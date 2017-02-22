@@ -279,14 +279,14 @@ div.ReactTags__tags {
 div.ReactTags__tagInput {
   width: 200px;
   border-radius: 2px;
-  display: inline-block;
+  display: block;
 }
 div.ReactTags__tagInput input,
 div.ReactTags__tagInput input:focus {
   margin: 0;
   font-size: 12px;
   width: 100%;
-  border: 1px solid #eee;
+  border: none;
   padding: 8px 10px ;
   display: block;
 }
@@ -297,7 +297,7 @@ div.ReactTags__selected span.ReactTags__tag {
   background: #eee;
   font-size: 12px;
   display: inline-block;
-  padding: 10px 10px;
+  padding: 4px;
   margin: 0 5px;
   cursor: move;
   border-radius: 2px;

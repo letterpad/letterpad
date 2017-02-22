@@ -1,7 +1,20 @@
 var pool = require("../../config/mysql.config").pool;
 var siteConfig = require("../../config/site.config");
 import { formatTaxonomyForDBInsert } from "../utils/common";
+import path from "path";
+import multer from "multer";
 
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, path.join(__dirname, "../../public/uploads/"));
+    },
+    filename: function(req, file, cb) {
+        let ext = path.extname(file.originalname);
+        cb(null, file.fieldname + "-" + Date.now() + ext);
+    },
+});
+
+var upload = multer({ storage: storage }).single("file");
 import moment from "moment";
 
 // This function is to insert multiple posts at once.
@@ -25,7 +38,7 @@ export function insertPosts(req, params) {
                     post.cover_image,
                     post.type,
                     new Date().toISOString().slice(0, 19).replace("T", " "),
-                    post.permalink
+                    post.permalink,
                 ];
                 taxonomies.tags.push(post.tags);
                 taxonomies.categories.push(post.categories);
@@ -41,7 +54,11 @@ export function insertPosts(req, params) {
                     let firstInsertID = rows.insertId;
                     insertTaxonomies("post_tag", post.tags, firstInsertID)
                         .then(() => {
-                            return insertTaxonomies("post_category", post.categories, firstInsertID);
+                            return insertTaxonomies(
+                                "post_category",
+                                post.categories,
+                                firstInsertID,
+                            );
                         })
                         .then(() => {
                             getPost(null, [post.id]).then(data => {
@@ -51,7 +68,7 @@ export function insertPosts(req, params) {
                         .catch(err => {
                             reject(err);
                         });
-                }
+                },
             );
         });
     });
@@ -63,7 +80,7 @@ export function updatePost(req, params) {
             let post = req.body.data;
 
             connection.query(
-                "UPDATE posts SET title=?, body=?, author=?, excerpt=?, cover_image=?, type=?, permalink=? WHERE id=?",
+                "UPDATE posts SET title=?, body=?, author=?, excerpt=?, cover_image=?, type=?,status=?, permalink=? WHERE id=?",
                 [
                     post.title,
                     post.body,
@@ -71,14 +88,23 @@ export function updatePost(req, params) {
                     post.excerpt,
                     post.cover_image,
                     post.type,
+                    post.status,
                     post.permalink,
-                    post.id
+                    post.id,
                 ],
                 (err, rows) => {
                     if (err) reject(err);
-                    insertTaxonomies("post_tag", post.taxonomies.post_tag || [], post.id)
+                    insertTaxonomies(
+                        "post_tag",
+                        post.taxonomies.post_tag || [],
+                        post.id,
+                    )
                         .then(() => {
-                            return insertTaxonomies("post_category", post.taxonomies.post_category || [], post.id);
+                            return insertTaxonomies(
+                                "post_category",
+                                post.taxonomies.post_category || [],
+                                post.id,
+                            );
                         })
                         .then(() => {
                             getPost(null, [post.id]).then(data => {
@@ -88,7 +114,7 @@ export function updatePost(req, params) {
                         .catch(err => {
                             reject(err);
                         });
-                }
+                },
             );
         });
     });
@@ -128,14 +154,18 @@ export function insertTaxonomies(type, values, post_id) {
                 }
                 return new Promise((resolve, reject) => {
                     pool.getConnection((err, connection) => {
-                        connection.query(`INSERT INTO taxonomies (name, type) VALUES ?`, [new_tags], (err, rows) => {
-                            connection.release();
-                            if (err) throw err;
-                            resolve({
-                                new_tags: new_tags,
-                                lastId: rows.insertId
-                            });
-                        });
+                        connection.query(
+                            `INSERT INTO taxonomies (name, type) VALUES ?`,
+                            [new_tags],
+                            (err, rows) => {
+                                connection.release();
+                                if (err) throw err;
+                                resolve({
+                                    new_tags: new_tags,
+                                    lastId: rows.insertId,
+                                });
+                            },
+                        );
                     });
                 });
             })
@@ -159,7 +189,7 @@ export function insertTaxonomies(type, values, post_id) {
                                 if (err) throw err;
                                 connection.release();
                                 resolve(post_tags);
-                            }
+                            },
                         );
                     });
                 });
@@ -173,13 +203,15 @@ export function insertTaxonomies(type, values, post_id) {
                         connection.query(
                             `DELETE ptr FROM post_taxonomy_relation ptr
                             INNER JOIN taxonomies t ON ptr.taxonomy_id = t.id
-                            WHERE t.type=? AND ptr.taxonomy_id NOT IN (${post_tags.join(",")})`,
-                            type,
+                            WHERE t.type=? AND ptr.post_id = ? AND ptr.taxonomy_id NOT IN (${post_tags.join(
+                                ",",
+                            )})`,
+                            [type, post_id],
                             (err, rows) => {
                                 if (err) throw err;
                                 connection.release();
                                 resolve();
-                            }
+                            },
                         );
                     });
                 });
@@ -201,7 +233,12 @@ export function insertTaxonomies(type, values, post_id) {
 export function getPosts(req, params) {
     return new Promise((resolve, reject) => {
         if (params.length < 2) {
-            reject({ data: [], count: 0, status: 500, message: "Invalid paramaters" });
+            reject({
+                data: [],
+                count: 0,
+                status: 500,
+                message: "Invalid paramaters",
+            });
             return;
         }
         //First page should be actually 0th page.)
@@ -213,17 +250,25 @@ export function getPosts(req, params) {
                 where += `status='${params[1]}' AND `;
             }
             where += " 1=1 ";
-            connection.query(`SELECT count(*) as count FROM posts WHERE ${where}`, (err, rows) => {
-                let count = rows[0].count;
-                connection.query(`SELECT * FROM posts WHERE ${where} ORDER BY created_on DESC LIMIT ?,?`, [low, high], (
-                    err,
-                    records
-                ) => {
-                    if (err) throw err;
-                    connection.release();
-                    resolve({ data: records, count: count, status: 200 });
-                });
-            });
+            connection.query(
+                `SELECT count(*) as count FROM posts WHERE ${where}`,
+                (err, rows) => {
+                    let count = rows[0].count;
+                    connection.query(
+                        `SELECT * FROM posts WHERE ${where} ORDER BY created_on DESC LIMIT ?,?`,
+                        [low, high],
+                        (err, records) => {
+                            if (err) throw err;
+                            connection.release();
+                            resolve({
+                                data: records,
+                                count: count,
+                                status: 200,
+                            });
+                        },
+                    );
+                },
+            );
         });
     });
 }
@@ -234,11 +279,15 @@ export function getPosts(req, params) {
 export function getPostByUrl(req, params) {
     return new Promise((resolve, reject) => {
         pool.getConnection((err, connection) => {
-            connection.query("SELECT * FROM posts WHERE permalink=?", params[0], (err, rows) => {
-                if (err) reject(err);
-                connection.release();
-                resolve(rows[0]);
-            });
+            connection.query(
+                "SELECT * FROM posts WHERE permalink=?",
+                params[0],
+                (err, rows) => {
+                    if (err) reject(err);
+                    connection.release();
+                    resolve(rows[0]);
+                },
+            );
         });
     });
 }
@@ -258,7 +307,9 @@ export function getPost(req, params) {
                 (err, rows) => {
                     if (err) reject(err);
                     connection.release();
-                    let mixed_taxonomies = rows[0].taxonomies === null ? [] : JSON.parse(rows[0].taxonomies);
+                    let mixed_taxonomies = rows[0].taxonomies === null
+                        ? []
+                        : JSON.parse(rows[0].taxonomies);
                     let taxonomies = {};
                     mixed_taxonomies.forEach(taxonomy => {
                         if (!taxonomies[taxonomy.type]) {
@@ -269,9 +320,9 @@ export function getPost(req, params) {
                     delete rows[0].taxonomies;
                     resolve({
                         ...rows[0],
-                        taxonomies: taxonomies
+                        taxonomies: taxonomies,
                     });
-                }
+                },
             );
         });
     });
@@ -280,7 +331,11 @@ export function getPost(req, params) {
 export function getTaxonomyList() {
     return new Promise((resolve, reject) => {
         pool.getConnection((err, connection) => {
-            connection.query("SELECT * FROM taxonomies", (err, rows, fields) => {
+            connection.query("SELECT * FROM taxonomies", (
+                err,
+                rows,
+                fields,
+            ) => {
                 if (err) throw err;
                 connection.release();
                 let result = {};
@@ -292,6 +347,55 @@ export function getTaxonomyList() {
                 });
                 resolve(result);
             });
+        });
+    });
+}
+
+export function uploadFile(req, params) {
+    return new Promise((resolve, reject) => {
+        upload(req, null, function(err) {
+            if (err) {
+                return reject(err);
+            }
+
+            resolve("/uploads/" + req.file.filename);
+        });
+    });
+}
+
+export function uploadCoverImage(req, params) {
+    return new Promise((resolve, reject) => {
+        upload(req, null, function(err) {
+            if (err) {
+                return reject(err);
+            }
+            pool.getConnection((err, connection) => {
+                connection.query(
+                    "UPDATE posts SET cover_image=? WHERE id=?",
+                    ["/uploads/" + req.file.filename, req.body.post_id],
+                    (err, rows, fields) => {
+                        if (err) throw err;
+                        connection.release();
+                        resolve("/uploads/" + req.file.filename);
+                    },
+                );
+            });
+        });
+    });
+}
+
+export function removeFeaturedImage(req, params) {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((err, connection) => {
+            connection.query(
+                "UPDATE posts SET cover_image='' WHERE id=?",
+                req.body.post_id,
+                (err, rows, fields) => {
+                    if (err) throw err;
+                    connection.release();
+                    resolve();
+                },
+            );
         });
     });
 }

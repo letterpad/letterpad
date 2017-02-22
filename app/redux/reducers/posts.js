@@ -18,7 +18,8 @@ var initalState = {
         }
     },
     inserting: false,
-    updating: false
+    updating: false,
+    files: []
 };
 
 function instagram(state = initalState, action) {
@@ -92,6 +93,22 @@ function instagram(state = initalState, action) {
                     taxonomy: action.payload
                 }
             };
+        case ActionTypes.UPDATING_COVER_IMAGE:
+            return {
+                ...state,
+                post: {
+                    ...state.post,
+                    data: {
+                        ...state.post.data,
+                        cover_image: action.payload
+                    }
+                }
+            }
+        // case ActionTypes.UPLOAD_FILES:
+        //     return {
+        //         ...state,
+        //         files: action.payload
+        //     }
 
         default:
             break;

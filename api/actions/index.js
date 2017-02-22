@@ -1,2 +1,11 @@
-export { insertPosts, updatePost, getPosts, getPost, getPostsByUrl, getTaxonomyList } from './posts';
-export { getCommentsByPostId } from './comments';
+export {
+    insertPosts,
+    updatePost,
+    getPosts,
+    getPost,
+    getPostsByUrl,
+    getTaxonomyList,
+    uploadFile,
+    uploadCoverImage,
+} from "./posts";
+export { getCommentsByPostId } from "./comments";

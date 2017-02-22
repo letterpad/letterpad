@@ -3,7 +3,14 @@ import { connect } from "react-redux";
 import { Link } from "react-router";
 import { bindActionCreators } from "redux";
 import * as ActionCreators from "../redux/actions/ActionCreators";
-import { PostActions, Tags, Categories, FeaturedImage } from "../components/posts";
+import {
+    PostActions,
+    Tags,
+    Categories,
+    FeaturedImage,
+    FileUpload,
+} from "../components/posts";
+import Editor from "../components/posts/Editor";
 import config from "../../config/config";
 
 class SinglePostView extends Component {
@@ -13,85 +20,66 @@ class SinglePostView extends Component {
         super(props);
         this.editorLoaded = false;
         this.updatePost = this.updatePost.bind(this);
-        this.setData = this.setData.bind(this);
-
+        this.setTaxonomies = this.setTaxonomies.bind(this);
     }
 
     componentDidMount() {
         this.props.getPost(this.props.params.post_id);
         this.props.getTaxonomyList();
+    }
 
-        if (!this.editorLoaded) {
-            this.loadEditor();
-        }
-    }
-    componentWillUnmount() {
-        this.editorLoaded = false;
-    }
     componentWillReceiveProps(nextState) {
         this.childData = {
             post_tag: nextState.post.data.post_tags || [],
-            post_category: nextState.post.data.post_categories || []
+            post_category: nextState.post.data.post_categories || [],
         };
-
     }
 
-    componentDidUpdate() {
-        if (!this.editorLoaded) {
-            this.loadEditor();
-        }
-
-
-    }
-
-    loadEditor() {
-        if (!this.editorLoaded) {
-            tinymce.init({
-                selector: "textarea.editor",
-                height: 300,
-                menubar: false,
-                theme: "modern",
-                plugins: [
-                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-                    "searchreplace wordcount visualblocks visualchars code fullscreen",
-                    "insertdatetime media nonbreaking save table contextmenu directionality",
-                    "template paste textcolor colorpicker textpattern imagetools codesample"
-                ],
-                toolbar1: "undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-                toolbar2: "print preview media | forecolor backcolor emoticons | codesample",
-                image_advtab: true,
-                templates: [
-                    { title: "Test template 1", content: "Test 1" },
-                    { title: "Test template 2", content: "Test 2" }
-                ],
-                init_instance_callback: () => {
-                    this.editorLoaded = true;
-                    tinymce.activeEditor.setContent(this.props.post.data.body);
-                }
-            });
-        }
-    }
-    setData(data) {
+    setTaxonomies(data) {
         this.childData = {
             ...this.childData,
-            ...data
+            ...data,
         };
+    }
+
+    insertFeaturedImage(files) {
+        this.props.uploadCoverImage(files, this.props.post.data.id);
+    }
+
+    removeFeaturedImage() {
+        this.props.removeFeaturedImage(this.props.post.data.id);
+    }
+
+    insertImageInPost() {
+        var files = this.refs.uploadInput.files;
+
+        if (files.length > 0) {
+            this.props.uploadFiles(files, this.props.post.data.id, response => {
+                var ed = tinyMCE.activeEditor; // get editor instance
+                var range = ed.selection.getRng(); // get range
+                var newNode = ed.getDoc().createElement("img"); // create img node
+                newNode.src = response; // add src attribute
+                range.insertNode(newNode);
+            });
+        }
     }
 
     updatePost(data) {
         let newData = {
             ...this.props.post.data,
             taxonomies: {
-                ...this.childData
+                ...this.childData,
             },
             status: data.status,
             title: this.titleInput.value,
             body: tinyMCE.activeEditor.getContent(),
             excerpt: "",
-            cover_image: ""
         };
 
         this.props.updatePost(newData);
+    }
+    openUploadWindow() {
+        this.refs.uploadInput.click();
     }
 
     render() {
@@ -99,7 +87,6 @@ class SinglePostView extends Component {
             return (
                 <div>
                     <div className="row row-offcanvas row-offcanvas-left">
-
                         <div className="col-xs-12 col-sm-8">
                             <img src="/images/loading.svg" />
                         </div>
@@ -132,13 +119,20 @@ class SinglePostView extends Component {
                             <div className="form-group">
                                 <button
                                     type="button"
-                                    className="btn btn-primary"
-                                    data-toggle="lean-modal"
-                                    data-target="#modal-insert-media"
+                                    className="btn btn-primary btn-sm"
+                                    onClick={this.openUploadWindow.bind(this)}
                                 >
                                     Insert Media
                                 </button>
-                                <textarea className="editor" />
+                                <input
+                                    ref="uploadInput"
+                                    onChange={this.insertImageInPost.bind(this)}
+                                    type="file"
+                                    className="hide"
+                                    name="uploads[]"
+                                    multiple="multiple"
+                                />
+                                <Editor body={this.props.post.data.body} />
                             </div>
                         </div>
                     </div>
@@ -146,10 +140,24 @@ class SinglePostView extends Component {
                 </div>
 
                 <div className="col-md-3 col-sm-3 col-xs-12">
-                    <PostActions post={this.props.post} updatePost={this.updatePost} />
-                    <Tags post={this.props.post} setData={this.setData} />
-                    <Categories post={this.props.post} setData={this.setData} />
-                    <FeaturedImage post={this.props.post} setData={this.setData} />
+                    <PostActions
+                        post={this.props.post}
+                        updatePost={this.updatePost}
+                    />
+                    <Tags post={this.props.post} setData={this.setTaxonomies} />
+                    <Categories
+                        post={this.props.post}
+                        setData={this.setTaxonomies}
+                    />
+                    <FeaturedImage
+                        post={this.props.post}
+                        removeFeaturedImage={this.removeFeaturedImage.bind(
+                            this,
+                        )}
+                        insertFeaturedImage={this.insertFeaturedImage.bind(
+                            this,
+                        )}
+                    />
                 </div>
             </div>
         );
@@ -158,7 +166,7 @@ class SinglePostView extends Component {
 
 const mapStateToProps = state => {
     return {
-        post: state.posts.post
+        post: state.posts.post,
     };
 };
 
@@ -167,9 +175,12 @@ const mapDispatchToProps = dispatch => {
         {
             getPost: ActionCreators.getPost,
             getTaxonomyList: ActionCreators.getTaxonomyList,
-            updatePost: ActionCreators.updatePost
+            updatePost: ActionCreators.updatePost,
+            uploadCoverImage: ActionCreators.uploadCoverImage,
+            removeFeaturedImage: ActionCreators.removeFeaturedImage,
+            uploadFiles: ActionCreators.uploadFiles,
         },
-        dispatch
+        dispatch,
     );
 };
 
