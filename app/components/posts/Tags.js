@@ -67,7 +67,7 @@ export default class Tags extends Component {
                 </div>
                 <div className="x_content">
                     <div className="control-group">
-                        <div className="col-xs-12">
+                        <div className="col-xs-12 row">
                             <ReactTags
                                 suggestions={suggestions}
                                 tags={post_tags}

@@ -9,9 +9,6 @@ export default class Categories extends Component {
             suggestions: []
         };
     }
-    componentDidMount() {
-        //this.setState({ post_category: this.props.post.data.taxonomies.post_category || []});
-    }
     componentWillReceiveProps(newState) {
         this.setState({
             post_category: newState.post.data.taxonomies.post_category || [],
@@ -67,7 +64,7 @@ export default class Categories extends Component {
                 </div>
                 <div className="x_content">
                     <div className="control-group">
-                        <div className="col-xs-12">
+                        <div className="col-xs-12 row">
                             <ReactTags
                                 suggestions={suggestions}
                                 tags={post_categories}

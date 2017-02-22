@@ -15,7 +15,7 @@ export default class PostActions extends Component {
                     <div className="clearfix" />
                 </div>
                 <div className="x_content">
-                    <h5 className="buffer-bottom">Status: { this.props.post.status }</h5>
+                    <h5 className="buffer-bottom">Status: { this.props.post.data.status }</h5>
 
                     <button
                         id="post-btn-publish"
