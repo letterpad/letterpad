@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import { Link } from "react-router";
 import { bindActionCreators } from "redux";
 import * as ActionCreators from "../redux/actions/ActionCreators";
+import * as PostActions from "../components/posts/PostActions";
 import {
-    PostActions,
+    PostPublish,
     Tags,
     Categories,
     FeaturedImage,
@@ -18,9 +19,6 @@ class SinglePostView extends Component {
 
     constructor(props) {
         super(props);
-        this.editorLoaded = false;
-        this.updatePost = this.updatePost.bind(this);
-        this.setTaxonomies = this.setTaxonomies.bind(this);
     }
 
     componentDidMount() {
@@ -35,53 +33,6 @@ class SinglePostView extends Component {
         };
     }
 
-    setTaxonomies(data) {
-        this.childData = {
-            ...this.childData,
-            ...data,
-        };
-    }
-
-    insertFeaturedImage(files) {
-        this.props.uploadCoverImage(files, this.props.post.data.id);
-    }
-
-    removeFeaturedImage() {
-        this.props.removeFeaturedImage(this.props.post.data.id);
-    }
-
-    insertImageInPost() {
-        var files = this.refs.uploadInput.files;
-
-        if (files.length > 0) {
-            this.props.uploadFiles(files, this.props.post.data.id, response => {
-                var ed = tinyMCE.activeEditor; // get editor instance
-                var range = ed.selection.getRng(); // get range
-                var newNode = ed.getDoc().createElement("img"); // create img node
-                newNode.src = response; // add src attribute
-                range.insertNode(newNode);
-            });
-        }
-    }
-
-    updatePost(data) {
-        let newData = {
-            ...this.props.post.data,
-            taxonomies: {
-                ...this.childData,
-            },
-            status: data.status,
-            title: this.titleInput.value,
-            body: tinyMCE.activeEditor.getContent(),
-            excerpt: "",
-        };
-
-        this.props.updatePost(newData);
-    }
-    openUploadWindow() {
-        this.refs.uploadInput.click();
-    }
-
     render() {
         if (this.props.post.loading) {
             return (
@@ -94,7 +45,7 @@ class SinglePostView extends Component {
                 </div>
             );
         }
-        let url = config.clientUrl + "/post/" + this.props.post.data.id;
+
         return (
             <div>
                 <div className="col-md-9 col-sm-9 col-xs-12">
@@ -120,13 +71,17 @@ class SinglePostView extends Component {
                                 <button
                                     type="button"
                                     className="btn btn-primary btn-sm"
-                                    onClick={this.openUploadWindow.bind(this)}
+                                    onClick={PostActions.openUploadWindow.bind(
+                                        this,
+                                    )}
                                 >
                                     Insert Media
                                 </button>
                                 <input
                                     ref="uploadInput"
-                                    onChange={this.insertImageInPost.bind(this)}
+                                    onChange={PostActions.insertImageInPost.bind(
+                                        this,
+                                    )}
                                     type="file"
                                     className="hide"
                                     name="uploads[]"
@@ -140,21 +95,24 @@ class SinglePostView extends Component {
                 </div>
 
                 <div className="col-md-3 col-sm-3 col-xs-12">
-                    <PostActions
+                    <PostPublish
                         post={this.props.post}
-                        updatePost={this.updatePost}
+                        updatePost={PostActions.updatePost.bind(this)}
                     />
-                    <Tags post={this.props.post} setData={this.setTaxonomies} />
+                    <Tags
+                        post={this.props.post}
+                        setData={PostActions.setTaxonomies.bind(this)}
+                    />
                     <Categories
                         post={this.props.post}
-                        setData={this.setTaxonomies}
+                        setData={PostActions.setTaxonomies.bind(this)}
                     />
                     <FeaturedImage
                         post={this.props.post}
-                        removeFeaturedImage={this.removeFeaturedImage.bind(
+                        removeFeaturedImage={PostActions.removeFeaturedImage.bind(
                             this,
                         )}
-                        insertFeaturedImage={this.insertFeaturedImage.bind(
+                        insertFeaturedImage={PostActions.insertFeaturedImage.bind(
                             this,
                         )}
                     />

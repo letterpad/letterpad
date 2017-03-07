@@ -1,11 +1,11 @@
-import React from 'react';
-import { Route, IndexRoute } from 'react-router';
-import { App, Home, Post } from './containers';
+import React from "react";
+import { Route, IndexRoute } from "react-router";
+import { App, Home, PostView, TwoColumnLayout } from "./containers";
 
 export default (
-	<Route path="/" component={App}>
-		<IndexRoute component={Home}></IndexRoute>
-		<Route name='posts-page' path="/page/:page_no" component={Home}></Route>
-		<Route path="/post/:title" component={Post}></Route>
-	</Route>
+    <Route path="/" component={App}>
+        <IndexRoute component={(Home)} />
+        <Route path="/:type/:post" component={TwoColumnLayout(PostView)} />
+        <Route path="/:page" component={TwoColumnLayout(PostView)} />
+    </Route>
 );

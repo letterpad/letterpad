@@ -5,21 +5,21 @@ var initalState = {
         loading: true,
         count: 0,
         loadMore: false,
-        data: []
+        data: [],
     },
     post: {
         loading: true,
         count: 0,
         loadMore: false,
         data: {},
-        taxonomy: {
-            tags: [],
-            categories: []
-        }
+        taxonomyList: {
+            post_tag: [],
+            post_category: [],
+        },
     },
     inserting: false,
     updating: false,
-    files: []
+    files: [],
 };
 
 function instagram(state = initalState, action) {
@@ -29,8 +29,8 @@ function instagram(state = initalState, action) {
                 ...state,
                 posts: {
                     ...state.posts,
-                    loading: true
-                }
+                    loading: true,
+                },
             };
         case ActionTypes.GET_POSTS:
             return {
@@ -38,8 +38,8 @@ function instagram(state = initalState, action) {
                 posts: {
                     ...state.posts,
                     data: action.payload.data,
-                    loading: false
-                }
+                    loading: false,
+                },
             };
         case ActionTypes.GET_SINGLE_POST:
             return {
@@ -47,21 +47,20 @@ function instagram(state = initalState, action) {
                 post: {
                     ...state.post,
                     data: action.payload,
-                    loading: false
-                }
+                    loading: false,
+                },
             };
         case ActionTypes.NEW_POST:
             return {
                 ...state,
                 post: {
                     ...state.post,
-                    data: action.payload
-                }
+                    data: action.payload,
+                },
             };
         case ActionTypes.INSERTING_POST:
             return {
-                ...state,
-                inserting: true
+                ...initalState
             };
         case ActionTypes.INSERTING_POST_COMPLETE:
             return {
@@ -71,27 +70,27 @@ function instagram(state = initalState, action) {
                     ...state.post,
                     data: {
                         ...state.post.data,
-                        ...action.payload
-                    }
-                }
+                        ...action.payload,
+                    },
+                },
             };
         case ActionTypes.UPDATING_POST:
             return {
                 ...state,
-                updating: true
+                updating: true,
             };
         case ActionTypes.UPDATING_POST_COMPLETE:
             return {
                 ...state,
-                updating: false
+                updating: false,
             };
         case ActionTypes.GET_TAXONOMY_LIST:
             return {
                 ...state,
                 post: {
                     ...state.post,
-                    taxonomy: action.payload
-                }
+                    taxonomyList: action.payload,
+                },
             };
         case ActionTypes.UPDATING_COVER_IMAGE:
             return {
@@ -100,10 +99,10 @@ function instagram(state = initalState, action) {
                     ...state.post,
                     data: {
                         ...state.post.data,
-                        cover_image: action.payload
-                    }
-                }
-            }
+                        cover_image: action.payload,
+                    },
+                },
+            };
         // case ActionTypes.UPLOAD_FILES:
         //     return {
         //         ...state,

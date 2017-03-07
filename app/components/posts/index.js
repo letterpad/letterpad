@@ -1,5 +1,5 @@
 export Categories from "./Categories";
 export Tags from "./Tags";
-export PostActions from "./PostActions";
+export PostPublish from "./PostPublish";
 export FeaturedImage from "./FeaturedImage";
 export FileUpload from "./FileUpload";

@@ -9,7 +9,7 @@ var config = {
 	connectionLimit: 30,
 	database : 'reactcms',
 	multipleStatements : true,
-	debug: true
+	debug: false
 };
 if(process.env.NODE_ENV && process.env.NODE_ENV === "dev") {
 	var pool = mysql.createPool(config);

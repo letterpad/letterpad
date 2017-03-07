@@ -1,58 +1,45 @@
-import React, { Component } from "react";
+export function insertFeaturedImage(files) {
+    this.props.uploadCoverImage(files, this.props.post.data.id);
+}
 
-export default class PostActions extends Component {
+export function removeFeaturedImage() {
+    this.props.removeFeaturedImage(this.props.post.data.id);
+}
 
-    updatePost(e, data) {
-        e.preventDefault();
-        this.props.updatePost(data);
+export function insertImageInPost() {
+    var files = this.refs.uploadInput.files;
+
+    if (files.length > 0) {
+        this.props.uploadFiles(files, this.props.post.data.id, response => {
+            var ed = tinyMCE.activeEditor; // get editor instance
+            var range = ed.selection.getRng(); // get range
+            var newNode = ed.getDoc().createElement("img"); // create img node
+            newNode.src = response; // add src attribute
+            range.insertNode(newNode);
+        });
     }
+}
 
-    render() {
-        return (
-            <div className="x_panel">
-                <div className="x_title">
-                    <h2>Publish</h2>
-                    <div className="clearfix" />
-                </div>
-                <div className="x_content">
-                    <h5 className="buffer-bottom">Status: { this.props.post.data.status }</h5>
+export function updatePost(data) {
+    let newData = {
+        ...this.props.post.data,
+        taxonomies: {
+            ...this.childData,
+        },
+        status: data.status,
+        title: this.titleInput.value,
+        body: tinyMCE.activeEditor.getContent(),
+        excerpt: "",
+    };
 
-                    <button
-                        id="post-btn-publish"
-                        name="btn-publish"
-                        type="submit"
-                        onClick={(e) => this.updatePost(e,{status: 'publish'})}
-                        className="btn btn-sm btn-primary col-xs-12"
-                    >
-                        Publish
-                    </button>
-                    <br className="clear" />
-                    <div className="divider-dashed" />
-                    <button
-                        id="post-btn-preview"
-                        name="btn-preview"
-                        type="submit"
-                        className="btn btn-sm btn-default pull-left"
-                    >
-                        Preview
-                    </button>
-                    <button
-                        id="post-btn-draft"
-                        name="btn-draft"
-                        type="submit"
-                        onClick={(e) => this.updatePost(e,{status: 'draft'})}
-                        className="btn btn-sm btn-default pull-right"
-                    >
-                        Save Draft
-                    </button>
-                    <br className="clear" />
-                    <div className="divider-dashed" />
-                    <a href="#" onClick={(e) => this.updatePost(e, {status: 'deleted'})} name="btn-trash" type="submit" className="text-danger text-bold">
-                        Move to Trash
-                    </a>
-
-                </div>
-            </div>
-        );
-    }
+    this.props.updatePost(newData);
+}
+export function openUploadWindow() {
+    this.refs.uploadInput.click();
+}
+export function setTaxonomies(data) {
+    this.childData = {
+        ...this.childData,
+        ...data,
+    };
 }

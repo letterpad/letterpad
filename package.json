@@ -91,6 +91,7 @@
     "redux-thunk": "^2.1.0",
     "rimraf": "^2.5.2",
     "semantic-ui-react": "^0.64.8",
+    "sequelize": "^3.30.2",
     "style-loader": "^0.13.0",
     "stylus-loader": "^1.5.1",
     "web-push": "^3.2.1",

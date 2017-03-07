@@ -9,7 +9,7 @@ import Comments from '../components/Comments'
 import Helmet from 'react-helmet';
 import config from '../../config/config'
 
-class Post extends Component {
+class PostView extends Component {
 
 	static prefetchData = [
 		(params) => ActionCreators.getPost(params.title)
@@ -134,4 +134,4 @@ const mapDispatchToProps = (dispatch) => {
 	}, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Post);
+export default connect(mapStateToProps, mapDispatchToProps)(PostView);
