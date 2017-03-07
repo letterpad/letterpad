@@ -14,11 +14,11 @@ export default class Tags extends Component {
     }
     componentWillReceiveProps(newState) {
         this.setState({
-            post_tag: newState.post.data.taxonomies.post_tag || [],
-            suggestions: newState.post.taxonomy.post_tag || []
+            post_tag: (newState.post.data.taxonomies && newState.post.data.taxonomies.post_tag) || [],
+            suggestions: newState.post.taxonomyList.post_tag || []
+        },()=>{
+            this.props.setData({post_tag: this.state.post_tag});
         });
-
-        this.props.setData(this.state);
     }
     handleDelete(i) {
         let post_tag = this.state.post_tag;

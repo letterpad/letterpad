@@ -10,12 +10,14 @@ export default class Categories extends Component {
         };
     }
     componentWillReceiveProps(newState) {
+        let taxonomies = newState.post.data.taxonomies;
         this.setState({
-            post_category: newState.post.data.taxonomies.post_category || [],
-            suggestions: newState.post.taxonomy.post_category || []
+            post_category: taxonomies && taxonomies.post_category || [],
+            suggestions: newState.post.taxonomyList.post_category
+        },()=>{
+            this.props.setData({post_category: this.state.post_category});
         });
 
-        this.props.setData(this.state);
     }
     handleDelete(i) {
         let post_category = this.state.post_category;
@@ -55,7 +57,7 @@ export default class Categories extends Component {
         let post_categories = this.state.post_category || [];
         let s = this.state.suggestions || [];
         let suggestions = s.map(t => t.name);
-
+console.log(suggestions);
         return (
             <div className="x_panel">
                 <div className="x_title">

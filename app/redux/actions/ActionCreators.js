@@ -91,6 +91,10 @@ export const getPosts = (page_no = 1, loadMore = false) => {
     };
 };
 
+/**
+ * 
+ * @param {number} id 
+ */
 export const getPost = id => {
     return dispatch => {
         let url = `${config.apiUrl}/getPost/${id}`;
@@ -146,8 +150,12 @@ export const insertEmptyPost = () => {
             cover_image: "",
             type: "post",
             permalink: "",
-            tags: "",
-            categories: "Uncategorized",
+            taxonomies: {
+                post_tag: [],
+                post_category: [
+                    { id: 8, name: "Uncategorized", type: "post_category" },
+                ],
+            },
         };
         return fetch(url, {
             method: "post",
@@ -275,7 +283,7 @@ export const removeFeaturedImage = (post_id, cb) => {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ post_id: post_id })
+            body: JSON.stringify({ post_id: post_id }),
         })
             .then(checkHttpStatus)
             .then(parseJSON)

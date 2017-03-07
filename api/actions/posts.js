@@ -1,6 +1,6 @@
 var pool = require("../../config/mysql.config").pool;
 var siteConfig = require("../../config/site.config");
-import { formatTaxonomyForDBInsert } from "../utils/common";
+import {insertTaxonomies, getTaxonomyList} from './taxonomies';
 import path from "path";
 import multer from "multer";
 
@@ -11,14 +11,19 @@ var storage = multer.diskStorage({
     filename: function(req, file, cb) {
         let ext = path.extname(file.originalname);
         cb(null, file.fieldname + "-" + Date.now() + ext);
-    },
+    }
 });
 
 var upload = multer({ storage: storage }).single("file");
 import moment from "moment";
 
-// This function is to insert multiple posts at once.
-// So if its a single post, wrap it inside an array
+
+/**
+ * This function is to insert multiple posts at once.
+ * So if its a single post, wrap it inside an array
+ * @param {*} req 
+ * @param {*} params 
+ */
 export function insertPosts(req, params) {
     return new Promise((resolve, reject) => {
         if (!req.body.data) {
@@ -28,7 +33,6 @@ export function insertPosts(req, params) {
         pool.getConnection((err, connection) => {
             let data = req.body.data;
             let posts = [];
-            let taxonomies = { tags: [], categories: [] };
             data.forEach(post => {
                 let item = [
                     post.title,
@@ -38,10 +42,8 @@ export function insertPosts(req, params) {
                     post.cover_image,
                     post.type,
                     new Date().toISOString().slice(0, 19).replace("T", " "),
-                    post.permalink,
+                    post.permalink
                 ];
-                taxonomies.tags.push(post.tags);
-                taxonomies.categories.push(post.categories);
                 posts.push(item);
             });
 
@@ -51,29 +53,52 @@ export function insertPosts(req, params) {
                 (err, rows) => {
                     if (err) throw err;
                     connection.release();
-                    let firstInsertID = rows.insertId;
-                    insertTaxonomies("post_tag", post.tags, firstInsertID)
-                        .then(() => {
-                            return insertTaxonomies(
-                                "post_category",
-                                post.categories,
-                                firstInsertID,
-                            );
-                        })
-                        .then(() => {
-                            getPost(null, [post.id]).then(data => {
-                                resolve(data);
+                    let insertId = rows.insertId;
+
+                    let idx = 0;
+                    function insertTaxonomyInit(data, idx, insertId) {
+                        getTaxonomyList().then(taxList => {
+                            insertTaxonomies(
+                                "post_tag",
+                                data[idx].taxonomies.post_tag,
+                                insertId,
+                                taxList
+                            )
+                            .then(() => {
+                                return insertTaxonomies(
+                                    "post_category",
+                                    data[idx].taxonomies.post_category,
+                                    insertId,
+                                    taxList
+                                );
+                            })
+                            .then(() => {
+                                if (data.length === idx + 1) {
+                                    getPost(null, [insertId]).then(data => {
+                                        resolve(data);
+                                    });
+                                    return;
+                                }
+                                idx++;
+                                insertId++;
+                                insertTaxonomyInit(data, idx, insertId);
+                            })
+                            .catch(err => {
+                                reject(err);
                             });
-                        })
-                        .catch(err => {
-                            reject(err);
                         });
-                },
+                    }
+                    insertTaxonomyInit(data, idx, insertId);
+                }
             );
         });
     });
 }
-
+/**
+ * 
+ * @param {*} req 
+ * @param {*} params 
+ */
 export function updatePost(req, params) {
     return new Promise((resolve, reject) => {
         pool.getConnection((err, connection) => {
@@ -90,20 +115,23 @@ export function updatePost(req, params) {
                     post.type,
                     post.status,
                     post.permalink,
-                    post.id,
+                    post.id
                 ],
                 (err, rows) => {
                     if (err) reject(err);
-                    insertTaxonomies(
-                        "post_tag",
-                        post.taxonomies.post_tag || [],
-                        post.id,
-                    )
+                    getTaxonomyList().then(taxList => {
+                        insertTaxonomies(
+                            "post_tag",
+                            post.taxonomies.post_tag || [],
+                            post.id,
+                            taxList
+                        )
                         .then(() => {
                             return insertTaxonomies(
                                 "post_category",
                                 post.taxonomies.post_category || [],
                                 post.id,
+                                taxList
                             );
                         })
                         .then(() => {
@@ -114,122 +142,18 @@ export function updatePost(req, params) {
                         .catch(err => {
                             reject(err);
                         });
-                },
+                    });
+                }
             );
         });
     });
 }
 
-export function insertTaxonomies(type, values, post_id) {
-    return new Promise((resolve, reject) => {
-        let post_tags = [];
-        //get exisiting tags
-        getTaxonomyList()
-            .then(result => {
-                let new_tags = [];
-                let dictionary = {};
-                if (!result[type]) {
-                    result[type] = [];
-                }
-                // result.tags - exisiting
-                result[type].forEach(tag => {
-                    dictionary[tag.id] = tag;
-                });
-                //compare
-                values.forEach(taxonomy => {
-                    if (!dictionary[taxonomy.id]) {
-                        new_tags.push([taxonomy.name, type]);
-                    }
-
-                    if (taxonomy.id !== 0) {
-                        post_tags.push(taxonomy.id);
-                    }
-                });
-
-                return new_tags;
-            })
-            .then(new_tags => {
-                if (new_tags.length === 0) {
-                    return null;
-                }
-                return new Promise((resolve, reject) => {
-                    pool.getConnection((err, connection) => {
-                        connection.query(
-                            `INSERT INTO taxonomies (name, type) VALUES ?`,
-                            [new_tags],
-                            (err, rows) => {
-                                connection.release();
-                                if (err) throw err;
-                                resolve({
-                                    new_tags: new_tags,
-                                    lastId: rows.insertId,
-                                });
-                            },
-                        );
-                    });
-                });
-            })
-            .then(result => {
-                if (result === null) {
-                    return null;
-                }
-                return new Promise((resolve, reject) => {
-                    let values = [];
-                    let tag_id = result.lastId;
-                    result.new_tags.forEach(tag => {
-                        post_tags.push(tag_id);
-                        values.push([post_id, tag_id]);
-                        tag_id++;
-                    });
-                    pool.getConnection((err, connection) => {
-                        connection.query(
-                            "INSERT INTO post_taxonomy_relation(post_id, taxonomy_id) VALUES ?",
-                            [values],
-                            (err, rows) => {
-                                if (err) throw err;
-                                connection.release();
-                                resolve(post_tags);
-                            },
-                        );
-                    });
-                });
-            })
-            .then(result => {
-                if (post_tags.length === 0) {
-                    return null;
-                }
-                return new Promise((resolve, reject) => {
-                    pool.getConnection((err, connection) => {
-                        connection.query(
-                            `DELETE ptr FROM post_taxonomy_relation ptr
-                            INNER JOIN taxonomies t ON ptr.taxonomy_id = t.id
-                            WHERE t.type=? AND ptr.post_id = ? AND ptr.taxonomy_id NOT IN (${post_tags.join(
-                                ",",
-                            )})`,
-                            [type, post_id],
-                            (err, rows) => {
-                                if (err) throw err;
-                                connection.release();
-                                resolve();
-                            },
-                        );
-                    });
-                });
-            })
-            .then(() => {
-                resolve({});
-            })
-            .catch(e => {
-                reject(e);
-            });
-    });
-}
-/* params = [
-    'page',
-    {page},
-    (optional) {draft, published}
-   ]
-*/
+/**
+ * 
+ * @param {Object} req 
+ * @param {Array} params ['page', {page}, (optional) {'draft','published','deleted'}]
+ */
 export function getPosts(req, params) {
     return new Promise((resolve, reject) => {
         if (params.length < 2) {
@@ -237,7 +161,7 @@ export function getPosts(req, params) {
                 data: [],
                 count: 0,
                 status: 500,
-                message: "Invalid paramaters",
+                message: "Invalid paramaters"
             });
             return;
         }
@@ -263,19 +187,21 @@ export function getPosts(req, params) {
                             resolve({
                                 data: records,
                                 count: count,
-                                status: 200,
+                                status: 200
                             });
-                        },
+                        }
                     );
-                },
+                }
             );
         });
     });
 }
 
-// params = [
-//     permalink
-// ]
+/**
+ * 
+ * @param {*} req 
+ * @param {Array} params [permalink]
+ */
 export function getPostByUrl(req, params) {
     return new Promise((resolve, reject) => {
         pool.getConnection((err, connection) => {
@@ -286,12 +212,16 @@ export function getPostByUrl(req, params) {
                     if (err) reject(err);
                     connection.release();
                     resolve(rows[0]);
-                },
+                }
             );
         });
     });
 }
-
+/**
+ * 
+ * @param {Object} req 
+ * @param {Array} params [(int) id]
+ */
 export function getPost(req, params) {
     return new Promise((resolve, reject) => {
         pool.getConnection((err, connection) => {
@@ -320,33 +250,10 @@ export function getPost(req, params) {
                     delete rows[0].taxonomies;
                     resolve({
                         ...rows[0],
-                        taxonomies: taxonomies,
+                        taxonomies: taxonomies
                     });
-                },
+                }
             );
-        });
-    });
-}
-
-export function getTaxonomyList() {
-    return new Promise((resolve, reject) => {
-        pool.getConnection((err, connection) => {
-            connection.query("SELECT * FROM taxonomies", (
-                err,
-                rows,
-                fields,
-            ) => {
-                if (err) throw err;
-                connection.release();
-                let result = {};
-                rows.forEach(item => {
-                    if (!result[item.type]) {
-                        result[item.type] = [];
-                    }
-                    result[item.type].push(item);
-                });
-                resolve(result);
-            });
         });
     });
 }
@@ -377,7 +284,7 @@ export function uploadCoverImage(req, params) {
                         if (err) throw err;
                         connection.release();
                         resolve("/uploads/" + req.file.filename);
-                    },
+                    }
                 );
             });
         });
@@ -394,7 +301,7 @@ export function removeFeaturedImage(req, params) {
                     if (err) throw err;
                     connection.release();
                     resolve();
-                },
+                }
             );
         });
     });

@@ -8,38 +8,48 @@ import prefetchComponentData from "../utils/prefetchComponentData";
 import store from "./redux/createStore";
 import Helmet from "react-helmet";
 
-module.exports = function(req, res) {
-    match(
-        {
-            routes,
-            location: req.url
-        },
-        (error, redirectLocation, renderProps) => {
-            if (error) {
-                res.status(500).send(error.message);
-            } else if (redirectLocation) {
-                res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-            } else if (renderProps) {
-                prefetchComponentData(store.dispatch, renderProps.components, renderProps.params)
-                    .then(renderHTML)
-                    .then(html => res.status(200).send(html))
-                    .catch(err => res.end(err.message));
-            } else {
-                res.status(404).send("Not found");
-            }
+module.exports.init = app => {
+    app.get("/*", (req, res) => {
+        match(
+            {
+                routes,
+                location: req.url
+            },
+            (error, redirectLocation, renderProps) => {
+                if (error) {
+                    res.status(500).send(error.message);
+                } else if (redirectLocation) {
+                    res.redirect(
+                        302,
+                        redirectLocation.pathname + redirectLocation.search
+                    );
+                } else if (renderProps) {
+                    prefetchComponentData(
+                        store.dispatch,
+                        renderProps.components,
+                        renderProps.params
+                    )
+                        .then(renderHTML)
+                        .then(html => res.status(200).send(html))
+                        .catch(err => res.end(err.message));
+                } else {
+                    res.status(404).send("Not found");
+                }
 
-            function renderHTML() {
-                const initialState = store.getState();
+                function renderHTML() {
+                    const initialState = store.getState();
 
-                const renderedComponent = ReactDOM.renderToString(
-                    <Provider store={store}>
-                        <RouterContext {...renderProps} />
-                    </Provider>
-                );
-                let head = Helmet.rewind();
-                var bundle = process.env.NODE_ENV == "production" ? "/js/client-bundle.js" : "/static/client-bundle.js";
+                    const renderedComponent = ReactDOM.renderToString(
+                        <Provider store={store}>
+                            <RouterContext {...renderProps} />
+                        </Provider>
+                    );
+                    let head = Helmet.rewind();
+                    var bundle = process.env.NODE_ENV == "production"
+                        ? "/js/client-bundle.js"
+                        : "/static/client-bundle.js";
 
-                const HTML = `
+                    const HTML = `
                 <!DOCTYPE html>
                 <html lang="en">
                   <head>
@@ -55,7 +65,9 @@ module.exports = function(req, res) {
                   <body id="client">
                     <div id="app">${renderedComponent}</div>
                     <script type="application/javascript">
-                       window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
+                       window.__INITIAL_STATE__ = ${JSON.stringify(
+                        initialState
+                    )};
                        window.__CONFIG__ =  ${JSON.stringify(config)}
                     </script>
 
@@ -63,8 +75,9 @@ module.exports = function(req, res) {
                   </body>
                 </html>
             `;
-                return HTML;
+                    return HTML;
+                }
             }
-        }
-    );
+        );
+    });
 };
