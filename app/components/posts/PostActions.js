@@ -1,5 +1,18 @@
-export function insertFeaturedImage(files) {
-    this.props.uploadCoverImage(files, this.props.post.data.id);
+import fetch from "isomorphic-fetch";
+
+export function uploadFile(files) {
+    let url = "http://localhost:3030/upload";
+
+    var data = new FormData();
+    data.append("file", files[0]);
+
+    return fetch(url, {
+        method: "post",
+        body: data
+    }).then(data => {
+        return data.json();
+    });
+    
 }
 
 export function removeFeaturedImage() {
@@ -22,17 +35,17 @@ export function insertImageInPost() {
 
 export function updatePost(data) {
     let newData = {
-        ...this.props.post.data,
-        taxonomies: {
-            ...this.childData,
-        },
+        id: this.props.posts[0].id,
+        taxonomies: [
+            ...this.childData.post_tag,
+            ...this.childData.post_category
+        ],
         status: data.status,
         title: this.titleInput.value,
         body: tinyMCE.activeEditor.getContent(),
-        excerpt: "",
+        excerpt: ""
     };
-
-    this.props.updatePost(newData);
+    this.props.update(newData);
 }
 export function openUploadWindow() {
     this.refs.uploadInput.click();
@@ -40,6 +53,6 @@ export function openUploadWindow() {
 export function setTaxonomies(data) {
     this.childData = {
         ...this.childData,
-        ...data,
+        ...data
     };
 }

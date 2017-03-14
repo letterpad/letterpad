@@ -42,7 +42,7 @@ app.use(
 app.use(require("webpack-hot-middleware")(compiler));
 
 adminServerRendering.init(app);
-clientServerRendering.init(app);
+//clientServerRendering.init(app);
 //app.use("/admin/*", adminServerRendering);
 //app.use("/", clientServerRendering);
 

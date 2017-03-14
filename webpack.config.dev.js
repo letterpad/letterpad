@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports = {
     devtool: 'source-map',
     entry: {
-        dashboard: ['webpack-hot-middleware/client', './app/dashboard'],
+        'app-admin': ['webpack-hot-middleware/client', './app/app'],
         client: ['webpack-hot-middleware/client', './client/client']
     },
     output: {

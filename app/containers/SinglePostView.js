@@ -9,10 +9,11 @@ import {
     Tags,
     Categories,
     FeaturedImage,
-    FileUpload,
+    FileUpload
 } from "../components/posts";
 import Editor from "../components/posts/Editor";
 import config from "../../config/config";
+import { gql, graphql } from "react-apollo";
 
 class SinglePostView extends Component {
     static prefetchData = [params => ActionCreators.getPost(params.post_id)];
@@ -21,20 +22,8 @@ class SinglePostView extends Component {
         super(props);
     }
 
-    componentDidMount() {
-        this.props.getPost(this.props.params.post_id);
-        this.props.getTaxonomyList();
-    }
-
-    componentWillReceiveProps(nextState) {
-        this.childData = {
-            post_tag: nextState.post.data.post_tags || [],
-            post_category: nextState.post.data.post_categories || [],
-        };
-    }
-
     render() {
-        if (this.props.post.loading) {
+        if (this.props.loading) {
             return (
                 <div>
                     <div className="row row-offcanvas row-offcanvas-left">
@@ -58,7 +47,7 @@ class SinglePostView extends Component {
 
                             <div className="form-group">
                                 <input
-                                    defaultValue={this.props.post.data.title}
+                                    defaultValue={this.props.posts[0].title}
                                     type="text"
                                     ref={input => this.titleInput = input}
                                     name="post-title"
@@ -72,7 +61,7 @@ class SinglePostView extends Component {
                                     type="button"
                                     className="btn btn-primary btn-sm"
                                     onClick={PostActions.openUploadWindow.bind(
-                                        this,
+                                        this
                                     )}
                                 >
                                     Insert Media
@@ -80,14 +69,14 @@ class SinglePostView extends Component {
                                 <input
                                     ref="uploadInput"
                                     onChange={PostActions.insertImageInPost.bind(
-                                        this,
+                                        this
                                     )}
                                     type="file"
                                     className="hide"
                                     name="uploads[]"
                                     multiple="multiple"
                                 />
-                                <Editor body={this.props.post.data.body} />
+                                <Editor body={this.props.posts[0].body} />
                             </div>
                         </div>
                     </div>
@@ -96,24 +85,21 @@ class SinglePostView extends Component {
 
                 <div className="col-md-3 col-sm-3 col-xs-12">
                     <PostPublish
-                        post={this.props.post}
+                        post={this.props.posts[0]}
                         updatePost={PostActions.updatePost.bind(this)}
                     />
                     <Tags
-                        post={this.props.post}
+                        post={this.props.posts[0]}
                         setData={PostActions.setTaxonomies.bind(this)}
                     />
                     <Categories
-                        post={this.props.post}
+                        post={this.props.posts[0]}
                         setData={PostActions.setTaxonomies.bind(this)}
                     />
                     <FeaturedImage
-                        post={this.props.post}
+                        post={this.props.posts[0]}
                         removeFeaturedImage={PostActions.removeFeaturedImage.bind(
-                            this,
-                        )}
-                        insertFeaturedImage={PostActions.insertFeaturedImage.bind(
-                            this,
+                            this
                         )}
                     />
                 </div>
@@ -124,7 +110,7 @@ class SinglePostView extends Component {
 
 const mapStateToProps = state => {
     return {
-        post: state.posts.post,
+        post: state.posts.post
     };
 };
 
@@ -136,10 +122,51 @@ const mapDispatchToProps = dispatch => {
             updatePost: ActionCreators.updatePost,
             uploadCoverImage: ActionCreators.uploadCoverImage,
             removeFeaturedImage: ActionCreators.removeFeaturedImage,
-            uploadFiles: ActionCreators.uploadFiles,
+            uploadFiles: ActionCreators.uploadFiles
         },
-        dispatch,
+        dispatch
     );
 };
+const postQuery = gql`
+  query getPosts($id: String!) {
+  posts(id:$id) {
+    id,
+    title,
+    body,
+    author {
+        username
+    },
+    status,
+    created_at,
+    cover_image,
+    taxonomies {
+      id,
+      name,
+      type
+    }
+  }
+}
+`;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SinglePostView);
+const ContainerWithData = graphql(postQuery, {
+    options: (props) => ({ variables: { id: props.params.post_id } }),
+    props: ({ data: { loading, posts } }) => ({
+        posts,
+        loading
+    })
+});
+
+const updatePostQuery = gql`
+  mutation updatePost($id: String!, $title: String!, $body: String!, $status: String!, $excerpt: String!, $taxonomies: [TaxonomyInputType]) {
+    updatePost(id: $id, title: $title, body: $body, status: $status, excerpt: $excerpt, taxonomies: $taxonomies) {
+      id
+    }
+  }
+`;
+const updateQueryWithData = graphql(updatePostQuery, {
+    props: ({ mutate }) => ({
+        update: data => mutate({ variables: data })
+    })
+});
+
+export default updateQueryWithData(ContainerWithData(SinglePostView));

@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory, hashHistory } from 'react-router'
-import rootReducer from './reducers/index';
+import rootReducer from './redux/reducers';
 import thunk from 'redux-thunk';
 import DevTools from './containers/DevTools';
-
+import client from './apolloClient';
 
 /*
   Store
@@ -18,8 +18,8 @@ const store = createStore(
     rootReducer, 
     initialState, 
     compose(
-      applyMiddleware(thunk),
-      window.devToolsExtension ? window.devToolsExtension() : f => f
+      applyMiddleware(thunk, client.middleware()),
+      window && window.devToolsExtension ? window.devToolsExtension() : f => f
     )
   );
 
@@ -34,8 +34,8 @@ export const history = syncHistoryWithStore(hashHistory, store);
 */
 
 if(module.hot) {
-  module.hot.accept('./reducers/', () => {
-    const nextRootReducer = require('./reducers/index').default;
+  module.hot.accept('./redux/reducers/', () => {
+    const nextRootReducer = require('./redux/reducers').default;
     store.replaceReducer(nextRootReducer);
   });
 }

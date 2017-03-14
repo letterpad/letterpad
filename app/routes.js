@@ -1,7 +1,6 @@
 import React from "react";
 import { Route, IndexRoute } from "react-router";
 import EnsureLoggedInContainer from "./containers/EnsureLoggedInContainer";
-
 import {
     App,
     Home,
