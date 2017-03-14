@@ -1,22 +1,29 @@
 import React from "react";
 import ReactDOM from "react-dom/server";
 //import Helmet from 'react-helmet';
-import config from "../config/config";
 import { match, RouterContext } from "react-router";
-
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { ApolloProvider } from "react-apollo";
+import { createStore, applyMiddleware, compose } from "redux";
 
-import { Provider } from "react-redux";
-
-import routes from "./routes";
 import prefetchComponentData from "../utils/prefetchComponentData";
-
-import store from "./redux/createStore";
+import config from "../config/config";
+import routes from "./routes";
 import { doLogin } from "./api/actions";
+import client from "./apolloClient";
+import rootReducer from "./redux/reducers";
+import thunk from "redux-thunk";
+
+var initialState = {};
+const store = createStore(
+    rootReducer,
+    initialState,
+    compose(applyMiddleware(thunk, client.middleware()))
+);
 
 module.exports.init = app => {
-    /*----------------------------------------------
+/*----------------------------------------------
  * For generating a password, we would do this
  *----------------------------------------------
     //-----------Generate salt----------------
@@ -30,7 +37,7 @@ module.exports.init = app => {
       // Store hash in your password DB.
       //$2a$10$.dPLmaFVW2jTF/rMcUPRjucno5oKMwVMGeTjrPGDVinSQtPNy9Mdy
     });
- ------------------------------------------------*/
+------------------------------------------------*/
 
     app.post("/admin/doLogin", (req, res) => {
         doLogin({ username: req.body.username }).then(result => {
@@ -101,15 +108,15 @@ module.exports.init = app => {
                 const initialState = store.getState();
 
                 const renderedComponent = ReactDOM.renderToString(
-                    <Provider store={store}>
+                    <ApolloProvider store={store} client={client}>
                         <RouterContext {...renderProps} />
-                    </Provider>
+                    </ApolloProvider>
                 );
 
                 //let head = Helmet.rewind();
                 var bundle = process.env.NODE_ENV == "production"
-                    ? "/js/dashboard-bundle.js"
-                    : "/static/dashboard-bundle.js";
+                    ? "/js/app-admin-bundle.js"
+                    : "/static/app-admin-bundle.js";
                 const HTML = `
             <!DOCTYPE html>
             <html lang="en">

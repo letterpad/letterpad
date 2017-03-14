@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
 /*
   Reducers
@@ -7,12 +7,19 @@ import { combineReducers } from 'redux';
   When state gets large, it makes sense to have multiple reducers that only deal with a piece of the state
 */
 
-import { routerReducer } from 'react-router-redux'; // we need this for react-router
-import instagram from './instagram';
-import auth from './auth';
-import posts from './posts';
+import { routerReducer } from "react-router-redux"; // we need this for react-router
+import instagram from "./instagram";
+import auth from "./auth";
+import posts from "./posts";
+import client from "../../apolloClient";
 
 // Combine all our reducers togeher
-const rootReducer = combineReducers({auth, instagram, posts, routing: routerReducer });
+const rootReducer = combineReducers({
+    auth,
+    instagram,
+    posts,
+    apollo: client.reducer(),
+    routing: routerReducer
+});
 
 export default rootReducer;

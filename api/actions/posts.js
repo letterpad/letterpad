@@ -1,6 +1,7 @@
 var pool = require("../../config/mysql.config").pool;
+
 var siteConfig = require("../../config/site.config");
-import {insertTaxonomies, getTaxonomyList} from './taxonomies';
+import { insertTaxonomies, getTaxonomyList } from "./taxonomies";
 import path from "path";
 import multer from "multer";
 
@@ -16,7 +17,6 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single("file");
 import moment from "moment";
-
 
 /**
  * This function is to insert multiple posts at once.
@@ -64,28 +64,28 @@ export function insertPosts(req, params) {
                                 insertId,
                                 taxList
                             )
-                            .then(() => {
-                                return insertTaxonomies(
-                                    "post_category",
-                                    data[idx].taxonomies.post_category,
-                                    insertId,
-                                    taxList
-                                );
-                            })
-                            .then(() => {
-                                if (data.length === idx + 1) {
-                                    getPost(null, [insertId]).then(data => {
-                                        resolve(data);
-                                    });
-                                    return;
-                                }
-                                idx++;
-                                insertId++;
-                                insertTaxonomyInit(data, idx, insertId);
-                            })
-                            .catch(err => {
-                                reject(err);
-                            });
+                                .then(() => {
+                                    return insertTaxonomies(
+                                        "post_category",
+                                        data[idx].taxonomies.post_category,
+                                        insertId,
+                                        taxList
+                                    );
+                                })
+                                .then(() => {
+                                    if (data.length === idx + 1) {
+                                        getPost(null, [insertId]).then(data => {
+                                            resolve(data);
+                                        });
+                                        return;
+                                    }
+                                    idx++;
+                                    insertId++;
+                                    insertTaxonomyInit(data, idx, insertId);
+                                })
+                                .catch(err => {
+                                    reject(err);
+                                });
                         });
                     }
                     insertTaxonomyInit(data, idx, insertId);
@@ -126,22 +126,22 @@ export function updatePost(req, params) {
                             post.id,
                             taxList
                         )
-                        .then(() => {
-                            return insertTaxonomies(
-                                "post_category",
-                                post.taxonomies.post_category || [],
-                                post.id,
-                                taxList
-                            );
-                        })
-                        .then(() => {
-                            getPost(null, [post.id]).then(data => {
-                                resolve(data);
+                            .then(() => {
+                                return insertTaxonomies(
+                                    "post_category",
+                                    post.taxonomies.post_category || [],
+                                    post.id,
+                                    taxList
+                                );
+                            })
+                            .then(() => {
+                                getPost(null, [post.id]).then(data => {
+                                    resolve(data);
+                                });
+                            })
+                            .catch(err => {
+                                reject(err);
                             });
-                        })
-                        .catch(err => {
-                            reject(err);
-                        });
                     });
                 }
             );

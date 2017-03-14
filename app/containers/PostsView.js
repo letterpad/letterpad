@@ -4,33 +4,40 @@ import { connect } from "react-redux";
 import * as ActionCreators from "../redux/actions/ActionCreators";
 import { Link } from "react-router";
 import Loader from "../components/Loader";
-
+import moment from "moment";
 import Sidebar from "../components/Sidebar";
-
+import { gql, graphql } from "react-apollo";
 class Row extends Component {
     render() {
         return (
             <tr>
                 <td><input type="checkbox" value={this.props.post.id} /></td>
-                <td><Link to={"/admin/post/" + this.props.post.id}>{this.props.post.title}</Link></td>
+                <td>
+                    <Link to={"/admin/post/" + this.props.post.id}>
+                        {this.props.post.title}
+                    </Link>
+                </td>
                 <td>{this.props.post.status}</td>
-                <td>{this.props.post.author}</td>
-                <td className="text-center">{this.props.post.created_on}</td>
+                <td>{this.props.post.author.username}</td>
+                <td className="text-center">{moment(new Date(this.props.post.created_at)).format("YYYY-MM-DD HH:mm:ss")}</td>
             </tr>
         );
     }
 }
 
 class PostsView extends Component {
+    constructor(args) {
+        super(args);
+    }
     componentDidMount() {
-        this.props.getPosts(1);
+        //this.props.getPosts(1);
     }
 
     render() {
-        if (this.props.posts.loading) {
+        if (this.props.loading) {
             return <Loader />;
         }
-        let rows = this.props.posts.data.map((post, i) => {
+        let rows = this.props.posts.map((post, i) => {
             return <Row key={i} post={post} />;
         });
 
@@ -39,10 +46,12 @@ class PostsView extends Component {
                 <div className="x_panel">
                     <div className="x_title">
                         <h2>Sample - Redsnow</h2>
-                        <div className="clearfix"/>
+                        <div className="clearfix" />
                     </div>
                     <div className="x_content">
-                        <table className="table table-striped jambo_table bulk_action">
+                        <table
+                            className="table table-striped jambo_table bulk_action"
+                        >
                             <thead>
                                 <tr>
                                     <th />
@@ -78,4 +87,31 @@ const mapDispatchToProps = dispatch => {
     );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostsView);
+const allPosts = gql`
+  query getPosts {
+  posts {
+    id,
+    title,
+    body,
+    author {
+        username
+    },
+    status,
+    created_at,
+    taxonomies {
+      id,
+      name,
+      type
+    }
+  }
+}
+`;
+
+const ContainerWithData = graphql(allPosts, {
+    props: ({ data: { loading, posts } }) => ({
+        posts,
+        loading
+    })
+});
+
+export default ContainerWithData(PostsView);
