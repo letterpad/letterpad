@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import { WithContext as ReactTags } from "react-tag-input";
 import { gql, graphql } from "react-apollo";
+import PostActions from "./PostActions";
 
 class Tags extends Component {
     constructor(props) {
         super(props);
         this.tags = [];
     }
+    
     componentDidMount() {
         this.tags = this.props.post.taxonomies.filter(tax => {
             return tax.type === "post_tag";
         }).map(tax => {delete tax['__typename']; return tax;});
-        this.props.setData({ post_tag: this.tags });
+       PostActions.setTaxonomies({ post_tag: this.tags });
     }
     
     handleDelete(i) {
@@ -31,20 +33,21 @@ class Tags extends Component {
                 name: tag,
                 type: "post_tag"
             });
-            this.props.setData({ post_tag: this.tags });
+            PostActions.setTaxonomies({ post_tag: this.tags });
         }
     }
 
     handleDrag(tag, currPos, newPos) {
+        
         // mutate array
         this.tags.splice(currPos, 1);
         this.tags.splice(newPos, 0, tag);
 
-        this.props.setData({ post_tag: this.tags });
+        PostActions.setTaxonomies({ post_tag: this.tags });
     }
 
     render() {
-         let suggestions = this.props.suggestions || [];
+        let suggestions = this.props.suggestions || [];
         suggestions = suggestions.map(t => t.name);
 
         return (
@@ -72,6 +75,7 @@ class Tags extends Component {
     }
 }
 
+
 const TaxSuggestionsQuery = gql`
   query getTaxonomies($type: String!) {
   taxonomies(type:$type) {
@@ -82,12 +86,10 @@ const TaxSuggestionsQuery = gql`
 `;
 const TaxSuggestionsData = graphql(TaxSuggestionsQuery, {
     options: { variables: { type: "post_tag" } },
-    props: ({ data: { loading, taxonomies } }) => {
-        return {
-            suggestions: taxonomies,
-            loading
-        }
-    }
+    props: ({ data: { loading, taxonomies } }) => ({
+        suggestions: taxonomies,
+        loading
+    })
 });
 
 export default TaxSuggestionsData(Tags);

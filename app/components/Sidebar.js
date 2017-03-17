@@ -23,8 +23,6 @@ export default class Sidebar extends Component {
                                     <ul className="nav child_menu">
                                         <li><Link to="/admin/posts">All Posts</Link></li>
                                         <li><Link to="/admin/post-new">New Post</Link></li>
-                                        <li><Link to="/admin/edit-categories">Categories</Link></li>
-                                        <li><Link to="/admin/edit-tags">Tags</Link></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -38,13 +36,6 @@ export default class Sidebar extends Component {
                                     <a><i className="fa fa-edit" /> Settings <span className="fa fa-chevron-down" /></a>
                                     <ul className="nav child_menu">
                                         <li><Link to="/welcome/edit-menu">Menu</Link></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a><i className="fa fa-laptop" /> Media<span className="fa fa-chevron-down" /></a>
-                                    <ul className="nav child_menu">
-                                        <li><Link to="/admin/media-upload">Add New</Link></li>
-                                        <li><Link to="/admin/media-library">Library</Link></li>
                                     </ul>
                                 </li>
                             </ul>

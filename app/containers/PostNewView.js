@@ -1,36 +1,63 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router";
-import { bindActionCreators } from "redux";
-import * as ActionCreators from "../redux/actions/ActionCreators";
-import * as PostActions from "../components/posts/PostActions";
+import React, { Component, PropTypes } from "react";
+import PostActions from "../components/posts/PostActions";
 import {
     PostPublish,
     Tags,
     Categories,
     FeaturedImage,
-    FileUpload,
+    FileUpload
 } from "../components/posts";
 import Editor from "../components/posts/Editor";
 import config from "../../config/config";
+import { gql, graphql } from "react-apollo";
 
 class PostNewView extends Component {
     constructor(props) {
         super(props);
-    }
-
-    componentDidMount() {
-        this.props.insertEmptyPost();
-        this.props.getTaxonomyList();
-    }
-
-    componentWillReceiveProps(nextState) {
-        this.childData = {
-            post_tag: nextState.post.data.post_tags || [],
-            post_category: nextState.post.data.post_categories || [],
+        this.state = {
+            loading: true,
+            post: {}
         };
     }
+    
+    componentDidMount() {
+        let that = this;
+        this.props.createPost({type:'post'}).then(result => {
+            PostActions.setData(result.data.createPost);
+            this.setState({ loading: false, post: result.data.createPost });
+        });
+
+        PostActions.subscribe(id => {
+            that.props.router.push("/admin/post/" + id);
+        });
+        
+        tinyMCE.on(
+            "addeditor",
+            function(event) {
+                var editor = event.editor;
+                editor.on("keyup", function() {
+                    var c = editor.getContent();
+                    PostActions.setData({
+                        body: editor.getContent()
+                    });
+                });
+            },
+            true
+        );
+    }
+
     render() {
+        if (this.state.loading) {
+            return (
+                <div>
+                    <div className="row row-offcanvas row-offcanvas-left">
+                        <div className="col-xs-12 col-sm-8">
+                            <img src="/images/loading.svg" />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
         return (
             <div>
                 <div className="col-md-9 col-sm-9 col-xs-12">
@@ -43,9 +70,12 @@ class PostNewView extends Component {
 
                             <div className="form-group">
                                 <input
-                                    value={this.props.post.data.title}
                                     type="text"
-                                    ref={input => this.titleInput = input}
+                                    onChange={e => {
+                                        PostActions.setData({
+                                            title: e.target.value
+                                        });
+                                    }}
                                     name="post-title"
                                     required="required"
                                     className="form-control"
@@ -56,23 +86,20 @@ class PostNewView extends Component {
                                 <button
                                     type="button"
                                     className="btn btn-primary btn-sm"
-                                    onClick={PostActions.openUploadWindow.bind(
-                                        this,
-                                    )}
+                                    onClick={() => {
+                                        this.refs.uploadInput.click();
+                                    }}
                                 >
                                     Insert Media
                                 </button>
                                 <input
                                     ref="uploadInput"
-                                    onChange={PostActions.insertImageInPost.bind(
-                                        this,
-                                    )}
                                     type="file"
                                     className="hide"
                                     name="uploads[]"
                                     multiple="multiple"
                                 />
-                                <Editor body={this.props.post.data.body} />
+                                <Editor body="" />
                             </div>
                         </div>
                     </div>
@@ -80,51 +107,47 @@ class PostNewView extends Component {
                 </div>
 
                 <div className="col-md-3 col-sm-3 col-xs-12">
-                    <PostPublish
-                        post={this.props.post}
-                        updatePost={PostActions.updatePost.bind(this)}
-                    />
-                    <Tags
-                        post={this.props.post}
-                        setData={PostActions.setTaxonomies.bind(this)}
-                    />
-                    <Categories
-                        post={this.props.post}
-                        setData={PostActions.setTaxonomies.bind(this)}
-                    />
-                    <FeaturedImage
-                        post={this.props.post}
-                        removeFeaturedImage={PostActions.removeFeaturedImage.bind(
-                            this,
-                        )}
-                        insertFeaturedImage={PostActions.insertFeaturedImage.bind(
-                            this,
-                        )}
-                    />
+                    <PostPublish post={this.state.post} />
+                    <Tags post={this.state.post} />
+                    <Categories post={this.state.post} />
+                    <FeaturedImage post={this.state.post} />
                 </div>
             </div>
         );
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        post: state.posts.post,
-    };
+PostNewView.propTypes = {
+    post: PropTypes.object
 };
-
-const mapDispatchToProps = dispatch => {
-    return bindActionCreators(
-        {
-            insertEmptyPost: ActionCreators.insertEmptyPost,
-            getTaxonomyList: ActionCreators.getTaxonomyList,
-            updatePost: ActionCreators.updatePost,
-            uploadCoverImage: ActionCreators.uploadCoverImage,
-            removeFeaturedImage: ActionCreators.removeFeaturedImage,
-            uploadFiles: ActionCreators.uploadFiles,
+const createPostQuery = gql`
+  mutation createPost($type: String!) {
+    createPost(type: $type) {
+        id,
+        title,
+        body,
+        author {
+            username
         },
-        dispatch,
-    );
-};
+        status,
+        type,
+        excerpt,
+        created_at,
+        cover_image,
+        taxonomies {
+            id,
+            name,
+            type
+        }
+    }
+  }
+`;
+const createQueryWithData = graphql(createPostQuery, {
+    props: ({ mutate }) => ({
+        createPost: data => mutate({
+            variables: data
+        })
+    })
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostNewView);
+export default createQueryWithData(PostNewView);

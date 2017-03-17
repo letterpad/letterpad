@@ -217,10 +217,24 @@ const Query = new GraphQLObjectType({
                 args: {
                     id: {
                         type: GraphQLString
+                    },
+                    type: {
+                        type: GraphQLString
                     }
                 },
                 resolve(root, args) {
                     return PostModel.findAll({ where: args });
+                }
+            },
+            post: {
+                type: Post,
+                args: {
+                    id: {
+                        type: GraphQLString
+                    }
+                },
+                resolve(root, args) {
+                    return PostModel.findOne({ where: args });
                 }
             },
             authors: {
@@ -332,7 +346,6 @@ const Mutation = new GraphQLObjectType({
                     }
                 },
                 resolve(source, args) {
-                    debugger;
                     return updatePost(args);
                 }
             }

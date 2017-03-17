@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { WithContext as ReactTags } from "react-tag-input";
 import { gql, graphql } from "react-apollo";
+import PostActions from "./PostActions";
 
 class Categories extends Component {
     constructor(props) {
@@ -12,7 +13,7 @@ class Categories extends Component {
         this.categories = this.props.post.taxonomies.filter(tax => {
             return tax.type === "post_category";
         }).map(tax => {delete tax['__typename']; return tax;});
-        this.props.setData({ post_category: this.categories });
+       PostActions.setTaxonomies({ post_category: this.categories });
     }
     
     handleDelete(i) {
@@ -32,7 +33,7 @@ class Categories extends Component {
                 name: tag,
                 type: "post_category"
             });
-            this.props.setData({ post_category: this.categories });
+            PostActions.setTaxonomies({ post_category: this.categories });
         }
     }
 
@@ -42,7 +43,7 @@ class Categories extends Component {
         this.categories.splice(currPos, 1);
         this.categories.splice(newPos, 0, tag);
 
-        this.props.setData({ post_category: this.categories });
+        PostActions.setTaxonomies({ post_category: this.categories });
     }
 
     render() {

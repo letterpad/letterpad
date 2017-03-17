@@ -7,25 +7,32 @@ export const PostModel = conn.define(
     "posts",
     {
         title: {
-            type: Sequalize.STRING
+            type: Sequalize.STRING,
+            defaultValue: ''
         },
         body: {
-            type: Sequalize.STRING
+            type: Sequalize.STRING,
+            defaultValue: ''
         },
         excerpt: {
-            type: Sequalize.STRING
+            type: Sequalize.STRING,
+            defaultValue: ''
         },
         cover_image: {
-            type: Sequalize.STRING
+            type: Sequalize.STRING,
+            defaultValue: ''
         },
         type: {
-            type: Sequalize.STRING
+            type: Sequalize.STRING,
+            defaultValue: ''
         },
         status: {
-            type: Sequalize.STRING
+            type: Sequalize.STRING,
+            defaultValue: 'draft'
         },
         permalink: {
-            type: Sequalize.STRING
+            type: Sequalize.STRING,
+            defaultValue: ''
         }
     },
     {
@@ -33,7 +40,7 @@ export const PostModel = conn.define(
     }
 );
 
-export function createPost(post) {
+export function createTestPost(post) {
     return PostModel.create(post).then(postObj => {
         let taxonomies = [new Promise(resolve => resolve())];
         if (args.taxonomies && args.taxonomies.length > 0) {
@@ -58,6 +65,22 @@ export function createPost(post) {
             return post;
         });
     });
+}
+
+export function createPost(data) {
+    data.author_id = 1;
+    return PostModel
+            .create(data)
+            .then(postObj => {
+                return PostTaxonomyModel.create({
+                    taxonomy_id: 1,
+                    post_id: postObj.id
+                }).then(()=>{
+                    return postObj;
+                });
+            }).then(postObj => {
+                return PostModel.findOne({where: {id: postObj.id}});
+            })
 }
 
 export function updatePost(post) {
@@ -88,7 +111,6 @@ export function updatePost(post) {
             }
         })
         .then(updatePostResult => {
-            debugger;
             let taxonomies = [new Promise(resolve => resolve())];
             if (post.taxonomies && post.taxonomies.length > 0) {
                 taxonomies = post.taxonomies.map(taxonomy => {
@@ -124,8 +146,8 @@ export function updatePost(post) {
             return Promise.all(taxonomies).then(result => {
                 return post;
             });
-        }).finally(() => {
-            debugger;
-            return PostModel.findAll({where:{id:post.id}});
+        })
+        .then(() => {
+            return PostModel.findOne({ where: { id: post.id } });
         });
 }
