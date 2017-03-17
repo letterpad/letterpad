@@ -12,7 +12,7 @@ class Row extends Component {
             <tr>
                 <td><input type="checkbox" value={this.props.post.id} /></td>
                 <td>
-                    <Link to={"/admin/post/" + this.props.post.id}>
+                    <Link to={"/admin/page/" + this.props.post.id}>
                         {this.props.post.title}
                     </Link>
                 </td>
@@ -24,7 +24,7 @@ class Row extends Component {
     }
 }
 
-class PostsView extends Component {
+class PagesView extends Component {
     constructor(args) {
         super(args);
     }
@@ -38,8 +38,8 @@ class PostsView extends Component {
         if (this.props.loading) {
             return <Loader />;
         }
-        let rows = this.props.posts.map((post, i) => {
-            return <Row key={i} post={post} />;
+        let rows = this.props.pages.map((page, i) => {
+            return <Row key={i} post={page} />;
         });
 
         return (
@@ -75,7 +75,7 @@ class PostsView extends Component {
 
 const allPosts = gql`
   query getPosts {
-  posts(type:"post") {
+  posts(type:"page") {
     id,
     title,
     body,
@@ -96,9 +96,9 @@ const allPosts = gql`
 
 const ContainerWithData = graphql(allPosts, {
     props: ({ data: { loading, posts } }) => ({
-        posts,
+        pages: posts,
         loading
     })
 });
 
-export default ContainerWithData(PostsView);
+export default ContainerWithData(PagesView);

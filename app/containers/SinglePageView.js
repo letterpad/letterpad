@@ -11,7 +11,7 @@ import Editor from "../components/posts/Editor";
 import config from "../../config/config";
 import { gql, graphql } from "react-apollo";
 
-class SinglePostView extends Component {
+class SinglePageView extends Component {
     static prefetchData = [params => ActionCreators.getPost(params.post_id)];
 
     constructor(props) {
@@ -34,7 +34,7 @@ class SinglePostView extends Component {
     }
 
     render() {
-        if (this.state.loading) {
+        if (this.props.loading) {
             return (
                 <div>
                     <div className="row row-offcanvas row-offcanvas-left">
@@ -45,7 +45,6 @@ class SinglePostView extends Component {
                 </div>
             );
         }
-
         return (
             <div>
                 <div className="col-md-9 col-sm-9 col-xs-12">
@@ -58,7 +57,7 @@ class SinglePostView extends Component {
 
                             <div className="form-group">
                                 <input
-                                    defaultValue={this.props.post.title}
+                                    defaultValue={this.props.page.title}
                                     type="text"
                                     onChange={e => {
                                         PostActions.setData({
@@ -88,7 +87,7 @@ class SinglePostView extends Component {
                                     name="uploads[]"
                                     multiple="multiple"
                                 />
-                                <Editor body={this.props.post.body} />
+                                <Editor body={this.props.page.body} />
                             </div>
                         </div>
                     </div>
@@ -96,10 +95,10 @@ class SinglePostView extends Component {
                 </div>
 
                 <div className="col-md-3 col-sm-3 col-xs-12">
-                    <PostPublish post={this.props.post} />
-                    <Tags post={this.props.post} />
-                    <Categories post={this.props.post} />
-                    <FeaturedImage post={this.props.post} />
+                    <PostPublish post={this.props.page} />
+                    <Tags post={this.props.page} />
+                    <Categories post={this.props.page} />
+                    <FeaturedImage post={this.props.page} />
                 </div>
             </div>
         );
@@ -129,11 +128,11 @@ const postQuery = gql`
 `;
 
 const ContainerWithData = graphql(postQuery, {
-    options: props => ({ variables: { id: props.params.post_id } }),
+    options: props => ({ variables: { id: props.params.page_id } }),
     props: ({ data: { loading, post } }) => ({
-        post,
+        page: post,
         loading
     })
 });
 
-export default ContainerWithData(SinglePostView);
+export default ContainerWithData(SinglePageView);

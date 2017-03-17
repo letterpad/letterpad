@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import PostActions from "../components/posts/PostActions";
 import {
     PostPublish,
@@ -11,26 +11,39 @@ import Editor from "../components/posts/Editor";
 import config from "../../config/config";
 import { gql, graphql } from "react-apollo";
 
-class SinglePostView extends Component {
-    static prefetchData = [params => ActionCreators.getPost(params.post_id)];
-
+class PageNewView extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            loading: true,
+            post: {}
+        };
     }
+    
     componentDidMount() {
-        tinyMCE &&
-            tinyMCE.on(
-                "addeditor",
-                function(event) {
-                    var editor = event.editor;
-                    editor.on("keyup", function() {
-                        PostActions.setData({
-                            body: editor.getContent()
-                        });
+        let that = this;
+        this.props.createPost({type:'page'}).then(result => {
+            PostActions.setData(result.data.createPost);
+            this.setState({ loading: false, post: result.data.createPost });
+        });
+
+        PostActions.subscribe(id => {
+            that.props.router.push("/admin/page/" + id);
+        });
+        
+        tinyMCE.on(
+            "addeditor",
+            function(event) {
+                var editor = event.editor;
+                editor.on("keyup", function() {
+                    var c = editor.getContent();
+                    PostActions.setData({
+                        body: editor.getContent()
                     });
-                },
-                true
-            );
+                });
+            },
+            true
+        );
     }
 
     render() {
@@ -45,7 +58,6 @@ class SinglePostView extends Component {
                 </div>
             );
         }
-
         return (
             <div>
                 <div className="col-md-9 col-sm-9 col-xs-12">
@@ -58,7 +70,6 @@ class SinglePostView extends Component {
 
                             <div className="form-group">
                                 <input
-                                    defaultValue={this.props.post.title}
                                     type="text"
                                     onChange={e => {
                                         PostActions.setData({
@@ -88,7 +99,7 @@ class SinglePostView extends Component {
                                     name="uploads[]"
                                     multiple="multiple"
                                 />
-                                <Editor body={this.props.post.body} />
+                                <Editor body="" />
                             </div>
                         </div>
                     </div>
@@ -96,44 +107,46 @@ class SinglePostView extends Component {
                 </div>
 
                 <div className="col-md-3 col-sm-3 col-xs-12">
-                    <PostPublish post={this.props.post} />
-                    <Tags post={this.props.post} />
-                    <Categories post={this.props.post} />
-                    <FeaturedImage post={this.props.post} />
+                    <PostPublish post={this.state.post} />
+                    <Tags post={this.state.post} />
+                    <Categories post={this.state.post} />
+                    <FeaturedImage post={this.state.post} />
                 </div>
             </div>
         );
     }
 }
 
-const postQuery = gql`
-  query getPost($id: String!) {
-  post(id:$id) {
-    id,
-    title,
-    body,
-    author {
-        username
-    },
-    status,
-    created_at,
-    cover_image,
-    excerpt,
-    taxonomies {
-      id,
-      name,
-      type
+PageNewView.propTypes = {
+    page: PropTypes.object
+};
+const createPostQuery = gql`
+  mutation createPost($type: String!) {
+    createPost(type: $type) {
+        id,
+        title,
+        body,
+        author {
+            username
+        },
+        type,
+        status,
+        excerpt,
+        created_at,
+        cover_image,
+        taxonomies {
+            id,
+            name,
+            type
+        }
     }
   }
-}
 `;
-
-const ContainerWithData = graphql(postQuery, {
-    options: props => ({ variables: { id: props.params.post_id } }),
-    props: ({ data: { loading, post } }) => ({
-        post,
-        loading
+const createQueryWithData = graphql(createPostQuery, {
+    props: ({ mutate }) => ({
+        createPost: data => mutate({
+            variables: data
+        })
     })
 });
-
-export default ContainerWithData(SinglePostView);
+export default createQueryWithData(PageNewView);

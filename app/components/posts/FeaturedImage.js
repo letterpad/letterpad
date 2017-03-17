@@ -1,28 +1,25 @@
 import React, { Component } from "react";
 import { gql, graphql } from "react-apollo";
-import * as PostActions from "../../components/posts/PostActions";
+import PostActions from "../../components/posts/PostActions";
 
 class FeaturedImage extends Component {
     constructor(props) {
         super(props);
-        this.props.uploadInput;
     }
 
-    openUploadWindow() {
-        this.refs.uploadInput.click();
-    }
     uploadImage(files) {
-        PostActions.uploadFile(files).then(cover_image => {
-            this.props.updateFeaturedImage({
-                id: this.props.post.id,
-                cover_image: cover_image
+        PostActions.uploadFile(files, "http://localhost:3030/upload")
+            .then(cover_image => {
+                this.props.updateFeaturedImage({
+                    id: this.props.post.id,
+                    cover_image: cover_image
+                });
             });
-        });
     }
     removeImage() {
         this.props.updateFeaturedImage({
             id: this.props.post.id,
-            cover_image: ''
+            cover_image: ""
         });
     }
 
@@ -46,7 +43,9 @@ class FeaturedImage extends Component {
                             return (
                                 <a
                                     className="text-primary pointer"
-                                    onClick={this.openUploadWindow.bind(this)}
+                                    onClick={() => {
+                                        this.refs.uploadInput.click();
+                                    }}
                                 >
                                     Set Featured Image
                                 </a>
@@ -90,14 +89,12 @@ const updateQueryWithData = graphql(uploadCoverImageQuery, {
         updateFeaturedImage: data => mutate({
             variables: data,
             updateQueries: {
-                getPosts: (prev, { mutationResult }) => {
+                getPost: (prev, { mutationResult }) => {
                     return {
-                        posts: [
-                            {
-                                ...prev.posts[0],
-                                cover_image: mutationResult.data.uploadFile.cover_image
-                            }
-                        ]
+                        post: {
+                            ...prev.post,
+                            cover_image: mutationResult.data.uploadFile.cover_image
+                        }
                     };
                 }
             }
