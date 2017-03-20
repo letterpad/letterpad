@@ -10,7 +10,8 @@ import {
     SinglePostView,
     PostNewView,
     SinglePageView,
-    PageNewView
+    PageNewView,
+    MenuCreation
 } from "./containers";
 export default (
     <Route path="/admin" component={App}>
@@ -18,6 +19,7 @@ export default (
         <Route path="/admin/login" component={LoginView} />
         <Route path="/admin/posts" component={TwoColumnLayout(PostsView)} />
         <Route path="/admin/pages" component={TwoColumnLayout(PagesView)} />
+        <Route path="/admin/menu" component={TwoColumnLayout(MenuCreation)} />
         
         <Route
             name='SinglePostView'

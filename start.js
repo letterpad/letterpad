@@ -1,3 +1,10 @@
+require.extensions[".sass"] = () => {
+    return "";
+};
+
+require.extensions[".scss"] = () => {
+    return "";
+};
 require("babel-register");
 require("./api/server");
 
@@ -29,7 +36,9 @@ app.use(express.static("public"));
 
 // start a webpack-dev-server
 var webpack = require("webpack");
-var wpConfigFile = process.env.NODE_ENV == "dev" ? "./webpack.config.dev.js" : "./webpack.config.prod.js";
+var wpConfigFile = process.env.NODE_ENV == "dev"
+    ? "./webpack.config.dev.js"
+    : "./webpack.config.prod.js";
 
 var webpackConfig = require(wpConfigFile);
 var compiler = webpack(webpackConfig);
@@ -42,9 +51,7 @@ app.use(
 app.use(require("webpack-hot-middleware")(compiler));
 
 adminServerRendering.init(app);
-//clientServerRendering.init(app);
-//app.use("/admin/*", adminServerRendering);
-//app.use("/", clientServerRendering);
+clientServerRendering.init(app);
 
 app.listen(4040, function() {
     console.log("====> Admin is listening on", 4040);

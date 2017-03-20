@@ -1,0 +1,87 @@
+//colors
+$black_4: rgba(0, 0, 0, 0.04);
+$black_9: rgba(0, 0, 0, 0.09);
+$white: #fff;
+$color_jade_approx: #00ab6b;
+$color_tapa_approx: #777777;
+$color_mine_shaft_approx: #333333;
+$color_oslo_gray_approx: #878b90;
+
+//fonts
+$font_0: Nunito Sans;
+$font_1: sans-serif;
+
+@import url(https://fonts.googleapis.com/css?family=Nunito+Sans);;
+body {
+	font-family: $font_0, $font_1;
+}
+.fleft {
+	float: left;
+}
+.fright {
+	float: right;
+}
+.clear {
+	clear: both;
+}
+.page-container {
+	padding-top: 100px;
+}
+
+article {
+	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: 0 1px 4px $black_4;
+	border: 1px solid $black_9;
+	padding: 24px;
+	background: $white;
+	margin-bottom: 20px;
+	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+	border-radius: 4px;
+	.entry-category {
+		margin-bottom: 5px;
+		font-size: 14px;
+		text-decoration: none;
+		a {
+			margin: 0 5px 0 6px;
+			color: $color_jade_approx;
+			text-decoration: none;
+			display: inline-block;
+			&:first-child {
+				margin-left: 0;
+			}
+			&:hover {
+				color: $color_jade_approx;
+			}
+		}
+	}
+	.entry-meta {
+		font-size: 13px;
+		color: $color_tapa_approx;
+	}
+	.entry-content {
+		margin: 22px 0;
+		font-size: 15px;
+		line-height: 1.5;
+		word-spacing: 1px;
+	}
+	.social {
+		color: $color_tapa_approx;
+		font-size: 15px;
+		margin-top: 20px;
+	}
+	.entry-title a {
+		color: $color_mine_shaft_approx;
+		font-weight: bold;
+		&:hover {
+			color: $color_mine_shaft_approx;
+			font-weight: bold;
+		}
+	}
+	.entry-footer .read-more a {
+		font-size: 13px;
+		color: $color_oslo_gray_approx;
+	}
+}
+.featured-image img {
+	width: 100%;
+}

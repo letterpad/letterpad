@@ -35,7 +35,7 @@ export default class Sidebar extends Component {
                                 <li>
                                     <a><i className="fa fa-edit" /> Settings <span className="fa fa-chevron-down" /></a>
                                     <ul className="nav child_menu">
-                                        <li><Link to="/welcome/edit-menu">Menu</Link></li>
+                                        <li><Link to="/admin/menu">Menu</Link></li>
                                     </ul>
                                 </li>
                             </ul>
