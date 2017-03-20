@@ -7,5 +7,6 @@ export SinglePostView from './SinglePostView';
 export SinglePageView from './SinglePageView';
 export PostNewView from './PostNewView';
 export PageNewView from './PageNewView';
+export MenuCreation from './MenuCreation';
 export LoginView from './LoginView';
 export TwoColumnLayout from './TwoColumnLayout';

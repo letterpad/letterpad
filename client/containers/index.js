@@ -1,4 +1,2 @@
-export App from './App';
-export Home from './Home';
-export PostView from './PostView';
-export TwoColumnLayout from './TwoColumnLayout';
+export App from "./App";
+export Home from "./Home";

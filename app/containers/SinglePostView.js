@@ -34,7 +34,7 @@ class SinglePostView extends Component {
     }
 
     render() {
-        if (this.state.loading) {
+        if (this.props.loading) {
             return (
                 <div>
                     <div className="row row-offcanvas row-offcanvas-left">
