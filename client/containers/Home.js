@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import ArticleList from "../components/post/ArticleList";
 import { gql, graphql } from "react-apollo";
-require("../../public/css/style.scss");
 
 class Home extends Component {
     constructor(props) {
@@ -9,24 +8,17 @@ class Home extends Component {
     }
 
     render() {
-        if (this.props.loading) {
-            return <div>hello</div>;
-        }
-        let articles = this.props.posts.map((post, i) => {
-            return <ArticleList key={i} post={post} />;
-        });
         return (
-            <div id="home-container" className="row">
-                <div className="col-lg-8">
-                    {(() => {
-                        if (this.props.loading) {
-                            return <div>hello</div>;
-                        } else {
-                            return articles;
-                        }
-                    })()}
-
-                </div>
+            <div>
+                {(() => {
+                    if (this.props.loading) {
+                        return <div>hello</div>;
+                    } else {
+                        return this.props.posts.map((post, i) => {
+                            return <ArticleList key={i} post={post} />;
+                        });
+                    }
+                })()}
             </div>
         );
     }
@@ -38,12 +30,10 @@ const allPosts = gql`
     id,
     title,
     body,
-    author {
-        username
-    },
     status,
     created_at,
     excerpt,
+	cover_image,
     taxonomies {
       id,
       name,
@@ -52,12 +42,11 @@ const allPosts = gql`
   }
 }
 `;
-
-const ContainerWithData = graphql(allPosts, {
+const ContainerWithPostData = graphql(allPosts, {
     props: ({ data: { loading, posts } }) => ({
         posts,
         loading
     })
 });
 
-export default ContainerWithData(Home);
+export default ContainerWithPostData(Home);

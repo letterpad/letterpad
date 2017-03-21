@@ -23,7 +23,7 @@ const store = createStore(
 );
 
 module.exports.init = app => {
-/*----------------------------------------------
+    /*----------------------------------------------
  * For generating a password, we would do this
  *----------------------------------------------
     //-----------Generate salt----------------
@@ -126,7 +126,6 @@ module.exports.init = app => {
 
                 <link rel="stylesheet" href="http://bootswatch.com/cosmo/bootstrap.min.css">
                 <link rel="stylesheet" href="http://dev.ajadmin/styles/custom.css">
-                <link rel="stylesheet" href="/css/style.css">
               </head>
               <body id='dashboard' class='nav-md'>
                 <div class='container body'>

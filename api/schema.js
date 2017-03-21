@@ -7,12 +7,15 @@ import {
     GraphQLInputObjectType,
     GraphQLNonNull
 } from "graphql";
+import { conn } from "../config/mysql.config";
+import Sequalize from "sequelize";
 import {
     createPost,
     updatePost,
     PostModel,
     AuthorModel,
     TaxonomyModel,
+    PostTaxonomyModel,
     uploadFile
 } from "./models";
 
@@ -118,6 +121,39 @@ const Taxonomy = new GraphQLObjectType({
     }
 });
 
+const PostTaxonomy = new GraphQLObjectType({
+    name: "PostTaxonomy",
+    description: "All taxonomies linked with a post",
+    fields() {
+        return {
+            id: {
+                type: GraphQLString,
+                resolve(taxonomy) {
+                    return taxonomy.id;
+                }
+            },
+            name: {
+                type: GraphQLString,
+                resolve(taxonomy) {
+                    return taxonomy.name;
+                }
+            },
+            type: {
+                type: GraphQLString,
+                resolve(taxonomy) {
+                    return taxonomy.type;
+                }
+            },
+            post_count: {
+                type: GraphQLString,
+                resolve(taxonomy) {
+                    return taxonomy.post[0].dataValues.post_count;
+                }
+            }
+        };
+    }
+});
+
 const TaxonomyInputType = new GraphQLInputObjectType({
     name: "TaxonomyInputType",
     description: "All taxonomies available for a post",
@@ -186,26 +222,35 @@ const Author = new GraphQLObjectType({
     }
 });
 
-const PostTaxonomy = new GraphQLObjectType({
-    name: "PostTaxonomy",
-    description: "Relationship between post and taxonomy",
-    fields() {
-        return {
-            post_id: {
-                type: GraphQLInt,
-                resolve(taxonomy) {
-                    return taxonomy.post_id;
-                }
-            },
-            taxonomy_id: {
-                type: GraphQLInt,
-                resolve(taxonomy) {
-                    return taxonomy.taxonomy_id;
-                }
-            }
-        };
+// const PostTaxonomy = new GraphQLObjectType({
+//     name: "PostTaxonomy",
+//     description: "Relationship between post and taxonomy",
+//     fields() {
+//         return {
+//             post_id: {
+//                 type: GraphQLInt,
+//                 resolve(taxonomy) {
+//                     return taxonomy.post_id;
+//                 }
+//             },
+//             taxonomy_id: {
+//                 type: GraphQLInt,
+//                 resolve(taxonomy) {
+//                     return taxonomy.taxonomy_id;
+//                 }
+//             }
+//         };
+//     }
+// });
+
+function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
     }
-});
+    return true;
+}
 
 const Query = new GraphQLObjectType({
     name: "Query",
@@ -220,10 +265,19 @@ const Query = new GraphQLObjectType({
                     },
                     type: {
                         type: GraphQLString
+                    },
+                    body: {
+                        type: GraphQLString
                     }
                 },
                 resolve(root, args) {
-                    return PostModel.findAll({ where: args });
+                    let obj = {};
+                    for (let field in args) {
+                        obj[field] = IsJsonString(args[field])
+                            ? JSON.parse(args[field])
+                            : args[field];
+                    }
+                    return PostModel.findAll({ where: obj });
                 }
             },
             post: {
@@ -256,10 +310,44 @@ const Query = new GraphQLObjectType({
                 args: {
                     type: {
                         type: GraphQLString
+                    },
+                    name: {
+                        type: GraphQLString
                     }
                 },
                 resolve(root, args) {
-                    return TaxonomyModel.findAll({where: args})
+                    return TaxonomyModel.findAll({ where: args });
+                }
+            },
+            postTaxonomies: {
+                type: new GraphQLList(PostTaxonomy),
+                args: {
+                    type: {
+                        type: GraphQLString
+                    }
+                },
+                resolve(root, args) {
+                    return TaxonomyModel.findAll({
+                        attributes: ["name", "id", "type"],
+                        include: [
+                            {
+                                model: PostModel,
+                                attributes: [
+                                    [
+                                        Sequalize.fn(
+                                            "COUNT",
+                                            Sequalize.col("post.id")
+                                        ),
+                                        "post_count"
+                                    ]
+                                ],
+                                as: "post",
+                                required: true
+                            }
+                        ],
+                        where: args,
+                        group: ["taxonomy_id"]
+                    });
                 }
             }
         };
