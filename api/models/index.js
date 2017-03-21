@@ -1,8 +1,7 @@
-
-import {PostModel, createPost, updatePost} from "./post";
-import {TaxonomyModel} from "./taxonomy";
-import {AuthorModel} from "./author";
-import {PostTaxonomyModel} from "./postTaxonomy";
+import { PostModel, createPost, updatePost } from "./post";
+import { TaxonomyModel } from "./taxonomy";
+import { AuthorModel } from "./author";
+import { PostTaxonomyModel } from "./postTaxonomy";
 
 import { conn } from "../../config/mysql.config";
 
@@ -17,7 +16,6 @@ TaxonomyModel.belongsToMany(PostModel, {
 
 AuthorModel.hasMany(PostModel);
 PostModel.belongsTo(AuthorModel);
-
 function createRecord() {
     return AuthorModel
         .create({
@@ -70,8 +68,8 @@ conn.sync({ force: false }).then(() => {
     //return createRecord();
 });
 
-export {PostModel, createPost, updatePost} from "./post";
-export {TaxonomyModel} from "./taxonomy";
-export {AuthorModel} from "./author";
-export {PostTaxonomyModel} from "./postTaxonomy";
-export {uploadFile} from "./upload";
+export { PostModel, createPost, updatePost } from "./post";
+export { TaxonomyModel } from "./taxonomy";
+export { AuthorModel } from "./author";
+export { PostTaxonomyModel } from "./postTaxonomy";
+export { uploadFile } from "./upload";

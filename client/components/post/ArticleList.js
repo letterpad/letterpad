@@ -7,8 +7,19 @@ export default class ArticleList extends Component {
             <article className="post-article post">
                 <header className="entry-header">
                     <div className="entry-category">
-                        <a href="" rel="category tag">Architecture</a>|
-                        <a href="" rel="category tag">Living</a>
+                        {(() => {
+                            return this.props.post.taxonomies
+                                .filter(taxonomy => {
+                                    return taxonomy.type == "post_category";
+                                })
+                                .map(taxonomy => {
+                                    return (
+                                        <a href="" rel="category tag">
+                                            {taxonomy.name}
+                                        </a>
+                                    );
+                                });
+                        })()}
                     </div>
                     <div className="entry-meta">
                         <span className="posted-on">
@@ -17,9 +28,9 @@ export default class ArticleList extends Component {
                                     className="fa fa-calendar"
                                     aria-hidden="true"
                                 />
-                                {moment(this.props.post.created_at).format(
-                                    "DD-MM-YYYY"
-                                )}
+                                {moment(new Date(
+                                    this.props.post.created_at
+                                )).format("DD-MM-YYYY")}
                             </span>
                         </span>
                         <span>&nbsp;·&nbsp;</span>
@@ -38,10 +49,7 @@ export default class ArticleList extends Component {
                 <div className="featured-image">
                     <a href="" title="" data-content="">
                         <img
-                            srcSet="http://placehold.it/1400x600 1280w,
-				http://placehold.it/700x300 640w,
-				http://placehold.it/350x150 320w"
-                            sizes="(min-width: 700px) 700px, 100vw"
+                            src={this.props.post.cover_image}
                             alt="A woman reading"
                         />
                     </a>
