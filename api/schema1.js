@@ -32,7 +32,7 @@ let definition = `
         mutation: Query
     }
     type Query {
-        post(id: Int): Post
+        post(id: Int, type: String, permalink: String): Post
         posts(type: String, body: String): [Post]
         authors(id: Int, username: String): [Author]
         taxonomies(type: String, name: String): [Taxonomy]

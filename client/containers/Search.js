@@ -35,6 +35,7 @@ export default function Search(term) {
                     author {
                         username
                     },
+                    type
                     status,
                     created_at,
                     excerpt,
@@ -70,6 +71,7 @@ export default function Search(term) {
                         id
                         title
                         body
+                        type
                         cover_image
                         created_at
                         permalink
@@ -107,6 +109,7 @@ export default function Search(term) {
                         id
                         title
                         body
+                        type
                         cover_image
                         created_at
                         permalink
