@@ -1,7 +1,7 @@
 import express from "express";
 import session from "express-session";
 import GraphHTTP from "express-graphql";
-import Schema from "./schema";
+import Schema from "./schema1";
 import bodyParser from "body-parser";
 import config from "../config/config";
 import * as actions from "./actions/index";
@@ -46,11 +46,11 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single("file");
 
-app.post('/upload',(req,res) => {
+app.post("/upload", (req, res) => {
     upload(req, null, function(err) {
-        res.json('/uploads/' + req.file.filename);
-    })
-})
+        res.json("/uploads/" + req.file.filename);
+    });
+});
 // app.use(bodyParser.json());
 // const server = new http.Server(app);
 

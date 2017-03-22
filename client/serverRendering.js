@@ -5,21 +5,10 @@ import { match, RouterContext } from "react-router";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { ApolloProvider } from "react-apollo";
-import { createStore, applyMiddleware, compose } from "redux";
-
-import prefetchComponentData from "../utils/prefetchComponentData";
 import config from "../config/config";
 import routes from "./routes";
-import client from "./apolloClient";
-import rootReducer from "./redux/reducers";
-import thunk from "redux-thunk";
-
-var initialState = {};
-const store = createStore(
-    rootReducer,
-    initialState,
-    compose(applyMiddleware(thunk, client.middleware()))
-);
+import ApolloClient, { createNetworkInterface } from "apollo-client";
+import { getDataFromTree, renderToStringWithData } from "react-apollo";
 
 module.exports.init = app => {
     app.get("*", (req, res) => {
@@ -36,57 +25,64 @@ module.exports.init = app => {
                     redirectLocation.pathname + redirectLocation.search
                 );
             } else if (renderProps) {
-                prefetchComponentData(
-                    store.dispatch,
-                    renderProps.components,
-                    renderProps.params
-                )
-                    .then(renderHTML)
-                    .then(html => res.status(200).send(html))
-                    .catch(err => res.end(err.message));
+                sendResponse(renderProps).then(html => {
+                    res.status(200);
+                    res.send(html);
+                    res.end();
+                });
             } else {
                 res.status(404).send("Not found");
-            }
-
-            function renderHTML() {
-                const initialState = store.getState();
-
-                const renderedComponent = ReactDOM.renderToString(
-                    <ApolloProvider store={store} client={client}>
-                        <RouterContext {...renderProps} />
-                    </ApolloProvider>
-                );
-
-                //let head = Helmet.rewind();
-                var bundle = process.env.NODE_ENV == "production"
-                    ? "/js/app-client-bundle.js"
-                    : "/static/app-client-bundle.js";
-                const HTML = `
-            <!DOCTYPE html>
-            <html lang="en">
-              <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-
-                <link rel="stylesheet" href="http://bootswatch.com/cosmo/bootstrap.min.css">
-                <link rel="stylesheet" href="/css/client.css">
-                <link rel="stylesheet" href="/css/font-awesome.min.css">
-              </head>
-              <body id='client' class='nav-md'>
-                <div class='container body'>
-                    <div id="app" class='main_container'>${renderedComponent}</div>
-                </div>
-                <script type="application/javascript">
-                   window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
-                   window.__CONFIG__ =  ${JSON.stringify(config)}
-                </script>
-                <script src="${bundle}"></script>
-              </body>
-            </html>
-        `;
-
-                return HTML;
             }
         });
     });
 };
+
+function sendResponse(renderProps) {
+    const client = new ApolloClient({
+        ssrMode: true,
+        networkInterface: createNetworkInterface({
+            uri: "http://localhost:3030/graphql"
+        })
+    });
+
+    const app = (
+        <ApolloProvider client={client}>
+            <RouterContext {...renderProps} />
+        </ApolloProvider>
+    );
+    return renderToStringWithData(app).then(content => {
+        const initialState = {
+            [client.reduxRootKey]: client.getInitialState()
+        };
+        return renderHTML(content, initialState);
+    });
+}
+
+function renderHTML(content, state) {
+    var bundle = process.env.NODE_ENV == "production"
+        ? "/js/app-client-bundle.js"
+        : "/static/app-client-bundle.js";
+    const HTML = `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <link rel="stylesheet" href="http://bootswatch.com/cosmo/bootstrap.min.css">
+                        <link rel="stylesheet" href="/css/client.css">
+                        <link rel="stylesheet" href="/css/font-awesome.min.css">
+                    </head>
+                    <body id='client' class='nav-md'>
+                        <div class='container body'>
+                            <div id="app" class='main_container'>${content}</div>
+                        </div>
+                        <script type="application/javascript">
+                        window.__APOLLO_STATE__ = ${JSON.stringify(state)};
+                        </script>
+                        <script src="${bundle}"></script>
+                    </body>
+                    </html>
+                `;
+
+    return HTML;
+}

@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 export default class Categories extends Component {
     getLink(name) {
-        let link = "/category/" + name.toLowerCase().replace(/\s+/g, "");
+        let link = "/category/" + name.toLowerCase();
         return (
             <Link to={link}>
                 {name}
