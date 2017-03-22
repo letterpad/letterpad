@@ -23,8 +23,8 @@ class Sidebar extends Component {
 }
 
 const linkedTaxonomies = gql`
-  query getTaxonomies($type:String!) {
-  postTaxonomies(type:$type) {
+  query getTaxonomies($type:String!,$postType:String) {
+  postTaxonomies(type:$type,postType:$postType) {
     id,
     name,
     type,
@@ -35,7 +35,7 @@ const linkedTaxonomies = gql`
 
 const ContainerWithCatData = graphql(linkedTaxonomies, {
     options: {
-        variables: { type: "post_category" }
+        variables: { type: "post_category", postType: "post" }
     },
     props: ({ data: { loading, postTaxonomies } }) => ({
         categories: postTaxonomies,

@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import { syncHistoryWithStore } from "react-router-redux";
 import { browserHistory, hashHistory } from "react-router";
-import rootReducer from "./redux/reducers";
+//import rootReducer from "./redux/reducers";
 import thunk from "redux-thunk";
 import client from "./apolloClient";
 
@@ -11,10 +11,9 @@ import client from "./apolloClient";
   1. All Reducers which we combined into `rootReducer`
   2. An optional starting state - similar to React's getInitialState
 */
-const initialState = {};
+const initialState = window.__APOLLO_STATE__;
 
 const store = createStore(
-    rootReducer,
     initialState,
     compose(
         applyMiddleware(thunk, client.middleware()),

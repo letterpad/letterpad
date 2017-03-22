@@ -1,4 +1,4 @@
-import ApolloClient,{createNetworkInterface} from "apollo-client";
+import ApolloClient, { createNetworkInterface } from "apollo-client";
 // By default, this client will send queries to the
 //  `/graphql` endpoint on the same host
 const client = new ApolloClient({
