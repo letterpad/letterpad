@@ -27,17 +27,21 @@ class Home extends Component {
 const allPosts = gql`
   query getPosts {
   posts(type:"post") {
-    id,
-    title,
-    body,
-    status,
-    created_at,
-    excerpt,
-	cover_image,
-    taxonomies {
-      id,
-      name,
-      type
+    edges {
+        node {
+            id,
+            title,
+            body,
+            status,
+            created_at,
+            excerpt,
+            cover_image,
+            taxonomies {
+                id,
+                name,
+                type
+            }
+        }
     }
   }
 }

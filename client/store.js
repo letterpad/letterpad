@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import { syncHistoryWithStore } from "react-router-redux";
 import { browserHistory, hashHistory } from "react-router";
-//import rootReducer from "./redux/reducers";
+import rootReducer from "./redux/reducers";
 import thunk from "redux-thunk";
 import client from "./apolloClient";
 
@@ -14,6 +14,7 @@ import client from "./apolloClient";
 const initialState = window.__APOLLO_STATE__;
 
 const store = createStore(
+    rootReducer,
     initialState,
     compose(
         applyMiddleware(thunk, client.middleware()),
@@ -30,11 +31,11 @@ export const history = syncHistoryWithStore(hashHistory, store);
   Webpack will handle the rest
 */
 
-if (module.hot) {
-    module.hot.accept("./redux/reducers/", () => {
-        const nextRootReducer = require("./redux/reducers").default;
-        store.replaceReducer(nextRootReducer);
-    });
-}
+// if (module.hot) {
+//     module.hot.accept("./redux/reducers/", () => {
+//         const nextRootReducer = require("./redux/reducers").default;
+//         store.replaceReducer(nextRootReducer);
+//     });
+// }
 
 export default store;
