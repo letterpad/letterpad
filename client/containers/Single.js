@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import ArticleList from "../components/post/ArticleList";
+import Article from "../components/post/Article";
 import { gql, graphql } from "react-apollo";
 
-class Home extends Component {
+class Single extends Component {
     constructor(props) {
         super(props);
     }
@@ -14,9 +14,7 @@ class Home extends Component {
                     if (this.props.loading) {
                         return <div>hello</div>;
                     } else {
-                        return this.props.posts.map((post, i) => {
-                            return <ArticleList key={i} post={post} />;
-                        });
+                        return <Article post={this.props.post} />;
                     }
                 })()}
             </div>
@@ -24,14 +22,12 @@ class Home extends Component {
     }
 }
 
-const allPosts = gql`
-  query getPosts {
-  posts(type:"post") {
+const singlePost = gql`
+  query singlePost($permalink:String) {
+  post(type:"post",permalink:$permalink) {
     id,
     title,
     body,
-    type,
-    permalink,
     status,
     created_at,
     excerpt,
@@ -44,11 +40,18 @@ const allPosts = gql`
   }
 }
 `;
-const ContainerWithPostData = graphql(allPosts, {
-    props: ({ data: { loading, posts } }) => ({
-        posts,
+const ContainerWithPostData = graphql(singlePost, {
+    options: props => {
+        return {
+            variables: {
+                permalink: props.params.permalink
+            }
+        };
+    },
+    props: ({ data: { loading, post } }) => ({
+        post,
         loading
     })
 });
 
-export default ContainerWithPostData(Home);
+export default ContainerWithPostData(Single);

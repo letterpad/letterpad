@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router";
 import moment from "moment";
 
 export default class ArticleList extends Component {
@@ -42,13 +41,9 @@ export default class ArticleList extends Component {
                         <span className="clear" />
                     </div>
                     <h2 className="entry-title">
-                        <Link
-                            to={
-                                `/${this.props.post.type}/${this.props.post.permalink}`
-                            }
-                        >
+                        <a href="" rel="bookmark">
                             {this.props.post.title}
-                        </Link>
+                        </a>
                     </h2>
                 </header>
                 <div className="featured-image">
