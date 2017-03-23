@@ -76,7 +76,7 @@ class PostPublish extends Component {
 }
 
 const updatePostQuery = gql`
-  mutation updatePost($id: String!, $title: String!, $body: String!, $status: String!, $excerpt: String!, $taxonomies: [TaxonomyInputType]) {
+  mutation updatePost($id: Int!, $title: String!, $body: String!, $status: String!, $excerpt: String!, $taxonomies: [TaxonomyInputType]) {
     updatePost(id: $id, title: $title, body: $body, status: $status, excerpt: $excerpt, taxonomies: $taxonomies) {
         id,
         title,
@@ -105,11 +105,11 @@ const updateQueryWithData = graphql(updatePostQuery, {
                 getPost: (prev, { mutationResult }) => {
                     debugger;
                     return {
-                            post: {
-                                ...prev.post,
-                                ...mutationResult.data.updatePost
-                            }
-                        };
+                        post: {
+                            ...prev.post,
+                            ...mutationResult.data.updatePost
+                        }
+                    };
                 }
             }
         })

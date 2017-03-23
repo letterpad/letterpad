@@ -8,31 +8,30 @@ export const PostModel = conn.define(
     {
         title: {
             type: Sequalize.STRING,
-            defaultValue: ''
+            defaultValue: ""
         },
         body: {
-            type: Sequalize.STRING,
-            defaultValue: ''
+            type: Sequalize.TEXT
         },
         excerpt: {
-            type: Sequalize.STRING,
-            defaultValue: ''
+            type: Sequalize.STRING(400),
+            defaultValue: ""
         },
         cover_image: {
             type: Sequalize.STRING,
-            defaultValue: ''
+            defaultValue: ""
         },
         type: {
             type: Sequalize.STRING,
-            defaultValue: ''
+            defaultValue: ""
         },
         status: {
             type: Sequalize.STRING,
-            defaultValue: 'draft'
+            defaultValue: "draft"
         },
         permalink: {
             type: Sequalize.STRING,
-            defaultValue: ''
+            defaultValue: ""
         }
     },
     {
@@ -69,21 +68,33 @@ export function createTestPost(post) {
 
 export function createPost(data) {
     data.author_id = 1;
-    return PostModel
-            .create(data)
-            .then(postObj => {
-                return PostTaxonomyModel.create({
+    let title = data.title;
+    data.permalink = title
+        .replace(/[^a-z0-9]+/gi, "-")
+        .replace(/^-*|-*$/g, "")
+        .toLowerCase();
+    return PostModel.create(data)
+        .then(postObj => {
+            return PostTaxonomyModel
+                .create({
                     taxonomy_id: 1,
                     post_id: postObj.id
-                }).then(()=>{
+                })
+                .then(() => {
                     return postObj;
                 });
-            }).then(postObj => {
-                return PostModel.findOne({where: {id: postObj.id}});
-            })
+        })
+        .then(postObj => {
+            return PostModel.findOne({ where: { id: postObj.id } });
+        });
 }
 
 export function updatePost(post) {
+    let title = post.title;
+    post.permalink = title
+        .replace(/[^a-z0-9]+/gi, "-")
+        .replace(/^-*|-*$/g, "")
+        .toLowerCase();
     return PostModel
         .update(post, {
             where: { id: post.id }

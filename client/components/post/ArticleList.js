@@ -62,7 +62,7 @@ export default class ArticleList extends Component {
                 <div className="entry-content">
                     <p
                         dangerouslySetInnerHTML={{
-                            __html: this.props.post.body
+                            __html: this.props.post.excerpt
                         }}
                     />
                 </div>

@@ -1,7 +1,7 @@
 import Node from "./node";
 const Edges = `
   type Edges {
-    node: Node,
+    node: [Node],
     cursor: String
   }
 `;

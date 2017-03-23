@@ -3,6 +3,8 @@ import Author from "./schema/author";
 import Post from "./schema/post";
 import PostTaxonomy from "./schema/postTaxonomy";
 import Taxonomy from "./schema/taxonomy";
+import TaxonomyInputType from "./schema/taxonomyInputType";
+import FileInputType from "./schema/fileInputType";
 
 import Sequalize from "sequelize";
 
@@ -29,7 +31,7 @@ function IsJsonString(str) {
 let definition = `
     schema {
         query:    Query
-        mutation: Query
+        mutation: Mutation
     }
     type Query {
         post(id: Int, type: String, permalink: String): Post
@@ -38,11 +40,35 @@ let definition = `
         taxonomies(type: String, name: String): [Taxonomy]
         postTaxonomies(type: String, name: String, postType: String): [PostTaxonomy]
     }
+    type Mutation {
+        createPost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, permalink: String, taxonomies: [TaxonomyInputType]):Post
+        updatePost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, permalink: String, taxonomies: [TaxonomyInputType]):Post
+        uploadFile(id: Int, cover_image: String):Post
+    }
     
 `;
 
 /*  the GraphQL schema resolvers  */
 let resolvers = {
+    Mutation: {
+        createPost: (root, args) => {
+            let data = {};
+            Object.keys(args).forEach(field => {
+                data[field] = args[field];
+            });
+            return createPost(data);
+        },
+        updatePost: (root, args) => {
+            let data = {};
+            Object.keys(args).forEach(field => {
+                data[field] = args[field];
+            });
+            return updatePost(data);
+        },
+        uploadFile: (root, args) => {
+            return updatePost(args);
+        }
+    },
     Query: {
         posts: (root, args, context) => {
             let obj = {};
@@ -106,7 +132,14 @@ let resolvers = {
 
 /*  generate executable GraphQL schema  */
 let schema = GraphQLTools.makeExecutableSchema({
-    typeDefs: [definition, Author, Post, PostTaxonomy, Taxonomy],
+    typeDefs: [
+        definition,
+        Author,
+        Post,
+        PostTaxonomy,
+        Taxonomy,
+        TaxonomyInputType
+    ],
     resolvers: resolvers,
     allowUndefinedInResolve: false,
     printErrors: true,

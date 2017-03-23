@@ -106,7 +106,7 @@ class SinglePageView extends Component {
 }
 
 const postQuery = gql`
-  query getPost($id: String!) {
+  query getPost($id: Int!) {
   post(id:$id) {
     id,
     title,
