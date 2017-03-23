@@ -26,6 +26,22 @@ function IsJsonString(str) {
     }
     return true;
 }
+
+function getConditions(columns, args) {
+    let obj = {};
+    let conditions = {};
+    for (let field in args) {
+        if (columns.indexOf(field) >= 0) {
+            obj[field] = IsJsonString(args[field])
+                ? JSON.parse(args[field])
+                : args[field];
+        } else {
+            conditions[field] = args[field];
+        }
+    }
+    conditions.where = obj;
+    return conditions;
+}
 /*  the GraphQL schema definition  */
 
 let definition = `
@@ -35,7 +51,7 @@ let definition = `
     }
     type Query {
         post(id: Int, type: String, permalink: String): Post
-        posts(type: String, body: String): [Post]
+        posts(type: String, body: String, offset: Int, limit: Int): [Post]
         authors(id: Int, username: String): [Author]
         taxonomies(type: String, name: String): [Taxonomy]
         postTaxonomies(type: String, name: String, postType: String): [PostTaxonomy]
@@ -71,13 +87,9 @@ let resolvers = {
     },
     Query: {
         posts: (root, args, context) => {
-            let obj = {};
-            for (let field in args) {
-                obj[field] = IsJsonString(args[field])
-                    ? JSON.parse(args[field])
-                    : args[field];
-            }
-            return PostModel.findAll({ where: obj });
+            let columns = Object.keys(PostModel.rawAttributes);
+            let conditions = getConditions(columns, args);
+            return PostModel.findAll(conditions);
         },
         post: (root, args) => {
             return PostModel.findOne({ where: args });
