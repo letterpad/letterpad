@@ -85,3 +85,17 @@ article {
 .featured-image img {
 	width: 100%;
 }
+
+aside.widget {
+	ul {
+		list-style-type: none;
+		padding: 0px;
+
+		li a {
+			text-decoration: none;
+			&:hover {
+				text-decoration: none;
+			}
+		}
+	}
+}
