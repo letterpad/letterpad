@@ -68,14 +68,17 @@ function renderHTML(content, state) {
                     <head>
                         <meta charset="UTF-8">
                         <meta name="viewport" content="width=device-width, initial-scale=1">
-                        <link rel="stylesheet" href="http://bootswatch.com/cosmo/bootstrap.min.css">
+                        <!-- Fonts -->
+                        <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,400italic,700' rel='stylesheet' type='text/css'>
+                        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+                        <!--<link rel="stylesheet" href="http://bootswatch.com/cosmo/bootstrap.min.css">-->
+                        <link rel="stylesheet" href="/css/bootstrap.min.css">
                         <link rel="stylesheet" href="/css/client.css">
+                        <link rel="stylesheet" href="/css/vertical.css">
                         <link rel="stylesheet" href="/css/font-awesome.min.css">
                     </head>
-                    <body id='client' class='nav-md'>
-                        <div class='container body'>
-                            <div id="app" class='main_container'>${content}</div>
-                        </div>
+                    <body id='client'>
+                        <div id="app">${content}</div>
                         <script type="application/javascript">
                         window.__APOLLO_STATE__ = ${JSON.stringify(state)};
                         </script>
