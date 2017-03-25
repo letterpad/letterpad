@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Sidebar from "./Sidebar";
-require("../../public/css/style.scss");
 
 export default function Layout(Element) {
     return class Layout extends Component {

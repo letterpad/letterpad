@@ -24,19 +24,13 @@ class FeaturedImage extends Component {
     }
 
     render() {
+        let cover_image = this.props.post.cover_image ||
+            "http://placehold.it/800x300";
         return (
             <div className="x_panel">
-                <div className="x_title">
-                    <h2>Set Featured Image</h2>
-                    <div className="clearfix" />
-                </div>
                 <div className="x_content">
                     <div id="featured-image">
-                        {this.props.post.cover_image &&
-                            <img
-                                width="100%"
-                                src={this.props.post.cover_image}
-                            />}
+                        <img width="100%" src={cover_image} />
                     </div>
                     {(() => {
                         if (!this.props.post.cover_image) {
@@ -76,7 +70,7 @@ class FeaturedImage extends Component {
 }
 
 const uploadCoverImageQuery = gql`
-  mutation uploadFile($cover_image: String!, $id: String!) {
+  mutation uploadFile($cover_image: String!, $id: Int!) {
     uploadFile(cover_image: $cover_image, id: $id) {
       id,
       cover_image

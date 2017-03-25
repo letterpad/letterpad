@@ -1,10 +1,9 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import { syncHistoryWithStore } from 'react-router-redux';
-import { browserHistory, hashHistory } from 'react-router'
-import rootReducer from './redux/reducers';
-import thunk from 'redux-thunk';
-import DevTools from './containers/DevTools';
-import client from './apolloClient';
+import { createStore, applyMiddleware, compose } from "redux";
+import { syncHistoryWithStore } from "react-router-redux";
+import { browserHistory, hashHistory } from "react-router";
+import rootReducer from "./redux/reducers";
+import thunk from "redux-thunk";
+import client from "./apolloClient";
 
 /*
   Store
@@ -15,14 +14,13 @@ import client from './apolloClient';
 const initialState = {};
 
 const store = createStore(
-    rootReducer, 
-    initialState, 
+    rootReducer,
+    initialState,
     compose(
-      applyMiddleware(thunk, client.middleware()),
-      window && window.devToolsExtension ? window.devToolsExtension() : f => f
+        applyMiddleware(thunk, client.middleware()),
+        window && window.devToolsExtension ? window.devToolsExtension() : f => f
     )
-  );
-
+);
 
 // we export history because we need it in `dashboard.js` to feed into <Router>
 export const history = syncHistoryWithStore(hashHistory, store);
@@ -33,11 +31,11 @@ export const history = syncHistoryWithStore(hashHistory, store);
   Webpack will handle the rest
 */
 
-if(module.hot) {
-  module.hot.accept('./redux/reducers/', () => {
-    const nextRootReducer = require('./redux/reducers').default;
-    store.replaceReducer(nextRootReducer);
-  });
+if (module.hot) {
+    module.hot.accept("./redux/reducers/", () => {
+        const nextRootReducer = require("./redux/reducers").default;
+        store.replaceReducer(nextRootReducer);
+    });
 }
 
 export default store;

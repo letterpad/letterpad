@@ -25,10 +25,12 @@ export default class ArticleList extends Component {
                         )}
                     </div>
                 </div>
-                <div className="post-content">
-                    <p>
-                        {this.props.post.body}
-                    </p>
+                <div className="post-content ql-editor">
+                    <p
+                        dangerouslySetInnerHTML={{
+                            __html: this.props.post.body
+                        }}
+                    />
                 </div>
                 <div className="tags font-serif">
                     {(() => {
@@ -100,6 +102,7 @@ export default class ArticleList extends Component {
                 </div>
                 <div className="entry-content">
                     <p
+                        className="ql-editor"
                         dangerouslySetInnerHTML={{
                             __html: this.props.post.body
                         }}

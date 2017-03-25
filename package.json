@@ -9,9 +9,13 @@
     "postinstall": "npm run build",
     "build": "better-npm-run build",
     "start-dev": "better-npm-run start-dev",
+    "insert-fake": "better-npm-run insert-fake",
     "dev": "concurrently --kill-others \"npm run start-dev\""
   },
   "betterScripts": {
+    "insert-fake": {
+      "command": "babel-node ./api/faker/data.js"
+    },
     "start-prod": {
       "command": "node ./start.js",
       "env": {

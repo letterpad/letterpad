@@ -1,15 +1,132 @@
+/* Login */
+
+.login {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.form-signin {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);
+
+  .form-signin-heading,
+  .checkbox {
+    margin-bottom: 30px;
+  }
+
+  .checkbox {
+    font-weight: normal;
+  }
+
+  .form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    box-sizing: border-box;
+
+    &:focus {
+      z-index: 2;
+    }
+  }
+
+  input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  input[type="password"] {
+    margin-bottom: 20px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+/* Login End */
+
+/* Admin Sidebar */
+.nav.child_menu {
+  display: block;
+}
+/* Admin Sidebar End */
+.jumbotron {
+    color: #003066;
+    background-color: #337ab7;
+}
+.jumbotron h1 {
+  font-weight: 100;
+}
+.jumbotron p {
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 200;
+}
+.text-center {
+  padding-top: 20px;
+}
+#sidebar {
+  height: 100%;
+  padding-right: 0;
+  padding-top: 20px;
+}
+#sidebar .nav {
+  width: 95%;
+}
+#sidebar li {
+  border:0 #f2f2f2 solid;
+  border-bottom-width:1px;
+}
+/* collapsed sidebar styles */
+@media screen and (max-width: 767px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -41.6%;
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -41.6%;
+  }
+  .row-offcanvas-right.active {
+    right: 41.6%;
+  }
+  .row-offcanvas-left.active {
+    left: 41.6%;
+  }
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 41.6%;
+  }
+  #sidebar {
+    padding-top:0;
+  }
+}
+
 /*! -----------------------------------------------------------------
 [Master Stylesheet]
 
-Project:     Stone
+Project:     Ajaxtown
 Version:     1.0
-Last change: 20/11/2015
-Primary use: Portfolio
+Last change: 21/03/2017
+Primary use: Blog
 
 ------------------------------------------------------------------
 [General Styles]
 */
-
+html {
+	// overflow: hidden;
+	height: 100%;
+}
 body{
 	background:#fff;
 	font-family:'Open Sans', sans-serif;
@@ -18,6 +135,7 @@ body{
 	color:#787878;
 	-ms-overflow-style:scrollbar;
 	overflow-x:hidden;
+	height: 100%;
 }
 
 img{
@@ -28,7 +146,19 @@ img{
 iframe{
 	border:0;
 }
-
+[contenteditable=true]:empty:before{
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+}
+input,textarea,[contenteditable=true]:focus{
+	outline: none;
+}
+.top-head {
+	display: none;
+}
+.home .top-head {
+	display: block;
+}
 .sidebar{
 	position:fixed;
 	width:250px;
@@ -99,6 +229,13 @@ iframe{
 .container-custom{
 	max-width:1170px;
 	margin:0 auto;
+}
+@media (max-width: 768px){
+
+	.container-custom{
+		padding: 0px;
+	}
+
 }
 /*!------------------------------------------------------------------
 [Typography]
@@ -1385,7 +1522,7 @@ blockquote cite{
 }
 
 .post pre{
-	margin:40px -10% 40px;
+	// margin:40px -10% 40px;
 }
 
 .post blockquote{
@@ -1795,4 +1932,3 @@ blockquote cite{
 	.multi-columns-row .col-lg-1:nth-child(12n + 13){ clear:left; }
 
 }
-
