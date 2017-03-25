@@ -73,9 +73,10 @@ function renderHTML(content, state) {
                         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
                         <!--<link rel="stylesheet" href="http://bootswatch.com/cosmo/bootstrap.min.css">-->
                         <link rel="stylesheet" href="/css/bootstrap.min.css">
-                        <link rel="stylesheet" href="/css/client.css">
+                        <link rel="stylesheet" href="/css/style.scss">
                         <link rel="stylesheet" href="/css/vertical.css">
                         <link rel="stylesheet" href="/css/font-awesome.min.css">
+                        <link rel="stylesheet" href="https://cdn.quilljs.com/1.1.5/quill.snow.css">
                     </head>
                     <body id='client'>
                         <div id="app">${content}</div>

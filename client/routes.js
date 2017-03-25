@@ -10,14 +10,14 @@ import {
 } from "./containers";
 export default (
     <Route path="/" component={App}>
-        <IndexRoute component={TwoColLayout(Home)} />
+        <IndexRoute component={OneColLayout(Home)} />
         <Route path="/home" component={OneColLayout(Home)} />
-        <Route path="/post/:permalink" component={TwoColLayout(Single)} />
+        <Route path="/post/:permalink" component={OneColLayout(Single)} />
         <Route
             path="/category/:query"
-            component={TwoColLayout(Search("category"))}
+            component={OneColLayout(Search("category"))}
         />
-        <Route path="/tag/:query" component={TwoColLayout(Search("tag"))} />
-        <Route path="/post/:query" component={TwoColLayout(Search("post"))} />
+        <Route path="/tag/:query" component={OneColLayout(Search("tag"))} />
+        <Route path="/post/:query" component={OneColLayout(Search("post"))} />
     </Route>
 );

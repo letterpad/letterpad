@@ -5,38 +5,33 @@ import {
     Home,
     LoginView,
     TwoColumnLayout,
-    PagesView,
-    PostsView,
-    SinglePostView,
-    PostNewView,
-    SinglePageView,
-    PageNewView,
-    MenuCreation
+    OneColumnLayout,
+    List,
+    Single,
+    Create
 } from "./containers";
 export default (
     <Route path="/admin" component={App}>
         <IndexRoute component={LoginView} />
         <Route path="/admin/login" component={LoginView} />
-        <Route path="/admin/posts" component={TwoColumnLayout(PostsView)} />
-        <Route path="/admin/pages" component={TwoColumnLayout(PagesView)} />
-        <Route path="/admin/menu" component={TwoColumnLayout(MenuCreation)} />
-        
+        <Route path="/admin/posts" component={OneColumnLayout(List("post"))} />
+        <Route path="/admin/pages" component={OneColumnLayout(List("page"))} />
+
         <Route
-            name='SinglePostView'
             path="/admin/post/:post_id"
-            component={TwoColumnLayout(SinglePostView)}
+            component={OneColumnLayout(Single)}
         />
         <Route
             path="/admin/post-new"
-            component={TwoColumnLayout(PostNewView)}
+            component={OneColumnLayout(Create("post"))}
         />
         <Route
-            path="/admin/page/:page_id"
-            component={TwoColumnLayout(SinglePageView)}
+            path="/admin/page/:post_id"
+            component={OneColumnLayout(Single)}
         />
         <Route
             path="/admin/page-new"
-            component={TwoColumnLayout(PageNewView)}
+            component={OneColumnLayout(Create("post"))}
         />
     </Route>
 );

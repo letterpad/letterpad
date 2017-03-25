@@ -1,38 +1,88 @@
 import React, { Component } from "react";
-
+import PostActions from "./PostActions";
 const Editor = React.createClass({
     componentDidMount() {
-        this.loadEditor();
-    },
-    componentWillReceiveProps(newState) {
-        if (newState.body !== this.props.body) {
-            tinymce.activeEditor.setContent(newState.body || '');
-        }
+        // this.loadEditor();
+        this.loadQuillEditor();
+        qEditor.root.innerHTML = this.props.body;
     },
 
-    loadEditor() {
-        tinymce.init({
-            selector: "textarea.editor",
-            height: 300,
-            menubar: false,
-            theme: "modern",
-            plugins: [
-                "advlist autolink lists link charmap hr anchor pagebreak",
-                "wordcount visualblocks visualchars code fullscreen",
-                "insertdatetime media nonbreaking save table contextmenu directionality",
-                "paste textcolor colorpicker textpattern imagetools codesample",
-            ],
-            toolbar1: "undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | forecolor backcolor | codesample",
-            image_advtab: true,
-            init_instance_callback: () => {
-                tinymce.activeEditor.setContent(this.props.body);
+    loadQuillEditor() {
+        let that = this;
+        var toolbarOptions = [
+            [
+                "bold",
+                "italic",
+                "underline",
+                "strike",
+                "blockquote",
+                "code-block",
+                "image",
+                { list: "ordered" },
+                { list: "bullet" },
+                { script: "sub" },
+                { script: "super" },
+                { indent: "-1" },
+                { indent: "+1" },
+                { header: [1, 2, 3, 4, 5, 6, false] },
+                { color: [] },
+                { background: [] },
+                { align: [] },
+                "clean"
+            ]
+        ];
+
+        window.qEditor = new Quill("#editor", {
+            theme: "snow",
+            placeholder: "Compose an epic...",
+            modules: {
+                toolbar: {
+                    container: toolbarOptions,
+                    handlers: {
+                        image: function() {
+                            document.querySelector(".post-image").click();
+                        }
+                    }
+                },
+                syntax: true
             },
+            scrollingContainer: "#quill-container"
         });
+        qEditor.on("text-change", function() {
+            var justHtml = qEditor.root.innerHTML;
+            PostActions.setData({
+                body: justHtml
+            });
+        });
+        qEditor.root.innerHTML = this.props.body;
     },
 
-    render() {
-        return <textarea className="editor" />;
+    uploadImage(files) {
+        PostActions.uploadFile(files, "http://localhost:3030/upload")
+            .then(post_image => {
+                var Delta = qEditor.constructor.import("delta");
+                qEditor.updateContents(
+                    new Delta()
+                        .retain(qEditor.selection.savedRange.index)
+                        .insert({
+                            image: post_image
+                        })
+                );
+            });
     },
+    render() {
+        return (
+            <div id="quill-container">
+                <div id="editor" className="editor" />
+                <input
+                    ref={input => this.imageInput = input}
+                    className="hide post-image"
+                    type="file"
+                    onChange={input => this.uploadImage(input.target.files)}
+                />
+            </div>
+        );
+    }
 });
 
 export default Editor;

@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import PostActions from "./PostActions";
 import { gql, graphql } from "react-apollo";
 
+const actions = {
+    publish: "Published",
+    draft: "Save Draft"
+};
 class PostPublish extends Component {
     updatePost(e, status) {
         e.preventDefault();
@@ -17,58 +21,32 @@ class PostPublish extends Component {
             });
     }
 
+    getButton(status, label, btnType = "btn-dark") {
+        return (
+            <div className="btn-group">
+                <button
+                    type="submit"
+                    onClick={e => this.updatePost(e, { status: status })}
+                    className={"btn btn-sm " + btnType}
+                >
+                    {label}
+                </button>
+            </div>
+        );
+    }
+
     render() {
         return (
-            <div className="x_panel">
-                <div className="x_title">
-                    <h2>Publish</h2>
-                    <div className="clearfix" />
-                </div>
+            <div className="x_panel m-b-80">
                 <div className="x_content">
-                    <h5 className="buffer-bottom">
-                        Status: {this.props.post.status}
-                    </h5>
 
-                    <button
-                        id="post-btn-publish"
-                        name="btn-publish"
-                        type="submit"
-                        onClick={e => this.updatePost(e, { status: "publish" })}
-                        className="btn btn-sm btn-primary col-xs-12"
-                    >
-                        Publish
-                    </button>
-                    <br className="clear" />
-                    <div className="divider-dashed" />
-                    <button
-                        id="post-btn-preview"
-                        name="btn-preview"
-                        type="submit"
-                        className="btn btn-sm btn-default pull-left"
-                    >
-                        Preview
-                    </button>
-                    <button
-                        id="post-btn-draft"
-                        name="btn-draft"
-                        type="submit"
-                        onClick={e => this.updatePost(e, { status: "draft" })}
-                        className="btn btn-sm btn-default pull-right"
-                    >
-                        Save Draft
-                    </button>
-                    <br className="clear" />
-                    <div className="divider-dashed" />
-                    <a
-                        href="#"
-                        onClick={e => this.updatePost(e, { status: "deleted" })}
-                        name="btn-trash"
-                        type="submit"
-                        className="text-danger text-bold"
-                    >
-                        Move to Trash
-                    </a>
+                    <div className="btn-group btn-group-justified">
 
+                        {this.getButton("deleted", "Trash", "btn-danger")}
+                        {this.getButton("draft", "Save Draft")}
+                        {this.getButton("publish", "Publish")}
+
+                    </div>
                 </div>
             </div>
         );

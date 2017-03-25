@@ -69,10 +69,13 @@ export function createTestPost(post) {
 export function createPost(data) {
     data.author_id = 1;
     let title = data.title;
-    data.permalink = title
-        .replace(/[^a-z0-9]+/gi, "-")
-        .replace(/^-*|-*$/g, "")
-        .toLowerCase();
+    if (title) {
+        data.permalink = title
+            .replace(/[^a-z0-9]+/gi, "-")
+            .replace(/^-*|-*$/g, "")
+            .toLowerCase();
+    }
+
     return PostModel.create(data)
         .then(postObj => {
             return PostTaxonomyModel
@@ -91,10 +94,12 @@ export function createPost(data) {
 
 export function updatePost(post) {
     let title = post.title;
-    post.permalink = title
-        .replace(/[^a-z0-9]+/gi, "-")
-        .replace(/^-*|-*$/g, "")
-        .toLowerCase();
+    if (title) {
+        post.permalink = title
+            .replace(/[^a-z0-9]+/gi, "-")
+            .replace(/^-*|-*$/g, "")
+            .toLowerCase();
+    }
     return PostModel
         .update(post, {
             where: { id: post.id }
