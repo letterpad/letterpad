@@ -14,6 +14,9 @@ class Single extends Component {
                     if (this.props.loading) {
                         return <div>hello</div>;
                     } else {
+                        if (this.props.post === null) {
+                            return <div>Nothing found..Absolute bullshit</div>;
+                        }
                         return <Article post={this.props.post} />;
                     }
                 })()}

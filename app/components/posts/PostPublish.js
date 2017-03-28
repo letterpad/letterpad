@@ -27,7 +27,7 @@ class PostPublish extends Component {
                 <button
                     type="submit"
                     onClick={e => this.updatePost(e, { status: status })}
-                    className={"btn btn-sm " + btnType}
+                    className={"btn btn-md " + btnType}
                 >
                     {label}
                 </button>

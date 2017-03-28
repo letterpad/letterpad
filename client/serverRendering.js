@@ -38,6 +38,7 @@ module.exports.init = app => {
 };
 
 function sendResponse(renderProps) {
+    debugger;
     const client = new ApolloClient({
         ssrMode: true,
         networkInterface: createNetworkInterface({

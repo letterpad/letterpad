@@ -8,14 +8,19 @@ class Categories extends Component {
         super(props);
         this.categories = [];
     }
-    
+
     componentDidMount() {
-        this.categories = this.props.post.taxonomies.filter(tax => {
-            return tax.type === "post_category";
-        }).map(tax => {delete tax['__typename']; return tax;});
-       PostActions.setTaxonomies({ post_category: this.categories });
+        this.categories = this.props.post.taxonomies
+            .filter(tax => {
+                return tax.type === "post_category";
+            })
+            .map(tax => {
+                delete tax["__typename"];
+                return tax;
+            });
+        PostActions.setTaxonomies({ post_category: this.categories });
     }
-    
+
     handleDelete(i) {
         this.categories.splice(i, 1);
     }
@@ -38,7 +43,6 @@ class Categories extends Component {
     }
 
     handleDrag(tag, currPos, newPos) {
-        
         // mutate array
         this.categories.splice(currPos, 1);
         this.categories.splice(newPos, 0, tag);
@@ -61,6 +65,7 @@ class Categories extends Component {
                         <div className="col-xs-12 row">
                             <ReactTags
                                 suggestions={suggestions}
+                                autofocus={false}
                                 tags={this.categories}
                                 labelField="name"
                                 handleDelete={this.handleDelete.bind(this)}
@@ -74,7 +79,6 @@ class Categories extends Component {
         );
     }
 }
-
 
 const TaxSuggestionsQuery = gql`
   query getTaxonomies($type: String!) {

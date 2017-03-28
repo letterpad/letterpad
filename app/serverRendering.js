@@ -7,13 +7,14 @@ import bcrypt from "bcrypt";
 import { ApolloProvider } from "react-apollo";
 import { createStore, applyMiddleware, compose } from "redux";
 
-import prefetchComponentData from "../utils/prefetchComponentData";
 import config from "../config/config";
 import routes from "./routes";
 import { doLogin } from "./api/actions";
 import client from "./apolloClient";
 import rootReducer from "./redux/reducers";
 import thunk from "redux-thunk";
+import Request from "request";
+let session = require("express-session");
 
 var initialState = {};
 const store = createStore(
@@ -23,22 +24,32 @@ const store = createStore(
 );
 
 module.exports.init = app => {
-    /*----------------------------------------------
- * For generating a password, we would do this
- *----------------------------------------------
-    //-----------Generate salt----------------
-    var saltRounds = 10;
+    app.use(
+        session({
+            secret: "your-dirty-secret",
+            resave: false,
+            saveUninitialized: true
+        })
+    );
 
-    /* Hash the password with the salt
-     * and store this hash in the db
-     * - This can be done in one single line
-
-    bcrypt.hash("hellofresh", saltRounds, function(err, hash) {
-      // Store hash in your password DB.
-      //$2a$10$.dPLmaFVW2jTF/rMcUPRjucno5oKMwVMGeTjrPGDVinSQtPNy9Mdy
-    });
-------------------------------------------------*/
-
+    // app.use("/admin", (req, res, next) => {
+    //     switch (req.originalUrl) {
+    //         case "/admin/login":
+    //             if (req.session.token) {
+    //                 res.redirect("/admin/posts");
+    //             }
+    //             break;
+    //         case "/admin/doLogin":
+    //             //let it go
+    //             break;
+    //         default:
+    //             if (!req.session.token) {
+    //                 res.redirect("/admin/login");
+    //             }
+    //             break;
+    //     }
+    //     next();
+    // });
     app.post("/admin/doLogin", (req, res) => {
         doLogin({ username: req.body.username }).then(result => {
             if (result.code == 400) {
@@ -60,9 +71,9 @@ module.exports.init = app => {
                         {
                             username: req.body.username
                         },
-                        "some-secret-to-be-kept-secret" //secret
+                        "your-dirty-secret" //secret
                     );
-
+                    req.session.username = req.body.username;
                     req.session.token = token;
                     res.status(200).json({
                         code: 200,
@@ -78,6 +89,25 @@ module.exports.init = app => {
         });
     });
 
+    app.post("/graphql", (req, res) => {
+        req.body.token = req.session.token;
+        Request
+            .post({
+                url: "http://localhost:3030/graphql",
+                json: req.body
+            })
+            .pipe(res);
+    });
+
+    app.get("/logout", function(req, res) {
+        req.session.destroy(function(err) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.redirect("/admin/login");
+            }
+        });
+    });
     app.get("/admin/*", (req, res) => {
         match({ routes, location: req.url }, (
             error,
@@ -92,19 +122,16 @@ module.exports.init = app => {
                     redirectLocation.pathname + redirectLocation.search
                 );
             } else if (renderProps) {
-                prefetchComponentData(
-                    store.dispatch,
-                    renderProps.components,
-                    renderProps.params
-                )
-                    .then(renderHTML)
+                new Promise((resolve, reject) => {
+                    resolve(renderHTML(renderProps));
+                })
                     .then(html => res.status(200).send(html))
                     .catch(err => res.end(err.message));
             } else {
                 res.status(404).send("Not found");
             }
 
-            function renderHTML() {
+            function renderHTML(renderProps) {
                 const initialState = store.getState();
 
                 const renderedComponent = ReactDOM.renderToString(

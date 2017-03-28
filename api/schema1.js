@@ -4,7 +4,9 @@ import Post from "./schema/post";
 import PostTaxonomy from "./schema/postTaxonomy";
 import Taxonomy from "./schema/taxonomy";
 import TaxonomyInputType from "./schema/taxonomyInputType";
+import OptionInputType from "./schema/OptionInputType";
 import FileInputType from "./schema/fileInputType";
+import Setting from "./schema/setting";
 
 import Sequalize from "sequelize";
 
@@ -12,10 +14,14 @@ import {
     createPost,
     updatePost,
     PostModel,
+    RoleModel,
+    PermissionModel,
     AuthorModel,
     TaxonomyModel,
     PostTaxonomyModel,
-    uploadFile
+    uploadFile,
+    updateOptions,
+    SettingsModel
 } from "./models";
 
 function IsJsonString(str) {
@@ -55,11 +61,13 @@ let definition = `
         authors(id: Int, username: String): [Author]
         taxonomies(type: String, name: String): [Taxonomy]
         postTaxonomies(type: String, name: String, postType: String): [PostTaxonomy]
+        settings(option: String):[Setting]
     }
     type Mutation {
         createPost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, permalink: String, taxonomies: [TaxonomyInputType]):Post
         updatePost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, permalink: String, taxonomies: [TaxonomyInputType]):Post
         uploadFile(id: Int, cover_image: String):Post
+        updateOptions(options:[OptionInputType]): [Setting]
     }
     
 `;
@@ -74,7 +82,8 @@ let resolvers = {
             });
             return createPost(data);
         },
-        updatePost: (root, args) => {
+        updatePost: (root, args, token) => {
+            debugger;
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
@@ -83,6 +92,11 @@ let resolvers = {
         },
         uploadFile: (root, args) => {
             return updatePost(args);
+        },
+        updateOptions: (root, args) => {
+            return updateOptions(args).then(() => {
+                return SettingsModel.findAll();
+            });
         }
     },
     Query: {
@@ -122,6 +136,9 @@ let resolvers = {
                 where: args,
                 group: ["taxonomy_id"]
             });
+        },
+        settings: (root, args) => {
+            return SettingsModel.findAll({ where: args });
         }
     },
     Post: {
@@ -150,7 +167,9 @@ let schema = GraphQLTools.makeExecutableSchema({
         Post,
         PostTaxonomy,
         Taxonomy,
-        TaxonomyInputType
+        Setting,
+        TaxonomyInputType,
+        OptionInputType
     ],
     resolvers: resolvers,
     allowUndefinedInResolve: false,

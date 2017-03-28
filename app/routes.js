@@ -8,7 +8,8 @@ import {
     OneColumnLayout,
     List,
     Single,
-    Create
+    Create,
+    Settings
 } from "./containers";
 export default (
     <Route path="/admin" component={App}>
@@ -19,7 +20,7 @@ export default (
 
         <Route
             path="/admin/post/:post_id"
-            component={OneColumnLayout(Single)}
+            component={OneColumnLayout(Single("post"))}
         />
         <Route
             path="/admin/post-new"
@@ -27,11 +28,12 @@ export default (
         />
         <Route
             path="/admin/page/:post_id"
-            component={OneColumnLayout(Single)}
+            component={OneColumnLayout(Single("page"))}
         />
         <Route
             path="/admin/page-new"
             component={OneColumnLayout(Create("post"))}
         />
+        <Route path="/admin/settings" component={OneColumnLayout(Settings)} />
     </Route>
 );
