@@ -15,7 +15,7 @@ class Home extends Component {
                         return <div>hello</div>;
                     } else {
                         return this.props.posts.map((post, i) => {
-                            return <ArticleList key={i} post={post} />;
+                            return <ArticleList idx={i} key={i} post={post} />;
                         });
                     }
                 })()}

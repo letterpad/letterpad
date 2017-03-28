@@ -16,7 +16,7 @@ var config = {
 if (process.env.NODE_ENV && process.env.NODE_ENV === "dev") {
     var pool = mysql.createPool(config);
 } else {
-    config.password = "if1else2";
+    config.password = "";
     var pool = mysql.createPool(config);
 }
 

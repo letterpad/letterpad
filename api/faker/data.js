@@ -1,12 +1,17 @@
 require("babel-register");
 let Faker = require("faker");
-import Promise from "bluebird";
+import _Promise from "bluebird";
 import { conn } from "../../config/mysql.config";
 import {
     PostModel,
     PostTaxonomyModel,
+    RolePermissionModel,
+    RoleAuthorModel,
+    RoleModel,
+    PermissionModel,
     TaxonomyModel,
-    AuthorModel
+    AuthorModel,
+    SettingsModel
 } from "../models";
 
 function createRecord(author) {
@@ -17,7 +22,7 @@ function createRecord(author) {
         body: Faker.lorem.paragraphs(6),
         author: Faker.name.findName(),
         excerpt: Faker.lorem.sentences(),
-        cover_image: Faker.image.imageUrl(900, 400, "abstract"),
+        cover_image: "http://lorempixel.com/900/300/nature/",
         type: postTypes[Math.floor(Math.random() * postTypes.length)],
         status: "draft",
         permalink: title
@@ -34,7 +39,7 @@ var createPostTaxonomy = function(taxonomy_id) {
             taxonomy_id: Math.round(Math.random() * 10) + 2
         })
         .catch(() => {
-            return new Promise((resolve, reject) => {
+            return new _Promise((resolve, reject) => {
                 resolve(true);
             });
         });
@@ -49,21 +54,51 @@ var createTaxonomy = function() {
 var times = 0;
 conn.sync({ force: true }).then(() => {
     times = 0;
-    var promiseWhile = Promise.method(function(condition, action) {
+    var _promiseWhile = _Promise.method(function(condition, action) {
         if (!condition()) return "oops";
-        return action().then(promiseWhile.bind(null, condition, action));
+        return action().then(_promiseWhile.bind(null, condition, action));
     });
-    var loop = function(n, create, param1, param2) {
-        return promiseWhile(
+    var loop = function(n, _create, param1, param2) {
+        return _promiseWhile(
             function() {
                 return times < n;
             },
             function() {
                 times++;
-                return create(param1, param2);
+                return _create(param1, param2);
             }
         );
     };
+    let roles = [
+        { id: 1, name: "ADMIN" },
+        { id: 2, name: "REVIEWER" },
+        { id: 3, name: "READER" },
+        { id: 4, name: "AUTHOR" }
+    ];
+    let permissions = [
+        { id: 1, name: "MANAGE_OWN_POSTS", belongsTo: [4] },
+        { id: 2, name: "READ_ONLY_POSTS", belongsTo: [3] },
+        { id: 3, name: "MANAGE_ALL_POSTS", belongsTo: [2] },
+        { id: 4, name: "MANAGE_USERS", belongsTo: [1] }
+    ];
+    let roles_Promise = roles.map(role => {
+        return RoleModel.create({ name: role.name });
+    });
+    let perm_Promise = permissions.map(permission => {
+        return PermissionModel.create({
+            id: permission.id,
+            name: permission.name
+        });
+    });
+    let rolePerm_Promise = permissions.map((permission, i) => {
+        let relations = permission.belongsTo.map(role_id => {
+            return RolePermissionModel.create({
+                permission_id: permission.id,
+                role_id: role_id
+            });
+        });
+    });
+
     return AuthorModel
         .create({
             username: "Admin",
@@ -78,5 +113,16 @@ conn.sync({ force: true }).then(() => {
                     return loop(60, createPostTaxonomy);
                 });
             });
+        })
+        .then(() => {
+            return Promise.all(roles_Promise)
+                .then(Promise.all(perm_Promise))
+                .then(Promise.all(rolePerm_Promise))
+                .then(() => {
+                    return RoleAuthorModel.create({
+                        role_id: 1,
+                        author_id: 1
+                    });
+                });
         });
 });

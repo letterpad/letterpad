@@ -23,6 +23,7 @@ export default function Create(type) {
             PostActions.subscribe(id => {
                 that.props.router.push(`/admin/${type}/${id}`);
             });
+            document.body.classList.add(`create-${type}`);
         }
         render() {
             return (

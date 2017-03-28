@@ -3,32 +3,33 @@ import ArticleEdit from "../components/posts/ArticleEdit";
 import { gql, graphql } from "react-apollo";
 import PostPublish from "../components/posts/PostPublish";
 
-class Single extends Component {
-    constructor(props) {
-        super(props);
+export default function Single(type) {
+    class Single extends Component {
+        constructor(props) {
+            super(props);
+        }
+
+        render() {
+            return (
+                <div>
+                    {(() => {
+                        if (this.props.loading) {
+                            return <div>hello</div>;
+                        } else {
+                            return (
+                                <div>
+                                    <PostPublish post={this.props.post} />
+                                    <ArticleEdit post={this.props.post} />
+                                </div>
+                            );
+                        }
+                    })()}
+                </div>
+            );
+        }
     }
 
-    render() {
-        return (
-            <div>
-                {(() => {
-                    if (this.props.loading) {
-                        return <div>hello</div>;
-                    } else {
-                        return (
-                            <div>
-                                <PostPublish post={this.props.post} />
-                                <ArticleEdit post={this.props.post} />
-                            </div>
-                        );
-                    }
-                })()}
-            </div>
-        );
-    }
-}
-
-const postQuery = gql`
+    const postQuery = gql`
   query getPost($id: Int!) {
   post(id:$id) {
     id,
@@ -50,12 +51,13 @@ const postQuery = gql`
 }
 `;
 
-const ContainerWithData = graphql(postQuery, {
-    options: props => ({ variables: { id: props.params.post_id } }),
-    props: ({ data: { loading, post } }) => ({
-        post,
-        loading
-    })
-});
+    const ContainerWithData = graphql(postQuery, {
+        options: props => ({ variables: { id: props.params.post_id } }),
+        props: ({ data: { loading, post } }) => ({
+            post,
+            loading
+        })
+    });
 
-export default ContainerWithData(Single);
+    return ContainerWithData(Single);
+}

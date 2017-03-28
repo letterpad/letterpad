@@ -44,6 +44,9 @@ export default class Menu extends Component {
                         <ul className="nav navbar-nav">
                             <li><Link to="/admin/posts">All Posts</Link></li>
                             <li><Link to="/admin/post-new">New Post</Link></li>
+                            <li><Link to="/admin/pages">All Pages</Link></li>
+                            <li><Link to="/admin/page-new">New Page</Link></li>
+                            <li><Link to="/admin/settings">Settings</Link></li>
 
                         </ul>
                     </div>

@@ -10,4 +10,3 @@ export {
     taxonomies,
     conn
 } from "./posts";
-export { getCommentsByPostId } from "./comments";

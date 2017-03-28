@@ -10,7 +10,7 @@ import {
 } from "./containers";
 export default (
     <Route path="/" component={App}>
-        <IndexRoute component={OneColLayout(Home)} />
+        <IndexRoute component={OneColLayout(Home, true)} />
         <Route path="/home" component={OneColLayout(Home)} />
         <Route path="/post/:permalink" component={OneColLayout(Single)} />
         <Route

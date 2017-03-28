@@ -10,7 +10,7 @@ import http from "http";
 import cors from "cors";
 import multer from "multer";
 import path from "path";
-
+import jwt from "jsonwebtoken";
 const app = express();
 app.use(cors());
 app.options("*", cors());
@@ -23,12 +23,20 @@ app.use(bodyParser.json());
 app.use(
     "/graphql",
     GraphHTTP(req => {
+        let user = {};
+        if (typeof req.body.token != "undefined") {
+            user = jwt.verify(req.body.token, "your-dirty-secret");
+        }
+
         return {
             schema: Schema,
             pretty: true,
             graphiql: true,
             rootValue: {
                 request: req
+            },
+            context: {
+                user: user
             }
         };
     })

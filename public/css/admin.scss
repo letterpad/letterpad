@@ -1,3 +1,63 @@
+.form-control {
+  text-transform: none !important;
+}
+label.custom-label {
+  letter-spacing: 2px;
+  font-weight: 100;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+/* Login */
+.login-view {
+  background: #252627;
+  .login {
+      margin: 0 auto;
+      margin-top: -165px;
+      top: 50%;
+      position: absolute;
+      left: 50%;
+      margin-left: -190px;
+      width: 380px;
+      .form-signin {
+          input {
+              text-transform: none;
+              border: 1px solid #eee;
+              color: #5a5b5c;
+              font-size: 13px;
+          }
+          input:-webkit-autofill {
+              -webkit-box-shadow: 0 0 0px 1000px #f5f5f5 inset;
+          }
+          label {
+              display: inline-block;
+              max-width: 100%;
+              margin-bottom: 5px;
+              font-weight: bold;
+              letter-spacing: 4px;
+              font-weight: 100;
+              text-transform: uppercase;
+              font-size: 11px;
+              margin-top: 19px;
+          }
+          .form-signin-heading {
+              margin-bottom: 18px;
+              font-size: 30px;
+              color: #5a5b5c;
+          }
+          .form-control {
+              position: relative;
+              height: auto;
+              padding: 9px 8px;
+              box-sizing: border-box;
+              &:focus {
+                  z-index: 2;
+              }
+          }
+      }
+  }
+}
+/* Login End */
 
 /* Tell Quill not to scroll */
 #editor {
@@ -92,3 +152,26 @@ div.ReactTags__suggestions ul li.active {
     cursor: pointer;
 }
 /* Tags input end */
+
+/*Theme customization*/
+.theme-customizer {
+  .swatch {
+    padding: 5px;
+    background: #fff;
+    border-radius: 1px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+    display: block;
+    cursor: pointer;
+  }
+  .popover {
+      position: absolute;
+      z-index: 2;
+  }
+  .cover {
+      position: fixed;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+  }
+}

@@ -1,7 +1,7 @@
-import {conn} from "../../config/mysql.config";
+import { conn } from "../../config/mysql.config";
 import Sequalize from "sequelize";
 
-export const AuthorModel =  conn.define(
+export const AuthorModel = conn.define(
     "authors",
     {
         username: {
