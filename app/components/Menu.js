@@ -47,6 +47,7 @@ export default class Menu extends Component {
                             <li><Link to="/admin/pages">All Pages</Link></li>
                             <li><Link to="/admin/page-new">New Page</Link></li>
                             <li><Link to="/admin/settings">Settings</Link></li>
+                            <li><Link to="/admin/authors">Authors</Link></li>
 
                         </ul>
                     </div>

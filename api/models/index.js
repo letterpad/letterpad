@@ -1,5 +1,5 @@
-import { PostModel, createPost, updatePost } from "./post";
 import { TaxonomyModel } from "./taxonomy";
+import { PostModel, createPost, updatePost } from "./post";
 import { RoleModel } from "./role";
 import { PermissionModel } from "./permission";
 import { AuthorModel } from "./author";
@@ -30,16 +30,16 @@ PermissionModel.belongsToMany(RoleModel, {
     through: RolePermissionModel,
     as: "role"
 });
-RoleModel.belongsToMany(AuthorModel, {
-    through: RoleAuthorModel,
-    as: "author"
-});
-AuthorModel.belongsToMany(RoleModel, {
-    through: RoleAuthorModel,
-    as: "role"
-});
 
-conn.sync({ force: true });
+// RoleModel.belongsToMany(AuthorModel, {
+//     through: RoleAuthorModel,
+//     as: "author"
+// });
+RoleModel.hasMany(AuthorModel);
+
+AuthorModel.belongsTo(RoleModel);
+
+conn.sync({ force: false });
 
 export { PostModel, createPost, updatePost } from "./post";
 export { TaxonomyModel } from "./taxonomy";

@@ -45,7 +45,7 @@ export default class Profile extends Component {
                 </div>
                 <div className="form-group">
                     <label className="custom-label">
-                        Confirm Password
+                        New Password
                     </label>
                     <input
                         type="text"
@@ -54,7 +54,7 @@ export default class Profile extends Component {
                         aria-invalid="true"
                         onBlur={e =>
                             this.updateOption(
-                                "profile_cnf_password",
+                                "profile_new_password",
                                 e.target.value
                             )}
                     />

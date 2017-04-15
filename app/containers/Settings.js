@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { gql, graphql } from "react-apollo";
 import General from "../components/settings/General";
 import Social from "../components/settings/Social";
-import Theme from "../components/settings/Theme";
+//import Theme from "../components/settings/Theme";
 
 class Settings extends Component {
     constructor(props) {
@@ -115,7 +115,7 @@ class Settings extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="panel panel-default">
+                        {/*<div className="panel panel-default">
                             <div className="panel-heading">
                                 <h4 className="panel-title">
                                     <a
@@ -144,7 +144,8 @@ class Settings extends Component {
                                     />
                                 </div>
                             </div>
-                        </div>
+                        </div>*/
+                        }
                     </div>
                     <div className="text-center">
                         <button
