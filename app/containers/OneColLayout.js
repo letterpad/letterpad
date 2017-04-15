@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import Menu from "../components/Menu";
 
 export default function Layout(Element) {
     return class Layout extends Component {
         render() {
             return (
                 <div>
-                    <Menu />
                     <div className="wrapper">
                         <section className="module p-t-0">
                             <div className="container-fluid container-custom">

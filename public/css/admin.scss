@@ -59,6 +59,22 @@ label.custom-label {
 }
 /* Login End */
 
+/* Navbar */
+ul.nav.navbar-nav i {
+    width: 12px;
+}
+ul.nav.navbar-nav > li.item a {
+    margin-left: 10px;
+}
+ul.nav.navbar-nav ul {
+  list-style: none;
+}
+ul.nav.navbar-nav .parent {
+  padding-bottom: 4px;
+}
+ul.nav.navbar-nav li ul li {
+    padding: 6px 0px;
+}
 /* Tell Quill not to scroll */
 #editor {
   height: auto;

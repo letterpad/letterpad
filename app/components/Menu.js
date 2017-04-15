@@ -5,15 +5,23 @@ export default class Menu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            navbarOpen: false
+            navbarOpen: false,
+            postsOpen: false,
+            pagesOpen: false
         };
     }
     navbarToggle() {
         this.setState({ navbarOpen: !this.state.navbarOpen });
     }
-
+    toggleItem(item, e) {
+        e.preventDefault();
+        this.state[item] = !this.state[item];
+        this.setState(this.state);
+    }
     render() {
         let navbarStatus = this.state.navbarOpen ? "in" : "";
+        let postsStatus = this.state.postsOpen ? "" : "hide";
+        let pagesStatus = this.state.pagesOpen ? "" : "hide";
         return (
             <div className="sidebar">
                 <nav className="navbar navbar-custom font-alt">
@@ -42,13 +50,70 @@ export default class Menu extends Component {
                     >
 
                         <ul className="nav navbar-nav">
-                            <li><Link to="/admin/posts">All Posts</Link></li>
-                            <li><Link to="/admin/post-new">New Post</Link></li>
-                            <li><Link to="/admin/pages">All Pages</Link></li>
-                            <li><Link to="/admin/page-new">New Page</Link></li>
-                            <li><Link to="/admin/settings">Settings</Link></li>
-                            <li><Link to="/admin/authors">Authors</Link></li>
-
+                            <li>
+                                <Link
+                                    className="parent"
+                                    to="null"
+                                    onClick={e =>
+                                        this.toggleItem("postsOpen", e)}
+                                >
+                                    <i
+                                        className={
+                                            "fa fa-" +
+                                                (this.state.postsOpen
+                                                    ? "angle-down"
+                                                    : "angle-right")
+                                        }
+                                        aria-hidden="true"
+                                    />
+                                    Posts
+                                </Link>
+                                <ul className={postsStatus}>
+                                    <li className="item">
+                                        <Link to="/admin/posts">All Posts</Link>
+                                    </li>
+                                    <li className="item">
+                                        <Link to="/admin/post-new">
+                                            New Post
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <Link
+                                    to="null"
+                                    className="parent"
+                                    onClick={e =>
+                                        this.toggleItem("pagesOpen", e)}
+                                >
+                                    <i
+                                        className={
+                                            "fa fa-" +
+                                                (this.state.pagesOpen
+                                                    ? "angle-down"
+                                                    : "angle-right")
+                                        }
+                                        aria-hidden="true"
+                                    />
+                                    Pages
+                                </Link>
+                                <ul className={pagesStatus}>
+                                    <li className="item">
+                                        <Link to="/admin/pages">All Pages</Link>
+                                    </li>
+                                    <li className="item">
+                                        <Link to="/admin/page-new">
+                                            New Page
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="item">
+                                <Link to="/admin/settings">Settings</Link>
+                            </li>
+                            <li className="item">
+                                <Link to="/admin/authors">Authors</Link>
+                            </li>
                         </ul>
                     </div>
 
