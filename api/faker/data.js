@@ -124,5 +124,54 @@ conn.sync({ force: true }).then(() => {
                         author_id: 1
                     });
                 });
+        })
+        .then(() => {
+            let data = [
+                {
+                    option: "site_title",
+                    value: ""
+                },
+                {
+                    option: "site_tagline",
+                    value: ""
+                },
+                {
+                    option: "site_email",
+                    value: ""
+                },
+                {
+                    option: "site_description",
+                    value: ""
+                },
+                {
+                    option: "social_twitter",
+                    value: ""
+                },
+                {
+                    option: "social_facebook",
+                    value: ""
+                },
+                {
+                    option: "social_instagram",
+                    value: ""
+                },
+                {
+                    option: "profile_name",
+                    value: ""
+                },
+                {
+                    option: "profile_password",
+                    value: ""
+                }
+            ];
+
+            let promises = data.map(record => {
+                return SettingsModel.create(record);
+            });
+
+            return Promise.all(promises);
+        })
+        .then(() => {
+            console.log("All data inserted successfully");
         });
 });

@@ -58,7 +58,8 @@ let definition = `
     type Query {
         post(id: Int, type: String, permalink: String): Post
         posts(type: String, body: String, offset: Int, limit: Int): [Post]
-        authors(id: Int, username: String): [Author]
+        author(username: String!): Author
+        authors: [Author]
         taxonomies(type: String, name: String): [Taxonomy]
         postTaxonomies(type: String, name: String, postType: String): [PostTaxonomy]
         settings(option: String):[Setting]
@@ -108,8 +109,11 @@ let resolvers = {
         post: (root, args) => {
             return PostModel.findOne({ where: args });
         },
-        authors: (root, args) => {
+        author: (root, args) => {
             return AuthorModel.findOne({ where: args });
+        },
+        authors: (root, args) => {
+            return AuthorModel.findAll({ where: args });
         },
         taxonomies: (root, args) => {
             return TaxonomyModel.findAll({ where: args });
@@ -155,6 +159,16 @@ let resolvers = {
         },
         post_count: taxonomy => {
             return taxonomy.post[0].dataValues.post_count;
+        }
+    },
+    Author: {
+        role: author => {
+            return author.getRole();
+        }
+    },
+    Role: {
+        permissions: role => {
+            return role.getPermission();
         }
     }
 };

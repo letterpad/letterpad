@@ -3,6 +3,7 @@ export LoginView from "./LoginView";
 export Single from "./Single";
 export Create from "./Create";
 export List from "./List";
+export Authors from "./Authors";
 export Settings from "./Settings";
 export TwoColumnLayout from "./TwoColLayout";
 export OneColumnLayout from "./OneColLayout";

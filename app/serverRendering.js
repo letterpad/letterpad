@@ -61,7 +61,6 @@ module.exports.init = app => {
                     msg: "Invalid credentials"
                 });
             }
-
             bcrypt.compare(req.body.password, result.data.password, function(
                 err,
                 response
@@ -69,7 +68,8 @@ module.exports.init = app => {
                 if (response) {
                     let token = jwt.sign(
                         {
-                            username: req.body.username
+                            username: req.body.username,
+                            role: result.data.role
                         },
                         "your-dirty-secret" //secret
                     );

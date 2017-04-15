@@ -9,13 +9,35 @@ export function doLogin(data) {
         })
         .then(function(user) {
             if (user.length === 1) {
-                let result = { code: 200 };
-                result.data = user[0];
-                return result;
+                return user[0];
             }
-            return {
+            throw new Error({
                 code: 403,
                 msg: "Authentication failed"
-            };
+            });
+        })
+        .then(author => {
+            return conn
+                .query(
+                    "SELECT p.name as permission,r.name as role FROM permissions p INNER JOIN role_per_relation rpr ON rpr.permission_id = p.id INNER JOIN roles r ON r.id = rpr.role_id WHERE r.id = ?",
+                    {
+                        replacements: [author.role_id],
+                        type: sequelize.QueryTypes.SELECT
+                    }
+                )
+                .then(result => {
+                    let data = { role: "", permissions: [] };
+                    result.map(record => {
+                        data.role = record.role;
+                        data.permissions.push(record.permission);
+                    });
+                    author.role = data;
+                    let out = { code: 200 };
+                    out.data = author;
+                    return out;
+                });
+        })
+        .catch(error => {
+            return error;
         });
 }

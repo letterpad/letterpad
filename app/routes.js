@@ -9,7 +9,8 @@ import {
     List,
     Single,
     Create,
-    Settings
+    Settings,
+    Authors
 } from "./containers";
 export default (
     <Route path="/admin" component={App}>
@@ -35,5 +36,6 @@ export default (
             component={OneColumnLayout(Create("post"))}
         />
         <Route path="/admin/settings" component={OneColumnLayout(Settings)} />
+        <Route path="/admin/authors" component={OneColumnLayout(Authors)} />
     </Route>
 );

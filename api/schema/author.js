@@ -1,10 +1,11 @@
+import Role from "./Role";
 const Author = `
   type Author {
     id: Int
     username: String
-    password: String
-    email: String
+    email: String,
+    role: Role
   }
 `;
 
-export default () => [Author];
+export default () => [Author, Role];
