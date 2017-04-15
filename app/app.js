@@ -18,7 +18,6 @@ function handleUpdate() {
     let {
         action
     } = this.state.location;
-    console.log(this.state);
     if (action === "PUSH") {
         window.scrollTo(0, 0);
     }
