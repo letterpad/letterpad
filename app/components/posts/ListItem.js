@@ -28,7 +28,7 @@ export default class ListItem extends Component {
                     style={{ cursor: "pointer" }}
                     onClick={this.openArticle.bind(this)}
                 >
-                    {this.props.post.title}
+                    {this.props.post.title || "Draft.."}
                 </td>
                 <td>{this.props.post.status}</td>
                 <td>{this.props.post.author.username}</td>

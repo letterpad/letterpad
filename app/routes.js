@@ -16,26 +16,14 @@ export default (
     <Route path="/admin" component={App}>
         <IndexRoute component={LoginView} />
         <Route path="/admin/login" component={LoginView} />
-        <Route path="/admin/posts" component={OneColumnLayout(List("post"))} />
-        <Route path="/admin/pages" component={OneColumnLayout(List("page"))} />
+        <Route path="/admin/posts" component={List("post")} />
+        <Route path="/admin/pages" component={List("page")} />
 
-        <Route
-            path="/admin/post/:post_id"
-            component={OneColumnLayout(Single("post"))}
-        />
-        <Route
-            path="/admin/post-new"
-            component={OneColumnLayout(Create("post"))}
-        />
-        <Route
-            path="/admin/page/:post_id"
-            component={OneColumnLayout(Single("page"))}
-        />
-        <Route
-            path="/admin/page-new"
-            component={OneColumnLayout(Create("post"))}
-        />
-        <Route path="/admin/settings" component={OneColumnLayout(Settings)} />
-        <Route path="/admin/authors" component={OneColumnLayout(Authors)} />
+        <Route path="/admin/post/:post_id" component={Single("post")} />
+        <Route path="/admin/post-new" component={Create("post")} />
+        <Route path="/admin/page/:post_id" component={Single("page")} />
+        <Route path="/admin/page-new" component={Create("post")} />
+        <Route path="/admin/settings" component={Settings} />
+        <Route path="/admin/authors" component={Authors} />
     </Route>
 );

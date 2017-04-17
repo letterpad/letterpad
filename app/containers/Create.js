@@ -3,6 +3,8 @@ import ArticleCreate from "../components/posts/ArticleCreate";
 import { gql, graphql } from "react-apollo";
 import PostPublish from "../components/posts/PostPublish";
 import PostActions from "../components/posts/PostActions";
+import Tags from "../components/posts/Tags";
+import Categories from "../components/posts/Categories";
 
 export default function Create(type) {
     class Create extends Component {
@@ -26,6 +28,7 @@ export default function Create(type) {
             document.body.classList.add(`create-${type}`);
         }
         render() {
+            let page = type;
             return (
                 <div>
                     {(() => {
@@ -33,9 +36,29 @@ export default function Create(type) {
                             return <div>hello</div>;
                         } else {
                             return (
-                                <div>
-                                    <PostPublish post={this.state.post} />
-                                    <ArticleCreate post={this.state.post} />
+                                <div className={"wrapper " + page}>
+                                    <section className="module p-t-20">
+                                        <div
+                                            className="container-fluid container-custom"
+                                        >
+                                            <div className="col-lg-8 column">
+                                                <ArticleCreate
+                                                    post={this.state.post}
+                                                />
+                                            </div>
+                                            <div className="col-lg-4 column">
+                                                <PostPublish
+                                                    post={this.state.post}
+                                                />
+                                                <hr />
+                                                <Tags post={this.state.post} />
+                                                <hr />
+                                                <Categories
+                                                    post={this.state.post}
+                                                />
+                                            </div>
+                                        </div>
+                                    </section>
                                 </div>
                             );
                         }

@@ -55,24 +55,23 @@ class Tags extends Component {
         suggestions = suggestions.map(t => t.name);
 
         return (
-            <div className="x_panel">
+            <div className="x_panel m-b-20">
                 <div className="x_title">
                     <h2>Tags</h2>
                     <div className="clearfix" />
                 </div>
                 <div className="x_content">
                     <div className="control-group">
-                        <div className="col-xs-12 row">
-                            <ReactTags
-                                suggestions={suggestions}
-                                autofocus={false}
-                                tags={this.tags}
-                                labelField="name"
-                                handleDelete={this.handleDelete.bind(this)}
-                                handleAddition={this.handleAddition.bind(this)}
-                                handleDrag={this.handleDrag.bind(this)}
-                            />
-                        </div>
+                        <ReactTags
+                            suggestions={suggestions}
+                            autofocus={false}
+                            placeholder="Add new tag..."
+                            tags={this.tags}
+                            labelField="name"
+                            handleDelete={this.handleDelete.bind(this)}
+                            handleAddition={this.handleAddition.bind(this)}
+                            handleDrag={this.handleDrag.bind(this)}
+                        />
                     </div>
                 </div>
             </div>

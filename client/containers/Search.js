@@ -96,7 +96,11 @@ export default function Search(term) {
                 };
             },
             props: ({ data: { loading, postTaxonomies } }) => ({
-                posts: postTaxonomies ? postTaxonomies[0].posts : [],
+                posts: (
+                    postTaxonomies && postTaxonomies.length > 0
+                        ? postTaxonomies[0].posts
+                        : []
+                ),
                 loading
             })
         });
@@ -134,7 +138,11 @@ export default function Search(term) {
                 };
             },
             props: ({ data: { loading, postTaxonomies } }) => ({
-                posts: postTaxonomies ? postTaxonomies[0].posts : [],
+                posts: (
+                    postTaxonomies && postTaxonomies.length > 0
+                        ? postTaxonomies[0].posts
+                        : []
+                ),
                 loading
             })
         });

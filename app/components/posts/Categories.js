@@ -62,17 +62,16 @@ class Categories extends Component {
                 </div>
                 <div className="x_content">
                     <div className="control-group">
-                        <div className="col-xs-12 row">
-                            <ReactTags
-                                suggestions={suggestions}
-                                autofocus={false}
-                                tags={this.categories}
-                                labelField="name"
-                                handleDelete={this.handleDelete.bind(this)}
-                                handleAddition={this.handleAddition.bind(this)}
-                                handleDrag={this.handleDrag.bind(this)}
-                            />
-                        </div>
+                        <ReactTags
+                            suggestions={suggestions}
+                            autofocus={false}
+                            placeholder="Add new category..."
+                            tags={this.categories}
+                            labelField="name"
+                            handleDelete={this.handleDelete.bind(this)}
+                            handleAddition={this.handleAddition.bind(this)}
+                            handleDrag={this.handleDrag.bind(this)}
+                        />
                     </div>
                 </div>
             </div>

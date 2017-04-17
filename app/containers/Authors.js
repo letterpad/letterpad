@@ -43,20 +43,24 @@ class Authors extends Component {
         });
 
         return (
-            <section className="module-xs">
-                <table className="table table-hover table-bordered">
-                    <thead>
-                        <tr>
-                            <th className="col-check">
-                                <input type="checkbox" />
-                            </th>
-                            <th className="col-text">Username</th>
-                            <th className="col-text">Role</th>
-                        </tr>
-                    </thead>
-                    <tbody>{rows}</tbody>
-                </table>
-            </section>
+            <div className={"wrapper "}>
+                <section className="module-xs">
+                    <div className="container-fluid container-custom">
+                        <table className="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th className="col-check">
+                                        <input type="checkbox" />
+                                    </th>
+                                    <th className="col-text">Username</th>
+                                    <th className="col-text">Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>{rows}</tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
         );
     }
 }

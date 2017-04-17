@@ -15,7 +15,9 @@ var ContentEditable = React.createClass({
                 onInput={this.emitChange}
                 onBlur={this.emitChange}
                 contentEditable
-                dangerouslySetInnerHTML={{ __html: this.props.title }}
+                dangerouslySetInnerHTML={{
+                    __html: this.props.title || "Draft.."
+                }}
             />
         );
     },
@@ -59,10 +61,6 @@ export default class EditArticle extends Component {
                 </div>
                 <div className="post-content">
                     <Editor body={this.props.post.body} />
-                </div>
-                <div className="font-serif">
-                    <Tags post={this.props.post} />
-                    <Categories post={this.props.post} />
                 </div>
             </article>
         );

@@ -23,13 +23,11 @@ export default function Layout(Element) {
 
                     <section className="module-xs">
                         <div className="container-fluid container-custom">
-                            <div className="row">
-                                <div className="col-lg-8 column">
-                                    <Element {...this.props} />
-                                </div>
-                                <div className="col-lg-4 column">
-                                    <Sidebar />
-                                </div>
+                            <div className="col-lg-8 column">
+                                <Element {...this.props} />
+                            </div>
+                            <div className="col-lg-4 column">
+                                <Sidebar settings={this.props.settings} />
                             </div>
                         </div>
                     </section>

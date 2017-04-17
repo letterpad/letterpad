@@ -17,22 +17,26 @@ export default function List(type) {
             });
 
             return (
-                <section className="module-xs">
-                    <table className="table table-hover table-bordered">
-                        <thead>
-                            <tr>
-                                <th className="col-check">
-                                    <input type="checkbox" />
-                                </th>
-                                <th className="col-text">Title</th>
-                                <th className="col-text">Status</th>
-                                <th className="col-text">Author</th>
-                                <th className="col-text">Created At</th>
-                            </tr>
-                        </thead>
-                        <tbody>{rows}</tbody>
-                    </table>
-                </section>
+                <div className={"wrapper "}>
+                    <section className="module-xs">
+                        <div className="container-fluid container-custom">
+                            <table className="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th className="col-check">
+                                            <input type="checkbox" />
+                                        </th>
+                                        <th className="col-text">Title</th>
+                                        <th className="col-text">Status</th>
+                                        <th className="col-text">Author</th>
+                                        <th className="col-text">Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>{rows}</tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
             );
         }
     }

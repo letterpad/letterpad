@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import ArticleEdit from "../components/posts/ArticleEdit";
 import { gql, graphql } from "react-apollo";
 import PostPublish from "../components/posts/PostPublish";
+import Tags from "../components/posts/Tags";
+import Categories from "../components/posts/Categories";
+import Excerpt from "../components/posts/Excerpt";
 
 export default function Single(type) {
     class Single extends Component {
@@ -10,6 +13,7 @@ export default function Single(type) {
         }
 
         render() {
+            let page = type;
             return (
                 <div>
                     {(() => {
@@ -17,9 +21,33 @@ export default function Single(type) {
                             return <div>hello</div>;
                         } else {
                             return (
-                                <div>
-                                    <PostPublish post={this.props.post} />
-                                    <ArticleEdit post={this.props.post} />
+                                <div className={"wrapper " + page}>
+                                    <section className="module p-t-20">
+                                        <div
+                                            className="container-fluid container-custom"
+                                        >
+                                            <div className="col-lg-8 column">
+                                                <ArticleEdit
+                                                    post={this.props.post}
+                                                />
+                                            </div>
+                                            <div className="col-lg-4 column">
+                                                <PostPublish
+                                                    post={this.props.post}
+                                                />
+                                                <hr />
+                                                <Tags post={this.props.post} />
+                                                <hr />
+                                                <Categories
+                                                    post={this.props.post}
+                                                />
+                                                <hr />
+                                                <Excerpt
+                                                    post={this.props.post}
+                                                />
+                                            </div>
+                                        </div>
+                                    </section>
                                 </div>
                             );
                         }

@@ -23,27 +23,24 @@ class PostPublish extends Component {
 
     getButton(status, label, btnType = "btn-dark") {
         return (
-            <div className="btn-group btn-item">
-                <button
-                    type="submit"
-                    onClick={e => this.updatePost(e, { status: status })}
-                    className={"btn btn-md " + btnType}
-                >
-                    {label}
-                </button>
-            </div>
+            <button
+                type="submit"
+                onClick={e => this.updatePost(e, { status: status })}
+                className={"btn btn-md " + btnType}
+            >
+                {label}
+            </button>
         );
     }
 
     render() {
         return (
-            <div className="x_panel m-b-20">
+            <div className="x_panel m-b-80">
                 <div className="x_content">
-                    <div className="btn-group btn-group-justified">
-                        {this.getButton("publish", "Publish", "btn-info")}
-                        {this.getButton("draft", "Save Draft")}
-                        {this.getButton("deleted", "Trash")}
-                    </div>
+                    {this.getButton("deleted", "Trash")}
+                    {this.getButton("draft", "Save Draft")}
+                    {this.getButton("publish", "Publish")}
+
                 </div>
             </div>
         );

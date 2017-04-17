@@ -13,7 +13,7 @@ class Sidebar extends Component {
     render() {
         return (
             <div>
-                <About />
+                <About about={this.props.settings.sidebar_about.value} />
                 <Categories
                     loading={this.props.loading}
                     categories={this.props.categories}
@@ -39,8 +39,8 @@ const linkedTaxonomies = gql`
 `;
 
 const latestPosts = gql`
-  query latestPosts($type:String) {
-  posts(type:$type, offset: 1, limit: 2) {
+  query latestPosts($type:String, $limit:Int) {
+  posts(type:$type, offset: 1, limit: $limit) {
     id
     title
     type
@@ -61,9 +61,12 @@ const ContainerWithCatData = graphql(linkedTaxonomies, {
 });
 
 const ContainerWithLatestPosts = graphql(latestPosts, {
-    options: {
-        variables: { type: "post" }
-    },
+    options: props => ({
+        variables: {
+            type: "post",
+            limit: parseInt(props.settings.sidebar_latest_post_count.value)
+        }
+    }),
     props: ({ data: { loading, posts } }) => ({
         posts,
         ploading: loading
