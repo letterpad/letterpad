@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router";
 import moment from "moment";
 import Editor from "./Editor";
-import Tags from "./Tags";
-import Categories from "./Categories";
 import PostActions from "./PostActions";
 import FeaturedImage from "./FeaturedImage";
 import ReactDOM from "react-dom";
@@ -63,10 +61,6 @@ export default class CreateArticle extends Component {
                 </div>
                 <div className="post-content">
                     <Editor body="" />
-                </div>
-                <div className="font-serif">
-                    <Tags post={this.props.post} />
-                    <Categories post={this.props.post} />
                 </div>
             </article>
         );

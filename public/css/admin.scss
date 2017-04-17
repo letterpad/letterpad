@@ -100,6 +100,11 @@ ul.nav.navbar-nav li ul li {
   overflow-y: auto;
 }
 
+/* Publish buttons */
+.btn-group-justified .btn-item {
+  padding-left: 2px;
+  padding-right: 2px;
+}
 
 /* Tags Input */
 div.ReactTags__tags {
@@ -118,7 +123,7 @@ div.ReactTags__tagInput input:focus {
   font-size: 12px;
   width: 100%;
   border: none;
-  padding: 8px 10px ;
+  padding: 8px 0px 10px;
   display: block;
 }
 
@@ -128,8 +133,8 @@ div.ReactTags__selected span.ReactTags__tag {
   background: #eee;
   font-size: 12px;
   display: inline-block;
-  padding: 4px;
-  margin: 0 5px;
+  padding: 0px 8px;
+  margin-right: 4px;
   cursor: move;
   border-radius: 2px;
 }

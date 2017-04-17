@@ -24,29 +24,65 @@ class Home extends Component {
     }
 }
 
-const allPosts = gql`
-  query getPosts {
-  posts(type:"post") {
-    id,
-    title,
-    body,
-    type,
-    permalink,
-    status,
-    created_at,
-    excerpt,
-    cover_image,
-    taxonomies {
-        id,
-        name,
-        type
+// const allPosts = gql`
+//   query getPosts {
+//   posts(type:"post") {
+//     id,
+//     title,
+//     body,
+//     type,
+//     permalink,
+//     status,
+//     created_at,
+//     excerpt,
+//     cover_image,
+//     taxonomies {
+//         id,
+//         name,
+//         type
+//     }
+//   }
+// }
+// `;
+// const ContainerWithPostData = graphql(allPosts, {
+//     props: ({ data: { loading, posts } }) => ({
+//         posts,
+//         loading
+//     })
+// });
+//------
+const catPosts = gql`
+query allPosts($type:String,$query:String,$postType:String){
+    postsMenu(type:$type,name:$query) {
+        posts(type:$postType) {
+            id
+            title
+            type
+            cover_image
+            created_at
+            permalink
+            excerpt
+            taxonomies {
+                id,
+                name,
+                type
+            }
+        }
     }
-  }
 }
 `;
-const ContainerWithPostData = graphql(allPosts, {
-    props: ({ data: { loading, posts } }) => ({
-        posts,
+const ContainerWithPostData = graphql(catPosts, {
+    options: props => {
+        return {
+            variables: {
+                type: "post_category",
+                query: props.params.query || "Home",
+                postType: "post"
+            }
+        };
+    },
+    props: ({ data: { loading, postsMenu } }) => ({
+        posts: postsMenu && postsMenu.length > 0 ? postsMenu[0].posts : [],
         loading
     })
 });

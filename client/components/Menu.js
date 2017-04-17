@@ -14,6 +14,15 @@ export default class Menu extends Component {
 
     render() {
         let navbarStatus = this.state.navbarOpen ? "in" : "";
+        let menu = this.props.menu.map(item => {
+            if (item.label == "Home") {
+                return <li><Link to="/">{item.label}</Link></li>;
+            }
+            return (
+                <li><Link to={"/posts/" + item.label}>{item.label}</Link></li>
+            );
+        });
+
         return (
             <div className="sidebar">
                 <nav className="navbar navbar-custom font-alt">
@@ -42,9 +51,7 @@ export default class Menu extends Component {
                     >
 
                         <ul className="nav navbar-nav">
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-
+                            {menu}
                         </ul>
                     </div>
 

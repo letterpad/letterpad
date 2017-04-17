@@ -58,6 +58,7 @@ let definition = `
     type Query {
         post(id: Int, type: String, permalink: String): Post
         posts(type: String, body: String, offset: Int, limit: Int): [Post]
+        postsMenu(type: String, name: String, postType: String): [PostTaxonomy]
         author(username: String!): Author
         authors: [Author]
         taxonomies(type: String, name: String): [Taxonomy]
@@ -117,6 +118,31 @@ let resolvers = {
         },
         taxonomies: (root, args) => {
             return TaxonomyModel.findAll({ where: args });
+        },
+        postsMenu: (root, args) => {
+            let that = this;
+            debugger;
+            return SettingsModel.findOne({ where: { option: "menu" } })
+                .then(menu => {
+                    let t = menu.dataValues.value;
+                    return JSON.parse(t);
+                })
+                .then(menu => {
+                    let item = menu.filter(item => {
+                        if (item.label == args.name) {
+                            return item;
+                        }
+                    });
+                    return TaxonomyModel.findOne({ where: { id: item[0].id } })
+                        .then(taxonomy => {
+                            debugger;
+                            return resolvers.Query.postTaxonomies(root, {
+                                type: "post_category",
+                                name: taxonomy.dataValues.name,
+                                postType: "post"
+                            });
+                        });
+                });
         },
         postTaxonomies: (root, args) => {
             let postType = args.postType;

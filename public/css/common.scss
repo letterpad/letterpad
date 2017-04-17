@@ -178,8 +178,8 @@ input,textarea,[contenteditable=true]:focus{
 }
 
 .container-custom{
-	max-width:1170px;
-	margin:0 auto;
+	max-width:1250px;
+	margin:0 0;
 }
 @media (max-width: 768px){
 
@@ -441,15 +441,15 @@ blockquote cite{
 	.comments-form .control-label{
 		padding-top:12px;
 	}
-	.wrapper .column {
-		padding: 0 60px;
-	}
-	.wrapper .column:first-of-type {
-		padding: 0 30px 0 60px !important;
-	}
-	.wrapper .column:last-of-type {
-		padding: 0 60px 0 30px !important;
-	}
+	// .wrapper .column {
+	// 	padding: 0 60px;
+	// }
+	// .wrapper .column:first-of-type {
+	// 	padding: 0 30px 0 60px !important;
+	// }
+	// .wrapper .column:last-of-type {
+	// 	padding: 0 60px 0 30px !important;
+	// }
 
 }
 /*!------------------------------------------------------------------
@@ -588,6 +588,14 @@ blockquote cite{
 .progress-bar.progress-bar-danger > span{
 	background-color:#d9534f;
 }
+/*!------------------------------------------------------------------
+[Panels]
+*/
+.x_title h2 {
+	font-size: 14px;
+    font-weight: bold;
+}
+
 /*!------------------------------------------------------------------
 [Counters]
 */

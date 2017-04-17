@@ -1,6 +1,7 @@
 // import Sidebar from "../components/Sidebar";
 
 import React, { Component } from "react";
+import PostPublish from "../components/posts/PostPublish_1";
 
 export default function Layout(Element) {
     return class Layout extends Component {
@@ -24,12 +25,14 @@ export default function Layout(Element) {
                         </section>
                         <hr className="divider" />
 
-                        <section className="module-xs">
+                        <section className="module p-t-0">
                             <div className="container-fluid container-custom">
                                 <div className="col-lg-8 column">
                                     <Element {...this.props} />
                                 </div>
-                                <div className="col-lg-4 column" />
+                                <div className="col-lg-4 column">
+                                    <PostPublish {...this.props} />
+                                </div>
                             </div>
                         </section>
 
