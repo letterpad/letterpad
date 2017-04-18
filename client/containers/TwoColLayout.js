@@ -13,7 +13,7 @@ export default function Layout(Element) {
                             <div className="row">
                                 <div className="col-sm-6 col-sm-offset-3">
                                     <h2 className="module-title font-alt m-b-0">
-                                        {"{Page Name}"}
+                                        {""}
                                     </h2>
                                 </div>
                             </div>

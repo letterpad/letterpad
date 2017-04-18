@@ -11,13 +11,18 @@ class Single extends Component {
         return (
             <div>
                 {(() => {
-                    if (this.props.loading) {
+                    if (this.props.loading || this.props.adjPostsLoading) {
                         return <div>hello</div>;
                     } else {
                         if (this.props.post === null) {
                             return <div>Nothing found..Absolute bullshit</div>;
                         }
-                        return <Article post={this.props.post} />;
+                        return (
+                            <Article
+                                post={this.props.post}
+                                adjacentPosts={this.props.adjacentPosts}
+                            />
+                        );
                     }
                 })()}
             </div>
@@ -57,4 +62,26 @@ const ContainerWithPostData = graphql(singlePost, {
     })
 });
 
-export default ContainerWithPostData(Single);
+const adjacentPosts = gql`
+  query adjacentPosts($permalink:String) {
+  adjacentPosts(type:"post",permalink:$permalink) {
+    id,
+    title,
+    permalink
+  }
+}
+`;
+const adjacentPostsData = graphql(adjacentPosts, {
+    options: props => {
+        return {
+            variables: {
+                permalink: props.params.permalink
+            }
+        };
+    },
+    props: ({ data: { loading, adjacentPosts } }) => ({
+        adjacentPosts,
+        adjPostsLoading: loading
+    })
+});
+export default adjacentPostsData(ContainerWithPostData(Single));
