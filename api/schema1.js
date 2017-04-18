@@ -9,7 +9,7 @@ import FileInputType from "./schema/fileInputType";
 import Setting from "./schema/setting";
 
 import Sequalize from "sequelize";
-
+import { conn } from "../config/mysql.config";
 import {
     createPost,
     updatePost,
@@ -59,6 +59,7 @@ let definition = `
         post(id: Int, type: String, permalink: String): Post
         posts(type: String, body: String, offset: Int, limit: Int): [Post]
         postsMenu(type: String, name: String, postType: String): [PostTaxonomy]
+        adjacentPosts(type: String, permalink:String): [Post]
         author(username: String!): Author
         authors: [Author]
         taxonomies(type: String, name: String): [Taxonomy]
@@ -166,6 +167,51 @@ let resolvers = {
                 where: args,
                 group: ["taxonomy_id"]
             });
+        },
+        adjacentPosts: (root, args) => {
+            let data = [];
+            return PostModel.findOne({ where: args })
+                .then(post => {
+                    if (post === null) {
+                        throw new Error("Invalid query");
+                    }
+                    return post.dataValues.id;
+                })
+                .then(postId => {
+                    return PostModel
+                        .findOne({
+                            where: {
+                                id: {
+                                    $lt: postId
+                                },
+                                type: args.type
+                            },
+                            order: [["id", "DESC"]],
+                            limit: 1
+                        })
+                        .then(post => {
+                            data.push(post);
+                        })
+                        .then(() => {
+                            return PostModel.findOne({
+                                where: {
+                                    id: {
+                                        $gt: postId
+                                    },
+                                    type: args.type
+                                },
+                                order: [["id", "ASC"]],
+                                limit: 1
+                            });
+                        })
+                        .then(post => {
+                            data.push(post);
+                            return data;
+                        });
+                })
+                .then(data => {
+                    return data;
+                });
         },
         settings: (root, args) => {
             return SettingsModel.findAll({ where: args });

@@ -11,32 +11,42 @@ const MenuItem = (
             </option>
         );
     });
+    let style = {
+        "border-radius": 0,
+        border: "1px solid #eee",
+        width: "100%",
+        height: "37px"
+    };
     return (
-        <div className="form-group">
-            <label className="control-label col-sm-2">
-                <select onChange={e => onDDChange(e, index)} value={menuId}>
+        <tr>
+            <td>
+                <select
+                    style={style}
+                    onChange={e => onDDChange(e, index)}
+                    value={menuId}
+                >
                     <option value="0">Select</option>
                     {dropdown}
                 </select>
-            </label>
-            <div className="col-sm-8">
+            </td>
+            <td>
                 <input
                     type="text"
                     defaultValue={label}
                     className="form-control"
                     onBlur={e => onLabelChange(e, index)}
                 />
-
-            </div>
-            <div className="col-sm-2">
+            </td>
+            <td>
                 <button
+                    style={{ padding: "9px" }}
                     onClick={e => onDelete(e, index)}
-                    className="btn-xs btn"
+                    className="btn-xs btn btn-dark"
                 >
-                    Delete
+                    <i className="fa fa-trash fa-2x" aria-hidden="true" />
                 </button>
-            </div>
-        </div>
+            </td>
+        </tr>
     );
 };
 
@@ -92,6 +102,7 @@ export default class Menu extends Component {
         });
         return (
             <div>
+
                 <div className="form-group">
                     <label className="custom-label">
                         Menu
@@ -102,9 +113,19 @@ export default class Menu extends Component {
                     >
                         Add
                     </button>
-                    <div className="form-horizontal">
-                        {menu}
-                    </div>
+                    <table className="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Label</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {menu}
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         );
