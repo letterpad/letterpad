@@ -7,9 +7,6 @@ export default class Footer extends Component {
                 <div className="container-fluid container-custom">
                     <div className="row">
                         <div className="col-sm-12">
-                            <ul className="contact-info font-alt">
-                                <li><a href="#">admin@ajaxtown.com</a></li>
-                            </ul>
                             <div className="copyright text-center font-alt">
                                 © 2015{" "}
                                 <a href="#">Ajaxtown</a>
@@ -18,7 +15,7 @@ export default class Footer extends Component {
                         </div>
                     </div>
 
-                    <a className="to-top-link" href="#top">
+                    <a className="to-top-link hide" href="#top">
                         <i className="fa fa-angle-up" />
                     </a>
                 </div>

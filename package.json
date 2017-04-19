@@ -120,6 +120,7 @@
     "bluebird": "^3.5.0",
     "expect": "^1.14.0",
     "expect-jsx": "^2.3.0",
+    "extract-text-webpack-plugin": "^2.1.0",
     "faker": "^4.1.0",
     "isomorphic-fetch": "^2.2.1",
     "localforage": "^1.4.3",
