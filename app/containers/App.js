@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Header from "../components/Header";
 import Menu from "../components/Menu";
-require("../../public/css/common.scss");
-import "../../public/css/admin.scss";
+require("../../public/scss/common.scss");
+import "../../public/scss/admin.scss";
 
 export default class App extends Component {
     render() {

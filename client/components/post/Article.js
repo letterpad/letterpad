@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router";
 import moment from "moment";
+import AdjacentPosts from "./AdjacentPosts";
 
 export default class ArticleList extends Component {
     render() {
@@ -47,16 +48,7 @@ export default class ArticleList extends Component {
                             });
                     })()}
                 </div>
-                <div>
-                    Previous:{" "}
-                    <Link to={"/post/" + this.props.adjacentPosts[0].permalink}>
-                        {this.props.adjacentPosts[0].title}
-                    </Link>
-                    Next:{" "}
-                    <Link to={"/post/" + this.props.adjacentPosts[1].permalink}>
-                        {this.props.adjacentPosts[1].title}
-                    </Link>
-                </div>
+                <AdjacentPosts adjacentPosts={this.props.adjacentPosts} />
             </article>
         );
     }

@@ -6,7 +6,8 @@ const client = new ApolloClient({
         uri: "/graphql",
         opts: {
             credentials: "include"
-        }
+        },
+        shouldBatch: true
     })
 });
 

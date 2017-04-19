@@ -12,28 +12,27 @@ import { getDataFromTree, renderToStringWithData } from "react-apollo";
 
 module.exports.init = app => {
     app.get("*", (req, res) => {
-        match({ routes, location: req.url }, (
-            error,
-            redirectLocation,
-            renderProps
-        ) => {
-            if (error) {
-                res.status(500).send(error.message);
-            } else if (redirectLocation) {
-                res.redirect(
-                    302,
-                    redirectLocation.pathname + redirectLocation.search
-                );
-            } else if (renderProps) {
-                sendResponse(renderProps).then(html => {
-                    res.status(200);
-                    res.send(html);
-                    res.end();
-                });
-            } else {
-                res.status(404).send("Not found");
+        match(
+            { routes, location: req.url },
+            (error, redirectLocation, renderProps) => {
+                if (error) {
+                    res.status(500).send(error.message);
+                } else if (redirectLocation) {
+                    res.redirect(
+                        302,
+                        redirectLocation.pathname + redirectLocation.search
+                    );
+                } else if (renderProps) {
+                    sendResponse(renderProps).then(html => {
+                        res.status(200);
+                        res.send(html);
+                        res.end();
+                    });
+                } else {
+                    res.status(404).send("Not found");
+                }
             }
-        });
+        );
     });
 };
 
@@ -73,7 +72,6 @@ function renderHTML(content, state) {
                         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
                         <!--<link rel="stylesheet" href="http://bootswatch.com/cosmo/bootstrap.min.css">-->
                         <link rel="stylesheet" href="/css/bootstrap.min.css">
-                        <link rel="stylesheet" href="/css/style.scss">
                         <link rel="stylesheet" href="/css/vertical.css">
                         <link rel="stylesheet" href="/css/font-awesome.min.css">
                         <link rel="stylesheet" href="https://cdn.quilljs.com/1.1.5/quill.snow.css">

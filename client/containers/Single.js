@@ -65,9 +65,14 @@ const ContainerWithPostData = graphql(singlePost, {
 const adjacentPosts = gql`
   query adjacentPosts($permalink:String) {
   adjacentPosts(type:"post",permalink:$permalink) {
-    id,
-    title,
-    permalink
+    next {
+        title,
+        permalink
+    }
+    previous {
+        title
+        permalink
+    }
   }
 }
 `;
@@ -80,7 +85,7 @@ const adjacentPostsData = graphql(adjacentPosts, {
         };
     },
     props: ({ data: { loading, adjacentPosts } }) => ({
-        adjacentPosts,
+        adjacentPosts: adjacentPosts,
         adjPostsLoading: loading
     })
 });
