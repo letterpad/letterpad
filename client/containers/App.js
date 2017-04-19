@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Header from "../components/Header";
 import Menu from "../components/Menu";
 import { gql, graphql } from "react-apollo";
-require("../../public/scss/common.scss");
 require("../../public/scss/client.scss");
 
 class App extends Component {

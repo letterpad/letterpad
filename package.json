@@ -23,7 +23,7 @@
       }
     },
     "start-dev": {
-      "command": "node ./start.js",
+      "command": "node ./start.js --profile --json",
       "env": {
         "NODE_ENV": "dev"
       }
@@ -60,7 +60,6 @@
     "body-parser": "^1.15.2",
     "concurrently": "^3.1.0",
     "cors": "^2.8.1",
-    "css-loader": "^0.23.1",
     "dateformat": "^2.0.0",
     "draft-js": "^0.10.0",
     "ejs": "^2.5.5",
@@ -106,7 +105,6 @@
     "rimraf": "^2.5.2",
     "semantic-ui-react": "^0.64.8",
     "sequelize": "^3.30.2",
-    "style-loader": "^0.13.0",
     "stylus-loader": "^1.5.1",
     "web-push": "^3.2.1",
     "webpack-dev-middleware": "^1.5.1",
@@ -118,6 +116,7 @@
     "babel-preset-stage-0": "^6.16.0",
     "better-npm-run": "0.0.14",
     "bluebird": "^3.5.0",
+    "css-loader": "^0.28.0",
     "expect": "^1.14.0",
     "expect-jsx": "^2.3.0",
     "extract-text-webpack-plugin": "^2.1.0",
@@ -132,7 +131,8 @@
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.2.0",
     "remote-redux-devtools": "^0.5.7",
-    "sass-loader": "^5.0.1",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.16.1",
     "webpack": "^2.2.1"
   },
   "babel": {

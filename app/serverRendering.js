@@ -91,12 +91,10 @@ module.exports.init = app => {
 
     app.post("/graphql", (req, res) => {
         req.body.token = req.session.token;
-        Request
-            .post({
-                url: "http://localhost:3030/graphql",
-                json: req.body
-            })
-            .pipe(res);
+        Request.post({
+            url: "http://localhost:3030/graphql",
+            json: req.body
+        }).pipe(res);
     });
 
     app.get("/logout", function(req, res) {
@@ -109,42 +107,40 @@ module.exports.init = app => {
         });
     });
     app.get("/admin/*", (req, res) => {
-        match({ routes, location: req.url }, (
-            error,
-            redirectLocation,
-            renderProps
-        ) => {
-            if (error) {
-                res.status(500).send(error.message);
-            } else if (redirectLocation) {
-                res.redirect(
-                    302,
-                    redirectLocation.pathname + redirectLocation.search
-                );
-            } else if (renderProps) {
-                new Promise((resolve, reject) => {
-                    resolve(renderHTML(renderProps));
-                })
-                    .then(html => res.status(200).send(html))
-                    .catch(err => res.end(err.message));
-            } else {
-                res.status(404).send("Not found");
-            }
+        match(
+            { routes, location: req.url },
+            (error, redirectLocation, renderProps) => {
+                if (error) {
+                    res.status(500).send(error.message);
+                } else if (redirectLocation) {
+                    res.redirect(
+                        302,
+                        redirectLocation.pathname + redirectLocation.search
+                    );
+                } else if (renderProps) {
+                    new Promise((resolve, reject) => {
+                        resolve(renderHTML(renderProps));
+                    })
+                        .then(html => res.status(200).send(html))
+                        .catch(err => res.end(err.message));
+                } else {
+                    res.status(404).send("Not found");
+                }
 
-            function renderHTML(renderProps) {
-                const initialState = store.getState();
+                function renderHTML(renderProps) {
+                    const initialState = store.getState();
 
-                const renderedComponent = ReactDOM.renderToString(
-                    <ApolloProvider store={store} client={client}>
-                        <RouterContext {...renderProps} />
-                    </ApolloProvider>
-                );
+                    const renderedComponent = ReactDOM.renderToString(
+                        <ApolloProvider store={store} client={client}>
+                            <RouterContext {...renderProps} />
+                        </ApolloProvider>
+                    );
 
-                //let head = Helmet.rewind();
-                var bundle = process.env.NODE_ENV == "production"
-                    ? "/js/app-admin-bundle.js"
-                    : "/static/app-admin-bundle.js";
-                const HTML = `
+                    //let head = Helmet.rewind();
+                    var bundle = process.env.NODE_ENV == "production"
+                        ? "/js/app-admin-bundle.js"
+                        : "/static/app-admin-bundle.js";
+                    const HTML = `
             <!DOCTYPE html>
             <html lang="en">
               <head>
@@ -157,6 +153,7 @@ module.exports.init = app => {
                 <link rel="stylesheet" href="/css/bootstrap.min.css">
                 <link rel="stylesheet" href="/css/vertical.css">
                 <link rel="stylesheet" href="/css/font-awesome.min.css">
+                <link rel="stylesheet" href="/css/dashboard.css">
                 <link rel="stylesheet" href="http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/default.min.css">
                 <link rel="stylesheet" href="https://cdn.quilljs.com/1.2.2/quill.snow.css">
                 
@@ -175,8 +172,9 @@ module.exports.init = app => {
             </html>
         `;
 
-                return HTML;
+                    return HTML;
+                }
             }
-        });
+        );
     });
 };
