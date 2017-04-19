@@ -8,7 +8,7 @@ export default function Layout(Element) {
             let page = Element.WrappedComponent.name.toLowerCase();
             return (
                 <div className={"wrapper " + page}>
-                    <section className="module-sm top-head">
+                    {/*<section className="module-sm top-head">
                         <div className="container-fluid container-custom">
                             <div className="row">
                                 <div className="col-sm-6 col-sm-offset-3">
@@ -19,7 +19,7 @@ export default function Layout(Element) {
                             </div>
                         </div>
                     </section>
-                    <hr className="divider" />
+                    <hr className="divider" />*/}
 
                     <section className="module-xs">
                         <div className="container-fluid container-custom">

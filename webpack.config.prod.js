@@ -3,21 +3,22 @@ var webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
-    filename: "[name].[contenthash].css",
-    disable: process.env.NODE_ENV === "development"
+    filename: "../css/[name].css"
 });
 module.exports = {
-    devtool: "source-map",
+    profile: true,
     entry: {
         dashboard: ["./app/app"],
         client: ["./client/app"]
     },
     output: {
         path: path.join(__dirname, "public/js"),
-        filename: "[name]-bundle.js",
-        publicPath: "/static/"
+        filename: "[name]-bundle.js"
     },
     plugins: [
+        new webpack.LoaderOptionsPlugin({
+            debug: true
+        }),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.DefinePlugin({
             "process.env": {
@@ -29,10 +30,10 @@ module.exports = {
                 warnings: false
             }
         }),
-        new ExtractTextPlugin("./public/css/[name].css")
+        extractSass
     ],
     module: {
-        loaders: [
+        rules: [
             // js
             {
                 test: /\.js$/,
@@ -47,9 +48,10 @@ module.exports = {
             // CSS
             {
                 test: /\.scss$/,
-                loaders: ExtractTextPlugin.extract({
+                use: extractSass.extract({
                     fallback: "style-loader",
-                    use: "css-loader"
+                    use: ["css-loader", "sass-loader"],
+                    publicPath: path.join(__dirname, "public/css")
                 }),
                 include: path.join(__dirname, "public/scss")
             }
