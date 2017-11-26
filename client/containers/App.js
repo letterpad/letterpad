@@ -11,7 +11,7 @@ class App extends Component {
         }
         return (
             <div>
-                <Menu menu={JSON.parse(this.props.settings.menu.value)} />
+                {/*<Menu menu={JSON.parse(this.props.settings.menu.value)} />*/}
                 {React.cloneElement(this.props.children, this.props)}
             </div>
         );

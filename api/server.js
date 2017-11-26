@@ -1,7 +1,7 @@
 import express from "express";
 import session from "express-session";
 import GraphHTTP from "express-graphql";
-import Schema from "./schema1";
+import Schema from "./schema";
 import bodyParser from "body-parser";
 import config from "../config/config";
 import * as actions from "./actions/index";
