@@ -15,9 +15,7 @@ import routes from "./routes";
 import store from "./store";
 // import "babel-polyfill";
 function handleUpdate() {
-    let {
-        action
-    } = this.state.location;
+    let { action } = this.state.location;
     if (action === "PUSH") {
         window.scrollTo(0, 0);
     }

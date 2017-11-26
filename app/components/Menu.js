@@ -22,6 +22,10 @@ export default class Menu extends Component {
         let navbarStatus = this.state.navbarOpen ? "in" : "";
         let postsStatus = this.state.postsOpen ? "" : "hide";
         let pagesStatus = this.state.pagesOpen ? "" : "hide";
+        let client =
+            typeof window !== "undefined" &&
+            window.clientData.access &&
+            window.clientData.access.role;
         return (
             <div className="sidebar">
                 <nav className="navbar navbar-custom font-alt">
@@ -72,11 +76,22 @@ export default class Menu extends Component {
                                     <li className="item">
                                         <Link to="/admin/posts">All Posts</Link>
                                     </li>
-                                    <li className="item">
-                                        <Link to="/admin/post-new">
-                                            New Post
-                                        </Link>
-                                    </li>
+                                    {(() => {
+                                        if (
+                                            client &&
+                                            window.clientData.access.role ==
+                                                "ADMIN"
+                                        ) {
+                                            return (
+                                                <li className="item">
+                                                    <Link to="/admin/post-new">
+                                                        New Post
+                                                    </Link>
+                                                </li>
+                                            );
+                                        }
+                                    })()}
+
                                 </ul>
                             </li>
                             <li>
@@ -101,53 +116,61 @@ export default class Menu extends Component {
                                     <li className="item">
                                         <Link to="/admin/pages">All Pages</Link>
                                     </li>
-                                    <li className="item">
-                                        <Link to="/admin/page-new">
-                                            New Page
-                                        </Link>
-                                    </li>
+                                    {(() => {
+                                        if (
+                                            client &&
+                                            window.clientData.access.role ==
+                                                "ADMIN"
+                                        ) {
+                                            return (
+                                                <li className="item">
+                                                    <Link to="/admin/page-new">
+                                                        New Page
+                                                    </Link>
+                                                </li>
+                                            );
+                                        }
+                                    })()}
+
                                 </ul>
                             </li>
-                            <li className="item">
-                                <Link to="/admin/settings">Settings</Link>
-                            </li>
-                            <li className="item">
-                                <Link to="/admin/authors">Authors</Link>
-                            </li>
+
+                            {(() => {
+                                if (
+                                    client &&
+                                    window.clientData.access.role == "ADMIN"
+                                ) {
+                                    return (
+                                        <li className="item">
+                                            <Link to="/admin/settings">
+                                                Settings
+                                            </Link>
+                                        </li>
+                                    );
+                                }
+                            })()}
+
+                            {(() => {
+                                if (
+                                    client &&
+                                    window.clientData.access.role == "ADMIN"
+                                ) {
+                                    return (
+                                        <li className="item">
+                                            <Link to="/admin/authors">
+                                                Authors
+                                            </Link>
+                                        </li>
+                                    );
+                                }
+                            })()}
+
                         </ul>
                     </div>
 
                 </nav>
 
                 <div className="copyright">
-                    <div className="social-icons m-b-20">
-                        <a
-                            href="#"
-                            target="_blank"
-                            className="fa fa-facebook facebook"
-                        />
-                        <a
-                            href="#"
-                            target="_blank"
-                            className="fa fa-twitter twitter"
-                        />
-                        <a
-                            href="#"
-                            target="_blank"
-                            className="fa fa-instagram instagram"
-                        />
-                        <a
-                            href="#"
-                            target="_blank"
-                            className="fa fa-behance behance"
-                        />
-                        <a
-                            href="#"
-                            target="_blank"
-                            className="fa fa-dribbble dribbble"
-                        />
-                    </div>
-
                     <p>© 2017 Ajaxtown</p>
                 </div>
 

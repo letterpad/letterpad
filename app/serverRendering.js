@@ -24,6 +24,7 @@ const store = createStore(
 );
 
 module.exports.init = app => {
+    let clientData = {};
     app.use(
         session({
             secret: "your-dirty-secret",
@@ -32,24 +33,6 @@ module.exports.init = app => {
         })
     );
 
-    // app.use("/admin", (req, res, next) => {
-    //     switch (req.originalUrl) {
-    //         case "/admin/login":
-    //             if (req.session.token) {
-    //                 res.redirect("/admin/posts");
-    //             }
-    //             break;
-    //         case "/admin/doLogin":
-    //             //let it go
-    //             break;
-    //         default:
-    //             if (!req.session.token) {
-    //                 res.redirect("/admin/login");
-    //             }
-    //             break;
-    //     }
-    //     next();
-    // });
     app.post("/admin/doLogin", (req, res) => {
         doLogin({ username: req.body.username }).then(result => {
             if (result.code == 400) {
@@ -65,7 +48,7 @@ module.exports.init = app => {
                 err,
                 response
             ) {
-                if (response) {
+                if (!response) {
                     let token = jwt.sign(
                         {
                             username: req.body.username,
@@ -75,6 +58,7 @@ module.exports.init = app => {
                     );
                     req.session.username = req.body.username;
                     req.session.token = token;
+                    req.session.role = result.data.role;
                     res.status(200).json({
                         code: 200,
                         msg: "Authentication Successfull"
@@ -107,6 +91,7 @@ module.exports.init = app => {
         });
     });
     app.get("/admin/*", (req, res) => {
+        clientData.access = req.session.role;
         match(
             { routes, location: req.url },
             (error, redirectLocation, renderProps) => {
@@ -132,14 +117,18 @@ module.exports.init = app => {
 
                     const renderedComponent = ReactDOM.renderToString(
                         <ApolloProvider store={store} client={client}>
-                            <RouterContext {...renderProps} />
+                            <RouterContext
+                                {...renderProps}
+                                clientData={clientData}
+                            />
                         </ApolloProvider>
                     );
 
                     //let head = Helmet.rewind();
-                    var bundle = process.env.NODE_ENV == "production"
-                        ? "/js/app-admin-bundle.js"
-                        : "/static/app-admin-bundle.js";
+                    var bundle =
+                        process.env.NODE_ENV == "production"
+                            ? "/js/app-admin-bundle.js"
+                            : "/static/app-admin-bundle.js";
                     const HTML = `
             <!DOCTYPE html>
             <html lang="en">
@@ -163,6 +152,7 @@ module.exports.init = app => {
                 <script type="application/javascript">
                    window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
                    window.__CONFIG__ =  ${JSON.stringify(config)}
+                   window.clientData = ${JSON.stringify(clientData)}
                 </script>
                 <script type="text/javascript" src='/tinymce/js/tinymce/tinymce.min.js'></script>
                 <script type="text/javascript" src='http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js'></script>
