@@ -18,11 +18,14 @@ export default class ListItem extends Component {
         return (
             <tr>
                 <td align="center" onclick={this.postSelected.bind(this)}>
-                    <input
-                        type="checkbox"
-                        className="checkthis"
-                        value={this.props.post.id}
-                    />
+                    <label className="control control--checkbox">
+                        <input
+                            type="checkbox"
+                            className="checkthis"
+                            value={this.props.post.id}
+                        />
+                        <div className="control__indicator" />
+                    </label>
                 </td>
                 <td
                     style={{ cursor: "pointer" }}

@@ -20,11 +20,14 @@ export default function List(type) {
                 <div className={"wrapper "}>
                     <section className="module-xs">
                         <div className="container-fluid container-custom">
-                            <table className="table table-hover table-bordered">
+                            <table className="table table-hover">
                                 <thead>
                                     <tr>
                                         <th className="col-check">
-                                            <input type="checkbox" />
+                                            <label className="control control--checkbox">
+                                                <input type="checkbox" />
+                                                <div className="control__indicator" />
+                                            </label>
                                         </th>
                                         <th className="col-text">Title</th>
                                         <th className="col-text">Status</th>
@@ -42,25 +45,25 @@ export default function List(type) {
     }
 
     const allPosts = gql`
-  query getPosts($type:String!) {
-  posts(type:$type) {
-    id,
-    title,
-    body,
-    author {
-        username
-    },
-    status,
-    created_at,
-    excerpt,
-    taxonomies {
-      id,
-      name,
-      type
-    }
-  }
-}
-`;
+        query getPosts($type: String!) {
+            posts(type: $type) {
+                id
+                title
+                body
+                author {
+                    username
+                }
+                status
+                created_at
+                excerpt
+                taxonomies {
+                    id
+                    name
+                    type
+                }
+            }
+        }
+    `;
 
     const ContainerWithData = graphql(allPosts, {
         options: props => ({ variables: { type: type } }),
