@@ -52,21 +52,21 @@ export default class Menu extends Component {
                         className={"collapse navbar-collapse " + navbarStatus}
                         id="custom-collapse"
                     >
-
                         <ul className="nav navbar-nav">
                             <li>
                                 <Link
                                     className="parent"
                                     to="null"
                                     onClick={e =>
-                                        this.toggleItem("postsOpen", e)}
+                                        this.toggleItem("postsOpen", e)
+                                    }
                                 >
                                     <i
                                         className={
                                             "fa fa-" +
-                                                (this.state.postsOpen
-                                                    ? "angle-down"
-                                                    : "angle-right")
+                                            (this.state.postsOpen
+                                                ? "angle-down"
+                                                : "angle-right")
                                         }
                                         aria-hidden="true"
                                     />
@@ -91,7 +91,6 @@ export default class Menu extends Component {
                                             );
                                         }
                                     })()}
-
                                 </ul>
                             </li>
                             <li>
@@ -99,14 +98,15 @@ export default class Menu extends Component {
                                     to="null"
                                     className="parent"
                                     onClick={e =>
-                                        this.toggleItem("pagesOpen", e)}
+                                        this.toggleItem("pagesOpen", e)
+                                    }
                                 >
                                     <i
                                         className={
                                             "fa fa-" +
-                                                (this.state.pagesOpen
-                                                    ? "angle-down"
-                                                    : "angle-right")
+                                            (this.state.pagesOpen
+                                                ? "angle-down"
+                                                : "angle-right")
                                         }
                                         aria-hidden="true"
                                     />
@@ -131,7 +131,6 @@ export default class Menu extends Component {
                                             );
                                         }
                                     })()}
-
                                 </ul>
                             </li>
 
@@ -164,16 +163,13 @@ export default class Menu extends Component {
                                     );
                                 }
                             })()}
-
                         </ul>
                     </div>
-
                 </nav>
 
                 <div className="copyright">
                     <p>© 2017 Ajaxtown</p>
                 </div>
-
             </div>
         );
     }
