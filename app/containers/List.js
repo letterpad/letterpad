@@ -2,17 +2,42 @@ import React, { Component } from "react";
 import { gql, graphql } from "react-apollo";
 import ListItem from "../components/posts/ListItem";
 
+const Paginate = ({ count, onClick, page }) => {
+    const limit = 2;
+    const pages = Array.from(Array(Math.ceil(count / 2)));
+
+    return (
+        <ul className="pagination">
+            {pages.map((_, i) => {
+                let num = i + 1;
+                return (
+                    <li>
+                        <a href="#" data-page={num} onClick={onClick}>
+                            {num}
+                        </a>
+                    </li>
+                );
+            })}
+        </ul>
+    );
+};
+
 export default function List(type) {
     class List extends Component {
         constructor(props) {
             super(props);
+            this.state = {
+                page: 1
+            };
+            this.handlePageClick = this.handlePageClick.bind(this);
         }
+        handlePageClick() {}
 
         render() {
             if (this.props.loading) {
                 return <div>hello</div>;
             }
-            let rows = this.props.posts.map((post, i) => {
+            let rows = this.props.posts.rows.map((post, i) => {
                 return <ListItem key={i} post={post} />;
             });
 
@@ -37,6 +62,11 @@ export default function List(type) {
                                 </thead>
                                 <tbody>{rows}</tbody>
                             </table>
+                            <Paginate
+                                count={this.props.posts.count}
+                                onClick={this.handlePageClick}
+                                page={this.state.page}
+                            />
                         </div>
                     </section>
                 </div>
@@ -47,19 +77,22 @@ export default function List(type) {
     const allPosts = gql`
         query getPosts($type: String!) {
             posts(type: $type) {
-                id
-                title
-                body
-                author {
-                    username
-                }
-                status
-                created_at
-                excerpt
-                taxonomies {
+                count
+                rows {
                     id
-                    name
-                    type
+                    title
+                    body
+                    author {
+                        username
+                    }
+                    status
+                    created_at
+                    excerpt
+                    taxonomies {
+                        id
+                        name
+                        type
+                    }
                 }
             }
         }

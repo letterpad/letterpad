@@ -49,6 +49,18 @@ function getConditions(columns, args) {
     conditions.where = obj;
     return conditions;
 }
+const PostNode = `
+    type PostNode {
+        count: Int,
+        rows: [Post]
+    }
+`;
+const PostMenuNode = `
+    type PostMenuNode {
+        count: Int,
+        rows: [PostTaxonomy]
+    }
+`;
 /*  the GraphQL schema definition  */
 
 let definition = `
@@ -58,7 +70,7 @@ let definition = `
     }
     type Query {
         post(id: Int, type: String, permalink: String): Post
-        posts(type: String, body: String, offset: Int, limit: Int): [Post]
+        posts(type: String, body: String, status: String, offset: Int, limit: Int, cursor: Int): PostNode
         postsMenu(type: String, name: String, postType: String): [PostTaxonomy]
         adjacentPosts(type: String, permalink:String): AdjacentPosts
         author(username: String!): Author
@@ -107,7 +119,19 @@ let resolvers = {
         posts: (root, args, context) => {
             let columns = Object.keys(PostModel.rawAttributes);
             let conditions = getConditions(columns, args);
-            return PostModel.findAll(conditions);
+            return PostModel.count(conditions).then(count => {
+                if (args.cursor) {
+                    conditions.where.id = { gt: args.cursor };
+                }
+                return PostModel.findAll(conditions).then(res => {
+                    return {
+                        count: count,
+                        rows: res
+                    };
+                });
+            });
+
+            // return PostModel.findAndCountAll(conditions);
         },
         post: (root, args) => {
             return PostModel.findOne({ where: args });
@@ -254,6 +278,8 @@ let schema = GraphQLTools.makeExecutableSchema({
         definition,
         Author,
         Post,
+        PostNode,
+        PostMenuNode,
         PostTaxonomy,
         AdjacentPosts,
         Taxonomy,
