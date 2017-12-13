@@ -8,16 +8,15 @@ class Home extends Component {
     }
 
     render() {
+        if (this.props.loading) {
+            return <div>hello</div>;
+        }
         return (
             <div>
                 {(() => {
-                    if (this.props.loading) {
-                        return <div>hello</div>;
-                    } else {
-                        return this.props.posts.map((post, i) => {
-                            return <ArticleList idx={i} key={i} post={post} />;
-                        });
-                    }
+                    return this.props.posts.rows.map((post, i) => {
+                        return <ArticleList idx={i} key={i} post={post} />;
+                    });
                 })()}
             </div>
         );
@@ -52,24 +51,24 @@ class Home extends Component {
 // });
 //------
 const catPosts = gql`
-query allPosts($type:String,$query:String,$postType:String){
-    postsMenu(type:$type,name:$query) {
-        posts(type:$postType) {
-            id
-            title
-            type
-            cover_image
-            created_at
-            permalink
-            excerpt
-            taxonomies {
-                id,
-                name,
+    query allPosts($type: String, $query: String, $postType: String) {
+        postsMenu(type: $type, name: $query) {
+            posts(type: $postType) {
+                id
+                title
                 type
+                cover_image
+                created_at
+                permalink
+                excerpt
+                taxonomies {
+                    id
+                    name
+                    type
+                }
             }
         }
     }
-}
 `;
 const ContainerWithPostData = graphql(catPosts, {
     options: props => {
