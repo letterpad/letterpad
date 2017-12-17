@@ -29,39 +29,24 @@ export default function Create(type) {
         }
         render() {
             let page = type;
+            if (this.state.loading) {
+                return <div>hello</div>;
+            }
             return (
-                <div>
-                    {(() => {
-                        if (this.state.loading) {
-                            return <div>hello</div>;
-                        } else {
-                            return (
-                                <div className={"wrapper " + page}>
-                                    <section className="module p-t-20">
-                                        <div className="container-fluid container-custom">
-                                            <div className="col-lg-8 column">
-                                                <ArticleCreate
-                                                    post={this.state.post}
-                                                />
-                                            </div>
-                                            <div className="col-lg-4 column">
-                                                <PostPublish
-                                                    post={this.state.post}
-                                                />
-                                                <hr />
-                                                <Tags post={this.state.post} />
-                                                <hr />
-                                                <Categories
-                                                    post={this.state.post}
-                                                />
-                                            </div>
-                                        </div>
-                                    </section>
-                                </div>
-                            );
-                        }
-                    })()}
-                </div>
+                <section className="module p-t-20">
+                    <div className="container-fluid container-custom">
+                        <div className="col-lg-8 column">
+                            <ArticleCreate post={this.state.post} />
+                        </div>
+                        <div className="col-lg-4 column">
+                            <PostPublish post={this.state.post} />
+                            <hr />
+                            <Tags post={this.state.post} />
+                            <hr />
+                            <Categories post={this.state.post} />
+                        </div>
+                    </div>
+                </section>
             );
         }
     }

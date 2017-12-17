@@ -24,19 +24,51 @@ function Authorized(WrappedComponent) {
         constructor(props) {
             super(props);
         }
+        componentDidMount() {
+            console.log(WrappedComponent);
+        }
+
         componentWillReceiveProps(nextProps) {
             if (!window.clientData.access) {
                 document.location.href = "/admin/login";
             }
         }
 
+        getComponentName() {
+            let name =
+                WrappedComponent.displayName ||
+                WrappedComponent.name ||
+                (typeof WrappedComponent === "string" &&
+                WrappedComponent.length > 0
+                    ? WrappedComponent
+                    : "Unknown");
+
+            //  The name might contain brackets, eg Apollo(pages).
+            //  Lets get rid of Apollo
+            var matches = name.match(/\((.*?)\)/);
+
+            if (matches) {
+                name = matches[1];
+            }
+            return name.toLowerCase();
+        }
+
         render() {
-            // ... and renders the wrapped component with the fresh data!
-            // Notice that we pass through any additional props
+            const ComponentName = this.getComponentName();
             return (
                 <div>
                     <Menu />
-                    <WrappedComponent {...this.props} />
+                    <div className={"wrapper " + ComponentName}>
+                        <WrappedComponent {...this.props} />
+                        <div className="col-lg-12 text-center m-b-20">
+                            <footer id="footer">
+                                Thank you for creating with{" "}
+                                <a href="https://ajaxtown.com" target="_blank">
+                                    Ajaxtown
+                                </a>&nbsp;·&nbsp;v3.4.2
+                            </footer>
+                        </div>
+                    </div>
                 </div>
             );
         }

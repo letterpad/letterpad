@@ -40,29 +40,29 @@ var ContentEditable = React.createClass({
 export default class EditArticle extends Component {
     render() {
         return (
-            <article className="post">
-
-                <FeaturedImage post={this.props.post} />
-                <div className="post-header">
-                    <ContentEditable
-                        title={this.props.post.title}
-                        onChange={e => {
-                            PostActions.setData({
-                                title: e.target.value
-                            });
-                        }}
-                    />
-                    <div className="post-meta">
-                        {moment(new Date(this.props.post.created_at)).format(
-                            "LL"
-                        )}
+            <div className="card">
+                <article className="post">
+                    <FeaturedImage post={this.props.post} />
+                    <div className="post-header">
+                        <ContentEditable
+                            title={this.props.post.title}
+                            onChange={e => {
+                                PostActions.setData({
+                                    title: e.target.value
+                                });
+                            }}
+                        />
+                        <div className="post-meta">
+                            {moment(
+                                new Date(this.props.post.created_at)
+                            ).format("LL")}
+                        </div>
                     </div>
-
-                </div>
-                <div className="post-content">
-                    <Editor body={this.props.post.body} />
-                </div>
-            </article>
+                    <div className="post-content">
+                        <Editor body={this.props.post.body} />
+                    </div>
+                </article>
+            </div>
         );
     }
 }

@@ -4,7 +4,7 @@ import moment from "moment";
 
 export default class ArticleList extends Component {
     render() {
-        let href = `/${this.props.post.type}/${this.props.post.permalink}`;
+        let href = `/${this.props.post.type}/${this.props.post.slug}`;
         return (
             <article className="post">
                 <div className="post-thumbnail">
@@ -16,9 +16,7 @@ export default class ArticleList extends Component {
                 </div>
                 <div className="post-header">
                     <h2 className="post-title font-alt">
-                        <Link to={href}>
-                            {this.props.post.title}
-                        </Link>
+                        <Link to={href}>{this.props.post.title}</Link>
                     </h2>
                     <div className="post-meta">
                         {moment(new Date(this.props.post.created_at)).format(
@@ -27,9 +25,7 @@ export default class ArticleList extends Component {
                     </div>
                 </div>
                 <div className="post-content">
-                    <p>
-                        {this.props.post.excerpt}
-                    </p>
+                    <p>{this.props.post.excerpt}</p>
                     <a className="post-more" href="blog-single.html">
                         Read more →
                     </a>

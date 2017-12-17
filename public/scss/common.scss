@@ -416,7 +416,7 @@ blockquote cite {
 
 .form-control {
     border: 0;
-    height: 40px;
+    height: 36px;
     padding: 13px 0px;
     font-size: 13px;
     color: #000000;
@@ -430,7 +430,10 @@ blockquote cite {
     box-shadow: none;
     transition: 0.3s border-color linear;
 }
-
+.form-control[disabled] {
+    background: transparent;
+    color: $font_body_light;
+}
 .form-control:focus {
     box-shadow: 0px 1px 0px 0px #66afe9;
 }
@@ -488,6 +491,15 @@ blockquote cite {
 }
 .btn-dark:hover {
     background: rgba(17, 17, 17, 0.8);
+    color: #fff;
+}
+.btn-blue,
+.btn-blue:focus {
+    background: $link_active;
+    color: #fff;
+}
+.btn-blue:hover {
+    background: $link_hover;
     color: #fff;
 }
 
@@ -1362,13 +1374,20 @@ blockquote cite {
     }
 }
 /*!------------------------------------------------------------------
+[Card]
+*/
+.card {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+/*!------------------------------------------------------------------
 [Modules]
 */
 
 .module,
 .module-sm,
 .module-xs {
-    background-color: #fff;
     background-attachment: fixed;
     padding: 140px 0;
     position: relative;
@@ -1386,7 +1405,7 @@ blockquote cite {
 
 .module-xs {
     padding: 35px 0;
-    margin: 40px;
+    margin: 0 30px;
 }
 
 .module-title {

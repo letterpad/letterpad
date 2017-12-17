@@ -38,45 +38,43 @@ class Media extends Component {
         });
 
         return (
-            <div className="wrapper">
-                <section className="module-xs">
-                    <div className="container-fluid">
-                        <div className="module-title">Media</div>
-                        <div className="module-subtitle">
-                            Find all your uploaded media here
-                        </div>
-                        <table className="table table-hover media-table">
-                            <thead>
-                                <tr>
-                                    <th width="5%" className="col-check">
-                                        <label className="control control--checkbox">
-                                            <input type="checkbox" />
-                                            <div className="control__indicator" />
-                                        </label>
-                                    </th>
-                                    <th width="10%" className="col-text">
-                                        Title
-                                    </th>
-                                    <th width="60%" className="col-text">
-                                        URL
-                                    </th>
-                                    <th width="10%" className="col-text">
-                                        Created At
-                                    </th>
-                                    <th width="10%" className="col-text">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>{rows}</tbody>
-                        </table>
-                        <Paginate
-                            count={this.props.media.count}
-                            page={this.state.page}
-                        />
+            <section className="module-xs">
+                <div className="card">
+                    <div className="module-title">Media</div>
+                    <div className="module-subtitle">
+                        Find all your uploaded media here
                     </div>
-                </section>
-            </div>
+                    <table className="table table-hover media-table">
+                        <thead>
+                            <tr>
+                                <th width="5%" className="col-check">
+                                    <label className="control control--checkbox">
+                                        <input type="checkbox" />
+                                        <div className="control__indicator" />
+                                    </label>
+                                </th>
+                                <th width="10%" className="col-text">
+                                    Title
+                                </th>
+                                <th width="60%" className="col-text">
+                                    URL
+                                </th>
+                                <th width="10%" className="col-text">
+                                    Created At
+                                </th>
+                                <th width="10%" className="col-text">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>{rows}</tbody>
+                    </table>
+                    <Paginate
+                        count={this.props.media.count}
+                        page={this.state.page}
+                    />
+                </div>
+            </section>
         );
     }
 }

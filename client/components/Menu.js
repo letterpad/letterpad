@@ -15,7 +15,7 @@ export default class Menu extends Component {
     render() {
         let navbarStatus = this.state.navbarOpen ? "in" : "";
         let menu = this.props.menu.map(item => {
-            if (item.label == "Home") {
+            if (item.slug == "home") {
                 return (
                     <li>
                         <Link to="/">{item.label}</Link>
@@ -24,13 +24,13 @@ export default class Menu extends Component {
             } else if (item.type == "page") {
                 return (
                     <li>
-                        <Link to={"/page/" + item.label}>{item.label}</Link>
+                        <Link to={"/page/" + item.slug}>{item.label}</Link>
                     </li>
                 );
             }
             return (
                 <li>
-                    <Link to={"/posts/" + item.label}>{item.label}</Link>
+                    <Link to={"/posts/" + item.slug}>{item.label}</Link>
                 </li>
             );
         });

@@ -13,44 +13,23 @@ export default function Single(type) {
         }
 
         render() {
-            let page = type;
+            if (this.props.loading) {
+                return <div>hello</div>;
+            }
             return (
-                <div>
-                    {(() => {
-                        if (this.props.loading) {
-                            return <div>hello</div>;
-                        } else {
-                            return (
-                                <div className={"wrapper " + page}>
-                                    <section className="module-xs">
-                                        <div className="container-fluid container-custom">
-                                            <div className="col-lg-8 column">
-                                                <ArticleEdit
-                                                    post={this.props.post}
-                                                />
-                                            </div>
-                                            <div className="col-lg-4 column">
-                                                <PostPublish
-                                                    post={this.props.post}
-                                                />
-                                                <hr />
-                                                <Tags post={this.props.post} />
-                                                <hr />
-                                                <Categories
-                                                    post={this.props.post}
-                                                />
-                                                <hr />
-                                                <Excerpt
-                                                    post={this.props.post}
-                                                />
-                                            </div>
-                                        </div>
-                                    </section>
-                                </div>
-                            );
-                        }
-                    })()}
-                </div>
+                <section className="module-xs">
+                    <div className="row">
+                        <div className="col-lg-8 column">
+                            <ArticleEdit post={this.props.post} />
+                        </div>
+                        <div className="col-lg-4 column">
+                            <PostPublish post={this.props.post} />
+                            <Tags post={this.props.post} />
+                            <Categories post={this.props.post} />
+                            <Excerpt post={this.props.post} />
+                        </div>
+                    </div>
+                </section>
             );
         }
     }
@@ -68,7 +47,7 @@ export default function Single(type) {
                 created_at
                 cover_image
                 excerpt
-                permalink
+                slug
                 taxonomies {
                     id
                     name

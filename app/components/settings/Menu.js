@@ -10,9 +10,30 @@ class MenuItem extends Component {
             searchable: true,
             selectValue: this.props.menuId,
             clearable: true,
-            rtl: false
+            rtl: false,
+            slug: this.props.slug
         };
         this.updateValue = this.updateValue.bind(this);
+    }
+
+    componentDidMount() {
+        let items = this.props.data;
+        this.refs.slug.value = this.props.slug;
+        for (let i = 0; i < items.length; i++) {
+            if (
+                this.props.menuId == items[i].value &&
+                this.props.type == "page"
+            ) {
+                this.refs.slug.value = items[i].slug;
+                this.refs.slug.disabled = true;
+                this.props.onSlugChange(
+                    items[i].id,
+                    this.props.type,
+                    this.props.index
+                );
+                return;
+            }
+        }
     }
 
     updateValue(newValue) {
@@ -23,6 +44,10 @@ class MenuItem extends Component {
         let type = newValue.split(":")[1];
         this.props.onDDChange(id, type, this.props.index);
     }
+    // slugChanged(e) {
+    //     this.state.slug = e.target.value;
+    //     this.setState(this.state);
+    // }
 
     render() {
         let index = this.props.index;
@@ -50,6 +75,14 @@ class MenuItem extends Component {
                         defaultValue={this.props.label}
                         className="form-control"
                         onBlur={e => this.props.onLabelChange(e, index)}
+                    />
+                </td>
+                <td>
+                    <input
+                        type="text"
+                        ref="slug"
+                        className="form-control"
+                        onBlur={e => this.props.onSlugChange(e, index)}
                     />
                 </td>
                 <td>
@@ -100,6 +133,7 @@ export default class Menu extends Component {
                 return {
                     value: ele.id + ":page",
                     label: ele.title + " (Page)",
+                    slug: ele.slug,
                     type: "page"
                 };
             });
@@ -117,6 +151,12 @@ export default class Menu extends Component {
     }
     onLabelChange(e, index) {
         this.state.menu[index].label = e.target.value;
+        this.setState(this.state.menu);
+        this.updateOption();
+    }
+
+    onSlugChange(e, index) {
+        this.state.menu[index].slug = e.target.value;
         this.setState(this.state.menu);
         this.updateOption();
     }
@@ -154,6 +194,8 @@ export default class Menu extends Component {
                 <MenuItem
                     key={idx}
                     index={idx}
+                    type={item.type}
+                    slug={item.slug}
                     menuId={item.id + ":" + item.type}
                     label={item.label}
                     priority={item.priority}
@@ -161,6 +203,7 @@ export default class Menu extends Component {
                     updateOption={this.updateOption}
                     onDDChange={this.onDDChange.bind(this)}
                     onLabelChange={this.onLabelChange.bind(this)}
+                    onSlugChange={this.onSlugChange.bind(this)}
                     onPriorityChange={this.onPriorityChange.bind(this)}
                     onDelete={this.onDelete.bind(this)}
                 />
@@ -178,8 +221,9 @@ export default class Menu extends Component {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th width="50%">Menu Item</th>
-                                <th width="20%0%">Label</th>
+                                <th width="40%">Menu Item</th>
+                                <th width="20%%">Label</th>
+                                <th width="20%0%">Slug</th>
                                 <th width="10%">Priority</th>
                                 <th width="10%">Delete</th>
                             </tr>

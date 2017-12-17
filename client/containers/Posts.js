@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ArticleList from "../components/post/ArticleList";
 import { gql, graphql } from "react-apollo";
 
-class Home extends Component {
+class Posts extends Component {
     constructor(props) {
         super(props);
     }
@@ -11,15 +11,11 @@ class Home extends Component {
         if (this.props.loading) {
             return <div>hello</div>;
         }
-        return (
-            <div>
-                {(() => {
-                    return this.props.posts.map((post, i) => {
-                        return <ArticleList idx={i} key={i} post={post} />;
-                    });
-                })()}
-            </div>
-        );
+
+        const posts = this.props.posts.map((post, i) => {
+            return <ArticleList idx={i} key={i} post={post} />;
+        });
+        return <div>{posts}</div>;
     }
 }
 
@@ -30,7 +26,7 @@ class Home extends Component {
 //     title,
 //     body,
 //     type,
-//     permalink,
+//     slug,
 //     status,
 //     created_at,
 //     excerpt,
@@ -51,15 +47,15 @@ class Home extends Component {
 // });
 //------
 const catPosts = gql`
-    query allPosts($type: String, $query: String, $postType: String) {
-        postsMenu(type: $type, name: $query) {
+    query allPosts($type: String, $slug: String, $postType: String) {
+        postsMenu(type: $type, slug: $slug) {
             posts(type: $postType) {
                 id
                 title
                 type
                 cover_image
                 created_at
-                permalink
+                slug
                 excerpt
                 taxonomies {
                     id
@@ -75,7 +71,7 @@ const ContainerWithPostData = graphql(catPosts, {
         return {
             variables: {
                 type: "post_category",
-                query: props.params.query || "Home",
+                slug: props.slug || props.params.slug,
                 postType: "post"
             }
         };
@@ -86,4 +82,4 @@ const ContainerWithPostData = graphql(catPosts, {
     })
 });
 
-export default ContainerWithPostData(Home);
+export default ContainerWithPostData(Posts);

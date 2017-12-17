@@ -16,9 +16,9 @@ export default class LatestPosts extends Component {
                                     return (
                                         <li key={i}>
                                             <Link
-                                                to={
-                                                    `/${post.type}/${post.permalink}`
-                                                }
+                                                to={`/${post.type}/${
+                                                    post.slug
+                                                }`}
                                             >
                                                 {post.title}
                                             </Link>

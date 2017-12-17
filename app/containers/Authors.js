@@ -12,11 +12,14 @@ class ListItem extends Component {
         return (
             <tr>
                 <td align="center">
-                    <input
-                        type="checkbox"
-                        className="checkthis"
-                        value={this.props.author.id}
-                    />
+                    <label className="control control--checkbox">
+                        <input
+                            type="checkbox"
+                            className="checkthis"
+                            value={this.props.author.id}
+                        />
+                        <div className="control__indicator" />
+                    </label>
                 </td>
                 <td style={{ cursor: "pointer" }}>
                     {this.props.author.username}
@@ -43,39 +46,39 @@ class Authors extends Component {
         });
 
         return (
-            <div className={"wrapper "}>
-                <section className="module-xs">
-                    <div className="container-fluid container-custom">
-                        <table className="table table-hover table-bordered">
-                            <thead>
-                                <tr>
-                                    <th className="col-check">
-                                        <input type="checkbox" />
-                                    </th>
-                                    <th className="col-text">Username</th>
-                                    <th className="col-text">Role</th>
-                                </tr>
-                            </thead>
-                            <tbody>{rows}</tbody>
-                        </table>
-                    </div>
-                </section>
-            </div>
+            <section className="module-xs">
+                <div className="card">
+                    <div className="module-title">Authors</div>
+                    <div className="module-subtitle">[...]</div>
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th className="col-check">
+                                    <input type="checkbox" />
+                                </th>
+                                <th className="col-text">Username</th>
+                                <th className="col-text">Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>{rows}</tbody>
+                    </table>
+                </div>
+            </section>
         );
     }
 }
 const optionsQuery = gql`
-  query getAuthors{
-  authors{
-    username,
-    role {
-      name
-      permissions {
-        name
-      }
+    query getAuthors {
+        authors {
+            username
+            role {
+                name
+                permissions {
+                    name
+                }
+            }
+        }
     }
-  }
-}
 `;
 
 const ContainerWithData = graphql(optionsQuery, {

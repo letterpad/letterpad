@@ -48,26 +48,29 @@ class PostPublish extends Component {
             });
     }
 
-    getButton(status, label, btnType = "btn-dark") {
-        return (
-            <div className="btn-item">
-                <button
-                    type="submit"
-                    onClick={e => this.updatePost(e, { status: status })}
-                    className={"btn btn-sm " + btnType}
-                >
-                    {label}
-                </button>
-            </div>
-        );
+    getButton(label, btnType = "btn-dark", status) {
+        if (typeof status == "undefined") {
+            status = this.state.published ? "publish" : "draft";
+        }
+        if (status)
+            return (
+                <div className="btn-item">
+                    <button
+                        type="submit"
+                        onClick={e => this.updatePost(e, { status: status })}
+                        className={"btn btn-sm " + btnType}
+                    >
+                        {label}
+                    </button>
+                </div>
+            );
     }
 
     render() {
         const publishedCls = this.state.published ? "on" : "off";
-        const permalink =
-            siteConfig.root_url + "post/" + this.props.post.permalink;
+        const permalink = siteConfig.root_url + "post/" + this.props.post.slug;
         return (
-            <div className="x_panel m-b-20">
+            <div className="card">
                 <div className="module-title">Publishing</div>
                 <div className={"switch-block m-b-20 " + publishedCls}>
                     <span className="switch-label switch-off-text">Draft</span>
@@ -102,7 +105,7 @@ class PostPublish extends Component {
                         type="text"
                         className="form-control"
                         placeholder="Slug"
-                        value={this.props.post.permalink}
+                        value={this.props.post.slug}
                     />
                 </div>
                 <div className="x_content m-b-20">
@@ -117,8 +120,8 @@ class PostPublish extends Component {
                 </div>
                 <div className="x_content">
                     <div className="btn-together">
-                        {this.getButton("publish", "Publish", "btn-info")}
-                        {this.getButton("deleted", "Trash", "btn-danger")}
+                        {this.getButton("Publish", "btn-info")}
+                        {this.getButton("Trash", "btn-danger", "deleted")}
                     </div>
                 </div>
             </div>
