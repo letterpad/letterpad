@@ -6,8 +6,7 @@ import Menu from "../components/Menu";
 export default function Layout(Element) {
     return class Layout extends Component {
         render() {
-            let page = "a";
-            //Element.WrappedComponent.name.toLowerCase();
+            let page = "a"; //Element.WrappedComponent.name.toLowerCase();
             return (
                 <div className={"wrapper " + page}>
                     <Menu menu={JSON.parse(this.props.settings.menu.value)} />
@@ -25,7 +24,7 @@ export default function Layout(Element) {
                     <hr className="divider" />*/}
 
                     <section className="module-xs">
-                        <div className="container-fluid container-custom">
+                        <div className="row">
                             <div className="col-lg-8 column">
                                 <Element {...this.props} />
                             </div>
