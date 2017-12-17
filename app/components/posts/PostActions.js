@@ -1,5 +1,5 @@
 import fetch from "isomorphic-fetch";
-
+import client from "../../apolloClient";
 // export function uploadFile(files) {
 //     let url = "http://localhost:3030/upload";
 
@@ -66,19 +66,24 @@ let PostActions = {
     subscribers: {},
     taxonomies: {},
 
-    uploadFile: (files, url) => {
+    uploadFile: (files, insertMedia) => {
         var data = new FormData();
         data.append("file", files[0]);
 
-        return fetch(url, {
+        return fetch("http://localhost:3030/upload", {
             method: "post",
             body: data
-        }).then(data => {
-            return data.json();
-        });
+        })
+            .then(data => {
+                return data.json();
+            })
+            .then(image => {
+                insertMedia({ url: image });
+                return image;
+            });
     },
     postUpdated: function(data) {
-        for(let subscriber in PostActions.subscribers) {
+        for (let subscriber in PostActions.subscribers) {
             PostActions.subscribers[subscriber](data);
         }
     },

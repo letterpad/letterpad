@@ -26,6 +26,8 @@ export default class Menu extends Component {
             typeof window !== "undefined" &&
             window.clientData.access &&
             window.clientData.access.role;
+        let isAdmin = client && window.clientData.access.role == "ADMIN";
+
         return (
             <div className="sidebar">
                 <nav className="navbar navbar-custom font-alt">
@@ -74,23 +76,17 @@ export default class Menu extends Component {
                                 </Link>
                                 <ul className={postsStatus}>
                                     <li className="item">
-                                        <Link to="/admin/posts">All Posts</Link>
+                                        <Link to="/admin/posts/1">
+                                            All Posts
+                                        </Link>
                                     </li>
-                                    {(() => {
-                                        if (
-                                            client &&
-                                            window.clientData.access.role ==
-                                                "ADMIN"
-                                        ) {
-                                            return (
-                                                <li className="item">
-                                                    <Link to="/admin/post-new">
-                                                        New Post
-                                                    </Link>
-                                                </li>
-                                            );
-                                        }
-                                    })()}
+                                    {isAdmin && (
+                                        <li className="item">
+                                            <Link to="/admin/post-new">
+                                                New Post
+                                            </Link>
+                                        </li>
+                                    )}
                                 </ul>
                             </li>
                             <li>
@@ -114,55 +110,35 @@ export default class Menu extends Component {
                                 </Link>
                                 <ul className={pagesStatus}>
                                     <li className="item">
-                                        <Link to="/admin/pages">All Pages</Link>
+                                        <Link to="/admin/pages/1">
+                                            All Pages
+                                        </Link>
                                     </li>
-                                    {(() => {
-                                        if (
-                                            client &&
-                                            window.clientData.access.role ==
-                                                "ADMIN"
-                                        ) {
-                                            return (
-                                                <li className="item">
-                                                    <Link to="/admin/page-new">
-                                                        New Page
-                                                    </Link>
-                                                </li>
-                                            );
-                                        }
-                                    })()}
+                                    {isAdmin && (
+                                        <li className="item">
+                                            <Link to="/admin/page-new">
+                                                New Page
+                                            </Link>
+                                        </li>
+                                    )}
                                 </ul>
                             </li>
+                            {isAdmin && (
+                                <li className="item">
+                                    <Link to="/admin/media">Media</Link>
+                                </li>
+                            )}
+                            {isAdmin && (
+                                <li className="item">
+                                    <Link to="/admin/settings">Settings</Link>
+                                </li>
+                            )}
 
-                            {(() => {
-                                if (
-                                    client &&
-                                    window.clientData.access.role == "ADMIN"
-                                ) {
-                                    return (
-                                        <li className="item">
-                                            <Link to="/admin/settings">
-                                                Settings
-                                            </Link>
-                                        </li>
-                                    );
-                                }
-                            })()}
-
-                            {(() => {
-                                if (
-                                    client &&
-                                    window.clientData.access.role == "ADMIN"
-                                ) {
-                                    return (
-                                        <li className="item">
-                                            <Link to="/admin/authors">
-                                                Authors
-                                            </Link>
-                                        </li>
-                                    );
-                                }
-                            })()}
+                            {isAdmin && (
+                                <li className="item">
+                                    <Link to="/admin/authors">Authors</Link>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </nav>

@@ -135,14 +135,11 @@ module.exports.init = app => {
               <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
-                <!-- Fonts -->
-                <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,400italic,700' rel='stylesheet' type='text/css'>
                 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
                 <!--<link rel="stylesheet" href="http://bootswatch.com/cosmo/bootstrap.min.css">-->
                 <link rel="stylesheet" href="/css/bootstrap.min.css">
                 <link rel="stylesheet" href="/css/vertical.css">
                 <link rel="stylesheet" href="/css/font-awesome.min.css">
-                <link rel="stylesheet" href="/css/dashboard.css">
                 <link rel="stylesheet" href="http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/default.min.css">
                 <link rel="stylesheet" href="https://cdn.quilljs.com/1.2.2/quill.snow.css">
                 
@@ -155,7 +152,7 @@ module.exports.init = app => {
                    window.clientData = ${JSON.stringify(clientData)}
                 </script>
                 <script type="text/javascript" src='/tinymce/js/tinymce/tinymce.min.js'></script>
-                <script type="text/javascript" src='http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js'></script>
+                <script type="text/javascript" src='/js/highlight.min.js'></script>
                 <script type="text/javascript" src='https://cdn.quilljs.com/1.2.2/quill.js'></script>
                 <script src="${bundle}"></script>
               </body>

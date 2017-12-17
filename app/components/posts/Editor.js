@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { gql, graphql } from "react-apollo";
 import PostActions from "./PostActions";
 const Editor = React.createClass({
     componentDidMount() {
@@ -58,8 +59,8 @@ const Editor = React.createClass({
     },
 
     uploadImage(files) {
-        PostActions.uploadFile(files, "http://localhost:3030/upload")
-            .then(post_image => {
+        PostActions.uploadFile(files, this.props.insertMedia).then(
+            post_image => {
                 var Delta = qEditor.constructor.import("delta");
                 qEditor.updateContents(
                     new Delta()
@@ -68,14 +69,15 @@ const Editor = React.createClass({
                             image: post_image
                         })
                 );
-            });
+            }
+        );
     },
     render() {
         return (
             <div id="quill-container">
                 <div id="editor" className="editor" />
                 <input
-                    ref={input => this.imageInput = input}
+                    ref={input => (this.imageInput = input)}
                     className="hide post-image"
                     type="file"
                     onChange={input => this.uploadImage(input.target.files)}
@@ -84,5 +86,22 @@ const Editor = React.createClass({
         );
     }
 });
-
-export default Editor;
+const insertMediaQuery = gql`
+    mutation insertMedia($url: String!) {
+        insertMedia(url: $url) {
+            url
+        }
+    }
+`;
+const insertMedia = graphql(insertMediaQuery, {
+    props: ({ mutate }) => {
+        return {
+            insertMedia: data => {
+                mutate({
+                    variables: data
+                });
+            }
+        };
+    }
+});
+export default insertMedia(Editor);

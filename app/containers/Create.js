@@ -38,9 +38,7 @@ export default function Create(type) {
                             return (
                                 <div className={"wrapper " + page}>
                                     <section className="module p-t-20">
-                                        <div
-                                            className="container-fluid container-custom"
-                                        >
+                                        <div className="container-fluid container-custom">
                                             <div className="col-lg-8 column">
                                                 <ArticleCreate
                                                     post={this.state.post}
@@ -69,32 +67,34 @@ export default function Create(type) {
     }
 
     const createPostQuery = gql`
-  mutation createPost($type: String!) {
-    createPost(type: $type) {
-        id,
-        title,
-        body,
-        author {
-            username
-        },
-        status,
-        type,
-        excerpt,
-        created_at,
-        cover_image,
-        taxonomies {
-            id,
-            name,
-            type
+        mutation createPost($type: String!) {
+            createPost(type: $type) {
+                id
+                title
+                body
+                author {
+                    username
+                }
+                status
+                type
+                excerpt
+                created_at
+                cover_image
+                taxonomies {
+                    id
+                    name
+                    type
+                }
+            }
         }
-    }
-  }
-`;
+    `;
+
     const createQueryWithData = graphql(createPostQuery, {
         props: ({ mutate }) => ({
-            createPost: data => mutate({
-                variables: data
-            })
+            createPost: data =>
+                mutate({
+                    variables: data
+                })
         })
     });
 

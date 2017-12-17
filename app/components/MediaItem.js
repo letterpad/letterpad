@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import moment from "moment";
 import { browserHistory } from "react-router";
 
-export default class ListItem extends Component {
+export default class MediaItem extends Component {
     constructor(props) {
         super(props);
     }
@@ -11,8 +11,8 @@ export default class ListItem extends Component {
         e.preventDefault();
         e.stopPropagation();
     }
-    openArticle() {
-        browserHistory.push("/admin/post/" + this.props.post.id);
+    openMedia() {
+        browserHistory.push("/admin/media/" + this.props.media.id);
     }
     render() {
         return (
@@ -22,23 +22,32 @@ export default class ListItem extends Component {
                         <input
                             type="checkbox"
                             className="checkthis"
-                            value={this.props.post.id}
+                            value={this.props.media.id}
                         />
                         <div className="control__indicator" />
                     </label>
                 </td>
                 <td
                     style={{ cursor: "pointer" }}
-                    onClick={this.openArticle.bind(this)}
+                    onClick={this.openMedia.bind(this)}
                 >
-                    {this.props.post.title || "Draft.."}
+                    <img className="media-image" src={this.props.media.url} />
                 </td>
-                <td>{this.props.post.status}</td>
-                <td>{this.props.post.author.username}</td>
                 <td>
-                    {moment(new Date(this.props.post.created_at)).format(
+                    {"http://" + window.location.host + this.props.media.url}
+                </td>
+                <td>
+                    {moment(new Date(this.props.media.created_at)).format(
                         "MMM Do, YY"
                     )}
+                </td>
+                <td>
+                    <button
+                        style={{ padding: "6px" }}
+                        className="btn-xs btn btn-dark"
+                    >
+                        <i className="fa fa-trash fa-2x" aria-hidden="true" />
+                    </button>
                 </td>
             </tr>
         );

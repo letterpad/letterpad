@@ -16,9 +16,7 @@ export default class ArticleList extends Component {
                 </div>
                 <div className="post-header">
                     <h2 className="post-title font-alt">
-                        <Link to={"/"}>
-                            {this.props.post.title}
-                        </Link>
+                        <Link to={"/"}>{this.props.post.title}</Link>
                     </h2>
                     <div className="post-meta">
                         {moment(new Date(this.props.post.created_at)).format(
@@ -40,15 +38,13 @@ export default class ArticleList extends Component {
                                 return taxonomy.type == "post_category";
                             })
                             .map(taxonomy => {
-                                return (
-                                    <Link>
-                                        {taxonomy.name}
-                                    </Link>
-                                );
+                                return <Link>{taxonomy.name}</Link>;
                             });
                     })()}
                 </div>
-                <AdjacentPosts adjacentPosts={this.props.adjacentPosts} />
+                {this.props.adjacentPosts && (
+                    <AdjacentPosts adjacentPosts={this.props.adjacentPosts} />
+                )}
             </article>
         );
     }

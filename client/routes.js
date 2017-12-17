@@ -5,6 +5,7 @@ import {
     Home,
     Search,
     Single,
+    Page,
     OneColLayout,
     TwoColLayout
 } from "./containers";
@@ -12,6 +13,7 @@ export default (
     <Route path="/" component={App}>
         <IndexRoute component={TwoColLayout(Home, true)} />
         <Route path="/posts/:query" component={TwoColLayout(Home)} />
+        <Route path="/page/:slug" component={TwoColLayout(Page)} />
         <Route path="/post/:permalink" component={TwoColLayout(Single)} />
         <Route
             path="/category/:query"

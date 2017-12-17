@@ -1,12 +1,13 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
+@import "./variables.scss";
 @import "./common.scss";
+@import "./react-select.scss";
 .form-control {
     text-transform: none !important;
 }
 label.custom-label {
-    letter-spacing: 2px;
-    font-weight: 100;
-    font-size: 11px;
-    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 13px;
 }
 
 /* Login */
@@ -87,6 +88,9 @@ ul.nav.navbar-nav li ul li {
 #editor .ql-editor {
     overflow-y: visible;
     padding: 12px 0px;
+}
+.quill-container {
+    font-size: 14px;
 }
 #quill-container .ql-toolbar {
     opacity: 0.2;
@@ -207,6 +211,27 @@ div.ReactTags__suggestions ul li.active {
     padding: 12px 8px;
     border-top: none;
 }
+.table th {
+    color: $font_body_dark;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 400;
+}
+tr td:first-child,
+tr th:first-child {
+    padding-left: 0px !important;
+}
+/*Media*/
+.table.media-table {
+    td {
+        vertical-align: middle;
+    }
+    .media-image {
+        object-fit: cover;
+        width: 80px;
+        height: 80px;
+    }
+}
 /*Check box*/
 .control {
     display: block;
@@ -299,4 +324,66 @@ div.ReactTags__suggestions ul li.active {
     input:disabled ~ .control__indicator:after {
         background: #7b7b7b;
     }
+}
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 18px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    display: none;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: -4px;
+    bottom: -3px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+input:checked + .slider {
+    background-color: #2196f3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }

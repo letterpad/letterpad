@@ -4,12 +4,26 @@ import General from "../components/settings/General";
 import Social from "../components/settings/Social";
 import Sidebar from "../components/settings/Sidebar";
 import Menu from "../components/settings/Menu";
+
 //import Theme from "../components/settings/Theme";
+
+const SubmitBtn = ({ handleClick }) => {
+    return (
+        <button
+            type="submit"
+            onClick={handleClick}
+            className="btn btn-dark btn-md"
+        >
+            Save
+        </button>
+    );
+};
 
 class Settings extends Component {
     constructor(props) {
         super(props);
         this.updatedOptions = {};
+        this.submitData = this.submitData.bind(this);
     }
     clicked(e) {
         e.preventDefault();
@@ -53,200 +67,85 @@ class Settings extends Component {
         });
 
         return (
-            <div className={"wrapper "}>
+            <div className="wrapper ">
                 <section className="module-xs">
-                    <div className="container-fluid container-custom">
-                        <form id="contact-form" role="form" noValidate="">
-                            <div id="accordion" className="panel-group">
-                                <div className="panel panel-default">
-                                    <div className="panel-heading">
-                                        <h4 className="panel-title">
-                                            <a
-                                                data-toggle="collapse"
-                                                data-parent="#accordion"
-                                                href="general"
-                                                aria-expanded="false"
-                                                className="collapsed"
-                                                onClick={this.clicked.bind(
-                                                    this
-                                                )}
-                                            >
-                                                General
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div
-                                        id="general"
-                                        className="panel-collapse collapse"
-                                        aria-expanded="false"
-                                    >
-                                        <div className="panel-body">
-                                            <General
-                                                data={data}
-                                                updateOption={this.updateOption.bind(
-                                                    this
-                                                )}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="panel panel-default">
-                                    <div className="panel-heading">
-                                        <h4 className="panel-title">
-                                            <a
-                                                data-toggle="collapse"
-                                                data-parent="#accordion"
-                                                href="social"
-                                                className="collapsed"
-                                                aria-expanded="false"
-                                                onClick={this.clicked.bind(
-                                                    this
-                                                )}
-                                            >
-                                                Social
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div
-                                        id="social"
-                                        className="panel-collapse collapse"
-                                        aria-expanded="false"
-                                    >
-                                        <div className="panel-body">
-                                            <Social
-                                                data={data}
-                                                updateOption={this.updateOption.bind(
-                                                    this
-                                                )}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="panel panel-default">
-                                    <div className="panel-heading">
-                                        <h4 className="panel-title">
-                                            <a
-                                                data-toggle="collapse"
-                                                data-parent="#accordion"
-                                                href="sidebar-options"
-                                                className="collapsed"
-                                                aria-expanded="false"
-                                                onClick={this.clicked.bind(
-                                                    this
-                                                )}
-                                            >
-                                                Sidebar
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div
-                                        id="sidebar-options"
-                                        className="panel-collapse collapse"
-                                        aria-expanded="false"
-                                    >
-                                        <div className="panel-body">
-                                            <Sidebar
-                                                data={data}
-                                                updateOption={this.updateOption.bind(
-                                                    this
-                                                )}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="panel panel-default">
-                                    <div className="panel-heading">
-                                        <h4 className="panel-title">
-                                            <a
-                                                data-toggle="collapse"
-                                                data-parent="#accordion"
-                                                href="menu"
-                                                className="collapsed"
-                                                aria-expanded="false"
-                                                onClick={this.clicked.bind(
-                                                    this
-                                                )}
-                                            >
-                                                Menu
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div
-                                        id="menu"
-                                        className="panel-collapse collapse"
-                                        aria-expanded="false"
-                                    >
-                                        <div className="panel-body">
-                                            <Menu
-                                                data={data}
-                                                categories={
-                                                    this.props.categories.taxonomies
-                                                }
-                                                updateOption={this.updateOption.bind(
-                                                    this
-                                                )}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                {/*<div className="panel panel-default">
-                            <div className="panel-heading">
-                                <h4 className="panel-title">
-                                    <a
-                                        data-toggle="collapse"
-                                        data-parent="#accordion"
-                                        href="theme"
-                                        className="collapsed"
-                                        aria-expanded="false"
-                                        onClick={this.clicked.bind(this)}
-                                    >
-                                        Theme
-                                    </a>
-                                </h4>
-                            </div>
-                            <div
-                                id="theme"
-                                className="panel-collapse collapse"
-                                aria-expanded="false"
-                            >
-                                <div className="panel-body">
-                                    <Theme
-                                        data={data}
-                                        updateOption={this.updateOption.bind(
-                                            this
-                                        )}
-                                    />
-                                </div>
-                            </div>
-                        </div>*/
-                                }
-                            </div>
-                            <div className="text-center">
-                                <button
-                                    type="submit"
-                                    onClick={this.submitData.bind(this)}
-                                    className="btn btn-block btn-round btn-dark"
-                                >
-                                    Submit
-                                </button>
-                            </div>
-                        </form>
+                    <div className="container-fluid">
+                        <div className="module-title">General Settings</div>
+                        <div className="module-subtitle">
+                            Overview of configuration options for your site.
+                        </div>
+                        <General
+                            data={data}
+                            updateOption={this.updateOption.bind(this)}
+                        />
+                        <SubmitBtn handleClick={this.submitData} />
                     </div>
                 </section>
+                <section className="module-xs">
+                    <div className="container-fluid">
+                        <div className="module-title">Social Settings</div>
+                        <div className="module-subtitle">
+                            Setup your social links
+                        </div>
+                        <Social
+                            data={data}
+                            updateOption={this.updateOption.bind(this)}
+                        />
+                        <SubmitBtn handleClick={this.submitData} />
+                    </div>
+                </section>
+                <section className="module-xs">
+                    <div className="container-fluid">
+                        <div className="module-title">Sidebar Settings</div>
+                        <div className="module-subtitle">
+                            Configure your sidebar widgets
+                        </div>
+                        <Sidebar
+                            data={data}
+                            updateOption={this.updateOption.bind(this)}
+                        />
+                        <SubmitBtn handleClick={this.submitData} />
+                    </div>
+                </section>
+                <section className="module-xs">
+                    <div className="container-fluid">
+                        <div className="module-title">Menu Settings</div>
+                        <div className="module-subtitle">
+                            Configure your menu
+                        </div>
+                        <Menu
+                            data={data}
+                            pages={this.props.pages}
+                            categories={this.props.categories.taxonomies}
+                            updateOption={this.updateOption.bind(this)}
+                        />
+                        <SubmitBtn handleClick={this.submitData} />
+                    </div>
+                </section>
+                {/* <section className="module-xs">
+                    <div className="container-fluid">
+                        <div className="module-title">Sidebar Settings</div>
+                        <div className="module-subtitle">
+                            Configure your sidebar widgets
+                        </div>
+                        <Theme
+                            data={data}
+                            updateOption={this.updateOption.bind(this)}
+                        />
+                    </div>
+                </section> */}
             </div>
         );
     }
 }
 const optionsQuery = gql`
-  query getOptions {
-  settings {
-    id,
-    option,
-    value
-  }
-}
+    query getOptions {
+        settings {
+            id
+            option
+            value
+        }
+    }
 `;
 
 const ContainerWithData = graphql(optionsQuery, {
@@ -254,28 +153,44 @@ const ContainerWithData = graphql(optionsQuery, {
 });
 
 const CategoriesQuery = gql`
-  query getTaxonomies($type: String!) {
-  taxonomies(type:$type) {
-    id,
-    name
-  }
-}
+    query getTaxonomies($type: String!) {
+        taxonomies(type: $type) {
+            id
+            name
+        }
+    }
 `;
 const CategoriesData = graphql(CategoriesQuery, {
     name: "categories",
     options: { variables: { type: "post_category" } }
 });
 
-const Data = compose(ContainerWithData, CategoriesData);
+const PagesQuery = gql`
+    query getPosts($type: String!) {
+        posts(type: $type) {
+            count
+            rows {
+                id
+                title
+            }
+        }
+    }
+`;
+
+const PagesData = graphql(PagesQuery, {
+    name: "pages",
+    options: props => ({ variables: { type: "page" } })
+});
+const Data = compose(ContainerWithData, CategoriesData, PagesData);
 
 const mutateOptions = gql`
-  mutation updateOptions($options:[OptionInputType]) {
-    updateOptions(options:$options) {
-        id
-        option
-        value
+    mutation updateOptions($options: [OptionInputType]) {
+        updateOptions(options: $options) {
+            id
+            option
+            value
+        }
     }
-  }
 `;
 const createQueryWithData = graphql(mutateOptions, {
     props: ({ mutate }) => {

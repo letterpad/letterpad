@@ -9,26 +9,27 @@ import {
     TwoColumnLayout,
     OneColumnLayout,
     List,
+    Posts,
+    Media,
+    Pages,
     Single,
     Create,
     Settings,
     Authors
 } from "./containers";
 
-const Wrapper1 = Component => {
-    return (
-        <div>
-            <Menu />
-            <Component />
-        </div>
-    );
-};
 function Authorized(WrappedComponent) {
     // ...and returns another component...
     return class extends React.Component {
         constructor(props) {
             super(props);
         }
+        componentWillReceiveProps(nextProps) {
+            if (!window.clientData.access) {
+                document.location.href = "/admin/login";
+            }
+        }
+
         render() {
             // ... and renders the wrapped component with the fresh data!
             // Notice that we pass through any additional props
@@ -45,8 +46,8 @@ export default (
     <Route path="/admin" component={App}>
         <IndexRoute component={LoginView} />
         <Route path="/admin/login" component={LoginView} />
-        <Route path="/admin/posts" component={Authorized(List("post"))} />
-        <Route path="/admin/pages" component={Authorized(List("page"))} />
+        <Route path="/admin/posts/:page" component={Authorized(Posts)} />
+        <Route path="/admin/pages/:page" component={Authorized(Pages)} />
 
         <Route
             path="/admin/post/:post_id"
@@ -58,6 +59,7 @@ export default (
             component={Authorized(Single("page"))}
         />
         <Route path="/admin/page-new" component={Authorized(Create("post"))} />
+        <Route path="/admin/media" component={Authorized(Media)} />
         <Route path="/admin/settings" component={Authorized(Settings)} />
         <Route path="/admin/authors" component={Authorized(Authors)} />
     </Route>

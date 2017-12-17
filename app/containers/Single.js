@@ -22,10 +22,8 @@ export default function Single(type) {
                         } else {
                             return (
                                 <div className={"wrapper " + page}>
-                                    <section className="module p-t-20">
-                                        <div
-                                            className="container-fluid container-custom"
-                                        >
+                                    <section className="module-xs">
+                                        <div className="container-fluid container-custom">
                                             <div className="col-lg-8 column">
                                                 <ArticleEdit
                                                     post={this.props.post}
@@ -58,26 +56,27 @@ export default function Single(type) {
     }
 
     const postQuery = gql`
-  query getPost($id: Int!) {
-  post(id:$id) {
-    id,
-    title,
-    body,
-    author {
-        username
-    },
-    status,
-    created_at,
-    cover_image,
-    excerpt,
-    taxonomies {
-      id,
-      name,
-      type
-    }
-  }
-}
-`;
+        query getPost($id: Int!) {
+            post(id: $id) {
+                id
+                title
+                body
+                author {
+                    username
+                }
+                status
+                created_at
+                cover_image
+                excerpt
+                permalink
+                taxonomies {
+                    id
+                    name
+                    type
+                }
+            }
+        }
+    `;
 
     const ContainerWithData = graphql(postQuery, {
         options: props => ({ variables: { id: props.params.post_id } }),
