@@ -12,7 +12,7 @@ const SubmitBtn = ({ handleClick }) => {
         <button
             type="submit"
             onClick={handleClick}
-            className="btn btn-dark btn-md"
+            className="btn btn-blue btn-sm"
         >
             Save
         </button>
@@ -67,63 +67,52 @@ class Settings extends Component {
         });
 
         return (
-            <div className="wrapper ">
-                <section className="module-xs">
-                    <div className="container-fluid">
-                        <div className="module-title">General Settings</div>
-                        <div className="module-subtitle">
-                            Overview of configuration options for your site.
-                        </div>
-                        <General
-                            data={data}
-                            updateOption={this.updateOption.bind(this)}
-                        />
-                        <SubmitBtn handleClick={this.submitData} />
+            <section className="module-xs">
+                <div className="card">
+                    <div className="module-title">General Settings</div>
+                    <div className="module-subtitle">
+                        Overview of configuration options for your site.
                     </div>
-                </section>
-                <section className="module-xs">
-                    <div className="container-fluid">
-                        <div className="module-title">Social Settings</div>
-                        <div className="module-subtitle">
-                            Setup your social links
-                        </div>
-                        <Social
-                            data={data}
-                            updateOption={this.updateOption.bind(this)}
-                        />
-                        <SubmitBtn handleClick={this.submitData} />
+                    <General
+                        data={data}
+                        updateOption={this.updateOption.bind(this)}
+                    />
+                    <SubmitBtn handleClick={this.submitData} />
+                </div>
+                <div className="card">
+                    <div className="module-title">Social Settings</div>
+                    <div className="module-subtitle">
+                        Setup your social links
                     </div>
-                </section>
-                <section className="module-xs">
-                    <div className="container-fluid">
-                        <div className="module-title">Sidebar Settings</div>
-                        <div className="module-subtitle">
-                            Configure your sidebar widgets
-                        </div>
-                        <Sidebar
-                            data={data}
-                            updateOption={this.updateOption.bind(this)}
-                        />
-                        <SubmitBtn handleClick={this.submitData} />
+                    <Social
+                        data={data}
+                        updateOption={this.updateOption.bind(this)}
+                    />
+                    <SubmitBtn handleClick={this.submitData} />
+                </div>
+                <div className="card">
+                    <div className="module-title">Sidebar Settings</div>
+                    <div className="module-subtitle">
+                        Configure your sidebar widgets
                     </div>
-                </section>
-                <section className="module-xs">
-                    <div className="container-fluid">
-                        <div className="module-title">Menu Settings</div>
-                        <div className="module-subtitle">
-                            Configure your menu
-                        </div>
-                        <Menu
-                            data={data}
-                            pages={this.props.pages}
-                            categories={this.props.categories.taxonomies}
-                            updateOption={this.updateOption.bind(this)}
-                        />
-                        <SubmitBtn handleClick={this.submitData} />
-                    </div>
-                </section>
-                {/* <section className="module-xs">
-                    <div className="container-fluid">
+                    <Sidebar
+                        data={data}
+                        updateOption={this.updateOption.bind(this)}
+                    />
+                    <SubmitBtn handleClick={this.submitData} />
+                </div>
+                <div className="card">
+                    <div className="module-title">Menu Settings</div>
+                    <div className="module-subtitle">Configure your menu</div>
+                    <Menu
+                        data={data}
+                        pages={this.props.pages}
+                        categories={this.props.categories.taxonomies}
+                        updateOption={this.updateOption.bind(this)}
+                    />
+                    <SubmitBtn handleClick={this.submitData} />
+                </div>
+                {/* <div className="card">
                         <div className="module-title">Sidebar Settings</div>
                         <div className="module-subtitle">
                             Configure your sidebar widgets
@@ -132,9 +121,8 @@ class Settings extends Component {
                             data={data}
                             updateOption={this.updateOption.bind(this)}
                         />
-                    </div>
-                </section> */}
-            </div>
+                    </div> */}
+            </section>
         );
     }
 }
@@ -172,6 +160,7 @@ const PagesQuery = gql`
             rows {
                 id
                 title
+                slug
             }
         }
     }

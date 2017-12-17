@@ -28,7 +28,7 @@ class Categories extends Component {
     handleAddition(tag) {
         let found = this.categories.some(ele => ele.name === tag);
         let foundInSuggestion = this.props.suggestions.filter(
-            ele => ele.name === tag ? ele.id : 0
+            ele => (ele.name === tag ? ele.id : 0)
         );
 
         let id = foundInSuggestion.length > 0 ? foundInSuggestion[0].id : 0;
@@ -55,9 +55,9 @@ class Categories extends Component {
         suggestions = suggestions.map(t => t.name);
 
         return (
-            <div className="x_panel">
+            <div className="card">
                 <div className="x_title">
-                    <h2>Categories</h2>
+                    <div className="module-title">Categories</div>
                     <div className="clearfix" />
                 </div>
                 <div className="x_content">
@@ -80,12 +80,12 @@ class Categories extends Component {
 }
 
 const TaxSuggestionsQuery = gql`
-  query getTaxonomies($type: String!) {
-  taxonomies(type:$type) {
-    id,
-    name
-  }
-}
+    query getTaxonomies($type: String!) {
+        taxonomies(type: $type) {
+            id
+            name
+        }
+    }
 `;
 const TaxSuggestionsData = graphql(TaxSuggestionsQuery, {
     options: { variables: { type: "post_category" } },

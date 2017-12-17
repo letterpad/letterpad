@@ -23,8 +23,8 @@ class Page extends Component {
 }
 
 const pageQuery = gql`
-    query pageMenu($name: String, $postType: String) {
-        pageMenu(name: $name, postType: $postType) {
+    query pageMenu($slug: String, $postType: String) {
+        pageMenu(slug: $slug, postType: $postType) {
             id
             title
             body
@@ -44,7 +44,7 @@ const ContainerWithPageData = graphql(pageQuery, {
     options: props => {
         return {
             variables: {
-                name: props.params.slug,
+                slug: props.slug || props.params.slug,
                 postType: "page"
             }
         };

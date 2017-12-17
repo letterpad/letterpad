@@ -1,5 +1,5 @@
 export App from "./App";
-export Home from "./Home";
+export Posts from "./Posts";
 export Search from "./Search";
 export Sidebar from "./Sidebar";
 export Single from "./Single";

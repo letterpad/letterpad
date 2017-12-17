@@ -27,22 +27,22 @@ export default function Search(term) {
 
     if (term == "post") {
         const allPosts = gql`
-            query getPosts($type:String!,$query:String!) {
-                posts(type:$type,body:$query) {
-                    id,
-                    title,
-                    body,
+            query getPosts($type: String!, $query: String!) {
+                posts(type: $type, body: $query) {
+                    id
+                    title
+                    body
                     author {
                         username
-                    },
+                    }
                     type
-                    status,
-                    created_at,
-                    excerpt,
-                    cover_image,
+                    status
+                    created_at
+                    excerpt
+                    cover_image
                     taxonomies {
-                        id,
-                        name,
+                        id
+                        name
                         type
                     }
                 }
@@ -65,26 +65,26 @@ export default function Search(term) {
         return ContainerWithData(Search);
     } else if (term == "category") {
         const catPosts = gql`
-            query catPosts($type:String,$query:String,$postType:String){
-                postTaxonomies(type:$type,name:$query) {
-                    posts(type:$postType) {
+            query catPosts($type: String, $query: String, $postType: String) {
+                postTaxonomies(type: $type, name: $query) {
+                    posts(type: $postType) {
                         id
                         title
                         body
                         type
                         cover_image
                         created_at
-                        permalink
+                        slug
                         excerpt
                         taxonomies {
-                            id,
-                            name,
+                            id
+                            name
                             type
                         }
                     }
                 }
             }
-            `;
+        `;
         const ContainerWithData = graphql(catPosts, {
             options: props => {
                 return {
@@ -96,37 +96,36 @@ export default function Search(term) {
                 };
             },
             props: ({ data: { loading, postTaxonomies } }) => ({
-                posts: (
+                posts:
                     postTaxonomies && postTaxonomies.length > 0
                         ? postTaxonomies[0].posts
-                        : []
-                ),
+                        : [],
                 loading
             })
         });
         return ContainerWithData(Search);
     } else if (term == "tag") {
         const catPosts = gql`
-            query catPosts($type:String,$query:String,$postType:String){
-                postTaxonomies(type:$type,name:$query) {
-                    posts(type:$postType) {
+            query catPosts($type: String, $query: String, $postType: String) {
+                postTaxonomies(type: $type, name: $query) {
+                    posts(type: $postType) {
                         id
                         title
                         body
                         type
                         cover_image
                         created_at
-                        permalink
+                        slug
                         excerpt
                         taxonomies {
-                            id,
-                            name,
+                            id
+                            name
                             type
                         }
                     }
                 }
             }
-            `;
+        `;
         const ContainerWithData = graphql(catPosts, {
             options: props => {
                 return {
@@ -138,11 +137,10 @@ export default function Search(term) {
                 };
             },
             props: ({ data: { loading, postTaxonomies } }) => ({
-                posts: (
+                posts:
                     postTaxonomies && postTaxonomies.length > 0
                         ? postTaxonomies[0].posts
-                        : []
-                ),
+                        : [],
                 loading
             })
         });

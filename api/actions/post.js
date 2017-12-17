@@ -1,4 +1,4 @@
-import {conn} from "../../config/mysql.config";
+import { conn } from "../../config/mysql.config";
 import Sequalize from "sequelize";
 
 // const conn = new Sequalize("reactcms", "root", "123456", {
@@ -35,7 +35,7 @@ var Post = conn.define(
         status: {
             type: Sequalize.STRING
         },
-        permalink: {
+        slug: {
             type: Sequalize.STRING
         }
     },
@@ -109,55 +109,47 @@ Authors.hasMany(Post);
 Post.belongsTo(Authors);
 
 function createRecord() {
-    return Authors
-        .create({
-            username: "Admin",
-            emaill: "redsnow@ajaxtown.com",
-            password: "$2a$10$.dPLmaFVW2jTF/rMcUPRjucno5oKMwVMGeTjrPGDVinSQtPNy9Mdy"
-        })
-        .then(author => {
-            Post
-                .create({
-                    title: "John",
-                    body: "body",
-                    author: "Hancock",
-                    excerpt: "exceprt",
-                    cover_image: "../../",
-                    type: "page",
-                    status: "draft",
-                    permalink: "/..//./permalink",
-                    author_id: author.id
+    return Authors.create({
+        username: "Admin",
+        emaill: "redsnow@ajaxtown.com",
+        password: "$2a$10$.dPLmaFVW2jTF/rMcUPRjucno5oKMwVMGeTjrPGDVinSQtPNy9Mdy"
+    }).then(author => {
+        Post.create({
+            title: "John",
+            body: "body",
+            author: "Hancock",
+            excerpt: "exceprt",
+            cover_image: "../../",
+            type: "page",
+            status: "draft",
+            slug: "/..//./slug",
+            author_id: author.id
+        }).then(post => {
+            return Taxonomies.create({
+                name: "Uncategorized",
+                type: "post_category"
+            })
+                .then(taxonomy => {
+                    return PostTaxonomyRelationship.create({
+                        posts1_id: post.id,
+                        taxonomies1_id: taxonomy.id
+                    });
                 })
-                .then(post => {
-                    return Taxonomies
-                        .create({
-                            name: "Uncategorized",
-                            type: "post_category"
-                        })
-                        .then(taxonomy => {
-                            return PostTaxonomyRelationship.create({
-                                posts1_id: post.id,
-                                taxonomies1_id: taxonomy.id
-                            });
-                        })
-                        .then(() => {
-                            return Taxonomies
-                                .create({
-                                    name: "Categorized",
-                                    type: "post_category"
-                                })
-                                .then(taxonomy => {
-                                    return PostTaxonomyRelationship.create({
-                                        posts1_id: post.id,
-                                        taxonomies1_id: taxonomy.id
-                                    });
-                                });
+                .then(() => {
+                    return Taxonomies.create({
+                        name: "Categorized",
+                        type: "post_category"
+                    }).then(taxonomy => {
+                        return PostTaxonomyRelationship.create({
+                            posts1_id: post.id,
+                            taxonomies1_id: taxonomy.id
                         });
+                    });
                 });
         });
+    });
 }
-conn.sync({ force: true })
-.then(() => {
+conn.sync({ force: true }).then(() => {
     return createRecord();
 });
 

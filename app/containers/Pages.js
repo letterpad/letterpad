@@ -41,40 +41,38 @@ class Pages extends Component {
         });
 
         return (
-            <div className="wrapper">
-                <section className="module-xs">
-                    <div className="container-fluid">
-                        <div className="module-title">Pages</div>
-                        <div className="module-subtitle">
-                            This page provides a comprehensive overview of all
-                            your blog posts. Click the icon next to each post to
-                            update its contents or the icon to see what it looks
-                            like to your readers.
-                        </div>
-                        <table className="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th className="col-check">
-                                        <label className="control control--checkbox">
-                                            <input type="checkbox" />
-                                            <div className="control__indicator" />
-                                        </label>
-                                    </th>
-                                    <th className="col-text">Title</th>
-                                    <th className="col-text">Status</th>
-                                    <th className="col-text">Author</th>
-                                    <th className="col-text">Created At</th>
-                                </tr>
-                            </thead>
-                            <tbody>{rows}</tbody>
-                        </table>
-                        <Paginate
-                            count={this.props.posts.count}
-                            page={this.state.page}
-                        />
+            <section className="module-xs">
+                <div className="card">
+                    <div className="module-title">Pages</div>
+                    <div className="module-subtitle">
+                        This page provides a comprehensive overview of all your
+                        blog posts. Click the icon next to each post to update
+                        its contents or the icon to see what it looks like to
+                        your readers.
                     </div>
-                </section>
-            </div>
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th className="col-check">
+                                    <label className="control control--checkbox">
+                                        <input type="checkbox" />
+                                        <div className="control__indicator" />
+                                    </label>
+                                </th>
+                                <th className="col-text">Title</th>
+                                <th className="col-text">Status</th>
+                                <th className="col-text">Author</th>
+                                <th className="col-text">Created At</th>
+                            </tr>
+                        </thead>
+                        <tbody>{rows}</tbody>
+                    </table>
+                    <Paginate
+                        count={this.props.posts.count}
+                        page={this.state.page}
+                    />
+                </div>
+            </section>
         );
     }
 }

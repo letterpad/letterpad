@@ -46,7 +46,7 @@ const latestPosts = gql`
                 id
                 title
                 type
-                permalink
+                slug
                 created_at
             }
         }

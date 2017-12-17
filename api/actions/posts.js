@@ -21,8 +21,8 @@ import moment from "moment";
 /**
  * This function is to insert multiple posts at once.
  * So if its a single post, wrap it inside an array
- * @param {*} req 
- * @param {*} params 
+ * @param {*} req
+ * @param {*} params
  */
 export function insertPosts(req, params) {
     return new Promise((resolve, reject) => {
@@ -41,14 +41,17 @@ export function insertPosts(req, params) {
                     post.excerpt,
                     post.cover_image,
                     post.type,
-                    new Date().toISOString().slice(0, 19).replace("T", " "),
-                    post.permalink
+                    new Date()
+                        .toISOString()
+                        .slice(0, 19)
+                        .replace("T", " "),
+                    post.slug
                 ];
                 posts.push(item);
             });
 
             connection.query(
-                "INSERT INTO posts (title, body, author, excerpt, cover_image, type, created_on, permalink) VALUES ?",
+                "INSERT INTO posts (title, body, author, excerpt, cover_image, type, created_on, slug) VALUES ?",
                 [posts],
                 (err, rows) => {
                     if (err) throw err;
@@ -95,9 +98,9 @@ export function insertPosts(req, params) {
     });
 }
 /**
- * 
- * @param {*} req 
- * @param {*} params 
+ *
+ * @param {*} req
+ * @param {*} params
  */
 export function updatePost(req, params) {
     return new Promise((resolve, reject) => {
@@ -105,7 +108,7 @@ export function updatePost(req, params) {
             let post = req.body.data;
 
             connection.query(
-                "UPDATE posts SET title=?, body=?, author=?, excerpt=?, cover_image=?, type=?,status=?, permalink=? WHERE id=?",
+                "UPDATE posts SET title=?, body=?, author=?, excerpt=?, cover_image=?, type=?,status=?, slug=? WHERE id=?",
                 [
                     post.title,
                     post.body,
@@ -114,7 +117,7 @@ export function updatePost(req, params) {
                     post.cover_image,
                     post.type,
                     post.status,
-                    post.permalink,
+                    post.slug,
                     post.id
                 ],
                 (err, rows) => {
@@ -150,8 +153,8 @@ export function updatePost(req, params) {
 }
 
 /**
- * 
- * @param {Object} req 
+ *
+ * @param {Object} req
  * @param {Array} params ['page', {page}, (optional) {'draft','published','deleted'}]
  */
 export function getPosts(req, params) {
@@ -198,15 +201,15 @@ export function getPosts(req, params) {
 }
 
 /**
- * 
- * @param {*} req 
- * @param {Array} params [permalink]
+ *
+ * @param {*} req
+ * @param {Array} params [slug]
  */
 export function getPostByUrl(req, params) {
     return new Promise((resolve, reject) => {
         pool.getConnection((err, connection) => {
             connection.query(
-                "SELECT * FROM posts WHERE permalink=?",
+                "SELECT * FROM posts WHERE slug=?",
                 params[0],
                 (err, rows) => {
                     if (err) reject(err);
@@ -218,8 +221,8 @@ export function getPostByUrl(req, params) {
     });
 }
 /**
- * 
- * @param {Object} req 
+ *
+ * @param {Object} req
  * @param {Array} params [(int) id]
  */
 export function getPost(req, params) {
@@ -237,9 +240,10 @@ export function getPost(req, params) {
                 (err, rows) => {
                     if (err) reject(err);
                     connection.release();
-                    let mixed_taxonomies = rows[0].taxonomies === null
-                        ? []
-                        : JSON.parse(rows[0].taxonomies);
+                    let mixed_taxonomies =
+                        rows[0].taxonomies === null
+                            ? []
+                            : JSON.parse(rows[0].taxonomies);
                     let taxonomies = {};
                     mixed_taxonomies.forEach(taxonomy => {
                         if (!taxonomies[taxonomy.type]) {

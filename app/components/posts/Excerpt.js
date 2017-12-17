@@ -49,9 +49,9 @@ class Excerpt extends Component {
 
     render() {
         return (
-            <div className="x_panel m-b-20">
+            <div className="card">
                 <div className="x_title">
-                    <h2>Excerpt</h2>
+                    <div className="module-title">Excerpt</div>
                     <div className="clearfix" />
                 </div>
                 <div className="x_content">

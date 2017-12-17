@@ -25,7 +25,7 @@ function createRecord(author) {
         cover_image: "http://lorempixel.com/900/300/nature/",
         type: postTypes[Math.floor(Math.random() * postTypes.length)],
         status: "draft",
-        permalink: title
+        slug: title
             .replace(/[^a-z0-9]+/gi, "-")
             .replace(/^-*|-*$/g, "")
             .toLowerCase(),
@@ -33,16 +33,14 @@ function createRecord(author) {
     });
 }
 var createPostTaxonomy = function(taxonomy_id) {
-    return PostTaxonomyModel
-        .create({
-            post_id: Math.round(Math.random() * 10) + 2,
-            taxonomy_id: Math.round(Math.random() * 10) + 2
-        })
-        .catch(() => {
-            return new _Promise((resolve, reject) => {
-                resolve(true);
-            });
+    return PostTaxonomyModel.create({
+        post_id: Math.round(Math.random() * 10) + 2,
+        taxonomy_id: Math.round(Math.random() * 10) + 2
+    }).catch(() => {
+        return new _Promise((resolve, reject) => {
+            resolve(true);
         });
+    });
 };
 var taxonomies = ["post_tag", "post_category"];
 var createTaxonomy = function() {
@@ -99,12 +97,11 @@ conn.sync({ force: true }).then(() => {
         });
     });
 
-    return AuthorModel
-        .create({
-            username: "Admin",
-            emaill: "redsnow@ajaxtown.com",
-            password: "$2a$10$.dPLmaFVW2jTF/rMcUPRjucno5oKMwVMGeTjrPGDVinSQtPNy9Mdy"
-        })
+    return AuthorModel.create({
+        username: "Admin",
+        emaill: "redsnow@ajaxtown.com",
+        password: "$2a$10$.dPLmaFVW2jTF/rMcUPRjucno5oKMwVMGeTjrPGDVinSQtPNy9Mdy"
+    })
         .then(author => {
             return loop(12, createRecord, author).then(post => {
                 times = 0;

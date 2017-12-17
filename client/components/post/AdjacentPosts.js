@@ -4,21 +4,24 @@ import { Link } from "react-router";
 const Post = ({ post, label }) => {
     return (
         <div className="col-lg-6">
-            <strong>{label}:</strong><br />
-            <Link to={"/post/" + post.permalink}>
-                {post.title}
-            </Link>
+            <strong>{label}:</strong>
+            <br />
+            <Link to={"/post/" + post.slug}>{post.title}</Link>
         </div>
     );
 };
 
 const AdjacentPosts = ({ adjacentPosts }) => {
-    let prev = adjacentPosts.previous
-        ? <Post post={adjacentPosts.previous} label="Previous" />
-        : "";
-    let next = adjacentPosts.next
-        ? <Post post={adjacentPosts.next} label="Next" />
-        : "";
+    let prev = adjacentPosts.previous ? (
+        <Post post={adjacentPosts.previous} label="Previous" />
+    ) : (
+        ""
+    );
+    let next = adjacentPosts.next ? (
+        <Post post={adjacentPosts.next} label="Next" />
+    ) : (
+        ""
+    );
     return (
         <div className="row p-t-40">
             {prev}

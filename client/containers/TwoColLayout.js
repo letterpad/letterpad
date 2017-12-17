@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import Menu from "../components/Menu";
+
 export default function Layout(Element) {
     return class Layout extends Component {
         render() {
-            let page = Element.WrappedComponent.name.toLowerCase();
+            let page = "a";
+            //Element.WrappedComponent.name.toLowerCase();
             return (
                 <div className={"wrapper " + page}>
                     <Menu menu={JSON.parse(this.props.settings.menu.value)} />

@@ -31,8 +31,8 @@ class Single extends Component {
 }
 
 const singlePost = gql`
-    query singlePost($type: String, $permalink: String) {
-        post(type: $type, permalink: $permalink) {
+    query singlePost($type: String, $slug: String) {
+        post(type: $type, slug: $slug) {
             id
             title
             body
@@ -53,7 +53,7 @@ const ContainerWithPostData = graphql(singlePost, {
         return {
             variables: {
                 type: "post",
-                permalink: props.params.permalink
+                slug: props.params.slug
             }
         };
     },
@@ -64,15 +64,15 @@ const ContainerWithPostData = graphql(singlePost, {
 });
 
 const adjacentPosts = gql`
-    query adjacentPosts($permalink: String) {
-        adjacentPosts(type: "post", permalink: $permalink) {
+    query adjacentPosts($slug: String) {
+        adjacentPosts(type: "post", slug: $slug) {
             next {
                 title
-                permalink
+                slug
             }
             previous {
                 title
-                permalink
+                slug
             }
         }
     }
@@ -81,7 +81,7 @@ const adjacentPostsData = graphql(adjacentPosts, {
     options: props => {
         return {
             variables: {
-                permalink: props.params.permalink
+                slug: props.params.slug
             }
         };
     },

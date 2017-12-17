@@ -10,7 +10,7 @@ const Post = `
     cover_image: String
     type: String
     status: String
-    permalink: String
+    slug: String
     created_at: String
     taxonomies: [Taxonomy]
   }

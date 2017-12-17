@@ -78,12 +78,12 @@ let definition = `
         mutation: Mutation
     }
     type Query {
-        post(id: Int, type: String, permalink: String): Post
+        post(id: Int, type: String, slug: String): Post
         posts(type: String, body: String, status: String, offset: Int, limit: Int, cursor: Int): PostNode
-        postsMenu(type: String, name: String, postType: String): [PostTaxonomy]
-        pageMenu(name: String, postType: String): Post
+        postsMenu(slug: String,type: String, name: String, postType: String): [PostTaxonomy]
+        pageMenu(slug: String, name: String, postType: String): Post
         media(id: Int, author_id: Int!, offset: Int, limit: Int, cursor: Int): MediaNode
-        adjacentPosts(type: String, permalink:String): AdjacentPosts
+        adjacentPosts(type: String, slug:String): AdjacentPosts
         author(username: String!): Author
         authors: [Author]
         taxonomies(type: String, name: String): [Taxonomy]
@@ -91,8 +91,8 @@ let definition = `
         settings(option: String):[Setting]
     }
     type Mutation {
-        createPost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, permalink: String, taxonomies: [TaxonomyInputType]):Post
-        updatePost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, permalink: String, taxonomies: [TaxonomyInputType]):Post
+        createPost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, slug: String, taxonomies: [TaxonomyInputType]):Post
+        updatePost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, slug: String, taxonomies: [TaxonomyInputType]):Post
         uploadFile(id: Int, cover_image: String):Post
         updateOptions(options:[OptionInputType]): [Setting]
         insertMedia(url: String): Media
@@ -194,10 +194,11 @@ let resolvers = {
                 })
                 .then(menu => {
                     let item = menu.filter(item => {
-                        if (item.label == args.name) {
+                        if (item.slug == args.slug) {
                             return item;
                         }
                     });
+                    debugger;
                     return TaxonomyModel.findOne({
                         where: { id: item[0].id }
                     }).then(taxonomy => {
@@ -218,7 +219,7 @@ let resolvers = {
                 })
                 .then(menu => {
                     let item = menu.filter(item => {
-                        if (item.label == args.name) {
+                        if (item.slug == args.slug) {
                             return item;
                         }
                     });
