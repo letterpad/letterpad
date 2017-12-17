@@ -4,14 +4,10 @@ import moment from "moment";
 export default class About extends Component {
     render() {
         return (
-            <aside id="ajaxtown_about_widget" className="widget">
-                <h3 className="widget-title">Redsnow</h3>
-                <div className="about-widget">
-                    <p>
-                        {this.props.about}
-                    </p>
-                </div>
-            </aside>
+            <div className="card">
+                <div className="module-title">Redsnow</div>
+                <div className="x_content">{this.props.about}</div>
+            </div>
         );
     }
 }

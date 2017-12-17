@@ -58,9 +58,10 @@ function sendResponse(renderProps) {
 }
 
 function renderHTML(content, state) {
-    var bundle = process.env.NODE_ENV == "production"
-        ? "/js/app-client-bundle.js"
-        : "/static/app-client-bundle.js";
+    var bundle =
+        process.env.NODE_ENV == "production"
+            ? "/js/app-client-bundle.js"
+            : "/static/app-client-bundle.js";
     const HTML = `
                     <!DOCTYPE html>
                     <html lang="en">
@@ -74,7 +75,6 @@ function renderHTML(content, state) {
                         <link rel="stylesheet" href="/css/bootstrap.min.css">
                         <link rel="stylesheet" href="/css/vertical.css">
                         <link rel="stylesheet" href="/css/font-awesome.min.css">
-                        <link rel="stylesheet" href="/css/client.css">
                         <link rel="stylesheet" href="https://cdn.quilljs.com/1.1.5/quill.snow.css">
                     </head>
                     <body id='client'>

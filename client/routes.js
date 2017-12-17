@@ -33,7 +33,7 @@ class Home extends Component {
 export default (
     <Route path="/" component={App}>
         <IndexRoute component={TwoColLayout(Home)} />
-        <Route path="/posts/:query" component={TwoColLayout(Posts)} />
+        <Route path="/posts/:slug" component={TwoColLayout(Posts)} />
         <Route path="/page/:slug" component={TwoColLayout(Page)} />
         <Route path="/post/:slug" component={TwoColLayout(Single)} />
         <Route
