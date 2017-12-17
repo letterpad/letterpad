@@ -31,27 +31,28 @@ class Single extends Component {
 }
 
 const singlePost = gql`
-  query singlePost($permalink:String) {
-  post(type:"post",permalink:$permalink) {
-    id,
-    title,
-    body,
-    status,
-    created_at,
-    excerpt,
-    cover_image,
-    taxonomies {
-        id,
-        name,
-        type
+    query singlePost($type: String, $permalink: String) {
+        post(type: $type, permalink: $permalink) {
+            id
+            title
+            body
+            status
+            created_at
+            excerpt
+            cover_image
+            taxonomies {
+                id
+                name
+                type
+            }
+        }
     }
-  }
-}
 `;
 const ContainerWithPostData = graphql(singlePost, {
     options: props => {
         return {
             variables: {
+                type: "post",
                 permalink: props.params.permalink
             }
         };
@@ -63,18 +64,18 @@ const ContainerWithPostData = graphql(singlePost, {
 });
 
 const adjacentPosts = gql`
-  query adjacentPosts($permalink:String) {
-  adjacentPosts(type:"post",permalink:$permalink) {
-    next {
-        title,
-        permalink
+    query adjacentPosts($permalink: String) {
+        adjacentPosts(type: "post", permalink: $permalink) {
+            next {
+                title
+                permalink
+            }
+            previous {
+                title
+                permalink
+            }
+        }
     }
-    previous {
-        title
-        permalink
-    }
-  }
-}
 `;
 const adjacentPostsData = graphql(adjacentPosts, {
     options: props => {

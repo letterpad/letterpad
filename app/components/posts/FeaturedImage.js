@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { gql, graphql } from "react-apollo";
+import { gql, graphql, compose } from "react-apollo";
 import PostActions from "../../components/posts/PostActions";
 
 class FeaturedImage extends Component {
@@ -8,13 +8,14 @@ class FeaturedImage extends Component {
     }
 
     uploadImage(files) {
-        PostActions.uploadFile(files, "http://localhost:3030/upload")
-            .then(cover_image => {
+        PostActions.uploadFile(files, this.props.insertMedia).then(
+            cover_image => {
                 this.props.updateFeaturedImage({
                     id: this.props.post.id,
                     cover_image: cover_image
                 });
-            });
+            }
+        );
     }
     removeImage() {
         this.props.updateFeaturedImage({
@@ -24,8 +25,8 @@ class FeaturedImage extends Component {
     }
 
     render() {
-        let cover_image = this.props.post.cover_image ||
-            "http://placehold.it/800x300";
+        let cover_image =
+            this.props.post.cover_image || "http://placehold.it/800x300";
         return (
             <div className="x_panel">
                 <div className="x_content">
@@ -70,30 +71,52 @@ class FeaturedImage extends Component {
 }
 
 const uploadCoverImageQuery = gql`
-  mutation uploadFile($cover_image: String!, $id: Int!) {
-    uploadFile(cover_image: $cover_image, id: $id) {
-      id,
-      cover_image
+    mutation uploadFile($cover_image: String!, $id: Int!) {
+        uploadFile(cover_image: $cover_image, id: $id) {
+            id
+            cover_image
+        }
     }
-  }
 `;
 
 const updateQueryWithData = graphql(uploadCoverImageQuery, {
     props: ({ mutate }) => ({
-        updateFeaturedImage: data => mutate({
-            variables: data,
-            updateQueries: {
-                getPost: (prev, { mutationResult }) => {
-                    return {
-                        post: {
-                            ...prev.post,
-                            cover_image: mutationResult.data.uploadFile.cover_image
-                        }
-                    };
+        updateFeaturedImage: data =>
+            mutate({
+                variables: data,
+                updateQueries: {
+                    getPost: (prev, { mutationResult }) => {
+                        return {
+                            post: {
+                                ...prev.post,
+                                cover_image:
+                                    mutationResult.data.uploadFile.cover_image
+                            }
+                        };
+                    }
                 }
-            }
-        })
+            })
     })
 });
 
-export default updateQueryWithData(FeaturedImage);
+const insertMediaQuery = gql`
+    mutation insertMedia($url: String!) {
+        insertMedia(url: $url) {
+            url
+        }
+    }
+`;
+const insertMedia = graphql(insertMediaQuery, {
+    props: ({ mutate }) => {
+        return {
+            insertMedia: data => {
+                mutate({
+                    variables: data
+                });
+            }
+        };
+    }
+});
+
+const Data = compose(updateQueryWithData, insertMedia);
+export default Data(FeaturedImage);

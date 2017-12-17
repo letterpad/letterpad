@@ -16,10 +16,22 @@ export default class Menu extends Component {
         let navbarStatus = this.state.navbarOpen ? "in" : "";
         let menu = this.props.menu.map(item => {
             if (item.label == "Home") {
-                return <li><Link to="/">{item.label}</Link></li>;
+                return (
+                    <li>
+                        <Link to="/">{item.label}</Link>
+                    </li>
+                );
+            } else if (item.type == "page") {
+                return (
+                    <li>
+                        <Link to={"/page/" + item.label}>{item.label}</Link>
+                    </li>
+                );
             }
             return (
-                <li><Link to={"/posts/" + item.label}>{item.label}</Link></li>
+                <li>
+                    <Link to={"/posts/" + item.label}>{item.label}</Link>
+                </li>
             );
         });
 
@@ -49,12 +61,8 @@ export default class Menu extends Component {
                         className={"collapse navbar-collapse " + navbarStatus}
                         id="custom-collapse"
                     >
-
-                        <ul className="nav navbar-nav">
-                            {menu}
-                        </ul>
+                        <ul className="nav navbar-nav">{menu}</ul>
                     </div>
-
                 </nav>
 
                 <div className="copyright">
@@ -88,7 +96,6 @@ export default class Menu extends Component {
 
                     <p>© 2017 Ajaxtown</p>
                 </div>
-
             </div>
         );
     }

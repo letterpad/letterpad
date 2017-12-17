@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { gql, graphql } from "react-apollo";
 import ListItem from "../components/posts/ListItem";
+import BreadCrumb from "../components/BreadCrumb.js";
 
 const Paginate = ({ count, onClick, page }) => {
     const limit = 2;
@@ -23,6 +24,16 @@ const Paginate = ({ count, onClick, page }) => {
 };
 
 export default function List(type) {
+    let title = "post";
+    switch (type) {
+        case "post":
+            title = "Posts";
+            break;
+        case "page":
+            title = "Pages";
+            break;
+    }
+
     class List extends Component {
         constructor(props) {
             super(props);
@@ -42,9 +53,10 @@ export default function List(type) {
             });
 
             return (
-                <div className={"wrapper "}>
+                <div className="wrapper">
                     <section className="module-xs">
-                        <div className="container-fluid container-custom">
+                        <div className="module-title">{title}</div>
+                        <div className="container-fluid">
                             <table className="table table-hover">
                                 <thead>
                                     <tr>

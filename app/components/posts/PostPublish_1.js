@@ -7,6 +7,10 @@ const actions = {
     draft: "Save Draft"
 };
 class PostPublish extends Component {
+    componentDidMount() {
+        console.log("mounted", this.props.post);
+    }
+
     updatePost(e, status) {
         e.preventDefault();
         PostActions.setData(status);
@@ -40,7 +44,6 @@ class PostPublish extends Component {
                     {this.getButton("deleted", "Trash")}
                     {this.getButton("draft", "Save Draft")}
                     {this.getButton("publish", "Publish")}
-
                 </div>
             </div>
         );
@@ -48,43 +51,58 @@ class PostPublish extends Component {
 }
 
 const updatePostQuery = gql`
-  mutation updatePost($id: Int!, $title: String!, $body: String!, $status: String!, $excerpt: String!, $taxonomies: [TaxonomyInputType]) {
-    updatePost(id: $id, title: $title, body: $body, status: $status, excerpt: $excerpt, taxonomies: $taxonomies) {
-        id,
-        title,
-        body,
-        author {
-            username
-        },
-        type,
-        status,
-        excerpt,
-        created_at,
-        cover_image,
-        taxonomies {
-            id,
-            name,
+    mutation updatePost(
+        $id: Int!
+        $title: String!
+        $body: String!
+        $status: String!
+        $excerpt: String!
+        $taxonomies: [TaxonomyInputType]
+    ) {
+        updatePost(
+            id: $id
+            title: $title
+            body: $body
+            status: $status
+            excerpt: $excerpt
+            taxonomies: $taxonomies
+        ) {
+            id
+            title
+            body
+            author {
+                username
+            }
             type
+            status
+            excerpt
+            created_at
+            cover_image
+            taxonomies {
+                id
+                name
+                type
+            }
         }
     }
-  }
 `;
 const updateQueryWithData = graphql(updatePostQuery, {
     props: ({ mutate }) => ({
-        update: data => mutate({
-            variables: data,
-            updateQueries: {
-                getPost: (prev, { mutationResult }) => {
-                    debugger;
-                    return {
-                        post: {
-                            ...prev.post,
-                            ...mutationResult.data.updatePost
-                        }
-                    };
+        update: data =>
+            mutate({
+                variables: data,
+                updateQueries: {
+                    getPost: (prev, { mutationResult }) => {
+                        debugger;
+                        return {
+                            post: {
+                                ...prev.post,
+                                ...mutationResult.data.updatePost
+                            }
+                        };
+                    }
                 }
-            }
-        })
+            })
     })
 });
 export default updateQueryWithData(PostPublish);

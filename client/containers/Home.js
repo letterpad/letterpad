@@ -14,7 +14,7 @@ class Home extends Component {
         return (
             <div>
                 {(() => {
-                    return this.props.posts.rows.map((post, i) => {
+                    return this.props.posts.map((post, i) => {
                         return <ArticleList idx={i} key={i} post={post} />;
                     });
                 })()}

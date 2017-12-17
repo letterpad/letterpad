@@ -8,6 +8,7 @@ import TaxonomyInputType from "./schema/taxonomyInputType";
 import OptionInputType from "./schema/OptionInputType";
 import FileInputType from "./schema/fileInputType";
 import Setting from "./schema/setting";
+import Media from "./schema/media";
 
 import Sequalize from "sequelize";
 import { conn } from "../config/mysql.config";
@@ -22,7 +23,8 @@ import {
     PostTaxonomyModel,
     uploadFile,
     updateOptions,
-    SettingsModel
+    SettingsModel,
+    MediaModel
 } from "./models";
 
 function IsJsonString(str) {
@@ -55,6 +57,13 @@ const PostNode = `
         rows: [Post]
     }
 `;
+const MediaNode = `
+    type MediaNode {
+        count: Int,
+        rows: [Media]
+    }
+`;
+
 const PostMenuNode = `
     type PostMenuNode {
         count: Int,
@@ -72,6 +81,8 @@ let definition = `
         post(id: Int, type: String, permalink: String): Post
         posts(type: String, body: String, status: String, offset: Int, limit: Int, cursor: Int): PostNode
         postsMenu(type: String, name: String, postType: String): [PostTaxonomy]
+        pageMenu(name: String, postType: String): Post
+        media(id: Int, author_id: Int!, offset: Int, limit: Int, cursor: Int): MediaNode
         adjacentPosts(type: String, permalink:String): AdjacentPosts
         author(username: String!): Author
         authors: [Author]
@@ -84,6 +95,8 @@ let definition = `
         updatePost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, permalink: String, taxonomies: [TaxonomyInputType]):Post
         uploadFile(id: Int, cover_image: String):Post
         updateOptions(options:[OptionInputType]): [Setting]
+        insertMedia(url: String): Media
+        deleteMedia(id: Int!): Media
     }
     
 `;
@@ -99,7 +112,6 @@ let resolvers = {
             return createPost(data);
         },
         updatePost: (root, args, token) => {
-            debugger;
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
@@ -113,6 +125,20 @@ let resolvers = {
             return updateOptions(args).then(() => {
                 return SettingsModel.findAll();
             });
+        },
+        insertMedia: (root, args) => {
+            let data = {};
+            Object.keys(args).forEach(field => {
+                data[field] = args[field];
+            });
+            return MediaModel.create(data);
+        },
+        deleteMedia: (root, args) => {
+            let data = {};
+            Object.keys(args).forEach(field => {
+                data[field] = args[field];
+            });
+            return MediaModel.destroy(data);
         }
     },
     Query: {
@@ -130,8 +156,6 @@ let resolvers = {
                     };
                 });
             });
-
-            // return PostModel.findAndCountAll(conditions);
         },
         post: (root, args) => {
             return PostModel.findOne({ where: args });
@@ -141,6 +165,22 @@ let resolvers = {
         },
         authors: (root, args) => {
             return AuthorModel.findAll({ where: args });
+        },
+        media: (root, args) => {
+            let columns = Object.keys(PostModel.rawAttributes);
+            let conditions = getConditions(columns, args);
+
+            return MediaModel.count(conditions).then(count => {
+                if (args.cursor) {
+                    conditions.where.id = { gt: args.cursor };
+                }
+                return MediaModel.findAll(conditions).then(res => {
+                    return {
+                        count: count,
+                        rows: res
+                    };
+                });
+            });
         },
         taxonomies: (root, args) => {
             return TaxonomyModel.findAll({ where: args });
@@ -166,6 +206,24 @@ let resolvers = {
                             name: taxonomy.dataValues.name,
                             postType: "post"
                         });
+                    });
+                });
+        },
+        pageMenu: (root, args) => {
+            let that = this;
+            return SettingsModel.findOne({ where: { option: "menu" } })
+                .then(menu => {
+                    let t = menu.dataValues.value;
+                    return JSON.parse(t);
+                })
+                .then(menu => {
+                    let item = menu.filter(item => {
+                        if (item.label == args.name) {
+                            return item;
+                        }
+                    });
+                    return PostModel.findOne({
+                        where: { id: item[0].id }
                     });
                 });
         },
@@ -278,6 +336,8 @@ let schema = GraphQLTools.makeExecutableSchema({
         definition,
         Author,
         Post,
+        Media,
+        MediaNode,
         PostNode,
         PostMenuNode,
         PostTaxonomy,

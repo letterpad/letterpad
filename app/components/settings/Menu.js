@@ -1,54 +1,78 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import Select from "react-select";
 
-const MenuItem = (
-    { menuId, label, categories, onDDChange, onLabelChange, onDelete, index }
-) => {
-    let dropdown = categories.map((ele, idx) => {
+class MenuItem extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            disabled: false,
+            searchable: true,
+            selectValue: this.props.menuId,
+            clearable: true,
+            rtl: false
+        };
+        this.updateValue = this.updateValue.bind(this);
+    }
+
+    updateValue(newValue) {
+        this.setState({
+            selectValue: newValue
+        });
+        let id = newValue.split(":")[0];
+        let type = newValue.split(":")[1];
+        this.props.onDDChange(id, type, this.props.index);
+    }
+
+    render() {
+        let index = this.props.index;
         return (
-            <option key={idx} value={ele.id}>
-                {ele.name}
-            </option>
+            <tr>
+                <td>
+                    <Select
+                        id="state-select"
+                        ref="stateSelect"
+                        options={this.props.data}
+                        simpleValue
+                        clearable={this.state.clearable}
+                        name="selected-state"
+                        disabled={this.state.disabled}
+                        value={this.state.selectValue}
+                        onChange={this.updateValue}
+                        rtl={this.state.rtl}
+                        openOnClick={true}
+                        searchable={this.state.searchable}
+                    />
+                </td>
+                <td>
+                    <input
+                        type="text"
+                        defaultValue={this.props.label}
+                        className="form-control"
+                        onBlur={e => this.props.onLabelChange(e, index)}
+                    />
+                </td>
+                <td>
+                    <input
+                        type="text"
+                        defaultValue={this.props.priority}
+                        className="form-control"
+                        onBlur={e => this.props.onPriorityChange(e, index)}
+                    />
+                </td>
+                <td>
+                    <button
+                        style={{ padding: "9px" }}
+                        onClick={e => this.props.onDelete(e, index)}
+                        className="btn-xs btn btn-dark"
+                    >
+                        <i className="fa fa-trash fa-2x" aria-hidden="true" />
+                    </button>
+                </td>
+            </tr>
         );
-    });
-    let style = {
-        "border-radius": 0,
-        border: "1px solid #eee",
-        width: "100%",
-        height: "37px"
-    };
-    return (
-        <tr>
-            <td>
-                <select
-                    style={style}
-                    onChange={e => onDDChange(e, index)}
-                    value={menuId}
-                >
-                    <option value="0">Select</option>
-                    {dropdown}
-                </select>
-            </td>
-            <td>
-                <input
-                    type="text"
-                    defaultValue={label}
-                    className="form-control"
-                    onBlur={e => onLabelChange(e, index)}
-                />
-            </td>
-            <td>
-                <button
-                    style={{ padding: "9px" }}
-                    onClick={e => onDelete(e, index)}
-                    className="btn-xs btn btn-dark"
-                >
-                    <i className="fa fa-trash fa-2x" aria-hidden="true" />
-                </button>
-            </td>
-        </tr>
-    );
-};
+    }
+}
 
 export default class Menu extends Component {
     constructor(props) {
@@ -56,12 +80,38 @@ export default class Menu extends Component {
         this.updateOption = this.updateOption.bind(this);
         let menu = JSON.parse(this.props.data.menu.value);
         this.state = {
-            menu: menu
+            menu: menu,
+            loaded: false,
+            data: []
         };
     }
-    onDDChange(e, index) {
-        let newId = e.target.value;
+    componentWillReceiveProps(nextProps) {
+        if (this.state.loaded) return;
+
+        if (!nextProps.pages.loading) {
+            const categories = nextProps.categories.map((ele, idx) => {
+                return {
+                    value: ele.id + ":category",
+                    label: ele.name + " (Category)",
+                    type: "cateogry"
+                };
+            });
+            const pages = nextProps.pages.posts.rows.map((ele, idx) => {
+                return {
+                    value: ele.id + ":page",
+                    label: ele.title + " (Page)",
+                    type: "page"
+                };
+            });
+            this.state.data = [...categories, ...pages];
+            this.state.loaded = true;
+            this.setState(this.state);
+        }
+    }
+
+    onDDChange(newId, type, index) {
         this.state.menu[index].id = newId;
+        this.state.menu[index].type = type;
         this.setState(this.state.menu);
         this.updateOption();
     }
@@ -70,9 +120,19 @@ export default class Menu extends Component {
         this.setState(this.state.menu);
         this.updateOption();
     }
+    onPriorityChange(e, index) {
+        this.state.menu[index].priority = e.target.value;
+        this.setState(this.state.menu, () => {
+            this.updateOption();
+        });
+    }
     updateOption() {
-        console.log(this.state.menu);
-        this.props.updateOption("menu", JSON.stringify(this.state.menu));
+        //console.log(this.state.menu);
+        const menu = [...this.state.menu];
+        const sorted = menu.sort((a, b) => {
+            return a.priority - b.priority;
+        });
+        this.props.updateOption("menu", JSON.stringify(sorted));
     }
     addItem() {
         this.state.menu.push({ id: 0, label: "" });
@@ -85,47 +145,47 @@ export default class Menu extends Component {
     }
 
     render() {
+        if (this.props.pages.loading) {
+            return <div>Loading</div>;
+        }
+
         let menu = this.state.menu.map((item, idx) => {
             return (
                 <MenuItem
                     key={idx}
                     index={idx}
-                    menuId={item.id}
+                    menuId={item.id + ":" + item.type}
                     label={item.label}
-                    categories={this.props.categories}
+                    priority={item.priority}
+                    data={this.state.data}
                     updateOption={this.updateOption}
                     onDDChange={this.onDDChange.bind(this)}
                     onLabelChange={this.onLabelChange.bind(this)}
+                    onPriorityChange={this.onPriorityChange.bind(this)}
                     onDelete={this.onDelete.bind(this)}
                 />
             );
         });
         return (
             <div>
-
                 <div className="form-group">
-                    <label className="custom-label">
-                        Menu
-                    </label>
                     <button
                         className="btn btn-xs btn-dark pull-right"
                         onClick={this.addItem.bind(this)}
                     >
                         Add
                     </button>
-                    <table className="table table-bordered">
+                    <table className="table">
                         <thead>
                             <tr>
-                                <th>Category</th>
-                                <th>Label</th>
-                                <th>Delete</th>
+                                <th width="50%">Menu Item</th>
+                                <th width="20%0%">Label</th>
+                                <th width="10%">Priority</th>
+                                <th width="10%">Delete</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {menu}
-                        </tbody>
+                        <tbody>{menu}</tbody>
                     </table>
-
                 </div>
             </div>
         );
