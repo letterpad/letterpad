@@ -19,8 +19,11 @@ export default function Create(type) {
         componentDidMount() {
             let that = this;
             this.props.createPost({ type: type }).then(result => {
-                PostActions.setData(result.data.createPost);
-                this.setState({ loading: false, post: result.data.createPost });
+                PostActions.setData(result.data.createPost.post);
+                this.setState({
+                    loading: false,
+                    post: result.data.createPost.post
+                });
             });
 
             PostActions.subscribe(id => {

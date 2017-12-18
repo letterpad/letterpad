@@ -1,3 +1,4 @@
+import Sequalize from "sequelize";
 import {
     _createPost,
     _updatePost,
@@ -6,6 +7,7 @@ import {
     SettingsModel,
     TaxonomyModel
 } from "../models";
+import { getTaxonomies } from "../models/taxonomy";
 
 function IsJsonString(str) {
     try {
@@ -40,6 +42,7 @@ export default {
                 if (args.cursor) {
                     conditions.where.id = { gt: args.cursor };
                 }
+                conditions.order = [["id", "DESC"]];
                 return PostModel.findAll(conditions).then(res => {
                     return {
                         count: count,
@@ -51,115 +54,75 @@ export default {
         post: (root, args) => {
             return PostModel.findOne({ where: args });
         },
-        postsMenu: (root, args) => {
+        postsMenu: async (root, args) => {
             let that = this;
-            return SettingsModel.findOne({ where: { option: "menu" } })
-                .then(menu => {
-                    let t = menu.dataValues.value;
-                    return JSON.parse(t);
-                })
-                .then(menu => {
-                    let item = menu.filter(item => {
-                        if (item.slug == args.slug) {
-                            return item;
-                        }
-                    });
-                    return TaxonomyModel.findOne({
-                        where: { id: item[0].id }
-                    }).then(taxonomy => {
-                        return resolvers.Query.postTaxonomies(root, {
-                            type: "post_category",
-                            name: taxonomy.dataValues.name,
-                            postType: "post"
-                        });
-                    });
-                });
+            let menu = await SettingsModel.findOne({
+                where: { option: "menu" }
+            });
+            menu = JSON.parse(menu.dataValues.value);
+
+            let item = menu.filter(item => item.slug == args.slug);
+
+            const taxonomy = await TaxonomyModel.findOne({
+                where: { id: item[0].id }
+            });
+
+            return getTaxonomies({
+                type: "post_category",
+                name: taxonomy.dataValues.name,
+                postType: "post"
+            });
         },
-        pageMenu: (root, args) => {
+        pageMenu: async (root, args) => {
             let that = this;
-            return SettingsModel.findOne({ where: { option: "menu" } })
-                .then(menu => {
-                    let t = menu.dataValues.value;
-                    return JSON.parse(t);
-                })
-                .then(menu => {
-                    let item = menu.filter(item => {
-                        if (item.slug == args.slug) {
-                            return item;
-                        }
-                    });
-                    return PostModel.findOne({
-                        where: { id: item[0].id }
-                    });
+            let menu = await SettingsModel.findOne({
+                where: { option: "menu" }
+            });
+            menu = JSON.parse(menu.dataValues.value);
+            let item = menu.reduce(item => item.slug == args.slug);
+            console.log(item);
+            if (!item) {
+                return PostModel.findOne({
+                    where: { type: "page", slug: args.slug }
                 });
+            }
+            return PostModel.findOne({
+                where: { id: item[0].id }
+            });
         },
-        adjacentPosts: (root, args) => {
+        adjacentPosts: async (root, args) => {
             let data = {
                 previous: {},
                 next: {}
             };
-            return PostModel.findOne({ where: args })
-                .then(post => {
-                    if (post === null) {
-                        throw new Error("Invalid query");
-                    }
-                    return post.dataValues.id;
-                })
-                .then(postId => {
-                    return PostModel.findOne({
-                        where: {
-                            id: { $lt: postId },
-                            type: args.type
-                        },
-                        order: [["id", "DESC"]],
-                        limit: 1
-                    })
-                        .then(post => {
-                            data.previous = post;
-                        })
-                        .then(() => {
-                            return PostModel.findOne({
-                                where: {
-                                    id: {
-                                        $gt: postId
-                                    },
-                                    type: args.type
-                                },
-                                order: [["id", "ASC"]],
-                                limit: 1
-                            });
-                        })
-                        .then(post => {
-                            data.next = post;
-                            return data;
-                        });
-                })
-                .then(data => {
-                    return data;
-                });
+            const postCheck = await PostModel.findOne({ where: args });
+            if (postCheck === null) {
+                throw new Error("Invalid query");
+            }
+            const prevPost = await PostModel.findOne({
+                where: {
+                    id: { $lt: postCheck.dataValues.id },
+                    type: args.type
+                },
+                order: [["id", "DESC"]],
+                limit: 1
+            });
+            data.previous = prevPost;
+            const nextPost = await PostModel.findOne({
+                where: {
+                    id: {
+                        $gt: postId
+                    },
+                    type: args.type
+                },
+                order: [["id", "ASC"]],
+                limit: 1
+            });
+            data.next = nextPost;
+            return data;
         },
         postTaxonomies: (root, args) => {
-            let postType = args.postType;
-            delete args.postType;
-            return TaxonomyModel.findAll({
-                attributes: ["name", "id", "type"],
-                include: [
-                    {
-                        model: PostModel,
-                        attributes: [
-                            [
-                                Sequalize.fn("COUNT", Sequalize.col("post.id")),
-                                "post_count"
-                            ]
-                        ],
-                        as: "post",
-                        where: postType ? { type: postType } : {},
-                        required: true
-                    }
-                ],
-                where: args,
-                group: ["taxonomy_id", "post_id"]
-            });
+            return getTaxonomies(args);
         }
     },
     Mutation: {
@@ -168,6 +131,7 @@ export default {
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
             });
+
             return _createPost(data);
         },
         updatePost: (root, args, token) => {

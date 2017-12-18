@@ -17,7 +17,7 @@ export default `
       count: Int,
       rows: [Post]
   }
-  
+
   type PostTaxonomy {
     id: Int
     name: String
@@ -37,6 +37,12 @@ export default `
     type: String
   }
 
+  type Response {
+    ok: Boolean!
+    post: Post,
+    errors: [Error!]
+  }
+
   type Query {
     post(id: Int, type: String, slug: String): Post
     posts(type: String, body: String, status: String, offset: Int, limit: Int, cursor: Int): PostNode
@@ -47,8 +53,8 @@ export default `
   }
 
   type Mutation {
-    createPost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, slug: String, taxonomies: [TaxonomyInputType]):Post
-    updatePost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, slug: String, taxonomies: [TaxonomyInputType]):Post
+    createPost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, slug: String, taxonomies: [TaxonomyInputType]):Response!
+    updatePost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, slug: String, taxonomies: [TaxonomyInputType]): Response!
     uploadFile(id: Int, cover_image: String):Post
   }
 `;

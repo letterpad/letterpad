@@ -10,6 +10,7 @@ require.extensions[".gql"] = () => {
 };
 
 require("babel-register");
+require("babel-polyfill");
 require("./api/server");
 let express = require("express");
 let config = require("./config/config");

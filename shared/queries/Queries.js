@@ -11,6 +11,8 @@ export const GET_POSTS = gql`
                 author {
                     username
                 }
+                type
+                slug
                 status
                 created_at
                 excerpt
@@ -33,6 +35,7 @@ export const GET_SINGLE_POST = gql`
             author {
                 username
             }
+            type
             status
             created_at
             cover_image

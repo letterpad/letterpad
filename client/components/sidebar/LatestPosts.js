@@ -12,7 +12,7 @@ export default class LatestPosts extends Component {
                             if (this.props.loading) {
                                 return <div>Loading...</div>;
                             }
-                            return this.props.posts.map((post, i) => {
+                            return this.props.posts.rows.map((post, i) => {
                                 return (
                                     <li key={i}>
                                         <Link to={`/${post.type}/${post.slug}`}>
