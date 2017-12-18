@@ -5,6 +5,7 @@ import PostPublish from "../components/posts/PostPublish";
 import PostActions from "../components/posts/PostActions";
 import Tags from "../components/posts/Tags";
 import Categories from "../components/posts/Categories";
+import { CREATE_POST } from "../../shared/queries/Mutations";
 
 export default function Create(type) {
     class Create extends Component {
@@ -51,30 +52,7 @@ export default function Create(type) {
         }
     }
 
-    const createPostQuery = gql`
-        mutation createPost($type: String!) {
-            createPost(type: $type) {
-                id
-                title
-                body
-                author {
-                    username
-                }
-                status
-                type
-                excerpt
-                created_at
-                cover_image
-                taxonomies {
-                    id
-                    name
-                    type
-                }
-            }
-        }
-    `;
-
-    const createQueryWithData = graphql(createPostQuery, {
+    const createQueryWithData = graphql(CREATE_POST, {
         props: ({ mutate }) => ({
             createPost: data =>
                 mutate({

@@ -3,6 +3,7 @@ import { gql, graphql } from "react-apollo";
 import { Link } from "react-router";
 import moment from "moment";
 import { browserHistory } from "react-router";
+import { GET_AUTHORS } from "../../shared/queries/Queries";
 
 class ListItem extends Component {
     constructor(props) {
@@ -67,21 +68,8 @@ class Authors extends Component {
         );
     }
 }
-const optionsQuery = gql`
-    query getAuthors {
-        authors {
-            username
-            role {
-                name
-                permissions {
-                    name
-                }
-            }
-        }
-    }
-`;
 
-const ContainerWithData = graphql(optionsQuery, {
+const ContainerWithData = graphql(GET_AUTHORS, {
     props: ({ data: { loading, authors } }) => ({
         authors,
         loading

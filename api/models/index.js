@@ -42,7 +42,7 @@ AuthorModel.belongsTo(RoleModel);
 
 conn.sync({ force: false });
 
-export { PostModel, createPost, updatePost } from "./post";
+export { PostModel, _createPost, _updatePost } from "./post";
 export { TaxonomyModel } from "./taxonomy";
 export { AuthorModel } from "./author";
 export { RoleModel } from "./role";

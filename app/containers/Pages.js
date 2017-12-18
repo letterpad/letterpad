@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { gql, graphql } from "react-apollo";
 import ListItem from "../components/posts/ListItem";
 import { Link } from "react-router";
+import { GET_POSTS } from "../../shared/queries/Queries";
 
 const Paginate = ({ count, page }) => {
     const limit = 3;
@@ -77,31 +78,7 @@ class Pages extends Component {
     }
 }
 
-const allPosts = gql`
-    query getPosts($type: String!, $offset: Int, $limit: Int) {
-        posts(type: $type, offset: $offset, limit: $limit) {
-            count
-            rows {
-                id
-                title
-                body
-                author {
-                    username
-                }
-                status
-                created_at
-                excerpt
-                taxonomies {
-                    id
-                    name
-                    type
-                }
-            }
-        }
-    }
-`;
-
-const ContainerWithData = graphql(allPosts, {
+const ContainerWithData = graphql(GET_POSTS, {
     options: props => {
         return {
             variables: {

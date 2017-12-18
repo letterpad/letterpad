@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import ArticleEdit from "../components/posts/ArticleEdit";
-import { gql, graphql } from "react-apollo";
+import { graphql } from "react-apollo";
 import PostPublish from "../components/posts/PostPublish";
 import Tags from "../components/posts/Tags";
 import Categories from "../components/posts/Categories";
 import Excerpt from "../components/posts/Excerpt";
+import { GET_SINGLE_POST } from "../../shared/queries/Queries";
 
 export default function Single(type) {
     class Single extends Component {
@@ -34,30 +35,7 @@ export default function Single(type) {
         }
     }
 
-    const postQuery = gql`
-        query getPost($id: Int!) {
-            post(id: $id) {
-                id
-                title
-                body
-                author {
-                    username
-                }
-                status
-                created_at
-                cover_image
-                excerpt
-                slug
-                taxonomies {
-                    id
-                    name
-                    type
-                }
-            }
-        }
-    `;
-
-    const ContainerWithData = graphql(postQuery, {
+    const ContainerWithData = graphql(GET_SINGLE_POST, {
         options: props => ({ variables: { id: props.params.post_id } }),
         props: ({ data: { loading, post } }) => ({
             post,

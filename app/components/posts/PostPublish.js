@@ -44,7 +44,6 @@ class PostPublish extends Component {
             })
             .then(result => {
                 PostActions.postUpdated(result.data.updatePost.id);
-                this.props.refetchQueries();
             });
     }
 

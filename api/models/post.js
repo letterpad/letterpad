@@ -64,7 +64,7 @@ export function createTestPost(post) {
     });
 }
 
-export function createPost(data) {
+export function _createPost(data) {
     data.author_id = 1;
     let title = data.title;
     if (title) {
@@ -88,7 +88,7 @@ export function createPost(data) {
         });
 }
 
-export function updatePost(post) {
+export function _updatePost(post) {
     let title = post.title;
     if (title) {
         post.slug = title

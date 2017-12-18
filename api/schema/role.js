@@ -1,10 +1,12 @@
-import Permission from "./permission";
-const Role = `
+export default `
   type Role {
     id: Int
     name: String
     permissions: [Permission]
   }
-`;
 
-export default () => [Role, Permission];
+  type Permission {
+    id: Int
+    name: String
+  }
+`;

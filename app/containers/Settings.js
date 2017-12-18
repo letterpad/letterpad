@@ -4,6 +4,12 @@ import General from "../components/settings/General";
 import Social from "../components/settings/Social";
 import Sidebar from "../components/settings/Sidebar";
 import Menu from "../components/settings/Menu";
+import {
+    GET_OPTIONS,
+    GET_TAXONOMIES,
+    GET_PAGE_NAMES
+} from "../../shared/queries/Queries";
+import { UPDATE_OPTIONS } from "../../shared/queries/Mutations";
 
 //import Theme from "../components/settings/Theme";
 
@@ -129,77 +135,38 @@ class Settings extends Component {
         );
     }
 }
-const optionsQuery = gql`
-    query getOptions {
-        settings {
-            id
-            option
-            value
-        }
-    }
-`;
 
-const ContainerWithData = graphql(optionsQuery, {
+const ContainerWithData = graphql(GET_OPTIONS, {
     name: "options"
 });
 
-const CategoriesQuery = gql`
-    query getTaxonomies($type: String!) {
-        taxonomies(type: $type) {
-            id
-            name
-        }
-    }
-`;
-const CategoriesData = graphql(CategoriesQuery, {
+const CategoriesData = graphql(GET_TAXONOMIES, {
     name: "categories",
     options: { variables: { type: "post_category" } }
 });
 
-const PagesQuery = gql`
-    query getPosts($type: String!) {
-        posts(type: $type) {
-            count
-            rows {
-                id
-                title
-                slug
-            }
-        }
-    }
-`;
-
-const PagesData = graphql(PagesQuery, {
+const PagesData = graphql(GET_PAGE_NAMES, {
     name: "pages",
     options: props => ({ variables: { type: "page" } })
 });
 const Data = compose(ContainerWithData, CategoriesData, PagesData);
 
-const mutateOptions = gql`
-    mutation updateOptions($options: [OptionInputType]) {
-        updateOptions(options: $options) {
-            id
-            option
-            value
-        }
-    }
-`;
-const createQueryWithData = graphql(mutateOptions, {
+const createQueryWithData = graphql(UPDATE_OPTIONS, {
     props: ({ mutate }) => {
         return {
             updateOptions: data => {
                 return mutate({
-                    variables: { options: data }
-                    // updateQueries: {
-                    //     getOptions: (prev, { mutationResult }) => {
-                    //         return {
-                    //             post: {
-                    //                 ...prev.settings,
-                    //                 ...mutationResult.data.updateOptions
-                    //             }
-                    //         };
-                    //     }
-                    // }
+                    variables: { options: data },
+                    updateQueries: {
+                        getOptions: (prev, { mutationResult }) => {
+                            return {
+                                post: {
+                                    ...prev.settings,
+                                    ...mutationResult.data.updateOptions
+                                }
+                            };
+                        }
+                    }
                 });
             }
         };
