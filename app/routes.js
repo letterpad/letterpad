@@ -2,6 +2,20 @@ import React from "react";
 import { Route, IndexRoute } from "react-router";
 import Menu from "./components/Menu";
 
+// import App from "./App";
+// import Home from "./Home";
+// import LoginView from "./LoginView";
+// import TwoColumnLayout from "./TwoColumnLayout";
+// import OneColumnLayout from "./OneColumnLayout";
+// import List from "./List";
+// import Posts from "./Posts";
+// import Media from "./Media";
+// import Pages from "./Pages";
+// import Single from "./Single";
+// import Create from "./Create";
+// import Settings from "./Settings";
+// import Author from "./Author";
+
 import {
     App,
     Home,

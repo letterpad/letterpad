@@ -5,6 +5,10 @@ require.extensions[".sass"] = () => {
 require.extensions[".scss"] = () => {
     return "";
 };
+require.extensions[".gql"] = () => {
+    return "";
+};
+
 require("babel-register");
 require("./api/server");
 let express = require("express");
@@ -23,9 +27,10 @@ app.use(
 app.use(express.static("public"));
 // start a webpack-dev-server
 var webpack = require("webpack");
-var wpConfigFile = process.env.NODE_ENV == "dev"
-    ? "./webpack.config.dev.js"
-    : "./webpack.config.prod.js";
+var wpConfigFile =
+    process.env.NODE_ENV == "dev"
+        ? "./webpack.config.dev.js"
+        : "./webpack.config.prod.js";
 var webpackConfig = require(wpConfigFile);
 var compiler = webpack(webpackConfig);
 app.use(

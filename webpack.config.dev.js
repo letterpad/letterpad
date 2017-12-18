@@ -34,6 +34,13 @@ module.exports = {
                 include: /public/,
                 exclude: /node_modules/
             },
+
+            // query loader
+            {
+                test: /\.(graphql|gql)$/,
+                exclude: /node_modules/,
+                loader: "graphql-tag/loader"
+            },
             // js
             {
                 test: /\.js$/,

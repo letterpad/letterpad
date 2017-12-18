@@ -1,11 +1,14 @@
-import Role from "./Role";
-const Author = `
+export default `
   type Author {
     id: Int
     username: String
     email: String,
     role: Role
   }
-`;
 
-export default () => [Author, Role];
+  type Query {
+    author(username: String!): Author
+    authors: [Author]
+  }
+
+`;

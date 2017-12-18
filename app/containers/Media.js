@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { gql, graphql } from "react-apollo";
+import { graphql } from "react-apollo";
 import MediaItem from "../components/MediaItem";
 import { Link } from "react-router";
+import { GET_MEDIA } from "../../shared/queries/Queries";
 
 const Paginate = ({ count, page }) => {
     const limit = 3;
@@ -79,20 +80,7 @@ class Media extends Component {
     }
 }
 
-const mediaQuery = gql`
-    query getMedia($author_id: Int!, $offset: Int, $limit: Int) {
-        media(author_id: $author_id, offset: $offset, limit: $limit) {
-            count
-            rows {
-                id
-                url
-                created_at
-            }
-        }
-    }
-`;
-
-const ContainerWithData = graphql(mediaQuery, {
+const ContainerWithData = graphql(GET_MEDIA, {
     options: props => ({
         variables: {
             author_id: "1",
