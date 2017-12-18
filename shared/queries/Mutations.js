@@ -3,21 +3,29 @@ import gql from "graphql-tag";
 export const CREATE_POST = gql`
     mutation createPost($type: String!) {
         createPost(type: $type) {
-            id
-            title
-            body
-            author {
-                username
+            ok
+            errors {
+                path
+                message
             }
-            status
-            type
-            excerpt
-            created_at
-            cover_image
-            taxonomies {
+            post {
                 id
-                name
+                title
+                body
+                author {
+                    username
+                }
+                status
                 type
+                slug
+                excerpt
+                created_at
+                cover_image
+                taxonomies {
+                    id
+                    name
+                    type
+                }
             }
         }
     }

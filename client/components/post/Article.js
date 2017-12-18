@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import moment from "moment";
 import AdjacentPosts from "./AdjacentPosts";
 
-export default class ArticleList extends Component {
+export default class Article extends Component {
     render() {
         const tags = this.props.post.taxonomies
             .filter(taxonomy => {

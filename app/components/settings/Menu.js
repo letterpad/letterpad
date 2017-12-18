@@ -27,7 +27,7 @@ class MenuItem extends Component {
                 this.refs.slug.value = items[i].slug;
                 this.refs.slug.disabled = true;
                 this.props.onSlugChange(
-                    items[i].id,
+                    items[i].slug,
                     this.props.type,
                     this.props.index
                 );

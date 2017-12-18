@@ -11,7 +11,7 @@ class Page extends Component {
         if (this.props.loading) {
             return <div>hello</div>;
         }
-        if (this.props.post === null) {
+        if (this.props.page === null) {
             return <div>Nothing found..Absolute bullshit</div>;
         }
         return (
@@ -32,6 +32,7 @@ const pageQuery = gql`
             created_at
             excerpt
             cover_image
+            slug
             taxonomies {
                 id
                 name

@@ -12,7 +12,9 @@ export default class ListItem extends Component {
         e.stopPropagation();
     }
     openArticle() {
-        browserHistory.push("/admin/post/" + this.props.post.id);
+        browserHistory.push(
+            "/admin/" + this.props.post.type + "/" + this.props.post.id
+        );
     }
     render() {
         return (

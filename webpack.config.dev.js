@@ -4,8 +4,16 @@ var webpack = require("webpack");
 module.exports = {
     devtool: "source-map",
     entry: {
-        "app-admin": ["webpack-hot-middleware/client", "./app/app"],
-        "app-client": ["webpack-hot-middleware/client", "./client/app"]
+        "app-admin": [
+            "babel-polyfill",
+            "webpack-hot-middleware/client",
+            "./app/app"
+        ],
+        "app-client": [
+            "babel-polyfill",
+            "webpack-hot-middleware/client",
+            "./client/app"
+        ]
     },
     output: {
         path: path.join(__dirname, "dist"),

@@ -2,13 +2,16 @@ import { conn } from "../../config/mysql.config";
 import Sequalize from "sequelize";
 import { TaxonomyModel } from "./taxonomy";
 import { PostTaxonomyModel } from "./postTaxonomy";
+import { parseErrors } from "../../shared/util";
+import slugify from "../../shared/slugify";
+import siteConfig from "../../config/site.config";
 
 export const PostModel = conn.define(
     "posts",
     {
         title: {
             type: Sequalize.STRING,
-            defaultValue: ""
+            defaultValue: siteConfig.default_title
         },
         body: {
             type: Sequalize.TEXT
@@ -64,98 +67,104 @@ export function createTestPost(post) {
     });
 }
 
-export function _createPost(data) {
+export async function _createPost(data) {
     data.author_id = 1;
-    let title = data.title;
-    if (title) {
-        data.slug = title
-            .replace(/[^a-z0-9]+/gi, "-")
-            .replace(/^-*|-*$/g, "")
-            .toLowerCase();
-    }
+    let title = data.title || siteConfig.default_slug;
+    try {
+        //  create the slug
+        data.slug = await slugify(PostModel, title);
 
-    return PostModel.create(data)
-        .then(postObj => {
-            return PostTaxonomyModel.create({
-                taxonomy_id: 1,
-                post_id: postObj.id
-            }).then(() => {
-                return postObj;
-            });
-        })
-        .then(postObj => {
-            return PostModel.findOne({ where: { id: postObj.id } });
+        const createdPost = await PostModel.create(data);
+
+        await PostTaxonomyModel.create({
+            taxonomy_id: 1,
+            post_id: createdPost.id
         });
+
+        var post = PostModel.findOne({ where: { id: createdPost.id } });
+        return {
+            ok: true,
+            post,
+            errors: []
+        };
+    } catch (e) {
+        var errors = parseErrors(e);
+        return {
+            ok: false,
+            post: {},
+            errors
+        };
+    }
 }
 
-export function _updatePost(post) {
-    let title = post.title;
-    if (title) {
-        post.slug = title
-            .replace(/[^a-z0-9]+/gi, "-")
-            .replace(/^-*|-*$/g, "")
-            .toLowerCase();
-    }
-    return PostModel.update(post, {
-        where: { id: post.id }
-    })
-        .then(updatePostResult => {
-            //delete extra taxonomies
-            if (post.taxonomies && post.taxonomies.length > 0) {
-                let ids = post.taxonomies.map(tax => {
-                    return tax.id;
-                });
-                return PostTaxonomyModel.destroy({
-                    where: {
-                        taxonomy_id: {
-                            $notIn: ids
-                        },
-                        post_id: post.id
-                    }
-                }).then(() => {
-                    return updatePostResult;
-                });
-            } else {
-                return updatePostResult;
-            }
-        })
-        .then(updatePostResult => {
-            let taxonomies = [new Promise(resolve => resolve())];
-            if (post.taxonomies && post.taxonomies.length > 0) {
-                taxonomies = post.taxonomies.map(taxonomy => {
+export async function _updatePost(post) {
+    try {
+        if (
+            post.slug.indexOf(siteConfig.default_slug) === 0 &&
+            post.title !== siteConfig.default_title
+        ) {
+            //  create the slug
+            post.slug = await slugify(PostModel, post.title);
+        }
+        await PostModel.update(post, {
+            where: { id: post.id }
+        });
+        let taxonomies = [new Promise(resolve => resolve())];
+
+        if (post.taxonomies && post.taxonomies.length > 0) {
+            let ids = post.taxonomies.map(tax => {
+                return tax.id;
+            });
+            await PostTaxonomyModel.destroy({
+                where: {
+                    taxonomy_id: {
+                        $notIn: ids
+                    },
+                    post_id: post.id
+                }
+            });
+            await Promise.all(
+                post.taxonomies.map(async taxonomy => {
                     if (taxonomy.id != 0) {
-                        return PostTaxonomyModel.findOrCreate({
+                        await PostTaxonomyModel.findOrCreate({
                             where: {
                                 taxonomy_id: taxonomy.id,
                                 post_id: post.id
                             }
                         });
+                        return;
                     }
-                    return TaxonomyModel.findOrCreate({
+                    const taxItem = await TaxonomyModel.findOrCreate({
                         where: {
                             name: taxonomy.name,
                             type: taxonomy.type
                         }
-                    })
-                        .then(result => {
-                            taxonomy.id = result.id;
-                            return result;
-                        })
-                        .then(result => {
-                            return PostTaxonomyModel.findOrCreate({
-                                where: {
-                                    taxonomy_id: result[0].id,
-                                    post_id: post.id
-                                }
-                            });
-                        });
-                });
-            }
-            return Promise.all(taxonomies).then(result => {
-                return post;
+                    });
+                    taxonomy.id = taxItem.id;
+                    await PostTaxonomyModel.findOrCreate({
+                        where: {
+                            taxonomy_id: taxItem[0].id,
+                            post_id: post.id
+                        }
+                    });
+                })
+            );
+
+            const updatedPost = await PostModel.findOne({
+                where: { id: post.id }
             });
-        })
-        .then(() => {
-            return PostModel.findOne({ where: { id: post.id } });
-        });
+            return {
+                ok: true,
+                post: updatedPost,
+                errors: []
+            };
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            ok: false,
+            data: {},
+            errors: parseErrors(e)
+        };
+    }
 }

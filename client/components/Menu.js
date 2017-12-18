@@ -15,7 +15,7 @@ export default class Menu extends Component {
     render() {
         let navbarStatus = this.state.navbarOpen ? "in" : "";
         let menu = this.props.menu.map(item => {
-            if (item.slug == "home") {
+            if (item.label == "Home") {
                 return (
                     <li>
                         <Link to="/">{item.label}</Link>

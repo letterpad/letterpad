@@ -20,7 +20,7 @@ class Sidebar extends Component {
                 />
                 <LatestPosts
                     loading={this.props.ploading}
-                    posts={this.props.posts.rows}
+                    posts={this.props.posts}
                 />
             </div>
         );

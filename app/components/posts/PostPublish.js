@@ -13,14 +13,13 @@ class PostPublish extends Component {
         super(props);
         this.changePostStatus = this.changePostStatus.bind(this);
         this.state = {
+            post: this.props.post,
             published: 1
         };
     }
     componentWillReceiveProps(nextProps) {
         const status = nextProps.post.status == "publish" ? 1 : 0;
-        if (status != this.state.published) {
-            this.setState({ published: nextProps.post.status });
-        }
+        this.setState({ published: nextProps.post.status });
     }
 
     componentDidMount() {
@@ -43,7 +42,8 @@ class PostPublish extends Component {
                 ...data
             })
             .then(result => {
-                PostActions.postUpdated(result.data.updatePost.id);
+                PostActions.postUpdated(result.data.updatePost.post.id);
+                this.setState({ post: result.data.updatePost.post });
             });
     }
 
@@ -67,7 +67,11 @@ class PostPublish extends Component {
 
     render() {
         const publishedCls = this.state.published ? "on" : "off";
-        const permalink = siteConfig.root_url + "post/" + this.props.post.slug;
+        const permalink =
+            siteConfig.root_url +
+            this.state.post.type +
+            "/" +
+            this.state.post.slug;
         return (
             <div className="card">
                 <div className="module-title">Publishing</div>
@@ -92,7 +96,7 @@ class PostPublish extends Component {
                         className="form-control"
                         placeholder="Published date"
                         value={moment(
-                            new Date(this.props.post.created_at)
+                            new Date(this.state.post.created_at)
                         ).format("DD-MM-Y hh:mm A")}
                     />
                 </div>
@@ -104,7 +108,7 @@ class PostPublish extends Component {
                         type="text"
                         className="form-control"
                         placeholder="Slug"
-                        value={this.props.post.slug}
+                        value={this.state.post.slug}
                     />
                 </div>
                 <div className="x_content m-b-20">
@@ -136,6 +140,7 @@ const updatePostQuery = gql`
         $status: String!
         $excerpt: String!
         $taxonomies: [TaxonomyInputType]
+        $slug: String!
     ) {
         updatePost(
             id: $id
@@ -144,22 +149,31 @@ const updatePostQuery = gql`
             status: $status
             excerpt: $excerpt
             taxonomies: $taxonomies
+            slug: $slug
         ) {
-            id
-            title
-            body
-            author {
-                username
+            ok
+            errors {
+                path
+                message
             }
-            type
-            status
-            excerpt
-            created_at
-            cover_image
-            taxonomies {
+            post {
                 id
-                name
+                title
+                body
+                author {
+                    username
+                }
+                slug
                 type
+                status
+                excerpt
+                created_at
+                cover_image
+                taxonomies {
+                    id
+                    name
+                    type
+                }
             }
         }
     }
