@@ -74,7 +74,9 @@ class MenuItem extends Component {
                         type="text"
                         defaultValue={this.props.label}
                         className="form-control"
-                        onBlur={e => this.props.onLabelChange(e, index)}
+                        onBlur={e =>
+                            this.props.onLabelChange(e.target.value, index)
+                        }
                     />
                 </td>
                 <td>
@@ -82,7 +84,9 @@ class MenuItem extends Component {
                         type="text"
                         ref="slug"
                         className="form-control"
-                        onBlur={e => this.props.onSlugChange(e, index)}
+                        onBlur={e =>
+                            this.props.onSlugChange(e.target.value, index)
+                        }
                     />
                 </td>
                 <td>
@@ -90,7 +94,9 @@ class MenuItem extends Component {
                         type="text"
                         defaultValue={this.props.priority}
                         className="form-control"
-                        onBlur={e => this.props.onPriorityChange(e, index)}
+                        onBlur={e =>
+                            this.props.onPriorityChange(e.target.value, index)
+                        }
                     />
                 </td>
                 <td>
@@ -149,19 +155,19 @@ export default class Menu extends Component {
         this.setState(this.state.menu);
         this.updateOption();
     }
-    onLabelChange(e, index) {
-        this.state.menu[index].label = e.target.value;
+    onLabelChange(value, index) {
+        this.state.menu[index].label = value;
         this.setState(this.state.menu);
         this.updateOption();
     }
 
-    onSlugChange(e, index) {
-        this.state.menu[index].slug = e.target.value;
+    onSlugChange(value, type, index) {
+        this.state.menu[index].slug = value;
         this.setState(this.state.menu);
         this.updateOption();
     }
-    onPriorityChange(e, index) {
-        this.state.menu[index].priority = e.target.value;
+    onPriorityChange(value, index) {
+        this.state.menu[index].priority = value;
         this.setState(this.state.menu, () => {
             this.updateOption();
         });

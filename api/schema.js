@@ -198,7 +198,6 @@ let resolvers = {
                             return item;
                         }
                     });
-                    debugger;
                     return TaxonomyModel.findOne({
                         where: { id: item[0].id }
                     }).then(taxonomy => {

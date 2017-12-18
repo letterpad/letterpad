@@ -25,6 +25,7 @@ class Settings extends Component {
         this.updatedOptions = {};
         this.submitData = this.submitData.bind(this);
     }
+
     clicked(e) {
         e.preventDefault();
         let collapsed = e.target.getAttribute("class");
@@ -55,7 +56,9 @@ class Settings extends Component {
                 value: this.updatedOptions[option]
             });
         }
-        this.props.updateOptions(settings);
+        this.props.updateOptions(settings).then(res => {
+            console.log(res);
+        });
     }
     render() {
         let data = {};
@@ -185,18 +188,18 @@ const createQueryWithData = graphql(mutateOptions, {
     props: ({ mutate }) => {
         return {
             updateOptions: data => {
-                mutate({
-                    variables: { options: data },
-                    updateQueries: {
-                        getOptions: (prev, { mutationResult }) => {
-                            return {
-                                post: {
-                                    ...prev.settings,
-                                    ...mutationResult.data.updateOptions
-                                }
-                            };
-                        }
-                    }
+                return mutate({
+                    variables: { options: data }
+                    // updateQueries: {
+                    //     getOptions: (prev, { mutationResult }) => {
+                    //         return {
+                    //             post: {
+                    //                 ...prev.settings,
+                    //                 ...mutationResult.data.updateOptions
+                    //             }
+                    //         };
+                    //     }
+                    // }
                 });
             }
         };
