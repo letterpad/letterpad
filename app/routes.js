@@ -24,11 +24,9 @@ function Authorized(WrappedComponent) {
         constructor(props) {
             super(props);
         }
-        componentDidMount() {
-            console.log(WrappedComponent);
-        }
 
         componentWillReceiveProps(nextProps) {
+            console.log(nextProps);
             if (!window.clientData.access) {
                 document.location.href = "/admin/login";
             }
