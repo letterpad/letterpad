@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { notify } from "react-notify-toast";
 import PostActions from "./PostActions";
 import { gql, graphql } from "react-apollo";
 import moment from "moment";
@@ -12,6 +13,7 @@ class PostPublish extends Component {
     constructor(props) {
         super(props);
         this.changePostStatus = this.changePostStatus.bind(this);
+        this.changeSlug = this.changeSlug.bind(this);
         this.state = {
             post: this.props.post,
             published: 1
@@ -31,20 +33,33 @@ class PostPublish extends Component {
             published: ~~e.target.checked
         });
     }
+    changeSlug(e) {
+        this.state.post.slug = e.target.value;
+        this.setState(this.state);
+        PostActions.setData({ slug: this.state.post.slug });
+    }
 
-    updatePost(e, status) {
+    async updatePost(e, status) {
         e.preventDefault();
         PostActions.setData(status);
         let data = PostActions.getData();
-        return this.props
-            .update({
-                ...this.props.post,
-                ...data
-            })
-            .then(result => {
-                PostActions.postUpdated(result.data.updatePost.post.id);
-                this.setState({ post: result.data.updatePost.post });
-            });
+        const update = await this.props.update({
+            ...this.props.post,
+            ...data
+        });
+        if (update.data.updatePost.ok) {
+            PostActions.postUpdated(update.data.updatePost.post.id);
+            this.setState({ post: update.data.updatePost.post });
+            if (this.props.create) {
+                return notify.show("Sweet! Post created.", "success", 3000);
+            }
+            return notify.show("Sweet! Post updated.", "success", 3000);
+        }
+        let errors = update.data.updatePost.errors;
+        if (errors && errors.length > 0) {
+            errors = errors.map(error => error.message);
+            notify.show(errore.join("\n"));
+        }
     }
 
     getButton(label, btnType = "btn-dark", status) {
@@ -72,6 +87,7 @@ class PostPublish extends Component {
             this.state.post.type +
             "/" +
             this.state.post.slug;
+        const actionLabel = this.props.create ? "Create" : "Update";
         return (
             <div className="card">
                 <div className="module-title">Publishing</div>
@@ -108,7 +124,8 @@ class PostPublish extends Component {
                         type="text"
                         className="form-control"
                         placeholder="Slug"
-                        value={this.state.post.slug}
+                        defaultValue={this.state.post.slug}
+                        onBlur={this.changeSlug}
                     />
                 </div>
                 <div className="x_content m-b-20">
@@ -123,7 +140,7 @@ class PostPublish extends Component {
                 </div>
                 <div className="x_content">
                     <div className="btn-together">
-                        {this.getButton("Publish", "btn-info")}
+                        {this.getButton(actionLabel, "btn-info")}
                         {this.getButton("Trash", "btn-danger", "deleted")}
                     </div>
                 </div>

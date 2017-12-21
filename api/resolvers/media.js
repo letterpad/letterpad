@@ -1,4 +1,5 @@
 import { MediaModel, PostModel } from "../models";
+import { UnauthorizedError } from "../utils/common";
 
 function IsJsonString(str) {
     try {
@@ -26,7 +27,11 @@ function getConditions(columns, args) {
 }
 export default {
     Query: {
-        media: (root, args) => {
+        media: (root, args, context) => {
+            console.log(context);
+            if (!context.user.id) {
+                throw new UnauthorizedError({ url: "/media" });
+            }
             let columns = Object.keys(PostModel.rawAttributes);
             let conditions = getConditions(columns, args);
 
@@ -44,7 +49,10 @@ export default {
         }
     },
     Mutation: {
-        insertMedia: (root, args) => {
+        insertMedia: (root, args, context) => {
+            if (!context.user.id) {
+                throw new UnauthorizedError({ url: "/insertMedia" });
+            }
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
@@ -52,7 +60,10 @@ export default {
             return MediaModel.create(data);
         },
 
-        deleteMedia: (root, args) => {
+        deleteMedia: (root, args, context) => {
+            if (!context.user.id) {
+                throw new UnauthorizedError({ url: "/deleteMedia" });
+            }
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];

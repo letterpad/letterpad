@@ -41,28 +41,28 @@ export default class CreateArticle extends Component {
     }
     render() {
         return (
-            <article className="post">
-
-                <FeaturedImage post={this.props.post} />
-                <div className="post-header">
-                    <ContentEditable
-                        placeholder="Enter Title.."
-                        title={this.props.title}
-                        onChange={e => {
-                            PostActions.setData({
-                                title: e.target.value
-                            });
-                        }}
-                    />
-                    <div className="post-meta">
-                        {moment(new Date()).format("LL")}
+            <div className="card">
+                <article className="post">
+                    <FeaturedImage post={this.props.post} />
+                    <div className="post-header">
+                        <ContentEditable
+                            placeholder="Enter Title.."
+                            title={this.props.title}
+                            onChange={e => {
+                                PostActions.setData({
+                                    title: e.target.value
+                                });
+                            }}
+                        />
+                        <div className="post-meta">
+                            {moment(new Date()).format("LL")}
+                        </div>
                     </div>
-
-                </div>
-                <div className="post-content">
-                    <Editor body="" />
-                </div>
-            </article>
+                    <div className="post-content">
+                        <Editor body="" />
+                    </div>
+                </article>
+            </div>
         );
     }
 }

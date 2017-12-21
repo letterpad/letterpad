@@ -1,21 +1,7 @@
 import React from "react";
 import { Route, IndexRoute } from "react-router";
+import Notifications, { notify } from "react-notify-toast";
 import Menu from "./components/Menu";
-
-// import App from "./App";
-// import Home from "./Home";
-// import LoginView from "./LoginView";
-// import TwoColumnLayout from "./TwoColumnLayout";
-// import OneColumnLayout from "./OneColumnLayout";
-// import List from "./List";
-// import Posts from "./Posts";
-// import Media from "./Media";
-// import Pages from "./Pages";
-// import Single from "./Single";
-// import Create from "./Create";
-// import Settings from "./Settings";
-// import Author from "./Author";
-
 import {
     App,
     Home,
@@ -37,13 +23,6 @@ function Authorized(WrappedComponent) {
     return class extends React.Component {
         constructor(props) {
             super(props);
-        }
-
-        componentWillReceiveProps(nextProps) {
-            console.log(nextProps);
-            if (!window.clientData.access) {
-                document.location.href = "/admin/login";
-            }
         }
 
         getComponentName() {
@@ -71,6 +50,7 @@ function Authorized(WrappedComponent) {
                 <div>
                     <Menu />
                     <div className={"wrapper " + ComponentName}>
+                        <Notifications />
                         <WrappedComponent {...this.props} />
                         <div className="col-lg-12 text-center m-b-20">
                             <footer id="footer">
@@ -90,8 +70,8 @@ export default (
     <Route path="/admin" component={App}>
         <IndexRoute component={LoginView} />
         <Route path="/admin/login" component={LoginView} />
-        <Route path="/admin/posts/:page" component={Authorized(Posts)} />
-        <Route path="/admin/pages/:page" component={Authorized(Pages)} />
+        <Route path="/admin/posts" component={Authorized(Posts)} />
+        <Route path="/admin/pages" component={Authorized(Pages)} />
 
         <Route
             path="/admin/post/:post_id"

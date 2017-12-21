@@ -2,36 +2,15 @@ import React, { Component } from "react";
 import { gql, graphql } from "react-apollo";
 import ListItem from "../components/posts/ListItem";
 import { Link } from "react-router";
+import PostsHoc from "./hoc/PostsHoc";
 import { GET_POSTS } from "../../shared/queries/Queries";
-
-const Paginate = ({ count, page }) => {
-    const limit = 3;
-    const pages = Array.from(Array(Math.floor(count / 2)));
-
-    return (
-        <ul className="pagination">
-            {pages.map((_, i) => {
-                let num = i + 1;
-                return (
-                    <li>
-                        <Link to={"/admin/pages/" + num}>{num}</Link>
-                    </li>
-                );
-            })}
-        </ul>
-    );
-};
+import Paginate from "../components/Paginate";
+import { PostFilters } from "../components/posts/Filter";
 
 class Pages extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            page: 1
-        };
-        this.handlePageClick = this.handlePageClick.bind(this);
     }
-
-    handlePageClick() {}
 
     render() {
         if (this.props.loading && !this.props.posts) {
@@ -40,6 +19,8 @@ class Pages extends Component {
         let rows = this.props.posts.rows.map((post, i) => {
             return <ListItem key={i} post={post} />;
         });
+
+        const status = this.props.variables.status;
 
         return (
             <section className="module-xs">
@@ -51,6 +32,10 @@ class Pages extends Component {
                         its contents or the icon to see what it looks like to
                         your readers.
                     </div>
+                    <PostFilters
+                        changeStatus={this.props.changeStatus}
+                        selectedStatus={status}
+                    />
                     <table className="table table-hover">
                         <thead>
                             <tr>
@@ -70,7 +55,8 @@ class Pages extends Component {
                     </table>
                     <Paginate
                         count={this.props.posts.count}
-                        page={this.state.page}
+                        page={this.props.variables.page}
+                        changePage={this.props.changePage}
                     />
                 </div>
             </section>
@@ -82,9 +68,8 @@ const ContainerWithData = graphql(GET_POSTS, {
     options: props => {
         return {
             variables: {
-                type: "page",
-                offset: (parseInt(props.params.page) - 1) * 3,
-                limit: 3
+                ...props.variables,
+                type: "page"
             },
             forceFetch: true
         };
@@ -94,4 +79,4 @@ const ContainerWithData = graphql(GET_POSTS, {
         loading
     })
 });
-export default ContainerWithData(Pages);
+export default PostsHoc(ContainerWithData(Pages));
