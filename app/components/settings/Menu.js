@@ -11,29 +11,9 @@ class MenuItem extends Component {
             selectValue: this.props.menuId,
             clearable: true,
             rtl: false,
-            slug: this.props.slug
+            slug: this.props.item.slug
         };
         this.updateValue = this.updateValue.bind(this);
-    }
-
-    componentDidMount() {
-        let items = this.props.data;
-        this.refs.slug.value = this.props.slug;
-        for (let i = 0; i < items.length; i++) {
-            if (
-                this.props.menuId == items[i].value &&
-                this.props.type == "page"
-            ) {
-                this.refs.slug.value = items[i].slug;
-                this.refs.slug.disabled = true;
-                this.props.onSlugChange(
-                    items[i].slug,
-                    this.props.type,
-                    this.props.index
-                );
-                return;
-            }
-        }
     }
 
     updateValue(newValue) {
@@ -44,19 +24,47 @@ class MenuItem extends Component {
         let type = newValue.split(":")[1];
         this.props.onDDChange(id, type, this.props.index);
     }
-    // slugChanged(e) {
-    //     this.state.slug = e.target.value;
-    //     this.setState(this.state);
-    // }
 
     render() {
+        const DeleteBtn = ({ onDelete, index }) => {
+            return (
+                <button
+                    style={{ padding: "6px 9px" }}
+                    onClick={e => onDelete(e, index)}
+                    className="btn-xs btn btn-danger"
+                >
+                    Remove
+                </button>
+            );
+        };
+
         let index = this.props.index;
+        let slugOpts =
+            this.props.item.type == "page" ? { disabled: "disabled" } : {};
+        let homeChecked =
+            this.props.item.home == "true" ? { checked: "checked" } : {};
+
         return (
             <tr>
                 <td>
+                    <label className="control control--checkbox">
+                        <input
+                            type="checkbox"
+                            className="checkthis"
+                            {...homeChecked}
+                            onChange={e =>
+                                this.props.onHomeChange(e.target.checked, index)
+                            }
+                        />
+                        <div
+                            className="control__indicator"
+                            style={{ top: "10px" }}
+                        />
+                    </label>
+                </td>
+                <td>
                     <Select
-                        id="state-select"
-                        ref="stateSelect"
+                        id="page-select"
                         options={this.props.data}
                         simpleValue
                         clearable={this.state.clearable}
@@ -72,9 +80,9 @@ class MenuItem extends Component {
                 <td>
                     <input
                         type="text"
-                        defaultValue={this.props.label}
+                        value={this.props.item.label}
                         className="form-control"
-                        onBlur={e =>
+                        onChange={e =>
                             this.props.onLabelChange(e.target.value, index)
                         }
                     />
@@ -84,7 +92,9 @@ class MenuItem extends Component {
                         type="text"
                         ref="slug"
                         className="form-control"
-                        onBlur={e =>
+                        value={this.props.item.slug}
+                        {...slugOpts}
+                        onChange={e =>
                             this.props.onSlugChange(e.target.value, index)
                         }
                     />
@@ -92,7 +102,7 @@ class MenuItem extends Component {
                 <td>
                     <input
                         type="text"
-                        defaultValue={this.props.priority}
+                        defaultValue={this.props.item.priority}
                         className="form-control"
                         onBlur={e =>
                             this.props.onPriorityChange(e.target.value, index)
@@ -100,13 +110,12 @@ class MenuItem extends Component {
                     />
                 </td>
                 <td>
-                    <button
-                        style={{ padding: "9px" }}
-                        onClick={e => this.props.onDelete(e, index)}
-                        className="btn-xs btn btn-dark"
-                    >
-                        <i className="fa fa-trash fa-2x" aria-hidden="true" />
-                    </button>
+                    {index !== 0 && (
+                        <DeleteBtn
+                            onDelete={this.props.onDelete}
+                            index={index}
+                        />
+                    )}
                 </td>
             </tr>
         );
@@ -132,26 +141,54 @@ export default class Menu extends Component {
                 return {
                     value: ele.id + ":category",
                     label: ele.name + " (Category)",
-                    type: "cateogry"
+                    type: "cateogry",
+                    id: ele.id,
+                    name: ele.name
                 };
             });
+
             const pages = nextProps.pages.posts.rows.map((ele, idx) => {
                 return {
                     value: ele.id + ":page",
                     label: ele.title + " (Page)",
                     slug: ele.slug,
-                    type: "page"
+                    type: "page",
+                    id: ele.id,
+                    name: ele.title
                 };
             });
-            this.state.data = [...categories, ...pages];
+            console.log(categories.concat(pages));
+            this.state.data = categories.concat(pages);
             this.state.loaded = true;
             this.setState(this.state);
         }
     }
 
+    onHomeChange(value, index) {
+        this.state.menu = this.state.menu.map(item => {
+            item.home = "false";
+            return item;
+        });
+        this.state.menu[index].home = "true";
+        this.setState(this.state.menu);
+        this.updateOption();
+    }
     onDDChange(newId, type, index) {
         this.state.menu[index].id = newId;
         this.state.menu[index].type = type;
+
+        this.state.data.map((ele, idx) => {
+            if (ele.id == newId) {
+                if (type == "page") {
+                    this.state.menu[index].slug = ele.slug;
+                    this.state.menu[index].label = ele.name;
+                } else {
+                    this.state.menu[index].slug = "";
+                    this.state.menu[index].label = ele.name;
+                }
+            }
+        });
+
         this.setState(this.state.menu);
         this.updateOption();
     }
@@ -181,7 +218,13 @@ export default class Menu extends Component {
         this.props.updateOption("menu", JSON.stringify(sorted));
     }
     addItem() {
-        this.state.menu.push({ id: 0, label: "" });
+        this.state.menu.push({
+            home: false,
+            id: 0,
+            label: "",
+            slug: "",
+            priority: ""
+        });
         this.setState(this.state);
     }
     onDelete(e, index) {
@@ -200,11 +243,8 @@ export default class Menu extends Component {
                 <MenuItem
                     key={idx}
                     index={idx}
-                    type={item.type}
-                    slug={item.slug}
+                    item={item}
                     menuId={item.id + ":" + item.type}
-                    label={item.label}
-                    priority={item.priority}
                     data={this.state.data}
                     updateOption={this.updateOption}
                     onDDChange={this.onDDChange.bind(this)}
@@ -212,6 +252,7 @@ export default class Menu extends Component {
                     onSlugChange={this.onSlugChange.bind(this)}
                     onPriorityChange={this.onPriorityChange.bind(this)}
                     onDelete={this.onDelete.bind(this)}
+                    onHomeChange={this.onHomeChange.bind(this)}
                 />
             );
         });
@@ -219,15 +260,16 @@ export default class Menu extends Component {
             <div>
                 <div className="form-group">
                     <button
-                        className="btn btn-xs btn-dark pull-right"
+                        className="btn btn-xs btn-dark btn-circle"
                         onClick={this.addItem.bind(this)}
                     >
-                        Add
+                        <i className="fa fa-plus" />
                     </button>
                     <table className="table">
                         <thead>
                             <tr>
-                                <th width="40%">Menu Item</th>
+                                <th width="5%">Home</th>
+                                <th width="30%">Menu Item</th>
                                 <th width="20%%">Label</th>
                                 <th width="20%0%">Slug</th>
                                 <th width="10%">Priority</th>

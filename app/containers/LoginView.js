@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import fetch from "isomorphic-fetch";
+import { Redirect } from "react-router";
+import Notifications, { notify } from "react-notify-toast";
+import { gql, graphql } from "react-apollo";
 import { checkHttpStatus, parseJSON } from "../../utils/common";
 import { browserHistory } from "react-router";
+import { parseErrors } from "../../shared/util";
 
-export default class LoginView extends Component {
+class LoginView extends Component {
     constructor(props) {
         super(props);
         this.login = this.login.bind(this);
@@ -12,7 +15,7 @@ export default class LoginView extends Component {
     componentDidMount() {
         document.body.classList.add("login-view");
     }
-    login(e) {
+    async login(e) {
         e.preventDefault();
         if (
             this.usernameInput.value.length === 0 ||
@@ -20,36 +23,23 @@ export default class LoginView extends Component {
         ) {
             return;
         }
-
-        let that = this;
-        fetch("/admin/doLogin", {
-            method: "post",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username: that.usernameInput.value,
-                password: that.passwordInput.value
-            })
-        })
-            .then(checkHttpStatus)
-            .then(parseJSON)
-            .then(response => {
-                try {
-                    window.location = "/admin/posts";
-                } catch (e) {
-                }
-            })
-            .catch(error => {
-                alert("Authentication failed");
-            });
+        const res = await this.props.login({
+            username: this.usernameInput.value,
+            password: this.passwordInput.value
+        });
+        if (!res.data.login.ok) {
+            let errors = parseErrors(res.data.login);
+            errors = errors.map(error => error.message);
+            return notify.show(errors.join("\n"), "error", 3000);
+        }
+        localStorage.token = res.data.login.token;
+        this.props.router.push("/admin/posts");
     }
 
     render() {
         return (
             <div className="login">
+                <Notifications />
                 <form className="form-signin">
                     <h2 className="form-signin-heading text-center">#!</h2>
                     <label>Username</label>
@@ -86,3 +76,25 @@ export default class LoginView extends Component {
         );
     }
 }
+
+const LoginQuery = gql`
+    mutation login($username: String!, $password: String!) {
+        login(email: $username, password: $password) {
+            ok
+            token
+            errors {
+                message
+                path
+            }
+        }
+    }
+`;
+const updateQueryWithData = graphql(LoginQuery, {
+    props: ({ mutate }) => ({
+        login: data =>
+            mutate({
+                variables: data
+            })
+    })
+});
+export default updateQueryWithData(LoginView);

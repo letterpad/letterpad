@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export const GET_POSTS = gql`
-    query getPosts($type: String!, $offset: Int, $limit: Int) {
-        posts(type: $type, offset: $offset, limit: $limit) {
+    query getPosts($type: String!, $offset: Int, $limit: Int, $status: String) {
+        posts(type: $type, offset: $offset, limit: $limit, status: $status) {
             count
             rows {
                 id

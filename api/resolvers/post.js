@@ -8,6 +8,7 @@ import {
     TaxonomyModel
 } from "../models";
 import { getTaxonomies } from "../models/taxonomy";
+import { UnauthorizedError } from "../utils/common";
 
 function IsJsonString(str) {
     try {
@@ -36,6 +37,12 @@ function getConditions(columns, args) {
 export default {
     Query: {
         posts: (root, args, context) => {
+            if (!context.user.id) {
+                args.status = "publish";
+                if (context.admin) {
+                    throw new UnauthorizedError({ url: "/posts" });
+                }
+            }
             let columns = Object.keys(PostModel.rawAttributes);
             let conditions = getConditions(columns, args);
             return PostModel.count(conditions).then(count => {
@@ -51,7 +58,13 @@ export default {
                 });
             });
         },
-        post: (root, args) => {
+        post: (root, args, context) => {
+            if (!context.user.id) {
+                args.status = "publish";
+                if (context.admin) {
+                    throw new UnauthorizedError({ url: "/posts" });
+                }
+            }
             return PostModel.findOne({ where: args });
         },
         postsMenu: async (root, args) => {
@@ -126,7 +139,10 @@ export default {
         }
     },
     Mutation: {
-        createPost: (root, args) => {
+        createPost: (root, args, context) => {
+            if (!context.user.id) {
+                throw new UnauthorizedError({ url: "/createPost" });
+            }
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
@@ -134,7 +150,10 @@ export default {
 
             return _createPost(data);
         },
-        updatePost: (root, args, token) => {
+        updatePost: (root, args, context) => {
+            if (!context.user.id) {
+                throw new UnauthorizedError({ url: "/updatePost" });
+            }
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];

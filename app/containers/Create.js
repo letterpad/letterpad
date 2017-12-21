@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import ArticleCreate from "../components/posts/ArticleCreate";
 import { gql, graphql } from "react-apollo";
+import ArticleCreate from "../components/posts/ArticleCreate";
 import PostPublish from "../components/posts/PostPublish";
 import PostActions from "../components/posts/PostActions";
 import Tags from "../components/posts/Tags";
 import Categories from "../components/posts/Categories";
 import { CREATE_POST } from "../../shared/queries/Mutations";
+import Excerpt from "../components/posts/Excerpt";
 
 export default function Create(type) {
     class Create extends Component {
@@ -37,17 +38,16 @@ export default function Create(type) {
                 return <div>hello</div>;
             }
             return (
-                <section className="module p-t-20">
-                    <div className="container-fluid container-custom">
+                <section className="module-xs">
+                    <div className="row">
                         <div className="col-lg-8 column">
                             <ArticleCreate post={this.state.post} />
                         </div>
                         <div className="col-lg-4 column">
-                            <PostPublish post={this.state.post} />
-                            <hr />
+                            <PostPublish create={true} post={this.state.post} />
                             <Tags post={this.state.post} />
-                            <hr />
                             <Categories post={this.state.post} />
+                            <Excerpt post={this.state.post} />
                         </div>
                     </div>
                 </section>

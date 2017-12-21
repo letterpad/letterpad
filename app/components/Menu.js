@@ -22,11 +22,11 @@ export default class Menu extends Component {
         let navbarStatus = this.state.navbarOpen ? "in" : "";
         let postsStatus = this.state.postsOpen ? "" : "hide";
         let pagesStatus = this.state.pagesOpen ? "" : "hide";
-        let client =
-            typeof window !== "undefined" &&
-            window.clientData.access &&
-            window.clientData.access.role;
-        let isAdmin = client && window.clientData.access.role == "ADMIN";
+        // let client =
+        //     typeof window !== "undefined" &&
+        //     window.clientData.access &&
+        //     window.clientData.access.role;
+        let isAdmin = 1; // client && window.clientData.access.role == "ADMIN";
 
         return (
             <div className="sidebar">
@@ -76,9 +76,7 @@ export default class Menu extends Component {
                                 </Link>
                                 <ul className={postsStatus}>
                                     <li className="item">
-                                        <Link to="/admin/posts/1">
-                                            All Posts
-                                        </Link>
+                                        <Link to="/admin/posts">All Posts</Link>
                                     </li>
                                     {isAdmin && (
                                         <li className="item">
@@ -110,9 +108,7 @@ export default class Menu extends Component {
                                 </Link>
                                 <ul className={pagesStatus}>
                                     <li className="item">
-                                        <Link to="/admin/pages/1">
-                                            All Pages
-                                        </Link>
+                                        <Link to="/admin/pages">All Pages</Link>
                                     </li>
                                     {isAdmin && (
                                         <li className="item">
