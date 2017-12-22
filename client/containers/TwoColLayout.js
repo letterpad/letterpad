@@ -6,10 +6,13 @@ import Menu from "../components/Menu";
 export default function Layout(Element) {
     return class Layout extends Component {
         render() {
-            let page = "a"; //Element.WrappedComponent.name.toLowerCase();
+            let page = Element.name.toLowerCase();
             return (
                 <div className={"wrapper " + page}>
-                    <Menu menu={JSON.parse(this.props.settings.menu.value)} />
+                    <Menu
+                        settings={this.props.settings}
+                        menu={JSON.parse(this.props.settings.menu.value)}
+                    />
                     {/*<section className="module-sm top-head">
                         <div className="container-fluid container-custom">
                             <div className="row">

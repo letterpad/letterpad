@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { gql, graphql } from "react-apollo";
 import PostActions from "./PostActions";
+
 const Editor = React.createClass({
     componentDidMount() {
         // this.loadEditor();
@@ -32,7 +33,21 @@ const Editor = React.createClass({
                 "clean"
             ]
         ];
-
+        let Block = Quill.import("blots/block");
+        class JsBlot extends Block {
+            static create(url) {
+                let node = super.create();
+                // Attribute for output HTML
+                node.setAttribute("class", "ql-syntax hljs");
+                return node;
+            }
+        }
+        JsBlot.blotName = "js";
+        // Class to look for when parsing your input HTML
+        JsBlot.className = "js";
+        // Tag to look for when parsing your input HTML
+        JsBlot.tagName = "pre";
+        Quill.register(JsBlot);
         window.qEditor = new Quill("#editor", {
             theme: "snow",
             placeholder: "Compose an epic...",
@@ -42,6 +57,9 @@ const Editor = React.createClass({
                     handlers: {
                         image: function() {
                             document.querySelector(".post-image").click();
+                        },
+                        "code-block"() {
+                            console.log(this.container);
                         }
                     }
                 },

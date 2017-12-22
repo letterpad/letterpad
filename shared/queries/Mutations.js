@@ -40,3 +40,31 @@ export const UPDATE_OPTIONS = gql`
         }
     }
 `;
+
+export const UPDATE_AUTHOR = gql`
+    mutation updateAuthor(
+        $id: Int!
+        $email: String
+        $fname: String
+        $lname: String
+        $password: String
+        $username: String
+        $social: String
+    ) {
+        updateAuthor(
+            id: $id
+            email: $email
+            password: $password
+            username: $username
+            social: $social
+            fname: $fname
+            lname: $lname
+        ) {
+            ok
+            errors {
+                path
+                message
+            }
+        }
+    }
+`;

@@ -53,7 +53,7 @@ export default class Menu extends Component {
                         </button>
 
                         <Link className="navbar-brand" to="/">
-                            Ajaxtown
+                            {this.props.settings.site_title.value}
                         </Link>
                     </div>
 

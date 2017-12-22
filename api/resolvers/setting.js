@@ -1,4 +1,5 @@
 import { SettingsModel, updateOptions } from "../models";
+import { requiresAdmin } from "../utils/permissions";
 
 export default {
     Query: {
@@ -7,10 +8,10 @@ export default {
         }
     },
     Mutation: {
-        updateOptions: (root, args) => {
+        updateOptions: requiresAdmin.createResolver((root, args) => {
             return updateOptions(args).then(() => {
                 return SettingsModel.findAll();
             });
-        }
+        })
     }
 };

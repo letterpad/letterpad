@@ -15,6 +15,7 @@ class Tags extends Component {
                 return tax.type === "post_tag";
             })
             .map(tax => {
+                tax = { ...tax };
                 delete tax["__typename"];
                 return tax;
             });

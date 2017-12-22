@@ -9,9 +9,8 @@ const Paginate = ({ count, page, changePage }) => {
         let num = i + 1;
         let active = num == page ? "active" : "";
         return (
-            <li>
+            <li key={i}>
                 <Link
-                    key={i}
                     className={active}
                     onClick={e => changePage(e, num)}
                     to="#"

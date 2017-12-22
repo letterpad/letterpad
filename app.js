@@ -45,6 +45,4 @@ app.use(require("webpack-hot-middleware")(compiler));
 adminServerRendering.init(app);
 clientServerRendering.init(app);
 
-const httpServer = app.listen(4040, function() {
-    console.log("====> Admin is listening on", 4040);
-});
+module.exports = app;
