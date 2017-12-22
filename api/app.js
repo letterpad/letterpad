@@ -4,6 +4,7 @@ import GraphHTTP from "express-graphql";
 import Schema from "./schema";
 import bodyParser from "body-parser";
 import config from "../config/config";
+import * as actions from "./actions/index";
 import http from "http";
 import cors from "cors";
 import multer from "multer";
@@ -48,13 +49,12 @@ app.use(
                 request: req
             },
             formatError(error) {
-                if (error.originalError) {
-                    if (error.originalError.statusCode == 401) {
-                        res.status(error.originalError.statusCode);
-                        res.set("Location", "/admin/login");
-                    } else {
-                        res.status(500);
-                    }
+                console.log(error);
+                if (error.originalError.statusCode == 401) {
+                    res.status(error.originalError.statusCode);
+                    res.set("Location", "/admin/login");
+                } else {
+                    res.status(500);
                 }
                 return error;
             },
@@ -85,6 +85,4 @@ app.post("/upload", (req, res) => {
     });
 });
 
-const httpServer = app.listen(3030, () => {
-    console.log(`App listening on port 3030`);
-});
+module.exports = app;

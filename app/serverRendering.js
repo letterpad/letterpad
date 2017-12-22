@@ -19,13 +19,15 @@ import Request from "request";
 let session = require("express-session");
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
+import fetch from "node-fetch";
 
 var initialState = {};
 
 const client = new ApolloClient({
     ssrMode: true,
     link: createHttpLink({
-        uri: "http://localhost:3030/graphql"
+        uri: "http://localhost:3030/graphql",
+        fetch: fetch
     }),
     cache: new InMemoryCache()
 });

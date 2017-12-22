@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Article from "../components/post/Article";
 import { gql, graphql } from "react-apollo";
+import Loader from "../components/Loader";
 
 class Page extends Component {
     constructor(props) {
@@ -9,7 +10,7 @@ class Page extends Component {
 
     render() {
         if (this.props.loading) {
-            return <div>hello</div>;
+            return <Loader />;
         }
         if (this.props.page === null) {
             return <div>Nothing found..Absolute bullshit</div>;

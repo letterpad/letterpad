@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import Header from "../components/Header";
 import Menu from "../components/Menu";
 import { gql, graphql } from "react-apollo";
+import { spinner } from "../../app/components/Loader";
+import Loader from "../components/Loader";
 require("../../public/scss/client.scss");
 
 class App extends Component {
     render() {
         if (this.props.loading) {
-            return <div>hello</div>;
+            return <Loader />;
         }
         return (
             <div>
@@ -19,13 +21,13 @@ class App extends Component {
 }
 
 const optionsQuery = gql`
-  query getOptions {
-  settings {
-    id,
-    option,
-    value
-  }
-}
+    query getOptions {
+        settings {
+            id
+            option
+            value
+        }
+    }
 `;
 
 const ContainerWithSiteData = graphql(optionsQuery, {

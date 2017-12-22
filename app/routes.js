@@ -15,7 +15,8 @@ import {
     Single,
     Create,
     Settings,
-    Authors
+    Authors,
+    EditAuthor
 } from "./containers";
 
 function Authorized(WrappedComponent) {
@@ -86,5 +87,9 @@ export default (
         <Route path="/admin/media" component={Authorized(Media)} />
         <Route path="/admin/settings" component={Authorized(Settings)} />
         <Route path="/admin/authors" component={Authorized(Authors)} />
+        <Route
+            path="/admin/authors/edit/:id"
+            component={Authorized(EditAuthor)}
+        />
     </Route>
 );

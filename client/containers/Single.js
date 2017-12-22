@@ -1,6 +1,20 @@
 import React, { Component } from "react";
 import Article from "../components/post/Article";
 import { gql, graphql } from "react-apollo";
+import Loader from "../components/Loader";
+
+const OhSnap = ({ message }) => {
+    return (
+        <section className="module-xs">
+            <div className="row">
+                <div className="card">
+                    <div className="module-title">Oh Snap!</div>
+                    <div className="module-subtitle">{message}</div>
+                </div>
+            </div>
+        </section>
+    );
+};
 
 class Single extends Component {
     constructor(props) {
@@ -12,10 +26,12 @@ class Single extends Component {
             <div>
                 {(() => {
                     if (this.props.loading || this.props.adjPostsLoading) {
-                        return <div>hello</div>;
+                        return <Loader />;
                     } else {
                         if (this.props.post === null) {
-                            return <div>Nothing found..Absolute bullshit</div>;
+                            return (
+                                <OhSnap message="I am not sure how this happened. Maybe this page is dead for good or restricted." />
+                            );
                         }
                         return (
                             <Article

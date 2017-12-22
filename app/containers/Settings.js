@@ -32,23 +32,6 @@ class Settings extends Component {
         this.submitData = this.submitData.bind(this);
     }
 
-    clicked(e) {
-        e.preventDefault();
-        let collapsed = e.target.getAttribute("class");
-        e.target.setAttribute("class", collapsed == "" ? "collapsed" : "");
-
-        //open drawer
-        let href = e.target.getAttribute("href");
-        let $ele = document.getElementById(href);
-        if (collapsed == "") {
-            //open
-            $ele.classList.remove("in");
-        } else {
-            //close
-            $ele.classList.add("in");
-        }
-    }
-
     updateOption(option, value) {
         this.updatedOptions[option] = value;
     }

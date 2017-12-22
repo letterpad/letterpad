@@ -100,6 +100,7 @@ export async function _createPost(data) {
 export async function _updatePost(post) {
     try {
         if (
+            post.slug &&
             post.slug.indexOf(siteConfig.default_slug) === 0 &&
             post.title !== siteConfig.default_title
         ) {

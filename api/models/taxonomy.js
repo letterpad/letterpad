@@ -17,9 +17,15 @@ export const TaxonomyModel = conn.define(
     }
 );
 
-export const getTaxonomies = args => {
+export const getTaxonomies = (root, args, context) => {
     let postType = args.postType;
     delete args.postType;
+    delete args.status;
+    let where = postType ? { type: postType } : {};
+
+    if (!context.user || !context.user.id) {
+        where.status = "publish";
+    }
     return TaxonomyModel.findAll({
         attributes: ["name", "id", "type"],
         include: [
@@ -32,7 +38,7 @@ export const getTaxonomies = args => {
                     ]
                 ],
                 as: "post",
-                where: postType ? { type: postType } : {},
+                where: where,
                 required: true
             }
         ],

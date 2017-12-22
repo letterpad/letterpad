@@ -78,7 +78,30 @@ export const GET_MEDIA = gql`
 export const GET_AUTHORS = gql`
     query getAuthors {
         authors {
+            id
+            email
+            fname
+            lname
             username
+            role {
+                name
+                permissions {
+                    name
+                }
+            }
+        }
+    }
+`;
+
+export const GET_AUTHOR = gql`
+    query getAuthor($id: Int) {
+        author(id: $id) {
+            id
+            username
+            email
+            fname
+            lname
+            social
             role {
                 name
                 permissions {

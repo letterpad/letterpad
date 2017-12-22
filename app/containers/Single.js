@@ -6,6 +6,21 @@ import Tags from "../components/posts/Tags";
 import Categories from "../components/posts/Categories";
 import Excerpt from "../components/posts/Excerpt";
 import { GET_SINGLE_POST } from "../../shared/queries/Queries";
+import { browserHistory } from "react-router";
+import Loader from "../components/Loader";
+
+const OhSnap = ({ message }) => {
+    return (
+        <section className="module-xs">
+            <div className="row">
+                <div className="card">
+                    <div className="module-title">Oh Snap!</div>
+                    <div className="module-subtitle">{message}</div>
+                </div>
+            </div>
+        </section>
+    );
+};
 
 export default function Single(type) {
     class Single extends Component {
@@ -15,7 +30,12 @@ export default function Single(type) {
 
         render() {
             if (this.props.loading) {
-                return <div>hello</div>;
+                return <Loader />;
+            }
+            if (!this.props.post) {
+                return (
+                    <OhSnap message="I am not sure how this happened. Maybe this page is dead for good or restricted." />
+                );
             }
             return (
                 <section className="module-xs">

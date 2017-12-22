@@ -12,12 +12,10 @@ import createBrowserHistory from "history/lib/createBrowserHistory";
 const history = createBrowserHistory();
 
 import routes from "./routes";
-import store from "./store";
+// import store from "./store";
 // import "babel-polyfill";
 function handleUpdate() {
-    let {
-        action
-    } = this.state.location;
+    let { action } = this.state.location;
 
     if (action === "PUSH") {
         window.scrollTo(0, 0);
@@ -28,7 +26,7 @@ function handleUpdate() {
   This is where we hook up the Store with our actual component and the router
 */
 render(
-    <ApolloProvider client={client} store={store}>
+    <ApolloProvider client={client}>
         <Router
             onUpdate={handleUpdate}
             routes={routes}

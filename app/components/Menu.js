@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router";
+import jwtDecode from "jwt-decode";
 
 export default class Menu extends Component {
     constructor(props) {
@@ -7,9 +8,16 @@ export default class Menu extends Component {
         this.state = {
             navbarOpen: false,
             postsOpen: false,
-            pagesOpen: false
+            pagesOpen: false,
+            permissions: []
         };
+        this.permissions = [];
     }
+    componentWillMount() {
+        this.permissions = jwtDecode(localStorage.token).permissions;
+        //this.setState(this.state);
+    }
+
     navbarToggle() {
         this.setState({ navbarOpen: !this.state.navbarOpen });
     }
@@ -27,7 +35,9 @@ export default class Menu extends Component {
         //     window.clientData.access &&
         //     window.clientData.access.role;
         let isAdmin = 1; // client && window.clientData.access.role == "ADMIN";
-
+        const perm = permission => {
+            return this.permissions.indexOf(permission) !== -1;
+        };
         return (
             <div className="sidebar">
                 <nav className="navbar navbar-custom font-alt">
@@ -78,7 +88,8 @@ export default class Menu extends Component {
                                     <li className="item">
                                         <Link to="/admin/posts">All Posts</Link>
                                     </li>
-                                    {isAdmin && (
+                                    {(perm("MANAGE_OWN_POSTS") ||
+                                        perm("MANAGE_ALL_POSTS")) && (
                                         <li className="item">
                                             <Link to="/admin/post-new">
                                                 New Post
@@ -110,7 +121,8 @@ export default class Menu extends Component {
                                     <li className="item">
                                         <Link to="/admin/pages">All Pages</Link>
                                     </li>
-                                    {isAdmin && (
+                                    {(perm("MANAGE_OWN_POSTS") ||
+                                        perm("MANAGE_ALL_POSTS")) && (
                                         <li className="item">
                                             <Link to="/admin/page-new">
                                                 New Page
@@ -119,18 +131,19 @@ export default class Menu extends Component {
                                     )}
                                 </ul>
                             </li>
-                            {isAdmin && (
+                            {(perm("MANAGE_OWN_POSTS") ||
+                                perm("MANAGE_ALL_POSTS")) && (
                                 <li className="item">
                                     <Link to="/admin/media">Media</Link>
                                 </li>
                             )}
-                            {isAdmin && (
+                            {perm("MANAGE_USERS") && (
                                 <li className="item">
                                     <Link to="/admin/settings">Settings</Link>
                                 </li>
                             )}
 
-                            {isAdmin && (
+                            {perm("MANAGE_USERS") && (
                                 <li className="item">
                                     <Link to="/admin/authors">Authors</Link>
                                 </li>

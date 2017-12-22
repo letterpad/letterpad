@@ -153,9 +153,9 @@ const updatePostQuery = gql`
     mutation updatePost(
         $id: Int!
         $title: String!
-        $body: String!
+        $body: String
         $status: String!
-        $excerpt: String!
+        $excerpt: String
         $taxonomies: [TaxonomyInputType]
         $slug: String!
     ) {

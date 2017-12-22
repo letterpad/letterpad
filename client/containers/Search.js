@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ArticleList from "../components/post/ArticleList";
 import { gql, graphql } from "react-apollo";
+import Loader from "../../app/components/Loader";
 
 export default function Search(term) {
     class Search extends Component {
@@ -13,7 +14,7 @@ export default function Search(term) {
                 <div>
                     {(() => {
                         if (this.props.loading) {
-                            return <div>hello</div>;
+                            return <Loader />;
                         } else {
                             return this.props.posts.map((post, i) => {
                                 return <ArticleList key={i} post={post} />;

@@ -1,5 +1,6 @@
 import { MediaModel, PostModel } from "../models";
 import { UnauthorizedError } from "../utils/common";
+import { editPostPerm } from "../utils/permissions";
 
 function IsJsonString(str) {
     try {
@@ -28,7 +29,6 @@ function getConditions(columns, args) {
 export default {
     Query: {
         media: (root, args, context) => {
-            console.log(context);
             if (!context.user.id) {
                 throw new UnauthorizedError({ url: "/media" });
             }
@@ -49,26 +49,20 @@ export default {
         }
     },
     Mutation: {
-        insertMedia: (root, args, context) => {
-            if (!context.user.id) {
-                throw new UnauthorizedError({ url: "/insertMedia" });
-            }
+        insertMedia: editPostPerm.createResolver((root, args, context) => {
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
             });
             return MediaModel.create(data);
-        },
+        }),
 
-        deleteMedia: (root, args, context) => {
-            if (!context.user.id) {
-                throw new UnauthorizedError({ url: "/deleteMedia" });
-            }
+        deleteMedia: editPostPerm.createResolver((root, args, context) => {
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
             });
             return MediaModel.destroy(data);
-        }
+        })
     }
 };

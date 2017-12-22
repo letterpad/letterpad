@@ -4,11 +4,7 @@ import { Link } from "react-router";
 export default class Categories extends Component {
     getLink(name) {
         let link = "/category/" + name.toLowerCase();
-        return (
-            <Link to={link}>
-                {name}
-            </Link>
-        );
+        return <Link to={link}>{name}</Link>;
     }
 
     render() {
@@ -19,18 +15,17 @@ export default class Categories extends Component {
                     <ul>
                         {(() => {
                             if (this.props.loading) {
-                                return <div>Loading...</div>;
+                                return <Loader />;
                             } else {
-                                return this.props.categories.map((
-                                    category,
-                                    i
-                                ) => {
-                                    return (
-                                        <li key={i}>
-                                            {this.getLink(category.name)}
-                                        </li>
-                                    );
-                                });
+                                return this.props.categories.map(
+                                    (category, i) => {
+                                        return (
+                                            <li key={i}>
+                                                {this.getLink(category.name)}
+                                            </li>
+                                        );
+                                    }
+                                );
                             }
                         })()}
                     </ul>

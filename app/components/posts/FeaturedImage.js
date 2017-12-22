@@ -5,6 +5,9 @@ import PostActions from "../../components/posts/PostActions";
 class FeaturedImage extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            cover_image: this.props.post.cover_image
+        };
     }
 
     uploadImage(files) {
@@ -14,6 +17,7 @@ class FeaturedImage extends Component {
                     id: this.props.post.id,
                     cover_image: cover_image
                 });
+                this.setState({ cover_image });
             }
         );
     }
@@ -22,11 +26,12 @@ class FeaturedImage extends Component {
             id: this.props.post.id,
             cover_image: ""
         });
+        this.setState({ cover_image: "" });
     }
 
     render() {
         let cover_image =
-            this.props.post.cover_image || "http://placehold.it/800x300";
+            this.state.cover_image || "http://placehold.it/800x300";
         return (
             <div className="x_panel">
                 <div className="x_content">
@@ -34,7 +39,7 @@ class FeaturedImage extends Component {
                         <img width="100%" src={cover_image} />
                     </div>
                     {(() => {
-                        if (!this.props.post.cover_image) {
+                        if (!this.state.cover_image) {
                             return (
                                 <a
                                     className="text-primary pointer"
@@ -86,11 +91,13 @@ const updateQueryWithData = graphql(uploadCoverImageQuery, {
                 variables: data,
                 updateQueries: {
                     getPost: (prev, { mutationResult }) => {
+                        let cover_image = mutationResult.data.uploadFile
+                            ? mutationResult.data.uploadFile.cover_image
+                            : "";
                         return {
                             post: {
                                 ...prev.post,
-                                cover_image:
-                                    mutationResult.data.uploadFile.cover_image
+                                cover_image
                             }
                         };
                     }
