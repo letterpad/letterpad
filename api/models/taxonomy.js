@@ -1,36 +1,44 @@
-import { conn } from "../../config/mysql.config";
+// import { conn } from "../../config/mysql.config";
 import Sequalize from "sequelize";
-import { PostModel } from "./post";
 
-export const TaxonomyModel = conn.define(
-    "taxonomies",
-    {
-        name: {
-            type: Sequalize.STRING
+export default (conn, DataTypes) => {
+    const Taxonomy = conn.define(
+        "taxonomies",
+        {
+            name: {
+                type: Sequalize.STRING
+            },
+            type: {
+                type: Sequalize.STRING
+            }
         },
-        type: {
-            type: Sequalize.STRING
+        {
+            freezeTableName: true // Model tableName will be the same as the model name
         }
-    },
-    {
-        freezeTableName: true // Model tableName will be the same as the model name
-    }
-);
+    );
 
-export const getTaxonomies = (root, args, context) => {
-    let postType = args.postType;
-    delete args.postType;
-    delete args.status;
-    let where = postType ? { type: postType } : {};
+    Taxonomy.associate = models => {
+        Taxonomy.belongsToMany(models.Post, {
+            through: "PostTaxonomy"
+        });
+    };
+    return Taxonomy;
+};
+export const getTaxonomies = (root, args, { models, user }) => {
+    const { postType } = args;
+    const newArgs = { ...args };
+    delete newArgs.postType;
+    delete newArgs.status;
+    const where = postType ? { type: postType } : {};
 
-    if (!context.user || !context.user.id) {
+    if (!user || !user.id) {
         where.status = "publish";
     }
-    return TaxonomyModel.findAll({
+    return models.Taxonomy.findAll({
         attributes: ["name", "id", "type"],
         include: [
             {
-                model: PostModel,
+                model: models.Post,
                 attributes: [
                     [
                         Sequalize.fn("COUNT", Sequalize.col("post.id")),
@@ -38,11 +46,11 @@ export const getTaxonomies = (root, args, context) => {
                     ]
                 ],
                 as: "post",
-                where: where,
+                where,
                 required: true
             }
         ],
-        where: args,
+        where: newArgs,
         group: ["taxonomy_id", "post_id"]
     });
 };

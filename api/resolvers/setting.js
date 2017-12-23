@@ -1,17 +1,19 @@
-import { SettingsModel, updateOptions } from "../models";
+import { updateOptions } from "../models";
 import { requiresAdmin } from "../utils/permissions";
 
 export default {
     Query: {
-        settings: (root, args) => {
-            return SettingsModel.findAll({ where: args });
+        settings: (root, args, { models }) => {
+            return models.Setting.findAll({ where: args });
         }
     },
     Mutation: {
-        updateOptions: requiresAdmin.createResolver((root, args) => {
-            return updateOptions(args).then(() => {
-                return SettingsModel.findAll();
-            });
-        })
+        updateOptions: requiresAdmin.createResolver(
+            (root, args, { models }) => {
+                return updateOptions(args, { models }).then(() => {
+                    return models.Setting.findAll();
+                });
+            }
+        )
     }
 };

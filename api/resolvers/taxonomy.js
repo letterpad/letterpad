@@ -1,9 +1,6 @@
-import { TaxonomyModel } from "../models";
-
 export default {
     Query: {
-        taxonomies: (root, args) => {
-            return TaxonomyModel.findAll({ where: args });
-        }
+        taxonomies: (root, args, { models }) =>
+            models.Taxonomy.findAll({ where: args })
     }
 };

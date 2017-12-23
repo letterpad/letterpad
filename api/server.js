@@ -10,6 +10,7 @@ import multer from "multer";
 import path from "path";
 import jwt from "jsonwebtoken";
 import { UnauthorizedError } from "./utils/common";
+import models from "./models";
 
 const app = express();
 const SECRET = "cdascadsc-cdascadsca";
@@ -61,7 +62,8 @@ app.use(
             context: {
                 user: req.user || {},
                 SECRET,
-                admin: req.headers.admin || false
+                admin: req.headers.admin || false,
+                models: models
             }
         };
     })
@@ -84,7 +86,8 @@ app.post("/upload", (req, res) => {
         res.json("/uploads/" + req.file.filename);
     });
 });
-
-const httpServer = app.listen(3030, () => {
-    console.log(`App listening on port 3030`);
+models.conn.sync({ force: false }).then(() => {
+    const httpServer = app.listen(3030, () => {
+        console.log(`App listening on port 3030`);
+    });
 });
