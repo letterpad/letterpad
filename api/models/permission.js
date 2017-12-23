@@ -1,14 +1,22 @@
-import { conn } from "../../config/mysql.config";
 import Sequalize from "sequelize";
 
-export const PermissionModel = conn.define(
-    "permissions",
-    {
-        name: {
-            type: Sequalize.STRING
+export default (conn, DataTypes) => {
+    const Permission = conn.define(
+        "permissions",
+        {
+            name: {
+                type: Sequalize.STRING
+            }
+        },
+        {
+            freezeTableName: true // Model tableName will be the same as the model name
         }
-    },
-    {
-        freezeTableName: true // Model tableName will be the same as the model name
-    }
-);
+    );
+    Permission.associate = models => {
+        Permission.belongsToMany(models.Role, {
+            through: "RolePermission"
+        });
+    };
+
+    return Permission;
+};

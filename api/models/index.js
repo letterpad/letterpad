@@ -1,13 +1,13 @@
-import { TaxonomyModel } from "./taxonomy";
-import { PostModel, createPost, updatePost } from "./post";
-import { RoleModel } from "./role";
-import { PermissionModel } from "./permission";
-import { AuthorModel } from "./author";
-import { MediaModel } from "./media";
-import { PostTaxonomyModel } from "./postTaxonomy";
-import { RolePermissionModel } from "./rolePermission";
-import { RoleAuthorModel } from "./roleAuthor";
-import { conn } from "../../config/mysql.config";
+import TaxonomyModel from "./taxonomy";
+import PostModel, { createPost, updatePost } from "./post";
+import RoleModel from "./role";
+import PermissionModel from "./permission";
+import AuthorModel from "./author";
+import MediaModel from "./media";
+import PostTaxonomyModel from "./postTaxonomy";
+import RolePermissionModel from "./rolePermission";
+import RoleAuthorModel from "./roleAuthor";
+import conn from "../../config/mysql.config";
 
 PostModel.belongsToMany(TaxonomyModel, {
     through: PostTaxonomyModel,

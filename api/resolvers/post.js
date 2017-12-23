@@ -1,12 +1,5 @@
 import Sequalize from "sequelize";
-import {
-    _createPost,
-    _updatePost,
-    MediaModel,
-    PostModel,
-    SettingsModel,
-    TaxonomyModel
-} from "../models";
+import { _createPost, _updatePost } from "../models";
 import { getTaxonomies } from "../models/taxonomy";
 import { UnauthorizedError } from "../utils/common";
 import {
@@ -25,9 +18,9 @@ function IsJsonString(str) {
     return true;
 }
 function getConditions(columns, args) {
-    let obj = {};
-    let conditions = {};
-    for (let field in args) {
+    const obj = {};
+    const conditions = {};
+    for (const field in args) {
         if (columns.indexOf(field) >= 0) {
             obj[field] = IsJsonString(args[field])
                 ? JSON.parse(args[field])
@@ -42,39 +35,38 @@ function getConditions(columns, args) {
 
 export default {
     Query: {
-        posts: checkDisplayAccess.createResolver((root, args, context) => {
-            let columns = Object.keys(PostModel.rawAttributes);
-            let conditions = getConditions(columns, args);
+        posts: checkDisplayAccess.createResolver((root, args, { models }) => {
+            const columns = Object.keys(models.Post.rawAttributes);
+            const conditions = getConditions(columns, args);
             if (args.status) {
                 conditions.where.status = args.status;
             }
-            return PostModel.count(conditions).then(count => {
+            return models.Post.count(conditions).then(count => {
                 if (args.cursor) {
                     conditions.where.id = { gt: args.cursor };
                 }
                 conditions.order = [["id", "DESC"]];
 
-                return PostModel.findAll(conditions).then(res => {
+                return models.Post.findAll(conditions).then(res => {
                     return {
-                        count: count,
+                        count,
                         rows: res
                     };
                 });
             });
         }),
-        post: checkDisplayAccess.createResolver((root, args, context) => {
-            return PostModel.findOne({ where: args });
+        post: checkDisplayAccess.createResolver((root, args, { models }) => {
+            return models.Post.findOne({ where: args });
         }),
-        postsMenu: async (root, args, context) => {
-            let that = this;
-            let menu = await SettingsModel.findOne({
+        postsMenu: async (root, args, { models, user }) => {
+            let menu = await models.Setting.findOne({
                 where: { option: "menu" }
             });
             menu = JSON.parse(menu.dataValues.value);
 
             let item = menu.filter(item => item.slug == args.slug);
 
-            const taxonomy = await TaxonomyModel.findOne({
+            const taxonomy = await models.Taxonomy.findOne({
                 where: { id: item[0].id }
             });
 
@@ -86,7 +78,7 @@ export default {
                     postType: "post",
                     status: "publish"
                 },
-                context
+                { user, models }
             );
         },
         pageMenu: async (root, args) => {
@@ -98,11 +90,11 @@ export default {
             let item = menu.reduce(item => item.slug == args.slug);
             args.status = "publish";
             if (!item) {
-                return PostModel.findOne({
+                return models.Post.findOne({
                     where: { type: "page", slug: args.slug }
                 });
             }
-            return PostModel.findOne({
+            return models.Post.findOne({
                 where: { id: item[0].id }
             });
         },
@@ -112,13 +104,13 @@ export default {
                 next: {}
             };
             args.status = "publish";
-            const postCheck = await PostModel.findOne({ where: args });
+            const postCheck = await models.Post.findOne({ where: args });
             if (postCheck === null) {
                 throw new Error("Invalid query");
             }
             const newArgs = { ...args };
             delete newArgs.slug;
-            const prevPost = await PostModel.findOne({
+            const prevPost = await models.Post.findOne({
                 where: {
                     ...newArgs,
                     id: { $lt: postCheck.dataValues.id }
@@ -127,7 +119,7 @@ export default {
                 limit: 1
             });
             data.previous = prevPost;
-            const nextPost = await PostModel.findOne({
+            const nextPost = await models.Post.findOne({
                 where: {
                     ...newArgs,
                     id: {
@@ -147,39 +139,31 @@ export default {
         )
     },
     Mutation: {
-        createPost: createPostsPerm.createResolver((root, args, context) => {
+        createPost: createPostsPerm.createResolver((root, args, { models }) => {
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
             });
 
-            return _createPost(data);
+            return _createPost(data, models);
         }),
-        updatePost: editPostPerm.createResolver((root, args, context) => {
+        updatePost: editPostPerm.createResolver((root, args, { models }) => {
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
             });
-            return _updatePost(data);
+            return _updatePost(data, { models });
         }),
-        uploadFile: editPostPerm.createResolver((root, args) => {
-            return _updatePost(args);
+        uploadFile: editPostPerm.createResolver((root, args, { models }) => {
+            return _updatePost(args, models);
         })
     },
     Post: {
-        author: post => {
-            return post.getAuthor();
-        },
-        taxonomies: post => {
-            return post.getTaxonomy();
-        }
+        author: post => post.getAuthors(),
+        taxonomies: post => post.getTaxonomies()
     },
     PostTaxonomy: {
-        posts: (taxonomy, { type }) => {
-            return taxonomy.getPost({ where: { type: type } });
-        },
-        post_count: taxonomy => {
-            return taxonomy.post[0].dataValues.post_count;
-        }
+        posts: (taxonomy, { type }) => taxonomy.getPost({ where: { type } }),
+        post_count: taxonomy => taxonomy.post[0].dataValues.post_count
     }
 };

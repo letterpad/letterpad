@@ -1,14 +1,18 @@
-import { conn } from "../../config/mysql.config";
 import Sequalize from "sequelize";
 
-export const MediaModel = conn.define(
-    "media",
-    {
-        url: {
-            type: Sequalize.STRING
+export default (conn, DataTypes) => {
+    const Media = conn.define(
+        "media",
+        {
+            url: {
+                type: Sequalize.STRING
+            }
+        },
+        {
+            freezeTableName: true
         }
-    },
-    {
-        freezeTableName: true
-    }
-);
+    );
+    Media.associate = models => {
+        Media.hasOne(models.Post);
+    };
+};

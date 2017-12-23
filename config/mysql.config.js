@@ -9,7 +9,7 @@ var config = {
     timezone: "utc",
     charset: "utf8mb4",
     connectionLimit: 30,
-    database: "reactcms",
+    database: "testcms",
     multipleStatements: true,
     debug: false
 };
@@ -20,7 +20,10 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === "dev") {
     var pool = mysql.createPool(config);
 }
 
-var conn = new Sequalize("reactcms", "root", "123456", {
+var conn = new Sequalize("testcms", "root", "123456", {
+    logging: function(str) {
+        console.log(str);
+    },
     host: "localhost",
     dialect: "mysql",
     define: {
