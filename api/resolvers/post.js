@@ -1,5 +1,5 @@
 import Sequalize from "sequelize";
-import { _createPost, _updatePost } from "../models";
+import { _createPost, _updatePost } from "../models/post";
 import { getTaxonomies } from "../models/taxonomy";
 import { UnauthorizedError } from "../utils/common";
 import {
@@ -66,28 +66,30 @@ export default {
 
             let item = menu.filter(item => item.slug == args.slug);
 
-            const taxonomy = await models.Taxonomy.findOne({
-                where: { id: item[0].id }
-            });
+            // const taxonomy = await models.Taxonomy.findOne({
+            //     where: { id: item[0].id }
+            // });
 
             return getTaxonomies(
                 root,
                 {
                     type: "post_category",
-                    name: taxonomy.dataValues.name,
+                    taxId: item[0].id,
                     postType: "post",
                     status: "publish"
                 },
                 { user, models }
             );
         },
-        pageMenu: async (root, args) => {
+        pageMenu: async (root, args, { models }) => {
             let that = this;
-            let menu = await SettingsModel.findOne({
+            let menu = await models.Setting.findOne({
                 where: { option: "menu" }
             });
             menu = JSON.parse(menu.dataValues.value);
+
             let item = menu.reduce(item => item.slug == args.slug);
+
             args.status = "publish";
             if (!item) {
                 return models.Post.findOne({
@@ -95,10 +97,10 @@ export default {
                 });
             }
             return models.Post.findOne({
-                where: { id: item[0].id }
+                where: { id: item.id }
             });
         },
-        adjacentPosts: async (root, args) => {
+        adjacentPosts: async (root, args, { models }) => {
             let data = {
                 previous: {},
                 next: {}
@@ -152,18 +154,24 @@ export default {
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
             });
-            return _updatePost(data, { models });
+            return _updatePost(data, models);
         }),
         uploadFile: editPostPerm.createResolver((root, args, { models }) => {
             return _updatePost(args, models);
         })
     },
     Post: {
-        author: post => post.getAuthors(),
-        taxonomies: post => post.getTaxonomies()
+        author: post => post.getAuthor(),
+        taxonomies: post => {
+            return post.getTaxonomies();
+        }
     },
     PostTaxonomy: {
-        posts: (taxonomy, { type }) => taxonomy.getPost({ where: { type } }),
-        post_count: taxonomy => taxonomy.post[0].dataValues.post_count
+        posts: (taxonomy, { type }) => {
+            return taxonomy.getPosts({ where: { type, status: "publish" } });
+        },
+        post_count: taxonomy => {
+            return taxonomy.posts[0].dataValues.post_count;
+        }
     }
 };

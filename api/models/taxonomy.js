@@ -25,32 +25,38 @@ export default (conn, DataTypes) => {
     return Taxonomy;
 };
 export const getTaxonomies = (root, args, { models, user }) => {
-    const { postType } = args;
-    const newArgs = { ...args };
-    delete newArgs.postType;
-    delete newArgs.status;
-    const where = postType ? { type: postType } : {};
+    let { postType, type, taxId, status } = args;
 
+    let where = {};
     if (!user || !user.id) {
         where.status = "publish";
     }
-    return models.Taxonomy.findAll({
+    if (postType) {
+        where.type = postType;
+    }
+    console.log(where);
+    console.log("=================");
+    let query = {
         attributes: ["name", "id", "type"],
         include: [
             {
                 model: models.Post,
                 attributes: [
                     [
-                        Sequalize.fn("COUNT", Sequalize.col("post.id")),
+                        Sequalize.fn("COUNT", Sequalize.col("posts.id")),
                         "post_count"
                     ]
                 ],
-                as: "post",
+                as: "posts",
                 where,
                 required: true
             }
         ],
-        where: newArgs,
+        where: { type },
         group: ["taxonomy_id", "post_id"]
-    });
+    };
+    if (taxId) {
+        query.where.id = taxId;
+    }
+    return models.Taxonomy.findAll(query);
 };

@@ -42,7 +42,8 @@ export default (conn, DataTypes) => {
     Post.associate = models => {
         //  n:m
         Post.belongsToMany(models.Taxonomy, {
-            through: "PostTaxonomy"
+            through: "PostTaxonomy",
+            as: "taxonomies"
         });
         //  1:m
         Post.belongsTo(models.Author);
@@ -89,7 +90,10 @@ export async function _updatePost(post, models) {
             //  create the slug
             post.slug = await slugify(models.Post, post.title);
         }
-        const updatedPost = await models.Post.update(post, {
+        await models.Post.update(post, {
+            where: { id: post.id }
+        });
+        const updatedPost = await models.Post.findOne({
             where: { id: post.id }
         });
         // remove the texonomy relation
@@ -101,11 +105,10 @@ export async function _updatePost(post, models) {
                     let taxItem = null;
                     // add relation with existing taxonomies
                     if (taxonomy.id != 0) {
-                        taxItem = models.Taxonomy.findOne({
+                        taxItem = await models.Taxonomy.findOne({
                             where: { id: taxonomy.id }
                         });
-                        await updatedPost.addTaxonomy(taxItem);
-                        return;
+                        return await updatedPost.addTaxonomy(taxItem);
                     }
                     // taxonomies needs to be created
                     taxItem = await models.Taxonomy.findOrCreate({
@@ -115,15 +118,10 @@ export async function _updatePost(post, models) {
                         }
                     });
                     // add relation
-                    await updatedPost.addTaxonomy(taxItem);
+                    return await updatedPost.addTaxonomy(taxItem);
                 })
             );
         }
-
-        // const updatedPost = await PostModel.findOne({
-        //     where: { id: post.id }
-        // });
-
         return {
             ok: true,
             post: updatedPost,

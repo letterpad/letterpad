@@ -1,83 +1,23 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700.css");
 @import "./variables.scss";
+@import "./login.scss";
 @import "./common.scss";
 @import "./react-select.scss";
 .form-control {
     text-transform: none !important;
 }
+
 label.custom-label {
     font-weight: 500;
     font-size: 13px;
 }
 
-/* Login */
-.login-view {
-    background: #252627;
-    .login {
-        margin: 0 auto;
-        margin-top: -165px;
-        top: 50%;
-        position: absolute;
-        left: 50%;
-        margin-left: -190px;
-        width: 380px;
-        .form-signin {
-            input {
-                text-transform: none;
-                border: 1px solid #eee;
-                color: #5a5b5c;
-                font-size: 13px;
-            }
-            input:-webkit-autofill {
-                -webkit-box-shadow: 0 0 0px 1000px #f5f5f5 inset;
-            }
-            label {
-                display: inline-block;
-                max-width: 100%;
-                margin-bottom: 5px;
-                font-weight: bold;
-                letter-spacing: 4px;
-                font-weight: 100;
-                text-transform: uppercase;
-                font-size: 11px;
-                margin-top: 19px;
-            }
-            .form-signin-heading {
-                margin-bottom: 18px;
-                font-size: 30px;
-                color: #5a5b5c;
-            }
-            .form-control {
-                position: relative;
-                height: auto;
-                padding: 9px 8px;
-                box-sizing: border-box;
-                &:focus {
-                    z-index: 2;
-                }
-            }
-        }
-    }
-}
-/* Login End */
 
 /* Navbar */
-ul.nav.navbar-nav i {
-    width: 12px;
-}
-ul.nav.navbar-nav > li.item a {
-    margin-left: 10px;
-}
-ul.nav.navbar-nav ul {
-    list-style: none;
-}
-ul.nav.navbar-nav .parent {
-    padding-bottom: 4px;
-}
-ul.nav.navbar-nav li ul li {
-    padding: 6px 0px;
-}
+
+
 /* Tell Quill not to scroll */
+
 #editor {
     height: auto;
     min-height: 300px;
@@ -85,44 +25,58 @@ ul.nav.navbar-nav li ul li {
     border: none;
     font-family: inherit;
 }
+
 #editor .ql-editor {
     overflow-y: visible;
     padding: 12px 0px;
     min-height: 280px;
 }
+
 .quill-container {
     font-size: 14px;
 }
+
 #quill-container .ql-toolbar {
     opacity: 0.2;
 }
+
 #quill-container .ql-toolbar:hover {
     opacity: 1;
 }
+
+
 /* Specify our own scrolling container */
+
 #quill-container {
     height: 100%;
     min-height: 100%;
     overflow-y: auto;
 }
 
+
 /* Publish buttons */
+
 .btn-group-justified .btn-item {
     padding-left: 2px;
     padding-right: 2px;
 }
 
+
 /* Tags Input */
+
 div.ReactTags__tags {
     position: relative;
 }
 
+
 /* Styles for the input */
+
 div.ReactTags__tagInput {
     width: 200px;
     border-radius: 2px;
     display: block;
 }
+
 div.ReactTags__tagInput input,
 div.ReactTags__tagInput input:focus {
     margin: 0;
@@ -133,7 +87,9 @@ div.ReactTags__tagInput input:focus {
     display: block;
 }
 
+
 /* Styles for selected tags */
+
 div.ReactTags__selected span.ReactTags__tag {
     border: 1px solid #ddd;
     background: #eee;
@@ -144,6 +100,7 @@ div.ReactTags__selected span.ReactTags__tag {
     cursor: move;
     border-radius: 2px;
 }
+
 div.ReactTags__selected a.ReactTags__remove {
     color: #aaa;
     margin-left: 5px;
@@ -151,11 +108,14 @@ div.ReactTags__selected a.ReactTags__remove {
     font-size: 14px;
 }
 
+
 /* Styles for suggestions */
+
 div.ReactTags__suggestions {
     position: absolute;
     z-index: 10;
 }
+
 div.ReactTags__suggestions ul {
     list-style-type: none;
     box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
@@ -164,23 +124,30 @@ div.ReactTags__suggestions ul {
     padding: 0;
     margin: 0;
 }
+
 div.ReactTags__suggestions li {
     border-bottom: 1px solid #ddd;
     padding: 10px 5px;
     margin: 0;
 }
+
 div.ReactTags__suggestions li mark {
     text-decoration: underline;
     background: none;
     font-weight: 600;
 }
+
 div.ReactTags__suggestions ul li.active {
     background: #b7cfe0;
     cursor: pointer;
 }
+
+
 /* Tags input end */
 
+
 /*Theme customization*/
+
 .theme-customizer {
     .swatch {
         padding: 5px;
@@ -202,27 +169,35 @@ div.ReactTags__suggestions ul li.active {
         left: 0px;
     }
 }
+
+
 /* Table */
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
+
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td {
     padding: 12px 8px;
     border-top: none;
 }
+
 .table th {
     color: $font_body_dark;
     text-transform: uppercase;
     font-size: 14px;
     font-weight: 400;
 }
+
 tr td:first-child,
 tr th:first-child {
     padding-left: 0px !important;
 }
+
+
 /*Media*/
+
 .table.media-table {
     td {
         vertical-align: middle;
@@ -233,174 +208,21 @@ tr th:first-child {
         height: 80px;
     }
 }
-/*Check box*/
-.control {
-    display: block;
-    position: relative;
-    padding-left: 30px;
-    margin-bottom: 16px;
-    cursor: pointer;
-    font-size: 18px;
-    input {
-        position: absolute;
-        z-index: -1;
-        opacity: 0;
-    }
-}
 
-.control__indicator {
-    position: absolute;
-    top: 2px;
-    left: 0;
-    height: 20px;
-    width: 20px;
-    background: #e6e6e6;
-}
 
-.control--radio .control__indicator {
-    border-radius: 50%;
-}
+/*!------------------------------------------------------------------
+[Post Filters]
+*/
 
-.control {
-    &:hover input ~ .control__indicator {
-        background: #ccc;
-    }
-    input {
-        &:focus ~ .control__indicator {
-            background: #ccc;
-        }
-        &:checked ~ .control__indicator {
-            background: #111111;
-        }
-    }
-    &:hover input:not([disabled]):checked ~ .control__indicator {
-        background: #111111;
-    }
-    input {
-        &:checked:focus ~ .control__indicator {
-            background: #111111;
-        }
-        &:disabled ~ .control__indicator {
-            background: #e6e6e6;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-    }
-}
-
-.control__indicator:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-
-.control input:checked ~ .control__indicator:after {
-    display: block;
-}
-
-.control--checkbox {
-    .control__indicator:after {
-        left: 8px;
-        top: 4px;
-        width: 3px;
-        height: 8px;
-        border: solid #fff;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-    }
-    input:disabled ~ .control__indicator:after {
-        border-color: #7b7b7b;
-    }
-}
-
-.control--radio {
-    .control__indicator:after {
-        left: 7px;
-        top: 7px;
-        height: 6px;
-        width: 6px;
-        border-radius: 50%;
-        background: #fff;
-    }
-    input:disabled ~ .control__indicator:after {
-        background: #7b7b7b;
-    }
-}
-
-/* The switch - the box around the slider */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 46px;
-    height: 18px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-    display: none;
-}
-
-/* The slider */
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: -4px;
-    bottom: -3px;
-    background-color: white;
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
-}
-
-input:checked + .slider {
-    background-color: #2196f3;
-}
-
-input:focus + .slider {
-    box-shadow: 0 0 1px #2196f3;
-}
-
-input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
-
-/*Post Toolbar*/
 .post-filters {
     text-transform: uppercase;
     font-size: 12px;
     color: #afafaf;
-
     .filter-item:not(:last-child):after {
         content: "|";
         margin: 0px 10px;
         color: #afafaf;
     }
-
     .filter-item {
         transition: 0.3s all linear;
         cursor: pointer;
@@ -408,18 +230,5 @@ input:checked + .slider:before {
             font-weight: 600;
             color: $font_body_dark;
         }
-        // &.all.active {
-        //     color: #333;
-        // }
-        // &.publish.active {
-        //     color: #29bd29;
-        // }
-
-        // &.draft.active {
-        //     color: #e2b416;
-        // }
-        // &.trash.active {
-        //     color: #ca2020;
-        // }
     }
 }

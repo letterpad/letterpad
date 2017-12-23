@@ -12,7 +12,7 @@ export default class Categories extends Component {
             <div className="card">
                 <div className="module-title">Categories</div>
                 <div className="x_content">
-                    <ul>
+                    <ul style={{ "padding-left": "16px" }}>
                         {(() => {
                             if (this.props.loading) {
                                 return <div>Loading...</div>;

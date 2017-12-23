@@ -55,8 +55,8 @@ export default class Menu extends Component {
                             <span className="icon-bar" />
                         </button>
 
-                        <Link className="navbar-brand" to="/">
-                            Dashboard
+                        <Link className="navbar-brand brand" to="/">
+                            Paperboat
                         </Link>
                     </div>
 
