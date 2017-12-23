@@ -1,4 +1,3 @@
-import { updateOptions } from "../models";
 import { requiresAdmin } from "../utils/permissions";
 
 export default {
@@ -9,10 +8,14 @@ export default {
     },
     Mutation: {
         updateOptions: requiresAdmin.createResolver(
-            (root, args, { models }) => {
-                return updateOptions(args, { models }).then(() => {
-                    return models.Setting.findAll();
+            async (root, args, { models }) => {
+                let promises = args.options.map(setting => {
+                    return models.Setting.update(setting, {
+                        where: { option: setting.option }
+                    });
                 });
+                await Promise.all(promises);
+                return models.Setting.findAll();
             }
         )
     }

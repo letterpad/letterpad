@@ -43,7 +43,8 @@ export default (conn, Datatypes) => {
         // 1:n
         Author.hasMany(models.Post);
         //  1:1
-        //Author.hasOne(models.Role);
+        Author.belongsTo(models.Role);
+        Author.hasMany(models.Media);
     };
     return Author;
 };

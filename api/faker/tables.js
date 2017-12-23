@@ -10,7 +10,8 @@ const models = {
     Taxonomy: conn.import("../models/taxonomy"),
     Role: conn.import("../models/role"),
     Permission: conn.import("../models/permission"),
-    Setting: conn.import("../models/settings")
+    Setting: conn.import("../models/settings"),
+    Media: conn.import("../models/media")
 };
 
 Object.keys(models).map(name => {
@@ -38,43 +39,49 @@ models.conn = conn;
         ]
     });
  */
-models.conn.sync({ force: false }).then(() => {
-    //insertRolePermData();
-    //  create a Uncategorized category
-    //insertTaxonomy();
-    insertAuthor();
-    insertPost();
-    //insertSettings();
+models.conn.sync({ force: false }).then(async () => {
+    // await insertRolePermData();
+    // await insertAuthor();
+    // await insertTaxonomy();
+    // await insertPost();
+    // await insertSettings();
+
+    let post = await models.Post.findOne({ where: { id: 1 } });
+    let t = await post.getAuthor();
+    console.log(t);
 });
 
 async function insertPost() {
     // get author
     let admin = await models.Author.findOne({ where: { role_id: 1 } });
-    let role = await models.Role.findOne({ where: { id: admin.role_id } });
-    let r = await role.getPermissions();
-    const permissionNames = r.map(perm => perm.name);
-    console.log(permissionNames);
-    // let post = await models.Post.create({
-    //     title: "Hello World",
-    //     body: Faker.lorem.paragraphs(6),
-    //     excerpt: Faker.lorem.sentences(),
-    //     cover_image: "http://lorempixel.com/900/300/nature/",
-    //     type: "post",
-    //     status: "publish",
-    //     slug: "hello-world",
-    //     author_id: admin.id
-    // });
-    // await admin.addPost(post);
+    // let role = await models.Role.findOne({ where: { id: admin.role_id } });
+    // let r = await role.getPermissions();
+    // const permissionNames = r.map(perm => perm.name);
+    // console.log(permissionNames);
+    let post = await models.Post.create({
+        title: "Hello World",
+        body: Faker.lorem.paragraphs(6),
+        excerpt: Faker.lorem.sentences(),
+        cover_image: "http://lorempixel.com/900/300/nature/",
+        type: "post",
+        status: "publish",
+        slug: "hello-world",
+        author_id: admin.id
+    });
+    await admin.addPost(post);
 
-    // let taxonomy = await models.Taxonomy.findOne({
-    //     where: { type: "post_category" }
-    // });
-    // let postItem = await models.Post.findOne({ where: { id: 1 } });
-    // // await post.setTaxonomies([]);
-    // await postItem.addTaxonomy(taxonomy);
+    let taxonomy = await models.Taxonomy.findOne({
+        where: { type: "post_category" }
+    });
+    let postItem = await models.Post.findOne({ where: { id: 1 } });
+    // await post.setTaxonomies([]);
+    await postItem.addTaxonomy(taxonomy);
 
-    // let tax = await post.getTaxonomies();
-    // console.log(tax);
+    let tax = await post.getTaxonomies();
+    // // console.log(tax);
+
+    // let role = await admin.getRole();
+    // console.log(role);
 }
 
 async function insertTaxonomy() {
@@ -165,6 +172,16 @@ async function insertRolePermData() {
 }
 
 async function insertSettings() {
+    let menu = JSON.stringify([
+        {
+            label: "Home",
+            id: 1,
+            priority: 1,
+            slug: "hello-world",
+            home: true,
+            type: "category"
+        }
+    ]);
     let data = [
         {
             option: "site_title",
@@ -203,8 +220,16 @@ async function insertSettings() {
             value: ""
         },
         {
+            option: "sidebar_latest_post_count",
+            value: 3
+        },
+        {
+            option: "sidebar_about",
+            value: "about"
+        },
+        {
             option: "menu",
-            value: "[]"
+            value: menu
         }
     ];
     await models.Setting.bulkCreate(data);

@@ -52,7 +52,7 @@ export default class Menu extends Component {
                             <span className="icon-bar" />
                         </button>
 
-                        <Link className="navbar-brand" to="/">
+                        <Link className="navbar-brand brand" to="/">
                             {this.props.settings.site_title.value}
                         </Link>
                     </div>

@@ -12,7 +12,8 @@ export default (conn, DataTypes) => {
             freezeTableName: true
         }
     );
-    Media.associate = models => {
-        Media.hasOne(models.Post);
-    };
+    // Media.associate = models => {
+    //    // Media.belongsToMany(models.Author);
+    // };
+    return Media;
 };

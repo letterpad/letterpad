@@ -83,7 +83,7 @@ export default (
             path="/admin/page/:post_id"
             component={Authorized(Single("page"))}
         />
-        <Route path="/admin/page-new" component={Authorized(Create("post"))} />
+        <Route path="/admin/page-new" component={Authorized(Create("page"))} />
         <Route path="/admin/media" component={Authorized(Media)} />
         <Route path="/admin/settings" component={Authorized(Settings)} />
         <Route path="/admin/authors" component={Authorized(Authors)} />
