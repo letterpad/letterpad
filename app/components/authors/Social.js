@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class Social extends Component {
     constructor(props) {
@@ -8,7 +9,7 @@ export default class Social extends Component {
         };
         this.updateOption = this.updateOption.bind(this);
     }
-    componentDidMount() {
+    componentWillMount() {
         this.state.social = JSON.parse(this.props.data);
         this.setState(this.state);
     }
@@ -77,3 +78,8 @@ export default class Social extends Component {
         );
     }
 }
+
+Social.propTypes = {
+    data: PropTypes.string,
+    updateOption: PropTypes.func
+};

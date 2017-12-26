@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import Select from "react-select";
 
 class MenuItem extends Component {
@@ -157,7 +156,6 @@ export default class Menu extends Component {
                     name: ele.title
                 };
             });
-            console.log(categories.concat(pages));
             this.state.data = categories.concat(pages);
             this.state.loaded = true;
             this.setState(this.state);

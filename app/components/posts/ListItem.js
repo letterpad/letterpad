@@ -11,12 +11,17 @@ export default class ListItem extends Component {
         e.preventDefault();
         e.stopPropagation();
     }
-    openArticle() {
-        browserHistory.push(
-            "/admin/" + this.props.post.type + "/" + this.props.post.id
-        );
-    }
+
     render() {
+        const categories = this.props.post.taxonomies
+            .filter(item => item.type == "post_category")
+            .map(cat => cat.name)
+            .join(", ");
+
+        const tags = this.props.post.taxonomies
+            .filter(item => item.type == "post_tag")
+            .map(tag => tag.name)
+            .join(", ");
         return (
             <tr>
                 <td align="center" onclick={this.postSelected.bind(this)}>
@@ -31,10 +36,12 @@ export default class ListItem extends Component {
                 </td>
                 <td
                     style={{ cursor: "pointer" }}
-                    onClick={this.openArticle.bind(this)}
+                    onClick={() => this.props.handleClick(this.props.post.id)}
                 >
                     {this.props.post.title || "Draft.."}
                 </td>
+                <td>{categories}</td>
+                <td>{tags}</td>
                 <td>{this.props.post.status}</td>
                 <td>{this.props.post.author.username}</td>
                 <td>

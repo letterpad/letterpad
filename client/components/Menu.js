@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 export default class Menu extends Component {
     constructor(props) {
@@ -37,7 +37,7 @@ export default class Menu extends Component {
 
         return (
             <div className="sidebar">
-                <nav className="navbar navbar-custom font-alt">
+                <nav className="navbar navbar-custom">
                     <div className="navbar-header">
                         <button
                             type="button"

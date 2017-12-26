@@ -1,4 +1,4 @@
-import { conn } from "../config/mysql.config";
+import { conn, config } from "../config/mysql.config";
 import Sequalize, { DataTypes } from "sequelize";
 
 const models = {
@@ -10,12 +10,12 @@ const models = {
     Setting: conn.import("./models/settings"),
     Media: conn.import("./models/media")
 };
-Object.keys(models).map(name => {
+Object.keys(models).forEach(name => {
     if ("associate" in models[name]) {
         models[name].associate(models);
     }
 });
 models.Sequalize = Sequalize;
 models.conn = conn;
-
+models.config = config;
 module.exports = models;

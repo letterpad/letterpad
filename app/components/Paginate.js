@@ -1,13 +1,14 @@
 import React from "react";
-import { Link } from "react-router";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const Paginate = ({ count, page, changePage }) => {
     const limit = 3;
     const pages = Array.from(Array(Math.ceil(count / limit)));
 
     const pageItems = pages.map((_, i) => {
-        let num = i + 1;
-        let active = num == page ? "active" : "";
+        const num = i + 1;
+        const active = num === page ? "active" : "";
         return (
             <li key={i}>
                 <Link
@@ -24,4 +25,9 @@ const Paginate = ({ count, page, changePage }) => {
     return <ul className="pagination">{pageItems}</ul>;
 };
 
+Paginate.propTypes = {
+    count: PropTypes.number,
+    page: PropTypes.page,
+    changePage: PropTypes.func
+};
 export default Paginate;

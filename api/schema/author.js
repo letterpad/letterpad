@@ -24,10 +24,11 @@ export default `
   type AuthorResponse {
     ok: Boolean!
     errors: [Error!]
+    data: Author
   }
 
   type Mutation {
-    register(username: String!, password: String!, email: String!): Author!
+    register(username: String!, password: String!, email: String!): AuthorResponse!
     login(username: String, email: String, password: String!): LoginResponse!
     updateAuthor(id: Int!, username: String, email: String, fname: String, lname: String, social: String, password: String): AuthorResponse
   }

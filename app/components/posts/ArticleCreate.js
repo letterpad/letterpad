@@ -1,13 +1,27 @@
 import React, { Component } from "react";
-import { Link } from "react-router";
 import moment from "moment";
+import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 import Editor from "./Editor";
 import PostActions from "./PostActions";
 import FeaturedImage from "./FeaturedImage";
-import ReactDOM from "react-dom";
 
-var ContentEditable = React.createClass({
-    render: function() {
+class ContentEditable extends Component {
+    shouldComponentUpdate(nextProps) {
+        return nextProps.title !== ReactDOM.findDOMNode(this).innerHTML;
+    }
+    emitChange() {
+        const title = ReactDOM.findDOMNode(this).innerHTML;
+        if (this.props.onChange && title !== this.lastTitle) {
+            this.props.onChange({
+                target: {
+                    value: title
+                }
+            });
+        }
+        this.lastTitle = title;
+    }
+    render() {
         return (
             <h2
                 className="post-title"
@@ -18,27 +32,16 @@ var ContentEditable = React.createClass({
                 dangerouslySetInnerHTML={{ __html: this.props.title }}
             />
         );
-    },
-    shouldComponentUpdate: function(nextProps) {
-        return nextProps.title !== ReactDOM.findDOMNode(this).innerHTML;
-    },
-    emitChange: function() {
-        var title = ReactDOM.findDOMNode(this).innerHTML;
-        if (this.props.onChange && title !== this.lastTitle) {
-            this.props.onChange({
-                target: {
-                    value: title
-                }
-            });
-        }
-        this.lastTitle = title;
     }
-});
+}
+
+ContentEditable.propTypes = {
+    placeholder: PropTypes.string,
+    onChange: PropTypes.func,
+    title: PropTypes.string
+};
 
 export default class CreateArticle extends Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         return (
             <div className="card">
@@ -66,3 +69,8 @@ export default class CreateArticle extends Component {
         );
     }
 }
+
+CreateArticle.propTypes = {
+    title: PropTypes.string,
+    post: PropTypes.object
+};

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class Social extends Component {
     constructor(props) {
@@ -13,9 +14,7 @@ export default class Social extends Component {
         return (
             <div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        Facebook
-                    </label>
+                    <label className="custom-label">Facebook</label>
                     <input
                         defaultValue={this.props.data.social_facebook.value}
                         type="text"
@@ -23,16 +22,12 @@ export default class Social extends Component {
                         placeholder="Enter your facebook link"
                         aria-invalid="false"
                         onBlur={e =>
-                            this.updateOption(
-                                "social_facebook",
-                                e.target.value
-                            )}
+                            this.updateOption("social_facebook", e.target.value)
+                        }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        Twitter
-                    </label>
+                    <label className="custom-label">Twitter</label>
                     <input
                         defaultValue={this.props.data.social_twitter.value}
                         type="text"
@@ -40,13 +35,12 @@ export default class Social extends Component {
                         placeholder="Enter your twitter link"
                         aria-invalid="true"
                         onBlur={e =>
-                            this.updateOption("social_twitter", e.target.value)}
+                            this.updateOption("social_twitter", e.target.value)
+                        }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        Instagram
-                    </label>
+                    <label className="custom-label">Instagram</label>
                     <input
                         defaultValue={this.props.data.social_instagram.value}
                         type="text"
@@ -57,10 +51,26 @@ export default class Social extends Component {
                             this.updateOption(
                                 "social_instagram",
                                 e.target.value
-                            )}
+                            )
+                        }
                     />
                 </div>
             </div>
         );
     }
 }
+
+Social.propTypes = {
+    data: PropTypes.object,
+    updateOption: PropTypes.func
+};
+Social.defaultPropTypes = {
+    data: JSON.stringify({
+        social: {
+            twitter: "",
+            facebook: "",
+            instagram: "",
+            github: ""
+        }
+    })
+};

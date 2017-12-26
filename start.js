@@ -17,7 +17,7 @@ let config = require("./config/config");
 let bodyParser = require("body-parser");
 
 let adminServerRendering = require("./app/serverRendering");
-let clientServerRendering = require("./client/serverRendering");
+//let clientServerRendering = require("./client/serverRendering");
 const app = express();
 app.use(bodyParser.json());
 app.use(
@@ -43,7 +43,7 @@ app.use(
 );
 app.use(require("webpack-hot-middleware")(compiler));
 adminServerRendering.init(app);
-clientServerRendering.init(app);
+// clientServerRendering.init(app);
 
 const httpServer = app.listen(4040, function() {
     console.log("====> Admin is listening on", 4040);

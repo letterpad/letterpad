@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
+import PropTypes from "prop-types";
 import ListItem from "../components/posts/ListItem";
-import { Link } from "react-router";
 import { GET_POSTS } from "../../shared/queries/Queries";
-import client from "../apolloClient";
 import PostsHoc from "./hoc/PostsHoc";
 import Paginate from "../components/Paginate";
 import { PostFilters } from "../components/posts/Filter";
@@ -11,17 +10,22 @@ import { PostFilters } from "../components/posts/Filter";
 class Posts extends Component {
     constructor(props) {
         super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(id) {
+        this.props.history.push("/admin/posts/" + id);
     }
 
     render() {
         if (this.props.loading && !this.props.posts) {
             return <div>hello</div>;
         }
-        let rows = this.props.posts.rows.map((post, i) => {
-            return <ListItem key={i} post={post} />;
-        });
+        const rows = this.props.posts.rows.map((post, i) => (
+            <ListItem handleClick={this.handleClick} key={i} post={post} />
+        ));
 
-        const status = this.props.variables.status;
+        const { status } = this.props.variables;
         return (
             <section className="module-xs">
                 <div className="card">
@@ -46,13 +50,19 @@ class Posts extends Component {
                                         <div className="control__indicator" />
                                     </label>
                                 </th>
-                                <th width="60%" className="col-text">
+                                <th width="25%" className="col-text">
                                     Title
                                 </th>
-                                <th width="10%" className="col-text">
+                                <th width="20%" className="col-text">
+                                    Categories
+                                </th>
+                                <th width="20%" className="col-text">
+                                    Tags
+                                </th>
+                                <th width="5%" className="col-text">
                                     Status
                                 </th>
-                                <th width="15%" className="col-text">
+                                <th width="10%" className="col-text">
                                     Author
                                 </th>
                                 <th width="10%" className="col-text">
@@ -86,5 +96,12 @@ const ContainerWithData = graphql(GET_POSTS, {
         loading
     })
 });
-
+Posts.propTypes = {
+    posts: PropTypes.object,
+    changePage: PropTypes.func,
+    variables: PropTypes.object,
+    changeStatus: PropTypes.func,
+    loading: PropTypes.bool,
+    history: PropTypes.func
+};
 export default PostsHoc(ContainerWithData(Posts));

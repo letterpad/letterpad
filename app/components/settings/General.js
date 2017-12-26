@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class General extends Component {
     constructor(props) {
@@ -13,9 +14,7 @@ export default class General extends Component {
         return (
             <div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        Site title
-                    </label>
+                    <label className="custom-label">Site title</label>
                     <input
                         defaultValue={this.props.data.site_title.value}
                         type="text"
@@ -23,13 +22,12 @@ export default class General extends Component {
                         placeholder="Enter an epic title"
                         aria-invalid="false"
                         onBlur={e =>
-                            this.updateOption("site_title", e.target.value)}
+                            this.updateOption("site_title", e.target.value)
+                        }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        Tagline
-                    </label>
+                    <label className="custom-label">Tagline</label>
                     <input
                         defaultValue={this.props.data.site_tagline.value}
                         type="text"
@@ -37,13 +35,12 @@ export default class General extends Component {
                         placeholder="Enter an epic tagline"
                         aria-invalid="true"
                         onBlur={e =>
-                            this.updateOption("site_tagline", e.target.value)}
+                            this.updateOption("site_tagline", e.target.value)
+                        }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        Email
-                    </label>
+                    <label className="custom-label">Email</label>
                     <input
                         defaultValue={this.props.data.site_email.value}
                         type="email"
@@ -51,13 +48,12 @@ export default class General extends Component {
                         placeholder="someone@somewhere.com"
                         aria-invalid="true"
                         onBlur={e =>
-                            this.updateOption("site_email", e.target.value)}
+                            this.updateOption("site_email", e.target.value)
+                        }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        Short description
-                    </label>
+                    <label className="custom-label">Short description</label>
                     <textarea
                         defaultValue={this.props.data.site_description.value}
                         className="form-control"
@@ -69,10 +65,16 @@ export default class General extends Component {
                             this.updateOption(
                                 "site_description",
                                 e.target.value
-                            )}
+                            )
+                        }
                     />
                 </div>
             </div>
         );
     }
 }
+
+General.propTypes = {
+    data: PropTypes.object,
+    updateOption: PropTypes.func
+};

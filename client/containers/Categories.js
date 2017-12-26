@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
+import Loader from "../components/Loader";
 
 export default class Categories extends Component {
     getLink(name) {
