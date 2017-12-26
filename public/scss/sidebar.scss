@@ -1,7 +1,7 @@
 .sidebar {
     position: fixed;
     width: 250px;
-    background-color: $dark_1;
+    background-color: $color-bg-secondary;
     height: 100%;
     top: 0;
     left: 0;
@@ -21,11 +21,14 @@
         bottom: 0;
         left: 0;
         padding: 15px 30px;
-        font-size: 11px;
+        font-size: 13px;
+        font-weight: 300;
+        color: $color-text-primary-invert;
     }
     .social-icons a {
         font-size: 12px;
         margin-right: 10px;
+        position: relative;
     }
     &.nav {
         width: 95%;

@@ -1,32 +1,76 @@
-$dark: #232323;
-$dark_1: #303030;
-$dark_2: #3a3a3a;
-$light: #fdfdfd;
-$font_body: #818181;
-$font_body_dark: #000;
-$font_body_medium: rgb(92, 92, 92);
-$font_body_light: #aeaeae;
-$blue_primary: #2196f3;
-$blue_secondary: #1a82d6;
-$link_active: $blue_primary;
-$link_hover: $blue_secondary;
-$border_color: #e5e5e5;
-$placeholder: #eeeeee;
-$racing_font: "Racing Sans One",
-cursive;
-// $color-shadow:	rgba($black, .125);
-// $color-text-primary:	#818181;
-// $color-accent:	$patina;
-// $color-background:	$white;
-// $color-background-shade:	$iron;
-// $color-background-invert:	$hopbush;
-// $color-text:	darken($pale-sky, 15);
-// $color-text-weak:	$regent-grey;
-// $color-text-strong:	$midnight-blue;
-// $color-text-heading:	$regent-grey;
-// $color-text-invert:	rgba($color-background, .75);
-// $color-text-strong-invert:	$color-background;
-// $color-text-link:	$color-primary;
-// $color-text-link-visited:	$bouquet;
-// $color-text-link-hover:	$midnight-blue;
-// $color-border:	$iron;
+$racing_font: "Racing Sans One", cursive;
+
+/*!------------------------------------------------------------------
+[Body Color]
+*/
+
+$color-text-primary: #333333;
+
+/*!------------------------------------------------------------------
+[Contrast for backgrounds. This should be opposite of text-primary-color]
+*/
+
+$color-text-primary-invert: #b7b7b7;
+
+/*!------------------------------------------------------------------
+[Help text]
+*/
+
+$color-text-primary-light: #616161;
+
+/*!------------------------------------------------------------------
+[Placeholders]
+*/
+
+$color-text-weak: rgb(185, 185, 185);
+
+/*!------------------------------------------------------------------
+[Headlines]
+*/
+
+$color-text-secondary: #000;
+
+/*!------------------------------------------------------------------
+[Input boxes, text areas, etc. All .form-control]
+*/
+
+$color-text-secondary-light: #4c4c4c;
+
+/*!------------------------------------------------------------------
+[Something to contrast]
+*/
+
+$color-accent: #2196f3;
+
+/*!------------------------------------------------------------------
+[Body background color]
+*/
+
+$color-bg-primary: #3a3a3a;
+
+/*!------------------------------------------------------------------
+[Sidebar color]
+*/
+
+$color-bg-secondary: #1f1e1e;
+
+/*!------------------------------------------------------------------
+[Link colors]
+*/
+
+$link_active: $color-accent;
+$link_hover: #1a82d6;
+
+/*!------------------------------------------------------------------
+[Borders]
+*/
+
+$color-border: #e5e5e5;
+
+/*!------------------------------------------------------------------
+[Menu Link Color]
+*/
+
+$color-menu-link: $color-text-primary-invert;
+$color-menu-link-hover: $color-accent;
+$color-menu-link-active: $color-accent;

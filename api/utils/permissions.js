@@ -15,7 +15,12 @@ const createResolver = resolver => {
 
 export const requiresAuth = createResolver((root, args, context) => {
     if (!context.user || !context.user.id) {
-        throw new UnauthorizedError({ url: root.body.operationName });
+        console.log(root);
+        let operationName = "server";
+        if (root.body && root.body.operationName) {
+            operationName = root.body.operationName;
+        }
+        throw new UnauthorizedError({ url: operationName });
     }
     return args;
 });
@@ -23,7 +28,11 @@ export const requiresAuth = createResolver((root, args, context) => {
 export const requiresAdmin = requiresAuth.createResolver(
     (root, args, context) => {
         if (!context.user.role == "ADMIN") {
-            throw new UnauthorizedError({ url: root.body.operationName });
+            let operationName = "server";
+            if (root.body && root.body.operationName) {
+                operationName = root.body.operationName;
+            }
+            throw new UnauthorizedError({ url: operationName });
         }
         return args;
     }
@@ -35,7 +44,11 @@ export const createPostsPerm = requiresAuth.createResolver(
             context.user.permissions.includes(i)
         );
         if (contains.length == 0) {
-            throw new UnauthorizedError({ url: root.body.operationName });
+            let operationName = "server";
+            if (root.body && root.body.operationName) {
+                operationName = root.body.operationName;
+            }
+            throw new UnauthorizedError({ url: operationName });
         }
         return args;
     }
@@ -48,7 +61,11 @@ export const editPostPerm = requiresAuth.createResolver(
         } else if (context.user.permissions.indexOf("MANAGE_ALL_POSTS") >= 0) {
             return args;
         }
-        throw new UnauthorizedError({ url: root.body.operationName });
+        let operationName = "server";
+        if (root.body && root.body.operationName) {
+            operationName = root.body.operationName;
+        }
+        throw new UnauthorizedError({ url: operationName });
     }
 );
 
@@ -56,7 +73,11 @@ export const checkDisplayAccess = createResolver((root, args, context) => {
     //  if this is enduser, he should see only public posts.
     if (!context.user || !context.user.id) {
         // if (args.status != "publish") {
-        //     throw new UnauthorizedError({ url: root.body.operationName });
+        let operationName = "server";
+        if (root.body && root.body.operationName) {
+            operationName = root.body.operationName;
+        }
+        //     throw new UnauthorizedError({ url: operationName });
         // }
         args.status = "publish";
         return args;

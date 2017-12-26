@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import { Link } from "react-router";
+import ReactDOM from "react-dom";
 import moment from "moment";
 import Editor from "./Editor";
-import Tags from "./Tags";
-import Categories from "./Categories";
 import PostActions from "./PostActions";
 import FeaturedImage from "./FeaturedImage";
-import ReactDOM from "react-dom";
+
 var ContentEditable = React.createClass({
     render: function() {
         return (

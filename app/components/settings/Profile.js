@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class Profile extends Component {
     constructor(props) {
@@ -13,9 +14,7 @@ export default class Profile extends Component {
         return (
             <div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        Full Name
-                    </label>
+                    <label className="custom-label">Full Name</label>
                     <input
                         defaultValue={this.props.data.profile_name.value}
                         type="text"
@@ -23,13 +22,12 @@ export default class Profile extends Component {
                         placeholder="Enter an epic title"
                         aria-invalid="false"
                         onBlur={e =>
-                            this.updateOption("profile_name", e.target.value)}
+                            this.updateOption("profile_name", e.target.value)
+                        }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        Old Password
-                    </label>
+                    <label className="custom-label">Old Password</label>
                     <input
                         defaultValue={this.props.data.profile_password.value}
                         type="text"
@@ -40,13 +38,12 @@ export default class Profile extends Component {
                             this.updateOption(
                                 "profile_password",
                                 e.target.value
-                            )}
+                            )
+                        }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        New Password
-                    </label>
+                    <label className="custom-label">New Password</label>
                     <input
                         type="text"
                         className="form-control"
@@ -56,10 +53,16 @@ export default class Profile extends Component {
                             this.updateOption(
                                 "profile_new_password",
                                 e.target.value
-                            )}
+                            )
+                        }
                     />
                 </div>
             </div>
         );
     }
 }
+
+Profile.propTypes = {
+    updateOption: PropTypes.func,
+    data: PropTypes.object
+};

@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router";
+import PropTypes from "prop-types";
 import Notifications, { notify } from "react-notify-toast";
 import { gql, graphql } from "react-apollo";
-import { checkHttpStatus, parseJSON } from "../../utils/common";
-import { browserHistory } from "react-router";
 import { parseErrors } from "../../shared/util";
 
 class LoginView extends Component {
@@ -13,7 +11,9 @@ class LoginView extends Component {
     }
 
     componentDidMount() {
-        document.body.classList.add("login-view");
+        if (typeof document !== "undefined") {
+            document.body.classList.add("login-view");
+        }
     }
     async login(e) {
         e.preventDefault();
@@ -30,10 +30,11 @@ class LoginView extends Component {
         if (!res.data.login.ok) {
             let errors = parseErrors(res.data.login);
             errors = errors.map(error => error.message);
-            return notify.show(errors.join("\n"), "error", 3000);
+            notify.show(errors.join("\n"), "error", 3000);
+        } else {
+            localStorage.token = res.data.login.token;
+            this.props.history.push("/admin/posts");
         }
-        localStorage.token = res.data.login.token;
-        this.props.router.push("/admin/posts");
     }
 
     render() {
@@ -42,8 +43,9 @@ class LoginView extends Component {
                 <Notifications />
                 <form className="form-signin">
                     <h2 className="form-signin-heading text-center">#!</h2>
-                    <label>Username</label>
+                    <label htmlFor="username">Username</label>
                     <input
+                        id="username"
                         type="text"
                         className="form-control"
                         name="username"
@@ -51,10 +53,10 @@ class LoginView extends Component {
                             this.usernameInput = input;
                         }}
                         required=""
-                        autofocus=""
                     />
-                    <label>Password</label>
+                    <label htmlFor="password">Password</label>
                     <input
+                        id="password"
                         type="password"
                         className="form-control"
                         name="password"
@@ -77,6 +79,10 @@ class LoginView extends Component {
     }
 }
 
+LoginView.propTypes = {
+    login: PropTypes.func,
+    history: PropTypes.func
+};
 const LoginQuery = gql`
     mutation login($username: String!, $password: String!) {
         login(email: $username, password: $password) {

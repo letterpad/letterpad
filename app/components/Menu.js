@@ -1,53 +1,140 @@
 import React, { Component } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import { MenuTree } from "./TreeNode";
 
+const data = [
+    {
+        id: 11,
+        label: "Posts",
+        priority: 1,
+        permissions: [],
+        home: true,
+        icon: "fa-book",
+        collapsed: false,
+        children: [
+            {
+                id: 1,
+                label: "All Posts",
+                priority: 1,
+                permissions: [],
+                slug: "posts",
+                icon: "fa-envelope"
+            },
+            {
+                id: 2,
+                label: "New Post",
+                priority: 2,
+                permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
+                slug: "post-new",
+                icon: "fa-plus"
+            }
+        ]
+    },
+    {
+        id: 12,
+        label: "Pages",
+        priority: 2,
+        permissions: [],
+        icon: "fa-file",
+        children: [
+            {
+                id: 1,
+                label: "All Pages",
+                priority: 1,
+                permissions: [],
+                slug: "pages",
+                icon: "fa-envelope"
+            },
+            {
+                id: 2,
+                label: "New Page",
+                priority: 2,
+                permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
+                slug: "page-new",
+                icon: "fa-plus"
+            }
+        ]
+    },
+    {
+        id: 13,
+        label: "Media",
+        priority: 3,
+        permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
+        slug: "media",
+        icon: "fa-picture-o"
+    },
+    {
+        id: 14,
+        label: "Settings",
+        priority: 7,
+        permissions: ["MANAGE_SETTINGS"],
+        slug: "settings",
+        icon: "fa-cog"
+    },
+    {
+        id: 16,
+        label: "Menu",
+        priority: 5,
+        permissions: ["MANAGE_SETTINGS"],
+        slug: "menu-builder",
+        icon: "fa-user"
+    },
+    {
+        id: 15,
+        label: "Authors",
+        priority: 6,
+        permissions: ["MANAGE_USERS"],
+        slug: "authors",
+        icon: "fa-user"
+    }
+];
 export default class Menu extends Component {
     constructor(props) {
         super(props);
+
+        this.setData = this.setData.bind(this);
+        this.navbarToggle = this.navbarToggle.bind(this);
         this.state = {
             navbarOpen: false,
-            postsOpen: false,
-            pagesOpen: false,
-            permissions: []
+            data
         };
         this.permissions = [];
     }
+
     componentWillMount() {
-        this.permissions = jwtDecode(localStorage.token).permissions;
-        //this.setState(this.state);
+        if (typeof localStorage !== "undefined") {
+            this.permissions = jwtDecode(localStorage.token).permissions;
+        }
+        this.setState({ data });
     }
 
-    navbarToggle() {
-        this.setState({ navbarOpen: !this.state.navbarOpen });
+    setData(newData) {
+        this.setState({ data: newData });
     }
     toggleItem(item, e) {
         e.preventDefault();
         this.state[item] = !this.state[item];
         this.setState(this.state);
     }
+    navbarToggle() {
+        this.setState({ navbarOpen: !this.state.navbarOpen });
+    }
     render() {
-        let navbarStatus = this.state.navbarOpen ? "in" : "";
-        let postsStatus = this.state.postsOpen ? "" : "hide";
-        let pagesStatus = this.state.pagesOpen ? "" : "hide";
-        // let client =
-        //     typeof window !== "undefined" &&
-        //     window.clientData.access &&
-        //     window.clientData.access.role;
-        let isAdmin = 1; // client && window.clientData.access.role == "ADMIN";
-        const perm = permission => {
-            return this.permissions.indexOf(permission) !== -1;
-        };
+        const navbarStatus = this.state.navbarOpen ? "in" : "";
+
+        const selected = this.props.location.pathname.replace("/admin/", "");
+
         return (
             <div className="sidebar">
-                <nav className="navbar navbar-custom font-alt">
+                <nav className="navbar navbar-custom">
                     <div className="navbar-header">
                         <button
                             type="button"
                             className="navbar-toggle"
                             data-toggle="collapse"
                             data-target="#custom-collapse"
-                            onClick={this.navbarToggle.bind(this)}
+                            onClick={this.navbarToggle}
                         >
                             <span className="sr-only">Toggle navigation</span>
                             <span className="icon-bar" />
@@ -56,99 +143,25 @@ export default class Menu extends Component {
                         </button>
 
                         <Link className="navbar-brand brand" to="/">
-                            Paperboat
+                            {this.props.settings.site_title.value}
+                            <small>
+                                {this.props.settings.site_tagline.value}
+                            </small>
                         </Link>
                     </div>
 
                     <div
-                        className={"collapse navbar-collapse " + navbarStatus}
+                        className={`collapse navbar-collapse + ${navbarStatus}`}
                         id="custom-collapse"
                     >
-                        <ul className="nav navbar-nav">
-                            <li>
-                                <Link
-                                    className="parent"
-                                    to="null"
-                                    onClick={e =>
-                                        this.toggleItem("postsOpen", e)
-                                    }
-                                >
-                                    <i
-                                        className={
-                                            "fa fa-" +
-                                            (this.state.postsOpen
-                                                ? "angle-down"
-                                                : "angle-right")
-                                        }
-                                        aria-hidden="true"
-                                    />
-                                    Posts
-                                </Link>
-                                <ul className={postsStatus}>
-                                    <li className="item">
-                                        <Link to="/admin/posts">All Posts</Link>
-                                    </li>
-                                    {(perm("MANAGE_OWN_POSTS") ||
-                                        perm("MANAGE_ALL_POSTS")) && (
-                                        <li className="item">
-                                            <Link to="/admin/post-new">
-                                                New Post
-                                            </Link>
-                                        </li>
-                                    )}
-                                </ul>
-                            </li>
-                            <li>
-                                <Link
-                                    to="null"
-                                    className="parent"
-                                    onClick={e =>
-                                        this.toggleItem("pagesOpen", e)
-                                    }
-                                >
-                                    <i
-                                        className={
-                                            "fa fa-" +
-                                            (this.state.pagesOpen
-                                                ? "angle-down"
-                                                : "angle-right")
-                                        }
-                                        aria-hidden="true"
-                                    />
-                                    Pages
-                                </Link>
-                                <ul className={pagesStatus}>
-                                    <li className="item">
-                                        <Link to="/admin/pages">All Pages</Link>
-                                    </li>
-                                    {(perm("MANAGE_OWN_POSTS") ||
-                                        perm("MANAGE_ALL_POSTS")) && (
-                                        <li className="item">
-                                            <Link to="/admin/page-new">
-                                                New Page
-                                            </Link>
-                                        </li>
-                                    )}
-                                </ul>
-                            </li>
-                            {(perm("MANAGE_OWN_POSTS") ||
-                                perm("MANAGE_ALL_POSTS")) && (
-                                <li className="item">
-                                    <Link to="/admin/media">Media</Link>
-                                </li>
-                            )}
-                            {perm("MANAGE_USERS") && (
-                                <li className="item">
-                                    <Link to="/admin/settings">Settings</Link>
-                                </li>
-                            )}
-
-                            {perm("MANAGE_USERS") && (
-                                <li className="item">
-                                    <Link to="/admin/authors">Authors</Link>
-                                </li>
-                            )}
-                        </ul>
+                        <div id="cssmenu1">
+                            <MenuTree
+                                data={this.state.data}
+                                permissions={this.permissions}
+                                route={selected}
+                                setData={this.setData}
+                            />
+                        </div>
                     </div>
                 </nav>
 

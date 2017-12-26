@@ -1,26 +1,25 @@
 import React, { Component } from "react";
-import { gql, graphql } from "react-apollo";
+import { graphql } from "react-apollo";
+import PropTypes from "prop-types";
 import ListItem from "../components/posts/ListItem";
-import { Link } from "react-router";
 import PostsHoc from "./hoc/PostsHoc";
 import { GET_POSTS } from "../../shared/queries/Queries";
 import Paginate from "../components/Paginate";
 import { PostFilters } from "../components/posts/Filter";
 
 class Pages extends Component {
-    constructor(props) {
-        super(props);
+    handleClick(id) {
+        this.props.history.push("/admin/pages/" + id);
     }
-
     render() {
         if (this.props.loading && !this.props.posts) {
             return <div>hello</div>;
         }
-        let rows = this.props.posts.rows.map((post, i) => {
-            return <ListItem key={i} post={post} />;
-        });
+        const rows = this.props.posts.rows.map((post, i) => (
+            <ListItem {...this.props} key={i} post={post} />
+        ));
 
-        const status = this.props.variables.status;
+        const { status } = this.props.variables;
 
         return (
             <section className="module-xs">
@@ -46,6 +45,8 @@ class Pages extends Component {
                                     </label>
                                 </th>
                                 <th className="col-text">Title</th>
+                                <th className="col-text">Categories</th>
+                                <th className="col-text">Tags</th>
                                 <th className="col-text">Status</th>
                                 <th className="col-text">Author</th>
                                 <th className="col-text">Created At</th>
@@ -65,18 +66,26 @@ class Pages extends Component {
 }
 
 const ContainerWithData = graphql(GET_POSTS, {
-    options: props => {
-        return {
-            variables: {
-                ...props.variables,
-                type: "page"
-            },
-            forceFetch: true
-        };
-    },
+    options: props => ({
+        variables: {
+            ...props.variables,
+            type: "page"
+        },
+        forceFetch: true
+    }),
     props: ({ data: { loading, posts } }) => ({
         posts,
         loading
     })
 });
+
+Pages.propTypes = {
+    posts: PropTypes.object,
+    changePage: PropTypes.func,
+    variables: PropTypes.object,
+    changeStatus: PropTypes.func,
+    loading: PropTypes.bool,
+    history: PropTypes.func
+};
+
 export default PostsHoc(ContainerWithData(Pages));

@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, IndexRoute } from "react-router";
+// import Breadcrumbs from "react-router-breadcrumbs";
 import Notifications, { notify } from "react-notify-toast";
 import Menu from "./components/Menu";
 import {
@@ -16,16 +17,13 @@ import {
     Create,
     Settings,
     Authors,
-    EditAuthor
+    EditAuthor,
+    MenuBuilder
 } from "./containers";
 
 function Authorized(WrappedComponent) {
     // ...and returns another component...
     return class extends React.Component {
-        constructor(props) {
-            super(props);
-        }
-
         getComponentName() {
             let name =
                 WrappedComponent.displayName ||
@@ -37,7 +35,7 @@ function Authorized(WrappedComponent) {
 
             //  The name might contain brackets, eg Apollo(pages).
             //  Lets get rid of Apollo
-            var matches = name.match(/\((.*?)\)/);
+            const matches = name.match(/\((.*?)\)/);
 
             if (matches) {
                 name = matches[1];
@@ -49,7 +47,7 @@ function Authorized(WrappedComponent) {
             const ComponentName = this.getComponentName();
             return (
                 <div>
-                    <Menu />
+                    <Menu {...this.props} />
                     <div className={"wrapper " + ComponentName}>
                         <Notifications />
                         <WrappedComponent {...this.props} />
@@ -71,7 +69,7 @@ export default (
     <Route path="/admin" component={App}>
         <IndexRoute component={LoginView} />
         <Route path="/admin/login" component={LoginView} />
-        <Route path="/admin/posts" component={Authorized(Posts)} />
+        <Route path="/admin/posts" name="Posts" component={Authorized(Posts)} />
         <Route path="/admin/pages" component={Authorized(Pages)} />
 
         <Route
@@ -85,6 +83,7 @@ export default (
         />
         <Route path="/admin/page-new" component={Authorized(Create("page"))} />
         <Route path="/admin/media" component={Authorized(Media)} />
+        <Route path="/admin/menu-builder" component={Authorized(MenuBuilder)} />
         <Route path="/admin/settings" component={Authorized(Settings)} />
         <Route path="/admin/authors" component={Authorized(Authors)} />
         <Route

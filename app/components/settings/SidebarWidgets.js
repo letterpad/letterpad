@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-export default class Sidebar extends Component {
+export default class SidebarWidgets extends Component {
     constructor(props) {
         super(props);
         this.updateOption = this.updateOption.bind(this);
@@ -13,9 +14,7 @@ export default class Sidebar extends Component {
         return (
             <div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        Latest Post Count
-                    </label>
+                    <label className="custom-label">Latest Post Count</label>
                     <input
                         defaultValue={
                             this.props.data.sidebar_latest_post_count.value
@@ -28,13 +27,12 @@ export default class Sidebar extends Component {
                             this.updateOption(
                                 "sidebar_latest_post_count",
                                 e.target.value
-                            )}
+                            )
+                        }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        About
-                    </label>
+                    <label className="custom-label">About</label>
                     <textarea
                         defaultValue={this.props.data.sidebar_about.value}
                         className="form-control"
@@ -43,10 +41,15 @@ export default class Sidebar extends Component {
                         required=""
                         aria-invalid="false"
                         onBlur={e =>
-                            this.updateOption("sidebar_about", e.target.value)}
+                            this.updateOption("sidebar_about", e.target.value)
+                        }
                     />
                 </div>
             </div>
         );
     }
 }
+SidebarWidgets.propTypes = {
+    data: PropTypes.object,
+    updateOption: PropTypes.func
+};

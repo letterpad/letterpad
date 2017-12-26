@@ -1,17 +1,17 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import { graphql } from "react-apollo";
 import MediaItem from "../components/MediaItem";
-import { Link } from "react-router";
 import { GET_MEDIA } from "../../shared/queries/Queries";
 
-const Paginate = ({ count, page }) => {
-    const limit = 3;
+const Paginate = ({ count }) => {
     const pages = Array.from(Array(Math.ceil(count / 3)));
 
     return (
         <ul className="pagination">
             {pages.map((_, i) => {
-                let num = i + 1;
+                const num = i + 1;
                 return (
                     <li>
                         <Link to={"/admin/posts/" + num}>{num}</Link>
@@ -20,6 +20,9 @@ const Paginate = ({ count, page }) => {
             })}
         </ul>
     );
+};
+Paginate.propTypes = {
+    count: PropTypes.number
 };
 
 class Media extends Component {
@@ -31,12 +34,12 @@ class Media extends Component {
     }
 
     render() {
-        if (this.props.loading && !this.props.posts) {
+        if (this.props.loading) {
             return <div>hello</div>;
         }
-        let rows = this.props.media.rows.map((media, i) => {
-            return <MediaItem key={i} media={media} />;
-        });
+        const rows = this.props.media.rows.map((media, i) => (
+            <MediaItem key={i} media={media} />
+        ));
 
         return (
             <section className="module-xs">
@@ -84,7 +87,7 @@ const ContainerWithData = graphql(GET_MEDIA, {
     options: props => ({
         variables: {
             author_id: "1",
-            offset: (parseInt(props.params.page) - 1) * 3,
+            offset: (parseInt(props.match.params.page, 0) - 1) * 3,
             limit: 3
         }
     }),
@@ -93,5 +96,10 @@ const ContainerWithData = graphql(GET_MEDIA, {
         loading
     })
 });
+
+Media.propTypes = {
+    media: PropTypes.object,
+    loading: PropTypes.bool
+};
 
 export default ContainerWithData(Media);

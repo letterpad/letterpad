@@ -1,23 +1,12 @@
 import React, { Component } from "react";
-import { gql, graphql } from "react-apollo";
-import { Link } from "react-router";
-import moment from "moment";
-import { browserHistory } from "react-router";
+import PropTypes from "prop-types";
+import { graphql } from "react-apollo";
 import { GET_AUTHORS } from "../../shared/queries/Queries";
 
 class ListItem extends Component {
-    constructor(props) {
-        super(props);
-        this.authorSelected = this.authorSelected.bind(this);
-    }
-
-    authorSelected() {
-        browserHistory.push("/admin/authors/edit/" + this.props.author.id);
-    }
-
     render() {
         return (
-            <tr onClick={this.authorSelected}>
+            <tr onClick={() => this.props.handleClick(this.props.author.id)}>
                 <td align="center">
                     <label className="control control--checkbox">
                         <input
@@ -39,19 +28,25 @@ class ListItem extends Component {
         );
     }
 }
-
+PropTypes.ListItem = {
+    author: PropTypes.obj
+};
 class Authors extends Component {
     constructor(props) {
         super(props);
+        this.authorSelect = this.authorSelect.bind(this);
     }
 
+    authorSelect(id) {
+        this.props.history.push("/admin/authors/edit/" + id);
+    }
     render() {
         if (this.props.loading) {
             return <div>hello</div>;
         }
-        let rows = this.props.authors.map((author, i) => {
-            return <ListItem key={i} author={author} />;
-        });
+        const rows = this.props.authors.map((author, i) => (
+            <ListItem handleClick={this.authorSelect} key={i} author={author} />
+        ));
 
         return (
             <section className="module-xs">

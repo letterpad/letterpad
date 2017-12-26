@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { parseErrors } from "../../shared/util";
 import { requiresAdmin } from "../utils/permissions";
 import { getPermissions } from "../models/author";
+import { error } from "util";
 
 export default {
     Query: {
@@ -56,6 +57,7 @@ export default {
                 SECRET,
                 { expiresIn: "1y" }
             );
+            console.log(token);
             return {
                 ok: true,
                 token,
@@ -63,9 +65,33 @@ export default {
             };
         },
         register: async (root, args, { models }) => {
-            const author = args;
-            author.password = await bcrypt.hash(author.password, 12);
-            return models.Author.create(author);
+            const author = { ...args };
+            try {
+                const user = await models.Author.findOne({
+                    attributes: ["email"],
+                    where: { email: author.email }
+                });
+                if (user) {
+                    throw new Error("Email already exist");
+                }
+
+                author.password = await bcrypt.hash(author.password, 12);
+                author.role_id = 1;
+                console.log(author);
+                const res = models.Author.create(author);
+
+                return {
+                    ok: true,
+                    data: res,
+                    errors: []
+                };
+            } catch (e) {
+                return {
+                    ok: false,
+                    data: null,
+                    errors: [{ message: e.message, path: "Register" }]
+                };
+            }
         },
         updateAuthor: requiresAdmin.createResolver(
             async (root, args, { models }) => {
