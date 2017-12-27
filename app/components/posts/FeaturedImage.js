@@ -8,18 +8,20 @@ class FeaturedImage extends Component {
         this.state = {
             cover_image: this.props.post.cover_image
         };
+        this.removeImage = this.removeImage.bind(this);
     }
 
-    uploadImage(files) {
-        PostActions.uploadFile(files, this.props.insertMedia).then(
-            cover_image => {
-                this.props.updateFeaturedImage({
-                    id: this.props.post.id,
-                    cover_image: cover_image
-                });
-                this.setState({ cover_image });
-            }
+    async uploadImage(files) {
+        const coverImage = await PostActions.uploadFile(
+            files,
+            this.props.insertMedia
         );
+
+        this.props.updateFeaturedImage({
+            id: this.props.post.id,
+            cover_image: coverImage
+        });
+        this.setState({ cover_image: coverImage });
     }
     removeImage() {
         this.props.updateFeaturedImage({
@@ -30,13 +32,13 @@ class FeaturedImage extends Component {
     }
 
     render() {
-        let cover_image =
+        const coverImage =
             this.state.cover_image || "http://placehold.it/800x300";
         return (
             <div className="x_panel">
                 <div className="x_content">
                     <div id="featured-image">
-                        <img width="100%" src={cover_image} />
+                        <img alt="" width="100%" src={coverImage} />
                     </div>
                     {(() => {
                         if (!this.state.cover_image) {
@@ -50,16 +52,15 @@ class FeaturedImage extends Component {
                                     Set Featured Image
                                 </a>
                             );
-                        } else {
-                            return (
-                                <a
-                                    className="text-primary pointer"
-                                    onClick={this.removeImage.bind(this)}
-                                >
-                                    Remove Featured Image
-                                </a>
-                            );
                         }
+                        return (
+                            <a
+                                className="text-primary pointer"
+                                onClick={this.removeImage}
+                            >
+                                Remove Featured Image
+                            </a>
+                        );
                     })()}
                     <input
                         ref="uploadInput"
@@ -91,13 +92,13 @@ const updateQueryWithData = graphql(uploadCoverImageQuery, {
                 variables: data,
                 updateQueries: {
                     getPost: (prev, { mutationResult }) => {
-                        let cover_image = mutationResult.data.uploadFile
+                        const coverImage = mutationResult.data.uploadFile
                             ? mutationResult.data.uploadFile.cover_image
                             : "";
                         return {
                             post: {
                                 ...prev.post,
-                                cover_image
+                                cover_image: coverImage
                             }
                         };
                     }
@@ -114,15 +115,13 @@ const insertMediaQuery = gql`
     }
 `;
 const insertMedia = graphql(insertMediaQuery, {
-    props: ({ mutate }) => {
-        return {
-            insertMedia: data => {
-                mutate({
-                    variables: data
-                });
-            }
-        };
-    }
+    props: ({ mutate }) => ({
+        insertMedia: data => {
+            mutate({
+                variables: data
+            });
+        }
+    })
 });
 
 const Data = compose(updateQueryWithData, insertMedia);

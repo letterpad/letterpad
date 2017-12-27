@@ -17,29 +17,24 @@ const OhSnap = ({ message }) => {
 };
 
 class Single extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
+        if (this.props.loading || this.props.adjPostsLoading) {
+            return <Loader />;
+        }
         return (
             <div>
                 {(() => {
-                    if (this.props.loading || this.props.adjPostsLoading) {
-                        return <Loader />;
-                    } else {
-                        if (this.props.post === null) {
-                            return (
-                                <OhSnap message="I am not sure how this happened. Maybe this page is dead for good or restricted." />
-                            );
-                        }
+                    if (this.props.post === null) {
                         return (
-                            <Article
-                                post={this.props.post}
-                                adjacentPosts={this.props.adjacentPosts}
-                            />
+                            <OhSnap message="I am not sure how this happened. Maybe this page is dead for good or restricted." />
                         );
                     }
+                    return (
+                        <Article
+                            post={this.props.post}
+                            adjacentPosts={this.props.adjacentPosts}
+                        />
+                    );
                 })()}
             </div>
         );
@@ -69,7 +64,7 @@ const ContainerWithPostData = graphql(singlePost, {
         return {
             variables: {
                 type: "post",
-                slug: props.params.slug
+                slug: props.match.params.slug
             }
         };
     },
@@ -79,7 +74,7 @@ const ContainerWithPostData = graphql(singlePost, {
     })
 });
 
-const adjacentPosts = gql`
+const adjacentPostsQuery = gql`
     query adjacentPosts($slug: String) {
         adjacentPosts(type: "post", slug: $slug) {
             next {
@@ -93,17 +88,17 @@ const adjacentPosts = gql`
         }
     }
 `;
-const adjacentPostsData = graphql(adjacentPosts, {
+const adjacentData = graphql(adjacentPostsQuery, {
     options: props => {
         return {
             variables: {
-                slug: props.params.slug
+                slug: props.match.params.slug
             }
         };
     },
     props: ({ data: { loading, adjacentPosts } }) => ({
-        adjacentPosts: adjacentPosts,
+        adjacentPosts,
         adjPostsLoading: loading
     })
 });
-export default adjacentPostsData(ContainerWithPostData(Single));
+export default adjacentData(ContainerWithPostData(Single));

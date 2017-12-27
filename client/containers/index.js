@@ -1,6 +1,6 @@
 export App from "./App";
 export Posts from "./Posts";
-export Search from "./Search";
+export SearchWrapper from "./SearchWrapper";
 export Sidebar from "./Sidebar";
 export Single from "./Single";
 export Page from "./Page";

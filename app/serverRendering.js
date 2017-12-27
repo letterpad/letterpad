@@ -49,8 +49,8 @@ module.exports.init = app => {
 };
 
 function Html({ content, state }) {
-    var bundle =
-        process.env.NODE_ENV == "production"
+    const bundle =
+        process.env.NODE_ENV === "production"
             ? "/js/app-admin-bundle.js"
             : "/static/app-admin-bundle.js";
 
