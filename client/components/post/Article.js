@@ -1,16 +1,14 @@
 import React, { Component } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import moment from "moment";
 import AdjacentPosts from "./AdjacentPosts";
 
 export default class Article extends Component {
     render() {
         const tags = this.props.post.taxonomies
-            .filter(taxonomy => {
-                return taxonomy.type == "post_category";
-            })
+            .filter(taxonomy => taxonomy.type === "post_category")
             .map(taxonomy => {
-                return <Link>{taxonomy.name}</Link>;
+                return <Link to="">{taxonomy.name}</Link>;
             });
 
         return (

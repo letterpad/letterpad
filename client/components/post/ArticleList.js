@@ -27,7 +27,7 @@ export default class ArticleList extends Component {
                     </div>
                     <div className="post-content">
                         <p>{this.props.post.excerpt}</p>
-                        <Link className="post-more" href={href}>
+                        <Link className="post-more" to={href}>
                             Read more →
                         </Link>
                     </div>

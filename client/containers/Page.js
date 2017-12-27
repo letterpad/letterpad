@@ -4,10 +4,6 @@ import { gql, graphql } from "react-apollo";
 import Loader from "../components/Loader";
 
 class Page extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         if (this.props.loading) {
             return <Loader />;

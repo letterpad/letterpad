@@ -3,30 +3,20 @@ import ArticleList from "../components/post/ArticleList";
 import { gql, graphql } from "react-apollo";
 import Loader from "../../app/components/Loader";
 
-export default function Search(term) {
+export default function SearchWrapper(term) {
     class Search extends Component {
-        constructor(props) {
-            super(props);
-        }
-
         render() {
-            return (
-                <div>
-                    {(() => {
-                        if (this.props.loading) {
-                            return <Loader />;
-                        } else {
-                            return this.props.posts.map((post, i) => {
-                                return <ArticleList key={i} post={post} />;
-                            });
-                        }
-                    })()}
-                </div>
-            );
+            if (this.props.loading) {
+                return <Loader />;
+            }
+            const data = this.props.posts.map((post, i) => (
+                <ArticleList key={i} post={post} />
+            ));
+            return <div>{data}</div>;
         }
     }
 
-    if (term == "post") {
+    if (term === "post") {
         const allPosts = gql`
             query getPosts($type: String!, $query: String!) {
                 posts(type: $type, body: $query) {
@@ -54,7 +44,8 @@ export default function Search(term) {
                 return {
                     variables: {
                         type: "post",
-                        query: '{ "like": "%' + props.params.query + '%" }'
+                        query:
+                            '{ "like": "%' + props.match.params.query + '%" }'
                     }
                 };
             },
@@ -64,7 +55,7 @@ export default function Search(term) {
             })
         });
         return ContainerWithData(Search);
-    } else if (term == "category") {
+    } else if (term === "category") {
         const catPosts = gql`
             query catPosts($type: String, $query: String, $postType: String) {
                 postTaxonomies(type: $type, name: $query) {
@@ -105,7 +96,7 @@ export default function Search(term) {
             })
         });
         return ContainerWithData(Search);
-    } else if (term == "tag") {
+    } else if (term === "tag") {
         const catPosts = gql`
             query catPosts($type: String, $query: String, $postType: String) {
                 postTaxonomies(type: $type, name: $query) {
