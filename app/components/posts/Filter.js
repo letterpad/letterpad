@@ -1,14 +1,17 @@
 import React from "react";
 
 const Filter = ({ id, label, status, changeStatus }) => {
-    let selected = "all";
+    let selected = "publish";
     if (status) {
         selected = status;
     }
     let active = selected == id ? "active" : "";
     return (
         <a
-            onClick={e => changeStatus(e, id)}
+            onClick={e => {
+                e.preventDefault();
+                changeStatus(id);
+            }}
             className={"filter-item " + id + " " + active}
         >
             {label}

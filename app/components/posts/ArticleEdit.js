@@ -1,41 +1,12 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import moment from "moment";
 import Editor from "./Editor";
 import PostActions from "./PostActions";
 import FeaturedImage from "./FeaturedImage";
+import ContentEditable from "./ContentEditable";
+import PropTypes from "prop-types";
 
-var ContentEditable = React.createClass({
-    render: function() {
-        return (
-            <h2
-                className="post-title"
-                onInput={this.emitChange}
-                onBlur={this.emitChange}
-                contentEditable
-                dangerouslySetInnerHTML={{
-                    __html: this.props.title || "Draft.."
-                }}
-            />
-        );
-    },
-    shouldComponentUpdate: function(nextProps) {
-        return nextProps.title !== ReactDOM.findDOMNode(this).innerHTML;
-    },
-    emitChange: function() {
-        var title = ReactDOM.findDOMNode(this).innerHTML;
-        if (this.props.onChange && title !== this.lastTitle) {
-            this.props.onChange({
-                target: {
-                    value: title
-                }
-            });
-        }
-        this.lastTitle = title;
-    }
-});
-
-export default class EditArticle extends Component {
+export default class ArticleEdit extends Component {
     render() {
         return (
             <div className="card">
@@ -44,6 +15,7 @@ export default class EditArticle extends Component {
                     <div className="post-header">
                         <ContentEditable
                             title={this.props.post.title}
+                            placeholder="Enter a title"
                             onChange={e => {
                                 PostActions.setData({
                                     title: e.target.value
@@ -64,3 +36,7 @@ export default class EditArticle extends Component {
         );
     }
 }
+
+ArticleEdit.propTypes = {
+    post: PropTypes.object
+};

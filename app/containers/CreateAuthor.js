@@ -20,7 +20,7 @@ const SubmitBtn = ({ handleClick }) => {
     );
 };
 
-class EditAuthor extends Component {
+class CreateAuthor extends Component {
     constructor(props) {
         super(props);
         this.author = {};
@@ -34,21 +34,16 @@ class EditAuthor extends Component {
 
     async submitData(e) {
         e.preventDefault();
-        this.author.id = this.props.author.id;
-        const update = await this.props.updateAuthor(this.author);
-        let { errors } = update.data.updateAuthor;
+        const update = await this.props.createAuthor(this.author);
+        let { errors } = update.data.createAuthor;
         if (errors && errors.length > 0) {
             errors = errors.map(error => error.message);
             notify.show(errors.join("\n"), "error");
         } else {
-            notify.show("Author updated", "success");
+            notify.show("Author created", "success");
         }
     }
     render() {
-        if (this.props.loading) {
-            return <div>hello</div>;
-        }
-
         return (
             <section className="module-xs">
                 <div className="row">
@@ -83,33 +78,24 @@ class EditAuthor extends Component {
     }
 }
 
-const ContainerWithData = graphql(GET_AUTHOR, {
-    options: props => {
-        return {
-            variables: {
-                id: props.match.params.id || props.author.id
-            }
-        };
-    },
-    props: ({ data: { loading, author } }) => ({
-        author,
-        loading
-    })
-});
-
 const updateAuthorQuery = graphql(UPDATE_AUTHOR, {
     props: ({ mutate }) => ({
-        updateAuthor: data =>
+        createAuthor: data =>
             mutate({
                 variables: data
             })
     })
 });
 
-EditAuthor.propTypes = {
-    author: PropTypes.object,
-    updateAuthor: PropTypes.func,
-    loading: PropTypes.bool
+CreateAuthor.defaultProps = {
+    author: {
+        fname: "",
+        lname: "",
+        email: "",
+        username: "",
+        social: ""
+    },
+    createAuthor: PropTypes.func
 };
 
-export default updateAuthorQuery(ContainerWithData(EditAuthor));
+export default updateAuthorQuery(CreateAuthor);

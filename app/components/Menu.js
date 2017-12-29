@@ -5,7 +5,7 @@ import { MenuTree } from "./TreeNode";
 
 const data = [
     {
-        id: 11,
+        id: 1,
         label: "Posts",
         priority: 1,
         permissions: [],
@@ -32,7 +32,7 @@ const data = [
         ]
     },
     {
-        id: 12,
+        id: 2,
         label: "Pages",
         priority: 2,
         permissions: [],
@@ -57,7 +57,7 @@ const data = [
         ]
     },
     {
-        id: 13,
+        id: 3,
         label: "Media",
         priority: 3,
         permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
@@ -65,28 +65,54 @@ const data = [
         icon: "fa-picture-o"
     },
     {
-        id: 14,
+        id: 4,
         label: "Settings",
         priority: 7,
         permissions: ["MANAGE_SETTINGS"],
-        slug: "settings",
-        icon: "fa-cog"
+        icon: "fa-cog",
+        children: [
+            {
+                id: 1,
+                label: "Menu",
+                priority: 2,
+                permissions: ["MANAGE_SETTINGS"],
+                slug: "menu-builder",
+                icon: "fa-bars"
+            },
+            {
+                id: 2,
+                label: "Site Settings",
+                priority: 1,
+                permissions: ["MANAGE_SETTINGS"],
+                slug: "settings",
+                icon: "fa-user"
+            }
+        ]
     },
+
     {
-        id: 16,
-        label: "Menu",
+        id: 6,
+        label: "Profile",
         priority: 5,
-        permissions: ["MANAGE_SETTINGS"],
-        slug: "menu-builder",
+        permissions: ["MANAGE_OWN_POSTS"],
+        slug: "edit-profile",
         icon: "fa-user"
     },
     {
-        id: 15,
+        id: 7,
         label: "Authors",
         priority: 6,
         permissions: ["MANAGE_USERS"],
         slug: "authors",
-        icon: "fa-user"
+        icon: "fa-users"
+    },
+    {
+        id: 8,
+        label: "Themes",
+        priority: 7,
+        permissions: ["MANAGE_SETTINGS"],
+        slug: "themes",
+        icon: "fa-paint-brush"
     }
 ];
 export default class Menu extends Component {

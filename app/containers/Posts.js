@@ -1,15 +1,21 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
-import ListItem from "../components/posts/ListItem";
+import { TableRow, Rows } from "../components/posts/TableRow";
 import { GET_POSTS } from "../../shared/queries/Queries";
 import PostsHoc from "./hoc/PostsHoc";
 import Paginate from "../components/Paginate";
 import { PostFilters } from "../components/posts/Filter";
+import Loader from "../components/Loader";
 
 class Posts extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            status: "publish",
+            loading: true,
+            posts: null
+        };
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -18,29 +24,21 @@ class Posts extends Component {
     }
 
     render() {
-        if (this.props.loading && !this.props.posts) {
-            return <div>hello</div>;
-        }
-        const rows = this.props.posts.rows.map((post, i) => (
-            <ListItem handleClick={this.handleClick} key={i} post={post} />
-        ));
-
+        const loading = this.props.loading || !this.props.networkStatus === 2;
         const { status } = this.props.variables;
         return (
             <section className="module-xs">
                 <div className="card">
                     <div className="module-title">Posts</div>
                     <div className="module-subtitle">
-                        This page provides a comprehensive overview of all your
-                        blog posts. Click the icon next to each post to update
-                        its contents or the icon to see what it looks like to
-                        your readers.
+                        Overview of all your blog posts
                     </div>
 
                     <PostFilters
                         changeStatus={this.props.changeStatus}
                         selectedStatus={status}
                     />
+
                     <table className="table table-hover">
                         <thead>
                             <tr>
@@ -70,13 +68,22 @@ class Posts extends Component {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>{rows}</tbody>
+
+                        <Rows
+                            colSpan={7}
+                            handleClick={this.handleClick}
+                            posts={this.props.posts}
+                            loading={loading}
+                        />
                     </table>
-                    <Paginate
-                        count={this.props.posts.count}
-                        page={this.props.variables.page}
-                        changePage={this.props.changePage}
-                    />
+
+                    {!loading && (
+                        <Paginate
+                            count={this.props.posts.count}
+                            page={this.props.variables.page}
+                            changePage={this.props.changePage}
+                        />
+                    )}
                 </div>
             </section>
         );
@@ -84,16 +91,20 @@ class Posts extends Component {
 }
 
 const ContainerWithData = graphql(GET_POSTS, {
-    options: props => ({
-        variables: {
-            ...props.variables,
-            type: "post"
-        },
-        forceFetch: true
-    }),
-    props: ({ data: { loading, posts } }) => ({
+    options: props => {
+        return {
+            variables: {
+                ...props.variables,
+                type: "post"
+            },
+            forceFetch: true,
+            fetchPolicy: "network-only"
+        };
+    },
+    props: ({ data: { loading, posts, networkStatus } }) => ({
         posts,
-        loading
+        loading,
+        networkStatus
     })
 });
 Posts.propTypes = {
@@ -102,6 +113,6 @@ Posts.propTypes = {
     variables: PropTypes.object,
     changeStatus: PropTypes.func,
     loading: PropTypes.bool,
-    history: PropTypes.func
+    history: PropTypes.object
 };
 export default PostsHoc(ContainerWithData(Posts));

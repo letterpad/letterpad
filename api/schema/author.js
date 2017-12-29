@@ -10,7 +10,7 @@ export default `
   }
 
   type Query {
-    author(id: Int, username: String): Author
+    author(id: Int!, username: String): Author
     authors: [Author]
     me: Author
   }
@@ -18,6 +18,7 @@ export default `
   type LoginResponse {
     ok: Boolean!
     token: String
+    data: Author
     errors: [Error!]
   }
 

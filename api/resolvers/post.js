@@ -36,14 +36,18 @@ function getConditions(columns, args) {
 export default {
     Query: {
         posts: checkDisplayAccess.createResolver((root, args, { models }) => {
+            const newArgs = { ...args };
+
+            if (newArgs.status == "all") delete newArgs.status;
+
             const columns = Object.keys(models.Post.rawAttributes);
-            const conditions = getConditions(columns, args);
-            if (args.status) {
-                conditions.where.status = args.status;
+            const conditions = getConditions(columns, newArgs);
+            if (newArgs.status) {
+                conditions.where.status = newArgs.status;
             }
             return models.Post.count(conditions).then(count => {
-                if (args.cursor) {
-                    conditions.where.id = { gt: args.cursor };
+                if (newArgs.cursor) {
+                    conditions.where.id = { gt: newArgs.cursor };
                 }
                 conditions.order = [["id", "DESC"]];
 

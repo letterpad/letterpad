@@ -27,7 +27,7 @@ const Paginate = ({ count, page, changePage }) => {
 
 Paginate.propTypes = {
     count: PropTypes.number,
-    page: PropTypes.page,
+    page: PropTypes.number,
     changePage: PropTypes.func
 };
 export default Paginate;

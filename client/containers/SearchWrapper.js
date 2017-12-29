@@ -1,142 +1,94 @@
 import React, { Component } from "react";
+import { graphql } from "react-apollo";
 import ArticleList from "../components/post/ArticleList";
-import { gql, graphql } from "react-apollo";
+import appoloClient from "../apolloClient";
+
 import Loader from "../../app/components/Loader";
+import { SEARCH_POSTS_BY_TAXONOMY } from "../../shared/queries/Queries";
 
-export default function SearchWrapper(term) {
-    class Search extends Component {
-        render() {
-            if (this.props.loading) {
-                return <Loader />;
+//export default function SearchWrapper(term) {
+export default class SearchWrapper extends Component {
+    async componentWillMount() {
+        let result = await appoloClient.query({
+            query: SEARCH_POSTS_BY_TAXONOMY,
+            variables: {
+                type: "post_category",
+                query: this.props.match.params.query,
+                postType: "post"
             }
-            const data = this.props.posts.map((post, i) => (
-                <ArticleList key={i} post={post} />
-            ));
-            return <div>{data}</div>;
+        });
+        console.log(result);
+    }
+
+    render() {
+        if (this.props.loading) {
+            return <Loader />;
         }
+        return <div>cadc</div>;
+        // const data = this.props.posts.map((post, i) => (
+        //     <ArticleList key={i} post={post} />
+        // ));
+        // return <div>{data}</div>;
     }
-
-    if (term === "post") {
-        const allPosts = gql`
-            query getPosts($type: String!, $query: String!) {
-                posts(type: $type, body: $query) {
-                    id
-                    title
-                    body
-                    author {
-                        username
-                    }
-                    type
-                    status
-                    created_at
-                    excerpt
-                    cover_image
-                    taxonomies {
-                        id
-                        name
-                        type
-                    }
-                }
-            }
-        `;
-        const ContainerWithData = graphql(allPosts, {
-            options: props => {
-                return {
-                    variables: {
-                        type: "post",
-                        query:
-                            '{ "like": "%' + props.match.params.query + '%" }'
-                    }
-                };
-            },
-            props: ({ data: { loading, posts } }) => ({
-                posts,
-                loading
-            })
-        });
-        return ContainerWithData(Search);
-    } else if (term === "category") {
-        const catPosts = gql`
-            query catPosts($type: String, $query: String, $postType: String) {
-                postTaxonomies(type: $type, name: $query) {
-                    posts(type: $postType) {
-                        id
-                        title
-                        body
-                        type
-                        cover_image
-                        created_at
-                        slug
-                        excerpt
-                        taxonomies {
-                            id
-                            name
-                            type
-                        }
-                    }
-                }
-            }
-        `;
-        const ContainerWithData = graphql(catPosts, {
-            options: props => {
-                return {
-                    variables: {
-                        type: "post_category",
-                        query: props.params.query,
-                        postType: "post"
-                    }
-                };
-            },
-            props: ({ data: { loading, postTaxonomies } }) => ({
-                posts:
-                    postTaxonomies && postTaxonomies.length > 0
-                        ? postTaxonomies[0].posts
-                        : [],
-                loading
-            })
-        });
-        return ContainerWithData(Search);
-    } else if (term === "tag") {
-        const catPosts = gql`
-            query catPosts($type: String, $query: String, $postType: String) {
-                postTaxonomies(type: $type, name: $query) {
-                    posts(type: $postType) {
-                        id
-                        title
-                        body
-                        type
-                        cover_image
-                        created_at
-                        slug
-                        excerpt
-                        taxonomies {
-                            id
-                            name
-                            type
-                        }
-                    }
-                }
-            }
-        `;
-        const ContainerWithData = graphql(catPosts, {
-            options: props => {
-                return {
-                    variables: {
-                        type: "post_tag",
-                        query: props.params.query,
-                        postType: "post"
-                    }
-                };
-            },
-            props: ({ data: { loading, postTaxonomies } }) => ({
-                posts:
-                    postTaxonomies && postTaxonomies.length > 0
-                        ? postTaxonomies[0].posts
-                        : [],
-                loading
-            })
-        });
-        return ContainerWithData(Search);
-    }
-    return Search;
 }
+
+//     if (term === "post") {
+//         const ContainerWithData = graphql(SEARCH_POSTS, {
+//             options: props => {
+//                 return {
+//                     variables: {
+//                         type: "post",
+//                         query:
+//                             '{ "like": "%' + props.match.params.query + '%" }'
+//                     }
+//                 };
+//             },
+//             props: ({ data: { loading, posts } }) => ({
+//                 posts,
+//                 loading
+//             })
+//         });
+//         return ContainerWithData(Search);
+//     } else if (term === "category") {
+//         const ContainerWithData = graphql(SEARCH_POSTS_BY_TAXONOMY, {
+//             options: props => {
+//                 return {
+//                     variables: {
+//                         type: "post_category",
+//                         query: props.params.query,
+//                         postType: "post"
+//                     }
+//                 };
+//             },
+//             props: ({ data: { loading, postTaxonomies } }) => ({
+//                 posts:
+//                     postTaxonomies && postTaxonomies.length > 0
+//                         ? postTaxonomies[0].posts
+//                         : [],
+//                 loading
+//             })
+//         });
+//         return ContainerWithData(Search);
+//     } else if (term === "tag") {
+//         const ContainerWithData = graphql(SEARCH_POSTS_BY_TAXONOMY, {
+//             options: props => {
+//                 return {
+//                     variables: {
+//                         type: "post_tag",
+//                         query: props.params.query,
+//                         postType: "post"
+//                     }
+//                 };
+//             },
+//             props: ({ data: { loading, postTaxonomies } }) => ({
+//                 posts:
+//                     postTaxonomies && postTaxonomies.length > 0
+//                         ? postTaxonomies[0].posts
+//                         : [],
+//                 loading
+//             })
+//         });
+//         return ContainerWithData(Search);
+//     }
+//     return Search;
+// }

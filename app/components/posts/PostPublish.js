@@ -4,6 +4,7 @@ import PostActions from "./PostActions";
 import { gql, graphql } from "react-apollo";
 import moment from "moment";
 import siteConfig from "../../../config/site.config";
+import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 
 const actions = {
     publish: "Published",
@@ -21,7 +22,7 @@ class PostPublish extends Component {
     }
     componentWillReceiveProps(nextProps) {
         const status = nextProps.post.status == "publish" ? 1 : 0;
-        this.setState({ published: nextProps.post.status });
+        this.setState({ published: status });
     }
 
     componentDidMount() {
@@ -48,17 +49,21 @@ class PostPublish extends Component {
             ...data
         });
         if (update.data.updatePost.ok) {
-            PostActions.postUpdated(update.data.updatePost.post.id);
-            this.setState({ post: update.data.updatePost.post });
+            // If any component has subscribed to get notifications on update/delete, it will be notified.
+            PostActions.postUpdated(update.data.updatePost.post);
             if (this.props.create) {
-                return notify.show("Sweet! Post created.", "success", 3000);
+                return notify.show("Post created", "success", 3000);
             }
-            return notify.show("Sweet! Post updated.", "success", 3000);
+            if (this.props.post.status === "trash") {
+                return notify.show("Post trashed", "success", 3000);
+            }
+            this.setState({ post: update.data.updatePost.post });
+            return notify.show("Post updated", "success", 3000);
         }
         let errors = update.data.updatePost.errors;
         if (errors && errors.length > 0) {
             errors = errors.map(error => error.message);
-            notify.show(errore.join("\n"));
+            notify.show(errore.join("\n"), "error", 3000);
         }
     }
 
@@ -140,8 +145,8 @@ class PostPublish extends Component {
                 </div>
                 <div className="x_content">
                     <div className="btn-together">
-                        {this.getButton(actionLabel, "btn-info")}
-                        {this.getButton("Trash", "btn-danger", "deleted")}
+                        {this.getButton(actionLabel, "btn-dark")}
+                        {this.getButton("Trash", "btn-danger", "trash")}
                     </div>
                 </div>
             </div>
@@ -149,53 +154,7 @@ class PostPublish extends Component {
     }
 }
 
-const updatePostQuery = gql`
-    mutation updatePost(
-        $id: Int!
-        $title: String!
-        $body: String
-        $status: String!
-        $excerpt: String
-        $taxonomies: [TaxonomyInputType]
-        $slug: String!
-    ) {
-        updatePost(
-            id: $id
-            title: $title
-            body: $body
-            status: $status
-            excerpt: $excerpt
-            taxonomies: $taxonomies
-            slug: $slug
-        ) {
-            ok
-            errors {
-                path
-                message
-            }
-            post {
-                id
-                title
-                body
-                author {
-                    username
-                }
-                slug
-                type
-                status
-                excerpt
-                created_at
-                cover_image
-                taxonomies {
-                    id
-                    name
-                    type
-                }
-            }
-        }
-    }
-`;
-const updateQueryWithData = graphql(updatePostQuery, {
+const updateQueryWithData = graphql(UPDATE_POST_QUERY, {
     props: ({ mutate }) => ({
         update: data =>
             mutate({
@@ -205,7 +164,7 @@ const updateQueryWithData = graphql(updatePostQuery, {
                         return {
                             post: {
                                 ...prev.post,
-                                ...mutationResult.data.updatePost
+                                ...mutationResult.data.updatePost.post
                             }
                         };
                     }

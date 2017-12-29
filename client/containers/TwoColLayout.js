@@ -9,11 +9,15 @@ export default function Layout(Element) {
             const pageName = Element.type
                 ? Element.type.name.toLowerCase()
                 : "";
-
-            const clonedElement = React.cloneElement(Element, {
+            // let ChildEle = Element;
+            // if (typeof Element === "function") {
+            //     ChildEle = <Element props={this.props} />;
+            // }
+            const enhancedElement = React.cloneElement(Element, {
                 ...this.props
             });
-            const { settings } = clonedElement.props;
+
+            const { settings } = enhancedElement.props;
             return (
                 <div className={"wrapper " + pageName}>
                     <Menu
@@ -24,7 +28,7 @@ export default function Layout(Element) {
                     <section className="module-xs">
                         <div className="row">
                             <div className="col-lg-8 column">
-                                {clonedElement}
+                                {enhancedElement}
                             </div>
                             <div className="col-lg-4 column">
                                 <Sidebar settings={settings} />
@@ -32,8 +36,8 @@ export default function Layout(Element) {
                         </div>
                     </section>
 
-                    <hr className="divider" />
-                    <Footer />
+                    {/* <hr className="divider" />
+                    <Footer /> */}
                 </div>
             );
         }

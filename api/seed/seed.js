@@ -61,7 +61,7 @@ export async function insertRolePermData() {
         name: "MANAGE_USERS"
     });
     let MANAGE_SETTINGS = await models.Permission.create({
-        name: "MANAGE_USERS"
+        name: "MANAGE_SETTINGS"
     });
 
     let role = await models.Role.create({ name: "ADMIN" });

@@ -49,6 +49,7 @@ app.use(
                 request: req
             },
             formatError(error) {
+                console.log("reached");
                 if (error.originalError) {
                     if (error.originalError.statusCode == 401) {
                         res.status(error.originalError.statusCode);

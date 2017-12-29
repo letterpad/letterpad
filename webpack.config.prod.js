@@ -1,6 +1,7 @@
 var path = require("path");
 var webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const BabiliPlugin = require("babili-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
     filename: "../css/[name].css"
@@ -25,11 +26,12 @@ module.exports = {
                 NODE_ENV: "'production'"
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                warnings: false
-            }
-        }),
+        new BabiliPlugin(),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compressor: {
+        //         warnings: false
+        //     }
+        // }),
         extractSass
     ],
     module: {

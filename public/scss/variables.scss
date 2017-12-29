@@ -1,76 +1,89 @@
+:root {
+    --color-text-primary: #333333;
+    --color-text-primary-invert: #b7b7b7;
+    --color-text-primary-light: #616161;
+    --color-text-muted: rgb(185, 185, 185);
+    --color-text-secondary: #000000;
+    --color-text-secondary-light: #4c4c4c;
+    --color-accent: #2196f3;
+    --color-bg-primary: #3a3a3a;
+    --color-bg-secondary: #1f1e1e;
+    --color-border: #e5e5e5;
+    --link-hover: #1a82d6;
+    --color-menu-link: var(--color-text-primary-invert);
+}
+
 $racing_font: "Racing Sans One", cursive;
 
 /*!------------------------------------------------------------------
 [Body Color]
 */
 
-$color-text-primary: #333333;
-
-/*!------------------------------------------------------------------
-[Contrast for backgrounds. This should be opposite of text-primary-color]
-*/
-
-$color-text-primary-invert: #b7b7b7;
-
-/*!------------------------------------------------------------------
-[Help text]
-*/
-
-$color-text-primary-light: #616161;
-
-/*!------------------------------------------------------------------
-[Placeholders]
-*/
-
-$color-text-weak: rgb(185, 185, 185);
+$color-text-primary: var(--color-text-primary);
 
 /*!------------------------------------------------------------------
 [Headlines]
 */
 
-$color-text-secondary: #000;
+$color-text-secondary: var(--color-text-secondary);
+
+/*!------------------------------------------------------------------
+[Help text]
+*/
+
+$color-text-primary-light: var(--color-text-primary-light);
+
+/*!------------------------------------------------------------------
+[Placeholders]
+*/
+
+$color-text-muted: var(--color-text-muted);
+
+/*!------------------------------------------------------------------
+[Contrast for backgrounds. This should be opposite of text-primary-color]
+*/
+
+$color-text-primary-invert: var(--color-text-primary-invert);
 
 /*!------------------------------------------------------------------
 [Input boxes, text areas, etc. All .form-control]
 */
 
-$color-text-secondary-light: #4c4c4c;
+$color-text-secondary-light: var(--color-text-secondary-light);
 
 /*!------------------------------------------------------------------
 [Something to contrast]
 */
 
-$color-accent: #2196f3;
+$color-accent: var(--color-accent);
 
 /*!------------------------------------------------------------------
 [Body background color]
 */
 
-$color-bg-primary: #3a3a3a;
+$color-bg-primary: var(--color-bg-primary);
 
 /*!------------------------------------------------------------------
 [Sidebar color]
 */
 
-$color-bg-secondary: #1f1e1e;
+$color-bg-secondary: var(--color-bg-secondary);
 
 /*!------------------------------------------------------------------
 [Link colors]
 */
 
-$link_active: $color-accent;
-$link_hover: #1a82d6;
+$link_active: var(--color-accent);
+$link_hover: var(--link-hover);
 
 /*!------------------------------------------------------------------
 [Borders]
 */
 
-$color-border: #e5e5e5;
+$color-border: var(--color-border);
 
 /*!------------------------------------------------------------------
 [Menu Link Color]
 */
 
-$color-menu-link: $color-text-primary-invert;
-$color-menu-link-hover: $color-accent;
-$color-menu-link-active: $color-accent;
+$color-menu-link: var(--color-menu-link);

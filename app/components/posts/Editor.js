@@ -57,9 +57,6 @@ const Editor = React.createClass({
                     handlers: {
                         image: function() {
                             document.querySelector(".post-image").click();
-                        },
-                        "code-block"() {
-                            console.log(this.container);
                         }
                     }
                 },

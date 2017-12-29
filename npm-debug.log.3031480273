@@ -1,0 +1,30 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/ajaxtown/.nvm/versions/node/v6.9.1/bin/node',
+1 verbose cli   '/Users/ajaxtown/.nvm/versions/node/v6.9.1/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'build' ]
+2 info using npm@3.10.8
+3 info using node@v6.9.1
+4 verbose run-script [ 'prebuild', 'build', 'postbuild' ]
+5 info lifecycle ReactCMS@1.0.0~prebuild: ReactCMS@1.0.0
+6 silly lifecycle ReactCMS@1.0.0~prebuild: no script for prebuild, continuing
+7 info lifecycle ReactCMS@1.0.0~build: ReactCMS@1.0.0
+8 verbose lifecycle ReactCMS@1.0.0~build: unsafe-perm in lifecycle true
+9 verbose lifecycle ReactCMS@1.0.0~build: PATH: /Users/ajaxtown/.nvm/versions/node/v6.9.1/lib/node_modules/npm/bin/node-gyp-bin:/Users/ajaxtown/Sites/ReactCMS/node_modules/.bin:/Users/ajaxtown/google-cloud-sdk/bin:/Users/ajaxtown/.nvm/versions/node/v6.9.1/bin:/usr/local/mysql/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin:/Users/ajaxtown/google-cloud-sdk/bin:/usr/local/mysql/bin:/usr/local/opt/php56/bin/php:/usr/local/opt/php56/bin/php
+10 verbose lifecycle ReactCMS@1.0.0~build: CWD: /Users/ajaxtown/Sites/ReactCMS
+11 silly lifecycle ReactCMS@1.0.0~build: Args: [ '-c', 'better-npm-run build' ]
+12 verbose stack Error: write EPIPE
+12 verbose stack     at exports._errnoException (util.js:1026:11)
+12 verbose stack     at WriteWrap.afterWrite (net.js:799:14)
+13 verbose cwd /Users/ajaxtown/Sites/ReactCMS
+14 error Darwin 17.2.0
+15 error argv "/Users/ajaxtown/.nvm/versions/node/v6.9.1/bin/node" "/Users/ajaxtown/.nvm/versions/node/v6.9.1/bin/npm" "run" "build"
+16 error node v6.9.1
+17 error npm  v3.10.8
+18 error code EPIPE
+19 error errno EPIPE
+20 error syscall write
+21 error write EPIPE
+22 error If you need help, you may report this error at:
+22 error     <https://github.com/npm/npm/issues>
+23 verbose exit [ 1, true ]
