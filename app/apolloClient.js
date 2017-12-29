@@ -1,11 +1,13 @@
 import ApolloClient from "apollo-client";
+import { fetch } from "whatwg-fetch";
 import { createHttpLink } from "apollo-link-http";
 import { ApolloLink } from "apollo-link";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { onError } from "apollo-link-error";
 
 const httpLink = createHttpLink({
-    uri: "http://localhost:3030/graphql"
+    uri: "http://localhost:3030/graphql",
+    fetch
 });
 
 const middlewareLink = new ApolloLink((operation, forward) => {

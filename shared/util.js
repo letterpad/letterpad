@@ -7,3 +7,8 @@ export const parseErrors = errObj => {
     }
     return result;
 };
+
+export const plural = {
+    post: "posts",
+    page: "pages"
+};

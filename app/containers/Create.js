@@ -7,6 +7,7 @@ import Tags from "../components/posts/Tags";
 import Categories from "../components/posts/Categories";
 import { CREATE_POST } from "../../shared/queries/Mutations";
 import Excerpt from "../components/posts/Excerpt";
+import { plural } from "../../shared/util";
 
 class Create extends Component {
     constructor(props) {
@@ -26,8 +27,14 @@ class Create extends Component {
             });
         });
 
-        PostActions.subscribe(id => {
-            this.props.history.push(`/admin/${type}/${id}`);
+        PostActions.subscribe(post => {
+            if ((post.status = "trash")) {
+                this.props.history.push(`/admin/${plural[post.type]}`);
+            } else {
+                this.props.history.push(
+                    `/admin/${plural[post.type]}/${post.id}`
+                );
+            }
         });
         document.body.classList.add(`create-${type}`);
     }

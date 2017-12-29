@@ -83,3 +83,12 @@ Social.propTypes = {
     data: PropTypes.string,
     updateOption: PropTypes.func
 };
+
+Social.defaultProps = {
+    data: JSON.stringify({
+        twitter: "",
+        github: "",
+        instagram: "",
+        facebook: ""
+    })
+};

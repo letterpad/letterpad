@@ -23,7 +23,13 @@ export default {
                 return {
                     ok: false,
                     token: "",
-                    errors: [{ path: "Login", message: "Email not found" }]
+                    errors: [
+                        {
+                            path: "Login",
+                            message:
+                                "We couldnt find this email. Are you sure there is no typo ?"
+                        }
+                    ]
                 };
             }
             const valid = await bcrypt.compare(password, author.password);
@@ -33,7 +39,10 @@ export default {
                     ok: false,
                     token: "",
                     errors: [
-                        { path: "Login", message: "Authentication Failed" }
+                        {
+                            path: "Login",
+                            message: "We couldn't authenticate your credentials"
+                        }
                     ]
                 };
             }

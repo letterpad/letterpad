@@ -8,6 +8,8 @@ import Categories from "../components/posts/Categories";
 import Excerpt from "../components/posts/Excerpt";
 import { GET_SINGLE_POST } from "../../shared/queries/Queries";
 import Loader from "../components/Loader";
+import PostActions from "../components/posts/PostActions";
+import { plural } from "../../shared/util";
 
 const OhSnap = ({ message }) => (
     <section className="module-xs">
@@ -25,6 +27,14 @@ OhSnap.propTypes = {
 };
 
 class Single extends Component {
+    componentDidMount() {
+        PostActions.subscribe(post => {
+            if (post.status == "trash") {
+                this.props.history.push(`/admin/${plural[post.type]}`);
+            }
+        });
+    }
+
     render() {
         if (this.props.loading) {
             return <Loader />;
@@ -41,7 +51,7 @@ class Single extends Component {
                         <ArticleEdit post={this.props.post} />
                     </div>
                     <div className="col-lg-4 column">
-                        <PostPublish post={this.props.post} />
+                        <PostPublish edit post={this.props.post} />
                         <Tags post={this.props.post} />
                         <Categories post={this.props.post} />
                         <Excerpt post={this.props.post} />

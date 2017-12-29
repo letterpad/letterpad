@@ -3,10 +3,6 @@
 @import "./login.scss";
 @import "./common.scss";
 @import "./react-select.scss";
-.form-control {
-    text-transform: none !important;
-}
-
 label.custom-label {
     font-weight: 500;
     font-size: 13px;
@@ -227,10 +223,11 @@ tr th:first-child {
         padding: 10px;
         cursor: pointer;
         border-bottom: 1px solid #2d2d2d !important;
-        color: #9d9d9d;
+        color: $color-menu-link;
+        border-left: 4px solid transparent;
     }
-    .nav-list .active {
-        border-left: 2px solid $color-accent;
+    .nav-list li.active a {
+        border-left: 4px solid $color-accent;
     }
     .nav-list > li > a {
         color: $color-menu-link;
@@ -238,8 +235,8 @@ tr th:first-child {
         padding-left: 13px !important;
         border-bottom: 1px solid #2e2e2e;
     }
-    .nav-list > li > a:hover {
-        border-left: 2px solid $color-accent !important;
+    .nav-list > li a:hover {
+        border-left: 4px solid $color-accent;
     }
     .nav-list a span {
         margin-left: 20px;
@@ -249,5 +246,50 @@ tr th:first-child {
     }
     .nav-list li.has-sub li a {
         padding-left: 34px !important;
+    }
+}
+
+/*----------------------------------------------
+[Themes]
+*/
+
+#cp-css {
+    .cp-swatch {
+        padding: 5px;
+        background: #fff;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+        display: inline-block;
+        cursor: pointer;
+        .color-box {
+            width: 26px;
+            height: 14px;
+        }
+    }
+    .cp-popover {
+        position: absolute;
+        z-index: 2;
+    }
+    .cp-cover {
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+    }
+}
+
+/*--------------------------------------------
+[Themes]
+*/
+
+.color-blocks {
+    .custom-label {
+        display: flex;
+        justify-content: space-between;
+    }
+    .text-muted {
+        line-height: 20px;
+        font-size: 12px;
+        min-height: 42px;
     }
 }

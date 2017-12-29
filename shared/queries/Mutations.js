@@ -68,3 +68,50 @@ export const UPDATE_AUTHOR = gql`
         }
     }
 `;
+
+export const UPDATE_POST_QUERY = gql`
+    mutation updatePost(
+        $id: Int!
+        $title: String!
+        $body: String
+        $status: String!
+        $excerpt: String
+        $taxonomies: [TaxonomyInputType]
+        $slug: String!
+    ) {
+        updatePost(
+            id: $id
+            title: $title
+            body: $body
+            status: $status
+            excerpt: $excerpt
+            taxonomies: $taxonomies
+            slug: $slug
+        ) {
+            ok
+            errors {
+                path
+                message
+            }
+            post {
+                id
+                title
+                body
+                author {
+                    username
+                }
+                slug
+                type
+                status
+                excerpt
+                created_at
+                cover_image
+                taxonomies {
+                    id
+                    name
+                    type
+                }
+            }
+        }
+    }
+`;

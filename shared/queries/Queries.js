@@ -94,7 +94,7 @@ export const GET_AUTHORS = gql`
 `;
 
 export const GET_AUTHOR = gql`
-    query getAuthor($id: Int) {
+    query getAuthor($id: Int!) {
         author(id: $id) {
             id
             username
@@ -127,6 +127,51 @@ export const GET_TAXONOMIES = gql`
         taxonomies(type: $type) {
             id
             name
+        }
+    }
+`;
+
+export const SEARCH_POSTS = gql`
+    query searchPosts($type: String!, $query: String!) {
+        posts(type: $type, body: $query) {
+            id
+            title
+            body
+            author {
+                username
+            }
+            type
+            status
+            created_at
+            excerpt
+            cover_image
+            taxonomies {
+                id
+                name
+                type
+            }
+        }
+    }
+`;
+
+export const SEARCH_POSTS_BY_TAXONOMY = gql`
+    query catPosts($type: String, $query: String, $postType: String) {
+        postTaxonomies(type: $type, name: $query) {
+            posts(type: $postType) {
+                id
+                title
+                body
+                type
+                cover_image
+                created_at
+                slug
+                excerpt
+                taxonomies {
+                    id
+                    name
+                    type
+                }
+            }
         }
     }
 `;

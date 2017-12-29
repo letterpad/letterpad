@@ -42,7 +42,7 @@ const ContainerWithPageData = graphql(pageQuery, {
     options: props => {
         return {
             variables: {
-                slug: props.slug || props.params.slug,
+                slug: props.slug || props.match.params.slug,
                 postType: "page"
             }
         };

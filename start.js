@@ -38,6 +38,32 @@ app.use(
 
 app.use(require("webpack-hot-middleware")(compiler));
 
+let pinger = null;
+
+app.get("/build", (req, res) => {
+    // console.log("reached");
+    // if (pinger !== null) {
+    //     console.log("Ending");
+    //     pinger.end();
+    // }
+    // console.log("Continuing");
+    // pinger = Object.assign({}, res);
+    var webpack = require("webpack");
+    var ProgressPlugin = require("webpack/lib/ProgressPlugin");
+    var config = require("./webpack.config.prod.js");
+    var compiler = webpack(config);
+    compiler.apply(
+        new ProgressPlugin(function(percentage, msg) {
+            res.write(percentage * 100 + "%" + " >> " + msg + "\n");
+            //console.log(percentage * 100 + "%", msg);
+        })
+    );
+
+    compiler.run(function(err, stats) {
+        // ...
+        res.end();
+    });
+});
 adminServerRendering.init(app);
 clientServerRendering.init(app);
 
