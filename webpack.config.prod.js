@@ -9,7 +9,7 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
     profile: true,
     entry: {
-        dashboard: ["./app/app"],
+        dashboard: ["./admin/app"],
         client: ["./client/app"]
     },
     output: {
@@ -40,7 +40,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loaders: ["babel-loader"],
-                include: path.join(__dirname, "app")
+                include: path.join(__dirname, "admin")
             },
             {
                 test: /\.js$/,

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { parseErrors } from "../../shared/util";
 import { requiresAdmin } from "../utils/permissions";
 import { getPermissions } from "../models/author";
@@ -50,11 +50,7 @@ export default {
                 where: { id: author.role_id }
             });
             const perms = await role.getPermissions();
-            const permissionNames = perms.map(perm => perm.name);
-            // const role = await author.getRole({
-            //     where: { id: author.role_id }
-            // });
-            //const permissionNames = await getPermissions(role.id);
+            const permissionNames = perms.map(perm => perm.name); //test
 
             const token = jwt.sign(
                 {

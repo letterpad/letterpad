@@ -8,7 +8,15 @@ label.custom-label {
     font-size: 13px;
 }
 
-/* Navbar */
+/*--------------------------------------
+[TopBar]
+*/
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    background: $color-bg-secondary;
+}
 
 /* Tell Quill not to scroll */
 

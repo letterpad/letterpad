@@ -3,7 +3,7 @@ import { graphql } from "react-apollo";
 import ArticleList from "../components/post/ArticleList";
 import appoloClient from "../apolloClient";
 
-import Loader from "../../app/components/Loader";
+import Loader from "../components/Loader";
 import { SEARCH_POSTS_BY_TAXONOMY } from "../../shared/queries/Queries";
 
 //export default function SearchWrapper(term) {

@@ -4,10 +4,14 @@ var webpack = require("webpack");
 module.exports = {
     devtool: "source-map",
     entry: {
-        "app-admin": ["babel-polyfill", "./app/app"],
+        "app-admin": [
+            "babel-polyfill",
+            "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
+            "./admin/app"
+        ],
         "app-client": [
             "babel-polyfill",
-            "webpack-hot-middleware/client",
+            "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
             "./client/app"
         ]
     },
@@ -38,17 +42,11 @@ module.exports = {
                 include: /public/,
                 exclude: /node_modules/
             },
-            // query loader
-            {
-                test: /\.(graphql|gql)$/,
-                exclude: /node_modules/,
-                loader: "graphql-tag/loader"
-            },
             // js
             {
                 test: /\.js$/,
                 loaders: ["babel-loader"],
-                include: path.join(__dirname, "app")
+                include: path.join(__dirname, "admin")
             },
             {
                 test: /\.js$/,
