@@ -81,7 +81,7 @@ class LoginView extends Component {
 
 LoginView.propTypes = {
     login: PropTypes.func,
-    history: PropTypes.func
+    history: PropTypes.object
 };
 const LoginQuery = gql`
     mutation login($username: String!, $password: String!) {

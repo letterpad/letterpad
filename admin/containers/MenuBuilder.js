@@ -42,9 +42,7 @@ class MenuBuilder extends Component {
                 });
             }
         }
-        this.props.updateOptions(settings).then(res => {
-            console.log(res);
-        });
+        this.props.updateOptions(settings).then(res => {});
     }
     render() {
         const data = {};

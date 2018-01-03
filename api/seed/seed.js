@@ -1,6 +1,6 @@
 import { conn } from "../../config/mysql.config";
 import Sequalize, { DataTypes } from "sequelize";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import Faker from "faker";
 
 const models = {
@@ -21,31 +21,14 @@ Object.keys(models).map(name => {
 models.Sequalize = Sequalize;
 models.conn = conn;
 
-/*----------------------------------
-[Get Permissions from Role]
-*/
-//  await models.Permission.findAll({
-//         attributes: ["name"],
-//         through: { attributes: [] },
-//         include: [
-//             {
-//                 model: models.Role,
-//                 attributes: [],
-//                 as: models.Role.tableName,
-//                 where: {
-//                     id: 1
-//                 }
-//             }
-//         ]
-//     });
-
-models.conn.sync({ force: true }).then(async () => {
+export const seed = async () => {
+    await models.conn.sync({ force: true });
     await insertRolePermData();
     await insertAuthor();
     await insertTaxonomy();
     await insertPost();
     await insertSettings();
-});
+};
 
 export async function insertRolePermData() {
     let MANAGE_OWN_POSTS = await models.Permission.create({
@@ -224,4 +207,8 @@ export async function insertSettings() {
         }
     ];
     await models.Setting.bulkCreate(data);
+}
+
+if (require.main === module) {
+    seed();
 }

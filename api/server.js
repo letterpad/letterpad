@@ -1,16 +1,14 @@
 import express from "express";
-import session from "express-session";
 import GraphHTTP from "express-graphql";
 import Schema from "./schema";
 import bodyParser from "body-parser";
-import config from "../config/config";
-import http from "http";
 import cors from "cors";
 import multer from "multer";
 import path from "path";
 import jwt from "jsonwebtoken";
 import { UnauthorizedError } from "./utils/common";
 import models from "./models";
+import { seed } from "./seed/seed";
 
 const app = express();
 const SECRET = "cdascadsc-cdascadsca";
@@ -87,7 +85,18 @@ app.post("/upload", (req, res) => {
         res.json("/uploads/" + req.file.filename);
     });
 });
-models.conn.sync({ force: false }).then(() => {
+
+// seed the database if settings is empty
+const seedIfEmpty = async () => {
+    const result = await models.Setting.findOne({ where: { id: 1 } });
+    if (!result) {
+        console.log("Seeding");
+        await seed();
+    }
+};
+console.log("Initiating Graphql Server");
+models.conn.sync({ force: false }).then(async () => {
+    await seedIfEmpty();
     const httpServer = app.listen(3030, () => {
         console.log(`App listening on port 3030`);
     });

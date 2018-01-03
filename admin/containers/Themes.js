@@ -147,9 +147,7 @@ class Themes extends Component {
                 value: this.updatedOptions[option]
             });
         });
-        this.props.updateOptions(settings).then(res => {
-            console.log(res);
-        });
+        this.props.updateOptions(settings).then(res => {});
     }
     render() {
         const data = {};

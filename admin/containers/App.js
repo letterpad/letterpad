@@ -19,6 +19,7 @@ import Menu from "../components/Menu";
 import "../../public/scss/admin.scss";
 import author from "../../api/schema/author";
 import Themes from "./Themes";
+
 const App = data => {
     if (data.loading) {
         return <Loader />;
@@ -30,8 +31,14 @@ const App = data => {
     return (
         <Switch>
             <Route exact path="/admin/login" component={LoginView} />
+
             <div className="wrapper">
+                <div className="top-bar">
+                    <div className="top-bar-left">Brand</div>
+                    <div className="top-bar-right">Right</div>
+                </div>
                 <Notifications />
+
                 <Route
                     path="/admin"
                     component={props => <Menu {...props} {...data} />}

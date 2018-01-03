@@ -7,12 +7,13 @@ import fetch from "node-fetch";
 import { StaticRouter } from "react-router";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
 import ApolloClient from "apollo-client";
+import siteConfig from "../config/site.config";
 import App from "./containers/App";
 
 const client = new ApolloClient({
     ssrMode: true,
     link: createHttpLink({
-        uri: "http://localhost:3030/graphql",
+        uri: siteConfig.apiUrl,
         fetch
     }),
     cache: new InMemoryCache()
