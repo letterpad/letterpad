@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import TextField from "material-ui/TextField";
 
 export default class SidebarWidgets extends Component {
     constructor(props) {
@@ -14,16 +15,13 @@ export default class SidebarWidgets extends Component {
         return (
             <div>
                 <div className="form-group">
-                    <label className="custom-label">Latest Post Count</label>
-                    <input
+                    <TextField
                         defaultValue={
                             this.props.data.sidebar_latest_post_count.value
                         }
-                        type="text"
-                        className="form-control"
-                        placeholder="Total posts to display"
-                        aria-invalid="false"
-                        onBlur={e =>
+                        floatingLabelText="Total posts to display in sidebar"
+                        fullWidth={true}
+                        onChange={e =>
                             this.updateOption(
                                 "sidebar_latest_post_count",
                                 e.target.value
@@ -32,15 +30,14 @@ export default class SidebarWidgets extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">About</label>
-                    <textarea
+                    <TextField
                         defaultValue={this.props.data.sidebar_about.value}
-                        className="form-control"
-                        rows="7"
-                        placeholder="Introduce your site"
-                        required=""
-                        aria-invalid="false"
-                        onBlur={e =>
+                        floatingLabelText="Introduction to display in sidebar"
+                        fullWidth={true}
+                        multiLine={true}
+                        rows={4}
+                        maxRows={5}
+                        onChange={e =>
                             this.updateOption("sidebar_about", e.target.value)
                         }
                     />

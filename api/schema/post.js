@@ -55,6 +55,6 @@ export default `
   type Mutation {
     createPost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, slug: String, taxonomies: [TaxonomyInputType]):Response!
     updatePost(id: Int, title: String, body: String, author: String, excerpt: String, cover_image: String, type:                String, status: String, slug: String, taxonomies: [TaxonomyInputType]): Response!
-    uploadFile(id: Int, cover_image: String):Post
+    uploadFile(id: Int, cover_image: String):Response!
   }
 `;

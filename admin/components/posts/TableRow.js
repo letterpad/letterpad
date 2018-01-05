@@ -2,38 +2,21 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import Loader from "../Loader";
+import { TableBody, TableRow, TableRowColumn } from "material-ui/Table";
 
-export const Rows = props => {
-    if (props.loading) {
-        return (
-            <tbody>
-                <tr>
-                    <td colSpan={props.colSpan}>
-                        <Loader type="spin" />
-                    </td>
-                </tr>
-            </tbody>
-        );
-    }
-    let data = (
-        <tr>
-            <td colSpan={props.colSpan}>Nothing found..</td>
-        </tr>
-    );
-    if (props.posts.rows.length > 0) {
-        data = props.posts.rows.map((post, i) => {
-            return <TableRow {...props} post={post} key={i} />;
-        });
-    }
-    return <tbody>{data}</tbody>;
-};
-export class TableRow extends Component {
+export class Item extends Component {
     constructor(props) {
         super(props);
+        this.isSelected = this.isSelected.bind(this);
     }
+
     postSelected(e) {
         e.preventDefault();
         e.stopPropagation();
+    }
+
+    isSelected(index) {
+        return this.props.rowSelected.indexOf(index) !== -1;
     }
 
     render() {
@@ -49,33 +32,24 @@ export class TableRow extends Component {
             .join(", ");
 
         return (
-            <tr>
-                <td align="center" onclick={this.postSelected.bind(this)}>
-                    <label className="control control--checkbox">
-                        <input
-                            type="checkbox"
-                            className="checkthis"
-                            value={this.props.post.id}
-                        />
-                        <div className="control__indicator" />
-                    </label>
-                </td>
-                <td
-                    style={{ cursor: "pointer" }}
+            <TableRow selected={this.isSelected(this.props.idx)}>
+                <TableRowColumn
                     onClick={() => this.props.handleClick(this.props.post.id)}
                 >
                     {this.props.post.title || "Draft.."}
-                </td>
-                <td>{categories}</td>
-                <td>{tags}</td>
-                <td>{this.props.post.status}</td>
-                <td>{this.props.post.author.username}</td>
-                <td>
+                </TableRowColumn>
+                <TableRowColumn>{categories}</TableRowColumn>
+                <TableRowColumn>{tags}</TableRowColumn>
+                <TableRowColumn>{this.props.post.status}</TableRowColumn>
+                <TableRowColumn>
+                    {this.props.post.author.username}
+                </TableRowColumn>
+                <TableRowColumn>
                     {moment(new Date(this.props.post.created_at)).format(
                         "MMM Do, YY"
                     )}
-                </td>
-            </tr>
+                </TableRowColumn>
+            </TableRow>
         );
     }
 }

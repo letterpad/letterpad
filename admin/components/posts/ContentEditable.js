@@ -24,7 +24,7 @@ export default class ContentEditable extends Component {
     render() {
         return (
             <h2
-                className="post-title"
+                style={{ color: "initial" }}
                 onInput={this.emitChange}
                 placeholder={this.props.placeholder}
                 onBlur={this.emitChange}

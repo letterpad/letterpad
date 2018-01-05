@@ -96,10 +96,10 @@ export async function _updatePost(post, models) {
         const updatedPost = await models.Post.findOne({
             where: { id: post.id }
         });
-        // remove the texonomy relation
-        await updatedPost.setTaxonomies([]);
 
         if (post.taxonomies && post.taxonomies.length > 0) {
+            // remove the texonomy relation
+            await updatedPost.setTaxonomies([]);
             await Promise.all(
                 post.taxonomies.map(async taxonomy => {
                     let taxItem = null;
@@ -117,11 +117,20 @@ export async function _updatePost(post, models) {
                             type: taxonomy.type
                         }
                     });
+
+                    taxItem = await models.Taxonomy.find({
+                        where: {
+                            name: taxonomy.name,
+                            type: taxonomy.type
+                        }
+                    });
+
                     // add relation
                     return await updatedPost.addTaxonomy(taxItem);
                 })
             );
         }
+
         return {
             ok: true,
             post: updatedPost,

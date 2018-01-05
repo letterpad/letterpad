@@ -4,7 +4,14 @@ import PropTypes from "prop-types";
 import General from "../components/settings/General";
 import Social from "../components/settings/Social";
 import SidebarWidgets from "../components/settings/SidebarWidgets";
-
+import {
+    Card,
+    CardActions,
+    CardHeader,
+    CardMedia,
+    CardTitle,
+    CardText
+} from "material-ui/Card";
 import { GET_OPTIONS, GET_TAXONOMIES } from "../../shared/queries/Queries";
 import { UPDATE_OPTIONS } from "../../shared/queries/Mutations";
 
@@ -54,32 +61,43 @@ class Settings extends Component {
         });
 
         return (
-            <section className="module-xs">
-                <div className="card">
-                    <div className="module-title">General Settings</div>
-                    <div className="module-subtitle">
-                        Overview of configuration options for your site.
-                    </div>
-                    <General data={data} updateOption={this.setOption} />
-                    <SubmitBtn handleClick={this.submitData} />
-                </div>
-                <div className="card">
-                    <div className="module-title">Social Settings</div>
-                    <div className="module-subtitle">
-                        Setup your social links
-                    </div>
-                    <Social data={data} updateOption={this.setOption} />
-                    <SubmitBtn handleClick={this.submitData} />
-                </div>
-                <div className="card">
-                    <div className="module-title">Sidebar Settings</div>
-                    <div className="module-subtitle">
-                        Configure your sidebar widgets
-                    </div>
-                    <SidebarWidgets data={data} updateOption={this.setOption} />
-                    <SubmitBtn handleClick={this.submitData} />
-                </div>
-            </section>
+            <div>
+                <Card>
+                    <CardHeader
+                        title="General Settings"
+                        subtitle="Overview of configuration options for your site."
+                    />
+                    <CardText>
+                        <General data={data} updateOption={this.setOption} />
+                        <SubmitBtn handleClick={this.submitData} />
+                    </CardText>
+                </Card>
+                <br />
+                <Card>
+                    <CardHeader
+                        title="Social Settings"
+                        subtitle="Setup your social links"
+                    />
+                    <CardText>
+                        <Social data={data} updateOption={this.setOption} />
+                        <SubmitBtn handleClick={this.submitData} />
+                    </CardText>
+                </Card>
+                <br />
+                <Card>
+                    <CardHeader
+                        title="Sidebar Settings"
+                        subtitle="Configure your sidebar widgets"
+                    />
+                    <CardText>
+                        <SidebarWidgets
+                            data={data}
+                            updateOption={this.setOption}
+                        />
+                        <SubmitBtn handleClick={this.submitData} />
+                    </CardText>
+                </Card>
+            </div>
         );
     }
 }

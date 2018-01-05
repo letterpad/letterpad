@@ -8,6 +8,7 @@ const conn = new Sequalize(
     {
         logging: str => {
             //...
+            console.log(str);
         },
         host: process.env.MYSQL_HOST,
         port: process.env.MYSQL_PORT || 3306,

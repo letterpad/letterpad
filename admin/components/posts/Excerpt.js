@@ -3,6 +3,7 @@ import { WithContext as ReactTags } from "react-tag-input";
 import { gql, graphql } from "react-apollo";
 import PostActions from "./PostActions";
 import ReactDOM from "react-dom";
+import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
 
 var ContentEditable = React.createClass({
     render: function() {
@@ -49,24 +50,19 @@ class Excerpt extends Component {
 
     render() {
         return (
-            <div className="card">
-                <div className="x_title">
-                    <div className="module-title">Excerpt</div>
-                    <div className="clearfix" />
-                </div>
-                <div className="x_content">
-                    <div className="control-group">
-                        <ContentEditable
-                            excerpt={this.props.post.excerpt}
-                            onChange={e => {
-                                PostActions.setData({
-                                    excerpt: e.target.value
-                                });
-                            }}
-                        />
-                    </div>
-                </div>
-            </div>
+            <Card>
+                <CardHeader title="Excerpt" />
+                <CardText>
+                    <ContentEditable
+                        excerpt={this.props.post.excerpt}
+                        onChange={e => {
+                            PostActions.setData({
+                                excerpt: e.target.value
+                            });
+                        }}
+                    />
+                </CardText>
+            </Card>
         );
     }
 }

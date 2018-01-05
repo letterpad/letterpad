@@ -1,74 +1,110 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
+import moment from "moment";
 import PropTypes from "prop-types";
-import { TableRow, Rows } from "../components/posts/TableRow";
 import PostsHoc from "./hoc/PostsHoc";
 import { GET_POSTS } from "../../shared/queries/Queries";
 import Paginate from "../components/Paginate";
 import { PostFilters } from "../components/posts/Filter";
 import Loader from "../components/Loader";
+import { Link } from "react-router-dom";
+import {
+    Table,
+    TableBody,
+    TableHeader,
+    TableHeaderColumn,
+    TableRow,
+    TableRowColumn
+} from "material-ui/Table";
+import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
 
 class Pages extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            status: "publish",
+            loading: true,
+            posts: null,
+            selected: []
+        };
         this.handleClick = this.handleClick.bind(this);
+        this.isSelected = this.isSelected.bind(this);
+        this.handleRowSelection = this.handleRowSelection.bind(this);
     }
     handleClick(id) {
         this.props.history.push("/admin/pages/" + id);
+    }
+    handleRowSelection(selectedRows) {
+        this.setState({
+            selected: selectedRows
+        });
+    }
+    isSelected(index) {
+        return this.state.selected.indexOf(index) !== -1;
+    }
+    getTaxonomy(type, taxonomies) {
+        return taxonomies
+            .filter(item => item.type == type)
+            .map(tax => tax.name)
+            .join(", ");
     }
     render() {
         const loading = this.props.loading || !this.props.networkStatus === 2;
 
         const { status } = this.props.variables;
 
+        const rows = this.props.posts.rows.map((post, i) => (
+            <TableRow selected={this.isSelected(i)}>
+                <TableRowColumn onClick={() => this.handleClick(post.id)}>
+                    {post.title || "Draft.."}
+                </TableRowColumn>
+                <TableRowColumn>
+                    {this.getTaxonomy("post_category", post.taxonomies)}
+                </TableRowColumn>
+                <TableRowColumn>
+                    {this.getTaxonomy("post_tag", post.taxonomies)}
+                </TableRowColumn>
+                <TableRowColumn>{post.status}</TableRowColumn>
+                <TableRowColumn>{post.author.username}</TableRowColumn>
+                <TableRowColumn>
+                    {moment(new Date(post.created_at)).format("MMM Do, YY")}
+                </TableRowColumn>
+                <TableRowColumn>
+                    <Link className="button" to={"/admin/pages/" + post.id}>
+                        <i className="material-icons">edit</i>
+                    </Link>
+                </TableRowColumn>
+            </TableRow>
+        ));
         return (
-            <section className="module-xs">
-                <div className="card">
-                    <div className="module-title">Pages</div>
-                    <div className="module-subtitle">
-                        Overview of all your pages.
-                    </div>
+            <Card>
+                <CardHeader
+                    title="Posts"
+                    subtitle="Overview of all your blog posts"
+                />
+                <CardText>
                     <PostFilters
                         changeStatus={this.props.changeStatus}
                         selectedStatus={status}
                     />
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th width="5%" className="col-check">
-                                    <label className="control control--checkbox">
-                                        <input type="checkbox" />
-                                        <div className="control__indicator" />
-                                    </label>
-                                </th>
-                                <th width="25%" className="col-text">
-                                    Title
-                                </th>
-                                <th width="20%" className="col-text">
+                    <Table onRowSelection={this.handleRowSelection}>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHeaderColumn>Title</TableHeaderColumn>
+                                <TableHeaderColumn>
                                     Categories
-                                </th>
-                                <th width="20%" className="col-text">
-                                    Tags
-                                </th>
-                                <th width="5%" className="col-text">
-                                    Status
-                                </th>
-                                <th width="10%" className="col-text">
-                                    Author
-                                </th>
-                                <th width="10%" className="col-text">
+                                </TableHeaderColumn>
+                                <TableHeaderColumn>Tags</TableHeaderColumn>
+                                <TableHeaderColumn>Status</TableHeaderColumn>
+                                <TableHeaderColumn>Author</TableHeaderColumn>
+                                <TableHeaderColumn>
                                     Created At
-                                </th>
-                            </tr>
-                        </thead>
-
-                        <Rows
-                            handleClick={this.handleClick}
-                            posts={this.props.posts}
-                            loading={loading}
-                            colSpan={7}
-                        />
-                    </table>
+                                </TableHeaderColumn>
+                                <TableHeaderColumn>Edit</TableHeaderColumn>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>{rows}</TableBody>
+                    </Table>
 
                     {!loading && (
                         <Paginate
@@ -77,8 +113,8 @@ class Pages extends Component {
                             changePage={this.props.changePage}
                         />
                     )}
-                </div>
-            </section>
+                </CardText>
+            </Card>
         );
     }
 }
@@ -107,5 +143,9 @@ Pages.propTypes = {
     loading: PropTypes.bool,
     history: PropTypes.object
 };
-
+Pages.defaultProps = {
+    posts: {
+        rows: []
+    }
+};
 export default PostsHoc(ContainerWithData(Pages));
