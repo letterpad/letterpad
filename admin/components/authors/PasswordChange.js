@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import TextField from "material-ui/TextField";
 
 export default class Social extends Component {
     constructor(props) {
@@ -11,18 +12,11 @@ export default class Social extends Component {
     render() {
         return (
             <div>
-                <div className="module-title">Change Password</div>
-                <div className="module-subtitle">
-                    Some basic information about yourself
-                </div>
-
                 <div className="form-group">
-                    <label className="custom-label">New Password</label>
-                    <input
+                    <TextField
+                        floatingLabelText="Enter your new password"
+                        fullWidth={true}
                         type="password"
-                        className="form-control"
-                        placeholder="Change your password"
-                        aria-invalid="false"
                         onChange={e =>
                             this.updateOption("password", e.target.value)
                         }

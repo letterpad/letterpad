@@ -2,79 +2,142 @@ import React, { Component } from "react";
 import { WithContext as ReactTags } from "react-tag-input";
 import { gql, graphql } from "react-apollo";
 import PostActions from "./PostActions";
+import {
+    Card,
+    CardActions,
+    CardHeader,
+    CardMedia,
+    CardTitle,
+    CardText
+} from "material-ui/Card";
+import Chip from "material-ui/Chip";
+import AutoComplete from "material-ui/AutoComplete";
 
-class Categories extends Component {
+class Category extends Component {
     constructor(props) {
         super(props);
-        this.categories = [];
+        this.renderChip = this.renderChip.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleAddition = this.handleAddition.bind(this);
+        this.state = {
+            categories: [],
+            suggestions: []
+        };
+        this.styles = {
+            chip: {
+                margin: 4
+            },
+            wrapper: {
+                display: "flex",
+                flexWrap: "wrap"
+            }
+        };
     }
 
     componentDidMount() {
-        this.categories = this.props.post.taxonomies
+        this.state.categories = this.props.post.taxonomies
             .filter(tax => {
                 return tax.type === "post_category";
             })
             .map(tax => {
+                tax = { ...tax };
                 delete tax["__typename"];
                 return tax;
             });
-        PostActions.setTaxonomies({ post_category: this.categories });
+        PostActions.setTaxonomies({ post_category: this.state.categories });
+        this.setState(this.state);
     }
 
-    handleDelete(i) {
-        this.categories.splice(i, 1);
+    componentWillReceiveProps(nextProps) {
+        if (
+            nextProps.suggestions &&
+            nextProps.suggestions.length !== this.state.suggestions.length
+        ) {
+            const doExist = name =>
+                this.state.categories.some(tag => tag.name === name);
+
+            nextProps.suggestions.forEach(t => {
+                if (!doExist(t.name)) {
+                    this.state.suggestions.push({ name: t.name, id: t.id });
+                }
+            });
+        }
     }
 
-    handleAddition(tag) {
-        let found = this.categories.some(ele => ele.name === tag);
-        let foundInSuggestion = this.props.suggestions.filter(
-            ele => (ele.name === tag ? ele.id : 0)
-        );
+    handleDelete(name) {
+        this.state.categories.forEach((tag, i) => {
+            if (tag.name == name) {
+                this.state.suggestions.push({
+                    id: this.state.categories[i].id,
+                    name: this.state.categories[i].name
+                });
+                this.state.categories.splice(i, 1);
+            }
+        });
+        this.setState(this.state);
+    }
 
-        let id = foundInSuggestion.length > 0 ? foundInSuggestion[0].id : 0;
+    handleAddition(tag, idx) {
+        let found = this.state.categories.some(ele => ele.name === tag);
         if (!found) {
-            this.categories.push({
+            let foundInSuggestion = this.state.suggestions.filter((ele, i) => {
+                if (ele.name === tag) {
+                    this.state.suggestions.splice(i, 1);
+                    return ele.id;
+                }
+                return 0;
+            });
+
+            let id = foundInSuggestion.length > 0 ? foundInSuggestion[0].id : 0;
+
+            this.state.categories.push({
                 id: id,
                 name: tag,
                 type: "post_category"
             });
-            PostActions.setTaxonomies({ post_category: this.categories });
+            PostActions.setTaxonomies({ post_category: this.state.categories });
+            this.setState(this.state);
         }
     }
 
-    handleDrag(tag, currPos, newPos) {
-        // mutate array
-        this.categories.splice(currPos, 1);
-        this.categories.splice(newPos, 0, tag);
-
-        PostActions.setTaxonomies({ post_category: this.categories });
+    renderChip(data) {
+        const newData = { ...data };
+        const min = 1;
+        const max = 999999;
+        const random_id = Math.floor(Math.random() * (max - min + 1)) + min;
+        newData.id = newData.id + "-" + random_id;
+        return (
+            <Chip
+                key={newData.id}
+                onRequestDelete={() => this.handleDelete(newData.name)}
+                style={this.styles.chip}
+            >
+                {newData.name}
+            </Chip>
+        );
     }
 
     render() {
-        let suggestions = this.props.suggestions || [];
-        suggestions = suggestions.map(t => t.name);
-
+        const suggestions = this.state.suggestions.map(item => item.name);
         return (
-            <div className="card">
-                <div className="x_title">
-                    <div className="module-title">Categories</div>
-                    <div className="clearfix" />
-                </div>
-                <div className="x_content">
-                    <div className="control-group">
-                        <ReactTags
-                            suggestions={suggestions}
-                            autofocus={false}
-                            placeholder="Add new category..."
-                            tags={this.categories}
-                            labelField="name"
-                            handleDelete={this.handleDelete.bind(this)}
-                            handleAddition={this.handleAddition.bind(this)}
-                            handleDrag={this.handleDrag.bind(this)}
-                        />
+            <Card>
+                <CardHeader title="Categories" />
+                <CardText>
+                    <div style={this.styles.wrapper}>
+                        {this.state.categories.map(this.renderChip, this)}
                     </div>
-                </div>
-            </div>
+                    <AutoComplete
+                        hintText="Enter a category and press enter"
+                        dataSource={suggestions}
+                        openOnFocus={true}
+                        onNewRequest={this.handleAddition}
+                        fullWidth={true}
+                        filter={(searchText, key) =>
+                            key.toLowerCase().includes(searchText.toLowerCase())
+                        }
+                    />
+                </CardText>
+            </Card>
         );
     }
 }
@@ -95,4 +158,4 @@ const TaxSuggestionsData = graphql(TaxSuggestionsQuery, {
     })
 });
 
-export default TaxSuggestionsData(Categories);
+export default TaxSuggestionsData(Category);

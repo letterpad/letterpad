@@ -5,6 +5,18 @@ import { gql, graphql } from "react-apollo";
 import moment from "moment";
 import siteConfig from "../../../config/site.config";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
+import Toggle from "material-ui/Toggle";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import {
+    Card,
+    CardActions,
+    CardHeader,
+    CardMedia,
+    CardTitle,
+    CardText
+} from "material-ui/Card";
+import DatePicker from "material-ui/DatePicker";
 
 const actions = {
     publish: "Published",
@@ -15,6 +27,7 @@ class PostPublish extends Component {
         super(props);
         this.changePostStatus = this.changePostStatus.bind(this);
         this.changeSlug = this.changeSlug.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
         this.state = {
             post: this.props.post,
             published: 1
@@ -27,17 +40,27 @@ class PostPublish extends Component {
 
     componentDidMount() {
         PostActions.setData(this.props.post);
+        if (this.props.post.created_at) {
+            this.state.post.created_at = moment(
+                new Date(this.props.post.created_at)
+            ).format("DD-MM-Y hh:mm A");
+            this.setState(this.state);
+        }
     }
 
-    changePostStatus(e) {
+    changePostStatus(e, checked) {
         this.setState({
-            published: ~~e.target.checked
+            published: ~~checked
         });
     }
     changeSlug(e) {
         this.state.post.slug = e.target.value;
         this.setState(this.state);
         PostActions.setData({ slug: this.state.post.slug });
+    }
+    handleDateChange(e) {
+        this.state.post.created_at = e.target.value;
+        this.setState(this.state);
     }
 
     async updatePost(e, status) {
@@ -67,22 +90,18 @@ class PostPublish extends Component {
         }
     }
 
-    getButton(label, btnType = "btn-dark", status) {
+    getButton(label, status, isPrimary) {
         if (typeof status == "undefined") {
             status = this.state.published ? "publish" : "draft";
         }
-        if (status)
-            return (
-                <div className="btn-item">
-                    <button
-                        type="submit"
-                        onClick={e => this.updatePost(e, { status: status })}
-                        className={"btn btn-sm " + btnType}
-                    >
-                        {label}
-                    </button>
-                </div>
-            );
+
+        return (
+            <FlatButton
+                onClick={e => this.updatePost(e, { status: status })}
+                primary={isPrimary}
+                label={label}
+            />
+        );
     }
 
     render() {
@@ -94,62 +113,60 @@ class PostPublish extends Component {
             this.state.post.slug;
         const actionLabel = this.props.create ? "Create" : "Update";
         return (
-            <div className="card">
-                <div className="module-title">Publishing</div>
-                <div className={"switch-block m-b-20 " + publishedCls}>
-                    <span className="switch-label switch-off-text">Draft</span>
-                    <label className="switch">
-                        <input
-                            type="checkbox"
-                            onChange={this.changePostStatus}
-                            checked={this.state.published}
+            <Card>
+                <CardHeader title="Publishing" />
+                <CardText>
+                    <div className={"switch-block m-b-20 " + publishedCls}>
+                        <span className="switch-label switch-off-text">
+                            Draft
+                        </span>
+                        <Toggle
+                            style={{ width: "initial", marginRight: 10 }}
+                            onToggle={this.changePostStatus}
+                            defaultToggled={!!this.state.published}
                         />
-                        <span className="slider round" />
-                    </label>
-                    <span className="switch-label switch-on-text">Publish</span>
-                </div>
-                <div className="x_content m-b-20">
-                    <label className="custom-label">
-                        <i className="fa fa fa-calendar" /> Published at
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Published date"
-                        value={moment(
-                            new Date(this.state.post.created_at)
-                        ).format("DD-MM-Y hh:mm A")}
-                    />
-                </div>
-                <div className="x_content m-b-20">
-                    <label className="custom-label">
-                        <i className="fa fa fa-link" /> Slug
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Slug"
-                        defaultValue={this.state.post.slug}
-                        onBlur={this.changeSlug}
-                    />
-                </div>
-                <div className="x_content m-b-20">
-                    <label className="custom-label">
-                        <i className="fa fa fa-link" /> Permalink
-                    </label>
-                    <div>
-                        <a target="_blank" href={permalink}>
-                            {permalink}
-                        </a>
+                        <span className="switch-label switch-on-text">
+                            Publish
+                        </span>
                     </div>
-                </div>
-                <div className="x_content">
-                    <div className="btn-together">
-                        {this.getButton(actionLabel, "btn-dark")}
-                        {this.getButton("Trash", "btn-danger", "trash")}
+                    <div className="x_content m-b-20">
+                        <label className="custom-label">
+                            <i className="fa fa fa-calendar" /> Published at
+                        </label>
+                        <TextField
+                            value={this.state.post.created_at}
+                            hintText="Published date"
+                            onChange={this.handleDateChange}
+                            fullWidth={true}
+                        />
                     </div>
-                </div>
-            </div>
+                    <div className="x_content m-b-20">
+                        <label className="custom-label">
+                            <i className="fa fa fa-link" /> Slug
+                        </label>
+                        <TextField
+                            value={this.state.post.slug}
+                            hintText="Slug"
+                            onChange={this.changeSlug}
+                            fullWidth={true}
+                        />
+                    </div>
+                    <div className="x_content m-b-20">
+                        <label className="custom-label">
+                            <i className="fa fa fa-link" /> Permalink
+                        </label>
+                        <div>
+                            <a target="_blank" href={permalink}>
+                                {permalink}
+                            </a>
+                        </div>
+                    </div>
+                </CardText>
+                <CardActions>
+                    {this.getButton(actionLabel, "publish", true)}
+                    {this.getButton("Trash", "draft", false)}
+                </CardActions>
+            </Card>
         );
     }
 }

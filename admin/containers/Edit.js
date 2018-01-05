@@ -45,19 +45,20 @@ class Single extends Component {
             );
         }
         return (
-            <section className="module-xs">
-                <div className="row">
-                    <div className="col-lg-8 column">
-                        <ArticleEdit post={this.props.post} />
-                    </div>
-                    <div className="col-lg-4 column">
-                        <PostPublish edit post={this.props.post} />
-                        <Tags post={this.props.post} />
-                        <Categories post={this.props.post} />
-                        <Excerpt post={this.props.post} />
-                    </div>
+            <div>
+                <div className="col-lg-8 column">
+                    <ArticleEdit post={this.props.post} />
                 </div>
-            </section>
+                <div className="col-lg-4 column">
+                    <PostPublish edit post={this.props.post} />
+                    <br />
+                    <Tags post={this.props.post} />
+                    <br />
+                    <Categories post={this.props.post} />
+                    <br />
+                    <Excerpt post={this.props.post} />
+                </div>
+            </div>
         );
     }
 }

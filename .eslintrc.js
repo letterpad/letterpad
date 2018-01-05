@@ -5,7 +5,12 @@ module.exports = {
         indent: ["error", 4, { SwitchCase: 1 }],
         "comma-dangle": ["error", "never"],
         "function-paren-newline": ["error", "consistent"],
-        "no-restricted-syntax": ["error", "never"],
+        "no-restricted-syntax": [
+            "error",
+            "FunctionExpression",
+            "WithStatement",
+            "BinaryExpression[operator='in']"
+        ],
         "arrow-parens": ["error", "as-needed"],
         "no-underscore-dangle": ["error", { enforceInMethodNames: false }],
         "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],

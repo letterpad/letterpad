@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import TextField from "material-ui/TextField";
 
 export default class Basic extends Component {
     constructor(props) {
@@ -12,41 +13,34 @@ export default class Basic extends Component {
     render() {
         return (
             <div>
-                <div className="module-title">Basic Information</div>
-                <div className="module-subtitle">
-                    Some basic information about yourself
-                </div>
                 <div className="form-group">
-                    <label className="custom-label">First name</label>
-                    <input
+                    <TextField
+                        floatingLabelText="First name"
+                        fullWidth={true}
                         defaultValue={this.props.data.fname}
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter your name"
-                        aria-invalid="false"
-                        onBlur={e => this.updateOption("fname", e.target.value)}
+                        onChange={e =>
+                            this.updateOption("fname", e.target.value)
+                        }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Last Name</label>
-                    <input
+                    <TextField
+                        floatingLabelText="Last Name"
+                        fullWidth={true}
                         defaultValue={this.props.data.lname}
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter your last name"
-                        aria-invalid="false"
-                        onBlur={e => this.updateOption("lname", e.target.value)}
+                        onChange={e =>
+                            this.updateOption("lname", e.target.value)
+                        }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Email</label>
-                    <input
+                    <TextField
+                        floatingLabelText="Email"
+                        fullWidth={true}
                         defaultValue={this.props.data.email}
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter your email"
-                        aria-invalid="false"
-                        onBlur={e => this.updateOption("email", e.target.value)}
+                        onChange={e =>
+                            this.updateOption("email", e.target.value)
+                        }
                     />
                 </div>
             </div>

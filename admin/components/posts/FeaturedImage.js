@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { gql, graphql, compose } from "react-apollo";
 import PostActions from "../../components/posts/PostActions";
+import RaisedButton from "material-ui/RaisedButton";
 
 class FeaturedImage extends Component {
     constructor(props) {
@@ -23,7 +24,8 @@ class FeaturedImage extends Component {
         });
         this.setState({ cover_image: coverImage });
     }
-    removeImage() {
+    removeImage(e) {
+        e.preventDefault();
         this.props.updateFeaturedImage({
             id: this.props.post.id,
             cover_image: ""
@@ -35,42 +37,42 @@ class FeaturedImage extends Component {
         const coverImage =
             this.state.cover_image || "http://placehold.it/800x300";
         return (
-            <div className="x_panel">
-                <div className="x_content">
-                    <div id="featured-image">
-                        <img alt="" width="100%" src={coverImage} />
-                    </div>
-                    {(() => {
-                        if (!this.state.cover_image) {
-                            return (
-                                <a
-                                    className="text-primary pointer"
-                                    onClick={() => {
-                                        this.refs.uploadInput.click();
-                                    }}
-                                >
-                                    Set Featured Image
-                                </a>
-                            );
-                        }
-                        return (
-                            <a
-                                className="text-primary pointer"
-                                onClick={this.removeImage}
-                            >
-                                Remove Featured Image
-                            </a>
-                        );
-                    })()}
-                    <input
-                        ref="uploadInput"
-                        onChange={input => this.uploadImage(input.target.files)}
-                        type="file"
-                        className="hide"
-                        name="uploads[]"
-                        multiple="multiple"
-                    />
+            <div className="featured-image">
+                <div>
+                    <img alt="" width="100%" src={coverImage} />
                 </div>
+                {(() => {
+                    if (!this.state.cover_image) {
+                        return (
+                            <RaisedButton
+                                label="Choose an Image"
+                                labelPosition="before"
+                                containerElement="label"
+                                primary={true}
+                            >
+                                <input
+                                    ref="uploadInput"
+                                    onChange={input =>
+                                        this.uploadImage(input.target.files)
+                                    }
+                                    type="file"
+                                    className="hide"
+                                    name="uploads[]"
+                                    multiple="multiple"
+                                />
+                            </RaisedButton>
+                        );
+                    }
+                    return (
+                        <RaisedButton
+                            label="Remove Featured Image"
+                            labelPosition="before"
+                            primary={true}
+                            onClick={this.removeImage}
+                            containerElement="label"
+                        />
+                    );
+                })()}
             </div>
         );
     }
@@ -79,8 +81,11 @@ class FeaturedImage extends Component {
 const uploadCoverImageQuery = gql`
     mutation uploadFile($cover_image: String!, $id: Int!) {
         uploadFile(cover_image: $cover_image, id: $id) {
-            id
-            cover_image
+            ok
+            post {
+                id
+                cover_image
+            }
         }
     }
 `;
@@ -93,7 +98,7 @@ const updateQueryWithData = graphql(uploadCoverImageQuery, {
                 updateQueries: {
                     getPost: (prev, { mutationResult }) => {
                         const coverImage = mutationResult.data.uploadFile
-                            ? mutationResult.data.uploadFile.cover_image
+                            ? mutationResult.data.uploadFile.post.cover_image
                             : "";
                         return {
                             post: {

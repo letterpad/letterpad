@@ -8,6 +8,7 @@ import Categories from "../components/posts/Categories";
 import { CREATE_POST } from "../../shared/queries/Mutations";
 import Excerpt from "../components/posts/Excerpt";
 import { plural } from "../../shared/util";
+import Loader from "../components/Loader";
 
 class Create extends Component {
     constructor(props) {
@@ -40,22 +41,24 @@ class Create extends Component {
     }
     render() {
         if (this.state.loading) {
-            return <div>hello</div>;
+            return <Loader />;
         }
+
         return (
-            <section className="module-xs">
-                <div className="row">
-                    <div className="col-lg-8 column">
-                        <ArticleCreate post={this.state.post} />
-                    </div>
-                    <div className="col-lg-4 column">
-                        <PostPublish create post={this.state.post} />
-                        <Tags post={this.state.post} />
-                        <Categories post={this.state.post} />
-                        <Excerpt post={this.state.post} />
-                    </div>
+            <div>
+                <div className="col-lg-8 column">
+                    <ArticleCreate post={this.state.post} />
                 </div>
-            </section>
+                <div className="col-lg-4 column">
+                    <PostPublish create post={this.state.post} />
+                    <br />
+                    <Tags post={this.state.post} />
+                    <br />
+                    <Categories post={this.state.post} />
+                    <br />
+                    <Excerpt post={this.state.post} />
+                </div>
+            </div>
         );
     }
 }

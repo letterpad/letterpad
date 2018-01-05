@@ -7,6 +7,14 @@ import PasswordChange from "../components/authors/PasswordChange";
 import { GET_AUTHOR } from "../../shared/queries/Queries";
 import { UPDATE_AUTHOR } from "../../shared/queries/Mutations";
 import { notify } from "react-notify-toast";
+import {
+    Card,
+    CardActions,
+    CardHeader,
+    CardMedia,
+    CardTitle,
+    CardText
+} from "material-ui/Card";
 
 const SubmitBtn = ({ handleClick }) => {
     return (
@@ -50,35 +58,56 @@ class EditAuthor extends Component {
         }
 
         return (
-            <section className="module-xs">
+            <div>
                 <div className="row">
                     <div className="col-md-6">
-                        <div className="card">
-                            <Basic
-                                data={this.props.author}
-                                updateOption={this.setOption}
+                        <Card>
+                            <CardHeader
+                                title="Basic Information"
+                                subtitle="Some basic information about yourself"
                             />
-                            <SubmitBtn handleClick={this.submitData} />
-                        </div>
-                        <div className="card">
-                            <PasswordChange
-                                data={this.props.author}
-                                updateOption={this.setOption}
+                            <CardText>
+                                <Basic
+                                    data={this.props.author}
+                                    updateOption={this.setOption}
+                                />
+                                <SubmitBtn handleClick={this.submitData} />
+                            </CardText>
+                        </Card>
+
+                        <br />
+                        <Card>
+                            <CardHeader
+                                title="Change Password"
+                                subtitle="Change your password"
                             />
-                            <SubmitBtn handleClick={this.submitData} />
-                        </div>
+                            <CardText>
+                                <PasswordChange
+                                    data={this.props.author}
+                                    updateOption={this.setOption}
+                                />
+                                <SubmitBtn handleClick={this.submitData} />
+                            </CardText>
+                        </Card>
                     </div>
+
                     <div className="col-md-6">
-                        <div className="card">
-                            <Social
-                                data={this.props.author.social}
-                                updateOption={this.setOption}
+                        <Card>
+                            <CardHeader
+                                title="Social Information"
+                                subtitle="Other will be able to discover you"
                             />
-                            <SubmitBtn handleClick={this.submitData} />
-                        </div>
+                            <CardText>
+                                <Social
+                                    data={this.props.author.social}
+                                    updateOption={this.setOption}
+                                />
+                                <SubmitBtn handleClick={this.submitData} />
+                            </CardText>
+                        </Card>
                     </div>
                 </div>
-            </section>
+            </div>
         );
     }
 }

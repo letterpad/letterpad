@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import TextField from "material-ui/TextField";
 
 export default class Social extends Component {
     constructor(props) {
@@ -22,53 +23,41 @@ export default class Social extends Component {
     render() {
         return (
             <div>
-                <div className="module-title">Social Information</div>
-                <div className="module-subtitle">
-                    Some social information about yourself
-                </div>
                 <div className="form-group">
-                    <label className="custom-label">Twitter</label>
-                    <input
+                    <TextField
                         value={this.state.social.twitter}
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter your twitter username"
+                        floatingLabelText="Your twitter username"
+                        fullWidth={true}
                         onChange={e =>
                             this.updateOption("twitter", e.target.value)
                         }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Facebook</label>
-                    <input
-                        value={this.state.social.twitter}
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter your facebook username"
+                    <TextField
+                        value={this.state.social.facebook}
+                        floatingLabelText="Your facebook username"
+                        fullWidth={true}
                         onChange={e =>
                             this.updateOption("facebook", e.target.value)
                         }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Instagram</label>
-                    <input
-                        value={this.state.social.twitter}
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter your instagram username"
+                    <TextField
+                        value={this.state.social.instagram}
+                        floatingLabelText="Your instagram username"
+                        fullWidth={true}
                         onChange={e =>
                             this.updateOption("instagram", e.target.value)
                         }
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Github</label>
-                    <input
+                    <TextField
                         value={this.state.social.github}
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter your github username"
+                        floatingLabelText="Your github username"
+                        fullWidth={true}
                         onChange={e =>
                             this.updateOption("github", e.target.value)
                         }

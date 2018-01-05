@@ -6,14 +6,15 @@
     --color-text-secondary: #000000;
     --color-text-secondary-light: #4c4c4c;
     --color-accent: #2196f3;
-    --color-bg-primary: #3a3a3a;
+    --color-bg-primary: #f1f1f1;
     --color-bg-secondary: #1f1e1e;
     --color-border: #e5e5e5;
     --link-hover: #1a82d6;
     --color-menu-link: var(--color-text-primary-invert);
 }
 
-$racing_font: "Racing Sans One", cursive;
+$racing_font: "Racing Sans One",
+cursive;
 
 /*!------------------------------------------------------------------
 [Body Color]

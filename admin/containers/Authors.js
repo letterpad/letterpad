@@ -2,78 +2,77 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { graphql } from "react-apollo";
 import { GET_AUTHORS } from "../../shared/queries/Queries";
+import {
+    Table,
+    TableBody,
+    TableHeader,
+    TableHeaderColumn,
+    TableRow,
+    TableRowColumn
+} from "material-ui/Table";
+import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
+import { Link } from "react-router-dom";
 
-class ListItem extends Component {
-    render() {
-        return (
-            <tr onClick={() => this.props.handleClick(this.props.author.id)}>
-                <td align="center">
-                    <label className="control control--checkbox">
-                        <input
-                            type="checkbox"
-                            className="checkthis"
-                            value={this.props.author.id}
-                        />
-                        <div className="control__indicator" />
-                    </label>
-                </td>
-                <td style={{ cursor: "pointer" }}>{this.props.author.email}</td>
-                <td style={{ cursor: "pointer" }}>
-                    {this.props.author.fname + " " + this.props.author.lname}
-                </td>
-                <td style={{ cursor: "pointer" }}>
-                    {this.props.author.role.name}
-                </td>
-            </tr>
-        );
-    }
-}
-PropTypes.ListItem = {
-    author: PropTypes.obj
-};
 class Authors extends Component {
     constructor(props) {
         super(props);
         this.authorSelect = this.authorSelect.bind(this);
-    }
+        this.state = {
+            selected: []
+        };
 
+        this.isSelected = this.isSelected.bind(this);
+        this.handleRowSelection = this.handleRowSelection.bind(this);
+    }
+    isSelected(index) {
+        return this.state.selected.indexOf(index) !== -1;
+    }
+    handleRowSelection(selectedRows) {
+        this.setState({
+            selected: selectedRows
+        });
+    }
     authorSelect(id) {
         this.props.history.push("/admin/authors/edit/" + id);
     }
     render() {
-        if (this.props.loading) {
-            return <div>hello</div>;
-        }
         const rows = this.props.authors.map((author, i) => (
-            <ListItem handleClick={this.authorSelect} key={i} author={author} />
+            <TableRow selected={this.isSelected(i)}>
+                <TableRowColumn>{author.email}</TableRowColumn>
+                <TableRowColumn>
+                    {author.fname + " " + author.lname}
+                </TableRowColumn>
+                <TableRowColumn>{author.role.name}</TableRowColumn>
+                <TableRowColumn>
+                    <Link
+                        className="button"
+                        to={"/admin/authors/edit/" + author.id}
+                    >
+                        <i className="material-icons">edit</i>
+                    </Link>
+                </TableRowColumn>
+            </TableRow>
         ));
-
         return (
-            <section className="module-xs">
-                <div className="card">
-                    <div className="module-title">Authors</div>
-                    <div className="module-subtitle">[...]</div>
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th width="5%" className="col-check">
-                                    <input type="checkbox" />
-                                </th>
-                                <th width="20%" className="col-text">
-                                    Email
-                                </th>
-                                <th width="10%" className="col-text">
-                                    Name
-                                </th>
-                                <th width="10%" className="col-text">
-                                    Role
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>{rows}</tbody>
-                    </table>
-                </div>
-            </section>
+            <Card>
+                <CardHeader
+                    title="Authors"
+                    subtitle="Overview of all your authors"
+                />
+                <CardText>
+                    <Table onRowSelection={this.handleRowSelection}>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHeaderColumn>Email</TableHeaderColumn>
+                                <TableHeaderColumn>Name</TableHeaderColumn>
+                                <TableHeaderColumn>Role</TableHeaderColumn>
+                                <TableHeaderColumn>Edit</TableHeaderColumn>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>{rows}</TableBody>
+                    </Table>
+                </CardText>
+            </Card>
         );
     }
 }
@@ -85,4 +84,7 @@ const ContainerWithData = graphql(GET_AUTHORS, {
     })
 });
 
+Authors.defaultProps = {
+    authors: []
+};
 export default ContainerWithData(Authors);

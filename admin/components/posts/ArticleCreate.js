@@ -5,32 +5,46 @@ import Editor from "./Editor";
 import PostActions from "./PostActions";
 import FeaturedImage from "./FeaturedImage";
 import ContentEditable from "./ContentEditable";
+import {
+    Card,
+    CardActions,
+    CardHeader,
+    CardMedia,
+    CardTitle,
+    CardText
+} from "material-ui/Card";
 
 export default class CreateArticle extends Component {
     render() {
         return (
-            <div className="card">
-                <article className="post">
+            <Card>
+                <CardMedia>
                     <FeaturedImage post={this.props.post} />
-                    <div className="post-header">
+                </CardMedia>
+                <CardHeader
+                    title={
                         <ContentEditable
+                            title={this.props.post.title}
                             placeholder="Enter a title"
-                            title={this.props.title}
                             onChange={e => {
                                 PostActions.setData({
                                     title: e.target.value
                                 });
                             }}
                         />
+                    }
+                    subtitle={
                         <div className="post-meta">
-                            {moment(new Date()).format("LL")}
+                            {moment(
+                                new Date(this.props.post.created_at)
+                            ).format("LL")}
                         </div>
-                    </div>
-                    <div className="post-content">
-                        <Editor body="" />
-                    </div>
-                </article>
-            </div>
+                    }
+                />
+                <CardText>
+                    <Editor body="" />
+                </CardText>
+            </Card>
         );
     }
 }
