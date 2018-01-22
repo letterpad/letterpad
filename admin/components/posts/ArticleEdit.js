@@ -5,14 +5,7 @@ import PostActions from "./PostActions";
 import FeaturedImage from "./FeaturedImage";
 import ContentEditable from "./ContentEditable";
 import PropTypes from "prop-types";
-import {
-    Card,
-    CardActions,
-    CardHeader,
-    CardMedia,
-    CardTitle,
-    CardText
-} from "material-ui/Card";
+import Card, { CardHeader, CardContent, CardMedia } from "material-ui/Card";
 
 export default class ArticleEdit extends Component {
     render() {
@@ -34,7 +27,7 @@ export default class ArticleEdit extends Component {
                             }}
                         />
                     }
-                    subtitle={
+                    subheader={
                         <div className="post-meta">
                             {moment(
                                 new Date(this.props.post.created_at)
@@ -42,9 +35,9 @@ export default class ArticleEdit extends Component {
                         </div>
                     }
                 />
-                <CardText>
+                <CardContent>
                     <Editor body={this.props.post.body} />
-                </CardText>
+                </CardContent>
             </Card>
         );
     }

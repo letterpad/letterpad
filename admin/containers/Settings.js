@@ -4,23 +4,20 @@ import PropTypes from "prop-types";
 import General from "../components/settings/General";
 import Social from "../components/settings/Social";
 import SidebarWidgets from "../components/settings/SidebarWidgets";
-import {
-    Card,
-    CardActions,
-    CardHeader,
-    CardMedia,
-    CardTitle,
-    CardText
-} from "material-ui/Card";
+import Card, { CardHeader, CardContent, CardActions } from "material-ui/Card";
 import { GET_OPTIONS, GET_TAXONOMIES } from "../../shared/queries/Queries";
 import { UPDATE_OPTIONS } from "../../shared/queries/Mutations";
+import Button from "material-ui/Button";
+import PageHeader from "../components/PageHeader";
 
 //import Theme from "../components/settings/Theme";
 
 const SubmitBtn = ({ handleClick }) => (
-    <button type="submit" onClick={handleClick} className="btn btn-blue btn-sm">
-        Save
-    </button>
+    <CardActions>
+        <Button raised color="primary" onClick={handleClick}>
+            Save
+        </Button>
+    </CardActions>
 );
 SubmitBtn.propTypes = {
     handleClick: PropTypes.func
@@ -62,41 +59,62 @@ class Settings extends Component {
 
         return (
             <div>
-                <Card>
-                    <CardHeader
-                        title="General Settings"
-                        subtitle="Overview of configuration options for your site."
-                    />
-                    <CardText>
-                        <General data={data} updateOption={this.setOption} />
-                        <SubmitBtn handleClick={this.submitData} />
-                    </CardText>
-                </Card>
-                <br />
-                <Card>
-                    <CardHeader
-                        title="Social Settings"
-                        subtitle="Setup your social links"
-                    />
-                    <CardText>
-                        <Social data={data} updateOption={this.setOption} />
-                        <SubmitBtn handleClick={this.submitData} />
-                    </CardText>
-                </Card>
-                <br />
-                <Card>
-                    <CardHeader
-                        title="Sidebar Settings"
-                        subtitle="Configure your sidebar widgets"
-                    />
-                    <CardText>
-                        <SidebarWidgets
-                            data={data}
-                            updateOption={this.setOption}
-                        />
-                        <SubmitBtn handleClick={this.submitData} />
-                    </CardText>
-                </Card>
+                <PageHeader
+                    title="Site Settings"
+                    subtitle="Control site wide specific settings and customizations from here."
+                />
+                <CardContent>
+                    <div className="row">
+                        <div className="col-lg-6">
+                            <Card>
+                                <CardHeader
+                                    title="General Settings"
+                                    subheader="Overview of configuration options for your site."
+                                />
+                                <CardContent>
+                                    <General
+                                        data={data}
+                                        updateOption={this.setOption}
+                                    />
+                                    <SubmitBtn handleClick={this.submitData} />
+                                </CardContent>
+                            </Card>
+                        </div>
+                        <div className="col-lg-6">
+                            <Card>
+                                <CardHeader
+                                    title="Social Settings"
+                                    subheader="Setup your social links"
+                                />
+                                <CardContent>
+                                    <Social
+                                        data={data}
+                                        updateOption={this.setOption}
+                                    />
+                                    <SubmitBtn handleClick={this.submitData} />
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </div>
+                    <br />
+                    <div className="row">
+                        <div className="col-lg-6">
+                            <Card>
+                                <CardHeader
+                                    title="Sidebar Settings"
+                                    subheader="Configure your sidebar widgets"
+                                />
+                                <CardContent>
+                                    <SidebarWidgets
+                                        data={data}
+                                        updateOption={this.setOption}
+                                    />
+                                    <SubmitBtn handleClick={this.submitData} />
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </div>
+                </CardContent>
             </div>
         );
     }

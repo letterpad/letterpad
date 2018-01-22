@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Racing+Sans+One");
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700");
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,600,700");
+// @import url('https://fonts.googleapis.com/css?family=Alegreya+Sans:400,500,700');
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import "./variables.scss";
 @import "./layout.scss";
@@ -19,11 +20,11 @@ Primary use: Blog
 
 html {
     height: 100%;
+    font-family: "Roboto", sans-serif;
 }
 
 body {
     background: $color-bg-primary;
-    font-family: "Roboto", sans-serif;
     line-height: 1.8;
     font-size: 14px;
     font-weight: 400;
@@ -45,6 +46,7 @@ iframe {
 [contenteditable="true"]:empty:before {
     content: attr(placeholder);
     display: block;
+    color: #eee;
     /* For Firefox */
 }
 
@@ -55,8 +57,7 @@ textarea,
 }
 
 ::-webkit-input-placeholder {
-    color: $color-text-muted !important;
-    font-weight: 300;
+    font-size: 12px !important;
 }
 
 .top-head {
@@ -1663,5 +1664,54 @@ input {
         position: absolute !important;
         margin-top: -53px !important;
         width: initial !important;
+    }
+}
+
+input,
+textarea,
+[role="menuitem"] {
+    font-size: 14px !important;
+}
+
+ul {
+    margin: 0px;
+    list-style-type: none;
+    padding: 0px;
+}
+
+.md-btn {
+    button {
+        span {
+            font-weight: 400 !important;
+        }
+    }
+}
+
+.md-btn-xs {
+    min-width: 66px !important;
+    height: 25px !important;
+    line-height: 25px !important;
+    button {
+        height: 25px !important;
+        line-height: 25px !important;
+        div>div {
+            height: 25px !important;
+            line-height: 25px !important;
+        }
+        span {
+            font-size: 12px !important;
+        }
+    }
+    i {
+        font-size: 14px !important;
+    }
+}
+
+.inline-edit {
+    height: 24px;
+    width: 100%;
+    display: block;
+    &[contentEditable="true"] {
+        border-bottom: 1px solid #66afe9;
     }
 }

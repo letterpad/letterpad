@@ -12,7 +12,6 @@ module.exports = {
             "BinaryExpression[operator='in']"
         ],
         "arrow-parens": ["error", "as-needed"],
-        "no-underscore-dangle": ["error", { enforceInMethodNames: false }],
         "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
         "react/jsx-indent": ["error", 4],
         "react/jsx-indent-props": ["error", 4],
@@ -24,9 +23,9 @@ module.exports = {
         "react/no-multi-comp": [0],
         "react/require-default-props": [0],
         globals: {
-            localStorage: false,
-            window: false,
-            document: false
+            localStorage: 0,
+            window: 0,
+            document: 0
         },
         "jsx-a11y/label-has-for": [0],
         "react/forbid-prop-types": [0],

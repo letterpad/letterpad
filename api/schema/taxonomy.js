@@ -9,4 +9,15 @@ export default `
     taxonomies(type: String, name: String): [Taxonomy]
   }
 
+  type EditTaxResponse {
+    ok: Boolean,
+    id: Int,
+    errors: [Error!]
+  }
+
+  type Mutation {
+    updateTaxonomy(id: Int!, name: String, desc: String, type: String!):EditTaxResponse
+    deleteTaxonomy(id: Int!):EditTaxResponse
+  }
+
 `;

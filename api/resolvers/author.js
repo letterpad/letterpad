@@ -57,12 +57,12 @@ export default {
                     email,
                     id: author.id,
                     role: role.name,
-                    permissions: permissionNames
+                    permissions: permissionNames,
+                    name: author.fname
                 },
                 SECRET,
                 { expiresIn: "1y" }
             );
-            console.log(token);
             return {
                 ok: true,
                 token,

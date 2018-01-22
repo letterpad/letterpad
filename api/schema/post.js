@@ -39,8 +39,20 @@ export default `
 
   type Response {
     ok: Boolean!
-    post: Post,
+    post: Post
     errors: [Error!]
+  }
+
+  type PostStatus {
+    published: Int
+    drafts: Int
+  }
+
+  type Stats {
+    posts: PostStatus
+    pages: PostStatus
+    tags: Int
+    categories: Int
   }
 
   type Query {
@@ -50,6 +62,7 @@ export default `
     pageMenu(slug: String, name: String, postType: String): Post
     postTaxonomies(type: String, name: String, postType: String): [PostTaxonomy]
     adjacentPosts(type: String, slug:String): AdjacentPosts
+    stats: Stats
   }
 
   type Mutation {

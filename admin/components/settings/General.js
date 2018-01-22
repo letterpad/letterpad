@@ -17,8 +17,8 @@ export default class General extends Component {
                 <div className="form-group">
                     <TextField
                         defaultValue={this.props.data.site_title.value}
-                        floatingLabelText="Site title"
-                        fullWidth={true}
+                        label="Site title"
+                        fullWidth
                         onChange={e =>
                             this.updateOption("site_title", e.target.value)
                         }
@@ -27,8 +27,8 @@ export default class General extends Component {
                 <div className="form-group">
                     <TextField
                         defaultValue={this.props.data.site_tagline.value}
-                        floatingLabelText="Site tagline"
-                        fullWidth={true}
+                        label="Site tagline"
+                        fullWidth
                         onChange={e =>
                             this.updateOption("site_tagline", e.target.value)
                         }
@@ -37,8 +37,8 @@ export default class General extends Component {
                 <div className="form-group">
                     <TextField
                         defaultValue={this.props.data.site_email.value}
-                        floatingLabelText="Email"
-                        fullWidth={true}
+                        label="Email"
+                        fullWidth
                         onChange={e =>
                             this.updateOption("site_email", e.target.value)
                         }
@@ -47,11 +47,10 @@ export default class General extends Component {
                 <div className="form-group">
                     <TextField
                         defaultValue={this.props.data.site_description.value}
-                        floatingLabelText="Short description"
-                        fullWidth={true}
-                        multiLine={true}
+                        label="Short description"
+                        fullWidth
+                        multiLine
                         rows={3}
-                        rowsMax={4}
                         onChange={e =>
                             this.updateOption(
                                 "site_description",

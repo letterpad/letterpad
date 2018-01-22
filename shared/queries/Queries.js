@@ -85,6 +85,7 @@ export const GET_AUTHORS = gql`
             username
             role {
                 name
+                id
                 permissions {
                     name
                 }
@@ -104,10 +105,20 @@ export const GET_AUTHOR = gql`
             social
             role {
                 name
+                id
                 permissions {
                     name
                 }
             }
+        }
+    }
+`;
+
+export const GET_ROLES = gql`
+    query roles {
+        roles {
+            id
+            name
         }
     }
 `;
@@ -172,6 +183,23 @@ export const SEARCH_POSTS_BY_TAXONOMY = gql`
                     type
                 }
             }
+        }
+    }
+`;
+
+export const BLOG_STATS = gql`
+    query stats {
+        stats {
+            posts {
+                published
+                drafts
+            }
+            pages {
+                published
+                drafts
+            }
+            tags
+            categories
         }
     }
 `;

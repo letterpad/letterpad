@@ -75,7 +75,6 @@ function Html({ content, state }) {
                 {insertStyle(
                     "https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700"
                 )}
-                {insertStyle("/css/bootstrap.min.css")}
                 {insertStyle("/css/vertical.css")}
                 {insertStyle("/css/font-awesome.min.css")}
                 {insertStyle(

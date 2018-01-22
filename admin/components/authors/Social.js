@@ -26,7 +26,7 @@ export default class Social extends Component {
                 <div className="form-group">
                     <TextField
                         value={this.state.social.twitter}
-                        floatingLabelText="Your twitter username"
+                        label="Your twitter username"
                         fullWidth={true}
                         onChange={e =>
                             this.updateOption("twitter", e.target.value)
@@ -36,7 +36,7 @@ export default class Social extends Component {
                 <div className="form-group">
                     <TextField
                         value={this.state.social.facebook}
-                        floatingLabelText="Your facebook username"
+                        label="Your facebook username"
                         fullWidth={true}
                         onChange={e =>
                             this.updateOption("facebook", e.target.value)
@@ -46,7 +46,7 @@ export default class Social extends Component {
                 <div className="form-group">
                     <TextField
                         value={this.state.social.instagram}
-                        floatingLabelText="Your instagram username"
+                        label="Your instagram username"
                         fullWidth={true}
                         onChange={e =>
                             this.updateOption("instagram", e.target.value)
@@ -56,7 +56,7 @@ export default class Social extends Component {
                 <div className="form-group">
                     <TextField
                         value={this.state.social.github}
-                        floatingLabelText="Your github username"
+                        label="Your github username"
                         fullWidth={true}
                         onChange={e =>
                             this.updateOption("github", e.target.value)

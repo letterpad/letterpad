@@ -45,7 +45,7 @@ class Single extends Component {
             );
         }
         return (
-            <div>
+            <div className="row">
                 <div className="col-lg-8 column">
                     <ArticleEdit post={this.props.post} />
                 </div>
