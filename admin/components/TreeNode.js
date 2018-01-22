@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import List, { ListItem, ListItemIcon, ListItemText } from "material-ui/List";
+import Collapse from "material-ui/transitions/Collapse";
+import InboxIcon from "material-ui-icons/MoveToInbox";
+import DraftsIcon from "material-ui-icons/Drafts";
+import SendIcon from "material-ui-icons/Send";
+import ExpandLess from "material-ui-icons/ExpandLess";
+import ExpandMore from "material-ui-icons/ExpandMore";
+import StarBorder from "material-ui-icons/StarBorder";
 
 export class MenuTree extends Component {
     constructor(props) {
         super(props);
-        this.onSelect = this.onSelect.bind(this);
+        this.setSelection = this.setSelection.bind(this);
         this.state = {
             data: this.props.data,
             permissions: this.props.permissions,
@@ -13,7 +21,7 @@ export class MenuTree extends Component {
         };
     }
 
-    onSelect(data) {
+    setSelection(data) {
         const newData = this.props.data.map(item => {
             if (item.label === data.label) {
                 return data;
@@ -25,17 +33,26 @@ export class MenuTree extends Component {
     render() {
         const sorted = this.state.data.sort((a, b) => a.priority - b.priority);
 
-        const tree = sorted.map(child => (
-            <TreeNode
-                permissions={this.state.permissions}
-                key={child.id}
-                data={child}
-                route={this.state.route}
-                setSelection={this.onSelect}
-            />
-        ));
+        const tree = sorted.map(child => {
+            if (child.children) {
+                child.children.map(subChild => {
+                    if (subChild.slug === this.props.route) {
+                        child.collapsed = false;
+                    }
+                });
+            }
+            return (
+                <TreeNode
+                    permissions={this.state.permissions}
+                    key={child.id}
+                    data={child}
+                    route={this.state.route}
+                    setSelection={this.setSelection}
+                />
+            );
+        });
 
-        return <ul className="nav nav-list">{tree}</ul>;
+        return <List>{tree}</List>;
     }
 }
 
@@ -51,9 +68,10 @@ class TreeNode extends Component {
         super(props);
         this.state = { collapsed: true, selected: "" };
         this.onClick = this.onClick.bind(this);
+        this.itemClicked = this.itemClicked.bind(this);
     }
     componentDidMount() {
-        if ("collapsed" in this.props.data && !this.props.data.collapsed) {
+        if ("collapsed" in this.props.data) {
             this.state.collapsed = this.props.data.collapsed;
         }
 
@@ -70,8 +88,18 @@ class TreeNode extends Component {
         this.props.data.collapsed = !this.state.collapsed;
         this.props.setSelection(this.props.data);
     }
+    itemClicked(slug) {
+        this.props.route.push(slug);
+    }
 
     render() {
+        const classes = {
+            listItemText: {
+                color: "#FFF",
+                backgroundColor: "red"
+            }
+        };
+
         const checkPerm = permission =>
             this.props.permissions.indexOf(permission) !== -1;
 
@@ -90,14 +118,6 @@ class TreeNode extends Component {
                 ));
         }
 
-        let containerClassName = "collapse in";
-        let linkclass = "accordian-heading";
-        let treeState = "open";
-        if (this.state.collapsed) {
-            linkclass += " collapsed";
-            treeState = "";
-            containerClassName = " collapse";
-        }
         let hasPerms = true;
         const itemPermissions = this.props.data.permissions;
         if (itemPermissions && itemPermissions.length > 0) {
@@ -112,41 +132,45 @@ class TreeNode extends Component {
 
         if (subtree) {
             return (
-                <li className={"has-sub " + treeState}>
-                    <Link
-                        href="#"
-                        to=""
-                        className={linkclass}
+                <div>
+                    <ListItem
+                        button
                         onClick={this.onClick}
-                        data-id={this.props.data.id}
+                        className="menu-item"
                     >
-                        {this.props.data.icon && (
-                            <i
-                                className={
-                                    "menu-icon fa " + this.props.data.icon
-                                }
-                            />
-                        )}
-                        <span>{this.props.data.label}</span>
-                    </Link>
-                    <ul className={containerClassName + " nav nav-list"}>
-                        {subtree}
-                    </ul>
-                </li>
+                        <ListItemIcon>
+                            <i className="material-icons">
+                                {this.props.data.icon}
+                            </i>
+                        </ListItemIcon>
+                        <ListItemText inset primary={this.props.data.label} />
+                        {this.state.collapsed ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse
+                        component="div"
+                        in={!this.state.collapsed}
+                        timeout="auto"
+                        unmountOnExit
+                    >
+                        <div
+                            className="sub-menu-item"
+                            style={{ paddingLeft: 0 }}
+                        >
+                            {subtree}
+                        </div>
+                    </Collapse>
+                </div>
             );
         }
         return (
-            <li className={"tree-node-leaf " + this.state.selected}>
-                <Link
-                    data-id={this.props.data.id}
-                    to={"/admin/" + this.props.data.slug}
-                >
-                    {this.props.data.icon && (
-                        <i className={"menu-icon fa " + this.props.data.icon} />
-                    )}
-                    <span>{this.props.data.label}</span>
-                </Link>
-            </li>
+            <Link to={this.props.data.slug} className={this.state.selected}>
+                <ListItem className="menu-item" button>
+                    <ListItemIcon>
+                        <i className="material-icons">{this.props.data.icon}</i>
+                    </ListItemIcon>
+                    <ListItemText inset primary={this.props.data.label} />
+                </ListItem>
+            </Link>
         );
     }
 }

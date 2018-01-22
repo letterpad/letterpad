@@ -2,16 +2,12 @@ import React, { Component } from "react";
 import { WithContext as ReactTags } from "react-tag-input";
 import { gql, graphql } from "react-apollo";
 import PostActions from "./PostActions";
-import {
-    Card,
-    CardActions,
-    CardHeader,
-    CardMedia,
-    CardTitle,
-    CardText
-} from "material-ui/Card";
+import Card, { CardHeader, CardContent } from "material-ui/Card";
 import Chip from "material-ui/Chip";
-import AutoComplete from "material-ui/AutoComplete";
+import Autosuggest from "react-autosuggest";
+import match from "autosuggest-highlight/match";
+import parse from "autosuggest-highlight/parse";
+import AutoCompleteHoc from "./AutoCompleteHoc";
 
 class Tags extends Component {
     constructor(props) {
@@ -67,17 +63,20 @@ class Tags extends Component {
     handleDelete(name) {
         this.state.tags.forEach((tag, i) => {
             if (tag.name == name) {
-                this.state.suggestions.push({
-                    id: this.state.tags[i].id,
-                    name: this.state.tags[i].name
-                });
+                let found = this.state.tags.some(ele => ele.name === tag);
+                if (found) {
+                    this.state.suggestions.push({
+                        id: this.state.tags[i].id,
+                        name: this.state.tags[i].name
+                    });
+                }
                 this.state.tags.splice(i, 1);
             }
         });
         this.setState(this.state);
     }
 
-    handleAddition(tag, idx) {
+    handleAddition(tag) {
         let found = this.state.tags.some(ele => ele.name === tag);
         if (!found) {
             let foundInSuggestion = this.state.suggestions.filter((ele, i) => {
@@ -99,14 +98,6 @@ class Tags extends Component {
             this.setState(this.state);
         }
     }
-
-    handleDrag(tag, currPos, newPos) {
-        // mutate array
-        this.tags.splice(currPos, 1);
-        this.tags.splice(newPos, 0, tag);
-
-        PostActions.setTaxonomies({ post_tag: this.tags });
-    }
     renderChip(data) {
         const newData = { ...data };
         const min = 1;
@@ -115,35 +106,29 @@ class Tags extends Component {
         newData.id = newData.id + "-" + random_id;
         return (
             <Chip
+                label={newData.name}
                 key={newData.id}
-                onRequestDelete={() => this.handleDelete(newData.name)}
+                onDelete={() => this.handleDelete(newData.name)}
                 style={this.styles.chip}
-            >
-                {newData.name}
-            </Chip>
+            />
         );
     }
 
     render() {
-        const suggestions = this.state.suggestions.map(item => item.name);
+        const suggestions = this.state.suggestions.map(item => item);
         return (
             <Card>
                 <CardHeader title="Tags" />
-                <CardText>
+                <CardContent>
                     <div style={this.styles.wrapper}>
                         {this.state.tags.map(this.renderChip, this)}
                     </div>
-                    <AutoComplete
-                        hintText="Enter a tag and press enter"
-                        dataSource={suggestions}
-                        openOnFocus={true}
-                        onNewRequest={this.handleAddition}
-                        fullWidth={true}
-                        filter={(searchText, key) =>
-                            key.toLowerCase().includes(searchText.toLowerCase())
-                        }
+                    <AutoCompleteHoc
+                        suggestions={suggestions}
+                        placeholder="..."
+                        addSuggestion={this.handleAddition}
                     />
-                </CardText>
+                </CardContent>
             </Card>
         );
     }

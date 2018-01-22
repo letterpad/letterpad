@@ -1,50 +1,77 @@
 import React, { Component } from "react";
 import Drawer from "material-ui/Drawer";
 import { spacing, typography } from "material-ui/styles";
-import { white, blue600 } from "material-ui/styles/colors";
-import Menu from "material-ui/Menu";
-import MenuItem from "material-ui/MenuItem";
-import RemoveRedEye from "material-ui/svg-icons/image/remove-red-eye";
-import PersonAdd from "material-ui/svg-icons/social/person-add";
-import ContentLink from "material-ui/svg-icons/content/link";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Avatar from "material-ui/Avatar";
-import { List, ListItem, makeSelectable } from "material-ui/List";
-import ActionGrade from "material-ui/svg-icons/action/grade";
-import ContentInbox from "material-ui/svg-icons/content/inbox";
-import ContentDrafts from "material-ui/svg-icons/content/drafts";
-import ContentSend from "material-ui/svg-icons/content/send";
-import Subheader from "material-ui/Subheader";
-
-let SelectableList = makeSelectable(List);
-// import TreeNode, { MenuTree } from "./_TreeNode";
+import List, { ListItem, ListItemIcon, ListItemText } from "material-ui/List";
+import classNames from "classnames";
+import { withStyles } from "material-ui/styles";
 import jwtDecode from "jwt-decode";
-import style from "material-ui/svg-icons/image/style";
+import ChevronLeftIcon from "material-ui-icons/ChevronLeft";
+import ChevronRightIcon from "material-ui-icons/ChevronRight";
+import IconButton from "material-ui/IconButton";
+import ListSubheader from "material-ui/List/ListSubheader";
 
+import Collapse from "material-ui/transitions/Collapse";
+import InboxIcon from "material-ui-icons/MoveToInbox";
+import DraftsIcon from "material-ui-icons/Drafts";
+import SendIcon from "material-ui-icons/Send";
+import ExpandLess from "material-ui-icons/ExpandLess";
+import ExpandMore from "material-ui-icons/ExpandMore";
+import StarBorder from "material-ui-icons/StarBorder";
+import { MenuTree } from "./TreeNode";
+
+const drawerWidth = 240;
 const data = [
+    {
+        id: 9,
+        label: "Home",
+        priority: 1,
+        permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
+        home: true,
+        slug: "/admin/",
+        icon: "home"
+    },
     {
         id: 1,
         label: "Posts",
         priority: 1,
         permissions: [],
-        home: true,
         icon: "collections_bookmark",
-        collapsed: false,
+        collapsed: true,
         children: [
             {
                 id: 1,
                 label: "All Posts",
                 priority: 1,
                 permissions: [],
-                slug: "posts"
+                slug: "/admin/posts",
+                icon: "mail"
             },
             {
                 id: 2,
                 label: "New Post",
                 priority: 2,
                 permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
-                slug: "post-new"
+                slug: "/admin/post-new",
+                icon: "add"
+            },
+            {
+                id: 10,
+                label: "Tags",
+                priority: 2,
+                permissions: ["MANAGE_SETTINGS"],
+                slug: "/admin/tags",
+                icon: "label"
+            },
+            {
+                id: 11,
+                label: "Categories",
+                priority: 2,
+                permissions: ["MANAGE_SETTINGS"],
+                slug: "/admin/categories",
+                icon: "loyalty"
             }
         ]
     },
@@ -54,20 +81,23 @@ const data = [
         priority: 2,
         permissions: [],
         icon: "insert_drive_file",
+        collapsed: true,
         children: [
             {
                 id: 1,
                 label: "All Pages",
                 priority: 1,
                 permissions: [],
-                slug: "pages"
+                slug: "/admin/pages",
+                icon: "pages"
             },
             {
                 id: 2,
                 label: "New Page",
                 priority: 2,
                 permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
-                slug: "page-new"
+                slug: "/admin/page-new",
+                icon: "add"
             }
         ]
     },
@@ -76,7 +106,7 @@ const data = [
         label: "Media",
         priority: 3,
         permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
-        slug: "media",
+        slug: "/admin/media",
         icon: "photo_library"
     },
     {
@@ -85,20 +115,23 @@ const data = [
         priority: 7,
         permissions: ["MANAGE_SETTINGS"],
         icon: "settings",
+        collapsed: true,
         children: [
             {
                 id: 1,
                 label: "Menu",
                 priority: 2,
                 permissions: ["MANAGE_SETTINGS"],
-                slug: "menu-builder"
+                slug: "/admin/menu-builder",
+                icon: "menu"
             },
             {
                 id: 2,
-                label: "Site Settings",
+                label: "Site",
                 priority: 1,
                 permissions: ["MANAGE_SETTINGS"],
-                slug: "settings"
+                slug: "/admin/settings",
+                icon: "build"
             }
         ]
     },
@@ -108,7 +141,7 @@ const data = [
         label: "Profile",
         priority: 5,
         permissions: ["MANAGE_OWN_POSTS"],
-        slug: "edit-profile",
+        slug: "/admin/edit-profile",
         icon: "person"
     },
     {
@@ -116,7 +149,7 @@ const data = [
         label: "Authors",
         priority: 6,
         permissions: ["MANAGE_USERS"],
-        slug: "authors",
+        slug: "/admin/authors",
         icon: "group"
     },
     {
@@ -124,10 +157,50 @@ const data = [
         label: "Themes",
         priority: 7,
         permissions: ["MANAGE_SETTINGS"],
-        slug: "themes",
+        slug: "/admin/themes",
         icon: "border_color"
     }
 ];
+
+const styles = theme => ({
+    root: {
+        width: "100%",
+        maxWidth: 360,
+        backgroundColor: theme.palette.background.paper
+    },
+    nested: {
+        paddingLeft: theme.spacing.unit * 4
+    },
+    drawerInner: {
+        // Make the items inside not wrap when transitioning:
+        width: drawerWidth
+    },
+    drawerHeader: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        padding: "0 8px",
+        ...theme.mixins.toolbar
+    },
+    drawerPaper: {
+        position: "relative",
+        height: "100%",
+        width: drawerWidth,
+        backgroundColor: theme.palette.common.darkBlack,
+        transition: theme.transitions.create("width", {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen
+        })
+    },
+    drawerPaperClose: {
+        width: 60,
+        overflowX: "hidden",
+        transition: theme.transitions.create("width", {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen
+        })
+    }
+});
 
 class LeftDrawer extends Component {
     constructor(props) {
@@ -147,26 +220,26 @@ class LeftDrawer extends Component {
         if (typeof localStorage !== "undefined") {
             this.permissions = jwtDecode(localStorage.token).permissions;
         }
-        const checkPerm = permission =>
-            this.permissions.indexOf(permission) !== -1;
+        // const checkPerm = permission =>
+        //     this.permissions.indexOf(permission) !== -1;
 
-        function filterMenu(data) {
-            let hasPerms = true;
-            return data.filter(item => {
-                if (item.permissions.length > 0) {
-                    hasPerms =
-                        item.permissions.filter(name => {
-                            return checkPerm(name);
-                        }).length > 0;
-                }
-                if (hasPerms && item.children) {
-                    item.children = filterMenu(item.children);
-                }
-                return hasPerms;
-            });
-        }
-
-        this.setState({ data: filterMenu(data) });
+        // function filterMenu(data) {
+        //     let hasPerms = true;
+        //     return data.filter(item => {
+        //         if (item.permissions.length > 0) {
+        //             hasPerms =
+        //                 item.permissions.filter(name => {
+        //                     return checkPerm(name);
+        //                 }).length > 0;
+        //         }
+        //         if (hasPerms && item.children) {
+        //             item.children = filterMenu(item.children);
+        //         }
+        //         return hasPerms;
+        //     });
+        // }
+        console.log(this.props.history.location.pathname);
+        this.setState({ data: data });
     }
 
     setData(newData) {
@@ -179,7 +252,7 @@ class LeftDrawer extends Component {
     }
     handleToggle() {
         this.setState({
-            open: !this.state.open
+            open: !navDrawerOpen
         });
     }
 
@@ -192,119 +265,44 @@ class LeftDrawer extends Component {
     itemClicked(slug) {
         this.props.history.push("/admin/" + slug);
     }
-
     render() {
-        let { navDrawerOpen } = this.props;
-        const selected = this.props.location.pathname.split("/")[2];
-        const styles = {
-            logo: {
-                cursor: "pointer",
-                fontSize: 16,
-                color: typography.textFullWhite,
-                lineHeight: `${spacing.desktopKeylineIncrement}px`,
-                fontWeight: typography.fontWeightLight,
-                backgroundColor: blue600,
-                textAlign: "center",
-                textTransform: "uppercase",
-                letterSpacing: "3px",
-                height: 56
-            },
-            listItem: {
-                color: white,
-                fontSize: 10
-            },
-            avatar: {
-                div: {
-                    padding: "15px 0 20px 15px",
-                    background: "#000"
-                },
-                icon: {
-                    float: "left",
-                    display: "block",
-                    marginRight: 15,
-                    boxShadow: "0px 0px 0px 8px rgba(0,0,0,0.2)"
-                },
-                span: {
-                    paddingTop: 12,
-                    display: "block",
-                    color: "white",
-                    fontWeight: 300,
-                    textShadow: "1px 1px #444"
-                }
-            }
-        };
-        let value = 0;
-        let selectedValue = 2;
-        const createMenu = data => {
-            return data.map((item, i) => {
-                value += 1;
-                if (item.slug === selected) {
-                    selectedValue = value;
-                }
-                let nestedItems = [];
-                if (item.children) {
-                    nestedItems = createMenu(item.children);
-                }
-                if (nestedItems.length > 0) {
-                    return (
-                        <ListItem
-                            className="list-item"
-                            key={i}
-                            value={value}
-                            initiallyOpen={true}
-                            primaryTogglesNestedList={true}
-                            nestedItems={nestedItems}
-                            primaryText={item.label}
-                            leftIcon={
-                                item.icon && (
-                                    <i className="material-icons">
-                                        {item.icon}
-                                    </i>
-                                )
-                            }
-                        />
-                    );
-                }
-                return (
-                    <ListItem
-                        className="list-item"
-                        value={value}
-                        insetChildren={true}
-                        key={i}
-                        onClick={() => this.itemClicked(item.slug)}
-                        primaryText={item.label}
-                        leftIcon={
-                            item.icon && (
-                                <i className="material-icons">{item.icon}</i>
-                            )
-                        }
-                    />
-                );
-            });
-        };
-        const menu = createMenu(this.state.data);
+        let { navDrawerOpen, classes, theme } = this.props;
+        const selected = this.props.location.pathname;
+
         return (
-            <Drawer docked={true} open={navDrawerOpen}>
-                <div style={styles.logo}>
-                    {this.props.settings.site_title.value}
-                </div>
-                <div style={styles.avatar.div}>
-                    <Avatar
-                        src="http://www.material-ui.com/images/uxceo-128.jpg"
-                        size={50}
-                        style={styles.avatar.icon}
+            <Drawer
+                type="permanent"
+                classes={{
+                    paper: classNames(
+                        classes.drawerPaper,
+                        !navDrawerOpen && classes.drawerPaperClose
+                    )
+                }}
+                open={navDrawerOpen}
+            >
+                <div className={classes.drawerInner}>
+                    <div className={classes.drawerHeader}>
+                        <IconButton onClick={this.props.handleDrawerToggle}>
+                            {theme.direction === "rtl" ? (
+                                <ChevronRightIcon />
+                            ) : (
+                                <ChevronLeftIcon />
+                            )}
+                        </IconButton>
+                    </div>
+
+                    {/*} <div style={styles.logo}>
+                        {this.props.settings.site_title.value}
+                    </div>
+                    <div style={styles.loggedIn}>
+                        Welcome back, <strong>{this.props.user.name}</strong>!
+                        </div>*/}
+                    <MenuTree
+                        data={this.state.data}
+                        permissions={this.permissions}
+                        route={selected}
+                        setData={this.setData}
                     />
-                    <span style={styles.avatar.span}>
-                        {this.props.username}
-                    </span>
-                </div>
-                <div>
-                    <SelectableList
-                        value={selectedValue}
-                        style={{ fontSize: "10px" }}
-                    >
-                        {menu}
-                    </SelectableList>
                 </div>
             </Drawer>
         );
@@ -317,4 +315,4 @@ LeftDrawer.propTypes = {
     username: PropTypes.string
 };
 
-export default LeftDrawer;
+export default withStyles(styles, { withTheme: true })(LeftDrawer);

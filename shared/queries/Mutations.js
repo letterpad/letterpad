@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export const CREATE_POST = gql`
-    mutation createPost($type: String!) {
-        createPost(type: $type) {
+    mutation createPost($type: String!, $title: String!, $body: String) {
+        createPost(type: $type, title: $title, body: $body) {
             ok
             errors {
                 path
@@ -41,6 +41,37 @@ export const UPDATE_OPTIONS = gql`
     }
 `;
 
+export const UPDATE_TAXONOMY = gql`
+    mutation updateTaxonomy(
+        $id: Int!
+        $name: String
+        $desc: String
+        $type: String!
+    ) {
+        updateTaxonomy(id: $id, name: $name, desc: $desc, type: $type) {
+            id
+            ok
+            errors {
+                message
+                path
+            }
+        }
+    }
+`;
+
+export const DELETE_TAXONOMY = gql`
+    mutation deleteTaxonomy($id: Int!) {
+        deleteTaxonomy(id: $id) {
+            id
+            ok
+            errors {
+                message
+                path
+            }
+        }
+    }
+`;
+
 export const UPDATE_AUTHOR = gql`
     mutation updateAuthor(
         $id: Int!
@@ -50,6 +81,7 @@ export const UPDATE_AUTHOR = gql`
         $password: String
         $username: String
         $social: String
+        $role_id: Int
     ) {
         updateAuthor(
             id: $id
@@ -59,6 +91,7 @@ export const UPDATE_AUTHOR = gql`
             social: $social
             fname: $fname
             lname: $lname
+            role_id: $role_id
         ) {
             ok
             errors {

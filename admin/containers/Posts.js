@@ -9,15 +9,17 @@ import Paginate from "../components/Paginate";
 import { PostFilters } from "../components/posts/Filter";
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
-import {
-    Table,
+import Table, {
     TableBody,
-    TableHeader,
-    TableHeaderColumn,
+    TableCell,
+    TableHead,
     TableRow,
-    TableRowColumn
+    TableFooter,
+    TablePagination
 } from "material-ui/Table";
-import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
+import Card, { CardHeader, CardContent } from "material-ui/Card";
+import Paper from "material-ui/Paper";
+import PageHeader from "../components/PageHeader";
 
 class Posts extends Component {
     constructor(props) {
@@ -58,64 +60,87 @@ class Posts extends Component {
 
         const rows = this.props.posts.rows.map((post, i) => (
             <TableRow selected={this.isSelected(i)}>
-                <TableRowColumn>{post.title || "Draft.."}</TableRowColumn>
-                <TableRowColumn>
+                <TableCell>{post.title || "Draft.."}</TableCell>
+                <TableCell>
                     {this.getTaxonomy("post_category", post.taxonomies)}
-                </TableRowColumn>
-                <TableRowColumn>
+                </TableCell>
+                <TableCell>
                     {this.getTaxonomy("post_tag", post.taxonomies)}
-                </TableRowColumn>
-                <TableRowColumn>{post.status}</TableRowColumn>
-                <TableRowColumn>{post.author.username}</TableRowColumn>
-                <TableRowColumn>
+                </TableCell>
+                <TableCell>{post.status}</TableCell>
+                <TableCell>{post.author.username}</TableCell>
+                <TableCell>
                     {moment(new Date(post.created_at)).format("MMM Do, YY")}
-                </TableRowColumn>
-                <TableRowColumn>
+                </TableCell>
+                <TableCell>
                     <Link className="button" to={"/admin/posts/" + post.id}>
                         <i className="material-icons">edit</i>
                     </Link>
-                </TableRowColumn>
+                </TableCell>
             </TableRow>
         ));
+        const emptyRows =
+            3 -
+            Math.min(
+                3,
+                this.props.posts.count - (this.props.variables.page - 1) * 3
+            );
         return (
-            <Card>
-                <CardHeader
+            <div>
+                <PageHeader
                     title="Posts"
                     subtitle="Overview of all your blog posts"
                 />
-                <CardText>
+                <CardContent>
                     <PostFilters
                         changeStatus={this.props.changeStatus}
                         selectedStatus={status}
                     />
-                    <Table onRowSelection={this.handleRowSelection}>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHeaderColumn>Title</TableHeaderColumn>
-                                <TableHeaderColumn>
-                                    Categories
-                                </TableHeaderColumn>
-                                <TableHeaderColumn>Tags</TableHeaderColumn>
-                                <TableHeaderColumn>Status</TableHeaderColumn>
-                                <TableHeaderColumn>Author</TableHeaderColumn>
-                                <TableHeaderColumn>
-                                    Created At
-                                </TableHeaderColumn>
-                                <TableHeaderColumn>Edit</TableHeaderColumn>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>{rows}</TableBody>
-                    </Table>
-
-                    {!loading && (
-                        <Paginate
-                            count={this.props.posts.count}
-                            page={this.props.variables.page}
-                            changePage={this.props.changePage}
-                        />
-                    )}
-                </CardText>
-            </Card>
+                    <Paper>
+                        <Table onRowSelection={this.handleRowSelection}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Title</TableCell>
+                                    <TableCell>Categories</TableCell>
+                                    <TableCell>Tags</TableCell>
+                                    <TableCell>Status</TableCell>
+                                    <TableCell>Author</TableCell>
+                                    <TableCell>Created At</TableCell>
+                                    <TableCell>Edit</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows}
+                                {emptyRows > 0 && (
+                                    <TableRow
+                                        style={{ height: 49 * emptyRows }}
+                                    >
+                                        <TableCell colSpan={7} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                            <TableFooter>
+                                <TableRow>
+                                    <TablePagination
+                                        count={this.props.posts.count || 0}
+                                        rowsPerPage={3}
+                                        page={this.props.variables.page - 1}
+                                        backIconButtonProps={{
+                                            "aria-label": "Previous Page"
+                                        }}
+                                        nextIconButtonProps={{
+                                            "aria-label": "Next Page"
+                                        }}
+                                        onChangePage={(e, page) => {
+                                            this.props.changePage(e, page + 1);
+                                        }}
+                                    />
+                                </TableRow>
+                            </TableFooter>
+                        </Table>
+                    </Paper>
+                </CardContent>
+            </div>
         );
     }
 }

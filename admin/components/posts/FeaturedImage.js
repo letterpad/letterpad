@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { gql, graphql, compose } from "react-apollo";
 import PostActions from "../../components/posts/PostActions";
-import RaisedButton from "material-ui/RaisedButton";
+import Button from "material-ui/Button";
 
 class FeaturedImage extends Component {
     constructor(props) {
@@ -41,38 +41,45 @@ class FeaturedImage extends Component {
                 <div>
                     <img alt="" width="100%" src={coverImage} />
                 </div>
-                {(() => {
-                    if (!this.state.cover_image) {
+                <div className="cover-image-btn">
+                    {(() => {
+                        if (!this.state.cover_image) {
+                            return (
+                                <div>
+                                    <input
+                                        ref="uploadInput"
+                                        onChange={input =>
+                                            this.uploadImage(input.target.files)
+                                        }
+                                        id="btn-upload"
+                                        type="file"
+                                        className="hide"
+                                        name="uploads[]"
+                                    />
+                                    <label htmlFor="btn-upload">
+                                        <Button
+                                            component="span"
+                                            raised
+                                            color="primary"
+                                        >
+                                            Choose an Image
+                                        </Button>
+                                    </label>
+                                </div>
+                            );
+                        }
                         return (
-                            <RaisedButton
-                                label="Choose an Image"
-                                labelPosition="before"
-                                containerElement="label"
-                                primary={true}
+                            <Button
+                                raised
+                                color="primary"
+                                onClick={this.removeImage}
+                                component="label"
                             >
-                                <input
-                                    ref="uploadInput"
-                                    onChange={input =>
-                                        this.uploadImage(input.target.files)
-                                    }
-                                    type="file"
-                                    className="hide"
-                                    name="uploads[]"
-                                    multiple="multiple"
-                                />
-                            </RaisedButton>
+                                Remove Featured Image
+                            </Button>
                         );
-                    }
-                    return (
-                        <RaisedButton
-                            label="Remove Featured Image"
-                            labelPosition="before"
-                            primary={true}
-                            onClick={this.removeImage}
-                            containerElement="label"
-                        />
-                    );
-                })()}
+                    })()}
+                </div>
             </div>
         );
     }

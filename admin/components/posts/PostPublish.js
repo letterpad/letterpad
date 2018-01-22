@@ -5,18 +5,11 @@ import { gql, graphql } from "react-apollo";
 import moment from "moment";
 import siteConfig from "../../../config/site.config";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
-import Toggle from "material-ui/Toggle";
 import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
-import {
-    Card,
-    CardActions,
-    CardHeader,
-    CardMedia,
-    CardTitle,
-    CardText
-} from "material-ui/Card";
-import DatePicker from "material-ui/DatePicker";
+import Button from "material-ui/Button";
+import Card, { CardHeader, CardContent, CardActions } from "material-ui/Card";
+//import DatePicker from "material-ui/DatePicker";
+import Switch from "material-ui/Switch";
 
 const actions = {
     publish: "Published",
@@ -61,6 +54,7 @@ class PostPublish extends Component {
     handleDateChange(e) {
         this.state.post.created_at = e.target.value;
         this.setState(this.state);
+        PostActions.setData({ created_at: e.target.value });
     }
 
     async updatePost(e, status) {
@@ -80,6 +74,10 @@ class PostPublish extends Component {
             if (this.props.post.status === "trash") {
                 return notify.show("Post trashed", "success", 3000);
             }
+            update.data.updatePost.post.created_at = moment(
+                new Date(update.data.updatePost.post.created_at)
+            ).format("DD-MM-Y hh:mm A");
+
             this.setState({ post: update.data.updatePost.post });
             return notify.show("Post updated", "success", 3000);
         }
@@ -96,11 +94,12 @@ class PostPublish extends Component {
         }
 
         return (
-            <FlatButton
+            <Button
                 onClick={e => this.updatePost(e, { status: status })}
-                primary={isPrimary}
-                label={label}
-            />
+                color={isPrimary ? "primary" : ""}
+            >
+                {label}
+            </Button>
         );
     }
 
@@ -115,15 +114,14 @@ class PostPublish extends Component {
         return (
             <Card>
                 <CardHeader title="Publishing" />
-                <CardText>
+                <CardContent>
                     <div className={"switch-block m-b-20 " + publishedCls}>
                         <span className="switch-label switch-off-text">
                             Draft
                         </span>
-                        <Toggle
-                            style={{ width: "initial", marginRight: 10 }}
-                            onToggle={this.changePostStatus}
-                            defaultToggled={!!this.state.published}
+                        <Switch
+                            checked={!!this.state.published}
+                            onChange={this.changePostStatus}
                         />
                         <span className="switch-label switch-on-text">
                             Publish
@@ -161,7 +159,7 @@ class PostPublish extends Component {
                             </a>
                         </div>
                     </div>
-                </CardText>
+                </CardContent>
                 <CardActions>
                     {this.getButton(actionLabel, "publish", true)}
                     {this.getButton("Trash", "draft", false)}

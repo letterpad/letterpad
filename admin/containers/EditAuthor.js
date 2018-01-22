@@ -4,27 +4,19 @@ import PropTypes from "prop-types";
 import Basic from "../components/authors/Basic";
 import Social from "../components/authors/Social";
 import PasswordChange from "../components/authors/PasswordChange";
-import { GET_AUTHOR } from "../../shared/queries/Queries";
+import { GET_AUTHOR, GET_ROLES } from "../../shared/queries/Queries";
 import { UPDATE_AUTHOR } from "../../shared/queries/Mutations";
 import { notify } from "react-notify-toast";
-import {
-    Card,
-    CardActions,
-    CardHeader,
-    CardMedia,
-    CardTitle,
-    CardText
-} from "material-ui/Card";
+import Card, { CardHeader, CardContent, CardActions } from "material-ui/Card";
+import Button from "material-ui/Button";
 
 const SubmitBtn = ({ handleClick }) => {
     return (
-        <button
-            type="submit"
-            onClick={handleClick}
-            className="btn btn-blue btn-sm"
-        >
-            Save
-        </button>
+        <CardActions>
+            <Button mini={true} raised color="primary" onClick={handleClick}>
+                Save
+            </Button>
+        </CardActions>
     );
 };
 
@@ -53,7 +45,7 @@ class EditAuthor extends Component {
         }
     }
     render() {
-        if (this.props.loading) {
+        if (this.props.loading || this.props.roles.loading) {
             return <div>hello</div>;
         }
 
@@ -64,30 +56,31 @@ class EditAuthor extends Component {
                         <Card>
                             <CardHeader
                                 title="Basic Information"
-                                subtitle="Some basic information about yourself"
+                                subheader="Some basic information about yourself"
                             />
-                            <CardText>
+                            <CardContent>
                                 <Basic
                                     data={this.props.author}
                                     updateOption={this.setOption}
+                                    roles={this.props.roles.roles}
                                 />
                                 <SubmitBtn handleClick={this.submitData} />
-                            </CardText>
+                            </CardContent>
                         </Card>
 
                         <br />
                         <Card>
                             <CardHeader
                                 title="Change Password"
-                                subtitle="Change your password"
+                                subheader="Change your password"
                             />
-                            <CardText>
+                            <CardContent>
                                 <PasswordChange
                                     data={this.props.author}
                                     updateOption={this.setOption}
                                 />
                                 <SubmitBtn handleClick={this.submitData} />
-                            </CardText>
+                            </CardContent>
                         </Card>
                     </div>
 
@@ -95,15 +88,15 @@ class EditAuthor extends Component {
                         <Card>
                             <CardHeader
                                 title="Social Information"
-                                subtitle="Other will be able to discover you"
+                                subheader="Other will be able to discover you"
                             />
-                            <CardText>
+                            <CardContent>
                                 <Social
                                     data={this.props.author.social}
                                     updateOption={this.setOption}
                                 />
                                 <SubmitBtn handleClick={this.submitData} />
-                            </CardText>
+                            </CardContent>
                         </Card>
                     </div>
                 </div>
@@ -126,6 +119,10 @@ const ContainerWithData = graphql(GET_AUTHOR, {
     })
 });
 
+const ContainerWithRoles = graphql(GET_ROLES, {
+    name: "roles"
+});
+
 const updateAuthorQuery = graphql(UPDATE_AUTHOR, {
     props: ({ mutate }) => ({
         updateAuthor: data =>
@@ -141,4 +138,6 @@ EditAuthor.propTypes = {
     loading: PropTypes.bool
 };
 
-export default updateAuthorQuery(ContainerWithData(EditAuthor));
+export default updateAuthorQuery(
+    ContainerWithRoles(ContainerWithData(EditAuthor))
+);

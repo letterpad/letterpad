@@ -2,16 +2,16 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { graphql } from "react-apollo";
 import { GET_AUTHORS } from "../../shared/queries/Queries";
-import {
-    Table,
+import Table, {
     TableBody,
-    TableHeader,
-    TableHeaderColumn,
-    TableRow,
-    TableRowColumn
+    TableCell,
+    TableHead,
+    TableRow
 } from "material-ui/Table";
-import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
+import Card, { CardHeader, CardContent } from "material-ui/Card";
 import { Link } from "react-router-dom";
+import PageHeader from "../components/PageHeader";
+import Paper from "material-ui/Paper/Paper";
 
 class Authors extends Component {
     constructor(props) {
@@ -38,41 +38,41 @@ class Authors extends Component {
     render() {
         const rows = this.props.authors.map((author, i) => (
             <TableRow selected={this.isSelected(i)}>
-                <TableRowColumn>{author.email}</TableRowColumn>
-                <TableRowColumn>
-                    {author.fname + " " + author.lname}
-                </TableRowColumn>
-                <TableRowColumn>{author.role.name}</TableRowColumn>
-                <TableRowColumn>
+                <TableCell>{author.email}</TableCell>
+                <TableCell>{author.fname + " " + author.lname}</TableCell>
+                <TableCell>{author.role.name}</TableCell>
+                <TableCell>
                     <Link
                         className="button"
                         to={"/admin/authors/edit/" + author.id}
                     >
                         <i className="material-icons">edit</i>
                     </Link>
-                </TableRowColumn>
+                </TableCell>
             </TableRow>
         ));
         return (
-            <Card>
-                <CardHeader
+            <div>
+                <PageHeader
                     title="Authors"
                     subtitle="Overview of all your authors"
                 />
-                <CardText>
-                    <Table onRowSelection={this.handleRowSelection}>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHeaderColumn>Email</TableHeaderColumn>
-                                <TableHeaderColumn>Name</TableHeaderColumn>
-                                <TableHeaderColumn>Role</TableHeaderColumn>
-                                <TableHeaderColumn>Edit</TableHeaderColumn>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>{rows}</TableBody>
-                    </Table>
-                </CardText>
-            </Card>
+                <CardContent>
+                    <Paper>
+                        <Table onRowSelection={this.handleRowSelection}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Email</TableCell>
+                                    <TableCell>Name</TableCell>
+                                    <TableCell>Role</TableCell>
+                                    <TableCell>Edit</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>{rows}</TableBody>
+                        </Table>
+                    </Paper>
+                </CardContent>
+            </div>
         );
     }
 }

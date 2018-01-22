@@ -34,8 +34,7 @@ export const getTaxonomies = (root, args, { models, user }) => {
     if (postType) {
         where.type = postType;
     }
-    console.log(where);
-    console.log("=================");
+
     let query = {
         attributes: ["name", "id", "type"],
         include: [
@@ -52,6 +51,7 @@ export const getTaxonomies = (root, args, { models, user }) => {
                 required: true
             }
         ],
+        order: [["name", "ASC"]],
         where: { type },
         group: ["taxonomy_id", "post_id"]
     };

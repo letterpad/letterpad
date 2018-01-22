@@ -8,15 +8,15 @@ import Paginate from "../components/Paginate";
 import { PostFilters } from "../components/posts/Filter";
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
-import {
-    Table,
+import Table, {
     TableBody,
-    TableHeader,
-    TableHeaderColumn,
+    TableCell,
+    TableHead,
     TableRow,
-    TableRowColumn
+    TableFooter,
+    TablePagination
 } from "material-ui/Table";
-import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
+import Card, { CardHeader, CardContent } from "material-ui/Card";
 
 class Pages extends Component {
     constructor(props) {
@@ -55,55 +55,67 @@ class Pages extends Component {
 
         const rows = this.props.posts.rows.map((post, i) => (
             <TableRow selected={this.isSelected(i)}>
-                <TableRowColumn onClick={() => this.handleClick(post.id)}>
+                <TableCell onClick={() => this.handleClick(post.id)}>
                     {post.title || "Draft.."}
-                </TableRowColumn>
-                <TableRowColumn>
+                </TableCell>
+                <TableCell>
                     {this.getTaxonomy("post_category", post.taxonomies)}
-                </TableRowColumn>
-                <TableRowColumn>
+                </TableCell>
+                <TableCell>
                     {this.getTaxonomy("post_tag", post.taxonomies)}
-                </TableRowColumn>
-                <TableRowColumn>{post.status}</TableRowColumn>
-                <TableRowColumn>{post.author.username}</TableRowColumn>
-                <TableRowColumn>
+                </TableCell>
+                <TableCell>{post.status}</TableCell>
+                <TableCell>{post.author.username}</TableCell>
+                <TableCell>
                     {moment(new Date(post.created_at)).format("MMM Do, YY")}
-                </TableRowColumn>
-                <TableRowColumn>
+                </TableCell>
+                <TableCell>
                     <Link className="button" to={"/admin/pages/" + post.id}>
                         <i className="material-icons">edit</i>
                     </Link>
-                </TableRowColumn>
+                </TableCell>
             </TableRow>
         ));
         return (
             <Card>
                 <CardHeader
-                    title="Posts"
-                    subtitle="Overview of all your blog posts"
+                    title="Pages"
+                    subtitle="Overview of all your site pages"
                 />
-                <CardText>
+                <CardContent>
                     <PostFilters
                         changeStatus={this.props.changeStatus}
                         selectedStatus={status}
                     />
                     <Table onRowSelection={this.handleRowSelection}>
-                        <TableHeader>
+                        <TableHead>
                             <TableRow>
-                                <TableHeaderColumn>Title</TableHeaderColumn>
-                                <TableHeaderColumn>
-                                    Categories
-                                </TableHeaderColumn>
-                                <TableHeaderColumn>Tags</TableHeaderColumn>
-                                <TableHeaderColumn>Status</TableHeaderColumn>
-                                <TableHeaderColumn>Author</TableHeaderColumn>
-                                <TableHeaderColumn>
-                                    Created At
-                                </TableHeaderColumn>
-                                <TableHeaderColumn>Edit</TableHeaderColumn>
+                                <TableCell>Title</TableCell>
+                                <TableCell>Categories</TableCell>
+                                <TableCell>Tags</TableCell>
+                                <TableCell>Status</TableCell>
+                                <TableCell>Author</TableCell>
+                                <TableCell>Created At</TableCell>
+                                <TableCell>Edit</TableCell>
                             </TableRow>
-                        </TableHeader>
+                        </TableHead>
                         <TableBody>{rows}</TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TablePagination
+                                    count={this.props.posts.count}
+                                    rowsPerPage={3}
+                                    page={this.props.variables.page}
+                                    backIconButtonProps={{
+                                        "aria-label": "Previous Page"
+                                    }}
+                                    nextIconButtonProps={{
+                                        "aria-label": "Next Page"
+                                    }}
+                                    onChangePage={this.props.changePage}
+                                />
+                            </TableRow>
+                        </TableFooter>
                     </Table>
 
                     {!loading && (
@@ -113,7 +125,7 @@ class Pages extends Component {
                             changePage={this.props.changePage}
                         />
                     )}
-                </CardText>
+                </CardContent>
             </Card>
         );
     }

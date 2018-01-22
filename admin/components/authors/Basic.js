@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import TextField from "material-ui/TextField";
+// import SelectField from "material-ui/SelectField";
+// import MenuItem from "material-ui/MenuItem";
 
 export default class Basic extends Component {
     constructor(props) {
         super(props);
         this.updateOption = this.updateOption.bind(this);
+        this.state = {
+            role_id: this.props.data.role.id
+        };
     }
 
     updateOption(option, value) {
@@ -15,8 +20,8 @@ export default class Basic extends Component {
             <div>
                 <div className="form-group">
                     <TextField
-                        floatingLabelText="First name"
-                        fullWidth={true}
+                        label="First name"
+                        fullWidth
                         defaultValue={this.props.data.fname}
                         onChange={e =>
                             this.updateOption("fname", e.target.value)
@@ -25,8 +30,8 @@ export default class Basic extends Component {
                 </div>
                 <div className="form-group">
                     <TextField
-                        floatingLabelText="Last Name"
-                        fullWidth={true}
+                        label="Last Name"
+                        fullWidth
                         defaultValue={this.props.data.lname}
                         onChange={e =>
                             this.updateOption("lname", e.target.value)
@@ -35,13 +40,34 @@ export default class Basic extends Component {
                 </div>
                 <div className="form-group">
                     <TextField
-                        floatingLabelText="Email"
-                        fullWidth={true}
+                        label="Email"
+                        fullWidth
                         defaultValue={this.props.data.email}
                         onChange={e =>
                             this.updateOption("email", e.target.value)
                         }
                     />
+                </div>
+                <div className="form-group">
+                    {/*<SelectField
+                        value={this.state.role_id}
+                        onChange={(e, idx, value) => {
+                            this.setState({ role_id: value });
+                            this.updateOption("role_id", value);
+                        }}
+                        fullWidth
+                        label="Role"
+                    >
+                        {this.props.roles.map((role, i) => {
+                            return (
+                                <MenuItem
+                                    key={i}
+                                    value={role.id}
+                                    primaryText={role.name.toLowerCase()}
+                                />
+                            );
+                        })}
+                    </SelectField>*/}
                 </div>
             </div>
         );

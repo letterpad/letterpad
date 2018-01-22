@@ -1,22 +1,101 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700.css");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import "./grid.scss";
+@import "./normalize.scss";
 @import "./variables.scss";
 @import "./login.scss";
-@import "./common.scss";
 @import "./react-select.scss";
+body {
+    background: $color-bg-primary;
+    line-height: 1.8;
+    font-size: 13px;
+    font-weight: 400;
+    color: $color-text-primary;
+    -ms-overflow-style: scrollbar;
+    overflow-x: hidden;
+    height: 100%;
+}
+
 label.custom-label {
     font-weight: 500;
     font-size: 13px;
 }
 
-/*--------------------------------------
-[TopBar]
+.cover-image-btn {
+    position: absolute !important;
+    margin-top: -45px !important;
+    width: initial !important;
+}
+
+
+/*-------------------------------
+[Menu Drawer]
 */
 
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    background: $color-bg-secondary;
+a.active h3 {
+    color: #fff;
 }
+
+.menu-item {
+    h3 {
+        color: rgba(255, 255, 255, 0.527);
+        font-size: 0.85rem;
+    }
+    i {
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.527);
+    }
+}
+
+.sub-menu-item {
+    background: #2b2b2b;
+}
+
+
+/*-------------------------------
+[Form elements]
+*/
+
+.form-group {
+    margin-bottom: 32px;
+}
+
+a {
+    color: rgb(29, 122, 199);
+}
+
+.inline-edit {
+    display: block;
+}
+
+.inline-edit:hover {
+    cursor: text;
+}
+
+.row-selected {
+    background: #efefef;
+}
+
+[contenteditable="true"]:empty:before {
+    content: attr(placeholder);
+    display: block;
+    color: rgb(197, 197, 197);
+    /* For Firefox */
+}
+
+
+/*-------------------------------
+[Page Headers]
+*/
+
+.page-header {
+    margin: 16px;
+    h1 {
+        padding: 0px;
+        margin: 0;
+    }
+}
+
 
 /* Tell Quill not to scroll */
 
@@ -46,6 +125,7 @@ label.custom-label {
     opacity: 1;
 }
 
+
 /* Specify our own scrolling container */
 
 #quill-container {
@@ -54,91 +134,6 @@ label.custom-label {
     overflow-y: auto;
 }
 
-/* Publish buttons */
-
-.btn-group-justified .btn-item {
-    padding-left: 2px;
-    padding-right: 2px;
-}
-
-/* Tags Input */
-
-div.ReactTags__tags {
-    position: relative;
-}
-
-/* Styles for the input */
-
-div.ReactTags__tagInput {
-    width: 200px;
-    border-radius: 2px;
-    display: block;
-}
-
-div.ReactTags__tagInput input,
-div.ReactTags__tagInput input:focus {
-    margin: 0;
-    font-size: 12px;
-    width: 100%;
-    border: none;
-    padding: 8px 0px 10px;
-    display: block;
-}
-
-/* Styles for selected tags */
-
-div.ReactTags__selected span.ReactTags__tag {
-    border: 1px solid #ddd;
-    background: #eee;
-    font-size: 12px;
-    display: inline-block;
-    padding: 0px 8px;
-    margin-right: 4px;
-    cursor: move;
-    border-radius: 2px;
-}
-
-div.ReactTags__selected a.ReactTags__remove {
-    color: #aaa;
-    margin-left: 5px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-/* Styles for suggestions */
-
-div.ReactTags__suggestions {
-    position: absolute;
-    z-index: 10;
-}
-
-div.ReactTags__suggestions ul {
-    list-style-type: none;
-    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
-    background: white;
-    width: 220px;
-    padding: 0;
-    margin: 0;
-}
-
-div.ReactTags__suggestions li {
-    border-bottom: 1px solid #ddd;
-    padding: 10px 5px;
-    margin: 0;
-}
-
-div.ReactTags__suggestions li mark {
-    text-decoration: underline;
-    background: none;
-    font-weight: 600;
-}
-
-div.ReactTags__suggestions ul li.active {
-    background: #b7cfe0;
-    cursor: pointer;
-}
-
-/* Tags input end */
 
 /*Theme customization*/
 
@@ -164,42 +159,6 @@ div.ReactTags__suggestions ul li.active {
     }
 }
 
-/* Table */
-
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
-    padding: 12px 8px;
-    border-top: none;
-}
-
-.table > thead tr > th {
-    color: $color-text-secondary;
-    text-transform: uppercase;
-    font-size: 13px;
-    font-weight: 500;
-}
-
-tr td:first-child,
-tr th:first-child {
-    padding-left: 0px !important;
-}
-
-/*Media*/
-
-.table.media-table {
-    td {
-        vertical-align: middle;
-    }
-    .media-image {
-        object-fit: cover;
-        width: 80px;
-        height: 80px;
-    }
-}
 
 /*!------------------------------------------------------------------
 [Post Filters]
@@ -224,38 +183,6 @@ tr th:first-child {
     }
 }
 
-.navbar-custom {
-    .nav-list li a {
-        text-decoration: none;
-        display: block;
-        padding: 10px;
-        cursor: pointer;
-        border-bottom: 1px solid #2d2d2d !important;
-        color: $color-menu-link;
-        border-left: 4px solid transparent;
-    }
-    .nav-list li.active a {
-        border-left: 4px solid $color-accent;
-    }
-    .nav-list > li > a {
-        color: $color-menu-link;
-        font-size: 14px;
-        padding-left: 13px !important;
-        border-bottom: 1px solid #2e2e2e;
-    }
-    .nav-list > li a:hover {
-        border-left: 4px solid $color-accent;
-    }
-    .nav-list a span {
-        margin-left: 20px;
-    }
-    .nav-list .menu-icon {
-        margin-top: 4px;
-    }
-    .nav-list li.has-sub li a {
-        padding-left: 34px !important;
-    }
-}
 
 /*----------------------------------------------
 [Themes]
@@ -285,6 +212,25 @@ tr th:first-child {
         left: 0px;
     }
 }
+
+
+/*--------------------------------------------
+[Themes]
+*/
+
+.listing {
+    display: flex;
+    flex-direction: column;
+    i {
+        font-size: 13px;
+        margin-right: 8px;
+        color: #5f5f5f;
+    }
+    >div {
+        margin-bottom: 4px;
+    }
+}
+
 
 /*--------------------------------------------
 [Themes]

@@ -3,7 +3,7 @@ import { WithContext as ReactTags } from "react-tag-input";
 import { gql, graphql } from "react-apollo";
 import PostActions from "./PostActions";
 import ReactDOM from "react-dom";
-import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
+import Card, { CardHeader, CardContent } from "material-ui/Card";
 
 var ContentEditable = React.createClass({
     render: function() {
@@ -52,7 +52,7 @@ class Excerpt extends Component {
         return (
             <Card>
                 <CardHeader title="Excerpt" />
-                <CardText>
+                <CardContent>
                     <ContentEditable
                         excerpt={this.props.post.excerpt}
                         onChange={e => {
@@ -61,7 +61,7 @@ class Excerpt extends Component {
                             });
                         }}
                     />
-                </CardText>
+                </CardContent>
             </Card>
         );
     }

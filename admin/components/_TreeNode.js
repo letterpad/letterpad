@@ -1,18 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import ListSubheader from 'material-ui/List/ListSubheader';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import Collapse from 'material-ui/transitions/Collapse';
-import InboxIcon from 'material-ui-icons/MoveToInbox';
-import DraftsIcon from 'material-ui-icons/Drafts';
-import SendIcon from 'material-ui-icons/Send';
-import ExpandLess from 'material-ui-icons/ExpandLess';
-import ExpandMore from 'material-ui-icons/ExpandMore';
-import StarBorder from 'material-ui-icons/StarBorder';
-
 
 export class MenuTree extends Component {
     constructor(props) {
@@ -36,18 +24,8 @@ export class MenuTree extends Component {
     }
     render() {
         const sorted = this.state.data.sort((a, b) => a.priority - b.priority);
-        const menu = [];
 
-        const tree = sorted.forEach((child,i) => {
-            
-            if(child.children) {
-                
-            }
-            menu[i] =  <ListItem
-            key={i}
-            primaryText={child.label}
-        />
-
+        const tree = sorted.map(child => (
             <TreeNode
                 permissions={this.state.permissions}
                 key={child.id}
@@ -55,9 +33,9 @@ export class MenuTree extends Component {
                 route={this.state.route}
                 setSelection={this.onSelect}
             />
-        });
+        ));
 
-        return <List>{tree}</List>;
+        return <ul className="nav nav-list">{tree}</ul>;
     }
 }
 
@@ -134,8 +112,6 @@ class TreeNode extends Component {
 
         if (subtree) {
             return (
-                <ListItem key={1} primaryText={this.props.data.label} 
-                nestedItems={[]} leftIcon={<ContentDrafts />} />
                 <li className={"has-sub " + treeState}>
                     <Link
                         href="#"
