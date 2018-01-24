@@ -1,6 +1,8 @@
 import path from "path";
 import multer from "multer";
-import { PostModel, updatePost } from "./post";
+import models from "../models";
+
+import { _updatePost } from "./post";
 
 let storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -36,7 +38,7 @@ export function uploadCoverImage(request) {
                 cover_image: "/uploads/" + params.filename,
                 id: params.post_id
             };
-            updatePost(data).then(result => {
+            _updatePost(data, models).then(result => {
                 resolve("/uploads/" + params.filename);
             });
         });
@@ -49,7 +51,7 @@ export function removeFeaturedImage(req, params) {
             cover_image: "",
             id: params.id
         };
-        updatePost(data).then(result => {
+        _updatePost(data, models).then(result => {
             resolve("/uploads/" + params.filename);
         });
     });

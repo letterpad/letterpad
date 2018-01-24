@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 export default class LatestPosts extends Component {
     render() {
@@ -7,7 +7,7 @@ export default class LatestPosts extends Component {
             <div className="card">
                 <div className="module-title">Latest Posts</div>
                 <div className="x_content">
-                    <ul>
+                    <ul style={{ "padding-left": "16px" }}>
                         {(() => {
                             if (this.props.loading) {
                                 return <div>Loading...</div>;

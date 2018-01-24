@@ -1,6 +1,7 @@
 var path = require("path");
 var webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const BabiliPlugin = require("babili-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
     filename: "../css/[name].css"
@@ -8,7 +9,7 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
     profile: true,
     entry: {
-        dashboard: ["./app/app"],
+        dashboard: ["./admin/app"],
         client: ["./client/app"]
     },
     output: {
@@ -25,11 +26,12 @@ module.exports = {
                 NODE_ENV: "'production'"
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                warnings: false
-            }
-        }),
+        new BabiliPlugin(),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compressor: {
+        //         warnings: false
+        //     }
+        // }),
         extractSass
     ],
     module: {
@@ -38,7 +40,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loaders: ["babel-loader"],
-                include: path.join(__dirname, "app")
+                include: path.join(__dirname, "admin")
             },
             {
                 test: /\.js$/,

@@ -40,7 +40,7 @@ const linkedTaxonomies = gql`
 
 const latestPosts = gql`
     query latestPosts($type: String, $limit: Int) {
-        posts(type: $type, offset: 1, limit: $limit) {
+        posts(type: $type, offset: 0, limit: $limit) {
             count
             rows {
                 id

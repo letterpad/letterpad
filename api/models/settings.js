@@ -1,24 +1,27 @@
-import { conn } from "../../config/mysql.config";
+// import { conn } from "../../config/mysql.config";
 import Sequalize from "sequelize";
 
 function isArray(obj) {
     return !!obj && obj.constructor === Array;
 }
 
-export const SettingsModel = conn.define(
-    "settings",
-    {
-        option: {
-            type: Sequalize.STRING
+export default (conn, DataTypes) => {
+    const Setting = conn.define(
+        "settings",
+        {
+            option: {
+                type: Sequalize.STRING
+            },
+            value: {
+                type: Sequalize.TEXT
+            }
         },
-        value: {
-            type: Sequalize.TEXT
+        {
+            freezeTableName: true // Model tableName will be the same as the model name
         }
-    },
-    {
-        freezeTableName: true // Model tableName will be the same as the model name
-    }
-);
+    );
+    return Setting;
+};
 
 export function createOptions(data) {
     if (!isArray(data)) {

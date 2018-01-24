@@ -1,91 +1,99 @@
 import React from "react";
 import ReactDOM from "react-dom/server";
 //import Helmet from 'react-helmet';
-import { match, RouterContext } from "react-router";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import { ApolloProvider } from "react-apollo";
-import config from "../config/config";
-import routes from "./routes";
-import ApolloClient, { createNetworkInterface } from "apollo-client";
-import { getDataFromTree, renderToStringWithData } from "react-apollo";
+import { createHttpLink } from "apollo-link-http";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import fetch from "node-fetch";
+import { StaticRouter } from "react-router";
+import { ApolloProvider, getDataFromTree } from "react-apollo";
+import ApolloClient from "apollo-client";
+import App from "./containers/App";
+import siteConfig from "../config/site.config";
+
+const client = new ApolloClient({
+    ssrMode: true,
+    link: createHttpLink({
+        uri: siteConfig.apiUrl,
+        fetch
+    }),
+    cache: new InMemoryCache()
+});
+const context = {};
 
 module.exports.init = app => {
     app.get("*", (req, res) => {
-        match(
-            { routes, location: req.url },
-            (error, redirectLocation, renderProps) => {
-                if (error) {
-                    res.status(500).send(error.message);
-                } else if (redirectLocation) {
-                    res.redirect(
-                        302,
-                        redirectLocation.pathname + redirectLocation.search
-                    );
-                } else if (renderProps) {
-                    sendResponse(renderProps).then(html => {
-                        res.status(200);
-                        res.send(html);
-                        res.end();
-                    });
-                } else {
-                    res.status(404).send("Not found");
-                }
-            }
-        );
+        const sendResponse = ({ content, initialState }) => {
+            const html = <Html content={content} state={initialState} />;
+            res.status(200);
+            res.send(`<!doctype html>\n${ReactDOM.renderToStaticMarkup(html)}`);
+            res.end();
+        };
+        let initialState = {};
+
+        if (!req.headers.cookie) {
+            const adminApp = (
+                <ApolloProvider client={client}>
+                    <StaticRouter location={req.url} context={context}>
+                        <App />
+                    </StaticRouter>
+                </ApolloProvider>
+            );
+
+            getDataFromTree(adminApp).then(() => {
+                const content = ReactDOM.renderToString(adminApp);
+                initialState = client.extract();
+                sendResponse({ content, initialState });
+            });
+        } else {
+            sendResponse({ content: null, initialState });
+        }
     });
 };
 
-function sendResponse(renderProps) {
-    const client = new ApolloClient({
-        ssrMode: true,
-        networkInterface: createNetworkInterface({
-            uri: "http://localhost:3030/graphql"
-        })
-    });
-
-    const app = (
-        <ApolloProvider client={client}>
-            <RouterContext {...renderProps} />
-        </ApolloProvider>
-    );
-    return renderToStringWithData(app).then(content => {
-        const initialState = {
-            [client.reduxRootKey]: client.getInitialState()
-        };
-        return renderHTML(content, initialState);
-    });
-}
-
-function renderHTML(content, state) {
-    var bundle =
-        process.env.NODE_ENV == "production"
+function Html({ content, state }) {
+    const bundle =
+        process.env.NODE_ENV === "production"
             ? "/js/app-client-bundle.js"
             : "/static/app-client-bundle.js";
-    const HTML = `
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1">
-                        <!-- Fonts -->
-                        <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,400italic,700' rel='stylesheet' type='text/css'>
-                        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
-                        <!--<link rel="stylesheet" href="http://bootswatch.com/cosmo/bootstrap.min.css">-->
-                        <link rel="stylesheet" href="/css/bootstrap.min.css">
-                        <link rel="stylesheet" href="/css/vertical.css">
-                        <link rel="stylesheet" href="/css/font-awesome.min.css">
-                        <link rel="stylesheet" href="https://cdn.quilljs.com/1.1.5/quill.snow.css">
-                    </head>
-                    <body id='client'>
-                        <div id="app">${content}</div>
-                        <script type="application/javascript">
-                        window.__APOLLO_STATE__ = ${JSON.stringify(state)};
-                        </script>
-                        <script src="${bundle}"></script>
-                    </body>
-                    </html>
-                `;
 
-    return HTML;
+    const insertScript = script => (
+        <script type="text/javascript" src={script} />
+    );
+
+    const insertStyle = style => (
+        <link href={style} rel="stylesheet" type="text/css" />
+    );
+    return (
+        <html lang="en">
+            <head>
+                <meta charSet="UTF-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+                <title>Blog Dashboard</title>
+                {insertStyle(
+                    "https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700"
+                )}
+                {insertStyle("/css/bootstrap.min.css")}
+                {insertStyle("/css/vertical.css")}
+                {insertStyle("/css/font-awesome.min.css")}
+                {insertStyle(
+                    "http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/github.min.css"
+                )}
+            </head>
+            <body>
+                <div id="app" dangerouslySetInnerHTML={{ __html: content }} />
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `window.__APOLLO_STATE__=${JSON.stringify(
+                            state
+                        ).replace(/</g, "\\u003c")};`
+                    }}
+                />
+                {insertScript("/js/highlight.min.js")}
+                {insertScript(bundle)}
+            </body>
+        </html>
+    );
 }

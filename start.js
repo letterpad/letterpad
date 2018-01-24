@@ -1,23 +1,25 @@
-require.extensions[".sass"] = () => {
-    return "";
-};
-
-require.extensions[".scss"] = () => {
-    return "";
-};
-require.extensions[".gql"] = () => {
-    return "";
-};
+require.extensions[".sass"] = () => "";
+require.extensions[".scss"] = () => "";
 
 require("babel-register");
 require("babel-polyfill");
-require("./api/server");
-let express = require("express");
-let config = require("./config/config");
-let bodyParser = require("body-parser");
-let adminServerRendering = require("./app/serverRendering");
-let clientServerRendering = require("./client/serverRendering");
+const express = require("express");
+const bodyParser = require("body-parser");
+const webpack = require("webpack");
+const webpackDevMiddleware = require("webpack-dev-middleware");
+const webpackHotMiddleware = require("webpack-hot-middleware");
+
+const adminServerRendering = require("./admin/serverRendering");
+const clientServerRendering = require("./client/serverRendering");
+
+const wpConfigFile =
+    process.env.NODE_ENV === "dev"
+        ? "./webpack.config.dev.js"
+        : "./webpack.config.prod.js";
+
+const webpackConfig = require(wpConfigFile);
 const app = express();
+
 app.use(bodyParser.json());
 app.use(
     bodyParser.urlencoded({
@@ -27,22 +29,60 @@ app.use(
 
 app.use(express.static("public"));
 // start a webpack-dev-server
-var webpack = require("webpack");
-var wpConfigFile =
-    process.env.NODE_ENV == "dev"
-        ? "./webpack.config.dev.js"
-        : "./webpack.config.prod.js";
-var webpackConfig = require(wpConfigFile);
-var compiler = webpack(webpackConfig);
+
+const compiler = webpack(webpackConfig);
+
+// let pinger = null;
+
+// app.get("/build", (req, res) => {
+//     // console.log("reached");
+//     // if (pinger !== null) {
+//     //     console.log("Ending");
+//     //     pinger.end();
+//     // }
+//     // console.log("Continuing");
+//     // pinger = Object.assign({}, res);
+//     var webpack = require("webpack");
+//     var ProgressPlugin = require("webpack/lib/ProgressPlugin");
+//     var config = require("./webpack.config.prod.js");
+//     var compiler = webpack(config);
+//     compiler.apply(
+//         new ProgressPlugin(function(percentage, msg) {
+//             res.write(percentage * 100 + "%" + " >> " + msg + "\n");
+//             //console.log(percentage * 100 + "%", msg);
+//         })
+//     );
+
+//     compiler.run(function(err, stats) {
+//         // ...
+//         res.end();
+//     });
+// });
 app.use(
-    require("webpack-dev-middleware")(compiler, {
+    webpackDevMiddleware(compiler, {
+        hot: true,
         noInfo: true,
-        publicPath: webpackConfig.output.publicPath
+        publicPath: webpackConfig.output.publicPath,
+        stats: {
+            colors: true
+        },
+        historyApiFallback: true
     })
 );
-app.use(require("webpack-hot-middleware")(compiler));
+
+app.use(
+    webpackHotMiddleware(compiler, {
+        log: console.log,
+        path: "/__webpack_hmr",
+        heartbeat: 10 * 1000
+    })
+);
 adminServerRendering.init(app);
 clientServerRendering.init(app);
-app.listen(4040, function() {
-    console.log("====> Admin is listening on", 4040);
+
+const server = app.listen(4040, function() {
+    const host = server.address().address;
+    const port = server.address().port;
+
+    console.log("Example app listening at http://%s:%s", host, port);
 });

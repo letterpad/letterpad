@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ArticleList from "../components/post/ArticleList";
 import { gql, graphql } from "react-apollo";
+import Loader from "../components/Loader";
 
 class Posts extends Component {
     constructor(props) {
@@ -9,7 +10,7 @@ class Posts extends Component {
 
     render() {
         if (this.props.loading) {
-            return <div>hello</div>;
+            return <Loader />;
         }
 
         const posts = this.props.posts.map((post, i) => {

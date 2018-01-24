@@ -1,17 +1,18 @@
 import express from "express";
-import session from "express-session";
 import GraphHTTP from "express-graphql";
 import Schema from "./schema";
 import bodyParser from "body-parser";
-import config from "../config/config";
-import * as actions from "./actions/index";
-import { mapUrl } from "./utils/url.js";
-import http from "http";
 import cors from "cors";
 import multer from "multer";
 import path from "path";
 import jwt from "jsonwebtoken";
+import { UnauthorizedError } from "./utils/common";
+import models from "./models";
+import { seed } from "./seed/seed";
+
 const app = express();
+const SECRET = "cdascadsc-cdascadsca";
+
 app.use(cors());
 app.options("*", cors());
 app.use(
@@ -19,15 +20,25 @@ app.use(
         extended: true
     })
 );
+
+const addUser = async req => {
+    const token = req.headers["authorization"];
+    delete req.user;
+    if (token) {
+        try {
+            req.user = await jwt.verify(token, SECRET);
+        } catch (error) {
+            // we do nothing here. just watch the show
+        }
+    }
+    req.next();
+};
+
 app.use(bodyParser.json());
+app.use(addUser);
 app.use(
     "/graphql",
-    GraphHTTP(req => {
-        let user = {};
-        if (typeof req.body.token != "undefined") {
-            user = jwt.verify(req.body.token, "your-dirty-secret");
-        }
-
+    GraphHTTP((req, res) => {
         return {
             schema: Schema,
             pretty: true,
@@ -35,8 +46,23 @@ app.use(
             rootValue: {
                 request: req
             },
+            formatError(error) {
+                console.log("reached");
+                if (error.originalError) {
+                    if (error.originalError.statusCode == 401) {
+                        res.status(error.originalError.statusCode);
+                        res.set("Location", "/admin/login");
+                    } else {
+                        res.status(500);
+                    }
+                }
+                return error;
+            },
             context: {
-                user: user
+                user: req.user || {},
+                SECRET,
+                admin: req.headers.admin || false,
+                models: models
             }
         };
     })
@@ -59,50 +85,19 @@ app.post("/upload", (req, res) => {
         res.json("/uploads/" + req.file.filename);
     });
 });
-// app.use(bodyParser.json());
-// const server = new http.Server(app);
 
-// app.use((req, res) => {
-//     const splittedUrlPath = req.url.split("?")[0].split("/").slice(1);
-//     const { action, params } = mapUrl(actions, splittedUrlPath);
-
-//     if (action) {
-//         action(req, params).then(
-//             result => {
-//                 if (result instanceof Function) {
-//                     result(res);
-//                 } else {
-//                     res.json(result);
-//                 }
-//             },
-//             reason => {
-//                 if (reason && reason.redirect) {
-//                     res.redirect(reason.redirect);
-//                 } else {
-//                     console.error("API ERROR:", reason);
-//                     res.status(reason.status || 500).json(reason);
-//                 }
-//             }
-//         );
-//     } else {
-//         res.status(404).end("NOT FOUND");
-//     }
-// });
-
-// if (config.apiPort) {
-//     const runnable = server.listen(config.apiPort, err => {
-//         if (err) {
-//             console.error(err);
-//         }
-//         console.info("----\n==> 🌎  API is running on port %s", config.apiPort);
-//         console.info("==> 💻  Send requests to %s", config.apiUrl);
-//     });
-// } else {
-//     console.error(
-//         "==>     ERROR: No PORT environment variable has been specified"
-//     );
-// }
-
-app.listen(3030, () => {
-    console.log(`App listening on port 3030`);
+// seed the database if settings is empty
+const seedIfEmpty = async () => {
+    const result = await models.Setting.findOne({ where: { id: 1 } });
+    if (!result) {
+        console.log("Seeding");
+        await seed();
+    }
+};
+console.log("Initiating Graphql Server");
+models.conn.sync({ force: false }).then(async () => {
+    await seedIfEmpty();
+    const httpServer = app.listen(3030, () => {
+        console.log(`App listening on port 3030`);
+    });
 });
