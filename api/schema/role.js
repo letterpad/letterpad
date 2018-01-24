@@ -9,4 +9,8 @@ export default `
     id: Int
     name: String
   }
+
+  type Query {
+    roles: [Role]
+  }
 `;

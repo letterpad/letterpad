@@ -1,19 +1,8 @@
 import React, { Component } from "react";
 import { Route, IndexRoute } from "react-router";
-import {
-    App,
-    Posts,
-    Search,
-    Single,
-    Page,
-    OneColLayout,
-    TwoColLayout
-} from "./containers";
+import { App, Posts, Search, Single, Page, TwoColLayout } from "./containers";
 
 class Home extends Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         //  so this is the homepage. Lets see what to display
         const menu = JSON.parse(this.props.settings.menu.value);

@@ -1,40 +1,29 @@
-var mysql = require("mysql");
 import Sequalize from "sequelize";
 
-var config = {
-    host: "127.0.0.1",
-    port: 3306,
-    user: "root",
-    password: "123456",
-    timezone: "utc",
-    charset: "utf8mb4",
-    connectionLimit: 30,
-    database: "reactcms",
-    multipleStatements: true,
-    debug: false
-};
-if (process.env.NODE_ENV && process.env.NODE_ENV === "dev") {
-    var pool = mysql.createPool(config);
-} else {
-    config.password = "";
-    var pool = mysql.createPool(config);
-}
-
-var conn = new Sequalize("reactcms", "root", "123456", {
-    host: "localhost",
-    dialect: "mysql",
-    define: {
-        underscored: true
-    },
-    pool: {
-        max: 5,
-        min: 0,
-        idle: 10000
+const DB_NAME = process.env.TEST_DB || process.env.MYSQL_DB;
+const conn = new Sequalize(
+    DB_NAME,
+    process.env.MYSQL_USER,
+    process.env.MYSQL_PASSWORD,
+    {
+        logging: str => {
+            //...
+            console.log(str);
+        },
+        host: process.env.MYSQL_HOST,
+        port: process.env.MYSQL_PORT || 3306,
+        dialect: "mysql",
+        define: {
+            underscored: true
+        },
+        pool: {
+            max: 5,
+            min: 0,
+            idle: 10000
+        }
     }
-});
+);
 
 module.exports = {
-    pool: pool,
-    conn: conn,
-    config: config
+    conn
 };

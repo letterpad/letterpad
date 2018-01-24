@@ -1,4 +1,5 @@
-import { MediaModel, PostModel } from "../models";
+import { UnauthorizedError } from "../utils/common";
+import { editPostPerm } from "../utils/permissions";
 
 function IsJsonString(str) {
     try {
@@ -10,9 +11,9 @@ function IsJsonString(str) {
 }
 
 function getConditions(columns, args) {
-    let obj = {};
-    let conditions = {};
-    for (let field in args) {
+    const obj = {};
+    const conditions = {};
+    for (const field in args) {
         if (columns.indexOf(field) >= 0) {
             obj[field] = IsJsonString(args[field])
                 ? JSON.parse(args[field])
@@ -26,38 +27,39 @@ function getConditions(columns, args) {
 }
 export default {
     Query: {
-        media: (root, args) => {
-            let columns = Object.keys(PostModel.rawAttributes);
-            let conditions = getConditions(columns, args);
+        media: async (root, args, { user, models }) => {
+            if (!user || !user.id) {
+                throw new UnauthorizedError({ url: "/media" });
+            }
+            const columns = Object.keys(models.Post.rawAttributes);
+            const conditions = getConditions(columns, args);
 
-            return MediaModel.count(conditions).then(count => {
-                if (args.cursor) {
-                    conditions.where.id = { gt: args.cursor };
-                }
-                return MediaModel.findAll(conditions).then(res => {
-                    return {
-                        count: count,
-                        rows: res
-                    };
-                });
-            });
+            const count = await models.Media.count(conditions);
+            if (args.cursor) {
+                conditions.where.id = { gt: args.cursor };
+            }
+            const media = await models.Media.findAll(conditions);
+            return {
+                count,
+                rows: media
+            };
         }
     },
     Mutation: {
-        insertMedia: (root, args) => {
-            let data = {};
+        insertMedia: editPostPerm.createResolver((root, args, { models }) => {
+            const data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
             });
-            return MediaModel.create(data);
-        },
+            return models.Media.create(data);
+        }),
 
-        deleteMedia: (root, args) => {
-            let data = {};
+        deleteMedia: editPostPerm.createResolver((root, args, { models }) => {
+            const data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
             });
-            return MediaModel.destroy(data);
-        }
+            return models.Media.destroy(data);
+        })
     }
 };

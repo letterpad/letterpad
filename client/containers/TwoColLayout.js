@@ -4,38 +4,40 @@ import Footer from "./Footer";
 import Menu from "../components/Menu";
 
 export default function Layout(Element) {
-    return class Layout extends Component {
+    return class extends Component {
         render() {
-            let page = "a"; //Element.WrappedComponent.name.toLowerCase();
+            const pageName = Element.type
+                ? Element.type.name.toLowerCase()
+                : "";
+            // let ChildEle = Element;
+            // if (typeof Element === "function") {
+            //     ChildEle = <Element props={this.props} />;
+            // }
+            const enhancedElement = React.cloneElement(Element, {
+                ...this.props
+            });
+
+            const { settings } = enhancedElement.props;
             return (
-                <div className={"wrapper " + page}>
-                    <Menu menu={JSON.parse(this.props.settings.menu.value)} />
-                    {/*<section className="module-sm top-head">
-                        <div className="container-fluid container-custom">
-                            <div className="row">
-                                <div className="col-sm-6 col-sm-offset-3">
-                                    <h2 className="module-title font-alt m-b-0">
-                                        {""}
-                                    </h2>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <hr className="divider" />*/}
+                <div className={"wrapper " + pageName}>
+                    <Menu
+                        settings={settings}
+                        menu={JSON.parse(settings.menu.value)}
+                    />
 
                     <section className="module-xs">
                         <div className="row">
                             <div className="col-lg-8 column">
-                                <Element {...this.props} />
+                                {enhancedElement}
                             </div>
                             <div className="col-lg-4 column">
-                                <Sidebar settings={this.props.settings} />
+                                <Sidebar settings={settings} />
                             </div>
                         </div>
                     </section>
 
-                    <hr className="divider" />
-                    <Footer />
+                    {/* <hr className="divider" />
+                    <Footer /> */}
                 </div>
             );
         }

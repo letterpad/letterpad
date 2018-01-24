@@ -1,13 +1,13 @@
 import Sequalize from "sequelize";
-import {
-    _createPost,
-    _updatePost,
-    MediaModel,
-    PostModel,
-    SettingsModel,
-    TaxonomyModel
-} from "../models";
+import { _createPost, _updatePost } from "../models/post";
 import { getTaxonomies } from "../models/taxonomy";
+import { UnauthorizedError } from "../utils/common";
+import {
+    requiresAdmin,
+    checkDisplayAccess,
+    createPostsPerm,
+    editPostPerm
+} from "../utils/permissions";
 
 function IsJsonString(str) {
     try {
@@ -18,9 +18,9 @@ function IsJsonString(str) {
     return true;
 }
 function getConditions(columns, args) {
-    let obj = {};
-    let conditions = {};
-    for (let field in args) {
+    const obj = {};
+    const conditions = {};
+    for (const field in args) {
         if (columns.indexOf(field) >= 0) {
             obj[field] = IsJsonString(args[field])
                 ? JSON.parse(args[field])
@@ -35,85 +35,102 @@ function getConditions(columns, args) {
 
 export default {
     Query: {
-        posts: (root, args, context) => {
-            let columns = Object.keys(PostModel.rawAttributes);
-            let conditions = getConditions(columns, args);
-            return PostModel.count(conditions).then(count => {
-                if (args.cursor) {
-                    conditions.where.id = { gt: args.cursor };
+        posts: checkDisplayAccess.createResolver((root, args, { models }) => {
+            const newArgs = { ...args };
+
+            if (newArgs.status == "all") delete newArgs.status;
+
+            const columns = Object.keys(models.Post.rawAttributes);
+            const conditions = getConditions(columns, newArgs);
+            if (newArgs.status) {
+                conditions.where.status = newArgs.status;
+            }
+            return models.Post.count(conditions).then(count => {
+                if (newArgs.cursor) {
+                    conditions.where.id = { gt: newArgs.cursor };
                 }
                 conditions.order = [["id", "DESC"]];
-                return PostModel.findAll(conditions).then(res => {
+
+                return models.Post.findAll(conditions).then(res => {
                     return {
-                        count: count,
+                        count,
                         rows: res
                     };
                 });
             });
-        },
-        post: (root, args) => {
-            return PostModel.findOne({ where: args });
-        },
-        postsMenu: async (root, args) => {
-            let that = this;
-            let menu = await SettingsModel.findOne({
+        }),
+        post: checkDisplayAccess.createResolver((root, args, { models }) => {
+            return models.Post.findOne({ where: args });
+        }),
+        postsMenu: async (root, args, { models, user }) => {
+            let menu = await models.Setting.findOne({
                 where: { option: "menu" }
             });
             menu = JSON.parse(menu.dataValues.value);
 
             let item = menu.filter(item => item.slug == args.slug);
 
-            const taxonomy = await TaxonomyModel.findOne({
-                where: { id: item[0].id }
-            });
+            // const taxonomy = await models.Taxonomy.findOne({
+            //     where: { id: item[0].id }
+            // });
 
-            return getTaxonomies({
-                type: "post_category",
-                name: taxonomy.dataValues.name,
-                postType: "post"
-            });
+            return getTaxonomies(
+                root,
+                {
+                    type: "post_category",
+                    taxId: item[0].id,
+                    postType: "post",
+                    status: "publish"
+                },
+                { user, models }
+            );
         },
-        pageMenu: async (root, args) => {
+        pageMenu: async (root, args, { models }) => {
             let that = this;
-            let menu = await SettingsModel.findOne({
+            let menu = await models.Setting.findOne({
                 where: { option: "menu" }
             });
             menu = JSON.parse(menu.dataValues.value);
+
             let item = menu.reduce(item => item.slug == args.slug);
-            console.log(item);
+
+            args.status = "publish";
             if (!item) {
-                return PostModel.findOne({
+                return models.Post.findOne({
                     where: { type: "page", slug: args.slug }
                 });
             }
-            return PostModel.findOne({
-                where: { id: item[0].id }
+            return models.Post.findOne({
+                where: { id: item.id }
             });
         },
-        adjacentPosts: async (root, args) => {
+        adjacentPosts: async (root, args, { models }) => {
             let data = {
                 previous: {},
                 next: {}
             };
-            const postCheck = await PostModel.findOne({ where: args });
+            args.status = "publish";
+            const postCheck = await models.Post.findOne({ where: args });
             if (postCheck === null) {
                 throw new Error("Invalid query");
             }
-            const prevPost = await PostModel.findOne({
+            const newArgs = { ...args };
+            delete newArgs.slug;
+            const prevPost = await models.Post.findOne({
                 where: {
-                    id: { $lt: postCheck.dataValues.id },
-                    type: args.type
+                    ...newArgs,
+                    id: { $lt: postCheck.dataValues.id }
                 },
                 order: [["id", "DESC"]],
                 limit: 1
             });
             data.previous = prevPost;
-            const nextPost = await PostModel.findOne({
+            const nextPost = await models.Post.findOne({
                 where: {
+                    ...newArgs,
                     id: {
-                        $gt: postId
-                    },
-                    type: args.type
+                        $gt: postCheck.dataValues.id
+                    }
                 },
                 order: [["id", "ASC"]],
                 limit: 1
@@ -121,44 +138,76 @@ export default {
             data.next = nextPost;
             return data;
         },
-        postTaxonomies: (root, args) => {
-            return getTaxonomies(args);
+        postTaxonomies: checkDisplayAccess.createResolver(
+            (root, args, context) => {
+                return getTaxonomies(root, args, context);
+            }
+        ),
+        stats: async (root, args, { models }) => {
+            const result = {
+                posts: { published: 0, drafts: 0 },
+                pages: { published: 0, drafts: 0 },
+                tags: 0,
+                categories: 0
+            };
+            result.posts.published = await models.Post.count({
+                where: { status: "publish", type: "post" }
+            });
+
+            result.posts.drafts = await models.Post.count({
+                where: { status: "draft", type: "post" }
+            });
+
+            result.pages.published = await models.Post.count({
+                where: { status: "publish", type: "page" }
+            });
+
+            result.pages.drafts = await models.Post.count({
+                where: { status: "draft", type: "page" }
+            });
+
+            result.categories = await models.Taxonomy.count({
+                where: { type: "post_category" }
+            });
+            result.tags = await models.Taxonomy.count({
+                where: { type: "post_tag" }
+            });
+
+            return result;
         }
     },
     Mutation: {
-        createPost: (root, args) => {
+        createPost: createPostsPerm.createResolver((root, args, { models }) => {
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
             });
 
-            return _createPost(data);
-        },
-        updatePost: (root, args, token) => {
+            return _createPost(data, models);
+        }),
+        updatePost: editPostPerm.createResolver((root, args, { models }) => {
             let data = {};
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
             });
-            return _updatePost(data);
-        },
-        uploadFile: (root, args) => {
-            return _updatePost(args);
-        }
+            return _updatePost(data, models);
+        }),
+        uploadFile: editPostPerm.createResolver((root, args, { models }) => {
+            return _updatePost(args, models);
+        })
     },
     Post: {
-        author: post => {
-            return post.getAuthor();
-        },
+        author: post => post.getAuthor(),
         taxonomies: post => {
-            return post.getTaxonomy();
+            return post.getTaxonomies();
         }
     },
     PostTaxonomy: {
         posts: (taxonomy, { type }) => {
-            return taxonomy.getPost({ where: { type: type } });
+            return taxonomy.getPosts({ where: { type, status: "publish" } });
         },
         post_count: taxonomy => {
-            return taxonomy.post[0].dataValues.post_count;
+            return taxonomy.posts[0].dataValues.post_count;
         }
     }
 };

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import moment from "moment";
 
 export default class ArticleList extends Component {
@@ -27,9 +27,9 @@ export default class ArticleList extends Component {
                     </div>
                     <div className="post-content">
                         <p>{this.props.post.excerpt}</p>
-                        <a className="post-more" href="blog-single.html">
+                        <Link className="post-more" to={href}>
                             Read more →
-                        </a>
+                        </Link>
                     </div>
                 </article>
             </div>

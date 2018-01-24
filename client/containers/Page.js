@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import Article from "../components/post/Article";
 import { gql, graphql } from "react-apollo";
+import Loader from "../components/Loader";
 
 class Page extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         if (this.props.loading) {
-            return <div>hello</div>;
+            return <Loader />;
         }
         if (this.props.page === null) {
             return <div>Nothing found..Absolute bullshit</div>;
@@ -45,7 +42,7 @@ const ContainerWithPageData = graphql(pageQuery, {
     options: props => {
         return {
             variables: {
-                slug: props.slug || props.params.slug,
+                slug: props.slug || props.match.params.slug,
                 postType: "page"
             }
         };

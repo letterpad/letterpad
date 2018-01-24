@@ -1,12 +1,90 @@
-$dark: #232323;
-$dark_1: #303030;
-$dark_2: #3a3a3a;
-$light: #fdfdfd;
-$font_body: #818181;
-$font_body_dark: #000;
-$font_body_medium: rgb(92, 92, 92);
-$font_body_light: #aeaeae;
-$link_active: #2196f3;
-$link_hover: #1a82d6;
-$border_color: #e5e5e5;
-$placeholder: #eeeeee;
+:root {
+    --color-text-primary: #333333;
+    --color-text-primary-invert: #b7b7b7;
+    --color-text-primary-light: #616161;
+    --color-text-muted: rgb(185, 185, 185);
+    --color-text-secondary: #000000;
+    --color-text-secondary-light: #4c4c4c;
+    --color-accent: #2196f3;
+    --color-bg-primary: #f1f1f1;
+    --color-bg-secondary: #1f1e1e;
+    --color-border: #e5e5e5;
+    --link-hover: #1a82d6;
+    --color-menu-link: var(--color-text-primary-invert);
+}
+
+$racing_font: "Racing Sans One",
+cursive;
+
+/*!------------------------------------------------------------------
+[Body Color]
+*/
+
+$color-text-primary: var(--color-text-primary);
+
+/*!------------------------------------------------------------------
+[Headlines]
+*/
+
+$color-text-secondary: var(--color-text-secondary);
+
+/*!------------------------------------------------------------------
+[Help text]
+*/
+
+$color-text-primary-light: var(--color-text-primary-light);
+
+/*!------------------------------------------------------------------
+[Placeholders]
+*/
+
+$color-text-muted: var(--color-text-muted);
+
+/*!------------------------------------------------------------------
+[Contrast for backgrounds. This should be opposite of text-primary-color]
+*/
+
+$color-text-primary-invert: var(--color-text-primary-invert);
+
+/*!------------------------------------------------------------------
+[Input boxes, text areas, etc. All .form-control]
+*/
+
+$color-text-secondary-light: var(--color-text-secondary-light);
+
+/*!------------------------------------------------------------------
+[Something to contrast]
+*/
+
+$color-accent: var(--color-accent);
+
+/*!------------------------------------------------------------------
+[Body background color]
+*/
+
+$color-bg-primary: var(--color-bg-primary);
+
+/*!------------------------------------------------------------------
+[Sidebar color]
+*/
+
+$color-bg-secondary: var(--color-bg-secondary);
+
+/*!------------------------------------------------------------------
+[Link colors]
+*/
+
+$link_active: var(--color-accent);
+$link_hover: var(--link-hover);
+
+/*!------------------------------------------------------------------
+[Borders]
+*/
+
+$color-border: var(--color-border);
+
+/*!------------------------------------------------------------------
+[Menu Link Color]
+*/
+
+$color-menu-link: var(--color-menu-link);
