@@ -117,6 +117,7 @@
     "autoprefixer": "^7.2.4",
     "axios": "^0.17.1",
     "babel-core": "^6.21.0",
+    "babel-eslint": "^5.0.4",
     "babel-jest": "^22.0.4",
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.16.0",
