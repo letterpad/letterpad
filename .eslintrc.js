@@ -1,5 +1,12 @@
 module.exports = {
-    extends: "airbnb",
+    extends: ["eslint:recommended", "plugin:react/recommended"],
+    env: {
+        es6: true,
+        browser: true,
+        commonjs: true,
+        node: fase
+    },
+    parser: "babel-eslint",
     rules: {
         quotes: [2, "double", { avoidEscape: true }],
         indent: ["error", 4, { SwitchCase: 1 }],
@@ -22,11 +29,6 @@ module.exports = {
         "react/prefer-stateless-function": [0],
         "react/no-multi-comp": [0],
         "react/require-default-props": [0],
-        globals: {
-            localStorage: 0,
-            window: 0,
-            document: 0
-        },
         "jsx-a11y/label-has-for": [0],
         "react/forbid-prop-types": [0],
         "jsx-a11y/click-events-have-key-events": [0],
