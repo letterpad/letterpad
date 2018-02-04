@@ -2,17 +2,21 @@ import React, { Component } from "react";
 import { graphql, compose } from "react-apollo";
 import PropTypes from "prop-types";
 import Menu from "../components/settings/Menu";
+import MenuConstruction from "../components/settings/MenuConstruction";
 import {
     GET_OPTIONS,
     GET_TAXONOMIES,
     GET_PAGE_NAMES
 } from "../../shared/queries/Queries";
 import { UPDATE_OPTIONS } from "../../shared/queries/Mutations";
+import PageHeader from "../components/PageHeader";
+import Paper from "material-ui/Paper";
+import Button from "material-ui/Button";
 
 const SubmitBtn = ({ handleClick }) => (
-    <button type="submit" onClick={handleClick} className="btn btn-blue btn-sm">
+    <Button raised color="primary" onClick={handleClick}>
         Save
-    </button>
+    </Button>
 );
 
 SubmitBtn.propTypes = {
@@ -46,45 +50,38 @@ class MenuBuilder extends Component {
     }
     render() {
         const data = {};
-        if (this.props.options.loading) {
+        if (this.props.settings.loading) {
             return <div>hello</div>;
         }
-        this.props.options.settings.forEach(setting => {
-            data[setting.option] = setting;
-        });
-
         return (
-            <section className="module-xs">
-                <div className="card">
-                    <div className="module-title">Menu Settings</div>
-                    <div className="module-subtitle">Configure your menu</div>
-                    <Menu
-                        data={data}
+            <div>
+                <PageHeader
+                    title="Menu Settings"
+                    subtitle="Configure your menu"
+                />
+                <div className="col-lg-12" style={{ marginTop: 16 }}>
+                    <MenuConstruction
+                        data={this.props.settings}
                         pages={this.props.pages}
-                        categories={this.props.categories.taxonomies}
+                        categories={this.props.categories}
                         updateOption={this.setOption}
                     />
                     <SubmitBtn handleClick={this.submitData} />
                 </div>
-            </section>
+            </div>
         );
     }
 }
 
-const ContainerWithData = graphql(GET_OPTIONS, {
-    name: "options"
-});
-
 const CategoriesData = graphql(GET_TAXONOMIES, {
     name: "categories",
-    options: { variables: { type: "post_category" } }
+    options: () => ({ variables: { type: "post_category" } })
 });
 
 const PagesData = graphql(GET_PAGE_NAMES, {
     name: "pages",
     options: () => ({ variables: { type: "page" } })
 });
-const Data = compose(ContainerWithData, CategoriesData, PagesData);
 
 const createQueryWithData = graphql(UPDATE_OPTIONS, {
     props: ({ mutate }) => ({
@@ -107,7 +104,8 @@ MenuBuilder.propTypes = {
     updateOptions: PropTypes.func,
     options: PropTypes.object,
     pages: PropTypes.object,
-    categories: PropTypes.object
+    categories: PropTypes.object,
+    settings: PropTypes.object
 };
 
-export default createQueryWithData(Data(MenuBuilder));
+export default createQueryWithData(CategoriesData(PagesData(MenuBuilder)));

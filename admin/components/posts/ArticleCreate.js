@@ -5,16 +5,9 @@ import Editor from "./Editor";
 import PostActions from "./PostActions";
 import FeaturedImage from "./FeaturedImage";
 import ContentEditable from "./ContentEditable";
-import {
-    Card,
-    CardActions,
-    CardHeader,
-    CardMedia,
-    CardTitle,
-    CardText
-} from "material-ui/Card";
+import Card, { CardHeader, CardContent, CardMedia } from "material-ui/Card";
 
-export default class CreateArticle extends Component {
+export default class ArticleCreate extends Component {
     render() {
         return (
             <Card>
@@ -41,15 +34,15 @@ export default class CreateArticle extends Component {
                         </div>
                     }
                 />
-                <CardText>
+                <CardContent>
                     <Editor body="" />
-                </CardText>
+                </CardContent>
             </Card>
         );
     }
 }
 
-CreateArticle.propTypes = {
+ArticleCreate.propTypes = {
     title: PropTypes.string,
     post: PropTypes.object
 };

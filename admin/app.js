@@ -10,7 +10,7 @@ import client from "./apolloClient";
 import App from "./containers/App";
 import { lightBlue, green } from "material-ui/colors";
 import SidebarWidgets from "./components/settings/SidebarWidgets";
-console.log(lightBlue);
+
 /*
   Rendering
   This is where we hook up the Store with our actual component and the router

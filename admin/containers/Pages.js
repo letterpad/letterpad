@@ -103,28 +103,22 @@ class Pages extends Component {
                         <TableFooter>
                             <TableRow>
                                 <TablePagination
-                                    count={this.props.posts.count}
+                                    count={this.props.posts.count || 0}
                                     rowsPerPage={3}
-                                    page={this.props.variables.page}
+                                    page={this.props.variables.page - 1}
                                     backIconButtonProps={{
                                         "aria-label": "Previous Page"
                                     }}
                                     nextIconButtonProps={{
                                         "aria-label": "Next Page"
                                     }}
-                                    onChangePage={this.props.changePage}
+                                    onChangePage={(e, page) => {
+                                        this.props.changePage(e, page + 1);
+                                    }}
                                 />
                             </TableRow>
                         </TableFooter>
                     </Table>
-
-                    {!loading && (
-                        <Paginate
-                            count={this.props.posts.count}
-                            page={this.props.variables.page}
-                            changePage={this.props.changePage}
-                        />
-                    )}
                 </CardContent>
             </Card>
         );
