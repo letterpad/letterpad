@@ -33,6 +33,14 @@ module.exports = {
         loaders: [
             // CSS
             {
+                test: /\.css$/,
+                loaders: ["style-loader", "css-loader"]
+            },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                loader: "url-loader?limit=10000&mimetype=image/svg+xml"
+            },
+            {
                 test: /\.scss$/,
                 loaders: [
                     "style-loader",
@@ -54,5 +62,8 @@ module.exports = {
                 include: path.join(__dirname, "client")
             }
         ]
+    },
+    stats: {
+        colors: true
     }
 };

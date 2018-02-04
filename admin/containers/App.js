@@ -26,6 +26,8 @@ import LeftDrawer from "../components/LeftDrawer";
 import { withStyles } from "material-ui/styles";
 import Typography from "material-ui/Typography";
 import "../../public/scss/admin.scss";
+import "../../public/scss/common.scss";
+import { GET_OPTIONS } from "../../shared/queries/Queries";
 
 const styles = theme => ({
     root: {
@@ -176,7 +178,12 @@ class App extends Component {
                                 <Route path="/admin/media" component={Media} />
                                 <Route
                                     path="/admin/menu-builder"
-                                    component={MenuBuilder}
+                                    component={props => (
+                                        <MenuBuilder
+                                            {...props}
+                                            settings={this.props.settings}
+                                        />
+                                    )}
                                 />
 
                                 <Route
@@ -221,17 +228,7 @@ class App extends Component {
     }
 }
 
-const optionsQuery = gql`
-    query getOptions {
-        settings {
-            id
-            option
-            value
-        }
-    }
-`;
-
-const ContainerWithSiteData = graphql(optionsQuery, {
+const ContainerWithSiteData = graphql(GET_OPTIONS, {
     props: ({ data: { loading, settings } }) => {
         const data = {};
         if (settings) {

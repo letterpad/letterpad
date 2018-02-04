@@ -17,7 +17,7 @@ const PostsHoc = WrappedComponent => {
         }
 
         changePage(e, page) {
-            e.preventDefault();
+            e && e.preventDefault();
             this.setState({ page });
         }
 

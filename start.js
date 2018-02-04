@@ -1,5 +1,6 @@
 require.extensions[".sass"] = () => "";
 require.extensions[".scss"] = () => "";
+require.extensions[".css"] = () => "";
 
 require("babel-register");
 require("babel-polyfill");

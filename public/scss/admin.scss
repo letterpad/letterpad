@@ -27,6 +27,15 @@ label.custom-label {
     width: initial !important;
 }
 
+.nestable-item-handler {
+    width: 20px;
+    height: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    background: #2b2b2b;
+    cursor: move;
+}
+
 
 /*-------------------------------
 [Menu Drawer]

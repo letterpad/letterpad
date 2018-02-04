@@ -20,7 +20,7 @@ class Create extends Component {
     }
     componentDidMount() {
         const { type } = this.props;
-        this.props.createPost({ type }).then(result => {
+        this.props.createPost({ type, title: "" }).then(result => {
             PostActions.setData(result.data.createPost.post);
             this.setState({
                 loading: false,
