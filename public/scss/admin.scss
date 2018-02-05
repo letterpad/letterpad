@@ -8,6 +8,7 @@ label.custom-label {
     font-size: 13px;
 }
 
+
 /*--------------------------------------
 [TopBar]
 */
@@ -17,6 +18,7 @@ label.custom-label {
     justify-content: space-between;
     background: $color-bg-secondary;
 }
+
 
 /* Tell Quill not to scroll */
 
@@ -46,6 +48,7 @@ label.custom-label {
     opacity: 1;
 }
 
+
 /* Specify our own scrolling container */
 
 #quill-container {
@@ -54,6 +57,7 @@ label.custom-label {
     overflow-y: auto;
 }
 
+
 /* Publish buttons */
 
 .btn-group-justified .btn-item {
@@ -61,11 +65,13 @@ label.custom-label {
     padding-right: 2px;
 }
 
+
 /* Tags Input */
 
 div.ReactTags__tags {
     position: relative;
 }
+
 
 /* Styles for the input */
 
@@ -84,6 +90,7 @@ div.ReactTags__tagInput input:focus {
     padding: 8px 0px 10px;
     display: block;
 }
+
 
 /* Styles for selected tags */
 
@@ -104,6 +111,7 @@ div.ReactTags__selected a.ReactTags__remove {
     cursor: pointer;
     font-size: 14px;
 }
+
 
 /* Styles for suggestions */
 
@@ -138,7 +146,9 @@ div.ReactTags__suggestions ul li.active {
     cursor: pointer;
 }
 
+
 /* Tags input end */
+
 
 /*Theme customization*/
 
@@ -164,19 +174,20 @@ div.ReactTags__suggestions ul li.active {
     }
 }
 
+
 /* Table */
 
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td {
     padding: 12px 8px;
     border-top: none;
 }
 
-.table > thead tr > th {
+.table>thead tr>th {
     color: $color-text-secondary;
     text-transform: uppercase;
     font-size: 13px;
@@ -187,6 +198,7 @@ tr td:first-child,
 tr th:first-child {
     padding-left: 0px !important;
 }
+
 
 /*Media*/
 
@@ -200,6 +212,7 @@ tr th:first-child {
         height: 80px;
     }
 }
+
 
 /*!------------------------------------------------------------------
 [Post Filters]
@@ -237,13 +250,13 @@ tr th:first-child {
     .nav-list li.active a {
         border-left: 4px solid $color-accent;
     }
-    .nav-list > li > a {
+    .nav-list>li>a {
         color: $color-menu-link;
         font-size: 14px;
         padding-left: 13px !important;
         border-bottom: 1px solid #2e2e2e;
     }
-    .nav-list > li a:hover {
+    .nav-list>li a:hover {
         border-left: 4px solid $color-accent;
     }
     .nav-list a span {
@@ -256,6 +269,7 @@ tr th:first-child {
         padding-left: 34px !important;
     }
 }
+
 
 /*----------------------------------------------
 [Themes]
@@ -286,6 +300,7 @@ tr th:first-child {
     }
 }
 
+
 /*--------------------------------------------
 [Themes]
 */
@@ -300,4 +315,30 @@ tr th:first-child {
         font-size: 12px;
         min-height: 42px;
     }
+}
+
+
+/*--------------------------------------------
+[Menu Construction]
+*/
+
+.nestable-item-handler {
+    &:before {
+        content: "\F0C9";
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: inherit;
+        color: #000;
+        padding-right: 0.5em;
+    }
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item[disabled] {
+    background: #eee;
+    cursor: not-allowed;
 }

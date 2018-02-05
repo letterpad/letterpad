@@ -44,6 +44,8 @@ iframe {
 [contenteditable="true"]:empty:before {
     content: attr(placeholder);
     display: block;
+    color: #ccc;
+    cursor: pointer;
     /* For Firefox */
 }
 
@@ -51,6 +53,14 @@ input,
 textarea,
 [contenteditable="true"]:focus {
     outline: none;
+}
+
+.table {
+    tbody tr td:first-child,
+    thead tr th:first-child {
+        padding-left: 16px !important;
+    }
+    box-shadow: 0px 0px 10px 0px #ccc;
 }
 
 ::-webkit-input-placeholder {

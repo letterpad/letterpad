@@ -175,3 +175,29 @@ export const SEARCH_POSTS_BY_TAXONOMY = gql`
         }
     }
 `;
+
+export const BLOG_STATS = gql`
+    query stats {
+        stats {
+            posts {
+                published
+                drafts
+            }
+            pages {
+                published
+                drafts
+            }
+            tags
+            categories
+        }
+    }
+`;
+
+export const TAX_SUGGESTIONS = gql`
+    query getTaxonomies($type: String!) {
+        taxonomies(type: $type) {
+            id
+            name
+        }
+    }
+`;
