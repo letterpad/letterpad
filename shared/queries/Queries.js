@@ -51,8 +51,8 @@ export const GET_SINGLE_POST = gql`
 `;
 
 export const GET_PAGE_NAMES = gql`
-    query getPosts($type: String!) {
-        posts(type: $type) {
+    query getPosts($type: String!, $status: String) {
+        posts(type: $type, status: $status) {
             count
             rows {
                 id
@@ -127,6 +127,7 @@ export const GET_TAXONOMIES = gql`
         taxonomies(type: $type) {
             id
             name
+            desc
         }
     }
 `;
@@ -155,8 +156,20 @@ export const SEARCH_POSTS = gql`
 `;
 
 export const SEARCH_POSTS_BY_TAXONOMY = gql`
-    query catPosts($type: String, $query: String, $postType: String) {
-        postTaxonomies(type: $type, name: $query) {
+    query catPosts(
+        $type: String
+        $query: String
+        $postType: String
+        $offset: Int
+        $limit: Int
+    ) {
+        postTaxonomies(
+            type: $type
+            name: $query
+            offset: $offset
+            limit: $limit
+        ) {
+            post_count
             posts(type: $postType) {
                 id
                 title

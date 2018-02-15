@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import moment from "moment";
 import { browserHistory } from "react-router";
 import PropTypes from "prop-types";
-import siteConfig from "../../../config/site.config";
+import config from "../../../config";
 
 export default class MediaItem extends Component {
     constructor(props) {
@@ -34,9 +34,7 @@ export default class MediaItem extends Component {
                 >
                     <img className="media-image" src={this.props.media.url} />
                 </td>
-                <td>
-                    {"http://" + siteConfig.root_url + this.props.media.url}
-                </td>
+                <td>{config.rootUrl + this.props.media.url}</td>
                 <td>
                     {moment(new Date(this.props.media.created_at)).format(
                         "MMM Do, YY"

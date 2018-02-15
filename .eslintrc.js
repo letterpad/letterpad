@@ -15,7 +15,8 @@ module.exports = {
     plugins: ["react"],
     globals: {
         qEditor: true,
-        Quill: true
+        Quill: true,
+        process: true
     },
     rules: {
         indent: [2, 4],

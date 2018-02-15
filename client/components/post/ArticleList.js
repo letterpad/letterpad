@@ -8,13 +8,15 @@ export default class ArticleList extends Component {
         return (
             <div className="card">
                 <article className="post">
-                    <div className="post-thumbnail">
-                        <img
-                            width="100"
-                            src={this.props.post.cover_image}
-                            alt={this.props.title}
-                        />
-                    </div>
+                    {this.props.post.cover_image && (
+                        <div className="post-thumbnail">
+                            <img
+                                width="100"
+                                src={this.props.post.cover_image}
+                                alt={this.props.title}
+                            />
+                        </div>
+                    )}
                     <div className="post-header">
                         <h2 className="post-title font-alt">
                             <Link to={href}>{this.props.post.title}</Link>

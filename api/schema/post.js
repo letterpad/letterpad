@@ -51,8 +51,8 @@ export default `
     post(id: Int, type: String, slug: String): Post
     posts(type: String, body: String, status: String, offset: Int, limit: Int, cursor: Int): PostNode
     postsMenu(slug: String,type: String, name: String, postType: String): [PostTaxonomy]
-    pageMenu(slug: String, name: String, postType: String): Post
-    postTaxonomies(type: String, name: String, postType: String): [PostTaxonomy]
+    pageMenu(slug: String, name: String, postType: String): Response
+    postTaxonomies(type: String, name: String, postType: String, offset: Int, limit: Int, cursor: Int): [PostTaxonomy]
     adjacentPosts(type: String, slug:String): AdjacentPosts
     stats: Stats
   }

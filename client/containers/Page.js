@@ -3,17 +3,30 @@ import Article from "../components/post/Article";
 import { gql, graphql } from "react-apollo";
 import Loader from "../components/Loader";
 
+const OhSnap = ({ message }) => {
+    return (
+        <section className="module-xs">
+            <div className="row">
+                <div className="card">
+                    <div className="module-title">Oh Snap!</div>
+                    <div className="module-subtitle">{message}</div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
 class Page extends Component {
     render() {
         if (this.props.loading) {
             return <Loader />;
         }
-        if (this.props.page === null) {
-            return <div>Nothing found..Absolute bullshit</div>;
+        if (!this.props.page.ok) {
+            return <OhSnap message="Something wrong happened" />;
         }
         return (
             <div>
-                <Article post={this.props.page} />;
+                <Article post={this.props.page.post} />;
             </div>
         );
     }
@@ -22,18 +35,24 @@ class Page extends Component {
 const pageQuery = gql`
     query pageMenu($slug: String, $postType: String) {
         pageMenu(slug: $slug, postType: $postType) {
-            id
-            title
-            body
-            status
-            created_at
-            excerpt
-            cover_image
-            slug
-            taxonomies {
+            ok
+            post {
                 id
-                name
-                type
+                title
+                body
+                status
+                created_at
+                excerpt
+                cover_image
+                slug
+                taxonomies {
+                    id
+                    name
+                    type
+                }
+            }
+            errors {
+                message
             }
         }
     }

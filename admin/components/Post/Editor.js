@@ -34,21 +34,6 @@ class Editor extends Component {
                 "clean"
             ]
         ];
-        let Block = Quill.import("blots/block");
-        class JsBlot extends Block {
-            static create(url) {
-                let node = super.create();
-                // Attribute for output HTML
-                node.setAttribute("class", "ql-syntax hljs");
-                return node;
-            }
-        }
-        JsBlot.blotName = "js";
-        // Class to look for when parsing your input HTML
-        JsBlot.className = "js";
-        // Tag to look for when parsing your input HTML
-        JsBlot.tagName = "pre";
-        Quill.register(JsBlot);
         window.qEditor = new Quill("#editor", {
             theme: "snow",
             placeholder: "Compose an epic...",
@@ -67,6 +52,8 @@ class Editor extends Component {
         });
         qEditor.on("text-change", function() {
             var justHtml = qEditor.root.innerHTML;
+            // add extra class
+            justHtml = justHtml.replace("\"ql-syntax\"", "\"ql-syntax hljs\"");
             PostActions.setData({
                 body: justHtml
             });

@@ -8,16 +8,29 @@ import { SEARCH_POSTS_BY_TAXONOMY } from "../../shared/queries/Queries";
 
 //export default function SearchWrapper(term) {
 export default class SearchWrapper extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loading: true,
+            data: []
+        };
+    }
+
     async componentWillMount() {
         let result = await appoloClient.query({
             query: SEARCH_POSTS_BY_TAXONOMY,
             variables: {
                 type: "post_category",
                 query: this.props.match.params.query,
-                postType: "post"
+                postType: "post",
+                limit: 2
             }
         });
-        console.log(result);
+        this.setState({
+            loading: false,
+            data: result.data.postTaxonomies
+        });
     }
 
     render() {

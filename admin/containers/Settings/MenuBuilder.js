@@ -69,7 +69,7 @@ const CategoriesData = graphql(GET_TAXONOMIES, {
 
 const PagesData = graphql(GET_PAGE_NAMES, {
     name: "pages",
-    options: () => ({ variables: { type: "page" } })
+    options: () => ({ variables: { type: "page", status: "publish" } })
 });
 
 const createQueryWithData = graphql(UPDATE_OPTIONS, {

@@ -3,6 +3,7 @@ export default `
     id: Int
     name: String
     type: String
+    desc: String
   }
   type Query {
     taxonomies(type: String, name: String): [Taxonomy]
@@ -13,7 +14,7 @@ export default `
     errors: [Error!]
   }
   type Mutation {
-    updateTaxonomy(id: Int!, name: String, desc: String, type: String!):EditTaxResponse
+    updateTaxonomy(id: Int!, name: String, desc: String, type: String!, edit: Boolean):EditTaxResponse
     deleteTaxonomy(id: Int!):EditTaxResponse
   }
 `;

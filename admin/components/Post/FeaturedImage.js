@@ -79,8 +79,11 @@ class FeaturedImage extends Component {
 const uploadCoverImageQuery = gql`
     mutation uploadFile($cover_image: String!, $id: Int!) {
         uploadFile(cover_image: $cover_image, id: $id) {
-            id
-            cover_image
+            ok
+            post {
+                id
+                cover_image
+            }
         }
     }
 `;

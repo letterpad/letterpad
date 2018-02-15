@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import moment from "moment";
 import PropTypes from "prop-types";
+import { notify } from "react-notify-toast";
 import { Link } from "react-router-dom";
 import PostsHoc from "./PostsHoc";
 import Paginate from "../../components/Paginate";
@@ -50,9 +51,10 @@ class Taxonomy extends Component {
             !nextProps.loading &&
             this.state.taxonomies.length !== nextProps.taxonomies.length
         ) {
-            this.state.taxonomies = nextProps.taxonomies;
-            this.state.filteredData = nextProps.taxonomies;
-            this.setState(this.state);
+            this.setState({
+                taxonomies: [...nextProps.taxonomies],
+                filteredData: [...nextProps.taxonomies]
+            });
         }
     }
     setRef(ele, idx, key) {
@@ -62,38 +64,56 @@ class Taxonomy extends Component {
         this.refList[idx][key] = ele;
     }
 
-    editSaveTaxonomy(idx) {
-        let item = this.state.filteredData[idx];
+    async editSaveTaxonomy(idx) {
+        let item = { ...this.state.filteredData[idx] };
+        let oldItem = this.state.taxonomies[idx];
 
         if (typeof item.edit === "undefined") {
             item.edit = false;
         }
+        //  dont allow multiple edits
         if (this.state.editMode && !item.edit) {
-            return;
+            return false;
         }
+
+        const newState = { editMode: !item.edit };
+        newState.filteredData = [...this.state.filteredData];
+        newState.filteredData[idx] = item;
+
+        //  make the item editable
+        if (!item.edit) {
+            newState.filteredData[idx].edit = true;
+
+            return this.setState(newState, _ => {
+                this.refList[idx].name.focus();
+            });
+        } else if (
+            item.name == oldItem.name &&
+            item.desc == oldItem.desc &&
+            item.edit
+        ) {
+            delete newState.filteredData[idx].edit;
+            return this.setState(newState);
+        }
+        // dont allow empty taxonomies
         if (item.edit && item.name == "") {
             return alert("Cannot be empty");
         }
-
-        item.edit = !item.edit;
-
-        this.state.editMode = item.edit;
-
-        this.state.filteredData[idx] = item;
-
-        this.setState(this.state, async () => {
-            if (item.edit) {
-                this.refList[idx].name.focus();
-            } else {
-                item.type = this.props.type;
-                const result = await this.props.updateTaxonomy(item);
-                if (result.data.updateTaxonomy.ok) {
-                    this.state.filteredData[idx].id =
-                        result.data.updateTaxonomy.id;
-                    this.setState(this.state);
-                }
-            }
-        });
+        newState.editMode = false;
+        item.type = this.props.type;
+        const result = await this.props.updateTaxonomy(item);
+        if (result.data.updateTaxonomy.ok) {
+            newState.filteredData[idx].id = result.data.updateTaxonomy.id;
+            delete newState.filteredData[idx].edit;
+            this.setState(newState);
+            notify.show("Taxonomy Saved", "success", 3000);
+        } else {
+            notify.show(
+                result.data.updateTaxonomy.errors[0].message,
+                "error",
+                3000
+            );
+        }
     }
 
     newTaxClicked() {
@@ -156,7 +176,7 @@ class Taxonomy extends Component {
                             this.handleChange(
                                 idx,
                                 "desc",
-                                e.currentTarget.innerHTML
+                                e.currentTarget.innerText
                             )
                         }
                         className={item.edit ? "inline-edit" : ""}
@@ -196,7 +216,7 @@ class Taxonomy extends Component {
                         {this.defaultText.subtitle1}
                     </div>
 
-                    <div>
+                    <div className="m-b-20">
                         <button
                             className="btn btn-xs btn-dark"
                             aria-label="Add"

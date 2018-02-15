@@ -3,6 +3,19 @@ import ArticleList from "../components/post/ArticleList";
 import { gql, graphql } from "react-apollo";
 import Loader from "../components/Loader";
 
+const OhSnap = ({ message }) => {
+    return (
+        <section className="module-xs">
+            <div className="row">
+                <div className="card">
+                    <div className="module-title">Oh Snap!</div>
+                    <div className="module-subtitle">{message}</div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
 class Posts extends Component {
     constructor(props) {
         super(props);
@@ -12,7 +25,9 @@ class Posts extends Component {
         if (this.props.loading) {
             return <Loader />;
         }
-
+        if (!this.props.posts) {
+            return <OhSnap message="Something wrong happened" />;
+        }
         const posts = this.props.posts.map((post, i) => {
             return <ArticleList idx={i} key={i} post={post} />;
         });
@@ -72,13 +87,13 @@ const ContainerWithPostData = graphql(catPosts, {
         return {
             variables: {
                 type: "post_category",
-                slug: props.slug || props.params.slug,
+                slug: props.slug || props.match.params.slug,
                 postType: "post"
             }
         };
     },
     props: ({ data: { loading, postsMenu } }) => ({
-        posts: postsMenu && postsMenu.length > 0 ? postsMenu[0].posts : [],
+        posts: postsMenu && postsMenu.length >= 0 ? postsMenu[0].posts : null,
         loading
     })
 });

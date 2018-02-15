@@ -1,39 +1,49 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import MenuTree from "./Nav/MenuTree";
 
 export default class Menu extends Component {
     constructor(props) {
         super(props);
+        this.setData = this.setData.bind(this);
         this.state = {
-            navbarOpen: false
+            navbarOpen: false,
+            menu: []
         };
     }
     navbarToggle() {
         this.setState({ navbarOpen: !this.state.navbarOpen });
     }
+    componentWillMount() {
+        this.setState({ menu: this.props.menu });
+    }
 
+    setData(newData) {
+        this.setState({ data: newData });
+    }
     render() {
         let navbarStatus = this.state.navbarOpen ? "in" : "";
-        let menu = this.props.menu.map(item => {
-            if (item.label == "Home") {
-                return (
-                    <li>
-                        <Link to="/">{item.label}</Link>
-                    </li>
-                );
-            } else if (item.type == "page") {
-                return (
-                    <li>
-                        <Link to={"/page/" + item.slug}>{item.label}</Link>
-                    </li>
-                );
-            }
-            return (
-                <li>
-                    <Link to={"/posts/" + item.slug}>{item.label}</Link>
-                </li>
-            );
-        });
+
+        // let menu = this.props.menu.map(item => {
+        //     if (item.label == "Home") {
+        //         return (
+        //             <li>
+        //                 <Link to="/">{item.label}</Link>
+        //             </li>
+        //         );
+        //     } else if (item.type == "page") {
+        //         return (
+        //             <li>
+        //                 <Link to={"/page/" + item.slug}>{item.label}</Link>
+        //             </li>
+        //         );
+        //     }
+        //     return (
+        //         <li>
+        //             <Link to={"/posts/" + item.slug}>{item.label}</Link>
+        //         </li>
+        //     );
+        // });
 
         return (
             <div className="sidebar">
@@ -61,7 +71,14 @@ export default class Menu extends Component {
                         className={"collapse navbar-collapse " + navbarStatus}
                         id="custom-collapse"
                     >
-                        <ul className="nav navbar-nav">{menu}</ul>
+                        <ul className="nav navbar-nav">
+                            <MenuTree
+                                data={this.state.menu}
+                                permissions={[]}
+                                route={"/"}
+                                setData={this.setData}
+                            />
+                        </ul>
                     </div>
                 </nav>
 

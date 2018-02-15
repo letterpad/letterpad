@@ -3,7 +3,7 @@ import { notify } from "react-notify-toast";
 import PostActions from "./PostActions";
 import { gql, graphql } from "react-apollo";
 import moment from "moment";
-import siteConfig from "../../../config/site.config";
+import config from "../../../config";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 
 const actions = {
@@ -88,10 +88,7 @@ class PostPublish extends Component {
     render() {
         const publishedCls = this.state.published ? "on" : "off";
         const permalink =
-            siteConfig.root_url +
-            this.state.post.type +
-            "/" +
-            this.state.post.slug;
+            config.rootUrl + this.state.post.type + "/" + this.state.post.slug;
         const actionLabel = this.props.create ? "Create" : "Update";
         return (
             <div className="card">

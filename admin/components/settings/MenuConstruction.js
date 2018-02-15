@@ -1,106 +1,11 @@
 import React, { Component } from "react";
 import Nestable from "react-nestable";
-
+import Resources from "./menu/Resources";
+import RenderItem from "./menu/RenderItem";
 const Handler = () => {
     return <span />;
 };
 
-class RenderItem extends Component {
-    constructor(props) {
-        super(props);
-        this.toggleCollapse = this.toggleCollapse.bind(this);
-        this.state = {
-            collapse: true
-        };
-    }
-    toggleCollapse() {
-        this.setState({ collapse: !this.state.collapse });
-    }
-
-    render() {
-        const slugHelperText =
-            this.props.item.type == "page"
-                ? "You can change this from the page."
-                : "";
-        return (
-            <div className="panel panel-default">
-                <div className="panel-heading" onClick={this.toggleCollapse}>
-                    <h3 className="panel-title">
-                        {this.props.handler}
-                        {this.props.item.label} ({this.props.item.type})
-                    </h3>
-                </div>
-                <div
-                    className={
-                        "panel-collapse collapse" +
-                        (!this.state.collapse ? " in" : "")
-                    }
-                >
-                    <div className="panel-body">
-                        <div className="form-group">
-                            <label className="custom-label">Name</label>
-                            <input
-                                label="Name"
-                                value={this.props.item.label}
-                                placeholder="Name to be displayed in the menu"
-                                type="text"
-                                className="form-control"
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label className="custom-label">Slug</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={this.props.item.slug}
-                                disabled={this.props.item.type === "page"}
-                                placeholder="Rewrite the slug"
-                                helperText={slugHelperText}
-                            />
-                        </div>
-
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "flex-end"
-                            }}
-                        >
-                            <i
-                                className="fa fa-trash"
-                                onClick={() =>
-                                    this.props.removeItem(this.props.item)
-                                }
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
-
-const Resources = ({ title, data, itemClicked }) => {
-    return (
-        <div>
-            <h5>{title}</h5>
-            <ul className="list-group">
-                {data.map((item, i) => {
-                    const disabled = item.disabled ? { disabled: true } : {};
-                    return (
-                        <li
-                            className="list-group-item"
-                            key={i}
-                            onClick={() => itemClicked(i)}
-                            {...disabled}
-                        >
-                            {item.label}
-                        </li>
-                    );
-                })}
-            </ul>
-        </div>
-    );
-};
 /**
  * A utility function to index menu items including children for faster searching
  * @param {*} arr
@@ -125,6 +30,7 @@ class MenuConstruction extends Component {
         this.onChange = this.onChange.bind(this);
         this.addItem = this.addItem.bind(this);
         this.removeItem = this.removeItem.bind(this);
+        this.changeItemProperty = this.changeItemProperty.bind(this);
 
         let menu = JSON.parse(this.props.data.menu.value);
 
@@ -136,7 +42,8 @@ class MenuConstruction extends Component {
                 {
                     id: Date.now() + "-label",
                     label: "Label",
-                    type: "label"
+                    type: "label",
+                    name: "Label"
                 }
             ]
         };
@@ -151,6 +58,7 @@ class MenuConstruction extends Component {
                         id: ele.id + "-category",
                         label: ele.name,
                         type: "category",
+                        name: ele.name,
                         disabled: menuIds[ele.id + "-category"] ? true : false
                     };
                 }
@@ -162,6 +70,7 @@ class MenuConstruction extends Component {
                     label: ele.title,
                     slug: ele.slug,
                     type: "page",
+                    name: ele.title,
                     disabled: menuIds[ele.id + "-page"] ? true : false
                 };
             });
@@ -169,9 +78,9 @@ class MenuConstruction extends Component {
         }
     }
     addItem(idx, type) {
-        const newState = {};
+        const newState = { ...this.state };
         if (type === "labels") {
-            this.state[type][idx] = {
+            newState[type][idx] = {
                 ...this.state[type][idx],
                 id: Date.now() + "-label"
             };
@@ -186,8 +95,9 @@ class MenuConstruction extends Component {
         }
         //  add the item in the menu
         newState.items = [...this.state.items, this.state[type][idx]];
-        this.setState(newState);
-        this.props.updateOption("menu", JSON.stringify(this.state.items));
+        this.setState(newState, () => {
+            this.props.updateOption("menu", JSON.stringify(this.state.items));
+        });
     }
 
     removeItem(menuItem) {
@@ -240,13 +150,20 @@ class MenuConstruction extends Component {
         };
         removeIdFromMenu(this.state.items, menuItem.id);
 
-        this.setState({
-            ...this.state,
-            items: this.state.items,
-            categories: [...this.state.categories],
-            pages: [...this.state.pages]
-        });
-        this.props.updateOption("menu", JSON.stringify(this.state.items));
+        this.setState(
+            {
+                ...this.state,
+                items: this.state.items,
+                categories: [...this.state.categories],
+                pages: [...this.state.pages]
+            },
+            () => {
+                this.props.updateOption(
+                    "menu",
+                    JSON.stringify(this.state.items)
+                );
+            }
+        );
     }
 
     onChange(items) {
@@ -267,6 +184,25 @@ class MenuConstruction extends Component {
             this.setState({ items: this.state.items });
         }
         this.props.updateOption("menu", JSON.stringify(this.state.items));
+    }
+
+    changeItemProperty(changedItem) {
+        //  hack
+        const items = JSON.parse(JSON.stringify(this.state.items));
+        const updateProperty = (menu, id) => {
+            menu.forEach((item, idx) => {
+                if (item.id !== changedItem.id) {
+                    if (item.children && item.children.length > 0) {
+                        updateProperty(item.children, id);
+                    }
+                } else {
+                    menu[idx] = changedItem;
+                }
+            });
+        };
+        updateProperty(items, changedItem.id);
+        this.setState({ items });
+        this.props.updateOption("menu", JSON.stringify(items));
     }
 
     render() {
@@ -292,11 +228,13 @@ class MenuConstruction extends Component {
                     />
                 </div>
                 <div className="col-lg-5">
+                    <h5>Build your menu</h5>
                     <Nestable
                         items={this.state.items}
                         renderItem={props => (
                             <RenderItem
                                 {...props}
+                                changeItemProperty={this.changeItemProperty}
                                 removeItem={this.removeItem}
                             />
                         )}

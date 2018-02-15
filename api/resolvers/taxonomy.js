@@ -5,21 +5,25 @@ export default {
     },
     Mutation: {
         updateTaxonomy: async (root, args, { models }) => {
-            let found = await models.Taxonomy.findOne({
-                where: { name: args.name, type: args.type }
-            });
-
-            if (found) {
-                return {
-                    ok: false,
-                    errors: [{ message: "Already exist", path: "Taxonomy" }]
-                };
+            console.log(args);
+            if (!args.edit) {
+                let found = await models.Taxonomy.findOne({
+                    where: { name: args.name, type: args.type }
+                });
+                if (found) {
+                    return {
+                        ok: false,
+                        id: null,
+                        errors: [{ message: "Already exist", path: "Taxonomy" }]
+                    };
+                }
             }
             if (args.id == 0) {
                 //create
 
                 let item = await models.Taxonomy.create({
                     name: args.name,
+                    desc: args.desc,
                     type: args.type
                 });
 
@@ -30,7 +34,7 @@ export default {
                 };
             } else {
                 let id = await models.Taxonomy.update(
-                    { name: args.name, type: args.type },
+                    { name: args.name, desc: args.desc, type: args.type },
                     {
                         where: { id: args.id }
                     }

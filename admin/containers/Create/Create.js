@@ -10,7 +10,7 @@ import {
     Tags,
     Categories,
     Excerpt
-} from "../../components/Post/ArticleCreate";
+} from "../../components/Post";
 import { CREATE_POST } from "../../../shared/queries/Mutations";
 
 class Create extends Component {

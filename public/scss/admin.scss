@@ -8,7 +8,13 @@ label.custom-label {
     font-size: 13px;
 }
 
-
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(36vw, 1fr));
+    grid-gap: 26px;
+    grid-auto-rows: minmax(203px, auto);
+    grid-auto-flow: dense;
+}
 /*--------------------------------------
 [TopBar]
 */
@@ -19,6 +25,13 @@ label.custom-label {
     background: $color-bg-secondary;
 }
 
+/*--------------------------------------
+[Edit/Create Post or Page]
+*/
+.post-excerpt {
+    display: block;
+    height: 80px;
+}
 
 /* Tell Quill not to scroll */
 
@@ -36,7 +49,7 @@ label.custom-label {
     min-height: 280px;
 }
 
-.quill-container {
+.ql-container {
     font-size: 14px;
 }
 
@@ -48,7 +61,6 @@ label.custom-label {
     opacity: 1;
 }
 
-
 /* Specify our own scrolling container */
 
 #quill-container {
@@ -57,7 +69,6 @@ label.custom-label {
     overflow-y: auto;
 }
 
-
 /* Publish buttons */
 
 .btn-group-justified .btn-item {
@@ -65,13 +76,11 @@ label.custom-label {
     padding-right: 2px;
 }
 
-
 /* Tags Input */
 
 div.ReactTags__tags {
     position: relative;
 }
-
 
 /* Styles for the input */
 
@@ -84,13 +93,11 @@ div.ReactTags__tagInput {
 div.ReactTags__tagInput input,
 div.ReactTags__tagInput input:focus {
     margin: 0;
-    font-size: 12px;
     width: 100%;
     border: none;
     padding: 8px 0px 10px;
     display: block;
 }
-
 
 /* Styles for selected tags */
 
@@ -112,7 +119,6 @@ div.ReactTags__selected a.ReactTags__remove {
     font-size: 14px;
 }
 
-
 /* Styles for suggestions */
 
 div.ReactTags__suggestions {
@@ -131,24 +137,21 @@ div.ReactTags__suggestions ul {
 
 div.ReactTags__suggestions li {
     border-bottom: 1px solid #ddd;
-    padding: 10px 5px;
+    padding: 8px 4px;
     margin: 0;
 }
 
 div.ReactTags__suggestions li mark {
-    text-decoration: underline;
-    background: none;
-    font-weight: 600;
+    padding: 0 0 0 0.4em;
+    background: transparent;
 }
 
-div.ReactTags__suggestions ul li.active {
-    background: #b7cfe0;
+li.ReactTags__activeSuggestion {
+    background: #eaeaea;
     cursor: pointer;
 }
 
-
 /* Tags input end */
-
 
 /*Theme customization*/
 
@@ -174,20 +177,19 @@ div.ReactTags__suggestions ul li.active {
     }
 }
 
-
 /* Table */
 
-.table>thead>tr>th,
-.table>tbody>tr>th,
-.table>tfoot>tr>th,
-.table>thead>tr>td,
-.table>tbody>tr>td,
-.table>tfoot>tr>td {
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
     padding: 12px 8px;
     border-top: none;
 }
 
-.table>thead tr>th {
+.table > thead tr > th {
     color: $color-text-secondary;
     text-transform: uppercase;
     font-size: 13px;
@@ -198,7 +200,6 @@ tr td:first-child,
 tr th:first-child {
     padding-left: 0px !important;
 }
-
 
 /*Media*/
 
@@ -212,7 +213,6 @@ tr th:first-child {
         height: 80px;
     }
 }
-
 
 /*!------------------------------------------------------------------
 [Post Filters]
@@ -250,13 +250,13 @@ tr th:first-child {
     .nav-list li.active a {
         border-left: 4px solid $color-accent;
     }
-    .nav-list>li>a {
+    .nav-list > li > a {
         color: $color-menu-link;
         font-size: 14px;
         padding-left: 13px !important;
         border-bottom: 1px solid #2e2e2e;
     }
-    .nav-list>li a:hover {
+    .nav-list > li a:hover {
         border-left: 4px solid $color-accent;
     }
     .nav-list a span {
@@ -269,7 +269,6 @@ tr th:first-child {
         padding-left: 34px !important;
     }
 }
-
 
 /*----------------------------------------------
 [Themes]
@@ -300,7 +299,6 @@ tr th:first-child {
     }
 }
 
-
 /*--------------------------------------------
 [Themes]
 */
@@ -317,10 +315,30 @@ tr th:first-child {
     }
 }
 
+/*--------------------------------------------
+[Menu Construction]
+*/
+.listing i.fa {
+    margin-right: 8px;
+    color: $color-text-primary-light;
+}
 
 /*--------------------------------------------
 [Menu Construction]
 */
+
+.nestable-item-name {
+    .panel-heading {
+        background: #eee;
+        border: 1px solid #ddd;
+        padding: 12px 16px;
+        cursor: pointer;
+    }
+    .panel-collapse {
+        border: 1px solid #eee;
+        border-top: none;
+    }
+}
 
 .nestable-item-handler {
     &:before {
@@ -331,14 +349,38 @@ tr th:first-child {
         text-decoration: inherit;
         color: #000;
         padding-right: 0.5em;
+        cursor: move;
     }
 }
 
-.list-group-item {
-    cursor: pointer;
-}
-
-.list-group-item[disabled] {
-    background: #eee;
-    cursor: not-allowed;
+.menu-construct {
+    h5 {
+        margin-bottom: 8px;
+        font-size: 12px;
+    }
+    .resources {
+        &.list-group {
+            border: 1px solid #e6e5e5;
+            max-height: 200px;
+            overflow-y: scroll;
+            box-shadow: 0 0 10px 0 #f0f0f0;
+            width: 300px;
+            .list-group-item {
+                border-left: none;
+                border-right: none;
+                cursor: pointer;
+                &[disabled] {
+                    background: #eee;
+                    cursor: not-allowed;
+                    color: #919191;
+                }
+                &:first-child {
+                    border-top: none;
+                }
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
 }

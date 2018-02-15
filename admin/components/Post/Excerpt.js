@@ -31,6 +31,7 @@ class ContentEditable extends Component {
                 onInput={this.emitChange}
                 onBlur={this.emitChange}
                 contentEditable
+                placeholder="Write a small description"
                 dangerouslySetInnerHTML={{
                     __html: this.props.excerpt
                 }}

@@ -7,6 +7,12 @@ export default (conn, DataTypes) => {
             name: {
                 type: Sequalize.STRING
             },
+            desc: {
+                type: Sequalize.STRING
+            },
+            slug: {
+                type: Sequalize.STRING
+            },
             type: {
                 type: Sequalize.STRING
             }
