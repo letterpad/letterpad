@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import TextField from "material-ui/TextField/TextField";
 
 export default class SidebarWidgets extends Component {
     constructor(props) {
@@ -15,13 +14,16 @@ export default class SidebarWidgets extends Component {
         return (
             <div>
                 <div className="form-group">
-                    <TextField
+                    <label className="custom-label">Latest Post Count</label>
+                    <input
                         defaultValue={
                             this.props.data.sidebar_latest_post_count.value
                         }
-                        label="Total posts to display in sidebar"
-                        fullWidth
-                        onChange={e =>
+                        type="text"
+                        className="form-control"
+                        placeholder="Total posts to display"
+                        aria-invalid="false"
+                        onBlur={e =>
                             this.updateOption(
                                 "sidebar_latest_post_count",
                                 e.target.value
@@ -30,15 +32,15 @@ export default class SidebarWidgets extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <TextField
+                    <label className="custom-label">About</label>
+                    <textarea
                         defaultValue={this.props.data.sidebar_about.value}
-                        label="Introduction to display in sidebar"
-                        fullWidth
-                        multiLine
-                        rows="4"
-                        maxRows="5"
-                        margin="normal"
-                        onChange={e =>
+                        className="form-control"
+                        rows="7"
+                        placeholder="Introduce your site"
+                        required=""
+                        aria-invalid="false"
+                        onBlur={e =>
                             this.updateOption("sidebar_about", e.target.value)
                         }
                     />

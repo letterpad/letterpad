@@ -47,8 +47,17 @@ export const UPDATE_TAXONOMY = gql`
         $name: String
         $desc: String
         $type: String!
+        $slug: String
+        $edit: Boolean
     ) {
-        updateTaxonomy(id: $id, name: $name, desc: $desc, type: $type) {
+        updateTaxonomy(
+            id: $id
+            name: $name
+            desc: $desc
+            type: $type
+            edit: $edit
+            slug: $slug
+        ) {
             id
             ok
             errors {
@@ -145,6 +154,14 @@ export const UPDATE_POST_QUERY = gql`
                     type
                 }
             }
+        }
+    }
+`;
+
+export const INSERT_MEDIA = gql`
+    mutation insertMedia($url: String!) {
+        insertMedia(url: $url) {
+            url
         }
     }
 `;

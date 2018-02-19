@@ -51,8 +51,8 @@ export const GET_SINGLE_POST = gql`
 `;
 
 export const GET_PAGE_NAMES = gql`
-    query getPosts($type: String!) {
-        posts(type: $type) {
+    query getPosts($type: String!, $status: String) {
+        posts(type: $type, status: $status) {
             count
             rows {
                 id
@@ -85,7 +85,6 @@ export const GET_AUTHORS = gql`
             username
             role {
                 name
-                id
                 permissions {
                     name
                 }
@@ -105,20 +104,10 @@ export const GET_AUTHOR = gql`
             social
             role {
                 name
-                id
                 permissions {
                     name
                 }
             }
-        }
-    }
-`;
-
-export const GET_ROLES = gql`
-    query roles {
-        roles {
-            id
-            name
         }
     }
 `;
@@ -138,37 +127,55 @@ export const GET_TAXONOMIES = gql`
         taxonomies(type: $type) {
             id
             name
+            desc
+            slug
         }
     }
 `;
 
 export const SEARCH_POSTS = gql`
-    query searchPosts($type: String!, $query: String!) {
-        posts(type: $type, body: $query) {
-            id
-            title
-            body
-            author {
-                username
-            }
-            type
-            status
-            created_at
-            excerpt
-            cover_image
-            taxonomies {
+    query searchPosts(
+        $type: String!
+        $query: String!
+        $offset: Int
+        $limit: Int
+    ) {
+        posts(type: $type, body: $query, offset: $offset, limit: $limit) {
+            count
+            rows {
                 id
-                name
+                title
+                body
+                author {
+                    username
+                }
                 type
+                slug
+                status
+                created_at
+                excerpt
+                cover_image
+                taxonomies {
+                    id
+                    name
+                    type
+                }
             }
         }
     }
 `;
 
 export const SEARCH_POSTS_BY_TAXONOMY = gql`
-    query catPosts($type: String, $query: String, $postType: String) {
-        postTaxonomies(type: $type, name: $query) {
-            posts(type: $postType) {
+    query catPosts(
+        $type: String
+        $slug: String
+        $postType: String
+        $offset: Int
+        $limit: Int
+    ) {
+        taxonomyBySlug(type: $type, slug: $slug) {
+            post_count
+            posts(type: $postType, offset: $offset, limit: $limit) {
                 id
                 title
                 body
@@ -200,6 +207,15 @@ export const BLOG_STATS = gql`
             }
             tags
             categories
+        }
+    }
+`;
+
+export const TAX_SUGGESTIONS = gql`
+    query getTaxonomies($type: String!) {
+        taxonomies(type: $type) {
+            id
+            name
         }
     }
 `;

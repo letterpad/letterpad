@@ -43,6 +43,18 @@ class App extends Component {
                             <SearchWrapper {...this.props} type="category" />
                         )}
                     />
+                    <Route
+                        path="/tag/:query"
+                        component={TwoColLayout(
+                            <SearchWrapper {...this.props} type="tag" />
+                        )}
+                    />
+                    <Route
+                        path="/search/:query"
+                        component={TwoColLayout(
+                            <SearchWrapper {...this.props} type="post" />
+                        )}
+                    />
                 </Switch>
             </div>
         );

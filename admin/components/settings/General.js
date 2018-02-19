@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import TextField from "material-ui/TextField";
 
 export default class General extends Component {
     constructor(props) {
@@ -15,43 +14,54 @@ export default class General extends Component {
         return (
             <div>
                 <div className="form-group">
-                    <TextField
+                    <label className="custom-label">Site title</label>
+                    <input
                         defaultValue={this.props.data.site_title.value}
-                        label="Site title"
-                        fullWidth
-                        onChange={e =>
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter an epic title"
+                        aria-invalid="false"
+                        onBlur={e =>
                             this.updateOption("site_title", e.target.value)
                         }
                     />
                 </div>
                 <div className="form-group">
-                    <TextField
+                    <label className="custom-label">Tagline</label>
+                    <input
                         defaultValue={this.props.data.site_tagline.value}
-                        label="Site tagline"
-                        fullWidth
-                        onChange={e =>
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter an epic tagline"
+                        aria-invalid="true"
+                        onBlur={e =>
                             this.updateOption("site_tagline", e.target.value)
                         }
                     />
                 </div>
                 <div className="form-group">
-                    <TextField
+                    <label className="custom-label">Email</label>
+                    <input
                         defaultValue={this.props.data.site_email.value}
-                        label="Email"
-                        fullWidth
-                        onChange={e =>
+                        type="email"
+                        className="form-control"
+                        placeholder="someone@somewhere.com"
+                        aria-invalid="true"
+                        onBlur={e =>
                             this.updateOption("site_email", e.target.value)
                         }
                     />
                 </div>
                 <div className="form-group">
-                    <TextField
+                    <label className="custom-label">Short description</label>
+                    <textarea
                         defaultValue={this.props.data.site_description.value}
-                        label="Short description"
-                        fullWidth
-                        multiLine
-                        rows={3}
-                        onChange={e =>
+                        className="form-control"
+                        rows="7"
+                        placeholder="What is your site all about ? This will be used for SEO"
+                        required=""
+                        aria-invalid="false"
+                        onBlur={e =>
                             this.updateOption(
                                 "site_description",
                                 e.target.value

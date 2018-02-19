@@ -33,6 +33,7 @@ const linkedTaxonomies = gql`
             id
             name
             type
+            slug
             post_count
         }
     }
