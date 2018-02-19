@@ -7,13 +7,13 @@ import fetch from "node-fetch";
 import { StaticRouter } from "react-router";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
 import ApolloClient from "apollo-client";
-import siteConfig from "../config/site.config";
+import config from "../config";
 import App from "./containers/App";
 
 const client = new ApolloClient({
     ssrMode: true,
     link: createHttpLink({
-        uri: siteConfig.apiUrl,
+        uri: config.apiUrl,
         fetch
     }),
     cache: new InMemoryCache()
@@ -75,10 +75,11 @@ function Html({ content, state }) {
                 {insertStyle(
                     "https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700"
                 )}
+                {insertStyle("/css/bootstrap.min.css")}
                 {insertStyle("/css/vertical.css")}
                 {insertStyle("/css/font-awesome.min.css")}
                 {insertStyle(
-                    "http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/default.min.css"
+                    "http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/monokai.min.css"
                 )}
                 {insertStyle("https://cdn.quilljs.com/1.2.2/quill.snow.css")}
             </head>
@@ -88,7 +89,9 @@ function Html({ content, state }) {
                     dangerouslySetInnerHTML={{
                         __html: `window.__APOLLO_STATE__=${JSON.stringify(
                             state
-                        ).replace(/</g, "\\u003c")};`
+                        ).replace(/</g, "\\u003c")};window.ENV = "${
+                            process.env.NODE_ENV
+                        }";`
                     }}
                 />
                 {insertScript("/tinymce/js/tinymce/tinymce.min.js")}

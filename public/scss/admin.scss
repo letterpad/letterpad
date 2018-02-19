@@ -1,110 +1,37 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700.css");
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
-@import "./grid.scss";
-@import "./normalize.scss";
 @import "./variables.scss";
 @import "./login.scss";
+@import "./common.scss";
 @import "./react-select.scss";
-body {
-    background: $color-bg-primary;
-    line-height: 1.8;
-    font-size: 13px;
-    font-weight: 400;
-    color: $color-text-primary;
-    -ms-overflow-style: scrollbar;
-    overflow-x: hidden;
-    height: 100%;
-}
-
 label.custom-label {
     font-weight: 500;
     font-size: 13px;
 }
 
-.cover-image-btn {
-    position: absolute !important;
-    margin-top: -45px !important;
-    width: initial !important;
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(36vw, 1fr));
+    grid-gap: 26px;
+    grid-auto-rows: minmax(203px, auto);
+    grid-auto-flow: dense;
 }
-
-.nestable-item-handler {
-    width: 20px;
-    height: 10px;
-    margin-right: 10px;
-    display: inline-block;
-    background: #2b2b2b;
-    cursor: move;
-}
-
-
-/*-------------------------------
-[Menu Drawer]
+/*--------------------------------------
+[TopBar]
 */
 
-a.active h3 {
-    color: #fff;
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    background: $color-bg-secondary;
 }
 
-.menu-item {
-    h3 {
-        color: rgba(255, 255, 255, 0.527);
-        font-size: 0.85rem;
-    }
-    i {
-        font-size: 18px;
-        color: rgba(255, 255, 255, 0.527);
-    }
-}
-
-.sub-menu-item {
-    background: #2b2b2b;
-}
-
-
-/*-------------------------------
-[Form elements]
+/*--------------------------------------
+[Edit/Create Post or Page]
 */
-
-.form-group {
-    margin-bottom: 32px;
-}
-
-a {
-    color: rgb(29, 122, 199);
-}
-
-.inline-edit {
+.post-excerpt {
     display: block;
+    height: 80px;
 }
-
-.inline-edit:hover {
-    cursor: text;
-}
-
-.row-selected {
-    background: #efefef;
-}
-
-[contenteditable="true"]:empty:before {
-    content: attr(placeholder);
-    display: block;
-    color: rgb(197, 197, 197);
-    /* For Firefox */
-}
-
-
-/*-------------------------------
-[Page Headers]
-*/
-
-.page-header {
-    margin: 16px;
-    h1 {
-        padding: 0px;
-        margin: 0;
-    }
-}
-
 
 /* Tell Quill not to scroll */
 
@@ -122,7 +49,7 @@ a {
     min-height: 280px;
 }
 
-.quill-container {
+.ql-container {
     font-size: 14px;
 }
 
@@ -134,7 +61,6 @@ a {
     opacity: 1;
 }
 
-
 /* Specify our own scrolling container */
 
 #quill-container {
@@ -143,6 +69,89 @@ a {
     overflow-y: auto;
 }
 
+/* Publish buttons */
+
+.btn-group-justified .btn-item {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+/* Tags Input */
+
+div.ReactTags__tags {
+    position: relative;
+}
+
+/* Styles for the input */
+
+div.ReactTags__tagInput {
+    width: 200px;
+    border-radius: 2px;
+    display: block;
+}
+
+div.ReactTags__tagInput input,
+div.ReactTags__tagInput input:focus {
+    margin: 0;
+    width: 100%;
+    border: none;
+    padding: 8px 0px 10px;
+    display: block;
+}
+
+/* Styles for selected tags */
+
+div.ReactTags__selected span.ReactTags__tag {
+    border: 1px solid #ddd;
+    background: #eee;
+    font-size: 12px;
+    display: inline-block;
+    padding: 0px 8px;
+    margin-right: 4px;
+    cursor: move;
+    border-radius: 2px;
+}
+
+div.ReactTags__selected a.ReactTags__remove {
+    color: #aaa;
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Styles for suggestions */
+
+div.ReactTags__suggestions {
+    position: absolute;
+    z-index: 10;
+}
+
+div.ReactTags__suggestions ul {
+    list-style-type: none;
+    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
+    background: white;
+    width: 220px;
+    padding: 0;
+    margin: 0;
+}
+
+div.ReactTags__suggestions li {
+    border-bottom: 1px solid #ddd;
+    padding: 8px 4px;
+    margin: 0;
+}
+
+div.ReactTags__suggestions li mark {
+    padding: 0 0 0 0.4em;
+    background: transparent;
+}
+
+li.ReactTags__activeSuggestion {
+    background: #eaeaea;
+    cursor: pointer;
+}
+
+/* Tags input end */
 
 /*Theme customization*/
 
@@ -168,6 +177,42 @@ a {
     }
 }
 
+/* Table */
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    padding: 12px 8px;
+    border-top: none;
+}
+
+.table > thead tr > th {
+    color: $color-text-secondary;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+tr td:first-child,
+tr th:first-child {
+    padding-left: 0px !important;
+}
+
+/*Media*/
+
+.table.media-table {
+    td {
+        vertical-align: middle;
+    }
+    .media-image {
+        object-fit: cover;
+        width: 80px;
+        height: 80px;
+    }
+}
 
 /*!------------------------------------------------------------------
 [Post Filters]
@@ -192,6 +237,38 @@ a {
     }
 }
 
+.navbar-custom {
+    .nav-list li a {
+        text-decoration: none;
+        display: block;
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #2d2d2d !important;
+        color: $color-menu-link;
+        border-left: 4px solid transparent;
+    }
+    .nav-list li.active a {
+        border-left: 4px solid $color-accent;
+    }
+    .nav-list > li > a {
+        color: $color-menu-link;
+        font-size: 14px;
+        padding-left: 13px !important;
+        border-bottom: 1px solid #2e2e2e;
+    }
+    .nav-list > li a:hover {
+        border-left: 4px solid $color-accent;
+    }
+    .nav-list a span {
+        margin-left: 20px;
+    }
+    .nav-list .menu-icon {
+        margin-top: 4px;
+    }
+    .nav-list li.has-sub li a {
+        padding-left: 34px !important;
+    }
+}
 
 /*----------------------------------------------
 [Themes]
@@ -222,25 +299,6 @@ a {
     }
 }
 
-
-/*--------------------------------------------
-[Themes]
-*/
-
-.listing {
-    display: flex;
-    flex-direction: column;
-    i {
-        font-size: 13px;
-        margin-right: 8px;
-        color: #5f5f5f;
-    }
-    >div {
-        margin-bottom: 4px;
-    }
-}
-
-
 /*--------------------------------------------
 [Themes]
 */
@@ -254,5 +312,75 @@ a {
         line-height: 20px;
         font-size: 12px;
         min-height: 42px;
+    }
+}
+
+/*--------------------------------------------
+[Menu Construction]
+*/
+.listing i.fa {
+    margin-right: 8px;
+    color: $color-text-primary-light;
+}
+
+/*--------------------------------------------
+[Menu Construction]
+*/
+
+.nestable-item-name {
+    .panel-heading {
+        background: #eee;
+        border: 1px solid #ddd;
+        padding: 12px 16px;
+        cursor: pointer;
+    }
+    .panel-collapse {
+        border: 1px solid #eee;
+        border-top: none;
+    }
+}
+
+.nestable-item-handler {
+    &:before {
+        content: "\F0C9";
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: inherit;
+        color: #000;
+        padding-right: 0.5em;
+        cursor: move;
+    }
+}
+
+.menu-construct {
+    h5 {
+        margin-bottom: 8px;
+        font-size: 12px;
+    }
+    .resources {
+        &.list-group {
+            border: 1px solid #e6e5e5;
+            max-height: 200px;
+            overflow-y: scroll;
+            box-shadow: 0 0 10px 0 #f0f0f0;
+            width: 300px;
+            .list-group-item {
+                border-left: none;
+                border-right: none;
+                cursor: pointer;
+                &[disabled] {
+                    background: #eee;
+                    cursor: not-allowed;
+                    color: #919191;
+                }
+                &:first-child {
+                    border-top: none;
+                }
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
     }
 }

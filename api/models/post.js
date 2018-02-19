@@ -1,7 +1,7 @@
 import Sequalize from "sequelize";
 import { parseErrors } from "../../shared/util";
 import slugify from "../../shared/slugify";
-import siteConfig from "../../config/site.config";
+import config from "../../config";
 
 export default (conn, DataTypes) => {
     const Post = conn.define(
@@ -9,7 +9,7 @@ export default (conn, DataTypes) => {
         {
             title: {
                 type: Sequalize.STRING,
-                defaultValue: siteConfig.default_title
+                defaultValue: config.defaultTitle
             },
             body: {
                 type: Sequalize.TEXT
@@ -53,7 +53,7 @@ export default (conn, DataTypes) => {
 
 export async function _createPost(data, models) {
     data.author_id = 1;
-    let title = data.title || siteConfig.default_slug;
+    let title = data.title || config.defaultSlug;
     try {
         //  create the slug
         data.slug = await slugify(models.Post, title);
@@ -84,8 +84,8 @@ export async function _updatePost(post, models) {
     try {
         if (
             post.slug &&
-            post.slug.indexOf(siteConfig.default_slug) === 0 &&
-            post.title !== siteConfig.default_title
+            post.slug.indexOf(config.defaultSlug) === 0 &&
+            post.title !== config.defaulTitle
         ) {
             //  create the slug
             post.slug = await slugify(models.Post, post.title);

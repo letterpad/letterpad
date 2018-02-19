@@ -68,17 +68,29 @@ export default {
             });
             menu = JSON.parse(menu.dataValues.value);
 
-            let item = menu.filter(item => item.slug == args.slug);
+            let menuItem = null;
+            const getItemFromMenu = (arr, slug) => {
+                const a = arr.some(item => {
+                    if (item.slug && item.slug == slug) {
+                        menuItem = item;
+                    }
+                    if (item.children && item.children.length > 0) {
+                        getItemFromMenu(item.children, slug);
+                    }
+                });
+            };
+            getItemFromMenu(menu, args.slug);
 
-            // const taxonomy = await models.Taxonomy.findOne({
-            //     where: { id: item[0].id }
-            // });
+            if (!menuItem) {
+                return null;
+            }
+            const [id, type] = menuItem.id.split(/-(.+)/);
 
             return getTaxonomies(
                 root,
                 {
                     type: "post_category",
-                    taxId: item[0].id,
+                    taxId: id,
                     postType: "post",
                     status: "publish"
                 },
@@ -86,23 +98,52 @@ export default {
             );
         },
         pageMenu: async (root, args, { models }) => {
-            let that = this;
             let menu = await models.Setting.findOne({
                 where: { option: "menu" }
             });
             menu = JSON.parse(menu.dataValues.value);
 
-            let item = menu.reduce(item => item.slug == args.slug);
-
+            let menuItem = null;
+            const getItemFromMenu = (arr, slug) => {
+                return arr.some(item => {
+                    if (item.slug && item.slug == slug) {
+                        menuItem = item;
+                    }
+                    if (item.children && item.children.length > 0) {
+                        getItemFromMenu(item.children, slug);
+                    }
+                });
+            };
+            getItemFromMenu(menu, args.slug);
             args.status = "publish";
-            if (!item) {
-                return models.Post.findOne({
+            const response = {
+                ok: true,
+                post: null,
+                errors: []
+            };
+            if (!menuItem) {
+                const page = await models.Post.findOne({
                     where: { type: "page", slug: args.slug }
                 });
+                if (page) {
+                    response.post = page;
+                } else {
+                    response.ok = false;
+                    response.errors = [
+                        {
+                            path: "pageMenu",
+                            message: "Page not found"
+                        }
+                    ];
+                }
+                return response;
             }
-            return models.Post.findOne({
-                where: { id: item.id }
+
+            const page = await models.Post.findOne({
+                where: { id: menuItem.id }
             });
+            response.post = page;
+            return response;
         },
         adjacentPosts: async (root, args, { models }) => {
             let data = {
@@ -140,6 +181,19 @@ export default {
         },
         postTaxonomies: checkDisplayAccess.createResolver(
             (root, args, context) => {
+                // const newArgs = { ...args };
+                // const columns = Object.keys(context.models.Post.rawAttributes);
+                // const conditions = getConditions(columns, newArgs);
+                // if (newArgs.cursor) {
+                //     conditions.where.id = { gt: newArgs.cursor };
+                // }
+                // console.log("===", args);
+                // const taxId = await models.Taxonomy.findOne({where: {name}})
+                return getTaxonomies(root, args, context);
+            }
+        ),
+        taxonomyBySlug: checkDisplayAccess.createResolver(
+            async (root, args, context) => {
                 return getTaxonomies(root, args, context);
             }
         ),
@@ -203,11 +257,18 @@ export default {
         }
     },
     PostTaxonomy: {
-        posts: (taxonomy, { type }) => {
-            return taxonomy.getPosts({ where: { type, status: "publish" } });
+        posts: async (taxonomy, { type, limit, offset }) => {
+            const conditions = { where: { type, status: "publish" } };
+            if (limit) {
+                conditions.limit = limit;
+            }
+            if (offset) {
+                conditions.offset = offset;
+            }
+            return taxonomy.getPosts(conditions);
         },
         post_count: taxonomy => {
-            return taxonomy.posts[0].dataValues.post_count;
+            return taxonomy.dataValues.posts.length;
         }
     }
 };

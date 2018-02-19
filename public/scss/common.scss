@@ -1,7 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Racing+Sans+One");
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,600,700");
-// @import url('https://fonts.googleapis.com/css?family=Alegreya+Sans:400,500,700');
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700");
 @import "./variables.scss";
 @import "./layout.scss";
 @import "./sidebar.scss";
@@ -20,11 +18,11 @@ Primary use: Blog
 
 html {
     height: 100%;
-    font-family: "Roboto", sans-serif;
 }
 
 body {
     background: $color-bg-primary;
+    font-family: "Source Sans Pro", sans-serif;
     line-height: 1.8;
     font-size: 14px;
     font-weight: 400;
@@ -46,7 +44,8 @@ iframe {
 [contenteditable="true"]:empty:before {
     content: attr(placeholder);
     display: block;
-    color: #eee;
+    color: #ccc;
+    cursor: pointer;
     /* For Firefox */
 }
 
@@ -56,8 +55,17 @@ textarea,
     outline: none;
 }
 
+.table {
+    tbody tr td:first-child,
+    thead tr th:first-child {
+        padding-left: 16px !important;
+    }
+    box-shadow: 0px 0px 10px 0px #ccc;
+}
+
 ::-webkit-input-placeholder {
-    font-size: 12px !important;
+    color: $color-text-muted !important;
+    font-weight: 300;
 }
 
 .top-head {
@@ -80,7 +88,6 @@ textarea,
     position: relative;
 }
 
-
 /*!------------------------------------------------------------------
 [Typography]
 */
@@ -97,6 +104,8 @@ a:hover,
 a:focus {
     text-decoration: none;
     outline: none;
+}
+a:hover {
     color: $link_hover;
 }
 
@@ -218,9 +227,7 @@ blockquote cite {
 }
 
 .brand {
-    font-family: $racing_font;
 }
-
 
 /*!------------------------------------------------------------------
 [Preloader]
@@ -270,7 +277,8 @@ blockquote cite {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     animation: ringrotate 0.8s infinite cubic-bezier(0.5, 0.49, 0.49, 0.49);
-    -webkit-animation: ringrotate 0.8s infinite cubic-bezier(0.5, 0.49, 0.49, 0.49);
+    -webkit-animation: ringrotate 0.8s infinite
+        cubic-bezier(0.5, 0.49, 0.49, 0.49);
 }
 
 @keyframes ringrotate {
@@ -302,7 +310,6 @@ blockquote cite {
         transform: rotateZ(360deg);
     }
 }
-
 
 /*!------------------------------------------------------------------
 [Forms]
@@ -345,7 +352,6 @@ blockquote cite {
         padding-top: 12px;
     }
 }
-
 
 /*!------------------------------------------------------------------
 [Buttons]
@@ -395,7 +401,6 @@ blockquote cite {
     color: #fff;
 }
 
-
 /*! Button types */
 
 .btn.btn-round {
@@ -411,7 +416,6 @@ blockquote cite {
     -o-border-radius: 30px;
     border-radius: 30px;
 }
-
 
 /*! Button sizes */
 
@@ -432,7 +436,6 @@ blockquote cite {
     font-size: 9px;
     padding: 4px 19px;
 }
-
 
 /*!------------------------------------------------------------------
 [Bars]
@@ -461,7 +464,7 @@ blockquote cite {
     margin: 0 0 12px;
 }
 
-.progress-bar>span {
+.progress-bar > span {
     position: absolute;
     background: #111;
     padding: 2px 10px;
@@ -478,7 +481,7 @@ blockquote cite {
     background-color: #5cb85c;
 }
 
-.progress-bar.progress-bar-success>span {
+.progress-bar.progress-bar-success > span {
     background-color: #5cb85c;
 }
 
@@ -486,7 +489,7 @@ blockquote cite {
     background-color: #5bc0de;
 }
 
-.progress-bar.progress-bar-info>span {
+.progress-bar.progress-bar-info > span {
     background-color: #5bc0de;
 }
 
@@ -494,7 +497,7 @@ blockquote cite {
     background-color: #f0ad4e;
 }
 
-.progress-bar.progress-bar-warning>span {
+.progress-bar.progress-bar-warning > span {
     background-color: #f0ad4e;
 }
 
@@ -502,17 +505,16 @@ blockquote cite {
     background-color: #d9534f;
 }
 
-.progress-bar.progress-bar-danger>span {
+.progress-bar.progress-bar-danger > span {
     background-color: #d9534f;
 }
-
 
 /*!------------------------------------------------------------------
 [Pagination]
 */
 
-.pagination>li>a,
-.pagination>li>span {
+.pagination > li > a,
+.pagination > li > span {
     background: #f5f5f5;
     border: 0;
     color: #111;
@@ -520,12 +522,12 @@ blockquote cite {
     margin: 0 5px 0 0;
 }
 
-.pagination>li>a,
-.pagination>li>span,
-.pagination>li:first-child>a,
-.pagination>li:first-child>span,
-.pagination>li:last-child>a,
-.pagination>li:last-child>span {
+.pagination > li > a,
+.pagination > li > span,
+.pagination > li:first-child > a,
+.pagination > li:first-child > span,
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     -o-border-radius: 2px;
@@ -536,20 +538,19 @@ blockquote cite {
     transition: all 0.125s cubic-bezier(0.3, 0.1, 0.58, 1);
 }
 
-.pagination>li>a:hover,
-.pagination>li>a:focus,
-.pagination>li>span:hover,
-.pagination>li>span:focus,
-.pagination>.active>a,
-.pagination>.active>span,
-.pagination>.active>a:hover,
-.pagination>.active>span:hover,
-.pagination>.active>a:focus,
-.pagination>.active>span:focus {
+.pagination > li > a:hover,
+.pagination > li > a:focus,
+.pagination > li > span:hover,
+.pagination > li > span:focus,
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
     background-color: #111;
     color: #fff;
 }
-
 
 /*!------------------------------------------------------------------
 [Tags]
@@ -611,7 +612,6 @@ blockquote cite {
     border-left-color: #eee;
 }
 
-
 /*!------------------------------------------------------------------
 [Tabs]
 */
@@ -620,7 +620,7 @@ blockquote cite {
     border-color: #eee;
 }
 
-.nav-tabs>li>a {
+.nav-tabs > li > a {
     font-weight: 400;
     font-size: 13px;
     color: #111;
@@ -630,9 +630,9 @@ blockquote cite {
     border-radius: 2px 2px 0 0;
 }
 
-.nav-tabs>li.active>a,
-.nav-tabs>li.active>a:hover,
-.nav-tabs>li.active>a:focus {
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
     border-color: #eee;
     border-bottom: 1px solid transparent;
     color: #111;
@@ -641,7 +641,6 @@ blockquote cite {
 .tab-content {
     padding: 15px 0;
 }
-
 
 /*!------------------------------------------------------------------
 [Accordions]
@@ -672,7 +671,7 @@ blockquote cite {
     border-bottom: 1px solid #eee;
 }
 
-.panel-default>.panel-heading+.panel-collapse>.panel-body {
+.panel-default > .panel-heading + .panel-collapse > .panel-body {
     border-color: #eee;
 }
 
@@ -680,7 +679,7 @@ blockquote cite {
     padding: 15px 20px;
 }
 
-.panel-default>.panel-heading {
+.panel-default > .panel-heading {
     background: transparent;
     border-color: #eee;
 }
@@ -709,7 +708,7 @@ blockquote cite {
     font-size: 12px;
 }
 
-.panel-group .panel+.panel {
+.panel-group .panel + .panel {
     border-top: 0;
     margin-top: 0;
 }
@@ -721,7 +720,6 @@ blockquote cite {
 .panel-arrow .panel-heading a.collapsed:after {
     content: "\f107";
 }
-
 
 /*!------------------------------------------------------------------
 [Switch]
@@ -749,7 +747,6 @@ blockquote cite {
     }
 }
 
-
 /*!------------------------------------------------------------------
 [Button Together]
 */
@@ -760,7 +757,6 @@ blockquote cite {
         margin-left: 4px;
     }
 }
-
 
 /*!------------------------------------------------------------------
 [Nice Checkboxes and Radio Buttons]
@@ -794,25 +790,25 @@ blockquote cite {
 }
 
 .control {
-    &:hover input~.control__indicator {
+    &:hover input ~ .control__indicator {
         background: #ccc;
     }
     input {
-        &:focus~.control__indicator {
+        &:focus ~ .control__indicator {
             background: #ccc;
         }
-        &:checked~.control__indicator {
+        &:checked ~ .control__indicator {
             background: #111111;
         }
     }
-    &:hover input:not([disabled]):checked~.control__indicator {
+    &:hover input:not([disabled]):checked ~ .control__indicator {
         background: #111111;
     }
     input {
-        &:checked:focus~.control__indicator {
+        &:checked:focus ~ .control__indicator {
             background: #111111;
         }
-        &:disabled~.control__indicator {
+        &:disabled ~ .control__indicator {
             background: #e6e6e6;
             opacity: 0.6;
             pointer-events: none;
@@ -826,7 +822,7 @@ blockquote cite {
     display: none;
 }
 
-.control input:checked~.control__indicator:after {
+.control input:checked ~ .control__indicator:after {
     display: block;
 }
 
@@ -840,7 +836,7 @@ blockquote cite {
         border-width: 0 2px 2px 0;
         transform: rotate(45deg);
     }
-    input:disabled~.control__indicator:after {
+    input:disabled ~ .control__indicator:after {
         border-color: #7b7b7b;
     }
 }
@@ -854,11 +850,10 @@ blockquote cite {
         border-radius: 50%;
         background: #fff;
     }
-    input:disabled~.control__indicator:after {
+    input:disabled ~ .control__indicator:after {
         background: #7b7b7b;
     }
 }
-
 
 /*!------------------------------------------------------------------
 [Sliders]
@@ -899,13 +894,13 @@ blockquote cite {
 }
 
 input {
-    &:checked+.slider {
+    &:checked + .slider {
         background-color: $color-accent;
     }
-    &:focus+.slider {
+    &:focus + .slider {
         box-shadow: 0 0 1px $color-accent;
     }
-    &:checked+.slider:before {
+    &:checked + .slider:before {
         -webkit-transform: translateX(26px);
         -ms-transform: translateX(26px);
         transform: translateX(26px);
@@ -924,7 +919,6 @@ input {
         padding-right: 0;
     }
 }
-
 
 /*!------------------------------------------------------------------
 [Navbar]
@@ -950,43 +944,43 @@ input {
         small {
             display: block;
             font-size: 12px;
-            font-style: italic;
             font-family: "Source Sans Pro", sans-serif;
         }
     }
-    li>a,
-    .dropdown-menu li>a {
+    li > a,
+    .dropdown-menu li > a {
         color: $color-menu-link;
     }
     .nav {
-        >li>a {
-            &:hover,
-            &:focus {
+        > li > a {
+            &:hover {
                 background: transparent;
                 color: #fff;
             }
-        }
-        .open>a {
-            background: transparent;
-            &:hover,
             &:focus {
                 background: transparent;
+            }
+        }
+        .open > a {
+            background: transparent;
+            &:hover {
+                background: transparent;
                 color: #fff;
+            }
+            &:focus {
+                background: transparent;
             }
         }
     }
     .dropdown-menu {
-        >li>a {
+        > li > a {
             &:hover,
             &:focus {
                 background: transparent;
                 color: $color-accent;
             }
         }
-        background: rgba(26,
-        26,
-        26,
-        0.9);
+        background: rgba(26, 26, 26, 0.9);
         border: 0;
         padding: 5px 0;
         -webkit-box-shadow: none;
@@ -1026,7 +1020,7 @@ input {
             font-size: 12px;
             color: $color-accent;
         }
-        >li.item a {
+        > li.item a {
             margin-left: 10px;
         }
         ul {
@@ -1054,12 +1048,12 @@ input {
                 float: none;
             }
         }
-        li>a,
-        .dropdown-menu li>a {
+        li > a,
+        .dropdown-menu li > a {
             padding-top: 12px;
             padding-bottom: 12px;
         }
-        li.dropdown>a:after {
+        li.dropdown > a:after {
             position: absolute;
             display: block;
             right: 35px;
@@ -1086,22 +1080,21 @@ input {
 }
 
 @media (max-width: 991px) {
-    .navbar-custom li>a {
+    .navbar-custom li > a {
         -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
         -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
         -o-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
-    .navbar-custom .navbar-nav .open .dropdown-menu>li>a,
+    .navbar-custom .navbar-nav .open .dropdown-menu > li > a,
     .navbar-custom .navbar-nav .open .dropdown-menu .dropdown-header {
         padding: 10px 15px 10px 25px;
     }
-    .navbar-nav>li>.dropdown-menu {
+    .navbar-nav > li > .dropdown-menu {
         padding-top: 0;
         padding-bottom: 0;
     }
 }
-
 
 /*!------------------------------------------------------------------
 [Module Hero]
@@ -1223,7 +1216,6 @@ input {
     }
 }
 
-
 /*!------------------------------------------------------------------
 [Card]
 */
@@ -1233,7 +1225,6 @@ input {
     padding: 20px;
     margin-bottom: 20px;
 }
-
 
 /*!------------------------------------------------------------------
 [Modules]
@@ -1282,10 +1273,9 @@ input {
     margin: 0 0 30px;
 }
 
-.module-title+.module-subtitle {
+.module-title + .module-subtitle {
     margin-top: -25px;
 }
-
 
 /*!------------------------------------------------------------------
 [Overlays]
@@ -1377,7 +1367,6 @@ input {
     margin: 0;
 }
 
-
 /*!------------------------------------------------------------------
 [Post]
 */
@@ -1426,7 +1415,7 @@ input {
     h6 {
         margin-top: 40px;
     }
-    p>img {
+    p > img {
         width: 100%;
         max-width: none;
     }
@@ -1464,7 +1453,7 @@ input {
 }
 
 @media (max-width: 991px) {
-    .post p>img,
+    .post p > img,
     .post-thumbnail img {
         max-width: 100%;
         margin-left: 0;
@@ -1485,7 +1474,6 @@ input {
         }
     }
 }
-
 
 /*!------------------------------------------------------------------
 [Post Navigation]
@@ -1528,7 +1516,6 @@ input {
 .post-nav-subtitle {
     font-size: 13px;
 }
-
 
 /*!------------------------------------------------------------------
 [Comments and Comment form]
@@ -1575,7 +1562,7 @@ input {
     margin: 0 0 20px;
 }
 
-.comments+.comment-form {
+.comments + .comment-form {
     margin: 70px 0 0;
 }
 
@@ -1584,7 +1571,6 @@ input {
         margin-left: 70px;
     }
 }
-
 
 /*!------------------------------------------------------------------
 [Footer]
@@ -1641,77 +1627,4 @@ input {
     margin: 0 auto 1em;
     display: inline-block;
     vertical-align: top;
-}
-
-
-/*----------------------------------
-[Material Design]
-*/
-
-.list-item {
-    font-size: 14px !important;
-    >div>div {
-        padding-top: 12px !important;
-        padding-bottom: 12px !important;
-    }
-    .material-icons {
-        font-size: 18px !important;
-    }
-}
-
-.featured-image {
-    label {
-        position: absolute !important;
-        margin-top: -53px !important;
-        width: initial !important;
-    }
-}
-
-input,
-textarea,
-[role="menuitem"] {
-    font-size: 14px !important;
-}
-
-ul {
-    margin: 0px;
-    list-style-type: none;
-    padding: 0px;
-}
-
-.md-btn {
-    button {
-        span {
-            font-weight: 400 !important;
-        }
-    }
-}
-
-.md-btn-xs {
-    min-width: 66px !important;
-    height: 25px !important;
-    line-height: 25px !important;
-    button {
-        height: 25px !important;
-        line-height: 25px !important;
-        div>div {
-            height: 25px !important;
-            line-height: 25px !important;
-        }
-        span {
-            font-size: 12px !important;
-        }
-    }
-    i {
-        font-size: 14px !important;
-    }
-}
-
-.inline-edit {
-    height: 24px;
-    width: 100%;
-    display: block;
-    &[contentEditable="true"] {
-        border-bottom: 1px solid #66afe9;
-    }
 }

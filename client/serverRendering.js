@@ -8,12 +8,12 @@ import { StaticRouter } from "react-router";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
 import ApolloClient from "apollo-client";
 import App from "./containers/App";
-import siteConfig from "../config/site.config";
+import config from "../config";
 
 const client = new ApolloClient({
     ssrMode: true,
     link: createHttpLink({
-        uri: siteConfig.apiUrl,
+        uri: config.apiUrl,
         fetch
     }),
     cache: new InMemoryCache()
@@ -79,7 +79,7 @@ function Html({ content, state }) {
                 {insertStyle("/css/vertical.css")}
                 {insertStyle("/css/font-awesome.min.css")}
                 {insertStyle(
-                    "http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/github.min.css"
+                    "http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/monokai.min.css"
                 )}
             </head>
             <body>
@@ -88,7 +88,9 @@ function Html({ content, state }) {
                     dangerouslySetInnerHTML={{
                         __html: `window.__APOLLO_STATE__=${JSON.stringify(
                             state
-                        ).replace(/</g, "\\u003c")};`
+                        ).replace(/</g, "\\u003c")};window.ENV = "${
+                            process.env.NODE_ENV
+                        }";`
                     }}
                 />
                 {insertScript("/js/highlight.min.js")}

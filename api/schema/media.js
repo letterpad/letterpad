@@ -11,6 +11,13 @@ export default `
     rows: [Media]
   }
 
+  input Upload {
+    name: String!
+    type: String!
+    size: Int!
+    path: String!
+  }
+
   type Query {
     media(id: Int, author_id: Int!, offset: Int, limit: Int, cursor: Int): MediaNode
   }
@@ -18,5 +25,6 @@ export default `
   type Mutation {
     insertMedia(url: String): Media
     deleteMedia(id: Int!): Media
+    uploadFile(file: Upload!):Boolean
   }
 `;

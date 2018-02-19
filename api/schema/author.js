@@ -31,6 +31,6 @@ export default `
   type Mutation {
     register(username: String!, password: String!, email: String!): AuthorResponse!
     login(username: String, email: String, password: String!): LoginResponse!
-    updateAuthor(id: Int!, username: String, email: String, fname: String, lname: String, social: String, password: String, role_id: Int): AuthorResponse
+    updateAuthor(id: Int!, username: String, email: String, fname: String, lname: String, social: String, password: String): AuthorResponse
   }
 `;

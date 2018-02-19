@@ -25,13 +25,12 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
             "process.env": {
-                NODE_ENV: '"dev"'
+                NODE_ENV: JSON.stringify("dev")
             }
         })
     ],
     module: {
         loaders: [
-            // CSS
             {
                 test: /\.css$/,
                 loaders: ["style-loader", "css-loader"]
@@ -40,6 +39,7 @@ module.exports = {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
                 loader: "url-loader?limit=10000&mimetype=image/svg+xml"
             },
+            // CSS
             {
                 test: /\.scss$/,
                 loaders: [
@@ -62,8 +62,5 @@ module.exports = {
                 include: path.join(__dirname, "client")
             }
         ]
-    },
-    stats: {
-        colors: true
     }
 };

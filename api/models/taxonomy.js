@@ -1,4 +1,3 @@
-// import { conn } from "../../config/mysql.config";
 import Sequalize from "sequelize";
 
 export default (conn, DataTypes) => {
@@ -6,6 +5,12 @@ export default (conn, DataTypes) => {
         "taxonomies",
         {
             name: {
+                type: Sequalize.STRING
+            },
+            desc: {
+                type: Sequalize.STRING
+            },
+            slug: {
                 type: Sequalize.STRING
             },
             type: {
@@ -36,7 +41,7 @@ export const getTaxonomies = (root, args, { models, user }) => {
     }
 
     let query = {
-        attributes: ["name", "id", "type"],
+        attributes: ["name", "id", "type", "slug"],
         include: [
             {
                 model: models.Post,

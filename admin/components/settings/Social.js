@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import TextField from "material-ui/TextField";
 
 export default class Social extends Component {
     constructor(props) {
@@ -15,31 +14,40 @@ export default class Social extends Component {
         return (
             <div>
                 <div className="form-group">
-                    <TextField
+                    <label className="custom-label">Facebook</label>
+                    <input
                         defaultValue={this.props.data.social_facebook.value}
-                        label="Facebook"
-                        fullWidth
-                        onChange={e =>
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter your facebook link"
+                        aria-invalid="false"
+                        onBlur={e =>
                             this.updateOption("social_facebook", e.target.value)
                         }
                     />
                 </div>
                 <div className="form-group">
-                    <TextField
+                    <label className="custom-label">Twitter</label>
+                    <input
                         defaultValue={this.props.data.social_twitter.value}
-                        label="Twitter"
-                        fullWidth
-                        onChange={e =>
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter your twitter link"
+                        aria-invalid="true"
+                        onBlur={e =>
                             this.updateOption("social_twitter", e.target.value)
                         }
                     />
                 </div>
                 <div className="form-group">
-                    <TextField
+                    <label className="custom-label">Instagram</label>
+                    <input
                         defaultValue={this.props.data.social_instagram.value}
-                        label="Instagram"
-                        fullWidth
-                        onChange={e =>
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter your instagram link.."
+                        aria-invalid="true"
+                        onBlur={e =>
                             this.updateOption(
                                 "social_instagram",
                                 e.target.value

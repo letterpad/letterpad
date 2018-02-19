@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { Route, IndexRoute } from "react-router";
-import { App, Posts, Search, Single, Page, TwoColLayout } from "./containers";
+import {
+    App,
+    Posts,
+    SearchWrapper,
+    Single,
+    Page,
+    TwoColLayout
+} from "./containers";
 
 class Home extends Component {
     render() {
@@ -22,14 +29,23 @@ class Home extends Component {
 export default (
     <Route path="/" component={App}>
         <IndexRoute component={TwoColLayout(Home)} />
-        <Route path="/posts/:slug" component={TwoColLayout(Posts)} />
-        <Route path="/page/:slug" component={TwoColLayout(Page)} />
-        <Route path="/post/:slug" component={TwoColLayout(Single)} />
+        <Route exact path="/posts/:slug" component={TwoColLayout(Posts)} />
+        <Route exact path="/page/:slug" component={TwoColLayout(Page)} />
+        <Route exact path="/post/:slug" component={TwoColLayout(Single)} />
         <Route
-            path="/category/:query"
-            component={TwoColLayout(Search("category"))}
+            exact
+            path="/tag/:query"
+            component={TwoColLayout(<SearchWrapper type="tag" />)}
         />
-        <Route path="/tag/:query" component={TwoColLayout(Search("tag"))} />
-        <Route path="/post/:query" component={TwoColLayout(Search("post"))} />
+        <Route
+            exact
+            path="/category/:query"
+            component={TwoColLayout(<SearchWrapper type="category" />)}
+        />
+        <Route
+            exact
+            path="/search/:query"
+            component={TwoColLayout(<SearchWrapper type="post" />)}
+        />
     </Route>
 );
