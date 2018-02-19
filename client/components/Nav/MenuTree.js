@@ -12,6 +12,9 @@ export default class MenuTree extends Component {
             route: this.props.route
         };
     }
+    componentWillReceiveProps(nextProps) {
+        this.setState({ data: nextProps.data });
+    }
 
     onSelect(data) {
         const newData = this.props.data.map(item => {
@@ -51,13 +54,18 @@ class TreeNode extends Component {
         this.onClick = this.onClick.bind(this);
     }
     componentDidMount() {
+        const newState = {};
         if ("collapsed" in this.props.data && !this.props.data.collapsed) {
-            this.state.collapsed = this.props.data.collapsed;
+            newState.collapsed = this.props.data.collapsed;
         }
-
-        this.state.selected =
-            this.props.data.slug === this.props.route ? "active" : "";
-        this.setState(this.state);
+        let slug = "";
+        if (this.props.data.type === "page") {
+            slug = "/page/" + this.props.data.slug;
+        } else if (this.props.data.type == "category") {
+            slug = "/posts/" + this.props.data.slug;
+        }
+        newState.selected = slug === this.props.route ? "active" : "";
+        this.setState(newState);
     }
 
     onClick(e) {

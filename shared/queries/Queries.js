@@ -128,28 +128,38 @@ export const GET_TAXONOMIES = gql`
             id
             name
             desc
+            slug
         }
     }
 `;
 
 export const SEARCH_POSTS = gql`
-    query searchPosts($type: String!, $query: String!) {
-        posts(type: $type, body: $query) {
-            id
-            title
-            body
-            author {
-                username
-            }
-            type
-            status
-            created_at
-            excerpt
-            cover_image
-            taxonomies {
+    query searchPosts(
+        $type: String!
+        $query: String!
+        $offset: Int
+        $limit: Int
+    ) {
+        posts(type: $type, body: $query, offset: $offset, limit: $limit) {
+            count
+            rows {
                 id
-                name
+                title
+                body
+                author {
+                    username
+                }
                 type
+                slug
+                status
+                created_at
+                excerpt
+                cover_image
+                taxonomies {
+                    id
+                    name
+                    type
+                }
             }
         }
     }
@@ -158,19 +168,14 @@ export const SEARCH_POSTS = gql`
 export const SEARCH_POSTS_BY_TAXONOMY = gql`
     query catPosts(
         $type: String
-        $query: String
+        $slug: String
         $postType: String
         $offset: Int
         $limit: Int
     ) {
-        postTaxonomies(
-            type: $type
-            name: $query
-            offset: $offset
-            limit: $limit
-        ) {
+        taxonomyBySlug(type: $type, slug: $slug) {
             post_count
-            posts(type: $postType) {
+            posts(type: $postType, offset: $offset, limit: $limit) {
                 id
                 title
                 body

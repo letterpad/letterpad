@@ -41,7 +41,7 @@ export const getTaxonomies = (root, args, { models, user }) => {
     }
 
     let query = {
-        attributes: ["name", "id", "type"],
+        attributes: ["name", "id", "type", "slug"],
         include: [
             {
                 model: models.Post,

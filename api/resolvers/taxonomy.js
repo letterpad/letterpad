@@ -5,7 +5,6 @@ export default {
     },
     Mutation: {
         updateTaxonomy: async (root, args, { models }) => {
-            console.log(args);
             if (!args.edit) {
                 let found = await models.Taxonomy.findOne({
                     where: { name: args.name, type: args.type }
@@ -24,7 +23,8 @@ export default {
                 let item = await models.Taxonomy.create({
                     name: args.name,
                     desc: args.desc,
-                    type: args.type
+                    type: args.type,
+                    slug: args.slug
                 });
 
                 return {
@@ -34,7 +34,12 @@ export default {
                 };
             } else {
                 let id = await models.Taxonomy.update(
-                    { name: args.name, desc: args.desc, type: args.type },
+                    {
+                        name: args.name,
+                        desc: args.desc,
+                        type: args.type,
+                        slug: args.slug
+                    },
                     {
                         where: { id: args.id }
                     }

@@ -8,7 +8,8 @@ const models = {
     Role: conn.import("./models/role"),
     Permission: conn.import("./models/permission"),
     Setting: conn.import("./models/settings"),
-    Media: conn.import("./models/media")
+    Media: conn.import("./models/media"),
+    PostTaxonomy: conn.import("./models/postTaxonomy")
 };
 Object.keys(models).forEach(name => {
     if ("associate" in models[name]) {

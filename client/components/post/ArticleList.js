@@ -10,11 +10,13 @@ export default class ArticleList extends Component {
                 <article className="post">
                     {this.props.post.cover_image && (
                         <div className="post-thumbnail">
-                            <img
-                                width="100"
-                                src={this.props.post.cover_image}
-                                alt={this.props.title}
-                            />
+                            <Link to={href}>
+                                <img
+                                    width="100"
+                                    src={this.props.post.cover_image}
+                                    alt={this.props.title}
+                                />
+                            </Link>
                         </div>
                     )}
                     <div className="post-header">

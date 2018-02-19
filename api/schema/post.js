@@ -20,8 +20,9 @@ export default `
     id: Int
     name: String
     type: String
+    slug: String
     post_count: Int
-    posts(type:String): [Post]
+    posts(type:String, limit: Int, offset: Int): [Post]
   }
   type AdjacentPosts {
     previous: Post,
@@ -53,6 +54,7 @@ export default `
     postsMenu(slug: String,type: String, name: String, postType: String): [PostTaxonomy]
     pageMenu(slug: String, name: String, postType: String): Response
     postTaxonomies(type: String, name: String, postType: String, offset: Int, limit: Int, cursor: Int): [PostTaxonomy]
+    taxonomyBySlug(type: String, slug: String, postType: String, offset: Int, limit: Int, cursor: Int): [PostTaxonomy]
     adjacentPosts(type: String, slug:String): AdjacentPosts
     stats: Stats
   }

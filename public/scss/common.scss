@@ -104,6 +104,8 @@ a:hover,
 a:focus {
     text-decoration: none;
     outline: none;
+}
+a:hover {
     color: $link_hover;
 }
 
@@ -951,18 +953,22 @@ input {
     }
     .nav {
         > li > a {
-            &:hover,
-            &:focus {
+            &:hover {
                 background: transparent;
                 color: #fff;
+            }
+            &:focus {
+                background: transparent;
             }
         }
         .open > a {
             background: transparent;
-            &:hover,
-            &:focus {
+            &:hover {
                 background: transparent;
                 color: #fff;
+            }
+            &:focus {
+                background: transparent;
             }
         }
     }

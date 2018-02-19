@@ -84,11 +84,13 @@ export default {
             if (!menuItem) {
                 return null;
             }
+            const [id, type] = menuItem.id.split(/-(.+)/);
+
             return getTaxonomies(
                 root,
                 {
                     type: "post_category",
-                    taxId: menuItem.id,
+                    taxId: id,
                     postType: "post",
                     status: "publish"
                 },
@@ -190,6 +192,11 @@ export default {
                 return getTaxonomies(root, args, context);
             }
         ),
+        taxonomyBySlug: checkDisplayAccess.createResolver(
+            async (root, args, context) => {
+                return getTaxonomies(root, args, context);
+            }
+        ),
         stats: async (root, args, { models }) => {
             const result = {
                 posts: { published: 0, drafts: 0 },
@@ -250,11 +257,18 @@ export default {
         }
     },
     PostTaxonomy: {
-        posts: (taxonomy, { type }) => {
-            return taxonomy.getPosts({ where: { type, status: "publish" } });
+        posts: async (taxonomy, { type, limit, offset }) => {
+            const conditions = { where: { type, status: "publish" } };
+            if (limit) {
+                conditions.limit = limit;
+            }
+            if (offset) {
+                conditions.offset = offset;
+            }
+            return taxonomy.getPosts(conditions);
         },
         post_count: taxonomy => {
-            return taxonomy.posts[0].dataValues.post_count;
+            return taxonomy.dataValues.posts.length;
         }
     }
 };

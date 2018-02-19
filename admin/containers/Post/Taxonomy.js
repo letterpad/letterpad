@@ -90,6 +90,7 @@ class Taxonomy extends Component {
         } else if (
             item.name == oldItem.name &&
             item.desc == oldItem.desc &&
+            item.slug == oldItem.slug &&
             item.edit
         ) {
             delete newState.filteredData[idx].edit;
@@ -98,6 +99,9 @@ class Taxonomy extends Component {
         // dont allow empty taxonomies
         if (item.edit && item.name == "") {
             return alert("Cannot be empty");
+        }
+        if (!item.slug) {
+            item.slug = item.name.toLowerCase().replace(/ /g, "-");
         }
         newState.editMode = false;
         item.type = this.props.type;
@@ -150,7 +154,7 @@ class Taxonomy extends Component {
         };
         const rows = this.state.filteredData.map((item, idx) => (
             <tr key={idx} className={item.edit ? "row-selected" : ""}>
-                <td width="30%">
+                <td width="25%">
                     <span
                         style={{ display: "block" }}
                         ref={ele => this.setRef(ele, idx, "name")}
@@ -158,7 +162,7 @@ class Taxonomy extends Component {
                             this.handleChange(
                                 idx,
                                 "name",
-                                e.currentTarget.innerHTML
+                                e.currentTarget.innerText
                             )
                         }
                         className={item.edit ? "inline-edit" : ""}
@@ -168,7 +172,7 @@ class Taxonomy extends Component {
                         {item.name}
                     </span>
                 </td>
-                <td width="50%">
+                <td width="35%">
                     <span
                         style={{ display: "block" }}
                         ref={ele => this.setRef(ele, idx, "desc")}
@@ -184,6 +188,24 @@ class Taxonomy extends Component {
                         contentEditable={item.edit}
                     >
                         {item.desc || ""}
+                    </span>
+                </td>
+                <td width="20%">
+                    <span
+                        style={{ display: "block" }}
+                        ref={ele => this.setRef(ele, idx, "slug")}
+                        onKeyUp={e =>
+                            this.handleChange(
+                                idx,
+                                "slug",
+                                e.currentTarget.innerText
+                            )
+                        }
+                        className={item.edit ? "inline-edit" : ""}
+                        placeholder="Enter a slug"
+                        contentEditable={item.edit}
+                    >
+                        {item.slug || ""}
                     </span>
                 </td>
                 <td width="20%">
@@ -233,6 +255,9 @@ class Taxonomy extends Component {
                                 </th>
                                 <th width="25%" className="col-text">
                                     Description
+                                </th>
+                                <th width="25%" className="col-text">
+                                    Slug
                                 </th>
                                 <th width="25%" className="col-text">
                                     Actions
