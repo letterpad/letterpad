@@ -13,7 +13,7 @@ const config = new function(configFile) {
     this.defaultTitle = "Untitled";
     this.defaultSlug = "ajaxtown";
     this.adminPath = "/admin";
-    this.itemsPerPage = 3;
+    this.itemsPerPage = 1;
 }(configFile);
 
 export default config;

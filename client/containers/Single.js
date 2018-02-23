@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import Article from "../components/post/Article";
 import { gql, graphql } from "react-apollo";
 import Loader from "../components/Loader";
+import {
+    GET_SINGLE_POST,
+    GET_POST_BY_SLUG
+} from "../../shared/queries/Queries";
 
 const OhSnap = ({ message }) => {
     return (
@@ -41,25 +45,7 @@ class Single extends Component {
     }
 }
 
-const singlePost = gql`
-    query singlePost($type: String, $slug: String) {
-        post(type: $type, slug: $slug) {
-            id
-            title
-            body
-            status
-            created_at
-            excerpt
-            cover_image
-            taxonomies {
-                id
-                name
-                type
-            }
-        }
-    }
-`;
-const ContainerWithPostData = graphql(singlePost, {
+const ContainerWithPostData = graphql(GET_POST_BY_SLUG, {
     options: props => {
         return {
             variables: {

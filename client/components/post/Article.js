@@ -5,11 +5,21 @@ import AdjacentPosts from "./AdjacentPosts";
 
 export default class Article extends Component {
     render() {
-        const tags = this.props.post.taxonomies
-            .filter(taxonomy => taxonomy.type === "post_category")
-            .map(taxonomy => {
-                return <Link to="">{taxonomy.name}</Link>;
-            });
+        const tags = [],
+            categories = [];
+        this.props.post.taxonomies.forEach(taxonomy => {
+            if (taxonomy.type === "post_category") {
+                categories.push(
+                    <Link to={"/category/" + taxonomy.slug}>
+                        {taxonomy.name}
+                    </Link>
+                );
+            } else {
+                tags.push(
+                    <Link to={"/tag/" + taxonomy.slug}>#{taxonomy.name}</Link>
+                );
+            }
+        });
 
         return (
             <div className="card">
@@ -29,6 +39,9 @@ export default class Article extends Component {
                             {moment(
                                 new Date(this.props.post.created_at)
                             ).format("LL")}
+                            <div className="tags font-serif  p-t-30">
+                                {tags}
+                            </div>
                         </div>
                     </div>
                     <div className="post-content ql-editor">
@@ -38,7 +51,7 @@ export default class Article extends Component {
                             }}
                         />
                     </div>
-                    <div className="tags font-serif  p-t-30">{tags}</div>
+                    <div className="tags font-serif  p-t-30">{categories}</div>
                     {this.props.adjacentPosts && (
                         <AdjacentPosts
                             adjacentPosts={this.props.adjacentPosts}

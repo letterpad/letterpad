@@ -2,6 +2,8 @@ import { conn } from "../../config/mysql.config";
 import Sequalize, { DataTypes } from "sequelize";
 import bcrypt from "bcryptjs";
 import Faker from "faker";
+import rimraf from "rimraf";
+const copydir = require("copy-dir");
 
 const models = {
     Author: conn.import("../models/author"),
@@ -23,10 +25,35 @@ models.conn = conn;
 
 export const seed = async () => {
     await models.conn.sync({ force: true });
+
+    // do some clean first. delete the uploads folder
+    rimraf(__dirname + "/../../public/uploads/*", () => {
+        copydir.sync(
+            __dirname + "/uploads",
+            __dirname + "/../../public/uploads"
+        );
+    });
     await insertRolePermData();
     await insertAuthor();
     await insertTaxonomy();
-    await insertPost();
+    await insertPost({ title: "Post 1", type: "post", status: "publish" });
+    await insertPost({ title: "Post 2", type: "post", status: "publish" });
+    await insertPost({ title: "Post 3", type: "post", status: "publish" });
+    await insertPost({ title: "Post 4", type: "post", status: "publish" });
+    await insertPost({ title: "Post 5", type: "post", status: "publish" });
+    await insertPost({ title: "Post 6", type: "post", status: "publish" });
+    await insertPost({ title: "Post 7", type: "post", status: "publish" });
+    await insertPost({ title: "Post 8", type: "post", status: "publish" });
+    await insertPost({ title: "Post 9-draft", type: "post", status: "draft" });
+    await insertPost({ title: "Post 10-draft", type: "post", status: "draft" });
+
+    await insertPost({ title: "Page 1", type: "page", status: "publish" });
+    await insertPost({ title: "Page 2", type: "page", status: "publish" });
+    await insertPost({
+        title: "Page 3 (draft)",
+        type: "page",
+        status: "draft"
+    });
     await insertSettings();
 };
 
@@ -98,49 +125,58 @@ export async function insertTaxonomy() {
     await models.Taxonomy.bulkCreate([
         {
             name: "Uncategorized",
-            type: "post_category"
+            type: "post_category",
+            slug: "un-categorized"
         },
         {
             name: "General",
-            type: "post_category"
+            type: "post_category",
+            slug: "gen"
         }
     ]);
     await models.Taxonomy.bulkCreate([
         {
             name: "tag1",
-            type: "post_tag"
+            type: "post_tag",
+            slug: "tag-1"
         },
         {
             name: "tag2",
-            type: "post_tag"
+            type: "post_tag",
+            slug: "tag-2"
         },
         {
             name: "tag3",
-            type: "post_tag"
+            type: "post_tag",
+            slug: "tag-3"
         },
         {
             name: "tag4",
-            type: "post_tag"
+            type: "post_tag",
+            slug: "tag-4"
         },
         {
             name: "tag5",
-            type: "post_tag"
+            type: "post_tag",
+            slug: "tag-5"
         }
     ]);
 }
 
-export async function insertPost() {
+export async function insertPost(params) {
     // get author
     let admin = await models.Author.findOne({ where: { role_id: 1 } });
-
+    const title = Faker.lorem.words(3);
+    const slug = title.toLocaleLowerCase().replace(/ /g, "-");
+    const imageNo = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
     let post = await models.Post.create({
-        title: "Welcome",
+        title: params.title,
         body: Faker.lorem.paragraphs(6),
         excerpt: Faker.lorem.sentences(),
-        cover_image: "http://lorempixel.com/900/300/nature/",
-        type: "post",
-        status: "publish",
-        slug: "welcome-world",
+        cover_image: "/uploads/" + imageNo + ".jpeg",
+        type: params.type,
+        status: params.status,
+        slug: slug,
         author_id: admin.id
     });
     await admin.addPost(post);
@@ -148,25 +184,69 @@ export async function insertPost() {
     let taxonomy = await models.Taxonomy.findOne({
         where: { type: "post_category" }
     });
-    let postItem = await models.Post.findOne({ where: { id: 1 } });
+    let postItem = await models.Post.findOne({
+        limit: 1,
+        order: [["id", "DESC"]]
+    });
     await postItem.addTaxonomy(taxonomy);
 }
 
 export async function insertSettings() {
     let menu = JSON.stringify([
         {
-            label: "Home",
-            id: 1,
-            priority: 1,
-            slug: "welcome-world",
-            home: true,
-            type: "category"
+            id: "1-category",
+            label: "Uncategorized",
+            type: "category",
+            name: "Home",
+            children: [],
+            slug: "un-categorized"
+        },
+        {
+            id: "2-category",
+            label: "General",
+            type: "category",
+            name: "Empty",
+            children: [],
+            slug: "gen"
+        },
+        {
+            id: "12-page",
+            label: "Page 2",
+            slug: "error-quasi-iste",
+            type: "page",
+            name: "About Me",
+            children: []
+        },
+        {
+            id: "1519412227282-label",
+            label: "Label",
+            type: "label",
+            name: "Folder",
+            children: [
+                {
+                    id: "1519412236064-label",
+                    label: "Label",
+                    type: "label",
+                    name: "Sub Folder",
+                    children: [
+                        {
+                            id: "11-page",
+                            label: "Page 1",
+                            slug: "dignissimos-est-consequatur",
+                            type: "page",
+                            name: "Page 1",
+                            disabled: true,
+                            children: []
+                        }
+                    ]
+                }
+            ]
         }
     ]);
     let data = [
         {
             option: "site_title",
-            value: "Paperboat"
+            value: "Letterpad"
         },
         {
             option: "site_tagline",
@@ -191,6 +271,14 @@ export async function insertSettings() {
         {
             option: "social_instagram",
             value: ""
+        },
+        {
+            option: "text_notfound",
+            value: "Sorry, we went deep inside, but found nothing"
+        },
+        {
+            option: "text_posts_empty",
+            value: "Sorry, we couldn't find any posts"
         },
         {
             option: "sidebar_latest_post_count",

@@ -16,14 +16,11 @@ export default `
       count: Int,
       rows: [Post]
   }
-  type PostTaxonomy {
-    id: Int
-    name: String
-    type: String
-    slug: String
-    post_count: Int
-    posts(type:String, limit: Int, offset: Int): [Post]
+  type PostTaxonomyNode {
+    count: Int,
+    posts: [Post]
   }
+
   type AdjacentPosts {
     previous: Post,
     next: Post
@@ -51,10 +48,9 @@ export default `
   type Query {
     post(id: Int, type: String, slug: String): Post
     posts(type: String, body: String, status: String, offset: Int, limit: Int, cursor: Int): PostNode
-    postsMenu(slug: String,type: String, name: String, postType: String): [PostTaxonomy]
+    postsMenu(slug: String,type: String, name: String, postType: String,offset: Int, limit: Int, cursor: Int): PostTaxonomyNode
     pageMenu(slug: String, name: String, postType: String): Response
-    postTaxonomies(type: String, name: String, postType: String, offset: Int, limit: Int, cursor: Int): [PostTaxonomy]
-    taxonomyBySlug(type: String, slug: String, postType: String, offset: Int, limit: Int, cursor: Int): [PostTaxonomy]
+    postsByTaxSlug(type: String, slug: String, postType: String, offset: Int, limit: Int, cursor: Int): PostTaxonomyNode
     adjacentPosts(type: String, slug:String): AdjacentPosts
     stats: Stats
   }

@@ -31,7 +31,7 @@ export default function Layout(Element) {
                                 {enhancedElement}
                             </div>
                             <div className="col-lg-4 column">
-                                <Sidebar settings={settings} />
+                                <Sidebar settings={settings} {...this.props} />
                             </div>
                         </div>
                     </section>

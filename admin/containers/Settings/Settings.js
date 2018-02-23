@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { graphql, compose } from "react-apollo";
 import PropTypes from "prop-types";
-import { General, Social, SidebarWidgets } from "../../components/Settings";
+import {
+    General,
+    Social,
+    SidebarWidgets,
+    Translations
+} from "../../components/Settings";
 import { GET_OPTIONS, GET_TAXONOMIES } from "../../../shared/queries/Queries";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 
@@ -74,6 +79,14 @@ class Settings extends Component {
                         Configure your sidebar widgets
                     </div>
                     <SidebarWidgets data={data} updateOption={this.setOption} />
+                    <SubmitBtn handleClick={this.submitData} />
+                </div>
+                <div className="card">
+                    <div className="module-title">Messages</div>
+                    <div className="module-subtitle">
+                        Configure various message texts
+                    </div>
+                    <Translations data={data} updateOption={this.setOption} />
                     <SubmitBtn handleClick={this.submitData} />
                 </div>
             </section>

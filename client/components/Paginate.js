@@ -1,28 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import config from "../../config";
+import InfiniteScroll from "react-infinite-scroller";
 
-const Paginate = ({ count, page, changePage }) => {
-    const limit = 3;
+const Paginate = ({ data, count, page, loadMore }) => {
+    const limit = config.itemsPerPage;
     const pages = Array.from(Array(Math.ceil(count / limit)));
 
-    const pageItems = pages.map((_, i) => {
-        const num = i + 1;
-        const active = num === page ? "active" : "";
-        return (
-            <li key={i}>
-                <Link
-                    className={active}
-                    onClick={e => changePage(e, num)}
-                    to="#"
-                >
-                    {num}
-                </Link>
-            </li>
-        );
-    });
-
-    return <ul className="pagination">{pageItems}</ul>;
+    return (
+        <InfiniteScroll
+            pageStart={1}
+            loadMore={loadMore}
+            hasMore={page < pages.length}
+            loader={<div className="loader1">Loading ...</div>}
+        >
+            {data}
+        </InfiniteScroll>
+    );
 };
 
 Paginate.propTypes = {

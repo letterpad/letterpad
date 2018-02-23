@@ -41,16 +41,9 @@ export const getTaxonomies = (root, args, { models, user }) => {
     }
 
     let query = {
-        attributes: ["name", "id", "type", "slug"],
         include: [
             {
                 model: models.Post,
-                attributes: [
-                    [
-                        Sequalize.fn("COUNT", Sequalize.col("posts.id")),
-                        "post_count"
-                    ]
-                ],
                 as: "posts",
                 where,
                 required: true
@@ -62,6 +55,9 @@ export const getTaxonomies = (root, args, { models, user }) => {
     };
     if (taxId) {
         query.where.id = taxId;
+    }
+    if (args.slug) {
+        query.where.slug = args.slug;
     }
     return models.Taxonomy.findAll(query);
 };
