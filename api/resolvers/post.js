@@ -81,21 +81,47 @@ export default {
             };
             getItemFromMenu(menu, args.slug);
 
-            if (!menuItem) {
-                return null;
-            }
-            const [id, type] = menuItem.id.split(/-(.+)/);
+            let id = null;
 
-            return getTaxonomies(
+            if (!menuItem) {
+                const taxonomy = await models.Taxonomy.findOne({
+                    where: { slug: args.slug, type: args.type }
+                });
+                id = taxonomy.dataValues.id;
+            } else {
+                [id] = menuItem.id.split(/-(.+)/);
+            }
+            const taxonomies = await getTaxonomies(
                 root,
                 {
                     type: "post_category",
                     taxId: id,
-                    postType: "post",
+                    postType: args.postType,
                     status: "publish"
                 },
                 { user, models }
             );
+            if (taxonomies.length === 0) {
+                return {
+                    count: 0,
+                    posts: []
+                };
+            }
+            const conditions = {
+                where: { type: args.postType, status: "publish" }
+            };
+
+            if ("limit" in args) {
+                conditions.limit = args.limit;
+            }
+            if ("offset" in args) {
+                conditions.offset = args.offset;
+            }
+
+            return {
+                count: taxonomies[0].dataValues.posts.length,
+                posts: await models.Post.findAll(conditions)
+            };
         },
         pageMenu: async (root, args, { models }) => {
             let menu = await models.Setting.findOne({
@@ -180,21 +206,31 @@ export default {
             return data;
         },
         postTaxonomies: checkDisplayAccess.createResolver(
-            (root, args, context) => {
-                // const newArgs = { ...args };
-                // const columns = Object.keys(context.models.Post.rawAttributes);
-                // const conditions = getConditions(columns, newArgs);
-                // if (newArgs.cursor) {
-                //     conditions.where.id = { gt: newArgs.cursor };
-                // }
-                // console.log("===", args);
-                // const taxId = await models.Taxonomy.findOne({where: {name}})
-                return getTaxonomies(root, args, context);
+            async (root, args, context) => {
+                const taxonomies = await getTaxonomies(root, args, context);
+                return {
+                    count: taxonomies[0].dataValues.posts.length,
+                    posts: taxonomies[0].dataValues.posts
+                };
             }
         ),
-        taxonomyBySlug: checkDisplayAccess.createResolver(
+        postsByTaxSlug: checkDisplayAccess.createResolver(
             async (root, args, context) => {
-                return getTaxonomies(root, args, context);
+                const taxonomies = await getTaxonomies(root, args, context);
+                const conditions = {
+                    where: { type: args.postType, status: "publish" }
+                };
+
+                if (args.limit) {
+                    conditions.limit = args.limit;
+                }
+                if (args.offset) {
+                    conditions.offset = args.offset;
+                }
+                return {
+                    count: taxonomies[0].dataValues.posts.length,
+                    posts: await context.models.Post.findAll(conditions)
+                };
             }
         ),
         stats: async (root, args, { models }) => {
@@ -255,20 +291,20 @@ export default {
         taxonomies: post => {
             return post.getTaxonomies();
         }
-    },
-    PostTaxonomy: {
-        posts: async (taxonomy, { type, limit, offset }) => {
-            const conditions = { where: { type, status: "publish" } };
-            if (limit) {
-                conditions.limit = limit;
-            }
-            if (offset) {
-                conditions.offset = offset;
-            }
-            return taxonomy.getPosts(conditions);
-        },
-        post_count: taxonomy => {
-            return taxonomy.dataValues.posts.length;
-        }
     }
+    // PostTaxonomy: {
+    //     posts: async (taxonomy, { type, limit, offset }) => {
+    //         const conditions = { where: { type, status: "publish" } };
+    //         if (limit) {
+    //             conditions.limit = limit;
+    //         }
+    //         if (offset) {
+    //             conditions.offset = offset;
+    //         }
+    //         const result = {};
+    //         result.posts = await taxonomy.getPosts(conditions);
+    //         result.count = taxonomy.dataValues.posts.length;
+    //         return result;
+    //     }
+    // }
 };

@@ -66,11 +66,9 @@ Social.propTypes = {
 };
 Social.defaultPropTypes = {
     data: JSON.stringify({
-        social: {
-            twitter: "",
-            facebook: "",
-            instagram: "",
-            github: ""
-        }
+        social_twitter: "",
+        social_instagram: "",
+        social_facebook: "",
+        social_github: ""
     })
 };

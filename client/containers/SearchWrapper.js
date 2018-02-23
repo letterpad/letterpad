@@ -9,13 +9,13 @@ import {
     SEARCH_POSTS
 } from "../../shared/queries/Queries";
 import Paginate from "../components/Paginate";
+import OhSnap from "../components/OhSnap";
 
 //export default function SearchWrapper(params) {
 
 export default class SearchMe extends Component {
     constructor(props) {
         super(props);
-        this.changePage = this.changePage.bind(this);
         this.loadData = this.loadData.bind(this);
         this.state = {
             loading: true,
@@ -33,14 +33,13 @@ export default class SearchMe extends Component {
         this.loadData();
     }
 
-    async loadData() {
+    async loadData(num = 1) {
         const term = this.props.type;
-        const offset = (this.state.pageNo[term] - 1) * config.itemsPerPage;
+        const offset = (num - 1) * config.itemsPerPage;
         if (term === "post") {
             let result = await appoloClient.query({
                 query: SEARCH_POSTS,
                 variables: {
-                    type: "post",
                     query:
                         '{ "like": "%' + this.props.match.params.query + '%" }',
                     limit: config.itemsPerPage,
@@ -49,11 +48,11 @@ export default class SearchMe extends Component {
             });
             this.setState({
                 loading: false,
-                posts: result.data.posts.rows,
+                posts: [...this.state.posts, ...result.data.posts.rows],
                 total: result.data.posts.count,
                 pageNo: {
                     ...this.state.pageNo,
-                    post: this.state.pageNo.post
+                    post: num
                 }
             });
         } else if (term === "category") {
@@ -69,11 +68,14 @@ export default class SearchMe extends Component {
             });
             this.setState({
                 loading: false,
-                posts: result.data.taxonomyBySlug[0].posts,
-                total: result.data.taxonomyBySlug[0].post_count,
+                posts: [
+                    ...this.state.posts,
+                    ...result.data.postsByTaxSlug.posts
+                ],
+                total: result.data.postsByTaxSlug.count,
                 pageNo: {
                     ...this.state.pageNo,
-                    category: this.state.pageNo.category
+                    category: num
                 }
             });
         } else if (term === "tag") {
@@ -89,25 +91,14 @@ export default class SearchMe extends Component {
             });
             this.setState({
                 loading: false,
-                posts: result.data.taxonomyBySlug[0].posts,
-                total: result.data.taxonomyBySlug[0].post_count,
+                posts: result.data.postsByTaxSlug.posts,
+                total: result.data.postsByTaxSlug.count,
                 pageNo: {
                     ...this.state.pageNo,
-                    tag: this.state.pageNo.tag
+                    tag: num
                 }
             });
         }
-    }
-
-    changePage(e, num) {
-        e.preventDefault();
-        const newState = {
-            pageNo: { ...this.state.pageNo }
-        };
-        newState.pageNo[this.props.type] = num;
-        this.setState(newState, () => {
-            this.loadData();
-        });
     }
 
     render() {
@@ -117,17 +108,19 @@ export default class SearchMe extends Component {
         const data = this.state.posts.map((post, i) => (
             <ArticleList key={i} post={post} />
         ));
+        if (data.length === 0) {
+            console.log(this.props);
+            return <OhSnap message="wow" />;
+        }
         const type = this.props.type;
         return (
             <div>
-                {data}
-                <ul className="pagination">
-                    <Paginate
-                        count={this.state.total}
-                        page={this.state.pageNo[type]}
-                        changePage={this.changePage}
-                    />
-                </ul>
+                <Paginate
+                    data={data}
+                    count={this.state.total}
+                    page={this.state.pageNo[type]}
+                    loadMore={this.loadData}
+                />
             </div>
         );
     }

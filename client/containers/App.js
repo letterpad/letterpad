@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { gql, graphql } from "react-apollo";
-
+import { withRouter } from "react-router";
 import Loader from "../components/Loader";
 import TwoColLayout from "./TwoColLayout";
 import Home from "./Home";
@@ -86,4 +86,4 @@ const ContainerWithSiteData = graphql(optionsQuery, {
     }
 });
 
-export default ContainerWithSiteData(App);
+export default ContainerWithSiteData(withRouter(App));

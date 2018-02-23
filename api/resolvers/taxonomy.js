@@ -1,7 +1,12 @@
+import { getTaxonomies } from "../models/taxonomy";
+
 export default {
     Query: {
         taxonomies: (root, args, { models }) =>
-            models.Taxonomy.findAll({ where: args, order: [["name", "ASC"]] })
+            models.Taxonomy.findAll({ where: args, order: [["name", "ASC"]] }),
+        postTaxonomies: (root, args, context) => {
+            return getTaxonomies(root, args, context);
+        }
     },
     Mutation: {
         updateTaxonomy: async (root, args, { models }) => {

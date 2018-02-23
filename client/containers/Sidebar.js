@@ -1,9 +1,13 @@
 import React, { Component } from "react";
-import ArticleList from "../components/post/ArticleList";
 import About from "../components/sidebar/About";
+import Search from "../components/sidebar/Search";
 import Categories from "../components/sidebar/Categories";
 import LatestPosts from "../components/sidebar/LatestPosts";
-import { gql, graphql } from "react-apollo";
+import { graphql } from "react-apollo";
+import {
+    GET_POSTS_LINKED_TAXONOMIES,
+    GET_LATEST_PUBLISHED_POSTS
+} from "../../shared/queries/Queries";
 
 class Sidebar extends Component {
     constructor(props) {
@@ -13,6 +17,7 @@ class Sidebar extends Component {
     render() {
         return (
             <div>
+                <Search history={this.props.history} />
                 <About about={this.props.settings.sidebar_about.value} />
                 <Categories
                     loading={this.props.loading}
@@ -27,34 +32,7 @@ class Sidebar extends Component {
     }
 }
 
-const linkedTaxonomies = gql`
-    query getTaxonomies($type: String!, $postType: String) {
-        postTaxonomies(type: $type, postType: $postType) {
-            id
-            name
-            type
-            slug
-            post_count
-        }
-    }
-`;
-
-const latestPosts = gql`
-    query latestPosts($type: String, $limit: Int) {
-        posts(type: $type, offset: 0, limit: $limit) {
-            count
-            rows {
-                id
-                title
-                type
-                slug
-                created_at
-            }
-        }
-    }
-`;
-
-const ContainerWithCatData = graphql(linkedTaxonomies, {
+const ContainerWithCatData = graphql(GET_POSTS_LINKED_TAXONOMIES, {
     options: {
         variables: { type: "post_category", postType: "post" }
     },
@@ -64,7 +42,7 @@ const ContainerWithCatData = graphql(linkedTaxonomies, {
     })
 });
 
-const ContainerWithLatestPosts = graphql(latestPosts, {
+const ContainerWithLatestPosts = graphql(GET_LATEST_PUBLISHED_POSTS, {
     options: props => ({
         variables: {
             type: "post",
