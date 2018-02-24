@@ -55,6 +55,7 @@ export const seed = async () => {
         status: "draft"
     });
     await insertSettings();
+    await insertMedia();
 };
 
 export async function insertRolePermData() {
@@ -174,6 +175,7 @@ export async function insertPost(params) {
         body: Faker.lorem.paragraphs(6),
         excerpt: Faker.lorem.sentences(),
         cover_image: "/uploads/" + imageNo + ".jpeg",
+        author_id: 1,
         type: params.type,
         status: params.status,
         slug: slug,
@@ -189,6 +191,21 @@ export async function insertPost(params) {
         order: [["id", "DESC"]]
     });
     await postItem.addTaxonomy(taxonomy);
+}
+
+export async function insertMedia(params) {
+    await models.Media.bulkCreate([
+        { url: "/uploads/1.jpeg", author_id: 1 },
+        { url: "/uploads/2.jpeg", author_id: 1 },
+        { url: "/uploads/3.jpeg", author_id: 1 },
+        { url: "/uploads/4.jpeg", author_id: 1 },
+        { url: "/uploads/5.jpeg", author_id: 1 },
+        { url: "/uploads/6.jpeg", author_id: 1 },
+        { url: "/uploads/7.jpeg", author_id: 1 },
+        { url: "/uploads/8.jpeg", author_id: 1 },
+        { url: "/uploads/9.jpeg", author_id: 1 },
+        { url: "/uploads/10.jpeg", author_id: 1 }
+    ]);
 }
 
 export async function insertSettings() {
@@ -258,6 +275,10 @@ export async function insertSettings() {
         },
         {
             option: "site_description",
+            value: ""
+        },
+        {
+            option: "post_display",
             value: ""
         },
         {

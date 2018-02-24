@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ArticleList from "../components/post/ArticleList";
 import { graphql } from "react-apollo";
+import StackGrid from "react-stack-grid";
 import Loader from "../components/Loader";
 import { CAT_POSTS } from "../../shared/queries/Queries";
 import config from "../../config";
@@ -42,9 +43,25 @@ class Posts extends Component {
                 <OhSnap message={this.props.settings.text_posts_empty.value} />
             );
         }
-        const posts = this.props.posts.map((post, i) => {
-            return <ArticleList idx={i} key={i} post={post} />;
-        });
+        const posts =
+            this.props.settings.post_display.value == "row" ? (
+                <div className="post-row">
+                    {this.props.posts.map((post, i) => {
+                        return <ArticleList idx={i} key={i} post={post} />;
+                    })}
+                </div>
+            ) : (
+                <StackGrid
+                    className="post-grid"
+                    columnWidth={"50%"}
+                    gutterWidth={12}
+                    gutterHeight={12}
+                >
+                    {this.props.posts.map((post, i) => {
+                        return <ArticleList idx={i} key={i} post={post} />;
+                    })}
+                </StackGrid>
+            );
 
         return (
             <Paginate
@@ -54,7 +71,6 @@ class Posts extends Component {
                 loadMore={this.loadMore}
             />
         );
-        //return <div>{posts}</div>;
     }
 }
 

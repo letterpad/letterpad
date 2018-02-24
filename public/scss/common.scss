@@ -515,10 +515,6 @@ blockquote cite {
 
 .pagination > li > a,
 .pagination > li > span {
-    background: #f5f5f5;
-    border: 0;
-    color: #111;
-    padding: 9px 14px;
     margin: 0 5px 0 0;
 }
 
@@ -538,19 +534,19 @@ blockquote cite {
     transition: all 0.125s cubic-bezier(0.3, 0.1, 0.58, 1);
 }
 
-.pagination > li > a:hover,
-.pagination > li > a:focus,
-.pagination > li > span:hover,
-.pagination > li > span:focus,
-.pagination > .active > a,
-.pagination > .active > span,
-.pagination > .active > a:hover,
-.pagination > .active > span:hover,
-.pagination > .active > a:focus,
-.pagination > .active > span:focus {
-    background-color: #111;
-    color: #fff;
-}
+// .pagination > li > a:hover,
+// .pagination > li > a:focus,
+// .pagination > li > span:hover,
+// .pagination > li > span:focus,
+// .pagination > .active > a,
+// .pagination > .active > span,
+// .pagination > .active > a:hover,
+// .pagination > .active > span:hover,
+// .pagination > .active > a:focus,
+// .pagination > .active > span:focus {
+//     background-color: #111;
+//     color: #fff;
+// }
 
 /*!------------------------------------------------------------------
 [Tags]
@@ -1225,6 +1221,24 @@ input {
     padding: 20px;
     margin-bottom: 20px;
 }
+.post-grid {
+    .card {
+        margin-bottom: 0px;
+        padding: 0px;
+    }
+    .post {
+        margin-bottom: 0px;
+        .post-content {
+            padding: 20px;
+        }
+        .post-header {
+            margin: 20px 20px 0 20px;
+        }
+        .post-body.with-border {
+            border: 1px solid #eee;
+        }
+    }
+}
 
 /*!------------------------------------------------------------------
 [Modules]
@@ -1372,7 +1386,7 @@ input {
 */
 
 .post {
-    margin-bottom: 60px;
+    margin-bottom: 20px;
 }
 
 .post-header {
@@ -1395,6 +1409,21 @@ input {
         font-size: 16px;
         color: #111;
         margin: 0 0 10px;
+    }
+}
+a.post-more {
+    background: $color-text-secondary;
+    color: $color-border;
+    border: 1px solid $color-text-secondary;
+    padding: 6px 10px;
+    transition: all 0.2s linear;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 11px;
+    &:hover {
+        background: $color-border;
+        color: $color-text-secondary;
+        border: 1px solid $color-text-secondary;
     }
 }
 

@@ -165,3 +165,12 @@ export const INSERT_MEDIA = gql`
         }
     }
 `;
+
+export const DELETE_MEDIA = gql`
+    mutation deleteMedia($id: Int!) {
+        deleteMedia(id: $id) {
+            ok
+            id
+        }
+    }
+`;

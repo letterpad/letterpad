@@ -1,6 +1,7 @@
 import React from "react";
 import { graphql } from "react-apollo";
 import { Route, Switch } from "react-router-dom";
+import { withRouter } from "react-router";
 import jwtDecode from "jwt-decode";
 import Notifications, { notify } from "react-notify-toast";
 import Loader from "../components/Loader";
@@ -47,12 +48,7 @@ const App = data => {
                 />
                 <Route exact path="/admin/home" component={Home} />
                 {/* Route for posts */}
-                <Route
-                    exact
-                    path="/admin/posts"
-                    name="Posts"
-                    component={Posts}
-                />
+                <Route path="/admin/posts" name="Posts" component={Posts} />
                 <Route
                     path="/admin/posts/:post_id"
                     component={props => <Edit {...props} type="post" />}
@@ -84,7 +80,14 @@ const App = data => {
                     component={props => <Create {...props} type="page" />}
                 />
                 {/* Route for others */}
-                <Route path="/admin/media" component={Media} />
+                <Route
+                    path="/admin/media"
+                    render={props => <Media {...props} author={user} />}
+                />
+                <Route
+                    path="/admin/media/:page"
+                    render={props => <Media {...props} author={user} />}
+                />
                 <Route
                     path="/admin/menu-builder"
                     component={props => (
@@ -127,4 +130,4 @@ const ContainerWithSiteData = graphql(GET_OPTIONS, {
     }
 });
 
-export default ContainerWithSiteData(App);
+export default ContainerWithSiteData(withRouter(App));
