@@ -227,6 +227,10 @@ blockquote cite {
 }
 
 .brand {
+    font-weight: 100;
+    font-size: 23px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 /*!------------------------------------------------------------------
@@ -932,8 +936,6 @@ input {
         height: 70px;
         padding-top: 0;
         padding-bottom: 0;
-        font-weight: 400;
-        font-size: 23px;
         color: $color-text-primary-invert;
         width: 100vw;
         text-shadow: 1px 1px 0 #000;
@@ -1035,7 +1037,7 @@ input {
     .navbar-custom {
         .navbar-header {
             float: none;
-            margin: 0 0 60px;
+            margin: 0 0 10px;
             padding: 20px 20px;
         }
         .navbar-nav {
@@ -1224,18 +1226,22 @@ input {
 .post-grid {
     .card {
         margin-bottom: 0px;
-        padding: 0px;
     }
-    .post {
-        margin-bottom: 0px;
-        .post-content {
-            padding: 20px;
+    &:not(.with-padding) {
+        .card {
+            padding: 0px;
         }
-        .post-header {
-            margin: 20px 20px 0 20px;
-        }
-        .post-body.with-border {
-            border: 1px solid #eee;
+        .post {
+            margin-bottom: 0px;
+            .post-content {
+                padding: 20px;
+            }
+            .post-header {
+                margin: 20px 20px 0 20px;
+            }
+            .post-body.with-border {
+                border: 1px solid #eee;
+            }
         }
     }
 }

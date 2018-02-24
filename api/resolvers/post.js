@@ -10,6 +10,7 @@ import {
 } from "../utils/permissions";
 
 function IsJsonString(str) {
+    if (!isNaN(str)) return false;
     try {
         JSON.parse(str);
     } catch (e) {
@@ -22,9 +23,17 @@ function getConditions(columns, args) {
     const conditions = {};
     for (const field in args) {
         if (columns.indexOf(field) >= 0) {
-            obj[field] = IsJsonString(args[field])
+            const validateJSONStr = IsJsonString(args[field]);
+            const query = validateJSONStr
                 ? JSON.parse(args[field])
                 : args[field];
+            console.log("=====");
+            console.log(validateJSONStr, query);
+            if (validateJSONStr) {
+                obj["$or"] = [{ body: query }, { title: query }];
+            } else {
+                obj[field] = query;
+            }
         } else {
             conditions[field] = args[field];
         }

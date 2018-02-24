@@ -44,28 +44,35 @@ const App = data => {
 
                 <Route
                     path="/admin"
-                    component={props => <Menu {...props} {...data} />}
+                    render={props => <Menu {...props} {...data} />}
                 />
                 <Route exact path="/admin/home" component={Home} />
                 {/* Route for posts */}
-                <Route path="/admin/posts" name="Posts" component={Posts} />
                 <Route
-                    path="/admin/posts/:post_id"
-                    component={props => <Edit {...props} type="post" />}
+                    exact
+                    path="/admin/posts"
+                    name="Posts"
+                    component={Posts}
                 />
                 <Route
+                    exact
+                    path="/admin/posts/:post_id"
+                    render={props => <Edit {...props} type="post" />}
+                />
+                <Route
+                    exact
                     path="/admin/post-new"
-                    component={props => <Create {...props} type="post" />}
+                    render={props => <Create {...props} type="post" />}
                 />
                 <Route
                     exact
                     path="/admin/tags"
-                    component={props => <Taxonomy {...props} type="post_tag" />}
+                    render={props => <Taxonomy {...props} type="post_tag" />}
                 />
                 <Route
                     exact
                     path="/admin/categories"
-                    component={props => (
+                    render={props => (
                         <Taxonomy {...props} type="post_category" />
                     )}
                 />
@@ -73,24 +80,28 @@ const App = data => {
                 <Route exact path="/admin/pages" component={Pages} />
                 <Route
                     path="/admin/pages/:post_id"
-                    component={props => <Edit {...props} type="page" />}
+                    render={props => <Edit {...props} type="page" />}
                 />
                 <Route
+                    exact
                     path="/admin/page-new"
-                    component={props => <Create {...props} type="page" />}
+                    render={props => <Create {...props} type="page" />}
                 />
                 {/* Route for others */}
                 <Route
+                    exact
                     path="/admin/media"
                     render={props => <Media {...props} author={user} />}
                 />
                 <Route
+                    exact
                     path="/admin/media/:page"
                     render={props => <Media {...props} author={user} />}
                 />
                 <Route
+                    exact
                     path="/admin/menu-builder"
-                    component={props => (
+                    render={props => (
                         <MenuBuilder {...props} settings={data.settings} />
                     )}
                 />
@@ -99,14 +110,12 @@ const App = data => {
                 <Route
                     exact
                     path="/admin/authors/new"
-                    component={props => (
-                        <CreateAuthor {...props} author={user} />
-                    )}
+                    render={props => <CreateAuthor {...props} author={user} />}
                 />
                 <Route path="/admin/authors/edit/:id" component={EditAuthor} />
                 <Route
                     path="/admin/edit-profile"
-                    component={props => <EditAuthor {...props} author={user} />}
+                    render={props => <EditAuthor {...props} author={user} />}
                 />
                 <Route path="/admin/settings" component={Settings} />
                 <Route path="/admin/themes" component={Themes} />

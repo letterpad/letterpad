@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
+import StackGrid from "react-stack-grid";
 import { Basic, Social, PasswordChange } from "../../components/Author";
 import { GET_AUTHOR } from "../../../shared/queries/Queries";
 import { UPDATE_AUTHOR } from "../../../shared/queries/Mutations";
@@ -49,33 +50,34 @@ class EditAuthor extends Component {
 
         return (
             <section className="module-xs">
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="card">
-                            <Basic
-                                data={this.props.author}
-                                updateOption={this.setOption}
-                            />
-                            <SubmitBtn handleClick={this.submitData} />
-                        </div>
-                        <div className="card">
-                            <PasswordChange
-                                data={this.props.author}
-                                updateOption={this.setOption}
-                            />
-                            <SubmitBtn handleClick={this.submitData} />
-                        </div>
+                <StackGrid
+                    className="post-grid with-padding"
+                    columnWidth={"50%"}
+                    gutterWidth={12}
+                    gutterHeight={12}
+                >
+                    <div className="card">
+                        <Basic
+                            data={this.props.author}
+                            updateOption={this.setOption}
+                        />
+                        <SubmitBtn handleClick={this.submitData} />
                     </div>
-                    <div className="col-md-6">
-                        <div className="card">
-                            <Social
-                                data={this.props.author.social}
-                                updateOption={this.setOption}
-                            />
-                            <SubmitBtn handleClick={this.submitData} />
-                        </div>
+                    <div className="card">
+                        <Social
+                            data={this.props.author.social}
+                            updateOption={this.setOption}
+                        />
+                        <SubmitBtn handleClick={this.submitData} />
                     </div>
-                </div>
+                    <div className="card">
+                        <PasswordChange
+                            data={this.props.author}
+                            updateOption={this.setOption}
+                        />
+                        <SubmitBtn handleClick={this.submitData} />
+                    </div>
+                </StackGrid>
             </section>
         );
     }

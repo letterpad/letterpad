@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
+import StackGrid from "react-stack-grid";
 import { GettingStarted, QuickDraft, Stats } from "../../components/Home";
 import { BLOG_STATS } from "../../../shared/queries/Queries";
 import { CREATE_POST } from "../../../shared/queries/Mutations";
@@ -27,18 +28,19 @@ class Home extends Component {
     render() {
         return (
             <section className="module-xs">
-                <div className="col-lg-6">
+                <StackGrid
+                    className="post-grid with-padding"
+                    columnWidth={"50%"}
+                    gutterWidth={12}
+                    gutterHeight={12}
+                >
                     <GettingStarted />
-                </div>
-                <div className="col-lg-6">
                     <Stats
                         loading={this.props.loading}
                         stats={this.props.stats}
                     />
-                </div>
-                <div className="col-lg-6">
                     <QuickDraft draftPost={this.draftPost} />
-                </div>
+                </StackGrid>
             </section>
         );
     }

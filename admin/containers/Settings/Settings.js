@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { graphql, compose } from "react-apollo";
 import PropTypes from "prop-types";
+import StackGrid from "react-stack-grid";
 import {
     General,
     Social,
@@ -57,38 +58,51 @@ class Settings extends Component {
 
         return (
             <section className="module-xs">
-                <div className="card">
-                    <div className="module-title">General Settings</div>
-                    <div className="module-subtitle">
-                        Overview of configuration options for your site.
+                <StackGrid
+                    className="post-grid with-padding"
+                    columnWidth={"50%"}
+                    gutterWidth={12}
+                    gutterHeight={12}
+                >
+                    <div className="card">
+                        <div className="module-title">General Settings</div>
+                        <div className="module-subtitle">
+                            Overview of configuration options for your site.
+                        </div>
+                        <General data={data} updateOption={this.setOption} />
+                        <SubmitBtn handleClick={this.submitData} />
                     </div>
-                    <General data={data} updateOption={this.setOption} />
-                    <SubmitBtn handleClick={this.submitData} />
-                </div>
-                <div className="card">
-                    <div className="module-title">Social Settings</div>
-                    <div className="module-subtitle">
-                        Setup your social links
+                    <div className="card">
+                        <div className="module-title">Social Settings</div>
+                        <div className="module-subtitle">
+                            Setup your social links
+                        </div>
+                        <Social data={data} updateOption={this.setOption} />
+                        <SubmitBtn handleClick={this.submitData} />
                     </div>
-                    <Social data={data} updateOption={this.setOption} />
-                    <SubmitBtn handleClick={this.submitData} />
-                </div>
-                <div className="card">
-                    <div className="module-title">Sidebar Settings</div>
-                    <div className="module-subtitle">
-                        Configure your sidebar widgets
+                    <div className="card">
+                        <div className="module-title">Sidebar Settings</div>
+                        <div className="module-subtitle">
+                            Configure your sidebar widgets
+                        </div>
+                        <SidebarWidgets
+                            data={data}
+                            updateOption={this.setOption}
+                        />
+                        <SubmitBtn handleClick={this.submitData} />
                     </div>
-                    <SidebarWidgets data={data} updateOption={this.setOption} />
-                    <SubmitBtn handleClick={this.submitData} />
-                </div>
-                <div className="card">
-                    <div className="module-title">Messages</div>
-                    <div className="module-subtitle">
-                        Configure various message texts
+                    <div className="card">
+                        <div className="module-title">Messages</div>
+                        <div className="module-subtitle">
+                            Configure various message texts
+                        </div>
+                        <Translations
+                            data={data}
+                            updateOption={this.setOption}
+                        />
+                        <SubmitBtn handleClick={this.submitData} />
                     </div>
-                    <Translations data={data} updateOption={this.setOption} />
-                    <SubmitBtn handleClick={this.submitData} />
-                </div>
+                </StackGrid>
             </section>
         );
     }

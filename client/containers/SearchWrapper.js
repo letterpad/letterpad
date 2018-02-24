@@ -13,8 +13,6 @@ import {
 import Paginate from "../components/Paginate";
 import OhSnap from "../components/OhSnap";
 
-//export default function SearchWrapper(params) {
-
 export default class SearchMe extends Component {
     constructor(props) {
         super(props);

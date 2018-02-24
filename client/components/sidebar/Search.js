@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 // A hack to remember the search text locally without asking parent
 let SEARCH_TEXT_STATE = "";
-
 export default class Search extends Component {
     constructor(props) {
         super(props);
