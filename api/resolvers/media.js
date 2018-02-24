@@ -54,12 +54,19 @@ export default {
             return models.Media.create(data);
         }),
 
-        deleteMedia: editPostPerm.createResolver((root, args, { models }) => {
-            const data = {};
-            Object.keys(args).forEach(field => {
-                data[field] = args[field];
-            });
-            return models.Media.destroy(data);
-        })
+        deleteMedia: editPostPerm.createResolver(
+            async (root, args, { models }) => {
+                let destroyedRecord = await models.Media.destroy({
+                    where: { id: args.id }
+                });
+                if (destroyedRecord == 1) {
+                    return {
+                        ok: true,
+                        id: args.id
+                    };
+                }
+                return { ok: false };
+            }
+        )
     }
 };

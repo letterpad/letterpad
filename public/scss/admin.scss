@@ -15,6 +15,27 @@ label.custom-label {
     grid-auto-rows: minmax(203px, auto);
     grid-auto-flow: dense;
 }
+.post-grid .post {
+    margin-bottom: 0px;
+    box-shadow: -2px 2px 14px -2px #ccc;
+}
+.media-grid .post {
+    .post-header {
+        margin: 0px;
+        font-size: 12px;
+    }
+    .post-time {
+        font-size: 11px;
+    }
+    .post-body {
+        padding: 4px 8px;
+        border: 1px solid #eee;
+        .post-content {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
 /*--------------------------------------
 [TopBar]
 */

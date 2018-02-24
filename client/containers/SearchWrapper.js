@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
+import Grid from "react-css-grid";
+import StackGrid from "react-stack-grid";
 import ArticleList from "../components/post/ArticleList";
 import appoloClient from "../apolloClient";
 import config from "../../config";
@@ -105,11 +107,27 @@ export default class SearchMe extends Component {
         if (this.state.loading) {
             return <Loader />;
         }
-        const data = this.state.posts.map((post, i) => (
-            <ArticleList key={i} post={post} />
+        const posts = this.state.posts.map((post, i) => (
+            <ArticleList idx={i} key={i} post={post} />
         ));
+
+        const data =
+            this.props.settings.post_display.value == "row" ? (
+                <div className="post-row">{posts}</div>
+            ) : (
+                <div>
+                    <StackGrid
+                        className="post-grid"
+                        columnWidth={"50%"}
+                        gutterWidth={12}
+                        gutterHeight={12}
+                    >
+                        {posts}
+                    </StackGrid>
+                </div>
+            );
+
         if (data.length === 0) {
-            console.log(this.props);
             return <OhSnap message="wow" />;
         }
         const type = this.props.type;

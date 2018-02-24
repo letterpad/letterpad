@@ -6,7 +6,6 @@ import { GET_POSTS } from "../../../shared/queries/Queries";
 import PostsHoc from "./PostsHoc";
 import Paginate from "../../components/Paginate";
 import { PostFilters } from "../../components/Post";
-import Loader from "../../components/Loader";
 
 class Posts extends Component {
     constructor(props) {

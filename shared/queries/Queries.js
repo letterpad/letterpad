@@ -82,6 +82,7 @@ export const GET_PAGE_NAMES = gql`
         }
     }
 `;
+
 export const GET_MEDIA = gql`
     query getMedia($author_id: Int!, $offset: Int, $limit: Int) {
         media(author_id: $author_id, offset: $offset, limit: $limit) {
