@@ -36,10 +36,6 @@ const App = data => {
             <Route exact path="/admin/login" component={LoginView} />
 
             <div className="wrapper">
-                <div className="top-bar">
-                    <div className="top-bar-left">Brand</div>
-                    <div className="top-bar-right">Right</div>
-                </div>
                 <Notifications />
 
                 <Route

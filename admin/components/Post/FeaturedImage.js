@@ -37,31 +37,26 @@ class FeaturedImage extends Component {
         return (
             <div className="x_panel">
                 <div className="x_content">
-                    <div id="featured-image">
+                    <div className="featured-image">
                         <img alt="" width="100%" src={coverImage} />
-                    </div>
-                    {(() => {
-                        if (!this.state.cover_image) {
-                            return (
-                                <a
-                                    className="text-primary pointer"
-                                    onClick={() => {
-                                        this.refs.uploadInput.click();
-                                    }}
-                                >
-                                    Set Featured Image
-                                </a>
-                            );
-                        }
-                        return (
+                        {!this.state.cover_image ? (
                             <a
-                                className="text-primary pointer"
+                                className="btn btn-xs btn-dark"
+                                onClick={() => {
+                                    this.refs.uploadInput.click();
+                                }}
+                            >
+                                Set Featured Image
+                            </a>
+                        ) : (
+                            <a
+                                className="btn btn-xs btn-dark"
                                 onClick={this.removeImage}
                             >
                                 Remove Featured Image
                             </a>
-                        );
-                    })()}
+                        )}
+                    </div>
                     <input
                         ref="uploadInput"
                         onChange={input => this.uploadImage(input.target.files)}

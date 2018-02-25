@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
-import Menu from "../components/Menu";
+import Navbar from "./Navbar";
 
 export default function Layout(Element) {
     return class extends Component {
@@ -9,35 +9,39 @@ export default function Layout(Element) {
             const pageName = Element.type
                 ? Element.type.name.toLowerCase()
                 : "";
-            // let ChildEle = Element;
-            // if (typeof Element === "function") {
-            //     ChildEle = <Element props={this.props} />;
-            // }
             const enhancedElement = React.cloneElement(Element, {
                 ...this.props
             });
-
+            const layout = "standard"; //another option: standard
+            let classes = {
+                navbarType:
+                    layout == "standard"
+                        ? "navbar navbar-default"
+                        : "navbar navbar-custom"
+            };
             const { settings } = enhancedElement.props;
             return (
-                <div className={"wrapper " + pageName}>
-                    <Menu
-                        settings={settings}
-                        menu={JSON.parse(settings.menu.value)}
-                    />
+                <div className={"main " + layout}>
+                    <nav className={classes.navbarType}>
+                        <div
+                            className={
+                                layout == "two-column" ? "sidebar" : "container"
+                            }
+                        >
+                            <Navbar
+                                settings={settings}
+                                menu={JSON.parse(settings.menu.value)}
+                                layout={layout}
+                            />
 
-                    <section className="module-xs">
-                        <div className="row">
-                            <div className="col-lg-8 column">
-                                {enhancedElement}
-                            </div>
-                            <div className="col-lg-4 column">
-                                <Sidebar settings={settings} {...this.props} />
-                            </div>
+                            {layout == "two-column" ? <Footer /> : ""}
                         </div>
-                    </section>
+                    </nav>
 
-                    {/* <hr className="divider" />
-                    <Footer /> */}
+                    <main>{enhancedElement}</main>
+                    <aside>
+                        <Sidebar settings={settings} {...this.props} />
+                    </aside>
                 </div>
             );
         }
