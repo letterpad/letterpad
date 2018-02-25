@@ -18,7 +18,7 @@ export default class MenuTree extends Component {
 
     onSelect(data) {
         const newData = this.props.data.map(item => {
-            if (item.label === data.label) {
+            if (item.label === data.label && item.name === data.name) {
                 return data;
             }
             return item;
@@ -36,7 +36,7 @@ export default class MenuTree extends Component {
             />
         ));
 
-        return <ul className="nav nav-list">{tree}</ul>;
+        return <ul className={"nav " + this.props.type}>{tree}</ul>;
     }
 }
 

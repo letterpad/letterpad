@@ -6,9 +6,10 @@ const conn = new Sequalize(
     process.env.MYSQL_USER,
     process.env.MYSQL_PASSWORD,
     {
-        logging: str => {
-            console.log(str);
-        },
+        // logging: str => {
+        //     //console.log(str);
+        // },
+        logging: false,
         host: process.env.MYSQL_HOST,
         port: process.env.MYSQL_PORT || 3306,
         dialect: "mysql",

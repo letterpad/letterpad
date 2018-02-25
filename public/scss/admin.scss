@@ -53,7 +53,12 @@ label.custom-label {
     display: block;
     height: 80px;
 }
-
+.featured-image {
+    .btn {
+        margin-top: -50px;
+    }
+    margin: -20px;
+}
 /* Tell Quill not to scroll */
 
 #editor {

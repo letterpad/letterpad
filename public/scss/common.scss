@@ -197,7 +197,7 @@ blockquote cite {
 
 .font-alt {
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }
 
 .font-serif {
@@ -1237,7 +1237,11 @@ input {
                 padding: 20px;
             }
             .post-header {
-                margin: 20px 20px 0 20px;
+                margin: 0px 20px;
+                padding-top: 20px;
+                .post-title {
+                    margin-bottom: 0px;
+                }
             }
             .post-body.with-border {
                 border: 1px solid #eee;
@@ -1276,8 +1280,9 @@ input {
 .module-title {
     line-height: 1.4;
     font-weight: 400;
-    font-size: 17px;
-    color: $color-text-secondary;
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
 }
 
 .module-subtitle {
@@ -1290,11 +1295,11 @@ input {
 
 .module-title,
 .module-subtitle {
-    margin: 0 0 30px;
+    margin: 0 0 16px;
 }
 
 .module-title + .module-subtitle {
-    margin-top: -25px;
+    margin-top: -16px;
 }
 
 /*!------------------------------------------------------------------
@@ -1396,7 +1401,7 @@ input {
 }
 
 .post-header {
-    margin: 40px 0 30px;
+    margin: 16px 0 16px;
 }
 
 .post-content {
@@ -1405,13 +1410,13 @@ input {
 }
 
 .post-title {
-    font-weight: 700;
+    font-weight: 500;
     font-size: 16px;
     color: #111;
     min-height: 20px;
     margin: 0 0 10px;
     a {
-        font-weight: 700;
+        font-weight: 500;
         font-size: 16px;
         color: #111;
         margin: 0 0 10px;
