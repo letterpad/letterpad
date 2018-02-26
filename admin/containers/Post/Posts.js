@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 import { PostRows } from "../../components/Post";
-import { GET_POSTS } from "../../../shared/queries/Queries";
 import PostsHoc from "./PostsHoc";
 import Paginate from "../../components/Paginate";
 import { PostFilters } from "../../components/Post";
+import Search from "../../components/Post/Search";
 
 class Posts extends Component {
     constructor(props) {
@@ -15,6 +14,7 @@ class Posts extends Component {
             loading: true,
             posts: null
         };
+
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -23,8 +23,8 @@ class Posts extends Component {
     }
 
     render() {
-        const loading = this.props.loading || !this.props.networkStatus === 2;
-        const { status } = this.props.variables;
+        const loading = this.props.loading; //|| !this.props.networkStatus === 2;
+        const { status } = this.props;
         return (
             <section className="module-xs">
                 <div className="card">
@@ -32,13 +32,12 @@ class Posts extends Component {
                     <div className="module-subtitle">
                         Overview of all your blog posts
                     </div>
-
+                    <Search type="post" searchPosts={this.props.searchPosts} />
                     <PostFilters
                         changeStatus={this.props.changeStatus}
                         selectedStatus={status}
                     />
-
-                    <table className="table table-hover">
+                    <table className="table table-hover table-striped">
                         <thead>
                             <tr>
                                 <th width="5%" className="col-check">
@@ -79,7 +78,7 @@ class Posts extends Component {
                     {!loading && (
                         <Paginate
                             count={this.props.posts.count}
-                            page={this.props.variables.page}
+                            page={this.props.page}
                             changePage={this.props.changePage}
                         />
                     )}
@@ -89,23 +88,6 @@ class Posts extends Component {
     }
 }
 
-const ContainerWithData = graphql(GET_POSTS, {
-    options: props => {
-        return {
-            variables: {
-                ...props.variables,
-                type: "post"
-            },
-            forceFetch: true,
-            fetchPolicy: "network-only"
-        };
-    },
-    props: ({ data: { loading, posts, networkStatus } }) => ({
-        posts,
-        loading,
-        networkStatus
-    })
-});
 Posts.propTypes = {
     posts: PropTypes.object,
     changePage: PropTypes.func,
@@ -114,4 +96,4 @@ Posts.propTypes = {
     loading: PropTypes.bool,
     history: PropTypes.object
 };
-export default PostsHoc(ContainerWithData(Posts));
+export default PostsHoc(Posts, "post");

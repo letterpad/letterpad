@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 import { PostRows } from "../../components/Post";
-import { GET_POSTS } from "../../../shared/queries/Queries";
 import PostsHoc from "../Post/PostsHoc";
 import Paginate from "../../components/Paginate";
 import { PostFilters } from "../../components/Post";
+import Search from "../../components/Post/Search";
 
 class Pages extends Component {
     constructor(props) {
@@ -16,9 +15,9 @@ class Pages extends Component {
         this.props.history.push("/admin/pages/" + id);
     }
     render() {
-        const loading = this.props.loading || !this.props.networkStatus === 2;
+        const loading = this.props.loading;
 
-        const { status } = this.props.variables;
+        const { status } = this.props;
 
         return (
             <section className="module-xs">
@@ -27,6 +26,7 @@ class Pages extends Component {
                     <div className="module-subtitle">
                         Overview of all your pages.
                     </div>
+                    <Search type="page" searchPosts={this.props.searchPosts} />
                     <PostFilters
                         changeStatus={this.props.changeStatus}
                         selectedStatus={status}
@@ -72,7 +72,7 @@ class Pages extends Component {
                     {!loading && (
                         <Paginate
                             count={this.props.posts.count}
-                            page={this.props.variables.page}
+                            page={this.props.page}
                             changePage={this.props.changePage}
                         />
                     )}
@@ -81,22 +81,6 @@ class Pages extends Component {
         );
     }
 }
-
-const ContainerWithData = graphql(GET_POSTS, {
-    options: props => ({
-        variables: {
-            ...props.variables,
-            type: "page"
-        },
-        forceFetch: true,
-        fetchPolicy: "network-only"
-    }),
-    props: ({ data: { loading, posts, networkStatus } }) => ({
-        posts,
-        loading,
-        networkStatus
-    })
-});
 
 Pages.propTypes = {
     posts: PropTypes.object,
@@ -107,4 +91,4 @@ Pages.propTypes = {
     history: PropTypes.object
 };
 
-export default PostsHoc(ContainerWithData(Pages));
+export default PostsHoc(Pages, "page");

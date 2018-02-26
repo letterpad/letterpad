@@ -36,7 +36,7 @@ export default class MenuTree extends Component {
             />
         ));
 
-        return <ul className={"nav " + this.props.type}>{tree}</ul>;
+        return <ul className="nav nav-list">{tree}</ul>;
     }
 }
 

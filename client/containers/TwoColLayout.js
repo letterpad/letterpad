@@ -12,7 +12,7 @@ export default function Layout(Element) {
             const enhancedElement = React.cloneElement(Element, {
                 ...this.props
             });
-            const layout = "standard"; //another option: standard
+            const layout = "two-column"; //another option: standard
             let classes = {
                 navbarType:
                     layout == "standard"
