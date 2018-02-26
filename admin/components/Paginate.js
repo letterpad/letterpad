@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const Paginate = ({ count, page, changePage }) => {
-    const limit = 3;
+    const limit = 20;
     const pages = Array.from(Array(Math.ceil(count / limit)));
 
     const pageItems = pages.map((_, i) => {

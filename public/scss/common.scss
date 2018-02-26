@@ -54,6 +54,9 @@ textarea,
 [contenteditable="true"]:focus {
     outline: none;
 }
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+}
 
 .table {
     tbody tr td:first-child,
@@ -1273,8 +1276,8 @@ input {
 }
 
 .module-xs {
-    padding: 35px 0;
-    margin: 0 30px;
+    padding: 16px 0;
+    margin: 0 16px;
 }
 
 .module-title {

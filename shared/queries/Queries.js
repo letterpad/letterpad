@@ -155,8 +155,20 @@ export const GET_TAXONOMIES = gql`
 `;
 
 export const SEARCH_POSTS = gql`
-    query searchPosts($query: String!, $offset: Int, $limit: Int) {
-        posts(body: $query, offset: $offset, limit: $limit) {
+    query searchPosts(
+        $type: String
+        $query: String!
+        $offset: Int
+        $limit: Int
+        $status: String
+    ) {
+        posts(
+            body: $query
+            offset: $offset
+            limit: $limit
+            type: $type
+            status: $status
+        ) {
             count
             rows {
                 id
