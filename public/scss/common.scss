@@ -57,6 +57,12 @@ textarea,
 input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: searchfield-cancel-button;
 }
+pre.CodeFlask__pre {
+    opacity: 0;
+}
+textarea.CodeFlask__textarea {
+    opacity: 1;
+}
 
 .table {
     tbody tr td:first-child,
@@ -127,10 +133,14 @@ h6 {
 }
 
 h1 {
-    font-size: 20px;
+    font-size: 22px;
 }
 
 h2 {
+    font-size: 20px;
+}
+
+h3 {
     font-size: 18px;
 }
 

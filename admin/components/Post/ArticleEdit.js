@@ -29,7 +29,10 @@ export default class ArticleEdit extends Component {
                         </div>
                     </div>
                     <div className="post-content">
-                        <Editor body={this.props.post.body} />
+                        <Editor
+                            mode={this.props.post.mode}
+                            body={this.props.post.body}
+                        />
                     </div>
                 </article>
             </div>

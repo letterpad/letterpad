@@ -12,14 +12,14 @@ export default function Layout(Element) {
             const enhancedElement = React.cloneElement(Element, {
                 ...this.props
             });
-            const layout = "two-column"; //another option: standard
+            const { settings } = enhancedElement.props;
+            const layout = settings.layout_display.value;
             let classes = {
                 navbarType:
-                    layout == "standard"
+                    layout == "centered"
                         ? "navbar navbar-default"
                         : "navbar navbar-custom"
             };
-            const { settings } = enhancedElement.props;
             return (
                 <div className={"main " + layout}>
                     <nav className={classes.navbarType}>

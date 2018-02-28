@@ -6,7 +6,8 @@ export default class General extends Component {
         super(props);
         this.updateOption = this.updateOption.bind(this);
         this.state = {
-            post_display: this.props.data.post_display.value
+            post_display: this.props.data.post_display.value,
+            layout_display: this.props.data.layout_display.value
         };
     }
 
@@ -14,12 +15,17 @@ export default class General extends Component {
         this.props.updateOption(option, value);
     }
     render() {
-        const checked = { row: {}, grid: {} };
+        const checked = { row: {}, grid: {}, "two-column": {}, centered: {} };
 
         if (this.state.post_display == "row") {
             checked.row.checked = true;
         } else {
             checked.grid.checked = true;
+        }
+        if (this.state.layout_display == "centered") {
+            checked.centered.checked = true;
+        } else {
+            checked["two-column"].checked = true;
         }
         return (
             <div>
@@ -67,7 +73,7 @@ export default class General extends Component {
                     <textarea
                         defaultValue={this.props.data.site_description.value}
                         className="form-control"
-                        rows="7"
+                        rows="2"
                         placeholder="What is your site all about ? This will be used for SEO"
                         required=""
                         aria-invalid="false"
@@ -103,6 +109,43 @@ export default class General extends Component {
                                     this.setState({ post_display: "grid" });
                                 }}
                             />Grid
+                        </label>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="custom-label">Layout display</label>
+                    <div>
+                        <label className="radio-inline">
+                            <input
+                                type="radio"
+                                name="layout_display"
+                                {...checked.centered}
+                                onClick={() => {
+                                    this.updateOption(
+                                        "layout_display",
+                                        "centered"
+                                    );
+                                    this.setState({
+                                        layout_display: "centered"
+                                    });
+                                }}
+                            />Centered
+                        </label>
+                        <label className="radio-inline">
+                            <input
+                                type="radio"
+                                name="layout_display"
+                                {...checked["two-column"]}
+                                onClick={() => {
+                                    this.updateOption(
+                                        "layout_display",
+                                        "two-column"
+                                    );
+                                    this.setState({
+                                        layout_display: "two-column"
+                                    });
+                                }}
+                            />Full Width
                         </label>
                     </div>
                 </div>

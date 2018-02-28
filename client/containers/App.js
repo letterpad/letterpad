@@ -13,10 +13,37 @@ import SearchWrapper from "./SearchWrapper";
 require("../../public/scss/client.scss");
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        this.applyCustomCSS = this.applyCustomCSS.bind(this);
+    }
+
+    componentDidMount() {
+        const bc = new BroadcastChannel("test_channel");
+        bc.onmessage = params => {
+            const { property, color } = params.data;
+            document.querySelector(":root").style.setProperty(property, color);
+        };
+    }
+
+    applyCustomCSS({ css, colors }) {
+        const style = document.createElement("style");
+        style.setAttribute("type", "text/css");
+        style.innerText = css.value;
+        document.head.appendChild(style);
+        const parsedColors = JSON.parse(colors.value);
+        Object.keys(parsedColors).forEach(property => {
+            document
+                .querySelector(":root")
+                .style.setProperty(property, parsedColors[property]);
+        });
+    }
+
     render() {
         if (this.props.loading) {
             return <Loader />;
         }
+        this.applyCustomCSS(this.props.settings);
         return (
             <div>
                 <Switch>

@@ -317,7 +317,11 @@ export async function insertSettings() {
         },
         {
             option: "post_display",
-            value: ""
+            value: "row"
+        },
+        {
+            option: "layout_display",
+            value: "two-column"
         },
         {
             option: "social_twitter",

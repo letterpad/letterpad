@@ -36,7 +36,7 @@ export default class SidebarWidgets extends Component {
                     <textarea
                         defaultValue={this.props.data.sidebar_about.value}
                         className="form-control"
-                        rows="7"
+                        rows="2"
                         placeholder="Introduce your site"
                         required=""
                         aria-invalid="false"

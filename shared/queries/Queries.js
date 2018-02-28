@@ -13,6 +13,7 @@ export const GET_POSTS = gql`
                 }
                 type
                 slug
+                mode
                 status
                 created_at
                 excerpt
@@ -37,6 +38,7 @@ export const GET_SINGLE_POST = gql`
             }
             type
             status
+            mode
             created_at
             cover_image
             excerpt
@@ -59,6 +61,7 @@ export const GET_POST_BY_SLUG = gql`
             status
             created_at
             excerpt
+            mode
             cover_image
             taxonomies {
                 id

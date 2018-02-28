@@ -18,6 +18,7 @@ export const CREATE_POST = gql`
                 status
                 type
                 slug
+                mode
                 excerpt
                 created_at
                 cover_image
@@ -120,6 +121,7 @@ export const UPDATE_POST_QUERY = gql`
         $excerpt: String
         $taxonomies: [TaxonomyInputType]
         $slug: String!
+        $mode: String
     ) {
         updatePost(
             id: $id
@@ -129,6 +131,7 @@ export const UPDATE_POST_QUERY = gql`
             excerpt: $excerpt
             taxonomies: $taxonomies
             slug: $slug
+            mode: $mode
         ) {
             ok
             errors {
@@ -146,6 +149,7 @@ export const UPDATE_POST_QUERY = gql`
                 type
                 status
                 excerpt
+                mode
                 created_at
                 cover_image
                 taxonomies {
