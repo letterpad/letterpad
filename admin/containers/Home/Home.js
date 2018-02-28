@@ -35,11 +35,11 @@ class Home extends Component {
                     gutterHeight={12}
                 >
                     <GettingStarted />
+                    <QuickDraft draftPost={this.draftPost} />
                     <Stats
                         loading={this.props.loading}
                         stats={this.props.stats}
                     />
-                    <QuickDraft draftPost={this.draftPost} />
                 </StackGrid>
             </section>
         );

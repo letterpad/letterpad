@@ -11,6 +11,10 @@ export default (conn, DataTypes) => {
                 type: Sequalize.STRING,
                 defaultValue: config.defaultTitle
             },
+            mode: {
+                type: Sequalize.STRING,
+                defaultValue: "standard"
+            },
             body: {
                 type: Sequalize.TEXT
             },

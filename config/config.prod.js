@@ -1,5 +1,5 @@
 export default {
-    apiUrl: "http://localhost:3030/graphql",
-    uploadUrl: "http://localhost:3030/upload",
-    rootUrl: "http://localhost:4040/"
+    apiUrl: "http://letterpad.org:5051/graphql",
+    uploadUrl: "http://api.letterpad.org:5051/upload",
+    rootUrl: "http://letterpad.org:5050/"
 };

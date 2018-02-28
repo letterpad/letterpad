@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { graphql, compose } from "react-apollo";
 import PropTypes from "prop-types";
+import FontPicker from "font-picker-react";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 import { ChromePicker } from "react-color";
-
+import { GET_OPTIONS } from "../../../shared/queries/Queries";
 class AddColor extends Component {
     constructor(props) {
         super(props);
@@ -29,9 +30,9 @@ class AddColor extends Component {
     handleClick() {
         this.setState({ display: !this.state.display });
     }
-    handleClose = () => {
+    handleClose() {
         this.setState({ display: false });
-    };
+    }
 
     render() {
         const style = {
@@ -74,64 +75,73 @@ const ColorBox = ({ name, description, property, handleChange, state }) => {
         </div>
     );
 };
-
+const colorMap = {
+    "--color-text-primary": "transparent",
+    "--color-text-primary-invert": "transparent",
+    "--color-text-primary-light": "transparent",
+    "--color-text-muted": "transparent",
+    "--color-text-secondary": "transparent",
+    "--color-text-secondary-light": "transparent",
+    "--color-accent": "transparent",
+    "--color-bg-primary": "transparent",
+    "--color-bg-secondary": "transparent",
+    "--color-border": "transparent",
+    "--link-hover": "transparent",
+    "--color-menu-link": "transparent"
+};
 class Themes extends Component {
     constructor(props) {
         super(props);
-        this.updatedOptions = {};
+        this.updatedOptions = { css: "", colors: {} };
         this.submitData = this.submitData.bind(this);
         this.setOption = this.setOption.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleCssChange = this.handleCssChange.bind(this);
         this.state = {
-            "--color-text-primary": "transparent",
-            "--color-text-primary-invert": "transparent",
-            "--color-text-primary-light": "transparent",
-            "--color-text-muted": "transparent",
-            "--color-text-secondary": "transparent",
-            "--color-text-secondary-light": "transparent",
-            "--color-accent": "transparent",
-            "--color-bg-primary": "transparent",
-            "--color-bg-secondary": "transparent",
-            "--color-border": "transparent",
-            "--link-hover": "transparent",
-            "--color-menu-link": "transparent"
+            css: "",
+            colors: { ...colorMap }
         };
+        this.bc = new BroadcastChannel("test_channel");
+        this.bcTrottleTimout = null;
     }
-    componentDidMount() {
-        if (typeof window !== "undefined") {
-            setTimeout(() => {
-                let properties = window.getComputedStyle(document.body);
-                const get = prop => properties.getPropertyValue(prop);
 
-                this.state = {
-                    "--color-text-primary": get("--color-text-primary"),
-                    "--color-text-primary-invert": get(
-                        "--color-text-primary-invert"
-                    ),
-                    "--color-text-primary-light": get(
-                        "--color-text-primary-light"
-                    ),
-                    "--color-text-muted": get("--color-text-muted"),
-                    "--color-text-secondary": get("--color-text-secondary"),
-                    "--color-text-secondary-light": get(
-                        "--color-text-secondary-light"
-                    ),
-                    "--color-accent": get("--color-accent"),
-                    "--color-bg-primary": get("--color-bg-primary"),
-                    "--color-bg-secondary": get("--color-bg-secondary"),
-                    "--color-border": get("--color-border"),
-                    "--link-hover": get("--link-hover"),
-                    "--color-menu-link": get("--color-menu-link")
-                };
-                this.setState(this.state);
-            }, 1000);
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.options.loading) {
+            return false;
         }
+        const data = {};
+        nextProps.options.settings.forEach(setting => {
+            data[setting.option] = setting;
+        });
+        const { css, colors } = data;
+        const parsedColors = JSON.parse(colors.value);
+
+        this.setState({
+            css: css.value,
+            colors: {
+                ...parsedColors
+            }
+        });
+        // Object.keys(parsedColors).forEach(property => {
+        //     document
+        //         .querySelector(":root")
+        //         .style.setProperty(property, parsedColors[property]);
+        // });
     }
 
     handleChange(property, color) {
-        document.querySelector(":root").style.setProperty(property, color.hex);
-        this.state[property] = color;
-        this.setState(this.state);
+        this.state.colors[property] = color.hex;
+        this.updatedOptions.colors = this.state.colors;
+        clearTimeout(this.bcTrottleTimout);
+        this.bcTrottleTimout = setTimeout(() => {
+            this.setState(this.state);
+            this.bc.postMessage({ property, color: color.hex });
+        }, 50);
+    }
+    handleCssChange(e) {
+        const css = e.target.value;
+        this.setState({ css });
+        this.updatedOptions.css = css;
     }
 
     setOption(option, value) {
@@ -142,20 +152,18 @@ class Themes extends Component {
         e.preventDefault();
         const settings = [];
         Object.keys(this.updatedOptions).forEach(option => {
+            let value = this.updatedOptions[option];
+            if (option == "colors") {
+                value = JSON.stringify(value);
+            }
             settings.push({
                 option,
-                value: this.updatedOptions[option]
+                value
             });
         });
         this.props.updateOptions(settings).then(res => {});
     }
     render() {
-        const data = {};
-
-        // this.props.options.settings.forEach(setting => {
-        //     data[setting.option] = setting;
-        // });
-
         return (
             <section className="module-xs">
                 <div className="card">
@@ -165,11 +173,20 @@ class Themes extends Component {
                     </div>
                 </div>
                 <div className="card">
+                    <FontPicker
+                        apiKey="AIzaSyAOkdDlx49HCSBdu86oe8AD1Q7piIxlR6k" // Google API key
+                        defaultFont={"Open Sans"}
+                        options={{ limit: 50 }}
+                        onChange={e => {
+                            console.log(e);
+                        }}
+                    />
                     <textarea
                         className="form-control"
                         rows="7"
                         placeholder="Additional CSS"
                         aria-invalid="false"
+                        onChange={this.handleCssChange}
                     />
                 </div>
                 <div className="row">
@@ -178,21 +195,21 @@ class Themes extends Component {
                             <ColorBox
                                 name="Primary Color"
                                 description="Color for most of the body texts"
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--color-text-primary"
                                 handleChange={this.handleChange}
                             />
                             <ColorBox
                                 name="Secondary Color"
                                 description="Color for headlines, table headers, titles, etc."
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--color-text-secondary"
                                 handleChange={this.handleChange}
                             />
                             <ColorBox
                                 name="Primary color light"
                                 description="Color for small descriptions, help texts, etc."
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--color-text-primary-light"
                                 handleChange={this.handleChange}
                                 tip="Usually same as primary color but with a little less opacity"
@@ -200,63 +217,63 @@ class Themes extends Component {
                             <ColorBox
                                 name="Weak color"
                                 description="For places like placeholders which dont need strong visibility"
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--color-text-muted"
                                 handleChange={this.handleChange}
                             />
                             <ColorBox
                                 name="Primary Color Invert"
                                 description="Used in menu"
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--color-text-primary-invert"
                                 handleChange={this.handleChange}
                             />
                             <ColorBox
                                 name="Secondary color light"
                                 description="All input boxes, textarea, dropdowns, etc."
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--color-text-secondary-light"
                                 handleChange={this.handleChange}
                             />
                             <ColorBox
                                 name="Accent"
                                 description="Makes an element stand out like buttons, active menu, etc"
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--color-accent"
                                 handleChange={this.handleChange}
                             />
                             <ColorBox
                                 name="Primary background color"
                                 description="Background color of the whole site"
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--color-bg-primary"
                                 handleChange={this.handleChange}
                             />
                             <ColorBox
                                 name="Secondary background color"
                                 description="Background color of header, footer, menu, etc."
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--color-bg-secondary"
                                 handleChange={this.handleChange}
                             />
                             <ColorBox
                                 name="Border colors"
                                 description="Most of the borders execpt the menu"
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--color-border"
                                 handleChange={this.handleChange}
                             />
                             <ColorBox
                                 name="Link hover colors"
                                 description=""
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--link-hover"
                                 handleChange={this.handleChange}
                             />
                             <ColorBox
                                 name="Menu Link"
                                 description="Font color of menu"
-                                state={this.state}
+                                state={this.state.colors}
                                 property="--color-menu-link"
                                 handleChange={this.handleChange}
                             />
@@ -269,7 +286,7 @@ class Themes extends Component {
                 </div>
                 <button
                     className="btn btn-blue btn-sm"
-                    handleClick={this.submitData}
+                    onClick={this.submitData}
                 >
                     Submit
                 </button>
@@ -277,4 +294,32 @@ class Themes extends Component {
         );
     }
 }
-export default Themes;
+
+const ContainerWithData = graphql(GET_OPTIONS, {
+    name: "options"
+});
+
+const createQueryWithData = graphql(UPDATE_OPTIONS, {
+    props: ({ mutate }) => {
+        return {
+            updateOptions: data =>
+                mutate({
+                    variables: { options: data },
+                    updateQueries: {
+                        getOptions: (prev, { mutationResult }) => {
+                            return {
+                                options: {
+                                    ...mutationResult.data.updateOptions
+                                }
+                            };
+                        }
+                    }
+                })
+        };
+    }
+});
+Themes.propTypes = {
+    updateOptions: PropTypes.func,
+    options: PropTypes.object
+};
+export default ContainerWithData(createQueryWithData(Themes));
