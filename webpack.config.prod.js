@@ -9,8 +9,8 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
     profile: true,
     entry: {
-        dashboard: ["./admin/app"],
-        client: ["./client/app"]
+        dashboard: ["babel-polyfill", "./admin/app"],
+        client: ["babel-polyfill", "./client/app"]
     },
     output: {
         path: path.join(__dirname, "public/js"),
@@ -36,6 +36,14 @@ module.exports = {
     ],
     module: {
         rules: [
+            {
+                test: /\.css$/,
+                loaders: ["style-loader", "css-loader"]
+            },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                loader: "url-loader?limit=10000&mimetype=image/svg+xml"
+            },
             // js
             {
                 test: /\.js$/,

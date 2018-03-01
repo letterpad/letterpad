@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
-import Grid from "react-css-grid";
 import StackGrid from "react-stack-grid";
 import ArticleList from "../components/post/ArticleList";
 import appoloClient from "../apolloClient";

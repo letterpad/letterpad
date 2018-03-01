@@ -1,11 +1,16 @@
 {
     "presets": ["es2015", "stage-0", "react"],
-    /* if you want to use babel runtime, uncomment the following
-		  * line */
-    // "plugins": ["transform-runtime"],
+
+    "plugins": [
+        "transform-es2015-modules-commonjs",
+        "transform-object-rest-spread"
+    ],
     "env": {
         "build": {
             "optional": ["optimisation", "minification"]
+        },
+        "targets": {
+            "browsers": ["last 2 Chrome versions"]
         }
     }
 }

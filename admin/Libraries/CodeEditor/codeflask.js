@@ -78,10 +78,10 @@
                     }
                 }
             })),
-                (config = {
-                    attributes: true,
-                    attributeFilter: ["dir"]
-                });
+            (config = {
+                attributes: true,
+                attributeFilter: ["dir"]
+            });
             observer.observe(target, config);
         }
     };
@@ -344,7 +344,7 @@
 
     CodeFlask.prototype.highlight = function(highlightCode) {
         // Support both globally present Prism.js, and loading from module
-        var Prism = window.Prism || require("prismjs");
+        var Prism = window.Prism || require("./prism.min.js");
         Prism.highlightElement(highlightCode);
     };
 
