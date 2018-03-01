@@ -53,7 +53,7 @@ module.exports.init = app => {
 function Html({ content, state }) {
     const bundle =
         process.env.NODE_ENV === "production"
-            ? "/js/app-client-bundle.js"
+            ? "/js/client-bundle.js"
             : "/static/app-client-bundle.js";
 
     const insertScript = script => (
@@ -81,6 +81,7 @@ function Html({ content, state }) {
                 {insertStyle(
                     "http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/monokai.min.css"
                 )}
+                {insertStyle("/css/client.css")}
             </head>
             <body>
                 <div id="app" dangerouslySetInnerHTML={{ __html: content }} />

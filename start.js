@@ -2,24 +2,48 @@ require.extensions[".sass"] = () => "";
 require.extensions[".scss"] = () => "";
 require.extensions[".css"] = () => "";
 
-require("babel-register");
+require("babel-core/register");
 require("babel-polyfill");
 const express = require("express");
 const bodyParser = require("body-parser");
 const webpack = require("webpack");
-const webpackDevMiddleware = require("webpack-dev-middleware");
-const webpackHotMiddleware = require("webpack-hot-middleware");
 
 const adminServerRendering = require("./admin/serverRendering");
 const clientServerRendering = require("./client/serverRendering");
 
-const wpConfigFile =
-    process.env.NODE_ENV === "dev"
-        ? "./webpack.config.dev.js"
-        : "./webpack.config.prod.js";
-
-const webpackConfig = require(wpConfigFile);
 const app = express();
+
+if (process.env.NODE_ENV === "dev") {
+    const wpConfigFile = "./webpack.config.dev.js";
+    const webpackConfig = require(wpConfigFile);
+    const compiler = webpack(webpackConfig);
+    const webpackDevMiddleware = require("webpack-dev-middleware");
+    const webpackHotMiddleware = require("webpack-hot-middleware");
+    app.use(
+        webpackDevMiddleware(compiler, {
+            hot: true,
+            noInfo: true,
+            publicPath: webpackConfig.output.publicPath,
+            stats: {
+                colors: true,
+                hash: false,
+                timings: true,
+                chunks: false,
+                chunkModules: false,
+                modules: false
+            },
+            historyApiFallback: true
+        })
+    );
+
+    app.use(
+        webpackHotMiddleware(compiler, {
+            log: console.log,
+            path: "/__webpack_hmr",
+            heartbeat: 10 * 1000
+        })
+    );
+}
 
 app.use(bodyParser.json());
 app.use(
@@ -29,9 +53,6 @@ app.use(
 );
 
 app.use(express.static("public"));
-// start a webpack-dev-server
-
-const compiler = webpack(webpackConfig);
 
 // let pinger = null;
 
@@ -59,25 +80,7 @@ const compiler = webpack(webpackConfig);
 //         res.end();
 //     });
 // });
-app.use(
-    webpackDevMiddleware(compiler, {
-        hot: true,
-        noInfo: true,
-        publicPath: webpackConfig.output.publicPath,
-        stats: {
-            colors: true
-        },
-        historyApiFallback: true
-    })
-);
 
-app.use(
-    webpackHotMiddleware(compiler, {
-        log: console.log,
-        path: "/__webpack_hmr",
-        heartbeat: 10 * 1000
-    })
-);
 adminServerRendering.init(app);
 clientServerRendering.init(app);
 
