@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken";
 import { UnauthorizedError } from "./utils/common";
 import models from "./models";
 import { seed } from "./seed/seed";
-
+import config from "../config";
 const app = express();
 const SECRET = "cdascadsc-cdascadsca";
 
@@ -97,7 +97,7 @@ const seedIfEmpty = async () => {
 console.log("Initiating Graphql Server");
 models.conn.sync({ force: false }).then(async () => {
     await seedIfEmpty();
-    const httpServer = app.listen(3030, () => {
-        console.log(`App listening on port 3030`);
+    const httpServer = app.listen(config.apiPort, () => {
+        console.log(`App listening on port ${config.apiPort}`);
     });
 });

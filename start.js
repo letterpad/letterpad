@@ -7,12 +7,11 @@ require("babel-polyfill");
 const express = require("express");
 const bodyParser = require("body-parser");
 const webpack = require("webpack");
-
+const config = require("./config/index.js").default;
 const adminServerRendering = require("./admin/serverRendering");
 const clientServerRendering = require("./client/serverRendering");
 
 const app = express();
-
 if (process.env.NODE_ENV === "dev") {
     const wpConfigFile = "./webpack.config.dev.js";
     const webpackConfig = require(wpConfigFile);
@@ -84,7 +83,7 @@ app.use(express.static("public"));
 adminServerRendering.init(app);
 clientServerRendering.init(app);
 
-const server = app.listen(4040, function() {
+const server = app.listen(config.appPort, function() {
     const host = server.address().address;
     const port = server.address().port;
 
