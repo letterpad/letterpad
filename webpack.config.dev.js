@@ -3,7 +3,15 @@ var webpack = require("webpack");
 
 module.exports = {
     devtool: "source-map",
+    mode: "development",
     entry: {
+        vendor: [
+            "babel-polyfill",
+            "react",
+            "react-dom",
+            "redux",
+            "react-apollo"
+        ],
         admin: [
             "babel-polyfill",
             "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
@@ -20,6 +28,19 @@ module.exports = {
         filename: "[name]-bundle.js",
         publicPath: "/static/"
     },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    chunks: "initial",
+                    name: "vendor",
+                    test: "vendor",
+                    enforce: true
+                }
+            }
+        },
+        runtimeChunk: true
+    },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
@@ -30,7 +51,7 @@ module.exports = {
         })
     ],
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.css$/,
                 loaders: ["style-loader", "css-loader"]

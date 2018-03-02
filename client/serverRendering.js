@@ -47,13 +47,21 @@ module.exports.init = app => {
 };
 
 function Html({ content, state }) {
-    const bundle =
-        process.env.NODE_ENV === "production"
-            ? "/js/client-bundle.js"
-            : "/static/client-bundle.js";
+    const devBundles = [
+        "/static/runtime~client-bundle.js",
+        "/static/vendor-bundle.js",
+        "/static/client-bundle.js"
+    ];
+    const prodBundles = [
+        "/js/runtime~client-bundle.js",
+        "/js/vendor-bundle.js",
+        "/js/client-bundle.js"
+    ];
+    const bundles =
+        process.env.NODE_ENV === "production" ? prodBundles : devBundles;
 
     const insertScript = script => (
-        <script type="text/javascript" src={script} />
+        <script type="text/javascript" src={script} defer />
     );
 
     const insertStyle = style => (
@@ -91,7 +99,7 @@ function Html({ content, state }) {
                     }}
                 />
                 {insertScript("/js/highlight.min.js")}
-                {insertScript(bundle)}
+                {bundles.map(bundle => insertScript(bundle))}
             </body>
         </html>
     );

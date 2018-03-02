@@ -8,30 +8,43 @@ const extractSass = new ExtractTextPlugin({
 });
 module.exports = {
     profile: true,
+    mode: "production",
     entry: {
-        admin: ["babel-polyfill", "./admin/app"],
-        client: ["babel-polyfill", "./client/app"]
+        vendor: [
+            "babel-polyfill",
+            "react",
+            "react-dom",
+            "redux",
+            "react-apollo"
+        ],
+        admin: ["./admin/app"],
+        client: ["./client/app"]
     },
     output: {
         path: path.join(__dirname, "public/js"),
         filename: "[name]-bundle.js"
     },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    chunks: "initial",
+                    name: "vendor",
+                    test: "vendor",
+                    enforce: true
+                }
+            }
+        },
+        runtimeChunk: true
+    },
     plugins: [
-        new webpack.LoaderOptionsPlugin({
-            debug: true
-        }),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: "'production'"
             }
         }),
-        // new BabiliPlugin(),
-        // new webpack.optimize.UglifyJsPlugin({
-        //     compressor: {
-        //         warnings: false
-        //     }
-        // }),
+        new BabiliPlugin(),
         extractSass
     ],
     module: {
