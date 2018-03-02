@@ -355,6 +355,14 @@ export async function insertSettings() {
         {
             option: "menu",
             value: menu
+        },
+        {
+            option: "css",
+            value: ""
+        },
+        {
+            option: "colors",
+            value: JSON.stringify({})
         }
     ];
     await models.Setting.bulkCreate(data);

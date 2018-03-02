@@ -9,7 +9,7 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
     profile: true,
     entry: {
-        dashboard: ["babel-polyfill", "./admin/app"],
+        admin: ["babel-polyfill", "./admin/app"],
         client: ["babel-polyfill", "./client/app"]
     },
     output: {
@@ -26,7 +26,7 @@ module.exports = {
                 NODE_ENV: "'production'"
             }
         }),
-        new BabiliPlugin(),
+        // new BabiliPlugin(),
         // new webpack.optimize.UglifyJsPlugin({
         //     compressor: {
         //         warnings: false

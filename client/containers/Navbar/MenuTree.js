@@ -106,8 +106,7 @@ class TreeNode extends Component {
             return (
                 <li className={"has-sub " + treeState}>
                     <Link
-                        href="#"
-                        to=""
+                        to="#"
                         className={linkclass}
                         onClick={this.onClick}
                         data-id={this.props.data.id}

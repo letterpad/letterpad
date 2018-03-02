@@ -32,6 +32,7 @@ export default function Layout(Element) {
                                 settings={settings}
                                 menu={JSON.parse(settings.menu.value)}
                                 layout={layout}
+                                router={{ ...this.props }}
                             />
 
                             {layout == "two-column" ? <Footer /> : ""}

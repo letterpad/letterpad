@@ -45,12 +45,14 @@ class Navbar extends Component {
                     {this.props.layout == "two-column" ? (
                         <MenuVertical
                             menu={JSON.parse(this.props.settings.menu.value)}
+                            router={this.props.router}
                         />
                     ) : (
                         <MenuHorizontal
                             ref="secondaryMenuItems"
                             secondary={true}
                             items={JSON.parse(this.props.settings.menu.value)}
+                            router={this.props.router}
                         />
                     )}
                 </div>

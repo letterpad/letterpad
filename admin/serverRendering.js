@@ -11,7 +11,7 @@ import config from "../config";
 import App from "./containers/App";
 
 const client = new ApolloClient({
-    ssrMode: true,
+    ssrMode: false,
     link: createHttpLink({
         uri: config.apiUrl,
         fetch
@@ -29,31 +29,31 @@ module.exports.init = app => {
             res.end();
         };
         let initialState = {};
-        if (!req.headers.cookie) {
-            const adminApp = (
-                <ApolloProvider client={client}>
-                    <StaticRouter location={req.url} context={context}>
-                        <App />
-                    </StaticRouter>
-                </ApolloProvider>
-            );
-            getDataFromTree(adminApp).then(() => {
-                const content = ReactDOM.renderToString(adminApp);
-                initialState = client.extract();
-                sendResponse({ content, initialState });
-            });
-        } else {
-            console.log("hello");
-            sendResponse({ content: null, initialState });
-        }
+        sendResponse({ content: null, initialState });
+        // if (!req.headers.cookie) {
+        //     const adminApp = (
+        //         <ApolloProvider client={client}>
+        //             <StaticRouter location={req.url} context={context}>
+        //                 <App />
+        //             </StaticRouter>
+        //         </ApolloProvider>
+        //     );
+        //     getDataFromTree(adminApp).then(() => {
+        //         const content = ReactDOM.renderToString(adminApp);
+        //         initialState = client.extract();
+        //         sendResponse({ content, initialState });
+        //     });
+        // } else {
+        //     sendResponse({ content: null, initialState });
+        // }
     });
 };
 
 function Html({ content, state }) {
     const bundle =
         process.env.NODE_ENV === "production"
-            ? "/js/app-admin-bundle.js"
-            : "/static/app-admin-bundle.js";
+            ? "/js/admin-bundle.js"
+            : "/static/admin-bundle.js";
 
     const insertScript = script => (
         <script type="text/javascript" src={script} />
@@ -82,6 +82,7 @@ function Html({ content, state }) {
                     "http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/monokai.min.css"
                 )}
                 {insertStyle("https://cdn.quilljs.com/1.2.2/quill.snow.css")}
+                {insertStyle("/css/admin.css")}
             </head>
             <body>
                 <div id="app" dangerouslySetInnerHTML={{ __html: content }} />
@@ -89,7 +90,7 @@ function Html({ content, state }) {
                     dangerouslySetInnerHTML={{
                         __html: `window.__APOLLO_STATE__=${JSON.stringify(
                             state
-                        ).replace(/</g, "\\u003c")};window.ENV = "${
+                        ).replace(/</g, "\\u003c")};window.NODE_ENV = "${
                             process.env.NODE_ENV
                         }";`
                     }}
