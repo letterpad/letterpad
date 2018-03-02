@@ -54,7 +54,7 @@ function Html({ content, state }) {
     const bundle =
         process.env.NODE_ENV === "production"
             ? "/js/client-bundle.js"
-            : "/static/app-client-bundle.js";
+            : "/static/client-bundle.js";
 
     const insertScript = script => (
         <script type="text/javascript" src={script} />
@@ -89,7 +89,7 @@ function Html({ content, state }) {
                     dangerouslySetInnerHTML={{
                         __html: `window.__APOLLO_STATE__=${JSON.stringify(
                             state
-                        ).replace(/</g, "\\u003c")};window.ENV = "${
+                        ).replace(/</g, "\\u003c")};window.NODE_ENV = "${
                             process.env.NODE_ENV
                         }";`
                     }}

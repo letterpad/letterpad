@@ -27,7 +27,7 @@ export default class Menu extends Component {
             <MenuTree
                 data={this.state.menu}
                 permissions={[]}
-                route={location.pathname}
+                route={this.props.router.location.pathname}
                 setData={this.setData}
             />
         );

@@ -4,12 +4,12 @@ var webpack = require("webpack");
 module.exports = {
     devtool: "source-map",
     entry: {
-        "app-admin": [
+        admin: [
             "babel-polyfill",
             "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
             "./admin/app"
         ],
-        "app-client": [
+        client: [
             "babel-polyfill",
             "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
             "./client/app"

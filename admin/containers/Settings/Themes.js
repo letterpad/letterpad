@@ -305,15 +305,20 @@ const createQueryWithData = graphql(UPDATE_OPTIONS, {
             updateOptions: data =>
                 mutate({
                     variables: { options: data },
-                    updateQueries: {
-                        getOptions: (prev, { mutationResult }) => {
-                            return {
-                                options: {
-                                    ...mutationResult.data.updateOptions
-                                }
-                            };
-                        }
+                    updateQuery: (previousResult, { mutationResult }) => {
+                        return {
+                            settings: [...mutationResult.data.updatedOptions]
+                        };
                     }
+                    // updateQueries: {
+                    //     settings: (prev, { mutationResult }) => {
+                    //         return {
+                    //             settings: [
+                    //                 ...mutationResult.data.updatedOptions
+                    //             ]
+                    //         };
+                    //     }
+                    // }
                 })
         };
     }
