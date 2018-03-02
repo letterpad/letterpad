@@ -27,16 +27,18 @@ class App extends Component {
     }
 
     applyCustomCSS({ css, colors }) {
-        const style = document.createElement("style");
-        style.setAttribute("type", "text/css");
-        style.innerText = css.value;
-        document.head.appendChild(style);
-        const parsedColors = JSON.parse(colors.value);
-        Object.keys(parsedColors).forEach(property => {
-            document
-                .querySelector(":root")
-                .style.setProperty(property, parsedColors[property]);
-        });
+        if (typeof document !== "undefined") {
+            const style = document.createElement("style");
+            style.setAttribute("type", "text/css");
+            style.innerText = css.value;
+            document.head.appendChild(style);
+            const parsedColors = JSON.parse(colors.value);
+            Object.keys(parsedColors).forEach(property => {
+                document
+                    .querySelector(":root")
+                    .style.setProperty(property, parsedColors[property]);
+            });
+        }
     }
 
     render() {
