@@ -30,23 +30,19 @@ module.exports.init = app => {
         };
         let initialState = {};
 
-        if (!req.headers.cookie) {
-            const adminApp = (
-                <ApolloProvider client={client}>
-                    <StaticRouter location={req.url} context={context}>
-                        <App />
-                    </StaticRouter>
-                </ApolloProvider>
-            );
+        const adminApp = (
+            <ApolloProvider client={client}>
+                <StaticRouter location={req.url} context={context}>
+                    <App />
+                </StaticRouter>
+            </ApolloProvider>
+        );
 
-            getDataFromTree(adminApp).then(() => {
-                const content = ReactDOM.renderToString(adminApp);
-                initialState = client.extract();
-                sendResponse({ content, initialState });
-            });
-        } else {
-            sendResponse({ content: null, initialState });
-        }
+        getDataFromTree(adminApp).then(() => {
+            const content = ReactDOM.renderToString(adminApp);
+            initialState = client.extract();
+            sendResponse({ content, initialState });
+        });
     });
 };
 

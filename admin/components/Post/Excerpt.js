@@ -4,6 +4,10 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 
 class ContentEditable extends Component {
+    constructor(props) {
+        super(props);
+        this.emitChange = this.emitChange.bind(this);
+    }
     componentDidMount() {
         this.lastExcerpt = this.props.excerpt;
     }
