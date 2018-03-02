@@ -5,18 +5,15 @@
     "main": "start.js",
     "scripts": {
         "dev": "concurrently 'npm run build:server:dev'",
-        "build:server:dev":
-            "webpack --config webpack.config.dev.js --profile --colors --watch",
-        "dev2":
-            "nodemon --watch api -e js --exec node ./start.js --profile --json",
+        "build:server:dev": "webpack --config webpack.config.dev.js --profile --colors --watch",
+        "dev2": "nodemon --watch api -e js --exec node ./start.js --profile --json",
         "start": "concurrently --kill-others \"npm run start-prod\" ",
         "start-prod": "better-npm-run start-prod",
         "build": "better-npm-run build",
         "start-dev": "better-npm-run start-dev",
         "insert-fake": "better-npm-run insert-fake",
         "test-server": "better-npm-run start-test-server",
-        "dev1":
-            "concurrently --kill-others \"nodemon -w api ./api/start.js\" \"npm run start-dev\"",
+        "dev1": "concurrently --kill-others \"nodemon -w api ./api/start.js\" \"npm run start-dev\"",
         "test": "jest"
     },
     "betterScripts": {
@@ -42,8 +39,7 @@
             }
         },
         "build": {
-            "command":
-                "webpack --verbose --colors --display-error-details --config webpack.config.prod.js",
+            "command": "webpack --verbose --colors --display-error-details --config webpack.config.prod.js",
             "env": {
                 "NODE_ENV": "production"
             }
@@ -124,7 +120,7 @@
         "eslint-plugin-import": "^2.8.0",
         "eslint-plugin-jsx-a11y": "^6.0.3",
         "eslint-plugin-react": "^7.6.1",
-        "extract-text-webpack-plugin": "^3.0.0",
+        "extract-text-webpack-plugin": "^4.0.0-beta.0",
         "faker": "^4.1.0",
         "graphql-tester": "0.0.5",
         "jest": "^22.0.4",
@@ -144,7 +140,8 @@
         "sass-loader": "^6.0.3",
         "style-loader": "^0.16.1",
         "url-loader": "^0.6.2",
-        "webpack": "^3.1.0",
+        "webpack": "^4.0.1",
+        "webpack-cli": "^2.0.10",
         "webpack-dev-middleware": "^1.5.1",
         "webpack-hot-middleware": "^2.7.1"
     }

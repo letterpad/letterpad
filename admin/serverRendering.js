@@ -50,13 +50,21 @@ module.exports.init = app => {
 };
 
 function Html({ content, state }) {
-    const bundle =
-        process.env.NODE_ENV === "production"
-            ? "/js/admin-bundle.js"
-            : "/static/admin-bundle.js";
+    const devBundles = [
+        "/static/runtime~admin-bundle.js",
+        "/static/vendor-bundle.js",
+        "/static/admin-bundle.js"
+    ];
+    const prodBundles = [
+        "/js/runtime~admin-bundle.js",
+        "/js/vendor-bundle.js",
+        "/js/admin-bundle.js"
+    ];
+    const bundles =
+        process.env.NODE_ENV === "production" ? prodBundles : devBundles;
 
     const insertScript = script => (
-        <script type="text/javascript" src={script} />
+        <script type="text/javascript" src={script} defer />
     );
 
     const insertStyle = style => (
@@ -98,7 +106,7 @@ function Html({ content, state }) {
                 {insertScript("/tinymce/js/tinymce/tinymce.min.js")}
                 {insertScript("/js/highlight.min.js")}
                 {insertScript("https://cdn.quilljs.com/1.2.2/quill.js")}
-                {insertScript(bundle)}
+                {bundles.map(bundle => insertScript(bundle))}
             </body>
         </html>
     );
