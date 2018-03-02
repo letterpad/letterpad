@@ -17,8 +17,8 @@ module.exports = {
             "redux",
             "react-apollo"
         ],
-        admin: ["./admin/app"],
-        client: ["./client/app"]
+        admin: ["babel-polyfill", "./admin/app"],
+        client: ["babel-polyfill", "./client/app"]
     },
     output: {
         path: path.join(__dirname, "public/js"),
