@@ -100,12 +100,6 @@ const optionsQuery = gql`
 `;
 
 const ContainerWithSiteData = graphql(optionsQuery, {
-    options: props => {
-        return {
-            forceFetch: true,
-            fetchPolicy: "no-cache"
-        };
-    },
     props: ({ data: { loading, settings } }) => {
         const data = {};
         if (settings) {
