@@ -24,7 +24,7 @@ class Posts extends Component {
             slug: this.props.slug || this.props.match.params.slug,
             postType: "post",
             limit: config.itemsPerPage,
-            offset: num
+            offset: (num - 1) * config.itemsPerPage
         });
         this.page = num;
     }
@@ -56,6 +56,7 @@ class Posts extends Component {
                     columnWidth={"50%"}
                     gutterWidth={12}
                     gutterHeight={12}
+                    enableSSR={true}
                 >
                     {this.props.posts.map((post, i) => {
                         return <ArticleList idx={i} key={i} post={post} />;
