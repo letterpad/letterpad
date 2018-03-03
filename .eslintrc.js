@@ -22,6 +22,7 @@ module.exports = {
         indent: [2, 4],
         "linebreak-style": ["error", "unix"],
         quotes: ["error", "double"],
-        semi: ["error", "always"]
+        semi: ["error", "always"],
+        "react/display-name": 0
     }
 };
