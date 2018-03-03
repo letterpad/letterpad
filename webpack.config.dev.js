@@ -1,17 +1,13 @@
 var path = require("path");
 var webpack = require("webpack");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+    .BundleAnalyzerPlugin;
 
 module.exports = {
     devtool: "source-map",
     mode: "development",
     entry: {
-        vendor: [
-            "babel-polyfill",
-            "react",
-            "react-dom",
-            "redux",
-            "react-apollo"
-        ],
+        vendor: ["react", "react-dom", "redux", "react-apollo"],
         admin: [
             "babel-polyfill",
             "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
@@ -42,6 +38,7 @@ module.exports = {
         runtimeChunk: true
     },
     plugins: [
+        new BundleAnalyzerPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
@@ -56,9 +53,13 @@ module.exports = {
                 test: /\.css$/,
                 loaders: ["style-loader", "css-loader"]
             },
+            // {
+            //     test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            //     loader: "url-loader?limit=10000&mimetype=image/svg+xml"
+            // },
             {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url-loader?limit=10000&mimetype=image/svg+xml"
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                loader: "url-loader?limit=100000"
             },
             // CSS
             {

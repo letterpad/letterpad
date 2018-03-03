@@ -10,13 +10,7 @@ module.exports = {
     profile: true,
     mode: "production",
     entry: {
-        vendor: [
-            "babel-polyfill",
-            "react",
-            "react-dom",
-            "redux",
-            "react-apollo"
-        ],
+        vendor: ["react", "react-dom", "redux", "react-apollo"],
         admin: ["babel-polyfill", "./admin/app"],
         client: ["babel-polyfill", "./client/app"]
     },
@@ -35,7 +29,7 @@ module.exports = {
                 }
             }
         },
-        runtimeChunk: true
+        runtimeChunk: false
     },
     plugins: [
         new webpack.optimize.OccurrenceOrderPlugin(),
@@ -53,9 +47,13 @@ module.exports = {
                 test: /\.css$/,
                 loaders: ["style-loader", "css-loader"]
             },
+            // {
+            //     test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            //     loader: "url-loader?limit=10000&mimetype=image/svg+xml"
+            // },
             {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url-loader?limit=10000&mimetype=image/svg+xml"
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                loader: "url-loader?limit=100000"
             },
             // js
             {
