@@ -3,7 +3,7 @@ require.extensions[".scss"] = () => "";
 require.extensions[".css"] = () => "";
 
 require("babel-core/register");
-require("babel-polyfill");
+// require("babel-polyfill");
 const express = require("express");
 const bodyParser = require("body-parser");
 const webpack = require("webpack");
