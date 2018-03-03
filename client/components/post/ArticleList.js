@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import LazyLoad from "./LazyLoad";
 
-export default class ArticleList extends Component {
+class ArticleList extends Component {
     render() {
         let href = `/${this.props.post.type}/${this.props.post.slug}`;
         return (
@@ -11,9 +12,10 @@ export default class ArticleList extends Component {
                     <div className="post-thumbnail">
                         <Link to={href}>
                             <img
-                                width="100"
-                                src={this.props.post.cover_image}
+                                className="lazy-image"
+                                data-src={this.props.post.cover_image}
                                 alt={this.props.title}
+                                src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLBQ0FFRUNBQ8IDRUNFBoWFhQRExMYHCggGBolGx8TITEhJSkrLi4uFx8zODMsNygtLisBCgoKBQUFDgUFDisZExkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAIEBhQMBIgACEQEDEQH/xAAWAAEBAQAAAAAAAAAAAAAAAAAAAQX/xAAYEAEAAwEAAAAAAAAAAAAAAAAAITFBAf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwDSvsgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Z"
                             />
                         </Link>
                     </div>
@@ -42,3 +44,5 @@ export default class ArticleList extends Component {
         );
     }
 }
+
+export default LazyLoad(ArticleList);
