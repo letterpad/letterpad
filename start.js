@@ -8,10 +8,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const webpack = require("webpack");
 const config = require("./config/index.js").default;
+const compression = require("compression");
 const adminServerRendering = require("./admin/serverRendering");
 const clientServerRendering = require("./client/serverRendering");
 
 const app = express();
+
+app.use(compression());
+
 if (process.env.NODE_ENV === "dev") {
     const wpConfigFile = "./webpack.config.dev.js";
     const webpackConfig = require(wpConfigFile);

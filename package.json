@@ -62,6 +62,7 @@
         "apollo-utilities": "1.0.8",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.15.2",
+        "compression": "^1.7.2",
         "cors": "^2.8.1",
         "express": "^4.13.4",
         "express-graphql": "^0.6.3",
