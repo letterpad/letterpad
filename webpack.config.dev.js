@@ -1,7 +1,5 @@
 var path = require("path");
 var webpack = require("webpack");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-    .BundleAnalyzerPlugin;
 
 var babelOptions = {
     presets: [
@@ -30,7 +28,8 @@ module.exports = {
             "react",
             "react-dom",
             "redux",
-            "react-apollo"
+            "react-apollo",
+            "moment"
         ],
         admin: [
             "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
@@ -61,7 +60,6 @@ module.exports = {
         runtimeChunk: false
     },
     plugins: [
-        new BundleAnalyzerPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
