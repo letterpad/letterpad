@@ -2,6 +2,8 @@ var path = require("path");
 var webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+    .BundleAnalyzerPlugin;
 
 const extractSass = new ExtractTextPlugin({
     filename: "../css/[name].css"
@@ -34,7 +36,8 @@ module.exports = {
             "react",
             "react-dom",
             "redux",
-            "react-apollo"
+            "react-apollo",
+            "moment"
         ],
         admin: ["./public/js/polyfill.js", "./admin/app"],
         client: ["./public/js/polyfill.js", "./client/app"]
@@ -57,12 +60,14 @@ module.exports = {
         runtimeChunk: false
     },
     plugins: [
+        new BundleAnalyzerPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: "'production'"
             }
         }),
+        new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
         new MinifyPlugin(),
         extractSass
     ],
