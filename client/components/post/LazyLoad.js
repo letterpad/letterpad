@@ -14,19 +14,24 @@ const LazyLoad = WrappedComponent => {
                 threshold: 0.01
             };
 
+            this.isBrowser = typeof window !== "undefined";
             // The observer for the images on the page
-            this.observer = new IntersectionObserver(
-                this.onIntersection,
-                config
-            );
+            if (this.isBrowser) {
+                this.observer = new IntersectionObserver(
+                    this.onIntersection,
+                    config
+                );
+            }
         }
         componentDidMount() {
-            const images = ReactDOM.findDOMNode(this).querySelectorAll(
-                ".lazy-image"
-            );
-            images.forEach(image => {
-                this.observer.observe(image);
-            });
+            if (this.isBrowser) {
+                const images = ReactDOM.findDOMNode(this).querySelectorAll(
+                    ".lazy-image"
+                );
+                images.forEach(image => {
+                    this.observer.observe(image);
+                });
+            }
         }
 
         fetchImage(url) {
