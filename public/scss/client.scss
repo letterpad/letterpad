@@ -10,6 +10,9 @@ Primary use: Blog
 [Sidebar Styles]
 */
 
+@import "../css/bootstrap.min.css";
+@import "../css/vertical.css";
+@import "../css/font-awesome.min.css";
 @import "./common.scss";
 h3.widget-title {
     font-size: 14px;

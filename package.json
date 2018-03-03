@@ -122,6 +122,7 @@
         "eslint-plugin-react": "^7.6.1",
         "extract-text-webpack-plugin": "^4.0.0-beta.0",
         "faker": "^4.1.0",
+        "file-loader": "^1.1.11",
         "graphql-tester": "0.0.5",
         "jest": "^22.0.4",
         "merge-graphql-schemas": "^1.4.0",
@@ -141,6 +142,7 @@
         "style-loader": "^0.16.1",
         "url-loader": "^0.6.2",
         "webpack": "^4.0.1",
+        "webpack-bundle-analyzer": "^2.11.1",
         "webpack-cli": "^2.0.10",
         "webpack-dev-middleware": "^1.5.1",
         "webpack-hot-middleware": "^2.7.1"

@@ -16,7 +16,8 @@ const client = new ApolloClient({
         uri: config.apiUrl,
         fetch
     }),
-    cache: new InMemoryCache()
+    cache: new InMemoryCache(),
+    fetchPolicy: "network-only"
 });
 const context = {};
 
@@ -29,31 +30,31 @@ module.exports.init = app => {
             res.end();
         };
         let initialState = {};
+        sendResponse({ contnt: null, initialState });
+        // const adminApp = (
+        //     <ApolloProvider client={client}>
+        //         <StaticRouter location={req.url} context={context}>
+        //             <App />
+        //         </StaticRouter>
+        //     </ApolloProvider>
+        // );
 
-        const adminApp = (
-            <ApolloProvider client={client}>
-                <StaticRouter location={req.url} context={context}>
-                    <App />
-                </StaticRouter>
-            </ApolloProvider>
-        );
-
-        getDataFromTree(adminApp).then(() => {
-            const content = ReactDOM.renderToString(adminApp);
-            initialState = client.extract();
-            sendResponse({ content, initialState });
-        });
+        // getDataFromTree(adminApp).then(() => {
+        //     const content = ReactDOM.renderToString(adminApp);
+        //     initialState = client.extract();
+        //     sendResponse({ content, initialState });
+        // });
     });
 };
 
 function Html({ content, state }) {
     const devBundles = [
-        "/static/runtime~client-bundle.js",
+        // "/static/runtime~client-bundle.js",
         "/static/vendor-bundle.js",
         "/static/client-bundle.js"
     ];
     const prodBundles = [
-        "/js/runtime~client-bundle.js",
+        // "/js/runtime~client-bundle.js",
         "/js/vendor-bundle.js",
         "/js/client-bundle.js"
     ];
@@ -64,9 +65,7 @@ function Html({ content, state }) {
         <script type="text/javascript" src={script} defer />
     );
 
-    const insertStyle = style => (
-        <link href={style} rel="stylesheet" type="text/css" />
-    );
+    const insertStyle = style => <link href={style} rel="stylesheet" />;
     return (
         <html lang="en">
             <head>
@@ -76,15 +75,6 @@ function Html({ content, state }) {
                     content="width=device-width, initial-scale=1"
                 />
                 <title>Blog Dashboard</title>
-                {insertStyle(
-                    "https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700"
-                )}
-                {insertStyle("/css/bootstrap.min.css")}
-                {insertStyle("/css/vertical.css")}
-                {insertStyle("/css/font-awesome.min.css")}
-                {insertStyle(
-                    "http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/monokai.min.css"
-                )}
                 {insertStyle("/css/client.css")}
             </head>
             <body>
@@ -99,6 +89,7 @@ function Html({ content, state }) {
                     }}
                 />
                 {insertScript("/js/highlight.min.js")}
+
                 {bundles.map(bundle => insertScript(bundle))}
             </body>
         </html>
