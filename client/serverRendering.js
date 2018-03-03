@@ -10,19 +10,19 @@ import ApolloClient from "apollo-client";
 import App from "./containers/App";
 import config from "../config";
 
-const client = new ApolloClient({
-    ssrMode: true,
-    link: createHttpLink({
-        uri: config.apiUrl,
-        fetch
-    }),
-    cache: new InMemoryCache(),
-    fetchPolicy: "network-only"
-});
 const context = {};
 
 module.exports.init = app => {
     app.get("*", (req, res) => {
+        const client = new ApolloClient({
+            ssrMode: true,
+            link: createHttpLink({
+                uri: config.apiUrl,
+                fetch
+            }),
+            cache: new InMemoryCache()
+        });
+
         const sendResponse = ({ content, initialState }) => {
             const html = <Html content={content} state={initialState} />;
             res.status(200);
@@ -30,34 +30,26 @@ module.exports.init = app => {
             res.end();
         };
         let initialState = {};
-        sendResponse({ contnt: null, initialState });
-        // const adminApp = (
-        //     <ApolloProvider client={client}>
-        //         <StaticRouter location={req.url} context={context}>
-        //             <App />
-        //         </StaticRouter>
-        //     </ApolloProvider>
-        // );
 
-        // getDataFromTree(adminApp).then(() => {
-        //     const content = ReactDOM.renderToString(adminApp);
-        //     initialState = client.extract();
-        //     sendResponse({ content, initialState });
-        // });
+        const adminApp = (
+            <ApolloProvider client={client}>
+                <StaticRouter location={req.url} context={context}>
+                    <App />
+                </StaticRouter>
+            </ApolloProvider>
+        );
+
+        getDataFromTree(adminApp).then(() => {
+            const content = ReactDOM.renderToString(adminApp);
+            initialState = client.extract();
+            sendResponse({ content, initialState });
+        });
     });
 };
 
 function Html({ content, state }) {
-    const devBundles = [
-        // "/static/runtime~client-bundle.js",
-        "/static/vendor-bundle.js",
-        "/static/client-bundle.js"
-    ];
-    const prodBundles = [
-        // "/js/runtime~client-bundle.js",
-        "/js/vendor-bundle.js",
-        "/js/client-bundle.js"
-    ];
+    const devBundles = ["/static/vendor-bundle.js", "/static/client-bundle.js"];
+    const prodBundles = ["/js/vendor-bundle.js", "/js/client-bundle.js"];
     const bundles =
         process.env.NODE_ENV === "production" ? prodBundles : devBundles;
 
