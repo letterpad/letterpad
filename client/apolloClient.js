@@ -31,7 +31,7 @@ if (typeof window !== "undefined") {
 
 const client = new ApolloClient({
     link: errorLink.concat(middlewareLink).concat(httpLink),
-    cache: new InMemoryCache(), //.restore(initialState),
+    cache: new InMemoryCache().restore(initialState),
     ssrForceFetchDelay: 100
 });
 

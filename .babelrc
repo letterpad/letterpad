@@ -1,16 +1,16 @@
 {
-    "presets": ["es2015", "stage-0", "react"],
-
-    "plugins": [
-        "transform-es2015-modules-commonjs",
-        "transform-object-rest-spread"
+    "presets": [
+        "react",
+        [
+            "env",
+            {
+                "targets": {
+                    "node": 8
+                },
+                "useBuiltIns": true
+            }
+        ]
     ],
-    "env": {
-        "build": {
-            "optional": ["optimisation", "minification"]
-        },
-        "targets": {
-            "browsers": ["last 2 Chrome versions"]
-        }
-    }
+
+    "plugins": ["transform-object-rest-spread"]
 }

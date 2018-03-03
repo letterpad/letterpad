@@ -1,24 +1,41 @@
 var path = require("path");
 var webpack = require("webpack");
 
+var babelOptions = {
+    presets: [
+        "react",
+        [
+            "env",
+            {
+                targets: {
+                    browsers: ["last 2 versions", "safari >= 7"]
+                },
+                modules: false,
+                useBuiltIns: false
+            }
+        ]
+    ],
+
+    plugins: ["transform-object-rest-spread"]
+};
+
 module.exports = {
     devtool: "source-map",
     mode: "development",
     entry: {
         vendor: [
-            "babel-polyfill",
+            "./public/js/polyfill.js",
             "react",
             "react-dom",
             "redux",
             "react-apollo"
         ],
         admin: [
-            "babel-polyfill",
             "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
             "./admin/app"
         ],
         client: [
-            "babel-polyfill",
+            "./public/js/polyfill.js",
             "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
             "./client/app"
         ]
@@ -39,7 +56,7 @@ module.exports = {
                 }
             }
         },
-        runtimeChunk: true
+        runtimeChunk: false
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
@@ -54,7 +71,7 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                loaders: ["style-loader", "css-loader"]
+                use: ["style-loader", "css-loader"]
             },
             {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
@@ -63,7 +80,7 @@ module.exports = {
             // CSS
             {
                 test: /\.scss$/,
-                loaders: [
+                use: [
                     "style-loader",
                     "css-loader?sourceMap",
                     "sass-loader?sourceMap"
@@ -74,12 +91,18 @@ module.exports = {
             // js
             {
                 test: /\.js$/,
-                loaders: ["babel-loader"],
+                use: {
+                    loader: "babel-loader",
+                    options: babelOptions
+                },
                 include: path.join(__dirname, "admin")
             },
             {
                 test: /\.js$/,
-                loaders: ["babel-loader"],
+                use: {
+                    loader: "babel-loader",
+                    options: babelOptions
+                },
                 include: path.join(__dirname, "client")
             }
         ]

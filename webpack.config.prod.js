@@ -1,24 +1,43 @@
 var path = require("path");
 var webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const BabiliPlugin = require("babili-webpack-plugin");
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
     filename: "../css/[name].css"
 });
+
+var babelOptions = {
+    presets: [
+        "react",
+        [
+            "env",
+            {
+                targets: {
+                    browsers: ["last 2 versions", "safari >= 7"]
+                },
+                modules: false,
+                useBuiltIns: true
+            }
+        ]
+    ],
+
+    plugins: ["transform-object-rest-spread"]
+};
+
 module.exports = {
     profile: true,
     mode: "production",
     entry: {
         vendor: [
-            "babel-polyfill",
+            "./public/js/polyfill.js",
             "react",
             "react-dom",
             "redux",
             "react-apollo"
         ],
-        admin: ["./admin/app"],
-        client: ["./client/app"]
+        admin: ["./public/js/polyfill.js", "./admin/app"],
+        client: ["./public/js/polyfill.js", "./client/app"]
     },
     output: {
         path: path.join(__dirname, "public/js"),
@@ -35,7 +54,7 @@ module.exports = {
                 }
             }
         },
-        runtimeChunk: true
+        runtimeChunk: false
     },
     plugins: [
         new webpack.optimize.OccurrenceOrderPlugin(),
@@ -44,7 +63,7 @@ module.exports = {
                 NODE_ENV: "'production'"
             }
         }),
-        new BabiliPlugin(),
+        new MinifyPlugin(),
         extractSass
     ],
     module: {
@@ -60,12 +79,18 @@ module.exports = {
             // js
             {
                 test: /\.js$/,
-                loaders: ["babel-loader"],
+                use: {
+                    loader: "babel-loader",
+                    options: babelOptions
+                },
                 include: path.join(__dirname, "admin")
             },
             {
                 test: /\.js$/,
-                loaders: ["babel-loader"],
+                use: {
+                    loader: "babel-loader",
+                    options: babelOptions
+                },
                 include: path.join(__dirname, "client")
             },
             // CSS
