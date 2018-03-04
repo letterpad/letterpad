@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const Stats = ({ stats, loading }) => {
+const Stats = ({ stats, loading }, { t }) => {
     const items = [
         {
             label: "Posts",
@@ -44,8 +44,8 @@ const Stats = ({ stats, loading }) => {
 
     return (
         <div className="card">
-            <div className="module-title">Stats</div>
-            <div className="module-subtitle">Snapshot of your blog</div>
+            <div className="module-title">{t("home.stats")}</div>
+            <div className="module-subtitle">{t("home.stats.tagline")}</div>
             {!loading && <div className="listing">{data}</div>}
         </div>
     );
@@ -61,5 +61,7 @@ Stats.defaultProps = {
         pages: {}
     }
 };
-
+Stats.contextTypes = {
+    t: PropTypes.func
+};
 export default Stats;

@@ -11,17 +11,17 @@ export default class Translations extends Component {
         this.props.updateOption(option, value);
     }
     render() {
+        const { t } = this.context;
         return (
             <div>
                 <div className="form-group">
                     <label className="custom-label">
-                        Search results not found
+                        {t("settings.messages.translationNotFound")}
                     </label>
                     <input
                         defaultValue={this.props.data.text_notfound.value}
                         type="text"
                         className="form-control"
-                        placeholder="Enter a text"
                         aria-invalid="false"
                         onBlur={e =>
                             this.updateOption("text_notfound", e.target.value)
@@ -29,12 +29,13 @@ export default class Translations extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Posts empty</label>
+                    <label className="custom-label">
+                        {t("settings.messages.emptyPost")}
+                    </label>
                     <input
                         defaultValue={this.props.data.text_posts_empty.value}
                         type="text"
                         className="form-control"
-                        placeholder="Enter your facebook link"
                         aria-invalid="false"
                         onBlur={e =>
                             this.updateOption(
@@ -57,4 +58,8 @@ Translations.defaultPropTypes = {
     data: JSON.stringify({
         text_notfound: ""
     })
+};
+
+Translations.contextTypes = {
+    t: PropTypes.func
 };

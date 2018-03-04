@@ -33,12 +33,12 @@ class Single extends Component {
             );
         }
         return (
-            <section className="module-xs">
+            <section className="module-xs edit-post">
                 <div className="row">
-                    <div className="col-lg-8 column">
+                    <div className="col-lg-8 column article-holder">
                         <ArticleEdit post={this.props.post} />
                     </div>
-                    <div className="col-lg-4 column">
+                    <div className="col-lg-4 column distractor">
                         <PostPublish edit post={this.props.post} />
                         <Tags post={this.props.post} />
                         <Categories post={this.props.post} />

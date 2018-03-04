@@ -6,7 +6,7 @@ import { MenuTree } from "./TreeNode";
 const data = [
     {
         id: 9,
-        label: "Home",
+        label: "menu.home",
         priority: 1,
         permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
         home: true,
@@ -15,7 +15,7 @@ const data = [
     },
     {
         id: 1,
-        label: "Posts",
+        label: "menu.posts",
         priority: 1,
         permissions: [],
         home: true,
@@ -24,7 +24,7 @@ const data = [
         children: [
             {
                 id: 1,
-                label: "All Posts",
+                label: "menu.allPosts",
                 priority: 1,
                 permissions: [],
                 slug: "posts",
@@ -32,7 +32,7 @@ const data = [
             },
             {
                 id: 2,
-                label: "New Post",
+                label: "menu.newPost",
                 priority: 2,
                 permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
                 slug: "post-new",
@@ -40,7 +40,7 @@ const data = [
             },
             {
                 id: 3,
-                label: "Tags",
+                label: "menu.tags",
                 priority: 3,
                 permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
                 slug: "tags",
@@ -48,7 +48,7 @@ const data = [
             },
             {
                 id: 4,
-                label: "Categories",
+                label: "menu.categories",
                 priority: 4,
                 permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
                 slug: "categories",
@@ -58,14 +58,14 @@ const data = [
     },
     {
         id: 2,
-        label: "Pages",
+        label: "menu.pages",
         priority: 2,
         permissions: [],
         icon: "fa-file",
         children: [
             {
                 id: 1,
-                label: "All Pages",
+                label: "menu.allPages",
                 priority: 1,
                 permissions: [],
                 slug: "pages",
@@ -73,7 +73,7 @@ const data = [
             },
             {
                 id: 2,
-                label: "New Page",
+                label: "menu.newPage",
                 priority: 2,
                 permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
                 slug: "page-new",
@@ -83,7 +83,7 @@ const data = [
     },
     {
         id: 3,
-        label: "Media",
+        label: "menu.media",
         priority: 3,
         permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
         slug: "media",
@@ -91,14 +91,14 @@ const data = [
     },
     {
         id: 4,
-        label: "Settings",
+        label: "menu.settings",
         priority: 7,
         permissions: ["MANAGE_SETTINGS"],
         icon: "fa-cog",
         children: [
             {
                 id: 1,
-                label: "Menu",
+                label: "menu.menu",
                 priority: 2,
                 permissions: ["MANAGE_SETTINGS"],
                 slug: "menu-builder",
@@ -106,7 +106,7 @@ const data = [
             },
             {
                 id: 2,
-                label: "Site Settings",
+                label: "menu.siteSettings",
                 priority: 1,
                 permissions: ["MANAGE_SETTINGS"],
                 slug: "settings",
@@ -117,7 +117,7 @@ const data = [
 
     {
         id: 6,
-        label: "Profile",
+        label: "menu.profile",
         priority: 5,
         permissions: ["MANAGE_OWN_POSTS"],
         slug: "edit-profile",
@@ -125,7 +125,7 @@ const data = [
     },
     {
         id: 7,
-        label: "Authors",
+        label: "menu.authors",
         priority: 6,
         permissions: ["MANAGE_USERS"],
         slug: "authors",
@@ -133,7 +133,7 @@ const data = [
     },
     {
         id: 8,
-        label: "Themes",
+        label: "menu.themes",
         priority: 7,
         permissions: ["MANAGE_SETTINGS"],
         slug: "themes",
@@ -177,7 +177,7 @@ export default class Menu extends Component {
         const selected = this.props.location.pathname.replace("/admin/", "");
 
         return (
-            <div className="sidebar">
+            <div className="sidebar distractor">
                 <nav className="navbar navbar-custom">
                     <div className="navbar-header">
                         <button

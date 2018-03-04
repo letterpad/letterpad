@@ -72,6 +72,7 @@ class TreeNode extends Component {
     }
 
     render() {
+        const { t } = this.context;
         const checkPerm = permission =>
             this.props.permissions.indexOf(permission) !== -1;
 
@@ -127,7 +128,7 @@ class TreeNode extends Component {
                                 }
                             />
                         )}
-                        <span>{this.props.data.label}</span>
+                        <span>{t(this.props.data.label)}</span>
                     </Link>
                     <ul className={containerClassName + " nav nav-list"}>
                         {subtree}
@@ -144,7 +145,7 @@ class TreeNode extends Component {
                     {this.props.data.icon && (
                         <i className={"menu-icon fa " + this.props.data.icon} />
                     )}
-                    <span>{this.props.data.label}</span>
+                    <span>{t(this.props.data.label)}</span>
                 </Link>
             </li>
         );
@@ -156,5 +157,8 @@ TreeNode.propTypes = {
     data: PropTypes.object,
     permissions: PropTypes.array,
     route: PropTypes.string
+};
+TreeNode.contextTypes = {
+    t: PropTypes.func
 };
 export default TreeNode;

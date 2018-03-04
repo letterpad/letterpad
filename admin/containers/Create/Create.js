@@ -48,12 +48,12 @@ class Create extends Component {
             return <div>hello</div>;
         }
         return (
-            <section className="module-xs">
+            <section className="module-xs create-post">
                 <div className="row">
-                    <div className="col-lg-8 column">
+                    <div className="col-lg-8 column article-holder">
                         <ArticleCreate post={this.state.post} />
                     </div>
-                    <div className="col-lg-4 column">
+                    <div className="col-lg-4 column distractor">
                         <PostPublish create post={this.state.post} />
                         <Tags post={this.state.post} />
                         <Categories post={this.state.post} />

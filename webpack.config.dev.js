@@ -32,6 +32,7 @@ module.exports = {
             "moment"
         ],
         admin: [
+            "./public/js/polyfill.js",
             "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
             "./admin/app"
         ],

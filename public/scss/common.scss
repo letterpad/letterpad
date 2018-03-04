@@ -397,6 +397,11 @@ blockquote cite {
     outline: 0;
 }
 
+.btn-danger-invert {
+    background: #fff;
+    color: #d9534e;
+}
+
 .btn-dark,
 .btn-dark:focus {
     background: rgba(17, 17, 17, 1);
@@ -1235,7 +1240,7 @@ input {
 .card {
     background: #fff;
     padding: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 .post-grid {
     .card {

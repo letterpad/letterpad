@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class PasswordChange extends Component {
     constructor(props) {
@@ -9,19 +10,24 @@ export default class PasswordChange extends Component {
         this.props.updateOption("password", value);
     }
     render() {
+        const { t } = this.context;
         return (
             <div>
-                <div className="module-title">Change Password</div>
+                <div className="module-title">
+                    {t("profile.password.title")}
+                </div>
                 <div className="module-subtitle">
-                    Some basic information about yourself
+                    {t("profile.password.tagline")}
                 </div>
 
                 <div className="form-group">
-                    <label className="custom-label">New Password</label>
+                    <label className="custom-label">
+                        {t("profile.password.label")}
+                    </label>
                     <input
                         type="password"
                         className="form-control"
-                        placeholder="Change your password"
+                        placeholder={t("profile.password.placeholder")}
                         aria-invalid="false"
                         onChange={e =>
                             this.updateOption("password", e.target.value)
@@ -32,3 +38,7 @@ export default class PasswordChange extends Component {
         );
     }
 }
+
+PasswordChange.contextTypes = {
+    t: PropTypes.func
+};

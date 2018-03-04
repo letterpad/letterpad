@@ -34,15 +34,15 @@ class MenuBuilder extends Component {
         this.props.updateOptions(settings).then(res => {});
     }
     render() {
-        const data = {};
         if (this.props.settings.loading) {
             return <div>hello</div>;
         }
+        const { t } = this.context;
         return (
             <section className="module-xs">
                 <div className="card">
-                    <div className="module-title">Menu Settings</div>
-                    <div className="module-subtitle">Configure your menu</div>
+                    <div className="module-title">{t("menu.title")}</div>
+                    <div className="module-subtitle">{t("menu.tagline")}</div>
                     <MenuConstruction
                         data={this.props.settings}
                         pages={this.props.pages}
@@ -54,7 +54,7 @@ class MenuBuilder extends Component {
                         onClick={this.submitData}
                         className="btn btn-blue btn-sm"
                     >
-                        Save
+                        {t("save")}
                     </button>
                 </div>
             </section>
@@ -95,6 +95,10 @@ MenuBuilder.propTypes = {
     pages: PropTypes.object,
     categories: PropTypes.object,
     settings: PropTypes.object
+};
+
+MenuBuilder.contextTypes = {
+    t: PropTypes.func
 };
 
 export default createQueryWithData(CategoriesData(PagesData(MenuBuilder)));

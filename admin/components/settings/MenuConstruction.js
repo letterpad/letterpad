@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Nestable from "react-nestable";
+import PropTypes from "prop-types";
 import Resources from "./menu/Resources";
 import RenderItem from "./menu/RenderItem";
 const Handler = () => {
@@ -206,6 +207,7 @@ class MenuConstruction extends Component {
     }
 
     render() {
+        const { t } = this.context;
         return (
             <div className="row">
                 <div className="col-lg-5">
@@ -228,7 +230,7 @@ class MenuConstruction extends Component {
                     />
                 </div>
                 <div className="col-lg-5">
-                    <h5>Build your menu</h5>
+                    <h5>{t("menu.build.title")}</h5>
                     <Nestable
                         items={this.state.items}
                         renderItem={props => (
@@ -246,4 +248,9 @@ class MenuConstruction extends Component {
         );
     }
 }
+
+MenuConstruction.contextTypes = {
+    t: PropTypes.func
+};
+
 export default MenuConstruction;

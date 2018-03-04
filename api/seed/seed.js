@@ -305,7 +305,7 @@ export async function insertSettings() {
         },
         {
             option: "site_tagline",
-            value: "Minimalism is beautiful"
+            value: "Compose a story"
         },
         {
             option: "site_email",

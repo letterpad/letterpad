@@ -76,14 +76,12 @@ class Media extends Component {
                 confirmDelete={this.toggleModal}
             />
         ));
-
+        const { t } = this.context;
         return (
             <section className="module-xs">
                 <div className="card">
-                    <div className="module-title">Media</div>
-                    <div className="module-subtitle">
-                        Find all your uploaded media here
-                    </div>
+                    <div className="module-title">{t("media.title")}</div>
+                    <div className="module-subtitle">{t("media.tagline")}</div>
                     <div className="row media-grid">{rows}</div>
                     <Paginate
                         count={this.props.media.count}
@@ -153,5 +151,7 @@ Media.defaultProps = {
         rows: []
     }
 };
-
+Media.contextTypes = {
+    t: PropTypes.func
+};
 export default ContainerWithData(deleteMedia(Media));

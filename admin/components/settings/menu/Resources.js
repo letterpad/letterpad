@@ -1,9 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const Resources = ({ title, data, itemClicked }) => {
+const Resources = ({ title, data, itemClicked }, { t }) => {
     return (
         <div>
-            <h5>Add {title}</h5>
+            <h5>{t(`menu.${title}`)}</h5>
             <ul className="list-group resources">
                 {data.map((item, i) => {
                     const disabled = item.disabled ? { disabled: true } : {};
@@ -21,6 +22,10 @@ const Resources = ({ title, data, itemClicked }) => {
             </ul>
         </div>
     );
+};
+
+Resources.contextTypes = {
+    t: PropTypes.func
 };
 
 export default Resources;

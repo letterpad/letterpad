@@ -49,6 +49,7 @@ class Settings extends Component {
     }
     render() {
         const data = {};
+        const { t } = this.context;
         if (this.props.options.loading) {
             return <div>hello</div>;
         }
@@ -65,25 +66,31 @@ class Settings extends Component {
                     gutterHeight={12}
                 >
                     <div className="card">
-                        <div className="module-title">General Settings</div>
+                        <div className="module-title">
+                            {t("settings.general.title")}
+                        </div>
                         <div className="module-subtitle">
-                            Overview of configuration options for your site.
+                            {t("settings.general.tagline")}
                         </div>
                         <General data={data} updateOption={this.setOption} />
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
                     <div className="card">
-                        <div className="module-title">Social Settings</div>
+                        <div className="module-title">
+                            {t("settings.social.title")}
+                        </div>
                         <div className="module-subtitle">
-                            Setup your social links
+                            {t("settings.social.tagline")}
                         </div>
                         <Social data={data} updateOption={this.setOption} />
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
                     <div className="card">
-                        <div className="module-title">Sidebar Settings</div>
+                        <div className="module-title">
+                            {t("settings.sidebar.title")}
+                        </div>
                         <div className="module-subtitle">
-                            Configure your sidebar widgets
+                            {t("settings.sidebar.tagline")}
                         </div>
                         <SidebarWidgets
                             data={data}
@@ -92,9 +99,11 @@ class Settings extends Component {
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
                     <div className="card">
-                        <div className="module-title">Messages</div>
+                        <div className="module-title">
+                            {t("settings.messages.title")}
+                        </div>
                         <div className="module-subtitle">
-                            Configure various message texts
+                            {t("settings.messages.tagline")}
                         </div>
                         <Translations
                             data={data}
@@ -143,4 +152,9 @@ Settings.propTypes = {
     updateOptions: PropTypes.func,
     options: PropTypes.object
 };
+
+Settings.contextTypes = {
+    t: PropTypes.func
+};
+
 export default createQueryWithData(Data(Settings));

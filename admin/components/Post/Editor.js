@@ -7,38 +7,10 @@ import Normal from "./Editors/Normal";
 import PostActions from "./PostActions";
 
 class Editor extends Component {
-    constructor(props) {
-        super(props);
-        this.changeEditor = this.changeEditor.bind(this);
-        this.state = {
-            markdownEditor: this.props.mode == "markdown"
-        };
-    }
-
-    changeEditor(e) {
-        const mode = e.target.checked ? "markdown" : "standard";
-        PostActions.setData({ mode });
-        this.setState({ markdownEditor: ~~e.target.checked });
-    }
-
     render() {
         return (
             <div>
-                <div className={"switch-block m-b-20 "}>
-                    <span className="switch-label switch-off-text">Simple</span>
-                    <label className="switch">
-                        <input
-                            type="checkbox"
-                            onChange={this.changeEditor}
-                            checked={this.state.markdownEditor}
-                        />
-                        <span className="slider round" />
-                    </label>
-                    <span className="switch-label switch-on-text">
-                        Markdown
-                    </span>
-                </div>
-                {this.state.markdownEditor ? (
+                {this.props.isMarkdown ? (
                     <MarkdownEditor body={this.props.body} />
                 ) : (
                     <Normal

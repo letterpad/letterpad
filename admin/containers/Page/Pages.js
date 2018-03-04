@@ -16,22 +16,20 @@ class Pages extends Component {
     }
     render() {
         const loading = this.props.loading;
-
+        const { t } = this.context;
         const { status } = this.props;
 
         return (
             <section className="module-xs">
                 <div className="card">
-                    <div className="module-title">Pages</div>
-                    <div className="module-subtitle">
-                        Overview of all your pages.
-                    </div>
+                    <div className="module-title">{t("pages.title")}</div>
+                    <div className="module-subtitle">{t("pages.tagline")}</div>
                     <Search type="page" searchPosts={this.props.searchPosts} />
                     <PostFilters
                         changeStatus={this.props.changeStatus}
                         selectedStatus={status}
                     />
-                    <table className="table table-hover">
+                    <table className="table table-hover table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th width="5%" className="col-check">
@@ -41,22 +39,22 @@ class Pages extends Component {
                                     </label>
                                 </th>
                                 <th width="25%" className="col-text">
-                                    Title
+                                    {t("common.title")}
                                 </th>
                                 <th width="20%" className="col-text">
-                                    Categories
+                                    {t("common.categories")}
                                 </th>
                                 <th width="20%" className="col-text">
-                                    Tags
+                                    {t("common.tags")}
                                 </th>
                                 <th width="5%" className="col-text">
-                                    Status
+                                    {t("common.status")}
                                 </th>
                                 <th width="10%" className="col-text">
-                                    Author
+                                    {t("common.author")}
                                 </th>
                                 <th width="10%" className="col-text">
-                                    Created At
+                                    {t("common.createdAt")}
                                 </th>
                             </tr>
                         </thead>
@@ -89,6 +87,10 @@ Pages.propTypes = {
     changeStatus: PropTypes.func,
     loading: PropTypes.bool,
     history: PropTypes.object
+};
+
+Pages.contextTypes = {
+    t: PropTypes.func
 };
 
 export default PostsHoc(Pages, "page");
