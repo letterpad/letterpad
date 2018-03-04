@@ -1,24 +1,34 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const QuickDraft = ({ draftPost }) => {
+const QuickDraft = ({ draftPost }, { t }) => {
     return (
         <div className="card">
-            <div className="module-title">Quick Draft</div>
-            <div className="module-subtitle">Draft a quick post</div>
+            <div className="module-title">{t("home.quickDraft")}</div>
+            <div className="module-subtitle">
+                {t("home.quickDraft.tagline")}
+            </div>
             <div>
                 <div className="form-group">
-                    <label className="custom-label">Title</label>
-                    <input className="form-control" id="quick-post-title" />
+                    <label className="custom-label">
+                        {t("home.quickDraft.title")}
+                    </label>
+                    <input
+                        className="form-control"
+                        id="quick-post-title"
+                        placeholder={t("home.quickDraft.title.placeholder")}
+                    />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Body</label>
+                    <label className="custom-label">
+                        {t("home.quickDraft.body")}
+                    </label>
                     <textarea
                         id="quick-post-body"
                         rows="2"
                         rowsMax="4"
                         className="form-control"
-                        placeholder="Flow your thoughts..."
+                        placeholder={t("home.quickDraft.body.placeholder")}
                     />
                 </div>
                 <button
@@ -26,7 +36,7 @@ const QuickDraft = ({ draftPost }) => {
                     onClick={draftPost}
                     className="btn btn-blue btn-sm"
                 >
-                    Save Draft
+                    {t("home.quickDraft.save")}
                 </button>
             </div>
         </div>
@@ -36,5 +46,7 @@ const QuickDraft = ({ draftPost }) => {
 QuickDraft.propTypes = {
     draftPost: PropTypes.func
 };
-
+QuickDraft.contextTypes = {
+    t: PropTypes.func
+};
 export default QuickDraft;

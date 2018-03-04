@@ -36,6 +36,12 @@ label.custom-label {
         }
     }
 }
+.article-holder {
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+    }
+}
 /*--------------------------------------
 [TopBar]
 */
@@ -58,6 +64,14 @@ label.custom-label {
         margin-top: -50px;
     }
     margin: -20px;
+}
+@media screen and (min-width: 1200px) {
+    .edit-post,
+    .create-post {
+        .column:not(:last-child) {
+            padding-right: 0px;
+        }
+    }
 }
 /* Tell Quill not to scroll */
 
@@ -407,6 +421,28 @@ tr th:first-child {
                     border-bottom: none;
                 }
             }
+        }
+    }
+}
+.distract-free {
+    .distractor {
+        display: none;
+    }
+    .wrapper {
+        margin: 0px;
+    }
+    .article-holder {
+        position: absolute;
+        left: 50%;
+        width: 1000px;
+        margin-left: -500px;
+    }
+    @media screen and (max-width: 1000px) {
+        .article-holder {
+            width: 100%;
+            left: 0px;
+            margin: 0px;
+            padding: 0px;
         }
     }
 }

@@ -26,30 +26,30 @@ Filter.propTypes = {
     changeStatus: PropTypes.func
 };
 
-export const PostFilters = ({ selectedStatus, changeStatus }) => {
+export const PostFilters = ({ selectedStatus, changeStatus }, { t }) => {
     return (
         <div className="post-filters m-b-20">
             <Filter
                 id="all"
-                label="All"
+                label={t("common.all")}
                 status={selectedStatus}
                 changeStatus={changeStatus}
             />
             <Filter
                 id="publish"
-                label="Published"
+                label={t("common.published")}
                 status={selectedStatus}
                 changeStatus={changeStatus}
             />
             <Filter
                 id="draft"
-                label="Drafts"
+                label={t("common.drafts")}
                 status={selectedStatus}
                 changeStatus={changeStatus}
             />
             <Filter
                 id="trash"
-                label="Deleted"
+                label={t("common.deleted")}
                 status={selectedStatus}
                 changeStatus={changeStatus}
             />
@@ -60,5 +60,8 @@ export const PostFilters = ({ selectedStatus, changeStatus }) => {
 PostFilters.propTypes = {
     selectedStatus: PropTypes.string,
     changeStatus: PropTypes.func
+};
+PostFilters.contextTypes = {
+    t: PropTypes.func
 };
 export default PostFilters;

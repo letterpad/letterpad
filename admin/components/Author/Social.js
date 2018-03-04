@@ -20,19 +20,18 @@ export default class Social extends Component {
         this.props.updateOption("social", JSON.stringify(this.state.social));
     }
     render() {
+        const { t } = this.context;
         return (
             <div>
-                <div className="module-title">Social Information</div>
-                <div className="module-subtitle">
-                    Some social information about yourself
-                </div>
+                <div className="module-title">{t("social.title")}</div>
+                <div className="module-subtitle">{t("social.tagline")}</div>
                 <div className="form-group">
                     <label className="custom-label">Twitter</label>
                     <input
                         value={this.state.social.twitter}
                         type="text"
                         className="form-control"
-                        placeholder="Enter your twitter username"
+                        placeholder={t("social.twitter.placeholder")}
                         onChange={e =>
                             this.updateOption("twitter", e.target.value)
                         }
@@ -44,7 +43,7 @@ export default class Social extends Component {
                         value={this.state.social.twitter}
                         type="text"
                         className="form-control"
-                        placeholder="Enter your facebook username"
+                        placeholder={t("social.fb.placeholder")}
                         onChange={e =>
                             this.updateOption("facebook", e.target.value)
                         }
@@ -56,7 +55,7 @@ export default class Social extends Component {
                         value={this.state.social.twitter}
                         type="text"
                         className="form-control"
-                        placeholder="Enter your instagram username"
+                        placeholder={t("social.ig.placeholder")}
                         onChange={e =>
                             this.updateOption("instagram", e.target.value)
                         }
@@ -68,7 +67,7 @@ export default class Social extends Component {
                         value={this.state.social.github}
                         type="text"
                         className="form-control"
-                        placeholder="Enter your github username"
+                        placeholder={t("social.gh.placeholder")}
                         onChange={e =>
                             this.updateOption("github", e.target.value)
                         }
@@ -91,4 +90,8 @@ Social.defaultProps = {
         instagram: "",
         facebook: ""
     })
+};
+
+Social.contextTypes = {
+    t: PropTypes.func
 };

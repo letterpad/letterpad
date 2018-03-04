@@ -11,17 +11,22 @@ export default class SidebarWidgets extends Component {
         this.props.updateOption(option, value);
     }
     render() {
+        const { t } = this.context;
         return (
             <div>
                 <div className="form-group">
-                    <label className="custom-label">Latest Post Count</label>
+                    <label className="custom-label">
+                        {t("settings.sidebar.latestPostCount")}
+                    </label>
                     <input
                         defaultValue={
                             this.props.data.sidebar_latest_post_count.value
                         }
                         type="text"
                         className="form-control"
-                        placeholder="Total posts to display"
+                        placeholder={t(
+                            "settings.sidebar.latestPostCount.placeholder"
+                        )}
                         aria-invalid="false"
                         onBlur={e =>
                             this.updateOption(
@@ -32,12 +37,16 @@ export default class SidebarWidgets extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">About</label>
+                    <label className="custom-label">
+                        {t("settings.sidebar.aboutTitle")}
+                    </label>
                     <textarea
                         defaultValue={this.props.data.sidebar_about.value}
                         className="form-control"
                         rows="2"
-                        placeholder="Introduce your site"
+                        placeholder={t(
+                            "settings.sidebar.aboutTitle.placeholder"
+                        )}
                         required=""
                         aria-invalid="false"
                         onBlur={e =>
@@ -52,4 +61,7 @@ export default class SidebarWidgets extends Component {
 SidebarWidgets.propTypes = {
     data: PropTypes.object,
     updateOption: PropTypes.func
+};
+SidebarWidgets.contextTypes = {
+    t: PropTypes.func
 };

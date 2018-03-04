@@ -16,6 +16,7 @@ export default class General extends Component {
     }
     render() {
         const checked = { row: {}, grid: {}, "two-column": {}, centered: {} };
+        const { t } = this.context;
 
         if (this.state.post_display == "row") {
             checked.row.checked = true;
@@ -30,12 +31,16 @@ export default class General extends Component {
         return (
             <div>
                 <div className="form-group">
-                    <label className="custom-label">Site title</label>
+                    <label className="custom-label">
+                        {t("settings.general.site.title")}
+                    </label>
                     <input
                         defaultValue={this.props.data.site_title.value}
                         type="text"
                         className="form-control"
-                        placeholder="Enter an epic title"
+                        placeholder={t(
+                            "settings.general.site.title.placeholder"
+                        )}
                         aria-invalid="false"
                         onBlur={e =>
                             this.updateOption("site_title", e.target.value)
@@ -43,12 +48,16 @@ export default class General extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Tagline</label>
+                    <label className="custom-label">
+                        {t("settings.general.site.tagline")}
+                    </label>
                     <input
                         defaultValue={this.props.data.site_tagline.value}
                         type="text"
                         className="form-control"
-                        placeholder="Enter an epic tagline"
+                        placeholder={t(
+                            "settings.general.site.tagline.placeholder"
+                        )}
                         aria-invalid="true"
                         onBlur={e =>
                             this.updateOption("site_tagline", e.target.value)
@@ -56,7 +65,9 @@ export default class General extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Email</label>
+                    <label className="custom-label">
+                        {t("settings.general.site.email")}
+                    </label>
                     <input
                         defaultValue={this.props.data.site_email.value}
                         type="email"
@@ -69,12 +80,16 @@ export default class General extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Short description</label>
+                    <label className="custom-label">
+                        {t("settings.general.site.description")}
+                    </label>
                     <textarea
                         defaultValue={this.props.data.site_description.value}
                         className="form-control"
                         rows="2"
-                        placeholder="What is your site all about ? This will be used for SEO"
+                        placeholder={t(
+                            "settings.general.site.description.placeholder"
+                        )}
                         required=""
                         aria-invalid="false"
                         onBlur={e =>
@@ -86,7 +101,9 @@ export default class General extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Posts display</label>
+                    <label className="custom-label">
+                        {t("settings.general.postDisplay")}
+                    </label>
                     <div>
                         <label className="radio-inline">
                             <input
@@ -97,7 +114,8 @@ export default class General extends Component {
                                     this.updateOption("post_display", "row");
                                     this.setState({ post_display: "row" });
                                 }}
-                            />Row
+                            />
+                            {t("common.row")}
                         </label>
                         <label className="radio-inline">
                             <input
@@ -108,12 +126,15 @@ export default class General extends Component {
                                     this.updateOption("post_display", "grid");
                                     this.setState({ post_display: "grid" });
                                 }}
-                            />Grid
+                            />
+                            {t("common.grid")}
                         </label>
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Layout display</label>
+                    <label className="custom-label">
+                        {t("settings.general.layoutDisplay")}
+                    </label>
                     <div>
                         <label className="radio-inline">
                             <input
@@ -129,7 +150,8 @@ export default class General extends Component {
                                         layout_display: "centered"
                                     });
                                 }}
-                            />Centered
+                            />
+                            {t("common.centered")}
                         </label>
                         <label className="radio-inline">
                             <input
@@ -145,7 +167,8 @@ export default class General extends Component {
                                         layout_display: "two-column"
                                     });
                                 }}
-                            />Full Width
+                            />
+                            {t("common.fullWidth")}
                         </label>
                     </div>
                 </div>
@@ -157,4 +180,8 @@ export default class General extends Component {
 General.propTypes = {
     data: PropTypes.object,
     updateOption: PropTypes.func
+};
+
+General.contextTypes = {
+    t: PropTypes.func
 };

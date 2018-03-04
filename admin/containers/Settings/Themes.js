@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { graphql, compose } from "react-apollo";
+import { graphql } from "react-apollo";
+import StackGrid from "react-stack-grid";
 import PropTypes from "prop-types";
 import FontPicker from "font-picker-react";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
@@ -59,19 +60,17 @@ class AddColor extends Component {
 
 const ColorBox = ({ name, description, property, handleChange, state }) => {
     return (
-        <div className="col-lg-4">
-            <div className="form-group card">
-                <label classNmae="custom-label">
-                    {name}
-                    <AddColor
-                        colors={state}
-                        property={property}
-                        handleChange={handleChange}
-                    />
-                </label>
+        <div className="m-b-0 card">
+            <label classNmae="custom-label">
+                {name}
+                <AddColor
+                    colors={state}
+                    property={property}
+                    handleChange={handleChange}
+                />
+            </label>
 
-                <div className="text-muted">{description}</div>
-            </div>
+            <div className="text-muted">{description}</div>
         </div>
     );
 };
@@ -190,8 +189,12 @@ class Themes extends Component {
                     />
                 </div>
                 <div className="row">
-                    <div className="col-lg-8 color-blocks">
-                        <div className="row">
+                    <div className="col-lg-12 color-blocks">
+                        <StackGrid
+                            columnWidth={"25%"}
+                            gutterWidth={12}
+                            gutterHeight={12}
+                        >
                             <ColorBox
                                 name="Primary Color"
                                 description="Color for most of the body texts"
@@ -277,15 +280,11 @@ class Themes extends Component {
                                 property="--color-menu-link"
                                 handleChange={this.handleChange}
                             />
-                        </div>
-                    </div>
-
-                    <div className="col-lg-4">
-                        <div className="card">Typography</div>
+                        </StackGrid>
                     </div>
                 </div>
                 <button
-                    className="btn btn-blue btn-sm"
+                    className="btn btn-blue btn-sm m-t-20"
                     onClick={this.submitData}
                 >
                     Submit

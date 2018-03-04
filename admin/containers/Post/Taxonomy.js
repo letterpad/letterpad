@@ -15,27 +15,26 @@ import {
 } from "../../../shared/queries/Mutations";
 
 class Taxonomy extends Component {
-    constructor(props) {
+    constructor(props, context) {
         super(props);
         this.editSaveTaxonomy = this.editSaveTaxonomy.bind(this);
         this.newTaxClicked = this.newTaxClicked.bind(this);
         this.deleteTax = this.deleteTax.bind(this);
+        const { t } = context;
         this.texts = {
             post_tag: {
-                title1: "Manage Tags",
-                subtitle1:
-                    "You can edit all your tags from here. Posts linked with those tags will automatically get updated.",
-                title2: "Create a tag",
-                input1: "Name of the tag",
-                input2: "Description of the tag"
+                title1: t("tags.title"),
+                subtitle1: t("tags.tagline"),
+                title2: t("tags.create"),
+                input1: t("tags.create.name.placeholder"),
+                input2: t("tags.create.desc.placeholder")
             },
             post_category: {
-                title1: "Manage Categories",
-                subtitle1:
-                    "You can edit all your categories from here. Posts linked with those categories will automatically get updated.",
-                title2: "Create a category",
-                input1: "Name of the category",
-                input2: "Description of the category"
+                title1: t("categories.title"),
+                subtitle1: t("categories.tagline"),
+                title2: t("categories.create"),
+                input1: t("categories.create.name.placeholder"),
+                input2: t("categories.create.desc.placeholder")
             }
         };
         this.defaultText = this.texts[this.props.type];
@@ -144,6 +143,7 @@ class Taxonomy extends Component {
         this.setState(this.state);
     }
     render() {
+        const { t } = this.context;
         const loading = this.props.loading || !this.props.networkStatus === 2;
         if (loading) return null;
         const style = {
@@ -215,14 +215,14 @@ class Taxonomy extends Component {
                             "btn btn-xs btn-" + (item.edit ? "success" : "dark")
                         }
                     >
-                        {item.edit ? "Save" : "Edit"}
+                        {item.edit ? t("common.save") : t("common.edit")}
                     </button>
                     &nbsp;&nbsp;
                     <button
                         onClick={_ => this.deleteTax(idx)}
-                        className="btn btn-xs btn-dark"
+                        className="btn btn-xs btn-danger btn-danger-invert"
                     >
-                        Delete
+                        {t("common.delete")}
                     </button>
                 </td>
             </tr>
@@ -247,20 +247,20 @@ class Taxonomy extends Component {
                             <i className="fa fa-plus" />
                         </button>
                     </div>
-                    <table className="table table-hover">
+                    <table className="table table-hover table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th width="25%" className="col-text">
-                                    Name
+                                    {t("common.name")}
                                 </th>
                                 <th width="25%" className="col-text">
-                                    Description
+                                    {t("common.description")}
                                 </th>
                                 <th width="25%" className="col-text">
-                                    Slug
+                                    {t("common.slug")}
                                 </th>
                                 <th width="25%" className="col-text">
-                                    Actions
+                                    {t("common.actions")}
                                 </th>
                             </tr>
                         </thead>
@@ -306,6 +306,11 @@ const deleteTaxonomyQuery = graphql(DELETE_TAXONOMY, {
             })
     })
 });
+
+Taxonomy.contextTypes = {
+    t: PropTypes.func
+};
+
 export default deleteTaxonomyQuery(
     updateTaxonomyQuery(ContainerWithData(Taxonomy))
 );

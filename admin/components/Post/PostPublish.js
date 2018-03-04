@@ -143,7 +143,11 @@ class PostPublish extends Component {
                 <div className="x_content">
                     <div className="btn-together">
                         {this.getButton(actionLabel, "btn-dark")}
-                        {this.getButton("Trash", "btn-danger", "trash")}
+                        {this.getButton(
+                            "Trash",
+                            "btn-danger btn-danger-invert",
+                            "trash"
+                        )}
                     </div>
                 </div>
             </div>

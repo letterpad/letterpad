@@ -7,6 +7,7 @@ import { CAT_POSTS } from "../../shared/queries/Queries";
 import config from "../../config";
 import Paginate from "../components/Paginate";
 import OhSnap from "../components/OhSnap";
+import WithResize from "./Hoc/WithResize";
 
 class Posts extends Component {
     constructor(props) {
@@ -16,6 +17,10 @@ class Posts extends Component {
         this.state = {
             posts: []
         };
+    }
+
+    componentDidMount() {
+        this.props.setResizeTracker(".post-grid");
     }
 
     async loadMore(num) {
@@ -43,6 +48,12 @@ class Posts extends Component {
                 <OhSnap message={this.props.settings.text_posts_empty.value} />
             );
         }
+        let windowWidth = this.props.clientWidth;
+        let gridWidth = "50%";
+        if (windowWidth < 600) {
+            gridWidth = "100%";
+        }
+
         const posts =
             this.props.settings.post_display.value == "row" ? (
                 <div className="post-row">
@@ -53,7 +64,7 @@ class Posts extends Component {
             ) : (
                 <StackGrid
                     className="post-grid"
-                    columnWidth={"50%"}
+                    columnWidth={gridWidth}
                     gutterWidth={12}
                     gutterHeight={12}
                     enableSSR={true}
@@ -112,4 +123,4 @@ const ContainerWithPostData = graphql(CAT_POSTS, {
     }
 });
 
-export default ContainerWithPostData(Posts);
+export default ContainerWithPostData(WithResize(Posts));

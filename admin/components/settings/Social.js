@@ -11,15 +11,18 @@ export default class Social extends Component {
         this.props.updateOption(option, value);
     }
     render() {
+        const { t } = this.context;
         return (
             <div>
                 <div className="form-group">
-                    <label className="custom-label">Facebook</label>
+                    <label className="custom-label">
+                        {t("common.facebook")}
+                    </label>
                     <input
                         defaultValue={this.props.data.social_facebook.value}
                         type="text"
                         className="form-control"
-                        placeholder="Enter your facebook link"
+                        placeholder={t("social.fb.placeholder")}
                         aria-invalid="false"
                         onBlur={e =>
                             this.updateOption("social_facebook", e.target.value)
@@ -27,12 +30,14 @@ export default class Social extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Twitter</label>
+                    <label className="custom-label">
+                        {t("common.twitter")}
+                    </label>
                     <input
                         defaultValue={this.props.data.social_twitter.value}
                         type="text"
                         className="form-control"
-                        placeholder="Enter your twitter link"
+                        placeholder={t("social.twitter.placeholder")}
                         aria-invalid="true"
                         onBlur={e =>
                             this.updateOption("social_twitter", e.target.value)
@@ -40,12 +45,14 @@ export default class Social extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label">Instagram</label>
+                    <label className="custom-label">
+                        {t("common.instagram")}
+                    </label>
                     <input
                         defaultValue={this.props.data.social_instagram.value}
                         type="text"
                         className="form-control"
-                        placeholder="Enter your instagram link.."
+                        placeholder={t("social.ig.placeholder")}
                         aria-invalid="true"
                         onBlur={e =>
                             this.updateOption(
@@ -71,4 +78,8 @@ Social.defaultPropTypes = {
         social_facebook: "",
         social_github: ""
     })
+};
+
+Social.contextTypes = {
+    t: PropTypes.func
 };
