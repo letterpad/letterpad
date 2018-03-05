@@ -316,6 +316,10 @@ export async function insertSettings() {
             value: ""
         },
         {
+            option: "site_footer",
+            value: ""
+        },
+        {
             option: "site_description",
             value: ""
         },

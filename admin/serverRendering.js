@@ -50,16 +50,8 @@ module.exports.init = app => {
 };
 
 function Html({ content, state }) {
-    const devBundles = [
-        "/static/runtime~admin-bundle.js",
-        "/static/vendor-bundle.js",
-        "/static/admin-bundle.js"
-    ];
-    const prodBundles = [
-        "/js/runtime~admin-bundle.js",
-        "/js/vendor-bundle.js",
-        "/js/admin-bundle.js"
-    ];
+    const devBundles = ["/static/vendor-bundle.js", "/static/admin-bundle.js"];
+    const prodBundles = ["/js/vendor-bundle.js", "/js/admin-bundle.js"];
     const bundles =
         process.env.NODE_ENV === "production" ? prodBundles : devBundles;
 
