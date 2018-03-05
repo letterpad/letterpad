@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/node /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/yarn remove react-sizeme
+  /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/node /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/yarn delete syntax-dynamic-import
 
 PATH: 
   /Users/ajaxtown/google-cloud-sdk/bin:/Users/ajaxtown/.nvm/versions/node/v8.1.0/bin:/usr/local/mysql/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin:/Users/ajaxtown/google-cloud-sdk/bin:/usr/local/mysql/bin:/usr/local/opt/php56/bin/php:/usr/local/opt/php56/bin/php
@@ -99,6 +99,7 @@ npm manifest:
           "react-apollo": "^1.4.0",
           "react-color": "^2.13.8",
           "react-dom": "^0.14.7",
+          "react-helmet": "^5.2.0",
           "react-infinite-scroller": "^1.1.3",
           "react-nestable": "^1.0.19",
           "react-notify-toast": "^0.4.0",
@@ -2990,6 +2991,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/decompress-response/-/decompress-response-3.3.0.tgz#80a4dd323748384bfa248083622aedec982adff3"
     dependencies:
       mimic-response "^1.0.0"
+  
+  deep-equal@^1.0.1:
+    version "1.0.1"
+    resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
   
   deep-extend@^0.4.0, deep-extend@~0.4.0:
     version "0.4.2"
@@ -7543,6 +7548,15 @@ Lockfile:
       object-assign "^4.1.0"
       prop-types "^15.5.10"
   
+  react-helmet@^5.2.0:
+    version "5.2.0"
+    resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.2.0.tgz#a81811df21313a6d55c5f058c4aeba5d6f3d97a7"
+    dependencies:
+      deep-equal "^1.0.1"
+      object-assign "^4.1.1"
+      prop-types "^15.5.4"
+      react-side-effect "^1.1.0"
+  
   react-infinite-scroller@^1.1.3:
     version "1.1.3"
     resolved "https://registry.yarnpkg.com/react-infinite-scroller/-/react-infinite-scroller-1.1.3.tgz#c4230024bc237ce876c76b2e38d77dc1f6aabb26"
@@ -7621,6 +7635,13 @@ Lockfile:
       classnames "^2.2.4"
       prop-types "^15.5.8"
       react-input-autosize "^2.1.2"
+  
+  react-side-effect@^1.1.0:
+    version "1.1.5"
+    resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-1.1.5.tgz#f26059e50ed9c626d91d661b9f3c8bb38cd0ff2d"
+    dependencies:
+      exenv "^1.2.1"
+      shallowequal "^1.0.1"
   
   react-sizeme@^2.2.0:
     version "2.3.6"
@@ -9860,10 +9881,14 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.7.1.tgz#f84075c0ee085594d3566e1d6454207f126411b3"
 
 Trace: 
-  Error: This module isn't specified in a manifest.
+  Error: Command "delete" not found.
       at new MessageError (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:186:110)
-      at Object.<anonymous> (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:60445:15)
+      at /Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:87307:17
       at Generator.next (<anonymous>)
       at step (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:98:30)
-      at /Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:109:13
-      at <anonymous>
+      at /Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:116:14
+      at Promise (<anonymous>)
+      at F (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:23451:28)
+      at /Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:95:12
+      at runCommand (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:87312:22)
+      at Object.<anonymous> (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:87412:14)

@@ -316,3 +316,44 @@ export const CAT_POSTS = gql`
         }
     }
 `;
+
+export const PAGE_MENU = gql`
+    query pageMenu($slug: String, $postType: String) {
+        pageMenu(slug: $slug, postType: $postType) {
+            ok
+            post {
+                id
+                title
+                body
+                status
+                created_at
+                excerpt
+                cover_image
+                slug
+                taxonomies {
+                    id
+                    name
+                    type
+                }
+            }
+            errors {
+                message
+            }
+        }
+    }
+`;
+
+export const ADJACENT_POSTS = gql`
+    query adjacentPosts($slug: String) {
+        adjacentPosts(type: "post", slug: $slug) {
+            next {
+                title
+                slug
+            }
+            previous {
+                title
+                slug
+            }
+        }
+    }
+`;

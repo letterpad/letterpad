@@ -2,6 +2,9 @@ require.extensions[".sass"] = () => "";
 require.extensions[".scss"] = () => "";
 require.extensions[".css"] = () => "";
 
+// require("babel-core").transform("code", {
+//     plugins: ["syntax-dynamic-import"]
+// });
 require("babel-core/register");
 // require("babel-polyfill");
 const express = require("express");
