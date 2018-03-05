@@ -9,6 +9,8 @@ import Posts from "./Posts";
 import Page from "./Page";
 import Single from "./Single";
 import SearchWrapper from "./SearchWrapper";
+import { Helmet } from "react-helmet";
+import SEO from "../components/SEO";
 
 require("../../public/scss/client.scss");
 
@@ -44,9 +46,21 @@ class App extends Component {
         if (this.props.loading) {
             return <Loader />;
         }
-        this.applyCustomCSS(this.props.settings);
+        const { settings } = this.props;
+        this.applyCustomCSS(settings);
         return (
             <div>
+                <SEO
+                    schema="Blog"
+                    title={`${settings.site_title.value} | ${
+                        settings.site_tagline.value
+                    }`}
+                    description={settings.sidebar_about.value}
+                    path="/"
+                    image="/"
+                    contentType="blog"
+                    settings={settings}
+                />
                 <Switch>
                     <Route
                         exact

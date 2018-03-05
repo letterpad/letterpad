@@ -102,6 +102,21 @@ export default class General extends Component {
                 </div>
                 <div className="form-group">
                     <label className="custom-label">
+                        {t("settings.general.site.url")}
+                    </label>
+                    <input
+                        defaultValue={this.props.data.site_url.value}
+                        type="text"
+                        className="form-control"
+                        placeholder={t("settings.general.site.url.placeholder")}
+                        aria-invalid="true"
+                        onBlur={e =>
+                            this.updateOption("site_url", e.target.value)
+                        }
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="custom-label">
                         {t("settings.general.postDisplay")}
                     </label>
                     <div>

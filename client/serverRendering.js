@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/server";
-//import Helmet from 'react-helmet';
+import { Helmet } from "react-helmet";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import fetch from "node-fetch";
@@ -23,10 +23,11 @@ module.exports.init = app => {
             cache: new InMemoryCache()
         });
 
-        const sendResponse = ({ content, initialState }) => {
-            const html = <Html content={content} state={initialState} />;
+        const sendResponse = ({ content, initialState, head }) => {
+            const html = getHtml(content, initialState, head);
+            // const html = ReactDOM.renderToStaticMarkup(htmlComponent);
             res.status(200);
-            res.send(`<!doctype html>\n${ReactDOM.renderToStaticMarkup(html)}`);
+            res.send(`<!doctype html>\n${html}`);
             res.end();
         };
         let initialState = {};
@@ -41,49 +42,61 @@ module.exports.init = app => {
 
         getDataFromTree(adminApp).then(() => {
             const content = ReactDOM.renderToString(adminApp);
+            const head = Helmet.renderStatic();
             initialState = client.extract();
-            sendResponse({ content, initialState });
+            sendResponse({ content, initialState, head });
         });
     });
 };
 
-function Html({ content, state }) {
-    const devBundles = ["/static/vendor-bundle.js", "/static/client-bundle.js"];
-    const prodBundles = ["/js/vendor-bundle.js", "/js/client-bundle.js"];
+function getHtml(content, state, head) {
+    let htmlAttrs = "";
+    const metaTags = Object.keys(head)
+        .map(item => {
+            if (item == "htmlAttributes") {
+                htmlAttrs = head[item].toString();
+                return "";
+            }
+            return head[item].toString();
+        })
+        .filter(x => x)
+        .join("");
+    const devBundles = [
+        "/js/highlight.min.js",
+        "/static/vendor-bundle.js",
+        "/static/client-bundle.js"
+    ];
+    const prodBundles = [
+        "/js/highlight.min.js",
+        "/js/vendor-bundle.js",
+        "/js/client-bundle.js"
+    ];
     const bundles =
         process.env.NODE_ENV === "production" ? prodBundles : devBundles;
 
-    const insertScript = script => (
-        <script type="text/javascript" src={script} defer />
-    );
+    const insertScript = script =>
+        `<script type="text/javascript" src="${script}" defer></script>`;
 
-    const insertStyle = style => <link href={style} rel="stylesheet" />;
-    return (
-        <html lang="en">
+    const initialState = JSON.stringify(state); //.replace(/</g, "\\u003c");
+    const scripts = bundles.map(bundle => insertScript(bundle));
+
+    return `<html ${htmlAttrs}>
             <head>
                 <meta charSet="UTF-8" />
                 <meta
                     name="viewport"
                     content="width=device-width, initial-scale=1"
                 />
-                <title>Blog Dashboard</title>
-                {insertStyle("/css/client.css")}
+                ${metaTags}
+                <link href="/css/client.css" rel="stylesheet"/>
             </head>
             <body>
-                <div id="app" dangerouslySetInnerHTML={{ __html: content }} />
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `window.__APOLLO_STATE__=${JSON.stringify(
-                            state
-                        ).replace(/</g, "\\u003c")};window.NODE_ENV = "${
-                            process.env.NODE_ENV
-                        }";`
-                    }}
-                />
-                {insertScript("/js/highlight.min.js")}
-
-                {bundles.map(bundle => insertScript(bundle))}
+                <div id="app">${content}</div>
+                <script>
+                    window.__APOLLO_STATE__=${initialState};
+                    window.NODE_ENV = "${process.env.NODE_ENV}";
+                </script>
+                ${scripts.join("")}
             </body>
-        </html>
-    );
+        </html>`;
 }

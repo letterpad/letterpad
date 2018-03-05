@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Article from "../components/post/Article";
-import { gql, graphql } from "react-apollo";
+import { graphql } from "react-apollo";
 import Loader from "../components/Loader";
+import SEO from "../components/SEO";
+import { PAGE_MENU } from "../../shared/queries/Queries";
 
 const OhSnap = ({ message }) => {
     return (
@@ -24,40 +26,36 @@ class Page extends Component {
         if (!this.props.page.ok) {
             return <OhSnap message="Something wrong happened" />;
         }
+        const post = this.props.page.post;
+        const tags = [],
+            categories = [];
+        post.taxonomies.forEach(taxonomy => {
+            if (taxonomy.type === "post_category") {
+                categories.push(taxonomy.name);
+            } else {
+                tags.push(taxonomy.name);
+            }
+        });
         return (
             <div>
-                <Article post={this.props.page.post} />;
+                <SEO
+                    schema="BlogPosting"
+                    title={post.title}
+                    description={post.excerpt}
+                    path={"/post/" + this.props.match.params.slug}
+                    contentType="article"
+                    category={categories.join(",")}
+                    tags={tags}
+                    image={post.cover_image}
+                    settings={this.props.settings || {}}
+                />
+                <Article post={post} />;
             </div>
         );
     }
 }
 
-const pageQuery = gql`
-    query pageMenu($slug: String, $postType: String) {
-        pageMenu(slug: $slug, postType: $postType) {
-            ok
-            post {
-                id
-                title
-                body
-                status
-                created_at
-                excerpt
-                cover_image
-                slug
-                taxonomies {
-                    id
-                    name
-                    type
-                }
-            }
-            errors {
-                message
-            }
-        }
-    }
-`;
-const ContainerWithPageData = graphql(pageQuery, {
+const ContainerWithPageData = graphql(PAGE_MENU, {
     options: props => {
         return {
             variables: {

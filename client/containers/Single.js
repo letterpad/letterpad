@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import Article from "../components/post/Article";
-import { gql, graphql } from "react-apollo";
+import { graphql } from "react-apollo";
 import Loader from "../components/Loader";
-import {
-    GET_SINGLE_POST,
-    GET_POST_BY_SLUG
-} from "../../shared/queries/Queries";
+import SEO from "../components/SEO";
+import { GET_POST_BY_SLUG, ADJACENT_POSTS } from "../../shared/queries/Queries";
+import PropTypes from "prop-types";
 
 const OhSnap = ({ message }) => {
     return (
@@ -25,21 +24,38 @@ class Single extends Component {
         if (this.props.loading || this.props.adjPostsLoading) {
             return <Loader />;
         }
+        if (this.props.post === null) {
+            return (
+                <OhSnap message="I am not sure how this happened. Maybe this page is dead for good or restricted." />
+            );
+        }
+        const tags = [],
+            categories = [];
+        this.props.post.taxonomies.forEach(taxonomy => {
+            if (taxonomy.type === "post_category") {
+                categories.push(taxonomy.name);
+            } else {
+                tags.push(taxonomy.name);
+            }
+        });
+
         return (
             <div>
-                {(() => {
-                    if (this.props.post === null) {
-                        return (
-                            <OhSnap message="I am not sure how this happened. Maybe this page is dead for good or restricted." />
-                        );
-                    }
-                    return (
-                        <Article
-                            post={this.props.post}
-                            adjacentPosts={this.props.adjacentPosts}
-                        />
-                    );
-                })()}
+                <SEO
+                    schema="BlogPosting"
+                    title={this.props.post.title}
+                    description={this.props.post.excerpt}
+                    path={"/post/" + this.props.match.params.slug}
+                    contentType="article"
+                    category={categories.join(",")}
+                    tags={tags}
+                    image={this.props.post.cover_image}
+                    settings={this.props.settings || {}}
+                />
+                <Article
+                    post={this.props.post}
+                    adjacentPosts={this.props.adjacentPosts}
+                />
             </div>
         );
     }
@@ -60,21 +76,7 @@ const ContainerWithPostData = graphql(GET_POST_BY_SLUG, {
     })
 });
 
-const adjacentPostsQuery = gql`
-    query adjacentPosts($slug: String) {
-        adjacentPosts(type: "post", slug: $slug) {
-            next {
-                title
-                slug
-            }
-            previous {
-                title
-                slug
-            }
-        }
-    }
-`;
-const adjacentData = graphql(adjacentPostsQuery, {
+const adjacentData = graphql(ADJACENT_POSTS, {
     options: props => {
         return {
             variables: {
@@ -87,4 +89,9 @@ const adjacentData = graphql(adjacentPostsQuery, {
         adjPostsLoading: loading
     })
 });
+
+Single.propTypes = {
+    post: PropTypes.object,
+    adjacentPosts: PropTypes.object
+};
 export default adjacentData(ContainerWithPostData(Single));

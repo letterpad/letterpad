@@ -312,6 +312,10 @@ export async function insertSettings() {
             value: ""
         },
         {
+            option: "site_url",
+            value: ""
+        },
+        {
             option: "site_description",
             value: ""
         },
