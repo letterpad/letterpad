@@ -35,7 +35,11 @@ export default function Layout(Element) {
                                 router={{ ...this.props }}
                             />
 
-                            {layout == "two-column" ? <Footer /> : ""}
+                            {layout == "two-column" ? (
+                                <Footer data={settings.site_footer.value} />
+                            ) : (
+                                ""
+                            )}
                         </div>
                     </nav>
 

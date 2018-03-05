@@ -55,7 +55,7 @@ class App extends Component {
                     title={`${settings.site_title.value} | ${
                         settings.site_tagline.value
                     }`}
-                    description={settings.sidebar_about.value}
+                    description={settings.site_description.value}
                     path="/"
                     image="/"
                     contentType="blog"

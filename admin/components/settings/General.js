@@ -117,6 +117,24 @@ export default class General extends Component {
                 </div>
                 <div className="form-group">
                     <label className="custom-label">
+                        {t("settings.general.site.footer")} (html allowed)
+                    </label>
+                    <textarea
+                        defaultValue={this.props.data.site_footer.value}
+                        className="form-control"
+                        rows="2"
+                        placeholder={t(
+                            "settings.general.site.footer.placeholder"
+                        )}
+                        required=""
+                        aria-invalid="false"
+                        onBlur={e =>
+                            this.updateOption("site_footer", e.target.value)
+                        }
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="custom-label">
                         {t("settings.general.postDisplay")}
                     </label>
                     <div>

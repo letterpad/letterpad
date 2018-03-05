@@ -32,7 +32,7 @@ export default class Footer extends Component {
                     />
                 </div>
 
-                <p>© 2017 Ajaxtown</p>
+                <p dangerouslySetInnerHTML={{ __html: this.props.data }} />
             </div>
         );
     }

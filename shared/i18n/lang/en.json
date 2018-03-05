@@ -110,11 +110,14 @@
         "Manage your blog's basic configurations from here",
     "settings.general.site.title": "Site Title",
     "settings.general.site.title.placeholder": "Enter your blog's title",
+    "settings.general.site.email": "Site Email",
     "settings.general.site.tagline": "Site tagine",
     "settings.general.site.tagline.placeholder":
         "Enter a tagline for your blog",
     "settings.general.site.url": "Enter the url of your site",
     "settings.general.site.url.placeholder": "http://letterpad.org",
+    "settings.general.site.footer": "Enter text to display in footer",
+    "settings.general.site.footer.placeholder": "© 2018 Letterpad",
     "settings.general.site.description": "Short description",
     "settings.general.site.description.placeholder":
         "What is your blog all about ? This will be used for SEO",

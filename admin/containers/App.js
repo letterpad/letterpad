@@ -1,6 +1,7 @@
 import React from "react";
 import { graphql } from "react-apollo";
 import { Route, Switch } from "react-router-dom";
+import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import jwtDecode from "jwt-decode";
 import Notifications, { notify } from "react-notify-toast";
@@ -147,5 +148,4 @@ const ContainerWithSiteData = graphql(GET_OPTIONS, {
         };
     }
 });
-
 export default ContainerWithSiteData(withRouter(App));

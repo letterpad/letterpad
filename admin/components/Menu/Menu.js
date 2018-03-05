@@ -217,7 +217,11 @@ export default class Menu extends Component {
                 </nav>
 
                 <div className="copyright">
-                    <p>© 2017 Ajaxtown</p>
+                    <p
+                        dangerouslySetInnerHTML={{
+                            __html: this.props.settings.site_footer.value
+                        }}
+                    />
                 </div>
             </div>
         );

@@ -14,7 +14,7 @@ class AddColor extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.state = {
             display: false,
-            color: "#FFF"
+            color: props.colors[props.property]
         };
     }
     componentWillReceiveProps(nextProps) {
@@ -61,7 +61,7 @@ class AddColor extends Component {
 const ColorBox = ({ name, description, property, handleChange, state }) => {
     return (
         <div className="m-b-0 card">
-            <label classNmae="custom-label">
+            <label className="custom-label">
                 {name}
                 <AddColor
                     colors={state}
@@ -194,6 +194,7 @@ class Themes extends Component {
                             columnWidth={"25%"}
                             gutterWidth={12}
                             gutterHeight={12}
+                            horizontal={true}
                         >
                             <ColorBox
                                 name="Primary Color"
