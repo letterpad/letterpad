@@ -15,7 +15,6 @@ const createResolver = resolver => {
 
 export const requiresAuth = createResolver((root, args, context) => {
     if (!context.user || !context.user.id) {
-        console.log(root);
         let operationName = "server";
         if (root.body && root.body.operationName) {
             operationName = root.body.operationName;
@@ -92,6 +91,5 @@ export const checkDisplayAccess = createResolver((root, args, context) => {
     ) {
         return args;
     }
-    console.log(root);
     throw new UnauthorizedError({ url: root.client.body.operationName });
 });
