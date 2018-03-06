@@ -1,5 +1,0 @@
-FROM node:8
-WORKDIR /app
-VOLUME [ "/app" ]
-EXPOSE 3030 4040
-CMD npm run dev

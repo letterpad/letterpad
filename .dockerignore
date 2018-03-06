@@ -1,6 +1,0 @@
-.git
-.gitignore
-node_modules
-dbdata
-.yarn-cache
-.vscode
