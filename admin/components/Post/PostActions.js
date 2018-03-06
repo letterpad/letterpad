@@ -16,8 +16,8 @@ let PostActions = {
             .then(data => {
                 return data.json();
             })
-            .then(image => {
-                insertMedia({ url: image });
+            .then(async image => {
+                await insertMedia({ url: image });
                 return image;
             });
     },
