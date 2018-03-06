@@ -85,7 +85,7 @@ const ModalHoc = (WrappedComponent, id = "", classes = "") => {
             let modalClass = this.props.className || "";
             let modalDialogClass = this.props.dialogClassName || "";
             return (
-                <div id={id}>
+                <div id={id} className={classes}>
                     <div
                         ref="modalWrapper"
                         onClick={this.handleClick.bind(this)}

@@ -27,6 +27,7 @@
     "common.twitter": "Twitter",
     "common.instagram": "Instagram",
     "common.github": "Github",
+    "common.cancel": "Cancel",
     "menu.home": "Home",
     "menu.posts": "Posts",
     "menu.allPosts": "All Posts",
@@ -144,5 +145,6 @@
     "menu.build.title": "Build your menu",
 
     "themesSetting": "Theme settings",
-    "themeTagline": "Your can change the look and feel of your blog from here"
+    "themeTagline": "Your can change the look and feel of your blog from here",
+    "modal.explorer.title": "Select an Item"
 }

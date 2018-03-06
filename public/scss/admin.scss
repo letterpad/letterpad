@@ -65,6 +65,12 @@ label.custom-label {
     }
     margin: -20px;
 }
+.file-explorer .post-thumbnail img {
+    height: 100px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
 @media screen and (min-width: 1200px) {
     .edit-post,
     .create-post {
@@ -254,6 +260,18 @@ tr th:first-child {
     }
 }
 
+.modal {
+    .post {
+        border: 4px solid transparent;
+        cursor: pointer;
+        &:hover {
+            border: 4px solid #d5d5d6;
+        }
+    }
+    .post.selected {
+        border: 4px solid #d5d5d6;
+    }
+}
 /*!------------------------------------------------------------------
 [Post Filters]
 */
