@@ -34,7 +34,10 @@ class Search extends Component {
 
     render() {
         return (
-            <div className="form-group search-box">
+            <div
+                className="form-group search-box"
+                style={{ flex: 1, marginRight: 20 }}
+            >
                 <input
                     onKeyUp={this.handleKeyUp}
                     type="search"

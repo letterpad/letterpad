@@ -31,7 +31,22 @@ class Posts extends Component {
                 <div className="card">
                     <div className="module-title">{t("posts.title")}</div>
                     <div className="module-subtitle">{t("posts.tagline")}</div>
-                    <Search type="post" searchPosts={this.props.searchPosts} />
+                    <div className="action-bar">
+                        <Search
+                            type="post"
+                            searchPosts={this.props.searchPosts}
+                        />
+                        <div className="action-delete">
+                            {this.props.selectedPosts.length > 0 && (
+                                <button
+                                    className="btn btn-xs btn-danger"
+                                    onClick={this.props.deletedSelectedPosts}
+                                >
+                                    Delete
+                                </button>
+                            )}
+                        </div>
+                    </div>
                     <PostFilters
                         changeStatus={this.props.changeStatus}
                         selectedStatus={status}
@@ -41,7 +56,10 @@ class Posts extends Component {
                             <tr>
                                 <th width="5%" className="col-check">
                                     <label className="control control--checkbox">
-                                        <input type="checkbox" />
+                                        <input
+                                            type="checkbox"
+                                            onClick={this.props.selectAllPosts}
+                                        />
                                         <div className="control__indicator" />
                                     </label>
                                 </th>
@@ -71,6 +89,8 @@ class Posts extends Component {
                             handleClick={this.handleClick}
                             posts={this.props.posts}
                             loading={loading}
+                            setSelection={this.props.setSelection}
+                            selectedPosts={this.props.selectedPosts}
                         />
                     </table>
 
