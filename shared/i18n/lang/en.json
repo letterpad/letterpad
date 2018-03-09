@@ -116,6 +116,7 @@
     "settings.general.site.tagline.placeholder":
         "Enter a tagline for your blog",
     "settings.general.site.url": "Enter the url of your site",
+    "settings.general.site.language": "Select language",
     "settings.general.site.url.placeholder": "http://letterpad.org",
     "settings.general.site.footer": "Enter text to display in footer",
     "settings.general.site.footer.placeholder": "© 2018 Letterpad",
