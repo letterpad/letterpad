@@ -9,6 +9,9 @@ export default {
     Mutation: {
         updateOptions: requiresAdmin.createResolver(
             async (root, args, { models }) => {
+                // if (args.options.option === "css") {
+                //     console.log("hello");
+                // }
                 let promises = args.options.map(setting => {
                     return models.Setting.update(setting, {
                         where: { option: setting.option }
