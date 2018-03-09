@@ -1,6 +1,0 @@
-FROM node:8
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash
-RUN yarn config set cache-folder /root/yarn-cache
-WORKDIR /app
-VOLUME [ "/app", "/root/yarn-cache" ]
-CMD yarn

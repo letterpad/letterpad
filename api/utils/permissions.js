@@ -26,6 +26,10 @@ export const requiresAuth = createResolver((root, args, context) => {
 
 export const requiresAdmin = requiresAuth.createResolver(
     (root, args, context) => {
+        console.log(context);
+        if (context.error) {
+            throw new UnauthorizedError({ error: context.error });
+        }
         if (!context.user.role == "ADMIN") {
             let operationName = "server";
             if (root.body && root.body.operationName) {
@@ -70,9 +74,9 @@ export const editPostPerm = requiresAuth.createResolver(
 
 export const checkDisplayAccess = createResolver((root, args, context) => {
     //  if this is enduser, he should see only public posts.
+    let operationName = "server";
     if (!context.user || !context.user.id) {
         // if (args.status != "publish") {
-        let operationName = "server";
         if (root.body && root.body.operationName) {
             operationName = root.body.operationName;
         }
@@ -80,6 +84,10 @@ export const checkDisplayAccess = createResolver((root, args, context) => {
         // }
         args.status = "publish";
         return args;
+    }
+
+    if (context.error) {
+        throw new UnauthorizedError({ url: operationName });
     }
     //  Author should not see others posts from admin panel
     if (context.user.permissions.indexOf("MANAGE_OWN_POSTS") >= 0) {
@@ -91,5 +99,5 @@ export const checkDisplayAccess = createResolver((root, args, context) => {
     ) {
         return args;
     }
-    throw new UnauthorizedError({ url: root.client.body.operationName });
+    throw new UnauthorizedError({ url: root.body.operationName });
 });

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700");
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,500,600,700");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
 @import url("http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/monokai.min.css");
 @import "./variables.scss";
@@ -97,7 +97,9 @@ textarea.CodeFlask__textarea {
 .fa {
     position: relative;
 }
-
+.hide {
+    display: none;
+}
 /*!------------------------------------------------------------------
 [Typography]
 */
@@ -422,6 +424,18 @@ blockquote cite {
 .btn-blue:hover {
     background: $link_hover;
     color: #fff;
+}
+
+.btn-white,
+.btn-white:focus {
+    color: #fefefe;
+    border: 1px solid #50353a;
+    background: #50353a;
+}
+
+.btn-white:hover {
+    background: #d7d7d7;
+    color: #242424;
 }
 
 /*! Button types */
@@ -976,6 +990,7 @@ input {
             }
             &:focus {
                 background: transparent;
+                border-color: transparent;
             }
         }
         .open > a {
@@ -1046,9 +1061,9 @@ input {
         .parent {
             padding-bottom: 4px;
         }
-        li ul li {
-            //padding: 6px 0px;
-        }
+        // li ul li {
+        //     //padding: 6px 0px;
+        // }
     }
 }
 
