@@ -24,7 +24,7 @@ import Home from "./Home/Home";
 import "../../public/scss/admin.scss";
 import Themes from "./Settings/Themes";
 import { GET_OPTIONS } from "../../shared/queries/Queries";
-const lang = require("../../shared/i18n/lang/en.json");
+import * as language from "../../shared/i18n/lang";
 
 const App = data => {
     if (data.loading) {
@@ -34,8 +34,13 @@ const App = data => {
     if (typeof localStorage !== "undefined" && localStorage.token) {
         user = jwtDecode(localStorage.token);
     }
+    const langOptions = JSON.parse(data.settings.locale.value);
+    const selectedLang = Object.keys(langOptions).filter(
+        key => langOptions[key]
+    );
+    const locale = language[selectedLang[0]];
     return (
-        <Translate i18n={lang}>
+        <Translate i18n={locale}>
             <Switch>
                 <Route exact path="/admin/login" component={LoginView} />
 

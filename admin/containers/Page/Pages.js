@@ -24,7 +24,22 @@ class Pages extends Component {
                 <div className="card">
                     <div className="module-title">{t("pages.title")}</div>
                     <div className="module-subtitle">{t("pages.tagline")}</div>
-                    <Search type="page" searchPosts={this.props.searchPosts} />
+                    <div className="action-bar">
+                        <Search
+                            type="page"
+                            searchPosts={this.props.searchPosts}
+                        />
+                        <div className="action-delete">
+                            {this.props.selectedPosts.length > 0 && (
+                                <button
+                                    className="btn btn-xs btn-danger"
+                                    onClick={this.props.deletedSelectedPosts}
+                                >
+                                    Delete
+                                </button>
+                            )}
+                        </div>
+                    </div>
                     <PostFilters
                         changeStatus={this.props.changeStatus}
                         selectedStatus={status}
@@ -60,10 +75,12 @@ class Pages extends Component {
                         </thead>
 
                         <PostRows
+                            colSpan={7}
                             handleClick={this.handleClick}
                             posts={this.props.posts}
                             loading={loading}
-                            colSpan={7}
+                            setSelection={this.props.setSelection}
+                            selectedPosts={this.props.selectedPosts}
                         />
                     </table>
 
