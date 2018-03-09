@@ -371,6 +371,10 @@ export async function insertSettings() {
         {
             option: "colors",
             value: JSON.stringify({})
+        },
+        {
+            option: "locale",
+            value: JSON.stringify({ en: true, fr: false, pl: false })
         }
     ];
     await models.Setting.bulkCreate(data);

@@ -47,7 +47,9 @@ export default {
         posts: checkDisplayAccess.createResolver((root, args, { models }) => {
             const newArgs = { ...args };
 
-            if (newArgs.status == "all") delete newArgs.status;
+            if (newArgs.status == "all") {
+                newArgs.status = { not: "trash" };
+            }
 
             const columns = Object.keys(models.Post.rawAttributes);
             const conditions = getConditions(columns, newArgs);
@@ -293,7 +295,29 @@ export default {
         }),
         uploadFile: editPostPerm.createResolver((root, args, { models }) => {
             return _updatePost(args, models);
-        })
+        }),
+        deletePosts: editPostPerm.createResolver(
+            async (root, args, { models }) => {
+                try {
+                    const update = await models.Post.update(
+                        { status: "trash" },
+                        {
+                            where: {
+                                id: { in: args.ids.split(",") }
+                            }
+                        }
+                    );
+                    console.log(update);
+                    if (update) {
+                        return {
+                            ok: true
+                        };
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        )
     },
     Post: {
         author: post => post.getAuthor(),

@@ -5,14 +5,23 @@ export default class General extends Component {
     constructor(props) {
         super(props);
         this.updateOption = this.updateOption.bind(this);
+        this.switchLanguage = this.switchLanguage.bind(this);
         this.state = {
             post_display: this.props.data.post_display.value,
             layout_display: this.props.data.layout_display.value
         };
-    }
 
+        this.langOptions = JSON.parse(this.props.data.locale.value);
+    }
     updateOption(option, value) {
         this.props.updateOption(option, value);
+    }
+    switchLanguage(e) {
+        const locales = {};
+        Object.keys(this.langOptions).map(lang => {
+            locales[lang] = e.target.value === lang;
+        });
+        this.updateOption("locale", JSON.stringify(locales));
     }
     render() {
         const checked = { row: {}, grid: {}, "two-column": {}, centered: {} };
@@ -204,6 +213,26 @@ export default class General extends Component {
                             {t("common.fullWidth")}
                         </label>
                     </div>
+                </div>
+                <div className="form-group">
+                    <label className="custom-label">
+                        {t("settings.general.site.language")}
+                    </label>
+                    <select
+                        onChange={this.switchLanguage}
+                        className="form-control"
+                    >
+                        {Object.keys(this.langOptions).map(key => {
+                            const selected = this.langOptions[key]
+                                ? { selected: "" }
+                                : {};
+                            return (
+                                <option {...selected} value={key}>
+                                    {key}
+                                </option>
+                            );
+                        })}
+                    </select>
                 </div>
             </div>
         );
