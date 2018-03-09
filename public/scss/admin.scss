@@ -71,6 +71,13 @@ label.custom-label {
     overflow: hidden;
 }
 
+.action-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 @media screen and (min-width: 1200px) {
     .edit-post,
     .create-post {

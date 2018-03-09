@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { SEARCH_POSTS, GET_POSTS } from "../../../shared/queries/Queries";
-import { graphql } from "graphql/graphql";
 import appoloClient from "../../apolloClient";
 import config from "../../../config";
+import {
+    BULK_DELETE_POSTS,
+    DELETE_TAXONOMY
+} from "../../../shared/queries/Mutations";
 
 const PostsHoc = (WrappedComponent, type) => {
     return class extends Component {
@@ -11,11 +14,17 @@ const PostsHoc = (WrappedComponent, type) => {
             this.changePage = this.changePage.bind(this);
             this.changeStatus = this.changeStatus.bind(this);
             this.searchPosts = this.searchPosts.bind(this);
+            this.deletePosts = this.deletePosts.bind(this);
+            this.selectAllPosts = this.selectAllPosts.bind(this);
+            this.deletedSelectedPosts = this.deletedSelectedPosts.bind(this);
+            this.setSelection = this.setSelection.bind(this);
+
             this.state = {
                 status: "publish",
                 page: 1,
                 isSearch: false,
-                loading: true
+                loading: true,
+                selectedPosts: []
             };
             this.variables = {
                 type: type,
@@ -75,6 +84,18 @@ const PostsHoc = (WrappedComponent, type) => {
             }
         }
 
+        async deletePosts(ids) {
+            return appoloClient.mutate({
+                mutation: BULK_DELETE_POSTS,
+                variables: { ids: ids.join(",") },
+                update: (proxy, { data: { deletePosts } }) => {
+                    if (deletePosts.ok) {
+                        this.fetchPosts();
+                    }
+                }
+            });
+        }
+
         async searchPosts(query, page = 1, status = "all") {
             if (query === "") {
                 this.variables.status = "publish";
@@ -103,6 +124,32 @@ const PostsHoc = (WrappedComponent, type) => {
 
             return result.data.posts.rows;
         }
+        deletedSelectedPosts() {
+            this.deletePosts(this.state.selectedPosts).then(result => {
+                this.setState({ selectedPosts: [] });
+            });
+        }
+
+        selectAllPosts(e) {
+            if (e.target.checked) {
+                this.state.selectedPosts = this.props.posts.rows.map(
+                    post => post.id
+                );
+            } else {
+                this.state.selectedPosts = [];
+            }
+            this.setState(this.state);
+        }
+
+        setSelection(id) {
+            const idx = this.state.selectedPosts.indexOf(id);
+            if (idx === -1) {
+                this.state.selectedPosts.push(id);
+            } else {
+                this.state.selectedPosts.splice(idx, 1);
+            }
+            this.setState(this.state);
+        }
 
         render() {
             return (
@@ -112,6 +159,9 @@ const PostsHoc = (WrappedComponent, type) => {
                     changeStatus={this.changeStatus}
                     changePage={this.changePage}
                     searchPosts={this.searchPosts}
+                    selectAllPosts={this.selectAllPosts}
+                    deletedSelectedPosts={this.deletedSelectedPosts}
+                    setSelection={this.setSelection}
                 />
             );
         }

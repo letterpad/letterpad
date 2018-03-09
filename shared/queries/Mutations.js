@@ -82,6 +82,14 @@ export const DELETE_TAXONOMY = gql`
     }
 `;
 
+export const BULK_DELETE_POSTS = gql`
+    mutation deletePosts($ids: String!) {
+        deletePosts(ids: $ids) {
+            ok
+        }
+    }
+`;
+
 export const UPDATE_AUTHOR = gql`
     mutation updateAuthor(
         $id: Int!

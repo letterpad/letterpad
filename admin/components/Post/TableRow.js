@@ -21,7 +21,15 @@ const PostRows = props => {
     );
     if (props.posts.rows.length > 0) {
         data = props.posts.rows.map((post, i) => {
-            return <TableRow {...props} post={post} key={i} />;
+            const isSelected = props.selectedPosts.indexOf(post.id) >= 0;
+            return (
+                <TableRow
+                    {...props}
+                    post={post}
+                    key={i}
+                    isSelected={isSelected}
+                />
+            );
         });
     }
     return <tbody>{data}</tbody>;
@@ -30,10 +38,11 @@ const PostRows = props => {
 class TableRow extends Component {
     constructor(props) {
         super(props);
+        this.postSelected = this.postSelected.bind(this);
     }
+
     postSelected(e) {
-        e.preventDefault();
-        e.stopPropagation();
+        this.props.setSelection(this.props.post.id);
     }
 
     render() {
@@ -48,13 +57,18 @@ class TableRow extends Component {
             .map(tag => tag.name)
             .join(", ");
 
+        const checked = {
+            checked: this.props.isSelected
+        };
+
         return (
             <tr>
                 <td align="center" onClick={this.postSelected.bind(this)}>
                     <label className="control control--checkbox">
                         <input
                             type="checkbox"
-                            className="checkthis"
+                            {...checked}
+                            onClick={this.postSelected}
                             value={this.props.post.id}
                         />
                         <div className="control__indicator" />
