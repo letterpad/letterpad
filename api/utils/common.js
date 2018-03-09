@@ -4,7 +4,6 @@
 // [[postId,tag1], [postId,tag2], [postId + 1,tag3], [postId + 1, tag4].....
 export function formatTaxonomyForDBInsert(taxonomies, firstInsertID) {
     let result = [];
-    console.log(taxonomies);
     taxonomies.map(function(items) {
         console.log(items);
         let taxItems = items.split(",");
@@ -23,3 +22,13 @@ export class UnauthorizedError extends Error {
         this.statusCode = statusCode;
     }
 }
+
+export const mailTemplate = ({ name, body, footer }) => {
+    return `
+        <div>
+        Hi ${name}, <br/><br/>
+            ${body}<br/><br/>
+        - Admin<br/>
+        </div>
+    `;
+};

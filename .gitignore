@@ -5,3 +5,5 @@ npm-debug.log
 .vscode
 .yarn-cache
 .env
+.yarn-error.log
+.env

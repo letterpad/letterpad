@@ -7,7 +7,8 @@ import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
 import client from "./apolloClient";
 import App from "./containers/App";
-
+import { Route, Switch } from "react-router-dom";
+import LoginView from "./containers/LoginView";
 /*
   Rendering
   This is where we hook up the Store with our actual component and the router
@@ -15,7 +16,9 @@ import App from "./containers/App";
 render(
     <BrowserRouter>
         <ApolloProvider client={client}>
-            <App />
+            <Switch>
+                <App />
+            </Switch>
         </ApolloProvider>
     </BrowserRouter>,
     document.getElementById("app")

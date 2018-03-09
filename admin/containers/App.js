@@ -37,11 +37,14 @@ const App = data => {
     return (
         <Translate i18n={lang}>
             <Switch>
-                <Route exact path="/admin/login" component={LoginView} />
+                <Route
+                    exact
+                    path="/admin/login"
+                    component={props => <LoginView {...props} {...data} />}
+                />
 
                 <div className="wrapper">
                     <Notifications />
-
                     <Route
                         path="/admin"
                         render={props => <Menu {...props} {...data} />}

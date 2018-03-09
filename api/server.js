@@ -6,14 +6,21 @@ import cors from "cors";
 import multer from "multer";
 import path from "path";
 import jwt from "jsonwebtoken";
-import { UnauthorizedError } from "./utils/common";
 import models from "./models";
 import { seed } from "./seed/seed";
 import config from "../config";
-const app = express();
-const SECRET = "cdascadsc-cdascadsca";
 
-app.use(cors());
+require("dotenv").config();
+
+const app = express();
+
+const SECRET = process.env.SECRET_KEY;
+
+app.use(
+    cors({
+        exposedHeaders: ["x-refresh-token"]
+    })
+);
 app.options("*", cors());
 app.use(
     bodyParser.urlencoded({
@@ -21,14 +28,30 @@ app.use(
     })
 );
 
-const addUser = async req => {
+const addUser = async (req, res) => {
     const token = req.headers["authorization"];
     delete req.user;
-    if (token) {
+    const operation = req.body.operationName;
+    if (token && operation !== "login") {
         try {
-            req.user = await jwt.verify(token, SECRET);
+            console.log("Token found");
+            const data = await jwt.verify(token, SECRET);
+            req.user = { ...data };
+
+            delete data.iat;
+            delete data.exp;
+            //if (req.params.refresh) {
+            const newToken = jwt.sign(data, SECRET, {
+                expiresIn: req.user.expiresIn
+            });
+            console.log(newToken);
+            res.setHeader("x-refresh-token", newToken);
+            // res.send(newToken);
+            //}
         } catch (error) {
-            // we do nothing here. just watch the show
+            console.log("error");
+            res.status(401);
+            res.set("Location", "/admin/login");
         }
     }
     req.next();
@@ -60,6 +83,7 @@ app.use(
             },
             context: {
                 user: req.user || {},
+                error: req.error || null,
                 SECRET,
                 admin: req.headers.admin || false,
                 models: models

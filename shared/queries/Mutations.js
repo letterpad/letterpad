@@ -190,3 +190,25 @@ export const UPLOAD_COVER_IMAGE = gql`
         }
     }
 `;
+
+export const LOGIN_QUERY = gql`
+    mutation login($username: String!, $password: String!) {
+        login(email: $username, password: $password) {
+            ok
+            token
+            errors {
+                message
+                path
+            }
+        }
+    }
+`;
+
+export const FORGOT_PASSWORD_QUERY = gql`
+    mutation forgotPassword($email: String!) {
+        forgotPassword(email: $email) {
+            ok
+            msg
+        }
+    }
+`;
