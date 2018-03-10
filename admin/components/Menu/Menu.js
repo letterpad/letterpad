@@ -205,7 +205,7 @@ export default class Menu extends Component {
                         className={`collapse navbar-collapse + ${navbarStatus}`}
                         id="custom-collapse"
                     >
-                        <div id="cssmenu1">
+                        <div id="menutree">
                             <MenuTree
                                 data={this.state.data}
                                 permissions={this.permissions}

@@ -27,7 +27,7 @@ class Posts extends Component {
         const loading = this.props.loading; //|| !this.props.networkStatus === 2;
         const { status } = this.props;
         return (
-            <section className="module-xs">
+            <section className="module-xs fs-normal">
                 <div className="card">
                     <div className="module-title">{t("posts.title")}</div>
                     <div className="module-subtitle">{t("posts.tagline")}</div>
