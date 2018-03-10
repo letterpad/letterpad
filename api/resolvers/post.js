@@ -27,8 +27,6 @@ function getConditions(columns, args) {
             const query = validateJSONStr
                 ? JSON.parse(args[field])
                 : args[field];
-            console.log("=====");
-            console.log(validateJSONStr, query);
             if (validateJSONStr) {
                 obj["$or"] = [{ body: query }, { title: query }];
             } else {

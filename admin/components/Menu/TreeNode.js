@@ -12,10 +12,15 @@ export class MenuTree extends Component {
             route: this.props.route
         };
     }
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            route: newProps.route
+        });
+    }
 
     onSelect(data) {
         const newData = this.props.data.map(item => {
-            if (item.label === data.label) {
+            if (item.label === data.label && item.name === data.name) {
                 return data;
             }
             return item;
@@ -49,16 +54,19 @@ MenuTree.propTypes = {
 class TreeNode extends Component {
     constructor(props) {
         super(props);
-        this.state = { collapsed: true, selected: "" };
+        this.state = {
+            collapsed: true,
+            selected: this.props.data.slug === this.props.route ? "active" : ""
+        };
         this.onClick = this.onClick.bind(this);
     }
-    componentDidMount() {
-        if ("collapsed" in this.props.data && !this.props.data.collapsed) {
+    componentWillReceiveProps(newProps) {
+        if ("collapsed" in newProps.data && !newProps.data.collapsed) {
             this.state.collapsed = this.props.data.collapsed;
         }
 
         this.state.selected =
-            this.props.data.slug === this.props.route ? "active" : "";
+            newProps.data.slug === newProps.route ? "active" : "";
         this.setState(this.state);
     }
 

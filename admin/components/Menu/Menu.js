@@ -20,7 +20,7 @@ const data = [
         permissions: [],
         home: true,
         icon: "fa-book",
-        collapsed: false,
+        collapsed: true,
         children: [
             {
                 id: 1,

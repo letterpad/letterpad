@@ -85,6 +85,7 @@ class EditAuthor extends Component {
 
 const ContainerWithData = graphql(GET_AUTHOR, {
     options: props => {
+        console.log(props);
         return {
             variables: {
                 id: props.match.params.id || props.author.id

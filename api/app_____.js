@@ -25,6 +25,8 @@ app.use(
 
 const addUser = async req => {
     const token = req.headers["authorization"];
+    console.log("........");
+    console.log(typeof token, token);
     delete req.user;
     if (token) {
         try {
