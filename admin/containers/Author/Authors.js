@@ -50,7 +50,7 @@ class Authors extends Component {
         ));
 
         return (
-            <section className="module-xs">
+            <section className="module-xs fs-normal">
                 <div className="card">
                     <div className="module-title">Authors</div>
                     <div className="module-subtitle">

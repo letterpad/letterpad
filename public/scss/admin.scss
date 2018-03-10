@@ -78,14 +78,6 @@ label.custom-label {
     align-items: center;
 }
 
-@media screen and (min-width: 1200px) {
-    .edit-post,
-    .create-post {
-        .column:not(:last-child) {
-            padding-right: 0px;
-        }
-    }
-}
 /* Tell Quill not to scroll */
 
 #editor {
@@ -103,7 +95,7 @@ label.custom-label {
 }
 
 .ql-container {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 #quill-container .ql-toolbar {
@@ -332,6 +324,10 @@ tr th:first-child {
     }
     .nav-list li.has-sub li a {
         padding-left: 34px !important;
+    }
+    #menutree {
+        max-height: calc(100vh - 210px);
+        overflow: scroll;
     }
 }
 
