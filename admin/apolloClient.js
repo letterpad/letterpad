@@ -19,7 +19,16 @@ const middlewareLink = new ApolloLink((operation, forward) => {
             browser: true
         }
     });
-    return forward(operation);
+    return forward(operation).map(response => {
+        const { response: { headers } } = operation.getContext();
+        if (headers) {
+            const refreshToken = headers.get("x-refresh-token");
+            if (refreshToken) {
+                localStorage.token = refreshToken;
+            }
+        }
+        return response;
+    });
 });
 const errorLink = onError(({ networkError }) => {
     if (networkError.statusCode === 401) {

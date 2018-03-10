@@ -22,6 +22,11 @@ export default `
     errors: [Error!]
   }
 
+  type ForgotPasswordResponse {
+    ok: Boolean!
+    msg: String
+  }
+
   type AuthorResponse {
     ok: Boolean!
     errors: [Error!]
@@ -30,7 +35,8 @@ export default `
 
   type Mutation {
     register(username: String!, password: String!, email: String!): AuthorResponse!
-    login(username: String, email: String, password: String!): LoginResponse!
+    login(username: String, email: String, password: String!, remember: Boolean): LoginResponse!
+    forgotPassword(email: String!): ForgotPasswordResponse!
     updateAuthor(id: Int!, username: String, email: String, fname: String, lname: String, social: String, password: String): AuthorResponse
   }
 `;

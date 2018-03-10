@@ -10,7 +10,6 @@ export default {
         updateOptions: requiresAdmin.createResolver(
             async (root, args, { models }) => {
                 let promises = args.options.map(setting => {
-                    console.log(setting);
                     if (setting.option === "css") {
                         require("fs").writeFileSync(
                             require("path").join(
@@ -19,7 +18,6 @@ export default {
                             ),
                             setting.value
                         );
-                        console.log(123456789123456789);
                     }
                     return models.Setting.update(setting, {
                         where: { option: setting.option }

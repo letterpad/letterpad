@@ -4,6 +4,9 @@ import { parseErrors } from "../../shared/util";
 import { requiresAdmin } from "../utils/permissions";
 import { getPermissions } from "../models/author";
 import { error } from "util";
+import config from "../../config";
+import SendMail from "../utils/mail";
+import { mailTemplate } from "../utils/common";
 
 export default {
     Query: {
@@ -16,7 +19,11 @@ export default {
             models.Author.findOne({ where: { id: user.id } })
     },
     Mutation: {
-        login: async (root, { email, password }, { SECRET, models }) => {
+        login: async (
+            root,
+            { email, password, remember },
+            { SECRET, models }
+        ) => {
             const author = await models.Author.findOne({ where: { email } });
 
             if (!author) {
@@ -26,8 +33,7 @@ export default {
                     errors: [
                         {
                             path: "Login",
-                            message:
-                                "We couldnt find this email. Are you sure there is no typo ?"
+                            message: "We couldnt find this email."
                         }
                     ]
                 };
@@ -51,6 +57,7 @@ export default {
             });
             const perms = await role.getPermissions();
             const permissionNames = perms.map(perm => perm.name); //test
+            const expiresIn = remember ? "30d" : "1d";
 
             const token = jwt.sign(
                 {
@@ -58,10 +65,11 @@ export default {
                     id: author.id,
                     role: role.name,
                     permissions: permissionNames,
-                    name: author.fname
+                    name: author.fname,
+                    expiresIn
                 },
                 SECRET,
-                { expiresIn: "1y" }
+                { expiresIn }
             );
             return {
                 ok: true,
@@ -82,7 +90,6 @@ export default {
 
                 author.password = await bcrypt.hash(author.password, 12);
                 author.role_id = 1;
-                console.log(author);
                 const res = models.Author.create(author);
 
                 return {
@@ -119,7 +126,44 @@ export default {
                     };
                 }
             }
-        )
+        ),
+        forgotPassword: async (root, args, { models }) => {
+            try {
+                const email = args.email;
+                const token = Math.random()
+                    .toString(36)
+                    .substr(2);
+                const author = await models.Author.findOne({
+                    where: { email }
+                });
+                if (!author) {
+                    throw new Error("Email does not exist");
+                }
+                await models.Author.update(
+                    { token },
+                    { where: { id: author.id } }
+                );
+                const link = `${config.rootUrl}admin/reset-password`;
+                const success = await SendMail({
+                    to: email,
+                    subject: "Password Reset",
+                    body: mailTemplate({
+                        name: author.fname,
+                        body: `You asked us to reset your password for your account using the email address ${email}.<br/>If this was a mistake, or you didn't ask for a password reset, just ignore this email and nothing will happen.<br/>To reset your password, visit the following address: <a href="${link}">${link}<a/>`
+                    })
+                });
+
+                return {
+                    ok: true,
+                    msg: "Check your email to recover your password"
+                };
+            } catch (e) {
+                return {
+                    ok: false,
+                    msg: "Something unexpected happened"
+                };
+            }
+        }
     },
     Author: {
         role: author => author.getRole()

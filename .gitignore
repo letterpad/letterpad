@@ -4,5 +4,6 @@ npm-debug.log
 .DS_Store
 .vscode
 .yarn-cache
+.env
 .yarn-error.log
 .env

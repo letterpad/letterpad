@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import Faker from "faker";
 import rimraf from "rimraf";
 const copydir = require("copy-dir");
-
+Faker.locale = "en_US";
 const models = {
     Author: conn.import("../models/author"),
     Post: conn.import("../models/post"),
@@ -370,7 +370,20 @@ export async function insertSettings() {
         },
         {
             option: "colors",
-            value: JSON.stringify({})
+            value: JSON.stringify({
+                "--color-text-primary": "#373737",
+                "--color-text-primary-invert": " #b7b7b7",
+                "--color-text-primary-light": " #616161",
+                "--color-text-muted": " #b9b9b9",
+                "--color-text-secondary": " #000000",
+                "--color-text-secondary-light": " #4c4c4c",
+                "--color-accent": "#4486ea",
+                "--color-bg-primary": "#373636",
+                "--color-bg-secondary": " #1f1e1e",
+                "--color-border": " #e5e5e5",
+                "--link-hover": " #1a82d6",
+                "--color-menu-link": "  #b7b7b7"
+            })
         },
         {
             option: "locale",

@@ -37,6 +37,10 @@ export default (conn, DataTypes) => {
             slug: {
                 type: Sequalize.STRING,
                 defaultValue: ""
+            },
+            published_at: {
+                type: Sequalize.DATE,
+                defaultValue: ""
             }
         },
         {

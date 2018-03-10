@@ -33,6 +33,10 @@ export default (conn, Datatypes) => {
             lname: {
                 type: Sequalize.STRING,
                 defaultValue: ""
+            },
+            token: {
+                type: Sequalize.STRING,
+                defaultValue: ""
             }
         },
         {
