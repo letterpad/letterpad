@@ -9,10 +9,18 @@ export default {
     Mutation: {
         updateOptions: requiresAdmin.createResolver(
             async (root, args, { models }) => {
-                // if (args.options.option === "css") {
-                //     console.log("hello");
-                // }
                 let promises = args.options.map(setting => {
+                    console.log(setting);
+                    if (setting.option === "css") {
+                        require("fs").writeFileSync(
+                            require("path").join(
+                                __dirname,
+                                "../../public/css/custom.css"
+                            ),
+                            setting.value
+                        );
+                        console.log(123456789123456789);
+                    }
                     return models.Setting.update(setting, {
                         where: { option: setting.option }
                     });

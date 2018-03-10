@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
-import StackGrid from "react-stack-grid";
 import PropTypes from "prop-types";
-import FontPicker from "font-picker-react";
-import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
+// import FontPicker from "font-picker-react";
 import { ChromePicker } from "react-color";
+import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 import { GET_OPTIONS } from "../../../shared/queries/Queries";
+
 class AddColor extends Component {
     constructor(props) {
         super(props);
@@ -60,17 +60,19 @@ class AddColor extends Component {
 
 const ColorBox = ({ name, description, property, handleChange, state }) => {
     return (
-        <div className="m-b-0 card">
-            <label className="custom-label">
-                {name}
-                <AddColor
-                    colors={state}
-                    property={property}
-                    handleChange={handleChange}
-                />
-            </label>
+        <div className="col-lg-3 col-md-4 col-sm-6">
+            <div className="m-b-0 card">
+                <label className="custom-label">
+                    {name}
+                    <AddColor
+                        colors={state}
+                        property={property}
+                        handleChange={handleChange}
+                    />
+                </label>
 
-            <div className="text-muted">{description}</div>
+                <div className="text-muted">{description}</div>
+            </div>
         </div>
     );
 };
@@ -121,11 +123,6 @@ class Themes extends Component {
                 ...parsedColors
             }
         });
-        // Object.keys(parsedColors).forEach(property => {
-        //     document
-        //         .querySelector(":root")
-        //         .style.setProperty(property, parsedColors[property]);
-        // });
     }
 
     handleChange(property, color) {
@@ -153,7 +150,11 @@ class Themes extends Component {
         Object.keys(this.updatedOptions).forEach(option => {
             let value = this.updatedOptions[option];
             if (option == "colors") {
-                value = JSON.stringify(value);
+                const mergeColors = Object.assign(
+                    this.state.colors,
+                    this.updatedOptions.colors
+                );
+                value = JSON.stringify(mergeColors);
             }
             settings.push({
                 option,
@@ -172,14 +173,14 @@ class Themes extends Component {
                     </div>
                 </div>
                 <div className="card">
-                    <FontPicker
+                    {/* <FontPicker
                         apiKey="AIzaSyAOkdDlx49HCSBdu86oe8AD1Q7piIxlR6k" // Google API key
                         defaultFont={"Open Sans"}
                         options={{ limit: 50 }}
                         onChange={e => {
                             console.log(e);
                         }}
-                    />
+                    />*/}
                     <textarea
                         className="form-control"
                         rows="7"
@@ -189,99 +190,92 @@ class Themes extends Component {
                     />
                 </div>
                 <div className="row">
-                    <div className="col-lg-12 color-blocks">
-                        <StackGrid
-                            columnWidth={"25%"}
-                            gutterWidth={12}
-                            gutterHeight={12}
-                            horizontal={true}
-                        >
-                            <ColorBox
-                                name="Primary Color"
-                                description="Color for most of the body texts"
-                                state={this.state.colors}
-                                property="--color-text-primary"
-                                handleChange={this.handleChange}
-                            />
-                            <ColorBox
-                                name="Secondary Color"
-                                description="Color for headlines, table headers, titles, etc."
-                                state={this.state.colors}
-                                property="--color-text-secondary"
-                                handleChange={this.handleChange}
-                            />
-                            <ColorBox
-                                name="Primary color light"
-                                description="Color for small descriptions, help texts, etc."
-                                state={this.state.colors}
-                                property="--color-text-primary-light"
-                                handleChange={this.handleChange}
-                                tip="Usually same as primary color but with a little less opacity"
-                            />
-                            <ColorBox
-                                name="Weak color"
-                                description="For places like placeholders which dont need strong visibility"
-                                state={this.state.colors}
-                                property="--color-text-muted"
-                                handleChange={this.handleChange}
-                            />
-                            <ColorBox
-                                name="Primary Color Invert"
-                                description="Used in menu"
-                                state={this.state.colors}
-                                property="--color-text-primary-invert"
-                                handleChange={this.handleChange}
-                            />
-                            <ColorBox
-                                name="Secondary color light"
-                                description="All input boxes, textarea, dropdowns, etc."
-                                state={this.state.colors}
-                                property="--color-text-secondary-light"
-                                handleChange={this.handleChange}
-                            />
-                            <ColorBox
-                                name="Accent"
-                                description="Makes an element stand out like buttons, active menu, etc"
-                                state={this.state.colors}
-                                property="--color-accent"
-                                handleChange={this.handleChange}
-                            />
-                            <ColorBox
-                                name="Primary background color"
-                                description="Background color of the whole site"
-                                state={this.state.colors}
-                                property="--color-bg-primary"
-                                handleChange={this.handleChange}
-                            />
-                            <ColorBox
-                                name="Secondary background color"
-                                description="Background color of header, footer, menu, etc."
-                                state={this.state.colors}
-                                property="--color-bg-secondary"
-                                handleChange={this.handleChange}
-                            />
-                            <ColorBox
-                                name="Border colors"
-                                description="Most of the borders execpt the menu"
-                                state={this.state.colors}
-                                property="--color-border"
-                                handleChange={this.handleChange}
-                            />
-                            <ColorBox
-                                name="Link hover colors"
-                                description=""
-                                state={this.state.colors}
-                                property="--link-hover"
-                                handleChange={this.handleChange}
-                            />
-                            <ColorBox
-                                name="Menu Link"
-                                description="Font color of menu"
-                                state={this.state.colors}
-                                property="--color-menu-link"
-                                handleChange={this.handleChange}
-                            />
-                        </StackGrid>
+                    <div className="color-blocks">
+                        <ColorBox
+                            name="Primary Color"
+                            description="Color for most of the body texts"
+                            state={this.state.colors}
+                            property="--color-text-primary"
+                            handleChange={this.handleChange}
+                        />
+                        <ColorBox
+                            name="Secondary Color"
+                            description="Color for headlines, table headers, titles, etc."
+                            state={this.state.colors}
+                            property="--color-text-secondary"
+                            handleChange={this.handleChange}
+                        />
+                        <ColorBox
+                            name="Primary color light"
+                            description="Color for small descriptions, help texts, etc."
+                            state={this.state.colors}
+                            property="--color-text-primary-light"
+                            handleChange={this.handleChange}
+                            tip="Usually same as primary color but with a little less opacity"
+                        />
+                        <ColorBox
+                            name="Weak color"
+                            description="For places like placeholders which dont need strong visibility"
+                            state={this.state.colors}
+                            property="--color-text-muted"
+                            handleChange={this.handleChange}
+                        />
+                        <ColorBox
+                            name="Primary Color Invert"
+                            description="Used in menu"
+                            state={this.state.colors}
+                            property="--color-text-primary-invert"
+                            handleChange={this.handleChange}
+                        />
+                        <ColorBox
+                            name="Secondary color light"
+                            description="All input boxes, textarea, dropdowns, etc."
+                            state={this.state.colors}
+                            property="--color-text-secondary-light"
+                            handleChange={this.handleChange}
+                        />
+                        <ColorBox
+                            name="Accent"
+                            description="Makes an element stand out like buttons, active menu, etc"
+                            state={this.state.colors}
+                            property="--color-accent"
+                            handleChange={this.handleChange}
+                        />
+                        <ColorBox
+                            name="Primary background color"
+                            description="Background color of the whole site"
+                            state={this.state.colors}
+                            property="--color-bg-primary"
+                            handleChange={this.handleChange}
+                        />
+                        <ColorBox
+                            name="Secondary background color"
+                            description="Background color of header, footer, menu, etc."
+                            state={this.state.colors}
+                            property="--color-bg-secondary"
+                            handleChange={this.handleChange}
+                        />
+                        <ColorBox
+                            name="Border colors"
+                            description="Most of the borders execpt the menu"
+                            state={this.state.colors}
+                            property="--color-border"
+                            handleChange={this.handleChange}
+                        />
+                        <ColorBox
+                            name="Link hover colors"
+                            description=""
+                            state={this.state.colors}
+                            property="--link-hover"
+                            handleChange={this.handleChange}
+                        />
+                        <ColorBox
+                            name="Menu Link"
+                            description="Font color of menu"
+                            state={this.state.colors}
+                            property="--color-menu-link"
+                            handleChange={this.handleChange}
+                        />
                     </div>
                 </div>
                 <button
