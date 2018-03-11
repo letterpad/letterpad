@@ -8,8 +8,9 @@ import {
     insertPost,
     insertSettings
 } from "../api/seed/seed";
+import config from "../config/config.dev";
 
-const server = "http://localhost:3030/graphql";
+const server = config.apiUrl;
 
 let authorization = "";
 describe("Test menu", () => {

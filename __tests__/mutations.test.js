@@ -1,9 +1,10 @@
 import fetch from "isomorphic-fetch";
 import axios from "axios";
 import { conn } from "../api/models";
+import config from "../config/config.dev";
 import { insertRolePermData } from "../api/seed/seed";
 
-const server = "http://localhost:3030/graphql";
+const server = config.apiUrl;
 
 let authorization = "";
 describe("Author Resolvers", () => {
