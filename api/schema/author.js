@@ -37,6 +37,6 @@ export default `
     register(username: String!, password: String!, email: String!): AuthorResponse!
     login(username: String, email: String, password: String!, remember: Boolean): LoginResponse!
     forgotPassword(email: String!): ForgotPasswordResponse!
-    updateAuthor(id: Int!, username: String, email: String, fname: String, lname: String, social: String, password: String): AuthorResponse
+    updateAuthor(id: Int!, username: String, email: String, fname: String, lname: String, social: String, password: String, role_id: Int): AuthorResponse
   }
 `;

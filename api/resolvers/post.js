@@ -276,14 +276,16 @@ export default {
         }
     },
     Mutation: {
-        createPost: createPostsPerm.createResolver((root, args, { models }) => {
-            let data = {};
-            Object.keys(args).forEach(field => {
-                data[field] = args[field];
-            });
-
-            return _createPost(data, models);
-        }),
+        createPost: createPostsPerm.createResolver(
+            (root, args, { models, user }) => {
+                let data = {};
+                Object.keys(args).forEach(field => {
+                    data[field] = args[field];
+                });
+                data.author_id = user.id;
+                return _createPost(data, models);
+            }
+        ),
         updatePost: editPostPerm.createResolver((root, args, { models }) => {
             let data = {};
             Object.keys(args).forEach(field => {
@@ -305,7 +307,6 @@ export default {
                             }
                         }
                     );
-                    console.log(update);
                     if (update) {
                         return {
                             ok: true

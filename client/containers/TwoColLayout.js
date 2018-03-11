@@ -17,8 +17,8 @@ export default function Layout(Element) {
             let classes = {
                 navbarType:
                     layout == "centered"
-                        ? "fs-normal navbar navbar-default"
-                        : "fs-normal navbar navbar-custom"
+                        ? "navbar navbar-default"
+                        : "navbar navbar-custom"
             };
             return (
                 <div className={"main " + layout}>
@@ -44,7 +44,7 @@ export default function Layout(Element) {
                     </nav>
 
                     <main>{enhancedElement}</main>
-                    <aside className="fs-normal">
+                    <aside>
                         <Sidebar settings={settings} {...this.props} />
                     </aside>
                 </div>

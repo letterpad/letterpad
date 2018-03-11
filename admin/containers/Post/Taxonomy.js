@@ -229,7 +229,7 @@ class Taxonomy extends Component {
         ));
 
         return (
-            <section className="module-xs fs-normal">
+            <section className="module-xs">
                 <div className="card">
                     <div className="module-title">
                         {this.defaultText.title1}

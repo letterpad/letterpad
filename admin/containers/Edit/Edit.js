@@ -18,7 +18,7 @@ class Single extends Component {
     componentDidMount() {
         PostActions.subscribe(post => {
             if (post.status == "trash") {
-                this.props.history.push(`/admin/${plural[post.type]}`);
+                // this.props.history.push(`/admin/${plural[post.type]}`);
             }
         });
     }

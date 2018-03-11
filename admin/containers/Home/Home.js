@@ -27,7 +27,7 @@ class Home extends Component {
 
     render() {
         return (
-            <section className="module-xs fs-normal">
+            <section className="module-xs">
                 <StackGrid
                     className="post-grid with-padding"
                     columnWidth={"50%"}
