@@ -1,7 +1,7 @@
 import Sequalize from "sequelize";
 import { _createPost, _updatePost } from "../models/post";
 import { getTaxonomies } from "../models/taxonomy";
-import { UnauthorizedError } from "../utils/common";
+import { UnauthorizedError, NotFoundError } from "../utils/common";
 import {
     requiresAdmin,
     checkDisplayAccess,
@@ -78,17 +78,17 @@ export default {
             menu = JSON.parse(menu.dataValues.value);
 
             let menuItem = null;
-            const getItemFromMenu = (arr, slug) => {
+            const setItemFromMenu = (arr, slug) => {
                 const a = arr.some(item => {
                     if (item.slug && item.slug == slug) {
                         menuItem = item;
                     }
                     if (item.children && item.children.length > 0) {
-                        getItemFromMenu(item.children, slug);
+                        setItemFromMenu(item.children, slug);
                     }
                 });
             };
-            getItemFromMenu(menu, args.slug);
+            setItemFromMenu(menu, args.slug);
 
             let id = null;
 
