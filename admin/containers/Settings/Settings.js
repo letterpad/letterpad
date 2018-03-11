@@ -10,6 +10,7 @@ import {
 } from "../../components/Settings";
 import { GET_OPTIONS, GET_TAXONOMIES } from "../../../shared/queries/Queries";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
+import { notify } from "react-notify-toast";
 
 //import Theme from "../components/settings/Theme";
 
@@ -44,7 +45,7 @@ class Settings extends Component {
             });
         });
         this.props.updateOptions(settings).then(res => {
-            //...
+            notify.show("Site settings saved", "success", 3000);
         });
     }
     render() {

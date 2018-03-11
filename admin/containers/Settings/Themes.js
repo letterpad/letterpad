@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { ChromePicker } from "react-color";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 import { GET_OPTIONS } from "../../../shared/queries/Queries";
+import { notify } from "react-notify-toast";
 
 class AddColor extends Component {
     constructor(props) {
@@ -161,7 +162,9 @@ class Themes extends Component {
                 value
             });
         });
-        this.props.updateOptions(settings).then(res => {});
+        this.props.updateOptions(settings).then(res => {
+            notify.show("Theme settings saved", "success", 3000);
+        });
     }
     render() {
         return (
@@ -304,15 +307,6 @@ const createQueryWithData = graphql(UPDATE_OPTIONS, {
                             settings: [...mutationResult.data.updatedOptions]
                         };
                     }
-                    // updateQueries: {
-                    //     settings: (prev, { mutationResult }) => {
-                    //         return {
-                    //             settings: [
-                    //                 ...mutationResult.data.updatedOptions
-                    //             ]
-                    //         };
-                    //     }
-                    // }
                 })
         };
     }

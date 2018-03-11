@@ -55,7 +55,7 @@ export default class ArticleEdit extends Component {
                         <div className="text-right">
                             <div className="switch-block">
                                 <span className="switch-label switch-off-text">
-                                    Simple
+                                    Rich Text
                                 </span>
                                 <label className="switch">
                                     <input

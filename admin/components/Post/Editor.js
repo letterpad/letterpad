@@ -9,7 +9,7 @@ import PostActions from "./PostActions";
 class Editor extends Component {
     render() {
         return (
-            <div>
+            <div className="fs-normal">
                 {this.props.isMarkdown ? (
                     <MarkdownEditor body={this.props.body} />
                 ) : (

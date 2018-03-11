@@ -1,5 +1,6 @@
 var path = require("path");
 var webpack = require("webpack");
+var FileNameReplacementPlugin = require("./utils/WebpackFileReplace");
 
 var babelOptions = {
     presets: [
@@ -47,6 +48,14 @@ module.exports = {
         filename: "[name]-bundle.js",
         publicPath: "/static/"
     },
+    resolve: {
+        alias: {
+            admin: path.join(__dirname, "admin"),
+            client: path.join(__dirname, "client"),
+            shared: path.join(__dirname, "shared")
+        },
+        extensions: [".js"]
+    },
     optimization: {
         splitChunks: {
             cacheGroups: {
@@ -62,6 +71,7 @@ module.exports = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
+        new FileNameReplacementPlugin("extend"),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
             "process.env": {

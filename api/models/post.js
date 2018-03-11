@@ -2,6 +2,7 @@ import Sequalize from "sequelize";
 import { parseErrors } from "../../shared/util";
 import slugify from "../../shared/slugify";
 import config from "../../config";
+import moment from "moment";
 
 export default (conn, DataTypes) => {
     const Post = conn.define(
@@ -39,8 +40,7 @@ export default (conn, DataTypes) => {
                 defaultValue: ""
             },
             published_at: {
-                type: Sequalize.DATE,
-                defaultValue: ""
+                type: Sequalize.DATE
             }
         },
         {
@@ -60,13 +60,14 @@ export default (conn, DataTypes) => {
 };
 
 export async function _createPost(data, models) {
-    data.author_id = 1;
     let title = data.title || config.defaultSlug;
     try {
         //  create the slug
         data.slug = await slugify(models.Post, title);
+        console.log("============>>>", data);
 
         const newPost = await models.Post.create(data);
+        console.log(newPost);
         const defaultTaxonomy = await models.Taxonomy.findOne({
             where: { id: 1 }
         });
@@ -97,6 +98,16 @@ export async function _updatePost(post, models) {
         ) {
             //  create the slug
             post.slug = await slugify(models.Post, post.title);
+        }
+        if (post.status == "publish") {
+            const currentPost = await models.Post.findOne({
+                where: { id: post.id }
+            });
+            if (currentPost.status === "draft") {
+                post.published_at = moment
+                    .utc(new Date())
+                    .format("YYYY-MM-DD HH:mm:ss");
+            }
         }
         await models.Post.update(post, {
             where: { id: post.id }

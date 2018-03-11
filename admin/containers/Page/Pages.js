@@ -20,7 +20,7 @@ class Pages extends Component {
         const { status } = this.props;
 
         return (
-            <section className="module-xs fs-normal">
+            <section className="module-xs">
                 <div className="card">
                     <div className="module-title">{t("pages.title")}</div>
                     <div className="module-subtitle">{t("pages.tagline")}</div>
