@@ -278,6 +278,7 @@ export const GET_LATEST_PUBLISHED_POSTS = gql`
                 type
                 slug
                 created_at
+                cover_image
             }
         }
     }

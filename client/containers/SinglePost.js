@@ -1,32 +1,20 @@
 import React, { Component } from "react";
-import Article from "../components/post/Article";
+import Article from "../components/Post/Article";
 import { graphql } from "react-apollo";
 import Loader from "../components/Loader";
 import SEO from "../components/SEO";
 import { GET_POST_BY_SLUG, ADJACENT_POSTS } from "../../shared/queries/Queries";
 import PropTypes from "prop-types";
+import OhSnap from "../components/OhSnap";
 
-const OhSnap = ({ message }) => {
-    return (
-        <section className="module-xs">
-            <div className="row">
-                <div className="card">
-                    <div className="module-title">Oh Snap!</div>
-                    <div className="module-subtitle">{message}</div>
-                </div>
-            </div>
-        </section>
-    );
-};
-
-class Single extends Component {
+class SinglePost extends Component {
     render() {
         if (this.props.loading || this.props.adjPostsLoading) {
             return <Loader />;
         }
         if (this.props.post === null) {
             return (
-                <OhSnap message="I am not sure how this happened. Maybe this page is dead for good or restricted." />
+                <OhSnap message="Sorry, this page does not exist or might be restricted." />
             );
         }
         const tags = [],
@@ -90,8 +78,8 @@ const adjacentData = graphql(ADJACENT_POSTS, {
     })
 });
 
-Single.propTypes = {
+SinglePost.propTypes = {
     post: PropTypes.object,
     adjacentPosts: PropTypes.object
 };
-export default adjacentData(ContainerWithPostData(Single));
+export default adjacentData(ContainerWithPostData(SinglePost));

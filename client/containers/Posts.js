@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ArticleList from "../components/post/ArticleList";
+import ArticleList from "../components/Post/ArticleList";
 import { graphql } from "react-apollo";
 import StackGrid from "react-stack-grid";
 import Loader from "../components/Loader";
@@ -68,6 +68,8 @@ class Posts extends Component {
                     gutterWidth={12}
                     gutterHeight={12}
                     enableSSR={true}
+                    duration={0}
+                    appearDelay={0}
                 >
                     {this.props.posts.map((post, i) => {
                         return <ArticleList idx={i} key={i} post={post} />;

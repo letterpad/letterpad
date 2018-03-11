@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import StackGrid from "react-stack-grid";
-import ArticleList from "../components/post/ArticleList";
+import ArticleList from "../components/Post/ArticleList";
 import appoloClient from "../apolloClient";
 import config from "../../config";
 import Loader from "../components/Loader";
