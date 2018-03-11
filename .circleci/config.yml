@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - checkout
-      - run: sudo apt install -y mysql-client
+      - run: sudo apt-get install -y mysql-client
       # Download and cache dependencies
       - restore_cache:
           keys:
