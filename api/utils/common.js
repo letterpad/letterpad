@@ -23,6 +23,13 @@ export class UnauthorizedError extends Error {
     }
 }
 
+export class NotFoundError extends Error {
+    constructor({ statusCode = 404, msg }) {
+        super("Page not found");
+        this.statusCode = statusCode;
+    }
+}
+
 export const mailTemplate = ({ name, body, footer }) => {
     return `
         <div>

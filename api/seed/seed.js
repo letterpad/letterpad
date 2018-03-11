@@ -254,7 +254,7 @@ export async function insertSettings() {
             type: "category",
             name: "Home",
             children: [],
-            slug: "un-categorized"
+            slug: "custom-slug"
         },
         {
             id: "2-category",
