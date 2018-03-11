@@ -11,7 +11,8 @@ import {
 import config from "../config/config.dev";
 
 const server = config.apiUrl;
-
+console.log(server);
+console.log(process.env);
 let authorization = "";
 describe("Test menu", () => {
     beforeAll(async done => {
