@@ -137,5 +137,7 @@
     "menu.Labels": "Ajouter des étiquettes",
     "menu.build.title": "Construisez votre menu",
     "themesSetting": "Paramètres du thème",
-    "themeTagline": "Vous pouvez changer l'apparence de votre blog ici"
+    "themeTagline": "Vous pouvez changer l'apparence de votre blog ici",
+    "authors.title": "Authors",
+    "authors.tagline": "You can create or edit authors from here"
 }

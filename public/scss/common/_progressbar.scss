@@ -1,0 +1,71 @@
+/*!------------------------------------------------------------------
+[Bars]
+*/
+
+.progress {
+    overflow: visible;
+    height: 4px;
+}
+
+.progress-bar {
+    position: relative;
+    background: #111;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.progress-title {
+    font-size: 12px;
+    margin: 0 0 12px;
+}
+
+.progress-bar > span {
+    position: absolute;
+    background: #111;
+    padding: 2px 10px;
+    top: -12px;
+    right: 0;
+    font-size: 11px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.progress-bar.progress-bar-success {
+    background-color: #5cb85c;
+}
+
+.progress-bar.progress-bar-success > span {
+    background-color: #5cb85c;
+}
+
+.progress-bar.progress-bar-info {
+    background-color: #5bc0de;
+}
+
+.progress-bar.progress-bar-info > span {
+    background-color: #5bc0de;
+}
+
+.progress-bar.progress-bar-warning {
+    background-color: #f0ad4e;
+}
+
+.progress-bar.progress-bar-warning > span {
+    background-color: #f0ad4e;
+}
+
+.progress-bar.progress-bar-danger {
+    background-color: #d9534f;
+}
+
+.progress-bar.progress-bar-danger > span {
+    background-color: #d9534f;
+}

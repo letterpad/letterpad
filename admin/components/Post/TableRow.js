@@ -83,7 +83,10 @@ class TableRow extends Component {
                 <td>{categories}</td>
                 <td>{tags}</td>
                 <td>{this.props.post.status}</td>
-                <td>{this.props.post.author.username}</td>
+                <td>
+                    {this.props.post.author.fname}{" "}
+                    {this.props.post.author.lname}
+                </td>
                 <td>
                     {moment(new Date(this.props.post.created_at)).format(
                         "MMM Do, YY"

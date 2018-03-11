@@ -1,0 +1,119 @@
+/*!------------------------------------------------------------------
+[Module Hero]
+*/
+
+.module-hero {
+    position: relative;
+    overflow: hidden;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.hero-caption {
+    position: relative;
+    display: table;
+    height: 100%;
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+    z-index: 2;
+}
+
+.hero-text {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.hero-subtitle {
+    font-size: 16px;
+    margin: 0 0 40px;
+}
+
+.module-hero h1,
+.module-hero h2,
+.module-hero h3,
+.module-hero h4,
+.module-hero h5,
+.module-hero h6 {
+    line-height: 1.4;
+    margin: 0 0 20px;
+}
+
+.module-hero h1 {
+    letter-spacing: 20px;
+    font-weight: 300;
+    font-size: 54px;
+}
+
+.module-hero h2 {
+    letter-spacing: 16px;
+    font-weight: 300;
+    font-size: 48px;
+}
+
+.module-hero h3 {
+    letter-spacing: 12px;
+    font-size: 32px;
+}
+
+.module-hero h4 {
+    letter-spacing: 10px;
+    font-size: 18px;
+}
+
+.module-hero h5 {
+    letter-spacing: 8px;
+    font-size: 14px;
+}
+
+.module-hero h6 {
+    letter-spacing: 6px;
+    font-size: 12px;
+}
+
+@media (max-width: 767px) {
+    .module-hero h1 {
+        font-size: 38px;
+    }
+    .module-hero h2 {
+        font-size: 30px;
+    }
+    .module-hero h3 {
+        letter-spacing: 12px;
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 667px) {
+    .module-hero h1 {
+        letter-spacing: 10px;
+        font-size: 30px;
+    }
+    .module-hero h2 {
+        letter-spacing: 8px;
+        font-size: 22px;
+    }
+    .module-hero h3 {
+        letter-spacing: 6px;
+        font-size: 18px;
+    }
+    .module-hero h4 {
+        letter-spacing: 4px;
+        font-size: 16px;
+    }
+    .module-hero h5 {
+        letter-spacing: 2px;
+        font-size: 14px;
+    }
+    .module-hero h6 {
+        letter-spacing: 2px;
+        font-size: 12px;
+    }
+}

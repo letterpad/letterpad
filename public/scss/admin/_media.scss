@@ -1,0 +1,25 @@
+/*Media*/
+
+.table.media-table {
+    td {
+        vertical-align: middle;
+    }
+    .media-image {
+        object-fit: cover;
+        width: 80px;
+        height: 80px;
+    }
+}
+
+.modal {
+    .post {
+        border: 4px solid transparent;
+        cursor: pointer;
+        &:hover {
+            border: 4px solid #d5d5d6;
+        }
+    }
+    .post.selected {
+        border: 4px solid #d5d5d6;
+    }
+}

@@ -54,7 +54,7 @@ class MenuBuilder extends Component {
                         onClick={this.submitData}
                         className="btn btn-blue btn-sm"
                     >
-                        {t("save")}
+                        {t("common.save")}
                     </button>
                 </div>
             </section>

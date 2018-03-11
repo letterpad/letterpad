@@ -32,6 +32,7 @@ ListItem.propTypes = {
     author: PropTypes.object,
     handleClick: PropTypes.func
 };
+
 class Authors extends Component {
     constructor(props) {
         super(props);
@@ -52,11 +53,11 @@ class Authors extends Component {
         return (
             <section className="module-xs">
                 <div className="card">
-                    <div className="module-title">Authors</div>
+                    <div className="module-title">{t("authors.title")}</div>
                     <div className="module-subtitle">
-                        You can edit an author from here
+                        {t("authors.tagline")}
                     </div>
-                    <table className="table table-hover">
+                    <table className="table table-hover table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th width="5%" className="col-check">
@@ -85,6 +86,10 @@ Authors.propTypes = {
     history: PropTypes.object,
     authors: PropTypes.array,
     loading: PropTypes.bool
+};
+
+Authors.contextTypes = {
+    t: PropTypes.func
 };
 
 const ContainerWithData = graphql(GET_AUTHORS, {
