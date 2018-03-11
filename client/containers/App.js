@@ -6,8 +6,8 @@ import Loader from "../components/Loader";
 import TwoColLayout from "./TwoColLayout";
 import Home from "./Home";
 import Posts from "./Posts";
-import Page from "./Page";
-import Single from "./Single";
+import SinglePage from "./SinglePage";
+import SinglePost from "./SinglePost";
 import SearchWrapper from "./SearchWrapper";
 import { Helmet } from "react-helmet";
 import SEO from "../components/SEO";
@@ -73,11 +73,11 @@ class App extends Component {
                     />
                     <Route
                         path="/page/:slug"
-                        component={TwoColLayout(<Page {...this.props} />)}
+                        component={TwoColLayout(<SinglePage {...this.props} />)}
                     />
                     <Route
                         path="/post/:slug"
-                        component={TwoColLayout(<Single {...this.props} />)}
+                        component={TwoColLayout(<SinglePost {...this.props} />)}
                     />
                     <Route
                         path="/category/:query"

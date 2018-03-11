@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Posts from "./Posts";
-import Page from "./Page";
+import SinglePage from "./SinglePage";
 
 export default class Home extends Component {
     render() {
-        //  so this is the homepage. Lets see what to display
+        // To get the homepage, parse the menu settings and see if there is any label by the name Home.
+        // If not, then take the first item as the home
         const menu = JSON.parse(this.props.settings.menu.value);
         let home = menu.filter(item => item.label === "Home");
         if (home.length === 0) {
@@ -16,7 +17,7 @@ export default class Home extends Component {
                 return <Posts slug={home[0].slug} {...this.props} />;
             }
         }
-        return <Page slug={home[0].slug} {...this.props} />;
+        return <SinglePage slug={home[0].slug} {...this.props} />;
     }
 }
 

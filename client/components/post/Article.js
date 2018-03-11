@@ -47,7 +47,7 @@ export default class Article extends Component {
                                 )}
                             </div>
                         </div>
-                        <div className="post-content ql-editor">
+                        <div className="post-content ql-editor fs-medium">
                             <p
                                 dangerouslySetInnerHTML={{
                                     __html: this.props.post.body

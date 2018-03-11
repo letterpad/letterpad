@@ -96,7 +96,14 @@ export default {
                 const taxonomy = await models.Taxonomy.findOne({
                     where: { slug: args.slug, type: args.type }
                 });
-                id = taxonomy.dataValues.id;
+                if (taxonomy) {
+                    id = taxonomy.dataValues.id;
+                } else {
+                    return {
+                        count: 0,
+                        posts: []
+                    };
+                }
             } else {
                 [id] = menuItem.id.split(/-(.+)/);
             }
@@ -126,7 +133,7 @@ export default {
             if ("offset" in args) {
                 conditions.offset = args.offset;
             }
-
+            conditions.order = [["id", "DESC"]];
             return {
                 count: taxonomies[0].dataValues.posts.length,
                 posts: await models.Post.findAll(conditions)

@@ -1,30 +1,20 @@
 import React, { Component } from "react";
-import Article from "../components/post/Article";
 import { graphql } from "react-apollo";
+import Article from "../components/Post/Article";
 import Loader from "../components/Loader";
 import SEO from "../components/SEO";
 import { PAGE_MENU } from "../../shared/queries/Queries";
+import OhSnap from "../components/OhSnap";
 
-const OhSnap = ({ message }) => {
-    return (
-        <section className="module-xs">
-            <div className="row">
-                <div className="card">
-                    <div className="module-title">Oh Snap!</div>
-                    <div className="module-subtitle">{message}</div>
-                </div>
-            </div>
-        </section>
-    );
-};
-
-class Page extends Component {
+class SinglePage extends Component {
     render() {
         if (this.props.loading) {
             return <Loader />;
         }
         if (!this.props.page.ok) {
-            return <OhSnap message="Something wrong happened" />;
+            return (
+                <OhSnap message="Sorry, this page does not exist or might be restricted." />
+            );
         }
         const post = this.props.page.post;
         const tags = [],
@@ -70,4 +60,4 @@ const ContainerWithPageData = graphql(PAGE_MENU, {
     })
 });
 
-export default ContainerWithPageData(Page);
+export default ContainerWithPageData(SinglePage);

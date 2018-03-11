@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import About from "../components/sidebar/About";
-import Search from "../components/sidebar/Search";
-import Categories from "../components/sidebar/Categories";
-import LatestPosts from "../components/sidebar/LatestPosts";
+import About from "../components/Sidebar/About";
+import Search from "../components/Sidebar/Search";
+import Categories from "../components/Sidebar/Categories";
+import LatestPosts from "../components/Sidebar/LatestPosts";
 import { graphql } from "react-apollo";
 import {
     GET_POSTS_LINKED_TAXONOMIES,
