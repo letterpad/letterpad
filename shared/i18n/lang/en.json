@@ -147,5 +147,7 @@
 
     "themesSetting": "Theme settings",
     "themeTagline": "Your can change the look and feel of your blog from here",
-    "modal.explorer.title": "Select an Item"
+    "modal.explorer.title": "Select an Item",
+    "authors.title": "Authors",
+    "authors.tagline": "You can create or edit authors from here"
 }

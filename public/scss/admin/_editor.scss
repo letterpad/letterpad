@@ -1,0 +1,35 @@
+/* Tell Quill not to scroll */
+
+#editor {
+    height: auto;
+    min-height: 300px;
+    padding: 0px;
+    border: none;
+    font-family: inherit;
+}
+
+#editor .ql-editor {
+    overflow-y: visible;
+    padding: 12px 0px;
+    min-height: 280px;
+}
+
+.ql-container {
+    font-size: 16px;
+}
+
+#quill-container .ql-toolbar {
+    opacity: 0.2;
+}
+
+#quill-container .ql-toolbar:hover {
+    opacity: 1;
+}
+
+/* Specify our own scrolling container */
+
+#quill-container {
+    height: 100%;
+    min-height: 100%;
+    overflow-y: auto;
+}

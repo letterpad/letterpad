@@ -1,8 +1,24 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700.css");
 @import "./variables.scss";
-@import "./login.scss";
 @import "./common.scss";
-@import "./react-select.scss";
+// @import "./common/_react-select.scss";
+@import "./common/_card.scss";
+@import "./common/_buttons.scss";
+@import "./common/_sidebar.scss";
+@import "./common/_checkbox.scss";
+@import "./common/_preloader.scss";
+@import "./common/_switch.scss";
+@import "./common/_navbar.scss";
+@import "./common/_post.scss";
+@import "./admin/_login.scss";
+@import "./admin/_editor.scss";
+@import "./admin/_login.scss";
+@import "./admin/_media.scss";
+@import "./admin/_navbar.scss";
+@import "./admin/_post.scss";
+@import "./admin/_menu_builder.scss";
+@import "./admin/_tagsInput.scss";
+
 label.custom-label {
     font-weight: 500;
     font-size: 13px;
@@ -53,152 +69,8 @@ label.custom-label {
 }
 
 /*--------------------------------------
-[Edit/Create Post or Page]
+[Theme Customization]
 */
-.post-excerpt {
-    display: block;
-    height: 80px;
-}
-.featured-image {
-    .btn {
-        margin-top: -50px;
-    }
-    margin: -20px;
-}
-.file-explorer .post-thumbnail img {
-    height: 100px;
-    object-fit: cover;
-    overflow: hidden;
-}
-
-.action-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Tell Quill not to scroll */
-
-#editor {
-    height: auto;
-    min-height: 300px;
-    padding: 0px;
-    border: none;
-    font-family: inherit;
-}
-
-#editor .ql-editor {
-    overflow-y: visible;
-    padding: 12px 0px;
-    min-height: 280px;
-}
-
-.ql-container {
-    font-size: 16px;
-}
-
-#quill-container .ql-toolbar {
-    opacity: 0.2;
-}
-
-#quill-container .ql-toolbar:hover {
-    opacity: 1;
-}
-
-/* Specify our own scrolling container */
-
-#quill-container {
-    height: 100%;
-    min-height: 100%;
-    overflow-y: auto;
-}
-
-/* Publish buttons */
-
-.btn-group-justified .btn-item {
-    padding-left: 2px;
-    padding-right: 2px;
-}
-
-/* Tags Input */
-
-div.ReactTags__tags {
-    position: relative;
-}
-
-/* Styles for the input */
-
-div.ReactTags__tagInput {
-    width: 200px;
-    border-radius: 2px;
-    display: block;
-}
-
-div.ReactTags__tagInput input,
-div.ReactTags__tagInput input:focus {
-    margin: 0;
-    width: 100%;
-    border: none;
-    padding: 8px 0px 10px;
-    display: block;
-}
-
-/* Styles for selected tags */
-
-div.ReactTags__selected span.ReactTags__tag {
-    border: 1px solid #ddd;
-    background: #eee;
-    font-size: 12px;
-    display: inline-block;
-    padding: 0px 8px;
-    margin-right: 4px;
-    cursor: move;
-    border-radius: 2px;
-}
-
-div.ReactTags__selected a.ReactTags__remove {
-    color: #aaa;
-    margin-left: 5px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-/* Styles for suggestions */
-
-div.ReactTags__suggestions {
-    position: absolute;
-    z-index: 10;
-}
-
-div.ReactTags__suggestions ul {
-    list-style-type: none;
-    box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
-    background: white;
-    width: 220px;
-    padding: 0;
-    margin: 0;
-}
-
-div.ReactTags__suggestions li {
-    border-bottom: 1px solid #ddd;
-    padding: 8px 4px;
-    margin: 0;
-}
-
-div.ReactTags__suggestions li mark {
-    padding: 0 0 0 0.4em;
-    background: transparent;
-}
-
-li.ReactTags__activeSuggestion {
-    background: #eaeaea;
-    cursor: pointer;
-}
-
-/* Tags input end */
-
-/*Theme customization*/
 
 .theme-customizer {
     .swatch {
@@ -246,91 +118,6 @@ tr th:first-child {
     padding-left: 0px !important;
 }
 
-/*Media*/
-
-.table.media-table {
-    td {
-        vertical-align: middle;
-    }
-    .media-image {
-        object-fit: cover;
-        width: 80px;
-        height: 80px;
-    }
-}
-
-.modal {
-    .post {
-        border: 4px solid transparent;
-        cursor: pointer;
-        &:hover {
-            border: 4px solid #d5d5d6;
-        }
-    }
-    .post.selected {
-        border: 4px solid #d5d5d6;
-    }
-}
-/*!------------------------------------------------------------------
-[Post Filters]
-*/
-
-.post-filters {
-    text-transform: uppercase;
-    font-size: 12px;
-    color: #afafaf;
-    .filter-item:not(:last-child):after {
-        content: "|";
-        margin: 0px 10px;
-        color: #afafaf;
-    }
-    .filter-item {
-        transition: 0.3s all linear;
-        cursor: pointer;
-        &.active {
-            font-weight: 600;
-            color: $color-text-secondary;
-        }
-    }
-}
-
-.navbar-custom {
-    .nav-list li a {
-        text-decoration: none;
-        display: block;
-        padding: 10px;
-        cursor: pointer;
-        border-bottom: 1px solid #2d2d2d !important;
-        color: $color-menu-link;
-        border-left: 4px solid transparent;
-    }
-    .nav-list li.active a {
-        border-left: 4px solid $color-accent;
-    }
-    .nav-list > li > a {
-        color: $color-menu-link;
-        font-size: 14px;
-        padding-left: 13px !important;
-        border-bottom: 1px solid #2e2e2e;
-    }
-    .nav-list > li a:hover {
-        border-left: 4px solid $color-accent;
-    }
-    .nav-list a span {
-        margin-left: 20px;
-    }
-    .nav-list .menu-icon {
-        margin-top: 4px;
-    }
-    .nav-list li.has-sub li a {
-        padding-left: 34px !important;
-    }
-    #menutree {
-        max-height: calc(100vh - 210px);
-        overflow: scroll;
-    }
-}
-
 /*----------------------------------------------
 [Themes]
 */
@@ -376,97 +163,6 @@ tr th:first-child {
     }
 }
 
-/*--------------------------------------------
-[Menu Construction]
-*/
-.listing i.fa {
-    margin-right: 8px;
-    color: $color-text-primary-light;
-}
-
-/*--------------------------------------------
-[Menu Construction]
-*/
-
-.nestable-item-name {
-    .panel-heading {
-        background: #eee;
-        border: 1px solid #ddd;
-        padding: 12px 16px;
-        cursor: pointer;
-    }
-    .panel-collapse {
-        border: 1px solid #eee;
-        border-top: none;
-    }
-}
-
-.nestable-item-handler {
-    &:before {
-        content: "\F0C9";
-        font-family: FontAwesome;
-        font-style: normal;
-        font-weight: normal;
-        text-decoration: inherit;
-        color: #000;
-        padding-right: 0.5em;
-        cursor: move;
-    }
-}
-
-.menu-construct {
-    h5 {
-        margin-bottom: 8px;
-        font-size: 12px;
-    }
-    .resources {
-        &.list-group {
-            border: 1px solid #e6e5e5;
-            max-height: 200px;
-            overflow-y: scroll;
-            box-shadow: 0 0 10px 0 #f0f0f0;
-            width: 300px;
-            .list-group-item {
-                border-left: none;
-                border-right: none;
-                cursor: pointer;
-                &[disabled] {
-                    background: #eee;
-                    cursor: not-allowed;
-                    color: #919191;
-                }
-                &:first-child {
-                    border-top: none;
-                }
-                &:last-child {
-                    border-bottom: none;
-                }
-            }
-        }
-    }
-}
-.distract-free {
-    .distractor {
-        display: none;
-    }
-    .wrapper {
-        margin: 0px;
-    }
-    .article-holder {
-        position: absolute;
-        left: 50%;
-        width: 1000px;
-        margin-left: -500px;
-    }
-    @media screen and (max-width: 1000px) {
-        .article-holder {
-            width: 100%;
-            left: 0px;
-            margin: 0px;
-            padding: 0px;
-        }
-    }
-}
 /*--------------------------------------------
 [Theme settings]
 */

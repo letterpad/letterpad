@@ -9,7 +9,8 @@ export const GET_POSTS = gql`
                 title
                 body
                 author {
-                    username
+                    fname
+                    lname
                 }
                 type
                 slug
@@ -178,7 +179,8 @@ export const SEARCH_POSTS = gql`
                 title
                 body
                 author {
-                    username
+                    fname
+                    lname
                 }
                 type
                 slug

@@ -135,5 +135,7 @@
     "menu.Labels": "Dodaj etykiety",
     "menu.build.title": "Zbuduj swoje menu",
     "themesSetting": "Ustawienia kompozycji",
-    "themeTagline": "Tutaj możesz zmienić wygląd i styl twojego bloga"
+    "themeTagline": "Tutaj możesz zmienić wygląd i styl twojego bloga",
+    "authors.title": "Authors",
+    "authors.tagline": "You can create or edit authors from here"
 }
