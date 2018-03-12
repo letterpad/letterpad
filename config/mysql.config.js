@@ -1,17 +1,17 @@
 import Sequalize from "sequelize";
 
-const DB_NAME = process.env.TEST_DB || process.env.MYSQL_DB;
+const DB_NAME = process.env.TEST_DB || process.env.DB_NAME;
 const conn = new Sequalize(
     DB_NAME,
-    process.env.MYSQL_USER,
-    process.env.MYSQL_PASSWORD,
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
     {
         // logging: str => {
         //     //console.log(str);
         // },
         logging: false,
-        host: process.env.MYSQL_HOST,
-        port: process.env.MYSQL_PORT || 3306,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT || 3306,
         dialect: "mysql",
         define: {
             underscored: true
