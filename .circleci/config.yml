@@ -11,10 +11,10 @@ jobs:
         
       - image: circleci/mysql:5.7.18
           environment:
-            MYSQL_HOST=127.0.0.1
-            MYSQL_DATABASE=letterpad
-            MYSQL_USER=root
-            MYSQL_PASSWORD=123456
+            MYSQL_HOST:127.0.0.1
+            MYSQL_DATABASE:letterpad
+            MYSQL_USER:root
+            MYSQL_PASSWORD:123456
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
