@@ -13,7 +13,6 @@ jobs:
       - image: circleci/mysql:5.7.18
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda
         environment:
-          MYSQL_HOST: %
           MYSQL_DATABASE: letterpad
           MYSQL_USER: root
           MYSQL_PASSWORD: 123456
