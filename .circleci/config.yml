@@ -41,6 +41,11 @@ jobs:
       - run: 
           command: babel-node ./api/start.js
           background: true
+      # wait for the server to start responding. We expect Bad Request 400 once it starts listening.
+      # so override the shell and have the last command be the : { null } command to force exit code 0.
+      - run:
+          name: Wait for server
+          command: dockerize -wait http://localhost:3030/graphql -timeout 1m
       - run: npm run test
       - save_cache:
           paths:
