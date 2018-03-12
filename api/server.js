@@ -69,8 +69,8 @@ app.use(
                 request: req
             },
             formatError(error) {
+                console.log(error);
                 if (error.originalError) {
-                    console.log(error);
                     if (error.originalError.statusCode == 401) {
                         res.status(error.originalError.statusCode);
                         res.set("Location", "/admin/login");
