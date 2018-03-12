@@ -13,7 +13,7 @@ jobs:
       - image: circleci/mysql:5.7.18
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda
         environment:
-          MYSQL_HOST: 127.0.0.1
+          MYSQL_HOST: %
           MYSQL_DATABASE: letterpad
           MYSQL_USER: root
           MYSQL_PASSWORD: 123456
@@ -34,7 +34,7 @@ jobs:
           - v1-dependencies-
 
       - run: yarn install
-      - run: npm install -g babel-node
+      - run: sudo npm install -g babel-node
       - run: babel-node ./api/start.js
       - run: npm run test
       - save_cache:
