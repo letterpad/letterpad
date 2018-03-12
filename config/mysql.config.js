@@ -1,6 +1,5 @@
 import Sequalize from "sequelize";
 require("dotenv").config();
-
 const DB_NAME = process.env.DB_NAME;
 const conn = new Sequalize(
     DB_NAME,

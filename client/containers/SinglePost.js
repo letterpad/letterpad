@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import Article from "../components/Post/Article";
-import { graphql } from "react-apollo";
 import Loader from "../components/Loader";
 import SEO from "../components/SEO";
-import { GET_POST_BY_SLUG, ADJACENT_POSTS } from "../../shared/queries/Queries";
 import PropTypes from "prop-types";
 import OhSnap from "../components/OhSnap";
 
@@ -49,37 +47,8 @@ class SinglePost extends Component {
     }
 }
 
-const ContainerWithPostData = graphql(GET_POST_BY_SLUG, {
-    options: props => {
-        return {
-            variables: {
-                type: "post",
-                slug: props.match.params.slug
-            }
-        };
-    },
-    props: ({ data: { loading, post } }) => ({
-        post,
-        loading
-    })
-});
-
-const adjacentData = graphql(ADJACENT_POSTS, {
-    options: props => {
-        return {
-            variables: {
-                slug: props.match.params.slug
-            }
-        };
-    },
-    props: ({ data: { loading, adjacentPosts } }) => ({
-        adjacentPosts,
-        adjPostsLoading: loading
-    })
-});
-
 SinglePost.propTypes = {
     post: PropTypes.object,
     adjacentPosts: PropTypes.object
 };
-export default adjacentData(ContainerWithPostData(SinglePost));
+export default SinglePost;
