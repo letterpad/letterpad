@@ -31,7 +31,8 @@ describe("Author Resolvers", () => {
             });
             expect(register.data.data.register.ok).toBe(true);
         } catch (e) {
-            console.log(e);
+            console.log(e.data.errors);
+            console.log(JSON.stringify(e));
         }
     });
 
