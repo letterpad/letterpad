@@ -5,6 +5,9 @@ import { Helmet } from "react-helmet";
 import SEO from "../components/SEO";
 import Loader from "../components/Loader";
 
+// Data supply
+import SettingsData from "../data-supply/SettingsData";
+
 /*!------------------------------------------------------------------
 [View Containers]
 */
@@ -14,8 +17,6 @@ import SinglePage from "./SinglePage";
 import SinglePost from "./SinglePost";
 import SearchWrapper from "./SearchWrapper";
 import Layout from "../layouts/Layout";
-
-import SettingsData from "../data-supply/SettingsData";
 
 require("../../public/scss/client.scss");
 
