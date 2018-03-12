@@ -37,7 +37,7 @@ jobs:
           - v1-dependencies-
 
       - run: yarn install
-      - run: sudo npm install -g babel-node
+      - run: sudo npm install -g babel-cli
       - run: babel-node ./api/start.js
       - run: npm run test
       - save_cache:
