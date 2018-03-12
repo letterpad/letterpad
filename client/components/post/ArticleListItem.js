@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import LazyLoad from "./LazyLoad";
 
-class ArticleList extends Component {
+class ArticleListItem extends Component {
     render() {
         let href = `/${this.props.post.type}/${this.props.post.slug}`;
         return (
@@ -45,4 +45,4 @@ class ArticleList extends Component {
     }
 }
 
-export default LazyLoad(ArticleList);
+export default LazyLoad(ArticleListItem);

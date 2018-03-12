@@ -3,6 +3,7 @@ import Article from "../components/Post/Article";
 import Loader from "../components/Loader";
 import SEO from "../components/SEO";
 import OhSnap from "../components/OhSnap";
+import SinglePageData from "../data-supply/SinglePageData";
 
 class SinglePage extends Component {
     render() {
@@ -43,4 +44,4 @@ class SinglePage extends Component {
     }
 }
 
-export default SinglePage;
+export default SinglePageData(SinglePage);

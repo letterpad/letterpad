@@ -4,6 +4,8 @@ import Loader from "../components/Loader";
 import SEO from "../components/SEO";
 import PropTypes from "prop-types";
 import OhSnap from "../components/OhSnap";
+import AdjacentPostsData from "../data-supply/AdjacentPostsData";
+import SinglePostData from "../data-supply/SinglePostData";
 
 class SinglePost extends Component {
     render() {
@@ -51,4 +53,4 @@ SinglePost.propTypes = {
     post: PropTypes.object,
     adjacentPosts: PropTypes.object
 };
-export default SinglePost;
+export default AdjacentPostsData(SinglePostData(SinglePost));

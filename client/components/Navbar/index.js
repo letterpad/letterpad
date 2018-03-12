@@ -42,7 +42,7 @@ class Navbar extends Component {
                     className={"collapse navbar-collapse " + navbarStatus}
                     id="custom-collapse"
                 >
-                    {this.props.layout == "two-column" ? (
+                    {this.props.position == "left" ? (
                         <MenuVertical
                             menu={JSON.parse(this.props.settings.menu.value)}
                             router={this.props.router}

@@ -10,8 +10,10 @@ export default graphql(GET_OPTIONS, {
             });
         }
         return {
-            settings: data,
-            loading
+            settings: {
+                data,
+                loading
+            }
         };
     }
 });
