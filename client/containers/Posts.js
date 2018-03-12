@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import ArticleList from "../components/Post/ArticleList";
-import { graphql } from "react-apollo";
+import ArticleListItem from "../components/Post/ArticleListItem";
 import StackGrid from "react-stack-grid";
 import Loader from "../components/Loader";
-import { CAT_POSTS } from "../../shared/queries/Queries";
 import config from "../../config";
 import Paginate from "../components/Paginate";
 import OhSnap from "../components/OhSnap";
 import WithResize from "./Hoc/WithResize";
+import PostsData from "../data-supply/PostsData";
 
 class Posts extends Component {
     constructor(props) {
@@ -58,7 +57,7 @@ class Posts extends Component {
             this.props.settings.post_display.value == "row" ? (
                 <div className="post-row">
                     {this.props.posts.map((post, i) => {
-                        return <ArticleList idx={i} key={i} post={post} />;
+                        return <ArticleListItem idx={i} key={i} post={post} />;
                     })}
                 </div>
             ) : (
@@ -72,7 +71,7 @@ class Posts extends Component {
                     appearDelay={0}
                 >
                     {this.props.posts.map((post, i) => {
-                        return <ArticleList idx={i} key={i} post={post} />;
+                        return <ArticleListItem idx={i} key={i} post={post} />;
                     })}
                 </StackGrid>
             );
@@ -88,4 +87,4 @@ class Posts extends Component {
     }
 }
 
-export default WithResize(Posts);
+export default PostsData(WithResize(Posts));

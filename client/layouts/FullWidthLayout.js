@@ -13,11 +13,9 @@ export default class extends Component {
                     <div className="sidebar">
                         <Navbar
                             settings={settings}
-                            menu={JSON.parse(settings.menu.value)}
-                            layout={settings.layout_display.value}
+                            position="left"
                             router={{ ...props }}
                         />
-
                         <Footer data={settings.site_footer.value} />
                     </div>
                 </nav>

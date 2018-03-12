@@ -15,13 +15,6 @@ import SinglePost from "./SinglePost";
 import SearchWrapper from "./SearchWrapper";
 import Layout from "../layouts/Layout";
 
-/*!------------------------------------------------------------------
-[Data Sources - Connected with Apollo]
-*/
-import PostsData from "../data-supply/PostsData";
-import SinglePageData from "../data-supply/SinglePageData";
-import SinglePostData from "../data-supply/SinglePostData";
-import AdjacentPostsData from "../data-supply/AdjacentPostsData";
 import SettingsData from "../data-supply/SettingsData";
 
 require("../../public/scss/client.scss");
@@ -55,73 +48,63 @@ class App extends Component {
     }
 
     render() {
-        if (this.props.loading) {
+        if (this.props.settings.loading) {
             return <Loader />;
         }
-        const { settings } = this.props;
+        const settings = this.props.settings.data;
         this.applyCustomCSS(settings);
 
-        // const routes = [
-        //     {
-        //         exact: true,
-        //         component: () => Layout(PostsData(Home), this.props),
-        //         path: "/"
-        //     },
-        //     {
-        //         exact: true,
-        //         component: () => Layout(PostsData(Posts), this.props),
-        //         path: "/posts/:slug"
-        //     },
-        //     {
-        //         exact: true,
-        //         component: () => Layout(SinglePageData(SinglePage), this.props),
-        //         path: "/page/:slug"
-        //     },
-        //     {
-        //         exact: true,
-        //         component: () =>
-        //             Layout(
-        //                 AdjacentPostsData(SinglePostData(SinglePost)),
-        //                 this.props
-        //             ),
-        //         path: "/post/:slug"
-        //     },
-        //     {
-        //         exact: true,
-        //         component: () =>
-        //             Layout(SearchWrapper, {
-        //                 ...this.props,
-        //                 type: "category"
-        //             }),
-        //         path: "/category/:query"
-        //     },
-        //     {
-        //         exact: true,
-        //         component: () =>
-        //             Layout(SearchWrapper, {
-        //                 ...this.props,
-        //                 type: "tag"
-        //             }),
-        //         path: "/tag/:query"
-        //     },
-        //     {
-        //         exact: true,
-        //         component: () =>
-        //             Layout(SearchWrapper, {
-        //                 ...this.props,
-        //                 type: "post"
-        //             }),
-        //         path: "/search/:query"
-        //     }
-        // ];
-        // const s = routes.map((route, i) => (
-        //     <Route
-        //         key={i}
+        const routes = [
+            {
+                exact: true,
+                component: Layout(Home, { settings }),
+                path: "/"
+            },
+            {
+                exact: true,
+                component: Layout(Posts, { settings }),
+                path: "/posts/:slug"
+            },
+            {
+                exact: true,
+                component: Layout(SinglePage, {
+                    settings
+                }),
+                path: "/page/:slug"
+            },
+            {
+                exact: true,
+                component: Layout(SinglePost, {
+                    settings
+                }),
+                path: "/post/:slug"
+            },
+            {
+                exact: true,
+                component: Layout(SearchWrapper, {
+                    type: "category",
+                    settings
+                }),
+                path: "/category/:query"
+            },
+            {
+                exact: true,
+                component: Layout(SearchWrapper, {
+                    type: "tag",
+                    settings
+                }),
+                path: "/tag/:query"
+            },
+            {
+                exact: true,
+                component: Layout(SearchWrapper, {
+                    type: "post",
+                    settings
+                }),
+                path: "/search/:query"
+            }
+        ];
 
-        //         path={route.path}
-        //         component={route.component()}
-        //     />
-        // ));
         return (
             <div>
                 <SEO
@@ -136,56 +119,14 @@ class App extends Component {
                     settings={settings}
                 />
                 <Switch>
-                    <Route
-                        exact
-                        component={Layout(PostsData(Home), this.props)}
-                        path="/"
-                    />
-
-                    <Route
-                        component={Layout(PostsData(Posts), this.props)}
-                        path="/posts/:slug"
-                    />
-
-                    <Route
-                        component={Layout(
-                            SinglePageData(SinglePage),
-                            this.props
-                        )}
-                        path="/page/:slug"
-                    />
-
-                    <Route
-                        component={Layout(
-                            AdjacentPostsData(SinglePostData(SinglePost)),
-                            this.props
-                        )}
-                        path="/post/:slug"
-                    />
-
-                    <Route
-                        component={Layout(SearchWrapper, {
-                            ...this.props,
-                            type: "category"
-                        })}
-                        path="/category/:query"
-                    />
-
-                    <Route
-                        component={Layout(SearchWrapper, {
-                            ...this.props,
-                            type: "tag"
-                        })}
-                        path="/tag/:query"
-                    />
-
-                    <Route
-                        component={Layout(SearchWrapper, {
-                            ...this.props,
-                            type: "post"
-                        })}
-                        path="/search/:query"
-                    />
+                    {routes.map((route, i) => (
+                        <Route
+                            key={i}
+                            exact
+                            path={route.path}
+                            component={route.component}
+                        />
+                    ))}
                 </Switch>
             </div>
         );

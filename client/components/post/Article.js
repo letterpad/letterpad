@@ -7,16 +7,18 @@ export default class Article extends Component {
     render() {
         const tags = [],
             categories = [];
-        this.props.post.taxonomies.forEach(taxonomy => {
+        this.props.post.taxonomies.forEach((taxonomy, i) => {
             if (taxonomy.type === "post_category") {
                 categories.push(
-                    <Link to={"/category/" + taxonomy.slug}>
+                    <Link key={i} to={"/category/" + taxonomy.slug}>
                         {taxonomy.name}
                     </Link>
                 );
             } else {
                 tags.push(
-                    <Link to={"/tag/" + taxonomy.slug}>#{taxonomy.name}</Link>
+                    <Link key={i} to={"/tag/" + taxonomy.slug}>
+                        #{taxonomy.name}
+                    </Link>
                 );
             }
         });

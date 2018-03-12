@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import StackGrid from "react-stack-grid";
-import ArticleList from "../components/Post/ArticleList";
+import ArticleListItem from "../components/Post/ArticleListItem";
 import appoloClient from "../apolloClient";
 import config from "../../config";
 import Loader from "../components/Loader";
@@ -12,7 +12,7 @@ import {
 import Paginate from "../components/Paginate";
 import OhSnap from "../components/OhSnap";
 
-export default class SearchMe extends Component {
+export default class SearchWrapper extends Component {
     constructor(props) {
         super(props);
         this.loadData = this.loadData.bind(this);
@@ -105,7 +105,7 @@ export default class SearchMe extends Component {
             return <Loader />;
         }
         const posts = this.state.posts.map((post, i) => (
-            <ArticleList idx={i} key={i} post={post} />
+            <ArticleListItem idx={i} key={i} post={post} />
         ));
 
         const data =
