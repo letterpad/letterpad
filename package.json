@@ -103,7 +103,6 @@
         "whatwg-fetch": "^2.0.3"
     },
     "devDependencies": {
-        "apollo-utilities": "^1.0.8",
         "autoprefixer": "^7.2.4",
         "axios": "^0.17.1",
         "babel-core": "^6.26.0",
