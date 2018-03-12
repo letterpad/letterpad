@@ -18,8 +18,9 @@ describe("Author Resolvers", () => {
     test("Register Author", async () => {
         console.log("registering author");
         const result = {};
-        const register = await axios.post(server, {
-            query: `mutation {
+        try {
+            const register = await axios.post(server, {
+                query: `mutation {
                 register(username:"Sam", email:"sam@gmail.com",password:"iamsam"){
                   data {
                       id
@@ -27,8 +28,11 @@ describe("Author Resolvers", () => {
                   ok
                 }
               }`
-        });
-        expect(register.data.data.register.ok).toBe(true);
+            });
+            expect(register.data.data.register.ok).toBe(true);
+        } catch (e) {
+            console.log(e);
+        }
     });
 
     test("Login with the author", async () => {
