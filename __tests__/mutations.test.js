@@ -3,6 +3,7 @@ import axios from "axios";
 import { conn } from "../api/models";
 import config from "../config/config.dev";
 import { insertRolePermData } from "../api/seed/seed";
+import { killServer } from "../api/server";
 
 const server = config.apiUrl;
 
@@ -14,13 +15,15 @@ describe("Author Resolvers", () => {
         await insertRolePermData();
         done();
     });
-
+    afterAll(() => {
+        killServer();
+    });
     test("Register Author", async () => {
         console.log("registering author");
         const result = {};
-        try {
-            const register = await axios.post(server, {
-                query: `mutation {
+
+        const register = await axios.post(server, {
+            query: `mutation {
                 register(username:"Sam", email:"sam@gmail.com",password:"iamsam"){
                   data {
                       id
@@ -28,11 +31,8 @@ describe("Author Resolvers", () => {
                   ok
                 }
               }`
-            });
-            expect(register.data.data.register.ok).toBe(true);
-        } catch (e) {
-            console.log(JSON.stringify(e));
-        }
+        });
+        expect(register.data.data.register.ok).toBe(true);
     });
 
     test("Login with the author", async () => {
