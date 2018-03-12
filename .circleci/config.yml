@@ -38,7 +38,9 @@ jobs:
 
       - run: yarn install
       - run: sudo npm install -g babel-cli
-      - run: babel-node ./api/start.js
+      - run: 
+          command: babel-node ./api/start.js
+          background: true
       - run: npm run test
       - save_cache:
           paths:
