@@ -7,9 +7,9 @@ const conn = new Sequalize(
     process.env.DB_USER,
     process.env.DB_PASSWORD,
     {
-        logging: str => {
-            console.log(str);
-        },
+        // logging: str => {
+        //     console.log(str);
+        // },
         logging: false,
         host: process.env.DB_HOST,
         port: process.env.DB_PORT || 3306,
