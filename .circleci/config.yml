@@ -38,16 +38,15 @@ jobs:
           - v1-dependencies-
 
       - run: yarn install
-      - run: sudo npm install -g babel-cli
       - run: 
-          command: babel-node ./api/start.js
+          command: node ./api/start.js
           background: true
       # wait for the server to start responding. We expect Bad Request 400 once it starts listening.
       # so override the shell and have the last command be the : { null } command to force exit code 0.
       - run:
           name: Wait for server
           command: sleep 30 #dockerize -wait http://localhost:3030/graphql -timeout 1m
-      - run: npm run test
+      - run: yarn test
       - save_cache:
           paths:
             - node_modules
