@@ -8,31 +8,12 @@ export default function Layout(Element, props) {
 
     return class extends Component {
         render() {
-            switch (layout) {
-                case "centered":
-                    return (
-                        <CenteredLayout
-                            component={
-                                <Element
-                                    {...this.props}
-                                    {...props}
-                                    settings={settings}
-                                />
-                            }
-                        />
-                    );
-                case "two-column":
-                    return (
-                        <FullWidthLayout
-                            component={
-                                <Element
-                                    {...this.props}
-                                    {...props}
-                                    settings={settings}
-                                />
-                            }
-                        />
-                    );
+            const _props = { ...this.props, ...props, settings };
+
+            if (layout == "centered") {
+                return <CenteredLayout component={<Element {..._props} />} />;
+            } else if (layout == "two-column") {
+                return <FullWidthLayout component={<Element {..._props} />} />;
             }
         }
     };
