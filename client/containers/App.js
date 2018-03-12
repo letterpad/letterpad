@@ -1,16 +1,28 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
-import { gql, graphql } from "react-apollo";
 import { withRouter } from "react-router";
+import { Helmet } from "react-helmet";
+import SEO from "../components/SEO";
 import Loader from "../components/Loader";
-import TwoColLayout from "./TwoColLayout";
+
+/*!------------------------------------------------------------------
+[View Containers]
+*/
 import Home from "./Home";
 import Posts from "./Posts";
 import SinglePage from "./SinglePage";
 import SinglePost from "./SinglePost";
 import SearchWrapper from "./SearchWrapper";
-import { Helmet } from "react-helmet";
-import SEO from "../components/SEO";
+import Layout from "../layouts/Layout";
+
+/*!------------------------------------------------------------------
+[Data Sources - Connected with Apollo]
+*/
+import PostsData from "../data-supply/PostsData";
+import SinglePageData from "../data-supply/SinglePageData";
+import SinglePostData from "../data-supply/SinglePostData";
+import AdjacentPostsData from "../data-supply/AdjacentPostsData";
+import SettingsData from "../data-supply/SettingsData";
 
 require("../../public/scss/client.scss");
 
@@ -48,6 +60,68 @@ class App extends Component {
         }
         const { settings } = this.props;
         this.applyCustomCSS(settings);
+
+        // const routes = [
+        //     {
+        //         exact: true,
+        //         component: () => Layout(PostsData(Home), this.props),
+        //         path: "/"
+        //     },
+        //     {
+        //         exact: true,
+        //         component: () => Layout(PostsData(Posts), this.props),
+        //         path: "/posts/:slug"
+        //     },
+        //     {
+        //         exact: true,
+        //         component: () => Layout(SinglePageData(SinglePage), this.props),
+        //         path: "/page/:slug"
+        //     },
+        //     {
+        //         exact: true,
+        //         component: () =>
+        //             Layout(
+        //                 AdjacentPostsData(SinglePostData(SinglePost)),
+        //                 this.props
+        //             ),
+        //         path: "/post/:slug"
+        //     },
+        //     {
+        //         exact: true,
+        //         component: () =>
+        //             Layout(SearchWrapper, {
+        //                 ...this.props,
+        //                 type: "category"
+        //             }),
+        //         path: "/category/:query"
+        //     },
+        //     {
+        //         exact: true,
+        //         component: () =>
+        //             Layout(SearchWrapper, {
+        //                 ...this.props,
+        //                 type: "tag"
+        //             }),
+        //         path: "/tag/:query"
+        //     },
+        //     {
+        //         exact: true,
+        //         component: () =>
+        //             Layout(SearchWrapper, {
+        //                 ...this.props,
+        //                 type: "post"
+        //             }),
+        //         path: "/search/:query"
+        //     }
+        // ];
+        // const s = routes.map((route, i) => (
+        //     <Route
+        //         key={i}
+
+        //         path={route.path}
+        //         component={route.component()}
+        //     />
+        // ));
         return (
             <div>
                 <SEO
@@ -64,38 +138,53 @@ class App extends Component {
                 <Switch>
                     <Route
                         exact
+                        component={Layout(PostsData(Home), this.props)}
                         path="/"
-                        component={TwoColLayout(<Home {...this.props} />)}
                     />
+
                     <Route
+                        component={Layout(PostsData(Posts), this.props)}
                         path="/posts/:slug"
-                        component={TwoColLayout(<Posts {...this.props} />)}
                     />
+
                     <Route
+                        component={Layout(
+                            SinglePageData(SinglePage),
+                            this.props
+                        )}
                         path="/page/:slug"
-                        component={TwoColLayout(<SinglePage {...this.props} />)}
                     />
+
                     <Route
+                        component={Layout(
+                            AdjacentPostsData(SinglePostData(SinglePost)),
+                            this.props
+                        )}
                         path="/post/:slug"
-                        component={TwoColLayout(<SinglePost {...this.props} />)}
                     />
+
                     <Route
+                        component={Layout(SearchWrapper, {
+                            ...this.props,
+                            type: "category"
+                        })}
                         path="/category/:query"
-                        component={TwoColLayout(
-                            <SearchWrapper {...this.props} type="category" />
-                        )}
                     />
+
                     <Route
+                        component={Layout(SearchWrapper, {
+                            ...this.props,
+                            type: "tag"
+                        })}
                         path="/tag/:query"
-                        component={TwoColLayout(
-                            <SearchWrapper {...this.props} type="tag" />
-                        )}
                     />
+
                     <Route
+                        component={Layout(SearchWrapper, {
+                            ...this.props,
+                            type: "post"
+                        })}
                         path="/search/:query"
-                        component={TwoColLayout(
-                            <SearchWrapper {...this.props} type="post" />
-                        )}
                     />
                 </Switch>
             </div>
@@ -103,29 +192,4 @@ class App extends Component {
     }
 }
 
-const optionsQuery = gql`
-    query getOptions {
-        settings {
-            id
-            option
-            value
-        }
-    }
-`;
-
-const ContainerWithSiteData = graphql(optionsQuery, {
-    props: ({ data: { loading, settings } }) => {
-        const data = {};
-        if (settings) {
-            settings.forEach(setting => {
-                data[setting.option] = setting;
-            });
-        }
-        return {
-            settings: data,
-            loading
-        };
-    }
-});
-
-export default ContainerWithSiteData(withRouter(App));
+export default SettingsData(withRouter(App));

@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
 import Article from "../components/Post/Article";
 import Loader from "../components/Loader";
 import SEO from "../components/SEO";
-import { PAGE_MENU } from "../../shared/queries/Queries";
 import OhSnap from "../components/OhSnap";
 
 class SinglePage extends Component {
@@ -45,19 +43,4 @@ class SinglePage extends Component {
     }
 }
 
-const ContainerWithPageData = graphql(PAGE_MENU, {
-    options: props => {
-        return {
-            variables: {
-                slug: props.slug || props.match.params.slug,
-                postType: "page"
-            }
-        };
-    },
-    props: ({ data: { loading, pageMenu } }) => ({
-        page: pageMenu,
-        loading
-    })
-});
-
-export default ContainerWithPageData(SinglePage);
+export default SinglePage;

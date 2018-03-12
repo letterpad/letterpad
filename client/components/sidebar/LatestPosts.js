@@ -56,7 +56,7 @@ export default class LatestPosts extends Component {
                                 return <div>Loading...</div>;
                             }
                             return this.props.posts.rows.map((post, i) => (
-                                <Item style={style} post={post} />
+                                <Item key={i} style={style} post={post} />
                             ));
                         })()}
                     </ul>

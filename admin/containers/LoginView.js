@@ -23,6 +23,7 @@ class LoginView extends Component {
         if (typeof document !== "undefined") {
             document.body.classList.add("login-view");
             this.usernameInput.focus();
+            delete localStorage.token;
         }
     }
     componentWillUnmount() {
