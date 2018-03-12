@@ -14,6 +14,7 @@ jobs:
           DB_USER: root
           DB_PASSWORD: 123456
           DB_PORT: 3306
+          NODE_ENV: dev
 
       - image: circleci/mysql:5.7.18
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda
@@ -45,7 +46,7 @@ jobs:
       # so override the shell and have the last command be the : { null } command to force exit code 0.
       - run:
           name: Wait for server
-          command: dockerize -wait http://localhost:3030/graphql -timeout 1m
+          command: sleep 30 #dockerize -wait http://localhost:3030/graphql -timeout 1m
       - run: npm run test
       - save_cache:
           paths:
