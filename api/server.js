@@ -120,7 +120,7 @@ const seedIfEmpty = async () => {
 console.log("Initiating Graphql Server");
 let httpServer = null;
 models.conn.sync({ force: false }).then(async () => {
-    await seedIfEmpty();
+    // await seedIfEmpty();
     httpServer = app.listen(config.apiPort, () => {
         console.log(`App listening on port ${config.apiPort}`);
     });
