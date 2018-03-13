@@ -19,9 +19,13 @@ class Posts extends Component {
     }
 
     componentDidMount() {
+        document.body.classList.add("posts-page");
         this.props.setResizeTracker(".post-grid");
     }
 
+    componentWillUnmount() {
+        document.body.classList.remove("posts-page");
+    }
     async loadMore(num) {
         let result = await this.props.fetchMore({
             type: "post_category",

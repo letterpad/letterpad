@@ -10,6 +10,11 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.draftPost = this.draftPost.bind(this);
+        document.body.classList.add("home-page");
+    }
+
+    componentWillUnmount() {
+        document.body.classList.remove("home-page");
     }
 
     draftPost() {

@@ -23,6 +23,7 @@ class Create extends Component {
     }
     componentWillMount() {
         const { type } = this.props;
+        document.body.classList.add("create-" + this.props.type + "-page");
         const title = "Draft - " + moment().format("L LT");
         this.props.createPost({ type, title }).then(result => {
             PostActions.setData(result.data.createPost.post);
@@ -41,8 +42,11 @@ class Create extends Component {
                 );
             }
         });
-        document.body.classList.add(`create-${type}`);
     }
+    componentWillUnmount() {
+        document.body.classList.remove("create-" + this.props.type + "-page");
+    }
+
     render() {
         if (this.state.loading) {
             return <div>hello</div>;
@@ -50,7 +54,7 @@ class Create extends Component {
         return (
             <section className="module-xs create-post">
                 <div className="row">
-                    <div className="col-lg-8 column article-holder">
+                    <div className="col-lg-8 column article-holder col-lg-offset-2">
                         <ArticleCreate post={this.state.post} />
                     </div>
                     <div className="col-lg-4 column distractor">

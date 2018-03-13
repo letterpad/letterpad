@@ -37,6 +37,10 @@ class Authors extends Component {
     constructor(props) {
         super(props);
         this.authorSelect = this.authorSelect.bind(this);
+        document.body.classList.add("authors-page");
+    }
+    componentWillUnmount() {
+        document.body.classList.remove("authors-page");
     }
 
     authorSelect(id) {
@@ -46,6 +50,7 @@ class Authors extends Component {
         if (this.props.loading) {
             return <div>hello</div>;
         }
+        const { t } = this.context;
         const rows = this.props.authors.map((author, i) => (
             <ListItem handleClick={this.authorSelect} key={i} author={author} />
         ));

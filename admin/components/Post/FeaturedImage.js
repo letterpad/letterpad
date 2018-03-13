@@ -47,7 +47,11 @@ class FeaturedImage extends Component {
         return (
             <div className="x_panel">
                 <div className="x_content">
-                    <div className="featured-image">
+                    <div
+                        className={
+                            !this.state.cover_image ? "hide" : "featured-image"
+                        }
+                    >
                         <img alt="" width="100%" src={coverImage} />
                         {!this.state.cover_image ? (
                             <a

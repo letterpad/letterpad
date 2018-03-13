@@ -11,6 +11,14 @@ class Pages extends Component {
         super(props);
         this.handleClick = this.handleClick.bind(this);
     }
+    componentDidMount() {
+        document.body.classList.add("pages-page");
+    }
+
+    componentWillUnmount() {
+        document.body.classList.remove("pages-page");
+    }
+
     handleClick(id) {
         this.props.history.push("/admin/pages/" + id);
     }

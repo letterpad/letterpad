@@ -45,6 +45,15 @@ class Taxonomy extends Component {
             editMode: false
         };
     }
+
+    componentWillMount() {
+        document.body.classList.add("taxonomy-" + this.props.type + "-page");
+    }
+
+    componentWillUnmount() {
+        document.body.classList.remove("taxonomy-" + this.props.type + "-page");
+    }
+
     componentWillReceiveProps(nextProps) {
         if (
             !nextProps.loading &&

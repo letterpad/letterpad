@@ -42,8 +42,11 @@ class Media extends Component {
             delete_id: 0,
             deleteMedia: false
         };
+        document.body.classList.add("media-page");
     }
-
+    componentWillUnmount() {
+        document.body.classList.remove("media-page");
+    }
     componentWillReceiveProps(nextProps) {
         if (
             nextProps.match.params.page &&

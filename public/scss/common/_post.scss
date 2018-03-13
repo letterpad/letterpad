@@ -18,13 +18,12 @@
 .post-title {
     font-weight: 500;
     font-size: 16px;
-    color: #111;
     min-height: 20px;
     margin: 0 0 10px;
     a {
         font-weight: 500;
         font-size: 16px;
-        color: #111;
+        color: $color-text-primary;
         margin: 0 0 10px;
     }
 }
