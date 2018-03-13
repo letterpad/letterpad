@@ -25,6 +25,11 @@ class EditAuthor extends Component {
         this.author = {};
         this.submitData = this.submitData.bind(this);
         this.setOption = this.setOption.bind(this);
+        document.body.classList.add("edit-author-page");
+    }
+
+    componentWillUnmount() {
+        document.body.classList.remove("edit-author-page");
     }
 
     setOption(option, value) {

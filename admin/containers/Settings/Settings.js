@@ -29,6 +29,10 @@ class Settings extends Component {
         this.updatedOptions = {};
         this.submitData = this.submitData.bind(this);
         this.setOption = this.setOption.bind(this);
+        document.body.classList.add("settings-page");
+    }
+    componentWillUnmount() {
+        document.body.classList.remove("settings-page");
     }
 
     setOption(option, value) {

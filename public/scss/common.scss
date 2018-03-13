@@ -69,7 +69,6 @@ textarea.CodeFlask__textarea {
     thead tr th:first-child {
         padding-left: 16px !important;
     }
-    box-shadow: 0px 0px 10px 0px #ccc;
 }
 
 ::-webkit-input-placeholder {
@@ -129,6 +128,7 @@ a:hover,
 a:focus {
     text-decoration: none;
     outline: none;
+    color: $link_active;
 }
 a:hover {
     color: $link_hover;
@@ -142,9 +142,8 @@ h5,
 h6 {
     font-family: "Roboto Condensed", sans-serif;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     font-weight: 400;
-    color: #111;
     margin: 0 0 20px;
 }
 

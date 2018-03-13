@@ -14,6 +14,10 @@ class MenuBuilder extends Component {
         this.updatedOptions = {};
         this.submitData = this.submitData.bind(this);
         this.setOption = this.setOption.bind(this);
+        document.body.classList.add("menu-builder-page");
+    }
+    componentWillUnmount() {
+        document.body.classList.remove("menu-builder-page");
     }
 
     setOption(option, value) {

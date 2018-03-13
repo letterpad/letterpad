@@ -24,6 +24,10 @@ class CreateAuthor extends Component {
         this.author = {};
         this.submitData = this.submitData.bind(this);
         this.setOption = this.setOption.bind(this);
+        document.body.classList.add("create-author-page");
+    }
+    componentWillUnmount() {
+        document.body.classList.remove("create-author-page");
     }
 
     setOption(option, value) {

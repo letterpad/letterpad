@@ -63,9 +63,34 @@ label.custom-label {
 */
 
 .top-bar {
-    display: flex;
-    justify-content: space-between;
-    background: $color-bg-secondary;
+    background: var(--color-bg-secondary);
+    padding: 8px 16px;
+    position: fixed;
+    width: calc(100% - 250px);
+    top: 0px;
+    z-index: 9;
+
+    .user-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        cursor: pointer;
+        .avatar {
+            width: 25px;
+            height: 25px;
+        }
+    }
+}
+@media screen and (max-width: 991px) {
+    .top-bar {
+        width: 100%;
+        margin-top: 71px;
+        position: absolute;
+    }
+}
+
+.content-area {
+    margin-top: 35px;
 }
 
 /*--------------------------------------

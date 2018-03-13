@@ -105,6 +105,11 @@ class Themes extends Component {
         };
         this.bc = new BroadcastChannel("test_channel");
         this.bcTrottleTimout = null;
+
+        document.body.classList.add("themes-page");
+    }
+    componentWillUnmount() {
+        document.body.classList.remove("themes-page");
     }
 
     componentWillReceiveProps(nextProps) {

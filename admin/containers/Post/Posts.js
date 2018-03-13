@@ -17,6 +17,13 @@ class Posts extends Component {
 
         this.handleClick = this.handleClick.bind(this);
     }
+    componentDidMount() {
+        document.body.classList.add("posts-page");
+    }
+
+    componentWillUnmount() {
+        document.body.classList.remove("posts-page");
+    }
 
     handleClick(id) {
         this.props.history.push("/admin/posts/" + id);

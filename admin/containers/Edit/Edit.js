@@ -16,6 +16,7 @@ import { GET_SINGLE_POST } from "../../../shared/queries/Queries";
 
 class Single extends Component {
     componentDidMount() {
+        document.body.classList.add("edit-post-page");
         PostActions.subscribe(post => {
             if (post.status == "trash") {
                 // this.props.history.push(`/admin/${plural[post.type]}`);
@@ -23,6 +24,9 @@ class Single extends Component {
         });
     }
 
+    componentWillUnmount() {
+        document.body.classList.remove("edit-post-page");
+    }
     render() {
         if (this.props.loading) {
             return <Loader />;
@@ -33,9 +37,9 @@ class Single extends Component {
             );
         }
         return (
-            <section className="module-xs edit-post">
+            <section className="module-xs">
                 <div className="row">
-                    <div className="col-lg-8 column article-holder">
+                    <div className="col-lg-8 column article-holder col-lg-offset-2">
                         <ArticleEdit post={this.props.post} />
                     </div>
                     <div className="col-lg-4 column distractor">

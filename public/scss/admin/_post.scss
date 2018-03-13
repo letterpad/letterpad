@@ -1,6 +1,6 @@
 .distract-free {
     .distractor {
-        display: none;
+        display: none !important;
     }
     .wrapper {
         margin: 0px;
@@ -10,6 +10,9 @@
         left: 50%;
         width: 1000px;
         margin-left: -500px;
+    }
+    .top-bar {
+        width: 100%;
     }
     @media screen and (max-width: 1000px) {
         .article-holder {
@@ -26,7 +29,7 @@
 */
 .post-excerpt {
     display: block;
-    height: 80px;
+    min-height: 80px;
 }
 .featured-image {
     .btn {
@@ -45,6 +48,30 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+/*!------------------------------------------------------------------
+[Post Options]
+*/
+
+.edit-post-page,
+.create-post-page {
+    .column.distractor {
+        display: none;
+    }
+    &.options-open {
+        .column.distractor {
+            display: block;
+        }
+    }
+    &.distract-free {
+        .post-options {
+            display: none !important;
+        }
+    }
+    .post-options {
+        display: block !important;
+    }
 }
 
 /*!------------------------------------------------------------------
