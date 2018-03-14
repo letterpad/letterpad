@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { graphql } from "react-apollo";
 import { GET_AUTHORS } from "../../../shared/queries/Queries";
+import { Link } from "react-router-dom";
 
 class ListItem extends Component {
     render() {
@@ -61,6 +62,15 @@ class Authors extends Component {
                     <div className="module-title">{t("authors.title")}</div>
                     <div className="module-subtitle">
                         {t("authors.tagline")}
+                    </div>
+                    <div className="m-b-20">
+                        <Link
+                            className="btn btn-xs btn-dark"
+                            aria-label="Add"
+                            to="/admin/authors/new"
+                        >
+                            <i className="fa fa-plus" />
+                        </Link>
                     </div>
                     <table className="table table-hover table-striped table-bordered">
                         <thead>

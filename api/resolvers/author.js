@@ -127,6 +127,55 @@ export default {
                 }
             }
         ),
+        createAuthor: requiresAdmin.createResolver(
+            async (root, args, { models }) => {
+                try {
+                    const newArgs = { ...args };
+
+                    const author = await models.Author.findOne({
+                        where: { email: newArgs.email }
+                    });
+                    if (author) {
+                        return {
+                            ok: false,
+                            errors: [
+                                {
+                                    message: "Email already exist",
+                                    path: "createAuthor"
+                                }
+                            ]
+                        };
+                    }
+
+                    const randomPassword = Math.random()
+                        .toString(36)
+                        .substr(2);
+                    newArgs.password = await bcrypt.hash(randomPassword, 12);
+
+                    await models.Author.create(newArgs, {
+                        where: { id: newArgs.id }
+                    });
+                    const link = `${config.rootUrl}admin/login`;
+                    const success = await SendMail({
+                        to: newArgs.email,
+                        subject: "Account Created",
+                        body: mailTemplate({
+                            name: newArgs.email,
+                            body: `Your new account has been created!<br/>Login using your email and use the password ${randomPassword} at this link: <a href="${link}">${link}<a/>`
+                        })
+                    });
+                    return {
+                        ok: true,
+                        errors: []
+                    };
+                } catch (e) {
+                    return {
+                        ok: false,
+                        errors: parseErrors(e)
+                    };
+                }
+            }
+        ),
         forgotPassword: async (root, args, { models }) => {
             try {
                 const email = args.email;

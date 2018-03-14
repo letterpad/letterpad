@@ -99,6 +99,7 @@ export const UPDATE_AUTHOR = gql`
         $password: String
         $username: String
         $social: String
+        $avatar: String
         $role_id: Int
     ) {
         updateAuthor(
@@ -107,6 +108,29 @@ export const UPDATE_AUTHOR = gql`
             password: $password
             username: $username
             social: $social
+            fname: $fname
+            lname: $lname
+            avatar: $avatar
+            role_id: $role_id
+        ) {
+            ok
+            errors {
+                path
+                message
+            }
+        }
+    }
+`;
+
+export const CREATE_AUTHOR = gql`
+    mutation createAuthor(
+        $email: String!
+        $fname: String
+        $lname: String
+        $role_id: Int
+    ) {
+        createAuthor(
+            email: $email
             fname: $fname
             lname: $lname
             role_id: $role_id

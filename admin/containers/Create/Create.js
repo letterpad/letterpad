@@ -62,6 +62,7 @@ class Create extends Component {
                         <Tags post={this.state.post} />
                         <Categories post={this.state.post} />
                         <Excerpt post={this.state.post} />
+                        <FeaturedImage post={this.props.post} />
                     </div>
                 </div>
             </section>

@@ -24,7 +24,8 @@ export default (conn, Datatypes) => {
                 }
             },
             social: {
-                type: Sequalize.TEXT
+                type: Sequalize.STRING,
+                defaultValue: "{}"
             },
             fname: {
                 type: Sequalize.STRING,
@@ -35,6 +36,10 @@ export default (conn, Datatypes) => {
                 defaultValue: ""
             },
             token: {
+                type: Sequalize.STRING,
+                defaultValue: ""
+            },
+            avatar: {
                 type: Sequalize.STRING,
                 defaultValue: ""
             }

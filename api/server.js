@@ -93,6 +93,7 @@ app.use(
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
+        console.log("req", req);
         cb(null, path.join(__dirname, "../public/uploads/"));
     },
     filename: function(req, file, cb) {

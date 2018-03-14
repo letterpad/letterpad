@@ -25,6 +25,8 @@ class EditAuthor extends Component {
         this.author = {};
         this.submitData = this.submitData.bind(this);
         this.setOption = this.setOption.bind(this);
+    }
+    componentDidMount() {
         document.body.classList.add("edit-author-page");
     }
 
@@ -90,7 +92,6 @@ class EditAuthor extends Component {
 
 const ContainerWithData = graphql(GET_AUTHOR, {
     options: props => {
-        console.log(props);
         return {
             variables: {
                 id: props.match.params.id || props.author.id

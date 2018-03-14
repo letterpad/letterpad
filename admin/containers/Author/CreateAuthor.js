@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 import { Basic, Social, PasswordChange } from "../../components/Author";
-import { GET_AUTHOR } from "../../../shared/queries/Queries";
-import { UPDATE_AUTHOR } from "../../../shared/queries/Mutations";
+import { GET_AUTHOR, GET_ROLES } from "../../../shared/queries/Queries";
+import {
+    UPDATE_AUTHOR,
+    CREATE_AUTHOR
+} from "../../../shared/queries/Mutations";
 import { notify } from "react-notify-toast";
 
 const SubmitBtn = ({ handleClick }) => {
@@ -24,10 +27,15 @@ class CreateAuthor extends Component {
         this.author = {};
         this.submitData = this.submitData.bind(this);
         this.setOption = this.setOption.bind(this);
+        this.selectRole = this.selectRole.bind(this);
         document.body.classList.add("create-author-page");
     }
     componentWillUnmount() {
         document.body.classList.remove("create-author-page");
+    }
+
+    selectRole(e) {
+        this.setOption("role_id", e.target.value);
     }
 
     setOption(option, value) {
@@ -43,34 +51,40 @@ class CreateAuthor extends Component {
             notify.show(errors.join("\n"), "error");
         } else {
             notify.show("Author created", "success");
+            this.props.history.push("/admin/authors");
         }
     }
     render() {
+        if (this.props.loading) {
+            return <div>Loading..</div>;
+        }
         return (
             <section className="module-xs">
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-lg-12">
                         <div className="card">
-                            <Basic
-                                data={this.props.author}
-                                updateOption={this.setOption}
-                            />
-                            <SubmitBtn handleClick={this.submitData} />
-                        </div>
-                        <div className="card">
-                            <PasswordChange
-                                data={this.props.author}
-                                updateOption={this.setOption}
-                            />
-                            <SubmitBtn handleClick={this.submitData} />
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="card">
-                            <Social
-                                data={this.props.author.social}
-                                updateOption={this.setOption}
-                            />
+                            <Basic data={{}} updateOption={this.setOption} />
+                            <div className="form-group">
+                                <label className="custom-label">Role</label>
+                                <select
+                                    ref={ele =>
+                                        ele &&
+                                        this.setOption("role_id", ele.value)
+                                    }
+                                    onChange={this.selectRole}
+                                    className="form-control"
+                                >
+                                    {this.props.roles.map((role, i) => (
+                                        <option
+                                            selected={role.name == "AUTHOR"}
+                                            key={i}
+                                            value={role.id}
+                                        >
+                                            {role.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                             <SubmitBtn handleClick={this.submitData} />
                         </div>
                     </div>
@@ -80,7 +94,7 @@ class CreateAuthor extends Component {
     }
 }
 
-const updateAuthorQuery = graphql(UPDATE_AUTHOR, {
+const createAuthorQuery = graphql(CREATE_AUTHOR, {
     props: ({ mutate }) => ({
         createAuthor: data =>
             mutate({
@@ -89,15 +103,20 @@ const updateAuthorQuery = graphql(UPDATE_AUTHOR, {
     })
 });
 
+const RolesData = graphql(GET_ROLES, {
+    props: ({ data: { loading, roles } }) => ({
+        roles,
+        loading
+    })
+});
+
 CreateAuthor.defaultProps = {
     author: {
         fname: "",
         lname: "",
-        email: "",
-        username: "",
-        social: ""
+        email: ""
     },
     createAuthor: PropTypes.func
 };
 
-export default updateAuthorQuery(CreateAuthor);
+export default createAuthorQuery(RolesData(CreateAuthor));

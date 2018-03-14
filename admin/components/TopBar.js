@@ -10,7 +10,7 @@ class TopBar extends Component {
                     <PublishDrawer />
                 </div>
                 <div className="right-block pull-right">
-                    <User />
+                    <User author={this.props.author} />
                 </div>
             </div>
         );

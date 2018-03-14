@@ -32,10 +32,14 @@
     min-height: 80px;
 }
 .featured-image {
-    .btn {
-        margin-top: -50px;
+    img {
+        object-fit: cover;
+        height: 100%;
     }
-    margin: -20px;
+    .btn {
+        margin-top: -48px;
+    }
+    height: 200px;
 }
 .file-explorer .post-thumbnail img {
     height: 100px;
