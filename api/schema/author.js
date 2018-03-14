@@ -7,12 +7,7 @@ export default `
     lname: String
     social: String
     role: Role
-  }
-
-  type Query {
-    author(id: Int!, username: String): Author
-    authors: [Author]
-    me: Author
+    avatar: String
   }
 
   type LoginResponse {
@@ -33,10 +28,22 @@ export default `
     data: Author
   }
 
+  type CreateAuthorResponse {
+    ok: Boolean!
+    errors: [Error!]
+  }
+
+  type Query {
+    author(id: Int!, username: String): Author
+    authors: [Author]
+    me: Author
+  }
+
   type Mutation {
     register(username: String!, password: String!, email: String!): AuthorResponse!
     login(username: String, email: String, password: String!, remember: Boolean): LoginResponse!
     forgotPassword(email: String!): ForgotPasswordResponse!
-    updateAuthor(id: Int!, username: String, email: String, fname: String, lname: String, social: String, password: String, role_id: Int): AuthorResponse
+    updateAuthor(id: Int!, username: String, email: String, fname: String, lname: String, social: String, password: String, role_id: Int, avatar: String): AuthorResponse
+    createAuthor(email: String!, fname: String, lname: String, role_id: Int): CreateAuthorResponse
   }
 `;

@@ -9,6 +9,7 @@ import client from "./apolloClient";
 import App from "./containers/App";
 import { Route, Switch } from "react-router-dom";
 import LoginView from "./containers/LoginView";
+import "isomorphic-fetch";
 /*
   Rendering
   This is where we hook up the Store with our actual component and the router

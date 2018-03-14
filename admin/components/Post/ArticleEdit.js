@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import moment from "moment";
 import Editor from "./Editor";
 import PostActions from "./PostActions";
-import FeaturedImage from "./FeaturedImage";
 import ContentEditable from "./ContentEditable";
 import PropTypes from "prop-types";
 
@@ -34,7 +33,6 @@ export default class ArticleEdit extends Component {
         return (
             <div className="card">
                 <article className="post">
-                    <FeaturedImage post={this.props.post} />
                     <div className="post-header">
                         <div>
                             <ContentEditable

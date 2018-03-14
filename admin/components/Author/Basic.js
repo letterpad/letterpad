@@ -1,17 +1,36 @@
 import React, { Component } from "react";
+import { uploadFile } from "../../util";
 import PropTypes from "prop-types";
 
 export default class Basic extends Component {
     constructor(props) {
         super(props);
         this.updateOption = this.updateOption.bind(this);
+        this.uploadAvatar = this.uploadAvatar.bind(this);
+        this.updateAvatar = this.updateAvatar.bind(this);
+        this.state = {
+            avatar: this.props.data.avatar
+        };
     }
 
     updateOption(option, value) {
         this.props.updateOption(option, value);
     }
+
+    async uploadAvatar(files) {
+        const avatar = await uploadFile({ files });
+        this.updateOption("avatar", avatar);
+        this.setState({ avatar });
+    }
+
+    updateAvatar(avatar) {
+        this.updateOption("avatar", avatar);
+        this.setState({ avatar });
+    }
+
     render() {
         const { t } = this.context;
+        const avatar = this.state.avatar || "/images/avatar.png";
         return (
             <div>
                 <div className="module-title">{t("profile.basic.title")}</div>
@@ -41,7 +60,7 @@ export default class Basic extends Component {
                     />
                 </div>
                 <div className="form-group">
-                    <label className="custom-label"> {t("common.ename")}</label>
+                    <label className="custom-label"> {t("common.email")}</label>
                     <input
                         defaultValue={this.props.data.email}
                         type="text"
@@ -49,6 +68,35 @@ export default class Basic extends Component {
                         placeholder={t("profile.email.placeholder")}
                         aria-invalid="false"
                         onBlur={e => this.updateOption("email", e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="custom-label">Upload Avatar</label>
+                    <div className="avatar-wrapper">
+                        <div className="avatar-image">
+                            <img alt="" src={avatar} />
+                        </div>
+                        {!this.state.avatar ? (
+                            <a
+                                href="#"
+                                onClick={_ => this.refs.uploadInput.click()}
+                            >
+                                Add Avatar
+                            </a>
+                        ) : (
+                            <a href="#" onClick={_ => this.updateAvatar("")}>
+                                Remove Avatar
+                            </a>
+                        )}
+                    </div>
+                    <input
+                        ref="uploadInput"
+                        onChange={input =>
+                            this.uploadAvatar(input.target.files)
+                        }
+                        type="file"
+                        className="hide"
+                        name="uploads[]"
                     />
                 </div>
             </div>

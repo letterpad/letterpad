@@ -52,10 +52,22 @@ ContentEditable.propTypes = {
 class Excerpt extends Component {
     constructor(props) {
         super(props);
+        this.setData = this.setData.bind(this);
+
+        this.state = {
+            chars: 0
+        };
     }
 
     componentDidMount() {
-        PostActions.setData({ excerpt: this.props.post.excerpt });
+        this.setData(this.props.post.excerpt);
+    }
+
+    setData(excerpt) {
+        this.setState({ chars: excerpt.length });
+        PostActions.setData({
+            excerpt
+        });
     }
 
     render() {
@@ -63,18 +75,16 @@ class Excerpt extends Component {
             <div className="card">
                 <div className="x_title">
                     <div className="module-title">Excerpt</div>
-                    <div className="clearfix" />
                 </div>
                 <div className="x_content">
                     <div className="control-group">
                         <ContentEditable
                             excerpt={this.props.post.excerpt}
-                            onChange={e => {
-                                PostActions.setData({
-                                    excerpt: e.target.value
-                                });
-                            }}
+                            onChange={e => this.setData(e.target.value)}
                         />
+                        <span className="label label-default">
+                            Chars: {this.state.chars} / 160
+                        </span>
                     </div>
                 </div>
             </div>

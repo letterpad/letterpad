@@ -40,6 +40,7 @@ const SecuredRoute = ({ component: Component, ...rest }) => {
                 exact={exact}
                 render={props => (
                     <div className={exact ? "content-area" : ""}>
+                        <TopBar author={user} />
                         <Component {...props} author={user} {...rest} />
                     </div>
                 )}
@@ -74,7 +75,6 @@ class App extends Component {
                         )}
                     />
                     <div className="wrapper">
-                        <TopBar />
                         <Notifications />
 
                         <SecuredRoute

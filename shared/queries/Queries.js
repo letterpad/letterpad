@@ -35,7 +35,8 @@ export const GET_SINGLE_POST = gql`
             title
             body
             author {
-                username
+                fname
+                lname
             }
             type
             status
@@ -108,6 +109,7 @@ export const GET_AUTHORS = gql`
             fname
             lname
             username
+            avatar
             role {
                 name
                 permissions {
@@ -127,6 +129,7 @@ export const GET_AUTHOR = gql`
             fname
             lname
             social
+            avatar
             role {
                 name
                 permissions {
@@ -137,6 +140,14 @@ export const GET_AUTHOR = gql`
     }
 `;
 
+export const GET_ROLES = gql`
+    query getRoles {
+        roles {
+            id
+            name
+        }
+    }
+`;
 export const GET_OPTIONS = gql`
     query getOptions {
         settings {

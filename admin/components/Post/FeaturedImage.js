@@ -7,6 +7,7 @@ import {
     UPLOAD_COVER_IMAGE
 } from "../../../shared/queries/Mutations";
 import FileExplorerModal from "../Modals/FileExplorerModal";
+import { uploadFile } from "../../util";
 
 class FeaturedImage extends Component {
     constructor(props) {
@@ -21,10 +22,8 @@ class FeaturedImage extends Component {
     }
 
     async uploadImage(files) {
-        const coverImage = await PostActions.uploadFile(
-            files,
-            this.props.insertMedia
-        );
+        const coverImage = await uploadFile({ files });
+        await this.props.insertMedia({ url: coverImage });
         this.updateFeaturedImage(coverImage);
     }
 
@@ -43,51 +42,46 @@ class FeaturedImage extends Component {
     render() {
         const { t } = this.context;
         const coverImage =
-            this.state.cover_image || "http://placehold.it/800x300";
+            this.state.cover_image || "http://placehold.it/800x400";
         return (
-            <div className="x_panel">
-                <div className="x_content">
-                    <div
-                        className={
-                            !this.state.cover_image ? "hide" : "featured-image"
-                        }
-                    >
-                        <img alt="" width="100%" src={coverImage} />
-                        {!this.state.cover_image ? (
-                            <a
-                                className="btn btn-xs btn-dark"
-                                onClick={this.toggleFileExplorer}
-                            >
-                                {t("addFeaturedImg")}
-                            </a>
-                        ) : (
-                            <a
-                                className="btn btn-xs btn-dark"
-                                onClick={_ => this.updateFeaturedImage("")}
-                            >
-                                {t("removeFeaturedImg")}
-                            </a>
-                        )}
-                    </div>
-                    <input
-                        ref="uploadInput"
-                        onChange={input => this.uploadImage(input.target.files)}
-                        type="file"
-                        className="hide"
-                        name="uploads[]"
-                        multiple="multiple"
-                    />
-                    {this.state.fileExplorerOpen && (
-                        <FileExplorerModal
-                            onClose={this.toggleFileExplorer}
-                            onMediaSelect={this.updateFeaturedImage}
-                            addNewMedia={_ => {
-                                this.refs.uploadInput.click();
-                                this.toggleFileExplorer();
-                            }}
-                        />
+            <div className="card">
+                <div className="module-title">Cover Image</div>
+                <div className="featured-image">
+                    <img alt="" width="100%" src={coverImage} />
+                    {!this.state.cover_image ? (
+                        <a
+                            className="btn btn-xs btn-dark"
+                            onClick={this.toggleFileExplorer}
+                        >
+                            {t("addFeaturedImg")}
+                        </a>
+                    ) : (
+                        <a
+                            className="btn btn-xs btn-dark"
+                            onClick={_ => this.updateFeaturedImage("")}
+                        >
+                            {t("removeFeaturedImg")}
+                        </a>
                     )}
                 </div>
+                <input
+                    ref="uploadInput"
+                    onChange={input => this.uploadImage(input.target.files)}
+                    type="file"
+                    className="hide"
+                    name="uploads[]"
+                    multiple="multiple"
+                />
+                {this.state.fileExplorerOpen && (
+                    <FileExplorerModal
+                        onClose={this.toggleFileExplorer}
+                        onMediaSelect={this.updateFeaturedImage}
+                        addNewMedia={_ => {
+                            this.refs.uploadInput.click();
+                            this.toggleFileExplorer();
+                        }}
+                    />
+                )}
             </div>
         );
     }

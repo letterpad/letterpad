@@ -3,6 +3,7 @@ import { graphql } from "react-apollo";
 import { plural } from "../../../shared/util";
 import PropTypes from "prop-types";
 import {
+    FeaturedImage,
     ArticleEdit,
     PostPublish,
     PostActions,
@@ -47,6 +48,7 @@ class Single extends Component {
                         <Tags post={this.props.post} />
                         <Categories post={this.props.post} />
                         <Excerpt post={this.props.post} />
+                        <FeaturedImage post={this.props.post} />
                     </div>
                 </div>
             </section>

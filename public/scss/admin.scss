@@ -18,6 +18,7 @@
 @import "./admin/_post.scss";
 @import "./admin/_menu_builder.scss";
 @import "./admin/_tagsInput.scss";
+@import "./admin/_author.scss";
 
 label.custom-label {
     font-weight: 500;
@@ -78,6 +79,7 @@ label.custom-label {
         .avatar {
             width: 25px;
             height: 25px;
+            border-radius: 100%;
         }
     }
 }
