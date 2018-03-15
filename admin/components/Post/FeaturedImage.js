@@ -123,5 +123,10 @@ FeaturedImage.contextTypes = {
     t: PropTypes.func
 };
 
+FeaturedImage.defaultProps = {
+    post: {
+        cover_image: ""
+    }
+};
 const Data = compose(updateQueryWithData, insertMedia);
 export default Data(FeaturedImage);

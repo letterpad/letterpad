@@ -9,21 +9,14 @@ export default class CreateArticle extends Component {
     constructor(props) {
         super(props);
         this.changeEditor = this.changeEditor.bind(this);
-        this.toggleFullScreen = this.toggleFullScreen.bind(this);
         this.state = {
             isMarkdown: "standard"
         };
     }
-    toggleFullScreen() {
-        const isDistractFree = document.body.classList.contains(
-            "distract-free"
-        );
-        if (isDistractFree) {
-            document.body.classList.remove("distract-free");
-        } else {
-            document.body.classList.add("distract-free");
-        }
+    componentWillUnmount() {
+        document.body.classList.remove("options-open");
     }
+
     changeEditor(e) {
         const mode = e.target.checked ? "markdown" : "standard";
         PostActions.setData({ mode });
@@ -34,19 +27,18 @@ export default class CreateArticle extends Component {
             <div className="card">
                 <article className="post">
                     <div className="post-header">
-                        <ContentEditable
-                            placeholder="Enter a title"
-                            title=""
-                            onChange={e => {
-                                if (e.target.value !== "") {
-                                    PostActions.setData({
-                                        title: e.target.value
-                                    });
-                                }
-                            }}
-                        />
-                        <div className="post-meta">
-                            {moment(new Date()).format("LL")}
+                        <div style={{ flex: 1 }}>
+                            <ContentEditable
+                                placeholder="Enter a title"
+                                title=""
+                                onChange={e => {
+                                    if (e.target.value !== "") {
+                                        PostActions.setData({
+                                            title: e.target.value
+                                        });
+                                    }
+                                }}
+                            />
                         </div>
                         <div className="text-right">
                             <div className="switch-block">
@@ -64,15 +56,6 @@ export default class CreateArticle extends Component {
                                 <span className="switch-label switch-on-text">
                                     Markdown
                                 </span>
-                            </div>
-                            <div
-                                className="full-screen pointer"
-                                onClick={this.toggleFullScreen}
-                            >
-                                <img
-                                    src="https://www.materialui.co/materialIcons/navigation/fullscreen_black_192x192.png"
-                                    width="30"
-                                />
                             </div>
                         </div>
                     </div>

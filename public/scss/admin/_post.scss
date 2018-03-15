@@ -27,9 +27,17 @@
 /*--------------------------------------
 [Edit/Create Post or Page]
 */
+.post-title {
+    margin: 0px;
+}
 .post-excerpt {
     display: block;
     min-height: 80px;
+}
+#md-post,
+#md-preview {
+    min-height: 100vh;
+    margin-top: 16px;
 }
 .featured-image {
     img {
@@ -53,6 +61,17 @@
     justify-content: space-between;
     align-items: center;
 }
+.article-holder {
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.post-grid .post {
+    margin-bottom: 0px;
+    box-shadow: -2px 2px 14px -2px #ccc;
+}
 
 /*!------------------------------------------------------------------
 [Post Options]
@@ -73,7 +92,8 @@
             display: none !important;
         }
     }
-    .post-options {
+    .post-options,
+    .full-screen {
         display: block !important;
     }
 }

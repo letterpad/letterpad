@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Sidebar from "../containers/Sidebar";
-import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 
 export default class extends Component {
@@ -16,8 +15,6 @@ export default class extends Component {
                             position="top"
                             router={{ ...this.props }}
                         />
-
-                        <Footer data={settings.site_footer.value} />
                     </div>
                 </nav>
 

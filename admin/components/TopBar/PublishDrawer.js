@@ -6,7 +6,26 @@ class PublishDrawer extends Component {
     constructor(props) {
         super(props);
         this.toggleOptions = this.toggleOptions.bind(this);
+        this.toggleFullScreen = this.toggleFullScreen.bind(this);
+
+        this.state = {
+            zenText: "Enable Zenmode"
+        };
     }
+    toggleFullScreen(e) {
+        e.preventDefault();
+        const isDistractFree = document.body.classList.contains(
+            "distract-free"
+        );
+        if (isDistractFree) {
+            document.body.classList.remove("distract-free");
+            this.setState({ zenText: "Enable Zenmode" });
+        } else {
+            document.body.classList.add("distract-free");
+            this.setState({ zenText: "Disable Zenmode" });
+        }
+    }
+
     toggleOptions(e) {
         e.preventDefault();
         if (document.body.classList.contains("options-open")) {
@@ -19,13 +38,20 @@ class PublishDrawer extends Component {
     }
     render() {
         return (
-            <div>
+            <div style={{ display: "flex" }}>
                 <a
                     href="#"
                     onClick={this.toggleOptions}
-                    className="post-options hide"
+                    className="post-options hide pointer"
                 >
                     <i className="fa fa-cog" /> Options
+                </a>
+                <a
+                    href="#"
+                    className="full-screen pointer hide"
+                    onClick={this.toggleFullScreen}
+                >
+                    {this.state.zenText}
                 </a>
             </div>
         );
