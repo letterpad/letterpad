@@ -6,25 +6,18 @@
     padding: 0px;
     border: none;
     font-family: inherit;
-}
 
-#editor .ql-editor {
-    overflow-y: visible;
-    padding: 12px 0px;
-    min-height: 280px;
-    padding-bottom: 400px;
+    .ql-editor {
+        overflow-y: visible;
+        padding: 12px 0px;
+        min-height: 100vh;
+        padding-bottom: 400px;
+        line-height: 1.7;
+    }
 }
 
 .ql-container {
     font-size: 16px;
-}
-
-#quill-container .ql-toolbar {
-    opacity: 0.2;
-}
-
-#quill-container .ql-toolbar:hover {
-    opacity: 1;
 }
 
 /* Specify our own scrolling container */
@@ -33,4 +26,25 @@
     height: 100%;
     min-height: 100%;
     overflow-y: auto;
+
+    .ql-toolbar {
+        opacity: 1;
+        position: fixed;
+        bottom: 0px;
+        left: 250px;
+        background: #fff;
+        z-index: 9;
+        width: calc(100% - 250px);
+        text-align: center;
+    }
+}
+.options-open {
+    .ql-toolbar {
+        text-align: left !important;
+    }
+}
+@media screen and (max-width: 991px) {
+    .ql-toolbar {
+        width: 100%;
+    }
 }

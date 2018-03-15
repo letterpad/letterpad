@@ -10,6 +10,7 @@
 @import "./common/_switch.scss";
 @import "./common/_navbar.scss";
 @import "./common/_post.scss";
+@import "./common/_modal.scss";
 @import "./admin/_login.scss";
 @import "./admin/_editor.scss";
 @import "./admin/_login.scss";
@@ -32,33 +33,7 @@ label.custom-label {
     grid-auto-rows: minmax(203px, auto);
     grid-auto-flow: dense;
 }
-.post-grid .post {
-    margin-bottom: 0px;
-    box-shadow: -2px 2px 14px -2px #ccc;
-}
-.media-grid .post {
-    .post-header {
-        margin: 0px;
-        font-size: 12px;
-    }
-    .post-time {
-        font-size: 11px;
-    }
-    .post-body {
-        padding: 4px 8px;
-        border: 1px solid #eee;
-        .post-content {
-            display: flex;
-            justify-content: space-between;
-        }
-    }
-}
-.article-holder {
-    .post-header {
-        display: flex;
-        justify-content: space-between;
-    }
-}
+
 /*--------------------------------------
 [TopBar]
 */
@@ -70,7 +45,9 @@ label.custom-label {
     width: calc(100% - 250px);
     top: 0px;
     z-index: 9;
-
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 22px;
     .user-info {
         display: flex;
         flex-direction: row;
@@ -81,6 +58,11 @@ label.custom-label {
             height: 25px;
             border-radius: 100%;
         }
+    }
+    .left-block a:not(:last-child):after {
+        content: "|";
+        margin: 0 8px;
+        color: #929191;
     }
 }
 @media screen and (max-width: 991px) {
@@ -173,11 +155,6 @@ tr th:first-child {
         left: 0px;
     }
 }
-
-/*--------------------------------------------
-[Themes]
-*/
-
 .color-blocks {
     .custom-label {
         display: flex;
@@ -188,16 +165,14 @@ tr th:first-child {
         font-size: 12px;
         min-height: 42px;
     }
+    > div:not(:last-child) {
+        margin-bottom: 12px;
+    }
 }
 
 /*--------------------------------------------
-[Theme settings]
+[Bootstrap settings]
 */
-
-.color-blocks > div:not(:last-child) {
-    margin-bottom: 12px;
-}
-
 .row {
     margin-left: -6px;
     margin-right: -6px;

@@ -9,7 +9,8 @@ import {
     PostActions,
     Tags,
     Categories,
-    Excerpt
+    Excerpt,
+    FeaturedImage
 } from "../../components/Post";
 import { CREATE_POST } from "../../../shared/queries/Mutations";
 

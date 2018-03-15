@@ -39,7 +39,7 @@ class MarkdownEditor extends Component {
             });
             document.querySelector("#md-preview").innerHTML = marked(
                 document.querySelector("#md-post").innerText
-            ).replace(/<pre>/g, "<pre class=\"hljs\">");
+            ).replace(/<pre>/g, '<pre class="hljs">');
         }
     }
     render() {
@@ -68,9 +68,7 @@ class MarkdownEditor extends Component {
 
                 <div className="tab-content clearfix">
                     <div className={"tab-pane " + this.state.activeTab.post}>
-                        <div id="md-post" style={{ minHeight: 500 }}>
-                            {this.state.body}
-                        </div>
+                        <div id="md-post">{this.state.body}</div>
                     </div>
                     <div
                         id="md-preview"

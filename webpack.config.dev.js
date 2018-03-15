@@ -97,7 +97,6 @@ module.exports = {
                     "css-loader?sourceMap",
                     "sass-loader?sourceMap"
                 ],
-                include: /public/,
                 exclude: /node_modules/
             },
             // js
