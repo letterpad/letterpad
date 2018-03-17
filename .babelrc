@@ -1,5 +1,6 @@
 {
     "presets": [
+        "es2015",
         "react",
         [
             "env",
@@ -12,5 +13,5 @@
         ]
     ],
 
-    "plugins": ["transform-object-rest-spread", "syntax-dynamic-import"]
+    "plugins": ["transform-object-rest-spread"]
 }

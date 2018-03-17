@@ -1,16 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom/server";
-import { Helmet } from "react-helmet";
+import ApolloClient from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import fetch from "node-fetch";
-import { StaticRouter } from "react-router";
-import { ApolloProvider, getDataFromTree } from "react-apollo";
-import ApolloClient from "apollo-client";
-import App from "./containers/App";
 import config from "../config";
-
-const context = {};
+import { GET_OPTIONS } from "../shared/queries/Queries";
 
 module.exports.init = app => {
     app.get("*", (req, res) => {
@@ -22,34 +15,27 @@ module.exports.init = app => {
             }),
             cache: new InMemoryCache()
         });
+        client.query({ query: GET_OPTIONS }).then(settings => {
+            const theme = settings.data.settings.filter(
+                item => item.option == "theme"
+            )[0].value;
 
-        const sendResponse = ({ content, initialState, head }) => {
-            const html = getHtml(content, initialState, head);
-            // const html = ReactDOM.renderToStaticMarkup(htmlComponent);
-            res.status(200);
-            res.send(`<!doctype html>\n${html}`);
-            res.end();
-        };
-        let initialState = {};
-
-        const adminApp = (
-            <ApolloProvider client={client}>
-                <StaticRouter location={req.url} context={context}>
-                    <App />
-                </StaticRouter>
-            </ApolloProvider>
-        );
-
-        getDataFromTree(adminApp).then(() => {
-            const content = ReactDOM.renderToString(adminApp);
-            const head = Helmet.renderStatic();
-            initialState = client.extract();
-            sendResponse({ content, initialState, head });
+            let serverFile = "../build/" + theme + ".server";
+            // const theme = req.query.theme;
+            // if (theme == "amun") {
+            //     serFile = "../dist/amun.server";
+            // } else if (theme == "uranium") {
+            //     serFile = "../dist/uranium.server";
+            // }
+            const server = require(serverFile).default;
+            server(req, client).then(({ html, apolloState, head }) => {
+                res.end(getHtml(theme, html, apolloState, head));
+            });
         });
     });
 };
 
-function getHtml(content, state, head) {
+function getHtml(theme, html, state, head) {
     let htmlAttrs = "";
     const metaTags = Object.keys(head)
         .map(item => {
@@ -61,11 +47,17 @@ function getHtml(content, state, head) {
         })
         .filter(x => x)
         .join("");
-    const devBundles = [
+    let devBundles = [
         "/js/highlight.min.js",
         "/static/vendor-bundle.js",
         "/static/client-bundle.js"
     ];
+    if (theme === "amun") {
+        devBundles[2] = "/dist/amun-bundle.js";
+    }
+    if (theme === "uranium") {
+        devBundles[2] = "/dist/uranium-bundle.js";
+    }
     const prodBundles = [
         "/js/highlight.min.js",
         "/js/vendor-bundle.js",
@@ -92,7 +84,7 @@ function getHtml(content, state, head) {
                 <link href="/css/custom.css" rel="stylesheet"/>
             </head>
             <body>
-                <div id="app">${content}</div>
+                <div id="app">${html}</div>
                 <script>
                     window.__APOLLO_STATE__=${initialState};
                     window.NODE_ENV = "${process.env.NODE_ENV}";

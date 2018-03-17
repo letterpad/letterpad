@@ -20,8 +20,8 @@ const app = express();
 app.use(compression());
 
 if (process.env.NODE_ENV === "dev") {
-    const wpConfigFile = "./webpack.config.dev.js";
-    const webpackConfig = require(wpConfigFile);
+    const wpConfigFile = "./webpack/webpack.config.dev.js";
+    const webpackConfig = require(wpConfigFile)[0];
     const compiler = webpack(webpackConfig);
     const webpackDevMiddleware = require("webpack-dev-middleware");
     const webpackHotMiddleware = require("webpack-hot-middleware");
@@ -59,35 +59,37 @@ app.use(
 );
 
 app.use(express.static("public"));
+app.use("/dist", express.static("dist"));
 
 // let pinger = null;
 
-// app.get("/build", (req, res) => {
-//     // console.log("reached");
-//     // if (pinger !== null) {
-//     //     console.log("Ending");
-//     //     pinger.end();
-//     // }
-//     // console.log("Continuing");
-//     // pinger = Object.assign({}, res);
-//     var webpack = require("webpack");
-//     var ProgressPlugin = require("webpack/lib/ProgressPlugin");
-//     var config = require("./webpack.config.prod.js");
-//     var compiler = webpack(config);
-//     compiler.apply(
-//         new ProgressPlugin(function(percentage, msg) {
-//             res.write(percentage * 100 + "%" + " >> " + msg + "\n");
-//             //console.log(percentage * 100 + "%", msg);
-//         })
-//     );
+app.get("/build", (req, res) => {
+    // console.log("reached");
+    // if (pinger !== null) {
+    //     console.log("Ending");
+    //     pinger.end();
+    // }
+    // console.log("Continuing");
+    // pinger = Object.assign({}, res);
+    var webpack = require("webpack");
+    var ProgressPlugin = require("webpack/lib/ProgressPlugin");
+    var config = require("./webpack.config.prod.js");
+    var compiler = webpack(config);
 
-//     compiler.run(function(err, stats) {
-//         // ...
-//         res.end();
-//     });
-// });
+    compiler.apply(
+        new ProgressPlugin(function(percentage, msg) {
+            res.write(percentage * 100 + "%" + " >> " + msg + "\n");
+            //console.log(percentage * 100 + "%", msg);
+        })
+    );
 
-adminServerRendering.init(app);
+    compiler.run(function(err, stats) {
+        // ...
+        res.end();
+    });
+});
+
+// adminServerRendering.init(app);
 clientServerRendering.init(app);
 
 const server = app.listen(config.appPort, function() {

@@ -9,24 +9,6 @@ const extractSass = new ExtractTextPlugin({
     filename: "../css/[name].css"
 });
 
-var babelOptions = {
-    presets: [
-        "react",
-        [
-            "env",
-            {
-                targets: {
-                    browsers: ["last 2 versions", "safari >= 7"]
-                },
-                modules: false,
-                useBuiltIns: true
-            }
-        ]
-    ],
-
-    plugins: ["transform-object-rest-spread"]
-};
-
 module.exports = {
     profile: true,
     mode: "production",
