@@ -5,18 +5,15 @@
     "main": "start.js",
     "scripts": {
         "dev": "concurrently 'npm run build:server:dev'",
-        "build:server:dev":
-            "webpack --config webpack.config.dev.js --profile --colors --watch",
-        "dev2":
-            "nodemon --watch api -e js --exec node ./start.js --profile --json",
+        "build:server:dev": "webpack --config webpack.config.dev.js --profile --colors --watch",
+        "dev2": "nodemon --watch api -e js --exec node ./start.js --profile --json",
         "start": "concurrently --kill-others \"npm run start-prod\" ",
         "start-prod": "better-npm-run start-prod",
         "build": "better-npm-run build",
         "start-dev": "better-npm-run start-dev",
         "insert-fake": "better-npm-run insert-fake",
         "test-server": "better-npm-run start-test-server",
-        "dev1":
-            "concurrently --kill-others \"nodemon -w api ./api/start.js\" \"npm run start-dev\"",
+        "dev1": "concurrently --kill-others \"nodemon -w api ./api/start.js\" \"npm run start-dev\"",
         "test": "jest --runInBand"
     },
     "betterScripts": {
@@ -42,8 +39,7 @@
             }
         },
         "build": {
-            "command":
-                "webpack --verbose --colors --display-error-details --config webpack/webpack.config.prod.js",
+            "command": "webpack --verbose --colors --display-error-details --config webpack/webpack.config.prod.js",
             "env": {
                 "NODE_ENV": "production"
             }
@@ -139,8 +135,11 @@
         "node-sass": "^4.5.0",
         "nodemon": "^1.14.6",
         "path": "^0.12.7",
+        "postcss": "^6.0.20",
+        "postcss-cssnext": "^3.1.0",
         "postcss-custom-properties": "^6.2.0",
-        "postcss-loader": "^2.0.9",
+        "postcss-import": "^11.1.0",
+        "postcss-loader": "^2.1.1",
         "postcss-nesting": "^4.2.1",
         "prettier": "^1.10.2",
         "react-addons-test-utils": "^0.14.7",
@@ -149,13 +148,15 @@
         "sass-loader": "^6.0.3",
         "style-loader": "^0.16.1",
         "url-loader": "^0.6.2",
-        "webpack": "^4.0.1",
+        "webpack": "^4.1.1",
         "webpack-bundle-analyzer": "^2.11.1",
         "webpack-cli": "^2.0.10",
         "webpack-dev-middleware": "^1.5.1",
         "webpack-hot-middleware": "^2.7.1"
     },
     "jest": {
-        "testMatch": ["**/__tests__/**/?(*.)(spec|test).js?(x)"]
+        "testMatch": [
+            "**/__tests__/**/?(*.)(spec|test).js?(x)"
+        ]
     }
 }

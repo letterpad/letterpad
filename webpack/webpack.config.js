@@ -26,7 +26,13 @@ module.exports.cssLoaders = [
     },
     {
         test: /\.scss$/,
-        use: ["style-loader", "css-loader?sourceMap", "sass-loader?sourceMap"],
+        use: [
+            {
+                loader: "css-loader",
+                options: { importLoaders: 1 }
+            },
+            "postcss-loader"
+        ],
         exclude: /node_modules/
     }
 ];
