@@ -1,15 +1,16 @@
 import React from "react";
-import { render } from "react-dom";
+import { hydrate } from "react-dom";
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
 import client from "./apolloClient";
 import App from "./containers/App";
 
-render(
+const app = (
     <BrowserRouter>
         <ApolloProvider client={client}>
             <App />
         </ApolloProvider>
-    </BrowserRouter>,
-    document.getElementById("app")
+    </BrowserRouter>
 );
+
+hydrate(app, document.getElementById("app"));

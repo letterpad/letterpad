@@ -16,7 +16,7 @@ import Posts from "./Posts";
 import SinglePage from "./SinglePage";
 import SinglePost from "./SinglePost";
 import SearchWrapper from "./SearchWrapper";
-import Layout from "../layouts/Layout";
+import Layout from "./Layout";
 
 require("../../public/scss/client.scss");
 

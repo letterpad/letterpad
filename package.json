@@ -43,7 +43,7 @@
         },
         "build": {
             "command":
-                "webpack --verbose --colors --display-error-details --config webpack.config.prod.js",
+                "webpack --verbose --colors --display-error-details --config webpack/webpack.config.prod.js",
             "env": {
                 "NODE_ENV": "production"
             }
