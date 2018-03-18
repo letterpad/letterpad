@@ -1,4 +1,5 @@
 import ApolloClient from "apollo-client";
+import path from "path";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import fetch from "node-fetch";
@@ -20,13 +21,13 @@ module.exports.init = app => {
                 item => item.option == "theme"
             )[0].value;
 
-            let serverFile = "../build/" + theme + ".server";
-            // const theme = req.query.theme;
-            // if (theme == "amun") {
-            //     serFile = "../dist/amun.server";
-            // } else if (theme == "uranium") {
-            //     serFile = "../dist/uranium.server";
-            // }
+            let serverFile = "../build/" + theme + ".node";
+            if (req.query.theme && req.query.theme !== "") {
+                const previewTheme = "../build/" + req.query.theme + ".node";
+                if (fs.existsSync(path.resolve(previewTheme))) {
+                    serverFile = previewTheme;
+                }
+            }
             const server = require(serverFile).default;
             server(req, client).then(({ html, apolloState, head }) => {
                 res.end(getHtml(theme, html, apolloState, head));
@@ -47,21 +48,17 @@ function getHtml(theme, html, state, head) {
         })
         .filter(x => x)
         .join("");
+
     let devBundles = [
         "/js/highlight.min.js",
-        "/static/vendor-bundle.js",
-        "/static/client-bundle.js"
+        "/js/themes/" + theme + "/dev/vendor-bundle.js",
+        "/js/themes/" + theme + "/dev/client-bundle.js"
     ];
-    if (theme === "amun") {
-        devBundles[2] = "/dist/amun-bundle.js";
-    }
-    if (theme === "uranium") {
-        devBundles[2] = "/dist/uranium-bundle.js";
-    }
+
     const prodBundles = [
         "/js/highlight.min.js",
-        "/js/vendor-bundle.js",
-        "/js/client-bundle.js"
+        "/js/themes/" + theme + "/prod/vendor-bundle.min.js",
+        "/js/themes/" + theme + "/prod/client-bundle.min.js"
     ];
     const bundles =
         process.env.NODE_ENV === "production" ? prodBundles : devBundles;

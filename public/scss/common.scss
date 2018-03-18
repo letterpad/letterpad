@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
 @import url("http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/monokai.min.css");
 @import "./variables.scss";
-@import "./common/layout.scss";
+@import "./common/_layout.scss";
 
 /*! -----------------------------------------------------------------
 [Master Stylesheet]
@@ -21,12 +21,12 @@ html {
 }
 
 body {
-    background: $color-bg-primary;
+    background: var(--color-bg-secondary);
     font-family: "Source Sans Pro", sans-serif;
     line-height: 1.6;
-    font-size: $fs-normal;
+    font-size: var(--fs-normal);
     font-weight: 400;
-    color: $color-text-primary;
+    color: var(--color-text-primary);
     -ms-overflow-style: scrollbar;
     overflow-x: hidden;
     height: 100%;
@@ -72,7 +72,7 @@ textarea.CodeFlask__textarea {
 }
 
 ::-webkit-input-placeholder {
-    color: $color-text-muted !important;
+    color: var(--color-text-muted) !important;
     font-weight: 300;
 }
 
@@ -117,7 +117,7 @@ textarea.CodeFlask__textarea {
 */
 
 a {
-    color: $link_active;
+    color: var(--color-accent);
     -webkit-transition: all 0.125s cubic-bezier(0.3, 0.1, 0.58, 1);
     -moz-transition: all 0.125s cubic-bezier(0.3, 0.1, 0.58, 1);
     -o-transition: all 0.125s cubic-bezier(0.3, 0.1, 0.58, 1);
@@ -128,10 +128,10 @@ a:hover,
 a:focus {
     text-decoration: none;
     outline: none;
-    color: $link_active;
+    color: var(--color-accent);
 }
 a:hover {
-    color: $link_hover;
+    color: var(--link-hover);
 }
 
 h1,
@@ -267,9 +267,9 @@ ul {
     border: 0;
     height: 36px;
     padding: 13px 0px;
-    font-size: $fs-normal;
-    border-bottom: 1px solid $color-border;
-    color: $color-text-secondary-light;
+    font-size: var(--fs-normal);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-secondary)-light;
     border-radius: 0px;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -282,7 +282,7 @@ ul {
 
 .form-control[disabled] {
     background: transparent;
-    color: $color-text-primary-light;
+    color: var(--color-text-primary)-light;
 }
 
 .form-control:focus {
@@ -299,7 +299,7 @@ ul {
 [Notification Messages]
 */
 #notification-wrapper {
-    font-size: $fs-normal;
+    font-size: var(--fs-normal);
 }
 
 /*!------------------------------------------------------------------
@@ -342,7 +342,7 @@ ul {
     line-height: 1.8;
     font-weight: 300;
     font-size: 13px;
-    color: $color-text-primary-light;
+    color: var(--color-text-primary)-light;
 }
 
 .module-title,

@@ -18,8 +18,14 @@ var babelOptions = {
     ],
     plugins: ["transform-object-rest-spread"]
 };
+module.exports.babelOptions = babelOptions;
 
-module.exports.cssLoaders = [
+module.exports.loaders = [
+    {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: "url-loader?url=false"
+    },
+    // CSS
     {
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
@@ -34,28 +40,7 @@ module.exports.cssLoaders = [
             "postcss-loader"
         ],
         exclude: /node_modules/
-    }
-];
-
-module.exports.serverCssLoaders = [
-    {
-        test: /\.css$/,
-        use: ["css-loader/locals"]
     },
-    {
-        test: /\.scss$/,
-        use: ["css-loader/locals", "sass-loader?sourceMap"],
-        exclude: /node_modules/
-    }
-];
-
-module.exports.otherLoaders = [
-    {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: "url-loader?limit=100000"
-    },
-    // CSS
-
     // js
     {
         test: /\.js$/,
@@ -78,7 +63,7 @@ module.exports.otherLoaders = [
 module.exports.commonConfig = {
     devtool: "source-map",
     mode: "development",
-
+    watch: true,
     resolve: {
         alias: {
             admin: path.join(__dirname, "../admin"),

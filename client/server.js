@@ -3,7 +3,7 @@ import { renderToString } from "react-dom/server";
 import { Helmet } from "react-helmet";
 import { StaticRouter } from "react-router";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
-import App from "./containers/App";
+import Route from "./Route";
 
 const context = {};
 
@@ -13,7 +13,7 @@ export default (req, client) => {
     const clientApp = (
         <ApolloProvider client={client}>
             <StaticRouter location={req.url} context={context}>
-                <App />
+                <Route />
             </StaticRouter>
         </ApolloProvider>
     );

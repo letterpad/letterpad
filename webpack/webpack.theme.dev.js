@@ -3,12 +3,12 @@ var path = require("path");
 var webpack = require("webpack");
 var FileNameReplacementPlugin = require("./FileNameReplacementPlugin");
 var AfterBuild = require("./AfterBuildPlugin");
-var _webpack = require("./webpack.config");
+var _webpack = require("./config");
 
 const clientConfig = args => {
     const config = Object.assign({}, _webpack.commonConfig, {
         entry: {
-            THEME_VENDOR: [
+            vendor: [
                 "babel-polyfill",
                 "react",
                 "react-dom",
@@ -16,16 +16,21 @@ const clientConfig = args => {
                 "react-apollo",
                 "moment"
             ],
-            THEME_NAME: [
+            client: [
                 "babel-polyfill",
                 "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
                 path.join(__dirname, "../client/app")
             ]
         },
         output: {
-            path: path.join(__dirname, "../dist"),
+            path: path.join(
+                __dirname,
+                "../public/js/themes/" + args.theme + "/dev"
+            ),
             filename: "[name]-bundle.js",
-            publicPath: "/static/"
+            publicPath: "/static/",
+            hotUpdateChunkFilename: "../hot/hot-update.js",
+            hotUpdateMainFilename: "../hot/hot-update.json"
         },
         plugins: [
             ..._webpack.commonConfig.plugins,
@@ -37,15 +42,9 @@ const clientConfig = args => {
             })
         ],
         module: {
-            rules: [..._webpack.cssLoaders, ..._webpack.otherLoaders]
+            rules: [..._webpack.loaders]
         }
     });
-
-    config.entry[args.theme] = config.entry.THEME_NAME;
-    config.entry[args.theme + "-vendor"] = config.entry.THEME_VENDOR;
-
-    delete config.entry.THEME_NAME;
-    delete config.entry.THEME_VENDOR;
 
     return config;
 };
@@ -56,10 +55,12 @@ const serverConfig = args => {
         target: "node",
         entry: ["babel-polyfill", path.join(__dirname, "../client/server.js")],
         output: {
-            filename: args.theme + ".server.js",
+            filename: args.theme + ".node.js",
             path: BUILD_PATH,
             library: "server",
-            libraryTarget: "commonjs2"
+            libraryTarget: "commonjs2",
+            hotUpdateChunkFilename: "../hot/hot-update.js",
+            hotUpdateMainFilename: "../hot/hot-update.json"
         },
         externals: _webpack.nodeModules,
         plugins: [
@@ -75,7 +76,7 @@ const serverConfig = args => {
             })
         ],
         module: {
-            rules: [..._webpack.serverCssLoaders, ..._webpack.otherLoaders]
+            rules: [..._webpack.loaders]
         }
     });
 };

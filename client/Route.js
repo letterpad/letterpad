@@ -2,23 +2,23 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { withRouter } from "react-router";
 import { Helmet } from "react-helmet";
-import SEO from "../components/SEO";
-import Loader from "../components/Loader";
+import SEO from "./components/SEO";
+import Loader from "./components/Loader";
 
 // Data supply
-import SettingsData from "../data-supply/SettingsData";
+import SettingsData from "./data-supply/SettingsData";
 
 /*!------------------------------------------------------------------
-[View Containers]
+[View Containers-]
 */
-import Home from "./Home";
-import Posts from "./Posts";
-import SinglePage from "./SinglePage";
-import SinglePost from "./SinglePost";
-import SearchWrapper from "./SearchWrapper";
-import Layout from "./Layout";
+import Home from "./containers/Home";
+import Posts from "./containers/Posts";
+import SinglePage from "./containers/SinglePage";
+import SinglePost from "./containers/SinglePost";
+import SearchWrapper from "./containers/SearchWrapper";
+import Layout from "./containers/Layout";
 
-require("../../public/scss/client.scss");
+require("../public/scss/client.scss");
 
 class App extends Component {
     constructor(props) {
