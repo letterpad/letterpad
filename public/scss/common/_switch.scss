@@ -13,14 +13,14 @@
         letter-spacing: 1px;
         font-size: 12px;
         font-weight: 500;
-        color: $color-text-primary-light;
+        color: var(--color-text-primary)-light;
         transition: 0.2s color linear;
     }
     &.on .switch-on-text {
-        color: $color-text-secondary;
+        color: var(--color-text-secondary);
     }
     &.off .switch-off-text {
-        color: $color-text-secondary;
+        color: var(--color-text-secondary);
     }
 }
 
@@ -67,10 +67,10 @@
         display: none;
 
         &:checked + .slider {
-            background-color: $color-accent;
+            background-color: var(--color-accent);
         }
         &:focus + .slider {
-            box-shadow: 0 0 1px $color-accent;
+            box-shadow: 0 0 1px var(--color-accent);
         }
         &:checked + .slider:before {
             -webkit-transform: translateX(26px);

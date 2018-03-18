@@ -9,20 +9,16 @@ ul.nav {
         display: block;
         padding: 10px;
         cursor: pointer;
-        // border-bottom: 1px solid #2d2d2d !important;
-        color: $color-menu-link;
-        // border-left: 4px solid transparent;
+        color: var(--color-menu-link);
     }
     .nav-list li.active a {
-        // border-left: 4px solid $color-accent;
     }
     .nav-list > li > a {
-        color: $color-menu-link;
+        color: var(--color-menu-link);
         padding-left: 13px !important;
-        // border-bottom: 1px solid #2e2e2e;
     }
     .nav-list > li a:hover {
-        border-left: 0px solid $color-accent;
+        border-left: 0px solid var(--color-accent);
     }
     .nav-list a span {
         margin-left: 20px;

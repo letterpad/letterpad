@@ -1,7 +1,7 @@
 var path = require("path");
 var webpack = require("webpack");
 var FileNameReplacementPlugin = require("../utils/WebpackFileReplace");
-var _webpack = require("./webpack.config");
+var _webpack = require("./config");
 
 const clientConfig = Object.assign({}, _webpack.commonConfig, {
     entry: {
@@ -39,7 +39,7 @@ const clientConfig = Object.assign({}, _webpack.commonConfig, {
         })
     ],
     module: {
-        rules: [..._webpack.cssLoaders, ..._webpack.otherLoaders]
+        rules: [..._webpack.loaders]
     }
 });
 
@@ -55,6 +55,7 @@ const serverConfig = Object.assign({}, _webpack.commonConfig, {
     externals: _webpack.nodeModules,
     plugins: [
         ..._webpack.commonConfig.plugins,
+        new FileNameReplacementPlugin("extend"),
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify("dev")
@@ -62,7 +63,7 @@ const serverConfig = Object.assign({}, _webpack.commonConfig, {
         })
     ],
     module: {
-        rules: [..._webpack.serverCssLoaders, ..._webpack.otherLoaders]
+        rules: [..._webpack.loaders]
     }
 });
 

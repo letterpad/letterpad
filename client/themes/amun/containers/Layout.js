@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Sidebar from "client/containers/Sidebar";
 import Navbar from "client/components/Navbar";
-console.log(1);
+
+require("../style.scss");
+
 export default function Layout(Element, props) {
     const settings = props.settings;
     const layout = settings.layout_display.value;

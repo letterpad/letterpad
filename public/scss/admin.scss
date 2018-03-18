@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700.css");
 @import "./variables.scss";
 @import "./common.scss";
-// @import "./common/_react-select.scss";
+/*@import "./common/_react-select.scss";*/
 @import "./common/_card.scss";
 @import "./common/_buttons.scss";
 @import "./common/_sidebar.scss";
@@ -116,7 +116,7 @@ label.custom-label {
 }
 
 .table > thead tr > th {
-    color: $color-text-secondary;
+    color: var(--color-text-secondary);
     text-transform: uppercase;
     font-size: 13px;
     font-weight: 500;

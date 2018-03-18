@@ -3,17 +3,19 @@
     "version": "1.0.0",
     "description": ":) ",
     "main": "start.js",
+    "private": true,
     "scripts": {
-        "dev": "concurrently 'npm run build:server:dev'",
-        "build:server:dev": "webpack --config webpack.config.dev.js --profile --colors --watch",
-        "dev2": "nodemon --watch api -e js --exec node ./start.js --profile --json",
-        "start": "concurrently --kill-others \"npm run start-prod\" ",
         "start-prod": "better-npm-run start-prod",
-        "build": "better-npm-run build",
+        "build":
+            "NODE_ENV=production  webpack --verbose --colors --display-error-details --config webpack/webpack.config.prod.js",
+        "build-theme":
+            "NODE_ENV=production  webpack --verbose --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${THEME}",
         "start-dev": "better-npm-run start-dev",
         "insert-fake": "better-npm-run insert-fake",
-        "test-server": "better-npm-run start-test-server",
-        "dev1": "concurrently --kill-others \"nodemon -w api ./api/start.js\" \"npm run start-dev\"",
+        "dev":
+            "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./start.js --profile --json\"",
+        "theme":
+            "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./start.js --profile --json\" \"webpack --config webpack/webpack.theme.dev.js --watch --env.theme=${THEME}\"",
         "test": "jest --runInBand"
     },
     "betterScripts": {
@@ -39,7 +41,8 @@
             }
         },
         "build": {
-            "command": "webpack --verbose --colors --display-error-details --config webpack/webpack.config.prod.js",
+            "command":
+                "webpack --verbose --colors --display-error-details --config webpack/webpack.config.prod.js",
             "env": {
                 "NODE_ENV": "production"
             }
@@ -52,6 +55,7 @@
     "author": "Abhishek Saha",
     "license": "MIT",
     "homepage": "http://ajaxtown.com",
+    "workspaces": ["client/themes/*"],
     "dependencies": {
         "apollo-cache-inmemory": "^1.1.4",
         "apollo-client": "^2.0.4",
@@ -96,6 +100,7 @@
         "react-stack-grid": "^0.7.1",
         "react-tag-input": "^4.6.2",
         "sequelize": "^3.30.2",
+        "webpack-sources": "1.0.1",
         "whatwg-fetch": "^2.0.3"
     },
     "devDependencies": {
@@ -132,7 +137,6 @@
         "merge-graphql-schemas": "1.4.0",
         "mocha": "^2.4.5",
         "mysql": "^2.15.0",
-        "node-sass": "^4.5.0",
         "nodemon": "^1.14.6",
         "path": "^0.12.7",
         "postcss": "^6.0.20",
@@ -145,7 +149,6 @@
         "react-addons-test-utils": "^0.14.7",
         "resolve-url-loader": "^2.2.1",
         "rimraf": "^2.6.2",
-        "sass-loader": "^6.0.3",
         "style-loader": "^0.16.1",
         "url-loader": "^0.6.2",
         "webpack": "^4.1.1",
@@ -155,8 +158,6 @@
         "webpack-hot-middleware": "^2.7.1"
     },
     "jest": {
-        "testMatch": [
-            "**/__tests__/**/?(*.)(spec|test).js?(x)"
-        ]
+        "testMatch": ["**/__tests__/**/?(*.)(spec|test).js?(x)"]
     }
 }

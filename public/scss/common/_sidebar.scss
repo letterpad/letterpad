@@ -1,7 +1,7 @@
 .sidebar {
     position: fixed;
     width: 250px;
-    background-color: $color-bg-secondary;
+    background-color: var(--color-bg-secondary);
     height: 100%;
     top: 0;
     left: 0;
@@ -23,7 +23,7 @@
         padding: 15px 30px;
         font-size: 13px;
         font-weight: 300;
-        color: $color-text-primary-invert;
+        color: var(--color-text-primary-invert);
     }
     .social-icons a {
         font-size: 12px;

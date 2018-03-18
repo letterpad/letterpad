@@ -3,14 +3,21 @@ import { hydrate } from "react-dom";
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
 import client from "./apolloClient";
-import App from "./containers/App";
+import Route from "./Route";
 
 const app = (
     <BrowserRouter>
         <ApolloProvider client={client}>
-            <App />
+            <Route />
         </ApolloProvider>
     </BrowserRouter>
 );
 
 hydrate(app, document.getElementById("app"));
+
+if (module.hot) {
+    module.hot.accept("./Route", () => {
+        const nextApp = require("./Route").default;
+        hydrate(app, document.getElementById("app"));
+    });
+}
