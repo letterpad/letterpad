@@ -43,7 +43,6 @@ const addUser = async (req, res) => {
             const newToken = jwt.sign(data, SECRET, {
                 expiresIn: req.user.expiresIn
             });
-            console.log(newToken);
             res.setHeader("x-refresh-token", newToken);
             // res.send(newToken);
             //}

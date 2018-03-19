@@ -14,17 +14,21 @@ const config = require("./config/index.js").default;
 const compression = require("compression");
 const adminServerRendering = require("./admin/serverRendering");
 const clientServerRendering = require("./client/serverRendering");
+const FileNameReplacementPlugin = require("./webpack/FileNameReplacementPlugin");
 
 const app = express();
 
 app.use(compression());
 
 if (process.env.NODE_ENV === "dev") {
-    const wpConfigFile = "./webpack/webpack.config.dev.js";
-    const webpackConfig = require(wpConfigFile)[0];
+    const wpConfigFile = "./webpack/webpack.dev.js";
+    const webpackConfig = require(wpConfigFile)({
+        theme: process.env.THEME
+    })[1];
     const compiler = webpack(webpackConfig);
     const webpackDevMiddleware = require("webpack-dev-middleware");
     const webpackHotMiddleware = require("webpack-hot-middleware");
+
     app.use(
         webpackDevMiddleware(compiler, {
             hot: true,

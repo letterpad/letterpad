@@ -1,7 +1,7 @@
 var fs = require("fs");
 var path = require("path");
 
-var FileNameReplacementPlugin = function(folder, theme) {
+var FileNameReplacementPlugin = function(theme) {
     const target = "/client/themes/" + theme + "/";
     return {
         apply: function(compiler) {
@@ -28,6 +28,7 @@ function validateAndReplace(result, target) {
             if (result[key].includes("/client/")) {
                 var replacement = result[key].replace("/client/", target);
                 if (fs.existsSync(path.resolve(replacement))) {
+                    console.log("replaced", replacement);
                     result[key] = replacement;
                 }
             }

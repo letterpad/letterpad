@@ -17,10 +17,13 @@ module.exports.init = app => {
             cache: new InMemoryCache()
         });
         client.query({ query: GET_OPTIONS }).then(settings => {
-            const theme = settings.data.settings.filter(
+            let theme = settings.data.settings.filter(
                 item => item.option == "theme"
             )[0].value;
-
+            // In dev mode if a theme is explicitly called, then use that
+            if (process.env.THEME !== "") {
+                let theme = process.env.THEME;
+            }
             let serverFile = "../build/" + theme + ".node";
             if (req.query.theme && req.query.theme !== "") {
                 const previewTheme = "../build/" + req.query.theme + ".node";
@@ -28,6 +31,7 @@ module.exports.init = app => {
                     serverFile = previewTheme;
                 }
             }
+            console.log("=====================", serverFile);
             const server = require(serverFile).default;
             server(req, client).then(({ html, apolloState, head }) => {
                 res.end(getHtml(theme, html, apolloState, head));
@@ -51,9 +55,14 @@ function getHtml(theme, html, state, head) {
 
     let devBundles = [
         "/js/highlight.min.js",
-        "/js/themes/" + theme + "/dev/vendor-bundle.js",
-        "/js/themes/" + theme + "/dev/client-bundle.js"
+        "/static/vendor-bundle.js",
+        "/static/client-bundle.js"
     ];
+    // let devBundles = [
+    //     "/js/highlight.min.js",
+    //     "/js/themes/" + theme + "/dev/vendor-bundle.js",
+    //     "/js/themes/" + theme + "/dev/client-bundle.js"
+    // ];
 
     const prodBundles = [
         "/js/highlight.min.js",
@@ -77,8 +86,13 @@ function getHtml(theme, html, state, head) {
                     content="width=device-width, initial-scale=1"
                 />
                 ${metaTags}
-                <link href="/css/client.css" rel="stylesheet"/>
-                <link href="/css/custom.css" rel="stylesheet"/>
+                ${
+                    process.env.NODE_ENV === "production"
+                        ? '<link href="/css/${theme}/client.min.css" rel="stylesheet"/> \
+                     <link href="/css/${theme}/custom.min.css" rel="stylesheet"/>'
+                        : ""
+                }
+                
             </head>
             <body>
                 <div id="app">${html}</div>

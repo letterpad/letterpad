@@ -7,7 +7,7 @@ import { graphql } from "react-apollo";
 import {
     GET_POSTS_LINKED_TAXONOMIES,
     GET_LATEST_PUBLISHED_POSTS
-} from "../../shared/queries/Queries";
+} from "shared/queries/Queries";
 
 class Sidebar extends Component {
     constructor(props) {

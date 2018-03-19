@@ -15,7 +15,9 @@ const WithResize = WrappedComonent => {
         }
         componentDidMount() {
             this.mounted = true;
-            window.addEventListener("resize", this.onResize);
+            if (typeof window !== "undefined") {
+                window.addEventListener("resize", this.onResize);
+            }
             this.onResize();
         }
         componentWillUnmount() {

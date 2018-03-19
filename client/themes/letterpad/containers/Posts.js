@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import ArticleListItem from "../components/Post/ArticleListItem";
 import StackGrid from "react-stack-grid";
 import Loader from "../components/Loader";
-import config from "../../config";
+import config from "../../../../config";
 import Paginate from "../components/Paginate";
 import OhSnap from "../components/OhSnap";
 import WithResize from "./Hoc/WithResize";
-import PostsData from "../data-supply/PostsData";
+import PostsData from "client/data-supply/PostsData";
 
 class Posts extends Component {
     constructor(props) {

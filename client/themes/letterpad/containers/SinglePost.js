@@ -4,8 +4,8 @@ import Loader from "../components/Loader";
 import SEO from "../components/SEO";
 import PropTypes from "prop-types";
 import OhSnap from "../components/OhSnap";
-import AdjacentPostsData from "../data-supply/AdjacentPostsData";
-import SinglePostData from "../data-supply/SinglePostData";
+import AdjacentPostsData from "client/data-supply/AdjacentPostsData";
+import SinglePostData from "client/data-supply/SinglePostData";
 
 class SinglePost extends Component {
     render() {

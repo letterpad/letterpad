@@ -2,13 +2,10 @@ import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import StackGrid from "react-stack-grid";
 import ArticleListItem from "../components/Post/ArticleListItem";
-import appoloClient from "../apolloClient";
-import config from "../../config";
+import appoloClient from "client/apolloClient";
+import config from "../../../../config";
 import Loader from "../components/Loader";
-import {
-    SEARCH_POSTS_BY_TAXONOMY,
-    SEARCH_POSTS
-} from "../../shared/queries/Queries";
+import { SEARCH_POSTS_BY_TAXONOMY, SEARCH_POSTS } from "shared/queries/Queries";
 import Paginate from "../components/Paginate";
 import OhSnap from "../components/OhSnap";
 
