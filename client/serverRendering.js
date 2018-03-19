@@ -31,7 +31,6 @@ module.exports.init = app => {
                     serverFile = previewTheme;
                 }
             }
-            console.log("=====================", serverFile);
             const server = require(serverFile).default;
             server(req, client).then(({ html, apolloState, head }) => {
                 res.end(getHtml(theme, html, apolloState, head));
@@ -58,19 +57,12 @@ function getHtml(theme, html, state, head) {
         "/static/vendor-bundle.js",
         "/static/client-bundle.js"
     ];
-    // let devBundles = [
-    //     "/js/highlight.min.js",
-    //     "/js/themes/" + theme + "/dev/vendor-bundle.js",
-    //     "/js/themes/" + theme + "/dev/client-bundle.js"
-    // ];
-
     const prodBundles = [
         "/js/highlight.min.js",
-        "/js/themes/" + theme + "/prod/vendor-bundle.min.js",
-        "/js/themes/" + theme + "/prod/client-bundle.min.js"
+        "/js/themes/" + theme + "/vendor-bundle.min.js",
+        "/js/themes/" + theme + "/client-bundle.min.js"
     ];
-    const bundles =
-        process.env.NODE_ENV === "production" ? prodBundles : devBundles;
+    const bundles = process.env.NODE_ENV === "dev" ? devBundles : prodBundles;
 
     const insertScript = script =>
         `<script type="text/javascript" src="${script}" defer></script>`;

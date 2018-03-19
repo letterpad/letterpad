@@ -4,10 +4,14 @@ const path = require("path");
 const fs = require("fs");
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 const clientConfig = args => {
+    if (args.theme == "") {
+        args.theme = "letterpad";
+    }
     const extractSass = new ExtractTextPlugin(
-        "../../../../css/" + args.theme + "/[name].min.css"
+        "../../../css/" + args.theme + "/[name].min.css"
     );
     return merge(baseConfig(args), {
         output: {
@@ -40,6 +44,9 @@ const clientConfig = args => {
 };
 
 const serverConfig = args => {
+    if (args.theme == "") {
+        args.theme = "letterpad";
+    }
     const BUILD_PATH = path.join(__dirname, "../build");
 
     const getExternals = () => {

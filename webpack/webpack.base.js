@@ -21,9 +21,6 @@ var babelOptions = {
 };
 
 module.exports = args => {
-    if (args.theme == "") {
-        args.theme = "letterpad";
-    }
     const config = {
         mode: isDev ? "development" : "production",
         watch: isDev,

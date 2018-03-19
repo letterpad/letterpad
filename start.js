@@ -23,7 +23,7 @@ app.use(compression());
 if (process.env.NODE_ENV === "dev") {
     const wpConfigFile = "./webpack/webpack.dev.js";
     const webpackConfig = require(wpConfigFile)({
-        theme: process.env.THEME
+        theme: process.env.THEME || "letterpad"
     })[1];
     const compiler = webpack(webpackConfig);
     const webpackDevMiddleware = require("webpack-dev-middleware");
