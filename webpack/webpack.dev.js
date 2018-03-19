@@ -5,6 +5,9 @@ const fs = require("fs");
 const webpack = require("webpack");
 
 const clientConfig = args => {
+    if (args.theme == "") {
+        args.theme = "letterpad";
+    }
     return merge(baseConfig(args), {
         devtool: "eval-source-map",
         output: {
@@ -35,6 +38,9 @@ const clientConfig = args => {
 };
 
 const serverConfig = args => {
+    if (args.theme == "") {
+        args.theme = "letterpad";
+    }
     const BUILD_PATH = path.join(__dirname, "../build");
 
     const getExternals = () => {
