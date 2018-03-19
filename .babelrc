@@ -8,10 +8,12 @@
                 "targets": {
                     "node": 8
                 },
-                "useBuiltIns": true
+                "useBuiltIns": true,
+                "loose": true,
+                "modules": false
             }
         ]
     ],
 
-    "plugins": ["transform-object-rest-spread"]
+    "plugins": ["react-hot-loader/babel", "transform-object-rest-spread"]
 }

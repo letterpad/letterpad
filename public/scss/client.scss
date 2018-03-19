@@ -10,9 +10,10 @@ Primary use: Blog
 [Sidebar Styles]
 */
 
-@import "../css/bootstrap.min.css";
+/*@import "../css/bootstrap.min.css";*/
+@import url("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css");
 @import "../css/vertical.css";
-/*@import "../css/font-awesome.min.css";*/
+@import "../css/font-awesome.min.css";
 @import "./common.scss";
 @import "./client/_layout.scss";
 @import "./client/_navbar.scss";

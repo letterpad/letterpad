@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/node /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/yarn add webpack-sources@1.0.1 --save-dev
+  /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/node /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/yarn add webpack-merge --dev
 
 PATH: 
   /Users/ajaxtown/google-cloud-sdk/bin:/Users/ajaxtown/.nvm/versions/node/v8.1.0/bin:/usr/local/mysql/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin:/Users/ajaxtown/google-cloud-sdk/bin:/usr/local/mysql/bin:/usr/local/opt/php56/bin/php:/usr/local/opt/php56/bin/php
@@ -22,16 +22,12 @@ npm manifest:
       "private": true,
       "scripts": {
           "start-prod": "better-npm-run start-prod",
-          "build":
-              "NODE_ENV=production  webpack --verbose --colors --display-error-details --config webpack/webpack.config.prod.js",
-          "build-theme":
-              "NODE_ENV=production  webpack --verbose --colors --display-error-details --config webpack/webpack.theme.js",
+          "build": "NODE_ENV=production  webpack --verbose --colors --display-error-details --config webpack/webpack.config.prod.js",
+          "build-theme": "NODE_ENV=production  webpack --verbose --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${THEME}",
           "start-dev": "better-npm-run start-dev",
           "insert-fake": "better-npm-run insert-fake",
-          "dev":
-              "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./start.js --profile --json\"",
-          "theme":
-              "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./start.js --profile --json\" \"webpack --config webpack/webpack.theme.js --watch --env.theme=${THEME}\"",
+          "dev": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./start.js --profile --json\"",
+          "theme": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./start.js --profile --json\" \"webpack --config webpack/webpack.theme.dev.js --watch --env.theme=${THEME}\"",
           "test": "jest --runInBand"
       },
       "betterScripts": {
@@ -57,8 +53,7 @@ npm manifest:
               }
           },
           "build": {
-              "command":
-                  "webpack --verbose --colors --display-error-details --config webpack/webpack.config.prod.js",
+              "command": "webpack --verbose --colors --display-error-details --config webpack/webpack.config.prod.js",
               "env": {
                   "NODE_ENV": "production"
               }
@@ -71,7 +66,9 @@ npm manifest:
       "author": "Abhishek Saha",
       "license": "MIT",
       "homepage": "http://ajaxtown.com",
-      "workspaces": ["client/themes/*"],
+      "workspaces": [
+          "client/themes/*"
+      ],
       "dependencies": {
           "apollo-cache-inmemory": "^1.1.4",
           "apollo-client": "^2.0.4",
@@ -101,12 +98,14 @@ npm manifest:
           "multer": "^1.3.0",
           "node-fetch": "^1.7.3",
           "nodemailer": "^4.6.2",
+          "postcss-nested": "^3.0.0",
           "prop-types": "^15.6.0",
           "react": "^16.2.0",
           "react-apollo": "^1.4.0",
           "react-color": "^2.13.8",
           "react-dom": "^16.2.0",
           "react-helmet": "^5.2.0",
+          "react-hot-loader": "^4.0.0",
           "react-infinite-scroller": "^1.1.3",
           "react-nestable": "^1.0.19",
           "react-notify-toast": "^0.4.0",
@@ -116,6 +115,7 @@ npm manifest:
           "react-stack-grid": "^0.7.1",
           "react-tag-input": "^4.6.2",
           "sequelize": "^3.30.2",
+          "webpack-sources": "1.0.1",
           "whatwg-fetch": "^2.0.3"
       },
       "devDependencies": {
@@ -173,7 +173,9 @@ npm manifest:
           "webpack-hot-middleware": "^2.7.1"
       },
       "jest": {
-          "testMatch": ["**/__tests__/**/?(*.)(spec|test).js?(x)"]
+          "testMatch": [
+              "**/__tests__/**/?(*.)(spec|test).js?(x)"
+          ]
       }
   }
 
@@ -3138,7 +3140,7 @@ Lockfile:
     dependencies:
       webidl-conversions "^4.0.2"
   
-  dot-prop@^4.1.0:
+  dot-prop@^4.1.0, dot-prop@^4.1.1:
     version "4.2.0"
     resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-4.2.0.tgz#1f19e0c2e1aa0e32797c49799f2837ac6af69c57"
     dependencies:
@@ -3654,7 +3656,7 @@ Lockfile:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/fast-json-stable-stringify/-/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
   
-  fast-levenshtein@~2.0.4:
+  fast-levenshtein@^2.0.6, fast-levenshtein@~2.0.4:
     version "2.0.6"
     resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   
@@ -4346,7 +4348,7 @@ Lockfile:
     version "4.2.1"
     resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.1.tgz#9634502aa12c445dd5a7c5734b572bb8738aacbb"
   
-  hoist-non-react-statics@^2.1.0, hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.3.0:
+  hoist-non-react-statics@^2.1.0, hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.3.0, hoist-non-react-statics@^2.5.0:
     version "2.5.0"
     resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
   
@@ -7140,6 +7142,13 @@ Lockfile:
       icss-replace-symbols "^1.1.0"
       postcss "^6.0.1"
   
+  postcss-nested@^3.0.0:
+    version "3.0.0"
+    resolved "https://registry.yarnpkg.com/postcss-nested/-/postcss-nested-3.0.0.tgz#cde40bd07a078565f3df72e2dc2665871c724852"
+    dependencies:
+      postcss "^6.0.14"
+      postcss-selector-parser "^3.1.1"
+  
   postcss-nesting@^4.0.1, postcss-nesting@^4.2.1:
     version "4.2.1"
     resolved "https://registry.yarnpkg.com/postcss-nesting/-/postcss-nesting-4.2.1.tgz#0483bce338b3f0828ced90ff530b29b98b00300d"
@@ -7227,6 +7236,14 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-2.2.3.tgz#f9437788606c3c9acee16ffe8d8b16297f27bb90"
     dependencies:
       flatten "^1.0.2"
+      indexes-of "^1.0.1"
+      uniq "^1.0.1"
+  
+  postcss-selector-parser@^3.1.1:
+    version "3.1.1"
+    resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-3.1.1.tgz#4f875f4afb0c96573d5cf4d74011aee250a7e865"
+    dependencies:
+      dot-prop "^4.1.1"
       indexes-of "^1.0.1"
       uniq "^1.0.1"
   
@@ -7574,6 +7591,16 @@ Lockfile:
       object-assign "^4.1.1"
       prop-types "^15.5.4"
       react-side-effect "^1.1.0"
+  
+  react-hot-loader@^4.0.0:
+    version "4.0.0"
+    resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.0.0.tgz#3452fa9bc0d0ba9dfc5b0ccfa25101ca8dbd2de2"
+    dependencies:
+      fast-levenshtein "^2.0.6"
+      global "^4.3.0"
+      hoist-non-react-statics "^2.5.0"
+      prop-types "^15.6.0"
+      shallowequal "^1.0.2"
   
   react-infinite-scroller@^1.1.3:
     version "1.1.3"
@@ -8406,7 +8433,7 @@ Lockfile:
       inherits "^2.0.1"
       safe-buffer "^5.0.1"
   
-  shallowequal@^1.0.1:
+  shallowequal@^1.0.1, shallowequal@^1.0.2:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.0.2.tgz#1561dbdefb8c01408100319085764da3fcf83f8f"
   
@@ -8572,7 +8599,7 @@ Lockfile:
     dependencies:
       amdefine ">=0.0.4"
   
-  source-map@^0.5.0, source-map@^0.5.3, source-map@^0.5.6, source-map@^0.5.7, source-map@~0.5.1:
+  source-map@^0.5.0, source-map@^0.5.3, source-map@^0.5.6, source-map@^0.5.7, source-map@~0.5.1, source-map@~0.5.3:
     version "0.5.7"
     resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   
@@ -9479,6 +9506,13 @@ Lockfile:
       html-entities "^1.2.0"
       querystring "^0.2.0"
       strip-ansi "^3.0.0"
+  
+  webpack-sources@1.0.1:
+    version "1.0.1"
+    resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-1.0.1.tgz#c7356436a4d13123be2e2426a05d1dad9cbe65cf"
+    dependencies:
+      source-list-map "^2.0.0"
+      source-map "~0.5.3"
   
   webpack-sources@^1.0.1, webpack-sources@^1.1.0:
     version "1.1.0"
