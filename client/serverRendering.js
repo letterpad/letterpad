@@ -3,8 +3,24 @@ import path from "path";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import fetch from "node-fetch";
+import fs from "fs";
 import config from "../config";
 import { GET_OPTIONS } from "../shared/queries/Queries";
+
+const getParams = query => {
+    if (!query) {
+        return {};
+    }
+
+    let hashes = query.slice(query.indexOf("?") + 1).split("&");
+    let params = {};
+    hashes.map(hash => {
+        let [key, val] = hash.split("=");
+        params[key] = decodeURIComponent(val);
+    });
+
+    return params;
+};
 
 module.exports.init = app => {
     app.get("*", (req, res) => {
@@ -20,15 +36,32 @@ module.exports.init = app => {
             let theme = settings.data.settings.filter(
                 item => item.option == "theme"
             )[0].value;
+
             // In dev mode if a theme is explicitly called, then use that
-            if (process.env.THEME !== "") {
-                let theme = process.env.THEME;
+            if (process.env.THEME && process.env.THEME !== "") {
+                theme = process.env.THEME;
             }
             let serverFile = "../build/" + theme + ".node";
-            if (req.query.theme && req.query.theme !== "") {
-                const previewTheme = "../build/" + req.query.theme + ".node";
-                if (fs.existsSync(path.resolve(previewTheme))) {
-                    serverFile = previewTheme;
+            const urlParams = {
+                ...getParams(req.originalUrl),
+                ...getParams(req.header("Referer"))
+            };
+            let previewTheme = false;
+
+            if (urlParams && "theme" in urlParams) {
+                theme = urlParams.theme;
+                previewTheme = true;
+            }
+
+            if (previewTheme) {
+                const previewThemePath = "../build/" + theme + ".node.js";
+                if (fs.existsSync(path.join(__dirname, previewThemePath))) {
+                    console.log("Previewing ", theme);
+                    serverFile = previewThemePath;
+                } else {
+                    console.log(
+                        "Server bundle for theme " + theme + " not found"
+                    );
                 }
             }
             const server = require(serverFile).default;
@@ -80,8 +113,8 @@ function getHtml(theme, html, state, head) {
                 ${metaTags}
                 ${
                     process.env.NODE_ENV === "production"
-                        ? '<link href="/css/${theme}/client.min.css" rel="stylesheet"/> \
-                     <link href="/css/${theme}/custom.min.css" rel="stylesheet"/>'
+                        ? `<link href="/css/${theme}/client.min.css" rel="stylesheet"/>
+                     <link href="/css/${theme}/custom.min.css" rel="stylesheet"/>`
                         : ""
                 }
                 

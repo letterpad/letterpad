@@ -37,6 +37,7 @@ export const GET_SINGLE_POST = gql`
             author {
                 fname
                 lname
+                avatar
             }
             type
             status
@@ -65,6 +66,11 @@ export const GET_POST_BY_SLUG = gql`
             excerpt
             mode
             cover_image
+            author {
+                fname
+                lname
+                avatar
+            }
             taxonomies {
                 id
                 name
@@ -192,6 +198,7 @@ export const SEARCH_POSTS = gql`
                 author {
                     fname
                     lname
+                    avatar
                 }
                 type
                 slug
@@ -234,6 +241,11 @@ export const SEARCH_POSTS_BY_TAXONOMY = gql`
                 created_at
                 slug
                 excerpt
+                author {
+                    fname
+                    lname
+                    avatar
+                }
                 taxonomies {
                     id
                     name
@@ -321,6 +333,11 @@ export const CAT_POSTS = gql`
                 created_at
                 slug
                 excerpt
+                author {
+                    fname
+                    lname
+                    avatar
+                }
                 taxonomies {
                     id
                     name
@@ -344,6 +361,11 @@ export const PAGE_MENU = gql`
                 excerpt
                 cover_image
                 slug
+                author {
+                    fname
+                    lname
+                    avatar
+                }
                 taxonomies {
                     id
                     name

@@ -18,8 +18,6 @@ import SinglePost from "./containers/SinglePost";
 import SearchWrapper from "./containers/SearchWrapper";
 import Layout from "./containers/Layout";
 
-require("../public/scss/client.scss");
-
 class App extends Component {
     constructor(props) {
         super(props);
@@ -58,50 +56,70 @@ class App extends Component {
         const routes = [
             {
                 exact: true,
-                component: Layout(Home, { settings }),
+                component: Layout(Home, { settings }, "Home"),
                 path: "/"
             },
             {
                 exact: true,
-                component: Layout(Posts, { settings }),
+                component: Layout(Posts, { settings }, "Posts"),
                 path: "/posts/:slug"
             },
             {
                 exact: true,
-                component: Layout(SinglePage, {
-                    settings
-                }),
+                component: Layout(
+                    SinglePage,
+                    {
+                        settings
+                    },
+                    "SinglePage"
+                ),
                 path: "/page/:slug"
             },
             {
                 exact: true,
-                component: Layout(SinglePost, {
-                    settings
-                }),
+                component: Layout(
+                    SinglePost,
+                    {
+                        settings
+                    },
+                    "SinglePost"
+                ),
                 path: "/post/:slug"
             },
             {
                 exact: true,
-                component: Layout(SearchWrapper, {
-                    type: "category",
-                    settings
-                }),
+                component: Layout(
+                    SearchWrapper,
+                    {
+                        type: "category",
+                        settings
+                    },
+                    "SearchWrapper"
+                ),
                 path: "/category/:query"
             },
             {
                 exact: true,
-                component: Layout(SearchWrapper, {
-                    type: "tag",
-                    settings
-                }),
+                component: Layout(
+                    SearchWrapper,
+                    {
+                        type: "tag",
+                        settings
+                    },
+                    "SearchWrapper"
+                ),
                 path: "/tag/:query"
             },
             {
                 exact: true,
-                component: Layout(SearchWrapper, {
-                    type: "post",
-                    settings
-                }),
+                component: Layout(
+                    SearchWrapper,
+                    {
+                        type: "post",
+                        settings
+                    },
+                    "SearchWrapper"
+                ),
                 path: "/search/:query"
             }
         ];

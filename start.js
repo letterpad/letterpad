@@ -6,7 +6,7 @@ require.extensions[".css"] = () => "";
 //     plugins: ["syntax-dynamic-import"]
 // });
 require("babel-core/register");
-// require("babel-polyfill");
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const webpack = require("webpack");
@@ -93,7 +93,7 @@ app.get("/build", (req, res) => {
     });
 });
 
-// adminServerRendering.init(app);
+adminServerRendering.init(app);
 clientServerRendering.init(app);
 
 const server = app.listen(config.appPort, function() {
