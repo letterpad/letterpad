@@ -119,12 +119,24 @@ const seedIfEmpty = async () => {
 };
 console.log("Initiating Graphql Server");
 let httpServer = null;
-models.conn.sync({ force: false }).then(async () => {
-    // await seedIfEmpty();
-    httpServer = app.listen(config.apiPort, () => {
-        console.log(`App listening on port ${config.apiPort}`);
+models.conn
+    .sync({ force: false })
+    .then(async () => {
+        // await seedIfEmpty();
+
+        httpServer = app.listen(
+            config.apiPort,
+            () => {
+                console.log(`App listening on port ${config.apiPort}`);
+            },
+            e => {
+                console.log(e);
+            }
+        );
+    })
+    .catch(e => {
+        console.log(e);
     });
-});
 export function killServer() {
     httpServer.close();
 }

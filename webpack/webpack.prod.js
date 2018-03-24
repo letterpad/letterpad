@@ -18,7 +18,7 @@ const clientConfig = args => {
             path: path.join(__dirname, "../public/js/themes/" + args.theme),
             filename: "[name]-bundle.min.js"
         },
-        plugins: [new MinifyPlugin(), extractSass],
+        plugins: [extractSass],
         module: {
             rules: [
                 {

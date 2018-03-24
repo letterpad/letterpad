@@ -29,8 +29,11 @@ const clientConfig = args => {
                             options: { importLoaders: 1 }
                         },
                         "postcss-loader"
-                    ],
-                    exclude: /node_modules/
+                    ]
+
+                    // include: [
+                    //     path.join(__dirname, "../client/themes/" + args.theme)
+                    // ]
                 }
             ]
         }

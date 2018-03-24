@@ -197,7 +197,19 @@ class Themes extends Component {
                         onChange={this.handleCssChange}
                     />
                 </div>
-                <div className="row">
+                <div className="card">
+                    <div className="module-title">Select theme</div>
+                    <div className="module-subtitle">
+                        Browse your themes here
+                    </div>
+                </div>
+                <div className="card">
+                    <div className="form-group">
+                        <label className="custom-label">Select Theme</label>
+                    </div>
+                </div>
+
+                <div className="row hide">
                     <div className="color-blocks">
                         <ColorBox
                             name="Primary Color"

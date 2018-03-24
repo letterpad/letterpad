@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Sidebar from "client/containers/Sidebar";
 import Navbar from "client/components/Navbar";
 import Footer from "client/components/Footer";
+require("../../../../public/scss/client.scss");
 require("../style.scss");
 
 export default function Layout(Element, props) {

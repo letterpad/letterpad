@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { uploadFile } from "../../util";
 
 export default class General extends Component {
     constructor(props) {
         super(props);
         this.updateOption = this.updateOption.bind(this);
         this.switchLanguage = this.switchLanguage.bind(this);
+
+        this.uploadBanner = this.uploadBanner.bind(this);
+        this.updateBanner = this.updateBanner.bind(this);
+
         this.state = {
             post_display: this.props.data.post_display.value,
-            layout_display: this.props.data.layout_display.value
+            layout_display: this.props.data.layout_display.value,
+            banner: this.props.data.banner.value
         };
 
         this.langOptions = JSON.parse(this.props.data.locale.value);
@@ -23,9 +29,20 @@ export default class General extends Component {
         });
         this.updateOption("locale", JSON.stringify(locales));
     }
+    async uploadBanner(files) {
+        const banner = await uploadFile({ files });
+        this.updateOption("banner", banner);
+        this.setState({ banner });
+    }
+
+    updateBanner(banner) {
+        this.updateOption("banner", banner);
+        this.setState({ banner });
+    }
     render() {
         const checked = { row: {}, grid: {}, "two-column": {}, centered: {} };
         const { t } = this.context;
+        const banner = this.state.banner || "/images/avatar.png";
 
         if (this.state.post_display == "row") {
             checked.row.checked = true;
@@ -213,6 +230,35 @@ export default class General extends Component {
                             {t("common.fullWidth")}
                         </label>
                     </div>
+                </div>
+                <div className="form-group">
+                    <label className="custom-label">Upload Hero Banner</label>
+                    <div className="banner-wrapper">
+                        <div className="banner-image">
+                            <img alt="" src={banner} />
+                        </div>
+                        {!this.state.banner ? (
+                            <a
+                                href="#"
+                                onClick={_ => this.refs.uploadInput.click()}
+                            >
+                                Add Banner
+                            </a>
+                        ) : (
+                            <a href="#" onClick={_ => this.updateBanner("")}>
+                                Remove Banner
+                            </a>
+                        )}
+                    </div>
+                    <input
+                        ref="uploadInput"
+                        onChange={input =>
+                            this.uploadBanner(input.target.files)
+                        }
+                        type="file"
+                        className="hide"
+                        name="uploads[]"
+                    />
                 </div>
                 <div className="form-group">
                     <label className="custom-label">

@@ -1,7 +1,19 @@
+.navbar {
+    border-radius: 0px;
+}
 ul.nav {
     text-transform: uppercase;
     font-weight: 100;
     letter-spacing: 1px;
+
+    .dropdown-menu {
+        border-radius: 0px;
+        margin-top: -2px;
+    }
+    .dropdown-submenu:hover > .dropdown-menu {
+        margin-top: -6px;
+        box-shadow: none;
+    }
 }
 .navbar-custom {
     .nav-list li a {

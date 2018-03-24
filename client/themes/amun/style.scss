@@ -1,3 +1,6 @@
+body {
+    background: #fff;
+}
 header {
     grid-area: header;
 }
@@ -19,10 +22,11 @@ aside {
         display: grid;
         grid-template-areas:
             "nav nav nav nav nav"
-            " . content content side ."
+            "header header header header header"
+            " . content content content ."
             "footer footer footer footer footer";
         grid-template-columns: 2fr repeat(3, minmax(auto, 368px)) 2fr;
-        grid-template-rows: auto 1fr auto;
+        grid-template-rows: auto 1fr 1fr auto;
         grid-gap: 16px;
         height: 100vh;
 
@@ -36,20 +40,20 @@ aside {
         &.main {
             grid-template-areas:
                 "nav"
+                "header"
                 "content"
-                "side"
                 "footer";
 
             grid-template-columns: 1fr;
             grid-template-rows:
                 auto
-                minmax(75px, auto)
+                minmax(400px, auto)
                 1fr
                 minmax(75px, auto)
                 auto; /* Footer */
-            margin-top: -16px;
+
             main {
-                margin: 0 16px;
+                margin: 0;
             }
         }
 
@@ -57,4 +61,39 @@ aside {
             display: none;
         }
     }
+}
+
+.hero {
+    height: 600px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: -60px;
+    .site-header-content {
+        background: rgba(0, 0, 0, 0.36);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: #fff;
+
+        h1.site-title {
+            font-size: 3em;
+        }
+        h2.site-description {
+            color: #bfbdbd;
+            font-size: 1.2rem;
+            letter-spacing: 9px;
+        }
+    }
+}
+
+.post-grid:not(.with-padding) .post {
+    border: 1px solid #eee;
+}
+
+h1.site_title {
+    line-height: 50px;
+    margin-left: 65px;
 }
