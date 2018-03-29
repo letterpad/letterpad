@@ -4,7 +4,7 @@ import production from "./config.prod.js";
 const env =
     "undefined" !== typeof window ? window.NODE_ENV : process.env.NODE_ENV;
 
-const configFile = env === "dev" ? dev : production;
+const configFile = dev; //env === "dev" ? dev : production;
 
 const config = new function(configFile) {
     this.rootUrl = configFile.rootUrl;
@@ -16,6 +16,7 @@ const config = new function(configFile) {
     this.defaultSlug = "ajaxtown";
     this.adminPath = "/admin";
     this.itemsPerPage = 6;
+    this.baseName = configFile.baseName;
 }(configFile);
 
 export default config;

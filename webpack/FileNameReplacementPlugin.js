@@ -28,7 +28,6 @@ function validateAndReplace(result, target) {
             if (result[key].includes("/client/")) {
                 var replacement = result[key].replace("/client/", target);
                 if (fs.existsSync(path.resolve(replacement))) {
-                    console.log("replaced", replacement);
                     result[key] = replacement;
                 }
             }

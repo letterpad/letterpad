@@ -1,7 +1,8 @@
 export default {
-    apiUrl: "http://api.letterpad.org/graphql",
-    uploadUrl: "http://api.letterpad.org/upload",
-    rootUrl: "http://letterpad.org/",
-    appPort: 6060,
-    apiPort: 6061
+    apiUrl: "http://api.letterpad.org/docs/graphql",
+    uploadUrl: "http://api.letterpad.org/docs/upload",
+    rootUrl: "http://letterpad.org/docs",
+    appPort: 7070,
+    apiPort: 7071,
+    baseName: "/docs/"
 };

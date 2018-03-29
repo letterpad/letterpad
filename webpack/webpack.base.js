@@ -1,6 +1,8 @@
 const webpack = require("webpack");
 const path = require("path");
 var FileNameReplacementPlugin = require("./FileNameReplacementPlugin");
+const WriteFilePlugin = require("write-file-webpack-plugin");
+
 const isDev = process.env.NODE_ENV === "dev" ? true : false;
 
 var babelOptions = {
@@ -20,29 +22,27 @@ var babelOptions = {
     plugins: ["transform-object-rest-spread"]
 };
 
+const vendorFiles = [
+    "babel-polyfill",
+    "react",
+    "react-dom",
+    "redux",
+    "react-apollo",
+    "moment"
+];
 module.exports = args => {
     const config = {
         mode: isDev ? "development" : "production",
         watch: isDev,
         entry: {
-            vendor: [
-                "babel-polyfill",
-                "react",
-                "react-dom",
-                "redux",
-                "react-apollo",
-                "moment"
-            ],
-            client: [
-                "babel-polyfill",
-                "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
+            ["admin/public/dist/vendor"]: vendorFiles,
+            ["client/themes/" +
+            args.theme +
+            "/public/dist/vendor"]: vendorFiles,
+            ["client/themes/" + args.theme + "/public/dist/client"]: [
                 path.join(__dirname, "../client/app")
             ],
-            admin: [
-                "babel-polyfill",
-                "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
-                path.join(__dirname, "../admin/app")
-            ]
+            "admin/public/dist/admin": [path.join(__dirname, "../admin/app")]
         },
         resolve: {
             alias: {
@@ -73,7 +73,11 @@ module.exports = args => {
                 }
             }),
             new FileNameReplacementPlugin(args.theme),
-            new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/)
+            new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
+            new WriteFilePlugin({
+                // exclude hot-update files
+                test: /^(?!.*(hot)).*/
+            })
         ],
         module: {
             rules: [
@@ -99,18 +103,10 @@ module.exports = args => {
     };
 
     if (isDev) {
-        console.log("Dev build");
         config.plugins.push(
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoEmitOnErrorsPlugin()
         );
-    } else {
-        config.entry.client = config.entry.client.filter(entry => {
-            if (entry.includes("webpack-hot-middleware")) {
-                return false;
-            }
-            return true;
-        });
     }
 
     return config;

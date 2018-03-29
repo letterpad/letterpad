@@ -10,7 +10,7 @@ export default class CreateArticle extends Component {
         super(props);
         this.changeEditor = this.changeEditor.bind(this);
         this.state = {
-            isMarkdown: "standard"
+            isMarkdown: "rich-text"
         };
     }
     componentWillUnmount() {
@@ -18,7 +18,7 @@ export default class CreateArticle extends Component {
     }
 
     changeEditor(e) {
-        const mode = e.target.checked ? "markdown" : "standard";
+        const mode = e.target.checked ? "markdown" : "rich-text";
         PostActions.setData({ mode });
         this.setState({ isMarkdown: ~~e.target.checked });
     }
@@ -60,7 +60,11 @@ export default class CreateArticle extends Component {
                         </div>
                     </div>
                     <div className="post-content">
-                        <Editor body="" />
+                        <Editor
+                            isMarkdown={this.state.isMarkdown}
+                            body=""
+                            mdBody=""
+                        />
                     </div>
                 </article>
             </div>

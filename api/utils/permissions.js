@@ -5,7 +5,6 @@ const createResolver = resolver => {
     baseResolver.createResolver = childResolver => {
         const newResolver = async (root, args, context) => {
             const newArgs = await resolver(root, args, context);
-            console.log("new args", newArgs);
             return childResolver(root, newArgs, context);
         };
         return createResolver(newResolver);
@@ -26,7 +25,6 @@ export const requiresAuth = createResolver((root, args, context) => {
 
 export const requiresAdmin = requiresAuth.createResolver(
     (root, args, context) => {
-        console.log(context);
         if (context.error) {
             throw new UnauthorizedError({ error: context.error });
         }

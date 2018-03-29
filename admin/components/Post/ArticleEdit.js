@@ -61,8 +61,7 @@ export default class ArticleEdit extends Component {
                     <div className="post-content">
                         <Editor
                             isMarkdown={this.state.isMarkdown}
-                            mode={this.props.post.mode}
-                            body={this.props.post.body}
+                            {...this.props.post}
                         />
                     </div>
                 </article>

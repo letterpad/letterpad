@@ -1,84 +1,35 @@
 import gql from "graphql-tag";
+import { PostFragment } from "./Fragments";
 
 export const GET_POSTS = gql`
     query getPosts($type: String!, $offset: Int, $limit: Int, $status: String) {
         posts(type: $type, offset: $offset, limit: $limit, status: $status) {
             count
             rows {
-                id
-                title
-                body
-                author {
-                    fname
-                    lname
-                }
-                type
-                slug
-                mode
-                status
-                created_at
-                excerpt
-                taxonomies {
-                    id
-                    name
-                    type
-                }
+                ...postFields
             }
         }
     }
+    ${PostFragment}
 `;
 
 export const GET_SINGLE_POST = gql`
     query getPost($id: Int!) {
         post(id: $id) {
-            id
-            title
-            body
-            author {
-                fname
-                lname
-                avatar
-            }
-            type
-            status
-            mode
-            created_at
-            cover_image
-            excerpt
-            slug
-            taxonomies {
-                id
-                name
-                type
-            }
+            ...postFields
+            mdBody
         }
     }
+    ${PostFragment}
 `;
 
 export const GET_POST_BY_SLUG = gql`
     query singlePost($type: String, $slug: String) {
         post(type: $type, slug: $slug) {
-            id
-            title
-            body
-            status
-            created_at
-            excerpt
-            mode
-            cover_image
-            author {
-                fname
-                lname
-                avatar
-            }
-            taxonomies {
-                id
-                name
-                type
-                slug
-            }
+            ...postFields
         }
     }
+    ${PostFragment}
 `;
 
 export const GET_PAGE_NAMES = gql`
@@ -192,28 +143,11 @@ export const SEARCH_POSTS = gql`
         ) {
             count
             rows {
-                id
-                title
-                body
-                author {
-                    fname
-                    lname
-                    avatar
-                }
-                type
-                slug
-                status
-                created_at
-                excerpt
-                cover_image
-                taxonomies {
-                    id
-                    name
-                    type
-                }
+                ...postFields
             }
         }
     }
+    ${PostFragment}
 `;
 
 export const SEARCH_POSTS_BY_TAXONOMY = gql`
@@ -233,27 +167,11 @@ export const SEARCH_POSTS_BY_TAXONOMY = gql`
         ) {
             count
             posts {
-                id
-                title
-                body
-                type
-                cover_image
-                created_at
-                slug
-                excerpt
-                author {
-                    fname
-                    lname
-                    avatar
-                }
-                taxonomies {
-                    id
-                    name
-                    type
-                }
+                ...postFields
             }
         }
     }
+    ${PostFragment}
 `;
 
 export const BLOG_STATS = gql`
@@ -326,26 +244,11 @@ export const CAT_POSTS = gql`
         ) {
             count
             posts {
-                id
-                title
-                type
-                cover_image
-                created_at
-                slug
-                excerpt
-                author {
-                    fname
-                    lname
-                    avatar
-                }
-                taxonomies {
-                    id
-                    name
-                    type
-                }
+                ...postFields
             }
         }
     }
+    ${PostFragment}
 `;
 
 export const PAGE_MENU = gql`
@@ -353,30 +256,14 @@ export const PAGE_MENU = gql`
         pageMenu(slug: $slug, postType: $postType) {
             ok
             post {
-                id
-                title
-                body
-                status
-                created_at
-                excerpt
-                cover_image
-                slug
-                author {
-                    fname
-                    lname
-                    avatar
-                }
-                taxonomies {
-                    id
-                    name
-                    type
-                }
+                ...postFields
             }
             errors {
                 message
             }
         }
     }
+    ${PostFragment}
 `;
 
 export const ADJACENT_POSTS = gql`

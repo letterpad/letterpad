@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { withRouter } from "react-router";
 import { Helmet } from "react-helmet";
-import SEO from "./components/SEO";
-import Loader from "./components/Loader";
+import SEO from "./helpers/SEO";
+import Loader from "./helpers/Loader";
 
 // Data supply
-import SettingsData from "./data-supply/SettingsData";
+import SettingsData from "../shared/data-connectors/SettingsData";
 
 /*!------------------------------------------------------------------
 [View Containers-]
@@ -16,7 +16,7 @@ import Posts from "./containers/Posts";
 import SinglePage from "./containers/SinglePage";
 import SinglePost from "./containers/SinglePost";
 import SearchWrapper from "./containers/SearchWrapper";
-import Layout from "./containers/Layout";
+import Layout from "./containers/Hoc/Layout";
 
 class App extends Component {
     constructor(props) {

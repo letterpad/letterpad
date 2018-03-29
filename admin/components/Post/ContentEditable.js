@@ -29,6 +29,7 @@ export default class ContentEditable extends Component {
                 placeholder={this.props.placeholder}
                 onBlur={this.emitChange}
                 contentEditable
+                suppressContentEditableWarning
             >
                 {this.props.title}
             </h2>

@@ -10,15 +10,14 @@ const clientConfig = args => {
     if (args.theme == "") {
         args.theme = "letterpad";
     }
-    const extractSass = new ExtractTextPlugin(
-        "../../../css/" + args.theme + "/[name].min.css"
-    );
+    const extractSass = new ExtractTextPlugin("[name].min.css");
+    const extractSassAdmin = new ExtractTextPlugin("[name].min.css");
     return merge(baseConfig(args), {
         output: {
-            path: path.join(__dirname, "../public/js/themes/" + args.theme),
+            path: path.join(__dirname, "../"),
             filename: "[name]-bundle.min.js"
         },
-        plugins: [extractSass],
+        plugins: [extractSass, extractSassAdmin],
         module: {
             rules: [
                 {
@@ -36,7 +35,28 @@ const clientConfig = args => {
                             },
                             "postcss-loader"
                         ]
-                    })
+                    }),
+                    include: [
+                        path.join(__dirname, "../client/themes/" + args.theme)
+                    ]
+                },
+                {
+                    test: /\.(css|scss)$/,
+                    use: extractSassAdmin.extract({
+                        fallback: "style-loader",
+                        use: [
+                            {
+                                loader: "css-loader",
+                                options: { importLoaders: 1, minimize: true }
+                            },
+                            "postcss-loader"
+                        ]
+                    }),
+                    include: [
+                        path.resolve(__dirname, "../admin"),
+                        path.resolve(__dirname, "../node_modules"),
+                        path.resolve(__dirname, "../public")
+                    ]
                 }
             ]
         }
@@ -47,7 +67,10 @@ const serverConfig = args => {
     if (args.theme == "") {
         args.theme = "letterpad";
     }
-    const BUILD_PATH = path.join(__dirname, "../build");
+    const BUILD_PATH = path.join(
+        __dirname,
+        "../client/themes/" + args.theme + "/public/dist"
+    );
 
     const getExternals = () => {
         const nodeModules = {};
@@ -65,7 +88,7 @@ const serverConfig = args => {
         target: "node",
         entry: ["babel-polyfill", path.join(__dirname, "../client/server")],
         output: {
-            filename: args.theme + ".node.js",
+            filename: "server.node.js",
             path: BUILD_PATH,
             library: "server",
             libraryTarget: "commonjs2",

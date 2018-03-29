@@ -12,8 +12,6 @@ import { GET_OPTIONS, GET_TAXONOMIES } from "../../../shared/queries/Queries";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 import { notify } from "react-notify-toast";
 
-//import Theme from "../components/settings/Theme";
-
 const SubmitBtn = ({ handleClick }) => (
     <button type="submit" onClick={handleClick} className="btn btn-blue btn-sm">
         Save

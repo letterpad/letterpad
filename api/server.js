@@ -31,7 +31,12 @@ app.use(
 const addUser = async (req, res) => {
     const token = req.headers["authorization"];
     delete req.user;
-    const operation = req.body.operationName;
+    const operationName = req.body.operationName;
+
+    if (operationName === "getOptions") {
+        return req.next();
+    }
+
     if (token && token != "null") {
         try {
             const data = await jwt.verify(token, SECRET);
@@ -47,7 +52,7 @@ const addUser = async (req, res) => {
             // res.send(newToken);
             //}
         } catch (error) {
-            console.log("error");
+            console.log("Error in token", error);
             res.status(401);
             res.set("Location", "/admin/login");
         }
@@ -92,7 +97,6 @@ app.use(
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        console.log("req", req);
         cb(null, path.join(__dirname, "../public/uploads/"));
     },
     filename: function(req, file, cb) {
@@ -117,22 +121,17 @@ const seedIfEmpty = async () => {
         await seed();
     }
 };
-console.log("Initiating Graphql Server");
 let httpServer = null;
 models.conn
     .sync({ force: false })
     .then(async () => {
         // await seedIfEmpty();
 
-        httpServer = app.listen(
-            config.apiPort,
-            () => {
-                console.log(`App listening on port ${config.apiPort}`);
-            },
-            e => {
-                console.log(e);
-            }
-        );
+        httpServer = app.listen(config.apiPort, function() {
+            var host = httpServer.address().address;
+            var port = httpServer.address().port;
+            console.log("Graphql api listening at http://%s:%s", host, port);
+        });
     })
     .catch(e => {
         console.log(e);

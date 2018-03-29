@@ -2,9 +2,6 @@ require.extensions[".sass"] = () => "";
 require.extensions[".scss"] = () => "";
 require.extensions[".css"] = () => "";
 
-// require("babel-core").transform("code", {
-//     plugins: ["syntax-dynamic-import"]
-// });
 require("babel-core/register");
 
 const express = require("express");
@@ -15,6 +12,7 @@ const compression = require("compression");
 const adminServerRendering = require("./admin/serverRendering");
 const clientServerRendering = require("./client/serverRendering");
 const FileNameReplacementPlugin = require("./webpack/FileNameReplacementPlugin");
+const dir = require("./shared/dir.js");
 
 const app = express();
 
@@ -62,19 +60,19 @@ app.use(
     })
 );
 
-app.use(express.static("public"));
-app.use("/dist", express.static("dist"));
-
-// let pinger = null;
+app.use(config.baseName, express.static("public"));
+app.use(config.baseName + "admin/", express.static("admin/public"));
+// app.use(config.baseName + "dist/", express.static("dist"));
+// app.use(config.baseName + "dist/", express.static("static/admin/public"));
+dir.getDirectories(__dirname + "/client/themes/").map(themePath => {
+    const theme = themePath.split("/").pop(-1);
+    app.use(
+        config.baseName + theme + "/",
+        express.static(themePath + "/public")
+    );
+});
 
 app.get("/build", (req, res) => {
-    // console.log("reached");
-    // if (pinger !== null) {
-    //     console.log("Ending");
-    //     pinger.end();
-    // }
-    // console.log("Continuing");
-    // pinger = Object.assign({}, res);
     var webpack = require("webpack");
     var ProgressPlugin = require("webpack/lib/ProgressPlugin");
     var config = require("./webpack.config.prod.js");
@@ -83,12 +81,10 @@ app.get("/build", (req, res) => {
     compiler.apply(
         new ProgressPlugin(function(percentage, msg) {
             res.write(percentage * 100 + "%" + " >> " + msg + "\n");
-            //console.log(percentage * 100 + "%", msg);
         })
     );
 
     compiler.run(function(err, stats) {
-        // ...
         res.end();
     });
 });
@@ -100,5 +96,5 @@ const server = app.listen(config.appPort, function() {
     const host = server.address().address;
     const port = server.address().port;
 
-    console.log("Example app listening at http://%s:%s", host, port);
+    console.log("Letterpad listening at http://%s:%s", host, port);
 });

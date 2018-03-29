@@ -13,11 +13,11 @@ import {
 } from "../../components/Post";
 import OhSnap from "./OhSnap";
 import Loader from "../../components/Loader";
-import { GET_SINGLE_POST } from "../../../shared/queries/Queries";
+import GetSinglePost from "../../data-connectors/GetSinglePost";
 
 class Single extends Component {
     componentDidMount() {
-        document.body.classList.add("edit-post-page");
+        document.body.classList.add("edit-post-page", "options-open");
         PostActions.subscribe(post => {
             if (post.status == "trash") {
                 // this.props.history.push(`/admin/${plural[post.type]}`);
@@ -40,7 +40,7 @@ class Single extends Component {
         return (
             <section className="module-xs">
                 <div className="row">
-                    <div className="col-lg-8 column article-holder col-lg-offset-2">
+                    <div className="col-lg-8 column article-holder ">
                         <ArticleEdit post={this.props.post} />
                     </div>
                     <div className="col-lg-4 column distractor">
@@ -56,18 +56,10 @@ class Single extends Component {
     }
 }
 
-const ContainerWithData = graphql(GET_SINGLE_POST, {
-    options: props => ({ variables: { id: props.match.params.post_id } }),
-    props: ({ data: { loading, post } }) => ({
-        post,
-        loading
-    })
-});
-
 Single.propTypes = {
     loading: PropTypes.bool,
     post: PropTypes.object,
     history: PropTypes.object
 };
 
-export default ContainerWithData(Single);
+export default GetSinglePost(Single);

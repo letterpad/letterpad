@@ -11,6 +11,7 @@ const clientConfig = args => {
     return merge(baseConfig(args), {
         devtool: "eval-source-map",
         output: {
+            path: path.join(__dirname, "../"),
             filename: "[name]-bundle.js",
             publicPath: "/static/"
         },
@@ -44,7 +45,10 @@ const serverConfig = args => {
     if (args.theme == "") {
         args.theme = "letterpad";
     }
-    const BUILD_PATH = path.join(__dirname, "../build");
+    const BUILD_PATH = path.join(
+        __dirname,
+        "../client/themes/" + args.theme + "/public/dist"
+    );
 
     const getExternals = () => {
         const nodeModules = {};
@@ -62,7 +66,7 @@ const serverConfig = args => {
         target: "node",
         entry: ["babel-polyfill", path.join(__dirname, "../client/server")],
         output: {
-            filename: args.theme + ".node.js",
+            filename: "server.node.js",
             path: BUILD_PATH,
             library: "server",
             libraryTarget: "commonjs2",

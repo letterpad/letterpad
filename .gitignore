@@ -5,7 +5,9 @@ npm-debug.log
 .vscode
 .yarn-cache
 .env
-.yarn-error.log
+yarn-error.log
 .env
 extend
 hot
+data
+data/letterpad.sqlite

@@ -4,9 +4,10 @@ import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
 import client from "./apolloClient";
 import Route from "./Route";
+import config from "../config";
 
 const app = (
-    <BrowserRouter>
+    <BrowserRouter basename={config.baseName}>
         <ApolloProvider client={client}>
             <Route />
         </ApolloProvider>

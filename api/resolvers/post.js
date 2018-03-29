@@ -109,7 +109,7 @@ export default {
                     };
                 }
             } else {
-                [id] = menuItem.id.split(/-(.+)/);
+                id = menuItem.id;
             }
             const taxonomies = await getTaxonomies(
                 root,

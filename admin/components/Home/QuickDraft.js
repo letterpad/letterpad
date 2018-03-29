@@ -26,7 +26,7 @@ const QuickDraft = ({ draftPost }, { t }) => {
                     <textarea
                         id="quick-post-body"
                         rows="2"
-                        rowsMax="4"
+                        rowsmax="4"
                         className="form-control"
                         placeholder={t("home.quickDraft.body.placeholder")}
                     />

@@ -1,4 +1,4 @@
-import { conn } from "../../config/mysql.config";
+import { conn } from "../../config/db.config";
 import Sequalize from "sequelize";
 
 export default (conn, DataTypes) => {

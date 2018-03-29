@@ -2,12 +2,9 @@ import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 import { Basic, Social, PasswordChange } from "../../components/Author";
-import { GET_AUTHOR, GET_ROLES } from "../../../shared/queries/Queries";
-import {
-    UPDATE_AUTHOR,
-    CREATE_AUTHOR
-} from "../../../shared/queries/Mutations";
 import { notify } from "react-notify-toast";
+import GetRoles from "../../data-connectors/GetRoles";
+import CreateAuthorConnector from "../../data-connectors/CreateAuthorConnector";
 
 const SubmitBtn = ({ handleClick }) => {
     return (
@@ -94,22 +91,6 @@ class CreateAuthor extends Component {
     }
 }
 
-const createAuthorQuery = graphql(CREATE_AUTHOR, {
-    props: ({ mutate }) => ({
-        createAuthor: data =>
-            mutate({
-                variables: data
-            })
-    })
-});
-
-const RolesData = graphql(GET_ROLES, {
-    props: ({ data: { loading, roles } }) => ({
-        roles,
-        loading
-    })
-});
-
 CreateAuthor.defaultProps = {
     author: {
         fname: "",
@@ -119,4 +100,4 @@ CreateAuthor.defaultProps = {
     createAuthor: PropTypes.func
 };
 
-export default createAuthorQuery(RolesData(CreateAuthor));
+export default CreateAuthorConnector(GetRoles(CreateAuthor));

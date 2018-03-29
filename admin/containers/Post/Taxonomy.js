@@ -8,11 +8,9 @@ import PostsHoc from "./PostsHoc";
 import Paginate from "../../components/Paginate";
 import { PostFilters } from "../../components/Post";
 import Loader from "../../components/Loader";
-import { GET_POSTS, GET_TAXONOMIES } from "../../../shared/queries/Queries";
-import {
-    UPDATE_TAXONOMY,
-    DELETE_TAXONOMY
-} from "../../../shared/queries/Mutations";
+import GetTaxonomies from "../../data-connectors/GetTaxonomies";
+import UpdateTaxonomy from "../../data-connectors/UpdateTaxonomy";
+import DeleteTaxonomy from "../../data-connectors/DeleteTaxonomy";
 
 class Taxonomy extends Component {
     constructor(props, context) {
@@ -281,45 +279,7 @@ class Taxonomy extends Component {
     }
 }
 
-const ContainerWithData = graphql(GET_TAXONOMIES, {
-    options: props => {
-        return {
-            variables: {
-                type: props.type
-            },
-            forceFetch: true,
-            fetchPolicy: "network-only"
-        };
-    },
-    props: ({ data: { loading, taxonomies, networkStatus } }) => ({
-        taxonomies,
-        loading,
-        networkStatus
-    })
-});
-
-const updateTaxonomyQuery = graphql(UPDATE_TAXONOMY, {
-    props: ({ mutate }) => ({
-        updateTaxonomy: data =>
-            mutate({
-                variables: data
-            })
-    })
-});
-
-const deleteTaxonomyQuery = graphql(DELETE_TAXONOMY, {
-    props: ({ mutate }) => ({
-        deleteTaxonomy: data =>
-            mutate({
-                variables: data
-            })
-    })
-});
-
 Taxonomy.contextTypes = {
     t: PropTypes.func
 };
-
-export default deleteTaxonomyQuery(
-    updateTaxonomyQuery(ContainerWithData(Taxonomy))
-);
+export default DeleteTaxonomy(UpdateTaxonomy(GetTaxonomies(Taxonomy)));
