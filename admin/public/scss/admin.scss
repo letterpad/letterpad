@@ -1,0 +1,236 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700.css");
+@import "./variables.scss";
+@import "./common.scss";
+@import "./admin/_layout.scss";
+/*@import "./admin/_react-select.scss";*/
+@import "./admin/_card.scss";
+@import "./admin/_buttons.scss";
+@import "./admin/_sidebar.scss";
+@import "./admin/_checkbox.scss";
+@import "./admin/_preloader.scss";
+@import "./admin/_switch.scss";
+@import "./admin/_navbar.scss";
+@import "./admin/_post.scss";
+@import "./admin/_modal.scss";
+@import "./admin/_login.scss";
+@import "./admin/_editor.scss";
+@import "./admin/_login.scss";
+@import "./admin/_media.scss";
+@import "./admin/_navbar.scss";
+@import "./admin/_post.scss";
+@import "./admin/_menu_builder.scss";
+@import "./admin/_tagsInput.scss";
+@import "./admin/_author.scss";
+@import "./admin/_theme.scss";
+
+label.custom-label {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(36vw, 1fr));
+    grid-gap: 26px;
+    grid-auto-rows: minmax(203px, auto);
+    grid-auto-flow: dense;
+}
+
+/*--------------------------------------
+[TopBar]
+*/
+
+.top-bar {
+    background: var(--color-bg-secondary);
+    padding: 8px 16px;
+    position: fixed;
+    width: calc(100% - 250px);
+    top: 0px;
+    z-index: 9;
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 22px;
+    .user-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        cursor: pointer;
+        .avatar {
+            width: 25px;
+            height: 25px;
+            border-radius: 100%;
+        }
+    }
+    .left-block a:not(:last-child):after {
+        content: "|";
+        margin: 0 8px;
+        color: #929191;
+    }
+}
+@media screen and (max-width: 991px) {
+    .top-bar {
+        width: 100%;
+        margin-top: 71px;
+        position: absolute;
+    }
+}
+
+.content-area {
+    margin-top: 35px;
+}
+
+/*--------------------------------------
+[Theme Customization]
+*/
+
+.theme-customizer {
+    .swatch {
+        padding: 5px;
+        background: #fff;
+        border-radius: 1px;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+        display: block;
+        cursor: pointer;
+    }
+    .popover {
+        position: absolute;
+        z-index: 2;
+    }
+    .cover {
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+    }
+}
+
+/* Table */
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    padding: 12px 8px;
+    border-top: none;
+}
+
+.table > thead tr > th {
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+tr td:first-child,
+tr th:first-child {
+    padding-left: 0px !important;
+}
+
+/*----------------------------------------------
+[Themes]
+*/
+
+#cp-css {
+    .cp-swatch {
+        padding: 5px;
+        background: #fff;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+        display: inline-block;
+        cursor: pointer;
+        .color-box {
+            width: 26px;
+            height: 14px;
+        }
+    }
+    .cp-popover {
+        position: absolute;
+        z-index: 2;
+    }
+    .cp-cover {
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+    }
+}
+.color-blocks {
+    .custom-label {
+        display: flex;
+        justify-content: space-between;
+    }
+    .text-muted {
+        line-height: 20px;
+        font-size: 12px;
+        min-height: 42px;
+    }
+    > div:not(:last-child) {
+        margin-bottom: 12px;
+    }
+}
+
+/*--------------------------------------------
+[Bootstrap settings]
+*/
+.row {
+    margin-left: -6px;
+    margin-right: -6px;
+}
+.col-xs-1,
+.col-sm-1,
+.col-md-1,
+.col-lg-1,
+.col-xs-2,
+.col-sm-2,
+.col-md-2,
+.col-lg-2,
+.col-xs-3,
+.col-sm-3,
+.col-md-3,
+.col-lg-3,
+.col-xs-4,
+.col-sm-4,
+.col-md-4,
+.col-lg-4,
+.col-xs-5,
+.col-sm-5,
+.col-md-5,
+.col-lg-5,
+.col-xs-6,
+.col-sm-6,
+.col-md-6,
+.col-lg-6,
+.col-xs-7,
+.col-sm-7,
+.col-md-7,
+.col-lg-7,
+.col-xs-8,
+.col-sm-8,
+.col-md-8,
+.col-lg-8,
+.col-xs-9,
+.col-sm-9,
+.col-md-9,
+.col-lg-9,
+.col-xs-10,
+.col-sm-10,
+.col-md-10,
+.col-lg-10,
+.col-xs-11,
+.col-sm-11,
+.col-md-11,
+.col-lg-11,
+.col-xs-12,
+.col-sm-12,
+.col-md-12,
+.col-lg-12 {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+.container {
+    padding-left: 12px;
+    padding-right: 12px;
+}

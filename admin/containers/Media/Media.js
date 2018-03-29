@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { graphql } from "react-apollo";
 import MediaItem from "../../components/Media/MediaItem";
-import { GET_MEDIA } from "../../../shared/queries/Queries";
-import { DELETE_MEDIA } from "../../../shared/queries/Mutations";
 import ConfirmDeleteModal from "../../components/Modals/ConfirmDeleteModal";
+import GetMedia from "../../data-connectors/GetMedia";
+import DeleteMedia from "../../data-connectors/DeleteMedia";
 
 const limit = 12;
 
@@ -106,44 +106,6 @@ class Media extends Component {
     }
 }
 
-const ContainerWithData = graphql(GET_MEDIA, {
-    options: props => ({
-        variables: {
-            author_id: props.author.id,
-            offset: (parseInt(props.match.params.page || 1, 0) - 1) * limit,
-            limit: limit
-        }
-    }),
-    props: ({ data: { loading, media } }) => ({
-        media,
-        loading
-    })
-});
-
-const deleteMedia = graphql(DELETE_MEDIA, {
-    props: ({ mutate }) => ({
-        deleteMedia: data =>
-            mutate({
-                variables: data,
-                updateQueries: {
-                    getMedia: (prev, { mutationResult }) => {
-                        return {
-                            media: {
-                                count: prev.media.count - 1,
-                                rows: prev.media.rows.filter(item => {
-                                    return (
-                                        item.id !=
-                                        mutationResult.data.deleteMedia.id
-                                    );
-                                })
-                            }
-                        };
-                    }
-                }
-            })
-    })
-});
-
 Media.propTypes = {
     media: PropTypes.object,
     loading: PropTypes.bool,
@@ -157,4 +119,4 @@ Media.defaultProps = {
 Media.contextTypes = {
     t: PropTypes.func
 };
-export default ContainerWithData(deleteMedia(Media));
+export default GetMedia(DeleteMedia(Media));

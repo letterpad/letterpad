@@ -3,8 +3,8 @@ import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 import StackGrid from "react-stack-grid";
 import { GettingStarted, QuickDraft, Stats } from "../../components/Home";
-import { BLOG_STATS } from "../../../shared/queries/Queries";
-import { CREATE_POST } from "../../../shared/queries/Mutations";
+import CreatePost from "../../data-connectors/CreatePost";
+import GetStats from "../../data-connectors/GetStats";
 
 class Home extends Component {
     constructor(props) {
@@ -57,20 +57,4 @@ Home.propTypes = {
     createPost: PropTypes.func
 };
 
-const ContainerWithData = graphql(BLOG_STATS, {
-    props: ({ data: { loading, stats } }) => ({
-        stats,
-        loading
-    })
-});
-
-const createPostWithData = graphql(CREATE_POST, {
-    props: ({ mutate }) => ({
-        createPost: data =>
-            mutate({
-                variables: data
-            })
-    })
-});
-
-export default createPostWithData(ContainerWithData(Home));
+export default CreatePost(GetStats(Home));

@@ -3,9 +3,9 @@ import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 import StackGrid from "react-stack-grid";
 import { Basic, Social, PasswordChange } from "../../components/Author";
-import { GET_AUTHOR } from "../../../shared/queries/Queries";
-import { UPDATE_AUTHOR } from "../../../shared/queries/Mutations";
 import { notify } from "react-notify-toast";
+import UpdateAuthor from "../../data-connectors/UpdateAuthor";
+import { GetAuthor } from "../../data-connectors/GetAuthors";
 
 const SubmitBtn = ({ handleClick }) => {
     return (
@@ -90,33 +90,10 @@ class EditAuthor extends Component {
     }
 }
 
-const ContainerWithData = graphql(GET_AUTHOR, {
-    options: props => {
-        return {
-            variables: {
-                id: props.match.params.id || props.author.id
-            }
-        };
-    },
-    props: ({ data: { loading, author } }) => ({
-        author,
-        loading
-    })
-});
-
-const updateAuthorQuery = graphql(UPDATE_AUTHOR, {
-    props: ({ mutate }) => ({
-        updateAuthor: data =>
-            mutate({
-                variables: data
-            })
-    })
-});
-
 EditAuthor.propTypes = {
     author: PropTypes.object,
     updateAuthor: PropTypes.func,
     loading: PropTypes.bool
 };
 
-export default updateAuthorQuery(ContainerWithData(EditAuthor));
+export default UpdateAuthor(GetAuthor(EditAuthor));

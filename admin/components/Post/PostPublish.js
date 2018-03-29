@@ -113,7 +113,7 @@ class PostPublish extends Component {
                         type="text"
                         className="form-control"
                         placeholder="Published date"
-                        value={moment(
+                        defaultValue={moment(
                             new Date(this.state.post.created_at)
                         ).format("DD-MM-Y hh:mm A")}
                     />
@@ -157,8 +157,8 @@ class PostPublish extends Component {
 
 const updateQueryWithData = graphql(UPDATE_POST_QUERY, {
     props: ({ mutate }) => ({
-        update: data =>
-            mutate({
+        update: data => {
+            return mutate({
                 variables: data,
                 updateQueries: {
                     getPost: (prev, { mutationResult }) => {
@@ -170,7 +170,8 @@ const updateQueryWithData = graphql(UPDATE_POST_QUERY, {
                         };
                     }
                 }
-            })
+            });
+        }
     })
 });
 export default updateQueryWithData(PostPublish);

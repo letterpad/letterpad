@@ -4,15 +4,19 @@ import { Helmet } from "react-helmet";
 import { StaticRouter } from "react-router";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
 import Route from "./Route";
+import config from "../config";
 
 const context = {};
 
 export default (req, client) => {
     const apolloContext = {};
-
     const clientApp = (
         <ApolloProvider client={client}>
-            <StaticRouter location={req.url} context={context}>
+            <StaticRouter
+                location={req.url}
+                context={context}
+                basename={config.baseName}
+            >
                 <Route />
             </StaticRouter>
         </ApolloProvider>

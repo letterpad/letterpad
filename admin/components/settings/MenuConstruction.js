@@ -1,10 +1,25 @@
 import React, { Component } from "react";
-import Nestable from "react-nestable";
 import PropTypes from "prop-types";
 import Resources from "./menu/Resources";
 import RenderItem from "./menu/RenderItem";
-const Handler = () => {
-    return <span />;
+import SortableTree, {
+    changeNodeAtPath,
+    removeNodeAtPath
+} from "react-sortable-tree";
+import "react-sortable-tree/style.css";
+
+const FormElement = ({ label, value, onChange }) => {
+    return (
+        <div className="form-group form-inline menu-props">
+            <span>{label}</span>
+            <input
+                type="text"
+                className="form-control"
+                value={value}
+                onChange={e => onChange(e, label)}
+            />
+        </div>
+    );
 };
 
 /**
@@ -18,7 +33,7 @@ var getMenuItems = function(arr) {
             if (item.children && item.children.length > 0) {
                 recur(item.children);
             }
-            toReturn[item.id] = true;
+            toReturn[item.id + "-" + item.type] = true;
         });
     };
     recur(arr);
@@ -28,7 +43,6 @@ var getMenuItems = function(arr) {
 class MenuConstruction extends Component {
     constructor(props) {
         super(props);
-        this.onChange = this.onChange.bind(this);
         this.addItem = this.addItem.bind(this);
         this.removeItem = this.removeItem.bind(this);
         this.changeItemProperty = this.changeItemProperty.bind(this);
@@ -42,7 +56,7 @@ class MenuConstruction extends Component {
             labels: [
                 {
                     id: Date.now() + "-label",
-                    label: "Label",
+                    title: "Label",
                     type: "label",
                     name: "Label"
                 }
@@ -56,19 +70,20 @@ class MenuConstruction extends Component {
             const categories = nextProps.categories.taxonomies.map(
                 (ele, idx) => {
                     return {
-                        id: ele.id + "-category",
-                        label: ele.name,
+                        id: ele.id,
+                        title: ele.name,
                         type: "category",
                         name: ele.name,
-                        disabled: menuIds[ele.id + "-category"] ? true : false
+                        disabled: menuIds[ele.id + "-category"] ? true : false,
+                        slug: ""
                     };
                 }
             );
 
             const pages = nextProps.pages.posts.rows.map((ele, idx) => {
                 return {
-                    id: ele.id + "-page",
-                    label: ele.title,
+                    id: ele.id,
+                    title: ele.title,
                     slug: ele.slug,
                     type: "page",
                     name: ele.title,
@@ -101,7 +116,8 @@ class MenuConstruction extends Component {
         });
     }
 
-    removeItem(menuItem) {
+    removeItem(props) {
+        const menuItem = props.node;
         const itemsRemoved = [];
 
         const keepItemBack = item => {
@@ -137,27 +153,18 @@ class MenuConstruction extends Component {
         };
         findItems(menuItem);
 
-        //  remove the item from the menu
-        const removeIdFromMenu = (menu, id) => {
-            menu.forEach((item, idx) => {
-                if (item.id !== menuItem.id) {
-                    if (item.children && item.children.length > 0) {
-                        removeIdFromMenu(item.children, id);
-                    }
-                } else {
-                    menu = menu.splice(idx, 1);
-                }
-            });
-        };
-        removeIdFromMenu(this.state.items, menuItem.id);
-
+        const getNodeKey = ({ treeIndex }) => treeIndex;
         this.setState(
-            {
+            state => ({
                 ...this.state,
-                items: this.state.items,
+                items: removeNodeAtPath({
+                    treeData: this.state.items,
+                    path: props.path,
+                    getNodeKey
+                }),
                 categories: [...this.state.categories],
                 pages: [...this.state.pages]
-            },
+            }),
             () => {
                 this.props.updateOption(
                     "menu",
@@ -167,50 +174,88 @@ class MenuConstruction extends Component {
         );
     }
 
-    onChange(items) {
-        let allowChange = true;
-        const isChangeAllowed = node => {
-            if (node.children && node.children.length > 0) {
-                if (node.type == "category" || node.type == "page") {
-                    allowChange = false;
-                } else {
-                    node.children.map(node => isChangeAllowed(node));
-                }
-            }
-        };
-        items.map(node => isChangeAllowed(node));
-        if (allowChange) {
-            this.setState({ items });
-        } else {
-            this.setState({ items: this.state.items });
-        }
-        this.props.updateOption("menu", JSON.stringify(this.state.items));
-    }
+    changeItemProperty(e, { node, path }, property) {
+        const getNodeKey = ({ treeIndex }) => treeIndex;
+        const value = e.target.value;
 
-    changeItemProperty(changedItem) {
-        //  hack
-        const items = JSON.parse(JSON.stringify(this.state.items));
-        const updateProperty = (menu, id) => {
-            menu.forEach((item, idx) => {
-                if (item.id !== changedItem.id) {
-                    if (item.children && item.children.length > 0) {
-                        updateProperty(item.children, id);
+        this.setState(
+            state => ({
+                items: changeNodeAtPath({
+                    treeData: this.state.items,
+                    path,
+                    getNodeKey,
+                    newNode: {
+                        ...node,
+                        [property]: value
                     }
-                } else {
-                    menu[idx] = changedItem;
-                }
-            });
-        };
-        updateProperty(items, changedItem.id);
-        this.setState({ items });
-        this.props.updateOption("menu", JSON.stringify(items));
+                })
+            }),
+            () => {
+                this.props.updateOption(
+                    "menu",
+                    JSON.stringify(this.state.items)
+                );
+            }
+        );
     }
 
+    canDrop({ node, nextParent }) {
+        if (!nextParent) return true;
+        if (
+            ["category", "page"].indexOf(node.type) >= 0 &&
+            nextParent.type === "label"
+        ) {
+            return true;
+        }
+        if (node.type === "label" && nextParent.type === "label") {
+            return true;
+        }
+        return false;
+    }
+    generateNodeProps(props) {
+        const form = [];
+        if (props.node.type == "category") {
+            form.push(
+                <FormElement
+                    label="Slug"
+                    value={props.node.slug}
+                    onChange={e => this.changeItemProperty(e, props, "slug")}
+                />
+            );
+        } else {
+            form.push(<div className="menu-props" />);
+        }
+        return {
+            buttons: [
+                ...form,
+                <i
+                    className="fa fa-trash"
+                    onClick={_ => this.removeItem(props)}
+                />
+            ],
+            title: (
+                <div className="menu-title-wrapper">
+                    <span>
+                        {props.node.title} ({props.node.type})
+                    </span>
+                    <i className="fa fa-arrow-right" aria-hidden="true" />
+                    <input
+                        value={props.node.name}
+                        className="form-control"
+                        placeholder="Display name in menu"
+                        onChange={e =>
+                            this.changeItemProperty(e, props, "name")
+                        }
+                    />
+                </div>
+            )
+        };
+    }
     render() {
         const { t } = this.context;
         return (
             <div className="row">
-                <div className="col-lg-5">
+                <div className="col-lg-4">
                     <Resources
                         title="Pages"
                         data={this.state.pages}
@@ -229,20 +274,25 @@ class MenuConstruction extends Component {
                         itemClicked={idx => this.addItem(idx, "labels")}
                     />
                 </div>
-                <div className="col-lg-5">
+                <div className="col-lg-8">
                     <h5>{t("menu.build.title")}</h5>
-                    <Nestable
-                        items={this.state.items}
-                        renderItem={props => (
-                            <RenderItem
-                                {...props}
-                                changeItemProperty={this.changeItemProperty}
-                                removeItem={this.removeItem}
-                            />
-                        )}
-                        handler={Handler}
-                        onChange={this.onChange}
-                    />
+                    <div style={{ height: 600 }}>
+                        <SortableTree
+                            treeData={this.state.items}
+                            onChange={treeData => {
+                                this.setState({ items: treeData });
+                                this.props.updateOption(
+                                    "menu",
+                                    JSON.stringify(treeData)
+                                );
+                            }}
+                            rowHeight={100}
+                            canDrop={this.canDrop.bind(this)}
+                            generateNodeProps={this.generateNodeProps.bind(
+                                this
+                            )}
+                        />
+                    </div>
                 </div>
             </div>
         );

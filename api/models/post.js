@@ -19,6 +19,12 @@ export default (conn, DataTypes) => {
             body: {
                 type: Sequalize.TEXT
             },
+            mdBody: {
+                type: Sequalize.TEXT
+            },
+            mdPreview: {
+                type: Sequalize.TEXT
+            },
             excerpt: {
                 type: Sequalize.STRING(400),
                 defaultValue: ""
@@ -64,10 +70,9 @@ export async function _createPost(data, models) {
     try {
         //  create the slug
         data.slug = await slugify(models.Post, title);
-        console.log("============>>>", data);
 
         const newPost = await models.Post.create(data);
-        console.log(newPost);
+
         const defaultTaxonomy = await models.Taxonomy.findOne({
             where: { id: 1 }
         });

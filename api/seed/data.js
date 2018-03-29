@@ -2,7 +2,7 @@ require("babel-register");
 let Faker = require("faker");
 
 // import _Promise from "bluebird";
-import { conn } from "../../config/mysql.config";
+import { conn } from "../../config/db.config";
 import {
     PostModel,
     PostTaxonomyModel,

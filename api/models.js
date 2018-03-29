@@ -1,4 +1,4 @@
-import { conn, config } from "../config/mysql.config";
+import { conn, config } from "../config/db.config";
 import Sequalize, { DataTypes } from "sequelize";
 
 const models = {

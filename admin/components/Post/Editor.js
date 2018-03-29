@@ -3,7 +3,7 @@ import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 import { INSERT_MEDIA } from "../../../shared/queries/Mutations";
 import MarkdownEditor from "./Editors/MarkdownEditor";
-import Normal from "./Editors/Normal";
+import RichText from "./Editors/RichText";
 import PostActions from "./PostActions";
 
 class Editor extends Component {
@@ -11,9 +11,12 @@ class Editor extends Component {
         return (
             <div className="fs-normal">
                 {this.props.isMarkdown ? (
-                    <MarkdownEditor body={this.props.body} />
+                    <MarkdownEditor
+                        body={this.props.body}
+                        mdBody={this.props.mdBody}
+                    />
                 ) : (
-                    <Normal
+                    <RichText
                         body={this.props.body}
                         insertMedia={this.props.insertMedia}
                     />

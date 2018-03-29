@@ -1,0 +1,109 @@
+/*--------------------------------------------
+[Menu Construction]
+*/
+.listing i.fa {
+    margin-right: 8px;
+    color: var(--color-text-primary-light);
+}
+.menu-props {
+    span {
+        margin-right: 10px;
+        font-weight: 600;
+    }
+}
+.rst__rowToolbar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+
+    .rst__toolbarButton {
+        width: 100%;
+        text-align: right;
+    }
+}
+.rst__rowContents {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+}
+.menu-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    span {
+        font-weight: 600;
+    }
+    input {
+        font-weight: normal;
+    }
+    i {
+        margin: 0 10px;
+    }
+}
+/*--------------------------------------------
+[Menu Construction]
+*/
+
+.nestable-item-name {
+    .panel-heading {
+        background: #eee;
+        border: 1px solid #ddd;
+        padding: 12px 16px;
+        cursor: pointer;
+    }
+    .panel-title {
+        font-size: $fs-small;
+        text-transform: capitalize;
+    }
+    .panel-collapse {
+        border: 1px solid #eee;
+        border-top: none;
+    }
+}
+
+.nestable-item-handler {
+    &:before {
+        content: "\F0C9";
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: inherit;
+        color: #000;
+        padding-right: 0.5em;
+        cursor: move;
+    }
+}
+
+.menu-construct {
+    h5 {
+        margin-bottom: 8px;
+        font-size: 12px;
+    }
+    .resources {
+        &.list-group {
+            border: 1px solid #e6e5e5;
+            max-height: 200px;
+            overflow-y: scroll;
+            box-shadow: 0 0 10px 0 #f0f0f0;
+            width: 300px;
+            .list-group-item {
+                border-left: none;
+                border-right: none;
+                cursor: pointer;
+                &[disabled] {
+                    background: #eee;
+                    cursor: not-allowed;
+                    color: #919191;
+                }
+                &:first-child {
+                    border-top: none;
+                }
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+}

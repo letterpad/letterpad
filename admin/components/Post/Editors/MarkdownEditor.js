@@ -8,7 +8,7 @@ class MarkdownEditor extends Component {
         super(props);
         this.setActiveTab = this.setActiveTab.bind(this);
         this.state = {
-            body: this.props.body,
+            body: this.props.mdBody,
             activeTab: {
                 post: "active",
                 preview: ""
@@ -21,7 +21,10 @@ class MarkdownEditor extends Component {
             language: "markdown"
         });
         flask.onUpdate(text => {
-            PostActions.setData({ body: text });
+            PostActions.setData({
+                mdBody: text,
+                mdPreview: marked(text).replace(/<pre>/g, '<pre class="hljs">')
+            });
         });
     }
 

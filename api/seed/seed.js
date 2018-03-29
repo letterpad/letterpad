@@ -1,4 +1,4 @@
-import { conn } from "../../config/mysql.config";
+import { conn } from "../../config/db.config";
 import Sequalize, { DataTypes } from "sequelize";
 import bcrypt from "bcryptjs";
 import Faker from "faker";
@@ -388,6 +388,14 @@ export async function insertSettings() {
         {
             option: "locale",
             value: JSON.stringify({ en: true, fr: false, pl: false })
+        },
+        {
+            option: "theme",
+            value: "amun"
+        },
+        {
+            option: "banner",
+            value: ""
         }
     ];
     await models.Setting.bulkCreate(data);

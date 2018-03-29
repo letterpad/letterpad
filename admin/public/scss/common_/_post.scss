@@ -1,0 +1,109 @@
+/*!------------------------------------------------------------------
+[Post]
+*/
+.post-thumbnail img {
+    width: 100%;
+    max-width: none;
+}
+.hljs code {
+    line-height: 2.5rem !important;
+}
+.post {
+    margin-bottom: 20px;
+    h1:first-child,
+    h2:first-child,
+    h3:first-child,
+    h4:first-child,
+    h5:first-child,
+    h6:first-child {
+        margin-top: 0px;
+    }
+    p > img {
+        width: 100%;
+        max-width: none;
+    }
+    .post-header {
+        margin: 16px 0 16px;
+        .post-meta {
+            color: var(--color-text-muted);
+        }
+    }
+
+    .post-content {
+        padding-bottom: 20px;
+        padding: 0px;
+    }
+
+    .post-title {
+        font-weight: 500;
+        min-height: 20px;
+        margin: 0 0 10px;
+        text-transform: initial;
+        a {
+            font-weight: 500;
+            color: var(--color-text-primary);
+            margin: 0 0 10px;
+        }
+    }
+    a.post-more {
+        background: var(--color-text-secondary);
+        color: var(--color-border);
+        border: 1px solid var(--color-text-secondary);
+        padding: 6px 10px;
+        transition: all 0.2s linear;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 11px;
+        &:hover {
+            background: var(--color-border);
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-text-secondary);
+        }
+    }
+    .slider {
+        img {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        &.owl-carousel {
+            width: 120%;
+            margin-left: -10%;
+            margin-right: -10%;
+        }
+    }
+    .fluid-width-video-wrapper {
+        width: 120%;
+        margin-left: -10%;
+        margin-right: -10%;
+    }
+    .gallery {
+        margin-left: -10%;
+        margin-right: -10%;
+    }
+    blockquote {
+        margin: 60px -10%;
+    }
+}
+
+@media (max-width: 991px) {
+    .post p > img,
+    .post-thumbnail img {
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .post {
+        .slider.owl-carousel,
+        .fluid-width-video-wrapper {
+            max-width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+        pre,
+        .gallery,
+        blockquote {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+}

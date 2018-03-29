@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { graphql } from "react-apollo";
-import { GET_AUTHORS } from "../../../shared/queries/Queries";
 import { Link } from "react-router-dom";
+import { GetAuthors } from "../../data-connectors/GetAuthors";
 
 class ListItem extends Component {
     render() {
@@ -107,11 +107,4 @@ Authors.contextTypes = {
     t: PropTypes.func
 };
 
-const ContainerWithData = graphql(GET_AUTHORS, {
-    props: ({ data: { loading, authors } }) => ({
-        authors,
-        loading
-    })
-});
-
-export default ContainerWithData(Authors);
+export default GetAuthors(Authors);

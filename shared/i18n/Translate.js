@@ -15,6 +15,9 @@ class Translate extends Component {
 Translate.propTypes = {
     t: PropTypes.func.isRequired
 };
+Translate.defaultProps = {
+    t: () => {}
+};
 Translate.childContextTypes = {
     t: PropTypes.func.isRequired
 };

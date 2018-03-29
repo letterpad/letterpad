@@ -12,7 +12,7 @@ import {
     Excerpt,
     FeaturedImage
 } from "../../components/Post";
-import { CREATE_POST } from "../../../shared/queries/Mutations";
+import CreatePost from "../../data-connectors/CreatePost";
 
 class Create extends Component {
     constructor(props) {
@@ -77,13 +77,4 @@ Create.propTypes = {
     type: PropTypes.string
 };
 
-const createQueryWithData = graphql(CREATE_POST, {
-    props: ({ mutate }) => ({
-        createPost: data =>
-            mutate({
-                variables: data
-            })
-    })
-});
-
-export default createQueryWithData(Create);
+export default CreatePost(Create);

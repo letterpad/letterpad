@@ -1,0 +1,269 @@
+// introduction
+
+Welcome to Letterpad, an open source and minimalistic blogging platform. It is easy to install, customize and extend. It is a single page application and loads content on the fly. It uses React, Graphql, Express and uses the Sequealize ORM to connect with various databases. It is in its early stages, but it covers most of the features that you will need in writing a blog post. It supports themes and each theme comes with its own set of features. Also it supports a markdown editor along with a rich text editor.
+
+WHY LETTERPAD ?
+Letterpad does not provide anything new out of the box. It just uses mordern technologes to speed up your blog with a clean UI. Every part of Letterpad including its core files can be extended. The default themes of Letterpad focuses more on content and keeps it away from distractions. The API of letterpad exchanges information in json and you have full control over what data to get, set and display. You can build entire publishing apps on top of it, and completely customise the reader experience.
+
+Request Body:
+
+query {
+  post(id:1){
+    title
+    body
+    author{
+      fname
+      avatar
+    }
+    created_at
+    cover_image
+  }
+}
+Request response:
+
+{
+    "data": {
+      "post": {
+        "title": "Letterpad",
+        "body": "A new story in Letterpad",
+        "author": {
+          "fname": "John",
+          "avatar": "/uploads/file-1521483243673.jpg"
+        },
+        "created_at": "Mon Mar 12 2018 17:11:14 GMT+0100 (CET)",
+        "cover_image": "/uploads/8.jpeg"
+    }
+}
+
+
+// Installation
+There are three steps to install letterpad in the development environment.
+
+Open a terminal and clone the project:
+
+git clone https://github.com/ajaxtown/letterpad.git
+cd letterpad
+Make a copy of .env.sample and name it .env. Open it and change SECRET_KEY to a random string to secure your app. Then add your SMTP credentials to activate emails. Change the database options accordingly. By default, letterpad uses mysql.
+
+Install dependencies and run:
+
+npm install
+npm run dev
+Now visit http://localhost:4040 and checkout the welcome page.
+
+The visit the admin dashboard, visit http://localhost:4040/admin. The initial credentials of the admin are:
+
+Email: admin@letterpad.com
+Password: password
+
+Theme Introduction
+----------------------
+Everything theme is written in React. Letterpad has no restrictions in developing a theme, nor does it enforce too many set of rules to keep in mind while developing a theme. Letterpad takes care of the dependencies of your theme, manages the build of your theme and takes care of server side rendering.
+
+A theme is more like a standalone application. Letterpad provides a set of HOC's (High Order Components) which are data-sources. You can use them as a wrapper for your components to get data. You can also create your own data-extracting HOC's and use them in your components.
+
+ARCHITECTURE
+Letterpad has this directory structure. Only relevant folders have been shown below.
+
+|--- admin
+|
+|--- client
+|     |
+|     |--- containers
+|     |
+|     |--- data-supply
+|     |
+|     |--- themes
+|     |    |
+|     |    |--- containers
+|     |
+|     |--- Route.js  <==== Responsible for calling different components from client/containers
+|
+|--- api
+|
+|--- shared
+|
+|--- extend
+The Route.js component takes the request and passes it to the Layout component (HOC) along with the necessary props. The Layout component, based on the props decides what kind of Component to be rendered. The various components available are:
+
+Home.js- Takes care of Rendering the Homepage. The home page can be a set of posts from a category or a single page.
+
+Posts.js- Takes care of rendering a posts feed.
+
+SinglePage.js - Takes care of rendering a single page.
+
+SinglePost.js - Takes care of rendering a single post .
+
+SearchWrapper.js - Takes care of rendering search related results.
+
+You can redevelop those components inside your theme folder under the folder containers. To power them up with data, simple wrap it inside the approproate data-source component. Below is an example how a single Article is displayed.
+
+import React, { Component } from "react";
+import Article from "../components/Post/Article";
+import Loader from "../components/Loader";
+import SEO from "../components/SEO";
+import PropTypes from "prop-types";
+import OhSnap from "../components/OhSnap";
+import AdjacentPostsData from "client/data-supply/AdjacentPostsData";
+import SinglePostData from "client/data-supply/SinglePostData";
+
+class SinglePost extends Component {
+    render() {
+        if (this.props.loading || this.props.adjPostsLoading) {
+            return <Loader />;
+        }
+        if (this.props.post === null) {
+            return (
+                <OhSnap message="Sorry, this page does not exist or might be restricted." />
+            );
+        }
+        const tags = [];
+        const categories = [];
+        this.props.post.taxonomies.forEach(taxonomy => {
+            if (taxonomy.type === "post_category") {
+                categories.push(taxonomy.name);
+            } else {
+                tags.push(taxonomy.name);
+            }
+        });
+
+        return (
+            <div>
+                <SEO
+                    schema="BlogPosting"
+                    title={this.props.post.title}
+                    description={this.props.post.excerpt}
+                    path={"/post/" + this.props.match.params.slug}
+                    contentType="article"
+                    category={categories.join(",")}
+                    tags={tags}
+                    image={this.props.post.cover_image}
+                    settings={this.props.settings || {}}
+                />
+                <Article
+                    post={this.props.post}
+                    adjacentPosts={this.props.adjacentPosts}
+                />
+            </div>
+        );
+    }
+}
+
+SinglePost.propTypes = {
+    post: PropTypes.object,
+    adjacentPosts: PropTypes.object
+};
+export default AdjacentPostsData(SinglePostData(SinglePost));
+
+Handling SEO
+----------------------Letterpad uses react-helmet to take care of SEO. You can read more about the library over here. In the default themes, we have created a SEO component which has some boilerplate to take care of default data. To add SEO, lets say in your SinglePage.js, simply make the component render along with the below tag and it will automatically set up the appropriate meta tags in the head of your document. It does the same while rendering on the server.
+
+<SEO
+        schema="BlogPosting"
+        title={post.title}
+        description={post.excerpt}
+        path={"/post/" + this.props.match.params.slug}
+        contentType="article"
+        category={categories.join(",")}
+        tags={tags}
+        image={post.cover_image}
+        settings={this.props.settings || {}}
+ />
+
+
+ Queries and mutations
+ ----------------------------
+ Letterpad communicates with the backend through GraphQL. This is beneficial because its easy to visualize your data as a json objects and you have full control over what data to get, set and display. You can build entire publishing apps on top of it, and completely customise the reader experience.
+
+All the available mutations and queries in the stored in the shared/queries directory. Below is an example of how a query to fetch a post might look like.
+
+export const GET_SINGLE_POST = gql`
+    query getPost($id: Int!) {
+        post(id: $id) {
+            id
+            title
+            body
+        }
+    }
+`;
+Since the above query in reality will contain more output fields and since those output fields will be used in different queries, we make use of fragments to encapsulate some common fields. So the above query can be written as:
+
+import { PostFragment } from "./Fragments";
+
+export const GET_SINGLE_POST = gql`
+    query getPost($id: Int!) {
+        post(id: $id) {
+            ...postFields
+        }
+    }
+    ${PostFragment}
+`;
+The folder data-sources contains components which uses this data and gives back a HOF which can be used to power up your components with data.
+
+The above query can be used in any of the React component as below.
+
+import React, { Component } from "react";
+import Article from "../components/Post/Article";
+import Loader from "../components/Loader";
+import OhSnap from "../components/OhSnap";
+import SinglePageData from "../data-supply/SinglePageData"; // <----- HOF
+
+class SinglePage extends Component {
+    render() {
+        if (this.props.loading) {
+            return <Loader />;
+        }
+        if (!this.props.page.ok) {
+            return (
+                <OhSnap message="Sorry, this page does not exist or might be restricted." />
+            );
+        }
+        const post = this.props.page.post;
+        return (
+            <div>
+                <Article post={post} />;
+            </div>
+        );
+    }
+}
+
+export default SinglePageData(SinglePage);
+
+
+
+Webpack build
+----------------------The below commands will assist you in making a build.
+
+// For running the theme set in the backend
+npm run dev 
+// For building the theme set in the backend
+npm run build
+// Forcing a custom theme to run in your development
+THEME=amun npm run dev
+// Forcing a build of a custom theme
+THEME=amun npm run build
+In order to prevent switching themes from the admin panel without a restart, it is important to build theme for server. So each themes will have 2 compulsary bundles, one for the client and the other for the server.
+
+HOW DOES IT BUILD ?
+Let understand how the build works in the production mode when you issue the below command:
+
+THEME=amun npm run build
+Here we are setting a temporary environment variable THEME. Webackpack needs to do the below tasks to successfully build the theme.
+
+It should create the below files.
+
+|---build
+|   |--amun.node.js
+|       
+|---public
+|   |---js
+|   |   |---amun
+|   |   |   |---client-bundle.min.js
+|   |   |   |---vendor-bundle.min.js
+It is important to note that the file amun.node.js contains only the application logic and references of the node_modules libraries. The node_module libraries is going to be common for all the themes. This file is going to be executed in the server. So when a request comes, the server contacts the backend to check the default theme and then uses the appropriate build to serve that.
+
+It should also replace the files in the client/containers directory with the theme files. Let consider the below structure.
+
+client >> containers >> SinglePost.js, SinglePage.js
+client >> themes >> amun >> containers >> SinglePost.js
+In this case, it will replace SinglePost.js from client >> containers with the SinglePost.js from themes.

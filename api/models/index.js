@@ -7,7 +7,7 @@ import MediaModel from "./media";
 import PostTaxonomyModel from "./postTaxonomy";
 import RolePermissionModel from "./rolePermission";
 import RoleAuthorModel from "./roleAuthor";
-import conn from "../../config/mysql.config";
+import conn from "../../config/db.config";
 
 PostModel.belongsToMany(TaxonomyModel, {
     through: PostTaxonomyModel,

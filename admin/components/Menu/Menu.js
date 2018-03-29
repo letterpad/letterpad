@@ -184,7 +184,6 @@ export default class Menu extends Component {
                             type="button"
                             className="navbar-toggle"
                             data-toggle="collapse"
-                            data-target="#custom-collapse"
                             onClick={this.navbarToggle}
                         >
                             <span className="sr-only">Toggle navigation</span>
@@ -202,8 +201,7 @@ export default class Menu extends Component {
                     </div>
 
                     <div
-                        className={`collapse navbar-collapse + ${navbarStatus}`}
-                        id="custom-collapse"
+                        className={`collapse navbar-collapse  ${navbarStatus}`}
                     >
                         <div id="menutree">
                             <MenuTree

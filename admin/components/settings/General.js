@@ -12,8 +12,6 @@ export default class General extends Component {
         this.updateBanner = this.updateBanner.bind(this);
 
         this.state = {
-            post_display: this.props.data.post_display.value,
-            layout_display: this.props.data.layout_display.value,
             banner: this.props.data.banner.value
         };
 
@@ -42,18 +40,7 @@ export default class General extends Component {
     render() {
         const checked = { row: {}, grid: {}, "two-column": {}, centered: {} };
         const { t } = this.context;
-        const banner = this.state.banner || "/images/avatar.png";
-
-        if (this.state.post_display == "row") {
-            checked.row.checked = true;
-        } else {
-            checked.grid.checked = true;
-        }
-        if (this.state.layout_display == "centered") {
-            checked.centered.checked = true;
-        } else {
-            checked["two-column"].checked = true;
-        }
+        const banner = this.state.banner || "";
         return (
             <div>
                 <div className="form-group">
@@ -159,84 +146,10 @@ export default class General extends Component {
                         }
                     />
                 </div>
-                <div className="form-group">
-                    <label className="custom-label">
-                        {t("settings.general.postDisplay")}
-                    </label>
-                    <div>
-                        <label className="radio-inline">
-                            <input
-                                type="radio"
-                                name="post_display"
-                                {...checked.row}
-                                onClick={() => {
-                                    this.updateOption("post_display", "row");
-                                    this.setState({ post_display: "row" });
-                                }}
-                            />
-                            {t("common.row")}
-                        </label>
-                        <label className="radio-inline">
-                            <input
-                                type="radio"
-                                name="post_display"
-                                {...checked.grid}
-                                onClick={() => {
-                                    this.updateOption("post_display", "grid");
-                                    this.setState({ post_display: "grid" });
-                                }}
-                            />
-                            {t("common.grid")}
-                        </label>
-                    </div>
-                </div>
-                <div className="form-group">
-                    <label className="custom-label">
-                        {t("settings.general.layoutDisplay")}
-                    </label>
-                    <div>
-                        <label className="radio-inline">
-                            <input
-                                type="radio"
-                                name="layout_display"
-                                {...checked.centered}
-                                onClick={() => {
-                                    this.updateOption(
-                                        "layout_display",
-                                        "centered"
-                                    );
-                                    this.setState({
-                                        layout_display: "centered"
-                                    });
-                                }}
-                            />
-                            {t("common.centered")}
-                        </label>
-                        <label className="radio-inline">
-                            <input
-                                type="radio"
-                                name="layout_display"
-                                {...checked["two-column"]}
-                                onClick={() => {
-                                    this.updateOption(
-                                        "layout_display",
-                                        "two-column"
-                                    );
-                                    this.setState({
-                                        layout_display: "two-column"
-                                    });
-                                }}
-                            />
-                            {t("common.fullWidth")}
-                        </label>
-                    </div>
-                </div>
+
                 <div className="form-group">
                     <label className="custom-label">Upload Hero Banner</label>
                     <div className="banner-wrapper">
-                        <div className="banner-image">
-                            <img alt="" src={banner} />
-                        </div>
                         {!this.state.banner ? (
                             <a
                                 href="#"
@@ -246,6 +159,9 @@ export default class General extends Component {
                             </a>
                         ) : (
                             <a href="#" onClick={_ => this.updateBanner("")}>
+                                <div className="banner-image">
+                                    <img width="300" alt="" src={banner} />
+                                </div>
                                 Remove Banner
                             </a>
                         )}

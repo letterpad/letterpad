@@ -1,3 +1,4 @@
+const express = require("express");
 import ApolloClient from "apollo-client";
 import path from "path";
 import { createHttpLink } from "apollo-link-http";
@@ -41,7 +42,8 @@ module.exports.init = app => {
             if (process.env.THEME && process.env.THEME !== "") {
                 theme = process.env.THEME;
             }
-            let serverFile = "../build/" + theme + ".node";
+            let serverFile =
+                "./themes/" + theme + "/public/dist/server.node.js";
             const urlParams = {
                 ...getParams(req.originalUrl),
                 ...getParams(req.header("Referer"))
@@ -54,7 +56,8 @@ module.exports.init = app => {
             }
 
             if (previewTheme) {
-                const previewThemePath = "../build/" + theme + ".node.js";
+                const previewThemePath =
+                    "./themes/" + theme + "/public/dist/server.node.js";
                 if (fs.existsSync(path.join(__dirname, previewThemePath))) {
                     console.log("Previewing ", theme);
                     serverFile = previewThemePath;
@@ -86,19 +89,21 @@ function getHtml(theme, html, state, head) {
         .join("");
 
     let devBundles = [
-        "/js/highlight.min.js",
-        "/static/vendor-bundle.js",
-        "/static/client-bundle.js"
+        theme + "/js/highlight.min.js",
+        "static/client/themes/" + theme + "/public/dist/vendor-bundle.js",
+        "static/client/themes/" + theme + "/public/dist/client-bundle.js"
     ];
     const prodBundles = [
-        "/js/highlight.min.js",
-        "/js/themes/" + theme + "/vendor-bundle.min.js",
-        "/js/themes/" + theme + "/client-bundle.min.js"
+        theme + "/js/highlight.min.js",
+        theme + "/dist/vendor-bundle.min.js",
+        theme + "/dist/client-bundle.min.js"
     ];
     const bundles = process.env.NODE_ENV === "dev" ? devBundles : prodBundles;
 
     const insertScript = script =>
-        `<script type="text/javascript" src="${script}" defer></script>`;
+        `<script type="text/javascript" src="${
+            config.rootUrl
+        }/${script}" defer></script>`;
 
     const initialState = JSON.stringify(state); //.replace(/</g, "\\u003c");
     const scripts = bundles.map(bundle => insertScript(bundle));
@@ -113,8 +118,12 @@ function getHtml(theme, html, state, head) {
                 ${metaTags}
                 ${
                     process.env.NODE_ENV === "production"
-                        ? `<link href="/css/${theme}/client.min.css" rel="stylesheet"/>
-                     <link href="/css/${theme}/custom.min.css" rel="stylesheet"/>`
+                        ? `<link href="${
+                              config.rootUrl
+                          }/${theme}/dist/client.min.css" rel="stylesheet"/>
+                     <link href="${
+                         config.rootUrl
+                     }/${theme}/dist/custom.min.css" rel="stylesheet"/>`
                         : ""
                 }
                 

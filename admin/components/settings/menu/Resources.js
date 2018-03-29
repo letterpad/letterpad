@@ -15,7 +15,7 @@ const Resources = ({ title, data, itemClicked }, { t }) => {
                             onClick={() => !item.disabled && itemClicked(i)}
                             {...disabled}
                         >
-                            {item.label}
+                            {item.title}
                         </li>
                     );
                 })}
