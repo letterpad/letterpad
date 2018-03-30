@@ -78,7 +78,25 @@
         margin-right: -10%;
     }
     blockquote {
-        margin: 60px -10%;
+        display: block;
+        background: #fff;
+        padding: 15px 20px 15px 20px;
+        margin: 30px -2%;
+        position: relative;
+
+        /*Font*/
+        font-size: var(--fs-medium);
+        line-height: 1.2;
+        text-align: justify;
+
+        /*Borders - (Optional)*/
+        border-left: 15px solid var(--color-accent);
+        border-right: 2px solid var(--color-accent);
+
+        /*Box Shadow - (Optional)*/
+        -moz-box-shadow: 2px 2px 15px #ccc;
+        -webkit-box-shadow: 2px 2px 15px #ccc;
+        box-shadow: 2px 2px 15px #ccc;
     }
 }
 

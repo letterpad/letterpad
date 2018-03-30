@@ -5,13 +5,16 @@ let PostActions = {
     subscribers: {},
     taxonomies: {},
 
-    postUpdated: function(data) {
-        for (let subscriber in PostActions.subscribers) {
-            PostActions.subscribers[subscriber](data);
+    postUpdated: function(action, data) {
+        for (let obj in PostActions.subscribers) {
+            const cb = PostActions.subscribers[obj];
+            if (cb.action === action) {
+                cb.subscriber(data);
+            }
         }
     },
-    subscribe: function(subscriber) {
-        PostActions.subscribers[subscriber] = subscriber;
+    subscribe: function(action, subscriber) {
+        PostActions.subscribers[subscriber] = { subscriber, action };
     },
     setData: data => {
         PostActions.data = {

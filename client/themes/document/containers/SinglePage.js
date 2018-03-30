@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Article from "../components/Post/Article";
 import Loader from "../components/Loader";
-import SEO from "../components/SEO";
-import OhSnap from "../components/OhSnap";
+import SEO from "client/helpers/SEO";
+import OhSnap from "client/helpers/OhSnap";
 import SinglePageData from "shared/data-connectors/SinglePageData";
 
 class SinglePage extends Component {
@@ -15,9 +16,9 @@ class SinglePage extends Component {
                 <OhSnap message="Sorry, this page does not exist or might be restricted." />
             );
         }
-        const post = this.props.page.post;
-        const tags = [],
-            categories = [];
+        const post = this.props.page;
+        const tags = [];
+        const categories = [];
         post.taxonomies.forEach(taxonomy => {
             if (taxonomy.type === "post_category") {
                 categories.push(taxonomy.name);
@@ -43,5 +44,10 @@ class SinglePage extends Component {
         );
     }
 }
+
+SinglePage.propTypes = {
+    page: PropTypes.object,
+    loading: PropTypes.bool
+};
 
 export default SinglePageData(SinglePage);

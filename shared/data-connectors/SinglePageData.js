@@ -11,7 +11,7 @@ export default graphql(PAGE_MENU, {
         };
     },
     props: ({ data: { loading, pageMenu } }) => ({
-        page: pageMenu,
+        page: pageMenu ? pageMenu.post : null,
         loading
     })
 });

@@ -1,11 +1,10 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import ArticleListItem from "../components/Post/ArticleListItem";
-import StackGrid from "react-stack-grid";
 import Loader from "../components/Loader";
-import config from "../../../../config";
-import Paginate from "../components/Paginate";
-import OhSnap from "../components/OhSnap";
-import WithResize from "./Hoc/WithResize";
+import config from "config";
+import Paginate from "client/helpers/Paginate";
+import OhSnap from "client/helpers/OhSnap";
 import PostsData from "shared/data-connectors/PostsData";
 
 class Posts extends Component {
@@ -13,14 +12,10 @@ class Posts extends Component {
         super(props);
         this.loadMore = this.loadMore.bind(this);
         this.page = 1;
-        this.state = {
-            posts: []
-        };
     }
 
     componentDidMount() {
         document.body.classList.add("posts-page");
-        this.props.setResizeTracker(".post-grid");
     }
 
     componentWillUnmount() {
@@ -51,34 +46,14 @@ class Posts extends Component {
                 <OhSnap message={this.props.settings.text_posts_empty.value} />
             );
         }
-        let windowWidth = this.props.clientWidth;
-        let gridWidth = "50%";
-        if (windowWidth < 600) {
-            gridWidth = "100%";
-        }
 
-        const posts =
-            this.props.settings.post_display.value == "row" ? (
-                <div className="post-row">
-                    {this.props.posts.map((post, i) => {
-                        return <ArticleListItem idx={i} key={i} post={post} />;
-                    })}
-                </div>
-            ) : (
-                <StackGrid
-                    className="post-grid"
-                    columnWidth={gridWidth}
-                    gutterWidth={12}
-                    gutterHeight={12}
-                    enableSSR={true}
-                    duration={0}
-                    appearDelay={0}
-                >
-                    {this.props.posts.map((post, i) => {
-                        return <ArticleListItem idx={i} key={i} post={post} />;
-                    })}
-                </StackGrid>
-            );
+        const posts = (
+            <div className="post-row">
+                {this.props.posts.map((post, i) => {
+                    return <ArticleListItem idx={i} key={i} post={post} />;
+                })}
+            </div>
+        );
 
         return (
             <Paginate
@@ -91,4 +66,10 @@ class Posts extends Component {
     }
 }
 
-export default PostsData(WithResize(Posts));
+Posts.propTypes = {
+    posts: PropTypes.array,
+    total: PropTypes.number,
+    loading: PropTypes.bool,
+    fetchMore: PropTypes.func
+};
+export default PostsData(Posts);

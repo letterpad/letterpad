@@ -189,36 +189,6 @@ pre {
     border-radius: 2px;
 }
 
-blockquote {
-    border: 0;
-    font-family: Georgia, sans-serif;
-    text-align: center;
-    font-style: italic;
-    font-size: 28px;
-    color: #111;
-    padding: 0;
-    margin: 0;
-}
-
-blockquote:before {
-    display: block;
-    content: "\f10d";
-    margin: 0 0 30px;
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: 24px;
-    color: #bbb;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: auto;
-    opacity: 0.3;
-}
-
-blockquote cite {
-    display: block;
-    font-size: 17px;
-    color: #bbb;
-    margin: 30px 0;
-}
-
 ul {
     padding-left: 0px;
     list-style: none;

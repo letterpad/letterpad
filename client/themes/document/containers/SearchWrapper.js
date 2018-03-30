@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
-import StackGrid from "react-stack-grid";
 import ArticleListItem from "../components/Post/ArticleListItem";
 import appoloClient from "client/apolloClient";
-import config from "../../../../config";
+import config from "config";
 import Loader from "../components/Loader";
 import { SEARCH_POSTS_BY_TAXONOMY, SEARCH_POSTS } from "shared/queries/Queries";
-import Paginate from "../components/Paginate";
-import OhSnap from "../components/OhSnap";
+import Paginate from "client/helpers/Paginate";
+import OhSnap from "client/helpers/OhSnap";
 
 export default class SearchWrapper extends Component {
     constructor(props) {
@@ -104,27 +103,12 @@ export default class SearchWrapper extends Component {
         const posts = this.state.posts.map((post, i) => (
             <ArticleListItem idx={i} key={i} post={post} />
         ));
-
-        const data =
-            this.props.settings.post_display.value == "row" ? (
-                <div className="post-row">{posts}</div>
-            ) : (
-                <div>
-                    <StackGrid
-                        className="post-grid"
-                        columnWidth={"50%"}
-                        gutterWidth={12}
-                        gutterHeight={12}
-                    >
-                        {posts}
-                    </StackGrid>
-                </div>
-            );
-
-        if (data.length === 0) {
+        if (posts.length === 0) {
             return <OhSnap message="wow" />;
         }
+        const data = <div className="post-row">{posts}</div>;
         const type = this.props.type;
+
         return (
             <div>
                 <Paginate

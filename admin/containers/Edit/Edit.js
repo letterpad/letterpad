@@ -18,7 +18,7 @@ import GetSinglePost from "../../data-connectors/GetSinglePost";
 class Single extends Component {
     componentDidMount() {
         document.body.classList.add("edit-post-page", "options-open");
-        PostActions.subscribe(post => {
+        PostActions.subscribe("update", post => {
             if (post.status == "trash") {
                 // this.props.history.push(`/admin/${plural[post.type]}`);
             }
