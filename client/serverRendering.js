@@ -67,6 +67,7 @@ module.exports.init = app => {
                     );
                 }
             }
+            console.log("Running server instance: ", serverFile);
             const server = require(serverFile).default;
             server(req, client).then(({ html, apolloState, head }) => {
                 res.end(getHtml(theme, html, apolloState, head));
