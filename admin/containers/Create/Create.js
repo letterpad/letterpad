@@ -34,8 +34,8 @@ class Create extends Component {
             });
         });
 
-        PostActions.subscribe(post => {
-            if ((post.status = "trash")) {
+        PostActions.subscribe("update", post => {
+            if (post.status == "trash") {
                 this.props.history.push(`/admin/${plural[post.type]}`);
             } else {
                 this.props.history.push(
