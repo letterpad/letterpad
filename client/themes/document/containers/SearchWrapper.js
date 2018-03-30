@@ -26,6 +26,10 @@ export default class SearchWrapper extends Component {
 
     componentDidMount() {
         this.loadData();
+        document.body.classList.add("search-page");
+    }
+    componentWillUnmount() {
+        document.body.classList.remove("search-page");
     }
 
     async loadData(num = 1) {
@@ -104,20 +108,22 @@ export default class SearchWrapper extends Component {
             <ArticleListItem idx={i} key={i} post={post} />
         ));
         if (posts.length === 0) {
-            return <OhSnap message="wow" />;
+            return (
+                <OhSnap message="We couldn't find anything related to your search" />
+            );
         }
-        const data = <div className="post-row">{posts}</div>;
+        const data = (
+            <div className="post-row col-lg-8 col-lg-offset-2">{posts}</div>
+        );
         const type = this.props.type;
 
         return (
-            <div>
-                <Paginate
-                    data={data}
-                    count={this.state.total}
-                    page={this.state.pageNo[type]}
-                    loadMore={this.loadData}
-                />
-            </div>
+            <Paginate
+                data={data}
+                count={this.state.total}
+                page={this.state.pageNo[type]}
+                loadMore={this.loadData}
+            />
         );
     }
 }

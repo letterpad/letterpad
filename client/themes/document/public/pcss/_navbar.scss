@@ -62,6 +62,10 @@ ul.nav {
     padding: 0;
     margin: 0;
     .navbar-brand {
+        font-weight: 600;
+        font-size: 23px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
         display: table-cell;
         vertical-align: middle;
         float: none;
@@ -169,22 +173,16 @@ ul.nav {
         -o-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-        height: calc(100vh - 130px);
+        height: calc(100vh - 250px);
         overflow-y: scroll;
     }
-}
-.navbar-brand {
-    font-weight: 100;
-    font-size: 23px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
 }
 @media (min-width: 992px) {
     .navbar-custom {
         .navbar-header {
             float: none;
             margin: 0 0 10px;
-            padding: 20px 20px;
+            padding: 10px 20px 0;
         }
         .navbar-nav {
             float: none;
@@ -276,7 +274,6 @@ ul.nav {
 .navbar-custom .navbar-header {
     float: none;
     margin: 0 0 10px;
-    padding: 20px 20px;
 }
 .navbar-custom .nav-list > li > a {
     box-shadow: none;

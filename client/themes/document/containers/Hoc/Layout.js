@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Sidebar from "../../containers/Sidebar";
 import Navbar from "../../components/Navbar";
 
 require("../../public/pcss/client.scss");

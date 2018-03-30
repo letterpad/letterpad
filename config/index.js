@@ -4,7 +4,7 @@ import production from "./config.prod.js";
 const env =
     "undefined" !== typeof window ? window.NODE_ENV : process.env.NODE_ENV;
 
-const configFile = dev; //env === "dev" ? dev : production;
+const configFile = env === "dev" ? dev : production;
 
 const config = new function(configFile) {
     this.rootUrl = configFile.rootUrl;

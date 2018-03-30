@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import MenuVertical from "./MenuVertical";
-import MenuHorizontal from "./MenuHorizontal";
+import Search from "client/helpers/Search";
 
 class Navbar extends Component {
     constructor(props) {
@@ -35,7 +35,7 @@ class Navbar extends Component {
                         {this.props.settings.site_title.value}
                     </Link>
                 </div>
-
+                <Search history={this.props.router.history} />
                 <div className={"navbar-collapse " + navbarStatus}>
                     <MenuVertical
                         menu={JSON.parse(this.props.settings.menu.value)}

@@ -48,7 +48,7 @@ class Posts extends Component {
         }
 
         const posts = (
-            <div className="post-row">
+            <div className="post-row col-lg-8 col-lg-offset-2">
                 {this.props.posts.map((post, i) => {
                     return <ArticleListItem idx={i} key={i} post={post} />;
                 })}

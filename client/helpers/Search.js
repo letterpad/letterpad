@@ -11,6 +11,15 @@ export default class Search extends Component {
         this.onChange = this.onChange.bind(this);
         this.doSearch = this.doSearch.bind(this);
     }
+    componentDidMount() {
+        if (this.props.history.location.pathname.includes("/search/")) {
+            this.setState({
+                search: this.props.history.location.pathname.split("/").pop(-1)
+            });
+        } else {
+            this.setState({ search: "" });
+        }
+    }
 
     onChange(e) {
         this.setState({ search: e.target.value });
@@ -32,7 +41,6 @@ export default class Search extends Component {
     render() {
         return (
             <div className="card">
-                <div className="module-title">Search</div>
                 <div className="x_content">
                     <div className="form-group">
                         <input
