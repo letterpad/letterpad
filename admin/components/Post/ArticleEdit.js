@@ -19,7 +19,7 @@ export default class ArticleEdit extends Component {
     }
 
     changeEditor(e) {
-        const mode = e.target.checked ? "markdown" : "standard";
+        const mode = e.target.checked ? "markdown" : "rich-text";
         PostActions.setData({ mode });
         this.setState({ isMarkdown: ~~e.target.checked });
     }

@@ -68,15 +68,12 @@ class CreateAuthor extends Component {
                                         ele &&
                                         this.setOption("role_id", ele.value)
                                     }
+                                    defaultValue={4}
                                     onChange={this.selectRole}
                                     className="form-control"
                                 >
                                     {this.props.roles.map((role, i) => (
-                                        <option
-                                            selected={role.name == "AUTHOR"}
-                                            key={i}
-                                            value={role.id}
-                                        >
+                                        <option key={i} value={role.id}>
                                             {role.name}
                                         </option>
                                     ))}

@@ -40,7 +40,6 @@ module.exports.init = app => {
                 let theme = settings.data.settings.filter(
                     item => item.option == "theme"
                 )[0].value;
-                console.log("=====xxxxxxx>>>>", theme);
                 const availableThemes = [];
                 getDirectories(path.join(__dirname, "../client/themes/")).map(
                     themePath => {

@@ -30,7 +30,7 @@ export default class Basic extends Component {
 
     render() {
         const { t } = this.context;
-        const avatar = this.state.avatar || "/images/avatar.png";
+        const avatar = this.state.avatar || "/admin/images/avatar.png";
         return (
             <div>
                 <div className="module-title">{t("profile.basic.title")}</div>

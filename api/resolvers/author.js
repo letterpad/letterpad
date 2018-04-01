@@ -6,7 +6,7 @@ import { getPermissions } from "../models/author";
 import { error } from "util";
 import config from "../../config";
 import SendMail from "../utils/mail";
-import { mailTemplate } from "../utils/common";
+import { mailTemplate, getEmailBody } from "../utils/common";
 
 export default {
     Query: {
@@ -155,14 +155,26 @@ export default {
                     await models.Author.create(newArgs, {
                         where: { id: newArgs.id }
                     });
-                    const link = `${config.rootUrl}admin/login`;
+                    const role = await models.Role.findOne({
+                        where: { id: newArgs.role_id }
+                    });
+
+                    const variables = {
+                        name: newArgs.fname,
+                        email: newArgs.email,
+                        password: randomPassword,
+                        rolename: role.name
+                    };
+                    const body = await getEmailBody(
+                        "register",
+                        variables,
+                        models
+                    );
+
                     const success = await SendMail({
                         to: newArgs.email,
                         subject: "Account Created",
-                        body: mailTemplate({
-                            name: newArgs.email,
-                            body: `Your new account has been created!<br/>Login using your email and use the password ${randomPassword} at this link: <a href="${link}">${link}<a/>`
-                        })
+                        body
                     });
                     return {
                         ok: true,

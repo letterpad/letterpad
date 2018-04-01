@@ -1,3 +1,12 @@
+import config from "../../config";
+import fs from "fs";
+import path from "path";
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, "g"), replacement);
+};
+
 // We want to convert
 // ['tag1, tag2', 'tag3, tag4', 'tag5, tag6']
 // to
@@ -38,4 +47,43 @@ export const mailTemplate = ({ name, body, footer }) => {
         - Admin<br/>
         </div>
     `;
+};
+
+export const getEmailBody = async (templateName, data, models) => {
+    // console.log(__dirname + "../emails/" + templateName + ".html");
+    // try {
+    //     require(path.join(__dirname, "../emails/" + templateName + ".html"));
+    // } catch (e) {
+    //     //...
+    // }
+
+    // get the template source
+    let a = fs;
+    let template = fs.readFileSync(
+        path.join(__dirname, "../emails/" + templateName + ".html"),
+        "utf-8"
+    );
+    // let template = require("../emails/" + templateName + ".html");
+    // get the settings data
+    const settings = await models.Setting.findAll();
+    // format the settings data into an object
+    const siteData = {};
+    if (settings) {
+        settings.forEach(setting => {
+            siteData[setting.option] = setting.value;
+        });
+    }
+    // do some default replacements
+    const blogname = siteData.site_title;
+    const blogurl = config.rootUrl + config.baseName;
+    const loginurl = blogurl + "admin/login";
+
+    template = template.replaceAll("{{blogurl}}", blogurl);
+    template = template.replaceAll("{{blogname}}", blogname);
+    template = template.replaceAll("{{loginurl}}", loginurl);
+
+    Object.keys(data).forEach(variable => {
+        template = template.replaceAll("{{" + variable + "}}", data[variable]);
+    });
+    return template;
 };
