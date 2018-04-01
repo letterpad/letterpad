@@ -1,0 +1,28 @@
+/*!------------------------------------------------------------------
+[Footer]
+*/
+
+.footer {
+    background-color: #fff;
+    padding: 20px 0;
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: #bbb;
+}
+
+.contact-info {
+    text-align: center;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px;
+}
+
+.contact-info li {
+    display: inline-block;
+    margin: 5px 15px;
+}

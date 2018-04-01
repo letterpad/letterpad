@@ -1,0 +1,84 @@
+/*!------------------------------------------------------------------
+[Overlays]
+*/
+
+.bg-gray {
+    background-color: #f5f5f5;
+}
+
+.bg-film:before,
+.bg-dark-30:before,
+.bg-dark-60:before,
+.bg-dark-90:before {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+}
+
+.bg-dark-30:before {
+    background: rgba(34, 34, 34, 0.3);
+    content: "";
+    left: 0;
+    top: 0;
+}
+
+.bg-dark-60:before {
+    background: rgba(34, 34, 34, 0.6);
+    content: "";
+    left: 0;
+    top: 0;
+}
+
+.bg-dark-90:before {
+    background: rgba(34, 34, 34, 0.9);
+    content: "";
+    left: 0;
+    top: 0;
+}
+
+.bg-film:before {
+    /*background-image:url(../images/dot.gif);*/
+    opacity: 0.15;
+    content: "";
+    left: 0;
+    top: 0;
+}
+
+.bg-film,
+.bg-dark-30,
+.bg-dark-60,
+.bg-dark-90 {
+    color: #fff;
+}
+
+.bg-film h1,
+.bg-film h2,
+.bg-film h3,
+.bg-film h4,
+.bg-film h5,
+.bg-film h6,
+.bg-film .module-subtitle,
+.bg-dark-30 h1,
+.bg-dark-30 h2,
+.bg-dark-30 h3,
+.bg-dark-30 h4,
+.bg-dark-30 h5,
+.bg-dark-30 h6,
+.bg-dark-30 .module-subtitle,
+.bg-dark-60 h1,
+.bg-dark-60 h2,
+.bg-dark-60 h3,
+.bg-dark-60 h4,
+.bg-dark-60 h5,
+.bg-dark-60 h6,
+.bg-dark-60 .module-subtitle,
+.bg-dark-90 h1,
+.bg-dark-90 h2,
+.bg-dark-90 h3,
+.bg-dark-90 h4,
+.bg-dark-90 h5,
+.bg-dark-90 h6,
+.bg-dark-90 .module-subtitle {
+    color: #fff;
+}

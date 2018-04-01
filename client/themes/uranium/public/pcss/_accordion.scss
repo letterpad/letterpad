@@ -1,0 +1,78 @@
+/*!------------------------------------------------------------------
+[Accordions]
+*/
+
+.panel-title,
+.panel-title a {
+    font-weight: 400;
+    font-size: 13px;
+    color: #111;
+}
+
+.panel-group {
+    border: 1px solid #eee;
+    border-bottom: 0;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.panel-group .panel {
+    border-radius: 0;
+}
+
+.panel {
+    border: 0;
+    border-bottom: 1px solid #eee;
+}
+
+.panel-default > .panel-heading + .panel-collapse > .panel-body {
+    border-color: #eee;
+}
+
+.panel-heading {
+    padding: 15px 20px;
+}
+
+.panel-default > .panel-heading {
+    background: transparent;
+    border-color: #eee;
+}
+
+.panel-heading a {
+    position: relative;
+    display: block;
+}
+
+.panel-heading a:after {
+    position: absolute;
+    content: "\f068";
+    top: 50%;
+    right: 0px;
+    margin-top: -5px;
+    font-family: "FontAwesome";
+    font-size: 11px;
+    line-height: 1;
+}
+
+.panel-heading a.collapsed:after {
+    content: "\f067";
+}
+
+.panel-title {
+    font-size: 12px;
+}
+
+.panel-group .panel + .panel {
+    border-top: 0;
+    margin-top: 0;
+}
+
+.panel-arrow .panel-heading a:after {
+    content: "\f106";
+}
+
+.panel-arrow .panel-heading a.collapsed:after {
+    content: "\f107";
+}

@@ -16,7 +16,7 @@ class SinglePage extends Component {
                 <OhSnap message="Sorry, this page does not exist or might be restricted." />
             );
         }
-        const post = this.props.page;
+        const post = this.props.page.post;
         const tags = [];
         const categories = [];
         post.taxonomies.forEach(taxonomy => {

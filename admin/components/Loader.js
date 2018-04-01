@@ -6,7 +6,10 @@ export default class Loader extends Component {
             return <i className="fa fa-circle-o-notch fa-spin fa-2x" />;
         }
         return (
-            <div className="progress progress-striped active">
+            <div
+                className="progress progress-striped active"
+                style={{ height: 6 }}
+            >
                 <div
                     className="progress-bar progress-bar-success"
                     style={{ width: "100%" }}

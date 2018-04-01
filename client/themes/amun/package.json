@@ -1,0 +1,9 @@
+{
+    "name": "amun",
+    "version": "1.0.0",
+    "description": "Amun Theme for Letterpad",
+    "author": "First Last <first.last@example.com>",
+    "dependencies": {
+        "react-burger-menu": "^2.3.0"
+    }
+}

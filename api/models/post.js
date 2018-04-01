@@ -14,7 +14,7 @@ export default (conn, DataTypes) => {
             },
             mode: {
                 type: Sequalize.STRING,
-                defaultValue: "standard"
+                defaultValue: "rich-text"
             },
             body: {
                 type: Sequalize.TEXT

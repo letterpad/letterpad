@@ -97,6 +97,12 @@ module.exports = args => {
                         options: babelOptions
                     },
                     include: path.join(__dirname, "../admin")
+                },
+                {
+                    test: /\.html$/,
+                    use: {
+                        loader: "html-loader"
+                    }
                 }
             ]
         }

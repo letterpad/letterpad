@@ -1,0 +1,35 @@
+/*!------------------------------------------------------------------
+[Card]
+*/
+
+.card {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 12px;
+}
+.post-grid {
+    .card {
+        margin-bottom: 0px;
+    }
+    &:not(.with-padding) {
+        .card {
+            padding: 0px;
+        }
+        .post {
+            margin-bottom: 0px;
+            .post-content {
+                padding: 20px;
+            }
+            .post-header {
+                margin: 0px 20px;
+                padding-top: 20px;
+                .post-title {
+                    margin-bottom: 0px;
+                }
+            }
+            .post-body.with-border {
+                border: 1px solid #eee;
+            }
+        }
+    }
+}

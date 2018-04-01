@@ -1,0 +1,19 @@
+:root {
+    --color-text-primary: #333333;
+    --color-text-primary-invert: #b7b7b7;
+    --color-text-primary-light: #616161;
+    --color-text-muted: rgb(185, 185, 185);
+    --color-text-secondary: #000000;
+    --color-text-secondary-light: #4c4c4c;
+    --color-accent: #2196f3;
+    --color-bg-primary: #27282f;
+    --color-bg-secondary: #1f2129;
+    --color-border: #e5e5e5;
+    --link-hover: #1a82d6;
+    --color-menu-link: var(--color-text-primary-invert);
+
+    --fs-small: 12px;
+    --fs-normal: 14px;
+    --fs-medium: 16px;
+    --fs-large: 18px;
+}

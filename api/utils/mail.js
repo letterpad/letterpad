@@ -10,13 +10,11 @@ const SendMail = (args, cb) => {
             pass: process.env.SMTP_PASSWORD
         }
     });
-    console.log(process.env);
     // setup email data with unicode symbols
     let mailOptions = {
         from: `"${process.env.SMTP_FROM_NAME}" <${process.env.SMTP_USERNAME}>`, // sender address
         to: args.to, // list of receivers
         subject: args.subject, // Subject line
-        text: "Hello world?", // plain text body
         html: args.body // html body
     };
 

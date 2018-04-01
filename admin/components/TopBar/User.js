@@ -43,7 +43,8 @@ class User extends Component {
                     >
                         <img
                             src={
-                                this.state.author.avatar || "/images/avatar.png"
+                                this.state.author.avatar ||
+                                "/admin/images/avatar.png"
                             }
                             className="avatar"
                         />

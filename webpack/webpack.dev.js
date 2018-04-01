@@ -6,7 +6,7 @@ const webpack = require("webpack");
 
 const clientConfig = args => {
     if (args.theme == "") {
-        args.theme = "letterpad";
+        args.theme = "document";
     }
     return merge(baseConfig(args), {
         devtool: "eval-source-map",
@@ -43,7 +43,7 @@ const clientConfig = args => {
 
 const serverConfig = args => {
     if (args.theme == "") {
-        args.theme = "letterpad";
+        args.theme = "document";
     }
     const BUILD_PATH = path.join(
         __dirname,
