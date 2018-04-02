@@ -9,5 +9,3 @@ yarn-error.log
 .env
 extend
 hot
-data
-data/letterpad.sqlite

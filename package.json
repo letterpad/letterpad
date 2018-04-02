@@ -6,10 +6,13 @@
     "private": true,
     "scripts": {
         "start-prod": "better-npm-run start-prod",
-        "build": "NODE_ENV=production  webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${THEME}",
+        "build":
+            "NODE_ENV=production  webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${THEME}",
         "insert-fake": "babel-node ./api/faker/data.js",
-        "dev": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./start.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${THEME}\"",
-        "prod": "NODE_ENV=production concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./start.js\"",
+        "dev":
+            "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./start.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${THEME}\"",
+        "prod":
+            "NODE_ENV=production concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./start.js\"",
         "test": "jest --runInBand"
     },
     "repository": {
@@ -19,9 +22,7 @@
     "author": "Abhishek Saha",
     "license": "MIT",
     "homepage": "http://ajaxtown.com",
-    "workspaces": [
-        "client/themes/*"
-    ],
+    "workspaces": ["client/themes/*"],
     "dependencies": {
         "apollo-cache-inmemory": "^1.1.4",
         "apollo-client": "^2.0.4",
@@ -105,7 +106,6 @@
         "jest": "^22.0.4",
         "merge-graphql-schemas": "1.4.0",
         "mocha": "^2.4.5",
-        "mysql": "^2.15.0",
         "nodemon": "^1.14.6",
         "path": "^0.12.7",
         "postcss": "^6.0.20",
@@ -130,8 +130,6 @@
         "write-file-webpack-plugin": "^4.2.0"
     },
     "jest": {
-        "testMatch": [
-            "**/__tests__/**/?(*.)(spec|test).js?(x)"
-        ]
+        "testMatch": ["**/__tests__/**/?(*.)(spec|test).js?(x)"]
     }
 }
