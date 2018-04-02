@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 // import FontPicker from "font-picker-react";
-import { ChromePicker } from "react-color";
+// import { ChromePicker } from "react-color";
 import { notify } from "react-notify-toast";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
 import SettingsData from "../../../shared/data-connectors/SettingsData";
