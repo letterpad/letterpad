@@ -204,14 +204,25 @@ export default {
                     { token },
                     { where: { id: author.id } }
                 );
-                const link = `${config.rootUrl}admin/reset-password`;
+                const link = `${config.rootUrl}/admin/reset-password/${token}`;
+                const role = await models.Role.findOne({
+                    where: { id: author.role_id }
+                });
+
+                const variables = {
+                    name: author.fname,
+                    email: args.email,
+                    link
+                };
+                const body = await getEmailBody(
+                    "password_reset",
+                    variables,
+                    models
+                );
                 const success = await SendMail({
                     to: email,
                     subject: "Password Reset",
-                    body: mailTemplate({
-                        name: author.fname,
-                        body: `You asked us to reset your password for your account using the email address ${email}.<br/>If this was a mistake, or you didn't ask for a password reset, just ignore this email and nothing will happen.<br/>To reset your password, visit the following address: <a href="${link}">${link}<a/>`
-                    })
+                    body
                 });
 
                 return {
@@ -222,6 +233,33 @@ export default {
                 return {
                     ok: false,
                     msg: "Something unexpected happened"
+                };
+            }
+        },
+        resetPassword: async (root, args, { models }) => {
+            try {
+                const token = args.token;
+                const password = await bcrypt.hash(args.password, 12);
+                const author = await models.Author.findOne({
+                    where: { token }
+                });
+
+                if (!author) {
+                    throw new Error("Invalid token for changing password");
+                }
+                await models.Author.update(
+                    { token: "", password },
+                    { where: { id: author.id } }
+                );
+
+                return {
+                    ok: true,
+                    msg: "Password changed successfully"
+                };
+            } catch (e) {
+                return {
+                    ok: false,
+                    msg: e.message
                 };
             }
         }

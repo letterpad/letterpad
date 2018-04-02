@@ -68,14 +68,24 @@ class LoginView extends Component {
         e.preventDefault();
         const email = this.lostPwdEmailInput.value.trim();
         if (email.length > 0) {
+            e.currentTarget.disabled = true;
             const response = await this.props.forgotPassword({ email });
+            e.currentTarget.disabled = false;
+            if (response.data.forgotPassword.ok) {
+                document.querySelector(".forgot-block").innerHTML =
+                    "Great. Check your email to reset your password!";
+            } else {
+                notify.show(response.data.forgotPassword.msg, "warning", 3000);
+            }
+        } else {
+            notify.show("Please fill up the email field.", "warning", 3000);
         }
     }
 
     render() {
         const classes = {
-            login: this.state.lostPassword ? "hide" : "",
-            forgot: this.state.lostPassword ? "" : "hide"
+            login: this.state.lostPassword ? "hide" : "login-block",
+            forgot: this.state.lostPassword ? "forgot-block" : "hide"
         };
         return (
             <div className="login-wrapper">
