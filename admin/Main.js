@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import jwtDecode from "jwt-decode";
@@ -14,6 +14,7 @@ import SettingsData from "../shared/data-connectors/SettingsData";
 // View Files
 import Loader from "./components/Loader";
 import LoginView from "./containers/LoginView";
+import ResetPassword from "./containers/ResetPassword";
 import Settings from "./containers/Settings/Settings";
 import Posts from "./containers/Post/Posts";
 import Pages from "./containers/Page/Pages";
@@ -70,12 +71,23 @@ class App extends Component {
         const locale = language[selectedLang[0]];
         return (
             <Translate i18n={locale}>
-                <div>
+                <Switch>
                     <Route
                         exact
                         path="/admin/login"
                         render={props => (
                             <LoginView {...props} settings={settings.data} />
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/admin/reset-password/:token"
+                        component={props => (
+                            <ResetPassword
+                                {...props}
+                                {...this.props}
+                                settings={settings.data}
+                            />
                         )}
                     />
                     <div className="wrapper">
@@ -178,7 +190,7 @@ class App extends Component {
                         />
                         <SecuredRoute path="/admin/themes" component={Themes} />
                     </div>
-                </div>
+                </Switch>
             </Translate>
         );
     }
