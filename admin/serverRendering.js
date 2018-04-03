@@ -11,6 +11,7 @@ import { GET_OPTIONS } from "../shared/queries/Queries";
 import { getDirectories } from "../shared/dir";
 import path from "path";
 import fs from "fs";
+import { makeUrl } from "../shared/util";
 
 // const getClient = () => {
 //     return new ApolloClient({
@@ -105,13 +106,13 @@ function Html({ theme, content, state }) {
     const bundles =
         process.env.NODE_ENV === "production" ? prodBundles : devBundles;
 
-    const insertScript = script => (
-        <script type="text/javascript" src={config.rootUrl + script} defer />
-    );
+    const insertScript = script => {
+        return <script type="text/javascript" src={makeUrl(script)} defer />;
+    };
 
     const insertStyle = style => (
         <link
-            href={config.rootUrl + "/admin" + style}
+            href={makeUrl(["admin", style])}
             rel="stylesheet"
             type="text/css"
         />

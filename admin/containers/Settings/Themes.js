@@ -8,6 +8,7 @@ import { notify } from "react-notify-toast";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
 import SettingsData from "../../../shared/data-connectors/SettingsData";
 import config from "../../../config";
+import { makeUrl } from "../../../shared/util";
 
 class ThemeItem extends Component {
     render() {
@@ -90,7 +91,8 @@ class Themes extends Component {
     }
 
     getThemes() {
-        fetch(config.rootUrl + "/admin/getThemes")
+        const url = makeUrl("/admin/getThemes");
+        fetch(url)
             .then(res => res.json())
             .then(themes => {
                 this.setState({ themes });

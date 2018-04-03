@@ -1,3 +1,5 @@
+import config from "../config";
+
 export const parseErrors = errObj => {
     const result = [];
     if (errObj && errObj.errors) {
@@ -11,4 +13,12 @@ export const parseErrors = errObj => {
 export const plural = {
     post: "posts",
     page: "pages"
+};
+
+export const makeUrl = parts => {
+    if (typeof parts === "string") {
+        parts = [parts];
+    }
+    const url = config.rootUrl + "/" + parts.join("/");
+    return url.replace(/\/\/+/g, "/");
 };

@@ -4,7 +4,7 @@ import { slide as Menu } from "react-burger-menu";
 import MenuVertical from "../../components/Navbar/MenuVertical";
 import Search from "../../components/Sidebar/Search";
 
-require("../../public/pcss/client.scss");
+require("../../public/pcss/client.pcss");
 
 var styles1 = {
     bmBurgerButton: {

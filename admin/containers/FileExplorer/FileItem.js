@@ -4,6 +4,7 @@ import { browserHistory } from "react-router";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import config from "../../../config";
+import { makeUrl } from "../../../shared/util";
 
 export default class MediaItem extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ export default class MediaItem extends Component {
     }
 
     render() {
-        const url = config.rootUrl + this.props.media.url.slice(1);
+        const url = makeUrl(this.props.media.url.slice(1));
         const isSelected = this.props.selected_id === this.props.media.id;
         const classes = "post" + (isSelected ? " selected" : "");
         return (

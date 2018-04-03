@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Navbar from "../../components/Navbar";
 
-require("../../public/pcss/client.scss");
+require("../../public/pcss/client.pcss");
 
 export default function Layout(Element, props) {
     const settings = props.settings;
