@@ -56,11 +56,12 @@ class MenuConstruction extends Component {
             labels: [
                 {
                     id: Date.now() + "-label",
-                    title: "Label",
+                    title: "Folder",
                     type: "label",
-                    name: "Label"
+                    name: "Folder"
                 }
-            ]
+            ],
+            scrollTop: 0
         };
     }
     componentWillReceiveProps(nextProps) {
@@ -113,6 +114,7 @@ class MenuConstruction extends Component {
         newState.items = [...this.state.items, this.state[type][idx]];
         this.setState(newState, () => {
             this.props.updateOption("menu", JSON.stringify(this.state.items));
+            this.setState({ scrollTop: 9999999 });
         });
     }
 
@@ -269,7 +271,7 @@ class MenuConstruction extends Component {
                     />
                     <br />
                     <Resources
-                        title="Labels"
+                        title="Folders"
                         data={this.state.labels}
                         itemClicked={idx => this.addItem(idx, "labels")}
                     />
@@ -285,6 +287,11 @@ class MenuConstruction extends Component {
                                     "menu",
                                     JSON.stringify(treeData)
                                 );
+                            }}
+                            reactVirtualizedListProps={{
+                                scrollTop: this.state.scrollTop,
+                                onScroll: ({ scrollTop }) =>
+                                    this.setState({ scrollTop })
                             }}
                             rowHeight={100}
                             canDrop={this.canDrop.bind(this)}

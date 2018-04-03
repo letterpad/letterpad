@@ -10,6 +10,15 @@
         left: 50%;
         width: 1000px;
         margin-left: -500px;
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: rgba(43, 43, 43, 0.09);
+            -webkit-box-shadow: none;
+        }
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: none;
+        }
     }
     .top-bar {
         width: 100%;
