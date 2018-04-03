@@ -10,14 +10,14 @@ const clientConfig = args => {
     if (args.theme == "") {
         args.theme = "letterpad";
     }
-    const extractSass = new ExtractTextPlugin("[name].min.css");
-    const extractSassAdmin = new ExtractTextPlugin("[name].min.css");
+    const extractPcss = new ExtractTextPlugin("[name].min.css");
+    const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");
     return merge(baseConfig(args), {
         output: {
             path: path.join(__dirname, "../"),
             filename: "[name]-bundle.min.js"
         },
-        plugins: [extractSass, extractSassAdmin],
+        plugins: [extractPcss, extractPcssAdmin],
         module: {
             rules: [
                 {
@@ -25,8 +25,8 @@ const clientConfig = args => {
                     loader: "url-loader?url=false"
                 },
                 {
-                    test: /\.(css|scss)$/,
-                    use: extractSass.extract({
+                    test: /\.(css|pcss)$/,
+                    use: extractPcss.extract({
                         fallback: "style-loader",
                         use: [
                             {
@@ -41,8 +41,8 @@ const clientConfig = args => {
                     ]
                 },
                 {
-                    test: /\.(css|scss)$/,
-                    use: extractSassAdmin.extract({
+                    test: /\.(css|pcss)$/,
+                    use: extractPcssAdmin.extract({
                         fallback: "style-loader",
                         use: [
                             {
@@ -103,7 +103,7 @@ const serverConfig = args => {
                     loader: "url-loader?url=false"
                 },
                 {
-                    test: /\.(scss|css)$/,
+                    test: /\.(pcss|css)$/,
                     use: ["css-loader/locals"]
                 }
             ]

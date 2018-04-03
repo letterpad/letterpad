@@ -4,6 +4,7 @@ import { browserHistory } from "react-router";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import config from "../../../config";
+import { makeUrl } from "../../../shared/util";
 
 export default class MediaItem extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ export default class MediaItem extends Component {
     }
 
     render() {
-        const url = config.rootUrl + this.props.media.url.slice(1);
+        const url = makeUrl(this.props.media.url.slice(1));
         return (
             <div className="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                 <article className="post">

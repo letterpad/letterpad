@@ -50,20 +50,12 @@ export const mailTemplate = ({ name, body, footer }) => {
 };
 
 export const getEmailBody = async (templateName, data, models) => {
-    // console.log(__dirname + "../emails/" + templateName + ".html");
-    // try {
-    //     require(path.join(__dirname, "../emails/" + templateName + ".html"));
-    // } catch (e) {
-    //     //...
-    // }
-
     // get the template source
     let a = fs;
     let template = fs.readFileSync(
         path.join(__dirname, "../emails/" + templateName + ".html"),
         "utf-8"
     );
-    // let template = require("../emails/" + templateName + ".html");
     // get the settings data
     const settings = await models.Setting.findAll();
     // format the settings data into an object

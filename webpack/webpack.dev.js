@@ -22,7 +22,7 @@ const clientConfig = args => {
                     loader: "url-loader?url=false"
                 },
                 {
-                    test: /\.(css|scss)$/,
+                    test: /\.(css|pcss)$/,
                     use: [
                         "style-loader",
                         {
@@ -81,7 +81,7 @@ const serverConfig = args => {
                     loader: "url-loader?url=false"
                 },
                 {
-                    test: /\.(scss|css)$/,
+                    test: /\.(pcss|css)$/,
                     use: ["css-loader/locals"]
                 }
             ]

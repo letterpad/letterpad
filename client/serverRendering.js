@@ -102,12 +102,22 @@ function getHtml(theme, html, state, head) {
     const bundles = process.env.NODE_ENV === "dev" ? devBundles : prodBundles;
 
     const insertScript = script =>
-        `<script type="text/javascript" src="${
-            config.rootUrl
-        }/${script}" defer></script>`;
+        `<script type="text/javascript" src="${makeUrl(
+            script
+        )}" defer></script>`;
 
     const initialState = JSON.stringify(state); //.replace(/</g, "\\u003c");
     const scripts = bundles.map(bundle => insertScript(bundle));
+
+    let styleLinks = "";
+
+    if (process.env.NODE_ENV === "production") {
+        let link1 = makeUrl([theme, "dist/client.min.css"]);
+        let link2 = makeUrl([theme, "dist/common.min.css"]);
+
+        styleLinks = `<link href="${link1}" rel="stylesheet"/>`;
+        styleLinks += `<link href="${link2}" rel="stylesheet"/>`;
+    }
 
     return `<html ${htmlAttrs}>
             <head>
@@ -117,16 +127,7 @@ function getHtml(theme, html, state, head) {
                     content="width=device-width, initial-scale=1"
                 />
                 ${metaTags}
-                ${
-                    process.env.NODE_ENV === "production"
-                        ? `<link href="${
-                              config.rootUrl
-                          }/${theme}/dist/client.min.css" rel="stylesheet"/>
-                     <link href="${
-                         config.rootUrl
-                     }/${theme}/dist/custom.min.css" rel="stylesheet"/>`
-                        : ""
-                }
+                ${styleLinks}
                 
             </head>
             <body>

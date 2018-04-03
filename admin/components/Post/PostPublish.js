@@ -5,6 +5,7 @@ import { gql, graphql } from "react-apollo";
 import moment from "moment";
 import config from "../../../config";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
+import { makeUrl } from "../../../shared/util";
 
 const actions = {
     publish: "Published",
@@ -87,8 +88,7 @@ class PostPublish extends Component {
 
     render() {
         const publishedCls = this.state.published ? "on" : "off";
-        const permalink =
-            config.rootUrl + this.state.post.type + "/" + this.state.post.slug;
+        const permalink = makeUrl([this.state.post.type, this.state.post.slug]);
         const actionLabel = this.props.create ? "Create" : "Update";
         return (
             <div className="card">

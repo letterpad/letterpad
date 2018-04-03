@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { parseErrors } from "../../shared/util";
+import { parseErrors, makeUrl } from "../../shared/util";
 import { requiresAdmin } from "../utils/permissions";
 import { getPermissions } from "../models/author";
 import { error } from "util";
@@ -204,7 +204,7 @@ export default {
                     { token },
                     { where: { id: author.id } }
                 );
-                const link = `${config.rootUrl}/admin/reset-password/${token}`;
+                const link = makeUrl(["/admin/reset-password", token]);
                 const role = await models.Role.findOne({
                     where: { id: author.role_id }
                 });
