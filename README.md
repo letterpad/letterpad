@@ -17,13 +17,13 @@ git clone https://github.com/ajaxtown/letterpad.git
 cd letterpad
 ```
 
-2.  Make a copy of `.env.sample` and name it `.env`. Open it and change `SECRET_KEY` to a random string to secure your app. Then add your SMTP credentials so email can be sent. Change the database options accordingly. By default, letterpad uses `mysql`.
+2.  Make a copy of `sample.env` and name it `.env`. Open it and change `SECRET_KEY` to a random string to secure your app. Then add your SMTP credentials so email can be sent. Change the database options accordingly. By default, letterpad uses `sqlite`.
 
-3.  Install dependencies and run:
+3.  Install dependencies and run (**use yarn to install dependencies**):
 
 ```
-npm install
-npm run dev
+yarn install
+THEME=document npm run dev
 ```
 
 Now visit [http://localhost:4040](http://localhost:4040) and checkout the welcome page.
