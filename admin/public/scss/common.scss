@@ -388,3 +388,23 @@ ul {
     display: inline-block;
     vertical-align: top;
 }
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 12px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-track:window-inactive {
+    -webkit-box-shadow: none;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(43, 43, 43, 0.8);
+    -webkit-box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(43, 43, 43, 0.8);
+}

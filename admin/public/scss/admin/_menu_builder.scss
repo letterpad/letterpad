@@ -76,7 +76,7 @@
     }
 }
 
-.menu-construct {
+.menu-builder-page {
     h5 {
         margin-bottom: 8px;
         font-size: 12px;
@@ -93,9 +93,8 @@
                 border-right: none;
                 cursor: pointer;
                 &[disabled] {
-                    background: #eee;
+                    opacity: 0.5;
                     cursor: not-allowed;
-                    color: #919191;
                 }
                 &:first-child {
                     border-top: none;
