@@ -6,6 +6,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import fetch from "node-fetch";
 import fs from "fs";
 import config from "../config";
+import { makeUrl } from "../shared/util";
 import { GET_OPTIONS } from "../shared/queries/Queries";
 
 const getParams = query => {

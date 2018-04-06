@@ -3,6 +3,9 @@ import Sequalize, { DataTypes } from "sequelize";
 import bcrypt from "bcryptjs";
 import Faker from "faker";
 import rimraf from "rimraf";
+
+require("dotenv").config({ path: "../../.env" });
+
 const copydir = require("copy-dir");
 Faker.locale = "en_US";
 const models = {
@@ -249,7 +252,7 @@ export async function insertMedia(params) {
 export async function insertSettings() {
     let menu = JSON.stringify([
         {
-            id: "1-category",
+            id: "1",
             label: "Uncategorized",
             type: "category",
             name: "Home",
@@ -257,7 +260,7 @@ export async function insertSettings() {
             slug: "custom-slug"
         },
         {
-            id: "2-category",
+            id: "2",
             label: "General",
             type: "category",
             name: "Empty",
@@ -265,7 +268,7 @@ export async function insertSettings() {
             slug: "gen"
         },
         {
-            id: "12-page",
+            id: "12",
             label: "Page 2",
             slug: "error-quasi-iste",
             type: "page",

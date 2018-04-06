@@ -1,13 +1,15 @@
+import path from "path";
+require("dotenv").config({ path: path.resolve(__dirname + "/../.env") });
 import Sequelize from "sequelize";
-require("dotenv").config();
 const DB_TYPE = process.env.DB_TYPE;
 const DB_NAME = process.env.DB_NAME;
-console.log(process.env.DB_TYPE);
+
 let conn = null;
 if (DB_TYPE === "sqlite") {
     conn = new Sequelize(DB_NAME, null, null, {
+        logging: process.env.NODE_ENV === "development",
         dialect: "sqlite",
-        storage: "./data/letterpad.sqlite",
+        storage: `./data/${DB_NAME}.sqlite`,
         define: {
             underscored: true
         }

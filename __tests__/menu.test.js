@@ -29,7 +29,7 @@ describe("Test menu", () => {
     test("Test custom category slug", async () => {
         const q = await axios.post(server, {
             query: `query {
-                postsMenu(slug:"custom-slug",postType:"post"){ 
+                postsMenu(slug:"custom-slug",postType:"post"){
                   posts {
                       id
                   }

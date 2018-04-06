@@ -1,16 +1,14 @@
+import config from "../config";
+import path from "path";
 import express from "express";
 import GraphHTTP from "express-graphql";
 import Schema from "./schema";
 import bodyParser from "body-parser";
 import cors from "cors";
 import multer from "multer";
-import path from "path";
 import jwt from "jsonwebtoken";
 import models from "./models";
 import { seed } from "./seed/seed";
-import config from "../config";
-
-require("dotenv").config();
 
 const app = express();
 

@@ -32,7 +32,7 @@ import Themes from "./containers/Settings/Themes";
 import TopBar from "./components/TopBar";
 
 // css
-import "./public/scss/admin.scss";
+import "./public/pcss/admin.pcss";
 
 const SecuredRoute = ({ component: Component, ...rest }) => {
     try {

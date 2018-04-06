@@ -13,16 +13,6 @@ import path from "path";
 import fs from "fs";
 import { makeUrl } from "../shared/util";
 
-// const getClient = () => {
-//     return new ApolloClient({
-//         ssrMode: false,
-//         link: createHttpLink({
-//             uri: config.apiUrl,
-//             fetch
-//         }),
-//         cache: new InMemoryCache()
-//     });
-// };
 const client = () =>
     new ApolloClient({
         ssrMode: false,
