@@ -10,3 +10,4 @@ yarn-error.log
 extend
 hot
 client/themes
+*hot*js*

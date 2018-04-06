@@ -20,5 +20,5 @@ export const makeUrl = parts => {
         parts = [parts];
     }
     const url = config.rootUrl + "/" + parts.join("/");
-    return url.replace(/\/\/+/g, "/");
+    return url.replace(/\/\/+/g, "/").replace(":/", "://");
 };

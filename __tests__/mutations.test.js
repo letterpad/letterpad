@@ -16,8 +16,7 @@ describe("Author Resolvers", () => {
         done();
     });
     afterAll(() => {
-        console.log("finished");
-        process.exit();
+        // process.exit();
         killServer();
     });
     test("Register Author", async () => {
