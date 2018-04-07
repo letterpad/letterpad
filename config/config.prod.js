@@ -1,8 +1,18 @@
 export default {
-    apiUrl: "http://api.letterpad.org/docs/graphql",
-    uploadUrl: "http://api.letterpad.org/docs/upload",
-    rootUrl: "http://letterpad.org/docs",
-    appPort: 7070,
-    apiPort: 7071,
-    baseName: "/docs/"
+    apiUrl: (() =>
+        typeof window !== "undefined" ? window.apiUrl : process.env.apiUrl)(),
+    uploadUrl: (() =>
+        typeof window !== "undefined"
+            ? window.uploadUrl
+            : process.env.uploadUrl)(),
+    rootUrl: (() =>
+        typeof window !== "undefined" ? window.rootUrl : process.env.rootUrl)(),
+    appPort: (() =>
+        typeof window !== "undefined" ? window.appPort : process.env.appPort)(),
+    apiPort: (() =>
+        typeof window !== "undefined" ? window.apiPort : process.env.apiPort)(),
+    baseName: (() =>
+        typeof window !== "undefined"
+            ? window.baseName
+            : process.env.baseName)()
 };

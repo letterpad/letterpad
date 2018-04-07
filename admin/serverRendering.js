@@ -142,7 +142,16 @@ function Html({ theme, content, state }) {
                 <div id="app" dangerouslySetInnerHTML={{ __html: content }} />
                 <script
                     dangerouslySetInnerHTML={{
-                        __html: `window.NODE_ENV = "${process.env.NODE_ENV}";`
+                        __html: `window.NODE_ENV = "${
+                            process.env.NODE_ENV
+                        }";window.__APOLLO_STATE__=${initialState};
+                        window.NODE_ENV = "${process.env.NODE_ENV}";
+                        window.rootUrl="${process.env.rootUrl}";
+                        window.apiUrl="${process.env.apiUrl}";
+                        window.uploadUrl="${process.env.uploadUrl}";
+                        window.appPort="${process.env.appPort}";
+                        window.apiPort="${process.env.apiPort}";
+                        window.baseName="${process.env.baseName}";`
                     }}
                 />
                 {insertScript("/admin/js/highlight.min.js")}

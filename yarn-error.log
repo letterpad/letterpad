@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/node /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/yarn add dotenv --dev
+  /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/node /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/yarn add fs --dev
 
 PATH: 
   /Users/ajaxtown/google-cloud-sdk/bin:/Users/ajaxtown/.nvm/versions/node/v8.1.0/bin:/usr/local/mysql/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin:/Users/ajaxtown/google-cloud-sdk/bin:/usr/local/mysql/bin:/usr/local/opt/php56/bin/php:/usr/local/opt/php56/bin/php
@@ -110,6 +110,7 @@ npm manifest:
           "concurrently": "^3.1.0",
           "copy-dir": "^0.3.0",
           "css-loader": "^0.28.0",
+          "dotenv": "^5.0.1",
           "eslint-plugin-import": "^2.8.0",
           "eslint-plugin-jsx-a11y": "^6.0.3",
           "eslint-plugin-react": "^7.6.1",
@@ -120,6 +121,7 @@ npm manifest:
           "jest": "^22.0.4",
           "merge-graphql-schemas": "1.4.0",
           "mocha": "^2.4.5",
+          "node-env-file": "^0.1.8",
           "nodemon": "^1.14.6",
           "path": "^0.12.7",
           "postcss": "^6.0.20",
@@ -3000,6 +3002,10 @@ Lockfile:
   dotenv@^2.0.0:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-2.0.0.tgz#bd759c357aaa70365e01c96b7b0bec08a6e0d949"
+  
+  dotenv@^5.0.1:
+    version "5.0.1"
+    resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-5.0.1.tgz#a5317459bd3d79ab88cff6e44057a6a3fbb1fcef"
   
   dottie@^1.0.0:
     version "1.1.1"
@@ -6082,6 +6088,10 @@ Lockfile:
   node-dir@0.1.8:
     version "0.1.8"
     resolved "https://registry.yarnpkg.com/node-dir/-/node-dir-0.1.8.tgz#55fb8deb699070707fb67f91a460f0448294c77d"
+  
+  node-env-file@^0.1.8:
+    version "0.1.8"
+    resolved "https://registry.yarnpkg.com/node-env-file/-/node-env-file-0.1.8.tgz#fccb7b050f735b5a33da9eb937cf6f1ab457fb69"
   
   node-fetch@^1.0.1, node-fetch@^1.7.3:
     version "1.7.3"
