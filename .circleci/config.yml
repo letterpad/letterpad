@@ -38,6 +38,7 @@ jobs:
           - v1-dependencies-
 
       - run: npm install
+      - run: node ./.circleci/buildEnv.js
       - run: 
           command: node ./api/start.js
           background: true
