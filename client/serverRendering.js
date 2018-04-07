@@ -136,6 +136,12 @@ function getHtml(theme, html, state, head) {
                 <script>
                     window.__APOLLO_STATE__=${initialState};
                     window.NODE_ENV = "${process.env.NODE_ENV}";
+                    window.rootUrl="${process.env.rootUrl}";
+                    window.apiUrl="${process.env.apiUrl}";
+                    window.uploadUrl="${process.env.uploadUrl}";
+                    window.appPort="${process.env.appPort}";
+                    window.apiPort="${process.env.apiPort}";
+                    window.baseName="${process.env.baseName}";
                 </script>
                 ${scripts.join("")}
             </body>

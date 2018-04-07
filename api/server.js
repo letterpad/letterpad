@@ -1,5 +1,6 @@
+var env = require("node-env-file");
+env(__dirname + "/../.env");
 import config from "../config";
-import path from "path";
 import express from "express";
 import GraphHTTP from "express-graphql";
 import Schema from "./schema";
@@ -9,7 +10,7 @@ import multer from "multer";
 import jwt from "jsonwebtoken";
 import models from "./models";
 import { seed } from "./seed/seed";
-
+console.log(config);
 const app = express();
 
 const SECRET = process.env.SECRET_KEY;
@@ -120,6 +121,7 @@ const seedIfEmpty = async () => {
     }
 };
 let httpServer = null;
+
 models.conn
     .sync({ force: false })
     .then(async () => {

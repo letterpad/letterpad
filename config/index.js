@@ -1,11 +1,8 @@
-// import path from "path";
-// require("dotenv").config({ path: path.resolve(process.cwd(), "/../.env") });
 import dev from "./config.dev.js";
 import production from "./config.prod.js";
 
 const env =
     "undefined" !== typeof window ? window.NODE_ENV : process.env.NODE_ENV;
-
 const configFile = env === "dev" ? dev : production;
 
 const config = new function(configFile) {
