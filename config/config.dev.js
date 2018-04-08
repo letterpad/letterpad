@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     appPort: 4040,
     apiPort: 3030,
     apiUrl: "http://localhost:3030/graphql",

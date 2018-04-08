@@ -1,3 +1,9 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = slugify;
 function toSlug(str) {
     return str
         .toLowerCase()
@@ -9,21 +15,25 @@ function toSlug(str) {
         .join("-");
 }
 
-export default async function slugify(Model, slug) {
+function slugify(Model, slug) {
     slug = toSlug(slug);
-    let found = await Model.find({ where: { slug: slug } });
-    if (found === null) {
-        return slug;
-    }
-    let count = 1;
-    slug += "-";
-
-    return (async function recursiveFindUniqueSlug() {
-        found = await Model.find({ where: { slug: slug + count } });
-        if (found === null) {
-            return slug + count;
+    return Model.find({ where: { slug: slug } }).then(function(result) {
+        if (result === null) {
+            return slug;
         }
-        count++;
-        return recursiveFindUniqueSlug();
-    })();
+        var count = 1;
+        slug += "-";
+
+        return (function recursiveFindUniqueSlug() {
+            return Model.find({ where: { slug: slug + count } }).then(function(
+                result
+            ) {
+                if (result === null) {
+                    return slug + count;
+                }
+                count++;
+                return recursiveFindUniqueSlug();
+            });
+        })();
+    });
 }

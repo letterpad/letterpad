@@ -7,12 +7,12 @@
     "scripts": {
         "start-prod": "better-npm-run start-prod",
         "build":
-            "NODE_ENV=production  webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${THEME}",
+            "NODE_ENV=production  babel api -d api/dist & webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${THEME}",
         "insert-fake": "babel-node ./api/faker/data.js",
         "dev":
             "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${THEME}\"",
         "prod":
-            "NODE_ENV=production concurrently --kill-others \"node ./api/start.js\" \"node ./server.js\"",
+            "NODE_ENV=production concurrently --kill-others \"node ./api/dist/server.js\" \"node ./server.js\"",
         "test": "jest --runInBand"
     },
     "repository": {

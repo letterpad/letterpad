@@ -1,15 +1,16 @@
-import path from "path";
-require("dotenv").config({ path: path.resolve(__dirname + "/../.env") });
-import Sequelize from "sequelize";
-const DB_TYPE = process.env.DB_TYPE;
-const DB_NAME = process.env.DB_NAME;
+var env = require("node-env-file");
+env(__dirname + "/../.env");
+var path = require("path");
+var sequelize = require("sequelize");
+var DB_TYPE = process.env.DB_TYPE;
+var DB_NAME = process.env.DB_NAME;
 
-let conn = null;
+var conn = null;
 if (DB_TYPE === "sqlite") {
-    conn = new Sequelize(DB_NAME, null, null, {
+    conn = new sequelize(DB_NAME, null, null, {
         logging: process.env.NODE_ENV === "development",
         dialect: "sqlite",
-        storage: `./data/${DB_NAME}.sqlite`,
+        storage: "./data/" + DB_NAME + ".sqlite",
         define: {
             underscored: true
         }
@@ -47,5 +48,5 @@ if (DB_TYPE === "mysql") {
 */
 
 module.exports = {
-    conn
+    conn: conn
 };

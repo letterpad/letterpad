@@ -1,24 +1,40 @@
-import config from "../config";
+"use strict";
 
-export const parseErrors = errObj => {
-    const result = [];
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.makeUrl = exports.plural = exports.parseErrors = undefined;
+
+var _config = require("../config");
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+}
+
+var parseErrors = (exports.parseErrors = function parseErrors(errObj) {
+    var result = [];
     if (errObj && errObj.errors) {
-        errObj.errors.map(({ message, path }) => {
-            result.push({ message, path });
+        errObj.errors.map(function(_ref) {
+            var message = _ref.message,
+                path = _ref.path;
+
+            result.push({ message: message, path: path });
         });
     }
     return result;
-};
+});
 
-export const plural = {
+var plural = (exports.plural = {
     post: "posts",
     page: "pages"
-};
+});
 
-export const makeUrl = parts => {
+var makeUrl = (exports.makeUrl = function makeUrl(parts) {
     if (typeof parts === "string") {
         parts = [parts];
     }
-    const url = config.rootUrl + "/" + parts.join("/");
+    var url = _config2.default.rootUrl + "/" + parts.join("/");
     return url.replace(/\/\/+/g, "/").replace(":/", "://");
-};
+});
