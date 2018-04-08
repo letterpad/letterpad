@@ -1,11 +1,13 @@
-import dev from "./config.dev.js";
-import production from "./config.prod.js";
+"use strict";
 
-const env =
+var configDev = require("./config.dev.js");
+var configProd = require("./config.prod.js");
+var env =
     "undefined" !== typeof window ? window.NODE_ENV : process.env.NODE_ENV;
-const configFile = env === "dev" ? dev : production;
 
-const config = new function(configFile) {
+var configFile = env === "dev" ? configDev : configProd;
+
+var config = new function(configFile) {
     this.rootUrl = configFile.rootUrl;
     this.apiUrl = configFile.apiUrl;
     this.uploadUrl = configFile.uploadUrl;
@@ -18,4 +20,4 @@ const config = new function(configFile) {
     this.baseName = configFile.baseName;
 }(configFile);
 
-export default config;
+module.exports = config;

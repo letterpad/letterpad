@@ -9,8 +9,8 @@ import cors from "cors";
 import multer from "multer";
 import jwt from "jsonwebtoken";
 import models from "./models";
-import { seed } from "./seed/seed";
-console.log(config);
+// import { seed } from "./seed/seed";
+
 const app = express();
 
 const SECRET = process.env.SECRET_KEY;
@@ -113,20 +113,20 @@ app.post("/upload", (req, res) => {
 });
 
 // seed the database if settings is empty
-const seedIfEmpty = async () => {
-    const result = await models.Setting.findOne({ where: { id: 1 } });
-    if (!result) {
-        console.log("Seeding");
-        await seed();
-    }
-};
+// const seedIfEmpty = async () => {
+//     const result = await models.Setting.findOne({ where: { id: 1 } });
+//     if (!result) {
+//         console.log("Seeding");
+//         await seed();
+//     }
+// };
 let httpServer = null;
 
 models.conn
     .sync({ force: false })
     .then(async () => {
         // await seedIfEmpty();
-
+        console.log(config);
         httpServer = app.listen(config.apiPort, function() {
             var host = httpServer.address().address;
             var port = httpServer.address().port;
