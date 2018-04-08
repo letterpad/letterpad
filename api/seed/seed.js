@@ -1,10 +1,10 @@
+var env = require("node-env-file");
+env(__dirname + "/../../.env");
 import { conn } from "../../config/db.config";
 import Sequalize, { DataTypes } from "sequelize";
 import bcrypt from "bcryptjs";
 import Faker from "faker";
 import rimraf from "rimraf";
-
-require("dotenv").config({ path: "../../.env" });
 
 const copydir = require("copy-dir");
 Faker.locale = "en_US";

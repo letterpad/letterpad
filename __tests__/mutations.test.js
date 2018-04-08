@@ -3,7 +3,7 @@ import axios from "axios";
 import { conn } from "../api/models";
 import config from "../config/config.dev";
 import { insertRolePermData } from "../api/seed/seed";
-import { killServer } from "../api/server";
+// import { killServer } from "../api/server";
 
 const server = config.apiUrl;
 
@@ -16,8 +16,8 @@ describe("Author Resolvers", () => {
         done();
     });
     afterAll(() => {
-        // process.exit();
-        killServer();
+        process.exit();
+        // killServer();
     });
     test("Register Author", async () => {
         console.log("registering author");
