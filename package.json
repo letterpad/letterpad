@@ -107,7 +107,6 @@
         "jest": "^22.0.4",
         "merge-graphql-schemas": "1.4.0",
         "mocha": "^2.4.5",
-        "node-env-file": "^0.1.8",
         "nodemon": "^1.14.6",
         "path": "^0.12.7",
         "postcss": "^6.0.20",
