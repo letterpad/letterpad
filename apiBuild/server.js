@@ -56,7 +56,7 @@ var env = require("node-env-file");
 env(__dirname + "/../.env");
 
 // import { seed } from "./seed/seed";
-console.log(_config2.default);
+
 var app = (0, _express2.default)();
 
 var SECRET = process.env.SECRET_KEY;
@@ -164,7 +164,7 @@ var httpServer = null;
 
 _models2.default.conn.sync({ force: false }).then(async function () {
     // await seedIfEmpty();
-
+    console.log(_config2.default);
     httpServer = app.listen(_config2.default.apiPort, function () {
         var host = httpServer.address().address;
         var port = httpServer.address().port;
