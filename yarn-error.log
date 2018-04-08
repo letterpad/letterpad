@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/node /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/yarn add babel --dev
+  /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/node /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/yarn add nnode-env-file -W
 
 PATH: 
   /Users/ajaxtown/google-cloud-sdk/bin:/Users/ajaxtown/.nvm/versions/node/v8.1.0/bin:/usr/local/mysql/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin:/Users/ajaxtown/google-cloud-sdk/bin:/usr/local/mysql/bin:/usr/local/opt/php56/bin/php:/usr/local/opt/php56/bin/php
@@ -22,13 +22,10 @@ npm manifest:
       "private": true,
       "scripts": {
           "start-prod": "better-npm-run start-prod",
-          "build":
-              "NODE_ENV=production  babel api -d apiBuild & webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${THEME}",
+          "build": "NODE_ENV=production  babel api -d apiBuild & webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${THEME}",
           "insert-fake": "babel-node ./api/faker/data.js",
-          "dev":
-              "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${THEME}\"",
-          "prod":
-              "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
+          "dev": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${THEME}\"",
+          "prod": "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
           "test": "jest --runInBand"
       },
       "repository": {
@@ -38,7 +35,9 @@ npm manifest:
       "author": "Abhishek Saha",
       "license": "MIT",
       "homepage": "http://ajaxtown.com",
-      "workspaces": ["client/themes/*"],
+      "workspaces": [
+          "client/themes/*"
+      ],
       "dependencies": {
           "apollo-cache-inmemory": "^1.1.4",
           "apollo-client": "^2.0.4",
@@ -92,6 +91,7 @@ npm manifest:
       "devDependencies": {
           "autoprefixer": "^7.2.4",
           "axios": "^0.17.1",
+          "babel-cli": "^6.26.0",
           "babel-core": "^6.26.0",
           "babel-eslint": "^8.2.2",
           "babel-jest": "^22.0.4",
@@ -123,7 +123,6 @@ npm manifest:
           "jest": "^22.0.4",
           "merge-graphql-schemas": "1.4.0",
           "mocha": "^2.4.5",
-          "node-env-file": "^0.1.8",
           "nodemon": "^1.14.6",
           "path": "^0.12.7",
           "postcss": "^6.0.20",
@@ -148,7 +147,9 @@ npm manifest:
           "write-file-webpack-plugin": "^4.2.0"
       },
       "jest": {
-          "testMatch": ["**/__tests__/**/?(*.)(spec|test).js?(x)"]
+          "testMatch": [
+              "**/__tests__/**/?(*.)(spec|test).js?(x)"
+          ]
       }
   }
 
@@ -402,6 +403,13 @@ Lockfile:
   any-observable@^0.2.0:
     version "0.2.0"
     resolved "https://registry.yarnpkg.com/any-observable/-/any-observable-0.2.0.tgz#c67870058003579009083f54ac0abafb5c33d242"
+  
+  anymatch@^1.3.0:
+    version "1.3.2"
+    resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-1.3.2.tgz#553dcb8f91e3c889845dfdba34c77721b90b9d7a"
+    dependencies:
+      micromatch "^2.1.5"
+      normalize-path "^2.0.0"
   
   anymatch@^2.0.0:
     version "2.0.0"
@@ -732,6 +740,27 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/axobject-query/-/axobject-query-0.1.0.tgz#62f59dbc59c9f9242759ca349960e7a2fe3c36c0"
     dependencies:
       ast-types-flow "0.0.7"
+  
+  babel-cli@^6.26.0:
+    version "6.26.0"
+    resolved "https://registry.yarnpkg.com/babel-cli/-/babel-cli-6.26.0.tgz#502ab54874d7db88ad00b887a06383ce03d002f1"
+    dependencies:
+      babel-core "^6.26.0"
+      babel-polyfill "^6.26.0"
+      babel-register "^6.26.0"
+      babel-runtime "^6.26.0"
+      commander "^2.11.0"
+      convert-source-map "^1.5.0"
+      fs-readdir-recursive "^1.0.0"
+      glob "^7.1.2"
+      lodash "^4.17.4"
+      output-file-sync "^1.1.2"
+      path-is-absolute "^1.0.1"
+      slash "^1.0.0"
+      source-map "^0.5.6"
+      v8flags "^2.1.1"
+    optionalDependencies:
+      chokidar "^1.6.1"
   
   babel-code-frame@^6.26.0:
     version "6.26.0"
@@ -1466,7 +1495,7 @@ Lockfile:
     version "6.9.0"
     resolved "https://registry.yarnpkg.com/babel-plugin-transform-undefined-to-void/-/babel-plugin-transform-undefined-to-void-6.9.0.tgz#eb5db0554caffe9ded0206468ec0c6c3b332b9d2"
   
-  babel-polyfill@^6.5.0:
+  babel-polyfill@^6.26.0, babel-polyfill@^6.5.0:
     version "6.26.0"
     resolved "https://registry.yarnpkg.com/babel-polyfill/-/babel-polyfill-6.26.0.tgz#379937abc67d7895970adc621f284cd966cf2153"
     dependencies:
@@ -2135,6 +2164,21 @@ Lockfile:
   check-types@^7.3.0:
     version "7.3.0"
     resolved "https://registry.yarnpkg.com/check-types/-/check-types-7.3.0.tgz#468f571a4435c24248f5fd0cb0e8d87c3c341e7d"
+  
+  chokidar@^1.6.1:
+    version "1.7.0"
+    resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
+    dependencies:
+      anymatch "^1.3.0"
+      async-each "^1.0.0"
+      glob-parent "^2.0.0"
+      inherits "^2.0.1"
+      is-binary-path "^1.0.0"
+      is-glob "^2.0.0"
+      path-is-absolute "^1.0.0"
+      readdirp "^2.0.0"
+    optionalDependencies:
+      fsevents "^1.0.0"
   
   chokidar@^2.0.2:
     version "2.0.2"
@@ -3758,6 +3802,10 @@ Lockfile:
     dependencies:
       minipass "^2.2.1"
   
+  fs-readdir-recursive@^1.0.0:
+    version "1.1.0"
+    resolved "https://registry.yarnpkg.com/fs-readdir-recursive/-/fs-readdir-recursive-1.1.0.tgz#e32fc030a2ccee44a6b5371308da54be0b397d27"
+  
   fs-write-stream-atomic@^1.0.8:
     version "1.0.10"
     resolved "https://registry.yarnpkg.com/fs-write-stream-atomic/-/fs-write-stream-atomic-1.0.10.tgz#b47df53493ef911df75731e70a9ded0189db40c9"
@@ -4002,7 +4050,7 @@ Lockfile:
       url-parse-lax "^3.0.0"
       url-to-options "^1.0.1"
   
-  graceful-fs@^4.1.11, graceful-fs@^4.1.2:
+  graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4:
     version "4.1.11"
     resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
   
@@ -5805,7 +5853,7 @@ Lockfile:
     version "1.1.2"
     resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
   
-  micromatch@^2.3.11, micromatch@^2.3.7:
+  micromatch@^2.1.5, micromatch@^2.3.11, micromatch@^2.3.7:
     version "2.3.11"
     resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-2.3.11.tgz#86677c97d1720b363431d04d0d15293bd38c1565"
     dependencies:
@@ -6093,10 +6141,6 @@ Lockfile:
     version "0.1.8"
     resolved "https://registry.yarnpkg.com/node-dir/-/node-dir-0.1.8.tgz#55fb8deb699070707fb67f91a460f0448294c77d"
   
-  node-env-file@^0.1.8:
-    version "0.1.8"
-    resolved "https://registry.yarnpkg.com/node-env-file/-/node-env-file-0.1.8.tgz#fccb7b050f735b5a33da9eb937cf6f1ab457fb69"
-  
   node-fetch@^1.0.1, node-fetch@^1.7.3:
     version "1.7.3"
     resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
@@ -6224,7 +6268,7 @@ Lockfile:
       semver "2 || 3 || 4 || 5"
       validate-npm-package-license "^3.0.1"
   
-  normalize-path@^2.0.1, normalize-path@^2.1.1:
+  normalize-path@^2.0.0, normalize-path@^2.0.1, normalize-path@^2.1.1:
     version "2.1.1"
     resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-2.1.1.tgz#1ab28b556e198363a8c1a6f7e6fa20137fe6aed9"
     dependencies:
@@ -6448,6 +6492,14 @@ Lockfile:
     dependencies:
       os-homedir "^1.0.0"
       os-tmpdir "^1.0.0"
+  
+  output-file-sync@^1.1.2:
+    version "1.1.2"
+    resolved "https://registry.yarnpkg.com/output-file-sync/-/output-file-sync-1.1.2.tgz#d0a33eefe61a205facb90092e826598d5245ce76"
+    dependencies:
+      graceful-fs "^4.1.4"
+      mkdirp "^0.5.1"
+      object-assign "^4.1.0"
   
   p-cancelable@^0.3.0:
     version "0.3.0"
@@ -9329,6 +9381,10 @@ Lockfile:
     dependencies:
       kind-of "^6.0.2"
   
+  user-home@^1.1.1:
+    version "1.1.1"
+    resolved "https://registry.yarnpkg.com/user-home/-/user-home-1.1.1.tgz#2b5be23a32b63a7c9deb8d0f28d485724a3df190"
+  
   util-deprecate@~1.0.1:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
@@ -9357,6 +9413,12 @@ Lockfile:
   v8-compile-cache@^1.1.2:
     version "1.1.2"
     resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-1.1.2.tgz#8d32e4f16974654657e676e0e467a348e89b0dc4"
+  
+  v8flags@^2.1.1:
+    version "2.1.1"
+    resolved "https://registry.yarnpkg.com/v8flags/-/v8flags-2.1.1.tgz#aab1a1fa30d45f88dd321148875ac02c0b55e5b4"
+    dependencies:
+      user-home "^1.1.1"
   
   validate-npm-package-license@^3.0.1:
     version "3.0.3"
@@ -9849,14 +9911,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.7.1.tgz#f84075c0ee085594d3566e1d6454207f126411b3"
 
 Trace: 
-  Error: Running this command will add the dependency to the workspace root rather than workspace itself, which might not be what you want - if you really meant it, make it explicit by running this command again with the -W flag (or --ignore-workspace-root-check).
+  Error: Couldn't find package "nnode-env-file" on the "npm" registry.
       at new MessageError (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:186:110)
-      at Add.<anonymous> (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:40871:15)
+      at NpmResolver.<anonymous> (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:51625:15)
       at Generator.next (<anonymous>)
       at step (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:98:30)
-      at /Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:116:14
-      at Promise (<anonymous>)
-      at F (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:23451:28)
-      at Add.<anonymous> (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:95:12)
-      at Add.init (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:40882:20)
-      at /Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:40594:21
+      at /Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:109:13
+      at <anonymous>
+      at process._tickCallback (internal/process/next_tick.js:169:7)
