@@ -1,13 +1,12 @@
-const express = require("express");
-import ApolloClient from "apollo-client";
-import path from "path";
-import { createHttpLink } from "apollo-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import fetch from "node-fetch";
-import fs from "fs";
-import config from "../config";
-import { makeUrl } from "../shared/util";
-import { GET_OPTIONS } from "../shared/queries/Queries";
+const { ApolloClient } = require("apollo-client");
+const path = require("path");
+const fetch = require("node-fetch");
+const fs = require("fs");
+const config = require("../config");
+const { createHttpLink } = require("apollo-link-http");
+const { InMemoryCache } = require("apollo-cache-inmemory");
+const { makeUrl } = require("../shared/util");
+const { GET_OPTIONS } = require("../shared/queries/Queries");
 
 const getParams = query => {
     if (!query) {
@@ -45,10 +44,11 @@ module.exports.init = app => {
             }
             let serverFile =
                 "./themes/" + theme + "/public/dist/server.node.js";
-            const urlParams = {
-                ...getParams(req.originalUrl),
-                ...getParams(req.header("Referer"))
-            };
+            const urlParams = Object.assign(
+                {},
+                getParams(req.originalUrl),
+                getParams(req.header("Referer"))
+            );
             let previewTheme = false;
 
             if (urlParams && "theme" in urlParams) {
