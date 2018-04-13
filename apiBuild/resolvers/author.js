@@ -34,13 +34,7 @@ var _common = require("../utils/common");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(function () {
-    var enterModule = require('react-hot-loader').enterModule;
-
-    enterModule && enterModule(module);
-})();
-
-var _default = {
+exports.default = {
     Query: {
         author: function author(root, args, _ref) {
             var models = _ref.models;
@@ -291,20 +285,3 @@ var _default = {
         }
     }
 };
-exports.default = _default;
-;
-
-(function () {
-    var reactHotLoader = require('react-hot-loader').default;
-
-    var leaveModule = require('react-hot-loader').leaveModule;
-
-    if (!reactHotLoader) {
-        return;
-    }
-
-    reactHotLoader.register(_default, "default", "api/resolvers/author.js");
-    leaveModule(module);
-})();
-
-;

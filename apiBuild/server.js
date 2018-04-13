@@ -46,12 +46,6 @@ var _models2 = _interopRequireDefault(_models);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(function () {
-    var enterModule = require('react-hot-loader').enterModule;
-
-    enterModule && enterModule(module);
-})();
-
 var env = require("node-env-file");
 env(__dirname + "/../.env");
 
@@ -164,7 +158,6 @@ var httpServer = null;
 
 _models2.default.conn.sync({ force: false }).then(async function () {
     // await seedIfEmpty();
-    console.log(_config2.default);
     httpServer = app.listen(_config2.default.apiPort, function () {
         var host = httpServer.address().address;
         var port = httpServer.address().port;
@@ -176,25 +169,3 @@ _models2.default.conn.sync({ force: false }).then(async function () {
 function killServer() {
     httpServer.close();
 }
-;
-
-(function () {
-    var reactHotLoader = require('react-hot-loader').default;
-
-    var leaveModule = require('react-hot-loader').leaveModule;
-
-    if (!reactHotLoader) {
-        return;
-    }
-
-    reactHotLoader.register(app, "app", "api/server.js");
-    reactHotLoader.register(SECRET, "SECRET", "api/server.js");
-    reactHotLoader.register(addUser, "addUser", "api/server.js");
-    reactHotLoader.register(storage, "storage", "api/server.js");
-    reactHotLoader.register(upload, "upload", "api/server.js");
-    reactHotLoader.register(httpServer, "httpServer", "api/server.js");
-    reactHotLoader.register(killServer, "killServer", "api/server.js");
-    leaveModule(module);
-})();
-
-;

@@ -8,12 +8,6 @@ var _common = require("../utils/common");
 
 var _permissions = require("../utils/permissions");
 
-(function () {
-    var enterModule = require('react-hot-loader').enterModule;
-
-    enterModule && enterModule(module);
-})();
-
 function IsJsonString(str) {
     try {
         JSON.parse(str);
@@ -36,7 +30,7 @@ function getConditions(columns, args) {
     conditions.where = obj;
     return conditions;
 }
-var _default = {
+exports.default = {
     Query: {
         media: async function media(root, args, _ref) {
             var user = _ref.user,
@@ -86,22 +80,3 @@ var _default = {
         })
     }
 };
-exports.default = _default;
-;
-
-(function () {
-    var reactHotLoader = require('react-hot-loader').default;
-
-    var leaveModule = require('react-hot-loader').leaveModule;
-
-    if (!reactHotLoader) {
-        return;
-    }
-
-    reactHotLoader.register(IsJsonString, "IsJsonString", "api/resolvers/media.js");
-    reactHotLoader.register(getConditions, "getConditions", "api/resolvers/media.js");
-    reactHotLoader.register(_default, "default", "api/resolvers/media.js");
-    leaveModule(module);
-})();
-
-;
