@@ -91,7 +91,7 @@ function getHtml(theme, html, state, head) {
         .join("");
 
     let devBundles = [
-        theme + "/js/highlight.min.js",
+        "static/client/themes/" + theme + "public/js/highlight.min.js",
         "static/client/themes/" + theme + "/public/dist/vendor-bundle.js",
         "static/client/themes/" + theme + "/public/dist/client-bundle.js"
     ];
