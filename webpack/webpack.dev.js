@@ -6,7 +6,7 @@ const webpack = require("webpack");
 
 const clientConfig = args => {
     if (args.theme == "") {
-        args.theme = "document";
+        args.theme = "amun";
     }
     return merge(baseConfig(args), {
         devtool: "eval-source-map",
@@ -43,7 +43,7 @@ const clientConfig = args => {
 
 const serverConfig = args => {
     if (args.theme == "") {
-        args.theme = "document";
+        args.theme = "amun";
     }
     const BUILD_PATH = path.join(
         __dirname,
