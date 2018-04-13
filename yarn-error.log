@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/node /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/yarn add merge-graphql-schemas@1.4.0 -W
+  /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/node /Users/ajaxtown/.nvm/versions/node/v8.1.0/bin/yarn webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --theme=amun
 
 PATH: 
   /Users/ajaxtown/google-cloud-sdk/bin:/Users/ajaxtown/.nvm/versions/node/v8.1.0/bin:/usr/local/mysql/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin:/Users/ajaxtown/google-cloud-sdk/bin:/usr/local/mysql/bin:/usr/local/opt/php56/bin/php:/usr/local/opt/php56/bin/php
@@ -9917,10 +9917,17 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.7.1.tgz#f84075c0ee085594d3566e1d6454207f126411b3"
 
 Trace: 
-  Error: There are more than one workspace with name "amun"
-      at new MessageError (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:186:110)
-      at Config.<anonymous> (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:40286:17)
-      at Generator.next (<anonymous>)
-      at step (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:98:30)
-      at /Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:109:13
-      at <anonymous>
+  Error: Command failed.
+  Exit code: 1
+  Command: sh
+  Arguments: -c /Users/ajaxtown/Sites/ReactCMS/node_modules/.bin/webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --theme=amun
+  Directory: /Users/ajaxtown/Sites/ReactCMS
+  Output:
+  
+      at ProcessTermError.MessageError (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:186:110)
+      at new ProcessTermError (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:226:113)
+      at ChildProcess.<anonymous> (/Users/ajaxtown/.nvm/versions/node/v8.1.0/lib/node_modules/yarn/lib/cli.js:30281:17)
+      at emitTwo (events.js:125:13)
+      at ChildProcess.emit (events.js:213:7)
+      at maybeClose (internal/child_process.js:887:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:208:5)

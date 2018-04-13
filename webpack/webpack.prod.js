@@ -8,7 +8,7 @@ const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 const clientConfig = args => {
     if (args.theme == "") {
-        args.theme = "letterpad";
+        args.theme = "amun";
     }
     const extractPcss = new ExtractTextPlugin("[name].min.css");
     const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");
@@ -65,7 +65,7 @@ const clientConfig = args => {
 
 const serverConfig = args => {
     if (args.theme == "") {
-        args.theme = "letterpad";
+        args.theme = "amun";
     }
     const BUILD_PATH = path.join(
         __dirname,

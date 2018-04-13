@@ -17,6 +17,7 @@ const app = express();
 app.use(compression());
 
 if (process.env.NODE_ENV === "dev") {
+    console.log("hello");
     const wpConfigFile = "./webpack/webpack.dev.js";
     const webpackConfig = require(wpConfigFile)({
         theme: process.env.THEME || "amun"
