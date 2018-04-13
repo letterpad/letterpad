@@ -1,13 +1,10 @@
-require.extensions[".sass"] = () => "";
-require.extensions[".scss"] = () => "";
-require.extensions[".css"] = () => "";
-
-require("dotenv").config();
-require("babel-core/register");
-
+// require.extensions[".sass"] = () => "";
+// require.extensions[".scss"] = () => "";
+// require.extensions[".css"] = () => "";
+const env = require("node-env-file");
+env(__dirname + "/.env");
 const express = require("express");
 const bodyParser = require("body-parser");
-const webpack = require("webpack");
 const config = require("./config/index.js");
 const compression = require("compression");
 const adminServerRendering = require("./admin/serverRendering");
@@ -24,7 +21,7 @@ if (process.env.NODE_ENV === "dev") {
     const webpackConfig = require(wpConfigFile)({
         theme: process.env.THEME || "amun"
     })[1];
-    const compiler = webpack(webpackConfig);
+    const compiler = require("webpack")(webpackConfig);
     const webpackDevMiddleware = require("webpack-dev-middleware");
     const webpackHotMiddleware = require("webpack-hot-middleware");
 
@@ -72,10 +69,10 @@ dir.getDirectories(__dirname + "/client/themes/").map(themePath => {
 });
 
 app.get("/build", (req, res) => {
-    var webpack = require("webpack");
-    var ProgressPlugin = require("webpack/lib/ProgressPlugin");
-    var config = require("./webpack.config.prod.js");
-    var compiler = webpack(config);
+    const webpack = require("webpack");
+    const ProgressPlugin = require("webpack/lib/ProgressPlugin");
+    const config = require("./webpack.config.prod.js");
+    const compiler = webpack(config);
 
     compiler.apply(
         new ProgressPlugin(function(percentage, msg) {

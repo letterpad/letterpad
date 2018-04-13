@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const CREATE_POST = gql`
+module.exports.CREATE_POST = gql`
     mutation createPost($type: String!, $title: String!, $body: String) {
         createPost(type: $type, title: $title, body: $body) {
             ok
@@ -32,7 +32,7 @@ export const CREATE_POST = gql`
     }
 `;
 
-export const UPDATE_OPTIONS = gql`
+module.exports.UPDATE_OPTIONS = gql`
     mutation updateOptions($options: [OptionInputType]) {
         updateOptions(options: $options) {
             id
@@ -42,7 +42,7 @@ export const UPDATE_OPTIONS = gql`
     }
 `;
 
-export const UPDATE_TAXONOMY = gql`
+module.exports.UPDATE_TAXONOMY = gql`
     mutation updateTaxonomy(
         $id: Int!
         $name: String
@@ -69,7 +69,7 @@ export const UPDATE_TAXONOMY = gql`
     }
 `;
 
-export const DELETE_TAXONOMY = gql`
+module.exports.DELETE_TAXONOMY = gql`
     mutation deleteTaxonomy($id: Int!) {
         deleteTaxonomy(id: $id) {
             id
@@ -82,7 +82,7 @@ export const DELETE_TAXONOMY = gql`
     }
 `;
 
-export const BULK_DELETE_POSTS = gql`
+module.exports.BULK_DELETE_POSTS = gql`
     mutation deletePosts($ids: String!) {
         deletePosts(ids: $ids) {
             ok
@@ -90,7 +90,7 @@ export const BULK_DELETE_POSTS = gql`
     }
 `;
 
-export const UPDATE_AUTHOR = gql`
+module.exports.UPDATE_AUTHOR = gql`
     mutation updateAuthor(
         $id: Int!
         $email: String
@@ -122,7 +122,7 @@ export const UPDATE_AUTHOR = gql`
     }
 `;
 
-export const CREATE_AUTHOR = gql`
+module.exports.CREATE_AUTHOR = gql`
     mutation createAuthor(
         $email: String!
         $fname: String
@@ -144,7 +144,7 @@ export const CREATE_AUTHOR = gql`
     }
 `;
 
-export const UPDATE_POST_QUERY = gql`
+module.exports.UPDATE_POST_QUERY = gql`
     mutation updatePost(
         $id: Int!
         $title: String!
@@ -200,7 +200,7 @@ export const UPDATE_POST_QUERY = gql`
     }
 `;
 
-export const INSERT_MEDIA = gql`
+module.exports.INSERT_MEDIA = gql`
     mutation insertMedia($url: String!) {
         insertMedia(url: $url) {
             url
@@ -208,7 +208,7 @@ export const INSERT_MEDIA = gql`
     }
 `;
 
-export const DELETE_MEDIA = gql`
+module.exports.DELETE_MEDIA = gql`
     mutation deleteMedia($id: Int!) {
         deleteMedia(id: $id) {
             ok
@@ -217,7 +217,7 @@ export const DELETE_MEDIA = gql`
     }
 `;
 
-export const UPLOAD_COVER_IMAGE = gql`
+module.exports.UPLOAD_COVER_IMAGE = gql`
     mutation uploadFile($cover_image: String!, $id: Int!) {
         uploadFile(cover_image: $cover_image, id: $id) {
             ok
@@ -229,7 +229,7 @@ export const UPLOAD_COVER_IMAGE = gql`
     }
 `;
 
-export const LOGIN_QUERY = gql`
+module.exports.LOGIN_QUERY = gql`
     mutation login($username: String!, $password: String!) {
         login(email: $username, password: $password) {
             ok
@@ -242,7 +242,7 @@ export const LOGIN_QUERY = gql`
     }
 `;
 
-export const FORGOT_PASSWORD_QUERY = gql`
+module.exports.FORGOT_PASSWORD_QUERY = gql`
     mutation forgotPassword($email: String!) {
         forgotPassword(email: $email) {
             ok
@@ -250,7 +250,7 @@ export const FORGOT_PASSWORD_QUERY = gql`
         }
     }
 `;
-export const RESET_PASSWORD_QUERY = gql`
+module.exports.RESET_PASSWORD_QUERY = gql`
     mutation resetPassword($token: String!, $password: String!) {
         resetPassword(token: $token, password: $password) {
             ok

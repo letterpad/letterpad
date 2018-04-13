@@ -1,17 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom/server";
-import { createHttpLink } from "apollo-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import fetch from "node-fetch";
-import { StaticRouter } from "react-router";
-import { ApolloProvider, getDataFromTree } from "react-apollo";
-import ApolloClient from "apollo-client";
-import config from "../config";
-import { GET_OPTIONS } from "../shared/queries/Queries";
-import { getDirectories } from "../shared/dir";
-import path from "path";
-import fs from "fs";
-import { makeUrl } from "../shared/util";
+const ReactDOM = require("react-dom/server");
+const { createHttpLink } = require("apollo-link-http");
+const { InMemoryCache } = require("apollo-cache-inmemory");
+const fetch = require("node-fetch");
+const { StaticRouter } = require("react-router");
+const { ApolloProvider, getDataFromTree } = require("react-apollo");
+const { ApolloClient } = require("apollo-client");
+const config = require("../config");
+const { GET_OPTIONS } = require("../shared/queries/Queries");
+const { getDirectories } = require("../shared/dir");
+const path = require("path");
+const fs = require("fs");
+const { makeUrl } = require("../shared/util");
 
 const client = () =>
     new ApolloClient({
@@ -38,7 +37,7 @@ module.exports.init = app => {
                             const details = require(themePath + "/config.json");
                             const name = themePath.split("/").pop(-1);
                             availableThemes.push({
-                                ...details,
+                                details: Object.assign({}, details),
                                 name: name,
                                 active: name === theme
                             });
@@ -63,13 +62,7 @@ module.exports.init = app => {
                     theme = process.env.THEME;
                 }
                 const sendResponse = ({ content, initialState }) => {
-                    const html = (
-                        <Html
-                            theme={theme}
-                            content={content}
-                            state={initialState}
-                        />
-                    );
+                    const html = Html({ theme, content, state });
                     res.status(200);
                     res.send(
                         `<!doctype html>\n${ReactDOM.renderToStaticMarkup(
@@ -96,20 +89,17 @@ function Html({ theme, content, state }) {
     const bundles =
         process.env.NODE_ENV === "production" ? prodBundles : devBundles;
 
-    const insertScript = script => {
-        return <script type="text/javascript" src={makeUrl(script)} defer />;
-    };
+    const insertScript = script =>
+        `<script type="text/javascript" src="${makeUrl(script)}" defer />`;
 
-    const insertStyle = style => (
-        <link
-            href={makeUrl(["admin", style])}
+    const insertStyle = style =>
+        `<link
+            href="${makeUrl(["admin", style])}"
             rel="stylesheet"
             type="text/css"
-        />
-    );
+        />`;
 
-    return (
-        <html lang="en">
+    return `<html lang="en">
             <head>
                 <meta charSet="UTF-8" />
                 <meta
@@ -123,9 +113,9 @@ function Html({ theme, content, state }) {
                     rel="stylesheet"
                     type="text/css"
                 />
-                {insertStyle("/css/bootstrap.min.css")}
-                {insertStyle("/css/vertical.css")}
-                {insertStyle("/css/font-awesome.min.css")}
+                ${insertStyle("/css/bootstrap.min.css")}
+                ${insertStyle("/css/vertical.css")}
+                ${insertStyle("/css/font-awesome.min.css")}
                 <link
                     href="http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/github.min.css"
                     rel="stylesheet"
@@ -136,32 +126,29 @@ function Html({ theme, content, state }) {
                     rel="stylesheet"
                     type="text/css"
                 />
-                {insertStyle("/dist/admin.min.css")}
+                ${insertStyle("/dist/admin.min.css")}
             </head>
             <body>
-                <div id="app" dangerouslySetInnerHTML={{ __html: content }} />
+                <div id="app">${content}</div>
                 <script
-                    dangerouslySetInnerHTML={{
-                        __html: `window.NODE_ENV = "${
-                            process.env.NODE_ENV
-                        }";window.__APOLLO_STATE__=${initialState};
-                        window.NODE_ENV = "${process.env.NODE_ENV}";
-                        window.rootUrl="${process.env.rootUrl}";
-                        window.apiUrl="${process.env.apiUrl}";
-                        window.uploadUrl="${process.env.uploadUrl}";
-                        window.appPort="${process.env.appPort}";
-                        window.apiPort="${process.env.apiPort}";
-                        window.baseName="${process.env.baseName}";`
-                    }}
+                    window.NODE_ENV = "${process.env.NODE_ENV}";
+                    window.__APOLLO_STATE__=${initialState};
+                    window.NODE_ENV = "${process.env.NODE_ENV}";
+                    window.rootUrl="${process.env.rootUrl}";
+                    window.apiUrl="${process.env.apiUrl}";
+                    window.uploadUrl="${process.env.uploadUrl}";
+                    window.appPort="${process.env.appPort}";
+                    window.apiPort="${process.env.apiPort}";
+                    window.baseName="${process.env.baseName}";
+
                 />
-                {insertScript("/admin/js/highlight.min.js")}
+                ${insertScript("/admin/js/highlight.min.js")}
                 <script
                     type="text/javascript"
                     src="https://cdn.quilljs.com/1.2.2/quill.js"
                     defer
                 />
-                {bundles.map(bundle => insertScript(bundle))}
+                ${bundles.map(bundle => insertScript(bundle))}
             </body>
-        </html>
-    );
+        </html>`;
 }
