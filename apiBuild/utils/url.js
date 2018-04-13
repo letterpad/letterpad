@@ -4,6 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.mapUrl = mapUrl;
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
 function mapUrl() {
   var availableActions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var url = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -32,3 +39,19 @@ function mapUrl() {
 
   return typeof actionAndParams.action === 'function' ? actionAndParams : notFound;
 }
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(mapUrl, 'mapUrl', 'api/utils/url.js');
+  leaveModule(module);
+})();
+
+;

@@ -11,7 +11,13 @@ var _sequelize2 = _interopRequireDefault(_sequelize);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = function (conn, Datatypes) {
+(function () {
+    var enterModule = require('react-hot-loader').enterModule;
+
+    enterModule && enterModule(module);
+})();
+
+var _default = function _default(conn, Datatypes) {
     var Author = conn.define("author", {
         username: {
             type: _sequelize2.default.STRING,
@@ -64,6 +70,7 @@ exports.default = function (conn, Datatypes) {
     return Author;
 };
 
+exports.default = _default;
 var getPermissions = exports.getPermissions = async function getPermissions(models, role_id) {
     var permissions = await models.Permission.findAll({
         attributes: ["name"],
@@ -81,3 +88,20 @@ var getPermissions = exports.getPermissions = async function getPermissions(mode
         return per.name;
     });
 };
+;
+
+(function () {
+    var reactHotLoader = require('react-hot-loader').default;
+
+    var leaveModule = require('react-hot-loader').leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(getPermissions, "getPermissions", "api/models/author.js");
+    reactHotLoader.register(_default, "default", "api/models/author.js");
+    leaveModule(module);
+})();
+
+;

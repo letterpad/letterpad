@@ -8,58 +8,34 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.killServer = killServer;
 
-var _config = require("../config");
+(function () {
+    var enterModule = require('react-hot-loader').enterModule;
 
-var _config2 = _interopRequireDefault(_config);
-
-var _express = require("express");
-
-var _express2 = _interopRequireDefault(_express);
-
-var _expressGraphql = require("express-graphql");
-
-var _expressGraphql2 = _interopRequireDefault(_expressGraphql);
-
-var _schema = require("./schema");
-
-var _schema2 = _interopRequireDefault(_schema);
-
-var _bodyParser = require("body-parser");
-
-var _bodyParser2 = _interopRequireDefault(_bodyParser);
-
-var _cors = require("cors");
-
-var _cors2 = _interopRequireDefault(_cors);
-
-var _multer = require("multer");
-
-var _multer2 = _interopRequireDefault(_multer);
-
-var _jsonwebtoken = require("jsonwebtoken");
-
-var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
-
-var _models = require("./models");
-
-var _models2 = _interopRequireDefault(_models);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+    enterModule && enterModule(module);
+})();
 
 var env = require("node-env-file");
 env(__dirname + "/../.env");
+var config = require("../config");
+var express = require("express");
+var GraphHTTP = require("express-graphql");
+var Schema = require("./schema");
+var bodyParser = require("body-parser");
+var cors = require("cors");
+var multer = require("multer");
+var jwt = require("jsonwebtoken");
+var models = require("./models");
+// const { seed } = require("./seed/seed");
 
-// import { seed } from "./seed/seed";
-
-var app = (0, _express2.default)();
+var app = express();
 
 var SECRET = process.env.SECRET_KEY;
 
-app.use((0, _cors2.default)({
+app.use(cors({
     exposedHeaders: ["x-refresh-token"]
 }));
-app.options("*", (0, _cors2.default)());
-app.use(_bodyParser2.default.urlencoded({
+app.options("*", cors());
+app.use(bodyParser.urlencoded({
     extended: true
 }));
 
@@ -74,13 +50,13 @@ var addUser = async function addUser(req, res) {
 
     if (token && token != "null") {
         try {
-            var data = await _jsonwebtoken2.default.verify(token, SECRET);
+            var data = await jwt.verify(token, SECRET);
             req.user = _extends({}, data);
 
             delete data.iat;
             delete data.exp;
             //if (req.params.refresh) {
-            var newToken = _jsonwebtoken2.default.sign(data, SECRET, {
+            var newToken = jwt.sign(data, SECRET, {
                 expiresIn: req.user.expiresIn
             });
             res.setHeader("x-refresh-token", newToken);
@@ -95,11 +71,11 @@ var addUser = async function addUser(req, res) {
     req.next();
 };
 
-app.use(_bodyParser2.default.json());
+app.use(bodyParser.json());
 app.use(addUser);
-app.use("/graphql", (0, _expressGraphql2.default)(function (req, res) {
+app.use("/graphql", GraphHTTP(function (req, res) {
     return {
-        schema: _schema2.default,
+        schema: Schema,
         pretty: true,
         graphiql: true,
         rootValue: {
@@ -123,12 +99,12 @@ app.use("/graphql", (0, _expressGraphql2.default)(function (req, res) {
             error: req.error || null,
             SECRET: SECRET,
             admin: req.headers.admin || false,
-            models: _models2.default
+            models: models
         }
     };
 }));
 
-var storage = _multer2.default.diskStorage({
+var storage = multer.diskStorage({
     destination: function destination(req, file, cb) {
         cb(null, path.join(__dirname, "../public/uploads/"));
     },
@@ -138,7 +114,7 @@ var storage = _multer2.default.diskStorage({
     }
 });
 
-var upload = (0, _multer2.default)({ storage: storage }).single("file");
+var upload = multer({ storage: storage }).single("file");
 
 app.post("/upload", function (req, res) {
     upload(req, null, function (err) {
@@ -156,9 +132,9 @@ app.post("/upload", function (req, res) {
 // };
 var httpServer = null;
 
-_models2.default.conn.sync({ force: false }).then(async function () {
+models.conn.sync({ force: false }).then(async function () {
     // await seedIfEmpty();
-    httpServer = app.listen(_config2.default.apiPort, function () {
+    httpServer = app.listen(config.apiPort, function () {
         var host = httpServer.address().address;
         var port = httpServer.address().port;
         console.log("Graphql api listening at http://%s:%s", host, port);
@@ -169,3 +145,25 @@ _models2.default.conn.sync({ force: false }).then(async function () {
 function killServer() {
     httpServer.close();
 }
+;
+
+(function () {
+    var reactHotLoader = require('react-hot-loader').default;
+
+    var leaveModule = require('react-hot-loader').leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(app, "app", "api/server.js");
+    reactHotLoader.register(SECRET, "SECRET", "api/server.js");
+    reactHotLoader.register(addUser, "addUser", "api/server.js");
+    reactHotLoader.register(storage, "storage", "api/server.js");
+    reactHotLoader.register(upload, "upload", "api/server.js");
+    reactHotLoader.register(httpServer, "httpServer", "api/server.js");
+    reactHotLoader.register(killServer, "killServer", "api/server.js");
+    leaveModule(module);
+})();
+
+;

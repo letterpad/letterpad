@@ -20,6 +20,12 @@ var _permissions = require("../utils/permissions");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+(function () {
+    var enterModule = require('react-hot-loader').enterModule;
+
+    enterModule && enterModule(module);
+})();
+
 function IsJsonString(str) {
     if (!isNaN(str)) return false;
     try {
@@ -53,7 +59,7 @@ function getConditions(columns, args) {
     return conditions;
 }
 
-exports.default = {
+var _default = {
     Query: {
         posts: _permissions.checkDisplayAccess.createResolver(function (root, args, _ref) {
             var models = _ref.models;
@@ -348,19 +354,39 @@ exports.default = {
         taxonomies: function taxonomies(post) {
             return post.getTaxonomies();
         }
-        // PostTaxonomy: {
-        //     posts: async (taxonomy, { type, limit, offset }) => {
-        //         const conditions = { where: { type, status: "publish" } };
-        //         if (limit) {
-        //             conditions.limit = limit;
-        //         }
-        //         if (offset) {
-        //             conditions.offset = offset;
-        //         }
-        //         const result = {};
-        //         result.posts = await taxonomy.getPosts(conditions);
-        //         result.count = taxonomy.dataValues.posts.length;
-        //         return result;
-        //     }
-        // }
-    } };
+    }
+    // PostTaxonomy: {
+    //     posts: async (taxonomy, { type, limit, offset }) => {
+    //         const conditions = { where: { type, status: "publish" } };
+    //         if (limit) {
+    //             conditions.limit = limit;
+    //         }
+    //         if (offset) {
+    //             conditions.offset = offset;
+    //         }
+    //         const result = {};
+    //         result.posts = await taxonomy.getPosts(conditions);
+    //         result.count = taxonomy.dataValues.posts.length;
+    //         return result;
+    //     }
+    // }
+};
+exports.default = _default;
+;
+
+(function () {
+    var reactHotLoader = require('react-hot-loader').default;
+
+    var leaveModule = require('react-hot-loader').leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(IsJsonString, "IsJsonString", "api/resolvers/post.js");
+    reactHotLoader.register(getConditions, "getConditions", "api/resolvers/post.js");
+    reactHotLoader.register(_default, "default", "api/resolvers/post.js");
+    leaveModule(module);
+})();
+
+;

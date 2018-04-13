@@ -1,15 +1,15 @@
 var env = require("node-env-file");
 env(__dirname + "/../.env");
-import config from "../config";
-import express from "express";
-import GraphHTTP from "express-graphql";
-import Schema from "./schema";
-import bodyParser from "body-parser";
-import cors from "cors";
-import multer from "multer";
-import jwt from "jsonwebtoken";
-import models from "./models";
-// import { seed } from "./seed/seed";
+const config = require("../config");
+const express = require("express");
+const GraphHTTP = require("express-graphql");
+const Schema = require("./schema");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const multer = require("multer");
+const jwt = require("jsonwebtoken");
+const models = require("./models");
+// const { seed } = require("./seed/seed");
 
 const app = express();
 
