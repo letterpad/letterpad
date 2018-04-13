@@ -8,7 +8,7 @@ require("babel-core/register");
 const express = require("express");
 const bodyParser = require("body-parser");
 const webpack = require("webpack");
-const config = require("./config/index.js").default;
+const config = require("./config/index.js");
 const compression = require("compression");
 const adminServerRendering = require("./admin/serverRendering");
 const clientServerRendering = require("./client/serverRendering");
@@ -22,7 +22,7 @@ app.use(compression());
 if (process.env.NODE_ENV === "dev") {
     const wpConfigFile = "./webpack/webpack.dev.js";
     const webpackConfig = require(wpConfigFile)({
-        theme: process.env.THEME || "letterpad"
+        theme: process.env.THEME || "amun"
     })[1];
     const compiler = webpack(webpackConfig);
     const webpackDevMiddleware = require("webpack-dev-middleware");
@@ -63,8 +63,6 @@ app.use(
 
 app.use(config.baseName, express.static("public"));
 app.use(config.baseName + "admin/", express.static("admin/public"));
-// app.use(config.baseName + "dist/", express.static("dist"));
-// app.use(config.baseName + "dist/", express.static("static/admin/public"));
 dir.getDirectories(__dirname + "/client/themes/").map(themePath => {
     const theme = themePath.split("/").pop(-1);
     app.use(

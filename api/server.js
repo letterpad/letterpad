@@ -126,7 +126,6 @@ models.conn
     .sync({ force: false })
     .then(async () => {
         // await seedIfEmpty();
-        console.log(config);
         httpServer = app.listen(config.apiPort, function() {
             var host = httpServer.address().address;
             var port = httpServer.address().port;

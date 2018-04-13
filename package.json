@@ -12,7 +12,7 @@
         "preinstall":
             "git clone git@github.com:ajaxtown/theme-amun.git client/themes/amun",
         "dev":
-            "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${THEME}\"",
+            "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/startDev.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${THEME}\"",
         "prod":
             "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
         "test": "jest --runInBand"
