@@ -10,5 +10,5 @@ yarn-error.log
 extend
 hot
 client/themes/*
-!client/themes/amun
+!client/themes/amun/
 *hot*js*
