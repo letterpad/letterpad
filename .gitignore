@@ -9,5 +9,6 @@ yarn-error.log
 .env
 extend
 hot
-client/themes
+client/themes/*
+!client/themes/amun
 *hot*js*
