@@ -19,7 +19,7 @@ env(__dirname + "/../.env");
 var config = require("../config");
 var express = require("express");
 var GraphHTTP = require("express-graphql");
-var Schema = require("./schema");
+var Schema = require("./schema").default;
 var bodyParser = require("body-parser");
 var cors = require("cors");
 var multer = require("multer");
@@ -156,6 +156,7 @@ function killServer() {
         return;
     }
 
+    reactHotLoader.register(Schema, "Schema", "api/server.js");
     reactHotLoader.register(app, "app", "api/server.js");
     reactHotLoader.register(SECRET, "SECRET", "api/server.js");
     reactHotLoader.register(addUser, "addUser", "api/server.js");
