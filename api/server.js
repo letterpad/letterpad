@@ -3,7 +3,7 @@ env(__dirname + "/../.env");
 const config = require("../config");
 const express = require("express");
 const GraphHTTP = require("express-graphql");
-const Schema = require("./schema");
+const Schema = require("./schema").default;
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const multer = require("multer");
