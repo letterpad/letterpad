@@ -6,13 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _taxonomy = require("../models/taxonomy");
 
-(function () {
-    var enterModule = require('react-hot-loader').enterModule;
-
-    enterModule && enterModule(module);
-})();
-
-var _default = {
+exports.default = {
     Query: {
         taxonomies: function taxonomies(root, args, _ref) {
             var models = _ref.models;
@@ -84,20 +78,3 @@ var _default = {
         }
     }
 };
-exports.default = _default;
-;
-
-(function () {
-    var reactHotLoader = require('react-hot-loader').default;
-
-    var leaveModule = require('react-hot-loader').leaveModule;
-
-    if (!reactHotLoader) {
-        return;
-    }
-
-    reactHotLoader.register(_default, "default", "api/resolvers/taxonomy.js");
-    leaveModule(module);
-})();
-
-;

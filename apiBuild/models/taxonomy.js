@@ -11,13 +11,7 @@ var _sequelize2 = _interopRequireDefault(_sequelize);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(function () {
-    var enterModule = require('react-hot-loader').enterModule;
-
-    enterModule && enterModule(module);
-})();
-
-var _default = function _default(conn, DataTypes) {
+exports.default = function (conn, DataTypes) {
     var Taxonomy = conn.define("taxonomies", {
         name: {
             type: _sequelize2.default.STRING
@@ -43,7 +37,6 @@ var _default = function _default(conn, DataTypes) {
     return Taxonomy;
 };
 
-exports.default = _default;
 var getTaxonomies = exports.getTaxonomies = function getTaxonomies(root, args, _ref) {
     var models = _ref.models,
         user = _ref.user;
@@ -80,20 +73,3 @@ var getTaxonomies = exports.getTaxonomies = function getTaxonomies(root, args, _
     }
     return models.Taxonomy.findAll(query);
 };
-;
-
-(function () {
-    var reactHotLoader = require('react-hot-loader').default;
-
-    var leaveModule = require('react-hot-loader').leaveModule;
-
-    if (!reactHotLoader) {
-        return;
-    }
-
-    reactHotLoader.register(getTaxonomies, "getTaxonomies", "api/models/taxonomy.js");
-    reactHotLoader.register(_default, "default", "api/models/taxonomy.js");
-    leaveModule(module);
-})();
-
-;

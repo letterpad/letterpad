@@ -7,12 +7,6 @@ exports.checkDisplayAccess = exports.editPostPerm = exports.createPostsPerm = ex
 
 var _common = require("./common");
 
-(function () {
-    var enterModule = require('react-hot-loader').enterModule;
-
-    enterModule && enterModule(module);
-})();
-
 var createResolver = function createResolver(resolver) {
     var baseResolver = resolver;
     baseResolver.createResolver = function (childResolver) {
@@ -103,24 +97,3 @@ var checkDisplayAccess = exports.checkDisplayAccess = createResolver(function (r
     }
     throw new _common.UnauthorizedError({ url: root.body.operationName });
 });
-;
-
-(function () {
-    var reactHotLoader = require('react-hot-loader').default;
-
-    var leaveModule = require('react-hot-loader').leaveModule;
-
-    if (!reactHotLoader) {
-        return;
-    }
-
-    reactHotLoader.register(createResolver, "createResolver", "api/utils/permissions.js");
-    reactHotLoader.register(requiresAuth, "requiresAuth", "api/utils/permissions.js");
-    reactHotLoader.register(requiresAdmin, "requiresAdmin", "api/utils/permissions.js");
-    reactHotLoader.register(createPostsPerm, "createPostsPerm", "api/utils/permissions.js");
-    reactHotLoader.register(editPostPerm, "editPostPerm", "api/utils/permissions.js");
-    reactHotLoader.register(checkDisplayAccess, "checkDisplayAccess", "api/utils/permissions.js");
-    leaveModule(module);
-})();
-
-;

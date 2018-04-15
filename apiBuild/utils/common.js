@@ -4,9 +4,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.getEmailBody = exports.mailTemplate = exports.NotFoundError = exports.UnauthorizedError = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 exports.formatTaxonomyForDBInsert = formatTaxonomyForDBInsert;
 
 var _config = require("../../config");
@@ -22,12 +19,6 @@ var _path = require("path");
 var _path2 = _interopRequireDefault(_path);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-    var enterModule = require('react-hot-loader').enterModule;
-
-    enterModule && enterModule(module);
-})();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74,13 +65,6 @@ var UnauthorizedError = exports.UnauthorizedError = function (_Error) {
         return _this;
     }
 
-    _createClass(UnauthorizedError, [{
-        key: "__reactstandin__regenerateByEval",
-        value: function __reactstandin__regenerateByEval(key, code) {
-            this[key] = eval(code);
-        }
-    }]);
-
     return UnauthorizedError;
 }(Error);
 
@@ -99,13 +83,6 @@ var NotFoundError = exports.NotFoundError = function (_Error2) {
         _this2.statusCode = statusCode;
         return _this2;
     }
-
-    _createClass(NotFoundError, [{
-        key: "__reactstandin__regenerateByEval",
-        value: function __reactstandin__regenerateByEval(key, code) {
-            this[key] = eval(code);
-        }
-    }]);
 
     return NotFoundError;
 }(Error);
@@ -145,23 +122,3 @@ var getEmailBody = exports.getEmailBody = async function getEmailBody(templateNa
     });
     return template;
 };
-;
-
-(function () {
-    var reactHotLoader = require('react-hot-loader').default;
-
-    var leaveModule = require('react-hot-loader').leaveModule;
-
-    if (!reactHotLoader) {
-        return;
-    }
-
-    reactHotLoader.register(formatTaxonomyForDBInsert, "formatTaxonomyForDBInsert", "api/utils/common.js");
-    reactHotLoader.register(UnauthorizedError, "UnauthorizedError", "api/utils/common.js");
-    reactHotLoader.register(NotFoundError, "NotFoundError", "api/utils/common.js");
-    reactHotLoader.register(mailTemplate, "mailTemplate", "api/utils/common.js");
-    reactHotLoader.register(getEmailBody, "getEmailBody", "api/utils/common.js");
-    leaveModule(module);
-})();
-
-;

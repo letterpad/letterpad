@@ -26,13 +26,7 @@ var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(function () {
-    var enterModule = require('react-hot-loader').enterModule;
-
-    enterModule && enterModule(module);
-})();
-
-var _default = function _default(conn, DataTypes) {
+exports.default = function (conn, DataTypes) {
     var Post = conn.define("posts", {
         title: {
             type: _sequelize2.default.STRING,
@@ -89,7 +83,6 @@ var _default = function _default(conn, DataTypes) {
     return Post;
 };
 
-exports.default = _default;
 async function _createPost(data, models) {
     var title = data.title || _config2.default.defaultSlug;
     try {
@@ -185,21 +178,3 @@ async function _updatePost(post, models) {
         };
     }
 }
-;
-
-(function () {
-    var reactHotLoader = require('react-hot-loader').default;
-
-    var leaveModule = require('react-hot-loader').leaveModule;
-
-    if (!reactHotLoader) {
-        return;
-    }
-
-    reactHotLoader.register(_createPost, "_createPost", "api/models/post.js");
-    reactHotLoader.register(_updatePost, "_updatePost", "api/models/post.js");
-    reactHotLoader.register(_default, "default", "api/models/post.js");
-    leaveModule(module);
-})();
-
-;

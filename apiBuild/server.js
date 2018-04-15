@@ -7,13 +7,6 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.killServer = killServer;
-
-(function () {
-    var enterModule = require('react-hot-loader').enterModule;
-
-    enterModule && enterModule(module);
-})();
-
 var env = require("node-env-file");
 env(__dirname + "/../.env");
 var config = require("../config");
@@ -145,26 +138,3 @@ models.conn.sync({ force: false }).then(async function () {
 function killServer() {
     httpServer.close();
 }
-;
-
-(function () {
-    var reactHotLoader = require('react-hot-loader').default;
-
-    var leaveModule = require('react-hot-loader').leaveModule;
-
-    if (!reactHotLoader) {
-        return;
-    }
-
-    reactHotLoader.register(Schema, "Schema", "api/server.js");
-    reactHotLoader.register(app, "app", "api/server.js");
-    reactHotLoader.register(SECRET, "SECRET", "api/server.js");
-    reactHotLoader.register(addUser, "addUser", "api/server.js");
-    reactHotLoader.register(storage, "storage", "api/server.js");
-    reactHotLoader.register(upload, "upload", "api/server.js");
-    reactHotLoader.register(httpServer, "httpServer", "api/server.js");
-    reactHotLoader.register(killServer, "killServer", "api/server.js");
-    leaveModule(module);
-})();
-
-;

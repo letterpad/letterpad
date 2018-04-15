@@ -62,13 +62,9 @@ module.exports.init = app => {
                     theme = process.env.THEME;
                 }
                 const sendResponse = ({ content, initialState }) => {
-                    const html = Html({ theme, content, state });
+                    const html = Html({ theme, content, initialState });
                     res.status(200);
-                    res.send(
-                        `<!doctype html>\n${ReactDOM.renderToStaticMarkup(
-                            html
-                        )}`
-                    );
+                    res.send(`<!doctype html>\n${html}`);
                     res.end();
                 };
                 let initialState = {};
@@ -77,7 +73,7 @@ module.exports.init = app => {
     });
 };
 
-function Html({ theme, content, state }) {
+function Html({ theme, content, initialState }) {
     const devBundles = [
         "/static/admin/public/dist/vendor-bundle.js",
         "/static/admin/public/dist/admin-bundle.js"
