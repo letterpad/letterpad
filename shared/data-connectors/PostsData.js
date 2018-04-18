@@ -29,7 +29,8 @@ export default graphql(CAT_POSTS, {
                                 posts: [
                                     ...previousResult.postsMenu.posts,
                                     ...fetchMoreResult.postsMenu.posts
-                                ]
+                                ],
+                                __typename: previousResult.postsMenu.__typename
                             }
                         };
                     }

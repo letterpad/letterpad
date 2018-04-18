@@ -1,7 +1,7 @@
 const configDev = require("./config.dev.js");
 const configProd = require("./config.prod.js");
 const currentEnv =
-    "undefined" !== typeof window ? window.NODE_ENV : process.env.NODE_ENV;
+    typeof window !== "undefined" ? window.NODE_ENV : process.env.NODE_ENV;
 
 const configFile = currentEnv === "dev" ? configDev : configProd;
 

@@ -86,7 +86,9 @@ function Html({ theme, content, initialState }) {
         process.env.NODE_ENV === "production" ? prodBundles : devBundles;
 
     const insertScript = script =>
-        `<script type="text/javascript" src="${makeUrl(script)}" defer />`;
+        `<script type="text/javascript" src="${makeUrl(
+            script
+        )}" defer></script>`;
 
     const insertStyle = style =>
         `<link
@@ -125,25 +127,23 @@ function Html({ theme, content, initialState }) {
                 ${insertStyle("/dist/admin.min.css")}
             </head>
             <body>
-                <div id="app">${content}</div>
-                <script
+                <div id="app"></div>
+                <script>
                     window.NODE_ENV = "${process.env.NODE_ENV}";
-                    window.__APOLLO_STATE__=${initialState};
-                    window.NODE_ENV = "${process.env.NODE_ENV}";
-                    window.rootUrl="${process.env.rootUrl}";
+                    window.__APOLLO_STATE__=${JSON.stringify(initialState)};
+                    window.rootUrl = "${process.env.rootUrl}";
                     window.apiUrl="${process.env.apiUrl}";
                     window.uploadUrl="${process.env.uploadUrl}";
                     window.appPort="${process.env.appPort}";
                     window.apiPort="${process.env.apiPort}";
                     window.baseName="${process.env.baseName}";
-
-                />
+                </script>
                 ${insertScript("/admin/js/highlight.min.js")}
                 <script
                     type="text/javascript"
                     src="https://cdn.quilljs.com/1.2.2/quill.js"
                     defer
-                />
+                ></script>
                 ${bundles.map(bundle => insertScript(bundle))}
             </body>
         </html>`;

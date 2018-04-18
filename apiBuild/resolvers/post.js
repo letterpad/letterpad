@@ -37,7 +37,11 @@ function getConditions(columns, args) {
             var validateJSONStr = IsJsonString(args[field]);
             var query = validateJSONStr ? JSON.parse(args[field]) : args[field];
             if (validateJSONStr) {
-                obj["$or"] = [{ body: query }, { title: query }, { mdBody: query }];
+                obj["$or"] = {
+                    body: query,
+                    title: query,
+                    mdBody: query
+                };
                 // obj["$or"] = [
                 //     { body: { ["$like"]: "%" + query + "%" } },
                 //     { title: query }
