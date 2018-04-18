@@ -21,7 +21,7 @@ export default `
   }
   type PostTaxonomyNode {
     count: Int,
-    posts: [Post]
+    posts: [Post],
   }
 
   type AdjacentPosts {

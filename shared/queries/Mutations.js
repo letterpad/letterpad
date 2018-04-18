@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+const gql = require("graphql-tag");
 
 module.exports.CREATE_POST = gql`
     mutation createPost($type: String!, $title: String!, $body: String) {

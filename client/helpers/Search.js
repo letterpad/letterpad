@@ -40,7 +40,7 @@ export default class Search extends Component {
 
     render() {
         return (
-            <div className="card">
+            <div className="search-box">
                 <div className="x_content">
                     <div className="form-group">
                         <input
