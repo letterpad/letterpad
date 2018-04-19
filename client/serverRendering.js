@@ -1,4 +1,6 @@
 const { ApolloClient } = require("apollo-client");
+const { ApolloLink } = require("apollo-link");
+const { onError } = require("apollo-link-error");
 const path = require("path");
 const fetch = require("node-fetch");
 const fs = require("fs");
@@ -7,6 +9,79 @@ const { createHttpLink } = require("apollo-link-http");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 const { makeUrl } = require("../shared/util");
 const { GET_OPTIONS } = require("../shared/queries/Queries");
+
+const errorLink = onError(({ networkError, graphQLErrors }) => {
+    if (graphQLErrors) {
+        graphQLErrors.map(({ message, locations, path }) =>
+            console.log(
+                `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+            )
+        );
+    }
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+const httpLink = createHttpLink({
+    uri: config.apiUrl,
+    fetch
+});
+
+const link = ApolloLink.from([errorLink, httpLink]);
+
+module.exports.init = app => {
+    app.get("*", (req, res) => {
+        const client = new ApolloClient({
+            ssrMode: true,
+            link,
+            cache: new InMemoryCache()
+        });
+
+        try {
+            client.query({ query: GET_OPTIONS }).then(settings => {
+                let theme = settings.data.settings.filter(
+                    item => item.option == "theme"
+                )[0].value;
+                // In dev mode if a theme is explicitly called, then use that
+                if (process.env.THEME && process.env.THEME !== "") {
+                    theme = process.env.THEME;
+                }
+                let serverFile =
+                    "./themes/" + theme + "/public/dist/server.node.js";
+                const urlParams = Object.assign(
+                    {},
+                    getParams(req.originalUrl),
+                    getParams(req.header("Referer"))
+                );
+                let previewTheme = false;
+
+                if (urlParams && "theme" in urlParams) {
+                    theme = urlParams.theme;
+                    previewTheme = true;
+                }
+
+                if (previewTheme) {
+                    const previewThemePath =
+                        "./themes/" + theme + "/public/dist/server.node.js";
+                    if (fs.existsSync(path.join(__dirname, previewThemePath))) {
+                        console.log("Previewing ", theme);
+                        serverFile = previewThemePath;
+                    } else {
+                        console.log(
+                            "Server bundle for theme " + theme + " not found"
+                        );
+                    }
+                }
+                console.log("Running server instance: ", serverFile);
+                const server = require(serverFile).default;
+                server(req, client).then(({ html, apolloState, head }) => {
+                    res.end(getHtml(theme, html, apolloState, head));
+                });
+            });
+        } catch (e) {
+            console.log(`[Request error]: ${e.message}`);
+        }
+    });
+};
 
 const getParams = query => {
     if (!query) {
@@ -21,60 +96,6 @@ const getParams = query => {
     });
 
     return params;
-};
-
-module.exports.init = app => {
-    app.get("*", (req, res) => {
-        const client = new ApolloClient({
-            ssrMode: true,
-            link: createHttpLink({
-                uri: config.apiUrl,
-                fetch
-            }),
-            cache: new InMemoryCache()
-        });
-        client.query({ query: GET_OPTIONS }).then(settings => {
-            let theme = settings.data.settings.filter(
-                item => item.option == "theme"
-            )[0].value;
-
-            // In dev mode if a theme is explicitly called, then use that
-            if (process.env.THEME && process.env.THEME !== "") {
-                theme = process.env.THEME;
-            }
-            let serverFile =
-                "./themes/" + theme + "/public/dist/server.node.js";
-            const urlParams = Object.assign(
-                {},
-                getParams(req.originalUrl),
-                getParams(req.header("Referer"))
-            );
-            let previewTheme = false;
-
-            if (urlParams && "theme" in urlParams) {
-                theme = urlParams.theme;
-                previewTheme = true;
-            }
-
-            if (previewTheme) {
-                const previewThemePath =
-                    "./themes/" + theme + "/public/dist/server.node.js";
-                if (fs.existsSync(path.join(__dirname, previewThemePath))) {
-                    console.log("Previewing ", theme);
-                    serverFile = previewThemePath;
-                } else {
-                    console.log(
-                        "Server bundle for theme " + theme + " not found"
-                    );
-                }
-            }
-            console.log("Running server instance: ", serverFile);
-            const server = require(serverFile).default;
-            server(req, client).then(({ html, apolloState, head }) => {
-                res.end(getHtml(theme, html, apolloState, head));
-            });
-        });
-    });
 };
 
 function getHtml(theme, html, state, head) {

@@ -65,7 +65,12 @@ class Posts extends Component {
                                     <label className="control control--checkbox">
                                         <input
                                             type="checkbox"
-                                            onClick={this.props.selectAllPosts}
+                                            onClick={e =>
+                                                this.props.selectAllPosts(
+                                                    e,
+                                                    this.props.posts
+                                                )
+                                            }
                                         />
                                         <div className="control__indicator" />
                                     </label>

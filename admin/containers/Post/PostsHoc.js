@@ -130,15 +130,12 @@ const PostsHoc = (WrappedComponent, type) => {
             });
         }
 
-        selectAllPosts(e) {
+        selectAllPosts(e, posts) {
+            let selectedPosts = [];
             if (e.target.checked) {
-                this.state.selectedPosts = this.props.posts.rows.map(
-                    post => post.id
-                );
-            } else {
-                this.state.selectedPosts = [];
+                selectedPosts = posts.rows.map(post => post.id);
             }
-            this.setState(this.state);
+            this.setState({ selectedPosts });
         }
 
         setSelection(id) {
