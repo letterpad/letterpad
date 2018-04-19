@@ -148,52 +148,32 @@ export default {
             };
         },
         pageMenu: async (root, args, { models }) => {
-            let menu = await models.Setting.findOne({
-                where: { option: "menu" }
-            });
-            menu = JSON.parse(menu.dataValues.value);
-
-            let menuItem = null;
-            const getItemFromMenu = (arr, slug) => {
-                return arr.some(item => {
-                    if (item.slug && item.slug == slug) {
-                        menuItem = item;
-                    }
-                    if (item.children && item.children.length > 0) {
-                        getItemFromMenu(item.children, slug);
-                    }
-                });
-            };
-            getItemFromMenu(menu, args.slug);
-            args.status = "publish";
             const response = {
                 ok: true,
                 post: null,
                 errors: []
             };
-            if (!menuItem) {
-                const page = await models.Post.findOne({
-                    where: { type: "page", slug: args.slug }
-                });
-                if (page) {
-                    response.post = page;
-                } else {
-                    response.ok = false;
-                    response.errors = [
-                        {
-                            path: "pageMenu",
-                            message: "Page not found"
-                        }
-                    ];
-                }
-                return response;
-            }
-
             const page = await models.Post.findOne({
-                where: { id: menuItem.id }
+                where: { type: "page", slug: args.slug, status: "publish" }
             });
-            response.post = page;
+            if (page) {
+                response.post = page;
+            } else {
+                response.ok = false;
+                response.errors = [
+                    {
+                        path: "pageMenu",
+                        message: "Page not found"
+                    }
+                ];
+            }
             return response;
+
+            // const page = await models.Post.findOne({
+            //     where: { id: menuItem.id }
+            // });
+            // response.post = page;
+            // return response;
         },
         adjacentPosts: async (root, args, { models }) => {
             let data = {

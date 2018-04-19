@@ -25,14 +25,6 @@ class App extends Component {
         this.getHomeSlug = this.getHomeSlug.bind(this);
     }
 
-    componentDidMount() {
-        const bc = new BroadcastChannel("test_channel");
-        bc.onmessage = params => {
-            const { property, color } = params.data;
-            document.querySelector(":root").style.setProperty(property, color);
-        };
-    }
-
     applyCustomCSS({ css, colors }) {
         if (typeof document == "undefined") return false;
         const style = document.createElement("style");

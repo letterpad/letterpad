@@ -57,7 +57,15 @@ class Pages extends Component {
                             <tr>
                                 <th width="5%" className="col-check">
                                     <label className="control control--checkbox">
-                                        <input type="checkbox" />
+                                        <input
+                                            type="checkbox"
+                                            onClick={e =>
+                                                this.props.selectAllPosts(
+                                                    e,
+                                                    this.props.posts
+                                                )
+                                            }
+                                        />
                                         <div className="control__indicator" />
                                     </label>
                                 </th>

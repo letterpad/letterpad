@@ -1,5 +1,5 @@
 import Sequalize from "sequelize";
-import { parseErrors } from "../../shared/util";
+import { parseErrors, recurseMenu } from "../../shared/util";
 import slugify from "../../shared/slugify";
 import config from "../../config";
 import moment from "moment";
@@ -96,34 +96,64 @@ export async function _createPost(data, models) {
 
 export async function _updatePost(post, models) {
     try {
-        if (
-            post.slug &&
-            post.slug.indexOf(config.defaultSlug) === 0 &&
-            post.title !== config.defaulTitle
-        ) {
+        // first get the post which is being updated
+        const oldPost = await models.Post.findOne({
+            where: { id: post.id }
+        });
+
+        // Create a new slug if the title changes.
+        if (post.title !== oldPost.title) {
             //  create the slug
             post.slug = await slugify(models.Post, post.title);
         }
-        if (post.status == "publish") {
-            const currentPost = await models.Post.findOne({
-                where: { id: post.id }
-            });
-            if (currentPost.status === "draft") {
-                post.published_at = moment
-                    .utc(new Date())
-                    .format("YYYY-MM-DD HH:mm:ss");
+
+        // check the menu. the menu has page items. update the slug of the page menu item if it exist.
+        const settings = await models.Setting.findAll();
+        const menu = JSON.parse(
+            settings.filter(item => item.option === "menu")[0].value
+        );
+
+        const changeMenuItem = item => {
+            if (item.type == "page") {
+                item.slug = post.slug;
             }
+            return item;
+        };
+        // loop though the menu and find the item with the current slug and id.
+        // if found, update the slug
+        const updatedMenu = menu.map(item =>
+            recurseMenu(item, post.id, changeMenuItem)
+        );
+
+        try {
+            await models.Setting.update(
+                { menu: JSON.stringify(updatedMenu) },
+                { where: { option: "menu" } }
+            );
+        } catch (e) {
+            console.log(e);
+        }
+
+        // If this post is being published for the first time, update the publish date
+        if (post.status == "publish" && oldPost.status == "draft") {
+            post.published_at = moment
+                .utc(new Date())
+                .format("YYYY-MM-DD HH:mm:ss");
         }
         await models.Post.update(post, {
             where: { id: post.id }
         });
-        const updatedPost = await models.Post.findOne({
+
+        // get all values of the updated post
+        const newPost = await models.Post.findOne({
             where: { id: post.id }
         });
 
+        // the taxonomies like tags/cathegories might have chqnged or added.
+        // sync them
         if (post.taxonomies && post.taxonomies.length > 0) {
             // remove the texonomy relation
-            await updatedPost.setTaxonomies([]);
+            await newPost.setTaxonomies([]);
             await Promise.all(
                 post.taxonomies.map(async taxonomy => {
                     let taxItem = null;
@@ -132,7 +162,7 @@ export async function _updatePost(post, models) {
                         taxItem = await models.Taxonomy.findOne({
                             where: { id: taxonomy.id }
                         });
-                        return await updatedPost.addTaxonomy(taxItem);
+                        return await newPost.addTaxonomy(taxItem);
                     }
                     // taxonomies needs to be created
                     taxItem = await models.Taxonomy.findOrCreate({
@@ -150,14 +180,14 @@ export async function _updatePost(post, models) {
                     });
 
                     // add relation
-                    return await updatedPost.addTaxonomy(taxItem);
+                    return await newPost.addTaxonomy(taxItem);
                 })
             );
         }
 
         return {
             ok: true,
-            post: updatedPost,
+            post: newPost,
             errors: []
         };
     } catch (e) {

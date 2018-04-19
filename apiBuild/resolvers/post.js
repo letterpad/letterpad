@@ -162,50 +162,30 @@ exports.default = {
         pageMenu: async function pageMenu(root, args, _ref4) {
             var models = _ref4.models;
 
-            var menu = await models.Setting.findOne({
-                where: { option: "menu" }
-            });
-            menu = JSON.parse(menu.dataValues.value);
-
-            var menuItem = null;
-            var getItemFromMenu = function getItemFromMenu(arr, slug) {
-                return arr.some(function (item) {
-                    if (item.slug && item.slug == slug) {
-                        menuItem = item;
-                    }
-                    if (item.children && item.children.length > 0) {
-                        getItemFromMenu(item.children, slug);
-                    }
-                });
-            };
-            getItemFromMenu(menu, args.slug);
-            args.status = "publish";
             var response = {
                 ok: true,
                 post: null,
                 errors: []
             };
-            if (!menuItem) {
-                var _page = await models.Post.findOne({
-                    where: { type: "page", slug: args.slug }
-                });
-                if (_page) {
-                    response.post = _page;
-                } else {
-                    response.ok = false;
-                    response.errors = [{
-                        path: "pageMenu",
-                        message: "Page not found"
-                    }];
-                }
-                return response;
-            }
-
             var page = await models.Post.findOne({
-                where: { id: menuItem.id }
+                where: { type: "page", slug: args.slug, status: "publish" }
             });
-            response.post = page;
+            if (page) {
+                response.post = page;
+            } else {
+                response.ok = false;
+                response.errors = [{
+                    path: "pageMenu",
+                    message: "Page not found"
+                }];
+            }
             return response;
+
+            // const page = await models.Post.findOne({
+            //     where: { id: menuItem.id }
+            // });
+            // response.post = page;
+            // return response;
         },
         adjacentPosts: async function adjacentPosts(root, args, _ref5) {
             var models = _ref5.models;
