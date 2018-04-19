@@ -6,7 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _permissions = require("../utils/permissions");
 
-exports.default = {
+(function () {
+    var enterModule = require('react-hot-loader').enterModule;
+
+    enterModule && enterModule(module);
+})();
+
+var _default = {
     Query: {
         settings: function settings(root, args, _ref) {
             var models = _ref.models;
@@ -31,3 +37,20 @@ exports.default = {
         })
     }
 };
+exports.default = _default;
+;
+
+(function () {
+    var reactHotLoader = require('react-hot-loader').default;
+
+    var leaveModule = require('react-hot-loader').leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(_default, "default", "api/resolvers/setting.js");
+    leaveModule(module);
+})();
+
+;

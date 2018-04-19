@@ -3,6 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+(function () {
+    var enterModule = require('react-hot-loader').enterModule;
+
+    enterModule && enterModule(module);
+})();
+
 var nodemailer = require("nodemailer");
 
 var SendMail = function SendMail(args, cb) {
@@ -27,4 +34,22 @@ var SendMail = function SendMail(args, cb) {
     return transporter.sendMail(mailOptions);
 };
 
-exports.default = SendMail;
+var _default = SendMail;
+exports.default = _default;
+;
+
+(function () {
+    var reactHotLoader = require('react-hot-loader').default;
+
+    var leaveModule = require('react-hot-loader').leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(SendMail, "SendMail", "api/utils/mail.js");
+    reactHotLoader.register(_default, "default", "api/utils/mail.js");
+    leaveModule(module);
+})();
+
+;

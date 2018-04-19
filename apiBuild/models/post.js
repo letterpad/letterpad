@@ -26,7 +26,13 @@ var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = function (conn, DataTypes) {
+(function () {
+    var enterModule = require('react-hot-loader').enterModule;
+
+    enterModule && enterModule(module);
+})();
+
+var _default = function _default(conn, DataTypes) {
     var Post = conn.define("posts", {
         title: {
             type: _sequelize2.default.STRING,
@@ -83,6 +89,7 @@ exports.default = function (conn, DataTypes) {
     return Post;
 };
 
+exports.default = _default;
 async function _createPost(data, models) {
     var title = data.title || _config2.default.defaultSlug;
     try {
@@ -126,10 +133,10 @@ async function _updatePost(post, models) {
         }
 
         // check the menu. the menu has page items. update the slug of the page menu item if it exist.
-        var settings = await models.Setting.findAll();
-        var menu = JSON.parse(settings.filter(function (item) {
-            return item.option === "menu";
-        })[0].value);
+
+        var menu = await models.Setting.findOne({
+            where: { option: "menu" }
+        });
 
         var changeMenuItem = function changeMenuItem(item) {
             if (item.type == "page") {
@@ -139,12 +146,12 @@ async function _updatePost(post, models) {
         };
         // loop though the menu and find the item with the current slug and id.
         // if found, update the slug
-        var updatedMenu = menu.map(function (item) {
+        var updatedMenu = JSON.parse(menu.value).map(function (item) {
             return (0, _util.recurseMenu)(item, post.id, changeMenuItem);
         });
 
         try {
-            await models.Setting.update({ menu: JSON.stringify(updatedMenu) }, { where: { option: "menu" } });
+            var updated = await models.Setting.update({ value: JSON.stringify(updatedMenu) }, { where: { option: "menu" } });
         } catch (e) {
             console.log(e);
         }
@@ -209,3 +216,21 @@ async function _updatePost(post, models) {
         };
     }
 }
+;
+
+(function () {
+    var reactHotLoader = require('react-hot-loader').default;
+
+    var leaveModule = require('react-hot-loader').leaveModule;
+
+    if (!reactHotLoader) {
+        return;
+    }
+
+    reactHotLoader.register(_createPost, "_createPost", "api/models/post.js");
+    reactHotLoader.register(_updatePost, "_updatePost", "api/models/post.js");
+    reactHotLoader.register(_default, "default", "api/models/post.js");
+    leaveModule(module);
+})();
+
+;

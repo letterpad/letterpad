@@ -108,10 +108,10 @@ export async function _updatePost(post, models) {
         }
 
         // check the menu. the menu has page items. update the slug of the page menu item if it exist.
-        const settings = await models.Setting.findAll();
-        const menu = JSON.parse(
-            settings.filter(item => item.option === "menu")[0].value
-        );
+
+        let menu = await models.Setting.findOne({
+            where: { option: "menu" }
+        });
 
         const changeMenuItem = item => {
             if (item.type == "page") {
@@ -121,13 +121,13 @@ export async function _updatePost(post, models) {
         };
         // loop though the menu and find the item with the current slug and id.
         // if found, update the slug
-        const updatedMenu = menu.map(item =>
+        const updatedMenu = JSON.parse(menu.value).map(item =>
             recurseMenu(item, post.id, changeMenuItem)
         );
 
         try {
-            await models.Setting.update(
-                { menu: JSON.stringify(updatedMenu) },
+            const updated = await models.Setting.update(
+                { value: JSON.stringify(updatedMenu) },
                 { where: { option: "menu" } }
             );
         } catch (e) {
