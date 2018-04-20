@@ -19,7 +19,7 @@ var babelOptions = {
             }
         ]
     ],
-    plugins: ["transform-object-rest-spread"]
+    plugins: ["transform-object-rest-spread", "react-hot-loader/babel"]
 };
 
 const vendorFiles = [
@@ -40,7 +40,8 @@ module.exports = args => {
             args.theme +
             "/public/dist/vendor"]: vendorFiles,
             ["client/themes/" + args.theme + "/public/dist/client"]: [
-                path.join(__dirname, "../client/app")
+                path.join(__dirname, "../client/app"),
+                "webpack-hot-middleware/client?reload=true&noInfo=true"
             ],
             "admin/public/dist/admin": [path.join(__dirname, "../admin/app")]
         },
@@ -53,19 +54,6 @@ module.exports = args => {
             },
             extensions: [".js"]
         },
-        optimization: {
-            splitChunks: {
-                cacheGroups: {
-                    vendor: {
-                        chunks: "initial",
-                        name: "vendor",
-                        test: "vendor",
-                        enforce: true
-                    }
-                }
-            },
-            runtimeChunk: false
-        },
         plugins: [
             new webpack.DefinePlugin({
                 "process.env": {
@@ -73,12 +61,9 @@ module.exports = args => {
                 }
             }),
             new FileNameReplacementPlugin(args.theme),
-            new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
-            new WriteFilePlugin({
-                // exclude hot-update files
-                test: /^(?!.*(hot)).*/
-            })
+            new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/)
         ],
+
         module: {
             rules: [
                 {
@@ -109,10 +94,10 @@ module.exports = args => {
     };
 
     if (isDev) {
-        config.plugins.push(
-            new webpack.HotModuleReplacementPlugin(),
-            new webpack.NoEmitOnErrorsPlugin()
-        );
+        console.log("​-------------");
+        console.log("​isDev", isDev);
+        console.log("​-------------");
+        config.plugins.push(new webpack.HotModuleReplacementPlugin());
     }
 
     return config;

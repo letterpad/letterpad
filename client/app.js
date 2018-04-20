@@ -15,10 +15,3 @@ const app = (
 );
 
 hydrate(app, document.getElementById("app"));
-
-if (module.hot) {
-    module.hot.accept("./Route", () => {
-        const nextApp = require("./Route").default;
-        hydrate(app, document.getElementById("app"));
-    });
-}

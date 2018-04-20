@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import { Helmet } from "react-helmet";
 import SEO from "./helpers/SEO";
 import Loader from "./helpers/Loader";
-
+import { hot } from "react-hot-loader";
 // Data supply
 import SettingsData from "../shared/data-connectors/SettingsData";
 
@@ -166,4 +166,4 @@ class App extends Component {
     }
 }
 
-export default SettingsData(withRouter(App));
+export default hot(module)(SettingsData(withRouter(App)));
