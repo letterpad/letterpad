@@ -23,12 +23,6 @@ var _post = require("./post");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(function () {
-    var enterModule = require('react-hot-loader').enterModule;
-
-    enterModule && enterModule(module);
-})();
-
 var storage = _multer2.default.diskStorage({
     destination: function destination(req, file, cb) {
         cb(null, _path2.default.join(__dirname, "../../public/uploads/"));
@@ -81,23 +75,3 @@ function removeFeaturedImage(req, params) {
         });
     });
 }
-;
-
-(function () {
-    var reactHotLoader = require('react-hot-loader').default;
-
-    var leaveModule = require('react-hot-loader').leaveModule;
-
-    if (!reactHotLoader) {
-        return;
-    }
-
-    reactHotLoader.register(storage, "storage", "api/models/upload.js");
-    reactHotLoader.register(upload, "upload", "api/models/upload.js");
-    reactHotLoader.register(uploadFile, "uploadFile", "api/models/upload.js");
-    reactHotLoader.register(uploadCoverImage, "uploadCoverImage", "api/models/upload.js");
-    reactHotLoader.register(removeFeaturedImage, "removeFeaturedImage", "api/models/upload.js");
-    leaveModule(module);
-})();
-
-;

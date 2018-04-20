@@ -9,6 +9,7 @@ const cors = require("cors");
 const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const models = require("./models");
+const path = require("path");
 // const { seed } = require("./seed/seed");
 
 const app = express();

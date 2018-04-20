@@ -11,5 +11,5 @@ extend
 hot
 client/themes/*
 *hot*js*
-data/letterpad_docs.sqlite
+data/*.sqlite
 yarn-error.log

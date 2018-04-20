@@ -12,8 +12,12 @@ const Paginate = ({ data, count, page, loadMore }) => {
         <InfiniteScroll
             pageStart={1}
             loadMore={loadMore}
-            hasMore={page < pages.length}
-            loader={<div className="loader">Loading ...</div>}
+            hasMore={page < pages.length - 1}
+            loader={
+                <div className="loader">
+                    <i className="fa fa-circle-o-notch fa-spin" />
+                </div>
+            }
         >
             {data}
         </InfiniteScroll>
