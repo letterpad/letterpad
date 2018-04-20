@@ -9,11 +9,21 @@ const clientConfig = args => {
         args.theme = "amun";
     }
     return merge(baseConfig(args), {
-        devtool: "eval-source-map",
+        name: "client",
+        devtool: "source-map",
+        target: "web",
+        entry: {
+            "react-hot-loder": "react-hot-loader/patch"
+        },
         output: {
             path: path.join(__dirname, "../"),
             filename: "[name]-bundle.js",
-            publicPath: "/static/"
+            publicPath: "/static/",
+            hotUpdateChunkFilename: "public/hot/client-hot-update.js",
+            hotUpdateMainFilename: "public/hot/client-hot-update.json"
+        },
+        watchOptions: {
+            ignored: [/node_modules([\\]+|\/)+(?!\some_npm_module_name)/]
         },
         module: {
             rules: [
@@ -27,9 +37,14 @@ const clientConfig = args => {
                         "style-loader",
                         {
                             loader: "css-loader",
-                            options: { importLoaders: 1 }
+                            options: { importLoaders: 1, sourceMap: 1 }
                         },
-                        "postcss-loader"
+                        {
+                            loader: "postcss-loader",
+                            options: {
+                                sourceMap: "inline"
+                            }
+                        }
                     ]
 
                     // include: [
@@ -63,6 +78,7 @@ const serverConfig = args => {
         return nodeModules;
     };
     return merge(baseConfig(args), {
+        name: "server",
         target: "node",
         entry: ["babel-polyfill", path.join(__dirname, "../client/server")],
         output: {
@@ -89,4 +105,4 @@ const serverConfig = args => {
     });
 };
 
-module.exports = args => [serverConfig(args), clientConfig(args)];
+module.exports = args => [clientConfig(args), serverConfig(args)];
