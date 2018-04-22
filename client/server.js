@@ -4,11 +4,10 @@ import { Helmet } from "react-helmet";
 import { StaticRouter } from "react-router";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
 import Route from "./Route";
-import config from "../config";
 
 const context = {};
 
-export default (req, client) => {
+export default (req, client, config) => {
     const apolloContext = {};
     const opts = {
         location: req.url,
@@ -23,6 +22,7 @@ export default (req, client) => {
         </ApolloProvider>
     );
     var a = renderToString;
+
     return Promise.all([getDataFromTree(clientApp)])
         .catch(function(err) {
             // log that I have an error, return the entire array;

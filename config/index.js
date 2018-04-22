@@ -5,17 +5,17 @@ const currentEnv =
 
 const configFile = currentEnv === "dev" ? configDev : configProd;
 
-const config = new function(configFile) {
-    this.rootUrl = configFile.rootUrl;
-    this.apiUrl = configFile.apiUrl;
-    this.uploadUrl = configFile.uploadUrl;
-    this.appPort = configFile.appPort;
-    this.apiPort = configFile.apiPort;
-    this.defaultTitle = "Untitled";
-    this.defaultSlug = "letterpad";
-    this.adminPath = "/admin";
-    this.itemsPerPage = 6;
-    this.baseName = configFile.baseName;
-}(configFile);
+const config = {
+    rootUrl: configFile.rootUrl,
+    apiUrl: configFile.apiUrl,
+    uploadUrl: configFile.uploadUrl,
+    appPort: configFile.appPort,
+    apiPort: configFile.apiPort,
+    defaultTitle: "Untitled",
+    defaultSlug: "letterpad",
+    adminPath: "/admin",
+    itemsPerPage: 6,
+    baseName: configFile.baseName
+};
 
 module.exports = config;

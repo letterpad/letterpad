@@ -18,6 +18,7 @@ var cors = require("cors");
 var multer = require("multer");
 var jwt = require("jsonwebtoken");
 var models = require("./models");
+var path = require("path");
 // const { seed } = require("./seed/seed");
 
 var app = express();

@@ -43,6 +43,10 @@ exports.default = function (conn, Datatypes) {
             type: _sequelize2.default.STRING,
             defaultValue: ""
         },
+        bio: {
+            type: _sequelize2.default.STRING,
+            defaultValue: ""
+        },
         token: {
             type: _sequelize2.default.STRING,
             defaultValue: ""
