@@ -8,6 +8,7 @@ import {
 } from "../../../shared/queries/Mutations";
 import FileExplorerModal from "../Modals/FileExplorerModal";
 import { uploadFile } from "../../util";
+import config from "config";
 
 class FeaturedImage extends Component {
     constructor(props) {
@@ -47,7 +48,7 @@ class FeaturedImage extends Component {
             <div className="card">
                 <div className="module-title">Cover Image</div>
                 <div className="featured-image">
-                    <img alt="" width="100%" src={coverImage} />
+                    <img alt="" width="100%" src={config.baseName+ coverImage} />
                     {!this.state.cover_image ? (
                         <a
                             className="btn btn-xs btn-dark"

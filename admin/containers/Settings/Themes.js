@@ -6,9 +6,9 @@ import PropTypes from "prop-types";
 // import { ChromePicker } from "react-color";
 import { notify } from "react-notify-toast";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
-import SettingsData from "../../../shared/data-connectors/SettingsData";
-import config from "../../../config";
-import { makeUrl } from "../../../shared/util";
+import SettingsData from "shared/data-connectors/SettingsData";
+import config from "config";
+import { makeUrl } from "shared/util";
 
 class ThemeItem extends Component {
     render() {
@@ -19,7 +19,10 @@ class ThemeItem extends Component {
                     className={"theme-item" + (theme.active ? " active" : "")}
                 >
                     <div className="theme-thumbnail">
-                        <img className="theme-image" src={theme.thumbnail} />
+                        <img
+                            className="theme-image"
+                            src={config.baseName + theme.thumbnail}
+                        />
                     </div>
                     <div className="theme-body with-border">
                         <div className="theme-header">

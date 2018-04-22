@@ -110,6 +110,18 @@ const serverConfig = args => {
         },
 
         externals: getExternals(),
+        plugins: [
+            new webpack.DefinePlugin({
+                "process.env": {
+                    apiUrl: "process.env.apiUrl",
+                    uploadUrl: "process.env.uploadUrl",
+                    rootUrl: "process.env.rootUrl",
+                    appPort: "process.env.appPort",
+                    apiPort: "process.env.apiPort",
+                    baseName: "process.env.baseName"
+                }
+            })
+        ],
         module: {
             rules: [
                 {
