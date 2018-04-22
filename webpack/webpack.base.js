@@ -30,6 +30,9 @@ const vendorFiles = [
     "react-apollo",
     "moment"
 ];
+if (isDev) {
+    vendorFiles.push("webpack-hot-middleware/client?reload=true");
+}
 module.exports = args => {
     const config = {
         mode: isDev ? "development" : "production",
@@ -37,8 +40,8 @@ module.exports = args => {
         entry: {
             ["public/js/vendor"]: vendorFiles,
             ["client/themes/" + args.theme + "/public/dist/client"]: [
-                path.join(__dirname, "../client/app"),
-                "webpack-hot-middleware/client?reload=true"
+                "babel-polyfill",
+                path.join(__dirname, "../client/app")
             ],
             "admin/public/dist/admin": [path.join(__dirname, "../admin/app")]
         },

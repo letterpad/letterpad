@@ -1,7 +1,3 @@
-require("babel-register")({
-    presets: ["es2015"]
-});
-
 const { ApolloClient } = require("apollo-client");
 const { ApolloLink } = require("apollo-link");
 const { onError } = require("apollo-link-error");
@@ -24,7 +20,7 @@ const errorLink = onError(({ networkError, graphQLErrors }) => {
     }
     if (networkError) console.log(`[Network error]: ${networkError}`);
 });
-
+console.log(config.apiUrl);
 const httpLink = createHttpLink({
     uri: config.apiUrl,
     fetch
@@ -79,9 +75,11 @@ module.exports.init = app => {
                 const server = require(serverFile).default;
 
                 // const server = require("./server").default;
-                server(req, client).then(({ html, apolloState, head }) => {
-                    res.end(getHtml(theme, html, apolloState, head));
-                });
+                server(req, client, config).then(
+                    ({ html, apolloState, head }) => {
+                        res.end(getHtml(theme, html, apolloState, head));
+                    }
+                );
             });
         } catch (e) {
             console.log(`[Request error]: ${e.message}`);

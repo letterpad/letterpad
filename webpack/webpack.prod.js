@@ -13,6 +13,7 @@ const clientConfig = args => {
     const extractPcss = new ExtractTextPlugin("[name].min.css");
     const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");
     return merge(baseConfig(args), {
+        target: "web",
         output: {
             path: path.join(__dirname, "../"),
             filename: "[name]-bundle.min.js"
@@ -84,16 +85,14 @@ const serverConfig = args => {
             });
         return nodeModules;
     };
-    return merge(baseConfig(args), {
+    const config = merge(baseConfig(args), {
         target: "node",
-        entry: ["babel-polyfill", path.join(__dirname, "../client/server")],
+
         output: {
             filename: "server.node.js",
             path: BUILD_PATH,
             library: "server",
-            libraryTarget: "commonjs2",
-            hotUpdateChunkFilename: "../hot/hot-update.js",
-            hotUpdateMainFilename: "../hot/hot-update.json"
+            libraryTarget: "commonjs2"
         },
         externals: getExternals(),
         module: {
@@ -109,6 +108,10 @@ const serverConfig = args => {
             ]
         }
     });
+    config.entry = {
+        server: ["babel-polyfill", path.join(__dirname, "../client/server")]
+    };
+    return config;
 };
 
 module.exports = args => [serverConfig(args), clientConfig(args)];
