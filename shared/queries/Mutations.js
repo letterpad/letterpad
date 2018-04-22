@@ -101,6 +101,7 @@ module.exports.UPDATE_AUTHOR = gql`
         $social: String
         $avatar: String
         $role_id: Int
+        $bio: String
     ) {
         updateAuthor(
             id: $id
@@ -112,6 +113,7 @@ module.exports.UPDATE_AUTHOR = gql`
             lname: $lname
             avatar: $avatar
             role_id: $role_id
+            bio: $bio
         ) {
             ok
             errors {

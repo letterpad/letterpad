@@ -17,6 +17,7 @@ module.exports.PostFragment = gql`
             fname
             lname
             avatar
+            bio
         }
         taxonomies {
             id

@@ -7,6 +7,7 @@ export default `
     lname: String
     social: String
     role: Role
+    bio: String
     avatar: String
   }
 
@@ -44,7 +45,7 @@ export default `
     login(username: String, email: String, password: String!, remember: Boolean): LoginResponse!
     forgotPassword(email: String!): ForgotPasswordResponse!
     resetPassword(password: String!, token: String!): ForgotPasswordResponse!
-    updateAuthor(id: Int!, username: String, email: String, fname: String, lname: String, social: String, password: String, role_id: Int, avatar: String): AuthorResponse
+    updateAuthor(id: Int!, username: String, email: String, fname: String, lname: String, bio: String, social: String, password: String, role_id: Int, avatar: String): AuthorResponse
     createAuthor(email: String!, fname: String, lname: String, role_id: Int): CreateAuthorResponse
   }
 `;

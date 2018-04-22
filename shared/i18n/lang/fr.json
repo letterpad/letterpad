@@ -19,6 +19,7 @@
     "common.fname": "Prénom",
     "common.lname": "Nom de famille",
     "common.email": "Email",
+    "common.bio": "Short Bio",
     "common.row": "Ligne",
     "common.grid": "Grille",
     "common.centered": "Centré",

@@ -60,6 +60,17 @@ export default class Basic extends Component {
                     />
                 </div>
                 <div className="form-group">
+                    <label className="custom-label"> {t("common.bio")}</label>
+                    <input
+                        defaultValue={this.props.data.bio}
+                        type="text"
+                        className="form-control"
+                        placeholder={t("profile.bio.placeholder")}
+                        aria-invalid="false"
+                        onBlur={e => this.updateOption("bio", e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
                     <label className="custom-label"> {t("common.email")}</label>
                     <input
                         defaultValue={this.props.data.email}
