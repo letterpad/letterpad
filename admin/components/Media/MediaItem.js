@@ -31,7 +31,10 @@ export default class MediaItem extends Component {
             <div className="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                 <article className="post">
                     <div className="post-thumbnail">
-                        <img width="100" src={this.props.media.url} />
+                        <img
+                            width="100"
+                            src={config.baseName + this.props.media.url}
+                        />
                     </div>
                     <div className="post-body with-border">
                         <div className="post-header">

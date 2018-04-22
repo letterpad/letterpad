@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import config from "config";
 import { uploadFile } from "../../util";
 
 export default class General extends Component {
@@ -160,7 +161,7 @@ export default class General extends Component {
                         ) : (
                             <a href="#" onClick={_ => this.updateBanner("")}>
                                 <div className="banner-image">
-                                    <img width="300" alt="" src={banner} />
+                                    <img width="300" alt="" src={config.baseName + banner} />
                                 </div>
                                 Remove Banner
                             </a>

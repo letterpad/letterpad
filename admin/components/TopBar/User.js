@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import appoloClient from "../../apolloClient";
 import { GET_AUTHOR } from "../../../shared/queries/Queries";
+import config from "config";
 
 class User extends Component {
     constructor(props) {
@@ -43,8 +44,9 @@ class User extends Component {
                     >
                         <img
                             src={
-                                this.state.author.avatar ||
-                                "/admin/images/avatar.png"
+                                config.baseName +
+                                (this.state.author.avatar ||
+                                    "/admin/images/avatar.png")
                             }
                             className="avatar"
                         />

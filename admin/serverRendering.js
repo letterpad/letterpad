@@ -23,7 +23,7 @@ const client = () =>
     });
 
 module.exports.init = app => {
-    app.get(config.baseName + "admin/getThemes", (req, res) => {
+    app.get(config.baseName + "/admin/getThemes", (req, res) => {
         client()
             .query({ query: GET_OPTIONS })
             .then(settings => {
@@ -48,7 +48,7 @@ module.exports.init = app => {
             });
     });
 
-    app.get(config.baseName + "admin/*", (req, res) => {
+    app.get(config.baseName + "/admin/*", (req, res) => {
         //const client = getClient();
         client()
             .query({ query: GET_OPTIONS })

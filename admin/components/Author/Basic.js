@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { uploadFile } from "../../util";
 import PropTypes from "prop-types";
+import config from "config";
 
 export default class Basic extends Component {
     constructor(props) {
@@ -85,7 +86,7 @@ export default class Basic extends Component {
                     <label className="custom-label">Upload Avatar</label>
                     <div className="avatar-wrapper">
                         <div className="avatar-image">
-                            <img alt="" src={avatar} />
+                            <img alt="" src={config.baseName + avatar} />
                         </div>
                         {!this.state.avatar ? (
                             <a

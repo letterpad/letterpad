@@ -1,5 +1,6 @@
 import React from "react";
 import ModalHoc from "../ModalHoc";
+import config from "config";
 
 const ConfirmDelete = props => {
     return (
@@ -13,7 +14,7 @@ const ConfirmDelete = props => {
             <div className="modal-body text-center">
                 {props.text}
                 <div className="p-t-20">
-                    <img width="300" src={props.media.url} />
+                    <img width="300" src={config.baseName + props.media.url} />
                 </div>
             </div>
             <div className="modal-footer">

@@ -20,7 +20,7 @@ const errorLink = onError(({ networkError, graphQLErrors }) => {
     }
     if (networkError) console.log(`[Network error]: ${networkError}`);
 });
-console.log(config.apiUrl);
+
 const httpLink = createHttpLink({
     uri: config.apiUrl,
     fetch

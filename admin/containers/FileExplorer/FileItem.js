@@ -3,8 +3,8 @@ import moment from "moment";
 import { browserHistory } from "react-router";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import config from "../../../config";
-import { makeUrl } from "../../../shared/util";
+import config from "config";
+import { makeUrl } from "shared/util";
 
 export default class MediaItem extends Component {
     constructor(props) {
@@ -24,7 +24,10 @@ export default class MediaItem extends Component {
             <div className="col-lg-2 col-md-3 col-sm-4 col-xs-12">
                 <article className={classes} onClick={this.onMediaSelected}>
                     <div className="post-thumbnail">
-                        <img width="100" src={this.props.media.url} />
+                        <img
+                            width="100"
+                            src={config.baseName + this.props.media.url}
+                        />
                     </div>
                     <div className="post-body with-border">
                         <div className="post-header">
