@@ -34,6 +34,10 @@ export default (conn, Datatypes) => {
                 type: Sequalize.STRING,
                 defaultValue: ""
             },
+            bio: {
+                type: Sequalize.STRING,
+                defaultValue: ""
+            },
             token: {
                 type: Sequalize.STRING,
                 defaultValue: ""

@@ -68,6 +68,7 @@ module.exports.GET_AUTHORS = gql`
             lname
             username
             avatar
+            bio
             role {
                 name
                 permissions {
@@ -88,6 +89,7 @@ module.exports.GET_AUTHOR = gql`
             lname
             social
             avatar
+            bio
             role {
                 name
                 permissions {

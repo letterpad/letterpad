@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === "dev") {
                 webpackHotMiddleware(compiler, {
                     log: console.log,
                     path: "/__webpack_hmr",
-                    heartbeat: 2000
+                    heartbeat: 200
                 })
             );
 
