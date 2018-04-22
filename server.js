@@ -74,7 +74,7 @@ app.use(config.baseName + "admin/", express.static("admin/public"));
 dir.getDirectories(__dirname + "/client/themes/").map(themePath => {
     const theme = themePath.split("/").pop(-1);
     app.use(
-        config.baseName + theme + "/",
+        config.baseName + "/" + theme + "/",
         express.static(themePath + "/public")
     );
 });

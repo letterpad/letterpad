@@ -40,7 +40,6 @@ module.exports = args => {
         entry: {
             ["public/js/vendor"]: vendorFiles,
             ["client/themes/" + args.theme + "/public/dist/client"]: [
-                "babel-polyfill",
                 path.join(__dirname, "../client/app")
             ],
             "admin/public/dist/admin": [path.join(__dirname, "../admin/app")]
