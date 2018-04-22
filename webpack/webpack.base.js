@@ -35,13 +35,10 @@ module.exports = args => {
         mode: isDev ? "development" : "production",
         watch: isDev,
         entry: {
-            ["admin/public/dist/vendor"]: vendorFiles,
-            ["client/themes/" +
-            args.theme +
-            "/public/dist/vendor"]: vendorFiles,
+            ["public/js/vendor"]: vendorFiles,
             ["client/themes/" + args.theme + "/public/dist/client"]: [
                 path.join(__dirname, "../client/app"),
-                "webpack-hot-middleware/client?reload=true&noInfo=true"
+                "webpack-hot-middleware/client?reload=true"
             ],
             "admin/public/dist/admin": [path.join(__dirname, "../admin/app")]
         },

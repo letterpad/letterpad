@@ -1,3 +1,7 @@
+require("babel-register")({
+    presets: ["es2015"]
+});
+
 const { ApolloClient } = require("apollo-client");
 const { ApolloLink } = require("apollo-link");
 const { onError } = require("apollo-link-error");
@@ -32,7 +36,7 @@ module.exports.init = app => {
     app.get("*", (req, res) => {
         const client = new ApolloClient({
             ssrMode: true,
-            link,
+            link: httpLink,
             cache: new InMemoryCache()
         });
 
@@ -73,6 +77,8 @@ module.exports.init = app => {
                 }
                 console.log("Running server instance: ", serverFile);
                 const server = require(serverFile).default;
+
+                // const server = require("./server").default;
                 server(req, client).then(({ html, apolloState, head }) => {
                     res.end(getHtml(theme, html, apolloState, head));
                 });
@@ -112,13 +118,13 @@ function getHtml(theme, html, state, head) {
         .join("");
 
     let devBundles = [
-        "static/client/themes/" + theme + "/public/js/highlight.min.js",
-        "static/client/themes/" + theme + "/public/dist/vendor-bundle.js",
+        theme + "/js/highlight.min.js",
+        "static/public/js/vendor-bundle.js",
         "static/client/themes/" + theme + "/public/dist/client-bundle.js"
     ];
     const prodBundles = [
         theme + "/js/highlight.min.js",
-        theme + "/dist/vendor-bundle.min.js",
+        "/public/js/vendor-bundle.min.js",
         theme + "/dist/client-bundle.min.js"
     ];
     const bundles = process.env.NODE_ENV === "dev" ? devBundles : prodBundles;

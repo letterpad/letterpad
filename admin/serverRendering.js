@@ -75,7 +75,7 @@ module.exports.init = app => {
 
 function Html({ theme, content, initialState }) {
     const devBundles = [
-        "/static/admin/public/dist/vendor-bundle.js",
+        "/static/public/js/vendor-bundle.js",
         "/static/admin/public/dist/admin-bundle.js"
     ];
     const prodBundles = [
