@@ -8,7 +8,7 @@ var DB_NAME = process.env.DB_NAME;
 var conn = null;
 if (DB_TYPE === "sqlite") {
     conn = new sequelize(DB_NAME, null, null, {
-        logging: process.env.NODE_ENV !== "production",
+        logging: false,
         dialect: "sqlite",
         storage: "./data/" + DB_NAME + ".sqlite",
         define: {

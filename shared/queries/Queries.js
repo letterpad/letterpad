@@ -53,6 +53,7 @@ module.exports.GET_MEDIA = gql`
                 id
                 url
                 created_at
+                published_at
             }
         }
     }
@@ -221,6 +222,7 @@ module.exports.GET_LATEST_PUBLISHED_POSTS = gql`
                 type
                 slug
                 created_at
+                published_at
                 cover_image
             }
         }
@@ -272,10 +274,14 @@ module.exports.ADJACENT_POSTS = gql`
             next {
                 title
                 slug
+                cover_image
+                published_at
             }
             previous {
                 title
                 slug
+                cover_image
+                published_at
             }
         }
     }

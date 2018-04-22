@@ -10,18 +10,19 @@ const context = {};
 
 export default (req, client) => {
     const apolloContext = {};
+    const opts = {
+        location: req.url,
+        context: context,
+        basename: config.baseName.replace(/\/$/, "") // remove the last slash
+    };
     const clientApp = (
         <ApolloProvider client={client}>
-            <StaticRouter
-                location={req.url}
-                context={context}
-                basename={config.baseName}
-            >
+            <StaticRouter {...opts}>
                 <Route />
             </StaticRouter>
         </ApolloProvider>
     );
-
+    var a = renderToString;
     return Promise.all([getDataFromTree(clientApp)])
         .catch(function(err) {
             // log that I have an error, return the entire array;

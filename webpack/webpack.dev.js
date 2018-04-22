@@ -10,7 +10,7 @@ const clientConfig = args => {
     }
     return merge(baseConfig(args), {
         name: "client",
-        devtool: "source-map",
+        devtool: "cheap-module-source-map",
         target: "web",
         entry: {
             "react-hot-loder": "react-hot-loader/patch"
@@ -24,6 +24,22 @@ const clientConfig = args => {
         },
         watchOptions: {
             ignored: [/node_modules([\\]+|\/)+(?!\some_npm_module_name)/]
+        },
+        optimization: {
+            minimize: false,
+            runtimeChunk: {
+                name: "public/js/vendor"
+            },
+            splitChunks: {
+                cacheGroups: {
+                    default: false,
+                    commons: {
+                        test: "public/js/vendor-bundle.js",
+                        name: "public/js/vendor",
+                        chunks: "all"
+                    }
+                }
+            }
         },
         module: {
             rules: [
@@ -77,18 +93,22 @@ const serverConfig = args => {
             });
         return nodeModules;
     };
-    return merge(baseConfig(args), {
+    const config = merge(baseConfig(args), {
         name: "server",
+        cache: true,
         target: "node",
-        entry: ["babel-polyfill", path.join(__dirname, "../client/server")],
+        entry: {
+            a: ["babel-polyfill", path.join(__dirname, "../client/server")]
+        },
         output: {
             filename: "server.node.js",
             path: BUILD_PATH,
             library: "server",
             libraryTarget: "commonjs2",
-            hotUpdateChunkFilename: "../hot/hot-update.js",
-            hotUpdateMainFilename: "../hot/hot-update.json"
+            hotUpdateChunkFilename: "../public/hot/hot-update.js",
+            hotUpdateMainFilename: "../public/hot/hot-update.json"
         },
+
         externals: getExternals(),
         module: {
             rules: [
@@ -103,6 +123,10 @@ const serverConfig = args => {
             ]
         }
     });
+    config.entry = {
+        server: ["babel-polyfill", path.join(__dirname, "../client/server")]
+    };
+    return config;
 };
 
-module.exports = args => [clientConfig(args), serverConfig(args)];
+module.exports = args => [serverConfig(args), clientConfig(args)];

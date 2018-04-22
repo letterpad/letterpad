@@ -5,12 +5,12 @@ export default graphql(ADJACENT_POSTS, {
     options: props => {
         return {
             variables: {
-                slug: props.match.params.slug
+                slug: props.slug
             }
         };
     },
     props: ({ data: { loading, adjacentPosts } }) => ({
         adjacentPosts,
-        adjPostsLoading: loading
+        loading: loading
     })
 });

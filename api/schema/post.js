@@ -13,6 +13,7 @@ export default `
     slug: String
     mode: String
     created_at: String
+    published_at: String
     taxonomies: [Taxonomy]
   }
   type PostNode {
