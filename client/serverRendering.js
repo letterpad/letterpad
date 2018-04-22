@@ -122,7 +122,7 @@ function getHtml(theme, html, state, head) {
     ];
     const prodBundles = [
         theme + "/js/highlight.min.js",
-        "/public/js/vendor-bundle.min.js",
+        "/js/vendor-bundle.min.js",
         theme + "/dist/client-bundle.min.js"
     ];
     const bundles = process.env.NODE_ENV === "dev" ? devBundles : prodBundles;
