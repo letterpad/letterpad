@@ -132,4 +132,4 @@ const serverConfig = args => {
     return config;
 };
 
-module.exports = args => [clientConfig(args)]; //serverConfig(args),
+module.exports = args => [serverConfig(args), clientConfig(args)];
