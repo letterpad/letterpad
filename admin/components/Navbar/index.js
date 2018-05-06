@@ -43,7 +43,7 @@ const data = [
                 priority: 3,
                 permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
                 slug: "tags",
-                icon: "fa-plus"
+                icon: "fa-tag"
             },
             {
                 id: 4,
@@ -51,7 +51,7 @@ const data = [
                 priority: 4,
                 permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
                 slug: "categories",
-                icon: "fa-plus"
+                icon: "fa-th"
             }
         ]
     },
@@ -68,7 +68,7 @@ const data = [
                 priority: 1,
                 permissions: [],
                 slug: "pages",
-                icon: "fa-envelope"
+                icon: "fa-copy"
             },
             {
                 id: 2,

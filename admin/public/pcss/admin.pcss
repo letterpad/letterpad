@@ -39,43 +39,24 @@ label.custom-label {
 [TopBar]
 */
 
-.top-bar {
-    background: var(--color-bg-secondary);
-    padding: 8px 16px;
-    position: fixed;
-    width: calc(100% - 250px);
-    top: 0px;
-    z-index: 9;
-    text-transform: uppercase;
-    font-size: 12px;
-    line-height: 22px;
-    .user-info {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        cursor: pointer;
-        .avatar {
-            width: 25px;
-            height: 25px;
-            border-radius: 100%;
-        }
-    }
-    .left-block a:not(:last-child):after {
-        content: "|";
-        margin: 0 8px;
-        color: #929191;
+.user-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    .avatar {
+        width: 25px;
+        height: 25px;
+        border-radius: 100%;
     }
 }
+
 @media screen and (max-width: 991px) {
     .top-bar {
         width: 100%;
         margin-top: 71px;
         position: absolute;
     }
-}
-
-.content-area {
-    margin-top: 35px;
 }
 
 /*--------------------------------------

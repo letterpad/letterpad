@@ -1,7 +1,27 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import User from "./TopBar/User";
 
 class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            zenview: false
+        };
+        this.toggleZenView = this.toggleZenView.bind(this);
+    }
+    toggleZenView(e) {
+        e.preventDefault();
+        this.setState(
+            {
+                zenview: !this.state.zenview
+            },
+            () => {
+                document.body.classList.toggle("distract-free");
+            }
+        );
+    }
+
     render() {
         const settings = this.props.settings;
         return (
@@ -21,34 +41,14 @@ class Header extends Component {
                         {settings.site_title.value}
                     </Link>
                 </div>
+                <div className="zen-view">
+                    <i className="fa fa-eye" />{" "}
+                    <Link to="#" onClick={this.toggleZenView}>
+                        Zenview
+                    </Link>
+                </div>
                 <div className="right-side">
-                    <div className="social-icons">
-                        <a
-                            href="#"
-                            target="_blank"
-                            className="fa fa-facebook facebook"
-                        />
-                        <a
-                            href="#"
-                            target="_blank"
-                            className="fa fa-twitter twitter"
-                        />
-                        <a
-                            href="#"
-                            target="_blank"
-                            className="fa fa-instagram instagram"
-                        />
-                        <a
-                            href="#"
-                            target="_blank"
-                            className="fa fa-behance behance"
-                        />
-                        <a
-                            href="#"
-                            target="_blank"
-                            className="fa fa-dribbble dribbble"
-                        />
-                    </div>
+                    <User author={this.props.author} />
                 </div>
             </header>
         );
