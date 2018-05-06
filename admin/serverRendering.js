@@ -75,10 +75,12 @@ module.exports.init = app => {
 
 function Html({ theme, content, initialState }) {
     const devBundles = [
+        "/admin/js/quill.1.2.2.js",
         "/static/public/js/vendor-bundle.js",
         "/static/admin/public/dist/admin-bundle.js"
     ];
     const prodBundles = [
+        "/admin/js/quill.1.2.2.js",
         "/admin/dist/vendor-bundle.min.js",
         "/admin/dist/admin-bundle.min.js"
     ];
@@ -139,11 +141,7 @@ function Html({ theme, content, initialState }) {
                     window.baseName="${process.env.baseName}";
                 </script>
                 ${insertScript("/admin/js/highlight.min.js")}
-                <script
-                    type="text/javascript"
-                    src="https://cdn.quilljs.com/1.2.2/quill.js"
-                    defer
-                ></script>
+               
                 ${bundles.map(bundle => insertScript(bundle))}
             </body>
         </html>`;

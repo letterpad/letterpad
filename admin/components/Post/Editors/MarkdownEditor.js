@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CodeFlask } from "../../../Libraries/CodeEditor";
+import { CodeFlask } from "../../../libraries/code-flask";
 import PostActions from "../PostActions";
 const marked = require("marked");
 
