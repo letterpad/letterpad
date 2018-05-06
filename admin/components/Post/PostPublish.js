@@ -15,7 +15,7 @@ class PostPublish extends Component {
     constructor(props) {
         super(props);
         this.changePostStatus = this.changePostStatus.bind(this);
-        this.changeSlug = this.changeSlug.bind(this);
+
         this.state = {
             post: this.props.post,
             published: 0
@@ -34,11 +34,6 @@ class PostPublish extends Component {
         this.setState({
             published: ~~e.target.checked
         });
-    }
-    changeSlug(e) {
-        this.state.post.slug = e.target.value;
-        this.setState(this.state);
-        PostActions.setData({ slug: this.state.post.slug });
     }
 
     async updatePost(e, status) {
@@ -68,7 +63,7 @@ class PostPublish extends Component {
         }
     }
 
-    getButton(label, btnType = "btn-dark", status) {
+    getButton(label, btnType = "btn-primary", status) {
         if (typeof status == "undefined") {
             status = this.state.published ? "publish" : "draft";
         }
@@ -92,8 +87,16 @@ class PostPublish extends Component {
         const actionLabel = this.props.create ? "Create" : "Update";
         return (
             <div className="card post-publish">
-                <div className="module-title">Publishing</div>
-                <div className={"switch-block m-b-20 " + publishedCls}>
+                <div className="btn-together">
+                    {this.getButton(actionLabel, "btn-primary")}
+                    {this.getButton(
+                        "Trash",
+                        "btn-danger btn-danger-invert",
+                        "trash"
+                    )}
+                </div>
+
+                <div className={"switch-block " + publishedCls}>
                     <span className="switch-label switch-off-text">Draft</span>
                     <label className="switch">
                         <input
@@ -104,54 +107,6 @@ class PostPublish extends Component {
                         <span className="slider round" />
                     </label>
                     <span className="switch-label switch-on-text">Publish</span>
-                </div>
-                <div className="x_content m-b-20">
-                    <label className="custom-label">
-                        <i className="fa fa fa-calendar" /> Published at
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Published date"
-                        defaultValue={moment(
-                            new Date(this.state.post.created_at)
-                        ).format("DD-MM-Y hh:mm A")}
-                    />
-                </div>
-                <div className="x_content m-b-20">
-                    <label className="custom-label">
-                        <i className="fa fa fa-link" /> Slug
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Slug"
-                        defaultValue={this.state.post.slug}
-                        onBlur={this.changeSlug}
-                    />
-                </div>
-                <div className="x_content m-b-20">
-                    <label className="custom-label">
-                        <i className="fa fa fa-link" /> Permalink
-                    </label>
-                    <div>
-                        <a target="_blank" href={permalink}>
-                            {"/" +
-                                this.state.post.type +
-                                "/" +
-                                this.state.post.slug}
-                        </a>
-                    </div>
-                </div>
-                <div className="x_content">
-                    <div className="btn-together">
-                        {this.getButton(actionLabel, "btn-dark")}
-                        {this.getButton(
-                            "Trash",
-                            "btn-danger btn-danger-invert",
-                            "trash"
-                        )}
-                    </div>
                 </div>
             </div>
         );

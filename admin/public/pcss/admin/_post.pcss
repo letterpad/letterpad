@@ -1,4 +1,14 @@
 .distract-free {
+    .two-column.main {
+        grid-template-columns: 0px 1fr;
+        transform: translateX(0px);
+        main {
+            transform: translateX(0px);
+        }
+    }
+    .sidebar {
+        display: none;
+    }
     .distractor {
         display: none !important;
     }
@@ -238,5 +248,39 @@
             margin-left: 0;
             margin-right: 0;
         }
+    }
+}
+
+/*!------------------------------------------------------------------
+[Post Preview]
+*/
+.create-post-page,
+.edit-post-page,
+.create-page-page {
+    .preview {
+        padding: 40px 20px;
+        font-size: 16px;
+    }
+}
+
+/*!------------------------------------------------------------------
+[Post Publish]
+*/
+.post-publish {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/*!------------------------------------------------------------------
+[ZenView]
+*/
+.zen-view {
+    display: none;
+}
+.edit-post-page,
+.create-post-page {
+    .zen-view {
+        display: block;
     }
 }

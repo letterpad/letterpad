@@ -13,6 +13,7 @@ import {
     FeaturedImage
 } from "../../components/Post";
 import CreatePost from "../../data-connectors/CreatePost";
+import PostMeta from "../../components/Post/PostMeta";
 
 class Create extends Component {
     constructor(props) {
@@ -30,7 +31,8 @@ class Create extends Component {
             PostActions.setData(result.data.createPost.post);
             this.setState({
                 loading: false,
-                post: result.data.createPost.post
+                post: result.data.createPost.post,
+                preview: ""
             });
         });
 
@@ -43,6 +45,15 @@ class Create extends Component {
                 );
             }
         });
+
+        PostActions.subscribe("change", props => {
+            if ("mdPreview" in props) {
+                this.setState({ preview: props.mdPreview });
+            }
+            if ("body" in props) {
+                this.setState({ preview: "" });
+            }
+        });
     }
     componentWillUnmount() {
         document.body.classList.remove("create-" + this.props.type + "-page");
@@ -50,20 +61,33 @@ class Create extends Component {
 
     render() {
         if (this.state.loading) {
-            return <div>hello</div>;
+            return <div />;
         }
         return (
             <section className="module-xs create-post">
                 <div className="row">
-                    <div className="col-lg-8 column article-holder col-lg-offset-2">
-                        <ArticleCreate post={this.state.post} />
-                    </div>
-                    <div className="col-lg-4 column distractor">
+                    <div className="col-lg-12 distractor">
                         <PostPublish create post={this.state.post} />
-                        <Tags post={this.state.post} />
-                        <Categories post={this.state.post} />
-                        <Excerpt post={this.state.post} />
-                        <FeaturedImage post={this.props.post} />
+                    </div>
+                    <div className="col-lg-6 column article-holder">
+                        <ArticleCreate post={this.state.post} />
+                        <div className="distractor">
+                            <PostMeta post={this.state.post} />
+                            <Tags post={this.state.post} />
+                            <Categories post={this.state.post} />
+                            <Excerpt post={this.state.post} />
+                            <FeaturedImage post={this.props.post} />
+                        </div>
+                    </div>
+                    <div className="col-lg-6 column preview">
+                        {PostActions.data.mode == "markdown" && (
+                            <h2>{PostActions.data.title}</h2>
+                        )}
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: this.state.preview
+                            }}
+                        />
                     </div>
                 </div>
             </section>

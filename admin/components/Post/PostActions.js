@@ -21,6 +21,12 @@ let PostActions = {
             ...PostActions.data,
             ...data
         };
+        for (let obj in PostActions.subscribers) {
+            const cb = PostActions.subscribers[obj];
+            if (cb.action === "change") {
+                cb.subscriber(data);
+            }
+        }
     },
 
     getData: () => {

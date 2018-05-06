@@ -49,6 +49,7 @@ export default function Layout(Element, props) {
                     <Header
                         sidebarToggle={this.sidebarToggle}
                         settings={settings}
+                        author={_props.author}
                     />
                     <nav className="navbar navbar-custom">
                         <div className="sidebar">

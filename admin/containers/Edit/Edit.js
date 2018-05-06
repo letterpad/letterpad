@@ -14,8 +14,16 @@ import {
 import OhSnap from "./OhSnap";
 import Loader from "../../components/Loader";
 import GetSinglePost from "../../data-connectors/GetSinglePost";
+import PostMeta from "../../components/Post/PostMeta";
 
 class Single extends Component {
+    constructor(props) {
+        super(props);
+        this.getHtml = this.getHtml.bind(this);
+        this.state = {
+            preview: ""
+        };
+    }
     componentDidMount() {
         document.body.classList.add("edit-post-page", "options-open");
         PostActions.subscribe("update", post => {
@@ -23,11 +31,24 @@ class Single extends Component {
                 // this.props.history.push(`/admin/${plural[post.type]}`);
             }
         });
+        PostActions.subscribe("change", props => {
+            if ("mdPreview" in props) {
+                this.setState({ preview: props.mdPreview });
+            }
+            if ("body" in props) {
+                this.setState({ preview: "" });
+            }
+        });
     }
 
     componentWillUnmount() {
         document.body.classList.remove("edit-post-page");
     }
+
+    getHtml(html) {
+        this.setState({ html });
+    }
+
     render() {
         if (this.props.loading) {
             return <Loader />;
@@ -40,15 +61,31 @@ class Single extends Component {
         return (
             <section className="module-xs">
                 <div className="row">
-                    <div className="col-lg-8 column article-holder ">
-                        <ArticleEdit post={this.props.post} />
-                    </div>
-                    <div className="col-lg-4 column distractor">
+                    <div className="col-lg-12 distractor">
                         <PostPublish edit post={this.props.post} />
-                        <Tags post={this.props.post} />
-                        <Categories post={this.props.post} />
-                        <Excerpt post={this.props.post} />
-                        <FeaturedImage post={this.props.post} />
+                    </div>
+                    <div className="col-lg-6 column article-holder ">
+                        <ArticleEdit
+                            post={this.props.post}
+                            setHtml={this.setHtml}
+                        />
+                        <div className="distractor">
+                            <PostMeta post={this.props.post} />
+                            <Tags post={this.props.post} />
+                            <Categories post={this.props.post} />
+                            <Excerpt post={this.props.post} />
+                            <FeaturedImage post={this.props.post} />
+                        </div>
+                    </div>
+                    <div className="col-lg-6 column preview distractor">
+                        {PostActions.data.mode == "markdown" && (
+                            <h2>{PostActions.data.title}</h2>
+                        )}
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: this.state.preview
+                            }}
+                        />
                     </div>
                 </div>
             </section>

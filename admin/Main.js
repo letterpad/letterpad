@@ -30,7 +30,6 @@ import Menu from "./components/Menu/Menu";
 import Navbar from "./components/Navbar/index";
 import Home from "./containers/Home/Home";
 import Themes from "./containers/Settings/Themes";
-import TopBar from "./components/TopBar";
 import Layout from "./containers/Layout";
 
 // css
