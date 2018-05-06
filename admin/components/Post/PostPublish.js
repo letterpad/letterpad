@@ -91,7 +91,7 @@ class PostPublish extends Component {
         const permalink = makeUrl([this.state.post.type, this.state.post.slug]);
         const actionLabel = this.props.create ? "Create" : "Update";
         return (
-            <div className="card">
+            <div className="card post-publish">
                 <div className="module-title">Publishing</div>
                 <div className={"switch-block m-b-20 " + publishedCls}>
                     <span className="switch-label switch-off-text">Draft</span>
@@ -136,7 +136,10 @@ class PostPublish extends Component {
                     </label>
                     <div>
                         <a target="_blank" href={permalink}>
-                            {permalink}
+                            {"/" +
+                                this.state.post.type +
+                                "/" +
+                                this.state.post.slug}
                         </a>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 .sidebar {
     position: fixed;
     width: 250px;
+    margin-top: 60px;
     background-color: var(--color-bg-secondary);
     height: 100%;
     top: 0;
@@ -9,27 +10,36 @@
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+
+    .about-site {
+        margin: 0px;
+        color: #636363;
+        padding: 0px 16px 28px;
+        font-weight: 400;
+        text-shadow: 0px 1px 0px #000;
+    }
+    .search-box {
+        margin: 0 16px;
+        padding-left: 10px;
+        background: #282c36;
+        input {
+            border: none;
+        }
+    }
     a {
         color: rgba(255, 255, 255, 0.7);
         &:hover {
             color: #fff;
         }
     }
-    .copyright {
-        position: absolute;
-        width: 100%;
-        bottom: 0;
-        left: 0;
-        padding: 15px 30px;
-        font-size: 13px;
-        font-weight: 300;
-        color: var(--color-text-primary-invert);
+    .footer {
+        height: 45px;
+        display: flex;
+        background: #292d37;
+        align-items: center;
+        padding: 0 20px;
     }
-    .social-icons a {
-        font-size: 12px;
-        margin-right: 10px;
-        position: relative;
-    }
+
     &.nav {
         width: 95%;
     }
@@ -37,35 +47,6 @@
 
 .nav.child_menu {
     display: block;
-}
-
-@media screen and (max-width: 767px) {
-    .row-offcanvas {
-        position: relative;
-        -webkit-transition: all 0.25s ease-out;
-        -moz-transition: all 0.25s ease-out;
-        transition: all 0.25s ease-out;
-    }
-    .row-offcanvas-right .sidebar-offcanvas {
-        right: -41.6%;
-    }
-    .row-offcanvas-left .sidebar-offcanvas {
-        left: -41.6%;
-    }
-    .row-offcanvas-right.active {
-        right: 41.6%;
-    }
-    .row-offcanvas-left.active {
-        left: 41.6%;
-    }
-    .sidebar-offcanvas {
-        position: absolute;
-        top: 0;
-        width: 41.6%;
-    }
-    #sidebar {
-        padding-top: 0;
-    }
 }
 
 @media (max-width: 991px) {
@@ -77,9 +58,6 @@
         padding: 0;
         &:after {
             content: normal;
-        }
-        .copyright {
-            display: none;
         }
     }
     .wrapper {

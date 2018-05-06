@@ -27,30 +27,30 @@ import CreateAuthor from "./containers/Author/CreateAuthor";
 import Taxonomy from "./containers/Post/Taxonomy";
 import MenuBuilder from "./containers/Settings/MenuBuilder";
 import Menu from "./components/Menu/Menu";
+import Navbar from "./components/Navbar/index";
 import Home from "./containers/Home/Home";
 import Themes from "./containers/Settings/Themes";
 import TopBar from "./components/TopBar";
+import Layout from "./containers/Layout";
 
 // css
 import "./public/pcss/admin.pcss";
 
-const SecuredRoute = ({ component: Component, ...rest }) => {
+const SecuredRoute = routeProps => {
     try {
+        let props = { ...routeProps };
+        const Component = props.component;
         const user = jwtDecode(localStorage.token);
         let exact = true;
-        if ("exact" in rest) {
-            exact = rest.exact;
+        if ("exact" in props) {
+            exact = props.exact;
         }
+        delete props.component;
         return (
             <Route
-                {...rest}
+                {...props}
                 exact={exact}
-                render={props => (
-                    <div className={exact ? "content-area" : ""}>
-                        <TopBar author={user} />
-                        <Component {...props} author={user} {...rest} />
-                    </div>
-                )}
+                component={Layout(Component, { ...props, author: user })}
             />
         );
     } catch (e) {
@@ -94,12 +94,10 @@ class App extends Component {
                         <Notifications />
 
                         <SecuredRoute
-                            exact={false}
-                            path="/admin"
-                            component={Menu}
+                            path="/admin/home"
+                            component={Home}
                             settings={settings.data}
                         />
-                        <SecuredRoute path="/admin/home" component={Home} />
                         {/* Route for posts */}
                         <SecuredRoute
                             path="/admin/posts"
@@ -151,7 +149,11 @@ class App extends Component {
                             settings={settings.data}
                         />
                         {/* Route for others */}
-                        <SecuredRoute path="/admin/media" component={Media} />
+                        <SecuredRoute
+                            path="/admin/media"
+                            component={Media}
+                            settings={settings.data}
+                        />
                         <SecuredRoute
                             path="/admin/media/:page"
                             component={Media}
@@ -188,7 +190,11 @@ class App extends Component {
                             component={Settings}
                             settings={settings.data}
                         />
-                        <SecuredRoute path="/admin/themes" component={Themes} />
+                        <SecuredRoute
+                            path="/admin/themes"
+                            component={Themes}
+                            settings={settings.data}
+                        />
                     </div>
                 </Switch>
             </Translate>
