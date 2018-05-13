@@ -13,33 +13,33 @@
 }
 .rst__rowToolbar {
     display: flex;
-    align-items: center;
-    width: 100%;
+
     justify-content: space-between;
 
     .rst__toolbarButton {
-        width: 100%;
-        text-align: right;
+        margin-left: 18px;
+        .item-type {
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+        i {
+            cursor: pointer;
+            &:hover {
+                color: #000;
+            }
+        }
     }
 }
 .rst__rowContents {
     display: flex;
-    flex-direction: column;
-    align-items: left;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 400px;
+    min-width: 400px;
 }
 .menu-title-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     span {
-        font-weight: 600;
-    }
-    input {
-        font-weight: normal;
-    }
-    i {
-        margin: 0 10px;
+        font-weight: 400;
     }
 }
 /*--------------------------------------------

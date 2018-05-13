@@ -1,6 +1,6 @@
 .sidebar {
     position: fixed;
-    width: 250px;
+    width: 38px;
     margin-top: 60px;
     background-color: var(--color-bg-secondary);
     height: 100%;
@@ -37,11 +37,24 @@
         display: flex;
         background: #292d37;
         align-items: center;
-        padding: 0 20px;
+        padding: 0 18px;
+        color: var(--color-text-primary-invert);
+        .footer-open {
+            display: none;
+        }
     }
 
     &.nav {
         width: 95%;
+    }
+}
+
+.hovering {
+    .footer .footer-closed {
+        display: none;
+    }
+    .footer .footer-open {
+        display: block;
     }
 }
 
@@ -62,5 +75,18 @@
     }
     .wrapper {
         margin-left: 0;
+    }
+}
+@media (min-width: 991px) {
+    .sidebar .name {
+        display: none;
+    }
+    .hovering {
+        .sidebar {
+            width: 250px;
+            .name {
+                display: initial;
+            }
+        }
     }
 }

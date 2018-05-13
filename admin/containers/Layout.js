@@ -16,6 +16,7 @@ export default function Layout(Element, props) {
             };
             this.mounted = false;
             this.sidebarToggle = this.sidebarToggle.bind(this);
+            this.toggleSidebar = this.toggleSidebar.bind(this);
             this.onResize = this.onResize.bind(this);
         }
         componentWillMount() {
@@ -23,6 +24,22 @@ export default function Layout(Element, props) {
             if (typeof window !== "undefined") {
                 window.addEventListener("resize", this.onResize);
                 this.onResize();
+
+                setTimeout(() => {
+                    document
+                        .querySelector(".sidebar")
+                        .addEventListener("mouseover", this.toggleSidebar);
+                    document
+                        .querySelector(".sidebar")
+                        .addEventListener("mouseout", this.toggleSidebar);
+                }, 1000);
+            }
+        }
+        toggleSidebar(e) {
+            if (e.type == "mouseover") {
+                document.body.classList.add("hovering");
+            } else {
+                document.body.classList.remove("hovering");
             }
         }
         componentWillUnmount() {
