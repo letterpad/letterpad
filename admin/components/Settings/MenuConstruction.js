@@ -4,23 +4,11 @@ import Resources from "./menu/Resources";
 import RenderItem from "./menu/RenderItem";
 import SortableTree, {
     changeNodeAtPath,
-    removeNodeAtPath
+    removeNodeAtPath,
+    getNodeAtPath
 } from "react-sortable-tree";
 import "react-sortable-tree/style.css";
-
-const FormElement = ({ label, value, onChange }) => {
-    return (
-        <div className="form-group form-inline menu-props">
-            <span>{label}</span>
-            <input
-                type="text"
-                className="form-control"
-                value={value}
-                onChange={e => onChange(e, label)}
-            />
-        </div>
-    );
-};
+import EditMenuModal from "../Modals/EditMenuModal";
 
 /**
  * A utility function to index menu items including children for faster searching
@@ -46,7 +34,7 @@ class MenuConstruction extends Component {
         this.addItem = this.addItem.bind(this);
         this.removeItem = this.removeItem.bind(this);
         this.changeItemProperty = this.changeItemProperty.bind(this);
-
+        this.openModalToEdit = this.openModalToEdit.bind(this);
         let menu = JSON.parse(this.props.data.menu.value);
 
         this.state = {
@@ -58,10 +46,12 @@ class MenuConstruction extends Component {
                     id: Date.now() + "-label",
                     title: "Folder",
                     type: "label",
+                    label: "Folder",
                     name: "Folder"
                 }
             ],
-            scrollTop: 0
+            scrollTop: 0,
+            nodeInfo: {} // node which is being edited
         };
     }
     componentWillReceiveProps(nextProps) {
@@ -114,7 +104,13 @@ class MenuConstruction extends Component {
         newState.items = [...this.state.items, this.state[type][idx]];
         this.setState(newState, () => {
             this.props.updateOption("menu", JSON.stringify(this.state.items));
-            this.setState({ scrollTop: 9999999 });
+            if (
+                document.querySelector(
+                    ".ReactVirtualized__Grid__innerScrollContainer"
+                ).scrollHeight > 600
+            ) {
+                this.setState({ scrollTop: 9999999 });
+            }
         });
     }
 
@@ -125,7 +121,7 @@ class MenuConstruction extends Component {
         const keepItemBack = item => {
             const type = item.type == "page" ? "pages" : "categories";
             this.state[type] = this.state[type].map(_item => {
-                if (item.id === _item.id) {
+                if (item.id == _item.id) {
                     _item.disabled = false;
                 }
                 return _item;
@@ -134,7 +130,7 @@ class MenuConstruction extends Component {
 
         let oldMenu = [...this.state.items];
 
-        const findItems = (node, menuNode = false) => {
+        const findItemsAndDelete = (node, menuNode = false) => {
             let nodeFromMenu = node;
             if (!menuNode) {
                 nodeFromMenu = this.state.items.filter(
@@ -147,13 +143,15 @@ class MenuConstruction extends Component {
                 nodeFromMenu.children &&
                 nodeFromMenu.children.length > 0
             ) {
-                nodeFromMenu.children.map(node => findItems(node, true));
+                nodeFromMenu.children.map(node =>
+                    findItemsAndDelete(node, true)
+                );
                 delete node.children;
             }
             if (node.type === "label") return;
             keepItemBack(node);
         };
-        findItems(menuItem);
+        findItemsAndDelete(menuItem);
 
         const getNodeKey = ({ treeIndex }) => treeIndex;
         this.setState(
@@ -214,22 +212,22 @@ class MenuConstruction extends Component {
         }
         return false;
     }
+
+    openModalToEdit(props) {
+        this.setState({
+            modalOpen: true,
+            nodeInfo: props
+        });
+    }
+
     generateNodeProps(props) {
-        const form = [];
-        if (props.node.type == "category") {
-            form.push(
-                <FormElement
-                    label="Slug"
-                    value={props.node.slug}
-                    onChange={e => this.changeItemProperty(e, props, "slug")}
-                />
-            );
-        } else {
-            form.push(<div className="menu-props" />);
-        }
         return {
             buttons: [
-                ...form,
+                <span className="item-type">{props.node.type}</span>,
+                <i
+                    className="fa fa-pencil"
+                    onClick={() => this.openModalToEdit(props)}
+                />,
                 <i
                     className="fa fa-trash"
                     onClick={_ => this.removeItem(props)}
@@ -237,18 +235,7 @@ class MenuConstruction extends Component {
             ],
             title: (
                 <div className="menu-title-wrapper">
-                    <span>
-                        {props.node.title} ({props.node.type})
-                    </span>
-                    <i className="fa fa-arrow-right" aria-hidden="true" />
-                    <input
-                        value={props.node.name}
-                        className="form-control"
-                        placeholder="Display name in menu"
-                        onChange={e =>
-                            this.changeItemProperty(e, props, "name")
-                        }
-                    />
+                    <span>{props.node.title}</span>
                 </div>
             )
         };
@@ -276,6 +263,7 @@ class MenuConstruction extends Component {
                         itemClicked={idx => this.addItem(idx, "labels")}
                     />
                 </div>
+
                 <div className="col-lg-8">
                     <h5>{t("menu.build.title")}</h5>
                     <div style={{ height: 600 }}>
@@ -293,7 +281,6 @@ class MenuConstruction extends Component {
                                 onScroll: ({ scrollTop }) =>
                                     this.setState({ scrollTop })
                             }}
-                            rowHeight={100}
                             canDrop={this.canDrop.bind(this)}
                             generateNodeProps={this.generateNodeProps.bind(
                                 this
@@ -301,6 +288,19 @@ class MenuConstruction extends Component {
                         />
                     </div>
                 </div>
+                {this.state.modalOpen && (
+                    <EditMenuModal
+                        title="Edit menu item"
+                        onClose={() => {
+                            this.setState({
+                                nodeInfo: {},
+                                modalOpen: false
+                            });
+                        }}
+                        changeItemProperty={this.changeItemProperty}
+                        nodeInfo={this.state.nodeInfo}
+                    />
+                )}
             </div>
         );
     }

@@ -17,7 +17,7 @@
         "prod":
             "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
         "prodPm2":
-            "NODE_ENV=production concurrently --kill-others \"pm2 start ./apiBuild/server.js\" \"pm2 start ./server.js\"",
+            "NODE_ENV=production concurrently --kill-others \"pm2 start ./apiBuild/server.js --name=lpDocsApi\" \"pm2 start ./server.js --name=lpDocs\"",
         "test": "jest --runInBand"
     },
     "repository": {

@@ -16,10 +16,13 @@ import Loader from "../../components/Loader";
 import GetSinglePost from "../../data-connectors/GetSinglePost";
 import PostMeta from "../../components/Post/PostMeta";
 
+const qs = handle => document.querySelector(handle);
+
 class Single extends Component {
     constructor(props) {
         super(props);
         this.getHtml = this.getHtml.bind(this);
+        this.addScrollTimer = this.addScrollTimer.bind(this);
         this.state = {
             preview: ""
         };
@@ -31,7 +34,11 @@ class Single extends Component {
                 // this.props.history.push(`/admin/${plural[post.type]}`);
             }
         });
+        const _this = this;
         PostActions.subscribe("change", props => {
+            if (props.mode == "markdown") {
+                _this.addScrollTimer();
+            }
             if ("mdPreview" in props) {
                 this.setState({ preview: props.mdPreview });
             }
@@ -39,6 +46,53 @@ class Single extends Component {
                 this.setState({ preview: "" });
             }
         });
+    }
+
+    addScrollTimer() {
+        setTimeout(() => {
+            var $divs = [
+                qs(".article-holder .CodeFlask__textarea"),
+                qs(".preview .post-content")
+            ];
+            document.addEventListener(
+                "scroll",
+                e => {
+                    $divs.forEach(div => {
+                        if (e.target === div) {
+                            this.adjustScroll(e);
+                        }
+                    });
+                },
+                true
+            );
+        }, 1000);
+    }
+    adjustScroll(event) {
+        const $divs = [
+            qs(".article-holder .CodeFlask__textarea"),
+            qs(".preview .post-content")
+        ];
+        let $allowed = $divs;
+        const sync = e => {
+            const $this = e.target;
+            if ($allowed.indexOf($this) >= 0) {
+                var other = $divs.filter(div => div !== $this)[0],
+                    percentage =
+                        $this.scrollTop /
+                        ($this.scrollHeight - $this.offsetHeight);
+
+                other.scrollTop = Math.round(
+                    percentage * (other.scrollHeight - other.offsetHeight)
+                );
+
+                $allowed = e.target;
+            } else {
+                $allowed = $divs;
+            }
+
+            return false;
+        };
+        sync(event);
     }
 
     componentWillUnmount() {
@@ -82,6 +136,7 @@ class Single extends Component {
                             <h2>{PostActions.data.title}</h2>
                         )}
                         <div
+                            className="post-content"
                             dangerouslySetInnerHTML={{
                                 __html: this.state.preview
                             }}

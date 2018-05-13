@@ -10,6 +10,7 @@
         global.CodeFlask = factory();
     }
 })(this, function() {
+    var roundedScroll = null;
     function CodeFlask(indent) {
         this.indent = indent || "    ";
         this.docroot = document;
@@ -78,10 +79,10 @@
                     }
                 }
             })),
-            (config = {
-                attributes: true,
-                attributeFilter: ["dir"]
-            });
+                (config = {
+                    attributes: true,
+                    attributeFilter: ["dir"]
+                });
             observer.observe(target, config);
         }
     };
@@ -170,7 +171,6 @@
             input,
             selStartPos,
             inputVal,
-            roundedScroll,
             currentLineStart,
             indentLength;
 

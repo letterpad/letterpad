@@ -18,8 +18,8 @@
     .article-holder {
         position: absolute;
         left: 50%;
-        width: 1000px;
-        margin-left: -500px;
+        max-width: 768px;
+        margin-left: -384px;
 
         /* Handle */
         ::-webkit-scrollbar-thumb {
@@ -151,6 +151,10 @@
 .hljs code {
     line-height: 2.5rem !important;
 }
+.post-content {
+    border-top: 1px solid #eee;
+    padding: 20px 0px;
+}
 .post {
     margin-bottom: 20px;
     h1:first-child,
@@ -170,11 +174,6 @@
         .post-meta {
             color: var(--color-text-muted);
         }
-    }
-
-    .post-content {
-        padding-bottom: 20px;
-        padding: 0px;
     }
 
     .post-title {
@@ -260,6 +259,11 @@
     .preview {
         padding: 40px 20px;
         font-size: 16px;
+        .post-content {
+            border-top: 1px solid #e2e2e2;
+            height: 940px;
+            overflow-y: auto;
+        }
     }
 }
 

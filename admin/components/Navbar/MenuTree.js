@@ -151,7 +151,7 @@ class TreeNode extends Component {
                                 }
                             />
                         )}
-                        <span>{t(this.props.data.name)}</span>
+                        <span className="name">{t(this.props.data.name)}</span>
                     </Link>
                     <ul className={containerClassName + " nav nav-list"}>
                         {subtree}
@@ -168,7 +168,7 @@ class TreeNode extends Component {
                     {this.props.data.icon && (
                         <i className={"menu-icon fa " + this.props.data.icon} />
                     )}
-                    <span>{t(this.props.data.name)}</span>
+                    <span className="name">{t(this.props.data.name)}</span>
                 </Link>
             </li>
         );
