@@ -139,10 +139,7 @@ function getHtml(theme, html, state, head) {
 
     if (process.env.NODE_ENV === "production") {
         let link1 = makeUrl([theme, "dist/client.min.css"]);
-        let link2 = makeUrl([theme, "dist/common.min.css"]);
-
         styleLinks = `<link href="${link1}" rel="stylesheet"/>`;
-        styleLinks += `<link href="${link2}" rel="stylesheet"/>`;
     }
 
     return `<html ${htmlAttrs}>

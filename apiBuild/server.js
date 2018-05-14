@@ -21,6 +21,13 @@ var models = require("./models");
 var path = require("path");
 // const { seed } = require("./seed/seed");
 
+// require("@google-cloud/profiler").start({
+//     serviceContext: {
+//         service: "Letterpad Site",
+//         version: "1.0.0"
+//     }
+// });
+
 var app = express();
 
 var SECRET = process.env.SECRET_KEY;
