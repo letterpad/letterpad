@@ -102,7 +102,7 @@ export async function _updatePost(post, models) {
         });
 
         // Create a new slug if the title changes.
-        if (post.title !== oldPost.title) {
+        if (post.title && post.title !== oldPost.title) {
             //  create the slug
             post.slug = await slugify(models.Post, post.title);
         }

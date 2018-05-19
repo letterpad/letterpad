@@ -364,6 +364,10 @@ export async function insertSettings() {
                 "You can fill up this space by writing a short bio about yourself or about your site.."
         },
         {
+            option: "displayAuthorInfo",
+            value: true
+        },
+        {
             option: "menu",
             value: menu
         },

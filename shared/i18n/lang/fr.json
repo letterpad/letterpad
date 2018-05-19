@@ -123,13 +123,16 @@
         "Configurer divers messages à l'échelle du site d'ici",
     "settings.messages.searchNotFound": "Aucun résultat trouvé",
     "settings.messages.emptyPost": "Messages vides",
-    "settings.sidebar.title": "Paramètres de la barre latérale",
-    "settings.sidebar.tagline": "Configurer les widgets de la barre latérale",
-    "settings.sidebar.latestPostCount": "Nombre d'articles",
-    "settings.sidebar.latestPostCount.placeholder":
+    "settings.social.title": "Social Settings",
+    "settings.social.tagline": "Configure your sites's social links",
+    "settings.additional.title": "Paramètres de la barre latérale",
+    "settings.additional.tagline":
+        "Configurer les widgets de la barre latérale",
+    "settings.additional.latestPostCount": "Nombre d'articles",
+    "settings.additional.latestPostCount.placeholder":
         "Nombre d'articles à afficher dans le widget",
-    "settings.sidebar.aboutTitle": "À propos",
-    "settings.sidebar.aboutTitle.placeholder": "Présentez votre blog",
+    "settings.additional.aboutTitle": "À propos",
+    "settings.additional.aboutTitle.placeholder": "Présentez votre blog",
     "menu.title": "Paramètres du menu",
     "menu.tagline":
         "Configurez votre menu en sélectionnant les options sur la gauche, puis déplacez-les pour les organiser sur la droite.",

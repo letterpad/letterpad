@@ -17,6 +17,7 @@ import SinglePage from "./containers/SinglePage";
 import SinglePost from "./containers/SinglePost";
 import SearchWrapper from "./containers/SearchWrapper";
 import Layout from "./containers/Hoc/Layout";
+import NotFound from "./containers/404";
 
 class App extends Component {
     constructor(props) {
@@ -43,7 +44,7 @@ class App extends Component {
         // To get the homepage, parse the menu settings and see if there is any label by the name Home.
         // If not, then take the first item as the home
         const menu = JSON.parse(this.props.settings.data.menu.value);
-        let home = menu.filter(item => item.label === "Home");
+        let home = menu.filter(item => item.name === "Home");
         if (home.length === 0) {
             home = menu[0];
         } else {
@@ -72,6 +73,15 @@ class App extends Component {
                     "Home"
                 ),
                 path: "/"
+            },
+            {
+                exact: true,
+                component: Layout(
+                    Home,
+                    { settings, slug: home.slug, type: home.type },
+                    "Home"
+                ),
+                path: "/home/page/:page_no"
             },
             {
                 exact: true,
@@ -160,6 +170,16 @@ class App extends Component {
                             component={route.component}
                         />
                     ))}
+                    <Route
+                        path="*"
+                        component={Layout(
+                            NotFound,
+                            {
+                                settings
+                            },
+                            "NotFound"
+                        )}
+                    />
                 </Switch>
             </div>
         );

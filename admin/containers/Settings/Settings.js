@@ -5,8 +5,8 @@ import StackGrid from "react-stack-grid";
 import {
     General,
     Social,
-    SidebarWidgets,
-    Translations
+    AdditionalSettings,
+    Messages
 } from "../../components/Settings";
 import { GET_OPTIONS, GET_TAXONOMIES } from "../../../shared/queries/Queries";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
@@ -67,6 +67,7 @@ class Settings extends Component {
                     columnWidth={"50%"}
                     gutterWidth={12}
                     gutterHeight={12}
+                    duration={0}
                 >
                     <div className="card">
                         <div className="module-title">
@@ -90,12 +91,12 @@ class Settings extends Component {
                     </div>
                     <div className="card">
                         <div className="module-title">
-                            {t("settings.sidebar.title")}
+                            {t("settings.additional.title")}
                         </div>
                         <div className="module-subtitle">
-                            {t("settings.sidebar.tagline")}
+                            {t("settings.additional.tagline")}
                         </div>
-                        <SidebarWidgets
+                        <AdditionalSettings
                             data={data}
                             updateOption={this.setOption}
                         />
@@ -108,10 +109,7 @@ class Settings extends Component {
                         <div className="module-subtitle">
                             {t("settings.messages.tagline")}
                         </div>
-                        <Translations
-                            data={data}
-                            updateOption={this.setOption}
-                        />
+                        <Messages data={data} updateOption={this.setOption} />
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
                 </StackGrid>
@@ -123,13 +121,6 @@ class Settings extends Component {
 const ContainerWithData = graphql(GET_OPTIONS, {
     name: "options"
 });
-
-const CategoriesData = graphql(GET_TAXONOMIES, {
-    name: "categories",
-    options: { variables: { type: "post_category" } }
-});
-
-const Data = compose(ContainerWithData, CategoriesData);
 
 const createQueryWithData = graphql(UPDATE_OPTIONS, {
     props: ({ mutate }) => {
@@ -160,4 +151,4 @@ Settings.contextTypes = {
     t: PropTypes.func
 };
 
-export default createQueryWithData(Data(Settings));
+export default createQueryWithData(ContainerWithData(Settings));

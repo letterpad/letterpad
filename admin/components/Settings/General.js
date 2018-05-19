@@ -154,14 +154,27 @@ export default class General extends Component {
                         {!this.state.banner ? (
                             <a
                                 href="#"
-                                onClick={_ => this.refs.uploadInput.click()}
+                                onClick={e => {
+                                    e.preventDefault();
+                                    this.refs.uploadInput.click();
+                                }}
                             >
                                 Add Banner
                             </a>
                         ) : (
-                            <a href="#" onClick={_ => this.updateBanner("")}>
+                            <a
+                                href="#"
+                                onClick={e => {
+                                    e.preventDefault();
+                                    this.updateBanner("");
+                                }}
+                            >
                                 <div className="banner-image">
-                                    <img width="300" alt="" src={config.baseName + banner} />
+                                    <img
+                                        width="300"
+                                        alt=""
+                                        src={config.baseName + banner}
+                                    />
                                 </div>
                                 Remove Banner
                             </a>
@@ -185,12 +198,12 @@ export default class General extends Component {
                         onChange={this.switchLanguage}
                         className="form-control"
                     >
-                        {Object.keys(this.langOptions).map(key => {
+                        {Object.keys(this.langOptions).map((key, i) => {
                             const selected = this.langOptions[key]
                                 ? { selected: "" }
                                 : {};
                             return (
-                                <option {...selected} value={key}>
+                                <option key={i} {...selected} value={key}>
                                     {key}
                                 </option>
                             );

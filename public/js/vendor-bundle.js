@@ -109,7 +109,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "74371aa2d26efe53741e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1fff852913fe63ddc445"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1020,6 +1020,22 @@ function _setTags (colors) {
 }
 
 ansiHTML.reset()
+
+
+/***/ }),
+
+/***/ "./node_modules/ansi-regex/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/ansi-regex/index.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = function () {
+	return /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-PRZcf-nqry=><]/g;
+};
 
 
 /***/ }),
@@ -47924,26 +47940,10 @@ function warning(message) {
 
 "use strict";
 
-var ansiRegex = __webpack_require__(/*! ansi-regex */ "./node_modules/strip-ansi/node_modules/ansi-regex/index.js")();
+var ansiRegex = __webpack_require__(/*! ansi-regex */ "./node_modules/ansi-regex/index.js")();
 
 module.exports = function (str) {
 	return typeof str === 'string' ? str.replace(ansiRegex, '') : str;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/strip-ansi/node_modules/ansi-regex/index.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/strip-ansi/node_modules/ansi-regex/index.js ***!
-  \******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-module.exports = function () {
-	return /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-PRZcf-nqry=><]/g;
 };
 
 

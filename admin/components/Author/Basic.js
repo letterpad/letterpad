@@ -91,12 +91,21 @@ export default class Basic extends Component {
                         {!this.state.avatar ? (
                             <a
                                 href="#"
-                                onClick={_ => this.refs.uploadInput.click()}
+                                onClick={e => {
+                                    e.preventDefault();
+                                    this.refs.uploadInput.click();
+                                }}
                             >
                                 Add Avatar
                             </a>
                         ) : (
-                            <a href="#" onClick={_ => this.updateAvatar("")}>
+                            <a
+                                href="#"
+                                onClick={e => {
+                                    e.preventDefault();
+                                    this.updateAvatar("");
+                                }}
+                            >
                                 Remove Avatar
                             </a>
                         )}
