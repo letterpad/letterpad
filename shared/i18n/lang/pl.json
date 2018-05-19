@@ -121,13 +121,15 @@
     "settings.general.site.language": "Wybierz język",
     "settings.messages.searchNotFound": "Nie znaleziono wyników wyszukiwania",
     "settings.messages.emptyPost": "Puste posty",
-    "settings.sidebar.title": "Ustawienia paska bocznego",
-    "settings.sidebar.tagline": "Skonfiguruj widżety paska bocznego",
-    "settings.sidebar.latestPostCount": "Ostatnia liczba postów",
-    "settings.sidebar.latestPostCount.placeholder":
+    "settings.social.title": "Social Settings",
+    "settings.social.tagline": "Configure your sites's social links",
+    "settings.additional.title": "Ustawienia paska bocznego",
+    "settings.additional.tagline": "Skonfiguruj widżety paska bocznego",
+    "settings.additional.latestPostCount": "Ostatnia liczba postów",
+    "settings.additional.latestPostCount.placeholder":
         "Łączne posty do wyświetlenia w widgecie",
-    "settings.sidebar.aboutTitle": "",
-    "settings.sidebar.aboutTitle.placeholder": "Przedstaw swój blog",
+    "settings.additional.aboutTitle": "",
+    "settings.additional.aboutTitle.placeholder": "Przedstaw swój blog",
     "menu.title": "Ustawienia menu",
     "menu.tagline":
         "Skonfiguruj swoje menu, wybierając opcje po lewej stronie, a następnie przeciągnij i upuść, aby zamówić je po prawej stronie.",

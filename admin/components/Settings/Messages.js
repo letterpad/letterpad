@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-export default class Translations extends Component {
+export default class Messages extends Component {
     constructor(props) {
         super(props);
         this.updateOption = this.updateOption.bind(this);
@@ -50,16 +50,16 @@ export default class Translations extends Component {
     }
 }
 
-Translations.propTypes = {
+Messages.propTypes = {
     data: PropTypes.object,
     updateOption: PropTypes.func
 };
-Translations.defaultPropTypes = {
+Messages.defaultPropTypes = {
     data: JSON.stringify({
         text_notfound: ""
     })
 };
 
-Translations.contextTypes = {
+Messages.contextTypes = {
     t: PropTypes.func
 };

@@ -18,17 +18,15 @@ body {
             "header header"
             "nav content"
             "footer footer";
-        grid-template-columns: 38px 1fr;
+        grid-template-columns: 200px 1fr;
         grid-template-rows: auto 1fr auto;
         height: 94vh;
     }
-    &.hovering .main {
-        grid-template-columns: 250px 1fr;
-    }
+
     .collapsed {
         nav,
         main {
-            transform: translateX(-250px);
+            transform: translateX(-200px);
             .content-area {
                 width: 100vw;
             }
@@ -42,7 +40,7 @@ body {
     }
     @media (max-width: 991px) {
         .main {
-            grid-template-columns: 250px 1fr;
+            grid-template-columns: 200px 1fr;
         }
     }
 }
@@ -55,7 +53,6 @@ body.single {
 .content-area {
     height: calc(100vh - 80px);
     overflow: auto;
-    width: 98vw;
 }
 body.posts {
     .content-area > div {

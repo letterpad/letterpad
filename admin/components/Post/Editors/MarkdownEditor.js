@@ -35,27 +35,10 @@ class MarkdownEditor extends Component {
     getPreview(text) {
         return marked(text).replace(/<pre>/g, '<pre class="hljs">');
     }
+    componentDidUpdate(prevProps, prevState) {
+        document.querySelectorAll(".hljs code").forEach(hljs.highlightBlock);
+    }
 
-    // setActiveTab(e) {
-    //     e.preventDefault();
-    //     const active = e.target.getAttribute("href");
-    //     this.state.activeTab.post = "";
-    //     this.state.activeTab.preview = "";
-    //     this.state.activeTab[active] = "active";
-    //     this.setState(this.state);
-
-    //     if (active == "preview") {
-    //         marked.setOptions({
-    //             highlight: code => hljs.highlightAuto(code).value
-    //         });
-
-    //         const preview = this.getPreview(this.state.body);
-    //         // qs("#md-preview").innerHTML = preview;
-    //         PostActions.setData({
-    //             mdPreview: preview
-    //         });
-    //     }
-    // }
     render() {
         return <div id="md-post">{this.state.body}</div>;
     }

@@ -130,14 +130,17 @@
     "settings.messages.tagline": "Set up various site-wide messages from here",
     "settings.messages.searchNotFound": "Search results not found",
     "settings.messages.emptyPost": "Empty posts",
-
-    "settings.sidebar.title": "Sidebar settings",
-    "settings.sidebar.tagline": "Configure your sidebar widgets",
-    "settings.sidebar.latestPostCount": "Latest post count",
-    "settings.sidebar.latestPostCount.placeholder":
+    "settings.social.title": "Social Settings",
+    "settings.social.tagline": "Configure your sites's social links",
+    "settings.additional.title": "Optional settings",
+    "settings.additional.tagline":
+        "Settings that might be used by themes for features",
+    "settings.additional.latestPostCount": "Latest post count",
+    "settings.additional.latestPostCount.placeholder":
         "Total posts to display in the widget",
-    "settings.sidebar.aboutTitle": "About",
-    "settings.sidebar.aboutTitle.placeholder": "Introduce your blog",
+    "settings.additional.aboutTitle": "About",
+    "settings.additional.aboutTitle.placeholder": "Introduce your blog",
+    "settings.additional.displayAuthor": "Display author info info after post",
     "menu.title": "Menu settings",
     "menu.tagline":
         "Configure your menu by selecting the options on the left and then drag-drop to order them on the right.",

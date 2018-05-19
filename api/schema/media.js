@@ -30,6 +30,7 @@ export default `
   type Mutation {
     insertMedia(url: String): Media
     deleteMedia(id: Int!): DeleteResponse
-    uploadFile(file: Upload!):Boolean
+
   }
 `;
+//    uploadFile(file: Upload!):Boolean

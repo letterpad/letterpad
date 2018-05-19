@@ -4,7 +4,6 @@ import Sidebar from "../../containers/Sidebar";
 
 export default function Layout(Element, props) {
     const settings = props.settings;
-    const layout = settings.layout_display.value;
 
     return class extends Component {
         render() {
