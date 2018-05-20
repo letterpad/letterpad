@@ -9,6 +9,9 @@ export default class General extends Component {
         this.updateOption = this.updateOption.bind(this);
         this.switchLanguage = this.switchLanguage.bind(this);
 
+        this.uploadLogo = this.uploadLogo.bind(this);
+        this.updateLogo = this.updateLogo.bind(this);
+
         this.uploadBanner = this.uploadBanner.bind(this);
         this.updateBanner = this.updateBanner.bind(this);
 
@@ -34,7 +37,7 @@ export default class General extends Component {
         this.updateOption("banner", banner);
         this.setState({ banner });
     }
-    async updloadLogo(files) {
+    async uploadLogo(files) {
         const site_logo = await uploadFile({ files });
         this.updateOption("site_logo", site_logo);
         this.setState({ site_logo });
@@ -43,6 +46,10 @@ export default class General extends Component {
     updateBanner(banner) {
         this.updateOption("banner", banner);
         this.setState({ banner });
+    }
+    updateLogo(site_logo) {
+        this.updateOption("site_logo", site_logo);
+        this.setState({ site_logo });
     }
     render() {
         const checked = { row: {}, grid: {}, "two-column": {}, centered: {} };
@@ -172,7 +179,7 @@ export default class General extends Component {
                                 href="#"
                                 onClick={e => {
                                     e.preventDefault();
-                                    this.updloadLogo("");
+                                    this.updateLogo("");
                                 }}
                             >
                                 <div className="logo-image">
@@ -188,7 +195,7 @@ export default class General extends Component {
                     </div>
                     <input
                         ref="uploadLogoInput"
-                        onChange={input => this.updloadLogo(input.target.files)}
+                        onChange={input => this.uploadLogo(input.target.files)}
                         type="file"
                         className="hide"
                         name="uploads[]"
