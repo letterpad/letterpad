@@ -11,19 +11,22 @@ const clientConfig = args => {
         throw new Error("Please provide a theme to build");
     }
     const extractPcss = new ExtractTextPlugin("[name].min.css");
-    const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");
+    //const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");
     const config = merge(baseConfig(args), {
         target: "web",
         output: {
             path: path.join(__dirname, "../"),
             filename: "[name]-bundle.min.js"
         },
-        plugins: [extractPcss, extractPcssAdmin],
+        plugins: [extractPcss],
         module: {
             rules: [
                 {
                     test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-                    loader: "url-loader?url=false"
+                    loader:
+                        "url-loader?limit=1024&&name=../client/themes/" +
+                        args.theme +
+                        "/public/fonts/[name].[ext]"
                 },
                 {
                     test: /\.(css|pcss)$/,
@@ -39,24 +42,6 @@ const clientConfig = args => {
                     }),
                     include: [
                         path.join(__dirname, "../client/themes/" + args.theme)
-                    ]
-                },
-                {
-                    test: /\.(css|pcss)$/,
-                    use: extractPcssAdmin.extract({
-                        fallback: "style-loader",
-                        use: [
-                            {
-                                loader: "css-loader",
-                                options: { importLoaders: 1, minimize: true }
-                            },
-                            "postcss-loader"
-                        ]
-                    }),
-                    include: [
-                        path.resolve(__dirname, "../admin"),
-                        path.resolve(__dirname, "../node_modules"),
-                        path.resolve(__dirname, "../public")
                     ]
                 }
             ]

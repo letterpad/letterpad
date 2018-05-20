@@ -23,7 +23,10 @@ const clientConfig = args => {
             rules: [
                 {
                     test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-                    loader: "url-loader?url=false"
+                    loader:
+                        "url-loader?limit=1024&&name=../client/themes/" +
+                        args.theme +
+                        "/public/fonts/[name].[ext]"
                 },
                 {
                     test: /\.(css|pcss)$/,
