@@ -138,6 +138,9 @@
     "settings.additional.latestPostCount": "Latest post count",
     "settings.additional.latestPostCount.placeholder":
         "Total posts to display in the widget",
+    "settings.additional.disqus":
+        "Integrate disqus for comments (Theme specific)",
+    "settings.additional.disqus.placeholder": "Enter the disqus id",
     "settings.additional.aboutTitle": "About",
     "settings.additional.aboutTitle.placeholder": "Introduce your blog",
     "settings.additional.displayAuthor": "Display author info info after post",

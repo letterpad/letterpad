@@ -380,6 +380,9 @@ var insertSettings = exports.insertSettings = function () {
                             option: "social_instagram",
                             value: ""
                         }, {
+                            option: "social_github",
+                            value: ""
+                        }, {
                             option: "text_notfound",
                             value: "Sorry, we went deep inside, but found nothing"
                         }, {
@@ -394,6 +397,9 @@ var insertSettings = exports.insertSettings = function () {
                         }, {
                             option: "displayAuthorInfo",
                             value: true
+                        }, {
+                            option: "site_logo",
+                            value: ""
                         }, {
                             option: "menu",
                             value: menu

@@ -21,16 +21,16 @@ class ThemeItem extends Component {
                     <div className="theme-thumbnail">
                         <img
                             className="theme-image"
-                            src={config.baseName + theme.thumbnail}
+                            src={config.baseName + theme.details.thumbnail}
                         />
                     </div>
                     <div className="theme-body with-border">
                         <div className="theme-header">
                             <div className="theme-name">
-                                {theme.name} by {theme.author}
+                                {theme.details.name} by {theme.details.author}
                             </div>
                             <div className="theme-meta">
-                                {theme.description}
+                                {theme.details.description}
                             </div>
                             {theme.active && (
                                 <span className="label label-info">active</span>

@@ -32,7 +32,7 @@ export default class AdditionalSettings extends Component {
             <div>
                 <div className="form-group">
                     <label className="custom-label">
-                        {t("settings.additional.latestPostCount")}
+                        {t("settings.additional.disqus")}
                     </label>
                     <input
                         defaultValue={
@@ -41,7 +41,7 @@ export default class AdditionalSettings extends Component {
                         type="text"
                         className="form-control"
                         placeholder={t(
-                            "settings.additional.latestPostCount.placeholder"
+                            "settings.additional.disqus.placeholder"
                         )}
                         aria-invalid="false"
                         onBlur={e =>
@@ -87,14 +87,14 @@ export default class AdditionalSettings extends Component {
                 </div>
                 <div className="form-group">
                     <label className="custom-label">
-                        {t("settings.additional.latestPostCount")}
+                        {t("settings.additional.disqus")}
                     </label>
                     <input
                         defaultValue={this.props.data.disqus_id.value}
                         type="text"
                         className="form-control"
                         placeholder={t(
-                            "settings.additional.latestPostCount.placeholder"
+                            "settings.additional.disqus.placeholder"
                         )}
                         aria-invalid="false"
                         onBlur={e =>

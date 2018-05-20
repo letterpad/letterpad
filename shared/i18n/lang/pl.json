@@ -128,6 +128,9 @@
     "settings.additional.latestPostCount": "Ostatnia liczba postów",
     "settings.additional.latestPostCount.placeholder":
         "Łączne posty do wyświetlenia w widgecie",
+    "settings.additional.disqus":
+        "Integrate disqus for comments (Theme specific)",
+    "settings.additional.disqus.placeholder": "Enter the disqus id",
     "settings.additional.aboutTitle": "",
     "settings.additional.aboutTitle.placeholder": "Przedstaw swój blog",
     "menu.title": "Ustawienia menu",

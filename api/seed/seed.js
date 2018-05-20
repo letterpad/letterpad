@@ -347,6 +347,10 @@ export async function insertSettings() {
             value: ""
         },
         {
+            option: "social_github",
+            value: ""
+        },
+        {
             option: "text_notfound",
             value: "Sorry, we went deep inside, but found nothing"
         },
@@ -366,6 +370,10 @@ export async function insertSettings() {
         {
             option: "displayAuthorInfo",
             value: true
+        },
+        {
+            option: "site_logo",
+            value: ""
         },
         {
             option: "menu",

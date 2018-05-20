@@ -310,18 +310,33 @@ exports.default = {
             var models = _ref10.models;
 
             try {
-                var update = await models.Post.update({ status: "trash" }, {
-                    where: {
-                        id: { in: args.ids.split(",") }
-                    }
+                // check the status of one post. If its already in trash
+                // then permanently delete it
+                var randomPost = await models.Post.findOne({
+                    where: { id: args.ids.split(",")[0] }
                 });
-                if (update) {
-                    return {
-                        ok: true
-                    };
+                if (randomPost.status == "trash") {
+                    await models.Post.destroy({
+                        where: { id: { in: args.ids.split(",") } }
+                    });
+                } else {
+                    await models.Post.update({ status: "trash" }, {
+                        where: {
+                            id: { in: args.ids.split(",") }
+                        }
+                    });
                 }
+                return {
+                    ok: true
+                };
             } catch (e) {
-                console.log(e);
+                return {
+                    ok: false,
+                    errors: [{
+                        message: e.message,
+                        path: "deleteMessage"
+                    }]
+                };
             }
         })
     },
