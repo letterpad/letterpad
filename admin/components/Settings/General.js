@@ -13,7 +13,8 @@ export default class General extends Component {
         this.updateBanner = this.updateBanner.bind(this);
 
         this.state = {
-            banner: this.props.data.banner.value
+            banner: this.props.data.banner.value,
+            site_logo: this.props.data.site_logo.value
         };
 
         this.langOptions = JSON.parse(this.props.data.locale.value);
@@ -33,6 +34,11 @@ export default class General extends Component {
         this.updateOption("banner", banner);
         this.setState({ banner });
     }
+    async updloadLogo(files) {
+        const site_logo = await uploadFile({ files });
+        this.updateOption("site_logo", site_logo);
+        this.setState({ site_logo });
+    }
 
     updateBanner(banner) {
         this.updateOption("banner", banner);
@@ -42,6 +48,7 @@ export default class General extends Component {
         const checked = { row: {}, grid: {}, "two-column": {}, centered: {} };
         const { t } = this.context;
         const banner = this.state.banner || "";
+        const site_logo = this.state.site_logo || "";
         return (
             <div>
                 <div className="form-group">
@@ -147,7 +154,46 @@ export default class General extends Component {
                         }
                     />
                 </div>
-
+                <div className="form-group">
+                    <label className="custom-label">Upload Logo</label>
+                    <div className="logo-wrapper">
+                        {!this.state.site_logo ? (
+                            <a
+                                href="#"
+                                onClick={e => {
+                                    e.preventDefault();
+                                    this.refs.uploadLogoInput.click();
+                                }}
+                            >
+                                Add Logo
+                            </a>
+                        ) : (
+                            <a
+                                href="#"
+                                onClick={e => {
+                                    e.preventDefault();
+                                    this.updloadLogo("");
+                                }}
+                            >
+                                <div className="logo-image">
+                                    <img
+                                        width="100"
+                                        alt=""
+                                        src={config.baseName + site_logo}
+                                    />
+                                </div>
+                                Remove Logo
+                            </a>
+                        )}
+                    </div>
+                    <input
+                        ref="uploadLogoInput"
+                        onChange={input => this.updloadLogo(input.target.files)}
+                        type="file"
+                        className="hide"
+                        name="uploads[]"
+                    />
+                </div>
                 <div className="form-group">
                     <label className="custom-label">Upload Hero Banner</label>
                     <div className="banner-wrapper">

@@ -131,6 +131,9 @@
     "settings.additional.latestPostCount": "Nombre d'articles",
     "settings.additional.latestPostCount.placeholder":
         "Nombre d'articles à afficher dans le widget",
+    "settings.additional.disqus":
+        "Integrate disqus for comments (Theme specific)",
+    "settings.additional.disqus.placeholder": "Enter the disqus id",
     "settings.additional.aboutTitle": "À propos",
     "settings.additional.aboutTitle.placeholder": "Présentez votre blog",
     "menu.title": "Paramètres du menu",

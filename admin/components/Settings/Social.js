@@ -15,6 +15,19 @@ export default class Social extends Component {
         return (
             <div>
                 <div className="form-group">
+                    <label className="custom-label">{t("common.github")}</label>
+                    <input
+                        defaultValue={this.props.data.social_github.value}
+                        type="text"
+                        className="form-control"
+                        placeholder={t("social.gh.placeholder")}
+                        aria-invalid="true"
+                        onBlur={e =>
+                            this.updateOption("social_github", e.target.value)
+                        }
+                    />
+                </div>
+                <div className="form-group">
                     <label className="custom-label">
                         {t("common.facebook")}
                     </label>

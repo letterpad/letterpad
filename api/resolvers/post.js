@@ -294,21 +294,38 @@ export default {
         deletePosts: editPostPerm.createResolver(
             async (root, args, { models }) => {
                 try {
-                    const update = await models.Post.update(
-                        { status: "trash" },
-                        {
-                            where: {
-                                id: { in: args.ids.split(",") }
+                    // check the status of one post. If its already in trash
+                    // then permanently delete it
+                    const randomPost = await models.Post.findOne({
+                        where: { id: args.ids.split(",")[0] }
+                    });
+                    if (randomPost.status == "trash") {
+                        await models.Post.destroy({
+                            where: { id: { in: args.ids.split(",") } }
+                        });
+                    } else {
+                        await models.Post.update(
+                            { status: "trash" },
+                            {
+                                where: {
+                                    id: { in: args.ids.split(",") }
+                                }
                             }
-                        }
-                    );
-                    if (update) {
-                        return {
-                            ok: true
-                        };
+                        );
                     }
+                    return {
+                        ok: true
+                    };
                 } catch (e) {
-                    console.log(e);
+                    return {
+                        ok: false,
+                        errors: [
+                            {
+                                message: e.message,
+                                path: "deleteMessage"
+                            }
+                        ]
+                    };
                 }
             }
         )
