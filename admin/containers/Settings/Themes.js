@@ -13,22 +13,17 @@ import { makeUrl } from "shared/util";
 class ThemeItem extends Component {
     render() {
         const theme = this.props.theme;
-        let thumbnail = theme.details.thumbnail;
 
-        if (thumbnail.indexOf("http") === -1) {
-            thumbnail =
-                config.baseName +
-                "/" +
-                theme.details.name +
-                theme.details.thumbnail;
-        }
         return (
             <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                 <article
                     className={"theme-item" + (theme.active ? " active" : "")}
                 >
                     <div className="theme-thumbnail">
-                        <img className="theme-image" src={thumbnail} />
+                        <img
+                            className="theme-image"
+                            src={theme.details.thumbnail}
+                        />
                     </div>
                     <div className="theme-body with-border">
                         <div className="theme-header">
