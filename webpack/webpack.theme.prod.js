@@ -22,20 +22,17 @@ const clientConfig = args => {
         module: {
             rules: [
                 {
-                    test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-                    loader:
-                        "url-loader?limit=1024&&name=../client/themes/" +
-                        args.theme +
-                        "/public/fonts/[name].[ext]"
-                },
-                {
                     test: /\.(css|pcss)$/,
                     use: extractPcss.extract({
                         fallback: "style-loader",
                         use: [
                             {
                                 loader: "css-loader",
-                                options: { importLoaders: 1, minimize: true }
+                                options: {
+                                    importLoaders: 1,
+                                    minimize: true,
+                                    url: false
+                                }
                             },
                             "postcss-loader"
                         ]

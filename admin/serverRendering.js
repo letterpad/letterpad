@@ -121,7 +121,7 @@ function Html({ theme, content, initialState }) {
                 ${insertStyle("/css/vertical.css")}
                 ${insertStyle("/css/font-awesome.min.css")}
                 <link
-                    href="http://cdn.jsdelivr.net/highlight.js/9.8.0/styles/github.min.css"
+                    href="https://cdn.jsdelivr.net/highlight.js/9.8.0/styles/github.min.css"
                     rel="stylesheet"
                     type="text/css"
                 />

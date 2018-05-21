@@ -68,15 +68,16 @@ app.use(
         extended: true
     })
 );
-let base = "/";
+let base = "";
 if (config.baseName.length > 0) {
     base = config.baseName;
 }
 app.use(base, express.static("public"));
-app.use(base + "admin/", express.static("admin/public"));
+app.use(base + "/admin/", express.static("admin/public"));
 dir.getDirectories(__dirname + "/client/themes/").map(themePath => {
     const theme = themePath.split("/").pop(-1);
-    app.use(base + theme + "/", express.static(themePath + "/public"));
+    app.use(base + "/" + theme + "/", express.static(themePath + "/public"));
+    app.use(base + "/client/", express.static(themePath + "/public"));
 });
 
 app.get("/build", (req, res) => {
