@@ -35,11 +35,14 @@ module.exports.init = app => {
                     themePath => {
                         if (fs.existsSync(themePath + "/config.json")) {
                             const details = require(themePath + "/config.json");
+                            const name = themePath.split("/").pop(-1);
                             if (details.thumbnail.indexOf("http") === -1) {
                                 details.thumbnail =
-                                    config.baseName + details.thumbnail;
+                                    config.baseName +
+                                    "/" +
+                                    name +
+                                    details.thumbnail;
                             }
-                            const name = themePath.split("/").pop(-1);
                             availableThemes.push({
                                 details: Object.assign({}, details),
                                 name: name,
