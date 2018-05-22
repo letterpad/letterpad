@@ -34,7 +34,9 @@ module.exports.init = app => {
                 getDirectories(path.join(__dirname, "../client/themes/")).map(
                     themePath => {
                         if (fs.existsSync(themePath + "/config.json")) {
-                            const details = require(themePath + "/config.json");
+                            const themeConfig = require(themePath +
+                                "/config.json");
+                            const details = Object.assign({}, themeConfig);
                             const name = themePath.split("/").pop(-1);
                             if (details.thumbnail.indexOf("http") === -1) {
                                 details.thumbnail =
@@ -148,7 +150,7 @@ function Html({ theme, content, initialState }) {
                     window.baseName="${process.env.baseName}";
                 </script>
                 ${insertScript("/admin/js/highlight.min.js")}
-               
+                <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
                 ${bundles.map(bundle => insertScript(bundle))}
             </body>
         </html>`;

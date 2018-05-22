@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
-import StackGrid from "react-stack-grid";
 import { Basic, Social, PasswordChange } from "../../components/Author";
 import { notify } from "react-notify-toast";
 import UpdateAuthor from "../../data-connectors/UpdateAuthor";
@@ -28,6 +27,12 @@ class EditAuthor extends Component {
     }
     componentDidMount() {
         document.body.classList.add("edit-author-page");
+
+        const elem = document.querySelector(".masonry-grid");
+        new Masonry(elem, {
+            itemSelector: ".masonry-grid-item",
+            gutter: 14
+        });
     }
 
     componentWillUnmount() {
@@ -52,39 +57,34 @@ class EditAuthor extends Component {
     }
     render() {
         if (this.props.loading) {
-            return <div>hello</div>;
+            return <div>Loading..</div>;
         }
 
         return (
             <section className="module-xs">
-                <StackGrid
-                    className="post-grid with-padding"
-                    columnWidth={"50%"}
-                    gutterWidth={12}
-                    gutterHeight={12}
-                >
-                    <div className="card">
+                <div className="masonry-grid">
+                    <div className="card masonry-grid-item">
                         <Basic
                             data={this.props.author}
                             updateOption={this.setOption}
                         />
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
-                    <div className="card">
+                    <div className="card masonry-grid-item">
                         <Social
                             data={this.props.author.social}
                             updateOption={this.setOption}
                         />
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
-                    <div className="card">
+                    <div className="card masonry-grid-item">
                         <PasswordChange
                             data={this.props.author}
                             updateOption={this.setOption}
                         />
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
-                </StackGrid>
+                </div>
             </section>
         );
     }
