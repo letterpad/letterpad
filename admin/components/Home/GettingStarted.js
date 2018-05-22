@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const GettingStarted = (props, { t }) => {
     return (
-        <div className="card">
+        <div className="card masonry-grid-item">
             <div className="module-title">{t("home.gettingStarted")}</div>
             <div className="module-subtitle">{t("home.tagline")}</div>
             <div className="listing">

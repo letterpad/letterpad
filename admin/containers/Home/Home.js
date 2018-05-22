@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
-import StackGrid from "react-stack-grid";
 import { GettingStarted, QuickDraft, Stats } from "../../components/Home";
 import CreatePost from "../../data-connectors/CreatePost";
 import GetStats from "../../data-connectors/GetStats";
@@ -11,6 +10,13 @@ class Home extends Component {
         super(props);
         this.draftPost = this.draftPost.bind(this);
         document.body.classList.add("home-page");
+    }
+    componentDidMount() {
+        const elem = document.querySelector(".masonry-grid");
+        new Masonry(elem, {
+            itemSelector: ".masonry-grid-item",
+            gutter: 10
+        });
     }
 
     componentWillUnmount() {
@@ -33,19 +39,14 @@ class Home extends Component {
     render() {
         return (
             <section className="module-xs">
-                <StackGrid
-                    className="post-grid with-padding"
-                    columnWidth={"50%"}
-                    gutterWidth={12}
-                    gutterHeight={12}
-                >
+                <div className="masonry-grid">
                     <GettingStarted />
                     <QuickDraft draftPost={this.draftPost} />
                     <Stats
                         loading={this.props.loading}
                         stats={this.props.stats}
                     />
-                </StackGrid>
+                </div>
             </section>
         );
     }

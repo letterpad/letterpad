@@ -78,16 +78,16 @@ class Posts extends Component {
                                 <th width="25%" className="col-text">
                                     {t("common.title")}
                                 </th>
-                                <th width="20%" className="col-text">
+                                <th width="20%" className="col-text hidden-xs">
                                     {t("common.categories")}
                                 </th>
-                                <th width="20%" className="col-text">
+                                <th width="20%" className="col-text hidden-xs">
                                     {t("common.tags")}
                                 </th>
                                 <th width="5%" className="col-text">
                                     {t("common.status")}
                                 </th>
-                                <th width="10%" className="col-text">
+                                <th width="10%" className="col-text hidden-xs">
                                     {t("common.author")}
                                 </th>
                                 <th width="10%" className="col-text">

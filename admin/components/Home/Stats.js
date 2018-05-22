@@ -43,7 +43,7 @@ const Stats = ({ stats, loading }, { t }) => {
     ));
 
     return (
-        <div className="card">
+        <div className="card masonry-grid-item">
             <div className="module-title">{t("home.stats")}</div>
             <div className="module-subtitle">{t("home.stats.tagline")}</div>
             {!loading && <div className="listing">{data}</div>}

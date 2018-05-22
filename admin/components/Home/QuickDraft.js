@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const QuickDraft = ({ draftPost }, { t }) => {
     return (
-        <div className="card">
+        <div className="card masonry-grid-item">
             <div className="module-title">{t("home.quickDraft")}</div>
             <div className="module-subtitle">
                 {t("home.quickDraft.tagline")}

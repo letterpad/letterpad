@@ -80,16 +80,16 @@ class TableRow extends Component {
                 >
                     {this.props.post.title || "Draft.."}
                 </td>
-                <td>{categories}</td>
-                <td>{tags}</td>
+                <td className="hidden-xs">{categories}</td>
+                <td className="hidden-xs">{tags}</td>
                 <td>{this.props.post.status}</td>
-                <td>
+                <td className="hidden-xs">
                     {this.props.post.author.fname}{" "}
                     {this.props.post.author.lname}
                 </td>
                 <td>
                     {moment(new Date(this.props.post.created_at)).format(
-                        "MMM Do, YY"
+                        "MMM Do"
                     )}
                 </td>
             </tr>

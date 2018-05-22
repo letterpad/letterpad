@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { graphql, compose } from "react-apollo";
 import PropTypes from "prop-types";
-import StackGrid from "react-stack-grid";
 import {
     General,
     Social,
@@ -29,6 +28,14 @@ class Settings extends Component {
         this.setOption = this.setOption.bind(this);
         document.body.classList.add("settings-page");
     }
+    componentDidMount() {
+        const elem = document.querySelector(".masonry-grid");
+        new Masonry(elem, {
+            itemSelector: ".masonry-grid-item",
+            gutter: 10
+        });
+    }
+
     componentWillUnmount() {
         document.body.classList.remove("settings-page");
     }
@@ -62,14 +69,8 @@ class Settings extends Component {
 
         return (
             <section className="module-xs">
-                <StackGrid
-                    className="post-grid with-padding"
-                    columnWidth={"50%"}
-                    gutterWidth={12}
-                    gutterHeight={12}
-                    duration={0}
-                >
-                    <div className="card">
+                <div className="masonry-grid">
+                    <div className="card masonry-grid-item">
                         <div className="module-title">
                             {t("settings.general.title")}
                         </div>
@@ -79,7 +80,7 @@ class Settings extends Component {
                         <General data={data} updateOption={this.setOption} />
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
-                    <div className="card">
+                    <div className="card masonry-grid-item">
                         <div className="module-title">
                             {t("settings.social.title")}
                         </div>
@@ -89,7 +90,7 @@ class Settings extends Component {
                         <Social data={data} updateOption={this.setOption} />
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
-                    <div className="card">
+                    <div className="card masonry-grid-item">
                         <div className="module-title">
                             {t("settings.additional.title")}
                         </div>
@@ -102,7 +103,7 @@ class Settings extends Component {
                         />
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
-                    <div className="card">
+                    <div className="card masonry-grid-item">
                         <div className="module-title">
                             {t("settings.messages.title")}
                         </div>
@@ -112,7 +113,7 @@ class Settings extends Component {
                         <Messages data={data} updateOption={this.setOption} />
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
-                </StackGrid>
+                </div>
             </section>
         );
     }
