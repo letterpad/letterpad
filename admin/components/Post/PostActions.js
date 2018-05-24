@@ -6,27 +6,20 @@ let PostActions = {
     taxonomies: {},
 
     postUpdated: function(action, data) {
-        for (let obj in PostActions.subscribers) {
-            const cb = PostActions.subscribers[obj];
-            if (cb.action === action) {
-                cb.subscriber(data);
-            }
-        }
+        PostActions.triggerEvent(action, { detail: data });
     },
-    subscribe: function(action, subscriber) {
-        PostActions.subscribers[subscriber] = { subscriber, action };
+    triggerEvent: function(name, data) {
+        // create and dispatch the event
+        let event = new CustomEvent(name, { detail: data });
+        window.dispatchEvent(event);
     },
+
     setData: data => {
         PostActions.data = {
             ...PostActions.data,
             ...data
         };
-        for (let obj in PostActions.subscribers) {
-            const cb = PostActions.subscribers[obj];
-            if (cb.action === "change") {
-                cb.subscriber(data);
-            }
-        }
+        PostActions.triggerEvent("onPostChange", data);
     },
 
     getData: () => {

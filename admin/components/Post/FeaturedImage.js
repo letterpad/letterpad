@@ -34,21 +34,40 @@ class FeaturedImage extends Component {
             cover_image: coverImage
         });
         this.setState({ cover_image: coverImage, fileExplorerOpen: false });
+        this.props.toggleFileExplorerModal({ display: false });
     }
 
     toggleFileExplorer() {
-        this.setState({ fileExplorerOpen: !this.state.fileExplorerOpen });
+        this.setState(
+            { fileExplorerOpen: !this.state.fileExplorerOpen },
+            () => {
+                this.props.toggleFileExplorerModal({
+                    onClose: this.toggleFileExplorer,
+                    onMediaSelect: this.updateFeaturedImage,
+                    addNewMedia: () => {
+                        this.refs.uploadInput.click();
+                        this.toggleFileExplorer();
+                    },
+                    display: this.state.fileExplorerOpen
+                });
+            }
+        );
     }
 
     render() {
         const { t } = this.context;
         const coverImage =
             this.state.cover_image || "http://placehold.it/800x400";
+
         return (
             <div className="card">
                 <div className="module-title">Cover Image</div>
                 <div className="featured-image">
-                    <img alt="" width="100%" src={config.baseName+ coverImage} />
+                    <img
+                        alt=""
+                        width="100%"
+                        src={config.baseName + coverImage}
+                    />
                     {!this.state.cover_image ? (
                         <a
                             className="btn btn-xs btn-dark"
@@ -73,16 +92,6 @@ class FeaturedImage extends Component {
                     name="uploads[]"
                     multiple="multiple"
                 />
-                {this.state.fileExplorerOpen && (
-                    <FileExplorerModal
-                        onClose={this.toggleFileExplorer}
-                        onMediaSelect={this.updateFeaturedImage}
-                        addNewMedia={_ => {
-                            this.refs.uploadInput.click();
-                            this.toggleFileExplorer();
-                        }}
-                    />
-                )}
             </div>
         );
     }

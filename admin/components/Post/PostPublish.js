@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { notify } from "react-notify-toast";
+import { Link } from "react-router-dom";
 import PostActions from "./PostActions";
 import { gql, graphql } from "react-apollo";
 import moment from "moment";
@@ -15,10 +16,11 @@ class PostPublish extends Component {
     constructor(props) {
         super(props);
         this.changePostStatus = this.changePostStatus.bind(this);
-
+        this.toggleZenView = this.toggleZenView.bind(this);
         this.state = {
             post: this.props.post,
-            published: 0
+            published: 0,
+            zenview: false
         };
     }
     componentWillReceiveProps(nextProps) {
@@ -80,7 +82,10 @@ class PostPublish extends Component {
                 </div>
             );
     }
-
+    toggleZenView(e) {
+        e.preventDefault();
+        document.body.classList.toggle("distract-free");
+    }
     render() {
         const publishedCls = this.state.published ? "on" : "off";
         const permalink = makeUrl([this.state.post.type, this.state.post.slug]);
@@ -107,6 +112,20 @@ class PostPublish extends Component {
                         <span className="slider round" />
                     </label>
                     <span className="switch-label switch-on-text">Publish</span>
+                    <Link
+                        to="#"
+                        className="action-drawer-btn"
+                        onClick={this.toggleZenView}
+                    >
+                        <i className="fa fa-eye" />
+                    </Link>
+                    <Link
+                        to="#"
+                        className="action-drawer-btn"
+                        onClick={this.props.toggleActionDrawer}
+                    >
+                        <i className="fa fa-cog" />
+                    </Link>
                 </div>
             </div>
         );

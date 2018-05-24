@@ -5,21 +5,6 @@ import User from "./TopBar/User";
 class Header extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            zenview: false
-        };
-        this.toggleZenView = this.toggleZenView.bind(this);
-    }
-    toggleZenView(e) {
-        e.preventDefault();
-        this.setState(
-            {
-                zenview: !this.state.zenview
-            },
-            () => {
-                document.body.classList.toggle("distract-free");
-            }
-        );
     }
 
     render() {
@@ -41,12 +26,7 @@ class Header extends Component {
                         {settings.site_title.value}
                     </Link>
                 </div>
-                <div className="zen-view">
-                    <i className="fa fa-eye" />{" "}
-                    <Link to="#" onClick={this.toggleZenView}>
-                        Zenview
-                    </Link>
-                </div>
+
                 <div className="right-side">
                     <User author={this.props.author} />
                 </div>
