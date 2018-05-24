@@ -16,7 +16,8 @@ export default graphql(DELETE_MEDIA, {
                                         item.id !=
                                         mutationResult.data.deleteMedia.id
                                     );
-                                })
+                                }),
+                                __typename: "MediaNode"
                             }
                         };
                     }

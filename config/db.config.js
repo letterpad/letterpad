@@ -1,6 +1,5 @@
 var env = require("node-env-file");
 env(__dirname + "/../.env");
-var path = require("path");
 var sequelize = require("sequelize");
 var DB_TYPE = process.env.DB_TYPE;
 var DB_NAME = process.env.DB_NAME;
