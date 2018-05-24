@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { graphql } from "react-apollo";
 import MediaItem from "../../components/Media/MediaItem";
 import ConfirmDeleteModal from "../../components/Modals/ConfirmDeleteModal";
 import GetMedia from "../../data-connectors/GetMedia";
 import DeleteMedia from "../../data-connectors/DeleteMedia";
+import config from "config";
 
-const limit = 12;
+const limit = config.itemsPerPage;
 
 const Paginate = ({ count, page }) => {
     count = count || 0;
+
     if (count <= limit) return <span />;
     const pages = Array.from(Array(Math.ceil(count / limit)));
     return (
@@ -18,7 +19,7 @@ const Paginate = ({ count, page }) => {
             {pages.map((_, i) => {
                 const num = i + 1;
                 return (
-                    <li className={page == num ? "active" : ""}>
+                    <li key={num} className={page == num ? "active" : ""}>
                         <Link to={"/admin/media/" + num}>{num}</Link>
                     </li>
                 );
@@ -52,7 +53,7 @@ class Media extends Component {
             nextProps.match.params.page &&
             nextProps.match.params.page !== this.state.page
         ) {
-            this.setState({ page: nextProps.match.params.page });
+            this.setState({ page: parseInt(nextProps.match.params.page) });
         }
     }
 
@@ -109,7 +110,8 @@ class Media extends Component {
 Media.propTypes = {
     media: PropTypes.object,
     loading: PropTypes.bool,
-    deleteMedia: PropTypes.func
+    deleteMedia: PropTypes.func,
+    match: PropTypes.object
 };
 Media.defaultProps = {
     media: {

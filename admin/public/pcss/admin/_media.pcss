@@ -23,20 +23,28 @@
         border: 4px solid #d5d5d6;
     }
 }
-.media-grid .post {
-    .post-header {
-        margin: 0px;
-        font-size: 12px;
+.media-grid {
+    > div {
+        margin-bottom: 16px;
     }
-    .post-time {
-        font-size: 11px;
-    }
-    .post-body {
-        padding: 4px 8px;
-        border: 1px solid #eee;
-        .post-content {
+    .post {
+        .post-header {
+            margin: 0px;
+            font-size: 12px;
+        }
+        .post-time {
+            font-size: 12px;
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+        }
+        .post-body {
+            padding: 4px 8px;
+            border: 1px solid #eee;
+            .post-content {
+                padding: 6px 4px;
+                display: flex;
+                justify-content: space-between;
+            }
         }
     }
 }

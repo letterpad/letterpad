@@ -21,12 +21,12 @@ export default class MediaItem extends Component {
         browserHistory.push("/admin/media/" + this.props.media.id);
     }
     deleteMedia(e) {
-        e.preventDefault;
+        e.preventDefault();
         this.props.confirmDelete(this.props.media);
     }
 
     render() {
-        const url = makeUrl(this.props.media.url.slice(1));
+        const url = config.baseName + this.props.media.url;
         return (
             <div className="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                 <article className="post">
@@ -63,5 +63,6 @@ export default class MediaItem extends Component {
 
 MediaItem.propTypes = {
     media: PropTypes.object,
-    deleteMedia: PropTypes.func
+    deleteMedia: PropTypes.func,
+    confirmDelete: PropTypes.func
 };

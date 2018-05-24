@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 import { GettingStarted, QuickDraft, Stats } from "../../components/Home";
 import CreatePost from "../../data-connectors/CreatePost";
@@ -13,10 +12,12 @@ class Home extends Component {
     }
     componentDidMount() {
         const elem = document.querySelector(".masonry-grid");
-        new Masonry(elem, {
-            itemSelector: ".masonry-grid-item",
-            gutter: 10
-        });
+        setTimeout(() => {
+            new Masonry(elem, {
+                itemSelector: ".masonry-grid-item",
+                gutter: 16
+            });
+        }, 100);
     }
 
     componentWillUnmount() {
@@ -25,15 +26,11 @@ class Home extends Component {
 
     draftPost() {
         const qsv = ele => document.querySelector(ele).value;
-        this.props
-            .createPost({
-                title: qsv("#quick-post-title"),
-                body: qsv("#quick-post-body"),
-                type: "post"
-            })
-            .then(res => {
-                //...
-            });
+        this.props.createPost({
+            title: qsv("#quick-post-title"),
+            body: qsv("#quick-post-body"),
+            type: "post"
+        });
     }
 
     render() {
