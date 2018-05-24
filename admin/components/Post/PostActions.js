@@ -1,10 +1,6 @@
-import config from "../../../config";
-
 let PostActions = {
     data: {},
-    subscribers: {},
     taxonomies: {},
-
     postUpdated: function(action, data) {
         PostActions.triggerEvent(action, { detail: data });
     },

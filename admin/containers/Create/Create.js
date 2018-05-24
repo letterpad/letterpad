@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { plural } from "../../../shared/util";
@@ -10,7 +9,6 @@ import {
     PostActionDrawer
 } from "../../components/Post";
 import CreatePost from "../../data-connectors/CreatePost";
-import PostMeta from "../../components/Post/PostMeta";
 import FileExplorerModal from "../../components/Modals/FileExplorerModal";
 
 class Create extends Component {
@@ -19,12 +17,9 @@ class Create extends Component {
         this.handlePostChanges = this.handlePostChanges.bind(this);
         this.state = {
             loading: true,
-            post: {}
+            post: {},
+            fileExplorerProps: {}
         };
-    }
-
-    componentDidMount() {
-        document.body.classList.add("create-" + this.props.type + "-page");
     }
 
     componentWillMount() {
@@ -42,7 +37,9 @@ class Create extends Component {
             });
         });
     }
-
+    componentDidMount() {
+        document.body.classList.add("create-" + this.props.type + "-page");
+    }
     componentWillUnmount() {
         document.body.classList.remove("create-" + this.props.type + "-page");
         window.removeEventListener("onPostChange", this.handlePostChanges);
@@ -96,7 +93,7 @@ class Create extends Component {
                     </div>
                 </div>
                 <PostActionDrawer
-                    post={this.props.post}
+                    post={this.state.post}
                     isOpen={this.state.actionDrawerOpen}
                     toggleActionDrawer={this.toggleActionDrawer}
                     toggleFileExplorerModal={this.toggleFileExplorerModal}

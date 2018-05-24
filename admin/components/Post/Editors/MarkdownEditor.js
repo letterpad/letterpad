@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { CodeFlask } from "../../../libraries/code-flask";
 import PostActions from "../PostActions";
+import PropTypes from "prop-types";
 const marked = require("marked");
-
-const qs = selector => document.querySelector;
 
 class MarkdownEditor extends Component {
     constructor(props) {
@@ -33,10 +32,10 @@ class MarkdownEditor extends Component {
     }
 
     getPreview(text) {
-        return marked(text).replace(/<pre>/g, '<pre class="hljs">');
+        return marked(text).replace(/<pre>/g, "<pre class=\"hljs\">");
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate() {
         document.querySelectorAll(".hljs code").forEach(hljs.highlightBlock);
     }
 
@@ -44,5 +43,9 @@ class MarkdownEditor extends Component {
         return <div id="md-post">{this.state.body}</div>;
     }
 }
+
+MarkdownEditor.propTypes = {
+    mdBody: PropTypes.string
+};
 
 export default MarkdownEditor;

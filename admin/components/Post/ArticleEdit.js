@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import moment from "moment";
 import Editor from "./Editor";
 import PostActions from "./PostActions";
 import ContentEditable from "./ContentEditable";
