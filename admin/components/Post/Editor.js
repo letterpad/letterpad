@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { INSERT_MEDIA } from "../../../shared/queries/Mutations";
 import MarkdownEditor from "./Editors/MarkdownEditor";
 import RichText from "./Editors/RichText";
-import PostActions from "./PostActions";
 
 class Editor extends Component {
     render() {
@@ -28,7 +27,9 @@ class Editor extends Component {
 
 Editor.propTypes = {
     insertMedia: PropTypes.func,
-    body: PropTypes.string
+    body: PropTypes.string,
+    mdBody: PropTypes.string,
+    isMarkdown: PropTypes.bool
 };
 
 const insertMedia = graphql(INSERT_MEDIA, {

@@ -1,8 +1,17 @@
 import React, { Component } from "react";
 import PostActions from "../PostActions";
 import PropTypes from "prop-types";
+import FileExplorerModal from "../../../components/Modals/FileExplorerModal";
 
-class Normal extends Component {
+class RichText extends Component {
+    constructor(props) {
+        super(props);
+        this.toggleFileExplorer = this.toggleFileExplorer.bind(this);
+        this.insertImage = this.insertImage.bind(this);
+        this.state = {
+            fileExplorerOpen: false
+        };
+    }
     componentDidMount() {
         this.loadQuillEditor();
         qEditor.root.innerHTML = this.props.body;
@@ -31,6 +40,7 @@ class Normal extends Component {
                 "clean"
             ]
         ];
+        let _this = this;
         window.qEditor = new Quill("#editor", {
             theme: "snow",
             placeholder: "Compose an epic...",
@@ -38,8 +48,9 @@ class Normal extends Component {
                 toolbar: {
                     container: toolbarOptions,
                     handlers: {
-                        image: function() {
-                            document.querySelector(".post-image").click();
+                        image: () => {
+                            //document.querySelector(".post-image").click();
+                            _this.toggleFileExplorer();
                         }
                     }
                 },
@@ -71,6 +82,20 @@ class Normal extends Component {
             }
         );
     }
+
+    insertImage(post_image) {
+        this.toggleFileExplorer();
+        var Delta = qEditor.constructor.import("delta");
+        qEditor.updateContents(
+            new Delta().retain(qEditor.selection.savedRange.index).insert({
+                image: post_image
+            })
+        );
+    }
+
+    toggleFileExplorer() {
+        this.setState({ fileExplorerOpen: !this.state.fileExplorerOpen });
+    }
     render() {
         return (
             <div id="quill-container">
@@ -81,14 +106,24 @@ class Normal extends Component {
                     type="file"
                     onChange={input => this.uploadImage(input.target.files)}
                 />
+                {this.state.fileExplorerOpen && (
+                    <FileExplorerModal
+                        onClose={this.toggleFileExplorer}
+                        onMediaSelect={this.insertImage}
+                        addNewMedia={() => {
+                            document.querySelector(".post-image").click();
+                            this.toggleFileExplorer();
+                        }}
+                    />
+                )}
             </div>
         );
     }
 }
 
-Normal.propTypes = {
+RichText.propTypes = {
     insertMedia: PropTypes.func,
     body: PropTypes.string
 };
 
-export default Normal;
+export default RichText;

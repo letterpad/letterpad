@@ -20,8 +20,7 @@ class FileExplorerModal extends Component {
 
     onPageClick(e, page) {
         e.preventDefault();
-        this.state.page = page;
-        this.setState(this.state);
+        this.setState({ page });
     }
     render() {
         const { t } = this.context;
