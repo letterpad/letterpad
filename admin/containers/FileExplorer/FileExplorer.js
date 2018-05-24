@@ -57,7 +57,7 @@ class FileExplorer extends Component {
                         <div className="media-grid">
                             <InfiniteScrollList
                                 data={rows}
-                                count={this.props.total}
+                                count={this.props.count}
                                 page={this.page}
                                 loadMore={this.loadMore}
                             />
@@ -79,7 +79,7 @@ const ContainerWithData = graphql(GET_MEDIA, {
     }),
     props: ({ data: { loading, media, fetchMore } }) => {
         return {
-            total: (media && media.count) || 0,
+            count: (media && media.count) || 0,
             media,
             loading,
             fetchMore: variables => {
@@ -88,11 +88,12 @@ const ContainerWithData = graphql(GET_MEDIA, {
                     updateQuery: (previousResult, { fetchMoreResult }) => {
                         return {
                             media: {
-                                total: fetchMoreResult.media.count,
+                                count: fetchMoreResult.media.count,
                                 rows: [
                                     ...previousResult.media.rows,
                                     ...fetchMoreResult.media.rows
-                                ]
+                                ],
+                                __typename: previousResult.media.__typename
                             }
                         };
                     }

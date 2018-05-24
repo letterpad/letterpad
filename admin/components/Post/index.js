@@ -10,3 +10,5 @@ export { default as PostActions } from "./PostActions";
 export { default as PostPublish } from "./PostPublish";
 export { default as PostRows } from "./TableRow";
 export { default as Tags } from "./Tags";
+export { default as PostActionDrawer } from "./PostActionDrawer";
+export { default as PostMeta } from "./PostMeta";

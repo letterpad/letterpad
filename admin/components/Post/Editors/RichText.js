@@ -44,13 +44,12 @@ class Normal extends Component {
                     }
                 },
                 syntax: true
-            },
-            scrollingContainer: "#quill-container"
+            }
         });
         qEditor.on("text-change", function() {
             var justHtml = qEditor.root.innerHTML;
             // add extra class
-            justHtml = justHtml.replace("\"ql-syntax\"", "\"ql-syntax hljs\"");
+            justHtml = justHtml.replace('"ql-syntax"', '"ql-syntax hljs"');
             PostActions.setData({
                 body: justHtml
             });

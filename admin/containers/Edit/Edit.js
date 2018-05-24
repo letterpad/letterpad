@@ -3,18 +3,17 @@ import { graphql } from "react-apollo";
 import { plural } from "../../../shared/util";
 import PropTypes from "prop-types";
 import {
-    FeaturedImage,
     ArticleEdit,
     PostPublish,
     PostActions,
-    Tags,
-    Categories,
-    Excerpt
+    PostActionDrawer,
+    PostMeta
 } from "../../components/Post";
+import { Link } from "react-router-dom";
 import OhSnap from "./OhSnap";
 import Loader from "../../components/Loader";
 import GetSinglePost from "../../data-connectors/GetSinglePost";
-import PostMeta from "../../components/Post/PostMeta";
+import FileExplorerModal from "../../components/Modals/FileExplorerModal";
 
 const qs = handle => document.querySelector(handle);
 
@@ -23,29 +22,47 @@ class Single extends Component {
         super(props);
         this.getHtml = this.getHtml.bind(this);
         this.addScrollTimer = this.addScrollTimer.bind(this);
+        this.toggleActionDrawer = this.toggleActionDrawer.bind(this);
+        this.toggleFileExplorerModal = this.toggleFileExplorerModal.bind(this);
+        this.toggleZenView = this.toggleZenView.bind(this);
+        this.handlePostChanges = this.handlePostChanges.bind(this);
+        this.mounted = true;
         this.state = {
-            preview: ""
+            preview: "",
+            actionDrawerOpen: false,
+            fileExplorerProps: {}
         };
     }
+
+    componentWillMount() {
+        window.addEventListener("onPostChange", this.handlePostChanges);
+    }
+
     componentDidMount() {
         document.body.classList.add("edit-post-page", "options-open");
-        PostActions.subscribe("update", post => {
-            if (post.status == "trash") {
-                // this.props.history.push(`/admin/${plural[post.type]}`);
+    }
+
+    componentWillUnmount() {
+        document.body.classList.remove("edit-post-page");
+        window.removeEventListener("onPostChange", this.handlePostChanges);
+    }
+
+    handlePostChanges(e) {
+        if (this.props.post.mode == "markdown") {
+            this.addScrollTimer();
+            if ("mdPreview" in e.detail) {
+                this.setState({ preview: e.detail.mdPreview });
             }
-        });
-        const _this = this;
-        PostActions.subscribe("change", props => {
-            if (props.mode == "markdown") {
-                _this.addScrollTimer();
-            }
-            if ("mdPreview" in props) {
-                this.setState({ preview: props.mdPreview });
-            }
-            if ("body" in props) {
-                this.setState({ preview: "" });
-            }
-        });
+        } else if ("body" in e.detail) {
+            this.setState({
+                preview: "Preview is only available for markdown editor"
+            });
+        }
+    }
+
+    toggleActionDrawer(e) {
+        e.preventDefault();
+        this.setState({ actionDrawerOpen: !this.state.actionDrawerOpen });
     }
 
     addScrollTimer() {
@@ -95,14 +112,17 @@ class Single extends Component {
         sync(event);
     }
 
-    componentWillUnmount() {
-        document.body.classList.remove("edit-post-page");
-    }
-
     getHtml(html) {
         this.setState({ html });
     }
-
+    toggleFileExplorerModal(props) {
+        this.setState({
+            fileExplorerProps: props
+        });
+    }
+    toggleZenView() {
+        document.body.classList.toggle("distract-free");
+    }
     render() {
         if (this.props.loading) {
             return <Loader />;
@@ -115,34 +135,49 @@ class Single extends Component {
         return (
             <section className="module-xs">
                 <div className="row">
+                    <Link
+                        to="#"
+                        className="toggle-zenview"
+                        onClick={this.toggleZenView}
+                    >
+                        <i className="fa fa-eye" />
+                    </Link>
                     <div className="col-lg-12 distractor">
-                        <PostPublish edit post={this.props.post} />
+                        <PostPublish
+                            edit
+                            post={this.props.post}
+                            toggleActionDrawer={this.toggleActionDrawer}
+                        />
                     </div>
                     <div className="col-lg-6 column article-holder ">
                         <ArticleEdit
                             post={this.props.post}
                             setHtml={this.setHtml}
                         />
-                        <div className="distractor">
-                            <PostMeta post={this.props.post} />
-                            <Tags post={this.props.post} />
-                            <Categories post={this.props.post} />
-                            <Excerpt post={this.props.post} />
-                            <FeaturedImage post={this.props.post} />
-                        </div>
                     </div>
                     <div className="col-lg-6 column preview distractor">
                         {PostActions.data.mode == "markdown" && (
                             <h2>{PostActions.data.title}</h2>
                         )}
-                        <div
-                            className="post-content"
-                            dangerouslySetInnerHTML={{
-                                __html: this.state.preview
-                            }}
-                        />
+                        <div className="post-content">
+                            <div
+                                id="md-preview"
+                                dangerouslySetInnerHTML={{
+                                    __html: this.state.preview
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
+                <PostActionDrawer
+                    post={this.props.post}
+                    isOpen={this.state.actionDrawerOpen}
+                    toggleActionDrawer={this.toggleActionDrawer}
+                    toggleFileExplorerModal={this.toggleFileExplorerModal}
+                />
+                {this.state.fileExplorerProps.display && (
+                    <FileExplorerModal {...this.state.fileExplorerProps} />
+                )}
             </section>
         );
     }

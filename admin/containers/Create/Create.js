@@ -7,25 +7,31 @@ import {
     ArticleCreate,
     PostPublish,
     PostActions,
-    Tags,
-    Categories,
-    Excerpt,
-    FeaturedImage
+    PostActionDrawer
 } from "../../components/Post";
 import CreatePost from "../../data-connectors/CreatePost";
 import PostMeta from "../../components/Post/PostMeta";
+import FileExplorerModal from "../../components/Modals/FileExplorerModal";
 
 class Create extends Component {
     constructor(props) {
         super(props);
+        this.handlePostChanges = this.handlePostChanges.bind(this);
         this.state = {
             loading: true,
             post: {}
         };
     }
+
+    componentDidMount() {
+        document.body.classList.add("create-" + this.props.type + "-page");
+    }
+
     componentWillMount() {
         const { type } = this.props;
-        document.body.classList.add("create-" + this.props.type + "-page");
+        window.addEventListener("onPostChange", this.handlePostChanges);
+        window.addEventListener("onPostSave", this.handlePostSave);
+
         const title = "Draft - " + moment().format("L LT");
         this.props.createPost({ type, title }).then(result => {
             PostActions.setData(result.data.createPost.post);
@@ -35,28 +41,34 @@ class Create extends Component {
                 preview: ""
             });
         });
-
-        PostActions.subscribe("update", post => {
-            if (post.status == "trash") {
-                this.props.history.push(`/admin/${plural[post.type]}`);
-            } else {
-                this.props.history.push(
-                    `/admin/${plural[post.type]}/${post.id}`
-                );
-            }
-        });
-
-        PostActions.subscribe("change", props => {
-            if ("mdPreview" in props) {
-                this.setState({ preview: props.mdPreview });
-            }
-            if ("body" in props) {
-                this.setState({ preview: "" });
-            }
-        });
     }
+
     componentWillUnmount() {
         document.body.classList.remove("create-" + this.props.type + "-page");
+        window.removeEventListener("onPostChange", this.handlePostChanges);
+        window.removeEventListener("onPostSave", this.handlePostSave);
+    }
+
+    handlePostChanges(e) {
+        if (this.state.post.mode == "markdown") {
+            //this.addScrollTimer();
+            if ("mdPreview" in e.detail) {
+                this.setState({ preview: e.detail.mdPreview });
+            }
+        } else if ("body" in e.detail) {
+            this.setState({
+                preview: "Preview is only available for markdown editor"
+            });
+        }
+    }
+
+    handlePostSave(e) {
+        const post = e.detail;
+        if (post.status == "trash") {
+            this.props.history.push(`/admin/${plural[post.type]}`);
+        } else {
+            this.props.history.push(`/admin/${plural[post.type]}/${post.id}`);
+        }
     }
 
     render() {
@@ -71,13 +83,6 @@ class Create extends Component {
                     </div>
                     <div className="col-lg-6 column article-holder">
                         <ArticleCreate post={this.state.post} />
-                        <div className="distractor">
-                            <PostMeta post={this.state.post} />
-                            <Tags post={this.state.post} />
-                            <Categories post={this.state.post} />
-                            <Excerpt post={this.state.post} />
-                            <FeaturedImage post={this.props.post} />
-                        </div>
                     </div>
                     <div className="col-lg-6 column preview">
                         {PostActions.data.mode == "markdown" && (
@@ -90,6 +95,15 @@ class Create extends Component {
                         />
                     </div>
                 </div>
+                <PostActionDrawer
+                    post={this.props.post}
+                    isOpen={this.state.actionDrawerOpen}
+                    toggleActionDrawer={this.toggleActionDrawer}
+                    toggleFileExplorerModal={this.toggleFileExplorerModal}
+                />
+                {this.state.fileExplorerProps.display && (
+                    <FileExplorerModal {...this.state.fileExplorerProps} />
+                )}
             </section>
         );
     }

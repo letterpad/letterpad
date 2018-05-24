@@ -8,7 +8,6 @@ const qs = selector => document.querySelector;
 class MarkdownEditor extends Component {
     constructor(props) {
         super(props);
-        // this.setActiveTab = this.setActiveTab.bind(this);
         this.getPreview = this.getPreview.bind(this);
         this.state = {
             body: this.props.mdBody
@@ -18,7 +17,8 @@ class MarkdownEditor extends Component {
         var flask = new CodeFlask();
         flask.run("#md-post", {
             language: "markdown",
-            placeholder: "..."
+            placeholder: "...",
+            lineNumbers: true
         });
         flask.onUpdate(text => {
             PostActions.setData({
@@ -28,13 +28,14 @@ class MarkdownEditor extends Component {
         });
 
         PostActions.setData({
-            mdPreview: this.getPreview(this.state.body || "")
+            mdPreview: this.getPreview(this.props.mdBody || "")
         });
     }
 
     getPreview(text) {
         return marked(text).replace(/<pre>/g, '<pre class="hljs">');
     }
+
     componentDidUpdate(prevProps, prevState) {
         document.querySelectorAll(".hljs code").forEach(hljs.highlightBlock);
     }

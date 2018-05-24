@@ -58,7 +58,6 @@ module.exports.init = app => {
     });
 
     app.get(config.baseName + "/admin/*", (req, res) => {
-        //const client = getClient();
         client()
             .query({ query: GET_OPTIONS })
             .then(settings => {
@@ -135,7 +134,11 @@ function Html({ theme, content, initialState }) {
                     rel="stylesheet"
                     type="text/css"
                 />
-                ${insertStyle("/dist/admin.min.css")}
+                ${
+                    process.env.NODE_ENV === "production"
+                        ? insertStyle("/dist/admin.min.css")
+                        : ""
+                }
             </head>
             <body>
                 <div id="app"></div>
@@ -151,7 +154,7 @@ function Html({ theme, content, initialState }) {
                 </script>
                 ${insertScript("/admin/js/highlight.min.js")}
                 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-                ${bundles.map(bundle => insertScript(bundle))}
+                ${bundles.map(insertScript).join("")}
             </body>
         </html>`;
 }
