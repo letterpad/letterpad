@@ -16,10 +16,12 @@ module.exports = {
     globals: {
         qEditor: true,
         Quill: true,
-        process: true
+        process: true,
+        hljs: true
     },
     rules: {
         indent: [2, 4],
+        "react/no-deprecated": 0,
         "linebreak-style": ["error", "unix"],
         quotes: ["error", "double"],
         semi: ["error", "always"],

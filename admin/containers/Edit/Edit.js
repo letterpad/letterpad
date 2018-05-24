@@ -1,13 +1,10 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
-import { plural } from "../../../shared/util";
 import PropTypes from "prop-types";
 import {
     ArticleEdit,
     PostPublish,
     PostActions,
-    PostActionDrawer,
-    PostMeta
+    PostActionDrawer
 } from "../../components/Post";
 import { Link } from "react-router-dom";
 import OhSnap from "./OhSnap";
@@ -48,7 +45,7 @@ class Single extends Component {
     }
 
     handlePostChanges(e) {
-        if (this.props.post.mode == "markdown") {
+        if (PostActions.data.mode == "markdown") {
             this.addScrollTimer();
             if ("mdPreview" in e.detail) {
                 this.setState({ preview: e.detail.mdPreview });
