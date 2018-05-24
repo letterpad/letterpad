@@ -3,8 +3,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
-// require("../../public/pcss/client.pcss");
-
 export default function Layout(Element, props) {
     const settings = props.settings;
 
@@ -23,16 +21,8 @@ export default function Layout(Element, props) {
             this.mounted = true;
             if (typeof window !== "undefined") {
                 window.addEventListener("resize", this.onResize);
-                this.onResize();
 
-                setTimeout(() => {
-                    document
-                        .querySelector(".sidebar")
-                        .addEventListener("mouseover", this.toggleSidebar);
-                    document
-                        .querySelector(".sidebar")
-                        .addEventListener("mouseout", this.toggleSidebar);
-                }, 1000);
+                this.onResize();
             }
         }
         toggleSidebar(e) {
