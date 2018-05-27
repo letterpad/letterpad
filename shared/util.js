@@ -38,6 +38,18 @@ const utils = {
             item = cb(item);
         }
         return item;
+    },
+
+    getTagsAndCategories: function(taxonomies) {
+        let data = { categories: [], tags: [] };
+        taxonomies.forEach(taxonomy => {
+            if (taxonomy.type === "post_category") {
+                data.categories.push(taxonomy);
+            } else {
+                data.tags.push(taxonomy);
+            }
+        });
+        return data;
     }
 };
 module.exports = utils;

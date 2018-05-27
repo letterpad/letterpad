@@ -104,11 +104,10 @@ class MenuConstruction extends Component {
         newState.items = [...this.state.items, this.state[type][idx]];
         this.setState(newState, () => {
             this.props.updateOption("menu", JSON.stringify(this.state.items));
-            if (
-                document.querySelector(
-                    ".ReactVirtualized__Grid__innerScrollContainer"
-                ).scrollHeight > 600
-            ) {
+            const scrollContainer = document.querySelector(
+                ".ReactVirtualized__Grid__innerScrollContainer"
+            );
+            if (scrollContainer && scrollContainer.scrollHeight > 600) {
                 this.setState({ scrollTop: 9999999 });
             }
         });
@@ -116,7 +115,6 @@ class MenuConstruction extends Component {
 
     removeItem(props) {
         const menuItem = props.node;
-        const itemsRemoved = [];
 
         const keepItemBack = item => {
             const type = item.type == "page" ? "pages" : "categories";

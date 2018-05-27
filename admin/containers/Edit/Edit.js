@@ -36,7 +36,7 @@ class Single extends Component {
     }
 
     componentDidMount() {
-        document.body.classList.add("edit-post-page", "options-open");
+        document.body.classList.add("edit-post-page");
     }
 
     componentWillUnmount() {
@@ -117,7 +117,8 @@ class Single extends Component {
             fileExplorerProps: props
         });
     }
-    toggleZenView() {
+    toggleZenView(e) {
+        e.preventDefault();
         document.body.classList.toggle("distract-free");
     }
     render() {

@@ -8,7 +8,7 @@ export default `
   }
   type Query {
     taxonomies(type: String, name: String): [Taxonomy]
-    postTaxonomies(type: String, postType: String): [Taxonomy]
+    activeTaxonomies(type: String, postType: String): [Taxonomy]
   }
   type EditTaxResponse {
     ok: Boolean,

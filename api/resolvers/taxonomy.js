@@ -4,8 +4,37 @@ export default {
     Query: {
         taxonomies: (root, args, { models }) =>
             models.Taxonomy.findAll({ where: args, order: [["name", "ASC"]] }),
-        postTaxonomies: (root, args, context) => {
-            return getTaxonomies(root, args, context);
+        activeTaxonomies: (root, args, { models, user }) => {
+            let { postType, type, taxId } = args;
+
+            let where = {};
+            if (!user || !user.id) {
+                where.status = "publish";
+            }
+            if (postType) {
+                where.type = postType;
+            }
+
+            let query = {
+                include: [
+                    {
+                        model: models.Post,
+                        as: "posts",
+                        where,
+                        required: true
+                    }
+                ],
+                order: [["name", "ASC"]],
+                where: { type },
+                group: ["taxonomy_id", "post_id"]
+            };
+            if (taxId) {
+                query.where.id = taxId;
+            }
+            if (args.slug) {
+                query.where.slug = args.slug;
+            }
+            return models.Taxonomy.findAll(query);
         }
     },
     Mutation: {

@@ -33,10 +33,6 @@ function getConditions(columns, args) {
                     title: query,
                     mdBody: query
                 };
-                // obj["$or"] = [
-                //     { body: { ["$like"]: "%" + query + "%" } },
-                //     { title: query }
-                // ];
             } else {
                 obj[field] = query;
             }
@@ -50,6 +46,10 @@ function getConditions(columns, args) {
 
 export default {
     Query: {
+        /**
+         * Query to take care of multiple post in one page.
+         * Used for Search and Admin posts and pages list.
+         */
         posts: checkDisplayAccess.createResolver((root, args, { models }) => {
             const newArgs = { ...args };
 
@@ -63,9 +63,6 @@ export default {
                 conditions.where.status = newArgs.status;
             }
             return models.Post.count(conditions).then(count => {
-                if (newArgs.cursor) {
-                    conditions.where.id = { gt: newArgs.cursor };
-                }
                 conditions.order = [["id", "DESC"]];
 
                 return models.Post.findAll(conditions).then(res => {
@@ -76,16 +73,32 @@ export default {
                 });
             });
         }),
+        /**
+         * Query to handle a single post/page.
+         */
         post: checkDisplayAccess.createResolver((root, args, { models }) => {
             return models.Post.findOne({ where: args });
         }),
+        /**
+         * Query to take care of posts from navigation menu.
+         * The navigation menu item will be a category with its own custom slug.
+         *
+         * First we get the menu object and loop though it to
+         * find the item (by matching slug) which was clicked.
+         * Note: The menu can have nested children.
+         *
+         * Now we know the id of the category. Using this id, we will find all the linked posts.
+         */
         postsMenu: async (root, args, { models, user }) => {
             let menu = await models.Setting.findOne({
                 where: { option: "menu" }
             });
+
             menu = JSON.parse(menu.dataValues.value);
 
             let menuItem = null;
+            let catId = null;
+
             const setItemFromMenu = (arr, slug) => {
                 const a = arr.some(item => {
                     if (item.slug && item.slug == slug) {
@@ -98,14 +111,12 @@ export default {
             };
             setItemFromMenu(menu, args.slug);
 
-            let id = null;
-
             if (!menuItem) {
                 const taxonomy = await models.Taxonomy.findOne({
                     where: { slug: args.slug, type: args.type }
                 });
                 if (taxonomy) {
-                    id = taxonomy.dataValues.id;
+                    catId = taxonomy.dataValues.id;
                 } else {
                     return {
                         count: 0,
@@ -113,26 +124,22 @@ export default {
                     };
                 }
             } else {
-                id = menuItem.id;
+                catId = menuItem.id;
             }
-            const taxonomies = await getTaxonomies(
-                root,
-                {
-                    type: "post_category",
-                    taxId: id,
-                    postType: args.postType,
+
+            const conditions = {
+                where: {
+                    type: args.postType,
                     status: "publish"
                 },
-                { user, models }
-            );
-            if (taxonomies.length === 0) {
-                return {
-                    count: 0,
-                    posts: []
-                };
-            }
-            const conditions = {
-                where: { type: args.postType, status: "publish" }
+                include: [
+                    {
+                        model: models.PostTaxonomy,
+                        where: { taxonomy_id: catId },
+                        require: true
+                    }
+                ],
+                order: [["id", "DESC"]]
             };
 
             if ("limit" in args) {
@@ -141,12 +148,20 @@ export default {
             if ("offset" in args) {
                 conditions.offset = args.offset;
             }
-            conditions.order = [["id", "DESC"]];
+
+            let data = await models.Post.findAndCountAll(conditions);
+
             return {
-                count: taxonomies[0].dataValues.posts.length,
-                posts: await models.Post.findAll(conditions)
+                count: data.count,
+                posts: data.rows
             };
         },
+        /**
+         * Query to take care of page clicked from nav menu.
+         * As pages cannot have a custom slug, we can directly query the Post table
+         * with the given slug.
+         *
+         */
         pageMenu: async (root, args, { models }) => {
             const response = {
                 ok: true,
@@ -168,75 +183,100 @@ export default {
                 ];
             }
             return response;
-
-            // const page = await models.Post.findOne({
-            //     where: { id: menuItem.id }
-            // });
-            // response.post = page;
-            // return response;
         },
+        /**
+         * Query to take care of adjacent posts.
+         */
         adjacentPosts: async (root, args, { models }) => {
-            let data = {
-                previous: {},
-                next: {}
-            };
+            let result = {};
             args.status = "publish";
-            const postCheck = await models.Post.findOne({ where: args });
-            if (postCheck === null) {
+            // get the current post
+            const currentPost = await models.Post.findOne({ where: args });
+            if (currentPost === null) {
                 throw new Error("Invalid query");
             }
+
+            // we dont need the slug anymore. Clone and remove it.
             const newArgs = { ...args };
             delete newArgs.slug;
-            const prevPost = await models.Post.findOne({
+
+            // get the preview item
+            result.previous = await models.Post.findOne({
                 where: {
                     ...newArgs,
-                    id: { $lt: postCheck.dataValues.id }
+                    id: { $lt: currentPost.dataValues.id }
                 },
                 order: [["id", "DESC"]],
                 limit: 1
             });
-            data.previous = prevPost;
-            const nextPost = await models.Post.findOne({
+
+            // get the next item
+            result.next = await models.Post.findOne({
                 where: {
                     ...newArgs,
                     id: {
-                        $gt: postCheck.dataValues.id
+                        $gt: currentPost.dataValues.id
                     }
                 },
                 order: [["id", "ASC"]],
                 limit: 1
             });
-            data.next = nextPost;
-            return data;
-        },
-        postTaxonomies: checkDisplayAccess.createResolver(
-            async (root, args, context) => {
-                const taxonomies = await getTaxonomies(root, args, context);
-                return {
-                    count: taxonomies[0].dataValues.posts.length,
-                    posts: taxonomies[0].dataValues.posts
-                };
-            }
-        ),
-        postsByTaxSlug: checkDisplayAccess.createResolver(
-            async (root, args, context) => {
-                const taxonomies = await getTaxonomies(root, args, context);
-                const conditions = {
-                    where: { type: args.postType, status: "publish" }
-                };
 
-                if (args.limit) {
-                    conditions.limit = args.limit;
+            return result;
+        },
+        /**
+         * Query to get posts by taxonomy slug and taxonomy type.
+         * The type can be post_category or post_tag
+         */
+        postsByTaxSlug: checkDisplayAccess.createResolver(
+            async (root, args, { models }) => {
+                // Get the taxonomy item
+                const taxonomy = await models.Taxonomy.findOne({
+                    where: { slug: args.slug, type: args.type }
+                });
+
+                if (taxonomy) {
+                    const taxId = taxonomy.dataValues.id;
+                    const conditions = {
+                        where: {
+                            status: "publish"
+                        },
+                        include: [
+                            {
+                                model: models.PostTaxonomy,
+                                where: { taxonomy_id: taxId },
+                                require: true
+                            }
+                        ],
+                        order: [["id", "DESC"]]
+                    };
+                    if ("postType" in args) {
+                        conditions.where.type = args.postType;
+                    }
+                    if ("limit" in args) {
+                        conditions.limit = args.limit;
+                    }
+                    if ("offset" in args) {
+                        conditions.offset = args.offset;
+                    }
+
+                    let data = await models.Post.findAndCountAll(conditions);
+                    return {
+                        count: data.count,
+                        posts: data.rows
+                    };
+                } else {
+                    return {
+                        count: 0,
+                        posts: []
+                    };
                 }
-                if (args.offset) {
-                    conditions.offset = args.offset;
-                }
-                return {
-                    count: taxonomies[0].dataValues.posts.length,
-                    posts: await context.models.Post.findAll(conditions)
-                };
             }
         ),
+        /**
+         * Query to get some stats for the admin dashboard
+         * TODO: Make one query to process all the data
+         */
         stats: async (root, args, { models }) => {
             const result = {
                 posts: { published: 0, drafts: 0 },
@@ -336,19 +376,4 @@ export default {
             return post.getTaxonomies();
         }
     }
-    // PostTaxonomy: {
-    //     posts: async (taxonomy, { type, limit, offset }) => {
-    //         const conditions = { where: { type, status: "publish" } };
-    //         if (limit) {
-    //             conditions.limit = limit;
-    //         }
-    //         if (offset) {
-    //             conditions.offset = offset;
-    //         }
-    //         const result = {};
-    //         result.posts = await taxonomy.getPosts(conditions);
-    //         result.count = taxonomy.dataValues.posts.length;
-    //         return result;
-    //     }
-    // }
 };

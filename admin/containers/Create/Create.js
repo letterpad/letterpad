@@ -8,17 +8,24 @@ import {
     PostActions,
     PostActionDrawer
 } from "../../components/Post";
+import { Link } from "react-router-dom";
 import CreatePost from "../../data-connectors/CreatePost";
 import FileExplorerModal from "../../components/Modals/FileExplorerModal";
+
+const qs = handle => document.querySelector(handle);
 
 class Create extends Component {
     constructor(props) {
         super(props);
+        this.addScrollTimer = this.addScrollTimer.bind(this);
         this.handlePostChanges = this.handlePostChanges.bind(this);
+        this.toggleActionDrawer = this.toggleActionDrawer.bind(this);
+        this.toggleZenView = this.toggleZenView.bind(this);
         this.state = {
             loading: true,
             post: {},
-            fileExplorerProps: {}
+            fileExplorerProps: {},
+            actionDrawerOpen: false
         };
     }
 
@@ -47,8 +54,8 @@ class Create extends Component {
     }
 
     handlePostChanges(e) {
-        if (this.state.post.mode == "markdown") {
-            //this.addScrollTimer();
+        if (PostActions.data.mode == "markdown") {
+            this.addScrollTimer();
             if ("mdPreview" in e.detail) {
                 this.setState({ preview: e.detail.mdPreview });
             }
@@ -58,7 +65,25 @@ class Create extends Component {
             });
         }
     }
-
+    addScrollTimer() {
+        setTimeout(() => {
+            var $divs = [
+                qs(".article-holder .CodeFlask__textarea"),
+                qs(".preview .post-content")
+            ];
+            document.addEventListener(
+                "scroll",
+                e => {
+                    $divs.forEach(div => {
+                        if (e.target === div) {
+                            this.adjustScroll(e);
+                        }
+                    });
+                },
+                true
+            );
+        }, 1000);
+    }
     handlePostSave(e) {
         const post = e.detail;
         if (post.status == "trash") {
@@ -68,6 +93,16 @@ class Create extends Component {
         }
     }
 
+    toggleActionDrawer(e) {
+        e.preventDefault();
+        this.setState({ actionDrawerOpen: !this.state.actionDrawerOpen });
+    }
+
+    toggleZenView(e) {
+        e.preventDefault();
+        document.body.classList.toggle("distract-free");
+    }
+
     render() {
         if (this.state.loading) {
             return <div />;
@@ -75,13 +110,24 @@ class Create extends Component {
         return (
             <section className="module-xs create-post">
                 <div className="row">
+                    <Link
+                        to="#"
+                        className="toggle-zenview"
+                        onClick={this.toggleZenView}
+                    >
+                        <i className="fa fa-eye" />
+                    </Link>
                     <div className="col-lg-12 distractor">
-                        <PostPublish create post={this.state.post} />
+                        <PostPublish
+                            create
+                            post={this.state.post}
+                            toggleActionDrawer={this.toggleActionDrawer}
+                        />
                     </div>
                     <div className="col-lg-6 column article-holder">
                         <ArticleCreate post={this.state.post} />
                     </div>
-                    <div className="col-lg-6 column preview">
+                    <div className="col-lg-6 column preview distractor">
                         {PostActions.data.mode == "markdown" && (
                             <h2>{PostActions.data.title}</h2>
                         )}
