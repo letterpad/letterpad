@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getTaxonomies = undefined;
 
 var _sequelize = require("sequelize");
 
@@ -35,41 +34,4 @@ exports.default = function (conn, DataTypes) {
         });
     };
     return Taxonomy;
-};
-
-var getTaxonomies = exports.getTaxonomies = function getTaxonomies(root, args, _ref) {
-    var models = _ref.models,
-        user = _ref.user;
-    var postType = args.postType,
-        type = args.type,
-        taxId = args.taxId,
-        status = args.status;
-
-
-    var where = {};
-    if (!user || !user.id) {
-        where.status = "publish";
-    }
-    if (postType) {
-        where.type = postType;
-    }
-
-    var query = {
-        include: [{
-            model: models.Post,
-            as: "posts",
-            where: where,
-            required: true
-        }],
-        order: [["name", "ASC"]],
-        where: { type: type },
-        group: ["taxonomy_id", "post_id"]
-    };
-    if (taxId) {
-        query.where.id = taxId;
-    }
-    if (args.slug) {
-        query.where.slug = args.slug;
-    }
-    return models.Taxonomy.findAll(query);
 };

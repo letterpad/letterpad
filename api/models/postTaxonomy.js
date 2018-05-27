@@ -15,6 +15,8 @@ export default (conn, DataTypes) => {
             freezeTableName: true
         }
     );
-
+    PostTaxonomy.associate = models => {
+        PostTaxonomy.belongsTo(models.Post);
+    };
     return PostTaxonomy;
 };

@@ -59,6 +59,7 @@ export default (conn, DataTypes) => {
             through: "PostTaxonomy",
             as: "taxonomies"
         });
+        Post.hasMany(models.PostTaxonomy);
         //  1:m
         Post.belongsTo(models.Author);
     };

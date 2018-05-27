@@ -6,7 +6,7 @@ const webpack = require("webpack");
 
 const clientConfig = args => {
     if (args.theme == "") {
-        args.theme = "amun";
+        args.theme = "hugo";
     }
     return merge(baseConfig(args), {
         name: "client",
@@ -74,7 +74,7 @@ const clientConfig = args => {
 
 const serverConfig = args => {
     if (args.theme == "") {
-        args.theme = "amun";
+        args.theme = "hugo";
     }
     const BUILD_PATH = path.join(
         __dirname,

@@ -15,7 +15,8 @@ const models = {
     Role: conn.import("../models/role"),
     Permission: conn.import("../models/permission"),
     Setting: conn.import("../models/settings"),
-    Media: conn.import("../models/media")
+    Media: conn.import("../models/media"),
+    PostTaxonomy: conn.import("../models/postTaxonomy")
 };
 
 Object.keys(models).map(name => {
@@ -39,57 +40,114 @@ export const seed = async () => {
     await insertRolePermData();
     await insertAuthor();
     await insertTaxonomy();
-    await insertPost({ title: "Post 1", type: "post", status: "publish" });
-    await insertPost({ title: "Post 2", type: "post", status: "publish" });
-    await insertPost({ title: "Post 3", type: "post", status: "publish" });
-    await insertPost({ title: "Post 4", type: "post", status: "publish" });
-    await insertPost({ title: "Post 5", type: "post", status: "publish" });
-    await insertPost({ title: "Post 6", type: "post", status: "publish" });
-    await insertPost({ title: "Post 7", type: "post", status: "publish" });
-    await insertPost({ title: "Post 8", type: "post", status: "publish" });
-    await insertPost({ title: "Post 9", type: "post", status: "publish" });
-    await insertPost({ title: "Post 10", type: "post", status: "publish" });
-    await insertPost({ title: "Post 11", type: "post", status: "publish" });
-    await insertPost({ title: "Post 12", type: "post", status: "publish" });
-    await insertPost({ title: "Post 13", type: "post", status: "publish" });
-    await insertPost({ title: "Post 14", type: "post", status: "publish" });
-    await insertPost({ title: "Post 15", type: "post", status: "publish" });
-    await insertPost({ title: "Post 16", type: "post", status: "publish" });
-    await insertPost({ title: "Post 17", type: "post", status: "publish" });
-    await insertPost({ title: "Post 18", type: "post", status: "publish" });
-    await insertPost({ title: "Post 19", type: "post", status: "publish" });
-    await insertPost({ title: "Post 20", type: "post", status: "publish" });
-    await insertPost({ title: "Post 21", type: "post", status: "publish" });
-    await insertPost({ title: "Post 22", type: "post", status: "publish" });
-    await insertPost({ title: "Post 23", type: "post", status: "publish" });
-    await insertPost({ title: "Post 24", type: "post", status: "publish" });
-    await insertPost({ title: "Post 25", type: "post", status: "publish" });
-    await insertPost({ title: "Post 26", type: "post", status: "publish" });
-    await insertPost({ title: "Post 27", type: "post", status: "publish" });
-    await insertPost({ title: "Post 28", type: "post", status: "publish" });
-    await insertPost({ title: "Post 29", type: "post", status: "publish" });
-    await insertPost({ title: "Post 30", type: "post", status: "publish" });
-    await insertPost({ title: "Post 31", type: "post", status: "publish" });
-    await insertPost({ title: "Post 32", type: "post", status: "publish" });
-    await insertPost({ title: "Post 33", type: "post", status: "publish" });
-    await insertPost({ title: "Post 34", type: "post", status: "publish" });
-    await insertPost({ title: "Post 35", type: "post", status: "publish" });
-    await insertPost({ title: "Post 36", type: "post", status: "publish" });
-    await insertPost({ title: "Post 37", type: "post", status: "publish" });
-    await insertPost({ title: "Post 38", type: "post", status: "publish" });
-    await insertPost({ title: "Post 39", type: "post", status: "publish" });
-    await insertPost({ title: "Post 40", type: "post", status: "publish" });
-    await insertPost({ title: "Post 41", type: "post", status: "publish" });
-    await insertPost({ title: "Post 42", type: "post", status: "publish" });
-    await insertPost({ title: "Post 43", type: "post", status: "publish" });
-    await insertPost({ title: "Post 44", type: "post", status: "publish" });
-    await insertPost({ title: "Post 45", type: "post", status: "publish" });
-    await insertPost({ title: "Post 46", type: "post", status: "publish" });
-    await insertPost({ title: "Post 9-draft", type: "post", status: "draft" });
-    await insertPost({ title: "Post 10-draft", type: "post", status: "draft" });
-
-    await insertPost({ title: "Page 1", type: "page", status: "publish" });
-    await insertPost({ title: "Page 2", type: "page", status: "publish" });
+    await insertPost({
+        title: "We encountered a new paradise",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/1.jpeg"
+    });
+    await insertPost({
+        title: "The Mountain",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/2.jpeg"
+    });
+    await insertPost({
+        title: "Ink in water",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/3.jpeg"
+    });
+    await insertPost({
+        title: "Future of ReactJS",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/4.jpeg"
+    });
+    await insertPost({
+        title: "A bright sunny day",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/5.jpeg"
+    });
+    await insertPost({
+        title: "Post 6",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/6.jpeg"
+    });
+    await insertPost({
+        title: "Post 7",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/7.jpeg"
+    });
+    await insertPost({
+        title: "Post 8",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/8.jpeg"
+    });
+    await insertPost({
+        title: "Post 9",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/9.jpeg"
+    });
+    await insertPost({
+        title: "Post 10",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/10.jpeg"
+    });
+    await insertPost({
+        title: "Post 11",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/10.jpeg"
+    });
+    await insertPost({
+        title: "Post 12",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/10.jpeg"
+    });
+    await insertPost({
+        title: "Post 13",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/10.jpeg"
+    });
+    await insertPost({
+        title: "Post 14",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/10.jpeg"
+    });
+    await insertPost({
+        title: "Post 15",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/10.jpeg"
+    });
+    await insertPost({
+        title: "Post 16",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/10.jpeg"
+    });
+    await insertPost({
+        title: "Post 17",
+        type: "post",
+        status: "publish",
+        cover_image: "/uploads/10.jpeg"
+    });
+    await insertPost({
+        title: "About",
+        type: "page",
+        status: "publish",
+        cover_image: "/uploads/1.jpeg"
+    });
     await insertPost({
         title: "Page 3 (draft)",
         type: "page",
@@ -138,100 +196,122 @@ export async function insertAuthor() {
         {
             fname: "John",
             lname: "Dave",
-            email: "admin@razor.com",
-            password: bcrypt.hashSync("password", 12),
+            email: "demo@demo.com",
+            password: bcrypt.hashSync("demo", 12),
             social: JSON.stringify({
-                twitter: "",
-                facebook: "",
-                github: "",
-                instagram: ""
+                twitter: "https://twitter.com",
+                facebook: "https://facebook.com",
+                github: "https://github.com",
+                instagram: "https://instagram.com"
             }),
-            role_id: 1
+            role_id: 1,
+            bio:
+                "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
+            avatar: "/admin/images/avatar.png"
         },
         {
             fname: "Jim",
             lname: "Parker",
-            email: "author@razor.com",
-            password: bcrypt.hashSync("password", 12),
+            email: "author@letterpad.app",
+            password: bcrypt.hashSync("demo", 12),
             social: JSON.stringify({
-                twitter: "",
-                facebook: "",
-                github: "",
-                instagram: ""
+                twitter: "https://twitter.com",
+                facebook: "https://facebook.com",
+                github: "https://github.com",
+                instagram: "https://instagram.com"
             }),
-            role_id: 1
+            role_id: 1,
+            bio:
+                "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
+            avatar: "/admin/images/avatar.png"
         }
     ]);
 }
 export async function insertTaxonomy() {
     await models.Taxonomy.bulkCreate([
         {
-            name: "Uncategorized",
+            name: "Travel",
             type: "post_category",
-            slug: "un-categorized"
+            slug: "travel"
         },
         {
-            name: "General",
+            name: "Nature",
             type: "post_category",
-            slug: "gen"
+            slug: "nature"
+        },
+        {
+            name: "Abstract",
+            type: "post_category",
+            slug: "abstract"
         }
     ]);
     await models.Taxonomy.bulkCreate([
         {
-            name: "tag1",
+            name: "sports",
             type: "post_tag",
-            slug: "tag-1"
+            slug: "sports"
         },
         {
-            name: "tag2",
+            name: "nature",
             type: "post_tag",
-            slug: "tag-2"
+            slug: "nature"
         },
         {
-            name: "tag3",
+            name: "street",
             type: "post_tag",
-            slug: "tag-3"
+            slug: "street"
         },
         {
-            name: "tag4",
+            name: "forest",
             type: "post_tag",
-            slug: "tag-4"
+            slug: "forest"
         },
         {
-            name: "tag5",
+            name: "sky",
             type: "post_tag",
-            slug: "tag-5"
+            slug: "sky"
         }
     ]);
 }
 
 export async function insertPost(params) {
-    // get author
-    let admin = await models.Author.findOne({ where: { role_id: 1 } });
-    const title = Faker.lorem.words(3);
-    const slug = title.toLocaleLowerCase().replace(/ /g, "-");
-    const imageNo = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+    // get author  // 1 or 2
+    const randomAuthorId = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
+    let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
+    const slug = params.title.toLocaleLowerCase().replace(/ /g, "-");
     let post = await models.Post.create({
         title: params.title,
         body: Faker.lorem.paragraphs(6),
         excerpt: Faker.lorem.sentences(),
-        cover_image: "/uploads/" + imageNo + ".jpeg",
-        author_id: 1,
+        cover_image: params.cover_image,
+        author_id: randomAuthorId,
         type: params.type,
         status: params.status,
         slug: slug,
-        author_id: admin.id
+        mode: "rich-text",
+        mdPreview: ""
     });
     await admin.addPost(post);
 
-    let taxonomy = await models.Taxonomy.findOne({
+    let categories = await models.Taxonomy.findAll({
         where: { type: "post_category" }
     });
+
+    let tags = await models.Taxonomy.findAll({
+        where: { type: "post_tag" }
+    });
+
     let postItem = await models.Post.findOne({
         limit: 1,
         order: [["id", "DESC"]]
     });
-    await postItem.addTaxonomy(taxonomy);
+    const randomCategory = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
+
+    await postItem.addTaxonomy(categories[randomCategory]);
+
+    tags.forEach(async tag => {
+        await postItem.addTaxonomy(tag);
+    });
 }
 
 export async function insertMedia(params) {
@@ -252,55 +332,31 @@ export async function insertMedia(params) {
 export async function insertSettings() {
     let menu = JSON.stringify([
         {
-            id: "1",
-            label: "Uncategorized",
+            id: 3,
+            title: "Abstract",
             type: "category",
             name: "Home",
-            children: [],
-            slug: "custom-slug"
+            disabled: true,
+            slug: "home"
         },
         {
-            id: "2",
-            label: "General",
+            id: 1,
+            title: "Travel",
             type: "category",
-            name: "Empty",
-            children: [],
-            slug: "gen"
+            name: "Travel",
+            disabled: true,
+            slug: "travel"
         },
         {
-            id: "12",
-            label: "Page 2",
-            slug: "error-quasi-iste",
+            id: 11,
+            title: "Page 2",
+            slug: "about",
             type: "page",
-            name: "About Me",
-            children: []
-        },
-        {
-            id: "1519412227282-label",
-            label: "Label",
-            type: "label",
-            name: "Folder",
-            children: [
-                {
-                    id: "1519412236064-label",
-                    label: "Label",
-                    type: "label",
-                    name: "Sub Folder",
-                    children: [
-                        {
-                            id: "11-page",
-                            label: "Page 1",
-                            slug: "dignissimos-est-consequatur",
-                            type: "page",
-                            name: "Page 1",
-                            disabled: true,
-                            children: []
-                        }
-                    ]
-                }
-            ]
+            name: "About",
+            disabled: true
         }
     ]);
+
     let data = [
         {
             option: "site_title",
@@ -312,11 +368,11 @@ export async function insertSettings() {
         },
         {
             option: "site_email",
-            value: ""
+            value: "admin@letterpad.app"
         },
         {
             option: "site_url",
-            value: ""
+            value: "https://letterpad.app/demo"
         },
         {
             option: "site_footer",
@@ -327,28 +383,20 @@ export async function insertSettings() {
             value: ""
         },
         {
-            option: "post_display",
-            value: "row"
-        },
-        {
-            option: "layout_display",
-            value: "two-column"
-        },
-        {
             option: "social_twitter",
-            value: ""
+            value: "https://twitter.com"
         },
         {
             option: "social_facebook",
-            value: ""
+            value: "https://facebook.com"
         },
         {
             option: "social_instagram",
-            value: ""
+            value: "https://instagram.com"
         },
         {
             option: "social_github",
-            value: ""
+            value: "https://www.github.com"
         },
         {
             option: "text_notfound",
@@ -373,7 +421,7 @@ export async function insertSettings() {
         },
         {
             option: "site_logo",
-            value: ""
+            value: "/uploads/logo.png"
         },
         {
             option: "menu",
@@ -406,11 +454,15 @@ export async function insertSettings() {
         },
         {
             option: "theme",
-            value: "amun"
+            value: "hugo"
+        },
+        {
+            option: "disqus_id",
+            value: "letterpad"
         },
         {
             option: "banner",
-            value: ""
+            value: "/uploads/banner.jpg"
         }
     ];
     await models.Setting.bulkCreate(data);

@@ -54,7 +54,7 @@ const clientConfig = args => {
 
 const serverConfig = args => {
     if (args.theme == "") {
-        args.theme = "amun";
+        args.theme = "hugo";
     }
     const BUILD_PATH = path.join(
         __dirname,

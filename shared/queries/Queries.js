@@ -204,7 +204,7 @@ module.exports.TAX_SUGGESTIONS = gql`
 
 module.exports.GET_POSTS_LINKED_TAXONOMIES = gql`
     query getTaxonomies($type: String!, $postType: String) {
-        postTaxonomies(type: $type, postType: $postType) {
+        activeTaxonomies(type: $type, postType: $postType) {
             id
             name
             type

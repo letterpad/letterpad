@@ -21,6 +21,8 @@ exports.default = function (conn, DataTypes) {
     }, {
         freezeTableName: true
     });
-
+    PostTaxonomy.associate = function (models) {
+        PostTaxonomy.belongsTo(models.Post);
+    };
     return PostTaxonomy;
 };
