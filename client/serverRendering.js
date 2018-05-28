@@ -32,7 +32,7 @@ module.exports.init = app => {
     app.get("*", (req, res) => {
         const client = new ApolloClient({
             ssrMode: true,
-            link: httpLink,
+            link: link,
             cache: new InMemoryCache()
         });
 
@@ -63,18 +63,15 @@ module.exports.init = app => {
                     const previewThemePath =
                         "./themes/" + theme + "/public/dist/server.node.js";
                     if (fs.existsSync(path.join(__dirname, previewThemePath))) {
-                        console.log("Previewing ", theme);
                         serverFile = previewThemePath;
                     } else {
-                        console.log(
+                        console.error(
                             "Server bundle for theme " + theme + " not found"
                         );
                     }
                 }
-                console.log("Running server instance: ", serverFile);
                 const server = require(serverFile).default;
 
-                // const server = require("./server").default;
                 server(req, client, config).then(
                     ({ html, apolloState, head }) => {
                         res.end(getHtml(theme, html, apolloState, head));
@@ -149,6 +146,7 @@ function getHtml(theme, html, state, head) {
                     name="viewport"
                     content="width=device-width, initial-scale=1"
                 />
+                <link rel="manifest" href=${config.baseName + "/manifest.json"}>
                 ${metaTags}
                 ${styleLinks}
                 

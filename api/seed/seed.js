@@ -175,7 +175,6 @@ export async function insertRolePermData() {
     });
 
     let role = await models.Role.create({ name: "ADMIN" });
-    await role.addPermission(MANAGE_OWN_POSTS);
     await role.addPermission(READ_ONLY_POSTS);
     await role.addPermission(MANAGE_ALL_POSTS);
     await role.addPermission(MANAGE_USERS);
