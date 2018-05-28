@@ -53,52 +53,48 @@ var insertRolePermData = exports.insertRolePermData = function () {
                     case 17:
                         role = _context2.sent;
                         _context2.next = 20;
-                        return role.addPermission(MANAGE_OWN_POSTS);
+                        return role.addPermission(READ_ONLY_POSTS);
 
                     case 20:
                         _context2.next = 22;
-                        return role.addPermission(READ_ONLY_POSTS);
+                        return role.addPermission(MANAGE_ALL_POSTS);
 
                     case 22:
                         _context2.next = 24;
-                        return role.addPermission(MANAGE_ALL_POSTS);
+                        return role.addPermission(MANAGE_USERS);
 
                     case 24:
                         _context2.next = 26;
-                        return role.addPermission(MANAGE_USERS);
+                        return role.addPermission(MANAGE_SETTINGS);
 
                     case 26:
                         _context2.next = 28;
-                        return role.addPermission(MANAGE_SETTINGS);
-
-                    case 28:
-                        _context2.next = 30;
                         return models.Role.create({ name: "REVIEWER" });
 
-                    case 30:
+                    case 28:
                         role = _context2.sent;
-                        _context2.next = 33;
+                        _context2.next = 31;
                         return role.addPermission(MANAGE_ALL_POSTS);
 
-                    case 33:
-                        _context2.next = 35;
+                    case 31:
+                        _context2.next = 33;
                         return models.Role.create({ name: "READER" });
 
-                    case 35:
+                    case 33:
                         role = _context2.sent;
-                        _context2.next = 38;
+                        _context2.next = 36;
                         return role.addPermission(READ_ONLY_POSTS);
 
-                    case 38:
-                        _context2.next = 40;
+                    case 36:
+                        _context2.next = 38;
                         return models.Role.create({ name: "AUTHOR" });
 
-                    case 40:
+                    case 38:
                         role = _context2.sent;
-                        _context2.next = 43;
+                        _context2.next = 41;
                         return role.addPermission(MANAGE_OWN_POSTS);
 
-                    case 43:
+                    case 41:
                     case "end":
                         return _context2.stop();
                 }

@@ -1,9 +1,6 @@
-const ReactDOM = require("react-dom/server");
 const { createHttpLink } = require("apollo-link-http");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 const fetch = require("node-fetch");
-const { StaticRouter } = require("react-router");
-const { ApolloProvider, getDataFromTree } = require("react-apollo");
 const { ApolloClient } = require("apollo-client");
 const config = require("../config");
 const { GET_OPTIONS } = require("../shared/queries/Queries");
@@ -81,14 +78,16 @@ module.exports.init = app => {
     });
 };
 
-function Html({ theme, content, initialState }) {
+function Html({ initialState }) {
     const devBundles = [
         "/admin/js/quill.1.2.2.js",
+        "/admin/js/highlight.min.js",
         "/static/public/js/vendor-bundle.js",
         "/static/admin/public/dist/admin-bundle.js"
     ];
     const prodBundles = [
         "/admin/js/quill.1.2.2.js",
+        "/admin/js/highlight.min.js",
         "/admin/dist/vendor-bundle.min.js",
         "/admin/dist/admin-bundle.min.js"
     ];
@@ -106,6 +105,10 @@ function Html({ theme, content, initialState }) {
             rel="stylesheet"
             type="text/css"
         />`;
+    const adminCss =
+        process.env.NODE_ENV === "production"
+            ? insertStyle("/dist/admin.min.css")
+            : "";
 
     return `<html lang="en">
             <head>
@@ -115,30 +118,9 @@ function Html({ theme, content, initialState }) {
                     content="width=device-width, initial-scale=1"
                 />
                 <title>Letterpad</title>
-
-                <link
-                    href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700"
-                    rel="stylesheet"
-                    type="text/css"
-                />
                 ${insertStyle("/css/bootstrap.min.css")}
                 ${insertStyle("/css/vertical.css")}
-                ${insertStyle("/css/font-awesome.min.css")}
-                <link
-                    href="https://cdn.jsdelivr.net/highlight.js/9.8.0/styles/github.min.css"
-                    rel="stylesheet"
-                    type="text/css"
-                />
-                <link
-                    href="https://cdn.quilljs.com/1.2.2/quill.snow.css"
-                    rel="stylesheet"
-                    type="text/css"
-                />
-                ${
-                    process.env.NODE_ENV === "production"
-                        ? insertStyle("/dist/admin.min.css")
-                        : ""
-                }
+                ${adminCss}
             </head>
             <body>
                 <div id="app"></div>
@@ -152,8 +134,15 @@ function Html({ theme, content, initialState }) {
                     window.apiPort="${process.env.apiPort}";
                     window.baseName="${process.env.baseName}";
                 </script>
-                ${insertScript("/admin/js/highlight.min.js")}
-                <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+                <link
+                    href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700"
+                    rel="stylesheet"
+                    type="text/css"
+                />
+                ${insertStyle("/css/font-awesome.min.css")}
+                ${insertStyle("/css/quill.snow.css")}
+                ${insertStyle("/css/github.min.css")}
+                <script src="/admin/js/masonry.pkgd.min.js"></script>
                 ${bundles.map(insertScript).join("")}
             </body>
         </html>`;

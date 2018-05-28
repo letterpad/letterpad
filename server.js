@@ -6,7 +6,6 @@ const config = require("./config/index.js");
 const compression = require("compression");
 const adminServerRendering = require("./admin/serverRendering");
 const clientServerRendering = require("./client/serverRendering");
-const FileNameReplacementPlugin = require("./webpack/FileNameReplacementPlugin");
 const dir = require("./shared/dir.js");
 
 const app = express();
@@ -15,7 +14,7 @@ app.use(compression());
 
 if (process.env.NODE_ENV === "dev") {
     const wpConfigFile = "./webpack/webpack.dev.js";
-    let webpackConfigs = require(wpConfigFile)({
+    require(wpConfigFile)({
         theme: process.env.THEME || "amun"
     }).map(webpackConfig => {
         if (webpackConfig.name === "client") {
@@ -57,7 +56,6 @@ if (process.env.NODE_ENV === "dev") {
                     }
                 });
             });
-        } else {
         }
     });
 }
