@@ -65,6 +65,14 @@
     margin-top: 16px;
     height: calc(100vh - 330px);
 }
+#md-preview {
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
+    &:hover::-webkit-scrollbar {
+        width: 4px;
+    }
+}
 .featured-image {
     img {
         object-fit: cover;
@@ -87,11 +95,10 @@
     justify-content: space-between;
     align-items: center;
 }
-.article-holder {
-    .post-header {
-        display: flex;
-        justify-content: space-between;
-    }
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
 }
 
 .post-grid .post {
@@ -176,7 +183,7 @@
         max-width: none;
     }
     .post-header {
-        margin: 16px 0 16px;
+        margin: 16px 0 16px !important;
         .post-meta {
             color: var(--color-text-muted);
             padding: 8px 0px;
@@ -186,7 +193,6 @@
     .post-title {
         font-weight: 500;
         min-height: 20px;
-        margin: 0 0 10px;
         text-transform: initial;
         a {
             font-weight: 500;
@@ -229,11 +235,22 @@
         margin-left: -10%;
         margin-right: -10%;
     }
-    blockquote {
-        margin: 60px -10%;
+
+    .footer {
+        margin: 0 -20px -20px;
+        padding: 8px 22px;
+        background: #eeeeee69;
+        font-size: 12px;
+        border-top: 1px solid #e4e4e4;
+        min-height: 36px;
     }
 }
-
+.no-preview {
+    display: flex;
+    height: 50vh;
+    align-items: center;
+    justify-content: center;
+}
 @media (max-width: 991px) {
     .post p > img,
     .post-thumbnail img {
@@ -260,6 +277,22 @@
     }
 }
 
+pre.CodeFlask__pre {
+    opacity: 0;
+}
+textarea.CodeFlask__textarea {
+    opacity: 1;
+    font-size: 16px;
+    line-height: 27.2px !important;
+    font-family: "Source Sans Pro", sans-serif;
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
+    &:hover::-webkit-scrollbar {
+        width: 4px;
+    }
+}
+
 /*!------------------------------------------------------------------
 [Post Preview]
 */
@@ -267,11 +300,13 @@
 .edit-post-page,
 .create-page-page {
     .preview {
-        padding: 40px 20px 23px;
         font-size: 16px;
         .post-content {
             border-top: 1px solid #e2e2e2;
             overflow-y: auto;
+            &::-webkit-scrollbar {
+                width: 4px;
+            }
         }
     }
 }

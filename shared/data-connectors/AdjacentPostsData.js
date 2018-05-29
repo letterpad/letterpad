@@ -11,6 +11,6 @@ export default graphql(ADJACENT_POSTS, {
     },
     props: ({ data: { loading, adjacentPosts } }) => ({
         adjacentPosts,
-        loading: loading
+        adjPostsLoading: loading
     })
 });

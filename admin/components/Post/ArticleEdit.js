@@ -27,34 +27,30 @@ export default class ArticleEdit extends Component {
             <div className="card">
                 <article className="post">
                     <div className="post-header">
-                        <div style={{ flex: 1 }}>
-                            <ContentEditable
-                                title={this.props.post.title}
-                                placeholder="Enter a title"
-                                onChange={e => {
-                                    PostActions.setData({
-                                        title: e.target.value
-                                    });
-                                }}
-                            />
-                        </div>
-                        <div className="text-right">
-                            <div className="switch-block">
-                                <span className="switch-label switch-off-text">
-                                    Rich Text
-                                </span>
-                                <label className="switch">
-                                    <input
-                                        type="checkbox"
-                                        onChange={this.changeEditor}
-                                        checked={this.state.isMarkdown}
-                                    />
-                                    <span className="slider round" />
-                                </label>
-                                <span className="switch-label switch-on-text">
-                                    Markdown
-                                </span>
-                            </div>
+                        <ContentEditable
+                            title={this.props.post.title}
+                            placeholder="Enter a title"
+                            onChange={e => {
+                                PostActions.setData({
+                                    title: e.target.value
+                                });
+                            }}
+                        />
+                        <div className="switch-block">
+                            <span className="switch-label switch-off-text">
+                                Rich Text
+                            </span>
+                            <label className="switch">
+                                <input
+                                    type="checkbox"
+                                    onChange={this.changeEditor}
+                                    checked={this.state.isMarkdown}
+                                />
+                                <span className="slider round" />
+                            </label>
+                            <span className="switch-label switch-on-text">
+                                Markdown
+                            </span>
                         </div>
                     </div>
                     <div className="post-content">
@@ -63,6 +59,7 @@ export default class ArticleEdit extends Component {
                             {...this.props.post}
                         />
                     </div>
+                    <div className="footer"> </div>
                 </article>
             </div>
         );

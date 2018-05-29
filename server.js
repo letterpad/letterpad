@@ -15,7 +15,7 @@ app.use(compression());
 if (process.env.NODE_ENV === "dev") {
     const wpConfigFile = "./webpack/webpack.dev.js";
     require(wpConfigFile)({
-        theme: process.env.THEME || "amun"
+        theme: process.env.theme || "hugo"
     }).map(webpackConfig => {
         if (webpackConfig.name === "client") {
             const compiler = require("webpack")(webpackConfig);

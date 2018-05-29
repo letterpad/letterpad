@@ -23,7 +23,7 @@ cd letterpad
 
 ```
 yarn install
-THEME=document npm run dev
+theme=document npm run dev
 ```
 
 Now visit [http://localhost:4040](http://localhost:4040) and checkout the welcome page.
