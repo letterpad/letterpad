@@ -1,3 +1,3 @@
-if [ ! -d client/themes/amun ]; then  
-    git clone git@github.com:ajaxtown/theme-amun.git client/themes/amun
+if [ ! -d client/themes/hugo ]; then  
+    git clone git@github.com:letterpad/theme-hugo.git client/themes/hugo
 fi

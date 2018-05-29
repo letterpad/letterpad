@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { withRouter } from "react-router";
-import { Helmet } from "react-helmet";
 import SEO from "./helpers/SEO";
 import Loader from "./helpers/Loader";
 import { hot, setConfig } from "react-hot-loader";
@@ -85,65 +84,47 @@ class App extends Component {
             },
             {
                 exact: true,
-                component: Layout(Posts, { settings }, "Posts"),
+                component: Layout(Posts, { settings, type: "posts" }),
                 path: "/posts/:slug"
             },
             {
                 exact: true,
-                component: Layout(
-                    SinglePage,
-                    {
-                        settings
-                    },
-                    "SinglePage"
-                ),
+                component: Layout(SinglePage, {
+                    type: "page",
+                    settings
+                }),
                 path: "/page/:slug"
             },
             {
                 exact: true,
-                component: Layout(
-                    SinglePost,
-                    {
-                        settings
-                    },
-                    "SinglePost"
-                ),
+                component: Layout(SinglePost, {
+                    type: "post",
+                    settings
+                }),
                 path: "/post/:slug"
             },
             {
                 exact: true,
-                component: Layout(
-                    SearchWrapper,
-                    {
-                        type: "category",
-                        settings
-                    },
-                    "SearchWrapper"
-                ),
+                component: Layout(SearchWrapper, {
+                    type: "category",
+                    settings
+                }),
                 path: "/category/:query"
             },
             {
                 exact: true,
-                component: Layout(
-                    SearchWrapper,
-                    {
-                        type: "tag",
-                        settings
-                    },
-                    "SearchWrapper"
-                ),
+                component: Layout(SearchWrapper, {
+                    type: "tag",
+                    settings
+                }),
                 path: "/tag/:query"
             },
             {
                 exact: true,
-                component: Layout(
-                    SearchWrapper,
-                    {
-                        type: "post",
-                        settings
-                    },
-                    "SearchWrapper"
-                ),
+                component: Layout(SearchWrapper, {
+                    type: "post",
+                    settings
+                }),
                 path: "/search/:query"
             }
         ];

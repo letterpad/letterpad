@@ -2,7 +2,7 @@ let PostActions = {
     data: {},
     taxonomies: {},
     postUpdated: function(action, data) {
-        PostActions.triggerEvent(action, { detail: data });
+        PostActions.triggerEvent(action, data);
     },
     triggerEvent: function(name, data) {
         // create and dispatch the event

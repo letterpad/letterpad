@@ -48,8 +48,13 @@ class PostPublish extends Component {
         });
         if (update.data.updatePost.ok) {
             // If any component has subscribed to get notifications on update/delete, it will be notified.
-            PostActions.postUpdated("update", update.data.updatePost.post);
-            if (this.props.create) {
+            if (this.props.edit) {
+                PostActions.postUpdated("update", update.data.updatePost.post);
+            } else {
+                PostActions.postUpdated(
+                    "onPostCreate",
+                    update.data.updatePost.post
+                );
                 return notify.show("Post created", "success", 3000);
             }
             if (this.props.post.status === "trash") {

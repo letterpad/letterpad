@@ -13,3 +13,4 @@ client/themes/*
 *hot*js*
 data/*.sqlite
 yarn-error.log
+public/uploads

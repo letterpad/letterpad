@@ -42,8 +42,8 @@ module.exports.init = app => {
                     item => item.option == "theme"
                 )[0].value;
                 // In dev mode if a theme is explicitly called, then use that
-                if (process.env.THEME && process.env.THEME !== "") {
-                    theme = process.env.THEME;
+                if (process.env.theme && process.env.theme !== "") {
+                    theme = process.env.theme;
                 }
                 let serverFile =
                     "./themes/" + theme + "/public/dist/server.node.js";

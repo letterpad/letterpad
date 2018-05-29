@@ -63,8 +63,8 @@ module.exports.init = app => {
                 )[0].value;
 
                 // In dev mode if a theme is explicitly called, then use that
-                if (process.env.THEME && process.env.THEME !== "") {
-                    theme = process.env.THEME;
+                if (process.env.theme && process.env.theme !== "") {
+                    theme = process.env.theme;
                 }
                 const sendResponse = ({ content, initialState }) => {
                     const html = Html({ theme, content, initialState });
@@ -80,14 +80,14 @@ module.exports.init = app => {
 
 function Html({ initialState }) {
     const devBundles = [
-        "/admin/js/quill.1.2.2.js",
         "/admin/js/highlight.min.js",
+        "/admin/js/quill.1.2.2.js",
         "/static/public/js/vendor-bundle.js",
         "/static/admin/public/dist/admin-bundle.js"
     ];
     const prodBundles = [
-        "/admin/js/quill.1.2.2.js",
         "/admin/js/highlight.min.js",
+        "/admin/js/quill.1.2.2.js",
         "/admin/dist/vendor-bundle.min.js",
         "/admin/dist/admin-bundle.min.js"
     ];

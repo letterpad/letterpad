@@ -11,6 +11,7 @@ import OhSnap from "./OhSnap";
 import Loader from "../../components/Loader";
 import GetSinglePost from "../../data-connectors/GetSinglePost";
 import FileExplorerModal from "../../components/Modals/FileExplorerModal";
+import MdPreview from "../../components/Post/MdPreview";
 
 const qs = handle => document.querySelector(handle);
 
@@ -50,10 +51,8 @@ class Single extends Component {
             if ("mdPreview" in e.detail) {
                 this.setState({ preview: e.detail.mdPreview });
             }
-        } else if ("body" in e.detail) {
-            this.setState({
-                preview: "Preview is only available for markdown editor"
-            });
+        } else {
+            this.setState({ preview: "" });
         }
     }
 
@@ -154,17 +153,10 @@ class Single extends Component {
                         />
                     </div>
                     <div className="col-lg-6 column preview distractor">
-                        {PostActions.data.mode == "markdown" && (
-                            <h2>{PostActions.data.title}</h2>
-                        )}
-                        <div className="post-content">
-                            <div
-                                id="md-preview"
-                                dangerouslySetInnerHTML={{
-                                    __html: this.state.preview
-                                }}
-                            />
-                        </div>
+                        <MdPreview
+                            post={PostActions.data}
+                            preview={this.state.preview}
+                        />
                     </div>
                 </div>
                 <PostActionDrawer

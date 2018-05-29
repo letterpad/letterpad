@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import CreatePost from "../../data-connectors/CreatePost";
 import FileExplorerModal from "../../components/Modals/FileExplorerModal";
+import MdPreview from "../../components/Post/MdPreview";
 
 const qs = handle => document.querySelector(handle);
 
@@ -21,6 +22,8 @@ class Create extends Component {
         this.handlePostChanges = this.handlePostChanges.bind(this);
         this.toggleActionDrawer = this.toggleActionDrawer.bind(this);
         this.toggleZenView = this.toggleZenView.bind(this);
+        this.adjustScroll = this.adjustScroll.bind(this);
+        this.handlePostSave = this.handlePostSave.bind(this);
         this.state = {
             loading: true,
             post: {},
@@ -32,8 +35,8 @@ class Create extends Component {
     componentWillMount() {
         const { type } = this.props;
         window.addEventListener("onPostChange", this.handlePostChanges);
-        window.addEventListener("onPostSave", this.handlePostSave);
-
+        window.addEventListener("onPostCreate", this.handlePostSave);
+        PostActions.data = {};
         const title = "Draft - " + moment().format("L LT");
         this.props.createPost({ type, title }).then(result => {
             PostActions.setData(result.data.createPost.post);
@@ -50,7 +53,7 @@ class Create extends Component {
     componentWillUnmount() {
         document.body.classList.remove("create-" + this.props.type + "-page");
         window.removeEventListener("onPostChange", this.handlePostChanges);
-        window.removeEventListener("onPostSave", this.handlePostSave);
+        window.removeEventListener("onPostCreate", this.handlePostSave);
     }
 
     handlePostChanges(e) {
@@ -59,10 +62,8 @@ class Create extends Component {
             if ("mdPreview" in e.detail) {
                 this.setState({ preview: e.detail.mdPreview });
             }
-        } else if ("body" in e.detail) {
-            this.setState({
-                preview: "Preview is only available for markdown editor"
-            });
+        } else {
+            this.setState({ preview: "" });
         }
     }
     addScrollTimer() {
@@ -83,6 +84,33 @@ class Create extends Component {
                 true
             );
         }, 1000);
+    }
+    adjustScroll(event) {
+        const $divs = [
+            qs(".article-holder .CodeFlask__textarea"),
+            qs(".preview .post-content")
+        ];
+        let $allowed = $divs;
+        const sync = e => {
+            const $this = e.target;
+            if ($allowed.indexOf($this) >= 0) {
+                var other = $divs.filter(div => div !== $this)[0],
+                    percentage =
+                        $this.scrollTop /
+                        ($this.scrollHeight - $this.offsetHeight);
+
+                other.scrollTop = Math.round(
+                    percentage * (other.scrollHeight - other.offsetHeight)
+                );
+
+                $allowed = e.target;
+            } else {
+                $allowed = $divs;
+            }
+
+            return false;
+        };
+        sync(event);
     }
     handlePostSave(e) {
         const post = e.detail;
@@ -128,13 +156,9 @@ class Create extends Component {
                         <ArticleCreate post={this.state.post} />
                     </div>
                     <div className="col-lg-6 column preview distractor">
-                        {PostActions.data.mode == "markdown" && (
-                            <h2>{PostActions.data.title}</h2>
-                        )}
-                        <div
-                            dangerouslySetInnerHTML={{
-                                __html: this.state.preview
-                            }}
+                        <MdPreview
+                            post={PostActions.data}
+                            preview={this.state.preview}
                         />
                     </div>
                 </div>
