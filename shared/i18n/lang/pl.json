@@ -42,7 +42,7 @@
     "menu.authors": "Autorzy",
     "menu.settings": "Ustawienia",
     "menu.siteSettings": "Ustawienia witryny",
-    "menu.menu": "Menu",
+    "menu.navigation": "Nawigacja",
     "menu.themes": "Motywy",
     "home.gettingStarted": "Pierwsze kroki",
     "home.tagline":
@@ -135,10 +135,10 @@
     "settings.additional.aboutTitle.placeholder": "Przedstaw swój blog",
     "menu.title": "Ustawienia menu",
     "menu.tagline":
-        "Skonfiguruj swoje menu, wybierając opcje po lewej stronie, a następnie przeciągnij i upuść, aby zamówić je po prawej stronie.",
+        "Skonfiguruj swoje menu nawigacyjne, klikając opcje po lewej stronie. Następnie możesz przeciągnąć elementy po prawej stronie, aby zmienić ich kolejność.",
     "menu.Pages": "Dodaj strony",
     "menu.Categories": "Dodaj kategorie",
-    "menu.Labels": "Dodaj etykiety",
+    "menu.Folders": "Dodaj foldery",
     "menu.build.title": "Zbuduj swoje menu",
     "themesSetting": "Ustawienia kompozycji",
     "themeTagline": "Tutaj możesz zmienić wygląd i styl twojego bloga",

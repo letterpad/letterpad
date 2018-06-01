@@ -5,6 +5,7 @@ import { Basic, Social, PasswordChange } from "../../components/Author";
 import { notify } from "react-notify-toast";
 import UpdateAuthor from "../../data-connectors/UpdateAuthor";
 import { GetAuthor } from "../../data-connectors/GetAuthors";
+import Loader from "../../components/Loader";
 
 const SubmitBtn = ({ handleClick }) => {
     return (
@@ -24,15 +25,20 @@ class EditAuthor extends Component {
         this.author = {};
         this.submitData = this.submitData.bind(this);
         this.setOption = this.setOption.bind(this);
+
+        this.gridLoaded = element => {
+            this.textInput = element;
+        };
     }
     componentDidMount() {
         document.body.classList.add("edit-author-page");
-
-        const elem = document.querySelector(".masonry-grid");
-        new Masonry(elem, {
-            itemSelector: ".masonry-grid-item",
-            gutter: 14
-        });
+        setTimeout(() => {
+            const elem = document.querySelector(".masonry-grid");
+            new Masonry(elem, {
+                itemSelector: ".masonry-grid-item",
+                gutter: 12
+            });
+        }, 300);
     }
 
     componentWillUnmount() {
@@ -57,7 +63,7 @@ class EditAuthor extends Component {
     }
     render() {
         if (this.props.loading) {
-            return <div>Loading..</div>;
+            return <Loader />;
         }
 
         return (

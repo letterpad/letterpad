@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
+import config from "../../config";
 
 const getMetaTags = ({
     title,
@@ -47,6 +48,7 @@ const getMetaTags = ({
 
     return metaTags;
 };
+const mainUrl = config.rootUrl + config.baseName;
 
 const SEO = props => (
     <Helmet
@@ -56,7 +58,12 @@ const SEO = props => (
             itemtype: `http://schema.org/${props.schema}`
         }}
         title={props.title}
-        link={[{ rel: "canonical", href: props.path }]}
+        link={[
+            {
+                rel: "canonical",
+                href: mainUrl + props.path
+            }
+        ]}
         meta={getMetaTags({ ...props })}
     />
 );

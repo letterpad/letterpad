@@ -98,7 +98,7 @@ app.get("/build", (req, res) => {
 adminServerRendering.init(app);
 clientServerRendering.init(app);
 
-setTimeout(_ => {
+setTimeout(() => {
     const server = app.listen(config.appPort, function() {
         const host = server.address().address;
         const port = server.address().port;

@@ -43,7 +43,7 @@
     "menu.authors": "Authors",
     "menu.settings": "Settings",
     "menu.siteSettings": "Site Settings",
-    "menu.menu": "Menu",
+    "menu.navigation": "Navigation",
     "menu.themes": "Themes",
     "home.gettingStarted": "Getting Started",
     "home.tagline":
@@ -60,7 +60,7 @@
     "home.quickDraft.body": "Body",
     "home.quickDraft.body.placeholder": "Compose a story",
     "home.quickDraft.save": "Save Draft",
-    "posts.title": "Post",
+    "posts.title": "Posts",
     "posts.tagline": "Overview of all your blog posts",
     "pages.title": "Pages",
     "pages.tagline": "Overview of all your blog pages",
@@ -146,10 +146,10 @@
     "settings.additional.displayAuthor": "Display author info info after post",
     "menu.title": "Menu settings",
     "menu.tagline":
-        "Configure your menu by selecting the options on the left and then drag-drop to order them on the right.",
+        "Configure your navigation menu by clicking the options on the left. You can then drag-drop the items on the right to reorder them",
     "menu.Pages": "Add pages",
     "menu.Categories": "Add categories",
-    "menu.Labels": "Add Labels",
+    "menu.Folders": "Add Folders",
     "menu.build.title": "Build your menu",
 
     "themesSetting": "Theme settings",

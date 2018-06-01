@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { MenuTree } from "./MenuTree";
 
@@ -34,15 +33,12 @@ export default class Menu extends Component {
     }
     toggleItem(item, e) {
         e.preventDefault();
-        this.state[item] = !this.state[item];
-        this.setState(this.state);
+        this.setState({ [item]: !this.state[item] });
     }
     navbarToggle() {
         this.setState({ navbarOpen: !this.state.navbarOpen });
     }
     render() {
-        const navbarStatus = this.state.navbarOpen ? "in" : "";
-
         const selected = this.props.router.location.pathname.replace(
             "/admin/",
             ""
