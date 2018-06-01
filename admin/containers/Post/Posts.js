@@ -65,11 +65,14 @@ class Posts extends Component {
                                     <label className="control control--checkbox">
                                         <input
                                             type="checkbox"
-                                            onClick={e =>
+                                            onClick={e => {
                                                 this.props.selectAllPosts(
                                                     e,
                                                     this.props.posts
-                                                )
+                                                );
+                                            }}
+                                            checked={
+                                                this.props.allPostsSelected
                                             }
                                         />
                                         <div className="control__indicator" />
@@ -125,7 +128,12 @@ Posts.propTypes = {
     variables: PropTypes.object,
     changeStatus: PropTypes.func,
     loading: PropTypes.bool,
-    history: PropTypes.object
+    history: PropTypes.object,
+    setSelection: PropTypes.func,
+    selectAllPosts: PropTypes.func,
+    deletedSelectedPosts: PropTypes.func,
+    searchPosts: PropTypes.func,
+    allPostsSelected: PropTypes.bool
 };
 
 Posts.contextTypes = {

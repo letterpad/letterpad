@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import User from "./TopBar/User";
+import config from "../../config";
 
 class Header extends Component {
     constructor(props) {
@@ -28,6 +29,13 @@ class Header extends Component {
                 </div>
 
                 <div className="right-side">
+                    <a
+                        className="view-site"
+                        target="_blank"
+                        href={config.baseName + "/"}
+                    >
+                        View Your site
+                    </a>
                     <User author={this.props.author} />
                 </div>
             </header>

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import MenuVertical from "./MenuVertical";
 
 const data = [
@@ -89,35 +88,9 @@ const data = [
         icon: "fa-picture-o"
     },
     {
-        id: 4,
-        name: "menu.settings",
-        priority: 7,
-        permissions: ["MANAGE_SETTINGS"],
-        icon: "fa-cog",
-        children: [
-            {
-                id: 1,
-                name: "menu.menu",
-                priority: 2,
-                permissions: ["MANAGE_SETTINGS"],
-                slug: "menu-builder",
-                icon: "fa-bars"
-            },
-            {
-                id: 2,
-                name: "menu.siteSettings",
-                priority: 1,
-                permissions: ["MANAGE_SETTINGS"],
-                slug: "settings",
-                icon: "fa-user"
-            }
-        ]
-    },
-
-    {
         id: 6,
         name: "menu.profile",
-        priority: 5,
+        priority: 3,
         permissions: ["MANAGE_OWN_POSTS"],
         slug: "edit-profile",
         icon: "fa-user"
@@ -125,15 +98,31 @@ const data = [
     {
         id: 7,
         name: "menu.authors",
-        priority: 6,
+        priority: 3,
         permissions: ["MANAGE_USERS"],
         slug: "authors",
         icon: "fa-users"
     },
     {
+        id: 4,
+        name: "menu.navigation",
+        priority: 3,
+        permissions: ["MANAGE_SETTINGS"],
+        slug: "menu-builder",
+        icon: "fa-bars"
+    },
+    {
+        id: 5,
+        name: "menu.siteSettings",
+        priority: 3,
+        permissions: ["MANAGE_SETTINGS"],
+        slug: "settings",
+        icon: "fa-user"
+    },
+    {
         id: 8,
         name: "menu.themes",
-        priority: 7,
+        priority: 3,
         permissions: ["MANAGE_SETTINGS"],
         slug: "themes",
         icon: "fa-paint-brush"

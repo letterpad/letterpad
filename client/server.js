@@ -8,7 +8,6 @@ import Route from "./Route";
 const context = {};
 
 export default (req, client, config) => {
-    const apolloContext = {};
     const opts = {
         location: req.url,
         context: context,
@@ -21,7 +20,6 @@ export default (req, client, config) => {
             </StaticRouter>
         </ApolloProvider>
     );
-    var a = renderToString;
 
     return Promise.all([getDataFromTree(clientApp)])
         .catch(function(err) {

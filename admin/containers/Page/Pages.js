@@ -65,6 +65,9 @@ class Pages extends Component {
                                                     this.props.posts
                                                 )
                                             }
+                                            checked={
+                                                this.props.allPostsSelected
+                                            }
                                         />
                                         <div className="control__indicator" />
                                     </label>
@@ -119,7 +122,12 @@ Pages.propTypes = {
     variables: PropTypes.object,
     changeStatus: PropTypes.func,
     loading: PropTypes.bool,
-    history: PropTypes.object
+    history: PropTypes.object,
+    setSelection: PropTypes.func,
+    selectAllPosts: PropTypes.func,
+    deletedSelectedPosts: PropTypes.func,
+    searchPosts: PropTypes.func,
+    allPostsSelected: PropTypes.bool
 };
 
 Pages.contextTypes = {

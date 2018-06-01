@@ -24,7 +24,8 @@ const PostsHoc = (WrappedComponent, type) => {
                 page: 1,
                 isSearch: false,
                 loading: true,
-                selectedPosts: []
+                selectedPosts: [],
+                allPostsSelected: false
             };
             this.variables = {
                 type: type,
@@ -126,7 +127,7 @@ const PostsHoc = (WrappedComponent, type) => {
         }
         deletedSelectedPosts() {
             this.deletePosts(this.state.selectedPosts).then(result => {
-                this.setState({ selectedPosts: [] });
+                this.setState({ selectedPosts: [], allPostsSelected: false });
             });
         }
 
@@ -135,7 +136,7 @@ const PostsHoc = (WrappedComponent, type) => {
             if (e.target.checked) {
                 selectedPosts = posts.rows.map(post => post.id);
             }
-            this.setState({ selectedPosts });
+            this.setState({ selectedPosts, allPostsSelected: true });
         }
 
         setSelection(id) {

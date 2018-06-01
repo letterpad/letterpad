@@ -1,13 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
-// import FontPicker from "font-picker-react";
-// import { ChromePicker } from "react-color";
 import { notify } from "react-notify-toast";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
 import SettingsData from "shared/data-connectors/SettingsData";
-import config from "config";
 import { makeUrl } from "shared/util";
 
 class ThemeItem extends Component {
@@ -18,6 +14,7 @@ class ThemeItem extends Component {
             <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                 <article
                     className={"theme-item" + (theme.active ? " active" : "")}
+                    onClick={e => this.props.activateTheme(e, this.props.theme)}
                 >
                     <div className="theme-thumbnail">
                         <img
@@ -33,22 +30,6 @@ class ThemeItem extends Component {
                             <div className="theme-meta">
                                 {theme.details.description}
                             </div>
-                            {theme.active && (
-                                <span className="label label-info">active</span>
-                            )}
-                            {!theme.active && (
-                                <Link
-                                    to="#"
-                                    onClick={e =>
-                                        this.props.activateTheme(
-                                            e,
-                                            this.props.theme
-                                        )
-                                    }
-                                >
-                                    Activate
-                                </Link>
-                            )}
                         </div>
                     </div>
                 </article>
@@ -147,20 +128,6 @@ class Themes extends Component {
         return (
             <section className="module-xs">
                 <div className="card">
-                    <div className="module-title">Theme Settings</div>
-                    <div className="module-subtitle">
-                        You can configure your theme.
-                    </div>
-                </div>
-                <div className="card">
-                    {/* <FontPicker
-                        apiKey="AIzaSyAOkdDlx49HCSBdu86oe8AD1Q7piIxlR6k" // Google API key
-                        defaultFont={"Open Sans"}
-                        options={{ limit: 50 }}
-                        onChange={e => {
-                            console.log(e);
-                        }}
-                    />*/}
                     <textarea
                         className="form-control"
                         rows="7"
@@ -175,8 +142,9 @@ class Themes extends Component {
                         Browse your themes here
                     </div>
                     <div className="row">
-                        {this.state.themes.map(theme => (
+                        {this.state.themes.map((theme, idx) => (
                             <ThemeItem
+                                key={idx}
                                 theme={theme}
                                 activateTheme={this.activateTheme.bind(this)}
                             />

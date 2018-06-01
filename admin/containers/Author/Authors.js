@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { graphql } from "react-apollo";
 import { Link } from "react-router-dom";
 import { GetAuthors } from "../../data-connectors/GetAuthors";
 
@@ -8,16 +7,6 @@ class ListItem extends Component {
     render() {
         return (
             <tr onClick={() => this.props.handleClick(this.props.author.id)}>
-                <td align="center">
-                    <label className="control control--checkbox">
-                        <input
-                            type="checkbox"
-                            className="checkthis"
-                            value={this.props.author.id}
-                        />
-                        <div className="control__indicator" />
-                    </label>
-                </td>
                 <td style={{ cursor: "pointer" }}>{this.props.author.email}</td>
                 <td style={{ cursor: "pointer" }}>
                     {this.props.author.fname + " " + this.props.author.lname}
@@ -75,9 +64,6 @@ class Authors extends Component {
                     <table className="table table-hover table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th width="5%" className="col-check">
-                                    <input type="checkbox" />
-                                </th>
                                 <th width="20%" className="col-text">
                                     Email
                                 </th>
