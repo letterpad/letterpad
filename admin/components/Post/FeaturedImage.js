@@ -56,6 +56,7 @@ class FeaturedImage extends Component {
 
     render() {
         const { t } = this.context;
+        
         const coverImage =
             this.state.cover_image || "/admin/images/placeholder-800x400.png";
 
