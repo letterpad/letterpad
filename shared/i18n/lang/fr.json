@@ -117,6 +117,9 @@
     "settings.general.postDisplay": "Comment afficher vos articles?",
     "settings.general.layoutDisplay":
         "Quel type de mise en page préférez-vous?",
+    "settings.general.site.ga": "Google Analytics",
+    "settings.general.site.ga.placeholder":
+        "Enter your google analytics tracking id",
     "settings.messages.title": "Messages du blog",
     "settings.general.site.language": "Choisir la langue",
     "settings.messages.tagline":

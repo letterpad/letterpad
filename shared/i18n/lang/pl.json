@@ -105,6 +105,9 @@
     "settings.general.title": "Ustawienia ogólne",
     "settings.general.tagline":
         "Zarządzaj podstawowymi konfiguracjami swojego bloga",
+    "settings.general.site.ga": "Google Analytics",
+    "settings.general.site.ga.placeholder":
+        "Enter your google analytics tracking id",
     "settings.general.site.title": "Tytuł witryny",
     "settings.general.site.title.placeholder": "Podaj tytuł bloga",
     "settings.general.site.tagline": "Tagine strony",
