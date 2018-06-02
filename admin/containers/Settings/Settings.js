@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { graphql, compose } from "react-apollo";
+import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 import {
     General,
@@ -7,7 +7,7 @@ import {
     AdditionalSettings,
     Messages
 } from "../../components/Settings";
-import { GET_OPTIONS, GET_TAXONOMIES } from "../../../shared/queries/Queries";
+import { GET_OPTIONS } from "../../../shared/queries/Queries";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 import { notify } from "react-notify-toast";
 
@@ -30,10 +30,12 @@ class Settings extends Component {
     }
     componentDidMount() {
         const elem = document.querySelector(".masonry-grid");
-        new Masonry(elem, {
-            itemSelector: ".masonry-grid-item",
-            gutter: 10
-        });
+        setTimeout(() => {
+            new Masonry(elem, {
+                itemSelector: ".masonry-grid-item",
+                gutter: 10
+            });
+        }, 300);
     }
 
     componentWillUnmount() {

@@ -37,10 +37,12 @@ module.exports.init = app => {
         });
 
         try {
-            client.query({ query: GET_OPTIONS }).then(settings => {
-                let theme = settings.data.settings.filter(
-                    item => item.option == "theme"
-                )[0].value;
+            client.query({ query: GET_OPTIONS }).then(options => {
+                const settings = {};
+                options.data.settings.forEach(item => {
+                    settings[item.option] = item.value;
+                });
+                let theme = settings.theme;
                 // In dev mode if a theme is explicitly called, then use that
                 if (process.env.theme && process.env.theme !== "") {
                     theme = process.env.theme;
@@ -74,7 +76,9 @@ module.exports.init = app => {
 
                 server(req, client, config).then(
                     ({ html, apolloState, head }) => {
-                        res.end(getHtml(theme, html, apolloState, head));
+                        res.end(
+                            getHtml(theme, html, apolloState, head, settings)
+                        );
                     }
                 );
             });
@@ -99,7 +103,7 @@ const getParams = query => {
     return params;
 };
 
-function getHtml(theme, html, state, head) {
+function getHtml(theme, html, state, head, settings) {
     let htmlAttrs = "";
     const metaTags = Object.keys(head)
         .map(item => {
@@ -139,6 +143,8 @@ function getHtml(theme, html, state, head) {
         styleLinks = `<link href="${link1}" rel="stylesheet"/>`;
     }
 
+    const analytics = addAnalytics(settings.google_analytics);
+
     return `<html ${htmlAttrs}>
             <head>
                 <meta charSet="UTF-8" />
@@ -162,8 +168,31 @@ function getHtml(theme, html, state, head) {
                     window.appPort="${process.env.appPort}";
                     window.apiPort="${process.env.apiPort}";
                     window.baseName="${process.env.baseName}";
+
+                    ${analytics}
+                    
                 </script>
+                ${
+    settings.google_analytics
+        ? " <script async src='https://www.google-analytics.com/analytics.js'></script>"
+        : ""
+}
                 ${scripts.join("")}
             </body>
         </html>`;
+}
+
+function addAnalytics(tracking_id) {
+    if (!tracking_id) return "";
+    return `
+            window.ga =
+                window.ga ||
+                function() {
+                    (ga.q = ga.q || []).push(arguments);
+                };
+            ga.l = +new Date();
+            ga("create", "${tracking_id}", "auto");
+            ga("send", "pageview");
+           
+    `;
 }

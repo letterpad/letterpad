@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Route, Switch } from "react-router-dom";
 import { withRouter } from "react-router";
 import SEO from "./helpers/SEO";
 import Loader from "./helpers/Loader";
+import config from "../config";
 import { hot, setConfig } from "react-hot-loader";
 // Data supply
 import SettingsData from "../shared/data-connectors/SettingsData";
@@ -23,6 +25,18 @@ class App extends Component {
         super(props);
         this.applyCustomCSS = this.applyCustomCSS.bind(this);
         this.getHomeSlug = this.getHomeSlug.bind(this);
+    }
+    componentDidUpdate(prevProps) {
+        if (this.props.location !== prevProps.location) {
+            if (this.props.settings.data.google_analytics.value) {
+                ga(
+                    "set",
+                    "page",
+                    config.baseName + this.props.location.pathname
+                );
+                ga("send", "pageview");
+            }
+        }
     }
 
     applyCustomCSS({ css, colors }) {
@@ -167,4 +181,9 @@ class App extends Component {
     }
 }
 setConfig({ logLevel: "error" });
+
+App.propTypes = {
+    location: PropTypes.object,
+    settings: PropTypes.object
+};
 export default hot(module)(SettingsData(withRouter(App)));

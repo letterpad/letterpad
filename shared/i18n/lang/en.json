@@ -110,6 +110,9 @@
     "settings.general.title": "General Settings",
     "settings.general.tagline":
         "Manage your blog's basic configurations from here",
+    "settings.general.site.ga": "Google Analytics",
+    "settings.general.site.ga.placeholder":
+        "Enter your google analytics tracking id",
     "settings.general.site.title": "Site Title",
     "settings.general.site.title.placeholder": "Enter your blog's title",
     "settings.general.site.email": "Site Email",

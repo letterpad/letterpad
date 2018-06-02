@@ -245,6 +245,24 @@ export default class General extends Component {
                 </div>
                 <div className="form-group">
                     <label className="custom-label">
+                        {t("settings.general.site.ga")}
+                    </label>
+                    <input
+                        defaultValue={this.props.data.google_analytics.value}
+                        type="text"
+                        className="form-control"
+                        placeholder={t("settings.general.site.ga.placeholder")}
+                        aria-invalid="true"
+                        onBlur={e =>
+                            this.updateOption(
+                                "google_analytics",
+                                e.target.value
+                            )
+                        }
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="custom-label">
                         {t("settings.general.site.language")}
                     </label>
                     <select

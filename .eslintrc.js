@@ -17,7 +17,9 @@ module.exports = {
         qEditor: true,
         Quill: true,
         process: true,
-        hljs: true
+        hljs: true,
+        ga: true,
+        Masonry: true
     },
     rules: {
         indent: [2, 4],
