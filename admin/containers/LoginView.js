@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Notifications, { notify } from "react-notify-toast";
 import { graphql } from "react-apollo";
 import { parseErrors } from "../../shared/util";
+import config from "../../config";
 import {
     LOGIN_QUERY,
     FORGOT_PASSWORD_QUERY
@@ -20,13 +21,15 @@ class LoginView extends Component {
     }
 
     componentDidMount() {
-        if (typeof document !== "undefined") {
-            document.body.classList.add("login-view");
-            this.usernameInput.focus();
-            delete localStorage.token;
-        }
+        document.body.classList.add("login-view");
+        this.usernameInput.focus();
+        delete localStorage.token;
+        document.querySelector(".login-view").style.backgroundImage = `url("${
+            config.baseName
+        }/admin/images/login_bg.jpg")`;
     }
     componentWillUnmount() {
+        document.querySelector(".login-view").removeAttribute("style");
         document.body.classList.remove("login-view");
     }
 
@@ -49,7 +52,7 @@ class LoginView extends Component {
             notify.show(errors.join("\n"), "warning", 33000);
         } else {
             localStorage.token = res.data.login.token;
-            this.props.history.push("/admin/posts");
+            this.props.history.push("/admin/home");
         }
     }
 

@@ -74,13 +74,15 @@ module.exports.init = app => {
                 }
                 const server = require(serverFile).default;
 
-                server(req, client, config).then(
-                    ({ html, apolloState, head }) => {
+                server(req, client, config)
+                    .then(({ html, apolloState, head }) => {
                         res.end(
                             getHtml(theme, html, apolloState, head, settings)
                         );
-                    }
-                );
+                    })
+                    .catch(e => {
+                        console.log("Error while rendering", e);
+                    });
             });
         } catch (e) {
             console.log(`[Request error]: ${e.message}`);

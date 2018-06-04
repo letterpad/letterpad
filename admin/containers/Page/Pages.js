@@ -75,12 +75,6 @@ class Pages extends Component {
                                 <th width="25%" className="col-text">
                                     {t("common.title")}
                                 </th>
-                                <th width="20%" className="col-text">
-                                    {t("common.categories")}
-                                </th>
-                                <th width="20%" className="col-text">
-                                    {t("common.tags")}
-                                </th>
                                 <th width="5%" className="col-text">
                                     {t("common.status")}
                                 </th>

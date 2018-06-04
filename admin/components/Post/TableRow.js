@@ -69,29 +69,26 @@ class TableRow extends Component {
                             type="checkbox"
                             {...checked}
                             onClick={this.postSelected}
-                            value={this.props.post.id}
+                            value={post.id}
                         />
                         <div className="control__indicator" />
                     </label>
                 </td>
                 <td
                     style={{ cursor: "pointer" }}
-                    onClick={() => this.props.handleClick(this.props.post.id)}
+                    onClick={() => this.props.handleClick(post.id)}
                 >
-                    {this.props.post.title || "Draft.."}
+                    {post.title || "Draft.."}
                 </td>
-                <td className="hidden-xs">{categories}</td>
-                <td className="hidden-xs">{tags}</td>
-                <td>{this.props.post.status}</td>
+                {post.type == "post" && (
+                    <td className="hidden-xs">{categories}</td>
+                )}
+                {post.type == "post" && <td className="hidden-xs">{tags}</td>}
+                <td>{post.status}</td>
                 <td className="hidden-xs">
-                    {this.props.post.author.fname}{" "}
-                    {this.props.post.author.lname}
+                    {post.author.fname} {post.author.lname}
                 </td>
-                <td>
-                    {moment(new Date(this.props.post.created_at)).format(
-                        "MMM Do"
-                    )}
-                </td>
+                <td>{moment(new Date(post.created_at)).format("MMM Do")}</td>
             </tr>
         );
     }

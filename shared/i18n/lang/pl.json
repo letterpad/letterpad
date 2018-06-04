@@ -86,7 +86,8 @@
     "tags.create.name.placeholder": "Wprowadź unikalną nazwę tagu",
     "tags.create.desc.placholder": "Wprowadź opis tagu",
     "media.title": "Media",
-    "media.tagline": "Tutaj znajdziesz wszystkie swoje przesłane media",
+    "media.tagline":
+        "Wszystkie twoje elementy multimedialne zostaną wymienione tutaj. Możesz dodać przedmiot i skopiować link, aby użyć go w swojej witrynie.",
     "profile.basic.title": "Podstawowe informacje",
     "profile.basic.tagline": "Kilka podstawowych informacji o tobie",
     "profile.fname.placeholder": "Podaj swoje imię",

@@ -4,7 +4,7 @@ import { browserHistory } from "react-router";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import config from "../../../config";
-import { makeUrl } from "../../../shared/util";
+import { notify } from "react-notify-toast";
 
 export default class MediaItem extends Component {
     constructor(props) {
@@ -24,11 +24,20 @@ export default class MediaItem extends Component {
         e.preventDefault();
         this.props.confirmDelete(this.props.media);
     }
-
+    copyToClipboard(e) {
+        e.preventDefault();
+        const textField = document.createElement("textarea");
+        textField.innerText = e.target.href;
+        document.body.appendChild(textField);
+        textField.select();
+        document.execCommand("copy");
+        textField.remove();
+        notify.show("Link copied", "success");
+    }
     render() {
         const url = config.baseName + this.props.media.url;
         return (
-            <div className="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <Link to={url} target="_blank">
                 <article className="post">
                     <div className="post-thumbnail">
                         <img
@@ -37,14 +46,12 @@ export default class MediaItem extends Component {
                         />
                     </div>
                     <div className="post-body with-border">
-                        <div className="post-header">
+                        <div className="post-content">
                             <div className="post-meta">
-                                <Link to={url} target="_blank">
-                                    {url}
+                                <Link to={url} onClick={this.copyToClipboard}>
+                                    copy
                                 </Link>
                             </div>
-                        </div>
-                        <div className="post-content">
                             <div className="post-time">
                                 {moment(
                                     new Date(this.props.media.created_at)
@@ -56,7 +63,7 @@ export default class MediaItem extends Component {
                         </div>
                     </div>
                 </article>
-            </div>
+            </Link>
         );
     }
 }

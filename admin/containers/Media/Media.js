@@ -5,7 +5,9 @@ import MediaItem from "../../components/Media/MediaItem";
 import ConfirmDeleteModal from "../../components/Modals/ConfirmDeleteModal";
 import GetMedia from "../../data-connectors/GetMedia";
 import DeleteMedia from "../../data-connectors/DeleteMedia";
+import InsertMedia from "../../data-connectors/InsertMedia";
 import config from "config";
+import { uploadFile } from "../../util";
 
 const limit = config.itemsPerPage;
 
@@ -37,24 +39,36 @@ class Media extends Component {
         super(props);
         this.toggleModal = this.toggleModal.bind(this);
         this.deleteMediaFinal = this.deleteMediaFinal.bind(this);
+        this.uploadImage = this.uploadImage.bind(this);
         this.state = {
             page: 1,
             confirmDelete: false,
             delete_id: 0,
-            deleteMedia: false
+            deleteMedia: false,
+            items: []
         };
+        this.uploadInput = React.createRef();
+
         document.body.classList.add("media-page");
     }
-    componentWillUnmount() {
-        document.body.classList.remove("media-page");
-    }
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (prevState.items.length == nextProps.media.rows.length) {
+            return null;
+        }
+        const newState = {
+            items: nextProps.media.rows
+        };
         if (
             nextProps.match.params.page &&
-            nextProps.match.params.page !== this.state.page
+            nextProps.match.params.page !== prevState.page
         ) {
-            this.setState({ page: parseInt(nextProps.match.params.page) });
+            newState.page = parseInt(nextProps.match.params.page);
         }
+        return newState;
+    }
+
+    componentWillUnmount() {
+        document.body.classList.remove("media-page");
     }
 
     toggleModal(media = {}) {
@@ -72,21 +86,56 @@ class Media extends Component {
         this.setState({ deleteMedia: true });
     }
 
+    async uploadImage(files) {
+        const coverImage = await uploadFile({ files });
+        const media = await this.props.insertMedia({
+            url: coverImage
+        });
+        this.setState(
+            {
+                items: [media.data.insertMedia, ...this.state.items]
+            },
+            () => {
+                this.props.history.push("/admin/media/1");
+            }
+        );
+    }
+
     render() {
-        const rows = this.props.media.rows.map((media, i) => (
+        const { t } = this.context;
+        const items = this.state.items.map((media, i) => (
             <MediaItem
                 key={media.id}
                 media={media}
                 confirmDelete={this.toggleModal}
             />
         ));
-        const { t } = this.context;
         return (
             <section className="module-xs">
                 <div className="card">
                     <div className="module-title">{t("media.title")}</div>
                     <div className="module-subtitle">{t("media.tagline")}</div>
-                    <div className="row media-grid">{rows}</div>
+                    <p>
+                        <button
+                            className="btn btn-xs btn-dark"
+                            onClick={() => {
+                                this.uploadInput.current.click();
+                            }}
+                        >
+                            Add Media
+                        </button>
+                        <input
+                            ref={this.uploadInput}
+                            onChange={input =>
+                                this.uploadImage(input.target.files)
+                            }
+                            type="file"
+                            className="hide"
+                            name="uploads[]"
+                            multiple="multiple"
+                        />
+                    </p>
+                    <div className="row media-grid">{items}</div>
                     <Paginate
                         count={this.props.media.count}
                         page={this.state.page}
@@ -121,4 +170,5 @@ Media.defaultProps = {
 Media.contextTypes = {
     t: PropTypes.func
 };
-export default GetMedia(DeleteMedia(Media));
+
+export default GetMedia(DeleteMedia(InsertMedia(Media)));

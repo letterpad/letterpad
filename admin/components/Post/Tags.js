@@ -19,6 +19,7 @@ class Tags extends Component {
             .map(tax => {
                 tax = { ...tax };
                 delete tax["__typename"];
+                tax.text = tax.name;
                 return tax;
             });
         PostActions.setTaxonomies({ post_tag: this.tags });

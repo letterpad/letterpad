@@ -27,10 +27,14 @@ export default (req, client, config) => {
             console.log("A promise failed to resolve", err);
         })
         .then(() => {
-            return {
-                head: Helmet.renderStatic(),
-                html: renderToString(clientApp),
-                apolloState: client.extract()
-            };
+            try {
+                return {
+                    head: Helmet.renderStatic(),
+                    html: renderToString(clientApp),
+                    apolloState: client.extract()
+                };
+            } catch (e) {
+                console.log(e);
+            }
         });
 };

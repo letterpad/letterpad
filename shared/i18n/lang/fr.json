@@ -86,7 +86,8 @@
     "tags.create.name.placeholder": "Entrez un nom de mot-clé unique",
     "tags.create.desc.placeholder": "Entrez une description du mot-clé",
     "media.title": "Média",
-    "media.tagline": "Trouvez tous vos médias mis en ligne ici",
+    "media.tagline":
+        "Tous vos éléments multimédias seront listés ici. Vous pouvez ajouter un élément et copier le lien pour l'utiliser sur votre site.",
     "profile.basic.title": "Informations de base",
     "profile.basic.tagline": "Quelques informations de base vous concernant",
     "profile.fname.placeholder": "Entrez votre prénom",

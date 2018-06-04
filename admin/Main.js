@@ -73,6 +73,11 @@ class App extends Component {
                 <Switch>
                     <Route
                         exact
+                        path="/admin"
+                        render={props => <Redirect to="/admin/login" />}
+                    />
+                    <Route
+                        exact
                         path="/admin/login"
                         render={props => (
                             <LoginView {...props} settings={settings.data} />
