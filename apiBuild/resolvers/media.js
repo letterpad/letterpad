@@ -46,6 +46,7 @@ exports.default = {
             if (args.cursor) {
                 conditions.where.id = { gt: args.cursor };
             }
+            conditions.order = [["created_at", "DESC"]];
             var media = await models.Media.findAll(conditions);
             return {
                 count: count,

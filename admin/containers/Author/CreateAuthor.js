@@ -5,6 +5,7 @@ import { Basic, Social, PasswordChange } from "../../components/Author";
 import { notify } from "react-notify-toast";
 import GetRoles from "../../data-connectors/GetRoles";
 import CreateAuthorConnector from "../../data-connectors/CreateAuthorConnector";
+import Loader from "../../components/Loader";
 
 const SubmitBtn = ({ handleClick }) => {
     return (
@@ -53,7 +54,7 @@ class CreateAuthor extends Component {
     }
     render() {
         if (this.props.loading) {
-            return <div>Loading..</div>;
+            return <Loader />;
         }
         return (
             <section className="module-xs">

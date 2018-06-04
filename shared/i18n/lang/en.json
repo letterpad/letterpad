@@ -89,7 +89,8 @@
     "tags.create.name.placeholder": "Enter a unique tag name",
     "tags.create.desc.placeholder": "Enter a description of the tag",
     "media.title": "Media",
-    "media.tagline": "Find all your uploaded media here",
+    "media.tagline":
+        "All your media items will be listed here. You can add an item and copy the link to use it in your site.",
     "profile.basic.title": "Basic Information",
     "profile.basic.tagline": "Some basic information about yourself",
     "profile.fname.placeholder": "Enter your first name",

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { GetAuthors } from "../../data-connectors/GetAuthors";
+import Loader from "../../components/Loader";
 
 class ListItem extends Component {
     render() {
@@ -38,7 +39,7 @@ class Authors extends Component {
     }
     render() {
         if (this.props.loading) {
-            return <div>hello</div>;
+            return <Loader />;
         }
         const { t } = this.context;
         const rows = this.props.authors.map((author, i) => (
@@ -58,7 +59,7 @@ class Authors extends Component {
                             aria-label="Add"
                             to="/admin/authors/new"
                         >
-                            <i className="fa fa-plus" />
+                            <i className="fa fa-plus" /> Create
                         </Link>
                     </div>
                     <table className="table table-hover table-striped table-bordered">

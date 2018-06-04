@@ -111,46 +111,17 @@ tr th:first-child {
 }
 
 /*----------------------------------------------
-[Themes]
+[Modal Backdrop]
 */
-
-#cp-css {
-    .cp-swatch {
-        padding: 5px;
-        background: #fff;
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-        display: inline-block;
-        cursor: pointer;
-        .color-box {
-            width: 26px;
-            height: 14px;
-        }
-    }
-    .cp-popover {
-        position: absolute;
-        z-index: 2;
-    }
-    .cp-cover {
-        position: fixed;
-        top: 0px;
-        right: 0px;
-        bottom: 0px;
-        left: 0px;
-    }
-}
-.color-blocks {
-    .custom-label {
-        display: flex;
-        justify-content: space-between;
-    }
-    .text-muted {
-        line-height: 20px;
-        font-size: 12px;
-        min-height: 42px;
-    }
-    > div:not(:last-child) {
-        margin-bottom: 12px;
-    }
+#modal-backdrop {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 1;
+    top: 0px;
+    opacity: 0.4;
+    left: 0px;
 }
 
 /*--------------------------------------------

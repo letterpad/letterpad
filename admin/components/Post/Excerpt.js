@@ -74,7 +74,7 @@ class Excerpt extends Component {
         return (
             <div className="card">
                 <div className="x_title">
-                    <div className="module-title">Excerpt</div>
+                    <div className="module-title">Introduction</div>
                 </div>
                 <div className="x_content">
                     <div className="control-group">

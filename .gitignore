@@ -14,3 +14,5 @@ client/themes/*
 data/*.sqlite
 yarn-error.log
 public/uploads
+package-lock.json
+yarn.lock

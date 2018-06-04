@@ -33,7 +33,7 @@ const EditMenuModal = (props, context) => {
                         type="text"
                         className="form-control"
                         disabled={props.nodeInfo.node.type == "page"}
-                        placeholder={t("social.fb.placeholder")}
+                        placeholder="Enter the path for navigation"
                         onBlur={e =>
                             props.changeItemProperty(e, props.nodeInfo, "slug")
                         }

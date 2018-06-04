@@ -171,6 +171,12 @@ class Create extends Component {
                 {this.state.fileExplorerProps.display && (
                     <FileExplorerModal {...this.state.fileExplorerProps} />
                 )}
+                {this.state.actionDrawerOpen && (
+                    <div
+                        id="modal-backdrop"
+                        onClick={this.toggleActionDrawer}
+                    />
+                )}
             </section>
         );
     }

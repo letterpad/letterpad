@@ -206,6 +206,8 @@ module.exports.INSERT_MEDIA = gql`
     mutation insertMedia($url: String!) {
         insertMedia(url: $url) {
             url
+            id
+            created_at
         }
     }
 `;

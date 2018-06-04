@@ -19,7 +19,7 @@ export default class MediaItem extends Component {
     render() {
         const url = makeUrl(this.props.media.url.slice(1));
         const isSelected = this.props.selected_id === this.props.media.id;
-        const classes = "post" + (isSelected ? " selected" : "");
+        const classes = isSelected ? " selected" : "";
         return (
             <div className="col-lg-2 col-md-3 col-sm-4 col-xs-12">
                 <article className={classes} onClick={this.onMediaSelected}>

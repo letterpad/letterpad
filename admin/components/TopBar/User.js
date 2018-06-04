@@ -54,7 +54,9 @@ class User extends Component {
                     </a>
                     <ul className="dropdown-menu" style={{ marginLeft: -120 }}>
                         <li>
-                            <a href="#">Logout</a>
+                            <a href={config.baseName + "/admin/login"}>
+                                Logout
+                            </a>
                         </li>
                     </ul>
                 </div>

@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { notify } from "react-notify-toast";
+import PropTypes from "prop-types";
 import PostActions from "./PostActions";
-import { gql, graphql } from "react-apollo";
 import moment from "moment";
-import config from "../../../config";
 import { makeUrl } from "../../../shared/util";
 
 class PostMeta extends Component {
@@ -18,8 +16,9 @@ class PostMeta extends Component {
     }
 
     changeSlug(e) {
-        this.state.post.slug = e.target.value;
-        this.setState(this.state);
+        this.setState({
+            post: { ...this.state.post, slug: e.target.value }
+        });
         PostActions.setData({ slug: this.state.post.slug });
     }
 
@@ -28,9 +27,7 @@ class PostMeta extends Component {
         return (
             <div className="card post-meta">
                 <div className="x_content m-b-20">
-                    <label className="custom-label">
-                        <i className="fa fa fa-calendar" /> Published at
-                    </label>
+                    <span className="meta-label">Published at</span>
                     <input
                         type="text"
                         className="form-control"
@@ -41,33 +38,28 @@ class PostMeta extends Component {
                     />
                 </div>
                 <div className="x_content m-b-20">
-                    <label className="custom-label">
-                        <i className="fa fa fa-link" /> Slug
-                    </label>
+                    <span className="meta-label">Link to post</span>
+                    <div>
+                        <a target="_blank" href={permalink}>
+                            {permalink}
+                        </a>
+                    </div>
+                </div>
+                <div className="x_content m-b-20">
+                    <span className="meta-label">Change Path</span>
                     <input
                         type="text"
                         className="form-control"
-                        placeholder="Slug"
+                        placeholder="Link to post"
                         defaultValue={this.state.post.slug}
-                        onBlur={this.changeSlug}
+                        onKeyUp={this.changeSlug}
                     />
-                </div>
-                <div className="x_content m-b-20">
-                    <label className="custom-label">
-                        <i className="fa fa fa-link" /> Permalink
-                    </label>
-                    <div>
-                        <a target="_blank" href={permalink}>
-                            {"/" +
-                                this.state.post.type +
-                                "/" +
-                                this.state.post.slug}
-                        </a>
-                    </div>
                 </div>
             </div>
         );
     }
 }
-
+PostMeta.defaultProps = {
+    post: PropTypes.object
+};
 export default PostMeta;
