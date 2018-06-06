@@ -154,18 +154,18 @@ module.exports.SEARCH_POSTS = gql`
 
 module.exports.SEARCH_POSTS_BY_TAXONOMY = gql`
     query catPosts(
-        $type: String
-        $slug: String
+        $type: String!
+        $slug: String!
         $postType: String
         $offset: Int
         $limit: Int
     ) {
         postsByTaxSlug(
+            type: $type
+            slug: $slug
             postType: $postType
             offset: $offset
             limit: $limit
-            type: $type
-            slug: $slug
         ) {
             count
             posts {
