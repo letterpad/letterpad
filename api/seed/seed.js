@@ -44,109 +44,109 @@ export const seed = async () => {
         title: "We encountered a new paradise",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/1.jpeg"
+        cover_image: "/uploads/1.jpg"
     });
     await insertPost({
         title: "The Mountain",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/2.jpeg"
+        cover_image: "/uploads/2.jpg"
     });
     await insertPost({
         title: "Ink in water",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/3.jpeg"
+        cover_image: "/uploads/3.jpg"
     });
     await insertPost({
         title: "Future of ReactJS",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/4.jpeg"
+        cover_image: "/uploads/4.jpg"
     });
     await insertPost({
         title: "A bright sunny day",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/5.jpeg"
+        cover_image: "/uploads/5.jpg"
     });
     await insertPost({
         title: "Post 6",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/6.jpeg"
+        cover_image: "/uploads/6.jpg"
     });
     await insertPost({
         title: "Post 7",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/7.jpeg"
+        cover_image: "/uploads/7.jpg"
     });
     await insertPost({
         title: "Post 8",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/8.jpeg"
+        cover_image: "/uploads/8.jpg"
     });
     await insertPost({
         title: "Post 9",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/9.jpeg"
+        cover_image: "/uploads/9.jpg"
     });
     await insertPost({
         title: "Post 10",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/10.jpeg"
+        cover_image: "/uploads/10.jpg"
     });
     await insertPost({
         title: "Post 11",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/10.jpeg"
+        cover_image: "/uploads/11.jpg"
     });
     await insertPost({
         title: "Post 12",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/10.jpeg"
+        cover_image: "/uploads/12.jpg"
     });
     await insertPost({
         title: "Post 13",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/10.jpeg"
+        cover_image: "/uploads/1.jpg"
     });
     await insertPost({
         title: "Post 14",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/10.jpeg"
+        cover_image: "/uploads/2.jpg"
     });
     await insertPost({
         title: "Post 15",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/10.jpeg"
+        cover_image: "/uploads/3.jpg"
     });
     await insertPost({
         title: "Post 16",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/10.jpeg"
+        cover_image: "/uploads/4.jpg"
     });
     await insertPost({
         title: "Post 17",
         type: "post",
         status: "publish",
-        cover_image: "/uploads/10.jpeg"
+        cover_image: "/uploads/5.jpg"
     });
     await insertPost({
         title: "About",
         type: "page",
         status: "publish",
-        cover_image: "/uploads/1.jpeg"
+        cover_image: "/uploads/6.jpg"
     });
     await insertPost({
         title: "Page 3 (draft)",
@@ -315,16 +315,18 @@ export async function insertPost(params) {
 
 export async function insertMedia(params) {
     await models.Media.bulkCreate([
-        { url: "/uploads/1.jpeg", author_id: 1 },
-        { url: "/uploads/2.jpeg", author_id: 1 },
-        { url: "/uploads/3.jpeg", author_id: 1 },
-        { url: "/uploads/4.jpeg", author_id: 1 },
-        { url: "/uploads/5.jpeg", author_id: 1 },
-        { url: "/uploads/6.jpeg", author_id: 1 },
-        { url: "/uploads/7.jpeg", author_id: 1 },
-        { url: "/uploads/8.jpeg", author_id: 1 },
-        { url: "/uploads/9.jpeg", author_id: 1 },
-        { url: "/uploads/10.jpeg", author_id: 1 }
+        { url: "/uploads/1.jpg", author_id: 1 },
+        { url: "/uploads/2.jpg", author_id: 1 },
+        { url: "/uploads/3.jpg", author_id: 1 },
+        { url: "/uploads/4.jpg", author_id: 1 },
+        { url: "/uploads/5.jpg", author_id: 1 },
+        { url: "/uploads/6.jpg", author_id: 1 },
+        { url: "/uploads/7.jpg", author_id: 1 },
+        { url: "/uploads/8.jpg", author_id: 1 },
+        { url: "/uploads/9.jpg", author_id: 1 },
+        { url: "/uploads/10.jpg", author_id: 1 },
+        { url: "/uploads/11.jpg", author_id: 1 },
+        { url: "/uploads/12.jpg", author_id: 1 }
     ]);
 }
 

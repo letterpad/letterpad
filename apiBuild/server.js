@@ -19,6 +19,7 @@ var multer = require("multer");
 var jwt = require("jsonwebtoken");
 var models = require("./models");
 var path = require("path");
+var sharp = require("sharp");
 // const { seed } = require("./seed/seed");
 
 // require("@google-cloud/profiler").start({
@@ -105,22 +106,24 @@ app.use("/graphql", GraphHTTP(function (req, res) {
     };
 }));
 
-var storage = multer.diskStorage({
-    destination: function destination(req, file, cb) {
-        cb(null, path.join(__dirname, "../public/uploads/"));
-    },
-    filename: function filename(req, file, cb) {
-        var ext = path.extname(file.originalname);
-        cb(null, file.fieldname + "-" + Date.now() + ext);
-    }
+var customStorage = require("./customStorage");
+
+var upload = multer({
+    storage: new customStorage({
+        destination: function destination(req, file, cb) {
+            var fname = Date.now() + ".jpg";
+            cb(null, path.join(__dirname, "../public/uploads/", fname));
+        },
+        filename: function filename(req, file, cb) {
+            cb(null, Date.now());
+        }
+    }),
+    limits: { fileSize: 5000000 }
 });
 
-var upload = multer({ storage: storage }).single("file");
-
-app.post("/upload", function (req, res) {
-    upload(req, null, function (err) {
-        res.json("/uploads/" + req.file.filename);
-    });
+app.use("/upload", upload.single("file"), function (req, res) {
+    var filename = req.file.path.split("/").pop();
+    res.json("/uploads/" + filename);
 });
 
 // seed the database if settings is empty

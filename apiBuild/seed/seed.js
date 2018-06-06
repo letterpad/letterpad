@@ -322,7 +322,7 @@ var insertMedia = exports.insertMedia = function () {
                 switch (_context7.prev = _context7.next) {
                     case 0:
                         _context7.next = 2;
-                        return models.Media.bulkCreate([{ url: "/uploads/1.jpeg", author_id: 1 }, { url: "/uploads/2.jpeg", author_id: 1 }, { url: "/uploads/3.jpeg", author_id: 1 }, { url: "/uploads/4.jpeg", author_id: 1 }, { url: "/uploads/5.jpeg", author_id: 1 }, { url: "/uploads/6.jpeg", author_id: 1 }, { url: "/uploads/7.jpeg", author_id: 1 }, { url: "/uploads/8.jpeg", author_id: 1 }, { url: "/uploads/9.jpeg", author_id: 1 }, { url: "/uploads/10.jpeg", author_id: 1 }]);
+                        return models.Media.bulkCreate([{ url: "/uploads/1.jpg", author_id: 1 }, { url: "/uploads/2.jpg", author_id: 1 }, { url: "/uploads/3.jpg", author_id: 1 }, { url: "/uploads/4.jpg", author_id: 1 }, { url: "/uploads/5.jpg", author_id: 1 }, { url: "/uploads/6.jpg", author_id: 1 }, { url: "/uploads/7.jpg", author_id: 1 }, { url: "/uploads/8.jpg", author_id: 1 }, { url: "/uploads/9.jpg", author_id: 1 }, { url: "/uploads/10.jpg", author_id: 1 }, { url: "/uploads/11.jpg", author_id: 1 }, { url: "/uploads/12.jpg", author_id: 1 }]);
 
                     case 2:
                     case "end":
@@ -531,7 +531,7 @@ var seed = exports.seed = function () {
                             title: "We encountered a new paradise",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/1.jpeg"
+                            cover_image: "/uploads/1.jpg"
                         });
 
                     case 11:
@@ -540,7 +540,7 @@ var seed = exports.seed = function () {
                             title: "The Mountain",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/2.jpeg"
+                            cover_image: "/uploads/2.jpg"
                         });
 
                     case 13:
@@ -549,7 +549,7 @@ var seed = exports.seed = function () {
                             title: "Ink in water",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/3.jpeg"
+                            cover_image: "/uploads/3.jpg"
                         });
 
                     case 15:
@@ -558,7 +558,7 @@ var seed = exports.seed = function () {
                             title: "Future of ReactJS",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/4.jpeg"
+                            cover_image: "/uploads/4.jpg"
                         });
 
                     case 17:
@@ -567,7 +567,7 @@ var seed = exports.seed = function () {
                             title: "A bright sunny day",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/5.jpeg"
+                            cover_image: "/uploads/5.jpg"
                         });
 
                     case 19:
@@ -576,7 +576,7 @@ var seed = exports.seed = function () {
                             title: "Post 6",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/6.jpeg"
+                            cover_image: "/uploads/6.jpg"
                         });
 
                     case 21:
@@ -585,7 +585,7 @@ var seed = exports.seed = function () {
                             title: "Post 7",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/7.jpeg"
+                            cover_image: "/uploads/7.jpg"
                         });
 
                     case 23:
@@ -594,7 +594,7 @@ var seed = exports.seed = function () {
                             title: "Post 8",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/8.jpeg"
+                            cover_image: "/uploads/8.jpg"
                         });
 
                     case 25:
@@ -603,7 +603,7 @@ var seed = exports.seed = function () {
                             title: "Post 9",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/9.jpeg"
+                            cover_image: "/uploads/9.jpg"
                         });
 
                     case 27:
@@ -612,7 +612,7 @@ var seed = exports.seed = function () {
                             title: "Post 10",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/10.jpeg"
+                            cover_image: "/uploads/10.jpg"
                         });
 
                     case 29:
@@ -621,7 +621,7 @@ var seed = exports.seed = function () {
                             title: "Post 11",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/10.jpeg"
+                            cover_image: "/uploads/11.jpg"
                         });
 
                     case 31:
@@ -630,7 +630,7 @@ var seed = exports.seed = function () {
                             title: "Post 12",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/10.jpeg"
+                            cover_image: "/uploads/12.jpg"
                         });
 
                     case 33:
@@ -639,7 +639,7 @@ var seed = exports.seed = function () {
                             title: "Post 13",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/10.jpeg"
+                            cover_image: "/uploads/1.jpg"
                         });
 
                     case 35:
@@ -648,7 +648,7 @@ var seed = exports.seed = function () {
                             title: "Post 14",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/10.jpeg"
+                            cover_image: "/uploads/2.jpg"
                         });
 
                     case 37:
@@ -657,7 +657,7 @@ var seed = exports.seed = function () {
                             title: "Post 15",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/10.jpeg"
+                            cover_image: "/uploads/3.jpg"
                         });
 
                     case 39:
@@ -666,7 +666,7 @@ var seed = exports.seed = function () {
                             title: "Post 16",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/10.jpeg"
+                            cover_image: "/uploads/4.jpg"
                         });
 
                     case 41:
@@ -675,7 +675,7 @@ var seed = exports.seed = function () {
                             title: "Post 17",
                             type: "post",
                             status: "publish",
-                            cover_image: "/uploads/10.jpeg"
+                            cover_image: "/uploads/5.jpg"
                         });
 
                     case 43:
@@ -684,7 +684,7 @@ var seed = exports.seed = function () {
                             title: "About",
                             type: "page",
                             status: "publish",
-                            cover_image: "/uploads/1.jpeg"
+                            cover_image: "/uploads/6.jpg"
                         });
 
                     case 45:

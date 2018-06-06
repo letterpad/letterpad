@@ -5,6 +5,7 @@ import { FeaturedImage, Tags, Categories, Excerpt, PostMeta } from "./";
 
 class PostActionDrawer extends Component {
     render() {
+        const post = this.props.post;
         const classes = this.props.isOpen ? " open" : "";
         return (
             <div className={"post-action-drawer" + classes}>
@@ -15,24 +16,20 @@ class PostActionDrawer extends Component {
                 >
                     ✕
                 </Link>
-                <PostMeta post={this.props.post} />
-                {this.props.post.type == "post" && (
-                    <Tags post={this.props.post} />
-                )}
-                {this.props.post.type == "post" && (
-                    <Categories post={this.props.post} />
-                )}
+                <PostMeta post={post} />
+                {post.type == "posts" && <Tags post={post} />}
+                {post.type == "posts" && <Categories post={post} />}
 
-                <Excerpt post={this.props.post} />
+                <Excerpt post={post} />
                 <FeaturedImage
-                    post={this.props.post}
+                    post={post}
                     toggleFileExplorerModal={this.props.toggleFileExplorerModal}
                 />
             </div>
         );
     }
 }
-PostActionDrawer.defaultProps = {
+PostActionDrawer.propTypes = {
     toggleActionDrawer: PropTypes.func,
     isOpen: PropTypes.bool,
     toggleFileExplorerModal: PropTypes.func,

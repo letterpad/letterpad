@@ -87,7 +87,7 @@ class Media extends Component {
     }
 
     async uploadImage(files) {
-        const coverImage = await uploadFile({ files });
+        const coverImage = await uploadFile({ files, type: "post_image" });
         const media = await this.props.insertMedia({
             url: coverImage
         });

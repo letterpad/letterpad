@@ -51,18 +51,19 @@ class Taxonomy extends Component {
     componentWillUnmount() {
         document.body.classList.remove("taxonomy-" + this.props.type + "-page");
     }
-
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
         if (
             !nextProps.loading &&
-            this.state.taxonomies.length !== nextProps.taxonomies.length
+            prevState.taxonomies.length !== nextProps.taxonomies.length
         ) {
-            this.setState({
+            return {
                 taxonomies: [...nextProps.taxonomies],
                 filteredData: [...nextProps.taxonomies]
-            });
+            };
         }
+        return null;
     }
+
     setRef(ele, idx, key) {
         if (!this.refList[idx]) {
             this.refList[idx] = {};

@@ -23,7 +23,7 @@ class FeaturedImage extends Component {
     }
 
     async uploadImage(files) {
-        const coverImage = await uploadFile({ files });
+        const coverImage = await uploadFile({ files, type: "post_image" });
         await this.props.insertMedia({ url: coverImage });
         this.updateFeaturedImage(coverImage);
     }
@@ -56,7 +56,7 @@ class FeaturedImage extends Component {
 
     render() {
         const { t } = this.context;
-        
+
         const coverImage =
             this.state.cover_image || "/admin/images/placeholder-800x400.png";
 
@@ -106,7 +106,7 @@ const updateQueryWithData = graphql(UPLOAD_COVER_IMAGE, {
                 updateQueries: {
                     getPost: (prev, { mutationResult }) => {
                         const coverImage = mutationResult.data.uploadFile
-                            ? mutationResult.data.uploadFile.cover_image
+                            ? mutationResult.data.uploadFile.post.cover_image
                             : "";
                         return {
                             post: {

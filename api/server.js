@@ -10,6 +10,7 @@ const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const models = require("./models");
 const path = require("path");
+const sharp = require("sharp");
 // const { seed } = require("./seed/seed");
 
 // require("@google-cloud/profiler").start({
@@ -102,22 +103,24 @@ app.use(
     })
 );
 
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, path.join(__dirname, "../public/uploads/"));
-    },
-    filename: function(req, file, cb) {
-        let ext = path.extname(file.originalname);
-        cb(null, file.fieldname + "-" + Date.now() + ext);
-    }
+const customStorage = require("./customStorage");
+
+var upload = multer({
+    storage: new customStorage({
+        destination: function(req, file, cb) {
+            let fname = Date.now() + ".jpg";
+            cb(null, path.join(__dirname, "../public/uploads/", fname));
+        },
+        filename: function(req, file, cb) {
+            cb(null, Date.now());
+        }
+    }),
+    limits: { fileSize: 5000000 }
 });
 
-var upload = multer({ storage: storage }).single("file");
-
-app.post("/upload", (req, res) => {
-    upload(req, null, function(err) {
-        res.json("/uploads/" + req.file.filename);
-    });
+app.use("/upload", upload.single("file"), (req, res) => {
+    let filename = req.file.path.split("/").pop();
+    res.json("/uploads/" + filename);
 });
 
 // seed the database if settings is empty

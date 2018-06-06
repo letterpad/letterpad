@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
@@ -61,18 +60,17 @@ class Themes extends Component {
     componentDidMount() {
         this.getThemes();
     }
-
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.settings.loading) {
             return false;
         }
         const data = nextProps.settings.data;
         const { css, theme } = data;
 
-        this.setState({
+        return {
             css: css.value,
             theme: theme.value
-        });
+        };
     }
 
     getThemes() {
