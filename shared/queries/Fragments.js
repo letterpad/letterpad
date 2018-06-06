@@ -23,6 +23,7 @@ module.exports.PostFragment = gql`
             id
             name
             type
+            slug
         }
     }
 `;

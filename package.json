@@ -5,18 +5,13 @@
     "main": "start.js",
     "private": true,
     "scripts": {
-        "build":
-            "NODE_ENV=production && babel api -d apiBuild && webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
-        "build:theme":
-            "NODE_ENV=production webpack --verbose --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${theme}",
+        "build": "NODE_ENV=production && babel api -d apiBuild && webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
+        "build:theme": "NODE_ENV=production webpack --verbose --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${theme}",
         "insert-fake": "babel-node ./api/faker/data.js",
         "preinstall": "./utils/preinstall.sh",
-        "dev":
-            "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/startDev.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
-        "prod":
-            "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
-        "prodPm2":
-            "NODE_ENV=production concurrently --kill-others \"pm2 start ./apiBuild/server.js --name=lpDocsApi\" \"pm2 start ./server.js --name=lpDocs\"",
+        "dev": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/startDev.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
+        "prod": "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
+        "prodPm2": "NODE_ENV=production concurrently --kill-others \"pm2 start ./apiBuild/server.js --name=lpDocsApi\" \"pm2 start ./server.js --name=lpDocs\"",
         "test": "jest --runInBand"
     },
     "repository": {
@@ -26,7 +21,9 @@
     "author": "Abhishek Saha",
     "license": "MIT",
     "homepage": "http://ajaxtown.com",
-    "workspaces": ["client/themes/*"],
+    "workspaces": [
+        "client/themes/*"
+    ],
     "dependencies": {
         "apollo-cache-inmemory": "^1.1.4",
         "apollo-client": "^2.0.4",
@@ -70,12 +67,12 @@
         "react-router": "^4.0.0",
         "react-router-dom": "^4.2.2",
         "react-sortable-tree": "^2.1.0",
-        "react-tag-input": "5.0.2",
+        "react-tag-input": "4.9.1",
         "reading-time": "*",
         "sequelize": "^3.30.2",
         "sequelize-cli": "^4.0.0",
-        "sqlite3": "^4.0.0",
         "sharp": "^0.20.3",
+        "sqlite3": "^4.0.0",
         "whatwg-fetch": "^2.0.3"
     },
     "devDependencies": {
@@ -136,6 +133,8 @@
         "write-file-webpack-plugin": "^4.2.0"
     },
     "jest": {
-        "testMatch": ["**/__tests__/**/?(*.)(spec|test).js?(x)"]
+        "testMatch": [
+            "**/__tests__/**/?(*.)(spec|test).js?(x)"
+        ]
     }
 }
