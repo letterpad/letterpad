@@ -26,22 +26,30 @@ const EditMenuModal = (props, context) => {
                         }
                     />
                 </div>
-                <div className="form-group">
-                    <label className="custom-label">{t("common.slug")}</label>
-                    <input
-                        defaultValue={props.nodeInfo.node.slug}
-                        type="text"
-                        className="form-control"
-                        disabled={props.nodeInfo.node.type == "page"}
-                        placeholder="Enter the path for navigation"
-                        onBlur={e =>
-                            props.changeItemProperty(e, props.nodeInfo, "slug")
-                        }
-                    />
-                    {props.nodeInfo.node.type == "page" && (
-                        <small>(You cannot edit slugs of pages)</small>
-                    )}
-                </div>
+                {props.nodeInfo.node.type !== "label" && (
+                    <div className="form-group">
+                        <label className="custom-label">
+                            {t("common.slug")}
+                        </label>
+                        <input
+                            defaultValue={props.nodeInfo.node.slug}
+                            type="text"
+                            className="form-control"
+                            disabled={props.nodeInfo.node.type == "page"}
+                            placeholder="Enter the path for navigation"
+                            onBlur={e =>
+                                props.changeItemProperty(
+                                    e,
+                                    props.nodeInfo,
+                                    "slug"
+                                )
+                            }
+                        />
+                        {props.nodeInfo.node.type == "page" && (
+                            <small>(You cannot edit slugs of pages)</small>
+                        )}
+                    </div>
+                )}
             </div>
             <div className="modal-footer">
                 <button

@@ -38,6 +38,7 @@ class MenuConstruction extends Component {
         let menu = JSON.parse(this.props.data.menu.value);
 
         this.state = {
+            loaded: false,
             categories: [],
             pages: [],
             items: [...menu],
@@ -54,9 +55,13 @@ class MenuConstruction extends Component {
             nodeInfo: {} // node which is being edited
         };
     }
-    componentWillReceiveProps(nextProps) {
-        if (!nextProps.categories.loading && !nextProps.pages.loading) {
-            let menu = JSON.parse(this.props.data.menu.value);
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (
+            !nextProps.categories.loading &&
+            !nextProps.pages.loading &&
+            !prevState.loaded
+        ) {
+            let menu = JSON.parse(nextProps.data.menu.value);
             const menuIds = getMenuItems(menu);
             const categories = nextProps.categories.taxonomies.map(
                 (ele, idx) => {
@@ -81,11 +86,13 @@ class MenuConstruction extends Component {
                     disabled: menuIds[ele.id + "-page"] ? true : false
                 };
             });
-            this.setState({ categories, pages });
+            return { categories, pages, loaded: true };
         }
+        return null;
     }
     addItem(idx, type) {
-        const newState = { ...this.state };
+        const newState = {};
+        newState[type] = [...this.state[type]];
         if (type === "labels") {
             newState[type][idx] = {
                 ...this.state[type][idx],
@@ -93,16 +100,14 @@ class MenuConstruction extends Component {
             };
         } else {
             // disable the item
-            newState[type] = this.state[type].map((item, i) => {
-                if (i === idx) {
-                    item.disabled = true;
-                }
-                return item;
-            });
+            newState[type][idx].disabled = true;
+        }
+        if (type === "categories") {
+            newState[type][idx].slug = newState[type][idx].name.toLowerCase();
         }
         //  add the item in the menu
-        newState.items = [...this.state.items, this.state[type][idx]];
-        this.setState(newState, () => {
+        newState.items = [...this.state.items, newState[type][idx]];
+        this.setState({ ...newState }, () => {
             this.props.updateOption("menu", JSON.stringify(this.state.items));
             const scrollContainer = document.querySelector(
                 ".ReactVirtualized__Grid__innerScrollContainer"
@@ -125,8 +130,6 @@ class MenuConstruction extends Component {
                 return _item;
             });
         };
-
-        let oldMenu = [...this.state.items];
 
         const findItemsAndDelete = (node, menuNode = false) => {
             let nodeFromMenu = node;
@@ -221,12 +224,16 @@ class MenuConstruction extends Component {
     generateNodeProps(props) {
         return {
             buttons: [
-                <span className="item-type">{props.node.type}</span>,
+                <span key="0" className="item-type">
+                    {props.node.type}
+                </span>,
                 <i
+                    key="1"
                     className="fa fa-pencil"
                     onClick={() => this.openModalToEdit(props)}
                 />,
                 <i
+                    key="2"
                     className="fa fa-trash"
                     onClick={_ => this.removeItem(props)}
                 />

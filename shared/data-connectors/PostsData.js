@@ -4,13 +4,15 @@ import config from "../../config";
 
 export default graphql(CAT_POSTS, {
     options: props => {
+        let offset =
+            props.match.params.page_no == 1 ? 0 : props.match.params.page_no;
         return {
             variables: {
                 type: "post_category",
                 slug: props.slug || props.match.params.slug,
                 postType: "post",
                 limit: config.itemsPerPage,
-                offset: 0
+                offset: offset || 0
             },
             fetchPolicy: "network-only"
         };

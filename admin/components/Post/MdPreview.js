@@ -25,7 +25,13 @@ class MdPreview extends Component {
                             }}
                         />
                     </div>
-                    <div className="footer">Preview</div>
+                    <div className="footer">
+                        <span>Preview</span>
+                        <span>
+                            Words:{" "}
+                            {this.props.preview.trim().split(" ").length - 1}
+                        </span>
+                    </div>
                 </article>
             </div>
         );

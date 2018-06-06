@@ -142,6 +142,7 @@ class Single extends Component {
                     <div className="col-lg-12 distractor">
                         <PostPublish
                             edit
+                            history={this.props.history}
                             post={this.props.post}
                             toggleActionDrawer={this.toggleActionDrawer}
                         />

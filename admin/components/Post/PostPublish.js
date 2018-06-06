@@ -23,9 +23,11 @@ class PostPublish extends Component {
             zenview: false
         };
     }
-    componentWillReceiveProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
         const status = nextProps.post.status == "publish" ? 1 : 0;
-        this.setState({ published: status });
+        return {
+            published: status
+        };
     }
 
     componentDidMount() {
@@ -58,6 +60,9 @@ class PostPublish extends Component {
                 return notify.show("Post created", "success", 3000);
             }
             if (this.props.post.status === "trash") {
+                this.props.history.push(
+                    config.baseName + "/admin/" + this.props.post.type + "s"
+                );
                 return notify.show("Post trashed", "success", 3000);
             }
             this.setState({ post: update.data.updatePost.post });

@@ -30,7 +30,7 @@ class PostMeta extends Component {
                     <span className="meta-label">Published at</span>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-control meta-value"
                         placeholder="Published date"
                         defaultValue={moment(
                             new Date(this.state.post.created_at)
@@ -39,7 +39,7 @@ class PostMeta extends Component {
                 </div>
                 <div className="x_content m-b-20">
                     <span className="meta-label">Link to post</span>
-                    <div>
+                    <div className="meta-value">
                         <a target="_blank" href={permalink}>
                             {permalink}
                         </a>
@@ -49,7 +49,7 @@ class PostMeta extends Component {
                     <span className="meta-label">Change Path</span>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-control meta-value"
                         placeholder="Link to post"
                         defaultValue={this.state.post.slug}
                         onKeyUp={this.changeSlug}
@@ -59,7 +59,7 @@ class PostMeta extends Component {
         );
     }
 }
-PostMeta.defaultProps = {
+PostMeta.propTypes = {
     post: PropTypes.object
 };
 export default PostMeta;

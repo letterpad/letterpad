@@ -12,11 +12,11 @@ export class MenuTree extends Component {
             route: this.props.route
         };
     }
-    componentWillReceiveProps(newProps) {
-        this.setState({
-            route: newProps.route,
-            data: this.props.data
-        });
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            route: nextProps.route,
+            data: prevState.data
+        };
     }
 
     onSelect(data) {
@@ -65,17 +65,15 @@ class TreeNode extends Component {
         };
         this.onClick = this.onClick.bind(this);
     }
-    componentWillReceiveProps(newProps) {
-        if (
-            "collapsed" in newProps.data &&
-            newProps.data.collapsed === this.state.collapsed
-        ) {
-            this.state.collapsed = newProps.data.collapsed;
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const newState = {};
+        if ("collapsed" in nextProps.data && !nextProps.data.collapsed) {
+            newState.collapsed = prevState.collapsed;
         }
 
-        this.state.selected =
-            newProps.data.slug === newProps.route ? "active" : "";
-        this.setState(this.state);
+        newState.selected =
+            nextProps.data.slug === nextProps.route ? "active" : "";
+        return newState;
     }
 
     onClick(e) {

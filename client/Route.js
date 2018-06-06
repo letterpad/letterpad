@@ -45,12 +45,12 @@ class App extends Component {
         style.setAttribute("type", "text/css");
         style.innerText = css.value;
         document.head.appendChild(style);
-        const parsedColors = JSON.parse(colors.value);
-        Object.keys(parsedColors).forEach(property => {
-            document
-                .querySelector(":root")
-                .style.setProperty(property, parsedColors[property]);
-        });
+        // const parsedColors = JSON.parse(colors.value);
+        // Object.keys(parsedColors).forEach(property => {
+        //     document
+        //         .querySelector(":root")
+        //         .style.setProperty(property, parsedColors[property]);
+        // });
     }
 
     getHomeSlug() {
@@ -100,6 +100,11 @@ class App extends Component {
                 exact: true,
                 component: Layout(Posts, { settings, type: "posts" }),
                 path: "/posts/:slug"
+            },
+            {
+                exact: true,
+                component: Layout(Posts, { settings, type: "posts" }),
+                path: "/posts/:slug/page/:page_no"
             },
             {
                 exact: true,

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
+import { notify } from "react-notify-toast";
 import PropTypes from "prop-types";
 import { MenuConstruction } from "../../components/Settings";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
@@ -35,7 +36,9 @@ class MenuBuilder extends Component {
                 });
             }
         }
-        this.props.updateOptions(settings).then(res => {});
+        this.props.updateOptions(settings).then(res => {
+            notify.show("Navigation menu saved", "success", 3000);
+        });
     }
     render() {
         if (this.props.settings.loading) {
@@ -83,10 +86,10 @@ const createQueryWithData = graphql(UPDATE_OPTIONS, {
                 variables: { options: data },
                 updateQueries: {
                     getOptions: (prev, { mutationResult }) => ({
-                        post: {
+                        settings: [
                             ...prev.settings,
                             ...mutationResult.data.updateOptions
-                        }
+                        ]
                     })
                 }
             })
