@@ -1,14 +1,34 @@
 # Letterpad &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/ajaxtown/letterpad/blob/master/LICENSE) ![CircleCI Status](https://circleci.com/gh/ajaxtown/letterpad.svg?style=shield&circle-token=:circle-token)
 
-Welcome to Letterpad, an open source minimalistic blogging engine which is easy to install, customize and extend. It is a single page application and loads content on the fly. It uses React, Graphql, Express and Sequelize ORM. It is in its early stages, but it covers most of the features that you will need to write a blog post. It supports multiple themes and each theme comes with its own set of features. Also it supports a markdown editor along with a rich text editor.
+Letterpad is an open-source and a high performant publishing engine for blogs with a state-of-the-art technology. It uses React, Graphql, Express and Sequelize ORM. It is in beta now. Few of the core features are listed below:
+
+
+- Server side rendering
+- Multi author support
+- Comments (Disqus integration)
+- Google Analytics
+- Theme support
+- Multi-level navigation
+- Image optimizer 
+- GraphQL for json API
+- Roles - Admin, Reviewer, Author, Reader
+- Markdown and RichText editor
+- Search Engine Optimised
+- Multi-language support (currently en, fr and pl)
+
+
+To check letterpad in action, check out this [Demo Site](https://letterpad.app/demo)
+You can visit the [Admin Panel](https://letterpad.app/demo/admin/login) and login with 
+```
+Email: demo@demo.com
+Password: demo
+```
 
 A verbose documentation can be found at [https://letterpad.app/docs](https://letterpad.app/docs)
 
-#### Why Letterpad ?
+Letterpad is an open source project, licensed under MIT. It is a Single Page Application and runs ridiculously fast. It has a very minimal initial configuration and is easy to setup.
 
-Lettterpad uses modern technologes to speed up your blog with a clean user interface and tries to keep the loading time below 3 seconds on a decent internet connection. It is rediculously fast. It has SEO built-in, so you will not need any third party libraries for this. There are optimised URLs, Facebook open graph, Twitter cards and semantic markup. It has been built for users with very little to no technical knowledge and is much easier to setup. Developers will find it pleasant to tweak letterpad and build additional features on top of it.
-
-Also, every part of Letterpad including its core files can be extended. The default themes of Letterpad focuses more on content and keeps it away from distractions. The API of letterpad exchanges information in json and you have full control over what data to get, set and display. You can build entire publishing apps on top of it, and completely customise the reader experience.
+The API of letterpad exchanges information in json and you have full control over what data to get, set and display. You can build entire publishing apps on top of it, and completely customise the reader experience.
 
 ### Installation
 
@@ -32,7 +52,15 @@ theme=hugo npm run dev
 
 Now visit [http://localhost:4040](http://localhost:4040) and checkout the welcome page.
 
-To visit the admin panel, visit [http://localhost:4040/admin](http://localhost:4040/admin)
+To visit the admin panel, visit [http://localhost:4040/admin](http://localhost:4040/admin) and login with 
+```
+Email: demo@demo.com 
+PAssword: demo
+```
+### How it works ?
+Letterpad needs two servers to run your blog. One server runs Graphql API and the other server runs the Letterpad Engine. However with little modification, you can combine this to use one server.
+
+
 
 ### License
 
