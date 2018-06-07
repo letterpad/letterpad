@@ -142,7 +142,9 @@ function Html({ initialState }) {
                 ${insertStyle("/css/font-awesome.min.css")}
                 ${insertStyle("/css/quill.snow.css")}
                 ${insertStyle("/css/github.min.css")}
-                <script src="/admin/js/masonry.pkgd.min.js"></script>
+                <script src="${
+    config.baseName
+}/admin/js/masonry.pkgd.min.js"></script>
                 ${bundles.map(insertScript).join("")}
             </body>
         </html>`;

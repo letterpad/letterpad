@@ -33,6 +33,7 @@ export default `
     id: Int
     name: String
     type: String
+    slug: String
   }
   type Response {
     ok: Boolean!
