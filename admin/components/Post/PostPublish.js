@@ -98,7 +98,6 @@ class PostPublish extends Component {
     }
     render() {
         const publishedCls = this.state.published ? "on" : "off";
-        const permalink = makeUrl([this.state.post.type, this.state.post.slug]);
         const actionLabel = this.props.create ? "Create" : "Update";
         return (
             <div className="card post-publish">
