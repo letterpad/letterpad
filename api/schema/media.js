@@ -33,4 +33,3 @@ export default `
 
   }
 `;
-//    uploadFile(file: Upload!):Boolean
