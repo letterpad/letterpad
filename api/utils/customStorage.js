@@ -1,5 +1,5 @@
-var fs = require("fs");
-var sharp = require("sharp");
+const fs = require("fs");
+const sharp = require("sharp");
 
 function getDestination(req, file, cb) {
     cb(null, "/dev/null"); // >Implying I use loonix
@@ -13,8 +13,8 @@ customStorage.prototype._handleFile = function _handleFile(req, file, cb) {
     this.getDestination(req, file, function(err, path) {
         if (err) return cb(err);
 
-        var outStream = fs.createWriteStream(path);
-        var transform = sharp();
+        let outStream = fs.createWriteStream(path);
+        let transform = sharp();
         if (req.body.type == "post_image") {
             transform = transform.resize(1200, 800);
         }

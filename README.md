@@ -62,6 +62,34 @@ Letterpad needs two servers to run your blog. One server runs Graphql API and th
 
 
 
+### Graphql API
+
+The graphql api code (ES6) for development is in the `api` folder. After the build, the folder `apiBuild` is created which contains all api code in ES5. This is used in production. The reason we have this build folder in this repository is because you can directly clone this repo in your production and use it straightaway.
+
+The api folder has well defined schemas in the `schema` folder and its resolvers in the `resolvers` folder. If you wish to make any change in the database label, then you should create a migration file. To create a migration file, enter this command:
+
+```
+yarn sequelize migration:generate --name specify-a-name-for-this-migration
+
+//eg.
+yarn sequelize migration:generate --name addGoogleAnalyticsField
+```
+
+In order to run the migrations, enter the below command.
+
+```
+yarn sequelize db:migrate
+```
+
+### Seeding
+
+If you want to seed the database with sample data, run the below command:
+
+```
+// you should have babel-node installed.
+babel-node ./api/seed/seed.js
+```
+
 ### License
 
 Letterpad is released under the MIT License.
