@@ -19,7 +19,8 @@ module.exports = {
         process: true,
         hljs: true,
         ga: true,
-        Masonry: true
+        Masonry: true,
+        __dirname: true
     },
     rules: {
         indent: [2, 4],
@@ -27,6 +28,7 @@ module.exports = {
         "linebreak-style": ["error", "unix"],
         quotes: ["error", "double"],
         semi: ["error", "always"],
-        "react/display-name": 0
+        "react/display-name": 0,
+        "no-console": 0
     }
 };

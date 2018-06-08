@@ -12,6 +12,7 @@ export default {
     Query: {
         author: (root, args, { models }) =>
             models.Author.findOne({ where: args }),
+
         authors: (root, args, { models }) =>
             models.Author.findAll({ where: args }),
 
