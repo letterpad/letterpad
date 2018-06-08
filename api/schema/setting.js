@@ -4,6 +4,7 @@ export default `
     option: String
     value: String
   }
+  
   input OptionInputType {
     id: Int
     option: String
