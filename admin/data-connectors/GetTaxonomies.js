@@ -5,7 +5,7 @@ export default graphql(GET_TAXONOMIES, {
     options: props => {
         return {
             variables: {
-                type: props.type
+                type: props.type || "post_category"
             },
             forceFetch: true,
             fetchPolicy: "network-only"

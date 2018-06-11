@@ -1,15 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Notifications, { notify } from "react-notify-toast";
-import { graphql } from "react-apollo";
-import { parseErrors } from "../../shared/util";
-import config from "../../config";
+import { parseErrors } from "../../../shared/util";
+import config from "../../../config";
 import {
-    LOGIN_QUERY,
-    FORGOT_PASSWORD_QUERY
-} from "../../shared/queries/Mutations";
+    forgotPassword,
+    updateQueryWithData
+} from "../../data-connectors/LoginConnector";
 
 class LoginView extends Component {
+    static propTypes = {
+        login: PropTypes.func,
+        history: PropTypes.object,
+        settings: PropTypes.object,
+        forgotPassword: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
         this.login = this.login.bind(this);
@@ -185,28 +191,4 @@ class LoginView extends Component {
         );
     }
 }
-
-LoginView.propTypes = {
-    login: PropTypes.func,
-    history: PropTypes.object
-};
-
-const updateQueryWithData = graphql(LOGIN_QUERY, {
-    props: ({ mutate }) => ({
-        login: data =>
-            mutate({
-                variables: data
-            })
-    })
-});
-
-const forgotPassword = graphql(FORGOT_PASSWORD_QUERY, {
-    props: ({ mutate }) => ({
-        forgotPassword: data =>
-            mutate({
-                variables: data
-            })
-    })
-});
-
 export default forgotPassword(updateQueryWithData(LoginView));

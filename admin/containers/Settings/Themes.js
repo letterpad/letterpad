@@ -4,40 +4,14 @@ import { notify } from "react-notify-toast";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
 import SettingsData from "shared/data-connectors/SettingsData";
 import { makeUrl } from "shared/util";
-
-class ThemeItem extends Component {
-    render() {
-        const theme = this.props.theme;
-
-        return (
-            <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                <article
-                    className={"theme-item" + (theme.active ? " active" : "")}
-                    onClick={e => this.props.activateTheme(e, this.props.theme)}
-                >
-                    <div className="theme-thumbnail">
-                        <img
-                            className="theme-image"
-                            src={theme.details.thumbnail}
-                        />
-                    </div>
-                    <div className="theme-body with-border">
-                        <div className="theme-header">
-                            <div className="theme-name">
-                                {theme.details.name} by {theme.details.author}
-                            </div>
-                            <div className="theme-meta">
-                                {theme.details.description}
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        );
-    }
-}
+import ThemeItem from "../../components/Settings/ThemeItem";
 
 class Themes extends Component {
+    static propTypes = {
+        updateOptions: PropTypes.func,
+        options: PropTypes.object
+    };
+
     constructor(props) {
         super(props);
         this.updatedOptions = {};
@@ -48,18 +22,18 @@ class Themes extends Component {
             css: "",
             themes: []
         };
-        this.bc = new BroadcastChannel("test_channel");
-        this.bcTrottleTimout = null;
 
         document.body.classList.add("themes-page");
-    }
-    componentWillUnmount() {
-        document.body.classList.remove("themes-page");
     }
 
     componentDidMount() {
         this.getThemes();
     }
+
+    componentWillUnmount() {
+        document.body.classList.remove("themes-page");
+    }
+
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.settings.loading) {
             return false;
@@ -102,11 +76,12 @@ class Themes extends Component {
                 value
             });
         });
-        this.props.updateOptions(settings).then(res => {
+        this.props.updateOptions(settings).then(() => {
             this.getThemes();
             notify.show("Theme settings saved", "success", 3000);
         });
     }
+
     activateTheme(e, theme) {
         e.preventDefault();
         const modifiedThemes = this.state.themes.map(items => {
@@ -161,8 +136,4 @@ class Themes extends Component {
     }
 }
 
-Themes.propTypes = {
-    updateOptions: PropTypes.func,
-    options: PropTypes.object
-};
 export default SettingsData(UpdateOptions(Themes));

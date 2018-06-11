@@ -1,7 +1,6 @@
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const path = require("path");
 const constants = require("./utils/constants");
 
 const corsMiddleWare = cors({
@@ -38,7 +37,7 @@ const addAdminToken = async (req, res) => {
             });
             res.setHeader("x-refresh-token", newToken);
         } catch (error) {
-            console.log("Error in token", error);
+            console.log("Invalid token or token expired");
             res.status(401);
             res.set("Location", constants.LOGIN_URL);
         }

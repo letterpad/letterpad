@@ -7,7 +7,6 @@ const isDev = process.env.NODE_ENV === "dev" ? true : false;
 
 var babelOptions = {
     presets: [
-        "react",
         [
             "env",
             {
@@ -17,9 +16,14 @@ var babelOptions = {
                 modules: false,
                 useBuiltIns: false
             }
-        ]
+        ],
+        "react"
     ],
-    plugins: ["transform-object-rest-spread", "react-hot-loader/babel"]
+    plugins: [
+        "transform-object-rest-spread",
+        "react-hot-loader/babel",
+        "transform-class-properties"
+    ]
 };
 
 const vendorFiles = [

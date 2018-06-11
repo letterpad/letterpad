@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
-import { Route, Redirect, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Route, Redirect, Switch } from "react-router-dom";
 import { withRouter } from "react-router";
-import jwtDecode from "jwt-decode";
-import Notifications, { notify } from "react-notify-toast";
+
+import Notifications from "react-notify-toast";
 
 // Shared
 import Translate from "../shared/i18n/Translate";
@@ -13,8 +12,8 @@ import SettingsData from "../shared/data-connectors/SettingsData";
 
 // View Files
 import Loader from "./components/Loader";
-import LoginView from "./containers/LoginView";
-import ResetPassword from "./containers/ResetPassword";
+import LoginView from "./containers/Login/LoginView";
+import ResetPassword from "./containers/Login/ResetPassword";
 import Settings from "./containers/Settings/Settings";
 import Posts from "./containers/Post/Posts";
 import Pages from "./containers/Page/Pages";
@@ -26,38 +25,17 @@ import EditAuthor from "./containers/Author/EditAuthor";
 import CreateAuthor from "./containers/Author/CreateAuthor";
 import Taxonomy from "./containers/Post/Taxonomy";
 import MenuBuilder from "./containers/Settings/MenuBuilder";
-import Menu from "./components/Menu/Menu";
-import Navbar from "./components/Navbar/index";
 import Home from "./containers/Home/Home";
 import Themes from "./containers/Settings/Themes";
-import Layout from "./containers/Layout";
 
 // css
 import "./public/pcss/admin.pcss";
+import SecuredRoute from "./containers/Secured";
 
-const SecuredRoute = routeProps => {
-    try {
-        let props = { ...routeProps };
-        const Component = props.component;
-        const user = jwtDecode(localStorage.token);
-        let exact = true;
-        if ("exact" in props) {
-            exact = props.exact;
-        }
-        delete props.component;
-        return (
-            <Route
-                {...props}
-                exact={exact}
-                component={Layout(Component, { ...props, author: user })}
-            />
-        );
-    } catch (e) {
-        // security failure
-    }
-    return <Redirect to="/admin/login" />;
-};
 class App extends Component {
+    static propTypes = {
+        settings: PropTypes.object
+    };
     render() {
         const settings = this.props.settings;
         if (settings.loading) {

@@ -11,30 +11,23 @@ import { uploadFile } from "../../util";
 
 const limit = config.itemsPerPage;
 
-const Paginate = ({ count, page }) => {
-    count = count || 0;
-
-    if (count <= limit) return <span />;
-    const pages = Array.from(Array(Math.ceil(count / limit)));
-    return (
-        <ul className="pagination">
-            {pages.map((_, i) => {
-                const num = i + 1;
-                return (
-                    <li key={num} className={page == num ? "active" : ""}>
-                        <Link to={"/admin/media/" + num}>{num}</Link>
-                    </li>
-                );
-            })}
-        </ul>
-    );
-};
-Paginate.propTypes = {
-    count: PropTypes.number,
-    page: PropTypes.number
-};
-
 class Media extends Component {
+    static propTypes = {
+        media: PropTypes.object,
+        history: PropTypes.object,
+        loading: PropTypes.bool,
+        deleteMedia: PropTypes.func,
+        insertMedia: PropTypes.func,
+        match: PropTypes.object
+    };
+    static defaultProps = {
+        media: {
+            rows: []
+        }
+    };
+    static contextTypes = {
+        t: PropTypes.func
+    };
     constructor(props) {
         super(props);
         this.toggleModal = this.toggleModal.bind(this);
@@ -47,7 +40,7 @@ class Media extends Component {
             deleteMedia: false,
             items: []
         };
-        this.uploadInput = React.createRef();
+        this.uploadInputRef = React.createRef();
 
         document.body.classList.add("media-page");
     }
@@ -96,7 +89,7 @@ class Media extends Component {
                 items: [media.data.insertMedia, ...this.state.items]
             },
             () => {
-                this.props.history.push("/admin/media/1");
+                this.props.history.push(config.baseName + "/admin/media/1");
             }
         );
     }
@@ -119,13 +112,13 @@ class Media extends Component {
                         <button
                             className="btn btn-xs btn-dark"
                             onClick={() => {
-                                this.uploadInput.current.click();
+                                this.uploadInputRef.current.click();
                             }}
                         >
                             Add Media
                         </button>
                         <input
-                            ref={this.uploadInput}
+                            ref={this.uploadInputRef}
                             onChange={input =>
                                 this.uploadImage(input.target.files)
                             }
@@ -156,19 +149,29 @@ class Media extends Component {
     }
 }
 
-Media.propTypes = {
-    media: PropTypes.object,
-    loading: PropTypes.bool,
-    deleteMedia: PropTypes.func,
-    match: PropTypes.object
-};
-Media.defaultProps = {
-    media: {
-        rows: []
-    }
-};
-Media.contextTypes = {
-    t: PropTypes.func
-};
-
 export default GetMedia(DeleteMedia(InsertMedia(Media)));
+
+const Paginate = ({ count, page }) => {
+    count = count || 0;
+
+    if (count <= limit) return <span />;
+    const pages = Array.from(Array(Math.ceil(count / limit)));
+    return (
+        <ul className="pagination">
+            {pages.map((_, i) => {
+                const num = i + 1;
+                return (
+                    <li key={num} className={page == num ? "active" : ""}>
+                        <Link to={config.baseName + "/admin/media/" + num}>
+                            {num}
+                        </Link>
+                    </li>
+                );
+            })}
+        </ul>
+    );
+};
+Paginate.propTypes = {
+    count: PropTypes.number,
+    page: PropTypes.number
+};
