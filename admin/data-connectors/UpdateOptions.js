@@ -9,7 +9,10 @@ export default graphql(UPDATE_OPTIONS, {
                     variables: { options: data },
                     updateQuery: (previousResult, { mutationResult }) => {
                         return {
-                            settings: [...mutationResult.data.updatedOptions]
+                            settings: [
+                                ...previousResult.settings,
+                                ...mutationResult.data.updatedOptions
+                            ]
                         };
                     }
                 })

@@ -2,6 +2,24 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 export default class Social extends Component {
+    static propTypes = {
+        data: PropTypes.string,
+        updateOption: PropTypes.func
+    };
+
+    static defaultProps = {
+        data: JSON.stringify({
+            twitter: "",
+            github: "",
+            instagram: "",
+            facebook: ""
+        })
+    };
+
+    static contextTypes = {
+        t: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -10,14 +28,16 @@ export default class Social extends Component {
         this.updateOption = this.updateOption.bind(this);
     }
     componentWillMount() {
-        this.state.social = JSON.parse(this.props.data);
-        this.setState(this.state);
+        this.setState({
+            social: JSON.parse(this.props.data)
+        });
     }
 
     updateOption(option, value) {
-        this.state.social[option] = value;
-        this.setState(this.state);
-        this.props.updateOption("social", JSON.stringify(this.state.social));
+        let newState = { social: { ...this.state.social } };
+        newState.social[option] = value;
+        this.setState(newState);
+        this.props.updateOption("social", JSON.stringify(newState));
     }
     render() {
         const { t } = this.context;
@@ -77,21 +97,3 @@ export default class Social extends Component {
         );
     }
 }
-
-Social.propTypes = {
-    data: PropTypes.string,
-    updateOption: PropTypes.func
-};
-
-Social.defaultProps = {
-    data: JSON.stringify({
-        twitter: "",
-        github: "",
-        instagram: "",
-        facebook: ""
-    })
-};
-
-Social.contextTypes = {
-    t: PropTypes.func
-};

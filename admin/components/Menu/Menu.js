@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { MenuTree } from "./TreeNode";
+import PropTypes from "prop-types";
 
 const data = [
     {
@@ -141,6 +142,10 @@ const data = [
     }
 ];
 export default class Menu extends Component {
+    static propTypes = {
+        location: PropTypes.object,
+        settings: PropTypes.object
+    };
     constructor(props) {
         super(props);
 
@@ -165,8 +170,9 @@ export default class Menu extends Component {
     }
     toggleItem(item, e) {
         e.preventDefault();
-        this.state[item] = !this.state[item];
-        this.setState(this.state);
+        this.setState({
+            [item]: !this.state[item]
+        });
     }
     navbarToggle() {
         this.setState({ navbarOpen: !this.state.navbarOpen });

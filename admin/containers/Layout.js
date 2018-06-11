@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
-export default function Layout(Element, props) {
+export default function Layout(ComponentClass, props) {
     const settings = props.settings;
 
     return class extends Component {
@@ -69,7 +69,7 @@ export default function Layout(Element, props) {
                     </nav>
                     <main>
                         <div className="content-area">
-                            <Element {..._props} />
+                            <ComponentClass {..._props} />
                         </div>
                     </main>
                 </div>

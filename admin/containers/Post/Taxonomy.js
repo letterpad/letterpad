@@ -4,7 +4,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
 import { Link } from "react-router-dom";
-import PostsHoc from "./PostsHoc";
+import PostsHoc from "../Hoc/PostsHoc";
 import Paginate from "../../components/Paginate";
 import { PostFilters } from "../../components/Post";
 import Loader from "../../components/Loader";
