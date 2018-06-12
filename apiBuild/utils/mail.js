@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var nodemailer = require("nodemailer");
 
-var SendMail = function SendMail(args, cb) {
+var SendMail = function SendMail(args) {
     var transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
         port: process.env.SMTP_PORT,
@@ -15,12 +15,12 @@ var SendMail = function SendMail(args, cb) {
             pass: process.env.SMTP_PASSWORD
         }
     });
-    // setup email data with unicode symbols
+    // setup email data
     var mailOptions = {
-        from: "\"" + process.env.SMTP_FROM_NAME + "\" <" + process.env.SMTP_USERNAME + ">", // sender address
-        to: args.to, // list of receivers
-        subject: args.subject, // Subject line
-        html: args.body // html body
+        from: "\"" + process.env.SMTP_FROM_NAME + "\" <" + process.env.SMTP_USERNAME + ">",
+        to: args.to,
+        subject: args.subject,
+        html: args.body
     };
 
     // send mail with defined transport object

@@ -40,6 +40,7 @@ exports.default = {
             var models = _ref.models;
             return models.Author.findOne({ where: args });
         },
+
         authors: function authors(root, args, _ref2) {
             var models = _ref2.models;
             return models.Author.findAll({ where: args });
