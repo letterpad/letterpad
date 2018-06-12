@@ -16,12 +16,12 @@ customStorage.prototype._handleFile = function _handleFile(req, file, cb) {
         let outStream = fs.createWriteStream(path);
         let transform = sharp();
         if (req.body.type == "post_image") {
-            transform = transform.resize(1200, 800);
+            transform = transform
+                .resize(1200, 800)
+                .background("transparent")
+                .embed()
+                .jpeg({ quality: 65 });
         }
-        transform = transform
-            .background("black")
-            .embed()
-            .jpeg({ quality: 65 });
 
         file.stream.pipe(transform).pipe(outStream);
         outStream.on("error", cb);
