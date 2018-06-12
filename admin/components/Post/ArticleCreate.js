@@ -5,6 +5,10 @@ import PostActions from "./PostActions";
 import ContentEditable from "./ContentEditable";
 
 export default class CreateArticle extends Component {
+    static propTypes = {
+        title: PropTypes.string,
+        post: PropTypes.object
+    };
     constructor(props) {
         super(props);
         this.changeEditor = this.changeEditor.bind(this);
@@ -66,8 +70,3 @@ export default class CreateArticle extends Component {
         );
     }
 }
-
-CreateArticle.propTypes = {
-    title: PropTypes.string,
-    post: PropTypes.object
-};

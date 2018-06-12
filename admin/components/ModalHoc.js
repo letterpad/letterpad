@@ -1,14 +1,23 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 const ModalHoc = (WrappedComponent, id = "", classes = "") => {
     return class extends Component {
+        static propTypes = {
+            isOpen: PropTypes.func.isRequired,
+            onClose: PropTypes.func,
+            className: PropTypes.string,
+            dialogClassName: PropTypes.string,
+            stateName: PropTypes.string
+        };
+
         constructor(props) {
             super(props);
             this.state = {
                 isOpen: this.props.isOpen,
                 isFadeIn: this.props.isOpen
             };
-
+            this.modalWrapperRef = React.createRef();
             this.close = this.close.bind(this);
             this.onEscKeyDown = this.onEscKeyDown.bind(this);
             this.fadeIn = this.fadeIn.bind(this);
@@ -71,7 +80,7 @@ const ModalHoc = (WrappedComponent, id = "", classes = "") => {
         }
 
         handleClick(evt) {
-            if (evt.target !== this.refs.modalWrapper) return;
+            if (evt.target !== this.modalWrapperRef.current) return;
             evt.preventDefault();
             this.close();
         }
@@ -87,7 +96,7 @@ const ModalHoc = (WrappedComponent, id = "", classes = "") => {
             return (
                 <div id={id} className={classes}>
                     <div
-                        ref="modalWrapper"
+                        ref={this.modalWrapperRef}
                         onClick={this.handleClick.bind(this)}
                         className={
                             "modal fade" +
@@ -116,4 +125,4 @@ const ModalHoc = (WrappedComponent, id = "", classes = "") => {
         }
     };
 };
-module.exports = ModalHoc;
+export default ModalHoc;

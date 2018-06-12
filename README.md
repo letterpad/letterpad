@@ -2,23 +2,22 @@
 
 Letterpad is an open-source and a high performant publishing engine for blogs with a state-of-the-art technology. It uses React, Graphql, Express and Sequelize ORM. It is in beta now. Few of the core features are listed below:
 
-
-- Server side rendering
-- Multi author support
-- Comments (Disqus integration)
-- Google Analytics
-- Theme support
-- Multi-level navigation
-- Image optimizer 
-- GraphQL for json API
-- Roles - Admin, Reviewer, Author, Reader
-- Markdown and RichText editor
-- Search Engine Optimised
-- Multi-language support (currently en, fr and pl)
-
+-   Server side rendering
+-   Multi author support
+-   Comments (Disqus integration)
+-   Google Analytics
+-   Theme support
+-   Multi-level navigation
+-   Image optimizer
+-   GraphQL for json API
+-   Roles - Admin, Reviewer, Author, Reader
+-   Markdown and RichText editor
+-   Search Engine Optimised
+-   Multi-language support (currently en, fr and pl)
 
 To check letterpad in action, check out this [Demo Site](https://letterpad.app/demo)
-You can visit the [Admin Panel](https://letterpad.app/demo/admin/login) and login with 
+You can visit the [Admin Panel](https://letterpad.app/demo/admin/login) and login with
+
 ```
 Email: demo@demo.com
 Password: demo
@@ -52,15 +51,16 @@ theme=hugo npm run dev
 
 Now visit [http://localhost:4040](http://localhost:4040) and checkout the welcome page.
 
-To visit the admin panel, visit [http://localhost:4040/admin](http://localhost:4040/admin) and login with 
+To visit the admin panel, visit [http://localhost:4040/admin](http://localhost:4040/admin) and login with
+
 ```
-Email: demo@demo.com 
+Email: demo@demo.com
 PAssword: demo
 ```
+
 ### How it works ?
+
 Letterpad needs two servers to run your blog. One server runs Graphql API and the other server runs the Letterpad Engine. However with little modification, you can combine this to use one server.
-
-
 
 ### Graphql API
 
@@ -75,10 +75,20 @@ yarn sequelize migration:generate --name specify-a-name-for-this-migration
 yarn sequelize migration:generate --name addGoogleAnalyticsField
 ```
 
+The above migration will be created in `api/housekeeper/migrations/xxxxxxxx-addGoogleAnalyticsField.js
+
 In order to run the migrations, enter the below command.
 
 ```
 yarn sequelize db:migrate
+```
+
+### EsLint
+
+Letterpad settings are based on VsCode editor but this can be used in any editor as well, however I have not tried this. To use class properties, we will install babel-eslint globally.
+
+```
+npm i -g babel-eslint
 ```
 
 ### Seeding

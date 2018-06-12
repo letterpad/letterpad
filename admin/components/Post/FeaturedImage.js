@@ -1,22 +1,32 @@
 import React, { Component } from "react";
-import { graphql, compose } from "react-apollo";
 import PropTypes from "prop-types";
-import PostActions from "./PostActions";
-import {
-    INSERT_MEDIA,
-    UPLOAD_COVER_IMAGE
-} from "../../../shared/queries/Mutations";
-import FileExplorerModal from "../Modals/FileExplorerModal";
 import { uploadFile } from "../../util";
 import config from "config";
+import UploadCoverImage from "../../data-connectors/UploadCoverImage";
+import InsertMedia from "../../data-connectors/InsertMedia";
 
 class FeaturedImage extends Component {
+    static contextTypes = {
+        t: PropTypes.func
+    };
+    static propTypes = {
+        post: PropTypes.object,
+        insertMedia: PropTypes.func.isRequired,
+        updateFeaturedImage: PropTypes.func.isRequired,
+        toggleFileExplorerModal: PropTypes.func.isRequired
+    };
+    static defaultProps = {
+        post: {
+            cover_image: ""
+        }
+    };
     constructor(props) {
         super(props);
         this.state = {
             cover_image: this.props.post.cover_image,
             fileExplorerOpen: false
         };
+        this.uploadInputRef = React.createRef();
         this.updateFeaturedImage = this.updateFeaturedImage.bind(this);
         this.toggleFileExplorer = this.toggleFileExplorer.bind(this);
         this.uploadImage = this.uploadImage.bind(this);
@@ -45,7 +55,7 @@ class FeaturedImage extends Component {
                     onClose: this.toggleFileExplorer,
                     onMediaSelect: this.updateFeaturedImage,
                     addNewMedia: () => {
-                        this.refs.uploadInput.click();
+                        this.uploadInputRef.current.click();
                         this.toggleFileExplorer();
                     },
                     display: this.state.fileExplorerOpen
@@ -79,14 +89,14 @@ class FeaturedImage extends Component {
                     ) : (
                         <a
                             className="btn btn-xs btn-dark"
-                            onClick={_ => this.updateFeaturedImage("")}
+                            onClick={() => this.updateFeaturedImage("")}
                         >
                             {t("removeFeaturedImg")}
                         </a>
                     )}
                 </div>
                 <input
-                    ref="uploadInput"
+                    ref={this.uploadInputRef}
                     onChange={input => this.uploadImage(input.target.files)}
                     type="file"
                     className="hide"
@@ -98,46 +108,4 @@ class FeaturedImage extends Component {
     }
 }
 
-const updateQueryWithData = graphql(UPLOAD_COVER_IMAGE, {
-    props: ({ mutate }) => ({
-        updateFeaturedImage: data =>
-            mutate({
-                variables: data,
-                updateQueries: {
-                    getPost: (prev, { mutationResult }) => {
-                        const coverImage = mutationResult.data.uploadFile
-                            ? mutationResult.data.uploadFile.post.cover_image
-                            : "";
-                        return {
-                            post: {
-                                ...prev.post,
-                                cover_image: coverImage
-                            }
-                        };
-                    }
-                }
-            })
-    })
-});
-
-const insertMedia = graphql(INSERT_MEDIA, {
-    props: ({ mutate }) => ({
-        insertMedia: data => {
-            mutate({
-                variables: data
-            });
-        }
-    })
-});
-
-FeaturedImage.contextTypes = {
-    t: PropTypes.func
-};
-
-FeaturedImage.defaultProps = {
-    post: {
-        cover_image: ""
-    }
-};
-const Data = compose(updateQueryWithData, insertMedia);
-export default Data(FeaturedImage);
+export default UploadCoverImage(InsertMedia(FeaturedImage));

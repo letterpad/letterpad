@@ -5,6 +5,9 @@ import PropTypes from "prop-types";
 const marked = require("marked");
 
 class MarkdownEditor extends Component {
+    static propTypes = {
+        mdBody: PropTypes.string.isRequired
+    };
     constructor(props) {
         super(props);
         this.getPreview = this.getPreview.bind(this);
@@ -43,9 +46,5 @@ class MarkdownEditor extends Component {
         return <div id="md-post">{this.state.body}</div>;
     }
 }
-
-MarkdownEditor.propTypes = {
-    mdBody: PropTypes.string
-};
 
 export default MarkdownEditor;

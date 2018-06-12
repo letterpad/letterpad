@@ -2,6 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 export default class PasswordChange extends Component {
+    static propTypes = {
+        updateOption: PropTypes.func
+    };
+
+    static contextTypes = {
+        t: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
         this.updateOption = this.updateOption.bind(this);
@@ -38,7 +46,3 @@ export default class PasswordChange extends Component {
         );
     }
 }
-
-PasswordChange.contextTypes = {
-    t: PropTypes.func
-};

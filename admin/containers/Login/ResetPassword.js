@@ -1,26 +1,26 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Notifications, { notify } from "react-notify-toast";
-import { graphql } from "react-apollo";
-import { parseErrors } from "../../shared/util";
-import {
-    LOGIN_QUERY,
-    FORGOT_PASSWORD_QUERY,
-    RESET_PASSWORD_QUERY
-} from "../../shared/queries/Mutations";
+import { resetPasswordQuery } from "../../data-connectors/LoginConnector";
+import config from "../../../config";
 
 class ResetPassword extends Component {
+    static propTypes = {
+        history: PropTypes.object,
+        location: PropTypes.object,
+        settings: PropTypes.object,
+        resetPassword: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
         this.changePassword = this.changePassword.bind(this);
     }
 
     componentDidMount() {
-        if (typeof document !== "undefined") {
-            document.body.classList.add("login-view");
-            this.passwordInput.focus();
-            delete localStorage.token;
-        }
+        document.body.classList.add("login-view");
+        this.passwordInput.focus();
+        delete localStorage.token;
     }
     componentWillUnmount() {
         document.body.classList.remove("login-view");
@@ -56,7 +56,7 @@ class ResetPassword extends Component {
             notify.show(res.data.resetPassword.msg, "warning", 3000);
         } else {
             notify.show(res.data.resetPassword.msg, "success", 3000);
-            this.props.history.push("/admin/login");
+            this.props.history.push(config.baseName + "/admin/login");
         }
     }
 
@@ -105,16 +105,4 @@ class ResetPassword extends Component {
     }
 }
 
-ResetPassword.propTypes = {
-    history: PropTypes.object
-};
-
-const resetPasswordQuery = graphql(RESET_PASSWORD_QUERY, {
-    props: ({ mutate }) => ({
-        resetPassword: data =>
-            mutate({
-                variables: data
-            })
-    })
-});
 export default resetPasswordQuery(ResetPassword);

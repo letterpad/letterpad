@@ -56,6 +56,6 @@ let httpServer = app.listen(config.apiPort, function() {
     var port = httpServer.address().port;
     console.log("Graphql api listening at http://%s:%s", host, port);
 });
-export function killServer() {
+module.exports.killServer = () => {
     httpServer.close();
-}
+};
