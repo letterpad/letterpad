@@ -1,13 +1,6 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
-import moment from "moment";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
-import { Link } from "react-router-dom";
-import PostsHoc from "../Hoc/PostsHoc";
-import Paginate from "../../components/Paginate";
-import { PostFilters } from "../../components/Post";
-import Loader from "../../components/Loader";
 import GetTaxonomies from "../../data-connectors/GetTaxonomies";
 import UpdateTaxonomy from "../../data-connectors/UpdateTaxonomy";
 import DeleteTaxonomy from "../../data-connectors/DeleteTaxonomy";
@@ -140,7 +133,7 @@ class Taxonomy extends Component {
         });
     }
 
-    handleChange(idx, key, value, maxWidth = 20) {
+    handleChange(idx, key, value) {
         this.state.filteredData[idx][key] = value;
         this.setState(this.state);
     }
@@ -154,12 +147,7 @@ class Taxonomy extends Component {
         const { t } = this.context;
         const loading = this.props.loading || !this.props.networkStatus === 2;
         if (loading) return null;
-        const style = {
-            tableBtns: {
-                marginRight: 5,
-                cursor: "pointer"
-            }
-        };
+
         const rows = this.state.filteredData.map((item, idx) => (
             <tr key={idx} className={item.edit ? "row-selected" : ""}>
                 <td width="25%">
