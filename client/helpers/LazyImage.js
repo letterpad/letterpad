@@ -9,13 +9,18 @@ class LazyImage extends Component {
             loaded: false
         };
     }
-
     componentDidMount() {
+        this.mounted = true;
         const img = new Image();
         img.src = this.props.src;
         img.onload = () => {
-            this.setState({ loaded: true });
+            if (this.mounted) {
+                this.setState({ loaded: true });
+            }
         };
+    }
+    componentWillUnmount() {
+        this.mounted = false;
     }
 
     render() {
