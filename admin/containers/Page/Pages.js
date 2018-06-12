@@ -1,16 +1,36 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { PostRows } from "../../components/Post";
-import PostsHoc from "../Post/PostsHoc";
+import PostsHoc from "../Hoc/PostsHoc";
 import Paginate from "../../components/Paginate";
 import { PostFilters } from "../../components/Post";
 import Search from "../../components/Post/Search";
 
 class Pages extends Component {
+    static propTypes = {
+        posts: PropTypes.object,
+        status: PropTypes.bool,
+        page: PropTypes.number,
+        changePage: PropTypes.func,
+        changeStatus: PropTypes.func,
+        loading: PropTypes.bool,
+        history: PropTypes.object,
+        setSelection: PropTypes.func,
+        selectedPosts: PropTypes.array,
+        selectAllPosts: PropTypes.func,
+        deletedSelectedPosts: PropTypes.func,
+        searchPosts: PropTypes.func,
+        allPostsSelected: PropTypes.bool
+    };
+    static contextTypes = {
+        t: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
     }
+
     componentDidMount() {
         document.body.classList.add("pages-page");
     }
@@ -109,23 +129,5 @@ class Pages extends Component {
         );
     }
 }
-
-Pages.propTypes = {
-    posts: PropTypes.object,
-    changePage: PropTypes.func,
-    variables: PropTypes.object,
-    changeStatus: PropTypes.func,
-    loading: PropTypes.bool,
-    history: PropTypes.object,
-    setSelection: PropTypes.func,
-    selectAllPosts: PropTypes.func,
-    deletedSelectedPosts: PropTypes.func,
-    searchPosts: PropTypes.func,
-    allPostsSelected: PropTypes.bool
-};
-
-Pages.contextTypes = {
-    t: PropTypes.func
-};
 
 export default PostsHoc(Pages, "page");

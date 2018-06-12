@@ -2,8 +2,15 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import User from "./TopBar/User";
 import config from "../../config";
+import PropTypes from "prop-types";
 
 class Header extends Component {
+    static propTypes = {
+        settings: PropTypes.object,
+        sidebarToggle: PropTypes.func,
+        author: PropTypes.object
+    };
+
     constructor(props) {
         super(props);
     }
@@ -23,7 +30,10 @@ class Header extends Component {
                         <span className="icon-bar" />
                         <span className="icon-bar" />
                     </button>
-                    <Link className="navbar-brand brand" to="/">
+                    <Link
+                        className="navbar-brand brand"
+                        to={config.baseName + "/"}
+                    >
                         {settings.site_title.value}
                     </Link>
                 </div>

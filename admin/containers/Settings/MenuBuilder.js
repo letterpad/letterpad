@@ -3,13 +3,25 @@ import { graphql } from "react-apollo";
 import { notify } from "react-notify-toast";
 import PropTypes from "prop-types";
 import { MenuConstruction } from "../../components/Settings";
-import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 import {
     GET_TAXONOMIES,
     GET_PAGE_NAMES
 } from "../../../shared/queries/Queries";
+import UpdateOptions from "../../data-connectors/UpdateOptions";
 
 class MenuBuilder extends Component {
+    static propTypes = {
+        updateOptions: PropTypes.func,
+        options: PropTypes.object,
+        pages: PropTypes.object,
+        categories: PropTypes.object,
+        settings: PropTypes.object
+    };
+
+    static contextTypes = {
+        t: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
         this.updatedOptions = {};
@@ -36,7 +48,7 @@ class MenuBuilder extends Component {
                 });
             }
         }
-        this.props.updateOptions(settings).then(res => {
+        this.props.updateOptions(settings).then(() => {
             notify.show("Navigation menu saved", "success", 3000);
         });
     }
@@ -79,33 +91,4 @@ const PagesData = graphql(GET_PAGE_NAMES, {
     options: () => ({ variables: { type: "page", status: "publish" } })
 });
 
-const createQueryWithData = graphql(UPDATE_OPTIONS, {
-    props: ({ mutate }) => ({
-        updateOptions: data =>
-            mutate({
-                variables: { options: data },
-                updateQueries: {
-                    getOptions: (prev, { mutationResult }) => ({
-                        settings: [
-                            ...prev.settings,
-                            ...mutationResult.data.updateOptions
-                        ]
-                    })
-                }
-            })
-    })
-});
-
-MenuBuilder.propTypes = {
-    updateOptions: PropTypes.func,
-    options: PropTypes.object,
-    pages: PropTypes.object,
-    categories: PropTypes.object,
-    settings: PropTypes.object
-};
-
-MenuBuilder.contextTypes = {
-    t: PropTypes.func
-};
-
-export default createQueryWithData(CategoriesData(PagesData(MenuBuilder)));
+export default UpdateOptions(CategoriesData(PagesData(MenuBuilder)));

@@ -5,6 +5,11 @@ import CreatePost from "../../data-connectors/CreatePost";
 import GetStats from "../../data-connectors/GetStats";
 
 class Home extends Component {
+    static propTypes = {
+        stats: PropTypes.object,
+        loading: PropTypes.bool,
+        createPost: PropTypes.func
+    };
     constructor(props) {
         super(props);
         this.draftPost = this.draftPost.bind(this);
@@ -48,11 +53,5 @@ class Home extends Component {
         );
     }
 }
-
-Home.propTypes = {
-    stats: PropTypes.object,
-    loading: PropTypes.bool,
-    createPost: PropTypes.func
-};
 
 export default CreatePost(GetStats(Home));

@@ -4,11 +4,21 @@ import PropTypes from "prop-types";
 import config from "config";
 
 export default class Basic extends Component {
+    static propTypes = {
+        data: PropTypes.object,
+        updateOption: PropTypes.func
+    };
+    static contextTypes = {
+        t: PropTypes.func
+    };
     constructor(props) {
         super(props);
         this.updateOption = this.updateOption.bind(this);
         this.uploadAvatar = this.uploadAvatar.bind(this);
         this.updateAvatar = this.updateAvatar.bind(this);
+
+        this.uploadInputRef = React.createRef();
+
         this.state = {
             avatar: this.props.data.avatar
         };
@@ -93,7 +103,7 @@ export default class Basic extends Component {
                                 href="#"
                                 onClick={e => {
                                     e.preventDefault();
-                                    this.refs.uploadInput.click();
+                                    this.uploadInputRef.current.click();
                                 }}
                             >
                                 Add Avatar
@@ -111,7 +121,7 @@ export default class Basic extends Component {
                         )}
                     </div>
                     <input
-                        ref="uploadInput"
+                        ref={this.uploadInputRef}
                         onChange={input =>
                             this.uploadAvatar(input.target.files)
                         }
@@ -124,6 +134,3 @@ export default class Basic extends Component {
         );
     }
 }
-Basic.contextTypes = {
-    t: PropTypes.func
-};

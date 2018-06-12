@@ -5,6 +5,10 @@ import ContentEditable from "./ContentEditable";
 import PropTypes from "prop-types";
 
 export default class ArticleEdit extends Component {
+    static propTypes = {
+        post: PropTypes.object
+    };
+
     constructor(props) {
         super(props);
         this.changeEditor = this.changeEditor.bind(this);
@@ -65,7 +69,3 @@ export default class ArticleEdit extends Component {
         );
     }
 }
-
-ArticleEdit.propTypes = {
-    post: PropTypes.object
-};

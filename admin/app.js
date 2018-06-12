@@ -7,8 +7,7 @@ import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
 import client from "./apolloClient";
 import Main from "./main";
-import { Route, Switch } from "react-router-dom";
-import LoginView from "./containers/LoginView";
+import { Switch } from "react-router-dom";
 import "isomorphic-fetch";
 import config from "../config";
 /*

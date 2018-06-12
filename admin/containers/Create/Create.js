@@ -8,21 +8,26 @@ import {
     PostActions,
     PostActionDrawer
 } from "../../components/Post";
+import config from "../../../config";
 import { Link } from "react-router-dom";
 import CreatePost from "../../data-connectors/CreatePost";
 import FileExplorerModal from "../../components/Modals/FileExplorerModal";
 import MdPreview from "../../components/Post/MdPreview";
-
-const qs = handle => document.querySelector(handle);
+import SyncScroll from "../Hoc/SyncScroll";
 
 class Create extends Component {
+    static propTypes = {
+        history: PropTypes.object,
+        createPost: PropTypes.func,
+        type: PropTypes.string,
+        manageScroll: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
-        this.addScrollTimer = this.addScrollTimer.bind(this);
         this.handlePostChanges = this.handlePostChanges.bind(this);
         this.toggleActionDrawer = this.toggleActionDrawer.bind(this);
         this.toggleZenView = this.toggleZenView.bind(this);
-        this.adjustScroll = this.adjustScroll.bind(this);
         this.handlePostSave = this.handlePostSave.bind(this);
         this.state = {
             loading: true,
@@ -34,9 +39,12 @@ class Create extends Component {
 
     componentWillMount() {
         const { type } = this.props;
+        // we need this only to listen mardown/richtext changes
         window.addEventListener("onPostChange", this.handlePostChanges);
+        // on save, we will navigate the user to edit post
         window.addEventListener("onPostCreate", this.handlePostSave);
         PostActions.data = {};
+        // Add a default title to the newly created post
         const title = "Draft - " + moment().format("L LT");
         this.props.createPost({ type, title }).then(result => {
             PostActions.setData(result.data.createPost.post);
@@ -47,9 +55,11 @@ class Create extends Component {
             });
         });
     }
+
     componentDidMount() {
         document.body.classList.add("create-" + this.props.type + "-page");
     }
+
     componentWillUnmount() {
         document.body.classList.remove("create-" + this.props.type + "-page");
         window.removeEventListener("onPostChange", this.handlePostChanges);
@@ -58,7 +68,7 @@ class Create extends Component {
 
     handlePostChanges(e) {
         if (PostActions.data.mode == "markdown") {
-            this.addScrollTimer();
+            this.props.manageScroll();
             if ("mdPreview" in e.detail) {
                 this.setState({ preview: e.detail.mdPreview });
             }
@@ -66,58 +76,17 @@ class Create extends Component {
             this.setState({ preview: "" });
         }
     }
-    addScrollTimer() {
-        setTimeout(() => {
-            var $divs = [
-                qs(".article-holder .CodeFlask__textarea"),
-                qs(".preview .post-content")
-            ];
-            document.addEventListener(
-                "scroll",
-                e => {
-                    $divs.forEach(div => {
-                        if (e.target === div) {
-                            this.adjustScroll(e);
-                        }
-                    });
-                },
-                true
-            );
-        }, 1000);
-    }
-    adjustScroll(event) {
-        const $divs = [
-            qs(".article-holder .CodeFlask__textarea"),
-            qs(".preview .post-content")
-        ];
-        let $allowed = $divs;
-        const sync = e => {
-            const $this = e.target;
-            if ($allowed.indexOf($this) >= 0) {
-                var other = $divs.filter(div => div !== $this)[0],
-                    percentage =
-                        $this.scrollTop /
-                        ($this.scrollHeight - $this.offsetHeight);
 
-                other.scrollTop = Math.round(
-                    percentage * (other.scrollHeight - other.offsetHeight)
-                );
-
-                $allowed = e.target;
-            } else {
-                $allowed = $divs;
-            }
-
-            return false;
-        };
-        sync(event);
-    }
     handlePostSave(e) {
         const post = e.detail;
         if (post.status == "trash") {
-            this.props.history.push(`/admin/${plural[post.type]}`);
+            this.props.history.push(
+                `${config.baseName}/admin/${plural[post.type]}`
+            );
         } else {
-            this.props.history.push(`/admin/${plural[post.type]}/${post.id}`);
+            this.props.history.push(
+                `${config.baseName}/admin/${plural[post.type]}/${post.id}`
+            );
         }
     }
 
@@ -182,10 +151,4 @@ class Create extends Component {
     }
 }
 
-Create.propTypes = {
-    history: PropTypes.object,
-    createPost: PropTypes.func,
-    type: PropTypes.string
-};
-
-export default CreatePost(Create);
+export default CreatePost(SyncScroll(Create));

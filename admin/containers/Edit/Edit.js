@@ -7,24 +7,30 @@ import {
     PostActionDrawer
 } from "../../components/Post";
 import { Link } from "react-router-dom";
-import OhSnap from "./OhSnap";
+import OhSnap from "../OhSnap";
 import Loader from "../../components/Loader";
 import GetSinglePost from "../../data-connectors/GetSinglePost";
 import FileExplorerModal from "../../components/Modals/FileExplorerModal";
 import MdPreview from "../../components/Post/MdPreview";
 
-const qs = handle => document.querySelector(handle);
+// Use to sync the scroll of mardown editor mode and preview mode
+import SyncScroll from "../Hoc/SyncScroll";
 
-class Single extends Component {
+class Edit extends Component {
+    static propTypes = {
+        loading: PropTypes.bool,
+        post: PropTypes.object,
+        history: PropTypes.object,
+        manageScroll: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
         this.getHtml = this.getHtml.bind(this);
-        this.addScrollTimer = this.addScrollTimer.bind(this);
         this.toggleActionDrawer = this.toggleActionDrawer.bind(this);
         this.toggleFileExplorerModal = this.toggleFileExplorerModal.bind(this);
         this.toggleZenView = this.toggleZenView.bind(this);
         this.handlePostChanges = this.handlePostChanges.bind(this);
-        this.mounted = true;
         this.state = {
             preview: "",
             actionDrawerOpen: false,
@@ -47,7 +53,7 @@ class Single extends Component {
 
     handlePostChanges(e) {
         if (PostActions.data.mode == "markdown") {
-            this.addScrollTimer();
+            this.props.manageScroll();
             if ("mdPreview" in e.detail) {
                 this.setState({ preview: e.detail.mdPreview });
             }
@@ -61,72 +67,28 @@ class Single extends Component {
         this.setState({ actionDrawerOpen: !this.state.actionDrawerOpen });
     }
 
-    addScrollTimer() {
-        setTimeout(() => {
-            var $divs = [
-                qs(".article-holder .CodeFlask__textarea"),
-                qs(".preview .post-content")
-            ];
-            document.addEventListener(
-                "scroll",
-                e => {
-                    $divs.forEach(div => {
-                        if (e.target === div) {
-                            this.adjustScroll(e);
-                        }
-                    });
-                },
-                true
-            );
-        }, 1000);
-    }
-    adjustScroll(event) {
-        const $divs = [
-            qs(".article-holder .CodeFlask__textarea"),
-            qs(".preview .post-content")
-        ];
-        let $allowed = $divs;
-        const sync = e => {
-            const $this = e.target;
-            if ($allowed.indexOf($this) >= 0) {
-                var other = $divs.filter(div => div !== $this)[0],
-                    percentage =
-                        $this.scrollTop /
-                        ($this.scrollHeight - $this.offsetHeight);
-
-                other.scrollTop = Math.round(
-                    percentage * (other.scrollHeight - other.offsetHeight)
-                );
-
-                $allowed = e.target;
-            } else {
-                $allowed = $divs;
-            }
-
-            return false;
-        };
-        sync(event);
-    }
-
     getHtml(html) {
         this.setState({ html });
     }
+
     toggleFileExplorerModal(props) {
         this.setState({
             fileExplorerProps: props
         });
     }
+
     toggleZenView(e) {
         e.preventDefault();
         document.body.classList.toggle("distract-free");
     }
+
     render() {
         if (this.props.loading) {
             return <Loader />;
         }
         if (!this.props.post) {
             return (
-                <OhSnap message="I am not sure how this happened. Maybe this page is dead for good or restricted." />
+                <OhSnap message="This page is either dead for good or restricted." />
             );
         }
         return (
@@ -180,10 +142,4 @@ class Single extends Component {
     }
 }
 
-Single.propTypes = {
-    loading: PropTypes.bool,
-    post: PropTypes.object,
-    history: PropTypes.object
-};
-
-export default GetSinglePost(Single);
+export default GetSinglePost(SyncScroll(Edit));

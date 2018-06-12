@@ -8,8 +8,8 @@ import {
     Messages
 } from "../../components/Settings";
 import { GET_OPTIONS } from "../../../shared/queries/Queries";
-import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 import { notify } from "react-notify-toast";
+import UpdateOptions from "../../data-connectors/UpdateOptions";
 
 const SubmitBtn = ({ handleClick }) => (
     <button type="submit" onClick={handleClick} className="btn btn-blue btn-sm">
@@ -21,6 +21,15 @@ SubmitBtn.propTypes = {
 };
 
 class Settings extends Component {
+    static propTypes = {
+        updateOptions: PropTypes.func,
+        options: PropTypes.object
+    };
+
+    static contextTypes = {
+        t: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
         this.updatedOptions = {};
@@ -55,7 +64,7 @@ class Settings extends Component {
                 value: this.updatedOptions[option]
             });
         });
-        this.props.updateOptions(settings).then(res => {
+        this.props.updateOptions(settings).then(() => {
             notify.show("Site settings saved", "success", 3000);
         });
     }
@@ -121,37 +130,7 @@ class Settings extends Component {
     }
 }
 
-const ContainerWithData = graphql(GET_OPTIONS, {
+const OptionsData = graphql(GET_OPTIONS, {
     name: "options"
 });
-
-const createQueryWithData = graphql(UPDATE_OPTIONS, {
-    props: ({ mutate }) => {
-        return {
-            updateOptions: data =>
-                mutate({
-                    variables: { options: data },
-                    updateQueries: {
-                        getOptions: (prev, { mutationResult }) => {
-                            return {
-                                post: {
-                                    ...prev.settings,
-                                    ...mutationResult.data.updateOptions
-                                }
-                            };
-                        }
-                    }
-                })
-        };
-    }
-});
-Settings.propTypes = {
-    updateOptions: PropTypes.func,
-    options: PropTypes.object
-};
-
-Settings.contextTypes = {
-    t: PropTypes.func
-};
-
-export default createQueryWithData(ContainerWithData(Settings));
+export default UpdateOptions(OptionsData(Settings));

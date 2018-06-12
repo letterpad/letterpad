@@ -7,6 +7,12 @@ import config from "../../../config";
 import { notify } from "react-notify-toast";
 
 export default class MediaItem extends Component {
+    static propTypes = {
+        media: PropTypes.object,
+        deleteMedia: PropTypes.func,
+        confirmDelete: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
         this.openMedia = this.openMedia.bind(this);
@@ -67,9 +73,3 @@ export default class MediaItem extends Component {
         );
     }
 }
-
-MediaItem.propTypes = {
-    media: PropTypes.object,
-    deleteMedia: PropTypes.func,
-    confirmDelete: PropTypes.func
-};

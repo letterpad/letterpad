@@ -4,6 +4,10 @@ import PropTypes from "prop-types";
 import FileExplorerModal from "../../../components/Modals/FileExplorerModal";
 
 class RichText extends Component {
+    static propTypes = {
+        insertMedia: PropTypes.func.isRequired,
+        body: PropTypes.string.isRequired
+    };
     constructor(props) {
         super(props);
         this.toggleFileExplorer = this.toggleFileExplorer.bind(this);
@@ -120,10 +124,5 @@ class RichText extends Component {
         );
     }
 }
-
-RichText.propTypes = {
-    insertMedia: PropTypes.func,
-    body: PropTypes.string
-};
 
 export default RichText;

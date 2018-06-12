@@ -1,12 +1,33 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { PostRows } from "../../components/Post";
-import PostsHoc from "./PostsHoc";
+import PostsHoc from "../Hoc/PostsHoc";
 import Paginate from "../../components/Paginate";
 import { PostFilters } from "../../components/Post";
 import Search from "../../components/Post/Search";
 
 class Posts extends Component {
+    static propTypes = {
+        posts: PropTypes.object,
+        changePage: PropTypes.func,
+        variables: PropTypes.object,
+        changeStatus: PropTypes.func,
+        loading: PropTypes.bool,
+        history: PropTypes.object,
+        setSelection: PropTypes.func,
+        selectAllPosts: PropTypes.func,
+        deletedSelectedPosts: PropTypes.func,
+        searchPosts: PropTypes.func,
+        allPostsSelected: PropTypes.bool,
+        selectedPosts: PropTypes.array,
+        status: PropTypes.string,
+        page: PropTypes.number
+    };
+
+    static contextTypes = {
+        t: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -14,8 +35,6 @@ class Posts extends Component {
             loading: true,
             posts: null
         };
-
-        this.handleClick = this.handleClick.bind(this);
     }
     componentDidMount() {
         document.body.classList.add("posts-page");
@@ -23,10 +42,6 @@ class Posts extends Component {
 
     componentWillUnmount() {
         document.body.classList.remove("posts-page");
-    }
-
-    handleClick(id) {
-        this.props.history.push("/admin/posts/" + id);
     }
 
     render() {
@@ -101,7 +116,6 @@ class Posts extends Component {
 
                         <PostRows
                             colSpan={7}
-                            handleClick={this.handleClick}
                             posts={this.props.posts}
                             loading={loading}
                             setSelection={this.props.setSelection}
@@ -121,23 +135,5 @@ class Posts extends Component {
         );
     }
 }
-
-Posts.propTypes = {
-    posts: PropTypes.object,
-    changePage: PropTypes.func,
-    variables: PropTypes.object,
-    changeStatus: PropTypes.func,
-    loading: PropTypes.bool,
-    history: PropTypes.object,
-    setSelection: PropTypes.func,
-    selectAllPosts: PropTypes.func,
-    deletedSelectedPosts: PropTypes.func,
-    searchPosts: PropTypes.func,
-    allPostsSelected: PropTypes.bool
-};
-
-Posts.contextTypes = {
-    t: PropTypes.func
-};
 
 export default PostsHoc(Posts, "post");
