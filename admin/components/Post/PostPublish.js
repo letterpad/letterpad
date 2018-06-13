@@ -60,9 +60,7 @@ class PostPublish extends Component {
                 return notify.show("Post created", "success", 3000);
             }
             if (this.props.post.status === "trash") {
-                this.props.history.push(
-                    config.baseName + "/admin/" + this.props.post.type + "s"
-                );
+                this.props.history.push("/admin/" + this.props.post.type + "s");
                 return notify.show("Post trashed", "success", 3000);
             }
             this.setState({ post: update.data.updatePost.post });

@@ -73,9 +73,7 @@ class PostRows extends Component {
                             </label>
                         </td>
                         <td>
-                            <Link
-                                to={config.baseName + "/admin/posts/" + post.id}
-                            >
+                            <Link to={"/admin/posts/" + post.id}>
                                 {post.title || "Draft.."}
                             </Link>
                         </td>
