@@ -7,7 +7,8 @@
     "scripts": {
         "build": "NODE_ENV=production && babel api -d apiBuild && webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
         "build:theme": "NODE_ENV=production webpack --verbose --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${theme}",
-        "insert-fake": "babel-node ./api/faker/data.js",
+        "build:admin": "NODE_ENV=production webpack --verbose --colors --display-error-details --config webpack/webpack.admin.prod.js",
+        "insert-fake": "babel-node ./api/seed/seed.js",
         "preinstall": "./utils/preinstall.sh",
         "dev": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/startDev.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
         "prod": "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
