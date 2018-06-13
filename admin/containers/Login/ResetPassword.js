@@ -56,7 +56,7 @@ class ResetPassword extends Component {
             notify.show(res.data.resetPassword.msg, "warning", 3000);
         } else {
             notify.show(res.data.resetPassword.msg, "success", 3000);
-            this.props.history.push(config.baseName + "/admin/login");
+            this.props.history.push("/admin/login");
         }
     }
 

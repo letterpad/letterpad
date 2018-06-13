@@ -89,7 +89,7 @@ class Media extends Component {
                 items: [media.data.insertMedia, ...this.state.items]
             },
             () => {
-                this.props.history.push(config.baseName + "/admin/media/1");
+                this.props.history.push("/admin/media/1");
             }
         );
     }

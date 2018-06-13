@@ -80,13 +80,9 @@ class Create extends Component {
     handlePostSave(e) {
         const post = e.detail;
         if (post.status == "trash") {
-            this.props.history.push(
-                `${config.baseName}/admin/${plural[post.type]}`
-            );
+            this.props.history.push(`/admin/${plural[post.type]}`);
         } else {
-            this.props.history.push(
-                `${config.baseName}/admin/${plural[post.type]}/${post.id}`
-            );
+            this.props.history.push(`/admin/${plural[post.type]}/${post.id}`);
         }
     }
 
