@@ -30,10 +30,7 @@ class Header extends Component {
                         <span className="icon-bar" />
                         <span className="icon-bar" />
                     </button>
-                    <Link
-                        className="navbar-brand brand"
-                        to={config.baseName + "/"}
-                    >
+                    <Link className="navbar-brand brand" to={"/"}>
                         {settings.site_title.value}
                     </Link>
                 </div>

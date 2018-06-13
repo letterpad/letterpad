@@ -162,9 +162,7 @@ const Paginate = ({ count, page }) => {
                 const num = i + 1;
                 return (
                     <li key={num} className={page == num ? "active" : ""}>
-                        <Link to={config.baseName + "/admin/media/" + num}>
-                            {num}
-                        </Link>
+                        <Link to={"/admin/media/" + num}>{num}</Link>
                     </li>
                 );
             })}

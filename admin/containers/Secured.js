@@ -25,7 +25,7 @@ const SecuredRoute = routeProps => {
     } catch (e) {
         // security failure
     }
-    return <Redirect to={config.baseName + "/admin/login"} />;
+    return <Redirect to={"/admin/login"} />;
 };
 SecuredRoute.propTypes = {
     component: PropTypes.func.isRequired,
