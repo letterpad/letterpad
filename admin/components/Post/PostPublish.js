@@ -2,11 +2,7 @@ import React, { Component } from "react";
 import { notify } from "react-notify-toast";
 import { Link } from "react-router-dom";
 import PostActions from "./PostActions";
-import { gql, graphql } from "react-apollo";
-import moment from "moment";
-import config from "../../../config";
-import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
-import { makeUrl } from "../../../shared/util";
+import UpdatePost from "../../data-connectors/UpdatePost";
 
 const actions = {
     publish: "Published",
@@ -19,16 +15,16 @@ class PostPublish extends Component {
         this.toggleZenView = this.toggleZenView.bind(this);
         this.state = {
             post: this.props.post,
-            published: 0,
+            published: this.props.post.status == "publish",
             zenview: false
         };
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const status = nextProps.post.status == "publish" ? 1 : 0;
-        return {
-            published: status
-        };
-    }
+    // static getDerivedStateFromProps(nextProps, prevState) {
+    //     const status = prevState.post.status == "publish" ? 1 : 0;
+    //     return {
+    //         published: status
+    //     };
+    // }
 
     componentDidMount() {
         PostActions.setData(this.props.post);
@@ -139,23 +135,4 @@ class PostPublish extends Component {
     }
 }
 
-const updateQueryWithData = graphql(UPDATE_POST_QUERY, {
-    props: ({ mutate }) => ({
-        update: data => {
-            return mutate({
-                variables: data,
-                updateQueries: {
-                    getPost: (prev, { mutationResult }) => {
-                        return {
-                            post: {
-                                ...prev.post,
-                                ...mutationResult.data.updatePost.post
-                            }
-                        };
-                    }
-                }
-            });
-        }
-    })
-});
-export default updateQueryWithData(PostPublish);
+export default UpdatePost(PostPublish);
