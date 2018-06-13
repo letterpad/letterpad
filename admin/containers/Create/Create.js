@@ -8,7 +8,6 @@ import {
     PostActions,
     PostActionDrawer
 } from "../../components/Post";
-import config from "../../../config";
 import { Link } from "react-router-dom";
 import CreatePost from "../../data-connectors/CreatePost";
 import FileExplorerModal from "../../components/Modals/FileExplorerModal";
@@ -29,6 +28,7 @@ class Create extends Component {
         this.toggleActionDrawer = this.toggleActionDrawer.bind(this);
         this.toggleZenView = this.toggleZenView.bind(this);
         this.handlePostSave = this.handlePostSave.bind(this);
+        this.toggleFileExplorerModal = this.toggleFileExplorerModal.bind(this);
         this.state = {
             loading: true,
             post: {},
@@ -89,6 +89,12 @@ class Create extends Component {
     toggleActionDrawer(e) {
         e.preventDefault();
         this.setState({ actionDrawerOpen: !this.state.actionDrawerOpen });
+    }
+
+    toggleFileExplorerModal(props) {
+        this.setState({
+            fileExplorerProps: props
+        });
     }
 
     toggleZenView(e) {

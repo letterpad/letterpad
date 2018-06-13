@@ -184,6 +184,10 @@ module.exports.UPDATE_POST_QUERY = gql`
                 mdPreview
                 author {
                     username
+                    lname
+                    fname
+                    avatar
+                    bio
                 }
                 slug
                 type
@@ -196,6 +200,7 @@ module.exports.UPDATE_POST_QUERY = gql`
                     id
                     name
                     type
+                    slug
                 }
             }
         }
