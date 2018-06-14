@@ -15,7 +15,7 @@ const httpLink = createHttpLink({
 // and client, we have to include the token if it exist in localStorage.
 // For every request to admin, this token will be refreshed and resaved in localstorage.
 // This is also useful to invalidate the sesson if the user is inactive for more than x time
-const middlewareLink = new ApolloLink((operation, forward) => {
+const middlewareLinkAdmin = new ApolloLink((operation, forward) => {
     operation.setContext({
         headers: {
             authorization: localStorage.token || null,
@@ -36,6 +36,15 @@ const middlewareLink = new ApolloLink((operation, forward) => {
     });
 });
 
+const middlewareLinkClient = new ApolloLink((operation, forward) => {
+    operation.setContext({
+        headers: {
+            browser: true
+        }
+    });
+    return forward(operation);
+});
+
 const errorLink = onError(({ networkError }) => {
     if (networkError.statusCode === 401) {
         window.location = "/admin/login";
@@ -47,10 +56,13 @@ if (typeof window !== "undefined") {
 }
 
 // prepare the cliet for graphql queries.
-const client = new ApolloClient({
-    link: errorLink.concat(middlewareLink).concat(httpLink),
-    cache: new InMemoryCache().restore(initialState),
-    ssrForceFetchDelay: 100
-});
 
+const client = (isAdmin = false) => {
+    const middleware = isAdmin ? middlewareLinkAdmin : middlewareLinkClient;
+    return new ApolloClient({
+        link: errorLink.concat(middleware).concat(httpLink),
+        cache: new InMemoryCache().restore(initialState),
+        ssrForceFetchDelay: 100
+    });
+};
 export default client;

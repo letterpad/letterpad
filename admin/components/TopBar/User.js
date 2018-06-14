@@ -15,7 +15,8 @@ class User extends Component {
         };
     }
     async componentDidMount() {
-        let response = await appoloClient.query({
+        const isAdmin = true;
+        let response = await appoloClient(isAdmin).query({
             query: GET_AUTHOR,
             variables: { id: this.props.author.id },
             forceFetch: true,
