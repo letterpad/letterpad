@@ -99,8 +99,7 @@ dir.getDirectories(__dirname + "/client/themes/").map(themePath => {
     // expose the public folder. This can be accessed as /theme-name/css/style.css
     // in dev mode, this is required.
     app.use(base + "/" + theme + "/", express.static(themePath + "/public"));
-    // in some instances its difficult to know which theme is being used.
-    // so we also provide a way to access the public folder like /client/css/style.css
+    // Also provide a way to access the client folder
     app.use(base + "/client/", express.static(themePath + "/public"));
 });
 

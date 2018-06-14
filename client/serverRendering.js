@@ -108,9 +108,9 @@ function getHtml(theme, html, state, head, settings) {
         "static/client/themes/" + theme + "/public/dist/client-bundle.js"
     ];
     const prodBundles = [
-        "client/js/highlight.min.js",
-        "client/js/vendor-bundle.min.js",
-        "client/dist/client-bundle.min.js"
+        theme + "/js/highlight.min.js",
+        theme + "/dist/vendor-bundle.min.js",
+        theme + "/dist/client-bundle.min.js"
     ];
     const bundles = isDev ? devBundles : prodBundles;
 
@@ -121,7 +121,7 @@ function getHtml(theme, html, state, head, settings) {
 
     // get the styles only in production. for dev, it will be injected by webpack
     const styleLinks = !isDev
-        ? prepareStyleTags("client/dist/client.min.css")
+        ? prepareStyleTags(theme + "/dist/client.min.css")
         : "";
 
     // read the template buffer
