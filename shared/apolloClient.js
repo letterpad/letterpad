@@ -11,15 +11,10 @@ const httpLink = createHttpLink({
     fetch: fetch
 });
 
-// const middlewareLink = new ApolloLink((operation, forward) => {
-//     operation.setContext({
-//         headers: {
-//             browser: true
-//         }
-//     });
-//     return forward(operation);
-// });
-
+// As the apollo client is responsible to send requests in both admin
+// and client, we have to include the token if it exist in localStorage.
+// For every request to admin, this token will be refreshed and resaved in localstorage.
+// This is also useful to invalidate the sesson if the user is inactive for more than x time
 const middlewareLink = new ApolloLink((operation, forward) => {
     operation.setContext({
         headers: {
