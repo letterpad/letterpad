@@ -11,14 +11,36 @@ const httpLink = createHttpLink({
     fetch: fetch
 });
 
+// const middlewareLink = new ApolloLink((operation, forward) => {
+//     operation.setContext({
+//         headers: {
+//             browser: true
+//         }
+//     });
+//     return forward(operation);
+// });
+
 const middlewareLink = new ApolloLink((operation, forward) => {
     operation.setContext({
         headers: {
+            authorization: localStorage.token || null,
             browser: true
         }
     });
-    return forward(operation);
+    return forward(operation).map(response => {
+        const {
+            response: { headers }
+        } = operation.getContext();
+        if (headers) {
+            const refreshToken = headers.get("x-refresh-token");
+            if (refreshToken) {
+                localStorage.token = refreshToken;
+            }
+        }
+        return response;
+    });
 });
+
 const errorLink = onError(({ networkError }) => {
     if (networkError.statusCode === 401) {
         window.location = "/admin/login";
