@@ -30,6 +30,8 @@ import Themes from "./containers/Settings/Themes";
 
 // css
 import "./public/pcss/admin.pcss";
+
+// All files which require authorization will pass though this
 import SecuredRoute from "./containers/Secured";
 
 class Routes extends Component {
@@ -73,6 +75,7 @@ class Routes extends Component {
                         )}
                     />
                     <div className="wrapper">
+                        {/* Notifications can be trigerred from anywhere, but they will be rendered in this block*/}
                         <Notifications />
 
                         <SecuredRoute

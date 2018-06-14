@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 export default class Categories extends Component {
+    static propTypes = {
+        loading: PropTypes.bool,
+        categories: PropTypes.array
+    };
     getLink({ name, slug }) {
         let link = "/category/" + slug;
         return <Link to={link}>{name}</Link>;

@@ -1,25 +1,18 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 import { Basic, Social, PasswordChange } from "../../components/Author";
 import { notify } from "react-notify-toast";
 import UpdateAuthor from "../../data-connectors/UpdateAuthor";
 import { GetAuthor } from "../../data-connectors/GetAuthors";
 import Loader from "../../components/Loader";
-
-const SubmitBtn = ({ handleClick }) => {
-    return (
-        <button
-            type="submit"
-            onClick={handleClick}
-            className="btn btn-blue btn-sm"
-        >
-            Save
-        </button>
-    );
-};
+import SaveButton from "./SaveButton";
 
 class EditAuthor extends Component {
+    static propTypes = {
+        author: PropTypes.object,
+        updateAuthor: PropTypes.func,
+        loading: PropTypes.bool
+    };
     constructor(props) {
         super(props);
         this.author = {};
@@ -74,32 +67,26 @@ class EditAuthor extends Component {
                             data={this.props.author}
                             updateOption={this.setOption}
                         />
-                        <SubmitBtn handleClick={this.submitData} />
+                        <SaveButton handleClick={this.submitData} />
                     </div>
                     <div className="card masonry-grid-item">
                         <Social
                             data={this.props.author.social}
                             updateOption={this.setOption}
                         />
-                        <SubmitBtn handleClick={this.submitData} />
+                        <SaveButton handleClick={this.submitData} />
                     </div>
                     <div className="card masonry-grid-item">
                         <PasswordChange
                             data={this.props.author}
                             updateOption={this.setOption}
                         />
-                        <SubmitBtn handleClick={this.submitData} />
+                        <SaveButton handleClick={this.submitData} />
                     </div>
                 </div>
             </section>
         );
     }
 }
-
-EditAuthor.propTypes = {
-    author: PropTypes.object,
-    updateAuthor: PropTypes.func,
-    loading: PropTypes.bool
-};
 
 export default UpdateAuthor(GetAuthor(EditAuthor));

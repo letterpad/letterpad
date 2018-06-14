@@ -1,25 +1,27 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
-import { Basic, Social, PasswordChange } from "../../components/Author";
+import { Basic } from "../../components/Author";
 import { notify } from "react-notify-toast";
 import GetRoles from "../../data-connectors/GetRoles";
 import CreateAuthorConnector from "../../data-connectors/CreateAuthorConnector";
 import Loader from "../../components/Loader";
-
-const SubmitBtn = ({ handleClick }) => {
-    return (
-        <button
-            type="submit"
-            onClick={handleClick}
-            className="btn btn-blue btn-sm"
-        >
-            Save
-        </button>
-    );
-};
+import SaveButton from "./SaveButton";
 
 class CreateAuthor extends Component {
+    static defaultProps = {
+        author: {
+            fname: "",
+            lname: "",
+            email: ""
+        }
+    };
+    static propTypes = {
+        author: PropTypes.object,
+        history: PropTypes.object,
+        createAuthor: PropTypes.func,
+        loading: PropTypes.bool,
+        roles: PropTypes.array
+    };
     constructor(props) {
         super(props);
         this.author = {};
@@ -80,7 +82,7 @@ class CreateAuthor extends Component {
                                     ))}
                                 </select>
                             </div>
-                            <SubmitBtn handleClick={this.submitData} />
+                            <SaveButton handleClick={this.submitData} />
                         </div>
                     </div>
                 </div>
@@ -88,14 +90,5 @@ class CreateAuthor extends Component {
         );
     }
 }
-
-CreateAuthor.defaultProps = {
-    author: {
-        fname: "",
-        lname: "",
-        email: ""
-    },
-    createAuthor: PropTypes.func
-};
 
 export default CreateAuthorConnector(GetRoles(CreateAuthor));

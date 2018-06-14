@@ -40,17 +40,12 @@ class Routes extends Component {
     }
 
     applyCustomCSS({ css, colors }) {
-        if (typeof document == "undefined") return false;
+        if (typeof document == "undefined" || typeof css == "undefined")
+            return false;
         const style = document.createElement("style");
         style.setAttribute("type", "text/css");
         style.innerText = css.value;
         document.head.appendChild(style);
-        // const parsedColors = JSON.parse(colors.value);
-        // Object.keys(parsedColors).forEach(property => {
-        //     document
-        //         .querySelector(":root")
-        //         .style.setProperty(property, parsedColors[property]);
-        // });
     }
 
     getHomeSlug() {

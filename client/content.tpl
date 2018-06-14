@@ -9,7 +9,7 @@
 
 <body>
     <div id="app">{{HTML_CONTENT}}</div>
-    <script>
+    <script type="text/javascript">
         window.__APOLLO_STATE__ = {{INITIAL_STATE}};
         window.NODE_ENV = "{{NODE_ENV}}";
         window.rootUrl = "{{ROOT_URL}}";
@@ -19,12 +19,14 @@
         window.apiPort = {{API_PORT}};
         window.baseName = "{{BASE_NAME}}";
 
+
         window.ga = window.ga ||  function() {
                         (ga.q = ga.q || []).push(arguments);
                     };
         ga.l = +new Date();
-        ga("create", {{TRACKING_ID}}, "auto");
+        ga("create", "{{TRACKING_ID}}", "auto");
         ga("send", "pageview");
+
     </script>
         
     {{SCRIPT_TAGS}}
