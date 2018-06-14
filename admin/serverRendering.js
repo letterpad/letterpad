@@ -7,7 +7,12 @@ const { GET_OPTIONS } = require("../shared/queries/Queries");
 const { getDirectories } = require("../shared/dir");
 const path = require("path");
 const fs = require("fs");
-const { makeUrl } = require("../shared/util");
+const {
+    getMetaTags,
+    prepareScriptTags,
+    prepareStyleTags,
+    templateEngine
+} = require("../shared/util");
 
 const client = () =>
     new ApolloClient({
@@ -66,86 +71,60 @@ module.exports.init = app => {
                 if (process.env.theme && process.env.theme !== "") {
                     theme = process.env.theme;
                 }
-                const sendResponse = ({ content, initialState }) => {
-                    const html = Html({ theme, content, initialState });
-                    res.status(200);
-                    res.send(`<!doctype html>\n${html}`);
-                    res.end();
-                };
-                let initialState = {};
-                sendResponse({ content: null, initialState });
+                let apolloState = {};
+                const content = getHtml(theme, content, apolloState, settings);
+                res.end(content);
             });
     });
 };
 
-function Html({ initialState }) {
+function getHtml(theme, html, apolloState, settings) {
+    const isDev = process.env.NODE_ENV === "dev";
+
     const devBundles = [
+        { src: "/admin/js/masonry.pkgd.min.js" },
         "/admin/js/highlight.min.js",
         "/admin/js/quill.1.2.2.js",
         "/static/public/js/vendor-bundle.js",
         "/static/admin/public/dist/admin-bundle.js"
     ];
     const prodBundles = [
+        { src: "/admin/js/masonry.pkgd.min.js" },
         "/admin/js/highlight.min.js",
         "/admin/js/quill.1.2.2.js",
         "/admin/dist/vendor-bundle.min.js",
         "/admin/dist/admin-bundle.min.js"
     ];
-    const bundles =
-        process.env.NODE_ENV === "production" ? prodBundles : devBundles;
+    const bundles = isDev ? devBundles : prodBundles;
 
-    const insertScript = script =>
-        `<script type="text/javascript" src="${makeUrl(
-            script
-        )}" defer></script>`;
+    const initialState = JSON.stringify(apolloState);
 
-    const insertStyle = style =>
-        `<link
-            href="${makeUrl(["admin", style])}"
-            rel="stylesheet"
-            type="text/css"
-        />`;
-    const adminCss =
-        process.env.NODE_ENV === "production"
-            ? insertStyle("/dist/admin.min.css")
-            : "";
+    // convert the bundles into <script ...></script>
+    const scripts = prepareScriptTags(bundles);
 
-    return `<html lang="en">
-            <head>
-                <meta charSet="UTF-8" />
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1"
-                />
-                <title>Letterpad</title>
-                ${insertStyle("/css/bootstrap.min.css")}
-                ${insertStyle("/css/vertical.css")}
-                ${adminCss}
-            </head>
-            <body>
-                <div id="app"></div>
-                <script>
-                    window.NODE_ENV = "${process.env.NODE_ENV}";
-                    window.__APOLLO_STATE__=${JSON.stringify(initialState)};
-                    window.rootUrl = "${process.env.rootUrl}";
-                    window.apiUrl="${process.env.apiUrl}";
-                    window.uploadUrl="${process.env.uploadUrl}";
-                    window.appPort="${process.env.appPort}";
-                    window.apiPort="${process.env.apiPort}";
-                    window.baseName="${process.env.baseName}";
-                </script>
-                <link
-                    href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700"
-                    rel="stylesheet"
-                    type="text/css"
-                />
-                ${insertStyle("/css/font-awesome.min.css")}
-                ${insertStyle("/css/quill.snow.css")}
-                ${insertStyle("/css/github.min.css")}
-                <script src="${
-    config.baseName
-}/admin/js/masonry.pkgd.min.js"></script>
-                ${bundles.map(insertScript).join("")}
-            </body>
-        </html>`;
+    // get the styles only in production. for dev, it will be injected by webpack
+    const styleLinks = !isDev
+        ? prepareStyleTags("admin/dist/admin.min.css")
+        : "";
+
+    // read the template buffer
+    const templateBuffer = fs.readFileSync(
+        path.resolve(__dirname, "./content.tpl")
+    );
+
+    let template = templateBuffer.toString();
+
+    // replace template variables with values and return the html markup
+    return templateEngine(template, {
+        STYLE_TAGS: styleLinks,
+        INITIAL_STATE: initialState,
+        NODE_ENV: process.env.NODE_ENV,
+        ROOT_URL: process.env.rootUrl,
+        API_URL: process.env.apiUrl,
+        UPLOAD_URL: process.env.uploadUrl,
+        APP_PORT: process.env.appPort,
+        API_PORT: process.env.apiPort,
+        BASE_NAME: process.env.baseName,
+        SCRIPT_TAGS: scripts
+    });
 }

@@ -2,14 +2,22 @@ const { ApolloClient } = require("apollo-client");
 const { ApolloLink } = require("apollo-link");
 const { onError } = require("apollo-link-error");
 const path = require("path");
-const fetch = require("node-fetch");
+const fetch = require("isomorphic-fetch");
 const fs = require("fs");
 const config = require("../config");
 const { createHttpLink } = require("apollo-link-http");
 const { InMemoryCache } = require("apollo-cache-inmemory");
-const { makeUrl } = require("../shared/util");
+const {
+    getMetaTags,
+    prepareScriptTags,
+    prepareStyleTags,
+    templateEngine,
+    convertQueryToParams
+} = require("../shared/util");
+
 const { GET_OPTIONS } = require("../shared/queries/Queries");
 
+// handle errors whie fetching data in the server.
 const errorLink = onError(({ networkError, graphQLErrors }) => {
     if (graphQLErrors) {
         graphQLErrors.map(({ message, locations, path }) =>
@@ -30,6 +38,7 @@ const link = ApolloLink.from([errorLink, httpLink]);
 
 module.exports.init = app => {
     app.get("*", (req, res) => {
+        // using the apolloclient we can fetch data from the backend
         const client = new ApolloClient({
             ssrMode: true,
             link: link,
@@ -37,6 +46,7 @@ module.exports.init = app => {
         });
 
         try {
+            // get the settings data. It contains information about the theme that we want to render.
             client.query({ query: GET_OPTIONS }).then(options => {
                 const settings = {};
                 options.data.settings.forEach(item => {
@@ -47,38 +57,34 @@ module.exports.init = app => {
                 if (process.env.theme && process.env.theme !== "") {
                     theme = process.env.theme;
                 }
+                // Get the server file based on the appropriate theme
                 let serverFile =
                     "./themes/" + theme + "/public/dist/server.node.js";
-                const urlParams = Object.assign(
-                    {},
-                    getParams(req.originalUrl),
-                    getParams(req.header("Referer"))
-                );
-                let previewTheme = false;
 
-                if (urlParams && "theme" in urlParams) {
-                    theme = urlParams.theme;
-                    previewTheme = true;
-                }
+                // we also need a way to preview other themes. This works but not very well.
+                // needs to be changed later.
+                const urlParams = {
+                    ...convertQueryToParams(req.originalUrl),
+                    ...convertQueryToParams(req.header("Referer"))
+                };
 
-                if (previewTheme) {
-                    const previewThemePath =
-                        "./themes/" + theme + "/public/dist/server.node.js";
-                    if (fs.existsSync(path.join(__dirname, previewThemePath))) {
-                        serverFile = previewThemePath;
-                    } else {
-                        console.error(
-                            "Server bundle for theme " + theme + " not found"
-                        );
-                    }
-                }
+                // if its in preview mode, get the preview file. this will not work in dev mode
+                // because at a time, only one theme is bundled
+                serverFile = checkPreview(serverFile, theme, urlParams);
+
+                // this is the bundle file from server.js which returns a promise
                 const server = require(serverFile).default;
 
                 server(req, client, config)
                     .then(({ html, apolloState, head }) => {
-                        res.end(
-                            getHtml(theme, html, apolloState, head, settings)
+                        const content = getHtml(
+                            theme,
+                            html,
+                            apolloState,
+                            head,
+                            settings
                         );
+                        res.end(content);
                     })
                     .catch(e => {
                         console.log("Error while rendering", e);
@@ -90,111 +96,80 @@ module.exports.init = app => {
     });
 };
 
-const getParams = query => {
-    if (!query) {
-        return {};
-    }
-
-    let hashes = query.slice(query.indexOf("?") + 1).split("&");
-    let params = {};
-    hashes.map(hash => {
-        let [key, val] = hash.split("=");
-        params[key] = decodeURIComponent(val);
-    });
-
-    return params;
-};
-
 function getHtml(theme, html, state, head, settings) {
-    let htmlAttrs = "";
-    const metaTags = Object.keys(head)
-        .map(item => {
-            if (item == "htmlAttributes") {
-                htmlAttrs = head[item].toString();
-                return "";
-            }
-            return head[item].toString();
-        })
-        .filter(x => x)
-        .join("");
+    const { htmlAttrs, metaTags } = getMetaTags(head);
+    const isDev = process.env.NODE_ENV === "dev";
 
     let devBundles = [
-        theme + "/js/highlight.min.js",
+        "client/js/highlight.min.js",
         "static/public/js/vendor-bundle.js",
         "static/client/themes/" + theme + "/public/dist/client-bundle.js"
     ];
     const prodBundles = [
-        theme + "/js/highlight.min.js",
-        "/js/vendor-bundle.min.js",
-        theme + "/dist/client-bundle.min.js"
+        "client/js/highlight.min.js",
+        "client/js/vendor-bundle.min.js",
+        "client/dist/client-bundle.min.js"
     ];
-    const bundles = process.env.NODE_ENV === "dev" ? devBundles : prodBundles;
+    const bundles = isDev ? devBundles : prodBundles;
 
-    const insertScript = script =>
-        `<script type="text/javascript" src="${makeUrl(
-            script
-        )}" defer></script>`;
+    const initialState = JSON.stringify(state);
 
-    const initialState = JSON.stringify(state); //.replace(/</g, "\\u003c");
-    const scripts = bundles.map(bundle => insertScript(bundle));
+    // convert the bundles into <script ...></script>
+    const scripts = prepareScriptTags(bundles);
 
-    let styleLinks = "";
+    // get the styles only in production. for dev, it will be injected by webpack
+    const styleLinks = !isDev
+        ? prepareStyleTags("client/dist/client.min.css")
+        : "";
 
-    if (process.env.NODE_ENV === "production") {
-        let link1 = makeUrl([theme, "dist/client.min.css"]);
-        styleLinks = `<link href="${link1}" rel="stylesheet"/>`;
+    // read the template buffer
+    const templateBuffer = fs.readFileSync(
+        path.resolve(__dirname, "./content.tpl")
+    );
+
+    let template = templateBuffer.toString();
+
+    // replace template variables with values and return the html markup
+    return templateEngine(template, {
+        HTML_CONTENT: html,
+        HTML_ATTRS: htmlAttrs,
+        STYLE_TAGS: styleLinks,
+        META_TAGS: metaTags,
+        INITIAL_STATE: initialState,
+        NODE_ENV: process.env.NODE_ENV,
+        ROOT_URL: process.env.rootUrl,
+        API_URL: process.env.apiUrl,
+        UPLOAD_URL: process.env.uploadUrl,
+        APP_PORT: process.env.appPort,
+        API_PORT: process.env.apiPort,
+        BASE_NAME: process.env.baseName,
+        TRACKING_ID: settings.google_analytics,
+        GA_SCRIPT_TAG:
+            settings.google_analytics !== ""
+                ? "<script async src=\"https://www.gogle-analytics.com/analytics.js\"></script>"
+                : "",
+        SCRIPT_TAGS: scripts
+    });
+}
+
+// if the url has a param ?theme=xxx, then use that theme
+// this will not work in dev mode.
+function checkPreview(serverFile, theme, urlParams) {
+    let previewTheme = false;
+
+    if (urlParams && "theme" in urlParams) {
+        theme = urlParams.theme;
+        previewTheme = true;
     }
 
-    const analytics = addAnalytics(settings.google_analytics);
-
-    return `<html ${htmlAttrs}>
-            <head>
-                <meta charSet="UTF-8" />
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1"
-                />
-                <link rel="manifest" href=${config.baseName + "/manifest.json"}>
-                ${metaTags}
-                ${styleLinks}
-                
-            </head>
-            <body>
-                <div id="app">${html}</div>
-                <script>
-                    window.__APOLLO_STATE__=${initialState};
-                    window.NODE_ENV = "${process.env.NODE_ENV}";
-                    window.rootUrl="${process.env.rootUrl}";
-                    window.apiUrl="${process.env.apiUrl}";
-                    window.uploadUrl="${process.env.uploadUrl}";
-                    window.appPort="${process.env.appPort}";
-                    window.apiPort="${process.env.apiPort}";
-                    window.baseName="${process.env.baseName}";
-
-                    ${analytics}
-                    
-                </script>
-                ${
-    settings.google_analytics
-        ? " <script async src='https://www.google-analytics.com/analytics.js'></script>"
-        : ""
-}
-                ${scripts.join("")}
-            </body>
-        </html>`;
-}
-
-function addAnalytics(tracking_id) {
-    if (!tracking_id) return "";
-    return `
-            window.ga =
-                window.ga ||
-                function() {
-                    (ga.q = ga.q || []).push(arguments);
-                };
-            ga.l = +new Date();
-            ga("create", "${tracking_id}", "auto");
-            ga("send", "pageview");
-           
-    `;
+    if (previewTheme) {
+        const previewThemePath =
+            "./themes/" + theme + "/public/dist/server.node.js";
+        if (fs.existsSync(path.join(__dirname, previewThemePath))) {
+            serverFile = previewThemePath;
+        } else {
+            console.error("Server bundle for theme " + theme + " not found");
+        }
+    }
+    return serverFile;
 }

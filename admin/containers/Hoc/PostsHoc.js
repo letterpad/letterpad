@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import { SEARCH_POSTS, GET_POSTS } from "../../../shared/queries/Queries";
-import appoloClient from "../../apolloClient";
-import config from "../../../config";
-import {
-    BULK_DELETE_POSTS,
-    DELETE_TAXONOMY
-} from "../../../shared/queries/Mutations";
+import appoloClient from "shared/apolloClient";
+import { BULK_DELETE_POSTS } from "../../../shared/queries/Mutations";
 
 const PostsHoc = (WrappedComponent, type) => {
     return class extends Component {
@@ -112,7 +108,7 @@ const PostsHoc = (WrappedComponent, type) => {
                 query: SEARCH_POSTS,
                 variables: {
                     ...this.variables,
-                    query: '{ "like": "%' + query + '%" }'
+                    query: "{ \"like\": \"%" + query + "%\" }"
                 }
             });
             this.setState({

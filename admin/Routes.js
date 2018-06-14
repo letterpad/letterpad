@@ -32,7 +32,7 @@ import Themes from "./containers/Settings/Themes";
 import "./public/pcss/admin.pcss";
 import SecuredRoute from "./containers/Secured";
 
-class App extends Component {
+class Routes extends Component {
     static propTypes = {
         settings: PropTypes.object
     };
@@ -183,4 +183,4 @@ class App extends Component {
         );
     }
 }
-export default SettingsData(withRouter(App));
+export default SettingsData(withRouter(Routes));

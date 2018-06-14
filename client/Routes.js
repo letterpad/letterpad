@@ -20,7 +20,7 @@ import SearchWrapper from "./containers/SearchWrapper";
 import Layout from "./containers/Hoc/Layout";
 import NotFound from "./containers/404";
 
-class App extends Component {
+class Routes extends Component {
     constructor(props) {
         super(props);
         this.applyCustomCSS = this.applyCustomCSS.bind(this);
@@ -187,8 +187,8 @@ class App extends Component {
 }
 setConfig({ logLevel: "error" });
 
-App.propTypes = {
+Routes.propTypes = {
     location: PropTypes.object,
     settings: PropTypes.object
 };
-export default hot(module)(SettingsData(withRouter(App)));
+export default hot(module)(SettingsData(withRouter(Routes)));
