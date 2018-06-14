@@ -1,3 +1,9 @@
+/**
+ * Welcome to Letterpad!
+ *
+ * This is the initial file which is responsible to bootup the client and the admin-dashboard.
+ *
+ */
 const env = require("node-env-file");
 env(__dirname + "/.env");
 
