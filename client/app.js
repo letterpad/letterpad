@@ -8,7 +8,7 @@ import config from "../config";
 
 const App = (
     <BrowserRouter basename={config.baseName}>
-        <ApolloProvider client={client}>
+        <ApolloProvider client={client()}>
             <Routes />
         </ApolloProvider>
     </BrowserRouter>

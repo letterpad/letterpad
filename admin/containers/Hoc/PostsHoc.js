@@ -4,6 +4,7 @@ import appoloClient from "shared/apolloClient";
 import { BULK_DELETE_POSTS } from "../../../shared/queries/Mutations";
 
 const PostsHoc = (WrappedComponent, type) => {
+    const isAdmin = true;
     return class extends Component {
         constructor(props) {
             super(props);
@@ -39,7 +40,7 @@ const PostsHoc = (WrappedComponent, type) => {
         async fetchPosts(page = 1) {
             this.setState({ loading: true });
             this.variables.offset = (parseInt(page) - 1) * 20;
-            let result = await appoloClient.query({
+            let result = await appoloClient(isAdmin).query({
                 query: GET_POSTS,
                 variables: this.variables,
                 forceFetch: true,
@@ -104,7 +105,7 @@ const PostsHoc = (WrappedComponent, type) => {
             this.variables.query = query;
             this.variables.status = status;
             this.variables.offset = (parseInt(page) - 1) * 20;
-            let result = await appoloClient.query({
+            let result = await appoloClient(isAdmin).query({
                 query: SEARCH_POSTS,
                 variables: {
                     ...this.variables,
