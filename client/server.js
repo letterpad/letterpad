@@ -12,7 +12,7 @@ import { renderToString } from "react-dom/server";
 import { Helmet } from "react-helmet";
 import { StaticRouter } from "react-router";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
-import Route from "./Route";
+import Routes from "./Routes";
 
 const context = {};
 
@@ -25,7 +25,7 @@ export default (req, client, config) => {
     const clientApp = (
         <ApolloProvider client={client}>
             <StaticRouter {...opts}>
-                <Route />
+                <Routes />
             </StaticRouter>
         </ApolloProvider>
     );

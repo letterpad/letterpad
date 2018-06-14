@@ -5,7 +5,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const config = require("./config/index.js");
 const compression = require("compression");
-const adminServerRendering = require("./admin/serverRendering");
+const adminServer = require("./admin/server");
 const clientServerRendering = require("./client/serverRendering");
 const dir = require("./shared/dir.js");
 
@@ -118,7 +118,7 @@ app.get("/build", (req, res) => {
 });
 
 // start the admin dashboard and the client. Both use the same server, but its nice to separate them
-adminServerRendering.init(app);
+adminServer.init(app);
 clientServerRendering.init(app);
 
 // add a timeout. We want the api server to run first and then the application server

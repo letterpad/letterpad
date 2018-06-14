@@ -62,6 +62,8 @@ PAssword: demo
 
 Letterpad needs two servers to run your blog. One server runs Graphql API and the other server runs the Letterpad Engine. However with little modification, you can combine this to use one server.
 
+Themes have their own seperate repository. While doing `yarn install`, the default theme `hugo` is fetched as a dependency during the install. If the theme already exist, this step will be ignored.
+
 ### Graphql API
 
 The graphql api code (ES6) for development is in the `api` folder. After the build, the folder `apiBuild` is created which contains all api code in ES5. This is used in production. The reason we have this build folder in this repository is because you can directly clone this repo in your production and use it straightaway.

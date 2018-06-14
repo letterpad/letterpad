@@ -3,28 +3,18 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { GetAuthors } from "../../data-connectors/GetAuthors";
 import Loader from "../../components/Loader";
-
-class ListItem extends Component {
-    render() {
-        return (
-            <tr onClick={() => this.props.handleClick(this.props.author.id)}>
-                <td style={{ cursor: "pointer" }}>{this.props.author.email}</td>
-                <td style={{ cursor: "pointer" }}>
-                    {this.props.author.fname + " " + this.props.author.lname}
-                </td>
-                <td style={{ cursor: "pointer" }}>
-                    {this.props.author.role.name}
-                </td>
-            </tr>
-        );
-    }
-}
-ListItem.propTypes = {
-    author: PropTypes.object,
-    handleClick: PropTypes.func
-};
+import AuthorRow from "./AuthorRow";
 
 class Authors extends Component {
+    static propTypes = {
+        history: PropTypes.object,
+        authors: PropTypes.array,
+        loading: PropTypes.bool
+    };
+    static contextTypes = {
+        t: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
         this.authorSelect = this.authorSelect.bind(this);
@@ -43,7 +33,11 @@ class Authors extends Component {
         }
         const { t } = this.context;
         const rows = this.props.authors.map((author, i) => (
-            <ListItem handleClick={this.authorSelect} key={i} author={author} />
+            <AuthorRow
+                handleClick={this.authorSelect}
+                key={i}
+                author={author}
+            />
         ));
 
         return (
@@ -83,15 +77,5 @@ class Authors extends Component {
         );
     }
 }
-
-Authors.propTypes = {
-    history: PropTypes.object,
-    authors: PropTypes.array,
-    loading: PropTypes.bool
-};
-
-Authors.contextTypes = {
-    t: PropTypes.func
-};
 
 export default GetAuthors(Authors);

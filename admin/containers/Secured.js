@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import jwtDecode from "jwt-decode";
-import config from "../../config";
 import { Route, Redirect } from "react-router-dom";
 import Layout from "../containers/Layout";
 

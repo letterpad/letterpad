@@ -1,21 +1,21 @@
 "use strict";
-export const _extends =
-    Object.assign ||
-    function(target) {
-        for (var i = 1; i < arguments.length; i++) {
-            var source = arguments[i];
-            for (var key in source) {
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target;
-    };
 
 var config = require("../config");
 
 var utils = {
+    _extends:
+        Object.assign ||
+        function(target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        },
     parseErrors: function parseErrors(errObj) {
         var result = [];
         if (errObj && errObj.errors) {
@@ -86,7 +86,11 @@ var utils = {
     createStringFromProps: function createStringFromProps(props) {
         var string = "";
         Object.keys(props).map(function(key) {
-            string += key + "=\"" + props[key] + "\" ";
+            if (props[key] == "") {
+                string += key + " ";
+            } else {
+                string += key + "=\"" + props[key] + "\" ";
+            }
         });
         return string;
     },
@@ -107,9 +111,11 @@ var utils = {
         var createScript = function createScript(params) {
             var props = {};
             if (typeof params === "string") {
-                props = _extends({}, defaults, { src: utils.makeUrl(params) });
+                props = utils._extends({}, defaults, {
+                    src: utils.makeUrl(params)
+                });
             } else {
-                props = _extends({}, defaults, params, {
+                props = utils._extends({}, defaults, params, {
                     src: utils.makeUrl(params.src)
                 });
             }
@@ -138,9 +144,11 @@ var utils = {
         var createScript = function createScript(params) {
             var props = {};
             if (typeof params === "string") {
-                props = _extends({}, defaults, { href: utils.makeUrl(params) });
+                props = utils._extends({}, defaults, {
+                    href: utils.makeUrl(params)
+                });
             } else {
-                props = _extends({}, defaults, params, {
+                props = utils._extends({}, defaults, params, {
                     href: utils.makeUrl(params.href)
                 });
             }

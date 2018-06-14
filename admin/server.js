@@ -1,3 +1,8 @@
+/**
+ * This file is not going to render in the server. For admin dashboard we dont need server sided rendering
+ * All code in ES5 for this file.
+ */
+
 const { createHttpLink } = require("apollo-link-http");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 const fetch = require("node-fetch");
@@ -8,7 +13,6 @@ const { getDirectories } = require("../shared/dir");
 const path = require("path");
 const fs = require("fs");
 const {
-    getMetaTags,
     prepareScriptTags,
     prepareStyleTags,
     templateEngine
