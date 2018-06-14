@@ -1,7 +1,5 @@
 const env = require("node-env-file");
 env(__dirname + "/.env");
-// add babel-register for runtime ES6 transpilation
-require("babel-register");
 
 const express = require("express");
 const bodyParser = require("body-parser");
