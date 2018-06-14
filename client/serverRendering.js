@@ -12,7 +12,8 @@ const {
     prepareScriptTags,
     prepareStyleTags,
     templateEngine,
-    convertQueryToParams
+    convertQueryToParams,
+    _extends
 } = require("../shared/util");
 
 const { GET_OPTIONS } = require("../shared/queries/Queries");
@@ -63,10 +64,11 @@ module.exports.init = app => {
 
                 // we also need a way to preview other themes. This works but not very well.
                 // needs to be changed later.
-                const urlParams = {
-                    ...convertQueryToParams(req.originalUrl),
-                    ...convertQueryToParams(req.header("Referer"))
-                };
+                const urlParams = _extends(
+                    {},
+                    convertQueryToParams(req.originalUrl),
+                    convertQueryToParams(req.header("Referer"))
+                );
 
                 // if its in preview mode, get the preview file. this will not work in dev mode
                 // because at a time, only one theme is bundled
