@@ -64,11 +64,26 @@ Letterpad needs two servers to run your blog. One server runs Graphql API and th
 
 Themes have their own seperate repository. While doing `yarn install`, the default theme `hugo` is fetched as a dependency during the installation. If the theme already exist, this step will be ignored.
 
+How a theme is bundled and executed is little bit of a magic. We have configured Webpack to take care of this. All you have to do is create folder inside `client/themes`. This folder will be the name of your theme.
+Create two more folders inside this theme folder `containers` and `public` and also add the file `config.json` with the below template.
+
+```json
+{
+    "name": "Hugo",
+    "description":
+        "A theme for writing classic blogs. Seo optimised, spa, disqus integrtion",
+    "author": "Redsnow",
+    "thumbnail": "/images/thumbnail.png" // IMPORTANT: This thumbnail should exist inside the public folder of your theme
+}
+```
+
+The containers folder should implement all the files which exist in `client/containers`. Read more about this in the documentation site.
+
 ### Admin Authentication
 
 Apollo Client is responsible to exchange data with graphql. After the users logs in to admin panel, a new token is created with the below information:
 
-```
+```json
 {
     email: "EMAIL",
     id: "USER_ID",
@@ -107,9 +122,9 @@ In order to run the migrations, enter the below command.
 yarn sequelize db:migrate
 ```
 
-### EsLint
+### VSCode setup
 
-Letterpad settings are based on VsCode editor but this can be used in any editor as well, however I have not tried this. To use class properties, we will install babel-eslint globally.
+Extensions: Prettier, postcss-syntax, GraphQL, ESLint, DotENV, Babel ES6/ES7
 
 ```
 npm i -g babel-eslint
@@ -120,9 +135,14 @@ npm i -g babel-eslint
 If you want to seed the database with sample data, run the below command:
 
 ```
-// you should have babel-node installed.
-babel-node ./api/seed/seed.js
+// you should have babel-node installed. Its good to have this package installed globally.
+npm run seed
 ```
+
+### Contribute
+
+Letterpad is in its early stages and requries support to move ahead. You can contribute through various ways like
+testing, ideas, recommendations, fixing bugs, documentation, logo desgin, assets, etc. You can join the slack channel(letterpad.slack.com) for discussions. Thanks.
 
 ### License
 
