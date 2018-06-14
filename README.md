@@ -62,7 +62,29 @@ PAssword: demo
 
 Letterpad needs two servers to run your blog. One server runs Graphql API and the other server runs the Letterpad Engine. However with little modification, you can combine this to use one server.
 
-Themes have their own seperate repository. While doing `yarn install`, the default theme `hugo` is fetched as a dependency during the install. If the theme already exist, this step will be ignored.
+Themes have their own seperate repository. While doing `yarn install`, the default theme `hugo` is fetched as a dependency during the installation. If the theme already exist, this step will be ignored.
+
+### Admin Authentication
+
+Apollo Client is responsible to exchange data with graphql. After the users logs in to admin panel, a new token is created with the below information:
+
+```
+{
+    email: "EMAIL",
+    id: "USER_ID",
+    role: "ROLE_NAME",
+    permissions: ["PERMISSIONS"],
+    name: "AUTHOR_FNAME",
+    expiresIn: "30d" // "1d";
+},
+SECRET, // from .env file
+{ expiresIn }
+```
+
+This token is then saved in localStorage. For every secured route in admin panel, a new token is issued and the previous token in localStorage is updated.
+
+You can check the code of this here: `shared/apolloClient.js`.
+And you can check the code at the route level here - `admin/containers/Secured.js`
 
 ### Graphql API
 
