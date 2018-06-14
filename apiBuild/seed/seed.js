@@ -236,7 +236,7 @@ var insertPost = exports.insertPost = function () {
                         return models.Post.create({
                             title: params.title,
                             body: _faker2.default.lorem.paragraphs(6),
-                            excerpt: _faker2.default.lorem.sentences(),
+                            excerpt: _faker2.default.lorem.sentences(3),
                             cover_image: params.cover_image,
                             author_id: randomAuthorId,
                             type: params.type,

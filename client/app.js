@@ -2,16 +2,16 @@ import React from "react";
 import { hydrate } from "react-dom";
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
-import client from "./apolloClient";
-import Route from "./Route";
+import client from "../shared/apolloClient";
+import Routes from "./Routes";
 import config from "../config";
 
-const app = (
+const App = (
     <BrowserRouter basename={config.baseName}>
         <ApolloProvider client={client}>
-            <Route />
+            <Routes />
         </ApolloProvider>
     </BrowserRouter>
 );
 
-hydrate(app, document.getElementById("app"));
+hydrate(App, document.getElementById("app"));

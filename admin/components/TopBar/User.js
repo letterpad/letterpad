@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import appoloClient from "../../apolloClient";
+import appoloClient from "shared/apolloClient";
 import { GET_AUTHOR } from "../../../shared/queries/Queries";
 import config from "config";
 

@@ -5,24 +5,20 @@ import React from "react";
 import { hydrate } from "react-dom";
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
-import client from "./apolloClient";
-import Main from "./main";
+import client from "../shared/apolloClient";
+import Routes from "./Routes";
 import { Switch } from "react-router-dom";
 import "isomorphic-fetch";
 import config from "../config";
-/*
-  Rendering
-  This is where we hook up the Store with our actual component and the router
-*/
 
-const app = (
+const App = (
     <BrowserRouter basename={config.baseName}>
         <ApolloProvider client={client}>
             <Switch>
-                <Main />
+                <Routes />
             </Switch>
         </ApolloProvider>
     </BrowserRouter>
 );
 
-hydrate(app, document.getElementById("app"));
+hydrate(App, document.getElementById("app"));

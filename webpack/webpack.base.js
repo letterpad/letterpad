@@ -20,9 +20,9 @@ var babelOptions = {
         "react"
     ],
     plugins: [
-        "transform-object-rest-spread",
         "react-hot-loader/babel",
-        "transform-class-properties"
+        "transform-class-properties",
+        "transform-object-rest-spread"
     ]
 };
 
@@ -44,9 +44,9 @@ module.exports = args => {
         entry: {
             ["public/js/vendor"]: vendorFiles,
             ["client/themes/" + args.theme + "/public/dist/client"]: [
-                path.join(__dirname, "../client/app")
+                path.join(__dirname, "../client/App")
             ],
-            "admin/public/dist/admin": [path.join(__dirname, "../admin/app")]
+            "admin/public/dist/admin": [path.join(__dirname, "../admin/App")]
         },
         resolve: {
             alias: {

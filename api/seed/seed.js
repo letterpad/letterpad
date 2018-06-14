@@ -281,7 +281,7 @@ export async function insertPost(params) {
     let post = await models.Post.create({
         title: params.title,
         body: Faker.lorem.paragraphs(6),
-        excerpt: Faker.lorem.sentences(),
+        excerpt: Faker.lorem.sentences(3),
         cover_image: params.cover_image,
         author_id: randomAuthorId,
         type: params.type,
