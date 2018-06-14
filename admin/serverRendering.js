@@ -72,13 +72,13 @@ module.exports.init = app => {
                     theme = process.env.theme;
                 }
                 let apolloState = {};
-                const content = getHtml(theme, content, apolloState, settings);
+                const content = getHtml(theme, apolloState);
                 res.end(content);
             });
     });
 };
 
-function getHtml(theme, html, apolloState, settings) {
+function getHtml(theme, apolloState) {
     const isDev = process.env.NODE_ENV === "dev";
 
     const devBundles = [

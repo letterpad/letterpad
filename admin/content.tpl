@@ -12,7 +12,7 @@
 <body>
     <div id="app"></div>
     <script>
-        window.__APOLLO_STATE__ = "{{INITIAL_STATE}}";
+        window.__APOLLO_STATE__ = {{INITIAL_STATE}};
         window.NODE_ENV = "{{NODE_ENV}}";
         window.rootUrl = "{{ROOT_URL}}";
         window.apiUrl = "{{API_URL}}";
