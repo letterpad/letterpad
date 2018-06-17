@@ -1,4 +1,4 @@
-# Letterpad &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/ajaxtown/letterpad/blob/master/LICENSE) ![CircleCI Status](https://circleci.com/gh/ajaxtown/letterpad.svg?style=shield&circle-token=:circle-token)
+# Letterpad &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/letterpad/letterpad/blob/master/LICENSE) ![CircleCI Status](https://circleci.com/gh/letterpad/letterpad.svg?style=shield&circle-token=:circle-token)
 
 Letterpad is an open-source and a high performant publishing engine for blogs with a state-of-the-art technology. It uses React, Graphql, Express and Sequelize ORM. It is in beta now. Few of the core features are listed below:
 
@@ -143,6 +143,10 @@ npm run seed
 
 Letterpad is in its early stages and requries support to move ahead. You can contribute through various ways like
 testing, ideas, recommendations, fixing bugs, documentation, logo desgin, assets, etc. You can join the slack channel(letterpad.slack.com) for discussions. Thanks.
+
+Slack Channel - [https://letterpad.slack.com](https://letterpad.slack.com)
+Slack - [Invite Link](https://tinyurl.com/letterpad)
+
 
 ### License
 
