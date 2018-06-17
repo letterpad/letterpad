@@ -192,6 +192,7 @@ export async function _updatePost(post, models) {
             errors: []
         };
     } catch (e) {
+        console.log(e);
         return {
             ok: false,
             data: {},
