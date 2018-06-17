@@ -67,7 +67,7 @@ Themes have their own seperate repository. While doing `yarn install`, the defau
 How a theme is bundled and executed is little bit of a magic. We have configured Webpack to take care of this. All you have to do is create folder inside `client/themes`. This folder will be the name of your theme.
 Create two more folders inside this theme folder `containers` and `public` and also add the file `config.json` with the below template.
 
-```json
+```javascript
 {
     "name": "Hugo",
     "description":
@@ -83,7 +83,7 @@ The containers folder should implement all the files which exist in `client/cont
 
 Apollo Client is responsible to exchange data with graphql. After the users logs in to admin panel, a new token is created with the below information:
 
-```json
+```javascript
 {
     email: "EMAIL",
     id: "USER_ID",
@@ -145,7 +145,8 @@ Letterpad is in its early stages and requries support to move ahead. You can con
 testing, ideas, recommendations, fixing bugs, documentation, logo desgin, assets, etc. You can join the slack channel(letterpad.slack.com) for discussions. Thanks.
 
 Slack Channel - [https://letterpad.slack.com](https://letterpad.slack.com)
-Slack - [Invite Link](https://tinyurl.com/letterpad)
+
+[Slack invite Link](https://tinyurl.com/letterpad)
 
 
 ### License
