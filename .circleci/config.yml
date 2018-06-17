@@ -26,14 +26,15 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: npm install
+      - run: yarn install
       - run: node ./.circleci/buildEnv.js
       - run: ./node_modules/.bin/babel api -d apiBuild
-      - run: npm run test
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn test
+      
         
       # run tests!
       #- run: yarn test
