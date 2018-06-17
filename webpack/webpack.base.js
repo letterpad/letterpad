@@ -2,6 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 var FileNameReplacementPlugin = require("./FileNameReplacementPlugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
+const WebpackBar = require("webpackbar");
 
 const isDev = process.env.NODE_ENV === "dev" ? true : false;
 
@@ -37,7 +38,7 @@ const vendorFiles = [
 if (isDev) {
     vendorFiles.push("webpack-hot-middleware/client?reload=true");
 }
-module.exports = args => {
+module.exports = (args, name) => {
     const config = {
         mode: isDev ? "development" : "production",
         watch: isDev,
@@ -58,6 +59,7 @@ module.exports = args => {
             extensions: [".js"]
         },
         plugins: [
+            new WebpackBar({ name: name }),
             new webpack.DefinePlugin({
                 "process.env": {
                     NODE_ENV: JSON.stringify(isDev ? "dev" : "production")
@@ -97,9 +99,6 @@ module.exports = args => {
     };
 
     if (isDev) {
-        console.log("​-------------");
-        console.log("​isDev", isDev);
-        console.log("​-------------");
         config.plugins.push(new webpack.HotModuleReplacementPlugin());
     }
 
