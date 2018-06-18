@@ -16,3 +16,6 @@ yarn-error.log
 public/uploads
 package-lock.json
 yarn.lock
+public/js/*bundle*
+admin/public/dist
+apiBuild
