@@ -14,11 +14,11 @@ import FileExplorerModal from "../../components/Modals/FileExplorerModal";
 import MdPreview from "../../components/Post/MdPreview";
 import SyncScroll from "../Hoc/SyncScroll";
 
-class Create extends Component {
+export class Create extends Component {
     static propTypes = {
         history: PropTypes.object,
-        createPost: PropTypes.func,
-        type: PropTypes.string,
+        createPost: PropTypes.func.isRequired,
+        type: PropTypes.string.isRequired,
         manageScroll: PropTypes.func
     };
 
