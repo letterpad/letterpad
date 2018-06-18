@@ -46,7 +46,7 @@ cd letterpad
 
 ```
 yarn install
-theme=hugo npm run dev
+theme=hugo yarn dev
 ```
 
 Now visit [http://localhost:4040](http://localhost:4040) and checkout the welcome page.
@@ -57,6 +57,19 @@ To visit the admin panel, visit [http://localhost:4040/admin](http://localhost:4
 Email: demo@demo.com
 PAssword: demo
 ```
+
+### Creating a build for production
+
+The below command will create a build for the `api`, the `admin dashboard` and the `theme`. You will have to specify which theme you want to build.
+
+```
+theme=hugo yarn build
+```
+
+-   This will create a folder called `apiBuild` which will contain all contents of the `api` folder in ES5.
+-   All the admin dashboard specific bundle will be in `admin/public/dist` folder.
+-   All the theme specific bundles will be in `client/public/dist` folder.
+-   The vendor bundles are common between admin and client. So they will be in `public/js` folder.
 
 ### How it works ?
 

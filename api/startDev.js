@@ -1,2 +1,2 @@
 require("babel-core/register");
-require("./server.js");
+module.exports = require("./server.js");

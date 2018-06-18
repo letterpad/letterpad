@@ -7,20 +7,9 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:7.10
+      - image: circleci/node:8.11
         environment:
-          DB_HOST: mysql
-          DB_NAME: letterpad
-          DB_USER: root
-          DB_PASSWORD: 123456
-          DB_PORT: 3306
-          NODE_ENV: dev
-
-      - image: circleci/mysql:5.7.18
-        command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda
-        environment:
-          MYSQL_DATABASE: letterpad
-          MYSQL_ROOT_PASSWORD: 123456
+          NODE_ENV: test
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -37,22 +26,15 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: npm install
+      - run: yarn install
       - run: node ./.circleci/buildEnv.js
       - run: ./node_modules/.bin/babel api -d apiBuild
-      - run: 
-          command: node ./apiBuild/server.js
-          background: true
-      # wait for the server to start responding. We expect Bad Request 400 once it starts listening.
-      # so override the shell and have the last command be the : { null } command to force exit code 0.
-      - run:
-          name: Wait for server
-          command: sleep 30 #dockerize -wait http://localhost:3030/graphql -timeout 1m
-      - run: npm run test
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn test
+      
         
       # run tests!
       #- run: yarn test
