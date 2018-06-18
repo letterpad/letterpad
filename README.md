@@ -68,7 +68,7 @@ theme=hugo yarn build
 
 -   This will create a folder called `apiBuild` which will contain all contents of the `api` folder in ES5.
 -   All the admin dashboard specific bundle will be in `admin/public/dist` folder.
--   All the theme specific bundles will be in `client/public/dist` folder.
+-   All the theme specific bundles will be in `client/hugo/public/dist` folder.
 -   The vendor bundles are common between admin and client. So they will be in `public/js` folder.
 
 ### How it works ?
