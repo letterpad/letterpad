@@ -8,7 +8,7 @@ const clientConfig = args => {
     if (args.theme == "") {
         args.theme = "hugo";
     }
-    return merge(baseConfig(args), {
+    return merge(baseConfig(args, "client"), {
         name: "client",
         devtool: "cheap-module-source-map",
         target: "web",
@@ -83,8 +83,7 @@ const serverConfig = args => {
 
     const getExternals = () => {
         const nodeModules = {};
-        fs
-            .readdirSync("node_modules")
+        fs.readdirSync("node_modules")
             .filter(function(x) {
                 return [".bin"].indexOf(x) === -1;
             })
@@ -93,7 +92,7 @@ const serverConfig = args => {
             });
         return nodeModules;
     };
-    const config = merge(baseConfig(args), {
+    const config = merge(baseConfig(args, "server"), {
         name: "server",
         cache: true,
         target: "node",

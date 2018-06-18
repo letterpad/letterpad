@@ -1,9 +1,5 @@
-import Sequalize from "sequelize";
 import { _createPost, _updatePost } from "../models/post";
-import { getTaxonomies } from "../models/taxonomy";
-import { UnauthorizedError, NotFoundError } from "../utils/common";
 import {
-    requiresAdmin,
     checkDisplayAccess,
     createPostsPerm,
     editPostPerm

@@ -12,7 +12,7 @@ const clientConfig = args => {
     }
     const extractPcss = new ExtractTextPlugin("[name].min.css");
     //const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");
-    const config = merge(baseConfig(args), {
+    const config = merge(baseConfig(args, "client"), {
         target: "web",
         output: {
             path: path.join(__dirname, "../"),
@@ -63,8 +63,7 @@ const serverConfig = args => {
 
     const getExternals = () => {
         const nodeModules = {};
-        fs
-            .readdirSync("node_modules")
+        fs.readdirSync("node_modules")
             .filter(function(x) {
                 return [".bin"].indexOf(x) === -1;
             })
@@ -73,7 +72,7 @@ const serverConfig = args => {
             });
         return nodeModules;
     };
-    const config = merge(baseConfig(args), {
+    const config = merge(baseConfig(args, "server"), {
         target: "node",
 
         output: {

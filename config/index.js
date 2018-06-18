@@ -1,9 +1,12 @@
 const configDev = require("./config.dev.js");
 const configProd = require("./config.prod.js");
-const currentEnv =
+let currentEnv =
     typeof window !== "undefined" ? window.NODE_ENV : process.env.NODE_ENV;
 
-const configFile = currentEnv === "dev" ? configDev : configProd;
+if (!currentEnv) currentEnv = "test";
+
+const configFile =
+    ["dev", "test"].indexOf(currentEnv) >= 0 ? configDev : configProd;
 
 const config = {
     rootUrl: configFile.rootUrl,
