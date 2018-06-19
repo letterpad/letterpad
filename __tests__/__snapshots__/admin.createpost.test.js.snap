@@ -39,6 +39,7 @@ ShallowWrapper {
           >
             <Apollo(PostPublish)
               create={true}
+              history={undefined}
               post={
                 Object {
                   "author_id": 1,
@@ -145,6 +146,7 @@ ShallowWrapper {
             >
               <Apollo(PostPublish)
                 create={true}
+                history={undefined}
                 post={
                   Object {
                     "author_id": 1,
@@ -242,6 +244,7 @@ ShallowWrapper {
             "props": Object {
               "children": <Apollo(PostPublish)
                 create={true}
+                history={undefined}
                 post={
                   Object {
                     "author_id": 1,
@@ -267,6 +270,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "create": true,
+                "history": undefined,
                 "post": Object {
                   "author_id": 1,
                   "body": "blog post",
@@ -443,6 +447,7 @@ ShallowWrapper {
             >
               <Apollo(PostPublish)
                 create={true}
+                history={undefined}
                 post={
                   Object {
                     "author_id": 1,
@@ -549,6 +554,7 @@ ShallowWrapper {
               >
                 <Apollo(PostPublish)
                   create={true}
+                  history={undefined}
                   post={
                     Object {
                       "author_id": 1,
@@ -646,6 +652,7 @@ ShallowWrapper {
               "props": Object {
                 "children": <Apollo(PostPublish)
                   create={true}
+                  history={undefined}
                   post={
                     Object {
                       "author_id": 1,
@@ -671,6 +678,7 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "create": true,
+                  "history": undefined,
                   "post": Object {
                     "author_id": 1,
                     "body": "blog post",
