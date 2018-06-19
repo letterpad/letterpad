@@ -4,7 +4,11 @@ import { gql, graphql } from "react-apollo";
 import PostActions from "./PostActions";
 import PropTypes from "prop-types";
 
-class Categories extends Component {
+export class Categories extends Component {
+    static propTypes = {
+        suggestions: PropTypes.array,
+        post: PropTypes.object
+    };
     constructor(props) {
         super(props);
         this.categories = [];
@@ -79,11 +83,6 @@ class Categories extends Component {
         );
     }
 }
-
-Categories.propTypes = {
-    suggestions: PropTypes.array,
-    post: PropTypes.object
-};
 
 const TaxSuggestionsQuery = gql`
     query getTaxonomies($type: String!) {
