@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { plural } from "../../../shared/util";
 import {
     ArticleCreate,
     PostPublish,
@@ -27,7 +26,6 @@ export class Create extends Component {
         this.handlePostChanges = this.handlePostChanges.bind(this);
         this.toggleActionDrawer = this.toggleActionDrawer.bind(this);
         this.toggleZenView = this.toggleZenView.bind(this);
-        this.handlePostSave = this.handlePostSave.bind(this);
         this.toggleFileExplorerModal = this.toggleFileExplorerModal.bind(this);
         this.state = {
             loading: true,
@@ -41,11 +39,13 @@ export class Create extends Component {
         const { type } = this.props;
         // we need this only to listen mardown/richtext changes
         window.addEventListener("onPostChange", this.handlePostChanges);
-        // on save, we will navigate the user to edit post
-        window.addEventListener("onPostCreate", this.handlePostSave);
+
+        // This is going to hold all the changes done to the post.
         PostActions.data = {};
         // Add a default title to the newly created post
         const title = "Draft - " + moment().format("L LT");
+
+        // create an empty post with the type and title
         this.props.createPost({ type, title }).then(result => {
             PostActions.setData(result.data.createPost.post);
             this.setState({
@@ -63,7 +63,6 @@ export class Create extends Component {
     componentWillUnmount() {
         document.body.classList.remove("create-" + this.props.type + "-page");
         window.removeEventListener("onPostChange", this.handlePostChanges);
-        window.removeEventListener("onPostCreate", this.handlePostSave);
     }
 
     handlePostChanges(e) {
@@ -74,15 +73,6 @@ export class Create extends Component {
             }
         } else {
             this.setState({ preview: "" });
-        }
-    }
-
-    handlePostSave(e) {
-        const post = e.detail;
-        if (post.status == "trash") {
-            this.props.history.push(`/admin/${plural[post.type]}`);
-        } else {
-            this.props.history.push(`/admin/${plural[post.type]}/${post.id}`);
         }
     }
 
@@ -119,6 +109,7 @@ export class Create extends Component {
                     <div className="col-lg-12 distractor">
                         <PostPublish
                             create
+                            history={this.props.history}
                             post={this.state.post}
                             toggleActionDrawer={this.toggleActionDrawer}
                         />
