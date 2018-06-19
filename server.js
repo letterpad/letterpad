@@ -126,11 +126,26 @@ app.get("/build", (req, res) => {
 adminServer.init(app);
 clientServerRendering.init(app);
 
-// add a timeout. We want the api server to run first and then the application server
-setTimeout(() => {
-    const server = app.listen(config.appPort, function() {
+let server;
+const startServer = () => {
+    server = app.listen(config.appPort, function() {
         const host = server.address().address;
         const port = server.address().port;
         console.log("Letterpad listening at http://%s:%s", host, port);
     });
+};
+
+// We want the api server to run first and then the application server.
+setTimeout(() => {
+    // During tests, we check if the server has already been started. If so, we return.
+    if (server) return false;
+    startServer();
 }, 3000);
+
+// Used in tests.
+// module.exports = new Promise(resolve => {
+//     server = app.listen(config.appPort, function() {
+//         server = startServer();
+//         resolve(server);
+//     });
+// });
