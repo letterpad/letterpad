@@ -5,7 +5,12 @@ import PostActions from "./PostActions";
 import { TAX_SUGGESTIONS } from "../../../shared/queries/Queries";
 import PropTypes from "prop-types";
 
-class Tags extends Component {
+export class Tags extends Component {
+    static propTypes = {
+        suggestions: PropTypes.array,
+        post: PropTypes.object
+    };
+
     constructor(props) {
         super(props);
         this.tags = [];
@@ -81,11 +86,6 @@ class Tags extends Component {
         );
     }
 }
-
-Tags.propTypes = {
-    suggestions: PropTypes.array,
-    post: PropTypes.object
-};
 
 const TaxSuggestionsData = graphql(TAX_SUGGESTIONS, {
     options: { variables: { type: "post_tag" } },
