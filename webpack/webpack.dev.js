@@ -97,7 +97,7 @@ const serverConfig = args => {
         cache: true,
         target: "node",
         entry: {
-            a: ["babel-polyfill", path.join(__dirname, "../client/server")]
+            server: ["babel-polyfill", path.join(__dirname, "../client/server")]
         },
         output: {
             filename: "server.node.js",
