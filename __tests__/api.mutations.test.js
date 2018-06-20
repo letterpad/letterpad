@@ -1,5 +1,5 @@
 import axios from "axios";
-import { conn, Setting, Post, Taxonomy } from "../api/models";
+import { conn } from "../api/models";
 import { insertRolePermData, insertSettings } from "../api/seed/seed";
 import config from "../config/config.dev";
 
