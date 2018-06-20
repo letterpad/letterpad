@@ -1,9 +1,8 @@
 echo "Seeding the database..."
 yarn seed
 echo "Seeding complete!"
-echo "Deploying letterpad"
-theme=hugo yarn build
-
+echo "Running migrations"
+yarn sequelize db:migrate
 
 echo "           
 
