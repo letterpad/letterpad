@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import jwtDecode from "jwt-decode";
 import { Route, Redirect } from "react-router-dom";
 import Layout from "../containers/Layout";
+import config from "../../config";
 
 const SecuredRoute = routeProps => {
     try {
@@ -29,7 +30,7 @@ const SecuredRoute = routeProps => {
     } catch (e) {
         // security failure
     }
-    return <Redirect to={"/admin/login"} />;
+    return <Redirect to={config.rootUrl + "/admin/login"} />;
 };
 SecuredRoute.propTypes = {
     component: PropTypes.func.isRequired,

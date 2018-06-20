@@ -74,6 +74,12 @@ module.exports.init = app => {
                 // because at a time, only one theme is bundled
                 serverFile = checkPreview(serverFile, theme, urlParams);
 
+                if (!fs.existsSync(path.join(__dirname, serverFile))) {
+                    res.end(
+                        "Server file does not exist. Wait for the build to finish and try again after some time."
+                    );
+                    return false;
+                }
                 // this is the bundle file from server.js which returns a promise
                 const server = require(serverFile).default;
 

@@ -49,6 +49,8 @@ yarn install
 theme=hugo yarn dev
 ```
 
+`yarn install` is going to install all the dependencies, seed the database, prepare a build and welcome you to letterpad.
+
 Now visit [http://localhost:4040](http://localhost:4040) and checkout the welcome page.
 
 To visit the admin panel, visit [http://localhost:4040/admin](http://localhost:4040/admin) and login with
@@ -160,7 +162,6 @@ testing, ideas, recommendations, fixing bugs, documentation, logo desgin, assets
 Slack Channel - [https://letterpad.slack.com](https://letterpad.slack.com)
 
 [Slack invite Link](https://tinyurl.com/letterpad)
-
 
 ### License
 

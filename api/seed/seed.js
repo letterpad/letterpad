@@ -1,5 +1,6 @@
 var env = require("node-env-file");
 env(__dirname + "/../../.env");
+
 import { conn } from "../../config/db.config";
 import Sequalize from "sequelize";
 import bcrypt from "bcryptjs";
