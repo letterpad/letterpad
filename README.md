@@ -157,7 +157,7 @@ npm run seed
 ### Contribute
 
 Letterpad is in its early stages and requries support to move ahead. You can contribute through various ways like
-testing, ideas, recommendations, fixing bugs, documentation, logo desgin, assets, etc. You can join the slack channel(letterpad.slack.com) for discussions. Thanks.
+testing, ideas, recommendations, fixing bugs, documentation, logo design, assets, etc. You can join the slack channel(letterpad.slack.com) for discussions. Thanks.
 
 Slack Channel - [https://letterpad.slack.com](https://letterpad.slack.com)
 

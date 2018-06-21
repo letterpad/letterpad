@@ -45,9 +45,9 @@ module.exports = (args, name) => {
         entry: {
             ["public/js/vendor"]: vendorFiles,
             ["client/themes/" + args.theme + "/public/dist/client"]: [
-                path.join(__dirname, "../client/App")
+                path.join(__dirname, "../client/app")
             ],
-            "admin/public/dist/admin": [path.join(__dirname, "../admin/App")]
+            "admin/public/dist/admin": [path.join(__dirname, "../admin/app")]
         },
         resolve: {
             alias: {
