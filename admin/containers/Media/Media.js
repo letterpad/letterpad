@@ -18,7 +18,9 @@ class Media extends Component {
         loading: PropTypes.bool,
         deleteMedia: PropTypes.func,
         insertMedia: PropTypes.func,
-        match: PropTypes.object
+        match: PropTypes.object,
+        fetchMore: PropTypes.func,
+        author: PropTypes.object
     };
     static defaultProps = {
         media: {
@@ -81,9 +83,10 @@ class Media extends Component {
 
     async uploadImage(files) {
         const coverImage = await uploadFile({ files, type: "post_image" });
-        const media = await this.props.insertMedia({
+        await this.props.insertMedia({
             url: coverImage
         });
+        // if the user is in page 1, just refetch the items of page 1
         if (this.props.match.params.page == 1) {
             let items = await this.props.fetchMore({
                 author_id: this.props.author.id,
@@ -92,16 +95,9 @@ class Media extends Component {
             });
             this.setState({ items: items.data.media.rows });
         } else {
+            // else navigate the user to page 1
             this.props.history.push("/admin/media/1");
         }
-        // this.setState(
-        //     {
-        //         items: [media.data.insertMedia]
-        //     },
-        //     () => {
-        //         this.props.history.push("/admin/media/1");
-        //     }
-        // );
     }
 
     render() {

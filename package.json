@@ -73,7 +73,7 @@
         "react-sortable-tree": "^2.1.0",
         "react-tag-input": "4.9.1",
         "reading-time": "*",
-        "sequelize": "^3.30.2",
+        "sequelize": "4.38.0",
         "sequelize-cli": "^4.0.0",
         "sharp": "^0.20.3",
         "sqlite3": "^4.0.0"

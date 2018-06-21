@@ -9,7 +9,7 @@ class Editor extends Component {
         insertMedia: PropTypes.func,
         body: PropTypes.string,
         mdBody: PropTypes.string,
-        isMarkdown: PropTypes.bool
+        isMarkdown: PropTypes.any
     };
     render() {
         return (

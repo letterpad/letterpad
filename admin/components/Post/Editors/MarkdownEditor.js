@@ -6,7 +6,7 @@ const marked = require("marked");
 
 class MarkdownEditor extends Component {
     static propTypes = {
-        mdBody: PropTypes.string.isRequired
+        mdBody: PropTypes.string
     };
     constructor(props) {
         super(props);

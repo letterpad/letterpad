@@ -30,7 +30,6 @@ models.conn = conn;
 
 export const seed = async () => {
     await models.conn.sync({ force: true });
-
     // do some clean first. delete the uploads folder
     rimraf(__dirname + "/../../public/uploads/*", () => {
         copydir.sync(
