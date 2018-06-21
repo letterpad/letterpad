@@ -1,3 +1,4 @@
 require("babel-register");
 require("babel-polyfill");
-require("./seed");
+const { seed } = require("./seed");
+seed();

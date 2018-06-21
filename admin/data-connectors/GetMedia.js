@@ -19,13 +19,23 @@ export default graphql(GET_MEDIA, {
             media,
             loading,
             fetchMore: variables => {
+                let merge = false;
+                if (variables.merge) {
+                    merge = true;
+                    delete variables.merge;
+                }
                 return fetchMore({
                     variables: variables,
                     updateQuery: (previousResult, { fetchMoreResult }) => {
                         return {
                             media: {
                                 count: fetchMoreResult.media.count,
-                                rows: [...fetchMoreResult.media.rows],
+                                rows: merge
+                                    ? [
+                                        ...previousResult.media.rows,
+                                        ...fetchMoreResult.media.rows
+                                    ]
+                                    : [...fetchMoreResult.media.rows],
                                 __typename: previousResult.media.__typename
                             }
                         };

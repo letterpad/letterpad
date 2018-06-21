@@ -38,7 +38,7 @@ export default {
             if (args.cursor) {
                 conditions.where.id = { gt: args.cursor };
             }
-            conditions.order = [["created_at", "DESC"]];
+            conditions.order = [["id", "DESC"]];
             const media = await models.Media.findAll(conditions);
             return {
                 count,

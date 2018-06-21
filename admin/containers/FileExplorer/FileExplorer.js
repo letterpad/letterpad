@@ -49,7 +49,8 @@ class FileExplorer extends Component {
         await this.props.fetchMore({
             author_id: this.props.author.id,
             offset: (num - 1) * config.itemsPerPage,
-            limit: config.itemsPerPage
+            limit: config.itemsPerPage,
+            merge: true
         });
         this.page = num;
         this.forceUpdate();
