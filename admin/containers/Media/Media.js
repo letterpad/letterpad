@@ -84,14 +84,24 @@ class Media extends Component {
         const media = await this.props.insertMedia({
             url: coverImage
         });
-        this.setState(
-            {
-                items: [media.data.insertMedia, ...this.state.items]
-            },
-            () => {
-                this.props.history.push("/admin/media/1");
-            }
-        );
+        if (this.props.match.params.page == 1) {
+            let items = await this.props.fetchMore({
+                author_id: this.props.author.id,
+                offset: 0,
+                limit: 6
+            });
+            this.setState({ items: items.data.media.rows });
+        } else {
+            this.props.history.push("/admin/media/1");
+        }
+        // this.setState(
+        //     {
+        //         items: [media.data.insertMedia]
+        //     },
+        //     () => {
+        //         this.props.history.push("/admin/media/1");
+        //     }
+        // );
     }
 
     render() {
@@ -128,7 +138,7 @@ class Media extends Component {
                             multiple="multiple"
                         />
                     </p>
-                    <div className="row media-grid">{items}</div>
+                    <div className="media-grid">{items}</div>
                     <Paginate
                         count={this.props.media.count}
                         page={this.state.page}

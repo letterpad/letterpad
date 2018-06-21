@@ -47,13 +47,16 @@ export default {
         }
     },
     Mutation: {
-        insertMedia: editPostPerm.createResolver((root, args, { models }) => {
-            const data = {};
-            Object.keys(args).forEach(field => {
-                data[field] = args[field];
-            });
-            return models.Media.create(data);
-        }),
+        insertMedia: editPostPerm.createResolver(
+            (root, args, { user, models }) => {
+                const data = {};
+                Object.keys(args).forEach(field => {
+                    data[field] = args[field];
+                });
+                data.author_id = user.id;
+                return models.Media.create(data);
+            }
+        ),
 
         deleteMedia: editPostPerm.createResolver(
             async (root, args, { models }) => {

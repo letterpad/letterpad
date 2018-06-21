@@ -25,10 +25,7 @@ export default graphql(GET_MEDIA, {
                         return {
                             media: {
                                 count: fetchMoreResult.media.count,
-                                rows: [
-                                    ...previousResult.media.rows,
-                                    ...fetchMoreResult.media.rows
-                                ],
+                                rows: [...fetchMoreResult.media.rows],
                                 __typename: previousResult.media.__typename
                             }
                         };
