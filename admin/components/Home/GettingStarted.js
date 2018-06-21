@@ -24,7 +24,7 @@ const GettingStarted = (props, { t }) => {
                     <span>
                         <i className="fa fa-eye" />
                     </span>
-                    <Link to="/admin/post-new">{t("home.view")}</Link>
+                    <Link to="/">{t("home.view")}</Link>
                 </div>
             </div>
         </div>
