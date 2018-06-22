@@ -37,7 +37,7 @@ export default class Social extends Component {
         let newState = { social: { ...this.state.social } };
         newState.social[option] = value;
         this.setState(newState);
-        this.props.updateOption("social", JSON.stringify(newState));
+        this.props.updateOption("social", JSON.stringify(newState.social));
     }
     render() {
         const { t } = this.context;
@@ -60,7 +60,7 @@ export default class Social extends Component {
                 <div className="form-group">
                     <label className="custom-label">Facebook</label>
                     <input
-                        value={this.state.social.twitter}
+                        value={this.state.social.facebook}
                         type="text"
                         className="form-control"
                         placeholder={t("social.fb.placeholder")}
@@ -72,7 +72,7 @@ export default class Social extends Component {
                 <div className="form-group">
                     <label className="custom-label">Instagram</label>
                     <input
-                        value={this.state.social.twitter}
+                        value={this.state.social.instagram}
                         type="text"
                         className="form-control"
                         placeholder={t("social.ig.placeholder")}
