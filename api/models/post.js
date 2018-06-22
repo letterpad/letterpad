@@ -1,4 +1,3 @@
-import Sequalize from "sequelize";
 import { parseErrors, recurseMenu } from "../../shared/util";
 import slugify from "../../shared/slugify";
 import config from "../../config";
@@ -6,47 +5,47 @@ import moment from "moment";
 
 export default (conn, DataTypes) => {
     const Post = conn.define(
-        "posts",
+        "post",
         {
             title: {
-                type: Sequalize.STRING,
+                type: DataTypes.STRING,
                 defaultValue: config.defaultTitle
             },
             mode: {
-                type: Sequalize.STRING,
+                type: DataTypes.STRING,
                 defaultValue: "rich-text"
             },
             body: {
-                type: Sequalize.TEXT
+                type: DataTypes.TEXT
             },
             mdBody: {
-                type: Sequalize.TEXT
+                type: DataTypes.TEXT
             },
             mdPreview: {
-                type: Sequalize.TEXT
+                type: DataTypes.TEXT
             },
             excerpt: {
-                type: Sequalize.STRING(400),
+                type: DataTypes.STRING(400),
                 defaultValue: ""
             },
             cover_image: {
-                type: Sequalize.STRING,
+                type: DataTypes.STRING,
                 defaultValue: ""
             },
             type: {
-                type: Sequalize.STRING,
+                type: DataTypes.STRING,
                 defaultValue: ""
             },
             status: {
-                type: Sequalize.STRING,
+                type: DataTypes.STRING,
                 defaultValue: "draft"
             },
             slug: {
-                type: Sequalize.STRING,
+                type: DataTypes.STRING,
                 defaultValue: ""
             },
             published_at: {
-                type: Sequalize.DATE
+                type: DataTypes.DATE
             }
         },
         {

@@ -4,10 +4,10 @@ const config = require("../config");
 const express = require("express");
 const GraphHTTP = require("express-graphql");
 const Schema = require("./schema").default;
-const models = require("./models");
 const upload = require("./upload");
 const constants = require("./utils/constants");
 const middlewares = require("./middlewares");
+const models = require("../api/models/index.js");
 
 const app = express();
 

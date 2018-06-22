@@ -1,11 +1,9 @@
-import Sequalize from "sequelize";
-
 export default (conn, DataTypes) => {
     const Permission = conn.define(
-        "permissions",
+        "permission",
         {
             name: {
-                type: Sequalize.STRING
+                type: DataTypes.STRING
             }
         },
         {

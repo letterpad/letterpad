@@ -1,55 +1,39 @@
-import TaxonomyModel from "./taxonomy";
-import PostModel, { createPost, updatePost } from "./post";
-import RoleModel from "./role";
-import PermissionModel from "./permission";
-import AuthorModel from "./author";
-import MediaModel from "./media";
-import PostTaxonomyModel from "./postTaxonomy";
-import RolePermissionModel from "./rolePermission";
-import RoleAuthorModel from "./roleAuthor";
-import conn from "../../config/db.config";
+var fs = require("fs");
+var path = require("path");
+var Sequelize = require("sequelize");
+var basename = path.basename(module.filename);
+var env = process.env.NODE_ENV || "dev";
+var config = require("../../config/db.config.js")[env];
+var db = {};
+var conn = null;
 
-PostModel.belongsToMany(TaxonomyModel, {
-    through: PostTaxonomyModel,
-    as: "taxonomy"
+// establish  database connection
+conn = new Sequelize(config.database, config.username, config.password, config);
+
+// read the current folder and get all the files (models) except this one
+// loop though the files and import them through sequelize to get an instance of all models
+fs.readdirSync(__dirname)
+    .filter(function(file) {
+        return (
+            file.indexOf(".") !== 0 &&
+            file !== basename &&
+            file.slice(-3) === ".js"
+        );
+    })
+    .forEach(function(file) {
+        var model = conn["import"](path.join(__dirname, file));
+        var name = model.name.charAt(0).toUpperCase() + model.name.slice(1);
+        db[name] = model;
+    });
+
+// now that we have the model instances, add relationships
+Object.keys(db).forEach(function(modelName) {
+    if (db[modelName].associate) {
+        db[modelName].associate(db);
+    }
 });
 
-TaxonomyModel.belongsToMany(PostModel, {
-    through: PostTaxonomyModel,
-    as: "post"
-});
+db.sequelize = conn;
+db.Sequelize = Sequelize;
 
-AuthorModel.hasMany(PostModel);
-PostModel.belongsTo(AuthorModel);
-
-RoleModel.belongsToMany(PermissionModel, {
-    through: RolePermissionModel,
-    as: "permission"
-});
-
-PermissionModel.belongsToMany(RoleModel, {
-    through: RolePermissionModel,
-    as: "role"
-});
-
-// RoleModel.belongsToMany(AuthorModel, {
-//     through: RoleAuthorModel,
-//     as: "author"
-// });
-RoleModel.hasMany(AuthorModel);
-
-AuthorModel.belongsTo(RoleModel);
-
-conn.sync({ force: false });
-
-export { PostModel, _createPost, _updatePost } from "./post";
-export { TaxonomyModel } from "./taxonomy";
-export { AuthorModel } from "./author";
-export { RoleModel } from "./role";
-export { PermissionModel } from "./permission";
-export { RolePermissionModel } from "./rolePermission";
-export { RoleAuthorModel } from "./roleAuthor";
-export { PostTaxonomyModel } from "./postTaxonomy";
-export { uploadFile } from "./upload";
-export { SettingsModel, updateOptions } from "./settings";
-export { MediaModel } from "./media";
+module.exports = db;
