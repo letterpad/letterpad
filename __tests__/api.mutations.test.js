@@ -27,7 +27,7 @@ describe("Test Mutations", () => {
 
     afterAll(function(done) {
         console.log("Closing server");
-        // server.close(done);
+        server.close();
         done();
     });
 
