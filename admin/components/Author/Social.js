@@ -37,7 +37,7 @@ export default class Social extends Component {
         let newState = { social: { ...this.state.social } };
         newState.social[option] = value;
         this.setState(newState);
-        this.props.updateOption("social", JSON.stringify(newState));
+        this.props.updateOption("social", JSON.stringify(newState.social));
     }
     render() {
         const { t } = this.context;
