@@ -96,7 +96,7 @@ The containers folder should implement all the files which exist in `client/cont
 
 ### Admin Authentication
 
-Apollo Client is responsible to exchange data with graphql. After the users logs in to admin panel, a new token is created with the below information:
+Apollo Client is responsible to exchange data with graphql. After the users logs in to admin panel, a new token is created with the below information.:
 
 ```javascript
 {
