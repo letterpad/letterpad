@@ -1,5 +1,4 @@
 import axios from "axios";
-import { conn, Setting, Post, Taxonomy } from "../api/models";
 import {
     insertRolePermData,
     insertAuthor,
@@ -7,6 +6,7 @@ import {
     insertPost
 } from "../api/seed/seed";
 import config from "../config/config.dev";
+import models from "../api/models/index.js";
 
 describe("Test menu", () => {
     var server;
@@ -14,22 +14,26 @@ describe("Test menu", () => {
     beforeAll(async done => {
         // increase callback async time for requests.
         jest.setTimeout(10000);
-        // set the environment to test
-        process.env = { ...process.env, NODE_ENV: "test" };
         // start the server and preserve the instance.
         // Ideally `beforeEach` should be called instead of `beforeAll`
         // But we are not able to close the server.
         server = require("../api/startDev");
 
         // clear the database
-        await conn.sync({ force: true });
+        await models.sequelize.sync({ force: true });
 
         // fill necessary data
-        await insertRolePermData();
-        await insertAuthor();
-        await insertTaxonomy();
-        await insertPost({ title: "Post 1", type: "post", status: "publish" });
-        await insertPost({ title: "Post 2", type: "page", status: "publish" });
+        await insertRolePermData(models);
+        await insertAuthor(models);
+        await insertTaxonomy(models);
+        await insertPost(
+            { title: "Post 1", type: "post", status: "publish" },
+            models
+        );
+        await insertPost(
+            { title: "Post 2", type: "page", status: "publish" },
+            models
+        );
         done();
     });
 
@@ -47,7 +51,7 @@ describe("Test menu", () => {
         // We want to check if the modified slug can render the same posts.
 
         // First create the category
-        const category = await Taxonomy.create({
+        const category = await models.Taxonomy.create({
             name: "Category",
             type: "post_category",
             slug: "category" // default slug
@@ -56,12 +60,12 @@ describe("Test menu", () => {
         const category_id = category.id;
 
         // get a post
-        const post = await Post.findOne({ where: { id: 1 } });
+        const post = await models.Post.findOne({ where: { id: 1 } });
         // add the cateogry to a post
         post.addTaxonomy(category);
 
         // create a menu with custom slug with the above category
-        await Setting.create({
+        await models.Setting.create({
             option: "menu",
             value: JSON.stringify([
                 {
@@ -95,7 +99,7 @@ describe("Test menu", () => {
         // We are verifying this here.
 
         // First create the category
-        const category = await Taxonomy.create({
+        const category = await models.Taxonomy.create({
             name: "Category",
             type: "post_category",
             slug: "category" // default slug
@@ -104,12 +108,12 @@ describe("Test menu", () => {
         const category_id = category.id;
 
         // get a post
-        const post = await Post.findOne({ where: { id: 1 } });
+        const post = await models.Post.findOne({ where: { id: 1 } });
         // add the cateogry to a post
         post.addTaxonomy(category);
 
         // create a menu with custom slug with the above category
-        await Setting.create({
+        await models.Setting.create({
             option: "menu",
             value: JSON.stringify([
                 {

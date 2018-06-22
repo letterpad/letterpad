@@ -1,20 +1,18 @@
-import Sequalize from "sequelize";
-
 export default (conn, DataTypes) => {
     const Taxonomy = conn.define(
-        "taxonomies",
+        "taxonomy",
         {
             name: {
-                type: Sequalize.STRING
+                type: DataTypes.STRING
             },
             desc: {
-                type: Sequalize.STRING
+                type: DataTypes.STRING
             },
             slug: {
-                type: Sequalize.STRING
+                type: DataTypes.STRING
             },
             type: {
-                type: Sequalize.STRING
+                type: DataTypes.STRING
             }
         },
         {

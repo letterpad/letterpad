@@ -2,7 +2,7 @@ import Sequalize from "sequelize";
 
 export default (conn, DataTypes) => {
     const Role = conn.define(
-        "roles",
+        "role",
         {
             name: {
                 type: Sequalize.STRING

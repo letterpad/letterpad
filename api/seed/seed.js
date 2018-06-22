@@ -1,35 +1,14 @@
-var env = require("node-env-file");
-env(__dirname + "/../../.env");
-
-import { conn } from "../../config/db.config";
-import Sequalize from "sequelize";
 import bcrypt from "bcryptjs";
 import Faker from "faker";
 import rimraf from "rimraf";
 
 const copydir = require("copy-dir");
 Faker.locale = "en_US";
-const models = {
-    Author: conn.import("../models/author"),
-    Post: conn.import("../models/post"),
-    Taxonomy: conn.import("../models/taxonomy"),
-    Role: conn.import("../models/role"),
-    Permission: conn.import("../models/permission"),
-    Setting: conn.import("../models/settings"),
-    Media: conn.import("../models/media"),
-    PostTaxonomy: conn.import("../models/postTaxonomy")
-};
 
-Object.keys(models).map(name => {
-    if ("associate" in models[name]) {
-        models[name].associate(models);
-    }
-});
-models.Sequalize = Sequalize;
-models.conn = conn;
-
-export const seed = async () => {
-    await models.conn.sync({ force: true });
+let models = null;
+export const seed = async dbModels => {
+    models = dbModels;
+    await models.sequelize.sync({ force: true });
     // do some clean first. delete the uploads folder
     rimraf(__dirname + "/../../public/uploads/*", () => {
         copydir.sync(
@@ -37,127 +16,185 @@ export const seed = async () => {
             __dirname + "/../../public/uploads"
         );
     });
-    await insertRolePermData();
-    await insertAuthor();
-    await insertTaxonomy();
-    await insertPost({
-        title: "We encountered a new paradise",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/1.jpg"
-    });
-    await insertPost({
-        title: "The Mountain",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/2.jpg"
-    });
-    await insertPost({
-        title: "Ink in water",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/3.jpg"
-    });
-    await insertPost({
-        title: "Future of ReactJS",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/4.jpg"
-    });
-    await insertPost({
-        title: "A bright sunny day",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/5.jpg"
-    });
-    await insertPost({
-        title: "Post 6",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/6.jpg"
-    });
-    await insertPost({
-        title: "Post 7",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/7.jpg"
-    });
-    await insertPost({
-        title: "Post 8",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/8.jpg"
-    });
-    await insertPost({
-        title: "Post 9",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/9.jpg"
-    });
-    await insertPost({
-        title: "Post 10",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/10.jpg"
-    });
-    await insertPost({
-        title: "Post 11",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/11.jpg"
-    });
-    await insertPost({
-        title: "Post 12",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/12.jpg"
-    });
-    await insertPost({
-        title: "Post 13",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/1.jpg"
-    });
-    await insertPost({
-        title: "Post 14",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/2.jpg"
-    });
-    await insertPost({
-        title: "Post 15",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/3.jpg"
-    });
-    await insertPost({
-        title: "Post 16",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/4.jpg"
-    });
-    await insertPost({
-        title: "Post 17",
-        type: "post",
-        status: "publish",
-        cover_image: "/uploads/5.jpg"
-    });
-    await insertPost({
-        title: "About",
-        type: "page",
-        status: "publish",
-        cover_image: "/uploads/6.jpg"
-    });
-    await insertPost({
-        title: "Page 3 (draft)",
-        type: "page",
-        status: "draft"
-    });
-    await insertSettings();
-    await insertMedia();
+
+    await insertRolePermData(models);
+    await insertAuthor(models);
+    await insertTaxonomy(models);
+    await insertPost(
+        {
+            title: "We encountered a new paradise",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/1.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "The Mountain",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/2.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Ink in water",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/3.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Future of ReactJS",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/4.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "A bright sunny day",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/5.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 6",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/6.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 7",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/7.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 8",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/8.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 9",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/9.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 10",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/10.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 11",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/11.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 12",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/12.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 13",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/1.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 14",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/2.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 15",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/3.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 16",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/4.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Post 17",
+            type: "post",
+            status: "publish",
+            cover_image: "/uploads/5.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "About",
+            type: "page",
+            status: "publish",
+            cover_image: "/uploads/6.jpg"
+        },
+        models
+    );
+    await insertPost(
+        {
+            title: "Page 3 (draft)",
+            type: "page",
+            status: "draft"
+        },
+        models
+    );
+    await insertSettings(models);
+    await insertMedia(models);
 };
 
-export async function insertRolePermData() {
+export async function insertRolePermData(models) {
     let MANAGE_OWN_POSTS = await models.Permission.create({
         name: "MANAGE_OWN_POSTS"
     });
@@ -190,7 +227,7 @@ export async function insertRolePermData() {
     await role.addPermission(MANAGE_OWN_POSTS);
 }
 
-export async function insertAuthor() {
+export async function insertAuthor(models) {
     await models.Author.bulkCreate([
         {
             fname: "John",
@@ -226,7 +263,7 @@ export async function insertAuthor() {
         }
     ]);
 }
-export async function insertTaxonomy() {
+export async function insertTaxonomy(models) {
     await models.Taxonomy.bulkCreate([
         {
             name: "Travel",
@@ -273,7 +310,7 @@ export async function insertTaxonomy() {
     ]);
 }
 
-export async function insertPost(params) {
+export async function insertPost(params, models) {
     // get author  // 1 or 2
     const randomAuthorId = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
     let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
@@ -313,7 +350,7 @@ export async function insertPost(params) {
     });
 }
 
-export async function insertMedia(params) {
+export async function insertMedia(models) {
     await models.Media.bulkCreate([
         { url: "/uploads/1.jpg", author_id: 1 },
         { url: "/uploads/2.jpg", author_id: 1 },
@@ -330,7 +367,7 @@ export async function insertMedia(params) {
     ]);
 }
 
-export async function insertSettings() {
+export async function insertSettings(models) {
     let menu = JSON.stringify([
         {
             id: 3,
@@ -454,8 +491,4 @@ export async function insertSettings() {
         }
     ];
     await models.Setting.bulkCreate(data);
-}
-
-if (require.main === module) {
-    seed();
 }

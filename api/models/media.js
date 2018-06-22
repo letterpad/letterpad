@@ -1,11 +1,9 @@
-import Sequalize from "sequelize";
-
 export default (conn, DataTypes) => {
     const Media = conn.define(
         "media",
         {
             url: {
-                type: Sequalize.STRING
+                type: DataTypes.STRING
             }
         },
         {

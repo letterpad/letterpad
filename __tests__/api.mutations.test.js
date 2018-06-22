@@ -1,7 +1,7 @@
 import axios from "axios";
-import { conn, Setting, Post, Taxonomy } from "../api/models";
 import { insertRolePermData, insertSettings } from "../api/seed/seed";
 import config from "../config/config.dev";
+import models from "../api/models/index.js";
 
 describe("Test Mutations", () => {
     var server;
@@ -17,17 +17,18 @@ describe("Test Mutations", () => {
         server = require("../api/startDev");
 
         // clear the database
-        await conn.sync({ force: true });
+        await models.sequelize.sync({ force: true });
 
         // fill necessary data
-        await insertRolePermData();
-        await insertSettings();
+        await insertRolePermData(models);
+        await insertSettings(models);
         done();
     });
 
     afterAll(function(done) {
         console.log("Closing server");
-        server.close(done);
+        // server.close(done);
+        done();
     });
 
     test("Register Author", async () => {

@@ -1,19 +1,17 @@
-import Sequalize from "sequelize";
-
 export default (conn, Datatypes) => {
     const Author = conn.define(
         "author",
         {
             username: {
-                type: Sequalize.STRING,
+                type: Datatypes.STRING,
                 defaultValue: ""
             },
             password: {
-                type: Sequalize.STRING,
+                type: Datatypes.STRING,
                 allowNull: false
             },
             email: {
-                type: Sequalize.STRING,
+                type: Datatypes.STRING,
                 allowNull: false,
                 unique: true,
                 validate: {
@@ -23,27 +21,27 @@ export default (conn, Datatypes) => {
                 }
             },
             social: {
-                type: Sequalize.STRING,
+                type: Datatypes.STRING,
                 defaultValue: "{}"
             },
             fname: {
-                type: Sequalize.STRING,
+                type: Datatypes.STRING,
                 defaultValue: ""
             },
             lname: {
-                type: Sequalize.STRING,
+                type: Datatypes.STRING,
                 defaultValue: ""
             },
             bio: {
-                type: Sequalize.STRING,
+                type: Datatypes.STRING,
                 defaultValue: ""
             },
             token: {
-                type: Sequalize.STRING,
+                type: Datatypes.STRING,
                 defaultValue: ""
             },
             avatar: {
-                type: Sequalize.STRING,
+                type: Datatypes.STRING,
                 defaultValue: ""
             }
         },
