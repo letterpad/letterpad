@@ -145,6 +145,12 @@ Extensions: Prettier, postcss-syntax, GraphQL, ESLint, DotENV, Babel ES6/ES7
 npm i -g babel-eslint
 ```
 
+For Prettier, it is recommended to add to the editor's `settings.json` to run on save.
+
+```
+"editor.formatOnSave": true
+```
+
 ### Seeding
 
 If you want to seed the database with sample data, run the below command:
