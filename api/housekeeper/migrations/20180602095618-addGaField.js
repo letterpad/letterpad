@@ -3,7 +3,7 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert(
-            "settings",
+            "setting",
             [
                 {
                     option: "google_analytics",
@@ -19,7 +19,7 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete("settings", [
+        return queryInterface.bulkDelete("setting", [
             {
                 option: "google_analytics"
             }

@@ -10,7 +10,7 @@ module.exports = {
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
         return queryInterface.bulkInsert(
-            "settings",
+            "setting",
             [
                 {
                     option: "displayAuthorInfo",
@@ -26,7 +26,7 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete("settings", [
+        return queryInterface.bulkDelete("setting", [
             {
                 option: "displayAuthorInfo"
             }
