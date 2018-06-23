@@ -71,6 +71,27 @@ export default {
                 }
                 return { ok: false };
             }
+        ),
+
+        updateMedia: editPostPerm.createResolver(
+            async (root, args, { models }) => {
+                try {
+                    await models.Media.update(args, {
+                        where: { id: args.id }
+                    });
+                    return { ok: true, errors: [] };
+                } catch (e) {
+                    return {
+                        ok: false,
+                        errors: [
+                            {
+                                message: e.message,
+                                path: "updateMedia"
+                            }
+                        ]
+                    };
+                }
+            }
         )
     }
 };

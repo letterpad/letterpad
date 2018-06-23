@@ -238,6 +238,18 @@ module.exports.UPLOAD_COVER_IMAGE = gql`
     }
 `;
 
+module.exports.UPDATE_MEDIA = gql`
+    mutation updateMedia($id: Int!, $name: String, $description: String) {
+        updateMedia(id: $id, name: $name, description: $description) {
+            ok
+            errors {
+                message
+                path
+            }
+        }
+    }
+`;
+
 module.exports.LOGIN_QUERY = gql`
     mutation login($username: String!, $password: String!) {
         login(email: $username, password: $password) {

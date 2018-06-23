@@ -26,12 +26,6 @@ export class PostPublish extends Component {
             zenview: false
         };
     }
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const status = prevState.post.status == "publish" ? 1 : 0;
-        return {
-            published: status
-        };
-    }
 
     componentDidMount() {
         PostActions.setData(this.props.post);

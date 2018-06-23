@@ -53,6 +53,8 @@ module.exports.GET_MEDIA = gql`
                 id
                 url
                 created_at
+                name
+                description
             }
         }
     }

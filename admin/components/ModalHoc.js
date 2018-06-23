@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const ModalHoc = (WrappedComponent, id = "", classes = "") => {
     return class extends Component {
         static propTypes = {
-            isOpen: PropTypes.func.isRequired,
+            isOpen: PropTypes.bool.isRequired,
             onClose: PropTypes.func,
             className: PropTypes.string,
             dialogClassName: PropTypes.string,

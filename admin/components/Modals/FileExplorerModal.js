@@ -25,7 +25,7 @@ class FileExplorerModal extends Component {
     render() {
         const { t } = this.context;
         return (
-            <div>
+            <React.Fragment>
                 <div className="modal-header">
                     <button onClick={this.props.onClose} className="close">
                         ×
@@ -77,7 +77,7 @@ class FileExplorerModal extends Component {
                         {t("common.cancel")}
                     </button>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }
