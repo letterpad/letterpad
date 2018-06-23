@@ -1,14 +1,17 @@
 const path = require("path");
-const dbFile = (process.env.DB_NAME ? process.env.DB_NAME : "test") + ".sqlite";
-const dbFilepath = path.join(__dirname, "../data/", dbFile);
+
+const getFile = name => {
+    const dbFile = name + ".sqlite";
+    return path.join(__dirname, "../data/", dbFile);
+};
 module.exports = {
     dev: {
         username: "root",
         password: null,
-        database: process.env.DB_NAME,
+        database: "letterpad_demo",
         host: "127.0.0.1",
         dialect: "sqlite",
-        storage: dbFilepath,
+        storage: getFile("letterpad_demo"),
         logging: false,
         define: {
             underscored: true
@@ -20,7 +23,7 @@ module.exports = {
         database: "test",
         host: "127.0.0.1",
         dialect: "sqlite",
-        storage: dbFilepath,
+        storage: getFile("test"),
         logging: false,
         define: {
             underscored: true
@@ -29,10 +32,10 @@ module.exports = {
     production: {
         username: "root",
         password: null,
-        database: process.env.DB_NAME,
+        database: "letterpad_demo",
         host: "127.0.0.1",
         dialect: "sqlite",
-        storage: dbFilepath,
+        storage: getFile("letterpad_demo"),
         logging: false,
         define: {
             underscored: true

@@ -9,8 +9,6 @@ describe("Test Mutations", () => {
     beforeAll(async done => {
         // increase callback async time for requests.
         jest.setTimeout(10000);
-        // set the environment to test
-        process.env = { ...process.env, NODE_ENV: "test" };
         // start the server and preserve the instance.
         // Ideally `beforeEach` should be called instead of `beforeAll`
         // But we are not able to close the server.

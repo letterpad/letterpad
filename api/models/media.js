@@ -4,6 +4,12 @@ export default (conn, DataTypes) => {
         {
             url: {
                 type: DataTypes.STRING
+            },
+            name: {
+                type: DataTypes.STRING
+            },
+            description: {
+                type: DataTypes.STRING
             }
         },
         {

@@ -1,12 +1,12 @@
-var env = require("node-env-file");
-env(__dirname + "/../../.env");
+const config = require("../../config/db.config")[process.env.NODE_ENV];
+
 module.exports = {
     dev: {
-        storage: "data/" + process.env.DB_NAME + ".sqlite",
+        storage: "data/" + config.database + ".sqlite",
         dialect: "sqlite"
     },
     production: {
-        storage: "data/" + process.env.DB_NAME + ".sqlite",
+        storage: "data/" + config.database + ".sqlite",
         dialect: "sqlite"
     }
 };
