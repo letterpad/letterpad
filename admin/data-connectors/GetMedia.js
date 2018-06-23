@@ -8,8 +8,8 @@ export default graphql(GET_MEDIA, {
             author_id: props.author.id,
             offset:
                 (parseInt(props.page || props.match.params.page) - 1) *
-                config.itemsPerPage,
-            limit: config.itemsPerPage
+                config.mediaPerPage,
+            limit: config.mediaPerPage
         },
         fetchPolicy: "network-only"
     }),

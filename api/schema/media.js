@@ -4,6 +4,8 @@ export default `
     author_id: Int
     url: String
     created_at: String
+    name: String
+    description: String
   }
 
   type MediaNode {
@@ -14,6 +16,11 @@ export default `
   type DeleteResponse {
     ok: Boolean!
     id: Int
+  }
+
+  type UpdateResponse {
+    ok: Boolean!
+    errors: [Error]
   }
 
   input Upload {
@@ -30,6 +37,6 @@ export default `
   type Mutation {
     insertMedia(url: String): Media
     deleteMedia(id: Int!): DeleteResponse
-
+    updateMedia(id: Int!, name: String, description: String): UpdateResponse
   }
 `;
