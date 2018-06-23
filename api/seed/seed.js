@@ -352,18 +352,78 @@ export async function insertPost(params, models) {
 
 export async function insertMedia(models) {
     await models.Media.bulkCreate([
-        { url: "/uploads/1.jpg", author_id: 1 },
-        { url: "/uploads/2.jpg", author_id: 1 },
-        { url: "/uploads/3.jpg", author_id: 1 },
-        { url: "/uploads/4.jpg", author_id: 1 },
-        { url: "/uploads/5.jpg", author_id: 1 },
-        { url: "/uploads/6.jpg", author_id: 1 },
-        { url: "/uploads/7.jpg", author_id: 1 },
-        { url: "/uploads/8.jpg", author_id: 1 },
-        { url: "/uploads/9.jpg", author_id: 1 },
-        { url: "/uploads/10.jpg", author_id: 1 },
-        { url: "/uploads/11.jpg", author_id: 1 },
-        { url: "/uploads/12.jpg", author_id: 1 }
+        {
+            url: "/uploads/1.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        },
+        {
+            url: "/uploads/2.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        },
+        {
+            url: "/uploads/3.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        },
+        {
+            url: "/uploads/4.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        },
+        {
+            url: "/uploads/5.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        },
+        {
+            url: "/uploads/6.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        },
+        {
+            url: "/uploads/7.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        },
+        {
+            url: "/uploads/8.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        },
+        {
+            url: "/uploads/9.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        },
+        {
+            url: "/uploads/10.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        },
+        {
+            url: "/uploads/11.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        },
+        {
+            url: "/uploads/12.jpg",
+            author_id: 1,
+            name: Faker.lorem.words(2),
+            description: Faker.lorem.sentences(2)
+        }
     ]);
 }
 

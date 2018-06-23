@@ -27,16 +27,11 @@ class RichText extends Component {
                 "bold",
                 "italic",
                 "underline",
-                "strike",
                 "blockquote",
                 "code-block",
                 "image",
                 { list: "ordered" },
                 { list: "bullet" },
-                { script: "sub" },
-                { script: "super" },
-                { indent: "-1" },
-                { indent: "+1" },
                 { header: [1, 2, 3, 4, 5, 6, false] },
                 { color: [] },
                 { background: [] },
@@ -64,7 +59,7 @@ class RichText extends Component {
         qEditor.on("text-change", function() {
             var justHtml = qEditor.root.innerHTML;
             // add extra class
-            justHtml = justHtml.replace('"ql-syntax"', '"ql-syntax hljs"');
+            justHtml = justHtml.replace("\"ql-syntax\"", "\"ql-syntax hljs\"");
             PostActions.setData({
                 body: justHtml
             });

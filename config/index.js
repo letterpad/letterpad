@@ -18,6 +18,7 @@ const config = {
     defaultSlug: "letterpad",
     adminPath: "/admin",
     itemsPerPage: 6,
+    mediaPerPage: 20,
     baseName: configFile.baseName
 };
 
