@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+import { notify } from "react-notify-toast";
+
 import {
     General,
     Social,
@@ -8,16 +11,42 @@ import {
     Messages
 } from "../../components/Settings";
 import { GET_OPTIONS } from "../../../shared/queries/Queries";
-import { notify } from "react-notify-toast";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
+
+const NavWrapper = styled.div`
+    margin-bottom: 2rem;
+`;
+
+const StyledA = styled.a`
+    text-transform: capitalize;
+    user-select: none;
+`;
 
 const SubmitBtn = ({ handleClick }) => (
     <button type="submit" onClick={handleClick} className="btn btn-blue btn-sm">
         Save
     </button>
 );
+
 SubmitBtn.propTypes = {
     handleClick: PropTypes.func
+};
+
+const getPageComponent = (selected, data, updateOption) => {
+    switch (selected) {
+        case "general":
+            return <General data={data} updateOption={updateOption} />;
+        case "social":
+            return <Social data={data} updateOption={updateOption} />;
+        case "additional":
+            return (
+                <AdditionalSettings data={data} updateOption={updateOption} />
+            );
+        case "messages":
+            return <Messages data={data} updateOption={updateOption} />;
+        default:
+            return null;
+    }
 };
 
 class Settings extends Component {
@@ -30,14 +59,14 @@ class Settings extends Component {
         t: PropTypes.func
     };
 
-    constructor(props) {
-        super(props);
-        this.updatedOptions = {};
-        this.submitData = this.submitData.bind(this);
-        this.setOption = this.setOption.bind(this);
-        document.body.classList.add("settings-page");
-    }
+    state = {
+        updatedOptions: {},
+        pages: ["general", "social", "additional", "messages"],
+        selectedPage: "general"
+    };
+
     componentDidMount() {
+        document.body.classList.add("settings-page");
         const elem = document.querySelector(".masonry-grid");
         setTimeout(() => {
             new Masonry(elem, {
@@ -51,30 +80,38 @@ class Settings extends Component {
         document.body.classList.remove("settings-page");
     }
 
-    setOption(option, value) {
-        this.updatedOptions[option] = value;
-    }
+    setOption = (option, value) => {
+        const { updatedOptions } = this.state;
+        updatedOptions[option] = value;
+    };
 
-    submitData(e) {
+    submitData = e => {
         e.preventDefault();
         const settings = [];
-        Object.keys(this.updatedOptions).forEach(option => {
+        Object.keys(this.state.updatedOptions).forEach(option => {
             settings.push({
                 option,
-                value: this.updatedOptions[option]
+                value: this.state.updatedOptions[option]
             });
         });
         this.props.updateOptions(settings).then(() => {
             notify.show("Site settings saved", "success", 3000);
         });
-    }
+    };
+
+    handleNavClick = page => {
+        this.setState({ selectedPage: page });
+    };
+
     render() {
+        const { selectedPage, pages } = this.state;
+        const { options } = this.props;
         const data = {};
         const { t } = this.context;
-        if (this.props.options.loading) {
+        if (options.loading) {
             return <div>hello</div>;
         }
-        this.props.options.settings.forEach(setting => {
+        options.settings.forEach(setting => {
             data[setting.option] = setting;
         });
 
@@ -82,46 +119,31 @@ class Settings extends Component {
             <section className="module-xs">
                 <div className="masonry-grid">
                     <div className="card masonry-grid-item">
+                        <NavWrapper>
+                            <ul className="nav nav-tabs">
+                                {pages.map((page, i) => (
+                                    <li
+                                        key={i}
+                                        className={
+                                            selectedPage == page ? "active" : ""
+                                        }
+                                        onClick={e =>
+                                            this.handleNavClick(page, e)
+                                        }
+                                    >
+                                        <StyledA>{page}</StyledA>
+                                    </li>
+                                ))}
+                            </ul>
+                        </NavWrapper>
                         <div className="module-title">
-                            {t("settings.general.title")}
+                            {t(`settings.${selectedPage}.title`)}
                         </div>
                         <div className="module-subtitle">
-                            {t("settings.general.tagline")}
+                            {t(`settings.${selectedPage}.tagline`)}
                         </div>
-                        <General data={data} updateOption={this.setOption} />
-                        <SubmitBtn handleClick={this.submitData} />
-                    </div>
-                    <div className="card masonry-grid-item">
-                        <div className="module-title">
-                            {t("settings.social.title")}
-                        </div>
-                        <div className="module-subtitle">
-                            {t("settings.social.tagline")}
-                        </div>
-                        <Social data={data} updateOption={this.setOption} />
-                        <SubmitBtn handleClick={this.submitData} />
-                    </div>
-                    <div className="card masonry-grid-item">
-                        <div className="module-title">
-                            {t("settings.additional.title")}
-                        </div>
-                        <div className="module-subtitle">
-                            {t("settings.additional.tagline")}
-                        </div>
-                        <AdditionalSettings
-                            data={data}
-                            updateOption={this.setOption}
-                        />
-                        <SubmitBtn handleClick={this.submitData} />
-                    </div>
-                    <div className="card masonry-grid-item">
-                        <div className="module-title">
-                            {t("settings.messages.title")}
-                        </div>
-                        <div className="module-subtitle">
-                            {t("settings.messages.tagline")}
-                        </div>
-                        <Messages data={data} updateOption={this.setOption} />
+
+                        {getPageComponent(selectedPage, data, this.setOption)}
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
                 </div>
