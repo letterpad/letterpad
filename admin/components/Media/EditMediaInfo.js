@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ModalHoc from "../../components/ModalHoc";
 import config from "../../../config";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import Loader from "../Loader";
 
 class EditMediaInfo extends Component {
     static propTypes = {
@@ -27,7 +27,8 @@ class EditMediaInfo extends Component {
                 id: this.props.media.id,
                 name: this.props.media.name,
                 description: this.props.media.description
-            }
+            },
+            saving: false
         };
     }
 
@@ -61,7 +62,7 @@ class EditMediaInfo extends Component {
         this.props.next();
     }
 
-    updateMedia(e) {
+    async updateMedia(e) {
         // get the old values
         const { name, description } = this.props.media;
         // compare with current state to see if there is a change.
@@ -69,8 +70,12 @@ class EditMediaInfo extends Component {
             this.state.media.name !== name ||
             this.state.media.description !== description
         ) {
+            this.setState({ saving: true });
             // if yes, update the backend.
-            this.props.updateMedia(this.state.media);
+            const update = await this.props.updateMedia(this.state.media);
+            if (update.data.updateMedia.ok) {
+                this.setState({ saving: false });
+            }
         }
         if (e && e.target.type == "button") {
             this.props.onClose();
@@ -100,8 +105,10 @@ class EditMediaInfo extends Component {
                 <div className="modal-body text-center">
                     <div className="media-info-slider">
                         <div className="media-wrapper">
+                            {this.state.saving && <Loader />}
                             <img src={url} />
                         </div>
+
                         <div className="media-info">
                             <div className="navigation">
                                 <button
