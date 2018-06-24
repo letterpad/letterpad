@@ -33,12 +33,14 @@ export default class General extends Component {
         this.updateOption("locale", JSON.stringify(locales));
     }
     async uploadBanner(files) {
-        const banner = await uploadFile({ files });
+        const uploadedFiles = await uploadFile({ files });
+        let banner = uploadedFiles[0];
         this.updateOption("banner", banner);
         this.setState({ banner });
     }
     async uploadLogo(files) {
-        const site_logo = await uploadFile({ files });
+        const uploadedFiles = await uploadFile({ files });
+        let site_logo = uploadedFiles[0];
         this.updateOption("site_logo", site_logo);
         this.setState({ site_logo });
     }

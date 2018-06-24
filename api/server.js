@@ -46,9 +46,17 @@ app.use(
     })
 );
 
-app.use("/upload", upload.single("file"), (req, res) => {
-    let filename = req.file.path.split("/").pop();
-    res.json("/uploads/" + filename);
+app.use("/upload", upload.any(), (req, res) => {
+    const uploadedFiles = [];
+    req.files.forEach(file => {
+        let filename = file.path.split("/").pop();
+        uploadedFiles.push("/uploads/" + filename);
+    });
+    //let filename = req.file.path.split("/").pop();
+    res.json(uploadedFiles);
+});
+app.use("/test", (req, res) => {
+    res.json(["a", "b"]);
 });
 
 let httpServer = app.listen(config.apiPort, function() {

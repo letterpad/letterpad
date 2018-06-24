@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PostActions from "../PostActions";
 import PropTypes from "prop-types";
 import FileExplorerModal from "../../../components/Modals/FileExplorerModal";
+import { uploadFile } from "../../../util";
 
 class RichText extends Component {
     static propTypes = {
@@ -67,19 +68,16 @@ class RichText extends Component {
         qEditor.root.innerHTML = this.props.body;
     }
 
-    uploadImage(files) {
-        PostActions.uploadFile(files, this.props.insertMedia).then(
-            post_image => {
-                var Delta = qEditor.constructor.import("delta");
-                qEditor.updateContents(
-                    new Delta()
-                        .retain(qEditor.selection.savedRange.index)
-                        .insert({
-                            image: post_image
-                        })
-                );
-            }
-        );
+    async uploadImage(files) {
+        const uploadedFiles = uploadFile({ files, type: "post_image" });
+        var Delta = qEditor.constructor.import("delta");
+        uploadedFiles.forEach(post_image => {
+            qEditor.updateContents(
+                new Delta().retain(qEditor.selection.savedRange.index).insert({
+                    image: post_image
+                })
+            );
+        });
     }
 
     insertImage(post_image) {
@@ -103,6 +101,7 @@ class RichText extends Component {
                     ref={input => (this.imageInput = input)}
                     className="hide post-image"
                     type="file"
+                    multiple
                     onChange={input => this.uploadImage(input.target.files)}
                 />
                 {this.state.fileExplorerOpen && (
