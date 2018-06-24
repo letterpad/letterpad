@@ -68,6 +68,7 @@ class RichText extends Component {
         qEditor.root.innerHTML = this.props.body;
     }
 
+    // upload new images and update the post
     async uploadImage(files) {
         const uploadedFiles = uploadFile({ files, type: "post_image" });
         var Delta = qEditor.constructor.import("delta");
@@ -80,6 +81,7 @@ class RichText extends Component {
         });
     }
 
+    // insert an existing image from the media gallery
     insertImage(post_image) {
         this.toggleFileExplorer();
         var Delta = qEditor.constructor.import("delta");
