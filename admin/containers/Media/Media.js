@@ -107,10 +107,7 @@ class Media extends Component {
     }
 
     async uploadImage(files) {
-        const uploadedFiles = await uploadFile({ files, type: "post_image" });
-        // await this.props.insertMedia({
-        //     url: coverImage
-        // });
+        await uploadFile({ files, type: "post_image" });
         // if the user is in page 1, just refetch the items of page 1
         if (this.props.match.params.page == 1) {
             let items = await this.props.fetchMore({
