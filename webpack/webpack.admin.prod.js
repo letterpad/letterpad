@@ -2,14 +2,21 @@ const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const { vendorFiles } = require("./webpack.base");
-
+const MinifyPlugin = require("babel-minify-webpack-plugin");
+const vendorFiles = [
+    "babel-polyfill",
+    "react",
+    "react-dom",
+    "redux",
+    "react-apollo",
+    "moment"
+];
 const clientConfig = args => {
     const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");
     if (typeof args === "undefined") {
         args = { theme: "" };
     }
-    const config = merge(baseConfig(args, "client"), {
+    const config = merge(baseConfig(args, "admin"), {
         target: "web",
         output: {
             path: path.join(__dirname, "../"),
