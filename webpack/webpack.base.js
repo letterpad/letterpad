@@ -27,7 +27,7 @@ var babelOptions = {
     ]
 };
 
-export const vendorFiles = [
+const vendorFiles = [
     "babel-polyfill",
     "react",
     "react-dom",
@@ -38,6 +38,7 @@ export const vendorFiles = [
 if (isDev) {
     vendorFiles.push("webpack-hot-middleware/client?reload=true");
 }
+module.exports.vendorFiles = vendorFiles;
 module.exports = (args, name) => {
     const config = {
         mode: isDev ? "development" : "production",
