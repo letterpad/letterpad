@@ -60,6 +60,9 @@ module.exports.init = app => {
                     }
                 );
                 res.send(availableThemes);
+            })
+            .catch(e => {
+                console.log(e);
             });
     });
 
