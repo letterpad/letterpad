@@ -13,7 +13,7 @@
         "postinstall": "./utils/postinstall.sh",
         "dev": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
         "prod": "NODE_ENV=production concurrently --kill-others \"node ./api/start.js\" \"node ./server.js\"",
-        "prodPm2": "NODE_ENV=production concurrently --kill-others \"pm2 start ./api/start.js --name=lpDemoApi\" \"pm2 start ./server.js --name=lpemo\"",
+        "prodPm2": "NODE_ENV=production concurrently --kill-others \"pm2 start ./api/start.js --name=lpDemoApi\" \"pm2 start ./server.js --name=lpDemo\"",
         "test": "NODE_ENV=test && jest --runInBand"
     },
     "env": {
@@ -128,7 +128,7 @@
         "rimraf": "^2.6.2",
         "style-loader": "^0.16.1",
         "url-loader": "^0.6.2",
-        "webpack": "^4.1.1",
+        "webpack": "^4.12.1",
         "webpack-bundle-analyzer": "^2.11.1",
         "webpack-cli": "^2.0.10",
         "webpack-dev-middleware": "^1.5.1",
