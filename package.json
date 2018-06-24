@@ -5,15 +5,15 @@
     "main": "start.js",
     "private": true,
     "scripts": {
-        "build": "NODE_ENV=production && babel api -d apiBuild && webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
+        "build": "NODE_ENV=production && webpack --verbose --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
         "build:theme": "NODE_ENV=production webpack --verbose --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${theme}",
         "build:admin": "NODE_ENV=production webpack --verbose --colors --display-error-details --config webpack/webpack.admin.prod.js",
         "seed": "node ./api/seed",
         "preinstall": "./utils/preinstall.sh",
         "postinstall": "./utils/postinstall.sh",
-        "dev": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/startDev.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
-        "prod": "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
-        "prodPm2": "NODE_ENV=production concurrently --kill-others \"pm2 start ./apiBuild/server.js --name=lpDocsApi\" \"pm2 start ./server.js --name=lpDocs\"",
+        "dev": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
+        "prod": "NODE_ENV=production concurrently --kill-others \"node ./api/start.js\" \"node ./server.js\"",
+        "prodPm2": "NODE_ENV=production concurrently --kill-others \"pm2 start ./api/start.js --name=lpDocsApi\" \"pm2 start ./server.js --name=lpDocs\"",
         "test": "NODE_ENV=test && jest --runInBand"
     },
     "env": {
