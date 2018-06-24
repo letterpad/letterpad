@@ -2,13 +2,14 @@ const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const { vendorFiles } = require("./webpack.base");
 
 const clientConfig = args => {
     const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");
     if (typeof args === "undefined") {
         args = { theme: "" };
     }
-    const config = merge(baseConfig(args,"client"), {
+    const config = merge(baseConfig(args, "client"), {
         target: "web",
         output: {
             path: path.join(__dirname, "../"),
@@ -39,7 +40,8 @@ const clientConfig = args => {
         }
     });
     config.entry = {
-        "admin/public/dist/admin": [path.join(__dirname, "../admin/app")]
+        "admin/public/dist/admin": [path.join(__dirname, "../admin/app")],
+        ["public/js/vendor"]: vendorFiles
     };
     return config;
 };

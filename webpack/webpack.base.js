@@ -27,7 +27,7 @@ var babelOptions = {
     ]
 };
 
-const vendorFiles = [
+export const vendorFiles = [
     "babel-polyfill",
     "react",
     "react-dom",
