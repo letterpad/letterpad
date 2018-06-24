@@ -61,8 +61,7 @@ class Settings extends Component {
 
     state = {
         updatedOptions: {},
-        pages: ["general", "social", "additional", "messages"],
-        selectedPage: "general"
+        selected: "general"
     };
 
     componentDidMount() {
@@ -100,11 +99,11 @@ class Settings extends Component {
     };
 
     handleNavClick = page => {
-        this.setState({ selectedPage: page });
+        this.setState({ selected: page });
     };
 
     render() {
-        const { selectedPage, pages } = this.state;
+        const { selected } = this.state;
         const { options } = this.props;
         const data = {};
         const { t } = this.context;
@@ -121,11 +120,16 @@ class Settings extends Component {
                     <div className="card masonry-grid-item">
                         <NavWrapper>
                             <ul className="nav nav-tabs">
-                                {pages.map((page, i) => (
+                                {[
+                                    "general",
+                                    "social",
+                                    "additional",
+                                    "messages"
+                                ].map((page, i) => (
                                     <li
                                         key={i}
                                         className={
-                                            selectedPage == page ? "active" : ""
+                                            selected == page ? "active" : ""
                                         }
                                         onClick={e =>
                                             this.handleNavClick(page, e)
@@ -137,13 +141,13 @@ class Settings extends Component {
                             </ul>
                         </NavWrapper>
                         <div className="module-title">
-                            {t(`settings.${selectedPage}.title`)}
+                            {t(`settings.${selected}.title`)}
                         </div>
                         <div className="module-subtitle">
-                            {t(`settings.${selectedPage}.tagline`)}
+                            {t(`settings.${selected}.tagline`)}
                         </div>
 
-                        {getPageComponent(selectedPage, data, this.setOption)}
+                        {getPageComponent(selected, data, this.setOption)}
                         <SubmitBtn handleClick={this.submitData} />
                     </div>
                 </div>
