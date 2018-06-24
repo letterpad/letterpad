@@ -12,7 +12,7 @@ describe("Test Mutations", () => {
         // start the server and preserve the instance.
         // Ideally `beforeEach` should be called instead of `beforeAll`
         // But we are not able to close the server.
-        server = require("../api/startDev");
+        server = require("../api/start");
 
         // clear the database
         await models.sequelize.sync({ force: true });

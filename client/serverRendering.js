@@ -46,9 +46,10 @@ module.exports.init = app => {
             cache: new InMemoryCache()
         });
 
-        try {
-            // get the settings data. It contains information about the theme that we want to render.
-            client.query({ query: GET_OPTIONS }).then(options => {
+        // get the settings data. It contains information about the theme that we want to render.
+        client
+            .query({ query: GET_OPTIONS })
+            .then(options => {
                 const settings = {};
                 options.data.settings.forEach(item => {
                     settings[item.option] = item.value;
@@ -97,10 +98,10 @@ module.exports.init = app => {
                     .catch(e => {
                         console.log("Error while rendering", e);
                     });
+            })
+            .catch(e => {
+                console.log(e);
             });
-        } catch (e) {
-            console.log(`[Request error]: ${e.message}`);
-        }
     });
 };
 
