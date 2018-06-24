@@ -60,7 +60,7 @@ class RichText extends Component {
         qEditor.on("text-change", function() {
             var justHtml = qEditor.root.innerHTML;
             // add extra class
-            justHtml = justHtml.replace("\"ql-syntax\"", "\"ql-syntax hljs\"");
+            justHtml = justHtml.replace('"ql-syntax"', '"ql-syntax hljs"');
             PostActions.setData({
                 body: justHtml
             });
@@ -70,13 +70,16 @@ class RichText extends Component {
 
     // upload new images and update the post
     async uploadImage(files) {
-        const uploadedFiles = uploadFile({ files, type: "post_image" });
+        const uploadedFiles = await uploadFile({ files, type: "post_image" });
         var Delta = qEditor.constructor.import("delta");
         uploadedFiles.forEach(post_image => {
             qEditor.updateContents(
-                new Delta().retain(qEditor.selection.savedRange.index).insert({
-                    image: post_image
-                })
+                new Delta()
+                    .retain(qEditor.selection.savedRange.index)
+                    .insert({
+                        image: post_image
+                    })
+                    .insert("\n\n")
             );
         });
     }
@@ -86,9 +89,12 @@ class RichText extends Component {
         this.toggleFileExplorer();
         var Delta = qEditor.constructor.import("delta");
         qEditor.updateContents(
-            new Delta().retain(qEditor.selection.savedRange.index).insert({
-                image: post_image
-            })
+            new Delta()
+                .retain(qEditor.selection.savedRange.index)
+                .insert({
+                    image: post_image
+                })
+                .insert("\n\n")
         );
     }
 
