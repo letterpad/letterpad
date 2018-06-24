@@ -17,7 +17,7 @@ const models = {
     Taxonomy: conn.import("./taxonomy"),
     Role: conn.import("./role"),
     Permission: conn.import("./permission"),
-    Setting: conn.import("./settings"),
+    Setting: conn.import("./setting"),
     Media: conn.import("./media"),
     PostTaxonomy: conn.import("./postTaxonomy")
 };
