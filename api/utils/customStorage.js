@@ -22,7 +22,7 @@ customStorage.prototype._handleFile = function _handleFile(req, file, cb) {
                 .embed()
                 .jpeg({ quality: 65 });
         } else if (req.body.type == "post_image") {
-            transform = transform.resize(1200, 800).jpeg({ quality: 65 });
+            transform = transform.jpeg({ quality: 65 });
         }
 
         file.stream.pipe(transform).pipe(outStream);

@@ -27,7 +27,6 @@ const addAdminToken = async (req, res) => {
         try {
             const data = await jwt.verify(token, constants.SECRET);
             req.user = { ...data };
-
             // while generating the new token we dont need the below data. This gets attached by jwt automatically.
             delete data.iat;
             delete data.exp;

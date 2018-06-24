@@ -9,7 +9,10 @@ export const uploadFile = async ({ files, type }) => {
 
     return await fetch(config.uploadUrl, {
         method: "post",
-        body: data
+        body: data,
+        headers: {
+            authorization: localStorage.token
+        }
     })
         .then(data => {
             return data.json();

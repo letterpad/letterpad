@@ -48,15 +48,21 @@ app.use(
 
 app.use("/upload", upload.any(), (req, res) => {
     const uploadedFiles = [];
+    const media = [];
     req.files.forEach(file => {
         let filename = file.path.split("/").pop();
+        // colect them to store in database
+        media.push({
+            author_id: req.user.id,
+            url: "/uploads/" + filename
+        });
+        // store the urls of the uploaded asset to be sent back to the browser
         uploadedFiles.push("/uploads/" + filename);
     });
-    //let filename = req.file.path.split("/").pop();
-    res.json(uploadedFiles);
-});
-app.use("/test", (req, res) => {
-    res.json(["a", "b"]);
+    // store in database
+    models.Media.bulkCreate(media).then(() => {
+        res.json(uploadedFiles);
+    });
 });
 
 let httpServer = app.listen(config.apiPort, function() {
