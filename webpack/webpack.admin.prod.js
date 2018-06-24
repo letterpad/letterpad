@@ -8,7 +8,7 @@ const clientConfig = args => {
     if (typeof args === "undefined") {
         args = { theme: "" };
     }
-    const config = merge(baseConfig(args), {
+    const config = merge(baseConfig(args,"client"), {
         target: "web",
         output: {
             path: path.join(__dirname, "../"),
