@@ -12,7 +12,7 @@ const clientConfig = args => {
     }
     const extractPcss = new ExtractTextPlugin("[name].min.css");
     //const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");
-    const config = merge(baseConfig(args, "client"), {
+    const config = merge(baseConfig(args, "client + admin"), {
         target: "web",
         output: {
             path: path.join(__dirname, "../"),
