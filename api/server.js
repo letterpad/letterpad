@@ -7,7 +7,7 @@ const Schema = require("./schema").default;
 const upload = require("./upload");
 const constants = require("./utils/constants");
 const middlewares = require("./middlewares");
-const models = require("../api/models/index.js");
+const models = require("./models/index");
 
 const app = express();
 
