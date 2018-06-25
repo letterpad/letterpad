@@ -2,11 +2,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { parseErrors, makeUrl } from "../../shared/util";
 import { requiresAdmin } from "../utils/permissions";
-import { getPermissions } from "../models/author";
-import { error } from "util";
-import config from "../../config";
 import SendMail from "../utils/mail";
-import { mailTemplate, getEmailBody } from "../utils/common";
+import { getEmailBody } from "../utils/common";
 
 export default {
     Query: {
