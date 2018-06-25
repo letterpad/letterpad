@@ -33,7 +33,11 @@ class FeaturedImage extends Component {
     }
 
     async uploadImage(files) {
-        const coverImage = await uploadFile({ files, type: "post_image" });
+        const uploadedFiles = await uploadFile({
+            files,
+            type: "featured_image"
+        });
+        const coverImage = uploadedFiles[0];
         await this.props.insertMedia({ url: coverImage });
         this.updateFeaturedImage(coverImage);
     }

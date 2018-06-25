@@ -25,7 +25,6 @@ module.exports = {
         __dirname: true
     },
     rules: {
-        indent: [2, 4],
         "react/no-deprecated": 0,
         "linebreak-style": ["error", "unix"],
         quotes: ["error", "double"],
