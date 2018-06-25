@@ -27,6 +27,10 @@ const NavItem = styled.div`
     border-bottom: ${p =>
         p.active ? "2px solid black" : "2px solid transparent"};
     cursor: pointer;
+    &:hover {
+        border-bottom: ${p =>
+            p.active ? "2px solid black" : "2px solid rgba(0,0,0, 0.3)"};
+    }
 `;
 
 const SubmitBtn = ({ handleClick }) => (
@@ -45,7 +49,7 @@ const getPageComponent = (selected, data, updateOption) => {
             return <General data={data} updateOption={updateOption} />;
         case "social":
             return <Social data={data} updateOption={updateOption} />;
-        case "additional":
+        case "optional":
             return (
                 <AdditionalSettings data={data} updateOption={updateOption} />
             );
@@ -107,6 +111,7 @@ class Settings extends Component {
     };
 
     render() {
+        console.log(this.state.updatedOptions)
         const { selected } = this.state;
         const { options } = this.props;
         const data = {};
@@ -122,7 +127,7 @@ class Settings extends Component {
             <section className="module-xs">
                 <div className="card">
                     <Nav>
-                        {["general", "social", "additional", "messages"].map(
+                        {["general", "social", "optional", "messages"].map(
                             (page, i) => (
                                 <NavItem
                                     key={i}
