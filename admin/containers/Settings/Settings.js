@@ -16,15 +16,17 @@ import UpdateOptions from "../../data-connectors/UpdateOptions";
 
 const Nav = styled.div`
     display: flex;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+    background: #f5f4f4;
 `;
 
 const NavItem = styled.div`
     text-transform: capitalize;
     user-select: none;
     padding: 10px 15px;
-    background-color: ${p => (p.active ? "black" : "white")};
-    color: ${p => (p.active ? "white" : "black")};
+    border-bottom: ${p =>
+        p.active ? "2px solid black" : "2px solid transparent"};
+    cursor: pointer;
 `;
 
 const SubmitBtn = ({ handleClick }) => (
