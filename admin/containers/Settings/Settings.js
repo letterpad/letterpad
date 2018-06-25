@@ -73,13 +73,10 @@ class Settings extends Component {
 
     state = {
         updatedOptions: {},
-        selected: (() => {
-            return (
-                new URLSearchParams(this.props.history.location.search).get(
-                    "tab"
-                ) || "general"
-            );
-        })()
+        selected:
+            new URLSearchParams(this.props.history.location.search).get(
+                "tab"
+            ) || "general"
     };
 
     setOption = (option, value) => {
@@ -111,7 +108,6 @@ class Settings extends Component {
     };
 
     render() {
-        console.log(this.state.updatedOptions)
         const { selected } = this.state;
         const { options } = this.props;
         const data = {};
