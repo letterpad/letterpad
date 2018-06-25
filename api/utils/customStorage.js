@@ -15,12 +15,14 @@ customStorage.prototype._handleFile = function _handleFile(req, file, cb) {
 
         let outStream = fs.createWriteStream(path);
         let transform = sharp();
-        if (req.body.type == "post_image") {
+        if (req.body.type == "featured_image") {
             transform = transform
                 .resize(1200, 800)
                 .background("transparent")
                 .embed()
                 .jpeg({ quality: 65 });
+        } else if (req.body.type == "post_image") {
+            transform = transform.jpeg({ quality: 65 });
         }
 
         file.stream.pipe(transform).pipe(outStream);
