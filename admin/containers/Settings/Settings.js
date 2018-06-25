@@ -59,7 +59,8 @@ const getPageComponent = (selected, data, updateOption) => {
 class Settings extends Component {
     static propTypes = {
         updateOptions: PropTypes.func,
-        options: PropTypes.object
+        options: PropTypes.object,
+        history: PropTypes.object
     };
 
     static contextTypes = {
@@ -68,7 +69,13 @@ class Settings extends Component {
 
     state = {
         updatedOptions: {},
-        selected: "general"
+        selected: (() => {
+            return (
+                new URLSearchParams(this.props.history.location.search).get(
+                    "tab"
+                ) || "general"
+            );
+        })()
     };
 
     setOption = (option, value) => {
@@ -85,13 +92,18 @@ class Settings extends Component {
                 value: this.state.updatedOptions[option]
             });
         });
+
         this.props.updateOptions(settings).then(() => {
             notify.show("Site settings saved", "success", 3000);
         });
     };
 
-    handleNavClick = page => {
-        this.setState({ selected: page });
+    handleNavClick = (page, e) => {
+        e.preventDefault();
+        this.props.history.push({
+            pathname: this.props.history.location.pathname,
+            search: "?tab=" + page
+        });
     };
 
     render() {
