@@ -49,7 +49,7 @@ const getPageComponent = (selected, data, updateOption) => {
             return <General data={data} updateOption={updateOption} />;
         case "social":
             return <Social data={data} updateOption={updateOption} />;
-        case "additional":
+        case "optional":
             return (
                 <AdditionalSettings data={data} updateOption={updateOption} />
             );
@@ -99,6 +99,7 @@ class Settings extends Component {
     };
 
     render() {
+        console.log(this.state.updatedOptions)
         const { selected } = this.state;
         const { options } = this.props;
         const data = {};
