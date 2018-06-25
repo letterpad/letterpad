@@ -27,6 +27,10 @@ const NavItem = styled.div`
     border-bottom: ${p =>
         p.active ? "2px solid black" : "2px solid transparent"};
     cursor: pointer;
+    &:hover {
+        border-bottom: ${p =>
+            p.active ? "2px solid black" : "2px solid rgba(0,0,0, 0.3)"};
+    }
 `;
 
 const SubmitBtn = ({ handleClick }) => (
@@ -110,7 +114,7 @@ class Settings extends Component {
             <section className="module-xs">
                 <div className="card">
                     <Nav>
-                        {["general", "social", "additional", "messages"].map(
+                        {["general", "social", "optional", "messages"].map(
                             (page, i) => (
                                 <NavItem
                                     key={i}
