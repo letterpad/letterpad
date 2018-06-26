@@ -11,52 +11,63 @@ export class Tags extends Component {
         post: PropTypes.object
     };
 
-    constructor(props) {
-        super(props);
-        this.tags = [];
-    }
+    state = {
+        tags: []
+    };
 
     componentDidMount() {
-        this.tags = this.props.post.taxonomies
+        const tags = this.props.post.taxonomies
             .filter(tax => {
                 return tax.type === "post_tag";
             })
             .map(tax => {
                 tax = { ...tax };
+                // react tags does uses text as a param internally
+                // so we need to add this key.
+                tax.text = tax.name;
                 delete tax["__typename"];
                 return tax;
             });
-        PostActions.setTaxonomies({ post_tag: this.tags });
+        PostActions.setTaxonomies({ post_tag: tags });
+        this.setState({ tags });
     }
 
-    handleDelete(i) {
-        this.tags.splice(i, 1);
-    }
+    handleDelete = i => {
+        const tags = [...this.state.tags];
+        tags.splice(i, 1);
+        PostActions.setTaxonomies({ post_tag: tags });
+        this.setState({ tags });
+    };
 
-    handleAddition(tag) {
-        let found = this.tags.some(ele => ele.name === tag);
+    handleAddition = tag => {
+        let found = this.state.tags.some(ele => ele.name === tag);
         let foundInSuggestion = this.props.suggestions.filter(
             ele => (ele.name === tag ? ele.id : 0)
         );
 
         let id = foundInSuggestion.length > 0 ? foundInSuggestion[0].id : 0;
         if (!found) {
-            this.tags.push({
-                id: id,
-                name: tag,
-                type: "post_tag"
-            });
-            PostActions.setTaxonomies({ post_tag: this.tags });
+            const tags = [
+                ...this.state.tags,
+                {
+                    id: id,
+                    name: tag,
+                    text: tag,
+                    type: "post_tag"
+                }
+            ];
+            PostActions.setTaxonomies({ post_tag: tags });
+            this.setState({ tags });
         }
-    }
+    };
 
-    handleDrag(tag, currPos, newPos) {
-        // mutate array
-        this.tags.splice(currPos, 1);
-        this.tags.splice(newPos, 0, tag);
-
-        PostActions.setTaxonomies({ post_tag: this.tags });
-    }
+    handleDrag = (tag, currPos, newPos) => {
+        const tags = [...this.state.tags];
+        tags.splice(currPos, 1);
+        tags.splice(newPos, 0, tag);
+        PostActions.setTaxonomies({ post_tag: tags });
+        this.setState({ tags });
+    };
 
     render() {
         let suggestions = this.props.suggestions || [];
@@ -74,11 +85,11 @@ export class Tags extends Component {
                             suggestions={suggestions}
                             autofocus={false}
                             placeholder="Add new tag..."
-                            tags={this.tags}
+                            tags={this.state.tags}
                             labelField="name"
-                            handleDelete={this.handleDelete.bind(this)}
-                            handleAddition={this.handleAddition.bind(this)}
-                            handleDrag={this.handleDrag.bind(this)}
+                            handleDelete={this.handleDelete}
+                            handleAddition={this.handleAddition}
+                            handleDrag={this.handleDrag}
                         />
                     </div>
                 </div>
