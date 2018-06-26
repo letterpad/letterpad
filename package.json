@@ -76,7 +76,8 @@
         "sequelize": "4.0.0",
         "sequelize-cli": "^4.0.0",
         "sharp": "^0.20.3",
-        "sqlite3": "^4.0.0"
+        "sqlite3": "^4.0.0",
+        "styled-components": "^3.3.3"
     },
     "devDependencies": {
         "autoprefixer": "^7.2.4",
