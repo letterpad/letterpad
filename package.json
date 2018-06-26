@@ -49,6 +49,7 @@
         "graphql-tag": "*",
         "graphql-tools": "^0.10.1",
         "has-flag": "^3.0.0",
+        "immutable": "^3.8.2",
         "isomorphic-fetch": "^2.2.1",
         "jsonwebtoken": "^7.3.0",
         "jwt-decode": "^2.2.0",
@@ -76,6 +77,8 @@
         "sequelize": "4.0.0",
         "sequelize-cli": "^4.0.0",
         "sharp": "^0.20.3",
+        "slate": "^0.34.2",
+        "slate-react": "^0.12.11",
         "sqlite3": "^4.0.0",
         "styled-components": "^3.3.3"
     },

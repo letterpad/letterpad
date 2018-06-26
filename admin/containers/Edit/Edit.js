@@ -24,19 +24,11 @@ class Edit extends Component {
         manageScroll: PropTypes.func
     };
 
-    constructor(props) {
-        super(props);
-        this.getHtml = this.getHtml.bind(this);
-        this.toggleActionDrawer = this.toggleActionDrawer.bind(this);
-        this.toggleFileExplorerModal = this.toggleFileExplorerModal.bind(this);
-        this.toggleZenView = this.toggleZenView.bind(this);
-        this.handlePostChanges = this.handlePostChanges.bind(this);
-        this.state = {
-            preview: "",
-            actionDrawerOpen: false,
-            fileExplorerProps: {}
-        };
-    }
+    state = {
+        preview: "",
+        actionDrawerOpen: false,
+        fileExplorerProps: {}
+    };
 
     componentWillMount() {
         window.addEventListener("onPostChange", this.handlePostChanges);
@@ -51,7 +43,7 @@ class Edit extends Component {
         window.removeEventListener("onPostChange", this.handlePostChanges);
     }
 
-    handlePostChanges(e) {
+    handlePostChanges = e => {
         if (PostActions.data.mode == "markdown") {
             this.props.manageScroll();
             if ("mdPreview" in e.detail) {
@@ -60,27 +52,27 @@ class Edit extends Component {
         } else {
             this.setState({ preview: "" });
         }
-    }
+    };
 
-    toggleActionDrawer(e) {
+    toggleActionDrawer = e => {
         e.preventDefault();
         this.setState({ actionDrawerOpen: !this.state.actionDrawerOpen });
-    }
+    };
 
-    getHtml(html) {
+    getHtml = html => {
         this.setState({ html });
-    }
+    };
 
-    toggleFileExplorerModal(props) {
+    toggleFileExplorerModal = props => {
         this.setState({
             fileExplorerProps: props
         });
-    }
+    };
 
-    toggleZenView(e) {
+    toggleZenView = e => {
         e.preventDefault();
         document.body.classList.toggle("distract-free");
-    }
+    };
 
     render() {
         if (this.props.loading) {

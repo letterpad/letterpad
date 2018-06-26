@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MarkdownEditor from "./Editors/MarkdownEditor";
-import RichText from "./Editors/RichText";
+import SlateEditor from "./Editors/SlateEditor";
 import InsertMedia from "../../data-connectors/InsertMedia";
 
 class Editor extends Component {
@@ -20,7 +20,7 @@ class Editor extends Component {
                         mdBody={this.props.mdBody}
                     />
                 ) : (
-                    <RichText
+                    <SlateEditor
                         body={this.props.body}
                         insertMedia={this.props.insertMedia}
                     />
