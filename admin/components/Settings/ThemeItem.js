@@ -1,6 +1,11 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class ThemeItem extends Component {
+    static propTypes = {
+        theme: PropTypes.object.isRequired,
+        activateTheme: PropTypes.func.isRequired
+    };
     render() {
         const theme = this.props.theme;
 

@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Resources from "./menu/Resources";
-import RenderItem from "./menu/RenderItem";
 import SortableTree, {
     changeNodeAtPath,
-    removeNodeAtPath,
-    getNodeAtPath
+    removeNodeAtPath
 } from "react-sortable-tree";
 import "react-sortable-tree/style.css";
 import EditMenuModal from "../Modals/EditMenuModal";
@@ -29,12 +27,13 @@ var getMenuItems = function(arr) {
 };
 
 class MenuConstruction extends Component {
+    static propTypes = {
+        data: PropTypes.object.isRequired,
+        updateOption: PropTypes.func.isRequired
+    };
+
     constructor(props) {
         super(props);
-        this.addItem = this.addItem.bind(this);
-        this.removeItem = this.removeItem.bind(this);
-        this.changeItemProperty = this.changeItemProperty.bind(this);
-        this.openModalToEdit = this.openModalToEdit.bind(this);
         let menu = JSON.parse(this.props.data.menu.value);
 
         this.state = {
@@ -63,20 +62,18 @@ class MenuConstruction extends Component {
         ) {
             let menu = JSON.parse(nextProps.data.menu.value);
             const menuIds = getMenuItems(menu);
-            const categories = nextProps.categories.taxonomies.map(
-                (ele, idx) => {
-                    return {
-                        id: ele.id,
-                        title: ele.name,
-                        type: "category",
-                        name: ele.name,
-                        disabled: menuIds[ele.id + "-category"] ? true : false,
-                        slug: ""
-                    };
-                }
-            );
+            const categories = nextProps.categories.taxonomies.map(ele => {
+                return {
+                    id: ele.id,
+                    title: ele.name,
+                    type: "category",
+                    name: ele.name,
+                    disabled: menuIds[ele.id + "-category"] ? true : false,
+                    slug: ""
+                };
+            });
 
-            const pages = nextProps.pages.posts.rows.map((ele, idx) => {
+            const pages = nextProps.pages.posts.rows.map(ele => {
                 return {
                     id: ele.id,
                     title: ele.title,
@@ -90,7 +87,7 @@ class MenuConstruction extends Component {
         }
         return null;
     }
-    addItem(idx, type) {
+    addItem = (idx, type) => {
         const newState = {};
         newState[type] = [...this.state[type]];
         if (type === "labels") {
@@ -116,19 +113,21 @@ class MenuConstruction extends Component {
                 this.setState({ scrollTop: 9999999 });
             }
         });
-    }
+    };
 
-    removeItem(props) {
+    removeItem = props => {
         const menuItem = props.node;
 
         const keepItemBack = item => {
             const type = item.type == "page" ? "pages" : "categories";
-            this.state[type] = this.state[type].map(_item => {
+            const newState = this.state[type].map(_item => {
                 if (item.id == _item.id) {
                     _item.disabled = false;
                 }
                 return _item;
             });
+
+            this.setState({ [type]: newState });
         };
 
         const findItemsAndDelete = (node, menuNode = false) => {
@@ -156,7 +155,7 @@ class MenuConstruction extends Component {
 
         const getNodeKey = ({ treeIndex }) => treeIndex;
         this.setState(
-            state => ({
+            () => ({
                 ...this.state,
                 items: removeNodeAtPath({
                     treeData: this.state.items,
@@ -173,14 +172,14 @@ class MenuConstruction extends Component {
                 );
             }
         );
-    }
+    };
 
-    changeItemProperty(e, { node, path }, property) {
+    changeItemProperty = (e, { node, path }, property) => {
         const getNodeKey = ({ treeIndex }) => treeIndex;
         const value = e.target.value;
 
         this.setState(
-            state => ({
+            () => ({
                 items: changeNodeAtPath({
                     treeData: this.state.items,
                     path,
@@ -198,7 +197,7 @@ class MenuConstruction extends Component {
                 );
             }
         );
-    }
+    };
 
     canDrop({ node, nextParent }) {
         if (!nextParent) return true;
@@ -214,12 +213,12 @@ class MenuConstruction extends Component {
         return false;
     }
 
-    openModalToEdit(props) {
+    openModalToEdit = props => {
         this.setState({
             modalOpen: true,
             nodeInfo: props
         });
-    }
+    };
 
     generateNodeProps(props) {
         return {
@@ -235,7 +234,7 @@ class MenuConstruction extends Component {
                 <i
                     key="2"
                     className="fa fa-trash"
-                    onClick={_ => this.removeItem(props)}
+                    onClick={() => this.removeItem(props)}
                 />
             ],
             title: (

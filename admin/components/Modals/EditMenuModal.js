@@ -1,6 +1,5 @@
 import React from "react";
 import ModalHoc from "../ModalHoc";
-import config from "config";
 import PropTypes from "prop-types";
 
 const EditMenuModal = (props, context) => {
@@ -66,7 +65,8 @@ const EditMenuModal = (props, context) => {
 EditMenuModal.propTypes = {
     nodeInfo: PropTypes.object.isRequired,
     changeItemProperty: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired
 };
 
 EditMenuModal.contextTypes = {

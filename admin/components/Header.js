@@ -39,6 +39,7 @@ class Header extends Component {
                     <a
                         className="view-site"
                         target="_blank"
+                        rel="noopener noreferrer"
                         href={config.baseName + "/"}
                     >
                         View Your site
