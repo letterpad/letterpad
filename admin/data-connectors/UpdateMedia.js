@@ -7,7 +7,7 @@ export default graphql(UPDATE_MEDIA, {
             mutate({
                 variables: data,
                 updateQueries: {
-                    getMedia: (previousResult, { mutationResult }) => {
+                    getMedia: (previousResult) => {
                         return {
                             media: {
                                 count: previousResult.media.count,

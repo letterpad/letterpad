@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import MenuVertical from "./MenuVertical";
 
 const data = [
@@ -130,28 +132,20 @@ const data = [
 ];
 
 class Navbar extends Component {
-    constructor(props) {
-        super(props);
-        this.navbarToggle = this.navbarToggle.bind(this);
-        this.state = {
-            navbarOpen: false
-        };
-    }
+    static propTypes = {
+        router: PropTypes.object,
+        settings: PropTypes.object,
+    };
 
-    navbarToggle() {
-        this.setState({ navbarOpen: !this.state.navbarOpen });
-    }
+    state = { navbarOpen: false };
+
+    navbarToggle = () => this.setState(s => ({ navbarOpen: !s.navbarOpen }));
 
     render() {
-        let navbarStatus = this.state.navbarOpen ? " in" : "";
-
+        const { router } = this.props;
         return (
             <div className="custom-menu">
-                <MenuVertical
-                    menu={data}
-                    router={this.props.router}
-                    settings={this.props.settings}
-                />
+                <MenuVertical menu={data} router={router} />
             </div>
         );
     }

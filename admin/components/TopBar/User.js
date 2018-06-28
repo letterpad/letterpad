@@ -1,17 +1,20 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import appoloClient from "shared/apolloClient";
 import { GET_AUTHOR } from "../../../shared/queries/Queries";
 import config from "config";
-import PropTypes from "prop-types";
 
 class User extends Component {
     static propTypes = {
-        author: PropTypes.object.id
+        author: PropTypes.object
     };
+
     state = {
         open: false,
         author: {}
     };
+
     async componentDidMount() {
         const isAdmin = true;
         let response = await appoloClient(isAdmin).query({
@@ -33,6 +36,7 @@ class User extends Component {
             this.setState({ open: false });
         }, 100);
     };
+
     render() {
         return (
             <div className="user-info" onMouseLeave={this.closeDropdown}>

@@ -24,6 +24,21 @@ const Resources = ({ title, data, itemClicked }, { t }) => {
     );
 };
 
+Resources.propTypes = {
+    title: PropTypes.string.isRequired,
+    data: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+                .isRequired,
+            title: PropTypes.string.isRequired,
+            type: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            url: PropTypes.string
+        })
+    ),
+    itemClicked: PropTypes.func
+};
+
 Resources.contextTypes = {
     t: PropTypes.func
 };

@@ -7,7 +7,7 @@ import { uploadFile } from "../../../util";
 class RichText extends Component {
     static propTypes = {
         insertMedia: PropTypes.func.isRequired,
-        body: PropTypes.string.isRequired
+        body: PropTypes.string
     };
     constructor(props) {
         super(props);
@@ -60,7 +60,7 @@ class RichText extends Component {
         qEditor.on("text-change", function() {
             var justHtml = qEditor.root.innerHTML;
             // add extra class
-            justHtml = justHtml.replace('"ql-syntax"', '"ql-syntax hljs"');
+            justHtml = justHtml.replace("\"ql-syntax\"", "\"ql-syntax hljs\"");
             PostActions.setData({
                 body: justHtml
             });

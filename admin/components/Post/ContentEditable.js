@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
 
 export default class ContentEditable extends Component {
-    constructor(props) {
-        super(props);
-        this.emitChange = this.emitChange.bind(this);
+    shouldComponentUpdate(prevProps) {
+        return prevProps.title !== this.node.innerHTML;
     }
-    shouldComponentUpdate(nextProps) {
-        return nextProps.title !== ReactDOM.findDOMNode(this).innerHTML;
-    }
-    emitChange() {
-        var title = ReactDOM.findDOMNode(this).innerHTML;
+
+    emitChange = () => {
+        const title = this.node.innerHTML;
         if (this.props.onChange && title !== this.lastTitle) {
             this.props.onChange({
                 target: {
@@ -20,7 +16,8 @@ export default class ContentEditable extends Component {
             });
         }
         this.lastTitle = title;
-    }
+    };
+
     render() {
         return (
             <h2
@@ -30,6 +27,7 @@ export default class ContentEditable extends Component {
                 onBlur={this.emitChange}
                 contentEditable
                 suppressContentEditableWarning
+                ref={node => (this.node = node)}
             >
                 {this.props.title}
             </h2>

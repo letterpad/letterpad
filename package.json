@@ -60,7 +60,7 @@
         "nodemailer": "^4.6.2",
         "postcss-nested": "^3.0.0",
         "prop-types": "^15.6.0",
-        "react": "^16.2.0",
+        "react": "16.4.1",
         "react-apollo": "^1.4.0",
         "react-dom": "^16.2.0",
         "react-dotdotdot": "^1.2.3",

@@ -54,7 +54,7 @@ class Routes extends Component {
                     <Route
                         exact
                         path="/admin"
-                        render={props => <Redirect to="/admin/login" />}
+                        render={() => <Redirect to="/admin/login" />}
                     />
                     <Route
                         exact

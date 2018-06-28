@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+
 import User from "./TopBar/User";
 import config from "../../config";
-import PropTypes from "prop-types";
 
 class Header extends Component {
     static propTypes = {
@@ -10,10 +11,6 @@ class Header extends Component {
         sidebarToggle: PropTypes.func,
         author: PropTypes.object
     };
-
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         const settings = this.props.settings;
