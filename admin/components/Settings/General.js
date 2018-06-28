@@ -4,57 +4,57 @@ import config from "config";
 import { uploadFile } from "../../util";
 
 export default class General extends Component {
-    constructor(props) {
-        super(props);
-        this.updateOption = this.updateOption.bind(this);
-        this.switchLanguage = this.switchLanguage.bind(this);
+    static propTypes = {
+        data: PropTypes.object,
+        updateOption: PropTypes.func
+    };
 
-        this.uploadLogo = this.uploadLogo.bind(this);
-        this.updateLogo = this.updateLogo.bind(this);
+    static contextTypes = {
+        t: PropTypes.func
+    };
 
-        this.uploadBanner = this.uploadBanner.bind(this);
-        this.updateBanner = this.updateBanner.bind(this);
+    uploadLogoInputRef = React.createRef();
+    uploadBannerRef = React.createRef();
 
-        this.state = {
-            banner: this.props.data.banner.value,
-            site_logo: this.props.data.site_logo.value
-        };
+    state = {
+        banner: this.props.data.banner.value,
+        site_logo: this.props.data.site_logo.value
+    };
 
-        this.langOptions = JSON.parse(this.props.data.locale.value);
-    }
-    updateOption(option, value) {
+    langOptions = JSON.parse(this.props.data.locale.value);
+
+    updateOption = (option, value) => {
         this.props.updateOption(option, value);
-    }
-    switchLanguage(e) {
+    };
+    switchLanguage = e => {
         const locales = {};
         Object.keys(this.langOptions).map(lang => {
             locales[lang] = e.target.value === lang;
         });
         this.updateOption("locale", JSON.stringify(locales));
-    }
-    async uploadBanner(files) {
+    };
+    uploadBanner = async files => {
         const uploadedFiles = await uploadFile({ files });
         let banner = uploadedFiles[0];
         this.updateOption("banner", banner);
         this.setState({ banner });
-    }
-    async uploadLogo(files) {
+    };
+    uploadLogo = async files => {
         const uploadedFiles = await uploadFile({ files });
         let site_logo = uploadedFiles[0];
         this.updateOption("site_logo", site_logo);
         this.setState({ site_logo });
-    }
+    };
 
-    updateBanner(banner) {
+    updateBanner = banner => {
         this.updateOption("banner", banner);
         this.setState({ banner });
-    }
-    updateLogo(site_logo) {
+    };
+    updateLogo = site_logo => {
         this.updateOption("site_logo", site_logo);
         this.setState({ site_logo });
-    }
+    };
     render() {
-        const checked = { row: {}, grid: {}, "two-column": {}, centered: {} };
         const { t } = this.context;
         const banner = this.state.banner || "";
         const site_logo = this.state.site_logo || "";
@@ -171,7 +171,7 @@ export default class General extends Component {
                                 href="#"
                                 onClick={e => {
                                     e.preventDefault();
-                                    this.refs.uploadLogoInput.click();
+                                    this.uploadLogoInput.current.click();
                                 }}
                             >
                                 Add Logo
@@ -196,7 +196,7 @@ export default class General extends Component {
                         )}
                     </div>
                     <input
-                        ref="uploadLogoInput"
+                        ref={this.uploadLogoInputRef}
                         onChange={input => this.uploadLogo(input.target.files)}
                         type="file"
                         className="hide"
@@ -211,7 +211,7 @@ export default class General extends Component {
                                 href="#"
                                 onClick={e => {
                                     e.preventDefault();
-                                    this.refs.uploadInput.click();
+                                    this.uploadBannerRef.current.click();
                                 }}
                             >
                                 Add Banner
@@ -236,7 +236,7 @@ export default class General extends Component {
                         )}
                     </div>
                     <input
-                        ref="uploadInput"
+                        ref={this.uploadBannerRef}
                         onChange={input =>
                             this.uploadBanner(input.target.files)
                         }
@@ -287,12 +287,3 @@ export default class General extends Component {
         );
     }
 }
-
-General.propTypes = {
-    data: PropTypes.object,
-    updateOption: PropTypes.func
-};
-
-General.contextTypes = {
-    t: PropTypes.func
-};

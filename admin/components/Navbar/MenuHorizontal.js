@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import MenuItems from "./MenuItems";
+import PropTypes from "prop-types";
 
-class Menuhorizontal extends Component {
-    render() {
-        return (
-            <MenuItems
-                ref="secondaryMenuItems"
-                secondary={true}
-                items={this.props.items}
-            />
-        );
-    }
-}
-
+const Menuhorizontal = ({ items }) => {
+    const secondaryMenuItems = React.createRef();
+    return (
+        <MenuItems ref={secondaryMenuItems} secondary={true} items={items} />
+    );
+};
+Menuhorizontal.propTypes = {
+    items: PropTypes.array.isRequired
+};
 export default Menuhorizontal;

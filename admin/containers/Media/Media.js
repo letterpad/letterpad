@@ -150,7 +150,7 @@ class Media extends Component {
 
     render() {
         const { t } = this.context;
-        const items = this.state.items.map((media, i) => (
+        const items = this.state.items.map(media => (
             <MediaItem
                 key={media.id}
                 media={media}

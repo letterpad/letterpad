@@ -1,19 +1,20 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import appoloClient from "shared/apolloClient";
 import { GET_AUTHOR } from "../../../shared/queries/Queries";
 import config from "config";
 
 class User extends Component {
-    constructor(props) {
-        super(props);
+    static propTypes = {
+        author: PropTypes.object
+    };
 
-        this.toggleDropdown = this.toggleDropdown.bind(this);
-        this.closeDropdown = this.closeDropdown.bind(this);
-        this.state = {
-            open: false,
-            author: {}
-        };
-    }
+    state = {
+        open: false,
+        author: {}
+    };
+
     async componentDidMount() {
         const isAdmin = true;
         let response = await appoloClient(isAdmin).query({
@@ -26,15 +27,16 @@ class User extends Component {
         this.setState({ author: response.data.author });
     }
 
-    toggleDropdown() {
+    toggleDropdown = () => {
         this.setState({ open: !this.state.open });
-    }
+    };
 
-    closeDropdown() {
+    closeDropdown = () => {
         setTimeout(() => {
             this.setState({ open: false });
         }, 100);
-    }
+    };
+
     render() {
         return (
             <div className="user-info" onMouseLeave={this.closeDropdown}>

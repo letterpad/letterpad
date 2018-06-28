@@ -28,14 +28,12 @@ class Posts extends Component {
         t: PropTypes.func
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            status: "publish",
-            loading: true,
-            posts: null
-        };
-    }
+    state = {
+        status: "publish",
+        loading: true,
+        posts: null
+    };
+    
     componentDidMount() {
         document.body.classList.add("posts-page");
     }

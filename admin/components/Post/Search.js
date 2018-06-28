@@ -1,23 +1,26 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class Search extends Component {
-    constructor(props) {
-        super(props);
-        this.handleKeyUp = this.handleKeyUp.bind(this);
-        this.handleClear = this.handleClear.bind(this);
-        this.state = {
-            page: 1,
-            text: ""
-        };
-    }
+    static propTypes = {
+        page: PropTypes.string.isRequired,
+        searchPosts: PropTypes.func
+    };
+
+    state = {
+        page: 1,
+        text: ""
+    };
+
     componentDidMount() {
         this.inputBox.addEventListener("search", this.handleClear);
     }
+
     componentWillUnmount() {
         this.inputBox.removeEventListener("search", this.handleClear);
     }
 
-    handleKeyUp(e) {
+    handleKeyUp = e => {
         const query = e.target.value.trim();
         if (query.length > 0 && e.keyCode === 13) {
             this.props.searchPosts(query, this.state.page);
@@ -27,10 +30,11 @@ class Search extends Component {
         if (query.length === 0) {
             this.handleClear();
         }
-    }
-    handleClear() {
+    };
+
+    handleClear = () => {
         this.props.searchPosts("");
-    }
+    };
 
     render() {
         return (

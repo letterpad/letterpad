@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Notifications, { notify } from "react-notify-toast";
 import { resetPasswordQuery } from "../../data-connectors/LoginConnector";
-import config from "../../../config";
 
 class ResetPassword extends Component {
     static propTypes = {
@@ -11,11 +10,6 @@ class ResetPassword extends Component {
         settings: PropTypes.object,
         resetPassword: PropTypes.func
     };
-
-    constructor(props) {
-        super(props);
-        this.changePassword = this.changePassword.bind(this);
-    }
 
     componentDidMount() {
         document.body.classList.add("login-view");
@@ -26,7 +20,7 @@ class ResetPassword extends Component {
         document.body.classList.remove("login-view");
     }
 
-    async changePassword(e) {
+    changePassword = async e => {
         e.preventDefault();
         if (
             this.cnfPasswordInput.value.length === 0 ||
@@ -58,7 +52,7 @@ class ResetPassword extends Component {
             notify.show(res.data.resetPassword.msg, "success", 3000);
             this.props.history.push("/admin/login");
         }
-    }
+    };
 
     render() {
         return (

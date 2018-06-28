@@ -6,11 +6,18 @@ import UpdateTaxonomy from "../../data-connectors/UpdateTaxonomy";
 import DeleteTaxonomy from "../../data-connectors/DeleteTaxonomy";
 
 class Taxonomy extends Component {
+    static propTypes = {
+        type: PropTypes.string.isRequired,
+        updateTaxonomy: PropTypes.func.isRequired,
+        deleteTaxonomy: PropTypes.func.isRequired,
+        loading: PropTypes.bool.isRequired,
+        networkStatus: PropTypes.number.isRequired
+    };
+    static contextTypes = {
+        t: PropTypes.func
+    };
     constructor(props, context) {
         super(props);
-        this.editSaveTaxonomy = this.editSaveTaxonomy.bind(this);
-        this.newTaxClicked = this.newTaxClicked.bind(this);
-        this.deleteTax = this.deleteTax.bind(this);
         const { t } = context;
         this.texts = {
             post_tag: {
@@ -64,7 +71,7 @@ class Taxonomy extends Component {
         this.refList[idx][key] = ele;
     }
 
-    async editSaveTaxonomy(idx) {
+    editSaveTaxonomy = async idx => {
         let item = { ...this.state.filteredData[idx] };
         let oldItem = this.state.taxonomies[idx];
 
@@ -84,7 +91,7 @@ class Taxonomy extends Component {
         if (!item.edit) {
             newState.filteredData[idx].edit = true;
 
-            return this.setState(newState, _ => {
+            return this.setState(newState, () => {
                 this.refList[idx].name.focus();
             });
         } else if (
@@ -118,31 +125,43 @@ class Taxonomy extends Component {
                 3000
             );
         }
-    }
+    };
 
-    newTaxClicked() {
-        this.state.editMode = false;
-        this.state.filteredData.unshift({
-            id: 0,
-            name: "",
-            desc: "",
-            edit: true
-        });
-        this.setState(this.state, () => {
+    newTaxClicked = () => {
+        const newState = {
+            filteredData: [
+                ...this.state.filteredData,
+                {
+                    id: 0,
+                    name: "",
+                    desc: "",
+                    edit: true
+                }
+            ],
+            editMode: false
+        };
+
+        this.setState(newState, () => {
             this.refList[0].name.focus();
         });
-    }
+    };
 
-    handleChange(idx, key, value) {
-        this.state.filteredData[idx][key] = value;
-        this.setState(this.state);
-    }
-    deleteTax(idx) {
+    handleChange = (idx, key, value) => {
+        const filteredData = this.state.filteredData.map((item, pointer) => {
+            if (idx == pointer) {
+                item[key] = value;
+            }
+            return item;
+        });
+
+        this.setState(filteredData);
+    };
+    deleteTax = idx => {
         let id = this.state.filteredData[idx].id;
         this.props.deleteTaxonomy({ id: id });
         delete this.state.filteredData[idx];
         this.setState(this.state);
-    }
+    };
     render() {
         const { t } = this.context;
         const loading = this.props.loading || !this.props.networkStatus === 2;
@@ -206,7 +225,7 @@ class Taxonomy extends Component {
                 </td>
                 <td width="20%">
                     <button
-                        onClick={_ => this.editSaveTaxonomy(idx, item.edit)}
+                        onClick={() => this.editSaveTaxonomy(idx, item.edit)}
                         className={
                             "btn btn-xs btn-" + (item.edit ? "success" : "dark")
                         }
@@ -215,7 +234,7 @@ class Taxonomy extends Component {
                     </button>
                     &nbsp;&nbsp;
                     <button
-                        onClick={_ => this.deleteTax(idx)}
+                        onClick={() => this.deleteTax(idx)}
                         className="btn btn-xs btn-danger btn-danger-invert"
                     >
                         {t("common.delete")}
@@ -268,7 +287,4 @@ class Taxonomy extends Component {
     }
 }
 
-Taxonomy.contextTypes = {
-    t: PropTypes.func
-};
 export default DeleteTaxonomy(UpdateTaxonomy(GetTaxonomies(Taxonomy)));

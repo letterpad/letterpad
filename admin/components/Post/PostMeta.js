@@ -40,7 +40,11 @@ class PostMeta extends Component {
                 <div className="x_content m-b-20">
                     <span className="meta-label">Link to post</span>
                     <div className="meta-value">
-                        <a target="_blank" href={permalink}>
+                        <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href={permalink}
+                        >
                             {permalink}
                         </a>
                     </div>
