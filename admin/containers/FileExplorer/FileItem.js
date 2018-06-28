@@ -1,23 +1,20 @@
 import React, { Component } from "react";
 import moment from "moment";
-import { browserHistory } from "react-router";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import config from "config";
-import { makeUrl } from "shared/util";
 
 export default class MediaItem extends Component {
-    constructor(props) {
-        super(props);
-        this.onMediaSelected = this.onMediaSelected.bind(this);
-    }
+    static propTypes = {
+        media: PropTypes.object,
+        onMediaSelected: PropTypes.func.isRequired,
+        selected_id: PropTypes.number.isRequired
+    };
 
-    onMediaSelected() {
+    onMediaSelected = () => {
         this.props.onMediaSelected(this.props.media);
-    }
+    };
 
     render() {
-        const url = makeUrl(this.props.media.url.slice(1));
         const isSelected = this.props.selected_id === this.props.media.id;
         const classes = isSelected ? " selected" : "";
         return (
@@ -48,7 +45,3 @@ export default class MediaItem extends Component {
         );
     }
 }
-
-MediaItem.propTypes = {
-    media: PropTypes.object
-};

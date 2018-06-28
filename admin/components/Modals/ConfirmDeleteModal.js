@@ -1,6 +1,7 @@
 import React from "react";
 import ModalHoc from "../ModalHoc";
 import config from "config";
+import PropTypes from "prop-types";
 
 const ConfirmDelete = props => {
     return (
@@ -29,5 +30,11 @@ const ConfirmDelete = props => {
         </div>
     );
 };
-
-module.exports = ModalHoc(ConfirmDelete);
+ConfirmDelete.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    onYes: PropTypes.func.isRequired,
+    text: PropTypes.string,
+    media: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired
+};
+export default ModalHoc(ConfirmDelete);

@@ -1,4 +1,4 @@
-import React, { Component, Children } from "react";
+import { Component, Children } from "react";
 import PropTypes from "prop-types";
 
 class Translate extends Component {
@@ -7,18 +7,24 @@ class Translate extends Component {
             t: key => this.props.i18n[key] || ""
         };
     }
+
     render() {
         // `Children.only` enables us not to add a <div /> for nothing
         return Children.only(this.props.children);
     }
 }
 Translate.propTypes = {
-    t: PropTypes.func.isRequired
+    t: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
+    i18n: PropTypes.object
 };
+
 Translate.defaultProps = {
     t: () => {}
 };
+
 Translate.childContextTypes = {
     t: PropTypes.func.isRequired
 };
+
 export default Translate;

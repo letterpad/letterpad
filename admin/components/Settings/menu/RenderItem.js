@@ -1,16 +1,18 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class RenderItem extends Component {
-    constructor(props) {
-        super(props);
-        this.toggleCollapse = this.toggleCollapse.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.state = {
-            collapse: true,
-            disabled: "",
-            ...this.props.item
-        };
-    }
+    static propTypes = {
+        item: PropTypes.object.isRequired,
+        changeItemProperty: PropTypes.func.isRequired,
+        handler: PropTypes.any.isRequired,
+        removeItem: PropTypes.func.isRequired
+    };
+    state = {
+        collapse: true,
+        disabled: "",
+        ...this.props.item
+    };
 
     componentWillMount() {
         this.setState({
@@ -18,11 +20,11 @@ export default class RenderItem extends Component {
         });
     }
 
-    toggleCollapse() {
+    toggleCollapse = () => {
         this.setState({ collapse: !this.state.collapse });
-    }
+    };
 
-    onChange(e, type) {
+    onChange = (e, type) => {
         const newState = { ...this.props.item };
         newState[type] = e.target.value;
         newState.disabled = this.state.disabled;
@@ -30,7 +32,7 @@ export default class RenderItem extends Component {
             delete newState.disabled;
             this.props.changeItemProperty(newState);
         });
-    }
+    };
 
     render() {
         return (

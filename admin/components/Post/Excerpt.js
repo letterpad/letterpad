@@ -1,23 +1,19 @@
 import React, { Component } from "react";
-import PostActions from "./PostActions";
-import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 
+import PostActions from "./PostActions";
+
 class ContentEditable extends Component {
-    constructor(props) {
-        super(props);
-        this.emitChange = this.emitChange.bind(this);
-    }
     componentDidMount() {
         this.lastExcerpt = this.props.excerpt;
     }
 
     shouldComponentUpdate(nextProps) {
-        return nextProps.excerpt !== ReactDOM.findDOMNode(this).innerHTML;
+        return nextProps.excerpt !== this.node.innerHTML;
     }
 
-    emitChange() {
-        var excerpt = ReactDOM.findDOMNode(this).innerHTML;
+    emitChange = () => {
+        const excerpt = this.node.innerHTML;
         if (this.props.onChange && excerpt !== this.lastExcerpt) {
             this.props.onChange({
                 target: {
@@ -26,7 +22,7 @@ class ContentEditable extends Component {
             });
         }
         this.lastExcerpt = excerpt;
-    }
+    };
 
     render() {
         return (
@@ -39,6 +35,7 @@ class ContentEditable extends Component {
                 dangerouslySetInnerHTML={{
                     __html: this.props.excerpt
                 }}
+                ref={node => (this.node = node)}
             />
         );
     }
@@ -50,25 +47,20 @@ ContentEditable.propTypes = {
 };
 
 class Excerpt extends Component {
-    constructor(props) {
-        super(props);
-        this.setData = this.setData.bind(this);
-
-        this.state = {
-            chars: 0
-        };
-    }
+    state = {
+        chars: 0
+    };
 
     componentDidMount() {
         this.setData(this.props.post.excerpt);
     }
 
-    setData(excerpt) {
+    setData = excerpt => {
         this.setState({ chars: excerpt.length });
         PostActions.setData({
             excerpt
         });
-    }
+    };
 
     render() {
         return (
