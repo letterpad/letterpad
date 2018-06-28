@@ -123,7 +123,7 @@ const PostsHoc = (WrappedComponent, type) => {
             return result.data.posts.rows;
         }
         deletedSelectedPosts() {
-            this.deletePosts(this.state.selectedPosts).then(result => {
+            this.deletePosts(this.state.selectedPosts).then(() => {
                 this.setState({ selectedPosts: [], allPostsSelected: false });
             });
         }

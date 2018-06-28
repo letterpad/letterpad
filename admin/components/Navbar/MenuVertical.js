@@ -1,52 +1,56 @@
 import React, { Component } from "react";
 import jwtDecode from "jwt-decode";
+import PropTypes from "prop-types";
+
 import { MenuTree } from "./MenuTree";
 
-let menuData = [];
-
 export default class Menu extends Component {
+    static propTypes = {
+        menu: PropTypes.arrayOf(PropTypes.object),
+        router: PropTypes.object,
+        settings: PropTypes.object
+    };
+
     constructor(props) {
         super(props);
-
-        this.setData = this.setData.bind(this);
-        this.navbarToggle = this.navbarToggle.bind(this);
-        if (menuData.length == 0) {
-            menuData = this.props.menu;
-        }
         this.state = {
             navbarOpen: false,
-            data: menuData
+            data: props.menu,
+            permissions: []
         };
-
-        this.permissions = [];
     }
 
     componentWillMount() {
         if (typeof localStorage !== "undefined") {
-            this.permissions = jwtDecode(localStorage.token).permissions;
+            this.setState({
+                permissions: jwtDecode(localStorage.token).permissions
+            });
         }
     }
 
-    setData(newData) {
-        menuData = newData;
+    setData = newData => {
         this.setState({ data: newData });
-    }
-    toggleItem(item, e) {
+    };
+
+    toggleItem = (item, e) => {
         e.preventDefault();
-        this.setState({ [item]: !this.state[item] });
-    }
-    navbarToggle() {
-        this.setState({ navbarOpen: !this.state.navbarOpen });
-    }
+        this.setState(s => ({ [item]: !s[item] }));
+    };
+
+    navbarToggle = () => {
+        this.setState(s => ({ navbarOpen: !s.navbarOpen }));
+    };
+
     render() {
         const selected = this.props.router.location.pathname.replace(
             "/admin/",
             ""
         );
+        const { permissions, data } = this.state;
         return (
             <MenuTree
-                data={this.state.data}
-                permissions={this.permissions}
+                data={data}
+                permissions={permissions}
                 route={selected}
                 setData={this.setData}
             />

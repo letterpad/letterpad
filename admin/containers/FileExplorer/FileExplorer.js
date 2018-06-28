@@ -65,7 +65,6 @@ class FileExplorer extends Component {
                 onMediaSelected={this.onMediaSelected}
             />
         ));
-        const { t } = this.context;
         return (
             <section className="module-xs">
                 <div className="row">

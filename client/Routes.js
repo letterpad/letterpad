@@ -39,7 +39,7 @@ class Routes extends Component {
         }
     }
 
-    applyCustomCSS({ css, colors }) {
+    applyCustomCSS({ css }) {
         if (typeof document == "undefined" || typeof css == "undefined")
             return false;
         const style = document.createElement("style");

@@ -1,11 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import config from "../../config";
 import InfiniteScroll from "react-infinite-scroller";
 
-const InfiniteScrollList = ({ data, count, page, loadMore }) => {
-    const limit = config.itemsPerPage;
-
+const InfiniteScrollList = ({ data, count, loadMore }) => {
     return (
         <InfiniteScroll
             pageStart={1}
@@ -20,7 +17,7 @@ const InfiniteScrollList = ({ data, count, page, loadMore }) => {
 
 InfiniteScrollList.propTypes = {
     count: PropTypes.number,
-    page: PropTypes.number,
-    changePage: PropTypes.func
+    data: PropTypes.array.isRequired,
+    loadMore: PropTypes.func.isRequired
 };
 export default InfiniteScrollList;

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
-import Loader from "../Loader";
 import { Link } from "react-router-dom";
-import config from "../../../config";
+
+import Loader from "../Loader";
 
 class PostRows extends Component {
     static propTypes = {
@@ -13,12 +13,8 @@ class PostRows extends Component {
         loading: PropTypes.bool.isRequired,
         posts: PropTypes.object
     };
-    constructor(props) {
-        super(props);
-        this.postSelected = this.postSelected.bind(this);
-    }
 
-    postSelected(e) {
+    postSelected = (e) => {
         this.props.setSelection(e.target.value);
     }
 

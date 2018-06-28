@@ -4,24 +4,19 @@ import PropTypes from "prop-types";
 import FileExplorer from "../../containers/FileExplorer/FileExplorer";
 
 class FileExplorerModal extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            page: 1,
-            selectedImageUrl: ""
-        };
-        this.onPageClick = this.onPageClick.bind(this);
-        this.onSelect = this.onSelect.bind(this);
-    }
+    state = {
+        page: 1,
+        selectedImageUrl: ""
+    };
 
-    onSelect(coverImage) {
+    onSelect = coverImage => {
         this.setState({ selectedImageUrl: coverImage });
-    }
+    };
 
-    onPageClick(e, page) {
+    onPageClick = (e, page) => {
         e.preventDefault();
         this.setState({ page });
-    }
+    };
     render() {
         const { t } = this.context;
         return (
@@ -59,7 +54,7 @@ class FileExplorerModal extends Component {
                 </div>
                 <div className="modal-footer">
                     <button
-                        onClick={_ =>
+                        onClick={() =>
                             this.props.onMediaSelect(
                                 this.state.selectedImageUrl
                             )
@@ -82,10 +77,15 @@ class FileExplorerModal extends Component {
     }
 }
 
+FileExplorerModal.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    addNewMedia: PropTypes.func.isRequired,
+    onMediaSelect: PropTypes.func.isRequired
+};
 FileExplorerModal.contextTypes = {
     t: PropTypes.func
 };
-module.exports = ModalHoc(
+export default ModalHoc(
     FileExplorerModal,
     null,
     "full-width-modal file-explorer"

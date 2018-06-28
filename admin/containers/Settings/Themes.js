@@ -34,7 +34,7 @@ class Themes extends Component {
         document.body.classList.remove("themes-page");
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
+    static getDerivedStateFromProps(nextProps) {
         if (nextProps.settings.loading) {
             return false;
         }
