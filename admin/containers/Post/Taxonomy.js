@@ -6,14 +6,14 @@ import UpdateTaxonomy from "../../data-connectors/UpdateTaxonomy";
 import DeleteTaxonomy from "../../data-connectors/DeleteTaxonomy";
 
 class Taxonomy extends Component {
-    propTypes = {
+    static propTypes = {
         type: PropTypes.string.isRequired,
         updateTaxonomy: PropTypes.func.isRequired,
         deleteTaxonomy: PropTypes.func.isRequired,
         loading: PropTypes.bool.isRequired,
         networkStatus: PropTypes.number.isRequired
     };
-    contextTypes = {
+    static contextTypes = {
         t: PropTypes.func
     };
     constructor(props, context) {
