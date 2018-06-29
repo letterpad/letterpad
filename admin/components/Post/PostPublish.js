@@ -15,7 +15,6 @@ const DropDown = styled.ul`
     max-height: 90vh;
     overflow-y: auto;
 `;
-// import config from "../../../config";
 
 export class PostPublish extends Component {
     static propTypes = {

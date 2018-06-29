@@ -99,11 +99,6 @@ class FeaturedImage extends Component {
     };
 
     render() {
-        // const { t } = this.context;
-
-        // const coverImage =
-        // this.state.cover_image || "/admin/images/placeholder-800x400.png";
-
         return (
             <div>
                 <strong>Cover Image</strong>
@@ -126,41 +121,6 @@ class FeaturedImage extends Component {
                 </ImageWrapper>
             </div>
         );
-        /*return (
-            <div>
-                <strong>Cover Image</strong>
-                <div className="featured-image">
-                    <img
-                        alt=""
-                        width="100%"
-                        src={config.baseName + coverImage}
-                    />
-                    {!this.state.cover_image ? (
-                        <a
-                            className="btn btn-xs btn-dark"
-                            onClick={this.toggleFileExplorer}
-                        >
-                            {t("addFeaturedImg")}
-                        </a>
-                    ) : (
-                        <a
-                            className="btn btn-xs btn-dark"
-                            onClick={() => this.updateFeaturedImage("")}
-                        >
-                            {t("removeFeaturedImg")}
-                        </a>
-                    )}
-                </div>
-                <input
-                    ref={this.uploadInputRef}
-                    onChange={input => this.uploadImage(input.target.files)}
-                    type="file"
-                    className="hide"
-                    name="uploads[]"
-                    multiple="multiple"
-                />
-            </div>
-        );*/
     }
 }
 
