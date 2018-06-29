@@ -58,27 +58,19 @@ export class Categories extends Component {
     render() {
         let suggestions = this.props.suggestions || [];
         suggestions = suggestions.map(t => t.name);
-
         return (
-            <div className="card">
-                <div className="x_title">
-                    <div className="module-title">Categories</div>
-                    <div className="clearfix" />
-                </div>
-                <div className="x_content">
-                    <div className="control-group">
-                        <ReactTags
-                            suggestions={suggestions}
-                            autofocus={false}
-                            placeholder="Add new category..."
-                            tags={this.categories}
-                            labelField="name"
-                            handleDelete={this.handleDelete.bind(this)}
-                            handleAddition={this.handleAddition.bind(this)}
-                            handleDrag={this.handleDrag.bind(this)}
-                        />
-                    </div>
-                </div>
+            <div>
+                <div style={{ marginBottom: "10px" }}>Categories</div>
+                <ReactTags
+                    suggestions={suggestions}
+                    autofocus={false}
+                    placeholder="Add new category..."
+                    tags={this.categories}
+                    labelField="name"
+                    handleDelete={this.handleDelete.bind(this)}
+                    handleAddition={this.handleAddition.bind(this)}
+                    handleDrag={this.handleDrag.bind(this)}
+                />
             </div>
         );
     }

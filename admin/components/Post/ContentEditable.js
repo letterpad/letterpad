@@ -20,7 +20,7 @@ export default class ContentEditable extends Component {
 
     render() {
         return (
-            <h2
+            <h1
                 className="post-title"
                 onInput={this.emitChange}
                 placeholder={this.props.placeholder}
@@ -30,7 +30,7 @@ export default class ContentEditable extends Component {
                 ref={node => (this.node = node)}
             >
                 {this.props.title}
-            </h2>
+            </h1>
         );
     }
 }

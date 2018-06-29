@@ -183,7 +183,7 @@
         max-width: none;
     }
     .post-header {
-        margin: 16px 0 16px !important;
+        min-height: 60px;
         .post-meta {
             color: var(--color-text-muted);
             padding: 8px 0px;
@@ -191,8 +191,9 @@
     }
 
     .post-title {
-        font-weight: 500;
-        min-height: 20px;
+        font-weight: 600;
+        flex: 1;
+        min-height: 60px;
         text-transform: initial;
         a {
             font-weight: 500;
@@ -320,6 +321,9 @@ textarea.CodeFlask__textarea {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    padding: 10px 20px;
 }
 
 /*!------------------------------------------------------------------

@@ -1,10 +1,21 @@
 import React, { Component } from "react";
 import { notify } from "react-notify-toast";
-import { Link } from "react-router-dom";
 import PostActions from "./PostActions";
 import UpdatePost from "../../data-connectors/UpdatePost";
 import PropTypes from "prop-types";
 import { plural } from "../../../shared/util";
+import PostActionDrawer from "./PostActionDrawer";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+
+const DropDown = styled.ul`
+    margin-left: -240;
+    width: 340px;
+    padding: 20px;
+    max-height: 90vh;
+    overflow-y: auto;
+`;
+// import config from "../../../config";
 
 export class PostPublish extends Component {
     static propTypes = {
@@ -12,31 +23,25 @@ export class PostPublish extends Component {
         update: PropTypes.func.isRequired,
         edit: PropTypes.bool,
         history: PropTypes.object.isRequired,
-        create: PropTypes.bool,
-        toggleActionDrawer: PropTypes.func.isRequired
+        create: PropTypes.bool
     };
-    constructor(props) {
-        super(props);
-        this.changePostStatus = this.changePostStatus.bind(this);
-        this.toggleZenView = this.toggleZenView.bind(this);
-        this.afterPostSave = this.afterPostSave.bind(this);
-        this.state = {
-            post: this.props.post,
-            published: this.props.post.status == "publish",
-            zenview: false
-        };
-    }
+
+    state = {
+        post: this.props.post,
+        isPublished: this.props.post.status == "publish",
+        openPublish: false
+    };
 
     componentDidMount() {
         PostActions.setData(this.props.post);
     }
 
-    changePostStatus(e) {
+    changePostStatus = e => {
         this.setState({
-            published: ~~e.target.checked
+            isPublished: ~~e.target.checked
         });
-    }
-    afterPostSave(post) {
+    };
+    afterPostSave = post => {
         let eventName = null;
         let notifyMessage = null;
         // if the status is trash, redirect the user to posts or pages depending on the post type.
@@ -68,8 +73,9 @@ export class PostPublish extends Component {
             // Trigger an event. This will allow other components to listen to post create, update events
             PostActions.triggerEvent(eventName, post);
         }
-    }
-    async updatePost(e, statusObj) {
+    };
+
+    updatePost = async (e, statusObj) => {
         if (e) e.preventDefault();
         PostActions.setData(statusObj);
         let data = PostActions.getData();
@@ -86,68 +92,69 @@ export class PostPublish extends Component {
             errors = errors.map(error => error.message);
             notify.show(errors.join("\n"), "error", 3000);
         }
-    }
+    };
 
-    getButton(label, btnType = "btn-primary", status) {
-        if (typeof status == "undefined") {
-            status = this.state.published ? "publish" : "draft";
-        }
-        if (status)
-            return (
-                <div className="btn-item">
-                    <button
-                        type="submit"
-                        onClick={e => this.updatePost(e, { status: status })}
-                        className={"publish-btn btn btn-sm " + btnType}
-                    >
-                        {label}
-                    </button>
-                </div>
-            );
-    }
-    toggleZenView(e) {
-        e.preventDefault();
-        document.body.classList.toggle("distract-free");
-    }
+    toggleDropdown = () => {
+        this.setState({ openPublish: !this.state.openPublish });
+    };
+
+    closeDropdown = () => {
+        setTimeout(() => {
+            this.setState({ openPublish: false });
+        }, 100);
+    };
     render() {
-        const publishedCls = this.state.published ? "on" : "off";
-        const actionLabel = this.props.create ? "Create" : "Update";
+        const publishedCls = this.state.isPublished ? "on" : "off";
+        const ddClass = "dropdown" + (this.state.openPublish ? " open" : "");
+        const goBackLink = "/admin/" + plural[this.props.post.type];
         return (
-            <div className="card post-publish">
+            <div className="post-publish">
                 <div className="btn-together">
-                    {this.getButton(actionLabel, "btn-primary")}
-                    {this.getButton(
-                        "Trash",
-                        "btn-danger btn-danger-invert",
-                        "trash"
-                    )}
+                    <Link to={goBackLink}>
+                        <span
+                            className="material-icons"
+                            style={{ fontSize: 34 }}
+                        >
+                            keyboard_arrow_left
+                        </span>
+                    </Link>
                 </div>
 
                 <div className={"switch-block " + publishedCls}>
-                    <span className="switch-label switch-off-text">Draft</span>
-                    <label className="switch">
-                        <input
-                            type="checkbox"
-                            onChange={this.changePostStatus}
-                            checked={this.state.published}
-                        />
-                        <span className="slider round" />
-                    </label>
-                    <span className="switch-label switch-on-text">Publish</span>
-                    <Link
-                        to="#"
-                        className="action-drawer-btn"
-                        onClick={this.toggleZenView}
-                    >
-                        <i className="fa fa-eye" />
-                    </Link>
-                    <Link
-                        to="#"
-                        className="action-drawer-btn"
-                        onClick={this.props.toggleActionDrawer}
-                    >
-                        <i className="fa fa-cog" />
-                    </Link>
+                    <div className="user-info">
+                        <div className={ddClass}>
+                            <a
+                                className="dropdown-toggle"
+                                onClick={this.toggleDropdown}
+                            >
+                                Publish
+                                <span className="caret" />
+                            </a>
+
+                            <DropDown className="dropdown-menu">
+                                <PostActionDrawer
+                                    isPublished={this.state.isPublished}
+                                    changePostStatus={this.changePostStatus}
+                                    post={this.props.post}
+                                    toggleActionDrawer={this.toggleDropdown}
+                                    isOpen={this.state.openPublish}
+                                    create={this.props.create || false}
+                                    updatePost={this.updatePost}
+                                />
+                            </DropDown>
+                        </div>
+                        <Link
+                            style={{ marginLeft: "20px" }}
+                            to="#"
+                            onClick={e =>
+                                this.updatePost(e, {
+                                    status: "trash"
+                                })
+                            }
+                        >
+                            Trash
+                        </Link>
+                    </div>
                 </div>
             </div>
         );

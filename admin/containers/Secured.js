@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import jwtDecode from "jwt-decode";
 import { Route, Redirect } from "react-router-dom";
 import Layout from "../containers/Layout";
+import NoLayout from "../containers/NoLayout";
 
 const SecuredRoute = routeProps => {
     try {
@@ -19,11 +20,12 @@ const SecuredRoute = routeProps => {
         }
         // delete the component from props. Ito had to be wrapped with the Layout component
         delete props.component;
+        const LayoutType = props.layout == "none" ? NoLayout : Layout;
         return (
             <Route
                 {...props}
                 exact={exact}
-                component={Layout(Component, { ...props, author: user })}
+                component={LayoutType(Component, { ...props, author: user })}
             />
         );
     } catch (e) {
@@ -33,6 +35,7 @@ const SecuredRoute = routeProps => {
 };
 SecuredRoute.propTypes = {
     component: PropTypes.func.isRequired,
-    exact: PropTypes.bool
+    exact: PropTypes.bool,
+    layout: PropTypes.string
 };
 export default SecuredRoute;

@@ -63,25 +63,18 @@ export class Tags extends Component {
         suggestions = suggestions.map(t => t.name);
 
         return (
-            <div className="card">
-                <div className="x_title">
-                    <div className="module-title">Tags</div>
-                    <div className="clearfix" />
-                </div>
-                <div className="x_content">
-                    <div className="control-group">
-                        <ReactTags
-                            suggestions={suggestions}
-                            autofocus={false}
-                            placeholder="Add new tag..."
-                            tags={this.tags}
-                            labelField="name"
-                            handleDelete={this.handleDelete.bind(this)}
-                            handleAddition={this.handleAddition.bind(this)}
-                            handleDrag={this.handleDrag.bind(this)}
-                        />
-                    </div>
-                </div>
+            <div>
+                <div style={{ marginBottom: "10px" }}>Tags</div>
+                <ReactTags
+                    suggestions={suggestions}
+                    autofocus={false}
+                    placeholder="Add new tag..."
+                    tags={this.tags}
+                    labelField="name"
+                    handleDelete={this.handleDelete.bind(this)}
+                    handleAddition={this.handleAddition.bind(this)}
+                    handleDrag={this.handleDrag.bind(this)}
+                />
             </div>
         );
     }

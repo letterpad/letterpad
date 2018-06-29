@@ -13,7 +13,7 @@ class Editor extends Component {
     };
     render() {
         return (
-            <div className="fs-normal">
+            <React.Fragment>
                 {this.props.isMarkdown ? (
                     <MarkdownEditor
                         body={this.props.body}
@@ -25,7 +25,7 @@ class Editor extends Component {
                         insertMedia={this.props.insertMedia}
                     />
                 )}
-            </div>
+            </React.Fragment>
         );
     }
 }
