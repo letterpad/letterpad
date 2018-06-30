@@ -1,8 +1,28 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import MarkdownEditor from "./Editors/MarkdownEditor";
-import SlateEditor from "./Editors/SlateEditor";
+import Html from "slate-html-serializer";
+// import MarkdownEditor from "./Editors/MarkdownEditor";
+import { SlateContent, SlateEditor, TextMenu } from "./Editors/SlateEditor";
 import InsertMedia from "../../data-connectors/InsertMedia";
+import { BoldPlugin, BoldButton } from "./Editors/plugins/bold";
+import { ItalicPlugin, ItalicButton } from "./Editors/plugins/italic";
+import { UnderlinePlugin, UnderlineButton } from "./Editors/plugins/underline";
+import { HighlightPlugin, HighlightButton } from "./Editors/plugins/highlight";
+import { ListPlugin, ListButtonBar } from "./Editors/plugins/list";
+import { ImageButton, ImagePlugin } from "./Editors/plugins/image";
+import ToolBar from "./Editors/SlateEditor/ToolBar";
+import rules from "./Editors/helper/rules";
+
+const html = new Html({ rules });
+
+const plugins = [
+    BoldPlugin(),
+    ItalicPlugin(),
+    UnderlinePlugin(),
+    HighlightPlugin(),
+    ListPlugin(),
+    ImagePlugin()
+];
 
 class Editor extends Component {
     static propTypes = {
@@ -11,22 +31,103 @@ class Editor extends Component {
         mdBody: PropTypes.string,
         isMarkdown: PropTypes.any
     };
+
+    state = {
+        value: html.deserialize(this.props.body) // Value.fromJSON(initialEditorState)
+    };
+
+    menuRef = React.createRef();
+
+    componentDidMount = () => {
+        this.updateMenu();
+    };
+
+    componentDidUpdate = () => {
+        this.updateMenu();
+    };
+    /**
+     * Update the menu's absolute position.
+     */
+
+    updateMenu = () => {
+        const { value } = this.state;
+        const menu = this.menuRef.current;
+        if (!menu) return;
+
+        if (value.isBlurred || value.isEmpty) {
+            menu.removeAttribute("style");
+            return;
+        }
+
+        const selection = window.getSelection();
+        const range = selection.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        menu.style.opacity = 1;
+        menu.style.top = `${rect.top +
+            window.pageYOffset -
+            menu.offsetHeight}px`;
+
+        menu.style.left = `${rect.left +
+            window.pageXOffset -
+            menu.offsetWidth / 2 +
+            rect.width / 2}px`;
+    };
+    /**
+     * On change.
+     *
+     * @param {Change} change
+     */
+
+    onEditorChange = value => {
+        if (value.document != this.state.value.document) {
+            const string = html.serialize(value);
+            console.log(string);
+            // PostActions.setData({
+            //     body: string
+            // });
+        }
+        this.setState({ value: value });
+    };
+
     render() {
         return (
             <React.Fragment>
-                {this.props.isMarkdown ? (
-                    <MarkdownEditor
-                        body={this.props.body}
-                        mdBody={this.props.mdBody}
-                    />
-                ) : (
-                    <SlateEditor
-                        body={this.props.body}
-                        insertMedia={this.props.insertMedia}
-                    />
-                )}
+                <SlateEditor
+                    plugins={plugins}
+                    value={this.state.value}
+                    onChange={this.onEditorChange}
+                >
+                    <TextMenu menuRef={this.menuRef} value={this.state.value}>
+                        <BoldButton />
+                        <ItalicButton />
+                        <UnderlineButton />
+                        <HighlightButton />
+                        <ListButtonBar />
+                    </TextMenu>
+                    <SlateContent />
+                    <ToolBar value={this.state.value}>
+                        <BoldButton />
+                        <ImageButton />
+                    </ToolBar>
+                </SlateEditor>
             </React.Fragment>
         );
+
+        // return (
+        //     <React.Fragment>
+        //         {this.props.isMarkdown ? (
+        //             <MarkdownEditor
+        //                 body={this.props.body}
+        //                 mdBody={this.props.mdBody}
+        //             />
+        //         ) : (
+        //             <SlateEditor
+        //                 body={this.props.body}
+        //                 insertMedia={this.props.insertMedia}
+        //             />
+        //         )}
+        //     </React.Fragment>
+        // );
     }
 }
 
