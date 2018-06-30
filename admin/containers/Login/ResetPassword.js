@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import Notifications, { notify } from "react-notify-toast";
 import { resetPasswordQuery } from "../../data-connectors/LoginConnector";
 
@@ -16,6 +17,7 @@ class ResetPassword extends Component {
         this.passwordInput.focus();
         delete localStorage.token;
     }
+    
     componentWillUnmount() {
         document.body.classList.remove("login-view");
     }

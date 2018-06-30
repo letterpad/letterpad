@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import Notifications, { notify } from "react-notify-toast";
 import { parseErrors } from "../../../shared/util";
 import config from "../../../config";
@@ -16,15 +17,9 @@ class LoginView extends Component {
         forgotPassword: PropTypes.func
     };
 
-    constructor(props) {
-        super(props);
-        this.login = this.login.bind(this);
-        this.forgotPassword = this.forgotPassword.bind(this);
-        this.state = {
-            lostPassword: false
-        };
-        this.toggleForgotPwdView = this.toggleForgotPwdView.bind(this);
-    }
+    state = {
+        lostPassword: false
+    };
 
     componentDidMount() {
         document.body.classList.add("login-view");
@@ -34,12 +29,13 @@ class LoginView extends Component {
             config.baseName
         }/admin/images/login_bg.jpg")`;
     }
+
     componentWillUnmount() {
         document.querySelector(".login-view").removeAttribute("style");
         document.body.classList.remove("login-view");
     }
 
-    async login(e) {
+    login = async e => {
         e.preventDefault();
         if (
             this.usernameInput.value.length === 0 ||
@@ -60,9 +56,9 @@ class LoginView extends Component {
             localStorage.token = res.data.login.token;
             this.props.history.push("/admin/home");
         }
-    }
+    };
 
-    toggleForgotPwdView(e) {
+    toggleForgotPwdView = e => {
         e.preventDefault();
         this.setState({ lostPassword: !this.state.lostPassword }, () => {
             if (this.state.lostPassword) {
@@ -71,9 +67,9 @@ class LoginView extends Component {
                 this.usernameInput.focus();
             }
         });
-    }
+    };
 
-    async forgotPassword(e) {
+    forgotPassword = async e => {
         e.preventDefault();
         const email = this.lostPwdEmailInput.value.trim();
         if (email.length > 0) {
@@ -89,7 +85,7 @@ class LoginView extends Component {
         } else {
             notify.show("Please fill up the email field.", "warning", 3000);
         }
-    }
+    };
 
     render() {
         const classes = {

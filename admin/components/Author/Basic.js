@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { uploadFile } from "../../util";
 import PropTypes from "prop-types";
+
+import { uploadFile } from "../../util";
 import config from "config";
 
 export default class Basic extends Component {
@@ -8,36 +9,31 @@ export default class Basic extends Component {
         data: PropTypes.object,
         updateOption: PropTypes.func
     };
+
     static contextTypes = {
         t: PropTypes.func
     };
-    constructor(props) {
-        super(props);
-        this.updateOption = this.updateOption.bind(this);
-        this.uploadAvatar = this.uploadAvatar.bind(this);
-        this.updateAvatar = this.updateAvatar.bind(this);
 
-        this.uploadInputRef = React.createRef();
+    uploadInputRef = React.createRef();
 
-        this.state = {
-            avatar: this.props.data.avatar
-        };
-    }
+    state = {
+        avatar: this.props.data.avatar
+    };
 
-    updateOption(option, value) {
+    updateOption = (option, value) => {
         this.props.updateOption(option, value);
-    }
+    };
 
-    async uploadAvatar(files) {
+    uploadAvatar = async files => {
         const avatar = await uploadFile({ files });
         this.updateOption("avatar", avatar);
         this.setState({ avatar });
-    }
+    };
 
-    updateAvatar(avatar) {
+    updateAvatar = avatar => {
         this.updateOption("avatar", avatar);
         this.setState({ avatar });
-    }
+    };
 
     render() {
         const { t } = this.context;

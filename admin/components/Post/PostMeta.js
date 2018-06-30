@@ -1,26 +1,22 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import PostActions from "./PostActions";
 import moment from "moment";
+
+import PostActions from "./PostActions";
 import { makeUrl } from "../../../shared/util";
 
 class PostMeta extends Component {
-    constructor(props) {
-        super(props);
+    state = {
+        post: this.props.post,
+        published: 0
+    };
 
-        this.changeSlug = this.changeSlug.bind(this);
-        this.state = {
-            post: this.props.post,
-            published: 0
-        };
-    }
-
-    changeSlug(e) {
+    changeSlug = e => {
         this.setState({
             post: { ...this.state.post, slug: e.target.value }
         });
         PostActions.setData({ slug: this.state.post.slug });
-    }
+    };
 
     render() {
         const permalink = makeUrl([this.state.post.type, this.state.post.slug]);
@@ -63,7 +59,9 @@ class PostMeta extends Component {
         );
     }
 }
+
 PostMeta.propTypes = {
     post: PropTypes.object
 };
+
 export default PostMeta;

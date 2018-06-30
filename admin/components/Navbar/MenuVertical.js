@@ -11,22 +11,14 @@ export default class Menu extends Component {
         settings: PropTypes.object
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            navbarOpen: false,
-            data: props.menu,
-            permissions: []
-        };
-    }
-
-    componentWillMount() {
-        if (typeof localStorage !== "undefined") {
-            this.setState({
-                permissions: jwtDecode(localStorage.token).permissions
-            });
-        }
-    }
+    state = {
+        navbarOpen: false,
+        data: this.props.menu,
+        permissions:
+            typeof localStorage !== "undefined"
+                ? jwtDecode(localStorage.token).permissions
+                : []
+    };
 
     setData = newData => {
         this.setState({ data: newData });

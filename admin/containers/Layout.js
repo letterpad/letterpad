@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -7,17 +8,13 @@ export default function Layout(ComponentClass, props) {
     const settings = props.settings;
 
     return class extends Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                sidebarOpen: true
-            };
-            this.mounted = false;
-            this.sidebarToggle = this.sidebarToggle.bind(this);
-            this.toggleSidebar = this.toggleSidebar.bind(this);
-            this.onResize = this.onResize.bind(this);
-        }
-        componentWillMount() {
+        state = {
+            sidebarOpen: true
+        };
+
+        mounted = false;
+
+        componentDidMount() {
             this.mounted = true;
             if (typeof window !== "undefined") {
                 window.addEventListener("resize", this.onResize);
@@ -25,29 +22,34 @@ export default function Layout(ComponentClass, props) {
                 this.onResize();
             }
         }
-        toggleSidebar(e) {
-            if (e.type == "mouseover") {
-                document.body.classList.add("hovering");
-            } else {
-                document.body.classList.remove("hovering");
-            }
-        }
+
         componentWillUnmount() {
             if (typeof window !== "undefined") {
                 window.removeEventListener("resize", this.onResize);
             }
         }
-        onResize() {
+
+        toggleSidebar = e => {
+            if (e.type == "mouseover") {
+                document.body.classList.add("hovering");
+            } else {
+                document.body.classList.remove("hovering");
+            }
+        };
+
+        onResize = () => {
             if (!this.mounted) return false;
             if (document.body.clientWidth < 991) {
                 this.setState({ sidebarOpen: false });
             } else {
                 this.setState({ sidebarOpen: true });
             }
-        }
-        sidebarToggle() {
+        };
+
+        sidebarToggle = () => {
             this.setState({ sidebarOpen: !this.state.sidebarOpen });
-        }
+        };
+
         render() {
             const _props = { ...this.props, ...props, settings };
             const classes = this.state.sidebarOpen ? "" : " collapsed";

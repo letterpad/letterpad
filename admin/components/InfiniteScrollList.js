@@ -20,4 +20,5 @@ InfiniteScrollList.propTypes = {
     data: PropTypes.array.isRequired,
     loadMore: PropTypes.func.isRequired
 };
+
 export default InfiniteScrollList;

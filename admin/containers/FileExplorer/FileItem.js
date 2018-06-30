@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
+
 import config from "config";
 
 export default class MediaItem extends Component {

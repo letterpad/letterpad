@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import ModalHoc from "../../components/ModalHoc";
-import config from "../../../config";
 import PropTypes from "prop-types";
+
+import ModalHoc from "../../components/ModalHoc";
 import Loader from "../Loader";
+import config from "../../../config";
 
 class EditMediaInfo extends Component {
     static propTypes = {
@@ -15,22 +16,17 @@ class EditMediaInfo extends Component {
     static contextTypes = {
         t: PropTypes.func
     };
-    constructor(props) {
-        super(props);
-        this.itemName = React.createRef();
-        this.onChange = this.onChange.bind(this);
-        this.updateMedia = this.updateMedia.bind(this);
-        this.goPrevious = this.goPrevious.bind(this);
-        this.goNext = this.goNext.bind(this);
-        this.state = {
-            media: {
-                id: this.props.media.id,
-                name: this.props.media.name,
-                description: this.props.media.description
-            },
-            saving: false
-        };
-    }
+
+    state = {
+        media: {
+            id: this.props.media.id,
+            name: this.props.media.name,
+            description: this.props.media.description
+        },
+        saving: false
+    };
+
+    itemName = React.createRef();
 
     static getDerivedStateFromProps(newProps, oldState) {
         if (oldState.media.id === newProps.media.id) return null;
@@ -47,22 +43,23 @@ class EditMediaInfo extends Component {
         this.itemName.current.focus();
     }
 
-    onChange(field, value) {
+    onChange = (field, value) => {
         this.setState({ media: { ...this.state.media, [field]: value } });
-    }
+    };
 
-    goPrevious(e) {
+    goPrevious = e => {
         e.preventDefault();
         this.updateMedia();
         this.props.previous();
-    }
-    goNext(e) {
+    };
+    goNext = e => {
         e.preventDefault();
         this.updateMedia();
         this.props.next();
-    }
+    };
 
-    async updateMedia(e) {
+    updateMedia = async e => {
+        e.persist();
         // get the old values
         const { name, description } = this.props.media;
         // compare with current state to see if there is a change.
@@ -80,7 +77,7 @@ class EditMediaInfo extends Component {
         if (e && e.target.type == "button") {
             this.props.onClose();
         }
-    }
+    };
 
     render() {
         const url = config.baseName + this.props.media.url;

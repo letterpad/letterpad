@@ -1,31 +1,29 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import Editor from "./Editor";
 import PostActions from "./PostActions";
 import ContentEditable from "./ContentEditable";
-import PropTypes from "prop-types";
 
 export default class ArticleEdit extends Component {
     static propTypes = {
         post: PropTypes.object
     };
 
-    constructor(props) {
-        super(props);
-        this.changeEditor = this.changeEditor.bind(this);
-        this.state = {
-            isMarkdown: this.props.post.mode == "markdown"
-        };
-    }
+    state = {
+        isMarkdown: this.props.post.mode == "markdown"
+    };
 
     componentWillUnmount() {
         document.body.classList.remove("options-open");
     }
 
-    changeEditor(e) {
+    changeEditor = e => {
         const mode = e.target.checked ? "markdown" : "rich-text";
         PostActions.setData({ mode });
         this.setState({ isMarkdown: ~~e.target.checked });
-    }
+    };
+
     render() {
         return (
             <div className="card">

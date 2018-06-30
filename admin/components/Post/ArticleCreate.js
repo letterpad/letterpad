@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import Editor from "./Editor";
 import PostActions from "./PostActions";
 import ContentEditable from "./ContentEditable";
@@ -9,22 +10,21 @@ export default class CreateArticle extends Component {
         title: PropTypes.string,
         post: PropTypes.object
     };
-    constructor(props) {
-        super(props);
-        this.changeEditor = this.changeEditor.bind(this);
-        this.state = {
-            isMarkdown: false
-        };
-    }
+
+    state = {
+        isMarkdown: false
+    };
+
     componentWillUnmount() {
         document.body.classList.remove("options-open");
     }
 
-    changeEditor(e) {
+    changeEditor = e => {
         const mode = e.target.checked ? "markdown" : "rich-text";
         PostActions.setData({ mode });
         this.setState({ isMarkdown: ~~e.target.checked });
-    }
+    };
+
     render() {
         return (
             <div className="card">

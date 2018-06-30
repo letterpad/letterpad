@@ -20,25 +20,17 @@ export default class Social extends Component {
         t: PropTypes.func
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            social: {}
-        };
-        this.updateOption = this.updateOption.bind(this);
-    }
-    componentWillMount() {
-        this.setState({
-            social: JSON.parse(this.props.data)
-        });
+    state = {
+        social: JSON.parse(this.props.data)
     }
 
-    updateOption(option, value) {
-        let newState = { social: { ...this.state.social } };
+    updateOption = (option, value) => {
+        const newState = { social: { ...this.state.social } };
         newState.social[option] = value;
         this.setState(newState);
         this.props.updateOption("social", JSON.stringify(newState.social));
     }
+
     render() {
         const { t } = this.context;
         return (

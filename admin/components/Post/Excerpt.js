@@ -83,6 +83,7 @@ class Excerpt extends Component {
         );
     }
 }
+
 Excerpt.propTypes = {
     post: PropTypes.object
 };

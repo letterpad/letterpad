@@ -2,14 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 export default class Messages extends Component {
-    constructor(props) {
-        super(props);
-        this.updateOption = this.updateOption.bind(this);
-    }
-
-    updateOption(option, value) {
+    updateOption = (option, value) => {
         this.props.updateOption(option, value);
     }
+
     render() {
         const { t } = this.context;
         return (
@@ -54,6 +50,7 @@ Messages.propTypes = {
     data: PropTypes.object,
     updateOption: PropTypes.func
 };
+
 Messages.defaultPropTypes = {
     data: JSON.stringify({
         text_notfound: ""
