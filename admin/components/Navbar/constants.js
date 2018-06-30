@@ -1,4 +1,4 @@
-const data = [
+const DATA = [
   {
       id: 9,
       name: "menu.home",
@@ -126,4 +126,4 @@ const data = [
   }
 ];
 
-export default data;
+export default DATA;

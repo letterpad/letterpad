@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import MenuVertical from "./MenuVertical";
-import data from "./constants";
+import DATA from "./constants";
 
 class Navbar extends Component {
     static propTypes = {
@@ -18,7 +18,7 @@ class Navbar extends Component {
         const { router } = this.props;
         return (
             <div className="custom-menu">
-                <MenuVertical menu={data} router={router} />
+                <MenuVertical menu={DATA} router={router} />
             </div>
         );
     }

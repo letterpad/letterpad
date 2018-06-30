@@ -4,7 +4,7 @@ import jwtDecode from "jwt-decode";
 import PropTypes from "prop-types";
 
 import { MenuTree } from "./TreeNode";
-import { data } from "./constants";
+import DATA from "./constants";
 
 export default class Menu extends Component {
     static propTypes = {
@@ -14,7 +14,7 @@ export default class Menu extends Component {
 
     state = {
         navbarOpen: false,
-        data,
+        data: DATA,
         permissions:
             typeof localStorage !== "undefined"
                 ? jwtDecode(localStorage.token).permissions
