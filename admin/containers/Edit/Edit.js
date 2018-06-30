@@ -32,6 +32,7 @@ class Edit extends Component {
     }
 
     componentDidMount() {
+        window.addEventListener("onPostChange", this.handlePostChanges);
         document.body.classList.add("edit-post-page");
     }
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import { FeaturedImage, Tags, Categories, Excerpt } from "./";
 
 class PostActionDrawer extends Component {

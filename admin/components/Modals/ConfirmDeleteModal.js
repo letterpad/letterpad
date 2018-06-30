@@ -1,7 +1,8 @@
 import React from "react";
-import ModalHoc from "../ModalHoc";
-import config from "config";
 import PropTypes from "prop-types";
+
+import config from "config";
+import ModalHoc from "../ModalHoc";
 
 const ConfirmDelete = props => {
     return (

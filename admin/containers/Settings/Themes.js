@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
+
 import UpdateOptions from "../../data-connectors/UpdateOptions";
 import SettingsData from "shared/data-connectors/SettingsData";
 import { makeUrl } from "shared/util";
@@ -12,21 +13,13 @@ class Themes extends Component {
         options: PropTypes.object
     };
 
-    constructor(props) {
-        super(props);
-        this.updatedOptions = {};
-        this.submitData = this.submitData.bind(this);
-        this.setOption = this.setOption.bind(this);
-        this.handleCssChange = this.handleCssChange.bind(this);
-        this.state = {
-            css: "",
-            themes: []
-        };
-
-        document.body.classList.add("themes-page");
-    }
+    state = {
+        css: "",
+        themes: []
+    };
 
     componentDidMount() {
+        document.body.classList.add("themes-page");
         this.getThemes();
     }
 
@@ -47,26 +40,26 @@ class Themes extends Component {
         };
     }
 
-    getThemes() {
+    getThemes = () => {
         const url = makeUrl("/admin/getThemes");
         fetch(url)
             .then(res => res.json())
             .then(themes => {
                 this.setState({ themes });
             });
-    }
+    };
 
-    handleCssChange(e) {
+    handleCssChange = e => {
         const css = e.target.value;
         this.setState({ css });
         this.updatedOptions.css = css;
-    }
+    };
 
-    setOption(option, value) {
+    setOption = (option, value) => {
         this.updatedOptions[option] = value;
-    }
+    };
 
-    submitData(e) {
+    submitData = e => {
         e.preventDefault();
         const settings = [];
         Object.keys(this.updatedOptions).forEach(option => {
@@ -80,9 +73,9 @@ class Themes extends Component {
             this.getThemes();
             notify.show("Theme settings saved", "success", 3000);
         });
-    }
+    };
 
-    activateTheme(e, theme) {
+    activateTheme = (e, theme) => {
         e.preventDefault();
         const modifiedThemes = this.state.themes.map(items => {
             items.active = false;
@@ -95,7 +88,7 @@ class Themes extends Component {
             themes: modifiedThemes
         });
         this.updatedOptions.theme = theme.name;
-    }
+    };
 
     render() {
         return (

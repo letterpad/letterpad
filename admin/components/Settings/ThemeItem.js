@@ -6,6 +6,7 @@ export default class ThemeItem extends Component {
         theme: PropTypes.object.isRequired,
         activateTheme: PropTypes.func.isRequired
     };
+    
     render() {
         const theme = this.props.theme;
 

@@ -4,11 +4,7 @@ const qs = handle => document.querySelector(handle);
 
 export default function SyncScroll(ClassComponent) {
     return class extends Component {
-        constructor(props) {
-            super(props);
-            this.manageScroll = this.manageScroll.bind(this);
-        }
-        manageScroll() {
+        manageScroll = () => {
             setTimeout(() => {
                 var $divs = [
                     qs(".article-holder .CodeFlask__textarea"),
@@ -28,7 +24,7 @@ export default function SyncScroll(ClassComponent) {
             }, 1000);
         }
 
-        adjustScroll(event) {
+        adjustScroll = (event) => {
             const $divs = [
                 qs(".article-holder .CodeFlask__textarea"),
                 qs(".preview .post-content")
@@ -55,6 +51,7 @@ export default function SyncScroll(ClassComponent) {
             };
             sync(event);
         }
+        
         render() {
             return (
                 <ClassComponent

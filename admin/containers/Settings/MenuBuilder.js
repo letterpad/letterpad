@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import { notify } from "react-notify-toast";
 import PropTypes from "prop-types";
+
 import { MenuConstruction } from "../../components/Settings";
 import {
     GET_TAXONOMIES,
@@ -25,19 +26,17 @@ class MenuBuilder extends Component {
     constructor(props) {
         super(props);
         this.updatedOptions = {};
-        this.submitData = this.submitData.bind(this);
-        this.setOption = this.setOption.bind(this);
         document.body.classList.add("menu-builder-page");
     }
     componentWillUnmount() {
         document.body.classList.remove("menu-builder-page");
     }
 
-    setOption(option, value) {
+    setOption = (option, value) => {
         this.updatedOptions[option] = value;
     }
 
-    submitData(e) {
+    submitData = (e) => {
         e.preventDefault();
         const settings = [];
         for (const option in this.updatedOptions) {
@@ -52,6 +51,7 @@ class MenuBuilder extends Component {
             notify.show("Navigation menu saved", "success", 3000);
         });
     }
+
     render() {
         if (this.props.settings.loading) {
             return <div>hello</div>;

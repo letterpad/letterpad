@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Basic, Social, PasswordChange } from "../../components/Author";
 import { notify } from "react-notify-toast";
+
+import { Basic, Social, PasswordChange } from "../../components/Author";
 import UpdateAuthor from "../../data-connectors/UpdateAuthor";
 import { GetAuthor } from "../../data-connectors/GetAuthors";
 import Loader from "../../components/Loader";
@@ -13,16 +14,13 @@ class EditAuthor extends Component {
         updateAuthor: PropTypes.func,
         loading: PropTypes.bool
     };
-    constructor(props) {
-        super(props);
-        this.author = {};
-        this.submitData = this.submitData.bind(this);
-        this.setOption = this.setOption.bind(this);
+    
+    author = {};
 
-        this.gridLoaded = element => {
-            this.textInput = element;
-        };
-    }
+    gridLoaded = element => {
+        this.textInput = element;
+    };
+
     componentDidMount() {
         document.body.classList.add("edit-author-page");
         setTimeout(() => {
@@ -38,11 +36,11 @@ class EditAuthor extends Component {
         document.body.classList.remove("edit-author-page");
     }
 
-    setOption(option, value) {
+    setOption = (option, value) => {
         this.author[option] = value;
-    }
+    };
 
-    async submitData(e) {
+    submitData = async e => {
         e.preventDefault();
         this.author.id = this.props.author.id;
         const update = await this.props.updateAuthor(this.author);
@@ -53,7 +51,8 @@ class EditAuthor extends Component {
         } else {
             notify.show("Author updated", "success");
         }
-    }
+    };
+
     render() {
         if (this.props.loading) {
             return <Loader />;

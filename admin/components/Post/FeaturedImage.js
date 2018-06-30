@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+
 import { uploadFile } from "../../util";
 import config from "config";
 import UploadCoverImage from "../../data-connectors/UploadCoverImage";
 import InsertMedia from "../../data-connectors/InsertMedia";
-import styled from "styled-components";
 
 const ImageWrapper = styled.div`
     overflow-x: auto;
@@ -46,12 +47,10 @@ class FeaturedImage extends Component {
     };
     state = {
         cover_image: this.props.post.cover_image,
-        fileExplorerOpen: false
-    };
-    uploadInputRef = React.createRef();
-    state = {
+        fileExplorerOpen: false,
         imageList: []
     };
+    uploadInputRef = React.createRef();
 
     componentDidMount() {
         const imgNodes = document.querySelectorAll(".post-content .editor img");

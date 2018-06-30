@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { WithContext as ReactTags } from "react-tag-input";
 import { graphql } from "react-apollo";
-import PostActions from "./PostActions";
-import { TAX_SUGGESTIONS } from "../../../shared/queries/Queries";
 import PropTypes from "prop-types";
+
+import { TAX_SUGGESTIONS } from "../../../shared/queries/Queries";
+import PostActions from "./PostActions";
 
 export class Tags extends Component {
     static propTypes = {
@@ -11,10 +12,7 @@ export class Tags extends Component {
         post: PropTypes.object
     };
 
-    constructor(props) {
-        super(props);
-        this.tags = [];
-    }
+    tags = [];
 
     componentDidMount() {
         this.tags = this.props.post.taxonomies

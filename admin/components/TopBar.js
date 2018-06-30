@@ -1,7 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import User from "./TopBar/User";
 import PublishDrawer from "./TopBar/PublishDrawer";
-import PropTypes from "prop-types";
 
 const TopBar = ({ author }) => (
     <div className="top-bar">
@@ -13,7 +14,9 @@ const TopBar = ({ author }) => (
         </div>
     </div>
 );
+
 TopBar.propTypes = {
     author: PropTypes.object.isRequired
 };
+
 export default TopBar;

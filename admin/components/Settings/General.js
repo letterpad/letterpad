@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import config from "config";
 import { uploadFile } from "../../util";
 
@@ -26,6 +27,7 @@ export default class General extends Component {
     updateOption = (option, value) => {
         this.props.updateOption(option, value);
     };
+
     switchLanguage = e => {
         const locales = {};
         Object.keys(this.langOptions).map(lang => {
@@ -33,12 +35,14 @@ export default class General extends Component {
         });
         this.updateOption("locale", JSON.stringify(locales));
     };
+
     uploadBanner = async files => {
         const uploadedFiles = await uploadFile({ files });
         let banner = uploadedFiles[0];
         this.updateOption("banner", banner);
         this.setState({ banner });
     };
+
     uploadLogo = async files => {
         const uploadedFiles = await uploadFile({ files });
         let site_logo = uploadedFiles[0];
@@ -50,10 +54,12 @@ export default class General extends Component {
         this.updateOption("banner", banner);
         this.setState({ banner });
     };
+
     updateLogo = site_logo => {
         this.updateOption("site_logo", site_logo);
         this.setState({ site_logo });
     };
+    
     render() {
         const { t } = this.context;
         const banner = this.state.banner || "";

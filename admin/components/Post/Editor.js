@@ -12,9 +12,9 @@ import { ListPlugin, ListButtonBar } from "./Editors/plugins/list";
 import { ImageButton, ImagePlugin } from "./Editors/plugins/image";
 import ToolBar from "./Editors/SlateEditor/ToolBar";
 import rules from "./Editors/helper/rules";
+import PostActions from "./PostActions";
 
 const html = new Html({ rules });
-
 const plugins = [
     BoldPlugin(),
     ItalicPlugin(),
@@ -81,10 +81,9 @@ class Editor extends Component {
     onEditorChange = value => {
         if (value.document != this.state.value.document) {
             const string = html.serialize(value);
-            console.log(string);
-            // PostActions.setData({
-            //     body: string
-            // });
+            PostActions.setData({
+                body: string
+            });
         }
         this.setState({ value: value });
     };
@@ -112,22 +111,6 @@ class Editor extends Component {
                 </SlateEditor>
             </React.Fragment>
         );
-
-        // return (
-        //     <React.Fragment>
-        //         {this.props.isMarkdown ? (
-        //             <MarkdownEditor
-        //                 body={this.props.body}
-        //                 mdBody={this.props.mdBody}
-        //             />
-        //         ) : (
-        //             <SlateEditor
-        //                 body={this.props.body}
-        //                 insertMedia={this.props.insertMedia}
-        //             />
-        //         )}
-        //     </React.Fragment>
-        // );
     }
 }
 

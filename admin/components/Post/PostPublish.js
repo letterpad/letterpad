@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { notify } from "react-notify-toast";
+import PropTypes from "prop-types";
+
 import PostActions from "./PostActions";
 import UpdatePost from "../../data-connectors/UpdatePost";
-import PropTypes from "prop-types";
 import { plural } from "../../../shared/util";
 import PostActionDrawer from "./PostActionDrawer";
 import styled from "styled-components";

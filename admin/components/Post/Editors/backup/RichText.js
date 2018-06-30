@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import PostActions from "../PostActions";
 import PropTypes from "prop-types";
+
+import PostActions from "../PostActions";
 import FileExplorerModal from "../../../components/Modals/FileExplorerModal";
 import { uploadFile } from "../../../util";
 
@@ -9,20 +10,17 @@ class RichText extends Component {
         insertMedia: PropTypes.func.isRequired,
         body: PropTypes.string
     };
-    constructor(props) {
-        super(props);
-        this.toggleFileExplorer = this.toggleFileExplorer.bind(this);
-        this.insertImage = this.insertImage.bind(this);
-        this.state = {
-            fileExplorerOpen: false
-        };
-    }
+
+    state = {
+        fileExplorerOpen: false
+    };
+
     componentDidMount() {
         this.loadQuillEditor();
         qEditor.root.innerHTML = this.props.body;
     }
 
-    loadQuillEditor() {
+    loadQuillEditor = () => {
         var toolbarOptions = [
             [
                 "bold",
@@ -66,10 +64,10 @@ class RichText extends Component {
             });
         });
         qEditor.root.innerHTML = this.props.body;
-    }
+    };
 
     // upload new images and update the post
-    async uploadImage(files) {
+    uploadImage = async files => {
         const uploadedFiles = await uploadFile({ files, type: "post_image" });
         var Delta = qEditor.constructor.import("delta");
         uploadedFiles.forEach(post_image => {
@@ -82,10 +80,10 @@ class RichText extends Component {
                     .insert("\n\n")
             );
         });
-    }
+    };
 
     // insert an existing image from the media gallery
-    insertImage(post_image) {
+    insertImage = post_image => {
         this.toggleFileExplorer();
         var Delta = qEditor.constructor.import("delta");
         qEditor.updateContents(
@@ -96,11 +94,11 @@ class RichText extends Component {
                 })
                 .insert("\n\n")
         );
-    }
+    };
 
-    toggleFileExplorer() {
+    toggleFileExplorer = () => {
         this.setState({ fileExplorerOpen: !this.state.fileExplorerOpen });
-    }
+    };
     render() {
         return (
             <div id="quill-container">

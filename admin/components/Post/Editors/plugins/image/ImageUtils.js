@@ -1,5 +1,5 @@
 export const insertInlineImage = ({ change, src }) => {
-    return change.insertInline({
+    return change.insertBlock({
         type: "image",
         isVoid: true,
         data: { src }

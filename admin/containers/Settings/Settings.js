@@ -153,4 +153,5 @@ class Settings extends Component {
 const OptionsData = graphql(GET_OPTIONS, {
     name: "options"
 });
+
 export default UpdateOptions(OptionsData(Settings));
