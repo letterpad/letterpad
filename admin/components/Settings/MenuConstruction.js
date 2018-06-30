@@ -6,14 +6,15 @@ import SortableTree, {
     removeNodeAtPath
 } from "react-sortable-tree";
 import "react-sortable-tree/style.css";
+
 import EditMenuModal from "../Modals/EditMenuModal";
 
 /**
  * A utility function to index menu items including children for faster searching
  * @param {*} arr
  */
-var getMenuItems = function(arr) {
-    var toReturn = {};
+const getMenuItems = function(arr) {
+    const toReturn = {};
     const recur = arr => {
         arr.forEach(item => {
             if (item.children && item.children.length > 0) {
@@ -32,28 +33,24 @@ class MenuConstruction extends Component {
         updateOption: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
-        let menu = JSON.parse(this.props.data.menu.value);
+    state = {
+        loaded: false,
+        categories: [],
+        pages: [],
+        items: [...JSON.parse(this.props.data.menu.value)],
+        labels: [
+            {
+                id: Date.now() + "-label",
+                title: "Folder",
+                type: "label",
+                label: "Folder",
+                name: "Folder"
+            }
+        ],
+        scrollTop: 0,
+        nodeInfo: {} // node which is being edited
+    };
 
-        this.state = {
-            loaded: false,
-            categories: [],
-            pages: [],
-            items: [...menu],
-            labels: [
-                {
-                    id: Date.now() + "-label",
-                    title: "Folder",
-                    type: "label",
-                    label: "Folder",
-                    name: "Folder"
-                }
-            ],
-            scrollTop: 0,
-            nodeInfo: {} // node which is being edited
-        };
-    }
     static getDerivedStateFromProps(nextProps, prevState) {
         if (
             !nextProps.categories.loading &&
@@ -87,6 +84,7 @@ class MenuConstruction extends Component {
         }
         return null;
     }
+    
     addItem = (idx, type) => {
         const newState = {};
         newState[type] = [...this.state[type]];

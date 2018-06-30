@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import { PostRows } from "../../components/Post";
 import PostsHoc from "../Hoc/PostsHoc";
 import Paginate from "../../components/Paginate";
@@ -22,15 +23,11 @@ class Pages extends Component {
         searchPosts: PropTypes.func,
         allPostsSelected: PropTypes.bool
     };
+
     static contextTypes = {
         t: PropTypes.func
     };
-
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
-    }
-
+    
     componentDidMount() {
         document.body.classList.add("pages-page");
     }
@@ -39,7 +36,7 @@ class Pages extends Component {
         document.body.classList.remove("pages-page");
     }
 
-    handleClick(id) {
+    handleClick = (id) => {
         this.props.history.push("/admin/pages/" + id);
     }
     render() {

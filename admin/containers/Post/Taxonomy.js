@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
+
 import GetTaxonomies from "../../data-connectors/GetTaxonomies";
 import UpdateTaxonomy from "../../data-connectors/UpdateTaxonomy";
 import DeleteTaxonomy from "../../data-connectors/DeleteTaxonomy";
@@ -13,9 +14,11 @@ class Taxonomy extends Component {
         loading: PropTypes.bool.isRequired,
         networkStatus: PropTypes.number.isRequired
     };
+
     static contextTypes = {
         t: PropTypes.func
     };
+
     constructor(props, context) {
         super(props);
         const { t } = context;
@@ -44,13 +47,14 @@ class Taxonomy extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         document.body.classList.add("taxonomy-" + this.props.type + "-page");
     }
 
     componentWillUnmount() {
         document.body.classList.remove("taxonomy-" + this.props.type + "-page");
     }
+
     static getDerivedStateFromProps(nextProps, prevState) {
         if (
             !nextProps.loading &&
@@ -156,12 +160,14 @@ class Taxonomy extends Component {
 
         this.setState(filteredData);
     };
+
     deleteTax = idx => {
         let id = this.state.filteredData[idx].id;
         this.props.deleteTaxonomy({ id: id });
         delete this.state.filteredData[idx];
         this.setState(this.state);
     };
+
     render() {
         const { t } = this.context;
         const loading = this.props.loading || !this.props.networkStatus === 2;

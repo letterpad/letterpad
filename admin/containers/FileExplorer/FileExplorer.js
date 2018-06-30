@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import FileItem from "./FileItem";
 import InfiniteScrollList from "../../components/InfiniteScrollList";
 import GetMedia from "../../data-connectors/GetMedia";
@@ -15,26 +16,25 @@ class FileExplorer extends Component {
         fetchMore: PropTypes.func,
         count: PropTypes.number
     };
+
     static defaultProps = {
         media: {
             rows: []
         },
         onPageClick: () => {}
     };
+
     static contextTypes = {
         t: PropTypes.func
     };
-    constructor(props) {
-        super(props);
-        this.page = 1;
-        this.state = {
-            selected_id: 0
-        };
-        this.onMediaSelected = this.onMediaSelected.bind(this);
-        this.loadMore = this.loadMore.bind(this);
-    }
 
-    onMediaSelected(media) {
+    page = 1;
+
+    state = {
+        selected_id: 0
+    };
+
+    onMediaSelected = media => {
         const newState = {};
         if (media.id === this.state.selected_id) {
             newState.selected_id = 0;
@@ -43,9 +43,9 @@ class FileExplorer extends Component {
             this.props.onSelect(media.url);
         }
         this.setState(newState);
-    }
+    };
 
-    async loadMore(num) {
+    loadMore = async num => {
         await this.props.fetchMore({
             author_id: this.props.author.id,
             offset: (num - 1) * config.itemsPerPage,
@@ -54,7 +54,7 @@ class FileExplorer extends Component {
         });
         this.page = num;
         this.forceUpdate();
-    }
+    };
 
     render() {
         const rows = this.props.media.rows.map(media => (

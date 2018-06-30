@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import jwtDecode from "jwt-decode";
 import { Route, Redirect } from "react-router-dom";
+
 import Layout from "../containers/Layout";
 
 const SecuredRoute = routeProps => {
@@ -31,8 +32,10 @@ const SecuredRoute = routeProps => {
     }
     return <Redirect to={"/admin/login"} />;
 };
+
 SecuredRoute.propTypes = {
     component: PropTypes.func.isRequired,
     exact: PropTypes.bool
 };
+
 export default SecuredRoute;

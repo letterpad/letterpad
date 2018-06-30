@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import MarkdownEditor from "./Editors/MarkdownEditor";
 import RichText from "./Editors/RichText";
 import InsertMedia from "../../data-connectors/InsertMedia";
@@ -11,6 +12,7 @@ class Editor extends Component {
         mdBody: PropTypes.string,
         isMarkdown: PropTypes.any
     };
+
     render() {
         return (
             <div className="fs-normal">

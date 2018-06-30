@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+
 import { GetAuthors } from "../../data-connectors/GetAuthors";
 import Loader from "../../components/Loader";
 import AuthorRow from "./AuthorRow";
@@ -11,22 +12,24 @@ class Authors extends Component {
         authors: PropTypes.array,
         loading: PropTypes.bool
     };
+
     static contextTypes = {
         t: PropTypes.func
     };
 
     constructor(props) {
         super(props);
-        this.authorSelect = this.authorSelect.bind(this);
         document.body.classList.add("authors-page");
     }
+
     componentWillUnmount() {
         document.body.classList.remove("authors-page");
     }
 
-    authorSelect(id) {
+    authorSelect = id => {
         this.props.history.push("/admin/authors/edit/" + id);
-    }
+    };
+    
     render() {
         if (this.props.loading) {
             return <Loader />;

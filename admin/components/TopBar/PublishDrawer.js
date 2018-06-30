@@ -3,16 +3,11 @@ import React, { Component } from "react";
 const qs = s => document.querySelector(s);
 
 class PublishDrawer extends Component {
-    constructor(props) {
-        super(props);
-        this.toggleOptions = this.toggleOptions.bind(this);
-        this.toggleFullScreen = this.toggleFullScreen.bind(this);
-
-        this.state = {
-            zenText: "Enable Zenmode"
-        };
-    }
-    toggleFullScreen(e) {
+    state = {
+        zenText: "Enable Zenmode"
+    };
+    
+    toggleFullScreen = e => {
         e.preventDefault();
         const isDistractFree = document.body.classList.contains(
             "distract-free"
@@ -24,9 +19,9 @@ class PublishDrawer extends Component {
             document.body.classList.add("distract-free");
             this.setState({ zenText: "Disable Zenmode" });
         }
-    }
+    };
 
-    toggleOptions(e) {
+    toggleOptions = e => {
         e.preventDefault();
         if (document.body.classList.contains("options-open")) {
             document.body.classList.remove("options-open");
@@ -35,7 +30,7 @@ class PublishDrawer extends Component {
             document.body.classList.add("options-open");
             qs(".article-holder").classList.remove("col-lg-offset-2");
         }
-    }
+    };
     render() {
         return (
             <div style={{ display: "flex" }}>

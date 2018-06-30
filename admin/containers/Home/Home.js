@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import { GettingStarted, QuickDraft, Stats } from "../../components/Home";
 import CreatePost from "../../data-connectors/CreatePost";
 import GetStats from "../../data-connectors/GetStats";
@@ -10,12 +11,9 @@ class Home extends Component {
         loading: PropTypes.bool,
         createPost: PropTypes.func
     };
-    constructor(props) {
-        super(props);
-        this.draftPost = this.draftPost.bind(this);
-        document.body.classList.add("home-page");
-    }
+
     componentDidMount() {
+        document.body.classList.add("home-page");
         const elem = document.querySelector(".masonry-grid");
         setTimeout(() => {
             new Masonry(elem, {
@@ -29,14 +27,14 @@ class Home extends Component {
         document.body.classList.remove("home-page");
     }
 
-    draftPost() {
+    draftPost = () => {
         const qsv = ele => document.querySelector(ele).value;
         this.props.createPost({
             title: qsv("#quick-post-title"),
             body: qsv("#quick-post-body"),
             type: "post"
         });
-    }
+    };
 
     render() {
         return (

@@ -11,17 +11,15 @@ const ModalHoc = (WrappedComponent, id = "", classes = "") => {
             stateName: PropTypes.string
         };
 
-        constructor(props) {
-            super(props);
-            this.state = {
-                isOpen: this.props.isOpen,
-                isFadeIn: this.props.isOpen
-            };
-            this.modalWrapperRef = React.createRef();
-            this.timerIds = [];
-        }
+        state = {
+            isOpen: this.props.isOpen,
+            isFadeIn: this.props.isOpen
+        };
 
-        componentWillMount() {
+        modalWrapperRef = React.createRef();
+        timerIds = [];
+
+        componentDidMount() {
             this.open();
         }
 
@@ -29,11 +27,11 @@ const ModalHoc = (WrappedComponent, id = "", classes = "") => {
             this.clearSetUp();
         }
 
-        open() {
+        open = () => {
             this.setUp();
             this.setState({ isOpen: true });
             this.timerIds.push(window.setTimeout(this.fadeIn, 0));
-        }
+        };
 
         close = () => {
             this.fadeOut();
@@ -41,23 +39,23 @@ const ModalHoc = (WrappedComponent, id = "", classes = "") => {
             this.timerIds.push(window.setTimeout(this.cleanUp, 600));
         };
 
-        setUp() {
+        setUp = () => {
             document.body.classList.add("modal-open");
             window.addEventListener("keydown", this.onEscKeyDown, false);
-        }
+        };
 
-        clearSetUp() {
+        clearSetUp = () => {
             document.body.classList.remove("modal-open");
             window.removeEventListener("keydown", this.onEscKeyDown, false);
-        }
+        };
 
         fadeIn = () => {
             this.setState({ isFadeIn: true });
         };
 
-        fadeOut() {
+        fadeOut = () => {
             this.setState({ isFadeIn: false });
-        }
+        };
 
         onEscKeyDown = evt => {
             if (evt.keyCode !== 27) return;
@@ -74,11 +72,11 @@ const ModalHoc = (WrappedComponent, id = "", classes = "") => {
             });
         };
 
-        handleClick(evt) {
+        handleClick = evt => {
             if (evt.target !== this.modalWrapperRef.current) return;
             evt.preventDefault();
             this.close();
-        }
+        };
 
         submit = () => {
             /* unimplemented */

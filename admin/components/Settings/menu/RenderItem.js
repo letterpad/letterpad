@@ -8,17 +8,12 @@ export default class RenderItem extends Component {
         handler: PropTypes.any.isRequired,
         removeItem: PropTypes.func.isRequired
     };
+
     state = {
         collapse: true,
-        disabled: "",
+        disabled: this.props.item.type != "category",
         ...this.props.item
     };
-
-    componentWillMount() {
-        this.setState({
-            disabled: this.props.item.type != "category"
-        });
-    }
 
     toggleCollapse = () => {
         this.setState({ collapse: !this.state.collapse });

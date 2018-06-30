@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { notify } from "react-notify-toast";
 import { Link } from "react-router-dom";
-import PostActions from "./PostActions";
-import UpdatePost from "../../data-connectors/UpdatePost";
 import PropTypes from "prop-types";
+
+import UpdatePost from "../../data-connectors/UpdatePost";
+import PostActions from "./PostActions";
 import { plural } from "../../../shared/util";
 
 export class PostPublish extends Component {
@@ -15,28 +16,24 @@ export class PostPublish extends Component {
         create: PropTypes.bool,
         toggleActionDrawer: PropTypes.func.isRequired
     };
-    constructor(props) {
-        super(props);
-        this.changePostStatus = this.changePostStatus.bind(this);
-        this.toggleZenView = this.toggleZenView.bind(this);
-        this.afterPostSave = this.afterPostSave.bind(this);
-        this.state = {
-            post: this.props.post,
-            published: this.props.post.status == "publish",
-            zenview: false
-        };
-    }
+
+    state = {
+        post: this.props.post,
+        published: this.props.post.status == "publish",
+        zenview: false
+    };
 
     componentDidMount() {
         PostActions.setData(this.props.post);
     }
 
-    changePostStatus(e) {
+    changePostStatus = e => {
         this.setState({
             published: ~~e.target.checked
         });
-    }
-    afterPostSave(post) {
+    };
+
+    afterPostSave = post => {
         let eventName = null;
         let notifyMessage = null;
         // if the status is trash, redirect the user to posts or pages depending on the post type.
@@ -68,8 +65,9 @@ export class PostPublish extends Component {
             // Trigger an event. This will allow other components to listen to post create, update events
             PostActions.triggerEvent(eventName, post);
         }
-    }
-    async updatePost(e, statusObj) {
+    };
+
+    updatePost = async (e, statusObj) => {
         if (e) e.preventDefault();
         PostActions.setData(statusObj);
         let data = PostActions.getData();
@@ -86,9 +84,9 @@ export class PostPublish extends Component {
             errors = errors.map(error => error.message);
             notify.show(errors.join("\n"), "error", 3000);
         }
-    }
+    };
 
-    getButton(label, btnType = "btn-primary", status) {
+    getButton = (label, btnType = "btn-primary", status) => {
         if (typeof status == "undefined") {
             status = this.state.published ? "publish" : "draft";
         }
@@ -104,11 +102,13 @@ export class PostPublish extends Component {
                     </button>
                 </div>
             );
-    }
-    toggleZenView(e) {
+    };
+
+    toggleZenView = e => {
         e.preventDefault();
         document.body.classList.toggle("distract-free");
-    }
+    };
+
     render() {
         const publishedCls = this.state.published ? "on" : "off";
         const actionLabel = this.props.create ? "Create" : "Update";
