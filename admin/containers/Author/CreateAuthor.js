@@ -22,27 +22,25 @@ class CreateAuthor extends Component {
         loading: PropTypes.bool,
         roles: PropTypes.array
     };
+    
     constructor(props) {
         super(props);
         this.author = {};
-        this.submitData = this.submitData.bind(this);
-        this.setOption = this.setOption.bind(this);
-        this.selectRole = this.selectRole.bind(this);
         document.body.classList.add("create-author-page");
     }
     componentWillUnmount() {
         document.body.classList.remove("create-author-page");
     }
 
-    selectRole(e) {
+    selectRole = e => {
         this.setOption("role_id", e.target.value);
-    }
+    };
 
-    setOption(option, value) {
+    setOption = (option, value) => {
         this.author[option] = value;
-    }
+    };
 
-    async submitData(e) {
+    submitData = async e => {
         e.preventDefault();
         const update = await this.props.createAuthor(this.author);
         let { errors } = update.data.createAuthor;
@@ -53,7 +51,8 @@ class CreateAuthor extends Component {
             notify.show("Author created", "success");
             this.props.history.push("/admin/authors");
         }
-    }
+    };
+
     render() {
         if (this.props.loading) {
             return <Loader />;

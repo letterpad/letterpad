@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import ModalHoc from "../../components/ModalHoc";
 import PropTypes from "prop-types";
+
+import ModalHoc from "../../components/ModalHoc";
 import FileExplorer from "../../containers/FileExplorer/FileExplorer";
 
 class FileExplorerModal extends Component {
@@ -17,6 +18,7 @@ class FileExplorerModal extends Component {
         e.preventDefault();
         this.setState({ page });
     };
+    
     render() {
         const { t } = this.context;
         return (

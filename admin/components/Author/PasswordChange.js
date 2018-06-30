@@ -10,13 +10,10 @@ export default class PasswordChange extends Component {
         t: PropTypes.func
     };
 
-    constructor(props) {
-        super(props);
-        this.updateOption = this.updateOption.bind(this);
-    }
-    updateOption(option, value) {
+    updateOption = (option, value) => {
         this.props.updateOption("password", value);
     }
+    
     render() {
         const { t } = this.context;
         return (

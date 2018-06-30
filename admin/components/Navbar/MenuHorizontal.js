@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import MenuItems from "./MenuItems";
 import PropTypes from "prop-types";
 

@@ -1,6 +1,7 @@
 import React from "react";
-import ModalHoc from "../ModalHoc";
 import PropTypes from "prop-types";
+
+import ModalHoc from "../ModalHoc";
 
 const EditMenuModal = (props, context) => {
     const { t } = context;

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+
 import MediaItem from "../../components/Media/MediaItem";
 import EditMediaInfo from "../../components/Media/EditMediaInfo";
 import ConfirmDeleteModal from "../../components/Modals/ConfirmDeleteModal";
@@ -25,23 +26,19 @@ class Media extends Component {
         updateMedia: PropTypes.func,
         author: PropTypes.object
     };
+
     static defaultProps = {
         media: {
             rows: []
         }
     };
+
     static contextTypes = {
         t: PropTypes.func
     };
+
     constructor(props) {
         super(props);
-        this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
-        this.deleteMediaFinal = this.deleteMediaFinal.bind(this);
-        this.toggleMediaInfo = this.toggleMediaInfo.bind(this);
-        this.uploadImage = this.uploadImage.bind(this);
-        this.selectNextMedia = this.selectNextMedia.bind(this);
-        this.selectPreviousMedia = this.selectPreviousMedia.bind(this);
-
         this.state = {
             page: 1,
             confirmDelete: false,
@@ -56,6 +53,7 @@ class Media extends Component {
 
         document.body.classList.add("media-page");
     }
+
     static getDerivedStateFromProps(nextProps, prevState) {
         const newState = {
             items: [...nextProps.media.rows]
@@ -73,14 +71,14 @@ class Media extends Component {
         document.body.classList.remove("media-page");
     }
 
-    toggleDeleteModal(media = {}) {
+    toggleDeleteModal = (media = {}) => {
         this.setState({
             confirmDelete: !this.state.confirmDelete,
             selectedItem: media
         });
     }
 
-    deleteMediaFinal() {
+    deleteMediaFinal = ()=>  {
         this.props.deleteMedia({
             id: this.state.selectedItem.id
         });
@@ -88,7 +86,7 @@ class Media extends Component {
         this.setState({ deleteMedia: true });
     }
 
-    toggleMediaInfo(selectedItem) {
+    toggleMediaInfo =(selectedItem) => {
         let selectedIndex = this.state.selectedIndex;
         if (selectedItem) {
             // find the index of this item.
@@ -106,7 +104,7 @@ class Media extends Component {
         });
     }
 
-    async uploadImage(files) {
+    uploadImage = async (files) => {
         await uploadFile({ files, type: "post_image" });
         // if the user is in page 1, just refetch the items of page 1
         if (this.props.match.params.page == 1) {
@@ -122,7 +120,7 @@ class Media extends Component {
         }
     }
 
-    selectNextMedia() {
+    selectNextMedia = () => {
         const newState = {};
         if (this.state.selectedIndex === this.state.items.length - 1) {
             newState.selectedIndex = 0;
@@ -135,7 +133,7 @@ class Media extends Component {
         this.setState(newState);
     }
 
-    selectPreviousMedia() {
+    selectPreviousMedia =() => {
         const newState = {};
         if (this.state.selectedIndex === 0) {
             newState.selectedIndex = this.state.items.length - 1;
@@ -234,6 +232,7 @@ const Paginate = ({ count, page }) => {
         </ul>
     );
 };
+
 Paginate.propTypes = {
     count: PropTypes.number,
     page: PropTypes.number

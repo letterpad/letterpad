@@ -30,4 +30,5 @@ Paginate.propTypes = {
     page: PropTypes.number,
     changePage: PropTypes.func
 };
+
 export default Paginate;

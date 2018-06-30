@@ -2,15 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 export default class AdditionalSettings extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            displayAuthor: JSON.parse(this.props.data.displayAuthorInfo.value)
-        };
-        this.changeAuthorDisplay = this.changeAuthorDisplay.bind(this);
-        this.updateOption = this.updateOption.bind(this);
-    }
-    changeAuthorDisplay(e) {
+    state = {
+        displayAuthor: JSON.parse(this.props.data.displayAuthorInfo.value)
+    };
+
+    changeAuthorDisplay = e => {
         this.setState(
             {
                 displayAuthor: e.target.checked
@@ -22,10 +18,12 @@ export default class AdditionalSettings extends Component {
                 );
             }
         );
-    }
-    updateOption(option, value) {
+    };
+
+    updateOption = (option, value) => {
         this.props.updateOption(option, value);
-    }
+    };
+
     render() {
         const { t } = this.context;
         return (
@@ -106,10 +104,12 @@ export default class AdditionalSettings extends Component {
         );
     }
 }
+
 AdditionalSettings.propTypes = {
     data: PropTypes.object,
     updateOption: PropTypes.func
 };
+
 AdditionalSettings.contextTypes = {
     t: PropTypes.func
 };

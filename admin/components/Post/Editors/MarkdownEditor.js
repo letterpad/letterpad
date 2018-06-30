@@ -1,20 +1,19 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import marked from "marked";
+
 import { CodeFlask } from "../../../libraries/code-flask";
 import PostActions from "../PostActions";
-import PropTypes from "prop-types";
-const marked = require("marked");
 
 class MarkdownEditor extends Component {
     static propTypes = {
         mdBody: PropTypes.string
     };
-    constructor(props) {
-        super(props);
-        this.getPreview = this.getPreview.bind(this);
-        this.state = {
-            body: this.props.mdBody
-        };
-    }
+
+    state = {
+        body: this.props.mdBody
+    };
+
     componentDidMount() {
         var flask = new CodeFlask();
         flask.run("#md-post", {
@@ -34,9 +33,9 @@ class MarkdownEditor extends Component {
         });
     }
 
-    getPreview(text) {
+    getPreview = text => {
         return marked(text).replace(/<pre>/g, "<pre class=\"hljs\">");
-    }
+    };
 
     componentDidUpdate() {
         document.querySelectorAll(".hljs code").forEach(hljs.highlightBlock);

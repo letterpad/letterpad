@@ -3,15 +3,12 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 export class MenuTree extends Component {
-    constructor(props) {
-        super(props);
-        this.onSelect = this.onSelect.bind(this);
-        this.state = {
-            data: this.props.data,
-            permissions: this.props.permissions,
-            route: this.props.route
-        };
-    }
+    state = {
+        data: this.props.data,
+        permissions: this.props.permissions,
+        route: this.props.route
+    };
+
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
             route: nextProps.route,
@@ -19,7 +16,7 @@ export class MenuTree extends Component {
         };
     }
 
-    onSelect(data) {
+    onSelect = data => {
         const newData = this.props.data.map(item => {
             if (item.name === data.name) {
                 return data;
@@ -28,7 +25,8 @@ export class MenuTree extends Component {
         });
         this.setState({ data: newData });
         this.props.setData(newData);
-    }
+    };
+
     render() {
         const sorted = this.state.data.sort((a, b) => a.priority - b.priority);
 
@@ -54,17 +52,12 @@ MenuTree.propTypes = {
 };
 
 class TreeNode extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            collapsed:
-                "collapsed" in this.props.data
-                    ? this.props.data.collapsed
-                    : true,
-            selected: this.props.data.slug === this.props.route ? "active" : ""
-        };
-        this.onClick = this.onClick.bind(this);
-    }
+    state = {
+        collapsed:
+            "collapsed" in this.props.data ? this.props.data.collapsed : true,
+        selected: this.props.data.slug === this.props.route ? "active" : ""
+    };
+
     static getDerivedStateFromProps(nextProps, prevState) {
         const newState = {};
         if ("collapsed" in nextProps.data && !nextProps.data.collapsed) {
@@ -76,7 +69,7 @@ class TreeNode extends Component {
         return newState;
     }
 
-    onClick(e) {
+    onClick = e => {
         e.preventDefault();
         this.setState(
             {
@@ -90,7 +83,7 @@ class TreeNode extends Component {
                 this.props.setSelection(data);
             }
         );
-    }
+    };
 
     render() {
         const { t } = this.context;
@@ -179,7 +172,9 @@ TreeNode.propTypes = {
     permissions: PropTypes.array,
     route: PropTypes.string
 };
+
 TreeNode.contextTypes = {
     t: PropTypes.func
 };
+
 export default TreeNode;

@@ -2,14 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 export default class Profile extends Component {
-    constructor(props) {
-        super(props);
-        this.updateOption = this.updateOption.bind(this);
-    }
-
-    updateOption(option, value) {
+    updateOption = (option, value) => {
         this.props.updateOption(option, value);
-    }
+    };
+
     render() {
         return (
             <div>

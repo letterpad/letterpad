@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import { PostRows } from "../../components/Post";
 import PostsHoc from "../Hoc/PostsHoc";
 import Paginate from "../../components/Paginate";
