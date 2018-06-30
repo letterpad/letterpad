@@ -22,7 +22,7 @@ export default [
                 switch (obj.type) {
                     case "code":
                         return (
-                            <pre>
+                            <pre className="hljs">
                                 <code>{children}</code>
                             </pre>
                         );
@@ -39,9 +39,9 @@ export default [
                                 className={obj.data.get("className")}
                             />
                         );
-
                     case "quote":
                         return <blockquote>{children}</blockquote>;
+
                     default:
                         return <p />;
                 }
@@ -69,6 +69,10 @@ export default [
                         return <em>{children}</em>;
                     case "underline":
                         return <u>{children}</u>;
+                    case "code":
+                        return <code>{children}</code>;
+                    case "link":
+                        return <a href={obj.data.get("href")}>{children}</a>;
                 }
             }
         }

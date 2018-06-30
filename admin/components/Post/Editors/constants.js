@@ -8,5 +8,6 @@ export const BLOCK_TAGS = {
 export const MARK_TAGS = {
     em: "italic",
     strong: "bold",
-    u: "underline"
+    u: "underline",
+    pre: "code"
 };

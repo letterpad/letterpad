@@ -169,17 +169,28 @@ class SlateEditor extends React.Component {
      */
 
     renderMark = props => {
-        const { children, mark, attributes } = props;
+        const { children, mark, attributes, node } = props;
 
         switch (mark.type) {
             case "bold":
                 return <strong {...attributes}>{children}</strong>;
             case "code":
                 return <code {...attributes}>{children}</code>;
+            case "pre":
+                return <pre {...attributes}>{children}</pre>;
             case "italic":
                 return <em {...attributes}>{children}</em>;
-            case "underlined":
+            case "underline":
                 return <u {...attributes}>{children}</u>;
+            case "link": {
+                const { data } = node;
+                const href = data.get("href");
+                return (
+                    <a {...attributes} href={href}>
+                        {children}
+                    </a>
+                );
+            }
         }
     };
 

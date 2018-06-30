@@ -74,8 +74,9 @@ export default class TextMenu extends React.Component {
             <div className="menu hover-menu" ref={this.props.menuRef}>
                 {this.renderMarkButton("bold", "format_bold")}
                 {this.renderMarkButton("italic", "format_italic")}
-                {this.renderMarkButton("underlined", "format_underlined")}
+                {this.renderMarkButton("underline", "format_underlined")}
                 {this.renderMarkButton("code", "code")}
+                {this.renderMarkButton("link", "link")}
             </div>
         );
     }
