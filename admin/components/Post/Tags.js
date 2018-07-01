@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { WithContext as ReactTags } from "react-tag-input";
 import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
+import Select from "react-select";
 
 import { TAX_SUGGESTIONS } from "../../../shared/queries/Queries";
 import PostActions from "./PostActions";
@@ -12,54 +12,41 @@ export class Tags extends Component {
         post: PropTypes.object
     };
 
-    tags = [];
+    state = {
+        tags: []
+    };
 
     componentDidMount() {
-        this.tags = this.props.post.taxonomies
+        const tags = this.props.post.taxonomies
             .filter(tax => {
                 return tax.type === "post_tag";
             })
             .map(tax => {
-                tax = { ...tax };
                 delete tax["__typename"];
                 return tax;
             });
-        PostActions.setTaxonomies({ post_tag: this.tags });
+
+        PostActions.setTaxonomies({ post_tag: tags });
+        this.setState({ tags });
     }
-
-    handleDelete(i) {
-        this.tags.splice(i, 1);
-    }
-
-    handleAddition(tag) {
-        let found = this.tags.some(ele => ele.name === tag);
-        let foundInSuggestion = this.props.suggestions.filter(
-            ele => (ele.name === tag ? ele.id : 0)
-        );
-
-        let id = foundInSuggestion.length > 0 ? foundInSuggestion[0].id : 0;
-        if (!found) {
-            this.tags.push({
-                id: id,
-                name: tag,
-                type: "post_tag"
-            });
-            PostActions.setTaxonomies({ post_tag: this.tags });
-        }
-    }
-
-    handleDrag(tag, currPos, newPos) {
-        // mutate array
-        this.tags.splice(currPos, 1);
-        this.tags.splice(newPos, 0, tag);
-
-        PostActions.setTaxonomies({ post_tag: this.tags });
-    }
-
+    handleOnChange = tags => {
+        const newTags = tags.map(tag => {
+            // check if this is a new custom tag
+            if (!tag.id) {
+                return {
+                    id: 0,
+                    name: tag.name,
+                    type: "post_tag",
+                    slug: tag.name
+                };
+            }
+            delete tag["__typename"];
+            return tag;
+        });
+        PostActions.setTaxonomies({ post_tag: newTags });
+        this.setState({ tags: newTags });
+    };
     render() {
-        let suggestions = this.props.suggestions || [];
-        suggestions = suggestions.map(t => t.name);
-
         return (
             <div className="card">
                 <div className="x_title">
@@ -68,15 +55,13 @@ export class Tags extends Component {
                 </div>
                 <div className="x_content">
                     <div className="control-group">
-                        <ReactTags
-                            suggestions={suggestions}
-                            autofocus={false}
-                            placeholder="Add new tag..."
-                            tags={this.tags}
-                            labelField="name"
-                            handleDelete={this.handleDelete.bind(this)}
-                            handleAddition={this.handleAddition.bind(this)}
-                            handleDrag={this.handleDrag.bind(this)}
+                        <Select.Creatable
+                            labelKey="name"
+                            valueKey="name"
+                            value={this.state.tags}
+                            onChange={this.handleOnChange}
+                            options={this.props.suggestions}
+                            multi={true}
                         />
                     </div>
                 </div>
