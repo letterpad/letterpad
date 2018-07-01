@@ -23,6 +23,7 @@ import { BoldMark } from "../plugins/bold";
 import { ItalicMark } from "../plugins/italic";
 import { UnderlineMark } from "../plugins/underline";
 import { HighlightMark } from "../plugins/highlight";
+import { LinkNode } from "../plugins/link";
 
 /* eslint-disable default-case */
 export const renderNode = props => {
@@ -41,8 +42,8 @@ export const renderNode = props => {
             return <ImageNode {...props} />;
         // case "imageLink":
         //     return <ImageLinkNode {...props} />;
-        // case "link":
-        //     return <LinkNode {...props} />;
+        case "link":
+            return <LinkNode {...props} />;
         case "list-item":
             return <ListItemNode {...props} />;
         case "ordered-list":

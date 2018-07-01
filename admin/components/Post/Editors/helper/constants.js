@@ -12,3 +12,7 @@ export const MARK_TAGS = {
     pre: "code",
     code: "highlight"
 };
+
+export const INLINE_TAGS = {
+    a: "link"
+};

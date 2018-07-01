@@ -13,6 +13,7 @@ import { ImageButton, ImagePlugin } from "./Editors/plugins/image";
 import ToolBar from "./Editors/SlateEditor/ToolBar";
 import rules from "./Editors/helper/rules";
 import PostActions from "./PostActions";
+import { LinkPlugin, LinkButton } from "./Editors/plugins/link";
 
 const html = new Html({ rules });
 const plugins = [
@@ -21,7 +22,8 @@ const plugins = [
     UnderlinePlugin(),
     HighlightPlugin(),
     ListPlugin(),
-    ImagePlugin()
+    ImagePlugin(),
+    LinkPlugin()
 ];
 
 class Editor extends Component {
@@ -102,6 +104,7 @@ class Editor extends Component {
                         <UnderlineButton />
                         <HighlightButton />
                         <ListButtonBar />
+                        <LinkButton />
                     </TextMenu>
                     <SlateContent />
                     <ToolBar value={this.state.value}>

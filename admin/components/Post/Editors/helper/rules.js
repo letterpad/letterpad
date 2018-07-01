@@ -1,5 +1,5 @@
 import React from "react";
-import { BLOCK_TAGS, MARK_TAGS } from "./constants";
+import { BLOCK_TAGS, MARK_TAGS, INLINE_TAGS } from "./constants";
 
 export default [
     {
@@ -11,7 +11,8 @@ export default [
                     type: type,
                     data: {
                         className: el.getAttribute("class"),
-                        src: el.getAttribute("src") || null
+                        src: el.getAttribute("src") || null,
+                        href: el.getAttribute("href") || null
                     },
                     nodes: next(el.childNodes)
                 };
@@ -71,9 +72,36 @@ export default [
                         return <u>{children}</u>;
                     case "highlight":
                         return <code>{children}</code>;
-                    case "link":
-                        return <a href={obj.data.get("href")}>{children}</a>;
                 }
+            }
+        }
+    },
+    {
+        deserialize: function(el, next) {
+            if (el.tagName != "a") {
+                return;
+            }
+            const type = INLINE_TAGS[el.tagName];
+
+            if (!type) {
+                return;
+            }
+            return {
+                object: "inline",
+                type: type,
+                nodes: next(el.childNodes),
+                data: {
+                    href: el.attrs.find(({ name }) => name == "href").value
+                }
+            };
+        },
+        serialize: function(obj, children) {
+            if (obj.object != "inline") {
+                return;
+            }
+            switch (obj.type) {
+                case "link":
+                    return <a href={obj.data.get("href")}>{children}</a>;
             }
         }
     }
