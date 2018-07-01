@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { WithContext as ReactTags } from "react-tag-input";
 import { gql, graphql } from "react-apollo";
-import PostActions from "./PostActions";
 import PropTypes from "prop-types";
+import Select from "react-select";
+
+import PostActions from "./PostActions";
 
 export class Categories extends Component {
     static propTypes = {
@@ -20,56 +21,31 @@ export class Categories extends Component {
             })
             .map(tax => {
                 delete tax["__typename"];
-                // react tags does uses text as a param internally
-                // so we need to add this key.
-                tax.text = tax.name;
                 return tax;
             });
         PostActions.setTaxonomies({ post_category: categories });
         this.setState({ categories });
     }
 
-    handleDelete = i => {
-        const categories = [...this.state.categories];
-        categories.splice(i, 1);
-        PostActions.setTaxonomies({ post_category: categories });
-        this.setState({ categories });
-    };
-
-    handleAddition = tag => {
-        let found = this.state.categories.some(ele => ele.name === tag);
-        let foundInSuggestion = this.props.suggestions.filter(
-            ele => (ele.name === tag ? ele.id : 0)
-        );
-
-        let id = foundInSuggestion.length > 0 ? foundInSuggestion[0].id : 0;
-        if (!found) {
-            const categories = [
-                ...this.state.categories,
-                {
-                    id: id,
-                    name: tag,
-                    text: tag,
-                    type: "post_category"
-                }
-            ];
-            PostActions.setTaxonomies({ post_category: categories });
-            this.setState({ categories });
-        }
-    };
-
-    handleDrag = (tag, currPos, newPos) => {
-        const categories = [...this.state.categories];
-        categories.splice(currPos, 1);
-        categories.splice(newPos, 0, tag);
-        PostActions.setTaxonomies({ post_category: categories });
-        this.setState({ categories });
+    handleOnChange = categories => {
+        const newCategories = categories.map(category => {
+            // check if this is a new custom tag
+            if (!category.id) {
+                return {
+                    id: 0,
+                    name: category.name,
+                    type: "post_category",
+                    slug: category.name
+                };
+            }
+            delete category["__typename"];
+            return category;
+        });
+        PostActions.setTaxonomies({ post_category: newCategories });
+        this.setState({ categories: newCategories });
     };
 
     render() {
-        let suggestions = this.props.suggestions || [];
-        suggestions = suggestions.map(t => t.name);
-
         return (
             <div className="card">
                 <div className="x_title">
@@ -78,15 +54,13 @@ export class Categories extends Component {
                 </div>
                 <div className="x_content">
                     <div className="control-group">
-                        <ReactTags
-                            suggestions={suggestions}
-                            autofocus={false}
-                            placeholder="Add new category..."
-                            tags={this.state.categories}
-                            labelField="name"
-                            handleDelete={this.handleDelete}
-                            handleAddition={this.handleAddition}
-                            handleDrag={this.handleDrag}
+                        <Select.Creatable
+                            labelKey="name"
+                            valueKey="name"
+                            value={this.state.categories}
+                            onChange={this.handleOnChange}
+                            options={this.props.suggestions}
+                            multi={true}
                         />
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import { uploadFile } from "../../util";
 import config from "config";
 import UploadCoverImage from "../../data-connectors/UploadCoverImage";
@@ -20,19 +21,15 @@ class FeaturedImage extends Component {
             cover_image: ""
         }
     };
-    constructor(props) {
-        super(props);
-        this.state = {
-            cover_image: this.props.post.cover_image,
-            fileExplorerOpen: false
-        };
-        this.uploadInputRef = React.createRef();
-        this.updateFeaturedImage = this.updateFeaturedImage.bind(this);
-        this.toggleFileExplorer = this.toggleFileExplorer.bind(this);
-        this.uploadImage = this.uploadImage.bind(this);
-    }
 
-    async uploadImage(files) {
+    state = {
+        cover_image: this.props.post.cover_image,
+        fileExplorerOpen: false
+    };
+
+    uploadInputRef = React.createRef();
+
+    uploadImage = async files => {
         const uploadedFiles = await uploadFile({
             files,
             type: "featured_image"
@@ -40,18 +37,18 @@ class FeaturedImage extends Component {
         const coverImage = uploadedFiles[0];
         await this.props.insertMedia({ url: coverImage });
         this.updateFeaturedImage(coverImage);
-    }
+    };
 
-    updateFeaturedImage(coverImage) {
+    updateFeaturedImage = coverImage => {
         this.props.updateFeaturedImage({
             id: this.props.post.id,
             cover_image: coverImage
         });
         this.setState({ cover_image: coverImage, fileExplorerOpen: false });
         this.props.toggleFileExplorerModal({ display: false });
-    }
+    };
 
-    toggleFileExplorer() {
+    toggleFileExplorer = () => {
         this.setState(
             { fileExplorerOpen: !this.state.fileExplorerOpen },
             () => {
@@ -66,7 +63,7 @@ class FeaturedImage extends Component {
                 });
             }
         );
-    }
+    };
 
     render() {
         const { t } = this.context;

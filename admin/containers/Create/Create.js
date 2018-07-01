@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+
 import {
     ArticleCreate,
     PostPublish,
     PostActions,
     PostActionDrawer
 } from "../../components/Post";
-import { Link } from "react-router-dom";
 import CreatePost from "../../data-connectors/CreatePost";
 import FileExplorerModal from "../../components/Modals/FileExplorerModal";
 import MdPreview from "../../components/Post/MdPreview";
@@ -21,21 +22,14 @@ export class Create extends Component {
         manageScroll: PropTypes.func
     };
 
-    constructor(props) {
-        super(props);
-        this.handlePostChanges = this.handlePostChanges.bind(this);
-        this.toggleActionDrawer = this.toggleActionDrawer.bind(this);
-        this.toggleZenView = this.toggleZenView.bind(this);
-        this.toggleFileExplorerModal = this.toggleFileExplorerModal.bind(this);
-        this.state = {
-            loading: true,
-            post: {},
-            fileExplorerProps: {},
-            actionDrawerOpen: false
-        };
-    }
+    state = {
+        loading: true,
+        post: {},
+        fileExplorerProps: {},
+        actionDrawerOpen: false
+    };
 
-    componentWillMount() {
+    componentDidMount() {
         const { type } = this.props;
         // we need this only to listen mardown/richtext changes
         window.addEventListener("onPostChange", this.handlePostChanges);
@@ -54,9 +48,7 @@ export class Create extends Component {
                 preview: ""
             });
         });
-    }
 
-    componentDidMount() {
         document.body.classList.add("create-" + this.props.type + "-page");
     }
 
@@ -65,7 +57,7 @@ export class Create extends Component {
         window.removeEventListener("onPostChange", this.handlePostChanges);
     }
 
-    handlePostChanges(e) {
+    handlePostChanges = e => {
         if (PostActions.data.mode == "markdown") {
             this.props.manageScroll();
             if ("mdPreview" in e.detail) {
@@ -74,23 +66,23 @@ export class Create extends Component {
         } else {
             this.setState({ preview: "" });
         }
-    }
+    };
 
-    toggleActionDrawer(e) {
+    toggleActionDrawer = e => {
         e.preventDefault();
         this.setState({ actionDrawerOpen: !this.state.actionDrawerOpen });
-    }
+    };
 
-    toggleFileExplorerModal(props) {
+    toggleFileExplorerModal = props => {
         this.setState({
             fileExplorerProps: props
         });
-    }
+    };
 
-    toggleZenView(e) {
+    toggleZenView = e => {
         e.preventDefault();
         document.body.classList.toggle("distract-free");
-    }
+    };
 
     render() {
         if (this.state.loading) {

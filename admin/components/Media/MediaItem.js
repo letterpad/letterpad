@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import config from "../../../config";
 import { notify } from "react-notify-toast";
+
+import config from "../../../config";
 
 export default class MediaItem extends Component {
     static propTypes = {
@@ -13,25 +14,22 @@ export default class MediaItem extends Component {
         editMediaInfo: PropTypes.func
     };
 
-    constructor(props) {
-        super(props);
-        this.deleteMedia = this.deleteMedia.bind(this);
-        this.mediaClicked = this.mediaClicked.bind(this);
-        this.editInfo = this.editInfo.bind(this);
-    }
-    postSelected(e) {
+    postSelected = (e) => {
         e.preventDefault();
         e.stopPropagation();
     }
-    deleteMedia(e) {
+
+    deleteMedia = (e) => {
         e.preventDefault();
         this.props.confirmDelete(this.props.media);
     }
-    editInfo(e) {
+
+    editInfo = (e) => {
         e.preventDefault();
         this.props.editMediaInfo(this.props.media);
     }
-    copyToClipboard(e) {
+
+    copyToClipboard = (e) => {
         e.preventDefault();
         const textField = document.createElement("textarea");
         textField.innerText = e.target.href;
@@ -41,7 +39,8 @@ export default class MediaItem extends Component {
         textField.remove();
         notify.show("Link copied", "success");
     }
-    mediaClicked() {
+
+    mediaClicked = () => {
         const url = config.baseName + this.props.media.url;
         window.open(url);
     }

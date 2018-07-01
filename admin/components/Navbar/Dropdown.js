@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import Item from "./Item";
 
 const Markup = ({ title, items, className, caret, toggleDropdown, isOpen }) => {
@@ -24,18 +26,27 @@ const Markup = ({ title, items, className, caret, toggleDropdown, isOpen }) => {
         </li>
     );
 };
+Markup.propTypes = {
+    title: PropTypes.string,
+    items: PropTypes.array.isRequired,
+    className: PropTypes.string,
+    caret: PropTypes.bool.isRequired,
+    toggleDropdown: PropTypes.func.isRequired,
+    isOpen: PropTypes.func.isRequired
+};
 
 class Dropdown extends Component {
-    constructor(props) {
-        super(props);
-        this.toggleDropdown = this.toggleDropdown.bind(this);
-        this.state = {
-            open: false
-        };
-    }
+    static propTypes = {
+        name: PropTypes.string,
+        children: PropTypes.array.isRequired
+    };
 
-    toggleDropdown() {
-        this.setState({ open: !this.state.open });
+    state = {
+        open: false
+    };
+
+    toggleDropdown = () => {
+        this.setState(s => ({ open: !s.open }));
     }
 
     render() {

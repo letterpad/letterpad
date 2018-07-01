@@ -1,20 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
+import PropTypes from "prop-types";
+
 import User from "./TopBar/User";
 import PublishDrawer from "./TopBar/PublishDrawer";
 
-class TopBar extends Component {
-    render() {
-        return (
-            <div className="top-bar">
-                <div className="left-block pull-left">
-                    <PublishDrawer />
-                </div>
-                <div className="right-block pull-right">
-                    <User author={this.props.author} />
-                </div>
-            </div>
-        );
-    }
-}
+const TopBar = ({ author }) => (
+    <div className="top-bar">
+        <div className="left-block pull-left">
+            <PublishDrawer />
+        </div>
+        <div className="right-block pull-right">
+            <User author={author} />
+        </div>
+    </div>
+);
+
+TopBar.propTypes = {
+    author: PropTypes.object.isRequired
+};
 
 export default TopBar;

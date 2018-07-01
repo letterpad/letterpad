@@ -1,20 +1,25 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-class Item extends Component {
-    render() {
-        let slug = "";
-        if (this.props.type === "page") {
-            slug = "/page/" + this.props.slug;
-        } else if (this.props.type == "category") {
-            slug = "/posts/" + this.props.slug;
-        }
-        return (
-            <li>
-                <Link to={slug}>{this.props.name}</Link>
-            </li>
-        );
+const Item = ({ type, slug, name }) => {
+    let pathname = "";
+    if (type === "page") {
+        pathname = "/page/" + slug;
+    } else if (type == "category") {
+        pathname = "/posts/" + slug;
     }
-}
+    return (
+        <li>
+            <Link to={pathname}>{name}</Link>
+        </li>
+    );
+};
+
+Item.propTypes = {
+    type: PropTypes.string.isRequired,
+    slug: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
+};
 
 export default Item;

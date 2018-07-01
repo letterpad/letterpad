@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import { PostRows } from "../../components/Post";
 import PostsHoc from "../Hoc/PostsHoc";
 import Paginate from "../../components/Paginate";
@@ -28,14 +29,12 @@ class Posts extends Component {
         t: PropTypes.func
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            status: "publish",
-            loading: true,
-            posts: null
-        };
-    }
+    state = {
+        status: "publish",
+        loading: true,
+        posts: null
+    };
+    
     componentDidMount() {
         document.body.classList.add("posts-page");
     }

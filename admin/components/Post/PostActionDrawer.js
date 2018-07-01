@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+
 import { FeaturedImage, Tags, Categories, Excerpt, PostMeta } from "./";
 
 class PostActionDrawer extends Component {
@@ -29,10 +30,12 @@ class PostActionDrawer extends Component {
         );
     }
 }
+
 PostActionDrawer.propTypes = {
     toggleActionDrawer: PropTypes.func,
     isOpen: PropTypes.bool,
     toggleFileExplorerModal: PropTypes.func,
     post: PropTypes.object
 };
+
 export default PostActionDrawer;

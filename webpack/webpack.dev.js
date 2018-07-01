@@ -66,6 +66,11 @@ const clientConfig = args => {
                     // include: [
                     //     path.join(__dirname, "../client/themes/" + args.theme)
                     // ]
+                },
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: ["babel-loader", "eslint-loader"]
                 }
             ]
         }

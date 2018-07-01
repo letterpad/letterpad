@@ -16,4 +16,5 @@ const SaveButton = ({ handleClick }) => {
 SaveButton.propTypes = {
     handleClick: PropTypes.func.isRequired
 };
+
 export default SaveButton;
