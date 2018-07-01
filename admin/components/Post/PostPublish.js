@@ -8,15 +8,40 @@ import { plural } from "../../../shared/util";
 import PostActionDrawer from "./PostActionDrawer";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import PostMetaDrawer from "./PostMetaDrawer";
 
-const DropDown = styled.ul`
-    margin-left: -240;
-    width: 340px;
-    padding: 20px;
-    max-height: 90vh;
-    overflow-y: auto;
+// const DropDown = styled.ul`
+
+// `;
+const PublishBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    a:hover {
+        text-decoration: none;
+    }
+    .meta-label {
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+    > div {
+        margin-left: 20px;
+        cursor: pointer;
+    }
+    .dropdown-menu {
+        padding: 20px;
+        max-height: 90vh;
+        overflow-y: auto;
+        &.publish {
+            width: 340px;
+            margin-left: -190px;
+        }
+        &.meta {
+            width: 320px;
+            margin-left: -240px;
+        }
+    }
 `;
-
 export class PostPublish extends Component {
     static propTypes = {
         post: PropTypes.object.isRequired,
@@ -29,7 +54,8 @@ export class PostPublish extends Component {
     state = {
         post: this.props.post,
         isPublished: this.props.post.status == "publish",
-        openPublish: false
+        publishOpen: false,
+        metaOpen: false
     };
 
     componentDidMount() {
@@ -94,19 +120,33 @@ export class PostPublish extends Component {
         }
     };
 
-    toggleDropdown = () => {
-        this.setState({ openPublish: !this.state.openPublish });
+    togglePublishDropdown = () => {
+        this.setState({
+            publishOpen: !this.state.publishOpen,
+            metaOpen: false
+        });
+    };
+    toggleMetaDropdown = () => {
+        this.setState({ metaOpen: !this.state.metaOpen, publishOpen: false });
     };
 
-    closeDropdown = () => {
-        setTimeout(() => {
-            this.setState({ openPublish: false });
-        }, 100);
-    };
+    // closeDropdown = () => {
+    //     setTimeout(() => {
+    //         this.setState({ publishOpen: false });
+    //     }, 100);
+    // };
+
     render() {
         const publishedCls = this.state.isPublished ? "on" : "off";
-        const ddClass = "dropdown" + (this.state.openPublish ? " open" : "");
+        const ddClassPublish =
+            "dropdown" + (this.state.publishOpen ? " open" : "");
+        const ddClassMeta = "dropdown" + (this.state.metaOpen ? " open" : "");
         const goBackLink = "/admin/" + plural[this.props.post.type];
+        const deleteAction = e =>
+            this.updatePost(e, {
+                status: "trash"
+            });
+
         return (
             <div className="post-publish">
                 <div className="btn-together">
@@ -121,40 +161,55 @@ export class PostPublish extends Component {
                 </div>
 
                 <div className={"switch-block " + publishedCls}>
-                    <div className="user-info">
-                        <div className={ddClass}>
+                    <PublishBox>
+                        <div className={ddClassPublish}>
                             <a
                                 className="dropdown-toggle"
-                                onClick={this.toggleDropdown}
+                                onClick={this.togglePublishDropdown}
                             >
                                 Publish
                                 <span className="caret" />
                             </a>
 
-                            <DropDown className="dropdown-menu">
+                            <div className="dropdown-menu publish">
                                 <PostActionDrawer
                                     isPublished={this.state.isPublished}
                                     changePostStatus={this.changePostStatus}
                                     post={this.props.post}
-                                    toggleActionDrawer={this.toggleDropdown}
-                                    isOpen={this.state.openPublish}
+                                    toggleActionDrawer={
+                                        this.togglePublishDropdown
+                                    }
+                                    isOpen={this.state.publishOpen}
                                     create={this.props.create || false}
                                     updatePost={this.updatePost}
                                 />
-                            </DropDown>
+                            </div>
                         </div>
-                        <Link
-                            style={{ marginLeft: "20px" }}
-                            to="#"
-                            onClick={e =>
-                                this.updatePost(e, {
-                                    status: "trash"
-                                })
-                            }
-                        >
-                            Trash
-                        </Link>
-                    </div>
+                        <div className={ddClassMeta}>
+                            <a
+                                className="dropdown-toggle"
+                                onClick={this.toggleMetaDropdown}
+                            >
+                                <span className="material-icons">
+                                    graphic_eq
+                                </span>
+                            </a>
+
+                            <div className="dropdown-menu meta">
+                                <PostMetaDrawer
+                                    post={this.props.post}
+                                    toggleMetaDrawer={this.toggleMetaDropdown}
+                                    isOpen={this.state.metaOpen}
+                                    updatePost={this.updatePost}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <Link to="#" onClick={deleteAction}>
+                                Trash
+                            </Link>
+                        </div>
+                    </PublishBox>
                 </div>
             </div>
         );

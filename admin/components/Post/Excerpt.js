@@ -69,7 +69,9 @@ class Excerpt extends Component {
     render() {
         return (
             <div>
-                <strong>Write a small introduction about this post</strong>
+                <div className="meta-label">
+                    Write a small introduction about this post
+                </div>
                 <ContentEditable
                     excerpt={this.props.post.excerpt}
                     onChange={e => this.setData(e.target.value)}

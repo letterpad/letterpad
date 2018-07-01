@@ -108,7 +108,6 @@ class Editor extends Component {
                     </TextMenu>
                     <SlateContent />
                     <ToolBar value={this.state.value}>
-                        <BoldButton />
                         <ImageButton />
                     </ToolBar>
                 </SlateEditor>

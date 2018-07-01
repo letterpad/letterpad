@@ -55,9 +55,7 @@ class PostActionDrawer extends Component {
                 <Excerpt post={post} />
                 <hr />
                 {post.type == "post" && <Tags post={post} />}
-                <hr />
                 {post.type == "post" && <Categories post={post} />}
-                <hr />
                 {/*<PostMeta post={post} />*/}
                 <FeaturedImage
                     post={post}

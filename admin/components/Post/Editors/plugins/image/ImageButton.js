@@ -41,7 +41,7 @@ class ImageButton extends React.Component {
                     type={type}
                     onMouseDown={this.toggleFileExplorer}
                 >
-                    <span className="material-icons">format_image</span>
+                    <span className="material-icons">image</span>
                 </span>
                 <input
                     ref={this.imageInputRef}

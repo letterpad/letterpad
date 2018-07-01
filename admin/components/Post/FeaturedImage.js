@@ -100,7 +100,7 @@ class FeaturedImage extends Component {
     render() {
         return (
             <div>
-                <strong>Cover Image</strong>
+                <div className="meta-label">Cover Image</div>
                 <ImageWrapper className="images-wrapper">
                     {this.state.imageList.map((imagePath, idx) => {
                         const selected = imagePath === this.state.cover_image;

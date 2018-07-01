@@ -10,6 +10,11 @@ const Article = styled.article`
     display: flex;
     flex: 1;
     flex-direction: column;
+    height: 100%;
+    div[contenteditable="true"] {
+        height: 100%;
+        min-height: 100vh;
+    }
 `;
 
 export default class ArticleEdit extends Component {
