@@ -154,16 +154,18 @@ export async function _updatePost(post, models) {
         if (post.taxonomies && post.taxonomies.length > 0) {
             // remove the texonomy relation
             await newPost.setTaxonomies([]);
-            await Promise.all(
-                post.taxonomies.map(async taxonomy => {
-                    let taxItem = null;
-                    // add relation with existing taxonomies
-                    if (taxonomy.id != 0) {
-                        taxItem = await models.Taxonomy.findOne({
-                            where: { id: taxonomy.id }
-                        });
-                        return await newPost.addTaxonomy(taxItem);
-                    }
+
+            let taxIndexToLink = post.taxonomies.length - 1;
+
+            const linkTaxonomyToPost = async taxonomy => {
+                if (taxIndexToLink < 0) return;
+                let taxItem = null;
+                // add relation with existing taxonomies
+                if (taxonomy.id != 0) {
+                    taxItem = await models.Taxonomy.findOne({
+                        where: { id: taxonomy.id }
+                    });
+                } else {
                     // taxonomies needs to be created
                     taxItem = await models.Taxonomy.findOrCreate({
                         where: {
@@ -178,11 +180,14 @@ export async function _updatePost(post, models) {
                             type: taxonomy.type
                         }
                     });
-
-                    // add relation
-                    return await newPost.addTaxonomy(taxItem);
-                })
-            );
+                }
+                // add relation
+                await newPost.addTaxonomy(taxItem);
+                taxIndexToLink--;
+                console.log(taxIndexToLink);
+                linkTaxonomyToPost(post.taxonomies[taxIndexToLink]);
+            };
+            linkTaxonomyToPost(post.taxonomies[taxIndexToLink]);
         }
 
         return {
