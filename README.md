@@ -11,13 +11,14 @@ Letterpad is an open-source and a high performant publishing engine for blogs wi
 -   Theme support
 -   Multi-level navigation
 -   Image optimizer
+-   React with styled-components for styling
 -   GraphQL for json API
 -   Roles - Admin, Reviewer, Author, Reader
 -   Markdown and RichText editor
 -   Search Engine Optimised
 -   Multi-language support (currently en, fr and pl)
 
-To check letterpad in action, check out this [Demo Site](https://letterpad.app/demo)
+To check letterpad in action, check out this [Demo Site](https://letterpad.app/demo).
 You can visit the [Admin Panel](https://letterpad.app/demo/admin/login) and login with
 
 ```
@@ -25,7 +26,7 @@ Email: demo@demo.com
 Password: demo
 ```
 
-A verbose documentation can be found at [https://letterpad.app/docs](https://letterpad.app/docs)
+A verbose documentation can be found at [https://letterpad.app/docs](https://letterpad.app/docs).
 
 Letterpad is an open source project, licensed under MIT. It is a Single Page Application and runs ridiculously fast. It has a very minimal initial configuration and is easy to setup.
 
@@ -47,11 +48,11 @@ cd letterpad
 3.  Install dependencies and run (**use yarn to install dependencies**):
 
 ```
-yarn install
+NODE_ENV=dev yarn install
 theme=hugo yarn dev
 ```
 
-`yarn install` is going to install all the dependencies, seed the database, prepare a build and welcome you to letterpad.
+`NODE_ENV=dev yarn install` is going to install all the dependencies, seed the database, prepare a build and welcome you to letterpad.
 
 Now visit [http://localhost:4040](http://localhost:4040) and checkout the welcome page.
 
@@ -158,14 +159,14 @@ For Prettier, it is recommended to add to the editor's `settings.json` to run on
 If you want to seed the database with sample data, run the below command:
 
 ```
-// you should have babel-node installed. Its good to have this package installed globally.
+// you should have babel-cli installed. Its good to have this package installed globally.
 npm run seed
 ```
 
 ### Contribute
 
-Letterpad is in its early stages and requries support to move ahead. You can contribute through various ways like
-testing, ideas, recommendations, fixing bugs, documentation, logo design, assets, etc. You can join the slack channel(letterpad.slack.com) for discussions. Thanks.
+Letterpad is in its early stages and requires support to move ahead. You can contribute through various ways like
+testing, ideas, recommendations, fixing bugs, documentation, logo design, assets, etc. You can join the slack channel (letterpad.slack.com) for discussions. Thanks.
 
 Slack Channel - [https://letterpad.slack.com](https://letterpad.slack.com)
 
