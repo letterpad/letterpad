@@ -56,7 +56,6 @@ class PostActionDrawer extends Component {
                 <hr />
                 {post.type == "post" && <Tags post={post} />}
                 {post.type == "post" && <Categories post={post} />}
-                {/*<PostMeta post={post} />*/}
                 <FeaturedImage
                     post={post}
                     toggleFileExplorerModal={this.props.toggleFileExplorerModal}

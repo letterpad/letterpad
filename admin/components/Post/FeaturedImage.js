@@ -6,6 +6,7 @@ import { uploadFile } from "../../util";
 import config from "config";
 import UploadCoverImage from "../../data-connectors/UploadCoverImage";
 import InsertMedia from "../../data-connectors/InsertMedia";
+import PostActions from "./PostActions";
 
 const ImageWrapper = styled.div`
     overflow-x: auto;
@@ -15,12 +16,11 @@ const ImageWrapper = styled.div`
         height: 60px;
         flex-shrink: 0;
         border: 1px solid transparent;
-        opacity: 0.8
         &:hover {
-            opacity: 1;
+            opacity: 0.4;
         }
         &.selected {
-            opacity: 1;
+            opacity: 0.4;
         }
         img {
             object-fit: cover;
@@ -53,13 +53,20 @@ class FeaturedImage extends Component {
     uploadInputRef = React.createRef();
 
     componentDidMount() {
-        const imgNodes = document.querySelectorAll(".post-content .editor img");
+        const imgNodes = document.querySelectorAll(
+            ".post-content .editor--content img"
+        );
         const imageList = [];
         for (let i = 0; i < imgNodes.length; i++) {
             imageList.push(imgNodes[i].getAttribute("src"));
         }
         this.setState({ imageList });
     }
+
+    selectCoverImage = imagePath => {
+        PostActions.setData({ cover_image: imagePath });
+        this.setState({ cover_image: imagePath });
+    };
 
     uploadImage = async files => {
         const uploadedFiles = await uploadFile({
@@ -108,6 +115,7 @@ class FeaturedImage extends Component {
                             <div
                                 key={idx}
                                 className={selected ? "selected" : ""}
+                                onClick={() => this.selectCoverImage(imagePath)}
                             >
                                 <img
                                     alt=""

@@ -15,6 +15,9 @@ const Article = styled.article`
         height: 100%;
         min-height: 100vh;
     }
+    .post-content {
+        flex: 1;
+    }
 `;
 
 export default class ArticleEdit extends Component {
@@ -37,7 +40,7 @@ export default class ArticleEdit extends Component {
                             }}
                         />
                     </div>
-                    <div className="post-content" style={{ flex: 1 }}>
+                    <div className="post-content">
                         <Editor isMarkdown={false} {...this.props.post} />
                     </div>
                 </Article>

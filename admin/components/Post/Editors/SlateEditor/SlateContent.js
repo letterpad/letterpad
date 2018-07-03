@@ -24,6 +24,12 @@ import { ItalicMark } from "../plugins/italic";
 import { UnderlineMark } from "../plugins/underline";
 import { HighlightMark } from "../plugins/highlight";
 import { LinkNode } from "../plugins/link";
+// import MarkdownNode from "../plugins/markdown/MarkdownNode";
+import BlockquoteNode from "../plugins/blockquote/BlockquoteNode";
+// import { HeadingsNode } from "../plugins/headings";
+// import { MarkdownNode } from "../plugins/markdown";
+import LinebreakNode from "../plugins/linebreak/LinebreakNode";
+import { HeadingsNode } from "../plugins/headings";
 
 /* eslint-disable default-case */
 export const renderNode = props => {
@@ -38,8 +44,24 @@ export const renderNode = props => {
         //     return <GridRowNode {...props} />;
         // case "grid-cell":
         //     return <GridCellNode {...props} />;
+        case "line-break":
+            return <LinebreakNode {...props} />;
         case "image":
             return <ImageNode {...props} />;
+        case "block-quote":
+            return <BlockquoteNode {...props} />;
+        case "heading-one":
+            return <HeadingsNode {...props} />;
+        case "heading-two":
+            return <HeadingsNode {...props} />;
+        case "heading-three":
+            return <HeadingsNode {...props} />;
+        case "heading-four":
+            return <HeadingsNode {...props} />;
+        case "heading-five":
+            return <HeadingsNode {...props} />;
+        case "heading-six":
+            return <HeadingsNode {...props} />;
         // case "imageLink":
         //     return <ImageLinkNode {...props} />;
         case "link":

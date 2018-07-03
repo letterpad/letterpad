@@ -5,6 +5,24 @@ import {
     decreaseListDepthStrategy
 } from "./ListUtils";
 
+export const onBackspace = (event, change) => {
+    const { value } = change;
+    if (value.isExpanded) return;
+    if (value.startOffset != 0) return;
+
+    const { startBlock } = value;
+    if (startBlock.type == "paragraph") return;
+
+    event.preventDefault();
+    change.setBlocks("paragraph");
+
+    if (startBlock.type == "list-item") {
+        change.unwrapBlock("ordered-list");
+    }
+
+    return true;
+};
+
 const ListKeyboardShortcut = (event, change) => {
     //
     // Behaviour to increase or decrease depth of the list.
@@ -13,6 +31,14 @@ const ListKeyboardShortcut = (event, change) => {
         event.preventDefault();
         if (event.shiftKey) return decreaseListDepthStrategy(change);
         return increaseListDepthStrategy(change);
+    } else if (event.key === "Enter" || event.key === "Backspace") {
+        const { value } = change;
+        if (value.isExpanded) return;
+
+        const { startBlock, startOffset } = value;
+        if (startOffset == 0 && startBlock.text.length == 0) {
+            return onBackspace(event, change);
+        }
     }
 
     const unorderedKey = event.key === "l";

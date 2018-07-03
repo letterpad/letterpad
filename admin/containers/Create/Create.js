@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-import {
-    ArticleCreate,
-    PostPublish,
-    PostActions,
-    PostActionDrawer
-} from "../../components/Post";
+import { ArticleCreate, PostPublish, PostActions } from "../../components/Post";
 import CreatePost from "../../data-connectors/CreatePost";
-import FileExplorerModal from "../../components/Modals/FileExplorerModal";
-import MdPreview from "../../components/Post/MdPreview";
-import SyncScroll from "../Hoc/SyncScroll";
+
+const FlexColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: ${p => (p.fullHeight ? "100vh" : "auto")};
+`;
 
 export class Create extends Component {
     static propTypes = {
@@ -31,8 +29,6 @@ export class Create extends Component {
 
     componentDidMount() {
         const { type } = this.props;
-        // we need this only to listen mardown/richtext changes
-        window.addEventListener("onPostChange", this.handlePostChanges);
 
         // This is going to hold all the changes done to the post.
         PostActions.data = {};
@@ -44,8 +40,7 @@ export class Create extends Component {
             PostActions.setData(result.data.createPost.post);
             this.setState({
                 loading: false,
-                post: result.data.createPost.post,
-                preview: ""
+                post: result.data.createPost.post
             });
         });
 
@@ -54,19 +49,7 @@ export class Create extends Component {
 
     componentWillUnmount() {
         document.body.classList.remove("create-" + this.props.type + "-page");
-        window.removeEventListener("onPostChange", this.handlePostChanges);
     }
-
-    handlePostChanges = e => {
-        if (PostActions.data.mode == "markdown") {
-            this.props.manageScroll();
-            if ("mdPreview" in e.detail) {
-                this.setState({ preview: e.detail.mdPreview });
-            }
-        } else {
-            this.setState({ preview: "" });
-        }
-    };
 
     toggleActionDrawer = e => {
         e.preventDefault();
@@ -79,61 +62,24 @@ export class Create extends Component {
         });
     };
 
-    toggleZenView = e => {
-        e.preventDefault();
-        document.body.classList.toggle("distract-free");
-    };
-
     render() {
         if (this.state.loading) {
             return <div />;
         }
         return (
-            <section className="module-xs create-post">
-                <div className="row">
-                    <Link
-                        to="#"
-                        className="toggle-zenview"
-                        onClick={this.toggleZenView}
-                    >
-                        <i className="fa fa-eye" />
-                    </Link>
-                    <div className="col-lg-12 distractor">
-                        <PostPublish
-                            create
-                            history={this.props.history}
-                            post={this.state.post}
-                            toggleActionDrawer={this.toggleActionDrawer}
-                        />
-                    </div>
-                    <div className="col-lg-6 column article-holder">
-                        <ArticleCreate post={this.state.post} />
-                    </div>
-                    <div className="col-lg-6 column preview distractor">
-                        <MdPreview
-                            post={PostActions.data}
-                            preview={this.state.preview}
-                        />
-                    </div>
-                </div>
-                <PostActionDrawer
+            <FlexColumn fullHeight>
+                <PostPublish
+                    create
+                    history={this.props.history}
                     post={this.state.post}
-                    isOpen={this.state.actionDrawerOpen}
                     toggleActionDrawer={this.toggleActionDrawer}
-                    toggleFileExplorerModal={this.toggleFileExplorerModal}
                 />
-                {this.state.fileExplorerProps.display && (
-                    <FileExplorerModal {...this.state.fileExplorerProps} />
-                )}
-                {this.state.actionDrawerOpen && (
-                    <div
-                        id="modal-backdrop"
-                        onClick={this.toggleActionDrawer}
-                    />
-                )}
-            </section>
+                <div className="article-holder">
+                    <ArticleCreate post={this.state.post} />
+                </div>
+            </FlexColumn>
         );
     }
 }
 
-export default CreatePost(SyncScroll(Create));
+export default CreatePost(Create);

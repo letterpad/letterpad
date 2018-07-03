@@ -14,16 +14,29 @@ import ToolBar from "./Editors/SlateEditor/ToolBar";
 import rules from "./Editors/helper/rules";
 import PostActions from "./PostActions";
 import { LinkPlugin, LinkButton } from "./Editors/plugins/link";
+import { MarkdownPlugin } from "./Editors/plugins/markdown";
+import { HeadingsPlugin, HeadingsButton } from "./Editors/plugins/headings";
+import { LinebreakPlugin, LinebreakButton } from "./Editors/plugins/linebreak";
+import {
+    BlockquoteButton,
+    BlockquotePlugin
+} from "./Editors/plugins/blockquote";
 
 const html = new Html({ rules });
+
+// Apply plugins
 const plugins = [
+    HeadingsPlugin(),
     BoldPlugin(),
     ItalicPlugin(),
     UnderlinePlugin(),
     HighlightPlugin(),
     ListPlugin(),
     ImagePlugin(),
-    LinkPlugin()
+    LinkPlugin(),
+    LinebreakPlugin(),
+    MarkdownPlugin(),
+    BlockquotePlugin()
 ];
 
 class Editor extends Component {
@@ -102,13 +115,20 @@ class Editor extends Component {
                         <BoldButton />
                         <ItalicButton />
                         <UnderlineButton />
-                        <HighlightButton />
+                        <BlockquoteButton type="block-quote" />
+                        <HeadingsButton type="heading-two" />
+                        <HeadingsButton type="heading-three" />
                         <ListButtonBar />
                         <LinkButton />
                     </TextMenu>
                     <SlateContent />
                     <ToolBar value={this.state.value}>
                         <ImageButton />
+                        <HighlightButton />
+                        <HeadingsButton type="heading-four" />
+                        <HeadingsButton type="heading-five" />
+                        <HeadingsButton type="heading-six" />
+                        <LinebreakButton />
                     </ToolBar>
                 </SlateEditor>
             </React.Fragment>
