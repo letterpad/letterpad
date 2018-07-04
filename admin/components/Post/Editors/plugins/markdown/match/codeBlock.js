@@ -1,6 +1,4 @@
-// @flow
 import { Range, Data } from "slate";
-import { Change, Node } from "slate";
 import PluginEditCode from "slate-edit-code";
 
 export default function(codeOption, currentTextNode, matched, change, lang) {

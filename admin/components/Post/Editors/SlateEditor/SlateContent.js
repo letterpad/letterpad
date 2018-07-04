@@ -30,6 +30,8 @@ import BlockquoteNode from "../plugins/blockquote/BlockquoteNode";
 // import { MarkdownNode } from "../plugins/markdown";
 import LinebreakNode from "../plugins/linebreak/LinebreakNode";
 import { HeadingsNode } from "../plugins/headings";
+import { CodeblockNode } from "../plugins/codeblock";
+import { decorateNode } from "../plugins/codeblock/CodeblockUtils";
 
 /* eslint-disable default-case */
 export const renderNode = props => {
@@ -44,6 +46,8 @@ export const renderNode = props => {
         //     return <GridRowNode {...props} />;
         // case "grid-cell":
         //     return <GridCellNode {...props} />;
+        case "code_block":
+            return <CodeblockNode {...props} />;
         case "line-break":
             return <LinebreakNode {...props} />;
         case "image":
@@ -116,6 +120,7 @@ export default ({
                 style={style}
                 renderNode={renderNode}
                 renderMark={renderMark}
+                decorateNode={decorateNode}
                 {...rest}
             />
             {children}

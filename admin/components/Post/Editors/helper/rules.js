@@ -1,6 +1,11 @@
 import React from "react";
+import styled from "styled-components";
 import { BLOCK_TAGS, MARK_TAGS, INLINE_TAGS } from "./constants";
+import { BoldMark } from "../plugins/bold";
 
+const CodeblockContainer = styled.div`
+    position: relative;
+`;
 export default [
     {
         deserialize(el, next) {
@@ -21,12 +26,8 @@ export default [
         serialize(obj, children) {
             if (obj.object == "block") {
                 switch (obj.type) {
-                    case "code":
-                        return (
-                            <pre className="hljs">
-                                <code>{children}</code>
-                            </pre>
-                        );
+                    // case "code":
+                    //     return <code>{children}</code>;
                     case "paragraph":
                         return (
                             <p className={obj.data.get("className")}>
@@ -42,6 +43,14 @@ export default [
                         );
                     case "quote":
                         return <blockquote>{children}</blockquote>;
+                    case "code_block":
+                        return (
+                            <CodeblockContainer>
+                                <pre className="prism-dark">
+                                    <code>{children}</code>
+                                </pre>
+                            </CodeblockContainer>
+                        );
 
                     default:
                         return <p />;
@@ -63,9 +72,10 @@ export default [
         },
         serialize(obj, children) {
             if (obj.object == "mark") {
+                const props = { children };
                 switch (obj.type) {
                     case "bold":
-                        return <strong>{children}</strong>;
+                        return <BoldMark {...props} />;
                     case "italic":
                         return <em>{children}</em>;
                     case "underline":

@@ -1,5 +1,5 @@
 // import matchBlockquote from "./match/blockquote";
-// import matchCodeBlock from "./match/codeBlock";
+import matchCodeBlock from "./match/codeBlock";
 import matchCode from "./match/code";
 // import matchHeader from "./match/header";
 import matchBold from "./match/bold";
@@ -35,6 +35,13 @@ export const onSpace = (event, change) => {
     if ((matched = currentLineText.match(/^\s*```(\w+)?\s/m))) {
         // [Code block]
         // ```lang
+        return matchCodeBlock(
+            "code_block",
+            currentTextNode,
+            matched,
+            change,
+            matched[1]
+        );
     }
 
     const offsetBeforeSpace = value.selection.anchorOffset - 1;

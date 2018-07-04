@@ -21,11 +21,21 @@ import {
     BlockquoteButton,
     BlockquotePlugin
 } from "./Editors/plugins/blockquote";
+// import PluginEditCode from "slate-edit-code";
+import PluginPrism from "slate-prism";
+import { CodeblockButton } from "./Editors/plugins/codeblock";
 
 const html = new Html({ rules });
 
 // Apply plugins
 const plugins = [
+    PluginPrism({
+        onlyIn: node => node.type === "code_block",
+        getSyntax: node => node.data.get("syntax")
+    }),
+    // PluginEditCode({
+    //     onlyIn: node => node.type === "code_block"
+    // }),
     HeadingsPlugin(),
     BoldPlugin(),
     ItalicPlugin(),
@@ -129,6 +139,7 @@ class Editor extends Component {
                         <HeadingsButton type="heading-five" />
                         <HeadingsButton type="heading-six" />
                         <LinebreakButton />
+                        <CodeblockButton />
                     </ToolBar>
                 </SlateEditor>
             </React.Fragment>

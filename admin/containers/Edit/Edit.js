@@ -4,10 +4,7 @@ import { ArticleEdit, PostPublish, PostActions } from "../../components/Post";
 import OhSnap from "../OhSnap";
 import Loader from "../../components/Loader";
 import GetSinglePost from "../../data-connectors/GetSinglePost";
-// import MdPreview from "../../components/Post/MdPreview";
 import styled from "styled-components";
-// Use to sync the scroll of mardown editor mode and preview mode
-import SyncScroll from "../Hoc/SyncScroll";
 
 const FlexColumn = styled.div`
     display: flex;
@@ -80,4 +77,4 @@ class Edit extends Component {
     }
 }
 
-export default GetSinglePost(SyncScroll(Edit));
+export default GetSinglePost(Edit);
