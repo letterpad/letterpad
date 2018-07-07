@@ -95,6 +95,7 @@ class Routes extends Component {
                             path="/admin/posts/:post_id"
                             component={Edit}
                             type="post"
+                            layout="none"
                             settings={settings.data}
                         />
                         <SecuredRoute

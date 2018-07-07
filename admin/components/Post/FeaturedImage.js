@@ -1,10 +1,34 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 
 import { uploadFile } from "../../util";
 import config from "config";
 import UploadCoverImage from "../../data-connectors/UploadCoverImage";
 import InsertMedia from "../../data-connectors/InsertMedia";
+import PostActions from "./PostActions";
+
+const ImageWrapper = styled.div`
+    overflow-x: auto;
+    display: flex;
+    div {
+        width: 100px;
+        height: 60px;
+        flex-shrink: 0;
+        border: 1px solid transparent;
+        &:hover {
+            opacity: 0.4;
+        }
+        &.selected {
+            opacity: 0.4;
+        }
+        img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+    }
+`;
 
 class FeaturedImage extends Component {
     static contextTypes = {
@@ -21,13 +45,28 @@ class FeaturedImage extends Component {
             cover_image: ""
         }
     };
-
     state = {
         cover_image: this.props.post.cover_image,
-        fileExplorerOpen: false
+        fileExplorerOpen: false,
+        imageList: []
     };
-
     uploadInputRef = React.createRef();
+
+    componentDidMount() {
+        const imgNodes = document.querySelectorAll(
+            ".post-content .editor--content img"
+        );
+        const imageList = [];
+        for (let i = 0; i < imgNodes.length; i++) {
+            imageList.push(imgNodes[i].getAttribute("src"));
+        }
+        this.setState({ imageList });
+    }
+
+    selectCoverImage = imagePath => {
+        PostActions.setData({ cover_image: imagePath });
+        this.setState({ cover_image: imagePath });
+    };
 
     uploadImage = async files => {
         const uploadedFiles = await uploadFile({
@@ -66,44 +105,27 @@ class FeaturedImage extends Component {
     };
 
     render() {
-        const { t } = this.context;
-
-        const coverImage =
-            this.state.cover_image || "/admin/images/placeholder-800x400.png";
-
         return (
-            <div className="card">
-                <div className="module-title">Cover Image</div>
-                <div className="featured-image">
-                    <img
-                        alt=""
-                        width="100%"
-                        src={config.baseName + coverImage}
-                    />
-                    {!this.state.cover_image ? (
-                        <a
-                            className="btn btn-xs btn-dark"
-                            onClick={this.toggleFileExplorer}
-                        >
-                            {t("addFeaturedImg")}
-                        </a>
-                    ) : (
-                        <a
-                            className="btn btn-xs btn-dark"
-                            onClick={() => this.updateFeaturedImage("")}
-                        >
-                            {t("removeFeaturedImg")}
-                        </a>
-                    )}
-                </div>
-                <input
-                    ref={this.uploadInputRef}
-                    onChange={input => this.uploadImage(input.target.files)}
-                    type="file"
-                    className="hide"
-                    name="uploads[]"
-                    multiple="multiple"
-                />
+            <div>
+                <div className="meta-label">Cover Image</div>
+                <ImageWrapper className="images-wrapper">
+                    {this.state.imageList.map((imagePath, idx) => {
+                        const selected = imagePath === this.state.cover_image;
+                        return (
+                            <div
+                                key={idx}
+                                className={selected ? "selected" : ""}
+                                onClick={() => this.selectCoverImage(imagePath)}
+                            >
+                                <img
+                                    alt=""
+                                    width="100%"
+                                    src={config.baseName + imagePath}
+                                />
+                            </div>
+                        );
+                    })}
+                </ImageWrapper>
             </div>
         );
     }

@@ -133,7 +133,6 @@ export async function _updatePost(post, models) {
         } catch (e) {
             console.log(e);
         }
-
         // If this post is being published for the first time, update the publish date
         if (post.status == "publish" && oldPost.status == "draft") {
             post.published_at = moment

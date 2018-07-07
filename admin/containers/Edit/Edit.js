@@ -1,20 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-    ArticleEdit,
-    PostPublish,
-    PostActions,
-    PostActionDrawer
-} from "../../components/Post";
-import { Link } from "react-router-dom";
+import { ArticleEdit, PostPublish, PostActions } from "../../components/Post";
 import OhSnap from "../OhSnap";
 import Loader from "../../components/Loader";
 import GetSinglePost from "../../data-connectors/GetSinglePost";
-import FileExplorerModal from "../../components/Modals/FileExplorerModal";
-import MdPreview from "../../components/Post/MdPreview";
+import styled from "styled-components";
 
-// Use to sync the scroll of mardown editor mode and preview mode
-import SyncScroll from "../Hoc/SyncScroll";
+const FlexColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: ${p => (p.fullHeight ? "100vh" : "auto")};
+`;
 
 class Edit extends Component {
     static propTypes = {
@@ -25,11 +21,13 @@ class Edit extends Component {
     };
 
     state = {
-        preview: "",
-        actionDrawerOpen: false,
-        fileExplorerProps: {}
+        preview: ""
     };
-    
+
+    componentWillMount() {
+        window.addEventListener("onPostChange", this.handlePostChanges);
+    }
+
     componentDidMount() {
         window.addEventListener("onPostChange", this.handlePostChanges);
         document.body.classList.add("edit-post-page");
@@ -51,26 +49,6 @@ class Edit extends Component {
         }
     };
 
-    toggleActionDrawer = e => {
-        e.preventDefault();
-        this.setState({ actionDrawerOpen: !this.state.actionDrawerOpen });
-    };
-
-    getHtml = html => {
-        this.setState({ html });
-    };
-
-    toggleFileExplorerModal = props => {
-        this.setState({
-            fileExplorerProps: props
-        });
-    };
-
-    toggleZenView = e => {
-        e.preventDefault();
-        document.body.classList.toggle("distract-free");
-    };
-
     render() {
         if (this.props.loading) {
             return <Loader />;
@@ -81,54 +59,22 @@ class Edit extends Component {
             );
         }
         return (
-            <section className="module-xs">
-                <div className="row">
-                    <Link
-                        to="#"
-                        className="toggle-zenview"
-                        onClick={this.toggleZenView}
-                    >
-                        <i className="fa fa-eye" />
-                    </Link>
-                    <div className="col-lg-12 distractor">
-                        <PostPublish
-                            edit
-                            history={this.props.history}
-                            post={this.props.post}
-                            toggleActionDrawer={this.toggleActionDrawer}
-                        />
-                    </div>
-                    <div className="col-lg-6 column article-holder ">
-                        <ArticleEdit
-                            post={this.props.post}
-                            setHtml={this.setHtml}
-                        />
-                    </div>
-                    <div className="col-lg-6 column preview distractor">
-                        <MdPreview
-                            post={PostActions.data}
-                            preview={this.state.preview}
-                        />
-                    </div>
-                </div>
-                <PostActionDrawer
+            <FlexColumn fullHeight>
+                <PostPublish
+                    edit
+                    history={this.props.history}
                     post={this.props.post}
-                    isOpen={this.state.actionDrawerOpen}
                     toggleActionDrawer={this.toggleActionDrawer}
-                    toggleFileExplorerModal={this.toggleFileExplorerModal}
                 />
-                {this.state.fileExplorerProps.display && (
-                    <FileExplorerModal {...this.state.fileExplorerProps} />
-                )}
-                {this.state.actionDrawerOpen && (
-                    <div
-                        id="modal-backdrop"
-                        onClick={this.toggleActionDrawer}
+                <div className="article-holder">
+                    <ArticleEdit
+                        post={this.props.post}
+                        setHtml={this.setHtml}
                     />
-                )}
-            </section>
+                </div>
+            </FlexColumn>
         );
     }
 }
 
-export default GetSinglePost(SyncScroll(Edit));
+export default GetSinglePost(Edit);

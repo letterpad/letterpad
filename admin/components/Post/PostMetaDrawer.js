@@ -2,28 +2,32 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 
-import PostActions from "./PostActions";
 import { makeUrl } from "../../../shared/util";
+import PostActions from "./PostActions";
 
-class PostMeta extends Component {
+class PostMetaDrawer extends Component {
     state = {
-        post: this.props.post,
-        published: 0
+        post: this.props.post
     };
-
     changeSlug = e => {
         this.setState({
             post: { ...this.state.post, slug: e.target.value }
         });
         PostActions.setData({ slug: this.state.post.slug });
     };
+    static propTypes = {
+        toggleMetaDrawer: PropTypes.func,
+        post: PropTypes.object,
+        isOpen: PropTypes.bool,
+        updatePost: PropTypes.func.isRequired
+    };
 
     render() {
         const permalink = makeUrl([this.state.post.type, this.state.post.slug]);
         return (
-            <div className="card post-meta">
+            <div className="post-meta">
                 <div className="x_content m-b-20">
-                    <span className="meta-label">Published at</span>
+                    <div className="meta-label">Published at</div>
                     <input
                         type="text"
                         className="form-control meta-value"
@@ -34,7 +38,17 @@ class PostMeta extends Component {
                     />
                 </div>
                 <div className="x_content m-b-20">
-                    <span className="meta-label">Link to post</span>
+                    <div className="meta-label">Change Path</div>
+                    <input
+                        type="text"
+                        className="form-control meta-value"
+                        placeholder="Link to post"
+                        defaultValue={this.state.post.slug}
+                        onKeyUp={this.changeSlug}
+                    />
+                </div>
+                <div className="x_content m-b-20">
+                    <div className="meta-label">Preview</div>
                     <div className="meta-value">
                         <a
                             target="_blank"
@@ -45,23 +59,19 @@ class PostMeta extends Component {
                         </a>
                     </div>
                 </div>
-                <div className="x_content m-b-20">
-                    <span className="meta-label">Change Path</span>
-                    <input
-                        type="text"
-                        className="form-control meta-value"
-                        placeholder="Link to post"
-                        defaultValue={this.state.post.slug}
-                        onKeyUp={this.changeSlug}
-                    />
+                <hr />
+                <div className="btn-item">
+                    <button
+                        type="submit"
+                        onClick={e => this.props.updatePost(e, {})}
+                        className={"publish-btn btn btn-sm btn-primary"}
+                    >
+                        Save
+                    </button>
                 </div>
             </div>
         );
     }
 }
 
-PostMeta.propTypes = {
-    post: PropTypes.object
-};
-
-export default PostMeta;
+export default PostMetaDrawer;

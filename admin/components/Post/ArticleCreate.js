@@ -4,6 +4,18 @@ import PropTypes from "prop-types";
 import Editor from "./Editor";
 import PostActions from "./PostActions";
 import ContentEditable from "./ContentEditable";
+import styled from "styled-components";
+
+const Article = styled.article`
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+    div[contenteditable="true"] {
+        height: 100%;
+        min-height: 100vh;
+    }
+`;
 
 export default class CreateArticle extends Component {
     static propTypes = {
@@ -15,20 +27,10 @@ export default class CreateArticle extends Component {
         isMarkdown: false
     };
 
-    componentWillUnmount() {
-        document.body.classList.remove("options-open");
-    }
-
-    changeEditor = e => {
-        const mode = e.target.checked ? "markdown" : "rich-text";
-        PostActions.setData({ mode });
-        this.setState({ isMarkdown: ~~e.target.checked });
-    };
-
     render() {
         return (
-            <div className="card">
-                <article className="post">
+            <React.Fragment>
+                <Article className="post">
                     <div className="post-header">
                         <ContentEditable
                             placeholder="Enter a title"
@@ -41,32 +43,12 @@ export default class CreateArticle extends Component {
                                 }
                             }}
                         />
-                        <div className="switch-block">
-                            <span className="switch-label switch-off-text">
-                                Rich Text
-                            </span>
-                            <label className="switch">
-                                <input
-                                    type="checkbox"
-                                    onChange={this.changeEditor}
-                                    checked={this.state.isMarkdown}
-                                />
-                                <span className="slider round" />
-                            </label>
-                            <span className="switch-label switch-on-text">
-                                Markdown
-                            </span>
-                        </div>
                     </div>
                     <div className="post-content">
-                        <Editor
-                            isMarkdown={this.state.isMarkdown}
-                            body={PostActions.data.body}
-                            mdBody={PostActions.data.mdBody}
-                        />
+                        <Editor isMarkdown={false} {...this.props.post} />
                     </div>
-                </article>
-            </div>
+                </Article>
+            </React.Fragment>
         );
     }
 }

@@ -107,6 +107,7 @@
     "settings.general.title": "Paramètres généraux",
     "settings.general.tagline":
         "Gérer les configurations de base de votre blog à partir d'ici",
+    "settings.general.site.enableMarkdown": "Enable markdown editor",
     "settings.general.site.title": "Titre du site",
     "settings.general.site.title.placeholder": "Entrez le titre de votre blog",
     "settings.general.site.tagline": "Slogan du site",

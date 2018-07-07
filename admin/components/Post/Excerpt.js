@@ -4,6 +4,11 @@ import PropTypes from "prop-types";
 import PostActions from "./PostActions";
 
 class ContentEditable extends Component {
+    static propTypes = {
+        excerpt: PropTypes.string,
+        onChange: PropTypes.func
+    };
+
     componentDidMount() {
         this.lastExcerpt = this.props.excerpt;
     }
@@ -41,12 +46,11 @@ class ContentEditable extends Component {
     }
 }
 
-ContentEditable.propTypes = {
-    excerpt: PropTypes.string,
-    onChange: PropTypes.func
-};
-
 class Excerpt extends Component {
+    static propTypes = {
+        post: PropTypes.object
+    };
+
     state = {
         chars: 0
     };
@@ -64,28 +68,18 @@ class Excerpt extends Component {
 
     render() {
         return (
-            <div className="card">
-                <div className="x_title">
-                    <div className="module-title">Introduction</div>
+            <div>
+                <div className="meta-label">
+                    Write a small introduction about this post
                 </div>
-                <div className="x_content">
-                    <div className="control-group">
-                        <ContentEditable
-                            excerpt={this.props.post.excerpt}
-                            onChange={e => this.setData(e.target.value)}
-                        />
-                        <span className="label label-default">
-                            Chars: {this.state.chars} / 160
-                        </span>
-                    </div>
-                </div>
+                <ContentEditable
+                    excerpt={this.props.post.excerpt}
+                    onChange={e => this.setData(e.target.value)}
+                />
+                <p>{this.state.chars} / 160</p>
             </div>
         );
     }
 }
-
-Excerpt.propTypes = {
-    post: PropTypes.object
-};
 
 export default Excerpt;
