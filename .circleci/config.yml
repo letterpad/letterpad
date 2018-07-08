@@ -26,9 +26,9 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: yarn install
       - run: cp sample.env .env
-      - run: ./node_modules/.bin/babel api -d apiBuild
+      - run: yarn
+      - run: yarn babel api -d apiBuild
       - save_cache:
           paths:
             - node_modules
