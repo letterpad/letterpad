@@ -3,238 +3,128 @@ import Faker from "faker";
 import rimraf from "rimraf";
 import path from "path";
 import mkdirp from "mkdirp";
+import posts from "./posts";
+import { promisify } from "util";
+import copydir from "copy-dir";
 
-const copydir = require("copy-dir");
+const mkdirpAsync = promisify(mkdirp);
+const rimrafAsync = promisify(rimraf);
+const copydirAsync = promisify(copydir);
+
 Faker.locale = "en_US";
+
+// All paths are relative to this file
+const dataDir = "../../data";
+const publicUploadsDir = "../../public/uploads";
+const uploadsSourceDir = "./uploads";
+
+function absPath(p) {
+    return path.join(__dirname, p);
+}
 
 let models = null;
 export const seed = async dbModels => {
     models = dbModels;
 
-    mkdirp.sync(path.join(__dirname, "../../data"));
-    mkdirp.sync(path.join(__dirname, "../../public/uploads"));
+    console.time("ensure data directories");
+    await Promise.all([
+        mkdirpAsync(absPath(dataDir)),
+        mkdirpAsync(absPath(publicUploadsDir))
+    ]);
+    console.timeEnd("ensure data directories");
 
+    console.time("sync sequelize models");
     await models.sequelize.sync({ force: true });
-    // do some clean first. delete the uploads folder
-    rimraf(__dirname + "/../../public/uploads/*", () => {
-        copydir.sync(
-            __dirname + "/uploads",
-            __dirname + "/../../public/uploads"
-        );
-    });
+    console.timeEnd("sync sequelize models");
 
+    // do some clean first. delete the uploads folder
+    console.time("sync uploads");
+    await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
+    await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
+    console.timeEnd("sync uploads");
+
+    console.time("insert roles and permissions");
     await insertRolePermData(models);
-    await insertAuthor(models);
-    await insertTaxonomy(models);
-    await insertPost(
-        {
-            title: "We encountered a new paradise",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/1.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "The Mountain",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/2.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Ink in water",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/3.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Future of ReactJS",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/4.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "A bright sunny day",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/5.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 6",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/6.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 7",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/7.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 8",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/8.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 9",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/9.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 10",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/10.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 11",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/11.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 12",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/12.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 13",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/1.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 14",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/2.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 15",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/3.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 16",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/4.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Post 17",
-            type: "post",
-            status: "publish",
-            cover_image: "/uploads/5.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "About",
-            type: "page",
-            status: "publish",
-            cover_image: "/uploads/6.jpg"
-        },
-        models
-    );
-    await insertPost(
-        {
-            title: "Page 3 (draft)",
-            type: "page",
-            status: "draft"
-        },
-        models
-    );
-    await insertSettings(models);
-    await insertMedia(models);
+    console.timeEnd("insert roles and permissions");
+
+    console.time("insert authors and taxonomies");
+    await Promise.all([insertAuthor(models), insertTaxonomy(models)]);
+
+    console.timeEnd("insert authors and taxonomies");
+
+    console.time("insert posts, settings, media");
+    const [categories, tags] = await Promise.all([
+        models.Taxonomy.findAll({
+            where: { type: "post_category" }
+        }),
+        models.Taxonomy.findAll({
+            where: { type: "post_tag" }
+        })
+    ]);
+
+    await Promise.all([
+        ...posts.map(post => insertPost(post, models, categories, tags)),
+        insertSettings(models),
+        insertMedia(models)
+    ]);
+    console.timeEnd("insert posts, settings, media");
 };
 
 export async function insertRolePermData(models) {
-    let MANAGE_OWN_POSTS = await models.Permission.create({
-        name: "MANAGE_OWN_POSTS"
-    });
-    let READ_ONLY_POSTS = await models.Permission.create({
-        name: "READ_ONLY_POSTS"
-    });
-    let MANAGE_ALL_POSTS = await models.Permission.create({
-        name: "MANAGE_ALL_POSTS"
-    });
-    let MANAGE_USERS = await models.Permission.create({
-        name: "MANAGE_USERS"
-    });
-    let MANAGE_SETTINGS = await models.Permission.create({
-        name: "MANAGE_SETTINGS"
-    });
+    const [
+        MANAGE_OWN_POSTS,
+        READ_ONLY_POSTS,
+        MANAGE_ALL_POSTS,
+        MANAGE_USERS,
+        MANAGE_SETTINGS
+    ] = await Promise.all([
+        models.Permission.create({
+            name: "MANAGE_OWN_POSTS"
+        }),
+        models.Permission.create({
+            name: "READ_ONLY_POSTS"
+        }),
+        models.Permission.create({
+            name: "MANAGE_ALL_POSTS"
+        }),
+        models.Permission.create({
+            name: "MANAGE_USERS"
+        }),
+        models.Permission.create({
+            name: "MANAGE_SETTINGS"
+        })
+    ]);
 
-    let role = await models.Role.create({ name: "ADMIN" });
-    await role.addPermission(READ_ONLY_POSTS);
-    await role.addPermission(MANAGE_ALL_POSTS);
-    await role.addPermission(MANAGE_USERS);
-    await role.addPermission(MANAGE_SETTINGS);
+    async function admin() {
+        const role = await models.Role.create({ name: "ADMIN" });
+        return Promise.all([
+            role.addPermission(READ_ONLY_POSTS),
+            role.addPermission(MANAGE_ALL_POSTS),
+            role.addPermission(MANAGE_USERS),
+            role.addPermission(MANAGE_SETTINGS)
+        ]);
+    }
 
-    role = await models.Role.create({ name: "REVIEWER" });
-    await role.addPermission(MANAGE_ALL_POSTS);
+    async function reviewer() {
+        const role = await models.Role.create({ name: "REVIEWER" });
+        return role.addPermission(MANAGE_ALL_POSTS);
+    }
 
-    role = await models.Role.create({ name: "READER" });
-    await role.addPermission(READ_ONLY_POSTS);
+    async function reader() {
+        const role = await models.Role.create({ name: "READER" });
+        return role.addPermission(READ_ONLY_POSTS);
+    }
 
-    role = await models.Role.create({ name: "AUTHOR" });
-    await role.addPermission(MANAGE_OWN_POSTS);
+    async function author() {
+        const role = await models.Role.create({ name: "AUTHOR" });
+        return role.addPermission(MANAGE_OWN_POSTS);
+    }
+
+    return Promise.all([admin(), reviewer(), reader(), author()]);
 }
 
 export async function insertAuthor(models) {
-    await models.Author.bulkCreate([
+    return models.Author.bulkCreate([
         {
             fname: "John",
             lname: "Dave",
@@ -269,8 +159,9 @@ export async function insertAuthor(models) {
         }
     ]);
 }
+
 export async function insertTaxonomy(models) {
-    await models.Taxonomy.bulkCreate([
+    return models.Taxonomy.bulkCreate([
         {
             name: "Travel",
             type: "post_category",
@@ -285,9 +176,7 @@ export async function insertTaxonomy(models) {
             name: "Abstract",
             type: "post_category",
             slug: "abstract"
-        }
-    ]);
-    await models.Taxonomy.bulkCreate([
+        },
         {
             name: "sports",
             type: "post_tag",
@@ -316,7 +205,7 @@ export async function insertTaxonomy(models) {
     ]);
 }
 
-export async function insertPost(params, models) {
+export async function insertPost(params, models, categories, tags) {
     // get author  // 1 or 2
     const randomAuthorId = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
     let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
@@ -333,31 +222,18 @@ export async function insertPost(params, models) {
         mode: "rich-text",
         mdPreview: ""
     });
-    await admin.addPost(post);
 
-    let categories = await models.Taxonomy.findAll({
-        where: { type: "post_category" }
-    });
-
-    let tags = await models.Taxonomy.findAll({
-        where: { type: "post_tag" }
-    });
-
-    let postItem = await models.Post.findOne({
-        limit: 1,
-        order: [["id", "DESC"]]
-    });
     const randomCategory = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
 
-    await postItem.addTaxonomy(categories[randomCategory]);
-
-    tags.forEach(async tag => {
-        await postItem.addTaxonomy(tag);
-    });
+    return Promise.all([
+        admin.addPost(post),
+        post.addTaxonomy(categories[randomCategory]),
+        ...tags.map(tag => post.addTaxonomy(tag))
+    ]);
 }
 
 export async function insertMedia(models) {
-    await models.Media.bulkCreate([
+    return models.Media.bulkCreate([
         {
             url: "/uploads/1.jpg",
             author_id: 1,
@@ -556,5 +432,6 @@ export async function insertSettings(models) {
             value: "/uploads/banner.jpg"
         }
     ];
-    await models.Setting.bulkCreate(data);
+
+    return models.Setting.bulkCreate(data);
 }

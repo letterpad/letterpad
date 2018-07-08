@@ -15,7 +15,7 @@
         "dev": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
         "prod": "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
         "prodPm2": "NODE_ENV=production concurrently --kill-others \"pm2 start ./apiBuild/server.js --name=lpDemoApi\" \"pm2 start ./server.js --name=lpDemo\"",
-        "test": "NODE_ENV=test && jest --runInBand"
+        "test": "jest --runInBand"
     },
     "env": {
         "jest": true

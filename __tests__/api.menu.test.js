@@ -26,13 +26,26 @@ describe("Test menu", () => {
         await insertRolePermData(models);
         await insertAuthor(models);
         await insertTaxonomy(models);
+        const [categories, tags] = await Promise.all([
+            models.Taxonomy.findAll({
+                where: { type: "post_category" }
+            }),
+
+            models.Taxonomy.findAll({
+                where: { type: "post_tag" }
+            })
+        ]);
         await insertPost(
             { title: "Post 1", type: "post", status: "publish" },
-            models
+            models,
+            categories,
+            tags
         );
         await insertPost(
             { title: "Post 2", type: "page", status: "publish" },
-            models
+            models,
+            categories,
+            tags
         );
         done();
     });
