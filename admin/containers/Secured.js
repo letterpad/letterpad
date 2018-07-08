@@ -35,6 +35,7 @@ const SecuredRoute = routeProps => {
 
 SecuredRoute.propTypes = {
     component: PropTypes.func.isRequired,
+    computedMatch: PropTypes.object,
     exact: PropTypes.bool
 };
 

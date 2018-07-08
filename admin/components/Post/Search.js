@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 class Search extends Component {
     static propTypes = {
-        page: PropTypes.string.isRequired,
         searchPosts: PropTypes.func
     };
 
