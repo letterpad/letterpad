@@ -1,8 +1,8 @@
-const path = require('path')
+const path = require("path");
 
 module.exports = {
-  "config": path.join('api/housekeeper/db.config.js'),
-  "models-path": path.resolve('./api/housekeeper/models'),
-   "migrations-path": path.resolve('./api/housekeeper/migrations'),
-   "seeders-path": path.resolve('./api/housekeeper/seeders'),
-}
+    config: path.join("./api/housekeeper/db.config.js"),
+    "models-path": path.resolve("./api/housekeeper/models"),
+    "migrations-path": path.resolve("./api/housekeeper/migrations"),
+    "seeders-path": path.resolve("./api/housekeeper/seeders")
+};
