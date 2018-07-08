@@ -74,7 +74,7 @@ class Routes extends Component {
                             />
                         )}
                     />
-                    <div className="wrapper">
+                    <React.Fragment>
                         {/* Notifications can be trigerred from anywhere, but they will be rendered in this block*/}
                         <Notifications />
 
@@ -180,7 +180,7 @@ class Routes extends Component {
                             component={Themes}
                             settings={settings.data}
                         />
-                    </div>
+                    </React.Fragment>
                 </Switch>
             </Translate>
         );
