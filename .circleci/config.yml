@@ -27,16 +27,10 @@ jobs:
           - v1-dependencies-
 
       - run: yarn install
-      - run: node ./.circleci/buildEnv.js
+      - run: cp sample.env .env
       - run: ./node_modules/.bin/babel api -d apiBuild
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn test
-      
-        
-      # run tests!
-      #- run: yarn test
-
-
