@@ -1,10 +1,15 @@
+#!/bin/bash
+
+# exit on first error
+set -e
+
 echo "Seeding the database..."
 yarn seed
 echo "Seeding complete!"
 echo "Running migrations"
 yarn sequelize db:migrate
 
-echo "           
+echo "
 
 
 WELCOME TO "
@@ -14,7 +19,7 @@ cat << "EOF"
 | |    / _ \ __| __/ _ \ '__| '_ \ / _` |/ _` |
 | |___|  __/ |_| ||  __/ |  | |_) | (_| | (_| |
 \_____/\___|\__|\__\___|_|  | .__/ \__,_|\__,_|
-                            | |                
-                            |_|     
+                            | |
+                            |_|
 
 EOF

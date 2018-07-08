@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import Faker from "faker";
 import rimraf from "rimraf";
+import path from "path";
+import mkdirp from "mkdirp";
 
 const copydir = require("copy-dir");
 Faker.locale = "en_US";
@@ -8,6 +10,10 @@ Faker.locale = "en_US";
 let models = null;
 export const seed = async dbModels => {
     models = dbModels;
+
+    mkdirp.sync(path.join(__dirname, "../../data"));
+    mkdirp.sync(path.join(__dirname, "../../public/uploads"));
+
     await models.sequelize.sync({ force: true });
     // do some clean first. delete the uploads folder
     rimraf(__dirname + "/../../public/uploads/*", () => {
