@@ -8,7 +8,7 @@ import {
 } from "react-virtualized";
 import styled from "styled-components";
 
-import Scrollbars from "./Scrollbars";
+// import Scrollbars from "./Scrollbars";
 
 const DEFAULT_ROW_HEIGHT = 50;
 
@@ -38,21 +38,14 @@ class ScrollbarsList extends Component {
         const { width, height, listRef, noRowsMessage, ...props } = this.props;
 
         return (
-            <Scrollbars
-                style={{ height, width }}
-                onScroll={this.handleScroll}
-                innerRef={ref => (this.scrollbars = ref)}
-            >
-                <VirtualizedList
-                    autoHeight
-                    height={height}
-                    width={width}
-                    ref={listRef}
-                    scrollTop={scrollTop}
-                    noRowsRenderer={() => <div>No rows</div>}
-                    {...props}
-                />
-            </Scrollbars>
+            <VirtualizedList
+                height={height}
+                width={width}
+                ref={listRef}
+                scrollTop={scrollTop}
+                noRowsRenderer={() => <div>No rows</div>}
+                {...props}
+            />
         );
     }
 }

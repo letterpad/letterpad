@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import sizeMe from "react-sizeme";
+// import sizeMe from "react-sizeme";
 
 import List from "./List";
 
@@ -9,28 +9,28 @@ const Wrapper = styled.div`
     display: flex;
     width: 100%;
     border: 1px solid #d3d3d3;
-    height: ${({ rowHeight, isOpen, numRows }) =>
-        `${isOpen ? numRows * rowHeight : 40}px`};
+    min-height: 300px;
     flex-direction: column;
     user-select: none;
+    overflow-y: auto;
     overflow-x: hidden;
 `;
 
-const Header = styled.div`
-    display: flex;
-    width: 100%;
-    height: 44px;
-    align-items: center;
-    padding: 0.5em;
-    justify-content: space-between;
-    cursor: pointer;
-`;
+// const Header = styled.div`
+//     display: flex;
+//     width: 100%;
+//     height: 44px;
+//     align-items: center;
+//     padding: 0.5em;
+//     justify-content: space-between;
+//     cursor: pointer;
+// `;
 
-const Icon = styled.i`
-    margin-right: 0.5rem;
-    font-size: 20px;
-    cursor: pointer;
-`;
+// const Icon = styled.i`
+//     margin-right: 0.5rem;
+//     font-size: 20px;
+//     cursor: pointer;
+// `;
 
 const ListItem = styled.div`
     display: flex;
@@ -100,40 +100,38 @@ class Accordion extends Component {
     };
 
     render() {
-        const { isOpen, isMobile, selected } = this.state;
-        const { items, rowHeight, numRows, size } = this.props;
-
+        const { isOpen, selected } = this.state;
+        let { items, rowHeight, numRows } = this.props;
+        numRows = numRows < 5 ? 8 : numRows;
         return (
-            <Wrapper isOpen={isOpen} rowHeight={rowHeight} numRows={numRows}>
-                {isOpen ? (
-                    <List
-                        width={size.width - 2}
-                        height={numRows * rowHeight}
-                        rowCount={items.length}
-                        rowHeight={rowHeight}
-                        rowRenderer={({ key, index, style }) => (
-                            <ListItem
-                                key={key}
-                                style={style}
-                                index={index}
-                                selected={selected}
-                                onClick={() =>
-                                    this.handleClick(index, items[index])
-                                }
-                            >
-                                {items[index].name}
-                            </ListItem>
-                        )}
-                    />
-                ) : (
-                    <Header onClick={this.handleOpen}>
-                        {items[0].slug}
-                        {!isMobile && <Icon className="fa caret-down" />}
-                    </Header>
-                )}
+            <Wrapper
+                className="idxwrapper"
+                isOpen={isOpen}
+                rowHeight={rowHeight}
+                numRows={numRows}
+            >
+                <List
+                    width={767}
+                    height={numRows * rowHeight}
+                    rowCount={items.length}
+                    rowHeight={rowHeight}
+                    rowRenderer={({ key, index, style }) => (
+                        <ListItem
+                            key={key}
+                            style={style}
+                            index={index}
+                            selected={selected}
+                            onClick={() =>
+                                this.handleClick(index, items[index])
+                            }
+                        >
+                            {items[index].name}
+                        </ListItem>
+                    )}
+                />
             </Wrapper>
         );
     }
 }
 
-export default sizeMe()(Accordion);
+export default Accordion;

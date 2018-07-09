@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
 import styled from "styled-components";
-import sizeMe from "react-sizeme";
+// import sizeMe from "react-sizeme";
 
 import GetTaxonomies from "../../data-connectors/GetTaxonomies";
 import UpdateTaxonomy from "../../data-connectors/UpdateTaxonomy";
@@ -44,13 +44,10 @@ const ActionsWrapper = styled.div`
     }
 `;
 
-const Label = styled.div`
-    font-weight: 700;
-`;
-
 const NewTagWrapper = styled.div`
     display: flex;
     border: 1px solid #d3d3d3;
+    border-top: none;
     justify-content: space-between;
     align-items: center;
 `;
@@ -62,23 +59,6 @@ const NewTagInput = styled.input`
     border-radius: 3px;
 `;
 
-const SlugInput = styled.input`
-    padding: 0.5rem;
-    width: 100%;
-    border: 1px solid #d3d3d3;
-    border-radius: 3px;
-    margin-bottom: 15px;
-`;
-
-const DescInput = styled.textarea`
-    padding: 0.5em;
-    width: 100%;
-    height: 120px;
-    border: 1px solid #d3d3d3;
-    border-radius: 3px;
-    margin-bottom: 15px;
-`;
-
 const Icon = styled.i`
     color: #1a82d6;
     margin-right: 0.5rem;
@@ -88,20 +68,18 @@ const Icon = styled.i`
 
 const ButtonsWrapper = styled.div`
     margin-top: 20px;
-    width: 170px;
+    width: 140px;
     display: flex;
     justify-content: space-between;
     align-self: flex-end;
+    align-items: center;
 `;
 
-const Button = styled.button`
-    padding: 6px 20px;
-    background-color: ${p => p.background};
+const ButtonLink = styled.a`
     color: ${p => p.color};
-    border: none;
-    font-weight: 600;
-    &:focus {
-        outline: 0;
+    :hover {
+        text-decoration: none;
+        color: ${p => p.color};
     }
 `;
 
@@ -113,7 +91,7 @@ class Taxonomy extends Component {
         loading: PropTypes.bool.isRequired,
         networkStatus: PropTypes.number.isRequired,
         taxonomies: PropTypes.Array,
-        size: PropTypes.object.isRequired
+        size: PropTypes.object
     };
 
     static contextTypes = {
@@ -158,7 +136,11 @@ class Taxonomy extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (!nextProps.loading && prevState.taxonomies.length === 0) {
+        if (
+            !nextProps.loading &&
+            prevState.taxonomies.length === 0 &&
+            nextProps.taxonomies.length > 0
+        ) {
             return {
                 taxonomies: [...nextProps.taxonomies],
                 selected: nextProps.taxonomies[0]
@@ -238,8 +220,28 @@ class Taxonomy extends Component {
 
     deleteTax = id => {
         const { deleteTaxonomy } = this.props;
+        let index = 0;
+        this.state.taxonomies.forEach((t, idx) => {
+            if (t.id === id) {
+                index = idx;
+            }
+        });
+
+        const setSelected = item => ({
+            id: item.id,
+            desc: item.desc,
+            slug: item.slug
+        });
         this.setState(
-            s => ({ taxonomies: s.taxonomies.filter(t => t.id !== id) }),
+            s => {
+                let newIndex =
+                    s.taxonomies.length - 1 >= index ? index - 1 : index - 2;
+                return {
+                    taxonomies: s.taxonomies.filter(t => t.id !== id),
+                    selected: setSelected(s.taxonomies[newIndex]),
+                    selectedIndex: newIndex
+                };
+            },
             () => deleteTaxonomy({ id })
         );
     };
@@ -252,10 +254,10 @@ class Taxonomy extends Component {
             newTagName,
             dropdownClicked
         } = this.state;
-        const { loading, networkStatus, size } = this.props;
+        const { loading, networkStatus } = this.props;
         const isLoading = loading || !networkStatus === 2;
 
-        const isMobile = size.width <= 767;
+        const isMobile = true;
         const open = isMobile ? (dropdownClicked ? true : false) : true;
         return (
             !isLoading && (
@@ -267,11 +269,10 @@ class Taxonomy extends Component {
                         <div className="module-subtitle">
                             {this.defaultText.subtitle1}
                         </div>
-                        <Wrapper>
-                            {!open && <Label>Tag</Label>}
-                            <TagsWrapper>
+                        <Wrapper className="wraperrr">
+                            <TagsWrapper className="tagswrapper">
                                 <Dropdown
-                                    numRows={5}
+                                    numRows={taxonomies.length}
                                     rowHeight={44}
                                     items={taxonomies || []}
                                     selectedIndex={this.state.selectedIndex}
@@ -283,57 +284,69 @@ class Taxonomy extends Component {
                                     open={open}
                                     dropdownClicked={dropdownClicked}
                                 />
-                                {open && (
-                                    <NewTagWrapper>
-                                        <NewTagInput
-                                            value={newTagName}
-                                            onChange={this.handleNewTagName}
-                                            placeholder="Add a new tag..."
-                                        />
-                                        <Icon
-                                            className="fa fa-plus"
-                                            onClick={this.saveNewTag}
-                                        />
-                                    </NewTagWrapper>
-                                )}
+
+                                <NewTagWrapper>
+                                    <NewTagInput
+                                        value={newTagName}
+                                        onChange={this.handleNewTagName}
+                                        placeholder="Add a new tag..."
+                                    />
+                                    <Icon
+                                        className="fa fa-plus"
+                                        onClick={this.saveNewTag}
+                                    />
+                                </NewTagWrapper>
                             </TagsWrapper>
                             <ActionsWrapper>
-                                <Label>{t("common.slug")}</Label>
-                                <div>
-                                    <SlugInput
+                                <div className="form-group">
+                                    <label className="custom-label">
+                                        {t("common.slug")}
+                                    </label>
+
+                                    <input
                                         type="text"
-                                        name="slug"
+                                        className="form-control"
+                                        placeholder="Enter your blog's title"
                                         value={slug ? slug : ""}
                                         onChange={this.handleChange}
+                                        name="slug"
                                     />
                                 </div>
-                                <Label>{t("common.description")}</Label>
-                                <div>
-                                    <DescInput
-                                        type="text"
+
+                                <div className="form-group">
+                                    <label className="custom-label">
+                                        {t("common.description")}
+                                    </label>
+                                    <textarea
+                                        className="form-control"
+                                        rows="2"
+                                        placeholder={`Enter a short description about the ${slug} tag. This maybe used by some themes`}
                                         name="desc"
-                                        value={desc ? desc : ""}
-                                        placeholder={`Some description about the ${slug} tag here, with some maximum character limit`}
                                         onChange={this.handleChange}
-                                    />
+                                    >
+                                        {desc ? desc : ""}
+                                    </textarea>
                                 </div>
+
                                 <ButtonsWrapper>
-                                    <Button
-                                        color="red"
-                                        background="white"
-                                        onClick={() => this.deleteTax(id)}
+                                    <ButtonLink
+                                        href="#"
+                                        color="#d40c31"
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            this.deleteTax(id);
+                                        }}
                                     >
                                         Delete tag
-                                    </Button>
-                                    <Button
-                                        color="white"
-                                        background="#1a82d6"
+                                    </ButtonLink>
+                                    <button
+                                        className="btn btn-sm btn-dark"
                                         onClick={() =>
                                             this.editSaveTaxonomy(id)
                                         }
                                     >
                                         Save
-                                    </Button>
+                                    </button>
                                 </ButtonsWrapper>
                             </ActionsWrapper>
                         </Wrapper>
@@ -344,6 +357,4 @@ class Taxonomy extends Component {
     }
 }
 
-export default DeleteTaxonomy(
-    UpdateTaxonomy(GetTaxonomies(sizeMe()(Taxonomy)))
-);
+export default DeleteTaxonomy(UpdateTaxonomy(GetTaxonomies(Taxonomy)));
