@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
 import styled from "styled-components";
-// import sizeMe from "react-sizeme";
 
 import GetTaxonomies from "../../data-connectors/GetTaxonomies";
 import UpdateTaxonomy from "../../data-connectors/UpdateTaxonomy";
 import DeleteTaxonomy from "../../data-connectors/DeleteTaxonomy";
-import Dropdown from "./Dropdown";
+import Taxonomies from "./Taxonomies";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -120,10 +119,9 @@ class Taxonomy extends Component {
         this.defaultText = this.texts[this.props.type];
         this.state = {
             taxonomies: [],
-            selected: {},
             newTagName: "",
             selectedIndex: 0,
-            dropdownClicked: false
+            TaxonomyClicked: false
         };
     }
 
@@ -142,20 +140,19 @@ class Taxonomy extends Component {
             nextProps.taxonomies.length > 0
         ) {
             return {
-                taxonomies: [...nextProps.taxonomies],
-                selected: nextProps.taxonomies[0]
+                taxonomies: [...nextProps.taxonomies]
             };
         }
         return null;
     }
 
     editSaveTaxonomy = async id => {
-        const { taxonomies, selected } = this.state;
+        const { taxonomies, selectedIndex } = this.state;
         const { type, updateTaxonomy } = this.props;
         const item = { ...taxonomies.filter(t => t.id === id)[0], type };
 
         // merge new changes into this item
-        const changedItem = { ...item, ...selected, edit: 1 };
+        const changedItem = { ...item, ...taxonomies[selectedIndex], edit: 1 };
 
         const result = await updateTaxonomy(changedItem);
         if (result.data.updateTaxonomy.ok) {
@@ -198,7 +195,6 @@ class Taxonomy extends Component {
             const newState = [...taxonomies, { ...item }];
             this.setState({
                 taxonomies: newState,
-                selected: newState[newState.length - 1],
                 selectedIndex: newState.length - 1,
                 newTagName: ""
             });
@@ -207,42 +203,42 @@ class Taxonomy extends Component {
 
     handleChange = e => {
         const { name, value } = e.target;
-        this.setState(s => ({ selected: { ...s.selected, [name]: value } }));
+
+        const taxonomies = this.state.taxonomies.map((item, index) => {
+            if (index === this.state.selectedIndex) {
+                item[name] = value;
+            }
+            return item;
+        });
+        this.setState({ taxonomies });
     };
 
     handleSelect = index => {
-        this.setState(s => ({ selected: s.taxonomies[index] }));
+        this.setState({ selectedIndex: index });
     };
 
-    handleDropdownClick = () => {
-        this.setState(s => ({ dropdownClicked: !s.dropdownClicked }));
+    handleTaxonomyClick = () => {
+        this.setState(s => ({ TaxonomyClicked: !s.TaxonomyClicked }));
     };
 
-    deleteTax = id => {
-        const { deleteTaxonomy } = this.props;
-        let index = 0;
-        this.state.taxonomies.forEach((t, idx) => {
-            if (t.id === id) {
-                index = idx;
-            }
-        });
+    deleteTax = () => {
+        let { selectedIndex } = this.state;
+        const { id } = this.state.taxonomies[selectedIndex];
+        const taxonomies = [...this.state.taxonomies];
+        taxonomies.splice(selectedIndex, 1);
 
-        const setSelected = item => ({
-            id: item.id,
-            desc: item.desc,
-            slug: item.slug
-        });
+        let newIndex = selectedIndex;
+        if (taxonomies.length - 1 < newIndex) {
+            newIndex = 0;
+        }
         this.setState(
-            s => {
-                let newIndex =
-                    s.taxonomies.length - 1 >= index ? index - 1 : index - 2;
-                return {
-                    taxonomies: s.taxonomies.filter(t => t.id !== id),
-                    selected: setSelected(s.taxonomies[newIndex]),
-                    selectedIndex: newIndex
-                };
+            {
+                taxonomies,
+                selectedIndex: newIndex
             },
-            () => deleteTaxonomy({ id })
+            () => {
+                this.props.deleteTaxonomy({ id });
+            }
         );
     };
 
@@ -250,109 +246,114 @@ class Taxonomy extends Component {
         const { t } = this.context;
         const {
             taxonomies,
-            selected: { id, desc, slug },
             newTagName,
-            dropdownClicked
+            TaxonomyClicked,
+            selectedIndex
         } = this.state;
         const { loading, networkStatus } = this.props;
         const isLoading = loading || !networkStatus === 2;
+        if (isLoading) return null;
 
+        let slug, desc, id;
+
+        if (taxonomies.length > 0) {
+            slug = taxonomies[selectedIndex].slug;
+            desc = taxonomies[selectedIndex].desc;
+            id = taxonomies[selectedIndex].id;
+        }
         const isMobile = true;
-        const open = isMobile ? (dropdownClicked ? true : false) : true;
+        const open = isMobile ? (TaxonomyClicked ? true : false) : true;
         return (
-            !isLoading && (
-                <section className="module-xs">
-                    <div className="card">
-                        <div className="module-title">
-                            {this.defaultText.title1}
-                        </div>
-                        <div className="module-subtitle">
-                            {this.defaultText.subtitle1}
-                        </div>
-                        <Wrapper className="wraperrr">
-                            <TagsWrapper className="tagswrapper">
-                                <Dropdown
-                                    numRows={taxonomies.length}
-                                    rowHeight={44}
-                                    items={taxonomies || []}
-                                    selectedIndex={this.state.selectedIndex}
-                                    handleSelect={this.handleSelect}
-                                    handleDropdownClick={
-                                        this.handleDropdownClick
-                                    }
-                                    isMobile={isMobile}
-                                    open={open}
-                                    dropdownClicked={dropdownClicked}
-                                />
-
-                                <NewTagWrapper>
-                                    <NewTagInput
-                                        value={newTagName}
-                                        onChange={this.handleNewTagName}
-                                        placeholder="Add a new tag..."
-                                    />
-                                    <Icon
-                                        className="fa fa-plus"
-                                        onClick={this.saveNewTag}
-                                    />
-                                </NewTagWrapper>
-                            </TagsWrapper>
-                            <ActionsWrapper>
-                                <div className="form-group">
-                                    <label className="custom-label">
-                                        {t("common.slug")}
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Enter your blog's title"
-                                        value={slug ? slug : ""}
-                                        onChange={this.handleChange}
-                                        name="slug"
-                                    />
-                                </div>
-
-                                <div className="form-group">
-                                    <label className="custom-label">
-                                        {t("common.description")}
-                                    </label>
-                                    <textarea
-                                        className="form-control"
-                                        rows="2"
-                                        placeholder={`Enter a short description about the ${slug} tag. This maybe used by some themes`}
-                                        name="desc"
-                                        onChange={this.handleChange}
-                                    >
-                                        {desc ? desc : ""}
-                                    </textarea>
-                                </div>
-
-                                <ButtonsWrapper>
-                                    <ButtonLink
-                                        href="#"
-                                        color="#d40c31"
-                                        onClick={e => {
-                                            e.preventDefault();
-                                            this.deleteTax(id);
-                                        }}
-                                    >
-                                        Delete tag
-                                    </ButtonLink>
-                                    <button
-                                        className="btn btn-sm btn-dark"
-                                        onClick={() =>
-                                            this.editSaveTaxonomy(id)
-                                        }
-                                    >
-                                        Save
-                                    </button>
-                                </ButtonsWrapper>
-                            </ActionsWrapper>
-                        </Wrapper>
+            <section className="module-xs">
+                <div className="card">
+                    <div className="module-title">
+                        {this.defaultText.title1}
                     </div>
-                </section>
-            )
+                    <div className="module-subtitle">
+                        {this.defaultText.subtitle1}
+                    </div>
+                    <Wrapper className="p-t-10">
+                        <TagsWrapper>
+                            <Taxonomies
+                                numRows={taxonomies.length}
+                                rowHeight={44}
+                                items={taxonomies || []}
+                                selectedIndex={selectedIndex}
+                                handleSelect={this.handleSelect}
+                                handleTaxonomyClick={this.handleTaxonomyClick}
+                                isMobile={isMobile}
+                                open={open}
+                                TaxonomyClicked={TaxonomyClicked}
+                            />
+
+                            <NewTagWrapper>
+                                <NewTagInput
+                                    value={newTagName}
+                                    onChange={this.handleNewTagName}
+                                    placeholder="Add a new tag..."
+                                    onKeyDown={e =>
+                                        e.keyCode == 13 && this.saveNewTag()
+                                    }
+                                />
+                                <Icon
+                                    className="fa fa-plus"
+                                    onClick={this.saveNewTag}
+                                />
+                            </NewTagWrapper>
+                        </TagsWrapper>
+                        <ActionsWrapper>
+                            <div className="form-group">
+                                <label className="custom-label">
+                                    {t("common.slug")}
+                                </label>
+
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter your blog's title"
+                                    value={slug ? slug : ""}
+                                    onChange={this.handleChange}
+                                    name="slug"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="custom-label">
+                                    {t("common.description")}
+                                </label>
+                                <textarea
+                                    className="form-control"
+                                    rows="2"
+                                    placeholder={`Enter a short description about the ${slug} tag. This maybe used by some themes`}
+                                    name="desc"
+                                    onChange={this.handleChange}
+                                >
+                                    {desc ? desc : ""}
+                                </textarea>
+                            </div>
+
+                            <ButtonsWrapper>
+                                <ButtonLink
+                                    href="#"
+                                    color="#d40c31"
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.deleteTax();
+                                    }}
+                                >
+                                    Delete tag
+                                </ButtonLink>
+                                <button
+                                    className="btn btn-sm btn-dark"
+                                    onClick={() => this.editSaveTaxonomy(id)}
+                                >
+                                    Save
+                                </button>
+                            </ButtonsWrapper>
+                        </ActionsWrapper>
+                    </Wrapper>
+                </div>
+            </section>
         );
     }
 }
