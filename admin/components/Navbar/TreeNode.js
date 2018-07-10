@@ -39,7 +39,6 @@ class TreeNode extends Component {
 
     render() {
         const { t } = this.props;
-        console.log(this.props);
         const checkPerm = permission =>
             this.props.permissions.indexOf(permission) !== -1;
 
@@ -95,9 +94,7 @@ class TreeNode extends Component {
                                 }
                             />
                         )}
-                        <span className="name">
-                            {t ? t(this.props.data.name) : this.props.data.name}
-                        </span>
+                        <span className="name">{t(this.props.data.name)}</span>
                     </Link>
                     <ul className={containerClassName + " nav nav-list"}>
                         {subtree}
