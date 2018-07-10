@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
-export default class Social extends Component {
+class Social extends Component {
     updateOption = (option, value) => {
         this.props.updateOption(option, value);
-    }
+    };
+
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
         return (
             <div>
                 <div className="form-group">
@@ -77,8 +79,10 @@ export default class Social extends Component {
 
 Social.propTypes = {
     data: PropTypes.object,
-    updateOption: PropTypes.func
+    updateOption: PropTypes.func,
+    t: PropTypes.func
 };
+
 Social.defaultPropTypes = {
     data: JSON.stringify({
         social_twitter: "",
@@ -88,6 +92,4 @@ Social.defaultPropTypes = {
     })
 };
 
-Social.contextTypes = {
-    t: PropTypes.func
-};
+export default translate("translations")(Social);

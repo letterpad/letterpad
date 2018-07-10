@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
 const Filter = ({ id, label, status, changeStatus }) => {
     let selected = "publish";
@@ -26,7 +27,7 @@ Filter.propTypes = {
     changeStatus: PropTypes.func
 };
 
-export const PostFilters = ({ selectedStatus, changeStatus }, { t }) => {
+export const PostFilters = ({ selectedStatus, changeStatus, t }) => {
     return (
         <div className="post-filters m-b-20">
             <Filter
@@ -59,9 +60,8 @@ export const PostFilters = ({ selectedStatus, changeStatus }, { t }) => {
 
 PostFilters.propTypes = {
     selectedStatus: PropTypes.string,
-    changeStatus: PropTypes.func
-};
-PostFilters.contextTypes = {
+    changeStatus: PropTypes.func,
     t: PropTypes.func
 };
-export default PostFilters;
+
+export default translate("translations")(PostFilters);

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
 import ModalHoc from "../../components/ModalHoc";
 import FileExplorer from "../../containers/FileExplorer/FileExplorer";
@@ -18,9 +19,9 @@ class FileExplorerModal extends Component {
         e.preventDefault();
         this.setState({ page });
     };
-    
+
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
         return (
             <React.Fragment>
                 <div className="modal-header">
@@ -82,13 +83,10 @@ class FileExplorerModal extends Component {
 FileExplorerModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     addNewMedia: PropTypes.func.isRequired,
-    onMediaSelect: PropTypes.func.isRequired
-};
-FileExplorerModal.contextTypes = {
+    onMediaSelect: PropTypes.func.isRequired,
     t: PropTypes.func
 };
-export default ModalHoc(
-    FileExplorerModal,
-    null,
-    "full-width-modal file-explorer"
+
+export default translate("translations")(
+    ModalHoc(FileExplorerModal, null, "full-width-modal file-explorer")
 );

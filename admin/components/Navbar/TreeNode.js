@@ -3,63 +3,17 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { translate } from "react-i18next";
 
-export class MenuTree extends Component {
-    state = {
-        data: this.props.data,
-        permissions: this.props.permissions,
-        route: this.props.route
-    };
-
-    static getDerivedStateFromProps(nextProps) {
-        return {
-            route: nextProps.route
-        };
-    }
-
-    onSelect = data => {
-        const newData = this.props.data.map(item => {
-            if (item.label === data.label && item.name === data.name) {
-                return data;
-            }
-            return item;
-        });
-        this.props.setData(newData);
-    };
-
-    render() {
-        const sorted = this.state.data.sort((a, b) => a.priority - b.priority);
-
-        const tree = sorted.map(child => (
-            <TreeNode
-                permissions={this.state.permissions}
-                key={child.id}
-                data={child}
-                route={this.state.route}
-                setSelection={this.onSelect}
-            />
-        ));
-
-        return <ul className="nav nav-list">{tree}</ul>;
-    }
-}
-
-MenuTree.propTypes = {
-    data: PropTypes.array,
-    permissions: PropTypes.array,
-    route: PropTypes.string,
-    setData: PropTypes.func
-};
-
 class TreeNode extends Component {
     state = {
-        collapsed: true,
+        collapsed:
+            "collapsed" in this.props.data ? this.props.data.collapsed : true,
         selected: this.props.data.slug === this.props.route ? "active" : ""
     };
 
-    static getDerivedStateFromProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, prevState) {
         const newState = {};
         if ("collapsed" in nextProps.data && !nextProps.data.collapsed) {
-            newState.collapsed = this.props.data.collapsed;
+            newState.collapsed = prevState.collapsed;
         }
 
         newState.selected =
@@ -69,13 +23,23 @@ class TreeNode extends Component {
 
     onClick = e => {
         e.preventDefault();
-        this.setState(s => ({ collapsed: !s.collapsed }));
-        this.props.data.collapsed = !this.state.collapsed; // ?
-        this.props.setSelection(this.props.data);
+        this.setState(
+            {
+                collapsed: !this.state.collapsed
+            },
+            () => {
+                const data = {
+                    ...this.props.data,
+                    collapsed: this.state.collapsed
+                };
+                this.props.setSelection(data);
+            }
+        );
     };
 
     render() {
         const { t } = this.props;
+        console.log(this.props);
         const checkPerm = permission =>
             this.props.permissions.indexOf(permission) !== -1;
 
@@ -131,7 +95,9 @@ class TreeNode extends Component {
                                 }
                             />
                         )}
-                        <span>{t(this.props.data.label)}</span>
+                        <span className="name">
+                            {t ? t(this.props.data.name) : this.props.data.name}
+                        </span>
                     </Link>
                     <ul className={containerClassName + " nav nav-list"}>
                         {subtree}
@@ -148,7 +114,9 @@ class TreeNode extends Component {
                     {this.props.data.icon && (
                         <i className={"menu-icon fa " + this.props.data.icon} />
                     )}
-                    <span>{t(this.props.data.label)}</span>
+                    <span className="name">
+                        {t ? t(this.props.data.name) : this.props.data.name}
+                    </span>
                 </Link>
             </li>
         );

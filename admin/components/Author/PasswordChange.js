@@ -1,21 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
-export default class PasswordChange extends Component {
+class PasswordChange extends Component {
     static propTypes = {
-        updateOption: PropTypes.func
-    };
-
-    static contextTypes = {
+        updateOption: PropTypes.func,
         t: PropTypes.func
     };
 
     updateOption = (option, value) => {
         this.props.updateOption("password", value);
-    }
-    
+    };
+
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
         return (
             <div>
                 <div className="module-title">
@@ -43,3 +41,5 @@ export default class PasswordChange extends Component {
         );
     }
 }
+
+export default translate("translations")(PasswordChange);

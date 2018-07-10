@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
 import MediaItem from "../../components/Media/MediaItem";
 import EditMediaInfo from "../../components/Media/EditMediaInfo";
@@ -24,17 +25,14 @@ class Media extends Component {
         match: PropTypes.object,
         fetchMore: PropTypes.func,
         updateMedia: PropTypes.func,
-        author: PropTypes.object
+        author: PropTypes.object,
+        t: PropTypes.func
     };
 
     static defaultProps = {
         media: {
             rows: []
         }
-    };
-
-    static contextTypes = {
-        t: PropTypes.func
     };
 
     constructor(props) {
@@ -76,17 +74,17 @@ class Media extends Component {
             confirmDelete: !this.state.confirmDelete,
             selectedItem: media
         });
-    }
+    };
 
-    deleteMediaFinal = ()=>  {
+    deleteMediaFinal = () => {
         this.props.deleteMedia({
             id: this.state.selectedItem.id
         });
         this.toggleDeleteModal();
         this.setState({ deleteMedia: true });
-    }
+    };
 
-    toggleMediaInfo =(selectedItem) => {
+    toggleMediaInfo = selectedItem => {
         let selectedIndex = this.state.selectedIndex;
         if (selectedItem) {
             // find the index of this item.
@@ -102,9 +100,9 @@ class Media extends Component {
             selectedItem,
             selectedIndex
         });
-    }
+    };
 
-    uploadImage = async (files) => {
+    uploadImage = async files => {
         await uploadFile({ files, type: "post_image" });
         // if the user is in page 1, just refetch the items of page 1
         if (this.props.match.params.page == 1) {
@@ -118,7 +116,7 @@ class Media extends Component {
             // else navigate the user to page 1
             this.props.history.push("/admin/media/1");
         }
-    }
+    };
 
     selectNextMedia = () => {
         const newState = {};
@@ -131,9 +129,9 @@ class Media extends Component {
             ...this.state.items[newState.selectedIndex]
         };
         this.setState(newState);
-    }
+    };
 
-    selectPreviousMedia =() => {
+    selectPreviousMedia = () => {
         const newState = {};
         if (this.state.selectedIndex === 0) {
             newState.selectedIndex = this.state.items.length - 1;
@@ -144,10 +142,10 @@ class Media extends Component {
             ...this.state.items[newState.selectedIndex]
         };
         this.setState(newState);
-    }
+    };
 
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
         const items = this.state.items.map(media => (
             <MediaItem
                 key={media.id}
@@ -212,7 +210,9 @@ class Media extends Component {
     }
 }
 
-export default GetMedia(DeleteMedia(InsertMedia(UpdateMedia(Media))));
+export default translate("translations")(
+    GetMedia(DeleteMedia(InsertMedia(UpdateMedia(Media))))
+);
 
 const Paginate = ({ count, page }) => {
     count = count || 0;
