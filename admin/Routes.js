@@ -6,7 +6,7 @@ import Notifications from "react-notify-toast";
 import { I18nextProvider } from "react-i18next";
 
 // Shared
-import i18n from "../shared/i18n/i18n";
+import getI18nWithDefaultLang from "../shared/i18n/i18n";
 import SettingsData from "../shared/data-connectors/SettingsData";
 
 // View Files
@@ -42,8 +42,14 @@ class Routes extends Component {
         if (settings.loading) {
             return <Loader />;
         }
+        const langOptions = JSON.parse(settings.data.locale.value);
+        const selectedLang = Object.keys(langOptions).filter(
+            key => langOptions[key]
+        );
+        const lang = selectedLang[0];
+        const i18nConfig = getI18nWithDefaultLang(lang);
         return (
-            <I18nextProvider i18n={i18n}>
+            <I18nextProvider i18n={i18nConfig}>
                 <Switch>
                     <Route
                         exact

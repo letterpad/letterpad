@@ -28,12 +28,12 @@ class General extends Component {
     };
 
     switchLanguage = e => {
-        // const locales = {};
-        // Object.keys(this.langOptions).map(lang => {
-        //     locales[lang] = e.target.value === lang;
-        // });
+        const locales = {};
+        Object.keys(this.langOptions).map(lang => {
+            locales[lang] = e.target.value === lang;
+        });
 
-        // this.updateOption("locale", JSON.stringify(locales));
+        this.updateOption("locale", JSON.stringify(locales));
         const { i18n } = this.props;
         i18n.changeLanguage(e.target.value);
     };
@@ -281,7 +281,7 @@ class General extends Component {
                     >
                         {Object.keys(this.langOptions).map((key, i) => {
                             const selected = this.langOptions[key]
-                                ? { selected: "" }
+                                ? { selected: "selected" }
                                 : {};
                             return (
                                 <option key={i} {...selected} value={key}>

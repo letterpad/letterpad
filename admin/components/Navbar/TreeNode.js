@@ -47,7 +47,7 @@ class TreeNode extends Component {
             subtree = this.props.data.children
                 .sort((a, b) => a.priority - b.priority)
                 .map(child => (
-                    <TreeNode
+                    <TreeNodeWithTranslations
                         permissions={this.props.permissions}
                         key={child.id}
                         data={child}
@@ -128,4 +128,5 @@ TreeNode.propTypes = {
     t: PropTypes.func
 };
 
-export default translate("translations")(TreeNode);
+const TreeNodeWithTranslations = translate("translations")(TreeNode);
+export default TreeNodeWithTranslations;
