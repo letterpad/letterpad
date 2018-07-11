@@ -1,10 +1,86 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
+import styled from "styled-components";
 
 import GetTaxonomies from "../../data-connectors/GetTaxonomies";
 import UpdateTaxonomy from "../../data-connectors/UpdateTaxonomy";
 import DeleteTaxonomy from "../../data-connectors/DeleteTaxonomy";
+import Taxonomies from "./Taxonomies";
+
+const Wrapper = styled.div`
+    width: 100%;
+    height: 75%;
+    display: flex;
+    button {
+        cursor: pointer;
+    }
+    @media (max-width: 767px) {
+        flex-direction: column;
+        height: 100%;
+    }
+`;
+
+const TagsWrapper = styled.div`
+    width: 47%;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    @media (max-width: 767px) {
+        width: 100%;
+    }
+`;
+
+const ActionsWrapper = styled.div`
+    width: 35%;
+    margin-left: 50px;
+    display: flex;
+    flex-direction: column;
+    @media (max-width: 767px) {
+        width: 100%;
+        margin-left: 0px;
+        margin-top: 20px;
+    }
+`;
+
+const NewTagWrapper = styled.div`
+    display: flex;
+    border: 1px solid #d3d3d3;
+    border-top: none;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const NewTagInput = styled.input`
+    padding: 1rem;
+    width: 90%;
+    border: none;
+    border-radius: 3px;
+`;
+
+const Icon = styled.i`
+    color: #1a82d6;
+    margin-right: 0.5rem;
+    font-size: 20px;
+    cursor: pointer;
+`;
+
+const ButtonsWrapper = styled.div`
+    margin-top: 20px;
+    width: 140px;
+    display: flex;
+    justify-content: space-between;
+    align-self: flex-end;
+    align-items: center;
+`;
+
+const ButtonLink = styled.a`
+    color: ${p => p.color};
+    :hover {
+        text-decoration: none;
+        color: ${p => p.color};
+    }
+`;
 
 class Taxonomy extends Component {
     static propTypes = {
@@ -12,7 +88,9 @@ class Taxonomy extends Component {
         updateTaxonomy: PropTypes.func.isRequired,
         deleteTaxonomy: PropTypes.func.isRequired,
         loading: PropTypes.bool.isRequired,
-        networkStatus: PropTypes.number.isRequired
+        networkStatus: PropTypes.number.isRequired,
+        taxonomies: PropTypes.Array,
+        size: PropTypes.object
     };
 
     static contextTypes = {
@@ -39,11 +117,11 @@ class Taxonomy extends Component {
             }
         };
         this.defaultText = this.texts[this.props.type];
-        this.refList = {};
         this.state = {
             taxonomies: [],
-            filteredData: [],
-            editMode: false
+            newTagName: "",
+            selectedIndex: 0,
+            TaxonomyClicked: false
         };
     }
 
@@ -58,69 +136,26 @@ class Taxonomy extends Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         if (
             !nextProps.loading &&
-            prevState.taxonomies.length !== nextProps.taxonomies.length
+            prevState.taxonomies.length === 0 &&
+            nextProps.taxonomies.length > 0
         ) {
             return {
-                taxonomies: [...nextProps.taxonomies],
-                filteredData: [...nextProps.taxonomies]
+                taxonomies: [...nextProps.taxonomies]
             };
         }
         return null;
     }
 
-    setRef(ele, idx, key) {
-        if (!this.refList[idx]) {
-            this.refList[idx] = {};
-        }
-        this.refList[idx][key] = ele;
-    }
+    editSaveTaxonomy = async id => {
+        const { taxonomies, selectedIndex } = this.state;
+        const { type, updateTaxonomy } = this.props;
+        const item = { ...taxonomies.filter(t => t.id === id)[0], type };
 
-    editSaveTaxonomy = async idx => {
-        let item = { ...this.state.filteredData[idx] };
-        let oldItem = this.state.taxonomies[idx];
+        // merge new changes into this item
+        const changedItem = { ...item, ...taxonomies[selectedIndex], edit: 1 };
 
-        if (typeof item.edit === "undefined") {
-            item.edit = false;
-        }
-        //  dont allow multiple edits
-        if (this.state.editMode && !item.edit) {
-            return false;
-        }
-
-        const newState = { editMode: !item.edit };
-        newState.filteredData = [...this.state.filteredData];
-        newState.filteredData[idx] = item;
-
-        //  make the item editable
-        if (!item.edit) {
-            newState.filteredData[idx].edit = true;
-
-            return this.setState(newState, () => {
-                this.refList[idx].name.focus();
-            });
-        } else if (
-            item.name == oldItem.name &&
-            item.desc == oldItem.desc &&
-            item.slug == oldItem.slug &&
-            item.edit
-        ) {
-            delete newState.filteredData[idx].edit;
-            return this.setState(newState);
-        }
-        // dont allow empty taxonomies
-        if (item.edit && item.name == "") {
-            return alert("Cannot be empty");
-        }
-        if (!item.slug) {
-            item.slug = item.name.toLowerCase().replace(/ /g, "-");
-        }
-        newState.editMode = false;
-        item.type = this.props.type;
-        const result = await this.props.updateTaxonomy(item);
+        const result = await updateTaxonomy(changedItem);
         if (result.data.updateTaxonomy.ok) {
-            newState.filteredData[idx].id = result.data.updateTaxonomy.id;
-            delete newState.filteredData[idx].edit;
-            this.setState(newState);
             notify.show("Taxonomy Saved", "success", 3000);
         } else {
             notify.show(
@@ -131,124 +166,103 @@ class Taxonomy extends Component {
         }
     };
 
-    newTaxClicked = () => {
-        const newState = {
-            filteredData: [
-                ...this.state.filteredData,
-                {
-                    id: 0,
-                    name: "",
-                    desc: "",
-                    edit: true
-                }
-            ],
-            editMode: false
-        };
-
-        this.setState(newState, () => {
-            this.refList[0].name.focus();
-        });
+    handleNewTagName = e => {
+        this.setState({ newTagName: e.target.value });
     };
 
-    handleChange = (idx, key, value) => {
-        const filteredData = this.state.filteredData.map((item, pointer) => {
-            if (idx == pointer) {
-                item[key] = value;
+    saveNewTag = async () => {
+        const { newTagName, taxonomies } = this.state;
+        const { type, updateTaxonomy } = this.props;
+
+        if (!newTagName) {
+            return;
+        }
+
+        let item = {
+            type,
+            name: newTagName,
+            desc: "",
+            edit: 0,
+            id: 0,
+            slug: newTagName
+        };
+
+        const result = await updateTaxonomy(item);
+
+        if (result.data.updateTaxonomy.ok) {
+            let id = result.data.updateTaxonomy.id;
+            item.id = id;
+            const newState = [...taxonomies, { ...item }];
+            this.setState({
+                taxonomies: newState,
+                selectedIndex: newState.length - 1,
+                newTagName: ""
+            });
+        }
+    };
+
+    handleChange = e => {
+        const { name, value } = e.target;
+
+        const taxonomies = this.state.taxonomies.map((item, index) => {
+            if (index === this.state.selectedIndex) {
+                item[name] = value;
             }
             return item;
         });
-
-        this.setState(filteredData);
+        this.setState({ taxonomies });
     };
 
-    deleteTax = idx => {
-        let id = this.state.filteredData[idx].id;
-        this.props.deleteTaxonomy({ id: id });
-        delete this.state.filteredData[idx];
-        this.setState(this.state);
+    handleSelect = index => {
+        this.setState({ selectedIndex: index });
+    };
+
+    handleTaxonomyClick = () => {
+        this.setState(s => ({ TaxonomyClicked: !s.TaxonomyClicked }));
+    };
+
+    deleteTax = () => {
+        let { selectedIndex } = this.state;
+        const { id } = this.state.taxonomies[selectedIndex];
+        const taxonomies = [...this.state.taxonomies];
+        taxonomies.splice(selectedIndex, 1);
+
+        let newIndex = selectedIndex;
+        if (taxonomies.length - 1 < newIndex) {
+            newIndex = 0;
+        }
+        this.setState(
+            {
+                taxonomies,
+                selectedIndex: newIndex
+            },
+            () => {
+                this.props.deleteTaxonomy({ id });
+            }
+        );
     };
 
     render() {
         const { t } = this.context;
-        const loading = this.props.loading || !this.props.networkStatus === 2;
-        if (loading) return null;
+        const {
+            taxonomies,
+            newTagName,
+            TaxonomyClicked,
+            selectedIndex
+        } = this.state;
+        const { loading, networkStatus } = this.props;
+        const isLoading = loading || !networkStatus === 2;
+        if (isLoading) return null;
 
-        const rows = this.state.filteredData.map((item, idx) => (
-            <tr key={idx} className={item.edit ? "row-selected" : ""}>
-                <td width="25%">
-                    <span
-                        style={{ display: "block" }}
-                        ref={ele => this.setRef(ele, idx, "name")}
-                        onKeyUp={e =>
-                            this.handleChange(
-                                idx,
-                                "name",
-                                e.currentTarget.innerText
-                            )
-                        }
-                        className={item.edit ? "inline-edit" : ""}
-                        placeholder={this.defaultText.input1}
-                        contentEditable={item.edit}
-                    >
-                        {item.name}
-                    </span>
-                </td>
-                <td width="35%">
-                    <span
-                        style={{ display: "block" }}
-                        ref={ele => this.setRef(ele, idx, "desc")}
-                        onKeyUp={e =>
-                            this.handleChange(
-                                idx,
-                                "desc",
-                                e.currentTarget.innerText
-                            )
-                        }
-                        className={item.edit ? "inline-edit" : ""}
-                        placeholder={this.defaultText.input2}
-                        contentEditable={item.edit}
-                    >
-                        {item.desc || ""}
-                    </span>
-                </td>
-                <td width="20%">
-                    <span
-                        style={{ display: "block" }}
-                        ref={ele => this.setRef(ele, idx, "slug")}
-                        onKeyUp={e =>
-                            this.handleChange(
-                                idx,
-                                "slug",
-                                e.currentTarget.innerText
-                            )
-                        }
-                        className={item.edit ? "inline-edit" : ""}
-                        placeholder="Enter a slug"
-                        contentEditable={item.edit}
-                    >
-                        {item.slug || ""}
-                    </span>
-                </td>
-                <td width="20%">
-                    <button
-                        onClick={() => this.editSaveTaxonomy(idx, item.edit)}
-                        className={
-                            "btn btn-xs btn-" + (item.edit ? "success" : "dark")
-                        }
-                    >
-                        {item.edit ? t("common.save") : t("common.edit")}
-                    </button>
-                    &nbsp;&nbsp;
-                    <button
-                        onClick={() => this.deleteTax(idx)}
-                        className="btn btn-xs btn-danger btn-danger-invert"
-                    >
-                        {t("common.delete")}
-                    </button>
-                </td>
-            </tr>
-        ));
+        let slug, desc, id;
 
+        if (taxonomies.length > 0) {
+            slug = taxonomies[selectedIndex].slug;
+            desc = taxonomies[selectedIndex].desc;
+            id = taxonomies[selectedIndex].id;
+        }
+        const isMobile = true;
+        const open = isMobile ? (TaxonomyClicked ? true : false) : true;
         return (
             <section className="module-xs">
                 <div className="card">
@@ -258,35 +272,86 @@ class Taxonomy extends Component {
                     <div className="module-subtitle">
                         {this.defaultText.subtitle1}
                     </div>
+                    <Wrapper className="p-t-10">
+                        <TagsWrapper>
+                            <Taxonomies
+                                numRows={taxonomies.length}
+                                rowHeight={44}
+                                items={taxonomies || []}
+                                selectedIndex={selectedIndex}
+                                handleSelect={this.handleSelect}
+                                handleTaxonomyClick={this.handleTaxonomyClick}
+                                isMobile={isMobile}
+                                open={open}
+                                TaxonomyClicked={TaxonomyClicked}
+                            />
 
-                    <div className="m-b-20">
-                        <button
-                            className="btn btn-xs btn-dark"
-                            aria-label="Add"
-                            onClick={this.newTaxClicked}
-                        >
-                            <i className="fa fa-plus" />
-                        </button>
-                    </div>
-                    <table className="table table-hover table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th width="25%" className="col-text">
-                                    {t("common.name")}
-                                </th>
-                                <th width="25%" className="col-text">
-                                    {t("common.description")}
-                                </th>
-                                <th width="25%" className="col-text">
+                            <NewTagWrapper>
+                                <NewTagInput
+                                    value={newTagName}
+                                    onChange={this.handleNewTagName}
+                                    placeholder="Add a new tag..."
+                                    onKeyDown={e =>
+                                        e.keyCode == 13 && this.saveNewTag()
+                                    }
+                                />
+                                <Icon
+                                    className="fa fa-plus"
+                                    onClick={this.saveNewTag}
+                                />
+                            </NewTagWrapper>
+                        </TagsWrapper>
+                        <ActionsWrapper>
+                            <div className="form-group">
+                                <label className="custom-label">
                                     {t("common.slug")}
-                                </th>
-                                <th width="25%" className="col-text">
-                                    {t("common.actions")}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>{rows}</tbody>
-                    </table>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter your blog's title"
+                                    value={slug ? slug : ""}
+                                    onChange={this.handleChange}
+                                    name="slug"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="custom-label">
+                                    {t("common.description")}
+                                </label>
+                                <textarea
+                                    className="form-control"
+                                    rows="2"
+                                    placeholder={`Enter a short description about the ${slug} tag. This maybe used by some themes`}
+                                    name="desc"
+                                    onChange={this.handleChange}
+                                >
+                                    {desc ? desc : ""}
+                                </textarea>
+                            </div>
+
+                            <ButtonsWrapper>
+                                <ButtonLink
+                                    href="#"
+                                    color="#d40c31"
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.deleteTax();
+                                    }}
+                                >
+                                    Delete tag
+                                </ButtonLink>
+                                <button
+                                    className="btn btn-sm btn-dark"
+                                    onClick={() => this.editSaveTaxonomy(id)}
+                                >
+                                    Save
+                                </button>
+                            </ButtonsWrapper>
+                        </ActionsWrapper>
+                    </Wrapper>
                 </div>
             </section>
         );
