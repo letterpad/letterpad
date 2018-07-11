@@ -8,8 +8,6 @@ import {
 } from "react-virtualized";
 import styled from "styled-components";
 
-// import Scrollbars from "./Scrollbars";
-
 const DEFAULT_ROW_HEIGHT = 50;
 
 const ListWrapper = styled.div`
