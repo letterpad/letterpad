@@ -2,14 +2,15 @@ import i18n from "i18next";
 import * as language from "./lang";
 
 const getI18nWithDefaultLang = lang => {
+    const resources = {};
+    Object.keys(language).forEach(lang => {
+        resources[lang] = language[lang];
+    });
+
     return i18n.init({
         lng: lang || "en", // 'en' | 'es'
         // Using simple hardcoded resources for simple example
-        resources: {
-            en: language.en,
-            fr: language.fr,
-            pl: language.pl
-        },
+        resources,
         fallbackLng: "en",
         debug: true,
 

@@ -175,4 +175,6 @@ class EditMediaInfo extends Component {
     }
 }
 
-export default translate()(ModalHoc(EditMediaInfo, null, "full-width-modal"));
+export default translate("translations")(
+    ModalHoc(EditMediaInfo, null, "full-width-modal")
+);
