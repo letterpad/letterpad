@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
-const GettingStarted = (props, { t }) => {
+const GettingStarted = ({ t }) => {
     return (
         <div className="card masonry-grid-item">
             <div className="module-title">{t("home.gettingStarted")}</div>
@@ -30,7 +31,9 @@ const GettingStarted = (props, { t }) => {
         </div>
     );
 };
-GettingStarted.contextTypes = {
+
+GettingStarted.propTypes = {
     t: PropTypes.func
 };
-export default GettingStarted;
+
+export default translate("translations")(GettingStarted);

@@ -5,8 +5,9 @@ import SortableTree, {
     changeNodeAtPath,
     removeNodeAtPath
 } from "react-sortable-tree";
-import "react-sortable-tree/style.css";
+import { translate } from "react-i18next";
 
+import "react-sortable-tree/style.css";
 import EditMenuModal from "../Modals/EditMenuModal";
 
 /**
@@ -30,7 +31,8 @@ const getMenuItems = function(arr) {
 class MenuConstruction extends Component {
     static propTypes = {
         data: PropTypes.object.isRequired,
-        updateOption: PropTypes.func.isRequired
+        updateOption: PropTypes.func.isRequired,
+        t: PropTypes.func
     };
 
     state = {
@@ -84,7 +86,7 @@ class MenuConstruction extends Component {
         }
         return null;
     }
-    
+
     addItem = (idx, type) => {
         const newState = {};
         newState[type] = [...this.state[type]];
@@ -243,7 +245,7 @@ class MenuConstruction extends Component {
         };
     }
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
         return (
             <div className="row">
                 <div className="col-lg-4">
@@ -308,8 +310,4 @@ class MenuConstruction extends Component {
     }
 }
 
-MenuConstruction.contextTypes = {
-    t: PropTypes.func
-};
-
-export default MenuConstruction;
+export default translate("translations")(MenuConstruction);

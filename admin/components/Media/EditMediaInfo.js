@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
 import ModalHoc from "../../components/ModalHoc";
 import Loader from "../Loader";
@@ -11,9 +12,7 @@ class EditMediaInfo extends Component {
         onClose: PropTypes.func.isRequired,
         previous: PropTypes.func.isRequired,
         next: PropTypes.func.isRequired,
-        updateMedia: PropTypes.func.isRequired
-    };
-    static contextTypes = {
+        updateMedia: PropTypes.func.isRequired,
         t: PropTypes.func
     };
 
@@ -81,7 +80,7 @@ class EditMediaInfo extends Component {
 
     render() {
         const url = config.baseName + this.props.media.url;
-        const { t } = this.context;
+        const { t } = this.props;
         return (
             <React.Fragment>
                 <div className="modal-header">
@@ -176,4 +175,6 @@ class EditMediaInfo extends Component {
     }
 }
 
-export default ModalHoc(EditMediaInfo, null, "full-width-modal");
+export default translate("translations")(
+    ModalHoc(EditMediaInfo, null, "full-width-modal")
+);

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
-export default class AdditionalSettings extends Component {
+class AdditionalSettings extends Component {
     state = {
         displayAuthor: JSON.parse(this.props.data.displayAuthorInfo.value)
     };
@@ -25,7 +26,7 @@ export default class AdditionalSettings extends Component {
     };
 
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
         return (
             <div>
                 <div className="form-group">
@@ -107,9 +108,8 @@ export default class AdditionalSettings extends Component {
 
 AdditionalSettings.propTypes = {
     data: PropTypes.object,
-    updateOption: PropTypes.func
-};
-
-AdditionalSettings.contextTypes = {
+    updateOption: PropTypes.func,
     t: PropTypes.func
 };
+
+export default translate("translations")(AdditionalSettings);

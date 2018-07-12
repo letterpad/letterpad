@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
-const Stats = ({ stats, loading }, { t }) => {
+const Stats = ({ stats, loading, t }) => {
     const items = [
         {
             label: "Posts",
@@ -53,7 +54,8 @@ const Stats = ({ stats, loading }, { t }) => {
 
 Stats.propTypes = {
     loading: PropTypes.bool,
-    stats: PropTypes.object
+    stats: PropTypes.object,
+    t: PropTypes.func
 };
 Stats.defaultProps = {
     stats: {
@@ -61,7 +63,5 @@ Stats.defaultProps = {
         pages: {}
     }
 };
-Stats.contextTypes = {
-    t: PropTypes.func
-};
-export default Stats;
+
+export default translate("translations")(Stats);

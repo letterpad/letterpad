@@ -1,13 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { withRouter } from "react-router";
-
 import Notifications from "react-notify-toast";
+import { I18nextProvider } from "react-i18next";
 
 // Shared
-import Translate from "../shared/i18n/Translate";
-import * as language from "../shared/i18n/lang";
+import getI18nWithDefaultLang from "../shared/i18n/i18n";
 import SettingsData from "../shared/data-connectors/SettingsData";
 
 // View Files
@@ -47,9 +46,10 @@ class Routes extends Component {
         const selectedLang = Object.keys(langOptions).filter(
             key => langOptions[key]
         );
-        const locale = language[selectedLang[0]];
+        const lang = selectedLang[0];
+        const i18nConfig = getI18nWithDefaultLang(lang);
         return (
-            <Translate i18n={locale}>
+            <I18nextProvider i18n={i18nConfig}>
                 <Switch>
                     <Route
                         exact
@@ -74,7 +74,7 @@ class Routes extends Component {
                             />
                         )}
                     />
-                    <React.Fragment>
+                    <Fragment>
                         {/* Notifications can be trigerred from anywhere, but they will be rendered in this block*/}
                         <Notifications />
 
@@ -180,9 +180,9 @@ class Routes extends Component {
                             component={Themes}
                             settings={settings.data}
                         />
-                    </React.Fragment>
+                    </Fragment>
                 </Switch>
-            </Translate>
+            </I18nextProvider>
         );
     }
 }

@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
-export default class Social extends Component {
+class Social extends Component {
     static propTypes = {
         data: PropTypes.string,
-        updateOption: PropTypes.func
+        updateOption: PropTypes.func,
+        t: PropTypes.func
     };
 
     static defaultProps = {
@@ -16,23 +18,19 @@ export default class Social extends Component {
         })
     };
 
-    static contextTypes = {
-        t: PropTypes.func
-    };
-
     state = {
         social: JSON.parse(this.props.data)
-    }
+    };
 
     updateOption = (option, value) => {
         const newState = { social: { ...this.state.social } };
         newState.social[option] = value;
         this.setState(newState);
         this.props.updateOption("social", JSON.stringify(newState.social));
-    }
+    };
 
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
         return (
             <div>
                 <div className="module-title">{t("social.title")}</div>
@@ -89,3 +87,5 @@ export default class Social extends Component {
         );
     }
 }
+
+export default translate("translations")(Social);
