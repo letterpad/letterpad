@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import { notify } from "react-notify-toast";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
 import { MenuConstruction } from "../../components/Settings";
 import {
@@ -16,10 +17,7 @@ class MenuBuilder extends Component {
         options: PropTypes.object,
         pages: PropTypes.object,
         categories: PropTypes.object,
-        settings: PropTypes.object
-    };
-
-    static contextTypes = {
+        settings: PropTypes.object,
         t: PropTypes.func
     };
 
@@ -34,9 +32,9 @@ class MenuBuilder extends Component {
 
     setOption = (option, value) => {
         this.updatedOptions[option] = value;
-    }
+    };
 
-    submitData = (e) => {
+    submitData = e => {
         e.preventDefault();
         const settings = [];
         for (const option in this.updatedOptions) {
@@ -50,13 +48,13 @@ class MenuBuilder extends Component {
         this.props.updateOptions(settings).then(() => {
             notify.show("Navigation menu saved", "success", 3000);
         });
-    }
+    };
 
     render() {
         if (this.props.settings.loading) {
             return <div>hello</div>;
         }
-        const { t } = this.context;
+        const { t } = this.props;
         return (
             <section className="module-xs">
                 <div className="card">
@@ -91,4 +89,6 @@ const PagesData = graphql(GET_PAGE_NAMES, {
     options: () => ({ variables: { type: "page", status: "publish" } })
 });
 
-export default UpdateOptions(CategoriesData(PagesData(MenuBuilder)));
+export default translate("translations")(
+    UpdateOptions(CategoriesData(PagesData(MenuBuilder)))
+);

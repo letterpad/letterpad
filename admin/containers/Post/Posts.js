@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
 import { PostRows } from "../../components/Post";
 import PostsHoc from "../Hoc/PostsHoc";
@@ -22,10 +23,7 @@ class Posts extends Component {
         allPostsSelected: PropTypes.bool,
         selectedPosts: PropTypes.array,
         status: PropTypes.string,
-        page: PropTypes.number
-    };
-
-    static contextTypes = {
+        page: PropTypes.number,
         t: PropTypes.func
     };
 
@@ -34,7 +32,7 @@ class Posts extends Component {
         loading: true,
         posts: null
     };
-    
+
     componentDidMount() {
         document.body.classList.add("posts-page");
     }
@@ -44,7 +42,7 @@ class Posts extends Component {
     }
 
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
         const loading = this.props.loading; //|| !this.props.networkStatus === 2;
         const { status } = this.props;
         return (
@@ -135,4 +133,4 @@ class Posts extends Component {
     }
 }
 
-export default PostsHoc(Posts, "post");
+export default translate("translations")(PostsHoc(Posts, "post"));

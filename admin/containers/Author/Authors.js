@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { translate } from "react-i18next";
 
 import { GetAuthors } from "../../data-connectors/GetAuthors";
 import Loader from "../../components/Loader";
@@ -10,10 +11,7 @@ class Authors extends Component {
     static propTypes = {
         history: PropTypes.object,
         authors: PropTypes.array,
-        loading: PropTypes.bool
-    };
-
-    static contextTypes = {
+        loading: PropTypes.bool,
         t: PropTypes.func
     };
 
@@ -29,12 +27,12 @@ class Authors extends Component {
     authorSelect = id => {
         this.props.history.push("/admin/authors/edit/" + id);
     };
-    
+
     render() {
         if (this.props.loading) {
             return <Loader />;
         }
-        const { t } = this.context;
+        const { t } = this.props;
         const rows = this.props.authors.map((author, i) => (
             <AuthorRow
                 handleClick={this.authorSelect}
@@ -81,4 +79,4 @@ class Authors extends Component {
     }
 }
 
-export default GetAuthors(Authors);
+export default translate("translations")(GetAuthors(Authors));

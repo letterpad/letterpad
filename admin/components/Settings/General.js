@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
 import config from "config";
 import { uploadFile } from "../../util";
 
-export default class General extends Component {
+class General extends Component {
     static propTypes = {
         data: PropTypes.object,
-        updateOption: PropTypes.func
-    };
-
-    static contextTypes = {
-        t: PropTypes.func
+        updateOption: PropTypes.func,
+        t: PropTypes.func,
+        i18n: PropTypes.object
     };
 
     uploadLogoInputRef = React.createRef();
@@ -33,7 +32,10 @@ export default class General extends Component {
         Object.keys(this.langOptions).map(lang => {
             locales[lang] = e.target.value === lang;
         });
+
         this.updateOption("locale", JSON.stringify(locales));
+        const { i18n } = this.props;
+        i18n.changeLanguage(e.target.value);
     };
 
     uploadBanner = async files => {
@@ -59,9 +61,9 @@ export default class General extends Component {
         this.updateOption("site_logo", site_logo);
         this.setState({ site_logo });
     };
-    
+
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
         const banner = this.state.banner || "";
         const site_logo = this.state.site_logo || "";
         return (
@@ -279,7 +281,7 @@ export default class General extends Component {
                     >
                         {Object.keys(this.langOptions).map((key, i) => {
                             const selected = this.langOptions[key]
-                                ? { selected: "" }
+                                ? { selected: "selected" }
                                 : {};
                             return (
                                 <option key={i} {...selected} value={key}>
@@ -293,3 +295,5 @@ export default class General extends Component {
         );
     }
 }
+
+export default translate("translations")(General);

@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
 import { uploadFile } from "../../util";
 import config from "config";
 
-export default class Basic extends Component {
+class Basic extends Component {
     static propTypes = {
         data: PropTypes.object,
-        updateOption: PropTypes.func
-    };
-
-    static contextTypes = {
+        updateOption: PropTypes.func,
         t: PropTypes.func
     };
 
@@ -36,7 +34,7 @@ export default class Basic extends Component {
     };
 
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
         const avatar = this.state.avatar || "/admin/images/avatar.png";
         return (
             <div>
@@ -130,3 +128,5 @@ export default class Basic extends Component {
         );
     }
 }
+
+export default translate("translations")(Basic);

@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
-const QuickDraft = ({ draftPost }, { t }) => {
+const QuickDraft = ({ draftPost, t }) => {
     return (
         <div className="card masonry-grid-item">
             <div className="module-title">{t("home.quickDraft")}</div>
@@ -44,9 +45,8 @@ const QuickDraft = ({ draftPost }, { t }) => {
 };
 
 QuickDraft.propTypes = {
-    draftPost: PropTypes.func
-};
-QuickDraft.contextTypes = {
+    draftPost: PropTypes.func,
     t: PropTypes.func
 };
-export default QuickDraft;
+
+export default translate("translations")(QuickDraft);

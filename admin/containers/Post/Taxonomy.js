@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
+import { translate } from "react-i18next";
 import styled from "styled-components";
 
 import GetTaxonomies from "../../data-connectors/GetTaxonomies";
@@ -90,16 +91,13 @@ class Taxonomy extends Component {
         loading: PropTypes.bool.isRequired,
         networkStatus: PropTypes.number.isRequired,
         taxonomies: PropTypes.Array,
-        size: PropTypes.object
-    };
-
-    static contextTypes = {
+        size: PropTypes.object,
         t: PropTypes.func
     };
 
-    constructor(props, context) {
+    constructor(props) {
         super(props);
-        const { t } = context;
+        const { t } = this.props;
         this.texts = {
             post_tag: {
                 title1: t("tags.title"),
@@ -243,7 +241,7 @@ class Taxonomy extends Component {
     };
 
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
         const {
             taxonomies,
             newTagName,
@@ -358,4 +356,6 @@ class Taxonomy extends Component {
     }
 }
 
-export default DeleteTaxonomy(UpdateTaxonomy(GetTaxonomies(Taxonomy)));
+export default translate("translations")(
+    DeleteTaxonomy(UpdateTaxonomy(GetTaxonomies(Taxonomy)))
+);

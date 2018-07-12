@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
-const Resources = ({ title, data, itemClicked }, { t }) => {
+const Resources = ({ title, data, itemClicked, t }) => {
     return (
         <div>
             <h5>{t(`menu.${title}`)}</h5>
@@ -36,11 +37,8 @@ Resources.propTypes = {
             url: PropTypes.string
         })
     ),
-    itemClicked: PropTypes.func
-};
-
-Resources.contextTypes = {
+    itemClicked: PropTypes.func,
     t: PropTypes.func
 };
 
-export default Resources;
+export default translate("translations")(Resources);

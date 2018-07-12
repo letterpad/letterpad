@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
 import { uploadFile } from "../../util";
 import config from "config";
@@ -7,14 +8,12 @@ import UploadCoverImage from "../../data-connectors/UploadCoverImage";
 import InsertMedia from "../../data-connectors/InsertMedia";
 
 class FeaturedImage extends Component {
-    static contextTypes = {
-        t: PropTypes.func
-    };
     static propTypes = {
         post: PropTypes.object,
         insertMedia: PropTypes.func.isRequired,
         updateFeaturedImage: PropTypes.func.isRequired,
-        toggleFileExplorerModal: PropTypes.func.isRequired
+        toggleFileExplorerModal: PropTypes.func.isRequired,
+        t: PropTypes.func
     };
     static defaultProps = {
         post: {
@@ -66,7 +65,7 @@ class FeaturedImage extends Component {
     };
 
     render() {
-        const { t } = this.context;
+        const { t } = this.props;
 
         const coverImage =
             this.state.cover_image || "/admin/images/placeholder-800x400.png";
@@ -109,4 +108,6 @@ class FeaturedImage extends Component {
     }
 }
 
-export default UploadCoverImage(InsertMedia(FeaturedImage));
+export default translate("translations")(
+    UploadCoverImage(InsertMedia(FeaturedImage))
+);

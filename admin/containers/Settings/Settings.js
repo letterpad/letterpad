@@ -3,8 +3,9 @@ import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { notify } from "react-notify-toast";
-import Loader from "admin/components/Loader";
+import { translate } from "react-i18next";
 
+import Loader from "admin/components/Loader";
 import {
     General,
     Social,
@@ -64,10 +65,7 @@ class Settings extends Component {
     static propTypes = {
         updateOptions: PropTypes.func,
         options: PropTypes.object,
-        history: PropTypes.object
-    };
-
-    static contextTypes = {
+        history: PropTypes.object,
         t: PropTypes.func
     };
 
@@ -111,7 +109,7 @@ class Settings extends Component {
         const { selected } = this.state;
         const { options } = this.props;
         const data = {};
-        const { t } = this.context;
+        const { t } = this.props;
         if (options.loading) {
             return <Loader />;
         }
@@ -154,4 +152,4 @@ const OptionsData = graphql(GET_OPTIONS, {
     name: "options"
 });
 
-export default UpdateOptions(OptionsData(Settings));
+export default translate("translations")(UpdateOptions(OptionsData(Settings)));
