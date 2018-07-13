@@ -1,15 +1,11 @@
-// import matchBlockquote from "./match/blockquote";
-import matchCodeBlock from "./match/codeBlock";
+//import matchCodeBlock from "./match/codeBlock";
 import matchCode from "./match/code";
-// import matchHeader from "./match/header";
 import matchBold from "./match/bold";
 import matchItalic from "./match/italic";
-// import matchStrikeThrough from "./match/strikethrough";
 import matchBoldItalic from "./match/boldItalic";
 import matchHr from "./match/hr";
 import matchImage from "./match/image";
 import matchLink from "./match/link";
-// import matchList from "./match/list";
 
 /**
  * On space, if it was after an auto-markdown shortcut, convert the current
@@ -23,26 +19,22 @@ export const onSpace = (event, change) => {
     const { value } = change;
     if (value.isExpanded) return;
 
-    // const { startBlock, startOffset } = value;
-    // const currentLineText = startBlock.text
-    //     .slice(0, startOffset)
-    //     .replace(/\s*/g, "");
     const { texts } = value;
     const currentTextNode = texts.get(0);
     const currentLineText = currentTextNode.text;
     let matched;
 
-    if ((matched = currentLineText.match(/^\s*```(\w+)?\s/m))) {
-        // [Code block]
-        // ```lang
-        return matchCodeBlock(
-            "code_block",
-            currentTextNode,
-            matched,
-            change,
-            matched[1]
-        );
-    }
+    // if ((matched = currentLineText.match(/^\s*```(\w+)?\s/m))) {
+    //     // [Code block]
+    //     // ```lang
+    //     return matchCodeBlock(
+    //         "code_block",
+    //         currentTextNode,
+    //         matched,
+    //         change,
+    //         matched[1]
+    //     );
+    // }
 
     const offsetBeforeSpace = value.selection.anchorOffset - 1;
     const lastChar = currentLineText.charAt(offsetBeforeSpace);
