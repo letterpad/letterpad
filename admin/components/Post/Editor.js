@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { getEventTransfer } from "slate-react";
 import Html from "slate-html-serializer";
 import { SlateContent, SlateEditor } from "./Editors/SlateEditor";
 import InsertMedia from "../../data-connectors/InsertMedia";

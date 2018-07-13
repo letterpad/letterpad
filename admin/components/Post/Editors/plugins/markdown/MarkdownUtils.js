@@ -128,66 +128,6 @@ export const onSpace = (event, change) => {
 };
 
 /**
- * On backspace, if at the start of a non-paragraph, convert it back into a
- * paragraph node.
- *
- * @param {Event} event
- * @param {Change} change
- */
-
-export const onBackspace = (event, change) => {
-    const { value } = change;
-    if (value.isExpanded) return;
-    if (value.startOffset != 0) return;
-
-    const { startBlock } = value;
-    if (startBlock.type == "paragraph") return;
-
-    event.preventDefault();
-    change.setBlocks("paragraph");
-
-    if (startBlock.type == "list-item") {
-        change.unwrapBlock("bulleted-list");
-    }
-
-    return true;
-};
-
-/**
- * On return, if at the end of a node type that should not be extended,
- * create a new paragraph below it.
- *
- * @param {Event} event
- * @param {Change} change
- */
-
-export const onEnter = (event, change) => {
-    const { value } = change;
-    if (value.isExpanded) return;
-
-    const { startBlock, startOffset, endOffset } = value;
-    if (startOffset == 0 && startBlock.text.length == 0)
-        return onBackspace(event, change);
-    if (endOffset != startBlock.text.length) return;
-
-    if (
-        startBlock.type != "heading-one" &&
-        startBlock.type != "heading-two" &&
-        startBlock.type != "heading-three" &&
-        startBlock.type != "heading-four" &&
-        startBlock.type != "heading-five" &&
-        startBlock.type != "heading-six" &&
-        startBlock.type != "block-quote"
-    ) {
-        return;
-    }
-
-    event.preventDefault();
-    change.splitBlock().setBlocks("paragraph");
-    return true;
-};
-
-/**
  * Get the block type for a series of auto-markdown shortcut `chars`.
  *
  * @param {String} chars
