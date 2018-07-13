@@ -33,7 +33,12 @@ const CodeblockNode = ({ attributes, children, node, editor }) => {
             </pre>
             <div
                 contentEditable={false}
-                style={{ position: "absolute", top: "5px", right: "5px" }}
+                style={{
+                    position: "absolute",
+                    top: "5px",
+                    right: "5px",
+                    display: "none"
+                }}
             >
                 <select value={language} onChange={onChange}>
                     <option value="css">CSS</option>

@@ -24,6 +24,14 @@ export const onBackspace = (event, change) => {
 
     event.preventDefault();
 
+    if (value.startOffset === 0) {
+        const node = getNodeOfType(value, "list-item");
+        const depth = value.document.getDepth(node.key);
+        if (depth > 2) {
+            return decreaseListDepthStrategy(change);
+        }
+    }
+
     if (startBlock.type == "list-item") {
         change.setBlocks("paragraph");
         if (getBlockParent(value, "unordered-list")) {
@@ -33,8 +41,6 @@ export const onBackspace = (event, change) => {
         }
         return true;
     }
-
-    // return true;
 };
 
 export const onEnter = (event, change) => {
@@ -59,6 +65,7 @@ export const onEnter = (event, change) => {
     }
 
     event.preventDefault();
+
     change.splitBlock().setBlocks("paragraph");
     return true;
 };

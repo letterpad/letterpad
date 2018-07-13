@@ -38,7 +38,8 @@ export const applyCodeblock = change => {
 
         return change
             .removeMark("highlight")
-            .unwrapBlockByKey(codeBlock.key, "code_block");
+            .unwrapBlockByKey(codeBlock.key, "code_block")
+            .focus();
     }
 
     return change.wrapBlock("code_block");
@@ -54,7 +55,6 @@ export const decorateNode = node => {
     const texts = node.getTexts().toArray();
 
     // Tokenize the whole block text
-    // const texts = block.getTexts();
     const blockText = texts.map(t => t.text).join("\n");
     const tokens = Prism.tokenize(blockText, grammar);
 
@@ -179,10 +179,12 @@ export const deleteNewLineBeforeCodeBlock = change => {
     const parentContainer = change.value.document.getParent(codeBlock.key);
     const index = parentContainer.nodes.findIndex(node => node === codeBlock);
 
-    if (index > 0) {
-        const targetNode = parentContainer.nodes.get(index - 1);
-        change.removeNodeByKey(targetNode.key);
-        return true;
+    if (index === 0) {
+        return applyCodeblock(change);
+
+        // const targetNode = parentContainer.nodes.get(index);
+        // change.removeNodeByKey(targetNode.key);
+        // return true;
     }
 };
 

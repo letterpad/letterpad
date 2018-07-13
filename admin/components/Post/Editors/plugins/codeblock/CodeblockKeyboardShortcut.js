@@ -8,8 +8,14 @@ import {
 } from "./CodeblockUtils";
 import { isMod } from "../../helper/keyboard-event";
 
-export const isCodeBlock = value =>
-    value.blocks.some(block => block.type === "code_block");
+export const hasParentOfType = (value, type) =>
+    value.blocks.some(
+        block =>
+            !!value.document.getClosest(
+                block.key,
+                parent => parent.type === type
+            )
+    );
 
 /* eslint-disable react/prop-types */
 const codeblockKeyboardShortcut = (event, change) => {
@@ -18,7 +24,7 @@ const codeblockKeyboardShortcut = (event, change) => {
     if (value.isExpanded && !isMod(event) && isPrintableKeycode(event.which)) {
         change.delete();
     }
-
+    if (!hasParentOfType(value, "code_block")) return;
     switch (event.key) {
         case "Enter":
             if (value.startOffset === 0) {
