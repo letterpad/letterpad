@@ -14,16 +14,8 @@ describe("Creating post", () => {
                 data: {
                     createPost: {
                         post: {
-                            title: "draft title",
-                            body: "blog post",
-                            excerpt: "excerpt",
-                            cover_image: "",
-                            author_id: 1,
-                            type: props.type,
-                            status: "draft",
-                            slug: "hello-world",
-                            mode: "rich-text",
-                            mdPreview: ""
+                            title: "",
+                            type: props.type
                         }
                     }
                 }
@@ -37,7 +29,7 @@ describe("Creating post", () => {
         });
     });
 
-    test("Test if post gets created and redirected to Edit", done => {
+    test("Test if post gets Updated", done => {
         const post = {
             title: "draft title",
             body: "blog post",
@@ -47,20 +39,17 @@ describe("Creating post", () => {
             type: "post",
             status: "draft",
             slug: "hello-world",
-            mode: "rich-text",
-            mdPreview: ""
+            mode: "rich-text"
         };
 
         const wrapper = shallow(
             <PostPublish
                 post={post}
-                create
                 history={{
                     push: () => {
                         done(); // this should run for the test to pass.
                     }
                 }}
-                togglePublishDropdown={() => {}}
                 update={data => {
                     return Promise.resolve({
                         data: {
@@ -73,7 +62,6 @@ describe("Creating post", () => {
                 }}
             />
         );
-
         wrapper
             .find(".publish-btn")
             .first()

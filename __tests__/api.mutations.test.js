@@ -71,7 +71,7 @@ describe("Test Mutations", () => {
                 "Content-Type": "application/json"
             },
             query: `mutation {
-                            createPost(title:"hello bad world",body:"b", type: "post", taxonomies:[{name:"CatNew", type:"post_Category"}]){
+                            createPost(title:"",body:"", type: "post", taxonomies:[{name:"CatNew", type:"post_Category"}]){
                                 ok
                                 post {
                                     id
@@ -87,7 +87,7 @@ describe("Test Mutations", () => {
 
         expect(a.data.data.createPost.post).toMatchObject({
             id: 1,
-            slug: "hello-bad-world"
+            slug: "story"
         });
     });
 
