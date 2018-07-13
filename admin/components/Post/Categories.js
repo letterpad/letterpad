@@ -47,11 +47,8 @@ export class Categories extends Component {
 
     render() {
         return (
-            <div className="card">
-                <div className="x_title">
-                    <div className="module-title">Categories</div>
-                    <div className="clearfix" />
-                </div>
+            <div>
+                <div className="meta-label">Categories</div>
                 <div className="x_content">
                     <div className="control-group">
                         <Select.Creatable
@@ -64,6 +61,7 @@ export class Categories extends Component {
                         />
                     </div>
                 </div>
+                <hr />
             </div>
         );
     }

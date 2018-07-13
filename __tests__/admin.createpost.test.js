@@ -60,7 +60,7 @@ describe("Creating post", () => {
                         done(); // this should run for the test to pass.
                     }
                 }}
-                toggleActionDrawer={() => {}}
+                togglePublishDropdown={() => {}}
                 update={data => {
                     return Promise.resolve({
                         data: {

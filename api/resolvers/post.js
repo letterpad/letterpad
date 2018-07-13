@@ -313,6 +313,7 @@ export default {
                 Object.keys(args).forEach(field => {
                     data[field] = args[field];
                 });
+                data.body = "";
                 data.author_id = user.id;
                 return _createPost(data, models);
             }

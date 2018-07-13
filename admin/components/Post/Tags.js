@@ -48,11 +48,8 @@ export class Tags extends Component {
     };
     render() {
         return (
-            <div className="card">
-                <div className="x_title">
-                    <div className="module-title">Tags</div>
-                    <div className="clearfix" />
-                </div>
+            <div>
+                <div className="meta-label">Tags</div>
                 <div className="x_content">
                     <div className="control-group">
                         <Select.Creatable
@@ -65,6 +62,7 @@ export class Tags extends Component {
                         />
                     </div>
                 </div>
+                <hr />
             </div>
         );
     }
