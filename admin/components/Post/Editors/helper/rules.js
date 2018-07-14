@@ -1,4 +1,5 @@
 import React from "react";
+import Prism from "prismjs";
 import { BLOCK_TAGS, MARK_TAGS, INLINE_TAGS } from "./constants";
 import { LinkNode } from "../plugins/link";
 import { nodeRenderer, markRenderer } from "./renderer";
@@ -25,6 +26,18 @@ export default [
                 const props = { children, node: obj };
                 if (obj.type == "paragraph") {
                     return <p>{props.children}</p>;
+                } else if (obj.type === "code_block") {
+                    const html = Prism.highlight(
+                        obj.text,
+                        Prism.languages.javascript,
+                        "javascript"
+                    );
+                    return (
+                        <pre
+                            className="prism-dark"
+                            dangerouslySetInnerHTML={{ __html: html }}
+                        />
+                    );
                 }
                 return nodeRenderer(obj.type, props);
             }

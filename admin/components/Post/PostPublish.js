@@ -104,6 +104,9 @@ export class PostPublish extends Component {
         if (e) e.preventDefault();
         PostActions.setData(statusObj);
         let data = PostActions.getData();
+
+        console.log(data);
+
         const update = await this.props.update({
             ...this.props.post,
             ...data

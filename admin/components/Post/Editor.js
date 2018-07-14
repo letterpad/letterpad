@@ -128,6 +128,7 @@ class Editor extends Component {
                 body: string
             });
         }
+
         this.setState({ value: value });
     };
 
