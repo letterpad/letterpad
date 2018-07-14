@@ -1,8 +1,7 @@
-// @flow
 import { Range } from "slate";
 import trailingSpace from "../utils/trailingSpace";
 
-export default function(type, currentTextNode, matched, change) {
+export default (type, currentTextNode, matched, change) => {
     const matchedLength = matched[0].length;
 
     return change
@@ -23,4 +22,4 @@ export default function(type, currentTextNode, matched, change) {
         })
         .collapseToEnd()
         .call(trailingSpace, currentTextNode, matched.index);
-}
+};

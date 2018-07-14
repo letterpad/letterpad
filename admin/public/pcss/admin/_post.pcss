@@ -14,19 +14,6 @@
     display: block;
     min-height: 80px;
 }
-#md-post,
-#md-preview {
-    margin-top: 16px;
-    height: calc(100vh - 330px);
-}
-#md-preview {
-    &::-webkit-scrollbar {
-        width: 0px;
-    }
-    &:hover::-webkit-scrollbar {
-        width: 4px;
-    }
-}
 .featured-image {
     img {
         object-fit: cover;
@@ -51,40 +38,12 @@
 }
 
 .post-header {
-    display: flex;
-    justify-content: space-between;
+    display: block;
 }
 
 .post-grid .post {
     margin-bottom: 0px;
     box-shadow: -2px 2px 14px -2px #ccc;
-}
-
-/*!------------------------------------------------------------------
-[Post Options]
-*/
-
-.edit-post-page,
-.create-page-page,
-.create-post-page {
-    &.options-open {
-        .column.distractor {
-            display: block;
-        }
-    }
-    &.distract-free {
-        background: #fff;
-        .post-options {
-            display: none !important;
-        }
-        .article-holder > .card {
-            border: none;
-        }
-    }
-    .post-options,
-    .full-screen {
-        display: block !important;
-    }
 }
 
 /*!------------------------------------------------------------------
@@ -121,9 +80,8 @@
     line-height: 2.5rem !important;
 }
 .post-content {
-    border-top: 1px solid #eee;
     font-size: 18px;
-
+    text-align: justify;
     hr {
         margin-top: 52px;
         margin-bottom: 42px;
@@ -160,7 +118,6 @@
         max-width: none;
     }
     .post-header {
-        min-height: 60px;
         .post-meta {
             color: var(--color-text-muted);
             padding: 8px 0px;
@@ -296,6 +253,8 @@ textarea.CodeFlask__textarea {
 */
 .post-publish {
     display: flex;
+    background: #fff;
+    box-shadow: 0 0 16px 0px #ddd;
     align-items: center;
     justify-content: space-between;
     position: fixed;

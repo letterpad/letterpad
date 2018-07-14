@@ -1,32 +1,20 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 
 import Editor from "./Editor";
 import PostActions from "./PostActions";
-import styled from "styled-components";
+import PostTitle from "./PostTitle";
 
 const Article = styled.article`
     display: flex;
     flex: 1;
     flex-direction: column;
-    height: 100%;
-    div[contenteditable="true"] {
-        height: 100%;
-        min-height: 100vh;
-    }
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol";
     .post-content {
         flex: 1;
-    }
-`;
-
-const TitleInput = styled.input`
-    width: 100%;
-    border: none;
-    background: transparent;
-    font-size: 34px;
-    margin-bottom: 20px;
-    ::placeholder {
-        font-weight: 500;
     }
 `;
 
@@ -36,13 +24,13 @@ export default class ArticleEdit extends Component {
     };
 
     render() {
+        console.log(PostActions.data.title);
         return (
-            <React.Fragment>
+            <Fragment>
                 <Article className="post">
                     <div className="post-header">
-                        <TitleInput
-                            title={this.props.post.title}
-                            value={PostActions.data.title}
+                        <PostTitle
+                            text={PostActions.data.title}
                             placeholder="Enter a title"
                             onChange={e => {
                                 PostActions.setData({
@@ -55,7 +43,7 @@ export default class ArticleEdit extends Component {
                         <Editor isMarkdown={false} {...this.props.post} />
                     </div>
                 </Article>
-            </React.Fragment>
+            </Fragment>
         );
     }
 }

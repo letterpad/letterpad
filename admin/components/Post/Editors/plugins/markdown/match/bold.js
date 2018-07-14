@@ -3,7 +3,7 @@ import { Mark, Range } from "slate";
 import trailingSpace from "../utils/trailingSpace";
 import removeAllMark from "../utils/mark-removal";
 
-export default function(type, currentTextNode, matched, change) {
+export default (type, currentTextNode, matched, change) => {
     const matchedLength = matched[0].length;
     const reg = matched[1] === "**" ? /\*\*/ : matched[1];
     const addText = matched[0].replace(new RegExp(reg, "g"), "");
@@ -21,4 +21,4 @@ export default function(type, currentTextNode, matched, change) {
         ])
         .call(trailingSpace, currentTextNode, matched.index)
         .call(removeAllMark);
-}
+};

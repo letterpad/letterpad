@@ -3,15 +3,22 @@
 /*--------------------------------------
 [Toolbar]
 *--------------------------------------*/
-.toolbar-menu {
+.toolbar-container {
     position: fixed;
-    padding: 8px;
     bottom: 0px;
-    background: #ebebeb;
     width: 100%;
     left: 0px;
-    text-align: center;
     z-index: 9;
+
+    background: linear-gradient(transparent, #dbdbdb);
+    height: 80px;
+    display: flex;
+    flex-flow: column-reverse;
+}
+.toolbar-menu {
+    padding: 8px;
+    background: #fff;
+    text-align: center;
     border-top: 1px solid #ddd;
 }
 .button {
@@ -33,10 +40,7 @@
     max-width: 767px;
     width: 100%;
     margin: 80px auto 0;
-    flex: 1;
-    display: flex;
     padding: 0 10px;
-    text-align: justify;
 }
 .hover-menu {
     padding: 8px 7px 6px;

@@ -1,6 +1,4 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-export default function(type, currentTextNode, matched, change) {
+export default (type, currentTextNode, change) => {
     return change
         .removeNodeByKey(currentTextNode.key)
         .insertBlock({
@@ -8,4 +6,4 @@ export default function(type, currentTextNode, matched, change) {
             isVoid: true
         })
         .collapseToStartOfNextBlock();
-}
+};

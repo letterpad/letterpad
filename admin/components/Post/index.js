@@ -1,6 +1,5 @@
 export { default as ArticleEdit } from "./ArticleEdit";
 export { default as Categories } from "./Categories";
-export { default as ContentEditable } from "./ContentEditable";
 export { default as Editor } from "./Editor";
 export { default as Excerpt } from "./Excerpt";
 export { default as FeaturedImage } from "./FeaturedImage";

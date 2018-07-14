@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
 import Editor from "./Editor";
@@ -47,7 +47,7 @@ export default class CreateArticle extends Component {
 
     render() {
         return (
-            <React.Fragment>
+            <Fragment>
                 <Article className="post">
                     <div className="post-header">
                         <TitleInput
@@ -64,7 +64,7 @@ export default class CreateArticle extends Component {
                         <Editor isMarkdown={false} {...this.props.post} />
                     </div>
                 </Article>
-            </React.Fragment>
+            </Fragment>
         );
     }
 }

@@ -44,9 +44,9 @@ module.exports = (args, name) => {
         watch: isDev,
         entry: {
             ["public/js/vendor"]: vendorFiles,
-            // ["client/themes/" + args.theme + "/public/dist/client"]: [
-            //     path.join(__dirname, "../client/app")
-            // ],
+            ["client/themes/" + args.theme + "/public/dist/client"]: [
+                path.join(__dirname, "../client/app")
+            ],
             "admin/public/dist/admin": [path.join(__dirname, "../admin/app")]
         },
         resolve: {

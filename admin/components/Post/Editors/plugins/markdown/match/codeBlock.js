@@ -1,7 +1,7 @@
 import { Range, Data } from "slate";
 import PluginEditCode from "slate-edit-code";
 
-export default function(codeOption, currentTextNode, matched, change, lang) {
+export default (codeOption, currentTextNode, matched, change, lang) => {
     const matchedLength = matched[0].length;
     const codePlugin = PluginEditCode(codeOption);
     let newChange = change;
@@ -20,4 +20,4 @@ export default function(codeOption, currentTextNode, matched, change, lang) {
             })
         )
     );
-}
+};

@@ -26,14 +26,14 @@ export const updateLinkStrategy = ({
 
     return change;
 };
-function wrapLink(change, href) {
+const wrapLink = (change, href) => {
     change.wrapInline({
         type: "link",
         data: { href }
     });
 
     change.collapseToEnd();
-}
+};
 export const insertLinkStrategy = change => {
     const { value } = change;
 

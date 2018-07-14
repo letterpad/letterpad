@@ -1,4 +1,3 @@
-// @flow
 import { Range } from "slate";
 
 export default (type, currentTextNode, matched, change) => {

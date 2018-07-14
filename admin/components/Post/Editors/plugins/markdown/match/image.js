@@ -1,7 +1,6 @@
-// @flow
 import { Range } from "slate";
 
-export default function(type, currentTextNode, matched, change) {
+export default (type, currentTextNode, matched, change) => {
     const matchedLength = matched[0].length;
 
     return change
@@ -22,4 +21,4 @@ export default function(type, currentTextNode, matched, change) {
             }
         })
         .collapseToStartOfNextText();
-}
+};

@@ -4,18 +4,13 @@ import React, { Component } from "react";
 import classnames from "classnames";
 import { isFunction } from "../helper/type-check";
 import { cloneElement } from "../helper/clone";
-// import { typeCheck } from "../helper";
 
 class SlateEditor extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: this.props.value
-        };
-    }
+    state = {
+        value: this.props.value
+    };
 
-    onChange = change => {
-        const value = change.value;
+    onChange = ({ value }) => {
         this.setState({ value });
         const { onChange } = this.props;
         if (isFunction(onChange)) onChange(value);

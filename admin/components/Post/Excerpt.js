@@ -58,23 +58,24 @@ class Excerpt extends Component {
         let excerpt = this.state.excerpt;
         if (!excerpt) {
             // the body will contain html characters. Remove all the tags and get plain text
-            let content = this.props.post.body;
-            const div = document.createElement("div");
-            div.innerHTML = content;
-            excerpt = div.textContent || div.innerText || "";
+            let stripedHtml = this.props.post.body.replace(/<[^>]+>/g, "");
+            const text = document.createElement("textarea");
+            text.innerHTML = stripedHtml;
+            const decodedHtml = text.value;
             // maximum number of characters to extract
             const maxLength = 150;
-            if (excerpt.length > maxLength) {
+            if (decodedHtml.length > maxLength) {
                 //trim the string to the maximum length
-                let trimmedString = content.substr(0, maxLength);
+                let trimmedString = decodedHtml.substr(0, maxLength);
                 //re-trim if we are in the middle of a word
-                excerpt = trimmedString.substr(
-                    0,
-                    Math.min(
-                        trimmedString.length,
-                        trimmedString.lastIndexOf(" ")
-                    )
-                );
+                excerpt =
+                    trimmedString.substr(
+                        0,
+                        Math.min(
+                            trimmedString.length,
+                            trimmedString.lastIndexOf(" ")
+                        )
+                    ) + "...";
             }
         }
         this.setData(excerpt);

@@ -1,10 +1,9 @@
-// @flow
 import { Mark, Range } from "slate";
 
 import removeAllMark from "../utils/mark-removal";
 import trailingSpace from "../utils/trailingSpace";
 
-export default function(type, currentTextNode, matched, change) {
+export default (type, currentTextNode, matched, change) => {
     const matchedLength = matched[0].length;
     const addText = matched[0].trim().replace(new RegExp(matched[1], "g"), "");
     return change
@@ -22,4 +21,4 @@ export default function(type, currentTextNode, matched, change) {
         ])
         .call(trailingSpace, currentTextNode, matched.index)
         .call(removeAllMark);
-}
+};

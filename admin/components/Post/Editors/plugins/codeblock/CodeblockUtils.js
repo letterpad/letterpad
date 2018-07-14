@@ -68,7 +68,7 @@ export const decorateNode = node => {
 
         let offset = 0;
 
-        function processToken(token, accu) {
+        const processToken = (token, accu) => {
             accu = accu || "";
 
             if (typeof token === "string") {
@@ -110,7 +110,7 @@ export const decorateNode = node => {
                     }
                 }
             }
-        }
+        };
 
         tokens.forEach(processToken);
         textStart = textEnd + 1; // account for added `\n`
@@ -121,7 +121,14 @@ export const decorateNode = node => {
 /**
  * Return a decoration range for the given text.
  */
-function createDecoration({ text, textStart, textEnd, start, end, className }) {
+const createDecoration = ({
+    text,
+    textStart,
+    textEnd,
+    start,
+    end,
+    className
+}) => {
     if (start >= textEnd || end <= textStart) {
         // Ignore, the token is not in the text
         return null;
@@ -142,7 +149,7 @@ function createDecoration({ text, textStart, textEnd, start, end, className }) {
         focusOffset: end,
         marks: [{ type: "prism-token", data: { className } }]
     };
-}
+};
 
 export const insertNewLineBeforeCodeBlock = change => {
     const anchor = change.value.anchorBlock;

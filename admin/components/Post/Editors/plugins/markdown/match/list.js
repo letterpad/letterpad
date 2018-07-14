@@ -1,8 +1,6 @@
-// @flow
-// import blocklist from "@canner/slate-helper-block-list";
 import { Range } from "slate";
 
-export default function(listOption, currentTextNode, matched, change, ordered) {
+export default (listOption, currentTextNode, matched, change, ordered) => {
     const matchedLength = matched[0].length;
     const newChange = change.deleteAtRange(
         Range.create({
@@ -17,4 +15,4 @@ export default function(listOption, currentTextNode, matched, change, ordered) {
         ...listOption,
         ordered
     });
-}
+};

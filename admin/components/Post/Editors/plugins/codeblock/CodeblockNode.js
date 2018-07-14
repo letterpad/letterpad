@@ -20,11 +20,11 @@ const CodeblockContainer = styled.div`
 /* eslint-disable react/prop-types */
 const CodeblockNode = ({ attributes, children, node, editor }) => {
     const language = "js"; //node.data.get("language");
-    function onChange(event) {
+    const onChange = event => {
         editor.change(c =>
             c.setNodeByKey(node.key, { data: { language: event.target.value } })
         );
-    }
+    };
 
     return (
         <CodeblockContainer>

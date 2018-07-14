@@ -50,7 +50,7 @@ export default [
         }
     },
     {
-        deserialize: function(el, next) {
+        deserialize: (el, next) => {
             if (el.tagName != "a") {
                 return;
             }
@@ -68,7 +68,7 @@ export default [
                 }
             };
         },
-        serialize: function(obj, children) {
+        serialize: (obj, children) => {
             if (obj.object != "inline") {
                 return;
             }
