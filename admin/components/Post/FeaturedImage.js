@@ -36,7 +36,7 @@ class FeaturedImage extends Component {
         post: PropTypes.object,
         insertMedia: PropTypes.func.isRequired,
         updateFeaturedImage: PropTypes.func.isRequired,
-        toggleFileExplorerModal: PropTypes.func.isRequired,
+        toggleFileExplorerModal: PropTypes.func,
         t: PropTypes.func
     };
     static defaultProps = {

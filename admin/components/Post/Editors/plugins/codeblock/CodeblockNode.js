@@ -28,16 +28,15 @@ const CodeblockNode = ({ attributes, children, node, editor }) => {
 
     return (
         <CodeblockContainer>
-            <pre className="prism-dark">
-                <code {...attributes}>{children}</code>
+            <pre className="prism-dark" {...attributes}>
+                {children}
             </pre>
             <div
                 contentEditable={false}
                 style={{
                     position: "absolute",
                     top: "5px",
-                    right: "5px",
-                    display: "none"
+                    right: "5px"
                 }}
             >
                 <select value={language} onChange={onChange}>

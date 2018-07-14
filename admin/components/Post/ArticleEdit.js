@@ -24,7 +24,6 @@ export default class ArticleEdit extends Component {
     };
 
     render() {
-        console.log(PostActions.data.title);
         return (
             <Fragment>
                 <Article className="post">
