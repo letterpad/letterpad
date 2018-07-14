@@ -28,8 +28,8 @@ const CodeblockNode = ({ attributes, children, node, editor }) => {
 
     return (
         <CodeblockContainer>
-            <pre className="prism-dark">
-                <code {...attributes}>{children}</code>
+            <pre className="prism-dark" {...attributes}>
+                {children}
             </pre>
             <div
                 contentEditable={false}

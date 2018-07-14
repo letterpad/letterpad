@@ -7,9 +7,6 @@ import CodeblockButton from "./CodeblockButton";
 const CodeblockPlugin = options => ({
     onKeyDown(...args) {
         return CodeblockKeyboardShortcut(...args);
-    },
-    decorateNode(node) {
-        return CodeblockUtils.decorateNode(node);
     }
 });
 

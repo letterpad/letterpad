@@ -4,18 +4,10 @@ import {
     isPrintableKeycode,
     preserveIndentationForCodeBlock,
     unindentClosingBlocks,
-    handleCommandAInCodeBlock
+    handleCommandAInCodeBlock,
+    getCodeBlockParent
 } from "./CodeblockUtils";
 import { isMod } from "../../helper/keyboard-event";
-
-export const hasParentOfType = (value, type) =>
-    value.blocks.some(
-        block =>
-            !!value.document.getClosest(
-                block.key,
-                parent => parent.type === type
-            )
-    );
 
 /* eslint-disable react/prop-types */
 const codeblockKeyboardShortcut = (event, change) => {
@@ -23,8 +15,11 @@ const codeblockKeyboardShortcut = (event, change) => {
 
     if (value.isExpanded && !isMod(event) && isPrintableKeycode(event.which)) {
         change.delete();
+        return true;
     }
-    if (!hasParentOfType(value, "code_block")) return;
+
+    if (!getCodeBlockParent(value)) return;
+
     switch (event.key) {
         case "Enter":
             if (value.startOffset === 0) {

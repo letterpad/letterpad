@@ -3,14 +3,7 @@ import { applyCodeblock } from "./CodeblockUtils";
 
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-const codeblockButton = ({
-    value,
-    onChange,
-    changeState,
-    style,
-    type,
-    node
-}) => (
+const codeblockButton = ({ value, onChange, style, type, node }) => (
     <span
         style={style}
         className="button"
@@ -22,4 +15,5 @@ const codeblockButton = ({
         <span className="material-icons">code</span>
     </span>
 );
+
 export default codeblockButton;

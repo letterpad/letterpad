@@ -197,7 +197,8 @@ export const deleteNewLineBeforeCodeBlock = change => {
 
 export const preserveIndentationForCodeBlock = change => {
     const anchor = change.value.anchorBlock;
-    const codeBlock = change.value.document.getParent(anchor.key);
+    const codeBlock = getCodeBlockParent(change.value);
+
     if (codeBlock.type !== "code_block") return;
 
     const lines = anchor.text.split(/\r?\n/);
@@ -212,8 +213,7 @@ export const preserveIndentationForCodeBlock = change => {
         nSpaces += 2;
     }
 
-    change.insertBlock(Block.create({ type: "paragraph" }));
-    change.insertText(" ".repeat(nSpaces));
+    change.insertText("\n" + " ".repeat(nSpaces));
 
     return true;
 };
