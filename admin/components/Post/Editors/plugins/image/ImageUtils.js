@@ -1,12 +1,15 @@
 export const insertInlineImage = ({ change, src }) => {
-    return change
-        .setBlocks("paragraph")
-        .insertBlock({
-            type: "image",
-            isVoid: true,
-            data: { src }
-        })
-        .focus();
+    return change.insertBlock({
+        type: "paragraph",
+        nodes: [
+            {
+                object: "inline",
+                type: "image",
+                isVoid: true,
+                data: { src }
+            }
+        ]
+    });
 };
 
 export const updateInlineImage = ({

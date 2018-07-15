@@ -1,6 +1,4 @@
 import React from "react";
-import getWindow from "get-window";
-import isBackward from "selection-is-backward";
 import FileExplorerModal from "../../../../Modals/FileExplorerModal";
 import { insertInlineImage } from "./ImageUtils";
 import { uploadFile } from "../../../../../util";
@@ -18,34 +16,7 @@ class ImageButton extends React.Component {
         this.props.onChange(
             insertInlineImage({ change: this.props.value.change(), src })
         );
-        function scrollToSelection(selection) {
-            if (!selection.anchorNode) return;
 
-            const window = getWindow(selection.anchorNode);
-            const backward = isBackward(selection);
-            const range = selection.getRangeAt(0);
-            const rect = range.getBoundingClientRect();
-            const {
-                innerWidth,
-                innerHeight,
-                pageYOffset,
-                pageXOffset
-            } = window;
-            const top = (backward ? rect.top : rect.bottom) + pageYOffset;
-            const left = (backward ? rect.left : rect.right) + pageXOffset;
-
-            const x =
-                left < pageXOffset || innerWidth + pageXOffset < left
-                    ? left - innerWidth / 2
-                    : pageXOffset;
-
-            const y =
-                top < pageYOffset || innerHeight + pageYOffset < top
-                    ? top - innerHeight / 2
-                    : pageYOffset;
-
-            window.scrollTo(x, y);
-        }
         this.toggleFileExplorer();
     };
 
@@ -55,12 +26,12 @@ class ImageButton extends React.Component {
 
     uploadImage = async files => {
         const uploadedFiles = await uploadFile({ files, type: "post_image" });
+        let change = this.props.value.change();
         uploadedFiles.forEach(src => {
-            this.props.onChange(
-                insertInlineImage({ change: this.props.value.change(), src })
-            );
+            this.props.onChange(insertInlineImage({ change, src }));
         });
     };
+
     render() {
         const { value, onChange, changeState, style, type } = this.props;
         return (
@@ -82,6 +53,7 @@ class ImageButton extends React.Component {
                 />
                 {this.state.fileExplorerOpen && (
                     <FileExplorerModal
+                        isOpen={this.state.fileExplorerOpen}
                         onClose={this.toggleFileExplorer}
                         onMediaSelect={this.insertMedia}
                         addNewMedia={() => {

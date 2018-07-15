@@ -44,6 +44,8 @@ export const nodeRenderer = (type, props) => {
             return <OrderedListNode {...props} />;
         case "unordered-list":
             return <UnorderedListNode {...props} />;
+        case "paragraph":
+            return <p {...props.attributes}>{props.children}</p>;
     }
 };
 

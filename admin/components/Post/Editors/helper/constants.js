@@ -24,5 +24,6 @@ export const MARK_TAGS = {
 };
 
 export const INLINE_TAGS = {
-    a: "link"
+    a: "link",
+    img: "image"
 };

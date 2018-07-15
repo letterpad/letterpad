@@ -3,6 +3,7 @@ import Prism from "prismjs";
 import { BLOCK_TAGS, MARK_TAGS, INLINE_TAGS } from "./constants";
 import { LinkNode } from "../plugins/link";
 import { nodeRenderer, markRenderer } from "./renderer";
+import { ImageNode } from "../plugins/image";
 
 export default [
     {
@@ -91,6 +92,8 @@ export default [
             switch (obj.type) {
                 case "link":
                     return <LinkNode {...props} />;
+                case "image":
+                    return <ImageNode {...props} />;
             }
         }
     }
