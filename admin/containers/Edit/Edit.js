@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { ArticleEdit, PostPublish, PostActions } from "../../components/Post";
+import { ArticleEdit, PostPublish } from "../../components/Post";
 import OhSnap from "../OhSnap";
 import Loader from "../../components/Loader";
 import GetSinglePost from "../../data-connectors/GetSinglePost";
@@ -20,34 +20,13 @@ class Edit extends Component {
         manageScroll: PropTypes.func
     };
 
-    state = {
-        preview: ""
-    };
-
-    componentWillMount() {
-        window.addEventListener("onPostChange", this.handlePostChanges);
-    }
-
     componentDidMount() {
-        window.addEventListener("onPostChange", this.handlePostChanges);
         document.body.classList.add("edit-post-page");
     }
 
     componentWillUnmount() {
         document.body.classList.remove("edit-post-page");
-        window.removeEventListener("onPostChange", this.handlePostChanges);
     }
-
-    handlePostChanges = e => {
-        if (PostActions.data.mode == "markdown") {
-            this.props.manageScroll();
-            if ("mdPreview" in e.detail) {
-                this.setState({ preview: e.detail.mdPreview });
-            }
-        } else {
-            this.setState({ preview: "" });
-        }
-    };
 
     render() {
         if (this.props.loading) {
