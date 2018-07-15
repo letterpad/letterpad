@@ -1,4 +1,4 @@
-import * as AutoscrollUtils from "./AutoscrollUtils";
+import scrollTo from "../../helper/scrollTo";
 
 const AutoScrollPlugin = () => {
     return {
@@ -8,16 +8,9 @@ const AutoScrollPlugin = () => {
             const block = change.value.blocks.get(0);
 
             const el = document.querySelector(`[data-key="${block.key}"]`);
-            AutoscrollUtils.scrollTo(el);
-        },
-        onChange(change) {
-            const block = change.value.blocks.get(0);
-
-            const el = document.querySelector(`[data-key="${block.key}"]`);
-            if (!el) return;
-            AutoscrollUtils.scrollTo(el);
+            scrollTo(el);
         }
     };
 };
 
-export { AutoScrollPlugin, AutoscrollUtils };
+export { AutoScrollPlugin };

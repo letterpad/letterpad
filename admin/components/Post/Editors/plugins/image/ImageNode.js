@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import scrollTo from "../../helper/scrollTo";
+
 /* eslint-disable react/prop-types */
 
 const Image = styled.img`
@@ -14,6 +16,9 @@ const ImageNode = ({ node, attributes, isFocused }) => {
             src={node.data.get("src")}
             selected={isFocused}
             {...attributes}
+            onLoad={e => {
+                scrollTo(e.currentTarget);
+            }}
         />
     );
 };

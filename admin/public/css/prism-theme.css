@@ -125,23 +125,8 @@ pre[data-line] {
     margin-top: 1em; /* Same as .prism’s padding-top */
 
     background: hsla(24, 20%, 50%, 0.08);
-    background: -moz-linear-gradient(
-        left,
-        hsla(24, 20%, 50%, 0.1) 70%,
-        hsla(24, 20%, 50%, 0)
-    );
-    background: -webkit-linear-gradient(
-        left,
-        hsla(24, 20%, 50%, 0.1) 70%,
-        hsla(24, 20%, 50%, 0)
-    );
-    background: -o-linear-gradient(
-        left,
-        hsla(24, 20%, 50%, 0.1) 70%,
-        hsla(24, 20%, 50%, 0)
-    );
     background: linear-gradient(
-        left,
+        to left,
         hsla(24, 20%, 50%, 0.1) 70%,
         hsla(24, 20%, 50%, 0)
     );

@@ -1,6 +1,6 @@
 import getWindow from "get-window";
 
-export const scrollTo = el => {
+const scrollTo = el => {
     const window = getWindow(el);
     const rect = el.getBoundingClientRect();
     const { innerWidth, innerHeight, pageYOffset, pageXOffset } = window;
@@ -18,3 +18,5 @@ export const scrollTo = el => {
 
     window.scrollTo(x, y + 40);
 };
+
+export default scrollTo;
