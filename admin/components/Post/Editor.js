@@ -25,6 +25,7 @@ import {
 import PluginPrism from "slate-prism";
 import { CodeblockPlugin, CodeblockButton } from "./Editors/plugins/codeblock";
 import styled from "styled-components";
+import { AutoScrollPlugin } from "./Editors/plugins/autoscroll";
 
 const html = new Html({ rules });
 
@@ -58,7 +59,8 @@ const plugins = [
     LinkPlugin(),
     LinebreakPlugin(),
     MarkdownPlugin(),
-    BlockquotePlugin()
+    BlockquotePlugin(),
+    AutoScrollPlugin()
 ];
 
 class Editor extends Component {
