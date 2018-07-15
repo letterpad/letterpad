@@ -16,5 +16,5 @@ export const scrollTo = el => {
             ? top - innerHeight / 2
             : pageYOffset;
 
-    window.scrollTo(x, y + 80);
+    window.scrollTo(x, y + 40);
 };

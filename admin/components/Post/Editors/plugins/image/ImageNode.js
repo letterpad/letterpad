@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Image = styled.img`
     display: block;
     max-width: 100%;
-    box-shadow: ${props => (props.selected ? "0 0 0 2px blue;" : "none")};
+    box-shadow: ${props => (props.selected ? "0 0 0 4px #414142;" : "none")};
 `;
 
 const ImageNode = ({ node, attributes, isFocused }) => {
