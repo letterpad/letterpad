@@ -12,11 +12,10 @@ export default class ContentEditable extends Component {
 
     titleNode = React.createRef();
 
-    componentWillReceiveProps(newProps) {
-        if (newProps.text !== this.titleNode.current.innerText) {
-            this.titleNode.current.innerText = newProps.text;
-        }
+    componentDidMount() {
+        this.titleNode.current.innerText = this.props.text;
     }
+
     shouldComponentUpdate() {
         return false;
     }

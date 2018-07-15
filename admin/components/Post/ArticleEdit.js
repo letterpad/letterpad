@@ -29,7 +29,7 @@ export default class ArticleEdit extends Component {
                 <Article className="post">
                     <div className="post-header">
                         <PostTitle
-                            text={PostActions.data.title}
+                            text={this.props.post.title}
                             placeholder="Enter a title"
                             onChange={e => {
                                 PostActions.setData({
