@@ -8,6 +8,7 @@ const ItalicButton = ({ value, onChange, changeState, style, type }) => (
         className="button"
         type={type}
         onMouseDown={e => {
+            e.preventDefault();
             return onChange(italicMarkStrategy(value.change()));
         }}
     >

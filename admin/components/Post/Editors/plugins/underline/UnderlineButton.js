@@ -8,6 +8,7 @@ const UnderlineButton = ({ value, onChange, changeState, style, type }) => (
         className="button"
         type={type}
         onMouseDown={e => {
+            e.preventDefault();
             return onChange(underlineMarkStrategy(value.change()));
         }}
     >

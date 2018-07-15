@@ -26,6 +26,7 @@ export const onBackspace = (event, change) => {
 
     if (value.startOffset === 0) {
         const node = getNodeOfType(value, "list-item");
+        if (!node) return;
         const depth = value.document.getDepth(node.key);
         if (depth > 2) {
             return decreaseListDepthStrategy(change);

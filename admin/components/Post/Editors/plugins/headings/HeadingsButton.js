@@ -9,6 +9,7 @@ const HeadingsButton = ({ value, onChange, changeState, style, type }) => {
             className="button"
             type={type}
             onMouseDown={e => {
+                e.preventDefault();
                 // check if this is already active
                 const isActive = hasBlock(value, type);
                 return onChange(

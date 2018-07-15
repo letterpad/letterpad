@@ -41,7 +41,8 @@ export const insertLinkStrategy = change => {
         change.unwrapInline("link");
     } else if (value.isExpanded && !hasMultiBlocks(value)) {
         const href = window.prompt("Enter the URL of the link:");
-        change.call(wrapLink, href);
+        if (!href) return;
+        change.call(wrapLink, href).focus();
         //change.wrapInline(createLink({ target: "_blank", openModal: true }));
     } else if (hasMultiBlocks(value)) {
         console.info("[SlateJS][LinkPlugin] has multiple blocks on selection");

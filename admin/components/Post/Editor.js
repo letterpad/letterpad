@@ -77,12 +77,22 @@ class Editor extends Component {
 
     componentDidMount = () => {
         this.updateMenu();
+        document.addEventListener("keyup", this.hideMenu);
     };
+
+    componentWillUnmount() {
+        document.removeEventListener("keyup", this.hideMenu);
+    }
 
     componentDidUpdate = () => {
         this.updateMenu();
     };
 
+    hideMenu = e => {
+        if (e.keyCode === 27) {
+            this.menuRef.current.removeAttribute("style");
+        }
+    };
     /**
      * Update the menu's absolute position.
      */

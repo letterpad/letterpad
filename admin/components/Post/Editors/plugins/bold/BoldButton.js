@@ -8,6 +8,7 @@ const BoldButton = ({ value, onChange, changeState, style, type }) => (
         className="button"
         type={type}
         onMouseDown={e => {
+            e.preventDefault();
             return onChange(boldMarkStrategy(value.change()));
         }}
     >

@@ -15,7 +15,8 @@ export default [
                     data: {
                         className: el.getAttribute("class"),
                         src: el.getAttribute("src") || null,
-                        href: el.getAttribute("href") || null
+                        href: el.getAttribute("href") || null,
+                        language: el.getAttribute("data-language") || null
                     },
                     nodes: next(el.childNodes)
                 };
@@ -35,6 +36,7 @@ export default [
                     return (
                         <pre
                             className="prism-dark"
+                            data-language={obj.data.get("language")}
                             dangerouslySetInnerHTML={{ __html: html }}
                         />
                     );
