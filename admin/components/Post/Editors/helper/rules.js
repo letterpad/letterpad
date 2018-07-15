@@ -67,20 +67,22 @@ export default [
     },
     {
         deserialize: (el, next) => {
-            if (el.tagName != "a") {
-                return;
-            }
-            const type = INLINE_TAGS[el.tagName];
+            if (!el.tagName) return;
+
+            const type = INLINE_TAGS[el.tagName.toLowerCase()];
 
             if (!type) {
                 return;
             }
+
             return {
                 object: "inline",
-                type: type,
+                type,
+                isVoid: el.tagName.toLowerCase() === "img",
                 nodes: next(el.childNodes),
                 data: {
-                    href: el.attrs.find(({ name }) => name == "href").value
+                    href: el.getAttribute("href"),
+                    src: el.getAttribute("src")
                 }
             };
         },

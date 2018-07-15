@@ -2,7 +2,6 @@ export const BLOCK_TAGS = {
     blockquote: "block-quote",
     p: "paragraph",
     pre: "code_block",
-    img: "image",
     h1: "heading-one",
     h2: "heading-two",
     h3: "heading-three",
@@ -12,8 +11,7 @@ export const BLOCK_TAGS = {
     hr: "line-break",
     ol: "ordered-list",
     ul: "unordered-list",
-    li: "list-item",
-    a: "link"
+    li: "list-item"
 };
 
 export const MARK_TAGS = {

@@ -1,14 +1,8 @@
 export const insertInlineImage = ({ change, src }) => {
-    return change.insertBlock({
-        type: "paragraph",
-        nodes: [
-            {
-                object: "inline",
-                type: "image",
-                isVoid: true,
-                data: { src }
-            }
-        ]
+    return change.insertInline({
+        type: "image",
+        isVoid: true,
+        data: { src }
     });
 };
 
