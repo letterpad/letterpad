@@ -26,6 +26,7 @@ import PluginPrism from "slate-prism";
 import { CodeblockPlugin, CodeblockButton } from "./Editors/plugins/codeblock";
 import styled from "styled-components";
 import { AutoScrollPlugin } from "./Editors/plugins/autoscroll";
+import scrollToCursor from "./Editors/helper/scrollToCursor";
 
 const html = new Html({ rules });
 
@@ -145,6 +146,7 @@ class Editor extends Component {
     };
 
     onPaste = (event, change) => {
+        scrollToCursor();
         const transfer = getEventTransfer(event);
         if (transfer.type != "html") return;
         const { document } = html.deserialize(transfer.html);

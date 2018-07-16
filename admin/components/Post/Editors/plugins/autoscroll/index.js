@@ -1,14 +1,13 @@
-import scrollTo from "../../helper/scrollTo";
+import scrollToCursor from "../../helper/scrollToCursor";
 
 const AutoScrollPlugin = () => {
     return {
-        onKeyDown(event, data, change) {
-            if (event.key !== "Enter") return;
-            event.preventDefault();
-            const block = change.value.blocks.get(0);
-
-            const el = document.querySelector(`[data-key="${block.key}"]`);
-            scrollTo(el);
+        onKeyDown(event) {
+            if (event.key == "Enter" || event.key == "Backspace") {
+                event.preventDefault();
+                scrollToCursor();
+            }
+            return;
         }
     };
 };
