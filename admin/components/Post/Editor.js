@@ -68,7 +68,6 @@ class Editor extends Component {
     static propTypes = {
         insertMedia: PropTypes.func,
         body: PropTypes.string,
-        mdBody: PropTypes.string,
         isMarkdown: PropTypes.any
     };
 
