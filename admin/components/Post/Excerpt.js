@@ -76,6 +76,8 @@ class Excerpt extends Component {
                             trimmedString.lastIndexOf(" ")
                         )
                     ) + "...";
+            } else {
+                excerpt = decodedHtml;
             }
         }
         this.setData(excerpt);

@@ -71,7 +71,7 @@ describe("Test Mutations", () => {
                 "Content-Type": "application/json"
             },
             query: `mutation {
-                            createPost(title:"",body:"", type: "post", taxonomies:[{name:"CatNew", type:"post_Category"}]){
+                            createPost(type: "post"){
                                 ok
                                 post {
                                     id
