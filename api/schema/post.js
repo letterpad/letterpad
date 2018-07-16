@@ -9,7 +9,6 @@ export default `
     type: String
     status: String
     mdBody: String
-    mdPreview: String
     slug: String
     mode: String
     created_at: String
@@ -67,7 +66,7 @@ export default `
   
   type Mutation {
     createPost(id: Int, title: String, body: String, author_id: Int, mode: String, excerpt: String, cover_image: String, type: String, status: String, slug: String, taxonomies: [TaxonomyInputType]):Response!
-    updatePost(id: Int, title: String, body: String, mdBody: String, mdPreview: String, author_id: Int, mode: String, excerpt: String, cover_image: String, type: String, status: String, slug: String, taxonomies: [TaxonomyInputType]): Response!
+    updatePost(id: Int, title: String, body: String, author_id: Int, mode: String, excerpt: String, cover_image: String, type: String, status: String, slug: String, taxonomies: [TaxonomyInputType]): Response!
     deletePosts(ids: String!): Response!
     uploadFile(id: Int, cover_image: String):Response!
   }

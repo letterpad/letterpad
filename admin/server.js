@@ -90,15 +90,11 @@ function getHtml(theme, apolloState) {
 
     const devBundles = [
         { src: "/admin/js/masonry.pkgd.min.js" },
-        "/admin/js/highlight.min.js",
-        "/admin/js/quill.1.2.2.js",
         "/static/public/js/vendor-bundle.js",
         "/static/admin/public/dist/admin-bundle.js"
     ];
     const prodBundles = [
         { src: "/admin/js/masonry.pkgd.min.js" },
-        "/admin/js/highlight.min.js",
-        "/admin/js/quill.1.2.2.js",
         "/js/vendor-bundle.min.js",
         "/admin/dist/admin-bundle.min.js"
     ];

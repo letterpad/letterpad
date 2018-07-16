@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 const OhSnap = ({ message }) => {
     return (
         <section className="card oh-snap">
@@ -13,4 +13,7 @@ const OhSnap = ({ message }) => {
     );
 };
 
+OhSnap.propTypes = {
+    message: PropTypes.string.isRequired
+};
 export default OhSnap;

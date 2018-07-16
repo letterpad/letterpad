@@ -11,7 +11,7 @@ import Search from "../../components/Post/Search";
 class Pages extends Component {
     static propTypes = {
         posts: PropTypes.object,
-        status: PropTypes.bool,
+        status: PropTypes.string,
         page: PropTypes.number,
         changePage: PropTypes.func,
         changeStatus: PropTypes.func,

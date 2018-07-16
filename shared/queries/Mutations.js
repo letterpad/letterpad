@@ -153,23 +153,21 @@ module.exports.UPDATE_POST_QUERY = gql`
         $body: String
         $status: String!
         $excerpt: String
+        $cover_image: String
         $taxonomies: [TaxonomyInputType]
         $slug: String!
         $mode: String
-        $mdBody: String
-        $mdPreview: String
     ) {
         updatePost(
             id: $id
             title: $title
             body: $body
-            mdBody: $mdBody
-            mdPreview: $mdPreview
             status: $status
             excerpt: $excerpt
             taxonomies: $taxonomies
             slug: $slug
             mode: $mode
+            cover_image: $cover_image
         ) {
             ok
             errors {

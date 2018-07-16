@@ -2,7 +2,7 @@ let PostActions = {
     data: {},
     taxonomies: {},
 
-    triggerEvent: function(name, data) {
+    triggerEvent: (name, data) => {
         // create and dispatch the event
         let event = new CustomEvent(name, { detail: data });
         window.dispatchEvent(event);

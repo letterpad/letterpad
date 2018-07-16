@@ -8,7 +8,11 @@ const InfiniteScrollList = ({ data, count, loadMore }) => {
             pageStart={1}
             loadMore={loadMore}
             hasMore={data.length < count}
-            loader={<div className="loader1">Loading ...</div>}
+            loader={
+                <div className="loader1" key={0}>
+                    Loading ...
+                </div>
+            }
         >
             {data}
         </InfiniteScroll>

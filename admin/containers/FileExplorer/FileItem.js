@@ -28,7 +28,7 @@ export default class MediaItem extends Component {
                         />
                     </div>
                     <div className="post-body with-border">
-                        <div className="post-header">
+                        <div className="post-header hide">
                             <div className="post-meta">
                                 {/* Placeholder for something cool. maybe*/}
                             </div>
