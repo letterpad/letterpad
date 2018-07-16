@@ -220,7 +220,6 @@ export async function insertPost(params, models, categories, tags) {
         status: params.status,
         slug: slug,
         mode: "rich-text",
-        mdPreview: ""
     });
 
     const randomCategory = Math.floor(Math.random() * (2 - 1 + 1)) + 1;

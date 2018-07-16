@@ -18,12 +18,6 @@ export default (conn, DataTypes) => {
             body: {
                 type: DataTypes.TEXT
             },
-            mdBody: {
-                type: DataTypes.TEXT
-            },
-            mdPreview: {
-                type: DataTypes.TEXT
-            },
             excerpt: {
                 type: DataTypes.STRING(400),
                 defaultValue: ""
