@@ -18,12 +18,6 @@ export default (conn, DataTypes) => {
             body: {
                 type: DataTypes.TEXT
             },
-            mdBody: {
-                type: DataTypes.TEXT
-            },
-            mdPreview: {
-                type: DataTypes.TEXT
-            },
             excerpt: {
                 type: DataTypes.STRING(400),
                 defaultValue: ""
@@ -66,10 +60,9 @@ export default (conn, DataTypes) => {
 };
 
 export async function _createPost(data, models) {
-    let title = data.title || config.defaultSlug;
     try {
-        //  create the slug
-        data.slug = await slugify(models.Post, title);
+        //  create a slug for the new psot
+        data.slug = await slugify(models.Post, config.defaultSlug);
 
         const newPost = await models.Post.create(data);
 
@@ -101,8 +94,10 @@ export async function _updatePost(post, models) {
             where: { id: post.id }
         });
 
-        // Create a new slug if the title changes.
-        if (post.title && post.title !== oldPost.title) {
+        // Initially the title will be empty for newly created post.
+        // While updating check if the user has entered a new title and based on that create a new slug.
+        // If the user changes the title the second time then we should not change the slug again. Doing so will affect SEO.
+        if (oldPost.title == "" && post.title !== oldPost.title) {
             //  create the slug
             post.slug = await slugify(models.Post, post.title);
         }
@@ -133,7 +128,6 @@ export async function _updatePost(post, models) {
         } catch (e) {
             console.log(e);
         }
-
         // If this post is being published for the first time, update the publish date
         if (post.status == "publish" && oldPost.status == "draft") {
             post.published_at = moment
@@ -154,18 +148,16 @@ export async function _updatePost(post, models) {
         if (post.taxonomies && post.taxonomies.length > 0) {
             // remove the texonomy relation
             await newPost.setTaxonomies([]);
-
-            let taxIndexToLink = post.taxonomies.length - 1;
-
-            const linkTaxonomyToPost = async taxonomy => {
-                if (taxIndexToLink < 0) return;
-                let taxItem = null;
-                // add relation with existing taxonomies
-                if (taxonomy.id != 0) {
-                    taxItem = await models.Taxonomy.findOne({
-                        where: { id: taxonomy.id }
-                    });
-                } else {
+            await Promise.all(
+                post.taxonomies.map(async taxonomy => {
+                    let taxItem = null;
+                    // add relation with existing taxonomies
+                    if (taxonomy.id != 0) {
+                        taxItem = await models.Taxonomy.findOne({
+                            where: { id: taxonomy.id }
+                        });
+                        return await newPost.addTaxonomy(taxItem);
+                    }
                     // taxonomies needs to be created
                     taxItem = await models.Taxonomy.findOrCreate({
                         where: {
@@ -180,14 +172,11 @@ export async function _updatePost(post, models) {
                             type: taxonomy.type
                         }
                     });
-                }
-                // add relation
-                await newPost.addTaxonomy(taxItem);
-                taxIndexToLink--;
-                console.log(taxIndexToLink);
-                linkTaxonomyToPost(post.taxonomies[taxIndexToLink]);
-            };
-            linkTaxonomyToPost(post.taxonomies[taxIndexToLink]);
+
+                    // add relation
+                    return await newPost.addTaxonomy(taxItem);
+                })
+            );
         }
 
         return {

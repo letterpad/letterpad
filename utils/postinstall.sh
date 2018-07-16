@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # exit on first error
-set -e
-
-echo "Seeding the database..."
-yarn seed
-echo "Seeding complete!"
+# seed the database only during first installation
+if [ ! -d node_modules ]; then
+    echo "Seeding the database..."
+    yarn seed
+    echo "Seeding complete!"
+fi
 echo "Running migrations"
 yarn sequelize db:migrate
 

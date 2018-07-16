@@ -23,8 +23,7 @@
     </script>
         
     {{SCRIPT_TAGS}}
-    <link href="{{BASE_NAME}}/admin/css/quill.snow.css" rel="stylesheet"/>
-    <link href="{{BASE_NAME}}/admin/css/github.min.css" rel="stylesheet"/>
+    <link href="{{BASE_NAME}}/admin/css/prism-theme.css" rel="stylesheet"/>
 </body>
 
 </html>

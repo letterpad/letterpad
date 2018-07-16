@@ -1,62 +1,88 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 
+const ExcerptBox = styled.textarea`
+    border: none;
+    width: 100%;
+`;
 import PostActions from "./PostActions";
 
 class ContentEditable extends Component {
-    componentDidMount() {
-        this.lastExcerpt = this.props.excerpt;
-    }
+    static propTypes = {
+        excerpt: PropTypes.string,
+        onChange: PropTypes.func
+    };
 
-    shouldComponentUpdate(nextProps) {
-        return nextProps.excerpt !== this.node.innerHTML;
-    }
+    state = {
+        excerpt: this.props.excerpt
+    };
 
-    emitChange = () => {
-        const excerpt = this.node.innerHTML;
-        if (this.props.onChange && excerpt !== this.lastExcerpt) {
+    emitChange = excerpt => {
+        if (this.props.onChange) {
+            this.setState({ excerpt });
             this.props.onChange({
                 target: {
                     value: excerpt
                 }
             });
         }
-        this.lastExcerpt = excerpt;
     };
 
     render() {
         return (
-            <span
+            <ExcerptBox
                 className="post-excerpt"
-                onInput={this.emitChange}
-                onBlur={this.emitChange}
-                contentEditable
-                placeholder="Write a small description"
-                dangerouslySetInnerHTML={{
-                    __html: this.props.excerpt
+                onChange={e => {
+                    this.emitChange(e.target.value);
                 }}
-                ref={node => (this.node = node)}
+                maxLength={160}
+                placeholder="Write a small description"
+                value={this.props.excerpt}
             />
         );
     }
 }
 
-ContentEditable.propTypes = {
-    excerpt: PropTypes.string,
-    onChange: PropTypes.func
-};
-
 class Excerpt extends Component {
+    static propTypes = {
+        post: PropTypes.object
+    };
+
     state = {
-        chars: 0
+        chars: 0,
+        excerpt: this.props.post.excerpt
     };
 
     componentDidMount() {
-        this.setData(this.props.post.excerpt);
+        let excerpt = this.state.excerpt;
+        if (!excerpt) {
+            // the body will contain html characters. Remove all the tags and get plain text
+            let stripedHtml = this.props.post.body.replace(/<[^>]+>/g, "");
+            const text = document.createElement("textarea");
+            text.innerHTML = stripedHtml;
+            const decodedHtml = text.value;
+            // maximum number of characters to extract
+            const maxLength = 150;
+            if (decodedHtml.length > maxLength) {
+                //trim the string to the maximum length
+                let trimmedString = decodedHtml.substr(0, maxLength);
+                //re-trim if we are in the middle of a word
+                excerpt =
+                    trimmedString.substr(
+                        0,
+                        Math.min(
+                            trimmedString.length,
+                            trimmedString.lastIndexOf(" ")
+                        )
+                    ) + "...";
+            }
+        }
+        this.setData(excerpt);
     }
 
     setData = excerpt => {
-        this.setState({ chars: excerpt.length });
+        this.setState({ chars: excerpt.length, excerpt });
         PostActions.setData({
             excerpt
         });
@@ -64,28 +90,18 @@ class Excerpt extends Component {
 
     render() {
         return (
-            <div className="card">
-                <div className="x_title">
-                    <div className="module-title">Introduction</div>
+            <div>
+                <div className="meta-label">
+                    Write a small introduction about this post
                 </div>
-                <div className="x_content">
-                    <div className="control-group">
-                        <ContentEditable
-                            excerpt={this.props.post.excerpt}
-                            onChange={e => this.setData(e.target.value)}
-                        />
-                        <span className="label label-default">
-                            Chars: {this.state.chars} / 160
-                        </span>
-                    </div>
-                </div>
+                <ContentEditable
+                    excerpt={this.state.excerpt}
+                    onChange={e => this.setData(e.target.value)}
+                />
+                <small>{this.state.chars} / 160</small>
             </div>
         );
     }
 }
-
-Excerpt.propTypes = {
-    post: PropTypes.object
-};
 
 export default Excerpt;

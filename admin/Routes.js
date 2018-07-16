@@ -95,12 +95,14 @@ class Routes extends Component {
                             path="/admin/posts/:post_id"
                             component={Edit}
                             type="post"
+                            layout="none"
                             settings={settings.data}
                         />
                         <SecuredRoute
                             path="/admin/post-new"
                             type="post"
                             component={Create}
+                            layout="none"
                             settings={settings.data}
                         />
                         <SecuredRoute
@@ -124,6 +126,7 @@ class Routes extends Component {
                         <SecuredRoute
                             path="/admin/pages/:post_id"
                             type="page"
+                            layout="none"
                             component={Edit}
                             settings={settings.data}
                         />

@@ -5,7 +5,6 @@ module.exports.PostFragment = gql`
         id
         title
         body
-        mdPreview
         status
         created_at
         excerpt

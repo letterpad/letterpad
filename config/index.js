@@ -15,7 +15,7 @@ const config = {
     appPort: configFile.appPort,
     apiPort: configFile.apiPort,
     defaultTitle: "Untitled",
-    defaultSlug: "letterpad",
+    defaultSlug: "story",
     adminPath: "/admin",
     itemsPerPage: 6,
     mediaPerPage: 20,

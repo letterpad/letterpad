@@ -1,8 +1,12 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 // A hack to remember the search text locally without asking parent
 let SEARCH_TEXT_STATE = "";
 export default class Search extends Component {
+    static propTypes = {
+        history: PropTypes.object
+    };
     constructor(props) {
         super(props);
         this.state = {

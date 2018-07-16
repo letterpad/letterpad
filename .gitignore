@@ -11,7 +11,8 @@ extend
 hot
 client/themes/*
 *hot*js*
-data/*.sqlite
+data/*
+!data/.gitkeep 
 yarn-error.log
 public/uploads
 package-lock.json
