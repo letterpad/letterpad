@@ -26,8 +26,7 @@ function getConditions(columns, args) {
             if (validateJSONStr) {
                 obj["$or"] = {
                     body: query,
-                    title: query,
-                    mdBody: query
+                    title: query
                 };
             } else {
                 obj[field] = query;

@@ -178,8 +178,6 @@ module.exports.UPDATE_POST_QUERY = gql`
                 id
                 title
                 body
-                mdBody
-                mdPreview
                 author {
                     username
                     lname

@@ -17,7 +17,6 @@ module.exports.GET_SINGLE_POST = gql`
     query getPost($id: Int!) {
         post(id: $id) {
             ...postFields
-            mdBody
         }
     }
     ${PostFragment}

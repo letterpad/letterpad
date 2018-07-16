@@ -8,7 +8,6 @@ export default `
     cover_image: String
     type: String
     status: String
-    mdBody: String
     slug: String
     mode: String
     created_at: String
