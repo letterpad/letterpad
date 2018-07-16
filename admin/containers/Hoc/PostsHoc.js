@@ -14,7 +14,7 @@ const PostsHoc = (WrappedComponent, type) => {
             selectedPosts: [],
             allPostsSelected: false
         };
-        
+
         variables = {
             type: type,
             limit: 20,
@@ -34,7 +34,7 @@ const PostsHoc = (WrappedComponent, type) => {
                 query: GET_POSTS,
                 variables: this.variables,
                 forceFetch: true,
-                fetchPolicy: "network-only"
+                fetchPolicy: "no-cache"
             });
             this.setState({
                 page: page,
@@ -99,7 +99,7 @@ const PostsHoc = (WrappedComponent, type) => {
                 query: SEARCH_POSTS,
                 variables: {
                     ...this.variables,
-                    query: "{ \"like\": \"%" + query + "%\" }"
+                    query: `{ "like": "%${query}%" }`
                 }
             });
             this.setState({

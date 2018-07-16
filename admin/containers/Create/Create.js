@@ -21,11 +21,8 @@ export class Create extends Component {
         const { type } = this.props;
         // This is going to hold all the changes done to the post.
         PostActions.data = {};
-        // Title of this story will be empty initially
-        const title = "";
-
         // create an empty post with the type and title
-        this.props.createPost({ type, title }).then(result => {
+        this.props.createPost({ type }).then(result => {
             const post = result.data.createPost.post;
             PostActions.setData({ slug: post.slug });
             this.props.history.push(`/admin/${plural[type]}/${post.id}`);

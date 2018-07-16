@@ -14,9 +14,9 @@ class PostRows extends Component {
         posts: PropTypes.object
     };
 
-    postSelected = (e) => {
+    postSelected = e => {
         this.props.setSelection(e.target.value);
-    }
+    };
 
     render() {
         if (this.props.loading) {
@@ -70,7 +70,7 @@ class PostRows extends Component {
                         </td>
                         <td>
                             <Link to={"/admin/posts/" + post.id}>
-                                {post.title || "Draft.."}
+                                {post.title || "Draft"}
                             </Link>
                         </td>
                         {post.type == "post" && (

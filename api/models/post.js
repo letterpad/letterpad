@@ -63,7 +63,8 @@ export async function _createPost(data, models) {
     try {
         //  create a slug for the new psot
         data.slug = await slugify(models.Post, config.defaultSlug);
-
+        // add a empty string for title
+        data.title = "";
         const newPost = await models.Post.create(data);
 
         const defaultTaxonomy = await models.Taxonomy.findOne({
