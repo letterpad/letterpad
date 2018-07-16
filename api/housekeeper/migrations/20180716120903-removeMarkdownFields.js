@@ -2,6 +2,10 @@
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
+        const tableDefinition = await queryInterface.describeTable("post");
+
+        if (!tableDefinition.mdPreview) return Promise.resolve();
+
         return [
             // Copy column value of markdownPreview into body.
             await queryInterface.sequelize.query(
