@@ -2,11 +2,14 @@ import scrollToCursor from "../../helper/scrollToCursor";
 
 export const insertInlineImage = ({ change, src }) => {
     scrollToCursor();
-    return change.insertInline({
-        type: "image",
-        isVoid: true,
-        data: { src }
-    });
+    return change
+        .insertInline({
+            type: "image",
+            isVoid: true,
+            data: { src }
+        })
+        .collapseToStartOfNextText()
+        .focus();
 };
 
 export const updateInlineImage = ({
