@@ -1,8 +1,4 @@
-export const applyHeadings = (change, type) =>
-    change
-        .setBlocks(type)
-        .selectAll()
-        .focus();
+export const applyHeadings = (change, type) => change.setBlocks(type).focus();
 
 /**
  * Check if the any of the currently selected blocks are of `type`.
