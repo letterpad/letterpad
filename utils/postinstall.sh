@@ -2,7 +2,7 @@
 
 # exit on first error
 # seed the database only during first installation
-if [ ! -d node_modules ]; then
+if [ ! -d ../node_modules ]; then
     echo "Seeding the database..."
     yarn seed
     echo "Seeding complete!"
