@@ -40,7 +40,7 @@ if (isDev) {
 }
 module.exports = (args, name) => {
     const config = {
-        mode: isDev ? "development" : "production",
+        mode: "development", // for production we use this mode to ignore uglify plugin. it is slow.
         watch: isDev,
         entry: {
             ["public/js/vendor"]: vendorFiles,

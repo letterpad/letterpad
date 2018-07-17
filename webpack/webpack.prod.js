@@ -18,7 +18,7 @@ const clientConfig = args => {
             path: path.join(__dirname, "../"),
             filename: "[name]-bundle.min.js"
         },
-        plugins: [extractPcss, extractPcssAdmin],
+        plugins: [extractPcss, extractPcssAdmin, new MinifyPlugin()],
         module: {
             rules: [
                 {
