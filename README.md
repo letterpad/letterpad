@@ -14,7 +14,7 @@ Letterpad is an open-source and a high performant publishing engine for blogs wi
 -   Roles - Admin, Reviewer, Author, Reader
 -   Markdown and RichText editor
 -   Search Engine Optimised
--   Multi-language support (currently en, fr and pl)
+-   Multi-language support with react-i18next (currently en, fr and pl)
 
 To check letterpad in action, check out this [Demo Site](https://letterpad.app/demo).
 You can visit the [Admin Panel](https://letterpad.app/demo/admin/login) and login with
@@ -137,6 +137,8 @@ In order to run the migrations, enter the below command.
 ```
 yarn sequelize db:migrate
 ```
+
+You can play around with the Graphql API locally on [http://localhost:3030/graphql](http://localhost:3030/graphql)
 
 ### VSCode setup
 
