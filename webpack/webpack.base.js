@@ -42,6 +42,18 @@ module.exports = (args, name) => {
     const config = {
         mode: "development", // for production we use this mode to ignore uglify plugin. it is slow.
         watch: isDev,
+        stats: {
+            cached: false,
+            cachedAssets: false,
+            chunks: false,
+            assets: true,
+            chunkModules: false,
+            chunkOrigins: false,
+            modules: false,
+            errors: true,
+            builtAt: true,
+            hash: false
+        },
         entry: {
             ["public/js/vendor"]: vendorFiles,
             ["client/themes/" + args.theme + "/public/dist/client"]: [
