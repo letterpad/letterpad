@@ -162,5 +162,9 @@
         "testMatch": [
             "**/__tests__/**/?(*.)(spec|test).js?(x)"
         ]
+    },
+    "collective": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/letterpad"
     }
 }
