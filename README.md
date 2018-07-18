@@ -1,4 +1,5 @@
-# Letterpad &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/letterpad/letterpad/blob/master/LICENSE) ![CircleCI Status](https://circleci.com/gh/letterpad/letterpad.svg?style=shield&circle-token=:circle-token)
+
+# Letterpad &middot; [![Backers on Open Collective](https://opencollective.com/letterpad/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/letterpad/sponsors/badge.svg)](#sponsors) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/letterpad/letterpad/blob/master/LICENSE) ![CircleCI Status](https://circleci.com/gh/letterpad/letterpad.svg?style=shield&circle-token=:circle-token)
 
 Letterpad is an open-source and a high performant publishing engine for blogs with a state-of-the-art technology. It uses React, Graphql, Express and Sequelize ORM. It is in beta now. Few of the core features are listed below:
 
@@ -171,6 +172,37 @@ testing, ideas, recommendations, fixing bugs, documentation, logo design, assets
 Slack Channel - [https://letterpad.slack.com](https://letterpad.slack.com)
 
 [Slack invite Link](https://tinyurl.com/letterpad)
+
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="graphs/contributors"><img src="https://opencollective.com/letterpad/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/letterpad#backer)]
+
+<a href="https://opencollective.com/letterpad#backers" target="_blank"><img src="https://opencollective.com/letterpad/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/letterpad#sponsor)]
+
+<a href="https://opencollective.com/letterpad/sponsor/0/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/letterpad/sponsor/1/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/letterpad/sponsor/2/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/letterpad/sponsor/3/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/letterpad/sponsor/4/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/letterpad/sponsor/5/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/letterpad/sponsor/6/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/letterpad/sponsor/7/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/letterpad/sponsor/8/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/letterpad/sponsor/9/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/9/avatar.svg"></a>
+
+
+
 
 ### License
 
