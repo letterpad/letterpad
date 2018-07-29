@@ -1,5 +1,3 @@
-import { getTaxonomies } from "../models/taxonomy";
-
 export default {
     Query: {
         taxonomies: (root, args, { models }) =>

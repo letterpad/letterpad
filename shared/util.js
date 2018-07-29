@@ -1,14 +1,14 @@
 "use strict";
 
-var config = require("../config");
+let config = require("../config");
 
-var utils = {
+let utils = {
     _extends:
         Object.assign ||
         function(target) {
-            for (var i = 1; i < arguments.length; i++) {
-                var source = arguments[i];
-                for (var key in source) {
+            for (let i = 1; i < arguments.length; i++) {
+                let source = arguments[i];
+                for (let key in source) {
                     if (Object.prototype.hasOwnProperty.call(source, key)) {
                         target[key] = source[key];
                     }
@@ -17,10 +17,10 @@ var utils = {
             return target;
         },
     parseErrors: function parseErrors(errObj) {
-        var result = [];
+        let result = [];
         if (errObj && errObj.errors) {
             errObj.errors.map(function(_ref) {
-                var message = _ref.message,
+                let message = _ref.message,
                     path = _ref.path;
 
                 result.push({ message: message, path: path });
@@ -38,7 +38,7 @@ var utils = {
         if (typeof parts === "string") {
             parts = [parts];
         }
-        var url = config.rootUrl + "/" + parts.join("/");
+        let url = config.rootUrl + "/" + parts.join("/");
         return url.replace(/\/\/+/g, "/").replace(":/", "://");
     },
 
@@ -56,7 +56,7 @@ var utils = {
     },
 
     getTagsAndCategories: function getTagsAndCategories(taxonomies) {
-        var data = { categories: [], tags: [] };
+        let data = { categories: [], tags: [] };
         taxonomies.forEach(function(taxonomy) {
             if (taxonomy.type === "post_category") {
                 data.categories.push(taxonomy);
@@ -68,8 +68,8 @@ var utils = {
     },
 
     getMetaTags: function getMetaTags(head) {
-        var htmlAttrs = "";
-        var metaTags = Object.keys(head)
+        let htmlAttrs = "";
+        let metaTags = Object.keys(head)
             .map(function(item) {
                 if (item == "htmlAttributes") {
                     htmlAttrs = head[item].toString();
@@ -84,12 +84,13 @@ var utils = {
         return { htmlAttrs: htmlAttrs, metaTags: metaTags };
     },
     createStringFromProps: function createStringFromProps(props) {
-        var string = "";
+        let string = "";
         Object.keys(props).map(function(key) {
             if (props[key] == "") {
                 string += key + " ";
             } else {
-                string += key + "=\"" + props[key] + "\" ";
+                /* eslint-disable quotes*/
+                string += key + '="' + props[key] + '" ';
             }
         });
         return string;
@@ -104,12 +105,12 @@ var utils = {
      * <script src="url" {...props}></script>
      */
     prepareScriptTags: function prepareScriptTags(data) {
-        var defaults = {
+        let defaults = {
             defer: "",
             type: "text/javascript"
         };
-        var createScript = function createScript(params) {
-            var props = {};
+        let createScript = function createScript(params) {
+            let props = {};
             if (typeof params === "string") {
                 props = utils._extends({}, defaults, {
                     src: utils.makeUrl(params)
@@ -119,7 +120,7 @@ var utils = {
                     src: utils.makeUrl(params.src)
                 });
             }
-            var attrs = utils.createStringFromProps(props);
+            let attrs = utils.createStringFromProps(props);
             return "<script " + attrs + "></script>";
         };
 
@@ -137,12 +138,12 @@ var utils = {
      * <script src="url" {...props}></script>
      */
     prepareStyleTags: function prepareStyleTags(data) {
-        var defaults = {
+        let defaults = {
             type: "text/css",
             rel: "stylesheet"
         };
-        var createScript = function createScript(params) {
-            var props = {};
+        let createScript = function createScript(params) {
+            let props = {};
             if (typeof params === "string") {
                 props = utils._extends({}, defaults, {
                     href: utils.makeUrl(params)
@@ -152,7 +153,7 @@ var utils = {
                     href: utils.makeUrl(params.href)
                 });
             }
-            var attrs = utils.createStringFromProps(props);
+            let attrs = utils.createStringFromProps(props);
             return "<link " + attrs + "></link>";
         };
 
@@ -179,10 +180,52 @@ var utils = {
         if (typeof data !== "object") return template;
 
         Object.keys(data).map(function(name) {
-            var regex = new RegExp("{{" + name + "}}", "g");
+            let regex = new RegExp("{{" + name + "}}", "g");
             template = template.replace(regex, data[name]);
         });
         return template;
+    },
+    syncArrays: (oldArray, newArray, key, compareFields) => {
+        function mapFromArray(array, prop) {
+            let map = {};
+            for (let i = 0; i < array.length; i++) {
+                map[array[i][prop]] = array[i];
+            }
+            return map;
+        }
+
+        function isEqual(a, b) {
+            return (
+                compareFields.filter(field => a[field] === b[field]).length ===
+                compareFields.length
+            );
+        }
+
+        function getDelta(o, n, key, comparator) {
+            let delta = {
+                added: [],
+                deleted: [],
+                changed: []
+            };
+            let mapO = mapFromArray(o, key);
+            let mapN = mapFromArray(n, key);
+            for (let id in mapO) {
+                if (!mapN.hasOwnProperty(id)) {
+                    delta.deleted.push(mapO[id]);
+                } else if (!comparator(mapN[id], mapO[id])) {
+                    delta.changed.push(mapN[id]);
+                }
+            }
+
+            for (let id in mapN) {
+                if (!mapO.hasOwnProperty(id)) {
+                    delta.added.push(mapN[id]);
+                }
+            }
+            return delta;
+        }
+
+        return getDelta(oldArray, newArray, key, isEqual);
     }
 };
 module.exports = utils;
