@@ -5,7 +5,7 @@ import { notify } from "react-notify-toast";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
 import SettingsData from "shared/data-connectors/SettingsData";
 import { makeUrl } from "shared/util";
-import ThemeItem from "../../components/Settings/ThemeItem";
+import ThemeItem from "../../components/Themes/ThemeItem";
 
 class Themes extends Component {
     static propTypes = {
@@ -17,6 +17,8 @@ class Themes extends Component {
         css: "",
         themes: []
     };
+
+    updatedOptions = {};
 
     componentDidMount() {
         document.body.classList.add("themes-page");
@@ -42,7 +44,7 @@ class Themes extends Component {
 
     getThemes = () => {
         const url = makeUrl("/admin/getThemes");
-        fetch(url)
+        fetch(url, { headers: { Authorization: localStorage.token } })
             .then(res => res.json())
             .then(themes => {
                 this.setState({ themes });
@@ -87,7 +89,7 @@ class Themes extends Component {
         this.setState({
             themes: modifiedThemes
         });
-        this.updatedOptions.theme = theme.name;
+        this.updatedOptions.theme = theme.short_name;
     };
 
     render() {
@@ -112,7 +114,7 @@ class Themes extends Component {
                             <ThemeItem
                                 key={idx}
                                 theme={theme}
-                                activateTheme={this.activateTheme.bind(this)}
+                                activateTheme={this.activateTheme}
                             />
                         ))}
                     </div>

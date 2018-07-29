@@ -1,22 +1,22 @@
 export default (conn, DataTypes) => {
-    const Role = conn.define(
-        "role",
+    const Theme = conn.define(
+        "theme",
         {
             name: {
+                type: DataTypes.STRING
+            },
+            value: {
+                type: DataTypes.STRING
+            },
+            settings: {
                 type: DataTypes.STRING
             }
         },
         {
+            timestamps: false,
             freezeTableName: true // Model tableName will be the same as the model name
         }
     );
 
-    Role.associate = models => {
-        Role.belongsToMany(models.Permission, {
-            through: "RolePermission"
-        });
-        Role.hasMany(models.Author);
-    };
-
-    return Role;
+    return Theme;
 };

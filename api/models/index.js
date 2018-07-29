@@ -19,7 +19,8 @@ const models = {
     Permission: conn.import("./permission"),
     Setting: conn.import("./setting"),
     Media: conn.import("./media"),
-    PostTaxonomy: conn.import("./postTaxonomy")
+    PostTaxonomy: conn.import("./postTaxonomy"),
+    Theme: conn.import("./theme")
 };
 
 // now that we have the model instances, add relationships

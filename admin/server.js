@@ -17,6 +17,7 @@ const {
     prepareStyleTags,
     templateEngine
 } = require("../shared/util");
+const { syncThemeSettings } = require("./util");
 
 const client = () =>
     new ApolloClient({
@@ -25,67 +26,96 @@ const client = () =>
             uri: config.apiUrl,
             fetch
         }),
+        fetchPolicy: "no-cache",
         cache: new InMemoryCache()
     });
 
 module.exports.init = app => {
+    app.get(config.baseName + "/admin/*", (req, res) => {
+        let apolloState = {};
+        const content = getHtml(apolloState);
+        res.end(content);
+    });
+
     app.get(config.baseName + "/admin/getThemes", (req, res) => {
         client()
             .query({ query: GET_OPTIONS })
             .then(settings => {
-                let theme = settings.data.settings.filter(
+                let themeName = settings.data.settings.filter(
                     item => item.option == "theme"
                 )[0].value;
                 const availableThemes = [];
+                const newSettings = [];
+                // Get all the folders inside the "themes" folder. Check if each
+                // of those folder has a "config.json" file. If found, we will assume that
+                // as a valid theme.
+
                 getDirectories(path.join(__dirname, "../client/themes/")).map(
                     themePath => {
                         if (fs.existsSync(themePath + "/config.json")) {
-                            const themeConfig = require(themePath +
+                            // get all the contents from the "config" file.
+                            const contents = require(themePath +
                                 "/config.json");
-                            const details = Object.assign({}, themeConfig);
-                            const name = themePath.split("/").pop(-1);
-                            if (details.thumbnail.indexOf("http") === -1) {
-                                details.thumbnail =
+                            const themeConfig = Object.assign({}, contents);
+                            const folder_name = themePath.split("/").pop(-1);
+                            // check if it has a thumbnail without http
+                            if (themeConfig.thumbnail.indexOf("http") === -1) {
+                                themeConfig.thumbnail =
                                     config.baseName +
                                     "/" +
-                                    name +
-                                    details.thumbnail;
+                                    folder_name +
+                                    themeConfig.thumbnail;
                             }
-                            availableThemes.push({
-                                details: Object.assign({}, details),
-                                name: name,
-                                active: name === theme
-                            });
+                            // check the theme has settings
+                            const hasSettings = fs.existsSync(
+                                themePath + "/settings.json"
+                            );
+
+                            themeConfig.active =
+                                themeConfig.short_name === themeName;
+                            themeConfig.settings = hasSettings;
+                            availableThemes.push(themeConfig);
+                            // get default settings of all themes from files
+                            if (hasSettings) {
+                                // we need to delete the cache, to get updated settings file
+                                delete require.cache[
+                                    require.resolve(
+                                        themePath + "/settings.json"
+                                    )
+                                ];
+                                const defaultSettings = require(themePath +
+                                    "/settings.json");
+                                const values = {};
+                                defaultSettings.forEach(field => {
+                                    values[field.name] = field.defaultValue;
+                                });
+                                newSettings.push({
+                                    name: themeConfig.short_name,
+                                    value: JSON.stringify(values),
+                                    settings: JSON.stringify(defaultSettings)
+                                });
+                            }
                         }
                     }
                 );
-                res.send(availableThemes);
+
+                // If the theme developer has changed the settings of the theme,
+                // it has to sync with the database.
+                syncThemeSettings(
+                    client,
+                    newSettings,
+                    req.headers.authorization
+                ).then(() => {
+                    res.send(availableThemes);
+                });
             })
             .catch(e => {
                 console.log(e);
             });
     });
-
-    app.get(config.baseName + "/admin/*", (req, res) => {
-        client()
-            .query({ query: GET_OPTIONS })
-            .then(settings => {
-                let theme = settings.data.settings.filter(
-                    item => item.option == "theme"
-                )[0].value;
-
-                // In dev mode if a theme is explicitly called, then use that
-                if (process.env.theme && process.env.theme !== "") {
-                    theme = process.env.theme;
-                }
-                let apolloState = {};
-                const content = getHtml(theme, apolloState);
-                res.end(content);
-            });
-    });
 };
 
-function getHtml(theme, apolloState) {
+function getHtml(apolloState) {
     const isDev = process.env.NODE_ENV === "dev";
 
     const devBundles = [

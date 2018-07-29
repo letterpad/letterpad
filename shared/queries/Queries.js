@@ -194,6 +194,16 @@ module.exports.BLOG_STATS = gql`
     }
 `;
 
+module.exports.THEME_SETTINGS = gql`
+    query themeSettings($name: String) {
+        themeSettings(name: $name) {
+            name
+            value
+            settings
+        }
+    }
+`;
+
 module.exports.TAX_SUGGESTIONS = gql`
     query getTaxonomies($type: String!) {
         taxonomies(type: $type) {

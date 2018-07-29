@@ -25,7 +25,7 @@ import CreateAuthor from "./containers/Author/CreateAuthor";
 import Taxonomy from "./containers/Post/Taxonomy";
 import MenuBuilder from "./containers/Settings/MenuBuilder";
 import Home from "./containers/Home/Home";
-import Themes from "./containers/Settings/Themes";
+import Themes from "./containers/Themes/Themes";
 
 // css
 import "./public/pcss/admin.pcss";

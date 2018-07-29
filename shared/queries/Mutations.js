@@ -42,6 +42,26 @@ module.exports.UPDATE_OPTIONS = gql`
     }
 `;
 
+module.exports.INSERT_THEME_SETTINGS = gql`
+    mutation insertThemeSettings(
+        $name: String
+        $value: String
+        $settings: String
+    ) {
+        insertThemeSettings(name: $name, value: $value, settings: $settings)
+    }
+`;
+
+module.exports.UPDATE_THEME_SETTINGS = gql`
+    mutation updateThemeSettings(
+        $name: String
+        $value: String
+        $settings: String
+    ) {
+        updateThemeSettings(name: $name, value: $value, settings: $settings)
+    }
+`;
+
 module.exports.UPDATE_TAXONOMY = gql`
     mutation updateTaxonomy(
         $id: Int!
