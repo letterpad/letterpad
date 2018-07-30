@@ -91,11 +91,11 @@ Every theme should contain the below config file. This will have some metadata a
     "description":
         "A theme for writing classic blogs. Seo optimised, spa, disqus integrtion",
     "author": "Redsnow",
-    "thumbnail": "/images/thumbnail.png" 
+    "thumbnail": "/images/thumbnail.png"
 }
 ```
-> This thumbnail path should exist inside the public folder of your theme
 
+> This thumbnail path should exist inside the public folder of your theme
 
 Read more about how to create a theme in the [documention site](https://letterpad.app/docs/page/theme-introduction).
 
@@ -144,6 +144,44 @@ yarn sequelize db:migrate
 
 You can play around with the Graphql API locally on [http://localhost:3030/graphql](http://localhost:3030/graphql)
 
+### Translations
+
+Letterpad uses react-18next library to handle translations. To add, edit or delete trannslation objects,
+you can use the below commands:
+
+```
+usage: yarn [operation] [options] [key=value || key]
+    operation (Required):
+        -a, --add     Add key value pair to all files
+        -s, --set     Set value of an existing key in all files
+        -d, --del     Delete key from all files
+            --sync    Sync all files with en.json
+    options (Optional)
+        -en     Operation only on this file
+        -fr     Operation only on this file
+        -pl     Operation only on this file
+```
+
+```sh
+# Adds the translated value, only in en.json and for others leave it blank.
+yarn translate --add save="Save"
+
+# Set the translated value only in en.json and for others, set the value to empty string.
+yarn translate --set oldKey="New Value"
+
+# sets a translation object in one file
+yarn translate --set -en oldKey="New Value"
+
+# deletes a translation object from all files
+yarn translate --del save
+
+# deletes a translation object from one file
+yarn translate --del -en tags.title
+
+# sync all files with en.json
+yarn translate --sync
+```
+
 ### VSCode setup
 
 Extensions: Prettier, postcss-syntax, GraphQL, ESLint, DotENV, Babel ES6/ES7
@@ -169,11 +207,11 @@ yarn seed
 
 ### Addition Links:
 
-- [Installing in Production](https://medium.com/@ajaxtown/installing-letterpad-in-digital-ocean-8ed53c66b114)
+-   [Installing in Production](https://medium.com/@ajaxtown/installing-letterpad-in-digital-ocean-8ed53c66b114)
 
-- [Letterpad - Slack](https://letterpad.slack.com)
+-   [Letterpad - Slack](https://letterpad.slack.com)
 
-- [Slack invite Link](https://tinyurl.com/letterpad)
+-   [Slack invite Link](https://tinyurl.com/letterpad)
 
 ### Contribute
 
