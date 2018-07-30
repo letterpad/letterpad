@@ -84,16 +84,18 @@ Themes have their own seperate repository. While doing `yarn install`, the defau
 
 Every theme should contain the below config file. This will have some metadata about your theme.
 
-```javascript
+```
 {
     "name": "Hugo",
     "short_name: "hugo",
     "description":
         "A theme for writing classic blogs. Seo optimised, spa, disqus integrtion",
     "author": "Redsnow",
-    "thumbnail": "/images/thumbnail.png" // IMPORTANT: This thumbnail should exist inside the public folder of your theme
+    "thumbnail": "/images/thumbnail.png" 
 }
 ```
+> This thumbnail path should exist inside the public folder of your theme
+
 
 Read more about how to create a theme in the [documention site](https://letterpad.app/docs/page/theme-introduction).
 
@@ -146,7 +148,7 @@ You can play around with the Graphql API locally on [http://localhost:3030/graph
 
 Extensions: Prettier, postcss-syntax, GraphQL, ESLint, DotENV, Babel ES6/ES7
 
-```
+```sh
 npm i -g babel-eslint
 ```
 
@@ -167,16 +169,16 @@ yarn seed
 
 ### Addition Links:
 
--   [Installing in Production](https://medium.com/@ajaxtown/installing-letterpad-in-digital-ocean-8ed53c66b114)
+- [Installing in Production](https://medium.com/@ajaxtown/installing-letterpad-in-digital-ocean-8ed53c66b114)
+
+- [Letterpad - Slack](https://letterpad.slack.com)
+
+- [Slack invite Link](https://tinyurl.com/letterpad)
 
 ### Contribute
 
 Letterpad is in its early stages and requires support to move ahead. You can contribute through various ways like
 testing, ideas, recommendations, fixing bugs, documentation, logo design, assets, etc. You can join the slack channel (letterpad.slack.com) for discussions. Thanks.
-
-Slack Channel - [https://letterpad.slack.com](https://letterpad.slack.com)
-
-[Slack invite Link](https://tinyurl.com/letterpad)
 
 ## Contributors
 
