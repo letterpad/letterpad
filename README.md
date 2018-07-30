@@ -1,7 +1,6 @@
-
 # Letterpad &middot; [![Backers on Open Collective](https://opencollective.com/letterpad/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/letterpad/sponsors/badge.svg)](#sponsors) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/letterpad/letterpad/blob/master/LICENSE) ![CircleCI Status](https://circleci.com/gh/letterpad/letterpad.svg?style=shield&circle-token=:circle-token)
 
-Letterpad is an open-source and a high performant publishing engine for blogs with a state-of-the-art technology. It uses React, Graphql, Express and Sequelize ORM. It is in beta now. Few of the core features are listed below:
+Letterpad is an open-source and a high performant publishing engine for blogs with a state-of-the-art technology. It uses React, Graphql, Express and Sequelize ORM. It is getting closer to releasing v1.0. Few of the core features are listed below:
 
 -   Server side rendering
 -   Multi author support
@@ -17,6 +16,8 @@ Letterpad is an open-source and a high performant publishing engine for blogs wi
 -   Search Engine Optimised
 -   Multi-language support with react-i18next (currently en, fr and pl)
 
+## Demo
+
 To check letterpad in action, check out this [Demo Site](https://letterpad.app/demo).
 You can visit the [Admin Panel](https://letterpad.app/demo/admin/login) and login with
 
@@ -27,7 +28,7 @@ Password: demo
 
 A verbose documentation can be found at [https://letterpad.app/docs](https://letterpad.app/docs).
 
-Letterpad is an open source project, licensed under MIT. It is a Single Page Application and runs ridiculously fast. It has a very minimal initial configuration and is easy to setup.
+Letterpad is an open source project, licensed under MIT. It runs ridiculously fast.
 
 The API of letterpad exchanges information in json and you have full control over what data to get, set and display. You can build entire publishing apps on top of it, and completely customise the reader experience.
 
@@ -81,12 +82,12 @@ Letterpad needs two servers to run your blog. One server runs Graphql API and th
 
 Themes have their own seperate repository. While doing `yarn install`, the default theme `hugo` is fetched as a dependency during the installation. If the theme already exist, this step will be ignored.
 
-How a theme is bundled and executed is little bit of a magic. We have configured Webpack to take care of this. All you have to do is create folder inside `client/themes`. This folder will be the name of your theme.
-Create two more folders inside this theme folder `containers` and `public` and also add the file `config.json` with the below template.
+Every theme should contain the below config file. This will have some metadata about your theme.
 
 ```javascript
 {
     "name": "Hugo",
+    "short_name: "hugo",
     "description":
         "A theme for writing classic blogs. Seo optimised, spa, disqus integrtion",
     "author": "Redsnow",
@@ -94,7 +95,7 @@ Create two more folders inside this theme folder `containers` and `public` and a
 }
 ```
 
-The containers folder should implement all the files which exist in `client/containers`. Read more about this in the documentation site.
+Read more about how to create a theme in the [documention site](https://letterpad.app/docs/page/theme-introduction).
 
 ### Admin Authentication
 
@@ -120,7 +121,7 @@ And you can check the code at the route level here - `admin/containers/Secured.j
 
 ### Graphql API
 
-The graphql api code (ES6) for development is in the `api` folder. After the build, the folder `apiBuild` is created which contains all api code in ES5. This is used in production. The reason we have this build folder in this repository is because you can directly clone this repo in your production and use it straightaway.
+The graphql api code (ES6) for development is in the `api` folder. After the build, the folder `apiBuild` is created which contains all api code in ES5. This is used in production.
 
 The api folder has well defined schemas in the `schema` folder and its resolvers in the `resolvers` folder. If you wish to make any change in the database label, then you should create a migration file. To create a migration file, enter this command:
 
@@ -161,7 +162,7 @@ If you want to seed the database with sample data, run the below command:
 
 ```
 // you should have babel-cli installed. Its good to have this package installed globally.
-npm run seed
+yarn seed
 ```
 
 ### Contribute
@@ -178,13 +179,11 @@ Slack Channel - [https://letterpad.slack.com](https://letterpad.slack.com)
 This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
 <a href="graphs/contributors"><img src="https://opencollective.com/letterpad/contributors.svg?width=890&button=false" /></a>
 
-
 ## Backers
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/letterpad#backer)]
 
 <a href="https://opencollective.com/letterpad#backers" target="_blank"><img src="https://opencollective.com/letterpad/backers.svg?width=890"></a>
-
 
 ## Sponsors
 
@@ -200,9 +199,6 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <a href="https://opencollective.com/letterpad/sponsor/7/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/7/avatar.svg"></a>
 <a href="https://opencollective.com/letterpad/sponsor/8/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/letterpad/sponsor/9/website" target="_blank"><img src="https://opencollective.com/letterpad/sponsor/9/avatar.svg"></a>
-
-
-
 
 ### License
 
