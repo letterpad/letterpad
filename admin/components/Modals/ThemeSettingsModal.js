@@ -17,7 +17,9 @@ class ThemeSettingsModal extends Component {
         changedValues: {}
     };
 
+    // On every input change, this function will be called
     getChangedValues = (field, newValue) => {
+        // update the state with the changed values
         this.setState({
             changedValues: {
                 ...this.state.changedValues,
@@ -26,12 +28,14 @@ class ThemeSettingsModal extends Component {
         });
     };
 
+    // On save, merge the new values with the old values.
     onSave = () => {
         const oldValue = JSON.parse(this.props.data.value);
         const data = {
             ...oldValue,
             ...this.state.changedValues
         };
+        // save this data
         this.props.onSave(data);
     };
 
@@ -40,7 +44,9 @@ class ThemeSettingsModal extends Component {
 
         const settings = JSON.parse(data.settings);
         const value = JSON.parse(data.value);
-
+        /**
+         * Parse the json data and build the UI
+         */
         const themeSettings = settings.map(ui => {
             ui.defaultValue = value[ui.name];
             switch (ui.tag) {

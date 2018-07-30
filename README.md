@@ -165,6 +165,10 @@ If you want to seed the database with sample data, run the below command:
 yarn seed
 ```
 
+### Addition Links:
+
+-   [Installing in Production](https://medium.com/@ajaxtown/installing-letterpad-in-digital-ocean-8ed53c66b114)
+
 ### Contribute
 
 Letterpad is in its early stages and requires support to move ahead. You can contribute through various ways like
