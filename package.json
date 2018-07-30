@@ -161,7 +161,8 @@
         },
         "testMatch": [
             "**/__tests__/**/?(*.)(spec|test).js?(x)"
-        ]
+        ],
+        "testEnvironment": "node"
     },
     "collective": {
         "type": "opencollective",
