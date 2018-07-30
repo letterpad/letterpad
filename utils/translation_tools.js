@@ -11,7 +11,15 @@ const folderToScan = path.join(__dirname, "../shared/i18n/lang");
 const files = fs.readdirSync(folderToScan);
 
 // allowed operations
-const availableOperations = ["--add", "--del", "--set", "-a", "-d", "-s"];
+const availableOperations = [
+    "--add",
+    "--del",
+    "--set",
+    "-a",
+    "-d",
+    "-s",
+    "--sync"
+];
 
 const reservedActions = ["-f", "-en", "-fr", "-pl"];
 
@@ -20,6 +28,40 @@ const [operation] = availableOperations.filter(key => args.indexOf(key) >= 0);
 
 if (!operation) {
     console.log("=> Error: Operation not found. Use --add, --del or --set");
+    return;
+}
+
+if (operation == "--sync") {
+    const store = {};
+    // get contents of all files and store them. This data will be used in syncing
+    files.forEach(file => {
+        if (path.extname(file) !== ".json") return;
+        const filePath = folderToScan + "/" + file;
+        const contents = getContentsOfFile(filePath);
+        store[file] = contents.translations;
+    });
+
+    // Reference language file contents
+    const reference = store["en.json"];
+
+    // loop through each language file
+    files.forEach(file => {
+        if (path.extname(file) !== ".json") return;
+        if (file === "en.json") return;
+        const filePath = folderToScan + "/" + file;
+        const oldContents = store[file];
+        const newContents = { translations: {} };
+        // loop through the reference file and get keys
+        Object.keys(reference).map(key => {
+            newContents.translations[key] = oldContents.hasOwnProperty(key)
+                ? oldContents[key]
+                : "";
+        });
+        newContents.translations = ksortObject(newContents.translations);
+        fs.writeFileSync(filePath, JSON.stringify(newContents, null, 4));
+        console.log(chalk.green(`✓ File ${file} was synced successfully`));
+    });
+
     return;
 }
 
@@ -43,6 +85,7 @@ usage: yarn [operation] [options] [key=value || key]
         -a, --add     Add key value pair to all files
         -s, --set     Set value of an existing key in all files
         -d, --del     Delete key from all files
+            --sync    Sync all files with en.json
     options (Optional)
         -en     Operation only on this file
         -fr     Operation only on this file
@@ -94,7 +137,7 @@ switch (operation) {
                 changed = true;
             }
             if (changed) {
-                contents.translations = ksortObject(contents.translations, key);
+                contents.translations = ksortObject(contents.translations);
                 fs.writeFileSync(filePath, JSON.stringify(contents, null, 4));
                 console.log(
                     chalk.green(`✓ File ${file} was written successfully`)
@@ -201,7 +244,7 @@ function getContentsOfFile(path) {
     return require(path);
 }
 
-function ksortObject(obj, a) {
+function ksortObject(obj) {
     const keys = Object.keys(obj);
     keys.sort();
     return keys.reduce((target, key) => {

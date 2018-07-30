@@ -155,6 +155,7 @@ usage: yarn [operation] [options] [key=value || key]
         -a, --add     Add key value pair to all files
         -s, --set     Set value of an existing key in all files
         -d, --del     Delete key from all files
+            --sync    Sync all files with en.json
     options (Optional)
         -en     Operation only on this file
         -fr     Operation only on this file
@@ -176,6 +177,9 @@ yarn translate --del save
 
 # deletes a translation object from one file
 yarn translate --del -en tags.title
+
+# sync all files with en.json
+yarn translate --sync
 ```
 
 ### VSCode setup
