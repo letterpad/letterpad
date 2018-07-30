@@ -161,34 +161,30 @@ usage: yarn [operation] [options] [key=value || key]
         -pl     Operation only on this file
 ```
 
+```sh
 # Adds the translated value, only in en.json and for others leave it blank.
-
 yarn translate --add save="Save"
 
 # Set the translated value only in en.json and for others, set the value to empty string.
-
 yarn translate --set oldKey="New Value"
 
 # sets a translation object in one file
-
 yarn translate --set -en oldKey="New Value"
 
 # deletes a translation object from all files
-
 yarn translate --del save
 
 # deletes a translation object from one file
-
 yarn translate --del -en tags.title
+```
 
-````
 ### VSCode setup
 
 Extensions: Prettier, postcss-syntax, GraphQL, ESLint, DotENV, Babel ES6/ES7
 
 ```sh
 npm i -g babel-eslint
-````
+```
 
 For Prettier, it is recommended to add to the editor's `settings.json` to run on save.
 
