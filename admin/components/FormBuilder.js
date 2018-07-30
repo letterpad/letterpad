@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+// renders an input box
 export const InputBox = ({ data, onChange }) => {
     return (
         <div className="form-group">
@@ -21,6 +22,7 @@ InputBox.propTypes = {
     onChange: PropTypes.func
 };
 
+// renders a Radio Button
 export const RadioBox = ({ data, onChange }) => {
     return (
         <div className="form-group">
@@ -46,6 +48,7 @@ RadioBox.propTypes = {
     onChange: PropTypes.func
 };
 
+// renders a CheckBox
 let cbRegistry = [];
 export const CheckBox = ({ data, onChange }) => {
     if (cbRegistry.length === 0) {
@@ -85,6 +88,7 @@ CheckBox.propTypes = {
     onChange: PropTypes.func
 };
 
+// renders a Dropdown
 export const SelectBox = ({ data, onChange }) => {
     return (
         <div className="form-group">
