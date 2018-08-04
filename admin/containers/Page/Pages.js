@@ -97,7 +97,7 @@ class Pages extends Component {
                                     {t("common.author")}
                                 </th>
                                 <th width="10%" className="col-text">
-                                    {t("common.createdAt")}
+                                    {t("common.updatedAt")}
                                 </th>
                             </tr>
                         </thead>

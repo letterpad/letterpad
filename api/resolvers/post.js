@@ -45,29 +45,35 @@ export default {
          * Query to take care of multiple post in one page.
          * Used for Search and Admin posts and pages list.
          */
-        posts: checkDisplayAccess.createResolver((root, args, { models }) => {
-            const newArgs = { ...args };
+        posts: checkDisplayAccess.createResolver(
+            (root, args, { models, user }) => {
+                const newArgs = { ...args };
 
-            if (newArgs.status == "all") {
-                newArgs.status = { not: "trash" };
-            }
+                if (newArgs.status == "all") {
+                    newArgs.status = { not: "trash" };
+                }
 
-            const columns = Object.keys(models.Post.rawAttributes);
-            const conditions = getConditions(columns, newArgs);
-            if (newArgs.status) {
-                conditions.where.status = newArgs.status;
-            }
-            return models.Post.count(conditions).then(count => {
-                conditions.order = [["id", "DESC"]];
+                const columns = Object.keys(models.Post.rawAttributes);
+                const conditions = getConditions(columns, newArgs);
+                if (newArgs.status) {
+                    conditions.where.status = newArgs.status;
+                }
+                return models.Post.count(conditions).then(count => {
+                    conditions.order = [["published_at", "DESC"]];
+                    // for admin dashboard, sort it based on updated_date
+                    if (user && user.id) {
+                        conditions.order = [["updated_at", "DESC"]];
+                    }
 
-                return models.Post.findAll(conditions).then(res => {
-                    return {
-                        count,
-                        rows: res
-                    };
+                    return models.Post.findAll(conditions).then(res => {
+                        return {
+                            count,
+                            rows: res
+                        };
+                    });
                 });
-            });
-        }),
+            }
+        ),
         /**
          * Query to handle a single post/page.
          */

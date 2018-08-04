@@ -11,8 +11,8 @@ export default graphql(CAT_POSTS, {
                 type: "post_category",
                 slug: props.slug || props.match.params.slug,
                 postType: "post",
-                limit: config.itemsPerPage,
-                offset: offset || 0
+                limit: props.limit || config.itemsPerPage,
+                offset: props.offset || offset || 0
             },
             fetchPolicy: "network-only"
         };
