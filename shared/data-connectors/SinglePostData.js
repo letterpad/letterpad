@@ -6,7 +6,7 @@ export default graphql(GET_POST_BY_SLUG, {
         return {
             variables: {
                 type: "post",
-                slug: props.match.params.slug
+                slug: props.slug || props.match.params.slug
             }
         };
     },
