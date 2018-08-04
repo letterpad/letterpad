@@ -114,7 +114,7 @@ function getHtml(theme, html, state, head, settings) {
         "static/client/themes/" + theme + "/public/dist/client-bundle.js"
     ];
     const prodBundles = [
-        theme + "/dist/vendor-bundle.min.js",
+        "/js/vendor-bundle.min.js",
         theme + "/dist/client-bundle.min.js"
     ];
     const bundles = isDev ? devBundles : prodBundles;
