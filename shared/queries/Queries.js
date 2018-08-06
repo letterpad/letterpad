@@ -153,6 +153,21 @@ module.exports.SEARCH_POSTS = gql`
     ${PostFragment}
 `;
 
+module.exports.SEARCH_POSTS_FUZY = gql`
+    query searchPosts($query: String!) {
+        search(query: $query) {
+            count
+            posts {
+                id
+                title
+                excerpt
+                published_at
+                slug
+            }
+        }
+    }
+`;
+
 module.exports.SEARCH_POSTS_BY_TAXONOMY = gql`
     query catPosts(
         $type: String!

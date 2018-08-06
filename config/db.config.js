@@ -8,10 +8,10 @@ module.exports = {
     dev: {
         username: "root",
         password: null,
-        database: "letterpad_demo",
+        database: "letterpad_docs",
         host: "127.0.0.1",
         dialect: "sqlite",
-        storage: getFile("letterpad_demo"),
+        storage: getFile("letterpad_docs"),
         logging: false,
         define: {
             underscored: true

@@ -47,6 +47,7 @@
         "disqus-react": "^1.0.5",
         "express": "^4.13.4",
         "express-graphql": "^0.6.3",
+        "fuse.js": "^3.2.1",
         "graphql": "^0.9.1",
         "graphql-tag": "*",
         "graphql-tools": "^0.10.1",
