@@ -110,13 +110,11 @@ function getHtml(theme, html, state, head, settings) {
     const isDev = process.env.NODE_ENV === "dev";
 
     let devBundles = [
-        "client/js/highlight.min.js",
         "static/public/js/vendor-bundle.js",
         "static/client/themes/" + theme + "/public/dist/client-bundle.js"
     ];
     const prodBundles = [
-        theme + "/js/highlight.min.js",
-        theme + "/dist/vendor-bundle.min.js",
+        "/js/vendor-bundle.min.js",
         theme + "/dist/client-bundle.min.js"
     ];
     const bundles = isDev ? devBundles : prodBundles;
@@ -155,7 +153,7 @@ function getHtml(theme, html, state, head, settings) {
         TRACKING_ID: settings.google_analytics,
         GA_SCRIPT_TAG:
             settings.google_analytics !== ""
-                ? "<script async src=\"https://www.gogle-analytics.com/analytics.js\"></script>"
+                ? '<script async src="https://www.gogle-analytics.com/analytics.js"></script>'
                 : "",
         SCRIPT_TAGS: scripts
     });

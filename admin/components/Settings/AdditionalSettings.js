@@ -30,46 +30,6 @@ class AdditionalSettings extends Component {
         return (
             <div>
                 <div className="form-group">
-                    <label className="custom-label">
-                        {t("settings.additional.latestPostCount")}
-                    </label>
-                    <input
-                        defaultValue={
-                            this.props.data.sidebar_latest_post_count.value
-                        }
-                        type="text"
-                        className="form-control"
-                        placeholder={t(
-                            "settings.additional.latestPostCount.placeholder"
-                        )}
-                        aria-invalid="false"
-                        onBlur={e =>
-                            this.updateOption(
-                                "sidebar_latest_post_count",
-                                e.target.value
-                            )
-                        }
-                    />
-                </div>
-                <div className="form-group">
-                    <label className="custom-label">
-                        {t("settings.additional.aboutTitle")}
-                    </label>
-                    <textarea
-                        defaultValue={this.props.data.sidebar_about.value}
-                        className="form-control"
-                        rows="2"
-                        placeholder={t(
-                            "settings.additional.aboutTitle.placeholder"
-                        )}
-                        required=""
-                        aria-invalid="false"
-                        onBlur={e =>
-                            this.updateOption("sidebar_about", e.target.value)
-                        }
-                    />
-                </div>
-                <div className="form-group">
                     <div className="switch-block">
                         <label className="custom-label">
                             {t("settings.additional.displayAuthor")}

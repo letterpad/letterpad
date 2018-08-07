@@ -122,7 +122,7 @@ export async function _updatePost(post, models) {
         );
 
         try {
-            const updated = await models.Setting.update(
+            await models.Setting.update(
                 { value: JSON.stringify(updatedMenu) },
                 { where: { option: "menu" } }
             );
@@ -135,6 +135,7 @@ export async function _updatePost(post, models) {
                 .utc(new Date())
                 .format("YYYY-MM-DD HH:mm:ss");
         }
+        post.updated_at = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
         await models.Post.update(post, {
             where: { id: post.id }
         });

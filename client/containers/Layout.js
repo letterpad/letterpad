@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import Sidebar from "../../containers/Sidebar";
-// import Navbar from "../../components/Navbar";
 
 export default function Layout(Element, props) {
     const settings = props.settings;
@@ -16,9 +14,6 @@ export default function Layout(Element, props) {
                     <main>
                         <Element {..._props} />
                     </main>
-                    <aside>
-                        <Sidebar settings={settings} {...this.props} />
-                    </aside>
                 </div>
             );
         }

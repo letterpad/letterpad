@@ -74,7 +74,7 @@ class General extends Component {
             }
         );
     };
-    
+
     render() {
         const { t } = this.props;
         const banner = this.state.banner || "";
@@ -192,7 +192,7 @@ class General extends Component {
                                 href="#"
                                 onClick={e => {
                                     e.preventDefault();
-                                    this.uploadLogoInput.current.click();
+                                    this.uploadLogoInputRef.current.click();
                                 }}
                             >
                                 Add Logo

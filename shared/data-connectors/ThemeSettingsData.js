@@ -3,9 +3,13 @@ import { THEME_SETTINGS } from "../../shared/queries/Queries";
 
 export default graphql(THEME_SETTINGS, {
     options: props => {
+        let name = props.name;
+        if (props.settings) {
+            name = props.settings.data.theme.value;
+        }
         return {
             variables: {
-                name: props.name
+                name
             }
         };
     },
@@ -15,11 +19,11 @@ export default graphql(THEME_SETTINGS, {
             const userValues = JSON.parse(themeSettings[0].value);
             const settings = JSON.parse(themeSettings[0].settings);
 
-            newSettings = settings.map(setting => {
+            settings.map(setting => {
                 if (userValues[setting.name]) {
                     setting.defaultValue = userValues[setting.name];
                 }
-                return setting;
+                newSettings[setting.name] = userValues[setting.name];
             });
         }
         return {
