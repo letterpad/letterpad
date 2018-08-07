@@ -52,6 +52,7 @@
         "graphql-tag": "*",
         "graphql-tools": "^0.10.1",
         "has-flag": "^3.0.0",
+        "html-entities": "^1.2.1",
         "i18next": "^11.3.6",
         "immutable": "^3.8.2",
         "is-url": "^1.2.4",
