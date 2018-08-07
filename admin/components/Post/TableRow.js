@@ -50,14 +50,14 @@ class PostRows extends Component {
                     .join(", ");
 
                 const checked = {
-                    checked: this.props.selectedPosts.indexOf(post.id) >= 0
+                    checked:
+                        this.props.selectedPosts
+                            .map(id => id.toString())
+                            .indexOf(post.id.toString()) >= 0
                 };
                 return (
                     <tr key={post.id}>
-                        <td
-                            align="center"
-                            onClick={this.postSelected.bind(this)}
-                        >
+                        <td align="center">
                             <label className="control control--checkbox">
                                 <input
                                     type="checkbox"

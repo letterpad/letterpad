@@ -31,12 +31,6 @@ const client = () =>
     });
 
 module.exports.init = app => {
-    app.get(config.baseName + "/admin/*", (req, res) => {
-        let apolloState = {};
-        const content = getHtml(apolloState);
-        res.end(content);
-    });
-
     app.get(config.baseName + "/admin/getThemes", (req, res) => {
         client()
             .query({ query: GET_OPTIONS })
@@ -49,7 +43,6 @@ module.exports.init = app => {
                 // Get all the folders inside the "themes" folder. Check if each
                 // of those folder has a "config.json" file. If found, we will assume that
                 // as a valid theme.
-
                 getDirectories(path.join(__dirname, "../client/themes/")).map(
                     themePath => {
                         if (fs.existsSync(themePath + "/config.json")) {
@@ -112,6 +105,11 @@ module.exports.init = app => {
             .catch(e => {
                 console.log(e);
             });
+    });
+    app.get(config.baseName + "/admin/*", (req, res) => {
+        let apolloState = {};
+        const content = getHtml(apolloState);
+        res.end(content);
     });
 };
 

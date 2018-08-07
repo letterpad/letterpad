@@ -1,9 +1,12 @@
+import Fuse from "fuse.js";
 import { _createPost, _updatePost } from "../models/post";
 import {
     checkDisplayAccess,
     createPostsPerm,
     editPostPerm
 } from "../utils/permissions";
+import memoryCache from "../utils/memoryCache";
+import { innertext } from "../utils/common";
 
 function IsJsonString(str) {
     if (!isNaN(str)) return false;
@@ -45,29 +48,89 @@ export default {
          * Query to take care of multiple post in one page.
          * Used for Search and Admin posts and pages list.
          */
-        posts: checkDisplayAccess.createResolver((root, args, { models }) => {
-            const newArgs = { ...args };
+        posts: checkDisplayAccess.createResolver(
+            (root, args, { models, user }) => {
+                const newArgs = { ...args };
 
-            if (newArgs.status == "all") {
-                newArgs.status = { not: "trash" };
-            }
+                if (newArgs.status == "all") {
+                    newArgs.status = { not: "trash" };
+                }
 
-            const columns = Object.keys(models.Post.rawAttributes);
-            const conditions = getConditions(columns, newArgs);
-            if (newArgs.status) {
-                conditions.where.status = newArgs.status;
-            }
-            return models.Post.count(conditions).then(count => {
-                conditions.order = [["id", "DESC"]];
+                const columns = Object.keys(models.Post.rawAttributes);
+                const conditions = getConditions(columns, newArgs);
+                if (newArgs.status) {
+                    conditions.where.status = newArgs.status;
+                }
+                return models.Post.count(conditions).then(count => {
+                    conditions.order = [["published_at", "DESC"]];
+                    // for admin dashboard, sort it based on updated_date
+                    if (user && user.id) {
+                        conditions.order = [["updated_at", "DESC"]];
+                    }
 
-                return models.Post.findAll(conditions).then(res => {
-                    return {
-                        count,
-                        rows: res
-                    };
+                    return models.Post.findAll(conditions).then(res => {
+                        return {
+                            count,
+                            rows: res
+                        };
+                    });
                 });
+            }
+        ),
+        search: async (root, args, { models, user }) => {
+            let cachedData = memoryCache.get("posts");
+            if (!cachedData) {
+                console.log("searching in db..");
+                const data = await models.Post.findAll({
+                    attributes: [
+                        "id",
+                        "title",
+                        "body",
+                        "excerpt",
+                        "published_at",
+                        "slug"
+                    ],
+                    where: { status: "publish" }
+                });
+
+                const cleanedData = data.map(item => {
+                    let cleanItem = item.toJSON();
+                    cleanItem.body = innertext(cleanItem.body);
+                    return cleanItem;
+                });
+                memoryCache.set("posts", cleanedData);
+                cachedData = cleanedData;
+            }
+            const options = {
+                keys: [
+                    {
+                        name: "title",
+                        weight: 1
+                    },
+                    {
+                        name: "excerpt",
+                        weight: 0.9
+                    },
+                    {
+                        name: "body",
+                        weight: 0.8
+                    }
+                ],
+                includeMatches: true
+            };
+
+            const fuse = new Fuse(cachedData, options);
+            const searchResult = fuse.search(args.query).map(data => {
+                delete data.item.body;
+                return data.item;
             });
-        }),
+
+            return {
+                ok: true,
+                posts: searchResult.slice(0, 6),
+                count: 6
+            };
+        },
         /**
          * Query to handle a single post/page.
          */
@@ -314,6 +377,7 @@ export default {
                 });
                 data.body = "";
                 data.author_id = user.id;
+                memoryCache.del("posts");
                 return _createPost(data, models);
             }
         ),
@@ -322,6 +386,7 @@ export default {
             Object.keys(args).forEach(field => {
                 data[field] = args[field];
             });
+            memoryCache.del("posts");
             return _updatePost(data, models);
         }),
         uploadFile: editPostPerm.createResolver((root, args, { models }) => {
@@ -348,6 +413,7 @@ export default {
                                 }
                             }
                         );
+                        memoryCache.del("posts");
                     }
                     return {
                         ok: true

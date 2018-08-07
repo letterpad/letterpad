@@ -213,13 +213,13 @@ export async function insertPost(params, models, categories, tags) {
     let post = await models.Post.create({
         title: params.title,
         body: Faker.lorem.paragraphs(6),
-        excerpt: Faker.lorem.sentences(3),
+        excerpt: Faker.lorem.sentences(4),
         cover_image: params.cover_image,
         author_id: randomAuthorId,
         type: params.type,
         status: params.status,
         slug: slug,
-        mode: "rich-text",
+        mode: "rich-text"
     });
 
     const randomCategory = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
@@ -319,19 +319,27 @@ export async function insertSettings(models) {
             slug: "home"
         },
         {
-            id: 1,
-            title: "Travel",
+            id: 2,
+            title: "Nature",
             type: "category",
-            name: "Travel",
+            name: "Nature",
             disabled: true,
-            slug: "travel"
+            slug: "nature"
         },
         {
             id: 11,
-            title: "Page 2",
+            title: "Single Page",
             slug: "about",
             type: "page",
             name: "About",
+            disabled: true
+        },
+        {
+            id: 111,
+            title: "Not Found",
+            slug: "404",
+            type: "page",
+            name: "Not Found",
             disabled: true
         }
     ]);
@@ -386,15 +394,6 @@ export async function insertSettings(models) {
             value: "Sorry, we couldn't find any posts"
         },
         {
-            option: "sidebar_latest_post_count",
-            value: 3
-        },
-        {
-            option: "sidebar_about",
-            value:
-                "You can fill up this space by writing a short bio about yourself or about your site.."
-        },
-        {
             option: "displayAuthorInfo",
             value: true
         },
@@ -429,10 +428,6 @@ export async function insertSettings(models) {
         {
             option: "banner",
             value: "/uploads/banner.jpg"
-        },
-        {
-            option: "editor",
-            value: "richtext"
         }
     ];
 

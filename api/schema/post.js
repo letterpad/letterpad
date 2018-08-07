@@ -53,6 +53,20 @@ export default `
     categories: Int
   }
 
+  type SearchResult {
+    id: Int
+    title: String
+    excerpt: String
+    published_at: String
+    slug: String
+  }
+
+  type SearchOutput {
+    ok: Boolean
+    count: Int
+    posts: [SearchResult]
+  }
+
   type Query {
     post(id: Int, type: String, slug: String): Post
     posts(type: String, body: String, status: String, offset: Int, limit: Int, cursor: Int): PostNode
@@ -60,6 +74,7 @@ export default `
     pageMenu(slug: String, name: String, postType: String): Response
     postsByTaxSlug(type: String!, slug: String!, postType: String, offset: Int, limit: Int, cursor: Int): PostTaxonomyNode
     adjacentPosts(type: String, slug:String): AdjacentPosts
+    search(query: String!): SearchOutput
     stats: Stats
   }
   

@@ -56,7 +56,11 @@ const PostsHoc = (WrappedComponent, type) => {
                     this.variables.status
                 );
             }
-            this.setState({ status });
+            this.setState({
+                status,
+                selectedPosts: [],
+                allPostsSelected: false
+            });
         };
 
         changePage = (e, page) => {
@@ -73,7 +77,8 @@ const PostsHoc = (WrappedComponent, type) => {
         };
 
         deletePosts = async ids => {
-            return appoloClient.mutate({
+            const isAdmin = true;
+            return appoloClient(isAdmin).mutate({
                 mutation: BULK_DELETE_POSTS,
                 variables: { ids: ids.join(",") },
                 update: (proxy, { data: { deletePosts } }) => {
@@ -112,7 +117,7 @@ const PostsHoc = (WrappedComponent, type) => {
 
             return result.data.posts.rows;
         };
-        deletedSelectedPosts = () => {
+        deleteSelectedPosts = () => {
             this.deletePosts(this.state.selectedPosts).then(() => {
                 this.setState({ selectedPosts: [], allPostsSelected: false });
             });
@@ -120,10 +125,12 @@ const PostsHoc = (WrappedComponent, type) => {
 
         selectAllPosts = (e, posts) => {
             let selectedPosts = [];
+            let allPostsSelected = false;
             if (e.target.checked) {
                 selectedPosts = posts.rows.map(post => post.id);
+                allPostsSelected = true;
             }
-            this.setState({ selectedPosts, allPostsSelected: true });
+            this.setState({ selectedPosts, allPostsSelected });
         };
 
         setSelection = id => {
@@ -145,7 +152,7 @@ const PostsHoc = (WrappedComponent, type) => {
                     changePage={this.changePage}
                     searchPosts={this.searchPosts}
                     selectAllPosts={this.selectAllPosts}
-                    deletedSelectedPosts={this.deletedSelectedPosts}
+                    deleteSelectedPosts={this.deleteSelectedPosts}
                     setSelection={this.setSelection}
                 />
             );

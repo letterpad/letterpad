@@ -8,6 +8,7 @@ import config from "../config";
 import { hot, setConfig } from "react-hot-loader";
 // Data supply
 import SettingsData from "../shared/data-connectors/SettingsData";
+import ThemeSettingsData from "../shared/data-connectors/ThemeSettingsData";
 
 /*!------------------------------------------------------------------
 [View Containers-]
@@ -17,15 +18,10 @@ import Posts from "./containers/Posts";
 import SinglePage from "./containers/SinglePage";
 import SinglePost from "./containers/SinglePost";
 import SearchWrapper from "./containers/SearchWrapper";
-import Layout from "./containers/Hoc/Layout";
+import Layout from "./containers/Layout";
 import NotFound from "./containers/404";
 
 class Routes extends Component {
-    constructor(props) {
-        super(props);
-        this.applyCustomCSS = this.applyCustomCSS.bind(this);
-        this.getHomeSlug = this.getHomeSlug.bind(this);
-    }
     componentDidUpdate(prevProps) {
         if (this.props.location !== prevProps.location) {
             if (this.props.settings.data.google_analytics.value) {
@@ -39,16 +35,16 @@ class Routes extends Component {
         }
     }
 
-    applyCustomCSS({ css }) {
+    applyCustomCSS = ({ css }) => {
         if (typeof document == "undefined" || typeof css == "undefined")
             return false;
         const style = document.createElement("style");
         style.setAttribute("type", "text/css");
         style.innerText = css.value;
         document.head.appendChild(style);
-    }
+    };
 
-    getHomeSlug() {
+    getHomeSlug = () => {
         // To get the homepage, parse the menu settings and see if there is any label by the name Home.
         // If not, then take the first item as the home
         const menu = JSON.parse(this.props.settings.data.menu.value);
@@ -62,13 +58,18 @@ class Routes extends Component {
             home = home.children[0];
         }
         return home;
-    }
+    };
 
     render() {
-        if (this.props.settings.loading) {
+        if (this.props.settings.loading || this.props.themeSettingsLoading) {
             return <Loader />;
         }
-        const settings = this.props.settings.data;
+
+        const settings = {
+            ...this.props.settings.data,
+            themeConfig: this.props.themeSettings
+        };
+
         this.applyCustomCSS(settings);
         const home = this.getHomeSlug();
 
@@ -184,6 +185,8 @@ setConfig({ logLevel: "error" });
 
 Routes.propTypes = {
     location: PropTypes.object,
-    settings: PropTypes.object
+    settings: PropTypes.object,
+    themeSettings: PropTypes.object,
+    themeSettingsLoading: PropTypes.bool
 };
-export default hot(module)(SettingsData(withRouter(Routes)));
+export default hot(module)(SettingsData(ThemeSettingsData(withRouter(Routes))));

@@ -6,7 +6,6 @@ npm-debug.log
 .yarn-cache
 .env
 yarn-error.log
-.env
 extend
 hot
 client/themes/*
@@ -20,3 +19,4 @@ yarn.lock
 public/js/*bundle*
 admin/public/dist
 apiBuild
+.installed

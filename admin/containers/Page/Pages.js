@@ -20,7 +20,7 @@ class Pages extends Component {
         setSelection: PropTypes.func,
         selectedPosts: PropTypes.array,
         selectAllPosts: PropTypes.func,
-        deletedSelectedPosts: PropTypes.func,
+        deleteSelectedPosts: PropTypes.func,
         searchPosts: PropTypes.func,
         allPostsSelected: PropTypes.bool,
         t: PropTypes.func
@@ -56,7 +56,7 @@ class Pages extends Component {
                             {this.props.selectedPosts.length > 0 && (
                                 <button
                                     className="btn btn-xs btn-danger"
-                                    onClick={this.props.deletedSelectedPosts}
+                                    onClick={this.props.deleteSelectedPosts}
                                 >
                                     Delete
                                 </button>
@@ -97,7 +97,7 @@ class Pages extends Component {
                                     {t("common.author")}
                                 </th>
                                 <th width="10%" className="col-text">
-                                    {t("common.createdAt")}
+                                    {t("common.updatedAt")}
                                 </th>
                             </tr>
                         </thead>

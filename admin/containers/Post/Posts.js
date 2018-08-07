@@ -18,7 +18,7 @@ class Posts extends Component {
         history: PropTypes.object,
         setSelection: PropTypes.func,
         selectAllPosts: PropTypes.func,
-        deletedSelectedPosts: PropTypes.func,
+        deleteSelectedPosts: PropTypes.func,
         searchPosts: PropTypes.func,
         allPostsSelected: PropTypes.bool,
         selectedPosts: PropTypes.array,
@@ -45,6 +45,9 @@ class Posts extends Component {
         const { t } = this.props;
         const loading = this.props.loading; //|| !this.props.networkStatus === 2;
         const { status } = this.props;
+        let checked = {
+            checked: this.props.allPostsSelected
+        };
         return (
             <section className="module-xs">
                 <div className="card">
@@ -59,7 +62,7 @@ class Posts extends Component {
                             {this.props.selectedPosts.length > 0 && (
                                 <button
                                     className="btn btn-xs btn-danger"
-                                    onClick={this.props.deletedSelectedPosts}
+                                    onClick={this.props.deleteSelectedPosts}
                                 >
                                     Delete
                                 </button>
@@ -83,9 +86,7 @@ class Posts extends Component {
                                                     this.props.posts
                                                 );
                                             }}
-                                            checked={
-                                                this.props.allPostsSelected
-                                            }
+                                            {...checked}
                                         />
                                         <div className="control__indicator" />
                                     </label>
@@ -106,7 +107,7 @@ class Posts extends Component {
                                     {t("common.author")}
                                 </th>
                                 <th width="10%" className="col-text">
-                                    {t("common.createdAt")}
+                                    {t("common.updatedAt")}
                                 </th>
                             </tr>
                         </thead>

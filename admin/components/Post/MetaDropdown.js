@@ -26,7 +26,7 @@ class MetaDropdown extends Component {
         this.setState({
             post: { ...this.state.post, slug: e.target.value }
         });
-        PostActions.setData({ slug: this.state.post.slug });
+        PostActions.setData({ slug: e.target.value });
     };
 
     render() {
