@@ -5,7 +5,7 @@ export default graphql(GET_LATEST_PUBLISHED_POSTS, {
     options: props => ({
         variables: {
             type: "post",
-            limit: parseInt(props.settings.sidebar_latest_post_count.value)
+            limit: props.limit || 3
         }
     }),
     props: ({ data: { loading, posts } }) => ({

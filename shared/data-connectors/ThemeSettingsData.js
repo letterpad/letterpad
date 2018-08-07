@@ -9,7 +9,7 @@ export default graphql(THEME_SETTINGS, {
         }
         return {
             variables: {
-                name: name
+                name
             }
         };
     },
