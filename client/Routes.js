@@ -129,6 +129,14 @@ class Routes extends Component {
             {
                 exact: true,
                 component: Layout(SearchWrapper, {
+                    type: "category",
+                    settings
+                }),
+                path: "/category/:query/page/:page_no"
+            },
+            {
+                exact: true,
+                component: Layout(SearchWrapper, {
                     type: "tag",
                     settings
                 }),
@@ -137,10 +145,18 @@ class Routes extends Component {
             {
                 exact: true,
                 component: Layout(SearchWrapper, {
+                    type: "tag",
+                    settings
+                }),
+                path: "/tag/:query/page/:page_no"
+            },
+            {
+                exact: true,
+                component: Layout(SearchWrapper, {
                     type: "post",
                     settings
                 }),
-                path: "/search/:query"
+                path: "/search/:query?"
             }
         ];
 

@@ -219,7 +219,8 @@ export async function insertPost(params, models, categories, tags) {
         type: params.type,
         status: params.status,
         slug: slug,
-        mode: "rich-text"
+        created_at: new Date(),
+        published_at: new Date()
     });
 
     const randomCategory = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
