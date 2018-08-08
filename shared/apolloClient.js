@@ -47,7 +47,7 @@ const middlewareLinkClient = new ApolloLink((operation, forward) => {
 
 const errorLink = onError(({ networkError }) => {
     if (networkError.statusCode === 401) {
-        window.location = "/admin/login";
+        window.location = config.baseName + "/admin/login";
     }
 });
 let initialState = {};

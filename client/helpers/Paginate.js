@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Paginate = ({ count, match }) => {
     const totalPages = Array.from(Array(Math.ceil(count / 6)));
-
+    if (totalPages.length === 1) return null;
     const pages = totalPages.map((_, i) => {
         const page = i + 1;
         let to = "/";
@@ -16,6 +16,16 @@ const Paginate = ({ count, match }) => {
             match.path == "/posts/:slug/page/:page_no"
         ) {
             to = "/posts/" + match.params.slug + "/page/" + page;
+        } else if (
+            match.path == "/category/:query" ||
+            match.path == "/category/:query/page/:page_no"
+        ) {
+            to = "/category/" + match.params.query + "/page/" + page;
+        } else if (
+            match.path == "/tag/:query" ||
+            match.path == "/tag/:query/page/:page_no"
+        ) {
+            to = "/tag/" + match.params.query + "/page/" + page;
         }
         let selected = parseInt(match.params.page_no) === page ? "active" : "";
 
