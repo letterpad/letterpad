@@ -18,8 +18,7 @@ class General extends Component {
 
     state = {
         banner: this.props.data.banner.value,
-        site_logo: this.props.data.site_logo.value,
-        preferredEditor: this.props.data.editor.value
+        site_logo: this.props.data.site_logo.value
     };
 
     langOptions = JSON.parse(this.props.data.locale.value);
@@ -61,18 +60,6 @@ class General extends Component {
     updateLogo = site_logo => {
         this.updateOption("site_logo", site_logo);
         this.setState({ site_logo });
-    };
-
-    changeEditor = e => {
-        const editor = e.target.checked ? "markdown" : "richtext";
-        this.setState(
-            {
-                preferredEditor: editor
-            },
-            () => {
-                this.updateOption("editor", this.state.preferredEditor);
-            }
-        );
     };
 
     render() {
@@ -283,23 +270,6 @@ class General extends Component {
                             )
                         }
                     />
-                </div>
-                <div className="form-group">
-                    <div className="switch-block">
-                        <label className="custom-label">
-                            {t("settings.general.site.enableMarkdown")}
-                        </label>
-                        <label className="switch">
-                            <input
-                                type="checkbox"
-                                onChange={this.changeEditor}
-                                checked={
-                                    this.state.preferredEditor === "markdown"
-                                }
-                            />
-                            <span className="slider round" />
-                        </label>
-                    </div>
                 </div>
                 <div className="form-group">
                     <label className="custom-label">
