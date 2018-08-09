@@ -46,6 +46,10 @@ module.exports.init = app => {
                 getDirectories(path.join(__dirname, "../client/themes/")).map(
                     themePath => {
                         if (fs.existsSync(themePath + "/config.json")) {
+                            // delete cache to get updated file
+                            delete require.cache[
+                                require.resolve(themePath + "/config.json")
+                            ];
                             // get all the contents from the "config" file.
                             const contents = require(themePath +
                                 "/config.json");
