@@ -12,6 +12,7 @@ import { renderToString } from "react-dom/server";
 import { Helmet } from "react-helmet";
 import { StaticRouter } from "react-router";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
+const { ServerStyleSheet } = require("styled-components");
 import Routes from "./Routes";
 
 const context = {};
@@ -38,10 +39,12 @@ export default (req, client, config) => {
         })
         .then(() => {
             try {
+                const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
                 return {
                     head: Helmet.renderStatic(),
-                    html: renderToString(clientApp),
-                    apolloState: client.extract()
+                    html: renderToString(sheet.collectStyles(clientApp)),
+                    apolloState: client.extract(),
+                    sheet: sheet
                 };
             } catch (e) {
                 console.log(e);

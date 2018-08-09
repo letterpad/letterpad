@@ -7,6 +7,7 @@ const fs = require("fs");
 const config = require("../config");
 const { createHttpLink } = require("apollo-link-http");
 const { InMemoryCache } = require("apollo-cache-inmemory");
+
 const {
     getMetaTags,
     prepareScriptTags,
@@ -85,13 +86,15 @@ module.exports.init = app => {
                 const server = require(serverFile).default;
 
                 server(req, client, config)
-                    .then(({ html, apolloState, head }) => {
+                    .then(({ html, apolloState, head, sheet }) => {
+                        const styles = sheet.getStyleTags(); // <-- getting all the tags from the sheet
                         const content = getHtml(
                             theme,
                             html,
                             apolloState,
                             head,
-                            settings
+                            settings,
+                            styles
                         );
                         res.end(content);
                     })
@@ -105,7 +108,7 @@ module.exports.init = app => {
     });
 };
 
-function getHtml(theme, html, state, head, settings) {
+function getHtml(theme, html, state, head, settings, styles) {
     const { htmlAttrs, metaTags } = getMetaTags(head);
     const isDev = process.env.NODE_ENV === "dev";
 
@@ -141,6 +144,7 @@ function getHtml(theme, html, state, head, settings) {
         HTML_CONTENT: html,
         HTML_ATTRS: htmlAttrs,
         STYLE_TAGS: styleLinks,
+        STYLED_STYLES: styles,
         META_TAGS: metaTags,
         INITIAL_STATE: initialState,
         NODE_ENV: process.env.NODE_ENV,
