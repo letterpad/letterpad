@@ -17,6 +17,12 @@
     "plugins": [
         "react-hot-loader/babel",
         "transform-object-rest-spread",
-        "transform-class-properties"
+        "transform-class-properties",
+        [
+            "babel-plugin-styled-components",
+            {
+                "ssr": true
+            }
+        ]
     ]
 }

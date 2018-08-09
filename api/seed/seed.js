@@ -6,6 +6,7 @@ import mkdirp from "mkdirp";
 import posts from "./posts";
 import { promisify } from "util";
 import copydir from "copy-dir";
+import generatePost from "./contentGenerator";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -212,7 +213,7 @@ export async function insertPost(params, models, categories, tags) {
     const slug = params.title.toLocaleLowerCase().replace(/ /g, "-");
     let post = await models.Post.create({
         title: params.title,
-        body: Faker.lorem.paragraphs(6),
+        body: generatePost(),
         excerpt: Faker.lorem.sentences(4),
         cover_image: params.cover_image,
         author_id: randomAuthorId,
