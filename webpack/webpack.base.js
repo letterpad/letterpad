@@ -23,7 +23,13 @@ var babelOptions = {
     plugins: [
         "react-hot-loader/babel",
         "transform-class-properties",
-        "transform-object-rest-spread"
+        "transform-object-rest-spread",
+        [
+            "babel-plugin-styled-components",
+            {
+                ssr: true
+            }
+        ]
     ]
 };
 
