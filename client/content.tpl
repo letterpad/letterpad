@@ -3,6 +3,12 @@
 <head>
     <meta charSet="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
     {{META_TAGS}}
     {{STYLE_TAGS}}
     {{STYLED_STYLES}}
