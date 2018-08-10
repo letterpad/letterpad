@@ -39,7 +39,7 @@ const generateQuote = () => {
 };
 
 const generateSentence = () => {
-    return `<hr><p>${Faker.lorem.sentences(3)}</p>`;
+    return `<p>${Faker.lorem.sentences(3)}</p>`;
 };
 
 const getImage = () => {
