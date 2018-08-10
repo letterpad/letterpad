@@ -12,7 +12,7 @@ import { renderToString } from "react-dom/server";
 import { Helmet } from "react-helmet";
 import { StaticRouter } from "react-router";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
-const { ServerStyleSheet } = require("styled-components");
+const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
 import Routes from "./Routes";
 
 const context = {};
@@ -23,11 +23,14 @@ export default (req, client, config) => {
         context: context,
         basename: config.baseName.replace(/\/$/, "") // remove the last slash
     };
+    const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
     const clientApp = (
         <ApolloProvider client={client}>
-            <StaticRouter {...opts}>
-                <Routes />
-            </StaticRouter>
+            <StyleSheetManager sheet={sheet.instance}>
+                <StaticRouter {...opts}>
+                    <Routes />
+                </StaticRouter>
+            </StyleSheetManager>
         </ApolloProvider>
     );
     // we will wait for the appropriate route to render the component and fetch necessary data.
@@ -39,10 +42,9 @@ export default (req, client, config) => {
         })
         .then(() => {
             try {
-                const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
                 return {
                     head: Helmet.renderStatic(),
-                    html: renderToString(sheet.collectStyles(clientApp)),
+                    html: renderToString(clientApp),
                     apolloState: client.extract(),
                     sheet: sheet
                 };

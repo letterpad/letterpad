@@ -27,7 +27,8 @@ var babelOptions = {
         [
             "babel-plugin-styled-components",
             {
-                ssr: true
+                ssr: true,
+                displayName: false
             }
         ]
     ]
