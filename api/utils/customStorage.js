@@ -20,9 +20,9 @@ customStorage.prototype._handleFile = function _handleFile(req, file, cb) {
                 .resize(1200, 800)
                 .background("transparent")
                 .embed()
-                .jpeg({ quality: 65 });
+                .jpeg({ quality: 65, progressive: true });
         } else if (req.body.type == "post_image") {
-            transform = transform.jpeg({ quality: 65 });
+            transform = transform.jpeg({ quality: 65, progressive: true });
         }
 
         file.stream.pipe(transform).pipe(outStream);
