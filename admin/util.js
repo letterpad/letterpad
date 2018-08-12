@@ -115,3 +115,26 @@ module.exports.syncThemeSettings = (client, newSettings, authorization) => {
             return Promise.all([promises, updatePromises]);
         });
 };
+
+// A utility function to convert all jpeg images in uploads folder to progressive jpeg images
+// const optimizeImage = function() {
+//     const sharp = require("sharp");
+//     const fs = require("fs");
+//     const path = require("path");
+//     const imageFolder = path.join(__dirname, "../public/uploads");
+//     const files = fs.readdirSync(imageFolder);
+//     for (var i in files) {
+//         let file = files[i];
+//         if (file.indexOf("loading.jpg") >= 0) {
+//             let image = imageFolder + "/" + file;
+//             let saveImage = imageFolder + "/pjpeg/" + file;
+//             sharp(image)
+//                 .jpeg({ progressive: true })
+//                 .toFile(saveImage, (err, info) => {
+//                     console.log("err: ", err);
+//                     console.log("info: ", info);
+//                 });
+//         }
+//     }
+// };
+// optimizeImage();
