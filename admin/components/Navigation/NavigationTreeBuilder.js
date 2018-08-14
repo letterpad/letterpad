@@ -1,18 +1,75 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Resources from "./menu/Resources";
 import SortableTree, {
     changeNodeAtPath,
     removeNodeAtPath
 } from "react-sortable-tree";
+import styled from "styled-components";
 import { translate } from "react-i18next";
 
-import "react-sortable-tree/style.css";
+import Resources from "./Resources";
 import EditMenuModal from "../Modals/EditMenuModal";
 
+import "react-sortable-tree/style.css";
+
+const StyledMenuTree = styled.div`
+    .rst__rowContents {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 400px;
+        min-width: 400px;
+
+        .rst__rowToolbar {
+            display: flex;
+            justify-content: space-between;
+
+            .category {
+                background: #bbe5c1;
+                color: #1f680e;
+                border: 1px solid #83c083;
+                text-shadow: 1px 1px 3px #b6e3c7;
+            }
+            .page {
+                background: #daeaff;
+                color: #0b70bc;
+                border: 1px solid #75b0ef;
+                text-shadow: 1px 1px 3px #f5f9ff;
+            }
+            .folder {
+                border: 1px solid #474747;
+            }
+            .rst__toolbarButton {
+                margin-left: 18px;
+
+                .item-type {
+                    font-size: 12px;
+                    padding: 2px 6px;
+                    border-radius: 3px;
+                    padding-bottom: 4px;
+                }
+                i {
+                    cursor: pointer;
+                    &:hover {
+                        color: #000;
+                    }
+                }
+            }
+        }
+    }
+    .menu-title-wrapper {
+        span {
+            font-weight: 400;
+        }
+    }
+`;
+
 /**
- * A utility function to index menu items including children for faster searching
- * @param {*} arr
+ * Convert deeply nested menu array to Object, one level deep.
+ * Keep the key as [id-type] and value as true.
+ *
+ * This will be used to disable all the category items, pages which has been used in the menu
+ * @param {Array} arr - Menu Data in json format
  */
 const getMenuItems = function(arr) {
     const toReturn = {};
@@ -28,7 +85,13 @@ const getMenuItems = function(arr) {
     return toReturn;
 };
 
-class MenuConstruction extends Component {
+/**
+ * Build Navigation tree
+ *
+ * @class NavigationTreeBuilder
+ * @extends {Component}
+ */
+class NavigationTreeBuilder extends Component {
     static propTypes = {
         data: PropTypes.object.isRequired,
         updateOption: PropTypes.func.isRequired,
@@ -40,11 +103,11 @@ class MenuConstruction extends Component {
         categories: [],
         pages: [],
         items: [...JSON.parse(this.props.data.menu.value)],
-        labels: [
+        folder: [
             {
-                id: Date.now() + "-label",
+                id: Date.now() + "-folder",
                 title: "Folder",
-                type: "label",
+                type: "folder",
                 label: "Folder",
                 name: "Folder"
             }
@@ -61,6 +124,9 @@ class MenuConstruction extends Component {
         ) {
             let menu = JSON.parse(nextProps.data.menu.value);
             const menuIds = getMenuItems(menu);
+
+            // Loop through the categories and add a key "disabled".
+            // The items which have been used in the navigation menu will have the value "disabled:true"
             const categories = nextProps.categories.taxonomies.map(ele => {
                 return {
                     id: ele.id,
@@ -71,7 +137,8 @@ class MenuConstruction extends Component {
                     slug: ""
                 };
             });
-
+            // Loop through the pages and add a key "disabled".
+            // The items which have been used in the navigation menu will have the value "disabled: true"
             const pages = nextProps.pages.posts.rows.map(ele => {
                 return {
                     id: ele.id,
@@ -86,26 +153,42 @@ class MenuConstruction extends Component {
         }
         return null;
     }
-
+    /**
+     * Add a new item in the navigation
+     *
+     * @memberof NavigationTreeBuilder
+     */
     addItem = (idx, type) => {
         const newState = {};
         newState[type] = [...this.state[type]];
-        if (type === "labels") {
+
+        // All items which are added to the navigation should be disabled, so that they cannot be re-added.
+        // This is not the case for folders. So when we add a folder, we change the id with a unique value
+        // and then add this to the navigation to prevent mapping.
+        if (type === "folder") {
             newState[type][idx] = {
                 ...this.state[type][idx],
-                id: Date.now() + "-label"
+                id: Date.now() + "-folder"
             };
         } else {
             // disable the item
             newState[type][idx].disabled = true;
+
+            // categories should have another key - "slug"
+            if (type === "categories") {
+                newState[type][idx].slug = newState[type][
+                    idx
+                ].name.toLowerCase();
+            }
         }
-        if (type === "categories") {
-            newState[type][idx].slug = newState[type][idx].name.toLowerCase();
-        }
-        //  add the item in the menu
+
+        // merge the changes
         newState.items = [...this.state.items, newState[type][idx]];
+
         this.setState({ ...newState }, () => {
             this.props.updateOption("menu", JSON.stringify(this.state.items));
+
+            // The newly added item will always be placed at the bottom. So Scroll the window to the bottom
             const scrollContainer = document.querySelector(
                 ".ReactVirtualized__Grid__innerScrollContainer"
             );
@@ -115,9 +198,15 @@ class MenuConstruction extends Component {
         });
     };
 
+    /**
+     * Remove an item from the navigation menu
+     *
+     * @memberof NavigationTreeBuilder
+     */
     removeItem = props => {
         const menuItem = props.node;
 
+        // A utility function to changed disabled to false for the item which is being removed
         const keepItemBack = item => {
             const type = item.type == "page" ? "pages" : "categories";
             const newState = this.state[type].map(_item => {
@@ -130,6 +219,8 @@ class MenuConstruction extends Component {
             this.setState({ [type]: newState });
         };
 
+        // The menu can be a deeply nested object. The item being removed can have children which will also get deleted.
+        // We need to get item which is being removed and enable them in the resources, so that then can be added later.
         const findItemsAndDelete = (node, menuNode = false) => {
             let nodeFromMenu = node;
             if (!menuNode) {
@@ -148,12 +239,14 @@ class MenuConstruction extends Component {
                 );
                 delete node.children;
             }
-            if (node.type === "label") return;
+            if (node.type === "folder") return;
+            // Enable them in the resources.
             keepItemBack(node);
         };
         findItemsAndDelete(menuItem);
 
         const getNodeKey = ({ treeIndex }) => treeIndex;
+
         this.setState(
             () => ({
                 ...this.state,
@@ -174,6 +267,12 @@ class MenuConstruction extends Component {
         );
     };
 
+    /**
+     * Each item in the navigation menu can have some additional properties.
+     * Like, the title of every item and also Category slugs can be changed.
+     *
+     * @memberof NavigationTreeBuilder
+     */
     changeItemProperty = (e, { node, path }, property) => {
         const getNodeKey = ({ treeIndex }) => treeIndex;
         const value = e.target.value;
@@ -186,7 +285,8 @@ class MenuConstruction extends Component {
                     getNodeKey,
                     newNode: {
                         ...node,
-                        [property]: value
+                        [property]: value,
+                        title: value
                     }
                 })
             }),
@@ -199,15 +299,23 @@ class MenuConstruction extends Component {
         );
     };
 
+    /**
+     * Few items can be a child of another item. Like page and category cannot be a child
+     * to each other. But they can be a child of a folder. We validate this here.
+     *
+     * @param {*} { node, nextParent }
+     * @returns {Boolean}
+     * @memberof NavigationTreeBuilder
+     */
     canDrop({ node, nextParent }) {
         if (!nextParent) return true;
         if (
             ["category", "page"].indexOf(node.type) >= 0 &&
-            nextParent.type === "label"
+            nextParent.type === "folder"
         ) {
             return true;
         }
-        if (node.type === "label" && nextParent.type === "label") {
+        if (node.type === "folder" && nextParent.type === "folder") {
             return true;
         }
         return false;
@@ -219,11 +327,17 @@ class MenuConstruction extends Component {
             nodeInfo: props
         });
     };
-
+    /**
+     *  Create UI for menu item title and toolbar to edit/delete a menu item
+     *
+     * @param {*} props
+     * @returns Object
+     * @memberof NavigationTreeBuilder
+     */
     generateNodeProps(props) {
         return {
             buttons: [
-                <span key="0" className="item-type">
+                <span key="0" className={"item-type " + props.node.type}>
                     {props.node.type}
                 </span>,
                 <i
@@ -248,6 +362,7 @@ class MenuConstruction extends Component {
         const { t } = this.props;
         return (
             <div className="row">
+                {/* Resources are collection of pages, categories and folders from where a menu will be created*/}
                 <div className="col-lg-4">
                     <Resources
                         title="Pages"
@@ -263,12 +378,12 @@ class MenuConstruction extends Component {
                     <br />
                     <Resources
                         title="Folders"
-                        data={this.state.labels}
-                        itemClicked={idx => this.addItem(idx, "labels")}
+                        data={this.state.folder}
+                        itemClicked={idx => this.addItem(idx, "folder")}
                     />
                 </div>
 
-                <div className="col-lg-8">
+                <StyledMenuTree className="col-lg-8">
                     <h5>{t("menu.build.title")}</h5>
                     <div style={{ height: 600 }}>
                         <SortableTree
@@ -291,7 +406,7 @@ class MenuConstruction extends Component {
                             )}
                         />
                     </div>
-                </div>
+                </StyledMenuTree>
                 {this.state.modalOpen && (
                     <EditMenuModal
                         title="Edit menu item"
@@ -310,4 +425,4 @@ class MenuConstruction extends Component {
     }
 }
 
-export default translate("translations")(MenuConstruction);
+export default translate("translations")(NavigationTreeBuilder);

@@ -1,9 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 
 import { GettingStarted, QuickDraft, Stats } from "../../components/Home";
 import CreatePost from "../../data-connectors/CreatePost";
 import GetStats from "../../data-connectors/GetStats";
+
+const StyledHome = styled.div`
+    .listing {
+        i {
+            margin-right: 8px;
+        }
+    }
+`;
 
 class Home extends Component {
     static propTypes = {
@@ -39,14 +48,14 @@ class Home extends Component {
     render() {
         return (
             <section className="module-xs">
-                <div className="masonry-grid">
+                <StyledHome className="masonry-grid">
                     <GettingStarted />
                     <QuickDraft draftPost={this.draftPost} />
                     <Stats
                         loading={this.props.loading}
                         stats={this.props.stats}
                     />
-                </div>
+                </StyledHome>
             </section>
         );
     }
