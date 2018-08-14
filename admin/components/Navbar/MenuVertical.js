@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 
 import { MenuTree } from "./MenuTree";
 
+let MENU_STATE = null;
+
 export default class Menu extends Component {
     static propTypes = {
         menu: PropTypes.arrayOf(PropTypes.object),
@@ -13,7 +15,7 @@ export default class Menu extends Component {
 
     state = {
         navbarOpen: false,
-        data: this.props.menu,
+        data: MENU_STATE || this.props.menu,
         permissions:
             typeof localStorage !== "undefined"
                 ? jwtDecode(localStorage.token).permissions
@@ -21,6 +23,7 @@ export default class Menu extends Component {
     };
 
     setData = newData => {
+        MENU_STATE = newData;
         this.setState({ data: newData });
     };
 
