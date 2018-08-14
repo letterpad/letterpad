@@ -4,14 +4,15 @@ import { notify } from "react-notify-toast";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 
-import { MenuConstruction } from "../../components/Settings";
+import Loader from "../../components/Loader";
+import NavigationTreeBuilder from "../../components/Navigation/NavigationTreeBuilder";
+import UpdateOptions from "../../data-connectors/UpdateOptions";
 import {
     GET_TAXONOMIES,
     GET_PAGE_NAMES
 } from "../../../shared/queries/Queries";
-import UpdateOptions from "../../data-connectors/UpdateOptions";
 
-class MenuBuilder extends Component {
+class NavigationBuilder extends Component {
     static propTypes = {
         updateOptions: PropTypes.func,
         options: PropTypes.object,
@@ -24,10 +25,10 @@ class MenuBuilder extends Component {
     constructor(props) {
         super(props);
         this.updatedOptions = {};
-        document.body.classList.add("menu-builder-page");
+        document.body.classList.add("navigation-builder-page");
     }
     componentWillUnmount() {
-        document.body.classList.remove("menu-builder-page");
+        document.body.classList.remove("navigation-builder-page");
     }
 
     setOption = (option, value) => {
@@ -52,7 +53,7 @@ class MenuBuilder extends Component {
 
     render() {
         if (this.props.settings.loading) {
-            return <div>hello</div>;
+            return <Loader />;
         }
         const { t } = this.props;
         return (
@@ -60,7 +61,7 @@ class MenuBuilder extends Component {
                 <div className="card">
                     <div className="module-title">{t("menu.title")}</div>
                     <div className="module-subtitle">{t("menu.tagline")}</div>
-                    <MenuConstruction
+                    <NavigationTreeBuilder
                         data={this.props.settings}
                         pages={this.props.pages}
                         categories={this.props.categories}
@@ -90,5 +91,5 @@ const PagesData = graphql(GET_PAGE_NAMES, {
 });
 
 export default translate("translations")(
-    UpdateOptions(CategoriesData(PagesData(MenuBuilder)))
+    UpdateOptions(CategoriesData(PagesData(NavigationBuilder)))
 );
