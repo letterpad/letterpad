@@ -5,10 +5,63 @@ import SortableTree, {
     changeNodeAtPath,
     removeNodeAtPath
 } from "react-sortable-tree";
+import styled from "styled-components";
 import { translate } from "react-i18next";
 
 import "react-sortable-tree/style.css";
 import EditMenuModal from "../Modals/EditMenuModal";
+
+const StyledMenuTree = styled.div`
+    .rst__rowContents {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 400px;
+        min-width: 400px;
+
+        .rst__rowToolbar {
+            display: flex;
+            justify-content: space-between;
+
+            .category {
+                background: #bbe5c1;
+                color: #1f680e;
+                border: 1px solid #83c083;
+                text-shadow: 1px 1px 3px #b6e3c7;
+            }
+            .page {
+                background: #daeaff;
+                color: #0b70bc;
+                border: 1px solid #75b0ef;
+                text-shadow: 1px 1px 3px #f5f9ff;
+            }
+            .folder {
+                border: 1px solid #474747;
+            }
+            .rst__toolbarButton {
+                margin-left: 18px;
+
+                .item-type {
+                    font-size: 12px;
+                    padding: 2px 6px;
+                    border-radius: 3px;
+                    padding-bottom: 4px;
+                }
+                i {
+                    cursor: pointer;
+                    &:hover {
+                        color: #000;
+                    }
+                }
+            }
+        }
+    }
+    .menu-title-wrapper {
+        span {
+            font-weight: 400;
+        }
+    }
+`;
 
 /**
  * A utility function to index menu items including children for faster searching
@@ -40,11 +93,11 @@ class MenuConstruction extends Component {
         categories: [],
         pages: [],
         items: [...JSON.parse(this.props.data.menu.value)],
-        labels: [
+        folder: [
             {
-                id: Date.now() + "-label",
+                id: Date.now() + "-folder",
                 title: "Folder",
-                type: "label",
+                type: "folder",
                 label: "Folder",
                 name: "Folder"
             }
@@ -90,10 +143,10 @@ class MenuConstruction extends Component {
     addItem = (idx, type) => {
         const newState = {};
         newState[type] = [...this.state[type]];
-        if (type === "labels") {
+        if (type === "folder") {
             newState[type][idx] = {
                 ...this.state[type][idx],
-                id: Date.now() + "-label"
+                id: Date.now() + "-folder"
             };
         } else {
             // disable the item
@@ -148,7 +201,7 @@ class MenuConstruction extends Component {
                 );
                 delete node.children;
             }
-            if (node.type === "label") return;
+            if (node.type === "folder") return;
             keepItemBack(node);
         };
         findItemsAndDelete(menuItem);
@@ -186,7 +239,8 @@ class MenuConstruction extends Component {
                     getNodeKey,
                     newNode: {
                         ...node,
-                        [property]: value
+                        [property]: value,
+                        title: value
                     }
                 })
             }),
@@ -203,11 +257,11 @@ class MenuConstruction extends Component {
         if (!nextParent) return true;
         if (
             ["category", "page"].indexOf(node.type) >= 0 &&
-            nextParent.type === "label"
+            nextParent.type === "folder"
         ) {
             return true;
         }
-        if (node.type === "label" && nextParent.type === "label") {
+        if (node.type === "folder" && nextParent.type === "folder") {
             return true;
         }
         return false;
@@ -219,11 +273,17 @@ class MenuConstruction extends Component {
             nodeInfo: props
         });
     };
-
+    /**
+     *  Create UI for menu item title and toolbar to edit/delete a menu item
+     *
+     * @param {*} props
+     * @returns Object
+     * @memberof MenuConstruction
+     */
     generateNodeProps(props) {
         return {
             buttons: [
-                <span key="0" className="item-type">
+                <span key="0" className={"item-type " + props.node.type}>
                     {props.node.type}
                 </span>,
                 <i
@@ -248,6 +308,7 @@ class MenuConstruction extends Component {
         const { t } = this.props;
         return (
             <div className="row">
+                {/* Resources are collection of pages, categories and folders from where a menu will be created*/}
                 <div className="col-lg-4">
                     <Resources
                         title="Pages"
@@ -263,12 +324,12 @@ class MenuConstruction extends Component {
                     <br />
                     <Resources
                         title="Folders"
-                        data={this.state.labels}
-                        itemClicked={idx => this.addItem(idx, "labels")}
+                        data={this.state.folder}
+                        itemClicked={idx => this.addItem(idx, "folder")}
                     />
                 </div>
 
-                <div className="col-lg-8">
+                <StyledMenuTree className="col-lg-8">
                     <h5>{t("menu.build.title")}</h5>
                     <div style={{ height: 600 }}>
                         <SortableTree
@@ -291,7 +352,7 @@ class MenuConstruction extends Component {
                             )}
                         />
                     </div>
-                </div>
+                </StyledMenuTree>
                 {this.state.modalOpen && (
                     <EditMenuModal
                         title="Edit menu item"
