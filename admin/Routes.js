@@ -23,7 +23,7 @@ import Authors from "./containers/Author/Authors";
 import EditAuthor from "./containers/Author/EditAuthor";
 import CreateAuthor from "./containers/Author/CreateAuthor";
 import Taxonomy from "./containers/Post/Taxonomy";
-import MenuBuilder from "./containers/Settings/MenuBuilder";
+import NavigationBuilder from "./containers/Navigation/NavigationBuilder";
 import Home from "./containers/Home/Home";
 import Themes from "./containers/Themes/Themes";
 
@@ -148,9 +148,9 @@ class Routes extends Component {
                             settings={settings.data}
                         />
                         <SecuredRoute
-                            path="/admin/menu-builder"
+                            path="/admin/navigation-builder"
                             settings={settings.data}
-                            component={MenuBuilder}
+                            component={NavigationBuilder}
                         />
 
                         <SecuredRoute

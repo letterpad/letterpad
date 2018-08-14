@@ -26,7 +26,7 @@ const EditMenuModal = (props, context) => {
                         }
                     />
                 </div>
-                {props.nodeInfo.node.type !== "label" && (
+                {props.nodeInfo.node.type !== "folder" && (
                     <div className="form-group">
                         <label className="custom-label">
                             {t("common.slug")}
