@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Paginate = ({ count, page, changePage }) => {
     const limit = 20;
     const pages = Array.from(Array(Math.ceil(count / limit)));
-
+    if (pages.length === 1) return null;
     const pageItems = pages.map((_, i) => {
         const num = i + 1;
         const active = num === page ? "active" : "";
