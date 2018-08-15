@@ -39,7 +39,7 @@ export default class ArticleEdit extends Component {
                         />
                     </div>
                     <div className="post-content">
-                        <Editor isMarkdown={false} {...this.props.post} />
+                        <Editor post={this.props.post} />
                     </div>
                 </Article>
             </Fragment>

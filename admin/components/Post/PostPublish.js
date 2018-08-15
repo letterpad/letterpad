@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import { notify } from "react-notify-toast";
 import PropTypes from "prop-types";
-
-import PostActions from "./PostActions";
-import UpdatePost from "../../data-connectors/UpdatePost";
-import { plural } from "../../../shared/util";
-import PublishDropdown from "./PublishDropdown";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+
+import { EventBusInstance } from "../../../shared/eventBus";
+import { plural } from "../../../shared/util";
+import UpdatePost from "../../data-connectors/UpdatePost";
+import PostActions from "./PostActions";
+import PublishDropdown from "./PublishDropdown";
 import MetaDropdown from "./MetaDropdown";
 
-// const DropDown = styled.ul`
-
-// `;
 const PublishBox = styled.div`
     display: flex;
     flex-direction: row;
@@ -42,6 +40,49 @@ const PublishBox = styled.div`
         }
     }
 `;
+
+const AutoSaveIndicator = styled.div`
+    .spinner {
+        width: 70px;
+        text-align: center;
+    }
+
+    .spinner > div {
+        width: 6px;
+        height: 6px;
+        background-color: #0eaf10;
+        margin-right: 4px;
+        border-radius: 100%;
+        display: inline-block;
+        animation: sk-bouncedelay 1s infinite ease-in-out both;
+    }
+
+    .spinner .bounce1 {
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+        background-color: #27b0ed;
+    }
+
+    .spinner .bounce2 {
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+        background-color: #f33f43;
+    }
+
+    @keyframes sk-bouncedelay {
+        0%,
+        80%,
+        100% {
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        }
+        40% {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+    }
+`;
+
 export class PostPublish extends Component {
     static propTypes = {
         post: PropTypes.object.isRequired,
@@ -58,12 +99,25 @@ export class PostPublish extends Component {
         post: this.props.post,
         isPublished: this.props.post.status == "publish",
         publishOpen: false,
-        metaOpen: false
+        metaOpen: false,
+        saving: false
     };
 
     componentDidMount() {
         PostActions.setData(this.props.post);
         document.addEventListener("click", this.closeDropdowns);
+
+        EventBusInstance.on("ARTICLE_SAVING", () => {
+            this.setState({ saving: true });
+        });
+        EventBusInstance.on("ARTICLE_SAVED", () => {
+            // updates are really fast.
+            // Let the saving state atleast for half a second to show our nice loader.
+            // Users should know we have auto-save option.
+            setTimeout(() => {
+                this.setState({ saving: false });
+            }, 500);
+        });
     }
 
     changePostStatus = e => {
@@ -104,8 +158,6 @@ export class PostPublish extends Component {
         if (e) e.preventDefault();
         PostActions.setData(statusObj);
         let data = PostActions.getData();
-
-        console.log(data);
 
         const update = await this.props.update({
             ...this.props.post,
@@ -178,7 +230,15 @@ export class PostPublish extends Component {
                         </span>
                     </Link>
                 </div>
-
+                {this.state.saving && (
+                    <AutoSaveIndicator>
+                        <div className="spinner">
+                            <div className="bounce1" />
+                            <div className="bounce2" />
+                            <div className="bounce3" />
+                        </div>
+                    </AutoSaveIndicator>
+                )}
                 <div className={"switch-block " + publishedCls}>
                     <PublishBox>
                         <div className={ddClassPublish}>

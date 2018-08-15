@@ -3,8 +3,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { getEventTransfer } from "slate-react";
 import Html from "slate-html-serializer";
-import { SlateContent, SlateEditor, TextMenu } from "./Editors/SlateEditor";
+
 import InsertMedia from "../../data-connectors/InsertMedia";
+import UpdatePost from "../../data-connectors/UpdatePost";
+
+import { EventBusInstance } from "../../../shared/eventBus";
+
+import { SlateContent, SlateEditor, TextMenu } from "./Editors/SlateEditor";
 import { BoldPlugin, BoldButton } from "./Editors/plugins/bold";
 import { ItalicPlugin, ItalicButton } from "./Editors/plugins/italic";
 import { UnderlinePlugin, UnderlineButton } from "./Editors/plugins/underline";
@@ -67,12 +72,12 @@ const plugins = [
 class Editor extends Component {
     static propTypes = {
         insertMedia: PropTypes.func,
-        body: PropTypes.string,
-        isMarkdown: PropTypes.any
+        post: PropTypes.object,
+        update: PropTypes.func
     };
 
     state = {
-        value: html.deserialize(this.props.body) // Value.fromJSON(initialEditorState)
+        value: html.deserialize(this.props.post.body)
     };
 
     menuRef = React.createRef();
@@ -139,8 +144,19 @@ class Editor extends Component {
             PostActions.setData({
                 body: string
             });
-        }
+            clearInterval(this.postSaveTimer);
 
+            this.postSaveTimer = setTimeout(async () => {
+                const data = PostActions.getData();
+                EventBusInstance.publish("ARTICLE_SAVING");
+                const update = await this.props.update({
+                    ...this.props.post,
+                    ...data
+                });
+                EventBusInstance.publish("ARTICLE_SAVED");
+                PostActions.setData({ slug: update.data.updatePost.post.slug });
+            }, 1000);
+        }
         this.setState({ value: value });
     };
 
@@ -188,4 +204,4 @@ class Editor extends Component {
     }
 }
 
-export default InsertMedia(Editor);
+export default UpdatePost(InsertMedia(Editor));
