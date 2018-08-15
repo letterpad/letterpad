@@ -413,7 +413,7 @@ export async function insertSettings(models) {
         },
         {
             option: "google_analytics",
-            value: ""
+            value: "UA-120251616-1"
         },
         {
             option: "locale",

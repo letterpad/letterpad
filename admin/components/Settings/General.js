@@ -185,22 +185,22 @@ class General extends Component {
                                 Add Logo
                             </a>
                         ) : (
-                            <a
-                                href="#"
-                                onClick={e => {
-                                    e.preventDefault();
-                                    this.updateLogo("");
-                                }}
-                            >
-                                <div className="logo-image">
-                                    <img
-                                        width="100"
-                                        alt=""
-                                        src={config.baseName + site_logo}
-                                    />
-                                </div>
-                                Remove Logo
-                            </a>
+                            <div className="logo-image">
+                                <img
+                                    width="100"
+                                    alt=""
+                                    src={config.baseName + site_logo}
+                                />
+                                <a
+                                    href="#"
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.updateLogo("");
+                                    }}
+                                >
+                                    Remove Logo
+                                </a>
+                            </div>
                         )}
                     </div>
                     <input
