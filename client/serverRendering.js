@@ -7,6 +7,7 @@ const fs = require("fs");
 const config = require("../config");
 const { createHttpLink } = require("apollo-link-http");
 const { InMemoryCache } = require("apollo-cache-inmemory");
+const { util } = require("./util");
 
 const {
     getMetaTags,
@@ -132,15 +133,21 @@ function getHtml(theme, html, state, head, settings, styles) {
         ? prepareStyleTags(theme + "/dist/client.min.css")
         : "";
 
-    // read the template buffer
-    const templateBuffer = fs.readFileSync(
-        path.resolve(__dirname, "./content.tpl")
+    // check if the theme has defined any html template
+    const themeTemplateBuffer = util.getThemeFileContents(
+        theme,
+        "template.tpl"
     );
 
-    let template = templateBuffer.toString();
+    // read the template buffer
+    const template =
+        themeTemplateBuffer || util.getClientFileContents("template.tpl");
+
+    // convert the buffer into string
+    const templateString = template.toString();
 
     // replace template variables with values and return the html markup
-    return templateEngine(template, {
+    return templateEngine(templateString, {
         HTML_CONTENT: html,
         HTML_ATTRS: htmlAttrs,
         STYLE_TAGS: styleLinks,
