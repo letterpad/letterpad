@@ -29,7 +29,7 @@ class Home extends Component {
                 itemSelector: ".masonry-grid-item",
                 gutter: 16
             });
-        }, 100);
+        }, 200);
     }
 
     componentWillUnmount() {
