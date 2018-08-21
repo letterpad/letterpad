@@ -1,7 +1,17 @@
 export default {
     Query: {
-        taxonomies: (root, args, { models }) =>
-            models.Taxonomy.findAll({ where: args, order: [["name", "ASC"]] }),
+        taxonomies: (root, args, { models }) => {
+            const cleanArgs = {};
+            Object.keys(args).map(key => {
+                if (args[key]) {
+                    cleanArgs[key] = args[key];
+                }
+            });
+            return models.Taxonomy.findAll({
+                where: cleanArgs,
+                order: [["name", "ASC"]]
+            });
+        },
         activeTaxonomies: (root, args, { models, user }) => {
             let { postType, type, taxId } = args;
 

@@ -220,10 +220,11 @@ module.exports.THEME_SETTINGS = gql`
 `;
 
 module.exports.TAX_SUGGESTIONS = gql`
-    query getTaxonomies($type: String!) {
+    query getTaxonomies($type: String) {
         taxonomies(type: $type) {
             id
             name
+            type
         }
     }
 `;
