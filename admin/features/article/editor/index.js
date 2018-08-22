@@ -46,11 +46,6 @@ const StyledMenu = styled(TextMenu)`
 `;
 
 const StyledToolBar = styled(ToolBar)`
-    padding: 8px;
-    background: #fff;
-    text-align: center;
-    border-top: 1px solid #ddd;
-
     > * {
         display: inline-block;
     }
