@@ -5,6 +5,8 @@ import appoloClient from "shared/apolloClient";
 import { GET_AUTHOR } from "../../../shared/queries/Queries";
 import config from "config";
 
+import StyledDropdown from "../../components/dropdown";
+
 class User extends Component {
     static propTypes = {
         author: PropTypes.object
@@ -36,36 +38,56 @@ class User extends Component {
             this.setState({ open: false });
         }, 100);
     };
-
     render() {
+        const name = (
+            <div>
+                <img
+                    src={
+                        config.baseName +
+                        (this.state.author.avatar || "/admin/images/avatar.png")
+                    }
+                    className="avatar"
+                />
+            </div>
+        );
         return (
             <div className="user-info" onMouseLeave={this.closeDropdown}>
-                <div className={"dropdown" + (this.state.open ? " open" : "")}>
-                    <a
-                        className="dropdown-toggle"
-                        onClick={this.toggleDropdown}
-                    >
-                        <img
-                            src={
-                                config.baseName +
-                                (this.state.author.avatar ||
-                                    "/admin/images/avatar.png")
-                            }
-                            className="avatar"
-                        />
-                        <span className="caret" />
-                    </a>
-                    <ul className="dropdown-menu" style={{ marginLeft: -120 }}>
+                <StyledDropdown name={name}>
+                    <ul>
                         <li>
                             <a href={config.baseName + "/admin/login"}>
                                 Logout
                             </a>
                         </li>
                     </ul>
-                </div>
+                </StyledDropdown>
             </div>
         );
     }
 }
 
 export default User;
+
+// <div className={"dropdown" + (this.state.open ? " open" : "")}>
+//                     <a
+//                         className="dropdown-toggle"
+//                         onClick={this.toggleDropdown}
+//                     >
+//                         <img
+//                             src={
+//                                 config.baseName +
+//                                 (this.state.author.avatar ||
+//                                     "/admin/images/avatar.png")
+//                             }
+//                             className="avatar"
+//                         />
+//                         <span className="caret" />
+//                     </a>
+//                     <ul className="dropdown-menu" style={{ marginLeft: -120 }}>
+//                         <li>
+//                             <a href={config.baseName + "/admin/login"}>
+//                                 Logout
+//                             </a>
+//                         </li>
+//                     </ul>
+//                 </div>

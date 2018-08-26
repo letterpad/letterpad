@@ -4,7 +4,7 @@ import jwtDecode from "jwt-decode";
 import { Route, Redirect } from "react-router-dom";
 
 import Layout from "../features/layout";
-import NoLayout from "./NoLayout";
+import NoLayout from "../features/layout/NoLayout";
 
 const SecuredRoute = routeProps => {
     try {

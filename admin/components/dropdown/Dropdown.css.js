@@ -3,6 +3,11 @@ import styled from "styled-components";
 export default styled.div`
     position: relative;
 
+    .dropdown-toggle {
+        display: flex;
+        align-items: center;
+    }
+
     &.open > .dropdown-menu {
         display: block;
     }
@@ -15,28 +20,34 @@ export default styled.div`
         display: none;
         float: left;
         min-width: 160px;
-        padding: 5px 0;
-        margin: 2px 0 0;
         font-size: 14px;
         text-align: left;
         list-style: none;
-        background-color: #fff;
+        background-color: var(--bg-base);
+        color: var(--color-base);
         background-clip: padding-box;
-        border: 1px solid #ccc;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        border-radius: 4px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-
-        padding: 20px;
-        max-height: 90vh;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+            0 6px 20px 0 rgba(0, 0, 0, 0.19);
         overflow-y: auto;
-        &.publish {
-            width: 340px;
-            margin-left: -190px;
-        }
-        &.meta {
-            width: 320px;
-            margin-left: -240px;
+
+        ul {
+            margin: 0px;
+            li {
+                padding: 4px 8px;
+                border-bottom: var(--color-border);
+                &:last-child {
+                    border: none;
+                }
+                a,
+                a:focus,
+                a:hover,
+                a:active {
+                    color: var(--color-base);
+                }
+                &:hover {
+                    background: var(--bg-sections);
+                }
+            }
         }
     }
 `;

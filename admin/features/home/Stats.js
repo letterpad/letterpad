@@ -48,7 +48,6 @@ const Stats = ({ stats, loading, t }) => {
 
     return (
         <StyledCard
-            className="masonry-grid-item"
             title={t("home.stats")}
             subtitle={t("home.stats.tagline")}
         >

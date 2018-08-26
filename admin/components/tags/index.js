@@ -9,7 +9,8 @@ export class StyledTags extends Component {
         onChange: PropTypes.func,
         options: PropTypes.array,
         value: PropTypes.array,
-        valueKey: PropTypes.string
+        valueKey: PropTypes.string,
+        name: PropTypes.string
     };
 
     render() {
@@ -19,11 +20,12 @@ export class StyledTags extends Component {
             onChange,
             options,
             value,
-            valueKey
+            valueKey,
+            name
         } = this.props;
         return (
             <div>
-                <div className="meta-label">Tags</div>
+                <div className="meta-label">{name}</div>
                 <div className="x_content">
                     <div className="control-group">
                         <Select.Creatable

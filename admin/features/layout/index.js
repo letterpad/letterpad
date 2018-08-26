@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-import Navbar from "../navbar";
-import Footer from "../footer";
 import Header from "../header";
+import Sidebar from "../sidebar";
 
 import { lightTheme, darkTheme } from "../../css-variables";
 import { StyledLayout } from "./Layout.css";
@@ -69,15 +68,7 @@ export default function Layout(ComponentClass, props) {
                             settings={settings}
                             author={_props.author}
                         />
-                        <nav className="navbar navbar-custom">
-                            <div className="sidebar">
-                                <Navbar
-                                    settings={settings}
-                                    router={{ ...this.props }}
-                                />
-                                <Footer data={settings.site_footer.value} />
-                            </div>
-                        </nav>
+                        <Sidebar {..._props} />
                         <main>
                             <div className="content-area">
                                 <ComponentClass {..._props} />

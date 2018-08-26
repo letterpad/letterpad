@@ -28,6 +28,18 @@ const PublishBox = styled.div`
         margin-left: 20px;
         cursor: pointer;
     }
+    .publish {
+        .dropdown-menu {
+            width: 340px;
+            margin-left: -190px;
+        }
+    }
+    .meta {
+        .dropdown-menu {
+            width: 320px;
+            margin-left: -240px;
+        }
+    }
 `;
 
 const AutoSaveIndicator = styled.div`
@@ -194,7 +206,7 @@ export class TopBar extends Component {
                 )}
                 <div className={"right-block " + publishedCls}>
                     <PublishBox>
-                        <StyledDropdown name="Publish">
+                        <StyledDropdown name="Publish" className="publish">
                             <PublishDropdown
                                 isPublished={this.state.isPublished}
                                 changePostStatus={this.changePostStatus}
@@ -204,7 +216,7 @@ export class TopBar extends Component {
                             />
                         </StyledDropdown>
 
-                        <StyledDropdown name="Meta">
+                        <StyledDropdown name="Meta" className="meta">
                             <MetaDropdown
                                 post={this.props.post}
                                 updatePost={this.updatePost}

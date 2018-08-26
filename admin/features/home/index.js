@@ -5,7 +5,8 @@ import GettingStarted from "./GettingStarted";
 import QuickDraft from "./QuickDraft";
 import Stats from "./Stats";
 import StyledSection from "../../components/section";
-import { StyledHome } from "./Home.css";
+import StyledGrid from "../../components/grid";
+// import { StyledHome } from "./Home.css";
 
 import CreatePost from "../../data-connectors/CreatePost";
 import GetStats from "../../data-connectors/GetStats";
@@ -19,13 +20,6 @@ class Home extends Component {
 
     componentDidMount() {
         document.body.classList.add("home-page");
-        const elem = document.querySelector(".masonry-grid");
-        setTimeout(() => {
-            new Masonry(elem, {
-                itemSelector: ".masonry-grid-item",
-                gutter: 16
-            });
-        }, 300);
     }
 
     componentWillUnmount() {
@@ -44,14 +38,14 @@ class Home extends Component {
     render() {
         return (
             <StyledSection xs>
-                <StyledHome className="masonry-grid">
+                <StyledGrid columns="repeat(auto-fit,minmax(400px,1fr))">
                     <GettingStarted />
                     <QuickDraft draftPost={this.draftPost} />
                     <Stats
                         loading={this.props.loading}
                         stats={this.props.stats}
                     />
-                </StyledHome>
+                </StyledGrid>
             </StyledSection>
         );
     }

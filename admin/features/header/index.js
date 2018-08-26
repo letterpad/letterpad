@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import User from "./User";
 import config from "../../../config";
+import StyledHeader from "./Header.css";
 
 class Header extends Component {
     static propTypes = {
@@ -15,17 +16,14 @@ class Header extends Component {
     render() {
         const settings = this.props.settings;
         return (
-            <header>
+            <StyledHeader>
                 <div className="left-side">
                     <button
                         type="button"
-                        className="navbar-toggle collapsed"
+                        className="navbar-toggle"
                         onClick={this.props.sidebarToggle}
                     >
-                        <span className="sr-only">Toggle navigation</span>
-                        <span className="icon-bar" />
-                        <span className="icon-bar" />
-                        <span className="icon-bar" />
+                        <i className="material-icons">menu</i>
                     </button>
                     <Link className="navbar-brand brand" to={"/"}>
                         {settings.site_title.value}
@@ -43,7 +41,7 @@ class Header extends Component {
                     </a>
                     <User author={this.props.author} />
                 </div>
-            </header>
+            </StyledHeader>
         );
     }
 }

@@ -14,17 +14,17 @@ import Loader from "./components/loader";
 import LoginView from "./features/login/LoginView";
 import ResetPassword from "./features/login/ResetPassword";
 import ArticleList from "./features/article-list";
+import ArticleCreate from "./features/article/Create";
 import Article from "./features/article";
-// import Settings from "./containers/Settings/Settings";
-// import Create from "./containers/Create/Create";
+import Settings from "./features/settings";
 import Media from "./features/media";
-// import Authors from "./containers/Author/Authors";
-// import EditAuthor from "./containers/Author/EditAuthor";
-// import CreateAuthor from "./containers/Author/CreateAuthor";
+import AuthorList from "./features/author-list";
+import Author from "./features/author";
+import AuthorCreate from "./features/author/Create";
 // import Taxonomy from "./containers/Post/Taxonomy";
-// import NavigationBuilder from "./containers/Navigation/NavigationBuilder";
+import NavigationBuilder from "./features/navigation-builder";
 import Home from "./features/home";
-// import Themes from "./containers/Themes/Themes";
+import Themes from "./features/themes";
 
 // css
 import "./public/pcss/admin.pcss";
@@ -84,6 +84,13 @@ class Routes extends Component {
                         />
                         {/* Route for posts */}
                         <SecuredRoute
+                            path="/admin/post-new"
+                            type="post"
+                            component={ArticleCreate}
+                            layout="none"
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
                             path="/admin/posts"
                             type="post"
                             component={ArticleList}
@@ -103,22 +110,63 @@ class Routes extends Component {
                             component={ArticleList}
                             settings={settings.data}
                         />
-
+                        <SecuredRoute
+                            path="/admin/pages/:post_id"
+                            type="page"
+                            component={Article}
+                            layout="none"
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
+                            path="/admin/page-new"
+                            type="page"
+                            component={ArticleCreate}
+                            settings={settings.data}
+                        />
                         {/* Route for others */}
                         <SecuredRoute
                             path="/admin/media"
                             component={Media}
                             settings={settings.data}
                         />
-                        {/*
-                        
                         <SecuredRoute
-                            path="/admin/post-new"
-                            type="post"
-                            component={Create}
-                            layout="none"
+                            path="/admin/authors"
+                            component={AuthorList}
                             settings={settings.data}
                         />
+                        <SecuredRoute
+                            path="/admin/authors/edit/:id"
+                            component={Author}
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
+                            path="/admin/authors/new"
+                            component={AuthorCreate}
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
+                            path="/admin/edit-profile"
+                            component={Author}
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
+                            path="/admin/settings"
+                            component={Settings}
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
+                            path="/admin/themes"
+                            component={Themes}
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
+                            path="/admin/navigation-builder"
+                            settings={settings.data}
+                            component={NavigationBuilder}
+                        />
+                        {/*
+                        
+                        
                         <SecuredRoute
                             path="/admin/tags"
                             type="post_tag"
@@ -132,66 +180,21 @@ class Routes extends Component {
                             settings={settings.data}
                         />
                         {/* Route for pages */}
-                        {/*<SecuredRoute
-                            path="/admin/pages"
-                            component={Pages}
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
-                            path="/admin/pages/:post_id"
-                            type="page"
-                            layout="none"
-                            component={Edit}
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
-                            path="/admin/page-new"
-                            type="page"
-                            component={Create}
-                            settings={settings.data}
-                        />
+                        {/*
+                        
                         
                         <SecuredRoute
                             path="/admin/media/:page"
                             component={Media}
                             settings={settings.data}
                         />
-                        <SecuredRoute
-                            path="/admin/navigation-builder"
-                            settings={settings.data}
-                            component={NavigationBuilder}
-                        />
+                        
 
-                        <SecuredRoute
-                            path="/admin/authors"
-                            component={Authors}
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
-                            path="/admin/authors/new"
-                            component={CreateAuthor}
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
-                            path="/admin/authors/edit/:id"
-                            component={EditAuthor}
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
-                            path="/admin/edit-profile"
-                            component={EditAuthor}
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
-                            path="/admin/settings"
-                            component={Settings}
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
-                            path="/admin/themes"
-                            component={Themes}
-                            settings={settings.data}
-                       />*/}
+                        
+                        
+                        
+                        
+                        */}
                     </Fragment>
                 </Switch>
             </I18nextProvider>

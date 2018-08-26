@@ -11,6 +11,7 @@ const Wrapper = styled.div`
             width: 100%;
             object-fit: cover;
             border-radius: 8px;
+            background: var(--bg-sections);
             &:hover {
                 opacity: 0.5;
             }

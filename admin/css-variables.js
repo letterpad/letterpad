@@ -1,7 +1,7 @@
 const darkTheme = `
     --bg-base: #1d1f20;
     --bg-sections: #2a303a;
-    --color-border: #626771;
+    --color-border: #37393e;
     
     --color-base: #e0e0e0;
 
@@ -32,7 +32,7 @@ const darkTheme = `
 const lightTheme = `
     --bg-base: #fff;
     --bg-sections: #e2e2e2;
-    --bg-border: #c5c4c4;
+    --color-border: #c5c4c4;
 
     --color-base: #3d3d3d;
     --color-text-1: #2b2b2b;

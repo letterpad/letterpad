@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const StyledCard = styled.div`
-    background: var(--bg-sections);
     padding: 20px;
-    margin-bottom: 12px;
     border: 1px solid var(--color-border);
 
     .title {

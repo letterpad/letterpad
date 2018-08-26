@@ -9,7 +9,6 @@ import StyledButton from "../../components/button";
 const QuickDraft = ({ draftPost, t }) => {
     return (
         <StyledCard
-            className="masonry-grid-item"
             title={t("home.quickDraft")}
             subtitle={t("home.quickDraft.tagline")}
         >

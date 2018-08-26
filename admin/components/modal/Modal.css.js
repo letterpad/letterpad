@@ -75,7 +75,7 @@ const StyledModal = styled.div`
     top: 0;
     width: 100%;
     z-index: 999;
-    background: var(--bg-sections);
+    background: var(--bg-base);
     transition: 0.2s all linear;
     transform: scale(0.7);
     &.in {
@@ -96,8 +96,11 @@ const StyledModal = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
+        min-height: 16.42857143px;
+        padding: 26px 16px;
+        border-bottom: 1px solid var(--bg-sections);
         h3 {
-            padding: 15px;
+            padding: 15px 0px;
             margin: 0px;
         }
         .material-icons {
@@ -120,6 +123,7 @@ const StyledModal = styled.div`
             width: 100%;
             justify-content: flex-end;
             padding: 0px 28px;
+            border-top: 1px solid var(--bg-sections);
         }
     }
 `;

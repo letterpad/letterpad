@@ -3,6 +3,15 @@ import PropTypes from "prop-types";
 import Wrapper from "./Dropdown.css";
 
 class DropDown extends Component {
+    static propTypes = {
+        children: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.node),
+            PropTypes.node
+        ]),
+        className: PropTypes.string,
+        name: PropTypes.any
+    };
+
     state = {
         isOpen: false
     };
@@ -29,8 +38,8 @@ class DropDown extends Component {
         this.setState({ isOpen: flag ? flag : !this.state.isOpen });
     };
     render() {
-        const { name, children } = this.props;
-        const ddClassPublish = "dropdown" + (this.state.isOpen ? " open" : "");
+        const { name, children, className } = this.props;
+        const ddClassPublish = " dropdown" + (this.state.isOpen ? " open" : "");
 
         const childrenWithProps = React.Children.map(children, child =>
             React.cloneElement(child, {
@@ -39,7 +48,7 @@ class DropDown extends Component {
             })
         );
         return (
-            <Wrapper className={ddClassPublish}>
+            <Wrapper className={className + ddClassPublish}>
                 <a
                     className="dropdown-toggle"
                     href="#"
@@ -50,19 +59,10 @@ class DropDown extends Component {
                     <span className="caret" />
                 </a>
 
-                <div className="dropdown-menu publish">{childrenWithProps}</div>
+                <div className="dropdown-menu">{childrenWithProps}</div>
             </Wrapper>
         );
     }
 }
-
-DropDown.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
-    ]),
-
-    name: PropTypes.string
-};
 
 export default DropDown;

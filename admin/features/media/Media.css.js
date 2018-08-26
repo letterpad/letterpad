@@ -13,16 +13,4 @@ export const StyledMedia = styled.div`
         color: var(--color-muted) !important;
         font-weight: 300;
     }
-
-    @media screen and (max-width: 991px) {
-        .masonry-grid-item {
-            width: 100%;
-        }
-    }
-
-    @media screen and (min-width: 992px) {
-        .masonry-grid-item {
-            width: 42%;
-        }
-    }
 `;

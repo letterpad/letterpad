@@ -7,6 +7,55 @@ const Wrapper = styled.div`
     align-items: center;
     .switch {
         margin: 0 20px;
+        position: relative;
+        display: inline-block;
+        width: 30px;
+        height: 12px;
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            &:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: -6px;
+                bottom: -3px;
+                background-color: white;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+            }
+            &.round {
+                border-radius: 34px;
+                &:before {
+                    border-radius: 50%;
+                }
+            }
+        }
+
+        input {
+            display: none;
+
+            &:checked + .slider {
+                background-color: rgba(var(--color-accent), 0.7);
+            }
+            &:focus + .slider {
+                box-shadow: 0 0 1px rgba(var(--color-accent), 0.7);
+            }
+            &:checked + .slider:before {
+                -webkit-transform: translateX(26px);
+                -ms-transform: translateX(26px);
+                transform: translateX(26px);
+            }
+        }
     }
     .switch-label {
         text-transform: uppercase;

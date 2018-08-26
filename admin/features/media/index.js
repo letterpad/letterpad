@@ -193,7 +193,7 @@ class Media extends Component {
                         multiple="multiple"
                     />
 
-                    <StyledGrid>
+                    <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
                         {this.state.items.map(media => {
                             return (
                                 <StyledGridItem

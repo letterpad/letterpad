@@ -12,7 +12,6 @@ const GettingStarted = ({ t }) => {
         <StyledCard
             title={t("home.gettingStarted")}
             subtitle={t("home.tagline")}
-            className="masonry-grid-item"
         >
             <StyledList>
                 <li>

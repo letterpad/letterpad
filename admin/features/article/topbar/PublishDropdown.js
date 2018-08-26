@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import StyledSwitch from "../../../components/switch";
+import StyledDropdown from "./Dropdown.css";
 
 import Excerpt from "./Excerpt";
 import FeaturedImage from "../FeaturedImage";
@@ -48,7 +49,7 @@ class PublishDropdown extends Component {
         const classes = this.props.isOpen ? " open" : "";
         const actionLabel = this.props.create ? "Create" : "Update";
         return (
-            <div className={classes}>
+            <StyledDropdown className={classes}>
                 <div>{this.getButton(actionLabel, "btn-primary")}</div>
                 <StyledSwitch
                     leftLabel="Draft"
@@ -67,7 +68,7 @@ class PublishDropdown extends Component {
                     <Taxonomies post={post} for="post_category" />
                 )}
                 <FeaturedImage post={post} />
-            </div>
+            </StyledDropdown>
         );
     }
 }

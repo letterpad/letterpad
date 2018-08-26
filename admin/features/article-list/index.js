@@ -82,7 +82,7 @@ class ArticleList extends Component {
                     {loading ? (
                         <div>loading</div>
                     ) : (
-                        <StyledGrid>
+                        <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
                             {this.props.posts.rows.map(post => {
                                 const { categories } = filterTaxonomies(
                                     post.taxonomies

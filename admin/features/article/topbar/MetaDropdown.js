@@ -4,6 +4,7 @@ import moment from "moment";
 
 import { makeUrl } from "../../../../shared/util";
 import PostActions from "../PostActions";
+import StyledDropdown from "./Dropdown.css";
 
 class MetaDropdown extends Component {
     static propTypes = {
@@ -33,7 +34,7 @@ class MetaDropdown extends Component {
         if (!this.props.isOpen) return null;
         const permalink = makeUrl([this.state.post.type, this.state.post.slug]);
         return (
-            <div className="post-meta">
+            <StyledDropdown className="post-meta">
                 <div className="x_content m-b-20">
                     <div className="meta-label">Published at</div>
                     <input
@@ -80,7 +81,7 @@ class MetaDropdown extends Component {
                         Save
                     </button>
                 </div>
-            </div>
+            </StyledDropdown>
         );
     }
 }

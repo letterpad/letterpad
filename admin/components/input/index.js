@@ -24,14 +24,16 @@ const Wrapper = styled.div`
 `;
 
 const StyledInput = ({ label, textarea, innerRef, ...props }) => {
+    if (innerRef) {
+        props.ref = innerRef;
+    }
     return (
         <Wrapper className="form-group">
-            <label className="custom-label">{label}</label>
-            {textarea ? (
-                <textarea ref={innerRef} {...props} />
-            ) : (
-                <input ref={innerRef} {...props} />
-            )}
+            <label
+                className="custom-label"
+                dangerouslySetInnerHTML={{ __html: label }}
+            />
+            {textarea ? <textarea {...props} /> : <input {...props} />}
         </Wrapper>
     );
 };

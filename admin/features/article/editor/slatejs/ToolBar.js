@@ -10,15 +10,13 @@ const Wrapper = styled.div`
     left: 0px;
     z-index: 9;
 
-    background: linear-gradient(transparent, #dbdbdb);
-    height: 80px;
     display: flex;
     flex-flow: column-reverse;
     .toolbar-menu {
         padding: 8px;
-        background: #fff;
+        box-shadow: 0px -6px 20px rgba(0, 0, 0, 0.42);
+        background: var(--bg-base);
         text-align: center;
-        border-top: 1px solid #ddd;
 
         .material-icons {
             font-size: 18px;
