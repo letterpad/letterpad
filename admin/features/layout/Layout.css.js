@@ -15,6 +15,8 @@ export const defaultStyles = `
     hr {
         border-top: 1px solid var(--color-border);
     }
+
+    
 `;
 
 export const StyledLayout = styled.div`
@@ -23,6 +25,17 @@ export const StyledLayout = styled.div`
     grid-template-columns: 200px 1fr;
     grid-template-rows: auto 1fr auto;
     min-height: 100vh;
-
     ${defaultStyles};
+
+    background: var(--bg-base);
+
+    main {
+        background: var(--bg-base);
+    }
+    @media (max-width: 991px) {
+        .main {
+            grid-gap: 0px;
+            grid-template-columns: 200px 1fr;
+        }
+    }
 `;

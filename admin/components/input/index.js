@@ -21,6 +21,7 @@ const Wrapper = styled.div`
     textarea {
         height: auto;
     }
+    margin-bottom: 15px;
 `;
 
 const StyledInput = ({ label, textarea, innerRef, ...props }) => {
@@ -28,7 +29,7 @@ const StyledInput = ({ label, textarea, innerRef, ...props }) => {
         props.ref = innerRef;
     }
     return (
-        <Wrapper className="form-group">
+        <Wrapper className="input-box">
             <label
                 className="custom-label"
                 dangerouslySetInnerHTML={{ __html: label }}

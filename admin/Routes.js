@@ -21,7 +21,7 @@ import Media from "./features/media";
 import AuthorList from "./features/author-list";
 import Author from "./features/author";
 import AuthorCreate from "./features/author/Create";
-// import Taxonomy from "./containers/Post/Taxonomy";
+import Taxonomy from "./features/taxonomy";
 import NavigationBuilder from "./features/navigation-builder";
 import Home from "./features/home";
 import Themes from "./features/themes";
@@ -125,6 +125,18 @@ class Routes extends Component {
                         />
                         {/* Route for others */}
                         <SecuredRoute
+                            path="/admin/tags"
+                            type="post_tag"
+                            component={Taxonomy}
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
+                            path="/admin/categories"
+                            type="post_category"
+                            component={Taxonomy}
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
                             path="/admin/media"
                             component={Media}
                             settings={settings.data}
@@ -167,18 +179,7 @@ class Routes extends Component {
                         {/*
                         
                         
-                        <SecuredRoute
-                            path="/admin/tags"
-                            type="post_tag"
-                            component={Taxonomy}
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
-                            path="/admin/categories"
-                            type="post_category"
-                            component={Taxonomy}
-                            settings={settings.data}
-                        />
+                        
                         {/* Route for pages */}
                         {/*
                         

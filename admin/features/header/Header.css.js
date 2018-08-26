@@ -30,6 +30,7 @@ const StyledHeader = styled.header`
         display: none;
         @media screen and (max-width: 998px) {
             display: block;
+            z-index: 999;
         }
     }
     .icon-bar {

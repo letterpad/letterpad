@@ -4,15 +4,11 @@ import PropTypes from "prop-types";
 import MenuVertical from "./MenuVertical";
 import DATA from "./constants";
 
-class Navbar extends Component {
+class Menu extends Component {
     static propTypes = {
         router: PropTypes.object,
         settings: PropTypes.object
     };
-
-    state = { navbarOpen: false };
-
-    navbarToggle = () => this.setState(s => ({ navbarOpen: !s.navbarOpen }));
 
     render() {
         const { router } = this.props;
@@ -24,4 +20,4 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar;
+export default Menu;

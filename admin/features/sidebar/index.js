@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Navbar from "../navbar";
+import Menu from "../menu";
 import Footer from "../footer";
 
 import StyledSidebar from "./Sidebar.css";
@@ -12,12 +12,12 @@ class Sidebar extends Component {
     render() {
         const { settings } = this.props;
         return (
-            <nav className="navbar navbar-custom">
-                <StyledSidebar className="sidebar">
-                    <Navbar settings={settings} router={{ ...this.props }} />
+            <StyledSidebar>
+                <div className="sidebar">
+                    <Menu settings={settings} router={{ ...this.props }} />
                     <Footer data={settings.site_footer.value} />
-                </StyledSidebar>
-            </nav>
+                </div>
+            </StyledSidebar>
         );
     }
 }
