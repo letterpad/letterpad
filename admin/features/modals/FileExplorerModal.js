@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 
-import ModalHoc from "./ModalHoc";
+import ModalHoc from "../../components/modal";
+import StyledButton from "../../components/button";
 import FileExplorer from "../file-explorer";
 
 class FileExplorerModal extends Component {
@@ -22,30 +23,13 @@ class FileExplorerModal extends Component {
 
     render() {
         const { t } = this.props;
+
         return (
-            <React.Fragment>
-                <div className="modal-header">
-                    <button onClick={this.props.onClose} className="close">
-                        ×
-                    </button>
-                    <h4
-                        className="modal-title"
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            paddingRight: 26
-                        }}
-                    >
-                        <span>{t("modal.explorer.title")}</span>
-                        <button
-                            onClick={this.props.addNewMedia}
-                            type="button"
-                            className="btn btn-xs btn-dark"
-                        >
-                            Add New Item
-                        </button>
-                    </h4>
-                </div>
+            <ModalHoc
+                confirm
+                title={t("modal.explorer.title")}
+                onClose={this.props.onClose}
+            >
                 <div className="modal-body text-center">
                     <FileExplorer
                         author={{ id: 1 }}
@@ -56,26 +40,24 @@ class FileExplorerModal extends Component {
                     <div className="p-t-20" />
                 </div>
                 <div className="modal-footer">
-                    <button
+                    <StyledButton onClick={this.props.onClose}>
+                        {t("common.cancel")}
+                    </StyledButton>
+                    <StyledButton onClick={this.props.addNewMedia}>
+                        Add New Item
+                    </StyledButton>
+                    <StyledButton
+                        success
                         onClick={() =>
                             this.props.onMediaSelect(
                                 this.state.selectedImageUrl
                             )
                         }
-                        type="button"
-                        className="btn btn-xs btn-dark"
                     >
-                        Ok
-                    </button>
-                    <button
-                        onClick={this.props.onClose}
-                        type="button"
-                        className="btn btn-xs btn-default"
-                    >
-                        {t("common.cancel")}
-                    </button>
+                        Insert
+                    </StyledButton>
                 </div>
-            </React.Fragment>
+            </ModalHoc>
         );
     }
 }
@@ -87,6 +69,4 @@ FileExplorerModal.propTypes = {
     t: PropTypes.func
 };
 
-export default translate("translations")(
-    ModalHoc(FileExplorerModal, null, "full-width-modal file-explorer")
-);
+export default translate("translations")(FileExplorerModal);

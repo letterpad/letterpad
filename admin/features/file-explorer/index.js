@@ -1,11 +1,23 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 
+// import StyledGrid from "../../components/grid";
 import FileItem from "./FileItem";
 import InfiniteScrollList from "./InfiniteScrollList";
 import GetMedia from "../../data-connectors/GetMedia";
 import config from "../../../config";
 
+const StyledGrid = styled.div`
+    > div {
+        display: grid;
+        height: auto;
+        grid-auto-flow: row;
+        grid-auto-rows: minmax(20px, auto);
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-gap: 15px;
+    }
+`;
 class FileExplorer extends Component {
     static propTypes = {
         media: PropTypes.object,
@@ -66,20 +78,14 @@ class FileExplorer extends Component {
             />
         ));
         return (
-            <section className="module-xs">
-                <div className="row">
-                    <div className="col-lg-12">
-                        <div className="media-grid">
-                            <InfiniteScrollList
-                                data={rows}
-                                count={this.props.count}
-                                page={this.page}
-                                loadMore={this.loadMore}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <StyledGrid columns="repeat(auto-fit, minmax(200px, 1fr))">
+                <InfiniteScrollList
+                    data={rows}
+                    count={this.props.count}
+                    page={this.page}
+                    loadMore={this.loadMore}
+                />
+            </StyledGrid>
         );
     }
 }

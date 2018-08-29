@@ -63,10 +63,10 @@ const lightTheme = `
 
     --color-accent: 20,181,239;
 
-    --bg-primary: #0288d1;
-    --color-primary: #e1f5fe;
-    --bg-hover-primary: #03a9f4;
-    --color-hover-primary: #fff;
+    --bg-primary: transparent;
+    --color-primary: #333;
+    --bg-hover-primary: transparent;
+    --color-hover-primary: #111;
 
     --bg-success: #4caf50;
     --color-success: #e8f5e9;
@@ -83,9 +83,9 @@ const lightTheme = `
     --base-shade-8: #424242
     --base-shade-7: #616161
     --base-shade-6: #757575
-    --base-shade-5: #9e9e9e
-    --base-shade-4: #bdbdbd
-    --base-shade-3: #adadad;
+    --base-shade-5: #8e8e8e
+    --base-shade-4: #8e8e8e
+    --base-shade-3: #8e8e8e
     --base-shade-2: #eeeeee;
     --base-shade-1: #f5f5f5
 

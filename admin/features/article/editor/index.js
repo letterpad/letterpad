@@ -49,6 +49,10 @@ const StyledMenu = styled(TextMenu)`
     }
     .button {
         cursor: pointer;
+        .material-icons {
+            font-size: 15px;
+            padding: 2px;
+        }
     }
 `;
 
@@ -62,6 +66,11 @@ const StyledToolBar = styled(ToolBar)`
     .button {
         color: #ccc;
         cursor: pointer;
+        .material-icons {
+            font-size: 15px;
+            vertical-align: text-bottom;
+            padding: 2px 4px;
+        }
     }
 `;
 

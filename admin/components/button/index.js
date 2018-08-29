@@ -29,7 +29,7 @@ const StyledButton = styled.button`
     margin-right: 4px;
     padding: 10px 15px;
     letter-spacing: 1px;
-    font-weight: 400;
+    font-weight: 600;
     text-transform: uppercase;
 
     ${props => {

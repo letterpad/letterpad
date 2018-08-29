@@ -97,6 +97,7 @@ class ThemeSettingsModal extends Component {
 
         return (
             <ModalHoc
+                confirm
                 title={<span>Theme settings - {name}</span>}
                 onClose={this.props.onClose}
             >

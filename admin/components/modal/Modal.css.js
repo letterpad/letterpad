@@ -4,7 +4,6 @@ const applyConfirmStyle = () => `
     width: 767px;
     left: 50%;
     margin-left: -353px;
-    max-height: 80vh;
     margin-top: 10vh;
     position: absolute;
     height: auto;
@@ -65,6 +64,7 @@ const StyledModal = styled.div`
         }
         .modal-body {
             overflow-y: auto;
+            max-height: calc(100vh - 200px);
             padding: 15px;
         }
         .modal-footer {
