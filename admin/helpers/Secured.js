@@ -4,7 +4,7 @@ import jwtDecode from "jwt-decode";
 import { Route, Redirect } from "react-router-dom";
 
 import Layout from "../features/layout";
-import NoLayout from "../features/layout/NoLayout";
+// import NoLayout from "../features/layout/NoLayout";
 
 const SecuredRoute = routeProps => {
     try {
@@ -21,12 +21,12 @@ const SecuredRoute = routeProps => {
         }
         // delete the component from props. Ito had to be wrapped with the Layout component
         delete props.component;
-        const LayoutType = props.layout == "none" ? NoLayout : Layout;
+        // const LayoutType = props.layout == "none" ? NoLayout : Layout;
         return (
             <Route
                 {...props}
                 exact={exact}
-                component={LayoutType(Component, { ...props, author: user })}
+                component={Layout(Component, { ...props, author: user })}
             />
         );
     } catch (e) {

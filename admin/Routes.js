@@ -143,6 +143,11 @@ class Routes extends Component {
                             settings={settings.data}
                         />
                         <SecuredRoute
+                            path="/admin/media/:page"
+                            component={Media}
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
                             path="/admin/authors"
                             component={AuthorList}
                             settings={settings.data}
@@ -177,26 +182,6 @@ class Routes extends Component {
                             settings={settings.data}
                             component={NavigationBuilder}
                         />
-                        {/*
-                        
-                        
-                        
-                        {/* Route for pages */}
-                        {/*
-                        
-                        
-                        <SecuredRoute
-                            path="/admin/media/:page"
-                            component={Media}
-                            settings={settings.data}
-                        />
-                        
-
-                        
-                        
-                        
-                        
-                        */}
                     </Fragment>
                 </Switch>
             </I18nextProvider>

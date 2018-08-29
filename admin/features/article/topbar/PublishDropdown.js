@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import StyledSwitch from "../../../components/switch";
+import StyledButton from "../../../components/button";
 import StyledDropdown from "./Dropdown.css";
 
 import Excerpt from "./Excerpt";
@@ -26,9 +27,10 @@ class PublishDropdown extends Component {
         }
         if (status)
             return (
-                <div className="btn-item text-right">
-                    <button
-                        type="submit"
+                <div style={{ textAlign: "right" }}>
+                    <StyledButton
+                        sm
+                        success
                         onClick={e => {
                             this.props.updatePost(e, { status: status });
                             this.props.toggleDropdown(e);
@@ -36,7 +38,7 @@ class PublishDropdown extends Component {
                         className={"publish-btn btn btn-sm " + btnType}
                     >
                         {label}
-                    </button>
+                    </StyledButton>
                 </div>
             );
     };

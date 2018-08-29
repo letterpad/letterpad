@@ -2,14 +2,11 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import "./admin/_normalize.pcss";
 
-@import "./admin/_variables.pcss";
 @import "./admin/_common.pcss";
 @import "./admin/_layout.pcss";
 @import "./admin/_login.pcss";
 
-@import "./admin/_buttons.pcss";
 @import "./admin/_preloader.pcss";
-@import "./admin/_modal.pcss";
 
 .modal-open {
     overflow: hidden;
@@ -42,47 +39,4 @@ label.custom-label {
         margin-top: 71px;
         position: absolute;
     }
-}
-
-/* Table */
-
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
-    padding: 12px 8px;
-    border-top: none;
-}
-
-.table > thead tr > th {
-    color: var(--color-text-secondary);
-    text-transform: uppercase;
-    font-size: 13px;
-    font-weight: 500;
-}
-
-tr td:first-child,
-tr th:first-child {
-    padding-left: 0px !important;
-}
-
-/*----------------------------------------------
-[Modal Backdrop]
-*/
-#modal-backdrop {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    z-index: 1;
-    top: 0px;
-    opacity: 0.4;
-    left: 0px;
-}
-
-.prism-dark {
-    background: #252424;
-    color: #fff;
 }

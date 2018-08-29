@@ -6,7 +6,7 @@ import StyledTags from "../../../components/tags";
 import { TAX_SUGGESTIONS } from "../../../../shared/queries/Queries";
 import PostActions from "../PostActions";
 
-export class Tags extends Component {
+export class Taxonomies extends Component {
     static propTypes = {
         suggestions: PropTypes.array,
         post: PropTypes.object,
@@ -73,4 +73,4 @@ const TaxSuggestionsData = graphql(TAX_SUGGESTIONS, {
     })
 });
 
-export default TaxSuggestionsData(Tags);
+export default TaxSuggestionsData(Taxonomies);

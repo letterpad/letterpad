@@ -13,10 +13,24 @@ const Wrapper = styled.div`
 
         li {
             display: inline;
-
+            a {
+                border-right: 1px solid var(--color-border);
+                background: var(--bg-sections);
+                padding: 8px 14px;
+                font-weight: 400;
+                &.active,
+                &:hover {
+                    background: rgba(var(--color-accent));
+                }
+            }
             &:first-child a {
                 border-top-left-radius: 4px;
                 border-bottom-left-radius: 4px;
+            }
+            &:last-child a {
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                border-right: none;
             }
         }
     }

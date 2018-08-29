@@ -5,12 +5,15 @@ import Header from "../header";
 import Sidebar from "../sidebar";
 
 import { lightTheme, darkTheme } from "../../css-variables";
-import { StyledLayout } from "./Layout.css";
+import { StyledLayout, defaultStyles } from "./Layout.css";
 
 const CSSVariables = styled.div`
     ${props => (props.dark ? darkTheme : lightTheme)};
 `;
 
+const NoLayout = styled.div`
+    ${defaultStyles};
+`;
 export default function Layout(ComponentClass, props) {
     const settings = props.settings;
 
@@ -62,19 +65,27 @@ export default function Layout(ComponentClass, props) {
             const classes = this.state.sidebarOpen ? "" : " collapsed";
             return (
                 <CSSVariables dark>
-                    <StyledLayout className={"main a two-column" + classes}>
-                        <Header
-                            sidebarToggle={this.sidebarToggle}
-                            settings={settings}
-                            author={_props.author}
-                        />
-                        <Sidebar {..._props} />
-                        <main>
+                    {props.layout == "none" ? (
+                        <NoLayout>
                             <div className="content-area">
                                 <ComponentClass {..._props} />
                             </div>
-                        </main>
-                    </StyledLayout>
+                        </NoLayout>
+                    ) : (
+                        <StyledLayout className={"main a two-column" + classes}>
+                            <Header
+                                sidebarToggle={this.sidebarToggle}
+                                settings={settings}
+                                author={_props.author}
+                            />
+                            <Sidebar {..._props} />
+                            <main>
+                                <div className="content-area">
+                                    <ComponentClass {..._props} />
+                                </div>
+                            </main>
+                        </StyledLayout>
+                    )}
                 </CSSVariables>
             );
         }
