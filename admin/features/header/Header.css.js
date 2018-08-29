@@ -27,13 +27,18 @@ const StyledHeader = styled.header`
     }
     button.navbar-toggle {
         margin: 0px;
-        background: var(--bg-base);
-        border: 1px solid var(--bg-base);
+        background: transparent;
+        border: 1px solid transparent;
         color: var(--color-base);
         display: none;
+        margin-right: 8px;
         @media screen and (max-width: 998px) {
             display: block;
+            cursor: pointer;
             z-index: 999;
+            i {
+                font-size: 20px;
+            }
         }
     }
     .navbar-brand {

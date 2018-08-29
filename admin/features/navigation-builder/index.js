@@ -70,7 +70,7 @@ class NavigationBuilder extends Component {
                         categories={this.props.categories}
                         updateOption={this.setOption}
                     />
-                    <StyledButton onClick={this.submitData}>
+                    <StyledButton success onClick={this.submitData}>
                         {t("common.save")}
                     </StyledButton>
                 </div>

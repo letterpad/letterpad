@@ -102,25 +102,17 @@ class EditMediaInfo extends Component {
 
                             <div className="media-info">
                                 <div className="navigation">
-                                    <button
-                                        className="btn btn-sm btn-dark"
-                                        onClick={this.goPrevious}
-                                    >
+                                    <StyledButton onClick={this.goPrevious}>
                                         <i className="fa fa-long-arrow-left" />
-                                    </button>{" "}
-                                    <button
-                                        className="btn btn-sm btn-dark"
-                                        onClick={this.goNext}
-                                    >
+                                    </StyledButton>{" "}
+                                    <StyledButton onClick={this.goNext}>
                                         <i className="fa fa-long-arrow-right" />
-                                    </button>
+                                    </StyledButton>
                                 </div>
                                 <StyledInput
                                     label="Title"
                                     value={this.state.media.name}
-                                    className="form-control"
                                     placeholder="Give a name for this item"
-                                    aria-invalid="false"
                                     innerRef={this.itemName}
                                     onChange={e =>
                                         this.onChange("name", e.target.value)
@@ -129,11 +121,9 @@ class EditMediaInfo extends Component {
                                 <StyledInput
                                     label="Description"
                                     value={this.state.media.description}
-                                    className="form-control"
                                     textarea
                                     rows="2"
                                     placeholder="Write a short description about this item"
-                                    aria-invalid="false"
                                     onChange={e =>
                                         this.onChange(
                                             "description",
@@ -148,7 +138,7 @@ class EditMediaInfo extends Component {
                         <StyledButton onClick={this.props.onClose}>
                             {t("common.cancel")}
                         </StyledButton>
-                        <StyledButton onClick={this.updateMedia}>
+                        <StyledButton success onClick={this.updateMedia}>
                             Update
                         </StyledButton>
                     </div>

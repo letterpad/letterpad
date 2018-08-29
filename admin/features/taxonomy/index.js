@@ -13,6 +13,7 @@ import StyledTaxonomy from "./Taxonomy.css";
 import StyledSection from "../../components/section";
 import StyledInput from "../../components/input";
 import StyledGrid from "../../components/grid";
+import StyledButton from "../../components/button";
 
 const NewTagWrapper = styled.div`
     display: flex;
@@ -35,23 +36,6 @@ const Icon = styled.i`
     margin-right: 0.5rem;
     font-size: 20px;
     cursor: pointer;
-`;
-
-const ButtonsWrapper = styled.div`
-    margin-top: 20px;
-    width: 140px;
-    display: flex;
-    justify-content: space-between;
-    align-self: flex-end;
-    align-items: center;
-`;
-
-const ButtonLink = styled.a`
-    color: ${p => p.color};
-    :hover {
-        text-decoration: none;
-        color: ${p => p.color};
-    }
 `;
 
 class Taxonomy extends Component {
@@ -286,7 +270,6 @@ class Taxonomy extends Component {
                             />
                             <StyledInput
                                 label={t("common.description")}
-                                className="form-control"
                                 rows="2"
                                 textarea
                                 placeholder={`Enter a short description about the ${slug} tag. This maybe used by some themes`}
@@ -294,24 +277,23 @@ class Taxonomy extends Component {
                                 onChange={this.handleChange}
                                 value={desc ? desc : ""}
                             />
-                            <ButtonsWrapper>
-                                <ButtonLink
+                            <div>
+                                <StyledButton
                                     href="#"
-                                    color="#d40c31"
                                     onClick={e => {
                                         e.preventDefault();
                                         this.deleteTax();
                                     }}
                                 >
                                     Delete tag
-                                </ButtonLink>
-                                <button
-                                    className="btn btn-sm btn-dark"
+                                </StyledButton>
+                                <StyledButton
+                                    success
                                     onClick={() => this.editSaveTaxonomy(id)}
                                 >
                                     Save
-                                </button>
-                            </ButtonsWrapper>
+                                </StyledButton>
+                            </div>
                         </div>
                     </StyledGrid>
                 </StyledTaxonomy>

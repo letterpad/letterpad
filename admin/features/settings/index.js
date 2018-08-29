@@ -103,7 +103,9 @@ class Settings extends Component {
                         data={data}
                         updateOption={this.setOption}
                     />
-                    <Button onClick={this.submitData}>Save</Button>
+                    <Button success onClick={this.submitData}>
+                        Save
+                    </Button>
                 </Tabs>
             </StyledSection>
         );

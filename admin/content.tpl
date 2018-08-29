@@ -3,9 +3,7 @@
 <head>
     <meta charSet="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="{{BASE_NAME}}/admin/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="{{BASE_NAME}}/admin/css/vertical.css" rel="stylesheet"/>
-    <link href="{{BASE_NAME}}/admin/css/font-awesome.min.css" rel="stylesheet"/>
     {{STYLE_TAGS}}
 </head>
 
@@ -24,6 +22,7 @@
         
     {{SCRIPT_TAGS}}
     <link href="{{BASE_NAME}}/admin/css/prism-theme.css" rel="stylesheet"/>
+    <link href="{{BASE_NAME}}/admin/css/font-awesome.min.css" rel="stylesheet"/>
 </body>
 
 </html>

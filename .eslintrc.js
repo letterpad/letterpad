@@ -16,12 +16,8 @@ module.exports = {
     },
     plugins: ["react"],
     globals: {
-        qEditor: true,
-        Quill: true,
         process: true,
-        hljs: true,
         ga: true,
-        Masonry: true,
         __dirname: true
     },
     rules: {

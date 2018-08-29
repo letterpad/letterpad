@@ -1,10 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
+import styled from "styled-components";
 
 import config from "config";
 import { uploadFile } from "../../util";
 import Input from "../../components/input";
+
+const ImageWrapper = styled.div`
+    margin-top: 15px;
+    margin-bottom: 15px;
+    .logo-image,
+    .banner-image {
+        display: flex;
+        align-items: center;
+    }
+`;
 
 class General extends Component {
     static propTypes = {
@@ -134,7 +145,7 @@ class General extends Component {
                     }
                 />
 
-                <div className="form-group">
+                <ImageWrapper>
                     <label className="custom-label">Upload Logo</label>
                     <div className="logo-wrapper">
                         {!this.state.site_logo ? (
@@ -173,8 +184,8 @@ class General extends Component {
                         className="hide"
                         name="uploads[]"
                     />
-                </div>
-                <div className="form-group">
+                </ImageWrapper>
+                <ImageWrapper>
                     <label className="custom-label">Upload Hero Banner</label>
                     <div className="banner-wrapper">
                         {!this.state.banner ? (
@@ -188,22 +199,22 @@ class General extends Component {
                                 Add Banner
                             </a>
                         ) : (
-                            <a
-                                href="#"
-                                onClick={e => {
-                                    e.preventDefault();
-                                    this.updateBanner("");
-                                }}
-                            >
-                                <div className="banner-image">
-                                    <img
-                                        width="300"
-                                        alt=""
-                                        src={config.baseName + banner}
-                                    />
-                                </div>
-                                Remove Banner
-                            </a>
+                            <div className="banner-image">
+                                <img
+                                    width="300"
+                                    alt=""
+                                    src={config.baseName + banner}
+                                />
+                                <a
+                                    href="#"
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        this.updateBanner("");
+                                    }}
+                                >
+                                    Remove Banner
+                                </a>
+                            </div>
                         )}
                     </div>
                     <input
@@ -215,13 +226,12 @@ class General extends Component {
                         className="hide"
                         name="uploads[]"
                     />
-                </div>
+                </ImageWrapper>
 
                 <Input
                     label={t("settings.general.site.ga")}
                     defaultValue={this.props.data.google_analytics.value}
                     type="text"
-                    className="form-control"
                     placeholder={t("settings.general.site.ga.placeholder")}
                     onBlur={e =>
                         this.updateOption("google_analytics", e.target.value)

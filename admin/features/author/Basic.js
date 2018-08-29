@@ -79,7 +79,7 @@ class Basic extends Component {
                     onBlur={e => this.updateOption("email", e.target.value)}
                 />
 
-                <section className="form-group">
+                <section>
                     <label className="custom-label">Upload Avatar</label>
                     <section className="avatar-wrapper">
                         <section className="avatar-image">
