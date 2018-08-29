@@ -16,7 +16,8 @@
         "prod": "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
         "prodPm2": "NODE_ENV=production concurrently --kill-others \"pm2 start ./apiBuild/server.js --name=lpDemoApi\" \"pm2 start ./server.js --name=lpDemo\"",
         "test": "jest --runInBand",
-        "translate": "node ./utils/translation_tools"
+        "translate": "node ./utils/translation_tools",
+        "precommit": "./utils/precommit.sh"
     },
     "env": {
         "jest": true

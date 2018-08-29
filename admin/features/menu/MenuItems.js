@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import classNames from "classnames";
+import PropTypes from "prop-types";
 
 import Dropdown from "./Dropdown";
 import Item from "./Item";
 
 class MenuItems extends Component {
+    static propTypes = {
+        secondary: PropTypes.string,
+        items: PropTypes.array
+    };
     render() {
         const className = classNames("nav navbar-nav", {
             "navbar-right": this.props.secondary

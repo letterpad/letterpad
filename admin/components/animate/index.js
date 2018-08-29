@@ -1,6 +1,12 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class Animate extends Component {
+    static propTypes = {
+        stateName: PropTypes.string,
+        isOpen: PropTypes.func,
+        onClose: PropTypes.func
+    };
     state = {
         isOpen: this.props.isOpen,
         onAppear: false,
@@ -18,7 +24,6 @@ class Animate extends Component {
     componentWillUnmount() {
         this.clearSetUp();
     }
-
     shouldComponentUpdate(nextProps, nextState) {
         if (this.state.onAppear && nextState.onAppear) {
             return false;

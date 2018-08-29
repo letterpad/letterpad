@@ -61,4 +61,4 @@ const StyledDialog = styled.div`
         }
     }
 `;
-export default StyledModal;
+export default StyledDialog;
