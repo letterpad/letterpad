@@ -36,6 +36,7 @@ class Routes extends Component {
     static propTypes = {
         settings: PropTypes.object
     };
+
     render() {
         const settings = this.props.settings;
         if (settings.loading) {

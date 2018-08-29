@@ -10,6 +10,7 @@ class MenuItems extends Component {
         secondary: PropTypes.string,
         items: PropTypes.array
     };
+
     render() {
         const className = classNames("nav navbar-nav", {
             "navbar-right": this.props.secondary

@@ -37,6 +37,7 @@ class DropDown extends Component {
         e.preventDefault();
         this.setState({ isOpen: flag ? flag : !this.state.isOpen });
     };
+
     render() {
         const { name, children, className } = this.props;
         const ddClassPublish = " dropdown" + (this.state.isOpen ? " open" : "");

@@ -51,6 +51,7 @@ class Media extends Component {
             rows: []
         }
     };
+
     state = {
         page: 1,
         confirmDelete: false,

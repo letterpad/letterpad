@@ -123,6 +123,7 @@ const ArticleHoc = WrappedComponent => {
 
             return result.data.posts.rows;
         };
+
         deleteSelectedPosts = () => {
             this.deletePosts(this.state.selectedPosts).then(() => {
                 this.setState({ selectedPosts: [], allPostsSelected: false });

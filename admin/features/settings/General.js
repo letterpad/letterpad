@@ -15,6 +15,7 @@ class General extends Component {
     };
 
     uploadLogoInputRef = React.createRef();
+
     uploadBannerRef = React.createRef();
 
     state = {

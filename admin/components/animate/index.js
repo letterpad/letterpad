@@ -7,6 +7,7 @@ class Animate extends Component {
         isOpen: PropTypes.func,
         onClose: PropTypes.func
     };
+
     state = {
         isOpen: this.props.isOpen,
         onAppear: false,
@@ -15,6 +16,7 @@ class Animate extends Component {
     };
 
     modalWrapperRef = React.createRef();
+
     timerIds = [];
 
     componentDidMount() {
@@ -24,6 +26,7 @@ class Animate extends Component {
     componentWillUnmount() {
         this.clearSetUp();
     }
+
     shouldComponentUpdate(nextProps, nextState) {
         if (this.state.onAppear && nextState.onAppear) {
             return false;
@@ -57,6 +60,7 @@ class Animate extends Component {
     onAppear = () => {
         this.setState({ onAppear: true });
     };
+
     onRemoveAppear = () => {
         this.setState({ onAppear: false, isVisible: true });
     };
@@ -85,6 +89,7 @@ class Animate extends Component {
         evt.preventDefault();
         this.close();
     };
+
     render() {
         return <div />;
     }

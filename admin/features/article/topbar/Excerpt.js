@@ -8,7 +8,9 @@ class Excerpt extends Component {
     static propTypes = {
         post: PropTypes.object
     };
+
     maxLength = 160;
+
     state = {
         chars: 0,
         excerpt: ""
@@ -45,6 +47,7 @@ class Excerpt extends Component {
             ) + "..."
         );
     };
+
     setData = excerpt => {
         this.setState({ chars: excerpt.length, excerpt });
         PostActions.setData({

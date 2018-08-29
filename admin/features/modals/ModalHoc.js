@@ -17,6 +17,7 @@ const ModalHoc = (WrappedComponent, id = "", classes = "") => {
         };
 
         modalWrapperRef = React.createRef();
+
         timerIds = [];
 
         componentDidMount() {

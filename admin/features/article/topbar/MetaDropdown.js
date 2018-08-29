@@ -16,6 +16,7 @@ class MetaDropdown extends Component {
         isOpen: PropTypes.bool,
         updatePost: PropTypes.func.isRequired
     };
+
     state = {
         post: this.props.post
     };

@@ -38,6 +38,7 @@ class User extends Component {
             this.setState({ open: false });
         }, 100);
     };
+
     render() {
         const name = (
             <div>

@@ -36,9 +36,11 @@ export default class ThemeItem extends Component {
         });
         return false;
     };
+
     toggleSettings = () => {
         this.setState({ settingsOpen: !this.state.settingsOpen });
     };
+
     onSave = async data => {
         const isAdmin = true;
         await appoloClient(isAdmin).mutate({
@@ -50,6 +52,7 @@ export default class ThemeItem extends Component {
         });
         this.setState({ settingsOpen: false });
     };
+
     render() {
         const { theme, selectTheme } = this.props;
 

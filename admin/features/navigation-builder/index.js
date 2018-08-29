@@ -31,6 +31,7 @@ class NavigationBuilder extends Component {
         this.updatedOptions = {};
         document.body.classList.add("navigation-builder-page");
     }
+
     componentWillUnmount() {
         document.body.classList.remove("navigation-builder-page");
     }

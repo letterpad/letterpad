@@ -11,6 +11,7 @@ class Select extends Component {
         bold: PropTypes.any,
         label: PropTypes.any
     };
+
     state = {
         open: false,
         options: this.props.options,

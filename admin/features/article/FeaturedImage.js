@@ -39,16 +39,19 @@ class FeaturedImage extends Component {
         toggleFileExplorerModal: PropTypes.func,
         t: PropTypes.func
     };
+
     static defaultProps = {
         post: {
             cover_image: ""
         }
     };
+
     state = {
         cover_image: this.props.post.cover_image,
         fileExplorerOpen: false,
         imageList: []
     };
+
     uploadInputRef = React.createRef();
 
     componentDidMount() {

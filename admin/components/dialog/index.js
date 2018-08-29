@@ -22,6 +22,7 @@ export default class ModalHoc extends Component {
     };
 
     modalWrapperRef = React.createRef();
+
     timerIds = [];
 
     componentDidMount() {
@@ -65,6 +66,7 @@ export default class ModalHoc extends Component {
     onEnter = () => {
         this.setState({ onEnter: true });
     };
+
     onRemoveAppear = () => {
         this.setState({ onEnter: false, isVisible: true });
     };

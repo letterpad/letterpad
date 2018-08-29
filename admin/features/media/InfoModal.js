@@ -56,6 +56,7 @@ class EditMediaInfo extends Component {
         this.updateMedia();
         this.props.previous();
     };
+
     goNext = e => {
         e.preventDefault();
         this.updateMedia();

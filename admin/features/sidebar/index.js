@@ -9,6 +9,7 @@ class Sidebar extends Component {
     static propTypes = {
         settings: PropTypes.object
     };
+
     render() {
         const { settings } = this.props;
         return (

@@ -20,6 +20,7 @@ class Create extends Component {
             email: ""
         }
     };
+
     static propTypes = {
         author: PropTypes.object,
         history: PropTypes.object,
@@ -27,10 +28,13 @@ class Create extends Component {
         loading: PropTypes.bool,
         roles: PropTypes.array
     };
+
     author = {};
+
     state = {
         selectedRole: "4"
     };
+
     componentDidMount() {
         this.setOption("role_id", this.state.selectedRole);
         document.body.classList.add("create-author-page");

@@ -40,6 +40,7 @@ class PublishDropdown extends Component {
                 </div>
             );
     };
+
     render() {
         if (!this.props.isOpen) return null;
         const post = {

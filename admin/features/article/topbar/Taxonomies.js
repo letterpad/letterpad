@@ -49,6 +49,7 @@ export class Tags extends Component {
         PostActions.setTaxonomies({ [this.props.for]: newTags });
         this.setState({ tags: newTags });
     };
+
     render() {
         const name = this.props.for === "post_tag" ? "Tags" : "Categories";
         return (

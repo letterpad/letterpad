@@ -103,6 +103,7 @@ class NavigationTreeBuilder extends Component {
         }
         return null;
     }
+
     /**
      * Add a new item in the navigation
      *
@@ -277,6 +278,7 @@ class NavigationTreeBuilder extends Component {
             nodeInfo: props
         });
     };
+
     /**
      *  Create UI for menu item title and toolbar to edit/delete a menu item
      *
@@ -308,6 +310,7 @@ class NavigationTreeBuilder extends Component {
             )
         };
     }
+
     render() {
         const { t } = this.props;
         return (

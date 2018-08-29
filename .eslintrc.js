@@ -30,6 +30,7 @@ module.exports = {
         quotes: ["error", "double"],
         semi: ["error", "always"],
         "react/display-name": 0,
-        "no-console": 0
+        "no-console": 0,
+        "lines-between-class-members": ["error", "always"]
     }
 };
