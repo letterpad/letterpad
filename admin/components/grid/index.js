@@ -40,7 +40,7 @@ const autoRows = ({ minRowHeight = "20px" }) => `minmax(${minRowHeight}, auto)`;
 const frGetter = value =>
     typeof value === "number" ? `repeat(${value}, 1fr)` : value;
 
-const gap = ({ gap = "12px" }) => gap;
+const gap = ({ gap = "15px" }) => gap;
 
 const flow = ({ flow = "row" }) => flow;
 

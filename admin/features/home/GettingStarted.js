@@ -16,19 +16,21 @@ const GettingStarted = ({ t }) => {
             <StyledList>
                 <li>
                     <StyledIcon name="settings" />
-                    <StyledLink to="/admin/settings">
+                    <StyledLink normal to="/admin/settings">
                         {t("home.configure")}
                     </StyledLink>
                 </li>
                 <li>
                     <StyledIcon name="edit" />
-                    <StyledLink to="/admin/post-new">
+                    <StyledLink normal to="/admin/post-new">
                         {t("home.write")}
                     </StyledLink>
                 </li>
                 <li>
                     <StyledIcon name="visibility" />
-                    <StyledLink to="/">{t("home.view")}</StyledLink>
+                    <StyledLink normal to="/">
+                        {t("home.view")}
+                    </StyledLink>
                 </li>
             </StyledList>
         </StyledCard>

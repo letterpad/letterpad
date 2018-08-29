@@ -70,7 +70,7 @@ class EditAuthor extends Component {
                                 data={this.props.author}
                                 updateOption={this.setOption}
                             />
-                            <StyledButton onClick={this.submitData}>
+                            <StyledButton success onClick={this.submitData}>
                                 Save
                             </StyledButton>
                         </div>
@@ -81,7 +81,7 @@ class EditAuthor extends Component {
                                 data={this.props.author.social}
                                 updateOption={this.setOption}
                             />
-                            <StyledButton onClick={this.submitData}>
+                            <StyledButton success onClick={this.submitData}>
                                 Save
                             </StyledButton>
                         </div>
@@ -92,7 +92,7 @@ class EditAuthor extends Component {
                                 data={this.props.author}
                                 updateOption={this.setOption}
                             />
-                            <StyledButton onClick={this.submitData}>
+                            <StyledButton success onClick={this.submitData}>
                                 Save
                             </StyledButton>
                         </div>

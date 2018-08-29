@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import User from "./User";
 import config from "../../../config";
 import StyledHeader from "./Header.css";
+import StyledLink from "../../components/link";
 
 class Header extends Component {
     static propTypes = {
@@ -31,14 +32,14 @@ class Header extends Component {
                 </div>
 
                 <div className="right-side">
-                    <a
+                    <StyledLink
                         className="view-site"
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={config.baseName + "/"}
+                        to={config.baseName + "/"}
                     >
                         View Your site
-                    </a>
+                    </StyledLink>
                     <User author={this.props.author} />
                 </div>
             </StyledHeader>

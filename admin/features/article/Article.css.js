@@ -7,6 +7,13 @@ const StyledArticle = styled.article`
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol";
+
+    .prism-dark {
+        background: #252424;
+        color: #fff;
+        padding: 4px 8px;
+        font-size: 14px;
+    }
 `;
 
 export default StyledArticle;

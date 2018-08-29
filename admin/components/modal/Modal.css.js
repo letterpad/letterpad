@@ -66,6 +66,18 @@ import styled from "styled-components";
 //         opacity: 0;
 //     }
 // `;
+
+const applyConfirmStyle = () => `
+    width: 767px;
+    left: 50%;
+    margin-left: -353px;
+    max-height: 80vh;
+    margin-top: 10vh;
+    position: absolute;
+    height: auto;
+    box-shadow: var(--box-shadow);
+    background: var(--bg-sections);
+`;
 const StyledModal = styled.div`
     opacity: 0;
     display: block;
@@ -75,7 +87,6 @@ const StyledModal = styled.div`
     top: 0;
     width: 100%;
     z-index: 999;
-    background: var(--bg-base);
     transition: 0.2s all linear;
     transform: scale(0.7);
     &.in {
@@ -92,27 +103,33 @@ const StyledModal = styled.div`
         transform: scale(0.7);
     }
 
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        min-height: 16.42857143px;
-        padding: 26px 16px;
-        border-bottom: 1px solid var(--bg-sections);
-        h3 {
-            padding: 15px 0px;
-            margin: 0px;
-        }
-        .material-icons {
-            color: var(--color-text-2);
-            cursor: pointer;
-        }
-    }
     .modal-wrapper {
         height: 100%;
         display: grid;
-        grid-template-rows: 52px auto 52px;
-
+        grid-template-rows: 52px minmax(min-content, max-content) 52px;
+        top: 0px;
+        left: 0px;
+        height: 100vh;
+        width: 100vw;
+        position: fixed;
+        background: var(--bg-sections);
+        ${props => props.confirm && applyConfirmStyle()};
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 16.42857143px;
+            padding: 26px 16px;
+            border-bottom: 1px solid var(--color-border);
+            h3 {
+                padding: 15px 0px;
+                margin: 0px;
+            }
+            .material-icons {
+                color: var(--color-text-2);
+                cursor: pointer;
+            }
+        }
         .modal-body {
             overflow-y: auto;
             padding: 15px;
@@ -123,8 +140,18 @@ const StyledModal = styled.div`
             width: 100%;
             justify-content: flex-end;
             padding: 0px 28px;
-            border-top: 1px solid var(--bg-sections);
+            border-top: 1px solid var(--color-border);
         }
+    }
+
+    .backdrop {
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        background: var(--base-shade-4);
+        opacity: 1;
     }
 `;
 export default StyledModal;

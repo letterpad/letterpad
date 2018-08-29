@@ -9,8 +9,10 @@ import ThemeItem from "./ThemeItem";
 
 import StyledSection from "../../components/section";
 import StyledGrid from "../../components/grid";
-import StyledButton from "../../components/button";
 import StyledCard from "../../components/card";
+import StyledInput from "../../components/input";
+
+let SCROLLTOP = 0;
 
 class Themes extends Component {
     static propTypes = {
@@ -20,14 +22,15 @@ class Themes extends Component {
 
     state = {
         css: "",
-        themes: []
+        themes: [],
+        loading: true
     };
 
     updatedOptions = {};
 
     componentDidMount() {
+        this.setState({ loading: true }, this.getThemes);
         document.body.classList.add("themes-page");
-        this.getThemes();
     }
 
     componentWillUnmount() {
@@ -47,12 +50,24 @@ class Themes extends Component {
         };
     }
 
+    getSnapshotBeforeUpdate = (prevProps, prevState) => {
+        if (typeof window === "undefined") return null;
+        if (prevState.loading) return null;
+        SCROLLTOP = window.scrollY;
+        return null;
+    };
+
+    componentDidUpdate() {
+        if (typeof window === "undefined") return null;
+        window.scrollTo(0, SCROLLTOP);
+    }
+
     getThemes = () => {
         const url = makeUrl("/admin/getThemes");
         fetch(url, { headers: { Authorization: localStorage.token } })
             .then(res => res.json())
             .then(themes => {
-                this.setState({ themes });
+                this.setState({ themes, loading: false });
             });
     };
 
@@ -66,8 +81,8 @@ class Themes extends Component {
         this.updatedOptions[option] = value;
     };
 
-    submitData = e => {
-        e.preventDefault();
+    activateTheme = async e => {
+        e && e.preventDefault();
         const settings = [];
         Object.keys(this.updatedOptions).forEach(option => {
             let value = this.updatedOptions[option];
@@ -76,14 +91,14 @@ class Themes extends Component {
                 value
             });
         });
-        this.props.updateOptions(settings).then(() => {
-            this.getThemes();
-            notify.show("Theme settings saved", "success", 3000);
-        });
+        await this.props.updateOptions(settings);
+        //this.getThemes();
+        notify.show("Theme Activated", "success", 3000);
     };
 
-    activateTheme = (e, theme) => {
+    selectTheme = (e, theme) => {
         e.preventDefault();
+        if (e.target.className == "material-icons") return;
         const modifiedThemes = this.state.themes.map(items => {
             items.active = false;
             if (theme.name === items.name) {
@@ -91,42 +106,49 @@ class Themes extends Component {
             }
             return items;
         });
-        this.setState({
-            themes: modifiedThemes
-        });
         this.updatedOptions.theme = theme.short_name;
+        this.setState(
+            {
+                themes: modifiedThemes
+            },
+            () => {
+                this.activateTheme();
+            }
+        );
     };
 
     render() {
         return (
-            <StyledSection title="Themes" subtitle="Change themes">
+            <StyledSection>
                 <div>
-                    <div className="card">
-                        <textarea
-                            className="form-control"
+                    <StyledCard
+                        title="Custom CSS"
+                        subtitle="Here you can write additional css to customize the theme. (optional)"
+                    >
+                        <StyledInput
+                            textarea
                             rows="7"
                             placeholder="Additional CSS"
-                            aria-invalid="false"
                             onChange={this.handleCssChange}
                         />
-                    </div>
+                    </StyledCard>
                     <br />
                     <StyledCard
                         title="Select Theme"
                         subtitle="Browse your themes here"
                     >
-                        <StyledGrid columns="repeat(auto-fit,minmax(300px,1fr))">
-                            {this.state.themes.map((theme, idx) => (
-                                <ThemeItem
-                                    key={idx}
-                                    theme={theme}
-                                    activateTheme={this.activateTheme}
-                                />
-                            ))}
-                        </StyledGrid>
+                        <div>
+                            <StyledGrid columns="repeat(auto-fit,minmax(250px,1fr))">
+                                {this.state.themes.map((theme, idx) => (
+                                    <ThemeItem
+                                        key={idx}
+                                        theme={theme}
+                                        selectTheme={this.selectTheme}
+                                    />
+                                ))}
+                            </StyledGrid>
+                        </div>
                     </StyledCard>
-
-                    <StyledButton onClick={this.submitData}>Save</StyledButton>
                 </div>
             </StyledSection>
         );

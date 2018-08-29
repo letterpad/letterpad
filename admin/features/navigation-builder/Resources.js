@@ -17,19 +17,19 @@ const StyledResources = styled.div`
         .list-group-item {
             background: var(--bg-sections);
             border: 1px solid var(--color-border);
-            border-left: none;
-            border-right: none;
             cursor: pointer;
             &[disabled] {
                 opacity: 0.3;
                 cursor: not-allowed;
             }
             &:first-child {
-                border-top: none;
+                border-top-right-radius: 4px;
+                border-top-left-radius: 4px;
             }
             &:last-child {
-                border-bottom: none;
                 margin-bottom: 0;
+                border-bottom-right-radius: 4px;
+                border-bottom-left-radius: 4px;
             }
 
             position: relative;

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import StyledModal from "./Modal.css";
 
-//const ModalHoc = (WrappedComponent, id = "", classes = "") => {
 export default class ModalHoc extends Component {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
@@ -101,9 +100,9 @@ export default class ModalHoc extends Component {
         className += this.state.onEnter ? " onEnter" : "";
         className += this.state.onLeave ? " onLeave" : "";
 
-        console.log(new Date(), className);
         return (
-            <StyledModal className={className}>
+            <StyledModal className={className} {...this.props}>
+                <div className="backdrop" />
                 <div className="modal-wrapper">
                     <div className="modal-header">
                         <h3>{this.props.title}</h3>
@@ -115,43 +114,7 @@ export default class ModalHoc extends Component {
                     </div>
                     {this.props.children}
                 </div>
-                <div className="backdrop" />
             </StyledModal>
         );
     }
-
-    // render() {
-    //     let style = this.state.onEnter ? { display: "flex" } : {};
-    //     let modalClass = this.props.className || "";
-    //     let modalDialogClass = this.props.dialogClassName || "";
-    //     return (
-    //         <StyledModal full>
-    //             <div
-    //                 ref={this.modalWrapperRef}
-    //                 onClick={this.handleClick.bind(this)}
-    //                 className={
-    //                     "modal-window fade" +
-    //                     (this.state.onEnter ? " in " : "") +
-    //                     modalClass
-    //                 }
-    //                 style={style}
-    //                 role="dialog"
-    //             >
-    //                 <div className={"modal-dialog " + modalDialogClass}>
-    //                     <div className="modal-content">
-    //                         {this.props.children}
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //             {this.state.isOpen ? (
-    //                 <div
-    //                     className={
-    //                         "modal-backdrop fade" +
-    //                         (this.state.onEnter ? " in" : "")
-    //                     }
-    //                 />
-    //             ) : null}
-    //         </StyledModal>
-    //     );
-    // }
 }

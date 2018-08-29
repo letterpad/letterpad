@@ -38,7 +38,7 @@ const Stats = ({ stats, loading, t }) => {
     const data = items.map((item, idx) => (
         <li key={idx}>
             <StyledIcon name={item.icon} />
-            <StyledLink to={item.link}>
+            <StyledLink normal to={item.link}>
                 <span>{item.value}</span>
                 &nbsp;&nbsp;
                 <span>{item.label}</span>
@@ -47,10 +47,7 @@ const Stats = ({ stats, loading, t }) => {
     ));
 
     return (
-        <StyledCard
-            title={t("home.stats")}
-            subtitle={t("home.stats.tagline")}
-        >
+        <StyledCard title={t("home.stats")} subtitle={t("home.stats.tagline")}>
             {loading ? <span>...</span> : <StyledList>{data}</StyledList>}
         </StyledCard>
     );

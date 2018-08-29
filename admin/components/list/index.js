@@ -6,6 +6,10 @@ const StyledList = styled.ul`
     line-height: 30px;
     list-style-type: none;
     padding: 0px;
+    li {
+        display: flex;
+        align-items: center;
+    }
 `;
 
 const List = ({ children, ...props }) => {

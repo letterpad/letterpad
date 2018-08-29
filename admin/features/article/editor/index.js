@@ -40,9 +40,16 @@ const StyledMenu = styled(TextMenu)`
     left: -10000px;
     margin-top: -6px;
     opacity: 0;
-    background-color: #222;
+    background-color: var(--bg-sections);
     border-radius: 4px;
     transition: opacity 0.75s;
+
+    > * + * {
+        margin-left: 8px;
+    }
+    .button {
+        cursor: pointer;
+    }
 `;
 
 const StyledToolBar = styled(ToolBar)`
@@ -55,6 +62,33 @@ const StyledToolBar = styled(ToolBar)`
     .button {
         color: #ccc;
         cursor: pointer;
+    }
+`;
+
+const StyledContent = styled(SlateContent)`
+    font-size: 18px;
+    line-height: 1.8;
+    hr {
+        border: none !important;
+        margin-top: 52px;
+        margin-bottom: 42px;
+        display: block;
+        border: 0;
+        text-align: center;
+        overflow: visible;
+        &:before {
+            font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 30px;
+            letter-spacing: 0.6em;
+            content: "...";
+            display: inline-block;
+            margin-left: 0.6em;
+            color: var(--color-base);
+            position: relative;
+            top: -30px;
+        }
     }
 `;
 
@@ -198,7 +232,7 @@ class Editor extends Component {
                         <HeadingsButton type="heading-three" />
                         <ListButtonBar />
                     </StyledMenu>
-                    <SlateContent />
+                    <StyledContent />
                     <StyledToolBar value={this.state.value}>
                         <ImageButton />
                         <HighlightButton />

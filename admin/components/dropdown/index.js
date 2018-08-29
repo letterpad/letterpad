@@ -56,7 +56,7 @@ class DropDown extends Component {
                     onClick={this.toggleDropdown}
                 >
                     {name}
-                    <span className="caret" />
+                    <i className="material-icons">arrow_drop_down</i>
                 </a>
 
                 <div className="dropdown-menu">{childrenWithProps}</div>

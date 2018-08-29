@@ -26,7 +26,7 @@ const QuickDraft = ({ draftPost, t }) => {
                     rows="2"
                     rowsmax="4"
                 />
-                <StyledButton md onClick={draftPost}>
+                <StyledButton success onClick={draftPost}>
                     {t("home.quickDraft.save")}
                 </StyledButton>
             </div>

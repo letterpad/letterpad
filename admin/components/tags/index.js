@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
 
+import Wrapper from "./Tags.css";
+
 export class StyledTags extends Component {
     static propTypes = {
         labelKey: PropTypes.string,
@@ -24,7 +26,7 @@ export class StyledTags extends Component {
             name
         } = this.props;
         return (
-            <div>
+            <Wrapper>
                 <div className="meta-label">{name}</div>
                 <div className="x_content">
                     <div className="control-group">
@@ -39,7 +41,7 @@ export class StyledTags extends Component {
                     </div>
                 </div>
                 <hr />
-            </div>
+            </Wrapper>
         );
     }
 }

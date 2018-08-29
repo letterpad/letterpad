@@ -14,11 +14,11 @@ const SettingsLink = styled.a`
 export default class ThemeItem extends Component {
     static propTypes = {
         theme: PropTypes.object.isRequired,
-        activateTheme: PropTypes.func.isRequired
+        selectTheme: PropTypes.func.isRequired
     };
 
     state = {
-        settings: null,
+        data: { settings: "[]", value: "[]" },
         settingsOpen: false
     };
 
@@ -31,7 +31,7 @@ export default class ThemeItem extends Component {
         });
 
         this.setState({
-            settings: response.data.themeSettings[0],
+            data: response.data.themeSettings[0],
             settingsOpen: true
         });
         return false;
@@ -51,15 +51,16 @@ export default class ThemeItem extends Component {
         this.setState({ settingsOpen: false });
     };
     render() {
-        const theme = this.props.theme;
+        const { theme, selectTheme } = this.props;
 
         return (
             <React.Fragment>
                 <StyledItem
                     className={"theme-item" + (theme.active ? " active" : "")}
-                    onClick={e => this.props.activateTheme(e, this.props.theme)}
+                    onClick={e => selectTheme(e, theme)}
                 >
                     <div className="theme-thumbnail">
+                        <span className="status">Active</span>
                         <img className="theme-image" src={theme.thumbnail} />
                     </div>
                     <div className="theme-body with-border">
@@ -88,7 +89,7 @@ export default class ThemeItem extends Component {
                     <ThemeSettingsModal
                         isOpen={this.state.settingsOpen}
                         onClose={this.toggleSettings}
-                        data={this.state.settings}
+                        data={this.state.data}
                         onSave={this.onSave}
                     />
                 )}

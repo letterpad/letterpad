@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import { translate } from "react-i18next";
 
 import { GetAuthors } from "../../data-connectors/GetAuthors";
 import Loader from "../../components/loader";
-// import AuthorRow from "./AuthorRow";
 
 import StyledSection from "../../components/section";
+import StyledButton from "../../components/button";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
 
@@ -44,13 +43,17 @@ class Authors extends Component {
                 subtitle={t("authors.tagline")}
             >
                 <StyledAuthorList>
-                    <Link
-                        className="btn btn-xs btn-dark"
-                        aria-label="Add"
-                        to="/admin/authors/new"
+                    <StyledButton
+                        success
+                        onClick={() => {
+                            this.props.history.push("/admin/authors/new");
+                        }}
+                        sm
                     >
-                        <i className="fa fa-plus" /> Create
-                    </Link>
+                        Add Media
+                    </StyledButton>
+                    <br />
+                    <br />
                     {loading ? (
                         <Loader />
                     ) : (

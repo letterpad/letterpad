@@ -10,23 +10,18 @@ const Wrapper = styled.div`
             height: 100%;
             width: 100%;
             object-fit: cover;
-            border-radius: 8px;
             background: var(--bg-sections);
-            &:hover {
-                opacity: 0.5;
-            }
+            border-radius: 8px;
         }
         .item-sticky {
             position: absolute;
             padding: 2px 12px;
-            background: rgba(var(--color-accent), 0.7);
-            border-radius: 8px;
-            border-top-right-radius: 0px;
-            border-bottom-left-radius: 0px;
-            text-transform: uppercase;
+            background: var(--base-shade-1);
+            opacity: 0.8;
             font-weight: 600;
             font-size: 11px;
             color: var(--color-text-1);
+            border-top-left-radius: 8px;
         }
     }
     .item-meta {
@@ -45,7 +40,11 @@ const Wrapper = styled.div`
         color: var(--color-text-2);
         height: 36px;
         margin-bottom: 10px;
+        margin-top: 0px;
         line-height: 1.4;
+    }
+    .grid-content {
+        padding-top: 15px;
     }
 `;
 
@@ -66,10 +65,12 @@ const StyledGrid = ({
                     {stickyText && <p className="item-sticky">{stickyText}</p>}
                     <img src={image} />
                 </div>
-                <h2 className="item-title">{title}</h2>
-                <div className="item-meta">
-                    {line1 && <p className="line1">{line1}</p>}
-                    {line2 && <p className="line2">{line2}</p>}
+                <div className="grid-content">
+                    <h2 className="item-title">{title}</h2>
+                    <div className="item-meta">
+                        {line1 && <p className="line1">{line1}</p>}
+                        {line2 && <p className="line2">{line2}</p>}
+                    </div>
                 </div>
             </Wrapper>
         </Link>

@@ -15,11 +15,14 @@ const ListItem = styled.div`
     display: flex;
     align-items: center;
     padding-left: 1.15rem;
-    background-color: ${({ selected }) => selected && "var(--bg-sections)"};
+    background-color: ${({ selected }) =>
+        selected && "rgba(var(--color-accent))"};
     color: ${({ selected }) => selected && "var(--color-base)"};
     &:hover {
         background-color: ${({ selected }) =>
-            selected ? "var(--bg-sections)" : "var(--bg-sections)"};
+            selected
+                ? "rgba(var(--color-accent))"
+                : "rgba(var(--color-accent))"};
     }
     cursor: pointer;
 `;

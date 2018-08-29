@@ -9,6 +9,8 @@ import Loader from "../../components/loader";
 import Basic from "./Basic";
 import StyledButton from "../../components/button";
 import StyledSection from "../../components/section";
+import StyledCard from "../../components/card";
+import StyledSelect from "../../components/select";
 
 class Create extends Component {
     static defaultProps = {
@@ -25,18 +27,22 @@ class Create extends Component {
         loading: PropTypes.bool,
         roles: PropTypes.array
     };
-
-    constructor(props) {
-        super(props);
-        this.author = {};
+    author = {};
+    state = {
+        selectedRole: "4"
+    };
+    componentDidMount() {
+        this.setOption("role_id", this.state.selectedRole);
         document.body.classList.add("create-author-page");
     }
+
     componentWillUnmount() {
         document.body.classList.remove("create-author-page");
     }
 
-    selectRole = e => {
-        this.setOption("role_id", e.target.value);
+    selectRole = role_id => {
+        this.setOption("role_id", role_id);
+        this.setState({ selectedRole: role_id });
     };
 
     setOption = (option, value) => {
@@ -65,29 +71,28 @@ class Create extends Component {
                 title="Create Author"
                 subtitle="Here you can create an author with an appropriate role for your blog"
             >
-                <div>
-                    <Basic data={{}} updateOption={this.setOption} />
-                    <div className="form-group">
-                        <label className="custom-label">Role</label>
-                        <select
-                            ref={ele =>
-                                ele && this.setOption("role_id", ele.value)
-                            }
-                            defaultValue={4}
+                <StyledCard>
+                    <React.Fragment>
+                        <Basic data={{}} updateOption={this.setOption} />
+
+                        <StyledSelect
+                            bold
+                            label="Role"
+                            selected={this.state.selectedRole}
+                            options={this.props.roles.map(role => {
+                                return { name: role.name, value: role.id };
+                            })}
                             onChange={this.selectRole}
-                            className="form-control"
-                        >
-                            {this.props.roles.map((role, i) => (
-                                <option key={i} value={role.id}>
-                                    {role.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <StyledButton onClick={this.submitData}>
-                        Create Author
-                    </StyledButton>
-                </div>
+                        />
+
+                        <br />
+                        <br />
+                        <br />
+                        <StyledButton success onClick={this.submitData}>
+                            Create Author
+                        </StyledButton>
+                    </React.Fragment>
+                </StyledCard>
             </StyledSection>
         );
     }

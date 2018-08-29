@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import MenuVertical from "./MenuVertical";
 import DATA from "./constants";
 
+import StyledMenu from "./Menu.css";
+
 class Menu extends Component {
     static propTypes = {
         router: PropTypes.object,
@@ -13,9 +15,9 @@ class Menu extends Component {
     render() {
         const { router } = this.props;
         return (
-            <div className="custom-menu">
+            <StyledMenu className="custom-menu">
                 <MenuVertical menu={DATA} router={router} />
-            </div>
+            </StyledMenu>
         );
     }
 }

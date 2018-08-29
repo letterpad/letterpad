@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 const StyledHeader = styled.header`
-    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--box-shadow);
     position: fixed;
     width: 100%;
     z-index: 1;
-    background: var(--bg-base);
+    background: var(--bg-sections);
     padding-left: 12px;
     height: 60px;
     display: flex;
@@ -17,9 +17,12 @@ const StyledHeader = styled.header`
     .right-side {
         display: flex;
         margin-right: 20px;
+        align-items: center;
 
         .view-site {
             margin-right: 10px;
+            font-weight: 500;
+            font-size: 12px;
         }
     }
     button.navbar-toggle {
@@ -32,9 +35,6 @@ const StyledHeader = styled.header`
             display: block;
             z-index: 999;
         }
-    }
-    .icon-bar {
-        background: #fff;
     }
     .navbar-brand {
         font-weight: 600;

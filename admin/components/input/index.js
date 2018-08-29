@@ -3,6 +3,14 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
+    label {
+        color: var(--base-shade-3);
+        font-weight: 500;
+        font-size: 13px;
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+    }
     input,
     textarea {
         border: 0px;
@@ -17,6 +25,27 @@ const Wrapper = styled.div`
         width: 100%;
         line-height: 1.42857143;
         height: 36px;
+        &::-webkit-input-placeholder {
+            color: var(--base-shade-3);
+        }
+        color: var(--color-base);
+
+        &::-webkit-input-placeholder {
+            /* Chrome/Opera/Safari */
+            color: pink;
+        }
+        &::-moz-placeholder {
+            /* Firefox 19+ */
+            color: pink;
+        }
+        &:-ms-input-placeholder {
+            /* IE 10+ */
+            color: pink;
+        }
+        &:-moz-placeholder {
+            /* Firefox 18- */
+            color: pink;
+        }
     }
     textarea {
         height: auto;

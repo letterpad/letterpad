@@ -2,67 +2,13 @@ import styled from "styled-components";
 
 const Sidebar = styled.div`
     border-radius: 0px;
-    background: transparent;
+    background: var(--bg-sections);
     border: 0;
     padding: 0;
     margin: 0;
     position: fixed;
     height: 100%;
     width: 200px;
-    ul.nav {
-        font-weight: 300;
-        letter-spacing: 1px;
-    }
-
-    .custom-menu {
-        height: calc(100vh - 105px);
-        overflow-y: auto;
-    }
-    .custom-menu > .nav-list {
-        li.active a {
-            color: var(--color-accent);
-            font-weight: 500;
-        }
-        > li a {
-            text-decoration: none;
-            display: block;
-            padding: 10px 15px;
-            cursor: pointer;
-            color: var(--color-menu-link);
-        }
-        > li > a {
-            color: var(--color-menu-link);
-            padding-left: 13px !important;
-        }
-        > li a:hover {
-            border-left: 0px solid var(--color-accent);
-        }
-        .menu-icon {
-            margin-top: 4px;
-            margin-right: 8px;
-        }
-        li.has-sub {
-            > a:first-child::after {
-                content: " + ";
-                margin-left: 100px;
-                position: absolute;
-            }
-            &.open > a::after {
-                content: " - ";
-                margin-left: 100px;
-                position: absolute;
-            }
-            /* Second level folder*/
-            > ul.nav.nav-list {
-                background: var(--bg-sections);
-                /* Third level files*/
-                > ul.nav.nav-list {
-                    margin-left: 32px;
-                    background: var(--bg-sections);
-                }
-            }
-        }
-    }
 
     .navbar-brand {
         font-weight: 600;
@@ -86,36 +32,11 @@ const Sidebar = styled.div`
         }
     }
 
-    .nav.nav-list {
-        font-size: 13px;
-        .accordian-heading {
-            color: #fff;
-        }
-        > li > a {
-            &:hover {
-                background: transparent;
-                color: #fff;
-            }
-            &:focus {
-                background: transparent;
-                border-color: transparent;
-            }
-        }
-        .open > a {
-            background: transparent;
-            &:hover {
-                background: transparent;
-                color: #fff;
-            }
-            &:focus {
-                background: transparent;
-            }
-        }
-    }
     .sidebar {
         position: fixed;
         width: 200px;
         margin-top: 60px;
+        padding-top: 24px;
         height: 100%;
         top: 0;
         left: 0;
@@ -166,14 +87,6 @@ const Sidebar = styled.div`
             align-items: center;
             padding: 0 18px;
             color: var(--color-text-primary-invert);
-        }
-
-        &.nav {
-            width: 95%;
-        }
-
-        .nav.child_menu {
-            display: block;
         }
     }
 `;

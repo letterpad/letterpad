@@ -16,6 +16,7 @@ import { uploadFile } from "../../util";
 import StyledSection from "../../components/section";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
+import StyledButton from "../../components/button";
 
 import InfoModal from "./InfoModal";
 
@@ -176,14 +177,15 @@ class Media extends Component {
                 subtitle={t("media.tagline")}
             >
                 <div>
-                    <button
-                        className="btn btn-xs btn-dark"
+                    <StyledButton
+                        success
                         onClick={() => {
                             this.uploadInputRef.current.click();
                         }}
+                        sm
                     >
                         Add Media
-                    </button>
+                    </StyledButton>
                     <input
                         ref={this.uploadInputRef}
                         onChange={input => this.uploadImage(input.target.files)}
@@ -192,7 +194,8 @@ class Media extends Component {
                         name="uploads[]"
                         multiple="multiple"
                     />
-
+                    <br />
+                    <br />
                     <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
                         {this.state.items.map(media => {
                             return (

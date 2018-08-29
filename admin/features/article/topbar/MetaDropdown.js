@@ -6,6 +6,9 @@ import { makeUrl } from "../../../../shared/util";
 import PostActions from "../PostActions";
 import StyledDropdown from "./Dropdown.css";
 
+import StyledInput from "../../../components/input";
+import StyledButton from "../../../components/button";
+
 class MetaDropdown extends Component {
     static propTypes = {
         toggleDropdown: PropTypes.func,
@@ -35,52 +38,44 @@ class MetaDropdown extends Component {
         const permalink = makeUrl([this.state.post.type, this.state.post.slug]);
         return (
             <StyledDropdown className="post-meta">
-                <div className="x_content m-b-20">
-                    <div className="meta-label">Published at</div>
-                    <input
-                        type="text"
-                        className="form-control meta-value"
-                        placeholder="Published date"
-                        defaultValue={moment(
-                            new Date(this.state.post.created_at)
-                        ).format("DD-MM-Y hh:mm A")}
-                    />
-                </div>
-                <div className="x_content m-b-20">
-                    <div className="meta-label">Change Path</div>
-                    <input
-                        type="text"
-                        className="form-control meta-value"
-                        placeholder="Link to post"
-                        defaultValue={this.state.post.slug}
-                        onKeyUp={this.changeSlug}
-                    />
-                </div>
-                <div className="x_content m-b-20">
-                    <div className="meta-label">Preview</div>
-                    <div className="meta-value">
-                        <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={permalink}
-                        >
-                            {permalink}
-                        </a>
-                    </div>
-                </div>
-                <hr />
-                <div className="btn-item">
-                    <button
-                        type="submit"
-                        onClick={e => {
-                            this.props.updatePost(e, {});
-                            this.props.toggleDropdown();
-                        }}
-                        className={"publish-btn btn btn-sm btn-primary"}
-                    >
-                        Save
-                    </button>
-                </div>
+                <StyledInput
+                    type="text"
+                    label="Published at"
+                    className="meta-value"
+                    placeholder="Published date"
+                    defaultValue={moment(
+                        new Date(this.state.post.created_at)
+                    ).format("DD-MM-Y hh:mm A")}
+                />
+
+                <StyledInput
+                    type="text"
+                    label="Change Path"
+                    className="meta-value"
+                    placeholder="Link to post"
+                    defaultValue={this.state.post.slug}
+                    onKeyUp={this.changeSlug}
+                />
+
+                <StyledInput
+                    type="text"
+                    label="Preview"
+                    className="meta-value"
+                    placeholder="Link to post"
+                    defaultValue={permalink}
+                    onClick={() => {
+                        window.open(permalink);
+                    }}
+                />
+
+                <StyledButton
+                    onClick={e => {
+                        this.props.updatePost(e, {});
+                        this.props.toggleDropdown();
+                    }}
+                >
+                    Save
+                </StyledButton>
             </StyledDropdown>
         );
     }

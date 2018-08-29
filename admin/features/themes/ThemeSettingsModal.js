@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 
-// import ModalHoc from "../../components/modal";
+import ModalHoc from "../../components/modal";
+import StyledButton from "../../components/button";
 import { InputBox, RadioBox, SelectBox, CheckBox } from "./FormBuilder";
 
 class ThemeSettingsModal extends Component {
@@ -40,10 +41,13 @@ class ThemeSettingsModal extends Component {
     };
 
     render() {
-        const { t, data } = this.props;
+        let {
+            t,
+            data: { name, settings, value }
+        } = this.props;
 
-        const settings = JSON.parse(data.settings);
-        const value = JSON.parse(data.value);
+        settings = JSON.parse(settings);
+        value = JSON.parse(value);
         /**
          * Parse the json data and build the UI
          */
@@ -92,43 +96,23 @@ class ThemeSettingsModal extends Component {
         });
 
         return (
-            <React.Fragment>
-                <div className="modal-header">
-                    <button onClick={this.props.onClose} className="close">
-                        ×
-                    </button>
-                    <h4
-                        className="modal-title"
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            paddingRight: 26
-                        }}
-                    >
-                        <span>Theme settings - {data.name}</span>
-                    </h4>
-                </div>
+            <ModalHoc
+                title={<span>Theme settings - {name}</span>}
+                onClose={this.props.onClose}
+            >
                 <div className="modal-body">
                     {themeSettings}
                     <div className="p-t-20" />
                 </div>
                 <div className="modal-footer">
-                    <button
-                        type="button"
-                        className="btn btn-xs btn-dark"
-                        onClick={this.onSave}
-                    >
-                        {t("common.save")}
-                    </button>
-                    <button
-                        type="button"
-                        className="btn btn-xs btn-default"
-                        onClick={this.props.onClose}
-                    >
+                    <StyledButton type="button" onClick={this.props.onClose}>
                         {t("common.cancel")}
-                    </button>
+                    </StyledButton>
+                    <StyledButton type="button" success onClick={this.onSave}>
+                        {t("common.save")}
+                    </StyledButton>
                 </div>
-            </React.Fragment>
+            </ModalHoc>
         );
     }
 }

@@ -3,12 +3,15 @@ import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 import moment from "moment";
 import ArticleHoc from "./ArticleHoc";
+import Search from "./Search";
 import Paginate from "../../components/pagination";
-// import { PostFilters } from "../../components/Post";
-// import Search from "../../components/Post/Search";
+
+import StyledToolbar from "./Toolbar.css";
+
 import StyledSection from "../../components/section";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
+import StyledSelect from "../../components/select";
 
 class ArticleList extends Component {
     static propTypes = {
@@ -61,23 +64,47 @@ class ArticleList extends Component {
                 }
             >
                 <div>
-                    <div className="action-bar">
-                        {/* <Search type="post" searchPosts={this.props.searchPosts} />*/}
-                        <div className="action-delete">
-                            {/*this.props.selectedPosts.length > 0 && (
-                            <button
-                                className="btn btn-xs btn-danger"
-                                onClick={this.props.deleteSelectedPosts}
-                            >
-                                Delete
-                            </button>
-                        )*/}
+                    <StyledToolbar className="action-bar">
+                        <Search
+                            type="post"
+                            searchPosts={this.props.searchPosts}
+                        />
+                        <div>
+                            <div className="action-delete">
+                                {this.props.selectedPosts.length > 0 && (
+                                    <button
+                                        className="btn btn-xs btn-danger"
+                                        onClick={this.props.deleteSelectedPosts}
+                                    >
+                                        Delete
+                                    </button>
+                                )}
+                            </div>
+                            <StyledSelect
+                                bold
+                                onChange={this.props.changeStatus}
+                                selected="publish"
+                                options={[
+                                    {
+                                        name: t("common.all"),
+                                        value: "all"
+                                    },
+                                    {
+                                        name: t("common.published"),
+                                        value: "publish"
+                                    },
+                                    {
+                                        name: t("common.drafts"),
+                                        value: "draft"
+                                    },
+                                    {
+                                        name: t("common.deleted"),
+                                        value: "trash"
+                                    }
+                                ]}
+                            />
                         </div>
-                        {/*<PostFilters
-                        changeStatus={this.props.changeStatus}
-                        selectedStatus={status}
-                    />*/}
-                    </div>
+                    </StyledToolbar>
 
                     {loading ? (
                         <div>loading</div>
