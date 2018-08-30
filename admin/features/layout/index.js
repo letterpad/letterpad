@@ -16,11 +16,15 @@ const NoLayout = styled.div`
 `;
 export default function Layout(ComponentClass, props) {
     const settings = props.settings;
+    let defaultTheme = "dark";
+    if (typeof localStorage !== "undefined" && localStorage.theme) {
+        defaultTheme = localStorage.theme;
+    }
 
     return class extends Component {
         state = {
             sidebarOpen: true,
-            theme: "dark"
+            theme: defaultTheme
         };
 
         mounted = false;
@@ -63,6 +67,9 @@ export default function Layout(ComponentClass, props) {
 
         switchTheme = theme => {
             this.setState({ theme });
+            if (typeof localStorage !== "undefined") {
+                localStorage.theme = theme;
+            }
         };
 
         render() {
