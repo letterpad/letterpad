@@ -1,39 +1,16 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700.css");
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import "./admin/_normalize.pcss";
+
 @import "./admin/_variables.pcss";
 @import "./admin/_common.pcss";
 @import "./admin/_layout.pcss";
-@import "./admin/_card.pcss";
-@import "./admin/_buttons.pcss";
-@import "./admin/_sidebar.pcss";
-@import "./admin/_checkbox.pcss";
+@import "./admin/_login.pcss";
+
 @import "./admin/_preloader.pcss";
-@import "./admin/_switch.pcss";
-@import "./admin/_post.pcss";
-@import "./admin/_modal.pcss";
-@import "./admin/_login.pcss";
-@import "./admin/_editor.pcss";
-@import "./admin/_login.pcss";
-@import "./admin/_media.pcss";
-@import "./admin/_navbar.pcss";
-@import "./admin/_header.pcss";
-@import "./admin/_post.pcss";
-@import "./admin/_react-select.pcss";
-@import "./admin/_author.pcss";
-@import "./admin/_theme.pcss";
-@import "./admin/_post_action_drawer.pcss";
 
-label.custom-label {
-    font-weight: 600;
-    font-size: 13px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(36vw, 1fr));
-    grid-gap: 26px;
-    grid-auto-rows: minmax(203px, auto);
-    grid-auto-flow: dense;
+.modal-open {
+    overflow: hidden;
 }
 
 /*--------------------------------------
@@ -58,136 +35,4 @@ label.custom-label {
         margin-top: 71px;
         position: absolute;
     }
-}
-
-/*--------------------------------------
-[Theme Customization]
-*/
-
-.theme-customizer {
-    .swatch {
-        padding: 5px;
-        background: #fff;
-        border-radius: 1px;
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-        display: block;
-        cursor: pointer;
-    }
-    .popover {
-        position: absolute;
-        z-index: 2;
-    }
-    .cover {
-        position: fixed;
-        top: 0px;
-        right: 0px;
-        bottom: 0px;
-        left: 0px;
-    }
-}
-
-/* Table */
-
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
-    padding: 12px 8px;
-    border-top: none;
-}
-
-.table > thead tr > th {
-    color: var(--color-text-secondary);
-    text-transform: uppercase;
-    font-size: 13px;
-    font-weight: 500;
-}
-
-tr td:first-child,
-tr th:first-child {
-    padding-left: 0px !important;
-}
-
-/*----------------------------------------------
-[Modal Backdrop]
-*/
-#modal-backdrop {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    z-index: 1;
-    top: 0px;
-    opacity: 0.4;
-    left: 0px;
-}
-
-/*--------------------------------------------
-[Bootstrap settings]
-*/
-.row {
-    margin-left: -6px;
-    margin-right: -6px;
-}
-.col-xs-1,
-.col-sm-1,
-.col-md-1,
-.col-lg-1,
-.col-xs-2,
-.col-sm-2,
-.col-md-2,
-.col-lg-2,
-.col-xs-3,
-.col-sm-3,
-.col-md-3,
-.col-lg-3,
-.col-xs-4,
-.col-sm-4,
-.col-md-4,
-.col-lg-4,
-.col-xs-5,
-.col-sm-5,
-.col-md-5,
-.col-lg-5,
-.col-xs-6,
-.col-sm-6,
-.col-md-6,
-.col-lg-6,
-.col-xs-7,
-.col-sm-7,
-.col-md-7,
-.col-lg-7,
-.col-xs-8,
-.col-sm-8,
-.col-md-8,
-.col-lg-8,
-.col-xs-9,
-.col-sm-9,
-.col-md-9,
-.col-lg-9,
-.col-xs-10,
-.col-sm-10,
-.col-md-10,
-.col-lg-10,
-.col-xs-11,
-.col-sm-11,
-.col-md-11,
-.col-lg-11,
-.col-xs-12,
-.col-sm-12,
-.col-md-12,
-.col-lg-12 {
-    padding-left: 6px;
-    padding-right: 6px;
-}
-.container {
-    padding-left: 12px;
-    padding-right: 12px;
-}
-
-.prism-dark {
-    background: #252424;
-    color: #fff;
 }

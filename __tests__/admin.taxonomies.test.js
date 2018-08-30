@@ -1,9 +1,8 @@
 import React from "react";
-import { Tags } from "../admin/components/Post/Tags";
 import { shallow } from "enzyme";
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import { Categories } from "../admin/components/Post/Categories";
+import { Taxonomies } from "../admin/features/article/topbar/Taxonomies";
 Enzyme.configure({ adapter: new Adapter() });
 
 describe("Testing Taxonomies", () => {
@@ -13,7 +12,10 @@ describe("Testing Taxonomies", () => {
         };
         const suggestions = [];
 
-        const wrapper = shallow(<Tags post={post} suggestions={suggestions} />);
+        const wrapper = shallow(
+            <Taxonomies for="post_tag" post={post} suggestions={suggestions} />
+        );
+
         wrapper.instance().handleOnChange([{ name: "new-tag" }]);
         const newTagId = 0;
         expect(wrapper.state().tags[0].id).toBe(newTagId);
@@ -31,7 +33,9 @@ describe("Testing Taxonomies", () => {
             ]
         };
         const suggestions = [];
-        const wrapper = shallow(<Tags post={post} suggestions={suggestions} />);
+        const wrapper = shallow(
+            <Taxonomies for="post_tag" post={post} suggestions={suggestions} />
+        );
         wrapper.instance().handleOnChange([]);
 
         expect(wrapper.state().tags.length).toBe(0);
@@ -45,11 +49,15 @@ describe("Testing Taxonomies", () => {
         const suggestions = [];
 
         const wrapper = shallow(
-            <Categories post={post} suggestions={suggestions} />
+            <Taxonomies
+                for="post_category"
+                post={post}
+                suggestions={suggestions}
+            />
         );
         wrapper.instance().handleOnChange([{ name: "new-category" }]);
         const newCatId = 0;
-        expect(wrapper.state().categories[0].id).toBe(newCatId);
+        expect(wrapper.state().tags[0].id).toBe(newCatId);
         done();
     });
 
@@ -65,11 +73,15 @@ describe("Testing Taxonomies", () => {
         };
         const suggestions = [];
         const wrapper = shallow(
-            <Categories post={post} suggestions={suggestions} />
+            <Taxonomies
+                for="post_category"
+                post={post}
+                suggestions={suggestions}
+            />
         );
         wrapper.instance().handleOnChange([]);
 
-        expect(wrapper.state().categories.length).toBe(0);
+        expect(wrapper.state().tags.length).toBe(0);
         done();
     });
 });

@@ -20,3 +20,4 @@ public/js/*bundle*
 admin/public/dist
 apiBuild
 .installed
+admin.bak

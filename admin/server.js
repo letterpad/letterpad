@@ -121,12 +121,10 @@ function getHtml(apolloState) {
     const isDev = process.env.NODE_ENV === "dev";
 
     const devBundles = [
-        { src: "/admin/js/masonry.pkgd.min.js" },
         "/static/public/js/vendor-bundle.js",
         "/static/admin/public/dist/admin-bundle.js"
     ];
     const prodBundles = [
-        { src: "/admin/js/masonry.pkgd.min.js" },
         "/js/vendor-bundle.min.js",
         "/admin/dist/admin-bundle.min.js"
     ];

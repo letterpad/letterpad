@@ -9,6 +9,7 @@ class LazyImage extends Component {
             loaded: false
         };
     }
+
     componentDidMount() {
         this.mounted = true;
         const img = new Image();
@@ -19,6 +20,7 @@ class LazyImage extends Component {
             }
         };
     }
+
     componentWillUnmount() {
         this.mounted = false;
     }

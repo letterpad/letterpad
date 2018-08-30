@@ -212,7 +212,7 @@ export async function insertPost(params, models, categories, tags) {
     let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
     const slug = params.title.toLocaleLowerCase().replace(/ /g, "-");
     let post = await models.Post.create({
-        title: params.title,
+        title: Faker.company.catchPhrase(),
         body: generatePost(),
         excerpt: Faker.lorem.sentences(4),
         cover_image: params.cover_image,

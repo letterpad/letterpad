@@ -6,9 +6,9 @@ const generateHeading = () => {
 };
 
 const generateParagraph = () => {
-    return `<p>${Faker.lorem.paragraphs(2)}</p>
+    return `${Faker.lorem.paragraphs(2)}
                 ${generateHeading()}
-            <p>${Faker.lorem.paragraphs(2)}</p><hr>`;
+            ${Faker.lorem.paragraphs(2)}<hr>`;
 };
 
 const generateCode = () => {
@@ -30,8 +30,8 @@ const client = (isAdmin = false) => {
 };
 
 const generateList = () => {
-    return `<p>${generateSentence()}</p><p><ul><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li><ul><li>${Faker.company.catchPhraseAdjective()}</li></ul></ul></p>
-    <p>${generateSentence()}</p>`;
+    return `${generateSentence()}<p><ul><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li><ul><li>${Faker.company.catchPhraseAdjective()}</li></ul></ul></p>
+    ${generateSentence()}`;
 };
 
 const generateQuote = () => {
@@ -39,13 +39,13 @@ const generateQuote = () => {
 };
 
 const generateSentence = () => {
-    return `<p>${Faker.lorem.sentences(3)}</p>`;
+    return `${Faker.lorem.sentences(3)}`;
 };
 
 const getImage = () => {
     const random = Math.floor(Math.random() * 10) + 1;
     const image = "/uploads/" + random + ".jpg";
-    return `<p>${generateSentence()}</p><p style="text-align: center"><img height="400" src="${image}"></p><p>${generateSentence()}</p>`;
+    return `${generateSentence()}<p style="text-align: center"><img height="400" src="${image}"></p><p>${generateSentence()}</p>`;
 };
 
 const shuffleArray = arr =>
