@@ -19,7 +19,8 @@ export default function Layout(ComponentClass, props) {
 
     return class extends Component {
         state = {
-            sidebarOpen: true
+            sidebarOpen: true,
+            theme: "dark"
         };
 
         mounted = false;
@@ -60,11 +61,16 @@ export default function Layout(ComponentClass, props) {
             this.setState({ sidebarOpen: !this.state.sidebarOpen });
         };
 
+        switchTheme = theme => {
+            this.setState({ theme });
+        };
+
         render() {
             const _props = { ...this.props, ...props, settings };
             const classes = this.state.sidebarOpen ? "" : " collapsed";
+            const selectedTheme = { [this.state.theme]: true };
             return (
-                <CSSVariables dark>
+                <CSSVariables {...selectedTheme}>
                     {props.layout == "none" ? (
                         <NoLayout>
                             <div className="content-area">
@@ -77,6 +83,8 @@ export default function Layout(ComponentClass, props) {
                                 sidebarToggle={this.sidebarToggle}
                                 settings={settings}
                                 author={_props.author}
+                                switchTheme={this.switchTheme}
+                                selectedTheme={this.state.theme}
                             />
                             <Sidebar {..._props} />
                             <main>

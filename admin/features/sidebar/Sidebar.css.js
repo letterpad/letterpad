@@ -83,10 +83,10 @@ const Sidebar = styled.div`
         .footer {
             height: 45px;
             display: flex;
-            background: #292d37;
+            border-top: 1px solid var(--color-border);
             align-items: center;
             padding: 0 18px;
-            color: var(--color-text-primary-invert);
+            color: var(--color-base);
         }
     }
 `;

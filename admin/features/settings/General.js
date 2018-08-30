@@ -55,15 +55,15 @@ class General extends Component {
         this.props.updateOption(option, value);
     };
 
-    switchLanguage = e => {
+    switchLanguage = value => {
         const locales = {};
         Object.keys(this.langOptions).map(lang => {
-            locales[lang] = e.target.value === lang;
+            locales[lang] = value === lang;
         });
 
         this.updateOption("locale", JSON.stringify(locales));
         const { i18n } = this.props;
-        i18n.changeLanguage(e.target.value);
+        i18n.changeLanguage(value);
     };
 
     uploadBanner = async files => {
@@ -273,6 +273,7 @@ class General extends Component {
                     label="Select language"
                     selected={selectedLanguage}
                     options={langOptions}
+                    onChange={this.switchLanguage}
                 />
             </div>
         );
