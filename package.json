@@ -16,7 +16,8 @@
         "prod": "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
         "prodPm2": "NODE_ENV=production concurrently --kill-others \"pm2 start ./apiBuild/server.js --name=lpDemoApi\" \"pm2 start ./server.js --name=lpDemo\"",
         "test": "jest --runInBand",
-        "translate": "node ./utils/translation_tools"
+        "translate": "node ./utils/translation_tools",
+        "precommit": "./utils/precommit.sh"
     },
     "env": {
         "jest": true
@@ -80,6 +81,7 @@
         "react-router-dom": "^4.3.1",
         "react-select": "^1.2.1",
         "react-sortable-tree": "^2.1.0",
+        "react-sortable-tree-theme-full-node-drag": "^1.1.0",
         "reading-time": "*",
         "sequelize": "4.0.0",
         "sequelize-cli": "^4.0.0",
@@ -146,7 +148,7 @@
         "rimraf": "^2.6.2",
         "style-loader": "^0.16.1",
         "url-loader": "^0.6.2",
-        "webpack": "^4.16.1",
+        "webpack": "^4.16.5",
         "webpack-bundle-analyzer": "^2.11.1",
         "webpack-cli": "^2.0.10",
         "webpack-dev-middleware": "^3.1.3",

@@ -10,33 +10,33 @@ import getI18nWithDefaultLang from "../shared/i18n/i18n";
 import SettingsData from "../shared/data-connectors/SettingsData";
 
 // View Files
-import Loader from "./components/Loader";
-import LoginView from "./containers/Login/LoginView";
-import ResetPassword from "./containers/Login/ResetPassword";
-import Settings from "./containers/Settings/Settings";
-import Posts from "./containers/Post/Posts";
-import Pages from "./containers/Page/Pages";
-import Edit from "./containers/Edit/Edit";
-import Create from "./containers/Create/Create";
-import Media from "./containers/Media/Media";
-import Authors from "./containers/Author/Authors";
-import EditAuthor from "./containers/Author/EditAuthor";
-import CreateAuthor from "./containers/Author/CreateAuthor";
-import Taxonomy from "./containers/Post/Taxonomy";
-import NavigationBuilder from "./containers/Navigation/NavigationBuilder";
-import Home from "./containers/Home/Home";
-import Themes from "./containers/Themes/Themes";
+import Loader from "./components/loader";
+import LoginView from "./features/login/LoginView";
+import ResetPassword from "./features/login/ResetPassword";
+import ArticleList from "./features/article-list";
+import ArticleCreate from "./features/article/Create";
+import Article from "./features/article";
+import Settings from "./features/settings";
+import Media from "./features/media";
+import AuthorList from "./features/author-list";
+import Author from "./features/author";
+import AuthorCreate from "./features/author/Create";
+import Taxonomy from "./features/taxonomy";
+import NavigationBuilder from "./features/navigation-builder";
+import Home from "./features/home";
+import Themes from "./features/themes";
 
 // css
 import "./public/pcss/admin.pcss";
 
 // All files which require authorization will pass though this
-import SecuredRoute from "./containers/Secured";
+import SecuredRoute from "./helpers/Secured";
 
 class Routes extends Component {
     static propTypes = {
         settings: PropTypes.object
     };
+
     render() {
         const settings = this.props.settings;
         if (settings.loading) {
@@ -85,26 +85,46 @@ class Routes extends Component {
                         />
                         {/* Route for posts */}
                         <SecuredRoute
-                            path="/admin/posts"
-                            name="Posts"
-                            component={Posts}
-                            settings={settings.data}
-                        />
-
-                        <SecuredRoute
-                            path="/admin/posts/:post_id"
-                            component={Edit}
-                            type="post"
-                            layout="none"
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
                             path="/admin/post-new"
                             type="post"
-                            component={Create}
+                            component={ArticleCreate}
                             layout="none"
                             settings={settings.data}
                         />
+                        <SecuredRoute
+                            path="/admin/posts"
+                            type="post"
+                            component={ArticleList}
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
+                            path="/admin/posts/:post_id"
+                            type="post"
+                            component={Article}
+                            layout="none"
+                            settings={settings.data}
+                        />
+                        {/* Route for pages */}
+                        <SecuredRoute
+                            path="/admin/pages"
+                            type="page"
+                            component={ArticleList}
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
+                            path="/admin/pages/:post_id"
+                            type="page"
+                            component={Article}
+                            layout="none"
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
+                            path="/admin/page-new"
+                            type="page"
+                            component={ArticleCreate}
+                            settings={settings.data}
+                        />
+                        {/* Route for others */}
                         <SecuredRoute
                             path="/admin/tags"
                             type="post_tag"
@@ -117,26 +137,6 @@ class Routes extends Component {
                             component={Taxonomy}
                             settings={settings.data}
                         />
-                        {/* Route for pages */}
-                        <SecuredRoute
-                            path="/admin/pages"
-                            component={Pages}
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
-                            path="/admin/pages/:post_id"
-                            type="page"
-                            layout="none"
-                            component={Edit}
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
-                            path="/admin/page-new"
-                            type="page"
-                            component={Create}
-                            settings={settings.data}
-                        />
-                        {/* Route for others */}
                         <SecuredRoute
                             path="/admin/media"
                             component={Media}
@@ -148,29 +148,23 @@ class Routes extends Component {
                             settings={settings.data}
                         />
                         <SecuredRoute
-                            path="/admin/navigation-builder"
-                            settings={settings.data}
-                            component={NavigationBuilder}
-                        />
-
-                        <SecuredRoute
                             path="/admin/authors"
-                            component={Authors}
-                            settings={settings.data}
-                        />
-                        <SecuredRoute
-                            path="/admin/authors/new"
-                            component={CreateAuthor}
+                            component={AuthorList}
                             settings={settings.data}
                         />
                         <SecuredRoute
                             path="/admin/authors/edit/:id"
-                            component={EditAuthor}
+                            component={Author}
+                            settings={settings.data}
+                        />
+                        <SecuredRoute
+                            path="/admin/authors/new"
+                            component={AuthorCreate}
                             settings={settings.data}
                         />
                         <SecuredRoute
                             path="/admin/edit-profile"
-                            component={EditAuthor}
+                            component={Author}
                             settings={settings.data}
                         />
                         <SecuredRoute
@@ -183,10 +177,16 @@ class Routes extends Component {
                             component={Themes}
                             settings={settings.data}
                         />
+                        <SecuredRoute
+                            path="/admin/navigation-builder"
+                            settings={settings.data}
+                            component={NavigationBuilder}
+                        />
                     </Fragment>
                 </Switch>
             </I18nextProvider>
         );
     }
 }
+
 export default SettingsData(withRouter(Routes));

@@ -19,7 +19,6 @@ const app = express();
 
 // This middleware will attempt to compress response bodies for all requests
 app.use(compression());
-
 // Handle hot module replacement in dev mode
 // We are not using webpack-dev-server.
 if (process.env.NODE_ENV === "dev") {
@@ -117,7 +116,7 @@ app.get("/build", (req, res) => {
         })
     );
 
-    compiler.run(function(err, stats) {
+    compiler.run(function(err) {
         res.end();
     });
 });

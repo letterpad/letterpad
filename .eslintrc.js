@@ -16,12 +16,8 @@ module.exports = {
     },
     plugins: ["react"],
     globals: {
-        qEditor: true,
-        Quill: true,
         process: true,
-        hljs: true,
         ga: true,
-        Masonry: true,
         __dirname: true
     },
     rules: {
@@ -30,6 +26,7 @@ module.exports = {
         quotes: ["error", "double"],
         semi: ["error", "always"],
         "react/display-name": 0,
-        "no-console": 0
+        "no-console": 0,
+        "lines-between-class-members": ["error", "always"]
     }
 };

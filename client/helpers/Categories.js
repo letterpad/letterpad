@@ -7,6 +7,7 @@ export default class Categories extends Component {
         loading: PropTypes.bool,
         categories: PropTypes.array
     };
+
     getLink({ name, slug }) {
         let link = "/category/" + slug;
         return <Link to={link}>{name}</Link>;

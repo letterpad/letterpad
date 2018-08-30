@@ -7,6 +7,7 @@ export default class Search extends Component {
         history: PropTypes.object,
         match: PropTypes.object
     };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -15,6 +16,7 @@ export default class Search extends Component {
         this.onChange = this.onChange.bind(this);
         this.doSearch = this.doSearch.bind(this);
     }
+
     componentDidMount() {
         if (this.props.history.location.pathname.includes("/search/")) {
             this.setState({
@@ -33,6 +35,7 @@ export default class Search extends Component {
         const query = e.target.value.trim();
         EventBusInstance.publish("SEARCH_QUERY", { query, type: "post" });
     };
+
     setSearchUrl = () => {
         if (this.props.history.location.pathname.indexOf("/search/") === -1) {
             this.props.history.push("/search/");
@@ -42,6 +45,7 @@ export default class Search extends Component {
             );
         }
     };
+
     render() {
         return (
             <div className="search-box">
