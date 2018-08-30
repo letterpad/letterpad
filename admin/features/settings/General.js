@@ -6,6 +6,7 @@ import styled from "styled-components";
 import config from "config";
 import { uploadFile } from "../../util";
 import Input from "../../components/input";
+import StyledSelect from "../../components/select";
 
 const ImageWrapper = styled.div`
     margin-top: 15px;
@@ -14,6 +15,20 @@ const ImageWrapper = styled.div`
     .banner-image {
         display: flex;
         align-items: center;
+    }
+    label {
+        color: var(--base-shade-3);
+        font-weight: 500;
+        font-size: 13px;
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 15px;
+    }
+    .material-icons {
+        font-size: 18px !important;
+    }
+    .danger {
+        color: #9e1b1b;
     }
 `;
 
@@ -79,6 +94,18 @@ class General extends Component {
         const { t } = this.props;
         const banner = this.state.banner || "";
         const site_logo = this.state.site_logo || "";
+
+        let selectedLanguage = "en";
+        const langOptions = Object.keys(this.langOptions).map(key => {
+            if (this.langOptions[key]) {
+                selectedLanguage = key;
+            }
+            return {
+                name: key,
+                value: key
+            };
+        });
+
         return (
             <div>
                 <Input
@@ -156,7 +183,7 @@ class General extends Component {
                                     this.uploadLogoInputRef.current.click();
                                 }}
                             >
-                                Add Logo
+                                <i className="material-icons">add</i>
                             </a>
                         ) : (
                             <div className="logo-image">
@@ -172,7 +199,9 @@ class General extends Component {
                                         this.updateLogo("");
                                     }}
                                 >
-                                    Remove Logo
+                                    <i className="material-icons danger">
+                                        delete
+                                    </i>
                                 </a>
                             </div>
                         )}
@@ -196,7 +225,7 @@ class General extends Component {
                                     this.uploadBannerRef.current.click();
                                 }}
                             >
-                                Add Banner
+                                <i className="material-icons">add</i>
                             </a>
                         ) : (
                             <div className="banner-image">
@@ -212,7 +241,9 @@ class General extends Component {
                                         this.updateBanner("");
                                     }}
                                 >
-                                    Remove Banner
+                                    <i className="material-icons danger">
+                                        delete
+                                    </i>
                                 </a>
                             </div>
                         )}
@@ -238,26 +269,11 @@ class General extends Component {
                     }
                 />
 
-                <div className="form-group">
-                    <label className="custom-label">
-                        {t("settings.general.site.language")}
-                    </label>
-                    <select
-                        onChange={this.switchLanguage}
-                        className="form-control"
-                    >
-                        {Object.keys(this.langOptions).map((key, i) => {
-                            const selected = this.langOptions[key]
-                                ? { selected: "selected" }
-                                : {};
-                            return (
-                                <option key={i} {...selected} value={key}>
-                                    {key}
-                                </option>
-                            );
-                        })}
-                    </select>
-                </div>
+                <StyledSelect
+                    label="Select language"
+                    selected={selectedLanguage}
+                    options={langOptions}
+                />
             </div>
         );
     }

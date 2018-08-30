@@ -4,7 +4,11 @@ import { translate } from "react-i18next";
 
 import ModalHoc from "../../components/modal";
 import StyledButton from "../../components/button";
-import { InputBox, RadioBox, SelectBox, CheckBox } from "./FormBuilder";
+
+import StyledInput from "../../components/input";
+import StyledCheckbox from "../../components/checkbox";
+import StyledRadioBox from "../../components/radio";
+import StyledSelect from "../../components/select";
 
 class ThemeSettingsModal extends Component {
     static propTypes = {
@@ -58,15 +62,22 @@ class ThemeSettingsModal extends Component {
                     switch (ui.type) {
                         case "text":
                             return (
-                                <InputBox
+                                <StyledInput
+                                    label={ui.label}
                                     key={ui.short_name}
                                     data={ui}
-                                    onChange={this.getChangedValues}
+                                    value={ui.defaultValue}
+                                    onBlur={e =>
+                                        this.getChangedValues(
+                                            ui.name,
+                                            e.target.value
+                                        )
+                                    }
                                 />
                             );
                         case "radio":
                             return (
-                                <RadioBox
+                                <StyledRadioBox
                                     key={ui.short_name}
                                     data={ui}
                                     onChange={this.getChangedValues}
@@ -74,7 +85,7 @@ class ThemeSettingsModal extends Component {
                             );
                         case "checkbox":
                             return (
-                                <CheckBox
+                                <StyledCheckbox
                                     key={ui.short_name}
                                     data={ui}
                                     onChange={this.getChangedValues}
@@ -84,10 +95,18 @@ class ThemeSettingsModal extends Component {
                     break;
                 case "select":
                     return (
-                        <SelectBox
+                        <StyledSelect
+                            block
+                            bold
+                            label={ui.label}
                             key={ui.short_name}
-                            data={ui}
-                            onChange={this.getChangedValues}
+                            options={ui.options.map(option => {
+                                return { value: option, name: option };
+                            })}
+                            selected={ui.defaultValue}
+                            onChange={value =>
+                                this.getChangedValues(ui.name, value)
+                            }
                         />
                     );
                 default:

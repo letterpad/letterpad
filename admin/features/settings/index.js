@@ -103,6 +103,8 @@ class Settings extends Component {
                         data={data}
                         updateOption={this.setOption}
                     />
+                    <br />
+                    <br />
                     <Button success onClick={this.submitData}>
                         Save
                     </Button>

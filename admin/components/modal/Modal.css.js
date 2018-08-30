@@ -9,6 +9,10 @@ const applyConfirmStyle = () => `
     height: auto;
     box-shadow: var(--box-shadow);
     background: var(--bg-sections);
+
+    .modal-body {
+        max-height:calc(100vh - 104px);
+    }
 `;
 const StyledModal = styled.div`
     opacity: 0;
@@ -45,7 +49,6 @@ const StyledModal = styled.div`
         width: 100vw;
         position: fixed;
         background: var(--bg-sections);
-        ${props => props.confirm && applyConfirmStyle()};
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -64,7 +67,7 @@ const StyledModal = styled.div`
         }
         .modal-body {
             overflow-y: auto;
-            max-height: calc(100vh - 200px);
+            max-height: calc(100vh - 104px);
             padding: 15px;
         }
         .modal-footer {
@@ -75,6 +78,7 @@ const StyledModal = styled.div`
             padding: 0px 28px;
             border-top: 1px solid var(--color-border);
         }
+        ${props => props.confirm && applyConfirmStyle()};
     }
 
     .backdrop {

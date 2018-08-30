@@ -11,6 +11,7 @@ const StyledSelect = styled.div`
     }
     ${props => props.bold && "font-weight: 500; font-size: 13px;"};
     display: inline-block;
+    ${props => props.block && "display:block"};
     .select-name {
         padding: 4px 8px;
         cursor: pointer;

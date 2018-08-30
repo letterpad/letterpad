@@ -22,7 +22,7 @@ class Tabs extends Component {
 
         return (
             <StyledTabs>
-                <nav className="tab-header">
+                <div className="tab-header">
                     {children.map(child => {
                         const { label } = child.props;
                         if (!label) return null;
@@ -38,7 +38,7 @@ class Tabs extends Component {
                             </StyledTab>
                         );
                     })}
-                </nav>
+                </div>
                 <section className="tab-content">
                     {children.map(child => {
                         const { label } = child.props;

@@ -7,7 +7,7 @@ const Footer = props => (
             className="footer-open"
             dangerouslySetInnerHTML={{ __html: props.data }}
         />
-        <div className="footer-closed">{/* Small icon for footer. TBD */}</div>
+        <div className="footer-closed">csdcdasc</div>
     </div>
 );
 

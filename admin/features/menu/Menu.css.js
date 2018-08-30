@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const StyledMenu = styled.div`
-    height: calc(100vh - 105px);
+    height: calc(100vh - 128px);
     overflow-y: auto;
 
     font-weight: 300;
