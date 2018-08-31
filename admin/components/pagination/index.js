@@ -21,6 +21,7 @@ const Wrapper = styled.div`
                 &.active,
                 &:hover {
                     background: rgba(var(--color-accent));
+                    color: #fff;
                 }
             }
             &:first-child a {

@@ -44,6 +44,7 @@ const Sidebar = styled.div`
         background-repeat: no-repeat;
         background-position: center center;
         background-size: cover;
+        border-right: 1px solid var(--color-border);
 
         @media (max-width: 991px) {
             position: relative;

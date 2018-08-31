@@ -7,6 +7,7 @@ const StyledTaxonomy = styled.section`
     }
     .taxonomy-edit {
         background: var(--bg-sections);
+        border: 1px solid var(--color-border);
         padding: 15px;
     }
     .input-box {
