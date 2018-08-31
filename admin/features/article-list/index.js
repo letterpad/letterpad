@@ -4,6 +4,8 @@ import { translate } from "react-i18next";
 import moment from "moment";
 import styled from "styled-components";
 
+import config from "../../../config";
+
 import ArticleHoc from "./ArticleHoc";
 import Search from "./Search";
 import Paginate from "../../components/pagination";
@@ -197,7 +199,10 @@ class ArticleList extends Component {
                                             />
                                         </div>
                                         <StyledGridItem
-                                            image={post.cover_image}
+                                            image={
+                                                config.baseName +
+                                                post.cover_image
+                                            }
                                             title={post.title}
                                             description={post.excerpt}
                                             href={"/admin/posts/" + post.id}
@@ -206,12 +211,6 @@ class ArticleList extends Component {
                                                 new Date(post.created_at)
                                             ).format("MMM Do YYYY")}
                                             stickyText={categories}
-                                            // setSelection={
-                                            //     this.props.setSelection
-                                            // }
-                                            // selectedPosts={
-                                            //     this.props.selectedPosts
-                                            // }
                                         />
                                     </StyledItem>
                                 );
