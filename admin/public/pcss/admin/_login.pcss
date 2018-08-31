@@ -26,12 +26,13 @@
                     border: 1px solid #eee;
                     color: #5a5b5c;
                     font-size: 13px;
+                    width: 100%;
                 }
                 input:-webkit-autofill {
                     -webkit-box-shadow: 0 0 0px 1000px #f5f5f5 inset;
                 }
                 label {
-                    display: inline-block;
+                    display: block;
                     max-width: 100%;
                     margin-bottom: 5px;
                     font-weight: bold;
@@ -57,9 +58,19 @@
                         z-index: 2;
                     }
                 }
+                .remember-me {
+                    display: flex;
+                    align-items: center;
+                    input {
+                        width: 24px;
+                    }
+                }
             }
             a.forgot-pwd {
                 color: #d7c8c8;
+            }
+            button {
+                border: 1px solid #eee;
             }
         }
     }

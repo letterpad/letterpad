@@ -9,6 +9,8 @@ import {
     updateQueryWithData
 } from "../../data-connectors/LoginConnector";
 
+import StyledButton from "../../components/button";
+
 class LoginView extends Component {
     static propTypes = {
         login: PropTypes.func,
@@ -95,34 +97,42 @@ class LoginView extends Component {
         return (
             <div className="login-wrapper">
                 <h2 className="brand text-center">
-                    {this.props.settings.site_title.value}
+                    <img
+                        width="150"
+                        src="/uploads/logo.png"
+                        alt={this.props.settings.site_title.value}
+                    />
                 </h2>
 
                 <div className="login">
                     <Notifications />
                     <form className={classes.login}>
-                        <label htmlFor="username">Username</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter your username"
-                            ref={input => {
-                                this.usernameInput = input;
-                            }}
-                            autoComplete="off"
-                        />
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            placeholder="Enter your password"
-                            ref={input => {
-                                this.passwordInput = input;
-                            }}
-                            autoComplete="off"
-                        />
+                        <div>
+                            <label htmlFor="username">Username</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your username"
+                                ref={input => {
+                                    this.usernameInput = input;
+                                }}
+                                autoComplete="off"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="password">Password</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                placeholder="Enter your password"
+                                ref={input => {
+                                    this.passwordInput = input;
+                                }}
+                                autoComplete="off"
+                            />
+                        </div>
                         <div className="m-10">
-                            <label>
+                            <label className="remember-me">
                                 <input
                                     type="checkbox"
                                     ref={input => {
@@ -136,13 +146,13 @@ class LoginView extends Component {
                             </label>
                         </div>
                         <br />
-                        <button
+                        <StyledButton
+                            sm
                             onClick={this.login}
-                            className="btn btn-md btn-white pull-right"
-                            type="submit"
+                            style={{ float: "right" }}
                         >
                             Login
-                        </button>
+                        </StyledButton>
                     </form>
                     <form className={classes.forgot}>
                         <label htmlFor="username">
@@ -158,18 +168,13 @@ class LoginView extends Component {
                             autoComplete="off"
                         />
                         <br />
-                        <button
-                            onClick={this.forgotPassword}
-                            className="btn btn-md btn-white"
-                        >
+                        <br />
+                        <StyledButton sm onClick={this.forgotPassword} success>
                             Submit
-                        </button>{" "}
-                        <button
-                            onClick={this.toggleForgotPwdView}
-                            className="btn btn-md btn-white"
-                        >
+                        </StyledButton>
+                        <StyledButton sm onClick={this.toggleForgotPwdView}>
                             Cancel
-                        </button>
+                        </StyledButton>
                     </form>
                     <div
                         className={this.state.lostPassword ? "hide" : "m-t-10"}
