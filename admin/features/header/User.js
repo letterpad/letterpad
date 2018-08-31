@@ -68,27 +68,3 @@ class User extends Component {
 }
 
 export default User;
-
-// <div className={"dropdown" + (this.state.open ? " open" : "")}>
-//                     <a
-//                         className="dropdown-toggle"
-//                         onClick={this.toggleDropdown}
-//                     >
-//                         <img
-//                             src={
-//                                 config.baseName +
-//                                 (this.state.author.avatar ||
-//                                     "/admin/images/avatar.png")
-//                             }
-//                             className="avatar"
-//                         />
-//                         <span className="caret" />
-//                     </a>
-//                     <ul className="dropdown-menu" style={{ marginLeft: -120 }}>
-//                         <li>
-//                             <a href={config.baseName + "/admin/login"}>
-//                                 Logout
-//                             </a>
-//                         </li>
-//                     </ul>
-//                 </div>

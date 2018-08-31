@@ -23,7 +23,8 @@ const StyledSection = styled.section`
     .section-header {
         margin-bottom: 36px;
         color: var(--color-text-2);
-        font-size: 14px;
+        font-size: 13px;
+        font-weight: 400;
         h2 {
             margin: 20px 0px 10px;
             color: var(--color-text-1);

@@ -51,9 +51,9 @@ const darkTheme = `
 `;
 
 const lightTheme = `
-    --bg-base: #fff;
-    --bg-sections: #f7f7f7;
-    --color-border: #c5c4c4;
+    --bg-sections: #fff;
+    --bg-base: #f7f7f7;
+    --color-border: #e6e6e6;
 
     --color-base: #3d3d3d;
     --color-text-1: #595959;
@@ -90,7 +90,7 @@ const lightTheme = `
     --base-shade-1: #f5f5f5
 
 
-    --box-shadow:  0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    --box-shadow:  0 2px 6px rgba(150, 150, 150, 0.26),0 0px 6px rgba(210, 210, 210, 0.23);
     
     --box-shadow-inset: inset -1px 3px 9px -3px rgba(0,0,0,0.32)
 `;

@@ -17,8 +17,9 @@ const ListItem = styled.div`
     padding-left: 1.15rem;
     background-color: ${({ selected }) =>
         selected && "rgba(var(--color-accent))"};
-    color: ${({ selected }) => selected && "var(--color-base)"};
+    color: ${({ selected }) => selected && "#FFF"};
     &:hover {
+        color: ${({ selected }) => selected && "#FFF"};
         background-color: ${({ selected }) =>
             selected
                 ? "rgba(var(--color-accent))"

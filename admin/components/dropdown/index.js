@@ -13,7 +13,7 @@ class DropDown extends Component {
     };
 
     state = {
-        isOpen: false
+        open: false
     };
 
     ddBtnRef = React.createRef();
@@ -27,34 +27,35 @@ class DropDown extends Component {
             this.ddBtnRef.current &&
             this.ddBtnRef.current.parentNode &&
             !this.ddBtnRef.current.parentNode.contains(e.target) &&
-            this.state.isOpen
+            this.state.open
         ) {
-            this.setState({ isOpen: false });
+            this.setState({ open: false });
         }
     };
 
-    toggleDropdown = (e, flag) => {
+    toggle = (e, flag) => {
         e.preventDefault();
-        this.setState({ isOpen: flag ? flag : !this.state.isOpen });
+        this.setState({ open: flag ? flag : !this.state.open });
     };
 
     render() {
         const { name, children, className } = this.props;
-        const ddClassPublish = " dropdown" + (this.state.isOpen ? " open" : "");
+        const ddClassPublish = " dropdown" + (this.state.open ? " open" : "");
 
         const childrenWithProps = React.Children.map(children, child =>
             React.cloneElement(child, {
-                toggleDropdown: this.toggleDropdown,
-                isOpen: this.state.isOpen
+                toggle: this.toggle,
+                open: this.state.open
             })
         );
+
         return (
             <Wrapper className={className + ddClassPublish}>
                 <a
                     className="dropdown-toggle"
                     href="#"
                     ref={this.ddBtnRef}
-                    onClick={this.toggleDropdown}
+                    onClick={this.toggle}
                 >
                     {name}
                     <i className="material-icons">arrow_drop_down</i>
