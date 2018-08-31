@@ -70,6 +70,7 @@ class MetaDropdown extends Component {
                 />
 
                 <StyledButton
+                    success
                     onClick={e => {
                         this.props.updatePost(e, {});
                         this.props.toggleDropdown();
