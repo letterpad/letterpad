@@ -99,7 +99,7 @@ class LoginView extends Component {
                 <h2 className="brand text-center">
                     <img
                         width="150"
-                        src="/uploads/logo.png"
+                        src={config.baseName + "/uploads/logo.png"}
                         alt={this.props.settings.site_title.value}
                     />
                 </h2>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 
+import config from "../../../config";
 import { GetAuthors } from "../../data-connectors/GetAuthors";
 import Loader from "../../components/loader";
 
@@ -67,7 +68,7 @@ class Authors extends Component {
                                 return (
                                     <StyledGridItem
                                         key={author.email}
-                                        image={author.avatar}
+                                        image={config.baseName + author.avatar}
                                         title={authorName}
                                         href="#"
                                         onClick={() =>
