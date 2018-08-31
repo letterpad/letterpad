@@ -38,6 +38,8 @@ const StyledMenu = styled.div`
         .menu-icon {
             margin-top: 4px;
             margin-right: 8px;
+            color: inherit;
+            transition: color 0.2s linear;
         }
         li.has-sub {
             > a:first-child::after {

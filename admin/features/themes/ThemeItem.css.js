@@ -21,6 +21,7 @@ const Wrapper = styled.article`
     }
     .theme-meta {
         height: 80px;
+        font-size: 13px;
     }
     .theme-thumbnail {
         .theme-image {
