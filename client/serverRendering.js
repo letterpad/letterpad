@@ -88,7 +88,8 @@ module.exports.init = app => {
 
                 server(req, client, config)
                     .then(({ html, apolloState, head, sheet }) => {
-                        const styles = sheet.getStyleTags(); // <-- getting all the tags from the sheet
+                        let styles = "";
+                        if (sheet) styles = sheet.getStyleTags(); // <-- getting all the tags from the sheet
                         const content = getHtml(
                             theme,
                             html,
