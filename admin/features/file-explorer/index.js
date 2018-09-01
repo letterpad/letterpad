@@ -78,7 +78,10 @@ class FileExplorer extends Component {
             />
         ));
         return (
-            <StyledGrid columns="repeat(auto-fit, minmax(200px, 1fr))">
+            <StyledGrid
+                className="grid"
+                columns="repeat(auto-fit, minmax(200px, 1fr))"
+            >
                 <InfiniteScrollList
                     data={rows}
                     count={this.props.count}

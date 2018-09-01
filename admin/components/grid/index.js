@@ -1,37 +1,3 @@
-// import React from "react";
-// import PropTypes from "prop-types";
-// import styled from "styled-components";
-
-// import { mediaTemplate } from "../config";
-
-// const Wrapper = styled.div`
-//     /* CSS Grid*/
-//     display: grid;
-
-//     grid-gap: 25px;
-
-//     ${mediaTemplate.xs`grid-template-columns: repeat(1, 1fr);`}
-//     ${mediaTemplate.sm`grid-template-columns: repeat(2, 1fr);`}
-//     ${mediaTemplate.md`grid-template-columns: repeat(3, 1fr);`}
-//     ${mediaTemplate.lg`grid-template-columns: repeat(4, 1fr);`}
-//     ${mediaTemplate.xl`grid-template-columns: repeat(5, 1fr);`}
-
-// `;
-
-// const StyledGrid = ({ children, className }) => {
-//     return <Wrapper className={"grid" + className}>{children}</Wrapper>;
-// };
-
-// StyledGrid.propTypes = {
-//     children: PropTypes.oneOfType([
-//         PropTypes.arrayOf(PropTypes.node),
-//         PropTypes.node
-//     ]),
-//     className: PropTypes.string
-// };
-
-// export default StyledGrid;
-
 import styled from "styled-components";
 import PropTypes from "prop-types";
 

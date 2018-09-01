@@ -131,11 +131,7 @@ class FeaturedImage extends Component {
                                 className={selected ? "selected" : ""}
                                 onClick={() => this.selectCoverImage(imagePath)}
                             >
-                                <img
-                                    alt=""
-                                    width="100%"
-                                    src={config.baseName + imagePath}
-                                />
+                                <img alt="" width="100%" src={imagePath} />
                             </div>
                         );
                     })}
