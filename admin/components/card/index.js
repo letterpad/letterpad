@@ -31,7 +31,7 @@ const Card = ({ children, title, subtitle, className }) => {
                 <h2 className="title">{title}</h2>
                 <p className="subtitle">{subtitle}</p>
             </header>
-            {...children}
+            {children}
         </StyledCard>
     );
 };

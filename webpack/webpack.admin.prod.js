@@ -4,7 +4,7 @@ const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 const vendorFiles = [
-    "babel-polyfill",
+    "@babel/polyfill",
     "react",
     "react-dom",
     "redux",
