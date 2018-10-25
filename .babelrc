@@ -17,6 +17,11 @@
         "react-hot-loader/babel",
         "@babel/plugin-proposal-object-rest-spread",
         "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-export-default-from",
+        "@babel/plugin-proposal-logical-assignment-operators",
+        "@babel/plugin-proposal-numeric-separator",
+        "@babel/plugin-proposal-optional-chaining",
+        "@babel/plugin-proposal-pipeline-operator",
         [
             "babel-plugin-styled-components",
             {
