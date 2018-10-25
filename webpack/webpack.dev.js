@@ -66,11 +66,6 @@ const clientConfig = args => {
                     // include: [
                     //     path.join(__dirname, "../client/themes/" + args.theme)
                     // ]
-                },
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    use: ["babel-loader", "eslint-loader"]
                 }
             ]
         }
@@ -102,7 +97,10 @@ const serverConfig = args => {
         cache: true,
         target: "node",
         entry: {
-            server: ["babel-polyfill", path.join(__dirname, "../client/server")]
+            server: [
+                "@babel/polyfill",
+                path.join(__dirname, "../client/server")
+            ]
         },
         output: {
             filename: "server.node.js",
@@ -140,7 +138,7 @@ const serverConfig = args => {
         }
     });
     config.entry = {
-        server: ["babel-polyfill", path.join(__dirname, "../client/server")]
+        server: ["@babel/polyfill", path.join(__dirname, "../client/server")]
     };
     return config;
 };

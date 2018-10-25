@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { translate } from "react-i18next";
 
 import { uploadFile } from "../../util";
-import config from "config";
 import UploadCoverImage from "../../data-connectors/UploadCoverImage";
 import InsertMedia from "../../data-connectors/InsertMedia";
 import PostActions from "./PostActions";

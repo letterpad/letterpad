@@ -1,3 +1,4 @@
+require("@babel/polyfill");
 var env = require("node-env-file");
 env(__dirname + "/../.env");
 const config = require("../config");

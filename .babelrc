@@ -1,14 +1,13 @@
 {
     "presets": [
-        "es2015",
-        "react",
+        "@babel/react",
         [
-            "env",
+            "@babel/env",
             {
                 "targets": {
                     "node": 8
                 },
-                "useBuiltIns": true,
+                "useBuiltIns": "entry",
                 "loose": true,
                 "modules": false
             }
@@ -16,8 +15,8 @@
     ],
     "plugins": [
         "react-hot-loader/babel",
-        "transform-object-rest-spread",
-        "transform-class-properties",
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-proposal-class-properties",
         [
             "babel-plugin-styled-components",
             {
