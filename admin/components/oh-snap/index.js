@@ -13,3 +13,4 @@ const OhSnap = ({ message }) => (
 OhSnap.propTypes = {
     message: PropTypes.string
 };
+export default OhSnap;

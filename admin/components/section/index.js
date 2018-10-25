@@ -41,7 +41,7 @@ const Section = ({ children, title, subtitle, ...props }) => {
                     {subtitle && <p>{subtitle}</p>}
                 </div>
             )}
-            {...children}
+            {children}
         </StyledSection>
     );
 };

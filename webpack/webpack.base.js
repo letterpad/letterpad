@@ -1,41 +1,15 @@
 const webpack = require("webpack");
 const path = require("path");
+const fs = require("fs");
 var FileNameReplacementPlugin = require("./FileNameReplacementPlugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
 const WebpackBar = require("webpackbar");
 
 const isDev = process.env.NODE_ENV === "dev" ? true : false;
-
-var babelOptions = {
-    presets: [
-        [
-            "env",
-            {
-                targets: {
-                    browsers: ["last 2 versions", "safari >= 7"]
-                },
-                modules: false,
-                useBuiltIns: false
-            }
-        ],
-        "react"
-    ],
-    plugins: [
-        "react-hot-loader/babel",
-        "transform-class-properties",
-        "transform-object-rest-spread",
-        [
-            "babel-plugin-styled-components",
-            {
-                ssr: true,
-                displayName: false
-            }
-        ]
-    ]
-};
+const babelRc = fs.readFileSync(path.resolve(__dirname, "../.babelrc"));
 
 const vendorFiles = [
-    "babel-polyfill",
+    "@babel/polyfill",
     "react",
     "react-dom",
     "redux",
@@ -92,19 +66,29 @@ module.exports = (args, name) => {
             rules: [
                 {
                     test: /\.js$/,
-                    use: {
-                        loader: "babel-loader",
-                        options: babelOptions
-                    },
+                    use: [
+                        {
+                            loader: "babel-loader",
+                            options: {
+                                ...JSON.parse(babelRc)
+                            }
+                        },
+                        { loader: "eslint-loader" }
+                    ],
                     include: path.join(__dirname, "../client")
                 },
                 // js
                 {
                     test: /\.js$/,
-                    use: {
-                        loader: "babel-loader",
-                        options: babelOptions
-                    },
+                    use: [
+                        {
+                            loader: "babel-loader",
+                            options: {
+                                ...JSON.parse(babelRc)
+                            }
+                        },
+                        { loader: "eslint-loader" }
+                    ],
                     include: path.join(__dirname, "../admin")
                 },
                 {

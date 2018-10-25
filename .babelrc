@@ -1,23 +1,27 @@
 {
     "presets": [
-        "es2015",
-        "react",
         [
-            "env",
+            "@babel/env",
             {
                 "targets": {
                     "node": 8
                 },
-                "useBuiltIns": true,
+                "useBuiltIns": "entry",
                 "loose": true,
                 "modules": false
             }
-        ]
+        ],
+        "@babel/react"
     ],
     "plugins": [
         "react-hot-loader/babel",
-        "transform-object-rest-spread",
-        "transform-class-properties",
+        "@babel/plugin-transform-modules-commonjs",
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-export-default-from",
+        "@babel/plugin-proposal-logical-assignment-operators",
+        "@babel/plugin-proposal-numeric-separator",
+        "@babel/plugin-proposal-optional-chaining",
         [
             "babel-plugin-styled-components",
             {

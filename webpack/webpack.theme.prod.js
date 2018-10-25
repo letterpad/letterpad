@@ -108,7 +108,7 @@ const serverConfig = args => {
         }
     });
     config.entry = {
-        server: ["babel-polyfill", path.join(__dirname, "../client/server")]
+        server: ["@babel/polyfill", path.join(__dirname, "../client/server")]
     };
     return config;
 };
