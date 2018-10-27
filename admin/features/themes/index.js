@@ -11,6 +11,7 @@ import StyledSection from "../../components/section";
 import StyledGrid from "../../components/grid";
 import StyledCard from "../../components/card";
 import StyledInput from "../../components/input";
+import StyledButton from "../../components/button";
 
 let SCROLLTOP = 0;
 
@@ -20,10 +21,13 @@ class Themes extends Component {
         options: PropTypes.object
     };
 
+    cssRef = React.createRef();
+
     state = {
         css: "",
         themes: [],
-        loading: true
+        loading: true,
+        theme: ""
     };
 
     updatedOptions = {};
@@ -37,15 +41,15 @@ class Themes extends Component {
         document.body.classList.remove("themes-page");
     }
 
-    static getDerivedStateFromProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, nextState) {
         if (nextProps.settings.loading) {
             return false;
         }
-        const data = nextProps.settings.data;
+        const { data } = nextProps.settings;
         const { css, theme } = data;
 
         return {
-            css: css.value,
+            css: nextState.css || css.value,
             theme: theme.value
         };
     }
@@ -72,9 +76,8 @@ class Themes extends Component {
     };
 
     handleCssChange = e => {
-        const css = e.target.value;
-        this.setState({ css });
-        this.updatedOptions.css = css;
+        const newState = { css: e.target.value };
+        this.setState(newState);
     };
 
     setOption = (option, value) => {
@@ -92,7 +95,6 @@ class Themes extends Component {
             });
         });
         await this.props.updateOptions(settings);
-        //this.getThemes();
         notify.show("Theme Activated", "success", 3000);
     };
 
@@ -117,6 +119,14 @@ class Themes extends Component {
         );
     };
 
+    saveCss = async e => {
+        e.preventDefault();
+        await this.props.updateOptions([
+            { option: "css", value: this.state.css }
+        ]);
+        notify.show("CSS Saved", "success", 3000);
+    };
+
     render() {
         return (
             <StyledSection>
@@ -128,9 +138,12 @@ class Themes extends Component {
                         <StyledInput
                             textarea
                             rows="7"
+                            value={this.state.css}
                             placeholder="Additional CSS"
                             onChange={this.handleCssChange}
+                            ref={this.cssRef}
                         />
+                        <StyledButton onClick={this.saveCss}>Save</StyledButton>
                     </StyledCard>
                     <br />
                     <StyledCard
