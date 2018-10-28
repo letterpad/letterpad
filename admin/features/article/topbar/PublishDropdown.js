@@ -71,6 +71,7 @@ class PublishDropdown extends Component {
                     <Taxonomies post={post} for="post_category" />
                 )}
                 <FeaturedImage post={post} />
+                <br />
             </StyledDropdown>
         );
     }

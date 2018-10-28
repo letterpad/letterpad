@@ -17,6 +17,12 @@ const StyledGrid = styled.div`
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         grid-gap: 15px;
     }
+    article {
+        opacity: 0.5;
+        &.selected {
+            opacity: 1;
+        }
+    }
 `;
 class FileExplorer extends Component {
     static propTypes = {
