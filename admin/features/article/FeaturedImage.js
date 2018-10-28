@@ -107,54 +107,38 @@ class FeaturedImage extends Component {
         this.setState({ imageList });
     }
 
-    selectCoverImage = imagePath => {
+    // All the images available in the post can be used as a cover image.
+    // This function sets the selection
+    setCoverImage = imagePath => {
         PostActions.setData({ cover_image: imagePath });
-        this.setState({ cover_image: imagePath });
+        this.setState({ cover_image: imagePath, fileExplorerOpen: false });
+        // update the post with the new url
+        this.props.updateFeaturedImage({
+            id: this.props.post.id,
+            cover_image: imagePath
+        });
     };
 
-    // We are not allowing users to upload any image here.
-    // But in future we might allow this. Below are the three methods that will take care of this.
-    // Currently they are not being used.
     uploadImage = async files => {
+        // upload the file and get the url
         const uploadedFiles = await uploadFile({
             files,
             type: "featured_image"
         });
         const coverImage = uploadedFiles[0];
-        await this.props.insertMedia({ url: coverImage });
-        this.updateFeaturedImage(coverImage);
-    };
 
-    updateFeaturedImage = (coverImage = "") => {
+        // update the post with the new url
         this.props.updateFeaturedImage({
             id: this.props.post.id,
             cover_image: coverImage
         });
+        // set the state with the new image
         this.setState({ cover_image: coverImage, fileExplorerOpen: false });
-        // this.props.toggleFileExplorerModal({ display: false });
     };
 
     toggleFileExplorer = () => {
-        this.setState(
-            { fileExplorerOpen: !this.state.fileExplorerOpen },
-            () => {
-                // this.props.toggleFileExplorerModal({
-                //     onClose: this.toggleFileExplorer,
-                //     onMediaSelect: this.updateFeaturedImage,
-                //     addNewMedia: () => {
-                //         this.uploadInputRef.current.click();
-                //         this.toggleFileExplorer();
-                //     },
-                //     display: this.state.fileExplorerOpen
-                // });
-            }
-        );
+        this.setState({ fileExplorerOpen: !this.state.fileExplorerOpen });
     };
-
-    // uploadImage = async files => {
-    //     const uploadedFiles = await uploadFile({ files, type: "post_image" });
-    //     console.log(uploadedFiles);
-    // };
 
     render() {
         if (this.state.imageList.length === 0) {
@@ -179,7 +163,7 @@ class FeaturedImage extends Component {
                         toggleFileExplorer={this.toggleFileExplorer}
                         isCustom={isCustom}
                         coverImage={this.state.cover_image}
-                        removeCustomImage={() => this.updateFeaturedImage("")}
+                        removeCustomImage={() => this.setCoverImage("")}
                     />
                     {this.state.imageList.map((imagePath, idx) => {
                         const selected = imagePath === this.state.cover_image;
@@ -187,7 +171,7 @@ class FeaturedImage extends Component {
                             <div
                                 key={idx}
                                 className={selected ? "selected" : ""}
-                                onClick={() => this.selectCoverImage(imagePath)}
+                                onClick={() => this.setCoverImage(imagePath)}
                             >
                                 <img alt="" width="100%" src={imagePath} />
                             </div>
@@ -205,10 +189,9 @@ class FeaturedImage extends Component {
                     <FileExplorerModal
                         isOpen={this.state.fileExplorerOpen}
                         onClose={this.toggleFileExplorer}
-                        onMediaSelect={this.updateFeaturedImage}
+                        onMediaSelect={this.setCoverImage}
                         addNewMedia={() => {
                             this.imageInputRef.current.click();
-                            //this.toggleFileExplorer();
                         }}
                     />
                 )}
