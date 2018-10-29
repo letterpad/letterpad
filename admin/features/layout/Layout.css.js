@@ -37,22 +37,22 @@ export const defaultStyles = `
 `;
 
 export const StyledLayout = styled.div`
-    display: grid;
-    grid-template-areas: "header header" "nav content" "footer footer";
-    grid-template-columns: 200px 1fr;
-    grid-template-rows: auto 1fr auto;
-    min-height: 100vh;
-    ${defaultStyles};
+  display: grid;
+  grid-template-areas: "header header" "nav content" "footer footer";
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  ${defaultStyles};
 
+  background: var(--bg-base);
+
+  main {
     background: var(--bg-base);
-
-    main {
-        background: var(--bg-base);
+  }
+  @media (max-width: 991px) {
+    .main {
+      grid-gap: 0px;
+      grid-template-columns: 200px 1fr;
     }
-    @media (max-width: 991px) {
-        .main {
-            grid-gap: 0px;
-            grid-template-columns: 200px 1fr;
-        }
-    }
+  }
 `;

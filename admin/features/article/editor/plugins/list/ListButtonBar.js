@@ -5,10 +5,10 @@ import { UnorderedListButton, OrderedListButton } from "./";
 if (require("exenv").canUseDOM) require("./ListButtonBar.css");
 
 const ListButtonBar = props => (
-    <React.Fragment>
-        <UnorderedListButton {...props} />
-        <OrderedListButton {...props} />
-    </React.Fragment>
+  <React.Fragment>
+    <UnorderedListButton {...props} />
+    <OrderedListButton {...props} />
+  </React.Fragment>
 );
 
 export default ListButtonBar;

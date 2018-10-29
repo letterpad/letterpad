@@ -14,11 +14,11 @@ import config from "../config";
 const isAdmin = true;
 
 const App = (
-    <BrowserRouter basename={config.baseName}>
-        <ApolloProvider client={client(isAdmin)}>
-            <Routes />
-        </ApolloProvider>
-    </BrowserRouter>
+  <BrowserRouter basename={config.baseName}>
+    <ApolloProvider client={client(isAdmin)}>
+      <Routes />
+    </ApolloProvider>
+  </BrowserRouter>
 );
 
 render(App, document.getElementById("app"));

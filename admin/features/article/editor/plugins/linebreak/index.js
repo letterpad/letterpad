@@ -6,15 +6,15 @@ import * as LinebreakUtils from "./LinebreakUtils";
 
 /* eslint-disable no-unused-vars */
 const LinebreakPlugin = options => ({
-    onKeyDown(...args) {
-        return LinebreakKeyboardShortcut(...args);
-    }
+  onKeyDown(...args) {
+    return LinebreakKeyboardShortcut(...args);
+  },
 });
 
 export {
-    LinebreakPlugin,
-    LinebreakNode,
-    LinebreakKeyboardShortcut,
-    LinebreakUtils,
-    LinebreakButton
+  LinebreakPlugin,
+  LinebreakNode,
+  LinebreakKeyboardShortcut,
+  LinebreakUtils,
+  LinebreakButton,
 };

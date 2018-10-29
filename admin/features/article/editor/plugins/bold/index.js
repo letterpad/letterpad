@@ -5,9 +5,9 @@ import BoldButton from "./BoldButton";
 
 /* eslint-disable no-unused-vars */
 const BoldPlugin = options => ({
-    onKeyDown(...args) {
-        return BoldKeyboardShortcut(...args);
-    }
+  onKeyDown(...args) {
+    return BoldKeyboardShortcut(...args);
+  },
 });
 
 export { BoldPlugin, BoldMark, BoldKeyboardShortcut, BoldUtils, BoldButton };

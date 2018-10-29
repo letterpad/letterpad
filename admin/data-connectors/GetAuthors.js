@@ -2,22 +2,22 @@ import { graphql } from "react-apollo";
 import { GET_AUTHOR, GET_AUTHORS } from "../../shared/queries/Queries";
 
 export const GetAuthor = graphql(GET_AUTHOR, {
-    options: props => {
-        return {
-            variables: {
-                id: props.match.params.id || props.author.id
-            }
-        };
-    },
-    props: ({ data: { loading, author } }) => ({
-        author,
-        loading
-    })
+  options: props => {
+    return {
+      variables: {
+        id: props.match.params.id || props.author.id,
+      },
+    };
+  },
+  props: ({ data: { loading, author } }) => ({
+    author,
+    loading,
+  }),
 });
 
 export const GetAuthors = graphql(GET_AUTHORS, {
-    props: ({ data: { loading, authors } }) => ({
-        authors,
-        loading
-    })
+  props: ({ data: { loading, authors } }) => ({
+    authors,
+    loading,
+  }),
 });

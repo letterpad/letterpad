@@ -5,15 +5,15 @@ import HighlightButton from "./HighlightButton";
 
 /* eslint-disable no-unused-vars */
 const HighlightPlugin = options => ({
-    onKeyDown(...args) {
-        return HighlightKeyboardShortcut(...args);
-    }
+  onKeyDown(...args) {
+    return HighlightKeyboardShortcut(...args);
+  },
 });
 
 export {
-    HighlightPlugin,
-    HighlightMark,
-    HighlightKeyboardShortcut,
-    HighlightUtils,
-    HighlightButton
+  HighlightPlugin,
+  HighlightMark,
+  HighlightKeyboardShortcut,
+  HighlightUtils,
+  HighlightButton,
 };

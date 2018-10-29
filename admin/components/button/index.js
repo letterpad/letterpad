@@ -33,8 +33,8 @@ const StyledButton = styled.button`
     text-transform: uppercase;
 
     ${props => {
-        if (props.danger) {
-            return `
+      if (props.danger) {
+        return `
                 color: var(--color-danger);
                 background: var(--bg-danger);
                 border: var(--bg-hover-danger);
@@ -44,9 +44,9 @@ const StyledButton = styled.button`
                     border: var(--bg-danger);
                 }
                 `;
-        }
-        if (props.success) {
-            return `
+      }
+      if (props.success) {
+        return `
                 color: var(--color-success);
                 background: var(--bg-success);
                 border: var(--bg-hover-success);
@@ -56,8 +56,8 @@ const StyledButton = styled.button`
                     border: var(--bg-success);
                 }
                 `;
-        }
-        return `
+      }
+      return `
             color: var(--color-primary);
             background: var(--bg-primary);
             border: var(--bg-hover-primary);
@@ -70,15 +70,15 @@ const StyledButton = styled.button`
     }}
 
     padding: ${props => {
-        if (props.sm) return "7px 10px";
-        if (props.lg) return "15px 20px";
-        return "10px 15px";
+      if (props.sm) return "7px 10px";
+      if (props.lg) return "15px 20px";
+      return "10px 15px";
     }};
     
     font-size: ${props => {
-        if (props.sm) return "10px";
-        if (props.lg) return "13";
-        return "11px";
+      if (props.sm) return "10px";
+      if (props.lg) return "13";
+      return "11px";
     }};
 
     ${props => props.basic && applyBasic}

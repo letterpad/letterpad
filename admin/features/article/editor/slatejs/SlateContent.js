@@ -9,11 +9,11 @@ import { nodeRenderer, markRenderer } from "../helper/renderer";
 
 /* eslint-disable default-case */
 export const renderNode = props => {
-    return nodeRenderer(props.node.type, props);
+  return nodeRenderer(props.node.type, props);
 };
 
 export const renderMark = props => {
-    return markRenderer(props.mark.type, props);
+  return markRenderer(props.mark.type, props);
 };
 
 /**
@@ -22,60 +22,56 @@ export const renderMark = props => {
  */
 
 const schema = {
-    document: {
-        last: { types: ["paragraph"] },
-        normalize: (change, reason, { node }) => {
-            switch (reason) {
-                case LAST_CHILD_TYPE_INVALID: {
-                    const paragraph = Block.create("paragraph");
-                    return change.insertNodeByKey(
-                        node.key,
-                        node.nodes.size,
-                        paragraph
-                    );
-                }
-            }
+  document: {
+    last: { types: ["paragraph"] },
+    normalize: (change, reason, { node }) => {
+      switch (reason) {
+        case LAST_CHILD_TYPE_INVALID: {
+          const paragraph = Block.create("paragraph");
+          return change.insertNodeByKey(node.key, node.nodes.size, paragraph);
         }
-    }
+      }
+    },
+  },
 };
 
 /* eslint-disable react/prop-types */
 
 export default ({
-    className,
-    wrapperStyle,
-    style,
-    value,
-    outerState,
-    plugins,
-    onChange,
-    children,
-    onPaste,
-    ...rest
+  className,
+  wrapperStyle,
+  style,
+  value,
+  outerState,
+  plugins,
+  onChange,
+  children,
+  onPaste,
+  ...rest
 }) => {
-    const { readOnly } = outerState;
+  const { readOnly } = outerState;
 
-    return (
-        <div
-            className={classnames("editor--content", className)}
-            style={wrapperStyle}
-        >
-            <Editor
-                schema={schema}
-                plugins={plugins}
-                value={value}
-                onChange={onChange}
-                onPaste={onPaste}
-                readOnly={readOnly}
-                outerState={outerState}
-                style={style}
-                renderNode={renderNode}
-                renderMark={renderMark}
-                decorateNode={decorateNode}
-                placeholder="Compose a story.."
-                {...rest}
-            />
-            {children}
-        </div>
-    );
+  return (
+    <div
+      className={classnames("editor--content", className)}
+      style={wrapperStyle}
+    >
+      <Editor
+        schema={schema}
+        plugins={plugins}
+        value={value}
+        onChange={onChange}
+        onPaste={onPaste}
+        readOnly={readOnly}
+        outerState={outerState}
+        style={style}
+        renderNode={renderNode}
+        renderMark={renderMark}
+        decorateNode={decorateNode}
+        placeholder="Compose a story.."
+        {...rest}
+      />
+      {children}
+    </div>
+  );
 };

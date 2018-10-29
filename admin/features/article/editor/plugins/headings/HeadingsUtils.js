@@ -8,5 +8,5 @@ export const applyHeadings = (change, type) => change.setBlocks(type).focus();
  */
 
 export const hasBlock = (value, type) => {
-    return value.blocks.some(node => node.type == type);
+  return value.blocks.some(node => node.type == type);
 };

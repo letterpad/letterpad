@@ -1,2 +1,2 @@
 export const isMod = event =>
-    (event.metaKey && !event.ctrlKey) || event.ctrlKey;
+  (event.metaKey && !event.ctrlKey) || event.ctrlKey;

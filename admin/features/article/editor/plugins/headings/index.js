@@ -4,15 +4,15 @@ import * as HeadingsUtils from "./HeadingsUtils";
 import HeadingsButton from "./HeadingsButton";
 /* eslint-disable no-unused-vars */
 const HeadingsPlugin = options => ({
-    onKeyDown(...args) {
-        return HeadingsKeyboardShortcut(...args);
-    }
+  onKeyDown(...args) {
+    return HeadingsKeyboardShortcut(...args);
+  },
 });
 
 export {
-    HeadingsPlugin,
-    HeadingsNode,
-    HeadingsKeyboardShortcut,
-    HeadingsUtils,
-    HeadingsButton
+  HeadingsPlugin,
+  HeadingsNode,
+  HeadingsKeyboardShortcut,
+  HeadingsUtils,
+  HeadingsButton,
 };

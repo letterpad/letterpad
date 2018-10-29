@@ -28,8 +28,8 @@ const darkTheme = `
     --color-hover-danger: #fff;
 
     ${
-        "" +
-            "" /* Create a shade of the --bg-base color. 
+      "" +
+        "" /* Create a shade of the --bg-base color. 
         If the base color is dark then go from drak => light
         If the base color is light then go from light => dark
      */

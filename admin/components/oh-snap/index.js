@@ -5,12 +5,12 @@ import StyledSection from "../section";
 import StyledCard from "../card";
 
 const OhSnap = ({ message }) => (
-    <StyledSection title="Oh Snap">
-        <StyledCard subtitle={message} />
-    </StyledSection>
+  <StyledSection title="Oh Snap">
+    <StyledCard subtitle={message} />
+  </StyledSection>
 );
 
 OhSnap.propTypes = {
-    message: PropTypes.string
+  message: PropTypes.string,
 };
 export default OhSnap;

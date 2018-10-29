@@ -1,5 +1,5 @@
 export const hasMark = value =>
-    value.marks.some(mark => mark.type === "underline");
+  value.marks.some(mark => mark.type === "underline");
 
 export const underlineMarkStrategy = change =>
-    change.toggleMark("underline").focus();
+  change.toggleMark("underline").focus();

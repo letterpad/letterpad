@@ -5,15 +5,15 @@ import UnderlineButton from "./UnderlineButton";
 
 /* eslint-disable no-unused-vars */
 const UnderlinePlugin = options => ({
-    onKeyDown(...args) {
-        return UnderlineKeyboardShortcut(...args);
-    }
+  onKeyDown(...args) {
+    return UnderlineKeyboardShortcut(...args);
+  },
 });
 
 export {
-    UnderlinePlugin,
-    UnderlineMark,
-    UnderlineKeyboardShortcut,
-    UnderlineUtils,
-    UnderlineButton
+  UnderlinePlugin,
+  UnderlineMark,
+  UnderlineKeyboardShortcut,
+  UnderlineUtils,
+  UnderlineButton,
 };

@@ -5,9 +5,9 @@ import LinkButton from "./LinkButton";
 
 /* eslint-disable no-unused-vars */
 const LinkPlugin = options => ({
-    onKeyDown(...args) {
-        return LinkKeyboardShortcut(...args);
-    }
+  onKeyDown(...args) {
+    return LinkKeyboardShortcut(...args);
+  },
 });
 
 export { LinkPlugin, LinkNode, LinkKeyboardShortcut, LinkUtils, LinkButton };

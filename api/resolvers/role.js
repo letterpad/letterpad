@@ -1,12 +1,12 @@
 export default {
-    Query: {
-        roles: (root, args, { models }) => {
-            return models.Role.findAll();
-        }
+  Query: {
+    roles: (root, args, { models }) => {
+      return models.Role.findAll();
     },
-    Role: {
-        permissions: role => {
-            return role.getPermissions();
-        }
-    }
+  },
+  Role: {
+    permissions: role => {
+      return role.getPermissions();
+    },
+  },
 };
