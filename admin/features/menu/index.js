@@ -7,19 +7,19 @@ import DATA from "./constants";
 import StyledMenu from "./Menu.css";
 
 class Menu extends Component {
-    static propTypes = {
-        router: PropTypes.object,
-        settings: PropTypes.object
-    };
+  static propTypes = {
+    router: PropTypes.object,
+    settings: PropTypes.object,
+  };
 
-    render() {
-        const { router } = this.props;
-        return (
-            <StyledMenu className="custom-menu">
-                <MenuVertical menu={DATA} router={router} />
-            </StyledMenu>
-        );
-    }
+  render() {
+    const { router } = this.props;
+    return (
+      <StyledMenu className="custom-menu">
+        <MenuVertical menu={DATA} router={router} />
+      </StyledMenu>
+    );
+  }
 }
 
 export default Menu;

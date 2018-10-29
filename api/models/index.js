@@ -5,30 +5,30 @@ var db = {};
 
 // establish  database connection
 const conn = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
+  config.database,
+  config.username,
+  config.password,
+  config,
 );
 
 const models = {
-    Author: conn.import("./author"),
-    Post: conn.import("./post"),
-    Taxonomy: conn.import("./taxonomy"),
-    Role: conn.import("./role"),
-    Permission: conn.import("./permission"),
-    Setting: conn.import("./setting"),
-    Media: conn.import("./media"),
-    PostTaxonomy: conn.import("./postTaxonomy"),
-    Theme: conn.import("./theme")
+  Author: conn.import("./author"),
+  Post: conn.import("./post"),
+  Taxonomy: conn.import("./taxonomy"),
+  Role: conn.import("./role"),
+  Permission: conn.import("./permission"),
+  Setting: conn.import("./setting"),
+  Media: conn.import("./media"),
+  PostTaxonomy: conn.import("./postTaxonomy"),
+  Theme: conn.import("./theme"),
 };
 
 // now that we have the model instances, add relationships
 Object.keys(models).forEach(function(modelName) {
-    db[modelName] = models[modelName];
-    if (db[modelName].associate) {
-        db[modelName].associate(models);
-    }
+  db[modelName] = models[modelName];
+  if (db[modelName].associate) {
+    db[modelName].associate(models);
+  }
 });
 
 db.sequelize = conn;

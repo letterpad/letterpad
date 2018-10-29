@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 const highlightKeyboardShortcut = () => {
-    return;
+  return;
 };
 
 export default highlightKeyboardShortcut;

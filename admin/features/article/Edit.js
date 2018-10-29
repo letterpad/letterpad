@@ -8,29 +8,29 @@ import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
 
 export default class Edit extends Component {
-    static propTypes = {
-        post: PropTypes.object
-    };
+  static propTypes = {
+    post: PropTypes.object,
+  };
 
-    render() {
-        const { post } = this.props;
-        return (
-            <StyledArticle className={post.type}>
-                <div className="post-header">
-                    <PostTitle
-                        text={post.title}
-                        placeholder="Enter a title"
-                        onChange={e => {
-                            PostActions.setData({
-                                title: e.target.value
-                            });
-                        }}
-                    />
-                </div>
-                <div className="post-content">
-                    <Editor post={post} />
-                </div>
-            </StyledArticle>
-        );
-    }
+  render() {
+    const { post } = this.props;
+    return (
+      <StyledArticle className={post.type}>
+        <div className="post-header">
+          <PostTitle
+            text={post.title}
+            placeholder="Enter a title"
+            onChange={e => {
+              PostActions.setData({
+                title: e.target.value,
+              });
+            }}
+          />
+        </div>
+        <div className="post-content">
+          <Editor post={post} />
+        </div>
+      </StyledArticle>
+    );
+  }
 }

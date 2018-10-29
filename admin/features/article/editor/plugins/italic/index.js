@@ -5,15 +5,15 @@ import ItalicButton from "./ItalicButton";
 
 /* eslint-disable no-unused-vars */
 const ItalicPlugin = options => ({
-    onKeyDown(...args) {
-        return ItalicKeyboardShortcut(...args);
-    }
+  onKeyDown(...args) {
+    return ItalicKeyboardShortcut(...args);
+  },
 });
 
 export {
-    ItalicPlugin,
-    ItalicMark,
-    ItalicKeyboardShortcut,
-    ItalicUtils,
-    ItalicButton
+  ItalicPlugin,
+  ItalicMark,
+  ItalicKeyboardShortcut,
+  ItalicUtils,
+  ItalicButton,
 };

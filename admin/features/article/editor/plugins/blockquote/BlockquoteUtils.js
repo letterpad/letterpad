@@ -8,5 +8,5 @@ export const applyBlockquote = (change, type) => change.setBlocks(type);
  */
 
 export const hasBlock = (value, type) => {
-    return value.blocks.some(node => node.type == type);
+  return value.blocks.some(node => node.type == type);
 };

@@ -16,91 +16,85 @@ import { GetAuthor } from "../../data-connectors/GetAuthors";
 import Loader from "../../components/loader";
 
 class EditAuthor extends Component {
-    static propTypes = {
-        author: PropTypes.object,
-        updateAuthor: PropTypes.func,
-        loading: PropTypes.bool
-    };
+  static propTypes = {
+    author: PropTypes.object,
+    updateAuthor: PropTypes.func,
+    loading: PropTypes.bool,
+  };
 
-    author = {};
+  author = {};
 
-    gridLoaded = element => {
-        this.textInput = element;
-    };
+  gridLoaded = element => {
+    this.textInput = element;
+  };
 
-    componentDidMount() {
-        document.body.classList.add("edit-author-page");
+  componentDidMount() {
+    document.body.classList.add("edit-author-page");
+  }
+
+  componentWillUnmount() {
+    document.body.classList.remove("edit-author-page");
+  }
+
+  setOption = (option, value) => {
+    this.author[option] = value;
+  };
+
+  submitData = async e => {
+    e.preventDefault();
+    this.author.id = this.props.author.id;
+    const update = await this.props.updateAuthor(this.author);
+    let { errors } = update.data.updateAuthor;
+    if (errors && errors.length > 0) {
+      errors = errors.map(error => error.message);
+      notify.show(errors.join("\n"), "error");
+    } else {
+      notify.show("Author updated", "success");
     }
+  };
 
-    componentWillUnmount() {
-        document.body.classList.remove("edit-author-page");
+  render() {
+    if (this.props.loading) {
+      return <Loader />;
     }
-
-    setOption = (option, value) => {
-        this.author[option] = value;
-    };
-
-    submitData = async e => {
-        e.preventDefault();
-        this.author.id = this.props.author.id;
-        const update = await this.props.updateAuthor(this.author);
-        let { errors } = update.data.updateAuthor;
-        if (errors && errors.length > 0) {
-            errors = errors.map(error => error.message);
-            notify.show(errors.join("\n"), "error");
-        } else {
-            notify.show("Author updated", "success");
-        }
-    };
-
-    render() {
-        if (this.props.loading) {
-            return <Loader />;
-        }
-        const { fname, lname } = this.props.author;
-        return (
-            <StyledSection
-                title={`Edit Author - ${fname} ${lname}`}
-                subtitle=""
-            >
-                <StyledGrid columns="repeat(auto-fit,minmax(300px, 1fr))">
-                    <StyledCard>
-                        <div>
-                            <Basic
-                                data={this.props.author}
-                                updateOption={this.setOption}
-                            />
-                            <StyledButton success onClick={this.submitData}>
-                                Save
-                            </StyledButton>
-                        </div>
-                    </StyledCard>
-                    <StyledCard>
-                        <div>
-                            <Social
-                                data={this.props.author.social}
-                                updateOption={this.setOption}
-                            />
-                            <StyledButton success onClick={this.submitData}>
-                                Save
-                            </StyledButton>
-                        </div>
-                    </StyledCard>
-                    <StyledCard>
-                        <div>
-                            <PasswordChange
-                                data={this.props.author}
-                                updateOption={this.setOption}
-                            />
-                            <StyledButton success onClick={this.submitData}>
-                                Save
-                            </StyledButton>
-                        </div>
-                    </StyledCard>
-                </StyledGrid>
-            </StyledSection>
-        );
-    }
+    const { fname, lname } = this.props.author;
+    return (
+      <StyledSection title={`Edit Author - ${fname} ${lname}`} subtitle="">
+        <StyledGrid columns="repeat(auto-fit,minmax(300px, 1fr))">
+          <StyledCard>
+            <div>
+              <Basic data={this.props.author} updateOption={this.setOption} />
+              <StyledButton success onClick={this.submitData}>
+                Save
+              </StyledButton>
+            </div>
+          </StyledCard>
+          <StyledCard>
+            <div>
+              <Social
+                data={this.props.author.social}
+                updateOption={this.setOption}
+              />
+              <StyledButton success onClick={this.submitData}>
+                Save
+              </StyledButton>
+            </div>
+          </StyledCard>
+          <StyledCard>
+            <div>
+              <PasswordChange
+                data={this.props.author}
+                updateOption={this.setOption}
+              />
+              <StyledButton success onClick={this.submitData}>
+                Save
+              </StyledButton>
+            </div>
+          </StyledCard>
+        </StyledGrid>
+      </StyledSection>
+    );
+  }
 }
 
 export default UpdateAuthor(GetAuthor(EditAuthor));

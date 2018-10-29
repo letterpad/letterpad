@@ -8,101 +8,101 @@ import { lightTheme, darkTheme } from "../../css-variables";
 import { StyledLayout, defaultStyles } from "./Layout.css";
 
 const CSSVariables = styled.div`
-    ${props => (props.dark ? darkTheme : lightTheme)};
+  ${props => (props.dark ? darkTheme : lightTheme)};
 `;
 
 const NoLayout = styled.div`
-    ${defaultStyles};
+  ${defaultStyles};
 `;
 export default function Layout(ComponentClass, props) {
-    const settings = props.settings;
-    let defaultTheme = "dark";
-    if (typeof localStorage !== "undefined" && localStorage.theme) {
-        defaultTheme = localStorage.theme;
+  const settings = props.settings;
+  let defaultTheme = "dark";
+  if (typeof localStorage !== "undefined" && localStorage.theme) {
+    defaultTheme = localStorage.theme;
+  }
+
+  return class extends Component {
+    state = {
+      sidebarOpen: true,
+      theme: defaultTheme,
+    };
+
+    mounted = false;
+
+    componentDidMount() {
+      this.mounted = true;
+      if (typeof window !== "undefined") {
+        window.addEventListener("resize", this.onResize);
+
+        this.onResize();
+      }
     }
 
-    return class extends Component {
-        state = {
-            sidebarOpen: true,
-            theme: defaultTheme
-        };
+    componentWillUnmount() {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", this.onResize);
+      }
+    }
 
-        mounted = false;
-
-        componentDidMount() {
-            this.mounted = true;
-            if (typeof window !== "undefined") {
-                window.addEventListener("resize", this.onResize);
-
-                this.onResize();
-            }
-        }
-
-        componentWillUnmount() {
-            if (typeof window !== "undefined") {
-                window.removeEventListener("resize", this.onResize);
-            }
-        }
-
-        toggleSidebar = e => {
-            if (e.type == "mouseover") {
-                document.body.classList.add("hovering");
-            } else {
-                document.body.classList.remove("hovering");
-            }
-        };
-
-        onResize = () => {
-            if (!this.mounted) return false;
-            if (document.body.clientWidth < 991) {
-                this.setState({ sidebarOpen: false });
-            } else {
-                this.setState({ sidebarOpen: true });
-            }
-        };
-
-        sidebarToggle = () => {
-            this.setState({ sidebarOpen: !this.state.sidebarOpen });
-        };
-
-        switchTheme = theme => {
-            this.setState({ theme });
-            if (typeof localStorage !== "undefined") {
-                localStorage.theme = theme;
-            }
-        };
-
-        render() {
-            const _props = { ...this.props, ...props, settings };
-            const classes = this.state.sidebarOpen ? "" : " collapsed";
-            const selectedTheme = { [this.state.theme]: true };
-            return (
-                <CSSVariables {...selectedTheme}>
-                    {props.layout == "none" ? (
-                        <NoLayout>
-                            <div className="content-area">
-                                <ComponentClass {..._props} />
-                            </div>
-                        </NoLayout>
-                    ) : (
-                        <StyledLayout className={"main a two-column" + classes}>
-                            <Header
-                                sidebarToggle={this.sidebarToggle}
-                                settings={settings}
-                                author={_props.author}
-                                switchTheme={this.switchTheme}
-                                selectedTheme={this.state.theme}
-                            />
-                            <Sidebar {..._props} />
-                            <main>
-                                <div className="content-area">
-                                    <ComponentClass {..._props} />
-                                </div>
-                            </main>
-                        </StyledLayout>
-                    )}
-                </CSSVariables>
-            );
-        }
+    toggleSidebar = e => {
+      if (e.type == "mouseover") {
+        document.body.classList.add("hovering");
+      } else {
+        document.body.classList.remove("hovering");
+      }
     };
+
+    onResize = () => {
+      if (!this.mounted) return false;
+      if (document.body.clientWidth < 991) {
+        this.setState({ sidebarOpen: false });
+      } else {
+        this.setState({ sidebarOpen: true });
+      }
+    };
+
+    sidebarToggle = () => {
+      this.setState({ sidebarOpen: !this.state.sidebarOpen });
+    };
+
+    switchTheme = theme => {
+      this.setState({ theme });
+      if (typeof localStorage !== "undefined") {
+        localStorage.theme = theme;
+      }
+    };
+
+    render() {
+      const _props = { ...this.props, ...props, settings };
+      const classes = this.state.sidebarOpen ? "" : " collapsed";
+      const selectedTheme = { [this.state.theme]: true };
+      return (
+        <CSSVariables {...selectedTheme}>
+          {props.layout == "none" ? (
+            <NoLayout>
+              <div className="content-area">
+                <ComponentClass {..._props} />
+              </div>
+            </NoLayout>
+          ) : (
+            <StyledLayout className={"main a two-column" + classes}>
+              <Header
+                sidebarToggle={this.sidebarToggle}
+                settings={settings}
+                author={_props.author}
+                switchTheme={this.switchTheme}
+                selectedTheme={this.state.theme}
+              />
+              <Sidebar {..._props} />
+              <main>
+                <div className="content-area">
+                  <ComponentClass {..._props} />
+                </div>
+              </main>
+            </StyledLayout>
+          )}
+        </CSSVariables>
+      );
+    }
+  };
 }

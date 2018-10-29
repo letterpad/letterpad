@@ -7,8 +7,8 @@ import fetch from "isomorphic-fetch";
 import config from "../config";
 
 const httpLink = createHttpLink({
-    uri: config.apiUrl,
-    fetch: fetch
+  uri: config.apiUrl,
+  fetch: fetch,
 });
 
 // As the apollo client is responsible to send requests in both admin
@@ -16,53 +16,53 @@ const httpLink = createHttpLink({
 // For every request to admin, this token will be refreshed and resaved in localstorage.
 // This is also useful to invalidate the sesson if the user is inactive for more than x time
 const middlewareLinkAdmin = new ApolloLink((operation, forward) => {
-    operation.setContext({
-        headers: {
-            authorization: localStorage.token || null,
-            browser: true
-        }
-    });
-    return forward(operation).map(response => {
-        const {
-            response: { headers }
-        } = operation.getContext();
-        if (headers) {
-            const refreshToken = headers.get("x-refresh-token");
-            if (refreshToken) {
-                localStorage.token = refreshToken;
-            }
-        }
-        return response;
-    });
+  operation.setContext({
+    headers: {
+      authorization: localStorage.token || null,
+      browser: true,
+    },
+  });
+  return forward(operation).map(response => {
+    const {
+      response: { headers },
+    } = operation.getContext();
+    if (headers) {
+      const refreshToken = headers.get("x-refresh-token");
+      if (refreshToken) {
+        localStorage.token = refreshToken;
+      }
+    }
+    return response;
+  });
 });
 
 const middlewareLinkClient = new ApolloLink((operation, forward) => {
-    operation.setContext({
-        headers: {
-            browser: true
-        }
-    });
-    return forward(operation);
+  operation.setContext({
+    headers: {
+      browser: true,
+    },
+  });
+  return forward(operation);
 });
 
 const errorLink = onError(({ networkError }) => {
-    if (networkError.statusCode === 401) {
-        window.location = config.baseName + "/admin/login";
-    }
+  if (networkError.statusCode === 401) {
+    window.location = config.baseName + "/admin/login";
+  }
 });
 let initialState = {};
 if (typeof window !== "undefined") {
-    initialState = window.__APOLLO_STATE__;
+  initialState = window.__APOLLO_STATE__;
 }
 
 // prepare the cliet for graphql queries.
 
 const client = (isAdmin = false) => {
-    const middleware = isAdmin ? middlewareLinkAdmin : middlewareLinkClient;
-    return new ApolloClient({
-        link: errorLink.concat(middleware).concat(httpLink),
-        cache: new InMemoryCache().restore(initialState),
-        ssrForceFetchDelay: 100
-    });
+  const middleware = isAdmin ? middlewareLinkAdmin : middlewareLinkClient;
+  return new ApolloClient({
+    link: errorLink.concat(middleware).concat(httpLink),
+    cache: new InMemoryCache().restore(initialState),
+    ssrForceFetchDelay: 100,
+  });
 };
 export default client;

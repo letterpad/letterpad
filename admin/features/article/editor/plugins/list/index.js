@@ -13,19 +13,19 @@ import OrderedListButton from "./OrderedListButton";
 
 /* eslint-disable no-unused-vars */
 const ListPlugin = options => ({
-    onKeyDown(...args) {
-        return ListKeyboardShortcut(...args);
-    }
+  onKeyDown(...args) {
+    return ListKeyboardShortcut(...args);
+  },
 });
 
 export {
-    ListPlugin,
-    ListItemNode,
-    OrderedListNode,
-    UnorderedListNode,
-    ListKeyboardShortcut,
-    ListUtils,
-    ListButtonBar,
-    UnorderedListButton,
-    OrderedListButton
+  ListPlugin,
+  ListItemNode,
+  OrderedListNode,
+  UnorderedListNode,
+  ListKeyboardShortcut,
+  ListUtils,
+  ListButtonBar,
+  UnorderedListButton,
+  OrderedListButton,
 };

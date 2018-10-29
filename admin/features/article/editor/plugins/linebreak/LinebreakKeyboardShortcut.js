@@ -1,5 +1,5 @@
 const BlockquoteKeyboardShortcut = () => {
-    return;
+  return;
 };
 
 export default BlockquoteKeyboardShortcut;

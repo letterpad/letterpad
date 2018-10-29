@@ -21,101 +21,92 @@ import { GET_OPTIONS } from "../../../shared/queries/Queries";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
 
 class Settings extends Component {
-    static propTypes = {
-        updateOptions: PropTypes.func,
-        options: PropTypes.object,
-        history: PropTypes.object,
-        t: PropTypes.func
-    };
+  static propTypes = {
+    updateOptions: PropTypes.func,
+    options: PropTypes.object,
+    history: PropTypes.object,
+    t: PropTypes.func,
+  };
 
-    state = {
-        updatedOptions: {},
-        selected:
-            new URLSearchParams(this.props.history.location.search).get(
-                "tab"
-            ) || "general"
-    };
+  state = {
+    updatedOptions: {},
+    selected:
+      new URLSearchParams(this.props.history.location.search).get("tab") ||
+      "general",
+  };
 
-    setOption = (option, value) => {
-        const { updatedOptions } = this.state;
-        updatedOptions[option] = value;
-    };
+  setOption = (option, value) => {
+    const { updatedOptions } = this.state;
+    updatedOptions[option] = value;
+  };
 
-    submitData = e => {
-        e.preventDefault();
-        const settings = [];
-        Object.keys(this.state.updatedOptions).forEach(option => {
-            settings.push({
-                option,
-                value: this.state.updatedOptions[option]
-            });
-        });
+  submitData = e => {
+    e.preventDefault();
+    const settings = [];
+    Object.keys(this.state.updatedOptions).forEach(option => {
+      settings.push({
+        option,
+        value: this.state.updatedOptions[option],
+      });
+    });
 
-        this.props.updateOptions(settings).then(() => {
-            notify.show("Site settings saved", "success", 3000);
-        });
-    };
+    this.props.updateOptions(settings).then(() => {
+      notify.show("Site settings saved", "success", 3000);
+    });
+  };
 
-    handleNavClick = page => {
-        this.props.history.push({
-            pathname: this.props.history.location.pathname,
-            search: "?tab=" + page
-        });
-    };
+  handleNavClick = page => {
+    this.props.history.push({
+      pathname: this.props.history.location.pathname,
+      search: "?tab=" + page,
+    });
+  };
 
-    render() {
-        const { selected } = this.state;
-        const { options, t } = this.props;
-        const data = {};
+  render() {
+    const { selected } = this.state;
+    const { options, t } = this.props;
+    const data = {};
 
-        if (options.loading) {
-            return <Loader />;
-        }
-        options.settings.forEach(setting => {
-            data[setting.option] = setting;
-        });
-
-        return (
-            <StyledSection>
-                <Tabs activeTab={selected} onChange={this.handleNavClick}>
-                    <StyledTitleHeader
-                        title={t(`settings.${selected}.title`)}
-                        subtitle={t(`settings.${selected}.tagline`)}
-                    />
-
-                    <General
-                        label="general"
-                        data={data}
-                        updateOption={this.setOption}
-                    />
-                    <Social
-                        label="social"
-                        data={data}
-                        updateOption={this.setOption}
-                    />
-                    <Optional
-                        label="optional"
-                        data={data}
-                        updateOption={this.setOption}
-                    />
-                    <Messages
-                        label="messages"
-                        data={data}
-                        updateOption={this.setOption}
-                    />
-                    <br />
-                    <br />
-                    <Button success onClick={this.submitData}>
-                        Save
-                    </Button>
-                </Tabs>
-            </StyledSection>
-        );
+    if (options.loading) {
+      return <Loader />;
     }
+    options.settings.forEach(setting => {
+      data[setting.option] = setting;
+    });
+
+    return (
+      <StyledSection>
+        <Tabs activeTab={selected} onChange={this.handleNavClick}>
+          <StyledTitleHeader
+            title={t(`settings.${selected}.title`)}
+            subtitle={t(`settings.${selected}.tagline`)}
+          />
+
+          <General label="general" data={data} updateOption={this.setOption} />
+          <Social label="social" data={data} updateOption={this.setOption} />
+          <Optional
+            label="optional"
+            data={data}
+            updateOption={this.setOption}
+          />
+          <Messages
+            label="messages"
+            data={data}
+            updateOption={this.setOption}
+          />
+          <br />
+          <br />
+          <Button success onClick={this.submitData}>
+            Save
+          </Button>
+        </Tabs>
+      </StyledSection>
+    );
+  }
 }
 
 const OptionsData = graphql(GET_OPTIONS, {
-    name: "options"
+  name: "options",
 });
 
 export default translate("translations")(UpdateOptions(OptionsData(Settings)));

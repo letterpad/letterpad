@@ -1,5 +1,5 @@
 export const hasMark = value =>
-    value.marks.some(mark => mark.type === "highlight");
+  value.marks.some(mark => mark.type === "highlight");
 
 export const highlightMarkStrategy = change =>
-    change.toggleMark("highlight").focus();
+  change.toggleMark("highlight").focus();

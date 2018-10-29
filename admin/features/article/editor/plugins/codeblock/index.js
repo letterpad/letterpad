@@ -5,15 +5,15 @@ import CodeblockButton from "./CodeblockButton";
 
 /* eslint-disable no-unused-vars */
 const CodeblockPlugin = options => ({
-    onKeyDown(...args) {
-        return CodeblockKeyboardShortcut(...args);
-    }
+  onKeyDown(...args) {
+    return CodeblockKeyboardShortcut(...args);
+  },
 });
 
 export {
-    CodeblockPlugin,
-    CodeblockNode,
-    CodeblockKeyboardShortcut,
-    CodeblockUtils,
-    CodeblockButton
+  CodeblockPlugin,
+  CodeblockNode,
+  CodeblockKeyboardShortcut,
+  CodeblockUtils,
+  CodeblockButton,
 };
