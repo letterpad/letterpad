@@ -5,18 +5,15 @@ export default graphql(DELETE_MEDIA, {
     props: ({ mutate }) => ({
         deleteMedia: data =>
             mutate({
-                variables: data,
+                variables: { ids: data.join(",") },
                 updateQueries: {
-                    getMedia: (prev, { mutationResult }) => {
+                    getMedia: prev => {
                         return {
                             media: {
-                                count: prev.media.count - 1,
-                                rows: prev.media.rows.filter(item => {
-                                    return (
-                                        item.id !=
-                                        mutationResult.data.deleteMedia.id
-                                    );
-                                }),
+                                count: prev.media.count - data.length,
+                                rows: prev.media.rows.filter(
+                                    item => data.indexOf(item.id) == -1
+                                ),
                                 __typename: "MediaNode"
                             }
                         };

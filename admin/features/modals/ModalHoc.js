@@ -1,5 +1,58 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+
+const ModalWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 40px;
+    position: fixed;
+    left: 0px;
+    z-index: 99999;
+    width: 100vw;
+
+    .modal {
+        display: flex;
+        flex-direction: column;
+        max-width: 767px;
+        width: 100%;
+        box-shadow: var(--box-shadow);
+        background: var(--bg-sections);
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 24px 16px;
+            align-items: center;
+            height: 40px;
+            border-bottom: 1px solid var(--color-border);
+
+            .close {
+                background: transparent;
+                border: none;
+                color: var(--color-base);
+                font-size: 24px;
+                cursor: pointer;
+            }
+        }
+
+        .modal-body {
+            max-height: 80vh;
+            overflow-y: auto;
+            flex: 1;
+            padding: 40px 14px;
+            text-align: center;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--color-border);
+            padding: 14px;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+`;
 
 const ModalHoc = (WrappedComponent, id = "", classes = "") => {
     return class extends Component {
@@ -87,9 +140,8 @@ const ModalHoc = (WrappedComponent, id = "", classes = "") => {
         render() {
             let style = this.state.isFadeIn ? { display: "flex" } : {};
             let modalClass = this.props.className || "";
-            let modalDialogClass = this.props.dialogClassName || "";
             return (
-                <div id={id} className={classes}>
+                <ModalWrapper id={id} className={classes}>
                     <div
                         ref={this.modalWrapperRef}
                         onClick={this.handleClick.bind(this)}
@@ -101,21 +153,9 @@ const ModalHoc = (WrappedComponent, id = "", classes = "") => {
                         style={style}
                         role="dialog"
                     >
-                        <div className={"modal-dialog " + modalDialogClass}>
-                            <div className="modal-content">
-                                <WrappedComponent {...this.props} />
-                            </div>
-                        </div>
+                        <WrappedComponent {...this.props} />
                     </div>
-                    {this.state.isOpen ? (
-                        <div
-                            className={
-                                "modal-backdrop fade" +
-                                (this.state.isFadeIn ? " in" : "")
-                            }
-                        />
-                    ) : null}
-                </div>
+                </ModalWrapper>
             );
         }
     };

@@ -60,16 +60,12 @@ export default {
 
         deleteMedia: editPostPerm.createResolver(
             async (root, args, { models }) => {
-                let destroyedRecord = await models.Media.destroy({
-                    where: { id: args.id }
+                await models.Media.destroy({
+                    where: { id: { in: args.ids.split(",") } }
                 });
-                if (destroyedRecord == 1) {
-                    return {
-                        ok: true,
-                        id: args.id
-                    };
-                }
-                return { ok: false };
+                return {
+                    ok: true
+                };
             }
         ),
 
