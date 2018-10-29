@@ -15,7 +15,6 @@ export default `
 
   type DeleteResponse {
     ok: Boolean!
-    id: Int
   }
 
   type UpdateResponse {
@@ -36,7 +35,7 @@ export default `
 
   type Mutation {
     insertMedia(url: String): Media
-    deleteMedia(id: Int!): DeleteResponse
+    deleteMedia(ids: String!): DeleteResponse
     updateMedia(id: Int!, name: String, description: String): UpdateResponse
   }
 `;

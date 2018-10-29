@@ -33,6 +33,7 @@ export const defaultStyles = `
     }
 
     
+    
 `;
 
 export const StyledLayout = styled.div`
