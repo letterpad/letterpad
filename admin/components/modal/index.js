@@ -4,7 +4,7 @@ import StyledModal from "./Modal.css";
 
 export default class ModalHoc extends Component {
     static propTypes = {
-        isOpen: PropTypes.bool.isRequired,
+        isOpen: PropTypes.bool,
         onClose: PropTypes.func,
         className: PropTypes.string,
         title: PropTypes.string,
