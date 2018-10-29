@@ -238,6 +238,8 @@ class Media extends Component {
 
     render() {
         const { t } = this.props;
+        const deleteCount = this.state.checkedItems.length;
+
         return (
             <StyledSection
                 md
@@ -301,9 +303,9 @@ class Media extends Component {
                 {this.state.confirmDelete && (
                     <ConfirmDeleteModal
                         title="Confirm Delete"
-                        text={`Are you sure you want to delete ${
-                            this.state.checkedItems.length
-                        } items ?`}
+                        text={`Are you sure you want to delete ${deleteCount} item${
+                            deleteCount == 1 ? "" : "s"
+                        }?`}
                         onYes={this.deleteSelectedMedia}
                         onClose={this.toggleDeleteModal}
                         media={this.state.selectedItem}

@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-// import ModalHoc from "./ModalHoc";
 import StyledButton from "../../components/button";
 import ModalHoc from "../../components/modal";
 
