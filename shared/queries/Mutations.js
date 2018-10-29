@@ -234,10 +234,9 @@ module.exports.INSERT_MEDIA = gql`
 `;
 
 module.exports.DELETE_MEDIA = gql`
-    mutation deleteMedia($id: Int!) {
-        deleteMedia(id: $id) {
+    mutation deleteMedia($ids: String!) {
+        deleteMedia(ids: $ids) {
             ok
-            id
         }
     }
 `;

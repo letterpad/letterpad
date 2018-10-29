@@ -68,14 +68,15 @@ const StyledModal = styled.div`
         .modal-body {
             overflow-y: auto;
             max-height: calc(100vh - 104px);
-            padding: 15px;
+            padding: 40px 16px;
+            text-align: center;
         }
         .modal-footer {
             display: flex;
             align-items: center;
             width: 100%;
             justify-content: flex-end;
-            padding: 0px 28px;
+            padding: 0px 14px;
             border-top: 1px solid var(--color-border);
         }
         ${props => props.confirm && applyConfirmStyle()};

@@ -29,6 +29,66 @@ const EditMediaWrapper = styled.div`
     }
 `;
 
+const StyledItem = styled.div`
+    .selection-box {
+        position: relative;
+        z-index: 99;
+        left: 100%;
+        margin-left: -24px;
+        border-top-right-radius: 7px;
+        top: 4px;
+    }
+    [type="checkbox"]:checked,
+    [type="checkbox"]:not(:checked) {
+        position: absolute;
+        left: -9999px;
+    }
+    [type="checkbox"]:checked + label,
+    [type="checkbox"]:not(:checked) + label {
+        position: relative;
+        padding-left: 28px;
+        cursor: pointer;
+        line-height: 20px;
+        display: inline-block;
+        color: #666;
+    }
+    [type="checkbox"]:checked + label:before,
+    [type="checkbox"]:not(:checked) + label:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0px;
+        width: 18px;
+        height: 18px;
+        border: 1px solid #fff;
+        background: #fff;
+        box-shadow: 0px 0px 4px 1px #0000005c;
+        border-radius: 50%;
+    }
+    [type="checkbox"]:checked + label:after,
+    [type="checkbox"]:not(:checked) + label:after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        background: #00a69c;
+        position: absolute;
+        border-radius: 50%;
+        top: 5px;
+        left: 5px;
+        transition: all 0.1s ease;
+    }
+    [type="checkbox"]:not(:checked) + label:after {
+        opacity: 0;
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    [type="checkbox"]:checked + label:after {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+`;
+
 const limit = config.mediaPerPage;
 
 class Media extends Component {
@@ -41,7 +101,6 @@ class Media extends Component {
         match: PropTypes.object,
         fetchMore: PropTypes.func,
         updateMedia: PropTypes.func,
-        InfoModal: PropTypes.func,
         author: PropTypes.object,
         t: PropTypes.func
     };
@@ -60,6 +119,7 @@ class Media extends Component {
         items: [],
         displayInfo: false,
         selectedItem: {},
+        checkedItems: [],
         selectedIndex: 0
     };
 
@@ -86,19 +146,18 @@ class Media extends Component {
         document.body.classList.remove("media-page");
     }
 
-    toggleDeleteModal = (media = {}) => {
+    toggleDeleteModal = () => {
         this.setState({
-            confirmDelete: !this.state.confirmDelete,
-            selectedItem: media
+            confirmDelete: !this.state.confirmDelete
         });
     };
 
-    deleteMediaFinal = () => {
-        this.props.deleteMedia({
-            id: this.state.selectedItem.id
+    deleteSelectedMedia = async () => {
+        await this.props.deleteMedia(this.state.checkedItems);
+        this.setState({
+            confirmDelete: false,
+            checkedItems: []
         });
-        this.toggleDeleteModal();
-        this.setState({ deleteMedia: true });
     };
 
     editMedia = (e, media) => {
@@ -107,9 +166,6 @@ class Media extends Component {
     };
 
     toggleMediaInfo = selectedItem => {
-        var a = 1;
-        var b = a + 1;
-        console.log(b);
         let selectedIndex = this.state.selectedIndex;
         if (selectedItem) {
             // find the index of this item.
@@ -169,78 +225,105 @@ class Media extends Component {
         this.setState(newState);
     };
 
+    setSelection = (e, id) => {
+        const checkedItems = [...this.state.checkedItems];
+        const idx = checkedItems.indexOf(id);
+        if (idx == -1) {
+            checkedItems.push(id);
+        } else {
+            checkedItems.splice(idx, 1);
+        }
+        this.setState({ checkedItems });
+    };
+
     render() {
         const { t } = this.props;
+        const deleteCount = this.state.checkedItems.length;
+
         return (
             <StyledSection
                 md
                 title={t("media.title")}
                 subtitle={t("media.tagline")}
             >
-                <div>
-                    <StyledButton
-                        success
-                        onClick={() => {
-                            this.uploadInputRef.current.click();
-                        }}
-                        sm
-                    >
-                        Add Media
+                <StyledButton
+                    success
+                    onClick={() => {
+                        this.uploadInputRef.current.click();
+                    }}
+                    sm
+                >
+                    Add Media
+                </StyledButton>
+                {this.state.checkedItems.length > 0 && (
+                    <StyledButton danger sm onClick={this.toggleDeleteModal}>
+                        Delete
                     </StyledButton>
-                    <input
-                        ref={this.uploadInputRef}
-                        onChange={input => this.uploadImage(input.target.files)}
-                        type="file"
-                        className="hide"
-                        name="uploads[]"
-                        multiple="multiple"
-                    />
-                    <br />
-                    <br />
-                    <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
-                        {this.state.items.map(media => {
-                            return (
-                                <StyledGridItem
-                                    key={media.id}
-                                    image={config.baseName + media.url}
-                                    title={media.name}
-                                    href="#"
-                                    line2={moment(
-                                        new Date(media.created_at)
-                                    ).format("MMM Do YYYY")}
-                                    onClick={e => this.editMedia(e, media)}
+                )}
+                <input
+                    ref={this.uploadInputRef}
+                    onChange={input => this.uploadImage(input.target.files)}
+                    type="file"
+                    className="hide"
+                    name="uploads[]"
+                    multiple="multiple"
+                />
+                <br />
+                <br />
+                <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
+                    {this.state.items.map(media => (
+                        <StyledItem key={media.id}>
+                            <div className="selection-box">
+                                <input
+                                    type="checkbox"
+                                    id={"checkbox-" + media.id}
+                                    onClick={e =>
+                                        this.setSelection(e, media.id)
+                                    }
                                 />
-                            );
-                        })}
-                    </StyledGrid>
-                    <Paginate
-                        count={this.props.media.count}
-                        page={this.state.page}
-                    />
-
-                    {this.state.confirmDelete && (
-                        <ConfirmDeleteModal
-                            title="Confirm Delete"
-                            text="Are you sure you want to delete this media ?"
-                            onYes={this.deleteMediaFinal}
-                            onClose={this.toggleDeleteModal}
-                            media={this.state.selectedItem}
-                            isOpen={this.state.confirmDelete}
-                        />
-                    )}
-                    {this.state.displayInfo && (
-                        <EditMediaWrapper>
-                            <InfoModal
-                                media={this.state.selectedItem}
-                                onClose={this.toggleMediaInfo}
-                                isOpen={this.state.displayInfo}
-                                updateMedia={this.props.updateMedia}
-                                next={this.selectNextMedia}
-                                previous={this.selectPreviousMedia}
+                                <label htmlFor={"checkbox-" + media.id} />
+                            </div>
+                            <StyledGridItem
+                                image={config.baseName + media.url}
+                                title={media.name}
+                                href="#"
+                                line2={moment(
+                                    new Date(media.created_at)
+                                ).format("MMM Do YYYY")}
+                                onClick={e => this.editMedia(e, media)}
                             />
-                        </EditMediaWrapper>
-                    )}
-                </div>
+                        </StyledItem>
+                    ))}
+                </StyledGrid>
+                <Paginate
+                    count={this.props.media.count}
+                    page={this.state.page}
+                />
+
+                {this.state.confirmDelete && (
+                    <ConfirmDeleteModal
+                        title="Confirm Delete"
+                        text={`Are you sure you want to delete ${deleteCount} item${
+                            deleteCount == 1 ? "" : "s"
+                        }?`}
+                        onYes={this.deleteSelectedMedia}
+                        onClose={this.toggleDeleteModal}
+                        media={this.state.selectedItem}
+                        isOpen={this.state.confirmDelete}
+                    />
+                )}
+                {this.state.displayInfo && (
+                    <EditMediaWrapper>
+                        <InfoModal
+                            media={this.state.selectedItem}
+                            onClose={this.toggleMediaInfo}
+                            isOpen={this.state.displayInfo}
+                            updateMedia={this.props.updateMedia}
+                            next={this.selectNextMedia}
+                            previous={this.selectPreviousMedia}
+                        />
+                    </EditMediaWrapper>
+                )}
             </StyledSection>
         );
     }
