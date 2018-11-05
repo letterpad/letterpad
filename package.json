@@ -1,9 +1,8 @@
 {
   "name": "letterpad",
-  "version": "1.0.0",
-  "description": ":) ",
+  "version": "1.3.3",
+  "description": "Letterpad is an open-source and a high performant publishing engine for blogs built with react & graphql and runs ridiculously fast 🚀",
   "main": "start.js",
-  "private": true,
   "scripts": {
     "build": "NODE_ENV=production && babel api -d apiBuild && webpack --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
     "build:theme": "NODE_ENV=production webpack --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${theme}",
