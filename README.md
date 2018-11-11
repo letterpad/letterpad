@@ -80,7 +80,7 @@ theme=hugo yarn build
 
 Letterpad needs two servers to run your blog. One server runs Graphql API and the other server runs the Letterpad Engine. However with little modification, you can combine this to use one server.
 
-Themes have their own seperate repository. While doing `yarn install`, the default theme `hugo` is fetched as a dependency during the installation. If the theme already exist, this step will be ignored.
+Themes have their own separate repository. While doing `yarn install`, the default theme `hugo` is fetched as a dependency during the installation. If the theme already exist, this step will be ignored.
 
 Every theme should contain the below config file. This will have some metadata about your theme.
 
