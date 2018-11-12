@@ -11,8 +11,7 @@ import Resources from "./Resources";
 import EditMenuModal from "./EditMenuModal";
 import StyledGrid from "../../components/grid";
 import StyledMenuTree from "./NavigationTreeBuilder.css";
-
-import "react-sortable-tree/style.css";
+import SortableWrapper from "./SortableWrapper.css";
 
 /**
  * Convert deeply nested menu array to Object, one level deep.
@@ -326,7 +325,7 @@ class NavigationTreeBuilder extends Component {
 
         <StyledMenuTree>
           <h5>{t("menu.build.title")}</h5>
-          <div style={{ height: 600 }}>
+          <SortableWrapper style={{ height: 600 }}>
             <SortableTree
               theme={FileExplorerTheme}
               treeData={this.state.items}
@@ -341,7 +340,7 @@ class NavigationTreeBuilder extends Component {
               canDrop={this.canDrop.bind(this)}
               generateNodeProps={this.generateNodeProps.bind(this)}
             />
-          </div>
+          </SortableWrapper>
         </StyledMenuTree>
         {this.state.modalOpen && (
           <EditMenuModal

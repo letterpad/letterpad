@@ -2,19 +2,19 @@
 
 Letterpad is an open-source and a high performant publishing engine for blogs with a state-of-the-art technology. It uses React, Graphql, Express and Sequelize ORM. It is getting closer to releasing v1.0. Few of the core features are listed below:
 
--   Server side rendering
--   Multi author support
--   Comments (Disqus integration)
--   Google Analytics
--   Theme support
--   Multi-level navigation
--   Image optimizer
--   React with styled-components for styling
--   GraphQL for json API
--   Roles - Admin, Reviewer, Author, Reader
--   Markdown and RichText editor
--   Search Engine Optimised
--   Multi-language support with react-i18next (currently en, fr and pl)
+- Server side rendering
+- Multi author support
+- Comments (Disqus integration)
+- Google Analytics
+- Theme support
+- Multi-level navigation
+- Image optimizer
+- React with styled-components for styling
+- GraphQL for json API
+- Roles - Admin, Reviewer, Author, Reader
+- Markdown and RichText editor
+- Search Engine Optimised
+- Multi-language support with react-i18next (currently en, fr and pl)
 
 ## Demo
 
@@ -47,12 +47,12 @@ cd letterpad
 
 3.  Install dependencies and run (**use yarn to install dependencies**):
 
-```
+```sh
 NODE_ENV=dev yarn install
-theme=hugo yarn dev
+# Seed the database and run migrations
+./utils/postinstall.sh
+yarn dev
 ```
-
-`NODE_ENV=dev yarn install` is going to install all the dependencies, seed the database, prepare a build and welcome you to letterpad.
 
 Now visit [http://localhost:4040](http://localhost:4040) and checkout the welcome page.
 
@@ -71,10 +71,10 @@ The below command will create a build for the `api`, the `admin dashboard` and t
 theme=hugo yarn build
 ```
 
--   This will create a folder called `apiBuild` which will contain all contents of the `api` folder in ES5.
--   All the admin dashboard specific bundle will be in `admin/public/dist` folder.
--   All the theme specific bundles will be in `client/hugo/public/dist` folder.
--   The vendor bundles are common between admin and client. So they will be in `public/js` folder.
+- This will create a folder called `apiBuild` which will contain all contents of the `api` folder in ES5.
+- All the admin dashboard specific bundle will be in `admin/public/dist` folder.
+- All the theme specific bundles will be in `client/hugo/public/dist` folder.
+- The vendor bundles are common between admin and client. So they will be in `public/js` folder.
 
 ### How it works ?
 
@@ -207,11 +207,11 @@ yarn seed
 
 ### Addition Links:
 
--   [Installing in Production](https://medium.com/@ajaxtown/installing-letterpad-in-digital-ocean-8ed53c66b114)
+- [Installing in Production](https://medium.com/@ajaxtown/installing-letterpad-in-digital-ocean-8ed53c66b114)
 
--   [Letterpad - Slack](https://letterpad.slack.com)
+- [Letterpad - Slack](https://letterpad.slack.com)
 
--   [Slack invite Link](https://tinyurl.com/letterpad)
+- [Slack invite Link](https://tinyurl.com/letterpad)
 
 ### Contribute
 

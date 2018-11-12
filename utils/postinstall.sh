@@ -1,15 +1,11 @@
 #!/bin/bash
 
-# exit on first error
-# seed the database only during first installation
-if [ ! -f .installed ]; then
-    echo "Seeding the database..."
-    yarn seed
-    echo "Seeding complete!"
-fi
+echo "Seeding the database..."
+yarn seed
+echo "Seeding complete!"
+
 echo "Running migrations"
 yarn sequelize db:migrate
-touch .installed
 echo "
 
 
