@@ -4,12 +4,10 @@ var config = require("../../config/db.config.js")[env];
 var db = {};
 
 // establish  database connection
-const conn = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  config,
-);
+const conn = new Sequelize(config.database, config.username, config.password, {
+  ...config,
+  dialect: config.dialect || "sqlite",
+});
 
 const models = {
   Author: conn.import("./author"),
