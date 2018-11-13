@@ -1,3 +1,6 @@
+const env = require("node-env-file");
+env(__dirname + "/../.env");
+
 import axios from "axios";
 import {
   insertRolePermData,

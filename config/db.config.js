@@ -4,41 +4,45 @@ const getFile = name => {
   const dbFile = name + ".sqlite";
   return path.join(__dirname, "../data/", dbFile);
 };
+
 module.exports = {
   dev: {
-    username: "root",
-    password: null,
-    database: "letterpad_demo",
-    host: "127.0.0.1",
-    dialect: "sqlite",
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_TYPE,
     storage: getFile("letterpad_demo"),
     logging: false,
     define: {
       underscored: true,
     },
+    operatorsAliases: false,
   },
   test: {
-    username: "root",
-    password: null,
-    database: "test",
-    host: "127.0.0.1",
-    dialect: "sqlite",
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_TYPE,
     storage: getFile("test"),
     logging: false,
     define: {
       underscored: true,
     },
+    operatorsAliases: false,
   },
   production: {
-    username: "root",
-    password: null,
-    database: "letterpad_demo",
-    host: "127.0.0.1",
-    dialect: "sqlite",
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_TYPE,
     storage: getFile("letterpad_demo"),
     logging: false,
     define: {
       underscored: true,
     },
+    operatorsAliases: false,
   },
 };

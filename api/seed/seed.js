@@ -69,6 +69,7 @@ export const seed = async dbModels => {
     insertMedia(models),
   ]);
   console.timeEnd("insert posts, settings, media");
+  process.exit(0);
 };
 
 export async function insertRolePermData(models) {
