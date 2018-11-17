@@ -10,7 +10,4 @@ if (Object.keys(configs).includes(process.env.NODE_ENV)) {
   config = configs.dev;
 }
 console.log("This file was called from housekeeper");
-module.exports = {
-  ...config,
-  storage: "data/" + config.database + ".sqlite",
-};
+module.exports = config;
