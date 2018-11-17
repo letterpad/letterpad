@@ -1,6 +1,6 @@
 {
   "name": "letterpad",
-  "version": "1.3.3",
+  "version": "1.1.4",
   "description": "Letterpad is an open-source and a high performant publishing engine for blogs built with react & graphql and runs ridiculously fast 🚀",
   "main": "start.js",
   "scripts": {
@@ -10,7 +10,6 @@
     "clean": "rm -rf data && rm -rf public/uploads",
     "seed": "node ./api/seed",
     "preinstall": "./utils/preinstall.sh",
-    "postinstall": "./utils/postinstall.sh",
     "dev": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
     "prod": "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
     "prodPm2": "./forever.sh",
@@ -31,6 +30,7 @@
   "workspaces": [
     "client/themes/*"
   ],
+  "private": true,
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "apollo-cache-inmemory": "^1.1.4",
@@ -79,12 +79,12 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-select": "^1.2.1",
-    "react-sortable-tree": "^2.1.0",
+    "react-sortable-tree": "2.1.0",
     "react-sortable-tree-theme-full-node-drag": "^1.1.0",
     "reading-time": "*",
-    "sequelize": "4.0.0",
+    "sequelize": "4.41.2",
     "sequelize-cli": "^4.0.0",
-    "sharp": "^0.20.3",
+    "sharp": "^0.21.0",
     "slate": "^0.34.5",
     "slate-edit-code": "^0.15.5",
     "slate-html-serializer": "^0.6.8",
