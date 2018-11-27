@@ -16,11 +16,11 @@ Letterpad is an open-source and a high performant publishing engine for blogs wi
 - Search Engine Optimised
 - Multi-language support with react-i18next (currently en, fr and pl)
 
-### Update:
+## Update:
 
 Letterpad now has a CLI tool to manage installations and upgrades. [Check it out here](https://github.com/letterpad/letterpad-cli).
 
-### Contents
+## Contents
 
 - [Demo](#demo)
 - [Installation](#installation)
@@ -32,9 +32,7 @@ Letterpad now has a CLI tool to manage installations and upgrades. [Check it out
 - [Additional Links](#additional-links)
 - [Contribute](#contribute)
 
----
-
-### Demo
+## Demo
 
 To check letterpad in action, check out this [Demo Site](https://letterpad.app/demo).
 You can visit the [Admin Panel](https://letterpad.app/demo/admin/login) and login with
@@ -50,9 +48,7 @@ Letterpad is an open source project, licensed under MIT. It runs ridiculously fa
 
 The API of letterpad exchanges information in json and you have full control over what data to get, set and display. You can build entire publishing apps on top of it, and completely customise the reader experience.
 
----
-
-### Installation
+## Installation
 
 There are three steps to install letterpad in the development environment.
 
@@ -84,9 +80,7 @@ Email: demo@demo.com
 PAssword: demo
 ```
 
----
-
-### Production Builds
+## Production Builds
 
 The below command will create a build for the `api`, the `admin dashboard` and the `theme`. You will have to specify which theme you want to build.
 
@@ -99,9 +93,7 @@ theme=hugo yarn build
 - All the theme specific bundles will be in `client/hugo/public/dist` folder.
 - The vendor bundles are common between admin and client. So they will be in `public/js` folder.
 
----
-
-### How it works ?
+## How it works ?
 
 Letterpad needs two servers to run your blog. One server runs Graphql API and the other server runs the Letterpad Engine. However with little modification, you can combine this to use one server.
 
@@ -109,9 +101,7 @@ Themes have their own separate repository. While doing `yarn install`, the defau
 
 If you want to develop a theme, read the [documention](https://letterpad.app/docs/page/theme-introduction).
 
----
-
-### Graphql API
+## Graphql API
 
 The `api` folder has well defined schemas in the `schema` folder and its resolvers in the `resolvers` folder. If you wish to make any change in the database, then you should create a migration file. To create a migration file, enter this command:
 
@@ -132,9 +122,7 @@ yarn sequelize db:migrate
 
 You can play around with the Graphql API locally on [http://localhost:3030/graphql](http://localhost:3030/graphql)
 
----
-
-### Translations
+## Translations
 
 Letterpad uses react-18next library to handle translations. To add, edit or delete trannslation objects,
 you can use the below commands:
@@ -172,9 +160,7 @@ yarn translate --del -en tags.title
 yarn translate --sync
 ```
 
----
-
-### Seeding
+## Seeding
 
 If you want to seed the database with sample data, run the below command:
 
@@ -183,9 +169,7 @@ If you want to seed the database with sample data, run the below command:
 yarn seed
 ```
 
----
-
-### Additional Links:
+## Additional Links:
 
 - [Installing in Production](https://medium.com/@ajaxtown/installing-letterpad-in-digital-ocean-8ed53c66b114)
 
@@ -193,7 +177,7 @@ yarn seed
 
 - [Slack invite Link](https://tinyurl.com/letterpad)
 
-### Contribute
+## Contribute
 
 Letterpad is in its early stages and requires support to move ahead. You can contribute through various ways like
 testing, ideas, recommendations, fixing bugs, documentation, logo design, assets, etc. You can join the slack channel (letterpad.slack.com) for discussions. Thanks.
@@ -206,6 +190,7 @@ Thanks to all the people who contributed. [[Contribute](CONTRIBUTING.md)].
 - Tien Pham | <a target="_blank" href="https://github.com/tienpham94">@tienpham94</a>
 - Aleksey Derkach | <a target="_blank" href="https://github.com/alder">@alder</a>
 - Boopathi Rajaa | <a target="_blank" href="https://github.com/boopathi">@boopathi</a>
+- Todd Cantley | <a target="_blank" href="https://toddcantley.com">toddcantley.com</a>
 
 ## Backers
 
@@ -223,6 +208,6 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
     <img src="https://opencollective.com/letterpad/sponsor/0/avatar.svg">
 </a>
 
-### License
+## License
 
 Letterpad is released under the MIT License.
