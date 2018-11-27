@@ -17,6 +17,7 @@ const Wrapper = styled.div`
     box-shadow: 0px -6px 20px rgba(0, 0, 0, 0.42);
     background: var(--bg-base);
     text-align: center;
+    user-select: none;
 
     .material-icons {
       font-size: 18px;
