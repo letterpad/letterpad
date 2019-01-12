@@ -1,3 +1,4 @@
+import Sequelize from "sequelize";
 import Fuse from "fuse.js";
 import { _createPost, _updatePost } from "../models/post";
 import {
@@ -76,7 +77,6 @@ export default {
     search: async (root, args, { models, user }) => {
       let cachedData = memoryCache.get("posts");
       if (!cachedData) {
-        console.log("searching in db..");
         const data = await models.Post.findAll({
           attributes: [
             "id",
@@ -258,7 +258,7 @@ export default {
       result.previous = await models.Post.findOne({
         where: {
           ...newArgs,
-          id: { $lt: currentPost.dataValues.id },
+          id: { [Sequelize.Op.lt]: currentPost.dataValues.id },
         },
         order: [["id", "DESC"]],
         limit: 1,
@@ -269,7 +269,7 @@ export default {
         where: {
           ...newArgs,
           id: {
-            $gt: currentPost.dataValues.id,
+            [Sequelize.Op.gt]: currentPost.dataValues.id,
           },
         },
         order: [["id", "ASC"]],

@@ -13,9 +13,6 @@ module.exports = {
   appPort: (function() {
     return typeof window !== "undefined" ? window.appPort : process.env.appPort;
   })(),
-  apiPort: (function() {
-    return typeof window !== "undefined" ? window.apiPort : process.env.apiPort;
-  })(),
   baseName: (function() {
     return typeof window !== "undefined"
       ? window.baseName

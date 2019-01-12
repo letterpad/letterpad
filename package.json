@@ -10,7 +10,7 @@
     "clean": "rm -rf data && rm -rf public/uploads",
     "seed": "node ./api/seed",
     "preinstall": "./utils/preinstall.sh",
-    "dev": "NODE_ENV=dev concurrently --kill-others \"nodemon -w api ./api/start.js\" \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
+    "dev": "NODE_ENV=dev concurrently --kill-others \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
     "prod": "NODE_ENV=production concurrently --kill-others \"node ./apiBuild/server.js\" \"node ./server.js\"",
     "prodPm2": "./forever.sh",
     "test": "jest --runInBand",
@@ -149,7 +149,6 @@
     "jest": "^22.0.4",
     "mkdirp": "^0.5.1",
     "mocha": "^2.4.5",
-    "nodemon": "^1.18.3",
     "path": "^0.12.7",
     "postcss": "^6.0.20",
     "postcss-cssnext": "^3.1.0",
@@ -182,7 +181,7 @@
       "\\.(css|jpg|png)$": "<rootDir>/__tests__/empty-module.js"
     },
     "testMatch": [
-      "**/__tests__/**/?(*.)(spec|test).js?(x)"
+      "**/?(*.)(spec|test).js?(x)"
     ],
     "testEnvironment": "node"
   },

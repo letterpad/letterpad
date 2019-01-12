@@ -13,7 +13,6 @@ const config = {
   apiUrl: configFile.apiUrl,
   uploadUrl: configFile.uploadUrl,
   appPort: configFile.appPort,
-  apiPort: configFile.apiPort,
   defaultTitle: "Untitled",
   defaultSlug: "story",
   adminPath: "/admin",

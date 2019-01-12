@@ -58,6 +58,16 @@ module.exports = (args, name) => {
           NODE_ENV: JSON.stringify(isDev ? "dev" : "production"),
         },
       }),
+      new webpack.DefinePlugin({
+        "process.env": {
+          apiUrl: "process.env.apiUrl",
+          uploadUrl: "process.env.uploadUrl",
+          rootUrl: "process.env.rootUrl",
+          appPort: "process.env.appPort",
+          apiPort: "process.env.apiPort",
+          baseName: "process.env.baseName",
+        },
+      }),
       new FileNameReplacementPlugin(args.theme),
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
     ],
