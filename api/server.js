@@ -65,7 +65,11 @@ module.exports = app => {
     });
   });
 <<<<<<< HEAD
+<<<<<<< HEAD
 };
 =======
 };
 >>>>>>> tested production
+=======
+};
+>>>>>>> Removed API port

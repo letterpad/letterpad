@@ -74,8 +74,6 @@ if (process.env.NODE_ENV === "dev") {
       require("chokidar")
         .watch("api/**/*.js")
         .on("all", (event, path) => {
-          // console.log(event, path);
-          console.log("__dirname, path :", __dirname, path);
           delete require.cache[require("path").join(__dirname, path)];
           delete require.cache[
             require("path").join(__dirname, "/api/schema.js")
