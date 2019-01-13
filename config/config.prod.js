@@ -1,20 +1,19 @@
+const rootUrl = typeof window !== "undefined" ? window.rootUrl : process.env.rootUrl;
+
 module.exports = {
   apiUrl: (function() {
-    return typeof window !== "undefined" ? window.apiUrl : process.env.apiUrl;
+    return typeof window !== "undefined" ? window.apiUrl : rootUrl + "/graphql";
   })(),
   uploadUrl: (function() {
     return typeof window !== "undefined"
       ? window.uploadUrl
-      : process.env.uploadUrl;
+      : rootUrl + "/upload";
   })(),
   rootUrl: (function() {
-    return typeof window !== "undefined" ? window.rootUrl : process.env.rootUrl;
+    return rootUrl
   })(),
   appPort: (function() {
     return typeof window !== "undefined" ? window.appPort : process.env.appPort;
-  })(),
-  apiPort: (function() {
-    return typeof window !== "undefined" ? window.apiPort : process.env.apiPort;
   })(),
   baseName: (function() {
     return typeof window !== "undefined"
