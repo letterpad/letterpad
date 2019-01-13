@@ -27,7 +27,6 @@ jobs:
           - v1-dependencies-
       - run: cp sample.env .env
       - run: yarn
-      - run: yarn babel api -d apiBuild
       - save_cache:
           paths:
             - node_modules
