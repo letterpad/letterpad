@@ -64,4 +64,8 @@ module.exports = app => {
       res.json(uploadedFiles);
     });
   });
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> tested production
