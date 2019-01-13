@@ -150,7 +150,7 @@ export default {
           const role = await models.Role.findOne({
             where: { id: newArgs.role_id },
           });
-
+          
           const variables = {
             name: newArgs.fname,
             email: newArgs.email,
@@ -158,12 +158,14 @@ export default {
             rolename: role.name,
           };
           const body = await getEmailBody("register", variables, models);
+          try {
+            const success = await SendMail({
+              to: newArgs.email,
+              subject: "Account Created",
+              body,
+            });
+          } catch (e) {}
 
-          const success = await SendMail({
-            to: newArgs.email,
-            subject: "Account Created",
-            body,
-          });
           return {
             ok: true,
             errors: [],

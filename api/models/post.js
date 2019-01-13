@@ -166,7 +166,7 @@ export async function _updatePost(post, models) {
             },
           });
 
-          taxItem = await models.Taxonomy.find({
+          taxItem = await models.Taxonomy.findOne({
             where: {
               name: taxonomy.name,
               type: taxonomy.type,

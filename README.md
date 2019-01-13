@@ -82,20 +82,19 @@ PAssword: demo
 
 ## Production Builds
 
-The below command will create a build for the `api`, the `admin dashboard` and the `theme`. You will have to specify which theme you want to build.
+The below command will create a build for the `admin dashboard` and the `theme`. You will have to specify which theme you want to build.
 
 ```
 theme=hugo yarn build
 ```
 
-- This will create a folder called `apiBuild` which will contain all contents of the `api` folder in ES5.
 - All the admin dashboard specific bundle will be in `admin/public/dist` folder.
 - All the theme specific bundles will be in `client/hugo/public/dist` folder.
 - The vendor bundles are common between admin and client. So they will be in `public/js` folder.
 
 ## How it works ?
 
-Letterpad needs two servers to run your blog. One server runs Graphql API and the other server runs the Letterpad Engine. However with little modification, you can combine this to use one server.
+Letterpad needs one server to run your blog. This server runs Graphql API and the Letterpad Engine. However with little modification, you can separate this to use two servers if you want to keep the API seperate.
 
 Themes have their own separate repository. While doing `yarn install`, the default theme `hugo` is fetched as a dependency during the installation. If the theme already exist, this step will be ignored.
 

@@ -43,8 +43,12 @@ const getMenuItems = function(arr) {
 class NavigationTreeBuilder extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
+    categories: PropTypes.object,
+    pages: PropTypes.object,
+    path: PropTypes.string,
     updateOption: PropTypes.func.isRequired,
     t: PropTypes.func,
+
   };
 
   state = {

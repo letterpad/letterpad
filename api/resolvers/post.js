@@ -397,14 +397,14 @@ export default {
         });
         if (randomPost.status == "trash") {
           await models.Post.destroy({
-            where: { id: { in: args.ids.split(",") } },
+            where: { id: { [Sequelize.Op.in]: args.ids.split(",") } },
           });
         } else {
           await models.Post.update(
             { status: "trash" },
             {
               where: {
-                id: { in: args.ids.split(",") },
+                id: { [Sequelize.Op.in]: args.ids.split(",") },
               },
             },
           );
