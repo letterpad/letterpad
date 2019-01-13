@@ -64,12 +64,4 @@ module.exports = app => {
       res.json(uploadedFiles);
     });
   });
-<<<<<<< HEAD
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> tested production
-=======
-};
->>>>>>> Removed API port
