@@ -24,7 +24,7 @@ function absPath(p) {
 }
 
 let models = null;
-export const seed = async dbModels => {
+export const seed = async (dbModels, autoExit = true) => {
   models = dbModels;
 
   console.time("ensure data directories");
@@ -69,7 +69,9 @@ export const seed = async dbModels => {
     insertMedia(models),
   ]);
   console.timeEnd("insert posts, settings, media");
-  process.exit(0);
+  if (autoExit) {
+    process.exit(0);
+  }
 };
 
 export async function insertRolePermData(models) {

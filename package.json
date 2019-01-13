@@ -13,7 +13,7 @@
     "dev": "NODE_ENV=dev concurrently --kill-others \"node ./server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
     "prod": "NODE_ENV=production concurrently \"node ./server.js\"",
     "prodPm2": "./forever.sh",
-    "test": "jest --runInBand",
+    "test": "NODE_ENV=test jest --runInBand",
     "translate": "node ./utils/translation_tools",
     "precommit": "./utils/precommit.sh"
   },

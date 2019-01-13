@@ -17,7 +17,7 @@ function toSlug(str) {
 
 function slugify(Model, slug) {
   slug = toSlug(slug);
-  return Model.find({ where: { slug: slug } }).then(function(result) {
+  return Model.findOne({ where: { slug: slug } }).then(function(result) {
     if (result === null) {
       return slug;
     }
@@ -25,7 +25,7 @@ function slugify(Model, slug) {
     slug += "-";
 
     return (function recursiveFindUniqueSlug() {
-      return Model.find({ where: { slug: slug + count } }).then(function(
+      return Model.findOne({ where: { slug: slug + count } }).then(function(
         result,
       ) {
         if (result === null) {
