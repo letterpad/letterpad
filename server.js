@@ -4,6 +4,7 @@
  * This is the initial file which is responsible to bootup the client and the admin-dashboard.
  *
  */
+require("@babel/register");
 const env = require("node-env-file");
 env(__dirname + "/.env");
 
@@ -12,6 +13,7 @@ const bodyParser = require("body-parser");
 const config = require("./config/index.js");
 const compression = require("compression");
 const adminServer = require("./admin/server");
+const apiServer = require("./api/server");
 const clientServerRendering = require("./client/serverRendering");
 const dir = require("./shared/dir.js");
 
@@ -67,6 +69,18 @@ if (process.env.NODE_ENV === "dev") {
           }
         });
       });
+
+      // One-liner for current directory, ignores .dotfiles
+      require("chokidar")
+        .watch("api/**/*.js")
+        .on("all", (event, path) => {
+          // console.log(event, path);
+          console.log("__dirname, path :", __dirname, path);
+          delete require.cache[require("path").join(__dirname, path)];
+          delete require.cache[
+            require("path").join(__dirname, "/api/schema.js")
+          ];
+        });
     }
   });
 }
@@ -124,12 +138,12 @@ app.get("/build", (req, res) => {
 // start the admin dashboard and the client. Both use the same server, but its nice to separate them
 adminServer.init(app);
 clientServerRendering.init(app);
+apiServer(app);
 
-// add a timeout. We want the api server to run first and then the application server
-setTimeout(() => {
-  const server = app.listen(config.appPort, function() {
-    const host = server.address().address;
-    const port = server.address().port;
-    console.log("Letterpad listening at http://%s:%s", host, port);
-  });
-}, 3000);
+const server = app.listen(config.appPort, function() {
+  const host = server.address().address;
+  const port = server.address().port;
+  console.log("Letterpad listening at http://%s:%s", host, port);
+});
+
+module.exports = server;

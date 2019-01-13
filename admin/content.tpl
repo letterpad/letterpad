@@ -17,7 +17,6 @@
         window.apiUrl = "{{API_URL}}";
         window.uploadUrl = "{{UPLOAD_URL}}";
         window.appPort = {{APP_PORT}};
-        window.apiPort = {{API_PORT}};
         window.baseName = "{{BASE_NAME}}";
     </script>
         

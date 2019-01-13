@@ -91,18 +91,7 @@ const serverConfig = args => {
       library: "server",
       libraryTarget: "commonjs2",
     },
-    plugins: [
-      new webpack.DefinePlugin({
-        "process.env": {
-          apiUrl: "process.env.apiUrl",
-          uploadUrl: "process.env.uploadUrl",
-          rootUrl: "process.env.rootUrl",
-          appPort: "process.env.appPort",
-          apiPort: "process.env.apiPort",
-          baseName: "process.env.baseName",
-        },
-      }),
-    ],
+    plugins: [],
     externals: getExternals(),
     module: {
       rules: [
