@@ -150,6 +150,7 @@ export default {
           const role = await models.Role.findOne({
             where: { id: newArgs.role_id },
           });
+          
           const variables = {
             name: newArgs.fname,
             email: newArgs.email,
@@ -170,7 +171,6 @@ export default {
             errors: [],
           };
         } catch (e) {
-          console.log("e :", e);
           return {
             ok: false,
             errors: parseErrors(e),
