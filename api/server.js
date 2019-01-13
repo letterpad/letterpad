@@ -1,10 +1,11 @@
-require("@babel/polyfill");
+require("@babel/polyfill/noConflict");
 var env = require("node-env-file");
 env(__dirname + "/../.env");
 
-// const config = require("../config");
-// const express = require("express");
-
+const Schema = require("./schema").default;
+const constants = require("./utils/constants");
+const models = require("./models/index");
+      
 const GraphHTTP = require("express-graphql");
 const upload = require("./upload");
 const middlewares = require("./middlewares");
@@ -15,9 +16,6 @@ module.exports = app => {
   app.use(
     "/graphql",
     GraphHTTP((req, res) => {
-      const Schema = require("./schema").default;
-      const constants = require("./utils/constants");
-      const models = require("./models/index");
       return {
         schema: Schema,
         pretty: true,
@@ -67,9 +65,3 @@ module.exports = app => {
     });
   });
 };
-// let httpServer = app.listen(config.apiPort, function() {
-//   var host = httpServer.address().address;
-//   var port = httpServer.address().port;
-//   console.log("Graphql api listening at http://%s:%s", host, port);
-// });
-// module.exports = httpServer;

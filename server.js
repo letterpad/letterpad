@@ -140,8 +140,10 @@ adminServer.init(app);
 clientServerRendering.init(app);
 apiServer(app);
 
-module.exports = app.listen(config.appPort, function() {
+const server = app.listen(config.appPort, function() {
   const host = server.address().address;
   const port = server.address().port;
   console.log("Letterpad listening at http://%s:%s", host, port);
 });
+
+module.exports = server;
