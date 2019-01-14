@@ -81,7 +81,7 @@ class Header extends Component {
             className="view-site"
             target="_blank"
             rel="noopener noreferrer"
-            to={config.baseName + "/"}
+            to={"/"}
           >
             View site
           </StyledLink>
