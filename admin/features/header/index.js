@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import User from "./User";
-import config from "../../../config";
 import StyledHeader from "./Header.css";
 import StyledLink from "../../components/link";
 
