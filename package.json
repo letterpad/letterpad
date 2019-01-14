@@ -1,6 +1,6 @@
 {
   "name": "letterpad",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Letterpad is an open-source and a high performant publishing engine for blogs built with react & graphql and runs ridiculously fast 🚀",
   "main": "start.js",
   "scripts": {
