@@ -5,7 +5,7 @@ env(__dirname + "/../.env");
 const Schema = require("./schema").default;
 const constants = require("./utils/constants");
 const models = require("./models/index");
-      
+
 const GraphHTTP = require("express-graphql");
 const upload = require("./upload");
 const middlewares = require("./middlewares");
@@ -14,7 +14,7 @@ module.exports = app => {
   middlewares(app);
 
   app.use(
-    "/graphql",
+    `${process.env.baseName}/graphql`,
     GraphHTTP((req, res) => {
       return {
         schema: Schema,
