@@ -137,10 +137,9 @@ function getHtml(apolloState) {
     INITIAL_STATE: initialState,
     NODE_ENV: process.env.NODE_ENV,
     ROOT_URL: process.env.rootUrl,
-    API_URL: process.env.apiUrl,
-    UPLOAD_URL: process.env.uploadUrl,
+    API_URL: process.env.rootUrl + "/graphql",
+    UPLOAD_URL: process.env.rootUrl + "/upload",
     APP_PORT: process.env.appPort,
-    API_PORT: process.env.apiPort,
     BASE_NAME: process.env.baseName,
     SCRIPT_TAGS: scripts,
   });
