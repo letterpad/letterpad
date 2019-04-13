@@ -21,7 +21,7 @@ const availableOperations = [
   "--sync",
 ];
 
-const reservedActions = ["-f", "-en", "-fr", "-pl"];
+const reservedActions = ["-f", "-en", "-fr", "-pl", "-ru"];
 
 // operation to be performed. check if it exists
 const [operation] = availableOperations.filter(key => args.indexOf(key) >= 0);
@@ -90,6 +90,7 @@ usage: yarn [operation] [options] [key=value || key]
         -en     Operation only on this file
         -fr     Operation only on this file
         -pl     Operation only on this file
+        -ru     Operation only on this file
 `,
     );
     console.log(chalk.yellow(msg));
