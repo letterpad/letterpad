@@ -1,3 +1,4 @@
+import Sequelize from "sequelize";
 import { UnauthorizedError } from "../utils/common";
 import { editPostPerm } from "../utils/permissions";
 
@@ -58,7 +59,7 @@ export default {
 
     deleteMedia: editPostPerm.createResolver(async (root, args, { models }) => {
       await models.Media.destroy({
-        where: { id: { in: args.ids.split(",") } },
+        where: { id: { [Sequelize.Op.in]: args.ids.split(",").map(Number) } },
       });
       return {
         ok: true,
