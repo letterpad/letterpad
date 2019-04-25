@@ -120,7 +120,7 @@ module.exports.UPDATE_AUTHOR = gql`
     $username: String
     $social: String
     $avatar: String
-    $role_id: Int
+    $roleId: Int
     $bio: String
   ) {
     updateAuthor(
@@ -132,7 +132,7 @@ module.exports.UPDATE_AUTHOR = gql`
       fname: $fname
       lname: $lname
       avatar: $avatar
-      role_id: $role_id
+      roleId: $roleId
       bio: $bio
     ) {
       ok
@@ -149,14 +149,9 @@ module.exports.CREATE_AUTHOR = gql`
     $email: String!
     $fname: String
     $lname: String
-    $role_id: Int
+    $roleId: Int
   ) {
-    createAuthor(
-      email: $email
-      fname: $fname
-      lname: $lname
-      role_id: $role_id
-    ) {
+    createAuthor(email: $email, fname: $fname, lname: $lname, roleId: $roleId) {
       ok
       errors {
         path
