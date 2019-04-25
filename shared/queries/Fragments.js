@@ -6,7 +6,7 @@ module.exports.PostFragment = gql`
     title
     body
     status
-    created_at
+    createdAt
     published_at
     excerpt
     cover_image

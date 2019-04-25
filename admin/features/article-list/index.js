@@ -119,7 +119,6 @@ class ArticleList extends Component {
     // let checked = {
     //     checked: this.props.allPostsSelected
     // };
-
     return (
       <StyledSection
         md
@@ -172,6 +171,7 @@ class ArticleList extends Component {
           ) : (
             <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
               {this.props.posts.rows.map(post => {
+                console.log(post);
                 const { categories } = filterTaxonomies(post.taxonomies);
                 const authorName = post.author.fname + " " + post.author.lname;
                 return (
@@ -190,7 +190,7 @@ class ArticleList extends Component {
                       description={post.excerpt}
                       href={"/admin/posts/" + post.id}
                       line1={authorName}
-                      line2={moment(new Date(post.created_at)).format(
+                      line2={moment(new Date(post.createdAt)).format(
                         "MMM Do YYYY",
                       )}
                       stickyText={categories}

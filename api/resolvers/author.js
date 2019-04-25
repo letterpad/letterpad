@@ -17,7 +17,6 @@ export default {
   Mutation: {
     login: async (root, { email, password, remember }, { SECRET, models }) => {
       const author = await models.Author.findOne({ where: { email } });
-
       if (!author) {
         return {
           ok: false,
@@ -45,7 +44,7 @@ export default {
         };
       }
       let role = await models.Role.findOne({
-        where: { id: author.role_id },
+        where: { id: author.roleId },
       });
       const perms = await role.getPermissions();
       const permissionNames = perms.map(perm => perm.name); //test
@@ -81,7 +80,7 @@ export default {
         }
 
         author.password = await bcrypt.hash(author.password, 12);
-        author.role_id = 1;
+        author.roleId = 1;
         const res = models.Author.create(author);
 
         return {
@@ -148,9 +147,9 @@ export default {
             where: { id: newArgs.id },
           });
           const role = await models.Role.findOne({
-            where: { id: newArgs.role_id },
+            where: { id: newArgs.roleId },
           });
-          
+
           const variables = {
             name: newArgs.fname,
             email: newArgs.email,
@@ -193,7 +192,7 @@ export default {
         await models.Author.update({ token }, { where: { id: author.id } });
         const link = makeUrl(["/admin/reset-password", token]);
         const role = await models.Role.findOne({
-          where: { id: author.role_id },
+          where: { id: author.roleId },
         });
 
         const variables = {

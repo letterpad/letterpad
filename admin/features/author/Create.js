@@ -36,7 +36,7 @@ class Create extends Component {
   };
 
   componentDidMount() {
-    this.setOption("role_id", this.state.selectedRole);
+    this.setOption("roleId", this.state.selectedRole);
     document.body.classList.add("create-author-page");
   }
 
@@ -44,9 +44,9 @@ class Create extends Component {
     document.body.classList.remove("create-author-page");
   }
 
-  selectRole = role_id => {
-    this.setOption("role_id", role_id);
-    this.setState({ selectedRole: role_id });
+  selectRole = roleId => {
+    this.setOption("roleId", roleId);
+    this.setState({ selectedRole: roleId });
   };
 
   setOption = (option, value) => {

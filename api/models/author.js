@@ -58,7 +58,7 @@ export default (conn, Datatypes) => {
   };
   return Author;
 };
-export const getPermissions = async (models, role_id) => {
+export const getPermissions = async (models, roleId) => {
   const permissions = await models.Permission.findAll({
     attributes: ["name"],
     through: { attributes: [] },
@@ -68,7 +68,7 @@ export const getPermissions = async (models, role_id) => {
         attributes: [],
         as: models.Role.tableName,
         where: {
-          id: role_id,
+          id: roleId,
         },
       },
     ],
