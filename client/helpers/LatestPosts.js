@@ -12,7 +12,7 @@ const Item = ({ style, post }) => {
       </div>
       <div className="content" style={style.content}>
         <Link to={`/${post.type}/${post.slug}`}>{post.title}</Link>
-        <span style={style.time}>{moment(post.created_at).fromNow()}</span>
+        <span style={style.time}>{moment(post.createdAt).fromNow()}</span>
       </div>
     </li>
   );

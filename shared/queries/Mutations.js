@@ -20,7 +20,7 @@ module.exports.CREATE_POST = gql`
         slug
         mode
         excerpt
-        created_at
+        createdAt
         cover_image
         taxonomies {
           id
@@ -210,7 +210,7 @@ module.exports.UPDATE_POST_QUERY = gql`
         status
         excerpt
         mode
-        created_at
+        createdAt
         cover_image
         taxonomies {
           id
@@ -228,7 +228,7 @@ module.exports.INSERT_MEDIA = gql`
     insertMedia(url: $url) {
       url
       id
-      created_at
+      createdAt
     }
   }
 `;

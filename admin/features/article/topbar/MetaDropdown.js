@@ -44,7 +44,7 @@ class MetaDropdown extends Component {
           label="Published at"
           className="meta-value"
           placeholder="Published date"
-          defaultValue={moment(new Date(this.state.post.created_at)).format(
+          defaultValue={moment(new Date(this.state.post.createdAt)).format(
             "DD-MM-Y hh:mm A",
           )}
         />

@@ -17,7 +17,6 @@ module.exports = {
     define: {
       underscored: true,
     },
-    operatorsAliases: false,
   },
   test: {
     username: process.env.DB_USER,
@@ -30,7 +29,6 @@ module.exports = {
     define: {
       underscored: true,
     },
-    operatorsAliases: false,
   },
   production: {
     username: process.env.DB_USER,
@@ -43,6 +41,5 @@ module.exports = {
     define: {
       underscored: true,
     },
-    operatorsAliases: false,
   },
 };

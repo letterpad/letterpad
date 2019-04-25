@@ -44,6 +44,7 @@ export default (conn, DataTypes) => {
     },
     {
       freezeTableName: true, // Model tableName will be the same as the model name
+      underscored: true,
     },
   );
   Post.associate = models => {
@@ -133,7 +134,7 @@ export async function _updatePost(post, models) {
     if (post.status == "publish" && oldPost.status == "draft") {
       post.published_at = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
     }
-    post.updated_at = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
+    post.updatedAt = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
     await models.Post.update(post, {
       where: { id: post.id },
     });

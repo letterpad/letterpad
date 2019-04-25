@@ -17,7 +17,7 @@ export default {
   Mutation: {
     login: async (root, { email, password, remember }, { SECRET, models }) => {
       const author = await models.Author.findOne({ where: { email } });
-
+      console.log(author);
       if (!author) {
         return {
           ok: false,
@@ -45,7 +45,7 @@ export default {
         };
       }
       let role = await models.Role.findOne({
-        where: { id: author.role_id },
+        where: { id: author.roleId },
       });
       const perms = await role.getPermissions();
       const permissionNames = perms.map(perm => perm.name); //test
@@ -150,7 +150,7 @@ export default {
           const role = await models.Role.findOne({
             where: { id: newArgs.role_id },
           });
-          
+
           const variables = {
             name: newArgs.fname,
             email: newArgs.email,

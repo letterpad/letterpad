@@ -47,6 +47,7 @@ export default (conn, Datatypes) => {
     },
     {
       freezeTableName: true,
+      underscored: true,
     },
   );
   Author.associate = models => {
