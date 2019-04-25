@@ -51,7 +51,7 @@ module.exports.GET_MEDIA = gql`
       rows {
         id
         url
-        created_at
+        createdAt
         name
         description
       }
@@ -249,7 +249,7 @@ module.exports.GET_LATEST_PUBLISHED_POSTS = gql`
         title
         type
         slug
-        created_at
+        createdAt
         published_at
         cover_image
       }

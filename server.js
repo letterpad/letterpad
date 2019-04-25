@@ -6,7 +6,13 @@
  */
 require("@babel/register");
 const env = require("node-env-file");
-env(__dirname + "/.env");
+try {
+  env(__dirname + "/.env");
+} catch (e) {
+  throw Error(
+    "The `.env` does not exist. Did you forget to rename `.env.sample` to `.env` ?",
+  );
+}
 
 const express = require("express");
 const bodyParser = require("body-parser");
