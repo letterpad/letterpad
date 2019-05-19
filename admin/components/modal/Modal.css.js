@@ -4,14 +4,20 @@ const applyConfirmStyle = () => `
     width: 767px;
     left: 50%;
     margin-left: -353px;
-    margin-top: 10vh;
+    margin-top: 2%;
     position: absolute;
     height: auto;
     box-shadow: var(--box-shadow);
     background: var(--bg-sections);
 
     .modal-body {
-        max-height:calc(100vh - 104px);
+        max-height:80vh;
+    }
+
+    @media(max-width:767px) {
+      width: 100%;
+      left: 0%;
+      margin-left: 0px;
     }
 `;
 const StyledModal = styled.div`
@@ -67,7 +73,7 @@ const StyledModal = styled.div`
     }
     .modal-body {
       overflow-y: auto;
-      max-height: calc(100vh - 104px);
+      max-height: calc(100vh - 240px);
       padding: 40px 16px;
       text-align: center;
     }

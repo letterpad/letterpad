@@ -22,7 +22,7 @@ const StyledArticle = styled.article`
   .post-header {
     max-width: 740px;
     margin: auto;
-    padding: 0px 1.3rem;
+    padding: 0px 1rem;
 
     @media (min-width: 740px) {
       width: 740px;
