@@ -14,7 +14,6 @@ const FlexColumn = styled.div`
   min-height: ${p => (p.fullHeight ? "100vh" : "auto")};
 
   .article-holder {
-    max-width: 767px;
     width: 100%;
     margin: 80px auto 0;
     padding: 0 10px;
@@ -31,7 +30,12 @@ class Article extends Component {
     post: PropTypes.object,
     history: PropTypes.object,
     manageScroll: PropTypes.func,
+    theme: PropTypes.string,
   };
+
+  // static defaultProps = {
+  //   theme: "light",
+  // };
 
   componentDidMount() {
     document.body.classList.add("edit-post-page");
@@ -54,7 +58,11 @@ class Article extends Component {
       <FlexColumn fullHeight>
         <TopBar edit history={this.props.history} post={this.props.post} />
         <div className="article-holder">
-          <Edit post={this.props.post} setHtml={this.setHtml} />
+          <Edit
+            theme={this.props.theme}
+            post={this.props.post}
+            setHtml={this.setHtml}
+          />
         </div>
       </FlexColumn>
     );

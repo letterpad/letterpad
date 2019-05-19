@@ -63,9 +63,8 @@ export default {
         conditions.order = [["published_at", "DESC"]];
         // for admin dashboard, sort it based on updated_date
         if (user && user.id) {
-          conditions.order = [["updated_at", "DESC"]];
+          conditions.order = [["updatedAt", "DESC"]];
         }
-
         return models.Post.findAll(conditions).then(res => {
           return {
             count,
