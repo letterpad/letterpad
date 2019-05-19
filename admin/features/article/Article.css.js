@@ -18,6 +18,16 @@ const StyledArticle = styled.article`
     padding: 4px 8px;
     font-size: 14px;
   }
+
+  .post-header {
+    max-width: 740px;
+    margin: auto;
+    padding: 0px 1.3rem;
+
+    @media (min-width: 740px) {
+      width: 740px;
+    }
+  }
 `;
 
 export default StyledArticle;

@@ -10,6 +10,7 @@ import PostTitle from "./PostTitle";
 export default class Edit extends Component {
   static propTypes = {
     post: PropTypes.object,
+    theme: PropTypes.string,
   };
 
   render() {
@@ -28,7 +29,7 @@ export default class Edit extends Component {
           />
         </div>
         <div className="post-content">
-          <Editor post={post} />
+          <Editor post={post} theme={this.props.theme} />
         </div>
       </StyledArticle>
     );

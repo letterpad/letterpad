@@ -81,7 +81,7 @@ export default function Layout(ComponentClass, props) {
           {props.layout == "none" ? (
             <NoLayout>
               <div className="content-area">
-                <ComponentClass {..._props} />
+                <ComponentClass {..._props} theme={this.state.theme} />
               </div>
             </NoLayout>
           ) : (
@@ -96,7 +96,7 @@ export default function Layout(ComponentClass, props) {
               <Sidebar {..._props} />
               <main>
                 <div className="content-area">
-                  <ComponentClass {..._props} />
+                  <ComponentClass {..._props} theme={this.state.theme} />
                 </div>
               </main>
             </StyledLayout>
