@@ -10,7 +10,7 @@ export default `
     status: String
     slug: String
     mode: String
-    created_at: String
+    createdAt: String
     published_at: String
     taxonomies: [Taxonomy]
   }

@@ -140,7 +140,7 @@ export async function insertAuthor(models) {
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
-      role_id: 1,
+      roleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar: "/admin/images/avatar.png",
@@ -156,7 +156,7 @@ export async function insertAuthor(models) {
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
-      role_id: 1,
+      roleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar: "/admin/images/avatar.png",
@@ -223,7 +223,7 @@ export async function insertPost(params, models, categories, tags) {
     type: params.type,
     status: params.status,
     slug: slug,
-    created_at: new Date(),
+    createdAt: new Date(),
     published_at: new Date(),
   });
 

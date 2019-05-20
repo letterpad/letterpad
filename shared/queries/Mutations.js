@@ -20,7 +20,7 @@ module.exports.CREATE_POST = gql`
         slug
         mode
         excerpt
-        created_at
+        createdAt
         cover_image
         taxonomies {
           id
@@ -120,7 +120,7 @@ module.exports.UPDATE_AUTHOR = gql`
     $username: String
     $social: String
     $avatar: String
-    $role_id: Int
+    $roleId: Int
     $bio: String
   ) {
     updateAuthor(
@@ -132,7 +132,7 @@ module.exports.UPDATE_AUTHOR = gql`
       fname: $fname
       lname: $lname
       avatar: $avatar
-      role_id: $role_id
+      roleId: $roleId
       bio: $bio
     ) {
       ok
@@ -149,14 +149,9 @@ module.exports.CREATE_AUTHOR = gql`
     $email: String!
     $fname: String
     $lname: String
-    $role_id: Int
+    $roleId: Int
   ) {
-    createAuthor(
-      email: $email
-      fname: $fname
-      lname: $lname
-      role_id: $role_id
-    ) {
+    createAuthor(email: $email, fname: $fname, lname: $lname, roleId: $roleId) {
       ok
       errors {
         path
@@ -210,7 +205,7 @@ module.exports.UPDATE_POST_QUERY = gql`
         status
         excerpt
         mode
-        created_at
+        createdAt
         cover_image
         taxonomies {
           id
@@ -228,7 +223,7 @@ module.exports.INSERT_MEDIA = gql`
     insertMedia(url: $url) {
       url
       id
-      created_at
+      createdAt
     }
   }
 `;
