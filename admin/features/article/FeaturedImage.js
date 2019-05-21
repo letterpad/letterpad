@@ -97,9 +97,7 @@ class FeaturedImage extends Component {
   uploadInputRef = React.createRef();
 
   componentDidMount() {
-    const imgNodes = document.querySelectorAll(
-      ".post-content .editor--content img",
-    );
+    const imgNodes = document.querySelectorAll("[data-id='plugin-image']");
     const imageList = [];
     for (let i = 0; i < imgNodes.length; i++) {
       imageList.push(imgNodes[i].getAttribute("src"));
@@ -109,7 +107,8 @@ class FeaturedImage extends Component {
 
   // All the images available in the post can be used as a cover image.
   // This function sets the selection
-  setCoverImage = imagePath => {
+  setCoverImage = (e, imagePath) => {
+    e.preventDefault();
     PostActions.setData({ cover_image: imagePath });
     this.setState({ cover_image: imagePath, fileExplorerOpen: false });
     // update the post with the new url
@@ -170,7 +169,7 @@ class FeaturedImage extends Component {
               <div
                 key={idx}
                 className={selected ? "selected" : ""}
-                onClick={() => this.setCoverImage(imagePath)}
+                onClick={e => this.setCoverImage(e, imagePath)}
               >
                 <img alt="" width="100%" src={imagePath} />
               </div>
