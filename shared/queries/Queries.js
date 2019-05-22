@@ -161,7 +161,7 @@ module.exports.SEARCH_POSTS_FUZY = gql`
         id
         title
         excerpt
-        published_at
+        publishedAt
         slug
       }
     }
@@ -250,7 +250,7 @@ module.exports.GET_LATEST_PUBLISHED_POSTS = gql`
         type
         slug
         createdAt
-        published_at
+        publishedAt
         cover_image
       }
     }
@@ -303,13 +303,13 @@ module.exports.ADJACENT_POSTS = gql`
         title
         slug
         cover_image
-        published_at
+        publishedAt
       }
       previous {
         title
         slug
         cover_image
-        published_at
+        publishedAt
       }
     }
   }

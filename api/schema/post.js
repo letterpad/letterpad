@@ -11,7 +11,7 @@ export default `
     slug: String
     mode: String
     createdAt: String
-    published_at: String
+    publishedAt: String
     taxonomies: [Taxonomy]
   }
   type PostNode {
@@ -57,7 +57,7 @@ export default `
     id: Int
     title: String
     excerpt: String
-    published_at: String
+    publishedAt: String
     slug: String
   }
 

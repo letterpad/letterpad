@@ -224,7 +224,7 @@ export async function insertPost(params, models, categories, tags) {
     status: params.status,
     slug: slug,
     createdAt: new Date(),
-    published_at: new Date(),
+    publishedAt: new Date(),
   });
 
   const randomCategory = Math.floor(Math.random() * (2 - 1 + 1)) + 1;

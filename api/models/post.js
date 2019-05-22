@@ -38,7 +38,7 @@ export default (conn, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: "",
       },
-      published_at: {
+      publishedAt: {
         type: DataTypes.DATE,
       },
     },
@@ -132,7 +132,7 @@ export async function _updatePost(post, models) {
     }
     // If this post is being published for the first time, update the publish date
     if (post.status == "publish" && oldPost.status == "draft") {
-      post.published_at = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
+      post.publishedAt = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
     }
     post.updatedAt = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
     await models.Post.update(post, {
