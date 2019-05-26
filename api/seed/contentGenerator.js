@@ -26,7 +26,7 @@ const client = (isAdmin = false) => {
 };
 
 const generateList = () => {
-  return `${generateSentence()}<p><ul><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li><ul><li>${Faker.company.catchPhraseAdjective()}</li></ul></ul></p>
+  return `${generateSentence()}<p><ul><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li><li>${Faker.company.catchPhraseAdjective()}</li></ul></p>
     ${generateSentence()}`;
 };
 

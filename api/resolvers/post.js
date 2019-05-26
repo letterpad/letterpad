@@ -60,7 +60,7 @@ export default {
         conditions.where.status = newArgs.status;
       }
       return models.Post.count(conditions).then(count => {
-        conditions.order = [["published_at", "DESC"]];
+        conditions.order = [["publishedAt", "DESC"]];
         // for admin dashboard, sort it based on updated_date
         if (user && user.id) {
           conditions.order = [["updatedAt", "DESC"]];
@@ -77,14 +77,7 @@ export default {
       let cachedData = memoryCache.get("posts");
       if (!cachedData) {
         const data = await models.Post.findAll({
-          attributes: [
-            "id",
-            "title",
-            "body",
-            "excerpt",
-            "published_at",
-            "slug",
-          ],
+          attributes: ["id", "title", "body", "excerpt", "publishedAt", "slug"],
           where: { status: "publish" },
         });
 
@@ -371,7 +364,7 @@ export default {
           data[field] = args[field];
         });
         data.body = "";
-        data.author_id = user.id;
+        data.authorId = user.id;
         memoryCache.del("posts");
         return _createPost(data, models);
       },

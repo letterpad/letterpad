@@ -65,7 +65,7 @@ class FileExplorer extends Component {
 
   loadMore = async num => {
     await this.props.fetchMore({
-      author_id: this.props.author.id,
+      authorId: this.props.author.id,
       offset: (num - 1) * config.mediaPerPage,
       limit: config.mediaPerPage,
       merge: true,

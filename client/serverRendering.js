@@ -40,7 +40,8 @@ const httpLink = createHttpLink({
 const link = ApolloLink.from([errorLink, httpLink]);
 
 module.exports.init = app => {
-  app.get("*", (req, res) => {
+  app.get("*", (req, res, next) => {
+    if (req.url === "/graphql") return next();
     // using the apolloclient we can fetch data from the backend
     const client = new ApolloClient({
       ssrMode: true,

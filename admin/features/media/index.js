@@ -188,7 +188,7 @@ class Media extends Component {
     // if the user is in page 1, just refetch the items of page 1
     if (this.props.match.params.page == 1) {
       let items = await this.props.fetchMore({
-        author_id: this.props.author.id,
+        authorId: this.props.author.id,
         offset: 0,
         limit: config.mediaPerPage,
       });

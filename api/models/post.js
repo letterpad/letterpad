@@ -38,13 +38,12 @@ export default (conn, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: "",
       },
-      published_at: {
+      publishedAt: {
         type: DataTypes.DATE,
       },
     },
     {
       freezeTableName: true, // Model tableName will be the same as the model name
-      underscored: true,
     },
   );
   Post.associate = models => {
@@ -55,7 +54,7 @@ export default (conn, DataTypes) => {
     });
     Post.hasMany(models.PostTaxonomy);
     //  1:m
-    Post.belongsTo(models.Author);
+    Post.belongsTo(models.Author, { foreignKey: "authorId" });
   };
   return Post;
 };
@@ -132,7 +131,7 @@ export async function _updatePost(post, models) {
     }
     // If this post is being published for the first time, update the publish date
     if (post.status == "publish" && oldPost.status == "draft") {
-      post.published_at = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
+      post.publishedAt = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
     }
     post.updatedAt = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
     await models.Post.update(post, {

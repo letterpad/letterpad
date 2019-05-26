@@ -11,7 +11,7 @@ export default `
     slug: String
     mode: String
     createdAt: String
-    published_at: String
+    publishedAt: String
     taxonomies: [Taxonomy]
   }
   type PostNode {
@@ -57,7 +57,7 @@ export default `
     id: Int
     title: String
     excerpt: String
-    published_at: String
+    publishedAt: String
     slug: String
   }
 
@@ -79,8 +79,8 @@ export default `
   }
   
   type Mutation {
-    createPost(id: Int, title: String, body: String, author_id: Int, mode: String, excerpt: String, cover_image: String, type: String, status: String, slug: String, taxonomies: [TaxonomyInputType]):Response!
-    updatePost(id: Int, title: String, body: String, author_id: Int, mode: String, excerpt: String, cover_image: String, type: String, status: String, slug: String, taxonomies: [TaxonomyInputType]): Response!
+    createPost(id: Int, title: String, body: String, authorId: Int, mode: String, excerpt: String, cover_image: String, type: String, status: String, slug: String, taxonomies: [TaxonomyInputType]):Response!
+    updatePost(id: Int, title: String, body: String, authorId: Int, mode: String, excerpt: String, cover_image: String, type: String, status: String, slug: String, taxonomies: [TaxonomyInputType]): Response!
     deletePosts(ids: String!): Response!
     uploadFile(id: Int, cover_image: String):Response!
   }

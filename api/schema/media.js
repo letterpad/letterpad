@@ -1,7 +1,7 @@
 export default `
   type Media {
     id: Int
-    author_id: Int
+    authorId: Int
     url: String
     createdAt: String
     name: String
@@ -30,7 +30,7 @@ export default `
   }
   
   type Query {
-    media(id: Int, author_id: Int!, offset: Int, limit: Int, cursor: Int): MediaNode
+    media(id: Int, authorId: Int!, offset: Int, limit: Int, cursor: Int): MediaNode
   }
 
   type Mutation {
