@@ -57,7 +57,7 @@ export const createPostsPerm = requiresAuth.createResolver(
 export const editPostPerm = requiresAuth.createResolver(
   (root, args, context) => {
     if (context.user.permissions.indexOf("MANAGE_OWN_POSTS") >= 0) {
-      args.author_id = context.user.id;
+      args.authorId = context.user.id;
       return args;
     } else if (context.user.permissions.indexOf("MANAGE_ALL_POSTS") >= 0) {
       return args;
@@ -89,7 +89,7 @@ export const checkDisplayAccess = createResolver((root, args, context) => {
   }
   //  Author should not see others posts from admin panel
   if (context.user.permissions.indexOf("MANAGE_OWN_POSTS") >= 0) {
-    args.author_id = context.user.id;
+    args.authorId = context.user.id;
     return args;
   } else if (
     context.user.permissions.indexOf("MANAGE_ALL_POSTS") >= 0 ||

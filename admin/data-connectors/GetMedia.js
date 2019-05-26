@@ -5,7 +5,7 @@ import config from "../../config";
 export default graphql(GET_MEDIA, {
   options: props => ({
     variables: {
-      author_id: props.author.id,
+      authorId: props.author.id,
       offset:
         (parseInt(props.page || props.match.params.page) - 1) *
         config.mediaPerPage,

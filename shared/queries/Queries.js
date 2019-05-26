@@ -45,8 +45,8 @@ module.exports.GET_PAGE_NAMES = gql`
 `;
 
 module.exports.GET_MEDIA = gql`
-  query getMedia($author_id: Int!, $offset: Int, $limit: Int) {
-    media(author_id: $author_id, offset: $offset, limit: $limit) {
+  query getMedia($authorId: Int!, $offset: Int, $limit: Int) {
+    media(authorId: $authorId, offset: $offset, limit: $limit) {
       count
       rows {
         id

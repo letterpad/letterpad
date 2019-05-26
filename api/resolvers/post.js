@@ -364,7 +364,7 @@ export default {
           data[field] = args[field];
         });
         data.body = "";
-        data.author_id = user.id;
+        data.authorId = user.id;
         memoryCache.del("posts");
         return _createPost(data, models);
       },

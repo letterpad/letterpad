@@ -15,7 +15,7 @@ module.exports = {
     storage: getFile("letterpad_demo"),
     logging: false,
     define: {
-      underscored: true,
+      underscored: false,
     },
   },
   test: {
@@ -27,7 +27,7 @@ module.exports = {
     storage: getFile("test"),
     logging: false,
     define: {
-      underscored: true,
+      underscored: false,
     },
   },
   production: {
@@ -39,7 +39,7 @@ module.exports = {
     storage: getFile("letterpad_demo"),
     logging: false,
     define: {
-      underscored: true,
+      underscored: false,
     },
   },
 };

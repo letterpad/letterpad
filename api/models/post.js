@@ -44,7 +44,6 @@ export default (conn, DataTypes) => {
     },
     {
       freezeTableName: true, // Model tableName will be the same as the model name
-      underscored: true,
     },
   );
   Post.associate = models => {
@@ -55,7 +54,7 @@ export default (conn, DataTypes) => {
     });
     Post.hasMany(models.PostTaxonomy);
     //  1:m
-    Post.belongsTo(models.Author);
+    Post.belongsTo(models.Author, { foreignKey: "authorId" });
   };
   return Post;
 };

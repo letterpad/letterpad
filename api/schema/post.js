@@ -79,8 +79,8 @@ export default `
   }
   
   type Mutation {
-    createPost(id: Int, title: String, body: String, author_id: Int, mode: String, excerpt: String, cover_image: String, type: String, status: String, slug: String, taxonomies: [TaxonomyInputType]):Response!
-    updatePost(id: Int, title: String, body: String, author_id: Int, mode: String, excerpt: String, cover_image: String, type: String, status: String, slug: String, taxonomies: [TaxonomyInputType]): Response!
+    createPost(id: Int, title: String, body: String, authorId: Int, mode: String, excerpt: String, cover_image: String, type: String, status: String, slug: String, taxonomies: [TaxonomyInputType]):Response!
+    updatePost(id: Int, title: String, body: String, authorId: Int, mode: String, excerpt: String, cover_image: String, type: String, status: String, slug: String, taxonomies: [TaxonomyInputType]): Response!
     deletePosts(ids: String!): Response!
     uploadFile(id: Int, cover_image: String):Response!
   }
