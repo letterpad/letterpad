@@ -53,7 +53,7 @@ export default {
       Object.keys(args).forEach(field => {
         data[field] = args[field];
       });
-      data.author_id = user.id;
+      data.authorId = user.id;
       return models.Media.create(data);
     }),
 

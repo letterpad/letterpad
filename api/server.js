@@ -53,7 +53,7 @@ module.exports = app => {
       let filename = file.path.split("/").pop();
       // colect them to store in database
       media.push({
-        author_id: req.user.id,
+        authorId: req.user.id,
         url: "/uploads/" + filename,
       });
       // store the urls of the uploaded asset to be sent back to the browser
