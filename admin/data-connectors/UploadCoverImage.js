@@ -6,20 +6,6 @@ export default graphql(UPLOAD_COVER_IMAGE, {
     updateFeaturedImage: data =>
       mutate({
         variables: data,
-        updateQueries: {
-          getPost: (previousResult, { mutationResult }) => {
-            const coverImage = mutationResult.data.uploadFile
-              ? mutationResult.data.uploadFile.post.cover_image
-              : "";
-            return {
-              post: {
-                ...previousResult.post,
-                cover_image: coverImage,
-              },
-              __typename: previousResult.media.__typename,
-            };
-          },
-        },
       }),
   }),
 });

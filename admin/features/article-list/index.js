@@ -171,7 +171,6 @@ class ArticleList extends Component {
           ) : (
             <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
               {this.props.posts.rows.map(post => {
-                console.log(post);
                 const { categories } = filterTaxonomies(post.taxonomies);
                 const authorName = post.author.fname + " " + post.author.lname;
                 return (

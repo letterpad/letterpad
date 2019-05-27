@@ -59,7 +59,7 @@ const CustomImage = ({
       className={className}
       onClick={isCustom ? removeCustomImage : toggleFileExplorer}
     >
-      <span>{isCustom ? "-" : "+"}</span>
+      <span>{isCustom ? "x" : "+"}</span>
       {isCustom && <img alt="" width="100%" src={coverImage} />}
     </div>
   );
@@ -107,8 +107,7 @@ class FeaturedImage extends Component {
 
   // All the images available in the post can be used as a cover image.
   // This function sets the selection
-  setCoverImage = (e, imagePath) => {
-    e.preventDefault();
+  setCoverImage = imagePath => {
     PostActions.setData({ cover_image: imagePath });
     this.setState({ cover_image: imagePath, fileExplorerOpen: false });
     // update the post with the new url
@@ -116,6 +115,7 @@ class FeaturedImage extends Component {
       id: this.props.post.id,
       cover_image: imagePath,
     });
+    return false;
   };
 
   uploadImage = async files => {
@@ -131,6 +131,7 @@ class FeaturedImage extends Component {
       id: this.props.post.id,
       cover_image: coverImage,
     });
+    PostActions.setData({ cover_image: coverImage });
     // set the state with the new image
     this.setState({ cover_image: coverImage, fileExplorerOpen: false });
   };
@@ -169,7 +170,7 @@ class FeaturedImage extends Component {
               <div
                 key={idx}
                 className={selected ? "selected" : ""}
-                onClick={e => this.setCoverImage(e, imagePath)}
+                onClick={() => this.setCoverImage(imagePath)}
               >
                 <img alt="" width="100%" src={imagePath} />
               </div>

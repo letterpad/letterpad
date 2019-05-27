@@ -6,9 +6,8 @@ const generateHeading = () => {
 };
 
 const generateParagraph = () => {
-  return `${Faker.lorem.paragraphs(2)}
-                ${generateHeading()}
-            ${Faker.lorem.paragraphs(2)}<hr>`;
+  const para = Faker.lorem.paragraphs(2);
+  return `${para}${generateHeading()}${para}<hr>`;
 };
 
 const generateCode = () => {
@@ -22,7 +21,7 @@ const client = (isAdmin = false) => {
     });
 };`;
   const html = Prism.highlight(code, Prism.languages.javascript, "javascript");
-  return `<p><pre class="prism-dark">${html}</pre></p>`;
+  return `<section><pre class="prism-dark">${html}</pre></section>`;
 };
 
 const generateList = () => {
@@ -31,7 +30,7 @@ const generateList = () => {
 };
 
 const generateQuote = () => {
-  return `<p>${generateSentence()}</p><p><blockquote>${Faker.hacker.phrase()}</blockquote></p><p>${generateSentence()}</p>`;
+  return `<section>${generateSentence()}</section><section><blockquote>${Faker.hacker.phrase()}</blockquote></p><p>${generateSentence()}</section>`;
 };
 
 const generateSentence = () => {
@@ -41,7 +40,13 @@ const generateSentence = () => {
 const getImage = () => {
   const random = Math.floor(Math.random() * 10) + 1;
   const image = "/uploads/" + random + ".jpg";
-  return `${generateSentence()}<p style="text-align: center"><img height="400" src="${image}"></p><p>${generateSentence()}</p>`;
+  return `${generateSentence()}<figure data-id="plugin-image-figure"><span type="wide" src="${image}" class="lp_img_wrapper"><img
+        width="100%"
+        height="auto"
+        src="${image}"
+        data-id="plugin-image"
+        data-align="wide"
+      /></span></figure><p>${generateSentence()}</p>`;
 };
 
 const shuffleArray = arr =>
