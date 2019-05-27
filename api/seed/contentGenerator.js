@@ -39,7 +39,7 @@ const generateSentence = () => {
 
 const getImage = () => {
   const random = Math.floor(Math.random() * 10) + 1;
-  const image = "/uploads/" + random + ".jpg";
+  const image = process.env.baseName + "/uploads/" + random + ".jpg";
   return `${generateSentence()}<figure data-id="plugin-image-figure"><span type="wide" src="${image}" class="lp_img_wrapper"><img
         width="100%"
         height="auto"

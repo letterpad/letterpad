@@ -23,7 +23,7 @@ module.exports = app => {
         rootValue: {
           request: req,
         },
-        formatError(error) {
+        customFormatErrorFn(error) {
           console.log(error);
           if (error.originalError) {
             if (error.originalError.statusCode == 401) {
