@@ -7,12 +7,13 @@ export default graphql(UPDATE_POST_QUERY, {
       return mutate({
         variables: data,
         updateQueries: {
-          getPost: (prev, { mutationResult }) => {
+          getPost: (previousResult, { mutationResult }) => {
             return {
               post: {
-                ...prev.post,
+                ...previousResult.post,
                 ...mutationResult.data.updatePost.post,
               },
+              __typename: previousResult.post.__typename,
             };
           },
         },
