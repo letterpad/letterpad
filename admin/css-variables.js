@@ -10,7 +10,8 @@ const darkTheme = `
     --color-text-3: #747677;
     --color-muted: #000;
 
-    --color-accent: 16,161,68;
+    --color-accent: #249fd3;
+    --color-menu-link: #e9e9e9;
 
     --bg-primary: #1c1b23;
     --color-primary: #e1f5fe;
@@ -61,7 +62,8 @@ const lightTheme = `
     --color-text-3: #7b7b7b;
     --color-muted: #a8a8a8;
 
-    --color-accent: 20,181,239;
+    --color-accent: #2290e9;
+    --color-menu-link: #353535;
 
     --bg-primary: transparent;
     --color-primary: #333;

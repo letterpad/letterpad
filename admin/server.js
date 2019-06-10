@@ -8,6 +8,10 @@ const { InMemoryCache } = require("apollo-cache-inmemory");
 const fetch = require("node-fetch");
 const { ApolloClient } = require("apollo-client");
 const config = require("../config");
+const {
+  generateStaticAssets,
+  createPullRequest,
+} = require("./static-generator");
 const { GET_OPTIONS } = require("../shared/queries/Queries");
 const { getDirectories } = require("../shared/dir");
 const path = require("path");
@@ -31,6 +35,13 @@ const client = () =>
   });
 
 module.exports.init = app => {
+  app.get(config.baseName + "/admin/generate-static-site", (req, res) => {
+    return generateStaticAssets(req, res);
+  });
+  app.get(config.baseName + "/admin/create-pull-request", (req, res) => {
+    return createPullRequest(req, res);
+  });
+
   app.get(config.baseName + "/admin/getThemes", (req, res) => {
     client()
       .query({ query: GET_OPTIONS })

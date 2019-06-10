@@ -434,6 +434,10 @@ export async function insertSettings(models) {
       option: "banner",
       value: "/uploads/banner.jpg",
     },
+    {
+      option: "github_repo",
+      value: "letterpad-static",
+    },
   ];
 
   return models.Setting.bulkCreate(data);

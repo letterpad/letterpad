@@ -138,6 +138,7 @@
         "settings.optional.title": "Дополнительные настройки",
         "settings.social.tagline": "Задайте ссылки на ваши аккаунты в социальных сетях",
         "settings.social.title": "Настройки социальных сетей",
+        "settings.static.github.placeholder": "",
         "slug": "Slug",
         "social.fb.placeholder": "Ваша страница в Facebook",
         "social.gh.placeholder": "Ваш аккаунт на Github",

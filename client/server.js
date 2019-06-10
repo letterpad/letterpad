@@ -14,12 +14,13 @@ import { StaticRouter } from "react-router";
 import { ApolloProvider, getDataFromTree } from "react-apollo";
 const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
 import Routes from "./Routes";
+import { StaticContext } from "./Context";
 
 const context = {};
 
-export default (req, client, config) => {
+export default (url, client, config, isStatic) => {
   const opts = {
-    location: req.url,
+    location: url,
     context: context,
     basename: config.baseName.replace(/\/$/, ""), // remove the last slash
   };
@@ -28,7 +29,9 @@ export default (req, client, config) => {
     <ApolloProvider client={client}>
       <StyleSheetManager sheet={sheet.instance}>
         <StaticRouter {...opts}>
-          <Routes />
+          <StaticContext.Provider value={{ isStatic }}>
+            <Routes />
+          </StaticContext.Provider>
         </StaticRouter>
       </StyleSheetManager>
     </ApolloProvider>
