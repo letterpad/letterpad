@@ -6,6 +6,8 @@ import StyledSection from "../../components/section";
 import StyledCard from "../../components/card";
 import Button from "../../components/button";
 
+import config from "../../../config";
+
 import { ProgressBar } from "./index.css";
 
 class CreateStatic extends Component {
@@ -23,7 +25,7 @@ class CreateStatic extends Component {
     }
     this.setState({ processingFiles: true });
     const reader = await this.props.sendRequest(
-      "http://localhost:4040/admin/generate-static-site",
+      `${config.rootUrl + config.baseName}/admin/generate-static-site`,
     );
 
     let oldPercentage = 0;

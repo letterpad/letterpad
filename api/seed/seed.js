@@ -436,7 +436,7 @@ export async function insertSettings(models) {
     },
     {
       option: "github_repo",
-      value: "letterpad-static",
+      value: "",
     },
   ];
 

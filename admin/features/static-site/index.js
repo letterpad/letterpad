@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import PropTypes from "prop-types";
+import { notify } from "react-notify-toast";
 import { translate } from "react-i18next";
 import StyledSection from "../../components/section";
 
@@ -15,6 +16,13 @@ class StaticSite extends Component {
   sendRequest = url => {
     return fetch(url).then(res => {
       return res.body.getReader();
+    });
+  };
+
+  updateOption = (option, value) => {
+    const settings = [{ option, value }];
+    this.props.updateOptions(settings).then(() => {
+      notify.show("Site settings saved", "success", 3000);
     });
   };
 

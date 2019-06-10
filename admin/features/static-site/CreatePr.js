@@ -10,6 +10,8 @@ import Button from "../../components/button";
 import Link from "../../components/link";
 import Input from "../../components/input";
 
+import config from "../../../config";
+
 class CreatePr extends Component {
   state = {
     creatingPr: false,
@@ -22,7 +24,7 @@ class CreatePr extends Component {
     this.pullRequestStatus.current.textContent = "";
 
     const reader = await this.props.sendRequest(
-      "http://localhost:4040/admin/create-pull-request",
+      `${config.rootUrl + config.baseName}/admin/create-pull-request`,
     );
 
     const readStream = reader => {
