@@ -22,7 +22,7 @@ class CreatePr extends Component {
   createPullRequest = async () => {
     this.setState({ creatingPr: true });
     this.pullRequestStatus.current.textContent = "";
-
+    const pointer = "<span style='color: var(--color-base)'>-</span>";
     const reader = await this.props.sendRequest(
       `${config.rootUrl + config.baseName}/admin/create-pull-request`,
     );
@@ -36,11 +36,12 @@ class CreatePr extends Component {
         // read the response
         const { message } = this.props.chunkToJSON(chunk);
         if (message === "done") {
-          this.pullRequestStatus.current.innerHTML += "<br> > All Done!";
+          this.pullRequestStatus.current.innerHTML += `<br> ${pointer} All Done!`;
           this.setState({ creatingPr: false });
           return reader.cancel();
         }
-        this.pullRequestStatus.current.innerHTML += "<br> > " + message;
+        this.pullRequestStatus.current.innerHTML +=
+          `<br> ${pointer} ` + message;
         return readStream(reader);
       });
     };

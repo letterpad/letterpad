@@ -5,6 +5,11 @@ BRANCH="static-$DATE"
 
 rm -r -f $REPO_PATH 2>/dev/null
 
+if [-z "$GITHUB_REPO" ]; then 
+    echo "Set your repository in .env file."
+    exit 1;
+fi
+
 echo "Cloning repository - $GITHUB_REPO" 2>&1
 hub clone $GITHUB_REPO letterpad-static 2>/dev/null
 cd letterpad-static

@@ -27,6 +27,9 @@ export const ProgressText = styled.div`
     padding-left: 8px;
     font-size: 12px;
     font-weight: bold;
+    color: var(--base-shade-3);
+    font-weight: 500;
+    line-height: 20px;
   }
 `;
 export const Spinner = styled.div`
