@@ -108,7 +108,7 @@ class CreateStatic extends Component {
             title="Static Site Generator"
             subtitle="Here you can generate static pages of your website"
           >
-            {canGenerate && (
+            {this.state.processingFiles && (
               <ProgressBar>
                 <span ref={this.progress} />
               </ProgressBar>
@@ -123,14 +123,16 @@ class CreateStatic extends Component {
                 using `yarn prod`.
               </small>
             )}
-            <Button
-              success
-              sm
-              onClick={this.createStaticFiles}
-              disabled={this.state.processingFiles}
-            >
-              Create Static
-            </Button>
+            {canGenerate && (
+              <Button
+                success
+                sm
+                onClick={this.createStaticFiles}
+                disabled={this.state.processingFiles}
+              >
+                Create Static
+              </Button>
+            )}
           </StyledCard>
           <br />
         </div>

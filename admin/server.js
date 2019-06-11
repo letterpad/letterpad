@@ -7,12 +7,14 @@ const { createHttpLink } = require("apollo-link-http");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 const fetch = require("node-fetch");
 const { ApolloClient } = require("apollo-client");
+import { ApolloLink } from "apollo-link";
+// const client = require("../shared/apolloClient").default;
 const config = require("../config");
 const {
   generateStaticAssets,
   createPullRequest,
 } = require("./static-generator");
-const { GET_OPTIONS } = require("../shared/queries/Queries");
+const { GET_OPTIONS, IS_AUTHORIZED } = require("../shared/queries/Queries");
 const { getDirectories } = require("../shared/dir");
 const path = require("path");
 const fs = require("fs");
@@ -23,23 +25,53 @@ const {
 } = require("../shared/util");
 const { syncThemeSettings } = require("./util");
 
-const client = () =>
+const middlewareAuthLink = (token = null) =>
+  new ApolloLink((operation, forward) => {
+    operation.setContext({
+      headers: {
+        authorization: token,
+      },
+    });
+    return forward(operation);
+  });
+
+const client = (token = "") =>
   new ApolloClient({
     ssrMode: false,
-    link: createHttpLink({
-      uri: config.apiUrl,
-      fetch,
-    }),
+    link: middlewareAuthLink(token).concat(
+      createHttpLink({
+        uri: config.apiUrl,
+        fetch,
+      }),
+    ),
     fetchPolicy: "no-cache",
     cache: new InMemoryCache(),
   });
 
 module.exports.init = app => {
   app.get(config.baseName + "/admin/generate-static-site", (req, res) => {
-    return generateStaticAssets(req, res);
+    return client(req.headers.token)
+      .query({ query: IS_AUTHORIZED })
+      .then(auth => {
+        if (auth.data.validateToken) {
+          return generateStaticAssets(req, res);
+        }
+      })
+      .catch(e => {
+        return res.send(e);
+      });
   });
   app.get(config.baseName + "/admin/create-pull-request", (req, res) => {
-    return createPullRequest(req, res);
+    return client(req.headers.token)
+      .query({ query: IS_AUTHORIZED })
+      .then(auth => {
+        if (auth.data.validateToken) {
+          return createPullRequest(req, res);
+        }
+      })
+      .catch(e => {
+        return res.send(e);
+      });
   });
 
   app.get(config.baseName + "/admin/getThemes", (req, res) => {

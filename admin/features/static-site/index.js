@@ -14,7 +14,13 @@ import CreatePr from "./CreatePr";
 
 class StaticSite extends Component {
   sendRequest = url => {
-    return fetch(url).then(res => {
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.token,
+      },
+    };
+    return fetch(url, options).then(res => {
       return res.body.getReader();
     });
   };
@@ -51,7 +57,6 @@ class StaticSite extends Component {
             chunkToJSON={this.chunkToJSON}
             data={data}
           />
-          <br />
           <CreatePr
             updateOption={this.updateOption}
             sendRequest={this.sendRequest}

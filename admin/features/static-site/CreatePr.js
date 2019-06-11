@@ -70,15 +70,8 @@ class CreatePr extends Component {
             for installation instructions.
             <br />
             <br />
-            <Input
-              label="Github Repository Name"
-              defaultValue={data.github_repo.value}
-              type="text"
-              placeholder={t("settings.static.github.placeholder")}
-              onBlur={e =>
-                this.props.updateOption("github_repo", e.target.value)
-              }
-            />
+            Github Repository: {data.github_repo.value}
+            <br />
             <small>(Make sure that the Github Repository exist)</small>
             <ProgressText>
               <br />

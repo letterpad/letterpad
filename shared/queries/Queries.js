@@ -314,3 +314,14 @@ module.exports.ADJACENT_POSTS = gql`
     }
   }
 `;
+
+module.exports.IS_AUTHORIZED = gql`
+  query validateToken {
+    validateToken {
+      ok
+      errors {
+        message
+      }
+    }
+  }
+`;

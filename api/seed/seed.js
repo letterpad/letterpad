@@ -434,10 +434,6 @@ export async function insertSettings(models) {
       option: "banner",
       value: "/uploads/banner.jpg",
     },
-    {
-      option: "github_repo",
-      value: "",
-    },
   ];
 
   return models.Setting.bulkCreate(data);
