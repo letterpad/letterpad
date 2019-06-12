@@ -2,13 +2,6 @@
  * This file is not going to render in the server. For admin dashboard we dont need server sided rendering
  * All code in ES5 for this file.
  */
-
-// const { createHttpLink } = require("apollo-link-http");
-// const { InMemoryCache } = require("apollo-cache-inmemory");
-// const fetch = require("node-fetch");
-// const { ApolloClient } = require("apollo-client");
-// import { ApolloLink } from "apollo-link";
-// const client = require("../shared/apolloClient").default;
 const config = require("../config");
 const {
   generateStaticAssets,
@@ -25,29 +18,6 @@ const {
 } = require("../shared/util");
 const { syncThemeSettings } = require("./util");
 const client = require("../shared/apolloClient").default;
-
-// const middlewareAuthLink = (token = null) =>
-//   new ApolloLink((operation, forward) => {
-//     operation.setContext({
-//       headers: {
-//         authorization: token,
-//       },
-//     });
-//     return forward(operation);
-//   });
-
-// const client = (token = "") =>
-//   new ApolloClient({
-//     ssrMode: false,
-//     link: middlewareAuthLink(token).concat(
-//       createHttpLink({
-//         uri: config.apiUrl,
-//         fetch,
-//       }),
-//     ),
-//     fetchPolicy: "no-cache",
-//     cache: new InMemoryCache(),
-//   });
 
 const clientOpts = {
   ssrMode: false,

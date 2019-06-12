@@ -69,7 +69,8 @@ class CreatePr extends Component {
             for installation instructions.
             <br />
             <br />
-            Github Repository: {data.github_repo.value}
+            Github Repository: <strong>{data.github_repo.value}</strong>
+            <br />
             <br />
             <small>(Make sure that the Github Repository exist)</small>
             <ProgressText>
