@@ -3,12 +3,13 @@ import styled from "styled-components";
 export const ProgressBar = styled.div`
   width: 100%;
   height: 14px;
-  background: var(--base-shade-7);
-  border: 1px solid #000;
+  background: var(--bg-primary);
+  border: 1px solid var(--color-border);
   overflow: hidden;
+  border-radius: 4px;
   span {
     height: 100%;
-    background: #000;
+    background: var(--bg-success);
     color: var(--base-shade-7);
     text-align: center;
     font-size: 8px;

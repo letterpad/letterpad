@@ -8,7 +8,6 @@ import StyledCard from "../../components/card";
 import StyledSection from "../../components/section";
 import Button from "../../components/button";
 import Link from "../../components/link";
-import Input from "../../components/input";
 
 import config from "../../../config";
 
@@ -49,7 +48,7 @@ class CreatePr extends Component {
   };
 
   render() {
-    const { data, t } = this.props;
+    const { data } = this.props;
 
     return (
       <StyledSection>

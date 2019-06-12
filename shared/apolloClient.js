@@ -11,30 +11,35 @@ const httpLink = createHttpLink({
   fetch: fetch,
 });
 
+const isServer = process && process.env;
+
 // As the apollo client is responsible to send requests in both admin
 // and client, we have to include the token if it exist in localStorage.
 // For every request to admin, this token will be refreshed and resaved in localstorage.
 // This is also useful to invalidate the sesson if the user is inactive for more than x time
-const middlewareLinkAdmin = new ApolloLink((operation, forward) => {
-  operation.setContext({
-    headers: {
-      authorization: localStorage.token || null,
-      browser: true,
-    },
-  });
-  return forward(operation).map(response => {
-    const {
-      response: { headers },
-    } = operation.getContext();
-    if (headers) {
-      const refreshToken = headers.get("x-refresh-token");
-      if (refreshToken) {
-        localStorage.token = refreshToken;
+const middlewareLinkAdmin = (token = null) =>
+  new ApolloLink((operation, forward) => {
+    operation.setContext({
+      headers: {
+        authorization: isServer ? token : localStorage.token,
+      },
+    });
+    // if (isServer) {
+    //   return forward(operation);
+    // }
+    return forward(operation).map(response => {
+      const {
+        response: { headers },
+      } = operation.getContext();
+      if (headers) {
+        const refreshToken = headers.get("x-refresh-token");
+        if (refreshToken) {
+          localStorage.token = refreshToken;
+        }
       }
-    }
-    return response;
+      return response;
+    });
   });
-});
 
 const middlewareLinkClient = new ApolloLink((operation, forward) => {
   operation.setContext({
@@ -57,12 +62,15 @@ if (typeof window !== "undefined") {
 
 // prepare the cliet for graphql queries.
 
-const client = (isAdmin = false) => {
-  const middleware = isAdmin ? middlewareLinkAdmin : middlewareLinkClient;
+const client = (isAdmin = false, token = false, opts = {}) => {
+  const middleware = isAdmin
+    ? middlewareLinkAdmin(token)
+    : middlewareLinkClient;
   return new ApolloClient({
     link: errorLink.concat(middleware).concat(httpLink),
     cache: new InMemoryCache().restore(initialState),
     ssrForceFetchDelay: 100,
+    ...opts,
   });
 };
 export default client;

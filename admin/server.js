@@ -3,11 +3,11 @@
  * All code in ES5 for this file.
  */
 
-const { createHttpLink } = require("apollo-link-http");
-const { InMemoryCache } = require("apollo-cache-inmemory");
-const fetch = require("node-fetch");
-const { ApolloClient } = require("apollo-client");
-import { ApolloLink } from "apollo-link";
+// const { createHttpLink } = require("apollo-link-http");
+// const { InMemoryCache } = require("apollo-cache-inmemory");
+// const fetch = require("node-fetch");
+// const { ApolloClient } = require("apollo-client");
+// import { ApolloLink } from "apollo-link";
 // const client = require("../shared/apolloClient").default;
 const config = require("../config");
 const {
@@ -24,33 +24,38 @@ const {
   templateEngine,
 } = require("../shared/util");
 const { syncThemeSettings } = require("./util");
+const client = require("../shared/apolloClient").default;
 
-const middlewareAuthLink = (token = null) =>
-  new ApolloLink((operation, forward) => {
-    operation.setContext({
-      headers: {
-        authorization: token,
-      },
-    });
-    return forward(operation);
-  });
+// const middlewareAuthLink = (token = null) =>
+//   new ApolloLink((operation, forward) => {
+//     operation.setContext({
+//       headers: {
+//         authorization: token,
+//       },
+//     });
+//     return forward(operation);
+//   });
 
-const client = (token = "") =>
-  new ApolloClient({
-    ssrMode: false,
-    link: middlewareAuthLink(token).concat(
-      createHttpLink({
-        uri: config.apiUrl,
-        fetch,
-      }),
-    ),
-    fetchPolicy: "no-cache",
-    cache: new InMemoryCache(),
-  });
+// const client = (token = "") =>
+//   new ApolloClient({
+//     ssrMode: false,
+//     link: middlewareAuthLink(token).concat(
+//       createHttpLink({
+//         uri: config.apiUrl,
+//         fetch,
+//       }),
+//     ),
+//     fetchPolicy: "no-cache",
+//     cache: new InMemoryCache(),
+//   });
 
+const clientOpts = {
+  ssrMode: false,
+  fetchPolicy: "no-cache",
+};
 module.exports.init = app => {
   app.get(config.baseName + "/admin/generate-static-site", (req, res) => {
-    return client(req.headers.token)
+    return client(true, req.headers.token, clientOpts)
       .query({ query: IS_AUTHORIZED })
       .then(auth => {
         if (auth.data.validateToken) {
@@ -62,7 +67,7 @@ module.exports.init = app => {
       });
   });
   app.get(config.baseName + "/admin/create-pull-request", (req, res) => {
-    return client(req.headers.token)
+    return client(true, req.headers.token, clientOpts)
       .query({ query: IS_AUTHORIZED })
       .then(auth => {
         if (auth.data.validateToken) {
