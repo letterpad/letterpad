@@ -1,4 +1,5 @@
 export default `
+  scalar Date
   type Post {
     id: Int
     title: String
@@ -10,8 +11,8 @@ export default `
     status: String
     slug: String
     mode: String
-    createdAt: String
-    publishedAt: String
+    createdAt: Date
+    publishedAt: Date
     taxonomies: [Taxonomy]
   }
   type PostNode {
@@ -57,7 +58,7 @@ export default `
     id: Int
     title: String
     excerpt: String
-    publishedAt: String
+    publishedAt: Date
     slug: String
   }
 

@@ -189,9 +189,7 @@ class ArticleList extends Component {
                       description={post.excerpt}
                       href={"/admin/posts/" + post.id}
                       line1={authorName}
-                      line2={moment(new Date(post.createdAt)).format(
-                        "MMM Do YYYY",
-                      )}
+                      line2={moment(post.createdAt).format("MMM Do YYYY")}
                       stickyText={categories}
                     />
                   </StyledItem>

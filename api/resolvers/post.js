@@ -51,7 +51,7 @@ export default {
       const newArgs = { ...args };
 
       if (newArgs.status == "all") {
-        newArgs.status = { not: "trash" };
+        newArgs.status = { [Sequelize.Op.ne]: "trash" };
       }
 
       const columns = Object.keys(models.Post.rawAttributes);
