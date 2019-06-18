@@ -62,3 +62,9 @@ export const Spinner = styled.div`
     }
   }
 `;
+
+export const Warning = styled.div`
+  font-size: 10px;
+  font-style: italic;
+  color: #f4602f;
+`;

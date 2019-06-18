@@ -19,7 +19,7 @@ const addAdminToken = async (req, res) => {
   delete req.user;
   const operationName = req.body.operationName;
 
-  if (operationName === "getOptions") {
+  if (operationName === "getOptions" || operationName === "login") {
     return req.next();
   }
 

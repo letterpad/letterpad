@@ -109,6 +109,9 @@ app.use(base, express.static("public"));
 // Expose the admin/public folder.
 app.use(base + "/admin/", express.static("admin/public"));
 
+// Expose the static folder for static site
+app.use(base + "/static", express.static("static"));
+
 // Every theme has a public directory for its assets. So we need to expose that.
 dir.getDirectories(__dirname + "/client/themes/").map(themePath => {
   // get the theme folder name

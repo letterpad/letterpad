@@ -24,7 +24,6 @@ module.exports.generateStaticAssets = async (req, res) => {
       "Content-Type": "application/json",
     });
     if (!isProduction) {
-      console.log("Not production. ends reques");
       return res.end(
         JSON.stringify({
           type: types.text,
@@ -32,7 +31,6 @@ module.exports.generateStaticAssets = async (req, res) => {
         }),
       );
     }
-    console.log("continued.", process.env.NODE_ENV);
     const testscript = spawn("./admin/static-generator/generate.sh");
     const totalLinks = 700;
     const percentageOfOneChunk = 100 / totalLinks;

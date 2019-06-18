@@ -8,7 +8,7 @@ import Button from "../../components/button";
 
 import config from "../../../config";
 
-import { ProgressBar } from "./index.css";
+import { ProgressBar, Warning } from "./index.css";
 
 class CreateStatic extends Component {
   state = {
@@ -100,7 +100,7 @@ class CreateStatic extends Component {
   render() {
     // const { t } = this.props;
     const canGenerate = window.NODE_ENV === "production";
-
+    const preview = config.baseName + "/static";
     return (
       <StyledSection>
         <div>
@@ -108,6 +108,14 @@ class CreateStatic extends Component {
             title="Static Site Generator"
             subtitle="Here you can generate static pages of your website"
           >
+            <div>
+              Preview your static site{" "}
+              <a rel="noopener noreferrer" target="_blank" href={preview}>
+                here
+              </a>
+              .
+              <br />
+            </div>
             {this.state.processingFiles && (
               <ProgressBar>
                 <span ref={this.progress} />
@@ -118,10 +126,10 @@ class CreateStatic extends Component {
             </strong>
             <br />
             {!canGenerate && (
-              <small>
+              <Warning>
                 Static Site cannot be generated in dev mode. Start letterpad
                 using `yarn prod`.
-              </small>
+              </Warning>
             )}
             {canGenerate && (
               <Button
