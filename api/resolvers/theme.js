@@ -3,13 +3,13 @@ import { requiresAdmin } from "../utils/permissions";
 export default {
   Query: {
     themeSettings: async (root, args, { models }) => {
-      let x = await models.Theme.findAll({ where: args });
       return models.Theme.findAll({ where: args });
     },
   },
   Mutation: {
     insertThemeSettings: requiresAdmin.createResolver(
       async (root, args, { models }) => {
+        // console.log(args);
         return models.Theme.create(args);
       },
     ),
