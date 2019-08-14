@@ -65,12 +65,12 @@ export default `
   type SearchOutput {
     ok: Boolean
     count: Int
-    posts: [SearchResult]
+    rows: [SearchResult]
   }
 
   type Query {
     post(id: Int, type: String, slug: String): Post
-    posts(type: String, body: String, status: String, offset: Int, limit: Int, cursor: Int): PostNode
+    posts(type: String, body: String, status: String, offset: Int, limit: Int, cursor: Int, query:String): PostNode
     postsMenu(slug: String,type: String, name: String, postType: String,offset: Int, limit: Int, cursor: Int): PostTaxonomyNode
     pageMenu(slug: String, name: String, postType: String): Response
     postsByTaxSlug(type: String!, slug: String!, postType: String, offset: Int, limit: Int, cursor: Int): PostTaxonomyNode

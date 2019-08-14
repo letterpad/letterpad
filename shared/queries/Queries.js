@@ -157,7 +157,7 @@ module.exports.SEARCH_POSTS_FUZY = gql`
   query searchPosts($query: String!) {
     search(query: $query) {
       count
-      posts {
+      rows {
         id
         title
         excerpt

@@ -48,8 +48,6 @@ class CreatePr extends Component {
   };
 
   render() {
-    const { data } = this.props;
-
     return (
       <StyledSection>
         <div>
@@ -69,7 +67,7 @@ class CreatePr extends Component {
             for installation instructions.
             <br />
             <br />
-            Github Repository: <strong>{data.github_repo.value}</strong>
+            Github Repository: <strong />
             <br />
             <br />
             <small>(Make sure that the Github Repository exist)</small>

@@ -110,7 +110,7 @@ app.use(base, express.static("public"));
 app.use(base + "/admin/", express.static("admin/public"));
 
 // Expose the static folder for static site
-app.use(base + "/static", express.static("static"));
+app.use(base + "/static", express.static("letterpad-static"));
 
 // Every theme has a public directory for its assets. So we need to expose that.
 dir.getDirectories(__dirname + "/client/themes/").map(themePath => {

@@ -11,7 +11,7 @@ import StyledButton from "../../../components/button";
 
 class MetaDropdown extends Component {
   static propTypes = {
-    toggleDropdown: PropTypes.func,
+    toggledropdown: PropTypes.func,
     post: PropTypes.object,
     isOpen: PropTypes.bool,
     updatePost: PropTypes.func.isRequired,
@@ -73,7 +73,7 @@ class MetaDropdown extends Component {
           success
           onClick={e => {
             this.props.updatePost(e, {});
-            this.props.toggleDropdown();
+            this.props.toggledropdown();
           }}
         >
           Save
