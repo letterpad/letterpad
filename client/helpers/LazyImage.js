@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import config from "config";
+import { StaticContext } from "../Context";
 
 class LazyImage extends Component {
   constructor(props) {
@@ -26,13 +27,14 @@ class LazyImage extends Component {
   }
 
   render() {
+    const isStatic = this.context ? this.context.isStatic : false;
+
     if (!this.state.loaded) {
-      return (
-        <img
-          src={config.baseName + "/uploads/loading.jpg"}
-          width={this.props.width}
-        />
-      );
+      let src = config.baseName + "/uploads/loading.jpg";
+      if (isStatic) {
+        src = this.props.src;
+      }
+      return <img src={src} width={this.props.width} />;
     }
     return <img src={this.props.src} width={this.props.width} />;
   }
@@ -45,5 +47,6 @@ LazyImage.propTypes = {
   src: PropTypes.string.isRequired,
   width: PropTypes.string,
 };
+LazyImage.contextType = StaticContext;
 
 export default LazyImage;

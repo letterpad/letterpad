@@ -13,6 +13,13 @@ export default {
 
     me: (req, args, { user, models }) =>
       models.Author.findOne({ where: { id: user.id } }),
+
+    validateToken: requiresAdmin.createResolver(async () => {
+      return {
+        ok: true,
+        errors: [],
+      };
+    }),
   },
   Mutation: {
     login: async (root, { email, password, remember }, { SECRET, models }) => {

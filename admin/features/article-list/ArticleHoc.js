@@ -106,7 +106,7 @@ const ArticleHoc = WrappedComponent => {
         query: SEARCH_POSTS,
         variables: {
           ...this.variables,
-          query: `{ "like": "%${query}%" }`,
+          body: query,
         },
       });
       this.setState({

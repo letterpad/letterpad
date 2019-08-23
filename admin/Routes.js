@@ -25,6 +25,7 @@ import Taxonomy from "./features/taxonomy";
 import NavigationBuilder from "./features/navigation-builder";
 import Home from "./features/home";
 import Themes from "./features/themes";
+import StaticSite from "./features/static-site";
 
 // css
 import "./public/pcss/admin.pcss";
@@ -173,6 +174,11 @@ class Routes extends Component {
             <SecuredRoute
               path="/admin/themes"
               component={Themes}
+              settings={settings.data}
+            />
+            <SecuredRoute
+              path="/admin/static-site"
+              component={StaticSite}
               settings={settings.data}
             />
             <SecuredRoute

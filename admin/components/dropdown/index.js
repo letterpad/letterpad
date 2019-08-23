@@ -44,7 +44,7 @@ class DropDown extends Component {
 
     const childrenWithProps = React.Children.map(children, child =>
       React.cloneElement(child, {
-        toggleDropdown: this.toggle,
+        toggledropdown: this.toggle,
         isOpen: this.state.open,
       }),
     );

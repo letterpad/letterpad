@@ -10,7 +10,7 @@ import memoryCache from "../utils/memoryCache";
 import { innertext } from "../utils/common";
 
 function IsJsonString(str) {
-  if (!isNaN(str)) return false;
+  // if (!isNaN(str)) return false;
   try {
     JSON.parse(str);
   } catch (e) {
@@ -23,15 +23,13 @@ function getConditions(columns, args) {
   const conditions = {};
   for (const field in args) {
     if (columns.indexOf(field) >= 0) {
-      const validateJSONStr = IsJsonString(args[field]);
-      const query = validateJSONStr ? JSON.parse(args[field]) : args[field];
-      if (validateJSONStr) {
-        obj["$or"] = {
-          body: query,
-          title: query,
-        };
+      if (field === "body") {
+        obj[Sequelize.Op.or] = [
+          { body: { [Sequelize.Op.like]: "%" + args[field] + "%" } },
+          { title: { [Sequelize.Op.like]: "%" + args[field] + "%" } },
+        ];
       } else {
-        obj[field] = query;
+        obj[field] = args[field];
       }
     } else {
       conditions[field] = args[field];
@@ -49,16 +47,11 @@ export default {
      */
     posts: checkDisplayAccess.createResolver((root, args, { models, user }) => {
       const newArgs = { ...args };
-
-      if (newArgs.status == "all") {
-        newArgs.status = { not: "trash" };
+      if (newArgs.status === "all") {
+        newArgs.status = { [Sequelize.Op.ne]: "trash" };
       }
-
       const columns = Object.keys(models.Post.rawAttributes);
       const conditions = getConditions(columns, newArgs);
-      if (newArgs.status) {
-        conditions.where.status = newArgs.status;
-      }
       return models.Post.count(conditions).then(count => {
         conditions.order = [["publishedAt", "DESC"]];
         // for admin dashboard, sort it based on updated_date
@@ -89,6 +82,7 @@ export default {
         memoryCache.set("posts", cleanedData);
         cachedData = cleanedData;
       }
+
       const options = {
         keys: [
           {
@@ -112,10 +106,9 @@ export default {
         delete data.item.body;
         return data.item;
       });
-
       return {
         ok: true,
-        posts: searchResult.slice(0, 6),
+        rows: searchResult.slice(0, 6),
         count: 6,
       };
     },

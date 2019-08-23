@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import Item from "./Item";
 
-const Markup = ({ title, items, className, caret, toggleDropdown, isOpen }) => {
-  const actions = toggleDropdown
-    ? { onMouseOver: toggleDropdown, onMouseOut: toggleDropdown }
+const Markup = ({ title, items, className, caret, toggledropdown, isOpen }) => {
+  const actions = toggledropdown
+    ? { onMouseOver: toggledropdown, onMouseOut: toggledropdown }
     : {};
   const classes = isOpen ? className + " open" : className;
   return (
@@ -31,7 +31,7 @@ Markup.propTypes = {
   items: PropTypes.array.isRequired,
   className: PropTypes.string,
   caret: PropTypes.bool.isRequired,
-  toggleDropdown: PropTypes.func.isRequired,
+  toggledropdown: PropTypes.func.isRequired,
   isOpen: PropTypes.func.isRequired,
 };
 
@@ -45,7 +45,7 @@ class Dropdown extends Component {
     open: false,
   };
 
-  toggleDropdown = () => {
+  toggledropdown = () => {
     this.setState(s => ({ open: !s.open }));
   };
 
@@ -72,7 +72,7 @@ class Dropdown extends Component {
         items={recurssiveDD(this.props.children)}
         caret
         isOpen={this.state.open}
-        toggleDropdown={this.toggleDropdown}
+        toggledropdown={this.toggledropdown}
       />
     );
   }

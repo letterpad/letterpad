@@ -29,7 +29,7 @@ class User extends Component {
     this.setState({ author: response.data.author });
   }
 
-  toggleDropdown = () => {
+  toggledropdown = () => {
     this.setState({ open: !this.state.open });
   };
 

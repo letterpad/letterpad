@@ -42,7 +42,7 @@ export default class MediaItem extends Component {
           </div>
           <div className="post-content">
             <div className="post-time">
-              {moment(new Date(this.props.media.createdAt)).fromNow()}
+              {moment(this.props.media.createdAt).fromNow()}
             </div>
           </div>
         </div>

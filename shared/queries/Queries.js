@@ -157,7 +157,7 @@ module.exports.SEARCH_POSTS_FUZY = gql`
   query searchPosts($query: String!) {
     search(query: $query) {
       count
-      posts {
+      rows {
         id
         title
         excerpt
@@ -310,6 +310,17 @@ module.exports.ADJACENT_POSTS = gql`
         slug
         cover_image
         publishedAt
+      }
+    }
+  }
+`;
+
+module.exports.IS_AUTHORIZED = gql`
+  query validateToken {
+    validateToken {
+      ok
+      errors {
+        message
       }
     }
   }

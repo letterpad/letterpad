@@ -281,7 +281,7 @@ class Media extends Component {
                 image={config.baseName + media.url}
                 title={media.name}
                 href="#"
-                line2={moment(new Date(media.createdAt)).format("MMM Do YYYY")}
+                line2={moment(media.createdAt).format("MMM Do YYYY")}
                 onClick={e => this.editMedia(e, media)}
               />
             </StyledItem>

@@ -11,7 +11,7 @@ import StyledButton from "../../../components/button";
 
 class MetaDropdown extends Component {
   static propTypes = {
-    toggleDropdown: PropTypes.func,
+    toggledropdown: PropTypes.func,
     post: PropTypes.object,
     isOpen: PropTypes.bool,
     updatePost: PropTypes.func.isRequired,
@@ -44,7 +44,7 @@ class MetaDropdown extends Component {
           label="Published at"
           className="meta-value"
           placeholder="Published date"
-          defaultValue={moment(new Date(this.state.post.createdAt)).format(
+          defaultValue={moment(this.state.post.createdAt).format(
             "DD-MM-Y hh:mm A",
           )}
         />
@@ -73,7 +73,7 @@ class MetaDropdown extends Component {
           success
           onClick={e => {
             this.props.updatePost(e, {});
-            this.props.toggleDropdown();
+            this.props.toggledropdown();
           }}
         >
           Save

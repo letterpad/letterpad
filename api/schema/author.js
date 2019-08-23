@@ -38,6 +38,7 @@ export default `
     author(id: Int!, username: String): Author
     authors: [Author]
     me: Author
+    validateToken: CreateAuthorResponse
   }
 
   type Mutation {
