@@ -3,7 +3,7 @@ export default `
     id: Int
     authorId: Int
     url: String
-    createdAt: String
+    createdAt: Date
     name: String
     description: String
   }

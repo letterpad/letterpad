@@ -138,6 +138,7 @@
         "settings.optional.title": "",
         "settings.social.tagline": "Configure your sites's social links",
         "settings.social.title": "Social Settings",
+        "settings.static.github.placeholder": "",
         "slug": "Slug",
         "social.fb.placeholder": "Entrez votre nom d'utilisateur facebook",
         "social.gh.placeholder": "Entrez votre nom d'utilisateur github",

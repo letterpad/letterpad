@@ -12,7 +12,7 @@ import PostActions from "../PostActions";
 
 class PublishDropdown extends Component {
   static propTypes = {
-    toggleDropdown: PropTypes.func,
+    toggledropdown: PropTypes.func,
     updatePost: PropTypes.func.isRequired,
     isOpen: PropTypes.bool,
     create: PropTypes.bool,
@@ -33,7 +33,7 @@ class PublishDropdown extends Component {
             success
             onClick={e => {
               this.props.updatePost(e, { status: status });
-              this.props.toggleDropdown(e);
+              this.props.toggledropdown(e);
             }}
             className={"publish-btn btn btn-sm " + btnType}
           >

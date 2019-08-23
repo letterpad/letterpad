@@ -1,4 +1,5 @@
 export default `
+  scalar Date
   type Post {
     id: Int
     title: String
@@ -10,8 +11,8 @@ export default `
     status: String
     slug: String
     mode: String
-    createdAt: String
-    publishedAt: String
+    createdAt: Date
+    publishedAt: Date
     taxonomies: [Taxonomy]
   }
   type PostNode {
@@ -57,19 +58,19 @@ export default `
     id: Int
     title: String
     excerpt: String
-    publishedAt: String
+    publishedAt: Date
     slug: String
   }
 
   type SearchOutput {
     ok: Boolean
     count: Int
-    posts: [SearchResult]
+    rows: [SearchResult]
   }
 
   type Query {
     post(id: Int, type: String, slug: String): Post
-    posts(type: String, body: String, status: String, offset: Int, limit: Int, cursor: Int): PostNode
+    posts(type: String, body: String, status: String, offset: Int, limit: Int, cursor: Int, query:String): PostNode
     postsMenu(slug: String,type: String, name: String, postType: String,offset: Int, limit: Int, cursor: Int): PostTaxonomyNode
     pageMenu(slug: String, name: String, postType: String): Response
     postsByTaxSlug(type: String!, slug: String!, postType: String, offset: Int, limit: Int, cursor: Int): PostTaxonomyNode

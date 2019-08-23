@@ -103,7 +103,6 @@ export default class ModalHoc extends Component {
     className += this.state.onEnter ? " onEnter" : "";
     className += this.state.onLeave ? " onLeave" : "";
 
-    console.log(new Date(), className);
     return (
       <StyledModal className={className}>
         <div className="modal-wrapper">

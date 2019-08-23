@@ -4,7 +4,7 @@ const StyledMenu = styled.div`
   height: calc(100vh - 128px);
   overflow-y: auto;
 
-  font-weight: 300;
+  font-weight: 500;
   letter-spacing: 1px;
 
   .nav.nav-list {
@@ -13,7 +13,6 @@ const StyledMenu = styled.div`
 
     li.active a {
       color: rgba(var(--color-accent));
-      font-weight: 500;
     }
     > li a {
       text-decoration: none;
@@ -24,7 +23,7 @@ const StyledMenu = styled.div`
       span {
         font-size: 11px;
         letter-spacing: 0.5;
-        font-weight: 400;
+
         text-transform: uppercase;
       }
     }
@@ -54,7 +53,7 @@ const StyledMenu = styled.div`
       }
       /* Second level folder*/
       > ul.nav.nav-list {
-        background: var(--bg-base);
+        background: var(--base-shade-1);
         display: none;
         &.in {
           display: block;
@@ -62,7 +61,7 @@ const StyledMenu = styled.div`
         /* Third level files*/
         > ul.nav.nav-list {
           margin-left: 32px;
-          background: var(--bg-base);
+          background: var(--base-shade-1);
           display: none;
           &.in {
             display: block;

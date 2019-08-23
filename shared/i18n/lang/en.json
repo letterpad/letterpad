@@ -138,6 +138,7 @@
         "settings.optional.title": "Optional Settings",
         "settings.social.tagline": "Configure your sites's social links",
         "settings.social.title": "Social Settings",
+        "settings.static.github.placeholder": "Enter Github Repo eg. letterpad/editor",
         "slug": "Slug",
         "social.fb.placeholder": "Enter your facebook username",
         "social.gh.placeholder": "Enter your github username",

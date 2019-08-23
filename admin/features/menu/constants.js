@@ -124,6 +124,14 @@ const DATA = [
     slug: "themes",
     icon: "fa-paint-brush",
   },
+  {
+    id: 8,
+    name: "menu.static",
+    priority: 3,
+    permissions: ["MANAGE_SETTINGS"],
+    slug: "static-site",
+    icon: "fa-paint-brush",
+  },
 ];
 
 export default DATA;

@@ -17,7 +17,7 @@ try {
 const express = require("express");
 const bodyParser = require("body-parser");
 const config = require("./config/index.js");
-const compression = require("compression");
+// const compression = require("compression");
 const adminServer = require("./admin/server");
 const apiServer = require("./api/server");
 const clientServerRendering = require("./client/serverRendering");
@@ -26,7 +26,7 @@ const dir = require("./shared/dir.js");
 const app = express();
 
 // This middleware will attempt to compress response bodies for all requests
-app.use(compression());
+// app.use(compression());
 // Handle hot module replacement in dev mode
 // We are not using webpack-dev-server.
 if (process.env.NODE_ENV === "dev") {
@@ -109,6 +109,9 @@ app.use(base, express.static("public"));
 // Expose the admin/public folder.
 app.use(base + "/admin/", express.static("admin/public"));
 
+// Expose the static folder for static site
+app.use(base + "/static", express.static("letterpad-static"));
+
 // Every theme has a public directory for its assets. So we need to expose that.
 dir.getDirectories(__dirname + "/client/themes/").map(themePath => {
   // get the theme folder name
@@ -143,7 +146,6 @@ app.get("/build", (req, res) => {
 adminServer.init(app);
 clientServerRendering.init(app);
 apiServer(app);
-
 const server = app.listen(config.appPort, function() {
   const host = server.address().address;
   const port = server.address().port;

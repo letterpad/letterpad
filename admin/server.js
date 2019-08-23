@@ -2,13 +2,12 @@
  * This file is not going to render in the server. For admin dashboard we dont need server sided rendering
  * All code in ES5 for this file.
  */
-
-const { createHttpLink } = require("apollo-link-http");
-const { InMemoryCache } = require("apollo-cache-inmemory");
-const fetch = require("node-fetch");
-const { ApolloClient } = require("apollo-client");
 const config = require("../config");
-const { GET_OPTIONS } = require("../shared/queries/Queries");
+const {
+  generateStaticAssets,
+  createPullRequest,
+} = require("./static-generator");
+const { GET_OPTIONS, IS_AUTHORIZED } = require("../shared/queries/Queries");
 const { getDirectories } = require("../shared/dir");
 const path = require("path");
 const fs = require("fs");
@@ -18,19 +17,38 @@ const {
   templateEngine,
 } = require("../shared/util");
 const { syncThemeSettings } = require("./util");
+const client = require("../shared/apolloClient").default;
 
-const client = () =>
-  new ApolloClient({
-    ssrMode: false,
-    link: createHttpLink({
-      uri: config.apiUrl,
-      fetch,
-    }),
-    fetchPolicy: "no-cache",
-    cache: new InMemoryCache(),
+const clientOpts = {
+  ssrMode: false,
+  fetchPolicy: "no-cache",
+};
+module.exports.init = app => {
+  app.get(config.baseName + "/admin/generate-static-site", (req, res) => {
+    return client(true, req.headers.token, clientOpts)
+      .query({ query: IS_AUTHORIZED })
+      .then(auth => {
+        if (auth.data.validateToken) {
+          return generateStaticAssets(req, res);
+        }
+      })
+      .catch(e => {
+        return res.send(e);
+      });
+  });
+  app.get(config.baseName + "/admin/create-pull-request", (req, res) => {
+    return client(true, req.headers.token, clientOpts)
+      .query({ query: IS_AUTHORIZED })
+      .then(auth => {
+        if (auth.data.validateToken) {
+          return createPullRequest(req, res);
+        }
+      })
+      .catch(e => {
+        return res.send(e);
+      });
   });
 
-module.exports.init = app => {
   app.get(config.baseName + "/admin/getThemes", (req, res) => {
     client()
       .query({ query: GET_OPTIONS })

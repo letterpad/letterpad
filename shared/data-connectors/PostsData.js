@@ -12,7 +12,7 @@ export default graphql(CAT_POSTS, {
         slug: props.slug || props.match.params.slug,
         postType: "post",
         limit: props.limit || config.itemsPerPage,
-        offset: props.offset || offset || 0,
+        offset: parseInt(props.offset || offset || 0),
       },
     };
   },

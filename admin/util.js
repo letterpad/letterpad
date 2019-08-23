@@ -35,7 +35,7 @@ module.exports.uploadFile = ({ files, type }) => {
  */
 module.exports.syncThemeSettings = (client, newSettings, authorization) => {
   // Get the existing theme settings
-  return client()
+  return client(true, authorization)
     .query({
       query: THEME_SETTINGS,
     })
@@ -58,7 +58,7 @@ module.exports.syncThemeSettings = (client, newSettings, authorization) => {
 
       // new themes to be inserted in db
       const promises = result.added.map(({ name, value, settings }) => {
-        return client().mutate({
+        return client(true, authorization).mutate({
           mutation: INSERT_THEME_SETTINGS,
           variables: {
             name,
@@ -94,7 +94,7 @@ module.exports.syncThemeSettings = (client, newSettings, authorization) => {
             });
 
             // update the old value in database
-            let promise = client().mutate({
+            let promise = client(true, authorization).mutate({
               mutation: UPDATE_THEME_SETTINGS,
               variables: {
                 name: newItem.name,
