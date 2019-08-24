@@ -20,15 +20,24 @@ module.exports.generateStaticAssets = async (req, res) => {
     }
 
     const scrape = require("website-scraper");
-    scrape({
+    const staticFolder = path.join(__dirname, "../../letterpad-static");
+    await scrape({
       urls: [process.env.rootUrl],
       urlFilter: url => url.startsWith(process.env.rootUrl), // Filter links to other websites
       recursive: true,
       maxRecursiveDepth: 10,
       filenameGenerator: "bySiteStructure",
-      directory: path.join(__dirname, "../../letterpad-static"),
+      directory: staticFolder,
+      request: {
+        headers: {
+          static: true,
+        },
+      },
     });
-    res.end(JSON.stringify({ type: types.progress, message: 100 }));
+
+    res.end(JSON.stringify({ type: types.text, message: "done" }));
+
+    // res.end(JSON.stringify({ type: types.progress, message: 100 }));
   } catch (error) {
     res.end(JSON.stringify({ type: types.text, message: error.message }));
   }
@@ -46,7 +55,7 @@ module.exports.createPullRequest = (req, res) => {
     res.write(JSON.stringify({ type: types.text, message: data }));
   });
 
-  testscript.on("data", function(err) {
+  testscript.stderr.on("data", function(err) {
     res.end(JSON.stringify({ type: types.text, message: err.message }));
   });
 
