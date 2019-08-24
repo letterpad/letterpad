@@ -1,4 +1,5 @@
 const path = require("path");
+var fs = require("fs");
 const types = {
   text: "text",
   progress: "progress",
@@ -21,6 +22,7 @@ module.exports.generateStaticAssets = async (req, res) => {
 
     const scrape = require("website-scraper");
     const staticFolder = path.join(__dirname, "../../letterpad-static");
+    deleteFolderRecursive(staticFolder);
     await scrape({
       urls: [process.env.rootUrl],
       urlFilter: url => url.startsWith(process.env.rootUrl), // Filter links to other websites
@@ -62,4 +64,20 @@ module.exports.createPullRequest = (req, res) => {
   testscript.on("close", function() {
     res.end(JSON.stringify({ type: types.text, message: "done" }));
   });
+};
+
+const deleteFolderRecursive = function(path) {
+  if (fs.existsSync(path)) {
+    fs.readdirSync(path).forEach(function(file) {
+      const curPath = path + "/" + file;
+      if (fs.lstatSync(curPath).isDirectory()) {
+        // recurse
+        deleteFolderRecursive(curPath);
+      } else {
+        // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
 };
