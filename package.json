@@ -66,9 +66,9 @@
     "postcss-nested": "^3.0.0",
     "prismjs": "^1.15.0",
     "prop-types": "^15.6.0",
-    "react": "^16.7.0",
-    "react-apollo": "^1.4.0",
-    "react-dom": "^16.7.0",
+    "react": "^16.9.0",
+    "react-apollo": "^1.4.16",
+    "react-dom": "^16.9.0",
     "react-dotdotdot": "^1.2.3",
     "react-helmet": "^5.2.0",
     "react-hot-loader": "^4.3.4",
@@ -85,7 +85,7 @@
     "sequelize-cli": "^4.0.0",
     "sharp": "0.21.0",
     "sqlite3": "^4.0.0",
-    "styled-components": "^3.4.2"
+    "styled-components": "^4.3.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
