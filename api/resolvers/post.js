@@ -356,7 +356,9 @@ export default {
         Object.keys(args).forEach(field => {
           data[field] = args[field];
         });
-        data.body = "";
+        if (!data.body) {
+          data.body = "";
+        }
         data.authorId = user.id;
         memoryCache.del("posts");
         return _createPost(data, models);
