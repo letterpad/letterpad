@@ -74,14 +74,14 @@ export async function _createPost(data, models) {
     });
     await newPost.addTaxonomy(defaultTaxonomy);
 
-    var post = await models.Post.findOne({ where: { id: newPost.id } });
+    const post = await models.Post.findOne({ where: { id: newPost.id } });
     return {
       ok: true,
       post,
       errors: [],
     };
   } catch (e) {
-    var errors = parseErrors(e);
+    const errors = parseErrors(e);
     return {
       ok: false,
       post: {},
