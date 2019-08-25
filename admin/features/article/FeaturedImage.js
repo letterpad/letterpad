@@ -141,14 +141,6 @@ class FeaturedImage extends Component {
   };
 
   render() {
-    if (this.state.imageList.length === 0) {
-      return (
-        <div>
-          <div className="meta-label">Cover Image</div>
-          No images found in the current {this.props.post.type}
-        </div>
-      );
-    }
     let isCustom = false;
     if (this.state.cover_image) {
       isCustom = this.state.imageList.indexOf(this.state.cover_image) == -1;
