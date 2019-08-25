@@ -121,6 +121,7 @@ class Edit extends Component {
               PostActions.setData({
                 title: e.target.value,
               });
+              this.onEditorChange(post.body);
             }}
           />
         </div>

@@ -26,11 +26,10 @@ class Home extends Component {
     document.body.classList.remove("home-page");
   }
 
-  draftPost = () => {
-    const qsv = ele => document.querySelector(ele).value;
+  draftPost = (title, body = "") => {
     this.props.createPost({
-      title: qsv("#quick-post-title"),
-      body: qsv("#quick-post-body"),
+      title,
+      body,
       type: "post",
     });
   };

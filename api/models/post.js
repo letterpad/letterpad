@@ -64,7 +64,9 @@ export async function _createPost(data, models) {
     //  create a slug for the new psot
     data.slug = await slugify(models.Post, config.defaultSlug);
     // add a empty string for title
-    data.title = "";
+    if (!data.title) {
+      data.title = "";
+    }
     const newPost = await models.Post.create(data);
 
     const defaultTaxonomy = await models.Taxonomy.findOne({
@@ -72,14 +74,14 @@ export async function _createPost(data, models) {
     });
     await newPost.addTaxonomy(defaultTaxonomy);
 
-    var post = await models.Post.findOne({ where: { id: newPost.id } });
+    const post = await models.Post.findOne({ where: { id: newPost.id } });
     return {
       ok: true,
       post,
       errors: [],
     };
   } catch (e) {
-    var errors = parseErrors(e);
+    const errors = parseErrors(e);
     return {
       ok: false,
       post: {},
