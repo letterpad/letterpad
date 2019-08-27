@@ -10,11 +10,11 @@ class DropDown extends Component {
     ]),
     className: PropTypes.string,
     name: PropTypes.any,
-    autoClose: PropTypes.bool,
+    render: PropTypes.func,
   };
 
   static defaultProps = {
-    autoClose: true,
+    render: () => {},
   };
 
   state = {
@@ -44,15 +44,12 @@ class DropDown extends Component {
   };
 
   render() {
-    const { name, children, className } = this.props;
+    const { name, className } = this.props;
     const ddClassPublish = " dropdown" + (this.state.open ? " open" : "");
 
-    const childrenWithProps = React.Children.map(children, child => {
-      return React.cloneElement(child, {
-        toggledropdown: this.toggle,
-        isOpen: this.state.open,
-      });
-    });
+    // const childrenWithProps = React.Children.map(children, child => {
+    //   return React.cloneElement(child, {});
+    // });
 
     return (
       <Wrapper className={className + ddClassPublish}>
@@ -66,7 +63,7 @@ class DropDown extends Component {
           <i className="material-icons">arrow_drop_down</i>
         </a>
 
-        <div className="dropdown-menu">{childrenWithProps}</div>
+        <div className="dropdown-menu">{this.props.render(this.toggle)}</div>
       </Wrapper>
     );
   }
