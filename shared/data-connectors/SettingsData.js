@@ -1,4 +1,4 @@
-import { graphql } from "react-apollo";
+import { graphql, Query } from "react-apollo";
 import { GET_OPTIONS } from "../../shared/queries/Queries";
 
 export default graphql(GET_OPTIONS, {

@@ -10,6 +10,11 @@ class DropDown extends Component {
     ]),
     className: PropTypes.string,
     name: PropTypes.any,
+    autoClose: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    autoClose: true,
   };
 
   state = {
@@ -42,12 +47,12 @@ class DropDown extends Component {
     const { name, children, className } = this.props;
     const ddClassPublish = " dropdown" + (this.state.open ? " open" : "");
 
-    const childrenWithProps = React.Children.map(children, child =>
-      React.cloneElement(child, {
+    const childrenWithProps = React.Children.map(children, child => {
+      return React.cloneElement(child, {
         toggledropdown: this.toggle,
         isOpen: this.state.open,
-      }),
-    );
+      });
+    });
 
     return (
       <Wrapper className={className + ddClassPublish}>
