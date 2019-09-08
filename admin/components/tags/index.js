@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Select from "react-select";
+import Select from "react-select/creatable";
 
 import Wrapper from "./Tags.css";
-
+const customStyles = {
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isSelected ? "#333" : "#000",
+  }),
+};
 export class StyledTags extends Component {
   static propTypes = {
     labelKey: PropTypes.string,
@@ -16,28 +21,14 @@ export class StyledTags extends Component {
   };
 
   render() {
-    const {
-      labelKey,
-      multi,
-      onChange,
-      options,
-      value,
-      valueKey,
-      name,
-    } = this.props;
+    // const { multi, onChange, options, value, name } = this.props;
+
     return (
       <Wrapper>
-        <div className="meta-label">{name}</div>
+        <div className="meta-label">{this.props.name}</div>
         <div className="x_content">
           <div className="control-group">
-            <Select.Creatable
-              labelKey={labelKey}
-              valueKey={valueKey}
-              value={value}
-              onChange={onChange}
-              options={options}
-              multi={multi}
-            />
+            <Select {...this.props} styles={customStyles} />
           </div>
         </div>
         <hr />
