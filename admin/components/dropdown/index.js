@@ -28,9 +28,14 @@ class DropDown extends Component {
   }
 
   closeDropdowns = e => {
+    // dont close dropdown on selecting a tag in the publish dropdown
+    if (e.target.parentNode.parentNode.className.indexOf("menu") >= 0) {
+      return false;
+    }
     // the admin panel publish dropwdown has tags. On deleting the tag, the dropdown closes
     // because the element(svg path in the close icon) is outside the parent container. This is to disallow that
-    if (e.target.tagName.indexOf(["svg", "path"])) return;
+
+    if (e.target.tagName.indexOf(["svg", "path"]) >= 0) return;
     if (
       this.ddBtnRef.current &&
       this.ddBtnRef.current.parentNode &&
