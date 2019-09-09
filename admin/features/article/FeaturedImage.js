@@ -96,8 +96,9 @@ class FeaturedImage extends Component {
 
   uploadInputRef = React.createRef();
 
-  componentDidMount() {
+  componentWillUpdate() {
     const imgNodes = document.querySelectorAll("[data-id='plugin-image']");
+    if (imgNodes.length === this.state.imageList.length) return;
     const imageList = [];
     for (let i = 0; i < imgNodes.length; i++) {
       imageList.push(imgNodes[i].getAttribute("src"));
