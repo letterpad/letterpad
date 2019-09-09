@@ -45,10 +45,10 @@ const Wrapper = styled.div`
       display: none;
 
       &:checked + .slider {
-        background-color: rgba(var(--color-accent), 0.7);
+        background-color: var(--color-accent);
       }
       &:focus + .slider {
-        box-shadow: 0 0 1px rgba(var(--color-accent), 0.7);
+        box-shadow: 0 0 1px var(--color-accent);
       }
       &:checked + .slider:before {
         -webkit-transform: translateX(26px);
