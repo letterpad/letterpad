@@ -184,7 +184,7 @@ class ArticleList extends Component {
                       <label htmlFor={"checkbox-" + post.id} />
                     </div>
                     <StyledGridItem
-                      image={config.baseName + post.cover_image}
+                      image={getCoverImage(post.cover_image)}
                       title={post.title}
                       description={post.excerpt}
                       href={"/admin/posts/" + post.id}
@@ -230,3 +230,7 @@ const filterTaxonomies = taxonomies => {
   result.categories = result.categories.join(", ");
   return result;
 };
+
+function getCoverImage(cover_image) {
+  return cover_image ? config.baseName + cover_image : "/admin/images/post.png";
+}

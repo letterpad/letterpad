@@ -98,9 +98,8 @@ class CreateStatic extends Component {
   };
 
   render() {
-    // const { t } = this.props;
     const canGenerate = window.NODE_ENV === "production";
-    const preview = config.baseName + "/static";
+    const preview = config.baseName + "/static/" + getHostName();
     return (
       <StyledSection>
         <div>
@@ -165,3 +164,7 @@ CreateStatic.defaultPropTypes = {
 };
 
 export default translate("translations")(CreateStatic);
+
+const getHostName = () => {
+  return location.host.replace(":", "_");
+};

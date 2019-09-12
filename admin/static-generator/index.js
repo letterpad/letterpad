@@ -1,22 +1,10 @@
-const { spawn } = require("child_process");
-
+const path = require("path");
+var fs = require("fs");
 const types = {
   text: "text",
   progress: "progress",
 };
 const isProduction = process.env.NODE_ENV === "production";
-
-const hasValidLink = chunk => {
-  const data = chunk.toString("utf8");
-  const dataArr = data.split(" ");
-  if (data.length >= 3) {
-    const url = dataArr[2];
-    if (url && url.toString().indexOf("http") >= 0) {
-      return true;
-    }
-  }
-  return false;
-};
 
 module.exports.generateStaticAssets = async (req, res) => {
   try {
@@ -31,26 +19,27 @@ module.exports.generateStaticAssets = async (req, res) => {
         }),
       );
     }
-    const testscript = spawn("./admin/static-generator/generate.sh");
-    const totalLinks = 700;
-    const percentageOfOneChunk = 100 / totalLinks;
-    let progress = 0;
-    testscript.stdout.on("data", chunk => {
-      if (hasValidLink(chunk)) {
-        progress += percentageOfOneChunk;
-        res.write(JSON.stringify({ type: types.progress, message: progress }));
-      }
+
+    const scrape = require("website-scraper");
+    const staticFolder = path.join(__dirname, "../../letterpad-static");
+    deleteFolderRecursive(staticFolder);
+    await scrape({
+      urls: [process.env.rootUrl],
+      urlFilter: url => url.startsWith(process.env.rootUrl), // Filter links to other websites
+      recursive: true,
+      maxRecursiveDepth: 10,
+      filenameGenerator: "bySiteStructure",
+      directory: staticFolder,
+      request: {
+        headers: {
+          static: true,
+        },
+      },
     });
 
-    testscript.stderr.on("data", error => {
-      delete process.env.MODE;
-      res.end(JSON.stringify({ type: types.text, message: error.message }));
-    });
+    res.end(JSON.stringify({ type: types.text, message: "done" }));
 
-    testscript.on("close", () => {
-      delete process.env.MODE;
-      res.end(JSON.stringify({ type: types.progress, message: 100 }));
-    });
+    // res.end(JSON.stringify({ type: types.progress, message: 100 }));
   } catch (error) {
     res.end(JSON.stringify({ type: types.text, message: error.message }));
   }
@@ -68,11 +57,27 @@ module.exports.createPullRequest = (req, res) => {
     res.write(JSON.stringify({ type: types.text, message: data }));
   });
 
-  testscript.on("data", function(err) {
+  testscript.stderr.on("data", function(err) {
     res.end(JSON.stringify({ type: types.text, message: err.message }));
   });
 
   testscript.on("close", function() {
     res.end(JSON.stringify({ type: types.text, message: "done" }));
   });
+};
+
+const deleteFolderRecursive = function(path) {
+  if (fs.existsSync(path)) {
+    fs.readdirSync(path).forEach(function(file) {
+      const curPath = path + "/" + file;
+      if (fs.lstatSync(curPath).isDirectory()) {
+        // recurse
+        deleteFolderRecursive(curPath);
+      } else {
+        // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
 };

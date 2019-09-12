@@ -10,7 +10,6 @@ import Loader from "admin/components/loader";
 import { GET_OPTIONS } from "../../../shared/queries/Queries";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
 import CreateStatic from "./CreateStatic";
-import CreatePr from "./CreatePr";
 
 class StaticSite extends Component {
   sendRequest = url => {
@@ -52,12 +51,6 @@ class StaticSite extends Component {
       <StyledSection>
         <div>
           <CreateStatic
-            updateOption={this.updateOption}
-            sendRequest={this.sendRequest}
-            chunkToJSON={this.chunkToJSON}
-            data={data}
-          />
-          <CreatePr
             updateOption={this.updateOption}
             sendRequest={this.sendRequest}
             chunkToJSON={this.chunkToJSON}
