@@ -144,7 +144,7 @@ app.get("/build", (req, res) => {
 
 // start the admin dashboard and the client. Both use the same server, but its nice to separate them
 adminServer.init(app);
-// clientServerRendering.init(app);
+clientServerRendering.init(app);
 apiServer(app);
 const server = app.listen(config.appPort, function() {
   const host = server.address().address;

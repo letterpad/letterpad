@@ -1,6 +1,6 @@
 import React from "react";
 import { hydrate } from "react-dom";
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider } from "@apollo/react-hoc";
 import { BrowserRouter } from "react-router-dom";
 import client from "../shared/apolloClient";
 import Routes from "./Routes";

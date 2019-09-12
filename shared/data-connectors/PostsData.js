@@ -1,5 +1,5 @@
-import { graphql } from "react-apollo";
-import { CAT_POSTS } from "../../shared/queries/Queries";
+import { graphql } from "@apollo/react-hoc";
+import { CAT_POSTS } from "../queries/Queries";
 import config from "../../config";
 
 export default graphql(CAT_POSTS, {

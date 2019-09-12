@@ -27,9 +27,9 @@ class LoginView extends Component {
     document.body.classList.add("login-view");
     this.usernameInput.focus();
     delete localStorage.token;
-    document.querySelector(".login-view").style.backgroundImage = `url("${
-      config.baseName
-    }/admin/images/login_bg.jpg")`;
+    document.querySelector(
+      ".login-view",
+    ).style.backgroundImage = `url("${config.baseName}/admin/images/login_bg.jpg")`;
   }
 
   componentWillUnmount() {
@@ -77,6 +77,7 @@ class LoginView extends Component {
     if (email.length > 0) {
       e.currentTarget.disabled = true;
       const response = await this.props.forgotPassword({ email });
+      // eslint-disable-next-line require-atomic-updates
       e.currentTarget.disabled = false;
       if (response.data.forgotPassword.ok) {
         document.querySelector(".forgot-block").innerHTML =

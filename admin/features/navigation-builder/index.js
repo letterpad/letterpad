@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import { notify } from "react-notify-toast";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";

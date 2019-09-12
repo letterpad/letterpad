@@ -1,4 +1,4 @@
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import { PAGE_MENU } from "../../shared/queries/Queries";
 
 export default graphql(PAGE_MENU, {

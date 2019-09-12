@@ -1,4 +1,4 @@
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import { INSERT_MEDIA } from "../../shared/queries/Mutations";
 
 export default graphql(INSERT_MEDIA, {

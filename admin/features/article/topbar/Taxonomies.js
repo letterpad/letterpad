@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import PropTypes from "prop-types";
 
 import StyledTags from "../../../components/tags";
