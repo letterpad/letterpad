@@ -16,7 +16,7 @@ describe("Testing Taxonomies", () => {
       <Taxonomies for="post_tag" post={post} suggestions={suggestions} />,
     );
 
-    wrapper.instance().handleOnChange([{ name: "new-tag" }]);
+    wrapper.instance().createNewTag("new-tag");
     const newTagId = 0;
     expect(wrapper.state().tags[0].id).toBe(newTagId);
     done();
@@ -36,7 +36,7 @@ describe("Testing Taxonomies", () => {
     const wrapper = shallow(
       <Taxonomies for="post_tag" post={post} suggestions={suggestions} />,
     );
-    wrapper.instance().handleOnChange([]);
+    wrapper.instance().handleOnChange([], { action: "remove-value" });
 
     expect(wrapper.state().tags.length).toBe(0);
     done();
@@ -51,7 +51,7 @@ describe("Testing Taxonomies", () => {
     const wrapper = shallow(
       <Taxonomies for="post_category" post={post} suggestions={suggestions} />,
     );
-    wrapper.instance().handleOnChange([{ name: "new-category" }]);
+    wrapper.instance().createNewTag("new-category");
     const newCatId = 0;
     expect(wrapper.state().tags[0].id).toBe(newCatId);
     done();
@@ -71,7 +71,7 @@ describe("Testing Taxonomies", () => {
     const wrapper = shallow(
       <Taxonomies for="post_category" post={post} suggestions={suggestions} />,
     );
-    wrapper.instance().handleOnChange([]);
+    wrapper.instance().handleOnChange([], { action: "remove-value" });
 
     expect(wrapper.state().tags.length).toBe(0);
     done();

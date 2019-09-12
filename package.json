@@ -162,6 +162,9 @@
       "^admin(.*)$": "<rootDir>/admin$1",
       "\\.(css|jpg|png)$": "<rootDir>/__tests__/empty-module.js"
     },
+    "setupFiles": [
+      "<rootDir>/node_modules/regenerator-runtime/runtime"
+    ],
     "testMatch": [
       "**/?(*.)(spec|test).js?(x)"
     ],
