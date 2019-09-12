@@ -125,7 +125,7 @@ const DATA = [
     icon: "fa-paint-brush",
   },
   {
-    id: 8,
+    id: 10,
     name: "menu.static",
     priority: 3,
     permissions: ["MANAGE_SETTINGS"],

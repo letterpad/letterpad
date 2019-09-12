@@ -2,7 +2,6 @@ const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const fs = require("fs");
-const webpack = require("webpack");
 
 const clientConfig = args => {
   if (args.theme == "") {
@@ -53,7 +52,7 @@ const clientConfig = args => {
             "style-loader",
             {
               loader: "css-loader",
-              options: { importLoaders: 1, sourceMap: 1 },
+              options: { importLoaders: 1, sourceMap: true },
             },
             {
               loader: "postcss-loader",

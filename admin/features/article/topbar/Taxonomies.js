@@ -1,16 +1,38 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import PropTypes from "prop-types";
 
 import StyledTags from "../../../components/tags";
 import { TAX_SUGGESTIONS } from "../../../../shared/queries/Queries";
 import PostActions from "../PostActions";
 
+const formatTagsForDropdown = tags => {
+  return tags.map(tag => {
+    return {
+      ...tag,
+      label: tag.name,
+      value: tag.name,
+    };
+  });
+};
+
+const formatTagsForBackend = tags => {
+  return tags.map(tag => {
+    // eslint-disable-next-line no-unused-vars
+    const { label, value, __typename, ...rest } = tag;
+    return rest;
+  });
+};
+
 export class Taxonomies extends Component {
   static propTypes = {
     suggestions: PropTypes.array,
     post: PropTypes.object,
     for: PropTypes.string.isRequired,
+  };
+
+  static defaultProps = {
+    suggestions: [],
   };
 
   state = {
@@ -27,40 +49,57 @@ export class Taxonomies extends Component {
         delete tax["__typename"];
         return tax;
       });
-
     PostActions.setTaxonomies({ [this.props.for]: tags });
-    this.setState({ tags });
+    this.setState({ tags: formatTagsForDropdown(tags) });
   }
 
-  handleOnChange = tags => {
-    const newTags = tags.map(tag => {
-      // check if this is a new custom tag
-      if (!tag.id) {
-        return {
-          id: 0,
-          name: tag.name,
-          type: this.props.for,
-          slug: tag.name,
-        };
-      }
-      delete tag["__typename"];
-      return tag;
+  handleOnChange = (tags, { action }) => {
+    if (action === "remove-value") {
+      PostActions.setTaxonomies({
+        [this.props.for]: formatTagsForBackend(tags),
+      });
+      this.setState({ tags });
+    } else if (action === "select-option") {
+      PostActions.setTaxonomies({
+        [this.props.for]: formatTagsForBackend(tags),
+      });
+      this.setState({ tags });
+    }
+  };
+
+  createNewTag = tag => {
+    if (tag.trim().length === 0) return;
+    const newTag = {
+      id: 0,
+      name: tag,
+      type: this.props.for,
+      slug: tag,
+    };
+    PostActions.setTaxonomies({
+      [this.props.for]: formatTagsForBackend([...this.state.tags, newTag]),
     });
-    PostActions.setTaxonomies({ [this.props.for]: newTags });
-    this.setState({ tags: newTags });
+    this.setState({
+      tags: formatTagsForDropdown([...this.state.tags, newTag]),
+    });
   };
 
   render() {
     const name = this.props.for === "post_tag" ? "Tags" : "Categories";
+
     return (
       <StyledTags
         name={name}
-        labelKey="name"
-        valueKey="name"
         value={this.state.tags}
         onChange={this.handleOnChange}
-        options={this.props.suggestions}
-        multi={true}
+        options={formatTagsForDropdown(
+          this.props.suggestions.filter(p => p.type === this.props.for),
+        )}
+        isMulti
+        isValidNewOption={inputValue => {
+          return inputValue.trim().length > 0;
+        }}
+        closeMenuOnSelect={false}
+        onCreateOption={this.createNewTag}
       />
     );
   }

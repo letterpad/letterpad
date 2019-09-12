@@ -11,7 +11,7 @@ import StyledButton from "../../../components/button";
 
 class MetaDropdown extends Component {
   static propTypes = {
-    toggledropdown: PropTypes.func,
+    close: PropTypes.func,
     post: PropTypes.object,
     isOpen: PropTypes.bool,
     updatePost: PropTypes.func.isRequired,
@@ -35,7 +35,6 @@ class MetaDropdown extends Component {
   };
 
   render() {
-    if (!this.props.isOpen) return null;
     const permalink = makeUrl([this.state.post.type, this.state.post.slug]);
     return (
       <StyledDropdown className="post-meta">
@@ -73,7 +72,7 @@ class MetaDropdown extends Component {
           success
           onClick={e => {
             this.props.updatePost(e, {});
-            this.props.toggledropdown();
+            this.props.close(e, false);
           }}
         >
           Save

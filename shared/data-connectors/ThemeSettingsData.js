@@ -1,4 +1,4 @@
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import { THEME_SETTINGS } from "../../shared/queries/Queries";
 
 export default graphql(THEME_SETTINGS, {
@@ -15,7 +15,7 @@ export default graphql(THEME_SETTINGS, {
   },
   props: ({ data: { loading, themeSettings } }) => {
     let newSettings = {};
-    if (themeSettings.length > 0) {
+    if (themeSettings && themeSettings.length > 0) {
       const userValues = JSON.parse(themeSettings[0].value);
       const settings = JSON.parse(themeSettings[0].settings);
 

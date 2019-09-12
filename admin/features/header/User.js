@@ -53,13 +53,23 @@ class User extends Component {
     );
     return (
       <div className="user-info" onMouseLeave={this.closeDropdown}>
-        <StyledDropdown name={name}>
-          <ul>
-            <li>
-              <a href={config.baseName + "/admin/login"}>Logout</a>
-            </li>
-          </ul>
-        </StyledDropdown>
+        <StyledDropdown
+          name={name}
+          render={close => {
+            const onClick = e => {
+              e.preventDefault();
+              close(e, false);
+              window.location = config.baseName + "/admin/login";
+            };
+            return (
+              <ul>
+                <li onClick={onClick}>
+                  <a href="#">Logout</a>
+                </li>
+              </ul>
+            );
+          }}
+        />
       </div>
     );
   }

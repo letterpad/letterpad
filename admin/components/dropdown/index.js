@@ -10,6 +10,11 @@ class DropDown extends Component {
     ]),
     className: PropTypes.string,
     name: PropTypes.any,
+    render: PropTypes.func,
+  };
+
+  static defaultProps = {
+    render: () => {},
   };
 
   state = {
@@ -23,6 +28,14 @@ class DropDown extends Component {
   }
 
   closeDropdowns = e => {
+    // dont close dropdown on selecting a tag in the publish dropdown
+    if (e.target.parentNode.parentNode.className.indexOf("menu") >= 0) {
+      return false;
+    }
+    // the admin panel publish dropwdown has tags. On deleting the tag, the dropdown closes
+    // because the element(svg path in the close icon) is outside the parent container. This is to disallow that
+
+    if (e.target.tagName.indexOf(["svg", "path"]) >= 0) return;
     if (
       this.ddBtnRef.current &&
       this.ddBtnRef.current.parentNode &&
@@ -39,15 +52,12 @@ class DropDown extends Component {
   };
 
   render() {
-    const { name, children, className } = this.props;
+    const { name, className } = this.props;
     const ddClassPublish = " dropdown" + (this.state.open ? " open" : "");
 
-    const childrenWithProps = React.Children.map(children, child =>
-      React.cloneElement(child, {
-        toggledropdown: this.toggle,
-        isOpen: this.state.open,
-      }),
-    );
+    // const childrenWithProps = React.Children.map(children, child => {
+    //   return React.cloneElement(child, {});
+    // });
 
     return (
       <Wrapper className={className + ddClassPublish}>
@@ -61,7 +71,7 @@ class DropDown extends Component {
           <i className="material-icons">arrow_drop_down</i>
         </a>
 
-        <div className="dropdown-menu">{childrenWithProps}</div>
+        <div className="dropdown-menu">{this.props.render(this.toggle)}</div>
       </Wrapper>
     );
   }

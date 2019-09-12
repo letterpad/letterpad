@@ -1,4 +1,4 @@
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import { GET_SINGLE_POST } from "../../shared/queries/Queries";
 
 export default graphql(GET_SINGLE_POST, {

@@ -19,7 +19,7 @@ class Themes extends Component {
   static propTypes = {
     updateOptions: PropTypes.func,
     options: PropTypes.object,
-    settings: PropTypes.object
+    settings: PropTypes.object,
   };
 
   cssRef = React.createRef();

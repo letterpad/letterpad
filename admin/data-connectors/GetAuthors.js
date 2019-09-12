@@ -1,4 +1,4 @@
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import { GET_AUTHOR, GET_AUTHORS } from "../../shared/queries/Queries";
 
 export const GetAuthor = graphql(GET_AUTHOR, {

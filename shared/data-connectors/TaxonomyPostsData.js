@@ -1,4 +1,4 @@
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import { SEARCH_POSTS_BY_TAXONOMY } from "../queries/Queries";
 import config from "../../config";
 

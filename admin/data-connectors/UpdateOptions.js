@@ -1,4 +1,4 @@
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import { UPDATE_OPTIONS } from "../../shared/queries/Mutations";
 
 export default graphql(UPDATE_OPTIONS, {
