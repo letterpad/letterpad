@@ -33,12 +33,14 @@ class FileExplorer extends Component {
     onSelect: PropTypes.func,
     fetchMore: PropTypes.func,
     count: PropTypes.number,
+    multi: PropTypes.bool,
   };
 
   static defaultProps = {
     media: {
       rows: [],
     },
+    multi: false,
     onPageClick: () => {},
   };
 
@@ -49,18 +51,22 @@ class FileExplorer extends Component {
   page = 1;
 
   state = {
-    selected_id: 0,
+    selected_ids: [],
   };
 
   onMediaSelected = media => {
-    const newState = {};
-    if (media.id === this.state.selected_id) {
-      newState.selected_id = 0;
-    } else {
-      newState.selected_id = media.id;
-      this.props.onSelect(media.url);
+    const selected_ids = [...this.state.selected_ids];
+    const index = selected_ids.indexOf(media.id);
+    if (index >= 0) {
+      selected_ids.splice(index, 1);
+    } else if (selected_ids.length >= 0 && this.props.multi) {
+      selected_ids.push(media.id);
+      const selectedMediaUrls = this.props.media.rows
+        .filter(item => selected_ids.indexOf(item.id) >= 0)
+        .map(media => media.url);
+      this.props.onSelect(selectedMediaUrls);
     }
-    this.setState(newState);
+    this.setState({ selected_ids });
   };
 
   loadMore = async num => {
@@ -79,7 +85,7 @@ class FileExplorer extends Component {
       <FileItem
         key={media.id}
         media={media}
-        selected_id={this.state.selected_id}
+        isSelected={this.state.selected_ids.indexOf(media.id) >= 0}
         onMediaSelected={this.onMediaSelected}
       />
     ));

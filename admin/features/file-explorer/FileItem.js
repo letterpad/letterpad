@@ -19,7 +19,7 @@ export default class MediaItem extends Component {
   static propTypes = {
     media: PropTypes.object,
     onMediaSelected: PropTypes.func.isRequired,
-    selected_id: PropTypes.number.isRequired,
+    isSelected: PropTypes.bool.isRequired,
   };
 
   onMediaSelected = () => {
@@ -27,7 +27,7 @@ export default class MediaItem extends Component {
   };
 
   render() {
-    const isSelected = this.props.selected_id === this.props.media.id;
+    const { isSelected } = this.props;
     const classes = isSelected ? " selected" : "";
     return (
       <StyledItem className={classes} onClick={this.onMediaSelected}>

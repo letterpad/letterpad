@@ -1,4 +1,4 @@
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import { GET_MEDIA } from "../../shared/queries/Queries";
 import config from "../../config";
 

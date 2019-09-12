@@ -1,7 +1,7 @@
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import { GET_OPTIONS } from "../../shared/queries/Queries";
 
-export default graphql(GET_OPTIONS, {
+const SettingsData = graphql(GET_OPTIONS, {
   props: ({ data: { loading, settings } }) => {
     const data = {};
     if (settings) {
@@ -17,3 +17,5 @@ export default graphql(GET_OPTIONS, {
     };
   },
 });
+
+export default SettingsData;

@@ -160,9 +160,7 @@ class Routes extends Component {
       <div>
         <SEO
           schema="Blog"
-          title={`${settings.site_title.value} | ${
-            settings.site_tagline.value
-          }`}
+          title={`${settings.site_title.value} | ${settings.site_tagline.value}`}
           description={settings.site_description.value}
           path="/"
           image="/"
@@ -201,4 +199,4 @@ Routes.propTypes = {
   themeSettings: PropTypes.object,
   themeSettingsLoading: PropTypes.bool,
 };
-export default hot(module)(SettingsData(ThemeSettingsData(withRouter(Routes))));
+export default hot(module)(ThemeSettingsData(SettingsData(withRouter(Routes))));

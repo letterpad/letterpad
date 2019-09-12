@@ -1,4 +1,4 @@
-import ApolloClient from "apollo-client";
+import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { ApolloLink } from "apollo-link";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -55,14 +55,9 @@ const errorLink = onError(({ networkError }) => {
  * Any request from client (theme) will not require a token as whatever data they request
  * is public.
  */
-const middlewareLinkClient = new ApolloLink((operation, forward) => {
-  operation.setContext({
-    headers: {
-      browser: true,
-    },
-  });
-  return forward(operation);
-});
+const middlewareLinkClient = new ApolloLink((operation, forward) =>
+  forward(operation),
+);
 
 let initialState = {};
 if (typeof window !== "undefined") {

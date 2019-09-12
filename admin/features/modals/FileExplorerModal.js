@@ -15,11 +15,11 @@ const StyledBody = styled.div`
 class FileExplorerModal extends Component {
   state = {
     page: 1,
-    selectedImageUrl: "",
+    selectedImageUrls: [],
   };
 
-  onSelect = coverImage => {
-    this.setState({ selectedImageUrl: coverImage });
+  onSelect = images => {
+    this.setState({ selectedImageUrls: images });
   };
 
   onPageClick = (e, page) => {
@@ -38,6 +38,7 @@ class FileExplorerModal extends Component {
       >
         <StyledBody className="modal-body text-center">
           <FileExplorer
+            multi={true}
             author={{ id: 1 }}
             page={this.state.page}
             onPageClick={this.onPageClick}
@@ -55,7 +56,7 @@ class FileExplorerModal extends Component {
           <StyledButton
             success
             onClick={() =>
-              this.props.onMediaSelect(this.state.selectedImageUrl)
+              this.props.onMediaSelect(this.state.selectedImageUrls)
             }
           >
             Insert

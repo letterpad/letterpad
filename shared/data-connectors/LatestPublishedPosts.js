@@ -1,4 +1,4 @@
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import { GET_LATEST_PUBLISHED_POSTS } from "../queries/Queries";
 
 export default graphql(GET_LATEST_PUBLISHED_POSTS, {

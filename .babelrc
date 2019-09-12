@@ -1,33 +1,34 @@
 {
-    "presets": [
-        [
-            "@babel/env",
-            {
-                "targets": {
-                    "node": 8
-                },
-                "useBuiltIns": "entry",
-                "loose": true,
-                "modules": false
-            }
-        ],
-        "@babel/react"
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": 11
+        },
+        "useBuiltIns": "entry",
+        "corejs": 3,
+        "loose": true,
+        "modules": false
+      }
     ],
-    "plugins": [
-        "react-hot-loader/babel",
-        "@babel/plugin-transform-modules-commonjs",
-        "@babel/plugin-proposal-object-rest-spread",
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-proposal-export-default-from",
-        "@babel/plugin-proposal-logical-assignment-operators",
-        "@babel/plugin-proposal-numeric-separator",
-        "@babel/plugin-proposal-optional-chaining",
-        [
-            "babel-plugin-styled-components",
-            {
-                "ssr": true,
-                "displayName": false
-            }
-        ]
+    "@babel/react"
+  ],
+  "plugins": [
+    "react-hot-loader/babel",
+    "@babel/plugin-transform-modules-commonjs",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-proposal-logical-assignment-operators",
+    "@babel/plugin-proposal-numeric-separator",
+    "@babel/plugin-proposal-optional-chaining",
+    [
+      "babel-plugin-styled-components",
+      {
+        "ssr": true,
+        "displayName": false
+      }
     ]
+  ]
 }

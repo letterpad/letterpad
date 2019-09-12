@@ -203,22 +203,33 @@ export class TopBar extends Component {
         )}
         <div className={"right-block " + publishedCls}>
           <PublishBox>
-            <StyledDropdown name="Publish" className="publish">
-              <PublishDropdown
-                isPublished={this.state.isPublished}
-                changePostStatus={this.changePostStatus}
-                post={this.props.post}
-                create={this.props.create || false}
-                updatePost={this.updatePost}
-              />
-            </StyledDropdown>
+            <StyledDropdown
+              name="Publish"
+              className="publish"
+              render={() => {
+                return (
+                  <PublishDropdown
+                    isPublished={this.state.isPublished}
+                    changePostStatus={this.changePostStatus}
+                    post={this.props.post}
+                    create={this.props.create || false}
+                    updatePost={this.updatePost}
+                  />
+                );
+              }}
+            />
 
-            <StyledDropdown name="Meta" className="meta">
-              <MetaDropdown
-                post={this.props.post}
-                updatePost={this.updatePost}
-              />
-            </StyledDropdown>
+            <StyledDropdown
+              name="Meta"
+              className="meta"
+              render={close => (
+                <MetaDropdown
+                  post={this.props.post}
+                  updatePost={this.updatePost}
+                  close={close}
+                />
+              )}
+            />
 
             <div>
               <Link to="#" onClick={deleteAction}>

@@ -1,4 +1,4 @@
-import { graphql } from "react-apollo";
+import { graphql } from "@apollo/react-hoc";
 import {
   FORGOT_PASSWORD_QUERY,
   LOGIN_QUERY,
