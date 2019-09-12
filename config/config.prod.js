@@ -1,4 +1,5 @@
-const rootUrl = typeof window !== "undefined" ? window.rootUrl : process.env.rootUrl;
+const rootUrl =
+  typeof window !== "undefined" ? window.rootUrl : process.env.rootUrl;
 
 module.exports = {
   apiUrl: (function() {
@@ -10,7 +11,7 @@ module.exports = {
       : rootUrl + "/upload";
   })(),
   rootUrl: (function() {
-    return rootUrl
+    return rootUrl;
   })(),
   appPort: (function() {
     return typeof window !== "undefined" ? window.appPort : process.env.appPort;
