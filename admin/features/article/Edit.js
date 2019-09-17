@@ -99,8 +99,13 @@ class Edit extends Component {
 
   uploadImage = async files => {
     const uploadedFiles = await uploadFile({ files, type: "post_image" });
-    uploadedFiles.forEach(src => {
-      this.hooks["plugin-image"].insertImage(this.editor, src);
+    uploadedFiles.forEach(({ src, errors }) => {
+      if (errors) return;
+      this.hooks["plugin-image"].insertImage(this.editor, src, "center");
+      this.editor
+        .moveAnchorToStartOfNextBlock()
+        .moveFocusToStartOfNextBlock()
+        .focus();
     });
   };
 
