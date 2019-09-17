@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 import styled from "styled-components";
+import { notify } from "react-notify-toast";
 
 import config from "config";
 import { uploadFile } from "../../util";
@@ -68,16 +69,24 @@ class General extends Component {
 
   uploadBanner = async files => {
     const uploadedFiles = await uploadFile({ files });
-    let banner = uploadedFiles[0];
-    this.updateOption("banner", banner);
-    this.setState({ banner });
+    let { src, errors } = uploadedFiles[0];
+    if (errors) {
+      notify.show(errors, "error", 3000);
+      return;
+    }
+    this.updateOption("banner", src);
+    this.setState({ banner: src });
   };
 
   uploadLogo = async files => {
     const uploadedFiles = await uploadFile({ files });
-    let site_logo = uploadedFiles[0];
-    this.updateOption("site_logo", site_logo);
-    this.setState({ site_logo });
+    let { src, errors } = uploadedFiles[0];
+    if (errors) {
+      notify.show(errors, "error", 3000);
+      return;
+    }
+    this.updateOption("site_logo", src);
+    this.setState({ site_logo: src });
   };
 
   updateBanner = banner => {

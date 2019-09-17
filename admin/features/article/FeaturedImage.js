@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { translate } from "react-i18next";
+import { notify } from "react-notify-toast";
 
 import { uploadFile } from "../../util";
 import UploadCoverImage from "../../data-connectors/UploadCoverImage";
@@ -108,13 +109,13 @@ class FeaturedImage extends Component {
 
   // All the images available in the post can be used as a cover image.
   // This function sets the selection
-  setCoverImage = imagePath => {
-    PostActions.setData({ cover_image: imagePath });
-    this.setState({ cover_image: imagePath, fileExplorerOpen: false });
+  setCoverImage = images => {
+    PostActions.setData({ cover_image: images[0] });
+    this.setState({ cover_image: images[0], fileExplorerOpen: false });
     // update the post with the new url
     this.props.updateFeaturedImage({
       id: this.props.post.id,
-      cover_image: imagePath,
+      cover_image: images[0],
     });
     return false;
   };
@@ -125,16 +126,19 @@ class FeaturedImage extends Component {
       files,
       type: "featured_image",
     });
-    const coverImage = uploadedFiles[0];
-
+    const { src, errors } = uploadedFiles[0];
+    if (errors) {
+      notify.show(errors, "error", 3000);
+      return;
+    }
     // update the post with the new url
     this.props.updateFeaturedImage({
       id: this.props.post.id,
-      cover_image: coverImage,
+      cover_image: src,
     });
-    PostActions.setData({ cover_image: coverImage });
+    PostActions.setData({ cover_image: src });
     // set the state with the new image
-    this.setState({ cover_image: coverImage, fileExplorerOpen: false });
+    this.setState({ cover_image: src, fileExplorerOpen: false });
   };
 
   toggleFileExplorer = () => {
@@ -155,7 +159,7 @@ class FeaturedImage extends Component {
             toggleFileExplorer={this.toggleFileExplorer}
             isCustom={isCustom}
             coverImage={this.state.cover_image}
-            removeCustomImage={() => this.setCoverImage("")}
+            removeCustomImage={() => this.setCoverImage([""])}
           />
           {this.state.imageList.map((imagePath, idx) => {
             const selected = imagePath === this.state.cover_image;
