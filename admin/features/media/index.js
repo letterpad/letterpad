@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 import moment from "moment";
 import styled from "styled-components";
+import { notify } from "react-notify-toast";
+
 import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
 
 import GetMedia from "../../data-connectors/GetMedia";
@@ -184,7 +186,16 @@ class Media extends Component {
   };
 
   uploadImage = async files => {
-    await uploadFile({ files, type: "post_image" });
+    const uploadedFiles = await uploadFile({ files, type: "post_image" });
+    const errors = uploadedFiles.filter(file => file.errors);
+    if (errors.length > 0) {
+      notify.show(
+        `${errors.length} out of ${uploadedFiles.length} had problems in image optimization`,
+        "error",
+        3000,
+      );
+      return;
+    }
     // if the user is in page 1, just refetch the items of page 1
     if (this.props.match.params.page == 1) {
       let items = await this.props.fetchMore({

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
+import { notify } from "react-notify-toast";
 
 import StyledInput from "../../components/input";
 import StyledTitleHeader from "../../components/title-header";
@@ -26,9 +27,14 @@ class Basic extends Component {
   };
 
   uploadAvatar = async files => {
-    const avatar = await uploadFile({ files });
-    this.updateOption("avatar", avatar);
-    this.setState({ avatar });
+    const uploadedFiles = await uploadFile({ files });
+    const { src, errors } = uploadedFiles[0];
+    if (errors) {
+      notify.show(errors, "error", 3000);
+      return;
+    }
+    this.updateOption("avatar", src);
+    this.setState({ avatar: src });
   };
 
   updateAvatar = avatar => {

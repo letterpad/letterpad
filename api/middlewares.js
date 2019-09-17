@@ -1,4 +1,5 @@
 const bodyParser = require("body-parser");
+const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const constants = require("./utils/constants");
@@ -50,4 +51,12 @@ module.exports = function(app) {
   app.use(bodyParserMiddleWare);
   app.use(bodyParser.json());
   app.use(addAdminToken);
+  app.use(
+    fileUpload({
+      limits: { fileSize: process.env.MAX_IMAGE_UPLOAD_SIZE * 1024 * 1024 },
+      abortOnLimit: true,
+      useTempFiles: true,
+      tempFileDir: "/tmp/",
+    }),
+  );
 };
