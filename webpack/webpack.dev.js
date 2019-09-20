@@ -18,8 +18,8 @@ const clientConfig = args => {
       path: path.join(__dirname, "../src"),
       filename: "[name]-bundle.js",
       publicPath: "/static/",
-      hotUpdateChunkFilename: "/tmp/public/hot/client-hot-update.js",
-      hotUpdateMainFilename: "/tmp/public/hot/client-hot-update.json",
+      hotUpdateChunkFilename: "public/hot/client-hot-update.js",
+      hotUpdateMainFilename: "public/hot/client-hot-update.json",
     },
     watchOptions: {
       ignored: [/node_modules([\\]+|\/)+(?!\some_npm_module_name)/],
@@ -92,7 +92,7 @@ const serverConfig = args => {
     cache: true,
     target: "node",
     entry: {
-      server: ["@babel/polyfill", path.join(__dirname, "../src/client/server")],
+      server: [path.join(__dirname, "../src/client/server")],
     },
     output: {
       filename: "server.node.js",

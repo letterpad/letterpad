@@ -7,14 +7,7 @@ const WebpackBar = require("webpackbar");
 const isDev = process.env.NODE_ENV === "dev" ? true : false;
 const babelRc = fs.readFileSync(path.resolve(__dirname, "../.babelrc"));
 
-const vendorFiles = [
-  "@babel/polyfill",
-  "react",
-  "react-dom",
-  "redux",
-  "react-apollo",
-  "moment",
-];
+const vendorFiles = ["react", "react-dom", "redux", "react-apollo", "moment"];
 let source = "src";
 if (isDev) {
   vendorFiles.push("webpack-hot-middleware/client?reload=true");
