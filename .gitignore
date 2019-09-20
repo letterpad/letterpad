@@ -9,6 +9,7 @@ yarn-error.log
 extend
 hot
 src/client/themes/*
+src/admin/public/dist
 *hot*js*
 data/*
 !data/.gitkeep 

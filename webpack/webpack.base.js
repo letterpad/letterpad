@@ -36,11 +36,11 @@ module.exports = (args, name) => {
       hash: false,
     },
     entry: {
-      ["src/public/js/vendor"]: vendorFiles,
-      ["src/client/themes/" + args.theme + "/public/dist/client"]: [
+      ["public/js/vendor"]: vendorFiles,
+      ["client/themes/" + args.theme + "/public/dist/client"]: [
         path.join(__dirname, `../${source}/client/app`),
       ],
-      ["src/admin/public/dist/admin"]: [
+      ["admin/public/dist/admin"]: [
         path.join(__dirname, `../${source}/admin/app`),
       ],
     },

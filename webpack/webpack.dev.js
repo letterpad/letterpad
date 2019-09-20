@@ -15,11 +15,11 @@ const clientConfig = args => {
       "react-hot-loder": "react-hot-loader/patch",
     },
     output: {
-      path: path.join(__dirname, "../"),
+      path: path.join(__dirname, "../src"),
       filename: "[name]-bundle.js",
       publicPath: "/static/",
-      hotUpdateChunkFilename: "public/hot/client-hot-update.js",
-      hotUpdateMainFilename: "public/hot/client-hot-update.json",
+      hotUpdateChunkFilename: "/tmp/public/hot/client-hot-update.js",
+      hotUpdateMainFilename: "/tmp/public/hot/client-hot-update.json",
     },
     watchOptions: {
       ignored: [/node_modules([\\]+|\/)+(?!\some_npm_module_name)/],

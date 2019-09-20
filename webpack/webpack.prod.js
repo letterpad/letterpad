@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const clientConfig = args => {
   if (args.theme == "") {
@@ -17,7 +18,35 @@ const clientConfig = args => {
       path: path.join(__dirname, "../dist"),
       filename: "[name]-bundle.min.js",
     },
-    plugins: [extractPcss, extractPcssAdmin, new MinifyPlugin()],
+    plugins: [
+      extractPcss,
+      extractPcssAdmin,
+      new MinifyPlugin(),
+      new CopyPlugin([
+        {
+          from: __dirname + "/../src/admin/public",
+          to: __dirname + "/../dist/admin/public",
+          force: true,
+        },
+        {
+          from: __dirname + "/../src/public",
+          to: __dirname + "/../dist/public",
+          force: true,
+        },
+        {
+          from: __dirname + "/../src/data",
+          to: __dirname + "/../dist/data",
+        },
+        {
+          from: __dirname + "/../src/admin/server/content.tpl",
+          to: __dirname + "/../dist/admin/server/content.tpl",
+        },
+        {
+          from: __dirname + "/../src/client/common/template.tpl",
+          to: __dirname + "/../dist/client/common/template.tpl",
+        },
+      ]),
+    ],
     module: {
       rules: [
         {
