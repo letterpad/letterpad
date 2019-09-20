@@ -5,4 +5,4 @@
 const exec = require("child_process").exec;
 
 // exec("node apiBuild/server.js");
-exec("node ./server.js");
+exec("node ./src/server.js");

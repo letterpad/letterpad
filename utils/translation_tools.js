@@ -6,7 +6,7 @@ const chalk = require("chalk");
 const args = process.argv.slice(2);
 
 // set the folders where the translation files exist
-const folderToScan = path.join(__dirname, "../shared/i18n/lang");
+const folderToScan = path.join(__dirname, "../src/shared/i18n/lang");
 
 const files = fs.readdirSync(folderToScan);
 
