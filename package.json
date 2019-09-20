@@ -10,6 +10,7 @@
     "clean": "rm -rf data && rm -rf public/uploads",
     "seed": "node ./src/api/seed",
     "preinstall": "./utils/preinstall.sh",
+    "postinstall": "./utils/postinstall.sh",
     "dev": "NODE_ENV=dev concurrently --kill-others \"node ./src/server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
     "prod": "concurrently --kill-others \"node ./dist/server.js\"",
     "prodPm2": "./forever.sh",

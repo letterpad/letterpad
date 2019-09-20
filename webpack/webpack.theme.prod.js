@@ -42,7 +42,7 @@ const clientConfig = args => {
     },
   });
   config.entry = {
-    ["dist/client/themes/" + args.theme + "/public/dist/client"]: [
+    ["client/themes/" + args.theme + "/public/dist/client"]: [
       path.join(__dirname, "../src/client/app"),
     ],
   };

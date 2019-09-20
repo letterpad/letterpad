@@ -12,7 +12,7 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     dialect: process.env.DB_TYPE,
-    storage: getFile("letterpad_demo"),
+    storage: getFile("letterpad"),
     logging: false,
     define: {
       underscored: true,
@@ -36,7 +36,7 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     dialect: process.env.DB_TYPE,
-    storage: getFile("letterpad_demo"),
+    storage: getFile("letterpad"),
     logging: false,
     define: {
       underscored: true,

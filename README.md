@@ -1,6 +1,15 @@
-# Letterpad &middot; [![Backers on Open Collective](https://opencollective.com/letterpad/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/letterpad/sponsors/badge.svg)](#sponsors) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/letterpad/letterpad/blob/master/LICENSE) ![CircleCI Status](https://circleci.com/gh/letterpad/letterpad.svg?style=shield&circle-token=:circle-token)
+# &middot; [![Backers on Open Collective](https://opencollective.com/letterpad/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/letterpad/sponsors/badge.svg)](#sponsors) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/letterpad/letterpad/blob/master/LICENSE) ![CircleCI Status](https://circleci.com/gh/letterpad/letterpad.svg?style=shield&circle-token=:circle-token)
 
-Letterpad is an open-source and a high performant publishing engine for blogs with a state-of-the-art technology. It uses React, Graphql, Express and Sequelize ORM. Few of the core features are listed below:
+<img src="banner.jpg">
+
+<p align="center">
+  An open-source and a high performant publishing engine for blogs <br/>
+  with state-of-the-art technology.
+</p>
+
+<br/>
+
+It uses React, Graphql, Express and Sequelize ORM. Few of the core features are listed below:
 
 - Server side rendering
 - Multi author support
@@ -15,10 +24,6 @@ Letterpad is an open-source and a high performant publishing engine for blogs wi
 - Markdown and RichText editor
 - Search Engine Optimised
 - Multi-language support with react-i18next (currently en, fr and pl)
-
-## Update:
-
-Letterpad now has a CLI tool to manage installations and upgrades. [Check it out here](https://github.com/letterpad/letterpad-cli).
 
 ## Contents
 
@@ -44,32 +49,24 @@ Password: demo
 
 A verbose documentation can be found at [https://letterpad.app/docs](https://letterpad.app/docs).
 
-Letterpad is an open source project, licensed under MIT. It runs ridiculously fast.
-
-The API of letterpad exchanges information in json and you have full control over what data to get, set and display. You can build entire publishing apps on top of it, and completely customise the reader experience.
+Letterpad is an open source project, licensed under MIT.
 
 ## Installation
 
-There are three steps to install letterpad in the development environment.
-
-1.  Open a terminal and clone the project:
+Run the below commands to install:
 
 ```
 git clone https://github.com/letterpad/letterpad.git
 cd letterpad
-```
-
-2.  Make a copy of `sample.env` and name it `.env`. Open it and change `SECRET_KEY` to a random string to secure your app. Then add your SMTP credentials so email can be sent. Change the database options accordingly. By default, letterpad uses `sqlite`.
-
-3.  Install dependencies and run (**use yarn to install dependencies**):
-
-```sh
-NODE_ENV=dev yarn install
-# Seed the database and run migrations
-./utils/postinstall.sh
-# run in dev mode
+yarn install
 yarn dev
 ```
+
+At this point an environment file has been created at the root by the name `.env`.
+
+**Optional:**
+
+Open the .env and change `SECRET_KEY` to a random string to secure your app. Then add your SMTP credentials so email can be sent. Change the database options accordingly. By default, letterpad uses `sqlite`.
 
 Now visit [http://localhost:4040](http://localhost:4040) and checkout the welcome page.
 
@@ -82,15 +79,12 @@ PAssword: demo
 
 ## Production Builds
 
-The below command will create a build for the `admin dashboard` and the `theme`. You will have to specify which theme you want to build.
+The below command will create a build for the `admin dashboard` and the `theme`. It will build the default theme, Hugo
 
 ```
-theme=hugo yarn build
+yarn build // creates a /dist folder
+yarn prod  // run production
 ```
-
-- All the admin dashboard specific bundle will be in `admin/public/dist` folder.
-- All the theme specific bundles will be in `client/hugo/public/dist` folder.
-- The vendor bundles are common between admin and client. So they will be in `public/js` folder.
 
 ## How it works ?
 
@@ -102,7 +96,7 @@ If you want to develop a theme, read the [documention](https://letterpad.app/doc
 
 ## Graphql API
 
-The `api` folder has well defined schemas in the `schema` folder and its resolvers in the `resolvers` folder. If you wish to make any change in the database, then you should create a migration file. To create a migration file, enter this command:
+The `src/api` folder has well defined schemas in the `schema` folder and its resolvers in the `resolvers` folder. If you wish to make any change in the database, then you should create a migration file. To create a migration file, enter this command:
 
 ```sh
 yarn sequelize migration:generate --name specify-a-name-for-this-migration
