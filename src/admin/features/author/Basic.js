@@ -6,7 +6,7 @@ import { notify } from "react-notify-toast";
 import StyledInput from "../../components/input";
 import StyledTitleHeader from "../../components/title-header";
 
-import { uploadFile } from "../../common/util";
+import { uploadFile } from "../../server/util";
 import config from "config";
 
 class Basic extends Component {

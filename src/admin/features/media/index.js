@@ -13,7 +13,7 @@ import DeleteMedia from "../../data-connectors/DeleteMedia";
 import InsertMedia from "../../data-connectors/InsertMedia";
 import UpdateMedia from "../../data-connectors/UpdateMedia";
 import config from "../../../config";
-import { uploadFile } from "../../common/util";
+import { uploadFile } from "../../server/util";
 
 import StyledSection from "../../components/section";
 import StyledGrid from "../../components/grid";

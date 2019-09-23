@@ -7,7 +7,7 @@ import LetterpadEditor from "letterpad-editor";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
 import FileExplorerModal from "../modals/FileExplorerModal";
-import { uploadFile } from "../../common/util";
+import { uploadFile } from "../../server/util";
 import { EventBusInstance } from "../../../shared/eventBus";
 import UpdatePost from "../../data-connectors/UpdatePost";
 import InsertMedia from "../../data-connectors/InsertMedia";

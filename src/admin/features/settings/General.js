@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { notify } from "react-notify-toast";
 
 import config from "config";
-import { uploadFile } from "../../common/util";
+import { uploadFile } from "../../server/util";
 import Input from "../../components/input";
 import StyledSelect from "../../components/select";
 

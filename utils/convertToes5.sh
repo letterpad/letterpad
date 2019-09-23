@@ -1,7 +1,6 @@
 #!/bin/bash
 
 yarn babel ./src/admin/server -d dist/admin/server && 
-yarn babel ./src/admin/common -d dist/admin/common && 
 
 yarn babel ./src/client/server  -d  dist/client/server &&
 yarn babel ./src/client/common  -d  dist/client/common &&

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { translate } from "react-i18next";
 import { notify } from "react-notify-toast";
 
-import { uploadFile } from "../../common/util";
+import { uploadFile } from "../../server/util";
 import UploadCoverImage from "../../data-connectors/UploadCoverImage";
 import InsertMedia from "../../data-connectors/InsertMedia";
 import PostActions from "./PostActions";

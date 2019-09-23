@@ -15,7 +15,7 @@ const clientConfig = args => {
       "react-hot-loder": "react-hot-loader/patch",
     },
     output: {
-      path: path.join(__dirname, "../src"),
+      path: path.join(__dirname, "../"),
       filename: "[name]-bundle.js",
       publicPath: "/static/",
       hotUpdateChunkFilename: "public/hot/client-hot-update.js",

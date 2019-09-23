@@ -1,4 +1,4 @@
-# &middot; [![Backers on Open Collective](https://opencollective.com/letterpad/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/letterpad/sponsors/badge.svg)](#sponsors) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/letterpad/letterpad/blob/master/LICENSE) ![CircleCI Status](https://circleci.com/gh/letterpad/letterpad.svg?style=shield&circle-token=:circle-token)
+c# &middot; [![Backers on Open Collective](https://opencollective.com/letterpad/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/letterpad/sponsors/badge.svg)](#sponsors) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/letterpad/letterpad/blob/master/LICENSE) ![CircleCI Status](https://circleci.com/gh/letterpad/letterpad.svg?style=shield&circle-token=:circle-token)
 
 <img src="banner.jpg">
 
@@ -18,8 +18,8 @@ It uses React, Graphql, Express and Sequelize ORM. Few of the core features are 
 - Theme support
 - Multi-level navigation
 - Image optimizer
-- React with styled-components for styling
-- GraphQL for json API
+- Styled-components
+- GraphQL
 - Roles - Admin, Reviewer, Author, Reader
 - Markdown and RichText editor
 - Search Engine Optimised
@@ -66,7 +66,7 @@ At this point an environment file has been created at the root by the name `.env
 
 **Optional:**
 
-Open the .env and change `SECRET_KEY` to a random string to secure your app. Then add your SMTP credentials so email can be sent. Change the database options accordingly. By default, letterpad uses `sqlite`.
+Open the .env and change `SECRET_KEY` to a random string to secure your app. Then add your SMTP credentials for emails to work. Change the database options accordingly. By default, letterpad uses `sqlite`.
 
 Now visit [http://localhost:4040](http://localhost:4040) and checkout the welcome page.
 
@@ -81,9 +81,9 @@ PAssword: demo
 
 The below command will create a build for the `admin dashboard` and the `theme`. It will build the default theme, Hugo
 
-```
-yarn build // creates a /dist folder
-yarn prod  // run production
+```sh
+yarn build # creates a /dist folder
+yarn prod  # run production
 ```
 
 ## How it works ?

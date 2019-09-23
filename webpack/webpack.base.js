@@ -8,8 +8,9 @@ const isDev = process.env.NODE_ENV === "dev" ? true : false;
 const babelRc = fs.readFileSync(path.resolve(__dirname, "../.babelrc"));
 
 const vendorFiles = ["react", "react-dom", "redux", "react-apollo", "moment"];
-let source = "src";
+let source = "";
 if (isDev) {
+  source = "src";
   vendorFiles.push("webpack-hot-middleware/client?reload=true");
 }
 module.exports = (args, name) => {
@@ -29,20 +30,20 @@ module.exports = (args, name) => {
       hash: false,
     },
     entry: {
-      ["public/js/vendor"]: vendorFiles,
-      ["client/themes/" + args.theme + "/public/dist/client"]: [
-        path.join(__dirname, `../${source}/client/app`),
+      [source + "/public/js/vendor"]: vendorFiles,
+      [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
+        path.join(__dirname, "../src/client/app"),
       ],
-      ["admin/public/dist/admin"]: [
-        path.join(__dirname, `../${source}/admin/app`),
+      [source + "/admin/public/dist/admin"]: [
+        path.join(__dirname, "../src/admin/app"),
       ],
     },
     resolve: {
       alias: {
-        admin: path.join(__dirname, `/../${source}/admin`),
-        client: path.join(__dirname, `/../${source}/client`),
-        shared: path.join(__dirname, `/../${source}/shared`),
-        config: path.join(__dirname, `/../${source}/config`),
+        admin: path.join(__dirname, "/../src/admin"),
+        client: path.join(__dirname, "/../src/client"),
+        shared: path.join(__dirname, "/../src/shared"),
+        config: path.join(__dirname, "/../src/config"),
       },
       extensions: [".js"],
     },
@@ -80,7 +81,7 @@ module.exports = (args, name) => {
             },
             // { loader: "eslint-loader" },
           ],
-          include: path.join(__dirname, `../${source}/client`),
+          include: path.join(__dirname, "../src/client"),
         },
         // js
         {
@@ -94,7 +95,7 @@ module.exports = (args, name) => {
             },
             { loader: "eslint-loader" },
           ],
-          include: path.join(__dirname, `../${source}/admin`),
+          include: path.join(__dirname, "../src/admin"),
         },
         {
           test: /\.html$/,

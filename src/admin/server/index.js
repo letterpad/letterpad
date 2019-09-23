@@ -16,7 +16,7 @@ const {
   prepareStyleTags,
   templateEngine,
 } = require("../../shared/util");
-const { syncThemeSettings } = require("../common/util");
+const { syncThemeSettings } = require("./util");
 const client = require("../../shared/apolloClient").default;
 
 const clientOpts = {
@@ -129,7 +129,7 @@ function getHtml(apolloState) {
     "/static/src/admin/public/dist/admin-bundle.js",
   ];
   const prodBundles = [
-    "/js/vendor-bundle.min.js",
+    "/dist/js/vendor-bundle.min.js",
     "/admin/dist/admin-bundle.min.js",
   ];
   const bundles = isDev ? devBundles : prodBundles;
