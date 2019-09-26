@@ -2,9 +2,9 @@ const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const fs = require("fs");
-const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const clientConfig = args => {
   if (args.theme == "") {
@@ -15,10 +15,49 @@ const clientConfig = args => {
   return merge(baseConfig(args, "client"), {
     target: "web",
     output: {
-      path: path.join(__dirname, "../"),
+      path: path.join(__dirname, "../dist"),
       filename: "[name]-bundle.min.js",
     },
-    plugins: [extractPcss, extractPcssAdmin, new MinifyPlugin()],
+    plugins: [
+      extractPcss,
+      extractPcssAdmin,
+      new MinifyPlugin(),
+      new CopyPlugin([
+        {
+          from: __dirname + "/../src/admin/public",
+          to: __dirname + "/../dist/admin/public",
+          force: true,
+        },
+        {
+          from: __dirname + "/../src/public",
+          to: __dirname + "/../dist/public",
+          force: true,
+        },
+        {
+          from: __dirname + "/../src/data",
+          to: __dirname + "/../dist/data",
+        },
+        {
+          from: __dirname + "/../src/admin/server/content.tpl",
+          to: __dirname + "/../dist/admin/server/content.tpl",
+        },
+        {
+          from: __dirname + "/../src/client/common/template.tpl",
+          to: __dirname + "/../dist/client/common/template.tpl",
+        },
+        {
+          from: __dirname + "/../src/api/seed/uploads",
+          to: __dirname + "/../dist/api/seed/uploads",
+        },
+        {
+          from: __dirname + "/../src/client/themes/**/public/**",
+          to: __dirname + "/..",
+          transformPath(targetPath) {
+            return targetPath.replace("src", "dist");
+          },
+        },
+      ]),
+    ],
     module: {
       rules: [
         {
@@ -37,7 +76,7 @@ const clientConfig = args => {
               "postcss-loader",
             ],
           }),
-          include: [path.join(__dirname, "../client/themes/" + args.theme)],
+          include: [path.join(__dirname, "../src/client/themes/" + args.theme)],
         },
         {
           test: /\.(css|pcss)$/,
@@ -52,9 +91,9 @@ const clientConfig = args => {
             ],
           }),
           include: [
-            path.resolve(__dirname, "../admin"),
-            path.resolve(__dirname, "../node_modules"),
-            path.resolve(__dirname, "../public"),
+            path.resolve(__dirname, "../src/admin"),
+            path.resolve(__dirname, "../src/node_modules"),
+            path.resolve(__dirname, "../src/public"),
           ],
         },
       ],
@@ -68,7 +107,7 @@ const serverConfig = args => {
   }
   const BUILD_PATH = path.join(
     __dirname,
-    "../client/themes/" + args.theme + "/public/dist",
+    "../dist/client/themes/" + args.theme + "/public/dist",
   );
 
   const getExternals = () => {
@@ -107,9 +146,8 @@ const serverConfig = args => {
     },
   });
   config.entry = {
-    server: [path.join(__dirname, "../client/server")],
+    server: [path.join(__dirname, "../src/client/server")],
   };
   return config;
 };
-
 module.exports = args => [serverConfig(args), clientConfig(args)];

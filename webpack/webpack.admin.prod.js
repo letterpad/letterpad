@@ -3,14 +3,9 @@ const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
-const vendorFiles = [
-  "@babel/polyfill",
-  "react",
-  "react-dom",
-  "redux",
-  "react-apollo",
-  "moment",
-];
+
+const vendorFiles = ["react", "react-dom", "redux", "react-apollo", "moment"];
+
 const clientConfig = args => {
   const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");
   if (typeof args === "undefined") {
@@ -38,16 +33,16 @@ const clientConfig = args => {
             ],
           }),
           include: [
-            path.resolve(__dirname, "../admin"),
+            path.resolve(__dirname, "../src/admin"),
             path.resolve(__dirname, "../node_modules"),
-            path.resolve(__dirname, "../public"),
+            path.resolve(__dirname, "../src/public"),
           ],
         },
       ],
     },
   });
   config.entry = {
-    "admin/public/dist/admin": [path.join(__dirname, "../admin/app")],
+    "dist/admin/public/dist/admin": [path.join(__dirname, "../src/admin/app")],
     ["public/js/vendor"]: vendorFiles,
   };
   return config;

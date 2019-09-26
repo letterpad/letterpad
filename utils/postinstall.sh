@@ -1,11 +1,13 @@
 #!/bin/bash
 
-echo "Seeding the database..."
-yarn seed
-echo "Seeding complete!"
-
-echo "Running migrations"
-yarn sequelize db:migrate
+if [ ! -a ".env" ]; then
+    cp sample.env .env
+fi
+if [ ! -f "src/data/.init" ]; then
+    touch src/data/.init
+    echo "Seeding the database..."
+    yarn seed
+    echo "Seeding complete!"
 echo "
 
 
@@ -20,3 +22,4 @@ cat << "EOF"
                             |_|
 
 EOF
+fi
