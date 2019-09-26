@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "dev") {
 }
 const env = require("node-env-file");
 try {
-  env(__dirname + "/../.env");
+  configureEnvironment();
 } catch (e) {
   throw Error(
     "The `.env` does not exist. Did you forget to rename `.env.sample` to `.env` ?",
@@ -150,10 +150,18 @@ app.get("/build", (req, res) => {
 adminServer.init(app);
 clientServerRendering.init(app);
 apiServer(app);
-const server = app.listen(config.appPort, function() {
+const server = app.listen(process.env.appPort, function() {
   const host = server.address().address;
   const port = server.address().port;
   console.log("Letterpad listening at http://%s:%s", host, port);
 });
 
 module.exports = server;
+
+function configureEnvironment() {
+  env(__dirname + "/../.env");
+  // for heroku
+  if (process.env.NODE_HOME === "/app/.heroku/node") {
+    process.env.appPort = process.env.PORT;
+  }
+}

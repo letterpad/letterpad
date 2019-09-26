@@ -12,6 +12,7 @@ c# &middot; [![Backers on Open Collective](https://opencollective.com/letterpad/
 It uses React, Graphql, Express and Sequelize ORM. Few of the core features are listed below:
 
 - Server side rendering
+- Static Site creation
 - Multi author support
 - Comments (Disqus integration)
 - Google Analytics
@@ -30,10 +31,6 @@ It uses React, Graphql, Express and Sequelize ORM. Few of the core features are 
 - [Demo](#demo)
 - [Installation](#installation)
 - [Production Builds](#production-builds)
-- [How it works](#how-it-works)
-- [Graphql API](#graphql-API)
-- [Translations](#translations)
-- [Database seeding](#seeding)
 - [Additional Links](#additional-links)
 - [Contribute](#contribute)
 
@@ -47,7 +44,9 @@ Email: demo@demo.com
 Password: demo
 ```
 
-A verbose documentation can be found at [https://letterpad.app/docs](https://letterpad.app/docs).
+## Documentation
+
+Documentation can be found at [https://docs.letterpad.app](https://docs.letterpad.app).
 
 Letterpad is an open source project, licensed under MIT.
 
@@ -84,82 +83,6 @@ The below command will create a build for the `admin dashboard` and the `theme`.
 ```sh
 yarn build # creates a /dist folder
 yarn prod  # run production
-```
-
-## How it works ?
-
-Letterpad needs one server to run your blog. This server runs Graphql API and the Letterpad Engine. However with little modification, you can separate this to use two servers if you want to keep the API seperate.
-
-Themes have their own separate repository. While doing `yarn install`, the default theme `hugo` is fetched as a dependency during the installation. If the theme already exist, this step will be ignored.
-
-If you want to develop a theme, read the [documention](https://letterpad.app/docs/page/theme-introduction).
-
-## Graphql API
-
-The `src/api` folder has well defined schemas in the `schema` folder and its resolvers in the `resolvers` folder. If you wish to make any change in the database, then you should create a migration file. To create a migration file, enter this command:
-
-```sh
-yarn sequelize migration:generate --name specify-a-name-for-this-migration
-
-#eg.
-yarn sequelize migration:generate --name addGoogleAnalyticsField
-```
-
-The above migration will be created in `api/housekeeper/migrations/xxxxxxxx-addGoogleAnalyticsField.js
-
-In order to run the migrations, enter the below command.
-
-```sh
-yarn sequelize db:migrate
-```
-
-You can play around with the Graphql API locally on [http://localhost:3030/graphql](http://localhost:3030/graphql)
-
-## Translations
-
-Letterpad uses react-18next library to handle translations. To add, edit or delete trannslation objects,
-you can use the below commands:
-
-```sh
-usage: yarn [operation] [options] [key=value || key]
-    operation (Required):
-        -a, --add     Add key value pair to all files
-        -s, --set     Set value of an existing key in all files
-        -d, --del     Delete key from all files
-            --sync    Sync all files with en.json
-    options (Optional)
-        -en     Operation only on this file
-        -fr     Operation only on this file
-        -pl     Operation only on this file
-```
-
-```sh
-# Adds the translated value, only in en.json and for others leave it blank.
-yarn translate --add save="Save"
-
-# Set the translated value only in en.json and for others, set the value to empty string.
-yarn translate --set oldKey="New Value"
-
-# sets a translation object in one file
-yarn translate --set -en oldKey="New Value"
-
-# deletes a translation object from all files
-yarn translate --del save
-
-# deletes a translation object from one file
-yarn translate --del -en tags.title
-
-# sync all files with en.json
-yarn translate --sync
-```
-
-## Seeding
-
-If you want to seed the database with sample data, run the below command:
-
-```sh
-// you should have babel-cli installed. Its good to have this package installed globally.
-yarn seed
 ```
 
 ## Additional Links:
