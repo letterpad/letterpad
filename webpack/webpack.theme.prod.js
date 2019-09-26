@@ -2,7 +2,6 @@ const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const fs = require("fs");
-const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 
@@ -15,7 +14,7 @@ const clientConfig = args => {
   const config = merge(baseConfig(args, "client + admin"), {
     target: "web",
     output: {
-      path: path.join(__dirname, "../"),
+      path: path.join(__dirname, "../dist"),
       filename: "[name]-bundle.min.js",
     },
     plugins: [extractPcss, new MinifyPlugin()],
@@ -37,14 +36,14 @@ const clientConfig = args => {
               "postcss-loader",
             ],
           }),
-          include: [path.join(__dirname, "../client/themes/" + args.theme)],
+          include: [path.join(__dirname, "../src/client/themes/" + args.theme)],
         },
       ],
     },
   });
   config.entry = {
     ["client/themes/" + args.theme + "/public/dist/client"]: [
-      path.join(__dirname, "../client/app"),
+      path.join(__dirname, "../src/client/app"),
     ],
   };
   return config;
@@ -56,7 +55,7 @@ const serverConfig = args => {
   }
   const BUILD_PATH = path.join(
     __dirname,
-    "../client/themes/" + args.theme + "/public/dist",
+    "../dist/client/themes/" + args.theme + "/public/dist",
   );
 
   const getExternals = () => {
@@ -95,7 +94,7 @@ const serverConfig = args => {
     },
   });
   config.entry = {
-    server: ["@babel/polyfill", path.join(__dirname, "../client/server")],
+    server: [path.join(__dirname, "../src/client/server")],
   };
   return config;
 };

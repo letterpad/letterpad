@@ -2,21 +2,15 @@ const webpack = require("webpack");
 const path = require("path");
 const fs = require("fs");
 var FileNameReplacementPlugin = require("./FileNameReplacementPlugin");
-const WriteFilePlugin = require("write-file-webpack-plugin");
 const WebpackBar = require("webpackbar");
 
 const isDev = process.env.NODE_ENV === "dev" ? true : false;
 const babelRc = fs.readFileSync(path.resolve(__dirname, "../.babelrc"));
 
-const vendorFiles = [
-  "@babel/polyfill",
-  "react",
-  "react-dom",
-  "redux",
-  "react-apollo",
-  "moment",
-];
+const vendorFiles = ["react", "react-dom", "redux", "react-apollo", "moment"];
+let source = "";
 if (isDev) {
+  source = "src";
   vendorFiles.push("webpack-hot-middleware/client?reload=true");
 }
 module.exports = (args, name) => {
@@ -36,18 +30,20 @@ module.exports = (args, name) => {
       hash: false,
     },
     entry: {
-      ["public/js/vendor"]: vendorFiles,
-      ["client/themes/" + args.theme + "/public/dist/client"]: [
-        path.join(__dirname, "../client/app"),
+      [source + "/public/js/vendor"]: vendorFiles,
+      [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
+        path.join(__dirname, "../src/client/app"),
       ],
-      "admin/public/dist/admin": [path.join(__dirname, "../admin/app")],
+      [source + "/admin/public/dist/admin"]: [
+        path.join(__dirname, "../src/admin/app"),
+      ],
     },
     resolve: {
       alias: {
-        admin: path.join(__dirname, "../admin"),
-        client: path.join(__dirname, "../client"),
-        shared: path.join(__dirname, "../shared"),
-        config: path.join(__dirname, "../config"),
+        admin: path.join(__dirname, "/../src/admin"),
+        client: path.join(__dirname, "/../src/client"),
+        shared: path.join(__dirname, "/../src/shared"),
+        config: path.join(__dirname, "/../src/config"),
       },
       extensions: [".js"],
     },
@@ -83,9 +79,9 @@ module.exports = (args, name) => {
                 ...JSON.parse(babelRc),
               },
             },
-            { loader: "eslint-loader" },
+            // { loader: "eslint-loader" },
           ],
-          include: path.join(__dirname, "../client"),
+          include: path.join(__dirname, "../src/client"),
         },
         // js
         {
@@ -99,7 +95,7 @@ module.exports = (args, name) => {
             },
             { loader: "eslint-loader" },
           ],
-          include: path.join(__dirname, "../admin"),
+          include: path.join(__dirname, "../src/admin"),
         },
         {
           test: /\.html$/,

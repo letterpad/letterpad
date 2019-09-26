@@ -27,14 +27,14 @@ const clientConfig = args => {
     optimization: {
       minimize: false,
       runtimeChunk: {
-        name: "public/js/vendor",
+        name: "src/public/js/vendor",
       },
       splitChunks: {
         cacheGroups: {
           default: false,
           commons: {
-            test: "public/js/vendor-bundle.js",
-            name: "public/js/vendor",
+            test: "src/public/js/vendor-bundle.js",
+            name: "src/public/js/vendor",
             chunks: "all",
           },
         },
@@ -73,7 +73,7 @@ const serverConfig = args => {
   }
   const BUILD_PATH = path.join(
     __dirname,
-    "../client/themes/" + args.theme + "/public/dist",
+    "../src/client/themes/" + args.theme + "/public/dist",
   );
 
   const getExternals = () => {
@@ -92,7 +92,7 @@ const serverConfig = args => {
     cache: true,
     target: "node",
     entry: {
-      server: ["@babel/polyfill", path.join(__dirname, "../client/server")],
+      server: [path.join(__dirname, "../src/client/server")],
     },
     output: {
       filename: "server.node.js",
@@ -119,7 +119,7 @@ const serverConfig = args => {
     },
   });
   config.entry = {
-    server: [path.join(__dirname, "../client/server")],
+    server: [path.join(__dirname, "../src/client/server")],
   };
   return config;
 };
