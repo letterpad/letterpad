@@ -123,7 +123,8 @@ module.exports.init = app => {
 };
 
 function getHtml(apolloState) {
-  const isDev = process.env.NODE_ENV === "dev";
+  const isProd = process.env.NODE_ENV === "production";
+  const isDev = !isProd;
 
   const devBundles = [
     "/static/src/public/js/vendor-bundle.js",

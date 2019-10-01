@@ -3,7 +3,6 @@ const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const fs = require("fs");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const MinifyPlugin = require("babel-minify-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
 const clientConfig = args => {
@@ -21,7 +20,6 @@ const clientConfig = args => {
     plugins: [
       extractPcss,
       extractPcssAdmin,
-      new MinifyPlugin(),
       new CopyPlugin([
         {
           from: __dirname + "/../src/admin/public",
@@ -123,7 +121,6 @@ const serverConfig = args => {
   };
   const config = merge(baseConfig(args, "server"), {
     target: "node",
-
     output: {
       filename: "server.node.js",
       path: BUILD_PATH,
