@@ -13,7 +13,7 @@ const StyledRadio = styled.div`
           content: "";
           background: var(--bg-sections);
           border-radius: 100%;
-          border: 1px solid var(--color-border);
+          border: 1px solid #eee;
           display: inline-block;
           width: 1.4em;
           height: 1.4em;
@@ -29,7 +29,7 @@ const StyledRadio = styled.div`
       &:checked {
         + .radio-label {
           &:before {
-            background-color: rgba(var(--color-accent));
+            background-color: #ddd;
           }
         }
       }
@@ -37,7 +37,7 @@ const StyledRadio = styled.div`
         + .radio-label {
           &:before {
             outline: none;
-            border-color: rgba(--var(color-accent));
+            border-color: #ddd;
           }
         }
       }

@@ -23,6 +23,9 @@ const clientOpts = {
   ssrMode: false,
   fetchPolicy: "no-cache",
 };
+
+const themesDir = path.join(__dirname, "../../client/themes/");
+
 module.exports.init = app => {
   app.get(config.baseName + "/admin/generate-static-site", (req, res) => {
     return client(true, req.headers.token, clientOpts)
@@ -61,46 +64,44 @@ module.exports.init = app => {
         // Get all the folders inside the "themes" folder. Check if each
         // of those folder has a "config.json" file. If found, we will assume that
         // as a valid theme.
-        getDirectories(path.join(__dirname, "../client/themes/")).map(
-          themePath => {
-            if (fs.existsSync(themePath + "/config.json")) {
-              // delete cache to get updated file
-              delete require.cache[require.resolve(themePath + "/config.json")];
-              // get all the contents from the "config" file.
-              const contents = require(themePath + "/config.json");
-              const themeConfig = Object.assign({}, contents);
-              const folder_name = themePath.split("/").pop(-1);
-              // check if it has a thumbnail without http
-              if (themeConfig.thumbnail.indexOf("http") === -1) {
-                themeConfig.thumbnail =
-                  config.baseName + "/" + folder_name + themeConfig.thumbnail;
-              }
-              // check the theme has settings
-              const hasSettings = fs.existsSync(themePath + "/settings.json");
-
-              themeConfig.active = themeConfig.short_name === themeName;
-              themeConfig.settings = hasSettings;
-              availableThemes.push(themeConfig);
-              // get default settings of all themes from files
-              if (hasSettings) {
-                // we need to delete the cache, to get updated settings file
-                delete require.cache[
-                  require.resolve(themePath + "/settings.json")
-                ];
-                const defaultSettings = require(themePath + "/settings.json");
-                const values = {};
-                defaultSettings.forEach(field => {
-                  values[field.name] = field.defaultValue;
-                });
-                newSettings.push({
-                  name: themeConfig.short_name,
-                  value: JSON.stringify(values),
-                  settings: JSON.stringify(defaultSettings),
-                });
-              }
+        getDirectories(themesDir).map(themePath => {
+          if (fs.existsSync(themePath + "/config.json")) {
+            // delete cache to get updated file
+            delete require.cache[require.resolve(themePath + "/config.json")];
+            // get all the contents from the "config" file.
+            const contents = require(themePath + "/config.json");
+            const themeConfig = Object.assign({}, contents);
+            const folder_name = themePath.split("/").pop(-1);
+            // check if it has a thumbnail without http
+            if (themeConfig.thumbnail.indexOf("http") === -1) {
+              themeConfig.thumbnail =
+                config.baseName + "/" + folder_name + themeConfig.thumbnail;
             }
-          },
-        );
+            // check the theme has settings
+            const hasSettings = fs.existsSync(themePath + "/settings.json");
+
+            themeConfig.active = themeConfig.short_name === themeName;
+            themeConfig.settings = hasSettings;
+            availableThemes.push(themeConfig);
+            // get default settings of all themes from files
+            if (hasSettings) {
+              // we need to delete the cache, to get updated settings file
+              delete require.cache[
+                require.resolve(themePath + "/settings.json")
+              ];
+              const defaultSettings = require(themePath + "/settings.json");
+              const values = {};
+              defaultSettings.forEach(field => {
+                values[field.name] = field.defaultValue;
+              });
+              newSettings.push({
+                name: themeConfig.short_name,
+                value: JSON.stringify(values),
+                settings: JSON.stringify(defaultSettings),
+              });
+            }
+          }
+        });
 
         // If the theme developer has changed the settings of the theme,
         // it has to sync with the database.
@@ -122,14 +123,15 @@ module.exports.init = app => {
 };
 
 function getHtml(apolloState) {
-  const isDev = process.env.NODE_ENV === "dev";
+  const isProd = process.env.NODE_ENV === "production";
+  const isDev = !isProd;
 
   const devBundles = [
     "/static/src/public/js/vendor-bundle.js",
     "/static/src/admin/public/dist/admin-bundle.js",
   ];
   const prodBundles = [
-    "/dist/js/vendor-bundle.min.js",
+    "/js/vendor-bundle.min.js",
     "/admin/dist/admin-bundle.min.js",
   ];
   const bundles = isDev ? devBundles : prodBundles;

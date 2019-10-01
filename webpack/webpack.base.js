@@ -1,21 +1,26 @@
 const webpack = require("webpack");
 const path = require("path");
 const fs = require("fs");
-var FileNameReplacementPlugin = require("./FileNameReplacementPlugin");
+const FileNameReplacementPlugin = require("./FileNameReplacementPlugin");
 const WebpackBar = require("webpackbar");
 
-const isDev = process.env.NODE_ENV === "dev" ? true : false;
 const babelRc = fs.readFileSync(path.resolve(__dirname, "../.babelrc"));
 
 const vendorFiles = ["react", "react-dom", "redux", "react-apollo", "moment"];
 let source = "";
-if (isDev) {
-  source = "src";
-  vendorFiles.push("webpack-hot-middleware/client?reload=true");
-}
+
 module.exports = (args, name) => {
+  let env = "production";
+  const isProd = args.NODE_ENV === "production";
+  const isDev = !isProd;
+
+  if (isDev) {
+    source = "src";
+    env = "development";
+    vendorFiles.push("webpack-hot-middleware/client?reload=true");
+  }
   const config = {
-    mode: "development", // for production we use this mode to ignore uglify plugin. it is slow.
+    mode: env, // for production we use this mode to ignore uglify plugin. it is slow.
     watch: isDev,
     stats: {
       cached: false,
@@ -51,7 +56,7 @@ module.exports = (args, name) => {
       new WebpackBar({ name: name }),
       new webpack.DefinePlugin({
         "process.env": {
-          NODE_ENV: JSON.stringify(isDev ? "dev" : "production"),
+          NODE_ENV: JSON.stringify(env),
         },
       }),
       new webpack.DefinePlugin({
@@ -60,7 +65,6 @@ module.exports = (args, name) => {
           uploadUrl: "process.env.uploadUrl",
           rootUrl: "process.env.rootUrl",
           appPort: "process.env.appPort",
-          apiPort: "process.env.apiPort",
           baseName: "process.env.baseName",
         },
       }),

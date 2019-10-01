@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Route, Switch } from "react-router-dom";
-import { withRouter } from "react-router";
 import SEO from "../helpers/SEO";
 import Loader from "../helpers/Loader";
 import config from "../../config";
