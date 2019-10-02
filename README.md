@@ -102,11 +102,32 @@ testing, ideas, recommendations, fixing bugs, documentation, logo design, assets
 
 Thanks to all the people who contributed. [[Contribute](CONTRIBUTING.md)].
 
-- Abhishek Saha | <a target="_blank" href="https://github.com/ajaxtown">@ajaxtown</a>
-- Tien Pham | <a target="_blank" href="https://github.com/tienpham94">@tienpham94</a>
-- Aleksey Derkach | <a target="_blank" href="https://github.com/alder">@alder</a>
-- Boopathi Rajaa | <a target="_blank" href="https://github.com/boopathi">@boopathi</a>
-- Todd Cantley | <a target="_blank" href="https://toddcantley.com">toddcantley.com</a>
+<table>
+    <tr>
+        <td align="center">
+            <a href="https://github.com/ajaxtown"><img src="https://avatars3.githubusercontent.com/u/1502352?s=460&v=4" width="100px;" alt="Abhishek Saha" />
+                <br /><sub><b>Abhishek Saha</b></sub></a>
+           </td>
+        <td align="center">
+            <a href="https://github.com/tienpham94"><img src="https://avatars0.githubusercontent.com/u/25751050?s=460&v=4" width="100px;" alt="Tien Pham" />
+                <br /><sub><b>Tien Pham</b></sub></a>
+           </td>
+        <td align="center">
+            <a href="https://github.com/alder"><img src="https://avatars3.githubusercontent.com/u/199887?s=460&v=4" width="100px;" alt="Aleksey Derkach" />
+                <br /><sub><b>Aleksey Derkach</b></sub></a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/boopathi"><img src="https://avatars1.githubusercontent.com/u/294474?s=460&v=4" width="100px;" alt="Boopathi Rajaa" />
+                <br /><sub><b>Boopathi Rajaa</b></sub></a>
+            </td>
+       </td>
+       <td align="center">
+            <a href="https://toddcantley.com"><img src="https://cdn.dribbble.com/users/997175/avatars/normal/dd175be405cc04ac43be1877f521184d.png?1501249987" width="100px;" alt="Todd Cantley" />
+                <br /><sub><b>Todd Cantley</b></sub></a>
+            </td>
+       </td>
+    </tr>
+</table>
 
 ## Backers
 

@@ -32,10 +32,6 @@ const clientConfig = args => {
           force: true,
         },
         {
-          from: __dirname + "/../src/data",
-          to: __dirname + "/../dist/data",
-        },
-        {
           from: __dirname + "/../src/admin/server/content.tpl",
           to: __dirname + "/../dist/admin/server/content.tpl",
         },
