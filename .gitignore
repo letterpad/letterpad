@@ -11,7 +11,7 @@ hot
 src/client/themes/*
 src/admin/public/dist
 *hot*js*
-src/data/*
+data/*
 !data/.gitkeep 
 yarn-error.log
 src/public/uploads
