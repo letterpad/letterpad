@@ -3,8 +3,8 @@
 if [ ! -a ".env" ]; then
     cp sample.env .env
 fi
-if [ ! -f "src/data/.init" ]; then
-    touch src/data/.init
+if [ ! -f "data/.init" ]; then
+    touch data/.init
     echo "Seeding the database..."
     yarn seed
     echo "Seeding complete!"
