@@ -2,7 +2,6 @@ const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 const vendorFiles = ["react", "react-dom", "redux", "react-apollo", "moment"];
 
@@ -17,7 +16,7 @@ const clientConfig = args => {
       path: path.join(__dirname, "../"),
       filename: "[name]-bundle.min.js",
     },
-    plugins: [extractPcssAdmin, new MinifyPlugin()],
+    plugins: [extractPcssAdmin],
     module: {
       rules: [
         {

@@ -15,7 +15,7 @@ const copydirAsync = promisify(copydir);
 Faker.locale = "en_US";
 
 // All paths are relative to this file
-const dataDir = "../../data";
+const dataDir = "../../../data";
 const publicUploadsDir = "../../public/uploads";
 const uploadsSourceDir = "./uploads";
 

@@ -2,7 +2,7 @@ const path = require("path");
 
 const getFile = name => {
   const dbFile = name + ".sqlite";
-  return path.join(__dirname, "../data/", dbFile);
+  return path.join(__dirname, "../../data/", dbFile);
 };
 
 module.exports = {
