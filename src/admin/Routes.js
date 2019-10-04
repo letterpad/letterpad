@@ -5,6 +5,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import { withRouter } from "react-router";
 import Notifications from "react-notify-toast";
 import { I18nextProvider } from "react-i18next";
+import { hot } from "react-hot-loader/root";
 
 // Shared
 import getI18nWithDefaultLang from "../shared/i18n/i18n";
@@ -191,4 +192,4 @@ class Routes extends Component {
   }
 }
 
-export default SettingsData(withRouter(Routes));
+export default hot(SettingsData(withRouter(Routes)));

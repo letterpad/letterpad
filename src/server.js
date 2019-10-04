@@ -41,30 +41,30 @@ if (process.env.NODE_ENV === "dev") {
       const webpackDevMiddleware = require("webpack-dev-middleware");
       const webpackHotMiddleware = require("webpack-hot-middleware");
 
-      app.use(
-        webpackDevMiddleware(compiler, {
-          noInfo: true,
-          hot: true,
-          publicPath: webpackConfig.output.publicPath,
-          stats: {
-            colors: true,
-            hash: false,
-            timings: true,
-            chunks: false,
-            chunkModules: false,
-            modules: false,
-          },
-          historyApiFallback: true,
-        }),
-      );
-
-      app.use(
-        webpackHotMiddleware(compiler, {
-          log: console.log,
-          path: "/__webpack_hmr",
-          heartbeat: 200,
-        }),
-      );
+      app
+        .use(
+          webpackDevMiddleware(compiler, {
+            noInfo: true,
+            hot: true,
+            publicPath: webpackConfig.output.publicPath,
+            stats: {
+              colors: true,
+              hash: false,
+              timings: true,
+              chunks: false,
+              chunkModules: false,
+              modules: false,
+            },
+            historyApiFallback: true,
+          }),
+        )
+        .use(
+          webpackHotMiddleware(compiler, {
+            log: console.log,
+            path: "/__webpack_hmr",
+            heartbeat: 200,
+          }),
+        );
       // To take care of server sided rendering, we either have to restart the server
       // or delete the cache. After webpack has rebuild the bundles with the new change, we clear the cache
       // so that in the next request, node can read the new files instead of the cached ones.

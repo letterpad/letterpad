@@ -6,10 +6,9 @@ const WebpackBar = require("webpackbar");
 
 const babelRc = fs.readFileSync(path.resolve(__dirname, "../.babelrc"));
 
-const vendorFiles = ["react", "react-dom", "redux", "react-apollo", "moment"];
-let source = "";
-
 module.exports = (args, name) => {
+  let source = "";
+  const vendorFiles = ["react", "react-dom", "redux", "react-apollo", "moment"];
   let env = "production";
   const isProd = args.NODE_ENV === "production";
   const isDev = !isProd;
@@ -17,7 +16,6 @@ module.exports = (args, name) => {
   if (isDev) {
     source = "src";
     env = "development";
-    vendorFiles.push("webpack-hot-middleware/client?reload=true");
   }
   const config = {
     mode: env, // for production we use this mode to ignore uglify plugin. it is slow.
@@ -80,6 +78,7 @@ module.exports = (args, name) => {
             {
               loader: "babel-loader",
               options: {
+                cacheDirectory: true,
                 ...JSON.parse(babelRc),
               },
             },
@@ -94,6 +93,7 @@ module.exports = (args, name) => {
             {
               loader: "babel-loader",
               options: {
+                cacheDirectory: true,
                 ...JSON.parse(babelRc),
               },
             },
@@ -110,10 +110,6 @@ module.exports = (args, name) => {
       ],
     },
   };
-
-  if (isDev) {
-    config.plugins.push(new webpack.HotModuleReplacementPlugin());
-  }
 
   return config;
 };
