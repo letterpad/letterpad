@@ -4,7 +4,7 @@
   "description": "Letterpad is an open-source and a high performant publishing engine for blogs built with react & graphql and runs ridiculously fast 🚀",
   "main": "start.js",
   "scripts": {
-    "build": "./utils/convertToes5.sh && webpack  --hot  --inline --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
+    "build": "./utils/convertToes5.sh && webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
     "build:theme": "webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${theme}",
     "build:admin": "webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.admin.prod.js",
     "seed": "node ./src/api/seed",
