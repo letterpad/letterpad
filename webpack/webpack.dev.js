@@ -2,69 +2,69 @@ const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const fs = require("fs");
+const hotReloadConfig = require("./webpack.hot.reload");
 
 const clientConfig = args => {
   if (args.theme == "") {
     args.theme = "hugo";
   }
-  return merge(baseConfig(args, "client"), {
-    name: "client",
-    devtool: "cheap-module-source-map",
-    target: "web",
-    entry: {
-      "react-hot-loder": "react-hot-loader/patch",
-    },
-    output: {
-      path: path.join(__dirname, "../"),
-      filename: "[name]-bundle.js",
-      publicPath: "/static/",
-      hotUpdateChunkFilename: "public/hot/client-hot-update.js",
-      hotUpdateMainFilename: "public/hot/client-hot-update.json",
-    },
-    watchOptions: {
-      ignored: [/node_modules([\\]+|\/)+(?!\some_npm_module_name)/],
-    },
-    optimization: {
-      minimize: false,
-      runtimeChunk: {
-        name: "src/public/js/vendor",
+  return merge(
+    baseConfig(args, "client"),
+    {
+      name: "client",
+      devtool: "cheap-module-source-map",
+      target: "web",
+      output: {
+        path: path.join(__dirname, "../"),
+        filename: "[name]-bundle.js",
+        publicPath: "/static/",
       },
-      splitChunks: {
-        cacheGroups: {
-          default: false,
-          commons: {
-            test: "src/public/js/vendor-bundle.js",
-            name: "src/public/js/vendor",
-            chunks: "all",
+      watchOptions: {
+        ignored: [/node_modules([\\]+|\/)+(?!\some_npm_module_name)/],
+      },
+      optimization: {
+        minimize: false,
+        runtimeChunk: {
+          name: "src/public/js/vendor",
+        },
+        splitChunks: {
+          cacheGroups: {
+            default: false,
+            commons: {
+              test: "src/public/js/vendor-bundle.js",
+              name: "src/public/js/vendor",
+              chunks: "all",
+            },
           },
         },
       },
-    },
-    module: {
-      rules: [
-        {
-          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-          loader: "url-loader?url=false",
-        },
-        {
-          test: /\.(css|pcss)$/,
-          use: [
-            "style-loader",
-            {
-              loader: "css-loader",
-              options: { importLoaders: 1, sourceMap: true },
-            },
-            {
-              loader: "postcss-loader",
-              options: {
-                sourceMap: "inline",
+      module: {
+        rules: [
+          {
+            test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+            loader: "url-loader?url=false",
+          },
+          {
+            test: /\.(css|pcss)$/,
+            use: [
+              "style-loader",
+              {
+                loader: "css-loader",
+                options: { importLoaders: 1, sourceMap: true },
               },
-            },
-          ],
-        },
-      ],
+              {
+                loader: "postcss-loader",
+                options: {
+                  sourceMap: "inline",
+                },
+              },
+            ],
+          },
+        ],
+      },
     },
-  });
+    hotReloadConfig,
+  );
 };
 
 const serverConfig = args => {
@@ -124,4 +124,6 @@ const serverConfig = args => {
   return config;
 };
 
-module.exports = args => [serverConfig(args), clientConfig(args)];
+module.exports = args => {
+  return [serverConfig(args), clientConfig(args)];
+};
