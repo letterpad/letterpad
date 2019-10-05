@@ -4,7 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import SEO from "../helpers/SEO";
 import Loader from "../helpers/Loader";
 import config from "../../config";
-import { hot, setConfig } from "react-hot-loader";
+import { hot } from "react-hot-loader";
 // Data supply
 import SettingsData from "../../shared/data-connectors/SettingsData";
 import ThemeSettingsData from "../../shared/data-connectors/ThemeSettingsData";
@@ -190,7 +190,6 @@ class Routes extends Component {
     );
   }
 }
-setConfig({ logLevel: "error" });
 
 Routes.propTypes = {
   location: PropTypes.object,

@@ -299,7 +299,6 @@ class Media extends Component {
           ))}
         </StyledGrid>
         <Paginate count={this.props.media.count} page={this.state.page} />
-
         {this.state.confirmDelete && (
           <ConfirmDeleteModal
             title="Confirm Delete"

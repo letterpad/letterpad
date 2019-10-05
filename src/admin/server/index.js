@@ -127,6 +127,7 @@ function getHtml(apolloState) {
   const isDev = !isProd;
 
   const devBundles = [
+    "/static/hot-reload-bundle.js",
     "/static/src/public/js/vendor-bundle.js",
     "/static/src/admin/public/dist/admin-bundle.js",
   ];

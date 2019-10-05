@@ -131,7 +131,6 @@ class General extends Component {
           placeholder={t("settings.general.site.tagline.placeholder")}
           onBlur={e => this.updateOption("site_tagline", e.target.value)}
         />
-
         <Input
           label={t("settings.general.site.email")}
           defaultValue={this.props.data.site_email.value}
@@ -139,7 +138,6 @@ class General extends Component {
           placeholder="someone@somewhere.com"
           onBlur={e => this.updateOption("site_email", e.target.value)}
         />
-
         <Input
           label={t("settings.general.site.description")}
           textarea
@@ -149,7 +147,6 @@ class General extends Component {
           required=""
           onBlur={e => this.updateOption("site_description", e.target.value)}
         />
-
         <Input
           label={t("settings.general.site.url")}
           defaultValue={this.props.data.site_url.value}
@@ -157,7 +154,6 @@ class General extends Component {
           placeholder={t("settings.general.site.url.placeholder")}
           onBlur={e => this.updateOption("site_url", e.target.value)}
         />
-
         <Input
           label={t("settings.general.site.footer") + "(html allowed)"}
           textarea
@@ -168,7 +164,6 @@ class General extends Component {
           required=""
           onBlur={e => this.updateOption("site_footer", e.target.value)}
         />
-
         <ImageWrapper>
           <label className="custom-label">Upload Logo</label>
           <div className="logo-wrapper">
@@ -241,7 +236,6 @@ class General extends Component {
             name="uploads[]"
           />
         </ImageWrapper>
-
         <Input
           label={t("settings.general.site.ga")}
           defaultValue={this.props.data.google_analytics.value}
@@ -249,7 +243,6 @@ class General extends Component {
           placeholder={t("settings.general.site.ga.placeholder")}
           onBlur={e => this.updateOption("google_analytics", e.target.value)}
         />
-
         <StyledSelect
           label="Select language"
           selected={selectedLanguage}

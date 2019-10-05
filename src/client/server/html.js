@@ -20,6 +20,7 @@ module.exports.getHtml = (
   const isDev = process.env.NODE_ENV === "dev";
 
   let devBundles = [
+    "static/hot-reload-bundle.js",
     "static/src/public/js/vendor-bundle.js",
     "static/src/client/themes/" + theme + "/public/dist/client-bundle.js",
   ];
