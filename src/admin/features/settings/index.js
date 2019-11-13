@@ -19,11 +19,14 @@ import Tabs from "../../components/tabs";
 
 import { GET_OPTIONS } from "../../../shared/queries/Queries";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
+import Themes from "./Themes";
+import Css from "./Css";
 
 class Settings extends Component {
   static propTypes = {
     updateOptions: PropTypes.func,
     options: PropTypes.object,
+    settings: PropTypes.object,
     history: PropTypes.object,
     t: PropTypes.func,
   };
@@ -64,15 +67,15 @@ class Settings extends Component {
 
   render() {
     const { selected } = this.state;
-    const { options, t } = this.props;
-    const data = {};
+    const { options, settings, t } = this.props;
+    // const data = {};
 
     if (options.loading) {
       return <Loader />;
     }
-    options.settings.forEach(setting => {
-      data[setting.option] = setting;
-    });
+    // options.settings.forEach(setting => {
+    //   data[setting.option] = setting;
+    // });
 
     return (
       <StyledSection>
@@ -82,16 +85,30 @@ class Settings extends Component {
             subtitle={t(`settings.${selected}.tagline`)}
           />
 
-          <General label="general" data={data} updateOption={this.setOption} />
-          <Social label="social" data={data} updateOption={this.setOption} />
-          <Optional
-            label="optional"
-            data={data}
+          <General
+            label="general"
+            data={settings}
             updateOption={this.setOption}
           />
+          <Social
+            label="social"
+            data={settings}
+            updateOption={this.setOption}
+          />
+          <Optional
+            label="optional"
+            data={settings}
+            updateOption={this.setOption}
+          />
+          <Themes
+            label="themes"
+            settings={settings}
+            updateOptions={this.setOption}
+          />
+          <Css label="css" settings={settings} updateOption={this.setOption} />
           <Messages
             label="messages"
-            data={data}
+            data={settings}
             updateOption={this.setOption}
           />
           <br />

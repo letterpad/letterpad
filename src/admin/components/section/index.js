@@ -51,7 +51,7 @@ Section.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
-  title: PropTypes.string,
+  title: PropTypes.any,
   subtitle: PropTypes.string,
 };
 

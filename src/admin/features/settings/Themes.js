@@ -5,7 +5,7 @@ import { notify } from "react-notify-toast";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
 import SettingsData from "shared/data-connectors/SettingsData";
 import { makeUrl } from "shared/util";
-import ThemeItem from "./ThemeItem";
+import ThemeItem from "./themes/ThemeItem";
 
 // import StyledSection from "../../components/section";
 import StyledGrid from "../../components/grid";
