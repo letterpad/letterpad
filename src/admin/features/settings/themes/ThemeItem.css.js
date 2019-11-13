@@ -9,7 +9,7 @@ const Wrapper = styled.article`
   }
   &.active .status {
     display: inline-block;
-    background: rgba(var(--color-accent));
+    background: var(--color-accent);
     color: var(--color-base);
     position: absolute;
     padding: 5px 8px;

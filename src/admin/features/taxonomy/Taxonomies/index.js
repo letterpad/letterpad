@@ -15,13 +15,12 @@ const ListItem = styled.div`
   display: flex;
   align-items: center;
   padding-left: 1.15rem;
-  background-color: ${({ selected }) =>
-    selected && "rgba(var(--color-accent))"};
+  background-color: ${({ selected }) => selected && "var(--color-accent)"};
   color: ${({ selected }) => selected && "#FFF"};
   &:hover {
     color: ${({ selected }) => selected && "#FFF"};
     background-color: ${({ selected }) =>
-      selected ? "rgba(var(--color-accent))" : "rgba(var(--color-accent))"};
+      selected ? "var(--color-accent)" : "var(--color-accent)"};
   }
   cursor: pointer;
 `;

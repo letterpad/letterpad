@@ -167,7 +167,7 @@ class FeaturedImage extends Component {
               <div
                 key={idx}
                 className={selected ? "selected" : ""}
-                onClick={() => this.setCoverImage(imagePath)}
+                onClick={() => this.setCoverImage([imagePath])}
               >
                 <img alt="" width="100%" src={imagePath} />
               </div>

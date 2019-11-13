@@ -12,7 +12,6 @@ import Optional from "./Optional";
 import Messages from "./Messages";
 
 import StyledSection from "../../components/section";
-// import StyledCard from "../../components/card";
 import StyledTitleHeader from "../../components/title-header";
 import Button from "../../components/button";
 import Tabs from "../../components/tabs";
@@ -68,14 +67,10 @@ class Settings extends Component {
   render() {
     const { selected } = this.state;
     const { options, settings, t } = this.props;
-    // const data = {};
 
     if (options.loading) {
       return <Loader />;
     }
-    // options.settings.forEach(setting => {
-    //   data[setting.option] = setting;
-    // });
 
     return (
       <StyledSection>

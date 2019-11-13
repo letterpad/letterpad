@@ -105,7 +105,7 @@ class Taxonomy extends Component {
     const item = { ...taxonomies.filter(t => t.id === id)[0], type };
 
     // merge new changes into this item
-    const changedItem = { ...item, ...taxonomies[selectedIndex], edit: 1 };
+    const changedItem = { ...item, ...taxonomies[selectedIndex], edit: true };
 
     const result = await updateTaxonomy(changedItem);
     if (result.data.updateTaxonomy.ok) {
@@ -131,7 +131,7 @@ class Taxonomy extends Component {
       type,
       name: newTagName,
       desc: "",
-      edit: 0,
+      edit: false,
       id: 0,
       slug: newTagName,
     };

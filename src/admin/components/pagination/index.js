@@ -20,7 +20,7 @@ const Wrapper = styled.div`
         font-weight: 400;
         &.active,
         &:hover {
-          background: rgba(var(--color-accent));
+          background: var(--color-accent);
           color: #fff;
         }
       }

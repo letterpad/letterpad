@@ -22,14 +22,14 @@ const StyledThemeChooser = styled.div`
     cursor: pointer;
     i.light {
       color: ${p =>
-        p.active == "light" && "rgba(var(--color-accent));font-weight: bold;"};
+        p.active == "light" && "var(--color-accent);font-weight: bold;"};
     }
     i.dark {
       color: ${p =>
-        p.active == "dark" && "rgba(var(--color-accent));font-weight: bold;"};
+        p.active == "dark" && "var(--color-accent);font-weight: bold;"};
     }
     i:hover {
-      color: rgba(var(--color-accent));
+      color: var(--color-accent);
       font-weight: bold;
     }
   }
