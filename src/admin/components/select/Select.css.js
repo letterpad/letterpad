@@ -40,7 +40,7 @@ const StyledSelect = styled.div`
       }
       &:hover,
       &.selected {
-        background: rgba(var(--color-accent, 0.8));
+        background: var(--color-accent);
         cursor: pointer;
       }
     }

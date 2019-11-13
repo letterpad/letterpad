@@ -20,9 +20,9 @@ class Excerpt extends Component {
     let { excerpt } = this.props.post;
     if (!excerpt) {
       // the body will contain html characters. Remove all the tags and get plain text
-      let stripedHtml = this.props.post.body.replace(/<[^>]+>/g, "");
+      let html = this.props.post.body;
       const text = document.createElement("textarea");
-      text.innerHTML = stripedHtml;
+      text.innerHTML = html;
       const decodedHtml = text.value;
       // maximum number of characters to extract
       if (decodedHtml.length > this.maxLength) {
@@ -59,9 +59,7 @@ class Excerpt extends Component {
     return (
       <div>
         <StyledInput
-          label={`Write a small introduction about this post - [${
-            this.state.chars
-          }/160]`}
+          label={`Write a small introduction about this post - [${this.state.chars}/160]`}
           textarea
           rows={2}
           maxLength={160}

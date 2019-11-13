@@ -1,7 +1,7 @@
 const darkTheme = `
-    --bg-base: #212121;
-    --bg-sections: #000000;
-    --color-border: #37393e;
+    --bg-base: #1C2429;
+    --bg-sections: #131B1F;
+    --color-border: #283237;
     
     --color-base: #c8c8c8;
 

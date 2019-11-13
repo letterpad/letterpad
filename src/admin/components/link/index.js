@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const StyledLink = styled(Link)`
-  color: rgba(var(--color-accent), 0.8);
-  ${props => props.normal && "text-decoration: none;color: var(--color-base)"};
+  color: var(--color-accent)
+    ${props => props.normal && "text-decoration: none;color: var(--color-base)"};
   &:hover {
-    color: rgba(var(--color-accent), 1);
+    color: var(--color-accent);
   }
 `;
 

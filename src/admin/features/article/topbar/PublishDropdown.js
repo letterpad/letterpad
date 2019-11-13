@@ -33,7 +33,7 @@ class PublishDropdown extends Component {
             success
             onClick={e => {
               this.props.updatePost(e, { status: status });
-              this.props.close(e, false);
+              // this.props.close(e, false);
             }}
             className={"publish-btn btn btn-sm " + btnType}
           >
