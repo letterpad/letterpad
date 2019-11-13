@@ -75,12 +75,12 @@ const Sidebar = styled.div`
         border: none;
       }
     }
-    a {
+    /* a {
       color: rgba(255, 255, 255, 0.7);
       &:hover {
         color: #fff;
       }
-    }
+    } */
     .footer {
       height: 45px;
       display: flex;
