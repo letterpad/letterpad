@@ -70,7 +70,6 @@ Resources.propTypes = {
       id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
       title: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
       url: PropTypes.string,
     }),
   ),

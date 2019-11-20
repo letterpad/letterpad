@@ -6,7 +6,9 @@ import OhSnap from "../../components/oh-snap";
 import Edit from "./Edit";
 import TopBar from "./topbar";
 import Loader from "../../components/loader";
-import GetSinglePost from "../../data-connectors/GetSinglePost";
+// import GetSinglePost from "../../data-connectors/GetSinglePost";
+import { GET_SINGLE_POST } from "../../../shared/queries/Queries";
+import { executeQuery } from "../../../shared/executeQuery";
 
 const FlexColumn = styled.div`
   display: flex;
@@ -31,14 +33,25 @@ class Article extends Component {
     history: PropTypes.object,
     manageScroll: PropTypes.func,
     theme: PropTypes.string,
+    match: PropTypes.object,
   };
 
-  // static defaultProps = {
-  //   theme: "light",
-  // };
+  state = {
+    loading: true,
+    post: null,
+  };
 
-  componentDidMount() {
+  async componentDidMount() {
     document.body.classList.add("edit-post-page");
+    const result = await executeQuery(GET_SINGLE_POST, {
+      filters: {
+        id: parseInt(this.props.match.params.post_id),
+      },
+    });
+    this.setState({
+      post: result.data.getSinglePost,
+      loading: false,
+    });
   }
 
   componentWillUnmount() {
@@ -46,21 +59,21 @@ class Article extends Component {
   }
 
   render() {
-    if (this.props.loading) {
+    if (this.state.loading) {
       return <Loader />;
     }
-    if (!this.props.post) {
+    if (!this.state.post) {
       return (
         <OhSnap message="This page is either dead for good or restricted." />
       );
     }
     return (
       <FlexColumn fullHeight>
-        <TopBar edit history={this.props.history} post={this.props.post} />
+        <TopBar edit history={this.props.history} post={this.state.post} />
         <div className="article-holder">
           <Edit
             theme={this.props.theme}
-            post={this.props.post}
+            post={this.state.post}
             setHtml={this.setHtml}
           />
         </div>
@@ -69,4 +82,4 @@ class Article extends Component {
   }
 }
 
-export default GetSinglePost(Article);
+export default Article;

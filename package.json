@@ -11,6 +11,7 @@
     "preinstall": "./utils/preinstall.sh",
     "postinstall": "./utils/postinstall.sh",
     "dev": "NODE_ENV=dev concurrently --kill-others \"node ./src/server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
+    "api": "NODE_ENV=dev concurrently --kill-others \"nodemon --watch src/api ./src/server.js\"",
     "prod": "NODE_ENV=production concurrently --kill-others \"node ./dist/server.js\"",
     "start": "yarn prod",
     "prodPm2": "./forever.sh",
@@ -34,6 +35,7 @@
   ],
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.0.0-beta.11",
     "@apollo/react-ssr": "^3.1.0",
     "@babel/polyfill": "^7.6.0",
     "apollo-cache-inmemory": "^1.6.3",
@@ -42,6 +44,7 @@
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.16",
     "apollo-link-schema": "^1.2.4",
+    "apollo-server-express": "^2.9.9",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",

@@ -15,22 +15,22 @@ import StyledToolbar from "./Toolbar.css";
 import StyledSection from "../../components/section";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
-import StyledSelect from "../../components/select";
 import StyledButton from "../../components/button";
 import { StyledTitle, StyledItem } from "./ArticleList.css";
+import Filters from "./Filters";
 
 class ArticleList extends Component {
   static propTypes = {
     posts: PropTypes.object,
     changePage: PropTypes.func,
     variables: PropTypes.object,
-    changeStatus: PropTypes.func,
     loading: PropTypes.bool,
     history: PropTypes.object,
     setSelection: PropTypes.func,
     selectAllPosts: PropTypes.func,
     deleteSelectedPosts: PropTypes.func,
     searchPosts: PropTypes.func,
+    fetchPosts: PropTypes.func,
     allPostsSelected: PropTypes.bool,
     selectedPosts: PropTypes.array,
     status: PropTypes.string,
@@ -53,13 +53,28 @@ class ArticleList extends Component {
     document.body.classList.remove("posts-page");
   }
 
+  changeFilter = (key, value) => {
+    const query = new URLSearchParams(this.props.history.location.search);
+    const filterKeys = [...query.keys()];
+    if (value === null) {
+      query.delete(key);
+    } else if (filterKeys.includes(key)) {
+      query.set(key, value);
+    } else {
+      query.append(key, value);
+    }
+
+    this.props.history.push({
+      search: "?" + query.toString(),
+    });
+    this.props.fetchPosts();
+  };
+
   render() {
     const { t } = this.props;
-    const { loading, type } = this.props; //|| !this.props.networkStatus === 2;
-    // const { status } = this.props;
-    // let checked = {
-    //     checked: this.props.allPostsSelected
-    // };
+    const { loading, type } = this.props;
+    const query = new URLSearchParams(this.props.history.location.search);
+
     return (
       <StyledSection
         md
@@ -74,29 +89,7 @@ class ArticleList extends Component {
         <div>
           <StyledToolbar className="action-bar">
             <div className="action-delete">
-              <StyledSelect
-                bold
-                onChange={this.props.changeStatus}
-                selected="publish"
-                options={[
-                  {
-                    name: t("common.all"),
-                    value: "all",
-                  },
-                  {
-                    name: t("common.published"),
-                    value: "publish",
-                  },
-                  {
-                    name: t("common.drafts"),
-                    value: "draft",
-                  },
-                  {
-                    name: t("common.deleted"),
-                    value: "trash",
-                  },
-                ]}
-              />
+              <Filters query={query} changeFilter={this.changeFilter} />
               {this.props.selectedPosts.length > 0 && (
                 <StyledButton
                   danger
@@ -108,7 +101,11 @@ class ArticleList extends Component {
               )}
             </div>
             <div className="right-block">
-              <Search type="post" searchPosts={this.props.searchPosts} />
+              <Search
+                type="post"
+                searchPosts={this.changeFilter}
+                query={query.get("query")}
+              />
             </div>
           </StyledToolbar>
 

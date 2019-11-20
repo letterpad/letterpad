@@ -1,8 +1,8 @@
 import { graphql } from "@apollo/react-hoc";
-import { CAT_POSTS } from "../queries/Queries";
+import { MENU_CONTENT } from "../queries/Queries";
 import config from "../../config";
 
-export default graphql(CAT_POSTS, {
+export default graphql(MENU_CONTENT, {
   options: props => {
     let offset =
       props.match.params.page_no == 1 ? 0 : props.match.params.page_no;
@@ -16,23 +16,23 @@ export default graphql(CAT_POSTS, {
       },
     };
   },
-  props: ({ data: { loading, postsMenu, fetchMore } }) => {
+  props: ({ data: { loading, getContentFromMenu, fetchMore } }) => {
     return {
-      posts: (postsMenu && postsMenu.posts) || [],
-      total: (postsMenu && postsMenu.count) || 0,
+      posts: (getContentFromMenu && getContentFromMenu.posts) || [],
+      total: (getContentFromMenu && getContentFromMenu.count) || 0,
       loading,
       fetchMore: variables => {
         return fetchMore({
           variables: variables,
           updateQuery: (previousResult, { fetchMoreResult }) => {
             return {
-              postsMenu: {
-                count: fetchMoreResult.postsMenu.count,
+              getContentFromMenu: {
+                count: fetchMoreResult.getContentFromMenu.count,
                 posts: [
-                  ...previousResult.postsMenu.posts,
-                  ...fetchMoreResult.postsMenu.posts,
+                  ...previousResult.getContentFromMenu.posts,
+                  ...fetchMoreResult.getContentFromMenu.posts,
                 ],
-                __typename: previousResult.postsMenu.__typename,
+                __typename: previousResult.getContentFromMenu.__typename,
               },
             };
           },

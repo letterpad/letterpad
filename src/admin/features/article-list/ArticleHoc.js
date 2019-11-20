@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import appoloClient from "shared/apolloClient";
-import { SEARCH_POSTS, GET_POSTS } from "../../../shared/queries/Queries";
+import { GET_POSTS } from "../../../shared/queries/Queries";
 import { BULK_DELETE_POSTS } from "../../../shared/queries/Mutations";
 
 const ArticleHoc = WrappedComponent => {
@@ -10,62 +10,32 @@ const ArticleHoc = WrappedComponent => {
   return class extends Component {
     static propTypes = {
       type: PropTypes.string.required,
+      history: PropTypes.object,
     };
 
     state = {
-      status: "publish",
-      page: 1,
-      isSearch: false,
       loading: true,
       selectedPosts: [],
       allPostsSelected: false,
-    };
-
-    variables = {
-      type: this.props.type,
-      limit: 20,
-      offset: (parseInt(this.state.page) - 1) * 20,
-      status: this.state.status,
-      query: null,
     };
 
     componentDidMount() {
       this.fetchPosts();
     }
 
-    fetchPosts = async (page = 1) => {
+    fetchPosts = async () => {
       this.setState({ loading: true });
-      this.variables.offset = (parseInt(page) - 1) * 20;
+      const query = new URLSearchParams(this.props.history.location.search);
+      const params = Object.fromEntries(query);
       let result = await appoloClient(isAdmin).query({
         query: GET_POSTS,
-        variables: this.variables,
+        variables: { filters: { ...params, type: this.props.type } },
         forceFetch: true,
         fetchPolicy: "no-cache",
       });
       this.setState({
-        page: page,
-        isSearch: false,
-        status: this.variables.status,
-        posts: result.data.posts,
+        posts: result.data.getPosts,
         loading: false,
-      });
-    };
-
-    changeStatus = status => {
-      this.variables.status = status;
-      if (!this.state.isSearch) {
-        this.fetchPosts();
-      } else {
-        this.searchPosts(
-          this.variables.query,
-          this.state.page,
-          this.variables.status,
-        );
-      }
-      this.setState({
-        status,
-        selectedPosts: [],
-        allPostsSelected: false,
       });
     };
 
@@ -89,35 +59,6 @@ const ArticleHoc = WrappedComponent => {
           }
         },
       });
-    };
-
-    searchPosts = async (query, page = 1, status = "all") => {
-      if (query === "") {
-        this.variables.status = "publish";
-        return this.setState({ status: "publish" }, () => {
-          this.fetchPosts();
-        });
-      }
-      this.setState({ loading: true });
-      this.variables.query = query;
-      this.variables.status = status;
-      this.variables.offset = (parseInt(page) - 1) * 20;
-      let result = await appoloClient(isAdmin).query({
-        query: SEARCH_POSTS,
-        variables: {
-          ...this.variables,
-          body: query,
-        },
-      });
-      this.setState({
-        page: page,
-        isSearch: true,
-        status: status,
-        posts: result.data.posts,
-        loading: false,
-      });
-
-      return result.data.posts.rows;
     };
 
     deleteSelectedPosts = () => {
@@ -151,9 +92,8 @@ const ArticleHoc = WrappedComponent => {
         <WrappedComponent
           {...this.props}
           {...this.state}
-          changeStatus={this.changeStatus}
           changePage={this.changePage}
-          searchPosts={this.searchPosts}
+          fetchPosts={this.fetchPosts}
           selectAllPosts={this.selectAllPosts}
           deleteSelectedPosts={this.deleteSelectedPosts}
           setSelection={this.setSelection}

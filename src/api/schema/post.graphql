@@ -1,0 +1,186 @@
+scalar Date
+
+enum PostStatusOptions {
+  publish
+  draft
+  trash
+}
+
+type Post {
+  id: Int
+  title: String
+  body: String
+  author: Author
+  excerpt: String
+  cover_image: String
+  type: String
+  status: String
+  slug: String
+  mode: String
+  createdAt: Date
+  publishedAt: Date
+  updatedAt: Date
+  taxonomies: [Taxonomy]
+}
+
+input TypeCreatePostData {
+  id: Int
+  title: String
+  body: String
+  authorId: Int
+  excerpt: String
+  cover_image: String
+  type: String
+  status: PostStatusOptions
+  slug: String
+  taxonomies: [TaxonomyInputType]
+}
+
+type PostNode {
+  count: Int
+  rows: [Post]
+}
+type PostTaxonomyNode {
+  count: Int
+  posts: [Post]
+}
+
+type AdjacentPosts {
+  previous: Post
+  next: Post
+}
+
+input TaxonomyInputType {
+  id: Int
+  name: String
+  type: String
+  slug: String
+}
+
+type Response {
+  ok: Boolean!
+  post: Post
+  errors: [Error!]
+}
+
+type PostStatus {
+  published: Int
+  drafts: Int
+}
+
+type Stats {
+  posts: PostStatus
+  pages: PostStatus
+  tags: Int
+  categories: Int
+}
+
+type SearchResult {
+  id: Int
+  title: String
+  excerpt: String
+  publishedAt: Date
+  slug: String
+}
+
+type SearchOutput {
+  ok: Boolean
+  count: Int
+  rows: [SearchResult]
+}
+
+enum PostSortBy {
+  newest
+  oldest
+}
+
+enum PostTypes {
+  page
+  post
+}
+
+enum MenuTypes {
+  category
+  page
+}
+
+input PostFilters {
+  tag: String
+  category: String
+  authorName: String
+  sortBy: PostSortBy
+  status: PostStatusOptions
+  author: String
+  query: String
+  type: PostTypes
+}
+
+input MenuFiltersWithPagination {
+  slug: String
+  type: MenuTypes!
+  page: Int
+  limit: Int
+}
+
+input PostFiltersWithPagination {
+  tag: String
+  category: String
+  authorName: String
+  sortBy: PostSortBy
+  status: PostStatusOptions
+  author: String
+  query: String
+  type: PostTypes
+  cursor: Int
+  limit: Int
+}
+
+input SinglePostFilters {
+  id: Int
+  slug: String
+}
+
+type Query {
+  getSinglePost(filters: SinglePostFilters): Post
+
+  getPosts(filters: PostFiltersWithPagination): PostNode
+
+  getContentFromMenu(filters: MenuFiltersWithPagination): PostTaxonomyNode
+
+  getPostsByTaxinomySlug(
+    type: String!
+    slug: String!
+    postType: String
+    offset: Int
+    limit: Int
+    cursor: Int
+  ): PostTaxonomyNode
+
+  adjacentPosts(slug: String): AdjacentPosts
+
+  search(query: String!): SearchOutput
+
+  stats: Stats
+}
+
+type Mutation {
+  createPost(data: TypeCreatePostData): Response!
+
+  updatePost(
+    id: Int
+    title: String
+    body: String
+    authorId: Int
+    mode: String
+    excerpt: String
+    cover_image: String
+    type: String
+    status: String
+    slug: String
+    taxonomies: [TaxonomyInputType]
+  ): Response!
+
+  deletePosts(ids: String!): Response!
+
+  uploadFile(id: Int, cover_image: String): Response!
+}

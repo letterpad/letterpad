@@ -40,18 +40,9 @@ class Routes extends Component {
   };
 
   getHomeSlug = () => {
-    // To get the homepage, parse the menu settings and see if there is any label by the name Home.
-    // If not, then take the first item as the home
+    // To get the homepage, parse the menu settings then take the first item as the home
     const menu = JSON.parse(this.props.settings.data.menu.value);
-    let home = menu.filter(item => item.name === "Home");
-    if (home.length === 0) {
-      home = menu[0];
-    } else {
-      home = home[0];
-    }
-    if (home.type === "label") {
-      home = home.children[0];
-    }
+    let home = menu[0];
     return home;
   };
 

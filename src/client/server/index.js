@@ -11,6 +11,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { StaticRouter } from "react-router";
 import { ApolloProvider } from "@apollo/react-hoc";
+// import { ApolloProvider } from "react-apollo";
 import { renderToStringWithData } from "@apollo/react-ssr";
 const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
 import Routes from "../common/Routes";
