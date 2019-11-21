@@ -7,7 +7,7 @@ export default graphql(GET_MEDIA, {
     variables: {
       authorId: props.author.id,
       offset:
-        (parseInt(props.page || props.match.params.page) - 1) *
+        (parseInt(props.page || props.router.match.params.page) - 1) *
         config.mediaPerPage,
       limit: config.mediaPerPage,
     },

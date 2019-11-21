@@ -26,15 +26,16 @@ class Settings extends Component {
     updateOptions: PropTypes.func,
     options: PropTypes.object,
     settings: PropTypes.object,
-    history: PropTypes.object,
+    router: PropTypes.object,
     t: PropTypes.func,
   };
 
   state = {
     updatedOptions: {},
     selected:
-      new URLSearchParams(this.props.history.location.search).get("tab") ||
-      "general",
+      new URLSearchParams(this.props.router.history.location.search).get(
+        "tab",
+      ) || "general",
   };
 
   setOption = (option, value) => {
@@ -58,8 +59,8 @@ class Settings extends Component {
   };
 
   handleNavClick = page => {
-    this.props.history.push({
-      pathname: this.props.history.location.pathname,
+    this.props.router.history.push({
+      pathname: this.props.router.history.location.pathname,
       search: "?tab=" + page,
     });
   };

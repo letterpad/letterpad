@@ -10,7 +10,7 @@ const ArticleHoc = WrappedComponent => {
   return class extends Component {
     static propTypes = {
       type: PropTypes.string.required,
-      history: PropTypes.object,
+      router: PropTypes.object,
     };
 
     state = {
@@ -25,7 +25,9 @@ const ArticleHoc = WrappedComponent => {
 
     fetchPosts = async () => {
       this.setState({ loading: true });
-      const query = new URLSearchParams(this.props.history.location.search);
+      const query = new URLSearchParams(
+        this.props.router.history.location.search,
+      );
       const params = Object.fromEntries(query);
       let result = await appoloClient(isAdmin).query({
         query: GET_POSTS,

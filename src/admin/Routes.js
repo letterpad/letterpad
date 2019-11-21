@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-unreachable */
 /* eslint-disable react/prop-types */
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
@@ -80,9 +82,15 @@ class Routes extends Component {
             {/* Notifications can be trigerred from anywhere, but they will be rendered in this block*/}
             <Notifications />
 
-            <SecuredRoute path="/admin/home" component={Home} settings={data} />
+            <SecuredRoute
+              exact
+              path="/admin/home"
+              component={Home}
+              settings={data}
+            />
             {/* Route for posts */}
             <SecuredRoute
+              exact
               path="/admin/post-new"
               type="post"
               component={ArticleCreate}
@@ -90,12 +98,14 @@ class Routes extends Component {
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/posts"
               type="post"
               component={ArticleList}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/posts/:post_id"
               type="post"
               component={Article}
@@ -104,12 +114,14 @@ class Routes extends Component {
             />
             {/* Route for pages */}
             <SecuredRoute
+              exact
               path="/admin/pages"
               type="page"
               component={ArticleList}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/pages/:post_id"
               type="page"
               component={Article}
@@ -117,6 +129,7 @@ class Routes extends Component {
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/page-new"
               type="page"
               component={ArticleCreate}
@@ -124,63 +137,75 @@ class Routes extends Component {
             />
             {/* Route for others */}
             <SecuredRoute
+              exact
               path="/admin/tags"
               type="post_tag"
               component={Taxonomy}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/categories"
               type="post_category"
               component={Taxonomy}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/media"
               component={Media}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/media/:page"
               component={Media}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/authors"
               component={AuthorList}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/authors/edit/:id"
               component={Author}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/authors/new"
               component={AuthorCreate}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/edit-profile"
               component={Author}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/settings"
               component={Settings}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/themes"
               component={Themes}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/static-site"
               component={StaticSite}
               settings={data}
             />
             <SecuredRoute
+              exact
               path="/admin/navigation-builder"
               settings={data}
               component={NavigationBuilder}

@@ -8,14 +8,15 @@ import StyledSidebar from "./Sidebar.css";
 class Sidebar extends Component {
   static propTypes = {
     settings: PropTypes.object,
+    router: PropTypes.object,
   };
 
   render() {
-    const { settings } = this.props;
+    const { settings, router } = this.props;
     return (
       <StyledSidebar>
         <div className="sidebar">
-          <Menu settings={settings} router={{ ...this.props }} />
+          <Menu settings={settings} router={router} />
           <Footer data={settings.site_footer.value} />
         </div>
       </StyledSidebar>

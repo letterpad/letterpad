@@ -8,7 +8,7 @@ import Loader from "../../components/loader";
 
 export class Create extends Component {
   static propTypes = {
-    history: PropTypes.object,
+    router: PropTypes.object,
     createPost: PropTypes.func.isRequired,
     type: PropTypes.string.isRequired,
   };
@@ -22,10 +22,10 @@ export class Create extends Component {
     // This is going to hold all the changes done to the post.
     PostActions.data = {};
     // create an empty post with the type and title
-    this.props.createPost({ type }).then(result => {
+    this.props.createPost({ data: { type } }).then(result => {
       const post = result.data.createPost.post;
       PostActions.setData({ slug: post.slug });
-      this.props.history.push(`/admin/${plural[type]}/${post.id}`);
+      this.props.router.history.push(`/admin/${plural[type]}/${post.id}`);
     });
   }
 

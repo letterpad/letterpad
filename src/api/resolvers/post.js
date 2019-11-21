@@ -215,14 +215,13 @@ const postresolver = {
      */
     getSinglePost: checkDisplayAccess.createResolver(
       (root, args, { models }) => {
-        const conditions = { where: {} };
+        const conditions = { where: { ...args.filters } };
         if (args.filters.id) {
           conditions.where.id = args.filters.id;
         }
         if (args.filters.slug) {
           conditions.where.slug = args.filters.slug;
         }
-        console.log(conditions);
         return models.Post.findOne(conditions);
       },
     ),
@@ -239,13 +238,18 @@ const postresolver = {
       let menu = await models.Setting.findOne({
         where: { option: "menu" },
       });
-      const filters = { ...args.filters };
+      const filters = { ...args.filters, status: "publish" };
       menu = JSON.parse(menu.dataValues.value);
-      const menuItem = getMenuItemFromSlug(
-        menu,
-        args.filters.slug,
-        args.filters.type,
-      );
+      let menuItem = {};
+      if (args.filters.slug === "/") {
+        menuItem = menu[0];
+      } else {
+        menuItem = getMenuItemFromSlug(
+          menu,
+          args.filters.slug,
+          args.filters.type,
+        );
+      }
 
       if (menuItem.type === "page") {
         filters.type = menuItem.type;

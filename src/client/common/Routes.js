@@ -8,7 +8,6 @@ import { hot } from "react-hot-loader";
 // Data supply
 import SettingsData from "../../shared/data-connectors/SettingsData";
 import ThemeSettingsData from "../../shared/data-connectors/ThemeSettingsData";
-
 /*!------------------------------------------------------------------
 [View Containers-]
 */
@@ -47,7 +46,7 @@ class Routes extends Component {
   };
 
   render() {
-    if (this.props.settings.loading || this.props.themeSettingsLoading) {
+    if (this.props.settings.loading) {
       return <Loader />;
     }
 
@@ -59,90 +58,39 @@ class Routes extends Component {
     this.applyCustomCSS(settings);
     const home = this.getHomeSlug();
 
+    const getComponent = (Comp, type) => Layout(Comp, { settings, type: type });
+
     const routes = [
       {
         exact: true,
-        component: Layout(
-          Home,
-          { settings, slug: home.slug, type: home.type },
-          "Home",
-        ),
-        path: "/",
+        component: getComponent(Home, home.type),
+        path: ["/", "/home/page/:page_no"],
       },
       {
         exact: true,
-        component: Layout(
-          Home,
-          { settings, slug: home.slug, type: home.type },
-          "Home",
-        ),
-        path: "/home/page/:page_no",
+        component: getComponent(Posts, "post"),
+        path: ["/posts/:slug", "/posts/:slug/page/:page_no"],
       },
       {
         exact: true,
-        component: Layout(Posts, { settings, type: "posts" }),
-        path: "/posts/:slug",
+        component: getComponent(SinglePage, "page"),
+        path: ["/page/:slug"],
       },
       {
         exact: true,
-        component: Layout(Posts, { settings, type: "posts" }),
-        path: "/posts/:slug/page/:page_no",
+        component: getComponent(SinglePost, "page"),
+        path: ["/post/:slug"],
       },
       {
         exact: true,
-        component: Layout(SinglePage, {
-          type: "page",
-          settings,
-        }),
-        path: "/page/:slug",
-      },
-      {
-        exact: true,
-        component: Layout(SinglePost, {
-          type: "post",
-          settings,
-        }),
-        path: "/post/:slug",
-      },
-      {
-        exact: true,
-        component: Layout(SearchWrapper, {
-          type: "category",
-          settings,
-        }),
-        path: "/category/:query",
-      },
-      {
-        exact: true,
-        component: Layout(SearchWrapper, {
-          type: "category",
-          settings,
-        }),
-        path: "/category/:query/page/:page_no",
-      },
-      {
-        exact: true,
-        component: Layout(SearchWrapper, {
-          type: "tag",
-          settings,
-        }),
-        path: "/tag/:query",
-      },
-      {
-        exact: true,
-        component: Layout(SearchWrapper, {
-          type: "tag",
-          settings,
-        }),
-        path: "/tag/:query/page/:page_no",
-      },
-      {
-        exact: true,
-        component: Layout(SearchWrapper, {
-          type: "post",
-          settings,
-        }),
-        path: "/search/:query?",
+        component: getComponent(SearchWrapper, "category"),
+        path: [
+          "/category/:query",
+          "/category/:query/page/:page_no",
+          "/tag/:query",
+          "/tag/:query/page/:page_no",
+          "/search/:query?",
+        ],
       },
     ];
 
@@ -168,13 +116,9 @@ class Routes extends Component {
           ))}
           <Route
             path="*"
-            component={Layout(
-              NotFound,
-              {
-                settings,
-              },
-              "NotFound",
-            )}
+            component={Layout(NotFound, {
+              settings,
+            })}
           />
         </Switch>
       </div>
@@ -183,9 +127,7 @@ class Routes extends Component {
 }
 
 Routes.propTypes = {
-  location: PropTypes.object,
   settings: PropTypes.object,
   themeSettings: PropTypes.object,
-  themeSettingsLoading: PropTypes.bool,
 };
 export default hot(module)(ThemeSettingsData(SettingsData(Routes)));

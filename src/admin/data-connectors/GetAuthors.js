@@ -5,7 +5,7 @@ export const GetAuthor = graphql(GET_AUTHOR, {
   options: props => {
     return {
       variables: {
-        id: props.match.params.id || props.author.id,
+        id: props.router.match.params.id || props.author.id,
       },
     };
   },

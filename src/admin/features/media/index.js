@@ -23,7 +23,6 @@ import StyledButton from "../../components/button";
 import InfoModal from "./InfoModal";
 
 const EditMediaWrapper = styled.div`
-  //take care of modal window si
   @media (max-width: 992px) {
     .open .modal-wrapper {
       height: 92vh;
@@ -96,7 +95,7 @@ const limit = config.mediaPerPage;
 class Media extends Component {
   static propTypes = {
     media: PropTypes.object,
-    history: PropTypes.object,
+    router: PropTypes.object,
     loading: PropTypes.bool,
     deleteMedia: PropTypes.func,
     insertMedia: PropTypes.func,
@@ -132,10 +131,10 @@ class Media extends Component {
       items: [...nextProps.media.rows],
     };
     if (
-      nextProps.match.params.page &&
-      nextProps.match.params.page !== prevState.page
+      nextProps.router.match.params.page &&
+      nextProps.router.match.params.page !== prevState.page
     ) {
-      newState.page = parseInt(nextProps.match.params.page);
+      newState.page = parseInt(nextProps.router.match.params.page);
     }
     return newState;
   }
@@ -206,7 +205,7 @@ class Media extends Component {
       this.setState({ items: items.data.media.rows });
     } else {
       // else navigate the user to page 1
-      this.props.history.push("/admin/media/1");
+      this.props.router.history.push("/admin/media/1");
     }
   };
 

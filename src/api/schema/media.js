@@ -22,12 +22,7 @@ export default `
     errors: [Error]
   }
 
-  input Upload {
-    name: String!
-    type: String!
-    size: Int!
-    path: String!
-  }
+
   
   type Query {
     media(id: Int, authorId: Int!, offset: Int, limit: Int, cursor: Int): MediaNode

@@ -73,12 +73,12 @@ export default function Layout(ComponentClass, props) {
     };
 
     render() {
-      const _props = { ...this.props, ...props, settings };
+      const _props = { ...props, router: { ...this.props } };
       const classes = this.state.sidebarOpen ? "" : " collapsed";
       const selectedTheme = { [this.state.theme]: true };
       return (
         <CSSVariables {...selectedTheme}>
-          {props.layout == "none" ? (
+          {_props.layout == "none" ? (
             <NoLayout>
               <div className="content-area">
                 <ComponentClass {..._props} theme={this.state.theme} />

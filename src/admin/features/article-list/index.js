@@ -25,7 +25,7 @@ class ArticleList extends Component {
     changePage: PropTypes.func,
     variables: PropTypes.object,
     loading: PropTypes.bool,
-    history: PropTypes.object,
+    router: PropTypes.object,
     setSelection: PropTypes.func,
     selectAllPosts: PropTypes.func,
     deleteSelectedPosts: PropTypes.func,
@@ -54,7 +54,9 @@ class ArticleList extends Component {
   }
 
   changeFilter = (key, value) => {
-    const query = new URLSearchParams(this.props.history.location.search);
+    const query = new URLSearchParams(
+      this.props.router.history.location.search,
+    );
     const filterKeys = [...query.keys()];
     if (value === null) {
       query.delete(key);
@@ -64,7 +66,7 @@ class ArticleList extends Component {
       query.append(key, value);
     }
 
-    this.props.history.push({
+    this.props.router.history.push({
       search: "?" + query.toString(),
     });
     this.props.fetchPosts();
@@ -73,7 +75,9 @@ class ArticleList extends Component {
   render() {
     const { t } = this.props;
     const { loading, type } = this.props;
-    const query = new URLSearchParams(this.props.history.location.search);
+    const query = new URLSearchParams(
+      this.props.router.history.location.search,
+    );
 
     return (
       <StyledSection
