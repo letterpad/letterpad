@@ -139,31 +139,7 @@ const postresolver = {
         rows: result.rows,
       };
     },
-    /**
-     * Query to take care of multiple post in one page.
-     * Used for Search and Admin posts and pages list.
-     */
-    // posts: checkDisplayAccess.createResolver((root, args, { models, user }) => {
-    //   const newArgs = { ...args };
-    //   if (newArgs.status === "all") {
-    //     newArgs.status = { [Sequelize.Op.ne]: "trash" };
-    //   }
-    //   const columns = Object.keys(models.Post.rawAttributes);
-    //   const conditions = getConditions(columns, newArgs);
-    //   return models.Post.count(conditions).then(count => {
-    //     conditions.order = [["publishedAt", "DESC"]];
-    //     // for admin dashboard, sort it based on updated_date
-    //     if (user && user.id) {
-    //       conditions.order = [["updatedAt", "DESC"]];
-    //     }
-    //     return models.Post.findAll(conditions).then(res => {
-    //       return {
-    //         count,
-    //         rows: res,
-    //       };
-    //     });
-    //   });
-    // }),
+
     search: async (root, args, { models, user }) => {
       let cachedData = memoryCache.get("posts");
       if (!cachedData) {
@@ -259,7 +235,6 @@ const postresolver = {
       } else {
         return noResult;
       }
-      console.log(filters);
       const result = await postresolver.Query.posts(
         root,
         { filters },
@@ -384,26 +359,15 @@ const postresolver = {
   Mutation: {
     createPost: createPostsPerm.createResolver(
       (root, args, { models, user }) => {
-        let data = {};
-        Object.keys(args).forEach(field => {
-          data[field] = args[field];
-        });
-        if (!data.body) {
-          data.body = "";
-        }
-        data.authorId = user.id;
+        args.data.authorId = user.id;
         memoryCache.del("posts");
-        return _createPost(data, models);
+        return _createPost(args.data, models);
       },
     ),
-    updatePost: editPostPerm.createResolver((root, args, { models }) => {
-      let data = {};
-      Object.keys(args).forEach(field => {
-        data[field] = args[field];
-      });
+    updatePost: (root, args, { models }) => {
       memoryCache.del("posts");
-      return _updatePost(data, models);
-    }),
+      return _updatePost(args.data, models);
+    },
     uploadFile: editPostPerm.createResolver((root, args, { models }) => {
       return _updatePost(args, models);
     }),

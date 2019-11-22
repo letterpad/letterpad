@@ -1,7 +1,7 @@
 const gql = require("graphql-tag");
 
 module.exports.CREATE_POST = gql`
-  mutation createPost($data: TypeCreatePostData) {
+  mutation createPost($data: InputCreatePost) {
     createPost(data: $data) {
       ok
       errors {
