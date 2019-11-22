@@ -38,7 +38,7 @@ const Filters = ({ query, t, tags, categories, changeFilter }) => {
           selected={query.get("tag")}
           options={[
             {
-              name: "Select",
+              name: "Select Tag",
               value: null,
             },
             ...tags.taxonomies.map(tag => {
@@ -54,7 +54,7 @@ const Filters = ({ query, t, tags, categories, changeFilter }) => {
           selected={query.get("category")}
           options={[
             {
-              name: "Select",
+              name: "Select Category",
               value: null,
             },
             ...categories.taxonomies.map(category => {

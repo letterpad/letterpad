@@ -36,7 +36,7 @@ const ArticleHoc = WrappedComponent => {
         fetchPolicy: "no-cache",
       });
       this.setState({
-        posts: result.data.getPosts,
+        posts: result.data.posts,
         loading: false,
       });
     };

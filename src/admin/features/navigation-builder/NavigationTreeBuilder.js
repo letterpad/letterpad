@@ -85,7 +85,7 @@ class NavigationTreeBuilder extends Component {
       });
       // Loop through the pages and add a key "disabled".
       // The items which have been used in the navigation menu will have the value "disabled: true"
-      const pages = nextProps.pages.getPosts.rows.map(ele => {
+      const pages = nextProps.pages.posts.rows.map(ele => {
         return {
           id: ele.id,
           title: ele.title,

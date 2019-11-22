@@ -1,29 +1,13 @@
 import React, { Component } from "react";
+import { Query } from "react-apollo";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 
 import OhSnap from "../../components/oh-snap";
 import Edit from "./Edit";
 import TopBar from "./topbar";
 import Loader from "../../components/loader";
 import { GET_SINGLE_POST } from "../../../shared/queries/Queries";
-import { Query } from "react-apollo";
-
-const FlexColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: ${p => (p.fullHeight ? "100vh" : "auto")};
-
-  .article-holder {
-    width: 100%;
-    margin: 80px auto 0;
-    padding: 0 10px;
-
-    .post-content {
-      flex: 1;
-    }
-  }
-`;
+import { Container } from "./Article.css";
 
 class Article extends Component {
   static propTypes = {
@@ -32,7 +16,6 @@ class Article extends Component {
     router: PropTypes.object,
     manageScroll: PropTypes.func,
     theme: PropTypes.string,
-    match: PropTypes.object,
   };
 
   async componentDidMount() {
@@ -58,26 +41,22 @@ class Article extends Component {
           if (loading) {
             return <Loader />;
           }
-          if (!data.getSinglePost) {
+          if (!data.post) {
             return (
               <OhSnap message="This page is either dead for good or restricted." />
             );
           }
           return (
-            <FlexColumn fullHeight>
-              <TopBar
-                edit
-                history={this.props.router.history}
-                post={data.getSinglePost}
-              />
+            <Container fullHeight>
+              <TopBar edit router={this.props.router} post={data.post} />
               <div className="article-holder">
                 <Edit
                   theme={this.props.theme}
-                  post={data.getSinglePost}
+                  post={data.post}
                   setHtml={this.setHtml}
                 />
               </div>
-            </FlexColumn>
+            </Container>
           );
         }}
       </Query>

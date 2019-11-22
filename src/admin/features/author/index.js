@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
+import { Query } from "react-apollo";
 
 import Basic from "./Basic";
 import Social from "./Social";
@@ -12,8 +13,8 @@ import StyledCard from "../../components/card";
 import StyledButton from "../../components/button";
 
 import UpdateAuthor from "../../data-connectors/UpdateAuthor";
-import { GetAuthor } from "../../data-connectors/GetAuthors";
 import Loader from "../../components/loader";
+import { GET_AUTHOR } from "../../../shared/queries/Queries";
 
 class EditAuthor extends Component {
   static propTypes = {
@@ -54,47 +55,54 @@ class EditAuthor extends Component {
   };
 
   render() {
-    if (this.props.loading) {
-      return <Loader />;
-    }
-    const { fname, lname } = this.props.author;
     return (
-      <StyledSection title={`Edit Author - ${fname} ${lname}`} subtitle="">
-        <StyledGrid columns="repeat(auto-fit,minmax(300px, 1fr))">
-          <StyledCard>
-            <div>
-              <Basic data={this.props.author} updateOption={this.setOption} />
-              <StyledButton success onClick={this.submitData}>
-                Save
-              </StyledButton>
-            </div>
-          </StyledCard>
-          <StyledCard>
-            <div>
-              <Social
-                data={this.props.author.social}
-                updateOption={this.setOption}
-              />
-              <StyledButton success onClick={this.submitData}>
-                Save
-              </StyledButton>
-            </div>
-          </StyledCard>
-          <StyledCard>
-            <div>
-              <PasswordChange
-                data={this.props.author}
-                updateOption={this.setOption}
-              />
-              <StyledButton success onClick={this.submitData}>
-                Save
-              </StyledButton>
-            </div>
-          </StyledCard>
-        </StyledGrid>
-      </StyledSection>
+      <Query query={GET_AUTHOR}>
+        {({ loading, data }) => {
+          if (loading) return <Loader />;
+          const { fname, lname } = data.author;
+          return (
+            <StyledSection
+              title={`Edit Author - ${fname} ${lname}`}
+              subtitle=""
+            >
+              <StyledGrid columns="repeat(auto-fit,minmax(300px, 1fr))">
+                <StyledCard>
+                  <div>
+                    <Basic data={data.author} updateOption={this.setOption} />
+                    <StyledButton success onClick={this.submitData}>
+                      Save
+                    </StyledButton>
+                  </div>
+                </StyledCard>
+                <StyledCard>
+                  <div>
+                    <Social
+                      data={data.author.social}
+                      updateOption={this.setOption}
+                    />
+                    <StyledButton success onClick={this.submitData}>
+                      Save
+                    </StyledButton>
+                  </div>
+                </StyledCard>
+                <StyledCard>
+                  <div>
+                    <PasswordChange
+                      data={data.author}
+                      updateOption={this.setOption}
+                    />
+                    <StyledButton success onClick={this.submitData}>
+                      Save
+                    </StyledButton>
+                  </div>
+                </StyledCard>
+              </StyledGrid>
+            </StyledSection>
+          );
+        }}
+      </Query>
     );
   }
 }
 
-export default UpdateAuthor(GetAuthor(EditAuthor));
+export default UpdateAuthor(EditAuthor);

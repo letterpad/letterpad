@@ -2,23 +2,17 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
 
-import UpdateOptions from "../../data-connectors/UpdateOptions";
-import SettingsData from "shared/data-connectors/SettingsData";
 import { makeUrl } from "shared/util";
 import ThemeItem from "./themes/ThemeItem";
 
-// import StyledSection from "../../components/section";
 import StyledGrid from "../../components/grid";
-// import StyledCard from "../../components/card";
-// import StyledInput from "../../components/input";
-// import StyledButton from "../../components/button";
 import { translate } from "react-i18next";
 
 let SCROLLTOP = 0;
 
 class Themes extends Component {
   static propTypes = {
-    updateOptions: PropTypes.func,
+    updateOption: PropTypes.func,
     options: PropTypes.object,
     settings: PropTypes.object,
   };
@@ -47,8 +41,7 @@ class Themes extends Component {
     if (nextProps.settings.loading) {
       return false;
     }
-    const { data } = nextProps.settings;
-    const { css, theme } = data;
+    const { css, theme } = nextProps.settings;
 
     return {
       css: nextState.css || css.value,
@@ -96,7 +89,7 @@ class Themes extends Component {
         value,
       });
     });
-    await this.props.updateOptions(settings);
+    await this.props.updateOption(settings);
     notify.show("Theme Activated", "success", 3000);
   };
 
@@ -123,7 +116,7 @@ class Themes extends Component {
 
   saveCss = async e => {
     e.preventDefault();
-    await this.props.updateOptions([{ option: "css", value: this.state.css }]);
+    await this.props.updateOption([{ option: "css", value: this.state.css }]);
     notify.show("CSS Saved", "success", 3000);
   };
 
@@ -137,41 +130,7 @@ class Themes extends Component {
         </StyledGrid>
       </div>
     );
-    // return (
-    //   <>
-    //     <div>
-    //       <StyledCard
-    //         title="Custom CSS"
-    //         subtitle="Here you can write additional css to customize the theme. (optional)"
-    //       >
-    //         <StyledInput
-    //           textarea
-    //           rows="7"
-    //           value={this.state.css}
-    //           placeholder="Additional CSS"
-    //           onChange={this.handleCssChange}
-    //           ref={this.cssRef}
-    //         />
-    //         <StyledButton onClick={this.saveCss}>Save</StyledButton>
-    //       </StyledCard>
-    //       <br />
-    //       <StyledCard title="Select Theme" subtitle="Browse your themes here">
-    //         <div>
-    //           <StyledGrid columns="repeat(auto-fit,minmax(250px,1fr))">
-    //             {this.state.themes.map((theme, idx) => (
-    //               <ThemeItem
-    //                 key={idx}
-    //                 theme={theme}
-    //                 selectTheme={this.selectTheme}
-    //               />
-    //             ))}
-    //           </StyledGrid>
-    //         </div>
-    //       </StyledCard>
-    //     </div>
-    //   </>
-    // );
   }
 }
 
-export default translate("translations")(SettingsData(UpdateOptions(Themes)));
+export default translate("translations")(Themes);

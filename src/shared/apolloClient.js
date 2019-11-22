@@ -60,13 +60,15 @@ const middlewareLinkClient = new ApolloLink((operation, forward) =>
 );
 
 let initialState = {};
+let token;
 if (typeof window !== "undefined") {
+  token = localStorage.token;
   initialState = window.__APOLLO_STATE__;
 }
 
 // prepare the client for graphql queries.
 
-const client = (isAdmin = false, token = null, opts = {}) => {
+const client = (isAdmin = true, opts = {}) => {
   const middleware = isAdmin
     ? middlewareLinkAdmin(token)
     : middlewareLinkClient;

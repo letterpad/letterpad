@@ -2,8 +2,8 @@ const gql = require("graphql-tag");
 const { PostFragment } = require("./Fragments");
 
 module.exports.GET_POSTS = gql`
-  query getPosts($filters: PostFiltersWithPagination) {
-    getPosts(filters: $filters) {
+  query posts($filters: PostFiltersWithPagination) {
+    posts(filters: $filters) {
       count
       rows {
         ...postFields
@@ -15,8 +15,8 @@ module.exports.GET_POSTS = gql`
 
 module.exports.GET_SINGLE_POST = gql`
   # TODO: Convert the below params to object.
-  query getSinglePost($filters: SinglePostFilters) {
-    getSinglePost(filters: $filters) {
+  query post($filters: SinglePostFilters) {
+    post(filters: $filters) {
       ...postFields
     }
   }
@@ -246,8 +246,8 @@ module.exports.GET_LATEST_PUBLISHED_POSTS = gql`
 `;
 
 module.exports.POSTS_FROM_CATEGORY_SLUG = gql`
-  query getContentFromMenu($filters: MenuFiltersWithPagination) {
-    getContentFromMenu(filters: $filters) {
+  query menuContent($filters: MenuFiltersWithPagination) {
+    menuContent(filters: $filters) {
       count
       posts {
         ...postFields

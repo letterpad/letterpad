@@ -16,23 +16,23 @@ export default graphql(MENU_CONTENT, {
       },
     };
   },
-  props: ({ data: { loading, getContentFromMenu, fetchMore } }) => {
+  props: ({ data: { loading, menuContent, fetchMore } }) => {
     return {
-      posts: (getContentFromMenu && getContentFromMenu.posts) || [],
-      total: (getContentFromMenu && getContentFromMenu.count) || 0,
+      posts: (menuContent && menuContent.posts) || [],
+      total: (menuContent && menuContent.count) || 0,
       loading,
       fetchMore: variables => {
         return fetchMore({
           variables: variables,
           updateQuery: (previousResult, { fetchMoreResult }) => {
             return {
-              getContentFromMenu: {
-                count: fetchMoreResult.getContentFromMenu.count,
+              menuContent: {
+                count: fetchMoreResult.menuContent.count,
                 posts: [
-                  ...previousResult.getContentFromMenu.posts,
-                  ...fetchMoreResult.getContentFromMenu.posts,
+                  ...previousResult.menuContent.posts,
+                  ...fetchMoreResult.menuContent.posts,
                 ],
-                __typename: previousResult.getContentFromMenu.__typename,
+                __typename: previousResult.menuContent.__typename,
               },
             };
           },

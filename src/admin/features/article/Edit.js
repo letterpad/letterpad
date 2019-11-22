@@ -9,8 +9,8 @@ import PostTitle from "./PostTitle";
 import FileExplorerModal from "../modals/FileExplorerModal";
 import { uploadFile } from "../../server/util";
 import { EventBusInstance } from "../../../shared/eventBus";
-import UpdatePost from "../../data-connectors/UpdatePost";
-import InsertMedia from "../../data-connectors/InsertMedia";
+import client from "../../../shared/apolloClient";
+import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 
 class Edit extends Component {
   static propTypes = {
@@ -88,9 +88,12 @@ class Edit extends Component {
     this.postSaveTimer = setTimeout(async () => {
       const data = PostActions.getData();
       EventBusInstance.publish("ARTICLE_SAVING");
-      const update = await this.props.update({
-        ...this.props.post,
-        ...data,
+      const update = await client().mutate({
+        mutation: UPDATE_POST_QUERY,
+        variables: {
+          ...this.props.post,
+          ...data,
+        },
       });
       EventBusInstance.publish("ARTICLE_SAVED");
       PostActions.setData({ slug: update.data.updatePost.post.slug });
@@ -162,4 +165,4 @@ class Edit extends Component {
   }
 }
 
-export default UpdatePost(InsertMedia(Edit));
+export default Edit;

@@ -41,7 +41,7 @@ const postresolver = {
      * Query to take care of multiple post in one page.
      * Used for Search and Admin posts and pages list.
      */
-    getPosts: async (root, args, { models, user }) => {
+    posts: async (root, args, { models, user }) => {
       const conditions = { include: [], where: {}, limit: 20 };
 
       const {
@@ -213,18 +213,16 @@ const postresolver = {
     /**
      * Query to handle a single post/page.
      */
-    getSinglePost: checkDisplayAccess.createResolver(
-      (root, args, { models }) => {
-        const conditions = { where: { ...args.filters } };
-        if (args.filters.id) {
-          conditions.where.id = args.filters.id;
-        }
-        if (args.filters.slug) {
-          conditions.where.slug = args.filters.slug;
-        }
-        return models.Post.findOne(conditions);
-      },
-    ),
+    post: checkDisplayAccess.createResolver((root, args, { models }) => {
+      const conditions = { where: { ...args.filters } };
+      if (args.filters.id) {
+        conditions.where.id = args.filters.id;
+      }
+      if (args.filters.slug) {
+        conditions.where.slug = args.filters.slug;
+      }
+      return models.Post.findOne(conditions);
+    }),
     /**
      * Query to take care of posts/page from navigation menu.
      * The navigation menu item will be either a category or a page.
@@ -234,7 +232,7 @@ const postresolver = {
      * Note: The menu can have nested children.
      *
      */
-    getContentFromMenu: async (root, args, { models, user }) => {
+    menuContent: async (root, args, { models, user }) => {
       let menu = await models.Setting.findOne({
         where: { option: "menu" },
       });
@@ -262,7 +260,7 @@ const postresolver = {
         return noResult;
       }
       console.log(filters);
-      const result = await postresolver.Query.getPosts(
+      const result = await postresolver.Query.posts(
         root,
         { filters },
         {
@@ -317,7 +315,7 @@ const postresolver = {
      * Query to get posts by taxonomy slug and taxonomy type.
      * The type can be post_category or post_tag
      */
-    getPostsByTaxinomySlug: checkDisplayAccess.createResolver(
+    postsByTaxinomySlug: checkDisplayAccess.createResolver(
       async (root, args, { models, user }) => {
         // Get the taxonomy item
         const filters = { ...args };
@@ -332,7 +330,7 @@ const postresolver = {
         } else {
           filters.tag = taxonomy.name;
         }
-        const result = await postresolver.Query.getPosts(
+        const result = await postresolver.Query.posts(
           root,
           { filters },
           {

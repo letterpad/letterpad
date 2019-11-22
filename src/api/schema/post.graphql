@@ -141,13 +141,13 @@ input SinglePostFilters {
 }
 
 type Query {
-  getSinglePost(filters: SinglePostFilters): Post
+  post(filters: SinglePostFilters): Post
 
-  getPosts(filters: PostFiltersWithPagination): PostNode
+  posts(filters: PostFiltersWithPagination): PostNode
 
-  getContentFromMenu(filters: MenuFiltersWithPagination): PostTaxonomyNode
+  menuContent(filters: MenuFiltersWithPagination): PostTaxonomyNode
 
-  getPostsByTaxinomySlug(
+  postsByTaxinomySlug(
     type: String!
     slug: String!
     postType: String
