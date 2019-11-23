@@ -48,7 +48,7 @@ class ArticleList extends Component {
   componentDidMount() {
     document.body.classList.add("posts-page");
     if (!this.getUrlParams().get("limit")) {
-      this.changeFilter("limit", 10);
+      this.changeFilter("limit", config.itemsPerPage);
     }
   }
 
@@ -84,7 +84,7 @@ class ArticleList extends Component {
   goToNextPage = (e, page) => {
     e.preventDefault();
     this.changeFilter("page", page);
-    this.changeFilter("limit", 8);
+    this.changeFilter("limit", config.itemsPerPage);
   };
 
   render() {
@@ -165,7 +165,7 @@ class ArticleList extends Component {
               count={this.props.posts.count}
               page={parseInt(query.get("page")) || 1}
               changePage={this.goToNextPage}
-              limit={8}
+              limit={config.itemsPerPage}
             />
           )}
         </div>
