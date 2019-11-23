@@ -47,16 +47,21 @@ class ArticleList extends Component {
 
   componentDidMount() {
     document.body.classList.add("posts-page");
+    if (!this.getUrlParams().get("limit")) {
+      this.changeFilter("limit", 10);
+    }
   }
 
   componentWillUnmount() {
     document.body.classList.remove("posts-page");
   }
 
+  getUrlParams = () => {
+    return new URLSearchParams(this.props.router.history.location.search);
+  };
+
   changeFilter = (key, value) => {
-    const query = new URLSearchParams(
-      this.props.router.history.location.search,
-    );
+    const query = this.getUrlParams();
     const filterKeys = [...query.keys()];
     if (value === null) {
       query.delete(key);
@@ -65,11 +70,21 @@ class ArticleList extends Component {
     } else {
       query.append(key, value);
     }
+    if (query.get("category") || query.get("tag") || query.get("status")) {
+      query.delete("limit");
+      query.delete("page");
+    }
 
     this.props.router.history.push({
       search: "?" + query.toString(),
     });
     this.props.fetchPosts();
+  };
+
+  goToNextPage = (e, page) => {
+    e.preventDefault();
+    this.changeFilter("page", page);
+    this.changeFilter("limit", 8);
   };
 
   render() {
@@ -145,12 +160,12 @@ class ArticleList extends Component {
             </StyledGrid>
           )}
 
-          {!loading && (
+          {!loading && this.props.posts && (
             <Paginate
               count={this.props.posts.count}
-              page={this.props.page}
-              changePage={this.props.changePage}
-              limit={10}
+              page={parseInt(query.get("page")) || 1}
+              changePage={this.goToNextPage}
+              limit={8}
             />
           )}
         </div>

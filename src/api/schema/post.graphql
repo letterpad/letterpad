@@ -54,7 +54,7 @@ type PostNode {
 }
 type PostTaxonomyNode {
   count: Int
-  posts: [Post]
+  rows: [Post]
 }
 
 type AdjacentPosts {
@@ -145,6 +145,7 @@ input PostFiltersWithPagination {
   type: PostTypes
   cursor: Int
   limit: Int
+  page: Int
 }
 
 input SinglePostFilters {

@@ -29,6 +29,15 @@ const ArticleHoc = WrappedComponent => {
         this.props.router.history.location.search,
       );
       const params = Object.fromEntries(query);
+      if (params.cursor) {
+        params.cursor = parseInt(params.cursor);
+      }
+      if (params.page) {
+        params.page = parseInt(params.page);
+      }
+      if (params.limit) {
+        params.limit = parseInt(params.limit);
+      }
       let result = await appoloClient(isAdmin).query({
         query: GET_POSTS,
         variables: { filters: { ...params, type: this.props.type } },
@@ -44,7 +53,7 @@ const ArticleHoc = WrappedComponent => {
     changePage = (e, page) => {
       e.preventDefault();
       if (!this.state.isSearch) {
-        this.fetchPosts(page);
+        this.router.history.this.fetchPosts(page);
       } else {
         this.searchPosts(this.variables.query, page, this.variables.status);
       }

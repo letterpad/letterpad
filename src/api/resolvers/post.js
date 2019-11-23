@@ -245,7 +245,7 @@ const postresolver = {
       );
       return {
         count: result.count,
-        posts: result.rows,
+        rows: result.rows,
       };
     },
     /**
@@ -315,7 +315,7 @@ const postresolver = {
         );
         return {
           count: result.count,
-          posts: result.rows,
+          rows: result.rows,
         };
       },
     ),

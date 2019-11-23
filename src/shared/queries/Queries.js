@@ -249,7 +249,7 @@ module.exports.POSTS_FROM_CATEGORY_SLUG = gql`
   query menuContent($filters: MenuFiltersWithPagination) {
     menuContent(filters: $filters) {
       count
-      posts {
+      rows {
         ...postFields
       }
     }
