@@ -10,13 +10,13 @@ import ArticleHoc from "./ArticleHoc";
 import Search from "./Search";
 import Paginate from "../../components/pagination";
 
-import StyledToolbar from "./Toolbar.css";
+import StyledToolbar, { Layout } from "./Toolbar.css";
 
 import StyledSection from "../../components/section";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
 import StyledButton from "../../components/button";
-import { StyledTitle, StyledItem } from "./ArticleList.css";
+import { StyledTitle, StyledItem, Table, Loader } from "./ArticleList.css";
 import Filters from "./Filters";
 
 class ArticleList extends Component {
@@ -43,12 +43,13 @@ class ArticleList extends Component {
     status: "publish",
     loading: true,
     posts: null,
+    layout: localStorage.layout || "list",
   };
 
   componentDidMount() {
     document.body.classList.add("posts-page");
     if (!this.getUrlParams().get("limit")) {
-      this.changeFilter("limit", config.itemsPerPage);
+      //this.changeFilter("limit", config.itemsPerPage);
     }
   }
 
@@ -78,6 +79,7 @@ class ArticleList extends Component {
     this.props.router.history.push({
       search: "?" + query.toString(),
     });
+
     this.props.fetchPosts();
   };
 
@@ -86,6 +88,13 @@ class ArticleList extends Component {
     this.changeFilter("page", page);
     this.changeFilter("limit", config.itemsPerPage);
   };
+
+  setLayout = layout => {
+    this.setState({ layout });
+    localStorage.layout = layout;
+  };
+
+  deletePosts = () => {};
 
   render() {
     const { t } = this.props;
@@ -107,14 +116,20 @@ class ArticleList extends Component {
       >
         <div>
           <StyledToolbar className="action-bar">
-            <div className="action-delete">
+            <div className="left-block">
+              <Layout selected={this.state.layout}>
+                <i
+                  className="fa fa-list list"
+                  onClick={() => this.setLayout("list")}
+                />
+                <i
+                  className="fa fa-th grid"
+                  onClick={() => this.setLayout("grid")}
+                />
+              </Layout>
               <Filters query={query} changeFilter={this.changeFilter} />
               {this.props.selectedPosts.length > 0 && (
-                <StyledButton
-                  danger
-                  sm
-                  onClick={this.props.deleteSelectedPosts}
-                >
+                <StyledButton basic sm onClick={this.props.deleteSelectedPosts}>
                   Delete
                 </StyledButton>
               )}
@@ -127,38 +142,22 @@ class ArticleList extends Component {
               />
             </div>
           </StyledToolbar>
-
-          {loading ? (
-            <div>loading</div>
-          ) : (
-            <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
-              {this.props.posts.rows.map(post => {
-                const { categories } = filterTaxonomies(post.taxonomies);
-                const authorName = post.author.fname + " " + post.author.lname;
-                return (
-                  <StyledItem key={post.slug}>
-                    <div className="selection-box">
-                      <input
-                        type="checkbox"
-                        id={"checkbox-" + post.id}
-                        onClick={() => this.props.setSelection(post.id)}
-                      />
-                      <label htmlFor={"checkbox-" + post.id} />
-                    </div>
-                    <StyledGridItem
-                      image={getCoverImage(post.cover_image)}
-                      title={post.title}
-                      description={post.excerpt}
-                      href={"/admin/posts/" + post.id}
-                      line1={authorName}
-                      line2={moment(post.createdAt).format("MMM Do YYYY")}
-                      stickyText={categories}
-                    />
-                  </StyledItem>
-                );
-              })}
-            </StyledGrid>
-          )}
+          {
+            <React.Fragment>
+              {<Loader loading={loading} />}
+              {this.state.layout === "list" ? (
+                <RenderTable
+                  data={(this.props.posts && this.props.posts.rows) || []}
+                  setSelection={this.props.setSelection}
+                />
+              ) : (
+                <RenderGrid
+                  data={(this.props.posts && this.props.posts.rows) || []}
+                  setSelection={this.props.setSelection}
+                />
+              )}
+            </React.Fragment>
+          }
 
           {!loading && this.props.posts && (
             <Paginate
@@ -188,6 +187,99 @@ const Title = ({ title, creationLink }) => {
 Title.propTypes = {
   title: PropTypes.string,
   creationLink: PropTypes.string,
+};
+
+const RenderGrid = ({ data, setSelection }) => {
+  return (
+    <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
+      {data.map(post => {
+        const { categories } = filterTaxonomies(post.taxonomies);
+        const authorName = post.author.fname + " " + post.author.lname;
+        return (
+          <StyledItem key={post.slug}>
+            <div className="selection-box">
+              <input
+                type="checkbox"
+                id={"checkbox-" + post.id}
+                onClick={() => setSelection(post.id)}
+              />
+              <label htmlFor={"checkbox-" + post.id} />
+            </div>
+            <StyledGridItem
+              image={getCoverImage(post.cover_image)}
+              title={post.title}
+              description={post.excerpt}
+              href={"/admin/posts/" + post.id}
+              line1={authorName}
+              line2={moment(post.createdAt).format("MMM Do YYYY")}
+              stickyText={categories}
+            />
+          </StyledItem>
+        );
+      })}
+    </StyledGrid>
+  );
+};
+RenderGrid.propTypes = {
+  data: PropTypes.array,
+  setSelection: PropTypes.func,
+};
+
+const RenderTable = ({ data, setSelection }) => {
+  return (
+    <Table
+      className="table"
+      columns={["", "Title", "Last Updated", "Author", "Status", "Category"]}
+    >
+      <thead>
+        <tr>
+          {["", "Title", "Last Updated", "Author", "Status", "Category"].map(
+            (colName, i) => (
+              <th key={i}>{colName}</th>
+            ),
+          )}
+        </tr>
+      </thead>
+      <tbody>
+        {data.map(post => {
+          const { categories } = filterTaxonomies(post.taxonomies);
+          const authorName = post.author.fname + " " + post.author.lname;
+          return (
+            <tr key={post.slug}>
+              <td className="selection-box">
+                <input
+                  type="checkbox"
+                  id={"checkbox-" + post.id}
+                  onClick={() => setSelection(post.id)}
+                />
+                <label htmlFor={"checkbox-" + post.id} />
+              </td>
+              <td>
+                <Link to={"/admin/posts/" + post.id}>
+                  <div className="title">{post.title}</div>
+                </Link>
+
+                <div className="small">{post.excerpt.slice(0, 60)}...</div>
+              </td>
+              <td className="small">
+                {moment(post.createdAt).format("MMM Do YYYY")}
+              </td>
+              <td className="small">{authorName}</td>
+              <td className={"upper status " + post.status}>
+                <span>{post.status}</span>
+              </td>
+              <td className="small">{categories}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </Table>
+  );
+};
+
+RenderTable.propTypes = {
+  data: PropTypes.array,
+  setSelection: PropTypes.func,
 };
 
 const filterTaxonomies = taxonomies => {

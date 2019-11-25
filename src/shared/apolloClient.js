@@ -68,9 +68,9 @@ if (typeof window !== "undefined") {
 
 // prepare the client for graphql queries.
 
-const client = (isAdmin = true, opts = {}) => {
+const client = (isAdmin = true, opts = {}, authToken = null) => {
   const middleware = isAdmin
-    ? middlewareLinkAdmin(token)
+    ? middlewareLinkAdmin(authToken || token)
     : middlewareLinkClient;
   return new ApolloClient({
     link: errorLink.concat(middleware).concat(httpLink),

@@ -83,12 +83,29 @@ export class TopBar extends Component {
     if (e) e.preventDefault();
     PostActions.setData(statusObj);
     let data = PostActions.getData();
-
+    const postData = {
+      ...this.props.post,
+      ...data,
+    };
+    const {
+      // eslint-disable-next-line no-unused-vars
+      createdAt,
+      // eslint-disable-next-line no-unused-vars
+      publishedAt,
+      // eslint-disable-next-line no-unused-vars
+      updatedAt,
+      // eslint-disable-next-line no-unused-vars
+      mode,
+      // eslint-disable-next-line no-unused-vars
+      author,
+      // eslint-disable-next-line no-unused-vars
+      __typename,
+      ...post
+    } = postData;
     const update = await client().mutate({
       mutation: UPDATE_POST_QUERY,
       variables: {
-        ...this.props.post,
-        ...data,
+        data: post,
       },
     });
 

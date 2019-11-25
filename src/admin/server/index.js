@@ -102,7 +102,6 @@ module.exports.init = app => {
             }
           }
         });
-
         // If the theme developer has changed the settings of the theme,
         // it has to sync with the database.
         syncThemeSettings(client, newSettings, req.headers.authorization).then(

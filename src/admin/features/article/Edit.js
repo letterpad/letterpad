@@ -87,12 +87,30 @@ class Edit extends Component {
 
     this.postSaveTimer = setTimeout(async () => {
       const data = PostActions.getData();
+      const postData = {
+        ...this.props.post,
+        ...data,
+      };
       EventBusInstance.publish("ARTICLE_SAVING");
+      const {
+        // eslint-disable-next-line no-unused-vars
+        createdAt,
+        // eslint-disable-next-line no-unused-vars
+        publishedAt,
+        // eslint-disable-next-line no-unused-vars
+        updatedAt,
+        // eslint-disable-next-line no-unused-vars
+        mode,
+        // eslint-disable-next-line no-unused-vars
+        author,
+        // eslint-disable-next-line no-unused-vars
+        __typename,
+        ...post
+      } = postData;
       const update = await client().mutate({
         mutation: UPDATE_POST_QUERY,
         variables: {
-          ...this.props.post,
-          ...data,
+          data: post,
         },
       });
       EventBusInstance.publish("ARTICLE_SAVED");

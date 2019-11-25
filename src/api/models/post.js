@@ -95,10 +95,10 @@ export async function _createPost(data, models) {
 
 export async function _updatePost(updatedPost, models) {
   try {
-    const postId = updatedPost.id;
+    const { id } = updatedPost;
     // first get the post which is being updated
     const oldPost = await models.Post.findOne({
-      where: { id: postId },
+      where: { id },
     });
 
     // Initially the title will be empty for newly created post.
@@ -116,7 +116,7 @@ export async function _updatePost(updatedPost, models) {
         options.title = updatedPost.title;
       }
       // check the menu. the menu has page items. update the slug of the page menu item if it exist.
-      await updateMenuItem(models, postId, oldPost.type, options);
+      await updateMenuItem(models, id, oldPost.type, options);
     }
     const currentTime = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
     // If this post is being published for the first time, update the publish date
@@ -125,12 +125,12 @@ export async function _updatePost(updatedPost, models) {
     }
     updatedPost = { ...updatedPost, updatedAt: currentTime };
     await models.Post.update(updatedPost, {
-      where: { id: postId },
+      where: { id },
     });
 
     // get all values of the updated post
     const newPost = await models.Post.findOne({
-      where: { id: postId },
+      where: { id },
     });
 
     // the taxonomies like tags/cathegories might have chqnged or added.
@@ -175,9 +175,10 @@ export async function _updatePost(updatedPost, models) {
       errors: [],
     };
   } catch (e) {
+    console.log(e);
     return {
       ok: false,
-      data: {},
+      post: {},
       errors: parseErrors(e),
     };
   }

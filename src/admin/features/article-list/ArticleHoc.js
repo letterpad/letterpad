@@ -61,9 +61,13 @@ const ArticleHoc = WrappedComponent => {
 
     deletePosts = async ids => {
       const isAdmin = true;
+      const urlQuery = new URLSearchParams(
+        this.props.router.history.location.search,
+      );
+      const deleteFromSystem = urlQuery.get("status") === "trash";
       return appoloClient(isAdmin).mutate({
         mutation: BULK_DELETE_POSTS,
-        variables: { ids: ids.join(",") },
+        variables: { ids: ids, deleteFromSystem },
         update: (proxy, { data: { deletePosts } }) => {
           if (deletePosts.ok) {
             this.fetchPosts();

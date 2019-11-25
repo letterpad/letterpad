@@ -4,7 +4,6 @@ const createResolver = resolver => {
   const baseResolver = resolver;
   baseResolver.createResolver = childResolver => {
     const newResolver = async (root, args, context, err) => {
-      // console.log("==================", err);
       const newArgs = await resolver(root, args, context, err);
       return childResolver(root, newArgs, context, err);
     };
@@ -46,7 +45,7 @@ export const createPostsPerm = requiresAuth.createResolver(
 export const editPostPerm = requiresAuth.createResolver(
   (root, args, context) => {
     if (context.user.permissions.indexOf("MANAGE_OWN_POSTS") >= 0) {
-      args.authorId = context.user.id;
+      args.data.authorId = context.user.id;
       return args;
     } else if (context.user.permissions.indexOf("MANAGE_ALL_POSTS") >= 0) {
       return args;
@@ -63,10 +62,9 @@ export const checkDisplayAccess = createResolver((root, args, context, err) => {
   //  if this is enduser, he should see only public posts.
   if (!context.user || !context.user.id) {
     if (args.filters) {
-      args.filters.status = "publish";
-    } else {
-      args.status = "publish";
+      args.filters = {};
     }
+    args.filters.status = "publish";
     return args;
   }
 

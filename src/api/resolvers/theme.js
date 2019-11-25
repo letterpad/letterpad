@@ -9,7 +9,6 @@ export default {
   Mutation: {
     insertThemeSettings: requiresAdmin.createResolver(
       async (root, args, { models }) => {
-        // console.log(args);
         return models.Theme.create(args);
       },
     ),

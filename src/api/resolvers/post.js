@@ -10,26 +10,6 @@ import memoryCache from "../utils/memoryCache";
 import { innertext } from "../utils/common";
 import { getMenuItemFromSlug } from "./selectors/post";
 
-function getConditions(columns, args) {
-  const obj = {};
-  const conditions = {};
-  for (const field in args) {
-    if (columns.indexOf(field) >= 0) {
-      if (field === "body") {
-        obj[Sequelize.Op.or] = [
-          { body: { [Sequelize.Op.like]: "%" + args[field] + "%" } },
-          { title: { [Sequelize.Op.like]: "%" + args[field] + "%" } },
-        ];
-      } else {
-        obj[field] = args[field];
-      }
-    } else {
-      conditions[field] = args[field];
-    }
-  }
-  conditions.where = obj;
-  return conditions;
-}
 const noResult = {
   count: 0,
   rows: [],
@@ -41,104 +21,108 @@ const postresolver = {
      * Query to take care of multiple post in one page.
      * Used for Search and Admin posts and pages list.
      */
-    posts: async (root, args, { models, user }) => {
-      const conditions = { include: [], where: {}, limit: 20 };
+    posts: checkDisplayAccess.createResolver(
+      async (root, args, { models, user }) => {
+        const conditions = { include: [], where: {}, limit: 20 };
 
-      const {
-        status,
-        sortBy,
-        author,
-        tag,
-        category,
-        limit,
-        query,
-        cursor,
-        type,
-        page,
-      } = args.filters;
+        const {
+          status,
+          sortBy,
+          author,
+          tag,
+          category,
+          limit,
+          query,
+          cursor,
+          type,
+          page,
+        } = args.filters;
 
-      if (category) {
-        const taxCategory = await models.Taxonomy.findOne({
-          where: { name: category },
-        });
-        if (!taxCategory) return noResult;
-        conditions.include.push({
-          model: models.PostTaxonomy,
-          where: { taxonomy_id: taxCategory.id },
-          require: true,
-        });
-      }
-
-      if (tag) {
-        const taxTag = await models.Taxonomy.findOne({
-          where: { name: tag },
-        });
-        if (!taxTag) return noResult;
-
-        conditions.include.push({
-          model: models.PostTaxonomy,
-          where: { taxonomy_id: taxTag.id },
-          require: true,
-        });
-      }
-
-      if (author) {
-        const authorCondition = {
-          where: {
-            fname: { [Sequelize.Op.like]: "%" + author + "%" },
-          },
-        };
-        const author = await models.Author.findOne(authorCondition);
-
-        if (!author) {
-          return noResult;
+        if (category) {
+          const taxCategory = await models.Taxonomy.findOne({
+            where: { name: category },
+          });
+          if (!taxCategory) return noResult;
+          conditions.include.push({
+            model: models.PostTaxonomy,
+            where: { taxonomy_id: taxCategory.id },
+            require: true,
+          });
         }
-        conditions.include.push({
-          model: models.Author,
-          where: { id: author.id },
-          require: true,
-        });
-      }
 
-      if (type) {
-        conditions.where.type = type;
-      }
+        if (tag) {
+          const taxTag = await models.Taxonomy.findOne({
+            where: { name: tag },
+          });
+          if (!taxTag) return noResult;
 
-      if (status) {
-        conditions.where.status = status;
-      }
-
-      conditions.order = [["updatedAt", "DESC"]];
-      if (sortBy) {
-        conditions.order = [
-          ["updatedAt", sortBy === "oldest" ? "ASC" : "DESC"],
-        ];
-        // for public users, sort it based on published date
-        if (user && user.id) {
-          conditions.order = [["publishedAt", "DESC"]];
+          conditions.include.push({
+            model: models.PostTaxonomy,
+            where: { taxonomy_id: taxTag.id },
+            require: true,
+          });
         }
-      }
 
-      if (limit) {
-        conditions.limit = limit;
-      }
+        if (author) {
+          const authorCondition = {
+            where: {
+              fname: { [Sequelize.Op.like]: "%" + author + "%" },
+            },
+          };
+          const author = await models.Author.findOne(authorCondition);
 
-      if (query) {
-        conditions.where.title = {
-          [Sequelize.Op.like]: "%" + query + "%",
+          if (!author) {
+            return noResult;
+          }
+          conditions.include.push({
+            model: models.Author,
+            where: { id: author.id },
+            require: true,
+          });
+        }
+
+        if (type) {
+          conditions.where.type = type;
+        }
+
+        if (status) {
+          conditions.where.status = status;
+        } else {
+          conditions.where.status = { [Sequelize.Op.ne]: "trash" };
+        }
+
+        conditions.order = [["updatedAt", "DESC"]];
+        if (sortBy) {
+          conditions.order = [
+            ["updatedAt", sortBy === "oldest" ? "ASC" : "DESC"],
+          ];
+          // for public users, sort it based on published date
+          if (user && user.id) {
+            conditions.order = [["publishedAt", "DESC"]];
+          }
+        }
+
+        if (limit) {
+          conditions.limit = limit;
+        }
+
+        if (query) {
+          conditions.where.title = {
+            [Sequelize.Op.like]: "%" + query + "%",
+          };
+        }
+        if (cursor) {
+          conditions.where.id = { [Sequelize.Op.gt]: cursor };
+        } else if (page) {
+          conditions.offset = (page - 1) * conditions.limit;
+        }
+        const result = await models.Post.findAndCountAll(conditions);
+        return {
+          count: result.count,
+          rows: result.rows,
         };
-      }
-      if (cursor) {
-        conditions.where.id = { [Sequelize.Op.gt]: cursor };
-      } else if (page) {
-        conditions.offset = page * conditions.limit;
-      }
-      const result = await models.Post.findAndCountAll(conditions);
-      return {
-        count: result.count,
-        rows: result.rows,
-      };
-    },
+      },
+    ),
 
     search: async (root, args, { models, user }) => {
       let cachedData = memoryCache.get("posts");
@@ -364,30 +348,27 @@ const postresolver = {
         return _createPost(args.data, models);
       },
     ),
-    updatePost: (root, args, { models }) => {
+    updatePost: editPostPerm.createResolver((root, args, { models }) => {
       memoryCache.del("posts");
+      console.log(args);
       return _updatePost(args.data, models);
-    },
+    }),
     uploadFile: editPostPerm.createResolver((root, args, { models }) => {
       return _updatePost(args, models);
     }),
     deletePosts: editPostPerm.createResolver(async (root, args, { models }) => {
       try {
-        // check the status of one post. If its already in trash
-        // then permanently delete it
-        const randomPost = await models.Post.findOne({
-          where: { id: args.ids.split(",")[0] },
-        });
-        if (randomPost.status == "trash") {
+        const deleteFromSystem = args.deleteFromSystem || false;
+        if (deleteFromSystem) {
           await models.Post.destroy({
-            where: { id: { [Sequelize.Op.in]: args.ids.split(",") } },
+            where: { id: args.ids },
           });
         } else {
           await models.Post.update(
             { status: "trash" },
             {
               where: {
-                id: { [Sequelize.Op.in]: args.ids.split(",") },
+                id: args.ids,
               },
             },
           );

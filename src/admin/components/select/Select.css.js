@@ -17,17 +17,18 @@ const StyledSelect = styled.div`
     cursor: pointer;
     display: flex;
     align-items: center;
+    font-weight: 400;
   }
   ul.options {
     position: absolute;
     background: var(--bg-base);
     z-index: 999;
     li {
+      font-weight: 300;
       border-left: 1px solid var(--color-border);
       border-right: 1px solid var(--color-border);
-      transition: all 0.2s linear;
       min-width: 120px;
-      padding: 10px 8px;
+      padding: 6px 8px;
       &:first-child {
         border-top: 1px solid var(--color-border);
         border-top-left-radius: 4px;
@@ -40,8 +41,9 @@ const StyledSelect = styled.div`
       }
       &:hover,
       &.selected {
-        background: var(--color-accent);
+        font-weight: bold;
         cursor: pointer;
+        color: var(--color-accent);
       }
     }
   }

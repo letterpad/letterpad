@@ -6,8 +6,8 @@ const darkTheme = `
     --color-base: #c8c8c8;
 
     --color-text-1: #fff;
-    --color-text-2: #d4d4d4;
-    --color-text-3: #747677;
+    --color-text-2: #9cb4c1;
+    --color-text-3: #417896;
     --color-muted: #000;
 
     --color-accent: #249fd3;
