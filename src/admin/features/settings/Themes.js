@@ -63,7 +63,6 @@ class Themes extends Component {
 
   getThemes = () => {
     const url = makeUrl("/admin/getThemes");
-    console.log("reached");
     fetch(url, { headers: { Authorization: localStorage.token } })
       .then(res => res.json())
       .then(themes => {
