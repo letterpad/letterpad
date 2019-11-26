@@ -1,4 +1,4 @@
-import { parseErrors, recurseMenu } from "../../shared/util";
+import { parseErrors } from "../../shared/util";
 import slugify from "../../shared/slugify";
 import config from "../../config";
 import moment from "moment";
@@ -103,7 +103,8 @@ export async function _updatePost(updatedPost, models) {
 
     // Initially the title will be empty for newly created post.
     // While updating check if the user has entered a new title and based on that create a new slug.
-    // If the user changes the title the second time then we should not change the slug again. Doing so will affect SEO.
+    // If the user changes the title the second time then dont change the slug again.
+    // Doing so will affect SEO.
     let slug = null;
     if (oldPost.title === "" && updatedPost.title !== oldPost.title) {
       //  create the slug

@@ -45,9 +45,9 @@ export class TopBar extends Component {
     });
   }
 
-  changePostStatus = e => {
+  changePostStatus = status => {
     this.setState({
-      isPublished: !!+e.target.checked, // "false" to false
+      isPublished: status,
     });
   };
 

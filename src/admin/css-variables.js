@@ -22,7 +22,7 @@ const darkTheme = `
     --color-success: #e8f5e9;
     --bg-hover-success: #43a047;
     --color-hover-success: #fff;
-    
+
     --bg-danger: #e64a19 ;
     --color-danger: #fbe9e7;
     --bg-hover-danger: #d84315;

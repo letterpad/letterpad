@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router";
 import { Route, Switch } from "react-router-dom";
 import SEO from "../helpers/SEO";
 import Loader from "../helpers/Loader";
@@ -20,13 +21,13 @@ import Layout from "../containers/Layout";
 import NotFound from "../containers/404";
 
 class Routes extends Component {
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
+  componentDidMount() {
+    this.props.history.listen((location, action) => {
       if (this.props.settings.data.google_analytics.value) {
-        ga("set", "page", config.baseName + this.props.location.pathname);
+        ga("set", "page", config.baseName + location.pathname);
         ga("send", "pageview");
       }
-    }
+    });
   }
 
   applyCustomCSS = ({ css }) => {
@@ -58,17 +59,22 @@ class Routes extends Component {
     this.applyCustomCSS(settings);
     const home = this.getHomeSlug();
 
-    const getComponent = (Comp, type) => Layout(Comp, { settings, type: type });
+    const getComponent = (Comp, type) => {
+      return Layout(Comp, { settings, type: type });
+    };
 
     const routes = [
       {
         exact: true,
-        component: getComponent(Home, home.type),
+        component: getComponent(
+          Home,
+          home.type === "category" ? "posts" : "page",
+        ),
         path: ["/", "/home/page/:page_no"],
       },
       {
         exact: true,
-        component: getComponent(Posts, "post"),
+        component: getComponent(Posts, "posts"),
         path: ["/posts/:slug", "/posts/:slug/page/:page_no"],
       },
       {
@@ -78,7 +84,7 @@ class Routes extends Component {
       },
       {
         exact: true,
-        component: getComponent(SinglePost, "page"),
+        component: getComponent(SinglePost, "post"),
         path: ["/post/:slug"],
       },
       {
@@ -129,5 +135,6 @@ class Routes extends Component {
 Routes.propTypes = {
   settings: PropTypes.object,
   themeSettings: PropTypes.object,
+  history: PropTypes.object,
 };
-export default hot(module)(ThemeSettingsData(SettingsData(Routes)));
+export default hot(module)(ThemeSettingsData(SettingsData(withRouter(Routes))));

@@ -350,7 +350,6 @@ const postresolver = {
     ),
     updatePost: editPostPerm.createResolver((root, args, { models }) => {
       memoryCache.del("posts");
-      console.log(args);
       return _updatePost(args.data, models);
     }),
     uploadFile: editPostPerm.createResolver((root, args, { models }) => {

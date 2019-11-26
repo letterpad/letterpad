@@ -2,6 +2,10 @@ import React, { Component } from "react";
 
 export default function Layout(Element, { settings, type }) {
   return class extends Component {
+    componentDidMount() {
+      document.body.className = type;
+    }
+
     render() {
       const props = { router: { ...this.props }, settings, type };
       return (
