@@ -37,7 +37,7 @@ const darkTheme = `
     }
     --base-shade-1: #212121
     --base-shade-2: #424242
-    --base-shade-3: #616161
+    --base-shade-3: #4f6671
     --base-shade-4: #757575
     --base-shade-5: #9e9e9e
     --base-shade-6: #bdbdbd

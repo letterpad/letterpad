@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router";
+// import { withRouter } from "react-router";
 import { Route, Switch } from "react-router-dom";
 import SEO from "../helpers/SEO";
 import Loader from "../helpers/Loader";
-import config from "../../config";
 import { hot } from "react-hot-loader";
 // Data supply
 import SettingsData from "../../shared/data-connectors/SettingsData";
@@ -19,17 +18,9 @@ import SinglePost from "../containers/SinglePost";
 import SearchWrapper from "../containers/SearchWrapper";
 import Layout from "../containers/Layout";
 import NotFound from "../containers/404";
+import DecorateRoute from "./DecorateRoute";
 
 class Routes extends Component {
-  componentDidMount() {
-    this.props.history.listen((location, action) => {
-      if (this.props.settings.data.google_analytics.value) {
-        ga("set", "page", config.baseName + location.pathname);
-        ga("send", "pageview");
-      }
-    });
-  }
-
   applyCustomCSS = ({ css }) => {
     if (typeof document == "undefined" || typeof css == "undefined")
       return false;
@@ -60,7 +51,7 @@ class Routes extends Component {
     const home = this.getHomeSlug();
 
     const getComponent = (Comp, type) => {
-      return Layout(Comp, { settings, type: type });
+      return DecorateRoute(Layout(Comp), { settings, type });
     };
 
     const routes = [
@@ -98,6 +89,11 @@ class Routes extends Component {
           "/search/:query?",
         ],
       },
+      {
+        exact: true,
+        component: getComponent(NotFound, "page"),
+        path: "*",
+      },
     ];
 
     return (
@@ -120,12 +116,6 @@ class Routes extends Component {
               component={route.component}
             />
           ))}
-          <Route
-            path="*"
-            component={Layout(NotFound, {
-              settings,
-            })}
-          />
         </Switch>
       </div>
     );
@@ -137,4 +127,4 @@ Routes.propTypes = {
   themeSettings: PropTypes.object,
   history: PropTypes.object,
 };
-export default hot(module)(ThemeSettingsData(SettingsData(withRouter(Routes))));
+export default hot(module)(ThemeSettingsData(SettingsData(Routes)));
