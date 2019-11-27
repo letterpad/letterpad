@@ -1,0 +1,187 @@
+scalar Date
+
+enum PostStatusOptions {
+  publish
+  draft
+  trash
+}
+
+type Post {
+  id: Int
+  title: String
+  body: String
+  author: Author
+  excerpt: String
+  cover_image: String
+  type: String
+  status: String
+  slug: String
+  mode: String
+  createdAt: Date
+  publishedAt: Date
+  updatedAt: Date
+  taxonomies: [Taxonomy]
+}
+
+input InputCreatePost {
+  title: String
+  body: String
+  authorId: Int
+  excerpt: String
+  cover_image: String
+  type: String
+  status: PostStatusOptions
+  slug: String
+  taxonomies: [TaxonomyInputType]
+}
+
+input InputUpdatePost {
+  id: Int!
+  title: String
+  body: String
+  authorId: Int
+  excerpt: String
+  cover_image: String
+  type: String
+  status: PostStatusOptions
+  slug: String
+  taxonomies: [TaxonomyInputType]
+}
+
+type PostNode {
+  count: Int
+  rows: [Post]
+}
+type PostTaxonomyNode {
+  count: Int
+  rows: [Post]
+}
+
+type AdjacentPosts {
+  previous: Post
+  next: Post
+}
+
+input TaxonomyInputType {
+  id: Int
+  name: String
+  type: String
+  slug: String
+}
+
+type Response {
+  ok: Boolean!
+  post: Post
+  errors: [Error!]
+}
+
+type PostStatus {
+  published: Int
+  drafts: Int
+}
+
+type Stats {
+  posts: PostStatus
+  pages: PostStatus
+  tags: Int
+  categories: Int
+}
+
+type SearchResult {
+  id: Int
+  title: String
+  excerpt: String
+  publishedAt: Date
+  slug: String
+}
+
+type SearchOutput {
+  ok: Boolean
+  count: Int
+  rows: [SearchResult]
+}
+
+enum PostSortBy {
+  newest
+  oldest
+}
+
+enum PostTypes {
+  page
+  post
+}
+
+enum MenuTypes {
+  category
+  page
+}
+
+input PostFilters {
+  tag: String
+  category: String
+  authorName: String
+  sortBy: PostSortBy
+  status: PostStatusOptions
+  author: String
+  query: String
+  type: PostTypes
+}
+
+input MenuFiltersWithPagination {
+  slug: String
+  type: MenuTypes!
+  page: Int
+  limit: Int
+}
+
+input PostFiltersWithPagination {
+  tag: String
+  category: String
+  authorName: String
+  sortBy: PostSortBy
+  status: PostStatusOptions
+  author: String
+  query: String
+  type: PostTypes
+  cursor: Int
+  limit: Int
+  page: Int
+}
+
+input SinglePostFilters {
+  id: Int
+  slug: String
+}
+
+type Query {
+  post(filters: SinglePostFilters): Post
+
+  posts(filters: PostFiltersWithPagination): PostNode
+
+  menuContent(filters: MenuFiltersWithPagination): PostTaxonomyNode
+
+  postsByTaxinomySlug(
+    type: String!
+    slug: String!
+    postType: String
+    offset: Int
+    limit: Int
+    cursor: Int
+  ): PostTaxonomyNode
+
+  adjacentPosts(slug: String): AdjacentPosts
+
+  search(query: String!): SearchOutput
+
+  stats: Stats
+}
+
+type Mutation {
+  createPost(data: InputCreatePost): Response!
+
+  updatePost(data: InputUpdatePost): Response!
+
+  deletePosts(ids: [Int!], deleteFromSystem: Boolean): Response!
+
+  uploadFile(id: Int, cover_image: String): Response!
+}

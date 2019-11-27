@@ -22,7 +22,7 @@ export const StyledLink = styled(Link)`
   }
   .menu-icon {
     margin-right: 8px;
-    color: var(--color-accent) !important;
+    color: var(--color-text-3) !important;
   }
 `;
 const StyledMenu = styled.div`

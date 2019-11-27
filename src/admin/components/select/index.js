@@ -12,6 +12,8 @@ class Select extends Component {
     label: PropTypes.any,
   };
 
+  rootRef = React.createRef();
+
   state = {
     open: false,
     options: this.props.options,
@@ -24,7 +26,19 @@ class Select extends Component {
     if (option.length > 0) {
       this.setState({ selected: option[0].name });
     }
+    document.addEventListener("click", this.closeSelect);
   }
+
+  componentDidUnmount() {
+    document.removeEventListener("click", this.closeSelect);
+  }
+
+  closeSelect = e => {
+    const rootNode = this.rootRef.current;
+    if (rootNode && !rootNode.contains(e.target)) {
+      this.setState({ open: false });
+    }
+  };
 
   toggleSelect = () => {
     this.setState({ open: !this.state.open });
@@ -40,7 +54,7 @@ class Select extends Component {
     /* eslint-disable no-unused-vars */
     const { options, selected, onChange, label, ...props } = this.props;
     return (
-      <StyledSelect {...props}>
+      <StyledSelect {...props} ref={this.rootRef}>
         {label && (
           <label
             className="custom-label"

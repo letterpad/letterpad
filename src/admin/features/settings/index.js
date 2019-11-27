@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import { graphql } from "@apollo/react-hoc";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
 import { translate } from "react-i18next";
-
-import Loader from "admin/components/loader";
 
 import General from "./General";
 import Social from "./Social";
@@ -16,7 +13,6 @@ import StyledTitleHeader from "../../components/title-header";
 import Button from "../../components/button";
 import Tabs from "../../components/tabs";
 
-import { GET_OPTIONS } from "../../../shared/queries/Queries";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
 import Themes from "./Themes";
 import Css from "./Css";
@@ -26,15 +22,16 @@ class Settings extends Component {
     updateOptions: PropTypes.func,
     options: PropTypes.object,
     settings: PropTypes.object,
-    history: PropTypes.object,
+    router: PropTypes.object,
     t: PropTypes.func,
   };
 
   state = {
     updatedOptions: {},
     selected:
-      new URLSearchParams(this.props.history.location.search).get("tab") ||
-      "general",
+      new URLSearchParams(this.props.router.history.location.search).get(
+        "tab",
+      ) || "general",
   };
 
   setOption = (option, value) => {
@@ -58,19 +55,15 @@ class Settings extends Component {
   };
 
   handleNavClick = page => {
-    this.props.history.push({
-      pathname: this.props.history.location.pathname,
+    this.props.router.history.push({
+      pathname: this.props.router.history.location.pathname,
       search: "?tab=" + page,
     });
   };
 
   render() {
     const { selected } = this.state;
-    const { options, settings, t } = this.props;
-
-    if (options.loading) {
-      return <Loader />;
-    }
+    const { settings, t } = this.props;
 
     return (
       <StyledSection>
@@ -98,7 +91,7 @@ class Settings extends Component {
           <Themes
             label="themes"
             settings={settings}
-            updateOptions={this.setOption}
+            updateOption={this.setOption}
           />
           <Css label="css" settings={settings} updateOption={this.setOption} />
           <Messages
@@ -117,8 +110,4 @@ class Settings extends Component {
   }
 }
 
-const OptionsData = graphql(GET_OPTIONS, {
-  name: "options",
-});
-
-export default translate("translations")(UpdateOptions(OptionsData(Settings)));
+export default translate("translations")(UpdateOptions(Settings));

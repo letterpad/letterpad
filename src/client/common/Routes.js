@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+// import { withRouter } from "react-router";
 import { Route, Switch } from "react-router-dom";
 import SEO from "../helpers/SEO";
 import Loader from "../helpers/Loader";
-import config from "../../config";
 import { hot } from "react-hot-loader";
 // Data supply
 import SettingsData from "../../shared/data-connectors/SettingsData";
 import ThemeSettingsData from "../../shared/data-connectors/ThemeSettingsData";
-
 /*!------------------------------------------------------------------
 [View Containers-]
 */
@@ -19,17 +18,9 @@ import SinglePost from "../containers/SinglePost";
 import SearchWrapper from "../containers/SearchWrapper";
 import Layout from "../containers/Layout";
 import NotFound from "../containers/404";
+import DecorateRoute from "./DecorateRoute";
 
 class Routes extends Component {
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      if (this.props.settings.data.google_analytics.value) {
-        ga("set", "page", config.baseName + this.props.location.pathname);
-        ga("send", "pageview");
-      }
-    }
-  }
-
   applyCustomCSS = ({ css }) => {
     if (typeof document == "undefined" || typeof css == "undefined")
       return false;
@@ -40,23 +31,14 @@ class Routes extends Component {
   };
 
   getHomeSlug = () => {
-    // To get the homepage, parse the menu settings and see if there is any label by the name Home.
-    // If not, then take the first item as the home
+    // To get the homepage, parse the menu settings then take the first item as the home
     const menu = JSON.parse(this.props.settings.data.menu.value);
-    let home = menu.filter(item => item.name === "Home");
-    if (home.length === 0) {
-      home = menu[0];
-    } else {
-      home = home[0];
-    }
-    if (home.type === "label") {
-      home = home.children[0];
-    }
+    let home = menu[0];
     return home;
   };
 
   render() {
-    if (this.props.settings.loading || this.props.themeSettingsLoading) {
+    if (this.props.settings.loading) {
       return <Loader />;
     }
 
@@ -68,90 +50,49 @@ class Routes extends Component {
     this.applyCustomCSS(settings);
     const home = this.getHomeSlug();
 
+    const getComponent = (Comp, type) => {
+      return DecorateRoute(Layout(Comp), { settings, type });
+    };
+
     const routes = [
       {
         exact: true,
-        component: Layout(
+        component: getComponent(
           Home,
-          { settings, slug: home.slug, type: home.type },
-          "Home",
+          home.type === "category" ? "posts" : "page",
         ),
-        path: "/",
+        path: ["/", "/home/page/:page_no"],
       },
       {
         exact: true,
-        component: Layout(
-          Home,
-          { settings, slug: home.slug, type: home.type },
-          "Home",
-        ),
-        path: "/home/page/:page_no",
+        component: getComponent(Posts, "posts"),
+        path: ["/posts/:slug", "/posts/:slug/page/:page_no"],
       },
       {
         exact: true,
-        component: Layout(Posts, { settings, type: "posts" }),
-        path: "/posts/:slug",
+        component: getComponent(SinglePage, "page"),
+        path: ["/page/:slug"],
       },
       {
         exact: true,
-        component: Layout(Posts, { settings, type: "posts" }),
-        path: "/posts/:slug/page/:page_no",
+        component: getComponent(SinglePost, "post"),
+        path: ["/post/:slug"],
       },
       {
         exact: true,
-        component: Layout(SinglePage, {
-          type: "page",
-          settings,
-        }),
-        path: "/page/:slug",
+        component: getComponent(SearchWrapper, "category"),
+        path: [
+          "/category/:query",
+          "/category/:query/page/:page_no",
+          "/tag/:query",
+          "/tag/:query/page/:page_no",
+          "/search/:query?",
+        ],
       },
       {
         exact: true,
-        component: Layout(SinglePost, {
-          type: "post",
-          settings,
-        }),
-        path: "/post/:slug",
-      },
-      {
-        exact: true,
-        component: Layout(SearchWrapper, {
-          type: "category",
-          settings,
-        }),
-        path: "/category/:query",
-      },
-      {
-        exact: true,
-        component: Layout(SearchWrapper, {
-          type: "category",
-          settings,
-        }),
-        path: "/category/:query/page/:page_no",
-      },
-      {
-        exact: true,
-        component: Layout(SearchWrapper, {
-          type: "tag",
-          settings,
-        }),
-        path: "/tag/:query",
-      },
-      {
-        exact: true,
-        component: Layout(SearchWrapper, {
-          type: "tag",
-          settings,
-        }),
-        path: "/tag/:query/page/:page_no",
-      },
-      {
-        exact: true,
-        component: Layout(SearchWrapper, {
-          type: "post",
-          settings,
-        }),
-        path: "/search/:query?",
+        component: getComponent(NotFound, "page"),
+        path: "*",
       },
     ];
 
@@ -175,16 +116,6 @@ class Routes extends Component {
               component={route.component}
             />
           ))}
-          <Route
-            path="*"
-            component={Layout(
-              NotFound,
-              {
-                settings,
-              },
-              "NotFound",
-            )}
-          />
         </Switch>
       </div>
     );
@@ -192,9 +123,8 @@ class Routes extends Component {
 }
 
 Routes.propTypes = {
-  location: PropTypes.object,
   settings: PropTypes.object,
   themeSettings: PropTypes.object,
-  themeSettingsLoading: PropTypes.bool,
+  history: PropTypes.object,
 };
 export default hot(module)(ThemeSettingsData(SettingsData(Routes)));

@@ -2,8 +2,8 @@ const gql = require("graphql-tag");
 const { PostFragment } = require("./Fragments");
 
 module.exports.GET_POSTS = gql`
-  query getPosts($type: String!, $offset: Int, $limit: Int, $status: String) {
-    posts(type: $type, offset: $offset, limit: $limit, status: $status) {
+  query posts($filters: PostFiltersWithPagination) {
+    posts(filters: $filters) {
       count
       rows {
         ...postFields
@@ -14,8 +14,9 @@ module.exports.GET_POSTS = gql`
 `;
 
 module.exports.GET_SINGLE_POST = gql`
-  query getPost($id: Int!) {
-    post(id: $id) {
+  # TODO: Convert the below params to object.
+  query post($filters: SinglePostFilters) {
+    post(filters: $filters) {
       ...postFields
     }
   }
@@ -29,19 +30,6 @@ module.exports.GET_POST_BY_SLUG = gql`
     }
   }
   ${PostFragment}
-`;
-
-module.exports.GET_PAGE_NAMES = gql`
-  query getPosts($type: String!, $status: String) {
-    posts(type: $type, status: $status) {
-      count
-      rows {
-        id
-        title
-        slug
-      }
-    }
-  }
 `;
 
 module.exports.GET_MEDIA = gql`
@@ -257,39 +245,12 @@ module.exports.GET_LATEST_PUBLISHED_POSTS = gql`
   }
 `;
 
-module.exports.CAT_POSTS = gql`
-  query allPosts(
-    $type: String
-    $slug: String
-    $postType: String
-    $offset: Int
-    $limit: Int
-  ) {
-    postsMenu(
-      postType: $postType
-      limit: $limit
-      offset: $offset
-      type: $type
-      slug: $slug
-    ) {
+module.exports.POSTS_FROM_CATEGORY_SLUG = gql`
+  query menuContent($filters: MenuFiltersWithPagination) {
+    menuContent(filters: $filters) {
       count
-      posts {
+      rows {
         ...postFields
-      }
-    }
-  }
-  ${PostFragment}
-`;
-
-module.exports.PAGE_MENU = gql`
-  query pageMenu($slug: String, $postType: String) {
-    pageMenu(slug: $slug, postType: $postType) {
-      ok
-      post {
-        ...postFields
-      }
-      errors {
-        message
       }
     }
   }
@@ -298,7 +259,7 @@ module.exports.PAGE_MENU = gql`
 
 module.exports.ADJACENT_POSTS = gql`
   query adjacentPosts($slug: String) {
-    adjacentPosts(type: "post", slug: $slug) {
+    adjacentPosts(slug: $slug) {
       next {
         title
         slug

@@ -10,7 +10,8 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import { StaticRouter } from "react-router";
-import { ApolloProvider } from "@apollo/react-hoc";
+import { ApolloProvider as ApolloHocProvider } from "@apollo/react-hoc";
+import { ApolloProvider } from "react-apollo";
 import { renderToStringWithData } from "@apollo/react-ssr";
 const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
 import Routes from "../common/Routes";
@@ -24,18 +25,19 @@ export default async (url, client, config, isStatic) => {
     context: context,
     basename: config.baseName.replace(/\/$/, ""), // remove the last slash
   };
-
   const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
   const clientApp = (
-    <ApolloProvider client={client}>
-      <StyleSheetManager sheet={sheet.instance}>
-        <StaticRouter {...opts}>
-          <StaticContext.Provider value={{ isStatic }}>
-            <Routes />
-          </StaticContext.Provider>
-        </StaticRouter>
-      </StyleSheetManager>
-    </ApolloProvider>
+    <StyleSheetManager sheet={sheet.instance}>
+      <StaticRouter {...opts}>
+        <StaticContext.Provider value={{ isStatic }}>
+          <ApolloHocProvider client={client}>
+            <ApolloProvider client={client}>
+              <Routes />
+            </ApolloProvider>
+          </ApolloHocProvider>
+        </StaticContext.Provider>
+      </StaticRouter>
+    </StyleSheetManager>
   );
   try {
     const content = await renderToStringWithData(clientApp);

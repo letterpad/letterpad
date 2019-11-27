@@ -1,8 +1,8 @@
 const gql = require("graphql-tag");
 
 module.exports.CREATE_POST = gql`
-  mutation createPost($type: String!, $title: String, $body: String) {
-    createPost(type: $type, title: $title, body: $body) {
+  mutation createPost($data: InputCreatePost) {
+    createPost(data: $data) {
       ok
       errors {
         path
@@ -103,8 +103,8 @@ module.exports.DELETE_TAXONOMY = gql`
 `;
 
 module.exports.BULK_DELETE_POSTS = gql`
-  mutation deletePosts($ids: String!) {
-    deletePosts(ids: $ids) {
+  mutation deletePosts($ids: [Int!], $deleteFromSystem: Boolean) {
+    deletePosts(ids: $ids, deleteFromSystem: $deleteFromSystem) {
       ok
     }
   }
@@ -162,28 +162,8 @@ module.exports.CREATE_AUTHOR = gql`
 `;
 
 module.exports.UPDATE_POST_QUERY = gql`
-  mutation updatePost(
-    $id: Int!
-    $title: String!
-    $body: String
-    $status: String!
-    $excerpt: String
-    $cover_image: String
-    $taxonomies: [TaxonomyInputType]
-    $slug: String!
-    $mode: String
-  ) {
-    updatePost(
-      id: $id
-      title: $title
-      body: $body
-      status: $status
-      excerpt: $excerpt
-      taxonomies: $taxonomies
-      slug: $slug
-      mode: $mode
-      cover_image: $cover_image
-    ) {
+  mutation updatePost($data: InputUpdatePost) {
+    updatePost(data: $data) {
       ok
       errors {
         path

@@ -3,26 +3,25 @@ import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 
 import config from "../../../config";
-import { GetAuthors } from "../../data-connectors/GetAuthors";
 import Loader from "../../components/loader";
 
 import StyledSection from "../../components/section";
 import StyledButton from "../../components/button";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
-
 import StyledAuthorList from "./AuthorList.css";
+import { Query } from "react-apollo";
+import { GET_AUTHORS } from "../../../shared/queries/Queries";
 
 class Authors extends Component {
   static propTypes = {
-    history: PropTypes.object,
+    router: PropTypes.object,
     authors: PropTypes.array,
     loading: PropTypes.bool,
     t: PropTypes.func,
   };
 
-  constructor(props) {
-    super(props);
+  componentDidMount() {
     document.body.classList.add("authors-page");
   }
 
@@ -31,11 +30,11 @@ class Authors extends Component {
   }
 
   authorSelect = id => {
-    this.props.history.push("/admin/authors/edit/" + id);
+    this.props.router.history.push("/admin/authors/edit/" + id);
   };
 
   render() {
-    const { t, loading } = this.props;
+    const { t } = this.props;
 
     return (
       <StyledSection
@@ -47,7 +46,7 @@ class Authors extends Component {
           <StyledButton
             success
             onClick={() => {
-              this.props.history.push("/admin/authors/new");
+              this.props.router.history.push("/admin/authors/new");
             }}
             sm
           >
@@ -55,34 +54,37 @@ class Authors extends Component {
           </StyledButton>
           <br />
           <br />
-          {loading ? (
-            <Loader />
-          ) : (
-            <StyledGrid
-              className="author-grid"
-              columns="repeat(auto-fill, 200px)"
-            >
-              {this.props.authors.map(author => {
-                const authorName = author.fname + " " + author.lname;
-                return (
-                  <StyledGridItem
-                    key={author.email}
-                    image={config.baseName + author.avatar}
-                    title={authorName}
-                    href="#"
-                    onClick={() => this.authorSelect(author.id)}
-                    line1={author.role.name}
-                    // setSelection={this.props.setSelection}
-                    // selectedPosts={this.props.selectedPosts}
-                  />
-                );
-              })}
-            </StyledGrid>
-          )}
+          <Query query={GET_AUTHORS}>
+            {({ loading, data }) => {
+              if (loading) return <Loader />;
+              return (
+                <StyledGrid
+                  className="author-grid"
+                  columns="repeat(auto-fill, 200px)"
+                >
+                  {data.authors.map(author => {
+                    const authorName = author.fname + " " + author.lname;
+                    return (
+                      <StyledGridItem
+                        key={author.email}
+                        image={config.baseName + author.avatar}
+                        title={authorName}
+                        href="#"
+                        onClick={() => this.authorSelect(author.id)}
+                        line1={author.role.name}
+                        // setSelection={this.props.setSelection}
+                        // selectedPosts={this.props.selectedPosts}
+                      />
+                    );
+                  })}
+                </StyledGrid>
+              );
+            }}
+          </Query>
         </StyledAuthorList>
       </StyledSection>
     );
   }
 }
 
-export default translate("translations")(GetAuthors(Authors));
+export default translate("translations")(Authors);

@@ -26,7 +26,6 @@ class Tabs extends Component {
           {children.map(child => {
             const { label } = child.props;
             if (!label) return null;
-            console.log("activeTab === label :", activeTab, label);
             return (
               <StyledTab
                 className="tab-item"

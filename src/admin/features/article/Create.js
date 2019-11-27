@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import PostActions from "./PostActions";
-import CreatePost from "../../data-connectors/CreatePost";
 import { plural } from "../../../shared/util";
 import Loader from "../../components/loader";
+import apolloClient from "../../../shared/apolloClient";
+import { CREATE_POST } from "../../../shared/queries/Mutations";
 
 export class Create extends Component {
   static propTypes = {
-    history: PropTypes.object,
+    router: PropTypes.object,
     createPost: PropTypes.func.isRequired,
     type: PropTypes.string.isRequired,
   };
@@ -17,16 +18,17 @@ export class Create extends Component {
     post: {},
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { type } = this.props;
     // This is going to hold all the changes done to the post.
     PostActions.data = {};
-    // create an empty post with the type and title
-    this.props.createPost({ type }).then(result => {
-      const post = result.data.createPost.post;
-      PostActions.setData({ slug: post.slug });
-      this.props.history.push(`/admin/${plural[type]}/${post.id}`);
+    const result = await apolloClient(true).mutate({
+      mutation: CREATE_POST,
+      variables: { data: { type } },
     });
+    const post = result.data.createPost.post;
+    PostActions.setData({ slug: post.slug });
+    this.props.router.history.replace(`/admin/${plural[type]}/${post.id}`);
   }
 
   render() {
@@ -35,4 +37,4 @@ export class Create extends Component {
   }
 }
 
-export default CreatePost(Create);
+export default Create;

@@ -1,5 +1,21 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: ${p => (p.fullHeight ? "100vh" : "auto")};
+
+  .article-holder {
+    width: 100%;
+    margin: 80px auto 0;
+    padding: 0 10px;
+
+    .post-content {
+      flex: 1;
+    }
+  }
+`;
+
 const StyledArticle = styled.article`
   display: flex;
   flex: 1;

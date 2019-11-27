@@ -102,6 +102,11 @@ module.exports = (args, name) => {
           include: path.join(__dirname, "../src/admin"),
         },
         {
+          test: /\.(graphql|gql)$/,
+          exclude: /node_modules/,
+          loader: "graphql-tag/loader",
+        },
+        {
           test: /\.html$/,
           use: {
             loader: "html-loader",

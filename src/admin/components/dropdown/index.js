@@ -55,10 +55,6 @@ class DropDown extends Component {
     const { name, className } = this.props;
     const ddClassPublish = " dropdown" + (this.state.open ? " open" : "");
 
-    // const childrenWithProps = React.Children.map(children, child => {
-    //   return React.cloneElement(child, {});
-    // });
-
     return (
       <Wrapper className={className + ddClassPublish}>
         <a

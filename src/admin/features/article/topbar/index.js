@@ -1,95 +1,23 @@
 import React, { Component } from "react";
 import { notify } from "react-notify-toast";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import StyledTopBar from "./TopBar.css";
+import StyledTopBar, { AutoSaveIndicator, PublishBox } from "./TopBar.css";
 import { EventBusInstance } from "../../../../shared/eventBus";
-import { plural } from "../../../../shared/util";
-import UpdatePost from "../../../data-connectors/UpdatePost";
 import PostActions from "../PostActions";
 import PublishDropdown from "./PublishDropdown";
 import MetaDropdown from "./MetaDropdown";
 import StyledDropdown from "../../../components/dropdown";
-
-const PublishBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  a:hover {
-    text-decoration: none;
-  }
-  .meta-label {
-    font-weight: 500;
-    margin-bottom: 10px;
-  }
-  > div {
-    margin-left: 20px;
-    cursor: pointer;
-  }
-  .publish {
-    .dropdown-menu {
-      width: 340px;
-      margin-left: -190px;
-    }
-  }
-  .meta {
-    .dropdown-menu {
-      width: 320px;
-      margin-left: -240px;
-    }
-  }
-`;
-
-const AutoSaveIndicator = styled.div`
-  .spinner {
-    width: 70px;
-    text-align: center;
-  }
-
-  .spinner > div {
-    width: 6px;
-    height: 6px;
-    background-color: #0eaf10;
-    margin-right: 4px;
-    border-radius: 100%;
-    display: inline-block;
-    animation: sk-bouncedelay 1s infinite ease-in-out both;
-  }
-
-  .spinner .bounce1 {
-    -webkit-animation-delay: -0.32s;
-    animation-delay: -0.32s;
-    background-color: #27b0ed;
-  }
-
-  .spinner .bounce2 {
-    -webkit-animation-delay: -0.16s;
-    animation-delay: -0.16s;
-    background-color: #f33f43;
-  }
-
-  @keyframes sk-bouncedelay {
-    0%,
-    80%,
-    100% {
-      -webkit-transform: scale(0);
-      transform: scale(0);
-    }
-    40% {
-      -webkit-transform: scale(1);
-      transform: scale(1);
-    }
-  }
-`;
+import client from "../../../../shared/apolloClient";
+import { UPDATE_POST_QUERY } from "../../../../shared/queries/Mutations";
 
 export class TopBar extends Component {
   static propTypes = {
     post: PropTypes.object.isRequired,
     update: PropTypes.func.isRequired,
     edit: PropTypes.bool,
-    history: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
     create: PropTypes.bool,
   };
 
@@ -109,7 +37,7 @@ export class TopBar extends Component {
     });
     EventBusInstance.on("ARTICLE_SAVED", () => {
       // updates are really fast.
-      // Let the saving state atleast for half a second to show our nice loader.
+      // Let the saving state stay atleast for half a second to show the loader.
       // Users should know we have auto-save option.
       setTimeout(() => {
         this.setState({ saving: false });
@@ -117,9 +45,9 @@ export class TopBar extends Component {
     });
   }
 
-  changePostStatus = e => {
+  changePostStatus = status => {
     this.setState({
-      isPublished: !!+e.target.checked, // "false" to false
+      isPublished: status,
     });
   };
 
@@ -127,9 +55,9 @@ export class TopBar extends Component {
     let eventName = null;
     let notifyMessage = null;
     // if the status is trash, redirect the user to posts or pages depending on the post type.
-    if (post.status == "trash") {
+    if (post.status === "trash") {
       notifyMessage = "Post trashed";
-      this.props.history.push(`/admin/${plural[post.type]}`);
+      this.props.router.history.goBack();
     }
     // if the post is in edit mode, trigger the event
     else if (this.props.edit) {
@@ -155,10 +83,30 @@ export class TopBar extends Component {
     if (e) e.preventDefault();
     PostActions.setData(statusObj);
     let data = PostActions.getData();
-
-    const update = await this.props.update({
+    const postData = {
       ...this.props.post,
       ...data,
+    };
+    const {
+      // eslint-disable-next-line no-unused-vars
+      createdAt,
+      // eslint-disable-next-line no-unused-vars
+      publishedAt,
+      // eslint-disable-next-line no-unused-vars
+      updatedAt,
+      // eslint-disable-next-line no-unused-vars
+      mode,
+      // eslint-disable-next-line no-unused-vars
+      author,
+      // eslint-disable-next-line no-unused-vars
+      __typename,
+      ...post
+    } = postData;
+    const update = await client().mutate({
+      mutation: UPDATE_POST_QUERY,
+      variables: {
+        data: post,
+      },
     });
 
     if (update.data.updatePost.ok) {
@@ -177,7 +125,10 @@ export class TopBar extends Component {
   render() {
     const publishedCls = this.state.isPublished ? "on" : "off";
 
-    const goBackLink = "/admin/" + plural[this.props.post.type];
+    const goBack = e => {
+      e.preventDefault();
+      this.props.router.history.goBack();
+    };
     const deleteAction = e =>
       this.updatePost(e, {
         status: "trash",
@@ -186,7 +137,7 @@ export class TopBar extends Component {
     return (
       <StyledTopBar className="article-top-bar">
         <div className="left-block">
-          <Link to={goBackLink}>
+          <Link to="#" onClick={goBack}>
             <span className="material-icons" style={{ fontSize: 34 }}>
               keyboard_arrow_left
             </span>
@@ -243,4 +194,4 @@ export class TopBar extends Component {
   }
 }
 
-export default UpdatePost(TopBar);
+export default TopBar;

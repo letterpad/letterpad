@@ -1,4 +1,5 @@
 import { requiresAdmin } from "../utils/permissions";
+import { recurseMenu } from "../../shared/util";
 
 export default {
   Query: {
@@ -25,4 +26,31 @@ export default {
       },
     ),
   },
+};
+
+export const updateMenuItem = async (models, id, type, field) => {
+  let menu = await models.Setting.findOne({
+    where: { option: "menu" },
+  });
+
+  const changeMenuItem = item => {
+    if (item.type === type) {
+      item = { ...item, ...field };
+    }
+    return item;
+  };
+  // loop though the menu and find the item with the current slug and id.
+  // if found, update the slug
+  const updatedMenu = JSON.parse(menu.value).map(item =>
+    recurseMenu(item, id, changeMenuItem),
+  );
+
+  try {
+    await models.Setting.update(
+      { value: JSON.stringify(updatedMenu) },
+      { where: { option: "menu" } },
+    );
+  } catch (e) {
+    console.log(e);
+  }
 };
