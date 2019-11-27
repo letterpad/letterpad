@@ -1,7 +1,8 @@
-import { parseErrors, recurseMenu } from "../../shared/util";
+import { parseErrors } from "../../shared/util";
 import slugify from "../../shared/slugify";
 import config from "../../config";
 import moment from "moment";
+import { updateMenuItem } from "../resolvers/setting";
 
 export default (conn, DataTypes) => {
   const Post = conn.define(
@@ -63,7 +64,10 @@ export async function _createPost(data, models) {
   try {
     //  create a slug for the new psot
     data.slug = await slugify(models.Post, config.defaultSlug);
-    // add a empty string for title
+    if (!data.body) {
+      data.body = "";
+    }
+    // add an empty string for title
     if (!data.title) {
       data.title = "";
     }
@@ -73,7 +77,6 @@ export async function _createPost(data, models) {
       where: { id: 1 },
     });
     await newPost.addTaxonomy(defaultTaxonomy);
-
     const post = await models.Post.findOne({ where: { id: newPost.id } });
     return {
       ok: true,
@@ -90,71 +93,57 @@ export async function _createPost(data, models) {
   }
 }
 
-export async function _updatePost(post, models) {
+export async function _updatePost(updatedPost, models) {
   try {
+    const { id } = updatedPost;
     // first get the post which is being updated
     const oldPost = await models.Post.findOne({
-      where: { id: post.id },
+      where: { id },
     });
 
     // Initially the title will be empty for newly created post.
     // While updating check if the user has entered a new title and based on that create a new slug.
-    // If the user changes the title the second time then we should not change the slug again. Doing so will affect SEO.
-    if (oldPost.title == "" && post.title !== oldPost.title) {
+    // If the user changes the title the second time then dont change the slug again.
+    // Doing so will affect SEO.
+    let slug = null;
+    if (oldPost.title === "" && updatedPost.title !== oldPost.title) {
       //  create the slug
-      post.slug = await slugify(models.Post, post.title);
+      slug = await slugify(models.Post, updatedPost.title);
+      updatedPost = { ...updatedPost, slug };
     }
-
-    // check the menu. the menu has page items. update the slug of the page menu item if it exist.
-
-    let menu = await models.Setting.findOne({
-      where: { option: "menu" },
-    });
-
-    const changeMenuItem = item => {
-      if (item.type == "page") {
-        item.slug = post.slug;
+    if (updatedPost.slug || (oldPost.type === "page" && slug)) {
+      const options = { slug: updatedPost.slug };
+      if (updatedPost.title) {
+        options.title = updatedPost.title;
       }
-      return item;
-    };
-    // loop though the menu and find the item with the current slug and id.
-    // if found, update the slug
-    const updatedMenu = JSON.parse(menu.value).map(item =>
-      recurseMenu(item, post.id, changeMenuItem),
-    );
-
-    try {
-      await models.Setting.update(
-        { value: JSON.stringify(updatedMenu) },
-        { where: { option: "menu" } },
-      );
-    } catch (e) {
-      console.log(e);
+      // check the menu. the menu has page items. update the slug of the page menu item if it exist.
+      await updateMenuItem(models, id, oldPost.type, options);
     }
+    const currentTime = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
     // If this post is being published for the first time, update the publish date
-    if (post.status == "publish" && oldPost.status == "draft") {
-      post.publishedAt = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
+    if (updatedPost.status == "publish" && oldPost.status == "draft") {
+      updatedPost = { ...updatedPost, publishedAt: currentTime };
     }
-    post.updatedAt = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
-    await models.Post.update(post, {
-      where: { id: post.id },
+    updatedPost = { ...updatedPost, updatedAt: currentTime };
+    await models.Post.update(updatedPost, {
+      where: { id },
     });
 
     // get all values of the updated post
     const newPost = await models.Post.findOne({
-      where: { id: post.id },
+      where: { id },
     });
 
     // the taxonomies like tags/cathegories might have chqnged or added.
     // sync them
-    if (post.taxonomies && post.taxonomies.length > 0) {
+    if (updatedPost.taxonomies && updatedPost.taxonomies.length > 0) {
       // remove the texonomy relation
       await newPost.setTaxonomies([]);
       await Promise.all(
-        post.taxonomies.map(async taxonomy => {
+        updatedPost.taxonomies.map(async taxonomy => {
           let taxItem = null;
           // add relation with existing taxonomies
-          if (taxonomy.id != 0) {
+          if (taxonomy.id !== 0) {
             taxItem = await models.Taxonomy.findOne({
               where: { id: taxonomy.id },
             });
@@ -190,7 +179,7 @@ export async function _updatePost(post, models) {
     console.log(e);
     return {
       ok: false,
-      data: {},
+      post: {},
       errors: parseErrors(e),
     };
   }

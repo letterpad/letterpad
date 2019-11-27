@@ -58,6 +58,7 @@ export default (conn, Datatypes) => {
   };
   return Author;
 };
+
 export const getPermissions = async (models, roleId) => {
   const permissions = await models.Permission.findAll({
     attributes: ["name"],

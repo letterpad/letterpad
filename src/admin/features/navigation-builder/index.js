@@ -8,10 +8,7 @@ import Loader from "../../components/loader";
 import NavigationTreeBuilder from "./NavigationTreeBuilder";
 
 import UpdateOptions from "../../data-connectors/UpdateOptions";
-import {
-  GET_TAXONOMIES,
-  GET_PAGE_NAMES,
-} from "../../../shared/queries/Queries";
+import { GET_TAXONOMIES, GET_POSTS } from "../../../shared/queries/Queries";
 
 import StyledSection from "../../components/section";
 import StyledButton from "../../components/button";
@@ -84,9 +81,11 @@ const CategoriesData = graphql(GET_TAXONOMIES, {
   options: () => ({ variables: { type: "post_category" } }),
 });
 
-const PagesData = graphql(GET_PAGE_NAMES, {
+const PagesData = graphql(GET_POSTS, {
   name: "pages",
-  options: () => ({ variables: { type: "page", status: "publish" } }),
+  options: () => ({
+    variables: { filters: { type: "page", status: "publish" } },
+  }),
 });
 
 export default translate("translations")(

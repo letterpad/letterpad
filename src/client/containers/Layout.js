@@ -1,18 +1,20 @@
 import React, { Component } from "react";
 
-export default function Layout(Element, props) {
-  const settings = props.settings;
-
+export default function Layout(Element, { settings, type }) {
   return class extends Component {
+    componentDidMount() {
+      document.body.className = type;
+    }
+
     render() {
-      const _props = { ...this.props, ...props, settings };
+      const props = { router: { ...this.props }, settings, type };
       return (
         <div className="main centered">
           <nav className="navbar navbar-default">
             <div className="container">Navbar here</div>
           </nav>
           <main>
-            <Element {..._props} />
+            <Element {...props} />
           </main>
         </div>
       );

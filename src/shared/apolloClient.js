@@ -1,4 +1,4 @@
-import { ApolloClient } from "apollo-client";
+import { ApolloClient } from "@apollo/client";
 import { createHttpLink } from "apollo-link-http";
 import { ApolloLink } from "apollo-link";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -60,15 +60,17 @@ const middlewareLinkClient = new ApolloLink((operation, forward) =>
 );
 
 let initialState = {};
+let token;
 if (typeof window !== "undefined") {
+  token = localStorage.token;
   initialState = window.__APOLLO_STATE__;
 }
 
 // prepare the client for graphql queries.
 
-const client = (isAdmin = false, token = null, opts = {}) => {
+const client = (isAdmin = true, opts = {}, authToken = null) => {
   const middleware = isAdmin
-    ? middlewareLinkAdmin(token)
+    ? middlewareLinkAdmin(authToken || token)
     : middlewareLinkClient;
   return new ApolloClient({
     link: errorLink.concat(middleware).concat(httpLink),

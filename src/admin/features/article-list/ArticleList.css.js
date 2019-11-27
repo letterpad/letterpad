@@ -17,7 +17,7 @@ export const StyledTitle = styled.div`
 export const StyledItem = styled.div`
   .selection-box {
     position: relative;
-    z-index: 99;
+    z-index: 0;
     left: 100%;
     margin-left: -24px;
     border-top-right-radius: 7px;
@@ -72,4 +72,91 @@ export const StyledItem = styled.div`
     -webkit-transform: scale(1);
     transform: scale(1);
   }
+`;
+
+export const Table = styled.table`
+  /* Remove spacing between table cells (from Normalize.css) */
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  border: 1px solid var(--color-border);
+  font-size: 14px;
+  width: 100%;
+  background: var(--bg-sections);
+  color: var(--color-text-3);
+  box-shadow: var(--box-shadow);
+  .small {
+    font-size: 12px;
+  }
+  .upper {
+    text-transform: uppercase;
+    padding: 2px 4px;
+    background: var(--color-base-2);
+  }
+  .title {
+    font-weight: 400;
+    padding: 6px 0px;
+    color: var(--color-text-2);
+  }
+  .status {
+    font-size: 11px;
+
+    &.publish {
+      color: var(--bg-hover-success);
+    }
+  }
+
+  caption {
+    color: #000;
+    font: italic 85%/1 arial, sans-serif;
+    padding: 1em 0;
+    text-align: center;
+  }
+
+  td,
+  th {
+    border-width: 0 0 0 1px;
+    font-size: inherit;
+    margin: 0;
+    overflow: visible; /*to make ths where the title is really long work*/
+    padding: 12px 0 12px 0px;
+  }
+
+  tbody tr:hover {
+    cursor: pointer;
+    background: var(--bg-base);
+  }
+
+  thead {
+    background-color: var(--bg-base);
+    color: var(--color-base);
+    text-align: left;
+    vertical-align: bottom;
+    border-bottom: 2px solid var(--color-border);
+    th {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 12px 0 12px 0px;
+    }
+  }
+
+  /* BORDERED TABLES */
+  td {
+    border-bottom: 2px solid var(--color-border);
+    text-align: left;
+  }
+  tbody > tr:last-child > td {
+    border-bottom-width: 0;
+  }
+`;
+
+export const Loader = styled.div`
+  width: 100%;
+  height: 4px;
+  background: var(--color-accent);
+  transition: 0.2s linear all;
+
+  opacity: ${p => (p.loading ? 0.7 : 0)};
 `;

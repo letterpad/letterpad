@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import SortableTree, {
-  changeNodeAtPath,
-  removeNodeAtPath,
-} from "react-sortable-tree";
+import SortableTree, { removeNodeAtPath } from "react-sortable-tree";
 import { translate } from "react-i18next";
 import FileExplorerTheme from "react-sortable-tree-theme-full-node-drag";
 
 import Resources from "./Resources";
-import EditMenuModal from "./EditMenuModal";
 import StyledGrid from "../../components/grid";
 import StyledMenuTree from "./NavigationTreeBuilder.css";
 import SortableWrapper from "./SortableWrapper.css";
@@ -48,7 +44,6 @@ class NavigationTreeBuilder extends Component {
     path: PropTypes.string,
     updateOption: PropTypes.func.isRequired,
     t: PropTypes.func,
-
   };
 
   state = {
@@ -62,7 +57,6 @@ class NavigationTreeBuilder extends Component {
         title: "Folder",
         type: "folder",
         label: "Folder",
-        name: "Folder",
       },
     ],
     scrollTop: 0,
@@ -85,7 +79,6 @@ class NavigationTreeBuilder extends Component {
           id: ele.id,
           title: ele.name,
           type: "category",
-          name: ele.name,
           disabled: menuIds[ele.id + "-category"] ? true : false,
           slug: "",
         };
@@ -98,7 +91,6 @@ class NavigationTreeBuilder extends Component {
           title: ele.title,
           slug: ele.slug,
           type: "page",
-          name: ele.title,
           disabled: menuIds[ele.id + "-page"] ? true : false,
         };
       });
@@ -130,7 +122,7 @@ class NavigationTreeBuilder extends Component {
 
       // categories should have another key - "slug"
       if (type === "categories") {
-        newState[type][idx].slug = newState[type][idx].name.toLowerCase();
+        newState[type][idx].slug = newState[type][idx].title.toLowerCase();
       }
     }
 
@@ -213,35 +205,6 @@ class NavigationTreeBuilder extends Component {
   };
 
   /**
-   * Each item in the navigation menu can have some additional properties.
-   * Like, the title of every item and also Category slugs can be changed.
-   *
-   * @memberof NavigationTreeBuilder
-   */
-  changeItemProperty = (e, { node, path }, property) => {
-    const getNodeKey = ({ treeIndex }) => treeIndex;
-    const value = e.target.value;
-
-    this.setState(
-      () => ({
-        items: changeNodeAtPath({
-          treeData: this.state.items,
-          path,
-          getNodeKey,
-          newNode: {
-            ...node,
-            [property]: value,
-            title: value,
-          },
-        }),
-      }),
-      () => {
-        this.props.updateOption("menu", JSON.stringify(this.state.items));
-      },
-    );
-  };
-
-  /**
    * Few items can be a child of another item. Like page and category cannot be a child
    * to each other. But they can be a child of a folder. We validate this here.
    *
@@ -263,13 +226,6 @@ class NavigationTreeBuilder extends Component {
     return false;
   }
 
-  openModalToEdit = props => {
-    this.setState({
-      modalOpen: true,
-      nodeInfo: props,
-    });
-  };
-
   /**
    *  Create UI for menu item title and toolbar to edit/delete a menu item
    *
@@ -283,11 +239,6 @@ class NavigationTreeBuilder extends Component {
         <span key="0" className={"item-type " + props.node.type}>
           {props.node.type}
         </span>,
-        <i
-          key="1"
-          className="fa fa-pencil"
-          onClick={() => this.openModalToEdit(props)}
-        />,
         <i
           key="2"
           className="fa fa-trash"
@@ -346,19 +297,6 @@ class NavigationTreeBuilder extends Component {
             />
           </SortableWrapper>
         </StyledMenuTree>
-        {this.state.modalOpen && (
-          <EditMenuModal
-            title="Edit menu item"
-            onClose={() => {
-              this.setState({
-                nodeInfo: {},
-                modalOpen: false,
-              });
-            }}
-            changeItemProperty={this.changeItemProperty}
-            nodeInfo={this.state.nodeInfo}
-          />
-        )}
       </StyledGrid>
     );
   }

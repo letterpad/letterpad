@@ -8,24 +8,16 @@ import Layout from "../features/layout";
 
 const SecuredRoute = routeProps => {
   try {
-    let props = { ...routeProps };
-    const Component = props.component;
+    const { settings, component, type, path, exact, layout } = routeProps;
+    let props = { exact, settings, type, path, layout };
+    const Component = component;
 
     // decode the token and get all user info. This will be passed to all compnents as a prop
     const user = jwtDecode(localStorage.token);
 
-    // check if this exact or not
-    let exact = true;
-    if ("exact" in props) {
-      exact = props.exact;
-    }
-    // delete the component from props. Ito had to be wrapped with the Layout component
-    delete props.component;
-    // const LayoutType = props.layout == "none" ? NoLayout : Layout;
     return (
       <Route
         {...props}
-        exact={exact}
         component={Layout(Component, { ...props, author: user })}
       />
     );

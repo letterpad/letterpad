@@ -42,13 +42,13 @@ let utils = {
     return url.replace(/\/\/+/g, "/").replace(":/", "://");
   },
 
-  recurseMenu: function recurseMenu(item, postId, cb) {
+  recurseMenu: function recurseMenu(item, id, cb) {
     if (item.children && item.children.length > 0) {
       item.children = item.children.map(function(childItem) {
-        return utils.recurseMenu(childItem, postId, cb);
+        return utils.recurseMenu(childItem, id, cb);
       });
     }
-    if (item.id == postId) {
+    if (item.id === id) {
       // the slug of this page should change.
       item = cb(item);
     }

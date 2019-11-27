@@ -3,15 +3,10 @@ import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
 
 import UpdateOptions from "../../data-connectors/UpdateOptions";
-import SettingsData from "shared/data-connectors/SettingsData";
 import { makeUrl } from "shared/util";
 import ThemeItem from "./ThemeItem";
 
-// import StyledSection from "../../components/section";
 import StyledGrid from "../../components/grid";
-// import StyledCard from "../../components/card";
-// import StyledInput from "../../components/input";
-// import StyledButton from "../../components/button";
 import { translate } from "react-i18next";
 
 let SCROLLTOP = 0;
@@ -137,41 +132,7 @@ class Themes extends Component {
         </StyledGrid>
       </div>
     );
-    // return (
-    //   <>
-    //     <div>
-    //       <StyledCard
-    //         title="Custom CSS"
-    //         subtitle="Here you can write additional css to customize the theme. (optional)"
-    //       >
-    //         <StyledInput
-    //           textarea
-    //           rows="7"
-    //           value={this.state.css}
-    //           placeholder="Additional CSS"
-    //           onChange={this.handleCssChange}
-    //           ref={this.cssRef}
-    //         />
-    //         <StyledButton onClick={this.saveCss}>Save</StyledButton>
-    //       </StyledCard>
-    //       <br />
-    //       <StyledCard title="Select Theme" subtitle="Browse your themes here">
-    //         <div>
-    //           <StyledGrid columns="repeat(auto-fit,minmax(250px,1fr))">
-    //             {this.state.themes.map((theme, idx) => (
-    //               <ThemeItem
-    //                 key={idx}
-    //                 theme={theme}
-    //                 selectTheme={this.selectTheme}
-    //               />
-    //             ))}
-    //           </StyledGrid>
-    //         </div>
-    //       </StyledCard>
-    //     </div>
-    //   </>
-    // );
   }
 }
 
-export default translate("translations")(SettingsData(UpdateOptions(Themes)));
+export default translate("translations")(UpdateOptions(Themes));

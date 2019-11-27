@@ -76,12 +76,26 @@ const Wrapper = styled.div`
 const StyledSwitch = ({ onChange, leftLabel, rightLabel, isSelected }) => {
   return (
     <Wrapper>
-      <span className="switch-label switch-off-text">{leftLabel}</span>
+      <span
+        className="switch-label switch-off-text"
+        onClick={() => onChange(false)}
+      >
+        {leftLabel}
+      </span>
       <label className="switch">
-        <input type="checkbox" onChange={onChange} checked={isSelected} />
+        <input
+          type="checkbox"
+          onChange={e => onChange(!!+e.target.checked)} // "false" to false
+          checked={isSelected}
+        />
         <span className="slider round" />
       </label>
-      <span className="switch-label switch-on-text">{rightLabel}</span>
+      <span
+        className="switch-label switch-on-text"
+        onClick={() => onChange(true)}
+      >
+        {rightLabel}
+      </span>
     </Wrapper>
   );
 };

@@ -5,7 +5,7 @@ export const defaultStyles = `
     color: var(--color-base);
 
     a {
-        color: var(--color-accent);
+        color: var(--color-text-2);
         transition: all 0.125s cubic-bezier(0.3, 0.1, 0.58, 1);
         text-decoration: none;
     }
@@ -14,7 +14,6 @@ export const defaultStyles = `
     a:focus {
         text-decoration: none;
         outline: none;
-        color: var(--color-accent);
     }
     a:hover {
         color: var(--link-hover);

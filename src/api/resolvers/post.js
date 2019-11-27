@@ -8,64 +8,122 @@ import {
 } from "../utils/permissions";
 import memoryCache from "../utils/memoryCache";
 import { innertext } from "../utils/common";
+import { getMenuItemFromSlug } from "./selectors/post";
 
-function IsJsonString(str) {
-  // if (!isNaN(str)) return false;
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-  return true;
-}
-function getConditions(columns, args) {
-  const obj = {};
-  const conditions = {};
-  for (const field in args) {
-    if (columns.indexOf(field) >= 0) {
-      if (field === "body") {
-        obj[Sequelize.Op.or] = [
-          { body: { [Sequelize.Op.like]: "%" + args[field] + "%" } },
-          { title: { [Sequelize.Op.like]: "%" + args[field] + "%" } },
-        ];
-      } else {
-        obj[field] = args[field];
-      }
-    } else {
-      conditions[field] = args[field];
-    }
-  }
-  conditions.where = obj;
-  return conditions;
-}
+const noResult = {
+  count: 0,
+  rows: [],
+};
 
-export default {
+const postresolver = {
   Query: {
     /**
      * Query to take care of multiple post in one page.
      * Used for Search and Admin posts and pages list.
      */
-    posts: checkDisplayAccess.createResolver((root, args, { models, user }) => {
-      const newArgs = { ...args };
-      if (newArgs.status === "all") {
-        newArgs.status = { [Sequelize.Op.ne]: "trash" };
-      }
-      const columns = Object.keys(models.Post.rawAttributes);
-      const conditions = getConditions(columns, newArgs);
-      return models.Post.count(conditions).then(count => {
-        conditions.order = [["publishedAt", "DESC"]];
-        // for admin dashboard, sort it based on updated_date
-        if (user && user.id) {
-          conditions.order = [["updatedAt", "DESC"]];
+    posts: checkDisplayAccess.createResolver(
+      async (root, args, { models, user }) => {
+        const conditions = { include: [], where: {}, limit: 20 };
+
+        const {
+          status,
+          sortBy,
+          author,
+          tag,
+          category,
+          limit,
+          query,
+          cursor,
+          type,
+          page,
+        } = args.filters;
+
+        if (category) {
+          const taxCategory = await models.Taxonomy.findOne({
+            where: { name: category },
+          });
+          if (!taxCategory) return noResult;
+          conditions.include.push({
+            model: models.PostTaxonomy,
+            where: { taxonomy_id: taxCategory.id },
+            require: true,
+          });
         }
-        return models.Post.findAll(conditions).then(res => {
-          return {
-            count,
-            rows: res,
+
+        if (tag) {
+          const taxTag = await models.Taxonomy.findOne({
+            where: { name: tag },
+          });
+          if (!taxTag) return noResult;
+
+          conditions.include.push({
+            model: models.PostTaxonomy,
+            where: { taxonomy_id: taxTag.id },
+            require: true,
+          });
+        }
+
+        if (author) {
+          const authorCondition = {
+            where: {
+              fname: { [Sequelize.Op.like]: "%" + author + "%" },
+            },
           };
-        });
-      });
-    }),
+          const author = await models.Author.findOne(authorCondition);
+
+          if (!author) {
+            return noResult;
+          }
+          conditions.include.push({
+            model: models.Author,
+            where: { id: author.id },
+            require: true,
+          });
+        }
+
+        if (type) {
+          conditions.where.type = type;
+        }
+
+        if (status) {
+          conditions.where.status = status;
+        } else {
+          conditions.where.status = { [Sequelize.Op.ne]: "trash" };
+        }
+
+        conditions.order = [["updatedAt", "DESC"]];
+        if (sortBy) {
+          conditions.order = [
+            ["updatedAt", sortBy === "oldest" ? "ASC" : "DESC"],
+          ];
+          // for public users, sort it based on published date
+          if (user && user.id) {
+            conditions.order = [["publishedAt", "DESC"]];
+          }
+        }
+
+        if (limit) {
+          conditions.limit = limit;
+        }
+
+        if (query) {
+          conditions.where.title = {
+            [Sequelize.Op.like]: "%" + query + "%",
+          };
+        }
+        if (cursor) {
+          conditions.where.id = { [Sequelize.Op.gt]: cursor };
+        } else if (page) {
+          conditions.offset = (page - 1) * conditions.limit;
+        }
+        const result = await models.Post.findAndCountAll(conditions);
+        return {
+          count: result.count,
+          rows: result.rows,
+        };
+      },
+    ),
+
     search: async (root, args, { models, user }) => {
       let cachedData = memoryCache.get("posts");
       if (!cachedData) {
@@ -116,112 +174,63 @@ export default {
      * Query to handle a single post/page.
      */
     post: checkDisplayAccess.createResolver((root, args, { models }) => {
-      return models.Post.findOne({ where: args });
+      const conditions = { where: { ...args.filters } };
+      if (args.filters.id) {
+        conditions.where.id = args.filters.id;
+      }
+      if (args.filters.slug) {
+        conditions.where.slug = args.filters.slug;
+      }
+      return models.Post.findOne(conditions);
     }),
     /**
-     * Query to take care of posts from navigation menu.
-     * The navigation menu item will be a category with its own custom slug.
+     * Query to take care of posts/page from navigation menu.
+     * The navigation menu item will be either a category or a page.
      *
      * First we get the menu object and loop though it to
      * find the item (by matching slug) which was clicked.
      * Note: The menu can have nested children.
      *
-     * Now we know the id of the category. Using this id, we will find all the linked posts.
      */
-    postsMenu: async (root, args, { models, user }) => {
+    menuContent: async (root, args, { models, user }) => {
       let menu = await models.Setting.findOne({
         where: { option: "menu" },
       });
-
+      const filters = { ...args.filters, status: "publish" };
       menu = JSON.parse(menu.dataValues.value);
-
-      let menuItem = null;
-      let catId = null;
-
-      const setItemFromMenu = (arr, slug) => {
-        const a = arr.some(item => {
-          if (item.slug && item.slug == slug) {
-            menuItem = item;
-          }
-          if (item.children && item.children.length > 0) {
-            setItemFromMenu(item.children, slug);
-          }
-        });
-      };
-      setItemFromMenu(menu, args.slug);
-
-      if (!menuItem) {
-        const taxonomy = await models.Taxonomy.findOne({
-          where: { slug: args.slug, type: args.type },
-        });
-        if (taxonomy) {
-          catId = taxonomy.dataValues.id;
-        } else {
-          return {
-            count: 0,
-            posts: [],
-          };
-        }
+      let menuItem = {};
+      if (args.filters.slug === "/") {
+        menuItem = menu[0];
       } else {
-        catId = menuItem.id;
+        menuItem = getMenuItemFromSlug(
+          menu,
+          args.filters.slug,
+          args.filters.type,
+        );
       }
 
-      const conditions = {
-        where: {
-          type: args.postType,
-          status: "publish",
+      if (menuItem.type === "page") {
+        filters.type = menuItem.type;
+        filters.slug = menuItem.slug;
+      } else if (menuItem.type === "category") {
+        filters.category = menuItem.title;
+        filters.type = "post";
+        delete filters.slug;
+      } else {
+        return noResult;
+      }
+      const result = await postresolver.Query.posts(
+        root,
+        { filters },
+        {
+          models,
+          user,
         },
-        include: [
-          {
-            model: models.PostTaxonomy,
-            where: { taxonomy_id: catId },
-            require: true,
-          },
-        ],
-        order: [["id", "DESC"]],
-      };
-
-      if ("limit" in args) {
-        conditions.limit = args.limit;
-      }
-      if ("offset" in args) {
-        conditions.offset = args.offset;
-      }
-
-      let data = await models.Post.findAndCountAll(conditions);
-
+      );
       return {
-        count: data.count,
-        posts: data.rows,
+        count: result.count,
+        rows: result.rows,
       };
-    },
-    /**
-     * Query to take care of page clicked from nav menu.
-     * As pages cannot have a custom slug, we can directly query the Post table
-     * with the given slug.
-     *
-     */
-    pageMenu: async (root, args, { models }) => {
-      const response = {
-        ok: true,
-        post: null,
-        errors: [],
-      };
-      const page = await models.Post.findOne({
-        where: { type: "page", slug: args.slug, status: "publish" },
-      });
-      if (page) {
-        response.post = page;
-      } else {
-        response.ok = false;
-        response.errors = [
-          {
-            path: "pageMenu",
-            message: "Page not found",
-          },
-        ];
-      }
-      return response;
     },
     /**
      * Query to take care of adjacent posts.
@@ -229,6 +238,7 @@ export default {
     adjacentPosts: async (root, args, { models }) => {
       let result = {};
       args.status = "publish";
+      args.type = "post";
       // get the current post
       const currentPost = await models.Post.findOne({ where: args });
       if (currentPost === null) {
@@ -236,17 +246,15 @@ export default {
       }
 
       // we dont need the slug anymore. Clone and remove it.
-      const newArgs = { ...args };
-      delete newArgs.slug;
+      const { slug, ...newArgs } = args;
 
       // get the preview item
       result.previous = await models.Post.findOne({
         where: {
           ...newArgs,
-          id: { [Sequelize.Op.lt]: currentPost.dataValues.id },
+          id: { [Sequelize.Op.lt]: currentPost.id },
         },
         order: [["id", "DESC"]],
-        limit: 1,
       });
 
       // get the next item
@@ -258,7 +266,6 @@ export default {
           },
         },
         order: [["id", "ASC"]],
-        limit: 1,
       });
 
       return result;
@@ -267,49 +274,33 @@ export default {
      * Query to get posts by taxonomy slug and taxonomy type.
      * The type can be post_category or post_tag
      */
-    postsByTaxSlug: checkDisplayAccess.createResolver(
-      async (root, args, { models }) => {
+    postsByTaxinomySlug: checkDisplayAccess.createResolver(
+      async (root, args, { models, user }) => {
         // Get the taxonomy item
+        const filters = { ...args };
         const taxonomy = await models.Taxonomy.findOne({
           where: { slug: args.slug, type: args.type },
         });
-
-        if (taxonomy) {
-          const taxId = taxonomy.dataValues.id;
-          const conditions = {
-            where: {
-              status: "publish",
-            },
-            include: [
-              {
-                model: models.PostTaxonomy,
-                where: { taxonomy_id: taxId },
-                require: true,
-              },
-            ],
-            order: [["id", "DESC"]],
-          };
-          if ("postType" in args) {
-            conditions.where.type = args.postType;
-          }
-          if ("limit" in args) {
-            conditions.limit = args.limit;
-          }
-          if ("offset" in args) {
-            conditions.offset = args.offset;
-          }
-
-          let data = await models.Post.findAndCountAll(conditions);
-          return {
-            count: data.count,
-            posts: data.rows,
-          };
-        } else {
-          return {
-            count: 0,
-            posts: [],
-          };
+        if (!taxonomy) {
+          return noResult;
         }
+        if (taxonomy.type === "post_category") {
+          filters.category = taxonomy.name;
+        } else {
+          filters.tag = taxonomy.name;
+        }
+        const result = await postresolver.Query.posts(
+          root,
+          { filters },
+          {
+            models,
+            user,
+          },
+        );
+        return {
+          count: result.count,
+          rows: result.rows,
+        };
       },
     ),
     /**
@@ -352,46 +343,31 @@ export default {
   Mutation: {
     createPost: createPostsPerm.createResolver(
       (root, args, { models, user }) => {
-        let data = {};
-        Object.keys(args).forEach(field => {
-          data[field] = args[field];
-        });
-        if (!data.body) {
-          data.body = "";
-        }
-        data.authorId = user.id;
+        args.data.authorId = user.id;
         memoryCache.del("posts");
-        return _createPost(data, models);
+        return _createPost(args.data, models);
       },
     ),
     updatePost: editPostPerm.createResolver((root, args, { models }) => {
-      let data = {};
-      Object.keys(args).forEach(field => {
-        data[field] = args[field];
-      });
       memoryCache.del("posts");
-      return _updatePost(data, models);
+      return _updatePost(args.data, models);
     }),
     uploadFile: editPostPerm.createResolver((root, args, { models }) => {
       return _updatePost(args, models);
     }),
     deletePosts: editPostPerm.createResolver(async (root, args, { models }) => {
       try {
-        // check the status of one post. If its already in trash
-        // then permanently delete it
-        const randomPost = await models.Post.findOne({
-          where: { id: args.ids.split(",")[0] },
-        });
-        if (randomPost.status == "trash") {
+        const deleteFromSystem = args.deleteFromSystem || false;
+        if (deleteFromSystem) {
           await models.Post.destroy({
-            where: { id: { [Sequelize.Op.in]: args.ids.split(",") } },
+            where: { id: args.ids },
           });
         } else {
           await models.Post.update(
             { status: "trash" },
             {
               where: {
-                id: { [Sequelize.Op.in]: args.ids.split(",") },
+                id: args.ids,
               },
             },
           );
@@ -420,3 +396,5 @@ export default {
     },
   },
 };
+
+export default postresolver;

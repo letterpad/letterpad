@@ -319,15 +319,13 @@ export async function insertSettings(models) {
       id: 3,
       title: "Abstract",
       type: "category",
-      name: "Home",
       disabled: true,
-      slug: "home",
+      slug: "abstract",
     },
     {
       id: 2,
       title: "Nature",
       type: "category",
-      name: "Nature",
       disabled: true,
       slug: "nature",
     },
@@ -336,7 +334,6 @@ export async function insertSettings(models) {
       title: "Single Page",
       slug: "about",
       type: "page",
-      name: "About",
       disabled: true,
     },
     {
@@ -344,7 +341,6 @@ export async function insertSettings(models) {
       title: "Not Found",
       slug: "404",
       type: "page",
-      name: "Not Found",
       disabled: true,
     },
   ]);

@@ -74,8 +74,6 @@ const RadioBox = ({ data, onChange }) => {
             id={option}
             defaultChecked={option === data.defaultValue}
             onClick={e => {
-              var a = 1;
-              console.log(a);
               onChange(data.name, e.target.value);
             }}
           />

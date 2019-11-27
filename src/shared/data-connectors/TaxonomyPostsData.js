@@ -5,7 +5,9 @@ import config from "../../config";
 export default graphql(SEARCH_POSTS_BY_TAXONOMY, {
   options: props => {
     let offset =
-      props.match.params.page_no == 1 ? 0 : props.match.params.page_no;
+      props.router.match.params.page_no == 1
+        ? 0
+        : props.router.match.params.page_no;
     let type = "";
     if (props.type === "category") {
       type = "post_category";
@@ -15,7 +17,7 @@ export default graphql(SEARCH_POSTS_BY_TAXONOMY, {
     return {
       variables: {
         type,
-        slug: props.query || props.match.params.query,
+        slug: props.query || props.router.match.params.query,
         postType: "post",
         limit: props.limit || config.itemsPerPage,
         offset: parseInt(props.offset || offset || 0),

@@ -8,7 +8,6 @@ import StyledSection from "../../components/section";
 import StyledGrid from "../../components/grid";
 // import { StyledHome } from "./Home.css";
 
-import CreatePost from "../../data-connectors/CreatePost";
 import GetStats from "../../data-connectors/GetStats";
 
 class Home extends Component {
@@ -26,14 +25,6 @@ class Home extends Component {
     document.body.classList.remove("home-page");
   }
 
-  draftPost = (title, body = "") => {
-    this.props.createPost({
-      title,
-      body,
-      type: "post",
-    });
-  };
-
   render() {
     return (
       <StyledSection xs>
@@ -47,4 +38,4 @@ class Home extends Component {
   }
 }
 
-export default CreatePost(GetStats(Home));
+export default GetStats(Home);

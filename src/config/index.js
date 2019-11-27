@@ -21,4 +21,4 @@ const config = {
   baseName: configFile.baseName,
 };
 
-module.exports = config;
+export default config;

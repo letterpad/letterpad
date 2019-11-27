@@ -9,8 +9,8 @@ import PostTitle from "./PostTitle";
 import FileExplorerModal from "../modals/FileExplorerModal";
 import { uploadFile } from "../../server/util";
 import { EventBusInstance } from "../../../shared/eventBus";
-import UpdatePost from "../../data-connectors/UpdatePost";
-import InsertMedia from "../../data-connectors/InsertMedia";
+import client from "../../../shared/apolloClient";
+import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 
 class Edit extends Component {
   static propTypes = {
@@ -87,10 +87,31 @@ class Edit extends Component {
 
     this.postSaveTimer = setTimeout(async () => {
       const data = PostActions.getData();
-      EventBusInstance.publish("ARTICLE_SAVING");
-      const update = await this.props.update({
+      const postData = {
         ...this.props.post,
         ...data,
+      };
+      EventBusInstance.publish("ARTICLE_SAVING");
+      const {
+        // eslint-disable-next-line no-unused-vars
+        createdAt,
+        // eslint-disable-next-line no-unused-vars
+        publishedAt,
+        // eslint-disable-next-line no-unused-vars
+        updatedAt,
+        // eslint-disable-next-line no-unused-vars
+        mode,
+        // eslint-disable-next-line no-unused-vars
+        author,
+        // eslint-disable-next-line no-unused-vars
+        __typename,
+        ...post
+      } = postData;
+      const update = await client().mutate({
+        mutation: UPDATE_POST_QUERY,
+        variables: {
+          data: post,
+        },
       });
       EventBusInstance.publish("ARTICLE_SAVED");
       PostActions.setData({ slug: update.data.updatePost.post.slug });
@@ -162,4 +183,4 @@ class Edit extends Component {
   }
 }
 
-export default UpdatePost(InsertMedia(Edit));
+export default Edit;

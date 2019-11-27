@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 import moment from "moment";
-import styled from "styled-components";
 import { notify } from "react-notify-toast";
 
 import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
@@ -21,82 +20,14 @@ import StyledGridItem from "../../components/grid/GridItem";
 import StyledButton from "../../components/button";
 
 import InfoModal from "./InfoModal";
-
-const EditMediaWrapper = styled.div`
-  //take care of modal window si
-  @media (max-width: 992px) {
-    .open .modal-wrapper {
-      height: 92vh;
-    }
-  }
-`;
-
-const StyledItem = styled.div`
-  .selection-box {
-    position: relative;
-    z-index: 99;
-    left: 100%;
-    margin-left: -24px;
-    border-top-right-radius: 7px;
-    top: 4px;
-  }
-  [type="checkbox"]:checked,
-  [type="checkbox"]:not(:checked) {
-    position: absolute;
-    left: -9999px;
-  }
-  [type="checkbox"]:checked + label,
-  [type="checkbox"]:not(:checked) + label {
-    position: relative;
-    padding-left: 28px;
-    cursor: pointer;
-    line-height: 20px;
-    display: inline-block;
-    color: #666;
-  }
-  [type="checkbox"]:checked + label:before,
-  [type="checkbox"]:not(:checked) + label:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0px;
-    width: 18px;
-    height: 18px;
-    border: 1px solid #fff;
-    background: #fff;
-    box-shadow: 0px 0px 4px 1px #0000005c;
-    border-radius: 50%;
-  }
-  [type="checkbox"]:checked + label:after,
-  [type="checkbox"]:not(:checked) + label:after {
-    content: "";
-    width: 10px;
-    height: 10px;
-    background: #00a69c;
-    position: absolute;
-    border-radius: 50%;
-    top: 5px;
-    left: 5px;
-    transition: all 0.1s ease;
-  }
-  [type="checkbox"]:not(:checked) + label:after {
-    opacity: 0;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  }
-  [type="checkbox"]:checked + label:after {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    transform: scale(1);
-  }
-`;
+import { StyledItem, EditMediaWrapper } from "./Media.css";
 
 const limit = config.mediaPerPage;
 
 class Media extends Component {
   static propTypes = {
     media: PropTypes.object,
-    history: PropTypes.object,
+    router: PropTypes.object,
     loading: PropTypes.bool,
     deleteMedia: PropTypes.func,
     insertMedia: PropTypes.func,
@@ -132,10 +63,10 @@ class Media extends Component {
       items: [...nextProps.media.rows],
     };
     if (
-      nextProps.match.params.page &&
-      nextProps.match.params.page !== prevState.page
+      nextProps.router.match.params.page &&
+      nextProps.router.match.params.page !== prevState.page
     ) {
-      newState.page = parseInt(nextProps.match.params.page);
+      newState.page = parseInt(nextProps.router.match.params.page);
     }
     return newState;
   }
@@ -206,7 +137,7 @@ class Media extends Component {
       this.setState({ items: items.data.media.rows });
     } else {
       // else navigate the user to page 1
-      this.props.history.push("/admin/media/1");
+      this.props.router.history.push("/admin/media/1");
     }
   };
 
