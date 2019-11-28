@@ -1,6 +1,6 @@
 var Sequelize = require("sequelize");
 var env = process.env.NODE_ENV || "dev";
-var config = require("../../config/db.config.js")[env];
+var config = require("../../config/db.config")[env];
 var db = {};
 
 // establish  database connection

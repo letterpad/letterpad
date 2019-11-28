@@ -2,7 +2,7 @@
   "name": "letterpad",
   "version": "1.4.0",
   "description": "Letterpad is an open-source and a high performant publishing engine for blogs built with react & graphql and runs ridiculously fast 🚀",
-  "main": "start.js",
+  "main": "start.ts",
   "scripts": {
     "build": "./utils/convertToes5.sh && webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
     "build:theme": "webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${theme}",
@@ -10,7 +10,7 @@
     "seed": "node ./src/api/seed",
     "preinstall": "./utils/preinstall.sh",
     "postinstall": "./utils/postinstall.sh",
-    "dev": "NODE_ENV=dev concurrently --kill-others \"node ./src/server.js --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
+    "dev": "NODE_ENV=dev concurrently --kill-others \"ts-node ./src/start.ts --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
     "api": "NODE_ENV=dev concurrently --kill-others \"nodemon --watch src/api ./src/server.js\"",
     "prod": "NODE_ENV=production concurrently --kill-others \"node ./dist/server.js\"",
     "start": "yarn prod",
@@ -70,7 +70,7 @@
     "postcss-nested": "^4.1.2",
     "prismjs": "^1.17.1",
     "prop-types": "^15.7.2",
-    "react": "^16.9.0",
+    "react": "^16.9.3",
     "react-apollo": "^3.1.3",
     "react-dom": "^16.9.0",
     "react-dotdotdot": "^1.3.1",
@@ -91,6 +91,9 @@
     "sqlite3": "^4.1.0",
     "styled-components": "^4.3.2"
   },
+  "resolutions": {
+    "@types/react": "16.9.3"
+  },
   "devDependencies": {
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
@@ -103,6 +106,9 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.6.0",
     "@babel/runtime": "^7.6.0",
+    "@types/react": "^16.9.13",
+    "@types/sharp": "^0.23.0",
+    "@types/styled-components": "^4.4.0",
     "autoprefixer": "^9.6.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",
@@ -142,6 +148,9 @@
     "resolve-url-loader": "^3.1.0",
     "rimraf": "^3.0.0",
     "style-loader": "^0.16.1",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2",
     "url-loader": "^0.6.2",
     "webpack": "4.39.3",
     "webpack-cli": "3.3.8",
@@ -157,7 +166,7 @@
       "^shared(.*)$": "<rootDir>/shared$1",
       "^client(.*)$": "<rootDir>/client$1",
       "^admin(.*)$": "<rootDir>/admin$1",
-      "\\.(css|jpg|png)$": "<rootDir>/__tests__/empty-module.js"
+      "\\.(css|jpg|png)$": "<rootDir>/__tests__/empty-module.ts"
     },
     "setupFiles": [
       "<rootDir>/node_modules/regenerator-runtime/runtime"

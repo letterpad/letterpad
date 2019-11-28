@@ -1,7 +1,7 @@
 const gql = require("graphql-tag");
 const { PostFragment } = require("./Fragments");
 
-module.exports.GET_POSTS = gql`
+export const GET_POSTS = gql`
   query posts($filters: PostFiltersWithPagination) {
     posts(filters: $filters) {
       count
@@ -13,7 +13,7 @@ module.exports.GET_POSTS = gql`
   ${PostFragment}
 `;
 
-module.exports.GET_SINGLE_POST = gql`
+export const GET_SINGLE_POST = gql`
   # TODO: Convert the below params to object.
   query post($filters: SinglePostFilters) {
     post(filters: $filters) {
@@ -23,7 +23,7 @@ module.exports.GET_SINGLE_POST = gql`
   ${PostFragment}
 `;
 
-module.exports.GET_POST_BY_SLUG = gql`
+export const GET_POST_BY_SLUG = gql`
   query singlePost($type: String, $slug: String) {
     post(type: $type, slug: $slug) {
       ...postFields
@@ -32,7 +32,7 @@ module.exports.GET_POST_BY_SLUG = gql`
   ${PostFragment}
 `;
 
-module.exports.GET_MEDIA = gql`
+export const GET_MEDIA = gql`
   query getMedia($authorId: Int!, $offset: Int, $limit: Int) {
     media(authorId: $authorId, offset: $offset, limit: $limit) {
       count
@@ -47,7 +47,7 @@ module.exports.GET_MEDIA = gql`
   }
 `;
 
-module.exports.GET_AUTHORS = gql`
+export const GET_AUTHORS = gql`
   query getAuthors {
     authors {
       id
@@ -67,7 +67,7 @@ module.exports.GET_AUTHORS = gql`
   }
 `;
 
-module.exports.GET_AUTHOR = gql`
+export const GET_AUTHOR = gql`
   query getAuthor($id: Int!) {
     author(id: $id) {
       id
@@ -88,7 +88,7 @@ module.exports.GET_AUTHOR = gql`
   }
 `;
 
-module.exports.GET_ROLES = gql`
+export const GET_ROLES = gql`
   query getRoles {
     roles {
       id
@@ -96,7 +96,7 @@ module.exports.GET_ROLES = gql`
     }
   }
 `;
-module.exports.GET_OPTIONS = gql`
+export const GET_OPTIONS = gql`
   query getOptions {
     settings {
       id
@@ -106,7 +106,7 @@ module.exports.GET_OPTIONS = gql`
   }
 `;
 
-module.exports.GET_TAXONOMIES = gql`
+export const GET_TAXONOMIES = gql`
   query getTaxonomies($type: String!) {
     taxonomies(type: $type) {
       id
@@ -117,7 +117,7 @@ module.exports.GET_TAXONOMIES = gql`
   }
 `;
 
-module.exports.SEARCH_POSTS = gql`
+export const SEARCH_POSTS = gql`
   query searchPosts(
     $type: String
     $query: String!
@@ -141,7 +141,7 @@ module.exports.SEARCH_POSTS = gql`
   ${PostFragment}
 `;
 
-module.exports.SEARCH_POSTS_FUZY = gql`
+export const SEARCH_POSTS_FUZY = gql`
   query searchPosts($query: String!) {
     search(query: $query) {
       count
@@ -156,7 +156,7 @@ module.exports.SEARCH_POSTS_FUZY = gql`
   }
 `;
 
-module.exports.SEARCH_POSTS_BY_TAXONOMY = gql`
+export const SEARCH_POSTS_BY_TAXONOMY = gql`
   query catPosts(
     $type: String!
     $slug: String!
@@ -180,7 +180,7 @@ module.exports.SEARCH_POSTS_BY_TAXONOMY = gql`
   ${PostFragment}
 `;
 
-module.exports.BLOG_STATS = gql`
+export const BLOG_STATS = gql`
   query stats {
     stats {
       posts {
@@ -197,7 +197,7 @@ module.exports.BLOG_STATS = gql`
   }
 `;
 
-module.exports.THEME_SETTINGS = gql`
+export const THEME_SETTINGS = gql`
   query themeSettings($name: String) {
     themeSettings(name: $name) {
       name
@@ -207,7 +207,7 @@ module.exports.THEME_SETTINGS = gql`
   }
 `;
 
-module.exports.TAX_SUGGESTIONS = gql`
+export const TAX_SUGGESTIONS = gql`
   query getTaxonomies($type: String) {
     taxonomies(type: $type) {
       id
@@ -217,7 +217,7 @@ module.exports.TAX_SUGGESTIONS = gql`
   }
 `;
 
-module.exports.GET_POSTS_LINKED_TAXONOMIES = gql`
+export const GET_POSTS_LINKED_TAXONOMIES = gql`
   query getTaxonomies($type: String!, $postType: String) {
     activeTaxonomies(type: $type, postType: $postType) {
       id
@@ -228,7 +228,7 @@ module.exports.GET_POSTS_LINKED_TAXONOMIES = gql`
   }
 `;
 
-module.exports.GET_LATEST_PUBLISHED_POSTS = gql`
+export const GET_LATEST_PUBLISHED_POSTS = gql`
   query latestPosts($type: String, $limit: Int) {
     posts(type: $type, offset: 0, limit: $limit) {
       count
@@ -245,7 +245,7 @@ module.exports.GET_LATEST_PUBLISHED_POSTS = gql`
   }
 `;
 
-module.exports.POSTS_FROM_CATEGORY_SLUG = gql`
+export const POSTS_FROM_CATEGORY_SLUG = gql`
   query menuContent($filters: MenuFiltersWithPagination) {
     menuContent(filters: $filters) {
       count
@@ -257,7 +257,7 @@ module.exports.POSTS_FROM_CATEGORY_SLUG = gql`
   ${PostFragment}
 `;
 
-module.exports.ADJACENT_POSTS = gql`
+export const ADJACENT_POSTS = gql`
   query adjacentPosts($slug: String) {
     adjacentPosts(slug: $slug) {
       next {
@@ -276,7 +276,7 @@ module.exports.ADJACENT_POSTS = gql`
   }
 `;
 
-module.exports.IS_AUTHORIZED = gql`
+export const IS_AUTHORIZED = gql`
   query validateToken {
     validateToken {
       ok

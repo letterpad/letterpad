@@ -48,7 +48,7 @@ module.exports = (args, name) => {
         shared: path.join(__dirname, "/../src/shared"),
         config: path.join(__dirname, "/../src/config"),
       },
-      extensions: [".js"],
+      extensions: [".tsx", ".ts", ".js"],
     },
     plugins: [
       new WebpackBar({ name: name }),
@@ -72,6 +72,11 @@ module.exports = (args, name) => {
 
     module: {
       rules: [
+        {
+          test: /\.(j|t)sx?$/,
+          use: "ts-loader",
+          exclude: /node_modules/,
+        },
         {
           test: /\.js$/,
           use: [

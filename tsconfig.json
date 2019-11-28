@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2015",
+    "noEmitOnError": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "pretty": true,
+    "outDir": "dist",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "jsx": "react",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "src/**/.tsx"],
+  "exclude": ["node_modules", "src/typings"]
+}
