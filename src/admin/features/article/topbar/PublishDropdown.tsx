@@ -10,7 +10,7 @@ import FeaturedImage from "../FeaturedImage";
 import Taxonomies from "./Taxonomies";
 import PostActions from "../PostActions";
 
-class PublishDropdown extends Component {
+class PublishDropdown extends Component<any, any> {
   static propTypes = {
     close: PropTypes.func,
     updatePost: PropTypes.func.isRequired,

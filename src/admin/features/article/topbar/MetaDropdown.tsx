@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 
-import { makeUrl } from "../../../../shared/util";
+import util from "../../../../shared/util";
 import PostActions from "../PostActions";
 import StyledDropdown from "./Dropdown.css";
 
 import StyledInput from "../../../components/input";
 import StyledButton from "../../../components/button";
 
-class MetaDropdown extends Component {
+class MetaDropdown extends Component<any, any> {
   static propTypes = {
     close: PropTypes.func,
     post: PropTypes.object,
@@ -35,7 +35,10 @@ class MetaDropdown extends Component {
   };
 
   render() {
-    const permalink = makeUrl([this.state.post.type, this.state.post.slug]);
+    const permalink = util.makeUrl([
+      this.state.post.type,
+      this.state.post.slug,
+    ]);
     return (
       <StyledDropdown className="post-meta">
         <StyledInput

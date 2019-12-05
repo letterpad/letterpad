@@ -24,7 +24,7 @@ const formatTagsForBackend = tags => {
   });
 };
 
-export class Taxonomies extends Component {
+export class Taxonomies extends Component<any, any> {
   static propTypes = {
     suggestions: PropTypes.array,
     post: PropTypes.object,
@@ -106,7 +106,7 @@ export class Taxonomies extends Component {
 }
 
 const TaxSuggestionsData = graphql(TAX_SUGGESTIONS, {
-  props: ({ data: { loading, taxonomies } }) => ({
+  props: ({ data: { loading, taxonomies } }: any) => ({
     suggestions: taxonomies,
     loading,
   }),

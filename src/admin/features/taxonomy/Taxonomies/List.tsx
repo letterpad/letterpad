@@ -10,7 +10,7 @@ import styled from "styled-components";
 
 const DEFAULT_ROW_HEIGHT = 50;
 
-const ListWrapper = styled.div`
+const ListWrapper = styled.div<any>`
   height: ${p => p.windowScroller || "100%"};
   width: 100%;
   flex: 1;
@@ -22,7 +22,7 @@ const NoDataCell = styled.div`
   margin: 0 0.5em;
 `;
 
-class ScrollbarsList extends Component {
+class ScrollbarsList extends Component<any, any> {
   state = {
     scrollTop: 0,
   };

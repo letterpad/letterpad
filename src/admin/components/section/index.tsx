@@ -1,20 +1,28 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const StyledSection = styled.section`
+export enum SectionSizes {
+  sm,
+  xs,
+  md,
+}
+
+interface ISectionProps {
+  size: SectionSizes;
+}
+export const StyledSection = styled.section<ISectionProps>`
   background-attachment: fixed;
   position: relative;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   padding: ${props => {
-    switch (props) {
-      case "sm":
+    switch (props.size) {
+      case SectionSizes.sm:
         return "8px";
-      case "xs":
+      case SectionSizes.xs:
         return "16px";
-      case "md":
+      case SectionSizes.md:
         return "32px";
       default:
         return "16px";
@@ -32,9 +40,9 @@ const StyledSection = styled.section`
   }
 `;
 
-const Section = ({ children, title, subtitle, ...props }) => {
+const Section: React.FC<any> = ({ size, children, title, subtitle }) => {
   return (
-    <StyledSection {...props}>
+    <StyledSection size={size}>
       {title && (
         <div className="section-header">
           <h2>{title}</h2>
@@ -46,13 +54,13 @@ const Section = ({ children, title, subtitle, ...props }) => {
   );
 };
 
-Section.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
-  title: PropTypes.any,
-  subtitle: PropTypes.string,
-};
+// Section.propTypes = {
+//   children: PropTypes.oneOfType([
+//     PropTypes.arrayOf(PropTypes.node),
+//     PropTypes.node,
+//   ]),
+//   title: PropTypes.any,
+//   subtitle: PropTypes.string,
+// };
 
 export default Section;

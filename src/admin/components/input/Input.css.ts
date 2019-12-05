@@ -1,8 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+export const Container = styled.div`
   label {
     color: var(--base-shade-3);
     font-weight: 500;
@@ -52,26 +50,3 @@ const Wrapper = styled.div`
   }
   margin-bottom: 15px;
 `;
-
-const StyledInput = ({ label, textarea, innerRef, ...props }) => {
-  if (innerRef) {
-    props.ref = innerRef;
-  }
-  return (
-    <Wrapper className="input-box">
-      <label
-        className="custom-label"
-        dangerouslySetInnerHTML={{ __html: label }}
-      />
-      {textarea ? <textarea {...props} /> : <input {...props} />}
-    </Wrapper>
-  );
-};
-
-StyledInput.propTypes = {
-  label: PropTypes.string,
-  textarea: PropTypes.bool,
-  innerRef: PropTypes.object,
-};
-
-export default StyledInput;

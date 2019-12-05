@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import PostActions from "../PostActions";
 import StyledInput from "../../../components/input";
 
-class Excerpt extends Component {
+class Excerpt extends Component<any, any> {
   static propTypes = {
     post: PropTypes.object,
   };

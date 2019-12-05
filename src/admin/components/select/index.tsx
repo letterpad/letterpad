@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 import StyledSelect from "./Select.css";
 
-class Select extends Component {
-  static propTypes = {
-    options: PropTypes.array,
-    selected: PropTypes.string,
-    onChange: PropTypes.func,
-    bold: PropTypes.any,
-    label: PropTypes.any,
-  };
+class Select extends Component<any, any> {
+  // static propTypes = {
+  //   options: PropTypes.array,
+  //   selected: PropTypes.string,
+  //   onChange: PropTypes.func,
+  //   bold: PropTypes.any,
+  //   label: PropTypes.any,
+  // };
 
-  rootRef = React.createRef();
+  rootRef = React.createRef<HTMLDivElement>();
 
   state = {
     open: false,
@@ -67,7 +66,7 @@ class Select extends Component {
         </div>
 
         {this.state.open && (
-          <ul isOpen={this.state.open} className="options">
+          <ul className="options">
             {options.map(option => {
               let className =
                 option.name === this.state.selected ? " selected" : "";

@@ -1,22 +1,31 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
-import appoloClient from "shared/apolloClient";
+import appoloClient from "../../../shared/apolloClient";
 import { GET_POSTS } from "../../../shared/queries/Queries";
 import { BULK_DELETE_POSTS } from "../../../shared/queries/Mutations";
 
-const ArticleHoc = WrappedComponent => {
-  const isAdmin = true;
-  return class extends Component {
-    static propTypes = {
-      type: PropTypes.string.required,
-      router: PropTypes.object,
-    };
+interface IArticleProps {
+  type: string;
+  router: any;
+}
 
-    state = {
+interface IArticleState {
+  loading: boolean;
+  selectedPosts: string[];
+  allPostsSelected: boolean;
+  posts: any;
+}
+
+const ArticleHoc = <P extends IArticleProps>(
+  WrappedComponent: React.ComponentType<P>,
+) => {
+  const isAdmin = true;
+  return class extends Component<P, IArticleState> {
+    state: IArticleState = {
       loading: true,
       selectedPosts: [],
       allPostsSelected: false,
+      posts: [],
     };
 
     componentDidMount() {
@@ -25,10 +34,10 @@ const ArticleHoc = WrappedComponent => {
 
     fetchPosts = async () => {
       this.setState({ loading: true });
-      const query = new URLSearchParams(
+      const query: any = new URLSearchParams(
         this.props.router.history.location.search,
       );
-      const params = Object.fromEntries(query);
+      const params: any = (Object as any).fromEntries(query);
       if (params.cursor) {
         params.cursor = parseInt(params.cursor);
       }
@@ -41,7 +50,6 @@ const ArticleHoc = WrappedComponent => {
       let result = await appoloClient(isAdmin).query({
         query: GET_POSTS,
         variables: { filters: { ...params, type: this.props.type } },
-        forceFetch: true,
         fetchPolicy: "no-cache",
       });
       this.setState({
@@ -50,13 +58,13 @@ const ArticleHoc = WrappedComponent => {
       });
     };
 
-    changePage = (e, page) => {
+    changePage = (e, _page) => {
       e.preventDefault();
-      if (!this.state.isSearch) {
-        this.router.history.this.fetchPosts(page);
-      } else {
-        this.searchPosts(this.variables.query, page, this.variables.status);
-      }
+      // if (!this.state.isSearch) {
+      //   this.props.router.history.this.fetchPosts(page);
+      // } else {
+      this.fetchPosts();
+      // }
     };
 
     deletePosts = async ids => {
@@ -68,7 +76,7 @@ const ArticleHoc = WrappedComponent => {
       return appoloClient(isAdmin).mutate({
         mutation: BULK_DELETE_POSTS,
         variables: { ids: ids, deleteFromSystem },
-        update: (proxy, { data: { deletePosts } }) => {
+        update: (_proxy, { data: { deletePosts } }) => {
           if (deletePosts.ok) {
             this.fetchPosts();
           }
@@ -83,7 +91,7 @@ const ArticleHoc = WrappedComponent => {
     };
 
     selectAllPosts = (e, posts) => {
-      let selectedPosts = [];
+      let selectedPosts: Array<string> = [];
       let allPostsSelected = false;
       if (e.target.checked) {
         selectedPosts = posts.rows.map(post => post.id);
@@ -92,7 +100,7 @@ const ArticleHoc = WrappedComponent => {
       this.setState({ selectedPosts, allPostsSelected });
     };
 
-    setSelection = id => {
+    setSelection = (id: string) => {
       const idx = this.state.selectedPosts.indexOf(id);
       if (idx === -1) {
         this.state.selectedPosts.push(id);

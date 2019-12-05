@@ -1,6 +1,7 @@
-const gql = require("graphql-tag");
+// const gql = require("graphql-tag");
+import gql from "graphql-tag";
 
-module.exports.CREATE_POST = gql`
+export const CREATE_POST = gql`
   mutation createPost($data: InputCreatePost) {
     createPost(data: $data) {
       ok
@@ -32,7 +33,7 @@ module.exports.CREATE_POST = gql`
   }
 `;
 
-module.exports.UPDATE_OPTIONS = gql`
+export const UPDATE_OPTIONS = gql`
   mutation updateOptions($options: [OptionInputType]) {
     updateOptions(options: $options) {
       id
@@ -42,7 +43,7 @@ module.exports.UPDATE_OPTIONS = gql`
   }
 `;
 
-module.exports.INSERT_THEME_SETTINGS = gql`
+export const INSERT_THEME_SETTINGS = gql`
   mutation insertThemeSettings(
     $name: String
     $value: String
@@ -52,7 +53,7 @@ module.exports.INSERT_THEME_SETTINGS = gql`
   }
 `;
 
-module.exports.UPDATE_THEME_SETTINGS = gql`
+export const UPDATE_THEME_SETTINGS = gql`
   mutation updateThemeSettings(
     $name: String
     $value: String
@@ -62,7 +63,7 @@ module.exports.UPDATE_THEME_SETTINGS = gql`
   }
 `;
 
-module.exports.UPDATE_TAXONOMY = gql`
+export const UPDATE_TAXONOMY = gql`
   mutation updateTaxonomy(
     $id: Int!
     $name: String
@@ -89,7 +90,7 @@ module.exports.UPDATE_TAXONOMY = gql`
   }
 `;
 
-module.exports.DELETE_TAXONOMY = gql`
+export const DELETE_TAXONOMY = gql`
   mutation deleteTaxonomy($id: Int!) {
     deleteTaxonomy(id: $id) {
       id
@@ -102,7 +103,7 @@ module.exports.DELETE_TAXONOMY = gql`
   }
 `;
 
-module.exports.BULK_DELETE_POSTS = gql`
+export const BULK_DELETE_POSTS = gql`
   mutation deletePosts($ids: [Int!], $deleteFromSystem: Boolean) {
     deletePosts(ids: $ids, deleteFromSystem: $deleteFromSystem) {
       ok
@@ -110,7 +111,7 @@ module.exports.BULK_DELETE_POSTS = gql`
   }
 `;
 
-module.exports.UPDATE_AUTHOR = gql`
+export const UPDATE_AUTHOR = gql`
   mutation updateAuthor(
     $id: Int!
     $email: String
@@ -144,7 +145,7 @@ module.exports.UPDATE_AUTHOR = gql`
   }
 `;
 
-module.exports.CREATE_AUTHOR = gql`
+export const CREATE_AUTHOR = gql`
   mutation createAuthor(
     $email: String!
     $fname: String
@@ -161,7 +162,7 @@ module.exports.CREATE_AUTHOR = gql`
   }
 `;
 
-module.exports.UPDATE_POST_QUERY = gql`
+export const UPDATE_POST_QUERY = gql`
   mutation updatePost($data: InputUpdatePost) {
     updatePost(data: $data) {
       ok
@@ -198,7 +199,7 @@ module.exports.UPDATE_POST_QUERY = gql`
   }
 `;
 
-module.exports.INSERT_MEDIA = gql`
+export const INSERT_MEDIA = gql`
   mutation insertMedia($url: String!) {
     insertMedia(url: $url) {
       url
@@ -208,7 +209,7 @@ module.exports.INSERT_MEDIA = gql`
   }
 `;
 
-module.exports.DELETE_MEDIA = gql`
+export const DELETE_MEDIA = gql`
   mutation deleteMedia($ids: String!) {
     deleteMedia(ids: $ids) {
       ok
@@ -216,7 +217,7 @@ module.exports.DELETE_MEDIA = gql`
   }
 `;
 
-module.exports.UPLOAD_COVER_IMAGE = gql`
+export const UPLOAD_COVER_IMAGE = gql`
   mutation uploadFile($cover_image: String!, $id: Int!) {
     uploadFile(cover_image: $cover_image, id: $id) {
       ok
@@ -228,7 +229,7 @@ module.exports.UPLOAD_COVER_IMAGE = gql`
   }
 `;
 
-module.exports.UPDATE_MEDIA = gql`
+export const UPDATE_MEDIA = gql`
   mutation updateMedia($id: Int!, $name: String, $description: String) {
     updateMedia(id: $id, name: $name, description: $description) {
       ok
@@ -240,7 +241,7 @@ module.exports.UPDATE_MEDIA = gql`
   }
 `;
 
-module.exports.LOGIN_QUERY = gql`
+export const LOGIN_QUERY = gql`
   mutation login($username: String!, $password: String!) {
     login(email: $username, password: $password) {
       ok
@@ -253,7 +254,7 @@ module.exports.LOGIN_QUERY = gql`
   }
 `;
 
-module.exports.FORGOT_PASSWORD_QUERY = gql`
+export const FORGOT_PASSWORD_QUERY = gql`
   mutation forgotPassword($email: String!) {
     forgotPassword(email: $email) {
       ok
@@ -261,7 +262,7 @@ module.exports.FORGOT_PASSWORD_QUERY = gql`
     }
   }
 `;
-module.exports.RESET_PASSWORD_QUERY = gql`
+export const RESET_PASSWORD_QUERY = gql`
   mutation resetPassword($token: String!, $password: String!) {
     resetPassword(token: $token, password: $password) {
       ok

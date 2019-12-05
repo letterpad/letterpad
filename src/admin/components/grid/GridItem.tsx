@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -48,7 +48,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const StyledGrid = ({
+const StyledGrid: React.FC<any> = ({
   title,
   image,
   line1,
@@ -77,15 +77,15 @@ const StyledGrid = ({
   );
 };
 
-StyledGrid.propTypes = {
-  className: PropTypes.string,
-  title: PropTypes.string,
-  stickyText: PropTypes.string,
-  image: PropTypes.string,
-  line1: PropTypes.string,
-  line2: PropTypes.string,
-  href: PropTypes.string,
-  onClick: PropTypes.func,
-};
+// StyledGrid.propTypes = {
+//   className: PropTypes.string,
+//   title: PropTypes.string,
+//   stickyText: PropTypes.string,
+//   image: PropTypes.string,
+//   line1: PropTypes.string,
+//   line2: PropTypes.string,
+//   href: PropTypes.string,
+//   onClick: PropTypes.func,
+// };
 
 export default StyledGrid;

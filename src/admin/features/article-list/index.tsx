@@ -12,32 +12,32 @@ import Paginate from "../../components/pagination";
 
 import StyledToolbar, { Layout } from "./Toolbar.css";
 
-import StyledSection from "../../components/section";
+import Section, { SectionSizes } from "../../components/section";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
 import StyledButton from "../../components/button";
 import { StyledTitle, StyledItem, Table, Loader } from "./ArticleList.css";
 import Filters from "./Filters";
 
-class ArticleList extends Component {
-  static propTypes = {
-    posts: PropTypes.object,
-    changePage: PropTypes.func,
-    variables: PropTypes.object,
-    loading: PropTypes.bool,
-    router: PropTypes.object,
-    setSelection: PropTypes.func,
-    selectAllPosts: PropTypes.func,
-    deleteSelectedPosts: PropTypes.func,
-    searchPosts: PropTypes.func,
-    fetchPosts: PropTypes.func,
-    allPostsSelected: PropTypes.bool,
-    selectedPosts: PropTypes.array,
-    status: PropTypes.string,
-    page: PropTypes.number,
-    t: PropTypes.func,
-    type: PropTypes.string.isRequired,
-  };
+class ArticleList extends Component<any, any> {
+  // static propTypes = {
+  //   posts: PropTypes.object,
+  //   changePage: PropTypes.func,
+  //   variables: PropTypes.object,
+  //   loading: PropTypes.bool,
+  //   router: PropTypes.object,
+  //   setSelection: PropTypes.func,
+  //   selectAllPosts: PropTypes.func,
+  //   deleteSelectedPosts: PropTypes.func,
+  //   searchPosts: PropTypes.func,
+  //   fetchPosts: PropTypes.func,
+  //   allPostsSelected: PropTypes.bool,
+  //   selectedPosts: PropTypes.array,
+  //   status: PropTypes.string,
+  //   page: PropTypes.number,
+  //   t: PropTypes.func,
+  //   type: PropTypes.string.isRequired,
+  // };
 
   state = {
     status: "publish",
@@ -63,7 +63,7 @@ class ArticleList extends Component {
 
   changeFilter = (key, value) => {
     const query = this.getUrlParams();
-    const filterKeys = [...query.keys()];
+    const filterKeys: string[] = [...query.keys()];
     if (value === null) {
       query.delete(key);
     } else if (filterKeys.includes(key)) {
@@ -102,10 +102,11 @@ class ArticleList extends Component {
     const query = new URLSearchParams(
       this.props.router.history.location.search,
     );
-
+    const a = t("posts.title");
+    console.log(a);
     return (
-      <StyledSection
-        md
+      <Section
+        size={SectionSizes.md}
         title={
           <Title
             title={type === "post" ? t("posts.title") : t("pages.title")}
@@ -162,13 +163,13 @@ class ArticleList extends Component {
           {!loading && this.props.posts && (
             <Paginate
               count={this.props.posts.count}
-              page={parseInt(query.get("page")) || 1}
+              page={parseInt(query.get("page") || "1")}
               changePage={this.goToNextPage}
               limit={config.itemsPerPage}
             />
           )}
         </div>
-      </StyledSection>
+      </Section>
     );
   }
 }
@@ -189,7 +190,7 @@ Title.propTypes = {
   creationLink: PropTypes.string,
 };
 
-const RenderGrid = ({ data, setSelection }) => {
+const RenderGrid: React.FC<any> = ({ data, setSelection }) => {
   return (
     <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
       {data.map(post => {
@@ -208,7 +209,6 @@ const RenderGrid = ({ data, setSelection }) => {
             <StyledGridItem
               image={getCoverImage(post.cover_image)}
               title={post.title}
-              description={post.excerpt}
               href={"/admin/posts/" + post.id}
               line1={authorName}
               line2={moment(post.createdAt).format("MMM Do YYYY")}
@@ -277,13 +277,13 @@ const RenderTable = ({ data, setSelection }) => {
   );
 };
 
-RenderTable.propTypes = {
-  data: PropTypes.array,
-  setSelection: PropTypes.func,
-};
+// RenderTable.propTypes = {
+//   data: PropTypes.array,
+//   setSelection: PropTypes.func,
+// };
 
 const filterTaxonomies = taxonomies => {
-  const result = {
+  const result: any = {
     tags: [],
     categories: [],
   };

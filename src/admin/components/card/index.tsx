@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const StyledCard = styled.div`
@@ -24,7 +23,13 @@ const StyledCard = styled.div`
   }
 `;
 
-const Card = ({ children, title, subtitle, className }) => {
+interface ICard {
+  title: string;
+  subtitle: string;
+  className?: string;
+}
+
+const Card: React.FC<ICard> = ({ children, title, subtitle, className }) => {
   return (
     <StyledCard className={"card " + className}>
       <header>
@@ -36,14 +41,14 @@ const Card = ({ children, title, subtitle, className }) => {
   );
 };
 
-Card.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
-  className: PropTypes.string,
-  title: PropTypes.string,
-  subtitle: PropTypes.string,
-};
+// Card.propTypes = {
+//   children: PropTypes.oneOfType([
+//     PropTypes.arrayOf(PropTypes.node),
+//     PropTypes.node,
+//   ]),
+//   className: PropTypes.string,
+//   title: PropTypes.string,
+//   subtitle: PropTypes.string,
+// };
 
 export default Card;

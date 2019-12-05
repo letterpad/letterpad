@@ -4,11 +4,11 @@
 import React from "react";
 import { render } from "react-dom";
 import { ApolloProvider } from "react-apollo";
+import "isomorphic-fetch";
 // import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
 import client from "../shared/apolloClient";
 import Routes from "./Routes";
-import "isomorphic-fetch";
 import config from "../config";
 
 const isAdmin = true;

@@ -5,13 +5,13 @@ import { notify } from "react-notify-toast";
 import { translate } from "react-i18next";
 import StyledSection from "../../components/section";
 
-import Loader from "admin/components/loader";
+// import Loader from "admin/components/loader";
 
 import { GET_OPTIONS } from "../../../shared/queries/Queries";
 import UpdateOptions from "../../data-connectors/UpdateOptions";
-import CreateStatic from "./CreateStatic";
+// import CreateStatic from "./CreateStatic";
 
-class StaticSite extends Component {
+class StaticSite extends Component<any, any> {
   sendRequest = url => {
     const options = {
       headers: {
@@ -50,30 +50,30 @@ class StaticSite extends Component {
     return (
       <StyledSection>
         <div>
-          <CreateStatic
+          {/* <CreateStatic
             updateOption={this.updateOption}
             sendRequest={this.sendRequest}
             chunkToJSON={this.chunkToJSON}
             data={data}
-          />
+          /> */}
         </div>
       </StyledSection>
     );
   }
 }
 
-StaticSite.propTypes = {
-  data: PropTypes.object,
-  updateOptions: PropTypes.func,
-  t: PropTypes.func,
-  options: PropTypes.object,
-};
+// StaticSite.propTypes = {
+//   data: PropTypes.object,
+//   updateOptions: PropTypes.func,
+//   t: PropTypes.func,
+//   options: PropTypes.object,
+// };
 
-StaticSite.defaultPropTypes = {
-  data: JSON.stringify({
-    text_notfound: "",
-  }),
-};
+// StaticSite.defaultPropTypes = {
+//   data: JSON.stringify({
+//     text_notfound: "",
+//   }),
+// };
 
 const OptionsData = graphql(GET_OPTIONS, {
   name: "options",

@@ -1,11 +1,34 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 import StyledSelect from "../../components/select";
 import { translate } from "react-i18next";
-import { graphql } from "@apollo/react-hoc";
 import { GET_TAXONOMIES } from "../../../shared/queries/Queries";
+import apolloClient from "../../../shared/apolloClient";
 
-const Filters = ({ query, t, tags, categories, changeFilter }) => {
+const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
+  const [taxonomies, setTaxonomies] = React.useState<any>({
+    tags: [],
+    categories: [],
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const tags = await apolloClient(true).query({
+        query: GET_TAXONOMIES,
+        variables: { type: "post_tag" },
+      });
+      const categories = await apolloClient(true).query({
+        query: GET_TAXONOMIES,
+        variables: { type: "post_tag" },
+      });
+      setTaxonomies({
+        tags: tags.data.taxonomies,
+        categories: categories.data.taxonomies,
+      });
+    };
+    fetchData();
+  }, []);
+
+  const { tags, categories } = taxonomies;
   return (
     <div>
       <StyledSelect
@@ -31,38 +54,36 @@ const Filters = ({ query, t, tags, categories, changeFilter }) => {
           },
         ]}
       />
-      {!tags.loading && (
-        <StyledSelect
-          bold
-          onChange={status => changeFilter("tag", status)}
-          selected={query.get("tag")}
-          options={[
-            {
-              name: "Select Tag",
-              value: null,
-            },
-            ...tags.taxonomies.map(tag => {
-              return { name: tag.name, value: tag.name };
-            }),
-          ]}
-        />
-      )}
-      {!categories.loading && (
-        <StyledSelect
-          bold
-          onChange={status => changeFilter("category", status)}
-          selected={query.get("category")}
-          options={[
-            {
-              name: "Select Category",
-              value: null,
-            },
-            ...categories.taxonomies.map(category => {
-              return { name: category.name, value: category.name };
-            }),
-          ]}
-        />
-      )}
+
+      <StyledSelect
+        bold
+        onChange={status => changeFilter("tag", status)}
+        selected={query.get("tag")}
+        options={[
+          {
+            name: "Select Tag",
+            value: null,
+          },
+          ...tags.map(tag => {
+            return { name: tag.name, value: tag.name };
+          }),
+        ]}
+      />
+
+      <StyledSelect
+        bold
+        onChange={status => changeFilter("category", status)}
+        selected={query.get("category")}
+        options={[
+          {
+            name: "Select Category",
+            value: null,
+          },
+          ...categories.map(category => {
+            return { name: category.name, value: category.name };
+          }),
+        ]}
+      />
 
       <StyledSelect
         bold
@@ -83,22 +104,12 @@ const Filters = ({ query, t, tags, categories, changeFilter }) => {
   );
 };
 
-Filters.propTypes = {
-  query: PropTypes.object.isRequired,
-  tags: PropTypes.object,
-  categories: PropTypes.object,
-  t: PropTypes.func,
-  changeFilter: PropTypes.func.isRequired,
-};
+// Filters.propTypes = {
+//   query: PropTypes.object.isRequired,
+//   tags: PropTypes.object,
+//   categories: PropTypes.object,
+//   t: PropTypes.func,
+//   changeFilter: PropTypes.func.isRequired,
+// };
 
-const CategoriesData = graphql(GET_TAXONOMIES, {
-  name: "categories",
-  options: () => ({ variables: { type: "post_category" } }),
-});
-
-const TagsData = graphql(GET_TAXONOMIES, {
-  name: "tags",
-  options: () => ({ variables: { type: "post_tag" } }),
-});
-
-export default translate("translations")(TagsData(CategoriesData(Filters)));
+export default translate("translations")(Filters);

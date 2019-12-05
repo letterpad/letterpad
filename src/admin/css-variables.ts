@@ -1,4 +1,4 @@
-const darkTheme = `
+export const darkTheme = `
     --bg-base: #1C2429;
     --bg-sections: #131B1F;
     --color-border: #283237;
@@ -51,7 +51,7 @@ const darkTheme = `
     --box-shadow-inset: inset 0px 2px 5px 0px rgba(0, 0, 0, 0.72);
 `;
 
-const lightTheme = `
+export const lightTheme = `
     --bg-sections: #fff;
     --bg-base: #f7f7f7;
     --color-border: #e6e6e6;
@@ -97,4 +97,4 @@ const lightTheme = `
     --box-shadow-inset: inset -1px 3px 9px -3px rgba(0,0,0,0.32)
 `;
 
-module.exports = { darkTheme, lightTheme };
+// export default { darkTheme, lightTheme };

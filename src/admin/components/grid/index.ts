@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 const autoRows = ({ minRowHeight = "20px" }) => `minmax(${minRowHeight}, auto)`;
 
@@ -12,7 +12,7 @@ const flow = ({ flow = "row" }) => flow;
 
 const formatAreas = areas => areas.map(area => `"${area}"`).join(" ");
 
-const Grid = styled.div`
+const Grid = styled.div<any>`
   display: grid;
   height: ${({ height = "auto" }) => height};
   grid-auto-flow: ${flow};
@@ -30,17 +30,17 @@ const Grid = styled.div`
   }
 `;
 
-Grid.propTypes = {
-  className: PropTypes.string,
-  columns: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  gap: PropTypes.string,
-  height: PropTypes.string,
-  minRowHeight: PropTypes.string,
-  flow: PropTypes.string,
-  rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  areas: PropTypes.arrayOf(PropTypes.string),
-  justifyContent: PropTypes.string,
-  alignContent: PropTypes.string,
-};
+// Grid.propTypes = {
+//   className: PropTypes.string,
+//   columns: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+//   gap: PropTypes.string,
+//   height: PropTypes.string,
+//   minRowHeight: PropTypes.string,
+//   flow: PropTypes.string,
+//   rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+//   areas: PropTypes.arrayOf(PropTypes.string),
+//   justifyContent: PropTypes.string,
+//   alignContent: PropTypes.string,
+// };
 
 export default Grid;

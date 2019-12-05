@@ -71,7 +71,7 @@ if (typeof window !== "undefined") {
 }
 
 // prepare the client for graphql queries.
-const client = (isAdmin = true, opts = {}, authToken = null) => {
+const apolloClient = (isAdmin = true, opts = {}, authToken = null) => {
   const middleware = isAdmin
     ? middlewareLinkAdmin(authToken || token)
     : middlewareLinkClient;
@@ -84,4 +84,4 @@ const client = (isAdmin = true, opts = {}, authToken = null) => {
   });
 };
 
-export default client;
+export default apolloClient;

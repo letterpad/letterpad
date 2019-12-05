@@ -37,7 +37,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const StyledPagination = ({ count, limit, page, changePage }) => {
+const StyledPagination = ({ count, limit, page, changePage }: any) => {
   const pages = Array.from(Array(Math.floor(count / limit)));
   if (pages.length === 1) return null;
   const pageItems = pages.map((_, i) => {

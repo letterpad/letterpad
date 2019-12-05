@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 
 import StyledSection from "../../components/section";
@@ -10,14 +9,26 @@ import config from "../../../config";
 
 import { ProgressBar, Warning } from "./index.css";
 
-class CreateStatic extends Component {
+interface IStaticProps {
+  sendRequest: () => void;
+  chunkToJSON: any;
+  data: any;
+  updateOptions: any;
+  t: any;
+  options: any;
+}
+
+class CreateStatic extends Component<
+  IStaticProps,
+  { processingFiles: boolean }
+> {
   state = {
     processingFiles: false,
   };
 
-  progress = React.createRef();
+  progress = React.createRef<HTMLSpanElement>();
 
-  message = React.createRef();
+  message = React.createRef<HTMLSpanElement>();
 
   createStaticFiles = async () => {
     if (this.state.processingFiles) {
@@ -91,14 +102,14 @@ class CreateStatic extends Component {
     }, 200);
   };
 
-  setProgressWidth = (width = 100) => {
+  setProgressWidth = (width = "100") => {
     const newWidth = -100 + parseFloat(width);
     this.progress.current.style.transform = `translateX(calc(${newWidth}%))`;
     this.progress.current.textContent = parseFloat(width).toFixed(2) + "%";
   };
 
   render() {
-    const canGenerate = window.NODE_ENV === "production";
+    const canGenerate = (window as any).NODE_ENV === "production";
     const preview = config.baseName + "/static/" + getHostName();
     return (
       <StyledSection>
@@ -148,20 +159,11 @@ class CreateStatic extends Component {
   }
 }
 
-CreateStatic.propTypes = {
-  data: PropTypes.object,
-  updateOptions: PropTypes.func,
-  chunkToJSON: PropTypes.func,
-  sendRequest: PropTypes.func,
-  t: PropTypes.func,
-  options: PropTypes.object,
-};
-
-CreateStatic.defaultPropTypes = {
-  data: JSON.stringify({
-    text_notfound: "",
-  }),
-};
+// CreateStatic.defaultPropTypes = {
+//   data: JSON.stringify({
+//     text_notfound: "",
+//   }),
+// };
 
 export default translate("translations")(CreateStatic);
 

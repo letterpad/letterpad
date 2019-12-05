@@ -1,24 +1,32 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useRef } from "react";
 import { translate } from "react-i18next";
 
 import StyledCard from "../../components/card";
-import StyledInput from "../../components/input";
+import Input, { TextArea } from "../../components/input";
 import StyledButton from "../../components/button";
 import { notify } from "react-notify-toast";
-import { Mutation } from "react-apollo";
 import { CREATE_POST } from "../../../shared/queries/Mutations";
+import apolloClient from "../../../shared/apolloClient";
 
-const QuickDraft = ({ t }) => {
-  const titleRef = React.createRef();
-  const bodyRef = React.createRef();
+const QuickDraft = ({ t }: any) => {
+  const titleRef = useRef<HTMLInputElement>(null);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
 
-  const quickDraftAction = createPost => {
+  const quickDraftAction = async () => {
+    if (!titleRef.current || !bodyRef.current) return;
     if (titleRef.current.value.length > 0) {
-      createPost(titleRef.current.value, bodyRef.current.value);
-      notify.show("Draft Saved", "success", 3000);
-      titleRef.current.value = "";
-      bodyRef.current.value = "";
+      await apolloClient().mutate({
+        mutation: CREATE_POST,
+        variables: {
+          data: {
+            title: titleRef.current.value,
+            body: bodyRef.current.value,
+          },
+        },
+      });
+      notify.show("Draft Saved", "success", 3000, "var(--base-color");
+      // titleRef.current.value = "";
+      // bodyRef.current.value = "";
     }
   };
   return (
@@ -26,42 +34,24 @@ const QuickDraft = ({ t }) => {
       title={t("home.quickDraft")}
       subtitle={t("home.quickDraft.tagline")}
     >
-      <Mutation mutation={CREATE_POST}>
-        {createPost => {
-          return (
-            <div>
-              <StyledInput
-                innerRef={titleRef}
-                label={t("home.quickDraft.title")}
-                id="quick-post-title"
-                placeholder={t("home.quickDraft.title.placeholder")}
-              />
-              <StyledInput
-                innerRef={bodyRef}
-                label={t("home.quickDraft.body")}
-                id="quick-post-body"
-                placeholder={t("home.quickDraft.body.placeholder")}
-                textarea
-                rows="2"
-                rowsmax="4"
-              />
-              <StyledButton
-                success
-                onClick={() => quickDraftAction(createPost)}
-              >
-                {t("home.quickDraft.save")}
-              </StyledButton>
-            </div>
-          );
-        }}
-      </Mutation>
+      <div>
+        <Input
+          ref={titleRef}
+          label={t("home.quickDraft.title")}
+          placeholder={t("home.quickDraft.title.placeholder")}
+        />
+        <TextArea
+          ref={bodyRef}
+          label={t("home.quickDraft.body")}
+          placeholder={t("home.quickDraft.body.placeholder")}
+          rows={2}
+        />
+        <StyledButton success onClick={() => quickDraftAction()}>
+          {t("home.quickDraft.save")}
+        </StyledButton>
+      </div>
     </StyledCard>
   );
-};
-
-QuickDraft.propTypes = {
-  draftPost: PropTypes.func,
-  t: PropTypes.func,
 };
 
 export default translate("translations")(QuickDraft);

@@ -13,7 +13,7 @@ import { GET_TAXONOMIES, GET_POSTS } from "../../../shared/queries/Queries";
 import StyledSection from "../../components/section";
 import StyledButton from "../../components/button";
 
-class NavigationBuilder extends Component {
+class NavigationBuilder extends Component<any, any> {
   static propTypes = {
     updateOptions: PropTypes.func,
     options: PropTypes.object,
@@ -22,6 +22,8 @@ class NavigationBuilder extends Component {
     settings: PropTypes.object,
     t: PropTypes.func,
   };
+
+  updatedOptions: object = {};
 
   constructor(props) {
     super(props);

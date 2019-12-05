@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import User from "./User";
 import StyledHeader from "./Header.css";
 import StyledLink from "../../components/link";
 
-const StyledThemeChooser = styled.div`
+const StyledThemeChooser = styled.div<any>`
   display: flex;
   align-items: center;
   margin-right: 10px;
@@ -35,14 +34,14 @@ const StyledThemeChooser = styled.div`
   }
 `;
 
-class Header extends Component {
-  static propTypes = {
-    settings: PropTypes.object,
-    sidebarToggle: PropTypes.func,
-    author: PropTypes.object,
-    switchTheme: PropTypes.func,
-    selectedTheme: PropTypes.string,
-  };
+class Header extends Component<any, any> {
+  // static propTypes = {
+  //   settings: PropTypes.object,
+  //   sidebarToggle: PropTypes.func,
+  //   author: PropTypes.object,
+  //   switchTheme: PropTypes.func,
+  //   selectedTheme: PropTypes.string,
+  // };
 
   render() {
     const settings = this.props.settings;

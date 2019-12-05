@@ -5,7 +5,7 @@ import DATA from "./constants";
 import StyledMenu, { StyledHeading, StyledLink, MenuItem } from "./Menu.css";
 import { translate } from "react-i18next";
 
-class Menu extends Component {
+class Menu extends Component<any, any> {
   static propTypes = {
     router: PropTypes.object,
     settings: PropTypes.object,

@@ -1,6 +1,11 @@
 const slice = [].slice;
 
 class EventBus {
+  nextSubscriptionIndex: number = 0;
+  callbacks: {
+    [event: string]: Array<{ subscription: Function; index: number }>;
+  } = {};
+
   constructor() {
     if (!(this instanceof EventBus)) {
       return new EventBus();

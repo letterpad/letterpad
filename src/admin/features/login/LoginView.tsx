@@ -1,87 +1,89 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-
-import Notifications, { notify } from "react-notify-toast";
-import { parseErrors } from "../../../shared/util";
+import util from "../../../shared/util";
+import apolloClient from "../../../shared/apolloClient";
 import config from "../../../config";
 import {
-  forgotPassword,
-  updateQueryWithData,
-} from "../../data-connectors/LoginConnector";
+  LOGIN_QUERY,
+  FORGOT_PASSWORD_QUERY,
+  // RESET_PASSWORD_QUERY,
+} from "../../../shared/queries/Mutations";
+import {
+  Container,
+  Block,
+  Brand,
+  InputBlock,
+  RememberMeBlock,
+  Button,
+} from "./LoginView.css";
+import Notifications, { notify } from "react-notify-toast";
 
-import StyledButton from "../../components/button";
-
-class LoginView extends Component {
-  static propTypes = {
-    login: PropTypes.func,
-    history: PropTypes.object,
-    settings: PropTypes.object,
-    forgotPassword: PropTypes.func,
-  };
-
+class LoginView extends Component<any, any> {
   state = {
-    lostPassword: false,
+    loginEmail: "",
+    password: "",
+    rememberMe: false,
+    loginView: true,
   };
 
-  componentDidMount() {
-    document.body.classList.add("login-view");
-    this.usernameInput.focus();
-    delete localStorage.token;
-    document.querySelector(
-      ".login-view",
-    ).style.backgroundImage = `url("${config.baseName}/admin/images/login_bg.jpg")`;
-  }
+  onloginEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ loginEmail: e.target.value });
+  };
 
-  componentWillUnmount() {
-    document.querySelector(".login-view").removeAttribute("style");
-    document.body.classList.remove("login-view");
-  }
+  onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ password: e.target.value });
+  };
 
-  login = async e => {
+  onRememberMeChange = (e: React.MouseEvent<HTMLInputElement>) => {
+    this.setState({ rememberMe: e.target["checked"] });
+  };
+
+  showLostPasswordView = e => {
     e.preventDefault();
-    if (
-      this.usernameInput.value.length === 0 ||
-      this.passwordInput.value.length === 0
-    ) {
-      return;
-    }
-    const res = await this.props.login({
-      username: this.usernameInput.value,
-      password: this.passwordInput.value,
-      remember: this.rememberMe.checked,
+    this.setState({ loginView: false });
+  };
+
+  showLoginView = e => {
+    e.preventDefault();
+    this.setState({ loginView: true });
+  };
+
+  login = async () => {
+    const loginResult = await apolloClient().mutate({
+      mutation: LOGIN_QUERY,
+      variables: {
+        username: this.state.loginEmail,
+        password: this.state.password,
+        remember: this.state.rememberMe,
+      },
     });
-    if (!res.data.login.ok) {
-      let errors = parseErrors(res.data.login);
-      errors = errors.map(error => error.message);
+    if (!loginResult.data.login.ok) {
+      let errors = util.parseErrors(loginResult.data.login);
+      errors = errors.map(error => error["message"]);
       notify.show(errors.join("\n"), "warning", 33000);
     } else {
-      localStorage.token = res.data.login.token;
-      this.props.history.push("/admin/home");
+      localStorage.token = loginResult.data.login.token;
+      this.props.router.history.push("/admin/home");
     }
   };
 
-  toggleForgotPwdView = e => {
-    e.preventDefault();
-    this.setState({ lostPassword: !this.state.lostPassword }, () => {
-      if (this.state.lostPassword) {
-        this.lostPwdEmailInput.focus();
-      } else {
-        this.usernameInput.focus();
-      }
-    });
-  };
-
-  forgotPassword = async e => {
-    e.preventDefault();
-    const email = this.lostPwdEmailInput.value.trim();
-    if (email.length > 0) {
+  forgotPassword = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { loginEmail } = this.state;
+    const sanitisedLoginEmail = loginEmail.trim();
+    if (sanitisedLoginEmail.length > 0) {
       e.currentTarget.disabled = true;
-      const response = await this.props.forgotPassword({ email });
-      // eslint-disable-next-line require-atomic-updates
+      const response = await apolloClient().mutate({
+        mutation: FORGOT_PASSWORD_QUERY,
+        variables: {
+          email: sanitisedLoginEmail,
+        },
+      });
       e.currentTarget.disabled = false;
       if (response.data.forgotPassword.ok) {
-        document.querySelector(".forgot-block").innerHTML =
-          "Great. Check your email to reset your password!";
+        notify.show(
+          "Great. Check your email to reset your password!",
+          "success",
+          3000,
+        );
       } else {
         notify.show(response.data.forgotPassword.msg, "warning", 3000);
       }
@@ -91,95 +93,81 @@ class LoginView extends Component {
   };
 
   render() {
-    const classes = {
-      login: this.state.lostPassword ? "hide" : "login-block",
-      forgot: this.state.lostPassword ? "forgot-block" : "hide",
-    };
     return (
-      <div className="login-wrapper">
-        <h2 className="brand text-center">
+      <Container>
+        <Brand>
           <img
             width="150"
             src={config.baseName + "/uploads/logo.png"}
             alt={this.props.settings.site_title.value}
           />
-        </h2>
+        </Brand>
 
         <div className="login">
           <Notifications />
-          <form className={classes.login}>
-            <div>
+          <Block isVisible={this.state.loginView}>
+            <InputBlock>
               <label htmlFor="username">Username</label>
               <input
                 type="text"
-                className="form-control"
                 placeholder="Enter your username"
-                ref={input => {
-                  this.usernameInput = input;
-                }}
+                value={this.state.loginEmail}
+                onChange={this.onloginEmailChange}
                 autoComplete="off"
               />
-            </div>
-            <div>
+            </InputBlock>
+            <InputBlock>
               <label htmlFor="password">Password</label>
               <input
                 type="password"
-                className="form-control"
                 placeholder="Enter your password"
-                ref={input => {
-                  this.passwordInput = input;
-                }}
+                onChange={this.onPasswordChange}
+                value={this.state.password}
                 autoComplete="off"
               />
-            </div>
-            <div className="m-10">
-              <label className="remember-me">
-                <input
-                  type="checkbox"
-                  ref={input => {
-                    this.rememberMe = input;
-                  }}
-                />
+            </InputBlock>
+            <RememberMeBlock>
+              <label>
+                <input type="checkbox" onClick={this.onRememberMeChange} />
                 <span className="label-text"> Remember my password</span>
               </label>
-            </div>
+            </RememberMeBlock>
             <br />
-            <StyledButton sm onClick={this.login} style={{ float: "right" }}>
-              Login
-            </StyledButton>
-          </form>
-          <form className={classes.forgot}>
-            <label htmlFor="username">Enter your email address</label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Enter your email"
-              ref={input => {
-                this.lostPwdEmailInput = input;
-              }}
-              autoComplete="off"
-            />
+            <Button onClick={this.login}>Login</Button>
+            <InputBlock>
+              <a
+                onClick={this.showLostPasswordView}
+                className="forgot-pwd"
+                href="#"
+              >
+                Lost your password ?
+              </a>
+            </InputBlock>
+          </Block>
+          <Block isVisible={!this.state.loginView}>
+            <InputBlock>
+              <label htmlFor="username">Enter your email</label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={this.state.loginEmail}
+                onChange={this.onloginEmailChange}
+                autoComplete="off"
+              />
+            </InputBlock>
             <br />
             <br />
-            <StyledButton sm onClick={this.forgotPassword} success>
-              Submit
-            </StyledButton>
-            <StyledButton sm onClick={this.toggleForgotPwdView}>
-              Cancel
-            </StyledButton>
-          </form>
-          <div className={this.state.lostPassword ? "hide" : "m-t-10"}>
-            <a
-              onClick={this.toggleForgotPwdView}
-              className="forgot-pwd"
-              href="#"
-            >
-              Lost your password ?
-            </a>
-          </div>
+            <InputBlock>
+              <Button contained secondary onClick={this.showLoginView}>
+                Cancel
+              </Button>
+              <Button onClick={this.forgotPassword}>Submit</Button>
+            </InputBlock>
+          </Block>
         </div>
-      </div>
+      </Container>
     );
   }
 }
-export default forgotPassword(updateQueryWithData(LoginView));
+
+export default LoginView;

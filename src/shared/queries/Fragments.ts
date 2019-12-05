@@ -1,6 +1,6 @@
 const gql = require("graphql-tag");
 
-module.exports.PostFragment = gql`
+export const PostFragment = gql`
   fragment postFields on Post {
     id
     title

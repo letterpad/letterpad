@@ -3,25 +3,27 @@ import styled from "styled-components";
 
 import Header from "../header";
 import Sidebar from "../sidebar";
-
 import { lightTheme, darkTheme } from "../../css-variables";
 import { StyledLayout, defaultStyles } from "./Layout.css";
 
-const CSSVariables = styled.div`
+const CSSVariables = styled.div<any>`
   ${props => (props.dark ? darkTheme : lightTheme)};
 `;
 
 const NoLayout = styled.div`
   ${defaultStyles};
 `;
-export default function Layout(ComponentClass, props) {
+const Layout = <P extends object>(
+  ComponentClass: React.ComponentType<P>,
+  props: any,
+) => {
   const settings = props.settings;
   let defaultTheme = "dark";
   if (typeof localStorage !== "undefined" && localStorage.theme) {
     defaultTheme = localStorage.theme;
   }
 
-  return class extends Component {
+  return class extends Component<P> {
     state = {
       sidebarOpen: true,
       theme: defaultTheme,
@@ -105,4 +107,6 @@ export default function Layout(ComponentClass, props) {
       );
     }
   };
-}
+};
+
+export default Layout;

@@ -1,5 +1,5 @@
 import i18n from "i18next";
-import * as language from "./lang";
+import language from "./lang";
 
 const getI18nWithDefaultLang = lang => {
   const resources = {};

@@ -1,15 +1,14 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
+import React, { PureComponent, ChangeEvent } from "react";
 
-import StyledInput from "../../components/input";
+import Input from "../../components/input";
 
-class Search extends PureComponent {
-  static propTypes = {
-    searchPosts: PropTypes.func,
-    query: PropTypes.string,
-  };
+class Search extends PureComponent<any, any> {
+  // static propTypes = {
+  //   searchPosts: PropTypes.func,
+  //   query: PropTypes.string,
+  // };
 
-  searchInput = React.createRef();
+  searchInput = React.createRef<HTMLInputElement>();
 
   state = {
     query: this.props.query || "",
@@ -21,7 +20,7 @@ class Search extends PureComponent {
     }
   }
 
-  onChange = e => {
+  onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value.trim();
     this.setState({ query });
     if (query.length === 0) {
@@ -42,9 +41,8 @@ class Search extends PureComponent {
 
   render() {
     return (
-      <StyledInput
-        innerRef={this.searchInput}
-        focus="true"
+      <Input
+        ref={this.searchInput}
         value={this.state.query}
         onChange={this.onChange}
         onKeyUp={this.onKeyUp}

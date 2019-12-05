@@ -16,20 +16,16 @@ try {
 
 import express from "express";
 import bodyParser from "body-parser";
-import config from "./config";
 import adminServer from "./admin/server";
 import apiServer from "./api/server";
-import clientServerRendering from "./client/server/serverRendering";
-// import { dir } from "./shared/dir";
+// import clientServerRendering from "./client/server/serverRendering";
 import { AddressInfo } from "net";
-import { getDirectories } from "./shared/dir";
+import staticPaths from "./staticPaths";
 
 const app = express();
 
 // This middleware will attempt to compress response bodies for all requests
-// app.use(compression());
-// Handle hot module replacement in dev mode
-// We are not using webpack-dev-server.
+// Handle hot module replacement in dev mode. This is not working
 if (process.env.NODE_ENV === "dev") {
   const wpConfigFile = "../webpack/webpack.dev.js";
   require(wpConfigFile)({
@@ -76,16 +72,6 @@ if (process.env.NODE_ENV === "dev") {
           }
         });
       });
-
-      // One-liner for current directory, ignores .dotfiles
-      require("chokidar")
-        .watch("api/**/*.js")
-        .on("all", (_event, path: string) => {
-          delete require.cache[require("path").join(__dirname, path)];
-          delete require.cache[
-            require("path").join(__dirname, "/api/schema.js")
-          ];
-        });
     }
   });
 }
@@ -97,57 +83,12 @@ app.use(
   }),
 );
 
-let base = "";
-if (config.baseName.length > 0) {
-  base = config.baseName;
-}
-
-// Take care of static assets. We will expose couple of folders here.
-
-// Expose the root public folder.
-app.use(base, express.static("src/public"));
-app.use(base, express.static("dist/public"));
-
-// Expose the admin/public folder.
-app.use(base + "/admin/", express.static(__dirname + "/admin/public"));
-app.use(base + "/admin/", express.static(__dirname + "/admin/public"));
-
-// Expose the static folder for static site
-app.use(base + "/static", express.static("letterpad-static"));
-
-// Every theme has a public directory for its assets. So we need to expose that.
-getDirectories(__dirname + "/client/themes/").map((themePath: string) => {
-  // get the theme folder name
-  const theme = themePath.split("/").pop();
-  // expose the public folder. This can be accessed as /theme-name/css/style.css
-  // in dev mode, this is required.
-  app.use(base + "/" + theme + "/", express.static(themePath + "/public"));
-  // Also provide a way to access the client folder
-  app.use(base + "/client/", express.static(themePath + "/public"));
-});
-
-// This is not being used. The intention was to allow a user to start a build from the dashboard.
-// But that would mean that the production server should have all the devDependencies.
-app.get("/build", (_req, res) => {
-  const webpack = require("webpack");
-  const ProgressPlugin = require("webpack/lib/ProgressPlugin");
-  const config = require("../webpack/webpack.config.prod.js");
-  const compiler = webpack(config);
-
-  compiler.apply(
-    new ProgressPlugin(function(percentage: number, msg: string) {
-      res.write(percentage * 100 + "%" + " >> " + msg + "\n");
-    }),
-  );
-
-  compiler.run(function() {
-    res.end();
-  });
-});
+// Take care of static assets.
+staticPaths(app);
 
 // start the admin dashboard and the client. Both use the same server, but its nice to separate them
 adminServer(app);
-clientServerRendering.init(app);
+// clientServerRendering.init(app);
 apiServer(app);
 const server = app.listen(process.env.appPort, function() {
   const addressInfo = server.address() as AddressInfo;
@@ -160,7 +101,8 @@ module.exports = server;
 
 function configureEnvironment() {
   env(__dirname + "/../.env");
-  // for heroku
+  // Heroku automatically starts the node server with the port defined
+  // in the environment variable.
   if (process.env.NODE_HOME === "/app/.heroku/node") {
     process.env.appPort = process.env.PORT;
   }

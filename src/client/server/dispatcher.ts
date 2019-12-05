@@ -3,8 +3,8 @@ const path = require("path");
 const config = require("../../config");
 const { getHtml } = require("./html");
 
-const dispatcher = async (url, client, options, isStatic) => {
-  const settings = {};
+export const dispatcher = async (url, client, options, isStatic) => {
+  const settings: any = {};
   options.data.settings.forEach(item => {
     settings[item.option] = item.value;
   });
@@ -45,5 +45,3 @@ const dispatcher = async (url, client, options, isStatic) => {
     return "Error while rendering";
   }
 };
-
-module.exports.dispatcher = dispatcher;

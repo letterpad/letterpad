@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 import PostActions from "./PostActions";
-import { plural } from "../../../shared/util";
 import Loader from "../../components/loader";
 import apolloClient from "../../../shared/apolloClient";
 import { CREATE_POST } from "../../../shared/queries/Mutations";
+import util from "../../../shared/util";
 
-export class Create extends Component {
-  static propTypes = {
-    router: PropTypes.object,
-    createPost: PropTypes.func.isRequired,
-    type: PropTypes.string.isRequired,
-  };
+export class CreateArticle extends Component<any, any> {
+  // static propTypes = {
+  //   router: PropTypes.object,
+  //   createPost: PropTypes.func.isRequired,
+  //   type: PropTypes.string.isRequired,
+  // };
 
   state = {
     post: {},
@@ -28,7 +27,7 @@ export class Create extends Component {
     });
     const post = result.data.createPost.post;
     PostActions.setData({ slug: post.slug });
-    this.props.router.history.replace(`/admin/${plural[type]}/${post.id}`);
+    this.props.router.history.replace(`/admin/${util.plural[type]}/${post.id}`);
   }
 
   render() {
@@ -37,4 +36,4 @@ export class Create extends Component {
   }
 }
 
-export default Create;
+export default CreateArticle;

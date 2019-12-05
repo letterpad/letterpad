@@ -1,16 +1,10 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Menu from "../menu";
 import Footer from "../footer";
 
 import StyledSidebar from "./Sidebar.css";
 
-class Sidebar extends Component {
-  static propTypes = {
-    settings: PropTypes.object,
-    router: PropTypes.object,
-  };
-
+class Sidebar extends Component<any, any> {
   render() {
     const { settings, router } = this.props;
     return (

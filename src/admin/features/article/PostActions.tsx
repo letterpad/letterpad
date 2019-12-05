@@ -1,4 +1,4 @@
-let PostActions = {
+let PostActions: any = {
   data: {},
   taxonomies: {},
 
@@ -17,9 +17,9 @@ let PostActions = {
   },
 
   getData: () => {
-    let taxonomies = [];
+    let taxonomies: Array<any> = [];
     for (let type in PostActions.taxonomies) {
-      PostActions.taxonomies[type].forEach(obj => {
+      PostActions.taxonomies[type].forEach((obj: any) => {
         taxonomies.push(obj);
       });
     }

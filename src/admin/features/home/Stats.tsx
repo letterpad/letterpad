@@ -1,13 +1,12 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 
-import StyledCard from "../../components/card";
+import Card from "../../components/card";
 import StyledList from "../../components/list";
 import StyledIcon from "../../components/icon";
 import StyledLink from "../../components/link";
 
-const Stats = ({ stats, loading, t }) => {
+const Stats: React.FC<any> = ({ stats, loading, t }) => {
   const items = [
     {
       label: "Posts",
@@ -47,17 +46,17 @@ const Stats = ({ stats, loading, t }) => {
   ));
 
   return (
-    <StyledCard title={t("home.stats")} subtitle={t("home.stats.tagline")}>
+    <Card title={t("home.stats")} subtitle={t("home.stats.tagline")}>
       {loading ? <span>...</span> : <StyledList>{data}</StyledList>}
-    </StyledCard>
+    </Card>
   );
 };
 
-Stats.propTypes = {
-  loading: PropTypes.bool,
-  stats: PropTypes.object,
-  t: PropTypes.func,
-};
+// Stats.propTypes = {
+//   loading: PropTypes.bool,
+//   stats: PropTypes.object,
+//   t: PropTypes.func,
+// };
 Stats.defaultProps = {
   stats: {
     posts: {},

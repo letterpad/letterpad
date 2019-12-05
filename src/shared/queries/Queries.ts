@@ -1,5 +1,5 @@
-const gql = require("graphql-tag");
-const { PostFragment } = require("./Fragments");
+import gql from "graphql-tag";
+import { PostFragment } from "./Fragments";
 
 export const GET_POSTS = gql`
   query posts($filters: PostFiltersWithPagination) {

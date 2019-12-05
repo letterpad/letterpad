@@ -12,7 +12,7 @@ import StyledDropdown from "../../../components/dropdown";
 import client from "../../../../shared/apolloClient";
 import { UPDATE_POST_QUERY } from "../../../../shared/queries/Mutations";
 
-export class TopBar extends Component {
+export class TopBar extends Component<any, any> {
   static propTypes = {
     post: PropTypes.object.isRequired,
     update: PropTypes.func.isRequired,

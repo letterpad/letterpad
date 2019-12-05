@@ -1,16 +1,18 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 import Notifications, { notify } from "react-notify-toast";
 import { resetPasswordQuery } from "../../data-connectors/LoginConnector";
 
-class ResetPassword extends Component {
-  static propTypes = {
-    history: PropTypes.object,
-    location: PropTypes.object,
-    settings: PropTypes.object,
-    resetPassword: PropTypes.func,
-  };
+class ResetPassword extends Component<any, any> {
+  // static propTypes = {
+  //   history: PropTypes.object,
+  //   location: PropTypes.object,
+  //   settings: PropTypes.object,
+  //   resetPassword: PropTypes.func,
+  // };
+  passwordInput: any = null;
+  cnfPasswordInput: any = null;
 
   componentDidMount() {
     document.body.classList.add("login-view");

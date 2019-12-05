@@ -25,3 +25,4 @@ static
 letterpad-static
 dist/*
 public/*
+.bin

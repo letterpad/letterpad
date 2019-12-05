@@ -1,4 +1,4 @@
-import { IThemeConfig } from "./../../@types/types";
+import { IThemeConfig } from "../../types/types";
 /**
  * This file is not going to render in the server. For admin dashboard we dont need server sided rendering
  * All code in ES5 for this file.

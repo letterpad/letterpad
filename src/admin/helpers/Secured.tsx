@@ -6,10 +6,10 @@ import { Route, Redirect } from "react-router-dom";
 import Layout from "../features/layout";
 // import NoLayout from "../features/layout/NoLayout";
 
-const SecuredRoute = (routeProps: any) => {
+const SecuredRoute: React.SFC<any> = (routeProps: any) => {
   try {
     const { settings, component, type, path, exact, layout } = routeProps;
-    let props = { exact, settings, type, path, layout };
+    const props = { exact, settings, type, path, layout };
     const Component = component;
 
     // decode the token and get all user info. This will be passed to all compnents as a prop

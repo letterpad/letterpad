@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import Wrapper from "./Dropdown.css";
 
-class DropDown extends Component {
-  static propTypes = {
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.node),
-      PropTypes.node,
-    ]),
-    className: PropTypes.string,
-    name: PropTypes.any,
-    render: PropTypes.func,
-  };
+class DropDown extends Component<any, any> {
+  // static propTypes = {
+  //   children: PropTypes.oneOfType([
+  //     PropTypes.arrayOf(PropTypes.node),
+  //     PropTypes.node,
+  //   ]),
+  //   className: PropTypes.string,
+  //   name: PropTypes.any,
+  //   render: PropTypes.func,
+  // };
 
   static defaultProps = {
     render: () => {},
@@ -21,7 +21,7 @@ class DropDown extends Component {
     open: false,
   };
 
-  ddBtnRef = React.createRef();
+  ddBtnRef = React.createRef<HTMLAnchorElement>();
 
   componentDidMount() {
     document.addEventListener("click", this.closeDropdowns);
@@ -36,17 +36,17 @@ class DropDown extends Component {
     // because the element(svg path in the close icon) is outside the parent container. This is to disallow that
 
     if (e.target.tagName.indexOf(["svg", "path"]) >= 0) return;
+    if (!this.ddBtnRef.current) return;
     if (
-      this.ddBtnRef.current &&
-      this.ddBtnRef.current.parentNode &&
-      !this.ddBtnRef.current.parentNode.contains(e.target) &&
+      this.ddBtnRef.current["parentNode"] &&
+      !this.ddBtnRef.current["parentNode"].contains(e.target) &&
       this.state.open
     ) {
       this.setState({ open: false });
     }
   };
 
-  toggle = (e, flag) => {
+  toggle = (e: any, flag) => {
     e.preventDefault();
     this.setState({ open: flag ? flag : !this.state.open });
   };
@@ -61,7 +61,7 @@ class DropDown extends Component {
           className="dropdown-toggle"
           href="#"
           ref={this.ddBtnRef}
-          onClick={this.toggle}
+          onClick={e => this.toggle(e, !this.state.open)}
         >
           {name}
           <i className="material-icons">arrow_drop_down</i>

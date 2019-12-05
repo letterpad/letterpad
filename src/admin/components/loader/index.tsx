@@ -1,7 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-const Loader = ({ type }) =>
+const Loader = ({ type }: any) =>
   type == "spin" ? (
     <i className="fa fa-circle-o-notch fa-spin fa-2x" />
   ) : (
@@ -12,9 +11,5 @@ const Loader = ({ type }) =>
       />
     </div>
   );
-
-Loader.propTypes = {
-  type: PropTypes.string,
-};
 
 export default Loader;

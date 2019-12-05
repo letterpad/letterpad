@@ -1,28 +1,35 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import appoloClient from "shared/apolloClient";
+import apolloClient from "../../../shared/apolloClient";
 import { GET_AUTHOR } from "../../../shared/queries/Queries";
-import config from "config";
-
 import StyledDropdown from "../../components/dropdown";
+import config from "../../../config";
+import { IAuthor } from "../../../types/types";
 
-class User extends Component {
+interface IUserProps {
+  author: IAuthor;
+}
+interface IUserState {
+  author: IAuthor;
+  open: boolean;
+}
+
+class User extends Component<IUserProps, IUserState> {
   static propTypes = {
     author: PropTypes.object,
   };
 
   state = {
     open: false,
-    author: {},
+    author: this.props.author,
   };
 
   async componentDidMount() {
     const isAdmin = true;
-    let response = await appoloClient(isAdmin).query({
+    let response = await apolloClient(isAdmin).query({
       query: GET_AUTHOR,
       variables: { id: this.props.author.id },
-      forceFetch: true,
       fetchPolicy: "network-only",
     });
 
@@ -59,7 +66,7 @@ class User extends Component {
             const onClick = e => {
               e.preventDefault();
               close(e, false);
-              window.location = config.baseName + "/admin/login";
+              window.location.href = config.baseName + "/admin/login";
             };
             return (
               <ul>

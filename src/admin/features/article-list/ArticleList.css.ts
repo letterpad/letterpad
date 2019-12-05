@@ -74,7 +74,7 @@ export const StyledItem = styled.div`
   }
 `;
 
-export const Table = styled.table`
+export const Table = styled.table<any>`
   /* Remove spacing between table cells (from Normalize.css) */
   border-collapse: collapse;
   border-spacing: 0;

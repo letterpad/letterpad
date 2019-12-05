@@ -19,7 +19,7 @@ const applyRaised = `
     }
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<any>`
     border-radius: 0px;
     cursor: pointer;
     position: relative;

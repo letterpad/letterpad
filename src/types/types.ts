@@ -5,3 +5,8 @@ export interface IThemeConfig {
   settings?: boolean;
   active?: boolean;
 }
+
+export interface IAuthor {
+  id: number;
+  avatar: string;
+}
