@@ -45,27 +45,6 @@ module.exports.generateStaticAssets = async (req, res) => {
   }
 };
 
-module.exports.createPullRequest = (req, res) => {
-  res.writeHead(200, {
-    "Content-Type": "application/json",
-  });
-  const exec = require("child_process").exec;
-  const testscript = exec("sh ./admin/static-generator/createPr.sh");
-
-  testscript.stdout.on("data", chunk => {
-    const data = chunk.toString("utf8");
-    res.write(JSON.stringify({ type: types.text, message: data }));
-  });
-
-  testscript.stderr.on("data", function(err) {
-    res.end(JSON.stringify({ type: types.text, message: err.message }));
-  });
-
-  testscript.on("close", function() {
-    res.end(JSON.stringify({ type: types.text, message: "done" }));
-  });
-};
-
 const deleteFolderRecursive = function(path) {
   if (fs.existsSync(path)) {
     fs.readdirSync(path).forEach(function(file) {

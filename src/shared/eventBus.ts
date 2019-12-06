@@ -40,8 +40,8 @@ class EventBus {
     };
   }
 
-  publish() {
-    const event = arguments[0];
+  publish(event: string) {
+    // const event = arguments[0];
     const args = arguments.length >= 2 ? slice.call(arguments, 1) : [];
     if (this.callbacks && this.callbacks[event]) {
       this.callbacks[event].forEach(callback => {

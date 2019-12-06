@@ -17,7 +17,7 @@ import LoginView from "./features/login/LoginView";
 import ResetPassword from "./features/login/ResetPassword";
 import ArticleList from "./features/article-list";
 import CreateArticle from "./features/article/CreateArticle";
-// import Article from "./features/article";
+import Article from "./features/article";
 // import Settings from "./features/settings";
 // import Media from "./features/media";
 // import AuthorList from "./features/author-list";
@@ -103,6 +103,21 @@ class Routes extends Component<IRoutesProps> {
               component={ArticleList}
               settings={data}
             />
+            <SecuredRoute
+              exact
+              path="/admin/posts/:post_id"
+              type="post"
+              component={Article}
+              layout="none"
+              settings={data}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/pages"
+              type="page"
+              component={ArticleList}
+              settings={data}
+            />
           </Fragment>
         </Switch>
       </I18nextProvider>
@@ -115,43 +130,8 @@ export default hot(module)(SettingsData(withRouter(Routes)));
 // <Fragment>
 //             <Notifications />
 
-//             <SecuredRoute
-//               exact
-//               path="/admin/home"
-//               component={Home}
-//               settings={data}
-//             />
-//             <SecuredRoute
-//               exact
-//               path="/admin/post-new"
-//               type="post"
-//               component={ArticleCreate}
-//               layout="none"
-//               settings={data}
-//             />
-//             <SecuredRoute
-//               exact
-//               path="/admin/posts"
-//               type="post"
-//               component={ArticleList}
-//               settings={data}
-//             />
-//             <SecuredRoute
-//               exact
-//               path="/admin/posts/:post_id"
-//               type="post"
-//               component={Article}
-//               layout="none"
-//               settings={data}
-//             />
 //             {/* Route for pages */}
-//             <SecuredRoute
-//               exact
-//               path="/admin/pages"
-//               type="page"
-//               component={ArticleList}
-//               settings={data}
-//             />
+//
 //             <SecuredRoute
 //               exact
 //               path="/admin/pages/:post_id"

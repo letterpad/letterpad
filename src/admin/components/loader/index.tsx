@@ -1,6 +1,6 @@
 import React from "react";
 
-const Loader = ({ type }: any) =>
+const Loader: React.FC<any> = ({ type }) =>
   type == "spin" ? (
     <i className="fa fa-circle-o-notch fa-spin fa-2x" />
   ) : (

@@ -1,16 +1,15 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import StyledSection from "../section";
 import StyledCard from "../card";
 
-const OhSnap = ({ message }) => (
+const OhSnap: React.FC<any> = ({ message }) => (
   <StyledSection title="Oh Snap">
-    <StyledCard subtitle={message} />
+    <StyledCard title="" subtitle={message} />
   </StyledSection>
 );
 
-OhSnap.propTypes = {
-  message: PropTypes.string,
-};
+// OhSnap.propTypes = {
+//   message: PropTypes.string,
+// };
 export default OhSnap;

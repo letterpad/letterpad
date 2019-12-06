@@ -6,7 +6,7 @@ const {
 } = require("../../shared/queries/Mutations");
 const { syncArrays } = require("../../shared/util");
 
-module.exports.uploadFile = ({ files, type }) => {
+export const uploadFile = ({ files, type }) => {
   var data = new FormData();
   data.append("type", type);
   for (let i = 0; i < files.length; i++) {
@@ -33,7 +33,7 @@ module.exports.uploadFile = ({ files, type }) => {
  * it needs to be synced with the values saved in the database.
  *
  */
-module.exports.syncThemeSettings = (client, newSettings, authorization) => {
+export const syncThemeSettings = (client, newSettings, authorization) => {
   // Get the existing theme settings
   return client(true, {}, authorization)
     .query({
@@ -74,7 +74,7 @@ module.exports.syncThemeSettings = (client, newSettings, authorization) => {
       });
 
       // existing theme settings to be updated
-      const updatePromises = [];
+      const updatePromises = [] as any;
       newSettings.forEach(newItem => {
         oldSettings.forEach(oldItem => {
           if (
@@ -115,12 +115,3 @@ module.exports.syncThemeSettings = (client, newSettings, authorization) => {
       return Promise.all([promises, updatePromises]);
     });
 };
-
-// /-src
-//   |- admin
-//   |- client
-//   |- api
-//   |- config
-//   |- data
-//   |- public
-//   |- shared

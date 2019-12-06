@@ -17,7 +17,7 @@ const httpLink = createHttpLink({
  * This is also useful to invalidate the sesson if the user is inactive for more than x time
  * @param {*} token
  */
-const middlewareLinkAdmin = (token = null) => {
+const middlewareLinkAdmin = (token: string | null = null) => {
   const isServer = typeof window === "undefined";
   return new ApolloLink((operation, forward) => {
     operation.setContext({
@@ -71,9 +71,13 @@ if (typeof window !== "undefined") {
 }
 
 // prepare the client for graphql queries.
-const apolloClient = (isAdmin = true, opts = {}, authToken = null) => {
+const apolloClient = (
+  isAdmin = true,
+  opts = {},
+  authToken: string | null = token,
+) => {
   const middleware = isAdmin
-    ? middlewareLinkAdmin(authToken || token)
+    ? middlewareLinkAdmin(authToken)
     : middlewareLinkClient;
   const link = from([errorLink, middleware, httpLink]);
   return new ApolloClient({

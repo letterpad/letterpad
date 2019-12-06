@@ -1,32 +1,38 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 import StyledArticle from "./Article.css";
 
-import LetterpadEditor from "letterpad-editor";
+// import LetterpadEditor from "letterpad-editor";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
-import FileExplorerModal from "../modals/FileExplorerModal";
+// import FileExplorerModal from "../modals/FileExplorerModal";
 import { uploadFile } from "../../server/util";
 import { EventBusInstance } from "../../../shared/eventBus";
 import client from "../../../shared/apolloClient";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
+import {
+  updatePost,
+  updatePostVariables,
+} from "../../../shared/queries/types/updatePost";
 
-class Edit extends Component {
-  static propTypes = {
-    post: PropTypes.object,
-    theme: PropTypes.string,
-    update: PropTypes.func,
-  };
+class Edit extends Component<any, any> {
+  // static propTypes = {
+  //   post: PropTypes.object,
+  //   theme: PropTypes.string,
+  //   update: PropTypes.func,
+  // };
+  postSaveTimer: number = 0;
+  hooks: any = null;
+  editor: any = null;
 
   state = {
     fileExplorerOpen: false,
     pluginOperation: null, // enter the name of the plugin which is currently being overwritten.
   };
 
-  imageInputRef = React.createRef();
+  imageInputRef = React.createRef<HTMLInputElement>();
 
-  onEditorPluginBtnClick = (e, plugin) => {
+  onEditorPluginBtnClick = (_e, plugin) => {
     if (plugin === "plugin-image") {
       this.setState({ fileExplorerOpen: true, pluginOperation: "image" });
       return true;
@@ -48,7 +54,7 @@ class Edit extends Component {
           .focus();
       }
     } else if (this.state.pluginOperation === "gallery") {
-      const imgElements = [];
+      const imgElements = [] as any;
       for (let i = 0; i < urls.length; i++) {
         const src = urls[i];
         imgElements.push(
@@ -92,29 +98,32 @@ class Edit extends Component {
         ...data,
       };
       EventBusInstance.publish("ARTICLE_SAVING");
-      const {
-        // eslint-disable-next-line no-unused-vars
-        createdAt,
-        // eslint-disable-next-line no-unused-vars
-        publishedAt,
-        // eslint-disable-next-line no-unused-vars
-        updatedAt,
-        // eslint-disable-next-line no-unused-vars
-        mode,
-        // eslint-disable-next-line no-unused-vars
-        author,
-        // eslint-disable-next-line no-unused-vars
-        __typename,
-        ...post
-      } = postData;
-      const update = await client().mutate({
+
+      const update = await client().mutate<updatePost, updatePostVariables>({
         mutation: UPDATE_POST_QUERY,
         variables: {
-          data: post,
+          data: {
+            id: postData.id,
+            title: postData.title,
+            body: postData.body,
+            authorId: postData.authorId,
+            excerpt: postData.excerpt,
+            cover_image: postData.cover_image,
+            type: postData.type,
+            status: postData.status,
+            slug: postData.slug,
+            taxonomies: postData.taxonomies,
+          },
         },
       });
-      EventBusInstance.publish("ARTICLE_SAVED");
-      PostActions.setData({ slug: update.data.updatePost.post.slug });
+      if (
+        update.data &&
+        update.data.updatePost &&
+        update.data.updatePost.post
+      ) {
+        EventBusInstance.publish("ARTICLE_SAVED");
+        PostActions.setData({ slug: update.data.updatePost.post.slug });
+      }
     }, 1000);
   };
 
@@ -143,23 +152,23 @@ class Edit extends Component {
           <PostTitle
             text={post.title}
             placeholder="Enter a title"
-            onChange={e => {
+            onChange={(value: string) => {
               PostActions.setData({
-                title: e.target.value,
+                title: value,
               });
               this.onEditorChange(post.body);
             }}
           />
         </div>
         <div className="post-content">
-          <LetterpadEditor
+          {/* <LetterpadEditor
             html={post.body}
             theme={this.props.theme}
             onButtonClick={this.onEditorPluginBtnClick}
             hooks={this.setEditorPluginHooks}
             onChange={this.onEditorChange}
-          />
-          {this.state.fileExplorerOpen && (
+          /> */}
+          {/* {this.state.fileExplorerOpen && (
             <FileExplorerModal
               isOpen={this.state.fileExplorerOpen}
               onClose={this.toggleFileExplorer}
@@ -169,7 +178,7 @@ class Edit extends Component {
                 this.toggleFileExplorer();
               }}
             />
-          )}
+          )} */}
         </div>
         <input
           ref={this.imageInputRef}

@@ -23,14 +23,14 @@ export const GET_SINGLE_POST = gql`
   ${PostFragment}
 `;
 
-export const GET_POST_BY_SLUG = gql`
-  query singlePost($type: String, $slug: String) {
-    post(type: $type, slug: $slug) {
-      ...postFields
-    }
-  }
-  ${PostFragment}
-`;
+// export const GET_POST_BY_SLUG = gql`
+//   query singlePost($type: String, $slug: String) {
+//     post(type: $type, slug: $slug) {
+//       ...postFields
+//     }
+//   }
+//   ${PostFragment}
+// `;
 
 export const GET_MEDIA = gql`
   query getMedia($authorId: Int!, $offset: Int, $limit: Int) {
@@ -96,6 +96,7 @@ export const GET_ROLES = gql`
     }
   }
 `;
+
 export const GET_OPTIONS = gql`
   query getOptions {
     settings {
@@ -117,68 +118,68 @@ export const GET_TAXONOMIES = gql`
   }
 `;
 
-export const SEARCH_POSTS = gql`
-  query searchPosts(
-    $type: String
-    $query: String!
-    $offset: Int
-    $limit: Int
-    $status: String
-  ) {
-    posts(
-      body: $query
-      offset: $offset
-      limit: $limit
-      type: $type
-      status: $status
-    ) {
-      count
-      rows {
-        ...postFields
-      }
-    }
-  }
-  ${PostFragment}
-`;
+// export const SEARCH_POSTS = gql`
+//   query searchPosts(
+//     $type: String
+//     $query: String!
+//     $offset: Int
+//     $limit: Int
+//     $status: String
+//   ) {
+//     posts(
+//       body: $query
+//       offset: $offset
+//       limit: $limit
+//       type: $type
+//       status: $status
+//     ) {
+//       count
+//       rows {
+//         ...postFields
+//       }
+//     }
+//   }
+//   ${PostFragment}
+// `;
 
-export const SEARCH_POSTS_FUZY = gql`
-  query searchPosts($query: String!) {
-    search(query: $query) {
-      count
-      rows {
-        id
-        title
-        excerpt
-        publishedAt
-        slug
-      }
-    }
-  }
-`;
+// export const SEARCH_POSTS_FUZY = gql`
+//   query searchPosts($query: String!) {
+//     search(query: $query) {
+//       count
+//       rows {
+//         id
+//         title
+//         excerpt
+//         publishedAt
+//         slug
+//       }
+//     }
+//   }
+// `;
 
-export const SEARCH_POSTS_BY_TAXONOMY = gql`
-  query catPosts(
-    $type: String!
-    $slug: String!
-    $postType: String
-    $offset: Int
-    $limit: Int
-  ) {
-    postsByTaxSlug(
-      type: $type
-      slug: $slug
-      postType: $postType
-      offset: $offset
-      limit: $limit
-    ) {
-      count
-      posts {
-        ...postFields
-      }
-    }
-  }
-  ${PostFragment}
-`;
+// export const SEARCH_POSTS_BY_TAXONOMY = gql`
+//   query catPosts(
+//     $type: String!
+//     $slug: String!
+//     $postType: String
+//     $offset: Int
+//     $limit: Int
+//   ) {
+//     postsByTaxSlug(
+//       type: $type
+//       slug: $slug
+//       postType: $postType
+//       offset: $offset
+//       limit: $limit
+//     ) {
+//       count
+//       posts {
+//         ...postFields
+//       }
+//     }
+//   }
+//   ${PostFragment}
+// `;
 
 export const BLOG_STATS = gql`
   query stats {
@@ -207,43 +208,43 @@ export const THEME_SETTINGS = gql`
   }
 `;
 
-export const TAX_SUGGESTIONS = gql`
-  query getTaxonomies($type: String) {
-    taxonomies(type: $type) {
-      id
-      name
-      type
-    }
-  }
-`;
+// export const TAX_SUGGESTIONS = gql`
+//   query getTaxonomies($type: String) {
+//     taxonomies(type: $type) {
+//       id
+//       name
+//       type
+//     }
+//   }
+// `;
 
-export const GET_POSTS_LINKED_TAXONOMIES = gql`
-  query getTaxonomies($type: String!, $postType: String) {
-    activeTaxonomies(type: $type, postType: $postType) {
-      id
-      name
-      type
-      slug
-    }
-  }
-`;
+// export const GET_POSTS_LINKED_TAXONOMIES = gql`
+//   query getTaxonomies($type: String!, $postType: String) {
+//     activeTaxonomies(type: $type, postType: $postType) {
+//       id
+//       name
+//       type
+//       slug
+//     }
+//   }
+// `;
 
-export const GET_LATEST_PUBLISHED_POSTS = gql`
-  query latestPosts($type: String, $limit: Int) {
-    posts(type: $type, offset: 0, limit: $limit) {
-      count
-      rows {
-        id
-        title
-        type
-        slug
-        createdAt
-        publishedAt
-        cover_image
-      }
-    }
-  }
-`;
+// export const GET_LATEST_PUBLISHED_POSTS = gql`
+//   query latestPosts($type: String, $limit: Int) {
+//     posts(type: $type, offset: 0, limit: $limit) {
+//       count
+//       rows {
+//         id
+//         title
+//         type
+//         slug
+//         createdAt
+//         publishedAt
+//         cover_image
+//       }
+//     }
+//   }
+// `;
 
 export const POSTS_FROM_CATEGORY_SLUG = gql`
   query menuContent($filters: MenuFiltersWithPagination) {

@@ -62,7 +62,7 @@
     "isomorphic-fetch": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
-    "letterpad-editor": "^0.0.10",
+    "letterpad-editor": "^0.0.12",
     "merge-graphql-schemas": "1.7.0",
     "moment": "^2.24.0",
     "node-env-file": "^0.1.8",
@@ -89,7 +89,7 @@
     "sequelize-cli": "^5.5.1",
     "sharp": "^0.23.3",
     "sqlite3": "^4.1.0",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.4.1"
   },
   "resolutions": {
     "@types/react": "16.9.3"
@@ -106,9 +106,11 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.6.0",
     "@babel/runtime": "^7.6.0",
+    "@types/graphql": "^14.5.0",
     "@types/react": "^16.9.13",
     "@types/sharp": "^0.23.0",
     "@types/styled-components": "^4.4.0",
+    "apollo": "^2.21.1",
     "autoprefixer": "^9.6.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",

@@ -24,7 +24,6 @@ import staticPaths from "./staticPaths";
 
 const app = express();
 
-// This middleware will attempt to compress response bodies for all requests
 // Handle hot module replacement in dev mode. This is not working
 if (process.env.NODE_ENV === "dev") {
   const wpConfigFile = "../webpack/webpack.dev.js";
@@ -35,7 +34,6 @@ if (process.env.NODE_ENV === "dev") {
       const compiler = require("webpack")(webpackConfig);
       const webpackDevMiddleware = require("webpack-dev-middleware");
       const webpackHotMiddleware = require("webpack-hot-middleware");
-
       app
         .use(
           webpackDevMiddleware(compiler, {

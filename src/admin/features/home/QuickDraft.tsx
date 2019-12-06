@@ -6,6 +6,10 @@ import Input, { TextArea } from "../../components/input";
 import StyledButton from "../../components/button";
 import { notify } from "react-notify-toast";
 import { CREATE_POST } from "../../../shared/queries/Mutations";
+import {
+  createPost,
+  createPostVariables,
+} from "../../../shared/queries/types/createPost";
 import apolloClient from "../../../shared/apolloClient";
 
 const QuickDraft = ({ t }: any) => {
@@ -15,7 +19,7 @@ const QuickDraft = ({ t }: any) => {
   const quickDraftAction = async () => {
     if (!titleRef.current || !bodyRef.current) return;
     if (titleRef.current.value.length > 0) {
-      await apolloClient().mutate({
+      await apolloClient().mutate<createPost, createPostVariables>({
         mutation: CREATE_POST,
         variables: {
           data: {
