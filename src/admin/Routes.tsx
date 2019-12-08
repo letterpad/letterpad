@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 import React, { Component, Fragment } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-import { withRouter } from "react-router";
+import { withRouter, RouteComponentProps } from "react-router";
 import Notifications from "react-notify-toast";
 import { I18nextProvider } from "react-i18next";
 import { hot } from "react-hot-loader";
@@ -15,7 +15,7 @@ import getI18nWithDefaultLang from "../shared/i18n/i18n";
 import Loader from "./components/loader";
 import LoginView from "./features/login/LoginView";
 import ResetPassword from "./features/login/ResetPassword";
-import ArticleList from "./features/article-list";
+import Articles from "./features/articles";
 import CreateArticle from "./features/article/CreateArticle";
 import Article from "./features/article";
 // import Settings from "./features/settings";
@@ -34,32 +34,61 @@ import "./public/pcss/admin.pcss";
 
 // All files which require authorization will pass though this
 import SecuredRoute from "./helpers/Secured";
-import SettingsData from "../shared/data-connectors/SettingsData";
+import apolloClient from "../shared/apolloClient";
+import { GET_OPTIONS } from "../shared/queries/Queries";
+import {
+  getOptions,
+  getOptions_settings,
+} from "../shared/queries/types/getOptions";
+import { SettingOptions } from "../../types/globalTypes";
 
-interface IRoutesProps {
-  settings: {
-    loading: boolean;
-    error: any;
-    data: any;
-  };
+type TypeSettings =
+  | { [option in SettingOptions]: getOptions_settings }
+  | {};
+
+interface IState {
+  settings: TypeSettings | {};
+  loading: boolean;
+  error: any;
 }
-class Routes extends Component<IRoutesProps> {
+
+class Routes extends Component<RouteComponentProps, IState> {
+  state = {
+    settings: {},
+    loading: true,
+    error: null,
+  };
+
+  async componentDidMount() {
+    try {
+      const options = await apolloClient().query<getOptions>({
+        query: GET_OPTIONS,
+      });
+      const data: TypeSettings = {};
+      if (options && options.data && options.data.settings) {
+        options.data.settings.forEach(setting => {
+          if (data && setting && setting.option) {
+            data[setting.option] = setting;
+          }
+        });
+        this.setState({ settings: data, loading: false });
+      }
+    } catch (e) {
+      this.setState({ error: e, loading: false });
+    }
+  }
+
   render() {
-    const { loading, error, data } = this.props.settings;
-    if (loading) {
+    const { loading, error, settings } = this.state as IState;
+    if (loading || !settings) {
       return <Loader />;
     }
     if (error) {
       window.location.href = "/admin/login";
       return;
     }
+    const i18nConfig = getI18nConfig(settings);
 
-    const langOptions = JSON.parse(data.locale.value);
-    const selectedLang = Object.keys(langOptions).filter(
-      key => langOptions[key],
-    );
-    const lang = selectedLang[0];
-    const i18nConfig = getI18nWithDefaultLang(lang);
     return (
       <I18nextProvider i18n={i18nConfig}>
         <Notifications />
@@ -72,13 +101,13 @@ class Routes extends Component<IRoutesProps> {
           <Route
             exact
             path="/admin/login"
-            render={props => <LoginView router={...props} settings={data} />}
+            render={props => <LoginView router={props} settings={settings} />}
           />
           <Route
             exact
             path="/admin/reset-password/:token"
             component={props => (
-              <ResetPassword {...props} {...this.props} settings={data} />
+              <ResetPassword {...props} {...this.props} settings={settings} />
             )}
           />
           <Fragment>
@@ -86,7 +115,7 @@ class Routes extends Component<IRoutesProps> {
               exact
               path="/admin/home"
               component={Home}
-              settings={data}
+              settings={settings}
             />
             <SecuredRoute
               exact
@@ -94,14 +123,14 @@ class Routes extends Component<IRoutesProps> {
               type="post"
               component={CreateArticle}
               layout="none"
-              settings={data}
+              settings={settings}
             />
             <SecuredRoute
               exact
               path="/admin/posts"
               type="post"
-              component={ArticleList}
-              settings={data}
+              component={Articles}
+              settings={settings}
             />
             <SecuredRoute
               exact
@@ -109,14 +138,14 @@ class Routes extends Component<IRoutesProps> {
               type="post"
               component={Article}
               layout="none"
-              settings={data}
+              settings={settings}
             />
             <SecuredRoute
               exact
               path="/admin/pages"
               type="page"
-              component={ArticleList}
-              settings={data}
+              component={Articles}
+              settings={settings}
             />
           </Fragment>
         </Switch>
@@ -125,7 +154,33 @@ class Routes extends Component<IRoutesProps> {
   }
 }
 
-export default hot(module)(SettingsData(withRouter(Routes)));
+export default hot(module)(withRouter(Routes));
+
+function getI18nConfig(settings) {
+  const langOptions = JSON.parse(settings.locale.value);
+  const selectedLang = Object.keys(langOptions).filter(key => langOptions[key]);
+  const lang = selectedLang[0];
+  return getI18nWithDefaultLang(lang);
+}
+// const _Routes: React.FC<RouteComponentProps<any>> = () => {
+//   const { loading, error, data } = useQuery<getOptions>(GET_OPTIONS);
+//   if (loading) {
+//     return <Loader />;
+//   }
+//   const settings: any = {};
+
+//   if (data && data.settings) {
+//     data.settings.forEach(setting => {
+//       if (setting && setting.option) {
+//         settings[setting.option] = setting;
+//       }
+//     });
+//   }
+//   if (error) {
+//     window.location.href = "/admin/login";
+//     return;
+//   }
+// };
 
 // <Fragment>
 //             <Notifications />

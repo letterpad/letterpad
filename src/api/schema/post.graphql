@@ -134,6 +134,12 @@ input MenuFiltersWithPagination {
   limit: Int
 }
 
+enum FilterKeys {
+  tag
+  category
+  authorName
+}
+
 input PostFiltersWithPagination {
   tag: String
   category: String

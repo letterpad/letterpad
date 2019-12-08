@@ -1,3 +1,4 @@
+import { LayoutOptions } from "./index";
 import styled from "styled-components";
 
 const StyledToolbar = styled.div`
@@ -17,7 +18,7 @@ const StyledToolbar = styled.div`
 `;
 
 interface ILayoutProps {
-  selected: string;
+  selected: LayoutOptions;
 }
 
 export const Layout = styled.div<ILayoutProps>`

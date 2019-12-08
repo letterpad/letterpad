@@ -6,7 +6,7 @@ then
     DEFAULT_PORT=$(cat .env | grep appPort= | cut -d '=' -f2)
 fi
 
-yarn run apollo schema:download --endpoint=https://localhost:$PORT/graphql graphql-schema.json
+yarn run apollo schema:download --endpoint=http://localhost:$DEFAULT_PORT/graphql graphql-schema.json
 
 yarn run \
     apollo client:codegen \

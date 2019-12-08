@@ -3,10 +3,12 @@ import React, { Component } from "react";
 import appoloClient from "../../../shared/apolloClient";
 import { GET_POSTS } from "../../../shared/queries/Queries";
 import { BULK_DELETE_POSTS } from "../../../shared/queries/Mutations";
+import { PostTypes } from "../../../../types/globalTypes";
+import { RouteComponentProps } from "react-router";
 
 interface IArticleProps {
-  type: string;
-  router: any;
+  type: PostTypes;
+  router: RouteComponentProps;
 }
 
 interface IArticleState {

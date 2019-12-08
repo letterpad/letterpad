@@ -18,7 +18,7 @@ const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
       });
       const categories = await apolloClient(true).query({
         query: GET_TAXONOMIES,
-        variables: { type: "post_tag" },
+        variables: { type: "post_category" },
       });
       setTaxonomies({
         tags: tags.data.taxonomies,

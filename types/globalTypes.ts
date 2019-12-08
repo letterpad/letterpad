@@ -27,6 +27,30 @@ export enum PostTypes {
   post = "post",
 }
 
+export enum SettingOptions {
+  banner = "banner",
+  css = "css",
+  displayAuthorInfo = "displayAuthorInfo",
+  disqus_id = "disqus_id",
+  google_analytics = "google_analytics",
+  locale = "locale",
+  menu = "menu",
+  site_description = "site_description",
+  site_email = "site_email",
+  site_footer = "site_footer",
+  site_logo = "site_logo",
+  site_tagline = "site_tagline",
+  site_title = "site_title",
+  site_url = "site_url",
+  social_facebook = "social_facebook",
+  social_github = "social_github",
+  social_instagram = "social_instagram",
+  social_twitter = "social_twitter",
+  text_notfound = "text_notfound",
+  text_posts_empty = "text_posts_empty",
+  theme = "theme",
+}
+
 export interface InputCreatePost {
   title?: string | null;
   body?: string | null;
@@ -61,7 +85,7 @@ export interface MenuFiltersWithPagination {
 
 export interface OptionInputType {
   id?: number | null;
-  option?: string | null;
+  option?: SettingOptions | null;
   value?: string | null;
 }
 

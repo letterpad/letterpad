@@ -1,13 +1,15 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { translate } from "react-i18next";
-
 import StyledCard from "../../components/card";
 import StyledIcon from "../../components/icon";
 import StyledLink from "../../components/link";
 import StyledList from "../../components/list";
 
-const GettingStarted = ({ t }) => {
+interface IGettingStartedProps {
+  t: (name: string) => string;
+}
+
+const GettingStarted: React.FC<IGettingStartedProps> = ({ t }) => {
   return (
     <StyledCard title={t("home.gettingStarted")} subtitle={t("home.tagline")}>
       <StyledList>
@@ -34,7 +36,4 @@ const GettingStarted = ({ t }) => {
   );
 };
 
-GettingStarted.propTypes = {
-  t: PropTypes.func,
-};
 export default translate("translations")(GettingStarted);

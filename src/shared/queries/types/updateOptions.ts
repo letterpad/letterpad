@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { OptionInputType } from "./../../../../types/globalTypes";
+import { OptionInputType, SettingOptions } from "./../../../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: updateOptions
@@ -11,7 +11,7 @@ import { OptionInputType } from "./../../../../types/globalTypes";
 export interface updateOptions_updateOptions {
   __typename: "Setting";
   id: number | null;
-  option: string | null;
+  option: SettingOptions | null;
   value: string | null;
 }
 

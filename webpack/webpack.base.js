@@ -43,10 +43,10 @@ module.exports = (args, name) => {
     },
     resolve: {
       alias: {
-        admin: path.join(__dirname, "/../src/admin"),
-        client: path.join(__dirname, "/../src/client"),
-        shared: path.join(__dirname, "/../src/shared"),
-        config: path.join(__dirname, "/../src/config"),
+        admin: path.resolve(__dirname, "/../src/admin"),
+        client: path.resolve(__dirname, "/../src/client"),
+        shared: path.resolve(__dirname, "/../src/shared"),
+        config: path.resolve(__dirname, "/../src/config"),
       },
       extensions: [".tsx", ".ts", ".js"],
     },

@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { translate } from "react-i18next";
-
 import StyledCard from "../../components/card";
 import Input, { TextArea } from "../../components/input";
 import StyledButton from "../../components/button";
@@ -12,7 +11,11 @@ import {
 } from "../../../shared/queries/types/createPost";
 import apolloClient from "../../../shared/apolloClient";
 
-const QuickDraft = ({ t }: any) => {
+interface IQuickDraftProps {
+  t: (name: string) => string;
+}
+
+const QuickDraft: React.FC<IQuickDraftProps> = ({ t }) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
 
@@ -28,9 +31,9 @@ const QuickDraft = ({ t }: any) => {
           },
         },
       });
-      notify.show("Draft Saved", "success", 3000, "var(--base-color");
-      // titleRef.current.value = "";
-      // bodyRef.current.value = "";
+      notify.show("Draft Saved", "success", 3000);
+      titleRef.current.value = "";
+      bodyRef.current.value = "";
     }
   };
   return (

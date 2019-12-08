@@ -1,12 +1,34 @@
 import React from "react";
 import { translate } from "react-i18next";
-
 import Card from "../../components/card";
 import StyledList from "../../components/list";
 import StyledIcon from "../../components/icon";
 import StyledLink from "../../components/link";
+import { useQuery } from "react-apollo";
+import { stats } from "../../../shared/queries/types/stats";
+import { BLOG_STATS } from "../../../shared/queries/Queries";
 
-const Stats: React.FC<any> = ({ stats, loading, t }) => {
+interface IStatsProps {
+  t: (name: string) => string;
+}
+
+const Stats: React.FC<IStatsProps> = ({ t }) => {
+  const { loading, data } = useQuery<stats>(BLOG_STATS);
+
+  return (
+    <Card title={t("home.stats")} subtitle={t("home.stats.tagline")}>
+      {loading ? (
+        <span>...</span>
+      ) : (
+        <StyledList>{data && getStats(data.stats)}</StyledList>
+      )}
+    </Card>
+  );
+};
+
+export default translate("translations")(Stats);
+
+function getStats(stats) {
   const items = [
     {
       label: "Posts",
@@ -45,23 +67,5 @@ const Stats: React.FC<any> = ({ stats, loading, t }) => {
     </li>
   ));
 
-  return (
-    <Card title={t("home.stats")} subtitle={t("home.stats.tagline")}>
-      {loading ? <span>...</span> : <StyledList>{data}</StyledList>}
-    </Card>
-  );
-};
-
-// Stats.propTypes = {
-//   loading: PropTypes.bool,
-//   stats: PropTypes.object,
-//   t: PropTypes.func,
-// };
-Stats.defaultProps = {
-  stats: {
-    posts: {},
-    pages: {},
-  },
-};
-
-export default translate("translations")(Stats);
+  return data;
+}
