@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { PostFiltersWithPagination } from "./../../../../types/globalTypes";
+import { PostFiltersWithPagination, TaxonomyTypes } from "./../../../../types/globalTypes";
 
 // ====================================================
 // GraphQL query operation: posts
@@ -18,10 +18,10 @@ export interface posts_posts_rows_author {
 
 export interface posts_posts_rows_taxonomies {
   __typename: "Taxonomy";
-  id: number | null;
-  name: string | null;
-  type: string | null;
-  slug: string | null;
+  id: number;
+  name: string;
+  type: TaxonomyTypes;
+  slug: string;
 }
 
 export interface posts_posts_rows {

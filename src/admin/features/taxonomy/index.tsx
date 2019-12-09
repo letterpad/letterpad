@@ -1,19 +1,36 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
+import { useQuery } from "react-apollo";
 import { notify } from "react-notify-toast";
-import { translate } from "react-i18next";
+import { translate, WithNamespaces } from "react-i18next";
 import styled from "styled-components";
 
-import GetTaxonomies from "../../data-connectors/GetTaxonomies";
-import UpdateTaxonomy from "../../data-connectors/UpdateTaxonomy";
-import DeleteTaxonomy from "../../data-connectors/DeleteTaxonomy";
-import Taxonomies from "./Taxonomies";
+// import Taxonomies from "./Taxonomies";
 import StyledTaxonomy from "./Taxonomy.css";
 
 import StyledSection from "../../components/section";
-import StyledInput from "../../components/input";
+import Input, { TextArea } from "../../components/input";
 import StyledGrid from "../../components/grid";
 import StyledButton from "../../components/button";
+import { TaxonomyTypes } from "../../../../types/globalTypes";
+import {
+  getTaxonomies,
+  getTaxonomiesVariables,
+  getTaxonomies_taxonomies,
+} from "../../../shared/queries/types/getTaxonomies";
+import { GET_TAXONOMIES } from "../../../shared/queries/Queries";
+import apolloClient from "../../../shared/apolloClient";
+import {
+  UPDATE_TAXONOMY,
+  DELETE_TAXONOMY,
+} from "../../../shared/queries/Mutations";
+import {
+  updateTaxonomy,
+  updateTaxonomyVariables,
+} from "../../../shared/queries/types/updateTaxonomy";
+import {
+  deleteTaxonomy,
+  deleteTaxonomyVariables,
+} from "../../../shared/queries/types/deleteTaxonomy";
 
 const NewTagWrapper = styled.div`
   display: flex;
@@ -38,258 +55,220 @@ const Icon = styled.i`
   cursor: pointer;
 `;
 
-class Taxonomy extends Component {
-  static propTypes = {
-    type: PropTypes.string.isRequired,
-    updateTaxonomy: PropTypes.func.isRequired,
-    deleteTaxonomy: PropTypes.func.isRequired,
-    loading: PropTypes.bool.isRequired,
-    networkStatus: PropTypes.number.isRequired,
-    taxonomies: PropTypes.Array,
-    size: PropTypes.object,
-    t: PropTypes.func,
-  };
+const texts = t => ({
+  post_tag: {
+    title1: t("tags.title"),
+    subtitle1: t("tags.tagline"),
+    title2: t("tags.create"),
+    input1: t("tags.create.name.placeholder"),
+    input2: t("tags.create.desc.placeholder"),
+  },
+  post_category: {
+    title1: t("categories.title"),
+    subtitle1: t("categories.tagline"),
+    title2: t("categories.create"),
+    input1: t("categories.create.name.placeholder"),
+    input2: t("categories.create.desc.placeholder"),
+  },
+});
 
-  constructor(props) {
-    super(props);
-    const { t } = this.props;
-    this.texts = {
-      post_tag: {
-        title1: t("tags.title"),
-        subtitle1: t("tags.tagline"),
-        title2: t("tags.create"),
-        input1: t("tags.create.name.placeholder"),
-        input2: t("tags.create.desc.placeholder"),
+interface ITaxonomyProps extends WithNamespaces {
+  type: TaxonomyTypes;
+}
+
+const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
+  const defaultTexts = texts(t)[type];
+  const [selectedTaxonomyIndex, setTaxonomyIndex] = useState<number>(0);
+  const [newTaxonomy, setNewTaxonomy] = useState<string>("");
+  const [taxonomies, setTaxonomies] = React.useState<
+    getTaxonomies_taxonomies[]
+  >([]);
+
+  const { data, loading } = useQuery<getTaxonomies, getTaxonomiesVariables>(
+    GET_TAXONOMIES,
+    {
+      variables: {
+        type,
       },
-      post_category: {
-        title1: t("categories.title"),
-        subtitle1: t("categories.tagline"),
-        title2: t("categories.create"),
-        input1: t("categories.create.name.placeholder"),
-        input2: t("categories.create.desc.placeholder"),
-      },
-    };
-    this.defaultText = this.texts[this.props.type];
-    this.state = {
-      taxonomies: [],
-      newTagName: "",
-      selectedIndex: 0,
-      TaxonomyClicked: false,
-    };
-  }
+    },
+  );
 
-  componentDidMount() {
-    document.body.classList.add("taxonomy-" + this.props.type + "-page");
-  }
-
-  componentWillUnmount() {
-    document.body.classList.remove("taxonomy-" + this.props.type + "-page");
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (
-      !nextProps.loading &&
-      prevState.taxonomies.length === 0 &&
-      nextProps.taxonomies.length > 0
-    ) {
-      return {
-        taxonomies: [...nextProps.taxonomies],
-      };
+  useEffect(() => {
+    if (!loading && data && data.taxonomies && data.taxonomies.length > 0) {
+      setTaxonomies(data.taxonomies);
     }
-    return null;
-  }
+  }, [loading]);
 
-  editSaveTaxonomy = async id => {
-    const { taxonomies, selectedIndex } = this.state;
-    const { type, updateTaxonomy } = this.props;
-    const item = { ...taxonomies.filter(t => t.id === id)[0], type };
+  if (loading || !data) return null;
 
-    // merge new changes into this item
-    const changedItem = { ...item, ...taxonomies[selectedIndex], edit: true };
+  const saveNewTaxonomy = async () => {
+    const name = newTaxonomy.trim();
 
-    const result = await updateTaxonomy(changedItem);
-    if (result.data.updateTaxonomy.ok) {
-      notify.show("Taxonomy Saved", "success", 3000);
-    } else {
-      notify.show(result.data.updateTaxonomy.errors[0].message, "error", 3000);
-    }
-  };
-
-  handleNewTagName = e => {
-    this.setState({ newTagName: e.target.value });
-  };
-
-  saveNewTag = async () => {
-    const { newTagName, taxonomies } = this.state;
-    const { type, updateTaxonomy } = this.props;
-
-    if (!newTagName) {
+    if (!name) {
       return;
     }
-
-    let item = {
+    const item = {
       type,
-      name: newTagName,
+      name,
       desc: "",
-      edit: false,
-      id: 0,
-      slug: newTagName,
+      id: 0, // creating new taxonomy
+      slug: name,
     };
-
-    const result = await updateTaxonomy(item);
-
-    if (result.data.updateTaxonomy.ok) {
-      let id = result.data.updateTaxonomy.id;
-      item.id = id;
-      const newState = [...taxonomies, { ...item }];
-      this.setState({
-        taxonomies: newState,
-        selectedIndex: newState.length - 1,
-        newTagName: "",
-      });
+    const result = await updateTaxonomyFromAPI(item);
+    if (result.data && result.data.updateTaxonomy.ok) {
+      item.id = result.data.updateTaxonomy.id as number;
+      setTaxonomies([...taxonomies, { ...item, __typename: "Taxonomy" }]);
+      setNewTaxonomy("");
+      setTaxonomyIndex(taxonomies.length - 1);
     }
   };
 
-  handleChange = e => {
-    const { name, value } = e.target;
+  const editSaveTaxonomy = async (id: number) => {
+    const item = { ...taxonomies.find(t => t.id === id), type };
 
-    const taxonomies = this.state.taxonomies.map((item, index) => {
-      if (index === this.state.selectedIndex) {
-        item[name] = value;
+    // merge new changes into this item
+    const changedItem = { ...item, ...taxonomies[selectedTaxonomyIndex] };
+
+    const result = await updateTaxonomyFromAPI(changedItem);
+    if (result && result.data) {
+      if (result.data.updateTaxonomy.ok) {
+        notify.show("Taxonomy Saved", "success", 3000);
+      } else if (
+        result.data.updateTaxonomy.errors &&
+        result.data.updateTaxonomy.errors.length > 0
+      ) {
+        notify.show(
+          result.data.updateTaxonomy.errors[0].message as string,
+          "error",
+          3000,
+        );
+      }
+    }
+  };
+
+  const deleteTaxonomy = async (id: number) => {
+    // delete from api
+    await deleteTaxonomyFromAPI(id);
+    const _taxonomies = [...taxonomies];
+    _taxonomies.splice(selectedTaxonomyIndex, 1);
+
+    let newIndex;
+    if (taxonomies.length - 1 < selectedTaxonomyIndex) {
+      newIndex = 0;
+    }
+    setTaxonomies(_taxonomies);
+    setTaxonomyIndex(newIndex);
+  };
+
+  const changeTaxonomyDetails = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: string,
+  ) => {
+    const { value } = e.target;
+
+    const _taxonomies = taxonomies.map((item, index) => {
+      if (index === selectedTaxonomyIndex) {
+        item[field] = value;
       }
       return item;
     });
-    this.setState({ taxonomies });
+    setTaxonomies(_taxonomies);
   };
 
-  handleSelect = index => {
-    this.setState({ selectedIndex: index });
-  };
+  let slug: string = "",
+    desc: string = "",
+    id: number = 0,
+    name: string = "";
 
-  handleTaxonomyClick = () => {
-    this.setState(s => ({ TaxonomyClicked: !s.TaxonomyClicked }));
-  };
-
-  deleteTax = () => {
-    let { selectedIndex } = this.state;
-    const { id } = this.state.taxonomies[selectedIndex];
-    const taxonomies = [...this.state.taxonomies];
-    taxonomies.splice(selectedIndex, 1);
-
-    let newIndex = selectedIndex;
-    if (taxonomies.length - 1 < newIndex) {
-      newIndex = 0;
-    }
-    this.setState(
-      {
-        taxonomies,
-        selectedIndex: newIndex,
-      },
-      () => {
-        this.props.deleteTaxonomy({ id });
-      },
-    );
-  };
-
-  render() {
-    const { t } = this.props;
-    const {
-      taxonomies,
-      newTagName,
-      TaxonomyClicked,
-      selectedIndex,
-    } = this.state;
-    const { loading, networkStatus } = this.props;
-    const isLoading = loading || !networkStatus === 2;
-    if (isLoading) return null;
-
-    let slug, desc, id, name;
-
-    if (taxonomies.length > 0) {
-      slug = taxonomies[selectedIndex].slug;
-      desc = taxonomies[selectedIndex].desc;
-      id = taxonomies[selectedIndex].id;
-      name = taxonomies[selectedIndex].name;
-    }
-    const isMobile = true;
-    const open = isMobile ? (TaxonomyClicked ? true : false) : true;
-    return (
-      <StyledSection
-        title={this.defaultText.title1}
-        subtitle={this.defaultText.subtitle1}
-      >
-        <StyledTaxonomy>
-          <StyledGrid columns="repeat(2, minmax(300px,1fr))">
-            <div className="taxonomy-list">
-              <Taxonomies
-                numRows={taxonomies.length}
-                rowHeight={44}
-                items={taxonomies || []}
-                selectedIndex={selectedIndex}
-                handleSelect={this.handleSelect}
-                handleTaxonomyClick={this.handleTaxonomyClick}
-                isMobile={isMobile}
-                open={open}
-                TaxonomyClicked={TaxonomyClicked}
-              />
-
-              <NewTagWrapper>
-                <StyledInput
-                  value={newTagName}
-                  onChange={this.handleNewTagName}
-                  placeholder="Add a new tag..."
-                  onKeyDown={e => e.keyCode == 13 && this.saveNewTag()}
-                />
-                <Icon className="fa fa-plus" onClick={this.saveNewTag} />
-              </NewTagWrapper>
-            </div>
-            <div className="taxonomy-edit">
-              <StyledInput
-                label={t("common.name")}
-                type="text"
-                value={name}
-                onChange={this.handleChange}
-                name="name"
-              />
-              <StyledInput
-                label={t("common.slug")}
-                type="text"
-                placeholder="Enter your blog's title"
-                value={slug ? slug : ""}
-                onChange={this.handleChange}
-                name="slug"
-              />
-              <StyledInput
-                label={t("common.description")}
-                rows="2"
-                textarea
-                placeholder={`Enter a short description about the ${slug} tag. This maybe used by some themes`}
-                name="desc"
-                onChange={this.handleChange}
-                value={desc ? desc : ""}
-              />
-              <div>
-                <StyledButton
-                  href="#"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.deleteTax();
-                  }}
-                >
-                  Delete tag
-                </StyledButton>
-                <StyledButton success onClick={() => this.editSaveTaxonomy(id)}>
-                  Save
-                </StyledButton>
-              </div>
-            </div>
-          </StyledGrid>
-        </StyledTaxonomy>
-      </StyledSection>
-    );
+  if (taxonomies.length > 0) {
+    ({ slug, desc, id, name } = taxonomies[selectedTaxonomyIndex]);
   }
-}
+  return (
+    <StyledSection
+      title={defaultTexts.title1}
+      subtitle={defaultTexts.subtitle1}
+    >
+      <StyledTaxonomy>
+        <StyledGrid columns="repeat(2, minmax(300px,1fr))">
+          <div className="taxonomy-list">
+            <ul>
+              {taxonomies.map((item, index) => {
+                return (
+                  <li onClick={() => setTaxonomyIndex(index)}>{item.name}</li>
+                );
+              })}
+            </ul>
+            {/* <Taxonomies
+              numRows={data.taxonomies.length}
+              rowHeight={44}
+              items={data.taxonomies || []}
+              selectedIndex={selectedTaxonomyIndex}
+              handleSelect={setTaxonomyIndex}
+            /> */}
 
-export default translate("translations")(
-  DeleteTaxonomy(UpdateTaxonomy(GetTaxonomies(Taxonomy))),
-);
+            <NewTagWrapper>
+              <Input
+                value={newTaxonomy}
+                onChange={e => setNewTaxonomy(e.target.value)}
+                placeholder="Add a new tag..."
+                onKeyDown={e => e.keyCode === 13 && saveNewTaxonomy()}
+              />
+              <Icon className="fa fa-plus" onClick={saveNewTaxonomy} />
+            </NewTagWrapper>
+          </div>
+          <div className="taxonomy-edit">
+            <Input
+              label={t("common.name")}
+              value={name}
+              onChange={e => changeTaxonomyDetails(e, "name")}
+              placeholder="Edit this field"
+            />
+            <Input
+              label={t("common.slug")}
+              placeholder="Enter a slug"
+              value={slug || ""}
+              onChange={e => changeTaxonomyDetails(e, "slug")}
+            />
+            <TextArea
+              label={t("common.description")}
+              placeholder={`Enter a short description about the ${slug} tag. This maybe used by some themes`}
+              onChange={e => changeTaxonomyDetails(e, "desc")}
+              value={desc || ""}
+            />
+            <div>
+              <StyledButton href="#" onClick={() => deleteTaxonomy(id)}>
+                Delete tag
+              </StyledButton>
+              <StyledButton success onClick={() => editSaveTaxonomy(id)}>
+                Save
+              </StyledButton>
+            </div>
+          </div>
+        </StyledGrid>
+      </StyledTaxonomy>
+    </StyledSection>
+  );
+};
+
+export default translate("translations")(Taxonomy);
+
+async function updateTaxonomyFromAPI(item) {
+  return await apolloClient(true).mutate<
+    updateTaxonomy,
+    updateTaxonomyVariables
+  >({
+    mutation: UPDATE_TAXONOMY,
+    variables: item,
+  });
+}
+async function deleteTaxonomyFromAPI(id) {
+  return await apolloClient(true).mutate<
+    deleteTaxonomy,
+    deleteTaxonomyVariables
+  >({
+    mutation: DELETE_TAXONOMY,
+    variables: {
+      id,
+    },
+  });
+}

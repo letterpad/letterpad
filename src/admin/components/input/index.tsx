@@ -1,13 +1,9 @@
-import React, { ChangeEvent, Ref } from "react";
+import React, { InputHTMLAttributes, Ref, TextareaHTMLAttributes } from "react";
 import { Container } from "./Input.css";
 
-interface IInputProps {
+interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  placeholder: string;
-  value?: string;
   ref?: Ref<HTMLInputElement>;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  onKeyUp?: (e) => void;
 }
 
 const Input: React.FC<IInputProps> = ({ label, ...props }) => {
@@ -23,21 +19,15 @@ const Input: React.FC<IInputProps> = ({ label, ...props }) => {
     </Container>
   );
 };
+export default Input;
 
-interface ITextareaProps {
-  label: string;
-  placeholder: string;
-  ref?: Ref<HTMLTextAreaElement>;
-  cols?: number;
-  rows: number;
+interface ITextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label?: string;
   value?: string;
+  ref?: Ref<HTMLTextAreaElement>;
 }
 
-export const TextArea: React.FC<ITextareaProps> = ({
-  label,
-  value,
-  ...props
-}) => {
+export const TextArea: React.FC<ITextareaProps> = ({ label, ...props }) => {
   return (
     <Container className="input-box">
       {label && (
@@ -46,9 +36,7 @@ export const TextArea: React.FC<ITextareaProps> = ({
           dangerouslySetInnerHTML={{ __html: label }}
         />
       )}
-      <textarea {...props}>{value || ""}</textarea>
+      <textarea rows={2} {...props}></textarea>
     </Container>
   );
 };
-
-export default Input;

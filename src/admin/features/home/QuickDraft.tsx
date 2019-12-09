@@ -51,7 +51,6 @@ const QuickDraft: React.FC<IQuickDraftProps> = ({ t }) => {
           ref={bodyRef}
           label={t("home.quickDraft.body")}
           placeholder={t("home.quickDraft.body.placeholder")}
-          rows={2}
         />
         <StyledButton success onClick={() => quickDraftAction()}>
           {t("home.quickDraft.save")}

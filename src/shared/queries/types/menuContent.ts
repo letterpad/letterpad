@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { MenuFiltersWithPagination } from "./../../../../types/globalTypes";
+import { MenuFiltersWithPagination, TaxonomyTypes } from "./../../../../types/globalTypes";
 
 // ====================================================
 // GraphQL query operation: menuContent
@@ -18,10 +18,10 @@ export interface menuContent_menuContent_rows_author {
 
 export interface menuContent_menuContent_rows_taxonomies {
   __typename: "Taxonomy";
-  id: number | null;
-  name: string | null;
-  type: string | null;
-  slug: string | null;
+  id: number;
+  name: string;
+  type: TaxonomyTypes;
+  slug: string;
 }
 
 export interface menuContent_menuContent_rows {

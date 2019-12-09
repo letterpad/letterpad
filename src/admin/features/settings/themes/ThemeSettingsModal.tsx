@@ -1,22 +1,21 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 
 import ModalHoc from "../../../components/modal";
 import StyledButton from "../../../components/button";
 
-import StyledInput from "../../../components/input";
-import StyledCheckbox from "../../../components/checkbox";
-import StyledRadioBox from "../../../components/radio";
+import Input from "../../../components/input";
+import Checkbox from "../../../components/checkbox";
+import RadioBox from "../../../components/radio";
 import StyledSelect from "../../../components/select";
 
-class ThemeSettingsModal extends Component {
-  static propTypes = {
-    onClose: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
-    data: PropTypes.object,
-    t: PropTypes.func,
-  };
+class ThemeSettingsModal extends Component<any, any> {
+  // static propTypes = {
+  //   onClose: PropTypes.func.isRequired,
+  //   onSave: PropTypes.func.isRequired,
+  //   data: PropTypes.object,
+  //   t: PropTypes.func,
+  // };
 
   state = {
     changedValues: {},
@@ -62,25 +61,23 @@ class ThemeSettingsModal extends Component {
           switch (ui.type) {
             case "text":
               return (
-                <StyledInput
+                <Input
                   label={ui.label}
                   key={ui.short_name}
-                  data={ui}
                   value={ui.defaultValue}
                   onBlur={e => this.getChangedValues(ui.name, e.target.value)}
                 />
               );
             case "radio":
               return (
-                <StyledRadioBox
+                <RadioBox
                   key={ui.short_name}
-                  data={ui}
-                  onChange={this.getChangedValues}
+                  onChange={e => this.getChangedValues(ui.name, ui)}
                 />
               );
             case "checkbox":
               return (
-                <StyledCheckbox
+                <Checkbox
                   key={ui.short_name}
                   data={ui}
                   onChange={this.getChangedValues}

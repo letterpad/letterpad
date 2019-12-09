@@ -68,16 +68,14 @@ export const UPDATE_TAXONOMY = gql`
     $id: Int!
     $name: String
     $desc: String
-    $type: String!
+    $type: TaxonomyTypes!
     $slug: String
-    $edit: Boolean
   ) {
     updateTaxonomy(
       id: $id
       name: $name
       desc: $desc
       type: $type
-      edit: $edit
       slug: $slug
     ) {
       id

@@ -2,22 +2,24 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { TaxonomyTypes } from "./../../../../types/globalTypes";
+
 // ====================================================
 // GraphQL query operation: getTaxonomies
 // ====================================================
 
 export interface getTaxonomies_taxonomies {
   __typename: "Taxonomy";
-  id: number | null;
-  name: string | null;
-  desc: string | null;
-  slug: string | null;
+  id: number;
+  name: string;
+  desc: string;
+  slug: string;
 }
 
 export interface getTaxonomies {
-  taxonomies: (getTaxonomies_taxonomies | null)[] | null;
+  taxonomies: getTaxonomies_taxonomies[];
 }
 
 export interface getTaxonomiesVariables {
-  type: string;
+  type: TaxonomyTypes;
 }

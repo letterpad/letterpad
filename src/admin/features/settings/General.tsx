@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { translate } from "react-i18next";
+import React, { useState, createRef } from "react";
+import { translate, WithNamespaces } from "react-i18next";
 import styled from "styled-components";
 import { notify } from "react-notify-toast";
 
-import config from "config";
 import { uploadFile } from "../../server/util";
-import Input from "../../components/input";
+import Input, { TextArea } from "../../components/input";
 import StyledSelect from "../../components/select";
+import { SettingOptions } from "../../../../types/globalTypes";
+import { getOptions_settings } from "../../../shared/queries/types/getOptions";
+import config from "../../../config";
 
 const ImageWrapper = styled.div`
   margin-top: 15px;
@@ -33,225 +34,222 @@ const ImageWrapper = styled.div`
   }
 `;
 
-class General extends Component {
-  static propTypes = {
-    data: PropTypes.object,
-    updateOption: PropTypes.func,
-    t: PropTypes.func,
-    i18n: PropTypes.object,
-  };
+interface IGeneralProps extends WithNamespaces {
+  data: { [option in SettingOptions]: getOptions_settings };
+  updateOption: (option: SettingOptions, value: string) => void;
+  label: string;
+}
 
-  uploadLogoInputRef = React.createRef();
+const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
+  const [banner, setBanner] = useState<string>(data.banner.value || "");
+  const [site_logo, setSiteLogo] = useState<string>(data.site_logo.value || "");
 
-  uploadBannerRef = React.createRef();
+  const uploadLogoInputRef = createRef<HTMLInputElement>();
+  const uploadBannerRef = createRef<HTMLInputElement>();
 
-  state = {
-    banner: this.props.data.banner.value,
-    site_logo: this.props.data.site_logo.value,
-  };
+  const { langOptions, selectedLanguage } = getLanguageOptions(
+    data.locale.value,
+  );
 
-  langOptions = JSON.parse(this.props.data.locale.value);
-
-  updateOption = (option, value) => {
-    this.props.updateOption(option, value);
-  };
-
-  switchLanguage = value => {
+  const switchLanguage = (value: string) => {
     const locales = {};
-    Object.keys(this.langOptions).map(lang => {
+    Object.keys(langOptions).map(lang => {
       locales[lang] = value === lang;
     });
-
-    this.updateOption("locale", JSON.stringify(locales));
-    const { i18n } = this.props;
+    updateOption(SettingOptions.locale, JSON.stringify(locales));
     i18n.changeLanguage(value);
   };
 
-  uploadBanner = async files => {
+  const updateBanner = (banner: string) => {
+    updateOption(SettingOptions.banner, banner);
+    setBanner(banner);
+  };
+
+  const updateLogo = (site_logo: string) => {
+    updateOption(SettingOptions.site_logo, site_logo);
+    setSiteLogo(site_logo);
+  };
+
+  const uploadBanner = async (files: FileList | null) => {
+    if (!files) return;
     const uploadedFiles = await uploadFile({ files });
     let { src, errors } = uploadedFiles[0];
     if (errors) {
       notify.show(errors, "error", 3000);
       return;
     }
-    this.updateOption("banner", src);
-    this.setState({ banner: src });
+    updateBanner(src);
   };
 
-  uploadLogo = async files => {
+  const uploadLogo = async (files: FileList | null) => {
+    if (!files) return;
     const uploadedFiles = await uploadFile({ files });
     let { src, errors } = uploadedFiles[0];
     if (errors) {
       notify.show(errors, "error", 3000);
       return;
     }
-    this.updateOption("site_logo", src);
-    this.setState({ site_logo: src });
+    updateLogo(src);
   };
 
-  updateBanner = banner => {
-    this.updateOption("banner", banner);
-    this.setState({ banner });
-  };
-
-  updateLogo = site_logo => {
-    this.updateOption("site_logo", site_logo);
-    this.setState({ site_logo });
-  };
-
-  render() {
-    const { t } = this.props;
-    const banner = this.state.banner || "";
-    const site_logo = this.state.site_logo || "";
-
-    let selectedLanguage = "en";
-    const langOptions = Object.keys(this.langOptions).map(key => {
-      if (this.langOptions[key]) {
-        selectedLanguage = key;
-      }
-      return {
-        name: key,
-        value: key,
-      };
-    });
-
-    return (
-      <div>
-        <Input
-          label={t("settings.general.site.title")}
-          defaultValue={this.props.data.site_title.value}
-          type="text"
-          placeholder={t("settings.general.site.title.placeholder")}
-          onBlur={e => this.updateOption("site_title", e.target.value)}
-        />
-        <Input
-          label={t("settings.general.site.tagline")}
-          defaultValue={this.props.data.site_tagline.value}
-          type="text"
-          placeholder={t("settings.general.site.tagline.placeholder")}
-          onBlur={e => this.updateOption("site_tagline", e.target.value)}
-        />
-        <Input
-          label={t("settings.general.site.email")}
-          defaultValue={this.props.data.site_email.value}
-          type="email"
-          placeholder="someone@somewhere.com"
-          onBlur={e => this.updateOption("site_email", e.target.value)}
-        />
-        <Input
-          label={t("settings.general.site.description")}
-          textarea
-          defaultValue={this.props.data.site_description.value}
-          rows="2"
-          placeholder={t("settings.general.site.description.placeholder")}
-          required=""
-          onBlur={e => this.updateOption("site_description", e.target.value)}
-        />
-        <Input
-          label={t("settings.general.site.url")}
-          defaultValue={this.props.data.site_url.value}
-          type="text"
-          placeholder={t("settings.general.site.url.placeholder")}
-          onBlur={e => this.updateOption("site_url", e.target.value)}
-        />
-        <Input
-          label={t("settings.general.site.footer") + "(html allowed)"}
-          textarea
-          defaultValue={this.props.data.site_footer.value}
-          className="form-control"
-          rows="2"
-          placeholder={t("settings.general.site.footer.placeholder")}
-          required=""
-          onBlur={e => this.updateOption("site_footer", e.target.value)}
-        />
-        <ImageWrapper>
-          <label className="custom-label">Upload Logo</label>
-          <div className="logo-wrapper">
-            {!this.state.site_logo ? (
+  return (
+    <div>
+      <Input
+        label={t("settings.general.site.title")}
+        defaultValue={data.site_title.value}
+        type="text"
+        placeholder={t("settings.general.site.title.placeholder")}
+        onBlur={e => updateOption(SettingOptions.site_title, e.target.value)}
+      />
+      <Input
+        label={t("settings.general.site.tagline")}
+        defaultValue={data.site_tagline.value}
+        type="text"
+        placeholder={t("settings.general.site.tagline.placeholder")}
+        onBlur={e => updateOption(SettingOptions.site_tagline, e.target.value)}
+      />
+      <Input
+        label={t("settings.general.site.email")}
+        defaultValue={data.site_email.value}
+        type="email"
+        placeholder="someone@somewhere.com"
+        onBlur={e => updateOption(SettingOptions.site_email, e.target.value)}
+      />
+      <TextArea
+        label={t("settings.general.site.description")}
+        defaultValue={data.site_description.value}
+        placeholder={t("settings.general.site.description.placeholder")}
+        onBlur={e =>
+          updateOption(SettingOptions.site_description, e.target.value)
+        }
+      />
+      <Input
+        label={t("settings.general.site.url")}
+        defaultValue={data.site_url.value}
+        type="text"
+        placeholder={t("settings.general.site.url.placeholder")}
+        onBlur={e => updateOption(SettingOptions.site_url, e.target.value)}
+      />
+      <TextArea
+        label={t("settings.general.site.footer") + "(html allowed)"}
+        defaultValue={data.site_footer.value}
+        className="form-control"
+        placeholder={t("settings.general.site.footer.placeholder")}
+        onBlur={e => updateOption(SettingOptions.site_footer, e.target.value)}
+      />
+      <ImageWrapper>
+        <label className="custom-label">Upload Logo</label>
+        <div className="logo-wrapper">
+          {!site_logo ? (
+            <a
+              href="#"
+              onClick={e => {
+                e.preventDefault();
+                if (uploadLogoInputRef.current) {
+                  uploadLogoInputRef.current.click();
+                }
+              }}
+            >
+              <i className="material-icons">add</i>
+            </a>
+          ) : (
+            <div className="logo-image">
+              <img width="100" alt="" src={config.baseName + site_logo} />
               <a
                 href="#"
                 onClick={e => {
                   e.preventDefault();
-                  this.uploadLogoInputRef.current.click();
+                  updateLogo("");
                 }}
               >
-                <i className="material-icons">add</i>
+                <i className="material-icons danger">delete</i>
               </a>
-            ) : (
-              <div className="logo-image">
-                <img width="100" alt="" src={config.baseName + site_logo} />
-                <a
-                  href="#"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.updateLogo("");
-                  }}
-                >
-                  <i className="material-icons danger">delete</i>
-                </a>
-              </div>
-            )}
-          </div>
-          <input
-            ref={this.uploadLogoInputRef}
-            onChange={input => this.uploadLogo(input.target.files)}
-            type="file"
-            className="hide"
-            name="uploads[]"
-          />
-        </ImageWrapper>
-        <ImageWrapper>
-          <label className="custom-label">Upload Hero Banner</label>
-          <div className="banner-wrapper">
-            {!this.state.banner ? (
+            </div>
+          )}
+        </div>
+        <input
+          ref={uploadLogoInputRef}
+          onChange={input => uploadLogo(input.target.files)}
+          type="file"
+          className="hide"
+          name="uploads[]"
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <label className="custom-label">Upload Hero Banner</label>
+        <div className="banner-wrapper">
+          {!banner ? (
+            <a
+              href="#"
+              onClick={e => {
+                e.preventDefault();
+                if (uploadBannerRef.current) {
+                  uploadBannerRef.current.click();
+                }
+              }}
+            >
+              <i className="material-icons">add</i>
+            </a>
+          ) : (
+            <div className="banner-image">
+              <img width="300" alt="" src={config.baseName + banner} />
               <a
                 href="#"
                 onClick={e => {
                   e.preventDefault();
-                  this.uploadBannerRef.current.click();
+                  updateBanner("");
                 }}
               >
-                <i className="material-icons">add</i>
+                <i className="material-icons danger">delete</i>
               </a>
-            ) : (
-              <div className="banner-image">
-                <img width="300" alt="" src={config.baseName + banner} />
-                <a
-                  href="#"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.updateBanner("");
-                  }}
-                >
-                  <i className="material-icons danger">delete</i>
-                </a>
-              </div>
-            )}
-          </div>
-          <input
-            ref={this.uploadBannerRef}
-            onChange={input => this.uploadBanner(input.target.files)}
-            type="file"
-            className="hide"
-            name="uploads[]"
-          />
-        </ImageWrapper>
-        <Input
-          label={t("settings.general.site.ga")}
-          defaultValue={this.props.data.google_analytics.value}
-          type="text"
-          placeholder={t("settings.general.site.ga.placeholder")}
-          onBlur={e => this.updateOption("google_analytics", e.target.value)}
+            </div>
+          )}
+        </div>
+        <input
+          ref={uploadBannerRef}
+          onChange={input => uploadBanner(input.target.files)}
+          type="file"
+          className="hide"
+          name="uploads[]"
         />
-        <StyledSelect
-          label="Select language"
-          selected={selectedLanguage}
-          options={langOptions}
-          onChange={this.switchLanguage}
-        />
-      </div>
-    );
-  }
-}
+      </ImageWrapper>
+      <Input
+        label={t("settings.general.site.ga")}
+        defaultValue={data.google_analytics.value}
+        type="text"
+        placeholder={t("settings.general.site.ga.placeholder")}
+        onBlur={e =>
+          updateOption(SettingOptions.google_analytics, e.target.value)
+        }
+      />
+      <StyledSelect
+        label="Select language"
+        selected={selectedLanguage}
+        options={langOptions}
+        onChange={switchLanguage}
+      />
+    </div>
+  );
+};
 
 export default translate("translations")(General);
+
+function getLanguageOptions(locale: string) {
+  const parsedLangOptions = JSON.parse(locale);
+  let selectedLanguage = "en";
+
+  const langOptions = Object.keys(parsedLangOptions).map(key => {
+    if (parsedLangOptions[key]) {
+      selectedLanguage = key;
+    }
+    return {
+      name: key,
+      value: key,
+    };
+  });
+
+  return {
+    selectedLanguage,
+    langOptions,
+  };
+}

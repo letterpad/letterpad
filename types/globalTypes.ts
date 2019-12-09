@@ -51,6 +51,11 @@ export enum SettingOptions {
   theme = "theme",
 }
 
+export enum TaxonomyTypes {
+  post_category = "post_category",
+  post_tag = "post_tag",
+}
+
 export interface InputCreatePost {
   title?: string | null;
   body?: string | null;

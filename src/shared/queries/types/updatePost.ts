@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { InputUpdatePost } from "./../../../../types/globalTypes";
+import { InputUpdatePost, TaxonomyTypes } from "./../../../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: updatePost
@@ -25,10 +25,10 @@ export interface updatePost_updatePost_post_author {
 
 export interface updatePost_updatePost_post_taxonomies {
   __typename: "Taxonomy";
-  id: number | null;
-  name: string | null;
-  type: string | null;
-  slug: string | null;
+  id: number;
+  name: string;
+  type: TaxonomyTypes;
+  slug: string;
 }
 
 export interface updatePost_updatePost_post {

@@ -10,13 +10,13 @@ import { OptionInputType, SettingOptions } from "./../../../../types/globalTypes
 
 export interface updateOptions_updateOptions {
   __typename: "Setting";
-  id: number | null;
-  option: SettingOptions | null;
-  value: string | null;
+  id: number;
+  option: SettingOptions;
+  value: string;
 }
 
 export interface updateOptions {
-  updateOptions: (updateOptions_updateOptions | null)[] | null;
+  updateOptions: updateOptions_updateOptions[];
 }
 
 export interface updateOptionsVariables {

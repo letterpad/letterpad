@@ -1,96 +1,102 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import appoloClient from "shared/apolloClient";
+import React, { useState } from "react";
+import appoloClient from "../../../../shared/apolloClient";
 import styled from "styled-components";
 
-import { THEME_SETTINGS } from "shared/queries/Queries";
+import { THEME_SETTINGS } from "../../../../shared/queries/Queries";
 import { UPDATE_THEME_SETTINGS } from "../../../../shared/queries/Mutations";
 import ThemeSettingsModal from "./ThemeSettingsModal";
 import StyledItem from "./ThemeItem.css";
+import { IThemeConfig } from "../../../../types/types";
+import {
+  themeSettings,
+  themeSettingsVariables,
+} from "../../../../shared/queries/types/themeSettings";
+import {
+  updateThemeSettings,
+  updateThemeSettingsVariables,
+} from "../../../../shared/queries/types/updateThemeSettings";
 
 const SettingsLink = styled.a`
   text-decoration: none;
 `;
-export default class ThemeItem extends Component {
-  static propTypes = {
-    theme: PropTypes.object.isRequired,
-    selectTheme: PropTypes.func.isRequired,
-  };
 
-  state = {
-    data: { settings: "[]", value: "[]" },
-    settingsOpen: false,
-  };
+interface IThemeItemProps {
+  theme: IThemeConfig;
+  selectTheme: (e: React.MouseEvent, selectedTheme: IThemeConfig) => void;
+}
 
-  displaySettings = async e => {
+const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
+  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [data, setData] = useState<any>();
+
+  const displaySettings = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    let response = await appoloClient().query({
+    let response = await appoloClient().query<
+      themeSettings,
+      themeSettingsVariables
+    >({
       query: THEME_SETTINGS,
-      variables: { name: this.props.theme.short_name },
+      variables: { name: theme.short_name },
       fetchPolicy: "no-cache",
     });
 
-    this.setState({
-      data: response.data.themeSettings[0],
-      settingsOpen: true,
-    });
+    setSettingsOpen(true);
+    setData(response.data.themeSettings[0]);
+
     return false;
   };
 
-  toggleSettings = () => {
-    this.setState({ settingsOpen: !this.state.settingsOpen });
-  };
-
-  onSave = async data => {
+  const onSave = async data => {
     const isAdmin = true;
-    await appoloClient(isAdmin).mutate({
+    await appoloClient(isAdmin).mutate<
+      updateThemeSettings,
+      updateThemeSettingsVariables
+    >({
       mutation: UPDATE_THEME_SETTINGS,
       variables: {
-        name: this.props.theme.short_name,
+        name: theme.short_name,
         value: JSON.stringify(data),
       },
     });
-    this.setState({ settingsOpen: false });
+    setSettingsOpen(false);
   };
 
-  render() {
-    const { theme, selectTheme } = this.props;
-
-    return (
-      <React.Fragment>
-        <StyledItem
-          className={"theme-item" + (theme.active ? " active" : "")}
-          onClick={e => selectTheme(e, theme)}
-        >
-          <div className="theme-thumbnail">
-            <span className="status">Active</span>
-            <img className="theme-image" src={theme.thumbnail} />
-          </div>
-          <div className="theme-body with-border">
-            <div className="theme-header">
-              <div className="theme-name">
-                <span>
-                  {theme.name} by {theme.author}
-                </span>
-                {theme.settings && (
-                  <SettingsLink onClick={this.displaySettings}>
-                    <span className="material-icons">settings</span>
-                  </SettingsLink>
-                )}
-              </div>
-              <div className="theme-meta">{theme.description}</div>
+  return (
+    <React.Fragment>
+      <StyledItem
+        className={"theme-item" + (theme.active ? " active" : "")}
+        onClick={e => selectTheme(e, theme)}
+      >
+        <div className="theme-thumbnail">
+          <span className="status">Active</span>
+          <img className="theme-image" src={theme.thumbnail} />
+        </div>
+        <div className="theme-body with-border">
+          <div className="theme-header">
+            <div className="theme-name">
+              <span>
+                {theme.name} by {theme.author}
+              </span>
+              {theme.settings && (
+                <SettingsLink onClick={displaySettings}>
+                  <span className="material-icons">settings</span>
+                </SettingsLink>
+              )}
             </div>
+            <div className="theme-meta">{theme.description}</div>
           </div>
-        </StyledItem>
-        {this.state.settingsOpen && (
-          <ThemeSettingsModal
-            isOpen={this.state.settingsOpen}
-            onClose={this.toggleSettings}
-            data={this.state.data}
-            onSave={this.onSave}
-          />
-        )}
-      </React.Fragment>
-    );
-  }
-}
+        </div>
+      </StyledItem>
+      {settingsOpen && (
+        <ThemeSettingsModal
+          isOpen={settingsOpen}
+          onClose={() => setSettingsOpen(false)}
+          data={data}
+          onSave={onSave}
+        />
+      )}
+    </React.Fragment>
+  );
+};
+
+export default ThemeItem;

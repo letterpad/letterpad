@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { InputCreatePost } from "./../../../../types/globalTypes";
+import { InputCreatePost, TaxonomyTypes } from "./../../../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: createPost
@@ -21,9 +21,9 @@ export interface createPost_createPost_post_author {
 
 export interface createPost_createPost_post_taxonomies {
   __typename: "Taxonomy";
-  id: number | null;
-  name: string | null;
-  type: string | null;
+  id: number;
+  name: string;
+  type: TaxonomyTypes;
 }
 
 export interface createPost_createPost_post {

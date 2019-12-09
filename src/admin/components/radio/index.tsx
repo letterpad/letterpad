@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const StyledRadio = styled.div`
@@ -60,7 +59,7 @@ const StyledRadio = styled.div`
     }
   }
 `;
-const RadioBox = ({ data, onChange }) => {
+const RadioBox: React.FC<any> = ({ data, onChange }) => {
   return (
     <StyledRadio>
       <label className="custom-label">{data.label}</label>
@@ -73,7 +72,7 @@ const RadioBox = ({ data, onChange }) => {
             value={option}
             id={option}
             defaultChecked={option === data.defaultValue}
-            onClick={e => {
+            onClick={(e: any) => {
               onChange(data.name, e.target.value);
             }}
           />
@@ -85,9 +84,9 @@ const RadioBox = ({ data, onChange }) => {
     </StyledRadio>
   );
 };
-RadioBox.propTypes = {
-  data: PropTypes.object,
-  onChange: PropTypes.func,
-};
+// RadioBox.propTypes = {
+//   data: PropTypes.object,
+//   onChange: PropTypes.func,
+// };
 
 export default RadioBox;

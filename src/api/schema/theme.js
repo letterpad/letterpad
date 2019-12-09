@@ -1,12 +1,12 @@
 export default `
     type ThemeSettings {
-        name: String,
-        value: String,
-        settings: String
+        name: String!,
+        value: String!,
+        settings: String!
     }
 
     type Query {
-        themeSettings(name: String): [ThemeSettings]
+        themeSettings(name: String!): [ThemeSettings]!
     }
 
     type Mutation {

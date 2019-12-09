@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -70,7 +69,7 @@ const Wrapper = styled.div`
   }
 `;
 
-class StyledCheckbox extends Component {
+class StyledCheckbox extends Component<any, any> {
   state = {
     cbRegistry: [],
   };
@@ -120,11 +119,11 @@ class StyledCheckbox extends Component {
   }
 }
 
-StyledCheckbox.propTypes = {
-  label: PropTypes.string,
-  onChange: PropTypes.func,
-  data: PropTypes.array,
-  innerRef: PropTypes.object,
-};
+// StyledCheckbox.propTypes = {
+//   label: PropTypes.string,
+//   onChange: PropTypes.func,
+//   data: PropTypes.array,
+//   innerRef: PropTypes.object,
+// };
 
 export default StyledCheckbox;

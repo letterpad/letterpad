@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import List from "./List";
@@ -11,7 +10,7 @@ const Wrapper = styled.div`
   overflow-x: hidden;
 `;
 
-const ListItem = styled.div`
+const ListItem = styled.div<any>`
   display: flex;
   align-items: center;
   padding-left: 1.15rem;
@@ -24,15 +23,15 @@ const ListItem = styled.div`
   cursor: pointer;
 `;
 
-class Taxonomies extends Component {
-  static propTypes = {
-    items: PropTypes.array.isRequired,
-    rowHeight: PropTypes.number.isRequired,
-    numRows: PropTypes.number,
-    handleSelect: PropTypes.func.isRequired,
-    size: PropTypes.object,
-    selectedIndex: PropTypes.number,
-  };
+class Taxonomies extends Component<any, any> {
+  // static propTypes = {
+  //   items: PropTypes.array.isRequired,
+  //   rowHeight: PropTypes.number.isRequired,
+  //   numRows: PropTypes.number,
+  //   handleSelect: PropTypes.func.isRequired,
+  //   size: PropTypes.object,
+  //   selectedIndex: PropTypes.number,
+  // };
 
   static defaultProps = {
     numRows: 4,
@@ -53,7 +52,7 @@ class Taxonomies extends Component {
     let { items, rowHeight, numRows, selectedIndex } = this.props;
     numRows = numRows < 5 ? 8 : numRows;
     return (
-      <Wrapper rowHeight={rowHeight} numRows={numRows}>
+      <Wrapper>
         <List
           width={767}
           height={numRows * rowHeight}

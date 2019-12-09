@@ -8,15 +8,15 @@
 
 export interface themeSettings_themeSettings {
   __typename: "ThemeSettings";
-  name: string | null;
-  value: string | null;
-  settings: string | null;
+  name: string;
+  value: string;
+  settings: string;
 }
 
 export interface themeSettings {
-  themeSettings: (themeSettings_themeSettings | null)[] | null;
+  themeSettings: (themeSettings_themeSettings | null)[];
 }
 
 export interface themeSettingsVariables {
-  name?: string | null;
+  name?: string;
 }

@@ -10,11 +10,11 @@ import { SettingOptions } from "./../../../../types/globalTypes";
 
 export interface getOptions_settings {
   __typename: "Setting";
-  id: number | null;
-  option: SettingOptions | null;
-  value: string | null;
+  id: number;
+  option: SettingOptions;
+  value: string;
 }
 
 export interface getOptions {
-  settings: (getOptions_settings | null)[] | null;
+  settings: getOptions_settings[];
 }

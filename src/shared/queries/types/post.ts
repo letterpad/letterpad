@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { SinglePostFilters } from "./../../../../types/globalTypes";
+import { SinglePostFilters, TaxonomyTypes } from "./../../../../types/globalTypes";
 
 // ====================================================
 // GraphQL query operation: post
@@ -18,10 +18,10 @@ export interface post_post_author {
 
 export interface post_post_taxonomies {
   __typename: "Taxonomy";
-  id: number | null;
-  name: string | null;
-  type: string | null;
-  slug: string | null;
+  id: number;
+  name: string;
+  type: TaxonomyTypes;
+  slug: string;
 }
 
 export interface post_post {

@@ -1,14 +1,22 @@
-const config = require("../../config");
-const { THEME_SETTINGS } = require("../../shared/queries/Queries");
-const {
+import config from "../../config";
+import { THEME_SETTINGS } from "../../shared/queries/Queries";
+import {
   INSERT_THEME_SETTINGS,
   UPDATE_THEME_SETTINGS,
-} = require("../../shared/queries/Mutations");
+} from "../../shared/queries/Mutations";
+
 const { syncArrays } = require("../../shared/util");
 
-export const uploadFile = ({ files, type }) => {
-  var data = new FormData();
-  data.append("type", type);
+interface IUploadFileProps {
+  files: FileList;
+  type?: string;
+}
+
+export const uploadFile = ({ files, type }: IUploadFileProps) => {
+  const data: FormData = new FormData();
+  if (type) {
+    data.append("type", type);
+  }
   for (let i = 0; i < files.length; i++) {
     data.append("file", files[i]);
   }

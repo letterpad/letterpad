@@ -15,12 +15,12 @@ export interface deleteTaxonomy_deleteTaxonomy_errors {
 export interface deleteTaxonomy_deleteTaxonomy {
   __typename: "EditTaxResponse";
   id: number | null;
-  ok: boolean | null;
+  ok: boolean;
   errors: deleteTaxonomy_deleteTaxonomy_errors[] | null;
 }
 
 export interface deleteTaxonomy {
-  deleteTaxonomy: deleteTaxonomy_deleteTaxonomy | null;
+  deleteTaxonomy: deleteTaxonomy_deleteTaxonomy;
 }
 
 export interface deleteTaxonomyVariables {

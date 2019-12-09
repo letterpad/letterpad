@@ -2,6 +2,8 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { TaxonomyTypes } from "./../../../../types/globalTypes";
+
 // ====================================================
 // GraphQL fragment: postFields
 // ====================================================
@@ -16,10 +18,10 @@ export interface postFields_author {
 
 export interface postFields_taxonomies {
   __typename: "Taxonomy";
-  id: number | null;
-  name: string | null;
-  type: string | null;
-  slug: string | null;
+  id: number;
+  name: string;
+  type: TaxonomyTypes;
+  slug: string;
 }
 
 export interface postFields {

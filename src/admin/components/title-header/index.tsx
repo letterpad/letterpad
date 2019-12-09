@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 
 const Wrapper = styled.div`
   margin-bottom: 40px;
@@ -15,18 +14,13 @@ const Wrapper = styled.div`
   }
 `;
 
-const TitleHeader = ({ title, subtitle }) => {
+const TitleHeader: React.FC<any> = ({ title, subtitle }) => {
   return (
     <Wrapper className="section-header">
       <h3>{title}</h3>
       {subtitle && <p>{subtitle}</p>}
     </Wrapper>
   );
-};
-
-TitleHeader.propTypes = {
-  title: PropTypes.string,
-  subtitle: PropTypes.string,
 };
 
 export default TitleHeader;

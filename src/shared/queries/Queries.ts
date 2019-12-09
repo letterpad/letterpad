@@ -108,7 +108,7 @@ export const GET_OPTIONS = gql`
 `;
 
 export const GET_TAXONOMIES = gql`
-  query getTaxonomies($type: String!) {
+  query getTaxonomies($type: TaxonomyTypes!) {
     taxonomies(type: $type) {
       id
       name

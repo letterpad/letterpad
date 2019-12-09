@@ -1,48 +1,25 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import StyledInput from "../../components/input";
+import React from "react";
+import { TextArea } from "../../components/input";
+import { SettingOptions } from "../../../../types/globalTypes";
+import { getOptions_settings } from "../../../shared/queries/types/getOptions";
 
-class CustomCSS extends Component {
-  static propTypes = {
-    updateOption: PropTypes.func,
-    options: PropTypes.object,
-    settings: PropTypes.object,
-  };
-
-  state = {
-    css: this.props.settings.css.value,
-  };
-
-  updatedOptions = {};
-
-  componentDidMount() {
-    this.setState({ loading: true }, this.getThemes);
-    document.body.classList.add("settings-css-page");
-  }
-
-  componentWillUnmount() {
-    document.body.classList.remove("settings-css-page");
-  }
-
-  handleCssChange = e => {
-    const newState = { css: e.target.value };
-    this.setState(newState);
-    this.props.updateOption("css", e.target.value);
-  };
-
-  render() {
-    return (
-      <div>
-        <StyledInput
-          textarea
-          rows="7"
-          value={this.state.css}
-          placeholder="Additional CSS"
-          onChange={this.handleCssChange}
-        />
-      </div>
-    );
-  }
+interface ICssProps {
+  updateOption: (option: SettingOptions, value: string) => void;
+  data: { [option in SettingOptions]: getOptions_settings };
+  label: string;
 }
+
+const CustomCSS: React.FC<ICssProps> = ({ updateOption, data }) => {
+  return (
+    <div>
+      <TextArea
+        rows={7}
+        defaultValue={data.css.value || ""}
+        placeholder="Additional CSS"
+        onChange={e => updateOption(SettingOptions.css, e.target.value)}
+      />
+    </div>
+  );
+};
 
 export default CustomCSS;

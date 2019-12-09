@@ -18,12 +18,12 @@ import ResetPassword from "./features/login/ResetPassword";
 import Articles from "./features/articles";
 import CreateArticle from "./features/article/CreateArticle";
 import Article from "./features/article";
-// import Settings from "./features/settings";
+import Settings from "./features/settings";
 // import Media from "./features/media";
 // import AuthorList from "./features/author-list";
 // import Author from "./features/author";
 // import AuthorCreate from "./features/author/Create";
-// import Taxonomy from "./features/taxonomy";
+import Taxonomy from "./features/taxonomy";
 // import NavigationBuilder from "./features/navigation-builder";
 import Home from "./features/home";
 // import Themes from "./features/themes";
@@ -42,9 +42,7 @@ import {
 } from "../shared/queries/types/getOptions";
 import { SettingOptions } from "../../types/globalTypes";
 
-type TypeSettings =
-  | { [option in SettingOptions]: getOptions_settings }
-  | {};
+type TypeSettings = { [option in SettingOptions]: getOptions_settings } | {};
 
 interface IState {
   settings: TypeSettings | {};
@@ -147,6 +145,34 @@ class Routes extends Component<RouteComponentProps, IState> {
               component={Articles}
               settings={settings}
             />
+            <SecuredRoute
+              exact
+              path="/admin/pages/:post_id"
+              type="page"
+              component={Article}
+              layout="none"
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/tags"
+              type="post_tag"
+              component={Taxonomy}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/categories"
+              type="post_category"
+              component={Taxonomy}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/settings"
+              component={Settings}
+              settings={settings}
+            />
           </Fragment>
         </Switch>
       </I18nextProvider>
@@ -187,14 +213,7 @@ function getI18nConfig(settings) {
 
 //             {/* Route for pages */}
 //
-//             <SecuredRoute
-//               exact
-//               path="/admin/pages/:post_id"
-//               type="page"
-//               component={Article}
-//               layout="none"
-//               settings={data}
-//             />
+//
 //             <SecuredRoute
 //               exact
 //               path="/admin/page-new"
@@ -203,20 +222,7 @@ function getI18nConfig(settings) {
 //               settings={data}
 //             />
 //             {/* Route for others */}
-//             <SecuredRoute
-//               exact
-//               path="/admin/tags"
-//               type="post_tag"
-//               component={Taxonomy}
-//               settings={data}
-//             />
-//             <SecuredRoute
-//               exact
-//               path="/admin/categories"
-//               type="post_category"
-//               component={Taxonomy}
-//               settings={data}
-//             />
+//
 //             <SecuredRoute
 //               exact
 //               path="/admin/media"
