@@ -5,7 +5,7 @@ import ModalHoc from "../../../components/modal";
 import StyledButton from "../../../components/button";
 
 import Input from "../../../components/input";
-import Checkbox from "../../../components/checkbox";
+// import Checkbox from "../../../components/checkbox";
 import RadioBox from "../../../components/radio";
 import StyledSelect from "../../../components/select";
 
@@ -34,28 +34,29 @@ class ThemeSettingsModal extends Component<any, any> {
 
   // On save, merge the new values with the old values.
   onSave = () => {
-    const oldValue = JSON.parse(this.props.data.value);
-    const data = {
-      ...oldValue,
-      ...this.state.changedValues,
-    };
+    const newData = this.props.data.settings.map(item => {
+      const newChangedValue = this.state.changedValues[item.name];
+      const { __typename, ...itemWithoutTypeName } = item;
+      if (newChangedValue) {
+        itemWithoutTypeName.changedValue = newChangedValue;
+      }
+      return itemWithoutTypeName;
+    });
+
     // save this data
-    this.props.onSave(data);
+    this.props.onSave(newData);
   };
 
   render() {
     let {
       t,
-      data: { name, settings, value },
+      data: { name, settings },
     } = this.props;
 
-    settings = JSON.parse(settings);
-    value = JSON.parse(value);
     /**
      * Parse the json data and build the UI
      */
     const themeSettings = settings.map(ui => {
-      ui.defaultValue = value[ui.name];
       switch (ui.tag) {
         case "input":
           switch (ui.type) {
@@ -64,25 +65,30 @@ class ThemeSettingsModal extends Component<any, any> {
                 <Input
                   label={ui.label}
                   key={ui.short_name}
-                  value={ui.defaultValue}
+                  value={ui.changedValue || ui.defaultValue}
                   onBlur={e => this.getChangedValues(ui.name, e.target.value)}
                 />
               );
             case "radio":
               return (
                 <RadioBox
+                  defaultValue={ui.changedValue || ui.defaultValue}
+                  label={ui.label}
+                  options={ui.options}
                   key={ui.short_name}
-                  onChange={e => this.getChangedValues(ui.name, ui)}
+                  onChange={(selected: string) =>
+                    this.getChangedValues(ui.name, selected)
+                  }
                 />
               );
-            case "checkbox":
-              return (
-                <Checkbox
-                  key={ui.short_name}
-                  data={ui}
-                  onChange={this.getChangedValues}
-                />
-              );
+            // case "checkbox":
+            //   return (
+            //     <Checkbox
+            //       key={ui.short_name}
+            //       data={ui}
+            //       onChange={this.getChangedValues}
+            //     />
+            //   );
           }
           break;
         case "select":
@@ -95,7 +101,7 @@ class ThemeSettingsModal extends Component<any, any> {
               options={ui.options.map(option => {
                 return { value: option, name: option };
               })}
-              selected={ui.defaultValue}
+              selected={ui.changedValue || ui.defaultValue}
               onChange={value => this.getChangedValues(ui.name, value)}
             />
           );

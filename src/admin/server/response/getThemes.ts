@@ -1,4 +1,3 @@
-import path from "path";
 import fs from "fs";
 import { Request, Response } from "express";
 import { GET_OPTIONS } from "./../../../shared/queries/Queries";
@@ -9,27 +8,12 @@ import { IThemeConfig } from "../../../types/types";
 import { getDirectories } from "../../../shared/dir";
 import config from "../../../config";
 import { syncThemeSettings } from "../util";
+import { getDirPath } from "../../../dir";
 
-const themesDir = path.join(__dirname, "../../../client/themes/");
-let selectedTheme = "hugo";
-
+const themesDir = getDirPath("client/themes");
 export const getThemes = async (req: Request, res: Response) => {
   try {
-    const response = await apolloClient(
-      true,
-      clientOpts,
-      req.headers.token as string,
-    ).query<getOptions>({ query: GET_OPTIONS });
-
-    if (!response.data.settings) {
-      return null;
-    }
-    let option = response.data.settings.find(
-      item => item && item.option === "theme",
-    );
-    if (option && option.value) {
-      selectedTheme = option.value;
-    }
+    const currentTheme = await getCurrentTheme(req);
     const availableThemes: Array<IThemeConfig> = [];
     const newSettings: Array<object> = [];
     // Get all the folders inside the "themes" folder. Check if each
@@ -51,7 +35,7 @@ export const getThemes = async (req: Request, res: Response) => {
         // check the theme has settings
         const hasSettings = fs.existsSync(themePath + "/settings.json");
 
-        themeConfig.active = themeConfig.short_name === selectedTheme;
+        themeConfig.active = themeConfig.short_name === currentTheme;
         themeConfig.settings = hasSettings;
         availableThemes.push(themeConfig);
         // get default settings of all themes from files
@@ -59,27 +43,45 @@ export const getThemes = async (req: Request, res: Response) => {
           // we need to delete the cache, to get updated settings file
           delete require.cache[require.resolve(themePath + "/settings.json")];
           const defaultSettings = require(themePath + "/settings.json");
-          const values = {};
-          defaultSettings.forEach(field => {
-            values[field.name] = field.defaultValue;
+          defaultSettings.forEach(setting => {
+            setting.changedValue = setting.defaultValue;
           });
           newSettings.push({
             name: themeConfig.short_name,
-            value: JSON.stringify(values),
-            settings: JSON.stringify(defaultSettings),
+            settings: defaultSettings,
           });
         }
       }
     });
     // If the theme developer has changed the settings of the theme,
     // it has to sync with the database.
-    await syncThemeSettings(
-      apolloClient,
-      newSettings,
-      req.headers.authorization,
-    );
+    try {
+      await syncThemeSettings(newSettings, req.headers.authorization);
+    } catch (e) {
+      console.log(e);
+    }
     res.send(availableThemes);
   } catch (e) {
     return res.send(e);
   }
 };
+
+async function getCurrentTheme(req: Request) {
+  let currentTheme = "hugo";
+  const response = await apolloClient(
+    true,
+    clientOpts,
+    req.headers.token as string,
+  ).query<getOptions>({ query: GET_OPTIONS });
+
+  if (!response.data.settings) {
+    return null;
+  }
+  let option = response.data.settings.find(
+    item => item && item.option === "theme",
+  );
+  if (option && option.value) {
+    currentTheme = option.value;
+  }
+  return currentTheme;
+}

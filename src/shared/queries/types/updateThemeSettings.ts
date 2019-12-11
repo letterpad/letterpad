@@ -2,6 +2,8 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { InputThemeSettingOptions } from "./../../../../types/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: updateThemeSettings
 // ====================================================
@@ -11,7 +13,6 @@ export interface updateThemeSettings {
 }
 
 export interface updateThemeSettingsVariables {
-  name?: string | null;
-  value?: string | null;
-  settings?: string | null;
+  name: string;
+  settings: (InputThemeSettingOptions | null)[];
 }

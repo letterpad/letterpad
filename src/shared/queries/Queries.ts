@@ -202,8 +202,17 @@ export const THEME_SETTINGS = gql`
   query themeSettings($name: String) {
     themeSettings(name: $name) {
       name
-      value
-      settings
+      settings {
+        name
+        type
+        tag
+        defaultValue
+        changedValue
+        helpText
+        label
+        placeholder
+        options
+      }
     }
   }
 `;

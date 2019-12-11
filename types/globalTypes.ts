@@ -56,6 +56,17 @@ export enum TaxonomyTypes {
   post_tag = "post_tag",
 }
 
+export enum ThemeSettingsUIInputTypes {
+  checkbox = "checkbox",
+  radio = "radio",
+  text = "text",
+}
+
+export enum ThemeSettingsUITags {
+  input = "input",
+  select = "select",
+}
+
 export interface InputCreatePost {
   title?: string | null;
   body?: string | null;
@@ -66,6 +77,19 @@ export interface InputCreatePost {
   status?: PostStatusOptions | null;
   slug?: string | null;
   taxonomies?: (TaxonomyInputType | null)[] | null;
+}
+
+export interface InputThemeSettingOptions {
+  name: string;
+  type: ThemeSettingsUIInputTypes;
+  tag: ThemeSettingsUITags;
+  options?: (string | null)[] | null;
+  placeholder?: string | null;
+  defaultValue?: string | null;
+  changedValue?: string | null;
+  selectedValue?: string | null;
+  label: string;
+  helpText?: string | null;
 }
 
 export interface InputUpdatePost {

@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import StyledModal from "./Modal.css";
 
-export default class ModalHoc extends Component {
-  static propTypes = {
-    isOpen: PropTypes.bool,
-    onClose: PropTypes.func,
-    className: PropTypes.string,
-    title: PropTypes.string,
-    dialogClassName: PropTypes.string,
-    stateName: PropTypes.string,
-    children: PropTypes.node,
-  };
+export default class ModalHoc extends Component<any, any> {
+  // static propTypes = {
+  //   isOpen: PropTypes.bool,
+  //   onClose: PropTypes.func,
+  //   className: PropTypes.string,
+  //   title: PropTypes.string,
+  //   dialogClassName: PropTypes.string,
+  //   stateName: PropTypes.string,
+  //   children: PropTypes.node,
+  // };
 
   state = {
     isOpen: this.props.isOpen,
@@ -22,7 +22,7 @@ export default class ModalHoc extends Component {
 
   modalWrapperRef = React.createRef();
 
-  timerIds = [];
+  timerIds:number[] = [];
 
   componentDidMount() {
     this.open();
@@ -32,7 +32,7 @@ export default class ModalHoc extends Component {
     this.clearSetUp();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(_nextProps, nextState) {
     if (this.state.onEnter && nextState.onEnter) {
       return false;
     }

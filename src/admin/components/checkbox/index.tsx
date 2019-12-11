@@ -69,6 +69,46 @@ const Wrapper = styled.div`
   }
 `;
 
+const Checkbox: React.FC<ICheckboxProps> = ({ label, ...props }) => {
+  handleCheckBoxChange = e => {
+    const { cbRegistry } = this.state;
+    const index = cbRegistry.indexOf(e.target.value);
+    // if found then remove
+    if (index >= 0) {
+      cbRegistry.splice(index, 1);
+    } else {
+      cbRegistry.push(e.target.value);
+    }
+    this.setState({ cbRegistry });
+    this.props.onChange(e.target.name, cbRegistry);
+  };
+
+  return (
+    <Wrapper className="check-box">
+      <label
+        className="custom-label"
+        dangerouslySetInnerHTML={{ __html: label }}
+      />
+
+      {data.map(option => {
+        return (
+          <div key={option.name}>
+            <input
+              type="checkbox"
+              name={data.name}
+              value={option}
+              id={option}
+              defaultChecked={data.defaultValue.indexOf(option) >= 0}
+              onClick={handleCheckBoxChange}
+            />
+            <label htmlFor={option}>{data.label}</label>
+          </div>
+        );
+      })}
+    </Wrapper>
+  );
+};
+
 class StyledCheckbox extends Component<any, any> {
   state = {
     cbRegistry: [],
@@ -92,30 +132,6 @@ class StyledCheckbox extends Component<any, any> {
     if (innerRef) {
       props.ref = innerRef;
     }
-    return (
-      <Wrapper className="check-box">
-        <label
-          className="custom-label"
-          dangerouslySetInnerHTML={{ __html: label }}
-        />
-
-        {data.map(option => {
-          return (
-            <div key={option.name}>
-              <input
-                type="checkbox"
-                name={data.name}
-                value={option}
-                id={option}
-                defaultChecked={data.defaultValue.indexOf(option) >= 0}
-                onClick={this.handleCheckBoxChange}
-              />
-              <label htmlFor={option}>{data.label}</label>
-            </div>
-          );
-        })}
-      </Wrapper>
-    );
   }
 }
 

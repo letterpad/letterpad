@@ -11,7 +11,7 @@
     "preinstall": "./utils/preinstall.sh",
     "postinstall": "./utils/postinstall.sh",
     "dev": "NODE_ENV=dev concurrently --kill-others \"ts-node ./src/start.ts --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
-    "api": "NODE_ENV=dev concurrently --kill-others \"nodemon --watch src/api ./src/server.js\"",
+    "api": "NODE_ENV=dev concurrently --kill-others \"nodemon --watch src/api ./src/start.ts\"",
     "prod": "NODE_ENV=production concurrently --kill-others \"node ./dist/server.js\"",
     "start": "yarn prod",
     "prodPm2": "./forever.sh",

@@ -1,0 +1,70 @@
+enum ThemeSettingsUITags {
+  input
+  select
+}
+
+enum ThemeSettingsUIInputTypes {
+  radio
+  text
+  checkbox
+}
+
+type ThemeSettingOptions {
+  name: String!
+  type: ThemeSettingsUIInputTypes!
+  tag: ThemeSettingsUITags!
+  options: [String]
+  placeholder: String
+  defaultValue: String
+  changedValue: String
+  selectedValue: String
+  label: String!
+  helpText: String
+}
+
+type ThemeSettingOptions {
+  name: String!
+  type: ThemeSettingsUIInputTypes!
+  tag: ThemeSettingsUITags!
+  options: [String]
+  placeholder: String
+  defaultValue: String
+  changedValue: String
+  selectedValue: String
+  label: String!
+  helpText: String
+}
+
+input InputThemeSettingOptions {
+  name: String!
+  type: ThemeSettingsUIInputTypes!
+  tag: ThemeSettingsUITags!
+  options: [String]
+  placeholder: String
+  defaultValue: String
+  changedValue: String
+  selectedValue: String
+  label: String!
+  helpText: String
+}
+
+type ThemeSettings {
+  name: String!
+  settings: [ThemeSettingOptions!]!
+}
+
+type Query {
+  themeSettings(name: String): [ThemeSettings!]!
+}
+
+type Mutation {
+  updateThemeSettings(
+    name: String!
+    settings: [InputThemeSettingOptions!]!
+  ): Boolean
+
+  insertThemeSettings(
+    name: String!
+    settings: [InputThemeSettingOptions!]!
+  ): Boolean
+}

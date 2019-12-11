@@ -27,7 +27,7 @@ interface IThemeItemProps {
 
 const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<any>({});
 
   const displaySettings = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -40,8 +40,8 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
       fetchPolicy: "no-cache",
     });
 
-    setSettingsOpen(true);
     setData(response.data.themeSettings[0]);
+    setSettingsOpen(true);
 
     return false;
   };
@@ -55,7 +55,7 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
       mutation: UPDATE_THEME_SETTINGS,
       variables: {
         name: theme.short_name,
-        value: JSON.stringify(data),
+        settings: data,
       },
     });
     setSettingsOpen(false);

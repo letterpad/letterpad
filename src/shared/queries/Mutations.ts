@@ -45,21 +45,19 @@ export const UPDATE_OPTIONS = gql`
 
 export const INSERT_THEME_SETTINGS = gql`
   mutation insertThemeSettings(
-    $name: String
-    $value: String
-    $settings: String
+    $name: String!
+    $settings: [InputThemeSettingOptions]!
   ) {
-    insertThemeSettings(name: $name, value: $value, settings: $settings)
+    insertThemeSettings(name: $name, settings: $settings)
   }
 `;
 
 export const UPDATE_THEME_SETTINGS = gql`
   mutation updateThemeSettings(
-    $name: String
-    $value: String
-    $settings: String
+    $name: String!
+    $settings: [InputThemeSettingOptions]!
   ) {
-    updateThemeSettings(name: $name, value: $value, settings: $settings)
+    updateThemeSettings(name: $name, settings: $settings)
   }
 `;
 

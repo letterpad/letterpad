@@ -59,24 +59,33 @@ const StyledRadio = styled.div`
     }
   }
 `;
-const RadioBox: React.FC<any> = ({ data, onChange }) => {
+const RadioBox: React.FC<any> = ({
+  options,
+  label,
+  onChange,
+  defaultValue,
+  name,
+  ...props
+}) => {
+  const groupName = "rb-" + Date.now();
   return (
     <StyledRadio>
-      <label className="custom-label">{data.label}</label>
+      <label className="custom-label">{label}</label>
       <br />
-      {data.options.map(option => (
+      {options.map(option => (
         <div className="radio" key={option}>
           <input
             type="radio"
-            name={data.name}
+            name={groupName}
             value={option}
-            id={option}
-            defaultChecked={option === data.defaultValue}
+            id={"rb-" + option}
+            defaultChecked={option === defaultValue}
             onClick={(e: any) => {
-              onChange(data.name, e.target.value);
+              onChange(e.target.value);
             }}
+            {...props}
           />
-          <label htmlFor={option} className="radio-label">
+          <label htmlFor={"rb-" + option} className="radio-label">
             {option}
           </label>
         </div>

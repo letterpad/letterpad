@@ -162,7 +162,12 @@ const utils = {
     });
     return template;
   },
-  syncArrays: (oldArray, newArray, key, compareFields) => {
+  syncArrays: (
+    oldArray: Array<any>,
+    newArray: Array<any>,
+    key: string,
+    compareFields: Array<string>,
+  ): { added: Array<any>; deleted: Array<any>; changed: Array<any> } => {
     function mapFromArray(array, prop) {
       let map = {};
       for (let i = 0; i < array.length; i++) {
