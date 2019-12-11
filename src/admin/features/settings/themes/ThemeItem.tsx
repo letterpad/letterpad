@@ -8,13 +8,13 @@ import ThemeSettingsModal from "./ThemeSettingsModal";
 import StyledItem from "./ThemeItem.css";
 import { IThemeConfig } from "../../../../types/types";
 import {
-  themeSettings,
-  themeSettingsVariables,
-} from "../../../../shared/queries/types/themeSettings";
+  themes,
+  themesVariables,
+} from "../../../../shared/queries/types/themes";
 import {
-  updateThemeSettings,
-  updateThemeSettingsVariables,
-} from "../../../../shared/queries/types/updateThemeSettings";
+  updateThemes,
+  updateThemesVariables,
+} from "../../../../shared/queries/types/updateThemes";
 
 const SettingsLink = styled.a`
   text-decoration: none;
@@ -31,16 +31,13 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
 
   const displaySettings = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    let response = await appoloClient().query<
-      themeSettings,
-      themeSettingsVariables
-    >({
+    let response = await appoloClient().query<themes, themesVariables>({
       query: THEME_SETTINGS,
       variables: { name: theme.short_name },
       fetchPolicy: "no-cache",
     });
 
-    setData(response.data.themeSettings[0]);
+    setData(response.data.themes[0]);
     setSettingsOpen(true);
 
     return false;
@@ -48,10 +45,7 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
 
   const onSave = async data => {
     const isAdmin = true;
-    await appoloClient(isAdmin).mutate<
-      updateThemeSettings,
-      updateThemeSettingsVariables
-    >({
+    await appoloClient(isAdmin).mutate<updateThemes, updateThemesVariables>({
       mutation: UPDATE_THEME_SETTINGS,
       variables: {
         name: theme.short_name,

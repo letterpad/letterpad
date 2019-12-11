@@ -79,7 +79,7 @@ export interface InputCreatePost {
   taxonomies?: (TaxonomyInputType | null)[] | null;
 }
 
-export interface InputThemeSettingOptions {
+export interface InputThemeSettings {
   name: string;
   type: ThemeSettingsUIInputTypes;
   tag: ThemeSettingsUITags;

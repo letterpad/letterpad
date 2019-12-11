@@ -173,6 +173,12 @@ class Routes extends Component<RouteComponentProps, IState> {
               component={Settings}
               settings={settings}
             />
+            {/* <SecuredRoute
+              exact
+              path="/admin/navigation-builder"
+              settings={settings}
+              component={NavigationBuilder}
+            /> */}
           </Fragment>
         </Switch>
       </I18nextProvider>
@@ -257,18 +263,6 @@ function getI18nConfig(settings) {
 //               exact
 //               path="/admin/edit-profile"
 //               component={Author}
-//               settings={data}
-//             />
-//             <SecuredRoute
-//               exact
-//               path="/admin/settings"
-//               component={Settings}
-//               settings={data}
-//             />
-//             <SecuredRoute
-//               exact
-//               path="/admin/themes"
-//               component={Themes}
 //               settings={data}
 //             />
 //             <SecuredRoute

@@ -1,13 +1,13 @@
 import { ThemeSettingsUIInputTypes } from "./../../../types/globalTypes";
 import {
-  insertThemeSettings,
-  insertThemeSettingsVariables,
-} from "./../../shared/queries/types/insertThemeSettings";
+  insertThemes,
+  insertThemesVariables,
+} from "./../../shared/queries/types/insertThemes";
 import {
-  themeSettings,
-  themeSettingsVariables,
-  themeSettings_themeSettings,
-} from "./../../shared/queries/types/themeSettings";
+  themes,
+  themesVariables,
+  themes_themes,
+} from "./../../shared/queries/types/themes";
 import config from "../../config";
 import { THEME_SETTINGS } from "../../shared/queries/Queries";
 import {
@@ -57,12 +57,12 @@ export const syncThemeSettings = async (
 ) => {
   // Get the existing theme settings
   const { data } = await apolloClient(true, {}, authorization).query<
-    themeSettings,
-    themeSettingsVariables
+    themes,
+    themesVariables
   >({
     query: THEME_SETTINGS,
   });
-  const themeConfigsFromDB = data.themeSettings;
+  const themeConfigsFromDB = data.themes;
 
   // Check if the theme settings exist in the db.
   // Remove the unused ones.
@@ -83,7 +83,7 @@ export const syncThemeSettings = async (
   // existing theme settings to be updated
   const updatePromises = [] as any;
 
-  themeConfigsFromFS.forEach((_config: themeSettings_themeSettings) => {
+  themeConfigsFromFS.forEach((_config: themes_themes) => {
     const themeName = _config.name;
     const themeSettings = _config.settings;
     const dbThemeSetting = getDBThemeSetting(themeConfigsFromDB, themeName);
@@ -117,10 +117,7 @@ export const syncThemeSettings = async (
   return Promise.all([promises, updatePromises]);
 };
 
-function getDBThemeSetting(
-  dbThemeConfigs,
-  themeName: string,
-): themeSettings_themeSettings {
+function getDBThemeSetting(dbThemeConfigs, themeName: string): themes_themes {
   return dbThemeConfigs.find(config => config.name === themeName);
 }
 
@@ -141,8 +138,8 @@ function updateThemeSetting(themeName, themeSettings, authorization) {
 
 function insertThemeSettings(themeName, themeSettings, authorization) {
   return apolloClient(true, {}, authorization).mutate<
-    insertThemeSettings,
-    insertThemeSettingsVariables
+    insertThemes,
+    insertThemesVariables
   >({
     mutation: INSERT_THEME_SETTINGS,
     variables: {

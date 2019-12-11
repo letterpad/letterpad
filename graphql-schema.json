@@ -507,7 +507,7 @@
             "deprecationReason": null
           },
           {
-            "name": "themeSettings",
+            "name": "themes",
             "description": "",
             "args": [
               {
@@ -532,7 +532,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "ThemeSettings",
+                    "name": "Theme",
                     "ofType": null
                   }
                 }
@@ -2129,7 +2129,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ThemeSettings",
+        "name": "Theme",
         "description": "",
         "fields": [
           {
@@ -2163,7 +2163,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "ThemeSettingOptions",
+                    "name": "ThemeSettings",
                     "ofType": null
                   }
                 }
@@ -2180,7 +2180,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "ThemeSettingOptions",
+        "name": "ThemeSettings",
         "description": "",
         "fields": [
           {
@@ -3182,7 +3182,7 @@
             "deprecationReason": null
           },
           {
-            "name": "updateThemeSettings",
+            "name": "updateThemes",
             "description": "",
             "args": [
               {
@@ -3213,7 +3213,7 @@
                       "name": null,
                       "ofType": {
                         "kind": "INPUT_OBJECT",
-                        "name": "InputThemeSettingOptions",
+                        "name": "InputThemeSettings",
                         "ofType": null
                       }
                     }
@@ -3223,15 +3223,19 @@
               }
             ],
             "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "insertThemeSettings",
+            "name": "insertThemes",
             "description": "",
             "args": [
               {
@@ -3262,7 +3266,7 @@
                       "name": null,
                       "ofType": {
                         "kind": "INPUT_OBJECT",
-                        "name": "InputThemeSettingOptions",
+                        "name": "InputThemeSettings",
                         "ofType": null
                       }
                     }
@@ -3272,9 +3276,13 @@
               }
             ],
             "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -3960,7 +3968,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "InputThemeSettingOptions",
+        "name": "InputThemeSettings",
         "description": "",
         "fields": null,
         "inputFields": [

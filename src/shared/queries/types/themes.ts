@@ -5,11 +5,11 @@
 import { ThemeSettingsUIInputTypes, ThemeSettingsUITags } from "./../../../../types/globalTypes";
 
 // ====================================================
-// GraphQL query operation: themeSettings
+// GraphQL query operation: themes
 // ====================================================
 
-export interface themeSettings_themeSettings_settings {
-  __typename: "ThemeSettingOptions";
+export interface themes_themes_settings {
+  __typename: "ThemeSettings";
   name: string;
   type: ThemeSettingsUIInputTypes;
   tag: ThemeSettingsUITags;
@@ -21,16 +21,16 @@ export interface themeSettings_themeSettings_settings {
   options: (string | null)[] | null;
 }
 
-export interface themeSettings_themeSettings {
-  __typename: "ThemeSettings";
+export interface themes_themes {
+  __typename: "Theme";
   name: string;
-  settings: themeSettings_themeSettings_settings[];
+  settings: themes_themes_settings[];
 }
 
-export interface themeSettings {
-  themeSettings: themeSettings_themeSettings[];
+export interface themes {
+  themes: themes_themes[];
 }
 
-export interface themeSettingsVariables {
+export interface themesVariables {
   name?: string | null;
 }

@@ -199,8 +199,8 @@ export const BLOG_STATS = gql`
 `;
 
 export const THEME_SETTINGS = gql`
-  query themeSettings($name: String) {
-    themeSettings(name: $name) {
+  query themes($name: String) {
+    themes(name: $name) {
       name
       settings {
         name
