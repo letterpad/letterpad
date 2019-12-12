@@ -24,7 +24,7 @@ import Settings from "./features/settings";
 // import Author from "./features/author";
 // import AuthorCreate from "./features/author/Create";
 import Taxonomy from "./features/taxonomy";
-// import NavigationBuilder from "./features/navigation-builder";
+import NavigationBuilder from "./features/navigation-builder";
 import Home from "./features/home";
 // import Themes from "./features/themes";
 // import StaticSite from "./features/static-site";
@@ -173,12 +173,12 @@ class Routes extends Component<RouteComponentProps, IState> {
               component={Settings}
               settings={settings}
             />
-            {/* <SecuredRoute
+            <SecuredRoute
               exact
               path="/admin/navigation-builder"
               settings={settings}
               component={NavigationBuilder}
-            /> */}
+            />
           </Fragment>
         </Switch>
       </I18nextProvider>

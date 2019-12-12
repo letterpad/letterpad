@@ -5,21 +5,21 @@
 import { TaxonomyTypes } from "./../../../../types/globalTypes";
 
 // ====================================================
-// GraphQL query operation: getTaxonomies
+// GraphQL query operation: taxonomies
 // ====================================================
 
-export interface getTaxonomies_taxonomies {
+export interface taxonomies_taxonomies {
   __typename: "Taxonomy";
   id: number;
   name: string;
-  desc: string;
+  desc: string | null;
   slug: string;
 }
 
-export interface getTaxonomies {
-  taxonomies: getTaxonomies_taxonomies[];
+export interface taxonomies {
+  taxonomies: taxonomies_taxonomies[];
 }
 
-export interface getTaxonomiesVariables {
+export interface taxonomiesVariables {
   type: TaxonomyTypes;
 }

@@ -36,7 +36,7 @@ const getMenuItems = function(arr) {
  * @class NavigationTreeBuilder
  * @extends {Component}
  */
-class NavigationTreeBuilder extends Component {
+class NavigationTreeBuilder extends Component<any, any> {
   static propTypes = {
     data: PropTypes.object.isRequired,
     categories: PropTypes.object,
@@ -64,17 +64,13 @@ class NavigationTreeBuilder extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (
-      !nextProps.categories.loading &&
-      !nextProps.pages.loading &&
-      !prevState.loaded
-    ) {
+    if (!prevState.loaded) {
       let menu = JSON.parse(nextProps.data.menu.value);
       const menuIds = getMenuItems(menu);
 
       // Loop through the categories and add a key "disabled".
       // The items which have been used in the navigation menu will have the value "disabled:true"
-      const categories = nextProps.categories.taxonomies.map(ele => {
+      const categories = nextProps.categories.map(ele => {
         return {
           id: ele.id,
           title: ele.name,
@@ -85,7 +81,7 @@ class NavigationTreeBuilder extends Component {
       });
       // Loop through the pages and add a key "disabled".
       // The items which have been used in the navigation menu will have the value "disabled: true"
-      const pages = nextProps.pages.posts.rows.map(ele => {
+      const pages = nextProps.pages.map(ele => {
         return {
           id: ele.id,
           title: ele.title,
@@ -105,9 +101,9 @@ class NavigationTreeBuilder extends Component {
    * @memberof NavigationTreeBuilder
    */
   addItem = (idx, type) => {
-    const newState = {};
+    const newState = { items: [] };
     newState[type] = [...this.state[type]];
-
+    newState[type][idx] = {};
     // All items which are added to the navigation should be disabled, so that they cannot be re-added.
     // This is not the case for folders. So when we add a folder, we change the id with a unique value
     // and then add this to the navigation to prevent mapping.
@@ -127,7 +123,7 @@ class NavigationTreeBuilder extends Component {
     }
 
     // merge the changes
-    newState.items = [...this.state.items, newState[type][idx]];
+    newState.items = [...this.state.items, newState[type][idx]] as any;
 
     this.setState({ ...newState }, () => {
       this.props.updateOption("menu", JSON.stringify(this.state.items));
@@ -153,7 +149,7 @@ class NavigationTreeBuilder extends Component {
     // A utility function to changed disabled to false for the item which is being removed
     const keepItemBack = item => {
       const type = item.type == "page" ? "pages" : "categories";
-      const newState = this.state[type].map(_item => {
+      const newState = this.state[type].map((_item: any) => {
         if (item.id == _item.id) {
           _item.disabled = false;
         }

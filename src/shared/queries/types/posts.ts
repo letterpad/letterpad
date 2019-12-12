@@ -43,12 +43,12 @@ export interface posts_posts_rows {
 
 export interface posts_posts {
   __typename: "PostNode";
-  count: number | null;
-  rows: (posts_posts_rows | null)[] | null;
+  count: number;
+  rows: posts_posts_rows[];
 }
 
 export interface posts {
-  posts: posts_posts | null;
+  posts: posts_posts;
 }
 
 export interface postsVariables {

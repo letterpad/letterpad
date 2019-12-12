@@ -13,10 +13,10 @@ import StyledGrid from "../../components/grid";
 import StyledButton from "../../components/button";
 import { TaxonomyTypes } from "../../../../types/globalTypes";
 import {
-  getTaxonomies,
-  getTaxonomiesVariables,
-  getTaxonomies_taxonomies,
-} from "../../../shared/queries/types/getTaxonomies";
+  taxonomies,
+  taxonomiesVariables,
+  taxonomies_taxonomies,
+} from "../../../shared/queries/types/taxonomies";
 import { GET_TAXONOMIES } from "../../../shared/queries/Queries";
 import apolloClient from "../../../shared/apolloClient";
 import {
@@ -80,11 +80,11 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
   const defaultTexts = texts(t)[type];
   const [selectedTaxonomyIndex, setTaxonomyIndex] = useState<number>(0);
   const [newTaxonomy, setNewTaxonomy] = useState<string>("");
-  const [taxonomies, setTaxonomies] = React.useState<
-    getTaxonomies_taxonomies[]
-  >([]);
+  const [taxonomies, setTaxonomies] = React.useState<taxonomies_taxonomies[]>(
+    [],
+  );
 
-  const { data, loading } = useQuery<getTaxonomies, getTaxonomiesVariables>(
+  const { data, loading } = useQuery<taxonomies, taxonomiesVariables>(
     GET_TAXONOMIES,
     {
       variables: {

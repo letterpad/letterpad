@@ -7,7 +7,7 @@ type Taxonomy {
   id: Int!
   name: String!
   type: TaxonomyTypes!
-  desc: String!
+  desc: String
   slug: String!
 }
 

@@ -49,8 +49,8 @@ input InputUpdatePost {
 }
 
 type PostNode {
-  count: Int
-  rows: [Post]
+  count: Int!
+  rows: [Post!]!
 }
 type PostTaxonomyNode {
   count: Int
@@ -162,7 +162,7 @@ input SinglePostFilters {
 type Query {
   post(filters: SinglePostFilters): Post
 
-  posts(filters: PostFiltersWithPagination): PostNode
+  posts(filters: PostFiltersWithPagination): PostNode!
 
   menuContent(filters: MenuFiltersWithPagination): PostTaxonomyNode
 

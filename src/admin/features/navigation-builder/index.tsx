@@ -1,95 +1,122 @@
-import React, { Component } from "react";
-import { graphql } from "@apollo/react-hoc";
+import React, { useEffect, useState } from "react";
 import { notify } from "react-notify-toast";
-import PropTypes from "prop-types";
-import { translate } from "react-i18next";
+import { translate, WithNamespaces } from "react-i18next";
 
 import Loader from "../../components/loader";
 import NavigationTreeBuilder from "./NavigationTreeBuilder";
 
-import UpdateOptions from "../../data-connectors/UpdateOptions";
 import { GET_TAXONOMIES, GET_POSTS } from "../../../shared/queries/Queries";
 
 import StyledSection from "../../components/section";
 import StyledButton from "../../components/button";
+import {
+  taxonomies_taxonomies,
+  taxonomies,
+  taxonomiesVariables,
+} from "../../../shared/queries/types/taxonomies";
+import { useQuery } from "react-apollo";
+import {
+  TaxonomyTypes,
+  PostTypes,
+  PostStatusOptions,
+  SettingOptions,
+} from "../../../../types/globalTypes";
+import {
+  posts,
+  postsVariables,
+  posts_posts,
+} from "../../../shared/queries/types/posts";
+import { getOptions_settings } from "../../../shared/queries/types/getOptions";
+import apolloClient from "../../../shared/apolloClient";
+import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 
-class NavigationBuilder extends Component<any, any> {
-  static propTypes = {
-    updateOptions: PropTypes.func,
-    options: PropTypes.object,
-    pages: PropTypes.object,
-    categories: PropTypes.object,
-    settings: PropTypes.object,
-    t: PropTypes.func,
-  };
-
-  updatedOptions: object = {};
-
-  constructor(props) {
-    super(props);
-    this.updatedOptions = {};
-    document.body.classList.add("navigation-builder-page");
-  }
-
-  componentWillUnmount() {
-    document.body.classList.remove("navigation-builder-page");
-  }
-
-  setOption = (option, value) => {
-    this.updatedOptions[option] = value;
-  };
-
-  submitData = e => {
-    e.preventDefault();
-    const settings = [];
-    for (const option in this.updatedOptions) {
-      if ({}.hasOwnProperty.call(this.updatedOptions, option)) {
-        settings.push({
-          option,
-          value: this.updatedOptions[option],
-        });
-      }
-    }
-    this.props.updateOptions(settings).then(() => {
-      notify.show("Navigation menu saved", "success", 3000);
-    });
-  };
-
-  render() {
-    if (this.props.settings.loading) {
-      return <Loader />;
-    }
-    const { t } = this.props;
-    return (
-      <StyledSection title={t("menu.title")} subtitle={t("menu.tagline")}>
-        <div>
-          <NavigationTreeBuilder
-            data={this.props.settings}
-            pages={this.props.pages}
-            categories={this.props.categories}
-            updateOption={this.setOption}
-          />
-          <StyledButton success onClick={this.submitData}>
-            {t("common.save")}
-          </StyledButton>
-        </div>
-      </StyledSection>
-    );
-  }
+interface INavigationBuilderProps extends WithNamespaces {
+  settings: { [option in SettingOptions]: getOptions_settings };
 }
 
-const CategoriesData = graphql(GET_TAXONOMIES, {
-  name: "categories",
-  options: () => ({ variables: { type: "post_category" } }),
-});
+// type that the internal state accepts
+type TypeUpdatedOptions = { [option in keyof typeof SettingOptions]?: string };
 
-const PagesData = graphql(GET_POSTS, {
-  name: "pages",
-  options: () => ({
-    variables: { filters: { type: "page", status: "publish" } },
-  }),
-});
+// Type that the api expects
+type TypeAPIUpdatedOptions = { option: SettingOptions; value: string };
 
-export default translate("translations")(
-  UpdateOptions(CategoriesData(PagesData(NavigationBuilder))),
-);
+const NavigationBuilder: React.FC<INavigationBuilderProps> = ({
+  t,
+  settings,
+}) => {
+  const [categories, setCategories] = useState<taxonomies_taxonomies[]>([]);
+  const [pages, setPages] = useState<posts_posts | []>([]);
+
+  const [updatedOptions, setUpdatedOptions] = useState<TypeUpdatedOptions>({});
+
+  const categoriesData = useQuery<taxonomies, taxonomiesVariables>(
+    GET_TAXONOMIES,
+    {
+      variables: {
+        type: TaxonomyTypes.post_category,
+      },
+    },
+  );
+  const pagesData = useQuery<posts, postsVariables>(GET_POSTS, {
+    variables: {
+      filters: { type: PostTypes.page, status: PostStatusOptions.publish },
+    },
+  });
+
+  useEffect(() => {
+    const { loading, data } = categoriesData;
+    if (!loading && data && data.taxonomies && data.taxonomies.length > 0) {
+      setCategories(data.taxonomies);
+    }
+  }, [categoriesData.loading]);
+
+  useEffect(() => {
+    const { loading, data } = pagesData;
+    if (!loading && data && data.posts && data.posts.rows.length > 0) {
+      setPages(data.posts);
+    }
+  }, [pagesData.loading]);
+
+  const setOption = (option: SettingOptions, value: string) => {
+    const newUpdates = { ...updatedOptions, [option]: value };
+    setUpdatedOptions(newUpdates);
+  };
+
+  const submitData = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    const settings: TypeAPIUpdatedOptions[] = [];
+    Object.keys(updatedOptions).forEach(option => {
+      settings.push({
+        option: SettingOptions[option],
+        value: updatedOptions[option],
+      });
+    });
+    await apolloClient(true).mutate({
+      mutation: UPDATE_OPTIONS,
+      variables: {
+        options: settings,
+      },
+    });
+    notify.show("Navigation menu saved", "success", 3000);
+  };
+  if (categoriesData.loading || pagesData.loading) {
+    return <Loader />;
+  }
+  return (
+    <StyledSection title={t("menu.title")} subtitle={t("menu.tagline")}>
+      <div>
+        <NavigationTreeBuilder
+          data={settings}
+          pages={pages}
+          categories={categories}
+          updateOption={setOption}
+        />
+        <StyledButton success onClick={submitData}>
+          {t("common.save")}
+        </StyledButton>
+      </div>
+    </StyledSection>
+  );
+};
+
+export default translate("translations")(NavigationBuilder);

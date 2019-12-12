@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 import styled from "styled-components";
 
@@ -40,7 +39,7 @@ const StyledResources = styled.div`
   }
 `;
 
-const Resources = ({ title, data, itemClicked, t }) => {
+const Resources: React.FC<any> = ({ title, data, itemClicked, t }) => {
   return (
     <StyledResources>
       <h5>{t(`menu.${title}`)}</h5>
@@ -63,18 +62,18 @@ const Resources = ({ title, data, itemClicked, t }) => {
   );
 };
 
-Resources.propTypes = {
-  title: PropTypes.string.isRequired,
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-      title: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      url: PropTypes.string,
-    }),
-  ),
-  itemClicked: PropTypes.func,
-  t: PropTypes.func,
-};
+// Resources.propTypes = {
+//   title: PropTypes.string.isRequired,
+//   data: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+//       title: PropTypes.string.isRequired,
+//       type: PropTypes.string.isRequired,
+//       url: PropTypes.string,
+//     }),
+//   ),
+//   itemClicked: PropTypes.func,
+//   t: PropTypes.func,
+// };
 
 export default translate("translations")(Resources);
