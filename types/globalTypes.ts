@@ -67,6 +67,18 @@ export enum ThemeSettingsUITags {
   select = "select",
 }
 
+export interface InputAuthor {
+  id: number;
+  email?: string | null;
+  fname?: string | null;
+  lname?: string | null;
+  bio?: string | null;
+  social?: Social | null;
+  password?: string | null;
+  roleId?: number | null;
+  avatar?: string | null;
+}
+
 export interface InputCreatePost {
   title?: string | null;
   body?: string | null;
@@ -135,6 +147,13 @@ export interface PostFiltersWithPagination {
 export interface SinglePostFilters {
   id?: number | null;
   slug?: string | null;
+}
+
+export interface Social {
+  github?: string | null;
+  facebook?: string | null;
+  twitter?: string | null;
+  instagram?: string | null;
 }
 
 export interface TaxonomyInputType {

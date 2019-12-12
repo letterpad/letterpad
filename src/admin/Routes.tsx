@@ -20,8 +20,8 @@ import CreateArticle from "./features/article/CreateArticle";
 import Article from "./features/article";
 import Settings from "./features/settings";
 // import Media from "./features/media";
-// import AuthorList from "./features/author-list";
-// import Author from "./features/author";
+import AuthorList from "./features/author-list";
+import Author from "./features/author";
 // import AuthorCreate from "./features/author/Create";
 import Taxonomy from "./features/taxonomy";
 import NavigationBuilder from "./features/navigation-builder";
@@ -179,6 +179,18 @@ class Routes extends Component<RouteComponentProps, IState> {
               settings={settings}
               component={NavigationBuilder}
             />
+            <SecuredRoute
+              exact
+              path="/admin/authors"
+              component={AuthorList}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/authors/edit/:id"
+              component={Author}
+              settings={settings}
+            />
           </Fragment>
         </Switch>
       </I18nextProvider>
@@ -241,18 +253,8 @@ function getI18nConfig(settings) {
 //               component={Media}
 //               settings={data}
 //             />
-//             <SecuredRoute
-//               exact
-//               path="/admin/authors"
-//               component={AuthorList}
-//               settings={data}
-//             />
-//             <SecuredRoute
-//               exact
-//               path="/admin/authors/edit/:id"
-//               component={Author}
-//               settings={data}
-//             />
+//
+//
 //             <SecuredRoute
 //               exact
 //               path="/admin/authors/new"

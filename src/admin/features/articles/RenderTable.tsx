@@ -3,6 +3,7 @@ import moment from "moment";
 import { Table } from "./ArticleList.css";
 import { filterTaxonomies } from ".";
 import { Link } from "react-router-dom";
+
 const RenderTable = ({ data, setSelection }) => {
   return (
     <Table

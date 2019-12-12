@@ -16,11 +16,11 @@ export interface updatePost_updatePost_errors {
 
 export interface updatePost_updatePost_post_author {
   __typename: "Author";
-  username: string | null;
-  lname: string | null;
-  fname: string | null;
+  username: string;
+  lname: string;
+  fname: string;
   avatar: string | null;
-  bio: string | null;
+  bio: string;
 }
 
 export interface updatePost_updatePost_post_taxonomies {

@@ -176,7 +176,7 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
   };
 
   let slug: string = "",
-    desc: string = "",
+    desc: string | null = "",
     id: number = 0,
     name: string = "";
 

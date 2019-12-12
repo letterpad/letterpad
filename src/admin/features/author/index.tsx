@@ -1,108 +1,109 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
 import { notify } from "react-notify-toast";
-import { Query } from "react-apollo";
 
 import Basic from "./Basic";
 import Social from "./Social";
 import PasswordChange from "./PasswordChange";
 
 import StyledSection from "../../components/section";
-import StyledGrid from "../../components/grid";
-import StyledCard from "../../components/card";
-import StyledButton from "../../components/button";
+import Button from "../../components/button";
+import Tabs from "../../components/tabs";
 
-import UpdateAuthor from "../../data-connectors/UpdateAuthor";
-import Loader from "../../components/loader";
+import { RouteComponentProps } from "react-router";
+import apolloClient from "../../../shared/apolloClient";
+import { UPDATE_AUTHOR } from "../../../shared/queries/Mutations";
+import {
+  getAuthor,
+  getAuthorVariables,
+  getAuthor_author,
+} from "../../../shared/queries/types/getAuthor";
+import {
+  updateAuthor,
+  updateAuthorVariables,
+} from "../../../shared/queries/types/updateAuthor";
 import { GET_AUTHOR } from "../../../shared/queries/Queries";
+import Loader from "../../components/loader";
+import { InputAuthor } from "../../../../types/globalTypes";
 
-class EditAuthor extends Component {
-  static propTypes = {
-    author: PropTypes.object,
-    updateAuthor: PropTypes.func,
-    loading: PropTypes.bool,
-  };
-
-  author = {};
-
-  gridLoaded = element => {
-    this.textInput = element;
-  };
-
-  componentDidMount() {
-    document.body.classList.add("edit-author-page");
-  }
-
-  componentWillUnmount() {
-    document.body.classList.remove("edit-author-page");
-  }
-
-  setOption = (option, value) => {
-    this.author[option] = value;
-  };
-
-  submitData = async e => {
-    e.preventDefault();
-    this.author.id = this.props.author.id;
-    const update = await this.props.updateAuthor(this.author);
-    let { errors } = update.data.updateAuthor;
-    if (errors && errors.length > 0) {
-      errors = errors.map(error => error.message);
-      notify.show(errors.join("\n"), "error");
-    } else {
-      notify.show("Author updated", "success");
-    }
-  };
-
-  render() {
-    return (
-      <Query query={GET_AUTHOR}>
-        {({ loading, data }) => {
-          if (loading) return <Loader />;
-          const { fname, lname } = data.author;
-          return (
-            <StyledSection
-              title={`Edit Author - ${fname} ${lname}`}
-              subtitle=""
-            >
-              <StyledGrid columns="repeat(auto-fit,minmax(300px, 1fr))">
-                <StyledCard>
-                  <div>
-                    <Basic data={data.author} updateOption={this.setOption} />
-                    <StyledButton success onClick={this.submitData}>
-                      Save
-                    </StyledButton>
-                  </div>
-                </StyledCard>
-                <StyledCard>
-                  <div>
-                    <Social
-                      data={data.author.social}
-                      updateOption={this.setOption}
-                    />
-                    <StyledButton success onClick={this.submitData}>
-                      Save
-                    </StyledButton>
-                  </div>
-                </StyledCard>
-                <StyledCard>
-                  <div>
-                    <PasswordChange
-                      data={data.author}
-                      updateOption={this.setOption}
-                    />
-                    <StyledButton success onClick={this.submitData}>
-                      Save
-                    </StyledButton>
-                  </div>
-                </StyledCard>
-              </StyledGrid>
-            </StyledSection>
-          );
-        }}
-      </Query>
-    );
-  }
+interface ISettingsProps {
+  router: RouteComponentProps;
 }
 
-export default UpdateAuthor(EditAuthor);
+const Author: React.FC<ISettingsProps> = ({ router }) => {
+  const urlParams = new URLSearchParams(router.history.location.search);
+  const [selectedTab] = useState<string>(urlParams.get("tab") || "basic");
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [author, setAuthor] = useState<getAuthor_author>();
+  const [updatedAuthor, setUpdatedAuthor] = useState<InputAuthor>({ id: 0 });
+
+  const fetchAuthor = async () => {
+    const { loading, data } = await apolloClient().query<
+      getAuthor,
+      getAuthorVariables
+    >({
+      query: GET_AUTHOR,
+      variables: {
+        id: parseInt(router.match.params["id"]),
+      },
+    });
+    const { author } = data;
+    if (author) {
+      delete author.social.__typename;
+      delete author.__typename;
+      delete author.role.__typename;
+      setAuthor(data.author);
+      setUpdatedAuthor({ id: data.author.id });
+    }
+    setLoading(loading);
+  };
+
+  useEffect(() => {
+    fetchAuthor();
+  }, []);
+
+  const setOption = (option: string, value: string) => {
+    const updated = { ...updatedAuthor, [option]: value };
+    setUpdatedAuthor(updated);
+  };
+
+  const handleTabChange = (page: string) => {
+    router.history.push({
+      pathname: router.history.location.pathname,
+      search: "?tab=" + page,
+    });
+  };
+
+  const submitData = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    await apolloClient(true).mutate<updateAuthor, updateAuthorVariables>({
+      mutation: UPDATE_AUTHOR,
+      variables: {
+        author: updatedAuthor as InputAuthor,
+      },
+    });
+    notify.show("Author information saved", "success", 3000);
+  };
+
+  if (loading || !author) return <Loader />;
+  return (
+    <StyledSection>
+      <Tabs activeTab={selectedTab} onChange={handleTabChange}>
+        <Basic label="basic" data={author} updateOption={setOption} />
+        <Social label="social" data={author.social} updateOption={setOption} />
+        <PasswordChange
+          label="passwordChange"
+          data={author}
+          updateOption={setOption}
+        />
+        <br />
+        <br />
+        <Button success onClick={submitData}>
+          Save
+        </Button>
+      </Tabs>
+    </StyledSection>
+  );
+};
+
+export default Author;

@@ -102,30 +102,8 @@ export const BULK_DELETE_POSTS = gql`
 `;
 
 export const UPDATE_AUTHOR = gql`
-  mutation updateAuthor(
-    $id: Int!
-    $email: String
-    $fname: String
-    $lname: String
-    $password: String
-    $username: String
-    $social: String
-    $avatar: String
-    $roleId: Int
-    $bio: String
-  ) {
-    updateAuthor(
-      id: $id
-      email: $email
-      password: $password
-      username: $username
-      social: $social
-      fname: $fname
-      lname: $lname
-      avatar: $avatar
-      roleId: $roleId
-      bio: $bio
-    ) {
+  mutation updateAuthor($author: InputAuthor!) {
+    updateAuthor(author: $author) {
       ok
       errors {
         path

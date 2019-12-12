@@ -10,10 +10,10 @@ import { TaxonomyTypes } from "./../../../../types/globalTypes";
 
 export interface postFields_author {
   __typename: "Author";
-  fname: string | null;
-  lname: string | null;
+  fname: string;
+  lname: string;
   avatar: string | null;
-  bio: string | null;
+  bio: string;
 }
 
 export interface postFields_taxonomies {

@@ -48,7 +48,7 @@ export const GET_MEDIA = gql`
 `;
 
 export const GET_AUTHORS = gql`
-  query getAuthors {
+  query authors {
     authors {
       id
       email
@@ -75,7 +75,12 @@ export const GET_AUTHOR = gql`
       email
       fname
       lname
-      social
+      social {
+        facebook
+        instagram
+        github
+        twitter
+      }
       avatar
       bio
       role {

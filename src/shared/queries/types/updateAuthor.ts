@@ -2,6 +2,8 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { InputAuthor } from "./../../../../types/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: updateAuthor
 // ====================================================
@@ -23,14 +25,5 @@ export interface updateAuthor {
 }
 
 export interface updateAuthorVariables {
-  id: number;
-  email?: string | null;
-  fname?: string | null;
-  lname?: string | null;
-  password?: string | null;
-  username?: string | null;
-  social?: string | null;
-  avatar?: string | null;
-  roleId?: number | null;
-  bio?: string | null;
+  author: InputAuthor;
 }

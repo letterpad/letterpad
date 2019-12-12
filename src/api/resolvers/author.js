@@ -7,7 +7,13 @@ import { getEmailBody } from "../utils/common";
 
 export default {
   Query: {
-    author: (root, args, { models }) => models.Author.findOne({ where: args }),
+    author: async (root, args, { models }) => {
+      const author = await models.Author.findOne({ where: args });
+      if (author) {
+        author.social = JSON.parse(author.dataValues.social);
+      }
+      return author;
+    },
 
     authors: (root, args, { models }) => models.Author.findAll({ where: args }),
 
@@ -106,9 +112,12 @@ export default {
     updateAuthor: requiresAdmin.createResolver(
       async (root, args, { models }) => {
         try {
-          const newArgs = { ...args };
-          if (args.password) {
-            newArgs.password = await bcrypt.hash(args.password, 12);
+          const newArgs = { ...args.author };
+          if (args.author.password) {
+            newArgs.password = await bcrypt.hash(args.author.password, 12);
+          }
+          if (args.author.social) {
+            newArgs.social = JSON.stringify(args.author.social);
           }
           await models.Author.update(newArgs, {
             where: { id: newArgs.id },

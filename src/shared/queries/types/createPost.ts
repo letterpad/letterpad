@@ -16,7 +16,7 @@ export interface createPost_createPost_errors {
 
 export interface createPost_createPost_post_author {
   __typename: "Author";
-  username: string | null;
+  username: string;
 }
 
 export interface createPost_createPost_post_taxonomies {

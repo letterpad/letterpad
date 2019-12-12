@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 
 import StyledInput from "../../components/input";
 import StyledTitleHeader from "../../components/title-header";
 
-class PasswordChange extends Component {
-  static propTypes = {
-    updateOption: PropTypes.func,
-    t: PropTypes.func,
-  };
+class PasswordChange extends Component<any, any> {
+  // static propTypes = {
+  //   updateOption: PropTypes.func,
+  //   t: PropTypes.func,
+  // };
 
-  updateOption = (option, value) => {
-    this.props.updateOption("password", value);
+  updateOption = (option: any, value: any) => {
+    this.props.updateOption(option, value);
   };
 
   render() {

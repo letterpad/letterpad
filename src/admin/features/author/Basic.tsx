@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 import { notify } from "react-notify-toast";
 
@@ -7,26 +6,26 @@ import StyledInput from "../../components/input";
 import StyledTitleHeader from "../../components/title-header";
 
 import { uploadFile } from "../../server/util";
-import config from "config";
+import config from "../../../config";
 
-class Basic extends Component {
-  static propTypes = {
-    data: PropTypes.object,
-    updateOption: PropTypes.func,
-    t: PropTypes.func,
-  };
+class Basic extends Component<any, any> {
+  // static propTypes = {
+  //   data: PropTypes.object,
+  //   updateOption: PropTypes.func,
+  //   t: PropTypes.func,
+  // };
 
-  uploadInputRef = React.createRef();
+  uploadInputRef = React.createRef<HTMLInputElement>();
 
   state = {
     avatar: this.props.data.avatar,
   };
 
-  updateOption = (option, value) => {
+  updateOption = (option: string, value: string) => {
     this.props.updateOption(option, value);
   };
 
-  uploadAvatar = async files => {
+  uploadAvatar = async (files: FileList) => {
     const uploadedFiles = await uploadFile({ files });
     const { src, errors } = uploadedFiles[0];
     if (errors) {
@@ -37,7 +36,7 @@ class Basic extends Component {
     this.setState({ avatar: src });
   };
 
-  updateAvatar = avatar => {
+  updateAvatar = (avatar: string) => {
     this.updateOption("avatar", avatar);
     this.setState({ avatar });
   };
@@ -96,7 +95,9 @@ class Basic extends Component {
                 href="#"
                 onClick={e => {
                   e.preventDefault();
-                  this.uploadInputRef.current.click();
+                  if (this.uploadInputRef.current) {
+                    this.uploadInputRef.current.click();
+                  }
                 }}
               >
                 Add Avatar
@@ -115,7 +116,9 @@ class Basic extends Component {
           </section>
           <input
             ref={this.uploadInputRef}
-            onChange={input => this.uploadAvatar(input.target.files)}
+            onChange={input =>
+              input.target.files && this.uploadAvatar(input.target.files)
+            }
             type="file"
             className="hide"
             name="uploads[]"

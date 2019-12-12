@@ -10,10 +10,10 @@ import { SinglePostFilters, TaxonomyTypes } from "./../../../../types/globalType
 
 export interface post_post_author {
   __typename: "Author";
-  fname: string | null;
-  lname: string | null;
+  fname: string;
+  lname: string;
   avatar: string | null;
-  bio: string | null;
+  bio: string;
 }
 
 export interface post_post_taxonomies {

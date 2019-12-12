@@ -6,6 +6,14 @@
 // GraphQL query operation: getAuthor
 // ====================================================
 
+export interface getAuthor_author_social {
+  __typename: "TypeSocial";
+  facebook: string;
+  instagram: string;
+  github: string;
+  twitter: string;
+}
+
 export interface getAuthor_author_role_permissions {
   __typename: "Permission";
   name: string | null;
@@ -19,19 +27,19 @@ export interface getAuthor_author_role {
 
 export interface getAuthor_author {
   __typename: "Author";
-  id: number | null;
-  username: string | null;
-  email: string | null;
-  fname: string | null;
-  lname: string | null;
-  social: string | null;
+  id: number;
+  username: string;
+  email: string;
+  fname: string;
+  lname: string;
+  social: getAuthor_author_social;
   avatar: string | null;
-  bio: string | null;
-  role: getAuthor_author_role | null;
+  bio: string;
+  role: getAuthor_author_role;
 }
 
 export interface getAuthor {
-  author: getAuthor_author | null;
+  author: getAuthor_author;
 }
 
 export interface getAuthorVariables {
