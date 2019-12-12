@@ -2,6 +2,8 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { EnumRoles } from "./../../../../types/globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: createAuthor
 // ====================================================
@@ -26,5 +28,5 @@ export interface createAuthorVariables {
   email: string;
   fname?: string | null;
   lname?: string | null;
-  roleId?: number | null;
+  roleName?: EnumRoles | null;
 }

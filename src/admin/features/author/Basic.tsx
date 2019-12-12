@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { translate } from "react-i18next";
 import { notify } from "react-notify-toast";
-
+import StyledSelect from "../../components/select";
 import StyledInput from "../../components/input";
 import StyledTitleHeader from "../../components/title-header";
 
@@ -9,12 +9,6 @@ import { uploadFile } from "../../server/util";
 import config from "../../../config";
 
 class Basic extends Component<any, any> {
-  // static propTypes = {
-  //   data: PropTypes.object,
-  //   updateOption: PropTypes.func,
-  //   t: PropTypes.func,
-  // };
-
   uploadInputRef = React.createRef<HTMLInputElement>();
 
   state = {
@@ -84,6 +78,17 @@ class Basic extends Component<any, any> {
           onBlur={e => this.updateOption("email", e.target.value)}
         />
 
+        <StyledSelect
+          bold
+          label="Role"
+          selected={this.props.data.roleName}
+          options={this.props.roles.map(role => {
+            return { name: role.name, value: role.name };
+          })}
+          onChange={this.props.onRoleeChange}
+        />
+        <br />
+        <br />
         <section>
           <label className="custom-label">Upload Avatar</label>
           <section className="avatar-wrapper">

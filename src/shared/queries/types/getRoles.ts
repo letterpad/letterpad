@@ -2,16 +2,18 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { EnumRoles } from "./../../../../types/globalTypes";
+
 // ====================================================
 // GraphQL query operation: getRoles
 // ====================================================
 
 export interface getRoles_roles {
   __typename: "Role";
-  id: number | null;
-  name: string | null;
+  id: number;
+  name: EnumRoles;
 }
 
 export interface getRoles {
-  roles: (getRoles_roles | null)[] | null;
+  roles: getRoles_roles[];
 }

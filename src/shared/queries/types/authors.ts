@@ -2,6 +2,8 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { EnumRoles } from "./../../../../types/globalTypes";
+
 // ====================================================
 // GraphQL query operation: authors
 // ====================================================
@@ -13,7 +15,7 @@ export interface authors_authors_role_permissions {
 
 export interface authors_authors_role {
   __typename: "Role";
-  name: string | null;
+  name: EnumRoles | null;
   permissions: (authors_authors_role_permissions | null)[] | null;
 }
 

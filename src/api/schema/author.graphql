@@ -85,6 +85,6 @@ type Mutation {
     email: String!
     fname: String
     lname: String
-    roleId: Int
+    roleName: EnumRoles
   ): CreateAuthorResponse
 }

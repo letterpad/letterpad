@@ -22,11 +22,10 @@ import Settings from "./features/settings";
 // import Media from "./features/media";
 import AuthorList from "./features/author-list";
 import Author from "./features/author";
-// import AuthorCreate from "./features/author/Create";
+import AuthorCreate from "./features/author/Create";
 import Taxonomy from "./features/taxonomy";
 import NavigationBuilder from "./features/navigation-builder";
 import Home from "./features/home";
-// import Themes from "./features/themes";
 // import StaticSite from "./features/static-site";
 
 // css
@@ -191,6 +190,12 @@ class Routes extends Component<RouteComponentProps, IState> {
               component={Author}
               settings={settings}
             />
+            <SecuredRoute
+              exact
+              path="/admin/authors/new"
+              component={AuthorCreate}
+              settings={settings}
+            />
           </Fragment>
         </Switch>
       </I18nextProvider>
@@ -255,12 +260,7 @@ function getI18nConfig(settings) {
 //             />
 //
 //
-//             <SecuredRoute
-//               exact
-//               path="/admin/authors/new"
-//               component={AuthorCreate}
-//               settings={data}
-//             />
+//
 //             <SecuredRoute
 //               exact
 //               path="/admin/edit-profile"
@@ -273,10 +273,5 @@ function getI18nConfig(settings) {
 //               component={StaticSite}
 //               settings={data}
 //             />
-//             <SecuredRoute
-//               exact
-//               path="/admin/navigation-builder"
-//               settings={data}
-//               component={NavigationBuilder}
-//             />
+//
 //           </Fragment>

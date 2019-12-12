@@ -137,8 +137,10 @@ export default {
     createAuthor: requiresAdmin.createResolver(
       async (root, args, { models }) => {
         try {
-          const newArgs = { ...args };
-
+          let { roleName, ...newArgs } = args;
+          if (!roleName) {
+            roleName = "READER";
+          }
           const author = await models.Author.findOne({
             where: { email: newArgs.email },
           });
@@ -153,17 +155,20 @@ export default {
               ],
             };
           }
-
           const randomPassword = Math.random()
             .toString(36)
             .substr(2);
+
           newArgs.password = await bcrypt.hash(randomPassword, 12);
+
+          const role = await models.Role.findOne({
+            where: { name: roleName },
+          });
+
+          newArgs.roleId = role.id;
 
           await models.Author.create(newArgs, {
             where: { id: newArgs.id },
-          });
-          const role = await models.Role.findOne({
-            where: { id: newArgs.roleId },
           });
 
           const variables = {

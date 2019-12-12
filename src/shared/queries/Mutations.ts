@@ -118,9 +118,14 @@ export const CREATE_AUTHOR = gql`
     $email: String!
     $fname: String
     $lname: String
-    $roleId: Int
+    $roleName: EnumRoles
   ) {
-    createAuthor(email: $email, fname: $fname, lname: $lname, roleId: $roleId) {
+    createAuthor(
+      email: $email
+      fname: $fname
+      lname: $lname
+      roleName: $roleName
+    ) {
       ok
       errors {
         path

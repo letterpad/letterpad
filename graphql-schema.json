@@ -831,8 +831,8 @@
             "description": "",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "ENUM",
+              "name": "EnumRoles",
               "ofType": null
             },
             "isDeprecated": false,
@@ -858,6 +858,41 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "EnumRoles",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "ADMIN",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "REVIEWER",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "AUTHOR",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "READER",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -2779,11 +2814,11 @@
                 "defaultValue": null
               },
               {
-                "name": "roleId",
+                "name": "roleName",
                 "description": "",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
+                  "kind": "ENUM",
+                  "name": "EnumRoles",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -5203,6 +5238,41 @@
           },
           {
             "name": "authorName",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "EnumPermissions",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "READ_ONLY_POSTS",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "MANAGE_ALL_POSTS",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "MANAGE_USERS",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "MANAGE_SETTINGS",
             "description": "",
             "isDeprecated": false,
             "deprecationReason": null

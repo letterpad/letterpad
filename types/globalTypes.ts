@@ -6,6 +6,13 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum EnumRoles {
+  ADMIN = "ADMIN",
+  AUTHOR = "AUTHOR",
+  READER = "READER",
+  REVIEWER = "REVIEWER",
+}
+
 export enum MenuTypes {
   category = "category",
   page = "page",
