@@ -183,7 +183,7 @@ export const INSERT_MEDIA = gql`
 `;
 
 export const DELETE_MEDIA = gql`
-  mutation deleteMedia($ids: String!) {
+  mutation deleteMedia($ids: [Int!]!) {
     deleteMedia(ids: $ids) {
       ok
     }

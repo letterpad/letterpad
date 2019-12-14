@@ -1,0 +1,39 @@
+type Media {
+  id: Int!
+  authorId: Int!
+  url: String!
+  createdAt: Date!
+  name: String
+  description: String
+}
+
+type MediaNode {
+  count: Int!
+  rows: [Media]!
+}
+
+type DeleteResponse {
+  ok: Boolean!
+}
+
+type UpdateResponse {
+  ok: Boolean!
+  errors: [Error]
+}
+
+input MediaFiltersWithPagination {
+  id: Int
+  cursor: Int
+  limit: Int
+  page: Int
+}
+
+type Query {
+  media(filters: MediaFiltersWithPagination): MediaNode!
+}
+
+type Mutation {
+  insertMedia(url: String): Media
+  deleteMedia(ids: [Int!]!): DeleteResponse
+  updateMedia(id: Int!, name: String, description: String): UpdateResponse
+}

@@ -55,7 +55,7 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
           }}
           sm
         >
-          Add Media
+          Create Author
         </StyledButton>
         <br />
         <br />

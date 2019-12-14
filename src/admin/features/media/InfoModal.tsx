@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { translate } from "react-i18next";
+import { translate, WithNamespaces } from "react-i18next";
 
 import StyledInput from "../../components/input";
 import StyledButton from "../../components/button";
@@ -10,17 +9,16 @@ import Loader from "../../components/loader";
 import config from "../../../config";
 
 import StyledInfoModal from "./InfoModal.css";
+import { media_media_rows } from "../../../shared/queries/types/media";
 
-class EditMediaInfo extends Component {
-  static propTypes = {
-    media: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired,
-    previous: PropTypes.func.isRequired,
-    next: PropTypes.func.isRequired,
-    updateMedia: PropTypes.func.isRequired,
-    t: PropTypes.func,
-  };
+interface IEditMediaInfoProps extends WithNamespaces {
+  media: media_media_rows;
+  previous: () => void;
+  next: () => void;
+  onClose: () => void;
+}
 
+class EditMediaInfo extends Component<IEditMediaInfoProps, any> {
   state = {
     media: {
       id: this.props.media.id,
@@ -30,9 +28,9 @@ class EditMediaInfo extends Component {
     saving: false,
   };
 
-  itemName = React.createRef();
+  itemName = React.createRef<HTMLInputElement>();
 
-  static getDerivedStateFromProps(newProps, oldState) {
+  static getDerivedStateFromProps(newProps: IEditMediaInfoProps, oldState) {
     if (oldState.media.id === newProps.media.id) return null;
     return {
       media: {
@@ -44,27 +42,36 @@ class EditMediaInfo extends Component {
   }
 
   componentDidMount() {
-    this.itemName.current.focus();
+    if (this.itemName.current) {
+      this.itemName.current.focus();
+    }
   }
 
-  onChange = (field, value) => {
-    this.setState({ media: { ...this.state.media, [field]: value } });
+  onChange = (e: React.ChangeEvent) => {
+    const { nodeValue } = e.target;
+    if (e.target["name"]) {
+      this.setState({
+        media: { ...this.state.media, [e.target["name"]]: nodeValue },
+      });
+    }
   };
 
-  goPrevious = e => {
+  goPrevious = (e: React.SyntheticEvent) => {
     e.preventDefault();
     this.updateMedia();
     this.props.previous();
   };
 
-  goNext = e => {
+  goNext = (e: React.SyntheticEvent) => {
     e.preventDefault();
     this.updateMedia();
     this.props.next();
   };
 
-  updateMedia = async e => {
-    e.persist();
+  updateMedia = async (e?: React.SyntheticEvent) => {
+    if (e) {
+      e.persist();
+    }
     // get the old values
     const { name, description } = this.props.media;
     // compare with current state to see if there is a change.
@@ -74,13 +81,8 @@ class EditMediaInfo extends Component {
     ) {
       this.setState({ saving: true });
       // if yes, update the backend.
-      const update = await this.props.updateMedia(this.state.media);
-      if (update.data.updateMedia.ok) {
-        this.setState({ saving: false });
-      }
-    }
-    if (e && e.target.type == "button") {
-      this.props.onClose();
+
+      // TODO: update the info
     }
   };
 
@@ -108,18 +110,17 @@ class EditMediaInfo extends Component {
                 </div>
                 <StyledInput
                   label="Title"
-                  value={this.state.media.name}
+                  value={this.state.media.name || ""}
                   placeholder="Give a name for this item"
-                  innerRef={this.itemName}
-                  onChange={e => this.onChange("name", e.target.value)}
+                  name="name"
+                  onChange={this.onChange}
                 />
                 <StyledInput
                   label="Description"
-                  value={this.state.media.description}
-                  textarea
-                  rows="2"
+                  value={this.state.media.description || ""}
+                  name="description"
                   placeholder="Write a short description about this item"
-                  onChange={e => this.onChange("description", e.target.value)}
+                  onChange={this.onChange}
                 />
               </div>
             </div>

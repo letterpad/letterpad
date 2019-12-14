@@ -10,8 +10,8 @@ import { EnumRoles } from "./../../../../types/globalTypes";
 
 export interface getRoles_roles {
   __typename: "Role";
-  id: number;
-  name: EnumRoles;
+  id: number | null;
+  name: EnumRoles | null;
 }
 
 export interface getRoles {

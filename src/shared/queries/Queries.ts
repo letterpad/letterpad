@@ -33,8 +33,8 @@ export const GET_SINGLE_POST = gql`
 // `;
 
 export const GET_MEDIA = gql`
-  query getMedia($authorId: Int!, $offset: Int, $limit: Int) {
-    media(authorId: $authorId, offset: $offset, limit: $limit) {
+  query media($filters: MediaFiltersWithPagination) {
+    media(filters: $filters) {
       count
       rows {
         id

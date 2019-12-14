@@ -106,6 +106,7 @@ export async function insertRolePermData(models) {
       role.addPermission(MANAGE_ALL_POSTS),
       role.addPermission(MANAGE_USERS),
       role.addPermission(MANAGE_SETTINGS),
+      role.addPermission(MANAGE_OWN_POSTS),
     ]);
   }
 

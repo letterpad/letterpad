@@ -124,6 +124,13 @@ export interface InputUpdatePost {
   taxonomies?: (TaxonomyInputType | null)[] | null;
 }
 
+export interface MediaFiltersWithPagination {
+  id?: number | null;
+  cursor?: number | null;
+  limit?: number | null;
+  page?: number | null;
+}
+
 export interface MenuFiltersWithPagination {
   slug?: string | null;
   type: MenuTypes;

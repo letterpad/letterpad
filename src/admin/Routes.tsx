@@ -19,14 +19,14 @@ import Articles from "./features/articles";
 import CreateArticle from "./features/article/CreateArticle";
 import Article from "./features/article";
 import Settings from "./features/settings";
-// import Media from "./features/media";
+import Media from "./features/media";
 import AuthorList from "./features/author-list";
 import Author from "./features/author";
 import AuthorCreate from "./features/author/Create";
 import Taxonomy from "./features/taxonomy";
 import NavigationBuilder from "./features/navigation-builder";
 import Home from "./features/home";
-// import StaticSite from "./features/static-site";
+import StaticSite from "./features/static-site";
 
 // css
 import "./public/pcss/admin.pcss";
@@ -192,8 +192,26 @@ class Routes extends Component<RouteComponentProps, IState> {
             />
             <SecuredRoute
               exact
+              path="/admin/edit-profile"
+              component={Author}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
               path="/admin/authors/new"
               component={AuthorCreate}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/static-site"
+              component={StaticSite}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/media"
+              component={Media}
               settings={settings}
             />
           </Fragment>
@@ -261,17 +279,7 @@ function getI18nConfig(settings) {
 //
 //
 //
-//             <SecuredRoute
-//               exact
-//               path="/admin/edit-profile"
-//               component={Author}
-//               settings={data}
-//             />
-//             <SecuredRoute
-//               exact
-//               path="/admin/static-site"
-//               component={StaticSite}
-//               settings={data}
-//             />
+//
+//
 //
 //           </Fragment>

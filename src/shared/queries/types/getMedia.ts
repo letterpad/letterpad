@@ -22,7 +22,7 @@ export interface getMedia_media {
 }
 
 export interface getMedia {
-  media: getMedia_media | null;
+  media: getMedia_media;
 }
 
 export interface getMediaVariables {

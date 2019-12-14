@@ -23,5 +23,5 @@ type Permission {
   name: String!
 }
 type Query {
-  roles: [Role]!
+  roles: [Role!]!
 }

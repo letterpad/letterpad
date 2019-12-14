@@ -10,7 +10,7 @@ import { EnumRoles } from "./../../../../types/globalTypes";
 
 export interface authors_authors_role_permissions {
   __typename: "Permission";
-  name: string | null;
+  name: string;
 }
 
 export interface authors_authors_role {

@@ -21,7 +21,7 @@ export interface createAuthor_createAuthor {
 }
 
 export interface createAuthor {
-  createAuthor: createAuthor_createAuthor | null;
+  createAuthor: createAuthor_createAuthor;
 }
 
 export interface createAuthorVariables {

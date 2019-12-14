@@ -11,7 +11,7 @@
     "preinstall": "./utils/preinstall.sh",
     "postinstall": "./utils/postinstall.sh",
     "dev": "NODE_ENV=dev concurrently --kill-others \"ts-node ./src/start.ts --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
-    "api": "NODE_ENV=dev concurrently --kill-others \"nodemon --watch src/api ./src/start.ts\"",
+    "api": "NODE_ENV=dev concurrently --kill-others \"nodemon -e ts,json,js --watch ./src/api ./src/start.ts\"",
     "prod": "NODE_ENV=production concurrently --kill-others \"node ./dist/server.js\"",
     "start": "yarn prod",
     "prodPm2": "./forever.sh",
@@ -88,7 +88,7 @@
     "sequelize": "^5.18.4",
     "sequelize-cli": "^5.5.1",
     "sharp": "^0.23.4",
-    "sqlite3": "^4.1.0",
+    "sqlite3": "^4.1.1",
     "styled-components": "^4.4.1"
   },
   "resolutions": {

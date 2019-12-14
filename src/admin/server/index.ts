@@ -14,7 +14,7 @@ export const clientOpts = {
 };
 
 export default (app: Express) => {
-  app.get(config.baseName + "/admin/generate-static-site", generateStaticSite);
+  app.get(config.baseName + "/admin/generateStaticSite", generateStaticSite);
   app.get(config.baseName + "/admin/create-pull-request", createPR);
   app.get(config.baseName + "/admin/getThemes", getThemes);
   app.get(config.baseName + "/admin/*", getHtml);

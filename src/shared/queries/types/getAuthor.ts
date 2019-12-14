@@ -10,15 +10,15 @@ import { EnumRoles } from "./../../../../types/globalTypes";
 
 export interface getAuthor_author_social {
   __typename: "TypeSocial";
-  facebook: string;
-  instagram: string;
-  github: string;
-  twitter: string;
+  facebook: string | null;
+  instagram: string | null;
+  github: string | null;
+  twitter: string | null;
 }
 
 export interface getAuthor_author_role_permissions {
   __typename: "Permission";
-  name: string | null;
+  name: string;
 }
 
 export interface getAuthor_author_role {

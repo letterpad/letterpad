@@ -5,7 +5,7 @@ const EditMediaInfo = styled.div`
     max-width: 700px;
     margin: auto;
     .media-wrapper {
-      height: 400px;
+      height: 300px;
       max-width: 700px;
 
       img {

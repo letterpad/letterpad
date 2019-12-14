@@ -6,10 +6,10 @@ input Social {
 }
 
 type TypeSocial {
-  github: String!
-  facebook: String!
-  twitter: String!
-  instagram: String!
+  github: String
+  facebook: String
+  twitter: String
+  instagram: String
 }
 
 type Author {
@@ -86,5 +86,5 @@ type Mutation {
     fname: String
     lname: String
     roleName: EnumRoles
-  ): CreateAuthorResponse
+  ): CreateAuthorResponse!
 }

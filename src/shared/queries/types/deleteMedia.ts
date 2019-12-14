@@ -16,5 +16,5 @@ export interface deleteMedia {
 }
 
 export interface deleteMediaVariables {
-  ids: string;
+  ids: number[];
 }

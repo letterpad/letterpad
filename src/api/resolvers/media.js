@@ -32,18 +32,30 @@ export default {
       if (!user || !user.id) {
         throw new UnauthorizedError({ url: "/media" });
       }
-      const columns = Object.keys(models.Post.rawAttributes);
-      const conditions = getConditions(columns, args);
+      const conditions = { include: [], where: {}, limit: 20 };
+      if (args.filters) {
+        const { id, authorId, cursor, limit, page } = args.filters;
 
-      const count = await models.Media.count(conditions);
-      if (args.cursor) {
-        conditions.where.id = { gt: args.cursor };
+        if (id) {
+          conditions.where = { ...conditions.where, id };
+        }
+        if (authorId) {
+          conditions.where = { ...conditions.where, authorId };
+        }
+        if (limit) {
+          conditions.limit = limit;
+        }
+        if (cursor) {
+          conditions.where.id = { [Sequelize.Op.gt]: cursor };
+        } else if (page) {
+          conditions.offset = (page - 1) * conditions.limit;
+        }
       }
       conditions.order = [["id", "DESC"]];
-      const media = await models.Media.findAll(conditions);
+      const result = await models.Media.findAndCountAll(conditions);
       return {
-        count,
-        rows: media,
+        count: result.count,
+        rows: result.rows,
       };
     },
   },
