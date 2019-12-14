@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
-// import PropTypes from "prop-types";
+import { RouteComponentProps } from "react-router-dom";
 import { translate, WithNamespaces } from "react-i18next";
 import moment from "moment";
 import { notify } from "react-notify-toast";
-
+import Paginate from "../../components/pagination";
 import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
 
-// import GetMedia from "../../data-connectors/GetMedia";
 // import DeleteMedia from "../../data-connectors/DeleteMedia";
 // import InsertMedia from "../../data-connectors/InsertMedia";
 // import UpdateMedia from "../../data-connectors/UpdateMedia";
@@ -24,14 +22,13 @@ import { StyledItem } from "./Media.css";
 import { deleteMedias, getMedia } from "./actions";
 import { media_media_rows } from "../../../shared/queries/types/media";
 
-const limit = config.mediaPerPage;
+const itemsPerPage = 12;
 
 interface IMMediaProps extends WithNamespaces {
   router: RouteComponentProps;
 }
 
 interface IMediaState {
-  page: number;
   confirmDelete: boolean;
   delete_id: number;
   deleteMedia: boolean;
@@ -47,7 +44,6 @@ interface IMediaState {
 
 class Media extends Component<IMMediaProps, IMediaState> {
   state: Readonly<IMediaState> = {
-    page: 1,
     confirmDelete: false,
     delete_id: 0,
     deleteMedia: false,
@@ -64,8 +60,13 @@ class Media extends Component<IMMediaProps, IMediaState> {
 
   uploadInputRef = React.createRef<HTMLInputElement>();
 
-  async componentDidMount() {
-    const { data, loading } = await getMedia();
+  fetchMedia = async () => {
+    const params = this.getUrlParams();
+    const page = parseInt(params.get("page") || "1");
+    const { data, loading } = await getMedia({
+      page,
+      limit: itemsPerPage,
+    });
     this.setState({
       loading: loading,
       items: {
@@ -73,6 +74,10 @@ class Media extends Component<IMMediaProps, IMediaState> {
         count: data.media.count,
       },
     });
+  };
+
+  async componentDidMount() {
+    await this.fetchMedia();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -86,6 +91,10 @@ class Media extends Component<IMMediaProps, IMediaState> {
     }
     return newState;
   }
+
+  getUrlParams = () => {
+    return new URLSearchParams(this.props.router.history.location.search);
+  };
 
   toggleDeleteModal = () => {
     this.setState({
@@ -123,19 +132,10 @@ class Media extends Component<IMMediaProps, IMediaState> {
       );
       return;
     }
-    const page = this.props.router.match.params["page"];
-    // if the user is in page 1, just refetch the items of page 1
-    if (page == 1) {
-      // let items = await this.props.fetchMore({
-      //   authorId: this.props.author.id,
-      //   offset: 0,
-      //   limit: config.mediaPerPage,
-      // });
-      // this.setState({ items: items.data.media.rows });
-    } else {
-      // else navigate the user to page 1
-      this.props.router.history.push("/admin/media/1");
-    }
+    this.props.router.history.push({
+      search: "?page=1",
+    });
+    this.fetchMedia();
   };
 
   selectNextMedia = () => {
@@ -170,9 +170,17 @@ class Media extends Component<IMMediaProps, IMediaState> {
     this.setState({ checkedItems });
   };
 
+  goToNextPage = (e: React.SyntheticEvent, page: number) => {
+    e.preventDefault();
+    this.props.router.history.push({
+      search: "?page=" + page,
+    });
+    this.fetchMedia();
+  };
+
   render() {
     const { t } = this.props;
-    const { checkedItems, page, items } = this.state;
+    const { checkedItems, items } = this.state;
     const deleteCount = checkedItems.length;
 
     return (
@@ -227,7 +235,12 @@ class Media extends Component<IMMediaProps, IMediaState> {
             </StyledItem>
           ))}
         </StyledGrid>
-        <Paginate count={items.count} page={page} />
+        <Paginate
+          count={items.count}
+          page={parseInt(this.getUrlParams().get("page") || "1")}
+          changePage={this.goToNextPage}
+          limit={itemsPerPage}
+        />
         {this.state.confirmDelete && (
           <ConfirmDeleteModal
             title="Confirm Delete"
@@ -254,22 +267,3 @@ class Media extends Component<IMMediaProps, IMediaState> {
 }
 
 export default translate("translations")(Media);
-
-const Paginate = ({ count, page }) => {
-  count = count || 0;
-
-  if (count <= limit) return <span />;
-  const pages = Array.from(Array(Math.ceil(count / limit)));
-  return (
-    <ul className="pagination">
-      {pages.map((_, i) => {
-        const num = i + 1;
-        return (
-          <li key={num} className={page == num ? "active" : ""}>
-            <Link to={"/admin/media/" + num}>{num}</Link>
-          </li>
-        );
-      })}
-    </ul>
-  );
-};

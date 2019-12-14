@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-unreachable */
-/* eslint-disable react/prop-types */
 import React, { Component, Fragment } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
@@ -124,6 +121,13 @@ class Routes extends Component<RouteComponentProps, IState> {
             />
             <SecuredRoute
               exact
+              path="/admin/page-new"
+              type="page"
+              component={CreateArticle}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
               path="/admin/posts"
               type="post"
               component={Articles}
@@ -229,57 +233,3 @@ function getI18nConfig(settings) {
   const lang = selectedLang[0];
   return getI18nWithDefaultLang(lang);
 }
-// const _Routes: React.FC<RouteComponentProps<any>> = () => {
-//   const { loading, error, data } = useQuery<getOptions>(GET_OPTIONS);
-//   if (loading) {
-//     return <Loader />;
-//   }
-//   const settings: any = {};
-
-//   if (data && data.settings) {
-//     data.settings.forEach(setting => {
-//       if (setting && setting.option) {
-//         settings[setting.option] = setting;
-//       }
-//     });
-//   }
-//   if (error) {
-//     window.location.href = "/admin/login";
-//     return;
-//   }
-// };
-
-// <Fragment>
-//             <Notifications />
-
-//             {/* Route for pages */}
-//
-//
-//             <SecuredRoute
-//               exact
-//               path="/admin/page-new"
-//               type="page"
-//               component={ArticleCreate}
-//               settings={data}
-//             />
-//             {/* Route for others */}
-//
-//             <SecuredRoute
-//               exact
-//               path="/admin/media"
-//               component={Media}
-//               settings={data}
-//             />
-//             <SecuredRoute
-//               exact
-//               path="/admin/media/:page"
-//               component={Media}
-//               settings={data}
-//             />
-//
-//
-//
-//
-//
-//
-//           </Fragment>
