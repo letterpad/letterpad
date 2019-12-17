@@ -5,7 +5,7 @@ const getFile = name => {
   return path.join(__dirname, "../../data/", dbFile);
 };
 
-module.exports = {
+const dbConfig = {
   dev: {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
@@ -16,6 +16,7 @@ module.exports = {
     logging: false,
     define: {
       underscored: true,
+      raw: true,
     },
   },
   test: {
@@ -43,3 +44,4 @@ module.exports = {
     },
   },
 };
+export default dbConfig;

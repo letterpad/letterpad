@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true,
 });
-exports.default = slugify;
+export default slugify;
 function toSlug(str) {
   return str
     .toLowerCase()

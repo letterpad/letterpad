@@ -1,13 +1,10 @@
-import { ThemeSettingsUIInputTypes } from "./../../../types/globalTypes";
 import {
-  insertThemes,
-  insertThemesVariables,
-} from "./../../shared/queries/types/insertThemes";
-import {
-  themes,
-  themesVariables,
-  themes_themes,
-} from "./../../shared/queries/types/themes";
+  ThemesQuery,
+  Theme,
+  UpdateThemesMutation,
+  InsertThemesMutation,
+  ThemeSettingsUiInputTypes,
+} from "../../__generated__/gqlTypes";
 import config from "../../config";
 import { THEME_SETTINGS } from "../../shared/queries/Queries";
 import {
@@ -57,8 +54,7 @@ export const syncThemeSettings = async (
 ) => {
   // Get the existing theme settings
   const { data } = await apolloClient(true, {}, authorization).query<
-    themes,
-    themesVariables
+    ThemesQuery
   >({
     query: THEME_SETTINGS,
   });
@@ -83,7 +79,7 @@ export const syncThemeSettings = async (
   // existing theme settings to be updated
   const updatePromises = [] as any;
 
-  themeConfigsFromFS.forEach((_config: themes_themes) => {
+  themeConfigsFromFS.forEach((_config: Theme) => {
     const themeName = _config.name;
     const themeSettings = _config.settings;
     const dbThemeSetting = getDBThemeSetting(themeConfigsFromDB, themeName);
@@ -95,7 +91,7 @@ export const syncThemeSettings = async (
         );
         if (settingFound && settingFound.changedValue) {
           if (
-            setting.type !== ThemeSettingsUIInputTypes.text &&
+            setting.type !== ThemeSettingsUiInputTypes.Text &&
             setting.options &&
             !setting.options.includes(settingFound.changedValue)
           ) {
@@ -117,12 +113,12 @@ export const syncThemeSettings = async (
   return Promise.all([promises, updatePromises]);
 };
 
-function getDBThemeSetting(dbThemeConfigs, themeName: string): themes_themes {
+function getDBThemeSetting(dbThemeConfigs, themeName: string): Theme {
   return dbThemeConfigs.find(config => config.name === themeName);
 }
 
 function updateThemeSetting(themeName, themeSettings, authorization) {
-  return apolloClient(true, {}, authorization).mutate({
+  return apolloClient(true, {}, authorization).mutate<UpdateThemesMutation>({
     mutation: UPDATE_THEME_SETTINGS,
     variables: {
       name: themeName,
@@ -137,10 +133,7 @@ function updateThemeSetting(themeName, themeSettings, authorization) {
 }
 
 function insertThemeSettings(themeName, themeSettings, authorization) {
-  return apolloClient(true, {}, authorization).mutate<
-    insertThemes,
-    insertThemesVariables
-  >({
+  return apolloClient(true, {}, authorization).mutate<InsertThemesMutation>({
     mutation: INSERT_THEME_SETTINGS,
     variables: {
       name: themeName,

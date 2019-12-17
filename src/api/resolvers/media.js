@@ -11,21 +11,6 @@ function IsJsonString(str) {
   return true;
 }
 
-function getConditions(columns, args) {
-  const obj = {};
-  const conditions = {};
-  for (const field in args) {
-    if (columns.indexOf(field) >= 0) {
-      obj[field] = IsJsonString(args[field])
-        ? JSON.parse(args[field])
-        : args[field];
-    } else {
-      conditions[field] = args[field];
-    }
-  }
-  conditions.where = obj;
-  return conditions;
-}
 export default {
   Query: {
     media: async (root, args, { user, models }) => {

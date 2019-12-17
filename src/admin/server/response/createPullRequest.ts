@@ -1,8 +1,8 @@
 import { IS_AUTHORIZED } from "../../../shared/queries/Queries";
 import { Request, Response } from "express";
-import { validateToken } from "../../../shared/queries/types/validateToken";
 import apolloClient from "../../../shared/apolloClient";
 import { clientOpts } from "..";
+import { ValidateTokenQuery } from "../../../__generated__/gqlTypes";
 
 export const createPR = async (req: Request, res: Response) => {
   try {
@@ -10,7 +10,7 @@ export const createPR = async (req: Request, res: Response) => {
       true,
       clientOpts,
       req.headers.token as string,
-    ).query<validateToken>({ query: IS_AUTHORIZED });
+    ).query<ValidateTokenQuery>({ query: IS_AUTHORIZED });
 
     if (client.data.validateToken) {
       return createPullRequest(res);

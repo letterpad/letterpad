@@ -10,10 +10,9 @@ import Section, { SectionSizes } from "../../components/section";
 import { StyledTitle, Loader } from "./ArticleList.css";
 import StyledButton from "../../components/button";
 import Filters from "./Filters";
-import { PostTypes } from "../../../../types/globalTypes";
 import RenderTable from "./RenderTable";
 import RenderGrid from "./RenderGrid";
-import { posts_posts } from "../../../shared/queries/types/posts";
+import { PostTypes, PostNode } from "../../../__generated__/types";
 
 interface IArticleListProps extends WithNamespaces {
   type: PostTypes;
@@ -23,7 +22,7 @@ interface IArticleListProps extends WithNamespaces {
   deleteSelectedPosts: () => void;
   selectedPosts: string[];
   loading: boolean;
-  posts: posts_posts;
+  posts: PostNode;
 }
 
 export enum LayoutOptions {

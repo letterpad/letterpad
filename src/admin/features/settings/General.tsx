@@ -7,7 +7,7 @@ import { uploadFile } from "../../server/util";
 import Input, { TextArea } from "../../components/input";
 import StyledSelect from "../../components/select";
 import { SettingOptions } from "../../../../types/globalTypes";
-import { getOptions_settings } from "../../../shared/queries/types/getOptions";
+import { Setting } from "../../../__generated__/gqlTypes";
 import config from "../../../config";
 
 const ImageWrapper = styled.div`
@@ -35,7 +35,7 @@ const ImageWrapper = styled.div`
 `;
 
 interface IGeneralProps extends WithNamespaces {
-  data: { [option in SettingOptions]: getOptions_settings };
+  data: { [option in SettingOptions]: Setting };
   updateOption: (option: SettingOptions, value: string) => void;
   label: string;
 }

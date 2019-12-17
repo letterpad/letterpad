@@ -4,10 +4,10 @@ import { translate, WithNamespaces } from "react-i18next";
 import Input from "../../components/input";
 
 import { SettingOptions } from "../../../../types/globalTypes";
-import { getOptions_settings } from "../../../shared/queries/types/getOptions";
+import { Setting } from "../../../__generated__/gqlTypes";
 
 interface IOptionalProps extends WithNamespaces {
-  data: { [option in SettingOptions]: getOptions_settings };
+  data: { [option in SettingOptions]: Setting };
   updateOption: (option: SettingOptions, value: string) => void;
   label?: string;
 }

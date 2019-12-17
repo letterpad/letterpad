@@ -32,13 +32,10 @@ import "./public/pcss/admin.pcss";
 import SecuredRoute from "./helpers/Secured";
 import apolloClient from "../shared/apolloClient";
 import { GET_OPTIONS } from "../shared/queries/Queries";
-import {
-  getOptions,
-  getOptions_settings,
-} from "../shared/queries/types/getOptions";
+import { Setting, GetOptionsQuery } from "../__generated__/gqlTypes";
 import { SettingOptions } from "../../types/globalTypes";
 
-type TypeSettings = { [option in SettingOptions]: getOptions_settings } | {};
+type TypeSettings = { [option in SettingOptions]: Setting } | {};
 
 interface IState {
   settings: TypeSettings | {};
@@ -55,7 +52,7 @@ class Routes extends Component<RouteComponentProps, IState> {
 
   async componentDidMount() {
     try {
-      const options = await apolloClient().query<getOptions>({
+      const options = await apolloClient().query<GetOptionsQuery>({
         query: GET_OPTIONS,
       });
       const data: TypeSettings = {};

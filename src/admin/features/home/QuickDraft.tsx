@@ -5,11 +5,8 @@ import Input, { TextArea } from "../../components/input";
 import StyledButton from "../../components/button";
 import { notify } from "react-notify-toast";
 import { CREATE_POST } from "../../../shared/queries/Mutations";
-import {
-  createPost,
-  createPostVariables,
-} from "../../../shared/queries/types/createPost";
 import apolloClient from "../../../shared/apolloClient";
+import { CreatePostMutation } from "../../../__generated__/gqlTypes";
 
 interface IQuickDraftProps {
   t: (name: string) => string;
@@ -22,7 +19,7 @@ const QuickDraft: React.FC<IQuickDraftProps> = ({ t }) => {
   const quickDraftAction = async () => {
     if (!titleRef.current || !bodyRef.current) return;
     if (titleRef.current.value.length > 0) {
-      await apolloClient().mutate<createPost, createPostVariables>({
+      await apolloClient().mutate<CreatePostMutation>({
         mutation: CREATE_POST,
         variables: {
           data: {

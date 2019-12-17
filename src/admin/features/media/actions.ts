@@ -1,15 +1,11 @@
 import { MediaFiltersWithPagination } from "./../../../../types/globalTypes";
 import { GET_MEDIA } from "./../../../shared/queries/Queries";
 import { DELETE_MEDIA } from "./../../../shared/queries/Mutations";
-import {
-  deleteMedia,
-  deleteMediaVariables,
-} from "./../../../shared/queries/types/deleteMedia";
 import apolloClient from "../../../shared/apolloClient";
-import { media, mediaVariables } from "../../../shared/queries/types/media";
+import { MediaQuery, DeleteMediaMutation } from "../../../__generated__/gqlTypes";
 
 export const getMedia = async (filters?: MediaFiltersWithPagination) => {
-  return await apolloClient(true).query<media, mediaVariables>({
+  return await apolloClient(true).query<MediaQuery>({
     query: GET_MEDIA,
     variables: {
       filters,
@@ -18,7 +14,7 @@ export const getMedia = async (filters?: MediaFiltersWithPagination) => {
 };
 
 export const deleteMedias = async (ids: number[]) => {
-  await apolloClient(true).mutate<deleteMedia, deleteMediaVariables>({
+  await apolloClient(true).mutate<DeleteMediaMutation>({
     mutation: DELETE_MEDIA,
     variables: {
       ids,

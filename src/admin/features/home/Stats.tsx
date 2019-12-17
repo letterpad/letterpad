@@ -5,15 +5,15 @@ import StyledList from "../../components/list";
 import StyledIcon from "../../components/icon";
 import StyledLink from "../../components/link";
 import { useQuery } from "react-apollo";
-import { stats } from "../../../shared/queries/types/stats";
 import { BLOG_STATS } from "../../../shared/queries/Queries";
+import { StatsQuery } from "../../../__generated__/gqlTypes";
 
 interface IStatsProps {
   t: (name: string) => string;
 }
 
 const Stats: React.FC<IStatsProps> = ({ t }) => {
-  const { loading, data } = useQuery<stats>(BLOG_STATS);
+  const { loading, data } = useQuery<StatsQuery>(BLOG_STATS);
 
   return (
     <Card title={t("home.stats")} subtitle={t("home.stats.tagline")}>

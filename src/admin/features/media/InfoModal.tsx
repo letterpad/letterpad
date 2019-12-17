@@ -9,10 +9,10 @@ import Loader from "../../components/loader";
 import config from "../../../config";
 
 import StyledInfoModal from "./InfoModal.css";
-import { media_media_rows } from "../../../shared/queries/types/media";
+import { Media } from "../../../__generated__/gqlTypes";
 
 interface IEditMediaInfoProps extends WithNamespaces {
-  media: media_media_rows;
+  media: Media;
   previous: () => void;
   next: () => void;
   onClose: () => void;

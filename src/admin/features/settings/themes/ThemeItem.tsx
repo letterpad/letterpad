@@ -8,13 +8,9 @@ import ThemeSettingsModal from "./ThemeSettingsModal";
 import StyledItem from "./ThemeItem.css";
 import { IThemeConfig } from "../../../../types/types";
 import {
-  themes,
-  themesVariables,
-} from "../../../../shared/queries/types/themes";
-import {
-  updateThemes,
-  updateThemesVariables,
-} from "../../../../shared/queries/types/updateThemes";
+  UpdateThemesMutation,
+  ThemesQuery,
+} from "../../../../__generated__/gqlTypes";
 
 const SettingsLink = styled.a`
   text-decoration: none;
@@ -31,7 +27,7 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
 
   const displaySettings = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    let response = await appoloClient().query<themes, themesVariables>({
+    let response = await appoloClient().query<ThemesQuery>({
       query: THEME_SETTINGS,
       variables: { name: theme.short_name },
       fetchPolicy: "no-cache",
@@ -45,7 +41,7 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
 
   const onSave = async data => {
     const isAdmin = true;
-    await appoloClient(isAdmin).mutate<updateThemes, updateThemesVariables>({
+    await appoloClient(isAdmin).mutate<UpdateThemesMutation>({
       mutation: UPDATE_THEME_SETTINGS,
       variables: {
         name: theme.short_name,

@@ -16,13 +16,13 @@ import Themes from "./Themes";
 import Css from "./Css";
 import { RouteComponentProps } from "react-router";
 import { SettingOptions } from "../../../../types/globalTypes";
-import { getOptions_settings } from "../../../shared/queries/types/getOptions";
+import { Setting } from "../../../__generated__/gqlTypes";
 import apolloClient from "../../../shared/apolloClient";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 
 interface ISettingsProps extends WithNamespaces {
   router: RouteComponentProps;
-  settings: { [option in SettingOptions]: getOptions_settings };
+  settings: { [option in SettingOptions]: Setting };
 }
 
 // type that the internal state accepts

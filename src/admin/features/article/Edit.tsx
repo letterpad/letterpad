@@ -10,17 +10,9 @@ import { uploadFile } from "../../server/util";
 import { EventBusInstance } from "../../../shared/eventBus";
 import client from "../../../shared/apolloClient";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
-import {
-  updatePost,
-  updatePostVariables,
-} from "../../../shared/queries/types/updatePost";
+import { UpdatePostMutation } from "../../../__generated__/gqlTypes";
 
 class Edit extends Component<any, any> {
-  // static propTypes = {
-  //   post: PropTypes.object,
-  //   theme: PropTypes.string,
-  //   update: PropTypes.func,
-  // };
   postSaveTimer: number = 0;
   hooks: any = null;
   editor: any = null;
@@ -99,7 +91,7 @@ class Edit extends Component<any, any> {
       };
       EventBusInstance.publish("ARTICLE_SAVING");
 
-      const update = await client().mutate<updatePost, updatePostVariables>({
+      const update = await client().mutate<UpdatePostMutation>({
         mutation: UPDATE_POST_QUERY,
         variables: {
           data: {

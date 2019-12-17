@@ -11,12 +11,6 @@ import StyledSection from "../../components/section";
 import Input, { TextArea } from "../../components/input";
 import StyledGrid from "../../components/grid";
 import StyledButton from "../../components/button";
-import { TaxonomyTypes } from "../../../../types/globalTypes";
-import {
-  taxonomies,
-  taxonomiesVariables,
-  taxonomies_taxonomies,
-} from "../../../shared/queries/types/taxonomies";
 import { GET_TAXONOMIES } from "../../../shared/queries/Queries";
 import apolloClient from "../../../shared/apolloClient";
 import {
@@ -24,13 +18,12 @@ import {
   DELETE_TAXONOMY,
 } from "../../../shared/queries/Mutations";
 import {
-  updateTaxonomy,
-  updateTaxonomyVariables,
-} from "../../../shared/queries/types/updateTaxonomy";
-import {
-  deleteTaxonomy,
-  deleteTaxonomyVariables,
-} from "../../../shared/queries/types/deleteTaxonomy";
+  TaxonomiesQuery,
+  UpdateTaxonomyMutation,
+  DeleteTaxonomyMutation,
+  Taxonomy,
+  TaxonomyTypes,
+} from "../../../__generated__/gqlTypes";
 
 const NewTagWrapper = styled.div`
   display: flex;
@@ -80,18 +73,13 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
   const defaultTexts = texts(t)[type];
   const [selectedTaxonomyIndex, setTaxonomyIndex] = useState<number>(0);
   const [newTaxonomy, setNewTaxonomy] = useState<string>("");
-  const [taxonomies, setTaxonomies] = React.useState<taxonomies_taxonomies[]>(
-    [],
-  );
+  const [taxonomies, setTaxonomies] = React.useState<Taxonomy[]>([]);
 
-  const { data, loading } = useQuery<taxonomies, taxonomiesVariables>(
-    GET_TAXONOMIES,
-    {
-      variables: {
-        type,
-      },
+  const { data, loading } = useQuery<TaxonomiesQuery>(GET_TAXONOMIES, {
+    variables: {
+      type,
     },
-  );
+  });
 
   useEffect(() => {
     if (!loading && data && data.taxonomies && data.taxonomies.length > 0) {
@@ -176,7 +164,7 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
   };
 
   let slug: string = "",
-    desc: string | null = "",
+    desc: string | null | undefined = "",
     id: number = 0,
     name: string = "";
 
@@ -253,19 +241,13 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
 export default translate("translations")(Taxonomy);
 
 async function updateTaxonomyFromAPI(item) {
-  return await apolloClient(true).mutate<
-    updateTaxonomy,
-    updateTaxonomyVariables
-  >({
+  return await apolloClient(true).mutate<UpdateTaxonomyMutation>({
     mutation: UPDATE_TAXONOMY,
     variables: item,
   });
 }
 async function deleteTaxonomyFromAPI(id) {
-  return await apolloClient(true).mutate<
-    deleteTaxonomy,
-    deleteTaxonomyVariables
-  >({
+  return await apolloClient(true).mutate<DeleteTaxonomyMutation>({
     mutation: DELETE_TAXONOMY,
     variables: {
       id,

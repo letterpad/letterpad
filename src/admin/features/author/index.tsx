@@ -13,14 +13,10 @@ import { RouteComponentProps } from "react-router";
 import apolloClient from "../../../shared/apolloClient";
 import { UPDATE_AUTHOR } from "../../../shared/queries/Mutations";
 import {
-  getAuthor,
-  getAuthorVariables,
-  getAuthor_author,
-} from "../../../shared/queries/types/getAuthor";
-import {
-  updateAuthor,
-  updateAuthorVariables,
-} from "../../../shared/queries/types/updateAuthor";
+  GetAuthorQuery,
+  Author,
+  UpdateAuthorMutation,
+} from "../../../__generated__/gqlTypes";
 import { GET_AUTHOR } from "../../../shared/queries/Queries";
 import Loader from "../../components/loader";
 import { InputAuthor } from "../../../../types/globalTypes";
@@ -34,14 +30,11 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
   const [selectedTab] = useState<string>(urlParams.get("tab") || "basic");
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [author, setAuthor] = useState<getAuthor_author>();
+  const [author, setAuthor] = useState<Author>();
   const [updatedAuthor, setUpdatedAuthor] = useState<InputAuthor>({ id: 0 });
 
   const fetchAuthor = async () => {
-    const { loading, data } = await apolloClient().query<
-      getAuthor,
-      getAuthorVariables
-    >({
+    const { loading, data } = await apolloClient().query<GetAuthorQuery>({
       query: GET_AUTHOR,
       variables: {
         id: parseInt(router.match.params["id"]),
@@ -76,7 +69,7 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
 
   const submitData = async (e: React.MouseEvent) => {
     e.preventDefault();
-    await apolloClient(true).mutate<updateAuthor, updateAuthorVariables>({
+    await apolloClient(true).mutate<UpdateAuthorMutation>({
       mutation: UPDATE_AUTHOR,
       variables: {
         author: updatedAuthor as InputAuthor,

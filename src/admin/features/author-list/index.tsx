@@ -12,24 +12,23 @@ import StyledAuthorList from "./AuthorList.css";
 import { GET_AUTHORS } from "../../../shared/queries/Queries";
 import { RouteComponentProps } from "react-router";
 import apolloClient from "../../../shared/apolloClient";
-import {
-  authors,
-  authors_authors,
-} from "../../../shared/queries/types/authors";
+import { AuthorsQuery, Author } from "../../../__generated__/gqlTypes";
 
 interface IAuthorListProps extends WithNamespaces {
   router: RouteComponentProps;
 }
 
 const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
-  const [authors, setAuthors] = useState<authors_authors[]>([]);
+  const [authors, setAuthors] = useState<Author[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const getAuthors = async () => {
-    const { data } = await apolloClient().query<authors>({
+    const { data } = await apolloClient().query<AuthorsQuery>({
       query: GET_AUTHORS,
     });
-    setAuthors(data.authors);
+    if (data.authors.length > 0) {
+      setAuthors(data.authors);
+    }
     setLoading(false);
   };
 

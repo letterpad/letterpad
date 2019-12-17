@@ -7,12 +7,12 @@ import ThemeItem from "./themes/ThemeItem";
 
 import StyledGrid from "../../components/grid";
 import { SettingOptions } from "../../../../types/globalTypes";
-import { getOptions_settings } from "../../../shared/queries/types/getOptions";
+import { Setting } from "../../../__generated__/gqlTypes";
 import { IThemeConfig } from "../../../types/types";
 
 interface IThemesProps {
   updateOption: (option: SettingOptions, value: string) => void;
-  data: { [option in SettingOptions]: getOptions_settings };
+  data: { [option in SettingOptions]: Setting };
   label: string;
 }
 

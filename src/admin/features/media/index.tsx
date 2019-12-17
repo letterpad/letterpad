@@ -5,10 +5,6 @@ import moment from "moment";
 import { notify } from "react-notify-toast";
 import Paginate from "../../components/pagination";
 import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
-
-// import DeleteMedia from "../../data-connectors/DeleteMedia";
-// import InsertMedia from "../../data-connectors/InsertMedia";
-// import UpdateMedia from "../../data-connectors/UpdateMedia";
 import config from "../../../config";
 import { uploadFile } from "../../server/util";
 
@@ -20,7 +16,7 @@ import StyledButton from "../../components/button";
 // import InfoModal from "./InfoModal";
 import { StyledItem } from "./Media.css";
 import { deleteMedias, getMedia } from "./actions";
-import { media_media_rows } from "../../../shared/queries/types/media";
+import { MediaNode } from "../../../__generated__/gqlTypes";
 
 const itemsPerPage = 12;
 
@@ -34,7 +30,7 @@ interface IMediaState {
   deleteMedia: boolean;
   items: {
     count: number;
-    rows: media_media_rows[];
+    rows: MediaNode["rows"];
   };
   displayInfo: boolean;
   checkedItems: number[];
@@ -227,7 +223,7 @@ class Media extends Component<IMMediaProps, IMediaState> {
               </div>
               <StyledGridItem
                 image={config.baseName + media.url}
-                title={media.name}
+                title={media.name || ""}
                 href="#"
                 line2={moment(media.createdAt).format("MMM Do YYYY")}
                 onClick={(e: React.SyntheticEvent) => this.editMedia(e, idx)}

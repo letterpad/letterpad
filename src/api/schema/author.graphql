@@ -13,14 +13,14 @@ type TypeSocial {
 }
 
 type Author {
-  id: Int!
-  username: String!
-  email: String!
-  fname: String!
-  lname: String!
-  social: TypeSocial!
-  role: Role!
-  bio: String!
+  id: Int
+  username: String
+  email: String
+  fname: String
+  lname: String
+  social: TypeSocial
+  role: Role
+  bio: String
   avatar: String
 }
 
@@ -61,7 +61,7 @@ input InputAuthor {
 
 type Query {
   author(id: Int!, username: String): Author!
-  authors: [Author!]!
+  authors: [Author]!
   me: Author
   validateToken: CreateAuthorResponse
 }

@@ -1,11 +1,11 @@
 import React from "react";
 import { TextArea } from "../../components/input";
 import { SettingOptions } from "../../../../types/globalTypes";
-import { getOptions_settings } from "../../../shared/queries/types/getOptions";
+import { Setting } from "../../../__generated__/gqlTypes";
 
 interface ICssProps {
   updateOption: (option: SettingOptions, value: string) => void;
-  data: { [option in SettingOptions]: getOptions_settings };
+  data: { [option in SettingOptions]: Setting };
   label: string;
 }
 

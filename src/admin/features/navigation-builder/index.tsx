@@ -9,11 +9,7 @@ import { GET_TAXONOMIES, GET_POSTS } from "../../../shared/queries/Queries";
 
 import StyledSection from "../../components/section";
 import StyledButton from "../../components/button";
-import {
-  taxonomies_taxonomies,
-  taxonomies,
-  taxonomiesVariables,
-} from "../../../shared/queries/types/taxonomies";
+import { TaxonomiesQuery, Taxonomy } from "../../../__generated__/gqlTypes";
 import { useQuery } from "react-apollo";
 import {
   TaxonomyTypes,
@@ -21,17 +17,12 @@ import {
   PostStatusOptions,
   SettingOptions,
 } from "../../../../types/globalTypes";
-import {
-  posts,
-  postsVariables,
-  posts_posts,
-} from "../../../shared/queries/types/posts";
-import { getOptions_settings } from "../../../shared/queries/types/getOptions";
+import { Post, PostsQuery, Setting } from "../../../__generated__/gqlTypes";
 import apolloClient from "../../../shared/apolloClient";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 
 interface INavigationBuilderProps extends WithNamespaces {
-  settings: { [option in SettingOptions]: getOptions_settings };
+  settings: { [option in SettingOptions]: Setting };
 }
 
 // type that the internal state accepts
@@ -44,20 +35,17 @@ const NavigationBuilder: React.FC<INavigationBuilderProps> = ({
   t,
   settings,
 }) => {
-  const [categories, setCategories] = useState<taxonomies_taxonomies[]>([]);
-  const [pages, setPages] = useState<posts_posts | []>([]);
+  const [categories, setCategories] = useState<Taxonomy[]>([]);
+  const [pages, setPages] = useState<Post[]>([]);
 
   const [updatedOptions, setUpdatedOptions] = useState<TypeUpdatedOptions>({});
 
-  const categoriesData = useQuery<taxonomies, taxonomiesVariables>(
-    GET_TAXONOMIES,
-    {
-      variables: {
-        type: TaxonomyTypes.post_category,
-      },
+  const categoriesData = useQuery<TaxonomiesQuery>(GET_TAXONOMIES, {
+    variables: {
+      type: TaxonomyTypes.post_category,
     },
-  );
-  const pagesData = useQuery<posts, postsVariables>(GET_POSTS, {
+  });
+  const pagesData = useQuery<PostsQuery>(GET_POSTS, {
     variables: {
       filters: { type: PostTypes.page, status: PostStatusOptions.publish },
     },
@@ -73,7 +61,7 @@ const NavigationBuilder: React.FC<INavigationBuilderProps> = ({
   useEffect(() => {
     const { loading, data } = pagesData;
     if (!loading && data && data.posts && data.posts.rows.length > 0) {
-      setPages(data.posts);
+      setPages(data.posts.rows);
     }
   }, [pagesData.loading]);
 

@@ -11,16 +11,15 @@ import StyledSelect from "../../components/select";
 import { RouteComponentProps } from "react-router-dom";
 import apolloClient from "../../../shared/apolloClient";
 import { GET_ROLES } from "../../../shared/queries/Queries";
-import {
-  getRoles_roles,
-  getRoles,
-} from "../../../shared/queries/types/getRoles";
-import {
-  createAuthorVariables,
-  createAuthor,
-} from "../../../shared/queries/types/createAuthor";
-import { EnumRoles } from "../../../../types/globalTypes";
+
 import { CREATE_AUTHOR } from "../../../shared/queries/Mutations";
+import {
+  Role,
+  GetRolesQuery,
+  EnumRoles,
+  CreateAuthorMutation,
+  CreateAuthorMutationVariables,
+} from "../../../__generated__/gqlTypes";
 
 interface ICreateAuthorProps {
   router: RouteComponentProps;
@@ -28,14 +27,13 @@ interface ICreateAuthorProps {
 
 const CreateAuthor: React.FC<ICreateAuthorProps> = ({ router }) => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [roles, setRoles] = useState<getRoles_roles[]>([]);
-  const [data, setData] = useState<createAuthorVariables>({
+  const [roles, setRoles] = useState<Role[]>([]);
+  const [data, setData] = useState<CreateAuthorMutationVariables>({
     email: "",
-    roleName: EnumRoles.READER,
+    roleName: EnumRoles.Reader,
   });
-
   const fetchRoles = async () => {
-    const { loading, data } = await apolloClient().query<getRoles>({
+    const { loading, data } = await apolloClient().query<GetRolesQuery>({
       query: GET_ROLES,
     });
     if (data) {
@@ -58,10 +56,7 @@ const CreateAuthor: React.FC<ICreateAuthorProps> = ({ router }) => {
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const result = await apolloClient(true).mutate<
-      createAuthor,
-      createAuthorVariables
-    >({
+    const result = await apolloClient(true).mutate<CreateAuthorMutation>({
       mutation: CREATE_AUTHOR,
       variables: {
         ...data,
@@ -83,7 +78,7 @@ const CreateAuthor: React.FC<ICreateAuthorProps> = ({ router }) => {
     }
   };
 
-  if (loading) {
+  if (loading || !loading) {
     return <Loader />;
   }
   return (

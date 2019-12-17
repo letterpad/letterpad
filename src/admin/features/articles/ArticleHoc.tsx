@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import appoloClient from "../../../shared/apolloClient";
 import { GET_POSTS } from "../../../shared/queries/Queries";
 import { BULK_DELETE_POSTS } from "../../../shared/queries/Mutations";
-import { PostTypes } from "../../../../types/globalTypes";
 import { RouteComponentProps } from "react-router";
+import { PostTypes } from "../../../__generated__/gqlTypes";
 
 interface IArticleProps {
   type: PostTypes;

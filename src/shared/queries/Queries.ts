@@ -39,6 +39,7 @@ export const GET_MEDIA = gql`
       rows {
         id
         url
+        authorId
         createdAt
         name
         description
@@ -57,6 +58,12 @@ export const GET_AUTHORS = gql`
       username
       avatar
       bio
+      social {
+        github
+        facebook
+        twitter
+        instagram
+      }
       role {
         name
         permissions {
@@ -119,6 +126,7 @@ export const GET_TAXONOMIES = gql`
       name
       desc
       slug
+      type
     }
   }
 `;

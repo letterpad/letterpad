@@ -1,4 +1,4 @@
-import path from "path";
+const path = require("path");
 
 const currentDir = __dirname;
 export const getDirPath = (dirPath: string) => {

@@ -4,13 +4,14 @@
   "description": "Letterpad is an open-source and a high performant publishing engine for blogs built with react & graphql and runs ridiculously fast 🚀",
   "main": "start.ts",
   "scripts": {
+    "dev": "NODE_ENV=dev concurrently --kill-others \"ts-node ./src/start.ts --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
+    "generateTypes": "node ./utils/generateTypes.js",
     "build": "./utils/convertToes5.sh && webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
     "build:theme": "webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${theme}",
     "build:admin": "webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.admin.prod.js",
     "seed": "node ./src/api/seed",
     "preinstall": "./utils/preinstall.sh",
     "postinstall": "./utils/postinstall.sh",
-    "dev": "NODE_ENV=dev concurrently --kill-others \"ts-node ./src/start.ts --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
     "api": "NODE_ENV=dev concurrently --kill-others \"nodemon -e ts,json,js --watch ./src/api ./src/start.ts\"",
     "prod": "NODE_ENV=production concurrently --kill-others \"node ./dist/server.js\"",
     "start": "yarn prod",
@@ -92,7 +93,7 @@
     "styled-components": "^4.4.1"
   },
   "resolutions": {
-    "@types/react": "16.9.3"
+    "@types/react": "16.9.16"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",
@@ -106,11 +107,16 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.6.0",
     "@babel/runtime": "^7.6.0",
+    "@graphql-codegen/cli": "^1.9.1",
+    "@graphql-codegen/typescript-operations": "^1.9.1",
+    "@graphql-codegen/typescript-react-apollo": "^1.9.1",
+    "@graphql-codegen/typescript-resolvers": "^1.9.1",
     "@types/graphql": "^14.5.0",
     "@types/react": "^16.9.13",
     "@types/react-dom": "^16.9.4",
     "@types/react-notify-toast": "^0.5.2",
     "@types/react-router-dom": "^5.1.3",
+    "@types/sequelize": "^4.28.8",
     "@types/sharp": "^0.23.0",
     "@types/styled-components": "^4.4.0",
     "apollo": "^2.21.1",

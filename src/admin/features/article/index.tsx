@@ -6,8 +6,8 @@ import Edit from "./Edit";
 // import TopBar from "./topbar";
 import Loader from "../../components/loader";
 import { GET_SINGLE_POST } from "../../../shared/queries/Queries";
-import { post, postVariables } from "../../../shared/queries/types/post";
 import { Container } from "./Article.css";
+import { Query, QueryPostArgs } from "../../../__generated__/types";
 
 interface IArticleProps {
   router: any;
@@ -16,7 +16,7 @@ interface IArticleProps {
 }
 
 const Article: React.FC<IArticleProps> = ({ theme, router }) => {
-  const { loading, data } = useQuery<post, postVariables>(GET_SINGLE_POST, {
+  const { loading, data } = useQuery<Query, QueryPostArgs>(GET_SINGLE_POST, {
     variables: {
       filters: {
         id: parseInt(router.match.params.post_id),
