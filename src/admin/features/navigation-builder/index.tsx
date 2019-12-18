@@ -12,12 +12,14 @@ import StyledButton from "../../components/button";
 import { TaxonomiesQuery, Taxonomy } from "../../../__generated__/gqlTypes";
 import { useQuery } from "react-apollo";
 import {
+  Post,
+  PostsQuery,
+  Setting,
   TaxonomyTypes,
   PostTypes,
   PostStatusOptions,
   SettingOptions,
-} from "../../../../types/globalTypes";
-import { Post, PostsQuery, Setting } from "../../../__generated__/gqlTypes";
+} from "../../../__generated__/gqlTypes";
 import apolloClient from "../../../shared/apolloClient";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 
@@ -42,12 +44,12 @@ const NavigationBuilder: React.FC<INavigationBuilderProps> = ({
 
   const categoriesData = useQuery<TaxonomiesQuery>(GET_TAXONOMIES, {
     variables: {
-      type: TaxonomyTypes.post_category,
+      type: TaxonomyTypes.PostCategory,
     },
   });
   const pagesData = useQuery<PostsQuery>(GET_POSTS, {
     variables: {
-      filters: { type: PostTypes.page, status: PostStatusOptions.publish },
+      filters: { type: PostTypes.Page, status: PostStatusOptions.Publish },
     },
   });
 

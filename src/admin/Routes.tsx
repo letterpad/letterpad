@@ -32,8 +32,11 @@ import "./public/pcss/admin.pcss";
 import SecuredRoute from "./helpers/Secured";
 import apolloClient from "../shared/apolloClient";
 import { GET_OPTIONS } from "../shared/queries/Queries";
-import { Setting, GetOptionsQuery } from "../__generated__/gqlTypes";
-import { SettingOptions } from "../../types/globalTypes";
+import {
+  Setting,
+  GetOptionsQuery,
+  SettingOptions,
+} from "../__generated__/gqlTypes";
 
 type TypeSettings = { [option in SettingOptions]: Setting } | {};
 

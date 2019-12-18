@@ -20,13 +20,13 @@ export type AdjacentPosts = {
 
 export type Author = {
    __typename?: 'Author',
-  id?: Maybe<Scalars['Int']>,
-  username?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>,
-  fname?: Maybe<Scalars['String']>,
-  lname?: Maybe<Scalars['String']>,
-  social?: Maybe<TypeSocial>,
-  role?: Maybe<Role>,
+  id: Scalars['Int'],
+  username: Scalars['String'],
+  email: Scalars['String'],
+  fname: Scalars['String'],
+  lname: Scalars['String'],
+  social: TypeSocial,
+  role: Role,
   bio?: Maybe<Scalars['String']>,
   avatar?: Maybe<Scalars['String']>,
 };
@@ -167,7 +167,7 @@ export type MediaFiltersWithPagination = {
 export type MediaNode = {
    __typename?: 'MediaNode',
   count: Scalars['Int'],
-  rows: Array<Maybe<Media>>,
+  rows: Array<Media>,
 };
 
 export type MenuFiltersWithPagination = {
@@ -413,7 +413,7 @@ export enum PostTypes {
 export type Query = {
    __typename?: 'Query',
   author: Author,
-  authors: Array<Maybe<Author>>,
+  authors: Array<Author>,
   me?: Maybe<Author>,
   validateToken?: Maybe<CreateAuthorResponse>,
   media: MediaNode,
@@ -841,13 +841,13 @@ export type AdjacentPostsResolvers<ContextType = Context, ParentType extends Res
 };
 
 export type AuthorResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = {
-  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
-  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  fname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  lname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  social?: Resolver<Maybe<ResolversTypes['TypeSocial']>, ParentType, ContextType>,
-  role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>,
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  fname?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  lname?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  social?: Resolver<ResolversTypes['TypeSocial'], ParentType, ContextType>,
+  role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>,
   bio?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
 };
@@ -905,7 +905,7 @@ export type MediaResolvers<ContextType = Context, ParentType extends ResolversPa
 
 export type MediaNodeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['MediaNode'] = ResolversParentTypes['MediaNode']> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
-  rows?: Resolver<Array<Maybe<ResolversTypes['Media']>>, ParentType, ContextType>,
+  rows?: Resolver<Array<ResolversTypes['Media']>, ParentType, ContextType>,
 };
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -969,7 +969,7 @@ export type PostTaxonomyNodeResolvers<ContextType = Context, ParentType extends 
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   author?: Resolver<ResolversTypes['Author'], ParentType, ContextType, RequireFields<QueryAuthorArgs, 'id'>>,
-  authors?: Resolver<Array<Maybe<ResolversTypes['Author']>>, ParentType, ContextType>,
+  authors?: Resolver<Array<ResolversTypes['Author']>, ParentType, ContextType>,
   me?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType>,
   validateToken?: Resolver<Maybe<ResolversTypes['CreateAuthorResponse']>, ParentType, ContextType>,
   media?: Resolver<ResolversTypes['MediaNode'], ParentType, ContextType, QueryMediaArgs>,

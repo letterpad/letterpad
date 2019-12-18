@@ -36,11 +36,11 @@
   ],
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.0.0-beta.11",
+    "@apollo/client": "^3.0.0-beta.16",
     "@apollo/react-ssr": "^3.1.0",
     "@babel/polyfill": "^7.6.0",
     "apollo-cache-inmemory": "^1.6.3",
-    "apollo-client": "^2.6.4",
+    "apollo-client": "^2.6.8",
     "apollo-link": "^1.2.13",
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.16",

@@ -3,8 +3,7 @@ import { translate, WithNamespaces } from "react-i18next";
 
 import Input from "../../components/input";
 
-import { SettingOptions } from "../../../../types/globalTypes";
-import { Setting } from "../../../__generated__/gqlTypes";
+import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 
 interface IOptionalProps extends WithNamespaces {
   data: { [option in SettingOptions]: Setting };
@@ -19,7 +18,7 @@ const Optional: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
   const changeAuthorDisplay = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplayAuthor(e.target.checked);
     updateOption(
-      SettingOptions.displayAuthorInfo,
+      SettingOptions.DisplayAuthorInfo,
       JSON.stringify(e.target.checked),
     );
   };
@@ -47,7 +46,7 @@ const Optional: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
         defaultValue={data.disqus_id.value || ""}
         type="text"
         placeholder={t("settings.additional.disqus.placeholder")}
-        onBlur={e => updateOption(SettingOptions.disqus_id, e.target.value)}
+        onBlur={e => updateOption(SettingOptions.DisqusId, e.target.value)}
       />
     </div>
   );

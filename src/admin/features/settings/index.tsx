@@ -15,8 +15,7 @@ import Tabs from "../../components/tabs";
 import Themes from "./Themes";
 import Css from "./Css";
 import { RouteComponentProps } from "react-router";
-import { SettingOptions } from "../../../../types/globalTypes";
-import { Setting } from "../../../__generated__/gqlTypes";
+import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import apolloClient from "../../../shared/apolloClient";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 

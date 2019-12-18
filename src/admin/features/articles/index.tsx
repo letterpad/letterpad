@@ -12,7 +12,7 @@ import StyledButton from "../../components/button";
 import Filters from "./Filters";
 import RenderTable from "./RenderTable";
 import RenderGrid from "./RenderGrid";
-import { PostTypes, PostNode } from "../../../__generated__/types";
+import { PostTypes, PostNode } from "../../../__generated__/gqlTypes";
 
 interface IArticleListProps extends WithNamespaces {
   type: PostTypes;

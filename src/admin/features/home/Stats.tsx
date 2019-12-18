@@ -13,8 +13,10 @@ interface IStatsProps {
 }
 
 const Stats: React.FC<IStatsProps> = ({ t }) => {
-  const { loading, data } = useQuery<StatsQuery>(BLOG_STATS);
-
+  const { loading, data } = useQuery<StatsQuery>(BLOG_STATS, {
+    fetchPolicy: "no-cache",
+  });
+  console.log("loading, data :", loading, data);
   return (
     <Card title={t("home.stats")} subtitle={t("home.stats.tagline")}>
       {loading ? (

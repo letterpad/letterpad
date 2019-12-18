@@ -47,6 +47,7 @@ const addAdminToken = async (
     res.status(401);
     res.set("Location", constants.LOGIN_URL);
   }
+  next();
 };
 
 const MAX_UPLOAD_SIZE = parseInt(process.env["MAX_IMAGE_UPLOAD_SIZE"] || "10");

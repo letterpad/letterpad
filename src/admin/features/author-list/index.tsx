@@ -18,8 +18,10 @@ interface IAuthorListProps extends WithNamespaces {
   router: RouteComponentProps;
 }
 
+// type MayBeAuthors = Author[] | [];
+
 const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
-  const [authors, setAuthors] = useState<Author[]>([]);
+  const [authors, setAuthors] = useState<Author[]>();
   const [loading, setLoading] = useState<boolean>(true);
 
   const getAuthors = async () => {
@@ -65,21 +67,22 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
             className="author-grid"
             columns="repeat(auto-fill, 200px)"
           >
-            {authors.map(author => {
-              const authorName = author.fname + " " + author.lname;
-              return (
-                <StyledGridItem
-                  key={author.email}
-                  image={config.baseName + author.avatar}
-                  title={authorName}
-                  href="#"
-                  onClick={() => authorSelect(author.id)}
-                  line1={author.role.name}
-                  // setSelection={setSelection}
-                  // selectedPosts={selectedPosts}
-                />
-              );
-            })}
+            {authors &&
+              authors.map(author => {
+                const authorName = author.fname + " " + author.lname;
+                return (
+                  <StyledGridItem
+                    key={author.email}
+                    image={config.baseName + author.avatar}
+                    title={authorName}
+                    href="#"
+                    onClick={() => authorSelect(author.id)}
+                    line1={author.role.name}
+                    // setSelection={setSelection}
+                    // selectedPosts={selectedPosts}
+                  />
+                );
+              })}
           </StyledGrid>
         )}
       </StyledAuthorList>

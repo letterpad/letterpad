@@ -6,8 +6,7 @@ import utils from "../../../shared/util";
 import ThemeItem from "./themes/ThemeItem";
 
 import StyledGrid from "../../components/grid";
-import { SettingOptions } from "../../../../types/globalTypes";
-import { Setting } from "../../../__generated__/gqlTypes";
+import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import { IThemeConfig } from "../../../types/types";
 
 interface IThemesProps {
@@ -53,7 +52,7 @@ const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
       return theme;
     });
     setThemes(modifiedThemes);
-    updateOption(SettingOptions.theme, selectedTheme.short_name);
+    updateOption(SettingOptions.Theme, selectedTheme.short_name);
   };
 
   return (

@@ -7,7 +7,7 @@ import Edit from "./Edit";
 import Loader from "../../components/loader";
 import { GET_SINGLE_POST } from "../../../shared/queries/Queries";
 import { Container } from "./Article.css";
-import { Query, QueryPostArgs } from "../../../__generated__/types";
+import { Query, QueryPostArgs } from "../../../__generated__/gqlTypes";
 
 interface IArticleProps {
   router: any;

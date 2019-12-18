@@ -2,8 +2,7 @@ import React from "react";
 import { translate, WithNamespaces } from "react-i18next";
 
 import Input from "../../components/input";
-import { SettingOptions } from "../../../../types/globalTypes";
-import { Setting } from "../../../__generated__/gqlTypes";
+import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 
 interface ISocialProps extends WithNamespaces {
   data: { [option in SettingOptions]: Setting };
@@ -18,7 +17,7 @@ const Social: React.FC<ISocialProps> = ({ t, data, updateOption }) => {
         defaultValue={data.social_github.value}
         type="text"
         placeholder={t("social.gh.placeholder")}
-        onBlur={e => updateOption(SettingOptions.social_github, e.target.value)}
+        onBlur={e => updateOption(SettingOptions.SocialGithub, e.target.value)}
       />
 
       <Input
@@ -28,7 +27,7 @@ const Social: React.FC<ISocialProps> = ({ t, data, updateOption }) => {
         placeholder={t("social.fb.placeholder")}
         aria-invalid="false"
         onBlur={e =>
-          updateOption(SettingOptions.social_facebook, e.target.value)
+          updateOption(SettingOptions.SocialFacebook, e.target.value)
         }
       />
 
@@ -37,9 +36,7 @@ const Social: React.FC<ISocialProps> = ({ t, data, updateOption }) => {
         defaultValue={data.social_twitter.value}
         type="text"
         placeholder={t("social.twitter.placeholder")}
-        onBlur={e =>
-          updateOption(SettingOptions.social_twitter, e.target.value)
-        }
+        onBlur={e => updateOption(SettingOptions.SocialTwitter, e.target.value)}
       />
 
       <Input
@@ -48,7 +45,7 @@ const Social: React.FC<ISocialProps> = ({ t, data, updateOption }) => {
         type="text"
         placeholder={t("social.ig.placeholder")}
         onBlur={e =>
-          updateOption(SettingOptions.social_instagram, e.target.value)
+          updateOption(SettingOptions.SocialInstagram, e.target.value)
         }
       />
     </div>

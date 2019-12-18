@@ -1,7 +1,6 @@
 import React from "react";
 import { TextArea } from "../../components/input";
-import { SettingOptions } from "../../../../types/globalTypes";
-import { Setting } from "../../../__generated__/gqlTypes";
+import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 
 interface ICssProps {
   updateOption: (option: SettingOptions, value: string) => void;
@@ -16,7 +15,7 @@ const CustomCSS: React.FC<ICssProps> = ({ updateOption, data }) => {
         rows={7}
         defaultValue={data.css.value || ""}
         placeholder="Additional CSS"
-        onChange={e => updateOption(SettingOptions.css, e.target.value)}
+        onChange={e => updateOption(SettingOptions.Css, e.target.value)}
       />
     </div>
   );

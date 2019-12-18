@@ -57,7 +57,7 @@ export default {
         };
       }
       let role = await models.Role.findOne({
-        where: { id: author.roleId },
+        where: { id: author.RoleId },
       });
       const perms = await role.getPermissions();
       const permissionNames = perms.map(perm => perm.name); //test

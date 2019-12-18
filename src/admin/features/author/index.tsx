@@ -16,10 +16,10 @@ import {
   GetAuthorQuery,
   Author,
   UpdateAuthorMutation,
+  InputAuthor,
 } from "../../../__generated__/gqlTypes";
 import { GET_AUTHOR } from "../../../shared/queries/Queries";
 import Loader from "../../components/loader";
-import { InputAuthor } from "../../../../types/globalTypes";
 
 interface ISettingsProps {
   router: RouteComponentProps;
@@ -42,9 +42,13 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
     });
     const { author } = data;
     if (author) {
+      if(author.social) {
       delete author.social.__typename;
+      }
       delete author.__typename;
+      if(author.role) {
       delete author.role.__typename;
+      }
       setAuthor(data.author);
       setUpdatedAuthor({ id: data.author.id });
     }

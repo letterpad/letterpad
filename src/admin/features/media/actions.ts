@@ -1,8 +1,11 @@
-import { MediaFiltersWithPagination } from "./../../../../types/globalTypes";
 import { GET_MEDIA } from "./../../../shared/queries/Queries";
 import { DELETE_MEDIA } from "./../../../shared/queries/Mutations";
 import apolloClient from "../../../shared/apolloClient";
-import { MediaQuery, DeleteMediaMutation } from "../../../__generated__/gqlTypes";
+import {
+  MediaQuery,
+  DeleteMediaMutation,
+  MediaFiltersWithPagination,
+} from "../../../__generated__/gqlTypes";
 
 export const getMedia = async (filters?: MediaFiltersWithPagination) => {
   return await apolloClient(true).query<MediaQuery>({

@@ -6,8 +6,7 @@ import { notify } from "react-notify-toast";
 import { uploadFile } from "../../server/util";
 import Input, { TextArea } from "../../components/input";
 import StyledSelect from "../../components/select";
-import { SettingOptions } from "../../../../types/globalTypes";
-import { Setting } from "../../../__generated__/gqlTypes";
+import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import config from "../../../config";
 
 const ImageWrapper = styled.div`
@@ -56,17 +55,17 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
     Object.keys(langOptions).map(lang => {
       locales[lang] = value === lang;
     });
-    updateOption(SettingOptions.locale, JSON.stringify(locales));
+    updateOption(SettingOptions.Locale, JSON.stringify(locales));
     i18n.changeLanguage(value);
   };
 
   const updateBanner = (banner: string) => {
-    updateOption(SettingOptions.banner, banner);
+    updateOption(SettingOptions.Banner, banner);
     setBanner(banner);
   };
 
   const updateLogo = (site_logo: string) => {
-    updateOption(SettingOptions.site_logo, site_logo);
+    updateOption(SettingOptions.SiteLogo, site_logo);
     setSiteLogo(site_logo);
   };
 
@@ -99,28 +98,28 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
         defaultValue={data.site_title.value}
         type="text"
         placeholder={t("settings.general.site.title.placeholder")}
-        onBlur={e => updateOption(SettingOptions.site_title, e.target.value)}
+        onBlur={e => updateOption(SettingOptions.SiteTitle, e.target.value)}
       />
       <Input
         label={t("settings.general.site.tagline")}
         defaultValue={data.site_tagline.value}
         type="text"
         placeholder={t("settings.general.site.tagline.placeholder")}
-        onBlur={e => updateOption(SettingOptions.site_tagline, e.target.value)}
+        onBlur={e => updateOption(SettingOptions.SiteTagline, e.target.value)}
       />
       <Input
         label={t("settings.general.site.email")}
         defaultValue={data.site_email.value}
         type="email"
         placeholder="someone@somewhere.com"
-        onBlur={e => updateOption(SettingOptions.site_email, e.target.value)}
+        onBlur={e => updateOption(SettingOptions.SiteEmail, e.target.value)}
       />
       <TextArea
         label={t("settings.general.site.description")}
         defaultValue={data.site_description.value}
         placeholder={t("settings.general.site.description.placeholder")}
         onBlur={e =>
-          updateOption(SettingOptions.site_description, e.target.value)
+          updateOption(SettingOptions.SiteDescription, e.target.value)
         }
       />
       <Input
@@ -128,14 +127,14 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
         defaultValue={data.site_url.value}
         type="text"
         placeholder={t("settings.general.site.url.placeholder")}
-        onBlur={e => updateOption(SettingOptions.site_url, e.target.value)}
+        onBlur={e => updateOption(SettingOptions.SiteUrl, e.target.value)}
       />
       <TextArea
         label={t("settings.general.site.footer") + "(html allowed)"}
         defaultValue={data.site_footer.value}
         className="form-control"
         placeholder={t("settings.general.site.footer.placeholder")}
-        onBlur={e => updateOption(SettingOptions.site_footer, e.target.value)}
+        onBlur={e => updateOption(SettingOptions.SiteFooter, e.target.value)}
       />
       <ImageWrapper>
         <label className="custom-label">Upload Logo</label>
@@ -219,7 +218,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
         type="text"
         placeholder={t("settings.general.site.ga.placeholder")}
         onBlur={e =>
-          updateOption(SettingOptions.google_analytics, e.target.value)
+          updateOption(SettingOptions.GoogleAnalytics, e.target.value)
         }
       />
       <StyledSelect

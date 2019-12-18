@@ -9,7 +9,7 @@ type Media {
 
 type MediaNode {
   count: Int!
-  rows: [Media]!
+  rows: [Media!]!
 }
 
 type DeleteResponse {

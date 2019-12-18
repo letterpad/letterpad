@@ -19,13 +19,13 @@ export type AdjacentPosts = {
 
 export type Author = {
    __typename?: 'Author',
-  id?: Maybe<Scalars['Int']>,
-  username?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>,
-  fname?: Maybe<Scalars['String']>,
-  lname?: Maybe<Scalars['String']>,
-  social?: Maybe<TypeSocial>,
-  role?: Maybe<Role>,
+  id: Scalars['Int'],
+  username: Scalars['String'],
+  email: Scalars['String'],
+  fname: Scalars['String'],
+  lname: Scalars['String'],
+  social: TypeSocial,
+  role: Role,
   bio?: Maybe<Scalars['String']>,
   avatar?: Maybe<Scalars['String']>,
 };
@@ -166,7 +166,7 @@ export type MediaFiltersWithPagination = {
 export type MediaNode = {
    __typename?: 'MediaNode',
   count: Scalars['Int'],
-  rows: Array<Maybe<Media>>,
+  rows: Array<Media>,
 };
 
 export type MenuFiltersWithPagination = {
@@ -412,7 +412,7 @@ export enum PostTypes {
 export type Query = {
    __typename?: 'Query',
   author: Author,
-  authors: Array<Maybe<Author>>,
+  authors: Array<Author>,
   me?: Maybe<Author>,
   validateToken?: Maybe<CreateAuthorResponse>,
   media: MediaNode,
@@ -983,10 +983,10 @@ export type MediaQuery = (
   & { media: (
     { __typename?: 'MediaNode' }
     & Pick<MediaNode, 'count'>
-    & { rows: Array<Maybe<(
+    & { rows: Array<(
       { __typename?: 'Media' }
       & Pick<Media, 'id' | 'url' | 'authorId' | 'createdAt' | 'name' | 'description'>
-    )>> }
+    )> }
   ) }
 );
 
@@ -995,21 +995,21 @@ export type AuthorsQueryVariables = {};
 
 export type AuthorsQuery = (
   { __typename?: 'Query' }
-  & { authors: Array<Maybe<(
+  & { authors: Array<(
     { __typename?: 'Author' }
     & Pick<Author, 'id' | 'email' | 'fname' | 'lname' | 'username' | 'avatar' | 'bio'>
-    & { social: Maybe<(
+    & { social: (
       { __typename?: 'TypeSocial' }
       & Pick<TypeSocial, 'github' | 'facebook' | 'twitter' | 'instagram'>
-    )>, role: Maybe<(
+    ), role: (
       { __typename?: 'Role' }
       & Pick<Role, 'name'>
       & { permissions: Maybe<Array<Maybe<(
         { __typename?: 'Permission' }
         & Pick<Permission, 'name'>
       )>>> }
-    )> }
-  )>> }
+    ) }
+  )> }
 );
 
 export type GetAuthorQueryVariables = {
@@ -1022,17 +1022,17 @@ export type GetAuthorQuery = (
   & { author: (
     { __typename?: 'Author' }
     & Pick<Author, 'id' | 'username' | 'email' | 'fname' | 'lname' | 'avatar' | 'bio'>
-    & { social: Maybe<(
+    & { social: (
       { __typename?: 'TypeSocial' }
       & Pick<TypeSocial, 'facebook' | 'instagram' | 'github' | 'twitter'>
-    )>, role: Maybe<(
+    ), role: (
       { __typename?: 'Role' }
       & Pick<Role, 'name'>
       & { permissions: Maybe<Array<Maybe<(
         { __typename?: 'Permission' }
         & Pick<Permission, 'name'>
       )>>> }
-    )> }
+    ) }
   ) }
 );
 
