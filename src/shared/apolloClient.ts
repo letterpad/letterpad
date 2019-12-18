@@ -81,7 +81,7 @@ const apolloClient = (
     : middlewareLinkClient;
   const link = from([errorLink, middleware, httpLink]);
   return new ApolloClient({
-    link: link,
+    link,
     cache: new InMemoryCache().restore(initialState),
     ssrForceFetchDelay: 100,
     ...opts,

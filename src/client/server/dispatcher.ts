@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
-const config = require("../../config");
+import config from "../../config";
+// const config = require("../../config");
 const { getHtml } = require("./html");
 
 export const dispatcher = async (url, client, options, isStatic) => {

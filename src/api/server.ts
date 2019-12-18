@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-import { Express } from "express";
+import { Express, Response } from "express";
 import path from "path";
 import { ApolloServer } from "apollo-server-express";
 import constants from "./utils/constants";
@@ -42,6 +42,7 @@ export interface Context {
     PostTaxonomy: typeof models.PostTaxonomy;
     Theme: typeof models.Theme;
   };
+  response: Response;
 }
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));
@@ -49,12 +50,13 @@ const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));
 const resolvers = mergeResolvers(
   fileLoader(path.join(__dirname, "./resolvers")),
 );
-const context = ({ req }): Context => ({
+const context = ({ req, res }): Context => ({
   user: req.user || {},
   error: req.error || null,
   SECRET: constants.SECRET,
   admin: req.headers.admin || false,
   models,
+  response: res,
 });
 
 const server = new ApolloServer({

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Express } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import constants from "./utils/constants";
+import { ITokenData } from "../types/types";
 
 const fileUpload = require("express-fileupload");
 const jwt = require("jsonwebtoken");
@@ -17,7 +18,7 @@ const bodyParserMiddleWare = bodyParser.urlencoded({
  * This is useful in logging out the user due to inactivity.
  */
 
-const addAdminToken = async (
+const addRefreshToken = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -32,13 +33,13 @@ const addAdminToken = async (
   if (!token) return next();
 
   try {
-    const data = await jwt.verify(token, constants.SECRET);
-    req.user = { ...data };
-    // while generating the new token we dont need the below data. This gets attached by jwt automatically.
-    delete data.iat;
-    delete data.exp;
+    const { iat, exp, ...data }: ITokenData = await jwt.verify(
+      token,
+      constants.SECRET,
+    );
+    req.user = data;
 
-    const newToken = jwt.sign(data, constants.SECRET, {
+    const newToken: string = jwt.sign(data, constants.SECRET, {
       expiresIn: req.user.expiresIn,
     });
     res.setHeader("x-refresh-token", newToken);
@@ -54,10 +55,16 @@ const MAX_UPLOAD_SIZE = parseInt(process.env["MAX_IMAGE_UPLOAD_SIZE"] || "10");
 
 export default function(app: Express) {
   app.use(corsMiddleWare);
-  app.options("*", cors());
+  // app.options("*", cors());
+  app.use(
+    cors({
+      credentials: true,
+      origin: "http://localhost:4040",
+    }),
+  );
   app.use(bodyParserMiddleWare);
   app.use(bodyParser.json());
-  app.use(addAdminToken);
+  app.use(addRefreshToken);
   app.use(
     fileUpload({
       limits: { fileSize: MAX_UPLOAD_SIZE * 1024 * 1024 },

@@ -34,9 +34,9 @@ module.exports = (args, name) => {
     },
     entry: {
       [source + "/public/js/vendor"]: vendorFiles,
-      // [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
-      //   path.join(__dirname, "../src/client/app"),
-      // ],
+      [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
+        path.join(__dirname, "../src/client/app"),
+      ],
       [source + "/admin/public/dist/admin"]: [
         path.join(__dirname, "../src/admin/app"),
       ],
@@ -44,7 +44,7 @@ module.exports = (args, name) => {
     resolve: {
       alias: {
         admin: path.resolve(__dirname, "/../src/admin"),
-        client: path.resolve(__dirname, "/../src/client"),
+        // client: path.resolve(__dirname, "/../src/client"),
         shared: path.resolve(__dirname, "/../src/shared"),
         config: path.resolve(__dirname, "/../src/config"),
       },

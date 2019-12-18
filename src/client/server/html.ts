@@ -1,11 +1,11 @@
 const { util } = require("../common/util");
-
+import utils from "../../shared/util";
 const {
   getMetaTags,
   prepareScriptTags,
   prepareStyleTags,
   templateEngine,
-} = require("../../shared/util");
+} = utils;
 
 module.exports.getHtml = (
   theme,

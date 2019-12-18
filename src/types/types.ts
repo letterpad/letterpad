@@ -1,6 +1,18 @@
+import { EnumRoles, EnumPermissions } from "../__generated__/gqlTypes";
+
 export enum IFileUploadTypes {
   featured_image = "featured_image",
   post_image = "post_image",
+}
+export interface ITokenData {
+  email: string;
+  id: number;
+  role: EnumRoles;
+  permissions: [EnumPermissions];
+  name: string;
+  expiresIn: Date;
+  iat?: number;
+  exp?: number;
 }
 
 export interface IThemeConfig {

@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+
 import PropTypes from "prop-types";
 // import { withRouter } from "react-router";
 import { Route, Switch } from "react-router-dom";
