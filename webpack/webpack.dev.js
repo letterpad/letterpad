@@ -118,9 +118,9 @@ const serverConfig = args => {
       ],
     },
   });
-  config.entry = {
-    server: [path.join(__dirname, "../src/client/server")],
-  };
+  // config.entry = {
+  //   server: [path.join(__dirname, "../src/client/server")],
+  // };
   return config;
 };
 

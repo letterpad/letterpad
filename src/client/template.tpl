@@ -19,6 +19,7 @@
     <div id="app">{{HTML_CONTENT}}</div>
     <script type="text/javascript">
         window.__APOLLO_STATE__ = {{INITIAL_STATE}};
+        window.__INITIAL_DATA__ = {{INITIAL_DATA}};
         window.NODE_ENV = "{{NODE_ENV}}";
         window.rootUrl = "{{ROOT_URL}}";
         window.apiUrl = "{{API_URL}}";

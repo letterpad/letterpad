@@ -23,7 +23,7 @@ module.exports.util = {
    * @returns {string || null }
    */
   getClientFileContents: function(filename) {
-    const filePath = path.resolve(__dirname, filename);
+    const filePath = path.resolve(__dirname, "../", filename);
     if (fs.existsSync(filePath)) {
       return fs.readFileSync(filePath);
     }

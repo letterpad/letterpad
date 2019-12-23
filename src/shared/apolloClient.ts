@@ -20,10 +20,18 @@ const httpLink = createHttpLink({
 const middlewareLinkAdmin = (token: string | null = null) => {
   const isServer = typeof window === "undefined";
   return new ApolloLink((operation, forward) => {
+    let headers = {};
+    if (isServer) {
+      headers = {
+        authorization: token,
+      };
+    } else if (localStorage.getItem("token")) {
+      headers = {
+        authorization: localStorage.token,
+      };
+    }
     operation.setContext({
-      headers: {
-        authorization: isServer ? token : localStorage.token,
-      },
+      headers,
     });
     if (isServer) {
       return forward(operation);

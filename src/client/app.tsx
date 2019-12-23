@@ -4,13 +4,31 @@ import { ApolloProvider } from "react-apollo";
 // import { ApolloProvider } from "@apollo/react-hooks";
 import { BrowserRouter } from "react-router-dom";
 import client from "../shared/apolloClient";
-import Routes from "./common/Routes";
+import Routes, { TypeSettings } from "./Routes";
 import config from "../config";
+
+declare global {
+  interface Window {
+    ga: () => void;
+    __INITIAL_DATA__: {
+      settings: TypeSettings;
+      themeConfig: [];
+    };
+  }
+}
+
+let initialData = {
+  settings: {},
+  themeConfig: [],
+};
+if (window.__INITIAL_DATA__) {
+  initialData = window.__INITIAL_DATA__;
+}
 
 const App = (
   <BrowserRouter basename={config.baseName}>
     <ApolloProvider client={client()}>
-      <Routes />
+      <Routes initialData={initialData} />
     </ApolloProvider>
   </BrowserRouter>
 );

@@ -1,12 +1,12 @@
 import React from "react";
 
-const SinglePage = () => {
+const Posts: React.FC = () => {
   return (
     <div>
       This is just a abstract component. You should create a theme and keep this
-      file inside containers directory
+      File inside containers directory
     </div>
   );
 };
 
-export default SinglePage;
+export default Posts;

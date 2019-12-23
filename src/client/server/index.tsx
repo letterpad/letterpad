@@ -6,33 +6,38 @@
  *
  * This file will return a promise
  */
-
+const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
 import React from "react";
 import { Helmet } from "react-helmet";
 import { StaticRouter } from "react-router";
 import { ApolloProvider as ApolloHocProvider } from "@apollo/react-hoc";
 import { ApolloProvider } from "react-apollo";
 import { renderToStringWithData } from "@apollo/react-ssr";
-const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
-import Routes from "../common/Routes";
-import { StaticContext } from "../common/Context";
+import config from "../../config";
+import Routes, { TypeSettings } from "../Routes";
+import { StaticContext } from "../Context";
+import { ThemesQuery, ThemeSettings } from "../../__generated__/gqlTypes";
+import { THEME_SETTINGS } from "../../shared/queries/Queries";
+import apolloClient from "../../shared/apolloClient";
 
 const context = {};
 
-export default async (url, client, config, isStatic) => {
+export default async (url, client, settings, _isStatic) => {
   const opts = {
     location: url,
     context: context,
     basename: config.baseName.replace(/\/$/, ""), // remove the last slash
   };
+  const initialData = await getThemeData(settings);
+
   const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
   const clientApp = (
     <StyleSheetManager sheet={sheet.instance}>
       <StaticRouter {...opts}>
-        <StaticContext.Provider value={{ isStatic }}>
+        <StaticContext.Provider value={{ _isStatic }}>
           <ApolloHocProvider client={client}>
             <ApolloProvider client={client}>
-              <Routes />
+              <Routes initialData={initialData} />
             </ApolloProvider>
           </ApolloHocProvider>
         </StaticContext.Provider>
@@ -45,6 +50,7 @@ export default async (url, client, config, isStatic) => {
     return {
       head: Helmet.renderStatic(),
       html: content,
+      initialData: initialData,
       apolloState: initialState,
       sheet: sheet,
     };
@@ -52,3 +58,26 @@ export default async (url, client, config, isStatic) => {
     console.log("error :", error);
   }
 };
+
+interface initialData {
+  settings: TypeSettings | {};
+  themeConfig: ThemeSettings[] | [];
+}
+
+async function getThemeData(settings) {
+  const client = apolloClient();
+  const initialData: initialData = { settings: settings, themeConfig: [] };
+  try {
+    const themeResult = await client.query<ThemesQuery>({
+      query: THEME_SETTINGS,
+      variables: {
+        name: settings.theme.value,
+      },
+    });
+    if (themeResult.data && themeResult.data.themes.length > 0) {
+      initialData.themeConfig = themeResult.data.themes[0].settings;
+    }
+    return initialData;
+  } catch (e) {}
+  return initialData;
+}

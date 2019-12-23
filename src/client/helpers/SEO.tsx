@@ -50,7 +50,7 @@ const getMetaTags = ({
 };
 const mainUrl = config.rootUrl + config.baseName;
 
-const SEO = props => (
+const SEO = (props: any) => (
   <Helmet
     htmlAttributes={{
       lang: "en",
@@ -68,19 +68,19 @@ const SEO = props => (
   />
 );
 
-SEO.propTypes = {
-  schema: PropTypes.string,
-  title: PropTypes.string,
-  description: PropTypes.string,
-  path: PropTypes.string,
-  contentType: PropTypes.string,
-  published: PropTypes.string,
-  updated: PropTypes.string,
-  category: PropTypes.string,
-  tags: PropTypes.array,
-  twitter: PropTypes.string,
-  image: PropTypes.string,
-  settings: PropTypes.object,
-};
+// SEO.propTypes = {
+//   schema: PropTypes.string,
+//   title: PropTypes.string,
+//   description: PropTypes.string,
+//   path: PropTypes.string,
+//   contentType: PropTypes.string,
+//   published: PropTypes.string,
+//   updated: PropTypes.string,
+//   category: PropTypes.string,
+//   tags: PropTypes.array,
+//   twitter: PropTypes.string,
+//   image: PropTypes.string,
+//   settings: PropTypes.object,
+// };
 
 export default SEO;

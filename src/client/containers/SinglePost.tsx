@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchWrapper = () => {
+const SinglePost: React.FC = () => {
   return (
     <div>
       This is just a abstract component. You should create a theme and keep this
@@ -9,4 +9,4 @@ const SearchWrapper = () => {
   );
 };
 
-export default SearchWrapper;
+export default SinglePost;

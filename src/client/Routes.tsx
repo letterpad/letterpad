@@ -1,27 +1,35 @@
-import React from "react";
-
-import PropTypes from "prop-types";
-// import { withRouter } from "react-router";
+import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
-import SEO from "../helpers/SEO";
-import Loader from "../helpers/Loader";
+import SEO from "./helpers/SEO";
 import { hot } from "react-hot-loader";
-// Data supply
-import SettingsData from "../../shared/data-connectors/SettingsData";
-import ThemeSettingsData from "../../shared/data-connectors/ThemeSettingsData";
+
 /*!------------------------------------------------------------------
 [View Containers-]
 */
-import Home from "../containers/Home";
-import Posts from "../containers/Posts";
-import SinglePage from "../containers/SinglePage";
-import SinglePost from "../containers/SinglePost";
-import SearchWrapper from "../containers/SearchWrapper";
-import Layout from "../containers/Layout";
-import NotFound from "../containers/404";
-import DecorateRoute from "./DecorateRoute";
+import Home from "./containers/Home";
+import Posts from "./containers/Posts";
+import SinglePage from "./containers/SinglePage";
+import SinglePost from "./containers/SinglePost";
+import SearchWrapper from "./containers/SearchWrapper";
+import NotFound from "./containers/404";
+import Renderer from "./Renderer";
+import {
+  SettingOptions,
+  Setting,
+  ThemeSettings,
+} from "../__generated__/gqlTypes";
+import apolloClient from "../shared/apolloClient";
 
-class Routes extends Component {
+export type TypeSettings = { [option in SettingOptions]: Setting };
+
+interface IRoutes {
+  initialData: {
+    settings: TypeSettings | {};
+    themeConfig: ThemeSettings[] | [];
+  };
+}
+
+class Routes extends Component<IRoutes, {}> {
   applyCustomCSS = ({ css }) => {
     if (typeof document == "undefined" || typeof css == "undefined")
       return false;
@@ -32,27 +40,35 @@ class Routes extends Component {
   };
 
   getHomeSlug = () => {
+    const menu = JSON.parse(
+      (this.props.initialData.settings as TypeSettings).menu.value,
+    );
+
     // To get the homepage, parse the menu settings then take the first item as the home
-    const menu = JSON.parse(this.props.settings.data.menu.value);
+    // const menu = JSON.parse(menuStr);
     let home = menu[0];
     return home;
   };
 
   render() {
-    if (this.props.settings.loading) {
-      return <Loader />;
-    }
-
-    const settings = {
-      ...this.props.settings.data,
-      themeConfig: this.props.themeSettings,
-    };
+    const settings = this.props.initialData.settings as TypeSettings;
 
     this.applyCustomCSS(settings);
     const home = this.getHomeSlug();
 
-    const getComponent = (Comp, type) => {
-      return DecorateRoute(Layout(Comp), { settings, type });
+    const getComponent = (
+      WrappedComponent: React.ComponentType<any>,
+      type: string,
+    ) => {
+      const LayoutWithProps = Renderer(WrappedComponent, {
+        settings,
+        type,
+        client: apolloClient(),
+        themeConfig: (this.props.initialData
+          .themeConfig as unknown) as ThemeSettings[],
+      });
+
+      return LayoutWithProps;
     };
 
     const routes = [
@@ -123,9 +139,4 @@ class Routes extends Component {
   }
 }
 
-Routes.propTypes = {
-  settings: PropTypes.object,
-  themeSettings: PropTypes.object,
-  history: PropTypes.object,
-};
-export default hot(module)(ThemeSettingsData(SettingsData(Routes)));
+export default hot(module)(Routes);

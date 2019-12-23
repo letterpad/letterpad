@@ -26,12 +26,10 @@ const addRefreshToken = async (
   const token = req.headers.authorization;
   delete req.user;
   const operationName = req.body && req.body.operationName;
-
   if (operationName === "getOptions" || operationName === "login") {
     return next();
   }
   if (!token) return next();
-
   try {
     const { iat, exp, ...data }: ITokenData = await jwt.verify(
       token,
@@ -55,13 +53,7 @@ const MAX_UPLOAD_SIZE = parseInt(process.env["MAX_IMAGE_UPLOAD_SIZE"] || "10");
 
 export default function(app: Express) {
   app.use(corsMiddleWare);
-  // app.options("*", cors());
-  app.use(
-    cors({
-      credentials: true,
-      origin: "http://localhost:4040",
-    }),
-  );
+  app.options("*", cors());
   app.use(bodyParserMiddleWare);
   app.use(bodyParser.json());
   app.use(addRefreshToken);
