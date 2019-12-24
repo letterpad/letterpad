@@ -8,6 +8,7 @@ export const PostFragment = gql`
     status
     createdAt
     publishedAt
+    updatedAt
     excerpt
     cover_image
     slug

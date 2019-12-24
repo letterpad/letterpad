@@ -1,5 +1,6 @@
 const { util } = require("../common/util");
 import utils from "../../shared/util";
+import { TypeSettings } from "../types";
 const {
   getMetaTags,
   prepareScriptTags,
@@ -7,16 +8,27 @@ const {
   templateEngine,
 } = utils;
 
-module.exports.getHtml = (
-  theme,
-  html,
-  state,
-  initialData,
-  head,
-  settings,
-  styles,
-  isStatic,
-) => {
+interface IProps {
+  theme: string;
+  html: string;
+  apolloState: object;
+  initialData: object;
+  head: string;
+  settings: TypeSettings;
+  styles: string;
+  isStatic: boolean;
+}
+export const getHtml = (data: IProps) => {
+  const {
+    theme,
+    html,
+    apolloState,
+    initialData,
+    head,
+    settings,
+    styles,
+    isStatic,
+  } = data;
   const { htmlAttrs, metaTags } = getMetaTags(head);
   const isDev = process.env.NODE_ENV === "dev";
 
@@ -31,7 +43,7 @@ module.exports.getHtml = (
   ];
   const bundles = isDev ? devBundles : prodBundles;
 
-  const initialState = isStatic ? "" : JSON.stringify(state);
+  const initialState = isStatic ? "" : JSON.stringify(apolloState);
 
   // convert the bundles into <script ...></script>
   const scripts = isStatic ? "" : prepareScriptTags(bundles);
@@ -68,7 +80,7 @@ module.exports.getHtml = (
     BASE_NAME: process.env.baseName,
     TRACKING_ID: settings.google_analytics,
     GA_SCRIPT_TAG:
-      settings.google_analytics !== ""
+      settings.google_analytics.value !== ""
         ? '<script async src="https://www.gogle-analytics.com/analytics.js"></script>'
         : "",
     SCRIPT_TAGS: scripts,

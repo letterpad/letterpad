@@ -14,27 +14,29 @@ import { ApolloProvider as ApolloHocProvider } from "@apollo/react-hoc";
 import { ApolloProvider } from "react-apollo";
 import { renderToStringWithData } from "@apollo/react-ssr";
 import config from "../../config";
-import Routes, { TypeSettings } from "../Routes";
+import Routes from "../Routes";
 import { StaticContext } from "../Context";
 import { ThemesQuery, ThemeSettings } from "../../__generated__/gqlTypes";
 import { THEME_SETTINGS } from "../../shared/queries/Queries";
 import apolloClient from "../../shared/apolloClient";
+import { TypeSettings, IServerRenderProps } from "../types";
 
 const context = {};
 
-export default async (url, client, settings, _isStatic) => {
+export default async (props: IServerRenderProps) => {
+  const { requestUrl, client, settings, isStatic } = props;
   const opts = {
-    location: url,
+    location: requestUrl,
     context: context,
     basename: config.baseName.replace(/\/$/, ""), // remove the last slash
   };
   const initialData = await getThemeData(settings);
-
+  console.log(initialData);
   const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
   const clientApp = (
     <StyleSheetManager sheet={sheet.instance}>
       <StaticRouter {...opts}>
-        <StaticContext.Provider value={{ _isStatic }}>
+        <StaticContext.Provider value={{ isStatic }}>
           <ApolloHocProvider client={client}>
             <ApolloProvider client={client}>
               <Routes initialData={initialData} />
@@ -64,7 +66,7 @@ interface initialData {
   themeConfig: ThemeSettings[] | [];
 }
 
-async function getThemeData(settings) {
+async function getThemeData(settings: TypeSettings) {
   const client = apolloClient();
   const initialData: initialData = { settings: settings, themeConfig: [] };
   try {

@@ -13,13 +13,13 @@ type TypeSocial {
 }
 
 type Author {
-  id: Int!
-  username: String!
-  email: String!
+  id: Int
+  username: String
+  email: String
   fname: String!
   lname: String!
-  social: TypeSocial!
-  role: Role!
+  social: TypeSocial
+  role: Role
   bio: String
   avatar: String
 }

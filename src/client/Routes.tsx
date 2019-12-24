@@ -13,14 +13,9 @@ import SinglePost from "./containers/SinglePost";
 import SearchWrapper from "./containers/SearchWrapper";
 import NotFound from "./containers/404";
 import Renderer from "./Renderer";
-import {
-  SettingOptions,
-  Setting,
-  ThemeSettings,
-} from "../__generated__/gqlTypes";
+import { ThemeSettings } from "../__generated__/gqlTypes";
 import apolloClient from "../shared/apolloClient";
-
-export type TypeSettings = { [option in SettingOptions]: Setting };
+import { TypeSettings } from "./types";
 
 interface IRoutes {
   initialData: {
@@ -45,7 +40,6 @@ class Routes extends Component<IRoutes, {}> {
     );
 
     // To get the homepage, parse the menu settings then take the first item as the home
-    // const menu = JSON.parse(menuStr);
     let home = menu[0];
     return home;
   };

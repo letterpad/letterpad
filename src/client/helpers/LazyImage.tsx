@@ -1,15 +1,18 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import config from "config";
-import { StaticContext } from "../common/Context";
+import { StaticContext } from "../Context";
+import config from "../../config";
 
-class LazyImage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loaded: false,
-    };
-  }
+interface ILazyImageProps {
+  src: string;
+  width: string;
+}
+
+class LazyImage extends Component<ILazyImageProps, { loaded: boolean }> {
+  state = {
+    loaded: false,
+  };
+
+  mounted = false;
 
   componentDidMount() {
     this.mounted = true;
@@ -34,19 +37,12 @@ class LazyImage extends Component {
       if (isStatic) {
         src = this.props.src;
       }
-      return <img src={src} width={this.props.width} />;
+      return <img src={src} width={this.props.width || "100%"} />;
     }
     return <img src={this.props.src} width={this.props.width} />;
   }
 }
-LazyImage.defaultProps = {
-  width: "100%",
-};
 
-LazyImage.propTypes = {
-  src: PropTypes.string.isRequired,
-  width: PropTypes.string,
-};
 LazyImage.contextType = StaticContext;
 
 export default LazyImage;

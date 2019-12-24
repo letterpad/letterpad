@@ -18,8 +18,7 @@ import express from "express";
 import bodyParser from "body-parser";
 // import adminServer from "./admin/server";
 import apiServer from "./api/server";
-// import clientServerRendering from "./client/server/serverRendering";
-const clientServerRendering = require("./client/server/serverRendering");
+import clientServerRendering from "./client/server/serverRendering";
 import { AddressInfo } from "net";
 import staticPaths from "./staticPaths";
 
@@ -87,7 +86,7 @@ staticPaths(app);
 
 // start the admin dashboard and the client. Both use the same server, but its nice to separate them
 // adminServer(app);
-clientServerRendering.init(app);
+clientServerRendering(app);
 apiServer(app);
 const server = app.listen(process.env.appPort, function() {
   const addressInfo = server.address() as AddressInfo;

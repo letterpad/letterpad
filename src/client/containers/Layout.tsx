@@ -1,15 +1,5 @@
 import React from "react";
-import { TypeSettings } from "../Routes";
-import ApolloClient from "apollo-client";
-import { RouteComponentProps } from "react-router";
-
-interface ILayoutProps<T> {
-  type: string;
-  settings: TypeSettings;
-  client: ApolloClient<any>;
-  router: RouteComponentProps;
-  Renderer: React.ComponentType<T>;
-}
+import { ILayoutProps } from "../types";
 
 class Layout extends React.Component<ILayoutProps<any>> {
   render() {

@@ -1,26 +1,25 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { EventBusInstance } from "shared/eventBus";
+import { RouteComponentProps } from "react-router";
 
-export default class Search extends Component {
+export default class Search extends Component<
+  { history: RouteComponentProps["history"] },
+  {}
+> {
   static propTypes = {
     history: PropTypes.object,
     match: PropTypes.object,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      search: "",
-    };
-    this.onChange = this.onChange.bind(this);
-    this.doSearch = this.doSearch.bind(this);
-  }
+  state = {
+    search: "",
+  };
 
   componentDidMount() {
     if (this.props.history.location.pathname.includes("/search/")) {
       this.setState({
-        search: this.props.history.location.pathname.split("/").pop(-1),
+        search: this.props.history.location.pathname.split("/").pop(),
       });
     } else {
       this.setState({ search: "" });
@@ -33,13 +32,18 @@ export default class Search extends Component {
 
   doSearch = e => {
     const query = e.target.value.trim();
-    EventBusInstance.publish("SEARCH_QUERY", { query, type: "post" });
+    // EventBusInstance.publish("SEARCH_QUERY", { query, type: "post" });
   };
 
   setSearchUrl = () => {
     if (this.props.history.location.pathname.indexOf("/search/") === -1) {
       this.props.history.push("/search/");
-      setTimeout(() => document.querySelector("#search-input").focus(), 300);
+      setTimeout(() => {
+        const node: HTMLInputElement | null = document.querySelector(
+          "#search-input",
+        );
+        if (node) node.focus();
+      }, 300);
     }
   };
 

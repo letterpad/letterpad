@@ -76,8 +76,8 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
                     image={config.baseName + author.avatar}
                     title={authorName}
                     href="#"
-                    onClick={() => authorSelect(author.id)}
-                    line1={author.role.name}
+                    onClick={() => authorSelect(author.id || 0)}
+                    line1={author.role && author.role.name}
                     // setSelection={setSelection}
                     // selectedPosts={selectedPosts}
                   />

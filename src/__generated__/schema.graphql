@@ -13,13 +13,13 @@ type TypeSocial {
 }
 
 type Author {
-  id: Int!
-  username: String!
-  email: String!
+  id: Int
+  username: String
+  email: String
   fname: String!
   lname: String!
-  social: TypeSocial!
-  role: Role!
+  social: TypeSocial
+  role: Role
   bio: String
   avatar: String
 }
@@ -65,7 +65,7 @@ type Query {
   me: Author
   validateToken: CreateAuthorResponse
   media(filters: MediaFiltersWithPagination): MediaNode!
-  post(filters: SinglePostFilters): Post
+  post(filters: SinglePostFilters): Post!
   posts(filters: PostFiltersWithPagination): PostNode!
   menuContent(filters: MenuFiltersWithPagination): PostTaxonomyNode
   postsByTaxinomySlug(type: String!, slug: String!, postType: String, offset: Int, limit: Int, cursor: Int): PostTaxonomyNode
@@ -145,20 +145,20 @@ enum PostStatusOptions {
 }
 
 type Post {
-  id: Int
-  title: String
-  body: String
-  author: Author
-  excerpt: String
-  cover_image: String
-  type: String
-  status: String
-  slug: String
-  mode: String
-  createdAt: Date
-  publishedAt: Date
-  updatedAt: Date
-  taxonomies: [Taxonomy]
+  id: Int!
+  title: String!
+  body: String!
+  author: Author!
+  excerpt: String!
+  cover_image: String!
+  type: String!
+  status: String!
+  slug: String!
+  mode: String!
+  createdAt: Date!
+  publishedAt: Date!
+  updatedAt: Date!
+  taxonomies: [Taxonomy]!
 }
 
 input InputCreatePost {

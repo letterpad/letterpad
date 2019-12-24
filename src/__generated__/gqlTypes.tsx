@@ -19,13 +19,13 @@ export type AdjacentPosts = {
 
 export type Author = {
    __typename?: 'Author',
-  id: Scalars['Int'],
-  username: Scalars['String'],
-  email: Scalars['String'],
+  id?: Maybe<Scalars['Int']>,
+  username?: Maybe<Scalars['String']>,
+  email?: Maybe<Scalars['String']>,
   fname: Scalars['String'],
   lname: Scalars['String'],
-  social: TypeSocial,
-  role: Role,
+  social?: Maybe<TypeSocial>,
+  role?: Maybe<Role>,
   bio?: Maybe<Scalars['String']>,
   avatar?: Maybe<Scalars['String']>,
 };
@@ -334,20 +334,20 @@ export type Permission = {
 
 export type Post = {
    __typename?: 'Post',
-  id?: Maybe<Scalars['Int']>,
-  title?: Maybe<Scalars['String']>,
-  body?: Maybe<Scalars['String']>,
-  author?: Maybe<Author>,
-  excerpt?: Maybe<Scalars['String']>,
-  cover_image?: Maybe<Scalars['String']>,
-  type?: Maybe<Scalars['String']>,
-  status?: Maybe<Scalars['String']>,
-  slug?: Maybe<Scalars['String']>,
-  mode?: Maybe<Scalars['String']>,
-  createdAt?: Maybe<Scalars['Date']>,
-  publishedAt?: Maybe<Scalars['Date']>,
-  updatedAt?: Maybe<Scalars['Date']>,
-  taxonomies?: Maybe<Array<Maybe<Taxonomy>>>,
+  id: Scalars['Int'],
+  title: Scalars['String'],
+  body: Scalars['String'],
+  author: Author,
+  excerpt: Scalars['String'],
+  cover_image: Scalars['String'],
+  type: Scalars['String'],
+  status: Scalars['String'],
+  slug: Scalars['String'],
+  mode: Scalars['String'],
+  createdAt: Scalars['Date'],
+  publishedAt: Scalars['Date'],
+  updatedAt: Scalars['Date'],
+  taxonomies: Array<Maybe<Taxonomy>>,
 };
 
 export type PostFilters = {
@@ -416,7 +416,7 @@ export type Query = {
   me?: Maybe<Author>,
   validateToken?: Maybe<CreateAuthorResponse>,
   media: MediaNode,
-  post?: Maybe<Post>,
+  post: Post,
   posts: PostNode,
   menuContent?: Maybe<PostTaxonomyNode>,
   postsByTaxinomySlug?: Maybe<PostTaxonomyNode>,
@@ -647,14 +647,14 @@ export type UpdateResponse = {
 
 export type PostFieldsFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'id' | 'title' | 'body' | 'status' | 'createdAt' | 'publishedAt' | 'excerpt' | 'cover_image' | 'slug' | 'mode' | 'type'>
-  & { author: Maybe<(
+  & Pick<Post, 'id' | 'title' | 'body' | 'status' | 'createdAt' | 'publishedAt' | 'updatedAt' | 'excerpt' | 'cover_image' | 'slug' | 'mode' | 'type'>
+  & { author: (
     { __typename?: 'Author' }
     & Pick<Author, 'fname' | 'lname' | 'avatar' | 'bio'>
-  )>, taxonomies: Maybe<Array<Maybe<(
+  ), taxonomies: Array<Maybe<(
     { __typename?: 'Taxonomy' }
     & Pick<Taxonomy, 'id' | 'name' | 'type' | 'slug'>
-  )>>> }
+  )>> }
 );
 
 export type CreatePostMutationVariables = {
@@ -673,13 +673,13 @@ export type CreatePostMutation = (
     )>>, post: Maybe<(
       { __typename?: 'Post' }
       & Pick<Post, 'id' | 'title' | 'body' | 'status' | 'type' | 'slug' | 'mode' | 'excerpt' | 'createdAt' | 'cover_image'>
-      & { author: Maybe<(
+      & { author: (
         { __typename?: 'Author' }
         & Pick<Author, 'username'>
-      )>, taxonomies: Maybe<Array<Maybe<(
+      ), taxonomies: Array<Maybe<(
         { __typename?: 'Taxonomy' }
         & Pick<Taxonomy, 'id' | 'name' | 'type'>
-      )>>> }
+      )>> }
     )> }
   ) }
 );
@@ -824,13 +824,13 @@ export type UpdatePostMutation = (
     )>>, post: Maybe<(
       { __typename?: 'Post' }
       & Pick<Post, 'id' | 'title' | 'body' | 'slug' | 'type' | 'status' | 'excerpt' | 'mode' | 'createdAt' | 'cover_image'>
-      & { author: Maybe<(
+      & { author: (
         { __typename?: 'Author' }
         & Pick<Author, 'username' | 'lname' | 'fname' | 'avatar' | 'bio'>
-      )>, taxonomies: Maybe<Array<Maybe<(
+      ), taxonomies: Array<Maybe<(
         { __typename?: 'Taxonomy' }
         & Pick<Taxonomy, 'id' | 'name' | 'type' | 'slug'>
-      )>>> }
+      )>> }
     )> }
   ) }
 );
@@ -967,10 +967,10 @@ export type PostQueryVariables = {
 
 export type PostQuery = (
   { __typename?: 'Query' }
-  & { post: Maybe<(
+  & { post: (
     { __typename?: 'Post' }
     & PostFieldsFragment
-  )> }
+  ) }
 );
 
 export type MediaQueryVariables = {
@@ -998,17 +998,17 @@ export type AuthorsQuery = (
   & { authors: Array<(
     { __typename?: 'Author' }
     & Pick<Author, 'id' | 'email' | 'fname' | 'lname' | 'username' | 'avatar' | 'bio'>
-    & { social: (
+    & { social: Maybe<(
       { __typename?: 'TypeSocial' }
       & Pick<TypeSocial, 'github' | 'facebook' | 'twitter' | 'instagram'>
-    ), role: (
+    )>, role: Maybe<(
       { __typename?: 'Role' }
       & Pick<Role, 'name'>
       & { permissions: Maybe<Array<Maybe<(
         { __typename?: 'Permission' }
         & Pick<Permission, 'name'>
       )>>> }
-    ) }
+    )> }
   )> }
 );
 
@@ -1022,17 +1022,17 @@ export type GetAuthorQuery = (
   & { author: (
     { __typename?: 'Author' }
     & Pick<Author, 'id' | 'username' | 'email' | 'fname' | 'lname' | 'avatar' | 'bio'>
-    & { social: (
+    & { social: Maybe<(
       { __typename?: 'TypeSocial' }
       & Pick<TypeSocial, 'facebook' | 'instagram' | 'github' | 'twitter'>
-    ), role: (
+    )>, role: Maybe<(
       { __typename?: 'Role' }
       & Pick<Role, 'name'>
       & { permissions: Maybe<Array<Maybe<(
         { __typename?: 'Permission' }
         & Pick<Permission, 'name'>
       )>>> }
-    ) }
+    )> }
   ) }
 );
 
@@ -1165,6 +1165,7 @@ export const PostFieldsFragmentDoc = gql`
   status
   createdAt
   publishedAt
+  updatedAt
   excerpt
   cover_image
   slug

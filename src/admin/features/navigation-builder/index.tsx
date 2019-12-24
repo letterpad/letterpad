@@ -38,7 +38,7 @@ const NavigationBuilder: React.FC<INavigationBuilderProps> = ({
   settings,
 }) => {
   const [categories, setCategories] = useState<Taxonomy[]>([]);
-  const [pages, setPages] = useState<Post[]>([]);
+  const [pages, setPages] = useState<Post[] | []>([]);
 
   const [updatedOptions, setUpdatedOptions] = useState<TypeUpdatedOptions>({});
 

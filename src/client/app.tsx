@@ -4,8 +4,9 @@ import { ApolloProvider } from "react-apollo";
 // import { ApolloProvider } from "@apollo/react-hooks";
 import { BrowserRouter } from "react-router-dom";
 import client from "../shared/apolloClient";
-import Routes, { TypeSettings } from "./Routes";
+import Routes from "./Routes";
 import config from "../config";
+import { TypeSettings } from "./types";
 
 declare global {
   interface Window {

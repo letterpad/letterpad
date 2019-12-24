@@ -92,7 +92,7 @@ const serverConfig = args => {
     cache: true,
     target: "node",
     entry: {
-      server: [path.join(__dirname, "../src/client/server")],
+      server: [path.join(__dirname, "../src/client/server/app")],
     },
     output: {
       filename: "server.node.js",

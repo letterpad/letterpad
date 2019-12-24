@@ -7,20 +7,20 @@ enum PostStatusOptions {
 }
 
 type Post {
-  id: Int
-  title: String
-  body: String
-  author: Author
-  excerpt: String
-  cover_image: String
-  type: String
-  status: String
-  slug: String
-  mode: String
-  createdAt: Date
-  publishedAt: Date
-  updatedAt: Date
-  taxonomies: [Taxonomy]
+  id: Int!
+  title: String!
+  body: String!
+  author: Author!
+  excerpt: String!
+  cover_image: String!
+  type: String!
+  status: String!
+  slug: String!
+  mode: String!
+  createdAt: Date!
+  publishedAt: Date!
+  updatedAt: Date!
+  taxonomies: [Taxonomy]!
 }
 
 input InputCreatePost {
@@ -160,7 +160,7 @@ input SinglePostFilters {
 }
 
 type Query {
-  post(filters: SinglePostFilters): Post
+  post(filters: SinglePostFilters): Post!
 
   posts(filters: PostFiltersWithPagination): PostNode!
 

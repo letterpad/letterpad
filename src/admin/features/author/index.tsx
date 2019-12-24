@@ -42,15 +42,15 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
     });
     const { author } = data;
     if (author) {
-      if(author.social) {
-      delete author.social.__typename;
+      if (author.social) {
+        delete author.social.__typename;
       }
       delete author.__typename;
-      if(author.role) {
-      delete author.role.__typename;
+      if (author.role) {
+        delete author.role.__typename;
       }
       setAuthor(data.author);
-      setUpdatedAuthor({ id: data.author.id });
+      setUpdatedAuthor({ id: data.author.id || 0 });
     }
     setLoading(loading);
   };
