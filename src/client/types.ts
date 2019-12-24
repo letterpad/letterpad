@@ -20,6 +20,7 @@ export interface ILayoutProps<T> {
   settings: TypeSettings;
   client: ApolloClient<any>;
   router: RouteComponentProps;
+  data?: any;
   Renderer: React.ComponentType<T>;
 }
 
@@ -27,7 +28,8 @@ export interface IRouteProps {
   type: string;
   settings: TypeSettings;
   client: ApolloClient<any>;
-  themeConfig: ThemeSettings[];
+  themeSettings: ThemeSettings[];
+  data?: any;
 }
 
 export interface IThemeComponentProps extends IRouteProps {

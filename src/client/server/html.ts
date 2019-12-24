@@ -13,7 +13,7 @@ interface IProps {
   html: string;
   apolloState: object;
   initialData: object;
-  head: string;
+  head: string[];
   settings: TypeSettings;
   styles: string;
   isStatic: boolean;

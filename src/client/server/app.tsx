@@ -9,7 +9,7 @@
 const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
 import React from "react";
 import { Helmet } from "react-helmet";
-import { StaticRouter } from "react-router";
+import { StaticRouter, matchPath, RouteProps } from "react-router";
 import { ApolloProvider as ApolloHocProvider } from "@apollo/react-hoc";
 import { ApolloProvider } from "react-apollo";
 import { renderToStringWithData } from "@apollo/react-ssr";
@@ -20,8 +20,15 @@ import { ThemesQuery, ThemeSettings } from "../../__generated__/gqlTypes";
 import { THEME_SETTINGS } from "../../shared/queries/Queries";
 import apolloClient from "../../shared/apolloClient";
 import { TypeSettings, IServerRenderProps } from "../types";
+import getRoutes from "../_routes";
 
 const context = {};
+
+// interface A extends RouteProps {
+//   component: {
+//     static getInitialProps?: () => void;
+//   };
+// }
 
 export default async (props: IServerRenderProps) => {
   const { requestUrl, client, settings, isStatic } = props;
@@ -30,8 +37,32 @@ export default async (props: IServerRenderProps) => {
     context: context,
     basename: config.baseName.replace(/\/$/, ""), // remove the last slash
   };
-  const initialData = await getThemeData(settings);
-  console.log(initialData);
+  const initialData = await getInitialData(settings);
+  // We block rendering until all promises have resolved
+  const matchedRoute = getRoutes(initialData).find(route => {
+    const match = matchPath(requestUrl, route);
+    // @ts-ignore
+    return match && route.component.getInitialProps;
+  });
+  let matchedRouteProps = null;
+  if (matchedRoute) {
+    // @ts-ignore
+    matchedRouteProps = matchedRoute.component.getInitialProps({
+      match: "",
+      req: "req",
+      res: "res",
+      client,
+    });
+  }
+  // .map((route: RouteProps, index) => {
+  //   console.log("found");
+  //   // @ts-ignore
+  //   return route.component
+  // });
+  const data = await Promise.all([matchedRouteProps]);
+  console.log("==============>>>", data);
+
+  // console.log(initialData);
   const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
   const clientApp = (
     <StyleSheetManager sheet={sheet.instance}>
@@ -39,7 +70,7 @@ export default async (props: IServerRenderProps) => {
         <StaticContext.Provider value={{ isStatic }}>
           <ApolloHocProvider client={client}>
             <ApolloProvider client={client}>
-              <Routes initialData={initialData} />
+              <Routes initialData={{ ...initialData, data }} />
             </ApolloProvider>
           </ApolloHocProvider>
         </StaticContext.Provider>
@@ -63,12 +94,12 @@ export default async (props: IServerRenderProps) => {
 
 interface initialData {
   settings: TypeSettings | {};
-  themeConfig: ThemeSettings[] | [];
+  themeSettings: ThemeSettings[] | [];
 }
 
-async function getThemeData(settings: TypeSettings) {
+async function getInitialData(settings: TypeSettings) {
   const client = apolloClient();
-  const initialData: initialData = { settings: settings, themeConfig: [] };
+  const initialData: initialData = { settings: settings, themeSettings: [] };
   try {
     const themeResult = await client.query<ThemesQuery>({
       query: THEME_SETTINGS,
@@ -77,7 +108,7 @@ async function getThemeData(settings: TypeSettings) {
       },
     });
     if (themeResult.data && themeResult.data.themes.length > 0) {
-      initialData.themeConfig = themeResult.data.themes[0].settings;
+      initialData.themeSettings = themeResult.data.themes[0].settings;
     }
     return initialData;
   } catch (e) {}

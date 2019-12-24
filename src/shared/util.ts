@@ -52,7 +52,7 @@ const utils = {
     return data;
   },
 
-  getMetaTags: function getMetaTags(head) {
+  getMetaTags: function getMetaTags(head = {}) {
     let htmlAttrs = "";
     let metaTags = Object.keys(head)
       .map(function(item) {

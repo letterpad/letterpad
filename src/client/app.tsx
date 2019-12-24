@@ -13,14 +13,16 @@ declare global {
     ga: () => void;
     __INITIAL_DATA__: {
       settings: TypeSettings;
-      themeConfig: [];
+      themeSettings: [];
+      data: null;
     };
   }
 }
 
 let initialData = {
   settings: {},
-  themeConfig: [],
+  themeSettings: [],
+  data: null,
 };
 if (window.__INITIAL_DATA__) {
   initialData = window.__INITIAL_DATA__;
