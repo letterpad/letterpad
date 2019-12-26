@@ -1,80 +1,65 @@
-import { IRoutes } from "./Routes";
+import { IRoutes } from "./App";
 import Home from "./containers/Home";
 import Posts from "./containers/Posts";
 import SinglePage from "./containers/SinglePage";
 import SinglePost from "./containers/SinglePost";
 import SearchWrapper from "./containers/SearchWrapper";
 import NotFound from "./containers/404";
-import Renderer from "./Renderer";
+import LayoutConnector from "./LayoutConnector";
 import apolloClient from "../shared/apolloClient";
-import { ThemeSettings } from "../__generated__/gqlTypes";
 import { TypeSettings } from "./types";
-import { RouteProps } from "react-router";
+import { RouteProps, Route } from "react-router";
 import withSSR from "./withSSR";
 
 const getRoutes = (args: IRoutes["initialData"]): RouteProps[] => {
   const settings = args.settings as TypeSettings;
   const { themeSettings } = args;
   const home = getHomeSlug(settings);
-  if (typeof window !== "undefined") {
-    // @ts-ignore: test s
-    window.a = Renderer(withSSR(Home), {
-      type: home.type === "category" ? "posts" : "page",
-      client: apolloClient(),
-      settings,
-      themeSettings,
-    });
-  }
 
-  const routes = [
+  const commonProps = {
+    client: apolloClient(),
+    settings,
+    themeSettings,
+    initialProps: args.initialProps,
+  };
+  const routes: RouteProps[] = [
     {
       exact: true,
-      component: Renderer(withSSR(Home), {
+      component: LayoutConnector(withSSR(Home), {
         type: home.type === "category" ? "posts" : "page",
-        client: apolloClient(),
-        settings,
-        themeSettings,
-        data: args.data,
+        ...commonProps,
       }),
       path: ["/", "/home/page/:page_no"],
     },
     {
       exact: true,
-      component: Renderer(withSSR(Posts), {
+      component: LayoutConnector(withSSR(Posts), {
         type: "page",
-        client: apolloClient(),
-        settings,
-        themeSettings,
+        ...commonProps,
       }),
       path: ["/posts/:slug", "/posts/:slug/page/:page_no"],
     },
     {
       exact: true,
-      component: Renderer(withSSR(SinglePage), {
+      component: LayoutConnector(withSSR(SinglePage), {
         type: "page",
-        client: apolloClient(),
-        settings,
-        themeSettings,
+        ...commonProps,
       }),
       path: ["/page/:slug"],
     },
     {
       exact: true,
-      component: Renderer(withSSR(SinglePost), {
+      component: LayoutConnector(withSSR(SinglePost), {
         type: "post",
-        client: apolloClient(),
-        settings,
-        themeSettings,
+        ...commonProps,
       }),
       path: ["/post/:slug"],
     },
     {
       exact: true,
-      component: Renderer(withSSR(SearchWrapper), {
+      component: LayoutConnector(withSSR(SearchWrapper), {
         type: "category",
-        client: apolloClient(),
-        settings,
-        themeSettings,
+        ...commonProps,
       }),
       path: [
         "/category/:query",
@@ -86,11 +71,9 @@ const getRoutes = (args: IRoutes["initialData"]): RouteProps[] => {
     },
     {
       exact: true,
-      component: Renderer(withSSR(NotFound), {
+      component: LayoutConnector(withSSR(NotFound), {
         type: "page",
-        client: apolloClient(),
-        settings,
-        themeSettings,
+        ...commonProps,
       }),
       path: "*",
     },
@@ -105,20 +88,4 @@ const getHomeSlug = (settings: TypeSettings) => {
   // To get the homepage, parse the menu settings then take the first item as the home
   let home = menu[0];
   return home;
-};
-
-const getComponent = (
-  WrappedComponent: React.ComponentType<any>,
-  type: string,
-  settings: TypeSettings,
-  themeSettings: ThemeSettings[],
-) => {
-  const LayoutWithProps = Renderer(WrappedComponent, {
-    settings,
-    type,
-    client: apolloClient(),
-    themeSettings,
-  });
-
-  return LayoutWithProps;
 };

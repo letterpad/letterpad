@@ -1,39 +1,62 @@
-import React from "react";
-import { hydrate } from "react-dom";
-import { ApolloProvider } from "react-apollo";
-// import { ApolloProvider } from "@apollo/react-hooks";
-import { BrowserRouter } from "react-router-dom";
-import client from "../shared/apolloClient";
-import Routes from "./Routes";
-import config from "../config";
-import { TypeSettings } from "./types";
+import React, { Component } from "react";
+import { Route, Switch } from "react-router-dom";
+import SEO from "./helpers/SEO";
+import { hot } from "react-hot-loader";
+/*!------------------------------------------------------------------
+[View Containers-]
+*/
 
-declare global {
-  interface Window {
-    ga: () => void;
-    __INITIAL_DATA__: {
-      settings: TypeSettings;
-      themeSettings: [];
-      data: null;
-    };
+import { ThemeSettings } from "../__generated__/gqlTypes";
+
+import { TypeSettings } from "./types";
+import getRoutes from "./routes";
+
+export interface IRoutes {
+  initialData: {
+    settings: TypeSettings | {};
+    themeSettings: ThemeSettings[] | [];
+    initialProps?: {} | null;
+  };
+}
+
+class App extends Component<IRoutes, {}> {
+  applyCustomCSS = ({ css }) => {
+    if (typeof document == "undefined" || typeof css == "undefined")
+      return false;
+    const style = document.createElement("style");
+    style.setAttribute("type", "text/css");
+    style.innerText = css.value;
+    document.head.appendChild(style);
+  };
+
+  render() {
+    const settings = this.props.initialData.settings as TypeSettings;
+    this.applyCustomCSS(settings);
+    const routes = getRoutes({ ...this.props.initialData });
+    return (
+      <div>
+        <SEO
+          schema="Blog"
+          title={`${settings.site_title.value} | ${settings.site_tagline.value}`}
+          description={settings.site_description.value}
+          path="/"
+          image="/"
+          contentType="blog"
+          settings={settings}
+        />
+        <Switch>
+          {routes.map((route, i) => (
+            <Route
+              key={i}
+              exact
+              path={route.path}
+              component={route.component}
+            />
+          ))}
+        </Switch>
+      </div>
+    );
   }
 }
 
-let initialData = {
-  settings: {},
-  themeSettings: [],
-  data: null,
-};
-if (window.__INITIAL_DATA__) {
-  initialData = window.__INITIAL_DATA__;
-}
-
-const App = (
-  <BrowserRouter basename={config.baseName}>
-    <ApolloProvider client={client()}>
-      <Routes initialData={initialData} />
-    </ApolloProvider>
-  </BrowserRouter>
-);
-
-hydrate(App, document.getElementById("app"));
+export default hot(module)(App);

@@ -1,12 +1,12 @@
 import React from "react";
+import { TypeWrappedComponent } from "../types";
 
-const Home: React.FC<any> & {
-  getInitialProps?: ({ match, req, res, client }: any) => Promise<any>;
-} = _props => {
+const Home: TypeWrappedComponent = _props => {
   return (
     <div>
       This is just a abstract component. You should create a theme and keep this
-      File inside containers directory...{_props.data && _props.data}
+      File inside containers directory...
+      {_props.initialProps && JSON.stringify(_props.initialProps)}
     </div>
   );
 };

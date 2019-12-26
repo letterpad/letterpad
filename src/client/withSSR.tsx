@@ -1,7 +1,12 @@
 import React from "react";
 import apolloClient from "../shared/apolloClient";
+import { TypeWrappedComponent } from "./types";
 
-export default function withSSR(WrappedComponent) {
+export default function withSSR(
+  WrappedComponent,
+): React.ComponentType<any> & {
+  getInitialProps?: TypeWrappedComponent["getInitialProps"];
+} {
   class Page extends React.Component<any, any> {
     static getInitialProps(ctx) {
       // Need to call the wrapped components getInitialProps if it exists, else
@@ -17,10 +22,9 @@ export default function withSSR(WrappedComponent) {
 
     constructor(props) {
       super(props);
-      console.log("ssr props :", props);
       this.state = {
-        data: props.data,
-        isLoading: !!props.data,
+        data: props.initialProps,
+        isLoading: !!props.initialProps,
       };
     }
 
@@ -67,7 +71,7 @@ export default function withSSR(WrappedComponent) {
           {...rest}
           refetch={this.fetchData}
           isLoading={this.state.isLoading}
-          data={this.state.data}
+          initialProps={this.state.data}
         />
       );
     }

@@ -9,26 +9,20 @@
 const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
 import React from "react";
 import { Helmet } from "react-helmet";
-import { StaticRouter, matchPath, RouteProps } from "react-router";
+import { StaticRouter, matchPath } from "react-router";
 import { ApolloProvider as ApolloHocProvider } from "@apollo/react-hoc";
 import { ApolloProvider } from "react-apollo";
 import { renderToStringWithData } from "@apollo/react-ssr";
 import config from "../../config";
-import Routes from "../Routes";
+import App from "../App";
 import { StaticContext } from "../Context";
 import { ThemesQuery, ThemeSettings } from "../../__generated__/gqlTypes";
 import { THEME_SETTINGS } from "../../shared/queries/Queries";
 import apolloClient from "../../shared/apolloClient";
 import { TypeSettings, IServerRenderProps } from "../types";
-import getRoutes from "../_routes";
+import getRoutes from "../routes";
 
 const context = {};
-
-// interface A extends RouteProps {
-//   component: {
-//     static getInitialProps?: () => void;
-//   };
-// }
 
 export default async (props: IServerRenderProps) => {
   const { requestUrl, client, settings, isStatic } = props;
@@ -39,30 +33,22 @@ export default async (props: IServerRenderProps) => {
   };
   const initialData = await getInitialData(settings);
   // We block rendering until all promises have resolved
-  const matchedRoute = getRoutes(initialData).find(route => {
+  const matchedRoute = getRoutes(initialData).filter(route => {
     const match = matchPath(requestUrl, route);
     // @ts-ignore
     return match && route.component.getInitialProps;
   });
   let matchedRouteProps = null;
-  if (matchedRoute) {
+  if (matchedRoute.length > 0) {
     // @ts-ignore
-    matchedRouteProps = matchedRoute.component.getInitialProps({
+    matchedRouteProps = matchedRoute[0].component.getInitialProps({
       match: "",
       req: "req",
       res: "res",
       client,
     });
   }
-  // .map((route: RouteProps, index) => {
-  //   console.log("found");
-  //   // @ts-ignore
-  //   return route.component
-  // });
-  const data = await Promise.all([matchedRouteProps]);
-  console.log("==============>>>", data);
-
-  // console.log(initialData);
+  const initialProps = await Promise.all([matchedRouteProps]);
   const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
   const clientApp = (
     <StyleSheetManager sheet={sheet.instance}>
@@ -70,7 +56,7 @@ export default async (props: IServerRenderProps) => {
         <StaticContext.Provider value={{ isStatic }}>
           <ApolloHocProvider client={client}>
             <ApolloProvider client={client}>
-              <Routes initialData={{ ...initialData, data }} />
+              <App initialData={{ ...initialData, initialProps }} />
             </ApolloProvider>
           </ApolloHocProvider>
         </StaticContext.Provider>
@@ -83,7 +69,7 @@ export default async (props: IServerRenderProps) => {
     return {
       head: Helmet.renderStatic(),
       html: content,
-      initialData: initialData,
+      initialData: { ...initialData, initialProps },
       apolloState: initialState,
       sheet: sheet,
     };

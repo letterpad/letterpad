@@ -4,7 +4,6 @@ import { ILayoutProps } from "../types";
 class Layout extends React.Component<ILayoutProps<any>> {
   render() {
     const { Renderer, ...props } = this.props;
-    console.log("Layout", props);
     return (
       <div className="main centered">
         <nav className="navbar navbar-default">

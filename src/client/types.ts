@@ -20,7 +20,8 @@ export interface ILayoutProps<T> {
   settings: TypeSettings;
   client: ApolloClient<any>;
   router: RouteComponentProps;
-  data?: any;
+  initialProps?: any;
+  themeSettings: ThemeSettings[];
   Renderer: React.ComponentType<T>;
 }
 
@@ -29,9 +30,20 @@ export interface IRouteProps {
   settings: TypeSettings;
   client: ApolloClient<any>;
   themeSettings: ThemeSettings[];
-  data?: any;
+  initialProps?: any;
 }
 
 export interface IThemeComponentProps extends IRouteProps {
   router: RouteComponentProps;
 }
+
+export interface IWrappedComponentProps extends IRouteProps {
+  refetch: () => void;
+  isLoading: boolean;
+}
+
+export type TypeWrappedComponent = React.ComponentType<
+  IWrappedComponentProps
+> & {
+  getInitialProps?: ({ match, req, res, client }: any) => Promise<any>;
+};
