@@ -44,10 +44,12 @@ function LayoutConnector(
   };
 
   LayoutConnector.getInitialProps = async ctx => {
-    const data = { layout: null };
+    const data = {};
     if (LayouWithSSr.getInitialProps) {
       const layoutInitialProps = await LayouWithSSr.getInitialProps(ctx);
-      data.layout = layoutInitialProps;
+      if (layoutInitialProps) {
+        data["layout"] = layoutInitialProps;
+      }
     }
     if (WrappedComponent.getInitialProps) {
       const props = await WrappedComponent.getInitialProps(ctx);

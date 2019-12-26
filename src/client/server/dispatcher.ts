@@ -1,6 +1,7 @@
 import { getDirPath } from "./../../dir";
 import { IServerRenderProps } from "../types";
 import { getHtml } from "./html";
+import logger from "../../shared/logger";
 const fs = require("fs");
 const path = require("path");
 // const { getHtml } = require("./html");
@@ -25,6 +26,7 @@ export const dispatcher = async (props: IServerRenderProps) => {
   }
   // this is the bundle file from server.js which returns a promise
   const server = require(serverFile).default;
+  logger.debug("Loaded SSR server file to run => ", serverFile);
   try {
     const response = await server(props);
     if (response) {

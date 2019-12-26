@@ -8,10 +8,16 @@ import NotFound from "./containers/404";
 import LayoutConnector from "./LayoutConnector";
 import apolloClient from "../shared/apolloClient";
 import { TypeSettings } from "./types";
-import { RouteProps, Route } from "react-router";
+import { RouteProps } from "react-router";
 import withSSR from "./withSSR";
 
-const getRoutes = (args: IRoutes["initialData"]): RouteProps[] => {
+interface IRouteProps extends RouteProps {
+  component: RouteProps["component"] & {
+    getInitialProps?: ({ match, req, res, client }: any) => Promise<any>;
+  };
+}
+
+const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
   const settings = args.settings as TypeSettings;
   const { themeSettings } = args;
   const home = getHomeSlug(settings);
@@ -22,7 +28,7 @@ const getRoutes = (args: IRoutes["initialData"]): RouteProps[] => {
     themeSettings,
     initialProps: args.initialProps,
   };
-  const routes: RouteProps[] = [
+  const routes: IRouteProps[] = [
     {
       exact: true,
       component: LayoutConnector(withSSR(Home), {

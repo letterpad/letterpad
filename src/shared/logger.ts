@@ -1,32 +1,43 @@
-class log {
+class logger {
   color = "black";
 
-  constructor(message: string) {
-    print("LOG", message, "darkcyan");
+  static debug(...params: any[]) {
+    const [message, ...rest] = params;
+    print("LOG", message, "\x1b[36m%s", rest);
   }
 
-  static info(message: string) {
-    print("INFO", message, "Blue");
+  static info(...params: any[]) {
+    const [message, ...rest] = params;
+    print("INFO", message, "\x1b[34m", rest);
   }
 
-  static error(message: string) {
-    print("ERROR", message, "Red");
+  static error(...params: any[]) {
+    const [message, ...rest] = params;
+    print("ERROR", message, "\x1b[31m", rest);
   }
 
-  static warning(message: string) {
-    print("WARN", message, "Orange");
+  static warning(...params: any[]) {
+    const [message, ...rest] = params;
+    print("WARN", message, "\x1b[45m", rest);
   }
 
-  static success(message: string) {
-    print("SUCCESS", message, "Green");
+  static success(...params: any[]) {
+    const [message, ...rest] = params;
+    print("SUCCESS", message, "\x1b[42m", rest);
   }
 }
-export default log;
+export default logger;
 
-function print(tagName: string, tagColor: string, message: string) {
-  console.log(
-    `%c[${tagName}]  %c${message}`,
-    `color:${tagColor};font-weight:bold`,
-    `color:black`,
-  );
+function print(
+  tagName: string,
+  message: string,
+  tagColor: string,
+  rest: any[],
+) {
+  console.log.apply(console, [
+    tagColor,
+    `[${tagName}]\x1b[0m:`,
+    message,
+    ...rest,
+  ]);
 }
