@@ -2545,7 +2545,7 @@ apollo-cache-control@^0.8.9:
     apollo-server-env "^2.4.3"
     graphql-extensions "^0.10.8"
 
-apollo-cache-inmemory@^1.6.3:
+apollo-cache-inmemory@^1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/apollo-cache-inmemory/-/apollo-cache-inmemory-1.6.5.tgz#2ccaa3827686f6ed7fb634203dbf2b8d7015856a"
   integrity sha512-koB76JUDJaycfejHmrXBbWIN9pRKM0Z9CJGQcBzIOtmte1JhEBSuzsOUu7NQgiXKYI4iGoMREcnaWffsosZynA==
@@ -11284,6 +11284,13 @@ react-sortable-tree@^2.6.0:
     react-lifecycles-compat "^3.0.4"
     react-sortable-tree "^2.6.0"
     react-virtualized "^9.19.1"
+
+react-ssr-prepass@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-ssr-prepass/-/react-ssr-prepass-1.0.8.tgz#036abffe541975b20213cf7b261c05ac2843480d"
+  integrity sha512-O0gfRA1SaK+9ITKxqfnXsej2jF+OHGP/+GxD4unROQaM/0/UczGF9fuF+wTboxaQoKdIf4FvS3h/OigWh704VA==
+  dependencies:
+    object-is "^1.0.1"
 
 react-test-renderer@^16.0.0-0:
   version "16.12.0"

@@ -91,9 +91,6 @@ const serverConfig = args => {
     name: "server",
     cache: true,
     target: "node",
-    entry: {
-      server: [path.join(__dirname, "../src/client/server/app")],
-    },
     output: {
       filename: "server.node.js",
       path: BUILD_PATH,
@@ -118,9 +115,10 @@ const serverConfig = args => {
       ],
     },
   });
-  // config.entry = {
-  //   server: [path.join(__dirname, "../src/client/server")],
-  // };
+  // overwrite entry and do not merge from base.
+  config.entry = {
+    server: [path.join(__dirname, "../src/client/server/serverApp")],
+  };
   return config;
 };
 

@@ -4,7 +4,7 @@ import { ApolloProvider } from "react-apollo";
 // import { ApolloProvider } from "@apollo/react-hooks";
 import { BrowserRouter } from "react-router-dom";
 import client from "../shared/apolloClient";
-import App from "./App";
+import ClientApp from "./ClientApp";
 import config from "../config";
 import { TypeSettings } from "./types";
 
@@ -31,7 +31,7 @@ if (window.__INITIAL_DATA__) {
 const LetterpadClient = (
   <BrowserRouter basename={config.baseName}>
     <ApolloProvider client={client()}>
-      <App initialData={initialData} />
+      <ClientApp initialData={initialData} />
     </ApolloProvider>
   </BrowserRouter>
 );

@@ -1,5 +1,5 @@
 import ApolloClient from "apollo-client";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, RouterProps } from "react-router";
 import {
   SettingOptions,
   Setting,
@@ -13,6 +13,7 @@ export interface IServerRenderProps {
   client: ApolloClient<any>;
   settings: TypeSettings;
   isStatic: boolean;
+  request: { req: Express.Request; res: Express.Response };
 }
 
 export interface ILayoutProps<T> {
@@ -33,9 +34,27 @@ export interface IRouteProps {
   initialProps?: any;
 }
 
-export interface IThemeComponentProps extends IRouteProps {
-  router: RouteComponentProps;
+export interface RouteParams {
+  slug?: string;
+  page_no?: string;
+  query?: string;
 }
+export interface IThemeComponentProps extends IRouteProps {
+  router: RouteComponentProps<RouteParams>;
+}
+
+export interface IInitialProps {
+  match: RouteComponentProps["match"];
+  client: ApolloClient<any>;
+}
+
+export type IThemeContainer = React.FC<IThemeComponentProps> & {
+  getInitialProps?: ({
+    match,
+
+    client,
+  }: IInitialProps) => Promise<any>;
+};
 
 export interface IWrappedComponentProps extends IRouteProps {
   refetch: () => void;

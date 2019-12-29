@@ -9,27 +9,25 @@
 const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
 import React from "react";
 import { Helmet } from "react-helmet";
-import { StaticRouter, matchPath } from "react-router";
-import { ApolloProvider as ApolloHocProvider } from "@apollo/react-hoc";
+import { StaticRouter } from "react-router";
 import { ApolloProvider } from "react-apollo";
-import { renderToStringWithData } from "@apollo/react-ssr";
+import { renderToStringWithData } from "react-apollo";
 import config from "../../config";
-import App, { IRoutes } from "../App";
+import ClientApp, { IRoutes } from "../ClientApp";
 import { StaticContext } from "../Context";
 import { ThemesQuery, ThemeSettings } from "../../__generated__/gqlTypes";
 import { THEME_SETTINGS } from "../../shared/queries/Queries";
 import apolloClient from "../../shared/apolloClient";
 import { TypeSettings, IServerRenderProps } from "../types";
-import getRoutes from "../routes";
 import logger from "../../shared/logger";
+import ssrFetch from "./ssrFetch";
+import { getMatchedRouteData } from "./helper";
 
-const context = {};
-
-export default async (props: IServerRenderProps) => {
+const serverApp = async (props: IServerRenderProps) => {
   const { requestUrl, client, settings, isStatic } = props;
   const opts = {
     location: requestUrl,
-    context: context,
+    context: {},
     basename: config.baseName.replace(/\/$/, ""), // remove the last slash
   };
 
@@ -38,55 +36,47 @@ export default async (props: IServerRenderProps) => {
     settings,
   };
 
-  // We block rendering until all promises have resolved
-  const matchedRoute = getRoutes(initialData).find(route => {
-    const match = matchPath(requestUrl, route);
-    return match && route.component.getInitialProps;
-  });
-  let initialProps: Promise<any> = Promise.resolve(null);
-  if (
-    matchedRoute &&
-    typeof matchedRoute.component.getInitialProps === "function"
-  ) {
-    initialProps = await matchedRoute.component.getInitialProps({
-      match: matchedRoute.path,
-      req: "req",
-      res: "res",
-      client,
-    });
-  }
-  logger.debug("SSR - Found initial props", JSON.stringify(initialProps));
-
   const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
-  const clientApp = (
+  const serverApp = (
     <StyleSheetManager sheet={sheet.instance}>
       <StaticRouter {...opts}>
-        <StaticContext.Provider value={{ isStatic }}>
-          <ApolloHocProvider client={client}>
-            <ApolloProvider client={client}>
-              <App initialData={{ ...initialData, initialProps }} />
-            </ApolloProvider>
-          </ApolloHocProvider>
-        </StaticContext.Provider>
+        <ApolloProvider client={client}>
+          <StaticContext.Provider value={{ isStatic }}>
+            <ClientApp initialData={{ ...initialData }} />
+          </StaticContext.Provider>
+        </ApolloProvider>
       </StaticRouter>
     </StyleSheetManager>
   );
-  try {
-    const content = await renderToStringWithData(clientApp);
-    const initialState = client.extract();
-    return {
-      head: Helmet.renderStatic(),
-      html: content,
-      initialData: { ...initialData, initialProps },
-      apolloState: initialState,
-      sheet: sheet,
-    };
-  } catch (error) {
-    logger.error("Unable to render app");
-    logger.error(error);
+  const matchedRouteData = getMatchedRouteData(initialData, requestUrl);
+
+  if (matchedRouteData) {
+    try {
+      const context = {
+        client,
+        match: matchedRouteData,
+      };
+      logger.debug("Matched route data: ", matchedRouteData);
+      const initialProps = await ssrFetch(serverApp, context);
+      const content = await renderToStringWithData(serverApp);
+      const initialState = client.extract();
+      return {
+        head: Helmet.renderStatic(),
+        html: content,
+        initialData: { ...initialData, initialProps },
+        apolloState: initialState,
+        sheet: sheet,
+      };
+    } catch (error) {
+      logger.error("Unable to render app");
+      logger.error(error);
+    }
+  } else {
+    logger.error("The incoming request could not be handled by the server");
   }
 };
 
+export default serverApp;
 /**
  * Get app initial data
  */

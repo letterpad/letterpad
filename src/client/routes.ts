@@ -1,4 +1,4 @@
-import { IRoutes } from "./App";
+import { IRoutes } from "./ClientApp";
 import Home from "./containers/Home";
 import Posts from "./containers/Posts";
 import SinglePage from "./containers/SinglePage";
@@ -9,7 +9,6 @@ import LayoutConnector from "./LayoutConnector";
 import apolloClient from "../shared/apolloClient";
 import { TypeSettings } from "./types";
 import { RouteProps } from "react-router";
-import withSSR from "./withSSR";
 
 interface IRouteProps extends RouteProps {
   component: RouteProps["component"] & {
@@ -31,7 +30,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
   const routes: IRouteProps[] = [
     {
       exact: true,
-      component: LayoutConnector(withSSR(Home), {
+      component: LayoutConnector(Home, {
         type: home.type === "category" ? "posts" : "page",
         ...commonProps,
       }),
@@ -39,7 +38,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     },
     {
       exact: true,
-      component: LayoutConnector(withSSR(Posts), {
+      component: LayoutConnector(Posts, {
         type: "page",
         ...commonProps,
       }),
@@ -47,7 +46,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     },
     {
       exact: true,
-      component: LayoutConnector(withSSR(SinglePage), {
+      component: LayoutConnector(SinglePage, {
         type: "page",
         ...commonProps,
       }),
@@ -55,7 +54,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     },
     {
       exact: true,
-      component: LayoutConnector(withSSR(SinglePost), {
+      component: LayoutConnector(SinglePost, {
         type: "post",
         ...commonProps,
       }),
@@ -63,7 +62,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     },
     {
       exact: true,
-      component: LayoutConnector(withSSR(SearchWrapper), {
+      component: LayoutConnector(SearchWrapper, {
         type: "category",
         ...commonProps,
       }),
@@ -77,7 +76,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     },
     {
       exact: true,
-      component: LayoutConnector(withSSR(NotFound), {
+      component: LayoutConnector(NotFound, {
         type: "page",
         ...commonProps,
       }),

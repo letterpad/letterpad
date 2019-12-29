@@ -27,9 +27,11 @@ module.exports = (args, name) => {
       assets: true,
       chunkModules: false,
       chunkOrigins: false,
+      colors: true,
+      children: false,
       modules: false,
       errors: true,
-      builtAt: true,
+      builtAt: false,
       hash: false,
     },
     entry: {

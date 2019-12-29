@@ -30,6 +30,7 @@ const serverRendering = (app: Express) => {
           client,
           settings: formattedSettings as TypeSettings,
           isStatic,
+          request: { req, res },
         });
         res.send(content);
       } catch (e) {}

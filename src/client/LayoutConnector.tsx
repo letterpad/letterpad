@@ -4,9 +4,7 @@ import { RouteComponentProps } from "react-router";
 import Layout from "./containers/Layout";
 import config from "../config";
 import { IRouteProps, TypeWrappedComponent } from "./types";
-import withSSR from "./withSSR";
 
-const LayouWithSSr = withSSR(Layout);
 function LayoutConnector(
   WrappedComponent: TypeWrappedComponent,
   routeProps: IRouteProps,
@@ -31,7 +29,7 @@ function LayoutConnector(
       }
     };
     return (
-      <LayouWithSSr
+      <Layout
         Renderer={WrappedComponent}
         type={routeProps.type}
         settings={routeProps.settings}
@@ -43,28 +41,6 @@ function LayoutConnector(
     );
   };
 
-  LayoutConnector.getInitialProps = async ctx => {
-    const data = {};
-    if (LayouWithSSr.getInitialProps) {
-      const layoutInitialProps = await LayouWithSSr.getInitialProps(ctx);
-      if (layoutInitialProps) {
-        data["layout"] = layoutInitialProps;
-      }
-    }
-    if (WrappedComponent.getInitialProps) {
-      const props = await WrappedComponent.getInitialProps(ctx);
-      let key = "component";
-      if (WrappedComponent.displayName) {
-        const match = WrappedComponent.displayName.match(/\((.*)\)/);
-        if (match) {
-          key = match[1].toLowerCase();
-        }
-      }
-      data[key] = props;
-      return data;
-    }
-    return data;
-  };
   return LayoutConnector;
 }
 export default LayoutConnector;

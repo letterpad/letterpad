@@ -19,7 +19,7 @@ export interface IRoutes {
   };
 }
 
-class App extends Component<IRoutes, {}> {
+class ClientApp extends Component<IRoutes, {}> {
   applyCustomCSS = ({ css }) => {
     if (typeof document == "undefined" || typeof css == "undefined")
       return false;
@@ -59,4 +59,4 @@ class App extends Component<IRoutes, {}> {
   }
 }
 
-export default hot(module)(App);
+export default hot(module)(ClientApp);
