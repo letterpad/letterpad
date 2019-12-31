@@ -8,26 +8,15 @@ import {
 
 export type TypeSettings = { [option in SettingOptions]: Setting };
 
-export interface IServerRenderProps {
-  requestUrl: string;
-  client: ApolloClient<any>;
-  settings: TypeSettings;
-  isStatic: boolean;
-  request: { req: Express.Request; res: Express.Response };
-}
-
-export interface ILayoutProps<T> {
-  type: string;
-  settings: TypeSettings;
-  client: ApolloClient<any>;
-  router: RouteComponentProps;
-  initialProps?: any;
-  themeSettings: ThemeSettings[];
-  Renderer: React.ComponentType<T>;
+export enum EnumContentType {
+  POSTS = "posts",
+  POST = "post",
+  PAGE = "page",
+  CATEGORY = "category",
 }
 
 export interface IRouteProps {
-  type: string;
+  contentType: EnumContentType;
   settings: TypeSettings;
   client: ApolloClient<any>;
   themeSettings: ThemeSettings[];
@@ -43,26 +32,24 @@ export interface IThemeComponentProps extends IRouteProps {
   router: RouteComponentProps<RouteParams>;
 }
 
+export interface IServerRenderProps {
+  requestUrl: string;
+  client: ApolloClient<any>;
+  settings: TypeSettings;
+  isStatic: boolean;
+  request: { req: Express.Request; res: Express.Response };
+}
+
+export interface ILayoutProps extends IRouteProps {
+  router: RouteComponentProps;
+  Content: React.ComponentType<IThemeComponentProps>;
+}
+
 export interface IInitialProps {
-  match: RouteComponentProps["match"];
+  match: RouteComponentProps<RouteParams>["match"];
   client: ApolloClient<any>;
 }
 
-export type IThemeContainer = React.FC<IThemeComponentProps> & {
-  getInitialProps?: ({
-    match,
-
-    client,
-  }: IInitialProps) => Promise<any>;
-};
-
-export interface IWrappedComponentProps extends IRouteProps {
-  refetch: () => void;
-  isLoading: boolean;
-}
-
-export type TypeWrappedComponent = React.ComponentType<
-  IWrappedComponentProps
-> & {
-  getInitialProps?: ({ match, req, res, client }: any) => Promise<any>;
+export type IThemeContainer = React.ComponentType<IThemeComponentProps> & {
+  getInitialProps?: ({ match, client }: IInitialProps) => Promise<any>;
 };

@@ -67,8 +67,6 @@ type Query {
   media(filters: MediaFiltersWithPagination): MediaNode!
   post(filters: SinglePostFilters): Post!
   posts(filters: PostFiltersWithPagination): PostNode!
-  menuContent(filters: MenuFiltersWithPagination): PostTaxonomyNode
-  postsByTaxinomySlug(type: String!, slug: String!, postType: String, offset: Int, limit: Int, cursor: Int): PostTaxonomyNode
   adjacentPosts(slug: String): AdjacentPosts
   search(query: String!): SearchOutput
   stats: Stats
@@ -266,13 +264,6 @@ input PostFilters {
   type: PostTypes
 }
 
-input MenuFiltersWithPagination {
-  slug: String
-  type: MenuTypes!
-  page: Int
-  limit: Int
-}
-
 enum FilterKeys {
   tag
   category
@@ -282,6 +273,8 @@ enum FilterKeys {
 input PostFiltersWithPagination {
   tag: String
   category: String
+  categorySlug: String
+  tagSlug: String
   authorName: String
   sortBy: PostSortBy
   status: PostStatusOptions

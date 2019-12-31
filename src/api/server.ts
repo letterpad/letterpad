@@ -20,11 +20,7 @@ import models from "./models/index";
 import upload from "./upload";
 import middlewares from "./middlewares";
 import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
-
-async function A() {
-  // var a = await models.Role.findAll();
-  // console.log(a);
-}
+import logger from "../shared/logger";
 
 export interface Context {
   user: object;
@@ -63,7 +59,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   formatError: error => {
-    console.log(error);
+    logger.error(error.message, error.extensions);
     return error;
   },
   context: context,
@@ -72,7 +68,6 @@ const server = new ApolloServer({
 const endpoint = `${process.env.baseName}/graphql`;
 
 export default (app: Express) => {
-  A();
   middlewares(app);
   server.applyMiddleware({ app, path: endpoint });
 

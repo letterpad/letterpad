@@ -169,13 +169,6 @@ export type MediaNode = {
   rows: Array<Media>,
 };
 
-export type MenuFiltersWithPagination = {
-  slug?: Maybe<Scalars['String']>,
-  type: MenuTypes,
-  page?: Maybe<Scalars['Int']>,
-  limit?: Maybe<Scalars['Int']>,
-};
-
 export enum MenuTypes {
   Category = 'category',
   Page = 'page'
@@ -364,6 +357,8 @@ export type PostFilters = {
 export type PostFiltersWithPagination = {
   tag?: Maybe<Scalars['String']>,
   category?: Maybe<Scalars['String']>,
+  categorySlug?: Maybe<Scalars['String']>,
+  tagSlug?: Maybe<Scalars['String']>,
   authorName?: Maybe<Scalars['String']>,
   sortBy?: Maybe<PostSortBy>,
   status?: Maybe<PostStatusOptions>,
@@ -418,8 +413,6 @@ export type Query = {
   media: MediaNode,
   post: Post,
   posts: PostNode,
-  menuContent?: Maybe<PostTaxonomyNode>,
-  postsByTaxinomySlug?: Maybe<PostTaxonomyNode>,
   adjacentPosts?: Maybe<AdjacentPosts>,
   search?: Maybe<SearchOutput>,
   stats?: Maybe<Stats>,
@@ -449,21 +442,6 @@ export type QueryPostArgs = {
 
 export type QueryPostsArgs = {
   filters?: Maybe<PostFiltersWithPagination>
-};
-
-
-export type QueryMenuContentArgs = {
-  filters?: Maybe<MenuFiltersWithPagination>
-};
-
-
-export type QueryPostsByTaxinomySlugArgs = {
-  type: Scalars['String'],
-  slug: Scalars['String'],
-  postType?: Maybe<Scalars['String']>,
-  offset?: Maybe<Scalars['Int']>,
-  limit?: Maybe<Scalars['Int']>,
-  cursor?: Maybe<Scalars['Int']>
 };
 
 
@@ -1106,23 +1084,6 @@ export type ThemesQuery = (
   )> }
 );
 
-export type MenuContentQueryVariables = {
-  filters?: Maybe<MenuFiltersWithPagination>
-};
-
-
-export type MenuContentQuery = (
-  { __typename?: 'Query' }
-  & { menuContent: Maybe<(
-    { __typename?: 'PostTaxonomyNode' }
-    & Pick<PostTaxonomyNode, 'count'>
-    & { rows: Maybe<Array<Maybe<(
-      { __typename?: 'Post' }
-      & PostFieldsFragment
-    )>>> }
-  )> }
-);
-
 export type AdjacentPostsQueryVariables = {
   slug?: Maybe<Scalars['String']>
 };
@@ -1595,17 +1556,6 @@ export const ThemesDocument = gql`
 }
     `;
 export type ThemesQueryResult = ApolloReactCommon.QueryResult<ThemesQuery, ThemesQueryVariables>;
-export const MenuContentDocument = gql`
-    query menuContent($filters: MenuFiltersWithPagination) {
-  menuContent(filters: $filters) {
-    count
-    rows {
-      ...postFields
-    }
-  }
-}
-    ${PostFieldsFragmentDoc}`;
-export type MenuContentQueryResult = ApolloReactCommon.QueryResult<MenuContentQuery, MenuContentQueryVariables>;
 export const AdjacentPostsDocument = gql`
     query adjacentPosts($slug: String) {
   adjacentPosts(slug: $slug) {

@@ -1,7 +1,7 @@
 import React from "react";
-import { TypeWrappedComponent } from "../types";
+import { IThemeContainer } from "../types";
 
-const Home: TypeWrappedComponent = _props => {
+const Home: IThemeContainer = _props => {
   return (
     <div>
       This is just a abstract component. You should create a theme and keep this
@@ -10,7 +10,7 @@ const Home: TypeWrappedComponent = _props => {
     </div>
   );
 };
-Home.getInitialProps = async ({ match, req, res, client }) => {
+Home.getInitialProps = async ({ match, client }) => {
   console.log("Received home static method");
 
   return "hello world";

@@ -171,7 +171,7 @@ export const GET_TAXONOMIES = gql`
 // `;
 
 // export const SEARCH_POSTS_BY_TAXONOMY = gql`
-//   query catPosts(
+//   query postsByTaxSlug(
 //     $type: String!
 //     $slug: String!
 //     $postType: String
@@ -268,17 +268,17 @@ export const THEME_SETTINGS = gql`
 //   }
 // `;
 
-export const POSTS_FROM_CATEGORY_SLUG = gql`
-  query menuContent($filters: MenuFiltersWithPagination) {
-    menuContent(filters: $filters) {
-      count
-      rows {
-        ...postFields
-      }
-    }
-  }
-  ${PostFragment}
-`;
+// export const POSTS_FROM_CATEGORY_SLUG = gql`
+//   query menuContent($filters: MenuFiltersWithPagination) {
+//     menuContent(filters: $filters) {
+//       count
+//       rows {
+//         ...postFields
+//       }
+//     }
+//   }
+//   ${PostFragment}
+// `;
 
 export const ADJACENT_POSTS = gql`
   query adjacentPosts($slug: String) {

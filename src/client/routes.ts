@@ -3,11 +3,11 @@ import Home from "./containers/Home";
 import Posts from "./containers/Posts";
 import SinglePage from "./containers/SinglePage";
 import SinglePost from "./containers/SinglePost";
-import SearchWrapper from "./containers/SearchWrapper";
-import NotFound from "./containers/404";
+import Search from "./containers/Search";
+import NotFound from "./containers/NotFound";
 import LayoutConnector from "./LayoutConnector";
 import apolloClient from "../shared/apolloClient";
-import { TypeSettings } from "./types";
+import { TypeSettings, EnumContentType } from "./types";
 import { RouteProps } from "react-router";
 
 interface IRouteProps extends RouteProps {
@@ -31,7 +31,10 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     {
       exact: true,
       component: LayoutConnector(Home, {
-        type: home.type === "category" ? "posts" : "page",
+        contentType:
+          home.type === "category"
+            ? EnumContentType.POSTS
+            : EnumContentType.PAGE,
         ...commonProps,
       }),
       path: ["/", "/home/page/:page_no"],
@@ -39,7 +42,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     {
       exact: true,
       component: LayoutConnector(Posts, {
-        type: "page",
+        contentType: EnumContentType.PAGE,
         ...commonProps,
       }),
       path: ["/posts/:slug", "/posts/:slug/page/:page_no"],
@@ -47,7 +50,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     {
       exact: true,
       component: LayoutConnector(SinglePage, {
-        type: "page",
+        contentType: EnumContentType.PAGE,
         ...commonProps,
       }),
       path: ["/page/:slug"],
@@ -55,15 +58,15 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     {
       exact: true,
       component: LayoutConnector(SinglePost, {
-        type: "post",
+        contentType: EnumContentType.POST,
         ...commonProps,
       }),
       path: ["/post/:slug"],
     },
     {
       exact: true,
-      component: LayoutConnector(SearchWrapper, {
-        type: "category",
+      component: LayoutConnector(Search, {
+        contentType: EnumContentType.CATEGORY,
         ...commonProps,
       }),
       path: [
@@ -77,7 +80,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     {
       exact: true,
       component: LayoutConnector(NotFound, {
-        type: "page",
+        contentType: EnumContentType.PAGE,
         ...commonProps,
       }),
       path: "*",

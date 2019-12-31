@@ -1,16 +1,16 @@
-import React from "react";
+import React, { Component } from "react";
 import { ILayoutProps } from "../types";
 
-class Layout extends React.Component<ILayoutProps<any>> {
+class Layout extends Component<ILayoutProps> {
   render() {
-    const { Renderer, ...props } = this.props;
+    const { Content, ...props } = this.props;
     return (
       <div className="main centered">
         <nav className="navbar navbar-default">
           <div className="container">Navbar here</div>
         </nav>
         <main>
-          <Renderer {...props} />;
+          <Content {...props} />;
         </main>
       </div>
     );

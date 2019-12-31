@@ -127,12 +127,12 @@ input PostFilters {
   type: PostTypes
 }
 
-input MenuFiltersWithPagination {
-  slug: String
-  type: MenuTypes!
-  page: Int
-  limit: Int
-}
+# input MenuFiltersWithPagination {
+#   slug: String!
+#   type: MenuTypes!
+#   page: Int
+#   limit: Int
+# }
 
 enum FilterKeys {
   tag
@@ -143,6 +143,8 @@ enum FilterKeys {
 input PostFiltersWithPagination {
   tag: String
   category: String
+  categorySlug: String
+  tagSlug: String
   authorName: String
   sortBy: PostSortBy
   status: PostStatusOptions
@@ -164,16 +166,7 @@ type Query {
 
   posts(filters: PostFiltersWithPagination): PostNode!
 
-  menuContent(filters: MenuFiltersWithPagination): PostTaxonomyNode
-
-  postsByTaxinomySlug(
-    type: String!
-    slug: String!
-    postType: String
-    offset: Int
-    limit: Int
-    cursor: Int
-  ): PostTaxonomyNode
+  # menuContent(filters: MenuFiltersWithPagination): PostTaxonomyNode
 
   adjacentPosts(slug: String): AdjacentPosts
 

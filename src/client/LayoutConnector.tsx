@@ -3,10 +3,10 @@ import { RouteComponentProps } from "react-router";
 
 import Layout from "./containers/Layout";
 import config from "../config";
-import { IRouteProps, TypeWrappedComponent } from "./types";
+import { IRouteProps, IThemeContainer } from "./types";
 
 function LayoutConnector(
-  WrappedComponent: TypeWrappedComponent,
+  WrappedComponent: IThemeContainer,
   routeProps: IRouteProps,
 ) {
   const LayoutConnector: React.FC<RouteComponentProps> & {
@@ -16,6 +16,12 @@ function LayoutConnector(
       const unlistenHistory = props.history.listen(analyticsAction);
       return () => {
         unlistenHistory();
+        if (WrappedComponent.getInitialProps) {
+          WrappedComponent.getInitialProps({
+            match: props.match,
+            client: routeProps.client,
+          });
+        }
       };
     }, []);
 
@@ -30,8 +36,8 @@ function LayoutConnector(
     };
     return (
       <Layout
-        Renderer={WrappedComponent}
-        type={routeProps.type}
+        Content={WrappedComponent}
+        contentType={routeProps.contentType}
         settings={routeProps.settings}
         client={routeProps.client}
         themeSettings={routeProps.themeSettings}

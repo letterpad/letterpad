@@ -170,13 +170,6 @@ export type MediaNode = {
   rows: Array<Media>,
 };
 
-export type MenuFiltersWithPagination = {
-  slug?: Maybe<Scalars['String']>,
-  type: MenuTypes,
-  page?: Maybe<Scalars['Int']>,
-  limit?: Maybe<Scalars['Int']>,
-};
-
 export enum MenuTypes {
   Category = 'category',
   Page = 'page'
@@ -365,6 +358,8 @@ export type PostFilters = {
 export type PostFiltersWithPagination = {
   tag?: Maybe<Scalars['String']>,
   category?: Maybe<Scalars['String']>,
+  categorySlug?: Maybe<Scalars['String']>,
+  tagSlug?: Maybe<Scalars['String']>,
   authorName?: Maybe<Scalars['String']>,
   sortBy?: Maybe<PostSortBy>,
   status?: Maybe<PostStatusOptions>,
@@ -419,8 +414,6 @@ export type Query = {
   media: MediaNode,
   post: Post,
   posts: PostNode,
-  menuContent?: Maybe<PostTaxonomyNode>,
-  postsByTaxinomySlug?: Maybe<PostTaxonomyNode>,
   adjacentPosts?: Maybe<AdjacentPosts>,
   search?: Maybe<SearchOutput>,
   stats?: Maybe<Stats>,
@@ -450,21 +443,6 @@ export type QueryPostArgs = {
 
 export type QueryPostsArgs = {
   filters?: Maybe<PostFiltersWithPagination>
-};
-
-
-export type QueryMenuContentArgs = {
-  filters?: Maybe<MenuFiltersWithPagination>
-};
-
-
-export type QueryPostsByTaxinomySlugArgs = {
-  type: Scalars['String'],
-  slug: Scalars['String'],
-  postType?: Maybe<Scalars['String']>,
-  offset?: Maybe<Scalars['Int']>,
-  limit?: Maybe<Scalars['Int']>,
-  cursor?: Maybe<Scalars['Int']>
 };
 
 
@@ -741,9 +719,6 @@ export type ResolversTypes = {
   PostStatusOptions: PostStatusOptions,
   PostTypes: PostTypes,
   PostNode: ResolverTypeWrapper<PostNode>,
-  MenuFiltersWithPagination: MenuFiltersWithPagination,
-  MenuTypes: MenuTypes,
-  PostTaxonomyNode: ResolverTypeWrapper<PostTaxonomyNode>,
   AdjacentPosts: ResolverTypeWrapper<AdjacentPosts>,
   SearchOutput: ResolverTypeWrapper<SearchOutput>,
   SearchResult: ResolverTypeWrapper<SearchResult>,
@@ -770,6 +745,8 @@ export type ResolversTypes = {
   OptionInputType: OptionInputType,
   EditTaxResponse: ResolverTypeWrapper<EditTaxResponse>,
   InputThemeSettings: InputThemeSettings,
+  PostTaxonomyNode: ResolverTypeWrapper<PostTaxonomyNode>,
+  MenuTypes: MenuTypes,
   PostFilters: PostFilters,
   FilterKeys: FilterKeys,
   EnumPermissions: EnumPermissions,
@@ -801,9 +778,6 @@ export type ResolversParentTypes = {
   PostStatusOptions: PostStatusOptions,
   PostTypes: PostTypes,
   PostNode: PostNode,
-  MenuFiltersWithPagination: MenuFiltersWithPagination,
-  MenuTypes: MenuTypes,
-  PostTaxonomyNode: PostTaxonomyNode,
   AdjacentPosts: AdjacentPosts,
   SearchOutput: SearchOutput,
   SearchResult: SearchResult,
@@ -830,6 +804,8 @@ export type ResolversParentTypes = {
   OptionInputType: OptionInputType,
   EditTaxResponse: EditTaxResponse,
   InputThemeSettings: InputThemeSettings,
+  PostTaxonomyNode: PostTaxonomyNode,
+  MenuTypes: MenuTypes,
   PostFilters: PostFilters,
   FilterKeys: FilterKeys,
   EnumPermissions: EnumPermissions,
@@ -975,8 +951,6 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   media?: Resolver<ResolversTypes['MediaNode'], ParentType, ContextType, QueryMediaArgs>,
   post?: Resolver<ResolversTypes['Post'], ParentType, ContextType, QueryPostArgs>,
   posts?: Resolver<ResolversTypes['PostNode'], ParentType, ContextType, QueryPostsArgs>,
-  menuContent?: Resolver<Maybe<ResolversTypes['PostTaxonomyNode']>, ParentType, ContextType, QueryMenuContentArgs>,
-  postsByTaxinomySlug?: Resolver<Maybe<ResolversTypes['PostTaxonomyNode']>, ParentType, ContextType, RequireFields<QueryPostsByTaxinomySlugArgs, 'type' | 'slug'>>,
   adjacentPosts?: Resolver<Maybe<ResolversTypes['AdjacentPosts']>, ParentType, ContextType, QueryAdjacentPostsArgs>,
   search?: Resolver<Maybe<ResolversTypes['SearchOutput']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query'>>,
   stats?: Resolver<Maybe<ResolversTypes['Stats']>, ParentType, ContextType>,

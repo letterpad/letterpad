@@ -16,16 +16,25 @@ const ssrFetch = async (
   logger.debug("Fetching initial data for the route");
   await ssrPrepass(serverApp, (element, _instance) => {
     //@ts-ignore
+    if (!element || !element.type) {
+      logger.error("`type` of React element was not found,", element);
+      return null;
+    }
+    //@ts-ignore
     const { getInitialProps, name } = element.type;
     if (getInitialProps) {
       try {
         return getInitialProps(context).then((data: unknown) => {
-          logger.debug(`SSR Fetch from ${name} component:`, data);
+          logger.success(
+            `Successfully fetched data from ${name} component:`,
+            data,
+          );
           initialProps[name] = data;
         });
       } catch (e) {
-        logger.warning(
+        logger.error(
           "Failed to fetch initial SSR Data. Check the component " + name,
+          e,
         );
       }
     }
