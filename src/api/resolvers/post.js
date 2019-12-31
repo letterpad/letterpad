@@ -228,57 +228,6 @@ const postresolver = {
       }
       return models.Post.findOne(conditions);
     }),
-    // /**
-    //  * Query to take care of posts/page from navigation menu.
-    //  * The navigation menu item will be either a category or a page.
-    //  *
-    //  * First we get the menu object and loop though it to
-    //  * find the item (by matching slug) which was clicked.
-    //  * Note: The menu can have nested children.
-    //  *
-    //  */
-    // menuContent: async (root, args, { models, user }) => {
-    //   let menu = await models.Setting.findOne({
-    //     where: { option: "menu" },
-    //   });
-    //   const filters = { ...args.filters, status: "publish" };
-
-    //   menu = JSON.parse(menu.dataValues.value);
-    //   let menuItem = {};
-    //   if (args.filters.slug === "/") {
-    //     menuItem = menu[0];
-    //   } else {
-    //     menuItem = getMenuItemFromSlug(
-    //       menu,
-    //       args.filters.slug,
-    //       args.filters.type,
-    //     );
-    //   }
-
-    //   if (menuItem.type === "page") {
-    //     filters.type = menuItem.type;
-    //     filters.slug = menuItem.slug;
-    //   } else if (menuItem.type === "category") {
-    //     filters.category = menuItem.title;
-    //     filters.type = "post";
-    //     delete filters.slug;
-    //   } else {
-    //     return noResult;
-    //   }
-
-    //   const result = await postresolver.Query.posts(
-    //     root,
-    //     { filters },
-    //     {
-    //       models,
-    //       user,
-    //     },
-    //   );
-    //   return {
-    //     count: result.count,
-    //     rows: result.rows,
-    //   };
-    // },
     /**
      * Query to take care of adjacent posts.
      */

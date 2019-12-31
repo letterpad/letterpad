@@ -275,7 +275,6 @@ input PostFiltersWithPagination {
   category: String
   categorySlug: String
   tagSlug: String
-  authorName: String
   sortBy: PostSortBy
   status: PostStatusOptions
   author: String

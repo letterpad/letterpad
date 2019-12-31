@@ -127,13 +127,6 @@ input PostFilters {
   type: PostTypes
 }
 
-# input MenuFiltersWithPagination {
-#   slug: String!
-#   type: MenuTypes!
-#   page: Int
-#   limit: Int
-# }
-
 enum FilterKeys {
   tag
   category
@@ -145,7 +138,6 @@ input PostFiltersWithPagination {
   category: String
   categorySlug: String
   tagSlug: String
-  authorName: String
   sortBy: PostSortBy
   status: PostStatusOptions
   author: String
@@ -174,8 +166,6 @@ type Query {
   post(filters: SinglePostFilters): Post!
 
   posts(filters: PostFiltersWithPagination): PostNode!
-
-  # menuContent(filters: MenuFiltersWithPagination): PostTaxonomyNode
 
   adjacentPosts(slug: String): AdjacentPosts
 

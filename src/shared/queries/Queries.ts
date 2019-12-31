@@ -23,15 +23,6 @@ export const GET_SINGLE_POST = gql`
   ${PostFragment}
 `;
 
-// export const GET_POST_BY_SLUG = gql`
-//   query singlePost($type: String, $slug: String) {
-//     post(type: $type, slug: $slug) {
-//       ...postFields
-//     }
-//   }
-//   ${PostFragment}
-// `;
-
 export const GET_MEDIA = gql`
   query media($filters: MediaFiltersWithPagination) {
     media(filters: $filters) {
@@ -266,18 +257,6 @@ export const THEME_SETTINGS = gql`
 //       }
 //     }
 //   }
-// `;
-
-// export const POSTS_FROM_CATEGORY_SLUG = gql`
-//   query menuContent($filters: MenuFiltersWithPagination) {
-//     menuContent(filters: $filters) {
-//       count
-//       rows {
-//         ...postFields
-//       }
-//     }
-//   }
-//   ${PostFragment}
 // `;
 
 export const ADJACENT_POSTS = gql`

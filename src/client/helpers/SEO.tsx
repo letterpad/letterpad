@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import config from "../../config";
 
@@ -67,20 +66,5 @@ const SEO = (props: any) => (
     meta={getMetaTags({ ...props })}
   />
 );
-
-// SEO.propTypes = {
-//   schema: PropTypes.string,
-//   title: PropTypes.string,
-//   description: PropTypes.string,
-//   path: PropTypes.string,
-//   contentType: PropTypes.string,
-//   published: PropTypes.string,
-//   updated: PropTypes.string,
-//   category: PropTypes.string,
-//   tags: PropTypes.array,
-//   twitter: PropTypes.string,
-//   image: PropTypes.string,
-//   settings: PropTypes.object,
-// };
 
 export default SEO;

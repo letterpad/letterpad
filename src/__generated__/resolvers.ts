@@ -360,7 +360,6 @@ export type PostFiltersWithPagination = {
   category?: Maybe<Scalars['String']>,
   categorySlug?: Maybe<Scalars['String']>,
   tagSlug?: Maybe<Scalars['String']>,
-  authorName?: Maybe<Scalars['String']>,
   sortBy?: Maybe<PostSortBy>,
   status?: Maybe<PostStatusOptions>,
   author?: Maybe<Scalars['String']>,
