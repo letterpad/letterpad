@@ -13,6 +13,7 @@ export enum EnumContentType {
   POST = "post",
   PAGE = "page",
   CATEGORY = "category",
+  TAG = "tag",
 }
 
 export interface IRouteProps {
@@ -25,6 +26,8 @@ export interface IRouteProps {
 
 export interface RouteParams {
   slug?: string;
+  category?: string;
+  tag?: string;
   page_no?: string;
   query?: string;
 }

@@ -451,7 +451,7 @@ export type QueryAdjacentPostsArgs = {
 
 
 export type QuerySearchArgs = {
-  query: Scalars['String']
+  filters: SearchFilters
 };
 
 
@@ -488,6 +488,15 @@ export type Role = {
   id?: Maybe<Scalars['Int']>,
   name?: Maybe<EnumRoles>,
   permissions?: Maybe<Array<Maybe<Permission>>>,
+};
+
+export type SearchFilters = {
+  query?: Maybe<Scalars['String']>,
+  tag?: Maybe<Scalars['String']>,
+  category?: Maybe<Scalars['String']>,
+  cursor?: Maybe<Scalars['Int']>,
+  page?: Maybe<Scalars['Int']>,
+  limit?: Maybe<Scalars['String']>,
 };
 
 export type SearchOutput = {

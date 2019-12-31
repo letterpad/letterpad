@@ -156,6 +156,15 @@ input PostFiltersWithPagination {
   page: Int
 }
 
+input SearchFilters {
+  query: String
+  tag: String
+  category: String
+  cursor: Int
+  page: Int
+  limit: String
+}
+
 input SinglePostFilters {
   id: Int
   slug: String
@@ -170,7 +179,7 @@ type Query {
 
   adjacentPosts(slug: String): AdjacentPosts
 
-  search(query: String!): SearchOutput
+  search(filters: SearchFilters!): SearchOutput
 
   stats: Stats
 }

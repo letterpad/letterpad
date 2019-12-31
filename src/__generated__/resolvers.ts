@@ -452,7 +452,7 @@ export type QueryAdjacentPostsArgs = {
 
 
 export type QuerySearchArgs = {
-  query: Scalars['String']
+  filters: SearchFilters
 };
 
 
@@ -489,6 +489,15 @@ export type Role = {
   id?: Maybe<Scalars['Int']>,
   name?: Maybe<EnumRoles>,
   permissions?: Maybe<Array<Maybe<Permission>>>,
+};
+
+export type SearchFilters = {
+  query?: Maybe<Scalars['String']>,
+  tag?: Maybe<Scalars['String']>,
+  category?: Maybe<Scalars['String']>,
+  cursor?: Maybe<Scalars['Int']>,
+  page?: Maybe<Scalars['Int']>,
+  limit?: Maybe<Scalars['String']>,
 };
 
 export type SearchOutput = {
@@ -720,6 +729,7 @@ export type ResolversTypes = {
   PostTypes: PostTypes,
   PostNode: ResolverTypeWrapper<PostNode>,
   AdjacentPosts: ResolverTypeWrapper<AdjacentPosts>,
+  SearchFilters: SearchFilters,
   SearchOutput: ResolverTypeWrapper<SearchOutput>,
   SearchResult: ResolverTypeWrapper<SearchResult>,
   Stats: ResolverTypeWrapper<Stats>,
@@ -779,6 +789,7 @@ export type ResolversParentTypes = {
   PostTypes: PostTypes,
   PostNode: PostNode,
   AdjacentPosts: AdjacentPosts,
+  SearchFilters: SearchFilters,
   SearchOutput: SearchOutput,
   SearchResult: SearchResult,
   Stats: Stats,
@@ -952,7 +963,7 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   post?: Resolver<ResolversTypes['Post'], ParentType, ContextType, QueryPostArgs>,
   posts?: Resolver<ResolversTypes['PostNode'], ParentType, ContextType, QueryPostsArgs>,
   adjacentPosts?: Resolver<Maybe<ResolversTypes['AdjacentPosts']>, ParentType, ContextType, QueryAdjacentPostsArgs>,
-  search?: Resolver<Maybe<ResolversTypes['SearchOutput']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query'>>,
+  search?: Resolver<Maybe<ResolversTypes['SearchOutput']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'filters'>>,
   stats?: Resolver<Maybe<ResolversTypes['Stats']>, ParentType, ContextType>,
   roles?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType>,
   settings?: Resolver<Array<ResolversTypes['Setting']>, ParentType, ContextType, QuerySettingsArgs>,

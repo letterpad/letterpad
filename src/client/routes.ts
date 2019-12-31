@@ -45,7 +45,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
         contentType: EnumContentType.PAGE,
         ...commonProps,
       }),
-      path: ["/posts/:slug", "/posts/:slug/page/:page_no"],
+      path: ["/posts/:category", "/category/:category", "/tag/:tag"],
     },
     {
       exact: true,
@@ -69,13 +69,15 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
         contentType: EnumContentType.CATEGORY,
         ...commonProps,
       }),
-      path: [
-        "/category/:query",
-        "/category/:query/page/:page_no",
-        "/tag/:query",
-        "/tag/:query/page/:page_no",
-        "/search/:query?",
-      ],
+      path: ["/category/:query", "/tag/:query"],
+    },
+    {
+      exact: true,
+      component: LayoutConnector(Search, {
+        contentType: EnumContentType.CATEGORY,
+        ...commonProps,
+      }),
+      path: ["/search/"],
     },
     {
       exact: true,

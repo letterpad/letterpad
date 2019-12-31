@@ -68,7 +68,7 @@ type Query {
   post(filters: SinglePostFilters): Post!
   posts(filters: PostFiltersWithPagination): PostNode!
   adjacentPosts(slug: String): AdjacentPosts
-  search(query: String!): SearchOutput
+  search(filters: SearchFilters!): SearchOutput
   stats: Stats
   roles: [Role!]!
   settings(option: String): [Setting!]!
@@ -284,6 +284,15 @@ input PostFiltersWithPagination {
   cursor: Int
   limit: Int
   page: Int
+}
+
+input SearchFilters {
+  query: String
+  tag: String
+  category: String
+  cursor: Int
+  page: Int
+  limit: String
 }
 
 input SinglePostFilters {
