@@ -64,8 +64,12 @@ type Query {
   authors: [Author!]!
   me: Author
   validateToken: CreateAuthorResponse
-  media(filters: MediaFiltersWithPagination): MediaNode!
+  media(filters: MediaFilters): MediaNode!
+  
+  # Used to query a single post
   post(filters: SinglePostFilters): Post!
+  
+  # Used to query a collection of posts
   posts(filters: PostFilters): PostNode!
   adjacentPosts(slug: String): AdjacentPosts
   search(filters: SearchFilters!): SearchOutput
@@ -106,7 +110,7 @@ type Error {
 
 type Media {
   id: Int!
-  authorId: Int!
+  authorId: Int
   url: String!
   createdAt: Date!
   name: String
@@ -127,11 +131,12 @@ type UpdateResponse {
   errors: [Error]
 }
 
-input MediaFiltersWithPagination {
+input MediaFilters {
   id: Int
   cursor: Int
   limit: Int
   page: Int
+  authorId: Int
 }
 
 scalar Date

@@ -1,8 +1,17 @@
 import React from "react";
-import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroller";
 
-const InfiniteScrollList = ({ data, count, loadMore }) => {
+interface IInfiniteScrollListProps {
+  data: any;
+  count: number;
+  loadMore: (num: number) => void;
+}
+
+const InfiniteScrollList: React.FC<IInfiniteScrollListProps> = ({
+  data,
+  count,
+  loadMore,
+}) => {
   return (
     <InfiniteScroll
       pageStart={1}
@@ -17,12 +26,6 @@ const InfiniteScrollList = ({ data, count, loadMore }) => {
       {data}
     </InfiniteScroll>
   );
-};
-
-InfiniteScrollList.propTypes = {
-  count: PropTypes.number,
-  data: PropTypes.array.isRequired,
-  loadMore: PropTypes.func.isRequired,
 };
 
 export default InfiniteScrollList;

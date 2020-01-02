@@ -24,7 +24,7 @@ export const QUERY_POST = gql`
 `;
 
 export const QUERY_MEDIA = gql`
-  query media($filters: MediaFiltersWithPagination) {
+  query media($filters: MediaFilters) {
     media(filters: $filters) {
       count
       rows {

@@ -78,8 +78,7 @@ export class TopBar extends Component<ITopbarProps, any> {
     }
   };
 
-  updatePost = async (e: React.SyntheticEvent, statusObj) => {
-    if (e) e.preventDefault();
+  updatePost = async statusObj => {
     PostActions.setData(statusObj);
     let data = PostActions.getData();
     const postData = {
@@ -128,10 +127,12 @@ export class TopBar extends Component<ITopbarProps, any> {
       e.preventDefault();
       this.props.router.history.goBack();
     };
-    const deleteAction = e =>
-      this.updatePost(e, {
+    const deleteAction = (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      this.updatePost({
         status: "trash",
       });
+    };
 
     return (
       <StyledTopBar className="article-top-bar">

@@ -144,18 +144,19 @@ export type LoginResponse = {
 export type Media = {
    __typename?: 'Media',
   id: Scalars['Int'],
-  authorId: Scalars['Int'],
+  authorId?: Maybe<Scalars['Int']>,
   url: Scalars['String'],
   createdAt: Scalars['Date'],
   name?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
 };
 
-export type MediaFiltersWithPagination = {
+export type MediaFilters = {
   id?: Maybe<Scalars['Int']>,
   cursor?: Maybe<Scalars['Int']>,
   limit?: Maybe<Scalars['Int']>,
   page?: Maybe<Scalars['Int']>,
+  authorId?: Maybe<Scalars['Int']>,
 };
 
 export type MediaNode = {
@@ -396,7 +397,9 @@ export type Query = {
   me?: Maybe<Author>,
   validateToken?: Maybe<CreateAuthorResponse>,
   media: MediaNode,
+  /** Used to query a single post */
   post: Post,
+  /** Used to query a collection of posts */
   posts: PostNode,
   adjacentPosts?: Maybe<AdjacentPosts>,
   search?: Maybe<SearchOutput>,
@@ -416,7 +419,7 @@ export type QueryAuthorArgs = {
 
 
 export type QueryMediaArgs = {
-  filters?: Maybe<MediaFiltersWithPagination>
+  filters?: Maybe<MediaFilters>
 };
 
 
@@ -699,7 +702,7 @@ export type ResolversTypes = {
   CreateAuthorResponse: ResolverTypeWrapper<CreateAuthorResponse>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   Error: ResolverTypeWrapper<Error>,
-  MediaFiltersWithPagination: MediaFiltersWithPagination,
+  MediaFilters: MediaFilters,
   MediaNode: ResolverTypeWrapper<MediaNode>,
   Media: ResolverTypeWrapper<Media>,
   Date: ResolverTypeWrapper<Scalars['Date']>,
@@ -757,7 +760,7 @@ export type ResolversParentTypes = {
   CreateAuthorResponse: CreateAuthorResponse,
   Boolean: Scalars['Boolean'],
   Error: Error,
-  MediaFiltersWithPagination: MediaFiltersWithPagination,
+  MediaFilters: MediaFilters,
   MediaNode: MediaNode,
   Media: Media,
   Date: Scalars['Date'],
@@ -863,7 +866,7 @@ export type LoginResponseResolvers<ContextType = Context, ParentType extends Res
 
 export type MediaResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Media'] = ResolversParentTypes['Media']> = {
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
-  authorId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  authorId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,

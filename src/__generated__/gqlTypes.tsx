@@ -143,18 +143,19 @@ export type LoginResponse = {
 export type Media = {
    __typename?: 'Media',
   id: Scalars['Int'],
-  authorId: Scalars['Int'],
+  authorId?: Maybe<Scalars['Int']>,
   url: Scalars['String'],
   createdAt: Scalars['Date'],
   name?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
 };
 
-export type MediaFiltersWithPagination = {
+export type MediaFilters = {
   id?: Maybe<Scalars['Int']>,
   cursor?: Maybe<Scalars['Int']>,
   limit?: Maybe<Scalars['Int']>,
   page?: Maybe<Scalars['Int']>,
+  authorId?: Maybe<Scalars['Int']>,
 };
 
 export type MediaNode = {
@@ -395,7 +396,9 @@ export type Query = {
   me?: Maybe<Author>,
   validateToken?: Maybe<CreateAuthorResponse>,
   media: MediaNode,
+  /** Used to query a single post */
   post: Post,
+  /** Used to query a collection of posts */
   posts: PostNode,
   adjacentPosts?: Maybe<AdjacentPosts>,
   search?: Maybe<SearchOutput>,
@@ -415,7 +418,7 @@ export type QueryAuthorArgs = {
 
 
 export type QueryMediaArgs = {
-  filters?: Maybe<MediaFiltersWithPagination>
+  filters?: Maybe<MediaFilters>
 };
 
 
@@ -945,7 +948,7 @@ export type PostQuery = (
 );
 
 export type MediaQueryVariables = {
-  filters?: Maybe<MediaFiltersWithPagination>
+  filters?: Maybe<MediaFilters>
 };
 
 
@@ -1415,7 +1418,7 @@ export const PostDocument = gql`
     ${PostFieldsFragmentDoc}`;
 export type PostQueryResult = ApolloReactCommon.QueryResult<PostQuery, PostQueryVariables>;
 export const MediaDocument = gql`
-    query media($filters: MediaFiltersWithPagination) {
+    query media($filters: MediaFilters) {
   media(filters: $filters) {
     count
     rows {

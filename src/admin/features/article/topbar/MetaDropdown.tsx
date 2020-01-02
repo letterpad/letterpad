@@ -13,7 +13,7 @@ import { Post } from "../../../../__generated__/gqlTypes";
 interface IMetaDropdownProps {
   close: (e: React.SyntheticEvent) => void;
   post: Post;
-  updatePost: (e: React.SyntheticEvent, post: Post) => void;
+  updatePost: (post: Post) => void;
 }
 
 class MetaDropdown extends Component<IMetaDropdownProps, any> {
@@ -74,7 +74,8 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
         <StyledButton
           success
           onClick={(e: React.SyntheticEvent) => {
-            this.props.updatePost(e, this.state.post);
+            e.preventDefault();
+            this.props.updatePost(this.state.post);
             this.props.close(e);
           }}
         >

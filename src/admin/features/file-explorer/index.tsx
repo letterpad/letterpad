@@ -5,8 +5,14 @@ import styled from "styled-components";
 // import StyledGrid from "../../components/grid";
 import FileItem from "./FileItem";
 import InfiniteScrollList from "./InfiniteScrollList";
-import GetMedia from "../../data-connectors/GetMedia";
-import config from "../../../config";
+import {
+  Media,
+  MediaNode,
+  MediaQuery,
+  MediaQueryVariables,
+} from "../../../__generated__/gqlTypes";
+import apolloClient from "../../../shared/apolloClient";
+import { QUERY_MEDIA } from "../../../shared/queries/Queries";
 
 const StyledGrid = styled.div`
   > div {
@@ -24,26 +30,16 @@ const StyledGrid = styled.div`
     }
   }
 `;
-class FileExplorer extends Component {
-  static propTypes = {
-    media: PropTypes.object,
-    author: PropTypes.object,
-    loading: PropTypes.bool,
-    onPageClick: PropTypes.func,
-    onSelect: PropTypes.func,
-    fetchMore: PropTypes.func,
-    count: PropTypes.number,
-    multi: PropTypes.bool,
-  };
 
-  static defaultProps = {
-    media: {
-      rows: [],
-    },
-    multi: false,
-    onPageClick: () => {},
-  };
+interface IFileExpolorerProps {
+  multi: boolean;
+  onSelect: (any) => void;
+}
 
+class FileExplorer extends Component<
+  IFileExpolorerProps,
+  { selected_ids: number[]; media: MediaNode }
+> {
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -51,53 +47,73 @@ class FileExplorer extends Component {
   page = 1;
 
   state = {
+    media: {
+      rows: [],
+      count: 0,
+    },
     selected_ids: [],
   };
 
-  onMediaSelected = media => {
-    const selected_ids = [...this.state.selected_ids];
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData = async (page: number = 1) => {
+    const result = await apolloClient().query<MediaQuery, MediaQueryVariables>({
+      query: QUERY_MEDIA,
+      variables: {
+        filters: {
+          page,
+          authorId: 1,
+        },
+      },
+    });
+
+    if (result.data.media.rows) {
+      const newState = {
+        ...this.state.media,
+        rows: [...this.state.media.rows, ...result.data.media.rows],
+        count: this.state.media.count,
+      };
+      this.setState({ media: newState });
+    }
+  };
+
+  onMediaSelected = (media: Media) => {
+    const selected_ids: number[] = [...this.state.selected_ids];
     const index = selected_ids.indexOf(media.id);
     if (index >= 0) {
       selected_ids.splice(index, 1);
     } else if (selected_ids.length >= 0 && this.props.multi) {
       selected_ids.push(media.id);
-      const selectedMediaUrls = this.props.media.rows
-        .filter(item => selected_ids.indexOf(item.id) >= 0)
-        .map(media => media.url);
+      const selectedMediaUrls = this.state.media.rows
+        .filter((media: Media) => selected_ids.indexOf(media.id) >= 0)
+        .map((media: Media) => media.url);
       this.props.onSelect(selectedMediaUrls);
     }
     this.setState({ selected_ids });
   };
 
-  loadMore = async num => {
-    await this.props.fetchMore({
-      authorId: this.props.author.id,
-      offset: (num - 1) * config.mediaPerPage,
-      limit: config.mediaPerPage,
-      merge: true,
-    });
-    this.page = num;
-    this.forceUpdate();
+  loadMore = async (num: number) => {
+    this.fetchData(num);
   };
 
   render() {
-    const rows = this.props.media.rows.map(media => (
+    const rows = (this.state.media as MediaNode).rows.map(media => (
       <FileItem
         key={media.id}
         media={media}
-        isSelected={this.state.selected_ids.indexOf(media.id) >= 0}
+        isSelected={
+          (this.state.selected_ids as number[]).indexOf(media.id) >= 0
+        }
         onMediaSelected={this.onMediaSelected}
       />
     ));
     return (
-      <StyledGrid
-        className="grid"
-        columns="repeat(auto-fit, minmax(200px, 1fr))"
-      >
+      <StyledGrid className="grid">
         <InfiniteScrollList
           data={rows}
-          count={this.props.count}
-          page={this.page}
+          count={this.state.media.count}
           loadMore={this.loadMore}
         />
       </StyledGrid>
@@ -105,4 +121,4 @@ class FileExplorer extends Component {
   }
 }
 
-export default GetMedia(FileExplorer);
+export default FileExplorer;

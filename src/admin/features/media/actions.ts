@@ -4,10 +4,10 @@ import apolloClient from "../../../shared/apolloClient";
 import {
   MediaQuery,
   DeleteMediaMutation,
-  MediaFiltersWithPagination,
+  MediaFilters,
 } from "../../../__generated__/gqlTypes";
 
-export const getMedia = async (filters?: MediaFiltersWithPagination) => {
+export const getMedia = async (filters?: MediaFilters) => {
   return await apolloClient(true).query<MediaQuery>({
     query: QUERY_MEDIA,
     variables: {

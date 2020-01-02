@@ -6,7 +6,7 @@ import StyledButton from "../../../components/button";
 import StyledDropdown from "./Dropdown.css";
 
 import Excerpt from "./Excerpt";
-// import FeaturedImage from "../FeaturedImage";
+import FeaturedImage from "../FeaturedImage";
 import Taxonomies from "./Taxonomies";
 import PostActions from "../PostActions";
 import { TaxonomyTypes } from "../../../../__generated__/gqlTypes";
@@ -32,8 +32,8 @@ class PublishDropdown extends Component<any, any> {
           <StyledButton
             sm
             success
-            onClick={e => {
-              this.props.updatePost(e, { status: status });
+            onClick={(e: React.SyntheticEvent) => {
+              this.props.updatePost({ status: status });
               // this.props.close(e, false);
             }}
             className={"publish-btn btn btn-sm " + btnType}
@@ -78,7 +78,10 @@ class PublishDropdown extends Component<any, any> {
             suggestions={[]}
           />
         )}
-        {/* <FeaturedImage post={post} /> */}
+        <FeaturedImage
+          post={post}
+          updateFeaturedImage={this.props.updatePost}
+        />
         <br />
       </StyledDropdown>
     );

@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { translate } from "react-i18next";
+import { translate, WithNamespaces } from "react-i18next";
 import { notify } from "react-notify-toast";
 
 import { uploadFile } from "../../server/util";
-import UploadCoverImage from "../../data-connectors/UploadCoverImage";
-import InsertMedia from "../../data-connectors/InsertMedia";
 import PostActions from "./PostActions";
 import FileExplorerModal from "../modals/FileExplorerModal";
+import { Post } from "../../../__generated__/gqlTypes";
 
 const ImageWrapper = styled.div`
   overflow-x: auto;
@@ -72,22 +71,17 @@ CustomImage.propTypes = {
   coverImage: PropTypes.string,
   isCustom: PropTypes.bool,
 };
-class FeaturedImage extends Component {
-  static propTypes = {
-    post: PropTypes.object,
-    insertMedia: PropTypes.func.isRequired,
-    updateFeaturedImage: PropTypes.func.isRequired,
-    toggleFileExplorerModal: PropTypes.func,
-    t: PropTypes.func,
-  };
+interface IFeaturedImageProps extends WithNamespaces {
+  post: Post;
+  updateFeaturedImage: (any) => void;
+}
 
-  imageInputRef = React.createRef();
-
-  static defaultProps = {
-    post: {
-      cover_image: "",
-    },
-  };
+class FeaturedImage extends Component<
+  IFeaturedImageProps,
+  { imageList: string[]; fileExplorerOpen: boolean; cover_image: string }
+> {
+  imageInputRef = React.createRef<HTMLInputElement>();
+  uploadInputRef = React.createRef<HTMLInputElement>();
 
   state = {
     cover_image: this.props.post.cover_image,
@@ -95,14 +89,12 @@ class FeaturedImage extends Component {
     imageList: [],
   };
 
-  uploadInputRef = React.createRef();
-
   componentDidUpdate() {
     const imgNodes = document.querySelectorAll("[data-id='plugin-image']");
     if (imgNodes.length === this.state.imageList.length) return;
-    const imageList = [];
+    const imageList: string[] = [];
     for (let i = 0; i < imgNodes.length; i++) {
-      imageList.push(imgNodes[i].getAttribute("src"));
+      imageList.push(imgNodes[i].getAttribute("src") as string);
     }
     this.setState({ imageList });
   }
@@ -113,10 +105,9 @@ class FeaturedImage extends Component {
     PostActions.setData({ cover_image: images[0] });
     this.setState({ cover_image: images[0], fileExplorerOpen: false });
     // update the post with the new url
-    this.props.updateFeaturedImage({
-      id: this.props.post.id,
-      cover_image: images[0],
-    });
+    // this.props.updateFeaturedImage({
+    //   cover_image: images[0],
+    // });
     return false;
   };
 
@@ -131,14 +122,7 @@ class FeaturedImage extends Component {
       notify.show(errors, "error", 3000);
       return;
     }
-    // update the post with the new url
-    this.props.updateFeaturedImage({
-      id: this.props.post.id,
-      cover_image: src,
-    });
-    PostActions.setData({ cover_image: src });
-    // set the state with the new image
-    this.setState({ cover_image: src, fileExplorerOpen: false });
+    this.setCoverImage([src]);
   };
 
   toggleFileExplorer = () => {
@@ -148,7 +132,9 @@ class FeaturedImage extends Component {
   render() {
     let isCustom = false;
     if (this.state.cover_image) {
-      isCustom = this.state.imageList.indexOf(this.state.cover_image) == -1;
+      isCustom =
+        (this.state.imageList as string[]).indexOf(this.state.cover_image) ==
+        -1;
     }
 
     return (
@@ -187,7 +173,9 @@ class FeaturedImage extends Component {
             onClose={this.toggleFileExplorer}
             onMediaSelect={this.setCoverImage}
             addNewMedia={() => {
-              this.imageInputRef.current.click();
+              if (this.imageInputRef.current) {
+                this.imageInputRef.current.click();
+              }
             }}
           />
         )}
@@ -196,6 +184,4 @@ class FeaturedImage extends Component {
   }
 }
 
-export default translate("translations")(
-  UploadCoverImage(InsertMedia(FeaturedImage)),
-);
+export default translate("translations")(FeaturedImage);

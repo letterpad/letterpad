@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import config from "config";
+import config from "../../../config";
 
 const StyledItem = styled.article`
   .post-thumbnail {
@@ -15,7 +15,7 @@ const StyledItem = styled.article`
   }
 `;
 
-export default class MediaItem extends Component {
+export default class MediaItem extends Component<any, any> {
   static propTypes = {
     media: PropTypes.object,
     onMediaSelected: PropTypes.func.isRequired,

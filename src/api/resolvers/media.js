@@ -2,15 +2,6 @@ import Sequelize from "sequelize";
 import { UnauthorizedError } from "../utils/common";
 import { editPostPerm } from "../utils/permissions";
 
-function IsJsonString(str) {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-  return true;
-}
-
 export default {
   Query: {
     media: async (root, args, { user, models }) => {
@@ -25,7 +16,7 @@ export default {
           conditions.where = { ...conditions.where, id };
         }
         if (authorId) {
-          conditions.where = { ...conditions.where, authorId };
+          conditions.where = { ...conditions.where, author_id: authorId };
         }
         if (limit) {
           conditions.limit = limit;
@@ -37,6 +28,7 @@ export default {
         }
       }
       conditions.order = [["id", "DESC"]];
+      console.log("conditions :", conditions);
       const result = await models.Media.findAndCountAll(conditions);
       return {
         count: result.count,

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 import styled from "styled-components";
 import ModalHoc from "../../components/modal";
@@ -12,7 +12,7 @@ const StyledBody = styled.div`
   }
 `;
 
-class FileExplorerModal extends Component {
+class FileExplorerModal extends Component<any, any> {
   state = {
     page: 1,
     selectedImageUrls: [],
@@ -37,13 +37,7 @@ class FileExplorerModal extends Component {
         onClose={this.props.onClose}
       >
         <StyledBody className="modal-body text-center">
-          <FileExplorer
-            multi={true}
-            author={{ id: 1 }}
-            page={this.state.page}
-            onPageClick={this.onPageClick}
-            onSelect={this.onSelect}
-          />
+          <FileExplorer multi={true} onSelect={this.onSelect} />
           <div className="p-t-20" />
         </StyledBody>
         <div className="modal-footer">
@@ -67,11 +61,11 @@ class FileExplorerModal extends Component {
   }
 }
 
-FileExplorerModal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  addNewMedia: PropTypes.func.isRequired,
-  onMediaSelect: PropTypes.func.isRequired,
-  t: PropTypes.func,
-};
+// FileExplorerModal.propTypes = {
+//   onClose: PropTypes.func.isRequired,
+//   addNewMedia: PropTypes.func.isRequired,
+//   onMediaSelect: PropTypes.func.isRequired,
+//   t: PropTypes.func,
+// };
 
 export default translate("translations")(FileExplorerModal);

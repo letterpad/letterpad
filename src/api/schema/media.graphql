@@ -1,6 +1,6 @@
 type Media {
   id: Int!
-  authorId: Int!
+  authorId: Int
   url: String!
   createdAt: Date!
   name: String
@@ -21,15 +21,16 @@ type UpdateResponse {
   errors: [Error]
 }
 
-input MediaFiltersWithPagination {
+input MediaFilters {
   id: Int
   cursor: Int
   limit: Int
   page: Int
+  authorId: Int
 }
 
 type Query {
-  media(filters: MediaFiltersWithPagination): MediaNode!
+  media(filters: MediaFilters): MediaNode!
 }
 
 type Mutation {
