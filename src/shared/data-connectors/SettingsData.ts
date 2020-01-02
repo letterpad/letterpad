@@ -1,7 +1,7 @@
 import { graphql } from "@apollo/react-hoc";
-import { GET_OPTIONS } from "../queries/Queries";
+import { QUERY_SETTINGS } from "../queries/Queries";
 
-const SettingsData = graphql(GET_OPTIONS, {
+const SettingsData = graphql(QUERY_SETTINGS, {
   props: ({ data: { loading, settings, error } }: any) => {
     const data = {};
     if (settings) {

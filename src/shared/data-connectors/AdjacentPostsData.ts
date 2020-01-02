@@ -1,7 +1,7 @@
 import { graphql } from "@apollo/react-hoc";
-import { ADJACENT_POSTS } from "../../shared/queries/Queries";
+import { QUERY_ADJACENT_POSTS } from "../../shared/queries/Queries";
 
-export default graphql(ADJACENT_POSTS, {
+export default graphql(QUERY_ADJACENT_POSTS, {
   options: (props: any) => {
     return {
       variables: {

@@ -1,4 +1,4 @@
-import { IS_AUTHORIZED } from "./../../../shared/queries/Queries";
+import { QUERY_IS_AUTHORIZED } from "./../../../shared/queries/Queries";
 import { Request, Response } from "express";
 import { generateStaticAssets } from "./static-generator";
 import apolloClient from "../../../shared/apolloClient";
@@ -11,7 +11,7 @@ export const generateStaticSite = async (req: Request, res: Response) => {
       true,
       clientOpts,
       req.headers.token as string,
-    ).query<ValidateTokenQuery>({ query: IS_AUTHORIZED });
+    ).query<ValidateTokenQuery>({ query: QUERY_IS_AUTHORIZED });
 
     if (client.data.validateToken) {
       return generateStaticAssets(req, res);

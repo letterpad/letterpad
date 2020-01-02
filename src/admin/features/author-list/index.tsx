@@ -9,7 +9,7 @@ import StyledButton from "../../components/button";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
 import StyledAuthorList from "./AuthorList.css";
-import { GET_AUTHORS } from "../../../shared/queries/Queries";
+import { QUERY_AUTHORS } from "../../../shared/queries/Queries";
 import { RouteComponentProps } from "react-router";
 import apolloClient from "../../../shared/apolloClient";
 import { AuthorsQuery, Author } from "../../../__generated__/gqlTypes";
@@ -26,7 +26,7 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
 
   const getAuthors = async () => {
     const { data } = await apolloClient().query<AuthorsQuery>({
-      query: GET_AUTHORS,
+      query: QUERY_AUTHORS,
     });
     if (data.authors.length > 0) {
       setAuthors(data.authors);

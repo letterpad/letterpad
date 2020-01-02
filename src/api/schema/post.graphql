@@ -6,21 +6,45 @@ enum PostStatusOptions {
   trash
 }
 
-type Post {
-  id: Int!
-  title: String!
-  body: String!
-  author: Author!
-  excerpt: String!
-  cover_image: String!
-  type: String!
-  status: String!
-  slug: String!
-  mode: String!
-  createdAt: Date!
-  publishedAt: Date!
-  updatedAt: Date!
-  taxonomies: [Taxonomy]!
+enum PostSortBy {
+  newest
+  oldest
+}
+
+enum PostTypes {
+  page
+  post
+}
+
+enum MenuTypes {
+  category
+  page
+}
+
+input PostFilters {
+  tag: String
+  category: String
+  authorName: String
+  sortBy: PostSortBy
+  status: PostStatusOptions
+  author: String
+  query: String
+  type: PostTypes
+}
+
+input PostFilters {
+  tag: String
+  category: String
+  categorySlug: String
+  tagSlug: String
+  sortBy: PostSortBy
+  status: PostStatusOptions
+  author: String
+  query: String
+  type: PostTypes
+  cursor: Int
+  limit: Int
+  page: Int
 }
 
 input InputCreatePost {
@@ -46,6 +70,38 @@ input InputUpdatePost {
   status: PostStatusOptions
   slug: String
   taxonomies: [TaxonomyInputType]
+}
+
+input SearchFilters {
+  query: String
+  tag: String
+  category: String
+  cursor: Int
+  page: Int
+  limit: String
+}
+
+input SinglePostFilters {
+  id: Int
+  slug: String
+}
+
+type Post {
+  # Primary key
+  id: Int!
+  title: String!
+  body: String!
+  author: Author!
+  excerpt: String!
+  cover_image: String!
+  type: String!
+  status: String!
+  slug: String!
+  mode: String!
+  createdAt: Date!
+  publishedAt: Date!
+  updatedAt: Date!
+  taxonomies: [Taxonomy!]!
 }
 
 type PostNode {
@@ -101,71 +157,10 @@ type SearchOutput {
   rows: [SearchResult]
 }
 
-enum PostSortBy {
-  newest
-  oldest
-}
-
-enum PostTypes {
-  page
-  post
-}
-
-enum MenuTypes {
-  category
-  page
-}
-
-input PostFilters {
-  tag: String
-  category: String
-  authorName: String
-  sortBy: PostSortBy
-  status: PostStatusOptions
-  author: String
-  query: String
-  type: PostTypes
-}
-
-enum FilterKeys {
-  tag
-  category
-  authorName
-}
-
-input PostFiltersWithPagination {
-  tag: String
-  category: String
-  categorySlug: String
-  tagSlug: String
-  sortBy: PostSortBy
-  status: PostStatusOptions
-  author: String
-  query: String
-  type: PostTypes
-  cursor: Int
-  limit: Int
-  page: Int
-}
-
-input SearchFilters {
-  query: String
-  tag: String
-  category: String
-  cursor: Int
-  page: Int
-  limit: String
-}
-
-input SinglePostFilters {
-  id: Int
-  slug: String
-}
-
 type Query {
   post(filters: SinglePostFilters): Post!
 
-  posts(filters: PostFiltersWithPagination): PostNode!
+  posts(filters: PostFilters): PostNode!
 
   adjacentPosts(slug: String): AdjacentPosts
 

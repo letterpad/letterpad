@@ -6,9 +6,10 @@ import StyledButton from "../../../components/button";
 import StyledDropdown from "./Dropdown.css";
 
 import Excerpt from "./Excerpt";
-import FeaturedImage from "../FeaturedImage";
+// import FeaturedImage from "../FeaturedImage";
 import Taxonomies from "./Taxonomies";
 import PostActions from "../PostActions";
+import { TaxonomyTypes } from "../../../../__generated__/gqlTypes";
 
 class PublishDropdown extends Component<any, any> {
   static propTypes = {
@@ -21,8 +22,8 @@ class PublishDropdown extends Component<any, any> {
     isPublished: PropTypes.bool.isRequired,
   };
 
-  getButton = (label, btnType = "btn-primary", status) => {
-    if (typeof status == "undefined") {
+  getButton = (label, btnType = "btn-primary", status = "") => {
+    if (status === "") {
       status = this.props.isPublished ? "publish" : "draft";
     }
     if (status)
@@ -63,9 +64,21 @@ class PublishDropdown extends Component<any, any> {
         <hr />
         <Excerpt post={post} />
         <hr />
-        {post.type == "post" && <Taxonomies post={post} for="post_tag" />}
-        {post.type == "post" && <Taxonomies post={post} for="post_category" />}
-        <FeaturedImage post={post} />
+        {post.type == "post" && (
+          <Taxonomies
+            post={post}
+            for={TaxonomyTypes.PostTag}
+            suggestions={[]}
+          />
+        )}
+        {post.type == "post" && (
+          <Taxonomies
+            post={post}
+            for={TaxonomyTypes.PostCategory}
+            suggestions={[]}
+          />
+        )}
+        {/* <FeaturedImage post={post} /> */}
         <br />
       </StyledDropdown>
     );

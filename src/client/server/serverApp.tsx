@@ -16,7 +16,7 @@ import config from "../../config";
 import ClientApp, { IRoutes } from "../ClientApp";
 import { StaticContext } from "../Context";
 import { ThemesQuery, ThemeSettings } from "../../__generated__/gqlTypes";
-import { THEME_SETTINGS } from "../../shared/queries/Queries";
+import { QUERY_THEMES } from "../../shared/queries/Queries";
 import apolloClient from "../../shared/apolloClient";
 import { TypeSettings, IServerRenderProps } from "../types";
 import logger from "../../shared/logger";
@@ -87,7 +87,7 @@ async function getThemeSettings(
   let themeSettings: ThemeSettings[] | [] = [];
   try {
     const themeResult = await client.query<ThemesQuery>({
-      query: THEME_SETTINGS,
+      query: QUERY_THEMES,
       variables: {
         name: settings.theme.value,
       },

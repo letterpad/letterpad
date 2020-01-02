@@ -8,26 +8,26 @@ import StyledDropdown from "./Dropdown.css";
 
 import StyledInput from "../../../components/input";
 import StyledButton from "../../../components/button";
+import { Post } from "../../../../__generated__/gqlTypes";
 
-class MetaDropdown extends Component<any, any> {
-  static propTypes = {
-    close: PropTypes.func,
-    post: PropTypes.object,
-    isOpen: PropTypes.bool,
-    updatePost: PropTypes.func.isRequired,
-  };
+interface IMetaDropdownProps {
+  close: (e: React.SyntheticEvent) => void;
+  post: Post;
+  updatePost: (e: React.SyntheticEvent, post: Post) => void;
+}
 
+class MetaDropdown extends Component<IMetaDropdownProps, any> {
   state = {
     post: this.props.post,
   };
 
-  static getDerivedStateFromProps(newProps) {
+  static getDerivedStateFromProps(newProps: IMetaDropdownProps) {
     return {
       post: newProps.post,
     };
   }
 
-  changeSlug = e => {
+  changeSlug = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       post: { ...this.state.post, slug: e.target.value },
     });
@@ -57,7 +57,7 @@ class MetaDropdown extends Component<any, any> {
           className="meta-value"
           placeholder="Link to post"
           defaultValue={this.state.post.slug}
-          onKeyUp={this.changeSlug}
+          onChange={this.changeSlug}
         />
 
         <StyledInput
@@ -73,9 +73,9 @@ class MetaDropdown extends Component<any, any> {
 
         <StyledButton
           success
-          onClick={e => {
-            this.props.updatePost(e, {});
-            this.props.close(e, false);
+          onClick={(e: React.SyntheticEvent) => {
+            this.props.updatePost(e, this.state.post);
+            this.props.close(e);
           }}
         >
           Save

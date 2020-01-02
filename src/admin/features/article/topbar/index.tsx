@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { notify } from "react-notify-toast";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 
 import StyledTopBar, { AutoSaveIndicator, PublishBox } from "./TopBar.css";
 import { EventBusInstance } from "../../../../shared/eventBus";
@@ -11,16 +10,16 @@ import MetaDropdown from "./MetaDropdown";
 import StyledDropdown from "../../../components/dropdown";
 import client from "../../../../shared/apolloClient";
 import { UPDATE_POST_QUERY } from "../../../../shared/queries/Mutations";
+import { Post } from "../../../../__generated__/gqlTypes";
 
-export class TopBar extends Component<any, any> {
-  static propTypes = {
-    post: PropTypes.object.isRequired,
-    update: PropTypes.func.isRequired,
-    edit: PropTypes.bool,
-    router: PropTypes.object.isRequired,
-    create: PropTypes.bool,
-  };
+interface ITopbarProps {
+  post: Post;
+  edit?: boolean;
+  router: RouteComponentProps;
+  create?: boolean;
+}
 
+export class TopBar extends Component<ITopbarProps, any> {
   state = {
     post: this.props.post,
     isPublished: this.props.post.status == "publish",
@@ -51,9 +50,9 @@ export class TopBar extends Component<any, any> {
     });
   };
 
-  afterPostSave = post => {
-    let eventName = null;
-    let notifyMessage = null;
+  afterPostSave = (post: Post) => {
+    let eventName = "";
+    let notifyMessage = "";
     // if the status is trash, redirect the user to posts or pages depending on the post type.
     if (post.status === "trash") {
       notifyMessage = "Post trashed";
@@ -79,7 +78,7 @@ export class TopBar extends Component<any, any> {
     }
   };
 
-  updatePost = async (e, statusObj) => {
+  updatePost = async (e: React.SyntheticEvent, statusObj) => {
     if (e) e.preventDefault();
     PostActions.setData(statusObj);
     let data = PostActions.getData();
@@ -173,7 +172,7 @@ export class TopBar extends Component<any, any> {
             <StyledDropdown
               name="Meta"
               className="meta"
-              render={close => (
+              render={(close: () => void) => (
                 <MetaDropdown
                   post={this.props.post}
                   updatePost={this.updatePost}

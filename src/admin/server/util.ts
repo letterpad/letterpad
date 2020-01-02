@@ -6,7 +6,7 @@ import {
   ThemeSettingsUiInputTypes,
 } from "../../__generated__/gqlTypes";
 import config from "../../config";
-import { THEME_SETTINGS } from "../../shared/queries/Queries";
+import { QUERY_THEMES } from "../../shared/queries/Queries";
 import {
   INSERT_THEME_SETTINGS,
   UPDATE_THEME_SETTINGS,
@@ -56,7 +56,7 @@ export const syncThemeSettings = async (
   const { data } = await apolloClient(true, {}, authorization).query<
     ThemesQuery
   >({
-    query: THEME_SETTINGS,
+    query: QUERY_THEMES,
   });
   const themeConfigsFromDB = data.themes;
 

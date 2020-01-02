@@ -1,4 +1,4 @@
-import { IS_AUTHORIZED } from "../../../shared/queries/Queries";
+import { QUERY_IS_AUTHORIZED } from "../../../shared/queries/Queries";
 import { Request, Response } from "express";
 import apolloClient from "../../../shared/apolloClient";
 import { clientOpts } from "..";
@@ -10,7 +10,7 @@ export const createPR = async (req: Request, res: Response) => {
       true,
       clientOpts,
       req.headers.token as string,
-    ).query<ValidateTokenQuery>({ query: IS_AUTHORIZED });
+    ).query<ValidateTokenQuery>({ query: QUERY_IS_AUTHORIZED });
 
     if (client.data.validateToken) {
       return createPullRequest(res);

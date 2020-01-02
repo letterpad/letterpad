@@ -5,7 +5,7 @@ import { translate, WithNamespaces } from "react-i18next";
 import Loader from "../../components/loader";
 import NavigationTreeBuilder from "./NavigationTreeBuilder";
 
-import { GET_TAXONOMIES, GET_POSTS } from "../../../shared/queries/Queries";
+import { QUERY_TAXONOMIES, QUERY_POSTS } from "../../../shared/queries/Queries";
 
 import StyledSection from "../../components/section";
 import StyledButton from "../../components/button";
@@ -42,12 +42,12 @@ const NavigationBuilder: React.FC<INavigationBuilderProps> = ({
 
   const [updatedOptions, setUpdatedOptions] = useState<TypeUpdatedOptions>({});
 
-  const categoriesData = useQuery<TaxonomiesQuery>(GET_TAXONOMIES, {
+  const categoriesData = useQuery<TaxonomiesQuery>(QUERY_TAXONOMIES, {
     variables: {
       type: TaxonomyTypes.PostCategory,
     },
   });
-  const pagesData = useQuery<PostsQuery>(GET_POSTS, {
+  const pagesData = useQuery<PostsQuery>(QUERY_POSTS, {
     variables: {
       filters: { type: PostTypes.Page, status: PostStatusOptions.Publish },
     },

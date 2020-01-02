@@ -49,6 +49,11 @@ module.exports = (args, name) => {
         client: path.resolve(__dirname, "../src/client"),
         shared: path.resolve(__dirname, "../src/shared"),
         config: path.resolve(__dirname, "../src/config"),
+        "styled-components": path.resolve(
+          __dirname,
+          "../",
+          "./node_modules/styled-components",
+        ),
       },
       extensions: [".tsx", ".ts", ".js"],
     },

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import StyledSelect from "../../components/select";
 import { translate } from "react-i18next";
-import { GET_TAXONOMIES } from "../../../shared/queries/Queries";
+import { QUERY_TAXONOMIES } from "../../../shared/queries/Queries";
 import apolloClient from "../../../shared/apolloClient";
 
 const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
@@ -13,11 +13,11 @@ const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
   useEffect(() => {
     const fetchData = async () => {
       const tags = await apolloClient(true).query({
-        query: GET_TAXONOMIES,
+        query: QUERY_TAXONOMIES,
         variables: { type: "post_tag" },
       });
       const categories = await apolloClient(true).query({
-        query: GET_TAXONOMIES,
+        query: QUERY_TAXONOMIES,
         variables: { type: "post_category" },
       });
       setTaxonomies({

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import apolloClient from "../../../shared/apolloClient";
-import { GET_AUTHOR } from "../../../shared/queries/Queries";
+import { QUERY_AUTHOR } from "../../../shared/queries/Queries";
 import StyledDropdown from "../../components/dropdown";
 import config from "../../../config";
 import { IAuthor } from "../../../types/types";
@@ -28,7 +28,7 @@ class User extends Component<IUserProps, IUserState> {
   async componentDidMount() {
     const isAdmin = true;
     let response = await apolloClient(isAdmin).query({
-      query: GET_AUTHOR,
+      query: QUERY_AUTHOR,
       variables: { id: this.props.author.id },
       fetchPolicy: "network-only",
     });

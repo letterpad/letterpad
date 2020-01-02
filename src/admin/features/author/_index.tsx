@@ -13,7 +13,7 @@ import StyledButton from "../../components/button";
 
 // import UpdateAuthor from "../../data-connectors/UpdateAuthor";
 import Loader from "../../components/loader";
-import { GET_AUTHOR } from "../../../shared/queries/Queries";
+import { QUERY_AUTHOR } from "../../../shared/queries/Queries";
 import { translate } from "react-i18next";
 
 class EditAuthor extends Component<any, any> {
@@ -44,7 +44,7 @@ class EditAuthor extends Component<any, any> {
   render() {
     const { t } = this.props;
     return (
-      <Query query={GET_AUTHOR} variables={{ id: this.author.id }}>
+      <Query query={QUERY_AUTHOR} variables={{ id: this.author.id }}>
         {({ loading, data }) => {
           if (loading) return <Loader />;
           const { fname, lname } = data.author;

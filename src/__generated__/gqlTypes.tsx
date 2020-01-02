@@ -76,12 +76,6 @@ export type Error = {
   message?: Maybe<Scalars['String']>,
 };
 
-export enum FilterKeys {
-  Tag = 'tag',
-  Category = 'category',
-  AuthorName = 'authorName'
-}
-
 export type ForgotPasswordResponse = {
    __typename?: 'ForgotPasswordResponse',
   ok: Scalars['Boolean'],
@@ -327,6 +321,7 @@ export type Permission = {
 
 export type Post = {
    __typename?: 'Post',
+  /** Primary key */
   id: Scalars['Int'],
   title: Scalars['String'],
   body: Scalars['String'],
@@ -340,7 +335,7 @@ export type Post = {
   createdAt: Scalars['Date'],
   publishedAt: Scalars['Date'],
   updatedAt: Scalars['Date'],
-  taxonomies: Array<Maybe<Taxonomy>>,
+  taxonomies: Array<Taxonomy>,
 };
 
 export type PostFilters = {
@@ -352,18 +347,8 @@ export type PostFilters = {
   author?: Maybe<Scalars['String']>,
   query?: Maybe<Scalars['String']>,
   type?: Maybe<PostTypes>,
-};
-
-export type PostFiltersWithPagination = {
-  tag?: Maybe<Scalars['String']>,
-  category?: Maybe<Scalars['String']>,
   categorySlug?: Maybe<Scalars['String']>,
   tagSlug?: Maybe<Scalars['String']>,
-  sortBy?: Maybe<PostSortBy>,
-  status?: Maybe<PostStatusOptions>,
-  author?: Maybe<Scalars['String']>,
-  query?: Maybe<Scalars['String']>,
-  type?: Maybe<PostTypes>,
   cursor?: Maybe<Scalars['Int']>,
   limit?: Maybe<Scalars['Int']>,
   page?: Maybe<Scalars['Int']>,
@@ -440,7 +425,7 @@ export type QueryPostArgs = {
 
 
 export type QueryPostsArgs = {
-  filters?: Maybe<PostFiltersWithPagination>
+  filters?: Maybe<PostFilters>
 };
 
 
@@ -637,10 +622,10 @@ export type PostFieldsFragment = (
   & { author: (
     { __typename?: 'Author' }
     & Pick<Author, 'fname' | 'lname' | 'avatar' | 'bio'>
-  ), taxonomies: Array<Maybe<(
+  ), taxonomies: Array<(
     { __typename?: 'Taxonomy' }
     & Pick<Taxonomy, 'id' | 'name' | 'type' | 'slug'>
-  )>> }
+  )> }
 );
 
 export type CreatePostMutationVariables = {
@@ -662,10 +647,10 @@ export type CreatePostMutation = (
       & { author: (
         { __typename?: 'Author' }
         & Pick<Author, 'username'>
-      ), taxonomies: Array<Maybe<(
+      ), taxonomies: Array<(
         { __typename?: 'Taxonomy' }
         & Pick<Taxonomy, 'id' | 'name' | 'type'>
-      )>> }
+      )> }
     )> }
   ) }
 );
@@ -813,10 +798,10 @@ export type UpdatePostMutation = (
       & { author: (
         { __typename?: 'Author' }
         & Pick<Author, 'username' | 'lname' | 'fname' | 'avatar' | 'bio'>
-      ), taxonomies: Array<Maybe<(
+      ), taxonomies: Array<(
         { __typename?: 'Taxonomy' }
         & Pick<Taxonomy, 'id' | 'name' | 'type' | 'slug'>
-      )>> }
+      )> }
     )> }
   ) }
 );
@@ -930,7 +915,7 @@ export type ResetPasswordMutation = (
 );
 
 export type PostsQueryVariables = {
-  filters?: Maybe<PostFiltersWithPagination>
+  filters?: Maybe<PostFilters>
 };
 
 
@@ -998,12 +983,12 @@ export type AuthorsQuery = (
   )> }
 );
 
-export type GetAuthorQueryVariables = {
+export type AuthorQueryVariables = {
   id: Scalars['Int']
 };
 
 
-export type GetAuthorQuery = (
+export type AuthorQuery = (
   { __typename?: 'Query' }
   & { author: (
     { __typename?: 'Author' }
@@ -1022,10 +1007,10 @@ export type GetAuthorQuery = (
   ) }
 );
 
-export type GetRolesQueryVariables = {};
+export type RolesQueryVariables = {};
 
 
-export type GetRolesQuery = (
+export type RolesQuery = (
   { __typename?: 'Query' }
   & { roles: Array<(
     { __typename?: 'Role' }
@@ -1033,10 +1018,10 @@ export type GetRolesQuery = (
   )> }
 );
 
-export type GetOptionsQueryVariables = {};
+export type SettingsQueryVariables = {};
 
 
-export type GetOptionsQuery = (
+export type SettingsQuery = (
   { __typename?: 'Query' }
   & { settings: Array<(
     { __typename?: 'Setting' }
@@ -1411,7 +1396,7 @@ export type ResetPasswordMutationFn = ApolloReactCommon.MutationFunction<ResetPa
 export type ResetPasswordMutationResult = ApolloReactCommon.MutationResult<ResetPasswordMutation>;
 export type ResetPasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<ResetPasswordMutation, ResetPasswordMutationVariables>;
 export const PostsDocument = gql`
-    query posts($filters: PostFiltersWithPagination) {
+    query posts($filters: PostFilters) {
   posts(filters: $filters) {
     count
     rows {
@@ -1471,8 +1456,8 @@ export const AuthorsDocument = gql`
 }
     `;
 export type AuthorsQueryResult = ApolloReactCommon.QueryResult<AuthorsQuery, AuthorsQueryVariables>;
-export const GetAuthorDocument = gql`
-    query getAuthor($id: Int!) {
+export const AuthorDocument = gql`
+    query author($id: Int!) {
   author(id: $id) {
     id
     username
@@ -1496,18 +1481,18 @@ export const GetAuthorDocument = gql`
   }
 }
     `;
-export type GetAuthorQueryResult = ApolloReactCommon.QueryResult<GetAuthorQuery, GetAuthorQueryVariables>;
-export const GetRolesDocument = gql`
-    query getRoles {
+export type AuthorQueryResult = ApolloReactCommon.QueryResult<AuthorQuery, AuthorQueryVariables>;
+export const RolesDocument = gql`
+    query roles {
   roles {
     id
     name
   }
 }
     `;
-export type GetRolesQueryResult = ApolloReactCommon.QueryResult<GetRolesQuery, GetRolesQueryVariables>;
-export const GetOptionsDocument = gql`
-    query getOptions {
+export type RolesQueryResult = ApolloReactCommon.QueryResult<RolesQuery, RolesQueryVariables>;
+export const SettingsDocument = gql`
+    query settings {
   settings {
     id
     option
@@ -1515,7 +1500,7 @@ export const GetOptionsDocument = gql`
   }
 }
     `;
-export type GetOptionsQueryResult = ApolloReactCommon.QueryResult<GetOptionsQuery, GetOptionsQueryVariables>;
+export type SettingsQueryResult = ApolloReactCommon.QueryResult<SettingsQuery, SettingsQueryVariables>;
 export const TaxonomiesDocument = gql`
     query taxonomies($type: TaxonomyTypes!) {
   taxonomies(type: $type) {

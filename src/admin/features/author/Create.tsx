@@ -10,12 +10,12 @@ import StyledCard from "../../components/card";
 import StyledSelect from "../../components/select";
 import { RouteComponentProps } from "react-router-dom";
 import apolloClient from "../../../shared/apolloClient";
-import { GET_ROLES } from "../../../shared/queries/Queries";
+import { QUERY_ROLES } from "../../../shared/queries/Queries";
 
 import { CREATE_AUTHOR } from "../../../shared/queries/Mutations";
 import {
   Role,
-  GetRolesQuery,
+  RolesQuery,
   EnumRoles,
   CreateAuthorMutation,
   CreateAuthorMutationVariables,
@@ -33,8 +33,8 @@ const CreateAuthor: React.FC<ICreateAuthorProps> = ({ router }) => {
     roleName: EnumRoles.Reader,
   });
   const fetchRoles = async () => {
-    const { loading, data } = await apolloClient().query<GetRolesQuery>({
-      query: GET_ROLES,
+    const { loading, data } = await apolloClient().query<RolesQuery>({
+      query: QUERY_ROLES,
     });
     if (data) {
       setRoles(data.roles);

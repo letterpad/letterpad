@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import PostActions from "../PostActions";
-import StyledInput from "../../../components/input";
+import { TextArea } from "../../../components/input";
 
 class Excerpt extends Component<any, any> {
   static propTypes = {
@@ -58,10 +58,8 @@ class Excerpt extends Component<any, any> {
   render() {
     return (
       <div>
-        <StyledInput
+        <TextArea
           label={`Write a small introduction about this post - [${this.state.chars}/160]`}
-          textarea
-          rows={2}
           maxLength={160}
           placeholder="Write a small description"
           value={this.state.excerpt}

@@ -5,7 +5,7 @@ import StyledList from "../../components/list";
 import StyledIcon from "../../components/icon";
 import StyledLink from "../../components/link";
 import { useQuery } from "react-apollo";
-import { BLOG_STATS } from "../../../shared/queries/Queries";
+import { QUERY_STATS } from "../../../shared/queries/Queries";
 import { StatsQuery } from "../../../__generated__/gqlTypes";
 
 interface IStatsProps {
@@ -13,7 +13,7 @@ interface IStatsProps {
 }
 
 const Stats: React.FC<IStatsProps> = ({ t }) => {
-  const { loading, data } = useQuery<StatsQuery>(BLOG_STATS, {
+  const { loading, data } = useQuery<StatsQuery>(QUERY_STATS, {
     fetchPolicy: "no-cache",
   });
   console.log("loading, data :", loading, data);

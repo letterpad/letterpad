@@ -3,9 +3,9 @@ import { useQuery } from "react-apollo";
 
 import OhSnap from "../../components/oh-snap";
 import Edit from "./Edit";
-// import TopBar from "./topbar";
+import TopBar from "./topbar";
 import Loader from "../../components/loader";
-import { GET_SINGLE_POST } from "../../../shared/queries/Queries";
+import { QUERY_POST } from "../../../shared/queries/Queries";
 import { Container } from "./Article.css";
 import { Query, QueryPostArgs } from "../../../__generated__/gqlTypes";
 
@@ -16,7 +16,7 @@ interface IArticleProps {
 }
 
 const Article: React.FC<IArticleProps> = ({ theme, router }) => {
-  const { loading, data } = useQuery<Query, QueryPostArgs>(GET_SINGLE_POST, {
+  const { loading, data } = useQuery<Query, QueryPostArgs>(QUERY_POST, {
     variables: {
       filters: {
         id: parseInt(router.match.params.post_id),
@@ -33,7 +33,7 @@ const Article: React.FC<IArticleProps> = ({ theme, router }) => {
   }
   return (
     <Container fullHeight>
-      {/* <TopBar edit router={this.props.router} post={data.post} /> */}
+      <TopBar edit router={router} post={data.post} />
       <div className="article-holder">
         <Edit theme={theme} post={data.post} />
       </div>

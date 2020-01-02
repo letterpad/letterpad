@@ -11,7 +11,7 @@ import StyledSection from "../../components/section";
 import Input, { TextArea } from "../../components/input";
 import StyledGrid from "../../components/grid";
 import StyledButton from "../../components/button";
-import { GET_TAXONOMIES } from "../../../shared/queries/Queries";
+import { QUERY_TAXONOMIES } from "../../../shared/queries/Queries";
 import apolloClient from "../../../shared/apolloClient";
 import {
   UPDATE_TAXONOMY,
@@ -75,7 +75,7 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
   const [newTaxonomy, setNewTaxonomy] = useState<string>("");
   const [taxonomies, setTaxonomies] = React.useState<Taxonomy[]>([]);
 
-  const { data, loading } = useQuery<TaxonomiesQuery>(GET_TAXONOMIES, {
+  const { data, loading } = useQuery<TaxonomiesQuery>(QUERY_TAXONOMIES, {
     variables: {
       type,
     },

@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 import { PostFragment } from "./Fragments";
 
-export const GET_POSTS = gql`
-  query posts($filters: PostFiltersWithPagination) {
+export const QUERY_POSTS = gql`
+  query posts($filters: PostFilters) {
     posts(filters: $filters) {
       count
       rows {
@@ -13,7 +13,7 @@ export const GET_POSTS = gql`
   ${PostFragment}
 `;
 
-export const GET_SINGLE_POST = gql`
+export const QUERY_POST = gql`
   # TODO: Convert the below params to object.
   query post($filters: SinglePostFilters) {
     post(filters: $filters) {
@@ -23,7 +23,7 @@ export const GET_SINGLE_POST = gql`
   ${PostFragment}
 `;
 
-export const GET_MEDIA = gql`
+export const QUERY_MEDIA = gql`
   query media($filters: MediaFiltersWithPagination) {
     media(filters: $filters) {
       count
@@ -39,7 +39,7 @@ export const GET_MEDIA = gql`
   }
 `;
 
-export const GET_AUTHORS = gql`
+export const QUERY_AUTHORS = gql`
   query authors {
     authors {
       id
@@ -65,8 +65,8 @@ export const GET_AUTHORS = gql`
   }
 `;
 
-export const GET_AUTHOR = gql`
-  query getAuthor($id: Int!) {
+export const QUERY_AUTHOR = gql`
+  query author($id: Int!) {
     author(id: $id) {
       id
       username
@@ -91,8 +91,8 @@ export const GET_AUTHOR = gql`
   }
 `;
 
-export const GET_ROLES = gql`
-  query getRoles {
+export const QUERY_ROLES = gql`
+  query roles {
     roles {
       id
       name
@@ -100,8 +100,8 @@ export const GET_ROLES = gql`
   }
 `;
 
-export const GET_OPTIONS = gql`
-  query getOptions {
+export const QUERY_SETTINGS = gql`
+  query settings {
     settings {
       id
       option
@@ -110,7 +110,7 @@ export const GET_OPTIONS = gql`
   }
 `;
 
-export const GET_TAXONOMIES = gql`
+export const QUERY_TAXONOMIES = gql`
   query taxonomies($type: TaxonomyTypes!) {
     taxonomies(type: $type) {
       id
@@ -122,7 +122,7 @@ export const GET_TAXONOMIES = gql`
   }
 `;
 
-// export const SEARCH_POSTS = gql`
+// export const QUERY_SEARCH_POSTS = gql`
 //   query searchPosts(
 //     $type: String
 //     $query: String!
@@ -146,7 +146,7 @@ export const GET_TAXONOMIES = gql`
 //   ${PostFragment}
 // `;
 
-// export const SEARCH_POSTS_FUZY = gql`
+// export const QUERY_SEARCH_POSTS_FUZY = gql`
 //   query searchPosts($query: String!) {
 //     search(query: $query) {
 //       count
@@ -161,7 +161,7 @@ export const GET_TAXONOMIES = gql`
 //   }
 // `;
 
-// export const SEARCH_POSTS_BY_TAXONOMY = gql`
+// export const QUERY_SEARCH_POSTS_BY_TAXONOMY = gql`
 //   query postsByTaxSlug(
 //     $type: String!
 //     $slug: String!
@@ -185,7 +185,7 @@ export const GET_TAXONOMIES = gql`
 //   ${PostFragment}
 // `;
 
-export const BLOG_STATS = gql`
+export const QUERY_STATS = gql`
   query stats {
     stats {
       posts {
@@ -202,7 +202,7 @@ export const BLOG_STATS = gql`
   }
 `;
 
-export const THEME_SETTINGS = gql`
+export const QUERY_THEMES = gql`
   query themes($name: String) {
     themes(name: $name) {
       name
@@ -221,8 +221,8 @@ export const THEME_SETTINGS = gql`
   }
 `;
 
-// export const TAX_SUGGESTIONS = gql`
-//   query getTaxonomies($type: String) {
+// export const QUERY_TAX_SUGGESTIONS = gql`
+//   query taxonomies($type: String) {
 //     taxonomies(type: $type) {
 //       id
 //       name
@@ -231,7 +231,7 @@ export const THEME_SETTINGS = gql`
 //   }
 // `;
 
-// export const GET_POSTS_LINKED_TAXONOMIES = gql`
+// export const QUERY_GET_POSTS_LINKED_TAXONOMIES = gql`
 //   query getTaxonomies($type: String!, $postType: String) {
 //     activeTaxonomies(type: $type, postType: $postType) {
 //       id
@@ -242,7 +242,7 @@ export const THEME_SETTINGS = gql`
 //   }
 // `;
 
-// export const GET_LATEST_PUBLISHED_POSTS = gql`
+// export const QUERY_GET_LATEST_PUBLISHED_POSTS = gql`
 //   query latestPosts($type: String, $limit: Int) {
 //     posts(type: $type, offset: 0, limit: $limit) {
 //       count
@@ -259,7 +259,7 @@ export const THEME_SETTINGS = gql`
 //   }
 // `;
 
-export const ADJACENT_POSTS = gql`
+export const QUERY_ADJACENT_POSTS = gql`
   query adjacentPosts($slug: String) {
     adjacentPosts(slug: $slug) {
       next {
@@ -278,7 +278,7 @@ export const ADJACENT_POSTS = gql`
   }
 `;
 
-export const IS_AUTHORIZED = gql`
+export const QUERY_IS_AUTHORIZED = gql`
   query validateToken {
     validateToken {
       ok

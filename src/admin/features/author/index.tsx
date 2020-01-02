@@ -13,12 +13,12 @@ import { RouteComponentProps } from "react-router";
 import apolloClient from "../../../shared/apolloClient";
 import { UPDATE_AUTHOR } from "../../../shared/queries/Mutations";
 import {
-  GetAuthorQuery,
+  AuthorQuery,
   Author,
   UpdateAuthorMutation,
   InputAuthor,
 } from "../../../__generated__/gqlTypes";
-import { GET_AUTHOR } from "../../../shared/queries/Queries";
+import { QUERY_AUTHOR } from "../../../shared/queries/Queries";
 import Loader from "../../components/loader";
 
 interface ISettingsProps {
@@ -34,8 +34,8 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
   const [updatedAuthor, setUpdatedAuthor] = useState<InputAuthor>({ id: 0 });
 
   const fetchAuthor = async () => {
-    const { loading, data } = await apolloClient().query<GetAuthorQuery>({
-      query: GET_AUTHOR,
+    const { loading, data } = await apolloClient().query<AuthorQuery>({
+      query: QUERY_AUTHOR,
       variables: {
         id: parseInt(router.match.params["id"]),
       },

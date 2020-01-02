@@ -9,7 +9,8 @@ const customStyles = {
     color: state.isSelected ? "#333" : "#000",
   }),
 };
-export class StyledTags extends Component {
+
+export class StyledTags extends Component<any, any> {
   static propTypes = {
     labelKey: PropTypes.string,
     multi: PropTypes.bool,

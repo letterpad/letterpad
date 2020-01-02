@@ -1,4 +1,4 @@
-import { GET_MEDIA } from "./../../../shared/queries/Queries";
+import { QUERY_MEDIA } from "./../../../shared/queries/Queries";
 import { DELETE_MEDIA } from "./../../../shared/queries/Mutations";
 import apolloClient from "../../../shared/apolloClient";
 import {
@@ -9,7 +9,7 @@ import {
 
 export const getMedia = async (filters?: MediaFiltersWithPagination) => {
   return await apolloClient(true).query<MediaQuery>({
-    query: GET_MEDIA,
+    query: QUERY_MEDIA,
     variables: {
       filters,
     },

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import appoloClient from "../../../shared/apolloClient";
-import { GET_POSTS } from "../../../shared/queries/Queries";
+import { QUERY_POSTS } from "../../../shared/queries/Queries";
 import { BULK_DELETE_POSTS } from "../../../shared/queries/Mutations";
 import { RouteComponentProps } from "react-router";
 import { PostTypes } from "../../../__generated__/gqlTypes";
@@ -50,7 +50,7 @@ const ArticleHoc = <P extends IArticleProps>(
         params.limit = parseInt(params.limit);
       }
       let result = await appoloClient(isAdmin).query({
-        query: GET_POSTS,
+        query: QUERY_POSTS,
         variables: { filters: { ...params, type: this.props.type } },
         fetchPolicy: "no-cache",
       });

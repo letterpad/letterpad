@@ -1,7 +1,7 @@
 import { graphql } from "@apollo/react-hoc";
-import { THEME_SETTINGS } from "../../shared/queries/Queries";
+import { QUERY_THEMES } from "../../shared/queries/Queries";
 
-export default graphql(THEME_SETTINGS, {
+export default graphql(QUERY_THEMES, {
   options: (props: any) => {
     let name = props.name;
     if (props.settings) {

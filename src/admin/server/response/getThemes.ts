@@ -1,7 +1,7 @@
 import fs from "fs";
 import { Request, Response } from "express";
-import { GET_OPTIONS } from "./../../../shared/queries/Queries";
-import { GetOptionsQuery } from "../../../__generated__/gqlTypes";
+import { QUERY_SETTINGS } from "./../../../shared/queries/Queries";
+import { SettingsQuery } from "../../../__generated__/gqlTypes";
 import apolloClient from "../../../shared/apolloClient";
 import { clientOpts } from "..";
 import { IThemeConfig } from "../../../types/types";
@@ -72,7 +72,7 @@ async function getCurrentTheme(req: Request) {
     true,
     clientOpts,
     req.headers.token as string,
-  ).query<GetOptionsQuery>({ query: GET_OPTIONS });
+  ).query<SettingsQuery>({ query: QUERY_SETTINGS });
 
   if (!response.data.settings) {
     return null;

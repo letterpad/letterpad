@@ -73,7 +73,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const StyledSwitch = ({ onChange, leftLabel, rightLabel, isSelected }) => {
+const StyledSwitch: React.FC<any> = ({
+  onChange,
+  leftLabel,
+  rightLabel,
+  isSelected,
+}) => {
   return (
     <Wrapper>
       <span

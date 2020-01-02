@@ -26,7 +26,7 @@ const addRefreshToken = async (
   const token = req.headers.authorization;
   delete req.user;
   const operationName = req.body && req.body.operationName;
-  if (operationName === "getOptions" || operationName === "login") {
+  if (operationName === "settings" || operationName === "login") {
     return next();
   }
   if (!token) return next();

@@ -1,36 +1,35 @@
 import React, { Component } from "react";
-import { graphql } from "@apollo/react-hoc";
-import PropTypes from "prop-types";
-
 import StyledTags from "../../../components/tags";
-import { TAX_SUGGESTIONS } from "../../../../shared/queries/Queries";
+import { QUERY_TAXONOMIES } from "../../../../shared/queries/Queries";
 import PostActions from "../PostActions";
+import {
+  Post,
+  TaxonomyTypes,
+  TaxonomiesQuery,
+  TaxonomiesQueryVariables,
+  Taxonomy,
+} from "../../../../__generated__/gqlTypes";
+import apolloClient from "../../../../shared/apolloClient";
 
-const formatTagsForDropdown = tags => {
-  return tags.map(tag => {
-    return {
-      ...tag,
-      label: tag.name,
-      value: tag.name,
-    };
-  });
-};
+interface ITaxonomyProps {
+  post: Post;
+  for: TaxonomyTypes;
+  suggestions: [];
+}
 
-const formatTagsForBackend = tags => {
-  return tags.map(tag => {
-    // eslint-disable-next-line no-unused-vars
-    const { label, value, __typename, ...rest } = tag;
-    return rest;
-  });
-};
+interface ITaxonomyState {
+  tags:
+    | {
+        id: number;
+        name: string;
+        type: TaxonomyTypes;
+        slug: string;
+      }[]
+    | [];
+  suggestions: Taxonomy[];
+}
 
-export class Taxonomies extends Component<any, any> {
-  static propTypes = {
-    suggestions: PropTypes.array,
-    post: PropTypes.object,
-    for: PropTypes.string.isRequired,
-  };
-
+export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
   static defaultProps = {
     suggestions: [],
   };
@@ -38,22 +37,32 @@ export class Taxonomies extends Component<any, any> {
   state = {
     tags: [],
     loading: true,
+    suggestions: [],
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { data } = await apolloClient(true).query<
+      TaxonomiesQuery,
+      TaxonomiesQueryVariables
+    >({
+      query: QUERY_TAXONOMIES,
+      variables: {
+        type: this.props.for,
+      },
+    });
+    this.setState({ suggestions: data.taxonomies });
+
     const tags = this.props.post.taxonomies
-      .filter(tax => {
-        return tax.type === this.props.for;
-      })
+      .filter(tax => tax.type === this.props.for)
       .map(tax => {
-        delete tax["__typename"];
-        return tax;
+        const { __typename, ...rest } = tax;
+        return rest;
       });
     PostActions.setTaxonomies({ [this.props.for]: tags });
     this.setState({ tags: formatTagsForDropdown(tags) });
   }
 
-  handleOnChange = (tags, { action }) => {
+  handleOnChange = (tags: Taxonomy[], { action }) => {
     if (action === "remove-value") {
       PostActions.setTaxonomies({
         [this.props.for]: formatTagsForBackend(tags),
@@ -67,7 +76,7 @@ export class Taxonomies extends Component<any, any> {
     }
   };
 
-  createNewTag = tag => {
+  createNewTag = (tag: string) => {
     if (tag.trim().length === 0) return;
     const newTag = {
       id: 0,
@@ -92,7 +101,9 @@ export class Taxonomies extends Component<any, any> {
         value={this.state.tags}
         onChange={this.handleOnChange}
         options={formatTagsForDropdown(
-          this.props.suggestions.filter(p => p.type === this.props.for),
+          (this.state.suggestions as Taxonomy[]).filter(
+            p => p.type === this.props.for,
+          ),
         )}
         isMulti
         isValidNewOption={inputValue => {
@@ -105,11 +116,23 @@ export class Taxonomies extends Component<any, any> {
   }
 }
 
-const TaxSuggestionsData = graphql(TAX_SUGGESTIONS, {
-  props: ({ data: { loading, taxonomies } }: any) => ({
-    suggestions: taxonomies,
-    loading,
-  }),
-});
+export default Taxonomies;
 
-export default TaxSuggestionsData(Taxonomies);
+const formatTagsForDropdown = (tags: Taxonomy[]) => {
+  return tags.map(tag => {
+    return {
+      ...tag,
+      label: tag.name,
+      value: tag.name,
+    };
+  });
+};
+
+const formatTagsForBackend = (tags: Taxonomy[]) => {
+  return tags.map(tag => {
+    // eslint-disable-next-line no-unused-vars
+    // @ts-ignore
+    const { label, value, __typename, ...rest } = tag;
+    return rest;
+  });
+};

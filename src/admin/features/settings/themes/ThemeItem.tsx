@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import appoloClient from "../../../../shared/apolloClient";
 import styled from "styled-components";
 
-import { THEME_SETTINGS } from "../../../../shared/queries/Queries";
+import { QUERY_THEMES } from "../../../../shared/queries/Queries";
 import { UPDATE_THEME_SETTINGS } from "../../../../shared/queries/Mutations";
 import ThemeSettingsModal from "./ThemeSettingsModal";
 import StyledItem from "./ThemeItem.css";
@@ -28,7 +28,7 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
   const displaySettings = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     let response = await appoloClient().query<ThemesQuery>({
-      query: THEME_SETTINGS,
+      query: QUERY_THEMES,
       variables: { name: theme.short_name },
       fetchPolicy: "no-cache",
     });

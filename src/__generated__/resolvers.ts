@@ -77,12 +77,6 @@ export type Error = {
   message?: Maybe<Scalars['String']>,
 };
 
-export enum FilterKeys {
-  Tag = 'tag',
-  Category = 'category',
-  AuthorName = 'authorName'
-}
-
 export type ForgotPasswordResponse = {
    __typename?: 'ForgotPasswordResponse',
   ok: Scalars['Boolean'],
@@ -328,6 +322,7 @@ export type Permission = {
 
 export type Post = {
    __typename?: 'Post',
+  /** Primary key */
   id: Scalars['Int'],
   title: Scalars['String'],
   body: Scalars['String'],
@@ -341,7 +336,7 @@ export type Post = {
   createdAt: Scalars['Date'],
   publishedAt: Scalars['Date'],
   updatedAt: Scalars['Date'],
-  taxonomies: Array<Maybe<Taxonomy>>,
+  taxonomies: Array<Taxonomy>,
 };
 
 export type PostFilters = {
@@ -353,18 +348,8 @@ export type PostFilters = {
   author?: Maybe<Scalars['String']>,
   query?: Maybe<Scalars['String']>,
   type?: Maybe<PostTypes>,
-};
-
-export type PostFiltersWithPagination = {
-  tag?: Maybe<Scalars['String']>,
-  category?: Maybe<Scalars['String']>,
   categorySlug?: Maybe<Scalars['String']>,
   tagSlug?: Maybe<Scalars['String']>,
-  sortBy?: Maybe<PostSortBy>,
-  status?: Maybe<PostStatusOptions>,
-  author?: Maybe<Scalars['String']>,
-  query?: Maybe<Scalars['String']>,
-  type?: Maybe<PostTypes>,
   cursor?: Maybe<Scalars['Int']>,
   limit?: Maybe<Scalars['Int']>,
   page?: Maybe<Scalars['Int']>,
@@ -441,7 +426,7 @@ export type QueryPostArgs = {
 
 
 export type QueryPostsArgs = {
-  filters?: Maybe<PostFiltersWithPagination>
+  filters?: Maybe<PostFilters>
 };
 
 
@@ -722,7 +707,7 @@ export type ResolversTypes = {
   Post: ResolverTypeWrapper<Post>,
   Taxonomy: ResolverTypeWrapper<Taxonomy>,
   TaxonomyTypes: TaxonomyTypes,
-  PostFiltersWithPagination: PostFiltersWithPagination,
+  PostFilters: PostFilters,
   PostSortBy: PostSortBy,
   PostStatusOptions: PostStatusOptions,
   PostTypes: PostTypes,
@@ -754,10 +739,8 @@ export type ResolversTypes = {
   OptionInputType: OptionInputType,
   EditTaxResponse: ResolverTypeWrapper<EditTaxResponse>,
   InputThemeSettings: InputThemeSettings,
-  PostTaxonomyNode: ResolverTypeWrapper<PostTaxonomyNode>,
   MenuTypes: MenuTypes,
-  PostFilters: PostFilters,
-  FilterKeys: FilterKeys,
+  PostTaxonomyNode: ResolverTypeWrapper<PostTaxonomyNode>,
   EnumPermissions: EnumPermissions,
 };
 
@@ -782,7 +765,7 @@ export type ResolversParentTypes = {
   Post: Post,
   Taxonomy: Taxonomy,
   TaxonomyTypes: TaxonomyTypes,
-  PostFiltersWithPagination: PostFiltersWithPagination,
+  PostFilters: PostFilters,
   PostSortBy: PostSortBy,
   PostStatusOptions: PostStatusOptions,
   PostTypes: PostTypes,
@@ -814,10 +797,8 @@ export type ResolversParentTypes = {
   OptionInputType: OptionInputType,
   EditTaxResponse: EditTaxResponse,
   InputThemeSettings: InputThemeSettings,
-  PostTaxonomyNode: PostTaxonomyNode,
   MenuTypes: MenuTypes,
-  PostFilters: PostFilters,
-  FilterKeys: FilterKeys,
+  PostTaxonomyNode: PostTaxonomyNode,
   EnumPermissions: EnumPermissions,
 };
 
@@ -935,7 +916,7 @@ export type PostResolvers<ContextType = Context, ParentType extends ResolversPar
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
   publishedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
-  taxonomies?: Resolver<Array<Maybe<ResolversTypes['Taxonomy']>>, ParentType, ContextType>,
+  taxonomies?: Resolver<Array<ResolversTypes['Taxonomy']>, ParentType, ContextType>,
 };
 
 export type PostNodeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PostNode'] = ResolversParentTypes['PostNode']> = {

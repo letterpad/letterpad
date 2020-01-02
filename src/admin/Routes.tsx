@@ -31,10 +31,10 @@ import "./public/pcss/admin.pcss";
 // All files which require authorization will pass though this
 import SecuredRoute from "./helpers/Secured";
 import apolloClient from "../shared/apolloClient";
-import { GET_OPTIONS } from "../shared/queries/Queries";
+import { QUERY_SETTINGS } from "../shared/queries/Queries";
 import {
   Setting,
-  GetOptionsQuery,
+  SettingsQuery,
   SettingOptions,
 } from "../__generated__/gqlTypes";
 
@@ -55,8 +55,8 @@ class Routes extends Component<RouteComponentProps, IState> {
 
   async componentDidMount() {
     try {
-      const options = await apolloClient().query<GetOptionsQuery>({
-        query: GET_OPTIONS,
+      const options = await apolloClient().query<SettingsQuery>({
+        query: QUERY_SETTINGS,
       });
       const data: TypeSettings = {};
       if (options && options.data && options.data.settings) {
