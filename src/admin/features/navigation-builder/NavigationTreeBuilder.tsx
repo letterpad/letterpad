@@ -64,35 +64,32 @@ class NavigationTreeBuilder extends Component<any, any> {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (!prevState.loaded) {
-      let menu = JSON.parse(nextProps.data.menu.value);
-      const menuIds = getMenuItems(menu);
+    let menu = JSON.parse(nextProps.data.menu.value);
+    const menuIds = getMenuItems(menu);
 
-      // Loop through the categories and add a key "disabled".
-      // The items which have been used in the navigation menu will have the value "disabled:true"
-      const categories = nextProps.categories.map(ele => {
-        return {
-          id: ele.id,
-          title: ele.name,
-          type: "category",
-          disabled: menuIds[ele.id + "-category"] ? true : false,
-          slug: "",
-        };
-      });
-      // Loop through the pages and add a key "disabled".
-      // The items which have been used in the navigation menu will have the value "disabled: true"
-      const pages = nextProps.pages.map(ele => {
-        return {
-          id: ele.id,
-          title: ele.title,
-          slug: ele.slug,
-          type: "page",
-          disabled: menuIds[ele.id + "-page"] ? true : false,
-        };
-      });
-      return { categories, pages, loaded: true };
-    }
-    return null;
+    // Loop through the categories and add a key "disabled".
+    // The items which have been used in the navigation menu will have the value "disabled:true"
+    const categories = nextProps.categories.map(ele => {
+      return {
+        id: ele.id,
+        title: ele.name,
+        type: "category",
+        disabled: menuIds[ele.id + "-category"] ? true : false,
+        slug: "",
+      };
+    });
+    // Loop through the pages and add a key "disabled".
+    // The items which have been used in the navigation menu will have the value "disabled: true"
+    const pages = nextProps.pages.map(ele => {
+      return {
+        id: ele.id,
+        title: ele.title,
+        slug: ele.slug,
+        type: "page",
+        disabled: menuIds[ele.id + "-page"] ? true : false,
+      };
+    });
+    return { categories, pages, loaded: true };
   }
 
   /**
@@ -102,8 +99,9 @@ class NavigationTreeBuilder extends Component<any, any> {
    */
   addItem = (idx, type) => {
     const newState = { items: [] };
-    newState[type] = [...this.state[type]];
-    newState[type][idx] = {};
+    const { id, title, slug } = this.state[type];
+    newState[type] = [{ id, title, slug, type }];
+    newState[type][idx] = { ...this.props[type][idx] };
     // All items which are added to the navigation should be disabled, so that they cannot be re-added.
     // This is not the case for folders. So when we add a folder, we change the id with a unique value
     // and then add this to the navigation to prevent mapping.
@@ -114,7 +112,7 @@ class NavigationTreeBuilder extends Component<any, any> {
       };
     } else {
       // disable the item
-      newState[type][idx].disabled = true;
+      newState[type][idx] = { ...newState[type][idx], disabled: true };
 
       // categories should have another key - "slug"
       if (type === "categories") {

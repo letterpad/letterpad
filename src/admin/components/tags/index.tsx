@@ -22,8 +22,6 @@ export class StyledTags extends Component<any, any> {
   };
 
   render() {
-    // const { multi, onChange, options, value, name } = this.props;
-
     return (
       <Wrapper>
         <div className="meta-label">{this.props.name}</div>

@@ -22,6 +22,7 @@ const Article: React.FC<IArticleProps> = ({ theme, router }) => {
         id: parseInt(router.match.params.post_id),
       },
     },
+    fetchPolicy: "network-only",
   });
   if (loading) {
     return <Loader />;

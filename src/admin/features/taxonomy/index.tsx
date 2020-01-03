@@ -25,6 +25,7 @@ import {
   TaxonomyTypes,
   TaxonomiesQueryVariables,
 } from "../../../__generated__/gqlTypes";
+import TaxonomyList from "./Taxonomies/TaxonomyList";
 
 const NewTagWrapper = styled.div`
   display: flex;
@@ -183,13 +184,11 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
       <StyledTaxonomy>
         <StyledGrid columns="repeat(2, minmax(300px,1fr))">
           <div className="taxonomy-list">
-            <ul>
-              {taxonomies.map((item, index) => {
-                return (
-                  <li onClick={() => setTaxonomyIndex(index)}>{item.name}</li>
-                );
-              })}
-            </ul>
+            <TaxonomyList
+              taxonomies={taxonomies}
+              setTaxonomyIndex={setTaxonomyIndex}
+              selectedIndex={selectedTaxonomyIndex}
+            />
             {/* <Taxonomies
               numRows={data.taxonomies.length}
               rowHeight={44}

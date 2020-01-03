@@ -59,7 +59,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   formatError: error => {
-    logger.error(error.message, error.extensions);
+    logger.error(error.message, error.extensions, error);
     return error;
   },
   context: context,

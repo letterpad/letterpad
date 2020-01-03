@@ -229,8 +229,8 @@ type Post {
   slug: String!
   mode: String!
   createdAt: Date!
-  publishedAt: Date!
-  updatedAt: Date!
+  publishedAt: Date
+  updatedAt: Date
   taxonomies: [Taxonomy!]!
 }
 

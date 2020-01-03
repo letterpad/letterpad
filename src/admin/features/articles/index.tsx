@@ -31,11 +31,12 @@ export enum LayoutOptions {
 }
 
 enum FilterOptions {
-  page,
-  limit,
-  category,
-  tag,
-  status,
+  page = "page",
+  limit = "limit",
+  category = "category",
+  tag = "tag",
+  status = "status",
+  sortBy = "sortBy",
 }
 
 const Articles: React.FC<IArticleListProps> = ({

@@ -92,6 +92,7 @@ const apolloClient = (
     link,
     cache: new InMemoryCache().restore(initialState),
     ssrForceFetchDelay: 100,
+    queryDeduplication: false,
     ...opts,
   });
 };

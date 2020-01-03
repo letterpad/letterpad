@@ -335,8 +335,8 @@ export type Post = {
   slug: Scalars['String'],
   mode: Scalars['String'],
   createdAt: Scalars['Date'],
-  publishedAt: Scalars['Date'],
-  updatedAt: Scalars['Date'],
+  publishedAt?: Maybe<Scalars['Date']>,
+  updatedAt?: Maybe<Scalars['Date']>,
   taxonomies: Array<Taxonomy>,
 };
 
@@ -915,8 +915,8 @@ export type PostResolvers<ContextType = Context, ParentType extends ResolversPar
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   mode?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
-  publishedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
-  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
+  publishedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
+  updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
   taxonomies?: Resolver<Array<ResolversTypes['Taxonomy']>, ParentType, ContextType>,
 };
 

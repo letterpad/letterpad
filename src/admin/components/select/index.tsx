@@ -16,7 +16,7 @@ class Select extends Component<any, any> {
   state = {
     open: false,
     options: this.props.options,
-    selected: "",
+    selected: this.props.selected,
   };
 
   componentDidMount() {
@@ -28,7 +28,7 @@ class Select extends Component<any, any> {
     document.addEventListener("click", this.closeSelect);
   }
 
-  componentDidUnmount() {
+  componentWillUnmount() {
     document.removeEventListener("click", this.closeSelect);
   }
 

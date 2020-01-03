@@ -86,7 +86,7 @@ const NavigationBuilder: React.FC<INavigationBuilderProps> = ({
     const settings: TypeAPIUpdatedOptions[] = [];
     Object.keys(updatedOptions).forEach(option => {
       settings.push({
-        option: SettingOptions[option],
+        option: SettingOptions.Menu,
         value: updatedOptions[option],
       });
     });
