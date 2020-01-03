@@ -10,6 +10,7 @@ import { IThemeConfig } from "../../../../types/types";
 import {
   UpdateThemesMutation,
   ThemesQuery,
+  ThemesQueryVariables,
 } from "../../../../__generated__/gqlTypes";
 
 const SettingsLink = styled.a`
@@ -27,7 +28,10 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
 
   const displaySettings = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    let response = await appoloClient().query<ThemesQuery>({
+    let response = await appoloClient().query<
+      ThemesQuery,
+      ThemesQueryVariables
+    >({
       query: QUERY_THEMES,
       variables: { name: theme.short_name },
       fetchPolicy: "no-cache",

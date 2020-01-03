@@ -11,7 +11,6 @@ import StyledSection from "../../components/section";
 import StyledCard from "../../components/card";
 import StyledButton from "../../components/button";
 
-// import UpdateAuthor from "../../data-connectors/UpdateAuthor";
 import Loader from "../../components/loader";
 import { QUERY_AUTHOR } from "../../../shared/queries/Queries";
 import { translate } from "react-i18next";

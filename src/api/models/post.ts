@@ -4,6 +4,7 @@ import { Model, DataTypes } from "sequelize";
 import config from "../../config";
 import moment from "moment";
 import { updateMenuItem } from "../resolvers/setting";
+import logger from "../../shared/logger";
 
 class Post extends Model {
   static associate(models) {
@@ -107,6 +108,8 @@ export async function _updatePost(updatedPost, models) {
       where: { id },
     });
 
+    logger.debug("Updating post with id:", id);
+
     // Initially the title will be empty for newly created post.
     // While updating check if the user has entered a new title and based on that create a new slug.
     // If the user changes the title the second time then dont change the slug again.
@@ -116,6 +119,7 @@ export async function _updatePost(updatedPost, models) {
       //  create the slug
       slug = await slugify(models.Post, updatedPost.title);
       updatedPost = { ...updatedPost, slug };
+      logger.debug("Slug changed to:", slug);
     }
     if (updatedPost.slug || (oldPost.type === "page" && slug)) {
       const options = { slug: updatedPost.slug, title: oldPost.title };
@@ -129,6 +133,7 @@ export async function _updatePost(updatedPost, models) {
     // If this post is being published for the first time, update the publish date
     if (updatedPost.status == "publish" && oldPost.status == "draft") {
       updatedPost = { ...updatedPost, publishedAt: currentTime };
+      logger.debug("Post status changed from draft to publish - ", currentTime);
     }
     updatedPost = { ...updatedPost, updatedAt: currentTime };
     await models.Post.update(updatedPost, {
@@ -143,6 +148,7 @@ export async function _updatePost(updatedPost, models) {
     // the taxonomies like tags/cathegories might have chqnged or added.
     // sync them
     if (updatedPost.taxonomies && updatedPost.taxonomies.length > 0) {
+      logger.debug("Removing all taxonomies");
       // remove the texonomy relation
       await newPost.setTaxonomies([]);
       await Promise.all(
@@ -153,23 +159,29 @@ export async function _updatePost(updatedPost, models) {
             taxItem = await models.Taxonomy.findOne({
               where: { id: taxonomy.id },
             });
-            return await newPost.addTaxonomy(taxItem);
+            const result = await newPost.addTaxonomy(taxItem);
+            logger.debug(
+              `Added existing taxonomy (${taxonomy.name}) with id`,
+              taxonomy.id,
+            );
+            return result;
           }
           // taxonomies needs to be created
           taxItem = await models.Taxonomy.findOrCreate({
             where: {
               name: taxonomy.name,
               type: taxonomy.type,
+              slug: taxonomy.name.toLowerCase(),
             },
           });
-
+          logger.debug(`Added new taxonomy (${taxonomy.name})`);
           taxItem = await models.Taxonomy.findOne({
             where: {
               name: taxonomy.name,
               type: taxonomy.type,
             },
           });
-
+          logger.debug("Linking taxonomy to post", taxonomy.name);
           // add relation
           return await newPost.addTaxonomy(taxItem);
         }),

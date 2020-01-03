@@ -11,9 +11,13 @@ type Taxonomy {
   slug: String!
 }
 
+input TaxonomyFilters {
+  type: TaxonomyTypes
+  active: Boolean
+}
+
 type Query {
-  taxonomies(type: TaxonomyTypes, name: String): [Taxonomy!]!
-  activeTaxonomies(type: TaxonomyTypes, postType: String): [Taxonomy]!
+  taxonomies(filters: TaxonomyFilters): [Taxonomy!]!
 }
 
 type EditTaxResponse {

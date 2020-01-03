@@ -47,7 +47,10 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
     >({
       query: QUERY_TAXONOMIES,
       variables: {
-        type: this.props.for,
+        filters: {
+          type: this.props.for,
+          active: false,
+        },
       },
     });
     this.setState({ suggestions: data.taxonomies });
@@ -132,7 +135,7 @@ const formatTagsForBackend = (tags: Taxonomy[]) => {
   return tags.map(tag => {
     // eslint-disable-next-line no-unused-vars
     // @ts-ignore
-    const { label, value, __typename, ...rest } = tag;
+    const { label, value, desc, __typename, ...rest } = tag;
     return rest;
   });
 };

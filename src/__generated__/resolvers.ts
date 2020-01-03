@@ -343,14 +343,13 @@ export type Post = {
 export type PostFilters = {
   tag?: Maybe<Scalars['String']>,
   category?: Maybe<Scalars['String']>,
-  authorName?: Maybe<Scalars['String']>,
+  categorySlug?: Maybe<Scalars['String']>,
+  tagSlug?: Maybe<Scalars['String']>,
   sortBy?: Maybe<PostSortBy>,
   status?: Maybe<PostStatusOptions>,
   author?: Maybe<Scalars['String']>,
   query?: Maybe<Scalars['String']>,
   type?: Maybe<PostTypes>,
-  categorySlug?: Maybe<Scalars['String']>,
-  tagSlug?: Maybe<Scalars['String']>,
   cursor?: Maybe<Scalars['Int']>,
   limit?: Maybe<Scalars['Int']>,
   page?: Maybe<Scalars['Int']>,
@@ -407,7 +406,6 @@ export type Query = {
   roles: Array<Role>,
   settings: Array<Setting>,
   taxonomies: Array<Taxonomy>,
-  activeTaxonomies: Array<Maybe<Taxonomy>>,
   themes: Array<Theme>,
 };
 
@@ -449,14 +447,7 @@ export type QuerySettingsArgs = {
 
 
 export type QueryTaxonomiesArgs = {
-  type?: Maybe<TaxonomyTypes>,
-  name?: Maybe<Scalars['String']>
-};
-
-
-export type QueryActiveTaxonomiesArgs = {
-  type?: Maybe<TaxonomyTypes>,
-  postType?: Maybe<Scalars['String']>
+  filters?: Maybe<TaxonomyFilters>
 };
 
 
@@ -561,6 +552,11 @@ export type Taxonomy = {
   type: TaxonomyTypes,
   desc?: Maybe<Scalars['String']>,
   slug: Scalars['String'],
+};
+
+export type TaxonomyFilters = {
+  type?: Maybe<TaxonomyTypes>,
+  active?: Maybe<Scalars['Boolean']>,
 };
 
 export type TaxonomyInputType = {
@@ -723,6 +719,7 @@ export type ResolversTypes = {
   PostStatus: ResolverTypeWrapper<PostStatus>,
   Setting: ResolverTypeWrapper<Setting>,
   SettingOptions: SettingOptions,
+  TaxonomyFilters: TaxonomyFilters,
   Theme: ResolverTypeWrapper<Theme>,
   ThemeSettings: ResolverTypeWrapper<ThemeSettings>,
   ThemeSettingsUIInputTypes: ThemeSettingsUiInputTypes,
@@ -781,6 +778,7 @@ export type ResolversParentTypes = {
   PostStatus: PostStatus,
   Setting: Setting,
   SettingOptions: SettingOptions,
+  TaxonomyFilters: TaxonomyFilters,
   Theme: Theme,
   ThemeSettings: ThemeSettings,
   ThemeSettingsUIInputTypes: ThemeSettingsUiInputTypes,
@@ -951,7 +949,6 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   roles?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType>,
   settings?: Resolver<Array<ResolversTypes['Setting']>, ParentType, ContextType, QuerySettingsArgs>,
   taxonomies?: Resolver<Array<ResolversTypes['Taxonomy']>, ParentType, ContextType, QueryTaxonomiesArgs>,
-  activeTaxonomies?: Resolver<Array<Maybe<ResolversTypes['Taxonomy']>>, ParentType, ContextType, QueryActiveTaxonomiesArgs>,
   themes?: Resolver<Array<ResolversTypes['Theme']>, ParentType, ContextType, QueryThemesArgs>,
 };
 

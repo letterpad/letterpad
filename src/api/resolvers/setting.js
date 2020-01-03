@@ -1,5 +1,5 @@
 import { requiresAdmin } from "../utils/permissions";
-import { recurseMenu } from "../../shared/util";
+import utils from "../../shared/util";
 
 export default {
   Query: {
@@ -42,7 +42,7 @@ export const updateMenuItem = async (models, id, type, field) => {
   // loop though the menu and find the item with the current slug and id.
   // if found, update the slug
   const updatedMenu = JSON.parse(menu.value).map(item =>
-    recurseMenu(item, id, changeMenuItem),
+    utils.recurseMenu(item, id, changeMenuItem),
   );
 
   try {

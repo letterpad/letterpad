@@ -76,8 +76,7 @@ type Query {
   stats: Stats
   roles: [Role!]!
   settings(option: String): [Setting!]!
-  taxonomies(type: TaxonomyTypes, name: String): [Taxonomy!]!
-  activeTaxonomies(type: TaxonomyTypes, postType: String): [Taxonomy]!
+  taxonomies(filters: TaxonomyFilters): [Taxonomy!]!
   themes(name: String): [Theme!]!
 }
 
@@ -165,14 +164,13 @@ enum MenuTypes {
 input PostFilters {
   tag: String
   category: String
-  authorName: String
+  categorySlug: String
+  tagSlug: String
   sortBy: PostSortBy
   status: PostStatusOptions
   author: String
   query: String
   type: PostTypes
-  categorySlug: String
-  tagSlug: String
   cursor: Int
   limit: Int
   page: Int
@@ -362,6 +360,11 @@ type Taxonomy {
   type: TaxonomyTypes!
   desc: String
   slug: String!
+}
+
+input TaxonomyFilters {
+  type: TaxonomyTypes
+  active: Boolean
 }
 
 type EditTaxResponse {

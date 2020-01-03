@@ -24,17 +24,6 @@ enum MenuTypes {
 input PostFilters {
   tag: String
   category: String
-  authorName: String
-  sortBy: PostSortBy
-  status: PostStatusOptions
-  author: String
-  query: String
-  type: PostTypes
-}
-
-input PostFilters {
-  tag: String
-  category: String
   categorySlug: String
   tagSlug: String
   sortBy: PostSortBy

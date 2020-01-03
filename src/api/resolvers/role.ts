@@ -14,7 +14,6 @@ const RoleResolver: IRoleResolver = {
   },
   Role: {
     permissions: async role => {
-      console.log(role);
       // @ts-ignore: Relationship
       const permissions = await role.getPermissions();
       return permissions;

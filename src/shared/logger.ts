@@ -83,10 +83,16 @@ function getCaller() {
     try {
       // at /Users/abhi/www/letterpad/src/client/server/dispatcher.ts:29:10
       const getLineThree = e.stack.split("at ")[3];
-      // dispatcher.ts:29:10
-      const getLastSlashItem = getLineThree.split("/").pop();
-      // dispatcher.ts
-      const getFileName = getLastSlashItem.split(":")[0].replace("?", "");
+      // [/Users/abhi/www/letterpad/src/client/server/dispatcher.ts:29:10]
+      const getLastTwoSlashItem = getLineThree
+        .split("/")
+        .slice(1)
+        .splice(-2);
+      // [server, dispatcher.ts:29:10]
+      const getFileName =
+        getLastTwoSlashItem[0] +
+        "/" +
+        getLastTwoSlashItem[1].split(":")[0].replace("?", "");
       return getFileName;
     } catch (e) {
       return "";

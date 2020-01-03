@@ -23,6 +23,7 @@ import {
   DeleteTaxonomyMutation,
   Taxonomy,
   TaxonomyTypes,
+  TaxonomiesQueryVariables,
 } from "../../../__generated__/gqlTypes";
 
 const NewTagWrapper = styled.div`
@@ -75,11 +76,14 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
   const [newTaxonomy, setNewTaxonomy] = useState<string>("");
   const [taxonomies, setTaxonomies] = React.useState<Taxonomy[]>([]);
 
-  const { data, loading } = useQuery<TaxonomiesQuery>(QUERY_TAXONOMIES, {
-    variables: {
-      type,
+  const { data, loading } = useQuery<TaxonomiesQuery, TaxonomiesQueryVariables>(
+    QUERY_TAXONOMIES,
+    {
+      variables: {
+        filters: { type, active: false },
+      },
     },
-  });
+  );
 
   useEffect(() => {
     if (!loading && data && data.taxonomies && data.taxonomies.length > 0) {
