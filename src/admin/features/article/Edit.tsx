@@ -2,10 +2,10 @@ import React, { Component } from "react";
 
 import StyledArticle from "./Article.css";
 
-// import LetterpadEditor from "letterpad-editor";
+import LetterpadEditor from "letterpad-editor";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
-// import FileExplorerModal from "../modals/FileExplorerModal";
+import FileExplorerModal from "../modals/FileExplorerModal";
 import { uploadFile } from "../../server/util";
 import { EventBusInstance } from "../../../shared/eventBus";
 import client from "../../../shared/apolloClient";
@@ -153,14 +153,14 @@ class Edit extends Component<any, any> {
           />
         </div>
         <div className="post-content">
-          {/* <LetterpadEditor
+          <LetterpadEditor
             html={post.body}
             theme={this.props.theme}
             onButtonClick={this.onEditorPluginBtnClick}
             hooks={this.setEditorPluginHooks}
             onChange={this.onEditorChange}
-          /> */}
-          {/* {this.state.fileExplorerOpen && (
+          />
+          {this.state.fileExplorerOpen && (
             <FileExplorerModal
               isOpen={this.state.fileExplorerOpen}
               onClose={this.toggleFileExplorer}
@@ -170,7 +170,7 @@ class Edit extends Component<any, any> {
                 this.toggleFileExplorer();
               }}
             />
-          )} */}
+          )}
         </div>
         <input
           ref={this.imageInputRef}

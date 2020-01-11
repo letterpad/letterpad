@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-const Input = styled.input`
+const Input = styled.div`
   border: transparent;
   background: transparent;
   color: var(--color-base);
   font-size: 40px;
+  width: 100%;
 `;
 
 interface IPostTitleProps {
@@ -31,15 +32,21 @@ const PostTitle: React.FC<IPostTitleProps> = ({
   return (
     <Input
       onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
-        onTitleChange(e.target.value)
+        onTitleChange(e.target.innerText)
       }
       contentEditable={true}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-        onTitleChange(e.target.value)
+        onTitleChange(e.target.innerText)
       }
-      value={title}
       placeholder={placeholder}
-    />
+      onKeyDown={e => {
+        if (e.keyCode === 13) {
+          e.preventDefault();
+        }
+      }}
+    >
+      {title}
+    </Input>
   );
 };
 

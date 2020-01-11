@@ -12,6 +12,7 @@ const StyledTopBar = styled.div`
   background: var(--bg-base);
   .left-block {
     display: flex;
+    align-items: center;
   }
   .right-block {
     display: flex;
@@ -46,6 +47,20 @@ export const PublishBox = styled.div`
       margin-left: -240px;
     }
   }
+`;
+
+export const PostStatus = styled.span<{ status: string }>`
+  font-size: 11px;
+  margin-left: 30px;
+  border: 1px solid var(--color-border);
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: ${p =>
+    p.status === "publish"
+      ? "var(--bg-success)"
+      : p.status === "draft"
+      ? "#ce8809"
+      : "var(--bg-danger)"};
 `;
 
 export const AutoSaveIndicator = styled.div`

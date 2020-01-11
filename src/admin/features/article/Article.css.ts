@@ -48,6 +48,10 @@ const StyledArticle = styled.article`
       width: 740px;
     }
   }
+
+  #letterpad-editor-container {
+    background: transparent;
+  }
 `;
 
 export default StyledArticle;

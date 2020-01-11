@@ -40,14 +40,7 @@ if (process.env.NODE_ENV === "dev") {
             noInfo: true,
             hot: true,
             publicPath: webpackConfig.output.publicPath,
-            stats: {
-              colors: true,
-              hash: false,
-              timings: true,
-              chunks: false,
-              chunkModules: false,
-              modules: false,
-            },
+            stats: "errors-only",
             historyApiFallback: true,
           }),
         )

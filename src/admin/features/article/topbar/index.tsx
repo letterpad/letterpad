@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import { notify } from "react-notify-toast";
 import { Link, RouteComponentProps } from "react-router-dom";
 
-import StyledTopBar, { AutoSaveIndicator, PublishBox } from "./TopBar.css";
+import StyledTopBar, {
+  AutoSaveIndicator,
+  PublishBox,
+  PostStatus,
+} from "./TopBar.css";
 import { EventBusInstance } from "../../../../shared/eventBus";
 import PostActions from "../PostActions";
 import PublishDropdown from "./PublishDropdown";
@@ -142,6 +146,10 @@ export class TopBar extends Component<ITopbarProps, any> {
               keyboard_arrow_left
             </span>
           </Link>
+
+          <PostStatus status={this.state.post.status}>
+            {StatusGrammer[this.state.post.status]}
+          </PostStatus>
         </div>
         {this.state.saving && (
           <AutoSaveIndicator>
@@ -195,3 +203,9 @@ export class TopBar extends Component<ITopbarProps, any> {
 }
 
 export default TopBar;
+
+const StatusGrammer = {
+  publish: "Published",
+  draft: "In-Draft",
+  trash: "In-Trash",
+};

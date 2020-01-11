@@ -8,7 +8,7 @@ export default {
       if (!user || !user.id) {
         throw new UnauthorizedError({ url: "/media" });
       }
-      const conditions = { include: [], where: {}, limit: 20 };
+      const conditions = { where: {}, limit: 20 };
       if (args.filters) {
         const { id, authorId, cursor, limit, page } = args.filters;
 
