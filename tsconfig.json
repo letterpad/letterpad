@@ -1,26 +1,3 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2015",
-    "downlevelIteration": true,
-    "allowJs": true,
-    // "lib": ["es2017", "dom"],
-    "noEmitOnError": true,
-    "strict": true,
-    "moduleResolution": "node",
-    "alwaysStrict": true,
-    "esModuleInterop": true,
-    "pretty": true,
-    "outDir": "dist",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "jsx": "react",
-    "resolveJsonModule": true,
-    "declaration": false,
-    "sourceMap": true,
-    "noImplicitAny": false,
-    "skipLibCheck": true
-  },
-  "include": ["src/**/*.ts", "src/**/.tsx"],
-  "exclude": ["node_modules", "src/typings", "src/**/*.js"]
+  "extends": "./tsconfig.compiler.json"
 }

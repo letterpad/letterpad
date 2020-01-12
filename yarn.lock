@@ -11485,10 +11485,10 @@ react-sortable-tree@^2.6.0:
     react-sortable-tree "^2.6.0"
     react-virtualized "^9.19.1"
 
-react-ssr-prepass@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/react-ssr-prepass/-/react-ssr-prepass-1.0.8.tgz#036abffe541975b20213cf7b261c05ac2843480d"
-  integrity sha512-O0gfRA1SaK+9ITKxqfnXsej2jF+OHGP/+GxD4unROQaM/0/UczGF9fuF+wTboxaQoKdIf4FvS3h/OigWh704VA==
+react-ssr-prepass-fork@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-ssr-prepass-fork/-/react-ssr-prepass-fork-1.0.1.tgz#39a1eccdc46b3571eea7cffa498b7345f0f4b231"
+  integrity sha512-AdXDRbfU2vPxLzo8GAjmrS/vWGSaPu86Ult712ZnPE8/SVResEcLCq19lTYGezFVVx2ZUv+WJH2GU8j9J4YDqQ==
   dependencies:
     object-is "^1.0.1"
 

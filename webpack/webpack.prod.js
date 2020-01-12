@@ -27,6 +27,11 @@ const clientConfig = args => {
           force: true,
         },
         {
+          from: __dirname + "/../src/api/schema",
+          to: __dirname + "/../dist/api/schema",
+          force: true,
+        },
+        {
           from: __dirname + "/../src/public",
           to: __dirname + "/../dist/public",
           force: true,
@@ -118,7 +123,7 @@ const serverConfig = args => {
   const config = merge(baseConfig(args, "server"), {
     target: "node",
     output: {
-      filename: "[name]server.node.js",
+      filename: "server.node.js",
       path: BUILD_PATH,
       library: "server",
       libraryTarget: "commonjs2",

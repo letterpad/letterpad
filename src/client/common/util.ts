@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 
-module.exports.util = {
+export const util = {
   /**
    * Get the contents of a file inside a theme.
    *

@@ -1,5 +1,5 @@
 import React from "react";
-import ssrPrepass from "react-ssr-prepass";
+import ssrPrepass from "react-ssr-prepass-fork";
 import ApolloClient from "apollo-client";
 import logger from "../../shared/logger";
 import { match } from "react-router";

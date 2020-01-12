@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=dev concurrently --kill-others \"ts-node ./src/start.ts --profile --json\" \"webpack --config webpack/webpack.dev.js --env.theme=${theme}\"",
     "generateTypes": "node ./utils/generateTypes.js",
-    "build": "./utils/convertToes5.sh && webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
+    "build": "tsc --build tsconfig.build.json && webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
     "build:theme": "webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${theme}",
     "build:admin": "webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.admin.prod.js",
     "seed": "ts-node ./src/api/seed",
@@ -84,7 +84,7 @@
     "react-select": "^3.0.4",
     "react-sortable-tree": "2.6.2",
     "react-sortable-tree-theme-full-node-drag": "^1.1.0",
-    "react-ssr-prepass": "^1.0.8",
+    "react-ssr-prepass-fork": "1.0.1",
     "reading-time": "*",
     "regenerator-runtime": "^0.13.3",
     "sequelize": "^5.18.4",

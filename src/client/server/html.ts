@@ -1,4 +1,4 @@
-const { util } = require("../common/util");
+import { util } from "../common/util";
 import utils from "../../shared/util";
 import { TypeSettings } from "../types";
 const {
