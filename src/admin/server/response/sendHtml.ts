@@ -1,5 +1,5 @@
-import path from "path";
-import fs from "fs";
+import * as path from "path";
+import * as fs from "fs";
 import utils from "../../../shared/util";
 
 const isProd = process.env.NODE_ENV === "production";

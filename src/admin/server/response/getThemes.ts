@@ -1,4 +1,4 @@
-import fs from "fs";
+import * as fs from "fs";
 import { Request, Response } from "express";
 import { QUERY_SETTINGS } from "./../../../shared/queries/Queries";
 import { SettingsQuery } from "../../../__generated__/gqlTypes";

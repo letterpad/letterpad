@@ -32,12 +32,12 @@ const clientConfig = args => {
           force: true,
         },
         {
-          from: __dirname + "/../src/admin/server/content.tpl",
-          to: __dirname + "/../dist/admin/server/content.tpl",
+          from: __dirname + "/../src/admin/server/response/content.tpl",
+          to: __dirname + "/../dist/admin/server/response/content.tpl",
         },
         {
-          from: __dirname + "/../src/client/common/template.tpl",
-          to: __dirname + "/../dist/client/common/template.tpl",
+          from: __dirname + "/../src/client/template.tpl",
+          to: __dirname + "/../dist/client/template.tpl",
         },
         {
           from: __dirname + "/../src/api/seed/uploads",
@@ -118,7 +118,7 @@ const serverConfig = args => {
   const config = merge(baseConfig(args, "server"), {
     target: "node",
     output: {
-      filename: "server.node.js",
+      filename: "[name]server.node.js",
       path: BUILD_PATH,
       library: "server",
       libraryTarget: "commonjs2",
@@ -139,7 +139,7 @@ const serverConfig = args => {
     },
   });
   config.entry = {
-    server: [path.join(__dirname, "../src/client/server")],
+    server: [path.join(__dirname, "../src/client/server/serverApp")],
   };
   return config;
 };
