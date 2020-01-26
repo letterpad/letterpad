@@ -67,7 +67,7 @@ module.exports.getHtml = (
     TRACKING_ID: settings.google_analytics,
     GA_SCRIPT_TAG:
       settings.google_analytics !== ""
-        ? '<script async src="https://www.gogle-analytics.com/analytics.js"></script>'
+        ? '<script async src="https://www.google-analytics.com/analytics.js"></script>'
         : "",
     SCRIPT_TAGS: scripts,
   });
