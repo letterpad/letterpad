@@ -13,6 +13,15 @@
     {{META_TAGS}}
     {{STYLE_TAGS}}
     {{STYLED_STYLES}}
+    <script type="text/javascript">
+        function makeMeRun() {
+            const execute = document.querySelectorAll('.execute');
+            execute.forEach((item)=>{
+                eval(item.innerText);
+                item.parentElement.removeChild(item);
+            })
+        }
+    </script>
 </head>
 
 <body>
@@ -34,7 +43,9 @@
         ga.l = +new Date();
         ga("create", "{{TRACKING_ID}}", "auto");
         ga("send", "pageview");
+        
 
+        
     </script>
         
     {{SCRIPT_TAGS}}

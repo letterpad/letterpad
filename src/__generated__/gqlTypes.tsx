@@ -94,7 +94,8 @@ export type InputAuthor = {
 
 export type InputCreatePost = {
   title?: Maybe<Scalars['String']>,
-  body?: Maybe<Scalars['String']>,
+  html?: Maybe<Scalars['String']>,
+  md?: Maybe<Scalars['String']>,
   authorId?: Maybe<Scalars['Int']>,
   excerpt?: Maybe<Scalars['String']>,
   cover_image?: Maybe<Scalars['String']>,
@@ -120,7 +121,8 @@ export type InputThemeSettings = {
 export type InputUpdatePost = {
   id: Scalars['Int'],
   title?: Maybe<Scalars['String']>,
-  body?: Maybe<Scalars['String']>,
+  html?: Maybe<Scalars['String']>,
+  md?: Maybe<Scalars['String']>,
   authorId?: Maybe<Scalars['Int']>,
   excerpt?: Maybe<Scalars['String']>,
   cover_image?: Maybe<Scalars['String']>,
@@ -323,14 +325,14 @@ export type Post = {
   /** Primary key */
   id: Scalars['Int'],
   title: Scalars['String'],
-  body: Scalars['String'],
+  html: Scalars['String'],
+  md: Scalars['String'],
   author: Author,
   excerpt: Scalars['String'],
   cover_image: Scalars['String'],
   type: Scalars['String'],
   status: Scalars['String'],
   slug: Scalars['String'],
-  mode: Scalars['String'],
   createdAt: Scalars['Date'],
   publishedAt?: Maybe<Scalars['Date']>,
   updatedAt?: Maybe<Scalars['Date']>,
@@ -615,7 +617,7 @@ export type UpdateResponse = {
 
 export type PostFieldsFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'id' | 'title' | 'body' | 'status' | 'createdAt' | 'publishedAt' | 'updatedAt' | 'excerpt' | 'cover_image' | 'slug' | 'mode' | 'type'>
+  & Pick<Post, 'id' | 'title' | 'md' | 'html' | 'status' | 'createdAt' | 'publishedAt' | 'updatedAt' | 'excerpt' | 'cover_image' | 'slug' | 'type'>
   & { author: (
     { __typename?: 'Author' }
     & Pick<Author, 'fname' | 'lname' | 'avatar' | 'bio'>
@@ -640,7 +642,7 @@ export type CreatePostMutation = (
       & Pick<Error, 'path' | 'message'>
     )>>, post: Maybe<(
       { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'title' | 'body' | 'status' | 'type' | 'slug' | 'mode' | 'excerpt' | 'createdAt' | 'cover_image'>
+      & Pick<Post, 'id' | 'title' | 'md' | 'html' | 'status' | 'type' | 'slug' | 'excerpt' | 'createdAt' | 'cover_image'>
       & { author: (
         { __typename?: 'Author' }
         & Pick<Author, 'username'>
@@ -791,7 +793,7 @@ export type UpdatePostMutation = (
       & Pick<Error, 'path' | 'message'>
     )>>, post: Maybe<(
       { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'title' | 'body' | 'slug' | 'type' | 'status' | 'excerpt' | 'mode' | 'createdAt' | 'cover_image'>
+      & Pick<Post, 'id' | 'title' | 'md' | 'html' | 'slug' | 'type' | 'status' | 'excerpt' | 'createdAt' | 'cover_image'>
       & { author: (
         { __typename?: 'Author' }
         & Pick<Author, 'username' | 'lname' | 'fname' | 'avatar' | 'bio'>

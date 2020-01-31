@@ -11,14 +11,14 @@ export const CREATE_POST = gql`
       post {
         id
         title
-        body
+        md
+        html
         author {
           username
         }
         status
         type
         slug
-        mode
         excerpt
         createdAt
         cover_image
@@ -145,7 +145,8 @@ export const UPDATE_POST_QUERY = gql`
       post {
         id
         title
-        body
+        md
+        html
         author {
           username
           lname
@@ -157,7 +158,6 @@ export const UPDATE_POST_QUERY = gql`
         type
         status
         excerpt
-        mode
         createdAt
         cover_image
         taxonomies {

@@ -67,7 +67,9 @@ class DropDown extends Component<any, any> {
           <i className="material-icons">arrow_drop_down</i>
         </a>
 
-        <div className="dropdown-menu">{this.props.render(this.toggle)}</div>
+        <div className="dropdown-menu">
+          {this.props.render(this.state.open, this.toggle)}
+        </div>
       </Wrapper>
     );
   }

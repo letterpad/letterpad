@@ -51,6 +51,8 @@ const StyledArticle = styled.article`
 
   #letterpad-editor-container {
     background: transparent;
+    width: 767px;
+    margin: auto;
   }
 `;
 

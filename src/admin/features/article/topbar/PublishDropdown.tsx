@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-
-import StyledSwitch from "../../../components/switch";
-import StyledButton from "../../../components/button";
-import StyledDropdown from "./Dropdown.css";
 
 import Excerpt from "./Excerpt";
 import FeaturedImage from "../FeaturedImage";
-import Taxonomies from "./Taxonomies";
 import PostActions from "../PostActions";
+import PropTypes from "prop-types";
+import StyledButton from "../../../components/button";
+import StyledDropdown from "./Dropdown.css";
+import StyledSwitch from "../../../components/switch";
+import Taxonomies from "./Taxonomies";
 import { TaxonomyTypes } from "../../../../__generated__/gqlTypes";
 
 class PublishDropdown extends Component<any, any> {
@@ -47,7 +46,7 @@ class PublishDropdown extends Component<any, any> {
   render() {
     const post = {
       ...this.props.post,
-      body: PostActions.data.body,
+      body: PostActions.getData().body,
     };
     const classes = this.props.isOpen ? " open" : "";
     const actionLabel = this.props.create ? "Create" : "Update";

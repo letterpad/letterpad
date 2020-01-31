@@ -1,13 +1,15 @@
-import Sequelize from "sequelize";
-import Fuse from "fuse.js";
 import { _createPost, _updatePost } from "../models/post";
 import {
   checkDisplayAccess,
   createPostsPerm,
   editPostPerm,
 } from "../utils/permissions";
-import memoryCache from "../utils/memoryCache";
+
+import Fuse from "fuse.js";
+import Sequelize from "sequelize";
 import { innertext } from "../utils/common";
+import memoryCache from "../utils/memoryCache";
+
 // import { getMenuItemFromSlug } from "./selectors/post";
 
 const noResult = {
@@ -173,13 +175,13 @@ const postresolver = {
       let cachedData = memoryCache.get("posts");
       if (!cachedData) {
         const data = await models.Post.findAll({
-          attributes: ["id", "title", "body", "excerpt", "publishedAt", "slug"],
+          attributes: ["id", "title", "html", "excerpt", "publishedAt", "slug"],
           where: { status: "publish" },
         });
 
         const cleanedData = data.map(item => {
           let cleanItem = item.toJSON();
-          cleanItem.body = innertext(cleanItem.body);
+          cleanItem.html = innertext(cleanItem.html);
           return cleanItem;
         });
         memoryCache.set("posts", cleanedData);
@@ -197,7 +199,7 @@ const postresolver = {
             weight: 0.9,
           },
           {
-            name: "body",
+            name: "html",
             weight: 0.8,
           },
         ],
@@ -206,7 +208,7 @@ const postresolver = {
 
       const fuse = new Fuse(cachedData, options);
       const searchResult = fuse.search(args.query).map(data => {
-        delete data.item.body;
+        delete data.item.html;
         return data.item;
       });
       return {

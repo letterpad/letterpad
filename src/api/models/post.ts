@@ -1,10 +1,11 @@
-import utils from "../../shared/util";
-import slugify from "../../shared/slugify";
-import { Model, DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
+
 import config from "../../config";
-import moment from "moment";
-import { updateMenuItem } from "../resolvers/setting";
 import logger from "../../shared/logger";
+import moment from "moment";
+import slugify from "../../shared/slugify";
+import { updateMenuItem } from "../resolvers/setting";
+import utils from "../../shared/util";
 
 class Post extends Model {
   static associate(models) {
@@ -25,11 +26,10 @@ class Post extends Model {
           type: DataTypes.STRING,
           defaultValue: config.defaultTitle,
         },
-        mode: {
-          type: DataTypes.STRING,
-          defaultValue: "rich-text",
+        html: {
+          type: DataTypes.TEXT,
         },
-        body: {
+        md: {
           type: DataTypes.TEXT,
         },
         excerpt: {
@@ -71,8 +71,9 @@ export async function _createPost(data, models) {
   try {
     //  create a slug for the new psot
     data.slug = await slugify(models.Post, config.defaultSlug);
-    if (!data.body) {
-      data.body = "";
+    if (!data.md) {
+      data.md = "";
+      data.html = "";
     }
     // add an empty string for title
     if (!data.title) {

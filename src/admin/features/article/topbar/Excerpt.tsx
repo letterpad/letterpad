@@ -21,14 +21,12 @@ class Excerpt extends Component<any, any> {
     if (!excerpt) {
       // the body will contain html characters. Remove all the tags and get plain text
       let html = this.props.post.body;
-      const text = document.createElement("textarea");
-      text.innerHTML = html;
-      const decodedHtml = text.value;
-      // maximum number of characters to extract
-      if (decodedHtml.length > this.maxLength) {
-        excerpt = this.trimString(decodedHtml);
-      } else {
-        excerpt = decodedHtml;
+      const tmp = document.createElement("DIV");
+      tmp.innerHTML = html;
+
+      excerpt = tmp.textContent || tmp.innerText || "";
+      if (excerpt.length > this.maxLength) {
+        excerpt = this.trimString(excerpt);
       }
     } else if (excerpt.length > this.maxLength) {
       excerpt = this.trimString(excerpt);

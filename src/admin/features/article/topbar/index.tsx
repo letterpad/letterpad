@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import { notify } from "react-notify-toast";
 import { Link, RouteComponentProps } from "react-router-dom";
-
+import React, { Component } from "react";
 import StyledTopBar, {
   AutoSaveIndicator,
-  PublishBox,
   PostStatus,
+  PublishBox,
 } from "./TopBar.css";
+
 import { EventBusInstance } from "../../../../shared/eventBus";
+import MetaDropdown from "./MetaDropdown";
+import { Post } from "../../../../__generated__/gqlTypes";
 import PostActions from "../PostActions";
 import PublishDropdown from "./PublishDropdown";
-import MetaDropdown from "./MetaDropdown";
 import StyledDropdown from "../../../components/dropdown";
-import client from "../../../../shared/apolloClient";
 import { UPDATE_POST_QUERY } from "../../../../shared/queries/Mutations";
-import { Post } from "../../../../__generated__/gqlTypes";
+import client from "../../../../shared/apolloClient";
+import { notify } from "react-notify-toast";
 
 interface ITopbarProps {
   post: Post;
@@ -97,8 +97,6 @@ export class TopBar extends Component<ITopbarProps, any> {
       // eslint-disable-next-line no-unused-vars
       updatedAt,
       // eslint-disable-next-line no-unused-vars
-      mode,
-      // eslint-disable-next-line no-unused-vars
       author,
       // eslint-disable-next-line no-unused-vars
       __typename,
@@ -165,7 +163,8 @@ export class TopBar extends Component<ITopbarProps, any> {
             <StyledDropdown
               name="Publish"
               className="publish"
-              render={() => {
+              render={isOpen => {
+                if (!isOpen) return null;
                 return (
                   <PublishDropdown
                     isPublished={this.state.isPublished}

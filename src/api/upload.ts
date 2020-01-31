@@ -1,7 +1,7 @@
 const path = require("path");
 const { resizeImage } = require("./utils/resizeImage");
 const uploadDir = path.join(__dirname, "../public/uploads/");
-const models = require("./models/index");
+import models = require("./models/index");
 
 export default (req, res) => {
   const uploadedFiles: any = [];
@@ -37,8 +37,11 @@ export default (req, res) => {
   });
   Promise.all(promises).then(filesToSave => {
     // store in database
-    models.Media.bulkCreate(filesToSave).then(() => {
-      res.json(uploadedFiles);
-    });
+    //@ts-ignore
+    models.default.Media.bulkCreate(filesToSave)
+      .then(() => {
+        res.json(uploadedFiles);
+      })
+      .catch(console.log);
   });
 };

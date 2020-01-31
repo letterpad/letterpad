@@ -13,14 +13,15 @@ declare global {
 }
 
 import { Express, Response } from "express";
-import path from "path";
+import { fileLoader, mergeResolvers, mergeTypes } from "merge-graphql-schemas";
+
 import { ApolloServer } from "apollo-server-express";
 import constants from "./utils/constants";
-import models from "./models/index";
-import upload from "./upload";
-import middlewares from "./middlewares";
-import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
 import logger from "../shared/logger";
+import middlewares from "./middlewares";
+import models from "./models/index";
+import path from "path";
+import upload from "./upload";
 
 export interface Context {
   user: object;
@@ -59,7 +60,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   formatError: error => {
-    logger.error(error.message, error.extensions, error);
+    logger.error(error.message, error.extensions, error, JSON.stringify(error));
     return error;
   },
   context: context,

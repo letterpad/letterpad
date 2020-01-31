@@ -1,7 +1,7 @@
-var env = require("node-env-file");
-env(__dirname + "/../../.env");
-const configs = require("../../config/db.config");
+const env = require("node-env-file");
+env(__dirname + "/../../../.env");
 
+const configs = require("../../config/db.config.ts");
 let config;
 
 if (Object.keys(configs).includes(process.env.NODE_ENV)) {

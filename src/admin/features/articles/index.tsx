@@ -96,7 +96,7 @@ const Articles: React.FC<IArticleListProps> = ({
       title={
         <Title
           title={type === "post" ? t("posts.title") : t("pages.title")}
-          creationLink={"/admin/" + type === "post" ? "post-new" : "page-new"}
+          creationLink={"/admin/" + (type === "post" ? "post-new" : "page-new")}
         />
       }
       subtitle={type === "post" ? t("posts.tagline") : t("pages.tagline")}

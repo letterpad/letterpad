@@ -1,17 +1,17 @@
+import Author from "./author";
+import Media from "./media";
+import Permission from "./permission";
+import Post from "./post";
+import PostTaxonomy from "./postTaxonomy";
+import Role from "./role";
 import { Sequelize } from "sequelize";
-import dbConfig from "../../config/db.config";
+import Setting from "./setting";
+import Taxonomy from "./taxonomy";
+import Theme from "./theme";
+const dbConfig = require("../../config/db.config");
 const env = process.env.NODE_ENV || "dev";
 const config = dbConfig[env];
 
-import Theme from "./theme";
-import Taxonomy from "./taxonomy";
-import Setting from "./setting";
-import PostTaxonomy from "./postTaxonomy";
-import Media from "./media";
-import Post from "./post";
-import Role from "./role";
-import Permission from "./permission";
-import Author from "./author";
 // establish  database connection
 const conn = new Sequelize(config.database, config.username, config.password, {
   ...config,

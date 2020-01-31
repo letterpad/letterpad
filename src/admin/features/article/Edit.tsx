@@ -1,16 +1,22 @@
 import React, { Component } from "react";
 
-import StyledArticle from "./Article.css";
-
-import LetterpadEditor from "letterpad-editor";
+import Embed from "./Embed";
+import { EventBusInstance } from "../../../shared/eventBus";
+import FileExplorerModal from "../modals/FileExplorerModal";
+import LetterpadEditor from "../../../../../editor/src/editor";
+import MarkownIt from "markdown-it";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
-import FileExplorerModal from "../modals/FileExplorerModal";
-import { uploadFile } from "../../server/util";
-import { EventBusInstance } from "../../../shared/eventBus";
-import client from "../../../shared/apolloClient";
+import StyledArticle from "./Article.css";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 import { UpdatePostMutation } from "../../../__generated__/gqlTypes";
+import client from "../../../shared/apolloClient";
+import convertLinksToEmbed from "./EmbedContent";
+import { createGlobalStyle } from "styled-components";
+import embeds from "./embeds";
+import { uploadFile } from "../../server/util";
+
+const mdToHtml = MarkownIt();
 
 class Edit extends Component<any, any> {
   postSaveTimer: number = 0;
@@ -24,49 +30,15 @@ class Edit extends Component<any, any> {
 
   imageInputRef = React.createRef<HTMLInputElement>();
 
-  onEditorPluginBtnClick = (_e, plugin) => {
-    if (plugin === "plugin-image") {
-      this.setState({ fileExplorerOpen: true, pluginOperation: "image" });
-      return true;
-    }
-    if (plugin === "plugin-gallery") {
-      this.setState({ fileExplorerOpen: true, pluginOperation: "gallery" });
-      return true;
-    }
+  onMediaBrowse = () => {
+    this.setState({ fileExplorerOpen: true });
   };
 
   insertMedia = urls => {
-    this.editor.focus();
-    if (this.state.pluginOperation === "image") {
-      for (let i = 0; i < urls.length; i++) {
-        this.hooks["plugin-image"].insertImage(this.editor, urls[i], "center");
-        this.editor
-          .moveAnchorToStartOfNextBlock()
-          .moveFocusToStartOfNextBlock()
-          .focus();
-      }
-    } else if (this.state.pluginOperation === "gallery") {
-      const imgElements = [] as any;
-      for (let i = 0; i < urls.length; i++) {
-        const src = urls[i];
-        imgElements.push(
-          new Promise(resolve => {
-            let img = new Image();
-            img.onload = () => {
-              resolve({
-                w: img.width,
-                h: img.height,
-                src,
-              });
-              URL.revokeObjectURL(src);
-            };
-            img.src = src;
-          }),
-        );
-      }
+    urls.forEach(url => {
+      this.editor.insertImageUrl(url);
+    });
 
-      this.hooks["plugin-gallery"].createImageBlocks(imgElements, this.editor);
-    }
     setTimeout(this.toggleFileExplorer, 1000);
   };
 
@@ -77,9 +49,14 @@ class Edit extends Component<any, any> {
     });
   };
 
-  onEditorChange = html => {
+  onEditorChange = async change => {
+    const html = mdToHtml.render(change());
+    const htmlWithEmbedContent = await convertLinksToEmbed(html);
+
+    console.log(htmlWithEmbedContent);
     PostActions.setData({
-      body: html,
+      html: htmlWithEmbedContent,
+      md: change(),
     });
     clearInterval(this.postSaveTimer);
 
@@ -97,7 +74,7 @@ class Edit extends Component<any, any> {
           data: {
             id: postData.id,
             title: postData.title,
-            body: postData.body,
+            html: postData.html,
             authorId: postData.authorId,
             excerpt: postData.excerpt,
             cover_image: postData.cover_image,
@@ -121,19 +98,34 @@ class Edit extends Component<any, any> {
 
   uploadImage = async files => {
     const uploadedFiles = await uploadFile({ files, type: "post_image" });
-    uploadedFiles.forEach(({ src, errors }) => {
-      if (errors) return;
-      this.hooks["plugin-image"].insertImage(this.editor, src, "center");
-      this.editor
-        .moveAnchorToStartOfNextBlock()
-        .moveFocusToStartOfNextBlock()
-        .focus();
+    return uploadedFiles[0].src;
+  };
+
+  uploadAndInsert = async files => {
+    const uploadedFiles = await uploadFile({ files, type: "post_image" });
+    uploadedFiles.forEach(item => {
+      this.editor.insertImageUrl(item.src);
     });
   };
 
-  setEditorPluginHooks = (editor, hooks) => {
-    this.hooks = hooks;
+  onBeforeRender = editor => {
     this.editor = editor;
+  };
+
+  getLinkComponent = node => {
+    if (this.props.disableEmbeds) return;
+
+    const url = node.data.get("href");
+    const keys = Object.keys(embeds);
+
+    for (const key of keys) {
+      const component = embeds[key];
+
+      for (const host of component.ENABLED) {
+        const matches = url.match(host);
+        if (matches) return Embed;
+      }
+    }
   };
 
   render() {
@@ -148,17 +140,19 @@ class Edit extends Component<any, any> {
               PostActions.setData({
                 title: value,
               });
-              this.onEditorChange(post.body);
+              this.onEditorChange(post.md);
             }}
           />
         </div>
         <div className="post-content">
+          <PrismStyles />
           <LetterpadEditor
-            html={post.body}
-            theme={this.props.theme}
-            onButtonClick={this.onEditorPluginBtnClick}
-            hooks={this.setEditorPluginHooks}
+            onImageBrowse={this.onMediaBrowse}
+            getEditorInstance={this.onBeforeRender}
+            uploadImage={(file: File) => this.uploadImage([file])}
+            defaultValue={post.md}
             onChange={this.onEditorChange}
+            getLinkComponent={this.getLinkComponent}
           />
           {this.state.fileExplorerOpen && (
             <FileExplorerModal
@@ -177,7 +171,7 @@ class Edit extends Component<any, any> {
           className="hide post-image"
           type="file"
           multiple
-          onChange={input => this.uploadImage(input.target.files)}
+          onChange={input => this.uploadAndInsert(input.target.files)}
         />
       </StyledArticle>
     );
@@ -185,3 +179,145 @@ class Edit extends Component<any, any> {
 }
 
 export default Edit;
+
+/*
+Based on Prism template by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/prism/)
+Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)
+*/
+const PrismStyles = createGlobalStyle`
+  code[class*="language-"],
+  pre[class*="language-"] {
+    -webkit-font-smoothing: initial;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 13px;
+    line-height: 1.375;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+    color: #24292e;
+  }
+
+  /* Code blocks */
+  pre[class*="language-"] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+  }
+
+  /* Inline code */
+  :not(pre) > code[class*="language-"] {
+    padding: .1em;
+    border-radius: .3em;
+  }
+
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: #6a737d;
+  }
+
+  .token.punctuation {
+    color: #5e6687;
+  }
+
+  .token.namespace {
+    opacity: .7;
+  }
+
+  .token.operator,
+  .token.boolean,
+  .token.number {
+    color: #d73a49;
+  }
+
+  .token.property {
+    color: #c08b30;
+  }
+
+  .token.tag {
+    color: #3d8fd1;
+  }
+
+  .token.string {
+    color: #032f62;
+  }
+
+  .token.selector {
+    color: #6679cc;
+  }
+
+  .token.attr-name {
+    color: #c76b29;
+  }
+
+  .token.entity,
+  .token.url,
+  .language-css .token.string,
+  .style .token.string {
+    color: #22a2c9;
+  }
+
+  .token.attr-value,
+  .token.keyword,
+  .token.control,
+  .token.directive,
+  .token.unit {
+    color: #d73a49;
+  }
+
+  .token.function {
+    color: #6f42c1;
+  }
+
+  .token.statement,
+  .token.regex,
+  .token.atrule {
+    color: #22a2c9;
+  }
+
+  .token.placeholder,
+  .token.variable {
+    color: #3d8fd1;
+  }
+
+  .token.deleted {
+    text-decoration: line-through;
+  }
+
+  .token.inserted {
+    border-bottom: 1px dotted #202746;
+    text-decoration: none;
+  }
+
+  .token.italic {
+    font-style: italic;
+  }
+
+  .token.important,
+  .token.bold {
+    font-weight: bold;
+  }
+
+  .token.important {
+    color: #c94922;
+  }
+
+  .token.entity {
+    cursor: help;
+  }
+
+  pre > code.highlight {
+    outline: 0.4em solid #c94922;
+    outline-offset: .4em;
+  }
+`;

@@ -178,7 +178,8 @@ input PostFilters {
 
 input InputCreatePost {
   title: String
-  body: String
+  html: String
+  md: String
   authorId: Int
   excerpt: String
   cover_image: String
@@ -191,7 +192,8 @@ input InputCreatePost {
 input InputUpdatePost {
   id: Int!
   title: String
-  body: String
+  html: String
+  md: String
   authorId: Int
   excerpt: String
   cover_image: String
@@ -220,14 +222,14 @@ type Post {
   # Primary key
   id: Int!
   title: String!
-  body: String!
+  html: String!
+  md: String!
   author: Author!
   excerpt: String!
   cover_image: String!
   type: String!
   status: String!
   slug: String!
-  mode: String!
   createdAt: Date!
   publishedAt: Date
   updatedAt: Date

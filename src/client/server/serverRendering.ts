@@ -1,9 +1,8 @@
 import { Express } from "express";
-
-import apolloClient from "../../shared/apolloClient";
 import { QUERY_SETTINGS } from "../../shared/queries/Queries";
 import { SettingsQuery } from "../../__generated__/gqlTypes";
 import { TypeSettings } from "../types";
+import apolloClient from "../../shared/apolloClient";
 import { dispatcher } from "./dispatcher";
 import logger from "../../shared/logger";
 
@@ -33,7 +32,9 @@ const serverRendering = (app: Express) => {
           request: { req, res },
         });
         res.send(content);
-      } catch (e) {}
+      } catch (e) {
+        logger.error(e);
+      }
     } catch (e) {
       res.send(e);
     }

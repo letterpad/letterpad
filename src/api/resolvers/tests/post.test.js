@@ -1,8 +1,8 @@
-import { graphql } from "graphql";
-import { seed } from "../../seed/seed.js";
-import schema from "../../schema";
 import constants from "../../utils/constants";
+import { graphql } from "graphql";
 import models from "../../models";
+import schema from "../../schema";
+import { seed } from "../../seed/seed.js";
 
 describe("Testing Post Resolvers", () => {
   beforeAll(async () => {
@@ -55,7 +55,6 @@ describe("Testing Post Resolvers", () => {
           $cover_image: String
           $taxonomies: [TaxonomyInputType]
           $slug: String
-          $mode: String
         ) {
           updatePost(
             id: $id
@@ -65,7 +64,6 @@ describe("Testing Post Resolvers", () => {
             excerpt: $excerpt
             taxonomies: $taxonomies
             slug: $slug
-            mode: $mode
             cover_image: $cover_image
           ) {
             ok

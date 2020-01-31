@@ -24,9 +24,7 @@ export const defaultStyles = `
         font-weight: 300;
     }
 
-    .material-icons {
-        font-size: 14px;
-    }
+    
     hr {
         border-top: 1px solid var(--color-border);
     }

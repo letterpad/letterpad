@@ -4,7 +4,8 @@ export const PostFragment = gql`
   fragment postFields on Post {
     id
     title
-    body
+    md
+    html
     status
     createdAt
     publishedAt
@@ -12,7 +13,6 @@ export const PostFragment = gql`
     excerpt
     cover_image
     slug
-    mode
     type
     author {
       fname
