@@ -1,3 +1,5 @@
+const resolve = require("./webpack/alias-config");
+
 module.exports = {
   env: {
     browser: true,
@@ -29,10 +31,10 @@ module.exports = {
     "no-console": 0,
     "lines-between-class-members": ["error", "always"],
   },
-  "settings": {
-    "react": {
-      "pragma": "React",  // Pragma to use, default to "React"
-      "version": "detect", // React version. "detect" automatically picks the version you have installed.
+  settings: {
+    react: {
+      pragma: "React", // Pragma to use, default to "React"
+      version: "detect", // React version. "detect" automatically picks the version you have installed.
     },
-  }
+  },
 };

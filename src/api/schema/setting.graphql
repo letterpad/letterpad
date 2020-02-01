@@ -1,0 +1,43 @@
+enum SettingOptions {
+  site_title
+  site_tagline
+  site_email
+  site_url
+  site_footer
+  site_description
+  social_twitter
+  social_facebook
+  social_instagram
+  social_github
+  text_notfound
+  text_posts_empty
+  displayAuthorInfo
+  site_logo
+  menu
+  css
+  google_analytics
+  locale
+  theme
+  disqus_id
+  banner
+}
+
+type Setting {
+  id: Int!
+  option: SettingOptions!
+  value: String!
+}
+
+input OptionInputType {
+  id: Int
+  option: SettingOptions
+  value: String
+}
+
+type Query {
+  settings(option: String): [Setting!]!
+}
+
+type Mutation {
+  updateOptions(options: [OptionInputType]): [Setting!]!
+}

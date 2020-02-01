@@ -7,7 +7,13 @@ import { getEmailBody } from "../utils/common";
 
 export default {
   Query: {
-    author: (root, args, { models }) => models.Author.findOne({ where: args }),
+    author: async (root, args, { models }) => {
+      const author = await models.Author.findOne({ where: args });
+      if (author) {
+        author.social = JSON.parse(author.dataValues.social);
+      }
+      return author;
+    },
 
     authors: (root, args, { models }) => models.Author.findAll({ where: args }),
 
@@ -51,7 +57,7 @@ export default {
         };
       }
       let role = await models.Role.findOne({
-        where: { id: author.roleId },
+        where: { id: author.RoleId },
       });
       const perms = await role.getPermissions();
       const permissionNames = perms.map(perm => perm.name); //test
@@ -69,6 +75,11 @@ export default {
         SECRET,
         { expiresIn },
       );
+      // response.cookie("id", token, {
+      //   httpOnly: true,
+      //   secure: process.env.NODE_ENV === "production",
+      //   maxAge: 1000 * 60 * 60 * 24 * 30, // 7 days
+      // });
       return {
         ok: true,
         token,
@@ -106,9 +117,12 @@ export default {
     updateAuthor: requiresAdmin.createResolver(
       async (root, args, { models }) => {
         try {
-          const newArgs = { ...args };
-          if (args.password) {
-            newArgs.password = await bcrypt.hash(args.password, 12);
+          const newArgs = { ...args.author };
+          if (args.author.password) {
+            newArgs.password = await bcrypt.hash(args.author.password, 12);
+          }
+          if (args.author.social) {
+            newArgs.social = JSON.stringify(args.author.social);
           }
           await models.Author.update(newArgs, {
             where: { id: newArgs.id },
@@ -128,8 +142,10 @@ export default {
     createAuthor: requiresAdmin.createResolver(
       async (root, args, { models }) => {
         try {
-          const newArgs = { ...args };
-
+          let { roleName, ...newArgs } = args;
+          if (!roleName) {
+            roleName = "READER";
+          }
           const author = await models.Author.findOne({
             where: { email: newArgs.email },
           });
@@ -144,17 +160,20 @@ export default {
               ],
             };
           }
-
           const randomPassword = Math.random()
             .toString(36)
             .substr(2);
+
           newArgs.password = await bcrypt.hash(randomPassword, 12);
+
+          const role = await models.Role.findOne({
+            where: { name: roleName },
+          });
+
+          newArgs.roleId = role.id;
 
           await models.Author.create(newArgs, {
             where: { id: newArgs.id },
-          });
-          const role = await models.Role.findOne({
-            where: { id: newArgs.roleId },
           });
 
           const variables = {

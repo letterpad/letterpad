@@ -2,48 +2,37 @@ import Sequelize from "sequelize";
 import { UnauthorizedError } from "../utils/common";
 import { editPostPerm } from "../utils/permissions";
 
-function IsJsonString(str) {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-  return true;
-}
-
-function getConditions(columns, args) {
-  const obj = {};
-  const conditions = {};
-  for (const field in args) {
-    if (columns.indexOf(field) >= 0) {
-      obj[field] = IsJsonString(args[field])
-        ? JSON.parse(args[field])
-        : args[field];
-    } else {
-      conditions[field] = args[field];
-    }
-  }
-  conditions.where = obj;
-  return conditions;
-}
 export default {
   Query: {
     media: async (root, args, { user, models }) => {
       if (!user || !user.id) {
         throw new UnauthorizedError({ url: "/media" });
       }
-      const columns = Object.keys(models.Post.rawAttributes);
-      const conditions = getConditions(columns, args);
+      const conditions = { where: {}, limit: 20 };
+      if (args.filters) {
+        const { id, authorId, cursor, limit, page } = args.filters;
 
-      const count = await models.Media.count(conditions);
-      if (args.cursor) {
-        conditions.where.id = { gt: args.cursor };
+        if (id) {
+          conditions.where = { ...conditions.where, id };
+        }
+        if (authorId) {
+          conditions.where = { ...conditions.where, author_id: authorId };
+        }
+        if (limit) {
+          conditions.limit = limit;
+        }
+        if (cursor) {
+          conditions.where.id = { [Sequelize.Op.gt]: cursor };
+        } else if (page) {
+          conditions.offset = (page - 1) * conditions.limit;
+        }
       }
       conditions.order = [["id", "DESC"]];
-      const media = await models.Media.findAll(conditions);
+      console.log("conditions :", conditions);
+      const result = await models.Media.findAndCountAll(conditions);
       return {
-        count,
-        rows: media,
+        count: result.count,
+        rows: result.rows,
       };
     },
   },

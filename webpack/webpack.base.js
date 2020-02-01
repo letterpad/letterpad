@@ -24,18 +24,20 @@ module.exports = (args, name) => {
       cached: false,
       cachedAssets: false,
       chunks: false,
-      assets: true,
+      assets: false,
       chunkModules: false,
       chunkOrigins: false,
+      colors: true,
+      children: false,
       modules: false,
       errors: true,
-      builtAt: true,
+      builtAt: false,
       hash: false,
     },
     entry: {
-      [source + "/public/js/vendor"]: vendorFiles,
+      // [source + "/public/js/vendor"]: vendorFiles,
       [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
-        path.join(__dirname, "../src/client/app"),
+        path.join(__dirname, "../src/client/Run"),
       ],
       [source + "/admin/public/dist/admin"]: [
         path.join(__dirname, "../src/admin/app"),
@@ -43,12 +45,18 @@ module.exports = (args, name) => {
     },
     resolve: {
       alias: {
-        admin: path.join(__dirname, "/../src/admin"),
-        client: path.join(__dirname, "/../src/client"),
-        shared: path.join(__dirname, "/../src/shared"),
-        config: path.join(__dirname, "/../src/config"),
+        admin: path.resolve(__dirname, "../src/admin"),
+        client: path.resolve(__dirname, "../src/client"),
+        shared: path.resolve(__dirname, "../src/shared"),
+        config: path.resolve(__dirname, "../src/config"),
+        "styled-components$": path.resolve(
+          __dirname,
+          "../",
+          "./node_modules/styled-components",
+        ),
+        react: path.resolve(__dirname, "../", "./node_modules/react"),
       },
-      extensions: [".js"],
+      extensions: [".tsx", ".ts", ".js"],
     },
     plugins: [
       new WebpackBar({ name: name }),
@@ -73,7 +81,8 @@ module.exports = (args, name) => {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.ts(x?)$/,
+          exclude: /node_modules/,
           use: [
             {
               loader: "babel-loader",
@@ -82,24 +91,14 @@ module.exports = (args, name) => {
                 ...JSON.parse(babelRc),
               },
             },
-            // { loader: "eslint-loader" },
-          ],
-          include: path.join(__dirname, "../src/client"),
-        },
-        // js
-        {
-          test: /\.js$/,
-          use: [
             {
-              loader: "babel-loader",
+              loader: "ts-loader",
               options: {
-                cacheDirectory: true,
-                ...JSON.parse(babelRc),
+                transpileOnly: true,
+                experimentalWatchApi: true,
               },
             },
-            { loader: "eslint-loader" },
           ],
-          include: path.join(__dirname, "../src/admin"),
         },
         {
           test: /\.(graphql|gql)$/,

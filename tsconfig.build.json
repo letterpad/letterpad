@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.compiler.json",
+  "include": ["./src/server.ts", "./src/api", "src/client/server/*"],
+  "exclude": ["./src/client/themes"]
+}

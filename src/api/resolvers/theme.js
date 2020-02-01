@@ -2,21 +2,32 @@ import { requiresAdmin } from "../utils/permissions";
 
 export default {
   Query: {
-    themeSettings: async (root, args, { models }) => {
-      return models.Theme.findAll({ where: args });
+    themes: async (root, args, { models }) => {
+      const settings = await models.Theme.findAll({ where: args });
+      const parsedSettings = settings.map(({ dataValues }) => {
+        return {
+          name: dataValues.name,
+          value: dataValues.value,
+          settings: JSON.parse(dataValues.settings),
+        };
+      });
+      return parsedSettings;
     },
   },
   Mutation: {
-    insertThemeSettings: requiresAdmin.createResolver(
+    insertThemes: requiresAdmin.createResolver(
       async (root, args, { models }) => {
-        return models.Theme.create(args);
+        args.settings = JSON.stringify(args.settings);
+        const result = models.Theme.create(args);
+        return result ? true : false;
       },
     ),
-    updateThemeSettings: requiresAdmin.createResolver(
+    updateThemes: requiresAdmin.createResolver(
       async (root, args, { models }) => {
-        const { settings, value, name } = args;
+        const { settings, name } = args;
+        console.log("args===================> :", args);
         const result = await models.Theme.update(
-          { settings, value },
+          { settings: JSON.stringify(settings) },
           { where: { name } },
         );
         return result ? true : false;
