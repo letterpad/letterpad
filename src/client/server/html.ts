@@ -1,6 +1,6 @@
+import { TypeSettings } from "../types";
 import { util } from "../common/util";
 import utils from "../../shared/util";
-import { TypeSettings } from "../types";
 const {
   getMetaTags,
   prepareScriptTags,
@@ -79,9 +79,9 @@ export const getHtml = (data: IProps) => {
     APP_PORT: process.env.appPort,
     BASE_NAME: process.env.baseName,
     TRACKING_ID: settings.google_analytics,
-    GA_SCRIPT_TAG: settings.google_analytics !== ""
-        ? '<script async src="https://www.google-analytics.com/analytics.js"></script>'
-        : "",
+    GA_SCRIPT_TAG: settings.google_analytics
+      ? '<script async src="https://www.google-analytics.com/analytics.js"></script>'
+      : "",
     SCRIPT_TAGS: scripts,
   });
 };
