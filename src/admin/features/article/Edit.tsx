@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { EventBusInstance } from "../../../shared/eventBus";
 import FileExplorerModal from "../modals/FileExplorerModal";
-import LetterpadEditor from "../../../../../editor/src/editor";
+import LetterpadEditor from "letterpad-editor";
 import MarkownIt from "markdown-it";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
