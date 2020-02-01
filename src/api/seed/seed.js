@@ -129,7 +129,7 @@ export async function insertRolePermData(models) {
 }
 
 export async function insertAuthor(models) {
-  return models.Author.bulkCreate([
+  return await models.Author.bulkCreate([
     {
       fname: "John",
       lname: "Dave",
@@ -141,7 +141,7 @@ export async function insertAuthor(models) {
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
-      roleId: 1,
+      RoleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar: "/admin/images/avatar.png",
@@ -157,7 +157,7 @@ export async function insertAuthor(models) {
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
-      roleId: 1,
+      RoleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar: "/admin/images/avatar.png",
