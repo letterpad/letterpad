@@ -1,12 +1,12 @@
-import bcrypt from "bcryptjs";
 import Faker from "faker";
-import rimraf from "rimraf";
-import path from "path";
-import mkdirp from "mkdirp";
-import posts from "./posts";
-import { promisify } from "util";
+import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
 import generatePost from "./contentGenerator";
+import mkdirp from "mkdirp";
+import path from "path";
+import posts from "./posts";
+import { promisify } from "util";
+import rimraf from "rimraf";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -106,6 +106,7 @@ export async function insertRolePermData(models) {
       role.addPermission(MANAGE_ALL_POSTS),
       role.addPermission(MANAGE_USERS),
       role.addPermission(MANAGE_SETTINGS),
+      role.addPermission(MANAGE_OWN_POSTS),
     ]);
   }
 
@@ -216,7 +217,8 @@ export async function insertPost(params, models, categories, tags) {
   const slug = params.title.toLocaleLowerCase().replace(/ /g, "-");
   let post = await models.Post.create({
     title: Faker.company.catchPhrase(),
-    body: generatePost(),
+    html: generatePost(),
+    md: "# hello world",
     excerpt: Faker.lorem.sentences(4),
     cover_image: params.cover_image,
     authorId: randomAuthorId,

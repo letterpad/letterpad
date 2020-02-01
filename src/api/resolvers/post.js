@@ -1,14 +1,16 @@
-import Sequelize from "sequelize";
-import Fuse from "fuse.js";
 import { _createPost, _updatePost } from "../models/post";
 import {
   checkDisplayAccess,
   createPostsPerm,
   editPostPerm,
 } from "../utils/permissions";
-import memoryCache from "../utils/memoryCache";
+
+import Fuse from "fuse.js";
+import Sequelize from "sequelize";
 import { innertext } from "../utils/common";
-import { getMenuItemFromSlug } from "./selectors/post";
+import memoryCache from "../utils/memoryCache";
+
+// import { getMenuItemFromSlug } from "./selectors/post";
 
 const noResult = {
   count: 0,
@@ -31,16 +33,20 @@ const postresolver = {
           author,
           tag,
           category,
+          tagSlug,
+          categorySlug,
           limit,
           query,
           cursor,
           type,
           page,
         } = args.filters;
-
         if (category) {
           const taxCategory = await models.Taxonomy.findOne({
-            where: { name: category },
+            where: Sequelize.where(
+              Sequelize.fn("lower", Sequelize.col("name")),
+              Sequelize.fn("lower", category),
+            ),
           });
           if (!taxCategory) return noResult;
           conditions.include.push({
@@ -50,12 +56,53 @@ const postresolver = {
           });
         }
 
+        if (categorySlug) {
+          let realCategorySlug = categorySlug;
+          if (categorySlug === "/") {
+            // get the first menu item.
+            const menuStr = await models.Setting.findOne({
+              where: { option: "menu" },
+            });
+            const parsedMenu = JSON.parse(menuStr.dataValues.value);
+
+            if (parsedMenu.length > 0) {
+              realCategorySlug = parsedMenu[0].slug;
+            }
+          }
+          const taxCategory = await models.Taxonomy.findOne({
+            where: { slug: realCategorySlug, type: "post_category" },
+          });
+
+          if (!taxCategory) return noResult;
+
+          conditions.include.push({
+            model: models.PostTaxonomy,
+            where: { taxonomy_id: taxCategory.id },
+            require: true,
+          });
+        }
+
         if (tag) {
           const taxTag = await models.Taxonomy.findOne({
-            where: { name: tag },
+            where: Sequelize.where(
+              Sequelize.fn("lower", Sequelize.col("name")),
+              Sequelize.fn("lower", tag),
+            ),
           });
           if (!taxTag) return noResult;
 
+          conditions.include.push({
+            model: models.PostTaxonomy,
+            where: { taxonomy_id: taxTag.id },
+            require: true,
+          });
+        }
+
+        if (tagSlug) {
+          const taxTag = await models.Taxonomy.findOne({
+            where: { slug: tagSlug, type: "post_tag" },
+          });
+          if (!taxTag) return noResult;
           conditions.include.push({
             model: models.PostTaxonomy,
             where: { taxonomy_id: taxTag.id },
@@ -128,13 +175,13 @@ const postresolver = {
       let cachedData = memoryCache.get("posts");
       if (!cachedData) {
         const data = await models.Post.findAll({
-          attributes: ["id", "title", "body", "excerpt", "publishedAt", "slug"],
+          attributes: ["id", "title", "html", "excerpt", "publishedAt", "slug"],
           where: { status: "publish" },
         });
 
         const cleanedData = data.map(item => {
           let cleanItem = item.toJSON();
-          cleanItem.body = innertext(cleanItem.body);
+          cleanItem.html = innertext(cleanItem.html);
           return cleanItem;
         });
         memoryCache.set("posts", cleanedData);
@@ -152,7 +199,7 @@ const postresolver = {
             weight: 0.9,
           },
           {
-            name: "body",
+            name: "html",
             weight: 0.8,
           },
         ],
@@ -161,7 +208,7 @@ const postresolver = {
 
       const fuse = new Fuse(cachedData, options);
       const searchResult = fuse.search(args.query).map(data => {
-        delete data.item.body;
+        delete data.item.html;
         return data.item;
       });
       return {
@@ -183,55 +230,6 @@ const postresolver = {
       }
       return models.Post.findOne(conditions);
     }),
-    /**
-     * Query to take care of posts/page from navigation menu.
-     * The navigation menu item will be either a category or a page.
-     *
-     * First we get the menu object and loop though it to
-     * find the item (by matching slug) which was clicked.
-     * Note: The menu can have nested children.
-     *
-     */
-    menuContent: async (root, args, { models, user }) => {
-      let menu = await models.Setting.findOne({
-        where: { option: "menu" },
-      });
-      const filters = { ...args.filters, status: "publish" };
-      menu = JSON.parse(menu.dataValues.value);
-      let menuItem = {};
-      if (args.filters.slug === "/") {
-        menuItem = menu[0];
-      } else {
-        menuItem = getMenuItemFromSlug(
-          menu,
-          args.filters.slug,
-          args.filters.type,
-        );
-      }
-
-      if (menuItem.type === "page") {
-        filters.type = menuItem.type;
-        filters.slug = menuItem.slug;
-      } else if (menuItem.type === "category") {
-        filters.category = menuItem.title;
-        filters.type = "post";
-        delete filters.slug;
-      } else {
-        return noResult;
-      }
-      const result = await postresolver.Query.posts(
-        root,
-        { filters },
-        {
-          models,
-          user,
-        },
-      );
-      return {
-        count: result.count,
-        rows: result.rows,
-      };
-    },
     /**
      * Query to take care of adjacent posts.
      */
@@ -270,39 +268,6 @@ const postresolver = {
 
       return result;
     },
-    /**
-     * Query to get posts by taxonomy slug and taxonomy type.
-     * The type can be post_category or post_tag
-     */
-    postsByTaxinomySlug: checkDisplayAccess.createResolver(
-      async (root, args, { models, user }) => {
-        // Get the taxonomy item
-        const filters = { ...args };
-        const taxonomy = await models.Taxonomy.findOne({
-          where: { slug: args.slug, type: args.type },
-        });
-        if (!taxonomy) {
-          return noResult;
-        }
-        if (taxonomy.type === "post_category") {
-          filters.category = taxonomy.name;
-        } else {
-          filters.tag = taxonomy.name;
-        }
-        const result = await postresolver.Query.posts(
-          root,
-          { filters },
-          {
-            models,
-            user,
-          },
-        );
-        return {
-          count: result.count,
-          rows: result.rows,
-        };
-      },
-    ),
     /**
      * Query to get some stats for the admin dashboard
      * TODO: Make one query to process all the data

@@ -6,26 +6,40 @@ enum PostStatusOptions {
   trash
 }
 
-type Post {
-  id: Int
-  title: String
-  body: String
-  author: Author
-  excerpt: String
-  cover_image: String
-  type: String
-  status: String
-  slug: String
-  mode: String
-  createdAt: Date
-  publishedAt: Date
-  updatedAt: Date
-  taxonomies: [Taxonomy]
+enum PostSortBy {
+  newest
+  oldest
+}
+
+enum PostTypes {
+  page
+  post
+}
+
+enum MenuTypes {
+  category
+  page
+}
+
+input PostFilters {
+  tag: String
+  category: String
+  categorySlug: String
+  tagSlug: String
+  sortBy: PostSortBy
+  status: PostStatusOptions
+  author: String
+  query: String
+  type: PostTypes
+  cursor: Int
+  limit: Int
+  page: Int
 }
 
 input InputCreatePost {
   title: String
-  body: String
+  html: String
+  md: String
   authorId: Int
   excerpt: String
   cover_image: String
@@ -38,7 +52,8 @@ input InputCreatePost {
 input InputUpdatePost {
   id: Int!
   title: String
-  body: String
+  html: String
+  md: String
   authorId: Int
   excerpt: String
   cover_image: String
@@ -48,9 +63,41 @@ input InputUpdatePost {
   taxonomies: [TaxonomyInputType]
 }
 
+input SearchFilters {
+  query: String
+  tag: String
+  category: String
+  cursor: Int
+  page: Int
+  limit: String
+}
+
+input SinglePostFilters {
+  id: Int
+  slug: String
+}
+
+type Post {
+  # Primary key
+  id: Int!
+  title: String!
+  html: String!
+  md: String!
+  author: Author!
+  excerpt: String!
+  cover_image: String!
+  type: String!
+  status: String!
+  slug: String!
+  createdAt: Date!
+  publishedAt: Date
+  updatedAt: Date
+  taxonomies: [Taxonomy!]!
+}
+
 type PostNode {
-  count: Int
-  rows: [Post]
+  count: Int!
+  rows: [Post!]!
 }
 type PostTaxonomyNode {
   count: Int
@@ -101,77 +148,16 @@ type SearchOutput {
   rows: [SearchResult]
 }
 
-enum PostSortBy {
-  newest
-  oldest
-}
-
-enum PostTypes {
-  page
-  post
-}
-
-enum MenuTypes {
-  category
-  page
-}
-
-input PostFilters {
-  tag: String
-  category: String
-  authorName: String
-  sortBy: PostSortBy
-  status: PostStatusOptions
-  author: String
-  query: String
-  type: PostTypes
-}
-
-input MenuFiltersWithPagination {
-  slug: String
-  type: MenuTypes!
-  page: Int
-  limit: Int
-}
-
-input PostFiltersWithPagination {
-  tag: String
-  category: String
-  authorName: String
-  sortBy: PostSortBy
-  status: PostStatusOptions
-  author: String
-  query: String
-  type: PostTypes
-  cursor: Int
-  limit: Int
-  page: Int
-}
-
-input SinglePostFilters {
-  id: Int
-  slug: String
-}
-
 type Query {
-  post(filters: SinglePostFilters): Post
+  # Used to query a single post
+  post(filters: SinglePostFilters): Post!
 
-  posts(filters: PostFiltersWithPagination): PostNode
-
-  menuContent(filters: MenuFiltersWithPagination): PostTaxonomyNode
-
-  postsByTaxinomySlug(
-    type: String!
-    slug: String!
-    postType: String
-    offset: Int
-    limit: Int
-    cursor: Int
-  ): PostTaxonomyNode
+  # Used to query a collection of posts
+  posts(filters: PostFilters): PostNode!
 
   adjacentPosts(slug: String): AdjacentPosts
 
-  search(query: String!): SearchOutput
+  search(filters: SearchFilters!): SearchOutput
 
   stats: Stats
 }

@@ -1,48 +1,32 @@
 export default {
   Query: {
     taxonomies: (root, args, { models }) => {
-      const cleanArgs = {};
-      Object.keys(args).map(key => {
-        if (args[key]) {
-          cleanArgs[key] = args[key];
-        }
-      });
-      return models.Taxonomy.findAll({
-        where: cleanArgs,
+      let conditions = {
+        where: {},
         order: [["name", "ASC"]],
-      });
-    },
-    activeTaxonomies: (root, args, { models, user }) => {
-      let { postType, type, taxId } = args;
-
-      let where = {};
-      if (!user || !user.id) {
-        where.status = "publish";
-      }
-      if (postType) {
-        where.type = postType;
-      }
-
-      let query = {
-        include: [
-          {
-            model: models.Post,
-            as: "posts",
-            where,
-            required: true,
-          },
-        ],
-        order: [["name", "ASC"]],
-        where: { type },
-        group: ["taxonomy_id", "post_id"],
       };
-      if (taxId) {
-        query.where.id = taxId;
+      if (args.filters) {
+        let { active, type } = args.filters;
+        if (typeof active === "undefined") {
+          active = true;
+        }
+        if (type) {
+          conditions.where.type = type;
+        }
+        if (active === true) {
+          // return only active taxonomies
+          conditions.include = [
+            {
+              model: models.Post,
+              where: { status: "publish" },
+              required: true,
+            },
+          ];
+          conditions.group = ["taxonomy_id", "post_id"];
+        }
       }
-      if (args.slug) {
-        query.where.slug = args.slug;
-      }
-      return models.Taxonomy.findAll(query);
+
+      return models.Taxonomy.findAll(conditions);
     },
   },
   Mutation: {

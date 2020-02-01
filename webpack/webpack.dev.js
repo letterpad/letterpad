@@ -12,12 +12,13 @@ const clientConfig = args => {
     baseConfig(args, "client"),
     {
       name: "client",
-      devtool: "cheap-module-source-map",
+      devtool: "cheap-module-eval-source-map",
       target: "web",
       output: {
         path: path.join(__dirname, "../"),
         filename: "[name]-bundle.js",
         publicPath: "/static/",
+        pathinfo: false,
       },
       watchOptions: {
         ignored: [/node_modules([\\]+|\/)+(?!\some_npm_module_name)/],
@@ -27,16 +28,19 @@ const clientConfig = args => {
         runtimeChunk: {
           name: "src/public/js/vendor",
         },
-        splitChunks: {
-          cacheGroups: {
-            default: false,
-            commons: {
-              test: "src/public/js/vendor-bundle.js",
-              name: "src/public/js/vendor",
-              chunks: "all",
-            },
-          },
-        },
+        removeAvailableModules: false,
+        removeEmptyChunks: false,
+        splitChunks: false,
+        // splitChunks: {
+        //   cacheGroups: {
+        //     default: false,
+        //     commons: {
+        //       test: "src/public/js/vendor-bundle.js",
+        //       name: "src/public/js/vendor",
+        //       chunks: "all",
+        //     },
+        //   },
+        // },
       },
       module: {
         rules: [
@@ -91,9 +95,6 @@ const serverConfig = args => {
     name: "server",
     cache: true,
     target: "node",
-    entry: {
-      server: [path.join(__dirname, "../src/client/server")],
-    },
     output: {
       filename: "server.node.js",
       path: BUILD_PATH,
@@ -118,8 +119,9 @@ const serverConfig = args => {
       ],
     },
   });
+  // overwrite entry and do not merge from base.
   config.entry = {
-    server: [path.join(__dirname, "../src/client/server")],
+    server: [path.join(__dirname, "../src/client/server/serverApp")],
   };
   return config;
 };

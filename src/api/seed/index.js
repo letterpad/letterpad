@@ -5,7 +5,7 @@ require("@babel/register")({
 });
 var env = require("node-env-file");
 env(__dirname + "/../../../.env");
-const models = require("../../api/models/index.js");
+const models = require("../../api/models/index.ts").default;
 const { seed } = require("./seed");
 seed(models).catch(e => {
   console.error(e);

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-class Animate extends Component {
+class Animate extends Component<any, any> {
   static propTypes = {
     stateName: PropTypes.string,
     isOpen: PropTypes.func,

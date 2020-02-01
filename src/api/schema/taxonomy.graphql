@@ -1,0 +1,38 @@
+enum TaxonomyTypes {
+  post_tag
+  post_category
+}
+
+type Taxonomy {
+  id: Int!
+  name: String!
+  type: TaxonomyTypes!
+  desc: String
+  slug: String!
+}
+
+input TaxonomyFilters {
+  type: TaxonomyTypes
+  active: Boolean
+}
+
+type Query {
+  taxonomies(filters: TaxonomyFilters): [Taxonomy!]!
+}
+
+type EditTaxResponse {
+  ok: Boolean!
+  id: Int
+  errors: [Error!]
+}
+
+type Mutation {
+  updateTaxonomy(
+    id: Int!
+    name: String
+    desc: String
+    type: TaxonomyTypes!
+    slug: String
+  ): EditTaxResponse!
+  deleteTaxonomy(id: Int!): EditTaxResponse!
+}

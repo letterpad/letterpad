@@ -45,7 +45,11 @@ export const createPostsPerm = requiresAuth.createResolver(
 export const editPostPerm = requiresAuth.createResolver(
   (root, args, context) => {
     if (context.user.permissions.indexOf("MANAGE_OWN_POSTS") >= 0) {
-      args.data.authorId = context.user.id;
+      if (args.data) {
+        args.data.authorId = context.user.id;
+      } else {
+        args.data = context.user.id;
+      }
       return args;
     } else if (context.user.permissions.indexOf("MANAGE_ALL_POSTS") >= 0) {
       return args;
@@ -61,9 +65,6 @@ export const editPostPerm = requiresAuth.createResolver(
 export const checkDisplayAccess = createResolver((root, args, context, err) => {
   //  if this is enduser, he should see only public posts.
   if (!context.user || !context.user.id) {
-    if (args.filters) {
-      args.filters = {};
-    }
     args.filters.status = "publish";
     return args;
   }

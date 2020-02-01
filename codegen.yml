@@ -1,0 +1,27 @@
+overwrite: true
+schema: "./src/__generated__/schema.graphql"
+documents:
+  - "./src/shared/queries/Fragments.ts"
+  - "./src/shared/queries/Mutations.ts"
+  - "./src/shared/queries/Queries.ts"
+generates:
+  src/__generated__/gqlTypes.tsx:
+    - typescript
+    - typescript-operations
+    # - typescript-react-apollo
+  src/__generated__/resolvers.ts:
+    config:
+      rootValueType: ../api/server#Context # change this
+      contextType: ../api/server#Context
+    plugins:
+      - typescript
+      - typescript-resolvers
+config:
+  withResultType: true
+  withHOC: false
+  withComponent: false
+  withHooks: false
+  # useIndexSignature: true
+# hooks:
+# afterAllFileWrite:
+#   - prettier --write
