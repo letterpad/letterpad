@@ -29,30 +29,3 @@ export interface IAuthor {
   id: number;
   avatar: string;
 }
-
-export interface IFrameAttributes {
-  width: string;
-  height: string;
-  frameBorder: string;
-}
-
-export type EmbedContentCallBack = (
-  instance: HTMLIFrameElement,
-  attrs: IFrameAttributes,
-  content?: string,
-) => void;
-
-export interface IEmbedProvider {
-  url?: string;
-  getContent: EmbedContentCallBack;
-  matches: string[];
-}
-
-export interface IEmbedParent {
-  url?: string;
-  attributes?: any;
-  getContent: EmbedContentCallBack;
-  node: { data: { get: (attr: string) => any } };
-  isSelected?: boolean;
-  children?: React.ReactChildren;
-}

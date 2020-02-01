@@ -43,7 +43,7 @@ const StyledArticle = styled.article`
     max-width: 740px;
     margin: auto;
     padding: 0px 1rem;
-
+    border-bottom: solid 1px var(--color-border);
     @media (min-width: 740px) {
       width: 740px;
     }
@@ -51,8 +51,13 @@ const StyledArticle = styled.article`
 
   #letterpad-editor-container {
     background: transparent;
-    width: 767px;
+    width: 740px;
     margin: auto;
+    padding: 0px 1rem;
+    .lp-h1 {
+      border-bottom: none;
+    }
+    font-size: large;
   }
 `;
 

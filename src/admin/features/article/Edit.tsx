@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import Embed from "./Embed";
 import { EventBusInstance } from "../../../shared/eventBus";
 import FileExplorerModal from "../modals/FileExplorerModal";
 import LetterpadEditor from "../../../../../editor/src/editor";
@@ -11,12 +10,12 @@ import StyledArticle from "./Article.css";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 import { UpdatePostMutation } from "../../../__generated__/gqlTypes";
 import client from "../../../shared/apolloClient";
-import convertLinksToEmbed from "./EmbedContent";
 import { createGlobalStyle } from "styled-components";
-import embeds from "./embeds";
 import { uploadFile } from "../../server/util";
 
 const mdToHtml = MarkownIt();
+
+const sleep = (t: number) => new Promise(r => setTimeout(r, t));
 
 class Edit extends Component<any, any> {
   postSaveTimer: number = 0;
@@ -50,16 +49,12 @@ class Edit extends Component<any, any> {
   };
 
   onEditorChange = async change => {
-    const html = mdToHtml.render(change());
-    const htmlWithEmbedContent = await convertLinksToEmbed(html);
-
-    console.log(htmlWithEmbedContent);
+    const { markdown, html } = change();
     PostActions.setData({
-      html: htmlWithEmbedContent,
-      md: change(),
+      html,
+      md: markdown,
     });
     clearInterval(this.postSaveTimer);
-
     this.postSaveTimer = setTimeout(async () => {
       const data = PostActions.getData();
       const postData = {
@@ -67,7 +62,6 @@ class Edit extends Component<any, any> {
         ...data,
       };
       EventBusInstance.publish("ARTICLE_SAVING");
-
       const update = await client().mutate<UpdatePostMutation>({
         mutation: UPDATE_POST_QUERY,
         variables: {
@@ -75,6 +69,7 @@ class Edit extends Component<any, any> {
             id: postData.id,
             title: postData.title,
             html: postData.html,
+            md: postData.md,
             authorId: postData.authorId,
             excerpt: postData.excerpt,
             cover_image: postData.cover_image,
@@ -112,22 +107,6 @@ class Edit extends Component<any, any> {
     this.editor = editor;
   };
 
-  getLinkComponent = node => {
-    if (this.props.disableEmbeds) return;
-
-    const url = node.data.get("href");
-    const keys = Object.keys(embeds);
-
-    for (const key of keys) {
-      const component = embeds[key];
-
-      for (const host of component.ENABLED) {
-        const matches = url.match(host);
-        if (matches) return Embed;
-      }
-    }
-  };
-
   render() {
     const { post } = this.props;
     return (
@@ -140,19 +119,21 @@ class Edit extends Component<any, any> {
               PostActions.setData({
                 title: value,
               });
-              this.onEditorChange(post.md);
+              // this.onEditorChange(post.md);
             }}
           />
         </div>
         <div className="post-content">
           <PrismStyles />
+          <br />
+          <br />
           <LetterpadEditor
             onImageBrowse={this.onMediaBrowse}
             getEditorInstance={this.onBeforeRender}
             uploadImage={(file: File) => this.uploadImage([file])}
             defaultValue={post.md}
             onChange={this.onEditorChange}
-            getLinkComponent={this.getLinkComponent}
+            placeholder="Write a story.."
           />
           {this.state.fileExplorerOpen && (
             <FileExplorerModal

@@ -1,79 +1,78 @@
 header {
-    grid-area: header;
+  grid-area: header;
 }
 
 nav {
-    grid-area: nav;
+  grid-area: nav;
 }
 
 main {
-    grid-area: content;
-    margin-top: 60px;
+  grid-area: content;
+  margin-top: 60px;
 }
 
 body {
+  .main {
+    display: grid;
+    grid-template-areas:
+      "header header"
+      "nav content"
+      "footer footer";
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .collapsed {
+    nav,
+    main {
+      transform: translateX(-200px);
+      .content-area {
+        width: 100vw;
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    .content-area {
+      width: 100vw;
+    }
+  }
+  @media (max-width: 991px) {
     .main {
-        display: grid;
-        grid-template-areas:
-            "header header"
-            "nav content"
-            "footer footer";
-        grid-template-columns: 200px 1fr;
-        grid-template-rows: auto 1fr auto;
+      grid-template-columns: 200px 1fr;
     }
-
-    .collapsed {
-        nav,
-        main {
-            transform: translateX(-200px);
-            .content-area {
-                width: 100vw;
-            }
-        }
-    }
-
-    @media (max-width: 767px) {
-        .content-area {
-            width: 100vw;
-        }
-    }
-    @media (max-width: 991px) {
-        .main {
-            grid-template-columns: 200px 1fr;
-        }
-    }
+  }
 }
 
 body.single {
-    main .content-area > div {
-        grid-gap: 0px;
-    }
+  main .content-area > div {
+    grid-gap: 0px;
+  }
 }
 .content-area {
-    overflow: auto;
-    overflow-x: hidden;
-    min-height: 100%;
-    padding-bottom: 100px;
+  overflow: auto;
+  overflow-x: hidden;
+  min-height: 100%;
 }
 body.posts {
+  .content-area > div {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 12px;
+  }
+  @media (max-width: 991px) {
     .content-area > div {
-        display: grid;
-        grid-template-columns: auto auto auto;
-        grid-gap: 12px;
+      grid-template-columns: auto auto;
     }
-    @media (max-width: 991px) {
-        .content-area > div {
-            grid-template-columns: auto auto;
-        }
+  }
+  @media (max-width: 768px) {
+    .content-area > div {
+      grid-template-columns: auto;
     }
-    @media (max-width: 768px) {
-        .content-area > div {
-            grid-template-columns: auto;
-        }
-    }
+  }
 }
 @media (max-width: 768px) {
-    .content-area > .module-xs {
-        margin: 0px;
-    }
+  .content-area > .module-xs {
+    margin: 0px;
+  }
 }
