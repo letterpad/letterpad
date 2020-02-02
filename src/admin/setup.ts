@@ -12,7 +12,11 @@ export function setupLetterpad(req: Request, res: Response) {
     .catch(e => {
       res.statusCode = 500;
       console.error(e);
-      res.end("Seed unsuccessful" + e.message + "\n" + e.stack);
+      res.end(`
+Seed unsuccessful: ${e.message}
+
+${e.stack}
+`);
     });
 }
 

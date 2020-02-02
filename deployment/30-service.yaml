@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: letterpad-demo
 spec:
+  type: LoadBalancer
   selector:
     app: letterpad-demo
   ports:
