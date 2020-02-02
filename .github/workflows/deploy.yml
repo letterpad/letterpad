@@ -37,10 +37,10 @@ jobs:
       - run: |
           mkdir vendor-zip
           cp .env vendor-zip/.env
-          cp sample.env vendor-zip/.env
           cp package.json vendor-zip/package.json
           cp -rf data vendor-zip/data
           cp -rf dist vendor-zip/dist
+          cp -rf utils vendor-zip/utils
       - uses: montudor/action-zip@v0.1.0
         with:
           args: zip -qq -r ./vendor-zip/vendor.zip ./vendor-zip
