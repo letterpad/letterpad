@@ -19,7 +19,19 @@ jobs:
       with:
         node-version: '12.9.1'
     - run: yarn install
+    - name: Create environment file .env
+      shell: bash
+      run: cp sample.env .env
+    - name: Create database
+      run: yarn seed
     - run: yarn build
+    - uses: montudor/action-zip@v0.1.0
+      with:
+        args: zip -qq -r ./vendor-zip/vendor.zip ./dist package.json .env .sequelize.rc data
+    - uses: actions/upload-artifact@master
+      with:
+        name: vendor
+        path: vendor-zip  
     - name: Run a multi-line script
       run: |
         echo Add other actions to build,
