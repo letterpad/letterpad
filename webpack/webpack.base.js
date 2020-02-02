@@ -69,7 +69,6 @@ module.exports = (args, name) => {
         "process.env": {
           apiUrl: "process.env.apiUrl",
           uploadUrl: "process.env.uploadUrl",
-          rootUrl: "process.env.rootUrl",
           appPort: "process.env.appPort",
           baseName: "process.env.baseName",
         },
