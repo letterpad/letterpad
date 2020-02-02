@@ -2,6 +2,7 @@ import Faker from "faker";
 import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
 import generatePost from "./contentGenerator";
+import { mdToHTML } from "letterpad-editor/dist/editor";
 import mkdirp from "mkdirp";
 import path from "path";
 import posts from "./posts";
@@ -209,16 +210,18 @@ export async function insertTaxonomy(models) {
     },
   ]);
 }
-
+console.log("generatePost() :", generatePost());
 export async function insertPost(params, models, categories, tags) {
   // get author  // 1 or 2
+  const md = generatePost();
+  const html = mdToHTML(md, { props: {} });
   const randomAuthorId = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
   let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
   const slug = params.title.toLocaleLowerCase().replace(/ /g, "-");
   let post = await models.Post.create({
     title: Faker.company.catchPhrase(),
-    html: generatePost(),
-    md: "# hello world",
+    md: md,
+    html: html,
     excerpt: Faker.lorem.sentences(4),
     cover_image: params.cover_image,
     authorId: randomAuthorId,
