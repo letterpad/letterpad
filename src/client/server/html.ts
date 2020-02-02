@@ -73,7 +73,7 @@ export const getHtml = (data: IProps) => {
     INITIAL_STATE: initialState,
     INITIAL_DATA: JSON.stringify(initialData),
     NODE_ENV: process.env.NODE_ENV,
-    ROOT_URL: "",
+    ROOT_URL: process.env.ROOT_URL,
     API_URL: process.env.baseName + "/graphql",
     UPLOAD_URL: process.env.baseName + "/upload",
     APP_PORT: process.env.appPort,

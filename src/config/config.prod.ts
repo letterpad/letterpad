@@ -3,15 +3,17 @@ const baseName =
     ? (window as any).baseName
     : process.env.baseName;
 
+const rootUrl =
+  typeof window !== "undefined"
+    ? (window as any).rootUrl
+    : process.env.ROOT_URL;
+
 export default {
-  rootUrl:
-    typeof window !== "undefined"
-      ? (window as any).rootUrl
-      : process.env.ROOT_URL,
+  rootUrl,
   apiUrl:
     typeof window !== "undefined"
       ? (window as any).apiUrl
-      : baseName + "/graphql",
+      : rootUrl + baseName + "/graphql",
   uploadUrl:
     typeof window !== "undefined"
       ? (window as any).uploadUrl
