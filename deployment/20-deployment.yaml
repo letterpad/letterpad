@@ -6,6 +6,10 @@ metadata:
     app: letterpad-demo
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
   selector:
     matchLabels:
       app: letterpad-demo
@@ -16,7 +20,7 @@ spec:
     spec:
       containers:
         - name: letterpad-demo-container
-          image: gcr.io/ajaxtown-hosting/letterpad-demo
+          image: gcr.io/ajaxtown-hosting/letterpad-demo:$VERSION
           ports:
             - containerPort: 4040
           volumeMounts:
