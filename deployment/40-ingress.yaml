@@ -1,9 +1,0 @@
----
-apiVersion: "extensions/v1beta1"
-kind: Ingress
-metadata:
-  name: letterpad-demo
-spec:
-  backend:
-    serviceName: letterpad-demo
-    servicePort: 4040
