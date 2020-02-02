@@ -2,7 +2,6 @@ import Faker from "faker";
 import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
 import generatePost from "./contentGenerator";
-import { mdToHTML } from "letterpad-editor/dist/editor";
 import mkdirp from "mkdirp";
 import path from "path";
 import posts from "./posts";
@@ -214,7 +213,7 @@ console.log("generatePost() :", generatePost());
 export async function insertPost(params, models, categories, tags) {
   // get author  // 1 or 2
   const md = generatePost();
-  const html = mdToHTML(md, { props: {} });
+  const html = md;
   const randomAuthorId = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
   let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
   const slug = params.title.toLocaleLowerCase().replace(/ /g, "-");
