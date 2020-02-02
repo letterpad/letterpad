@@ -1,41 +1,39 @@
-import React, { Component, Fragment } from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
-import { withRouter, RouteComponentProps } from "react-router";
-import Notifications from "react-notify-toast";
-import { I18nextProvider } from "react-i18next";
-
-// Shared
-import getI18nWithDefaultLang from "../shared/i18n/i18n";
-
-// View Files
-import Loader from "./components/loader";
-import LoginView from "./features/login/LoginView";
-import ResetPassword from "./features/login/ResetPassword";
-import Articles from "./features/articles";
-import CreateArticle from "./features/article/CreateArticle";
-import Article from "./features/article";
-import Settings from "./features/settings";
-import Media from "./features/media";
-import AuthorList from "./features/author-list";
-import Author from "./features/author";
-import AuthorCreate from "./features/author/Create";
-import Taxonomy from "./features/taxonomy";
-import NavigationBuilder from "./features/navigation-builder";
-import Home from "./features/home";
-import StaticSite from "./features/static-site";
-
 // css
 import "./public/pcss/admin.pcss";
 
-// All files which require authorization will pass though this
-import SecuredRoute from "./helpers/Secured";
-import apolloClient from "../shared/apolloClient";
-import { QUERY_SETTINGS } from "../shared/queries/Queries";
+import React, { Component, Fragment } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router";
 import {
   Setting,
-  SettingsQuery,
   SettingOptions,
+  SettingsQuery,
 } from "../__generated__/gqlTypes";
+
+import Article from "./features/article";
+import Articles from "./features/articles";
+import Author from "./features/author";
+import AuthorCreate from "./features/author/Create";
+import AuthorList from "./features/author-list";
+import CreateArticle from "./features/article/CreateArticle";
+import Home from "./features/home";
+import { I18nextProvider } from "react-i18next";
+// View Files
+import Loader from "./components/loader";
+import LoginView from "./features/login/LoginView";
+import Media from "./features/media";
+import NavigationBuilder from "./features/navigation-builder";
+import Notifications from "react-notify-toast";
+import { QUERY_SETTINGS } from "../shared/queries/Queries";
+import ResetPassword from "./features/login/ResetPassword";
+// All files which require authorization will pass though this
+import SecuredRoute from "./helpers/Secured";
+import Settings from "./features/settings";
+import StaticSite from "./features/static-site";
+import Taxonomy from "./features/taxonomy";
+import apolloClient from "../shared/apolloClient";
+// Shared
+import getI18nWithDefaultLang from "../shared/i18n/i18n";
 
 type TypeSettings = { [option in SettingOptions]: Setting } | {};
 
