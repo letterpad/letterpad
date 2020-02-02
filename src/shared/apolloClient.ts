@@ -8,7 +8,7 @@ import fetch from "isomorphic-fetch";
 import { onError } from "apollo-link-error";
 
 const httpLink = createHttpLink({
-  uri: "https://ajaxtown.com" + config.apiUrl,
+  uri: "http://ajaxtown.com" + config.apiUrl,
   fetch: fetch,
 });
 
