@@ -1,9 +1,6 @@
-#!/bin/bash
+#!/bin/sh
+
 set -e
-printf "$npm_execpath" | grep -q "yarn\.js$" || 
-(printf "~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-\n⚠️ Use yarn not npm! ⚠️\n
-~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~" && exit 1)
 
 if [ ! -f src/client/themes/hugo/package.json ]; then
     echo "Installing the default theme - Hugo"

@@ -11,7 +11,6 @@
     "build:admin": "webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.admin.prod.js",
     "seed": "ts-node ./src/api/seed",
     "preinstall": "./utils/preinstall.sh",
-    "postinstall": "./utils/postinstall.sh",
     "api": "NODE_ENV=dev concurrently --kill-others \"nodemon -e ts,json,js --watch ./src/api ./src/start.ts\"",
     "prod": "NODE_ENV=production concurrently --kill-others \"node ./dist/server.js\"",
     "start": "yarn prod",
