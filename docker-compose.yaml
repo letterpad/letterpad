@@ -4,5 +4,7 @@ services:
     image: letterpad
     ports:
       - "4040:4040"
+    environment:
+      ROOT_URL: http://localhost:4040
     volumes:
       - "./data:/letterpad/data"
