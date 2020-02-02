@@ -1,7 +1,7 @@
+import { AllHtmlEntities } from "html-entities";
 import config from "../../config";
 import fs from "fs";
 import path from "path";
-import { AllHtmlEntities } from "html-entities";
 
 String.prototype.replaceAll = function(search, replacement) {
   var target = this;
@@ -68,7 +68,7 @@ export const getEmailBody = async (templateName, data, models) => {
   }
   // do some default replacements
   const blogname = siteData.site_title;
-  const blogurl = config.rootUrl + config.baseName;
+  const blogurl = config.baseName;
   const loginurl = blogurl + "admin/login";
 
   template = template.replaceAll("{{blogurl}}", blogurl);
