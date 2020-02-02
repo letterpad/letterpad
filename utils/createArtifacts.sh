@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 mkdir vendor-zip
 cp .env vendor-zip/.env
