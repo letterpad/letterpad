@@ -77,8 +77,8 @@ class Routes extends Component<RouteComponentProps, IState> {
       return <Loader />;
     }
     if (error) {
-      window.location.href = "/admin/login";
-      return;
+      console.log(error);
+      return <div>{error}</div>;
     }
     const i18nConfig = getI18nConfig(settings);
 

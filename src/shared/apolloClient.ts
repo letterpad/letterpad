@@ -7,9 +7,6 @@ import { createHttpLink } from "apollo-link-http";
 import fetch from "isomorphic-fetch";
 import { onError } from "apollo-link-error";
 
-console.log("Using configuartion", config);
-console.log("Using Apollo URL - ", config.rootUrl + config.apiUrl);
-
 const httpLink = createHttpLink({
   uri: config.rootUrl + config.apiUrl,
   fetch: fetch,
