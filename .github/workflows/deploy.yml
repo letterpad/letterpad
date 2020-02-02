@@ -18,7 +18,6 @@ jobs:
     - uses: actions/setup-node@v1.1.0
       with:
         node-version: '12.9.1'
-    - run: yarn install
     - name: Cache
       uses: actions/cache@v1.1.0
       with:
@@ -26,14 +25,18 @@ jobs:
         key: ${{ runner.OS }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.OS }}-yarn-cache-
+    - run: yarn install
     - name: Create environment file .env
       shell: bash
       run: cp sample.env .env
+    - name: Print .env
+      shell: bash
+      run: cat .env
     - name: Create database
       run: yarn seed
     - run: yarn build
     - run: mkdir vendor-zip
-    - name: Extract branch name
+    - name: List files
       shell: bash
       run: ls
     - uses: montudor/action-zip@v0.1.0
