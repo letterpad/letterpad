@@ -8673,10 +8673,10 @@ left-pad@^1.3.0:
   resolved "https://registry.yarnpkg.com/left-pad/-/left-pad-1.3.0.tgz#5b8a3a7765dfe001261dde915589e782f8c94d1e"
   integrity sha512-XI5MPzVNApjAyhQzphX8BkmKsKUxD4LdyK24iZeQGinBN9yTQT3bFlCBy/aVx2HrNcqQGsdot8ghrjyrvMCoEA==
 
-letterpad-editor@^0.0.15:
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/letterpad-editor/-/letterpad-editor-0.0.15.tgz#a9d2eb47280bd5aadf2da3a363fee871fe508241"
-  integrity sha512-OHtx4pXxHDyrmKl6ikqsab5I0XpOYzI5pzw6Z4Vg5a4Zxnvs6UtnyLVi0f6yp4F/gx/sHt2Wl7sQFCDGKhk0TQ==
+letterpad-editor@^0.0.16:
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/letterpad-editor/-/letterpad-editor-0.0.16.tgz#e52a8836b56f365c3c077615c0dfb839f0aa4d72"
+  integrity sha512-/x2di+Oojo9RRRJ49EWNyhMG6DjNLI1OFLPx5MpRBMdh4xmPV7anxtl2NV2oVST1VILRt5qrdHBcdlrk4MA/dQ==
   dependencies:
     "@domoinc/slate-edit-table" "0.22.2"
     "@tommoor/slate-edit-list" "0.19.0-0"
@@ -11639,10 +11639,10 @@ react-hot-keys@^2.4.5:
     hotkeys-js "^3.7.3"
     prop-types "^15.7.2"
 
-react-hot-loader@^4.12.14:
-  version "4.12.18"
-  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.12.18.tgz#a9029e34af2690d76208f9a35189d73c2dfea6a7"
-  integrity sha512-qYD0Qi9lIbg9jLyfmodfqvAQqCBsoPKxAhca8Nxvy2/2pO5Q9r2kM28jN0bbbSnhwK8dJ7FjsfVtXKOxMW+bqw==
+react-hot-loader@^4.12.19:
+  version "4.12.19"
+  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.12.19.tgz#99a1c763352828f404fa51cd887c5e16bb5b74d1"
+  integrity sha512-p8AnA4QE2GtrvkdmqnKrEiijtVlqdTIDCHZOwItkI9kW51bt5XnQ/4Anz8giiWf9kqBpEQwsmnChDCAFBRyR/Q==
   dependencies:
     fast-levenshtein "^2.0.6"
     global "^4.3.0"
