@@ -33,9 +33,12 @@ jobs:
       run: yarn seed
     - run: yarn build
     - run: mkdir vendor-zip
+    - name: Extract branch name
+      shell: bash
+      run: ls
     - uses: montudor/action-zip@v0.1.0
       with:
-        args: zip -qq -r ./vendor-zip/vendor.zip ./dist package.json .env .sequelize.rc data
+        args: zip -qq -r ./vendor-zip/vendor.zip ./dist package.json data
     - uses: actions/upload-artifact@master
       with:
         name: vendor
