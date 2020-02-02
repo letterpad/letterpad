@@ -1,3 +1,3 @@
 #!/bin/sh
 
-( echo "cat <<EOF" ; cat $1 ; echo EOF ) | sh
+( echo "cat <<EOF" ; cat $* ; echo EOF ) | sh

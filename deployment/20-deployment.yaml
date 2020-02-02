@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,7 +21,7 @@ spec:
     spec:
       containers:
         - name: letterpad-demo-container
-          image: gcr.io/ajaxtown-hosting/letterpad-demo:$VERSION
+          image: gcr.io/ajaxtown-hosting/letterpad-demo:$GITHUB_SHA
           ports:
             - containerPort: 4040
           volumeMounts:
