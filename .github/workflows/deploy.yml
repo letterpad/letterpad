@@ -36,6 +36,7 @@ jobs:
           cp .env vendor-zip/.env
           cp package.json vendor-zip/package.json
           cp -rf data vendor-zip/data
+          cp -rf dist vendor-zip/dist
       - uses: montudor/action-zip@v0.1.0
         with:
           args: zip -qq -r ./vendor-zip/vendor.zip ./vendor-zip
