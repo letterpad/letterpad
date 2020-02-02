@@ -13,6 +13,7 @@ const configFile =
 
 const config = {
   apiUrl: configFile.apiUrl,
+  rootUrl: configFile.rootUrl,
   uploadUrl: configFile.uploadUrl,
   appPort: configFile.appPort,
   defaultTitle: "Untitled",

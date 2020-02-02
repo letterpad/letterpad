@@ -19,7 +19,7 @@
         window.appPort = {{APP_PORT}};
         window.baseName = "{{BASE_NAME}}";
     </script>
-        
+
     {{SCRIPT_TAGS}}
     <link href="{{BASE_NAME}}/admin/css/prism-theme.css" rel="stylesheet"/>
     <link href="{{BASE_NAME}}/admin/css/font-awesome.min.css" rel="stylesheet"/>

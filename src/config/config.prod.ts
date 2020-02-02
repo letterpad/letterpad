@@ -4,20 +4,21 @@ const baseName =
     : process.env.baseName;
 
 export default {
-  apiUrl: (function() {
-    return typeof window !== "undefined"
+  rootUrl:
+    typeof window !== "undefined"
+      ? (window as any).rootUrl
+      : process.env.ROOT_URL,
+  apiUrl:
+    typeof window !== "undefined"
       ? (window as any).apiUrl
-      : baseName + "/graphql";
-  })(),
-  uploadUrl: (function() {
-    return typeof window !== "undefined"
+      : baseName + "/graphql",
+  uploadUrl:
+    typeof window !== "undefined"
       ? (window as any).uploadUrl
-      : baseName + "/upload";
-  })(),
-  appPort: (function() {
-    return typeof window !== "undefined"
+      : baseName + "/upload",
+  appPort:
+    typeof window !== "undefined"
       ? (window as any).appPort
-      : process.env.appPort;
-  })(),
+      : process.env.appPort,
   baseName: baseName,
 };

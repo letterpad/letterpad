@@ -43,11 +43,11 @@
         ga.l = +new Date();
         ga("create", "{{TRACKING_ID}}", "auto");
         ga("send", "pageview");
-        
 
-        
+
+
     </script>
-        
+
     {{SCRIPT_TAGS}}
     {{GA_SCRIPT_TAG}}
 </body>

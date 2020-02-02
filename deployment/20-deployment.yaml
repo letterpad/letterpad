@@ -24,6 +24,9 @@ spec:
           image: gcr.io/ajaxtown-hosting/letterpad-demo:$GITHUB_SHA
           ports:
             - containerPort: 4040
+          env:
+            - name: ROOT_URL
+              value: http://ajaxtown.com
           volumeMounts:
             - mountPath: /letterpad/data
               name: sqlite-data
