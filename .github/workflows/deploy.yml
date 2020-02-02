@@ -31,12 +31,14 @@ jobs:
       - name: Create database
         run: yarn seed
       - run: yarn build
-      - name: Create artifact folder and move files
-        shell: bash
-        run: ./utils/createArtifacts.sh
+      - run: |
+          mkdir vendor-zip
+          cp .env vendor-zip/.env
+          cp package.json vendor-zip/package.json
+          cp -rf data vendor-zip/data
       - uses: montudor/action-zip@v0.1.0
         with:
-          args: zip -qq -r ./vendor.zip ./vendor-zip
+          args: zip -qq -r ./vendor-zip/vendor.zip ./vendor-zip
       - uses: actions/upload-artifact@master
         with:
           name: vendor
