@@ -1,5 +1,5 @@
-import React from "react";
 import { Helmet } from "react-helmet";
+import React from "react";
 import config from "../../config";
 
 const getMetaTags = ({
@@ -47,7 +47,7 @@ const getMetaTags = ({
 
   return metaTags;
 };
-const mainUrl = config.rootUrl + config.baseName;
+const mainUrl = config.baseName;
 
 const SEO = (props: any) => (
   <Helmet

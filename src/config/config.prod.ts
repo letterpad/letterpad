@@ -1,5 +1,5 @@
-const rootUrl =
-  typeof window !== "undefined" ? (window as any).rootUrl : process.env.rootUrl;
+const rootUrl = "";
+//typeof window !== "undefined" ? (window as any).rootUrl : process.env.rootUrl;
 
 export default {
   apiUrl: (function() {

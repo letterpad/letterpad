@@ -1,15 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { translate } from "react-i18next";
-
 import { ProgressText, Spinner } from "./index.css";
+import React, { Component } from "react";
 
-import StyledCard from "../../components/card";
-import StyledSection from "../../components/section";
 import Button from "../../components/button";
 import Link from "../../components/link";
-
+import PropTypes from "prop-types";
+import StyledCard from "../../components/card";
+import StyledSection from "../../components/section";
 import config from "../../../config";
+import { translate } from "react-i18next";
 
 class CreatePr extends Component {
   state = {
@@ -23,7 +21,7 @@ class CreatePr extends Component {
     this.pullRequestStatus.current.textContent = "";
     const pointer = "<span style='color: var(--color-base)'>-</span>";
     const reader = await this.props.sendRequest(
-      `${config.rootUrl + config.baseName}/admin/create-pull-request`,
+      `${config.baseName}/admin/create-pull-request`,
     );
 
     const readStream = reader => {

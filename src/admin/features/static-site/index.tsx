@@ -1,13 +1,11 @@
-import React, { useState, createRef } from "react";
-import { translate, WithNamespaces } from "react-i18next";
-
-import StyledSection from "../../components/section";
-import StyledCard from "../../components/card";
-import Button from "../../components/button";
-
-import config from "../../../config";
-
 import { ProgressBar, Warning } from "./index.css";
+import React, { createRef, useState } from "react";
+import { WithNamespaces, translate } from "react-i18next";
+
+import Button from "../../components/button";
+import StyledCard from "../../components/card";
+import StyledSection from "../../components/section";
+import config from "../../../config";
 
 interface IStaticProps extends WithNamespaces {}
 
@@ -158,7 +156,7 @@ function chunkToJSON(chunk: any): IParsedChunk {
 }
 
 function getReader() {
-  const url = `${config.rootUrl + config.baseName}/admin/generateStaticSite`;
+  const url = `${config.baseName}/admin/generateStaticSite`;
   const options = {
     headers: {
       "Content-Type": "application/json",

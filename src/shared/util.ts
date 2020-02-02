@@ -23,7 +23,7 @@ const utils = {
     if (typeof parts === "string") {
       parts = [parts];
     }
-    let url = config.rootUrl + "/" + parts.join("/");
+    let url = "/" + parts.join("/");
     return url.replace(/\/\/+/g, "/").replace(":/", "://");
   },
 
