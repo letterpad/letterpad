@@ -12,7 +12,6 @@ const configFile =
   ["dev", "test"].indexOf(currentEnv) >= 0 ? configDev : configProd;
 
 const config = {
-  rootUrl: configFile.rootUrl,
   apiUrl: configFile.apiUrl,
   uploadUrl: configFile.uploadUrl,
   appPort: configFile.appPort,
