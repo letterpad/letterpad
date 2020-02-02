@@ -7,13 +7,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Cache
-        uses: actions/cache@v1.1.0
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.OS }}-yarn-cache-
       - name: Extract branch name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
@@ -24,6 +17,13 @@ jobs:
       - uses: actions/setup-node@v1.1.0
         with:
           node-version: "12.9.1"
+      - name: Cache
+        uses: actions/cache@v1.1.0
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-yarn-cache-
       - run: yarn install
       - name: Create environment file .env
         shell: bash
