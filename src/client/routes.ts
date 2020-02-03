@@ -24,8 +24,9 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
   const { themeSettings } = args;
   const home = getHomeSlug(settings);
 
+  const isAdmin = false;
   const commonProps = {
-    client: apolloClient(),
+    client: apolloClient(isAdmin),
     settings,
     themeSettings,
     initialProps: args.initialProps,

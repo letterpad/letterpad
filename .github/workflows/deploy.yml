@@ -34,13 +34,13 @@ jobs:
       - name: Create database
         run: yarn seed
       - run: yarn build
-      - run: |
-          mkdir vendor-zip
-          cp .env vendor-zip/.env
-          cp package.json vendor-zip/package.json
-          cp -rf data vendor-zip/data
-          cp -rf dist vendor-zip/dist
-          cp -rf utils vendor-zip/utils
+      - run: ./utils/createArtifacts.sh
+      - name: Post to google cloud
+        run: |
+          curl -X POST -L \
+          -F "metadata={name : 'vendor-zip.zip'};type=application/json;charset=UTF-8" \
+          -F "artifact=@vendor-zip.zip;type=application/zip" \
+          "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart"
       - uses: montudor/action-zip@v0.1.0
         with:
           args: zip -qq -r ./vendor-zip/vendor.zip ./vendor-zip

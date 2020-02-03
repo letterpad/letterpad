@@ -10,7 +10,6 @@ const serverRendering = (app: Express) => {
   app.get("*", async (req, res, next) => {
     if (req.url === "/graphql") return next();
     if (req.url.indexOf("/static") === 0) return next();
-
     const isStatic = req.get("static") ? true : false;
     try {
       const client = apolloClient(false, { ssrMode: true });
