@@ -2,73 +2,68 @@ const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const fs = require("fs");
-const hotReloadConfig = require("./webpack.hot.reload");
 
 const clientConfig = args => {
   if (args.theme == "") {
     args.theme = "hugo";
   }
-  return merge(
-    baseConfig(args, "client"),
-    {
-      name: "client",
-      devtool: "cheap-module-eval-source-map",
-      target: "web",
-      output: {
-        path: path.join(__dirname, "../"),
-        filename: "[name]-bundle.js",
-        publicPath: "/static/",
-        pathinfo: false,
-      },
-      watchOptions: {
-        ignored: [/node_modules([\\]+|\/)+(?!\some_npm_module_name)/],
-      },
-      optimization: {
-        minimize: false,
-        runtimeChunk: {
-          name: "src/public/js/vendor",
-        },
-        removeAvailableModules: false,
-        removeEmptyChunks: false,
-        splitChunks: false,
-        // splitChunks: {
-        //   cacheGroups: {
-        //     default: false,
-        //     commons: {
-        //       test: "src/public/js/vendor-bundle.js",
-        //       name: "src/public/js/vendor",
-        //       chunks: "all",
-        //     },
-        //   },
-        // },
-      },
-      module: {
-        rules: [
-          {
-            test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-            loader: "url-loader?url=false",
-          },
-          {
-            test: /\.(css|pcss)$/,
-            use: [
-              "style-loader",
-              {
-                loader: "css-loader",
-                options: { importLoaders: 1, sourceMap: true },
-              },
-              {
-                loader: "postcss-loader",
-                options: {
-                  sourceMap: "inline",
-                },
-              },
-            ],
-          },
-        ],
-      },
+  return merge(baseConfig(args, "client"), {
+    name: "client",
+    devtool: "cheap-module-eval-source-map",
+    target: "web",
+    output: {
+      path: path.join(__dirname, "../"),
+      filename: "[name]-bundle.js",
+      publicPath: "/static/",
+      pathinfo: false,
     },
-    hotReloadConfig,
-  );
+    watchOptions: {
+      ignored: [/node_modules([\\]+|\/)+(?!\some_npm_module_name)/],
+    },
+    optimization: {
+      minimize: false,
+      runtimeChunk: {
+        name: "src/public/js/vendor",
+      },
+      removeAvailableModules: false,
+      removeEmptyChunks: false,
+      splitChunks: false,
+      // splitChunks: {
+      //   cacheGroups: {
+      //     default: false,
+      //     commons: {
+      //       test: "src/public/js/vendor-bundle.js",
+      //       name: "src/public/js/vendor",
+      //       chunks: "all",
+      //     },
+      //   },
+      // },
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+          loader: "url-loader?url=false",
+        },
+        {
+          test: /\.(css|pcss)$/,
+          use: [
+            "style-loader",
+            {
+              loader: "css-loader",
+              options: { importLoaders: 1, sourceMap: true },
+            },
+            {
+              loader: "postcss-loader",
+              options: {
+                sourceMap: "inline",
+              },
+            },
+          ],
+        },
+      ],
+    },
+  });
 };
 
 const serverConfig = args => {
