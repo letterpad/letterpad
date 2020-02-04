@@ -71,6 +71,8 @@ export const seed = async (dbModels, autoExit = true) => {
   console.timeEnd("insert posts, settings, media");
   if (autoExit) {
     process.exit(0);
+  } else {
+    return null;
   }
 };
 
@@ -209,11 +211,11 @@ export async function insertTaxonomy(models) {
     },
   ]);
 }
-console.log("generatePost() :", generatePost());
+
 export async function insertPost(params, models, categories, tags) {
   // get author  // 1 or 2
-  const md = generatePost();
-  const html = md;
+  const { md, html } = generatePost();
+
   const randomAuthorId = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
   let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
   const slug = params.title.toLocaleLowerCase().replace(/ /g, "-");

@@ -35,7 +35,7 @@ module.exports = (args, name) => {
       hash: false,
     },
     entry: {
-      // [source + "/public/js/vendor"]: vendorFiles,
+      [source + "/public/js/vendor"]: vendorFiles,
       [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
         path.join(__dirname, "../src/client/Run"),
       ],

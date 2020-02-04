@@ -396,7 +396,7 @@ export type Query = {
   validateToken?: Maybe<CreateAuthorResponse>,
   media: MediaNode,
   /** Used to query a single post */
-  post: Post,
+  post?: Maybe<Post>,
   /** Used to query a collection of posts */
   posts: PostNode,
   adjacentPosts?: Maybe<AdjacentPosts>,
@@ -937,10 +937,10 @@ export type PostQueryVariables = {
 
 export type PostQuery = (
   { __typename?: 'Query' }
-  & { post: (
+  & { post: Maybe<(
     { __typename?: 'Post' }
     & PostFieldsFragment
-  ) }
+  )> }
 );
 
 export type MediaQueryVariables = {
