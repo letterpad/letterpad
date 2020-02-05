@@ -8,7 +8,7 @@ COPY utils /letterpad/utils
 RUN yarn --frozen-lockfile
 ADD . /letterpad/
 RUN NODE_ENV=production yarn build
-RUN yarn install --frozen-lockfile --production
+RUN yarn install --frozen-lockfile --production --ignore-scripts
 
 FROM node:13.7.0-alpine3.11
 
