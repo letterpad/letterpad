@@ -31,7 +31,7 @@ const serverApp = async (props: IServerRenderProps) => {
   const opts = {
     location: requestUrl,
     context: {},
-    basename: config.BASE_NAME.replace(/\/$/, ""), // remove the last slash
+    basename: config.BASE_NAME,
   };
 
   const initialData: IRoutes["initialData"] = {

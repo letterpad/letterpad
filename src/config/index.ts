@@ -1,5 +1,6 @@
 import configDev from "./config.dev";
 import configProd from "./config.prod";
+import logger from "../shared/logger";
 
 let currentEnv =
   typeof window !== "undefined"
@@ -22,5 +23,7 @@ const config = {
   mediaPerPage: 20,
   BASE_NAME: configFile.BASE_NAME,
 };
+
+logger.debug("Using config => ", config);
 
 export default config;

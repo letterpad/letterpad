@@ -7,13 +7,15 @@ import { getEmailBody } from "../utils/common";
 import jwt from "jsonwebtoken";
 import { requiresAdmin } from "../utils/permissions";
 
+const host = config.ROOT_URL + config.BASE_NAME + "/";
+
 export default {
   Query: {
     author: async (root, args, { models }) => {
       const author = await models.Author.findOne({ where: args });
       if (author) {
         author.social = JSON.parse(author.dataValues.social);
-        author.avatar = config.BASE_NAME + author.avatar;
+        author.avatar = host + author.avatar;
       }
       return author;
     },
@@ -21,7 +23,7 @@ export default {
     authors: async (root, args, { models }) => {
       const authors = await models.Author.findAll({ where: args });
       return authors.map(author => {
-        author.avatar = config.BASE_NAME + author.avatar;
+        author.avatar = host + author.avatar;
         return author;
       });
     },

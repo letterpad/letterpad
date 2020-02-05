@@ -12,6 +12,7 @@ import { innertext } from "../utils/common";
 import memoryCache from "../utils/memoryCache";
 
 // import { getMenuItemFromSlug } from "./selectors/post";
+const host = config.ROOT_URL + config.BASE_NAME;
 
 const noResult = {
   count: 0,
@@ -166,8 +167,8 @@ const postresolver = {
         }
         const result = await models.Post.findAndCountAll(conditions);
         result.rows = result.rows.map(item => {
-          item.cover_image = config.BASE_NAME + item.cover_image;
-          item.slug = config.BASE_NAME + "/" + item.cover_image;
+          item.cover_image = host + "/" + item.cover_image;
+          item.slug = "/" + item.type + "/" + item.slug;
           return item;
         });
         return {
@@ -235,8 +236,9 @@ const postresolver = {
         conditions.where.slug = args.filters.slug;
       }
       const post = await models.Post.findOne(conditions);
-      post.cover_image = config.BASE_NAME + post.cover_image;
-      post.slug = config.BASE_NAME + "/" + post.cover_image;
+      post.cover_image = host + post.cover_image;
+      post.slug = "/" + post.type + "/" + post.slug;
+
       return post;
     }),
     /**
@@ -365,8 +367,13 @@ const postresolver = {
   },
   Post: {
     author: post => post.getAuthor(),
-    taxonomies: post => {
-      return post.getTaxonomies();
+    taxonomies: async post => {
+      const taxonomies = await post.getTaxonomies();
+      return taxonomies.map(item => {
+        const type = item.type === "post_category" ? "category" : "tag";
+        item.slug = "/" + type + "/" + item.slug;
+        return item;
+      });
     },
   },
 };

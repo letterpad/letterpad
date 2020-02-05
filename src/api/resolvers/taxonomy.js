@@ -1,6 +1,6 @@
 export default {
   Query: {
-    taxonomies: (root, args, { models }) => {
+    taxonomies: async (root, args, { models }) => {
       let conditions = {
         where: {},
         order: [["name", "ASC"]],
@@ -26,7 +26,12 @@ export default {
         }
       }
 
-      return models.Taxonomy.findAll(conditions);
+      const taxonomies = await models.Taxonomy.findAll(conditions);
+      return taxonomies.map(item => {
+        const type = item.type === "post_category" ? "category" : "tag";
+        item.slug = "/" + type + "/" + item.slug;
+        return item;
+      });
     },
   },
   Mutation: {

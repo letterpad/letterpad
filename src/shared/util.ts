@@ -97,9 +97,9 @@ const utils = {
     let createScript = function createScript(params) {
       let props = {};
       if (typeof params === "string") {
-        props = { ...defaults, src: utils.makeUrl(params) };
+        props = { ...defaults, src: params };
       } else {
-        props = { ...defaults, ...params, src: utils.makeUrl(params.src) };
+        props = { ...defaults, ...params, src: params.src };
       }
       let attrs = utils.createStringFromProps(props);
       return "<script " + attrs + "></script>";
@@ -126,9 +126,9 @@ const utils = {
     let createScript = function createScript(params) {
       let props = {};
       if (typeof params === "string") {
-        props = { ...defaults, href: utils.makeUrl(params) };
+        props = { ...defaults, href: params };
       } else {
-        props = { ...defaults, ...params, href: utils.makeUrl(params) };
+        props = { ...defaults, ...params, href: params };
       }
       let attrs = utils.createStringFromProps(props);
       return "<link " + attrs + "></link>";

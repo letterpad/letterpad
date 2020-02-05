@@ -68,11 +68,11 @@ const server = new ApolloServer({
   context: context,
 });
 
-const endpoint = config.API_URL;
+const { pathname } = new URL(config.API_URL);
 
 export default async (app: Express) => {
   middlewares(app);
-  server.applyMiddleware({ app, path: endpoint });
+  server.applyMiddleware({ app, path: pathname });
 
-  app.use("/upload", upload);
+  app.use(config.UPLOAD_URL, upload);
 };
