@@ -1,26 +1,25 @@
-const baseName =
-  typeof window !== "undefined"
-    ? (window as any).baseName
-    : process.env.baseName;
+function isServer() {
+  return typeof window === "undefined";
+}
 
-const ROOT_URL =
-  typeof window !== "undefined"
-    ? (window as any).ROOT_URL
-    : process.env.ROOT_URL;
+// during bundling, restrict replacing process.env.xxx to values.
+const config = (() => {
+  const ROOT_URL = isServer() ? process.env.ROOT_URL : (window as any).ROOT_URL;
+  const BASE_NAME = isServer()
+    ? process.env.BASE_NAME
+    : (window as any).BASE_NAME;
 
-export default {
-  ROOT_URL,
-  apiUrl:
-    typeof window !== "undefined"
-      ? (window as any).apiUrl
-      : ROOT_URL + baseName + "/graphql",
-  uploadUrl:
-    typeof window !== "undefined"
-      ? (window as any).uploadUrl
-      : baseName + "/upload",
-  appPort:
-    typeof window !== "undefined"
-      ? (window as any).appPort
-      : process.env.appPort,
-  baseName: baseName || "",
-};
+  return {
+    ROOT_URL,
+    BASE_NAME,
+    API_URL: isServer()
+      ? ROOT_URL + BASE_NAME + "/graphql"
+      : (window as any).API_URL,
+    UPLOAD_URL: isServer()
+      ? ROOT_URL + BASE_NAME + "/upload"
+      : (window as any).UPLOAD_URL,
+    APP_PORT: isServer() ? process.env.APP_PORT : (window as any).APP_PORT,
+  };
+})();
+
+export default config;

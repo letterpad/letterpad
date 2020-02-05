@@ -1,4 +1,5 @@
 import { TypeSettings } from "../types";
+import config from "../../config";
 import { util } from "../common/util";
 import utils from "../../shared/util";
 const {
@@ -31,15 +32,15 @@ export const getHtml = (data: IProps) => {
   } = data;
   const { htmlAttrs, metaTags } = getMetaTags(head);
   const isDev = process.env.NODE_ENV !== "production";
-
+  const host = config.ROOT_URL + config.BASE_NAME;
   let devBundles = [
-    `${process.env.baseName}/static/hot-reload-bundle.js`,
-    `${process.env.baseName}/static/src/public/js/vendor-bundle.js`,
-    `${process.env.baseName}/static/src/client/themes/${theme}/public/dist/client-bundle.js`,
+    `${host}/static/hot-reload-bundle.js`,
+    `${host}/static/src/public/js/vendor-bundle.js`,
+    `${host}/static/src/client/themes/${theme}/public/dist/client-bundle.js`,
   ];
   const prodBundles = [
-    `${process.env.baseName}/js/vendor-bundle.min.js`,
-    `${process.env.baseName}/${theme}/dist/client-bundle.min.js`,
+    `${host}/js/vendor-bundle.min.js`,
+    `${host}/${theme}/dist/client-bundle.min.js`,
   ];
   const bundles = isDev ? devBundles : prodBundles;
 
@@ -65,6 +66,7 @@ export const getHtml = (data: IProps) => {
 
   // replace template variables with values and return the html markup
   return templateEngine(templateString, {
+    ...config,
     HTML_CONTENT: html,
     HTML_ATTRS: htmlAttrs,
     STYLE_TAGS: styleLinks,
@@ -73,11 +75,6 @@ export const getHtml = (data: IProps) => {
     INITIAL_STATE: initialState,
     INITIAL_DATA: JSON.stringify(initialData),
     NODE_ENV: process.env.NODE_ENV,
-    ROOT_URL: process.env.ROOT_URL,
-    API_URL: process.env.baseName + "/graphql",
-    UPLOAD_URL: process.env.baseName + "/upload",
-    APP_PORT: process.env.appPort,
-    BASE_NAME: process.env.baseName,
     TRACKING_ID: settings.google_analytics,
     GA_SCRIPT_TAG: settings.google_analytics
       ? '<script async src="https://www.google-analytics.com/analytics.js"></script>'

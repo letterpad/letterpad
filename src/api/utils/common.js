@@ -68,7 +68,7 @@ export const getEmailBody = async (templateName, data, models) => {
   }
   // do some default replacements
   const blogname = siteData.site_title;
-  const blogurl = config.baseName;
+  const blogurl = config.BASE_NAME;
   const loginurl = blogurl + "admin/login";
 
   template = template.replaceAll("{{blogurl}}", blogurl);

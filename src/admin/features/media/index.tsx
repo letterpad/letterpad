@@ -1,22 +1,21 @@
 import React, { Component } from "react";
-import { RouteComponentProps } from "react-router-dom";
-import { translate, WithNamespaces } from "react-i18next";
-import moment from "moment";
-import { notify } from "react-notify-toast";
-import Paginate from "../../components/pagination";
-import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
-import config from "../../../config";
-import { uploadFile } from "../../server/util";
+import { WithNamespaces, translate } from "react-i18next";
+import { deleteMedias, getMedia } from "./actions";
 
-import StyledSection from "../../components/section";
+import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
+import { MediaNode } from "../../../__generated__/gqlTypes";
+import Paginate from "../../components/pagination";
+import { RouteComponentProps } from "react-router-dom";
+import StyledButton from "../../components/button";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
-import StyledButton from "../../components/button";
-
 // import InfoModal from "./InfoModal";
 import { StyledItem } from "./Media.css";
-import { deleteMedias, getMedia } from "./actions";
-import { MediaNode } from "../../../__generated__/gqlTypes";
+import StyledSection from "../../components/section";
+import config from "../../../config";
+import moment from "moment";
+import { notify } from "react-notify-toast";
+import { uploadFile } from "../../server/util";
 
 const itemsPerPage = 12;
 
@@ -222,7 +221,7 @@ class Media extends Component<IMMediaProps, IMediaState> {
                 <label htmlFor={"checkbox-" + media.id} />
               </div>
               <StyledGridItem
-                image={config.baseName + media.url}
+                image={media.url}
                 title={media.name || ""}
                 href="#"
                 line2={moment(media.createdAt).format("MMM Do YYYY")}

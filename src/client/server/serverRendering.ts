@@ -3,6 +3,7 @@ import { QUERY_SETTINGS } from "../../shared/queries/Queries";
 import { SettingsQuery } from "../../__generated__/gqlTypes";
 import { TypeSettings } from "../types";
 import apolloClient from "../../shared/apolloClient";
+import config from "../../config";
 import { dispatcher } from "./dispatcher";
 import fs from "fs";
 import { getFile } from "./../../config/db.config";
@@ -10,6 +11,7 @@ import logger from "../../shared/logger";
 import models from "../../api/models";
 import { seed } from "../../api/seed/seed";
 
+const { pathname } = new URL(config.API_URL);
 const serverRendering = (app: Express) => {
   app.get("*", async (req, res, next) => {
     if (!hasDatabase()) {
@@ -19,7 +21,7 @@ const serverRendering = (app: Express) => {
         console.error(e);
       }
     }
-    if (req.url === "/graphql") return next();
+    if (req.url === pathname) return next();
     if (req.url.indexOf("/static") === 0) return next();
 
     const isStatic = req.get("static") ? true : false;

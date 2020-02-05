@@ -40,5 +40,5 @@ const RenderGrid: React.FC<any> = ({ data, setSelection }) => {
 export default RenderGrid;
 
 function getCoverImage(cover_image) {
-  return cover_image ? config.baseName + cover_image : "/admin/images/post.png";
+  return cover_image ? cover_image : "/admin/images/post.png";
 }

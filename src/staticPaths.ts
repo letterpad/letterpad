@@ -2,7 +2,7 @@ import config from "./config";
 import express from "express";
 import { getDirectories } from "./shared/dir";
 
-const base = config.baseName.length > 0 ? config.baseName : "";
+const base = config.BASE_NAME.length > 0 ? config.BASE_NAME : "";
 
 /**
  * Make the below folders static

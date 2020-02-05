@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import moment from "moment";
+
 import PropTypes from "prop-types";
-import styled from "styled-components";
 import config from "../../../config";
+import moment from "moment";
+import styled from "styled-components";
 
 const StyledItem = styled.article`
   .post-thumbnail {
@@ -32,7 +33,7 @@ export default class MediaItem extends Component<any, any> {
     return (
       <StyledItem className={classes} onClick={this.onMediaSelected}>
         <div className="post-thumbnail">
-          <img src={config.baseName + this.props.media.url} />
+          <img src={this.props.media.url} />
         </div>
         <div className="post-body with-border">
           <div className="post-header hide">

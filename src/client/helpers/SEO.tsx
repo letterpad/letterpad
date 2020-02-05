@@ -47,7 +47,7 @@ const getMetaTags = ({
 
   return metaTags;
 };
-const mainUrl = config.baseName;
+const mainUrl = config.BASE_NAME;
 
 const SEO = (props: any) => (
   <Helmet

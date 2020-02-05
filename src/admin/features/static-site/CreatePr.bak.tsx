@@ -21,7 +21,7 @@ class CreatePr extends Component {
     this.pullRequestStatus.current.textContent = "";
     const pointer = "<span style='color: var(--color-base)'>-</span>";
     const reader = await this.props.sendRequest(
-      `${config.baseName}/admin/create-pull-request`,
+      `${config.BASE_NAME}/admin/create-pull-request`,
     );
 
     const readStream = reader => {

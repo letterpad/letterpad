@@ -15,9 +15,9 @@ export const clientOpts = {
 };
 
 export default (app: Express) => {
-  app.get(config.baseName + "/admin/generateStaticSite", generateStaticSite);
-  app.get(config.baseName + "/admin/create-pull-request", createPR);
-  app.get(config.baseName + "/admin/getThemes", getThemes);
-  app.get(config.baseName + "/admin/*", getHtml);
-  app.get(config.baseName + "/initial-setup", setupLetterpad);
+  app.get(config.BASE_NAME + "/admin/generateStaticSite", generateStaticSite);
+  app.get(config.BASE_NAME + "/admin/create-pull-request", createPR);
+  app.get(config.BASE_NAME + "/admin/getThemes", getThemes);
+  app.get(config.BASE_NAME + "/admin/*", getHtml);
+  app.get(config.BASE_NAME + "/initial-setup", setupLetterpad);
 };

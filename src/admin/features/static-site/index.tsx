@@ -90,7 +90,7 @@ const CreateStatic: React.FC<IStaticProps> = () => {
   };
 
   const canGenerate = (window as any).NODE_ENV === "production";
-  const preview = config.baseName + "/static/" + getHostName();
+  const preview = config.BASE_NAME + "/static/" + getHostName();
 
   return (
     <StyledSection>
@@ -156,7 +156,7 @@ function chunkToJSON(chunk: any): IParsedChunk {
 }
 
 function getReader() {
-  const url = `${config.baseName}/admin/generateStaticSite`;
+  const url = `${config.BASE_NAME}/admin/generateStaticSite`;
   const options = {
     headers: {
       "Content-Type": "application/json",

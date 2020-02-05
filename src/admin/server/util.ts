@@ -1,18 +1,19 @@
 import {
-  ThemesQuery,
-  Theme,
-  UpdateThemesMutation,
-  InsertThemesMutation,
-  ThemeSettingsUiInputTypes,
-} from "../../__generated__/gqlTypes";
-import config from "../../config";
-import { QUERY_THEMES } from "../../shared/queries/Queries";
-import {
   INSERT_THEME_SETTINGS,
   UPDATE_THEME_SETTINGS,
 } from "../../shared/queries/Mutations";
-import utils from "../../shared/util";
+import {
+  InsertThemesMutation,
+  Theme,
+  ThemeSettingsUiInputTypes,
+  ThemesQuery,
+  UpdateThemesMutation,
+} from "../../__generated__/gqlTypes";
+
+import { QUERY_THEMES } from "../../shared/queries/Queries";
 import apolloClient from "../../shared/apolloClient";
+import config from "../../config";
+import utils from "../../shared/util";
 
 interface IUploadFileProps {
   files: FileList;
@@ -28,7 +29,7 @@ export const uploadFile = ({ files, type }: IUploadFileProps) => {
     data.append("file", files[i]);
   }
 
-  return fetch(config.uploadUrl, {
+  return fetch(config.UPLOAD_URL, {
     method: "post",
     body: data,
     headers: {

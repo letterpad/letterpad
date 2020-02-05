@@ -1,5 +1,6 @@
 import Sequelize from "sequelize";
 import { UnauthorizedError } from "../utils/common";
+import config from "../../config";
 import { editPostPerm } from "../utils/permissions";
 
 export default {
@@ -28,8 +29,11 @@ export default {
         }
       }
       conditions.order = [["id", "DESC"]];
-      console.log("conditions :", conditions);
       const result = await models.Media.findAndCountAll(conditions);
+      result.rows = result.rows.map(item => {
+        item.url = config.BASE_NAME + item.url;
+        return item;
+      });
       return {
         count: result.count,
         rows: result.rows,

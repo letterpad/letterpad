@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
-import apolloClient from "../../../shared/apolloClient";
+import { IAuthor } from "../../../types/types";
+import PropTypes from "prop-types";
 import { QUERY_AUTHOR } from "../../../shared/queries/Queries";
 import StyledDropdown from "../../components/dropdown";
+import apolloClient from "../../../shared/apolloClient";
 import config from "../../../config";
-import { IAuthor } from "../../../types/types";
 
 interface IUserProps {
   author: IAuthor;
@@ -51,7 +51,7 @@ class User extends Component<IUserProps, IUserState> {
       <div>
         <img
           src={
-            config.baseName +
+            config.BASE_NAME +
             (this.state.author.avatar || "/admin/images/avatar.png")
           }
           className="avatar"
@@ -66,7 +66,7 @@ class User extends Component<IUserProps, IUserState> {
             const onClick = e => {
               e.preventDefault();
               close(e, false);
-              window.location.href = config.baseName + "/admin/login";
+              window.location.href = "/admin/login";
             };
             return (
               <ul>

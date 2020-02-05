@@ -16,6 +16,7 @@ import { Express, Response } from "express";
 import { fileLoader, mergeResolvers, mergeTypes } from "merge-graphql-schemas";
 
 import { ApolloServer } from "apollo-server-express";
+import config from "../config";
 import constants from "./utils/constants";
 import logger from "../shared/logger";
 import middlewares from "./middlewares";
@@ -67,11 +68,11 @@ const server = new ApolloServer({
   context: context,
 });
 
-const endpoint = `${process.env.baseName}/graphql`;
+const { pathname } = new URL(config.API_URL);
 
 export default async (app: Express) => {
   middlewares(app);
-  server.applyMiddleware({ app, path: endpoint });
+  server.applyMiddleware({ app, path: pathname });
 
-  app.use("/upload", upload);
+  app.use(config.UPLOAD_URL, upload);
 };
