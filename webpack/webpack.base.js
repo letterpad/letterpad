@@ -70,7 +70,7 @@ module.exports = (args, name) => {
           baseName: "process.env.baseName",
         },
       }),
-      new FileNameReplacementPlugin(args.theme),
+
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
     ],
 
