@@ -34,8 +34,8 @@ export const getHtml = (data: IProps) => {
 
   let devBundles = [
     `${process.env.baseName}/static/hot-reload-bundle.js`,
-    `${process.env.baseName}static/src/public/js/vendor-bundle.js`,
-    `${process.env.baseName}static/src/client/themes/${theme}/public/dist/client-bundle.js`,
+    `${process.env.baseName}/static/src/public/js/vendor-bundle.js`,
+    `${process.env.baseName}/static/src/client/themes/${theme}/public/dist/client-bundle.js`,
   ];
   const prodBundles = [
     `${process.env.baseName}/js/vendor-bundle.min.js`,
