@@ -35,11 +35,12 @@ export const getHtml = (data: IProps) => {
   let devBundles = [
     "static/hot-reload-bundle.js",
     "static/src/public/js/vendor-bundle.js",
-    "static/src/client/themes/" + theme + "/public/dist/client-bundle.js",
+    `static/src/public/js/client-${theme}-bundle.js`,
   ];
   const prodBundles = [
     "/js/vendor-bundle.min.js",
     theme + "/dist/client-bundle.min.js",
+    `dist/public/js/client-${theme}-bundle.min.js`,
   ];
   const bundles = isDev ? devBundles : prodBundles;
 

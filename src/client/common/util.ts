@@ -10,7 +10,7 @@ export const util = {
    * @returns {string || null }
    */
   getThemeFileContents: function(theme, filename) {
-    const filePath = path.resolve(__dirname, "../themes", theme, filename);
+    const filePath = path.join(require.resolve(theme), filename);
     if (fs.existsSync(filePath)) {
       return fs.readFileSync(filePath);
     }

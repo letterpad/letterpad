@@ -8,6 +8,8 @@
     "generateTypes": "node ./utils/generateTypes.js",
     "build": "tsc --build tsconfig.build.json && webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.prod.js --env.theme=${theme}",
     "build:theme": "webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.theme.prod.js --env.theme=${theme}",
+    "prebuild:theme-hugo": "cp -r themes/letterpad-theme-hugo/src themes/letterpad-theme-hugo/dist/",
+    "build:theme-hugo": "tsc -p themes/letterpad-theme-hugo/tsconfig.json",
     "build:admin": "webpack --env.NODE_ENV=production --colors --display-error-details --config webpack/webpack.admin.prod.js",
     "seed": "ts-node ./src/api/seed",
     "api": "NODE_ENV=dev concurrently --kill-others \"nodemon -e ts,json,js --watch ./src/api ./src/start.ts\"",
@@ -17,8 +19,7 @@
     "static": "NODE_ENV=production & MODE=static concurrently \"node ./server.js\"",
     "test": "NODE_ENV=test jest --runInBand",
     "translate": "node ./utils/translation_tools",
-    "precommit": "./utils/precommit.sh",
-    "preinstall": "./utils/preinstall.sh"
+    "precommit": "./utils/precommit.sh"
   },
   "env": {
     "jest": true
@@ -31,7 +32,8 @@
   "license": "MIT",
   "homepage": "http://ajaxtown.com",
   "workspaces": [
-    "src/client/themes/*"
+    "themes/*",
+    "src"
   ],
   "private": true,
   "dependencies": {

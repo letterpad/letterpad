@@ -1,14 +1,19 @@
 import { EnumContentType, TypeSettings } from "./types";
 
-import Home from "./containers/Home";
+import {
+  Home,
+  NotFound,
+  Posts,
+  SinglePage,
+  SinglePost,
+} from "../themeSelector";
+
 import { IRoutes } from "./ClientApp";
 import LayoutConnector from "./LayoutConnector";
-import NotFound from "./containers/NotFound";
-import Posts from "./containers/Posts";
+
 import { RouteProps } from "react-router";
-import Search from "./containers/Search";
-import SinglePage from "./containers/SinglePage";
-import SinglePost from "./containers/SinglePost";
+import { Search } from "../themeSelector";
+
 import apolloClient from "../shared/apolloClient";
 
 interface IRouteProps extends RouteProps {

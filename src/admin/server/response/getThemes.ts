@@ -8,9 +8,9 @@ import { IThemeConfig } from "../../../types/types";
 import { getDirectories } from "../../../shared/dir";
 import config from "../../../config";
 import { syncThemeSettings } from "../util";
-import { getDirPath } from "../../../dir";
+import path from "path";
 
-const themesDir = getDirPath("client/themes");
+const themesDir = path.join("../../../../themes");
 export const getThemes = async (req: Request, res: Response) => {
   try {
     const currentTheme = await getCurrentTheme(req);

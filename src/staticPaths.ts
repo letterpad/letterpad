@@ -22,7 +22,7 @@ const staticPaths = app => {
   app.use(base + "/static", express.static("letterpad-static"));
 
   // Every theme has a public directory for its assets. So we need to expose that.
-  getDirectories(__dirname + "/client/themes/").map((themePath: string) => {
+  getDirectories(__dirname + "../themes/").map((themePath: string) => {
     // get the theme folder name
     const theme = themePath.split("/").pop();
     // expose the public folder. This can be accessed as /theme-name/css/style.css

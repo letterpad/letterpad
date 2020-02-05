@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { RouteComponentProps } from "react-router";
 
-import Layout from "./containers/Layout";
+import { Layout } from "../themeSelector";
 import config from "../config";
 import { IRouteProps, IThemeContainer } from "./types";
 

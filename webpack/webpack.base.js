@@ -36,7 +36,7 @@ module.exports = (args, name) => {
     },
     entry: {
       [source + "/public/js/vendor"]: vendorFiles,
-      [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
+      [source + "/public/js/client-" + args.theme]: [
         path.join(__dirname, "../src/client/Run"),
       ],
       [source + "/admin/public/dist/admin"]: [
