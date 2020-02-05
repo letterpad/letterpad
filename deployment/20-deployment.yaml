@@ -28,7 +28,7 @@ spec:
             - name: ROOT_URL
               value: http://ajaxtown.com
             - name: baseName
-              value: ""
+              value: "/kube"
           volumeMounts:
             - mountPath: /letterpad/data
               name: sqlite-data
