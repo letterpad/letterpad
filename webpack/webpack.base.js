@@ -17,7 +17,6 @@ module.exports = (args, name) => {
     source = "src";
     env = "development";
   }
-  console.log(env);
   const config = {
     mode: env, // for production we use this mode to ignore uglify plugin. it is slow.
     watch: isDev,

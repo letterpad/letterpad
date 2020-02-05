@@ -21,7 +21,6 @@ const serverRendering = (app: Express) => {
         console.error(e);
       }
     }
-    console.log(req.url, pathname);
     if (req.url === pathname) return next();
     if (req.url.indexOf("/static") === 0) return next();
 

@@ -29,7 +29,6 @@ export default {
         }
       }
       conditions.order = [["id", "DESC"]];
-      console.log("conditions :", conditions);
       const result = await models.Media.findAndCountAll(conditions);
       result.rows = result.rows.map(item => {
         item.url = config.BASE_NAME + item.url;

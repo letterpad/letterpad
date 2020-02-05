@@ -1,12 +1,12 @@
-import React from "react";
-import { translate } from "react-i18next";
 import Card from "../../components/card";
-import StyledList from "../../components/list";
+import { QUERY_STATS } from "../../../shared/queries/Queries";
+import React from "react";
+import { StatsQuery } from "../../../__generated__/gqlTypes";
 import StyledIcon from "../../components/icon";
 import StyledLink from "../../components/link";
+import StyledList from "../../components/list";
+import { translate } from "react-i18next";
 import { useQuery } from "react-apollo";
-import { QUERY_STATS } from "../../../shared/queries/Queries";
-import { StatsQuery } from "../../../__generated__/gqlTypes";
 
 interface IStatsProps {
   t: (name: string) => string;
@@ -16,7 +16,6 @@ const Stats: React.FC<IStatsProps> = ({ t }) => {
   const { loading, data } = useQuery<StatsQuery>(QUERY_STATS, {
     fetchPolicy: "no-cache",
   });
-  console.log("loading, data :", loading, data);
   return (
     <Card title={t("home.stats")} subtitle={t("home.stats.tagline")}>
       {loading ? (
