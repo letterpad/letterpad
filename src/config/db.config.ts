@@ -1,6 +1,6 @@
 const path = require("path");
 
-const getFile = name => {
+export const getFile = name => {
   const dbFile = name + ".sqlite";
   return path.join(__dirname, "../../data/", dbFile);
 };

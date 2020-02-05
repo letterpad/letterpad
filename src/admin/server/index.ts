@@ -6,6 +6,7 @@ import { getHtml } from "./response/sendHtml";
 import { getThemes } from "./response/getThemes";
 import { generateStaticSite } from "./response/generateStaticSite";
 import { createPR } from "./response/createPullRequest";
+import { setupLetterpad } from "../setup";
 import config from "../../config";
 
 export const clientOpts = {
@@ -18,4 +19,5 @@ export default (app: Express) => {
   app.get(config.baseName + "/admin/create-pull-request", createPR);
   app.get(config.baseName + "/admin/getThemes", getThemes);
   app.get(config.baseName + "/admin/*", getHtml);
+  app.get(config.baseName + "/initial-setup", setupLetterpad);
 };

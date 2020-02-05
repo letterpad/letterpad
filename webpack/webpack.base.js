@@ -35,7 +35,7 @@ module.exports = (args, name) => {
       hash: false,
     },
     entry: {
-      // [source + "/public/js/vendor"]: vendorFiles,
+      [source + "/public/js/vendor"]: vendorFiles,
       [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
         path.join(__dirname, "../src/client/Run"),
       ],
@@ -63,10 +63,7 @@ module.exports = (args, name) => {
       new webpack.DefinePlugin({
         "process.env": {
           NODE_ENV: JSON.stringify(env),
-        },
-      }),
-      new webpack.DefinePlugin({
-        "process.env": {
+          ROOT_URL: "process.env.ROOT_URL",
           apiUrl: "process.env.apiUrl",
           uploadUrl: "process.env.uploadUrl",
           appPort: "process.env.appPort",

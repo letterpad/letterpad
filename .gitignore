@@ -26,3 +26,4 @@ letterpad-static
 dist/*
 public/*
 .bin
+vendor-zip*

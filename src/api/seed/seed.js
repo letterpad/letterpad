@@ -71,6 +71,8 @@ export const seed = async (dbModels, autoExit = true) => {
   console.timeEnd("insert posts, settings, media");
   if (autoExit) {
     process.exit(0);
+  } else {
+    return null;
   }
 };
 
@@ -129,7 +131,7 @@ export async function insertRolePermData(models) {
 }
 
 export async function insertAuthor(models) {
-  return models.Author.bulkCreate([
+  return await models.Author.bulkCreate([
     {
       fname: "John",
       lname: "Dave",
@@ -141,7 +143,7 @@ export async function insertAuthor(models) {
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
-      roleId: 1,
+      RoleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar: "/admin/images/avatar.png",
@@ -157,7 +159,7 @@ export async function insertAuthor(models) {
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
-      roleId: 1,
+      RoleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar: "/admin/images/avatar.png",
@@ -212,13 +214,15 @@ export async function insertTaxonomy(models) {
 
 export async function insertPost(params, models, categories, tags) {
   // get author  // 1 or 2
+  const { md, html } = generatePost();
+
   const randomAuthorId = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
   let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
   const slug = params.title.toLocaleLowerCase().replace(/ /g, "-");
   let post = await models.Post.create({
     title: Faker.company.catchPhrase(),
-    html: generatePost(),
-    md: "# hello world",
+    md: md,
+    html: html,
     excerpt: Faker.lorem.sentences(4),
     cover_image: params.cover_image,
     authorId: randomAuthorId,

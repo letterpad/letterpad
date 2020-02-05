@@ -24,8 +24,8 @@ export const generateStaticAssets = async (req, res) => {
     const staticFolder = path.join(__dirname, "../../letterpad-static");
     deleteFolderRecursive(staticFolder);
     await scrape({
-      urls: [process.env.rootUrl],
-      urlFilter: url => url.startsWith(process.env.rootUrl), // Filter links to other websites
+      urls: [process.env.ROOT_URL],
+      urlFilter: url => url.startsWith(process.env.ROOT_URL), // Filter links to other websites
       recursive: true,
       maxRecursiveDepth: 10,
       filenameGenerator: "bySiteStructure",

@@ -14,12 +14,13 @@ try {
   );
 }
 
-import express from "express";
-import bodyParser from "body-parser";
+import { AddressInfo } from "net";
 import adminServer from "./admin/server";
 import apiServer from "./api/server";
+import bodyParser from "body-parser";
 import clientServerRendering from "./client/server/serverRendering";
-import { AddressInfo } from "net";
+import { conn } from "./api/models";
+import express from "express";
 import staticPaths from "./staticPaths";
 
 const app = express();
@@ -81,6 +82,7 @@ staticPaths(app);
 adminServer(app);
 clientServerRendering(app);
 apiServer(app);
+
 const server = app.listen(process.env.appPort, function() {
   const addressInfo = server.address() as AddressInfo;
   const host = addressInfo.address;

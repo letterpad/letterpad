@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import SEO from "./helpers/SEO";
-import { hot } from "react-hot-loader";
 /*!------------------------------------------------------------------
 [View Containers-]
 */
@@ -59,4 +58,4 @@ class ClientApp extends Component<IRoutes, {}> {
   }
 }
 
-export default hot(module)(ClientApp);
+export default ClientApp;

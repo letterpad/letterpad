@@ -4,10 +4,21 @@ import { SettingsQuery } from "../../__generated__/gqlTypes";
 import { TypeSettings } from "../types";
 import apolloClient from "../../shared/apolloClient";
 import { dispatcher } from "./dispatcher";
+import fs from "fs";
+import { getFile } from "./../../config/db.config";
 import logger from "../../shared/logger";
+import models from "../../api/models";
+import { seed } from "../../api/seed/seed";
 
 const serverRendering = (app: Express) => {
   app.get("*", async (req, res, next) => {
+    if (!hasDatabase()) {
+      try {
+        await seed(models, false);
+      } catch (e) {
+        console.error(e);
+      }
+    }
     if (req.url === "/graphql") return next();
     if (req.url.indexOf("/static") === 0) return next();
 
@@ -42,3 +53,13 @@ const serverRendering = (app: Express) => {
 };
 
 export default serverRendering;
+
+function hasDatabase() {
+  if (process.env.DB_TYPE === "sqlite") {
+    if (!fs.existsSync(getFile("letterpad"))) {
+      return false;
+    }
+  }
+  return true;
+  // check for other databases
+}
