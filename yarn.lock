@@ -4734,7 +4734,7 @@ copy-dir@^1.2.0:
   resolved "https://registry.yarnpkg.com/copy-dir/-/copy-dir-1.2.0.tgz#d2634378186d8762769285b36efb307a7945964e"
   integrity sha512-UeaUFUIHqGV4brjQ9bY2mHll/hoxyCak2emgmYG72LkGKABHBdBDKFw0H5nTKt5OzVBkBhkxCwnniJBAE7EGEw==
 
-copy-webpack-plugin@^5.0.4:
+copy-webpack-plugin@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-5.1.1.tgz#5481a03dea1123d88a988c6ff8b78247214f0b88"
   integrity sha512-P15M5ZC8dyCjQHWwd4Ia/dm0SgVvZJMYeykVIVYXbGyqO4dWB5oyPHp9i7wjwo5LhtlhKbiBCdS2NvM07Wlybg==

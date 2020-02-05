@@ -3,6 +3,7 @@ const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const fs = require("fs");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const clientConfig = args => {
   if (args.theme == "") {
@@ -16,7 +17,46 @@ const clientConfig = args => {
       path: path.join(__dirname, "../dist"),
       filename: "[name]-bundle.min.js",
     },
-    plugins: [extractPcss, extractPcssAdmin],
+    plugins: [
+      extractPcss,
+      extractPcssAdmin,
+      new CopyPlugin([
+        {
+          from: __dirname + "/../src/admin/public",
+          to: __dirname + "/../dist/admin/public",
+          force: true,
+        },
+        {
+          from: __dirname + "/../src/api/schema",
+          to: __dirname + "/../dist/api/schema",
+          force: true,
+        },
+        {
+          from: __dirname + "/../src/public",
+          to: __dirname + "/../dist/public",
+          force: true,
+        },
+        {
+          from: __dirname + "/../src/admin/server/response/content.tpl",
+          to: __dirname + "/../dist/admin/server/response/content.tpl",
+        },
+        {
+          from: __dirname + "/../src/client/template.tpl",
+          to: __dirname + "/../dist/client/template.tpl",
+        },
+        {
+          from: __dirname + "/../src/api/seed/uploads",
+          to: __dirname + "/../dist/api/seed/uploads",
+        },
+        {
+          from: __dirname + "/../src/client/themes/**/public/**",
+          to: __dirname + "/..",
+          transformPath(targetPath) {
+            return targetPath.replace("src", "dist");
+          },
+        },
+      ]),
+    ],
     module: {
       rules: [
         {

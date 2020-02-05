@@ -61,8 +61,8 @@ cp -rf sample.env vendor-zip
 # zip the folder
 zip -r vendor-zip{.zip,}
 
-# curl -X POST -L \
-#     -F "metadata={name : 'vendor-zip.zip'};type=application/json;charset=UTF-8" \
-#     -F "artifact=@vendor-zip.zip;type=application/zip" \
-#     -F 'data={"key":"", "domain":"ajaxtown.com"}' \
-#     "http://ajaxtown.com/deploy" 
+curl -X POST -L \
+    -F "metadata={name : 'vendor-zip.zip'};type=application/json;charset=UTF-8" \
+    -F "artifact=@vendor-zip.zip;type=application/zip" \
+    -F 'data={"key":"abcd1234", "domain":"ajaxtown.com"}' \
+    "http://ajaxtown.com/deploy" 
