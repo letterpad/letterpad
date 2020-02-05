@@ -52,7 +52,7 @@ export const getHtml = (data: IProps) => {
   // get the styles only in production. for dev, it will be injected by webpack
   const styleLinks = isDev
     ? ""
-    : prepareStyleTags(theme + "/dist/client.min.css");
+    : prepareStyleTags(host + "/" + theme + "/dist/client.min.css");
 
   // check if the theme has defined any html template
   const themeTemplateBuffer = util.getThemeFileContents(theme, "template.tpl");
