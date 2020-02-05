@@ -1,10 +1,41 @@
+import config from "../../config";
 import { requiresAdmin } from "../utils/permissions";
 import utils from "../../shared/util";
 
+const host = config.ROOT_URL + config.BASE_NAME;
+
+function getMenuWithSanitizedSlug(menu) {
+  const parsedMenu = JSON.parse(menu);
+  const menuWithSanitizedSlug = parsedMenu.map((item, i) => {
+    let to = "/posts/" + item.slug;
+
+    if (item.type === "page") {
+      to = "/page/" + item.slug;
+    }
+    item.slug = to;
+
+    if (i === 0) {
+      item.title = "Home";
+      item.slug = "/";
+    }
+    return item;
+  });
+  return JSON.stringify(menuWithSanitizedSlug);
+}
+
 export default {
   Query: {
-    settings: (root, args, { models }) => {
-      return models.Setting.findAll({ where: args });
+    settings: async (root, args, { models }) => {
+      const settings = await models.Setting.findAll({ where: args });
+      return settings.map(item => {
+        if (item.option === "banner") {
+          item.value = host + item.value;
+        }
+        if (item.option === "menu") {
+          item.value = getMenuWithSanitizedSlug(item.value);
+        }
+        return item;
+      });
     },
   },
   Mutation: {

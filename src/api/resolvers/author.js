@@ -1,9 +1,13 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import { parseErrors, makeUrl } from "../../shared/util";
-import { requiresAdmin } from "../utils/permissions";
+import { makeUrl, parseErrors } from "../../shared/util";
+
 import SendMail from "../utils/mail";
+import bcrypt from "bcryptjs";
+import config from "../../config";
 import { getEmailBody } from "../utils/common";
+import jwt from "jsonwebtoken";
+import { requiresAdmin } from "../utils/permissions";
+
+const host = config.ROOT_URL + config.BASE_NAME + "/";
 
 export default {
   Query: {
@@ -11,11 +15,18 @@ export default {
       const author = await models.Author.findOne({ where: args });
       if (author) {
         author.social = JSON.parse(author.dataValues.social);
+        author.avatar = host + author.avatar;
       }
       return author;
     },
 
-    authors: (root, args, { models }) => models.Author.findAll({ where: args }),
+    authors: async (root, args, { models }) => {
+      const authors = await models.Author.findAll({ where: args });
+      return authors.map(author => {
+        author.avatar = host + author.avatar;
+        return author;
+      });
+    },
 
     me: (req, args, { user, models }) =>
       models.Author.findOne({ where: { id: user.id } }),

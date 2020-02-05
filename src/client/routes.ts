@@ -41,7 +41,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
             : EnumContentType.PAGE,
         ...commonProps,
       }),
-      path: ["/", "/home/page/:page_no"],
+      path: ["/", "/dev/", "/home/page/:page_no"],
     },
     {
       exact: true,

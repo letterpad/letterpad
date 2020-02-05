@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
+
 import SEO from "./helpers/SEO";
+import { ThemeSettings } from "../__generated__/gqlTypes";
+import { TypeSettings } from "./types";
+import getRoutes from "./routes";
+
 /*!------------------------------------------------------------------
 [View Containers-]
 */
-
-import { ThemeSettings } from "../__generated__/gqlTypes";
-
-import { TypeSettings } from "./types";
-import getRoutes from "./routes";
 
 export interface IRoutes {
   initialData: {
@@ -44,14 +44,16 @@ class ClientApp extends Component<IRoutes, {}> {
           settings={settings}
         />
         <Switch>
-          {routes.map((route, i) => (
-            <Route
-              key={i}
-              exact
-              path={route.path}
-              component={route.component}
-            />
-          ))}
+          {routes.map((route, i) => {
+            return (
+              <Route
+                key={i}
+                exact
+                path={route.path}
+                component={route.component}
+              />
+            );
+          })}
         </Switch>
       </div>
     );

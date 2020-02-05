@@ -33,7 +33,7 @@ class LazyImage extends Component<ILazyImageProps, { loaded: boolean }> {
     const isStatic = this.context ? this.context.isStatic : false;
 
     if (!this.state.loaded) {
-      let src = config.baseName + "/uploads/loading.jpg";
+      let src = config.BASE_NAME + "/uploads/loading.jpg";
       if (isStatic) {
         src = this.props.src;
       }

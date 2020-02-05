@@ -1,15 +1,13 @@
 import React, { Component } from "react";
-import { translate, WithNamespaces } from "react-i18next";
+import { WithNamespaces, translate } from "react-i18next";
 
-import StyledInput from "../../components/input";
-import StyledButton from "../../components/button";
-
-import ModalHoc from "../../components/modal";
 import Loader from "../../components/loader";
-import config from "../../../config";
-
-import StyledInfoModal from "./InfoModal.css";
 import { Media } from "../../../__generated__/gqlTypes";
+import ModalHoc from "../../components/modal";
+import StyledButton from "../../components/button";
+import StyledInfoModal from "./InfoModal.css";
+import StyledInput from "../../components/input";
+import config from "../../../config";
 
 interface IEditMediaInfoProps extends WithNamespaces {
   media: Media;
@@ -87,7 +85,7 @@ class EditMediaInfo extends Component<IEditMediaInfoProps, any> {
   };
 
   render() {
-    const url = config.baseName + this.props.media.url;
+    const url = this.props.media.url;
     const { t } = this.props;
     return (
       <StyledInfoModal>

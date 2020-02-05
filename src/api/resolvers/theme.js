@@ -25,7 +25,6 @@ export default {
     updateThemes: requiresAdmin.createResolver(
       async (root, args, { models }) => {
         const { settings, name } = args;
-        console.log("args===================> :", args);
         const result = await models.Theme.update(
           { settings: JSON.stringify(settings) },
           { where: { name } },

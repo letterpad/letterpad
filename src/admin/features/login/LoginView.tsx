@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import util from "../../../shared/util";
-import apolloClient from "../../../shared/apolloClient";
-import config from "../../../config";
 import {
-  LOGIN_QUERY,
-  FORGOT_PASSWORD_QUERY,
-  // RESET_PASSWORD_QUERY,
-} from "../../../shared/queries/Mutations";
-import {
-  Container,
   Block,
   Brand,
+  Button,
+  Container,
   InputBlock,
   RememberMeBlock,
-  Button,
 } from "./LoginView.css";
+import {
+  FORGOT_PASSWORD_QUERY,
+  LOGIN_QUERY,
+} from "../../../shared/queries/Mutations";
 import Notifications, { notify } from "react-notify-toast";
+import React, { Component } from "react";
+
+import apolloClient from "../../../shared/apolloClient";
+import config from "../../../config";
+import util from "../../../shared/util";
 
 class LoginView extends Component<any, any> {
   state = {
@@ -98,7 +98,7 @@ class LoginView extends Component<any, any> {
         <Brand>
           <img
             width="150"
-            src={config.baseName + "/uploads/logo.png"}
+            src={"/uploads/logo.png"}
             alt={this.props.settings.site_title.value}
           />
         </Brand>

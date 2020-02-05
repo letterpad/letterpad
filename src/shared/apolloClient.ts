@@ -8,7 +8,7 @@ import fetch from "isomorphic-fetch";
 import { onError } from "apollo-link-error";
 
 const httpLink = createHttpLink({
-  uri: config.apiUrl,
+  uri: config.API_URL,
   fetch: fetch,
 });
 
@@ -60,7 +60,7 @@ const errorLink = onError(({ networkError }) => {
     "statusCode" in networkError &&
     networkError.statusCode === 401
   ) {
-    window.location.href = config.baseName + "/admin/login";
+    window.location.href = config.BASE_NAME + "/admin/login";
   }
 });
 

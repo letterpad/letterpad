@@ -83,7 +83,7 @@ adminServer(app);
 clientServerRendering(app);
 apiServer(app);
 
-const server = app.listen(process.env.appPort, function() {
+const server = app.listen(process.env.APP_PORT, function() {
   const addressInfo = server.address() as AddressInfo;
   const host = addressInfo.address;
   const port = addressInfo.port;
@@ -97,6 +97,6 @@ function configureEnvironment() {
   // Heroku automatically starts the node server with the port defined
   // in the environment variable.
   if (process.env.NODE_HOME === "/app/.heroku/node") {
-    process.env.appPort = process.env.PORT;
+    process.env.APP_PORT = process.env.PORT;
   }
 }

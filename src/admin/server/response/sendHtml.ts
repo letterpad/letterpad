@@ -1,5 +1,7 @@
-import * as path from "path";
 import * as fs from "fs";
+import * as path from "path";
+
+import config from "../../../config";
 import utils from "../../../shared/util";
 
 const isProd = process.env.NODE_ENV === "production";
@@ -17,14 +19,10 @@ const styleLinks = !isDev
 export const getHtml = (_req, res) => {
   // replace template variables with values and return the html markup
   const content = utils.templateEngine(getTemplate(), {
+    ...config,
     STYLE_TAGS: styleLinks,
     INITIAL_STATE: initialState,
     NODE_ENV: process.env.NODE_ENV,
-    ROOT_URL: process.env.ROOT_URL,
-    API_URL: process.env.ROOT_URL + "/graphql",
-    UPLOAD_URL: process.env.ROOT_URL + "/upload",
-    APP_PORT: process.env.appPort,
-    BASE_NAME: process.env.baseName,
     SCRIPT_TAGS: scripts,
   });
 
@@ -32,14 +30,15 @@ export const getHtml = (_req, res) => {
 };
 
 function getBundles() {
+  const host = config.ROOT_URL + config.BASE_NAME + "/";
   const devBundles = [
-    "/static/hot-reload-bundle.js",
-    "/static/src/public/js/vendor-bundle.js",
-    "/static/src/admin/public/dist/admin-bundle.js",
+    host + "static/hot-reload-bundle.js",
+    host + "static/src/public/js/vendor-bundle.js",
+    host + "static/src/admin/public/dist/admin-bundle.js",
   ];
   const prodBundles = [
-    "/js/vendor-bundle.min.js",
-    "/admin/dist/admin-bundle.min.js",
+    host + "js/vendor-bundle.min.js",
+    host + "admin/dist/admin-bundle.min.js",
   ];
   return isDev ? devBundles : prodBundles;
 }

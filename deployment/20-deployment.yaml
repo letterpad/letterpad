@@ -27,7 +27,7 @@ spec:
           env:
             - name: ROOT_URL
               value: http://ajaxtown.com
-            - name: baseName
+            - name: BASE_NAME
               value: "/kube"
           volumeMounts:
             - mountPath: /letterpad/data

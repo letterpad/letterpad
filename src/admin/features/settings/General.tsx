@@ -1,13 +1,13 @@
-import React, { useState, createRef } from "react";
-import { translate, WithNamespaces } from "react-i18next";
-import styled from "styled-components";
-import { notify } from "react-notify-toast";
-
-import { uploadFile } from "../../server/util";
 import Input, { TextArea } from "../../components/input";
-import StyledSelect from "../../components/select";
+import React, { createRef, useState } from "react";
 import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
+import { WithNamespaces, translate } from "react-i18next";
+
+import StyledSelect from "../../components/select";
 import config from "../../../config";
+import { notify } from "react-notify-toast";
+import styled from "styled-components";
+import { uploadFile } from "../../server/util";
 
 const ImageWrapper = styled.div`
   margin-top: 15px;
@@ -153,7 +153,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
             </a>
           ) : (
             <div className="logo-image">
-              <img width="100" alt="" src={config.baseName + site_logo} />
+              <img width="100" alt="" src={site_logo} />
               <a
                 href="#"
                 onClick={e => {
@@ -191,7 +191,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
             </a>
           ) : (
             <div className="banner-image">
-              <img width="300" alt="" src={config.baseName + banner} />
+              <img width="300" alt="" src={banner} />
               <a
                 href="#"
                 onClick={e => {
