@@ -366,7 +366,11 @@ const postresolver = {
     }),
   },
   Post: {
-    author: post => post.getAuthor(),
+    author: async post => {
+      const author = await post.getAuthor();
+      author.avatar = host + author.avatar;
+      return author;
+    },
     taxonomies: async post => {
       const taxonomies = await post.getTaxonomies();
       return taxonomies.map(item => {
