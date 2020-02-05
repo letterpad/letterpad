@@ -22,5 +22,5 @@ export default {
     typeof window !== "undefined"
       ? (window as any).appPort
       : process.env.appPort,
-  baseName: baseName,
+  baseName: baseName || "",
 };
