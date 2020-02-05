@@ -17,7 +17,8 @@
     "static": "NODE_ENV=production & MODE=static concurrently \"node ./server.js\"",
     "test": "NODE_ENV=test jest --runInBand",
     "translate": "node ./utils/translation_tools",
-    "precommit": "./utils/precommit.sh"
+    "precommit": "./utils/precommit.sh",
+    "preinstall": "./utils/preinstall.sh"
   },
   "env": {
     "jest": true
