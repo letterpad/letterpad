@@ -63,6 +63,11 @@ module.exports = (args, name) => {
       new webpack.DefinePlugin({
         "process.env": {
           NODE_ENV: JSON.stringify(env),
+          ROOT_URL: "process.env.ROOT_URL",
+          apiUrl: "process.env.apiUrl",
+          uploadUrl: "process.env.uploadUrl",
+          appPort: "process.env.appPort",
+          baseName: "process.env.baseName",
         },
       }),
       new FileNameReplacementPlugin(args.theme),
