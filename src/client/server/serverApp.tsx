@@ -27,8 +27,6 @@ import ssrFetch from "./ssrFetch";
 
 const serverApp = async (props: IServerRenderProps) => {
   const { requestUrl, client, settings, isStatic } = props;
-  console.log("process.env.NODE_ENV :", process.env.NODE_ENV);
-  console.log(config);
   const opts = {
     location: requestUrl,
     context: {},
