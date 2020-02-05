@@ -38,9 +38,10 @@ jobs:
       - name: Post to google cloud
         run: |
           curl -X POST -L \
-          -F "metadata={name : 'vendor-zip.zip'};type=application/json;charset=UTF-8" \
-          -F "artifact=@vendor-zip.zip;type=application/zip" \
-          "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart"
+            -F "metadata={name : 'vendor-zip.zip'};type=application/json;charset=UTF-8" \
+            -F "artifact=@vendor-zip.zip;type=application/zip" \
+            -F 'data={"key":"${{ secrets.DEPLOY_TOKEN }}", "domain":"ajaxtown.com"}' \
+            "http://ajaxtown.com/deploy"
       - uses: montudor/action-zip@v0.1.0
         with:
           args: zip -qq -r ./vendor-zip/vendor.zip ./vendor-zip
