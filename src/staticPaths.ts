@@ -1,5 +1,5 @@
-import express from "express";
 import config from "./config";
+import express from "express";
 import { getDirectories } from "./shared/dir";
 
 const base = config.baseName.length > 0 ? config.baseName : "";
@@ -13,11 +13,9 @@ const base = config.baseName.length > 0 ? config.baseName : "";
  */
 const staticPaths = app => {
   // Expose the root public folder.
-  app.use(base, express.static("src/public"));
-  app.use(base, express.static("dist/public"));
+  app.use(base, express.static(__dirname + "/public"));
 
   // Expose the admin/public folder.
-  app.use(base + "/admin/", express.static(__dirname + "/admin/public"));
   app.use(base + "/admin/", express.static(__dirname + "/admin/public"));
 
   // Expose the static folder for static site

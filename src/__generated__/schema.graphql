@@ -67,7 +67,7 @@ type Query {
   media(filters: MediaFilters): MediaNode!
   
   # Used to query a single post
-  post(filters: SinglePostFilters): Post!
+  post(filters: SinglePostFilters): Post
   
   # Used to query a collection of posts
   posts(filters: PostFilters): PostNode!

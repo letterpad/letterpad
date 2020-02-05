@@ -1,11 +1,11 @@
-import React from "react";
-import { hydrate } from "react-dom";
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
-import client from "../shared/apolloClient";
 import ClientApp from "./ClientApp";
-import config from "../config";
+import React from "react";
 import { TypeSettings } from "./types";
+import client from "../shared/apolloClient";
+import config from "../config";
+import { hydrate } from "react-dom";
 
 declare global {
   interface Window {
@@ -29,7 +29,7 @@ if (window.__INITIAL_DATA__) {
 
 const LetterpadClient = (
   <BrowserRouter basename={config.baseName}>
-    <ApolloProvider client={client()}>
+    <ApolloProvider client={client(false)}>
       <ClientApp initialData={initialData} />
     </ApolloProvider>
   </BrowserRouter>

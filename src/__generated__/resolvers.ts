@@ -399,7 +399,7 @@ export type Query = {
   validateToken?: Maybe<CreateAuthorResponse>,
   media: MediaNode,
   /** Used to query a single post */
-  post: Post,
+  post?: Maybe<Post>,
   /** Used to query a collection of posts */
   posts: PostNode,
   adjacentPosts?: Maybe<AdjacentPosts>,
@@ -677,6 +677,8 @@ export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   info: GraphQLResolveInfo
 ) => Maybe<TTypes>;
 
+export type isTypeOfResolverFn = (obj: any, info: GraphQLResolveInfo) => boolean;
+
 export type NextResolverFn<T> = () => Promise<T>;
 
 export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
@@ -808,6 +810,7 @@ export type ResolversParentTypes = {
 export type AdjacentPostsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['AdjacentPosts'] = ResolversParentTypes['AdjacentPosts']> = {
   previous?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>,
   next?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type AuthorResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = {
@@ -820,17 +823,20 @@ export type AuthorResolvers<ContextType = Context, ParentType extends ResolversP
   role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>,
   bio?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type AuthorResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['AuthorResponse'] = ResolversParentTypes['AuthorResponse']> = {
   ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   errors?: Resolver<Maybe<Array<ResolversTypes['Error']>>, ParentType, ContextType>,
   data?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type CreateAuthorResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['CreateAuthorResponse'] = ResolversParentTypes['CreateAuthorResponse']> = {
   ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   errors?: Resolver<Maybe<Array<ResolversTypes['Error']>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
@@ -839,22 +845,26 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export type DeleteResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['DeleteResponse'] = ResolversParentTypes['DeleteResponse']> = {
   ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type EditTaxResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['EditTaxResponse'] = ResolversParentTypes['EditTaxResponse']> = {
   ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   errors?: Resolver<Maybe<Array<ResolversTypes['Error']>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type ErrorResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Error'] = ResolversParentTypes['Error']> = {
   path?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type ForgotPasswordResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['ForgotPasswordResponse'] = ResolversParentTypes['ForgotPasswordResponse']> = {
   ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   msg?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type LoginResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['LoginResponse'] = ResolversParentTypes['LoginResponse']> = {
@@ -862,6 +872,7 @@ export type LoginResponseResolvers<ContextType = Context, ParentType extends Res
   token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   data?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType>,
   errors?: Resolver<Maybe<Array<ResolversTypes['Error']>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type MediaResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Media'] = ResolversParentTypes['Media']> = {
@@ -871,11 +882,13 @@ export type MediaResolvers<ContextType = Context, ParentType extends ResolversPa
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type MediaNodeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['MediaNode'] = ResolversParentTypes['MediaNode']> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   rows?: Resolver<Array<ResolversTypes['Media']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -903,6 +916,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 export type PermissionResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Permission'] = ResolversParentTypes['Permission']> = {
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type PostResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
@@ -920,21 +934,25 @@ export type PostResolvers<ContextType = Context, ParentType extends ResolversPar
   publishedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
   updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
   taxonomies?: Resolver<Array<ResolversTypes['Taxonomy']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type PostNodeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PostNode'] = ResolversParentTypes['PostNode']> = {
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   rows?: Resolver<Array<ResolversTypes['Post']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type PostStatusResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PostStatus'] = ResolversParentTypes['PostStatus']> = {
   published?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   drafts?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type PostTaxonomyNodeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PostTaxonomyNode'] = ResolversParentTypes['PostTaxonomyNode']> = {
   count?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   rows?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -943,7 +961,7 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   me?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType>,
   validateToken?: Resolver<Maybe<ResolversTypes['CreateAuthorResponse']>, ParentType, ContextType>,
   media?: Resolver<ResolversTypes['MediaNode'], ParentType, ContextType, QueryMediaArgs>,
-  post?: Resolver<ResolversTypes['Post'], ParentType, ContextType, QueryPostArgs>,
+  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, QueryPostArgs>,
   posts?: Resolver<ResolversTypes['PostNode'], ParentType, ContextType, QueryPostsArgs>,
   adjacentPosts?: Resolver<Maybe<ResolversTypes['AdjacentPosts']>, ParentType, ContextType, QueryAdjacentPostsArgs>,
   search?: Resolver<Maybe<ResolversTypes['SearchOutput']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'filters'>>,
@@ -958,18 +976,21 @@ export type ResponseResolvers<ContextType = Context, ParentType extends Resolver
   ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>,
   errors?: Resolver<Maybe<Array<ResolversTypes['Error']>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type RoleResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Role'] = ResolversParentTypes['Role']> = {
   id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   name?: Resolver<Maybe<ResolversTypes['EnumRoles']>, ParentType, ContextType>,
   permissions?: Resolver<Maybe<Array<Maybe<ResolversTypes['Permission']>>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type SearchOutputResolvers<ContextType = Context, ParentType extends ResolversParentTypes['SearchOutput'] = ResolversParentTypes['SearchOutput']> = {
   ok?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
   count?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   rows?: Resolver<Maybe<Array<Maybe<ResolversTypes['SearchResult']>>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type SearchResultResolvers<ContextType = Context, ParentType extends ResolversParentTypes['SearchResult'] = ResolversParentTypes['SearchResult']> = {
@@ -978,12 +999,14 @@ export type SearchResultResolvers<ContextType = Context, ParentType extends Reso
   excerpt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   publishedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
   slug?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type SettingResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Setting'] = ResolversParentTypes['Setting']> = {
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   option?: Resolver<ResolversTypes['SettingOptions'], ParentType, ContextType>,
   value?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type StatsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Stats'] = ResolversParentTypes['Stats']> = {
@@ -991,6 +1014,7 @@ export type StatsResolvers<ContextType = Context, ParentType extends ResolversPa
   pages?: Resolver<Maybe<ResolversTypes['PostStatus']>, ParentType, ContextType>,
   tags?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   categories?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type TaxonomyResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Taxonomy'] = ResolversParentTypes['Taxonomy']> = {
@@ -999,11 +1023,13 @@ export type TaxonomyResolvers<ContextType = Context, ParentType extends Resolver
   type?: Resolver<ResolversTypes['TaxonomyTypes'], ParentType, ContextType>,
   desc?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type ThemeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Theme'] = ResolversParentTypes['Theme']> = {
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   settings?: Resolver<Array<ResolversTypes['ThemeSettings']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type ThemeSettingsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['ThemeSettings'] = ResolversParentTypes['ThemeSettings']> = {
@@ -1017,6 +1043,7 @@ export type ThemeSettingsResolvers<ContextType = Context, ParentType extends Res
   selectedValue?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   label?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   helpText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type TypeSocialResolvers<ContextType = Context, ParentType extends ResolversParentTypes['TypeSocial'] = ResolversParentTypes['TypeSocial']> = {
@@ -1024,11 +1051,13 @@ export type TypeSocialResolvers<ContextType = Context, ParentType extends Resolv
   facebook?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   twitter?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   instagram?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type UpdateResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['UpdateResponse'] = ResolversParentTypes['UpdateResponse']> = {
   ok?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
   errors?: Resolver<Maybe<Array<Maybe<ResolversTypes['Error']>>>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn,
 };
 
 export type Resolvers<ContextType = Context> = {

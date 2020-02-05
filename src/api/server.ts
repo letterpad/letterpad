@@ -60,6 +60,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   formatError: error => {
+    console.log("error.message :", error.message);
     logger.error(error.message, error.extensions, error, JSON.stringify(error));
     return error;
   },
@@ -68,7 +69,7 @@ const server = new ApolloServer({
 
 const endpoint = `${process.env.baseName}/graphql`;
 
-export default (app: Express) => {
+export default async (app: Express) => {
   middlewares(app);
   server.applyMiddleware({ app, path: endpoint });
 

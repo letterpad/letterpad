@@ -1,19 +1,22 @@
-import { IRoutes } from "./ClientApp";
+import { EnumContentType, TypeSettings } from "./types";
+
 import Home from "./containers/Home";
+import { IRoutes } from "./ClientApp";
+import LayoutConnector from "./LayoutConnector";
+import NotFound from "./containers/NotFound";
 import Posts from "./containers/Posts";
+import { RouteProps } from "react-router";
+import Search from "./containers/Search";
 import SinglePage from "./containers/SinglePage";
 import SinglePost from "./containers/SinglePost";
-import Search from "./containers/Search";
-import NotFound from "./containers/NotFound";
-import LayoutConnector from "./LayoutConnector";
 import apolloClient from "../shared/apolloClient";
-import { TypeSettings, EnumContentType } from "./types";
-import { RouteProps } from "react-router";
 
 interface IRouteProps extends RouteProps {
   component: RouteProps["component"] & {
     getInitialProps?: ({ match, req, res, client }: any) => Promise<any>;
   };
+  exact: boolean;
+  path: string | string[];
 }
 
 const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
@@ -21,8 +24,9 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
   const { themeSettings } = args;
   const home = getHomeSlug(settings);
 
+  const isAdmin = false;
   const commonProps = {
-    client: apolloClient(),
+    client: apolloClient(isAdmin),
     settings,
     themeSettings,
     initialProps: args.initialProps,
