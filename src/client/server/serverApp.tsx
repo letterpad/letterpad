@@ -7,24 +7,27 @@
  * This file will return a promise
  */
 const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
-import React from "react";
-import { Helmet } from "react-helmet";
-import { StaticRouter } from "react-router";
-import { ApolloProvider } from "react-apollo";
-import { renderToStringWithData } from "react-apollo";
-import config from "../../config";
+
 import ClientApp, { IRoutes } from "../ClientApp";
-import { StaticContext } from "../Context";
-import { ThemesQuery, ThemeSettings } from "../../__generated__/gqlTypes";
+import { IServerRenderProps, TypeSettings } from "../types";
+import { ThemeSettings, ThemesQuery } from "../../__generated__/gqlTypes";
+
+import { ApolloProvider } from "react-apollo";
+import { Helmet } from "react-helmet";
 import { QUERY_THEMES } from "../../shared/queries/Queries";
+import React from "react";
+import { StaticContext } from "../Context";
+import { StaticRouter } from "react-router";
 import apolloClient from "../../shared/apolloClient";
-import { TypeSettings, IServerRenderProps } from "../types";
-import logger from "../../shared/logger";
-import ssrFetch from "./ssrFetch";
+import config from "../../config";
 import { getMatchedRouteData } from "./helper";
+import logger from "../../shared/logger";
+import { renderToStringWithData } from "react-apollo";
+import ssrFetch from "./ssrFetch";
 
 const serverApp = async (props: IServerRenderProps) => {
   const { requestUrl, client, settings, isStatic } = props;
+  logger.debug("config", config);
   const opts = {
     location: requestUrl,
     context: {},
@@ -83,7 +86,7 @@ export default serverApp;
 async function getThemeSettings(
   settings: TypeSettings,
 ): Promise<ThemeSettings[] | []> {
-  const client = apolloClient();
+  const client = apolloClient(false);
   let themeSettings: ThemeSettings[] | [] = [];
   try {
     const themeResult = await client.query<ThemesQuery>({

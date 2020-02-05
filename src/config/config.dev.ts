@@ -1,8 +1,9 @@
-const rootUrl = "http://localhost:4040";
+const ROOT_URL = "http://localhost:4040";
 
 export default {
   appPort: 4040,
-  apiUrl: rootUrl + "/graphql",
-  uploadUrl: rootUrl + "/upload",
+  ROOT_URL: ROOT_URL,
+  apiUrl: ROOT_URL + "/graphql",
+  uploadUrl: ROOT_URL + "/upload",
   baseName: "",
 };

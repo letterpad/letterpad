@@ -13,13 +13,13 @@
     <script>
         window.__APOLLO_STATE__ = {{INITIAL_STATE}};
         window.NODE_ENV = "{{NODE_ENV}}";
-        window.rootUrl = "{{ROOT_URL}}";
+        window.ROOT_URL = "{{ROOT_URL}}";
         window.apiUrl = "{{API_URL}}";
         window.uploadUrl = "{{UPLOAD_URL}}";
         window.appPort = {{APP_PORT}};
         window.baseName = "{{BASE_NAME}}";
     </script>
-        
+
     {{SCRIPT_TAGS}}
     <link href="{{BASE_NAME}}/admin/css/prism-theme.css" rel="stylesheet"/>
     <link href="{{BASE_NAME}}/admin/css/font-awesome.min.css" rel="stylesheet"/>

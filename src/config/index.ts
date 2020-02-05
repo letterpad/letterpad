@@ -8,11 +8,11 @@ let currentEnv =
 
 if (!currentEnv) currentEnv = "test";
 
-const configFile =
-  ["dev", "test"].indexOf(currentEnv) >= 0 ? configDev : configProd;
+const configFile = currentEnv === "production" ? configProd : configDev;
 
 const config = {
   apiUrl: configFile.apiUrl,
+  ROOT_URL: configFile.ROOT_URL,
   uploadUrl: configFile.uploadUrl,
   appPort: configFile.appPort,
   defaultTitle: "Untitled",

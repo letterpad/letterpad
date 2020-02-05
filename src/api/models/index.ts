@@ -14,10 +14,15 @@ const env = process.env.NODE_ENV || "dev";
 const config = dbConfig[env];
 
 // establish  database connection
-const conn = new Sequelize(config.database, config.username, config.password, {
-  ...config,
-  dialect: config.dialect || "sqlite",
-});
+export const conn = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  {
+    ...config,
+    dialect: config.dialect || "sqlite",
+  },
+);
 
 export const modelsMap = {
   Theme: Theme.init(conn),

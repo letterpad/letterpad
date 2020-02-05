@@ -30,7 +30,7 @@
         window.__APOLLO_STATE__ = {{INITIAL_STATE}};
         window.__INITIAL_DATA__ = {{INITIAL_DATA}};
         window.NODE_ENV = "{{NODE_ENV}}";
-        window.rootUrl = "{{ROOT_URL}}";
+        window.ROOT_URL = "{{ROOT_URL}}";
         window.apiUrl = "{{API_URL}}";
         window.uploadUrl = "{{UPLOAD_URL}}";
         window.appPort = {{APP_PORT}};
@@ -43,11 +43,11 @@
         ga.l = +new Date();
         ga("create", "{{TRACKING_ID}}", "auto");
         ga("send", "pageview");
-        
 
-        
+
+
     </script>
-        
+
     {{SCRIPT_TAGS}}
     {{GA_SCRIPT_TAG}}
 </body>

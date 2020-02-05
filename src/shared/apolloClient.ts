@@ -1,10 +1,11 @@
-import { ApolloClient } from "apollo-client";
-import { createHttpLink } from "apollo-link-http";
 import { ApolloLink, from } from "apollo-link";
+
+import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { onError } from "apollo-link-error";
-import fetch from "isomorphic-fetch";
 import config from "../config";
+import { createHttpLink } from "apollo-link-http";
+import fetch from "isomorphic-fetch";
+import { onError } from "apollo-link-error";
 
 const httpLink = createHttpLink({
   uri: config.apiUrl,
