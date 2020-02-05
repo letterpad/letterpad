@@ -30,16 +30,16 @@ export const getHtml = (data: IProps) => {
     isStatic,
   } = data;
   const { htmlAttrs, metaTags } = getMetaTags(head);
-  const isDev = process.env.NODE_ENV === "dev";
+  const isDev = process.env.NODE_ENV !== "production";
 
   let devBundles = [
-    "static/hot-reload-bundle.js",
-    "static/src/public/js/vendor-bundle.js",
-    "static/src/client/themes/" + theme + "/public/dist/client-bundle.js",
+    `${process.env.baseName}/static/hot-reload-bundle.js`,
+    `${process.env.baseName}/static/src/public/js/vendor-bundle.js`,
+    `${process.env.baseName}/static/src/client/themes/${theme}/public/dist/client-bundle.js`,
   ];
   const prodBundles = [
-    "/js/vendor-bundle.min.js",
-    theme + "/dist/client-bundle.min.js",
+    `${process.env.baseName}/js/vendor-bundle.min.js`,
+    `${process.env.baseName}/${theme}/dist/client-bundle.min.js`,
   ];
   const bundles = isDev ? devBundles : prodBundles;
 
