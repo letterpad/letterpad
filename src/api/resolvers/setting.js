@@ -1,10 +1,17 @@
+import config from "../../config";
 import { requiresAdmin } from "../utils/permissions";
 import utils from "../../shared/util";
 
 export default {
   Query: {
-    settings: (root, args, { models }) => {
-      return models.Setting.findAll({ where: args });
+    settings: async (root, args, { models }) => {
+      const settings = await models.Setting.findAll({ where: args });
+      return settings.map(item => {
+        if (item.option === "banner") {
+          item.value = config.BASE_NAME + item.value;
+        }
+        return item;
+      });
     },
   },
   Mutation: {

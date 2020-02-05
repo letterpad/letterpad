@@ -13,7 +13,7 @@ import config from "../config";
 const isAdmin = true;
 
 const App = (
-  <BrowserRouter basename={config.baseName}>
+  <BrowserRouter basename={config.BASE_NAME}>
     <ApolloProvider client={client(isAdmin)}>
       <Routes />
     </ApolloProvider>

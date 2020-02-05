@@ -7,6 +7,7 @@ import {
 
 import Fuse from "fuse.js";
 import Sequelize from "sequelize";
+import config from "../../config";
 import { innertext } from "../utils/common";
 import memoryCache from "../utils/memoryCache";
 
@@ -164,6 +165,11 @@ const postresolver = {
           conditions.offset = (page - 1) * conditions.limit;
         }
         const result = await models.Post.findAndCountAll(conditions);
+        result.rows = result.rows.map(item => {
+          item.cover_image = config.BASE_NAME + item.cover_image;
+          item.slug = config.BASE_NAME + "/" + item.cover_image;
+          return item;
+        });
         return {
           count: result.count,
           rows: result.rows,
@@ -220,7 +226,7 @@ const postresolver = {
     /**
      * Query to handle a single post/page.
      */
-    post: checkDisplayAccess.createResolver((root, args, { models }) => {
+    post: checkDisplayAccess.createResolver(async (root, args, { models }) => {
       const conditions = { where: { ...args.filters } };
       if (args.filters.id) {
         conditions.where.id = args.filters.id;
@@ -228,7 +234,10 @@ const postresolver = {
       if (args.filters.slug) {
         conditions.where.slug = args.filters.slug;
       }
-      return models.Post.findOne(conditions);
+      const post = await models.Post.findOne(conditions);
+      post.cover_image = config.BASE_NAME + post.cover_image;
+      post.slug = config.BASE_NAME + "/" + post.cover_image;
+      return post;
     }),
     /**
      * Query to take care of adjacent posts.

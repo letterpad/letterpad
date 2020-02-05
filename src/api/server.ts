@@ -16,6 +16,7 @@ import { Express, Response } from "express";
 import { fileLoader, mergeResolvers, mergeTypes } from "merge-graphql-schemas";
 
 import { ApolloServer } from "apollo-server-express";
+import config from "../config";
 import constants from "./utils/constants";
 import logger from "../shared/logger";
 import middlewares from "./middlewares";
@@ -67,7 +68,7 @@ const server = new ApolloServer({
   context: context,
 });
 
-const endpoint = `${process.env.baseName}/graphql`;
+const endpoint = config.API_URL;
 
 export default async (app: Express) => {
   middlewares(app);

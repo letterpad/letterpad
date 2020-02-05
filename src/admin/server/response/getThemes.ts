@@ -30,7 +30,7 @@ export const getThemes = async (req: Request, res: Response) => {
         // check if it has a thumbnail without http
         if (themeConfig.thumbnail.indexOf("http") === -1) {
           themeConfig.thumbnail =
-            config.baseName + "/" + folder_name + themeConfig.thumbnail;
+            config.BASE_NAME + "/" + folder_name + themeConfig.thumbnail;
         }
         // check the theme has settings
         const hasSettings = fs.existsSync(themePath + "/settings.json");

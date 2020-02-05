@@ -14,8 +14,8 @@
         window.__APOLLO_STATE__ = {{INITIAL_STATE}};
         window.NODE_ENV = "{{NODE_ENV}}";
         window.ROOT_URL = "{{ROOT_URL}}";
-        window.apiUrl = "{{API_URL}}";
-        window.uploadUrl = "{{UPLOAD_URL}}";
+        window.API_URL = "{{API_URL}}";
+        window.UPLOAD_URL = "{{UPLOAD_URL}}";
         window.appPort = {{APP_PORT}};
         window.baseName = "{{BASE_NAME}}";
     </script>

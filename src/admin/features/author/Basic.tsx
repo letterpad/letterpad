@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { translate } from "react-i18next";
-import { notify } from "react-notify-toast";
+
 import StyledInput from "../../components/input";
 import StyledTitleHeader from "../../components/title-header";
-
-import { uploadFile } from "../../server/util";
 import config from "../../../config";
+import { notify } from "react-notify-toast";
+import { translate } from "react-i18next";
+import { uploadFile } from "../../server/util";
 
 class Basic extends Component<any, any> {
   uploadInputRef = React.createRef<HTMLInputElement>();
@@ -80,7 +80,7 @@ class Basic extends Component<any, any> {
           <label className="custom-label">Upload Avatar</label>
           <section className="avatar-wrapper">
             <section className="avatar-image">
-              <img alt="" src={config.baseName + avatar} />
+              <img alt="" src={avatar} />
             </section>
             {!this.state.avatar ? (
               <a

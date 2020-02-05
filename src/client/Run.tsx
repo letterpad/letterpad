@@ -28,7 +28,7 @@ if (window.__INITIAL_DATA__) {
 }
 
 const LetterpadClient = (
-  <BrowserRouter basename={config.baseName}>
+  <BrowserRouter basename={config.BASE_NAME}>
     <ApolloProvider client={client(false)}>
       <ClientApp initialData={initialData} />
     </ApolloProvider>

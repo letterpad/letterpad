@@ -1,18 +1,17 @@
+import { Author, AuthorsQuery } from "../../../__generated__/gqlTypes";
 import React, { useEffect, useState } from "react";
-import { translate, WithNamespaces } from "react-i18next";
+import { WithNamespaces, translate } from "react-i18next";
 
-import config from "../../../config";
 import Loader from "../../components/loader";
-
-import StyledSection from "../../components/section";
+import { QUERY_AUTHORS } from "../../../shared/queries/Queries";
+import { RouteComponentProps } from "react-router";
+import StyledAuthorList from "./AuthorList.css";
 import StyledButton from "../../components/button";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
-import StyledAuthorList from "./AuthorList.css";
-import { QUERY_AUTHORS } from "../../../shared/queries/Queries";
-import { RouteComponentProps } from "react-router";
+import StyledSection from "../../components/section";
 import apolloClient from "../../../shared/apolloClient";
-import { AuthorsQuery, Author } from "../../../__generated__/gqlTypes";
+import config from "../../../config";
 
 interface IAuthorListProps extends WithNamespaces {
   router: RouteComponentProps;
@@ -73,7 +72,7 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
                 return (
                   <StyledGridItem
                     key={author.email}
-                    image={config.baseName + author.avatar}
+                    image={author.avatar}
                     title={authorName}
                     href="#"
                     onClick={() => authorSelect(author.id || 0)}
