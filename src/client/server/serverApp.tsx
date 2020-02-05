@@ -62,7 +62,6 @@ const serverApp = async (props: IServerRenderProps) => {
       logger.debug("Matched route data: ", matchedRouteData);
       const initialProps = await ssrFetch(serverApp, context);
       const content = await renderToStringWithData(serverApp);
-      logger.debug("Found content => " + content);
       const initialState = client.extract();
       return {
         head: Helmet.renderStatic(),

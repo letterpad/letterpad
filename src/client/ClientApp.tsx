@@ -5,7 +5,6 @@ import SEO from "./helpers/SEO";
 import { ThemeSettings } from "../__generated__/gqlTypes";
 import { TypeSettings } from "./types";
 import getRoutes from "./routes";
-import logger from "../shared/logger";
 
 /*!------------------------------------------------------------------
 [View Containers-]
@@ -46,7 +45,6 @@ class ClientApp extends Component<IRoutes, {}> {
         />
         <Switch>
           {routes.map((route, i) => {
-            logger.debug("route.path => " + route.path);
             return (
               <Route
                 key={i}
