@@ -243,6 +243,7 @@ If you have any ideas on some interesting plugin, you can [post them here](https
     
 `,
     html: `
+<div class="lp-editor" id="letterpad-editor-container">
 <p>The letterpad editor is a high level API of the <a href="https://slatejs.org">slatejs</a> editor with a robust plugin architecture. It comes with a set of rich plugins (each plugin is a feature) which can be extended to build more complex features. The editor also has markdown capabilites which generates inline previews as you start writing in markdown. This page is editable and is the playground of this editor. The toolbars are visible when you select some text or in a new line.</p>
 <hr>
 <p>Letterpad editor uses the below technologies.</p>
@@ -262,7 +263,7 @@ If you have any ideas on some interesting plugin, you can [post them here](https
 <p><img src="https://i.ibb.co/DWvD3zm/3.jpg" alt="Street of some place"></p>
 <hr>
 <p>You can embed media. Lets embed a youtube video.</p>
-<iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" width="100%" height="400px" type="text/html" frameBorder="0" title="embed" loading="lazy" allowFullScreen="true" src="https://www.youtube.com/embed/JjJHOYIVO98?modestbranding=1" ></iframe>
+<iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" width="100%" height="400px" type="text/html" frameborder="0" title="embed" loading="lazy" allowfullscreen="true" src="https://www.youtube.com/embed/JjJHOYIVO98?modestbranding=1"></iframe>
 <p>You can also embed a <strong>souncloud track</strong> or a <strong>website</strong> or a <strong>gist</strong>. You can nicely highlight the words that need attention.</p>
 <hr>
 <p>Do you write code ? We have something for you.</p>
@@ -270,11 +271,11 @@ If you have any ideas on some interesting plugin, you can [post them here](https
 <span class="token keyword">import</span> <span class="token punctuation">{</span> render <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"react-dom"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> LetterpadEditor <span class="token keyword">from</span> <span class="token string">"letterpad-editor"</span><span class="token punctuation">;</span>
 
-<span class="token function">render</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>LetterpadEditor <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">,</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"app"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">render</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>LetterpadEditor <span class="token operator">/</span><span class="token operator">&gt;</span><span class="token punctuation">,</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"app"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 </code></pre>
 <p>And you can add gists like so.</p>
-<iframe width="100%" height="200px" frameBorder="0" src="data:text/html;base64,PGh0bWw+PGhlYWQ+PGJhc2UgdGFyZ2V0PSJfcGFyZW50Ij48c3R5bGU+KnsgZm9udC1zaXplOjEycHg7IH0gYm9keSB7IG1hcmdpbjogMDsgfSAuZ2lzdCAuYmxvYi13cmFwcGVyLmRhdGEgeyBtYXgtaGVpZ2h0OjE1MHB4OyBvdmVyZmxvdzphdXRvOyB9PC9zdHlsZT48L2hlYWQ+PGJvZHk+PHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0iaHR0cHM6Ly9naXN0LmdpdGh1Yi5jb20vZjZiMjM0ZGMxMGM0MmIzMmE1MDNiNTc0ZTNmYzZiNTguanMiPjwvc2NyaXB0PjwvYm9keT48L2h0bWw+" ></iframe>
+<iframe width="100%" height="200px" frameborder="0" src="data:text/html;base64,PGh0bWw+PGhlYWQ+PGJhc2UgdGFyZ2V0PSJfcGFyZW50Ij48c3R5bGU+KnsgZm9udC1zaXplOjEycHg7IH0gYm9keSB7IG1hcmdpbjogMDsgfSAuZ2lzdCAuYmxvYi13cmFwcGVyLmRhdGEgeyBtYXgtaGVpZ2h0OjE1MHB4OyBvdmVyZmxvdzphdXRvOyB9PC9zdHlsZT48L2hlYWQ+PGJvZHk+PHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0iaHR0cHM6Ly9naXN0LmdpdGh1Yi5jb20vZjZiMjM0ZGMxMGM0MmIzMmE1MDNiNTc0ZTNmYzZiNTguanMiPjwvc2NyaXB0PjwvYm9keT48L2h0bWw+"></iframe>
 <p>Headings look like this:</p>
 <h1>Heading 1</h1>
 <h2>Heading 2</h2>

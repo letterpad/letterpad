@@ -28,7 +28,7 @@ export default {
     settings: async (root, args, { models }) => {
       const settings = await models.Setting.findAll({ where: args });
       return settings.map(item => {
-        if (item.option === "banner") {
+        if (["banner", "logo"].includes(item.option)) {
           item.value = host + item.value;
         }
         if (item.option === "menu") {
