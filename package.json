@@ -53,7 +53,6 @@
     "disqus-react": "^1.0.6",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6-alpha.4",
-    "faker": "^4.1.0",
     "fuse.js": "^3.4.5",
     "graphql": "^14.5.4",
     "graphql-tag": "^2.10.1",

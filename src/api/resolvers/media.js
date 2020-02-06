@@ -52,7 +52,7 @@ export default {
 
     deleteMedia: editPostPerm.createResolver(async (root, args, { models }) => {
       await models.Media.destroy({
-        where: { id: { [Sequelize.Op.in]: args.ids.split(",").map(Number) } },
+        where: { id: { [Sequelize.Op.in]: args.ids.map(Number) } },
       });
       return {
         ok: true,

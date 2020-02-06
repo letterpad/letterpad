@@ -217,12 +217,15 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
             <Input
               label={t("common.slug")}
               placeholder="Enter a slug"
-              value={slug || ""}
+              value={
+                (slug && slug.replace("/tag/", "").replace("/category/", "")) ||
+                ""
+              }
               onChange={e => changeTaxonomyDetails(e, "slug")}
             />
             <TextArea
               label={t("common.description")}
-              placeholder={`Enter a short description about the ${slug} tag. This maybe used by some themes`}
+              placeholder={`Enter a short description about this taxonomy. This maybe used by some themes`}
               onChange={e => changeTaxonomyDetails(e, "desc")}
               value={desc || ""}
             />

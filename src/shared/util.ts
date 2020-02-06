@@ -1,5 +1,3 @@
-import config from "../config";
-
 const utils = {
   parseErrors: function parseErrors(errObj) {
     let result: Array<object> = [];
@@ -208,6 +206,14 @@ const utils = {
     }
 
     return getDelta(oldArray, newArray, key, isEqual);
+  },
+  debounce: <T extends Function>(cb: T, wait = 20) => {
+    let timeout: number = 0;
+    let callable = (...args: any) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => cb(...args), wait);
+    };
+    return <T>(<any>callable);
   },
 };
 export default utils;

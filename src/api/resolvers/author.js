@@ -7,7 +7,7 @@ import { getEmailBody } from "../utils/common";
 import jwt from "jsonwebtoken";
 import { requiresAdmin } from "../utils/permissions";
 
-const host = config.ROOT_URL + config.BASE_NAME + "/";
+const host = config.ROOT_URL + config.BASE_NAME;
 
 export default {
   Query: {

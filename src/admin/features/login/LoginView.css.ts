@@ -59,6 +59,10 @@ const applySecondaryContained = () => `
 
 export const Button = styled.button<IButtonProps>`
   background: ${p => p.contained && "#EEE"};
-
+  padding: 3px 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  margin-left: 13px;
+  border-radius: 3px;
   ${p => p.secondary && p.contained && applySecondaryContained()}
 `;

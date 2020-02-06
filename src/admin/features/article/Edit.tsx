@@ -3,19 +3,17 @@ import React, { Component } from "react";
 import { EventBusInstance } from "../../../shared/eventBus";
 import FileExplorerModal from "../modals/FileExplorerModal";
 import LetterpadEditor from "letterpad-editor";
-import MarkownIt from "markdown-it";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
 import StyledArticle from "./Article.css";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 import { UpdatePostMutation } from "../../../__generated__/gqlTypes";
 import client from "../../../shared/apolloClient";
+import config from "../../../config";
 import { createGlobalStyle } from "styled-components";
 import { uploadFile } from "../../server/util";
 
-const mdToHtml = MarkownIt();
-
-const sleep = (t: number) => new Promise(r => setTimeout(r, t));
+const host = config.ROOT_URL + config.BASE_NAME;
 
 class Edit extends Component<any, any> {
   postSaveTimer: number = 0;
@@ -72,7 +70,7 @@ class Edit extends Component<any, any> {
             md: postData.md,
             authorId: postData.authorId,
             excerpt: postData.excerpt,
-            cover_image: postData.cover_image,
+            cover_image: postData.cover_image.replace(host, ""),
             type: postData.type,
             status: postData.status,
             slug: postData.slug,
