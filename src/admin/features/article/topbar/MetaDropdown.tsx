@@ -19,12 +19,18 @@ interface IMetaDropdownProps {
 
 class MetaDropdown extends Component<IMetaDropdownProps, any> {
   state = {
-    post: this.props.post,
+    post: {
+      ...this.props.post,
+      cover_image: this.props.post.cover_image.replace(host, ""),
+    },
   };
 
   static getDerivedStateFromProps(newProps: IMetaDropdownProps) {
     return {
-      post: newProps.post,
+      post: {
+        ...newProps.post,
+        cover_image: newProps.post.cover_image.replace(host, ""),
+      },
     };
   }
 

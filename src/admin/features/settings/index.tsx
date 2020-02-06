@@ -1,23 +1,22 @@
 import React, { useState } from "react";
-import { notify } from "react-notify-toast";
-import { translate, WithNamespaces } from "react-i18next";
+import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
+import { WithNamespaces, translate } from "react-i18next";
 
+import Button from "../../components/button";
+import Css from "./Css";
 import General from "./General";
-import Social from "./Social";
-import Optional from "./Optional";
 import Messages from "./Messages";
-
+import Optional from "./Optional";
+import { RouteComponentProps } from "react-router";
+import Social from "./Social";
 import StyledSection from "../../components/section";
 import StyledTitleHeader from "../../components/title-header";
-import Button from "../../components/button";
 import Tabs from "../../components/tabs";
-
 import Themes from "./Themes";
-import Css from "./Css";
-import { RouteComponentProps } from "react-router";
-import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
-import apolloClient from "../../../shared/apolloClient";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
+import apolloClient from "../../../shared/apolloClient";
+import { notify } from "react-notify-toast";
+import utils from "../../../shared/util";
 
 interface ISettingsProps extends WithNamespaces {
   router: RouteComponentProps;
@@ -28,7 +27,7 @@ interface ISettingsProps extends WithNamespaces {
 type TypeUpdatedOptions = { [option in keyof typeof SettingOptions]?: string };
 
 // Type that the api expects
-type TypeAPIUpdatedOptions = { option: SettingOptions; value: string };
+type TypeAPIUpdatedOptions = { option: string; value: string };
 
 const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
   const urlParams = new URLSearchParams(router.history.location.search);
@@ -36,8 +35,11 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
   const [selectedTab] = useState<string>(urlParams.get("tab") || "general");
 
   const setOption = (option: SettingOptions, value: string) => {
+    const key = SettingOptions[getSettingsKey(option)];
+    if (settings[key].value === value) return;
     const newUpdates = { ...updatedOptions, [option]: value };
     setUpdatedOptions(newUpdates);
+    utils.debounce(submitData, 500)();
   };
 
   const handleTabChange = (page: string) => {
@@ -47,12 +49,12 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
     });
   };
 
-  const submitData = async (e: React.MouseEvent) => {
-    e.preventDefault();
+  const submitData = async (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
     const settings: TypeAPIUpdatedOptions[] = [];
     Object.keys(updatedOptions).forEach(option => {
       settings.push({
-        option: SettingOptions[option],
+        option: option,
         value: updatedOptions[option],
       });
     });
@@ -90,3 +92,12 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
 };
 
 export default translate("translations")(Settings);
+
+function getSettingsKey(key: string) {
+  for (let enumMember in SettingOptions) {
+    const isValueProperty = SettingOptions[enumMember];
+    if (isValueProperty === key) {
+      return enumMember;
+    }
+  }
+}
