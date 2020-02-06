@@ -22,7 +22,6 @@ const serverRendering = (app: Express) => {
       }
     }
     if (req.url === pathname) return next();
-    // if (req.url.indexOf("/upload") >= 0) return next();
     if (req.url.indexOf("/static") === 0) return next();
 
     const isStatic = req.get("static") ? true : false;
