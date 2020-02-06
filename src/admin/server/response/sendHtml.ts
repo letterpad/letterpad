@@ -8,12 +8,12 @@ const isProd = process.env.NODE_ENV === "production";
 const isDev = !isProd;
 
 const initialState = JSON.stringify({});
-
+const host = config.ROOT_URL + config.BASE_NAME + "/";
 // convert the bundles into <script ...></script>
 const scripts = utils.prepareScriptTags(getBundles());
 // get the styles only in production. for dev, it will be injected by webpack
 const styleLinks = !isDev
-  ? utils.prepareStyleTags("admin/dist/admin.min.css")
+  ? utils.prepareStyleTags(host + "admin/dist/admin.min.css")
   : "";
 
 export const getHtml = (_req, res) => {
@@ -30,7 +30,6 @@ export const getHtml = (_req, res) => {
 };
 
 function getBundles() {
-  const host = config.ROOT_URL + config.BASE_NAME + "/";
   const devBundles = [
     host + "static/hot-reload-bundle.js",
     host + "static/src/public/js/vendor-bundle.js",

@@ -37,7 +37,7 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
     const { loading, data } = await apolloClient().query<AuthorQuery>({
       query: QUERY_AUTHOR,
       variables: {
-        id: parseInt(router.match.params["id"]),
+        id: parseInt(router.match.params["id"]) || 1,
       },
     });
     const { author } = data;

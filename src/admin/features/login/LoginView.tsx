@@ -124,6 +124,11 @@ class LoginView extends Component<any, any> {
                 onChange={this.onPasswordChange}
                 value={this.state.password}
                 autoComplete="off"
+                onKeyUp={(e: React.KeyboardEvent) => {
+                  if (e.keyCode === 13) {
+                    this.login();
+                  }
+                }}
               />
             </InputBlock>
             <RememberMeBlock>
