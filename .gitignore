@@ -27,3 +27,4 @@ dist/*
 public/*
 .bin
 vendor-zip*
+utils/createArtifacts.sh
