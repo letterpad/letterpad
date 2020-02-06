@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-
-// import StyledGrid from "../../components/grid";
-import FileItem from "./FileItem";
-import InfiniteScrollList from "./InfiniteScrollList";
 import {
   Media,
   MediaNode,
   MediaQuery,
   MediaQueryVariables,
 } from "../../../__generated__/gqlTypes";
-import apolloClient from "../../../shared/apolloClient";
+import React, { Component } from "react";
+
+// import StyledGrid from "../../components/grid";
+import FileItem from "./FileItem";
+import InfiniteScrollList from "./InfiniteScrollList";
+import PropTypes from "prop-types";
 import { QUERY_MEDIA } from "../../../shared/queries/Queries";
+import apolloClient from "../../../shared/apolloClient";
+import styled from "styled-components";
 
 const StyledGrid = styled.div`
   > div {

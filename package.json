@@ -95,7 +95,7 @@
     "rimraf": "^3.0.0",
     "sequelize": "^5.18.4",
     "sequelize-cli": "^5.5.1",
-    "sharp": "^0.23.4",
+    "sharp": "^0.24.0",
     "sqlite3": "^4.1.1",
     "styled-components": "^4.4.1",
     "website-scraper": "^4.2.0"
