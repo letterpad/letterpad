@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import SortableTree, { removeNodeAtPath } from "react-sortable-tree";
-import { translate } from "react-i18next";
-import FileExplorerTheme from "react-sortable-tree-theme-full-node-drag";
 
+import FileExplorerTheme from "react-sortable-tree-theme-full-node-drag";
+import PropTypes from "prop-types";
 import Resources from "./Resources";
+import SortableWrapper from "./SortableWrapper.css";
 import StyledGrid from "../../components/grid";
 import StyledMenuTree from "./NavigationTreeBuilder.css";
-import SortableWrapper from "./SortableWrapper.css";
+import { translate } from "react-i18next";
 
 /**
  * Convert deeply nested menu array to Object, one level deep.
@@ -50,7 +50,7 @@ class NavigationTreeBuilder extends Component<any, any> {
     loaded: false,
     categories: [],
     pages: [],
-    items: [...JSON.parse(this.props.data.menu.value)],
+    items: normalizeSlugs([...JSON.parse(this.props.data.menu.value)]),
     folder: [
       {
         id: Date.now() + "-folder",
@@ -64,7 +64,7 @@ class NavigationTreeBuilder extends Component<any, any> {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    let menu = JSON.parse(nextProps.data.menu.value);
+    let menu = normalizeSlugs(JSON.parse(nextProps.data.menu.value));
     const menuIds = getMenuItems(menu);
 
     // Loop through the categories and add a key "disabled".
@@ -297,3 +297,10 @@ class NavigationTreeBuilder extends Component<any, any> {
 }
 
 export default translate("translations")(NavigationTreeBuilder);
+
+function normalizeSlugs(menu) {
+  return menu.map(item => {
+    item.slug = item.slug.replace("category/", "").replace("tag/", "");
+    return item;
+  });
+}

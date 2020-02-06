@@ -48,7 +48,9 @@ const StyledArticle = styled.article`
       width: 740px;
     }
   }
-
+  table {
+    color: var(--color-base);
+  }
   #letterpad-editor-container {
     background: transparent;
     width: 740px;

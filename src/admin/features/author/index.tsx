@@ -20,6 +20,7 @@ import {
 } from "../../../__generated__/gqlTypes";
 import { QUERY_AUTHOR } from "../../../shared/queries/Queries";
 import Loader from "../../components/loader";
+import utils from "../../../shared/util";
 
 interface ISettingsProps {
   router: RouteComponentProps;
@@ -37,7 +38,7 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
     const { loading, data } = await apolloClient().query<AuthorQuery>({
       query: QUERY_AUTHOR,
       variables: {
-        id: parseInt(router.match.params["id"]),
+        id: parseInt(router.match.params["id"]) || 1,
       },
     });
     const { author } = data;
@@ -60,8 +61,10 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
   }, []);
 
   const setOption = (option: string, value: string) => {
+    if (author[option] === value) return;
     const updated = { ...updatedAuthor, [option]: value };
     setUpdatedAuthor(updated);
+    utils.debounce(submitData, 500)();
   };
 
   const handleTabChange = (page: string) => {
@@ -71,8 +74,8 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
     });
   };
 
-  const submitData = async (e: React.MouseEvent) => {
-    e.preventDefault();
+  const submitData = async (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
     await apolloClient(true).mutate<UpdateAuthorMutation>({
       mutation: UPDATE_AUTHOR,
       variables: {

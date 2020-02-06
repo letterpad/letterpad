@@ -74,5 +74,5 @@ export default async (app: Express) => {
   middlewares(app);
   server.applyMiddleware({ app, path: pathname });
 
-  app.use(config.UPLOAD_URL, upload);
+  app.use("/upload", upload);
 };
