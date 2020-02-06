@@ -3,7 +3,10 @@ const { resizeImage } = require("./utils/resizeImage");
 const uploadDir = path.join(__dirname, "../public/uploads/");
 import models = require("./models/index");
 
+import fs from "fs";
+
 export default (req, res) => {
+  console.log("reached uploads");
   const uploadedFiles: any = [];
   let files = req.files.file;
   if (!Array.isArray(req.files.file)) {
@@ -14,26 +17,28 @@ export default (req, res) => {
     // resize this image
     const resizedBuffer = resizeImage(req.body.type, file.tempFilePath);
     // save the file
-    return resizedBuffer
-      .toFile(uploadDir + filename)
-      .catch(err => {
-        uploadedFiles.push({
-          src: "/uploads/" + filename,
-          errors: "Error while resizing the image",
-        });
-        console.log("Error while transforming the imagesize :", err);
-      })
-      .then(() => {
-        // store the urls of the uploaded asset to be sent back to the browser
-        uploadedFiles.push({
-          src: "/uploads/" + filename,
-          errors: null,
-        });
-        return {
-          authorId: req.user.id,
-          url: "/uploads/" + filename,
-        };
-      });
+    return (
+      resizedBuffer
+        // .toFile(uploadDir + filename)
+        .then(data => {
+          fs.writeFileSync(uploadDir + filename, data);
+          uploadedFiles.push({
+            src: "/uploads/" + filename,
+            errors: null,
+          });
+          return {
+            AuthorId: req.user.id,
+            url: "/uploads/" + filename,
+          };
+        })
+        .catch(err => {
+          uploadedFiles.push({
+            src: "/uploads/" + filename,
+            errors: "Error while resizing the image",
+          });
+          console.log("Error while transforming the imagesize :", err);
+        })
+    );
   });
   Promise.all(promises).then(filesToSave => {
     // store in database

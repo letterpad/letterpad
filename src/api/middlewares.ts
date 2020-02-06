@@ -1,8 +1,9 @@
-import { NextFunction, Request, Response, Express } from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
-import constants from "./utils/constants";
+import { Express, NextFunction, Request, Response } from "express";
+
 import { ITokenData } from "../types/types";
+import bodyParser from "body-parser";
+import constants from "./utils/constants";
+import cors from "cors";
 
 const fileUpload = require("express-fileupload");
 const jwt = require("jsonwebtoken");
