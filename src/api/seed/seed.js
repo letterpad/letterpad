@@ -1,4 +1,3 @@
-import Faker from "faker";
 import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
 import generatePost from "./contentGenerator";
@@ -11,8 +10,6 @@ import rimraf from "rimraf";
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
 const copydirAsync = promisify(copydir);
-
-Faker.locale = "en_US";
 
 // All paths are relative to this file
 const dataDir = "../../../data";
@@ -162,7 +159,7 @@ export async function insertAuthor(models) {
       RoleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
-      avatar: "/admin/images/avatar.png",
+      avatar: "/admin/images/avatar2.png",
     },
   ]);
 }
@@ -170,60 +167,34 @@ export async function insertAuthor(models) {
 export async function insertTaxonomy(models) {
   return models.Taxonomy.bulkCreate([
     {
-      name: "Travel",
+      name: "Uncategorised",
       type: "post_category",
-      slug: "travel",
+      slug: "uncategorised",
     },
     {
-      name: "Nature",
-      type: "post_category",
-      slug: "nature",
-    },
-    {
-      name: "Abstract",
-      type: "post_category",
-      slug: "abstract",
-    },
-    {
-      name: "sports",
+      name: "first-post",
       type: "post_tag",
-      slug: "sports",
-    },
-    {
-      name: "nature",
-      type: "post_tag",
-      slug: "nature",
-    },
-    {
-      name: "street",
-      type: "post_tag",
-      slug: "street",
-    },
-    {
-      name: "forest",
-      type: "post_tag",
-      slug: "forest",
-    },
-    {
-      name: "sky",
-      type: "post_tag",
-      slug: "sky",
+      slug: "first-post",
     },
   ]);
 }
 
 export async function insertPost(params, models, categories, tags) {
   // get author  // 1 or 2
-  const { md, html } = generatePost();
-
+  const { md, html } = generatePost(params.type);
+  let promises = [];
   const randomAuthorId = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
   let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
-  const slug = params.title.toLocaleLowerCase().replace(/ /g, "-");
+  const title =
+    params.type === "post" ? "Welcome to Letterpad" : "Letterpad Typography";
+  const slug = title.toLocaleLowerCase().replace(/ /g, "-");
+
   let post = await models.Post.create({
-    title: Faker.company.catchPhrase(),
+    title,
     md: md,
     html: html,
-    excerpt: Faker.lorem.sentences(4),
+    excerpt:
+      "You can use this space to write a small description about the topic. This will be helpful in SEO.",
     cover_image: params.cover_image,
     authorId: randomAuthorId,
     type: params.type,
@@ -233,13 +204,15 @@ export async function insertPost(params, models, categories, tags) {
     publishedAt: new Date(),
   });
 
-  const randomCategory = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
-
-  return Promise.all([
-    admin.addPost(post),
-    post.addTaxonomy(categories[randomCategory]),
-    ...tags.map(tag => post.addTaxonomy(tag)),
-  ]);
+  promises = [admin.addPost(post)];
+  if (params.type === "post") {
+    promises = [
+      ...promises,
+      post.addTaxonomy(categories[0]),
+      ...tags.map(tag => post.addTaxonomy(tag)),
+    ];
+  }
+  return Promise.all(promises);
 }
 
 export async function insertMedia(models) {
@@ -247,74 +220,16 @@ export async function insertMedia(models) {
     {
       url: "/uploads/1.jpg",
       authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
+      name: "Blueberries",
+      description:
+        "Write a description about this image. You never know how this image can break the internet",
     },
     {
       url: "/uploads/2.jpg",
       authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
-    },
-    {
-      url: "/uploads/3.jpg",
-      authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
-    },
-    {
-      url: "/uploads/4.jpg",
-      authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
-    },
-    {
-      url: "/uploads/5.jpg",
-      authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
-    },
-    {
-      url: "/uploads/6.jpg",
-      authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
-    },
-    {
-      url: "/uploads/7.jpg",
-      authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
-    },
-    {
-      url: "/uploads/8.jpg",
-      authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
-    },
-    {
-      url: "/uploads/9.jpg",
-      authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
-    },
-    {
-      url: "/uploads/10.jpg",
-      authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
-    },
-    {
-      url: "/uploads/11.jpg",
-      authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
-    },
-    {
-      url: "/uploads/12.jpg",
-      authorId: 1,
-      name: Faker.lorem.words(2),
-      description: Faker.lorem.sentences(2),
+      name: "I love the beach and its smell",
+      description:
+        "Write a description about this image. You never know how this image can break the internet",
     },
   ]);
 }
@@ -323,22 +238,15 @@ export async function insertSettings(models) {
   let menu = JSON.stringify([
     {
       id: 3,
-      title: "Abstract",
+      title: "Uncategorised",
       type: "category",
       disabled: true,
-      slug: "abstract",
-    },
-    {
-      id: 2,
-      title: "Nature",
-      type: "category",
-      disabled: true,
-      slug: "nature",
+      slug: "uncategorised",
     },
     {
       id: 11,
-      title: "Single Page",
-      slug: "about",
+      title: "Letterpad Typography",
+      slug: "letterpad-typography",
       type: "page",
       disabled: true,
     },

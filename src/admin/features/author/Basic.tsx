@@ -80,7 +80,7 @@ class Basic extends Component<any, any> {
           <label className="custom-label">Upload Avatar</label>
           <section className="avatar-wrapper">
             <section className="avatar-image">
-              <img alt="" src={avatar} />
+              <img width="80px" alt="" src={avatar} />
             </section>
             {!this.state.avatar ? (
               <a

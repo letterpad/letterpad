@@ -50,6 +50,7 @@ class User extends Component<IUserProps, IUserState> {
     const name = (
       <div>
         <img
+          width="80px"
           src={
             config.BASE_NAME +
             (this.state.author.avatar || "/admin/images/avatar.png")

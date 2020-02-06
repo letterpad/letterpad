@@ -40,7 +40,7 @@ const postresolver = {
           limit,
           query,
           cursor,
-          type,
+          type = "post",
           page,
         } = args.filters;
         if (category) {
@@ -236,9 +236,10 @@ const postresolver = {
         conditions.where.slug = args.filters.slug;
       }
       const post = await models.Post.findOne(conditions);
-      post.cover_image = host + post.cover_image;
-      post.slug = "/" + post.type + "/" + post.slug;
-
+      if (post) {
+        post.cover_image = host + post.cover_image;
+        post.slug = "/" + post.type + "/" + post.slug;
+      }
       return post;
     }),
     /**
