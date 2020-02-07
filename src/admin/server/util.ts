@@ -26,7 +26,7 @@ export const uploadFile = ({ files, type }: IUploadFileProps) => {
     data.append("type", type);
   }
   for (let i = 0; i < files.length; i++) {
-    data.append("file", files[i]);
+    data.append(`file`, files[i]);
   }
 
   return fetch(config.UPLOAD_URL, {
