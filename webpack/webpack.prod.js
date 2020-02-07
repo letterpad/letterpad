@@ -32,8 +32,8 @@ const clientConfig = args => {
           force: true,
         },
         {
-          from: __dirname + "/../src/public",
-          to: __dirname + "/../dist/public",
+          from: __dirname + "/../src/api/seed/uploads",
+          to: __dirname + "/../dist/public/uploads",
           force: true,
         },
         {
