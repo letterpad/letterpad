@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { translate, WithNamespaces } from "react-i18next";
-
-import Input from "../../components/input";
-
 import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
+import { WithNamespaces, translate } from "react-i18next";
+
+import { Container } from "../../components/switch";
+import Input from "../../components/input";
 
 interface IOptionalProps extends WithNamespaces {
   data: { [option in SettingOptions]: Setting };
@@ -26,10 +26,11 @@ const Optional: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
   return (
     <div>
       <div className="form-group">
-        <div className="switch-block">
+        <Container className="switch-block">
           <label className="custom-label">
             {t("settings.additional.displayAuthor")}
           </label>
+          &nbsp;&nbsp;&nbsp;
           <label className="switch">
             <input
               type="checkbox"
@@ -38,9 +39,9 @@ const Optional: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
             />
             <span className="slider round" />
           </label>
-        </div>
+        </Container>
       </div>
-
+      <br />
       <Input
         label={t("settings.additional.disqus")}
         defaultValue={data.disqus_id.value || ""}

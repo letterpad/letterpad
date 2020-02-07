@@ -1,8 +1,49 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const StyledSwitch: React.FC<any> = ({
+  onChange,
+  leftLabel,
+  rightLabel,
+  isSelected,
+}) => {
+  return (
+    <Container>
+      <span
+        className="switch-label switch-off-text"
+        onClick={() => onChange(false)}
+      >
+        {leftLabel}
+      </span>
+      <label className="switch">
+        <input
+          type="checkbox"
+          onChange={e => onChange(!!+e.target.checked)} // "false" to false
+          checked={isSelected}
+        />
+        <span className="slider round" />
+      </label>
+      <span
+        className="switch-label switch-on-text"
+        onClick={() => onChange(true)}
+      >
+        {rightLabel}
+      </span>
+    </Container>
+  );
+};
+
+StyledSwitch.propTypes = {
+  leftLabel: PropTypes.string.isRequired,
+  rightLabel: PropTypes.string.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+export default StyledSwitch;
+
+export const Container = styled.div`
   display: flex;
   align-items: center;
   .switch {
@@ -72,44 +113,3 @@ const Wrapper = styled.div`
     color: var(--color-text-secondary);
   }
 `;
-
-const StyledSwitch: React.FC<any> = ({
-  onChange,
-  leftLabel,
-  rightLabel,
-  isSelected,
-}) => {
-  return (
-    <Wrapper>
-      <span
-        className="switch-label switch-off-text"
-        onClick={() => onChange(false)}
-      >
-        {leftLabel}
-      </span>
-      <label className="switch">
-        <input
-          type="checkbox"
-          onChange={e => onChange(!!+e.target.checked)} // "false" to false
-          checked={isSelected}
-        />
-        <span className="slider round" />
-      </label>
-      <span
-        className="switch-label switch-on-text"
-        onClick={() => onChange(true)}
-      >
-        {rightLabel}
-      </span>
-    </Wrapper>
-  );
-};
-
-StyledSwitch.propTypes = {
-  leftLabel: PropTypes.string.isRequired,
-  rightLabel: PropTypes.string.isRequired,
-  isSelected: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
-
-export default StyledSwitch;
