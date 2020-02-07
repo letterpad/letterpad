@@ -1,18 +1,17 @@
+import { EditMediaWrapper, StyledItem } from "./Media.css";
 import React, { Component } from "react";
 import { WithNamespaces, translate } from "react-i18next";
-import { deleteMedias, getMedia } from "./actions";
+import { deleteMedias, getMedia, updateMedia } from "./actions";
 
 import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
+import InfoModal from "./InfoModal";
 import { MediaNode } from "../../../__generated__/gqlTypes";
 import Paginate from "../../components/pagination";
 import { RouteComponentProps } from "react-router-dom";
 import StyledButton from "../../components/button";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
-// import InfoModal from "./InfoModal";
-import { StyledItem } from "./Media.css";
 import StyledSection from "../../components/section";
-import config from "../../../config";
 import moment from "moment";
 import { notify } from "react-notify-toast";
 import { uploadFile } from "../../server/util";
@@ -100,9 +99,16 @@ class Media extends Component<IMMediaProps, IMediaState> {
   deleteSelectedMedia = async () => {
     if (this.state.checkedItems.length > 0) {
       await deleteMedias(this.state.checkedItems);
+      const rows = this.state.items.rows.filter(
+        item => !this.state.checkedItems.includes(item.id),
+      );
       this.setState({
         confirmDelete: false,
         checkedItems: [],
+        items: {
+          ...this.state.items,
+          rows: rows,
+        },
       });
     }
   };
@@ -175,7 +181,7 @@ class Media extends Component<IMMediaProps, IMediaState> {
 
   render() {
     const { t } = this.props;
-    const { checkedItems, items } = this.state;
+    const { checkedItems, items, displayInfo, selectedIndex } = this.state;
     const deleteCount = checkedItems.length;
 
     return (
@@ -210,7 +216,10 @@ class Media extends Component<IMMediaProps, IMediaState> {
         <br />
         <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
           {items.rows.map((media, idx) => (
-            <StyledItem key={media.id}>
+            <StyledItem
+              key={media.id}
+              checked={checkedItems.includes(media.id)}
+            >
               <div className="selection-box">
                 <input
                   type="checkbox"
@@ -246,16 +255,17 @@ class Media extends Component<IMMediaProps, IMediaState> {
             onClose={this.toggleDeleteModal}
           />
         )}
-        {/* {displayInfo && (
+        {displayInfo && (
           <EditMediaWrapper>
             <InfoModal
               media={items.rows[selectedIndex]}
               onClose={() => this.setState({ displayInfo: false })}
               next={this.selectNextMedia}
               previous={this.selectPreviousMedia}
+              updateMedia={updateMedia}
             />
           </EditMediaWrapper>
-        )} */}
+        )}
       </StyledSection>
     );
   }

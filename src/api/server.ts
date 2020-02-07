@@ -79,8 +79,6 @@ export default async (app: Express) => {
     fileUpload({
       limits: { fileSize: MAX_UPLOAD_SIZE * 1024 * 1024 },
       abortOnLimit: true,
-      useTempFiles: true,
-      tempFileDir: "/tmp/",
     }),
   );
   app.use("/upload", upload);

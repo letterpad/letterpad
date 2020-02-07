@@ -146,11 +146,11 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
     _taxonomies.splice(selectedTaxonomyIndex, 1);
 
     let newIndex;
-    if (taxonomies.length - 1 < selectedTaxonomyIndex) {
+    if (_taxonomies.length - 1 < selectedTaxonomyIndex) {
       newIndex = 0;
     }
-    setTaxonomies(_taxonomies);
     setTaxonomyIndex(newIndex);
+    setTaxonomies(_taxonomies);
   };
 
   const changeTaxonomyDetails = (

@@ -7,7 +7,6 @@ import StyledDropdown from "./Dropdown.css";
 import StyledInput from "../../../components/input";
 import config from "../../../../config";
 import moment from "moment";
-import util from "../../../../shared/util";
 
 const host = config.ROOT_URL + config.BASE_NAME;
 
@@ -45,7 +44,7 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
   };
 
   render() {
-    const previewUrl = `${host}/${this.state.post.type}/${this.state.post.slug}`;
+    const previewUrl = `${host}${this.state.post.slug}`;
     return (
       <StyledDropdown className="post-meta">
         <StyledInput

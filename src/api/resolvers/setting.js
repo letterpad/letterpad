@@ -28,7 +28,7 @@ export default {
     settings: async (root, args, { models }) => {
       const settings = await models.Setting.findAll({ where: args });
       return settings.map(item => {
-        if (["banner", "logo"].includes(item.option)) {
+        if (["site_banner", "site_logo"].includes(item.option)) {
           item.value = host + item.value;
         }
         if (item.option === "menu") {
@@ -47,6 +47,8 @@ export default {
               require("path").join(__dirname, "../../public/css/custom.css"),
               setting.value,
             );
+          } else if (["site_banner", "site_logo"].includes(setting.option)) {
+            setting.value = setting.value.replace(host, "");
           }
           return models.Setting.update(setting, {
             where: { option: setting.option },
