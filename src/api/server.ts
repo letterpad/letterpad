@@ -18,11 +18,14 @@ import { fileLoader, mergeResolvers, mergeTypes } from "merge-graphql-schemas";
 import { ApolloServer } from "apollo-server-express";
 import config from "../config";
 import constants from "./utils/constants";
+import fileUpload from "express-fileupload";
 import logger from "../shared/logger";
 import middlewares from "./middlewares";
 import models from "./models/index";
 import path from "path";
 import upload from "./upload";
+
+const MAX_UPLOAD_SIZE = parseInt(process.env["MAX_IMAGE_UPLOAD_SIZE"] || "10");
 
 export interface Context {
   user: object;
@@ -72,7 +75,14 @@ const { pathname } = new URL(config.API_URL);
 
 export default async (app: Express) => {
   middlewares(app);
-  server.applyMiddleware({ app, path: pathname });
-
+  app.use(
+    fileUpload({
+      limits: { fileSize: MAX_UPLOAD_SIZE * 1024 * 1024 },
+      abortOnLimit: true,
+      useTempFiles: true,
+      tempFileDir: "/tmp/",
+    }),
+  );
   app.use("/upload", upload);
+  server.applyMiddleware({ app, path: pathname });
 };

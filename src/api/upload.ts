@@ -1,52 +1,55 @@
-const path = require("path");
-const { resizeImage } = require("./utils/resizeImage");
+import config from "../config";
+import logger from "../shared/logger";
+import path from "path";
+import resizeImage from "./utils/resizeImage";
+
 const uploadDir = path.join(__dirname, "../public/uploads/");
 import models = require("./models/index");
 
-import fs from "fs";
+const host = config.ROOT_URL + config.BASE_NAME;
 
-export default (req, res) => {
-  console.log("reached uploads");
-  const uploadedFiles: any = [];
+interface IResultItem {
+  src: string;
+  error: string | null;
+  name: string;
+}
+
+export default async (req, res) => {
   let files = req.files.file;
-  if (!Array.isArray(req.files.file)) {
+
+  if (!Array.isArray(files)) {
     files = [files];
   }
-  const promises = files.map(file => {
-    let filename = file.md5 + ".jpg";
-    // resize this image
-    const resizedBuffer = resizeImage(req.body.type, file.tempFilePath);
-    // save the file
-    return (
-      resizedBuffer
-        // .toFile(uploadDir + filename)
-        .then(data => {
-          fs.writeFileSync(uploadDir + filename, data);
-          uploadedFiles.push({
-            src: "/uploads/" + filename,
-            errors: null,
-          });
-          return {
-            AuthorId: req.user.id,
-            url: "/uploads/" + filename,
-          };
-        })
-        .catch(err => {
-          uploadedFiles.push({
-            src: "/uploads/" + filename,
-            errors: "Error while resizing the image",
-          });
-          console.log("Error while transforming the imagesize :", err);
-        })
-    );
-  });
-  Promise.all(promises).then(filesToSave => {
-    // store in database
-    //@ts-ignore
-    models.default.Media.bulkCreate(filesToSave)
-      .then(() => {
-        res.json(uploadedFiles);
-      })
-      .catch(console.log);
-  });
+
+  logger.debug(`Received ${files.length} file/s to upload`);
+
+  const output: IResultItem[] = [];
+
+  for (const file of files) {
+    const { md5, name } = file;
+    const extension = name.substr(name.lastIndexOf(".") + 1);
+    const resultItem: IResultItem = { src: "", error: null, name };
+    if (file) {
+      let filename = md5 + "." + extension;
+      try {
+        await resizeImage({
+          type: req.body.type,
+          ext: extension,
+          tempPath: file.tempFilePath,
+          uploadDir: uploadDir + filename,
+        });
+        await models.default.Media.create({
+          AuthorId: req.user.id,
+          url: "/uploads/" + filename,
+        });
+        resultItem.src = host + "/uploads/" + filename;
+      } catch (e) {
+        logger.error(e, resultItem);
+        resultItem.src = "";
+        resultItem.error = e;
+      }
+    }
+    output.push(resultItem);
+  }
+  res.json(output);
 };
