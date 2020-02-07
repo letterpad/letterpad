@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import { WithNamespaces, translate } from "react-i18next";
 
@@ -34,12 +34,17 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
   const [updatedOptions, setUpdatedOptions] = useState<TypeUpdatedOptions>({});
   const [selectedTab] = useState<string>(urlParams.get("tab") || "general");
 
+  useEffect(() => {
+    if (Object.keys(updatedOptions).length > 0) {
+      utils.debounce(submitData, 500)();
+    }
+  }, [updatedOptions]);
+
   const setOption = (option: SettingOptions, value: string) => {
     const key = SettingOptions[getSettingsKey(option)];
     if (settings[key].value === value) return;
     const newUpdates = { ...updatedOptions, [option]: value };
     setUpdatedOptions(newUpdates);
-    utils.debounce(submitData, 500)();
   };
 
   const handleTabChange = (page: string) => {
