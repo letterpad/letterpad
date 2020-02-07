@@ -7,13 +7,13 @@ import ModalHoc from "../../components/modal";
 import StyledButton from "../../components/button";
 import StyledInfoModal from "./InfoModal.css";
 import StyledInput from "../../components/input";
-import config from "../../../config";
 
 interface IEditMediaInfoProps extends WithNamespaces {
   media: Media;
   previous: () => void;
   next: () => void;
   onClose: () => void;
+  updateMedia: Function;
 }
 
 class EditMediaInfo extends Component<IEditMediaInfoProps, any> {
@@ -45,11 +45,11 @@ class EditMediaInfo extends Component<IEditMediaInfoProps, any> {
     }
   }
 
-  onChange = (e: React.ChangeEvent) => {
-    const { nodeValue } = e.target;
+  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
     if (e.target["name"]) {
       this.setState({
-        media: { ...this.state.media, [e.target["name"]]: nodeValue },
+        media: { ...this.state.media, [e.target["name"]]: value },
       });
     }
   };
@@ -79,8 +79,9 @@ class EditMediaInfo extends Component<IEditMediaInfoProps, any> {
     ) {
       this.setState({ saving: true });
       // if yes, update the backend.
-
-      // TODO: update the info
+      const { id, name, description } = this.state.media;
+      this.props.updateMedia(id, name, description);
+      this.props.onClose();
     }
   };
 

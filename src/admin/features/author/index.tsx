@@ -34,6 +34,12 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
   const [author, setAuthor] = useState<Author>();
   const [updatedAuthor, setUpdatedAuthor] = useState<InputAuthor>({ id: 0 });
 
+  useEffect(() => {
+    if (Object.keys(updatedAuthor).length > 1) {
+      utils.debounce(submitData, 500)();
+    }
+  }, [updatedAuthor]);
+
   const fetchAuthor = async () => {
     const { loading, data } = await apolloClient().query<AuthorQuery>({
       query: QUERY_AUTHOR,
@@ -64,7 +70,6 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
     if (author[option] === value) return;
     const updated = { ...updatedAuthor, [option]: value };
     setUpdatedAuthor(updated);
-    utils.debounce(submitData, 500)();
   };
 
   const handleTabChange = (page: string) => {

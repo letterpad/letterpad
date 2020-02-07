@@ -9,29 +9,7 @@ import { notify } from "react-notify-toast";
 import styled from "styled-components";
 import { uploadFile } from "../../server/util";
 
-const ImageWrapper = styled.div`
-  margin-top: 15px;
-  margin-bottom: 15px;
-  .logo-image,
-  .banner-image {
-    display: flex;
-    align-items: center;
-  }
-  label {
-    color: var(--base-shade-3);
-    font-weight: 500;
-    font-size: 13px;
-    display: inline-block;
-    max-width: 100%;
-    margin-bottom: 15px;
-  }
-  .material-icons {
-    font-size: 18px !important;
-  }
-  .danger {
-    color: #9e1b1b;
-  }
-`;
+const host = config.ROOT_URL + config.BASE_NAME;
 
 interface IGeneralProps extends WithNamespaces {
   data: { [option in SettingOptions]: Setting };
@@ -40,8 +18,12 @@ interface IGeneralProps extends WithNamespaces {
 }
 
 const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
-  const [banner, setBanner] = useState<string>(data.banner.value || "");
-  const [site_logo, setSiteLogo] = useState<string>(data.site_logo.value || "");
+  const [banner, setBanner] = useState<string>(
+    data.banner.value.replace(host, "") || "",
+  );
+  const [site_logo, setSiteLogo] = useState<string>(
+    data.site_logo.value.replace(host, "") || "",
+  );
 
   const uploadLogoInputRef = createRef<HTMLInputElement>();
   const uploadBannerRef = createRef<HTMLInputElement>();
@@ -252,3 +234,27 @@ function getLanguageOptions(locale: string) {
     langOptions,
   };
 }
+
+const ImageWrapper = styled.div`
+  margin-top: 15px;
+  margin-bottom: 15px;
+  .logo-image,
+  .banner-image {
+    display: flex;
+    align-items: center;
+  }
+  label {
+    color: var(--base-shade-3);
+    font-weight: 500;
+    font-size: 13px;
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 15px;
+  }
+  .material-icons {
+    font-size: 18px !important;
+  }
+  .danger {
+    color: #9e1b1b;
+  }
+`;

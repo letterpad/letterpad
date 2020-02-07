@@ -23,7 +23,7 @@ export const EditMediaWrapper = styled.div`
   }
 `;
 
-export const StyledItem = styled.div`
+export const StyledItem = styled.div<{ checked: boolean }>`
   .selection-box {
     position: relative;
     z-index: 99;
@@ -32,13 +32,12 @@ export const StyledItem = styled.div`
     border-top-right-radius: 7px;
     top: 4px;
   }
-  [type="checkbox"]:checked,
-  [type="checkbox"]:not(:checked) {
+
+  [type="checkbox"] {
     position: absolute;
     left: -9999px;
   }
-  [type="checkbox"]:checked + label,
-  [type="checkbox"]:not(:checked) + label {
+  [type="checkbox"] + label {
     position: relative;
     padding-left: 28px;
     cursor: pointer;
@@ -46,8 +45,7 @@ export const StyledItem = styled.div`
     display: inline-block;
     color: #666;
   }
-  [type="checkbox"]:checked + label:before,
-  [type="checkbox"]:not(:checked) + label:before {
+  [type="checkbox"] + label:before {
     content: "";
     position: absolute;
     left: 0;
@@ -59,8 +57,7 @@ export const StyledItem = styled.div`
     box-shadow: 0px 0px 4px 1px #0000005c;
     border-radius: 50%;
   }
-  [type="checkbox"]:checked + label:after,
-  [type="checkbox"]:not(:checked) + label:after {
+  [type="checkbox"] + label:after {
     content: "";
     width: 10px;
     height: 10px;
@@ -71,14 +68,22 @@ export const StyledItem = styled.div`
     left: 5px;
     transition: all 0.1s ease;
   }
-  [type="checkbox"]:not(:checked) + label:after {
-    opacity: 0;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  }
-  [type="checkbox"]:checked + label:after {
+  ${p =>
+    p.checked &&
+    `
+  label:after {
     opacity: 1;
     -webkit-transform: scale(1);
     transform: scale(1);
   }
+  `}
+  ${p =>
+    !p.checked &&
+    `
+  label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  `}
 `;
