@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import { WithNamespaces, translate } from "react-i18next";
 
-import Button from "../../components/button";
 import Css from "./Css";
 import General from "./General";
 import Messages from "./Messages";
@@ -88,9 +87,6 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
         <Messages label="messages" data={settings} updateOption={setOption} />
         <br />
         <br />
-        <Button success onClick={submitData}>
-          Save
-        </Button>
       </Tabs>
     </StyledSection>
   );

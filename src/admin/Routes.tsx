@@ -1,6 +1,3 @@
-// css
-import "./public/pcss/admin.pcss";
-
 import React, { Component, Fragment } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -35,17 +32,17 @@ import apolloClient from "../shared/apolloClient";
 // Shared
 import getI18nWithDefaultLang from "../shared/i18n/i18n";
 
-type TypeSettings = { [option in SettingOptions]: Setting } | {};
+type TypeSettings = { [option in SettingOptions]: Setting } | null;
 
 interface IState {
-  settings: TypeSettings | {};
+  settings: TypeSettings;
   loading: boolean;
   error: any;
 }
 
 class Routes extends Component<RouteComponentProps, IState> {
   state = {
-    settings: {},
+    settings: null,
     loading: true,
     error: null,
   };
@@ -55,14 +52,15 @@ class Routes extends Component<RouteComponentProps, IState> {
       const options = await apolloClient().query<SettingsQuery>({
         query: QUERY_SETTINGS,
       });
-      const data: TypeSettings = {};
+      const data: object = {};
       if (options && options.data && options.data.settings) {
         options.data.settings.forEach(setting => {
-          if (data && setting && setting.option) {
+          if (setting && setting.option) {
             data[setting.option] = setting;
           }
         });
-        this.setState({ settings: data, loading: false });
+
+        this.setState({ settings: data as TypeSettings, loading: false });
       }
     } catch (e) {
       this.setState({ error: e, loading: false });
@@ -70,7 +68,7 @@ class Routes extends Component<RouteComponentProps, IState> {
   }
 
   render() {
-    const { loading, error, settings } = this.state as IState;
+    let { loading, error, settings } = this.state as IState;
     if (loading || !settings) {
       return <Loader />;
     }
@@ -78,7 +76,7 @@ class Routes extends Component<RouteComponentProps, IState> {
       console.log(error);
       return <div>{error}</div>;
     }
-    const i18nConfig = getI18nConfig(settings);
+    const i18nConfig = getI18nConfig(settings.locale.value || "");
 
     return (
       <I18nextProvider i18n={i18nConfig}>
@@ -224,8 +222,8 @@ class Routes extends Component<RouteComponentProps, IState> {
 
 export default withRouter(Routes);
 
-function getI18nConfig(settings) {
-  const langOptions = JSON.parse(settings.locale.value);
+function getI18nConfig(value) {
+  const langOptions = JSON.parse(value);
   const selectedLang = Object.keys(langOptions).filter(key => langOptions[key]);
   const lang = selectedLang[0];
   return getI18nWithDefaultLang(lang);

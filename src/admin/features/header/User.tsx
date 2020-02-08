@@ -63,11 +63,11 @@ class User extends Component<IUserProps, IUserState> {
       <div className="user-info" onMouseLeave={this.closeDropdown}>
         <StyledDropdown
           name={name}
-          render={close => {
+          render={() => {
             const onClick = e => {
               e.preventDefault();
-              close(e, false);
-              window.location.href = "/admin/login";
+              window.location.href =
+                config.ROOT_URL + config.BASE_NAME + "/admin/login";
             };
             return (
               <ul>

@@ -133,14 +133,14 @@ const DATA = [
         slug: "settings",
         icon: "fa-user",
       },
-      {
-        id: 10,
-        name: "menu.static",
-        priority: 3,
-        permissions: ["MANAGE_SETTINGS"],
-        slug: "static-site",
-        icon: "fa-paint-brush",
-      },
+      // {
+      //   id: 10,
+      //   name: "menu.static",
+      //   priority: 3,
+      //   permissions: ["MANAGE_SETTINGS"],
+      //   slug: "static-site",
+      //   icon: "fa-paint-brush",
+      // },
     ],
   },
 ];

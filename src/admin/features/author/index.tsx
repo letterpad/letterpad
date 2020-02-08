@@ -103,9 +103,6 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
         />
         <br />
         <br />
-        <Button success onClick={submitData}>
-          Save
-        </Button>
       </Tabs>
     </StyledSection>
   );
