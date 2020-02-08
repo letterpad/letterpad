@@ -33,12 +33,17 @@ export const StyledSection = styled.section<ISectionProps>`
     color: var(--color-text-2);
     font-size: 13px;
     font-weight: 400;
-    max-width: 767px;
     width: 100%;
     h2 {
       margin: 20px 0px 10px;
       color: var(--color-text-1);
     }
+    p {
+      max-width: 767px;
+    }
+  }
+  .material-icons {
+    font-size: 16px;
   }
 `;
 

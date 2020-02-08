@@ -1,10 +1,8 @@
-import React from "react";
-// import PropTypes from "prop-types";
-import jwtDecode from "jwt-decode";
-import { Route, Redirect } from "react-router-dom";
-// import { withRouter } from "react-router";
+import { Redirect, Route } from "react-router-dom";
+
 import Layout from "../features/layout";
-// import NoLayout from "../features/layout/NoLayout";
+import React from "react";
+import jwtDecode from "jwt-decode";
 
 const SecuredRoute: React.SFC<any> = (routeProps: any) => {
   try {
@@ -26,11 +24,5 @@ const SecuredRoute: React.SFC<any> = (routeProps: any) => {
   }
   return <Redirect to={"/admin/login"} />;
 };
-
-// SecuredRoute.propTypes = {
-//   component: PropTypes.func.isRequired,
-//   exact: PropTypes.bool,
-//   layout: PropTypes.string,
-// };
 
 export default SecuredRoute;
