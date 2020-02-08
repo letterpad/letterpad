@@ -1,5 +1,12 @@
 import "isomorphic-fetch";
 
+import {
+  AdminBaseStyle,
+  AdminGlobalStyle,
+  CssVariables,
+  NormalizeCss,
+} from "./adminGlobal.css";
+
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
 /*
@@ -16,6 +23,10 @@ const isAdmin = true;
 const App = (
   <BrowserRouter basename={config.BASE_NAME}>
     <ApolloProvider client={client(isAdmin)}>
+      <CssVariables />
+      <NormalizeCss />
+      <AdminGlobalStyle />
+      <AdminBaseStyle />
       <Routes />
     </ApolloProvider>
   </BrowserRouter>

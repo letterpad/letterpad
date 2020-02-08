@@ -1,4 +1,5 @@
 import { Link, RouteComponentProps } from "react-router-dom";
+import { Post, PostStatusOptions } from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
 import StyledTopBar, {
   AutoSaveIndicator,
@@ -8,7 +9,6 @@ import StyledTopBar, {
 
 import { EventBusInstance } from "../../../../shared/eventBus";
 import MetaDropdown from "./MetaDropdown";
-import { Post } from "../../../../__generated__/gqlTypes";
 import PostActions from "../PostActions";
 import PublishDropdown from "./PublishDropdown";
 import StyledDropdown from "../../../components/dropdown";
@@ -58,7 +58,7 @@ export class TopBar extends Component<ITopbarProps, any> {
     let eventName = "";
     let notifyMessage = "";
     // if the status is trash, redirect the user to posts or pages depending on the post type.
-    if (post.status === "trash") {
+    if (post.status === PostStatusOptions.Trash) {
       notifyMessage = "Post trashed";
       this.props.router.history.goBack();
     }

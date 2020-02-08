@@ -6,12 +6,23 @@ interface ILoginContainerProps {
 
 export const Container = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  flex-direction: column;
   height: 100vh;
-  background: url("/admin/images/login_bg.jpg");
+  /* background: url("/admin/images/login_bg.jpg"); */
+  background: #e8e8e8;
   background-repeat: no-repeat;
   background-size: cover;
+
+  .login {
+    margin-top: 40px;
+    border: 1px solid #eee;
+    padding: 40px;
+    background: #ffffff;
+    box-shadow: 0px 3px 11px -7px #000;
+    border-radius: 9px;
+  }
 `;
 
 export const Brand = styled.div`
@@ -25,10 +36,11 @@ export const Brand = styled.div`
 
 export const Block = styled.div<ILoginContainerProps>`
   display: ${p => (p.isVisible ? "block" : "none")};
-  color: #c7b8b4;
+  color: #131313;
 `;
 export const RememberMeBlock = styled.div`
   padding: 10px;
+  padding-left: 130px;
 `;
 
 export const InputBlock = styled.div`
@@ -52,17 +64,12 @@ interface IButtonProps {
   secondary?: boolean;
 }
 
-const applySecondaryContained = () => `
-    background: #eee;
-    color: #222;
-`;
-
 export const Button = styled.button<IButtonProps>`
-  background: ${p => p.contained && "#EEE"};
-  padding: 3px 6px;
-  border: 1px solid transparent;
+  padding: 6px 12px;
+  border: 1px solid #7170703d;
   cursor: pointer;
-  margin-left: 13px;
+  margin-left: 132px;
   border-radius: 3px;
-  ${p => p.secondary && p.contained && applySecondaryContained()}
+  background: #131313;
+  color: #fff;
 `;

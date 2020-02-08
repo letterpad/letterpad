@@ -11,13 +11,26 @@ import {
   LOGIN_QUERY,
 } from "../../../shared/queries/Mutations";
 import Notifications, { notify } from "react-notify-toast";
-import React, { Component } from "react";
+import React, { Component, ReactChild } from "react";
 
+import { RouteComponentProps } from "react-router";
+import { TypeSettings } from "../../../client/types";
 import apolloClient from "../../../shared/apolloClient";
-import config from "../../../config";
 import util from "../../../shared/util";
 
-class LoginView extends Component<any, any> {
+interface ILoginProps {
+  settings: TypeSettings;
+  router: RouteComponentProps;
+}
+
+interface ILoginState {
+  loginEmail: string;
+  password: string;
+  rememberMe: boolean;
+  loginView: boolean;
+}
+
+class LoginView extends Component<ILoginProps, ILoginState> {
   state = {
     loginEmail: "",
     password: "",
@@ -93,15 +106,18 @@ class LoginView extends Component<any, any> {
   };
 
   render() {
+    const logoSrc = this.props.settings.site_logo.value;
+    let siteTitle = this.props.settings.site_title;
+    let logo;
+    if (logoSrc) {
+      logo = (
+        <img src={this.props.settings.site_logo.value} height="200" />
+      ) as ReactChild;
+    }
+
     return (
       <Container>
-        <Brand>
-          <img
-            width="150"
-            src={"/uploads/logo.png"}
-            alt={this.props.settings.site_title.value}
-          />
-        </Brand>
+        <Brand>{logo || siteTitle}</Brand>
 
         <div className="login">
           <Notifications />

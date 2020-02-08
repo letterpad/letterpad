@@ -1,18 +1,8 @@
 import React, { Component } from "react";
-// import PropTypes from "prop-types";
+
 import Wrapper from "./Dropdown.css";
 
 class DropDown extends Component<any, any> {
-  // static propTypes = {
-  //   children: PropTypes.oneOfType([
-  //     PropTypes.arrayOf(PropTypes.node),
-  //     PropTypes.node,
-  //   ]),
-  //   className: PropTypes.string,
-  //   name: PropTypes.any,
-  //   render: PropTypes.func,
-  // };
-
   static defaultProps = {
     render: () => {},
   };
