@@ -141,7 +141,6 @@
     "babel-plugin-styled-components": "^1.10.6",
     "babel-preset-react-hmre": "^1.1.1",
     "better-npm-run": "0.1.1",
-    "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "3",
     "css-loader": "^0.28.0",

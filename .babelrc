@@ -1,0 +1,31 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": 11
+        },
+        "useBuiltIns": "entry",
+        "corejs": 3,
+        "loose": true,
+        "modules": false
+      }
+    ],
+    "@babel/react"
+  ],
+  "plugins": [
+    "react-hot-loader/babel",
+    "@babel/plugin-transform-modules-commonjs",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-export-default-from",
+    [
+      "babel-plugin-styled-components",
+      {
+        "ssr": true,
+        "displayName": false
+      }
+    ]
+  ]
+}

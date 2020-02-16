@@ -4,7 +4,6 @@ import { Route, Switch } from "react-router-dom";
 import SEO from "./helpers/SEO";
 import { ThemeSettings } from "../__generated__/gqlTypes";
 import { TypeSettings } from "./types";
-import config from "../config";
 import getRoutes from "./routes";
 
 /*!------------------------------------------------------------------

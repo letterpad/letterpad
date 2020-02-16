@@ -91,7 +91,6 @@ module.exports = (args, name) => {
           exclude: /node_modules/,
           loader: "graphql-tag/loader",
         },
-
         {
           test: /\.html$/,
           use: {

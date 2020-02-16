@@ -2,7 +2,6 @@ const merge = require("webpack-merge");
 const baseConfig = require("./webpack.base.js");
 const webpack = require("webpack");
 const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const clientConfig = args => {
   if (args.theme == "") {
@@ -32,7 +31,6 @@ const clientConfig = args => {
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
-      new CleanWebpackPlugin(),
     ],
     module: {
       rules: [
