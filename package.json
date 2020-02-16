@@ -8,6 +8,7 @@
     "build": "./utils/commands.sh build",
     "buildTheme": "./utils/commands.sh buildTheme",
     "buildAdmin": "./utils/commands.sh buildAdmin",
+    "cleanup": "./utils/commands.sh cleanUp",
     "generateTypes": "node ./utils/generateTypes.js",
     "seed": "ts-node ./src/api/seed",
     "api": "NODE_ENV=dev concurrently --kill-others \"nodemon -e ts,json,js --watch ./src/api ./src/start.ts\"",

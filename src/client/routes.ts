@@ -27,7 +27,6 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
   }
   let Theme = require(`./themes/${theme}/app`).default;
   let { Home, Posts, Layout, SinglePage, SinglePost, NotFound, Search } = Theme;
-
   const isAdmin = false;
   const commonProps = {
     client: apolloClient(isAdmin),

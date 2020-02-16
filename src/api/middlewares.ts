@@ -1,16 +1,12 @@
 import { Express, NextFunction, Request, Response } from "express";
 
 import { ITokenData } from "../types/types";
-import bodyParser from "body-parser";
 import constants from "./utils/constants";
 import cors from "cors";
 
 const jwt = require("jsonwebtoken");
 const corsMiddleWare = cors({
   exposedHeaders: ["x-refresh-token"],
-});
-const bodyParserMiddleWare = bodyParser.urlencoded({
-  extended: true,
 });
 
 /**
