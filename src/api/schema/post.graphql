@@ -1,0 +1,173 @@
+scalar Date
+
+enum PostStatusOptions {
+  publish
+  draft
+  trash
+}
+
+enum PostSortBy {
+  newest
+  oldest
+}
+
+enum PostTypes {
+  page
+  post
+}
+
+enum MenuTypes {
+  category
+  page
+}
+
+input PostFilters {
+  tag: String
+  category: String
+  categorySlug: String
+  tagSlug: String
+  sortBy: PostSortBy
+  status: PostStatusOptions
+  author: String
+  query: String
+  type: PostTypes
+  cursor: Int
+  limit: Int
+  page: Int
+}
+
+input InputCreatePost {
+  title: String
+  html: String
+  md: String
+  authorId: Int
+  excerpt: String
+  cover_image: String
+  type: String
+  status: PostStatusOptions
+  slug: String
+  taxonomies: [TaxonomyInputType]
+}
+
+input InputUpdatePost {
+  id: Int!
+  title: String
+  html: String
+  md: String
+  authorId: Int
+  excerpt: String
+  cover_image: String
+  type: String
+  status: PostStatusOptions
+  slug: String
+  taxonomies: [TaxonomyInputType]
+}
+
+input SearchFilters {
+  query: String
+  tag: String
+  category: String
+  cursor: Int
+  page: Int
+  limit: String
+}
+
+input SinglePostFilters {
+  id: Int
+  slug: String
+}
+
+type Post {
+  # Primary key
+  id: Int!
+  title: String!
+  html: String!
+  md: String!
+  author: Author!
+  excerpt: String!
+  cover_image: String!
+  type: String!
+  status: String!
+  slug: String!
+  createdAt: Date!
+  publishedAt: Date
+  updatedAt: Date
+  taxonomies: [Taxonomy!]!
+}
+
+type PostNode {
+  count: Int!
+  rows: [Post!]!
+}
+type PostTaxonomyNode {
+  count: Int
+  rows: [Post]
+}
+
+type AdjacentPosts {
+  previous: Post
+  next: Post
+}
+
+input TaxonomyInputType {
+  id: Int
+  name: String
+  type: String
+  slug: String
+}
+
+type Response {
+  ok: Boolean!
+  post: Post
+  errors: [Error!]
+}
+
+type PostStatus {
+  published: Int
+  drafts: Int
+}
+
+type Stats {
+  posts: PostStatus
+  pages: PostStatus
+  tags: Int
+  categories: Int
+}
+
+type SearchResult {
+  id: Int
+  title: String
+  excerpt: String
+  publishedAt: Date
+  slug: String
+}
+
+type SearchOutput {
+  ok: Boolean
+  count: Int
+  rows: [SearchResult]
+}
+
+type Query {
+  # Used to query a single post
+  post(filters: SinglePostFilters): Post
+
+  # Used to query a collection of posts
+  posts(filters: PostFilters): PostNode!
+
+  adjacentPosts(slug: String): AdjacentPosts
+
+  search(filters: SearchFilters!): SearchOutput
+
+  stats: Stats
+}
+
+type Mutation {
+  createPost(data: InputCreatePost): Response!
+
+  updatePost(data: InputUpdatePost): Response!
+
+  deletePosts(ids: [Int!], deleteFromSystem: Boolean): Response!
+
+  uploadFile(id: Int, cover_image: String): Response!
+}

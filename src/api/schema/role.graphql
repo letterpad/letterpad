@@ -1,0 +1,27 @@
+enum EnumRoles {
+  ADMIN
+  REVIEWER
+  AUTHOR
+  READER
+}
+
+enum EnumPermissions {
+  READ_ONLY_POSTS
+  MANAGE_ALL_POSTS
+  MANAGE_USERS
+  MANAGE_SETTINGS
+}
+
+type Role {
+  id: Int
+  name: EnumRoles
+  permissions: [Permission]
+}
+
+type Permission {
+  id: Int!
+  name: String!
+}
+type Query {
+  roles: [Role!]!
+}
