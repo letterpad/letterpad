@@ -20,6 +20,7 @@ const clientConfig = args => {
     watchOptions: {
       ignored: [/node_modules([\\]+|\/)+(?!\some_npm_module_name)/],
     },
+    plugins: [new webpack.HotModuleReplacementPlugin()],
     optimization: {
       minimize: false,
       runtimeChunk: {
@@ -29,7 +30,6 @@ const clientConfig = args => {
       removeEmptyChunks: false,
       splitChunks: false,
     },
-    plugins: [new webpack.HotModuleReplacementPlugin()],
     module: {
       rules: [
         {
