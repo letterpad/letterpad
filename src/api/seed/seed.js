@@ -237,7 +237,7 @@ export async function insertMedia(models) {
 export async function insertSettings(models) {
   let menu = JSON.stringify([
     {
-      id: 3,
+      id: 1,
       title: "Uncategorised",
       type: "category",
       disabled: true,

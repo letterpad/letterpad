@@ -13,11 +13,6 @@ function getMenuWithSanitizedSlug(menu) {
       to = "/page/" + item.slug;
     }
     item.slug = to;
-
-    if (i === 0) {
-      item.title = "Home";
-      item.slug = "/";
-    }
     return item;
   });
   return JSON.stringify(menuWithSanitizedSlug);

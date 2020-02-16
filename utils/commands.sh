@@ -1,4 +1,5 @@
 #!/bin/bash
+
 run_dev () {
     THEME=$1
     if [ -z "$THEME" ]; then
@@ -14,17 +15,11 @@ run_dev () {
 
 
 run_production () {
-    THEME=$1
-    if [ -z "$THEME" ]; then
-        THEME=hugo
-    fi
-    
-    export THEME=$THEME
-    
     node ./dist/server.js
 }
 
-build_production () {
+build_letterpad_with_theme () {
+    THEME=$1
     if [ -z "$THEME" ]; then
         THEME=hugo
     fi
@@ -36,12 +31,41 @@ build_production () {
     webpack --env.NODE_ENV=production --config webpack/webpack.prod.js --env.theme=$THEME
 }
 
+build_theme () {
+    THEME=$1
+    if [ -z "$THEME" ]; then
+        THEME=hugo
+    fi
+    
+    export THEME=$THEME
+    echo $THEME
+    tsc --build "src/client/themes/$THEME/tsconfig.json" &
+    webpack --env.NODE_ENV=production --config webpack/webpack.prod.js --env.theme=$THEME
+}
+
+build_admin () {
+    THEME=$1
+    if [ -z "$THEME" ]; then
+        THEME=hugo
+    fi
+    
+    export THEME=$THEME
+    echo $THEME
+    tsc --build tsconfig.build.json &
+    webpack --env.NODE_ENV=production --config webpack/webpack.admin.prod.js --env.theme=$THEME
+}
+
 COMMAND=$1
+THEME=$2
 
 if [ "$COMMAND" = "runDev" ]; then
-    run_dev
+    run_dev $THEME
 elif [ "$COMMAND" = "build" ]; then
-    build_production
-elif [ "$NODE_ENV" = "production" ]; then
+    build_letterpad_with_theme $THEME
+elif [ "$COMMAND" = "buildTheme" ]; then
+    build_theme $THEME
+elif [ "$COMMAND" = "buildAdmin" ]; then
+    build_admin
+elif [ "$COMMAND" = "runProd" ]; then
     run_production
 fi

@@ -29,9 +29,7 @@ const clientConfig = args => {
       removeEmptyChunks: false,
       splitChunks: false,
     },
-    plugins: [
-      new webpack.HotModuleReplacementPlugin(),
-    ],
+    plugins: [new webpack.HotModuleReplacementPlugin()],
     module: {
       rules: [
         {
@@ -46,12 +44,6 @@ const clientConfig = args => {
               loader: "css-loader",
               options: { importLoaders: 1, sourceMap: true, import: true },
             },
-            {
-              loader: "postcss-loader",
-              options: {
-                sourceMap: "inline",
-              },
-            },
           ],
         },
       ],
@@ -59,7 +51,3 @@ const clientConfig = args => {
   });
 };
 module.exports = args => clientConfig(args);
-// module.exports = args => {
-//   return [clientConfig(args)];
-// };
-//serverConfig(args),
