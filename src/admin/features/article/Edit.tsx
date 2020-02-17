@@ -2,12 +2,10 @@ import React, { Component } from "react";
 
 import { EventBusInstance } from "../../../shared/eventBus";
 import FileExplorerModal from "../modals/FileExplorerModal";
-import LetterpadEditor from "../../../../../editor/src/editor";
-// import LetterpadEditor from "letterpad-editor";
+import LetterpadEditor from "letterpad-editor";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
 import StyledArticle from "./Article.css";
-import config from "../../../config";
 import { createGlobalStyle } from "styled-components";
 import { uploadFile } from "../../server/util";
 
