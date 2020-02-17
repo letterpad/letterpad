@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import { RouteComponentProps } from "react-router";
-
-import Layout from "./containers/Layout";
-import config from "../config";
 import { IRouteProps, IThemeContainer } from "./types";
+import React, { useEffect } from "react";
+
+import { RouteComponentProps } from "react-router";
+import config from "../config";
 
 function LayoutConnector(
   WrappedComponent: IThemeContainer,
   routeProps: IRouteProps,
+  Layout: React.ComponentType<any>,
 ) {
   const LayoutConnector: React.FC<RouteComponentProps> & {
     getInitialProps?: ({ match, req, res, client }: any) => Promise<any>;

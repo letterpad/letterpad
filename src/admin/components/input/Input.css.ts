@@ -49,4 +49,8 @@ export const Container = styled.div`
     height: auto;
   }
   margin-bottom: 15px;
+  input.pointer,
+  textarea.pointer {
+    cursor: pointer;
+  }
 `;

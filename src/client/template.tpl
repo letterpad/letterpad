@@ -35,6 +35,7 @@
         window.UPLOAD_URL = "{{UPLOAD_URL}}";
         window.APP_PORT = {{APP_PORT}};
         window.BASE_NAME = "{{BASE_NAME}}";
+        window.THEME = "{{THEME}}";
 
 
         window.ga = window.ga ||  function() {

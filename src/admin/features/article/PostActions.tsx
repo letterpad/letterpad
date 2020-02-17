@@ -1,6 +1,5 @@
 let PostActions: any = {
   data: {},
-  taxonomies: {},
 
   triggerEvent: (name, data) => {
     // create and dispatch the event
@@ -9,6 +8,12 @@ let PostActions: any = {
   },
 
   setData: data => {
+    if (data.taxonomies) {
+      data.taxonomies = data.taxonomies.map(item => {
+        const { __typename, ...rest } = item;
+        return rest;
+      });
+    }
     PostActions.data = {
       ...PostActions.data,
       ...data,
@@ -18,24 +23,24 @@ let PostActions: any = {
 
   getData: () => {
     let taxonomies: Array<any> = [];
-    for (let type in PostActions.taxonomies) {
-      PostActions.taxonomies[type].forEach((obj: any) => {
+    for (let type in PostActions.taxonomySuggestions) {
+      PostActions.taxonomySuggestions[type].forEach((obj: any) => {
         taxonomies.push(obj);
       });
     }
-    PostActions.data.taxonomies = taxonomies;
+    // PostActions.data.taxonomies = taxonomies;
     return PostActions.data;
   },
 
-  setTaxonomies: taxonomies => {
-    PostActions.taxonomies = {
-      ...PostActions.getTaxonomies(),
-      ...taxonomies,
-    };
+  removeTaxonomy: taxonomy => {
+    PostActions.data.taxonomies = PostActions.getData().taxonomies.filter(
+      item => item.id !== taxonomy.id,
+    );
   },
 
-  getTaxonomies: () => {
-    return PostActions.taxonomies;
+  addTaxonomy: taxonomy => {
+    const taxonomies = [...PostActions.getData().taxonomies, taxonomy];
+    PostActions.data.taxonomies = taxonomies;
   },
 };
 

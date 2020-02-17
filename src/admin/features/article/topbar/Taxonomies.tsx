@@ -1,20 +1,22 @@
-import React, { Component } from "react";
-import StyledTags from "../../../components/tags";
-import { QUERY_TAXONOMIES } from "../../../../shared/queries/Queries";
-import PostActions from "../PostActions";
 import {
   Post,
-  TaxonomyTypes,
   TaxonomiesQuery,
   TaxonomiesQueryVariables,
   Taxonomy,
+  TaxonomyTypes,
 } from "../../../../__generated__/gqlTypes";
+import React, { Component } from "react";
+
+import PostActions from "../PostActions";
+import { QUERY_TAXONOMIES } from "../../../../shared/queries/Queries";
+import StyledTags from "../../../components/tags";
 import apolloClient from "../../../../shared/apolloClient";
 
 interface ITaxonomyProps {
   post: Post;
   for: TaxonomyTypes;
   suggestions: [];
+  toggleVisibility: (e?: Event, flag?: boolean) => void;
 }
 
 interface ITaxonomyState {
@@ -56,25 +58,28 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
     this.setState({ suggestions: data.taxonomies });
 
     const tags = this.props.post.taxonomies
-      .filter(tax => tax.type === this.props.for)
+      .filter(item => item.type === this.props.for)
       .map(tax => {
         const { __typename, ...rest } = tax;
         return rest;
       });
-    PostActions.setTaxonomies({ [this.props.for]: tags });
     this.setState({ tags: formatTagsForDropdown(tags) });
   }
 
-  handleOnChange = (tags: Taxonomy[], { action }) => {
-    if (action === "remove-value") {
-      PostActions.setTaxonomies({
-        [this.props.for]: formatTagsForBackend(tags),
-      });
-      this.setState({ tags });
-    } else if (action === "select-option") {
-      PostActions.setTaxonomies({
-        [this.props.for]: formatTagsForBackend(tags),
-      });
+  filterTaxonomyByType = () => {
+    return PostActions.getData().taxonomies.filter(
+      item => item.type !== this.props.for,
+    );
+  };
+
+  handleOnChange = (tags: Taxonomy[], a, b) => {
+    if (a.action === "remove-value") {
+      PostActions.removeTaxonomy(a.removedValue);
+
+      this.setState({ tags: this.filterTaxonomyByType() });
+      setTimeout(() => this.props.toggleVisibility(null, true), 0);
+    } else if (a.action === "select-option") {
+      PostActions.addTaxonomy(formatTagsForBackend([a.option])[0]);
       this.setState({ tags });
     }
   };
@@ -87,9 +92,7 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
       type: this.props.for,
       slug: tag,
     };
-    PostActions.setTaxonomies({
-      [this.props.for]: formatTagsForBackend([...this.state.tags, newTag]),
-    });
+    PostActions.addTaxonomy(newTag);
     this.setState({
       tags: formatTagsForDropdown([...this.state.tags, newTag]),
     });

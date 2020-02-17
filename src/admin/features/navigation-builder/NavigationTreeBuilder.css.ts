@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
 export default styled.div`
+  h5 {
+    margin-bottom: 2px;
+  }
+  .caption {
+    font-size: 0.9em;
+  }
   .rstcustom__rowContents {
     display: flex;
     align-items: center;
