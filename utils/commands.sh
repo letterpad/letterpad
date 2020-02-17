@@ -60,6 +60,8 @@ clean_up() {
     echo "Removed *.hot-update.json"
     rm -rf runtime~src
     echo "Removed runtime~src"
+    rm -rf src/admin/public/dist
+    echo "Removed admin public dist"
     for d in src/client/themes/*/  ; do
         dist="${d}public/dist"
         echo "Removed $dist"

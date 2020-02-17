@@ -42,13 +42,13 @@ const clientConfig = args => {
           from: __dirname + "/../src/api/seed/uploads",
           to: __dirname + "/../dist/api/seed/uploads",
         },
-        // {
-        //   from: __dirname + "/../src/client/themes/**/public/**",
-        //   to: __dirname + "/..",
-        //   transformPath(targetPath) {
-        //     return targetPath.replace("src", "dist");
-        //   },
-        // },
+        {
+          from: __dirname + "/../src/client/themes/**/public/**",
+          to: __dirname + "/..",
+          transformPath(targetPath) {
+            return targetPath.replace("src", "dist");
+          },
+        },
       ]),
     ],
     module: {
