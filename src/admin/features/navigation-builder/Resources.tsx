@@ -1,6 +1,6 @@
 import React from "react";
-import { translate } from "react-i18next";
 import styled from "styled-components";
+import { translate } from "react-i18next";
 
 const StyledResources = styled.div`
   h5 {
@@ -61,19 +61,5 @@ const Resources: React.FC<any> = ({ title, data, itemClicked, t }) => {
     </StyledResources>
   );
 };
-
-// Resources.propTypes = {
-//   title: PropTypes.string.isRequired,
-//   data: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-//       title: PropTypes.string.isRequired,
-//       type: PropTypes.string.isRequired,
-//       url: PropTypes.string,
-//     }),
-//   ),
-//   itemClicked: PropTypes.func,
-//   t: PropTypes.func,
-// };
 
 export default translate("translations")(Resources);

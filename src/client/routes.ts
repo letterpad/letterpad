@@ -1,15 +1,10 @@
 import { EnumContentType, TypeSettings } from "./types";
 
-import Home from "./containers/Home";
 import { IRoutes } from "./ClientApp";
 import LayoutConnector from "./LayoutConnector";
-import NotFound from "./containers/NotFound";
-import Posts from "./containers/Posts";
 import { RouteProps } from "react-router";
-import Search from "./containers/Search";
-import SinglePage from "./containers/SinglePage";
-import SinglePost from "./containers/SinglePost";
 import apolloClient from "../shared/apolloClient";
+import config from "../config";
 
 interface IRouteProps extends RouteProps {
   component: RouteProps["component"] & {
@@ -23,7 +18,15 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
   const settings = args.settings as TypeSettings;
   const { themeSettings } = args;
   const home = getHomeSlug(settings);
+  let theme = "";
 
+  if (config.NODE_ENV === "dev") {
+    theme = `${config.THEME}`;
+  } else {
+    theme = `${settings.theme.value}`;
+  }
+  let Theme = require(`./themes/${theme}/app`).default;
+  let { Home, Posts, Layout, SinglePage, SinglePost, NotFound, Search } = Theme;
   const isAdmin = false;
   const commonProps = {
     client: apolloClient(isAdmin),
@@ -34,61 +37,89 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
   const routes: IRouteProps[] = [
     {
       exact: true,
-      component: LayoutConnector(Home, {
-        contentType:
-          home.type === "category"
-            ? EnumContentType.POSTS
-            : EnumContentType.PAGE,
-        ...commonProps,
-      }),
+      component: LayoutConnector(
+        Home,
+        {
+          contentType:
+            home.type === "category"
+              ? EnumContentType.POSTS
+              : EnumContentType.PAGE,
+          ...commonProps,
+        },
+        Layout,
+      ),
       path: ["/", "/dev/", "/home/page/:page_no"],
     },
     {
       exact: true,
-      component: LayoutConnector(Posts, {
-        contentType: EnumContentType.PAGE,
-        ...commonProps,
-      }),
+      component: LayoutConnector(
+        Posts,
+        {
+          contentType: EnumContentType.PAGE,
+          ...commonProps,
+        },
+        Layout,
+      ),
       path: ["/posts/:category", "/category/:category", "/tag/:tag"],
     },
     {
       exact: true,
-      component: LayoutConnector(SinglePage, {
-        contentType: EnumContentType.PAGE,
-        ...commonProps,
-      }),
+      component: LayoutConnector(
+        SinglePage,
+        {
+          contentType: EnumContentType.PAGE,
+          ...commonProps,
+        },
+        Layout,
+      ),
       path: ["/page/:slug"],
     },
     {
       exact: true,
-      component: LayoutConnector(SinglePost, {
-        contentType: EnumContentType.POST,
-        ...commonProps,
-      }),
+      component: LayoutConnector(
+        SinglePost,
+        {
+          contentType: EnumContentType.POST,
+          ...commonProps,
+        },
+        Layout,
+      ),
       path: ["/post/:slug"],
     },
     {
       exact: true,
-      component: LayoutConnector(Search, {
-        contentType: EnumContentType.CATEGORY,
-        ...commonProps,
-      }),
+      component: LayoutConnector(
+        Search,
+        {
+          contentType: EnumContentType.CATEGORY,
+          ...commonProps,
+        },
+        Layout,
+      ),
       path: ["/category/:query", "/tag/:query"],
     },
     {
       exact: true,
-      component: LayoutConnector(Search, {
-        contentType: EnumContentType.CATEGORY,
-        ...commonProps,
-      }),
+      component: LayoutConnector(
+        Search,
+        {
+          contentType: EnumContentType.CATEGORY,
+          ...commonProps,
+        },
+        Layout,
+      ),
       path: ["/search/"],
     },
     {
       exact: true,
-      component: LayoutConnector(NotFound, {
-        contentType: EnumContentType.PAGE,
-        ...commonProps,
-      }),
+      component: LayoutConnector(
+        NotFound,
+        {
+          contentType: EnumContentType.PAGE,
+          ...commonProps,
+        },
+        Layout,
+      ),
       path: "*",
     },
   ];

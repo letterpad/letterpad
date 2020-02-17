@@ -12,8 +12,6 @@ import MetaDropdown from "./MetaDropdown";
 import PostActions from "../PostActions";
 import PublishDropdown from "./PublishDropdown";
 import StyledDropdown from "../../../components/dropdown";
-import { UPDATE_POST_QUERY } from "../../../../shared/queries/Mutations";
-import client from "../../../../shared/apolloClient";
 import { notify } from "react-notify-toast";
 
 interface ITopbarProps {
@@ -21,6 +19,7 @@ interface ITopbarProps {
   edit?: boolean;
   router: RouteComponentProps;
   create?: boolean;
+  updatePost: () => any;
 }
 
 export class TopBar extends Component<ITopbarProps, any> {
@@ -84,30 +83,8 @@ export class TopBar extends Component<ITopbarProps, any> {
 
   updatePost = async statusObj => {
     PostActions.setData(statusObj);
-    let data = PostActions.getData();
-    const postData = {
-      ...this.props.post,
-      ...data,
-    };
-    const {
-      // eslint-disable-next-line no-unused-vars
-      createdAt,
-      // eslint-disable-next-line no-unused-vars
-      publishedAt,
-      // eslint-disable-next-line no-unused-vars
-      updatedAt,
-      // eslint-disable-next-line no-unused-vars
-      author,
-      // eslint-disable-next-line no-unused-vars
-      __typename,
-      ...post
-    } = postData;
-    const update = await client().mutate({
-      mutation: UPDATE_POST_QUERY,
-      variables: {
-        data: post,
-      },
-    });
+
+    const update = await this.props.updatePost();
 
     if (update.data.updatePost.ok) {
       // If this is the first update to the post, there should be a new slug that was generated.
@@ -163,10 +140,11 @@ export class TopBar extends Component<ITopbarProps, any> {
             <StyledDropdown
               name="Publish"
               className="publish"
-              render={isOpen => {
+              render={(isOpen, toggleVisibility) => {
                 if (!isOpen) return null;
                 return (
                   <PublishDropdown
+                    toggleVisibility={toggleVisibility}
                     isPublished={this.state.isPublished}
                     changePostStatus={this.changePostStatus}
                     post={this.props.post}

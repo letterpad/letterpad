@@ -71,7 +71,7 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
         <StyledInput
           type="text"
           label="Preview"
-          className="meta-value"
+          className="meta-value pointer"
           placeholder="Link to post"
           defaultValue={previewUrl}
           onClick={() => {

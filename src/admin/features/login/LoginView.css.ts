@@ -11,7 +11,7 @@ export const Container = styled.div`
   flex-direction: column;
   height: 100vh;
   /* background: url("/admin/images/login_bg.jpg"); */
-  background: #e8e8e8;
+  background: #45a760;
   background-repeat: no-repeat;
   background-size: cover;
 
@@ -22,7 +22,16 @@ export const Container = styled.div`
     background: #ffffff;
     box-shadow: 0px 3px 11px -7px #000;
     border-radius: 9px;
+    width: 460px;
   }
+`;
+interface IRowProps {
+  justify: string;
+}
+export const Row = styled.div<IRowProps>`
+  display: flex;
+  justify-content: ${p => p.justify};
+  align-items: center;
 `;
 
 export const Brand = styled.div`
@@ -32,6 +41,12 @@ export const Brand = styled.div`
   color: #f0e8e9;
   text-shadow: -1px 1px 27px #472532;
   font-family: "Source Sans Pro", sans-serif;
+  img {
+    background: #040404;
+    padding: 13px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+  }
 `;
 
 export const Block = styled.div<ILoginContainerProps>`
@@ -40,7 +55,6 @@ export const Block = styled.div<ILoginContainerProps>`
 `;
 export const RememberMeBlock = styled.div`
   padding: 10px;
-  padding-left: 130px;
 `;
 
 export const InputBlock = styled.div`
@@ -52,10 +66,13 @@ export const InputBlock = styled.div`
     font-weight: 500;
   }
   input {
-    border: 1px solid #eee;
-    padding: 6px;
-    width: 230px;
-    border-radius: 2px;
+    border: 1px solid #cecece;
+    padding: 12px 6px;
+    width: 100%;
+    border-radius: 10px;
+  }
+  a {
+    color: #44a760;
   }
 `;
 
@@ -65,11 +82,11 @@ interface IButtonProps {
 }
 
 export const Button = styled.button<IButtonProps>`
-  padding: 6px 12px;
+  padding: 8px 12px;
   border: 1px solid #7170703d;
   cursor: pointer;
-  margin-left: 132px;
   border-radius: 3px;
-  background: #131313;
-  color: #fff;
+  background: ${p => (p.secondary ? "#d6d6d6" : "#56af76")};
+  width: 100%;
+  color: ${p => (p.secondary ? "#585454" : "#fff")};
 `;

@@ -1,16 +1,12 @@
 import { Express, NextFunction, Request, Response } from "express";
 
 import { ITokenData } from "../types/types";
-import bodyParser from "body-parser";
 import constants from "./utils/constants";
 import cors from "cors";
 
 const jwt = require("jsonwebtoken");
 const corsMiddleWare = cors({
   exposedHeaders: ["x-refresh-token"],
-});
-const bodyParserMiddleWare = bodyParser.urlencoded({
-  extended: true,
 });
 
 /**
@@ -52,7 +48,5 @@ const addRefreshToken = async (
 export default function(app: Express) {
   app.use(corsMiddleWare);
   app.options("*", cors());
-  app.use(bodyParserMiddleWare);
-  app.use(bodyParser.json());
   app.use(addRefreshToken);
 }

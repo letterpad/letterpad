@@ -1,7 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
 const fs = require("fs");
-const FileNameReplacementPlugin = require("./FileNameReplacementPlugin");
 const WebpackBar = require("webpackbar");
 
 const babelRc = fs.readFileSync(path.resolve(__dirname, "../.babelrc"));
@@ -12,28 +11,17 @@ module.exports = (args, name) => {
   let env = "production";
   const isProd = args.NODE_ENV === "production";
   const isDev = !isProd;
-
   if (isDev) {
     source = "src";
     env = "development";
+    vendorFiles.push(
+      "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
+    );
   }
   const config = {
     mode: env, // for production we use this mode to ignore uglify plugin. it is slow.
-    watch: isDev,
-    stats: {
-      cached: false,
-      cachedAssets: false,
-      chunks: false,
-      assets: false,
-      chunkModules: false,
-      chunkOrigins: false,
-      colors: true,
-      children: false,
-      modules: false,
-      errors: true,
-      builtAt: false,
-      hash: false,
-    },
+    devtool: "#source-map",
+    stats: "normal",
     entry: {
       [source + "/public/js/vendor"]: vendorFiles,
       [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
@@ -61,6 +49,7 @@ module.exports = (args, name) => {
     plugins: [
       new WebpackBar({ name: name }),
       new webpack.DefinePlugin({
+        __THEME__: "hugo",
         "process.env": {
           NODE_ENV: JSON.stringify(env),
           API_URL: "process.env.API_URL",
@@ -68,9 +57,9 @@ module.exports = (args, name) => {
           ROOT_URL: "process.env.ROOT_URL",
           APP_PORT: "process.env.APP_PORT",
           BASE_NAME: "process.env.BASE_NAME",
+          THEME: JSON.stringify(args.theme),
         },
       }),
-      new FileNameReplacementPlugin(args.theme),
       new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
     ],
 
@@ -106,6 +95,32 @@ module.exports = (args, name) => {
           use: {
             loader: "html-loader",
           },
+        },
+        {
+          test: /\.md$/,
+          use: [
+            {
+              loader: "html-loader",
+            },
+            {
+              loader: "markdown-loader",
+              options: {
+                /* your options here */
+              },
+            },
+          ],
+        },
+        {
+          test: /\.(png|jpe?g|gif|woff(2)?|ttf|eot|svg)$/i,
+          use: [
+            {
+              loader: "url-loader",
+              options: {
+                name: "[name].[ext]",
+                limit: 9000,
+              },
+            },
+          ],
         },
       ],
     },

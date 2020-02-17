@@ -37,7 +37,9 @@ class DropDown extends Component<any, any> {
   };
 
   toggle = (e: any, flag) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     this.setState({ open: flag ? flag : !this.state.open });
   };
 

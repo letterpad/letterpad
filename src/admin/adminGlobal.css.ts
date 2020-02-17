@@ -301,7 +301,6 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
     }
     img {
         max-width: 100%;
-        height: auto;
     }
     iframe {
         border: 0;

@@ -20,7 +20,7 @@ const clientConfig = args => {
     module: {
       rules: [
         {
-          test: /\.(css|pcss)$/,
+          test: /\.(css)$/,
           use: extractPcssAdmin.extract({
             fallback: "style-loader",
             use: [
@@ -28,14 +28,8 @@ const clientConfig = args => {
                 loader: "css-loader",
                 options: { importLoaders: 1, minimize: true },
               },
-              "postcss-loader",
             ],
           }),
-          include: [
-            path.resolve(__dirname, "../src/admin"),
-            path.resolve(__dirname, "../node_modules"),
-            path.resolve(__dirname, "../src/public"),
-          ],
         },
       ],
     },
@@ -47,4 +41,4 @@ const clientConfig = args => {
   return config;
 };
 
-module.exports = args => [clientConfig(args)];
+module.exports = args => clientConfig(args);

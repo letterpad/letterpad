@@ -64,8 +64,7 @@ class NavigationTreeBuilder extends Component<any, any> {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    let menu = normalizeSlugs(JSON.parse(nextProps.data.menu.value));
-    const menuIds = getMenuItems(menu);
+    const menuIds = getMenuItems(prevState.items);
 
     // Loop through the categories and add a key "disabled".
     // The items which have been used in the navigation menu will have the value "disabled:true"
@@ -99,9 +98,9 @@ class NavigationTreeBuilder extends Component<any, any> {
    */
   addItem = (idx, type) => {
     const newState = { items: [] };
-    const { id, title, slug } = this.state[type];
+    const { id, title, slug } = this.state[type][idx];
     newState[type] = [{ id, title, slug, type }];
-    newState[type][idx] = { ...this.props[type][idx] };
+    newState[type][idx] = { id, title, slug, type, disabled: true };
     // All items which are added to the navigation should be disabled, so that they cannot be re-added.
     // This is not the case for folders. So when we add a folder, we change the id with a unique value
     // and then add this to the navigation to prevent mapping.
@@ -117,6 +116,7 @@ class NavigationTreeBuilder extends Component<any, any> {
       // categories should have another key - "slug"
       if (type === "categories") {
         newState[type][idx].slug = newState[type][idx].title.toLowerCase();
+        newState[type][idx].type = "category";
       }
     }
 
@@ -274,6 +274,10 @@ class NavigationTreeBuilder extends Component<any, any> {
 
         <StyledMenuTree>
           <h5>{t("menu.build.title")}</h5>
+          <p className="caption">
+            The first item of the menu will be the Home. You can drag and
+            re-order them accordingly.
+          </p>
           <SortableWrapper style={{ height: 600 }}>
             <SortableTree
               theme={FileExplorerTheme}
@@ -300,7 +304,12 @@ export default translate("translations")(NavigationTreeBuilder);
 
 function normalizeSlugs(menu) {
   return menu.map(item => {
-    item.slug = item.slug.replace("category/", "").replace("tag/", "");
+    item.slug = item.slug
+      .replace("/category/", "")
+      .replace("/tag/", "")
+      .replace("/posts/", "")
+      .replace("/page/", "");
     return item;
   });
+  return menu;
 }

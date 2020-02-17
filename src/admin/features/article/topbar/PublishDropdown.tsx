@@ -47,6 +47,7 @@ class PublishDropdown extends Component<any, any> {
     const post = {
       ...this.props.post,
       body: PostActions.getData().body,
+      taxonomies: PostActions.getData().taxonomies,
     };
     const classes = this.props.isOpen ? " open" : "";
     const actionLabel = this.props.create ? "Create" : "Update";
@@ -65,6 +66,7 @@ class PublishDropdown extends Component<any, any> {
         <hr />
         {post.type == "post" && (
           <Taxonomies
+            toggleVisibility={this.props.toggleVisibility}
             post={post}
             for={TaxonomyTypes.PostTag}
             suggestions={[]}
@@ -72,6 +74,7 @@ class PublishDropdown extends Component<any, any> {
         )}
         {post.type == "post" && (
           <Taxonomies
+            toggleVisibility={this.props.toggleVisibility}
             post={post}
             for={TaxonomyTypes.PostCategory}
             suggestions={[]}
