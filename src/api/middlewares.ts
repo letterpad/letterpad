@@ -48,7 +48,5 @@ const addRefreshToken = async (
 export default function(app: Express) {
   app.use(corsMiddleWare);
   app.options("*", cors());
-  app.use(bodyParserMiddleWare);
-  app.use(bodyParser.json());
   app.use(addRefreshToken);
 }

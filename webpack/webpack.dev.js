@@ -32,10 +32,10 @@ const clientConfig = args => {
     },
     module: {
       rules: [
-        {
-          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-          loader: "url-loader?url=false",
-        },
+        // {
+        //   test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        //   loader: "url-loader?url=false",
+        // },
         {
           test: /\.(css)$/,
           use: [

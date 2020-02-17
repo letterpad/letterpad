@@ -12,6 +12,9 @@ try {
     "The `.env` does not exist. Did you forget to rename `.env.sample` to `.env` ?",
   );
 }
+const noop = () => undefined;
+require.extensions[".css"] = noop;
+require.extensions[".svg"] = noop;
 
 import { AddressInfo } from "net";
 import adminServer from "./admin/server";

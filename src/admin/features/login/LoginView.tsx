@@ -5,6 +5,7 @@ import {
   Container,
   InputBlock,
   RememberMeBlock,
+  Row,
 } from "./LoginView.css";
 import {
   FORGOT_PASSWORD_QUERY,
@@ -111,19 +112,17 @@ class LoginView extends Component<ILoginProps, ILoginState> {
     let logo;
     if (logoSrc) {
       logo = (
-        <img src={this.props.settings.site_logo.value} height="200" />
+        <img src={this.props.settings.site_logo.value} height="100" />
       ) as ReactChild;
     }
 
     return (
       <Container>
-        <Brand>{logo || siteTitle}</Brand>
-
         <div className="login">
           <Notifications />
+          <Brand>{logo || siteTitle}</Brand>
           <Block isVisible={this.state.loginView}>
             <InputBlock>
-              <label htmlFor="username">Username</label>
               <input
                 type="text"
                 placeholder="Enter your username"
@@ -133,7 +132,6 @@ class LoginView extends Component<ILoginProps, ILoginState> {
               />
             </InputBlock>
             <InputBlock>
-              <label htmlFor="password">Password</label>
               <input
                 type="password"
                 placeholder="Enter your password"
@@ -147,27 +145,33 @@ class LoginView extends Component<ILoginProps, ILoginState> {
                 }}
               />
             </InputBlock>
-            <RememberMeBlock>
-              <label>
-                <input type="checkbox" onClick={this.onRememberMeChange} />
-                <span className="label-text"> Remember my password</span>
-              </label>
-            </RememberMeBlock>
+            <Row justify="space-between">
+              <RememberMeBlock>
+                <label>
+                  <input type="checkbox" onClick={this.onRememberMeChange} />
+                  <span className="label-text"> Remember me</span>
+                </label>
+              </RememberMeBlock>
+              <InputBlock>
+                <a
+                  onClick={this.showLostPasswordView}
+                  className="forgot-pwd"
+                  href="#"
+                >
+                  Forgot password ?
+                </a>
+              </InputBlock>
+            </Row>
             <br />
-            <Button onClick={this.login}>Login</Button>
-            <InputBlock>
-              <a
-                onClick={this.showLostPasswordView}
-                className="forgot-pwd"
-                href="#"
-              >
-                Lost your password ?
-              </a>
-            </InputBlock>
+            <Row justify="center">
+              <Button onClick={this.login}>Login</Button>
+            </Row>
           </Block>
           <Block isVisible={!this.state.loginView}>
             <InputBlock>
               <label htmlFor="username">Enter your email</label>
+              <br />
+              <br />
               <input
                 type="email"
                 placeholder="Enter your email"
@@ -178,12 +182,13 @@ class LoginView extends Component<ILoginProps, ILoginState> {
             </InputBlock>
             <br />
             <br />
-            <InputBlock>
+            <Row justify="space-between">
               <Button contained secondary onClick={this.showLoginView}>
                 Cancel
               </Button>
+              &nbsp;&nbsp;
               <Button onClick={this.forgotPassword}>Submit</Button>
-            </InputBlock>
+            </Row>
           </Block>
         </div>
       </Container>

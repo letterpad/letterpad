@@ -8,7 +8,7 @@ run_dev () {
     
     export THEME=$THEME
     export NODE_ENV=dev
-    yarn ts-node ./src/start.ts --profile --json |
+    yarn ts-node ./src/start.ts --profile --json &
     webpack --config ./webpack/webpack.dev.js --env.theme=$THEME 
 }
 
@@ -56,6 +56,8 @@ build_admin () {
 }
 
 clean_up() {
+    rm *.hot-update.json || :
+    echo "Removed *.hot-update.json"
     rm -rf runtime~src
     echo "Removed runtime~src"
     for d in src/client/themes/*/  ; do

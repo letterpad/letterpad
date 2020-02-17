@@ -20,7 +20,6 @@ module.exports = (args, name) => {
   }
   const config = {
     mode: env, // for production we use this mode to ignore uglify plugin. it is slow.
-    watch: isDev,
     devtool: "#source-map",
     stats: "normal",
     entry: {
@@ -115,9 +114,10 @@ module.exports = (args, name) => {
           test: /\.(png|jpe?g|gif|woff(2)?|ttf|eot|svg)$/i,
           use: [
             {
-              loader: "file-loader",
+              loader: "url-loader",
               options: {
                 name: "[name].[ext]",
+                limit: 9000,
               },
             },
           ],
