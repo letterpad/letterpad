@@ -11,6 +11,10 @@ const clientConfig = args => {
     name: "client",
     devtool: "cheap-module-eval-source-map",
     target: "web",
+    entry: {
+      "src/public/js/hot-reload":
+        "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
+    },
     output: {
       path: path.join(__dirname, "../"),
       filename: "[name]-bundle.js",
@@ -41,6 +45,18 @@ const clientConfig = args => {
               options: { importLoaders: 1, sourceMap: true, import: true },
             },
           ],
+          include: [path.join(__dirname, "../src/client/themes/" + args.theme)],
+        },
+        {
+          test: /\.(css)$/,
+          use: [
+            "style-loader",
+            {
+              loader: "css-loader",
+              options: { importLoaders: 1, sourceMap: true, import: true },
+            },
+          ],
+          include: [path.join(__dirname, "../src/admin")],
         },
       ],
     },

@@ -31,7 +31,7 @@ export const getHtml = (_req, res) => {
 
 function getBundles() {
   const devBundles = [
-    // host + "static/hot-reload-bundle.js",
+    host + "static/src/public/js/hot-reload-bundle.js",
     host + "static/src/public/js/vendor-bundle.js",
     host + "static/src/admin/public/dist/admin-bundle.js",
   ];

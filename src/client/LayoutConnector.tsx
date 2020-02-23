@@ -27,11 +27,13 @@ function LayoutConnector(
 
     const analyticsAction = () => {
       if (routeProps.settings.google_analytics.value) {
-        // @ts-ignore: Global ga.
-        // @todo - add this to window object
-        ga("set", "page", config.BASE_NAME + location.pathname);
-        // @ts-ignore: global ga
-        ga("send", "pageview");
+        setTimeout(() => {
+          // @ts-ignore
+          gtag("config", routeProps.settings.google_analytics.value, {
+            page_title: document.title,
+            page_path: document.location.pathname,
+          });
+        }, 1000);
       }
     };
     return (

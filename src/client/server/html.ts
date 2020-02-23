@@ -34,6 +34,7 @@ export const getHtml = (data: IProps) => {
   const isDev = process.env.NODE_ENV !== "production";
   const host = config.ROOT_URL + config.BASE_NAME;
   let devBundles = [
+    `${host}/static/src/public/js/hot-reload-bundle.js`,
     `${host}/js/vendor-bundle.js`,
     `${host}/${theme}/dist/client-bundle.js`,
   ];
@@ -74,9 +75,9 @@ export const getHtml = (data: IProps) => {
     INITIAL_STATE: initialState,
     INITIAL_DATA: JSON.stringify(initialData),
     NODE_ENV: process.env.NODE_ENV,
-    TRACKING_ID: settings.google_analytics,
-    GA_SCRIPT_TAG: settings.google_analytics
-      ? '<script async src="https://www.google-analytics.com/analytics.js"></script>'
+    TRACKING_ID: settings.google_analytics.value,
+    GA_SCRIPT_TAG: settings.google_analytics.value
+      ? '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-19390409-3"></script>'
       : "",
     SCRIPT_TAGS: scripts,
   });

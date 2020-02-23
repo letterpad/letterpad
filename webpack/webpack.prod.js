@@ -8,8 +8,8 @@ const clientConfig = args => {
   if (args.theme == "") {
     args.theme = "hugo";
   }
-  const extractPcss = new ExtractTextPlugin("[name].min.css");
-  const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");
+  const extractThemeCss = new ExtractTextPlugin("[name].min.css");
+  const extractAdminCSS = new ExtractTextPlugin("[name].min.css");
   return merge(baseConfig(args, "client"), {
     target: "web",
     output: {
@@ -17,8 +17,8 @@ const clientConfig = args => {
       filename: "[name]-bundle.min.js",
     },
     plugins: [
-      extractPcss,
-      extractPcssAdmin,
+      extractThemeCss,
+      extractAdminCSS,
       new CopyPlugin([
         {
           from: __dirname + "/../src/admin/public",
@@ -43,6 +43,10 @@ const clientConfig = args => {
           to: __dirname + "/../dist/api/seed/uploads",
         },
         {
+          from: __dirname + "/../src/api/seed/uploads",
+          to: __dirname + "/../dist/public/uploads/",
+        },
+        {
           from: __dirname + "/../src/client/themes/**/public/**",
           to: __dirname + "/..",
           transformPath(targetPath) {
@@ -54,15 +58,14 @@ const clientConfig = args => {
     module: {
       rules: [
         {
-          test: /\.(css)$/,
-          use: extractPcss.extract({
+          test: /\.css$/,
+          use: extractThemeCss.extract({
             fallback: "style-loader",
             use: [
               {
                 loader: "css-loader",
                 options: {
                   importLoaders: 1,
-                  minimize: true,
                   url: false,
                 },
               },
@@ -72,16 +75,17 @@ const clientConfig = args => {
           include: [path.join(__dirname, "../src/client/themes/" + args.theme)],
         },
         {
-          test: /\.(css)$/,
-          use: extractPcssAdmin.extract({
+          test: /\.css$/,
+          use: extractAdminCSS.extract({
             fallback: "style-loader",
             use: [
               {
                 loader: "css-loader",
-                options: { importLoaders: 1, minimize: true },
+                options: { importLoaders: 1 },
               },
             ],
           }),
+          include: [path.join(__dirname, "../src/admin")],
         },
       ],
     },

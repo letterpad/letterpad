@@ -37,16 +37,11 @@
         window.BASE_NAME = "{{BASE_NAME}}";
         window.THEME = "{{THEME}}";
 
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-        window.ga = window.ga ||  function() {
-                        (ga.q = ga.q || []).push(arguments);
-                    };
-        ga.l = +new Date();
-        ga("create", "{{TRACKING_ID}}", "auto");
-        ga("send", "pageview");
-
-
-
+        gtag('config', '{{TRACKING_ID}}');
     </script>
 
     {{SCRIPT_TAGS}}

@@ -7,6 +7,8 @@ import { notify } from "react-notify-toast";
 import { translate } from "react-i18next";
 import { uploadFile } from "../../server/util";
 
+const host = config.ROOT_URL + config.BASE_NAME;
+
 class Basic extends Component<any, any> {
   uploadInputRef = React.createRef<HTMLInputElement>();
 
@@ -25,7 +27,7 @@ class Basic extends Component<any, any> {
       notify.show(errors, "error", 3000);
       return;
     }
-    this.updateOption("avatar", src);
+    this.updateOption("avatar", src.replace(host, ""));
     this.setState({ avatar: src });
   };
 
