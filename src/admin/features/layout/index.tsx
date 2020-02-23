@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import styled from "styled-components";
+import { StyledLayout, defaultStyles } from "./Layout.css";
+import { darkTheme, lightTheme } from "../../css-variables";
 
 import Header from "../header";
 import Sidebar from "../sidebar";
-import { lightTheme, darkTheme } from "../../css-variables";
-import { StyledLayout, defaultStyles } from "./Layout.css";
+import styled from "styled-components";
 
 const CSSVariables = styled.div<any>`
   ${props => (props.dark ? darkTheme : lightTheme)};

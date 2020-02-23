@@ -81,8 +81,8 @@ export class TopBar extends Component<ITopbarProps, any> {
     }
   };
 
-  updatePost = async statusObj => {
-    PostActions.setData(statusObj);
+  updatePost = async data => {
+    PostActions.setData(data);
 
     const update = await this.props.updatePost();
 

@@ -1,6 +1,6 @@
 export default [
   {
-    title: "Welcome to Letterpad",
+    title: "Welcome post",
     type: "post",
     status: "publish",
     cover_image: "/uploads/1.jpg",

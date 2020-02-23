@@ -143,7 +143,7 @@ const postresolver = {
         conditions.order = [["updatedAt", "DESC"]];
         if (sortBy) {
           conditions.order = [
-            ["updatedAt", sortBy === "oldest" ? "ASC" : "DESC"],
+            ["publishedAt", sortBy === "oldest" ? "ASC" : "DESC"],
           ];
           // for public users, sort it based on published date
           if (user && user.id) {
