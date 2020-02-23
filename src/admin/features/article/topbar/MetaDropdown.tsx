@@ -13,38 +13,40 @@ const host = config.ROOT_URL + config.BASE_NAME;
 interface IMetaDropdownProps {
   close: (e: React.SyntheticEvent) => void;
   post: Post;
-  updatePost: (post: Post) => void;
+  updatePost: ({
+    publishedAt,
+    slug,
+  }: {
+    publishedAt: string;
+    slug: string;
+  }) => void;
 }
 
 class MetaDropdown extends Component<IMetaDropdownProps, any> {
   state = {
-    post: {
-      ...this.props.post,
-      cover_image: this.props.post.cover_image.replace(host, ""),
-    },
+    slug: this.props.post.slug,
+    publishedAt: this.props.post.publishedAt,
   };
 
   static getDerivedStateFromProps(newProps: IMetaDropdownProps) {
     return {
       post: {
         ...newProps.post,
-        cover_image: newProps.post.cover_image.replace(host, ""),
       },
     };
   }
 
   changeSlug = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      post: {
-        ...this.state.post,
-        slug: e.target.value,
-      },
+      slug: e.target.value,
     });
     PostActions.setData({ slug: e.target.value });
   };
 
   render() {
-    const previewUrl = `${host}${this.state.post.slug}`;
+    const { slug, publishedAt } = this.state;
+
+    const previewUrl = `${host}${slug}`;
     return (
       <StyledDropdown className="post-meta">
         <StyledInput
@@ -52,7 +54,7 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
           label="Published at"
           className="meta-value"
           placeholder="Published date"
-          defaultValue={moment(this.state.post.createdAt).format(
+          defaultValue={moment(this.props.post.createdAt).format(
             "DD-MM-Y hh:mm A",
           )}
         />
@@ -62,9 +64,7 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
           label="Change Path"
           className="meta-value"
           placeholder="Link to post"
-          defaultValue={this.state.post.slug
-            .replace("/post/", "")
-            .replace("/page/", "")}
+          defaultValue={slug.replace("/post/", "").replace("/page/", "")}
           onChange={this.changeSlug}
         />
 
@@ -83,7 +83,7 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
           success
           onClick={(e: React.SyntheticEvent) => {
             e.preventDefault();
-            this.props.updatePost(this.state.post);
+            this.props.updatePost({ publishedAt, slug });
             this.props.close(e);
           }}
         >

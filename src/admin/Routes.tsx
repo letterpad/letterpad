@@ -1,11 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { RouteComponentProps, withRouter } from "react-router";
-import {
-  Setting,
-  SettingOptions,
-  SettingsQuery,
-} from "../__generated__/gqlTypes";
 
 import Article from "./features/article";
 import Articles from "./features/articles";
@@ -15,7 +10,6 @@ import AuthorList from "./features/author-list";
 import CreateArticle from "./features/article/CreateArticle";
 import Home from "./features/home";
 import { I18nextProvider } from "react-i18next";
-// View Files
 import Loader from "./components/loader";
 import LoginView from "./features/login/LoginView";
 import Media from "./features/media";
@@ -23,19 +17,17 @@ import NavigationBuilder from "./features/navigation-builder";
 import Notifications from "react-notify-toast";
 import { QUERY_SETTINGS } from "../shared/queries/Queries";
 import ResetPassword from "./features/login/ResetPassword";
-// All files which require authorization will pass though this
 import SecuredRoute from "./helpers/Secured";
 import Settings from "./features/settings";
+import { SettingsQuery } from "../__generated__/gqlTypes";
 import StaticSite from "./features/static-site";
 import Taxonomy from "./features/taxonomy";
+import { TypeSettings } from "../client/types";
 import apolloClient from "../shared/apolloClient";
-// Shared
 import getI18nWithDefaultLang from "../shared/i18n/i18n";
 
-type TypeSettings = { [option in SettingOptions]: Setting } | null;
-
 interface IState {
-  settings: TypeSettings;
+  settings: TypeSettings | null;
   loading: boolean;
   error: any;
 }
@@ -90,7 +82,9 @@ class Routes extends Component<RouteComponentProps, IState> {
           <Route
             exact
             path="/admin/login"
-            render={props => <LoginView router={props} settings={settings} />}
+            render={props => (
+              <LoginView router={props} settings={settings as TypeSettings} />
+            )}
           />
           <Route
             exact

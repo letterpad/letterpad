@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 run_dev () {
+    clean_up
     THEME=$1
     if [ -z "$THEME" ]; then
         THEME=hugo
@@ -8,8 +9,9 @@ run_dev () {
     
     export THEME=$THEME
     export NODE_ENV=dev
-    yarn ts-node ./src/start.ts --profile --json &
-    webpack --config ./webpack/webpack.dev.js --env.theme=$THEME 
+    
+    webpack --config ./webpack/webpack.dev.js --env.theme=$THEME
+    yarn ts-node ./src/start.ts --profile --json
 }
 
 run_production () {
@@ -18,8 +20,7 @@ run_production () {
 
 build_letterpad_with_theme () {
     clean_up
-    rm -rf dist
-    rm vendor-zip.zip 
+    
     THEME=$1
     if [ -z "$THEME" ]; then
         THEME=hugo
@@ -27,9 +28,9 @@ build_letterpad_with_theme () {
     
     export THEME=$THEME
     
-    tsc --build tsconfig.build.json &
-    tsc --build "src/client/themes/$THEME/tsconfig.json" &
-    webpack --env.NODE_ENV=production --config webpack/webpack.prod.js --env.theme=$THEME
+    yarn tsc --build tsconfig.build.json &
+    yarn tsc --build "src/client/themes/$THEME/tsconfig.json" &
+    yarn webpack --env.NODE_ENV=production --config webpack/webpack.prod.js --env.theme=$THEME
 }
 
 build_theme () {
@@ -58,15 +59,17 @@ build_admin () {
 clean_up() {
     rm *.hot-update.json || :
     echo "Removed *.hot-update.json"
-    rm -rf runtime~src
+    rm -rf runtime~src || :
     echo "Removed runtime~src"
-    rm -rf src/admin/public/dist
+    rm -rf src/admin/public/dist || :
     echo "Removed admin public dist"
     for d in src/client/themes/*/  ; do
         dist="${d}public/dist"
         echo "Removed $dist"
-        rm -rf  "$dist"
+        rm -rf  "$dist" || :
     done
+    rm -rf dist || :
+    rm vendor-zip.zip  || :
 }
 
 COMMAND=$1

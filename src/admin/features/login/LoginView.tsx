@@ -108,7 +108,7 @@ class LoginView extends Component<ILoginProps, ILoginState> {
 
   render() {
     const logoSrc = this.props.settings.site_logo.value;
-    let siteTitle = this.props.settings.site_title;
+    let siteTitle = this.props.settings.site_title.value;
     let logo;
     if (logoSrc) {
       logo = (

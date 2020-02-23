@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import { translate, WithNamespaces } from "react-i18next";
-import { notify } from "react-notify-toast";
+import { WithNamespaces, translate } from "react-i18next";
 
-import { uploadFile } from "../../server/util";
-import PostActions from "./PostActions";
 import FileExplorerModal from "../modals/FileExplorerModal";
 import { Post } from "../../../__generated__/gqlTypes";
+import PostActions from "./PostActions";
+import PropTypes from "prop-types";
+import { notify } from "react-notify-toast";
+import styled from "styled-components";
+import { uploadFile } from "../../server/util";
 
 const ImageWrapper = styled.div`
   overflow-x: auto;
@@ -89,8 +89,8 @@ class FeaturedImage extends Component<
     imageList: [],
   };
 
-  componentDidUpdate() {
-    const imgNodes = document.querySelectorAll("[data-id='plugin-image']");
+  componentDidMount() {
+    const imgNodes = document.querySelectorAll(".lp-img");
     if (imgNodes.length === this.state.imageList.length) return;
     const imageList: string[] = [];
     for (let i = 0; i < imgNodes.length; i++) {
@@ -104,10 +104,6 @@ class FeaturedImage extends Component<
   setCoverImage = images => {
     PostActions.setData({ cover_image: images[0] });
     this.setState({ cover_image: images[0], fileExplorerOpen: false });
-    // update the post with the new url
-    // this.props.updateFeaturedImage({
-    //   cover_image: images[0],
-    // });
     return false;
   };
 
@@ -132,9 +128,9 @@ class FeaturedImage extends Component<
   render() {
     let isCustom = false;
     if (this.state.cover_image) {
-      isCustom =
-        (this.state.imageList as string[]).indexOf(this.state.cover_image) ==
-        -1;
+      isCustom = !(this.state.imageList as string[]).includes(
+        this.state.cover_image,
+      );
     }
 
     return (

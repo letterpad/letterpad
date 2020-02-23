@@ -14,9 +14,6 @@ module.exports = (args, name) => {
   if (isDev) {
     source = "src";
     env = "development";
-    vendorFiles.push(
-      "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
-    );
   }
   const config = {
     mode: env, // for production we use this mode to ignore uglify plugin. it is slow.

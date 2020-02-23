@@ -592,27 +592,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         display: inline-block;
         vertical-align: top;
     }
-    /* Let's get this party started */
-
-    ::-webkit-scrollbar {
-        width: 8px;
-    }
-    /* Track */
-
-    ::-webkit-scrollbar-track {
-        background: rgb(240, 240, 240);
-    }
-    ::-webkit-scrollbar-track:window-inactive {
-        -webkit-box-shadow: none;
-    }
-    /* Handle */
-
-    ::-webkit-scrollbar-thumb {
-        background: rgba(119, 119, 119, 0.8);
-    }
-    ::-webkit-scrollbar-thumb:window-inactive {
-        background: rgba(43, 43, 43, 0.8);
-    }
+    
     .modal-open {
         overflow: hidden;
     }

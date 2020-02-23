@@ -23,8 +23,10 @@ export default {
     settings: async (root, args, { models }) => {
       const settings = await models.Setting.findAll({ where: args });
       return settings.map(item => {
-        if (["site_banner", "site_logo"].includes(item.option)) {
-          item.value = host + item.value;
+        if (["banner", "site_logo"].includes(item.option)) {
+          if (item.value) {
+            item.value = host + item.value;
+          }
         }
         if (item.option === "menu") {
           item.value = getMenuWithSanitizedSlug(item.value);
