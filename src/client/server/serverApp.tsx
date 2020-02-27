@@ -8,11 +8,11 @@
  */
 const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
 
+import { ApolloProvider, renderToStringWithData } from "react-apollo";
 import ClientApp, { IRoutes } from "../ClientApp";
 import { IServerRenderProps, TypeSettings } from "../types";
 import { ThemeSettings, ThemesQuery } from "../../__generated__/gqlTypes";
 
-import { ApolloProvider } from "react-apollo";
 import { Helmet } from "react-helmet";
 import { QUERY_THEMES } from "../../shared/queries/Queries";
 import React from "react";
@@ -22,7 +22,6 @@ import apolloClient from "../../shared/apolloClient";
 import config from "../../config";
 import { getMatchedRouteData } from "./helper";
 import logger from "../../shared/logger";
-import { renderToStringWithData } from "react-apollo";
 import ssrFetch from "./ssrFetch";
 
 const serverApp = async (props: IServerRenderProps) => {

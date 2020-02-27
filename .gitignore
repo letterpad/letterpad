@@ -29,4 +29,5 @@ public/*
 vendor-zip*
 utils/deploy.sh
 runtime~src
+vendor~src
 src/public/uploads

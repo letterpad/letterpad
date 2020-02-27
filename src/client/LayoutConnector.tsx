@@ -1,12 +1,19 @@
 import { IRouteProps, IThemeContainer } from "./types";
+import { Post, PostsNode } from "../__generated__/gqlTypes";
 import React, { useEffect } from "react";
 
+import DataConnector from "./DataConnector";
 import { RouteComponentProps } from "react-router";
-import config from "../config";
+
+type TypeWrappedComponent =
+  | IThemeContainer["Home"]
+  | IThemeContainer["Post"]
+  | IThemeContainer["Page"]
+  | IThemeContainer["Posts"];
 
 function LayoutConnector(
-  WrappedComponent: IThemeContainer,
-  routeProps: IRouteProps,
+  WrappedComponent: TypeWrappedComponent,
+  routeProps: IRouteProps<Post | PostsNode>,
   Layout: React.ComponentType<any>,
 ) {
   const LayoutConnector: React.FC<RouteComponentProps> & {
@@ -38,7 +45,7 @@ function LayoutConnector(
     };
     return (
       <Layout
-        Content={WrappedComponent}
+        Content={DataConnector(WrappedComponent, routeProps.contentType)}
         contentType={routeProps.contentType}
         settings={routeProps.settings}
         client={routeProps.client}
