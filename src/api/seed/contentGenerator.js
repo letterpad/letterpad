@@ -153,7 +153,7 @@ You can also highlight newly added text by wrapping the text between two ++ foll
 <hr>
 <h1>Emphasis</h1>
 <p><strong>This is bold text</strong></p>
-<p><strong>This is underlined text</strong></p>
+<p><u>This is underlined text</u></p>
 <p><em>This is italic text</em></p>
 <p><s>Strikethrough</s></p>
 <hr>

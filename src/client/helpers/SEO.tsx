@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
+import PropTypes from "prop-types";
 import React from "react";
-import config from "../../config";
 
 const getMetaTags = ({
   title,
@@ -15,11 +15,10 @@ const getMetaTags = ({
   image,
   settings,
 }) => {
-  const host = settings.site_url.value;
   const metaTags = [
     { itemprop: "name", content: title },
     { itemprop: "description", content: description },
-    { itemprop: "image", content: host + image },
+    { itemprop: "image", content: image },
     { name: "description", content: description },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:site", content: `@${settings.social_twitter.value}` },
@@ -29,11 +28,11 @@ const getMetaTags = ({
       name: "twitter:creator",
       content: twitter || `@${settings.social_twitter.value}`,
     },
-    { name: "twitter:image:src", content: host + image },
+    { name: "twitter:image:src", content: image },
     { name: "og:title", content: `${title}` },
     { name: "og:type", content: contentType },
-    { name: "og:url", content: host + path },
-    { name: "og:image", content: host + image },
+    { name: "og:url", content: path },
+    { name: "og:image", content: image },
     { name: "og:description", content: description },
     { name: "og:site_name", content: settings.site_title.value },
   ];
@@ -47,9 +46,8 @@ const getMetaTags = ({
 
   return metaTags;
 };
-const mainUrl = config.BASE_NAME;
 
-const SEO = (props: any) => (
+const SEO = props => (
   <Helmet
     htmlAttributes={{
       lang: "en",
@@ -57,14 +55,24 @@ const SEO = (props: any) => (
       itemtype: `http://schema.org/${props.schema}`,
     }}
     title={props.title}
-    link={[
-      {
-        rel: "canonical",
-        href: mainUrl + props.path,
-      },
-    ]}
+    link={[{ rel: "canonical", href: props.path }]}
     meta={getMetaTags({ ...props })}
   />
 );
+
+SEO.propTypes = {
+  schema: PropTypes.string,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  path: PropTypes.string,
+  contentType: PropTypes.string,
+  published: PropTypes.string,
+  updated: PropTypes.string,
+  category: PropTypes.string,
+  tags: PropTypes.array,
+  twitter: PropTypes.string,
+  image: PropTypes.string,
+  settings: PropTypes.object,
+};
 
 export default SEO;
