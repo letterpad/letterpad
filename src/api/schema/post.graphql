@@ -95,7 +95,7 @@ type Post {
   taxonomies: [Taxonomy!]!
 }
 
-type PostNode {
+type PostsNode {
   count: Int!
   rows: [Post!]!
 }
@@ -153,7 +153,7 @@ type Query {
   post(filters: SinglePostFilters): Post
 
   # Used to query a collection of posts
-  posts(filters: PostFilters): PostNode!
+  posts(filters: PostFilters): PostsNode!
 
   adjacentPosts(slug: String): AdjacentPosts
 

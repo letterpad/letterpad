@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { translate, WithNamespaces } from "react-i18next";
 import { Link, RouteComponentProps } from "react-router-dom";
-import config from "../../../config";
-import ArticleHoc from "./ArticleHoc";
-import Search from "./Search";
-import Paginate from "../../components/pagination";
-import StyledToolbar, { Layout } from "./Toolbar.css";
+import { Loader, StyledTitle } from "./ArticleList.css";
+import { PostTypes, PostsNode } from "../../../__generated__/gqlTypes";
+import React, { useState } from "react";
 import Section, { SectionSizes } from "../../components/section";
-import { StyledTitle, Loader } from "./ArticleList.css";
-import StyledButton from "../../components/button";
+import StyledToolbar, { Layout } from "./Toolbar.css";
+import { WithNamespaces, translate } from "react-i18next";
+
+import ArticleHoc from "./ArticleHoc";
 import Filters from "./Filters";
-import RenderTable from "./RenderTable";
+import Paginate from "../../components/pagination";
 import RenderGrid from "./RenderGrid";
-import { PostTypes, PostNode } from "../../../__generated__/gqlTypes";
+import RenderTable from "./RenderTable";
+import Search from "./Search";
+import StyledButton from "../../components/button";
+import config from "../../../config";
 
 interface IArticleListProps extends WithNamespaces {
   type: PostTypes;
@@ -22,7 +23,7 @@ interface IArticleListProps extends WithNamespaces {
   deleteSelectedPosts: () => void;
   selectedPosts: string[];
   loading: boolean;
-  posts: PostNode;
+  posts: PostsNode;
 }
 
 export enum LayoutOptions {
