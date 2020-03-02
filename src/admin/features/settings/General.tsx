@@ -53,7 +53,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
 
   const updateFavicon = (site_favicon: string) => {
     updateOption(SettingOptions.SiteFavicon, site_favicon);
-    setSiteLogo(site_favicon);
+    setSiteFavicon(site_favicon);
   };
 
   const uploadBanner = async (files: FileList | null) => {
