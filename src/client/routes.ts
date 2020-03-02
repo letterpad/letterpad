@@ -26,7 +26,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     theme = `${settings.theme.value}`;
   }
   let Theme = require(`./themes/${theme}/app`).default;
-  let { Home, Posts, Layout, SinglePage, SinglePost, NotFound, Search } = Theme;
+  let { Home, Posts, Layout, Page, Post, NotFound, Search } = Theme;
   const isAdmin = false;
   const commonProps = {
     client: apolloClient(isAdmin),
@@ -65,7 +65,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     {
       exact: true,
       component: LayoutConnector(
-        SinglePage,
+        Page,
         {
           contentType: EnumContentType.PAGE,
           ...commonProps,
@@ -77,7 +77,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     {
       exact: true,
       component: LayoutConnector(
-        SinglePost,
+        Post,
         {
           contentType: EnumContentType.POST,
           ...commonProps,

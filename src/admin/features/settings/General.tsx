@@ -18,12 +18,8 @@ interface IGeneralProps extends WithNamespaces {
 }
 
 const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
-  const [banner, setBanner] = useState<string>(
-    data.banner.value.replace(host, "") || "",
-  );
-  const [site_logo, setSiteLogo] = useState<string>(
-    data.site_logo.value.replace(host, "") || "",
-  );
+  const [banner, setBanner] = useState<string>(data.banner.value || "");
+  const [site_logo, setSiteLogo] = useState<string>(data.site_logo.value || "");
 
   const uploadLogoInputRef = createRef<HTMLInputElement>();
   const uploadBannerRef = createRef<HTMLInputElement>();

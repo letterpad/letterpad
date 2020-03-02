@@ -1,9 +1,10 @@
+import Input, { TextArea } from "../../components/input";
 import React, { useState } from "react";
 import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import { WithNamespaces, translate } from "react-i18next";
 
 import { Container } from "../../components/switch";
-import Input from "../../components/input";
+import styled from "styled-components";
 
 interface IOptionalProps extends WithNamespaces {
   data: { [option in SettingOptions]: Setting };
@@ -49,8 +50,41 @@ const Optional: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
         placeholder={t("settings.additional.disqus.placeholder")}
         onBlur={e => updateOption(SettingOptions.DisqusId, e.target.value)}
       />
+      <br />
+      <SubscribeBlock>
+        <TextArea
+          label={t("settings.additional.subscribe")}
+          defaultValue={data.subscribe_embed.value || ""}
+          placeholder={t("settings.additional.subscribe.placeholder")}
+          rows={15}
+          onBlur={e =>
+            updateOption(SettingOptions.SubscribeEmbed, e.target.value)
+          }
+        />
+        <small>
+          Optional: You may use{" "}
+          <u>
+            <a href="https://tinyletter.com/" target="_blank">
+              TinyLetter
+            </a>
+          </u>
+          to create a free embedable subscription form and send newsletters to
+          your subscribers.
+        </small>
+      </SubscribeBlock>
     </div>
   );
 };
 
 export default translate("translations")(Optional);
+
+const SubscribeBlock = styled.div`
+  textarea {
+    height: auto;
+    font-family: monospace;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    border: 1px solid var(--color-border);
+    padding: 16px;
+  }
+`;

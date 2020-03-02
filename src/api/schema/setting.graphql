@@ -5,6 +5,7 @@ enum SettingOptions {
   site_url
   site_footer
   site_description
+  subscribe_embed
   social_twitter
   social_facebook
   social_instagram

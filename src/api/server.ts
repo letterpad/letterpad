@@ -69,6 +69,9 @@ const server = new ApolloServer({
     return error;
   },
   context: context,
+  playground: {
+    endpoint: config.API_URL,
+  },
 });
 
 const { pathname } = new URL(config.API_URL);
@@ -81,6 +84,6 @@ export default async (app: Express) => {
       abortOnLimit: true,
     }),
   );
-  app.use("/upload", upload);
+  app.use(config.BASE_NAME + "/upload", upload);
   server.applyMiddleware({ app, path: pathname });
 };

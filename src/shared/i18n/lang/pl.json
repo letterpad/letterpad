@@ -109,6 +109,8 @@
         "settings.additional.disqus.placeholder": "Enter the disqus id",
         "settings.additional.latestPostCount": "Ostatnia liczba postów",
         "settings.additional.latestPostCount.placeholder": "Łączne posty do wyświetlenia w widgecie",
+        "settings.additional.subscribe": "",
+        "settings.additional.subscribe.placeholder": "",
         "settings.additional.tagline": "Skonfiguruj widżety paska bocznego",
         "settings.additional.title": "Ustawienia paska bocznego",
         "settings.css.tagline": "",

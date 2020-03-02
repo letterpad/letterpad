@@ -44,7 +44,7 @@ export default {
               require("path").join(__dirname, "../../public/css/custom.css"),
               setting.value,
             );
-          } else if (["site_banner", "site_logo"].includes(setting.option)) {
+          } else if (["banner", "site_logo"].includes(setting.option)) {
             setting.value = setting.value.replace(host, "");
           }
           return models.Setting.update(setting, {
