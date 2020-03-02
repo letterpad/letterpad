@@ -73,7 +73,6 @@ CustomImage.propTypes = {
 };
 interface IFeaturedImageProps extends WithNamespaces {
   post: Post;
-  updateFeaturedImage: (any) => void;
 }
 
 class FeaturedImage extends Component<

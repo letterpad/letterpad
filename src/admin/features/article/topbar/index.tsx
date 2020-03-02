@@ -3,7 +3,7 @@ import { Post, PostStatusOptions } from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
 import StyledTopBar, {
   AutoSaveIndicator,
-  PostStatus,
+  PostStatusText,
   PublishBox,
 } from "./TopBar.css";
 
@@ -12,6 +12,7 @@ import MetaDropdown from "./MetaDropdown";
 import PostActions from "../PostActions";
 import PublishDropdown from "./PublishDropdown";
 import StyledDropdown from "../../../components/dropdown";
+import config from "../../../../config";
 import { notify } from "react-notify-toast";
 
 interface ITopbarProps {
@@ -32,8 +33,6 @@ export class TopBar extends Component<ITopbarProps, any> {
   };
 
   componentDidMount() {
-    PostActions.setData(this.props.post);
-
     EventBusInstance.on("ARTICLE_SAVING", () => {
       this.setState({ saving: true });
     });
@@ -47,12 +46,6 @@ export class TopBar extends Component<ITopbarProps, any> {
     });
   }
 
-  changePostStatus = status => {
-    this.setState({
-      isPublished: status,
-    });
-  };
-
   afterPostSave = (post: Post) => {
     let eventName = "";
     let notifyMessage = "";
@@ -64,7 +57,6 @@ export class TopBar extends Component<ITopbarProps, any> {
     // if the post is in edit mode, trigger the event
     else if (this.props.edit) {
       eventName = "onPostUpdate";
-      notifyMessage = "Post updated";
       this.setState({ post });
     }
     if (notifyMessage) {
@@ -81,10 +73,15 @@ export class TopBar extends Component<ITopbarProps, any> {
     }
   };
 
-  updatePost = async data => {
-    PostActions.setData(data);
-
+  updatePost = async () => {
+    this.setState({
+      isPublished: PostActions.getData().status === PostStatusOptions.Publish,
+    });
+    this.setState({ saving: true });
     const update = await this.props.updatePost();
+    setTimeout(() => {
+      this.setState({ saving: false });
+    }, 500);
 
     if (update.data.updatePost.ok) {
       // If this is the first update to the post, there should be a new slug that was generated.
@@ -104,13 +101,12 @@ export class TopBar extends Component<ITopbarProps, any> {
 
     const goBack = e => {
       e.preventDefault();
-      this.props.router.history.goBack();
+      this.props.router.history.push(config.BASE_NAME + "/admin/posts");
     };
     const deleteAction = (e: React.SyntheticEvent) => {
       e.preventDefault();
-      this.updatePost({
-        status: "trash",
-      });
+      PostActions.setData({ status: PostStatusOptions.Trash });
+      this.updatePost();
     };
 
     return (
@@ -122,9 +118,9 @@ export class TopBar extends Component<ITopbarProps, any> {
             </span>
           </Link>
 
-          <PostStatus status={this.state.post.status}>
+          <PostStatusText status={this.state.post.status}>
             {StatusGrammer[this.state.post.status]}
-          </PostStatus>
+          </PostStatusText>
         </div>
         {this.state.saving && (
           <AutoSaveIndicator>
@@ -140,15 +136,16 @@ export class TopBar extends Component<ITopbarProps, any> {
             <StyledDropdown
               name="Publish"
               className="publish"
-              render={(isOpen, toggleVisibility) => {
+              render={(
+                isOpen: boolean,
+                toggleVisibility: (e?: Event, flag?: boolean) => void,
+              ) => {
                 if (!isOpen) return null;
                 return (
                   <PublishDropdown
                     toggleVisibility={toggleVisibility}
                     isPublished={this.state.isPublished}
-                    changePostStatus={this.changePostStatus}
                     post={this.props.post}
-                    create={this.props.create || false}
                     updatePost={this.updatePost}
                   />
                 );

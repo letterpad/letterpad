@@ -1,26 +1,31 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 import PostActions from "../PostActions";
 import { TextArea } from "../../../components/input";
+import utils from "../../../../shared/util";
 
-class Excerpt extends Component<any, any> {
-  static propTypes = {
-    post: PropTypes.object,
-  };
-
+interface IProps {
+  excerpt: string;
+  html: string;
+  updatePost: () => void;
+}
+interface IState {
+  chars: number;
+  excerpt: string;
+}
+class Excerpt extends Component<IProps, IState> {
   maxLength = 160;
 
   state = {
     chars: 0,
-    excerpt: "",
+    excerpt: this.props.excerpt,
   };
 
   componentDidMount() {
-    let { excerpt } = this.props.post;
+    let { excerpt, html } = this.props;
+    const oldExcerpt = excerpt;
     if (!excerpt) {
       // the body will contain html characters. Remove all the tags and get plain text
-      let html = this.props.post.body;
       const tmp = document.createElement("DIV");
       tmp.innerHTML = html;
 
@@ -31,10 +36,12 @@ class Excerpt extends Component<any, any> {
     } else if (excerpt.length > this.maxLength) {
       excerpt = this.trimString(excerpt);
     }
-    this.setData(excerpt);
+    if (oldExcerpt !== excerpt) {
+      this.setData(excerpt);
+    }
   }
 
-  trimString = str => {
+  trimString = (str: string) => {
     //trim the string to the maximum length
     let trimmedString = str.substr(0, this.maxLength);
     //re-trim if we are in the middle of a word
@@ -46,11 +53,12 @@ class Excerpt extends Component<any, any> {
     );
   };
 
-  setData = excerpt => {
+  setData = (excerpt: string) => {
     this.setState({ chars: excerpt.length, excerpt });
     PostActions.setData({
       excerpt,
     });
+    utils.debounce(this.props.updatePost, 200)();
   };
 
   render() {

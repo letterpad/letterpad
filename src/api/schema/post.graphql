@@ -57,6 +57,7 @@ input InputUpdatePost {
   authorId: Int
   excerpt: String
   cover_image: String
+  publishedAt: Date
   type: String
   status: PostStatusOptions
   slug: String

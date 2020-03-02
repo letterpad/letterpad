@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-// import PropTypes from "prop-types";
-import { translate } from "react-i18next";
-import styled from "styled-components";
+
+import FileExplorer from "../file-explorer";
 import ModalHoc from "../../components/modal";
 import StyledButton from "../../components/button";
-import FileExplorer from "../file-explorer";
+import styled from "styled-components";
+// import PropTypes from "prop-types";
+import { translate } from "react-i18next";
 
 const StyledBody = styled.div`
   .grid {
@@ -29,7 +30,7 @@ class FileExplorerModal extends Component<any, any> {
 
   render() {
     const { t } = this.props;
-
+    const enableInsert = this.state.selectedImageUrls.length > 0;
     return (
       <ModalHoc
         confirm
@@ -47,25 +48,20 @@ class FileExplorerModal extends Component<any, any> {
           <StyledButton onClick={this.props.addNewMedia}>
             Add New Item
           </StyledButton>
-          <StyledButton
-            success
-            onClick={() =>
-              this.props.onMediaSelect(this.state.selectedImageUrls)
-            }
-          >
-            Insert
-          </StyledButton>
+          {enableInsert && (
+            <StyledButton
+              success
+              onClick={() =>
+                this.props.onMediaSelect(this.state.selectedImageUrls)
+              }
+            >
+              Insert
+            </StyledButton>
+          )}
         </div>
       </ModalHoc>
     );
   }
 }
-
-// FileExplorerModal.propTypes = {
-//   onClose: PropTypes.func.isRequired,
-//   addNewMedia: PropTypes.func.isRequired,
-//   onMediaSelect: PropTypes.func.isRequired,
-//   t: PropTypes.func,
-// };
 
 export default translate("translations")(FileExplorerModal);

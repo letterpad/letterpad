@@ -17,6 +17,7 @@ interface ITaxonomyProps {
   for: TaxonomyTypes;
   suggestions: [];
   toggleVisibility: (e?: Event, flag?: boolean) => void;
+  updatePost: () => void;
 }
 
 interface ITaxonomyState {
@@ -82,6 +83,7 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
       PostActions.addTaxonomy(formatTagsForBackend([a.option])[0]);
       this.setState({ tags });
     }
+    this.props.updatePost();
   };
 
   createNewTag = (tag: string) => {
@@ -96,10 +98,12 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
     this.setState({
       tags: formatTagsForDropdown([...this.state.tags, newTag]),
     });
+    this.props.updatePost();
   };
 
   render() {
-    const name = this.props.for === "post_tag" ? "Tags" : "Categories";
+    const name =
+      this.props.for === TaxonomyTypes.PostTag ? "Tags" : "Categories";
 
     return (
       <StyledTags
@@ -115,7 +119,7 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
         isValidNewOption={inputValue => {
           return inputValue.trim().length > 0;
         }}
-        closeMenuOnSelect={false}
+        closeMenuOnSelect={true}
         onCreateOption={this.createNewTag}
       />
     );

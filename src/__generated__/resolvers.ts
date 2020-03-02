@@ -135,6 +135,7 @@ export type InputUpdatePost = {
   authorId?: Maybe<Scalars["Int"]>;
   excerpt?: Maybe<Scalars["String"]>;
   cover_image?: Maybe<Scalars["String"]>;
+  publishedAt?: Maybe<Scalars["Date"]>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
@@ -502,6 +503,7 @@ export enum SettingOptions {
   TextPostsEmpty = "text_posts_empty",
   DisplayAuthorInfo = "displayAuthorInfo",
   SiteLogo = "site_logo",
+  SiteFavicon = "site_favicon",
   Menu = "menu",
   Css = "css",
   GoogleAnalytics = "google_analytics",

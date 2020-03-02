@@ -48,7 +48,7 @@ export const PublishBox = styled.div`
   }
 `;
 
-export const PostStatus = styled.span<{ status: string }>`
+export const PostStatusText = styled.span<{ status: string }>`
   font-size: 11px;
   margin-left: 30px;
   border: 1px solid var(--color-border);
