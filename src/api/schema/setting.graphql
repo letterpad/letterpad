@@ -5,6 +5,7 @@ enum SettingOptions {
   site_url
   site_footer
   site_description
+  subscribe_embed
   social_twitter
   social_facebook
   social_instagram
@@ -13,6 +14,7 @@ enum SettingOptions {
   text_posts_empty
   displayAuthorInfo
   site_logo
+  site_favicon
   menu
   css
   google_analytics

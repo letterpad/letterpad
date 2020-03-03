@@ -285,6 +285,10 @@ export async function insertSettings(models) {
       value: "",
     },
     {
+      option: "subscribe_embed",
+      value: "",
+    },
+    {
       option: "social_twitter",
       value: "https://twitter.com",
     },

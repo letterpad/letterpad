@@ -1,12 +1,42 @@
 import React, { Component } from "react";
+
 import PropTypes from "prop-types";
 import Select from "react-select/creatable";
 
-import Wrapper from "./Tags.css";
+// import Wrapper from "./Tags.css";
 const customStyles = {
-  option: (provided, state) => ({
+  option: (provided, state) => {
+    return {
+      ...provided,
+      color: state.isFocused ? "var(--bg-base)" : "var(--color-base)",
+      background: state.isFocused ? "var(--color-accent)" : "transparent",
+      cursor: "pointer",
+    };
+  },
+  menu: (provided, state) => ({
     ...provided,
-    color: state.isSelected ? "#333" : "#000",
+    color: "var(--color-base)",
+    background: "var(--bg-sections)",
+  }),
+  indicatorContainer: (provided, state) => ({
+    ...provided,
+    color: "var(--color-base)",
+  }),
+  control: (provided, state) => ({
+    ...provided,
+    background: "var(--bg-base)",
+    color: "var(--color-base)",
+    border: "1px solid var(--color-border)",
+  }),
+  multiValue: (provided, state) => ({
+    ...provided,
+    background: "var(--color-accent)",
+    border: "1px solid var(--color-border)",
+    color: "#FFF",
+  }),
+  multiValueLabel: (provided, state) => ({
+    ...provided,
+    color: "#FFF",
   }),
 };
 
@@ -23,7 +53,7 @@ export class StyledTags extends Component<any, any> {
 
   render() {
     return (
-      <Wrapper>
+      <div>
         <div className="meta-label">{this.props.name}</div>
         <div className="x_content">
           <div className="control-group">
@@ -31,7 +61,7 @@ export class StyledTags extends Component<any, any> {
           </div>
         </div>
         <hr />
-      </Wrapper>
+      </div>
     );
   }
 }

@@ -76,6 +76,7 @@ export const getHtml = (data: IProps) => {
     INITIAL_DATA: JSON.stringify(initialData),
     NODE_ENV: process.env.NODE_ENV,
     TRACKING_ID: settings.google_analytics.value,
+    FAVICON: settings.site_favicon.value,
     GA_SCRIPT_TAG: settings.google_analytics.value
       ? '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-19390409-3"></script>'
       : "",

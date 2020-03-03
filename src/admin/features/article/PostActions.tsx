@@ -1,47 +1,54 @@
-let PostActions: any = {
-  data: {},
+import { Post, Taxonomy } from "../../../__generated__/gqlTypes";
 
-  triggerEvent: (name, data) => {
-    // create and dispatch the event
-    let event = new CustomEvent(name, { detail: data });
-    window.dispatchEvent(event);
-  },
+interface IPostActions {
+  triggerEvent: (name: string, data: any) => void;
+  setData: (data: object) => void;
+  getData: () => Post;
+  removeTaxonomy: (taxonomy: Taxonomy) => void;
+  addTaxonomy: (taxonomy: Taxonomy) => void;
+}
 
-  setData: data => {
-    if (data.taxonomies) {
-      data.taxonomies = data.taxonomies.map(item => {
-        const { __typename, ...rest } = item;
-        return rest;
-      });
-    }
-    PostActions.data = {
-      ...PostActions.data,
-      ...data,
-    };
-    PostActions.triggerEvent("onPostChange", data);
-  },
+let PostActions: IPostActions = (() => {
+  let postData: Post;
+  return {
+    triggerEvent: (name, data) => {
+      // create and dispatch the event
+      let event = new CustomEvent(name, { detail: data });
+      window.dispatchEvent(event);
+    },
 
-  getData: () => {
-    let taxonomies: Array<any> = [];
-    for (let type in PostActions.taxonomySuggestions) {
-      PostActions.taxonomySuggestions[type].forEach((obj: any) => {
-        taxonomies.push(obj);
-      });
-    }
-    // PostActions.data.taxonomies = taxonomies;
-    return PostActions.data;
-  },
+    setData: data => {
+      if (data.taxonomies) {
+        data.taxonomies = data.taxonomies.map(item => {
+          const { __typename, ...rest } = item;
+          return rest;
+        });
+      }
+      postData = {
+        ...postData,
+        ...data,
+      };
+      PostActions.triggerEvent("onPostChange", data);
+    },
 
-  removeTaxonomy: taxonomy => {
-    PostActions.data.taxonomies = PostActions.getData().taxonomies.filter(
-      item => item.id !== taxonomy.id,
-    );
-  },
+    getData: () => {
+      return postData;
+    },
 
-  addTaxonomy: taxonomy => {
-    const taxonomies = [...PostActions.getData().taxonomies, taxonomy];
-    PostActions.data.taxonomies = taxonomies;
-  },
-};
+    removeTaxonomy: (taxonomy: Taxonomy) => {
+      if (!postData) return;
+      postData.taxonomies = PostActions.getData().taxonomies.filter(
+        item => item.id !== taxonomy.id,
+      );
+    },
+
+    addTaxonomy: (taxonomy: Taxonomy) => {
+      const taxonomies = [...PostActions.getData().taxonomies, taxonomy];
+      if (postData) {
+        postData.taxonomies = taxonomies;
+      }
+    },
+  };
+})();
 
 export default PostActions;

@@ -1,8 +1,14 @@
 const path = require("path");
 
+let source = "src";
+
+if(process.env.NODE_ENV === "production") {
+    source = "dist";
+}
+
 module.exports = {
-    config: path.join("./src/api/housekeeper/db.config.js"),
-    "models-path": path.resolve("./src/api/housekeeper/models"),
-    "migrations-path": path.resolve("./src/api/housekeeper/migrations"),
-    "seeders-path": path.resolve("./src/api/housekeeper/seeders")
+    config: path.join("./"+source+"/api/housekeeper/db.config.js"),
+    "models-path": path.resolve("./"+source+"/api/housekeeper/models"),
+    "migrations-path": path.resolve("./"+source+"/api/housekeeper/migrations"),
+    "seeders-path": path.resolve("./"+source+"/api/housekeeper/seeders")
 };

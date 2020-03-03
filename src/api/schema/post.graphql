@@ -21,7 +21,7 @@ enum MenuTypes {
   page
 }
 
-input PostFilters {
+input PostsFilters {
   tag: String
   category: String
   categorySlug: String
@@ -57,6 +57,7 @@ input InputUpdatePost {
   authorId: Int
   excerpt: String
   cover_image: String
+  publishedAt: Date
   type: String
   status: PostStatusOptions
   slug: String
@@ -72,7 +73,7 @@ input SearchFilters {
   limit: String
 }
 
-input SinglePostFilters {
+input PostFilters {
   id: Int
   slug: String
 }
@@ -150,10 +151,10 @@ type SearchOutput {
 
 type Query {
   # Used to query a single post
-  post(filters: SinglePostFilters): Post
+  post(filters: PostFilters): Post
 
   # Used to query a collection of posts
-  posts(filters: PostFilters): PostsNode!
+  posts(filters: PostsFilters): PostsNode!
 
   adjacentPosts(slug: String): AdjacentPosts
 

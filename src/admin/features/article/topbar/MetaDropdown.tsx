@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import { Post } from "../../../../__generated__/gqlTypes";
 import PostActions from "../PostActions";
-import StyledButton from "../../../components/button";
 import StyledDropdown from "./Dropdown.css";
 import StyledInput from "../../../components/input";
 import config from "../../../../config";
@@ -13,13 +12,7 @@ const host = config.ROOT_URL + config.BASE_NAME;
 interface IMetaDropdownProps {
   close: (e: React.SyntheticEvent) => void;
   post: Post;
-  updatePost: ({
-    publishedAt,
-    slug,
-  }: {
-    publishedAt: string;
-    slug: string;
-  }) => void;
+  updatePost: () => void;
 }
 
 class MetaDropdown extends Component<IMetaDropdownProps, any> {
@@ -41,6 +34,16 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
       slug: e.target.value,
     });
     PostActions.setData({ slug: e.target.value });
+    this.props.updatePost();
+  };
+
+  changePublishDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      publishedAt: e.target.value,
+    });
+    console.log(e.target.value);
+    PostActions.setData({ publishedAt: e.target.value });
+    this.props.updatePost();
   };
 
   render() {
@@ -54,9 +57,8 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
           label="Published at"
           className="meta-value"
           placeholder="Published date"
-          defaultValue={moment(this.props.post.createdAt).format(
-            "DD-MM-Y hh:mm A",
-          )}
+          defaultValue={moment(publishedAt).format("DD-MM-Y hh:mm A")}
+          onChange={this.changePublishDate}
         />
 
         <StyledInput
@@ -78,17 +80,6 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
             window.open(previewUrl);
           }}
         />
-
-        <StyledButton
-          success
-          onClick={(e: React.SyntheticEvent) => {
-            e.preventDefault();
-            this.props.updatePost({ publishedAt, slug });
-            this.props.close(e);
-          }}
-        >
-          Save
-        </StyledButton>
       </StyledDropdown>
     );
   }

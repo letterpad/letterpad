@@ -109,6 +109,8 @@
         "settings.additional.disqus.placeholder": "Enter the disqus id",
         "settings.additional.latestPostCount": "Nombre d'articles",
         "settings.additional.latestPostCount.placeholder": "Nombre d'articles à afficher dans le widget",
+        "settings.additional.subscribe": "",
+        "settings.additional.subscribe.placeholder": "",
         "settings.additional.tagline": "Configurer les widgets de la barre latérale",
         "settings.additional.title": "Paramètres de la barre latérale",
         "settings.css.tagline": "",

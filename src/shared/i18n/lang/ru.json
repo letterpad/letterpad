@@ -109,6 +109,8 @@
         "settings.additional.disqus.placeholder": "Введите ваш Disqus ID",
         "settings.additional.latestPostCount": "Число последних публикаций",
         "settings.additional.latestPostCount.placeholder": "Сколько последних публикаций выводить в виджете",
+        "settings.additional.subscribe": "",
+        "settings.additional.subscribe.placeholder": "",
         "settings.additional.tagline": "Настройки, которые могут использоваться темами оформления",
         "settings.additional.title": "Дополнительные настройки",
         "settings.css.tagline": "",

@@ -44,16 +44,22 @@ class Routes extends Component<RouteComponentProps, IState> {
       const options = await apolloClient().query<SettingsQuery>({
         query: QUERY_SETTINGS,
       });
-      const data: object = {};
+      const data: TypeSettings | {} = {};
       if (options && options.data && options.data.settings) {
         options.data.settings.forEach(setting => {
           if (setting && setting.option) {
             data[setting.option] = setting;
           }
         });
-
-        this.setState({ settings: data as TypeSettings, loading: false });
+        const favicon: HTMLLinkElement | null = document.querySelector(
+          "link[rel='icon']",
+        );
+        if (favicon) favicon.href = (data as TypeSettings).site_favicon.value;
       }
+      this.setState({
+        settings: data as TypeSettings,
+        loading: false,
+      });
     } catch (e) {
       this.setState({ error: e, loading: false });
     }
