@@ -99,7 +99,11 @@ class FileExplorer extends Component<
   };
 
   render() {
-    const rows = (this.state.media as MediaNode).rows.map(media => (
+    const images = (this.state.media as MediaNode).rows;
+    if (images.length === 0) {
+      return <p>You do not have any images in your gallery.</p>;
+    }
+    const rows = images.map(media => (
       <FileItem
         key={media.id}
         media={media}

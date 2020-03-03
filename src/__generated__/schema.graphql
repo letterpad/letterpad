@@ -65,12 +65,12 @@ type Query {
   me: Author
   validateToken: CreateAuthorResponse
   media(filters: MediaFilters): MediaNode!
-
+  
   # Used to query a single post
-  post(filters: SinglePostFilters): Post
-
+  post(filters: PostFilters): Post
+  
   # Used to query a collection of posts
-  posts(filters: PostFilters): PostsNode!
+  posts(filters: PostsFilters): PostsNode!
   adjacentPosts(slug: String): AdjacentPosts
   search(filters: SearchFilters!): SearchOutput
   stats: Stats
@@ -81,26 +81,12 @@ type Query {
 }
 
 type Mutation {
-  register(
-    username: String!
-    password: String!
-    email: String!
-  ): AuthorResponse!
-  login(
-    username: String
-    email: String
-    password: String!
-    remember: Boolean
-  ): LoginResponse!
+  register(username: String!, password: String!, email: String!): AuthorResponse!
+  login(username: String, email: String, password: String!, remember: Boolean): LoginResponse!
   forgotPassword(email: String!): ForgotPasswordResponse!
   resetPassword(password: String!, token: String!): ForgotPasswordResponse!
   updateAuthor(author: InputAuthor!): AuthorResponse
-  createAuthor(
-    email: String!
-    fname: String
-    lname: String
-    roleName: EnumRoles
-  ): CreateAuthorResponse!
+  createAuthor(email: String!, fname: String, lname: String, roleName: EnumRoles): CreateAuthorResponse!
   sendMail(to: String!, subject: String, body: String): Boolean
   insertMedia(url: String): Media
   deleteMedia(ids: [Int!]!): DeleteResponse
@@ -110,13 +96,7 @@ type Mutation {
   deletePosts(ids: [Int!], deleteFromSystem: Boolean): Response!
   uploadFile(id: Int, cover_image: String): Response!
   updateOptions(options: [OptionInputType]): [Setting!]!
-  updateTaxonomy(
-    id: Int!
-    name: String
-    desc: String
-    type: TaxonomyTypes!
-    slug: String
-  ): EditTaxResponse!
+  updateTaxonomy(id: Int!, name: String, desc: String, type: TaxonomyTypes!, slug: String): EditTaxResponse!
   deleteTaxonomy(id: Int!): EditTaxResponse!
   updateThemes(name: String!, settings: [InputThemeSettings!]!): Boolean!
   insertThemes(name: String!, settings: [InputThemeSettings!]!): Boolean!
@@ -181,7 +161,7 @@ enum MenuTypes {
   page
 }
 
-input PostFilters {
+input PostsFilters {
   tag: String
   category: String
   categorySlug: String
@@ -217,6 +197,7 @@ input InputUpdatePost {
   authorId: Int
   excerpt: String
   cover_image: String
+  publishedAt: Date
   type: String
   status: PostStatusOptions
   slug: String
@@ -232,12 +213,13 @@ input SearchFilters {
   limit: String
 }
 
-input SinglePostFilters {
+input PostFilters {
   id: Int
   slug: String
 }
 
 type Post {
+  
   # Primary key
   id: Int!
   title: String!
@@ -341,6 +323,7 @@ enum SettingOptions {
   site_url
   site_footer
   site_description
+  subscribe_embed
   social_twitter
   social_facebook
   social_instagram
@@ -349,6 +332,7 @@ enum SettingOptions {
   text_posts_empty
   displayAuthorInfo
   site_logo
+  site_favicon
   menu
   css
   google_analytics

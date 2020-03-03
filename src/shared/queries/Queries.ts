@@ -1,8 +1,8 @@
-import gql from "graphql-tag";
 import { PostFragment } from "./Fragments";
+import gql from "graphql-tag";
 
 export const QUERY_POSTS = gql`
-  query posts($filters: PostFilters) {
+  query posts($filters: PostsFilters) {
     posts(filters: $filters) {
       count
       rows {
@@ -15,7 +15,7 @@ export const QUERY_POSTS = gql`
 
 export const QUERY_POST = gql`
   # TODO: Convert the below params to object.
-  query post($filters: SinglePostFilters) {
+  query post($filters: PostFilters) {
     post(filters: $filters) {
       ...postFields
     }

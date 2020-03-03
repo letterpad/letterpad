@@ -680,4 +680,8 @@ export const AdminGlobalStyle = createGlobalStyle`
             margin: 0px;
         }
     }
+    #letterpad-editor-toolbar-toggle-button {
+        color: var(--color-border);
+        border: 1px solid var(--color-border);
+    }
 `;

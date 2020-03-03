@@ -9,7 +9,7 @@ import StyledArticle from "./Article.css";
 import { createGlobalStyle } from "styled-components";
 import { uploadFile } from "../../server/util";
 
-class Edit extends Component<any, any> {
+class Edit extends Component<any> {
   postSaveTimer: number = 0;
   hooks: any = null;
   editor: any = null;
@@ -20,6 +20,10 @@ class Edit extends Component<any, any> {
   };
 
   imageInputRef = React.createRef<HTMLInputElement>();
+
+  componentDidMount() {
+    PostActions.setData(this.props.post);
+  }
 
   onMediaBrowse = () => {
     this.setState({ fileExplorerOpen: true });
@@ -42,6 +46,7 @@ class Edit extends Component<any, any> {
 
   onEditorChange = async change => {
     const { markdown, html } = change();
+    if (markdown === PostActions.getData().md) return null;
     PostActions.setData({
       html,
       md: markdown,

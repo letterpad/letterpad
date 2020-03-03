@@ -3,7 +3,6 @@ import {
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from "graphql";
-
 import { Context } from "../api/server";
 export type Maybe<T> = T | null;
 export type RequireFields<T, K extends keyof T> = {
@@ -136,6 +135,7 @@ export type InputUpdatePost = {
   authorId?: Maybe<Scalars["Int"]>;
   excerpt?: Maybe<Scalars["String"]>;
   cover_image?: Maybe<Scalars["String"]>;
+  publishedAt?: Maybe<Scalars["Date"]>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
@@ -331,6 +331,11 @@ export type Post = {
 };
 
 export type PostFilters = {
+  id?: Maybe<Scalars["Int"]>;
+  slug?: Maybe<Scalars["String"]>;
+};
+
+export type PostsFilters = {
   tag?: Maybe<Scalars["String"]>;
   category?: Maybe<Scalars["String"]>;
   categorySlug?: Maybe<Scalars["String"]>;
@@ -409,11 +414,11 @@ export type QueryMediaArgs = {
 };
 
 export type QueryPostArgs = {
-  filters?: Maybe<SinglePostFilters>;
+  filters?: Maybe<PostFilters>;
 };
 
 export type QueryPostsArgs = {
-  filters?: Maybe<PostFilters>;
+  filters?: Maybe<PostsFilters>;
 };
 
 export type QueryAdjacentPostsArgs = {
@@ -489,6 +494,7 @@ export enum SettingOptions {
   SiteUrl = "site_url",
   SiteFooter = "site_footer",
   SiteDescription = "site_description",
+  SubscribeEmbed = "subscribe_embed",
   SocialTwitter = "social_twitter",
   SocialFacebook = "social_facebook",
   SocialInstagram = "social_instagram",
@@ -497,6 +503,7 @@ export enum SettingOptions {
   TextPostsEmpty = "text_posts_empty",
   DisplayAuthorInfo = "displayAuthorInfo",
   SiteLogo = "site_logo",
+  SiteFavicon = "site_favicon",
   Menu = "menu",
   Css = "css",
   GoogleAnalytics = "google_analytics",
@@ -505,11 +512,6 @@ export enum SettingOptions {
   DisqusId = "disqus_id",
   Banner = "banner",
 }
-
-export type SinglePostFilters = {
-  id?: Maybe<Scalars["Int"]>;
-  slug?: Maybe<Scalars["String"]>;
-};
 
 export type Social = {
   github?: Maybe<Scalars["String"]>;
@@ -720,11 +722,11 @@ export type ResolversTypes = {
   MediaNode: ResolverTypeWrapper<MediaNode>;
   Media: ResolverTypeWrapper<Media>;
   Date: ResolverTypeWrapper<Scalars["Date"]>;
-  SinglePostFilters: SinglePostFilters;
+  PostFilters: PostFilters;
   Post: ResolverTypeWrapper<Post>;
   Taxonomy: ResolverTypeWrapper<Taxonomy>;
   TaxonomyTypes: TaxonomyTypes;
-  PostFilters: PostFilters;
+  PostsFilters: PostsFilters;
   PostSortBy: PostSortBy;
   PostStatusOptions: PostStatusOptions;
   PostTypes: PostTypes;
@@ -779,11 +781,11 @@ export type ResolversParentTypes = {
   MediaNode: MediaNode;
   Media: Media;
   Date: Scalars["Date"];
-  SinglePostFilters: SinglePostFilters;
+  PostFilters: PostFilters;
   Post: Post;
   Taxonomy: Taxonomy;
   TaxonomyTypes: TaxonomyTypes;
-  PostFilters: PostFilters;
+  PostsFilters: PostsFilters;
   PostSortBy: PostSortBy;
   PostStatusOptions: PostStatusOptions;
   PostTypes: PostTypes;

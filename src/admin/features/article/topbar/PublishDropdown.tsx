@@ -1,89 +1,76 @@
+import {
+  Post,
+  PostStatusOptions,
+  PostTypes,
+  TaxonomyTypes,
+} from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
 
 import Excerpt from "./Excerpt";
 import FeaturedImage from "../FeaturedImage";
 import PostActions from "../PostActions";
-import PropTypes from "prop-types";
-import StyledButton from "../../../components/button";
 import StyledDropdown from "./Dropdown.css";
 import StyledSwitch from "../../../components/switch";
 import Taxonomies from "./Taxonomies";
-import { TaxonomyTypes } from "../../../../__generated__/gqlTypes";
 
-class PublishDropdown extends Component<any, any> {
-  static propTypes = {
-    close: PropTypes.func,
-    updatePost: PropTypes.func.isRequired,
-    isOpen: PropTypes.bool,
-    create: PropTypes.bool,
-    post: PropTypes.object,
-    changePostStatus: PropTypes.func.isRequired,
-    isPublished: PropTypes.bool.isRequired,
+interface IProps {
+  updatePost: (data?: object) => void;
+  post: Post;
+  toggleVisibility: (e?: Event, flag?: boolean) => void;
+  isPublished: boolean;
+}
+class PublishDropdown extends Component<IProps> {
+  onStatusChange = (status: boolean) => {
+    const statusText: PostStatusOptions = status
+      ? PostStatusOptions.Publish
+      : PostStatusOptions.Draft;
+
+    PostActions.setData({ status: statusText });
+    this.props.updatePost();
   };
-
-  getButton = (label, btnType = "btn-primary", status = "") => {
-    if (status === "") {
-      status = this.props.isPublished ? "publish" : "draft";
-    }
-    if (status)
-      return (
-        <div style={{ textAlign: "right" }}>
-          <StyledButton
-            sm
-            success
-            onClick={(e: React.SyntheticEvent) => {
-              this.props.updatePost({ status: status });
-              // this.props.close(e, false);
-            }}
-            className={"publish-btn btn btn-sm " + btnType}
-          >
-            {label}
-          </StyledButton>
-        </div>
-      );
-  };
-
   render() {
     const post = {
       ...this.props.post,
-      body: PostActions.getData().body,
+      html: PostActions.getData().html,
       taxonomies: PostActions.getData().taxonomies,
     };
-    const classes = this.props.isOpen ? " open" : "";
-    const actionLabel = this.props.create ? "Create" : "Update";
+    const { isPublished, toggleVisibility, updatePost } = this.props;
+
     return (
-      <StyledDropdown className={classes}>
-        <div>{this.getButton(actionLabel, "btn-primary")}</div>
+      <StyledDropdown>
         <StyledSwitch
           leftLabel="Draft"
           rightLabel="Publish"
-          onChange={this.props.changePostStatus}
-          isSelected={this.props.isPublished}
+          onChange={this.onStatusChange}
+          isSelected={isPublished}
         />
 
         <hr />
-        <Excerpt post={post} />
+        <Excerpt
+          html={post.html}
+          excerpt={post.excerpt}
+          updatePost={updatePost}
+        />
         <hr />
-        {post.type == "post" && (
+        {post.type === PostTypes.Post && (
           <Taxonomies
-            toggleVisibility={this.props.toggleVisibility}
+            toggleVisibility={toggleVisibility}
             post={post}
             for={TaxonomyTypes.PostTag}
             suggestions={[]}
+            updatePost={updatePost}
           />
         )}
-        {post.type == "post" && (
+        {post.type === PostTypes.Post && (
           <Taxonomies
-            toggleVisibility={this.props.toggleVisibility}
+            toggleVisibility={toggleVisibility}
             post={post}
             for={TaxonomyTypes.PostCategory}
             suggestions={[]}
+            updatePost={updatePost}
           />
         )}
-        <FeaturedImage
-          post={post}
-          updateFeaturedImage={this.props.updatePost}
-        />
+        <FeaturedImage post={post} />
         <br />
       </StyledDropdown>
     );

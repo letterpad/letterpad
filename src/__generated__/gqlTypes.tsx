@@ -125,6 +125,7 @@ export type InputUpdatePost = {
   authorId?: Maybe<Scalars["Int"]>;
   excerpt?: Maybe<Scalars["String"]>;
   cover_image?: Maybe<Scalars["String"]>;
+  publishedAt?: Maybe<Scalars["Date"]>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
@@ -320,6 +321,11 @@ export type Post = {
 };
 
 export type PostFilters = {
+  id?: Maybe<Scalars["Int"]>;
+  slug?: Maybe<Scalars["String"]>;
+};
+
+export type PostsFilters = {
   tag?: Maybe<Scalars["String"]>;
   category?: Maybe<Scalars["String"]>;
   categorySlug?: Maybe<Scalars["String"]>;
@@ -398,11 +404,11 @@ export type QueryMediaArgs = {
 };
 
 export type QueryPostArgs = {
-  filters?: Maybe<SinglePostFilters>;
+  filters?: Maybe<PostFilters>;
 };
 
 export type QueryPostsArgs = {
-  filters?: Maybe<PostFilters>;
+  filters?: Maybe<PostsFilters>;
 };
 
 export type QueryAdjacentPostsArgs = {
@@ -478,6 +484,7 @@ export enum SettingOptions {
   SiteUrl = "site_url",
   SiteFooter = "site_footer",
   SiteDescription = "site_description",
+  SubscribeEmbed = "subscribe_embed",
   SocialTwitter = "social_twitter",
   SocialFacebook = "social_facebook",
   SocialInstagram = "social_instagram",
@@ -486,6 +493,7 @@ export enum SettingOptions {
   TextPostsEmpty = "text_posts_empty",
   DisplayAuthorInfo = "displayAuthorInfo",
   SiteLogo = "site_logo",
+  SiteFavicon = "site_favicon",
   Menu = "menu",
   Css = "css",
   GoogleAnalytics = "google_analytics",
@@ -494,11 +502,6 @@ export enum SettingOptions {
   DisqusId = "disqus_id",
   Banner = "banner",
 }
-
-export type SinglePostFilters = {
-  id?: Maybe<Scalars["Int"]>;
-  slug?: Maybe<Scalars["String"]>;
-};
 
 export type Social = {
   github?: Maybe<Scalars["String"]>;
@@ -880,7 +883,7 @@ export type ResetPasswordMutation = { __typename?: "Mutation" } & {
 };
 
 export type PostsQueryVariables = {
-  filters?: Maybe<PostFilters>;
+  filters?: Maybe<PostsFilters>;
 };
 
 export type PostsQuery = { __typename?: "Query" } & {
@@ -890,7 +893,7 @@ export type PostsQuery = { __typename?: "Query" } & {
 };
 
 export type PostQueryVariables = {
-  filters?: Maybe<SinglePostFilters>;
+  filters?: Maybe<PostFilters>;
 };
 
 export type PostQuery = { __typename?: "Query" } & {

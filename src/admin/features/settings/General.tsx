@@ -18,15 +18,15 @@ interface IGeneralProps extends WithNamespaces {
 }
 
 const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
-  const [banner, setBanner] = useState<string>(
-    data.banner.value.replace(host, "") || "",
-  );
-  const [site_logo, setSiteLogo] = useState<string>(
-    data.site_logo.value.replace(host, "") || "",
+  const [banner, setBanner] = useState<string>(data.banner.value || "");
+  const [site_logo, setSiteLogo] = useState<string>(data.site_logo.value || "");
+  const [site_favicon, setSiteFavicon] = useState<string>(
+    data.site_favicon.value || "",
   );
 
   const uploadLogoInputRef = createRef<HTMLInputElement>();
   const uploadBannerRef = createRef<HTMLInputElement>();
+  const uploadFaviconRef = createRef<HTMLInputElement>();
 
   const { langOptions, selectedLanguage } = getLanguageOptions(
     data.locale.value,
@@ -51,6 +51,11 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
     setSiteLogo(site_logo);
   };
 
+  const updateFavicon = (site_favicon: string) => {
+    updateOption(SettingOptions.SiteFavicon, site_favicon);
+    setSiteFavicon(site_favicon);
+  };
+
   const uploadBanner = async (files: FileList | null) => {
     if (!files) return;
     const uploadedFiles = await uploadFile({ files });
@@ -71,6 +76,17 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
       return;
     }
     updateLogo(src);
+  };
+
+  const uploadFavicon = async (files: FileList | null) => {
+    if (!files) return;
+    const uploadedFiles = await uploadFile({ files });
+    let { src, errors } = uploadedFiles[0];
+    if (errors) {
+      notify.show(errors, "error", 3000);
+      return;
+    }
+    updateFavicon(src);
   };
 
   return (
@@ -151,6 +167,44 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
         <input
           ref={uploadLogoInputRef}
           onChange={input => uploadLogo(input.target.files)}
+          type="file"
+          className="hide"
+          name="uploads[]"
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <label className="custom-label">Upload Favicon</label>
+        <div className="logo-wrapper">
+          {!site_favicon ? (
+            <a
+              href="#"
+              onClick={e => {
+                e.preventDefault();
+                if (uploadFaviconRef.current) {
+                  uploadFaviconRef.current.click();
+                }
+              }}
+            >
+              <i className="material-icons">add</i>
+            </a>
+          ) : (
+            <div className="favicon">
+              <img width="100" alt="" src={site_favicon} />
+              <a
+                href="#"
+                onClick={e => {
+                  e.preventDefault();
+                  updateFavicon("");
+                }}
+              >
+                <i className="material-icons danger">delete</i>
+              </a>
+            </div>
+          )}
+        </div>
+        <input
+          ref={uploadFaviconRef}
+          onChange={input => uploadFavicon(input.target.files)}
           type="file"
           className="hide"
           name="uploads[]"

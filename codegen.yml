@@ -22,6 +22,6 @@ config:
   withComponent: false
   withHooks: false
   # useIndexSignature: true
-# hooks:
-# afterAllFileWrite:
-#   - prettier --write
+hooks:
+  afterAllFileWrite:
+    - prettier --write
