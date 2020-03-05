@@ -9,9 +9,9 @@ import Fuse from "fuse.js";
 import Sequelize from "sequelize";
 import config from "../../config";
 import { innertext } from "../utils/common";
+import logger from "../../shared/logger";
 import memoryCache from "../utils/memoryCache";
 
-// import { getMenuItemFromSlug } from "./selectors/post";
 const host = config.ROOT_URL + config.BASE_NAME;
 
 const noResult = {
@@ -27,6 +27,7 @@ const postresolver = {
      */
     posts: checkDisplayAccess.createResolver(
       async (root, args, { models, user }) => {
+        logger.debug("Reached resolver: posts");
         const conditions = { include: [], where: {}, limit: 20 };
 
         const {
@@ -179,6 +180,7 @@ const postresolver = {
     ),
 
     search: async (root, args, { models, user }) => {
+      logger.debug("Reached resolver: search");
       let cachedData = memoryCache.get("posts");
       if (!cachedData) {
         const data = await models.Post.findAll({
@@ -228,6 +230,7 @@ const postresolver = {
      * Query to handle a single post/page.
      */
     post: checkDisplayAccess.createResolver(async (root, args, { models }) => {
+      logger.debug("Reached resolver: post");
       const conditions = { where: { ...args.filters } };
       if (args.filters.id) {
         conditions.where.id = args.filters.id;
@@ -285,6 +288,7 @@ const postresolver = {
      * TODO: Make one query to process all the data
      */
     stats: async (root, args, { models }) => {
+      logger.debug("Reached resolver: stats");
       const result = {
         posts: { published: 0, drafts: 0 },
         pages: { published: 0, drafts: 0 },
