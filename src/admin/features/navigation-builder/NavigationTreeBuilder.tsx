@@ -16,14 +16,14 @@ import { translate } from "react-i18next";
  * This will be used to disable all the category items, pages which has been used in the menu
  * @param {Array} arr - Menu Data in json format
  */
-const getMenuItems = function(arr) {
+const getMenuSlugs = function(arr) {
   const toReturn = {};
   const recur = arr => {
     arr.forEach(item => {
       if (item.children && item.children.length > 0) {
         recur(item.children);
       }
-      toReturn[item.id + "-" + item.type] = true;
+      toReturn["/" + item.type + "/" + item.slug] = true;
     });
   };
   recur(arr);
@@ -64,7 +64,7 @@ class NavigationTreeBuilder extends Component<any, any> {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const menuIds = getMenuItems(prevState.items);
+    const menuSlugs = getMenuSlugs(prevState.items);
 
     // Loop through the categories and add a key "disabled".
     // The items which have been used in the navigation menu will have the value "disabled:true"
@@ -73,7 +73,10 @@ class NavigationTreeBuilder extends Component<any, any> {
         id: ele.id,
         title: ele.name,
         type: "category",
-        disabled: menuIds[ele.id + "-category"] ? true : false,
+        disabled:
+          typeof menuSlugs[ele.slug] === "undefined"
+            ? false
+            : !!menuSlugs[ele.slug],
         slug: "",
       };
     });
@@ -85,7 +88,10 @@ class NavigationTreeBuilder extends Component<any, any> {
         title: ele.title,
         slug: ele.slug,
         type: "page",
-        disabled: menuIds[ele.id + "-page"] ? true : false,
+        disabled:
+          typeof menuSlugs[ele.slug] === "undefined"
+            ? false
+            : !!menuSlugs[ele.slug],
       };
     });
     return { categories, pages, loaded: true };
@@ -99,7 +105,7 @@ class NavigationTreeBuilder extends Component<any, any> {
   addItem = (idx, type) => {
     const newState = { items: [] };
     const { id, title, slug } = this.state[type][idx];
-    newState[type] = [{ id, title, slug, type }];
+    newState[type] = [{ id, title, slug, type: this.state[type][idx].type }];
     newState[type][idx] = { id, title, slug, type, disabled: true };
     // All items which are added to the navigation should be disabled, so that they cannot be re-added.
     // This is not the case for folders. So when we add a folder, we change the id with a unique value
@@ -117,6 +123,8 @@ class NavigationTreeBuilder extends Component<any, any> {
       if (type === "categories") {
         newState[type][idx].slug = newState[type][idx].title.toLowerCase();
         newState[type][idx].type = "category";
+      } else {
+        newState[type][idx].type = "page";
       }
     }
 
@@ -311,5 +319,4 @@ function normalizeSlugs(menu) {
       .replace("/page/", "");
     return item;
   });
-  return menu;
 }

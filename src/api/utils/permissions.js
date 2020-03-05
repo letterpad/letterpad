@@ -12,6 +12,18 @@ const createResolver = resolver => {
   return baseResolver;
 };
 
+export const requireLoggedIn = createResolver((root, args, context, err) => {
+  if (context.error) {
+    throw new UnauthorizedError({ error: context.error });
+  }
+  args = { ...args, _loggedIn: true };
+
+  if (!context.user) {
+    args = { ...args, _loggedIn: false };
+  }
+  return args;
+});
+
 export const requiresAuth = createResolver((root, args, context, err) => {
   if (!context.user || !context.user.id) {
     throw new UnauthorizedError({ url: err.fieldName });
