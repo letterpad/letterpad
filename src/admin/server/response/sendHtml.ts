@@ -24,6 +24,7 @@ export const getHtml = (_req, res) => {
     INITIAL_STATE: initialState,
     NODE_ENV: process.env.NODE_ENV,
     SCRIPT_TAGS: scripts,
+    FAVICON: "data:image/x-icon;,",
   });
 
   res.end(content);

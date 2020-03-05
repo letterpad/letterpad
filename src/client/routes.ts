@@ -55,7 +55,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
       component: LayoutConnector(
         Posts,
         {
-          contentType: EnumContentType.PAGE,
+          contentType: EnumContentType.POSTS,
           ...commonProps,
         },
         Layout,

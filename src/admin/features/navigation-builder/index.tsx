@@ -1,31 +1,29 @@
+import {
+  Post,
+  PostStatusOptions,
+  PostTypes,
+  PostsQuery,
+  Setting,
+  SettingOptions,
+  TaxonomyTypes,
+} from "../../../__generated__/gqlTypes";
+import { QUERY_POSTS, QUERY_TAXONOMIES } from "../../../shared/queries/Queries";
 import React, { useEffect, useState } from "react";
-import { notify } from "react-notify-toast";
-import { translate, WithNamespaces } from "react-i18next";
+import {
+  TaxonomiesQuery,
+  TaxonomiesQueryVariables,
+  Taxonomy,
+} from "../../../__generated__/gqlTypes";
+import { WithNamespaces, translate } from "react-i18next";
 
 import Loader from "../../components/loader";
 import NavigationTreeBuilder from "./NavigationTreeBuilder";
-
-import { QUERY_TAXONOMIES, QUERY_POSTS } from "../../../shared/queries/Queries";
-
-import StyledSection from "../../components/section";
 import StyledButton from "../../components/button";
-import {
-  TaxonomiesQuery,
-  Taxonomy,
-  TaxonomiesQueryVariables,
-} from "../../../__generated__/gqlTypes";
-import { useQuery } from "react-apollo";
-import {
-  Post,
-  PostsQuery,
-  Setting,
-  TaxonomyTypes,
-  PostTypes,
-  PostStatusOptions,
-  SettingOptions,
-} from "../../../__generated__/gqlTypes";
-import apolloClient from "../../../shared/apolloClient";
+import StyledSection from "../../components/section";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
+import apolloClient from "../../../shared/apolloClient";
+import { notify } from "react-notify-toast";
+import { useQuery } from "react-apollo";
 
 interface INavigationBuilderProps extends WithNamespaces {
   settings: { [option in SettingOptions]: Setting };
@@ -79,10 +77,10 @@ const NavigationBuilder: React.FC<INavigationBuilderProps> = ({
   const setOption = (option: SettingOptions, value: string) => {
     const newUpdates = { ...updatedOptions, [option]: value };
     setUpdatedOptions(newUpdates);
+    submitData(newUpdates);
   };
 
-  const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  const submitData = async updatedOptions => {
     const settings: TypeAPIUpdatedOptions[] = [];
     Object.keys(updatedOptions).forEach(option => {
       settings.push({
@@ -110,9 +108,6 @@ const NavigationBuilder: React.FC<INavigationBuilderProps> = ({
           categories={categories}
           updateOption={setOption}
         />
-        <StyledButton success onClick={submitData}>
-          {t("common.save")}
-        </StyledButton>
       </div>
     </StyledSection>
   );

@@ -321,6 +321,10 @@ export async function insertSettings(models) {
       value: "/uploads/logo.png",
     },
     {
+      option: "site_favicon",
+      value: "/uploads/logo.png",
+    },
+    {
       option: "menu",
       value: menu,
     },

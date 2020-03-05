@@ -11,25 +11,41 @@ const host = config.ROOT_URL + config.BASE_NAME;
 
 export default {
   Query: {
-    author: async (root, args, { models }) => {
+    author: async (root, args, { user, models }) => {
       const author = await models.Author.findOne({ where: args });
+
       if (author) {
         author.social = JSON.parse(author.dataValues.social);
         author.avatar = host + author.avatar;
+      } else {
+        if (!user || !user.id) {
+          author.email = "xxx@xxx.com";
+          author.password = "xxx_xxx_xxx";
+        }
       }
       return author;
     },
 
-    authors: async (root, args, { models }) => {
+    authors: async (root, args, { user, models }) => {
       const authors = await models.Author.findAll({ where: args });
       return authors.map(author => {
         author.avatar = host + author.avatar;
+        if (!user || !user.id) {
+          author.email = "xxx@xxx.com";
+          author.password = "xxx_xxx_xxx";
+        }
         return author;
       });
     },
 
-    me: (req, args, { user, models }) =>
-      models.Author.findOne({ where: { id: user.id } }),
+    me: async (req, args, { user, models }) => {
+      const author = await models.Author.findOne({ where: { id: user.id } });
+      if (!user || !user.id) {
+        author.email = "xxx@xxx.com";
+        author.password = "xxx_xxx_xxx";
+      }
+      return author;
+    },
 
     validateToken: requiresAdmin.createResolver(async () => {
       return {

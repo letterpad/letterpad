@@ -69,6 +69,7 @@ const server = new ApolloServer({
     return error;
   },
   context: context,
+  introspection: true,
   playground: {
     endpoint: config.API_URL,
   },
