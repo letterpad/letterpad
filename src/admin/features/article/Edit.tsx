@@ -2,20 +2,34 @@ import React, { Component } from "react";
 
 import { EventBusInstance } from "../../../shared/eventBus";
 import FileExplorerModal from "../modals/FileExplorerModal";
-import LetterpadEditor from "letterpad-editor";
+// import LetterpadEditor from "letterpad-editor";
+import LetterpadEditor from "../../../../../editor/src/editor";
+import { Post } from "../../../__generated__/gqlTypes";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
 import StyledArticle from "./Article.css";
 import { createGlobalStyle } from "styled-components";
+import { notify } from "react-notify-toast";
 import { uploadFile } from "../../server/util";
 
-class Edit extends Component<any> {
+export enum MediaProvider {
+  Unsplash = "unsplash",
+  Letterpad = "letterpad",
+}
+
+interface IProps {
+  theme: string;
+  post: Post;
+  updatePost: () => Promise<any>;
+}
+class Edit extends Component<IProps> {
   postSaveTimer: number = 0;
   hooks: any = null;
   editor: any = null;
 
   state = {
     fileExplorerOpen: false,
+    mediaProvider: MediaProvider.Letterpad,
     pluginOperation: null, // enter the name of the plugin which is currently being overwritten.
   };
 
@@ -26,15 +40,25 @@ class Edit extends Component<any> {
   }
 
   onMediaBrowse = () => {
-    this.setState({ fileExplorerOpen: true });
+    this.setState({
+      fileExplorerOpen: true,
+      mediaProvider: MediaProvider.Letterpad,
+    });
   };
 
-  insertMedia = urls => {
-    urls.forEach(url => {
-      this.editor.insertImageUrl(url);
+  insertImageUrlInEditor = (urls: string[]) => {
+    const insertPromises = urls.map(url => {
+      return new Promise((resolve, reject) => {
+        try {
+          this.editor.insertImageUrl(url);
+          resolve();
+        } catch (e) {
+          reject();
+          console.error(e);
+        }
+      });
     });
-
-    setTimeout(this.toggleFileExplorer, 1000);
+    return Promise.all(insertPromises);
   };
 
   toggleFileExplorer = () => {
@@ -109,17 +133,39 @@ class Edit extends Component<any> {
             defaultValue={post.md}
             onChange={this.onEditorChange}
             placeholder="Write a story.."
+            addToToolbar={[
+              {
+                name: "test",
+                icon: (
+                  <div>
+                    <img src="https://cdn.iconscout.com/icon/free/png-256/unsplash-1884620-1596840.png" />
+                  </div>
+                ),
+                onClick: (name, editor) => {
+                  this.editor = editor;
+                  this.setState({
+                    mediaProvider: MediaProvider.Unsplash,
+                    fileExplorerOpen: true,
+                  });
+                },
+              },
+            ]}
           />
           {this.state.fileExplorerOpen && (
             <FileExplorerModal
+              mediaProvider={this.state.mediaProvider}
               isOpen={this.state.fileExplorerOpen}
               onClose={this.toggleFileExplorer}
-              onMediaSelect={this.insertMedia}
+              onMediaSelect={this.insertImageUrlInEditor}
               addNewMedia={() => {
-                if (this.imageInputRef.current) {
-                  this.imageInputRef.current.click();
+                const inputFile = this.imageInputRef.current;
+                if (inputFile) {
+                  inputFile.onchange = (change: any) => {
+                    this.uploadAndInsert(change.target.files);
+                    this.toggleFileExplorer();
+                  };
+                  inputFile.click();
                 }
-                this.toggleFileExplorer();
               }}
             />
           )}
@@ -129,7 +175,6 @@ class Edit extends Component<any> {
           className="hide post-image"
           type="file"
           multiple
-          onChange={input => this.uploadAndInsert(input.target.files)}
         />
       </StyledArticle>
     );

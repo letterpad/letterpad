@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import { WithNamespaces, translate } from "react-i18next";
 
 import FileExplorer from "../file-explorer";
+import { MediaProvider } from "../article/Edit";
 import ModalHoc from "../../components/modal";
 import StyledButton from "../../components/button";
+import { notify } from "react-notify-toast";
 import styled from "styled-components";
-// import PropTypes from "prop-types";
-import { translate } from "react-i18next";
 
 const StyledBody = styled.div`
   .grid {
@@ -13,13 +14,21 @@ const StyledBody = styled.div`
   }
 `;
 
-class FileExplorerModal extends Component<any, any> {
+interface IProps extends WithNamespaces {
+  onMediaSelect: (urls: string[]) => Promise<any>;
+  onClose: () => void;
+  mediaProvider: MediaProvider;
+  addNewMedia: () => void;
+  isOpen: boolean;
+}
+
+class FileExplorerModal extends Component<IProps, any> {
   state = {
     page: 1,
     selectedImageUrls: [],
   };
 
-  onSelect = images => {
+  onSelect = (images: string[]) => {
     this.setState({ selectedImageUrls: images });
   };
 
@@ -38,8 +47,11 @@ class FileExplorerModal extends Component<any, any> {
         onClose={this.props.onClose}
       >
         <StyledBody className="modal-body text-center">
-          <FileExplorer multi={true} onSelect={this.onSelect} />
-          <div className="p-t-20" />
+          <FileExplorer
+            multi={true}
+            onSelect={this.onSelect}
+            mediaProvider={this.props.mediaProvider}
+          />
         </StyledBody>
         <div className="modal-footer">
           <StyledButton onClick={this.props.onClose}>
@@ -51,9 +63,14 @@ class FileExplorerModal extends Component<any, any> {
           {enableInsert && (
             <StyledButton
               success
-              onClick={() =>
-                this.props.onMediaSelect(this.state.selectedImageUrls)
-              }
+              onClick={async () => {
+                try {
+                  await this.props.onMediaSelect(this.state.selectedImageUrls);
+                } catch (e) {
+                  notify.show("Something unexpected happened.", "error");
+                }
+                setTimeout(this.props.onClose, 0);
+              }}
             >
               Insert
             </StyledButton>

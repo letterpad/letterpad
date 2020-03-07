@@ -1,0 +1,61 @@
+import {
+  Media,
+  MediaQuery,
+  MediaQueryVariables,
+} from "../../../../__generated__/gqlTypes";
+import React, { useEffect, useState } from "react";
+
+import InfiniteScrollList from "../InfiniteScrollList";
+import { QUERY_MEDIA } from "../../../../shared/queries/Queries";
+import apolloClient from "../../../../shared/apolloClient";
+
+interface IProps {
+  renderer: (items: Media[]) => JSX.Element[];
+}
+
+const InternalMedia: React.FC<IProps> = ({ renderer }) => {
+  const [page, setPage] = useState(1);
+  const [data, setData] = useState<JSX.Element[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+
+  useEffect(() => {
+    fetchInternalMedia();
+  }, []);
+
+  const fetchInternalMedia = async (page = 1) => {
+    const result = await apolloClient().query<MediaQuery, MediaQueryVariables>({
+      query: QUERY_MEDIA,
+      variables: {
+        filters: {
+          page,
+          authorId: 1,
+        },
+      },
+    });
+
+    const images = {
+      rows: result.data.media.rows,
+      count: result.data.media.count,
+    };
+
+    const jsxElements = renderer(images.rows);
+    setData([...data, ...jsxElements]);
+    setTotalCount(images.count);
+  };
+
+  const loadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchInternalMedia(nextPage);
+  };
+  if (data.length === 0) {
+    return <p>You do not have any images in your gallery.</p>;
+  }
+  return (
+    <div>
+      <InfiniteScrollList data={data} count={totalCount} loadMore={loadMore} />
+    </div>
+  );
+};
+
+export default InternalMedia;
