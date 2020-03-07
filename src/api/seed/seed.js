@@ -349,6 +349,18 @@ export async function insertSettings(models) {
       value: "letterpad",
     },
     {
+      option: "cloudinary_key",
+      value: "",
+    },
+    {
+      option: "cloudinary_name",
+      value: "",
+    },
+    {
+      option: "cloudinary_secret",
+      value: "",
+    },
+    {
       option: "banner",
       value: "/uploads/banner.jpg",
     },
