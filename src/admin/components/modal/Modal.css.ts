@@ -74,7 +74,7 @@ const StyledModal = styled.div<any>`
     .modal-body {
       overflow-y: auto;
       max-height: calc(100vh - 106px);
-      padding: 40px 16px;
+      padding: 20px 16px;
       text-align: center;
     }
     .modal-footer {
