@@ -1,10 +1,8 @@
 import { Express } from "express";
-import { QUERY_SETTINGS } from "../../shared/queries/Queries";
-import { SettingsQuery } from "../../__generated__/gqlTypes";
-import { TypeSettings } from "../types";
 import apolloClient from "../../shared/apolloClient";
 import config from "../../config";
 import { dispatcher } from "./dispatcher";
+import { fetchSettings } from "../../api/fetchSettings";
 import fs from "fs";
 import { getFile } from "./../../config/db.config";
 import logger from "../../shared/logger";
@@ -28,19 +26,11 @@ const serverRendering = (app: Express) => {
     try {
       const client = apolloClient(false, { ssrMode: true });
       try {
-        // get the settings data. It contains information about the theme that we want to render.
-        const settings = await client.query<SettingsQuery>({
-          query: QUERY_SETTINGS,
-        });
-        const formattedSettings: TypeSettings | {} = {};
-        settings.data.settings.forEach(item => {
-          formattedSettings[item.option] = item;
-        });
         logger.debug("SSR - Fetched settings data");
         const content = await dispatcher({
           requestUrl: req.url,
           client,
-          settings: formattedSettings as TypeSettings,
+          settings: await fetchSettings(),
           isStatic,
           request: { req, res },
         });

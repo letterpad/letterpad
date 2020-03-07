@@ -168,7 +168,9 @@ const postresolver = {
         }
         const result = await models.Post.findAndCountAll(conditions);
         result.rows = result.rows.map(item => {
-          item.cover_image = host + "/" + item.cover_image;
+          if (!item.cover_image.startsWith("http")) {
+            item.cover_image = host + "/" + item.cover_image;
+          }
           item.slug = "/" + item.type + "/" + item.slug;
           return item;
         });
@@ -240,7 +242,9 @@ const postresolver = {
       }
       const post = await models.Post.findOne(conditions);
       if (post) {
-        post.cover_image = host + post.cover_image;
+        if (!post.cover_image.startsWith("http")) {
+          post.cover_image = host + post.cover_image;
+        }
         post.slug = "/" + post.type + "/" + post.slug;
       }
       return post;
