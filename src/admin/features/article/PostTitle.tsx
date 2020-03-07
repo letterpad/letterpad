@@ -44,6 +44,7 @@ const PostTitle: React.FC<IPostTitleProps> = ({
           e.preventDefault();
         }
       }}
+      suppressContentEditableWarning={true}
     >
       {title}
     </Input>
