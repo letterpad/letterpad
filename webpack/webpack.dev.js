@@ -46,7 +46,10 @@ const clientConfig = args => {
             },
             "postcss-loader",
           ],
-          include: [path.join(__dirname, "../src/client/themes/" + args.theme)],
+          include: [
+            path.join(__dirname, "../src/client/themes/" + args.theme),
+            path.join(__dirname, "../../editor"),
+          ],
         },
         {
           test: /\.(css)$/,

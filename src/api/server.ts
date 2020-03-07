@@ -3,6 +3,7 @@ declare global {
     interface Request {
       user: {
         expiresIn: Date;
+        id: number;
       };
       error: any;
     }
