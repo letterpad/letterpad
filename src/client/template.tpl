@@ -13,15 +13,6 @@
     {{META_TAGS}}
     {{STYLE_TAGS}}
     {{STYLED_STYLES}}
-    <script type="text/javascript">
-        function makeMeRun() {
-            const execute = document.querySelectorAll('.execute');
-            execute.forEach((item)=>{
-                eval(item.innerText);
-                item.parentElement.removeChild(item);
-            })
-        }
-    </script>
 </head>
 
 <body>
@@ -44,6 +35,7 @@
         gtag('config', '{{TRACKING_ID}}');
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@13.0.1/dist/lazyload.min.js"></script>
     {{SCRIPT_TAGS}}
     {{GA_SCRIPT_TAG}}
 </body>
