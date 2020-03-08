@@ -35,8 +35,8 @@ export const getHtml = (data: IProps) => {
   const host = config.ROOT_URL + config.BASE_NAME;
   let devBundles = [
     `${host}/static/src/public/js/hot-reload-bundle.js`,
-    `${host}/js/vendor-bundle.js`,
-    `${host}/${theme}/dist/client-bundle.js`,
+    `${host}/static/src/public/js/vendor-bundle.js`,
+    `${host}/static/src/client/themes/${theme}/public/dist/client-bundle.js`,
   ];
   const prodBundles = [
     `${host}/js/vendor-bundle.min.js`,
