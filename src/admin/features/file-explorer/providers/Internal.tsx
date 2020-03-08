@@ -15,7 +15,7 @@ interface IProps {
 
 const InternalMedia: React.FC<IProps> = ({ renderer }) => {
   const [page, setPage] = useState(1);
-  const [data, setData] = useState<JSX.Element[]>([]);
+  const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
@@ -38,8 +38,7 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
       count: result.data.media.count,
     };
 
-    const jsxElements = renderer(images.rows);
-    setData([...data, ...jsxElements]);
+    setData([...data, ...images.rows]);
     setTotalCount(images.count);
   };
 
@@ -51,9 +50,14 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
   if (data.length === 0) {
     return <p>You do not have any images in your gallery.</p>;
   }
+  const jsxElements = renderer(data);
   return (
     <div>
-      <InfiniteScrollList data={data} count={totalCount} loadMore={loadMore} />
+      <InfiniteScrollList
+        data={jsxElements}
+        count={totalCount}
+        loadMore={loadMore}
+      />
     </div>
   );
 };

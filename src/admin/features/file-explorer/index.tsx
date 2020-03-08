@@ -21,16 +21,16 @@ const FileExplorer: React.FC<IFileExpolorerProps> = ({
 
   const onMediaSelected = (media: Media) => {
     let urls = { ...selectedUrls };
-    if (urls[media.url]) {
-      delete urls[media.url];
+    if (urls[`${media.url}`]) {
+      delete urls[`${media.url}`];
     } else {
-      urls[media.url] = true;
+      urls[`${media.url}`] = true;
     }
     if (!multi) {
-      urls = { [media.url]: true };
+      urls = { [`${media.url}`]: true };
     }
-    onSelect(Object.keys(urls));
     setSelection(urls);
+    onSelect(Object.keys(urls));
   };
 
   const renderer = (items: Media[]) => {

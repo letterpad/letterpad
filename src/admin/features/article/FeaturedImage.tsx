@@ -86,7 +86,7 @@ class FeaturedImage extends Component<
   uploadInputRef = React.createRef<HTMLInputElement>();
 
   state = {
-    cover_image: this.props.post.cover_image,
+    cover_image: PostActions.getData().cover_image,
     fileExplorerOpen: false,
     imageList: [],
   };
@@ -103,10 +103,10 @@ class FeaturedImage extends Component<
 
   // All the images available in the post can be used as a cover image.
   // This function sets the selection
-  setCoverImage = (images: string[]) => {
+  setCoverImage = async (images: string[]) => {
     PostActions.setData({ cover_image: images[0] });
-    this.setState({ cover_image: images[0], fileExplorerOpen: false });
-    this.props.updatePost();
+    await this.props.updatePost();
+    this.setState({ cover_image: images[0] });
     return Promise.resolve();
   };
 
@@ -169,7 +169,7 @@ class FeaturedImage extends Component<
           <FileExplorerModal
             isOpen={this.state.fileExplorerOpen}
             onClose={this.toggleFileExplorer}
-            onMediaSelect={this.setCoverImage}
+            onMediaInsert={this.setCoverImage}
             addNewMedia={() => {
               const inputFile = this.imageInputRef.current;
               if (inputFile) {

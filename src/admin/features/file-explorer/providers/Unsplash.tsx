@@ -13,12 +13,9 @@ const url = config.BASE_NAME + "/admin/unsplash";
 const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [data, setData] = useState<JSX.Element[]>([]);
+  const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);
 
-  useEffect(() => {
-    fetchUnsplashMedia(page, "docs");
-  }, []);
   const fetchUnsplashMedia = async (page = 1, query: string) => {
     const endpoint = url + "/page/" + page + "/query/" + query;
 
@@ -40,8 +37,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
       count,
     };
 
-    const jsxElements = renderer(images.rows);
-    setData([...data, ...jsxElements]);
+    setData([...data, ...images.rows]);
     setTotalCount(images.count);
   };
 
@@ -49,6 +45,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     const search = e.target.value.trim();
     if (search.length > 0) {
       if (e.keyCode === 13) {
+        setData([]);
         return fetchUnsplashMedia(page, query);
       }
       return setQuery(search);
@@ -61,10 +58,15 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     fetchUnsplashMedia(nextPage, query);
   };
 
+  const jsxElements = renderer(data);
   return (
     <div>
-      {/* <Input onKeyUp={onKeyUp} placeholder="Enter a keyword to search images" /> */}
-      <InfiniteScrollList data={data} count={totalCount} loadMore={loadMore} />
+      <Input onKeyUp={onKeyUp} placeholder="Enter a keyword to search images" />
+      <InfiniteScrollList
+        data={jsxElements}
+        count={totalCount}
+        loadMore={loadMore}
+      />
     </div>
   );
 };

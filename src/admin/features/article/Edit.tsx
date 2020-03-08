@@ -2,8 +2,7 @@ import React, { Component } from "react";
 
 import { EventBusInstance } from "../../../shared/eventBus";
 import FileExplorerModal from "../modals/FileExplorerModal";
-// import LetterpadEditor from "letterpad-editor";
-import LetterpadEditor from "../../../../../editor/src/editor";
+import LetterpadEditor from "letterpad-editor";
 import { Post } from "../../../__generated__/gqlTypes";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
@@ -90,12 +89,12 @@ class Edit extends Component<IProps> {
     }, 1000);
   };
 
-  uploadImage = async files => {
+  uploadImage = async (files: FileList) => {
     const uploadedFiles = await uploadFile({ files, type: "post_image" });
     return uploadedFiles[0].src;
   };
 
-  uploadAndInsert = async files => {
+  uploadAndInsert = async (files: FileList) => {
     const uploadedFiles = await uploadFile({ files, type: "post_image" });
     uploadedFiles.forEach(item => {
       this.editor.insertImageUrl(item.src);
@@ -129,6 +128,7 @@ class Edit extends Component<IProps> {
           <LetterpadEditor
             onImageBrowse={this.onMediaBrowse}
             getEditorInstance={this.onBeforeRender}
+            //@ts-ignore
             uploadImage={(file: File) => this.uploadImage([file])}
             defaultValue={post.md}
             onChange={this.onEditorChange}
@@ -156,7 +156,7 @@ class Edit extends Component<IProps> {
               mediaProvider={this.state.mediaProvider}
               isOpen={this.state.fileExplorerOpen}
               onClose={this.toggleFileExplorer}
-              onMediaSelect={this.insertImageUrlInEditor}
+              onMediaInsert={this.insertImageUrlInEditor}
               addNewMedia={() => {
                 const inputFile = this.imageInputRef.current;
                 if (inputFile) {

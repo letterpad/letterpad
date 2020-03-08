@@ -1,14 +1,12 @@
-import { Request, Response } from "express";
-
 import Cloudinary from "cloudinary";
+import { Response } from "express";
 import config from "../config";
 import { fetchSettings } from "./fetchSettings";
 import { fileUpload } from "express-fileupload";
 import fs from "fs";
 import logger from "../shared/logger";
 import path from "path";
-import resizeImage from "./utils/resizeImage";
-import { uploadFile } from "./../admin/server/util";
+import resizeImage from "./utils/imageHelpers";
 
 const uploadDir = path.join(__dirname, "../public/uploads/");
 import models = require("./models/index");
@@ -19,6 +17,11 @@ interface IResultItem {
   src: string;
   error: string | null;
   name: string;
+  size?: {
+    width: number;
+    height: number;
+    type: string;
+  };
 }
 
 interface IFile {

@@ -2,11 +2,10 @@ import "isomorphic-fetch";
 
 import { DataTypes, Model } from "sequelize";
 
-import cheerio from "cheerio";
 import config from "../../config";
-import { getCloudinarySettings } from "./../fetchSettings";
 import logger from "../../shared/logger";
 import moment from "moment";
+import { setResponsiveImages } from "../utils/imageHelpers";
 import slugify from "../../shared/slugify";
 import { updateMenuItem } from "../resolvers/setting";
 import utils from "../../shared/util";
@@ -106,7 +105,6 @@ export async function _createPost(data, models) {
 }
 
 export async function _updatePost(updatedPost, models) {
-  const cloudinary = await getCloudinarySettings(models.Setting);
   try {
     const { id } = updatedPost;
     // first get the post which is being updated
@@ -211,76 +209,4 @@ export async function _updatePost(updatedPost, models) {
       errors: utils.parseErrors(e),
     };
   }
-}
-
-const sizes = [480, 720, 960, 1200, 1440];
-const srcSizes = `(max-width: 720px) 100vw, 720px`;
-
-const setResponsiveImages = async (html: string) => {
-  const $ = cheerio.load(html);
-  const $bodyImages = $("img");
-
-  for (let i = 0; i < $bodyImages.length; i++) {
-    const el = $bodyImages[i];
-    const $el = $(el);
-    $el.attr("loading", "lazy");
-    let src = $el.attr("src");
-    if (!src.startsWith("http")) return;
-    src = src.replace("http://", "https://");
-    const url = new URL(src);
-
-    if (url.hostname.includes("unsplash")) {
-      const srcSet = sizes.map(w => makeUnsplashImage(src, w)).join(", ");
-      $el.attr("src", makeUnsplashUrl(src, sizes[sizes.length - 1]));
-      $el.attr("sizes", srcSizes);
-      $el.attr("srcset", makeUnsplashUrl(src, 30));
-      $el.attr("data-srcset", srcSet);
-    } else if (url.hostname.includes("cloudinary")) {
-      const originalSrc = $el.attr("src");
-      const base64Url = await makeCloudinaryUrlBase64(src, 10);
-      const srcSet = sizes
-        .map(w => makeCloudinaryImage(originalSrc, w))
-        .join(", ");
-      console.log(base64Url, srcSet);
-      $el.attr("src", makeCloudinaryUrl(src, sizes[sizes.length - 1]));
-      $el.attr("sizes", srcSizes);
-      $el.attr("data-srcset", srcSet);
-      $el.attr("srcset", base64Url);
-      $el.attr("style", "width: 100%;max-width: 720px");
-    }
-  }
-  return $.html();
-};
-
-function makeUnsplashImage(src, width, extras = "") {
-  return `${makeUnsplashUrl(src, width, extras)} ${width}w`;
-}
-
-function makeCloudinaryImage(src, width) {
-  return `${makeCloudinaryUrl(src, width)} ${width}w`;
-}
-
-function makeUnsplashUrl(src, width, extras = "") {
-  const url = new URL(src);
-  const baseUrl = `${url.protocol}//${url.hostname}${url.pathname}`;
-  return `${baseUrl}?w=${width}&auto=format&lossless=true${extras}`;
-}
-
-function makeCloudinaryUrl(src, width) {
-  const replace = /image\/upload\/(.*)\/blog-images/;
-  const url = src.replace(
-    replace,
-    `image/upload/q_auto,f_auto,w_${width}/v1/blog-images`,
-  );
-
-  return url;
-}
-
-async function makeCloudinaryUrlBase64(url, width) {
-  const requestURL = makeCloudinaryUrl(url, width);
-  const response = await fetch(requestURL);
-  //@ts-ignore
-  const arrayBuffer = await response.buffer();
-  const b64 = arrayBuffer.toString("base64");
-  return `data:${response.headers.get("content-type")};base64,${b64}`;
 }
