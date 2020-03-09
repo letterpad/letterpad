@@ -1,6 +1,8 @@
 import {
   Query,
   QueryPostArgs,
+  Setting,
+  SettingOptions,
   UpdatePostMutation,
 } from "../../../__generated__/gqlTypes";
 
@@ -23,6 +25,7 @@ interface IArticleProps {
   router: any;
   manageScroll: Function;
   theme: string;
+  settings: { [option in SettingOptions]: Setting };
 }
 
 const Article: React.FC<IArticleProps> = ({ theme, router }) => {

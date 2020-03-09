@@ -1,8 +1,12 @@
+import Cloudinary from "cloudinary";
+import { Response } from "express";
 import config from "../config";
+import { fetchSettings } from "./fetchSettings";
+import { fileUpload } from "express-fileupload";
 import fs from "fs";
 import logger from "../shared/logger";
 import path from "path";
-import resizeImage from "./utils/resizeImage";
+import resizeImage from "./utils/imageHelpers";
 
 const uploadDir = path.join(__dirname, "../public/uploads/");
 import models = require("./models/index");
@@ -13,21 +17,39 @@ interface IResultItem {
   src: string;
   error: string | null;
   name: string;
+  size?: {
+    width: number;
+    height: number;
+    type: string;
+  };
 }
 
 interface IFile {
   mv: (path: string, callback: () => void) => Promise<IResultItem>;
   md5: string;
   name: string;
+  data: Buffer;
 }
 
-export default async (req, res) => {
+export default async (req, res: Response) => {
   let files = req.files.file;
 
   if (!Array.isArray(files)) {
     files = [files];
   }
 
+  const settings = await fetchSettings();
+  const { cloudinary_key, cloudinary_name, cloudinary_secret } = settings;
+  const cdnEnabled =
+    cloudinary_key.value && cloudinary_name.value && cloudinary_secret.value;
+
+  if (cdnEnabled) {
+    Cloudinary.v2.config({
+      cloud_name: cloudinary_name.value,
+      api_key: cloudinary_key.value,
+      api_secret: cloudinary_secret.value,
+    });
+  }
   logger.debug(`Received ${files.length} file/s to upload`);
 
   const output: IResultItem[] = [];
@@ -35,8 +57,13 @@ export default async (req, res) => {
   for (const file of files) {
     if (file) {
       try {
-        const result = await resizeAndSave(file, uploadDir, req.user.id);
-        output.push(result);
+        if (cdnEnabled) {
+          const result = await uploadToCloudinary(file);
+          output.push(result);
+        } else {
+          const result = await resizeAndSave(file, uploadDir, req.user.id);
+          output.push(result);
+        }
       } catch (e) {
         logger.error(e);
         output.push(e);
@@ -47,7 +74,7 @@ export default async (req, res) => {
 };
 
 function resizeAndSave(
-  file: IFile,
+  file: fileUpload.UploadedFile,
   uploadDir: string,
   id: number,
 ): Promise<IResultItem> {
@@ -87,5 +114,32 @@ function resizeAndSave(
         reject(resultItem);
       }
     });
+  });
+}
+
+async function uploadToCloudinary(
+  file: fileUpload.UploadedFile,
+): Promise<IResultItem> {
+  return await new Promise((resolve, reject) => {
+    const tempFile = "/tmp/" + file.md5;
+    fs.writeFileSync(tempFile, file.data);
+    Cloudinary.v2.uploader.upload(
+      tempFile,
+      { folder: "blog-images/" },
+      (error, result) => {
+        fs.unlinkSync(tempFile);
+        return result
+          ? resolve({
+              src: result.url,
+              error: "",
+              name: result.public_id,
+            })
+          : reject({
+              src: "",
+              error: error.message,
+              name: "",
+            });
+      },
+    );
   });
 }

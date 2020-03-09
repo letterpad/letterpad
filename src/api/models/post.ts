@@ -1,8 +1,11 @@
+import "isomorphic-fetch";
+
 import { DataTypes, Model } from "sequelize";
 
 import config from "../../config";
 import logger from "../../shared/logger";
 import moment from "moment";
+import { setResponsiveImages } from "../utils/imageHelpers";
 import slugify from "../../shared/slugify";
 import { updateMenuItem } from "../resolvers/setting";
 import utils from "../../shared/util";
@@ -136,7 +139,11 @@ export async function _updatePost(updatedPost, models) {
       updatedPost = { ...updatedPost, publishedAt: currentTime };
       logger.debug("Post status changed from draft to publish - ", currentTime);
     }
-    updatedPost = { ...updatedPost, updatedAt: currentTime };
+    updatedPost = {
+      ...updatedPost,
+      updatedAt: currentTime,
+      html: await setResponsiveImages(updatedPost.html),
+    };
     await models.Post.update(updatedPost, {
       where: { id },
     });

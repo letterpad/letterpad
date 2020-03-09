@@ -39,6 +39,10 @@ const clientConfig = args => {
           to: __dirname + "/../dist/client/template.tpl",
         },
         {
+          from: __dirname + "/../src/client/template-head.tpl",
+          to: __dirname + "/../dist/client/template-head.tpl",
+        },
+        {
           from: __dirname + "/../src/api/seed/uploads",
           to: __dirname + "/../dist/api/seed/uploads",
         },

@@ -3,19 +3,31 @@ import React, { Component } from "react";
 import { EventBusInstance } from "../../../shared/eventBus";
 import FileExplorerModal from "../modals/FileExplorerModal";
 import LetterpadEditor from "letterpad-editor";
+import { Post } from "../../../__generated__/gqlTypes";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
 import StyledArticle from "./Article.css";
 import { createGlobalStyle } from "styled-components";
 import { uploadFile } from "../../server/util";
 
-class Edit extends Component<any> {
+export enum MediaProvider {
+  Unsplash = "unsplash",
+  Letterpad = "letterpad",
+}
+
+interface IProps {
+  theme: string;
+  post: Post;
+  updatePost: () => Promise<any>;
+}
+class Edit extends Component<IProps> {
   postSaveTimer: number = 0;
   hooks: any = null;
   editor: any = null;
 
   state = {
     fileExplorerOpen: false,
+    mediaProvider: MediaProvider.Letterpad,
     pluginOperation: null, // enter the name of the plugin which is currently being overwritten.
   };
 
@@ -26,15 +38,25 @@ class Edit extends Component<any> {
   }
 
   onMediaBrowse = () => {
-    this.setState({ fileExplorerOpen: true });
+    this.setState({
+      fileExplorerOpen: true,
+      mediaProvider: MediaProvider.Letterpad,
+    });
   };
 
-  insertMedia = urls => {
-    urls.forEach(url => {
-      this.editor.insertImageUrl(url);
+  insertImageUrlInEditor = (urls: string[]) => {
+    const insertPromises = urls.map(url => {
+      return new Promise((resolve, reject) => {
+        try {
+          this.editor.insertImageUrl(url);
+          resolve();
+        } catch (e) {
+          reject();
+          console.error(e);
+        }
+      });
     });
-
-    setTimeout(this.toggleFileExplorer, 1000);
+    return Promise.all(insertPromises);
   };
 
   toggleFileExplorer = () => {
@@ -66,12 +88,12 @@ class Edit extends Component<any> {
     }, 1000);
   };
 
-  uploadImage = async files => {
+  uploadImage = async (files: FileList) => {
     const uploadedFiles = await uploadFile({ files, type: "post_image" });
     return uploadedFiles[0].src;
   };
 
-  uploadAndInsert = async files => {
+  uploadAndInsert = async (files: FileList) => {
     const uploadedFiles = await uploadFile({ files, type: "post_image" });
     uploadedFiles.forEach(item => {
       this.editor.insertImageUrl(item.src);
@@ -80,6 +102,10 @@ class Edit extends Component<any> {
 
   onBeforeRender = editor => {
     this.editor = editor;
+  };
+
+  switchMediaProvider = (mediaProvider: MediaProvider) => {
+    this.setState({ mediaProvider });
   };
 
   render() {
@@ -105,6 +131,7 @@ class Edit extends Component<any> {
           <LetterpadEditor
             onImageBrowse={this.onMediaBrowse}
             getEditorInstance={this.onBeforeRender}
+            //@ts-ignore
             uploadImage={(file: File) => this.uploadImage([file])}
             defaultValue={post.md}
             onChange={this.onEditorChange}
@@ -112,14 +139,20 @@ class Edit extends Component<any> {
           />
           {this.state.fileExplorerOpen && (
             <FileExplorerModal
+              mediaProvider={this.state.mediaProvider}
+              switchProvider={this.switchMediaProvider}
               isOpen={this.state.fileExplorerOpen}
               onClose={this.toggleFileExplorer}
-              onMediaSelect={this.insertMedia}
+              onMediaInsert={this.insertImageUrlInEditor}
               addNewMedia={() => {
-                if (this.imageInputRef.current) {
-                  this.imageInputRef.current.click();
+                const inputFile = this.imageInputRef.current;
+                if (inputFile) {
+                  inputFile.onchange = (change: any) => {
+                    this.uploadAndInsert(change.target.files);
+                    this.toggleFileExplorer();
+                  };
+                  inputFile.click();
                 }
-                this.toggleFileExplorer();
               }}
             />
           )}
@@ -129,7 +162,6 @@ class Edit extends Component<any> {
           className="hide post-image"
           type="file"
           multiple
-          onChange={input => this.uploadAndInsert(input.target.files)}
         />
       </StyledArticle>
     );

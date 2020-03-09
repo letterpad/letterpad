@@ -10,7 +10,7 @@ run_dev () {
     export THEME=$THEME
     export NODE_ENV=dev
     
-    webpack --config ./webpack/webpack.dev.js --env.theme=$THEME
+    # webpack --config ./webpack/webpack.dev.js --env.theme=$THEME
     yarn ts-node ./src/start.ts --profile --json
 }
 

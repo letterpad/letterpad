@@ -11,6 +11,11 @@ const StyledAuthorList = styled.div`
       grid-template-columns: 1fr;
     }
   }
+
+  .author-grid img {
+    object-fit: contain;
+    padding: 20px;
+  }
 `;
 
 export default StyledAuthorList;

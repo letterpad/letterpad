@@ -1,10 +1,11 @@
+import InfiniteScroll from "react-infinite-scroll-component";
 import React from "react";
-import InfiniteScroll from "react-infinite-scroller";
+import styled from "styled-components";
 
 interface IInfiniteScrollListProps {
   data: any;
   count: number;
-  loadMore: (num: number) => void;
+  loadMore: () => void;
 }
 
 const InfiniteScrollList: React.FC<IInfiniteScrollListProps> = ({
@@ -13,19 +14,43 @@ const InfiniteScrollList: React.FC<IInfiniteScrollListProps> = ({
   loadMore,
 }) => {
   return (
-    <InfiniteScroll
-      pageStart={1}
-      loadMore={loadMore}
-      hasMore={data.length < count}
-      loader={
-        <div className="loader1" key={0}>
-          Loading ...
-        </div>
-      }
-    >
-      {data}
-    </InfiniteScroll>
+    <Container>
+      <InfiniteScroll
+        height={400}
+        dataLength={data.length}
+        next={loadMore}
+        hasMore={data.length < count}
+        loader={
+          <img
+            src="https://res.cloudinary.com/chuloo/image/upload/v1550093026/scotch-logo-gif_jq4tgr.gif"
+            alt="loading"
+          />
+        }
+      >
+        <div className="image-grid">{data}</div>
+      </InfiniteScroll>
+    </Container>
   );
 };
 
 export default InfiniteScrollList;
+
+const Container = styled.div`
+  .image-grid {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-auto-rows: minmax(50px, auto);
+
+    .image-item:nth-child(5n) {
+      grid-column-end: span 2;
+    }
+
+    img {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+`;

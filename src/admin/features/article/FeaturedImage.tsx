@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { WithNamespaces, translate } from "react-i18next";
 
 import FileExplorerModal from "../modals/FileExplorerModal";
+import { MediaProvider } from "./Edit";
 import { Post } from "../../../__generated__/gqlTypes";
 import PostActions from "./PostActions";
 import PropTypes from "prop-types";
@@ -73,6 +74,8 @@ CustomImage.propTypes = {
 };
 interface IFeaturedImageProps extends WithNamespaces {
   post: Post;
+  mediaProvider: MediaProvider;
+  updatePost: () => void;
 }
 
 class FeaturedImage extends Component<
@@ -83,7 +86,7 @@ class FeaturedImage extends Component<
   uploadInputRef = React.createRef<HTMLInputElement>();
 
   state = {
-    cover_image: this.props.post.cover_image,
+    cover_image: PostActions.getData().cover_image,
     fileExplorerOpen: false,
     imageList: [],
   };
@@ -100,10 +103,11 @@ class FeaturedImage extends Component<
 
   // All the images available in the post can be used as a cover image.
   // This function sets the selection
-  setCoverImage = images => {
+  setCoverImage = async (images: string[]) => {
     PostActions.setData({ cover_image: images[0] });
-    this.setState({ cover_image: images[0], fileExplorerOpen: false });
-    return false;
+    await this.props.updatePost();
+    this.setState({ cover_image: images[0] });
+    return Promise.resolve();
   };
 
   uploadImage = async files => {
@@ -160,18 +164,23 @@ class FeaturedImage extends Component<
           className="hide post-image"
           type="file"
           multiple
-          onChange={input => this.uploadImage(input.target.files)}
         />
         {this.state.fileExplorerOpen && (
           <FileExplorerModal
             isOpen={this.state.fileExplorerOpen}
             onClose={this.toggleFileExplorer}
-            onMediaSelect={this.setCoverImage}
+            onMediaInsert={this.setCoverImage}
             addNewMedia={() => {
-              if (this.imageInputRef.current) {
-                this.imageInputRef.current.click();
+              const inputFile = this.imageInputRef.current;
+              if (inputFile) {
+                inputFile.onchange = (change: any) => {
+                  this.uploadImage(change.target.files);
+                  // this.toggleFileExplorer();
+                };
+                inputFile.click();
               }
             }}
+            mediaProvider={this.props.mediaProvider}
           />
         )}
       </div>
