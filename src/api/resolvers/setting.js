@@ -30,7 +30,7 @@ export default {
       const settings = await models.Setting.findAll({ where: args });
       return settings.map(item => {
         if (["banner", "site_logo", "site_favicon"].includes(item.option)) {
-          if (item.value) {
+          if (item.value && !item.value.startsWith("http")) {
             item.value = host + item.value;
           }
         }

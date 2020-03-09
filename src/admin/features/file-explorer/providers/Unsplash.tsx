@@ -61,7 +61,11 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const jsxElements = renderer(data);
   return (
     <div>
-      <Input onKeyUp={onKeyUp} placeholder="Enter a keyword to search images" />
+      <Input
+        onKeyUp={onKeyUp}
+        placeholder="Search free high resolution photos from Unsplash"
+        autoFocus
+      />
       <InfiniteScrollList
         data={jsxElements}
         count={totalCount}

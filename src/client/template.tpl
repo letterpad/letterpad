@@ -1,20 +1,3 @@
-<html {{HTML_ATTRS}}>
-
-<head>
-    <meta charSet="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="{{FAVICON}}">
-    <style type="text/css">
-        * {
-            margin: 0px;
-            padding: 0px;
-        }
-    </style>
-    {{META_TAGS}}
-    {{STYLE_TAGS}}
-    {{STYLED_STYLES}}
-</head>
-
 <body>
     <div id="app">{{HTML_CONTENT}}</div>
     <script type="text/javascript">

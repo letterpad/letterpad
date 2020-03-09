@@ -61,6 +61,7 @@ const StyledModal = styled.div<any>`
       align-items: center;
       min-height: 16.42857143px;
       padding: 26px 16px;
+      background: var(--bg-base);
       border-bottom: 1px solid var(--color-border);
       h3 {
         padding: 15px 0px;
@@ -84,6 +85,7 @@ const StyledModal = styled.div<any>`
       justify-content: flex-end;
       padding: 0px 14px;
       border-top: 1px solid var(--color-border);
+      background: var(--bg-base);
     }
     ${props => props.confirm && applyConfirmStyle()};
   }

@@ -8,7 +8,6 @@ import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
 import StyledArticle from "./Article.css";
 import { createGlobalStyle } from "styled-components";
-import { notify } from "react-notify-toast";
 import { uploadFile } from "../../server/util";
 
 export enum MediaProvider {
@@ -105,6 +104,10 @@ class Edit extends Component<IProps> {
     this.editor = editor;
   };
 
+  switchMediaProvider = (mediaProvider: MediaProvider) => {
+    this.setState({ mediaProvider });
+  };
+
   render() {
     const { post } = this.props;
     return (
@@ -133,27 +136,11 @@ class Edit extends Component<IProps> {
             defaultValue={post.md}
             onChange={this.onEditorChange}
             placeholder="Write a story.."
-            addToToolbar={[
-              {
-                name: "test",
-                icon: (
-                  <div>
-                    <img src="https://cdn.iconscout.com/icon/free/png-256/unsplash-1884620-1596840.png" />
-                  </div>
-                ),
-                onClick: (name, editor) => {
-                  this.editor = editor;
-                  this.setState({
-                    mediaProvider: MediaProvider.Unsplash,
-                    fileExplorerOpen: true,
-                  });
-                },
-              },
-            ]}
           />
           {this.state.fileExplorerOpen && (
             <FileExplorerModal
               mediaProvider={this.state.mediaProvider}
+              switchProvider={this.switchMediaProvider}
               isOpen={this.state.fileExplorerOpen}
               onClose={this.toggleFileExplorer}
               onMediaInsert={this.insertImageUrlInEditor}

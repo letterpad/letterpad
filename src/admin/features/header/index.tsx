@@ -1,50 +1,31 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 
-import User from "./User";
+import { EnumThemes } from "../../../client/themes/hugo/hugoTypes";
+import { IAuthor } from "../../../types/types";
+import { Link } from "react-router-dom";
 import StyledHeader from "./Header.css";
 import StyledLink from "../../components/link";
+import User from "./User";
+import styled from "styled-components";
 
-const StyledThemeChooser = styled.div<any>`
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-  border-right: 1px solid var(--color-border);
-  padding-right: 8px;
-  > div {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    i.light {
-      color: ${p =>
-        p.active == "light" && "var(--color-accent);font-weight: bold;"};
-    }
-    i.dark {
-      color: ${p =>
-        p.active == "dark" && "var(--color-accent);font-weight: bold;"};
-    }
-    i:hover {
-      color: var(--color-accent);
-      font-weight: bold;
-    }
-  }
-`;
-
-class Header extends Component<any, any> {
-  // static propTypes = {
-  //   settings: PropTypes.object,
-  //   sidebarToggle: PropTypes.func,
-  //   author: PropTypes.object,
-  //   switchTheme: PropTypes.func,
-  //   selectedTheme: PropTypes.string,
-  // };
-
+interface IProps {
+  settings: { [option in SettingOptions]: Setting };
+  sidebarToggle: () => void;
+  author: IAuthor;
+  switchTheme: (theme: EnumThemes) => void;
+  selectedTheme: EnumThemes;
+}
+class Header extends Component<IProps, any> {
   render() {
-    const settings = this.props.settings;
+    const { settings, selectedTheme } = this.props;
+    const themeClass = selectedTheme;
+    const themeIconclass =
+      selectedTheme === EnumThemes.light
+        ? "wrapper dark fa fa-inverse fa-moon-o"
+        : "wrapper  light fa fa-inverse fa-sun-o";
+    const nextTheme =
+      selectedTheme === EnumThemes.dark ? EnumThemes.light : EnumThemes.dark;
     return (
       <StyledHeader>
         <div className="left-side">
@@ -61,18 +42,12 @@ class Header extends Component<any, any> {
         </div>
 
         <div className="right-side">
-          <StyledThemeChooser active={this.props.selectedTheme}>
+          <StyledThemeChooser active={selectedTheme}>
             <div
-              className="dark"
-              onClick={() => this.props.switchTheme("dark")}
+              className={themeClass}
+              onClick={() => this.props.switchTheme(nextTheme)}
             >
-              <i className="dark fa fa-moon-o" />
-            </div>
-            <div
-              className="light"
-              onClick={() => this.props.switchTheme("light")}
-            >
-              <i className="light fa fa-sun-o" />
+              <i className={themeIconclass} />
             </div>
           </StyledThemeChooser>
           <StyledLink
@@ -90,3 +65,29 @@ class Header extends Component<any, any> {
   }
 }
 export default Header;
+
+const StyledThemeChooser = styled.div<any>`
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  border-right: 1px solid var(--color-border);
+  padding-right: 8px;
+  i {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    &.light {
+      color: orange;
+    }
+    &.dark {
+      color: #000;
+    }
+    &:hover {
+      font-weight: bold;
+    }
+  }
+`;

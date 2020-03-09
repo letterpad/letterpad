@@ -20,6 +20,7 @@ interface IProps extends WithNamespaces {
   mediaProvider: MediaProvider;
   addNewMedia: () => void;
   isOpen: boolean;
+  switchProvider: (mediaProvider: MediaProvider) => void;
 }
 
 class FileExplorerModal extends Component<IProps, any> {
@@ -38,27 +39,40 @@ class FileExplorerModal extends Component<IProps, any> {
   };
 
   render() {
-    const { t } = this.props;
+    const {
+      t,
+      mediaProvider,
+      onClose,
+      addNewMedia,
+      switchProvider,
+    } = this.props;
+
+    const nextProvider =
+      mediaProvider === MediaProvider.Letterpad
+        ? MediaProvider.Unsplash
+        : MediaProvider.Letterpad;
     const enableInsert = this.state.selectedImageUrls.length > 0;
     return (
-      <ModalHoc
-        confirm
-        title={t("modal.explorer.title")}
-        onClose={this.props.onClose}
-      >
+      <ModalHoc confirm title={t("modal.explorer.title")} onClose={onClose}>
         <StyledBody className="modal-body text-center">
           <FileExplorer
             multi={true}
             onSelect={this.onSelect}
-            mediaProvider={this.props.mediaProvider}
+            mediaProvider={mediaProvider}
           />
         </StyledBody>
         <div className="modal-footer">
-          <StyledButton onClick={this.props.onClose}>
-            {t("common.cancel")}
-          </StyledButton>
-          <StyledButton onClick={this.props.addNewMedia}>
-            Add New Item
+          <StyledButton onClick={onClose}>{t("common.cancel")}</StyledButton>
+          <StyledButton onClick={addNewMedia}>Browse</StyledButton>
+          <StyledButton
+            onClick={() => {
+              this.setState({ selectedImageUrls: [], page: 1 });
+              switchProvider(nextProvider);
+            }}
+          >
+            {mediaProvider === MediaProvider.Letterpad
+              ? "Search Online"
+              : "My Media"}
           </StyledButton>
           {enableInsert && (
             <StyledButton
@@ -69,7 +83,7 @@ class FileExplorerModal extends Component<IProps, any> {
                 } catch (e) {
                   notify.show("Something unexpected happened.", "error");
                 }
-                setTimeout(this.props.onClose, 0);
+                setTimeout(onClose, 0);
               }}
             >
               Insert

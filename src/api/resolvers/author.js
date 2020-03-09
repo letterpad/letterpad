@@ -16,7 +16,9 @@ export default {
 
       if (author) {
         author.social = JSON.parse(author.dataValues.social);
-        author.avatar = host + author.avatar;
+        if (!author.avatar.startsWith("http")) {
+          author.avatar = host + author.avatar;
+        }
       } else {
         if (!user || !user.id) {
           author.email = "xxx@xxx.com";

@@ -38,6 +38,10 @@ const customStyles = {
     ...provided,
     color: "#FFF",
   }),
+  input: (provided, state) => ({
+    ...provided,
+    color: "var(--color-base)",
+  }),
 };
 
 export class StyledTags extends Component<any, any> {

@@ -1,7 +1,8 @@
+import { dispatcher, generateHead } from "./dispatcher";
+
 import { Express } from "express";
 import apolloClient from "../../shared/apolloClient";
 import config from "../../config";
-import { dispatcher } from "./dispatcher";
 import { fetchSettings } from "../../api/fetchSettings";
 import fs from "fs";
 import { getFile } from "./../../config/db.config";
@@ -25,21 +26,34 @@ const serverRendering = (app: Express) => {
     const isStatic = req.get("static") ? true : false;
     try {
       const client = apolloClient(false, { ssrMode: true });
+      const settings = await fetchSettings();
+
+      const headHtml = generateHead({
+        requestUrl: req.url,
+        client,
+        settings,
+        isStatic,
+        request: { req, res },
+      });
+      res.writeHead(200, { "content-type": "text/html" });
+      res.write(headHtml);
+
       try {
         logger.debug("SSR - Fetched settings data");
         const content = await dispatcher({
           requestUrl: req.url,
           client,
-          settings: await fetchSettings(),
+          settings,
           isStatic,
           request: { req, res },
         });
-        res.send(content);
+        res.end(content);
       } catch (e) {
         logger.error(e);
       }
     } catch (e) {
-      res.send(e);
+      logger.error(e);
+      res.end(JSON.stringify(e));
     }
   });
 };
