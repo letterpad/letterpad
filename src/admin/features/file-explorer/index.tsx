@@ -1,128 +1,58 @@
-import {
-  Media,
-  MediaNode,
-  MediaQuery,
-  MediaQueryVariables,
-} from "../../../__generated__/gqlTypes";
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-// import StyledGrid from "../../components/grid";
 import FileItem from "./FileItem";
-import InfiniteScrollList from "./InfiniteScrollList";
-import PropTypes from "prop-types";
-import { QUERY_MEDIA } from "../../../shared/queries/Queries";
-import apolloClient from "../../../shared/apolloClient";
-import styled from "styled-components";
-
-const StyledGrid = styled.div`
-  > div {
-    display: grid;
-    height: auto;
-    grid-auto-flow: row;
-    grid-auto-rows: minmax(20px, auto);
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-gap: 15px;
-  }
-  article {
-    opacity: 0.5;
-    &.selected {
-      opacity: 1;
-    }
-  }
-`;
+import Internal from "./providers/Internal";
+import { Media } from "../../../__generated__/gqlTypes";
+import { MediaProvider } from "../article/Edit";
+import Unsplash from "./providers/Unsplash";
 
 interface IFileExpolorerProps {
   multi: boolean;
-  onSelect: (any) => void;
+  onSelect: (urls: string[]) => void;
+  mediaProvider: MediaProvider;
 }
 
-class FileExplorer extends Component<
-  IFileExpolorerProps,
-  { selected_ids: number[]; media: MediaNode }
-> {
-  static contextTypes = {
-    t: PropTypes.func,
-  };
+const FileExplorer: React.FC<IFileExpolorerProps> = ({
+  onSelect,
+  mediaProvider,
+  multi,
+}) => {
+  const [selectedUrls, setSelection] = useState<{ [url: string]: boolean }>({});
 
-  page = 1;
-
-  state = {
-    media: {
-      rows: [],
-      count: 0,
-    },
-    selected_ids: [],
-  };
-
-  componentDidMount() {
-    this.fetchData();
-  }
-
-  fetchData = async (page: number = 1) => {
-    const result = await apolloClient().query<MediaQuery, MediaQueryVariables>({
-      query: QUERY_MEDIA,
-      variables: {
-        filters: {
-          page,
-          authorId: 1,
-        },
-      },
-    });
-
-    if (result.data.media.rows) {
-      const newState = {
-        ...this.state.media,
-        rows: [...this.state.media.rows, ...result.data.media.rows],
-        count: this.state.media.count,
-      };
-      this.setState({ media: newState });
+  const onMediaSelected = (media: Media) => {
+    let urls = { ...selectedUrls };
+    if (urls[`${media.url}`]) {
+      delete urls[`${media.url}`];
+    } else {
+      urls[`${media.url}`] = true;
     }
-  };
-
-  onMediaSelected = (media: Media) => {
-    const selected_ids: number[] = [...this.state.selected_ids];
-    const index = selected_ids.indexOf(media.id);
-    if (index >= 0) {
-      selected_ids.splice(index, 1);
-    } else if (selected_ids.length >= 0 && this.props.multi) {
-      selected_ids.push(media.id);
-      const selectedMediaUrls = this.state.media.rows
-        .filter((media: Media) => selected_ids.indexOf(media.id) >= 0)
-        .map((media: Media) => media.url);
-      this.props.onSelect(selectedMediaUrls);
+    if (!multi) {
+      urls = { [`${media.url}`]: true };
     }
-    this.setState({ selected_ids });
+    setSelection(urls);
+    onSelect(Object.keys(urls));
   };
 
-  loadMore = async (num: number) => {
-    this.fetchData(num);
-  };
-
-  render() {
-    const images = (this.state.media as MediaNode).rows;
-    if (images.length === 0) {
-      return <p>You do not have any images in your gallery.</p>;
-    }
-    const rows = images.map(media => (
+  const renderer = (items: Media[]) => {
+    return items.map(media => (
       <FileItem
         key={media.id}
         media={media}
-        isSelected={
-          (this.state.selected_ids as number[]).indexOf(media.id) >= 0
-        }
-        onMediaSelected={this.onMediaSelected}
+        isSelected={selectedUrls[media.url]}
+        onMediaSelected={onMediaSelected}
       />
     ));
-    return (
-      <StyledGrid className="grid">
-        <InfiniteScrollList
-          data={rows}
-          count={this.state.media.count}
-          loadMore={this.loadMore}
-        />
-      </StyledGrid>
-    );
+  };
+
+  switch (mediaProvider) {
+    case MediaProvider.Letterpad: {
+      return <Internal renderer={renderer} />;
+    }
+
+    case MediaProvider.Unsplash: {
+      return <Unsplash renderer={renderer} />;
+    }
   }
-}
+};
 
 export default FileExplorer;

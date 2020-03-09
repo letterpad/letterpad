@@ -32,6 +32,9 @@ const StyledArticle = styled.article`
     margin: initial;
     list-style-type: initial;
   }
+  ol {
+    list-style-type: decimal;
+  }
   .prism-dark {
     background: #252424;
     color: #fff;

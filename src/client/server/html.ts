@@ -35,8 +35,8 @@ export const getHtml = (data: IProps) => {
   const host = config.ROOT_URL + config.BASE_NAME;
   let devBundles = [
     `${host}/static/src/public/js/hot-reload-bundle.js`,
-    `${host}/js/vendor-bundle.js`,
-    `${host}/${theme}/dist/client-bundle.js`,
+    `${host}/static/src/public/js/vendor-bundle.js`,
+    `${host}/static/src/client/themes/${theme}/public/dist/client-bundle.js`,
   ];
   const prodBundles = [
     `${host}/js/vendor-bundle.min.js`,
@@ -81,5 +81,30 @@ export const getHtml = (data: IProps) => {
       ? '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-19390409-3"></script>'
       : "",
     SCRIPT_TAGS: scripts,
+  });
+};
+
+export const getHeadHtml = ({
+  head,
+  theme,
+  styles,
+  settings,
+}: Pick<IProps, "head" | "theme" | "styles" | "settings">) => {
+  const template = util.getClientFileContents("template-head.tpl");
+  const templateString = template.toString();
+
+  const { htmlAttrs, metaTags } = getMetaTags(head);
+  const isDev = process.env.NODE_ENV !== "production";
+  const host = config.ROOT_URL + config.BASE_NAME;
+  const styleLinks = isDev
+    ? ""
+    : prepareStyleTags(host + "/" + theme + "/dist/client.min.css");
+
+  return templateEngine(templateString, {
+    HTML_ATTRS: htmlAttrs,
+    STYLE_TAGS: styleLinks,
+    STYLED_STYLES: styles,
+    META_TAGS: metaTags,
+    FAVICON: settings.site_favicon.value,
   });
 };

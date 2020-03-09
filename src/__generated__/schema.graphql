@@ -333,6 +333,9 @@ enum SettingOptions {
   displayAuthorInfo
   site_logo
   site_favicon
+  cloudinary_key
+  cloudinary_name
+  cloudinary_secret
   menu
   css
   google_analytics

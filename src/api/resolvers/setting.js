@@ -18,19 +18,31 @@ function getMenuWithSanitizedSlug(menu) {
   return JSON.stringify(menuWithSanitizedSlug);
 }
 
+const SECURE_SETTINGS = [
+  "cloudinary_key",
+  "cloudinary_name",
+  "cloudinary_secret",
+];
+
 export default {
   Query: {
-    settings: async (root, args, { models }) => {
+    settings: async (root, args, { models, user }) => {
       const settings = await models.Setting.findAll({ where: args });
       return settings.map(item => {
         if (["banner", "site_logo", "site_favicon"].includes(item.option)) {
-          if (item.value) {
+          if (item.value && !item.value.startsWith("http")) {
             item.value = host + item.value;
           }
         }
         if (item.option === "menu") {
           item.value = getMenuWithSanitizedSlug(item.value);
         }
+        if (!user && !user.id) {
+          if (SECURE_SETTINGS.includes(item.option)) {
+            // item.value = "xxx-xxx-xxx";
+          }
+        }
+
         return item;
       });
     },

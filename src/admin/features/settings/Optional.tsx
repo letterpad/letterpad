@@ -51,6 +51,14 @@ const Optional: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
         onBlur={e => updateOption(SettingOptions.DisqusId, e.target.value)}
       />
       <br />
+      <Input
+        label={t("settings.additional.cloudinary")}
+        defaultValue={data.cloudinary_key.value || ""}
+        type="text"
+        placeholder={t("settings.additional.cloudinary_key.placeholder")}
+        onBlur={e => updateOption(SettingOptions.CloudinaryKey, e.target.value)}
+      />
+      <br />
       <SubscribeBlock>
         <TextArea
           label={t("settings.additional.subscribe")}

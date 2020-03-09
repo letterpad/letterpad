@@ -8,6 +8,7 @@ import React, { Component } from "react";
 
 import Excerpt from "./Excerpt";
 import FeaturedImage from "../FeaturedImage";
+import { MediaProvider } from "../Edit";
 import PostActions from "../PostActions";
 import StyledDropdown from "./Dropdown.css";
 import StyledSwitch from "../../../components/switch";
@@ -70,7 +71,11 @@ class PublishDropdown extends Component<IProps> {
             updatePost={updatePost}
           />
         )}
-        <FeaturedImage post={post} />
+        <FeaturedImage
+          post={post}
+          mediaProvider={MediaProvider.Unsplash}
+          updatePost={updatePost}
+        />
         <br />
       </StyledDropdown>
     );

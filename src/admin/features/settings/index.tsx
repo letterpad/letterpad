@@ -4,6 +4,7 @@ import { WithNamespaces, translate } from "react-i18next";
 
 import Css from "./Css";
 import General from "./General";
+import ImagesCdn from "./ImagesCdn";
 import Messages from "./Messages";
 import Optional from "./Optional";
 import { RouteComponentProps } from "react-router";
@@ -82,6 +83,7 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
         <General label="general" data={settings} updateOption={setOption} />
         <Social label="social" data={settings} updateOption={setOption} />
         <Optional label="optional" data={settings} updateOption={setOption} />
+        <ImagesCdn label="cdn" data={settings} updateOption={setOption} />
         <Themes label="themes" data={settings} updateOption={setOption} />
         <Css label="css" data={settings} updateOption={setOption} />
         <Messages label="messages" data={settings} updateOption={setOption} />
