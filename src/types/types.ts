@@ -29,3 +29,14 @@ export interface IAuthor {
   id: number;
   avatar: string;
 }
+
+export interface IMediaUploadResult {
+  src: string;
+  error: string | null;
+  name: string;
+  size: {
+    width: number;
+    height: number;
+    type: string;
+  };
+}

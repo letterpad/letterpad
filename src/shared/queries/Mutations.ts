@@ -21,7 +21,11 @@ export const CREATE_POST = gql`
         slug
         excerpt
         createdAt
-        cover_image
+        cover_image {
+          src
+          width
+          height
+        }
         taxonomies {
           id
           name
@@ -159,7 +163,11 @@ export const UPDATE_POST_QUERY = gql`
         status
         excerpt
         createdAt
-        cover_image
+        cover_image {
+          width
+          height
+          src
+        }
         taxonomies {
           id
           name
@@ -195,7 +203,11 @@ export const UPLOAD_COVER_IMAGE = gql`
       ok
       post {
         id
-        cover_image
+        cover_image {
+          width
+          height
+          src
+        }
       }
     }
   }

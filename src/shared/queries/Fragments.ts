@@ -11,7 +11,11 @@ export const PostFragment = gql`
     publishedAt
     updatedAt
     excerpt
-    cover_image
+    cover_image {
+      width
+      height
+      src
+    }
     slug
     type
     author {

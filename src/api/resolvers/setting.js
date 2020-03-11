@@ -29,10 +29,17 @@ export default {
     settings: async (root, args, { models, user }) => {
       const settings = await models.Setting.findAll({ where: args });
       return settings.map(item => {
-        if (["banner", "site_logo", "site_favicon"].includes(item.option)) {
+        if (["site_logo", "site_favicon"].includes(item.option)) {
           if (item.value && !item.value.startsWith("http")) {
             item.value = host + item.value;
           }
+        }
+        if (["banner"].includes(item.option)) {
+          const parsedValue = JSON.parse(item.value);
+          if (parsedValue.src && !parsedValue.src.startsWith("http")) {
+            parsedValue.src = host + parsedValue.src;
+          }
+          item.value = JSON.stringify(parsedValue);
         }
         if (item.option === "menu") {
           item.value = getMenuWithSanitizedSlug(item.value);
@@ -69,6 +76,31 @@ export default {
         return models.Setting.findAll();
       },
     ),
+  },
+  Setting: {
+    value: async (setting, args, { models }) => {
+      //...
+      if (setting.dataValues.option === "banner") {
+        const banner = await models.Media.findOne({
+          attributes: ["width", "height"],
+          where: {
+            url: setting.dataValues.value.replace(host, ""),
+          },
+          raw: true,
+        });
+        console.log("setting.dataValues :", setting.dataValues);
+        console.log("banner :", banner);
+        if (banner) {
+          const { width, height } = banner;
+          return JSON.stringify({
+            src: setting.dataValues.value,
+            width,
+            height,
+          });
+        }
+      }
+      return setting.dataValues.value;
+    },
   },
 };
 

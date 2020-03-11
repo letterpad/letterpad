@@ -1,14 +1,19 @@
 import "isomorphic-fetch";
 
 import { DataTypes, Model } from "sequelize";
+import {
+  getImageDimensions,
+  setImageWidthAndHeightInHtml,
+} from "../utils/imageHelpers";
 
 import config from "../../config";
 import logger from "../../shared/logger";
 import moment from "moment";
-import { setResponsiveImages } from "../utils/imageHelpers";
 import slugify from "../../shared/slugify";
 import { updateMenuItem } from "../resolvers/setting";
 import utils from "../../shared/util";
+
+const host = config.ROOT_URL + config.BASE_NAME;
 
 class Post extends Model {
   static associate(models) {
@@ -42,6 +47,14 @@ class Post extends Model {
         cover_image: {
           type: DataTypes.STRING,
           defaultValue: "",
+        },
+        cover_image_width: {
+          type: DataTypes.INTEGER,
+          defaultValue: 0,
+        },
+        cover_image_height: {
+          type: DataTypes.INTEGER,
+          defaultValue: 0,
         },
         type: {
           type: DataTypes.STRING,
@@ -139,10 +152,26 @@ export async function _updatePost(updatedPost, models) {
       updatedPost = { ...updatedPost, publishedAt: currentTime };
       logger.debug("Post status changed from draft to publish - ", currentTime);
     }
+    let coverImageProps = { ...oldPost.cover_image };
+    if (updatedPost.cover_image) {
+      coverImageProps.cover_image = updatedPost.cover_image.src;
+    }
+
+    if (updatedPost.cover_image) {
+      let cover_image_url = updatedPost.cover_image.src;
+      if (!updatedPost.cover_image.src.startsWith("http")) {
+        // this is internal image, get its width and height
+        cover_image_url = host + updatedPost.cover_image.src;
+      }
+      const imageSize = await getImageDimensions(cover_image_url);
+      coverImageProps.cover_image_width = imageSize.width;
+      coverImageProps.cover_image_height = imageSize.height;
+    }
     updatedPost = {
       ...updatedPost,
       updatedAt: currentTime,
-      html: await setResponsiveImages(updatedPost.html),
+      html: await setImageWidthAndHeightInHtml(updatedPost.html),
+      ...coverImageProps,
     };
     await models.Post.update(updatedPost, {
       where: { id },

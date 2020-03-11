@@ -1,10 +1,10 @@
 import React from "react";
-import moment from "moment";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
 import { StyledItem } from "./ArticleList.css";
-import { filterTaxonomies } from ".";
 import config from "../../../config";
+import { filterTaxonomies } from ".";
+import moment from "moment";
 
 const RenderGrid: React.FC<any> = ({ data, setSelection }) => {
   return (
@@ -40,5 +40,8 @@ const RenderGrid: React.FC<any> = ({ data, setSelection }) => {
 export default RenderGrid;
 
 function getCoverImage(cover_image) {
-  return cover_image ? cover_image : "/admin/images/post.png";
+  cover_image.src = cover_image.src
+    ? cover_image.src
+    : "/admin/images/post.png";
+  return cover_image;
 }

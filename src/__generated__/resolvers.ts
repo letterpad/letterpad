@@ -45,6 +45,13 @@ export type AuthorResponse = {
   data?: Maybe<Author>;
 };
 
+export type CoverImage = {
+  __typename?: "CoverImage";
+  src: Scalars["String"];
+  width: Scalars["Int"];
+  height: Scalars["Int"];
+};
+
 export type CreateAuthorResponse = {
   __typename?: "CreateAuthorResponse";
   ok: Scalars["Boolean"];
@@ -101,13 +108,19 @@ export type InputAuthor = {
   avatar?: Maybe<Scalars["String"]>;
 };
 
+export type InputCoverImage = {
+  src: Scalars["String"];
+  width: Scalars["Int"];
+  height: Scalars["Int"];
+};
+
 export type InputCreatePost = {
   title?: Maybe<Scalars["String"]>;
   html?: Maybe<Scalars["String"]>;
   md?: Maybe<Scalars["String"]>;
   authorId?: Maybe<Scalars["Int"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<Scalars["String"]>;
+  cover_image?: Maybe<InputCoverImage>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
@@ -134,7 +147,7 @@ export type InputUpdatePost = {
   md?: Maybe<Scalars["String"]>;
   authorId?: Maybe<Scalars["Int"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<Scalars["String"]>;
+  cover_image?: Maybe<InputCoverImage>;
   publishedAt?: Maybe<Scalars["Date"]>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
@@ -157,6 +170,8 @@ export type Media = {
   url: Scalars["String"];
   createdAt: Scalars["Date"];
   name?: Maybe<Scalars["String"]>;
+  width?: Maybe<Scalars["Int"]>;
+  height?: Maybe<Scalars["Int"]>;
   description?: Maybe<Scalars["String"]>;
 };
 
@@ -320,7 +335,7 @@ export type Post = {
   md: Scalars["String"];
   author: Author;
   excerpt: Scalars["String"];
-  cover_image: Scalars["String"];
+  cover_image: CoverImage;
   type: Scalars["String"];
   status: Scalars["String"];
   slug: Scalars["String"];
@@ -727,6 +742,7 @@ export type ResolversTypes = {
   Date: ResolverTypeWrapper<Scalars["Date"]>;
   PostFilters: PostFilters;
   Post: ResolverTypeWrapper<Post>;
+  CoverImage: ResolverTypeWrapper<CoverImage>;
   Taxonomy: ResolverTypeWrapper<Taxonomy>;
   TaxonomyTypes: TaxonomyTypes;
   PostsFilters: PostsFilters;
@@ -756,6 +772,7 @@ export type ResolversTypes = {
   DeleteResponse: ResolverTypeWrapper<DeleteResponse>;
   UpdateResponse: ResolverTypeWrapper<UpdateResponse>;
   InputCreatePost: InputCreatePost;
+  InputCoverImage: InputCoverImage;
   TaxonomyInputType: TaxonomyInputType;
   Response: ResolverTypeWrapper<Response>;
   InputUpdatePost: InputUpdatePost;
@@ -786,6 +803,7 @@ export type ResolversParentTypes = {
   Date: Scalars["Date"];
   PostFilters: PostFilters;
   Post: Post;
+  CoverImage: CoverImage;
   Taxonomy: Taxonomy;
   TaxonomyTypes: TaxonomyTypes;
   PostsFilters: PostsFilters;
@@ -815,6 +833,7 @@ export type ResolversParentTypes = {
   DeleteResponse: DeleteResponse;
   UpdateResponse: UpdateResponse;
   InputCreatePost: InputCreatePost;
+  InputCoverImage: InputCoverImage;
   TaxonomyInputType: TaxonomyInputType;
   Response: Response;
   InputUpdatePost: InputUpdatePost;
@@ -866,6 +885,16 @@ export type AuthorResponseResolvers<
     ContextType
   >;
   data?: Resolver<Maybe<ResolversTypes["Author"]>, ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn;
+};
+
+export type CoverImageResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["CoverImage"] = ResolversParentTypes["CoverImage"]
+> = {
+  src?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  width?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  height?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn;
 };
 
@@ -951,6 +980,8 @@ export type MediaResolvers<
   url?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  width?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
+  height?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   description?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -1107,7 +1138,7 @@ export type PostResolvers<
   md?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   author?: Resolver<ResolversTypes["Author"], ParentType, ContextType>;
   excerpt?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  cover_image?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  cover_image?: Resolver<ResolversTypes["CoverImage"], ParentType, ContextType>;
   type?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   status?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
@@ -1415,6 +1446,7 @@ export type Resolvers<ContextType = Context> = {
   AdjacentPosts?: AdjacentPostsResolvers<ContextType>;
   Author?: AuthorResolvers<ContextType>;
   AuthorResponse?: AuthorResponseResolvers<ContextType>;
+  CoverImage?: CoverImageResolvers<ContextType>;
   CreateAuthorResponse?: CreateAuthorResponseResolvers<ContextType>;
   Date?: GraphQLScalarType;
   DeleteResponse?: DeleteResponseResolvers<ContextType>;

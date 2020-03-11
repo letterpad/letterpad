@@ -8,6 +8,7 @@ import {
 import { RouteComponentProps, RouterProps } from "react-router";
 
 import ApolloClient from "apollo-client";
+import { IHelpers } from "./helperProps";
 
 export type TypeSettings = { [option in SettingOptions]: Setting };
 
@@ -27,6 +28,7 @@ export interface IRouteProps<T> {
   initialProps?: any;
   loading?: boolean;
   data?: T | undefined;
+  helpers: IHelpers;
 }
 
 export interface RouteParams {
@@ -73,3 +75,13 @@ export type IThemeContainer = {
   Posts: TypeThemePosts;
   Home: TypeThemePost | TypeThemePosts;
 };
+
+interface IImageAttrs {
+  src: string;
+  sizes: string;
+  "data-srcset": string;
+  srcset: string[];
+  width: string;
+  loading: "lazy";
+}
+export type IImageAttrsResult = IImageAttrs | {};

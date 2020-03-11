@@ -50,7 +50,7 @@ function DataConnector(
               contentType="article"
               category={categories.join(",")}
               tags={tags}
-              image={data.cover_image}
+              image={data.cover_image.src}
               settings={props.settings || {}}
             />
           );
