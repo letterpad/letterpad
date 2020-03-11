@@ -4,13 +4,13 @@ const retry = <T>(
   maxRetries: number = 5,
 ) =>
   new Promise((resolve, reject) => {
-    var retries = 0;
+    let retries = 0;
     fn()
       .then(resolve)
       .catch(() => {
         setTimeout(() => {
           console.log("retrying failed promise...");
-          ++retries;
+          retries++;
           if (retries == maxRetries) {
             return reject("maximum retries exceeded");
           }

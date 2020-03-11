@@ -70,6 +70,31 @@ export default {
       },
     ),
   },
+  Setting: {
+    value: async (setting, args, { models }) => {
+      //...
+      if (setting.dataValues.option === "banner") {
+        const banner = await models.Media.findOne({
+          attributes: ["width", "height"],
+          where: {
+            url: setting.dataValues.value.replace(host, ""),
+          },
+          raw: true,
+        });
+        console.log("setting.dataValues :", setting.dataValues);
+        console.log("banner :", banner);
+        if (banner) {
+          const { width, height } = banner;
+          return JSON.stringify({
+            src: setting.dataValues.value,
+            width,
+            height,
+          });
+        }
+      }
+      return setting.dataValues.value;
+    },
+  },
 };
 
 export const updateMenuItem = async (models, id, type, field) => {

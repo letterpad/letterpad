@@ -49,7 +49,6 @@ export async function getImageDimensions(
   url: string,
 ): Promise<{ width: number; height: number; type: string }> {
   const withHttp = url.replace("https://", "http://");
-
   const actionToTry = () =>
     new Promise((resolve, reject) =>
       http.get(new URL(withHttp), function(response) {
@@ -68,12 +67,32 @@ export async function getImageDimensions(
       }),
     ) as Promise<ISizeCalculationResult>;
 
-  const response = await retry(actionToTry, 1000, 3);
+  const response = actionToTry(); //retry(actionToTry, 1000, 3);
   return response as Promise<{ width: number; height: number; type: string }>;
 }
 
 const sizes = [480, 720, 960, 1200, 1440, 1600, 2000];
 const srcSizes = `(max-width: 720px) 100vw, 720px`;
+
+export const setImageWidthAndHeightInHtml = async (html: string) => {
+  const $ = cheerio.load(html);
+  logger.debug("Setting image width and height inside html");
+  const $bodyImages = $("img");
+
+  for (let i = 0; i < $bodyImages.length; i++) {
+    const el = $bodyImages[i];
+    const $el = $(el);
+    $el.attr("loading", "lazy");
+    let src = $el.attr("src");
+    if (!src.startsWith("http")) return;
+    const size = await getImageDimensions(src);
+    src = src.replace("http://", "https://");
+    $el.attr("height", size.height.toString());
+    $el.attr("width", size.width.toString());
+    logger.info("Image width x height", { ...size });
+  }
+  return $.html();
+};
 
 export const setResponsiveImages = async (html: string) => {
   logger.debug("Setting responsive image");
@@ -111,11 +130,50 @@ export const setResponsiveImages = async (html: string) => {
       $el.attr("style", "max-width: 720px");
     }
     const size = await getImageDimensions(src);
-    $el.attr("height", size.height);
-    $el.attr("width", size.width);
+    $el.attr("height", size.height.toString());
+    $el.attr("width", size.width.toString());
   }
   return $.html();
 };
+
+export async function getResponsiveAttributes(
+  image: {
+    src: string;
+    width: number;
+    height: number;
+  },
+  sizes,
+) {
+  const { src, width, height } = image;
+  const url = new URL(src);
+
+  const attrs = {};
+  if (url.hostname.includes("unsplash")) {
+    const base64Url = ""; //await makeBase64Url(makeUnsplashUrl(src, 30));
+    const srcSet = sizes.map(w => makeUnsplashImage(src, w)).join(", ");
+    attrs["src"] = makeUnsplashUrl(src, sizes[sizes.length - 1]);
+    attrs["sizes"] = srcSizes;
+    attrs["data-srcset"] = srcSet;
+    attrs["srcSet"] = base64Url;
+    attrs["srcset"] = base64Url;
+  } else if (url.hostname.includes("cloudinary")) {
+    const originalSrc = src;
+
+    const base64Url = ""; //await makeBase64Url(makeCloudinaryUrl(src, 30));
+    const srcSet = sizes
+      .map(w => makeCloudinaryImage(originalSrc, w))
+      .join(", ");
+    attrs["src"] = makeCloudinaryUrl(src, sizes[sizes.length - 1]);
+    attrs["sizes"] = srcSizes;
+    attrs["data-srcset"] = srcSet;
+    attrs["srcSet"] = base64Url;
+    attrs["srcset"] = base64Url;
+  }
+  attrs["width"] = width;
+  attrs["height"] = height;
+
+  return attrs;
+}
 
 export function makeUnsplashImage(src: string, width: number, extras = "") {
   return `${makeUnsplashUrl(src, width, extras)} ${width}w`;

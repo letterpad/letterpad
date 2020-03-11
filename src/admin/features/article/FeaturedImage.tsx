@@ -1,9 +1,10 @@
+import { CoverImage, Post } from "../../../__generated__/gqlTypes";
 import React, { Component } from "react";
 import { WithNamespaces, translate } from "react-i18next";
 
 import FileExplorerModal from "../modals/FileExplorerModal";
+import { IMediaUploadResult } from "../../../types/types";
 import { MediaProvider } from "./Edit";
-import { Post } from "../../../__generated__/gqlTypes";
 import PostActions from "./PostActions";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
@@ -44,8 +45,13 @@ const ImageWrapper = styled.div`
     font-size: 50px;
   }
 `;
-
-const CustomImage = ({
+interface ICustomImageProps {
+  toggleFileExplorer: () => void;
+  removeCustomImage: () => void;
+  coverImage: CoverImage;
+  isCustom: boolean;
+}
+const CustomImage: React.FC<ICustomImageProps> = ({
   removeCustomImage,
   toggleFileExplorer,
   coverImage,
@@ -61,17 +67,11 @@ const CustomImage = ({
       onClick={isCustom ? removeCustomImage : toggleFileExplorer}
     >
       <span>{isCustom ? "x" : "+"}</span>
-      {isCustom && <img alt="" width="100%" src={coverImage} />}
+      {isCustom && <img alt="" width="100%" src={coverImage.src} />}
     </div>
   );
 };
 
-CustomImage.propTypes = {
-  toggleFileExplorer: PropTypes.func,
-  removeCustomImage: PropTypes.func,
-  coverImage: PropTypes.string,
-  isCustom: PropTypes.bool,
-};
 interface IFeaturedImageProps extends WithNamespaces {
   post: Post;
   mediaProvider: MediaProvider;
@@ -80,7 +80,12 @@ interface IFeaturedImageProps extends WithNamespaces {
 
 class FeaturedImage extends Component<
   IFeaturedImageProps,
-  { imageList: string[]; fileExplorerOpen: boolean; cover_image: string }
+  {
+    imageList: CoverImage[];
+    fileExplorerOpen: boolean;
+    cover_image: CoverImage;
+    mediaProvider: MediaProvider;
+  }
 > {
   imageInputRef = React.createRef<HTMLInputElement>();
   uploadInputRef = React.createRef<HTMLInputElement>();
@@ -89,21 +94,27 @@ class FeaturedImage extends Component<
     cover_image: PostActions.getData().cover_image,
     fileExplorerOpen: false,
     imageList: [],
+    mediaProvider: this.props.mediaProvider,
   };
 
   componentDidMount() {
     const imgNodes = document.querySelectorAll(".lp-img");
     if (imgNodes.length === this.state.imageList.length) return;
-    const imageList: string[] = [];
+    const imageList: CoverImage[] = [];
     for (let i = 0; i < imgNodes.length; i++) {
-      imageList.push(imgNodes[i].getAttribute("src") as string);
+      imageList.push({
+        src: imgNodes[i].getAttribute("src") as string,
+        width: (imgNodes[i].getAttribute("width") as unknown) as number,
+        height: (imgNodes[i].getAttribute("height") as unknown) as number,
+      });
     }
     this.setState({ imageList });
   }
 
   // All the images available in the post can be used as a cover image.
   // This function sets the selection
-  setCoverImage = async (images: string[]) => {
+  setCoverImage = async (images: CoverImage[]) => {
+    console.log(images);
     PostActions.setData({ cover_image: images[0] });
     await this.props.updatePost();
     this.setState({ cover_image: images[0] });
@@ -112,16 +123,20 @@ class FeaturedImage extends Component<
 
   uploadImage = async files => {
     // upload the file and get the url
-    const uploadedFiles = await uploadFile({
+    const uploadedFiles: IMediaUploadResult[] = await uploadFile({
       files,
       type: "featured_image",
     });
-    const { src, errors } = uploadedFiles[0];
-    if (errors) {
-      notify.show(errors, "error", 3000);
+    const {
+      src,
+      error,
+      size: { width, height },
+    } = uploadedFiles[0];
+    if (error) {
+      notify.show(error, "error", 3000);
       return;
     }
-    this.setCoverImage([src]);
+    this.setCoverImage([{ src, width, height }]);
   };
 
   toggleFileExplorer = () => {
@@ -130,8 +145,8 @@ class FeaturedImage extends Component<
 
   render() {
     let isCustom = false;
-    if (this.state.cover_image) {
-      isCustom = !(this.state.imageList as string[]).includes(
+    if (this.state.cover_image.src) {
+      isCustom = !(this.state.imageList as CoverImage[]).includes(
         this.state.cover_image,
       );
     }
@@ -144,17 +159,27 @@ class FeaturedImage extends Component<
             toggleFileExplorer={this.toggleFileExplorer}
             isCustom={isCustom}
             coverImage={this.state.cover_image}
-            removeCustomImage={() => this.setCoverImage([""])}
+            removeCustomImage={() =>
+              this.setCoverImage([{ width: 0, height: 0, src: "" }])
+            }
           />
           {this.state.imageList.map((imagePath, idx) => {
-            const selected = imagePath === this.state.cover_image;
+            const selected = imagePath.src === this.state.cover_image.src;
             return (
               <div
                 key={idx}
                 className={selected ? "selected" : ""}
-                onClick={() => this.setCoverImage([imagePath])}
+                onClick={async () => {
+                  const coverImage = {
+                    src: imagePath.src,
+                    width: imagePath.width || 0,
+                    height: imagePath.height || 0,
+                  };
+                  console.log("coverImage :", coverImage);
+                  await this.setCoverImage([coverImage]);
+                }}
               >
-                <img alt="" width="100%" src={imagePath} />
+                <img alt="" width="100%" src={imagePath.src} />
               </div>
             );
           })}
@@ -167,6 +192,9 @@ class FeaturedImage extends Component<
         />
         {this.state.fileExplorerOpen && (
           <FileExplorerModal
+            switchProvider={provider => {
+              this.setState({ mediaProvider: provider });
+            }}
             isOpen={this.state.fileExplorerOpen}
             onClose={this.toggleFileExplorer}
             onMediaInsert={this.setCoverImage}
@@ -180,7 +208,7 @@ class FeaturedImage extends Component<
                 inputFile.click();
               }
             }}
-            mediaProvider={this.props.mediaProvider}
+            mediaProvider={this.state.mediaProvider}
           />
         )}
       </div>

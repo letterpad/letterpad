@@ -35,6 +35,13 @@ export type AuthorResponse = {
   data?: Maybe<Author>;
 };
 
+export type CoverImage = {
+  __typename?: "CoverImage";
+  src: Scalars["String"];
+  width: Scalars["Int"];
+  height: Scalars["Int"];
+};
+
 export type CreateAuthorResponse = {
   __typename?: "CreateAuthorResponse";
   ok: Scalars["Boolean"];
@@ -91,13 +98,19 @@ export type InputAuthor = {
   avatar?: Maybe<Scalars["String"]>;
 };
 
+export type InputCoverImage = {
+  src: Scalars["String"];
+  width: Scalars["Int"];
+  height: Scalars["Int"];
+};
+
 export type InputCreatePost = {
   title?: Maybe<Scalars["String"]>;
   html?: Maybe<Scalars["String"]>;
   md?: Maybe<Scalars["String"]>;
   authorId?: Maybe<Scalars["Int"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<Scalars["String"]>;
+  cover_image?: Maybe<InputCoverImage>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
@@ -124,7 +137,7 @@ export type InputUpdatePost = {
   md?: Maybe<Scalars["String"]>;
   authorId?: Maybe<Scalars["Int"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<Scalars["String"]>;
+  cover_image?: Maybe<InputCoverImage>;
   publishedAt?: Maybe<Scalars["Date"]>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
@@ -147,6 +160,8 @@ export type Media = {
   url: Scalars["String"];
   createdAt: Scalars["Date"];
   name?: Maybe<Scalars["String"]>;
+  width?: Maybe<Scalars["Int"]>;
+  height?: Maybe<Scalars["Int"]>;
   description?: Maybe<Scalars["String"]>;
 };
 
@@ -310,7 +325,7 @@ export type Post = {
   md: Scalars["String"];
   author: Author;
   excerpt: Scalars["String"];
-  cover_image: Scalars["String"];
+  cover_image: CoverImage;
   type: Scalars["String"];
   status: Scalars["String"];
   slug: Scalars["String"];
@@ -603,10 +618,13 @@ export type PostFieldsFragment = { __typename?: "Post" } & Pick<
   | "publishedAt"
   | "updatedAt"
   | "excerpt"
-  | "cover_image"
   | "slug"
   | "type"
 > & {
+    cover_image: { __typename?: "CoverImage" } & Pick<
+      CoverImage,
+      "width" | "height" | "src"
+    >;
     author: { __typename?: "Author" } & Pick<
       Author,
       "fname" | "lname" | "avatar" | "bio"
@@ -640,9 +658,12 @@ export type CreatePostMutation = { __typename?: "Mutation" } & {
           | "slug"
           | "excerpt"
           | "createdAt"
-          | "cover_image"
         > & {
             author: { __typename?: "Author" } & Pick<Author, "username">;
+            cover_image: { __typename?: "CoverImage" } & Pick<
+              CoverImage,
+              "src" | "width" | "height"
+            >;
             taxonomies: Array<
               { __typename?: "Taxonomy" } & Pick<
                 Taxonomy,
@@ -780,11 +801,14 @@ export type UpdatePostMutation = { __typename?: "Mutation" } & {
           | "status"
           | "excerpt"
           | "createdAt"
-          | "cover_image"
         > & {
             author: { __typename?: "Author" } & Pick<
               Author,
               "username" | "lname" | "fname" | "avatar" | "bio"
+            >;
+            cover_image: { __typename?: "CoverImage" } & Pick<
+              CoverImage,
+              "width" | "height" | "src"
             >;
             taxonomies: Array<
               { __typename?: "Taxonomy" } & Pick<
@@ -824,7 +848,14 @@ export type UploadFileMutationVariables = {
 
 export type UploadFileMutation = { __typename?: "Mutation" } & {
   uploadFile: { __typename?: "Response" } & Pick<Response, "ok"> & {
-      post: Maybe<{ __typename?: "Post" } & Pick<Post, "id" | "cover_image">>;
+      post: Maybe<
+        { __typename?: "Post" } & Pick<Post, "id"> & {
+            cover_image: { __typename?: "CoverImage" } & Pick<
+              CoverImage,
+              "width" | "height" | "src"
+            >;
+          }
+      >;
     };
 };
 
@@ -1057,14 +1088,24 @@ export type AdjacentPostsQuery = { __typename?: "Query" } & {
       next: Maybe<
         { __typename?: "Post" } & Pick<
           Post,
-          "title" | "slug" | "cover_image" | "publishedAt"
-        >
+          "title" | "slug" | "publishedAt"
+        > & {
+            cover_image: { __typename?: "CoverImage" } & Pick<
+              CoverImage,
+              "width" | "height" | "src"
+            >;
+          }
       >;
       previous: Maybe<
         { __typename?: "Post" } & Pick<
           Post,
-          "title" | "slug" | "cover_image" | "publishedAt"
-        >
+          "title" | "slug" | "publishedAt"
+        > & {
+            cover_image: { __typename?: "CoverImage" } & Pick<
+              CoverImage,
+              "width" | "height" | "src"
+            >;
+          }
       >;
     }
   >;

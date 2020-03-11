@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 
 class Media extends Model {
   static associate(_models) {}
@@ -11,6 +11,12 @@ class Media extends Model {
         },
         name: {
           type: DataTypes.STRING,
+        },
+        width: {
+          type: DataTypes.INTEGER,
+        },
+        height: {
+          type: DataTypes.INTEGER,
         },
         description: {
           type: DataTypes.STRING,

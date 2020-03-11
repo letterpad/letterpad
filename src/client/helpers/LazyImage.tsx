@@ -1,13 +1,10 @@
 import React, { Component } from "react";
+
+import { CoverImage } from "../../__generated__/gqlTypes";
 import { StaticContext } from "../Context";
 import config from "../../config";
 
-interface ILazyImageProps {
-  src: string;
-  width: string;
-}
-
-class LazyImage extends Component<ILazyImageProps, { loaded: boolean }> {
+class LazyImage extends Component<CoverImage, { loaded: boolean }> {
   state = {
     loaded: false,
   };

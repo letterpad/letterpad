@@ -36,13 +36,25 @@ input PostsFilters {
   page: Int
 }
 
+type CoverImage {
+  src: String!
+  width: Int!
+  height: Int!
+}
+
+input InputCoverImage {
+  src: String!
+  width: Int!
+  height: Int!
+}
+
 input InputCreatePost {
   title: String
   html: String
   md: String
   authorId: Int
   excerpt: String
-  cover_image: String
+  cover_image: InputCoverImage
   type: String
   status: PostStatusOptions
   slug: String
@@ -56,7 +68,7 @@ input InputUpdatePost {
   md: String
   authorId: Int
   excerpt: String
-  cover_image: String
+  cover_image: InputCoverImage
   publishedAt: Date
   type: String
   status: PostStatusOptions
@@ -86,7 +98,7 @@ type Post {
   md: String!
   author: Author!
   excerpt: String!
-  cover_image: String!
+  cover_image: CoverImage!
   type: String!
   status: String!
   slug: String!
