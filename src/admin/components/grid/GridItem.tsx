@@ -63,7 +63,7 @@ const StyledGrid: React.FC<any> = ({
       <Wrapper className={"grid-item " + className}>
         <div className="item-image">
           {stickyText && <p className="item-sticky">{stickyText}</p>}
-          <img src={image} />
+          <img {...image} />
         </div>
         <div className="grid-content">
           <h2 className="item-title">{title}</h2>

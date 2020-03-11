@@ -48,6 +48,7 @@ const Article: React.FC<IArticleProps> = ({ theme, router }) => {
 
   const updatePost = async () => {
     const data = PostActions.getData();
+    delete data.cover_image.__typename;
     const update = await client().mutate<UpdatePostMutation>({
       mutation: UPDATE_POST_QUERY,
       variables: {
@@ -57,7 +58,7 @@ const Article: React.FC<IArticleProps> = ({ theme, router }) => {
           html: data.html,
           md: data.md,
           excerpt: data.excerpt,
-          cover_image: data.cover_image.replace(host, ""),
+          cover_image: data.cover_image,
           publishedAt: data.publishedAt,
           type: data.type,
           status: data.status,

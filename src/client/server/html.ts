@@ -90,7 +90,13 @@ export const getHeadHtml = ({
   styles,
   settings,
 }: Pick<IProps, "head" | "theme" | "styles" | "settings">) => {
-  const template = util.getClientFileContents("template-head.tpl");
+  // check if the theme has defined any html template
+  const themeTemplateBuffer = util.getThemeFileContents(
+    theme,
+    "template-head.tpl",
+  );
+  const template =
+    themeTemplateBuffer || util.getClientFileContents("template-head.tpl");
   const templateString = template.toString();
 
   const { htmlAttrs, metaTags } = getMetaTags(head);

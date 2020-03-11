@@ -4,6 +4,8 @@ type Media {
   url: String!
   createdAt: Date!
   name: String
+  width: Int
+  height: Int
   description: String
 }
 

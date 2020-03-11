@@ -219,14 +219,14 @@ export async function insertMedia(models) {
   return models.Media.bulkCreate([
     {
       url: "/uploads/1.jpg",
-      authorId: 1,
+      AuthorId: 1,
       name: "Blueberries",
       description:
         "Write a description about this image. You never know how this image can break the internet",
     },
     {
       url: "/uploads/2.jpg",
-      authorId: 1,
+      AuthorId: 1,
       name: "I love the beach and its smell",
       description:
         "Write a description about this image. You never know how this image can break the internet",
@@ -362,7 +362,11 @@ export async function insertSettings(models) {
     },
     {
       option: "banner",
-      value: "/uploads/banner.jpg",
+      value: JSON.stringify({
+        src: "/uploads/banner.jpg",
+        width: 1200,
+        height: 700,
+      }),
     },
   ];
 

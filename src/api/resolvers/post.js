@@ -166,12 +166,10 @@ const postresolver = {
         } else if (page) {
           conditions.offset = (page - 1) * conditions.limit;
         }
+        // conditions.raw = true;
         const result = await models.Post.findAndCountAll(conditions);
         result.rows = result.rows.map(item => {
-          if (!item.cover_image.startsWith("http")) {
-            item.cover_image = host + "/" + item.cover_image;
-          }
-          item.slug = "/" + item.type + "/" + item.slug;
+          item.dataValues = normalizePost(item.dataValues);
           return item;
         });
         return {
@@ -240,12 +238,9 @@ const postresolver = {
       if (args.filters.slug) {
         conditions.where.slug = args.filters.slug;
       }
-      const post = await models.Post.findOne(conditions);
+      let post = await models.Post.findOne(conditions);
       if (post) {
-        if (!post.cover_image.startsWith("http")) {
-          post.cover_image = host + post.cover_image;
-        }
-        post.slug = "/" + post.type + "/" + post.slug;
+        post.dataValues = normalizePost(post.dataValues);
       }
       return post;
     }),
@@ -274,6 +269,8 @@ const postresolver = {
         order: [["id", "DESC"]],
       });
 
+      result.previous = normalizePost(result.previous);
+
       // get the next item
       result.next = await models.Post.findOne({
         where: {
@@ -284,7 +281,7 @@ const postresolver = {
         },
         order: [["id", "ASC"]],
       });
-
+      result.next = normalizePost(result.next);
       return result;
     },
     /**
@@ -330,17 +327,25 @@ const postresolver = {
       (root, args, { models, user }) => {
         args.data.authorId = user.id;
         memoryCache.del("posts");
-        return _createPost(args.data, models);
+        const post = _createPost(args.data, models);
+        const normalizedPost = normalizePost(post);
+        return normalizedPost;
       },
     ),
-    updatePost: editPostPerm.createResolver((root, args, { models }) => {
+    updatePost: editPostPerm.createResolver(async (root, args, { models }) => {
       memoryCache.del("posts");
       if (args.data.slug) {
         args.data.slug = args.data.slug
           .replace("/post/", "")
           .replace("/page/", "");
       }
-      return _updatePost(args.data, models);
+      if (args.data.cover_image) {
+        args.data.cover_image.src = args.data.cover_image.src.replace(host, "");
+      }
+      const data = await _updatePost(args.data, models);
+      data.post.dataValues = normalizePost(data.post.dataValues);
+
+      return data;
     }),
     uploadFile: editPostPerm.createResolver((root, args, { models }) => {
       return _updatePost(args, models);
@@ -397,3 +402,29 @@ const postresolver = {
 };
 
 export default postresolver;
+
+function normalizePost(post) {
+  let {
+    cover_image_width,
+    cover_image_height,
+    cover_image,
+    slug,
+    ...rest
+  } = post;
+  if (!cover_image.startsWith("http")) {
+    cover_image = host + "/" + cover_image;
+  }
+
+  // normalize cover image
+  post = {
+    ...rest,
+    cover_image: {
+      src: cover_image,
+      width: cover_image_width,
+      height: cover_image_height,
+    },
+    slug: "/" + rest.type + "/" + slug,
+  };
+
+  return post;
+}

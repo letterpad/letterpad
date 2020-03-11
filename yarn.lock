@@ -1999,6 +1999,13 @@
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
   integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
 
+"@types/express-fileupload@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/express-fileupload/-/express-fileupload-1.1.2.tgz#3cc420abd0614b71cc7f2743c9d0b70182025922"
+  integrity sha512-a2rhTcnF1NBphmp6/fKGW+udO0yYafUi6oDxYoutB6L5Hd9qBvlE0by4CB2mqTzXdp0qz+56Zt9SHOGN2TGhBQ==
+  dependencies:
+    "@types/express" "*"
+
 "@types/express-serve-static-core@*":
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.2.tgz#f6f41fa35d42e79dbf6610eccbb2637e6008a0cf"

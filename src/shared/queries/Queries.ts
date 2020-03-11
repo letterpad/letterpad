@@ -164,13 +164,21 @@ export const QUERY_ADJACENT_POSTS = gql`
       next {
         title
         slug
-        cover_image
+        cover_image {
+          width
+          height
+          src
+        }
         publishedAt
       }
       previous {
         title
         slug
-        cover_image
+        cover_image {
+          width
+          height
+          src
+        }
         publishedAt
       }
     }

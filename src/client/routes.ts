@@ -1,3 +1,5 @@
+import * as helperProps from "./helperProps";
+
 import { EnumContentType, TypeSettings } from "./types";
 
 import { IRoutes } from "./ClientApp";
@@ -33,6 +35,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     settings,
     themeSettings,
     initialProps: args.initialProps,
+    helpers: { ...helperProps },
   };
   const routes: IRouteProps[] = [
     {

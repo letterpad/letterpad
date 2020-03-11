@@ -1,5 +1,7 @@
 import { Post, Taxonomy } from "../../../__generated__/gqlTypes";
 
+import { deepMerge } from "../../../shared/deepMerge";
+
 interface IPostActions {
   triggerEvent: (name: string, data: any) => void;
   setData: (data: object) => void;
@@ -24,10 +26,7 @@ let PostActions: IPostActions = (() => {
           return rest;
         });
       }
-      postData = {
-        ...postData,
-        ...data,
-      };
+      postData = deepMerge(postData || {}, data) as Post;
       PostActions.triggerEvent("onPostChange", data);
     },
 

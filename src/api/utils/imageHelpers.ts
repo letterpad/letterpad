@@ -49,7 +49,6 @@ export async function getImageDimensions(
   url: string,
 ): Promise<{ width: number; height: number; type: string }> {
   const withHttp = url.replace("https://", "http://");
-
   const actionToTry = () =>
     new Promise((resolve, reject) =>
       http.get(new URL(withHttp), function(response) {
@@ -68,9 +67,29 @@ export async function getImageDimensions(
       }),
     ) as Promise<ISizeCalculationResult>;
 
-  const response = await retry(actionToTry, 1000, 3);
+  const response = actionToTry(); //retry(actionToTry, 1000, 3);
   return response as Promise<{ width: number; height: number; type: string }>;
 }
+
+export const setImageWidthAndHeightInHtml = async (html: string) => {
+  const $ = cheerio.load(html);
+  logger.debug("Setting image width and height inside html");
+  const $bodyImages = $("img");
+
+  for (let i = 0; i < $bodyImages.length; i++) {
+    const el = $bodyImages[i];
+    const $el = $(el);
+    $el.attr("loading", "lazy");
+    let src = $el.attr("src");
+    if (!src.startsWith("http")) return;
+    const size = await getImageDimensions(src);
+    src = src.replace("http://", "https://");
+    $el.attr("height", size.height.toString());
+    $el.attr("width", size.width.toString());
+    logger.info("Image width x height", { ...size });
+  }
+  return $.html();
+};
 
 const sizes = [480, 720, 960, 1200, 1440, 1600, 2000];
 const srcSizes = `(max-width: 720px) 100vw, 720px`;
@@ -111,8 +130,8 @@ export const setResponsiveImages = async (html: string) => {
       $el.attr("style", "max-width: 720px");
     }
     const size = await getImageDimensions(src);
-    $el.attr("height", size.height);
-    $el.attr("width", size.width);
+    $el.attr("height", size.height.toString());
+    $el.attr("width", size.width.toString());
   }
   return $.html();
 };
@@ -141,7 +160,7 @@ export function makeCloudinaryUrl(src, width) {
   return url;
 }
 
-export async function makeBase64Url(requestURL) {
+export async function makeBase64Url(requestURL: string) {
   const response = await fetch(requestURL);
   //@ts-ignore
   const arrayBuffer = await response.buffer();
