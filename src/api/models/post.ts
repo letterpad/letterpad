@@ -4,7 +4,6 @@ import { DataTypes, Model } from "sequelize";
 import {
   getImageDimensions,
   setImageWidthAndHeightInHtml,
-  setResponsiveImages,
 } from "../utils/imageHelpers";
 
 import config from "../../config";

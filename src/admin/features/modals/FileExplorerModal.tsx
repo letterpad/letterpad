@@ -16,7 +16,7 @@ const StyledBody = styled.div`
 `;
 
 interface IProps extends WithNamespaces {
-  onMediaInsert: (urls: CoverImage[]) => Promise<any>;
+  onMediaInsert: (urls: string[]) => Promise<any>;
   onClose: () => void;
   mediaProvider: MediaProvider;
   addNewMedia: () => void;
@@ -39,6 +39,17 @@ class FileExplorerModal extends Component<IProps, any> {
     this.setState({ page });
   };
 
+  insertMedia = async () => {
+    // get only the urls in an array
+    const urls = Object.keys(this.state.selectedImageUrls);
+    try {
+      await this.props.onMediaInsert(urls);
+    } catch (e) {
+      notify.show("Something unexpected happened.", "error");
+    }
+    setTimeout(this.props.onClose, 0);
+  };
+
   render() {
     const {
       t,
@@ -52,7 +63,7 @@ class FileExplorerModal extends Component<IProps, any> {
       mediaProvider === MediaProvider.Letterpad
         ? MediaProvider.Unsplash
         : MediaProvider.Letterpad;
-    const enableInsert = this.state.selectedImageUrls.length > 0;
+    const enableInsert = Object.keys(this.state.selectedImageUrls).length > 0;
     return (
       <ModalHoc confirm title={t("modal.explorer.title")} onClose={onClose}>
         <StyledBody className="modal-body text-center">
@@ -76,17 +87,7 @@ class FileExplorerModal extends Component<IProps, any> {
               : "My Media"}
           </StyledButton>
           {enableInsert && (
-            <StyledButton
-              success
-              onClick={async () => {
-                try {
-                  await this.props.onMediaInsert(this.state.selectedImageUrls);
-                } catch (e) {
-                  notify.show("Something unexpected happened.", "error");
-                }
-                setTimeout(onClose, 0);
-              }}
-            >
+            <StyledButton success onClick={this.insertMedia}>
               Insert
             </StyledButton>
           )}

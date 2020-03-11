@@ -52,6 +52,7 @@ function LayoutConnector(
         themeSettings={routeProps.themeSettings}
         initialProps={routeProps.initialProps}
         router={{ ...props }}
+        helpers={{ ...routeProps.helpers }}
       />
     );
   };

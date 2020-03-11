@@ -1,4 +1,4 @@
-import { dispatcher, generateHead } from "./dispatcher";
+import { contentProvider, generateHead } from "./contentProvider";
 
 import { Express } from "express";
 import apolloClient from "../../shared/apolloClient";
@@ -40,7 +40,7 @@ const serverRendering = (app: Express) => {
 
       try {
         logger.debug("SSR - Fetched settings data");
-        const content = await dispatcher({
+        const content = await contentProvider({
           requestUrl: req.url,
           client,
           settings,

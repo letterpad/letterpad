@@ -6,7 +6,7 @@ import { ServerStyleSheet } from "styled-components";
 import serverApp from "./serverApp";
 
 let styles;
-export const dispatcher = async (props: IServerRenderProps) => {
+export const contentProvider = async (props: IServerRenderProps) => {
   const { settings, isStatic } = props;
   let theme = settings.theme.value;
   // In dev mode if a theme is explicitly called, then use that

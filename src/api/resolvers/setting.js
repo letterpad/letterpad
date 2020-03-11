@@ -29,10 +29,17 @@ export default {
     settings: async (root, args, { models, user }) => {
       const settings = await models.Setting.findAll({ where: args });
       return settings.map(item => {
-        if (["banner", "site_logo", "site_favicon"].includes(item.option)) {
+        if (["site_logo", "site_favicon"].includes(item.option)) {
           if (item.value && !item.value.startsWith("http")) {
             item.value = host + item.value;
           }
+        }
+        if (["banner"].includes(item.option)) {
+          const parsedValue = JSON.parse(item.value);
+          if (parsedValue.src && !parsedValue.src.startsWith("http")) {
+            parsedValue.src = host + parsedValue.src;
+          }
+          item.value = JSON.stringify(parsedValue);
         }
         if (item.option === "menu") {
           item.value = getMenuWithSanitizedSlug(item.value);
