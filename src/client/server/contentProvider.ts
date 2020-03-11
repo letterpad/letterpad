@@ -3,6 +3,7 @@ import { getHeadHtml, getHtml } from "./html";
 import { Helmet } from "react-helmet";
 import { IServerRenderProps } from "../types";
 import { ServerStyleSheet } from "styled-components";
+import config from "../../config";
 import serverApp from "./serverApp";
 
 let styles;
@@ -10,8 +11,8 @@ export const contentProvider = async (props: IServerRenderProps) => {
   const { settings, isStatic } = props;
   let theme = settings.theme.value;
   // In dev mode if a theme is explicitly called, then use that
-  if (process.env.theme && process.env.theme !== "") {
-    theme = process.env.theme;
+  if (config.THEME !== "") {
+    theme = config.THEME;
   }
 
   try {
@@ -44,8 +45,8 @@ export const generateHead = (props: IServerRenderProps) => {
   const { settings, isStatic } = props;
   let theme = settings.theme.value;
   // In dev mode if a theme is explicitly called, then use that
-  if (process.env.theme && process.env.theme !== "") {
-    theme = process.env.theme;
+  if (config.THEME !== "") {
+    theme = config.THEME;
   }
   return getHeadHtml({
     head: Helmet.renderStatic(),
