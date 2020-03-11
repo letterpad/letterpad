@@ -1,5 +1,6 @@
 import { Express } from "express";
 import bodyParser from "body-parser";
+import config from "./config";
 
 const bodyParserMiddleWare = bodyParser.urlencoded({
   extended: true,
@@ -15,7 +16,7 @@ export default function(app: Express) {
   if (process.env.NODE_ENV !== "production") {
     const wpConfigFile = "../webpack/webpack.dev.js";
     const webpackConfig = require(wpConfigFile)({
-      theme: process.env.theme || "hugo",
+      theme: config.THEME,
     });
 
     const compiler = require("webpack")(webpackConfig);
@@ -27,7 +28,7 @@ export default function(app: Express) {
           noInfo: true,
           hot: true,
           publicPath: webpackConfig.output.publicPath,
-          stats: "errors-only",
+          stats: "normal",
           historyApiFallback: true,
         }),
       )
