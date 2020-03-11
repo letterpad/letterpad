@@ -3,7 +3,7 @@ import {
   makeCloudinaryUrl,
   makeUnsplashImage,
   makeUnsplashUrl,
-} from "../api/providers/parser";
+} from "../api/providers/enhanceMediaUrl";
 
 import { IImageAttrsResult } from "./types";
 

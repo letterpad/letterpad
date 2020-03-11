@@ -4,7 +4,7 @@ import {
   makeCloudinaryUrl,
   makeUnsplashImage,
   makeUnsplashUrl,
-} from "../providers/parser";
+} from "../providers/enhanceMediaUrl";
 
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import cheerio from "cheerio";
