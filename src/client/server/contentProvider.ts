@@ -15,29 +15,36 @@ export const contentProvider = async (props: IServerRenderProps) => {
     theme = config.THEME;
   }
 
-  try {
-    const response = await serverApp(props);
-    if (response) {
-      const { html, apolloState, initialData, head, sheet } = response;
-
-      if (sheet) styles = sheet.getStyleTags(); // <-- getting all the tags from the sheet
-      const content = getHtml({
-        theme,
-        html,
-        apolloState,
-        initialData,
-        head,
-        settings,
-        styles,
-        isStatic,
-      });
-      return content;
-    } else {
-      console.log("Response =>", response);
+  let response: any = {
+    html: "",
+    apolloState: {},
+    initialData: { settings },
+    head: "",
+    sheet: "",
+  };
+  if (config.NODE_ENV === "production") {
+    try {
+      response = await serverApp(props);
+    } catch (E) {
+      console.log(E);
       return "Error while rendering";
     }
-  } catch (E) {
-    console.log(E);
+  }
+  if (response) {
+    const { html, apolloState, initialData, head, sheet } = response;
+
+    if (sheet) styles = sheet.getStyleTags(); // <-- getting all the tags from the sheet
+    const content = getHtml({
+      theme,
+      html,
+      apolloState,
+      initialData,
+      head,
+      settings,
+      styles,
+      isStatic,
+    });
+    return content;
   }
 };
 
