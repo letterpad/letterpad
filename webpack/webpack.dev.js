@@ -44,7 +44,13 @@ const clientConfig = args => {
               loader: "css-loader",
               options: { importLoaders: 1, sourceMap: true, import: true },
             },
-            "postcss-loader",
+            {
+              loader: "postcss-loader",
+              options: {
+                ident: "postcss",
+                plugins: [require("tailwindcss")],
+              },
+            },
           ],
           include: [path.join(__dirname, "../src/client/themes/")],
         },
