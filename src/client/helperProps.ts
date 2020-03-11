@@ -1,33 +1,9 @@
-// import {
-//   makeCloudinaryImage,
-//   makeCloudinaryUrl,
-//   makeUnsplashImage,
-//   makeUnsplashUrl,
-// } from "../api/utils/imageHelpers";
-
-export function makeUnsplashImage(src: string, width: number, extras = "") {
-  return `${makeUnsplashUrl(src, width, extras)} ${width}w`;
-}
-
-export function makeCloudinaryImage(src: string, width: number) {
-  return `${makeCloudinaryUrl(src, width)} ${width}w`;
-}
-
-export function makeUnsplashUrl(src: string, width: number, extras = "") {
-  const url = new URL(src);
-  const baseUrl = `${url.protocol}//${url.hostname}${url.pathname}`;
-  return `${baseUrl}?w=${width}&auto=format&lossless=true${extras}`;
-}
-
-export function makeCloudinaryUrl(src, width) {
-  const replace = /image\/upload\/(.*)\/blog-images/;
-  const url = src.replace(
-    replace,
-    `image/upload/q_auto,f_auto,w_${width}/v1/blog-images`,
-  );
-
-  return url;
-}
+import {
+  makeCloudinaryImage,
+  makeCloudinaryUrl,
+  makeUnsplashImage,
+  makeUnsplashUrl,
+} from "../api/providers/enhanceMediaUrl";
 
 import { IImageAttrsResult } from "./types";
 
