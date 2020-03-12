@@ -324,12 +324,12 @@ const postresolver = {
   },
   Mutation: {
     createPost: createPostsPerm.createResolver(
-      (root, args, { models, user }) => {
+      async (root, args, { models, user }) => {
         args.data.authorId = user.id;
         memoryCache.del("posts");
-        const post = _createPost(args.data, models);
-        const normalizedPost = normalizePost(post);
-        return normalizedPost;
+        const result = await _createPost(args.data, models);
+        result.post.dataValues = normalizePost(result.post.dataValues);
+        return result;
       },
     ),
     updatePost: editPostPerm.createResolver(async (root, args, { models }) => {
@@ -411,7 +411,7 @@ function normalizePost(post) {
     slug,
     ...rest
   } = post;
-  if (!cover_image.startsWith("http")) {
+  if (cover_image && !cover_image.startsWith("http")) {
     cover_image = host + "/" + cover_image;
   }
 
@@ -419,9 +419,9 @@ function normalizePost(post) {
   post = {
     ...rest,
     cover_image: {
-      src: cover_image,
-      width: cover_image_width,
-      height: cover_image_height,
+      src: cover_image || "",
+      width: cover_image_width || 0,
+      height: cover_image_height || 0,
     },
     slug: "/" + rest.type + "/" + slug,
   };

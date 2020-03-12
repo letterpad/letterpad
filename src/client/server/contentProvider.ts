@@ -24,6 +24,7 @@ export const contentProvider = async (props: IServerRenderProps) => {
   };
   if (config.NODE_ENV === "production") {
     try {
+      console.log("reached");
       response = await serverApp(props);
     } catch (E) {
       console.log(E);
