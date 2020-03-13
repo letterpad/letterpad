@@ -158,7 +158,7 @@ export async function _updatePost(updatedPost, models) {
       coverImageProps.cover_image = updatedPost.cover_image.src;
     }
 
-    if (updatedPost.cover_image) {
+    if (updatedPost.cover_image && updatedPost.cover_image.src) {
       let cover_image_url = updatedPost.cover_image.src;
       if (!updatedPost.cover_image.src.startsWith("http")) {
         // this is internal image, get its width and height
