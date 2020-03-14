@@ -8,12 +8,44 @@ import {
 import { IImageAttrsResult } from "./types";
 
 export interface IHelpers {
+  /**
+   * Use this function to create additional props which can asist to lazy load images.
+   * Given an image with the below attributes, this method will trigger the lazy loading of this image.
+   * ```
+   * getImageAttrs("https://unsplash.com/a/b",
+   *  [376, 515, 776, 992, 1200, 1600,2000],
+   *  "(max-width: 720px) 100vw, 720px)";
+   * ```
+   */
   getImageAttrs: (
     src: string,
     sizes?: number[],
     srcSizes?: string,
   ) => IImageAttrsResult;
 
+  /**
+   * Used to trigger lazy loading of images.
+   * Given an image with the below attributes, this method will trigger the lazy loading of this image.
+   *```
+   * <img
+   *    src="image.png"
+   *    sizes="(max-width: 720px) 100vw, 720px"
+   *    data-srcset="small.jpg 500w,
+   *      medium.jpg 640w,
+   *      big.jpg 1024w"
+   *    class="lazy"
+   *  />
+   * ```
+   */
+  triggerLazyLoad: () => void;
+
+  /**
+   * Use to set responsive attributes of images from unsplash or cloudinary
+   * by passing a html string.
+   *```
+   * setResponsiveImages("<div><img src="https://unsplash.com/foo/bar" width="1000" width="700"></div>")
+   * ```
+   */
   setResponsiveImages: (
     html: string,
     sizes?: number[],
@@ -83,4 +115,14 @@ export const setResponsiveImages = (
   });
 
   return htmlWithResponsiveImages;
+};
+
+/**
+ * Triggers a lazy load image
+ */
+export const triggerLazyLoad = () => {
+  //@ts-ignore
+  new LazyLoad({
+    elements_selector: "img[loading='lazy']",
+  });
 };

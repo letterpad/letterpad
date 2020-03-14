@@ -1,6 +1,6 @@
 const gql = require("graphql-tag");
 
-export const PostFragment = gql`
+export const PostFragmentAllFields = gql`
   fragment postFields on Post {
     id
     title
@@ -11,6 +11,7 @@ export const PostFragment = gql`
     publishedAt
     updatedAt
     excerpt
+    reading_time
     cover_image {
       width
       height

@@ -330,18 +330,33 @@ export type Post = {
   __typename?: "Post";
   /** Primary key */
   id: Scalars["Int"];
+  /** Title of the post */
   title: Scalars["String"];
+  /** Html content of the post */
   html: Scalars["String"];
+  /** Markdown content of the post */
   md: Scalars["String"];
+  /** Author information of the post */
   author: Author;
+  /** A breif summary of the post */
   excerpt: Scalars["String"];
+  /** Convert image of the post */
   cover_image: CoverImage;
-  type: Scalars["String"];
-  status: Scalars["String"];
+  /** Type of the post. Can be "page" or "post" */
+  type: PostTypes;
+  /** Status of the post */
+  status: PostStatusOptions;
+  /** The uri of the post */
   slug: Scalars["String"];
+  /** The creation date of the post */
   createdAt: Scalars["Date"];
-  publishedAt?: Maybe<Scalars["Date"]>;
-  updatedAt?: Maybe<Scalars["Date"]>;
+  /** The published date of the post */
+  publishedAt: Scalars["Date"];
+  /** Last updated date of the post */
+  updatedAt: Scalars["Date"];
+  /** Reading time of the post in minutes */
+  reading_time: Scalars["String"];
+  /** Tags and Categories of the post */
   taxonomies: Array<Taxonomy>;
 };
 
@@ -619,13 +634,6 @@ export type UpdateResponse = {
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
-export type ResolverFn<TResult, TParent, TContext, TArgs> = (
-  parent: TParent,
-  args: TArgs,
-  context: TContext,
-  info: GraphQLResolveInfo,
-) => Promise<TResult> | TResult;
-
 export type StitchingResolver<TResult, TParent, TContext, TArgs> = {
   fragment: string;
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
@@ -634,6 +642,13 @@ export type StitchingResolver<TResult, TParent, TContext, TArgs> = {
 export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
   | ResolverFn<TResult, TParent, TContext, TArgs>
   | StitchingResolver<TResult, TParent, TContext, TArgs>;
+
+export type ResolverFn<TResult, TParent, TContext, TArgs> = (
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo,
+) => Promise<TResult> | TResult;
 
 export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -701,12 +716,12 @@ export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   parent: TParent,
   context: TContext,
   info: GraphQLResolveInfo,
-) => Maybe<TTypes>;
+) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
-export type isTypeOfResolverFn = (
-  obj: any,
+export type isTypeOfResolverFn<T = {}> = (
+  obj: T,
   info: GraphQLResolveInfo,
-) => boolean;
+) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
@@ -743,12 +758,12 @@ export type ResolversTypes = {
   PostFilters: PostFilters;
   Post: ResolverTypeWrapper<Post>;
   CoverImage: ResolverTypeWrapper<CoverImage>;
+  PostTypes: PostTypes;
+  PostStatusOptions: PostStatusOptions;
   Taxonomy: ResolverTypeWrapper<Taxonomy>;
   TaxonomyTypes: TaxonomyTypes;
   PostsFilters: PostsFilters;
   PostSortBy: PostSortBy;
-  PostStatusOptions: PostStatusOptions;
-  PostTypes: PostTypes;
   PostsNode: ResolverTypeWrapper<PostsNode>;
   AdjacentPosts: ResolverTypeWrapper<AdjacentPosts>;
   SearchFilters: SearchFilters;
@@ -804,12 +819,12 @@ export type ResolversParentTypes = {
   PostFilters: PostFilters;
   Post: Post;
   CoverImage: CoverImage;
+  PostTypes: PostTypes;
+  PostStatusOptions: PostStatusOptions;
   Taxonomy: Taxonomy;
   TaxonomyTypes: TaxonomyTypes;
   PostsFilters: PostsFilters;
   PostSortBy: PostSortBy;
-  PostStatusOptions: PostStatusOptions;
-  PostTypes: PostTypes;
   PostsNode: PostsNode;
   AdjacentPosts: AdjacentPosts;
   SearchFilters: SearchFilters;
@@ -851,7 +866,7 @@ export type AdjacentPostsResolvers<
 > = {
   previous?: Resolver<Maybe<ResolversTypes["Post"]>, ParentType, ContextType>;
   next?: Resolver<Maybe<ResolversTypes["Post"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type AuthorResolvers<
@@ -871,7 +886,7 @@ export type AuthorResolvers<
   role?: Resolver<Maybe<ResolversTypes["Role"]>, ParentType, ContextType>;
   bio?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   avatar?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type AuthorResponseResolvers<
@@ -885,7 +900,7 @@ export type AuthorResponseResolvers<
     ContextType
   >;
   data?: Resolver<Maybe<ResolversTypes["Author"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type CoverImageResolvers<
@@ -895,7 +910,7 @@ export type CoverImageResolvers<
   src?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   width?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   height?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type CreateAuthorResponseResolvers<
@@ -908,7 +923,7 @@ export type CreateAuthorResponseResolvers<
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export interface DateScalarConfig
@@ -921,7 +936,7 @@ export type DeleteResponseResolvers<
   ParentType extends ResolversParentTypes["DeleteResponse"] = ResolversParentTypes["DeleteResponse"]
 > = {
   ok?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type EditTaxResponseResolvers<
@@ -935,7 +950,7 @@ export type EditTaxResponseResolvers<
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type ErrorResolvers<
@@ -944,7 +959,7 @@ export type ErrorResolvers<
 > = {
   path?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   message?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type ForgotPasswordResponseResolvers<
@@ -953,7 +968,7 @@ export type ForgotPasswordResponseResolvers<
 > = {
   ok?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   msg?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type LoginResponseResolvers<
@@ -968,7 +983,7 @@ export type LoginResponseResolvers<
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type MediaResolvers<
@@ -987,7 +1002,7 @@ export type MediaResolvers<
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type MediaNodeResolvers<
@@ -996,7 +1011,7 @@ export type MediaNodeResolvers<
 > = {
   count?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   rows?: Resolver<Array<ResolversTypes["Media"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type MutationResolvers<
@@ -1049,7 +1064,7 @@ export type MutationResolvers<
     Maybe<ResolversTypes["Media"]>,
     ParentType,
     ContextType,
-    MutationInsertMediaArgs
+    RequireFields<MutationInsertMediaArgs, never>
   >;
   deleteMedia?: Resolver<
     Maybe<ResolversTypes["DeleteResponse"]>,
@@ -1067,31 +1082,31 @@ export type MutationResolvers<
     ResolversTypes["Response"],
     ParentType,
     ContextType,
-    MutationCreatePostArgs
+    RequireFields<MutationCreatePostArgs, never>
   >;
   updatePost?: Resolver<
     ResolversTypes["Response"],
     ParentType,
     ContextType,
-    MutationUpdatePostArgs
+    RequireFields<MutationUpdatePostArgs, never>
   >;
   deletePosts?: Resolver<
     ResolversTypes["Response"],
     ParentType,
     ContextType,
-    MutationDeletePostsArgs
+    RequireFields<MutationDeletePostsArgs, never>
   >;
   uploadFile?: Resolver<
     ResolversTypes["Response"],
     ParentType,
     ContextType,
-    MutationUploadFileArgs
+    RequireFields<MutationUploadFileArgs, never>
   >;
   updateOptions?: Resolver<
     Array<ResolversTypes["Setting"]>,
     ParentType,
     ContextType,
-    MutationUpdateOptionsArgs
+    RequireFields<MutationUpdateOptionsArgs, never>
   >;
   updateTaxonomy?: Resolver<
     ResolversTypes["EditTaxResponse"],
@@ -1125,7 +1140,7 @@ export type PermissionResolvers<
 > = {
   id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type PostResolvers<
@@ -1139,22 +1154,23 @@ export type PostResolvers<
   author?: Resolver<ResolversTypes["Author"], ParentType, ContextType>;
   excerpt?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   cover_image?: Resolver<ResolversTypes["CoverImage"], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  slug?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
-  publishedAt?: Resolver<
-    Maybe<ResolversTypes["Date"]>,
+  type?: Resolver<ResolversTypes["PostTypes"], ParentType, ContextType>;
+  status?: Resolver<
+    ResolversTypes["PostStatusOptions"],
     ParentType,
     ContextType
   >;
-  updatedAt?: Resolver<Maybe<ResolversTypes["Date"]>, ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
+  publishedAt?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
+  reading_time?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   taxonomies?: Resolver<
     Array<ResolversTypes["Taxonomy"]>,
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type PostsNodeResolvers<
@@ -1163,7 +1179,7 @@ export type PostsNodeResolvers<
 > = {
   count?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   rows?: Resolver<Array<ResolversTypes["Post"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type PostStatusResolvers<
@@ -1172,7 +1188,7 @@ export type PostStatusResolvers<
 > = {
   published?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   drafts?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type PostTaxonomyNodeResolvers<
@@ -1185,7 +1201,7 @@ export type PostTaxonomyNodeResolvers<
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type QueryResolvers<
@@ -1209,25 +1225,25 @@ export type QueryResolvers<
     ResolversTypes["MediaNode"],
     ParentType,
     ContextType,
-    QueryMediaArgs
+    RequireFields<QueryMediaArgs, never>
   >;
   post?: Resolver<
     Maybe<ResolversTypes["Post"]>,
     ParentType,
     ContextType,
-    QueryPostArgs
+    RequireFields<QueryPostArgs, never>
   >;
   posts?: Resolver<
     ResolversTypes["PostsNode"],
     ParentType,
     ContextType,
-    QueryPostsArgs
+    RequireFields<QueryPostsArgs, never>
   >;
   adjacentPosts?: Resolver<
     Maybe<ResolversTypes["AdjacentPosts"]>,
     ParentType,
     ContextType,
-    QueryAdjacentPostsArgs
+    RequireFields<QueryAdjacentPostsArgs, never>
   >;
   search?: Resolver<
     Maybe<ResolversTypes["SearchOutput"]>,
@@ -1241,19 +1257,19 @@ export type QueryResolvers<
     Array<ResolversTypes["Setting"]>,
     ParentType,
     ContextType,
-    QuerySettingsArgs
+    RequireFields<QuerySettingsArgs, never>
   >;
   taxonomies?: Resolver<
     Array<ResolversTypes["Taxonomy"]>,
     ParentType,
     ContextType,
-    QueryTaxonomiesArgs
+    RequireFields<QueryTaxonomiesArgs, never>
   >;
   themes?: Resolver<
     Array<ResolversTypes["Theme"]>,
     ParentType,
     ContextType,
-    QueryThemesArgs
+    RequireFields<QueryThemesArgs, never>
   >;
 };
 
@@ -1268,7 +1284,7 @@ export type ResponseResolvers<
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type RoleResolvers<
@@ -1282,7 +1298,7 @@ export type RoleResolvers<
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type SearchOutputResolvers<
@@ -1296,7 +1312,7 @@ export type SearchOutputResolvers<
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type SearchResultResolvers<
@@ -1312,7 +1328,7 @@ export type SearchResultResolvers<
     ContextType
   >;
   slug?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type SettingResolvers<
@@ -1322,7 +1338,7 @@ export type SettingResolvers<
   id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   option?: Resolver<ResolversTypes["SettingOptions"], ParentType, ContextType>;
   value?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type StatsResolvers<
@@ -1341,7 +1357,7 @@ export type StatsResolvers<
   >;
   tags?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   categories?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type TaxonomyResolvers<
@@ -1353,7 +1369,7 @@ export type TaxonomyResolvers<
   type?: Resolver<ResolversTypes["TaxonomyTypes"], ParentType, ContextType>;
   desc?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   slug?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type ThemeResolvers<
@@ -1366,7 +1382,7 @@ export type ThemeResolvers<
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type ThemeSettingsResolvers<
@@ -1411,7 +1427,7 @@ export type ThemeSettingsResolvers<
   >;
   label?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   helpText?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type TypeSocialResolvers<
@@ -1426,7 +1442,7 @@ export type TypeSocialResolvers<
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type UpdateResponseResolvers<
@@ -1439,7 +1455,7 @@ export type UpdateResponseResolvers<
     ParentType,
     ContextType
   >;
-  __isTypeOf?: isTypeOfResolverFn;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type Resolvers<ContextType = Context> = {

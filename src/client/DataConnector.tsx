@@ -19,7 +19,7 @@ function DataConnector(
   WrappedComponent: React.ComponentType<any>,
   contentType: EnumContentType,
 ) {
-  const DataComponent = props => {
+  const DataConnector = props => {
     let loading = true;
     let data: Post | PostsNode | undefined;
     let error = "";
@@ -97,8 +97,8 @@ function DataConnector(
       </React.Fragment>
     );
   };
-
-  return DataComponent;
+  DataConnector.displayName = WrappedComponent.name;
+  return DataConnector;
 }
 
 export default DataConnector;

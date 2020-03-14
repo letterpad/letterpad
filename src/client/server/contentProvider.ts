@@ -11,7 +11,7 @@ export const contentProvider = async (props: IServerRenderProps) => {
   const { settings, isStatic } = props;
   let theme = settings.theme.value;
   // In dev mode if a theme is explicitly called, then use that
-  if (config.THEME !== "") {
+  if (config.THEME) {
     theme = config.THEME;
   }
 
@@ -52,7 +52,7 @@ export const generateHead = (props: IServerRenderProps) => {
   const { settings, isStatic } = props;
   let theme = settings.theme.value;
   // In dev mode if a theme is explicitly called, then use that
-  if (config.THEME !== "") {
+  if (config.THEME) {
     theme = config.THEME;
   }
   return getHeadHtml({
