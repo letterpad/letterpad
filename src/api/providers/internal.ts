@@ -41,20 +41,9 @@ export function uploadToInternal(
         // remove the temp file
         fs.unlinkSync(tempPath);
         resultItem.src = host + "/uploads/" + filename;
-
-        await upsertMedia(
-          {
-            name,
-            src: "/uploads/" + filename,
-            size: {
-              width: dimensions.width || 0,
-              height: dimensions.height || 0,
-              type: extension,
-            },
-            error: null,
-          },
-          id,
-        );
+        resultItem.size.width = dimensions.width || 0;
+        resultItem.size.height = dimensions.height || 0;
+        resultItem.size.type = dimensions.type || "";
 
         resolve(resultItem);
       } catch (e) {

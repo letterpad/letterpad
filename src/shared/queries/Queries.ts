@@ -1,4 +1,4 @@
-import { PostFragment } from "./Fragments";
+import { PostFragmentAllFields } from "./Fragments";
 import gql from "graphql-tag";
 
 export const QUERY_POSTS = gql`
@@ -10,7 +10,7 @@ export const QUERY_POSTS = gql`
       }
     }
   }
-  ${PostFragment}
+  ${PostFragmentAllFields}
 `;
 
 export const QUERY_POST = gql`
@@ -20,7 +20,7 @@ export const QUERY_POST = gql`
       ...postFields
     }
   }
-  ${PostFragment}
+  ${PostFragmentAllFields}
 `;
 
 export const QUERY_MEDIA = gql`

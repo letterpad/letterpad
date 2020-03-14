@@ -35,11 +35,17 @@ export default {
           }
         }
         if (["banner"].includes(item.option)) {
-          const parsedValue = JSON.parse(item.value);
-          if (parsedValue.src && !parsedValue.src.startsWith("http")) {
-            parsedValue.src = host + parsedValue.src;
+          let value = { src: "", width: 0, height: 0 };
+          try {
+            let parsedValue = JSON.parse(item.value);
+            if (parsedValue.src && !parsedValue.src.startsWith("http")) {
+              parsedValue.src = host + parsedValue.src;
+            }
+            value = parsedValue;
+          } catch (e) {
+            // no action
           }
-          item.value = JSON.stringify(parsedValue);
+          item.value = JSON.stringify(value);
         }
         if (item.option === "menu") {
           item.value = getMenuWithSanitizedSlug(item.value);
@@ -63,10 +69,21 @@ export default {
               require("path").join(__dirname, "../../public/css/custom.css"),
               setting.value,
             );
-          } else if (
-            ["banner", "site_logo", "site_favicon"].includes(setting.option)
-          ) {
+          } else if (["site_logo", "site_favicon"].includes(setting.option)) {
             setting.value = setting.value.replace(host, "");
+          } else if (["banner"].includes(setting.option)) {
+            let value = { src: "", width: 0, height: 0 };
+            try {
+              let parsedValue = JSON.parse(setting.value);
+              if (parsedValue.src && !parsedValue.src.startsWith(host)) {
+                parsedValue.src = parsedValue.src.replace(host, "");
+              }
+              value = parsedValue;
+            } catch (e) {
+              console.log(e);
+              // no action
+            }
+            setting.value = JSON.stringify(value);
           }
           return models.Setting.update(setting, {
             where: { option: setting.option },
@@ -76,31 +93,6 @@ export default {
         return models.Setting.findAll();
       },
     ),
-  },
-  Setting: {
-    value: async (setting, args, { models }) => {
-      //...
-      if (setting.dataValues.option === "banner") {
-        const banner = await models.Media.findOne({
-          attributes: ["width", "height"],
-          where: {
-            url: setting.dataValues.value.replace(host, ""),
-          },
-          raw: true,
-        });
-        console.log("setting.dataValues :", setting.dataValues);
-        console.log("banner :", banner);
-        if (banner) {
-          const { width, height } = banner;
-          return JSON.stringify({
-            src: setting.dataValues.value,
-            width,
-            height,
-          });
-        }
-      }
-      return setting.dataValues.value;
-    },
   },
 };
 

@@ -35,12 +35,11 @@ const upload = async (req, res: Response) => {
             cloud_name: cloudinary_name.value,
             api_secret: cloudinary_secret.value,
           });
-          await upsertMedia(result, id);
-          output.push(result);
         } else {
           result = await uploadToInternal(file, uploadDir, id);
-          output.push(result);
         }
+        await upsertMedia(result, id);
+        output.push(result);
       } catch (e) {
         logger.error(e);
         output.push(e);

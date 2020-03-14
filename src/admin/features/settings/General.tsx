@@ -18,7 +18,8 @@ interface IGeneralProps extends WithNamespaces {
 }
 
 const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
-  const [banner, setBanner] = useState<string>(data.banner.value || "");
+  const parsedBanner = JSON.parse(data.banner.value);
+  const [banner, setBanner] = useState<string>(parsedBanner.src || "");
   const [site_logo, setSiteLogo] = useState<string>(data.site_logo.value || "");
   const [site_favicon, setSiteFavicon] = useState<string>(
     data.site_favicon.value || "",
@@ -41,9 +42,9 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
     i18n.changeLanguage(value);
   };
 
-  const updateBanner = (banner: string) => {
-    updateOption(SettingOptions.Banner, banner);
-    setBanner(banner);
+  const updateBanner = ({ src, width, height }) => {
+    updateOption(SettingOptions.Banner, JSON.stringify({ src, width, height }));
+    setBanner(src);
   };
 
   const updateLogo = (site_logo: string) => {
@@ -59,12 +60,12 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
   const uploadBanner = async (files: FileList | null) => {
     if (!files) return;
     const uploadedFiles = await uploadFile({ files });
-    let { src, errors } = uploadedFiles[0];
+    let { src, errors, size } = uploadedFiles[0];
     if (errors) {
       notify.show(errors, "error", 3000);
       return;
     }
-    updateBanner(src);
+    updateBanner({ src, ...size });
   };
 
   const uploadLogo = async (files: FileList | null) => {
@@ -232,7 +233,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
                 href="#"
                 onClick={e => {
                   e.preventDefault();
-                  updateBanner("");
+                  updateBanner({ src: "", width: 0, height: 0 });
                 }}
               >
                 <i className="material-icons danger">delete</i>

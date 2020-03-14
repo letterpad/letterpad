@@ -236,18 +236,47 @@ type Post {
   
   # Primary key
   id: Int!
+  
+  # Title of the post
   title: String!
+  
+  # Html content of the post
   html: String!
+  
+  # Markdown content of the post
   md: String!
+  
+  # Author information of the post
   author: Author!
+  
+  # A breif summary of the post
   excerpt: String!
+  
+  # Convert image of the post
   cover_image: CoverImage!
-  type: String!
-  status: String!
+  
+  # Type of the post. Can be "page" or "post"
+  type: PostTypes!
+  
+  # Status of the post
+  status: PostStatusOptions!
+  
+  # The uri of the post
   slug: String!
+  
+  # The creation date of the post
   createdAt: Date!
-  publishedAt: Date
-  updatedAt: Date
+  
+  # The published date of the post
+  publishedAt: Date!
+  
+  # Last updated date of the post
+  updatedAt: Date!
+  
+  # Reading time of the post in minutes
+  reading_time: String!
+  
+  # Tags and Categories of the post
   taxonomies: [Taxonomy!]!
 }
 

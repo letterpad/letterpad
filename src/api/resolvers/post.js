@@ -166,10 +166,11 @@ const postresolver = {
         } else if (page) {
           conditions.offset = (page - 1) * conditions.limit;
         }
-        // conditions.raw = true;
         const result = await models.Post.findAndCountAll(conditions);
         result.rows = result.rows.map(item => {
           item.dataValues = normalizePost(item.dataValues);
+          item.dataValues.md = "...truncated";
+          item.dataValues.html = "...truncated";
           return item;
         });
         return {

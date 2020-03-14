@@ -16,6 +16,7 @@ function LayoutConnector(
   routeProps: IRouteProps<Post | PostsNode>,
   Layout: React.ComponentType<any>,
 ) {
+  // WrappedComponent.displayName = "Hello";/
   const LayoutConnector: React.FC<RouteComponentProps> & {
     getInitialProps?: ({ match, req, res, client }: any) => Promise<any>;
   } = props => {
