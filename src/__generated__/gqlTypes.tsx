@@ -320,18 +320,33 @@ export type Post = {
   __typename?: "Post";
   /** Primary key */
   id: Scalars["Int"];
+  /** Title of the post */
   title: Scalars["String"];
+  /** Html content of the post */
   html: Scalars["String"];
+  /** Markdown content of the post */
   md: Scalars["String"];
+  /** Author information of the post */
   author: Author;
+  /** A breif summary of the post */
   excerpt: Scalars["String"];
+  /** Convert image of the post */
   cover_image: CoverImage;
-  type: Scalars["String"];
-  status: Scalars["String"];
+  /** Type of the post. Can be "page" or "post" */
+  type: PostTypes;
+  /** Status of the post */
+  status: PostStatusOptions;
+  /** The uri of the post */
   slug: Scalars["String"];
+  /** The creation date of the post */
   createdAt: Scalars["Date"];
-  publishedAt?: Maybe<Scalars["Date"]>;
-  updatedAt?: Maybe<Scalars["Date"]>;
+  /** The published date of the post */
+  publishedAt: Scalars["Date"];
+  /** Last updated date of the post */
+  updatedAt: Scalars["Date"];
+  /** Reading time of the post in minutes */
+  reading_time: Scalars["String"];
+  /** Tags and Categories of the post */
   taxonomies: Array<Taxonomy>;
 };
 
@@ -618,6 +633,7 @@ export type PostFieldsFragment = { __typename?: "Post" } & Pick<
   | "publishedAt"
   | "updatedAt"
   | "excerpt"
+  | "reading_time"
   | "slug"
   | "type"
 > & {

@@ -9,6 +9,7 @@ import {
 import config from "../../config";
 import logger from "../../shared/logger";
 import moment from "moment";
+import reading_time from "reading-time";
 import slugify from "../../shared/slugify";
 import { updateMenuItem } from "../resolvers/setting";
 import utils from "../../shared/util";
@@ -65,6 +66,10 @@ class Post extends Model {
           defaultValue: "draft",
         },
         slug: {
+          type: DataTypes.STRING,
+          defaultValue: "",
+        },
+        reading_time: {
           type: DataTypes.STRING,
           defaultValue: "",
         },
@@ -167,6 +172,12 @@ export async function _updatePost(updatedPost, models) {
       const imageSize = await getImageDimensions(cover_image_url);
       coverImageProps.cover_image_width = imageSize.width;
       coverImageProps.cover_image_height = imageSize.height;
+    }
+
+    if (updatedPost.md && updatedPost.md !== oldPost.md) {
+      // update reading time
+      updatedPost.reading_time = reading_time(updatedPost.md).text;
+      logger.debug("Reading time: ", updatedPost.reading_time);
     }
     updatedPost = {
       ...updatedPost,
