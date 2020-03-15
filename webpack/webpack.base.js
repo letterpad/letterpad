@@ -7,7 +7,7 @@ const babelRc = fs.readFileSync(path.resolve(__dirname, "../.babelrc"));
 
 module.exports = (args, name) => {
   let source = "";
-  const vendorFiles = ["react", "react-dom", "redux", "react-apollo", "moment"];
+  const vendorFiles = ["react", "react-dom", "redux", "react-apollo"];
   let env = "production";
   const isProd = args.NODE_ENV === "production";
   const isDev = !isProd;

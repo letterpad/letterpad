@@ -12,6 +12,7 @@ const clientConfig = args => {
   const extractAdminCSS = new ExtractTextPlugin("[name].min.css");
   return merge(baseConfig(args, "client"), {
     target: "web",
+    devtool: undefined,
     output: {
       path: path.join(__dirname, "../dist"),
       filename: "[name]-bundle.min.js",
@@ -59,6 +60,12 @@ const clientConfig = args => {
         },
       ]),
     ],
+    optimization: {
+      splitChunks: {
+        // include all types of chunks
+        chunks: "all",
+      },
+    },
     module: {
       rules: [
         {
