@@ -5,7 +5,7 @@ import PostActions from "../PostActions";
 import StyledDropdown from "./Dropdown.css";
 import StyledInput from "../../../components/input";
 import config from "../../../../config";
-import moment from "moment";
+import { getDateTime } from "../../../../shared/date";
 
 const host = config.ROOT_URL + config.BASE_NAME;
 
@@ -57,7 +57,7 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
           label="Published at"
           className="meta-value"
           placeholder="Published date"
-          defaultValue={moment(publishedAt).format("DD-MM-Y hh:mm A")}
+          defaultValue={getDateTime(publishedAt)}
           onChange={this.changePublishDate}
         />
 

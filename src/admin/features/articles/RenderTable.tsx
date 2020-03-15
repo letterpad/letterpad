@@ -1,8 +1,7 @@
+import { Link } from "react-router-dom";
 import React from "react";
-import moment from "moment";
 import { Table } from "./ArticleList.css";
 import { filterTaxonomies } from ".";
-import { Link } from "react-router-dom";
 
 const RenderTable = ({ data, setSelection }) => {
   return (
@@ -40,9 +39,7 @@ const RenderTable = ({ data, setSelection }) => {
 
                 <div className="small">{post.excerpt.slice(0, 60)}...</div>
               </td>
-              <td className="small">
-                {moment(post.createdAt).format("MMM Do YYYY")}
-              </td>
+              <td className="small">{post.createdAt}</td>
               <td className="small">{authorName}</td>
               <td className={"upper status " + post.status}>
                 <span>{post.status}</span>

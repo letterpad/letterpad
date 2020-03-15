@@ -202,6 +202,7 @@ export async function insertPost(params, models, categories, tags) {
     slug: slug,
     createdAt: new Date(),
     publishedAt: new Date(),
+    reading_time: "5 mins",
   });
 
   promises = [admin.addPost(post)];

@@ -12,7 +12,7 @@ import StyledButton from "../../components/button";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
 import StyledSection from "../../components/section";
-import moment from "moment";
+import { getReadableDate } from "../../../shared/date";
 import { notify } from "react-notify-toast";
 import { uploadFile } from "../../server/util";
 
@@ -233,7 +233,7 @@ class Media extends Component<IMMediaProps, IMediaState> {
                 image={media.url}
                 title={media.name || ""}
                 href="#"
-                line2={moment(media.createdAt).format("MMM Do YYYY")}
+                line2={getReadableDate(media.createdAt)}
                 onClick={(e: React.SyntheticEvent) => this.editMedia(e, idx)}
               />
             </StyledItem>

@@ -7,8 +7,8 @@ import {
 } from "../utils/imageHelpers";
 
 import config from "../../config";
+import { getDateTime } from "../../shared/date";
 import logger from "../../shared/logger";
-import moment from "moment";
 import reading_time from "reading-time";
 import slugify from "../../shared/slugify";
 import { updateMenuItem } from "../resolvers/setting";
@@ -152,7 +152,7 @@ export async function _updatePost(updatedPost, models) {
       // check the menu. the menu has page items. update the slug of the page menu item if it exist.
       await updateMenuItem(models, id, oldPost.type, options);
     }
-    const currentTime = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
+    const currentTime = getDateTime(new Date().getTime());
     // If this post is being published for the first time, update the publish date
     if (updatedPost.status == "publish" && oldPost.status == "draft") {
       updatedPost = { ...updatedPost, publishedAt: currentTime };

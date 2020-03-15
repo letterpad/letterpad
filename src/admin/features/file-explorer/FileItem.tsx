@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 
 import PropTypes from "prop-types";
-import config from "../../../config";
-import moment from "moment";
+import { getReadableDate } from "../../../shared/date";
 import styled from "styled-components";
 
 const StyledItem = styled.article`
@@ -43,7 +42,7 @@ export default class MediaItem extends Component<any, any> {
           </div>
           <div className="post-content">
             <div className="post-time">
-              {moment(this.props.media.createdAt).fromNow()}
+              {getReadableDate(this.props.media.createdAt)}
             </div>
           </div>
         </div>
