@@ -3,7 +3,8 @@ const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
-
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 const clientConfig = args => {
   if (args.theme == "") {
     args.theme = "hugo";
@@ -18,6 +19,7 @@ const clientConfig = args => {
       filename: "[name]-bundle.min.js",
     },
     plugins: [
+      new BundleAnalyzerPlugin(),
       extractThemeCss,
       extractAdminCSS,
       new CopyPlugin([
@@ -62,8 +64,16 @@ const clientConfig = args => {
     ],
     optimization: {
       splitChunks: {
-        // include all types of chunks
-        chunks: "all",
+        cacheGroups: {
+          default: false,
+          commons: {
+            test: /react|redux|react-apollo|react-dom|styled-components/,
+            name: "vendor",
+            chunks: "all",
+            minChunks: 2,
+            filename: "public/js/[name]-bundle.min.js",
+          },
+        },
       },
     },
     module: {
