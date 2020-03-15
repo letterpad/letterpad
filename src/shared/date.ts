@@ -7,6 +7,20 @@ export const getReadableDate = (timestamp: number) => {
 };
 
 export const getDateTime = (timestamp: number) => {
-  var ts = new Date(timestamp);
-  return ts.toISOString();
+  const m = new Date(timestamp);
+
+  const dateString =
+    m.getUTCFullYear() +
+    "-" +
+    ("0" + (m.getUTCMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + m.getUTCDate()).slice(-2) +
+    " " +
+    ("0" + m.getUTCHours()).slice(-2) +
+    ":" +
+    ("0" + m.getUTCMinutes()).slice(-2) +
+    ":" +
+    ("0" + m.getUTCSeconds()).slice(-2);
+
+  return dateString;
 };

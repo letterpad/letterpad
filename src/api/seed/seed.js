@@ -219,15 +219,21 @@ export async function insertPost(params, models, categories, tags) {
 export async function insertMedia(models) {
   return models.Media.bulkCreate([
     {
-      url: "/uploads/1.jpg",
+      url:
+        "https://images.unsplash.com/photo-1473181488821-2d23949a045a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
       AuthorId: 1,
       name: "Blueberries",
+      width: 1350,
+      height: 900,
       description:
         "Write a description about this image. You never know how this image can break the internet",
     },
     {
-      url: "/uploads/2.jpg",
+      url:
+        "https://images.unsplash.com/photo-1524654458049-e36be0721fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
       AuthorId: 1,
+      width: 1350,
+      height: 900,
       name: "I love the beach and its smell",
       description:
         "Write a description about this image. You never know how this image can break the internet",

@@ -81,16 +81,18 @@ function DataConnector(
         loading = result.loading;
         if (result.data && result.data) {
           data = result.data.posts as PostsNode;
-          SEOComponent = (
-            <Helmet>
-              {(data as PostsNode).rows.map(item => (
-                <link href={item.slug} rel="prefetch" as="document" />
-              ))}
-              {(data as PostsNode).rows.map(item => (
-                <link href={item.slug} rel="prerender" />
-              ))}
-            </Helmet>
-          );
+          if (data.rows.length > 0) {
+            SEOComponent = (
+              <Helmet>
+                {data.rows.map(item => (
+                  <link href={item.slug} rel="prefetch" as="document" />
+                ))}
+                {data.rows.map(item => (
+                  <link href={item.slug} rel="prerender" />
+                ))}
+              </Helmet>
+            );
+          }
         }
         break;
       }

@@ -3,8 +3,7 @@ const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
+
 const clientConfig = args => {
   if (args.theme == "") {
     args.theme = "hugo";
@@ -19,7 +18,6 @@ const clientConfig = args => {
       filename: "[name]-bundle.min.js",
     },
     plugins: [
-      new BundleAnalyzerPlugin(),
       extractThemeCss,
       extractAdminCSS,
       new CopyPlugin([
@@ -42,12 +40,12 @@ const clientConfig = args => {
           to: __dirname + "/../dist/client/template.tpl",
         },
         {
-          from: __dirname + "/../src/client/template-head.tpl",
-          to: __dirname + "/../dist/client/template-head.tpl",
-        },
-        {
           from: __dirname + "/../src/api/seed/uploads",
           to: __dirname + "/../dist/api/seed/uploads",
+        },
+        {
+          from: __dirname + "/../src/public/robots.txt",
+          to: __dirname + "/../dist/public/robots.txt",
         },
         {
           from: __dirname + "/../src/api/seed/uploads",
@@ -62,20 +60,6 @@ const clientConfig = args => {
         },
       ]),
     ],
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          default: false,
-          commons: {
-            test: /react|redux|react-apollo|react-dom|styled-components/,
-            name: "vendor",
-            chunks: "all",
-            minChunks: 2,
-            filename: "public/js/[name]-bundle.min.js",
-          },
-        },
-      },
-    },
     module: {
       rules: [
         {
@@ -93,7 +77,7 @@ const clientConfig = args => {
               "postcss-loader",
             ],
           }),
-          include: [path.join(__dirname, "../src/client/themes/" + args.theme)],
+          include: [path.join(__dirname, "../src/client/themes/")],
         },
         {
           test: /\.css$/,

@@ -101,7 +101,7 @@ export class TopBar extends Component<ITopbarProps, any> {
 
     const goBack = e => {
       e.preventDefault();
-      this.props.router.history.push(config.BASE_NAME + "/admin/posts");
+      this.props.router.history.push("/admin/posts");
     };
     const deleteAction = (e: React.SyntheticEvent) => {
       e.preventDefault();

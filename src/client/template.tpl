@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html {{HTML_ATTRS}}>
 
 <head>

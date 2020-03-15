@@ -1,8 +1,8 @@
 class Cache {
-  data: [];
+  data: {};
 
   constructor() {
-    this.data = [];
+    this.data = {};
   }
 
   set(url: string, content: string) {
@@ -22,6 +22,10 @@ class Cache {
 
   has(url: string) {
     return this.data[url] ? true : false;
+  }
+
+  clear() {
+    this.data = {};
   }
 }
 

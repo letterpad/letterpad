@@ -173,6 +173,7 @@ const postresolver = {
           item.dataValues.html = "...truncated";
           return item;
         });
+
         return {
           count: result.count,
           rows: result.rows,
