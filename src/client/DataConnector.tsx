@@ -10,6 +10,7 @@ import {
 import { QUERY_POST, QUERY_POSTS } from "../shared/queries/Queries";
 
 import { EnumContentType } from "./types";
+import Helmet from "react-helmet";
 import React from "react";
 import SEO from "./helpers/SEO";
 import { useQuery } from "react-apollo";
@@ -80,6 +81,16 @@ function DataConnector(
         loading = result.loading;
         if (result.data && result.data) {
           data = result.data.posts as PostsNode;
+          SEOComponent = (
+            <Helmet>
+              {(data as PostsNode).rows.map(item => (
+                <link href={item.slug} rel="prefetch" as="document" />
+              ))}
+              {(data as PostsNode).rows.map(item => (
+                <link href={item.slug} rel="prerender" />
+              ))}
+            </Helmet>
+          );
         }
         break;
       }
