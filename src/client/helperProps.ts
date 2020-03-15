@@ -24,22 +24,6 @@ export interface IHelpers {
   ) => IImageAttrsResult;
 
   /**
-   * Used to trigger lazy loading of images.
-   * Given an image with the below attributes, this method will trigger the lazy loading of this image.
-   *```
-   * <img
-   *    src="image.png"
-   *    sizes="(max-width: 720px) 100vw, 720px"
-   *    data-srcset="small.jpg 500w,
-   *      medium.jpg 640w,
-   *      big.jpg 1024w"
-   *    class="lazy"
-   *  />
-   * ```
-   */
-  triggerLazyLoad: () => void;
-
-  /**
    * Use to set responsive attributes of images from unsplash or cloudinary
    * by passing a html string.
    *```
@@ -73,6 +57,7 @@ export const getImageAttrs = (
       srcset: [base64Url],
       width: "100%",
       loading: "lazy",
+      class: "lazyload",
     };
   }
 
@@ -85,6 +70,7 @@ export const getImageAttrs = (
       "data-srcset": srcSet,
       srcset: [base64Url],
       loading: "lazy",
+      class: "lazyload",
     };
   }
   return {
@@ -115,14 +101,4 @@ export const setResponsiveImages = (
   });
 
   return htmlWithResponsiveImages;
-};
-
-/**
- * Triggers a lazy load image
- */
-export const triggerLazyLoad = () => {
-  //@ts-ignore
-  new LazyLoad({
-    elements_selector: "img[loading='lazy']",
-  });
 };
