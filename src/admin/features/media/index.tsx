@@ -230,7 +230,11 @@ class Media extends Component<IMMediaProps, IMediaState> {
                 <label htmlFor={"checkbox-" + media.id} />
               </div>
               <StyledGridItem
-                image={media.url}
+                image={{
+                  src: media.url,
+                  width: media.width,
+                  height: media.height,
+                }}
                 title={media.name || ""}
                 href="#"
                 line2={getReadableDate(media.createdAt)}

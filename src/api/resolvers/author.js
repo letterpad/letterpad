@@ -16,7 +16,7 @@ export default {
 
       if (author) {
         author.social = JSON.parse(author.dataValues.social);
-        if (!author.avatar.startsWith("http")) {
+        if (author.avatar.startsWith("/")) {
           author.avatar = host + author.avatar;
         }
       } else {
@@ -31,7 +31,9 @@ export default {
     authors: async (root, args, { user, models }) => {
       const authors = await models.Author.findAll({ where: args });
       return authors.map(author => {
-        author.avatar = host + author.avatar;
+        if (author.avatar.startsWith("/")) {
+          author.avatar = host + author.avatar;
+        }
         if (!user || !user.id) {
           author.email = "xxx@xxx.com";
           author.password = "xxx_xxx_xxx";

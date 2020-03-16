@@ -29,21 +29,20 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
     };
   }
 
-  changeSlug = (e: React.ChangeEvent<HTMLInputElement>) => {
+  changeSlug = async (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       slug: e.target.value,
     });
-    PostActions.setData({ slug: e.target.value });
-    this.props.updatePost();
+    PostActions.setDraft({ slug: e.target.value });
+    await PostActions.updatePost();
   };
 
-  changePublishDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+  changePublishDate = async (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       publishedAt: e.target.value,
     });
-    console.log(e.target.value);
-    PostActions.setData({ publishedAt: e.target.value });
-    this.props.updatePost();
+    PostActions.setDraft({ publishedAt: e.target.value });
+    await PostActions.updatePost();
   };
 
   render() {

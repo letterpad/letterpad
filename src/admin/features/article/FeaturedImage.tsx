@@ -115,8 +115,8 @@ class FeaturedImage extends Component<
   // This function sets the selection
   setCoverImage = async (images: { [urls: string]: CoverImage }) => {
     const cover_image = Object.values(images)[0];
-    PostActions.setData({ cover_image });
-    await this.props.updatePost();
+    PostActions.setDraft({ cover_image });
+    await PostActions.updatePost();
     this.setState({ cover_image });
     return Promise.resolve();
   };

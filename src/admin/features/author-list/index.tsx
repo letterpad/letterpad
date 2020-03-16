@@ -72,7 +72,7 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
                 return (
                   <StyledGridItem
                     key={author.email}
-                    image={author.avatar}
+                    image={{ src: author.avatar }}
                     title={authorName}
                     href="#"
                     onClick={() => authorSelect(author.id || 0)}
