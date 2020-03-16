@@ -35,6 +35,7 @@ function DataConnector(
               slug: props.router.match.params.slug,
             },
           },
+          fetchPolicy: "network-only",
         });
         loading = result.loading;
         if (result.data && result.data.post) {

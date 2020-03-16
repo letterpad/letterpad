@@ -169,8 +169,8 @@ const postresolver = {
         const result = await models.Post.findAndCountAll(conditions);
         result.rows = result.rows.map(item => {
           item.dataValues = normalizePost(item.dataValues);
-          item.dataValues.md = "...truncated";
-          item.dataValues.html = "...truncated";
+          item.dataValues.md = "...[truncated]";
+          item.dataValues.html = "...[truncated]";
           return item;
         });
 
@@ -389,7 +389,9 @@ const postresolver = {
   Post: {
     author: async post => {
       const author = await post.getAuthor();
-      author.avatar = host + author.avatar;
+      if (author.avatar.startsWith("/")) {
+        author.avatar = host + author.avatar;
+      }
       return author;
     },
     taxonomies: async post => {

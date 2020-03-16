@@ -143,7 +143,8 @@ export async function insertAuthor(models) {
       RoleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
-      avatar: "/admin/images/avatar.png",
+      avatar:
+        "https://images.unsplash.com/photo-1566895733044-d2bdda8b6234?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=60",
     },
     {
       fname: "Jim",
@@ -159,7 +160,8 @@ export async function insertAuthor(models) {
       RoleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
-      avatar: "/admin/images/avatar2.png",
+      avatar:
+        "https://images.unsplash.com/photo-1485290334039-a3c69043e517?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=60",
     },
   ]);
 }
