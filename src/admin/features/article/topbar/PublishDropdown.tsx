@@ -34,11 +34,6 @@ class PublishDropdown extends Component<IProps> {
     const post = {
       ...PostActions.getData(),
     };
-    // const post = {
-    //   ...this.props.post,
-    //   html: PostActions.getData().html,
-    //   taxonomies: PostActions.getData().taxonomies,
-    // };
     const { isPublished, toggleVisibility, updatePost } = this.props;
 
     return (
