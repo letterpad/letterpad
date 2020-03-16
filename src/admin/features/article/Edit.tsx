@@ -1,9 +1,9 @@
+import { CoverImage, Post } from "../../../__generated__/gqlTypes";
 import React, { Component } from "react";
 
 import { EventBusInstance } from "../../../shared/eventBus";
 import FileExplorerModal from "../modals/FileExplorerModal";
 import LetterpadEditor from "letterpad-editor";
-import { Post } from "../../../__generated__/gqlTypes";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
 import StyledArticle from "./Article.css";
@@ -18,7 +18,6 @@ export enum MediaProvider {
 interface IProps {
   theme: string;
   post: Post;
-  updatePost: () => Promise<any>;
 }
 class Edit extends Component<IProps> {
   postSaveTimer: number = 0;
@@ -44,7 +43,8 @@ class Edit extends Component<IProps> {
     });
   };
 
-  insertImageUrlInEditor = (urls: string[]) => {
+  insertImageUrlInEditor = (images: { [url: string]: CoverImage }) => {
+    const urls = Object.keys(images);
     const insertPromises = urls.map(url => {
       return new Promise((resolve, reject) => {
         try {
@@ -69,21 +69,20 @@ class Edit extends Component<IProps> {
   onEditorChange = async change => {
     const { markdown, html } = change();
     if (markdown === PostActions.getData().md) return null;
-    PostActions.setData({
+    PostActions.setDraft({
       html,
       md: markdown,
     });
     clearInterval(this.postSaveTimer);
     this.postSaveTimer = setTimeout(async () => {
       EventBusInstance.publish("ARTICLE_SAVING");
-      const update = await this.props.updatePost();
+      const update = await PostActions.updatePost();
       if (
         update.data &&
         update.data.updatePost &&
         update.data.updatePost.post
       ) {
         EventBusInstance.publish("ARTICLE_SAVED");
-        PostActions.setData({ slug: update.data.updatePost.post.slug });
       }
     }, 1000);
   };
@@ -117,7 +116,7 @@ class Edit extends Component<IProps> {
             text={post.title}
             placeholder="Enter a title"
             onChange={(value: string) => {
-              PostActions.setData({
+              PostActions.setDraft({
                 title: value,
               });
               // this.onEditorChange(post.md);

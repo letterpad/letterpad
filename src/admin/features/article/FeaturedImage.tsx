@@ -75,7 +75,7 @@ const CustomImage: React.FC<ICustomImageProps> = ({
 interface IFeaturedImageProps extends WithNamespaces {
   post: Post;
   mediaProvider: MediaProvider;
-  updatePost: () => void;
+  updatePost: () => Promise<any>;
 }
 
 class FeaturedImage extends Component<
@@ -113,11 +113,11 @@ class FeaturedImage extends Component<
 
   // All the images available in the post can be used as a cover image.
   // This function sets the selection
-  setCoverImage = async (images: CoverImage[]) => {
-    console.log(images);
-    PostActions.setData({ cover_image: images[0] });
-    await this.props.updatePost();
-    this.setState({ cover_image: images[0] });
+  setCoverImage = async (images: { [urls: string]: CoverImage }) => {
+    const cover_image = Object.values(images)[0];
+    PostActions.setDraft({ cover_image });
+    await PostActions.updatePost();
+    this.setState({ cover_image });
     return Promise.resolve();
   };
 
@@ -136,7 +136,7 @@ class FeaturedImage extends Component<
       notify.show(error, "error", 3000);
       return;
     }
-    this.setCoverImage([{ src, width, height }]);
+    this.setCoverImage({ void: { src, width, height } });
   };
 
   toggleFileExplorer = () => {
@@ -145,10 +145,9 @@ class FeaturedImage extends Component<
 
   render() {
     let isCustom = false;
-    if (this.state.cover_image.src) {
-      isCustom = !(this.state.imageList as CoverImage[]).includes(
-        this.state.cover_image,
-      );
+    let { imageList, cover_image } = this.state;
+    if (cover_image.src) {
+      isCustom = !(imageList as CoverImage[]).includes(cover_image);
     }
 
     return (
@@ -158,28 +157,29 @@ class FeaturedImage extends Component<
           <CustomImage
             toggleFileExplorer={this.toggleFileExplorer}
             isCustom={isCustom}
-            coverImage={this.state.cover_image}
+            coverImage={cover_image}
             removeCustomImage={() =>
-              this.setCoverImage([{ width: 0, height: 0, src: "" }])
+              this.setCoverImage({
+                void: { width: 0, height: 0, src: "" },
+              })
             }
           />
-          {this.state.imageList.map((imagePath, idx) => {
-            const selected = imagePath.src === this.state.cover_image.src;
+          {imageList.map((image: CoverImage, idx: number) => {
+            const selected = image.src === cover_image.src;
             return (
               <div
                 key={idx}
                 className={selected ? "selected" : ""}
                 onClick={async () => {
                   const coverImage = {
-                    src: imagePath.src,
-                    width: imagePath.width || 0,
-                    height: imagePath.height || 0,
+                    src: image.src,
+                    width: image.width || 0,
+                    height: image.height || 0,
                   };
-                  console.log("coverImage :", coverImage);
-                  await this.setCoverImage([coverImage]);
+                  await this.setCoverImage({ [image.src]: coverImage });
                 }}
               >
-                <img alt="" width="100%" src={imagePath.src} />
+                <img alt="" width="100%" src={image.src} />
               </div>
             );
           })}

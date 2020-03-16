@@ -12,7 +12,6 @@ import MetaDropdown from "./MetaDropdown";
 import PostActions from "../PostActions";
 import PublishDropdown from "./PublishDropdown";
 import StyledDropdown from "../../../components/dropdown";
-import config from "../../../../config";
 import { notify } from "react-notify-toast";
 
 interface ITopbarProps {
@@ -20,7 +19,6 @@ interface ITopbarProps {
   edit?: boolean;
   router: RouteComponentProps;
   create?: boolean;
-  updatePost: () => any;
 }
 
 export class TopBar extends Component<ITopbarProps, any> {
@@ -46,7 +44,8 @@ export class TopBar extends Component<ITopbarProps, any> {
     });
   }
 
-  afterPostSave = (post: Post) => {
+  afterPostSave = () => {
+    const post = PostActions.getData();
     let eventName = "";
     let notifyMessage = "";
     // if the status is trash, redirect the user to posts or pages depending on the post type.
@@ -78,22 +77,29 @@ export class TopBar extends Component<ITopbarProps, any> {
       isPublished: PostActions.getData().status === PostStatusOptions.Publish,
     });
     this.setState({ saving: true });
-    const update = await this.props.updatePost();
+    const update = await PostActions.updatePost();
     setTimeout(() => {
       this.setState({ saving: false });
     }, 500);
 
-    if (update.data.updatePost.ok) {
-      // If this is the first update to the post, there should be a new slug that was generated.
-      // Add this to PostActions as this is the only new data that was generated in the backend.
-      PostActions.setData({ slug: update.data.updatePost.post.slug });
-      return this.afterPostSave(update.data.updatePost.post);
+    if (update.data && update.data.updatePost) {
+      let { ok, errors } = update.data.updatePost;
+      if (ok) {
+        return this.afterPostSave();
+      } else if (errors) {
+        if (errors && errors.length > 0) {
+          const errorsUI = errors.map(error => error.message).join("\n");
+          notify.show(errorsUI, "error", 3000);
+        }
+      }
     }
-    let errors = update.data.updatePost.errors;
-    if (errors && errors.length > 0) {
-      errors = errors.map(error => error.message);
-      notify.show(errors.join("\n"), "error", 3000);
-    }
+  };
+
+  deleteAction = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    PostActions.setDraft({ status: PostStatusOptions.Trash });
+    await PostActions.updatePost();
+    this.props.router.history.push("/admin/posts");
   };
 
   render() {
@@ -101,12 +107,7 @@ export class TopBar extends Component<ITopbarProps, any> {
 
     const goBack = e => {
       e.preventDefault();
-      this.props.router.history.push(config.BASE_NAME + "/admin/posts");
-    };
-    const deleteAction = (e: React.SyntheticEvent) => {
-      e.preventDefault();
-      PostActions.setData({ status: PostStatusOptions.Trash });
-      this.updatePost();
+      this.props.router.history.push("/admin/posts");
     };
 
     return (
@@ -165,7 +166,7 @@ export class TopBar extends Component<ITopbarProps, any> {
             />
 
             <div>
-              <Link to="#" onClick={deleteAction}>
+              <Link to="#" onClick={this.deleteAction}>
                 Trash
               </Link>
             </div>

@@ -17,6 +17,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const [totalCount, setTotalCount] = useState(0);
 
   const fetchUnsplashMedia = async (page = 1, query: string) => {
+    // unsplash.com/page/1/query/forest
     const endpoint = url + "/page/" + page + "/query/" + query;
 
     const { rows, count }: { rows: any; count: number } = await fetch(
@@ -32,6 +33,8 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
           url: item.urls.regular,
           description: item.description,
           createdAt: item.created_at,
+          width: item.width,
+          height: item.height,
         };
       }),
       count,

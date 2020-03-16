@@ -17,6 +17,7 @@ import { Express, Response } from "express";
 import { fileLoader, mergeResolvers, mergeTypes } from "merge-graphql-schemas";
 
 import { ApolloServer } from "apollo-server-express";
+import cache from "../client/server/cache";
 import config from "../config";
 import constants from "./utils/constants";
 import fileUpload from "express-fileupload";
@@ -69,6 +70,19 @@ const server = new ApolloServer({
     logger.error(error.message, error.extensions, error, JSON.stringify(error));
     return error;
   },
+  plugins: [
+    {
+      requestDidStart({ request }) {
+        return {
+          didResolveOperation({ request }) {
+            if (request.query?.startsWith("mutation")) {
+              cache.clear();
+            }
+          },
+        };
+      },
+    },
+  ],
   context: context,
   introspection: true,
   playground: {

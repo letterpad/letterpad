@@ -69,8 +69,8 @@ export const getHtml = (data: IProps) => {
     ...config,
     HTML_CONTENT: html,
     HTML_ATTRS: htmlAttrs,
-    STYLE_TAGS: styleLinks,
-    STYLED_STYLES: styles,
+    STYLE_TAGS: styleLinks || "",
+    STYLED_STYLES: styles || "",
     META_TAGS: metaTags,
     INITIAL_STATE: initialState,
     INITIAL_DATA: JSON.stringify(initialData),
@@ -81,36 +81,5 @@ export const getHtml = (data: IProps) => {
       ? '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-19390409-3"></script>'
       : "",
     SCRIPT_TAGS: scripts,
-  });
-};
-
-export const getHeadHtml = ({
-  head,
-  theme,
-  styles,
-  settings,
-}: Pick<IProps, "head" | "theme" | "styles" | "settings">) => {
-  // check if the theme has defined any html template
-  const themeTemplateBuffer = util.getThemeFileContents(
-    theme,
-    "template-head.tpl",
-  );
-  const template =
-    themeTemplateBuffer || util.getClientFileContents("template-head.tpl");
-  const templateString = template.toString();
-
-  const { htmlAttrs, metaTags } = getMetaTags(head);
-  const isDev = process.env.NODE_ENV !== "production";
-  const host = config.ROOT_URL + config.BASE_NAME;
-  const styleLinks = isDev
-    ? ""
-    : prepareStyleTags(host + "/" + theme + "/dist/client.min.css");
-
-  return templateEngine(templateString, {
-    HTML_ATTRS: htmlAttrs,
-    STYLE_TAGS: styleLinks,
-    STYLED_STYLES: styles,
-    META_TAGS: metaTags,
-    FAVICON: settings.site_favicon.value,
   });
 };

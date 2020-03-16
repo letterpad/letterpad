@@ -10,7 +10,6 @@ import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import cheerio from "cheerio";
 import http from "http";
 import logger from "../../shared/logger";
-import retry from "./retry";
 import sharp from "sharp";
 import sizeOf from "image-size";
 
@@ -57,6 +56,7 @@ export async function getImageDimensions(
   url: string,
 ): Promise<{ width: number; height: number; type: string }> {
   const withHttp = url.replace("https://", "http://");
+
   const actionToTry = () =>
     new Promise((resolve, reject) =>
       http.get(new URL(withHttp), function(response) {
@@ -65,7 +65,7 @@ export async function getImageDimensions(
           .on("data", function(chunk: Uint8Array) {
             chunks.push(chunk);
           })
-          .on("end", function() {
+          .on("end", async function() {
             const buffer = Buffer.concat(chunks);
             return resolve(sizeOf.imageSize(buffer));
           })

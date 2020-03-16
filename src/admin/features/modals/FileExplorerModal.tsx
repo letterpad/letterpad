@@ -16,7 +16,7 @@ const StyledBody = styled.div`
 `;
 
 interface IProps extends WithNamespaces {
-  onMediaInsert: (urls: string[]) => Promise<any>;
+  onMediaInsert: (images: { [urls: string]: CoverImage }) => void;
   onClose: () => void;
   mediaProvider: MediaProvider;
   addNewMedia: () => void;
@@ -41,9 +41,8 @@ class FileExplorerModal extends Component<IProps, any> {
 
   insertMedia = async () => {
     // get only the urls in an array
-    const urls = Object.keys(this.state.selectedImageUrls);
     try {
-      await this.props.onMediaInsert(urls);
+      await this.props.onMediaInsert(this.state.selectedImageUrls);
     } catch (e) {
       notify.show("Something unexpected happened.", "error");
     }

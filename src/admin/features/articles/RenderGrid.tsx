@@ -4,8 +4,7 @@ import StyledGridItem from "../../components/grid/GridItem";
 import { StyledItem } from "./ArticleList.css";
 import config from "../../../config";
 import { filterTaxonomies } from ".";
-import moment from "moment";
-
+import { getReadableDate } from "../../../shared/date";
 const RenderGrid: React.FC<any> = ({ data, setSelection }) => {
   return (
     <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
@@ -27,7 +26,7 @@ const RenderGrid: React.FC<any> = ({ data, setSelection }) => {
               title={post.title}
               href={"/admin/posts/" + post.id}
               line1={authorName}
-              line2={moment(post.createdAt).format("MMM Do YYYY")}
+              line2={getReadableDate(post.createdAt)}
               stickyText={categories}
             />
           </StyledItem>
