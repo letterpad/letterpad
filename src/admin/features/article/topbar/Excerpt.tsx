@@ -55,10 +55,10 @@ class Excerpt extends Component<IProps, IState> {
 
   setData = (excerpt: string) => {
     this.setState({ chars: excerpt.length, excerpt });
-    PostActions.setData({
+    PostActions.setDraft({
       excerpt,
     });
-    utils.debounce(this.props.updatePost, 200)();
+    utils.debounce(PostActions.updatePost, 200)();
   };
 
   render() {

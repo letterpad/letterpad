@@ -10,6 +10,7 @@ import {
 import { QUERY_POST, QUERY_POSTS } from "../shared/queries/Queries";
 
 import { EnumContentType } from "./types";
+import Helmet from "react-helmet";
 import React from "react";
 import SEO from "./helpers/SEO";
 import { useQuery } from "react-apollo";
@@ -34,6 +35,7 @@ function DataConnector(
               slug: props.router.match.params.slug,
             },
           },
+          fetchPolicy: "network-only",
         });
         loading = result.loading;
         if (result.data && result.data.post) {
@@ -80,6 +82,18 @@ function DataConnector(
         loading = result.loading;
         if (result.data && result.data) {
           data = result.data.posts as PostsNode;
+          if (data.rows.length > 0) {
+            SEOComponent = (
+              <Helmet>
+                {data.rows.map(item => (
+                  <link href={item.slug} rel="prefetch" as="document" />
+                ))}
+                {data.rows.map(item => (
+                  <link href={item.slug} rel="prerender" />
+                ))}
+              </Helmet>
+            );
+          }
         }
         break;
       }

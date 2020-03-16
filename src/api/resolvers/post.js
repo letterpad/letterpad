@@ -8,6 +8,7 @@ import {
 import Fuse from "fuse.js";
 import Sequelize from "sequelize";
 import config from "../../config";
+import { getReadableDate } from "../../shared/date";
 import { innertext } from "../utils/common";
 import logger from "../../shared/logger";
 import memoryCache from "../utils/memoryCache";
@@ -169,10 +170,11 @@ const postresolver = {
         const result = await models.Post.findAndCountAll(conditions);
         result.rows = result.rows.map(item => {
           item.dataValues = normalizePost(item.dataValues);
-          item.dataValues.md = "...truncated";
-          item.dataValues.html = "...truncated";
+          item.dataValues.md = "...[truncated]";
+          item.dataValues.html = "...[truncated]";
           return item;
         });
+
         return {
           count: result.count,
           rows: result.rows,
@@ -388,7 +390,9 @@ const postresolver = {
   Post: {
     author: async post => {
       const author = await post.getAuthor();
-      author.avatar = host + author.avatar;
+      if (author.avatar.startsWith("/")) {
+        author.avatar = host + author.avatar;
+      }
       return author;
     },
     taxonomies: async post => {
@@ -425,6 +429,9 @@ function normalizePost(post) {
       height: cover_image_height || 0,
     },
     slug: "/" + rest.type + "/" + slug,
+    publishedAt: getReadableDate(rest.publishedAt),
+    updatedAt: getReadableDate(rest.updatedAt),
+    createdAt: getReadableDate(rest.createdAt),
   };
 
   return post;

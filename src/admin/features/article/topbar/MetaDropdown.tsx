@@ -5,7 +5,7 @@ import PostActions from "../PostActions";
 import StyledDropdown from "./Dropdown.css";
 import StyledInput from "../../../components/input";
 import config from "../../../../config";
-import moment from "moment";
+import { getDateTime } from "../../../../shared/date";
 
 const host = config.ROOT_URL + config.BASE_NAME;
 
@@ -29,21 +29,20 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
     };
   }
 
-  changeSlug = (e: React.ChangeEvent<HTMLInputElement>) => {
+  changeSlug = async (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       slug: e.target.value,
     });
-    PostActions.setData({ slug: e.target.value });
-    this.props.updatePost();
+    PostActions.setDraft({ slug: e.target.value });
+    await PostActions.updatePost();
   };
 
-  changePublishDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+  changePublishDate = async (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       publishedAt: e.target.value,
     });
-    console.log(e.target.value);
-    PostActions.setData({ publishedAt: e.target.value });
-    this.props.updatePost();
+    PostActions.setDraft({ publishedAt: e.target.value });
+    await PostActions.updatePost();
   };
 
   render() {
@@ -57,7 +56,7 @@ class MetaDropdown extends Component<IMetaDropdownProps, any> {
           label="Published at"
           className="meta-value"
           placeholder="Published date"
-          defaultValue={moment(publishedAt).format("DD-MM-Y hh:mm A")}
+          defaultValue={getDateTime(publishedAt)}
           onChange={this.changePublishDate}
         />
 

@@ -21,19 +21,18 @@ interface IProps {
   isPublished: boolean;
 }
 class PublishDropdown extends Component<IProps> {
-  onStatusChange = (status: boolean) => {
+  onStatusChange = async (status: boolean) => {
     const statusText: PostStatusOptions = status
       ? PostStatusOptions.Publish
       : PostStatusOptions.Draft;
 
-    PostActions.setData({ status: statusText });
-    this.props.updatePost();
+    PostActions.setDraft({ status: statusText });
+    await PostActions.updatePost();
+    this.forceUpdate();
   };
   render() {
     const post = {
-      ...this.props.post,
-      html: PostActions.getData().html,
-      taxonomies: PostActions.getData().taxonomies,
+      ...PostActions.getData(),
     };
     const { isPublished, toggleVisibility, updatePost } = this.props;
 

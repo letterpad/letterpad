@@ -1,8 +1,8 @@
-import { contentProvider, generateHead } from "./contentProvider";
-
 import { Express } from "express";
 import apolloClient from "../../shared/apolloClient";
+import cache from "./cache";
 import config from "../../config";
+import { contentProvider } from "./contentProvider";
 import { fetchSettings } from "../../api/fetchSettings";
 import fs from "fs";
 import { getFile } from "./../../config/db.config";
@@ -13,6 +13,9 @@ import { seed } from "../../api/seed/seed";
 const { pathname } = new URL(config.API_URL);
 const serverRendering = (app: Express) => {
   app.get("*", async (req, res, next) => {
+    if (cache.has(req.url)) {
+      return res.send(cache.get(req.url));
+    }
     if (!hasDatabase()) {
       try {
         await seed(models, false);
@@ -28,16 +31,6 @@ const serverRendering = (app: Express) => {
       const client = apolloClient(false, { ssrMode: true });
       const settings = await fetchSettings();
 
-      const headHtml = generateHead({
-        requestUrl: req.url,
-        client,
-        settings,
-        isStatic,
-        request: { req, res },
-      });
-      res.writeHead(200, { "content-type": "text/html" });
-      res.write(headHtml);
-
       try {
         logger.debug("SSR - Fetched settings data");
         const content = await contentProvider({
@@ -47,6 +40,7 @@ const serverRendering = (app: Express) => {
           isStatic,
           request: { req, res },
         });
+        cache.set(req.url, content);
         res.end(content);
       } catch (e) {
         logger.error(e);

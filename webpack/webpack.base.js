@@ -7,7 +7,6 @@ const babelRc = fs.readFileSync(path.resolve(__dirname, "../.babelrc"));
 
 module.exports = (args, name) => {
   let source = "";
-  const vendorFiles = ["react", "react-dom", "redux", "react-apollo", "moment"];
   let env = "production";
   const isProd = args.NODE_ENV === "production";
   const isDev = !isProd;
@@ -20,13 +19,26 @@ module.exports = (args, name) => {
     devtool: "#source-map",
     stats: "normal",
     entry: {
-      [source + "/public/js/vendor"]: vendorFiles,
       [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
         path.join(__dirname, "../src/client/Run"),
       ],
       [source + "/admin/public/dist/admin"]: [
         path.join(__dirname, "../src/admin/app"),
       ],
+    },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          default: false,
+          commons: {
+            test: /react|redux|react-apollo|react-dom|apollo-client|graphql|apollo-utilities/,
+            name: "vendor",
+            chunks: "all",
+            minChunks: 2,
+            filename: "public/js/[name]-bundle.min.js",
+          },
+        },
+      },
     },
     resolve: {
       alias: {

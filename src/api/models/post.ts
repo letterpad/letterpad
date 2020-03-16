@@ -7,8 +7,8 @@ import {
 } from "../utils/imageHelpers";
 
 import config from "../../config";
+import { getDateTime } from "./../../shared/date";
 import logger from "../../shared/logger";
-import moment from "moment";
 import reading_time from "reading-time";
 import slugify from "../../shared/slugify";
 import { updateMenuItem } from "../resolvers/setting";
@@ -75,6 +75,7 @@ class Post extends Model {
         },
         publishedAt: {
           type: DataTypes.DATE,
+          defaultValue: getDateTime(+new Date()),
         },
       },
       {
@@ -123,16 +124,14 @@ export async function _createPost(data, models) {
   }
 }
 
-export async function _updatePost(updatedPost, models) {
+export async function _updatePost(props, models) {
   try {
-    const { id } = updatedPost;
+    let { id, cover_image, ...updatedPost } = props;
     // first get the post which is being updated
     const oldPost = await models.Post.findOne({
       where: { id },
     });
-
     logger.debug("Updating post with id:", id);
-
     // Initially the title will be empty for newly created post.
     // While updating check if the user has entered a new title and based on that create a new slug.
     // If the user changes the title the second time then dont change the slug again.
@@ -152,48 +151,66 @@ export async function _updatePost(updatedPost, models) {
       // check the menu. the menu has page items. update the slug of the page menu item if it exist.
       await updateMenuItem(models, id, oldPost.type, options);
     }
-    const currentTime = moment.utc(new Date()).format("YYYY-MM-DD HH:mm:ss");
+    const currentTime = getDateTime(new Date().getTime());
     // If this post is being published for the first time, update the publish date
     if (updatedPost.status == "publish" && oldPost.status == "draft") {
       updatedPost = { ...updatedPost, publishedAt: currentTime };
       logger.debug("Post status changed from draft to publish - ", currentTime);
     }
-    let coverImageProps = { ...oldPost.cover_image };
+
     if (updatedPost.cover_image) {
-      coverImageProps.cover_image = updatedPost.cover_image.src;
-    }
-
-    if (updatedPost.cover_image && updatedPost.cover_image.src) {
-      let cover_image_url = updatedPost.cover_image.src;
-      if (!updatedPost.cover_image.src.startsWith("http")) {
-        // this is internal image, get its width and height
-        cover_image_url = host + updatedPost.cover_image.src;
+      let { src, width, height } = updatedPost.cover_image;
+      if (src && (!width || !height)) {
+        let tempSrc = src;
+        if (src.startsWith("/")) {
+          // this is internal image
+          tempSrc = host + src;
+        }
+        try {
+          const imageSize = await getImageDimensions(tempSrc);
+          width = imageSize.width;
+          height = imageSize.height;
+        } catch (e) {
+          logger.error(
+            `No width/height specified for cover image.
+          \n Trying to get dimentions of image src`,
+            tempSrc,
+          );
+        }
       }
-      const imageSize = await getImageDimensions(cover_image_url);
-      coverImageProps.cover_image_width = imageSize.width;
-      coverImageProps.cover_image_height = imageSize.height;
+      updatedPost = {
+        ...updatedPost,
+        cover_image_url: src,
+        cover_image_width: width,
+        cover_image_height: height,
+      };
     }
-
     if (updatedPost.md && updatedPost.md !== oldPost.md) {
       // update reading time
       updatedPost.reading_time = reading_time(updatedPost.md).text;
       logger.debug("Reading time: ", updatedPost.reading_time);
     }
+    let tempHtml;
+    if (updatedPost.html) {
+      try {
+        tempHtml = await setImageWidthAndHeightInHtml(updatedPost.html);
+      } catch (e) {
+        logger.error(e);
+      }
+    }
+
     updatedPost = {
       ...updatedPost,
       updatedAt: currentTime,
-      html: await setImageWidthAndHeightInHtml(updatedPost.html),
-      ...coverImageProps,
+      html: tempHtml,
     };
     await models.Post.update(updatedPost, {
       where: { id },
     });
-
     // get all values of the updated post
     const newPost = await models.Post.findOne({
       where: { id },
     });
-
     // the taxonomies like tags/cathegories might have chqnged or added.
     // sync them
     if (updatedPost.taxonomies && updatedPost.taxonomies.length > 0) {
@@ -236,7 +253,6 @@ export async function _updatePost(updatedPost, models) {
         }),
       );
     }
-
     return {
       ok: true,
       post: newPost,

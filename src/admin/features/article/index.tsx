@@ -3,7 +3,6 @@ import {
   QueryPostArgs,
   Setting,
   SettingOptions,
-  UpdatePostMutation,
 } from "../../../__generated__/gqlTypes";
 
 import { Container } from "./Article.css";
@@ -14,8 +13,6 @@ import PostActions from "./PostActions";
 import { QUERY_POST } from "../../../shared/queries/Queries";
 import React from "react";
 import TopBar from "./topbar";
-import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
-import client from "../../../shared/apolloClient";
 import config from "../../../config";
 import { useQuery } from "react-apollo";
 
@@ -46,35 +43,11 @@ const Article: React.FC<IArticleProps> = ({ theme, router }) => {
     );
   }
 
-  const updatePost = async () => {
-    const data = PostActions.getData();
-    delete data.cover_image.__typename;
-    const update = await client().mutate<UpdatePostMutation>({
-      mutation: UPDATE_POST_QUERY,
-      variables: {
-        data: {
-          id: data.id,
-          title: data.title,
-          html: data.html,
-          md: data.md,
-          excerpt: data.excerpt,
-          cover_image: data.cover_image,
-          publishedAt: data.publishedAt,
-          type: data.type,
-          status: data.status,
-          slug: data.slug,
-          taxonomies: data.taxonomies,
-        },
-      },
-    });
-    return update;
-  };
-
   return (
     <Container fullHeight>
-      <TopBar edit router={router} post={data.post} updatePost={updatePost} />
+      <TopBar edit router={router} post={data.post} />
       <div className="article-holder">
-        <Edit theme={theme} post={data.post} updatePost={updatePost} />
+        <Edit theme={theme} post={data.post} />
       </div>
     </Container>
   );

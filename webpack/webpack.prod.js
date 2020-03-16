@@ -12,6 +12,7 @@ const clientConfig = args => {
   const extractAdminCSS = new ExtractTextPlugin("[name].min.css");
   return merge(baseConfig(args, "client"), {
     target: "web",
+    devtool: undefined,
     output: {
       path: path.join(__dirname, "../dist"),
       filename: "[name]-bundle.min.js",
@@ -39,12 +40,12 @@ const clientConfig = args => {
           to: __dirname + "/../dist/client/template.tpl",
         },
         {
-          from: __dirname + "/../src/client/template-head.tpl",
-          to: __dirname + "/../dist/client/template-head.tpl",
-        },
-        {
           from: __dirname + "/../src/api/seed/uploads",
           to: __dirname + "/../dist/api/seed/uploads",
+        },
+        {
+          from: __dirname + "/../src/public/robots.txt",
+          to: __dirname + "/../dist/public/robots.txt",
         },
         {
           from: __dirname + "/../src/api/seed/uploads",
@@ -76,7 +77,7 @@ const clientConfig = args => {
               "postcss-loader",
             ],
           }),
-          include: [path.join(__dirname, "../src/client/themes/" + args.theme)],
+          include: [path.join(__dirname, "../src/client/themes/")],
         },
         {
           test: /\.css$/,

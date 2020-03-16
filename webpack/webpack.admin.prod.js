@@ -3,7 +3,7 @@ const baseConfig = require("./webpack.base.js");
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const vendorFiles = ["react", "react-dom", "redux", "react-apollo", "moment"];
+const vendorFiles = ["react", "react-dom", "redux", "react-apollo"];
 
 const clientConfig = args => {
   const extractPcssAdmin = new ExtractTextPlugin("[name].min.css");

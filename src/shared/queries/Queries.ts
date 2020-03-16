@@ -34,6 +34,8 @@ export const QUERY_MEDIA = gql`
         createdAt
         name
         description
+        width
+        height
       }
     }
   }

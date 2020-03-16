@@ -143,7 +143,8 @@ export async function insertAuthor(models) {
       RoleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
-      avatar: "/admin/images/avatar.png",
+      avatar:
+        "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
     },
     {
       fname: "Jim",
@@ -159,7 +160,8 @@ export async function insertAuthor(models) {
       RoleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
-      avatar: "/admin/images/avatar2.png",
+      avatar:
+        "https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
     },
   ]);
 }
@@ -202,6 +204,7 @@ export async function insertPost(params, models, categories, tags) {
     slug: slug,
     createdAt: new Date(),
     publishedAt: new Date(),
+    reading_time: "5 mins",
   });
 
   promises = [admin.addPost(post)];
@@ -218,15 +221,21 @@ export async function insertPost(params, models, categories, tags) {
 export async function insertMedia(models) {
   return models.Media.bulkCreate([
     {
-      url: "/uploads/1.jpg",
+      url:
+        "https://images.unsplash.com/photo-1473181488821-2d23949a045a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
       AuthorId: 1,
       name: "Blueberries",
+      width: 1350,
+      height: 900,
       description:
         "Write a description about this image. You never know how this image can break the internet",
     },
     {
-      url: "/uploads/2.jpg",
+      url:
+        "https://images.unsplash.com/photo-1524654458049-e36be0721fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
       AuthorId: 1,
+      width: 1350,
+      height: 900,
       name: "I love the beach and its smell",
       description:
         "Write a description about this image. You never know how this image can break the internet",
@@ -247,13 +256,6 @@ export async function insertSettings(models) {
       id: 11,
       title: "Letterpad Typography",
       slug: "letterpad-typography",
-      type: "page",
-      disabled: true,
-    },
-    {
-      id: 111,
-      title: "Not Found",
-      slug: "404",
       type: "page",
       disabled: true,
     },
@@ -363,9 +365,10 @@ export async function insertSettings(models) {
     {
       option: "banner",
       value: JSON.stringify({
-        src: "/uploads/banner.jpg",
-        width: 1200,
-        height: 700,
+        src:
+          "https://images.unsplash.com/photo-1517486430290-35657bdcef51?ixlib=rb-1.2.1&auto=format&fit=crop&w=1510&q=80",
+        width: 1502,
+        height: 900,
       }),
     },
   ];
