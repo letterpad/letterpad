@@ -7,11 +7,11 @@ const RenderTable = ({ data, setSelection }) => {
   return (
     <Table
       className="table"
-      columns={["", "Title", "Last Updated", "Author", "Status", "Category"]}
+      columns={["", "Title", "Published At", "Author", "Status", "Category"]}
     >
       <thead>
         <tr>
-          {["", "Title", "Last Updated", "Author", "Status", "Category"].map(
+          {["", "Title", "Published At", "Author", "Status", "Category"].map(
             (colName, i) => (
               <th key={i}>{colName}</th>
             ),
@@ -39,7 +39,7 @@ const RenderTable = ({ data, setSelection }) => {
 
                 <div className="small">{post.excerpt.slice(0, 60)}...</div>
               </td>
-              <td className="small">{post.createdAt}</td>
+              <td className="small">{post.publishedAt}</td>
               <td className="small">{authorName}</td>
               <td className={"upper status " + post.status}>
                 <span>{post.status}</span>

@@ -3,7 +3,6 @@ import "isomorphic-fetch";
 import {
   AdminBaseStyle,
   AdminGlobalStyle,
-  CssVariables,
   NormalizeCss,
 } from "./adminGlobal.css";
 
@@ -23,7 +22,6 @@ const isAdmin = true;
 const App = (
   <BrowserRouter basename={config.BASE_NAME}>
     <ApolloProvider client={client(isAdmin)}>
-      <CssVariables />
       <NormalizeCss />
       <AdminGlobalStyle />
       <AdminBaseStyle />

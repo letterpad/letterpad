@@ -8,6 +8,7 @@ import {
 import Fuse from "fuse.js";
 import Sequelize from "sequelize";
 import config from "../../config";
+import { getReadableDate } from "../../shared/date";
 import { innertext } from "../utils/common";
 import logger from "../../shared/logger";
 import memoryCache from "../utils/memoryCache";
@@ -428,6 +429,9 @@ function normalizePost(post) {
       height: cover_image_height || 0,
     },
     slug: "/" + rest.type + "/" + slug,
+    publishedAt: getReadableDate(rest.publishedAt),
+    updatedAt: getReadableDate(rest.updatedAt),
+    createdAt: getReadableDate(rest.createdAt),
   };
 
   return post;
