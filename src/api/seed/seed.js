@@ -257,13 +257,6 @@ export async function insertSettings(models) {
       type: "page",
       disabled: true,
     },
-    {
-      id: 111,
-      title: "Not Found",
-      slug: "404",
-      type: "page",
-      disabled: true,
-    },
   ]);
 
   let data = [
@@ -370,9 +363,10 @@ export async function insertSettings(models) {
     {
       option: "banner",
       value: JSON.stringify({
-        src: "/uploads/banner.jpg",
-        width: 1200,
-        height: 700,
+        src:
+          "https://images.unsplash.com/photo-1517486430290-35657bdcef51?ixlib=rb-1.2.1&auto=format&fit=crop&w=1510&q=80",
+        width: 1502,
+        height: 900,
       }),
     },
   ];
