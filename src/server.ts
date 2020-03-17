@@ -25,13 +25,13 @@ import middlewares from "./middlewares";
 import staticPaths from "./staticPaths";
 
 const app = express();
-middlewares(app);
+// middlewares(app);
 // Take care of static assets.
 staticPaths(app);
 
 // start the admin dashboard and the client. Both use the same server, but its nice to separate them
-adminServer(app);
-clientServerRendering(app);
+// adminServer(app);
+// clientServerRendering(app);
 apiServer(app);
 
 const server = app.listen(process.env.APP_PORT, function() {
