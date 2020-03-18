@@ -51,7 +51,7 @@ const postresolver = {
      */
     posts: checkDisplayAccess
       .createResolver(addConditionsPlaceholder)
-      .createResolverInParallel(resolveCateogoryFilter)
+      .createResolver(resolveCateogoryFilter)
       .createResolver(resolveMenuFilter)
       .createResolver(resolveTagFilter)
       .createResolver(resolveAuthor)
@@ -237,7 +237,7 @@ function normalizePost(post) {
     slug,
     ...rest
   } = post;
-  if (cover_image && !cover_image.startsWith("http")) {
+  if (cover_image && cover_image.startsWith("/")) {
     cover_image = host + "/" + cover_image;
   }
 
