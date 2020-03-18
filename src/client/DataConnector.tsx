@@ -40,9 +40,6 @@ function DataConnector(
         loading = result.loading;
         if (result.data && result.data.post) {
           data = result.data.post as Post;
-          const { tags, categories } = utils.getTagsAndCategories(
-            data.taxonomies,
-          );
           SEOComponent = (
             <SEO
               schema="BlogPosting"
@@ -50,8 +47,8 @@ function DataConnector(
               description={data.excerpt}
               path={props.router.location.pathname}
               contentType="article"
-              category={categories.join(",")}
-              tags={tags}
+              category={data.categories.map(cat => cat.name).join(",")}
+              tags={data.tags.map(tag => tag.name).join(",")}
               image={data.cover_image.src}
               settings={props.settings || {}}
             />

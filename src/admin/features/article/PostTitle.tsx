@@ -1,3 +1,4 @@
+import PostActions from "./PostActions";
 import React from "react";
 import styled from "styled-components";
 
@@ -31,9 +32,10 @@ const PostTitle: React.FC<IPostTitleProps> = ({
 
   return (
     <Input
-      onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
-        onTitleChange(e.target.innerText)
-      }
+      onBlur={async (e: React.FocusEvent<HTMLInputElement>) => {
+        onTitleChange(e.target.innerText);
+        await PostActions.updatePost();
+      }}
       contentEditable={true}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
         onTitleChange(e.target.innerText)

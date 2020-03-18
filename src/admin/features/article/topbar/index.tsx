@@ -24,7 +24,7 @@ interface ITopbarProps {
 export class TopBar extends Component<ITopbarProps, any> {
   state = {
     post: this.props.post,
-    isPublished: this.props.post.status == "publish",
+    // isPublished: this.props.post.status == "publish",
     publishOpen: false,
     metaOpen: false,
     saving: false,
@@ -73,9 +73,6 @@ export class TopBar extends Component<ITopbarProps, any> {
   };
 
   updatePost = async () => {
-    this.setState({
-      isPublished: PostActions.getData().status === PostStatusOptions.Publish,
-    });
     this.setState({ saving: true });
     const update = await PostActions.updatePost();
     setTimeout(() => {
@@ -145,7 +142,6 @@ export class TopBar extends Component<ITopbarProps, any> {
                 return (
                   <PublishDropdown
                     toggleVisibility={toggleVisibility}
-                    isPublished={this.state.isPublished}
                     post={this.props.post}
                     updatePost={this.updatePost}
                   />

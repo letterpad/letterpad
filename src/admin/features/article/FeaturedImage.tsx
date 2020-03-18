@@ -75,7 +75,6 @@ const CustomImage: React.FC<ICustomImageProps> = ({
 interface IFeaturedImageProps extends WithNamespaces {
   post: Post;
   mediaProvider: MediaProvider;
-  updatePost: () => Promise<any>;
 }
 
 class FeaturedImage extends Component<

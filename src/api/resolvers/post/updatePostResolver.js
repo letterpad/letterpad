@@ -20,7 +20,6 @@ export const addUpdateDataPlaceholder = async (root, args, { models }) => {
     dataToUpdate: {},
     previousPost: await models.Post.findOne({
       where: { id: args.data.id },
-      raw: true,
     }),
   };
 };
@@ -28,20 +27,26 @@ export const addUpdateDataPlaceholder = async (root, args, { models }) => {
 export const updateTitleAndSlug = async (root, args, { models }) => {
   let { previousPost, title } = args;
   if (!title) return args;
-  if (isFirstTitleCreation(previousPost.title, title)) {
-    args.dataToUpdate.slug = await slugify(models.Post, previousPost.title);
+  if (isFirstTitleCreation(previousPost.dataValues.title, title)) {
+    args.dataToUpdate.slug = await slugify(
+      models.Post,
+      previousPost.dataValues.title,
+    );
     logger.debug("Slug created:", args.dataToUpdate.slug);
   }
   return args;
 };
 
-export const updateDates = async (root, args) => {
+export const updateDatesAndStatus = async (root, args) => {
   let { previousPost, status } = args;
   const currentTime = getDateTime(new Date().getTime());
   // If this post is being published for the first time, update the publish date
-  if (status == "publish" && previousPost.status == "draft") {
+  if (status === "publish" && previousPost.dataValues.status === "draft") {
     args.dataToUpdate.publishedAt = currentTime;
     logger.debug("Post status changed from draft to publish - ", currentTime);
+  }
+  if (status) {
+    args.dataToUpdate.status = status;
   }
   args.dataToUpdate.updatedAt = currentTime;
   return args;
@@ -82,7 +87,7 @@ export const updateReadingTime = async (root, args) => {
   let { previousPost, md } = args;
   if (!md) return args;
 
-  if (md !== previousPost.md) {
+  if (md !== previousPost.dataValues.md) {
     // update reading time
     args.dataToUpdate.reading_time = reading_time(md).text;
     logger.debug("Reading time: ", args.dataToUpdate.reading_time);
@@ -90,8 +95,14 @@ export const updateReadingTime = async (root, args) => {
   return args;
 };
 
-export const updateImageDimentionsInHtml = async (root, args) => {
-  let { html } = args;
+export const updateContent = async (root, args) => {
+  let { html, md, excerpt } = args;
+  if (md) {
+    args.dataToUpdate.md = md;
+  }
+  if (excerpt) {
+    args.dataToUpdate.excerpt = excerpt;
+  }
   if (!html) return args;
 
   try {
@@ -107,20 +118,40 @@ export const executeUpdatePost = async (root, args, { models }) => {
   await models.Post.update(dataToUpdate, {
     where: { id },
   });
-  return args;
-};
-
-export const updateTaxonomies = async (root, args, { models }) => {
-  let { id, taxonomies } = args;
-
   const newPost = await models.Post.findOne({
     where: { id },
   });
+  return {
+    ok: true,
+    post: newPost,
+    errors: [],
+  };
+};
 
+export const updateTaxonomies = async (root, args, { models }) => {
+  let { tags, categories, previousPost } = args;
+  logger.debug("Updating taxonomies");
+  const prevTaxonomies = await previousPost.getTaxonomies();
+  if (!tags)
+    tags = [...prevTaxonomies.filter(item => item.type === "post_tag")];
+  if (!categories)
+    categories = [
+      ...prevTaxonomies.filter(item => item.type === "post_category"),
+    ];
+
+  tags = tags.map(tag => {
+    tag.type = "post_tag";
+    return tag;
+  });
+  categories = categories.map(category => {
+    category.type = "post_category";
+    return category;
+  });
+  const taxonomies = [...tags, ...categories];
   if (taxonomies && taxonomies.length > 0) {
     logger.debug("Removing all taxonomies");
     // remove the texonomy relation
-    await newPost.setTaxonomies([]);
+    await previousPost.setTaxonomies([]);
     await Promise.all(
       taxonomies.map(async taxonomy => {
         let taxItem = null;
@@ -129,7 +160,7 @@ export const updateTaxonomies = async (root, args, { models }) => {
           taxItem = await models.Taxonomy.findOne({
             where: { id: taxonomy.id },
           });
-          const result = await newPost.addTaxonomy(taxItem);
+          const result = await previousPost.addTaxonomy(taxItem);
           logger.debug(
             `Added existing taxonomy (${taxonomy.name}) with id`,
             taxonomy.id,
@@ -153,15 +184,11 @@ export const updateTaxonomies = async (root, args, { models }) => {
         });
         logger.debug("Linking taxonomy to post", taxonomy.name);
         // add relation
-        return await newPost.addTaxonomy(taxItem);
+        return await previousPost.addTaxonomy(taxItem);
       }),
     );
   }
-  return {
-    ok: true,
-    post: newPost,
-    errors: [],
-  };
+  return args;
 };
 
 function isFirstTitleCreation(prevTitle, newTitle) {

@@ -7,7 +7,6 @@ import utils from "../../../../shared/util";
 interface IProps {
   excerpt: string;
   html: string;
-  updatePost: () => void;
 }
 interface IState {
   chars: number;

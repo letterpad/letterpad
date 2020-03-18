@@ -3,6 +3,7 @@ import {
   TaxonomiesQuery,
   TaxonomiesQueryVariables,
   Taxonomy,
+  TaxonomyType,
   TaxonomyTypes,
 } from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
@@ -14,20 +15,13 @@ import apolloClient from "../../../../shared/apolloClient";
 
 interface ITaxonomyProps {
   post: Post;
-  for: TaxonomyTypes;
+  for: TaxonomyType;
   suggestions: [];
   toggleVisibility: (e?: Event, flag?: boolean) => void;
 }
 
 interface ITaxonomyState {
-  tags:
-    | {
-        id: number;
-        name: string;
-        type: TaxonomyTypes;
-        slug: string;
-      }[]
-    | [];
+  tags: Pick<Taxonomy, "id" | "name" | "slug">[];
   suggestions: Taxonomy[];
 }
 
@@ -35,6 +29,11 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
   static defaultProps = {
     suggestions: [],
   };
+
+  type =
+    this.props.for === TaxonomyType.PostCategory
+      ? TaxonomyTypes.Categories
+      : TaxonomyTypes.Tags;
 
   state = {
     tags: [],
@@ -56,30 +55,26 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
       },
     });
     this.setState({ suggestions: data.taxonomies });
-
-    const tags = this.props.post.taxonomies
-      .filter(item => item.type === this.props.for)
-      .map(tax => {
-        const { __typename, ...rest } = tax;
-        return rest;
-      });
+    const type = this.type;
+    const tags = this.props.post[type].map(tax => {
+      const { __typename, ...rest } = tax;
+      return rest;
+    });
     this.setState({ tags: formatTagsForDropdown(tags) });
   }
 
   filterTaxonomyByType = () => {
-    return PostActions.getData().taxonomies.filter(
-      item => item.type !== this.props.for,
-    );
+    return PostActions.getData()[this.props.for];
   };
 
   handleOnChange = (tags: Taxonomy[], a, b) => {
     if (a.action === "remove-value") {
-      PostActions.removeTaxonomy(a.removedValue);
+      PostActions.removeTaxonomy(a.removedValue, this.type);
 
       this.setState({ tags: this.filterTaxonomyByType() });
-      setTimeout(() => this.props.toggleVisibility(null, true), 0);
+      setTimeout(() => this.props.toggleVisibility(undefined, true), 0);
     } else if (a.action === "select-option") {
-      PostActions.addTaxonomy(formatTagsForBackend([a.option])[0]);
+      PostActions.addTaxonomy(formatTagsForBackend([a.option])[0], this.type);
       this.setState({ tags });
     }
     PostActions.updatePost();
@@ -90,10 +85,10 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
     const newTag = {
       id: 0,
       name: tag,
-      type: this.props.for,
+      // type: this.props.for,
       slug: tag,
     };
-    PostActions.addTaxonomy(newTag);
+    PostActions.addTaxonomy(newTag, this.type);
     this.setState({
       tags: formatTagsForDropdown([...this.state.tags, newTag]),
     });
@@ -102,18 +97,14 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
 
   render() {
     const name =
-      this.props.for === TaxonomyTypes.PostTag ? "Tags" : "Categories";
+      this.props.for === TaxonomyType.PostTag ? "Tags" : "Categories";
 
     return (
       <StyledTags
         name={name}
         value={this.state.tags}
         onChange={this.handleOnChange}
-        options={formatTagsForDropdown(
-          (this.state.suggestions as Taxonomy[]).filter(
-            p => p.type === this.props.for,
-          ),
-        )}
+        options={formatTagsForDropdown(this.state.suggestions)}
         isMulti
         isValidNewOption={inputValue => {
           return inputValue.trim().length > 0;

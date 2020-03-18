@@ -14,9 +14,9 @@ import {
 import {
   addUpdateDataPlaceholder,
   executeUpdatePost,
+  updateContent,
   updateCoverImage,
-  updateDates,
-  updateImageDimentionsInHtml,
+  updateDatesAndStatus,
   updateReadingTime,
   updateTaxonomies,
   updateTitleAndSlug,
@@ -192,12 +192,12 @@ const postresolver = {
     updatePost: editPostPerm
       .createResolver(addUpdateDataPlaceholder)
       .createResolver(updateTitleAndSlug)
-      .createResolver(updateDates)
+      .createResolver(updateDatesAndStatus)
       .createResolver(updateCoverImage)
       .createResolver(updateReadingTime)
-      .createResolver(updateImageDimentionsInHtml)
-      .createResolver(executeUpdatePost)
+      .createResolver(updateContent)
       .createResolver(updateTaxonomies)
+      .createResolver(executeUpdatePost)
       .createResolver(async (root, result) => {
         result.post.dataValues = normalizePost(result.post.dataValues);
         return result;
@@ -216,13 +216,25 @@ const postresolver = {
       }
       return author;
     },
-    taxonomies: async post => {
+    tags: async post => {
       const taxonomies = await post.getTaxonomies();
-      return taxonomies.map(item => {
-        const type = item.type === "post_category" ? "category" : "tag";
-        item.slug = "/" + type + "/" + item.slug;
-        return item;
-      });
+      return taxonomies
+        .filter(item => item.type === "post_tag")
+        .map(item => {
+          const type = "tag";
+          item.slug = "/" + type + "/" + item.slug;
+          return item;
+        });
+    },
+    categories: async post => {
+      const taxonomies = await post.getTaxonomies();
+      return taxonomies
+        .filter(item => item.type === "post_category")
+        .map(item => {
+          const type = "category";
+          item.slug = "/" + type + "/" + item.slug;
+          return item;
+        });
     },
   },
 };

@@ -26,10 +26,15 @@ export const CREATE_POST = gql`
           width
           height
         }
-        taxonomies {
+        tags {
           id
           name
-          type
+          slug
+        }
+        categories {
+          id
+          name
+          slug
         }
       }
     }
@@ -63,7 +68,7 @@ export const UPDATE_TAXONOMY = gql`
     $id: Int!
     $name: String
     $desc: String
-    $type: TaxonomyTypes!
+    $type: TaxonomyType!
     $slug: String
   ) {
     updateTaxonomy(
@@ -168,10 +173,14 @@ export const UPDATE_POST_QUERY = gql`
           height
           src
         }
-        taxonomies {
+        tags {
           id
           name
-          type
+          slug
+        }
+        categories {
+          id
+          name
           slug
         }
       }

@@ -58,7 +58,8 @@ input InputCreatePost {
   type: String
   status: PostStatusOptions
   slug: String
-  taxonomies: [TaxonomyInputType]
+  tags: [TaxonomyInputType]
+  categories: [TaxonomyInputType]
 }
 
 input InputUpdatePost {
@@ -73,7 +74,8 @@ input InputUpdatePost {
   type: String
   status: PostStatusOptions
   slug: String
-  taxonomies: [TaxonomyInputType]
+  tags: [TaxonomyInputType]
+  categories: [TaxonomyInputType]
 }
 
 input SearchFilters {
@@ -119,8 +121,10 @@ type Post {
   updatedAt: Date!
   # Reading time of the post in minutes
   reading_time: String!
-  # Tags and Categories of the post
-  taxonomies: [Taxonomy!]!
+  # Tags of the post
+  tags: [Taxonomy!]!
+  # Categories of the post
+  categories: [Taxonomy!]!
 }
 
 type PostsNode {
@@ -140,7 +144,6 @@ type AdjacentPosts {
 input TaxonomyInputType {
   id: Int
   name: String
-  type: String
   slug: String
 }
 
