@@ -119,7 +119,6 @@ export const QUERY_TAXONOMIES = gql`
       name
       desc
       slug
-      type
     }
   }
 `;

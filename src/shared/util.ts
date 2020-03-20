@@ -38,18 +38,6 @@ const utils = {
     return item;
   },
 
-  getTagsAndCategories: function getTagsAndCategories(taxonomies) {
-    let data: any = { categories: [], tags: [] };
-    taxonomies.forEach(function(taxonomy) {
-      if (taxonomy.type === "post_category") {
-        data.categories.push(taxonomy);
-      } else {
-        data.tags.push(taxonomy);
-      }
-    });
-    return data;
-  },
-
   getMetaTags: function getMetaTags(head = {}) {
     let htmlAttrs = "";
     let metaTags = Object.keys(head)

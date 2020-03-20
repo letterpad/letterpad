@@ -114,7 +114,8 @@ export type InputCreatePost = {
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
-  taxonomies?: Maybe<Array<Maybe<TaxonomyInputType>>>;
+  tags?: Maybe<Array<Maybe<TaxonomyInputType>>>;
+  categories?: Maybe<Array<Maybe<TaxonomyInputType>>>;
 };
 
 export type InputThemeSettings = {
@@ -142,7 +143,8 @@ export type InputUpdatePost = {
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
-  taxonomies?: Maybe<Array<Maybe<TaxonomyInputType>>>;
+  tags?: Maybe<Array<Maybe<TaxonomyInputType>>>;
+  categories?: Maybe<Array<Maybe<TaxonomyInputType>>>;
 };
 
 export type LoginResponse = {
@@ -286,7 +288,7 @@ export type MutationUpdateTaxonomyArgs = {
   id: Scalars["Int"];
   name?: Maybe<Scalars["String"]>;
   desc?: Maybe<Scalars["String"]>;
-  type: TaxonomyTypes;
+  type: TaxonomyType;
   slug?: Maybe<Scalars["String"]>;
 };
 
@@ -346,8 +348,10 @@ export type Post = {
   updatedAt: Scalars["Date"];
   /** Reading time of the post in minutes */
   reading_time: Scalars["String"];
-  /** Tags and Categories of the post */
-  taxonomies: Array<Taxonomy>;
+  /** Tags of the post */
+  tags: Array<Taxonomy>;
+  /** Categories of the post */
+  categories: Array<Taxonomy>;
 };
 
 export type PostFilters = {
@@ -555,26 +559,29 @@ export type Taxonomy = {
   __typename?: "Taxonomy";
   id: Scalars["Int"];
   name: Scalars["String"];
-  type: TaxonomyTypes;
   desc?: Maybe<Scalars["String"]>;
   slug: Scalars["String"];
 };
 
 export type TaxonomyFilters = {
-  type?: Maybe<TaxonomyTypes>;
+  type?: Maybe<TaxonomyType>;
   active?: Maybe<Scalars["Boolean"]>;
 };
 
 export type TaxonomyInputType = {
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
-  type?: Maybe<Scalars["String"]>;
   slug?: Maybe<Scalars["String"]>;
 };
 
-export enum TaxonomyTypes {
+export enum TaxonomyType {
   PostTag = "post_tag",
   PostCategory = "post_category",
+}
+
+export enum TaxonomyTypes {
+  Tags = "tags",
+  Categories = "categories",
 }
 
 export type Theme = {
@@ -645,11 +652,11 @@ export type PostFieldsFragment = { __typename?: "Post" } & Pick<
       Author,
       "fname" | "lname" | "avatar" | "bio"
     >;
-    taxonomies: Array<
-      { __typename?: "Taxonomy" } & Pick<
-        Taxonomy,
-        "id" | "name" | "type" | "slug"
-      >
+    tags: Array<
+      { __typename?: "Taxonomy" } & Pick<Taxonomy, "id" | "name" | "slug">
+    >;
+    categories: Array<
+      { __typename?: "Taxonomy" } & Pick<Taxonomy, "id" | "name" | "slug">
     >;
   };
 
@@ -680,10 +687,16 @@ export type CreatePostMutation = { __typename?: "Mutation" } & {
               CoverImage,
               "src" | "width" | "height"
             >;
-            taxonomies: Array<
+            tags: Array<
               { __typename?: "Taxonomy" } & Pick<
                 Taxonomy,
-                "id" | "name" | "type"
+                "id" | "name" | "slug"
+              >
+            >;
+            categories: Array<
+              { __typename?: "Taxonomy" } & Pick<
+                Taxonomy,
+                "id" | "name" | "slug"
               >
             >;
           }
@@ -725,7 +738,7 @@ export type UpdateTaxonomyMutationVariables = {
   id: Scalars["Int"];
   name?: Maybe<Scalars["String"]>;
   desc?: Maybe<Scalars["String"]>;
-  type: TaxonomyTypes;
+  type: TaxonomyType;
   slug?: Maybe<Scalars["String"]>;
 };
 
@@ -826,10 +839,16 @@ export type UpdatePostMutation = { __typename?: "Mutation" } & {
               CoverImage,
               "width" | "height" | "src"
             >;
-            taxonomies: Array<
+            tags: Array<
               { __typename?: "Taxonomy" } & Pick<
                 Taxonomy,
-                "id" | "name" | "type" | "slug"
+                "id" | "name" | "slug"
+              >
+            >;
+            categories: Array<
+              { __typename?: "Taxonomy" } & Pick<
+                Taxonomy,
+                "id" | "name" | "slug"
               >
             >;
           }
@@ -959,7 +978,14 @@ export type MediaQuery = { __typename?: "Query" } & {
       rows: Array<
         { __typename?: "Media" } & Pick<
           Media,
-          "id" | "url" | "authorId" | "createdAt" | "name" | "description"
+          | "id"
+          | "url"
+          | "authorId"
+          | "createdAt"
+          | "name"
+          | "description"
+          | "width"
+          | "height"
         >
       >;
     };
@@ -1043,7 +1069,7 @@ export type TaxonomiesQuery = { __typename?: "Query" } & {
   taxonomies: Array<
     { __typename?: "Taxonomy" } & Pick<
       Taxonomy,
-      "id" | "name" | "desc" | "slug" | "type"
+      "id" | "name" | "desc" | "slug"
     >
   >;
 };

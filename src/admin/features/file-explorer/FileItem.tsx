@@ -13,6 +13,10 @@ const StyledItem = styled.article`
       height: 100%;
     }
   }
+  opacity: 0.6;
+  &.selected {
+    opacity: 1;
+  }
 `;
 
 export default class MediaItem extends Component<any, any> {

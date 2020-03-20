@@ -75,7 +75,6 @@ const CustomImage: React.FC<ICustomImageProps> = ({
 interface IFeaturedImageProps extends WithNamespaces {
   post: Post;
   mediaProvider: MediaProvider;
-  updatePost: () => Promise<any>;
 }
 
 class FeaturedImage extends Component<
@@ -103,9 +102,9 @@ class FeaturedImage extends Component<
     const imageList: CoverImage[] = [];
     for (let i = 0; i < imgNodes.length; i++) {
       imageList.push({
-        src: imgNodes[i].getAttribute("src") as string,
-        width: (imgNodes[i].getAttribute("width") as unknown) as number,
-        height: (imgNodes[i].getAttribute("height") as unknown) as number,
+        src: imgNodes[i]["src"],
+        width: imgNodes[i].clientWidth,
+        height: imgNodes[i].clientHeight,
       });
     }
     this.setState({ imageList });

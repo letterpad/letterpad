@@ -96,7 +96,7 @@ type Mutation {
   deletePosts(ids: [Int!], deleteFromSystem: Boolean): Response!
   uploadFile(id: Int, cover_image: String): Response!
   updateOptions(options: [OptionInputType]): [Setting!]!
-  updateTaxonomy(id: Int!, name: String, desc: String, type: TaxonomyTypes!, slug: String): EditTaxResponse!
+  updateTaxonomy(id: Int!, name: String, desc: String, type: TaxonomyType!, slug: String): EditTaxResponse!
   deleteTaxonomy(id: Int!): EditTaxResponse!
   updateThemes(name: String!, settings: [InputThemeSettings!]!): Boolean!
   insertThemes(name: String!, settings: [InputThemeSettings!]!): Boolean!
@@ -200,7 +200,8 @@ input InputCreatePost {
   type: String
   status: PostStatusOptions
   slug: String
-  taxonomies: [TaxonomyInputType]
+  tags: [TaxonomyInputType]
+  categories: [TaxonomyInputType]
 }
 
 input InputUpdatePost {
@@ -215,7 +216,8 @@ input InputUpdatePost {
   type: String
   status: PostStatusOptions
   slug: String
-  taxonomies: [TaxonomyInputType]
+  tags: [TaxonomyInputType]
+  categories: [TaxonomyInputType]
 }
 
 input SearchFilters {
@@ -276,8 +278,11 @@ type Post {
   # Reading time of the post in minutes
   reading_time: String!
   
-  # Tags and Categories of the post
-  taxonomies: [Taxonomy!]!
+  # Tags of the post
+  tags: [Taxonomy!]!
+  
+  # Categories of the post
+  categories: [Taxonomy!]!
 }
 
 type PostsNode {
@@ -298,7 +303,6 @@ type AdjacentPosts {
 input TaxonomyInputType {
   id: Int
   name: String
-  type: String
   slug: String
 }
 
@@ -400,21 +404,25 @@ input OptionInputType {
   value: String
 }
 
-enum TaxonomyTypes {
+enum TaxonomyType {
   post_tag
   post_category
+}
+
+enum TaxonomyTypes {
+  tags
+  categories
 }
 
 type Taxonomy {
   id: Int!
   name: String!
-  type: TaxonomyTypes!
   desc: String
   slug: String!
 }
 
 input TaxonomyFilters {
-  type: TaxonomyTypes
+  type: TaxonomyType
   active: Boolean
 }
 

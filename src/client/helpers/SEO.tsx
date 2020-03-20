@@ -69,7 +69,7 @@ SEO.propTypes = {
   published: PropTypes.string,
   updated: PropTypes.string,
   category: PropTypes.string,
-  tags: PropTypes.array,
+  tags: PropTypes.string,
   twitter: PropTypes.string,
   image: PropTypes.string,
   settings: PropTypes.object,
