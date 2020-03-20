@@ -5,7 +5,7 @@ import {
   SettingOptions,
   ThemeSettings,
 } from "../__generated__/gqlTypes";
-import { RouteComponentProps, RouterProps } from "react-router";
+import { RouteComponentProps } from "react-router";
 
 import ApolloClient from "apollo-client";
 import { IHelpers } from "./helperProps";
@@ -47,6 +47,7 @@ export interface IServerRenderProps {
   client: ApolloClient<any>;
   settings: TypeSettings;
   isStatic: boolean;
+  themeSettings: ThemeSettings[];
   request: { req: Express.Request; res: Express.Response };
 }
 

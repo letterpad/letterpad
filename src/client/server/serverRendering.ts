@@ -1,3 +1,5 @@
+import { QUERY_THEMES } from "./../../shared/queries/Queries";
+import { ThemeSettings, ThemesQuery } from "./../../__generated__/gqlTypes";
 import { Express } from "express";
 import apolloClient from "../../shared/apolloClient";
 import cache from "./cache";
@@ -30,13 +32,14 @@ const serverRendering = (app: Express) => {
     try {
       const client = apolloClient(false, { ssrMode: true });
       const settings = await fetchSettings();
-
+      let themeName = config.THEME || settings.theme.value;
       try {
         logger.debug("SSR - Fetched settings data");
         const content = await contentProvider({
           requestUrl: req.url,
           client,
           settings,
+          themeSettings: await getThemeSettings(themeName),
           isStatic,
           request: { req, res },
         });
@@ -62,4 +65,27 @@ function hasDatabase() {
   }
   return true;
   // check for other databases
+}
+
+/**
+ * Get app initial data
+ */
+async function getThemeSettings(
+  themeName: string,
+): Promise<ThemeSettings[] | []> {
+  const client = apolloClient(false);
+  let themeSettings: ThemeSettings[] | [] = [];
+  try {
+    const themeResult = await client.query<ThemesQuery>({
+      query: QUERY_THEMES,
+      variables: {
+        name: themeName,
+      },
+    });
+    if (themeResult.data && themeResult.data.themes.length > 0) {
+      themeSettings = themeResult.data.themes[0].settings as ThemeSettings[];
+    }
+    return themeSettings;
+  } catch (e) {}
+  return themeSettings;
 }

@@ -681,6 +681,7 @@ export type CreatePostMutation = { __typename?: "Mutation" } & {
           | "slug"
           | "excerpt"
           | "createdAt"
+          | "publishedAt"
         > & {
             author: { __typename?: "Author" } & Pick<Author, "username">;
             cover_image: { __typename?: "CoverImage" } & Pick<
@@ -830,6 +831,7 @@ export type UpdatePostMutation = { __typename?: "Mutation" } & {
           | "status"
           | "excerpt"
           | "createdAt"
+          | "publishedAt"
         > & {
             author: { __typename?: "Author" } & Pick<
               Author,

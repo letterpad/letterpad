@@ -5,7 +5,7 @@ import serverApp from "./serverApp";
 
 let styles;
 export const contentProvider = async (props: IServerRenderProps) => {
-  const { settings, isStatic } = props;
+  const { settings, isStatic, themeSettings } = props;
   let theme = settings.theme.value;
   // In dev mode if a theme is explicitly called, then use that
   if (config.THEME) {
@@ -15,7 +15,7 @@ export const contentProvider = async (props: IServerRenderProps) => {
   let response: any = {
     html: "",
     apolloState: {},
-    initialData: { settings },
+    initialData: { settings, themeSettings },
     head: "",
     sheet: "",
   };
@@ -29,6 +29,7 @@ export const contentProvider = async (props: IServerRenderProps) => {
   }
 
   const { html, apolloState, initialData, head, sheet } = response;
+
   if (sheet) {
     styles = sheet.getStyleTags();
     sheet.seal();
