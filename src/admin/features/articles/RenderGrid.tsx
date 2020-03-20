@@ -2,14 +2,11 @@ import React from "react";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
 import { StyledItem } from "./ArticleList.css";
-import config from "../../../config";
-import { filterTaxonomies } from ".";
 import { getReadableDate } from "../../../shared/date";
 const RenderGrid: React.FC<any> = ({ data, setSelection }) => {
   return (
     <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
       {data.map(post => {
-        const { categories } = filterTaxonomies(post.taxonomies);
         const authorName = post.author.fname + " " + post.author.lname;
         return (
           <StyledItem key={post.slug}>
@@ -27,7 +24,7 @@ const RenderGrid: React.FC<any> = ({ data, setSelection }) => {
               href={"/admin/posts/" + post.id}
               line1={authorName}
               line2={getReadableDate(post.createdAt)}
-              stickyText={categories}
+              stickyText={post.categories.map(item => item.name).join(", ")}
             />
           </StyledItem>
         );

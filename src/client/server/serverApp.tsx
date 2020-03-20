@@ -11,21 +11,18 @@ const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
 import { ApolloProvider, renderToStringWithData } from "react-apollo";
 import ClientApp, { IRoutes } from "../ClientApp";
 import { IServerRenderProps, TypeSettings } from "../types";
-import { ThemeSettings, ThemesQuery } from "../../__generated__/gqlTypes";
 
 import { Helmet } from "react-helmet";
-import { QUERY_THEMES } from "../../shared/queries/Queries";
 import React from "react";
 import { StaticContext } from "../Context";
 import { StaticRouter } from "react-router";
-import apolloClient from "../../shared/apolloClient";
 import config from "../../config";
 import { getMatchedRouteData } from "./helper";
 import logger from "../../shared/logger";
 import ssrFetch from "./ssrFetch";
 
 const serverApp = async (props: IServerRenderProps) => {
-  const { requestUrl, client, settings, isStatic } = props;
+  const { requestUrl, client, settings, isStatic, themeSettings } = props;
 
   const opts = {
     location: requestUrl,
@@ -34,7 +31,7 @@ const serverApp = async (props: IServerRenderProps) => {
   };
 
   const initialData: IRoutes["initialData"] = {
-    themeSettings: await getThemeSettings(settings),
+    themeSettings,
     settings,
   };
 
@@ -79,25 +76,3 @@ const serverApp = async (props: IServerRenderProps) => {
 };
 
 export default serverApp;
-/**
- * Get app initial data
- */
-async function getThemeSettings(
-  settings: TypeSettings,
-): Promise<ThemeSettings[] | []> {
-  const client = apolloClient(false);
-  let themeSettings: ThemeSettings[] | [] = [];
-  try {
-    const themeResult = await client.query<ThemesQuery>({
-      query: QUERY_THEMES,
-      variables: {
-        name: settings.theme.value,
-      },
-    });
-    if (themeResult.data && themeResult.data.themes.length > 0) {
-      themeSettings = themeResult.data.themes[0].settings as ThemeSettings[];
-    }
-    return themeSettings;
-  } catch (e) {}
-  return themeSettings;
-}

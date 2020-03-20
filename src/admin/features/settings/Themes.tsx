@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { notify } from "react-notify-toast";
 
 import utils from "../../../shared/util";
 
@@ -27,23 +26,8 @@ const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
       });
   }, []);
 
-  // const activateTheme = async (e?: React.MouseEvent) => {
-  //   e && e.preventDefault();
-  //   const settings = [];
-  //   Object.keys(this.updatedOptions).forEach(option => {
-  //     let value = this.updatedOptions[option];
-  //     settings.push({
-  //       option,
-  //       value,
-  //     });
-  //   });
-  //   await updateOption(settings);
-  //   notify.show("Theme Activated", "success", 3000);
-  // };
-
   const selectTheme = (e: React.MouseEvent, selectedTheme: IThemeConfig) => {
     e.preventDefault();
-    // if (e.target.className == "material-icons") return;
     const modifiedThemes = themes.map(theme => {
       theme.active = false;
       if (theme.name === selectedTheme.name) {
@@ -59,7 +43,12 @@ const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
     <div>
       <StyledGrid columns="repeat(auto-fit,minmax(250px,1fr))">
         {themes.map((theme, idx) => (
-          <ThemeItem key={idx} theme={theme} selectTheme={selectTheme} />
+          <ThemeItem
+            key={idx}
+            theme={theme}
+            selectTheme={selectTheme}
+            name={theme.name}
+          />
         ))}
       </StyledGrid>
     </div>

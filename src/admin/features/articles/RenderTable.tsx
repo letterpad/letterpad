@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import React from "react";
 import { Table } from "./ArticleList.css";
-import { filterTaxonomies } from ".";
 
 const RenderTable = ({ data, setSelection }) => {
   return (
@@ -20,7 +19,6 @@ const RenderTable = ({ data, setSelection }) => {
       </thead>
       <tbody>
         {data.map(post => {
-          const { categories } = filterTaxonomies(post.taxonomies);
           const authorName = post.author.fname + " " + post.author.lname;
           return (
             <tr key={post.slug}>
@@ -44,7 +42,9 @@ const RenderTable = ({ data, setSelection }) => {
               <td className={"upper status " + post.status}>
                 <span>{post.status}</span>
               </td>
-              <td className="small">{categories}</td>
+              <td className="small">
+                {post.categories.map(item => item.name).join(", ")}
+              </td>
             </tr>
           );
         })}
