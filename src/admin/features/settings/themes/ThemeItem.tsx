@@ -11,6 +11,7 @@ import {
   UpdateThemesMutation,
   ThemesQuery,
   ThemesQueryVariables,
+  ThemeSettings,
 } from "../../../../__generated__/gqlTypes";
 
 const SettingsLink = styled.a`
@@ -19,12 +20,12 @@ const SettingsLink = styled.a`
 
 interface IThemeItemProps {
   theme: IThemeConfig;
+  name: string;
   selectTheme: (e: React.MouseEvent, selectedTheme: IThemeConfig) => void;
 }
-
 const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
-  const [data, setData] = useState<any>({});
+  const [data, setData] = useState<ThemeSettings[]>();
 
   const displaySettings = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -37,7 +38,7 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
       fetchPolicy: "no-cache",
     });
 
-    setData(response.data.themes[0]);
+    setData(response.data.themes[0].settings);
     setSettingsOpen(true);
 
     return false;
@@ -83,9 +84,9 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
       </StyledItem>
       {settingsOpen && (
         <ThemeSettingsModal
-          isOpen={settingsOpen}
           onClose={() => setSettingsOpen(false)}
-          data={data}
+          data={data as ThemeSettings[]}
+          name={theme.name}
           onSave={onSave}
         />
       )}

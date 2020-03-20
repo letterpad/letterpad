@@ -2,6 +2,10 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledRadio = styled.div`
+  .horizontal {
+    display: flex;
+    justify-content: center;
+  }
   .radio {
     margin: 0.5rem;
     input[type="radio"] {
@@ -72,30 +76,29 @@ const RadioBox: React.FC<any> = ({
     <StyledRadio>
       <label className="custom-label">{label}</label>
       <br />
-      {options.map(option => (
-        <div className="radio" key={option}>
-          <input
-            type="radio"
-            name={groupName}
-            value={option}
-            id={"rb-" + option}
-            defaultChecked={option === defaultValue}
-            onClick={(e: any) => {
-              onChange(e.target.value);
-            }}
-            {...props}
-          />
-          <label htmlFor={"rb-" + option} className="radio-label">
-            {option}
-          </label>
-        </div>
-      ))}
+      <br />
+      <div className="horizontal">
+        {options.map(option => (
+          <div className="radio" key={option}>
+            <input
+              type="radio"
+              name={groupName}
+              value={option}
+              id={"rb-" + option}
+              defaultChecked={option === defaultValue}
+              onClick={(e: any) => {
+                onChange(e.target.value);
+              }}
+              {...props}
+            />
+            <label htmlFor={"rb-" + option} className="radio-label">
+              {option}
+            </label>
+          </div>
+        ))}
+      </div>
     </StyledRadio>
   );
 };
-// RadioBox.propTypes = {
-//   data: PropTypes.object,
-//   onChange: PropTypes.func,
-// };
 
 export default RadioBox;

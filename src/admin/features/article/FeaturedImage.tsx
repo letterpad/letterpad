@@ -135,7 +135,8 @@ class FeaturedImage extends Component<
       notify.show(error, "error", 3000);
       return;
     }
-    this.setCoverImage({ void: { src, width, height } });
+    await this.setCoverImage({ void: { src, width, height } });
+    this.toggleFileExplorer();
   };
 
   toggleFileExplorer = () => {

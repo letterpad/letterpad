@@ -173,20 +173,3 @@ const Title = ({ title, creationLink }) => {
     </StyledTitle>
   );
 };
-
-export const filterTaxonomies = taxonomies => {
-  const result: any = {
-    tags: [],
-    categories: [],
-  };
-
-  taxonomies.forEach(tax => {
-    const type = tax.type === "post_category" ? "categories" : "tags";
-
-    result[type].push(tax.name);
-  });
-
-  result.tags = result.tags.join(", ");
-  result.categories = result.categories.join(", ");
-  return result;
-};
