@@ -25,28 +25,38 @@ export const addUpdateDataPlaceholder = async (root, args, { models }) => {
 };
 
 export const updateTitleAndSlug = async (root, args, { models }) => {
-  let { previousPost, title } = args;
-  if (!title) return args;
-  if (isFirstTitleCreation(previousPost.dataValues.title, title)) {
+  let { previousPost, title, slug } = args;
+
+  if (slug) {
+    args.dataToUpdate.slug = slug;
+    logger.debug("Slug changed to :", args.dataToUpdate.slug);
+  } else if (!title) {
+    return args;
+  } else if (isFirstTitleCreation(previousPost.dataValues.title, title)) {
     args.dataToUpdate.slug = await slugify(
       models.Post,
       previousPost.dataValues.title,
     );
     logger.debug("Slug created:", args.dataToUpdate.slug);
   }
+
   return args;
 };
 
 export const updateDatesAndStatus = async (root, args) => {
-  let { previousPost, status } = args;
+  let { previousPost, status, publishedAt } = args;
   const currentTime = getDateTime(new Date().getTime());
-  // If this post is being published for the first time, update the publish date
-  if (status === "publish" && previousPost.dataValues.status === "draft") {
-    args.dataToUpdate.publishedAt = currentTime;
-    logger.debug("Post status changed from draft to publish - ", currentTime);
-  }
-  if (status) {
-    args.dataToUpdate.status = status;
+  if (publishedAt) {
+    args.dataToUpdate.publishedAt = publishedAt;
+  } else {
+    // If this post is being published for the first time, update the publish date
+    if (status === "publish" && previousPost.dataValues.status === "draft") {
+      args.dataToUpdate.publishedAt = currentTime;
+      logger.debug("Post status changed from draft to publish - ", currentTime);
+    }
+    if (status) {
+      args.dataToUpdate.status = status;
+    }
   }
   args.dataToUpdate.updatedAt = currentTime;
   return args;
@@ -56,7 +66,7 @@ export const updateCoverImage = async (root, args) => {
   let { cover_image } = args;
   if (!cover_image) return args;
 
-  args.dataToUpdate.src = cover_image.src.replace(host, "");
+  args.dataToUpdate.cover_image = cover_image.src.replace(host, "");
 
   if (!hasDimentions(cover_image)) {
     let { src } = cover_image;
@@ -79,7 +89,12 @@ export const updateCoverImage = async (root, args) => {
     args.dataToUpdate.cover_image_width = cover_image.width;
     args.dataToUpdate.cover_image_height = cover_image.height;
   }
-
+  logger.debug(
+    "Updating cover image",
+    args.dataToUpdate.src,
+    args.dataToUpdate.cover_image_width,
+    args.dataToUpdate.cover_image_height,
+  );
   return args;
 };
 
@@ -130,6 +145,7 @@ export const executeUpdatePost = async (root, args, { models }) => {
 
 export const updateTaxonomies = async (root, args, { models }) => {
   let { tags, categories, previousPost } = args;
+  if (!tags && !categories) return args;
   logger.debug("Updating taxonomies");
   const prevTaxonomies = await previousPost.getTaxonomies();
   if (!tags)

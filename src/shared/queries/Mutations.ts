@@ -21,6 +21,7 @@ export const CREATE_POST = gql`
         slug
         excerpt
         createdAt
+        publishedAt
         cover_image {
           src
           width
@@ -168,6 +169,7 @@ export const UPDATE_POST_QUERY = gql`
         status
         excerpt
         createdAt
+        publishedAt
         cover_image {
           width
           height
