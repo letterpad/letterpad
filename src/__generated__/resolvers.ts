@@ -124,7 +124,8 @@ export type InputCreatePost = {
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
-  taxonomies?: Maybe<Array<Maybe<TaxonomyInputType>>>;
+  tags?: Maybe<Array<Maybe<TaxonomyInputType>>>;
+  categories?: Maybe<Array<Maybe<TaxonomyInputType>>>;
 };
 
 export type InputThemeSettings = {
@@ -152,7 +153,8 @@ export type InputUpdatePost = {
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
-  taxonomies?: Maybe<Array<Maybe<TaxonomyInputType>>>;
+  tags?: Maybe<Array<Maybe<TaxonomyInputType>>>;
+  categories?: Maybe<Array<Maybe<TaxonomyInputType>>>;
 };
 
 export type LoginResponse = {
@@ -296,7 +298,7 @@ export type MutationUpdateTaxonomyArgs = {
   id: Scalars["Int"];
   name?: Maybe<Scalars["String"]>;
   desc?: Maybe<Scalars["String"]>;
-  type: TaxonomyTypes;
+  type: TaxonomyType;
   slug?: Maybe<Scalars["String"]>;
 };
 
@@ -356,8 +358,10 @@ export type Post = {
   updatedAt: Scalars["Date"];
   /** Reading time of the post in minutes */
   reading_time: Scalars["String"];
-  /** Tags and Categories of the post */
-  taxonomies: Array<Taxonomy>;
+  /** Tags of the post */
+  tags: Array<Taxonomy>;
+  /** Categories of the post */
+  categories: Array<Taxonomy>;
 };
 
 export type PostFilters = {
@@ -565,26 +569,29 @@ export type Taxonomy = {
   __typename?: "Taxonomy";
   id: Scalars["Int"];
   name: Scalars["String"];
-  type: TaxonomyTypes;
   desc?: Maybe<Scalars["String"]>;
   slug: Scalars["String"];
 };
 
 export type TaxonomyFilters = {
-  type?: Maybe<TaxonomyTypes>;
+  type?: Maybe<TaxonomyType>;
   active?: Maybe<Scalars["Boolean"]>;
 };
 
 export type TaxonomyInputType = {
   id?: Maybe<Scalars["Int"]>;
   name?: Maybe<Scalars["String"]>;
-  type?: Maybe<Scalars["String"]>;
   slug?: Maybe<Scalars["String"]>;
 };
 
-export enum TaxonomyTypes {
+export enum TaxonomyType {
   PostTag = "post_tag",
   PostCategory = "post_category",
+}
+
+export enum TaxonomyTypes {
+  Tags = "tags",
+  Categories = "categories",
 }
 
 export type Theme = {
@@ -761,7 +768,6 @@ export type ResolversTypes = {
   PostTypes: PostTypes;
   PostStatusOptions: PostStatusOptions;
   Taxonomy: ResolverTypeWrapper<Taxonomy>;
-  TaxonomyTypes: TaxonomyTypes;
   PostsFilters: PostsFilters;
   PostSortBy: PostSortBy;
   PostsNode: ResolverTypeWrapper<PostsNode>;
@@ -774,6 +780,7 @@ export type ResolversTypes = {
   Setting: ResolverTypeWrapper<Setting>;
   SettingOptions: SettingOptions;
   TaxonomyFilters: TaxonomyFilters;
+  TaxonomyType: TaxonomyType;
   Theme: ResolverTypeWrapper<Theme>;
   ThemeSettings: ResolverTypeWrapper<ThemeSettings>;
   ThemeSettingsUIInputTypes: ThemeSettingsUiInputTypes;
@@ -797,6 +804,7 @@ export type ResolversTypes = {
   MenuTypes: MenuTypes;
   PostTaxonomyNode: ResolverTypeWrapper<PostTaxonomyNode>;
   EnumPermissions: EnumPermissions;
+  TaxonomyTypes: TaxonomyTypes;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -822,7 +830,6 @@ export type ResolversParentTypes = {
   PostTypes: PostTypes;
   PostStatusOptions: PostStatusOptions;
   Taxonomy: Taxonomy;
-  TaxonomyTypes: TaxonomyTypes;
   PostsFilters: PostsFilters;
   PostSortBy: PostSortBy;
   PostsNode: PostsNode;
@@ -835,6 +842,7 @@ export type ResolversParentTypes = {
   Setting: Setting;
   SettingOptions: SettingOptions;
   TaxonomyFilters: TaxonomyFilters;
+  TaxonomyType: TaxonomyType;
   Theme: Theme;
   ThemeSettings: ThemeSettings;
   ThemeSettingsUIInputTypes: ThemeSettingsUiInputTypes;
@@ -858,6 +866,7 @@ export type ResolversParentTypes = {
   MenuTypes: MenuTypes;
   PostTaxonomyNode: PostTaxonomyNode;
   EnumPermissions: EnumPermissions;
+  TaxonomyTypes: TaxonomyTypes;
 };
 
 export type AdjacentPostsResolvers<
@@ -1165,7 +1174,8 @@ export type PostResolvers<
   publishedAt?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   reading_time?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  taxonomies?: Resolver<
+  tags?: Resolver<Array<ResolversTypes["Taxonomy"]>, ParentType, ContextType>;
+  categories?: Resolver<
     Array<ResolversTypes["Taxonomy"]>,
     ParentType,
     ContextType
@@ -1366,7 +1376,6 @@ export type TaxonomyResolvers<
 > = {
   id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes["TaxonomyTypes"], ParentType, ContextType>;
   desc?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   slug?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;

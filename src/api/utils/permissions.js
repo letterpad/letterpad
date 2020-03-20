@@ -1,6 +1,6 @@
 import { UnauthorizedError } from "./common";
 
-const createResolver = resolver => {
+export const createResolver = resolver => {
   const baseResolver = resolver;
   baseResolver.createResolver = childResolver => {
     const newResolver = async (root, args, context, err) => {

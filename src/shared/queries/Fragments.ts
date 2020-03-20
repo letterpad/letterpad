@@ -25,10 +25,14 @@ export const PostFragmentAllFields = gql`
       avatar
       bio
     }
-    taxonomies {
+    tags {
       id
       name
-      type
+      slug
+    }
+    categories {
+      id
+      name
       slug
     }
   }

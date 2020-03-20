@@ -1,9 +1,11 @@
 import {
   Post,
   Taxonomy,
+  TaxonomyTypes,
   UpdatePostMutation,
 } from "../../../__generated__/gqlTypes";
 
+import { EventBusInstance } from "../../../shared/eventBus";
 import { FetchResult } from "apollo-link";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 import client from "../../../shared/apolloClient";
@@ -11,12 +13,12 @@ import { deepMerge } from "../../../shared/deepMerge";
 
 interface IPostActions {
   triggerEvent: (name: string, data: any) => void;
-  setData: (data: Post | {}) => void;
+  setData: (data: Post) => void;
   setDraft: (data: { [T in keyof Partial<Post>]: Post[T] }) => void;
   getData: () => Post;
   getDraft: () => { [T in keyof Partial<Post>]: Post[T] };
-  removeTaxonomy: (taxonomy: Taxonomy) => void;
-  addTaxonomy: (taxonomy: Taxonomy) => void;
+  removeTaxonomy: (taxonomy: Taxonomy, type: TaxonomyTypes) => void;
+  addTaxonomy: (taxonomy: Taxonomy, type: TaxonomyTypes) => void;
   updatePost: () => Promise<FetchResult<UpdatePostMutation>>;
 }
 
@@ -32,14 +34,8 @@ let PostActions: IPostActions = (() => {
     },
 
     setData: (data: Post) => {
-      if (data.taxonomies) {
-        data.taxonomies = data.taxonomies.map(item => {
-          const { __typename, ...rest } = item;
-          return rest;
-        });
-      }
       draftData = { id: data.id };
-      postData = deepMerge(postData || {}, data) as Post;
+      postData = data; //deepMerge(postData || {}, data) as Post;
       PostActions.triggerEvent("onPostChange", data);
     },
 
@@ -58,32 +54,33 @@ let PostActions: IPostActions = (() => {
       return draftData;
     },
 
-    removeTaxonomy: (taxonomy: Taxonomy) => {
+    removeTaxonomy: (taxonomy: Taxonomy, type: TaxonomyTypes) => {
       if (!postData) return;
-      postData.taxonomies = PostActions.getData().taxonomies.filter(
+      postData[type] = PostActions.getData()[type].filter(
         item => item.id !== taxonomy.id,
       );
-      const draft = postData.taxonomies.map(item => {
+      const draft = postData[type].map(item => {
         const { __typename, ...rest } = item;
         return rest;
       });
-      draftData["taxonomies"] = draft;
+      draftData[type] = draft;
     },
 
-    addTaxonomy: (taxonomy: Taxonomy) => {
-      const taxonomies = [...PostActions.getData().taxonomies, taxonomy];
+    addTaxonomy: (taxonomy: Taxonomy, type: TaxonomyTypes) => {
+      const taxonomies = [...PostActions.getData()[type], taxonomy];
       if (postData) {
-        postData.taxonomies = taxonomies;
-        const draft = postData.taxonomies.map(item => {
+        postData[type] = taxonomies;
+        const draft = postData[type].map(item => {
           const { __typename, ...rest } = item;
           return rest;
         });
-        draftData["taxonomies"] = draft;
+        draftData[type] = draft;
       }
     },
 
     updatePost: async () => {
       const data = PostActions.getDraft();
+      EventBusInstance.publish("ARTICLE_SAVING");
       const update = await client().mutate<UpdatePostMutation>({
         mutation: UPDATE_POST_QUERY,
         variables: {
@@ -91,8 +88,8 @@ let PostActions: IPostActions = (() => {
         },
       });
       if (update.data) {
-        postData = update.data.updatePost.post as Post;
-        draftData = { id: data.id };
+        PostActions.setData(update.data.updatePost.post as Post);
+        EventBusInstance.publish("ARTICLE_SAVED");
       }
       return update;
     },

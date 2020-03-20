@@ -75,15 +75,7 @@ class Edit extends Component<IProps> {
     });
     clearInterval(this.postSaveTimer);
     this.postSaveTimer = setTimeout(async () => {
-      EventBusInstance.publish("ARTICLE_SAVING");
       const update = await PostActions.updatePost();
-      if (
-        update.data &&
-        update.data.updatePost &&
-        update.data.updatePost.post
-      ) {
-        EventBusInstance.publish("ARTICLE_SAVED");
-      }
     }, 1000);
   };
 
@@ -119,7 +111,6 @@ class Edit extends Component<IProps> {
               PostActions.setDraft({
                 title: value,
               });
-              // this.onEditorChange(post.md);
             }}
           />
         </div>

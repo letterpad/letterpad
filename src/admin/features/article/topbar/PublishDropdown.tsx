@@ -2,7 +2,7 @@ import {
   Post,
   PostStatusOptions,
   PostTypes,
-  TaxonomyTypes,
+  TaxonomyType,
 } from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
 
@@ -18,7 +18,7 @@ interface IProps {
   updatePost: (data?: object) => void;
   post: Post;
   toggleVisibility: (e?: Event, flag?: boolean) => void;
-  isPublished: boolean;
+  // isPublished: boolean;
 }
 class PublishDropdown extends Component<IProps> {
   onStatusChange = async (status: boolean) => {
@@ -34,7 +34,7 @@ class PublishDropdown extends Component<IProps> {
     const post = {
       ...PostActions.getData(),
     };
-    const { isPublished, toggleVisibility, updatePost } = this.props;
+    const { toggleVisibility } = this.props;
 
     return (
       <StyledDropdown>
@@ -42,39 +42,29 @@ class PublishDropdown extends Component<IProps> {
           leftLabel="Draft"
           rightLabel="Publish"
           onChange={this.onStatusChange}
-          isSelected={isPublished}
+          isSelected={post.status === PostStatusOptions.Publish}
         />
 
         <hr />
-        <Excerpt
-          html={post.html}
-          excerpt={post.excerpt}
-          updatePost={updatePost}
-        />
+        <Excerpt html={post.html} excerpt={post.excerpt} />
         <hr />
         {post.type === PostTypes.Post && (
           <Taxonomies
             toggleVisibility={toggleVisibility}
             post={post}
-            for={TaxonomyTypes.PostTag}
+            for={TaxonomyType.PostTag}
             suggestions={[]}
-            updatePost={updatePost}
           />
         )}
         {post.type === PostTypes.Post && (
           <Taxonomies
             toggleVisibility={toggleVisibility}
             post={post}
-            for={TaxonomyTypes.PostCategory}
+            for={TaxonomyType.PostCategory}
             suggestions={[]}
-            updatePost={updatePost}
           />
         )}
-        <FeaturedImage
-          post={post}
-          mediaProvider={MediaProvider.Unsplash}
-          updatePost={updatePost}
-        />
+        <FeaturedImage post={post} mediaProvider={MediaProvider.Unsplash} />
         <br />
       </StyledDropdown>
     );

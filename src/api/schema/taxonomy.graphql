@@ -1,18 +1,22 @@
-enum TaxonomyTypes {
+enum TaxonomyType {
   post_tag
   post_category
+}
+
+enum TaxonomyTypes {
+  tags
+  categories
 }
 
 type Taxonomy {
   id: Int!
   name: String!
-  type: TaxonomyTypes!
   desc: String
   slug: String!
 }
 
 input TaxonomyFilters {
-  type: TaxonomyTypes
+  type: TaxonomyType
   active: Boolean
 }
 
@@ -31,7 +35,7 @@ type Mutation {
     id: Int!
     name: String
     desc: String
-    type: TaxonomyTypes!
+    type: TaxonomyType!
     slug: String
   ): EditTaxResponse!
   deleteTaxonomy(id: Int!): EditTaxResponse!

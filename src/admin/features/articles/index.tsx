@@ -38,6 +38,7 @@ enum FilterOptions {
   tag = "tag",
   status = "status",
   sortBy = "sortBy",
+  query = "query",
 }
 
 const Articles: React.FC<IArticleListProps> = ({
