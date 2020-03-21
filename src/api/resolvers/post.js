@@ -19,7 +19,7 @@ import {
   updateDatesAndStatus,
   updateReadingTime,
   updateTaxonomies,
-  updateTitleAndSlug,
+  updateTitleAndSlugAndFeatured,
 } from "./post/updatePostResolver";
 import {
   checkDisplayAccess,
@@ -191,7 +191,7 @@ const postresolver = {
     ),
     updatePost: editPostPerm
       .createResolver(addUpdateDataPlaceholder)
-      .createResolver(updateTitleAndSlug)
+      .createResolver(updateTitleAndSlugAndFeatured)
       .createResolver(updateDatesAndStatus)
       .createResolver(updateCoverImage)
       .createResolver(updateReadingTime)

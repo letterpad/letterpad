@@ -34,6 +34,7 @@ input PostsFilters {
   cursor: Int
   limit: Int
   page: Int
+  featured: Boolean
 }
 
 type CoverImage {
@@ -56,6 +57,7 @@ input InputCreatePost {
   excerpt: String
   cover_image: InputCoverImage
   type: String
+  featured: Boolean
   status: PostStatusOptions
   slug: String
   tags: [TaxonomyInputType]
@@ -68,6 +70,7 @@ input InputUpdatePost {
   html: String
   md: String
   authorId: Int
+  featured: Boolean
   excerpt: String
   cover_image: InputCoverImage
   publishedAt: Date
@@ -83,6 +86,7 @@ input SearchFilters {
   tag: String
   category: String
   cursor: Int
+  featured: Boolean
   page: Int
   limit: String
 }
@@ -111,6 +115,8 @@ type Post {
   type: PostTypes!
   # Status of the post
   status: PostStatusOptions!
+  # Featured post
+  featured: Boolean!
   # The uri of the post
   slug: String!
   # The creation date of the post
@@ -171,6 +177,7 @@ type SearchResult {
   excerpt: String
   publishedAt: Date
   slug: String
+  featured: Boolean
 }
 
 type SearchOutput {

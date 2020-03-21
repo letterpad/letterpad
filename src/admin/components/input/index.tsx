@@ -40,3 +40,16 @@ export const TextArea: React.FC<ITextareaProps> = ({ label, ...props }) => {
     </Container>
   );
 };
+
+export const Label: React.FC<{ label: string }> = ({ label }) => {
+  return (
+    <Container>
+      {label && (
+        <label
+          className="custom-label"
+          dangerouslySetInnerHTML={{ __html: label }}
+        />
+      )}
+    </Container>
+  );
+};

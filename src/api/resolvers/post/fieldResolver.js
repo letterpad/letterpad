@@ -1,6 +1,9 @@
 import Sequelize from "sequelize";
 
 export const addConditionsPlaceholder = async (root, args) => {
+  if (!args.filters.type) {
+    args.filters.type = "post";
+  }
   return {
     ...args.filters,
     conditions: { include: [], where: {}, limit: 20 },

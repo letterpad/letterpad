@@ -34,7 +34,7 @@ const serverRendering = (app: Express) => {
       const settings = await fetchSettings();
       let themeName = config.THEME || settings.theme.value;
       try {
-        logger.debug("SSR - Fetched settings data");
+        logger.debug("SSR - Fetched settings data", req.url);
         const content = await contentProvider({
           requestUrl: req.url,
           client,

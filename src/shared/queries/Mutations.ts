@@ -20,6 +20,7 @@ export const CREATE_POST = gql`
         type
         slug
         excerpt
+        featured
         createdAt
         publishedAt
         cover_image {
@@ -168,6 +169,7 @@ export const UPDATE_POST_QUERY = gql`
         type
         status
         excerpt
+        featured
         createdAt
         publishedAt
         cover_image {
