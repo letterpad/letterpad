@@ -24,8 +24,11 @@ export const addUpdateDataPlaceholder = async (root, args, { models }) => {
   };
 };
 
-export const updateTitleAndSlug = async (root, args, { models }) => {
-  let { previousPost, title, slug } = args;
+export const updateTitleAndSlugAndFeatured = async (root, args, { models }) => {
+  let { previousPost, title, slug, featured } = args;
+  if (typeof featured === "boolean") {
+    args.dataToUpdate.featured = featured;
+  }
 
   if (slug) {
     args.dataToUpdate.slug = slug;

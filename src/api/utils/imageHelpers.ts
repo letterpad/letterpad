@@ -90,8 +90,9 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
     $el.attr("loading", "lazy");
     let src = $el.attr("src");
     if (!src.startsWith("http")) return;
+    logger.debug("Getting dimensions of ", src);
     const size = await getImageDimensions(src);
-    src = src.replace("http://", "https://");
+    // src = src.replace("http://", "https://");
     $el.attr("height", size.height.toString());
     $el.attr("width", size.width.toString());
     logger.info("Image width x height", { ...size });
@@ -113,7 +114,7 @@ export const setResponsiveImages = async (html: string) => {
     $el.attr("loading", "lazy");
     let src = $el.attr("src");
     if (!src.startsWith("http")) return;
-    src = src.replace("http://", "https://");
+    // src = src.replace("http://", "https://");
     const url = new URL(src);
 
     if (url.hostname.includes("unsplash")) {

@@ -136,7 +136,7 @@ You can wrap [certain text with link](http://google.com) or just have the url [h
 
 ## Images
 
-![Minion](https://octodex.github.com/images/minion.png)
+![Smoky morning in Cascades](https://images.unsplash.com/photo-1511497584788-876760111969?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1789&q=80)
 
 You can also highlight newly added text by wrapping the text between two ++ followed by a space.
 ++This is a newly added text++
@@ -247,7 +247,7 @@ cosnole<span class="token punctuation">.</span><span class="token function">log<
 <h2>Links</h2>
 <p>You can wrap <a href="http://google.com">certain text with link</a> or just have the url <a href="http://google.com">http://google.com</a> which will automatically convert into a link.</p>
 <h2>Images</h2>
-<p><figure><img src="https://octodex.github.com/images/minion.png" alt="Minion"><figcaption>Minion</figcaption></figure></p>
+<p><figure><img src="https://images.unsplash.com/photo-1511497584788-876760111969?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1789&q=80" alt="Smoky morning in Cascades"><figcaption>Minion</figcaption></figure></p>
 <p>You can also highlight newly added text by wrapping the text between two ++ followed by a space.
 ++This is a newly added text++</p>
 </div>
