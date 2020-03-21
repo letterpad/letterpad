@@ -61,6 +61,10 @@ class Post extends Model {
           type: DataTypes.STRING,
           defaultValue: "",
         },
+        featured: {
+          type: DataTypes.BOOLEAN,
+          defaultValue: false,
+        },
         status: {
           type: DataTypes.STRING,
           defaultValue: "draft",

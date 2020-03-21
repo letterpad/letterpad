@@ -112,6 +112,7 @@ export type InputCreatePost = {
   excerpt?: Maybe<Scalars["String"]>;
   cover_image?: Maybe<InputCoverImage>;
   type?: Maybe<Scalars["String"]>;
+  featured?: Maybe<Scalars["Boolean"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
   tags?: Maybe<Array<Maybe<TaxonomyInputType>>>;
@@ -137,6 +138,7 @@ export type InputUpdatePost = {
   html?: Maybe<Scalars["String"]>;
   md?: Maybe<Scalars["String"]>;
   authorId?: Maybe<Scalars["Int"]>;
+  featured?: Maybe<Scalars["Boolean"]>;
   excerpt?: Maybe<Scalars["String"]>;
   cover_image?: Maybe<InputCoverImage>;
   publishedAt?: Maybe<Scalars["Date"]>;
@@ -338,6 +340,8 @@ export type Post = {
   type: PostTypes;
   /** Status of the post */
   status: PostStatusOptions;
+  /** Featured post */
+  featured: Scalars["Boolean"];
   /** The uri of the post */
   slug: Scalars["String"];
   /** The creation date of the post */
@@ -372,6 +376,7 @@ export type PostsFilters = {
   cursor?: Maybe<Scalars["Int"]>;
   limit?: Maybe<Scalars["Int"]>;
   page?: Maybe<Scalars["Int"]>;
+  featured?: Maybe<Scalars["Boolean"]>;
 };
 
 export type PostsNode = {
@@ -484,6 +489,7 @@ export type SearchFilters = {
   tag?: Maybe<Scalars["String"]>;
   category?: Maybe<Scalars["String"]>;
   cursor?: Maybe<Scalars["Int"]>;
+  featured?: Maybe<Scalars["Boolean"]>;
   page?: Maybe<Scalars["Int"]>;
   limit?: Maybe<Scalars["String"]>;
 };
@@ -502,6 +508,7 @@ export type SearchResult = {
   excerpt?: Maybe<Scalars["String"]>;
   publishedAt?: Maybe<Scalars["Date"]>;
   slug?: Maybe<Scalars["String"]>;
+  featured?: Maybe<Scalars["Boolean"]>;
 };
 
 export type Setting = {

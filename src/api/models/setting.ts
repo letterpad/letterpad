@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 
 class Setting extends Model {
   static associate(_models) {}

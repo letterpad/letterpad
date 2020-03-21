@@ -12,6 +12,7 @@ export const PostFragmentAllFields = gql`
     updatedAt
     excerpt
     reading_time
+    featured
     cover_image {
       width
       height
