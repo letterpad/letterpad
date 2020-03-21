@@ -35,6 +35,7 @@ export class TopBar extends Component<ITopbarProps, any> {
       this.setState({ saving: true });
     });
     EventBusInstance.on("ARTICLE_SAVED", () => {
+      this.afterPostSave();
       // updates are really fast.
       // Let the saving state stay atleast for half a second to show the loader.
       // Users should know we have auto-save option.
@@ -81,9 +82,7 @@ export class TopBar extends Component<ITopbarProps, any> {
 
     if (update.data && update.data.updatePost) {
       let { ok, errors } = update.data.updatePost;
-      if (ok) {
-        return this.afterPostSave();
-      } else if (errors) {
+      if (errors) {
         if (errors && errors.length > 0) {
           const errorsUI = errors.map(error => error.message).join("\n");
           notify.show(errorsUI, "error", 3000);
