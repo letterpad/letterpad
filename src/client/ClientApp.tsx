@@ -33,7 +33,7 @@ class ClientApp extends Component<IRoutes, {}> {
     this.applyCustomCSS(settings);
     const routes = getRoutes({ ...this.props.initialData });
     return (
-      <div>
+      <>
         <SEO
           schema="Blog"
           title={`${settings.site_title.value} | ${settings.site_tagline.value}`}
@@ -55,7 +55,7 @@ class ClientApp extends Component<IRoutes, {}> {
             );
           })}
         </Switch>
-      </div>
+      </>
     );
   }
 }

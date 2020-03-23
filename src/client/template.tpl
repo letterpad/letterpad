@@ -14,9 +14,6 @@
     {{META_TAGS}}
     {{STYLE_TAGS}}
     {{STYLED_STYLES}}
-    <link rel="preload" as="script" href="/js/vendor-bundle.min.js"/>
-    <link rel="preload" as="script" href="/hugo/dist/client-bundle.min.js"/>
-    <link rel="preload" as="style" href="/hugo/dist/client.min.css"/>
 </head>
 <body>
     <div id="app">{{HTML_CONTENT}}</div>

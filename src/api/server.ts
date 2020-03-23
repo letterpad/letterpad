@@ -77,6 +77,7 @@ const server = new ApolloServer({
           didResolveOperation({ request }) {
             if (request.query?.startsWith("mutation")) {
               cache.clear();
+              logger.debug("Clearedcache");
             }
           },
         };

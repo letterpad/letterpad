@@ -41,8 +41,6 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
   }, [updatedOptions]);
 
   const setOption = (option: SettingOptions, value: string) => {
-    const key = SettingOptions[getSettingsKey(option)];
-    if (settings[key].value === value) return;
     const newUpdates = { ...updatedOptions, [option]: value };
     setUpdatedOptions(newUpdates);
   };
@@ -95,12 +93,3 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
 };
 
 export default translate("translations")(Settings);
-
-function getSettingsKey(key: string) {
-  for (let enumMember in SettingOptions) {
-    const isValueProperty = SettingOptions[enumMember];
-    if (isValueProperty === key) {
-      return enumMember;
-    }
-  }
-}

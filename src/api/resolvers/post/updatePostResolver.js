@@ -29,7 +29,9 @@ export const updateTitleAndSlugAndFeatured = async (root, args, { models }) => {
   if (typeof featured === "boolean") {
     args.dataToUpdate.featured = featured;
   }
-
+  if (title) {
+    args.dataToUpdate.title = title;
+  }
   if (slug) {
     args.dataToUpdate.slug = slug;
     logger.debug("Slug changed to :", args.dataToUpdate.slug);

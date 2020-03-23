@@ -26,17 +26,18 @@ export const getThemes = async (req: Request, res: Response) => {
         // get all the contents from the "config" file.
         const contents = require(themePath + "/config.json");
         const themeConfig: IThemeConfig = Object.assign({}, contents);
-        const folder_name = themePath.split("/").pop();
+        const theme_name = themePath.split("/").pop() as string;
         // check if it has a thumbnail without http
         if (themeConfig.thumbnail.indexOf("http") === -1) {
           themeConfig.thumbnail =
-            config.BASE_NAME + "/" + folder_name + themeConfig.thumbnail;
+            config.BASE_NAME + "/" + theme_name + themeConfig.thumbnail;
         }
         // check the theme has settings
         const hasSettings = fs.existsSync(themePath + "/settings.json");
 
-        themeConfig.active = themeConfig.short_name === currentTheme;
+        themeConfig.active = theme_name === currentTheme;
         themeConfig.settings = hasSettings;
+        themeConfig.folder_name = theme_name;
         availableThemes.push(themeConfig);
         // get default settings of all themes from files
         if (hasSettings) {
@@ -47,7 +48,7 @@ export const getThemes = async (req: Request, res: Response) => {
             setting.changedValue = setting.defaultValue;
           });
           newSettings.push({
-            name: themeConfig.short_name,
+            name: theme_name,
             settings: defaultSettings,
           });
         }

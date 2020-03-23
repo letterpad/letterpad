@@ -18,6 +18,23 @@ run_production () {
     node ./dist/server.js
 }
 
+build_all_themes () {
+
+    clean_up
+    
+    yarn tsc --build tsconfig.build.json &
+
+    for d in src/client/themes/* ; do
+        THEME="${d##*/}"
+        export THEME=$THEME
+        echo "Building theme $THEME"
+        yarn tsc --build "src/client/themes/$THEME/tsconfig.json" &
+        yarn webpack --env.NODE_ENV=production --config webpack/webpack.prod.js --env.theme=$THEME
+
+        sleep 1
+    done
+}
+
 build_letterpad_with_theme () {
     clean_up
     
@@ -27,7 +44,7 @@ build_letterpad_with_theme () {
     fi
     
     export THEME=$THEME
-    
+    export BUILD_RUNNING=true
     yarn tsc --build tsconfig.build.json &
     yarn tsc --build "src/client/themes/$THEME/tsconfig.json" &
     yarn webpack --env.NODE_ENV=production --config webpack/webpack.prod.js --env.theme=$THEME
@@ -79,6 +96,8 @@ if [ "$COMMAND" = "runDev" ]; then
     run_dev $THEME
 elif [ "$COMMAND" = "build" ]; then
     build_letterpad_with_theme $THEME
+elif [ "$COMMAND" = "buildAllThemes" ]; then
+    build_all_themes
 elif [ "$COMMAND" = "buildTheme" ]; then
     build_theme $THEME
 elif [ "$COMMAND" = "buildAdmin" ]; then

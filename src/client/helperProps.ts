@@ -46,6 +46,12 @@ export const getImageAttrs = (
   if (!sizes) sizes = [480, 720, 960, 1200, 1440, 1600, 2000];
   if (!srcSizes) srcSizes = `(max-width: 720px) 100vw, 720px`;
   const base64Url = makeCloudinaryUrl(src, 30);
+  if (src.startsWith("/")) {
+    return {
+      src,
+      loading: "lazy",
+    };
+  }
   const url = new URL(src);
 
   if (url.hostname.includes("cloudinary")) {

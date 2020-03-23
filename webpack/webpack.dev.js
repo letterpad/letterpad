@@ -28,7 +28,7 @@ const clientConfig = args => {
     optimization: {
       minimize: false,
       runtimeChunk: {
-        name: "src/public/js/vendor",
+        name: "src/public/js/" + args.theme + "/vendor",
       },
       removeAvailableModules: false,
       removeEmptyChunks: false,
