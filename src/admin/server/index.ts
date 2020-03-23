@@ -5,7 +5,7 @@ import { Express } from "express-serve-static-core";
 import config from "../../config";
 import { createPR } from "./response/createPullRequest";
 import { generateStaticSite } from "./response/generateStaticSite";
-import { getHtml } from "./response/sendHtml";
+import { getAdminContent } from "./response/getAdminContent";
 import { getThemes } from "./response/getThemes";
 import { setupLetterpad } from "../setup";
 import unsplash from "./response/unsplash";
@@ -20,6 +20,6 @@ export default (app: Express) => {
   app.get(base + "/admin/create-pull-request", createPR);
   app.get(base + "/admin/getThemes", getThemes);
   app.get(base + "/admin/unsplash/page/:page/query/:query", unsplash);
-  app.get(base + "/admin/*", getHtml);
+  app.get(base + "/admin/*", getAdminContent);
   app.get(base + "/initial-setup", setupLetterpad);
 };

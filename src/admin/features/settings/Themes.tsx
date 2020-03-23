@@ -36,7 +36,7 @@ const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
       return theme;
     });
     setThemes(modifiedThemes);
-    updateOption(SettingOptions.Theme, selectedTheme.short_name);
+    updateOption(SettingOptions.Theme, selectedTheme.folder_name);
   };
 
   return (

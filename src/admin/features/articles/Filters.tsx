@@ -3,7 +3,7 @@ import StyledSelect from "../../components/select";
 import { translate } from "react-i18next";
 import { QUERY_TAXONOMIES } from "../../../shared/queries/Queries";
 import apolloClient from "../../../shared/apolloClient";
-import { TaxonomyTypes } from "../../../__generated__/gqlTypes";
+import { TaxonomyTypes, TaxonomyType } from "../../../__generated__/gqlTypes";
 
 const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
   const [taxonomies, setTaxonomies] = React.useState<any>({
@@ -15,11 +15,11 @@ const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
     const fetchData = async () => {
       const tags = await apolloClient(true).query({
         query: QUERY_TAXONOMIES,
-        variables: { filters: { type: TaxonomyTypes.PostTag } },
+        variables: { filters: { type: TaxonomyType.PostTag } },
       });
       const categories = await apolloClient(true).query({
         query: QUERY_TAXONOMIES,
-        variables: { type: "post_category" },
+        variables: { type: TaxonomyType.PostCategory },
       });
       setTaxonomies({
         tags: tags.data.taxonomies,

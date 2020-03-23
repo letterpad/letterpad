@@ -1,15 +1,20 @@
 const merge = require("webpack-merge");
+const webpack = require("webpack");
 const baseConfig = require("./webpack.base.js");
 const path = require("path");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
 const clientConfig = args => {
   if (args.theme == "") {
     args.theme = "hugo";
   }
-  const extractThemeCss = new ExtractTextPlugin("[name].min.css");
-  const extractAdminCSS = new ExtractTextPlugin("[name].min.css");
+  const extractThemeCss = new ExtractTextPlugin({
+    filename: "[name].min.css",
+  });
+  const extractAdminCSS = new ExtractTextPlugin({
+    filename: "[name].min.css",
+  });
   return merge(baseConfig(args, "client"), {
     target: "web",
     devtool: undefined,
@@ -18,6 +23,17 @@ const clientConfig = args => {
       filename: "[name]-bundle.min.js",
     },
     plugins: [
+      new webpack.NormalModuleReplacementPlugin(
+        /themes\/.*?\/app.tsx/,
+        result => {
+          if (result.resource) {
+            result.resource = result.resource.replace(
+              /themes\/.*?\/app.tsx/,
+              "/themes/" + args.theme + "/app.tsx",
+            );
+          }
+        },
+      ),
       extractThemeCss,
       extractAdminCSS,
       new CopyPlugin([
@@ -52,7 +68,15 @@ const clientConfig = args => {
           to: __dirname + "/../dist/public/uploads/",
         },
         {
-          from: __dirname + "/../src/client/themes/**/public/**",
+          from:
+            __dirname + "/../src/client/themes/" + args.theme + "/public/**",
+          to: __dirname + "/..",
+          transformPath(targetPath) {
+            return targetPath.replace("src", "dist");
+          },
+        },
+        {
+          from: __dirname + "/../src/client/themes/" + args.theme + "/*.json",
           to: __dirname + "/..",
           transformPath(targetPath) {
             return targetPath.replace("src", "dist");
@@ -64,32 +88,38 @@ const clientConfig = args => {
       rules: [
         {
           test: /\.css$/,
-          use: extractThemeCss.extract({
-            fallback: "style-loader",
-            use: [
-              {
-                loader: "css-loader",
-                options: {
-                  importLoaders: 1,
-                  url: false,
-                },
+          use: [
+            {
+              loader: ExtractTextPlugin.loader,
+            },
+            {
+              loader: "css-loader",
+              options: {
+                importLoaders: 1,
+                url: true,
               },
-              "postcss-loader",
-            ],
-          }),
-          include: [path.join(__dirname, "../src/client/themes/")],
+            },
+            "postcss-loader",
+          ],
+          include: [
+            path.join(__dirname, "../src/client/themes/", args.theme, "/"),
+          ],
         },
         {
           test: /\.css$/,
-          use: extractAdminCSS.extract({
-            fallback: "style-loader",
-            use: [
-              {
-                loader: "css-loader",
-                options: { importLoaders: 1 },
+          use: [
+            {
+              loader: ExtractTextPlugin.loader,
+            },
+            {
+              loader: "css-loader",
+              options: {
+                importLoaders: 1,
+                url: true,
               },
-            ],
-          }),
+            },
+            "postcss-loader",
+          ],
           include: [path.join(__dirname, "../src/admin")],
         },
       ],
