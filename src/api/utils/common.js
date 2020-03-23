@@ -15,7 +15,6 @@ String.prototype.replaceAll = function(search, replacement) {
 export function formatTaxonomyForDBInsert(taxonomies, firstInsertID) {
   let result = [];
   taxonomies.map(function(items) {
-    console.log(items);
     let taxItems = items.split(",");
 
     taxItems.forEach(function(taxonomy) {

@@ -35,7 +35,7 @@ module.exports = (args, name) => {
             name: "vendor",
             chunks: "all",
             minChunks: 2,
-            filename: "public/js/[name]-bundle.min.js",
+            filename: "public/js/" + args.theme + "/[name]-bundle.min.js",
           },
         },
       },
@@ -58,7 +58,6 @@ module.exports = (args, name) => {
     plugins: [
       new WebpackBar({ name: name }),
       new webpack.DefinePlugin({
-        __THEME__: "hugo",
         "process.env": {
           NODE_ENV: JSON.stringify(env),
           API_URL: "process.env.API_URL",

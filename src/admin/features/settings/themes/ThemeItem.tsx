@@ -34,7 +34,7 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
       ThemesQueryVariables
     >({
       query: QUERY_THEMES,
-      variables: { name: theme.short_name },
+      variables: { name: theme.folder_name },
       fetchPolicy: "no-cache",
     });
 
@@ -49,7 +49,7 @@ const ThemeItem: React.FC<IThemeItemProps> = ({ theme, selectTheme }) => {
     await appoloClient(isAdmin).mutate<UpdateThemesMutation>({
       mutation: UPDATE_THEME_SETTINGS,
       variables: {
-        name: theme.short_name,
+        name: theme.folder_name,
         settings: data,
       },
     });

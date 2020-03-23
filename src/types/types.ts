@@ -18,7 +18,7 @@ export interface ITokenData {
 export interface IThemeConfig {
   name: string;
   thumbnail: string;
-  short_name: string;
+  folder_name: string;
   settings?: boolean;
   active?: boolean;
   author: string;

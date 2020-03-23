@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 
-import { EnumThemes } from "../../../client/themes/hugo/hugoTypes";
 import { IAuthor } from "../../../types/types";
 import { Link } from "react-router-dom";
 import StyledHeader from "./Header.css";
@@ -13,19 +12,19 @@ interface IProps {
   settings: { [option in SettingOptions]: Setting };
   sidebarToggle: () => void;
   author: IAuthor;
-  switchTheme: (theme: EnumThemes) => void;
-  selectedTheme: EnumThemes;
+  switchTheme: (theme: string) => void;
+  selectedTheme: string;
 }
+
 class Header extends Component<IProps, any> {
   render() {
     const { settings, selectedTheme } = this.props;
     const themeClass = selectedTheme;
     const themeIconclass =
-      selectedTheme === EnumThemes.light
+      selectedTheme === "light"
         ? "wrapper dark fa fa-inverse fa-moon-o"
         : "wrapper  light fa fa-inverse fa-sun-o";
-    const nextTheme =
-      selectedTheme === EnumThemes.dark ? EnumThemes.light : EnumThemes.dark;
+    const nextTheme = selectedTheme === "dark" ? "light" : "dark";
     return (
       <StyledHeader>
         <div className="left-side">

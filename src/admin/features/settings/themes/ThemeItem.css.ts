@@ -3,6 +3,7 @@ import styled from "styled-components";
 const Wrapper = styled.article`
   margin: 8px 0px;
   border: 5px solid transparent;
+
   cursor: pointer;
   .status {
     display: none;
@@ -26,10 +27,11 @@ const Wrapper = styled.article`
   .theme-thumbnail {
     .theme-image {
       height: 180px;
-      object-fit: cover;
+      object-fit: contain;
       width: 100%;
       border-radius: 8px;
       border: 1px solid var(--color-border);
+      background: var(--bg-base);
     }
   }
   .theme-header {
