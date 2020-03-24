@@ -22,7 +22,7 @@ module.exports = (args, name) => {
       [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
         path.join(__dirname, "../src/client/Run"),
       ],
-      [source + "/admin/public/dist/admin"]: [
+      [source + "/admin/public/dist/" + args.theme + "/admin"]: [
         path.join(__dirname, "../src/admin/app"),
       ],
     },
