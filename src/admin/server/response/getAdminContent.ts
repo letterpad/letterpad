@@ -36,11 +36,11 @@ function getBundles(theme: string) {
   const devBundles = [
     host + "static/src/public/js/hot-reload-bundle.js",
     host + "static/src/public/js/" + theme + "/vendor-bundle.js",
-    host + "static/src/admin/public/dist/admin-bundle.js",
+    host + "static/src/admin/public/dist/" + theme + "admin-bundle.js",
   ];
   const prodBundles = [
     host + "js/" + theme + "/vendor-bundle.min.js",
-    host + "admin/dist/admin-bundle.min.js",
+    host + "admin/dist/" + theme + "/admin-bundle.min.js",
   ];
   return isDev ? devBundles : prodBundles;
 }
