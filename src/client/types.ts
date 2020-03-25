@@ -1,4 +1,5 @@
 import {
+  MenuTypes,
   Post,
   PostsNode,
   Setting,
@@ -11,6 +12,13 @@ import { IHelpers } from "./helperProps";
 import { RouteComponentProps } from "react-router";
 
 export type TypeSettings = { [option in SettingOptions]: Setting };
+
+export interface IMenu {
+  id: number;
+  title: string;
+  slug: string;
+  type: MenuTypes | string;
+}
 
 export enum EnumContentType {
   POSTS = "posts",

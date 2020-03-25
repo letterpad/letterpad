@@ -646,6 +646,7 @@ export type PostFieldsFragment = { __typename?: "Post" } & Pick<
   | "createdAt"
   | "publishedAt"
   | "updatedAt"
+  | "featured"
   | "excerpt"
   | "reading_time"
   | "slug"
