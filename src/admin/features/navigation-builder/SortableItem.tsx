@@ -1,11 +1,10 @@
 import { InputBox, Item } from "./SortableItem.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-import DragIcon from "./drag.svg";
 import { IMenu } from "../../../client/types";
 import { Link } from "react-router-dom";
+import ReactTooltip from "react-tooltip";
 import { SortableElement } from "react-sortable-hoc";
-import TrashIcon from "./trash.svg";
 
 const SortableItem = SortableElement(props => {
   const { value, source, onChange, onRemove } = props;
@@ -13,10 +12,6 @@ const SortableItem = SortableElement(props => {
   const [item, setItem] = useState(value);
   const [error, setError] = useState<string>("");
   const [nameError, setNameError] = useState<string>("");
-
-  //   useEffect(() => {
-  //     onInputChange(item);
-  //   }, []);
 
   const onInputChange = (change: IMenu) => {
     const changedItem = {
@@ -40,20 +35,23 @@ const SortableItem = SortableElement(props => {
       changedItem.type = "";
     } else if (isCustomUrl) {
       changedItem.type = "custom";
+    } else {
+      changedItem.type = itemFromDropdown.type;
+      changedItem.originalName = itemFromDropdown.originalName;
     }
 
     setItem(changedItem);
-    if (!error && !nameError) {
-      onChange(changedItem);
-    }
+    changedItem.hasError = error.length > 0 || nameError.length > 0;
+    onChange(changedItem);
+
+    setTimeout(ReactTooltip.rebuild, 0);
   };
 
   return (
     <Item>
       <div className="icon-box">
-        <img className="dragger" src={DragIcon} width="15" />
+        <i className="fa fa-bars dragger" />
       </div>
-      <div> &nbsp;&nbsp; </div>
       <InputBox hasError={nameError !== ""}>
         <input
           type="text"
@@ -63,7 +61,6 @@ const SortableItem = SortableElement(props => {
         />
         <span className="error">{nameError}</span>
       </InputBox>
-      <div> &nbsp;&nbsp; </div>
       <div>
         <InputBox hasError={error !== ""}>
           <input
@@ -84,9 +81,11 @@ const SortableItem = SortableElement(props => {
           ))}
         </datalist>
       </div>
+      <i className="fa fa-info" data-tip={getToolTip(item)} />
       <Link to="#" onClick={onRemove} className="icon-box">
-        <img className="trashicon" src={TrashIcon} width="15" />
+        <i className="fa fa-trash" />
       </Link>
+      <ReactTooltip />
     </Item>
   );
 });
@@ -105,4 +104,16 @@ function isValidURL(url: string) {
     /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
   );
   return res !== null;
+}
+
+function getToolTip(item) {
+  if (item.type === "category") {
+    return "Displays all posts having the category - " + item.originalName;
+  }
+  if (item.type === "page") {
+    return "Displays page - " + item.originalName;
+  }
+  if (item.type === "custom") {
+    return "This will be opened in a new tab.";
+  }
 }

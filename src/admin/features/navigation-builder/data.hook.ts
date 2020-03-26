@@ -56,8 +56,9 @@ function normalizePages(pages) {
     return {
       id: item.id,
       type: item.type,
-      slug: item.slug,
+      slug: item.slug.replace("/page/", ""),
       name: item.title,
+      originalName: item.title,
     };
   });
 }
@@ -67,8 +68,9 @@ function normalizeCategories(categories) {
     return {
       id: item.id,
       type: "category",
-      slug: item.slug,
+      slug: item.slug.replace("/category/", ""),
       name: item.name,
+      originalName: item.name,
     };
   });
 }

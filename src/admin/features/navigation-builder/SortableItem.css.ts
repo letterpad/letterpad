@@ -1,13 +1,10 @@
+import { Grid } from "./Navigation.css";
 import styled from "styled-components";
 
-export const Item = styled.div`
-  display: flex;
-  align-items: baseline;
-  flex-direction: row;
-  > div {
-    display: flex;
+export const Item = styled(Grid)`
+  i {
+    cursor: pointer;
   }
-
   .dragger {
     cursor: move;
   }
@@ -19,7 +16,9 @@ export const Item = styled.div`
     padding: 6px;
     border-radius: 4px;
     border: 1px solid var(--color-border);
-    min-width: 300px;
+    width: 100%;
+    background: var(--bg-base);
+    color: var(--color-base);
   }
 
   .input-box {
@@ -37,6 +36,7 @@ export const InputBox = styled.div<IInputProps>`
     ${p => (p.hasError ? `border: 1px solid orange` : "")}
   }
   display: flex;
+  flex: 1;
   flex-direction: column;
   .error {
     height: 20px;
