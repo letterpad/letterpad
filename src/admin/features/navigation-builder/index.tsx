@@ -26,14 +26,15 @@ const Navigation: React.FC<INavigationBuilderProps> = ({ settings, t }) => {
   ]);
   if (loading) return null;
 
-  const onSortEnd = ({ oldIndex, newIndex }) => {
+  const onSortEnd = async ({ oldIndex, newIndex }) => {
     const newOrder = arrayMove(menu, oldIndex, newIndex);
     setMenu(newOrder);
+    await save(settings.menu.option, newOrder);
   };
 
   const addNewRow = () => {
     const newItem = {
-      id: 999 + menu.length,
+      id: +new Date(),
       title: "",
       slug: "",
       type: "",
@@ -47,36 +48,17 @@ const Navigation: React.FC<INavigationBuilderProps> = ({ settings, t }) => {
     newMenu[index] = change;
     setMenu(newMenu);
 
-    const errors = newMenu.filter(item => item.hasError);
-
-    if (errors.length > 0) {
-      return;
-    }
-    newMenu = newMenu.map(item => {
-      delete item.hasError;
-      return item;
-    });
-
-    await apolloClient(true).mutate({
-      mutation: UPDATE_OPTIONS,
-      variables: {
-        options: [
-          {
-            option: settings.menu.option,
-            value: JSON.stringify(newMenu),
-          },
-        ],
-      },
-    });
+    await save(settings.menu.option, newMenu);
   };
 
-  const onRemove = index => {
+  const onRemove = async index => {
     if (menu.length === 1) {
       return alert("Navigation menu cannot be empty");
     }
     const newMenu = [...menu];
     newMenu.splice(index, 1);
     setMenu(newMenu);
+    await save(settings.menu.option, newMenu);
   };
 
   return (
@@ -148,5 +130,33 @@ function normalizeSlugs(menu) {
       .replace("/page/", "");
 
     return item;
+  });
+}
+
+function prepareForBackend(newMenu) {
+  return newMenu.map(item => {
+    delete item.hasError;
+    delete item.id;
+    return item;
+  });
+}
+
+async function save(option, value) {
+  const errors = value.filter(item => item.hasError);
+  if (errors.length > 0) {
+    return;
+  }
+  const cleanMenu = prepareForBackend(value);
+
+  await apolloClient(true).mutate({
+    mutation: UPDATE_OPTIONS,
+    variables: {
+      options: [
+        {
+          option: option,
+          value: JSON.stringify(cleanMenu),
+        },
+      ],
+    },
   });
 }

@@ -46,7 +46,7 @@ function useNavigationData() {
     }
   }, [categoriesData.loading, pagesData.loading]);
 
-  return { loading, data: [...pages, ...categories] };
+  return { loading, data: addIds([...pages, ...categories]) };
 }
 
 export { useNavigationData };
@@ -54,7 +54,6 @@ export { useNavigationData };
 function normalizePages(pages) {
   return pages.map(item => {
     return {
-      id: item.id,
       type: item.type,
       slug: item.slug.replace("/page/", ""),
       name: item.title,
@@ -66,11 +65,17 @@ function normalizePages(pages) {
 function normalizeCategories(categories) {
   return categories.map(item => {
     return {
-      id: item.id,
       type: "category",
       slug: item.slug.replace("/category/", ""),
       name: item.name,
       originalName: item.name,
     };
+  });
+}
+
+function addIds(arr) {
+  return arr.map((item, idx) => {
+    item.id = idx;
+    return item;
   });
 }

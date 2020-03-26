@@ -18,12 +18,14 @@ const SortableItem = SortableElement(props => {
       ...item,
       ...change,
     };
-    setNameError("");
-    setError("");
+    const error = {
+      nameError: "",
+      error: "",
+    };
 
     // check the title
     if (changedItem.title.length === 0) {
-      setNameError("Cannot be empty");
+      error.nameError = "Cannot be empty";
     }
 
     // check the slug
@@ -31,7 +33,7 @@ const SortableItem = SortableElement(props => {
     const isCustomUrl = isValidURL(changedItem.slug);
 
     if (!itemFromDropdown && !isCustomUrl) {
-      setError("Should be an url or an item from dropdown");
+      error.error = "Should be an url or an item from dropdown";
       changedItem.type = "";
     } else if (isCustomUrl) {
       changedItem.type = "custom";
@@ -41,9 +43,10 @@ const SortableItem = SortableElement(props => {
     }
 
     setItem(changedItem);
-    changedItem.hasError = error.length > 0 || nameError.length > 0;
+    changedItem.hasError = error.error.length > 0 || error.nameError.length > 0;
     onChange(changedItem);
-
+    setError(error.error);
+    setNameError(error.nameError);
     setTimeout(ReactTooltip.rebuild, 0);
   };
 
