@@ -6,11 +6,13 @@ const host = config.ROOT_URL + config.BASE_NAME;
 
 function getMenuWithSanitizedSlug(menu) {
   const parsedMenu = JSON.parse(menu);
-  const menuWithSanitizedSlug = parsedMenu.map((item, i) => {
+  const menuWithSanitizedSlug = parsedMenu.map(item => {
     let to = "/posts/" + item.slug;
 
     if (item.type === "page") {
       to = "/page/" + item.slug;
+    } else if (item.type === "custom") {
+      to = item.slug;
     }
     item.slug = to;
     return item;
@@ -53,6 +55,7 @@ export default {
         if (!user && !user.id) {
           if (SECURE_SETTINGS.includes(item.option)) {
             // item.value = "xxx-xxx-xxx";
+            console.log("not found");
           }
         }
 

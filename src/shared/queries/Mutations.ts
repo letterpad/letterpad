@@ -210,22 +210,6 @@ export const DELETE_MEDIA = gql`
   }
 `;
 
-export const UPLOAD_COVER_IMAGE = gql`
-  mutation uploadFile($cover_image: String!, $id: Int!) {
-    uploadFile(cover_image: $cover_image, id: $id) {
-      ok
-      post {
-        id
-        cover_image {
-          width
-          height
-          src
-        }
-      }
-    }
-  }
-`;
-
 export const UPDATE_MEDIA = gql`
   mutation updateMedia($id: Int!, $name: String, $description: String) {
     updateMedia(id: $id, name: $name, description: $description) {

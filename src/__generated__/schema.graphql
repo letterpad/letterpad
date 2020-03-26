@@ -94,7 +94,6 @@ type Mutation {
   createPost(data: InputCreatePost): Response!
   updatePost(data: InputUpdatePost): Response!
   deletePosts(ids: [Int!], deleteFromSystem: Boolean): Response!
-  uploadFile(id: Int, cover_image: String): Response!
   updateOptions(options: [OptionInputType]): [Setting!]!
   updateTaxonomy(id: Int!, name: String, desc: String, type: TaxonomyType!, slug: String): EditTaxResponse!
   deleteTaxonomy(id: Int!): EditTaxResponse!

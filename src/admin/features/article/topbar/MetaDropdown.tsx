@@ -12,7 +12,6 @@ const host = config.ROOT_URL + config.BASE_NAME;
 interface IMetaDropdownProps {
   close: (e: React.SyntheticEvent) => void;
   post: Post;
-  updatePost: () => void;
 }
 
 class MetaDropdown extends Component<IMetaDropdownProps, any> {

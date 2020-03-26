@@ -112,10 +112,11 @@ const Container = styled.div`
 
       .brand {
         text-align: center;
-        font-weight: 100;
-        font-size: 40px;
-        color: #f0e8e9;
-        text-shadow: -1px 1px 27px #472532;
+        text-shadow: none;
+        color: #151a21;
+        font-weight: 400;
+        font-size: 1.8rem;
+        margin-bottom: 14px;
         font-family: "Source Sans Pro", sans-serif;
       }
       .login {

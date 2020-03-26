@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-
-import utils from "../../../shared/util";
-
-import ThemeItem from "./themes/ThemeItem";
-
-import StyledGrid from "../../components/grid";
 import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
+
 import { IThemeConfig } from "../../../types/types";
+import StyledGrid from "../../components/grid";
+import ThemeItem from "./themes/ThemeItem";
+import config from "../../../config";
+import utils from "../../../shared/util";
 
 interface IThemesProps {
   updateOption: (option: SettingOptions, value: string) => void;
@@ -18,7 +17,7 @@ const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
   const [themes, setThemes] = useState<IThemeConfig[]>([]);
 
   useEffect(() => {
-    const url = utils.makeUrl("/admin/getThemes");
+    const url = utils.makeUrl(config.BASE_NAME + "/admin/getThemes");
     fetch(url, { headers: { Authorization: localStorage.token } })
       .then(res => res.json())
       .then((themes: IThemeConfig[]) => {

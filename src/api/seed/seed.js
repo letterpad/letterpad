@@ -246,18 +246,16 @@ export async function insertMedia(models) {
 export async function insertSettings(models) {
   let menu = JSON.stringify([
     {
-      id: 1,
       title: "Uncategorised",
-      type: "category",
-      disabled: true,
+      originalName: "Uncategorised",
       slug: "uncategorised",
+      type: "category",
     },
     {
-      id: 11,
       title: "Letterpad Typography",
+      originalName: "Letterpad Typography",
       slug: "letterpad-typography",
       type: "page",
-      disabled: true,
     },
   ]);
 
