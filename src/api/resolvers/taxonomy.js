@@ -81,7 +81,7 @@ export default {
             where: { option: "menu" },
             raw: true,
           });
-          const parsedMenu = JSON.parse(menu);
+          const parsedMenu = JSON.parse(menu.value);
           const updatedMenu = parsedMenu.map(item => {
             if (item.type === "category") {
               item.slug = args.slug;

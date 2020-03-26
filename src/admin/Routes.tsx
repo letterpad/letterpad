@@ -42,7 +42,9 @@ class Routes extends Component<RouteComponentProps, IState> {
   async componentDidMount() {
     await this.loadSettings();
     this.props.history.listen(async () => {
-      await this.loadSettings();
+      if (document.location.pathname === "/admin/navigation-builder") {
+        await this.loadSettings();
+      }
     });
   }
 

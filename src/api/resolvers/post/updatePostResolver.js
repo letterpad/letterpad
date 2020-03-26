@@ -41,7 +41,7 @@ export const updateTitleAndSlugAndFeatured = async (root, args, { models }) => {
   } else if (isFirstTitleCreation(previousPost.dataValues.title, title)) {
     args.dataToUpdate.slug = await slugify(
       models.Post,
-      previousPost.dataValues.title,
+      args.dataToUpdate.title,
     );
     logger.debug("Slug created:", args.dataToUpdate.slug);
   }
@@ -225,12 +225,12 @@ export const updateMenuOnTitleChange = async (root, args, { models }) => {
 
   const updatedMenu = parsedMenu.map(item => {
     if (dataToUpdate.title) {
-      if (previousPost.type === "page" && item.type === "page") {
+      if (previousPost.dataValues.type === "page" && item.type === "page") {
         item.originalName = dataToUpdate.title;
       }
     }
     if (dataToUpdate.slug) {
-      if (previousPost.type === "page" && item.type === "page") {
+      if (previousPost.dataValues.type === "page" && item.type === "page") {
         item.slug = dataToUpdate.slug;
       }
     }

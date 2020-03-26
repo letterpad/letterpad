@@ -176,7 +176,7 @@ export const resolveOrderAndSort = async (root, args, { user }) => {
     ];
   }
   if (user && user.id) {
-    args.conditions.order = [["publishedAt", "DESC"]];
+    args.conditions.order = [["updatedAt", "DESC"]];
   }
 
   return args;
