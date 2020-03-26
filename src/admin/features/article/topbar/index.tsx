@@ -24,7 +24,6 @@ interface ITopbarProps {
 export class TopBar extends Component<ITopbarProps, any> {
   state = {
     post: this.props.post,
-    // isPublished: this.props.post.status == "publish",
     publishOpen: false,
     metaOpen: false,
     saving: false,
@@ -99,8 +98,6 @@ export class TopBar extends Component<ITopbarProps, any> {
   };
 
   render() {
-    const publishedCls = this.state.isPublished ? "on" : "off";
-
     const goBack = e => {
       e.preventDefault();
       this.props.router.history.push("/admin/posts");
@@ -128,7 +125,7 @@ export class TopBar extends Component<ITopbarProps, any> {
             </div>
           </AutoSaveIndicator>
         )}
-        <div className={"right-block " + publishedCls}>
+        <div className={"right-block "}>
           <PublishBox>
             <StyledDropdown
               name="Publish"
@@ -152,11 +149,7 @@ export class TopBar extends Component<ITopbarProps, any> {
               name="Meta"
               className="meta"
               render={(close: () => void) => (
-                <MetaDropdown
-                  post={this.props.post}
-                  updatePost={this.updatePost}
-                  close={close}
-                />
+                <MetaDropdown post={this.props.post} close={close} />
               )}
             />
 

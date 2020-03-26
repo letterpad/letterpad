@@ -203,7 +203,6 @@ export type Mutation = {
   createPost: Response;
   updatePost: Response;
   deletePosts: Response;
-  uploadFile: Response;
   updateOptions: Array<Setting>;
   updateTaxonomy: EditTaxResponse;
   deleteTaxonomy: EditTaxResponse;
@@ -275,11 +274,6 @@ export type MutationUpdatePostArgs = {
 export type MutationDeletePostsArgs = {
   ids?: Maybe<Array<Scalars["Int"]>>;
   deleteFromSystem?: Maybe<Scalars["Boolean"]>;
-};
-
-export type MutationUploadFileArgs = {
-  id?: Maybe<Scalars["Int"]>;
-  cover_image?: Maybe<Scalars["String"]>;
 };
 
 export type MutationUpdateOptionsArgs = {
@@ -648,6 +642,7 @@ export type PostFieldsFragment = { __typename?: "Post" } & Pick<
   | "updatedAt"
   | "excerpt"
   | "reading_time"
+  | "featured"
   | "slug"
   | "type"
 > & {
@@ -687,6 +682,7 @@ export type CreatePostMutation = { __typename?: "Mutation" } & {
           | "type"
           | "slug"
           | "excerpt"
+          | "featured"
           | "createdAt"
           | "publishedAt"
         > & {
@@ -837,6 +833,7 @@ export type UpdatePostMutation = { __typename?: "Mutation" } & {
           | "type"
           | "status"
           | "excerpt"
+          | "featured"
           | "createdAt"
           | "publishedAt"
         > & {
@@ -883,24 +880,6 @@ export type DeleteMediaMutation = { __typename?: "Mutation" } & {
   deleteMedia: Maybe<
     { __typename?: "DeleteResponse" } & Pick<DeleteResponse, "ok">
   >;
-};
-
-export type UploadFileMutationVariables = {
-  cover_image: Scalars["String"];
-  id: Scalars["Int"];
-};
-
-export type UploadFileMutation = { __typename?: "Mutation" } & {
-  uploadFile: { __typename?: "Response" } & Pick<Response, "ok"> & {
-      post: Maybe<
-        { __typename?: "Post" } & Pick<Post, "id"> & {
-            cover_image: { __typename?: "CoverImage" } & Pick<
-              CoverImage,
-              "width" | "height" | "src"
-            >;
-          }
-      >;
-    };
 };
 
 export type UpdateMediaMutationVariables = {

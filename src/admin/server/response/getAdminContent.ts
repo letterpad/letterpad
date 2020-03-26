@@ -18,14 +18,21 @@ const styleLinks = !isDev
   : "";
 
 export const getAdminContent = async (_req, res) => {
-  const settings = await fetchSettings();
+  let theme: string;
+
+  if (config.NODE_ENV === "production") {
+    const settings = await fetchSettings();
+    theme = settings.theme.value;
+  } else {
+    theme = config.THEME;
+  }
   // replace template variables with values and return the html markup
   const content = utils.templateEngine(getTemplate(), {
     ...config,
     STYLE_TAGS: styleLinks,
     INITIAL_STATE: initialState,
     NODE_ENV: process.env.NODE_ENV,
-    SCRIPT_TAGS: scripts(settings.theme.value),
+    SCRIPT_TAGS: scripts(theme),
     FAVICON: "data:image/x-icon;,",
   });
 
@@ -36,7 +43,7 @@ function getBundles(theme: string) {
   const devBundles = [
     host + "static/src/public/js/hot-reload-bundle.js",
     host + "static/src/public/js/" + theme + "/vendor-bundle.js",
-    host + "static/src/admin/public/dist/" + theme + "admin-bundle.js",
+    host + "static/src/admin/public/dist/" + theme + "/admin-bundle.js",
   ];
   const prodBundles = [
     host + "js/" + theme + "/vendor-bundle.min.js",

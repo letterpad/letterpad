@@ -122,7 +122,10 @@ textarea {
 	font-size: 100%;
 	line-height: 1.15;
 	margin: 0;
+    
 }
+
+
 button,
 input {
 	overflow: visible;
@@ -262,10 +265,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
             padding-left: 16px !important;
         }
     }
-    ::-webkit-input-placeholder {
-        color: var(--color-text-muted) !important;
-        font-weight: 300;
-    }
+    
     .top-head {
         display: none;
     }

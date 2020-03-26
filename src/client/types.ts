@@ -1,16 +1,24 @@
 import {
+  MenuTypes,
   Post,
   PostsNode,
   Setting,
   SettingOptions,
   ThemeSettings,
 } from "../__generated__/gqlTypes";
-import { RouteComponentProps } from "react-router";
 
 import ApolloClient from "apollo-client";
 import { IHelpers } from "./helperProps";
+import { RouteComponentProps } from "react-router";
 
 export type TypeSettings = { [option in SettingOptions]: Setting };
+
+export interface IMenu {
+  id: number;
+  title: string;
+  slug: string;
+  type: MenuTypes | string;
+}
 
 export enum EnumContentType {
   POSTS = "posts",
@@ -70,11 +78,16 @@ type TypeThemePost = React.ComponentType<IThemeComponentProps<Post>> &
 type TypeThemePosts = React.ComponentType<IThemeComponentProps<PostsNode>> &
   TypeInitialProps;
 
+type TypeThemeHome = React.ComponentType<
+  IThemeComponentProps<Post & PostsNode>
+> &
+  TypeInitialProps;
+
 export type IThemeContainer = {
   Post: TypeThemePost;
   Page: TypeThemePost;
   Posts: TypeThemePosts;
-  Home: TypeThemePost | TypeThemePosts;
+  Home: TypeThemeHome;
 };
 
 interface IImageAttrs {

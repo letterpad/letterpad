@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
      <link rel="icon" href="{{FAVICON}}">
     <link href="{{BASE_NAME}}/admin/css/vertical.css" rel="stylesheet"/>
+    <link href="{{BASE_NAME}}/admin/css/custom.css" rel="stylesheet"/>
     {{STYLE_TAGS}}
 </head>
 

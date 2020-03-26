@@ -1,4 +1,3 @@
-import { _createPost, _updatePost } from "../models/post";
 import {
   addConditionsPlaceholder,
   executePostCollectionQuery,
@@ -17,6 +16,7 @@ import {
   updateContent,
   updateCoverImage,
   updateDatesAndStatus,
+  updateMenuOnTitleChange,
   updateReadingTime,
   updateTaxonomies,
   updateTitleAndSlugAndFeatured,
@@ -29,6 +29,7 @@ import {
 
 import Fuse from "fuse.js";
 import Sequelize from "sequelize";
+import { _createPost } from "../models/post";
 import config from "../../config";
 import { deletePostResolver } from "./post/deletePostResolver";
 import { getReadableDate } from "../../shared/date";
@@ -197,15 +198,13 @@ const postresolver = {
       .createResolver(updateReadingTime)
       .createResolver(updateContent)
       .createResolver(updateTaxonomies)
+      .createResolver(updateMenuOnTitleChange)
       .createResolver(executeUpdatePost)
       .createResolver(async (root, result) => {
         result.post.dataValues = normalizePost(result.post.dataValues);
         return result;
       }),
 
-    uploadFile: editPostPerm.createResolver((root, args, { models }) => {
-      return _updatePost(args, models);
-    }),
     deletePosts: editPostPerm.createResolver(deletePostResolver),
   },
   Post: {

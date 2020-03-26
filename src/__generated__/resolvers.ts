@@ -213,7 +213,6 @@ export type Mutation = {
   createPost: Response;
   updatePost: Response;
   deletePosts: Response;
-  uploadFile: Response;
   updateOptions: Array<Setting>;
   updateTaxonomy: EditTaxResponse;
   deleteTaxonomy: EditTaxResponse;
@@ -285,11 +284,6 @@ export type MutationUpdatePostArgs = {
 export type MutationDeletePostsArgs = {
   ids?: Maybe<Array<Scalars["Int"]>>;
   deleteFromSystem?: Maybe<Scalars["Boolean"]>;
-};
-
-export type MutationUploadFileArgs = {
-  id?: Maybe<Scalars["Int"]>;
-  cover_image?: Maybe<Scalars["String"]>;
 };
 
 export type MutationUpdateOptionsArgs = {
@@ -1111,12 +1105,6 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationDeletePostsArgs, never>
-  >;
-  uploadFile?: Resolver<
-    ResolversTypes["Response"],
-    ParentType,
-    ContextType,
-    RequireFields<MutationUploadFileArgs, never>
   >;
   updateOptions?: Resolver<
     Array<ResolversTypes["Setting"]>,

@@ -75,7 +75,26 @@ export default {
             where: { id: args.id },
           },
         );
+        if (args.type === "post_category") {
+          // menu can have a category. update the slug and name
+          const menu = await models.Setting.findOne({
+            where: { option: "menu" },
+            raw: true,
+          });
+          const parsedMenu = JSON.parse(menu.value);
+          const updatedMenu = parsedMenu.map(item => {
+            if (item.type === "category") {
+              item.slug = args.slug;
+              item.originalName = args.name;
+            }
+            return item;
+          });
 
+          await models.Setting.update(
+            { value: JSON.stringify(updatedMenu) },
+            { where: { option: "menu" } },
+          );
+        }
         return {
           ok: true,
           errors: [],
