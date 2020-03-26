@@ -8,6 +8,7 @@ import { getDateTime } from "../../../shared/date";
 import logger from "../../../shared/logger";
 import reading_time from "reading-time";
 import slugify from "../../../shared/slugify";
+import { updateMenuItem } from "../setting";
 
 const host = config.ROOT_URL + config.BASE_NAME;
 
@@ -209,6 +210,37 @@ export const updateTaxonomies = async (root, args, { models }) => {
       }),
     );
   }
+  return args;
+};
+
+export const updateMenuOnTitleChange = async (root, args, { models }) => {
+  const { dataToUpdate, previousPost } = args;
+  if (!dataToUpdate.title && !dataToUpdate.slug) return args;
+  const menu = await models.Setting.findOne({
+    where: { option: "menu" },
+    raw: true,
+  });
+
+  const parsedMenu = JSON.parse(menu.value);
+
+  const updatedMenu = parsedMenu.map(item => {
+    if (dataToUpdate.title) {
+      if (previousPost.type === "page" && item.type === "page") {
+        item.originalName = dataToUpdate.title;
+      }
+    }
+    if (dataToUpdate.slug) {
+      if (previousPost.type === "page" && item.type === "page") {
+        item.slug = dataToUpdate.slug;
+      }
+    }
+    return item;
+  });
+
+  await models.Setting.update(
+    { value: JSON.stringify(updatedMenu) },
+    { where: { option: "menu" } },
+  );
   return args;
 };
 

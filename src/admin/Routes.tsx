@@ -40,9 +40,17 @@ class Routes extends Component<RouteComponentProps, IState> {
   };
 
   async componentDidMount() {
+    await this.loadSettings();
+    this.props.history.listen(async () => {
+      await this.loadSettings();
+    });
+  }
+
+  loadSettings = async () => {
     try {
       const options = await apolloClient().query<SettingsQuery>({
         query: QUERY_SETTINGS,
+        fetchPolicy: "network-only",
       });
       const data: TypeSettings | {} = {};
       if (options && options.data && options.data.settings) {
@@ -63,7 +71,7 @@ class Routes extends Component<RouteComponentProps, IState> {
     } catch (e) {
       this.setState({ error: e, loading: false });
     }
-  }
+  };
 
   render() {
     let { loading, error, settings } = this.state as IState;

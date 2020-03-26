@@ -26,12 +26,14 @@ function useNavigationData() {
           type: TaxonomyType.PostCategory,
         },
       },
+      fetchPolicy: "network-only",
     },
   );
   const pagesData = useQuery<PostsQuery>(QUERY_POSTS, {
     variables: {
       filters: { type: PostTypes.Page, status: PostStatusOptions.Publish },
     },
+    fetchPolicy: "network-only",
   });
 
   useEffect(() => {
