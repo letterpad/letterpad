@@ -1,6 +1,6 @@
 import { Author, AuthorsQuery } from "../../../__generated__/gqlTypes";
 import React, { useEffect, useState } from "react";
-import StyledSection, { Title } from "../../components/section";
+import StyledSection, { SectionSizes, Title } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 
 import { Button } from "../../components/button";
@@ -42,7 +42,7 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
 
   return (
     <StyledSection
-      md
+      size={SectionSizes.md}
       title={
         <Title
           title={t("authors.title")}

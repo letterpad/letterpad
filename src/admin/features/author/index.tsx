@@ -5,7 +5,7 @@ import Basic from "./Basic";
 import Social from "./Social";
 import PasswordChange from "./PasswordChange";
 
-import StyledSection from "../../components/section";
+import StyledSection, { SectionSizes } from "../../components/section";
 import Button from "../../components/button";
 import Tabs from "../../components/tabs";
 
@@ -92,7 +92,7 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
 
   if (loading || !author) return <Loader />;
   return (
-    <StyledSection>
+    <StyledSection title="Profile" size={SectionSizes.md}>
       <Tabs activeTab={selectedTab} onChange={handleTabChange}>
         <Basic label="basic" data={author} updateOption={setOption} />
         <Social label="social" data={author.social} updateOption={setOption} />

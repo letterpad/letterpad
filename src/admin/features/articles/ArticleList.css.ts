@@ -101,7 +101,7 @@ export const Table = styled.table<any>`
     font-size: inherit;
     margin: 0;
     overflow: visible; /*to make ths where the title is really long work*/
-    padding: 12px 0 12px 0px;
+    padding: 24px 0 24px 0px;
   }
 
   tbody tr:hover {

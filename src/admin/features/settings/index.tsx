@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
+import StyledSection, { SectionSizes } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 
 import Css from "./Css";
@@ -9,7 +10,6 @@ import Messages from "./Messages";
 import Optional from "./Optional";
 import { RouteComponentProps } from "react-router";
 import Social from "./Social";
-import StyledSection from "../../components/section";
 import StyledTitleHeader from "../../components/title-header";
 import Tabs from "../../components/tabs";
 import Themes from "./Themes";
@@ -71,7 +71,11 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
   };
 
   return (
-    <StyledSection>
+    <StyledSection
+      title="Sitewide Settings"
+      subtitle="Here you can configure your overall site."
+      size={SectionSizes.md}
+    >
       <Tabs activeTab={selectedTab} onChange={handleTabChange}>
         <StyledTitleHeader
           title={t(`settings.${selectedTab}.title`)}

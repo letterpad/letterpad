@@ -9,7 +9,7 @@ const Sidebar = styled.div`
   position: fixed;
   height: 100%;
   width: 290px;
-
+  flex: 1;
   .navbar-brand {
     font-weight: 600;
     font-size: 23px;
@@ -35,6 +35,7 @@ const Sidebar = styled.div`
   .sidebar {
     position: fixed;
     display: flex;
+    justify-content: space-between;
     flex-direction: column;
     box-shadow: -6px 0px 24px 0px var(--base-shade-3);
     width: 290px;
@@ -49,6 +50,12 @@ const Sidebar = styled.div`
     .sidebar-top {
       display: flex;
       flex-direction: column;
+      flex: 1;
+
+      .custom-menu {
+        flex: 1;
+        min-height: min-content;
+      }
     }
     @media (max-width: 991px) {
       position: relative;
