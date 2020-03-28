@@ -56,7 +56,7 @@ export const lightTheme = `
     --bg-base: #f7f7f7;
     --color-border: #e6e6e6;
 
-    --color-base: #3d3d3d;
+    --color-base: #111213;
     --color-text-1: #595959;
     --color-text-2: #5a5a5a;
     --color-text-3: #7b7b7b;

@@ -5,7 +5,7 @@ export const defaultStyles = `
     color: var(--color-base);
 
     a {
-        color: var(--color-text-2);
+        color: var(--color-base);
         transition: all 0.125s cubic-bezier(0.3, 0.1, 0.58, 1);
         text-decoration: none;
     }

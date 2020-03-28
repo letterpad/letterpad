@@ -39,9 +39,11 @@ const buildMenu = (items, selected, permissions, t) => {
         if (!hasPerms) {
           return <div key={item.name} />;
         }
+        if (item.spacer) {
+          return <br />;
+        }
         return (
           <MenuItem key={item.name}>
-            {/* {!item.slug && <StyledHeading>{t(item.name)}</StyledHeading>} */}
             {item.children && item.children.length > 0 ? (
               buildMenu(item.children, selected, permissions, t)
             ) : (
@@ -50,7 +52,7 @@ const buildMenu = (items, selected, permissions, t) => {
                 data-id={item.id}
                 to={slug}
               >
-                {item.icon && <i className={"menu-icon fa " + item.icon} />}
+                {/* {item.icon && <i className={"menu-icon fa " + item.icon} />} */}
                 <span className="name">{t(item.name)}</span>
               </StyledLink>
             )}

@@ -213,6 +213,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,500,600,700");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
+@import url('https://fonts.googleapis.com/css?family=Inter&display=swap');
 
 /*! -----------------------------------------------------------------
     [Master Stylesheet]
@@ -230,7 +231,8 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         height: 100%;
     }
     body {
-        font-family: "Roboto", sans-serif;
+        /* font-family: "Roboto", sans-serif; */
+        font-family: 'Inter', sans-serif;
         line-height: 1.4;
         font-size: 14px;
         font-weight: 400;
