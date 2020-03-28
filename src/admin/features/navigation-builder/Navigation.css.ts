@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  background: var(--bg-sections);
+  padding: 16px;
+  border: 1px solid var(--color-border);
   .toolbar {
     margin-bottom: 40px;
-    button {
-      padding: 8px 15px;
-    }
   }
 `;
 

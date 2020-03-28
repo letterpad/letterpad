@@ -30,7 +30,7 @@ export const StyledItem = styled.div<{ checked: boolean }>`
     left: 100%;
     margin-left: -24px;
     border-top-right-radius: 7px;
-    top: 4px;
+    top: 10px;
   }
 
   [type="checkbox"] {

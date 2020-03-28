@@ -1,17 +1,17 @@
 import { EditMediaWrapper, StyledItem } from "./Media.css";
 import React, { Component } from "react";
+import StyledSection, { Title } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 import { deleteMedias, getMedia, updateMedia } from "./actions";
 
+import { Button } from "../../components/button";
 import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
-import InfoModal from "./InfoModal";
+import EditMediaInfo from "./EditMediaInfo";
 import { MediaNode } from "../../../__generated__/gqlTypes";
 import Paginate from "../../components/pagination";
 import { RouteComponentProps } from "react-router-dom";
-import StyledButton from "../../components/button";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
-import StyledSection from "../../components/section";
 import { getReadableDate } from "../../../shared/date";
 import { notify } from "react-notify-toast";
 import { uploadFile } from "../../server/util";
@@ -185,22 +185,25 @@ class Media extends Component<IMMediaProps, IMediaState> {
     const deleteCount = checkedItems.length;
 
     return (
-      <StyledSection md title={t("media.title")} subtitle={t("media.tagline")}>
-        <StyledButton
-          success
-          onClick={() => {
-            if (this.uploadInputRef.current) {
-              this.uploadInputRef.current.click();
-            }
-          }}
-          sm
-        >
-          Add Media
-        </StyledButton>
+      <StyledSection
+        md
+        title={
+          <Title
+            title={t("media.title")}
+            onClick={() => {
+              if (this.uploadInputRef.current) {
+                this.uploadInputRef.current.click();
+              }
+            }}
+          />
+        }
+        subtitle={t("media.tagline")}
+      >
         {checkedItems.length > 0 && (
-          <StyledButton danger sm onClick={this.toggleDeleteModal}>
+          <Button btnStyle="danger" onClick={this.toggleDeleteModal}>
+            <i className="fa fa-trash" />
             Delete
-          </StyledButton>
+          </Button>
         )}
         <input
           ref={this.uploadInputRef}
@@ -261,7 +264,7 @@ class Media extends Component<IMMediaProps, IMediaState> {
         )}
         {displayInfo && (
           <EditMediaWrapper>
-            <InfoModal
+            <EditMediaInfo
               media={items.rows[selectedIndex]}
               onClose={() => this.setState({ displayInfo: false })}
               next={this.selectNextMedia}
