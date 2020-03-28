@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { notify } from "react-notify-toast";
-
-import Loader from "../../components/loader";
-
-import Basic from "./Basic";
-import StyledButton from "../../components/button";
-import StyledSection from "../../components/section";
-import StyledCard from "../../components/card";
-import StyledSelect from "../../components/select";
-import { RouteComponentProps } from "react-router-dom";
-import apolloClient from "../../../shared/apolloClient";
-import { QUERY_ROLES } from "../../../shared/queries/Queries";
-
-import { CREATE_AUTHOR } from "../../../shared/queries/Mutations";
 import {
-  Role,
-  RolesQuery,
-  EnumRoles,
   CreateAuthorMutation,
   CreateAuthorMutationVariables,
+  EnumRoles,
+  Role,
+  RolesQuery,
 } from "../../../__generated__/gqlTypes";
+import React, { useEffect, useState } from "react";
+
+import Basic from "./Basic";
+import Button from "../../components/button";
+import { CREATE_AUTHOR } from "../../../shared/queries/Mutations";
+import Loader from "../../components/loader";
+import { QUERY_ROLES } from "../../../shared/queries/Queries";
+import { RouteComponentProps } from "react-router-dom";
+import StyledCard from "../../components/card";
+import StyledSection from "../../components/section";
+import StyledSelect from "../../components/select";
+import apolloClient from "../../../shared/apolloClient";
+import { notify } from "react-notify-toast";
 
 interface ICreateAuthorProps {
   router: RouteComponentProps;
@@ -107,9 +105,10 @@ const CreateAuthor: React.FC<ICreateAuthorProps> = ({ router }) => {
           <br />
           <br />
           <br />
-          <StyledButton success onClick={submitData}>
+          <Button btnStyle="primary" onClick={submitData}>
+            <i className="fa fa-plus" />
             Create Author
-          </StyledButton>
+          </Button>
         </React.Fragment>
       </StyledCard>
     </StyledSection>

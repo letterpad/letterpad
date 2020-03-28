@@ -13,6 +13,11 @@ const StyledTaxonomy = styled.section`
   .input-box {
     flex: 1;
   }
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 `;
 
 export default StyledTaxonomy;

@@ -1,14 +1,13 @@
-import React, { Component, useState } from "react";
-import { translate, WithNamespaces } from "react-i18next";
+import React, { useState } from "react";
+import { WithNamespaces, translate } from "react-i18next";
 
-import ModalHoc from "../../../components/modal";
-import StyledButton from "../../../components/button";
-
+import Button from "../../../components/button";
+import CheckBox from "../../../components/checkbox";
 import Input from "../../../components/input";
+import ModalHoc from "../../../components/modal";
 import RadioBox from "../../../components/radio";
 import StyledSelect from "../../../components/select";
 import { ThemeSettings } from "../../../../__generated__/gqlTypes";
-import CheckBox from "../../../components/checkbox";
 
 interface IProps extends WithNamespaces {
   onClose: () => void;
@@ -135,12 +134,12 @@ const ThemeSettingsModal: React.FC<IProps> = props => {
         <div className="p-t-20" />
       </div>
       <div className="modal-footer">
-        <StyledButton type="button" onClick={onClose}>
+        <Button type="button" onClick={onClose}>
           {t("common.cancel")}
-        </StyledButton>
-        <StyledButton type="button" success onClick={actionSave}>
+        </Button>
+        <Button type="button" success onClick={actionSave}>
           {t("common.save")}
-        </StyledButton>
+        </Button>
       </div>
     </ModalHoc>
   );

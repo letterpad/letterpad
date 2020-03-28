@@ -1,17 +1,16 @@
 import { Author, AuthorsQuery } from "../../../__generated__/gqlTypes";
 import React, { useEffect, useState } from "react";
+import StyledSection, { Title } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 
+import { Button } from "../../components/button";
 import Loader from "../../components/loader";
 import { QUERY_AUTHORS } from "../../../shared/queries/Queries";
 import { RouteComponentProps } from "react-router";
 import StyledAuthorList from "./AuthorList.css";
-import StyledButton from "../../components/button";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
-import StyledSection from "../../components/section";
 import apolloClient from "../../../shared/apolloClient";
-import config from "../../../config";
 
 interface IAuthorListProps extends WithNamespaces {
   router: RouteComponentProps;
@@ -44,21 +43,17 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
   return (
     <StyledSection
       md
-      title={t("authors.title")}
-      subtitle={t("authors.tagline")}
-    >
-      <StyledAuthorList>
-        <StyledButton
-          success
+      title={
+        <Title
+          title={t("authors.title")}
           onClick={() => {
             router.history.push("/admin/authors/new");
           }}
-          sm
-        >
-          Create Author
-        </StyledButton>
-        <br />
-        <br />
+        />
+      }
+      subtitle={t("authors.tagline")}
+    >
+      <StyledAuthorList>
         {loading ? (
           <Loader />
         ) : (

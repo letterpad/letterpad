@@ -1,12 +1,13 @@
-import React, { useRef } from "react";
-import { translate } from "react-i18next";
-import StyledCard from "../../components/card";
 import Input, { TextArea } from "../../components/input";
-import StyledButton from "../../components/button";
-import { notify } from "react-notify-toast";
+import React, { useRef } from "react";
+
+import { Button } from "../../components/button";
 import { CREATE_POST } from "../../../shared/queries/Mutations";
-import apolloClient from "../../../shared/apolloClient";
 import { CreatePostMutation } from "../../../__generated__/gqlTypes";
+import StyledCard from "../../components/card";
+import apolloClient from "../../../shared/apolloClient";
+import { notify } from "react-notify-toast";
+import { translate } from "react-i18next";
 
 interface IQuickDraftProps {
   t: (name: string) => string;
@@ -49,9 +50,10 @@ const QuickDraft: React.FC<IQuickDraftProps> = ({ t }) => {
           label={t("home.quickDraft.body")}
           placeholder={t("home.quickDraft.body.placeholder")}
         />
-        <StyledButton success onClick={() => quickDraftAction()}>
+        <Button btnStyle="primary" onClick={() => quickDraftAction()}>
+          <i className="fa fa-save" />
           {t("home.quickDraft.save")}
-        </StyledButton>
+        </Button>
       </div>
     </StyledCard>
   );

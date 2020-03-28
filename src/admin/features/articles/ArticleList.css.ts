@@ -4,14 +4,6 @@ export const StyledTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  a {
-    background: var(--bg-success);
-    color: #fff !important;
-    font-size: 14px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-weight: bold;
-  }
 `;
 
 export const StyledItem = styled.div`
@@ -21,7 +13,7 @@ export const StyledItem = styled.div`
     left: 100%;
     margin-left: -24px;
     border-top-right-radius: 7px;
-    top: 4px;
+    top: 10px;
   }
   [type="checkbox"]:checked,
   [type="checkbox"]:not(:checked) {

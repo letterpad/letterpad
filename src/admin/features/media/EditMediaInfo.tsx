@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { WithNamespaces, translate } from "react-i18next";
 
+import { Button } from "../../components/button";
 import Loader from "../../components/loader";
 import { Media } from "../../../__generated__/gqlTypes";
 import ModalHoc from "../../components/modal";
-import StyledButton from "../../components/button";
 import StyledInfoModal from "./InfoModal.css";
 import StyledInput from "../../components/input";
 
@@ -100,12 +100,12 @@ class EditMediaInfo extends Component<IEditMediaInfoProps, any> {
 
               <div className="media-info">
                 <div className="navigation">
-                  <StyledButton onClick={this.goPrevious}>
+                  <Button compact onClick={this.goPrevious}>
                     <i className="fa fa-long-arrow-left" />
-                  </StyledButton>{" "}
-                  <StyledButton onClick={this.goNext}>
+                  </Button>{" "}
+                  <Button compact onClick={this.goNext}>
                     <i className="fa fa-long-arrow-right" />
-                  </StyledButton>
+                  </Button>
                 </div>
                 <StyledInput
                   label="Title"
@@ -125,12 +125,10 @@ class EditMediaInfo extends Component<IEditMediaInfoProps, any> {
             </div>
           </div>
           <div className="modal-footer">
-            <StyledButton onClick={this.props.onClose}>
-              {t("common.cancel")}
-            </StyledButton>
-            <StyledButton success onClick={this.updateMedia}>
+            <Button onClick={this.props.onClose}>{t("common.cancel")}</Button>
+            <Button btnStyle="primary" onClick={this.updateMedia}>
               Update
-            </StyledButton>
+            </Button>
           </div>
         </ModalHoc>
       </StyledInfoModal>
