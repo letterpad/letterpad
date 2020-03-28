@@ -7,12 +7,12 @@ import StyledToolbar, { Layout } from "./Toolbar.css";
 import { WithNamespaces, translate } from "react-i18next";
 
 import ArticleHoc from "./ArticleHoc";
+import { Button } from "../../components/button";
 import Filters from "./Filters";
 import Paginate from "../../components/pagination";
 import RenderGrid from "./RenderGrid";
 import RenderTable from "./RenderTable";
 import Search from "./Search";
-import StyledButton from "../../components/button";
 import config from "../../../config";
 
 interface IArticleListProps extends WithNamespaces {
@@ -94,7 +94,7 @@ const Articles: React.FC<IArticleListProps> = ({
 
   return (
     <Section
-      size={SectionSizes.md}
+      size={SectionSizes.xs}
       title={
         <Title
           title={type === "post" ? t("posts.title") : t("pages.title")}
@@ -118,9 +118,14 @@ const Articles: React.FC<IArticleListProps> = ({
             </Layout>
             <Filters query={getUrlParams()} changeFilter={changeFilter} />
             {selectedPosts.length > 0 && (
-              <StyledButton basic sm onClick={deleteSelectedPosts}>
+              <Button
+                btnStyle="danger"
+                btnSize="xs"
+                onClick={deleteSelectedPosts}
+              >
+                <i className="fa fa-trash" />
                 Delete
-              </StyledButton>
+              </Button>
             )}
           </div>
           <div className="right-block">
@@ -169,7 +174,12 @@ const Title = ({ title, creationLink }) => {
   return (
     <StyledTitle>
       <span>{title}</span>
-      <Link to={creationLink}>New</Link>
+      <Link to={creationLink}>
+        <Button btnSize="md" btnStyle="primary">
+          <i className="fa fa-plus" />
+          New
+        </Button>
+      </Link>
     </StyledTitle>
   );
 };

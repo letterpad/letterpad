@@ -15,10 +15,12 @@ export const MenuItem = styled.li`
 export const StyledLink = styled(Link)`
   display: block;
   &.active {
-    background: var(--bg-base);
+    font-weight: 600;
+    color: var(--color-hover-primary);
   }
   &:hover {
-    background: var(--bg-base);
+    font-weight: 600;
+    color: var(--color-hover-primary);
   }
   .menu-icon {
     margin-right: 8px;

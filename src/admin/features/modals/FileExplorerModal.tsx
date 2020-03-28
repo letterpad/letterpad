@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { WithNamespaces, translate } from "react-i18next";
 
+import { Button } from "../../components/button";
 import { CoverImage } from "../../../__generated__/gqlTypes";
 import FileExplorer from "../file-explorer";
 import { MediaProvider } from "../article/Edit";
 import ModalHoc from "../../components/modal";
-import StyledButton from "../../components/button";
 import { notify } from "react-notify-toast";
 import styled from "styled-components";
 
@@ -73,9 +73,12 @@ class FileExplorerModal extends Component<IProps, any> {
           />
         </StyledBody>
         <div className="modal-footer">
-          <StyledButton onClick={onClose}>{t("common.cancel")}</StyledButton>
-          <StyledButton onClick={addNewMedia}>Browse</StyledButton>
-          <StyledButton
+          <Button onClick={onClose}>
+            <i className="fa fa-close" />
+            {t("common.cancel")}
+          </Button>
+          <Button
+            btnStyle="flat"
             onClick={() => {
               this.setState({ selectedImageUrls: [], page: 1 });
               switchProvider(nextProvider);
@@ -84,11 +87,15 @@ class FileExplorerModal extends Component<IProps, any> {
             {mediaProvider === MediaProvider.Letterpad
               ? "Search Online"
               : "My Media"}
-          </StyledButton>
+          </Button>
+          <Button onClick={addNewMedia} btnStyle="primary">
+            <i className="fa fa-search" /> Browse
+          </Button>
           {enableInsert && (
-            <StyledButton success onClick={this.insertMedia}>
+            <Button btnStyle="primary" onClick={this.insertMedia}>
+              <i className="fa fa-arrow-circle-down" />
               Insert
-            </StyledButton>
+            </Button>
           )}
         </div>
       </ModalHoc>

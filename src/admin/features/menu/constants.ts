@@ -127,7 +127,7 @@ const DATA = [
       },
       {
         id: 5,
-        name: "menu.general",
+        name: "menu.sitesettings",
         priority: 3,
         permissions: ["MANAGE_SETTINGS"],
         slug: "settings",
