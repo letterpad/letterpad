@@ -8,7 +8,7 @@ const Sidebar = styled.div`
   margin: 0;
   position: fixed;
   height: 100%;
-  width: 200px;
+  width: 290px;
 
   .navbar-brand {
     font-weight: 600;
@@ -34,9 +34,10 @@ const Sidebar = styled.div`
 
   .sidebar {
     position: fixed;
-    width: 200px;
-    margin-top: 60px;
-    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 290px;
     height: 100%;
     top: 0;
     left: 0;

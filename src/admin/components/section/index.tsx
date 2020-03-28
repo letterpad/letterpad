@@ -19,7 +19,7 @@ export const StyledSection = styled.section<ISectionProps>`
   padding: ${props => {
     switch (props.size) {
       case SectionSizes.sm:
-        return "8px";
+        return "15px";
       case SectionSizes.xs:
         return "16px";
       case SectionSizes.md:

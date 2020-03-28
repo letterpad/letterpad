@@ -22,19 +22,27 @@ interface INavigationBuilderProps extends WithNamespaces {
 const Navigation: React.FC<INavigationBuilderProps> = ({ settings, t }) => {
   const { data, loading } = useNavigationData();
   const [menu, setMenu] = useState<IMenuWithError[]>([
-    ...normalizeSlugs(JSON.parse(settings.menu.value)),
+    ...addIds(normalizeSlugs(JSON.parse(settings.menu.value))),
   ]);
   if (loading) return null;
 
   const onSortEnd = async ({ oldIndex, newIndex }) => {
+    console.log("menu :", menu);
     const newOrder = arrayMove(menu, oldIndex, newIndex);
     setMenu(newOrder);
     await save(settings.menu.option, newOrder);
   };
 
+  const generareId = () => {
+    const ids = menu.map(item => item.id);
+    const id = Math.max.apply(null, ids);
+
+    return id + 1;
+  };
+
   const addNewRow = () => {
     const newItem = {
-      id: +new Date(),
+      id: generareId(),
       title: "",
       slug: "",
       type: "",
@@ -146,7 +154,7 @@ async function save(option, value) {
   if (errors.length > 0) {
     return;
   }
-  const cleanMenu = prepareForBackend(value);
+  const cleanMenu = prepareForBackend(JSON.parse(JSON.stringify(value)));
 
   await apolloClient(true).mutate({
     mutation: UPDATE_OPTIONS,
@@ -158,5 +166,12 @@ async function save(option, value) {
         },
       ],
     },
+  });
+}
+
+function addIds(arr) {
+  return arr.map((item, idx) => {
+    item.id = idx;
+    return item;
   });
 }

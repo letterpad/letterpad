@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import StyledMenu, { MenuItem, StyledHeading, StyledLink } from "./Menu.css";
+
+import DATA from "./constants";
 import PropTypes from "prop-types";
 import jwtDecode from "jwt-decode";
-import DATA from "./constants";
-import StyledMenu, { StyledHeading, StyledLink, MenuItem } from "./Menu.css";
 import { translate } from "react-i18next";
 
 class Menu extends Component<any, any> {
@@ -40,7 +41,7 @@ const buildMenu = (items, selected, permissions, t) => {
         }
         return (
           <MenuItem key={item.name}>
-            {!item.slug && <StyledHeading>{t(item.name)}</StyledHeading>}
+            {/* {!item.slug && <StyledHeading>{t(item.name)}</StyledHeading>} */}
             {item.children && item.children.length > 0 ? (
               buildMenu(item.children, selected, permissions, t)
             ) : (

@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 export const StyledHeading = styled.div`
   font-size: 11px;
@@ -8,12 +8,12 @@ export const StyledHeading = styled.div`
   margin: 16px 0px 8px 8px;
   letter-spacing: 1px;
 `;
-export const MenuItem = styled.li``;
+export const MenuItem = styled.li`
+  margin-bottom: 24px;
+`;
 
 export const StyledLink = styled(Link)`
   display: block;
-  padding: 6px 8px;
-  margin: 1px 0px;
   &.active {
     background: var(--bg-base);
   }
@@ -26,11 +26,9 @@ export const StyledLink = styled(Link)`
   }
 `;
 const StyledMenu = styled.div`
-  height: calc(100vh - 128px);
   overflow-y: auto;
-  padding: 12px 0px 12px 0px;
-  padding-left: 4px;
-  font-size: 12px;
+  padding: 28px 40px;
+  font-size: 16px;
 `;
 
 export default StyledMenu;

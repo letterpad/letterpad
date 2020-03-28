@@ -88,13 +88,6 @@ const Layout = <P extends object>(
             </NoLayout>
           ) : (
             <StyledLayout className={"main a two-column" + classes}>
-              <Header
-                sidebarToggle={this.sidebarToggle}
-                settings={settings}
-                author={_props.author}
-                switchTheme={this.switchTheme}
-                selectedTheme={this.state.theme}
-              />
               <Sidebar {..._props} />
               <main>
                 <div className="content-area">

@@ -549,7 +549,6 @@ export const AdminGlobalStyle = createGlobalStyle`
 
     main {
         grid-area: content;
-        margin-top: 60px;
     }
 
     body {
@@ -559,14 +558,14 @@ export const AdminGlobalStyle = createGlobalStyle`
             "header header"
             "nav content"
             "footer footer";
-            grid-template-columns: 200px 1fr;
+            grid-template-columns: 290px 1fr;
             grid-template-rows: auto 1fr auto;
         }
 
         .collapsed {
             nav,
             main {
-                transform: translateX(-200px);
+                transform: translateX(-290px);
                 .content-area {
                     width: 100vw;
                 }
@@ -580,7 +579,7 @@ export const AdminGlobalStyle = createGlobalStyle`
         }
         @media (max-width: 991px) {
             .main {
-                grid-template-columns: 200px 1fr;
+                grid-template-columns: 290px 1fr;
             }
         }
     }
