@@ -7,7 +7,7 @@ import styled from "styled-components";
 // import Taxonomies from "./Taxonomies";
 import StyledTaxonomy from "./Taxonomy.css";
 
-import StyledSection from "../../components/section";
+import StyledSection, { SectionSizes } from "../../components/section";
 import Input, { TextArea } from "../../components/input";
 import StyledGrid from "../../components/grid";
 import { Button } from "../../components/button";
@@ -178,6 +178,7 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
   }
   return (
     <StyledSection
+      size={SectionSizes.md}
       title={defaultTexts.title1}
       subtitle={defaultTexts.subtitle1}
     >

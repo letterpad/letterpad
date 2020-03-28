@@ -36,7 +36,7 @@ const Sidebar = styled.div`
     position: fixed;
     display: flex;
     flex-direction: column;
-
+    box-shadow: -6px 0px 24px 0px var(--base-shade-3);
     width: 290px;
     height: 100%;
     top: 0;
@@ -45,7 +45,6 @@ const Sidebar = styled.div`
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    border-right: 1px solid var(--color-border);
 
     .sidebar-top {
       display: flex;

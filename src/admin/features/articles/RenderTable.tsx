@@ -2,19 +2,23 @@ import { Link } from "react-router-dom";
 import React from "react";
 import { Table } from "./ArticleList.css";
 
+const columns = [
+  "Image",
+  "Title",
+  "Published At",
+  "Author",
+  "Status",
+  "Category",
+  "",
+];
 const RenderTable = ({ data, setSelection }) => {
   return (
-    <Table
-      className="table"
-      columns={["", "Title", "Published At", "Author", "Status", "Category"]}
-    >
+    <Table className="table" columns={columns}>
       <thead>
         <tr>
-          {["", "Title", "Published At", "Author", "Status", "Category"].map(
-            (colName, i) => (
-              <th key={i}>{colName}</th>
-            ),
-          )}
+          {columns.map((colName, i) => (
+            <th key={i}>{colName}</th>
+          ))}
         </tr>
       </thead>
       <tbody>
@@ -22,14 +26,16 @@ const RenderTable = ({ data, setSelection }) => {
           const authorName = post.author.fname + " " + post.author.lname;
           return (
             <tr key={post.slug}>
-              <td className="selection-box">
-                <input
-                  type="checkbox"
-                  id={"checkbox-" + post.id}
-                  onClick={() => setSelection(post.id)}
-                />
-                <label htmlFor={"checkbox-" + post.id} />
+              <td>
+                <div
+                  style={{
+                    background: `url('${post.cover_image.src}') var(--bg-base) center`,
+                    width: "64px",
+                    height: "64px",
+                  }}
+                ></div>
               </td>
+
               <td>
                 <Link to={"/admin/posts/" + post.id}>
                   <div className="title">{post.title}</div>
@@ -44,6 +50,14 @@ const RenderTable = ({ data, setSelection }) => {
               </td>
               <td className="small">
                 {post.categories.map(item => item.name).join(", ")}
+              </td>
+              <td className="selection-box">
+                <input
+                  type="checkbox"
+                  id={"checkbox-" + post.id}
+                  onClick={() => setSelection(post.id)}
+                />
+                <label htmlFor={"checkbox-" + post.id} />
               </td>
             </tr>
           );

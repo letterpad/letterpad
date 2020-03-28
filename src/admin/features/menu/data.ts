@@ -1,4 +1,7 @@
-const DATA = [
+import { EnumPermissions } from "../../../__generated__/gqlTypes";
+import { IAdminMenu } from "./../../../types/types";
+
+const DATA: IAdminMenu[] = [
   {
     id: 1,
     name: "menu.allPosts",
@@ -19,7 +22,10 @@ const DATA = [
     id: 3,
     name: "menu.media",
     priority: 3,
-    permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
+    permissions: [
+      EnumPermissions.ManageOwnPosts,
+      EnumPermissions.ManageAllPosts,
+    ],
     slug: "media",
     icon: "fa-picture-o",
   },
@@ -27,7 +33,10 @@ const DATA = [
     id: 3,
     name: "menu.tags",
     priority: 3,
-    permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
+    permissions: [
+      EnumPermissions.ManageOwnPosts,
+      EnumPermissions.ManageAllPosts,
+    ],
     slug: "tags",
     icon: "fa-tag",
   },
@@ -35,18 +44,18 @@ const DATA = [
     id: 4,
     name: "menu.categories",
     priority: 4,
-    permissions: ["MANAGE_OWN_POSTS", "MANAGE_ALL_POSTS"],
+    permissions: [
+      EnumPermissions.ManageOwnPosts,
+      EnumPermissions.ManageAllPosts,
+    ],
     slug: "categories",
     icon: "fa-th",
-  },
-  {
-    spacer: true,
   },
   {
     id: 6,
     name: "menu.profile",
     priority: 3,
-    permissions: ["MANAGE_OWN_POSTS"],
+    permissions: [EnumPermissions.ManageOwnPosts],
     slug: "edit-profile",
     icon: "fa-user",
   },
@@ -54,7 +63,7 @@ const DATA = [
     id: 7,
     name: "menu.authors",
     priority: 3,
-    permissions: ["MANAGE_USERS"],
+    permissions: [EnumPermissions.ManageUsers],
     slug: "authors",
     icon: "fa-users",
   },
@@ -62,7 +71,7 @@ const DATA = [
     id: 5,
     name: "menu.sitesettings",
     priority: 3,
-    permissions: ["MANAGE_SETTINGS"],
+    permissions: [EnumPermissions.ManageSettings],
     slug: "settings",
     icon: "fa-user",
   },
@@ -70,7 +79,7 @@ const DATA = [
     id: 4,
     name: "menu.navigation",
     priority: 3,
-    permissions: ["MANAGE_SETTINGS"],
+    permissions: [EnumPermissions.ManageSettings],
     slug: "navigation-builder",
     icon: "fa-bars",
   },

@@ -1,6 +1,6 @@
 import { Container, Grid } from "./Navigation.css";
 import React, { useState } from "react";
-import Section, { Title } from "../../components/section";
+import Section, { SectionSizes, Title } from "../../components/section";
 import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import { SortableContainer, arrayMove } from "react-sortable-hoc";
 import { WithNamespaces, translate } from "react-i18next";
@@ -71,6 +71,7 @@ const Navigation: React.FC<INavigationBuilderProps> = ({ settings, t }) => {
 
   return (
     <Section
+      size={SectionSizes.md}
       title={<Title title={t("menu.title")} onClick={() => addNewRow()} />}
       subtitle={t("menu.tagline")}
     >

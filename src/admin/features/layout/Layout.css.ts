@@ -44,7 +44,7 @@ export const StyledLayout = styled.div`
   background: var(--bg-base);
 
   main {
-    background: var(--bg-base);
+    background: var(--bg-sections);
     border-top: 1px solid var(--color-border);
   }
   @media (max-width: 991px) {

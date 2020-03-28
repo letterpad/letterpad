@@ -7,14 +7,6 @@ export const StyledTitle = styled.div`
 `;
 
 export const StyledItem = styled.div`
-  .selection-box {
-    position: relative;
-    z-index: 0;
-    left: 100%;
-    margin-left: -24px;
-    border-top-right-radius: 7px;
-    top: 10px;
-  }
   [type="checkbox"]:checked,
   [type="checkbox"]:not(:checked) {
     position: absolute;
@@ -71,14 +63,12 @@ export const Table = styled.table<any>`
   border-collapse: collapse;
   border-spacing: 0;
   empty-cells: show;
-  border: 1px solid var(--color-border);
   font-size: 14px;
   width: 100%;
-  background: var(--bg-sections);
-  color: var(--color-text-3);
-  box-shadow: var(--box-shadow);
+
   .small {
-    font-size: 12px;
+    font-size: 14px;
+    color: var(--color-text-3);
   }
   .upper {
     text-transform: uppercase;
@@ -88,7 +78,7 @@ export const Table = styled.table<any>`
   .title {
     font-weight: 400;
     padding: 6px 0px;
-    color: var(--color-text-2);
+    color: var(--color-base);
   }
   .status {
     font-size: 11px;
@@ -120,14 +110,14 @@ export const Table = styled.table<any>`
   }
 
   thead {
-    background-color: var(--bg-base);
     color: var(--color-base);
     text-align: left;
     vertical-align: bottom;
-    border-bottom: 2px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    /* border-bottom: 2px solid var(--color-border); */
     th {
       font-size: 10px;
-      font-weight: 500;
+      font-weight: 400;
       letter-spacing: 0.8px;
       text-transform: uppercase;
       padding: 12px 0 12px 0px;
@@ -136,11 +126,88 @@ export const Table = styled.table<any>`
 
   /* BORDERED TABLES */
   td {
-    border-bottom: 2px solid var(--color-border);
+    /* border-bottom: 2px solid var(--color-border); */
     text-align: left;
   }
   tbody > tr:last-child > td {
     border-bottom-width: 0;
+  }
+
+  .selection-box {
+    text-align: center;
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    user-select: none;
+    input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+
+      & + label {
+        position: relative;
+        cursor: pointer;
+        padding: 0;
+        top: 14px;
+        border-radius: 4px;
+      }
+
+      /* // Box. */
+      & + label:before {
+        content: "";
+        margin-right: 10px;
+        display: inline-block;
+        vertical-align: text-top;
+        width: 16px;
+        height: 16px;
+        border-radius: 2px;
+        background: var(--base-shade-2);
+      }
+
+      /* // Box hover */
+      &:hover + label:before {
+        background: #f35429;
+      }
+
+      /* // Box focus */
+      &:focus + label:before {
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+      }
+
+      /* // Box checked */
+      &:checked + label:before {
+        background: #f35429;
+      }
+
+      /* // Disabled state label. */
+      &:disabled + label {
+        color: #b8b8b8;
+        cursor: auto;
+      }
+
+      /* // Disabled box. */
+      &:disabled + label:before {
+        box-shadow: none;
+        background: #ddd;
+      }
+
+      /* // Checkmark. Could be replaced with an image */
+      &:checked + label:after {
+        content: "";
+        position: absolute;
+        left: 3px;
+        top: 7px;
+        background: white;
+        width: 1.5px;
+        height: 1.5px;
+        box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white,
+          4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;
+        transform: rotate(45deg);
+      }
+    }
   }
 `;
 

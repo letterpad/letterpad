@@ -17,7 +17,7 @@ export const Container = styled.section<ISectionProps>`
       case SectionSizes.xs:
         return "16px";
       case SectionSizes.md:
-        return "32px";
+        return "48px 72px";
       default:
         return "16px";
     }
@@ -30,7 +30,9 @@ export const Container = styled.section<ISectionProps>`
     width: 100%;
     h2 {
       margin: 20px 0px 10px;
-      color: var(--color-text-1);
+      color: var(--color-base);
+      font-size: 36px;
+      font-weight: 300;
     }
     p {
       max-width: 767px;

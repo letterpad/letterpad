@@ -1,6 +1,6 @@
 import { EditMediaWrapper, StyledItem } from "./Media.css";
 import React, { Component } from "react";
-import StyledSection, { Title } from "../../components/section";
+import StyledSection, { SectionSizes, Title } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 import { deleteMedias, getMedia, updateMedia } from "./actions";
 
@@ -186,7 +186,7 @@ class Media extends Component<IMMediaProps, IMediaState> {
 
     return (
       <StyledSection
-        md
+        size={SectionSizes.md}
         title={
           <Title
             title={t("media.title")}

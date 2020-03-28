@@ -94,7 +94,7 @@ const Articles: React.FC<IArticleListProps> = ({
 
   return (
     <Section
-      size={SectionSizes.xs}
+      size={SectionSizes.md}
       title={
         <Title
           title={type === "post" ? t("posts.title") : t("pages.title")}

@@ -213,7 +213,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,500,600,700");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
-@import url('https://fonts.googleapis.com/css?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Inter:100,300,400,500,600,700');
 
 /*! -----------------------------------------------------------------
     [Master Stylesheet]
@@ -234,7 +234,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         /* font-family: "Roboto", sans-serif; */
         font-family: 'Inter', sans-serif;
         line-height: 1.4;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: 400;
         -ms-overflow-style: scrollbar;
         overflow-x: hidden;
@@ -261,11 +261,6 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
     }
     input[type="search"]::-webkit-search-cancel-button {
         -webkit-appearance: searchfield-cancel-button;
-    }
-    .table {
-        tbody tr td:first-child, thead tr th:first-child {
-            padding-left: 16px !important;
-        }
     }
     
     .top-head {
@@ -311,7 +306,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
     h4,
     h5,
     h6 {
-        font-family: "Roboto Condensed", sans-serif;
+        font-family: "Inter", sans-serif;
         letter-spacing: 1px;
         font-weight: 400;
         margin: 24px 0 20px;

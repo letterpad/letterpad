@@ -1,5 +1,5 @@
 export const darkTheme = `
-    --bg-base: #1C2429;
+    --bg-base: #111213;
     --bg-sections: #131B1F;
     --color-border: #283237;
     

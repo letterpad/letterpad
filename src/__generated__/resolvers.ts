@@ -75,6 +75,7 @@ export enum EnumPermissions {
   ManageAllPosts = "MANAGE_ALL_POSTS",
   ManageUsers = "MANAGE_USERS",
   ManageSettings = "MANAGE_SETTINGS",
+  ManageOwnPosts = "MANAGE_OWN_POSTS",
 }
 
 export enum EnumRoles {

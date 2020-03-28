@@ -40,3 +40,13 @@ export interface IMediaUploadResult {
     type: string;
   };
 }
+
+export interface IAdminMenu {
+  id: number;
+  name: string;
+  priority: number;
+  permissions: EnumPermissions[];
+  slug: string;
+  icon: string;
+  children?: IAdminMenu[];
+}

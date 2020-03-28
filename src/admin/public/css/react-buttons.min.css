@@ -122,14 +122,10 @@ fieldset[disabled] .buttons---btn-default---1wWXD:hover {
 }
 .buttons---btn-primary---Wp1wb {
   color: #fff;
-  background-color: #0096cc;
-  background-image: -webkit-linear-gradient(top, #00a7e6 0, #0096cc 100%);
-  background-image: -moz-linear-gradient(top, #00a7e6 0, #0096cc 100%);
-  background-image: -o-linear-gradient(top, #00a7e6 0, #0096cc 100%);
-  background-image: -ms-linear-gradient(top, #00a7e6 0, #0096cc 100%);
-  background-image: linear-gradient(to bottom, #00a7e6 0, #0096cc 100%);
+  background-color: #333;
+  background-image: linear-gradient(to bottom, #333 0%, #333 100%);
   background-repeat: repeat-x;
-  border-color: #0095ce;
+  border-color: #333;
 }
 .buttons---btn-primary---Wp1wb
   > [class*="loader-container"]
@@ -140,9 +136,9 @@ fieldset[disabled] .buttons---btn-default---1wWXD:hover {
 .buttons---btn-primary---Wp1wb.buttons---active---2-a32,
 .buttons---btn-primary---Wp1wb:active {
   color: #fff;
-  background-color: #009ed8;
+  background-color: #000;
   background-image: none;
-  border-color: #00759f;
+  border-color: #000;
   -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15) inset;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15) inset;
 }
@@ -156,14 +152,9 @@ fieldset[disabled] .buttons---btn-default---1wWXD:hover {
 .buttons---btn-primary---Wp1wb.buttons---hover---42FF2,
 .buttons---btn-primary---Wp1wb:hover {
   color: #fff;
-  background-color: #1daee5;
-  background-image: -webkit-linear-gradient(top, #1daee5 0, #00a3df 100%);
-  background-image: -moz-linear-gradient(top, #1daee5 0, #00a3df 100%);
-  background-image: -o-linear-gradient(top, #1daee5 0, #00a3df 100%);
-  background-image: -ms-linear-gradient(top, #1daee5 0, #00a3df 100%);
-  background-image: linear-gradient(to bottom, #1daee5 0, #00a3df 100%);
+  background-color: #000;
   background-repeat: repeat-x;
-  border-color: #00759f;
+  border-color: #000;
 }
 .buttons---btn-primary---Wp1wb.buttons---disabled---eCY9b.buttons---focus---1kVJZ,
 .buttons---btn-primary---Wp1wb.buttons---disabled---eCY9b.buttons---hover---42FF2,

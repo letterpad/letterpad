@@ -26,6 +26,12 @@ export const StyledLink = styled(Link)`
     margin-right: 8px;
     color: var(--color-text-3) !important;
   }
+  display: flex;
+  justify-content: space-between;
+  .stats-item {
+    color: var(--color-muted);
+    font-weight: 400;
+  }
 `;
 const StyledMenu = styled.div`
   overflow-y: auto;
