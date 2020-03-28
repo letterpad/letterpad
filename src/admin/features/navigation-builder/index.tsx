@@ -1,13 +1,13 @@
 import { Container, Grid } from "./Navigation.css";
 import React, { useState } from "react";
+import Section, { Title } from "../../components/section";
 import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import { SortableContainer, arrayMove } from "react-sortable-hoc";
 import { WithNamespaces, translate } from "react-i18next";
 
+import { Button } from "../../components/button";
 import { IMenu } from "../../../client/types";
-import Section from "../../components/section";
 import SortableItem from "./SortableItem";
-import StyledButton from "../../components/button";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 import apolloClient from "../../../shared/apolloClient";
 import { useNavigationData } from "./data.hook";
@@ -62,13 +62,11 @@ const Navigation: React.FC<INavigationBuilderProps> = ({ settings, t }) => {
   };
 
   return (
-    <Section title={t("menu.title")} subtitle={t("menu.tagline")}>
+    <Section
+      title={<Title title={t("menu.title")} onClick={() => addNewRow()} />}
+      subtitle={t("menu.tagline")}
+    >
       <Container>
-        <div className="toolbar">
-          <StyledButton onClick={addNewRow} success>
-            Add
-          </StyledButton>
-        </div>
         <Grid>
           <span />
           <strong>Label</strong>
@@ -122,13 +120,13 @@ const SortableList = SortableContainer(
 );
 
 function normalizeSlugs(menu) {
-  return menu.map(item => {
+  return menu.map((item, idx) => {
     item.slug = item.slug
       .replace("/category/", "")
       .replace("/tag/", "")
       .replace("/posts/", "")
       .replace("/page/", "");
-
+    item.id = idx;
     return item;
   });
 }

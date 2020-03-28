@@ -10,7 +10,7 @@ import StyledTaxonomy from "./Taxonomy.css";
 import StyledSection from "../../components/section";
 import Input, { TextArea } from "../../components/input";
 import StyledGrid from "../../components/grid";
-import StyledButton from "../../components/button";
+import { Button } from "../../components/button";
 import { QUERY_TAXONOMIES } from "../../../shared/queries/Queries";
 import apolloClient from "../../../shared/apolloClient";
 import {
@@ -204,7 +204,14 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
                 placeholder="Add a new tag..."
                 onKeyDown={e => e.keyCode === 13 && saveNewTaxonomy()}
               />
-              <Icon className="fa fa-plus" onClick={saveNewTaxonomy} />
+              <Button
+                compact
+                btnSize="xs"
+                btnStyle="primary"
+                onClick={saveNewTaxonomy}
+              >
+                <i className="fa fa-plus"></i>
+              </Button>
             </NewTagWrapper>
           </div>
           <div className="taxonomy-edit">
@@ -229,13 +236,23 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
               onChange={e => changeTaxonomyDetails(e, "desc")}
               value={desc || ""}
             />
-            <div>
-              <StyledButton href="#" onClick={() => deleteTaxonomy(id)}>
+            <div className="footer">
+              <Button
+                btnStyle="danger"
+                btnSize="sm"
+                onClick={() => deleteTaxonomy(id)}
+              >
+                <i className="fa fa-trash" />
                 Delete tag
-              </StyledButton>
-              <StyledButton success onClick={() => editSaveTaxonomy(id)}>
+              </Button>
+              <Button
+                btnStyle="primary"
+                btnSize="sm"
+                onClick={() => editSaveTaxonomy(id)}
+              >
+                <i className="fa fa-save" />
                 Save
-              </StyledButton>
+              </Button>
             </div>
           </div>
         </StyledGrid>

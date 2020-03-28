@@ -1,8 +1,8 @@
 import { InputBox, Item } from "./SortableItem.css";
 import React, { useState } from "react";
 
+import { Button } from "../../components/button";
 import { IMenu } from "../../../client/types";
-import { Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { SortableElement } from "react-sortable-hoc";
 
@@ -85,9 +85,9 @@ const SortableItem = SortableElement(props => {
         </datalist>
       </div>
       <i className="fa fa-info" data-tip={getToolTip(item)} />
-      <Link to="#" onClick={onRemove} className="icon-box">
+      <Button btnStyle="danger" compact btnSize="xs" onClick={onRemove}>
         <i className="fa fa-trash" />
-      </Link>
+      </Button>
       <ReactTooltip />
     </Item>
   );

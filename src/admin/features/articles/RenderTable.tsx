@@ -33,9 +33,9 @@ const RenderTable = ({ data, setSelection }) => {
               <td>
                 <Link to={"/admin/posts/" + post.id}>
                   <div className="title">{post.title}</div>
-                </Link>
 
-                <div className="small">{post.excerpt.slice(0, 60)}...</div>
+                  <div className="small">{post.excerpt.slice(0, 60)}...</div>
+                </Link>
               </td>
               <td className="small">{post.publishedAt}</td>
               <td className="small">{authorName}</td>
