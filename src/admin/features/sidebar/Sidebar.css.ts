@@ -36,7 +36,7 @@ const Sidebar = styled.div`
     position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+
     width: 290px;
     height: 100%;
     top: 0;
@@ -47,6 +47,10 @@ const Sidebar = styled.div`
     background-size: cover;
     border-right: 1px solid var(--color-border);
 
+    .sidebar-top {
+      display: flex;
+      flex-direction: column;
+    }
     @media (max-width: 991px) {
       position: relative;
       z-index: 99999;

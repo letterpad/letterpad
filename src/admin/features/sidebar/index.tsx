@@ -11,11 +11,13 @@ class Sidebar extends Component<any, any> {
     return (
       <StyledSidebar>
         <div className="sidebar">
-          <Logo
-            src={settings.site_logo.value}
-            siteName={settings.site_title.value}
-          />
-          <Menu settings={settings} router={router} />
+          <div className="sidebar-top">
+            <Logo
+              src={settings.site_logo.value}
+              siteName={settings.site_title.value}
+            />
+            <Menu settings={settings} router={router} />
+          </div>
           <Footer data={settings.site_footer.value} />
         </div>
       </StyledSidebar>
