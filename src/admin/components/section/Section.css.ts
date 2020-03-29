@@ -32,8 +32,13 @@ export const Container = styled.section<ISectionProps>`
     font-size: 13px;
     font-weight: 400;
     width: 100%;
+    .section-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     h2 {
-      margin: 20px 0px 10px;
+      margin: 0px;
       color: var(--color-base);
       font-size: 36px;
       font-weight: 300;
@@ -51,4 +56,15 @@ export const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+export const ActionsContainer = styled.div`
+  button {
+    padding: 8px 40px;
+    text-transform: uppercase;
+    border-radius: 2px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-size: 10px;
+  }
 `;

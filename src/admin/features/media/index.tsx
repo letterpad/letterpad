@@ -1,4 +1,5 @@
 import { EditMediaWrapper, StyledItem } from "./Media.css";
+import { Link, RouteComponentProps } from "react-router-dom";
 import React, { Component } from "react";
 import StyledSection, { SectionSizes, Title } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
@@ -9,7 +10,6 @@ import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
 import EditMediaInfo from "./EditMediaInfo";
 import { MediaNode } from "../../../__generated__/gqlTypes";
 import Paginate from "../../components/pagination";
-import { RouteComponentProps } from "react-router-dom";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
 import { getReadableDate } from "../../../shared/date";
@@ -187,16 +187,16 @@ class Media extends Component<IMMediaProps, IMediaState> {
     return (
       <StyledSection
         size={SectionSizes.md}
-        title={
-          <Title
-            title={t("media.title")}
-            onClick={() => {
+        rightToolbar={
+          <Actions
+            newMediaAction={() => {
               if (this.uploadInputRef.current) {
                 this.uploadInputRef.current.click();
               }
             }}
           />
         }
+        title={t("media.title")}
         subtitle={t("media.tagline")}
       >
         {checkedItems.length > 0 && (
@@ -279,3 +279,13 @@ class Media extends Component<IMMediaProps, IMediaState> {
 }
 
 export default translate("translations")(Media);
+
+const Actions = ({ newMediaAction }) => {
+  return (
+    <>
+      <Button btnSize="md" btnStyle="primary" onClick={newMediaAction}>
+        New
+      </Button>
+    </>
+  );
+};

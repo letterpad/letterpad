@@ -6,6 +6,7 @@ import FileExplorerModal from "../modals/FileExplorerModal";
 import LetterpadEditor from "letterpad-editor";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
+import ReactTooltip from "react-tooltip";
 import StyledArticle from "./Article.css";
 import { createGlobalStyle } from "styled-components";
 import { uploadFile } from "../../server/util";
@@ -124,6 +125,7 @@ class Edit extends Component<IProps> {
             //@ts-ignore
             uploadImage={(file: File) => this.uploadImage([file])}
             defaultValue={post.md}
+            tooltip={Tooltip}
             onChange={this.onEditorChange}
             placeholder="Write a story.."
           />
@@ -159,6 +161,17 @@ class Edit extends Component<IProps> {
 }
 
 export default Edit;
+
+const Tooltip: React.FC<any> = ({ children, tooltip }) => {
+  return (
+    <>
+      <div data-tip={tooltip} className="flex" style={{ display: "flex" }}>
+        {children}
+      </div>
+      <ReactTooltip />
+    </>
+  );
+};
 
 /*
 Based on Prism template by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/prism/)

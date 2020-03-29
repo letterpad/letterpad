@@ -6,15 +6,14 @@ export const StyledTitle = styled.div`
   justify-content: space-between;
 `;
 
-export const StyledItem = styled.div`
-  .selection-box {
-    position: relative;
-    z-index: 99;
-    left: 100%;
-    margin-left: -24px;
-    border-top-right-radius: 7px;
-    top: 10px;
-  }
+export const RoundedCheckbox = styled.div`
+  position: relative;
+  z-index: 99;
+  left: 100%;
+  margin-left: -24px;
+  border-top-right-radius: 7px;
+  top: 10px;
+
   [type="checkbox"]:checked,
   [type="checkbox"]:not(:checked) {
     position: absolute;
@@ -66,82 +65,6 @@ export const StyledItem = styled.div`
   }
 `;
 
-export const Table = styled.table<any>`
-  /* Remove spacing between table cells (from Normalize.css) */
-  border-collapse: collapse;
-  border-spacing: 0;
-  empty-cells: show;
-  font-size: 14px;
-  width: 100%;
-
-  .small {
-    font-size: 14px;
-    color: var(--color-text-3);
-  }
-  .upper {
-    text-transform: uppercase;
-    padding: 2px 4px;
-    background: var(--color-base-2);
-  }
-  .title {
-    font-weight: 400;
-    padding: 6px 0px;
-    color: var(--color-base);
-  }
-  .status {
-    font-size: 11px;
-
-    &.publish {
-      color: var(--bg-hover-success);
-    }
-  }
-
-  caption {
-    color: #000;
-    font: italic 85%/1 arial, sans-serif;
-    padding: 1em 0;
-    text-align: center;
-  }
-
-  td,
-  th {
-    border-width: 0 0 0 1px;
-    font-size: inherit;
-    margin: 0;
-    overflow: visible; /*to make ths where the title is really long work*/
-    padding: 24px 0 24px 0px;
-  }
-
-  tbody tr:hover {
-    cursor: pointer;
-    background: var(--bg-base);
-  }
-
-  thead {
-    color: var(--color-base);
-    text-align: left;
-    vertical-align: bottom;
-    border-bottom: 1px solid var(--color-border);
-    /* border-bottom: 2px solid var(--color-border); */
-    th {
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      padding: 12px 0 12px 0px;
-    }
-  }
-
-  /* BORDERED TABLES */
-  td {
-    /* border-bottom: 2px solid var(--color-border); */
-    text-align: left;
-  }
-  tbody > tr:last-child > td {
-    border-bottom-width: 0;
-  }
-`;
-
 export const Loader = styled.div<any>`
   width: 100%;
   height: 4px;
@@ -157,16 +80,16 @@ export const List = styled.div`
     display: grid;
     grid-gap: 10px;
     align-items: center;
-    grid-template-columns: 80px 1fr 100px 100px 100px 100px 50px;
+    grid-template-columns: 100px 1fr 100px 100px 100px 100px 100px;
     font-size: 14px;
-    color: var(--color-muted);
+    color: var(--color-text-3);
     margin-bottom: 44px;
     .title {
       font-size: 16px;
       margin-bottom: 4px;
       color: var(--color-base);
       .small {
-        color: var(--color-muted);
+        color: var(--color-text-3);
         font-size: 14px;
       }
     }
@@ -240,22 +163,23 @@ export const List = styled.div`
           width: 16px;
           height: 16px;
           border-radius: 2px;
-          background: var(--base-shade-2);
+          /* background: var(--base-shade-2); */
+          border: 1px solid var(--color-border);
         }
 
         /* // Box hover */
         &:hover + label:before {
-          background: #f35429;
+          /* background: #f35429; */
         }
 
-        /* // Box focus */
+        /* // Box focus
         &:focus + label:before {
           box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
-        }
+        } */
 
         /* // Box checked */
         &:checked + label:before {
-          background: #f35429;
+          /* background: #f35429; */
         }
 
         /* // Disabled state label. */
@@ -274,14 +198,14 @@ export const List = styled.div`
         &:checked + label:after {
           content: "";
           position: absolute;
-          left: 3px;
-          top: 7px;
+          left: 4px;
+          top: 4px;
           background: white;
-          width: 1.5px;
-          height: 1.5px;
-          box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white,
-            4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;
-          transform: rotate(45deg);
+          width: 8px;
+          height: 8px;
+          border-radius: 15px;
+          background: #f35429;
+          border: 1px solid var(--color-border);
         }
       }
     }
@@ -291,6 +215,7 @@ export const List = styled.div`
       color: var(--color-base) !important;
       text-transform: uppercase;
       font-size: 12px !important;
+      letter-spacing: 1px;
     }
     border-bottom: 1px solid var(--color-border);
     padding-bottom: 16px;
@@ -312,5 +237,12 @@ export const List = styled.div`
         padding-right: 16px;
       }
     }
+  }
+`;
+
+export const Flex = styled.div`
+  display: flex;
+  .input-box {
+    margin: 0px;
   }
 `;

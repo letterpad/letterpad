@@ -1,7 +1,7 @@
 import React from "react";
+import { RoundedCheckbox } from "./ArticleList.css";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
-import { StyledItem } from "./ArticleList.css";
 import { getReadableDate } from "../../../shared/date";
 const RenderGrid: React.FC<any> = ({ data, setSelection }) => {
   return (
@@ -9,15 +9,15 @@ const RenderGrid: React.FC<any> = ({ data, setSelection }) => {
       {data.map(post => {
         const authorName = post.author.fname + " " + post.author.lname;
         return (
-          <StyledItem key={post.slug}>
-            <div className="selection-box">
+          <div key={post.slug}>
+            <RoundedCheckbox className="selection-box">
               <input
                 type="checkbox"
                 id={"checkbox-" + post.id}
                 onClick={() => setSelection(post.id)}
               />
               <label htmlFor={"checkbox-" + post.id} />
-            </div>
+            </RoundedCheckbox>
             <StyledGridItem
               image={getCoverImage(post.cover_image)}
               title={post.title}
@@ -26,7 +26,7 @@ const RenderGrid: React.FC<any> = ({ data, setSelection }) => {
               line2={getReadableDate(post.createdAt)}
               stickyText={post.categories.map(item => item.name).join(", ")}
             />
-          </StyledItem>
+          </div>
         );
       })}
     </StyledGrid>

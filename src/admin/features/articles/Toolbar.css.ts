@@ -5,7 +5,7 @@ const StyledToolbar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 40px;
 
   .left-block {
     display: flex;
@@ -14,6 +14,7 @@ const StyledToolbar = styled.div`
   .right-block {
     display: flex;
     align-items: center;
+    color: var(--color-text-3);
   }
 `;
 

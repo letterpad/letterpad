@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import Footer from "../footer";
+import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import Menu from "../menu";
 import { QUERY_STATS } from "../../../shared/queries/Queries";
@@ -31,7 +32,12 @@ const Sidebar: React.FC<IProps> = props => {
           />
           <Menu settings={settings} router={router} stats={data} />
         </div>
-        <Footer data={settings.site_footer.value} />
+        <div className="view-site">
+          <Link target="_blank" rel="noopener noreferrer" to={"/"}>
+            View site
+          </Link>
+        </div>
+        {/* <Footer data={settings.site_footer.value} /> */}
       </div>
     </StyledSidebar>
   );

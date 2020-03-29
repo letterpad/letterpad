@@ -617,4 +617,21 @@ export const AdminGlobalStyle = createGlobalStyle`
         color: var(--color-border);
         border: 1px solid var(--color-border);
     }
+
+    [data-id="tooltip"] {
+      font-size: 10px;
+      text-transform: uppercase;
+      padding: 12px 8px !important;
+      letter-spacing: 1px;
+      font-weight: 500 !important;
+      opacity: 1;
+    }
+    .block-toolbar {
+        [data-id="tooltip"] {
+            padding: 2px 8px !important;
+            font-weight: 500 !important;
+            opacity: 1 !important;
+            font-family: "Inter", sans-serif;
+        }
+    }
 `;

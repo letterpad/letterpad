@@ -39,7 +39,7 @@ const Sidebar = styled.div`
     flex-direction: column;
     box-shadow: -6px 0px 24px 0px var(--base-shade-3);
     width: 290px;
-    height: 100%;
+    height: 100vh;
     top: 0;
     left: 0;
     z-index: 999;
@@ -50,11 +50,14 @@ const Sidebar = styled.div`
     .sidebar-top {
       display: flex;
       flex-direction: column;
-      flex: 1;
 
       .custom-menu {
-        flex: 1;
-        min-height: min-content;
+        height: calc(100vh - 160px);
+        overflow-y: auto;
+        ul {
+          height: 100%;
+          margin: 0px;
+        }
       }
     }
     @media (max-width: 991px) {
@@ -92,12 +95,12 @@ const Sidebar = styled.div`
         color: #fff;
       }
     } */
-    .footer {
+    .view-site {
       height: 45px;
       display: flex;
       border-top: 1px solid var(--color-border);
       align-items: center;
-      padding: 0 18px;
+      padding: 30px 40px;
       color: var(--color-base);
     }
   }

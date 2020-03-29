@@ -22,9 +22,13 @@ const Logo: React.FC<IProps> = ({ src, siteName }) => {
 
 export default Logo;
 const Container = styled.div`
-  height: 120px;
+  height: 88px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
+  padding: 40px;
   border-bottom: 1px solid var(--color-border);
+  img {
+    width: 36px;
+  }
 `;

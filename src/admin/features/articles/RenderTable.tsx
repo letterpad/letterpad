@@ -10,7 +10,7 @@ const columns = [
   { label: "Author", className: "author" },
   { label: "Status", className: "status" },
   { label: "Categories", className: "categories" },
-  { label: "", className: "selection-box" },
+  { label: "Select", className: "selection-box" },
 ];
 const RenderTable = ({ data, setSelection }) => {
   return (

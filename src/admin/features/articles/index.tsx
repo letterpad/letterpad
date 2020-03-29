@@ -1,5 +1,5 @@
+import { ActionsContainer, Flex, Loader, StyledTitle } from "./ArticleList.css";
 import { Link, RouteComponentProps } from "react-router-dom";
-import { Loader, StyledTitle } from "./ArticleList.css";
 import { PostTypes, PostsNode } from "../../../__generated__/gqlTypes";
 import React, { useState } from "react";
 import Section, { SectionSizes } from "../../components/section";
@@ -95,10 +95,19 @@ const Articles: React.FC<IArticleListProps> = ({
   return (
     <Section
       size={SectionSizes.md}
-      title={
-        <Title
-          title={type === "post" ? t("posts.title") : t("pages.title")}
-          creationLink={"/admin/" + (type === "post" ? "post-new" : "page-new")}
+      title={type === "post" ? t("posts.title") : t("pages.title")}
+      rightToolbar={
+        <Actions
+          searchbox={
+            <Search
+              type="post"
+              searchPosts={changeFilter}
+              query={getUrlParams().get("query")}
+            />
+          }
+          createPost={"/admin/" + (type === "post" ? "post-new" : "page-new")}
+          onDelete={deleteSelectedPosts}
+          selectedPosts={selectedPosts}
         />
       }
       subtitle={type === "post" ? t("posts.tagline") : t("pages.tagline")}
@@ -116,24 +125,9 @@ const Articles: React.FC<IArticleListProps> = ({
                 onClick={() => setLayout(LayoutOptions.grid)}
               />
             </Layout>
-            <Filters query={getUrlParams()} changeFilter={changeFilter} />
-            {selectedPosts.length > 0 && (
-              <Button
-                btnStyle="danger"
-                btnSize="xs"
-                onClick={deleteSelectedPosts}
-              >
-                <i className="fa fa-trash" />
-                Delete
-              </Button>
-            )}
           </div>
           <div className="right-block">
-            <Search
-              type="post"
-              searchPosts={changeFilter}
-              query={getUrlParams().get("query")}
-            />
+            <Filters query={getUrlParams()} changeFilter={changeFilter} />
           </div>
         </StyledToolbar>
         {
@@ -170,16 +164,24 @@ const Articles: React.FC<IArticleListProps> = ({
 
 export default translate("translations")(ArticleHoc(Articles));
 
-const Title = ({ title, creationLink }) => {
+const Actions = ({ createPost, onDelete, selectedPosts, searchbox }) => {
   return (
-    <StyledTitle>
-      <span>{title}</span>
-      <Link to={creationLink}>
+    <Flex>
+      {searchbox}
+      {selectedPosts.length > 0 && (
+        <>
+          <Button btnStyle="danger" btnSize="md" onClick={onDelete}>
+            Delete
+          </Button>
+          &nbsp; &nbsp;
+        </>
+      )}
+
+      <Link to={createPost}>
         <Button btnSize="md" btnStyle="primary">
-          <i className="fa fa-plus" />
           New
         </Button>
       </Link>
-    </StyledTitle>
+    </Flex>
   );
 };

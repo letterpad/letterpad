@@ -72,7 +72,14 @@ const Navigation: React.FC<INavigationBuilderProps> = ({ settings, t }) => {
   return (
     <Section
       size={SectionSizes.md}
-      title={<Title title={t("menu.title")} onClick={() => addNewRow()} />}
+      title={t("menu.title")}
+      rightToolbar={
+        <Actions
+          onNewRowAdd={() => {
+            addNewRow();
+          }}
+        />
+      }
       subtitle={t("menu.tagline")}
     >
       <Container>
@@ -174,3 +181,13 @@ function addIds(arr) {
     return item;
   });
 }
+
+const Actions = ({ onNewRowAdd }) => {
+  return (
+    <>
+      <Button btnSize="md" btnStyle="primary" onClick={onNewRowAdd}>
+        New
+      </Button>
+    </>
+  );
+};

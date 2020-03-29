@@ -43,10 +43,10 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
   return (
     <StyledSection
       size={SectionSizes.md}
-      title={
-        <Title
-          title={t("authors.title")}
-          onClick={() => {
+      title={t("authors.title")}
+      rightToolbar={
+        <Actions
+          newAuthorAction={() => {
             router.history.push("/admin/authors/new");
           }}
         />
@@ -85,3 +85,13 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
 };
 
 export default translate("translations")(AuthorList);
+
+const Actions = ({ newAuthorAction }) => {
+  return (
+    <>
+      <Button btnSize="md" btnStyle="primary" onClick={newAuthorAction}>
+        New
+      </Button>
+    </>
+  );
+};
