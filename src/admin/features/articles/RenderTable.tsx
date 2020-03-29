@@ -1,17 +1,69 @@
+import { List, Table } from "./ArticleList.css";
+
 import { Link } from "react-router-dom";
 import React from "react";
-import { Table } from "./ArticleList.css";
 
 const columns = [
-  "Image",
-  "Title",
-  "Published At",
-  "Author",
-  "Status",
-  "Category",
-  "",
+  { label: "Image", className: "cover-image" },
+  { label: "Title", className: "title" },
+  { label: "Published", className: "published" },
+  { label: "Author", className: "author" },
+  { label: "Status", className: "status" },
+  { label: "Categories", className: "categories" },
+  { label: "", className: "selection-box" },
 ];
 const RenderTable = ({ data, setSelection }) => {
+  return (
+    <List>
+      <header>
+        {columns.map((item, i) => (
+          <div key={i} className={item.className}>
+            {item.label}
+          </div>
+        ))}
+      </header>
+      {data.map(post => {
+        const authorName = post.author.fname + " " + post.author.lname;
+        return (
+          <article key={post.slug}>
+            <div className="cover-image">
+              <div
+                style={{
+                  background: `url('${post.cover_image.src}') var(--bg-base) center`,
+                  width: "64px",
+                  height: "64px",
+                }}
+              ></div>
+            </div>
+
+            <div className="title">
+              <Link to={"/admin/posts/" + post.id}>
+                <div className="title">{post.title}</div>
+
+                <div className="small">{post.excerpt}...</div>
+              </Link>
+            </div>
+            <div className="small published">{smallDate(post.publishedAt)}</div>
+            <div className="small author">{authorName}</div>
+            <div className={"upper status"}>
+              <div className={post.status}></div>
+            </div>
+            <div className="small categories">
+              {post.categories.map(item => item.name).join(", ")}
+            </div>
+            <div className="selection-box">
+              <input
+                type="checkbox"
+                id={"checkbox-" + post.id}
+                onClick={() => setSelection(post.id)}
+              />
+              <label htmlFor={"checkbox-" + post.id} />
+            </div>
+          </article>
+        );
+      })}
+    </List>
+  );
   return (
     <Table className="table" columns={columns}>
       <thead>
@@ -68,3 +120,12 @@ const RenderTable = ({ data, setSelection }) => {
 };
 
 export default RenderTable;
+
+function smallDate(d) {
+  let date = new Date(d);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `${day}.${month}.${year}`;
+}

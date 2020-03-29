@@ -22,6 +22,10 @@ export const Container = styled.section<ISectionProps>`
         return "16px";
     }
   }};
+  @media (max-width: 767px) {
+    padding: 16px;
+  }
+
   .section-header {
     margin-bottom: 36px;
     color: var(--color-text-2);
