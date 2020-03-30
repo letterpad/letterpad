@@ -118,7 +118,7 @@ input,
 optgroup,
 select,
 textarea {
-	font-family: sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 100%;
 	line-height: 1.15;
 	margin: 0;
@@ -586,10 +586,16 @@ export const AdminGlobalStyle = createGlobalStyle`
             grid-gap: 0px;
         }
     }
+    .two-column .content-area {
+        width: auto;
+        height: auto;
+    }
     .content-area {
         overflow: auto;
         overflow-x: hidden;
         min-height: 100%;
+        width: 100vw;
+        height: 100vh;
     }
     body.posts {
         .content-area > div {

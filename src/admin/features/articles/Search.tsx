@@ -1,6 +1,5 @@
 import React, { ChangeEvent, PureComponent } from "react";
 
-import Input from "../../components/input";
 import styled from "styled-components";
 
 class Search extends PureComponent<any, any> {
@@ -58,6 +57,8 @@ const Container = styled.div`
     padding: 11.5px;
     border: 1px solid var(--color-border);
     border-radius: 2px;
+    background: transparent;
+    color: var(--color-base);
   }
   i {
     left: -20px;

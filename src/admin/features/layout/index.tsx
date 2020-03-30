@@ -91,6 +91,9 @@ const Layout = <P extends object>(
               <Sidebar {..._props} />
               <main>
                 <div className="content-area">
+                  <div className="sidebar-close" onClick={this.sidebarToggle}>
+                    <i className="fa fa-align-justify" />
+                  </div>
                   <ComponentClass {..._props} theme={this.state.theme} />
                 </div>
               </main>

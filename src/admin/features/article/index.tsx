@@ -42,7 +42,7 @@ const Article: React.FC<IArticleProps> = ({ theme, router }) => {
       <OhSnap message="This page is either dead for good or restricted." />
     );
   }
-
+  // return null;
   return (
     <Container fullHeight>
       <TopBar edit router={router} post={data.post} />

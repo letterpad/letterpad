@@ -8,12 +8,12 @@ import React, { Component } from "react";
 
 import Excerpt from "./Excerpt";
 import FeaturedImage from "../FeaturedImage";
+import { Label } from "../../../components/input";
 import { MediaProvider } from "../Edit";
 import PostActions from "../PostActions";
 import StyledDropdown from "./Dropdown.css";
 import StyledSwitch from "../../../components/switch";
 import Taxonomies from "./Taxonomies";
-import { Label } from "../../../components/input";
 
 interface IProps {
   updatePost: (data?: object) => void;

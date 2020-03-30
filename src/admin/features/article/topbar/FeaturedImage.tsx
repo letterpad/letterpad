@@ -1,15 +1,15 @@
-import { CoverImage, Post } from "../../../__generated__/gqlTypes";
+import { CoverImage, Post } from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
 import { WithNamespaces, translate } from "react-i18next";
 
-import FileExplorerModal from "../modals/FileExplorerModal";
-import { IMediaUploadResult } from "../../../types/types";
-import { MediaProvider } from "./Edit";
-import PostActions from "./PostActions";
+import FileExplorerModal from "../../modals/FileExplorerModal";
+import { IMediaUploadResult } from "../../../../types/types";
+import { MediaProvider } from "../Edit";
+import PostActions from "../PostActions";
 import PropTypes from "prop-types";
 import { notify } from "react-notify-toast";
 import styled from "styled-components";
-import { uploadFile } from "../../server/util";
+import { uploadFile } from "../../../server/util";
 
 const ImageWrapper = styled.div`
   overflow-x: auto;
@@ -152,7 +152,7 @@ class FeaturedImage extends Component<
 
     return (
       <div>
-        <div className="meta-label">Cover Image</div>
+        <label>Cover Image</label>
         <ImageWrapper className="images-wrapper">
           <CustomImage
             toggleFileExplorer={this.toggleFileExplorer}

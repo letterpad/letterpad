@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Sidebar = styled.div`
   border-radius: 0px;
-  background: var(--bg-sections);
+  background: var(--bg-base);
   border: 0;
   padding: 0;
   margin: 0;
@@ -37,7 +37,7 @@ const Sidebar = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    box-shadow: -6px 0px 24px 0px var(--base-shade-3);
+    box-shadow: var(--sidebar-shadow);
     width: 290px;
     height: 100vh;
     top: 0;
@@ -63,7 +63,6 @@ const Sidebar = styled.div`
     @media (max-width: 991px) {
       position: relative;
       z-index: 99999;
-      height: auto;
       width: 100%;
       padding: 0;
       &:after {

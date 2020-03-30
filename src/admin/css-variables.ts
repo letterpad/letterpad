@@ -1,5 +1,5 @@
 export const darkTheme = `
-    --bg-base: #111213;
+    --bg-base: #171818;
     --bg-sections: #131B1F;
     --color-border: #283237;
     
@@ -7,7 +7,7 @@ export const darkTheme = `
 
     --color-text-1: #fff;
     --color-text-2: #9cb4c1;
-    --color-text-3: #417896;
+    --color-text-3: #808a90;
     --color-muted: #546877;
 
     --color-accent: #249fd3;
@@ -49,6 +49,8 @@ export const darkTheme = `
     0 10px 10px rgba(0, 0, 0, 0.22);
 
     --box-shadow-inset: inset 0px 2px 5px 0px rgba(0, 0, 0, 0.72);
+
+    --sidebar-shadow: 0px 0px 19px 1px #000000;
 `;
 
 export const lightTheme = `

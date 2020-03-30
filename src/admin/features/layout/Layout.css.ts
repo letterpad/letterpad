@@ -44,13 +44,39 @@ export const StyledLayout = styled.div`
   background: var(--bg-base);
 
   main {
-    background: var(--bg-sections);
+    background: var(--bg-base);
     border-top: 1px solid var(--color-border);
+  }
+  .sidebar-close {
+    display: none;
   }
   @media (max-width: 991px) {
     .main {
       grid-gap: 0px;
       grid-template-columns: 200px 1fr;
+    }
+  }
+  @media (max-width: 991px) {
+    .sidebar-close {
+      z-index: 1;
+      display: block;
+      margin-left: 72px;
+      cursor: pointer;
+      margin-top: 14px;
+      i {
+        color: var(--color-base);
+        font-size: 1.4rem;
+      }
+    }
+  }
+  @media (max-width: 767px) {
+    .sidebar-close {
+      margin-left: 16px;
+      margin-top: 14px;
+      i {
+        color: var(--color-base);
+        font-size: 1.4rem;
+      }
     }
   }
 `;
