@@ -11,7 +11,12 @@ html {
 	line-height: 1.15;
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
+    font-size: 86%;
+    @media(min-width: 1441px) {
+        font-size: 96%;
+    }
 }
+
 body {
 	margin: 0;
 }
@@ -234,7 +239,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         /* font-family: "Roboto", sans-serif; */
         font-family: 'Inter', sans-serif;
         line-height: 1.4;
-        font-size: 16px;
+        font-size: 1rem;
         font-weight: 400;
         -ms-overflow-style: scrollbar;
         overflow-x: hidden;
@@ -285,7 +290,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         font-size: 12px;
     }
     .fs-normal {
-        font-size: 14px;
+        font-size: 0.95rem;
     }
     .fs-medium {
         font-size: 16px;
@@ -327,7 +332,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         font-size: 16px;
     }
     h6 {
-        font-size: 14px;
+        font-size: 0.95rem;
     }
     p,
     ul,
@@ -345,13 +350,13 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         border-radius: 2px;
         code {
             font-family: inherit;
-            font-size: 14px;
+            font-size: 0.95rem;
         }
     }
     blockquote {
         font-family: inherit;
         font-style: normal;
-        font-size: 16px;
+        font-size: 1.2rem;
         text-align: left;
         border-left: 4px solid var(--color-accent);
         padding: 2px 8px;

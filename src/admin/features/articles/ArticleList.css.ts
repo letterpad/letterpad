@@ -81,16 +81,16 @@ export const List = styled.div`
     grid-gap: 10px;
     align-items: center;
     grid-template-columns: 100px 1fr 100px 100px 100px 100px 100px;
-    font-size: 14px;
+    font-size: 0.95rem;
     color: var(--color-text-3);
     margin-bottom: 44px;
     .title {
-      font-size: 16px;
+      font-size: 1rem;
       margin-bottom: 4px;
       color: var(--color-base);
       .small {
         color: var(--color-text-3);
-        font-size: 14px;
+        font-size: 0.95rem;
       }
     }
     .status div {
@@ -214,7 +214,7 @@ export const List = styled.div`
     div {
       color: var(--color-base) !important;
       text-transform: uppercase;
-      font-size: 12px !important;
+      font-size: 0.7rem !important;
       letter-spacing: 1px;
     }
     border-bottom: 1px solid var(--color-border);

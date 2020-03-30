@@ -75,9 +75,6 @@ const PostSettings: React.FC<IProps> = ({
           />
         )}
         <FeaturedImage post={post} mediaProvider={MediaProvider.Unsplash} />
-        <Link to="#" onClick={onDelete}>
-          Trash
-        </Link>
       </Container>
       {isOpen && <BackFade onClick={closeDrawer} />}
     </div>

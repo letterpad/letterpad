@@ -29,7 +29,10 @@ const RenderTable = ({ data, setSelection }) => {
             <div className="cover-image">
               <div
                 style={{
-                  background: `url('${post.cover_image.src}') var(--bg-base) center`,
+                  backgroundImage: `url('${post.cover_image.src}')`,
+                  backgroundColor: "var(--bg-sections)",
+                  border: "1px solid var(--color-border)",
+                  backgroundPosition: "center",
                   width: "64px",
                   height: "64px",
                 }}
@@ -40,7 +43,9 @@ const RenderTable = ({ data, setSelection }) => {
               <Link to={"/admin/posts/" + post.id}>
                 <div className="title">{post.title}</div>
 
-                <div className="small">{post.excerpt}...</div>
+                <div className="small">
+                  {post.excerpt.substring(0, 90) + "..."}
+                </div>
               </Link>
             </div>
             <div className="small published">{smallDate(post.publishedAt)}</div>

@@ -29,7 +29,7 @@ export const Container = styled.section<ISectionProps>`
   .section-header {
     margin-bottom: 36px;
     color: var(--color-text-2);
-    font-size: 13px;
+    font-size: 0.94rem;
     font-weight: 400;
     width: 100%;
     .section-row {
@@ -40,7 +40,7 @@ export const Container = styled.section<ISectionProps>`
     h2 {
       margin: 0px;
       color: var(--color-base);
-      font-size: 36px;
+      font-size: 2.2rem;
       font-weight: 300;
     }
     p {
@@ -48,7 +48,7 @@ export const Container = styled.section<ISectionProps>`
     }
   }
   .material-icons {
-    font-size: 16px;
+    font-size: 1rem;
   }
 `;
 

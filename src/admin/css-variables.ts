@@ -96,7 +96,9 @@ export const lightTheme = `
 
     --box-shadow:  0 2px 6px rgba(150, 150, 150, 0.26),0 0px 6px rgba(210, 210, 210, 0.23);
     
-    --box-shadow-inset: inset -1px 3px 9px -3px rgba(0,0,0,0.32)
+    --box-shadow-inset: inset -1px 3px 9px -3px rgba(0,0,0,0.32);
+
+    --sidebar-shadow: 0px 0px 19px 1px #aaa;
 `;
 
 // export default { darkTheme, lightTheme };

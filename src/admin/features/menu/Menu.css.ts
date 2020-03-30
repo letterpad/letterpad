@@ -36,7 +36,6 @@ export const StyledLink = styled(Link)`
 const StyledMenu = styled.div`
   overflow-y: auto;
   padding: 28px 40px;
-  font-size: 16px;
 `;
 
 export default StyledMenu;

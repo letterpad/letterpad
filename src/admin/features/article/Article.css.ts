@@ -39,7 +39,7 @@ const StyledArticle = styled.article`
     background: #252424;
     color: #fff;
     padding: 4px 8px;
-    font-size: 14px;
+    font-size: 0.95rem;
   }
 
   .post-header {

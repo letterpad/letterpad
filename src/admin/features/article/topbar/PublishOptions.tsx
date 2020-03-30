@@ -17,6 +17,7 @@ const PublishOptions: React.FC<IProps> = ({ status, updatePost }) => {
   };
   const isPublished = status === PostStatusOptions.Publish;
   const isDraft = status === PostStatusOptions.Draft;
+  const isDeleted = status === PostStatusOptions.Trash;
   return (
     <Container>
       <label>Publish Options</label>
@@ -34,6 +35,13 @@ const PublishOptions: React.FC<IProps> = ({ status, updatePost }) => {
           active={isDraft}
         >
           Draft
+        </Button>
+        <Button
+          btnStyle={isDeleted ? "primary" : "danger"}
+          onClick={() => onChange({ status: PostStatusOptions.Trash })}
+          active={isDraft}
+        >
+          Delete
         </Button>
       </ButtonGroup>
     </Container>
