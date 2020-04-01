@@ -1,4 +1,4 @@
-import { ActionsContainer, Flex, Loader, StyledTitle } from "./ArticleList.css";
+import { Flex, Loader } from "./ArticleList.css";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { PostTypes, PostsNode } from "../../../__generated__/gqlTypes";
 import React, { useState } from "react";
@@ -10,7 +10,6 @@ import ArticleHoc from "./ArticleHoc";
 import { Button } from "../../components/button";
 import Filters from "./Filters";
 import Paginate from "../../components/pagination";
-import RenderGrid from "./RenderGrid";
 import RenderTable from "./RenderTable";
 import Search from "./Search";
 import config from "../../../config";
@@ -28,7 +27,6 @@ interface IArticleListProps extends WithNamespaces {
 
 export enum LayoutOptions {
   list = "list",
-  grid = "grid",
 }
 
 enum FilterOptions {
@@ -52,10 +50,6 @@ const Articles: React.FC<IArticleListProps> = ({
   posts,
   setSelection,
 }) => {
-  const [layout, setLayout] = useState<LayoutOptions>(
-    localStorage.layout || LayoutOptions.list,
-  );
-
   const getUrlParams = () => {
     return new URLSearchParams(router.history.location.search);
   };
@@ -114,18 +108,7 @@ const Articles: React.FC<IArticleListProps> = ({
     >
       <div>
         <StyledToolbar className="action-bar">
-          <div className="left-block">
-            <Layout selected={layout}>
-              <i
-                className="fa fa-list list"
-                onClick={() => setLayout(LayoutOptions.list)}
-              />
-              <i
-                className="fa fa-th grid"
-                onClick={() => setLayout(LayoutOptions.grid)}
-              />
-            </Layout>
-          </div>
+          <div className="left-block"></div>
           <div className="right-block">
             <Filters query={getUrlParams()} changeFilter={changeFilter} />
           </div>
@@ -133,19 +116,10 @@ const Articles: React.FC<IArticleListProps> = ({
         {
           <React.Fragment>
             {<Loader loading={loading} />}
-            {layout === LayoutOptions.list && (
-              <RenderTable
-                data={(posts && posts.rows) || []}
-                setSelection={setSelection}
-              />
-            )}
-
-            {layout === LayoutOptions.grid && (
-              <RenderGrid
-                data={(posts && posts.rows) || []}
-                setSelection={setSelection}
-              />
-            )}
+            <RenderTable
+              data={(posts && posts.rows) || []}
+              setSelection={setSelection}
+            />
           </React.Fragment>
         }
 
