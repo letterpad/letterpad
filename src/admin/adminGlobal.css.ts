@@ -127,6 +127,7 @@ textarea {
 	font-size: 100%;
 	line-height: 1.15;
 	margin: 0;
+    font-size: 1rem;
     
 }
 
@@ -630,7 +631,7 @@ export const AdminGlobalStyle = createGlobalStyle`
     }
 
     [data-id="tooltip"] {
-      font-size: 10px;
+      font-size: 0.8rem;
       text-transform: uppercase;
       padding: 12px 8px !important;
       letter-spacing: 1px;

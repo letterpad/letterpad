@@ -1,6 +1,8 @@
-import { QUERY_THEMES } from "./../../shared/queries/Queries";
 import { ThemeSettings, ThemesQuery } from "./../../__generated__/gqlTypes";
+
 import { Express } from "express";
+import { QUERY_THEMES } from "./../../shared/queries/Queries";
+import RssFeed from "../../api/rssFeed";
 import apolloClient from "../../shared/apolloClient";
 import cache from "./cache";
 import config from "../../config";

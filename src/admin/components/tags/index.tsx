@@ -35,6 +35,9 @@ const customStyles = {
     color: "var(--color-base)",
     border: "1px solid var(--color-border)",
     borderRadius: "2px",
+    "&:hover": {
+      border: "1px solid var(--color-border)",
+    },
   }),
   multiValue: (provided, state) => ({
     ...provided,

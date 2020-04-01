@@ -38,7 +38,6 @@ const Container = styled.div`
     border: 1px solid var(--color-border);
     padding: 16px;
     width: 100%;
-    font-size: 0.8rem;
     font-weight: 400;
     background: transparent;
     color: var(--color-base);

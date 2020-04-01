@@ -65,6 +65,6 @@ export const ActionsContainer = styled.div`
     border-radius: 2px;
     font-weight: 500;
     letter-spacing: 1px;
-    font-size: 10px;
+    font-size: 0.8rem;
   }
 `;

@@ -4,7 +4,7 @@ import {
   TaxonomyType,
 } from "../../../../__generated__/gqlTypes";
 import React, { useEffect, useState } from "react";
-
+import { Button } from "../../../components/button";
 import Excerpt from "./Excerpt";
 import FeaturedImage from "./FeaturedImage";
 import FeaturedPost from "./FeaturedPost";
@@ -15,6 +15,7 @@ import PublishOptions from "./PublishOptions";
 import Taxonomies from "./Taxonomies";
 import UpdateSlug from "./UpdateSlug";
 import styled from "styled-components";
+import CloseIcon from "../../../public/images/close.svg";
 
 interface IProps {
   onDelete: (e: React.SyntheticEvent) => void;
@@ -48,8 +49,10 @@ const PostSettings: React.FC<IProps> = ({
     <div>
       <Container isOpen={isOpen}>
         <Link to="#" onClick={closeDrawer}>
-          <i className="fa fa-times"></i>
+          <img width="16" src={CloseIcon} />
         </Link>
+        <br />
+        <br />
         <PublishOptions status={post.status} updatePost={updatePost} />
         <FeaturedPost isFeatured={post.featured} updatePost={updatePost} />
         <Excerpt
@@ -75,6 +78,12 @@ const PostSettings: React.FC<IProps> = ({
           />
         )}
         <FeaturedImage post={post} mediaProvider={MediaProvider.Unsplash} />
+        <br />
+        <Button btnSize="md" onClick={onDelete}>
+          Delete
+        </Button>
+        <br />
+        <br />
       </Container>
       {isOpen && <BackFade onClick={closeDrawer} />}
     </div>
@@ -104,7 +113,7 @@ const Container = styled.div<IContainerProps>`
   padding: 24px;
   > div {
     label {
-      font-size: 10px;
+      font-size: 0.8rem;
       text-transform: uppercase;
       display: block;
       margin-bottom: 12px;
@@ -116,7 +125,7 @@ const Container = styled.div<IContainerProps>`
   }
   button {
     text-transform: uppercase;
-    font-size: 10px;
+    font-size: 0.8rem;
   }
 `;
 

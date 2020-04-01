@@ -4,6 +4,7 @@ import PostActions from "../PostActions";
 import { PostStatusOptions } from "../../../../__generated__/gqlTypes";
 import React from "react";
 import styled from "styled-components";
+import StyledSwitch from "../../../components/switch";
 
 interface IProps {
   isFeatured: boolean;
@@ -18,23 +19,15 @@ const FeaturedPost: React.FC<IProps> = ({ isFeatured, updatePost }) => {
 
   return (
     <Container>
-      <label>Featured Post</label>
-      <ButtonGroup className="flex-horizontal">
-        <Button
-          btnStyle={isFeatured ? "primary" : "default"}
-          onClick={() => onChange({ featured: true })}
-          active={isFeatured}
-        >
-          Yes
-        </Button>
-        <Button
-          btnStyle={!isFeatured ? "primary" : "default"}
-          onClick={() => onChange({ featured: false })}
-          active={!isFeatured}
-        >
-          No
-        </Button>
-      </ButtonGroup>
+      <StyledSwitch
+        leftLabel="Featured Post"
+        isSelected={isFeatured}
+        onChange={selected =>
+          onChange({
+            featured: selected ? true : false,
+          })
+        }
+      />
     </Container>
   );
 };

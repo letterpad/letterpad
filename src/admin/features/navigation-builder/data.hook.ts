@@ -11,6 +11,7 @@ import {
 import { QUERY_POSTS, QUERY_TAXONOMIES } from "../../../shared/queries/Queries";
 import { useEffect, useState } from "react";
 
+import config from "../../../config";
 import { useQuery } from "react-apollo";
 
 function useNavigationData() {
@@ -48,7 +49,13 @@ function useNavigationData() {
     }
   }, [categoriesData.loading, pagesData.loading]);
 
-  return { loading, data: addIds([...pages, ...categories]) };
+  const rss = {
+    type: "rss",
+    slug: config.rssPath,
+    name: "Rss Feed of your site",
+    originalName: "Rss",
+  };
+  return { loading, data: addIds([...pages, ...categories, { ...rss }]) };
 }
 
 export { useNavigationData };

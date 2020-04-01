@@ -13,6 +13,7 @@
 
 <body>
     <div id="app"></div>
+    <div id="portal-root"></div>
     <script>
         window.__APOLLO_STATE__ = {{INITIAL_STATE}};
         window.NODE_ENV = "{{NODE_ENV}}";

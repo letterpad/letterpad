@@ -121,11 +121,15 @@ fieldset[disabled] .buttons---btn-default---1wWXD:hover {
   border-color: #ccc;
 }
 .buttons---btn-primary---Wp1wb {
-  color: #fff;
-  background-color: #333;
-  background-image: linear-gradient(to bottom, #333 0%, #333 100%);
+  color: var(--bg-base);
+  background-color: var(--color-base);
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-base) 0%,
+    var(--color-base) 100%
+  );
   background-repeat: repeat-x;
-  border-color: #333;
+  border-color: var(--color-base);
 }
 .buttons---btn-primary---Wp1wb
   > [class*="loader-container"]
@@ -135,7 +139,7 @@ fieldset[disabled] .buttons---btn-default---1wWXD:hover {
 }
 .buttons---btn-primary---Wp1wb.buttons---active---2-a32,
 .buttons---btn-primary---Wp1wb:active {
-  color: #fff;
+  color: var(--bg-base);
   background-color: #000;
   background-image: none;
   border-color: #000;
@@ -144,14 +148,14 @@ fieldset[disabled] .buttons---btn-default---1wWXD:hover {
 }
 .buttons---btn-primary---Wp1wb.buttons---focus---1kVJZ,
 .buttons---btn-primary---Wp1wb:focus {
-  color: #fff;
+  color: var(--bg-base);
   border-color: #444;
   -webkit-box-shadow: 0 0 1px #fff inset;
   box-shadow: 0 0 1px #fff inset;
 }
 .buttons---btn-primary---Wp1wb.buttons---hover---42FF2,
 .buttons---btn-primary---Wp1wb:hover {
-  color: #fff;
+  color: var(--bg-base);
   background-color: #000;
   background-repeat: repeat-x;
   border-color: #000;

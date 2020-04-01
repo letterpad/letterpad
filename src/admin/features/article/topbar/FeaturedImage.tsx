@@ -6,71 +6,11 @@ import FileExplorerModal from "../../modals/FileExplorerModal";
 import { IMediaUploadResult } from "../../../../types/types";
 import { MediaProvider } from "../Edit";
 import PostActions from "../PostActions";
-import PropTypes from "prop-types";
+
 import { notify } from "react-notify-toast";
 import styled from "styled-components";
 import { uploadFile } from "../../../server/util";
-
-const ImageWrapper = styled.div`
-  overflow-x: auto;
-  display: flex;
-  div {
-    width: 100px;
-    height: 60px;
-    flex-shrink: 0;
-    border: 1px solid transparent;
-    opacity: 0.5;
-    &:hover {
-      opacity: 1;
-    }
-    &.selected {
-      opacity: 1;
-    }
-    img {
-      object-fit: cover;
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .custom-featured-image span {
-    position: absolute;
-    width: 98px;
-    height: 58px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #000;
-    opacity: 0.6;
-    color: #fff;
-    font-size: 50px;
-  }
-`;
-interface ICustomImageProps {
-  toggleFileExplorer: () => void;
-  removeCustomImage: () => void;
-  coverImage: CoverImage;
-  isCustom: boolean;
-}
-const CustomImage: React.FC<ICustomImageProps> = ({
-  removeCustomImage,
-  toggleFileExplorer,
-  coverImage,
-  isCustom,
-}) => {
-  let className = "custom-featured-image";
-  if (isCustom) {
-    className += " selected";
-  }
-  return (
-    <div
-      className={className}
-      onClick={isCustom ? removeCustomImage : toggleFileExplorer}
-    >
-      <span>{isCustom ? "x" : "+"}</span>
-      {isCustom && <img alt="" width="100%" src={coverImage.src} />}
-    </div>
-  );
-};
+import Portal from "../../portal";
 
 interface IFeaturedImageProps extends WithNamespaces {
   post: Post;
@@ -95,20 +35,6 @@ class FeaturedImage extends Component<
     imageList: [],
     mediaProvider: this.props.mediaProvider,
   };
-
-  componentDidMount() {
-    const imgNodes = document.querySelectorAll(".lp-img");
-    if (imgNodes.length === this.state.imageList.length) return;
-    const imageList: CoverImage[] = [];
-    for (let i = 0; i < imgNodes.length; i++) {
-      imageList.push({
-        src: imgNodes[i]["src"],
-        width: imgNodes[i].clientWidth,
-        height: imgNodes[i].clientHeight,
-      });
-    }
-    this.setState({ imageList });
-  }
 
   // All the images available in the post can be used as a cover image.
   // This function sets the selection
@@ -164,25 +90,6 @@ class FeaturedImage extends Component<
               })
             }
           />
-          {imageList.map((image: CoverImage, idx: number) => {
-            const selected = image.src === cover_image.src;
-            return (
-              <div
-                key={idx}
-                className={selected ? "selected" : ""}
-                onClick={async () => {
-                  const coverImage = {
-                    src: image.src,
-                    width: image.width || 0,
-                    height: image.height || 0,
-                  };
-                  await this.setCoverImage({ [image.src]: coverImage });
-                }}
-              >
-                <img alt="" width="100%" src={image.src} />
-              </div>
-            );
-          })}
         </ImageWrapper>
         <input
           ref={this.imageInputRef}
@@ -191,25 +98,27 @@ class FeaturedImage extends Component<
           multiple
         />
         {this.state.fileExplorerOpen && (
-          <FileExplorerModal
-            switchProvider={provider => {
-              this.setState({ mediaProvider: provider });
-            }}
-            isOpen={this.state.fileExplorerOpen}
-            onClose={this.toggleFileExplorer}
-            onMediaInsert={this.setCoverImage}
-            addNewMedia={() => {
-              const inputFile = this.imageInputRef.current;
-              if (inputFile) {
-                inputFile.onchange = (change: any) => {
-                  this.uploadImage(change.target.files);
-                  // this.toggleFileExplorer();
-                };
-                inputFile.click();
-              }
-            }}
-            mediaProvider={this.state.mediaProvider}
-          />
+          <Portal>
+            <FileExplorerModal
+              switchProvider={provider => {
+                this.setState({ mediaProvider: provider });
+              }}
+              isOpen={this.state.fileExplorerOpen}
+              onClose={this.toggleFileExplorer}
+              onMediaInsert={this.setCoverImage}
+              addNewMedia={() => {
+                const inputFile = this.imageInputRef.current;
+                if (inputFile) {
+                  inputFile.onchange = (change: any) => {
+                    this.uploadImage(change.target.files);
+                    // this.toggleFileExplorer();
+                  };
+                  inputFile.click();
+                }
+              }}
+              mediaProvider={this.state.mediaProvider}
+            />
+          </Portal>
         )}
       </div>
     );
@@ -217,3 +126,53 @@ class FeaturedImage extends Component<
 }
 
 export default translate("translations")(FeaturedImage);
+
+interface ICustomImageProps {
+  toggleFileExplorer: () => void;
+  removeCustomImage: () => void;
+  coverImage: CoverImage;
+  isCustom: boolean;
+}
+const CustomImage: React.FC<ICustomImageProps> = ({
+  removeCustomImage,
+  toggleFileExplorer,
+  coverImage,
+  isCustom,
+}) => {
+  let className = "custom-featured-image";
+  if (isCustom) {
+    className += " selected";
+  }
+  return (
+    <div
+      className={className}
+      onClick={isCustom ? removeCustomImage : toggleFileExplorer}
+    >
+      <span className="handler">{coverImage.src ? "Remove" : "Add"}</span>
+      {isCustom && <img alt="" width="100%" src={coverImage.src} />}
+    </div>
+  );
+};
+
+const ImageWrapper = styled.div`
+  overflow-x: auto;
+  display: flex;
+  .handler {
+    position: absolute;
+    background: #000;
+    padding: 6px 14px;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 0.7rem;
+    cursor: pointer;
+  }
+  .custom-featured-image {
+    width: 100%;
+    min-height: 80px;
+    background: #000;
+  }
+`;

@@ -64,7 +64,7 @@ export const Spinner = styled.div`
 `;
 
 export const Warning = styled.div`
-  font-size: 10px;
+  font-size: 0.8rem;
   font-style: italic;
   color: #f4602f;
 `;

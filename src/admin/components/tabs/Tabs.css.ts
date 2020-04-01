@@ -19,11 +19,9 @@ const StyledTabs = styled.div`
   .tab-header {
     display: flex;
     margin-bottom: 1rem;
-    background: var(--bg-sections);
   }
   .tab-content {
     padding: 15px;
-    background: var(--bg-sections);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.12), 0 1px 6px rgba(0, 0, 0, 0.03),
       0 6px 10px -8px rgba(0, 0, 0, 0.1);
   }

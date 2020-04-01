@@ -90,7 +90,7 @@ const SubscribeBlock = styled.div`
   textarea {
     height: auto;
     font-family: monospace;
-    font-size: 0.8rem;
+
     opacity: 0.7;
     border: 1px solid var(--color-border);
     padding: 16px;
