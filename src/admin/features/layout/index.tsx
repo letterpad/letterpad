@@ -2,9 +2,13 @@ import React, { Component } from "react";
 import { StyledLayout, defaultStyles } from "./Layout.css";
 import { darkTheme, lightTheme } from "../../css-variables";
 
-import Header from "../header";
 import Sidebar from "../sidebar";
 import styled from "styled-components";
+
+const whyDidYouRender = require("@welldone-software/why-did-you-render");
+whyDidYouRender(React, {
+  trackAllPureComponents: true,
+});
 
 const CSSVariables = styled.div<any>`
   ${props => (props.dark ? darkTheme : lightTheme)};

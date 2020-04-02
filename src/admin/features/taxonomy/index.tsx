@@ -243,7 +243,6 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
                 btnSize="sm"
                 onClick={() => deleteTaxonomy(id)}
               >
-                <i className="fa fa-trash" />
                 Delete tag
               </Button>
               <Button
@@ -251,7 +250,6 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
                 btnSize="sm"
                 onClick={() => editSaveTaxonomy(id)}
               >
-                <i className="fa fa-save" />
                 Save
               </Button>
             </div>

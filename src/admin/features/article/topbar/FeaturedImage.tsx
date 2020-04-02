@@ -5,12 +5,11 @@ import { WithNamespaces, translate } from "react-i18next";
 import FileExplorerModal from "../../modals/FileExplorerModal";
 import { IMediaUploadResult } from "../../../../types/types";
 import { MediaProvider } from "../Edit";
+import Portal from "../../portal";
 import PostActions from "../PostActions";
-
 import { notify } from "react-notify-toast";
 import styled from "styled-components";
 import { uploadFile } from "../../../server/util";
-import Portal from "../../portal";
 
 interface IFeaturedImageProps extends WithNamespaces {
   post: Post;
@@ -143,12 +142,15 @@ const CustomImage: React.FC<ICustomImageProps> = ({
   if (isCustom) {
     className += " selected";
   }
+  if (!coverImage.src) {
+    className += " no-image";
+  }
   return (
     <div
       className={className}
       onClick={isCustom ? removeCustomImage : toggleFileExplorer}
     >
-      <span className="handler">{coverImage.src ? "Remove" : "Add"}</span>
+      <span className="handler">{coverImage.src ? "✕" : "+"}</span>
       {isCustom && <img alt="" width="100%" src={coverImage.src} />}
     </div>
   );
@@ -167,12 +169,26 @@ const ImageWrapper = styled.div`
     justify-content: center;
     text-transform: uppercase;
     font-weight: 500;
-    font-size: 0.7rem;
+    font-size: 2rem;
     cursor: pointer;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: 0.3s linear opacity;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.6;
+    }
   }
   .custom-featured-image {
     width: 100%;
-    min-height: 80px;
+    min-height: 70px;
     background: #000;
+    position: relative;
+
+    &.no-image .handler {
+      opacity: 1;
+    }
   }
 `;

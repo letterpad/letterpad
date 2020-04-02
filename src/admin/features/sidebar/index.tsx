@@ -17,9 +17,7 @@ interface IProps {
 }
 const Sidebar: React.FC<IProps> = props => {
   const { settings, router } = props;
-  const { loading, data } = useQuery<StatsQuery>(QUERY_STATS, {
-    fetchPolicy: "no-cache",
-  });
+  const { loading, data } = useQuery<StatsQuery>(QUERY_STATS, {});
 
   if (loading) return null;
   return (

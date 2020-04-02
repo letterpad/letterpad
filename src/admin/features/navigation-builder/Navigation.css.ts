@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  background: var(--bg-sections);
-  padding: 16px;
+  padding: 40px 16px;
+  border-radius: 4px;
   border: 1px solid var(--color-border);
   .toolbar {
     margin-bottom: 40px;

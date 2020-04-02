@@ -13,7 +13,7 @@ export const Item = styled(Grid)`
   }
 
   input {
-    padding: 6px;
+    padding: 8px 6px;
     border-radius: 4px;
     border: 1px solid var(--color-border);
     width: 100%;

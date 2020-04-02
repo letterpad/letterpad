@@ -5,13 +5,11 @@ export const StyledTab = styled.div<any>`
   user-select: none;
   padding: 10px 15px;
   border-bottom: ${p =>
-    p.active ? "2px solid var(--color-accent)" : "2px solid transparent"};
+    p.active ? "2px solid var(--color-base)" : "2px solid transparent"};
   cursor: pointer;
   &:hover {
     border-bottom: ${p =>
-      p.active
-        ? "2px solid var(--color-accent)"
-        : "2px solid rgba(0,0,0, 0.3)"};
+      p.active ? "2px solid var(--color-base)" : "2px solid rgba(0,0,0, 0.3)"};
   }
 `;
 
