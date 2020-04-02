@@ -13,8 +13,8 @@ import { EnumContentType } from "./types";
 import Helmet from "react-helmet";
 import React from "react";
 import SEO from "./helpers/SEO";
+import config from "../config/config.prod";
 import { useQuery } from "react-apollo";
-import utils from "../shared/util";
 
 function DataConnector(
   WrappedComponent: React.ComponentType<any>,
@@ -83,10 +83,14 @@ function DataConnector(
             SEOComponent = (
               <Helmet>
                 {data.rows.map(item => (
-                  <link href={item.slug} rel="prefetch" as="document" />
+                  <link
+                    href={config.BASE_NAME + item.slug}
+                    rel="prefetch"
+                    as="document"
+                  />
                 ))}
                 {data.rows.map(item => (
-                  <link href={item.slug} rel="prerender" />
+                  <link href={config.BASE_NAME + item.slug} rel="prerender" />
                 ))}
               </Helmet>
             );
