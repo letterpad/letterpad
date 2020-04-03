@@ -313,7 +313,6 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
     h5,
     h6 {
         font-family: "Inter", sans-serif;
-        letter-spacing: 1px;
         font-weight: 400;
         margin: 24px 0 20px;
     }

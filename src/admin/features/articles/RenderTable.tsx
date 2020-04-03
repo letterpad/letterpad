@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { List } from "./ArticleList.css";
 import React from "react";
+import { StyledCheckbox } from "../../components/checkbox/Checkbox.css";
 
 const columns = [
   { label: "Image", className: "cover-image" },
@@ -55,14 +56,14 @@ const RenderTable = ({ data, setSelection }) => {
             <div className="small categories">
               {post.categories.map(item => item.name).join(", ")}
             </div>
-            <div className="selection-box">
+            <StyledCheckbox>
               <input
                 type="checkbox"
                 id={"checkbox-" + post.id}
                 onClick={() => setSelection(post.id)}
               />
               <label htmlFor={"checkbox-" + post.id} />
-            </div>
+            </StyledCheckbox>
           </article>
         );
       })}

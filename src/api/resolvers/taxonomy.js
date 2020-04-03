@@ -36,18 +36,6 @@ export default {
   },
   Mutation: {
     updateTaxonomy: async (root, args, { models }) => {
-      if (!args.edit) {
-        let found = await models.Taxonomy.findOne({
-          where: { name: args.name, type: args.type },
-        });
-        if (found) {
-          return {
-            ok: false,
-            id: null,
-            errors: [{ message: "Already exist", path: "Taxonomy" }],
-          };
-        }
-      }
       if (args.id == 0) {
         //create
 

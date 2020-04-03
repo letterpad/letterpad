@@ -80,7 +80,7 @@ export const List = styled.div`
     display: grid;
     grid-gap: 10px;
     align-items: center;
-    grid-template-columns: 100px 1fr 100px 100px 100px 100px 100px;
+    grid-template-columns: 100px 1fr 100px 100px 100px 100px 50px;
     font-size: 0.95rem;
     color: var(--color-text-3);
     margin-bottom: 44px;
@@ -132,83 +132,6 @@ export const List = styled.div`
         display: none;
       }
     }
-    .selection-box {
-      text-align: center;
-      display: block;
-      position: relative;
-      padding-left: 35px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      font-size: 22px;
-      user-select: none;
-      input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-
-        & + label {
-          position: relative;
-          cursor: pointer;
-          padding: 0;
-          top: 14px;
-          border-radius: 4px;
-        }
-
-        /* // Box. */
-        & + label:before {
-          content: "";
-          margin-right: 10px;
-          display: inline-block;
-          vertical-align: text-top;
-          width: 16px;
-          height: 16px;
-          border-radius: 2px;
-          /* background: var(--base-shade-2); */
-          border: 1px solid var(--color-border);
-        }
-
-        /* // Box hover */
-        &:hover + label:before {
-          /* background: #f35429; */
-        }
-
-        /* // Box focus
-        &:focus + label:before {
-          box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
-        } */
-
-        /* // Box checked */
-        &:checked + label:before {
-          /* background: #f35429; */
-        }
-
-        /* // Disabled state label. */
-        &:disabled + label {
-          color: #b8b8b8;
-          cursor: auto;
-        }
-
-        /* // Disabled box. */
-        &:disabled + label:before {
-          box-shadow: none;
-          background: #ddd;
-        }
-
-        /* // Checkmark. Could be replaced with an image */
-        &:checked + label:after {
-          content: "";
-          position: absolute;
-          left: 4px;
-          top: 4px;
-          background: white;
-          width: 8px;
-          height: 8px;
-          border-radius: 15px;
-          background: #f35429;
-          border: 1px solid var(--color-border);
-        }
-      }
-    }
   }
   header {
     div {
@@ -218,8 +141,8 @@ export const List = styled.div`
       letter-spacing: 1px;
     }
     border-bottom: 1px solid var(--color-border);
-    padding-bottom: 16px;
-    margin-bottom: 24px;
+    padding-bottom: 12px;
+    margin-bottom: 38px;
   }
   @media (max-width: 767px) {
     header {
@@ -231,11 +154,6 @@ export const List = styled.div`
 
       flex-direction: row-reverse;
       align-items: center;
-      .selection-box {
-        flex: 1;
-        padding-left: 0px;
-        padding-right: 16px;
-      }
     }
   }
 `;

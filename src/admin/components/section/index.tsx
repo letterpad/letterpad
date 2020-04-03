@@ -24,7 +24,7 @@ const Section: React.FC<any> = ({
               <ActionsContainer>{rightToolbar}</ActionsContainer>
             )}
           </div>
-          {subtitle && <p>{subtitle}</p>}
+          {subtitle && <p className="section-description">{subtitle}</p>}
         </div>
       )}
       {children}

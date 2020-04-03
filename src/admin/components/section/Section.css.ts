@@ -43,10 +43,12 @@ export const Container = styled.section<ISectionProps>`
       font-size: 2.2rem;
       font-weight: 300;
     }
-    p {
+    .section-description {
+      margin-top: 24px;
       max-width: 767px;
     }
   }
+
   .material-icons {
     font-size: 1rem;
   }

@@ -22,3 +22,7 @@ const StyledTaxonomy = styled.section`
 `;
 
 export default StyledTaxonomy;
+
+export const Flex = styled.div`
+  display: flex;
+`;
