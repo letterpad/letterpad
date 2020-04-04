@@ -7,7 +7,7 @@ import {
   resolveOrderAndSort,
   resolvePagination,
   resolveSearchTerm,
-  resolveStatusAndType,
+  resolveStatusAndTypeAndFeatured,
   resolveTagFilter,
 } from "./post/fieldResolver";
 import {
@@ -57,7 +57,7 @@ const postresolver = {
       .createResolver(resolveTagFilter)
       .createResolver(resolveAuthor)
       .createResolver(resolvePagination)
-      .createResolver(resolveStatusAndType)
+      .createResolver(resolveStatusAndTypeAndFeatured)
       .createResolver(resolveOrderAndSort)
       .createResolver(resolveSearchTerm)
       .createResolver(executePostCollectionQuery)

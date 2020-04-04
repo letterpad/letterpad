@@ -59,6 +59,9 @@ const StyledArticle = styled.article`
     width: 740px;
     margin: auto;
     padding: 0px 1rem;
+    @media (max-width: 767px) {
+      width: 100%;
+    }
     .lp-h1 {
       border-bottom: none;
     }

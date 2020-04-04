@@ -153,8 +153,11 @@ export const resolvePagination = async (root, args) => {
   return args;
 };
 
-export const resolveStatusAndType = async (root, args) => {
+export const resolveStatusAndTypeAndFeatured = async (root, args) => {
   if (!args) return;
+  if (args.featured) {
+    args.conditions.where.featured = args.featured;
+  }
   if (args.type) {
     args.conditions.where.type = args.type;
   }

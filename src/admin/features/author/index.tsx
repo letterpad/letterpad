@@ -6,10 +6,8 @@ import Social from "./Social";
 import PasswordChange from "./PasswordChange";
 
 import StyledSection, { SectionSizes } from "../../components/section";
-import Button from "../../components/button";
-import Tabs from "../../components/tabs";
 
-import { RouteComponentProps } from "react-router";
+import Tabs from "../../components/tabs";
 import apolloClient from "../../../shared/apolloClient";
 import { UPDATE_AUTHOR } from "../../../shared/queries/Mutations";
 import {
@@ -21,18 +19,14 @@ import {
 import { QUERY_AUTHOR } from "../../../shared/queries/Queries";
 import Loader from "../../components/loader";
 import utils from "../../../shared/util";
+import { IAdminRouteProps } from "../../../types/types";
 
-interface ISettingsProps {
-  router: RouteComponentProps;
-}
-
-const Author: React.FC<ISettingsProps> = ({ router }) => {
-  const urlParams = new URLSearchParams(router.history.location.search);
-  const [selectedTab] = useState<string>(urlParams.get("tab") || "basic");
-
+const Author: React.FC<IAdminRouteProps> = ({ router: { match }, author }) => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [author, setAuthor] = useState<Author>();
-  const [updatedAuthor, setUpdatedAuthor] = useState<InputAuthor>({ id: 0 });
+  const [authorData, setAuthor] = useState<Author>();
+  const [updatedAuthor, setUpdatedAuthor] = useState<InputAuthor>({
+    id: parseInt(match.params["id"]),
+  });
 
   useEffect(() => {
     if (Object.keys(updatedAuthor).length > 1) {
@@ -40,11 +34,11 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
     }
   }, [updatedAuthor]);
 
-  const fetchAuthor = async () => {
+  const fetchAuthor = async id => {
     const { loading, data } = await apolloClient().query<AuthorQuery>({
       query: QUERY_AUTHOR,
       variables: {
-        id: parseInt(router.match.params["id"]) || 1,
+        id: id,
       },
     });
     const { author } = data;
@@ -57,26 +51,19 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
         delete author.role.__typename;
       }
       setAuthor(data.author);
-      setUpdatedAuthor({ id: data.author.id || 0 });
+      setUpdatedAuthor(id);
     }
     setLoading(loading);
   };
 
   useEffect(() => {
-    fetchAuthor();
-  }, []);
+    fetchAuthor(parseInt(match.params["id"]) || author.id);
+  }, [match.params["id"] || author.id]);
 
   const setOption = (option: string, value: string) => {
-    if (author[option] === value) return;
+    if (authorData && authorData[option] === value) return;
     const updated = { ...updatedAuthor, [option]: value };
     setUpdatedAuthor(updated);
-  };
-
-  const handleTabChange = (page: string) => {
-    router.history.push({
-      pathname: router.history.location.pathname,
-      search: "?tab=" + page,
-    });
   };
 
   const submitData = async (e?: React.MouseEvent) => {
@@ -90,15 +77,19 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
     notify.show("Author information saved", "success", 3000);
   };
 
-  if (loading || !author) return <Loader />;
+  if (loading || !authorData) return <Loader />;
   return (
     <StyledSection title="Profile" size={SectionSizes.md}>
-      <Tabs activeTab={selectedTab} onChange={handleTabChange}>
-        <Basic label="basic" data={author} updateOption={setOption} />
-        <Social label="social" data={author.social} updateOption={setOption} />
+      <Tabs defaultTab="basic">
+        <Basic label="basic" data={authorData} updateOption={setOption} />
+        <Social
+          label="social"
+          data={authorData.social}
+          updateOption={setOption}
+        />
         <PasswordChange
           label="passwordChange"
-          data={author}
+          data={authorData}
           updateOption={setOption}
         />
         <br />
@@ -108,4 +99,4 @@ const Author: React.FC<ISettingsProps> = ({ router }) => {
   );
 };
 
-export default Author;
+export default React.memo(Author);

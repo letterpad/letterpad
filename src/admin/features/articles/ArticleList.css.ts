@@ -80,7 +80,7 @@ export const List = styled.div`
     display: grid;
     grid-gap: 10px;
     align-items: center;
-    grid-template-columns: 100px 1fr 100px 100px 100px 100px 50px;
+    grid-template-columns: 50px 100px 1fr 100px 100px 100px 100px;
     font-size: 0.95rem;
     color: var(--color-text-3);
     margin-bottom: 44px;
@@ -120,13 +120,13 @@ export const List = styled.div`
         display: none;
       }
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       > div {
         width: 100%;
       }
     }
     @media (min-width: 990px) and (max-width: 1300px) {
-      grid-template-columns: minmax(300px, 1fr) auto 100px 100px 50px;
+      grid-template-columns: 50px minmax(300px, 1fr) auto 100px 100px;
       .cover-image,
       .categories {
         display: none;
@@ -152,7 +152,7 @@ export const List = styled.div`
       margin-bottom: 32px;
       display: flex;
 
-      flex-direction: row-reverse;
+      /* flex-direction: row-reverse; */
       align-items: center;
     }
   }

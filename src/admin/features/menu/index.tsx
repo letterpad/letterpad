@@ -66,6 +66,7 @@ const buildMenu = (
                   {item.slug === "pages" && stats.stats?.pages?.published}
                   {item.slug === "tags" && stats.stats?.tags}
                   {item.slug === "categories" && stats.stats?.categories}
+                  {item.slug === "media" && stats.stats?.media}
                 </span>
               </StyledLink>
             )}

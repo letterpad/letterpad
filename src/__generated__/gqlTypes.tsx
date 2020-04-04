@@ -555,6 +555,7 @@ export type Stats = {
   pages?: Maybe<PostStatus>;
   tags?: Maybe<Scalars["Int"]>;
   categories?: Maybe<Scalars["Int"]>;
+  media?: Maybe<Scalars["Int"]>;
 };
 
 export type Taxonomy = {
@@ -1067,7 +1068,7 @@ export type StatsQueryVariables = {};
 
 export type StatsQuery = { __typename?: "Query" } & {
   stats: Maybe<
-    { __typename?: "Stats" } & Pick<Stats, "tags" | "categories"> & {
+    { __typename?: "Stats" } & Pick<Stats, "tags" | "categories" | "media"> & {
         posts: Maybe<
           { __typename?: "PostStatus" } & Pick<
             PostStatus,

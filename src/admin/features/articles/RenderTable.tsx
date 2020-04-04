@@ -4,13 +4,13 @@ import React from "react";
 import { StyledCheckbox } from "../../components/checkbox/Checkbox.css";
 
 const columns = [
+  { label: "Select", className: "selection-box" },
   { label: "Image", className: "cover-image" },
   { label: "Title", className: "title" },
   { label: "Published", className: "published" },
   { label: "Author", className: "author" },
   { label: "Status", className: "status" },
   { label: "Categories", className: "categories" },
-  { label: "Select", className: "selection-box" },
 ];
 const RenderTable = ({ data, setSelection }) => {
   return (
@@ -26,6 +26,14 @@ const RenderTable = ({ data, setSelection }) => {
         const authorName = post.author.fname + " " + post.author.lname;
         return (
           <article key={post.slug}>
+            <StyledCheckbox>
+              <input
+                type="checkbox"
+                id={"checkbox-" + post.id}
+                onClick={() => setSelection(post.id)}
+              />
+              <label htmlFor={"checkbox-" + post.id} />
+            </StyledCheckbox>
             <div className="cover-image">
               <div
                 style={{
@@ -56,14 +64,6 @@ const RenderTable = ({ data, setSelection }) => {
             <div className="small categories">
               {post.categories.map(item => item.name).join(", ")}
             </div>
-            <StyledCheckbox>
-              <input
-                type="checkbox"
-                id={"checkbox-" + post.id}
-                onClick={() => setSelection(post.id)}
-              />
-              <label htmlFor={"checkbox-" + post.id} />
-            </StyledCheckbox>
           </article>
         );
       })}

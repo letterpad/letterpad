@@ -328,6 +328,7 @@ type Stats {
   pages: PostStatus
   tags: Int
   categories: Int
+  media: Int
 }
 
 type SearchResult {

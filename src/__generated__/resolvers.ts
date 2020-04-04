@@ -565,6 +565,7 @@ export type Stats = {
   pages?: Maybe<PostStatus>;
   tags?: Maybe<Scalars["Int"]>;
   categories?: Maybe<Scalars["Int"]>;
+  media?: Maybe<Scalars["Int"]>;
 };
 
 export type Taxonomy = {
@@ -1369,6 +1370,7 @@ export type StatsResolvers<
   >;
   tags?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   categories?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
+  media?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 

@@ -136,6 +136,7 @@ export const QUERY_STATS = gql`
       }
       tags
       categories
+      media
     }
   }
 `;

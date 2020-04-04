@@ -39,6 +39,22 @@ class LoginView extends Component<ILoginProps, ILoginState> {
     loginView: true,
   };
 
+  componentDidMount() {
+    // TODO: Replace this with a better solution. Something like iframing the app
+    // auto login for demo.
+    if (document.location.href === "/demo/admin/login") {
+      this.setState(
+        {
+          loginEmail: "demo@demo.com",
+          password: "demo",
+        },
+        () => {
+          this.login();
+        },
+      );
+    }
+  }
+
   onloginEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ loginEmail: e.target.value });
   };
@@ -76,7 +92,7 @@ class LoginView extends Component<ILoginProps, ILoginState> {
       notify.show(errors.join("\n"), "warning", 33000);
     } else {
       localStorage.token = loginResult.data.login.token;
-      this.props.router.history.push("/admin/home");
+      this.props.router.history.push("/admin/posts");
     }
   };
 

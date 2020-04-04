@@ -45,13 +45,6 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
     setUpdatedOptions(newUpdates);
   };
 
-  const handleTabChange = (page: string) => {
-    router.history.push({
-      pathname: router.history.location.pathname,
-      search: "?tab=" + page,
-    });
-  };
-
   const submitData = async (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
     const settings: TypeAPIUpdatedOptions[] = [];
@@ -76,7 +69,7 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
       subtitle="Here you can configure your overall site."
       size={SectionSizes.md}
     >
-      <Tabs activeTab={selectedTab} onChange={handleTabChange}>
+      <Tabs defaultTab="general">
         <StyledTitleHeader
           title={t(`settings.${selectedTab}.title`)}
           subtitle={t(`settings.${selectedTab}.tagline`)}

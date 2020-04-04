@@ -31,5 +31,7 @@ export const statsResolver = async (root, args, { models }) => {
     where: { type: "post_tag" },
   });
 
+  result.media = await models.Media.count();
+
   return result;
 };
