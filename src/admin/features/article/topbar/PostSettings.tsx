@@ -34,8 +34,8 @@ const PostSettings: React.FC<IProps> = ({
   const [post, setPost] = useState<Post>(PostActions.getData());
 
   useEffect(() => {
-    setTimeout(setPost(PostActions.getData()), 200);
-  }, [post]);
+    setPost(PostActions.getData());
+  }, [isOpen]);
 
   if (!post) return null;
 

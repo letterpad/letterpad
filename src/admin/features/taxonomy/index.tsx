@@ -71,13 +71,12 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
 
   useEffect(() => {
     if (!loading && data && data.taxonomies && data.taxonomies.length > 0) {
-      setTaxonomies(data.taxonomies);
+      const sortedTaxonomies = data.taxonomies.sort((a, b) => {
+        return a.id - b.id;
+      });
+      setTaxonomies(sortedTaxonomies);
     }
   }, [loading]);
-
-  // useEffect(()=>{
-
-  // },[createMode]);
 
   if (loading || !data) return null;
 
@@ -89,7 +88,10 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
     const updatedTaxonomies = taxonomies.filter(
       taxonomy => !selectedIds.includes(taxonomy.id),
     );
-    setTaxonomies(updatedTaxonomies);
+    const sortedTaxonomies = updatedTaxonomies.sort((a, b) => {
+      return a.id - b.id;
+    });
+    setTaxonomies(sortedTaxonomies);
     setSelectedIds([]);
   };
 
@@ -102,6 +104,11 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
     };
     setTaxonomies([...taxonomies, { ...taxonomy }]);
     setCreateMode(true);
+
+    setTimeout(() => {
+      const inputs = document.querySelectorAll(".scroller input");
+      inputs[inputs.length - 2].focus();
+    }, 0);
   };
 
   return (
@@ -133,6 +140,10 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
               );
               setCreateMode(false);
               setSelectedIds([]);
+              setTimeout(() => {
+                const inputs = document.querySelectorAll(".scroller input");
+                inputs[inputs.length - 1].focus();
+              }, 0);
             } else {
               return;
             }

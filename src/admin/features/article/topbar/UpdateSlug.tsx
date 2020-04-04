@@ -9,8 +9,11 @@ interface IProps {
   updatePost: () => void;
 }
 const UpdateSlug: React.FC<IProps> = ({ slug, updatePost }) => {
-  const [_slug, setSlug] = useState<string>(slug);
+  const [_slug, setSlug] = useState(slug);
 
+  useEffect(() => {
+    setSlug(slug);
+  }, [slug]);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const postType = PostActions.getData().type;
     if (!e.target.value.startsWith(postType + "/")) return;
@@ -27,7 +30,7 @@ const UpdateSlug: React.FC<IProps> = ({ slug, updatePost }) => {
       <input
         onChange={onChange}
         placeholder="Path that will be displayed in url"
-        value={_slug.replace("/post/", "").replace("/page/", "")}
+        value={_slug}
       />
     </Container>
   );

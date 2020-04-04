@@ -30,5 +30,8 @@ const Container = styled.div`
   border-bottom: 1px solid var(--color-border);
   img {
     width: 36px;
+    background: #fff;
+    padding: 4px;
+    border-radius: 2px;
   }
 `;

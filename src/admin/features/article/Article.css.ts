@@ -43,9 +43,9 @@ const StyledArticle = styled.article`
   }
 
   .post-header {
-    max-width: 740px;
     margin: auto;
     padding: 0px 1rem;
+    width: 100%;
     border-bottom: solid 1px var(--color-border);
     @media (min-width: 740px) {
       width: 740px;

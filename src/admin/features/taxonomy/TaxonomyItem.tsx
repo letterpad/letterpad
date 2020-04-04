@@ -9,29 +9,23 @@ interface IProps {
   onUpdate: (item: Taxonomy) => void;
   onSelect: (id: number, checked: boolean) => void;
 }
-let timeout;
+
 const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
   const [name, setName] = useState<string>(taxonomy.name);
   const [desc, setDesc] = useState<string>(taxonomy.desc || "");
 
   const onNameChange = value => {
     setName(value);
-    const updatedItem = { ...taxonomy, name: value };
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      onUpdate(updatedItem);
-      clearTimeout(timeout);
-    }, 800);
   };
 
   const onDescChange = value => {
     setDesc(value);
-    const updatedItem = { ...taxonomy, desc: value };
+  };
 
-    timeout = setTimeout(() => {
-      onUpdate(updatedItem);
-      clearTimeout(timeout);
-    }, 800);
+  const onBlur = (value, key) => {
+    if (value.length === 0) return;
+    const updatedItem = { ...taxonomy, [key]: value };
+    onUpdate(updatedItem);
   };
 
   return (
@@ -53,6 +47,7 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
             value={name}
             onChange={onNameChange}
             placeholder="Category name"
+            onBlur={e => onBlur(name, "name")}
           />
         </div>
       </div>
@@ -61,6 +56,7 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
           value={desc}
           onChange={onDescChange}
           placeholder="Enter a description"
+          onBlur={e => onBlur(name, "desc")}
         />
       </div>
     </article>
@@ -73,7 +69,8 @@ const InlineInput: React.FC<{
   value: string;
   placeholder: string;
   onChange: (value: string) => void;
-}> = ({ value, onChange, placeholder }) => {
+  onBlur: (value: string) => void;
+}> = ({ value, onChange, placeholder, onBlur }) => {
   return (
     <form>
       <Input
@@ -81,6 +78,7 @@ const InlineInput: React.FC<{
         autoComplete="off"
         value={value}
         onChange={e => onChange(e.target.value)}
+        onBlur={e => onBlur(e.target.value)}
         placeholder={placeholder}
       />
     </form>

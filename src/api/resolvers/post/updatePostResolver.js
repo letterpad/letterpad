@@ -34,7 +34,11 @@ export const updateTitleAndSlugAndFeatured = async (root, args, { models }) => {
     args.dataToUpdate.title = title;
   }
   if (slug) {
-    args.dataToUpdate.slug = slug;
+    args.dataToUpdate.slug = slug.replace("page/", "").replace("post/", "");
+    if (args.dataToUpdate.slug.length === 0) {
+      const _title = title || previousPost.dataValues.title;
+      args.dataToUpdate.slug = await slugify(models.Post, _title);
+    }
     logger.debug("Slug changed to :", args.dataToUpdate.slug);
   } else if (!title) {
     return args;
