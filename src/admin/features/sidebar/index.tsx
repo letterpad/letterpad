@@ -1,10 +1,8 @@
-import React, { Component } from "react";
-
-import Footer from "../footer";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import Menu from "../menu";
 import { QUERY_STATS } from "../../../shared/queries/Queries";
+import React from "react";
 import { RouteComponentProps } from "react-router";
 import { StatsQuery } from "../../../__generated__/gqlTypes";
 import StyledSidebar from "./Sidebar.css";
@@ -35,7 +33,6 @@ const Sidebar: React.FC<IProps> = props => {
             View site
           </Link>
         </div>
-        {/* <Footer data={settings.site_footer.value} /> */}
       </div>
     </StyledSidebar>
   );

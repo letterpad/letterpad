@@ -302,6 +302,9 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
     .hide {
         display: none;
     }
+    .theme-dark svg path {
+        fill: #fff
+    }
     /*!------------------------------------------------------------------
         [Typography]
         */
@@ -643,6 +646,61 @@ export const AdminGlobalStyle = createGlobalStyle`
             font-weight: 500 !important;
             opacity: 1 !important;
             font-family: "Inter", sans-serif;
+        }
+    }
+
+    /* buttons */
+
+    .btn-primary {
+        color: #fff;
+        background-color: #191c1d;
+        background-image: linear-gradient(to bottom, #00a7e6 0%, #191c1d 100%);
+        background-repeat: repeat-x;
+        border-color: #0095ce;
+
+        // Loading class within a primary button
+        > [class*="loader-container"] > [class*="loader"] {
+            border-color: rgba(255, 255, 255, 0.4);
+            border-left-color: #fff;
+        }
+
+        &:active,
+        &.active {
+            color: #fff;
+            background-color: #009ed8;
+            background-image: none;
+            border-color: #00759f;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, .15) inset;
+        }
+
+        &:focus,
+        &.focus {
+            color: #fff;
+            border-color: #444;
+            box-shadow: 0 0 1px #fff inset;
+        }
+
+        &:hover,
+        &.hover {
+            color: #fff;
+            background-color: #1daee5;
+            background-image: linear-gradient(to bottom, #1daee5 0%, #00a3df 100%);
+            background-repeat: repeat-x;
+            border-color: #00759f;
+        }
+
+        &.disabled,
+        &[disabled],
+        fieldset[disabled] & {
+            &:hover,
+            &.hover,
+            &:focus,
+            &.focus {
+                background-color: #191c1d;
+                background-image: linear-gradient(to bottom, #00a7e6 0%, #191c1d 100%);
+                background-repeat: repeat-x;
+                border-color: #0095ce;
+            }
         }
     }
 `;

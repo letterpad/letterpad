@@ -4,7 +4,9 @@ import {
   TaxonomyType,
 } from "../../../../__generated__/gqlTypes";
 import React, { useEffect, useState } from "react";
+
 import { Button } from "../../../components/button";
+import CloseIcon from "../../../public/images/Close";
 import Excerpt from "./Excerpt";
 import FeaturedImage from "./FeaturedImage";
 import FeaturedPost from "./FeaturedPost";
@@ -15,7 +17,8 @@ import PublishOptions from "./PublishOptions";
 import Taxonomies from "./Taxonomies";
 import UpdateSlug from "./UpdateSlug";
 import styled from "styled-components";
-import CloseIcon from "../../../public/images/close.svg";
+
+// import CloseIcon from "../../../public/images/close.svg";
 
 interface IProps {
   onDelete: (e: React.SyntheticEvent) => void;
@@ -49,7 +52,8 @@ const PostSettings: React.FC<IProps> = ({
     <div>
       <Container isOpen={isOpen}>
         <Link to="#" onClick={closeDrawer}>
-          <img width="16" src={CloseIcon} />
+          {/* <img width="16" src={CloseIcon} /> */}
+          <CloseIcon />
         </Link>
         <br />
         <br />

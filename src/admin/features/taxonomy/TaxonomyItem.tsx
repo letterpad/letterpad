@@ -92,4 +92,5 @@ const Input = styled.input`
   background: transparent;
   /* border-bottom: 1px solid #ddd; */
   width: 100%;
+  color: var(--color-base);
 `;

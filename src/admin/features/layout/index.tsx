@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { StyledLayout, defaultStyles } from "./Layout.css";
 import { darkTheme, lightTheme } from "../../css-variables";
 
+import { IAdminLayoutProps } from "../../../types/types";
+import { RouteComponentProps } from "react-router";
 import Sidebar from "../sidebar";
 import styled from "styled-components";
 
@@ -17,17 +19,17 @@ const CSSVariables = styled.div<any>`
 const NoLayout = styled.div`
   ${defaultStyles};
 `;
-const Layout = <P extends object>(
-  ComponentClass: React.ComponentType<P>,
-  props: any,
+
+const Layout = (
+  ComponentClass: React.ComponentType<IAdminLayoutProps>,
+  props: IAdminLayoutProps,
 ) => {
-  const settings = props.settings;
   let defaultTheme = "dark";
   if (typeof localStorage !== "undefined" && localStorage.theme) {
     defaultTheme = localStorage.theme;
   }
 
-  return class extends Component<P> {
+  return class extends Component<RouteComponentProps> {
     state = {
       sidebarOpen: true,
       theme: defaultTheme,
@@ -82,27 +84,34 @@ const Layout = <P extends object>(
       const _props = { ...props, router: { ...this.props } };
       const classes = this.state.sidebarOpen ? "" : " collapsed";
       const selectedTheme = { [this.state.theme]: true };
-      return (
-        <CSSVariables {...selectedTheme}>
-          {_props.layout == "none" ? (
-            <NoLayout>
+
+      if (_props.layout === "none") {
+        return (
+          <CSSVariables {...selectedTheme}>
+            <NoLayout className={`theme-${this.state.theme}`}>
               <div className="content-area">
                 <ComponentClass {..._props} theme={this.state.theme} />
               </div>
             </NoLayout>
-          ) : (
-            <StyledLayout className={"main a two-column" + classes}>
-              <Sidebar {..._props} />
-              <main>
-                <div className="content-area">
-                  <div className="sidebar-close" onClick={this.sidebarToggle}>
-                    <i className="fa fa-align-justify" />
-                  </div>
-                  <ComponentClass {..._props} theme={this.state.theme} />
+          </CSSVariables>
+        );
+      }
+
+      return (
+        <CSSVariables {...selectedTheme}>
+          <StyledLayout
+            className={`main two-column theme-${this.state.theme}` + classes}
+          >
+            <Sidebar {..._props} />
+            <main>
+              <div className="content-area">
+                <div className="sidebar-close" onClick={this.sidebarToggle}>
+                  <i className="fa fa-align-justify" />
                 </div>
-              </main>
-            </StyledLayout>
-          )}
+                <ComponentClass {..._props} theme={this.state.theme} />
+              </div>
+            </main>
+          </StyledLayout>
         </CSSVariables>
       );
     }

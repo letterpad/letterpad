@@ -1,4 +1,27 @@
-import { EnumPermissions, EnumRoles } from "../__generated__/gqlTypes";
+import { Author, EnumPermissions, EnumRoles } from "../__generated__/gqlTypes";
+
+import { RouteComponentProps } from "react-router-dom";
+import { TypeSettings } from "../client/types";
+
+export interface IAdminLayoutProps {
+  exact: true;
+  theme: string;
+  settings: TypeSettings;
+  type: "post_tag";
+  path: "/admin/tags";
+  layout: "none" | "b";
+  author: Required<Pick<Author, "id" | "role" | "email">> & {
+    permissions: EnumPermissions[];
+    name: string;
+    expiresIn: string;
+    iat: number;
+    exp: number;
+  };
+}
+
+export interface IAdminRouteProps extends IAdminLayoutProps {
+  router: RouteComponentProps;
+}
 
 export enum IFileUploadTypes {
   featured_image = "featured_image",

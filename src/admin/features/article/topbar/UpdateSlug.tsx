@@ -12,6 +12,8 @@ const UpdateSlug: React.FC<IProps> = ({ slug, updatePost }) => {
   const [_slug, setSlug] = useState<string>(slug);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const postType = PostActions.getData().type;
+    if (!e.target.value.startsWith(postType + "/")) return;
     setSlug(e.target.value.trim());
     PostActions.setDraft({
       slug: e.target.value.trim(),
