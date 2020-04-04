@@ -1,7 +1,6 @@
-import { EditMediaWrapper, StyledItem } from "./Media.css";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { EditMediaWrapper, Grid, StyledItem } from "./Media.css";
 import React, { Component } from "react";
-import StyledSection, { SectionSizes, Title } from "../../components/section";
+import StyledSection, { SectionSizes } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 import { deleteMedias, getMedia, updateMedia } from "./actions";
 
@@ -10,6 +9,7 @@ import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
 import EditMediaInfo from "./EditMediaInfo";
 import { MediaNode } from "../../../__generated__/gqlTypes";
 import Paginate from "../../components/pagination";
+import { RouteComponentProps } from "react-router-dom";
 import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
 import { getReadableDate } from "../../../shared/date";
@@ -189,6 +189,8 @@ class Media extends Component<IMMediaProps, IMediaState> {
         size={SectionSizes.md}
         rightToolbar={
           <Actions
+            hasDelete={checkedItems.length > 0}
+            onDelete={this.toggleDeleteModal}
             newMediaAction={() => {
               if (this.uploadInputRef.current) {
                 this.uploadInputRef.current.click();
@@ -199,12 +201,6 @@ class Media extends Component<IMMediaProps, IMediaState> {
         title={t("media.title")}
         subtitle={t("media.tagline")}
       >
-        {checkedItems.length > 0 && (
-          <Button btnStyle="danger" onClick={this.toggleDeleteModal}>
-            <i className="fa fa-trash" />
-            Delete
-          </Button>
-        )}
         <input
           ref={this.uploadInputRef}
           onChange={input =>
@@ -217,7 +213,7 @@ class Media extends Component<IMMediaProps, IMediaState> {
         />
         <br />
         <br />
-        <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
+        <Grid>
           {items.rows.map((media, idx) => (
             <StyledItem
               key={media.id}
@@ -240,12 +236,11 @@ class Media extends Component<IMMediaProps, IMediaState> {
                 }}
                 title={media.name || ""}
                 href="#"
-                line2={getReadableDate(media.createdAt)}
                 onClick={(e: React.SyntheticEvent) => this.editMedia(e, idx)}
               />
             </StyledItem>
           ))}
-        </StyledGrid>
+        </Grid>
         <Paginate
           count={items.count}
           page={parseInt(this.getUrlParams().get("page") || "1")}
@@ -280,9 +275,14 @@ class Media extends Component<IMMediaProps, IMediaState> {
 
 export default translate("translations")(Media);
 
-const Actions = ({ newMediaAction }) => {
+const Actions = ({ newMediaAction, hasDelete, onDelete }) => {
   return (
     <>
+      {hasDelete && (
+        <Button btnSize="md" btnStyle="danger" onClick={onDelete}>
+          Delete
+        </Button>
+      )}
       <Button btnSize="md" btnStyle="primary" onClick={newMediaAction}>
         New
       </Button>

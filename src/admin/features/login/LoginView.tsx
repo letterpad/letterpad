@@ -42,7 +42,7 @@ class LoginView extends Component<ILoginProps, ILoginState> {
   componentDidMount() {
     // TODO: Replace this with a better solution. Something like iframing the app
     // auto login for demo.
-    if (document.location.href === "/demo/admin/login") {
+    if (document.location.pathname === "/demo/admin/login") {
       this.setState(
         {
           loginEmail: "demo@demo.com",

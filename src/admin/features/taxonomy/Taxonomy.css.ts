@@ -5,6 +5,7 @@ const StyledTaxonomy = styled.section`
     border: 1px solid var(--color-border);
     border-radius: 4px;
     padding: 16px;
+    color: var(--color-base);
   }
   .taxonomy-edit {
     border-radius: 4px;

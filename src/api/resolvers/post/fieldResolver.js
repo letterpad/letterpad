@@ -26,33 +26,8 @@ export const resolveCateogoryFilter = async (root, args, { models }, err) => {
       where: { taxonomy_id: taxCategory.id },
       require: true,
     });
-    return args;
   }
-  if (args.categorySlug) {
-    let { categorySlug } = args;
-    if (categorySlug === "/") {
-      // get the first menu item.
-      const menuStr = await models.Setting.findOne({
-        where: { option: "menu" },
-      });
-      const parsedMenu = JSON.parse(menuStr.dataValues.value);
 
-      if (parsedMenu.length > 0) {
-        categorySlug = parsedMenu[0].slug;
-      }
-    }
-    const taxCategory = await models.Taxonomy.findOne({
-      where: { slug: categorySlug, type: "post_category" },
-    });
-
-    if (!taxCategory) return null;
-
-    args.conditions.include.push({
-      model: models.PostTaxonomy,
-      where: { taxonomy_id: taxCategory.id },
-      require: true,
-    });
-  }
   return args;
 };
 

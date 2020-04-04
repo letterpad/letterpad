@@ -57,11 +57,15 @@ function DataConnector(
         break;
       }
       case EnumContentType.POSTS: {
-        const { params } = props.router.match;
+        const { params, path } = props.router.match;
         const filters: { [key: string]: any } = {
           limit: 10,
           page: parseInt(params.page_no || "0"),
         };
+
+        if (path === "/") {
+          filters.categorySlug = path;
+        }
 
         if (params.category) {
           filters.categorySlug = params.category;

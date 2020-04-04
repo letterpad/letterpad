@@ -48,7 +48,7 @@ const List = styled.div`
     align-items: center;
     grid-template-columns: 50px 150px 1fr;
     font-size: 0.95rem;
-    color: var(--color-text-3);
+    color: var(--color-base);
     margin-bottom: 44px;
   }
   .scroller {
@@ -58,7 +58,6 @@ const List = styled.div`
   header {
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #111213 !important;
     font-size: 0.7rem !important;
     border-bottom: 1px solid var(--color-border);
     padding-bottom: 16px;

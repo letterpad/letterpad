@@ -1,5 +1,23 @@
 import styled from "styled-components";
 
+export const Grid = styled.article`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 32px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
 export const StyledMedia = styled.div`
   display: grid;
   grid-template-areas: "header header" "nav content" "footer footer";
