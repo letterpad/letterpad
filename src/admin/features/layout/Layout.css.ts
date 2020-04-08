@@ -1,6 +1,7 @@
+import { device } from "./../devices";
 import styled from "styled-components";
 
-export const defaultStyles = `
+const defaultStyles = `
     background: var(--bg-base);
     color: var(--color-base);
 
@@ -28,55 +29,82 @@ export const defaultStyles = `
     hr {
         border-top: 1px solid var(--color-border);
     }
-
-    
-    
 `;
 
-export const StyledLayout = styled.div`
-  display: grid;
-  grid-template-areas: "header header" "nav content" "footer footer";
-  grid-template-columns: 200px 1fr;
-  grid-template-rows: auto 1fr auto;
-  min-height: 100vh;
-  ${defaultStyles};
-
-  background: var(--bg-base);
-
+export const Layout = styled.div<any>`
+  display: flex;
+  flex-direction: row;
+  ${defaultStyles}
   main {
-    background: var(--bg-base);
-    border-top: 1px solid var(--color-border);
-  }
-  .sidebar-close {
-    display: none;
-  }
-  @media (max-width: 991px) {
-    .main {
-      grid-gap: 0px;
-      grid-template-columns: 200px 1fr;
+    margin-left: 290px;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    height: calc(100%);
+    .content-area {
+      max-width: 1200px;
+      margin: auto;
     }
   }
-  @media (max-width: 991px) {
-    .sidebar-close {
-      z-index: 1;
-      display: block;
-      margin-left: 72px;
-      cursor: pointer;
-      margin-top: 14px;
-      i {
-        color: var(--color-base);
-        font-size: 1.4rem;
+  .sidebar {
+    z-index: 3;
+    transition: 0.2s cubic-bezier(0.075, 0.82, 0.165, 1) transform;
+  }
+
+  @media ${device.tablet} {
+    main {
+      margin-left: 0px;
+    }
+    .sidebar {
+      transform: translateX(-390px);
+      .sidebar-header {
+        display: none;
+      }
+      .custom-menu {
+        height: calc(100vh - 60px);
       }
     }
   }
-  @media (max-width: 767px) {
-    .sidebar-close {
-      margin-left: 16px;
-      margin-top: 14px;
-      i {
-        color: var(--color-base);
-        font-size: 1.4rem;
-      }
-    }
+
+  ${p => p.sidebarOpen && showSidebar()}
+`;
+
+function showSidebar() {
+  return `
+  .sidebar {
+    transform: translateX(0px);
   }
+`;
+}
+
+export const MobileMenu = styled.div`
+  width: 100vw;
+  position: fixed;
+  bottom: 0px;
+  background: var(--bg-base);
+  padding: 16px;
+  z-index: 2;
+  justify-content: space-between;
+  display: none;
+  button {
+    border: none;
+    cursor: pointer;
+    background: transparent;
+  }
+
+  @media ${device.tablet} {
+    display: flex;
+  }
+`;
+
+export const BackFade = styled.div`
+  background: #000;
+  opacity: 0.6;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 2;
+  cursor: pointer;
 `;

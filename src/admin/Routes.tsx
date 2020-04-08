@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { RouteComponentProps, withRouter } from "react-router";
 
@@ -20,11 +20,12 @@ import SecuredRoute from "./helpers/Secured";
 import Settings from "./features/settings";
 import StaticSite from "./features/static-site";
 import Taxonomy from "./features/taxonomy";
+import { TwoColumnLayout } from "./features/layout";
 import { TypeSettings } from "../client/types";
 import { fetchSettings } from "../api/fetchSettings";
 import getI18nWithDefaultLang from "../shared/i18n/i18n";
 
-const Routes: React.FC<RouteComponentProps> = routeProps => {
+const Routes: React.FC<RouteComponentProps> = router => {
   const [settings, setSettings] = useState<TypeSettings>();
 
   const setFavicon = (src: string) => {
@@ -68,38 +69,10 @@ const Routes: React.FC<RouteComponentProps> = routeProps => {
           exact
           path="/admin/reset-password/:token"
           component={props => (
-            <ResetPassword {...props} {...routeProps} settings={settings} />
+            <ResetPassword {...props} {...router} settings={settings} />
           )}
         />
-        <Fragment>
-          <SecuredRoute
-            exact
-            path="/admin/home"
-            component={Home}
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/post-new"
-            type="post"
-            component={CreateArticle}
-            layout="none"
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/page-new"
-            type="page"
-            component={CreateArticle}
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/posts"
-            type="post"
-            component={Articles}
-            settings={settings}
-          />
+        <Switch>
           <SecuredRoute
             exact
             path="/admin/posts/:post_id"
@@ -110,82 +83,114 @@ const Routes: React.FC<RouteComponentProps> = routeProps => {
           />
           <SecuredRoute
             exact
-            path="/admin/pages"
-            type="page"
-            component={Articles}
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
             path="/admin/pages/:post_id"
             type="page"
             component={Article}
             layout="none"
             settings={settings}
           />
-          <SecuredRoute
-            exact
-            path="/admin/tags"
-            type="post_tag"
-            component={Taxonomy}
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/categories"
-            type="post_category"
-            component={Taxonomy}
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/settings"
-            component={Settings}
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/navigation-builder"
-            settings={settings}
-            component={NavigationBuilder}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/authors"
-            component={AuthorList}
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/authors/edit/:id"
-            component={Author}
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/edit-profile"
-            component={Author}
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/authors/new"
-            component={AuthorCreate}
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/static-site"
-            component={StaticSite}
-            settings={settings}
-          />
-          <SecuredRoute
-            exact
-            path="/admin/media"
-            component={Media}
-            settings={settings}
-          />
-        </Fragment>
+          <TwoColumnLayout settings={settings} router={router}>
+            <SecuredRoute
+              exact
+              path="/admin/home"
+              component={Home}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/post-new"
+              type="post"
+              component={CreateArticle}
+              layout="none"
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/page-new"
+              type="page"
+              component={CreateArticle}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/posts"
+              type="post"
+              component={Articles}
+              settings={settings}
+            />
+
+            <SecuredRoute
+              exact
+              path="/admin/pages"
+              type="page"
+              component={Articles}
+              settings={settings}
+            />
+
+            <SecuredRoute
+              exact
+              path="/admin/tags"
+              type="post_tag"
+              component={Taxonomy}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/categories"
+              type="post_category"
+              component={Taxonomy}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/settings"
+              component={Settings}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/navigation-builder"
+              settings={settings}
+              component={NavigationBuilder}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/authors"
+              component={AuthorList}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/authors/edit/:id"
+              component={Author}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/edit-profile"
+              component={Author}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/authors/new"
+              component={AuthorCreate}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/static-site"
+              component={StaticSite}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/media"
+              component={Media}
+              settings={settings}
+            />
+          </TwoColumnLayout>
+        </Switch>
       </Switch>
     </I18nextProvider>
   );

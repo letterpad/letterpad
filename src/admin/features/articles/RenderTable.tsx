@@ -4,7 +4,7 @@ import React from "react";
 import { StyledCheckbox } from "../../components/checkbox/Checkbox.css";
 
 const columns = [
-  { label: "Select", className: "selection-box" },
+  // { label: "Select", className: "selection-box" },
   { label: "Image", className: "cover-image" },
   { label: "Title", className: "title" },
   { label: "Published", className: "published" },
@@ -26,14 +26,14 @@ const RenderTable = ({ data, setSelection }) => {
         const authorName = post.author.fname + " " + post.author.lname;
         return (
           <article key={post.slug}>
-            <StyledCheckbox>
+            {/* <StyledCheckbox>
               <input
                 type="checkbox"
                 id={"checkbox-" + post.id}
                 onClick={() => setSelection(post.id)}
               />
               <label htmlFor={"checkbox-" + post.id} />
-            </StyledCheckbox>
+            </StyledCheckbox> */}
             <div className="cover-image">
               <div
                 style={{

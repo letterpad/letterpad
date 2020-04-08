@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
-import StyledSelect from "../../components/select";
-import { translate } from "react-i18next";
+
 import { QUERY_TAXONOMIES } from "../../../shared/queries/Queries";
+import StyledSelect from "../../components/select";
+import { TaxonomyType } from "../../../__generated__/gqlTypes";
 import apolloClient from "../../../shared/apolloClient";
-import { TaxonomyTypes, TaxonomyType } from "../../../__generated__/gqlTypes";
+import styled from "styled-components";
+import { translate } from "react-i18next";
 
 const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
   const [taxonomies, setTaxonomies] = React.useState<any>({
@@ -31,7 +33,7 @@ const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
 
   const { tags, categories } = taxonomies;
   return (
-    <div>
+    <Container>
       <StyledSelect
         bold
         onChange={status => changeFilter("status", status)}
@@ -101,8 +103,13 @@ const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
           },
         ]}
       />
-    </div>
+    </Container>
   );
 };
 
 export default translate("translations")(Filters);
+
+const Container = styled.div`
+  display: flex;
+  margin-bottom: 40px;
+`;

@@ -75,6 +75,7 @@ type Query {
   search(filters: SearchFilters!): SearchOutput
   stats: Stats
   roles: [Role!]!
+  globalSearch(keyword: String): SearchResponse
   settings(option: String): [Setting!]!
   taxonomies(filters: TaxonomyFilters): [Taxonomy!]!
   themes(name: String): [Theme!]!
@@ -372,6 +373,25 @@ type Permission {
   name: String!
 }
 
+type SearchResults {
+  title: String
+  id: Int
+  type: String
+}
+
+type SearchData {
+  pages: [SearchResults]
+  posts: [SearchResults]
+  tags: [SearchResults]
+  categories: [SearchResults]
+}
+
+type SearchResponse {
+  ok: Boolean!
+  data: SearchData
+  errors: [Error!]
+}
+
 enum SettingOptions {
   site_title
   site_tagline
@@ -428,6 +448,8 @@ type Taxonomy {
   name: String!
   desc: String
   slug: String!
+  type: TaxonomyType
+  posts: PostsNode
 }
 
 input TaxonomyFilters {

@@ -29,7 +29,7 @@ const Wrapper = styled.article`
       height: 180px;
       object-fit: contain;
       width: 100%;
-      border-radius: 8px;
+      border-radius: 2px;
       border: 1px solid var(--color-border);
       background: var(--bg-base);
     }

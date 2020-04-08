@@ -433,6 +433,7 @@ export type Query = {
   search?: Maybe<SearchOutput>;
   stats?: Maybe<Stats>;
   roles: Array<Role>;
+  globalSearch?: Maybe<SearchResponse>;
   settings: Array<Setting>;
   taxonomies: Array<Taxonomy>;
   themes: Array<Theme>;
@@ -463,6 +464,10 @@ export type QuerySearchArgs = {
   filters: SearchFilters;
 };
 
+export type QueryGlobalSearchArgs = {
+  keyword?: Maybe<Scalars["String"]>;
+};
+
 export type QuerySettingsArgs = {
   option?: Maybe<Scalars["String"]>;
 };
@@ -489,6 +494,14 @@ export type Role = {
   permissions?: Maybe<Array<Maybe<Permission>>>;
 };
 
+export type SearchData = {
+  __typename?: "SearchData";
+  pages?: Maybe<Array<Maybe<SearchResults>>>;
+  posts?: Maybe<Array<Maybe<SearchResults>>>;
+  tags?: Maybe<Array<Maybe<SearchResults>>>;
+  categories?: Maybe<Array<Maybe<SearchResults>>>;
+};
+
 export type SearchFilters = {
   query?: Maybe<Scalars["String"]>;
   tag?: Maybe<Scalars["String"]>;
@@ -506,6 +519,13 @@ export type SearchOutput = {
   rows?: Maybe<Array<Maybe<SearchResult>>>;
 };
 
+export type SearchResponse = {
+  __typename?: "SearchResponse";
+  ok: Scalars["Boolean"];
+  data?: Maybe<SearchData>;
+  errors?: Maybe<Array<Error>>;
+};
+
 export type SearchResult = {
   __typename?: "SearchResult";
   id?: Maybe<Scalars["Int"]>;
@@ -514,6 +534,13 @@ export type SearchResult = {
   publishedAt?: Maybe<Scalars["Date"]>;
   slug?: Maybe<Scalars["String"]>;
   featured?: Maybe<Scalars["Boolean"]>;
+};
+
+export type SearchResults = {
+  __typename?: "SearchResults";
+  title?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["Int"]>;
+  type?: Maybe<Scalars["String"]>;
 };
 
 export type Setting = {
@@ -574,6 +601,8 @@ export type Taxonomy = {
   name: Scalars["String"];
   desc?: Maybe<Scalars["String"]>;
   slug: Scalars["String"];
+  type?: Maybe<TaxonomyType>;
+  posts?: Maybe<PostsNode>;
 };
 
 export type TaxonomyFilters = {
@@ -771,19 +800,22 @@ export type ResolversTypes = {
   PostTypes: PostTypes;
   PostStatusOptions: PostStatusOptions;
   Taxonomy: ResolverTypeWrapper<Taxonomy>;
+  TaxonomyType: TaxonomyType;
+  PostsNode: ResolverTypeWrapper<PostsNode>;
   PostsFilters: PostsFilters;
   PostSortBy: PostSortBy;
-  PostsNode: ResolverTypeWrapper<PostsNode>;
   AdjacentPosts: ResolverTypeWrapper<AdjacentPosts>;
   SearchFilters: SearchFilters;
   SearchOutput: ResolverTypeWrapper<SearchOutput>;
   SearchResult: ResolverTypeWrapper<SearchResult>;
   Stats: ResolverTypeWrapper<Stats>;
   PostStatus: ResolverTypeWrapper<PostStatus>;
+  SearchResponse: ResolverTypeWrapper<SearchResponse>;
+  SearchData: ResolverTypeWrapper<SearchData>;
+  SearchResults: ResolverTypeWrapper<SearchResults>;
   Setting: ResolverTypeWrapper<Setting>;
   SettingOptions: SettingOptions;
   TaxonomyFilters: TaxonomyFilters;
-  TaxonomyType: TaxonomyType;
   Theme: ResolverTypeWrapper<Theme>;
   ThemeSettings: ResolverTypeWrapper<ThemeSettings>;
   ThemeSettingsUIInputTypes: ThemeSettingsUiInputTypes;
@@ -833,19 +865,22 @@ export type ResolversParentTypes = {
   PostTypes: PostTypes;
   PostStatusOptions: PostStatusOptions;
   Taxonomy: Taxonomy;
+  TaxonomyType: TaxonomyType;
+  PostsNode: PostsNode;
   PostsFilters: PostsFilters;
   PostSortBy: PostSortBy;
-  PostsNode: PostsNode;
   AdjacentPosts: AdjacentPosts;
   SearchFilters: SearchFilters;
   SearchOutput: SearchOutput;
   SearchResult: SearchResult;
   Stats: Stats;
   PostStatus: PostStatus;
+  SearchResponse: SearchResponse;
+  SearchData: SearchData;
+  SearchResults: SearchResults;
   Setting: Setting;
   SettingOptions: SettingOptions;
   TaxonomyFilters: TaxonomyFilters;
-  TaxonomyType: TaxonomyType;
   Theme: Theme;
   ThemeSettings: ThemeSettings;
   ThemeSettingsUIInputTypes: ThemeSettingsUiInputTypes;
@@ -1261,6 +1296,12 @@ export type QueryResolvers<
   >;
   stats?: Resolver<Maybe<ResolversTypes["Stats"]>, ParentType, ContextType>;
   roles?: Resolver<Array<ResolversTypes["Role"]>, ParentType, ContextType>;
+  globalSearch?: Resolver<
+    Maybe<ResolversTypes["SearchResponse"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryGlobalSearchArgs, never>
+  >;
   settings?: Resolver<
     Array<ResolversTypes["Setting"]>,
     ParentType,
@@ -1309,6 +1350,33 @@ export type RoleResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
+export type SearchDataResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["SearchData"] = ResolversParentTypes["SearchData"]
+> = {
+  pages?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["SearchResults"]>>>,
+    ParentType,
+    ContextType
+  >;
+  posts?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["SearchResults"]>>>,
+    ParentType,
+    ContextType
+  >;
+  tags?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["SearchResults"]>>>,
+    ParentType,
+    ContextType
+  >;
+  categories?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["SearchResults"]>>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+};
+
 export type SearchOutputResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["SearchOutput"] = ResolversParentTypes["SearchOutput"]
@@ -1317,6 +1385,20 @@ export type SearchOutputResolvers<
   count?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   rows?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["SearchResult"]>>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+};
+
+export type SearchResponseResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["SearchResponse"] = ResolversParentTypes["SearchResponse"]
+> = {
+  ok?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  data?: Resolver<Maybe<ResolversTypes["SearchData"]>, ParentType, ContextType>;
+  errors?: Resolver<
+    Maybe<Array<ResolversTypes["Error"]>>,
     ParentType,
     ContextType
   >;
@@ -1341,6 +1423,16 @@ export type SearchResultResolvers<
     ParentType,
     ContextType
   >;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+};
+
+export type SearchResultsResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["SearchResults"] = ResolversParentTypes["SearchResults"]
+> = {
+  title?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
+  type?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
@@ -1382,6 +1474,12 @@ export type TaxonomyResolvers<
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   desc?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   slug?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  type?: Resolver<
+    Maybe<ResolversTypes["TaxonomyType"]>,
+    ParentType,
+    ContextType
+  >;
+  posts?: Resolver<Maybe<ResolversTypes["PostsNode"]>, ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
@@ -1494,8 +1592,11 @@ export type Resolvers<ContextType = Context> = {
   Query?: QueryResolvers<ContextType>;
   Response?: ResponseResolvers<ContextType>;
   Role?: RoleResolvers<ContextType>;
+  SearchData?: SearchDataResolvers<ContextType>;
   SearchOutput?: SearchOutputResolvers<ContextType>;
+  SearchResponse?: SearchResponseResolvers<ContextType>;
   SearchResult?: SearchResultResolvers<ContextType>;
+  SearchResults?: SearchResultsResolvers<ContextType>;
   Setting?: SettingResolvers<ContextType>;
   Stats?: StatsResolvers<ContextType>;
   Taxonomy?: TaxonomyResolvers<ContextType>;

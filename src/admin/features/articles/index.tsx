@@ -92,13 +92,6 @@ const Articles: React.FC<IArticleListProps> = ({
       title={type === "post" ? t("posts.title") : t("pages.title")}
       rightToolbar={
         <Actions
-          searchbox={
-            <Search
-              type="post"
-              searchPosts={changeFilter}
-              query={getUrlParams().get("query")}
-            />
-          }
           createPost={"/admin/" + (type === "post" ? "post-new" : "page-new")}
           onDelete={deleteSelectedPosts}
           selectedPosts={selectedPosts}
@@ -108,10 +101,7 @@ const Articles: React.FC<IArticleListProps> = ({
     >
       <div>
         <StyledToolbar className="action-bar">
-          <div className="left-block"></div>
-          <div className="right-block">
-            <Filters query={getUrlParams()} changeFilter={changeFilter} />
-          </div>
+          <Filters query={getUrlParams()} changeFilter={changeFilter} />
         </StyledToolbar>
         {
           <React.Fragment>
@@ -138,10 +128,10 @@ const Articles: React.FC<IArticleListProps> = ({
 
 export default translate("translations")(ArticleHoc(Articles));
 
-const Actions = ({ createPost, onDelete, selectedPosts, searchbox }) => {
+const Actions = ({ createPost, onDelete, selectedPosts }) => {
   return (
     <Flex>
-      {searchbox}
+      {/* {searchbox} */}
       {selectedPosts.length > 0 && (
         <>
           <Button btnStyle="danger" btnSize="md" onClick={onDelete}>

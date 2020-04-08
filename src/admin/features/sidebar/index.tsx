@@ -42,19 +42,17 @@ const Sidebar: React.FC<IProps> = props => {
   if (!stats) return null;
   return (
     <StyledSidebar>
-      <div className="sidebar">
-        <div className="sidebar-top">
-          <Logo
-            src={settings.site_logo.value}
-            siteName={settings.site_title.value}
-          />
-          <Menu settings={settings} router={router} stats={stats} />
-        </div>
-        <div className="view-site">
-          <Link target="_blank" rel="noopener noreferrer" to={"/"}>
-            View site
-          </Link>
-        </div>
+      <div className="sidebar-top">
+        <Logo
+          src={settings.site_logo.value}
+          siteName={settings.site_title.value}
+        />
+        <Menu settings={settings} router={router} stats={stats} />
+      </div>
+      <div className="view-site">
+        <Link target="_blank" rel="noopener noreferrer" to={"/"}>
+          View site
+        </Link>
       </div>
     </StyledSidebar>
   );

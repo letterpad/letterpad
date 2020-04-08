@@ -1,121 +1,55 @@
-import React, { Component } from "react";
-import { StyledLayout, defaultStyles } from "./Layout.css";
+import { BackFade, Layout, MobileMenu } from "./Layout.css";
+import React, { useEffect, useState } from "react";
 import { darkTheme, lightTheme } from "../../css-variables";
 
-import { IAdminLayoutProps } from "../../../types/types";
-import { RouteComponentProps } from "react-router";
+import { Link } from "react-router-dom";
+import Search from "../search/index";
 import Sidebar from "../sidebar";
+import { deviceSize } from "../devices";
 import styled from "styled-components";
-
-const whyDidYouRender = require("@welldone-software/why-did-you-render");
-whyDidYouRender(React, {
-  trackAllPureComponents: true,
-});
 
 const CSSVariables = styled.div<any>`
   ${props => (props.dark ? darkTheme : lightTheme)};
 `;
 
-const NoLayout = styled.div`
-  ${defaultStyles};
-`;
+export const TwoColumnLayout = ({ children, settings, router }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-const Layout = (
-  ComponentClass: React.ComponentType<IAdminLayoutProps>,
-  props: IAdminLayoutProps,
-) => {
-  let defaultTheme = "dark";
-  if (typeof localStorage !== "undefined" && localStorage.theme) {
-    defaultTheme = localStorage.theme;
-  }
-
-  return class extends Component<RouteComponentProps> {
-    state = {
-      sidebarOpen: true,
-      theme: defaultTheme,
-    };
-
-    mounted = false;
-
-    componentDidMount() {
-      this.mounted = true;
-      if (typeof window !== "undefined") {
-        window.addEventListener("resize", this.onResize);
-
-        this.onResize();
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      if (document.body.clientWidth < parseInt(deviceSize.tablet)) {
+        setSidebarOpen(false);
       }
-    }
-
-    componentWillUnmount() {
-      if (typeof window !== "undefined") {
-        window.removeEventListener("resize", this.onResize);
-      }
-    }
-
-    toggleSidebar = e => {
-      if (e.type == "mouseover") {
-        document.body.classList.add("hovering");
-      } else {
-        document.body.classList.remove("hovering");
-      }
-    };
-
-    onResize = () => {
-      if (!this.mounted) return false;
-      if (document.body.clientWidth < 991) {
-        this.setState({ sidebarOpen: false });
-      } else {
-        this.setState({ sidebarOpen: true });
-      }
-    };
-
-    sidebarToggle = () => {
-      this.setState({ sidebarOpen: !this.state.sidebarOpen });
-    };
-
-    switchTheme = theme => {
-      this.setState({ theme });
-      if (typeof localStorage !== "undefined") {
-        localStorage.theme = theme;
-      }
-    };
-
-    render() {
-      const _props = { ...props, router: { ...this.props } };
-      const classes = this.state.sidebarOpen ? "" : " collapsed";
-      const selectedTheme = { [this.state.theme]: true };
-
-      if (_props.layout === "none") {
-        return (
-          <CSSVariables {...selectedTheme}>
-            <NoLayout className={`theme-${this.state.theme}`}>
-              <div className="content-area">
-                <ComponentClass {..._props} theme={this.state.theme} />
-              </div>
-            </NoLayout>
-          </CSSVariables>
-        );
-      }
-
-      return (
-        <CSSVariables {...selectedTheme}>
-          <StyledLayout
-            className={`main two-column theme-${this.state.theme}` + classes}
-          >
-            <Sidebar {..._props} />
-            <main>
-              <div className="content-area">
-                <div className="sidebar-close" onClick={this.sidebarToggle}>
-                  <i className="fa fa-align-justify" />
-                </div>
-                <ComponentClass {..._props} theme={this.state.theme} />
-              </div>
-            </main>
-          </StyledLayout>
-        </CSSVariables>
-      );
-    }
+    });
+  }, []);
+  const sidebarToggle = () => {
+    setSidebarOpen(!sidebarOpen);
   };
-};
 
-export default Layout;
+  return (
+    <CSSVariables dark>
+      {/* <Search onClose={() => {}} /> */}
+      <Layout className={` theme-light`} sidebarOpen={sidebarOpen}>
+        <div className="sidebar">
+          <Sidebar settings={settings} router={router} />
+        </div>
+        {sidebarOpen && <BackFade onClick={sidebarToggle} />}
+        <main>
+          <div className="content-area">{children}</div>
+        </main>
+        <MobileMenu>
+          <Link to="#">
+            <img src={settings.site_logo.value} height="20" />
+          </Link>
+          <button onClick={sidebarToggle}>
+            <i className="fa fa-search"></i>
+          </button>
+          <button onClick={sidebarToggle}>
+            <i className="fa fa-bars"></i>
+          </button>
+        </MobileMenu>
+      </Layout>
+      <div id="portal-root"></div>
+    </CSSVariables>
+  );
+};

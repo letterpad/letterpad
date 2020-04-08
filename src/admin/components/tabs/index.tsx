@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import StyledTabs, { StyledTab } from "./Tabs.css";
 
@@ -7,9 +7,12 @@ interface ITabProps extends RouteComponentProps {
 }
 
 const Tabs: React.FC<ITabProps> = ({ defaultTab, children, history }) => {
-  const urlParams = new URLSearchParams(history.location.search);
+  const [selectedTab, changeTab] = useState<string>(defaultTab);
 
-  const [selectedTab] = useState<string>(urlParams.get("tab") || defaultTab);
+  useEffect(() => {
+    const urlParams = new URLSearchParams(history.location.search);
+    changeTab(urlParams.get("tab") || defaultTab);
+  }, [document.location.search]);
 
   const onClickTabItem = (e: React.MouseEvent, tab: string) => {
     e.preventDefault();

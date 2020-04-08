@@ -12,6 +12,7 @@ html {
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
     font-size: 86%;
+    overflow-x: hidden;
     @media(min-width: 1441px) {
         font-size: 96%;
     }
@@ -557,7 +558,7 @@ export const AdminGlobalStyle = createGlobalStyle`
     }
 
     body {
-        .main {
+        /* .main {
             display: grid;
             grid-template-areas:
             "header header"
@@ -565,9 +566,9 @@ export const AdminGlobalStyle = createGlobalStyle`
             "footer footer";
             grid-template-columns: 290px 1fr;
             grid-template-rows: auto 1fr auto;
-        }
+        } */
 
-        .collapsed {
+        /* .collapsed {
             nav,
             main {
                 transform: translateX(-290px);
@@ -586,7 +587,7 @@ export const AdminGlobalStyle = createGlobalStyle`
             .main {
                 grid-template-columns: 290px 1fr;
             }
-        }
+        } */
     }
 
     body.single {
@@ -598,7 +599,7 @@ export const AdminGlobalStyle = createGlobalStyle`
         width: auto;
         height: auto;
     }
-    .content-area {
+    /* .content-area {
         overflow: auto;
         overflow-x: hidden;
         min-height: 100%;
@@ -626,7 +627,7 @@ export const AdminGlobalStyle = createGlobalStyle`
         .content-area > .module-xs {
             margin: 0px;
         }
-    }
+    } */
     #letterpad-editor-toolbar-toggle-button {
         color: var(--color-border);
         border: 1px solid var(--color-border);

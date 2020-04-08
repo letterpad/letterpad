@@ -423,6 +423,7 @@ export type Query = {
   search?: Maybe<SearchOutput>;
   stats?: Maybe<Stats>;
   roles: Array<Role>;
+  globalSearch?: Maybe<SearchResponse>;
   settings: Array<Setting>;
   taxonomies: Array<Taxonomy>;
   themes: Array<Theme>;
@@ -453,6 +454,10 @@ export type QuerySearchArgs = {
   filters: SearchFilters;
 };
 
+export type QueryGlobalSearchArgs = {
+  keyword?: Maybe<Scalars["String"]>;
+};
+
 export type QuerySettingsArgs = {
   option?: Maybe<Scalars["String"]>;
 };
@@ -479,6 +484,14 @@ export type Role = {
   permissions?: Maybe<Array<Maybe<Permission>>>;
 };
 
+export type SearchData = {
+  __typename?: "SearchData";
+  pages?: Maybe<Array<Maybe<SearchResults>>>;
+  posts?: Maybe<Array<Maybe<SearchResults>>>;
+  tags?: Maybe<Array<Maybe<SearchResults>>>;
+  categories?: Maybe<Array<Maybe<SearchResults>>>;
+};
+
 export type SearchFilters = {
   query?: Maybe<Scalars["String"]>;
   tag?: Maybe<Scalars["String"]>;
@@ -496,6 +509,13 @@ export type SearchOutput = {
   rows?: Maybe<Array<Maybe<SearchResult>>>;
 };
 
+export type SearchResponse = {
+  __typename?: "SearchResponse";
+  ok: Scalars["Boolean"];
+  data?: Maybe<SearchData>;
+  errors?: Maybe<Array<Error>>;
+};
+
 export type SearchResult = {
   __typename?: "SearchResult";
   id?: Maybe<Scalars["Int"]>;
@@ -504,6 +524,13 @@ export type SearchResult = {
   publishedAt?: Maybe<Scalars["Date"]>;
   slug?: Maybe<Scalars["String"]>;
   featured?: Maybe<Scalars["Boolean"]>;
+};
+
+export type SearchResults = {
+  __typename?: "SearchResults";
+  title?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["Int"]>;
+  type?: Maybe<Scalars["String"]>;
 };
 
 export type Setting = {
@@ -564,6 +591,8 @@ export type Taxonomy = {
   name: Scalars["String"];
   desc?: Maybe<Scalars["String"]>;
   slug: Scalars["String"];
+  type?: Maybe<TaxonomyType>;
+  posts?: Maybe<PostsNode>;
 };
 
 export type TaxonomyFilters = {
@@ -1051,6 +1080,61 @@ export type SettingsQuery = { __typename?: "Query" } & {
   >;
 };
 
+export type GlobalSearchQueryVariables = {
+  keyword?: Maybe<Scalars["String"]>;
+};
+
+export type GlobalSearchQuery = { __typename?: "Query" } & {
+  globalSearch: Maybe<
+    { __typename?: "SearchResponse" } & Pick<SearchResponse, "ok"> & {
+        data: Maybe<
+          { __typename?: "SearchData" } & {
+            pages: Maybe<
+              Array<
+                Maybe<
+                  { __typename?: "SearchResults" } & Pick<
+                    SearchResults,
+                    "id" | "title"
+                  >
+                >
+              >
+            >;
+            posts: Maybe<
+              Array<
+                Maybe<
+                  { __typename?: "SearchResults" } & Pick<
+                    SearchResults,
+                    "id" | "title"
+                  >
+                >
+              >
+            >;
+            categories: Maybe<
+              Array<
+                Maybe<
+                  { __typename?: "SearchResults" } & Pick<
+                    SearchResults,
+                    "id" | "title"
+                  >
+                >
+              >
+            >;
+            tags: Maybe<
+              Array<
+                Maybe<
+                  { __typename?: "SearchResults" } & Pick<
+                    SearchResults,
+                    "id" | "title"
+                  >
+                >
+              >
+            >;
+          }
+        >;
+      }
+  >;
+};
+
 export type TaxonomiesQueryVariables = {
   filters?: Maybe<TaxonomyFilters>;
 };
@@ -1059,8 +1143,14 @@ export type TaxonomiesQuery = { __typename?: "Query" } & {
   taxonomies: Array<
     { __typename?: "Taxonomy" } & Pick<
       Taxonomy,
-      "id" | "name" | "desc" | "slug"
-    >
+      "id" | "name" | "desc" | "slug" | "type"
+    > & {
+        posts: Maybe<
+          { __typename?: "PostsNode" } & Pick<PostsNode, "count"> & {
+              rows: Array<{ __typename?: "Post" } & Pick<Post, "id">>;
+            }
+        >;
+      }
   >;
 };
 

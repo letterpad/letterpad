@@ -112,6 +112,32 @@ export const QUERY_SETTINGS = gql`
   }
 `;
 
+export const QUERY_GLOBAL_SEARCH = gql`
+  query globalSearch($keyword: String) {
+    globalSearch(keyword: $keyword) {
+      ok
+      data {
+        pages {
+          id
+          title
+        }
+        posts {
+          id
+          title
+        }
+        categories {
+          id
+          title
+        }
+        tags {
+          id
+          title
+        }
+      }
+    }
+  }
+`;
+
 export const QUERY_TAXONOMIES = gql`
   query taxonomies($filters: TaxonomyFilters) {
     taxonomies(filters: $filters) {
@@ -119,6 +145,13 @@ export const QUERY_TAXONOMIES = gql`
       name
       desc
       slug
+      type
+      posts {
+        count
+        rows {
+          id
+        }
+      }
     }
   }
 `;

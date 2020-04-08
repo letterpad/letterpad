@@ -222,6 +222,16 @@ const postresolver = {
         .map(item => {
           const type = "tag";
           item.slug = "/" + type + "/" + item.slug;
+          const posts = item.getPosts();
+          item.posts = {
+            count: posts.then(items => items.length),
+            rows: posts.then(rows =>
+              rows.map(post => {
+                post.dataValues = normalizePost(post.dataValues);
+                return post;
+              }),
+            ),
+          };
           return item;
         });
     },
@@ -232,6 +242,16 @@ const postresolver = {
         .map(item => {
           const type = "category";
           item.slug = "/" + type + "/" + item.slug;
+          const posts = item.getPosts();
+          item.posts = {
+            count: posts.then(items => items.length),
+            rows: posts.then(rows =>
+              rows.map(post => {
+                post.dataValues = normalizePost(post.dataValues);
+                return post;
+              }),
+            ),
+          };
           return item;
         });
     },
@@ -240,7 +260,7 @@ const postresolver = {
 
 export default postresolver;
 
-function normalizePost(post) {
+export function normalizePost(post) {
   let {
     cover_image_width,
     cover_image_height,

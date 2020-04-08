@@ -1,4 +1,5 @@
 import { SectionSizes } from "./index";
+import { device } from "./../../features/devices";
 import styled from "styled-components";
 interface ISectionProps {
   size: SectionSizes;
@@ -10,7 +11,8 @@ export const Container = styled.section<ISectionProps>`
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  padding: ${props => {
+  padding: 60px;
+  /* padding: ${props => {
     switch (props.size) {
       case SectionSizes.sm:
         return "8px";
@@ -21,11 +23,18 @@ export const Container = styled.section<ISectionProps>`
       default:
         return "16px";
     }
-  }};
-  @media (max-width: 767px) {
-    padding: 16px;
-  }
+  }}; */
 
+  @media ${device.laptop} {
+    padding: 40px;
+  }
+  @media ${device.tablet} {
+    padding: 30px;
+  }
+  @media ${device.mobile} {
+    padding: 30px;
+  }
+  
   .section-header {
     margin-bottom: 36px;
     color: var(--color-text-2);

@@ -5,7 +5,7 @@ import { TypeSettings } from "../client/types";
 
 export interface IAdminLayoutProps {
   exact: true;
-  theme: string;
+  // theme: string;
   settings: TypeSettings;
   type: "post_tag";
   path: "/admin/tags";

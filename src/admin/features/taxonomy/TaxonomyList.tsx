@@ -1,5 +1,6 @@
+import { Taxonomy, TaxonomyTypes } from "../../../__generated__/gqlTypes";
+
 import React from "react";
-import { Taxonomy } from "../../../__generated__/resolvers";
 import TaxonomyItem from "./TaxonomyItem";
 import styled from "styled-components";
 
@@ -7,6 +8,7 @@ const columns = [
   { label: "Select", className: "select" },
   { label: "Name", className: "name" },
   { label: "Description", className: "description" },
+  { label: "Linked Posts", className: "linked-posts" },
 ];
 
 interface IProps {
@@ -46,7 +48,7 @@ const List = styled.div`
     display: grid;
     grid-gap: 10px;
     align-items: center;
-    grid-template-columns: 50px 150px 1fr;
+    grid-template-columns: 50px 150px 1fr 100px;
     font-size: 0.95rem;
     color: var(--color-base);
     margin-bottom: 44px;

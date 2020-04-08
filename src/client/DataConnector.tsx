@@ -63,8 +63,8 @@ function DataConnector(
           page: parseInt(params.page_no || "0"),
         };
 
-        if (path === "/") {
-          filters.categorySlug = path;
+        if (path === config.BASE_NAME + "/") {
+          filters.categorySlug = "/";
         }
 
         if (params.category) {

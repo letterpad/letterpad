@@ -1,3 +1,5 @@
+import { normalizePost } from "./post";
+
 export default {
   Query: {
     taxonomies: async (root, args, { models }) => {
@@ -27,9 +29,21 @@ export default {
       }
 
       const taxonomies = await models.Taxonomy.findAll(conditions);
+
       return taxonomies.map(item => {
         const type = item.type === "post_category" ? "category" : "tag";
         item.slug = "/" + type + "/" + item.slug;
+        // promise
+        const posts = item.getPosts();
+        item.posts = {
+          count: posts.then(items => items.length),
+          rows: posts.then(rows =>
+            rows.map(post => {
+              post.dataValues = normalizePost(post.dataValues);
+              return post;
+            }),
+          ),
+        };
         return item;
       });
     },

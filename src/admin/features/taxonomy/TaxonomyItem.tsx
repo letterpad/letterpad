@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Taxonomy, TaxonomyType } from "../../../__generated__/gqlTypes";
 
+import { Link } from "react-router-dom";
 import { StyledCheckbox } from "../../components/checkbox/Checkbox.css";
-import { Taxonomy } from "../../../__generated__/gqlTypes";
+import config from "../../../config";
 import styled from "styled-components";
 
 interface IProps {
@@ -27,6 +29,10 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
     const updatedItem = { ...taxonomy, [key]: value };
     onUpdate(updatedItem);
   };
+
+  const linkedPostsUrl = getLinkedPostsUrl(taxonomy.type, taxonomy.name);
+  const linkedPostsCount = taxonomy.posts?.count || 0;
+  const hasLinkedPosts = linkedPostsCount > 0;
 
   return (
     <article key={taxonomy.slug}>
@@ -58,6 +64,14 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
           placeholder="Enter a description"
           onBlur={e => onBlur(name, "desc")}
         />
+      </div>
+      <div className="linked-posts">
+        {hasLinkedPosts && (
+          <Link to={linkedPostsUrl}>
+            {linkedPostsCount} {linkedPostsCount === 1 ? "post" : "posts"}
+          </Link>
+        )}
+        {!hasLinkedPosts && "-"}
       </div>
     </article>
   );
@@ -92,3 +106,10 @@ const Input = styled.input`
   width: 100%;
   color: var(--color-base);
 `;
+
+function getLinkedPostsUrl(type, name) {
+  if (type === TaxonomyType.PostTag) {
+    return config.BASE_NAME + "posts?tag=" + name;
+  }
+  return config.BASE_NAME + "posts?category=" + name;
+}

@@ -9,10 +9,9 @@ import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
 import EditMediaInfo from "./EditMediaInfo";
 import { MediaNode } from "../../../__generated__/gqlTypes";
 import Paginate from "../../components/pagination";
+import Portal from "../portal";
 import { RouteComponentProps } from "react-router-dom";
-import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
-import { getReadableDate } from "../../../shared/date";
 import { notify } from "react-notify-toast";
 import { uploadFile } from "../../server/util";
 
@@ -139,26 +138,6 @@ class Media extends Component<IMMediaProps, IMediaState> {
     this.fetchMedia();
   };
 
-  selectNextMedia = () => {
-    const { selectedIndex, items } = this.state;
-    const newState = { selectedIndex: selectedIndex + 1 };
-    const isLastImage = selectedIndex === items.rows.length - 1;
-    if (isLastImage) {
-      newState.selectedIndex = 0;
-    }
-    this.setState(newState);
-  };
-
-  selectPreviousMedia = () => {
-    const { selectedIndex, items } = this.state;
-    const newState = { selectedIndex: selectedIndex - 1 };
-    const isFirstImage = selectedIndex === 0;
-    if (isFirstImage) {
-      newState.selectedIndex = items.rows.length - 1;
-    }
-    this.setState(newState);
-  };
-
   onMediaCheckBoxClick = (e: React.SyntheticEvent, id: number) => {
     e.preventDefault();
     let checkedItems = [...this.state.checkedItems];
@@ -258,15 +237,23 @@ class Media extends Component<IMMediaProps, IMediaState> {
           />
         )}
         {displayInfo && (
-          <EditMediaWrapper>
-            <EditMediaInfo
-              media={items.rows[selectedIndex]}
-              onClose={() => this.setState({ displayInfo: false })}
-              next={this.selectNextMedia}
-              previous={this.selectPreviousMedia}
-              updateMedia={updateMedia}
-            />
-          </EditMediaWrapper>
+          <Portal>
+            <EditMediaWrapper>
+              <EditMediaInfo
+                media={items.rows}
+                index={selectedIndex}
+                onClose={() => this.setState({ displayInfo: false })}
+                deleteMedia={(id, rows) => {
+                  this.setState({ items: { ...this.state.items, rows } });
+                  deleteMedias([id]);
+                }}
+                updateMedia={(change, rows) => {
+                  this.setState({ items: { ...this.state.items, rows } });
+                  updateMedia(change);
+                }}
+              />
+            </EditMediaWrapper>
+          </Portal>
         )}
       </StyledSection>
     );
@@ -284,7 +271,7 @@ const Actions = ({ newMediaAction, hasDelete, onDelete }) => {
         </Button>
       )}
       <Button btnSize="md" btnStyle="primary" onClick={newMediaAction}>
-        New
+        Add Media
       </Button>
     </>
   );

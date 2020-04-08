@@ -1,3 +1,5 @@
+import { device, deviceSize } from "./../../features/devices";
+
 import styled from "styled-components";
 
 export const StyledTab = styled.div<any>`
@@ -16,6 +18,11 @@ const StyledTabs = styled.div`
   .tab-header {
     display: flex;
     margin-bottom: 1rem;
+
+    @media ${device.tablet} {
+      width: 767px;
+      overflow-x: auto;
+    }
   }
   .tab-content {
     padding: 15px;

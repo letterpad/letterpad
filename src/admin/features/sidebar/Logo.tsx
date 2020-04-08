@@ -8,8 +8,9 @@ interface IProps {
 const Logo: React.FC<IProps> = ({ src, siteName }) => {
   if (src) {
     return (
-      <Container>
+      <Container className="sidebar-header">
         <img src={src} alt={siteName} />
+        <i className="fa fa-search" />
       </Container>
     );
   }
