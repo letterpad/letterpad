@@ -8,6 +8,7 @@ import Css from "./Css";
 import General from "./General";
 import ImagesCdn from "./ImagesCdn";
 import Messages from "./Messages";
+import Navigation from "./Navigation";
 import Optional from "./Optional";
 import { RouteComponentProps } from "react-router";
 import Social from "./Social";
@@ -70,6 +71,13 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
         tab="general"
       >
         <General data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.navigation.title`)}
+        subtitle={t(`settings.navigation.tagline`)}
+        tab="navigation"
+      >
+        <Navigation settings={settings} />
       </Accordion>
       <Accordion
         title={t(`settings.social.title`)}

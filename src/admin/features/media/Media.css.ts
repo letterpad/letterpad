@@ -41,7 +41,7 @@ export const EditMediaWrapper = styled.div`
   }
 `;
 
-export const StyledItem = styled.div<{ checked: boolean }>`
+export const StyledItem = styled.div`
   .selection-box {
     position: relative;
     z-index: 99;
@@ -86,22 +86,4 @@ export const StyledItem = styled.div<{ checked: boolean }>`
     left: 5px;
     transition: all 0.1s ease;
   }
-  ${p =>
-    p.checked &&
-    `
-  label:after {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    transform: scale(1);
-  }
-  `}
-  ${p =>
-    !p.checked &&
-    `
-  label:after {
-    opacity: 0;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  }
-  `}
 `;

@@ -75,14 +75,6 @@ const DATA: IAdminMenu[] = [
     slug: "settings",
     icon: "fa-user",
   },
-  {
-    id: 4,
-    name: "menu.navigation",
-    priority: 3,
-    permissions: [EnumPermissions.ManageSettings],
-    slug: "navigation-builder",
-    icon: "fa-bars",
-  },
 ];
 
 export default DATA;

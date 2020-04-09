@@ -1,16 +1,15 @@
-import { Container, Grid } from "./Navigation.css";
+import { Container, Grid } from "./navigation/Navigation.css";
 import React, { useState } from "react";
-import Section, { SectionSizes, Title } from "../../components/section";
 import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import { SortableContainer, arrayMove } from "react-sortable-hoc";
 import { WithNamespaces, translate } from "react-i18next";
 
 import { Button } from "../../components/button";
 import { IMenu } from "../../../client/types";
-import SortableItem from "./SortableItem";
+import SortableItem from "./navigation/SortableItem";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 import apolloClient from "../../../shared/apolloClient";
-import { useNavigationData } from "./data.hook";
+import { useNavigationData } from "./navigation/data.hook";
 
 interface IMenuWithError extends IMenu {
   hasError?: boolean;
@@ -69,44 +68,34 @@ const Navigation: React.FC<INavigationBuilderProps> = ({ settings, t }) => {
   };
 
   return (
-    <Section
-      size={SectionSizes.md}
-      title={t("menu.title")}
-      rightToolbar={
-        <Actions
-          onNewRowAdd={() => {
-            addNewRow();
+    <Container>
+      <Grid>
+        <span />
+        <strong>Label</strong>
+        <strong>Path</strong>
+        <span />
+      </Grid>
+      <br />
+      <div>
+        <SortableList
+          items={menu}
+          onSortEnd={onSortEnd}
+          source={data}
+          onChange={onChange}
+          onRemove={onRemove}
+          hideSortableGhost={false}
+          lockAxis="y"
+          lockToContainerEdges={true}
+          shouldCancelStart={e => {
+            //@ts-ignore
+            return !e.target.classList.contains("dragger");
           }}
         />
-      }
-      subtitle={t("menu.tagline")}
-    >
-      <Container>
-        <Grid>
-          <span />
-          <strong>Label</strong>
-          <strong>Slug</strong>
-          <span />
-        </Grid>
-        <br />
-        <div>
-          <SortableList
-            items={menu}
-            onSortEnd={onSortEnd}
-            source={data}
-            onChange={onChange}
-            onRemove={onRemove}
-            hideSortableGhost={false}
-            lockAxis="y"
-            lockToContainerEdges={true}
-            shouldCancelStart={e => {
-              //@ts-ignore
-              return !e.target.classList.contains("dragger");
-            }}
-          />
-        </div>
-      </Container>
-    </Section>
+      </div>
+      <Button btnSize="md" btnStyle="primary" onClick={addNewRow}>
+        New
+      </Button>
+    </Container>
   );
 };
 
@@ -180,13 +169,3 @@ function addIds(arr) {
     return item;
   });
 }
-
-const Actions = ({ onNewRowAdd }) => {
-  return (
-    <>
-      <Button btnSize="md" btnStyle="primary" onClick={onNewRowAdd}>
-        New
-      </Button>
-    </>
-  );
-};

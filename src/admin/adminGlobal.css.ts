@@ -1,3 +1,5 @@
+import { darkTheme, lightTheme } from "./css-variables";
+
 import { createGlobalStyle } from "styled-components";
 
 export const NormalizeCss = createGlobalStyle`
@@ -247,7 +249,14 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         overflow-x: hidden;
         overflow-y: auto;
         height: 100%;
+        &.theme-dark {
+            ${darkTheme}
+        }
+        &.theme-light {
+            ${lightTheme}
+        }
     }
+
     img {
         max-width: 100%;
     }
@@ -557,38 +566,7 @@ export const AdminGlobalStyle = createGlobalStyle`
         grid-area: content;
     }
 
-    body {
-        /* .main {
-            display: grid;
-            grid-template-areas:
-            "header header"
-            "nav content"
-            "footer footer";
-            grid-template-columns: 290px 1fr;
-            grid-template-rows: auto 1fr auto;
-        } */
-
-        /* .collapsed {
-            nav,
-            main {
-                transform: translateX(-290px);
-                .content-area {
-                    width: 100vw;
-                }
-            }
-        }
-
-        @media (max-width: 767px) {
-            .content-area {
-            width: 100vw;
-            }
-        }
-        @media (max-width: 991px) {
-            .main {
-                grid-template-columns: 290px 1fr;
-            }
-        } */
-    }
+    
 
     body.single {
         main .content-area > div {
@@ -599,35 +577,7 @@ export const AdminGlobalStyle = createGlobalStyle`
         width: auto;
         height: auto;
     }
-    /* .content-area {
-        overflow: auto;
-        overflow-x: hidden;
-        min-height: 100%;
-        width: 100vw;
-        height: 100vh;
-    }
-    body.posts {
-        .content-area > div {
-            display: grid;
-            grid-template-columns: auto auto auto;
-            grid-gap: 12px;
-        }
-        @media (max-width: 991px) {
-            .content-area > div {
-                grid-template-columns: auto auto;
-            }
-        }
-        @media (max-width: 768px) {
-            .content-area > div {
-                grid-template-columns: auto;
-            }
-        }
-    }
-    @media (max-width: 768px) {
-        .content-area > .module-xs {
-            margin: 0px;
-        }
-    } */
+    
     #letterpad-editor-toolbar-toggle-button {
         color: var(--color-border);
         border: 1px solid var(--color-border);
@@ -650,58 +600,5 @@ export const AdminGlobalStyle = createGlobalStyle`
         }
     }
 
-    /* buttons */
 
-    .btn-primary {
-        color: #fff;
-        background-color: #191c1d;
-        background-image: linear-gradient(to bottom, #00a7e6 0%, #191c1d 100%);
-        background-repeat: repeat-x;
-        border-color: #0095ce;
-
-        // Loading class within a primary button
-        > [class*="loader-container"] > [class*="loader"] {
-            border-color: rgba(255, 255, 255, 0.4);
-            border-left-color: #fff;
-        }
-
-        &:active,
-        &.active {
-            color: #fff;
-            background-color: #009ed8;
-            background-image: none;
-            border-color: #00759f;
-            box-shadow: 0 1px 6px rgba(0, 0, 0, .15) inset;
-        }
-
-        &:focus,
-        &.focus {
-            color: #fff;
-            border-color: #444;
-            box-shadow: 0 0 1px #fff inset;
-        }
-
-        &:hover,
-        &.hover {
-            color: #fff;
-            background-color: #1daee5;
-            background-image: linear-gradient(to bottom, #1daee5 0%, #00a3df 100%);
-            background-repeat: repeat-x;
-            border-color: #00759f;
-        }
-
-        &.disabled,
-        &[disabled],
-        fieldset[disabled] & {
-            &:hover,
-            &.hover,
-            &:focus,
-            &.focus {
-                background-color: #191c1d;
-                background-image: linear-gradient(to bottom, #00a7e6 0%, #191c1d 100%);
-                background-repeat: repeat-x;
-                border-color: #0095ce;
-            }
-        }
-    }
 `;

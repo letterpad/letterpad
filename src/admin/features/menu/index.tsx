@@ -5,7 +5,6 @@ import { WithNamespaces, translate } from "react-i18next";
 
 import DATA from "./data";
 import { IAdminMenu } from "../../../types/types";
-import PropTypes from "prop-types";
 import { RouteComponentProps } from "react-router";
 import { StatsQuery } from "../../../__generated__/gqlTypes";
 import jwtDecode from "jwt-decode";

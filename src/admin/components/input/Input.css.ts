@@ -3,12 +3,13 @@ import styled from "styled-components";
 export const Container = styled.div`
   label {
     opacity: 0.6;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 0.7rem;
     text-transform: uppercase;
     display: inline-block;
     max-width: 100%;
     margin-bottom: 5px;
+    letter-spacing: 1px;
   }
   input,
   textarea {
@@ -49,7 +50,7 @@ export const Container = styled.div`
   textarea {
     height: auto;
   }
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   input.pointer,
   textarea.pointer {
     cursor: pointer;

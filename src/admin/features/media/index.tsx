@@ -30,7 +30,6 @@ interface IMediaState {
     rows: MediaNode["rows"];
   };
   displayInfo: boolean;
-  checkedItems: number[];
   selectedIndex: number;
   loading: boolean;
 }
@@ -45,8 +44,6 @@ class Media extends Component<IMMediaProps, IMediaState> {
       count: 0,
     },
     displayInfo: false,
-    // selectedItem: {},
-    checkedItems: [],
     selectedIndex: 0,
     loading: true,
   };
@@ -76,7 +73,6 @@ class Media extends Component<IMMediaProps, IMediaState> {
   static getDerivedStateFromProps(nextProps, prevState) {
     const newState = {
       ...prevState,
-      // items: { ...nextProps.media },
     };
     const { page } = nextProps.router.match.params;
     if (page && page !== prevState.page) {
@@ -93,23 +89,6 @@ class Media extends Component<IMMediaProps, IMediaState> {
     this.setState({
       confirmDelete: !this.state.confirmDelete,
     });
-  };
-
-  deleteSelectedMedia = async () => {
-    if (this.state.checkedItems.length > 0) {
-      await deleteMedias(this.state.checkedItems);
-      const rows = this.state.items.rows.filter(
-        item => !this.state.checkedItems.includes(item.id),
-      );
-      this.setState({
-        confirmDelete: false,
-        checkedItems: [],
-        items: {
-          ...this.state.items,
-          rows: rows,
-        },
-      });
-    }
   };
 
   editMedia = (e: React.SyntheticEvent, idx: number) => {
@@ -138,18 +117,6 @@ class Media extends Component<IMMediaProps, IMediaState> {
     this.fetchMedia();
   };
 
-  onMediaCheckBoxClick = (e: React.SyntheticEvent, id: number) => {
-    e.preventDefault();
-    let checkedItems = [...this.state.checkedItems];
-
-    if (checkedItems.includes(id)) {
-      checkedItems = checkedItems.filter(checkedIds => checkedIds !== id);
-    } else {
-      checkedItems.push(id);
-    }
-    this.setState({ checkedItems });
-  };
-
   goToNextPage = (e: React.SyntheticEvent, page: number) => {
     e.preventDefault();
     this.props.router.history.push({
@@ -160,16 +127,13 @@ class Media extends Component<IMMediaProps, IMediaState> {
 
   render() {
     const { t } = this.props;
-    const { checkedItems, items, displayInfo, selectedIndex } = this.state;
-    const deleteCount = checkedItems.length;
+    const { items, displayInfo, selectedIndex } = this.state;
 
     return (
       <StyledSection
         size={SectionSizes.md}
         rightToolbar={
           <Actions
-            hasDelete={checkedItems.length > 0}
-            onDelete={this.toggleDeleteModal}
             newMediaAction={() => {
               if (this.uploadInputRef.current) {
                 this.uploadInputRef.current.click();
@@ -178,7 +142,6 @@ class Media extends Component<IMMediaProps, IMediaState> {
           />
         }
         title={t("media.title")}
-        subtitle={t("media.tagline")}
       >
         <input
           ref={this.uploadInputRef}
@@ -194,19 +157,7 @@ class Media extends Component<IMMediaProps, IMediaState> {
         <br />
         <Grid>
           {items.rows.map((media, idx) => (
-            <StyledItem
-              key={media.id}
-              checked={checkedItems.includes(media.id)}
-            >
-              <div className="selection-box">
-                <input
-                  type="checkbox"
-                  id={"checkbox-" + media.id}
-                  checked={checkedItems.includes(media.id)}
-                  onClick={e => this.onMediaCheckBoxClick(e, media.id)}
-                />
-                <label htmlFor={"checkbox-" + media.id} />
-              </div>
+            <StyledItem key={media.id}>
               <StyledGridItem
                 image={{
                   src: media.url,
@@ -226,16 +177,14 @@ class Media extends Component<IMMediaProps, IMediaState> {
           changePage={this.goToNextPage}
           limit={itemsPerPage}
         />
-        {this.state.confirmDelete && (
+        {/* {this.state.confirmDelete && (
           <ConfirmDeleteModal
             title="Confirm Delete"
-            text={`Are you sure you want to delete ${deleteCount} item${
-              deleteCount == 1 ? "" : "s"
-            }?`}
+            text={`Are you sure you want to delete this media`}
             onYes={this.deleteSelectedMedia}
             onClose={this.toggleDeleteModal}
           />
-        )}
+        )} */}
         {displayInfo && (
           <Portal>
             <EditMediaWrapper>
@@ -262,14 +211,9 @@ class Media extends Component<IMMediaProps, IMediaState> {
 
 export default translate("translations")(Media);
 
-const Actions = ({ newMediaAction, hasDelete, onDelete }) => {
+const Actions = ({ newMediaAction }) => {
   return (
     <>
-      {hasDelete && (
-        <Button btnSize="md" btnStyle="danger" onClick={onDelete}>
-          Delete
-        </Button>
-      )}
       <Button btnSize="md" btnStyle="primary" onClick={newMediaAction}>
         Add Media
       </Button>

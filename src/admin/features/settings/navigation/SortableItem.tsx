@@ -1,8 +1,8 @@
 import { InputBox, Item } from "./SortableItem.css";
 import React, { useState } from "react";
 
-import { Button } from "../../components/button";
-import { IMenu } from "../../../client/types";
+import { Button } from "../../../components/button";
+import { IMenu } from "../../../../client/types";
 import ReactTooltip from "react-tooltip";
 import { SortableElement } from "react-sortable-hoc";
 

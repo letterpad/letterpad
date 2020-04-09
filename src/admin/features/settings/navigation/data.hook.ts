@@ -7,11 +7,14 @@ import {
   TaxonomiesQueryVariables,
   Taxonomy,
   TaxonomyType,
-} from "../../../__generated__/gqlTypes";
-import { QUERY_POSTS, QUERY_TAXONOMIES } from "../../../shared/queries/Queries";
+} from "../../../../__generated__/gqlTypes";
+import {
+  QUERY_POSTS,
+  QUERY_TAXONOMIES,
+} from "../../../../shared/queries/Queries";
 import { useEffect, useState } from "react";
 
-import config from "../../../config";
+import config from "../../../../config";
 import { useQuery } from "react-apollo";
 
 function useNavigationData() {

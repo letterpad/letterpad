@@ -13,7 +13,7 @@ import { I18nextProvider } from "react-i18next";
 import Loader from "./components/loader";
 import LoginView from "./features/login/LoginView";
 import Media from "./features/media";
-import NavigationBuilder from "./features/navigation-builder";
+import NavigationBuilder from "./features/settings/Navigation";
 import Notifications from "react-notify-toast";
 import ResetPassword from "./features/login/ResetPassword";
 import SecuredRoute from "./helpers/Secured";

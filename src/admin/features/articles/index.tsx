@@ -97,7 +97,6 @@ const Articles: React.FC<IArticleListProps> = ({
           selectedPosts={selectedPosts}
         />
       }
-      subtitle={type === "post" ? t("posts.tagline") : t("pages.tagline")}
     >
       <div>
         <StyledToolbar className="action-bar">
