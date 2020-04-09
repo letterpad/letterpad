@@ -255,6 +255,9 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         &.theme-light {
             ${lightTheme}
         }
+        &.no-scroll {
+            overflow: hidden;
+        }
     }
 
     img {

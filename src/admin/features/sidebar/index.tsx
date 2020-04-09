@@ -7,9 +7,9 @@ import { QUERY_STATS } from "../../../shared/queries/Queries";
 import { RouteComponentProps } from "react-router";
 import { StatsQuery } from "../../../__generated__/gqlTypes";
 import StyledSidebar from "./Sidebar.css";
+import ThemeSwitch from "../theme-switcher";
 import { TypeSettings } from "../../../client/types";
 import apolloClient from "../../../shared/apolloClient";
-import { useQuery } from "react-apollo";
 
 interface IProps {
   settings: TypeSettings;
@@ -49,6 +49,7 @@ const Sidebar: React.FC<IProps> = props => {
         />
         <Menu settings={settings} router={router} stats={stats} />
       </div>
+      <ThemeSwitch />
       <div className="view-site">
         <Link target="_blank" rel="noopener noreferrer" to={"/"}>
           View site

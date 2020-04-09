@@ -61,7 +61,7 @@ export const Layout = styled.div<any>`
         display: none;
       }
       .custom-menu {
-        height: calc(100vh - 60px);
+        height: calc(100vh - 100px);
       }
     }
   }
@@ -78,6 +78,7 @@ function showSidebar() {
 }
 
 export const MobileMenu = styled.div`
+  border-top: 1px solid var(--color-border);
   width: 100vw;
   position: fixed;
   bottom: 0px;
@@ -90,6 +91,9 @@ export const MobileMenu = styled.div`
     border: none;
     cursor: pointer;
     background: transparent;
+    i {
+      font-size: 1.3rem;
+    }
   }
 
   @media ${device.tablet} {

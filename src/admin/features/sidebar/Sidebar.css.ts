@@ -1,17 +1,6 @@
 import styled from "styled-components";
 
 const Sidebar = styled.div`
-  /* border-radius: 0px;
-  background: var(--bg-base);
-  border: 0;
-  padding: 0;
-  margin: 0;
-  position: fixed;
-  height: 100%;
-  width: 290px;
-  flex: 1;
-
-  .sidebar { */
   background: var(--bg-base);
   position: fixed;
   display: flex;
@@ -41,7 +30,6 @@ const Sidebar = styled.div`
     }
   }
   @media (max-width: 991px) {
-    /* position: relative; */
     z-index: 99999;
     padding: 0;
     &:after {
@@ -67,12 +55,7 @@ const Sidebar = styled.div`
       border: none;
     }
   }
-  /* a {
-      color: rgba(255, 255, 255, 0.7);
-      &:hover {
-        color: #fff;
-      }
-    } */
+
   .view-site {
     height: 45px;
     display: flex;
@@ -81,7 +64,6 @@ const Sidebar = styled.div`
     padding: 30px 40px;
     color: var(--color-base);
   }
-  /* } */
 `;
 
 export default Sidebar;

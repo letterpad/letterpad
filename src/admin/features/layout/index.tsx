@@ -8,6 +8,7 @@ import { deviceSize } from "../devices";
 
 export const TwoColumnLayout = ({ children, settings, router }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   useEffect(() => {
     window.addEventListener("resize", () => {
       if (document.body.clientWidth < parseInt(deviceSize.tablet)) {
@@ -15,9 +16,18 @@ export const TwoColumnLayout = ({ children, settings, router }) => {
       }
     });
   }, []);
+
   const sidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
+
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [sidebarOpen]);
 
   return (
     <>
@@ -38,7 +48,7 @@ export const TwoColumnLayout = ({ children, settings, router }) => {
             <i className="fa fa-search"></i>
           </button>
           <button onClick={sidebarToggle}>
-            <i className="fa fa-bars"></i>
+            <i className={`fa fa-${sidebarOpen ? "times" : "bars"}`}></i>
           </button>
         </MobileMenu>
       </Layout>
