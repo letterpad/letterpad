@@ -29,7 +29,7 @@ interface ISearchItemsProps {
   getLink: (item: any) => string;
 }
 
-const GlobalSearch: React.FC<IProps> = ({ t }) => {
+const GlobalSearch: React.FC<IProps> = ({ t, onClose }) => {
   const [state, setState] = useState<SearchData>({
     posts: [],
     pages: [],
@@ -57,7 +57,7 @@ const GlobalSearch: React.FC<IProps> = ({ t }) => {
 
   return (
     <Container>
-      <ModalHoc confirm title="Global Search" onClose={() => {}}>
+      <ModalHoc confirm title="Global Search" onClose={onClose}>
         <div className="modal-body">
           <SearchBox onChange={e => actionSearch(e.target.value)} />
           <SearchBody>

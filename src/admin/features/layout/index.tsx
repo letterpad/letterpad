@@ -8,6 +8,7 @@ import { deviceSize } from "../devices";
 
 export const TwoColumnLayout = ({ children, settings, router }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchMode, setSearchMode] = useState(false);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -31,10 +32,14 @@ export const TwoColumnLayout = ({ children, settings, router }) => {
 
   return (
     <>
-      {/* <Search onClose={() => {}} /> */}
-      <Layout className={` theme-light`} sidebarOpen={sidebarOpen}>
+      {searchMode && <Search onClose={() => setSearchMode(false)} />}
+      <Layout sidebarOpen={sidebarOpen}>
         <div className="sidebar">
-          <Sidebar settings={settings} router={router} />
+          <Sidebar
+            settings={settings}
+            router={router}
+            setSearchMode={() => setSearchMode(true)}
+          />
         </div>
         {sidebarOpen && <BackFade onClick={sidebarToggle} />}
         <main>
@@ -44,7 +49,7 @@ export const TwoColumnLayout = ({ children, settings, router }) => {
           <Link to="#">
             <img src={settings.site_logo.value} height="20" />
           </Link>
-          <button onClick={sidebarToggle}>
+          <button onClick={() => setSearchMode(true)}>
             <i className="fa fa-search"></i>
           </button>
           <button onClick={sidebarToggle}>

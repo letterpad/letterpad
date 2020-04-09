@@ -32,7 +32,7 @@ export const Container = styled.section<ISectionProps>`
     padding: 30px;
   }
   @media ${device.mobile} {
-    padding: 30px;
+    padding: 16px;
   }
   
   .section-header {
@@ -51,6 +51,9 @@ export const Container = styled.section<ISectionProps>`
       color: var(--color-base);
       font-size: 2.2rem;
       font-weight: 300;
+      @media ${device.mobile} {
+        font-size: 1.8rem;
+      }
     }
     .section-description {
       margin-top: 24px;
@@ -77,5 +80,9 @@ export const ActionsContainer = styled.div`
     font-weight: 500;
     letter-spacing: 1px;
     font-size: 0.8rem;
+
+    @media ${device.mobile} {
+      padding: 4px 10px;
+    }
   }
 `;

@@ -149,7 +149,7 @@ export const List = styled.div`
       display: none !important;
     }
     article {
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       display: flex;
 
       /* flex-direction: row-reverse; */

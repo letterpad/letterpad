@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { translate } from "react-i18next";
 
 import StyledInput from "../../components/input";
-import StyledTitleHeader from "../../components/title-header";
+import { translate } from "react-i18next";
 
 class PasswordChange extends Component<any, any> {
   // static propTypes = {
@@ -18,10 +17,6 @@ class PasswordChange extends Component<any, any> {
     const { t } = this.props;
     return (
       <section>
-        <StyledTitleHeader
-          title={t("profile.password.title")}
-          subtitle={t("profile.password.tagline")}
-        />
         <StyledInput
           label={t("profile.password.label")}
           type="password"

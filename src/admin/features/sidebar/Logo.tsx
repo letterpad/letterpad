@@ -4,13 +4,14 @@ import styled from "styled-components";
 interface IProps {
   src?: string;
   siteName: string;
+  setSearchMode: () => void;
 }
-const Logo: React.FC<IProps> = ({ src, siteName }) => {
+const Logo: React.FC<IProps> = ({ src, siteName, setSearchMode }) => {
   if (src) {
     return (
       <Container className="sidebar-header">
         <img src={src} alt={siteName} />
-        <i className="fa fa-search" />
+        <i className="fa fa-search" onClick={setSearchMode} />
       </Container>
     );
   }
@@ -26,7 +27,7 @@ const Container = styled.div`
   height: 88px;
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: space-between;
   padding: 40px;
   border-bottom: 1px solid var(--color-border);
   img {

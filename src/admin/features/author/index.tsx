@@ -6,8 +6,6 @@ import Social from "./Social";
 import PasswordChange from "./PasswordChange";
 
 import StyledSection, { SectionSizes } from "../../components/section";
-
-import Tabs from "../../components/tabs";
 import apolloClient from "../../../shared/apolloClient";
 import { UPDATE_AUTHOR } from "../../../shared/queries/Mutations";
 import {
@@ -20,8 +18,14 @@ import { QUERY_AUTHOR } from "../../../shared/queries/Queries";
 import Loader from "../../components/loader";
 import utils from "../../../shared/util";
 import { IAdminRouteProps } from "../../../types/types";
+import Accordion from "../../components/accordion";
+import { translate, WithNamespaces } from "react-i18next";
 
-const Author: React.FC<IAdminRouteProps> = ({ router: { match }, author }) => {
+const Author: React.FC<IAdminRouteProps & WithNamespaces> = ({
+  t,
+  router: { match },
+  author,
+}) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [authorData, setAuthor] = useState<Author>();
   const [updatedAuthor, setUpdatedAuthor] = useState<InputAuthor>({
@@ -80,23 +84,30 @@ const Author: React.FC<IAdminRouteProps> = ({ router: { match }, author }) => {
   if (loading || !authorData) return <Loader />;
   return (
     <StyledSection title="Profile" size={SectionSizes.md}>
-      <Tabs defaultTab="basic">
-        <Basic label="basic" data={authorData} updateOption={setOption} />
-        <Social
-          label="social"
-          data={authorData.social}
-          updateOption={setOption}
-        />
-        <PasswordChange
-          label="passwordChange"
-          data={authorData}
-          updateOption={setOption}
-        />
-        <br />
-        <br />
-      </Tabs>
+      <Accordion
+        title={t("profile.basic.title")}
+        subtitle={t("profile.basic.tagline")}
+        tab="general"
+      >
+        <Basic data={authorData} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t("social.title")}
+        subtitle={t("social.tagline")}
+        tab="social"
+      >
+        <Social data={authorData.social} updateOption={setOption} />
+      </Accordion>
+
+      <Accordion
+        title={t("profile.password.title")}
+        subtitle={t("profile.password.tagline")}
+        tab="passwordChange"
+      >
+        <PasswordChange data={authorData} updateOption={setOption} />
+      </Accordion>
     </StyledSection>
   );
 };
 
-export default React.memo(Author);
+export default React.memo(translate("translations")(Author));

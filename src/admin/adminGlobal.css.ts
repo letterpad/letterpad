@@ -22,7 +22,35 @@ html {
 
 body {
 	margin: 0;
+    background: var(--bg-base);
+    color: var(--color-base);
 }
+
+
+a {
+    color: var(--color-base);
+    transition: all 0.125s cubic-bezier(0.3, 0.1, 0.58, 1);
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    text-decoration: none;
+    outline: none;
+}
+a:hover {
+    color: var(--link-hover);
+}
+
+::-webkit-input-placeholder {
+    color: var(--color-muted) !important;
+    font-weight: 300;
+}
+
+hr {
+    border-top: 1px solid var(--color-border);
+}
+
 article,
 aside,
 footer,

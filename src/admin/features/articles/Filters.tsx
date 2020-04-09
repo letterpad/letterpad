@@ -4,6 +4,7 @@ import { QUERY_TAXONOMIES } from "../../../shared/queries/Queries";
 import StyledSelect from "../../components/select";
 import { TaxonomyType } from "../../../__generated__/gqlTypes";
 import apolloClient from "../../../shared/apolloClient";
+import { device } from "../devices";
 import styled from "styled-components";
 import { translate } from "react-i18next";
 
@@ -112,4 +113,10 @@ export default translate("translations")(Filters);
 const Container = styled.div`
   display: flex;
   margin-bottom: 40px;
+  min-width: 100%;
+  overflow-x: auto;
+
+  @media ${device.mobile} {
+    margin-bottom:20px;
+  }
 `;

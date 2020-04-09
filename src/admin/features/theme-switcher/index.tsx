@@ -16,7 +16,7 @@ const ThemeSwitch = () => {
   const [theme, setTheme] = useState(localStorage.theme || "theme-light");
 
   useEffect(() => {
-    switchTheme(setTheme);
+    switchTheme(setTheme, theme);
   }, []);
 
   return (

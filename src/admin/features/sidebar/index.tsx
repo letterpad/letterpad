@@ -14,6 +14,7 @@ import apolloClient from "../../../shared/apolloClient";
 interface IProps {
   settings: TypeSettings;
   router: RouteComponentProps;
+  setSearchMode: () => void;
 }
 
 let MEMO_STATS;
@@ -46,6 +47,7 @@ const Sidebar: React.FC<IProps> = props => {
         <Logo
           src={settings.site_logo.value}
           siteName={settings.site_title.value}
+          setSearchMode={props.setSearchMode}
         />
         <Menu settings={settings} router={router} stats={stats} />
       </div>

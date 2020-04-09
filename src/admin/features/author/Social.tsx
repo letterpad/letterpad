@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { translate } from "react-i18next";
 
 import StyledInput from "../../components/input";
-import StyledTitleHeader from "../../components/title-header";
+import { translate } from "react-i18next";
 
 class Social extends Component<any, any> {
   static defaultProps = {
@@ -29,10 +28,6 @@ class Social extends Component<any, any> {
     const { t } = this.props;
     return (
       <section>
-        <StyledTitleHeader
-          title={t("social.title")}
-          subtitle={t("social.tagline")}
-        />
         <div>
           <StyledInput
             label="Twitter"

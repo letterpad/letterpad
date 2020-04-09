@@ -12,8 +12,6 @@ import Navigation from "./Navigation";
 import Optional from "./Optional";
 import { RouteComponentProps } from "react-router";
 import Social from "./Social";
-import StyledTitleHeader from "../../components/title-header";
-import Tabs from "../../components/tabs";
 import Themes from "./Themes";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 import apolloClient from "../../../shared/apolloClient";

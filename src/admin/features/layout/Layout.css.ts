@@ -1,40 +1,10 @@
 import { device } from "./../devices";
 import styled from "styled-components";
 
-const defaultStyles = `
-    background: var(--bg-base);
-    color: var(--color-base);
-
-    a {
-        color: var(--color-base);
-        transition: all 0.125s cubic-bezier(0.3, 0.1, 0.58, 1);
-        text-decoration: none;
-    }
-    
-    a:hover,
-    a:focus {
-        text-decoration: none;
-        outline: none;
-    }
-    a:hover {
-        color: var(--link-hover);
-    }
-
-    ::-webkit-input-placeholder {
-        color: var(--color-muted) !important;
-        font-weight: 300;
-    }
-
-    
-    hr {
-        border-top: 1px solid var(--color-border);
-    }
-`;
-
 export const Layout = styled.div<any>`
   display: flex;
   flex-direction: row;
-  ${defaultStyles}
+
   main {
     margin-left: 290px;
     z-index: 1;
@@ -49,6 +19,7 @@ export const Layout = styled.div<any>`
   .sidebar {
     z-index: 3;
     transition: 0.2s cubic-bezier(0.075, 0.82, 0.165, 1) transform;
+    position: absolute;
   }
 
   @media ${device.tablet} {
