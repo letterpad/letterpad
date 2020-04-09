@@ -3,6 +3,7 @@ import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import StyledSection, { SectionSizes } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 
+import Accordion from "../../components/accordion";
 import Css from "./Css";
 import General from "./General";
 import ImagesCdn from "./ImagesCdn";
@@ -30,9 +31,7 @@ type TypeUpdatedOptions = { [option in keyof typeof SettingOptions]?: string };
 type TypeAPIUpdatedOptions = { option: string; value: string };
 
 const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
-  const urlParams = new URLSearchParams(router.history.location.search);
   const [updatedOptions, setUpdatedOptions] = useState<TypeUpdatedOptions>({});
-  const [selectedTab] = useState<string>(urlParams.get("tab") || "general");
 
   useEffect(() => {
     if (Object.keys(updatedOptions).length > 0) {
@@ -64,31 +63,56 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
   };
 
   return (
-    <StyledSection
-      title="Sitewide Settings"
-      subtitle="Here you can configure your overall site."
-      size={SectionSizes.md}
-    >
-      <Tabs defaultTab="general">
-        <StyledTitleHeader
-          title={t(`settings.${selectedTab}.title`)}
-          subtitle={t(`settings.${selectedTab}.tagline`)}
-        />
-
-        <General label="general" data={settings} updateOption={setOption} />
-        <Social label="social" data={settings} updateOption={setOption} />
-        <Optional label="optional" data={settings} updateOption={setOption} />
-        <ImagesCdn
-          label="cloudinary"
-          data={settings}
-          updateOption={setOption}
-        />
-        <Themes label="themes" data={settings} updateOption={setOption} />
-        <Css label="styling" data={settings} updateOption={setOption} />
-        <Messages label="messages" data={settings} updateOption={setOption} />
-        <br />
-        <br />
-      </Tabs>
+    <StyledSection title="Sitewide Settings" size={SectionSizes.md}>
+      <Accordion
+        title={t(`settings.general.title`)}
+        subtitle={t(`settings.general.tagline`)}
+        tab="general"
+      >
+        <General data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.social.title`)}
+        subtitle={t(`settings.social.tagline`)}
+        tab="social"
+      >
+        <Social data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.optional.title`)}
+        subtitle={t(`settings.optional.tagline`)}
+        tab="optional"
+      >
+        <Optional data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.cloudinary.title`)}
+        subtitle={t(`settings.cloudinary.tagline`)}
+        tab="cloudinary"
+      >
+        <ImagesCdn data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.themes.title`)}
+        subtitle={t(`settings.themes.tagline`)}
+        tab="themes"
+      >
+        <Themes data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.styling.title`)}
+        subtitle={t(`settings.styling.tagline`)}
+        tab="styling"
+      >
+        <Css data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.messages.title`)}
+        subtitle={t(`settings.messages.tagline`)}
+        tab="messages"
+      >
+        <Messages data={settings} updateOption={setOption} />
+      </Accordion>
     </StyledSection>
   );
 };

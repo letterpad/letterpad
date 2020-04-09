@@ -10,7 +10,6 @@ import utils from "../../../shared/util";
 interface IThemesProps {
   updateOption: (option: SettingOptions, value: string) => void;
   data: { [option in SettingOptions]: Setting };
-  label: string;
 }
 
 const Themes: React.FC<IThemesProps> = ({ updateOption }) => {

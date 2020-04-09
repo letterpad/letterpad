@@ -2,9 +2,10 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   label {
-    color: var(--base-shade-3);
-    font-weight: 600;
-    font-size: 13px;
+    opacity: 0.6;
+    font-weight: 500;
+    font-size: 0.7rem;
+    text-transform: uppercase;
     display: inline-block;
     max-width: 100%;
     margin-bottom: 5px;

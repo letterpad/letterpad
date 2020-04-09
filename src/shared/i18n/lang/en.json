@@ -121,7 +121,7 @@
     "settings.cdn.cloudinary_key.placeholder": "Enter Cloudinary key",
     "settings.cdn.cloudinary_secret": "Cloudinary secret",
     "settings.cdn.cloudinary_secret.placeholder": "Enter Cloudinary secret",
-    "settings.cloudinary.tagline": "Enter cloudinary credentials to take advantage of CDN. Registera free raccount in cloudinary.com. All the below details can be found from the dashboard",
+    "settings.cloudinary.tagline": "Use cloudinary to make your images load faster",
     "settings.cloudinary.title": "Cloudinary Settings",
     "settings.styling.tagline": "Here you can write additional css to customize the theme.",
     "settings.styling.title": "Custom",

@@ -14,7 +14,6 @@ const host = config.ROOT_URL + config.BASE_NAME;
 interface IGeneralProps extends WithNamespaces {
   data: { [option in SettingOptions]: Setting };
   updateOption: (option: SettingOptions, value: string) => void;
-  label: string;
 }
 
 const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
@@ -160,7 +159,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
                   updateLogo("");
                 }}
               >
-                <i className="material-icons danger">delete</i>
+                <i className="material-icons danger">delete_outline</i>
               </a>
             </div>
           )}
@@ -175,7 +174,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
       </ImageWrapper>
       <ImageWrapper>
         <label className="custom-label">Upload Favicon</label>
-        <div className="logo-wrapper">
+        <div className="logo-wrapper favicon">
           {!site_favicon ? (
             <a
               href="#"
@@ -190,7 +189,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
             </a>
           ) : (
             <div className="favicon">
-              <img width="100" alt="" src={site_favicon} />
+              <img width="50" alt="" src={site_favicon} />
               <a
                 href="#"
                 onClick={e => {
@@ -198,7 +197,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
                   updateFavicon("");
                 }}
               >
-                <i className="material-icons danger">delete</i>
+                <i className="material-icons danger">delete_outline</i>
               </a>
             </div>
           )}
@@ -236,7 +235,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
                   updateBanner({ src: "", width: 0, height: 0 });
                 }}
               >
-                <i className="material-icons danger">delete</i>
+                <i className="material-icons danger">delete_outline</i>
               </a>
             </div>
           )}
@@ -293,10 +292,49 @@ function getLanguageOptions(locale: string) {
 const ImageWrapper = styled.div`
   margin-top: 15px;
   margin-bottom: 15px;
+
+  .logo-wrapper {
+    height: 100px;
+    width: 100px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    position: relative;
+    background: var(--color-base);
+    a {
+      left: calc(100% - 20px);
+      top: 2px;
+      position: absolute;
+      i {
+        font-size: 1.6rem !important;
+      }
+    }
+
+    &.favicon {
+      height: 50px;
+      width: 50px;
+    }
+  }
+  .banner-wrapper {
+    height: 150px;
+    width: 250px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    position: relative;
+    a {
+      left: calc(100% - 29px);
+      top: 6px;
+      position: absolute;
+      i {
+        font-size: 2rem !important;
+      }
+    }
+  }
+
   .logo-image,
   .banner-image {
     display: flex;
     align-items: center;
+    height: 100%;
   }
   label {
     color: var(--base-shade-3);

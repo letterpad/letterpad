@@ -25,6 +25,12 @@ const Wrapper = styled.article`
     font-size: 13px;
   }
   .theme-thumbnail {
+    position: relative;
+    min-height: 160px;
+    .status {
+      position: absolute;
+    }
+
     .theme-image {
       height: 180px;
       object-fit: contain;

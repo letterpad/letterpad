@@ -1,13 +1,12 @@
-import React from "react";
-import { translate, WithNamespaces } from "react-i18next";
+import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
+import { WithNamespaces, translate } from "react-i18next";
 
 import Input from "../../components/input";
-import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
+import React from "react";
 
 interface IMessagesProps extends WithNamespaces {
   updateOption: (option: SettingOptions, value: string) => void;
   data: { [option in SettingOptions]: Setting };
-  label: string;
 }
 const Messages: React.FC<IMessagesProps> = ({ t, updateOption, data }) => {
   return (
