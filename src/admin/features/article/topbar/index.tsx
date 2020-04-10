@@ -17,6 +17,7 @@ interface ITopbarProps {
 }
 
 export class TopBar extends Component<ITopbarProps, any> {
+  prevPath = "/admin/" + this.props.post.type + "s";
   state = {
     post: this.props.post,
     settingsOpen: false,
@@ -88,7 +89,7 @@ export class TopBar extends Component<ITopbarProps, any> {
     e.preventDefault();
     PostActions.setDraft({ status: PostStatusOptions.Trash });
     await PostActions.updatePost();
-    this.props.router.history.push("/admin/posts");
+    this.props.router.history.push(this.prevPath);
   };
 
   slideSettingsDrawer = (flag?: boolean) => {
@@ -101,7 +102,7 @@ export class TopBar extends Component<ITopbarProps, any> {
   render() {
     const goBack = e => {
       e.preventDefault();
-      this.props.router.history.push("/admin/posts");
+      this.props.router.history.push(this.prevPath);
     };
 
     return (

@@ -18,6 +18,7 @@ const Logo: React.FC<IProps> = ({ src, siteName, setSearchMode }) => {
   return (
     <Container>
       <h1>{siteName}</h1>
+      <i className="fa fa-search" onClick={setSearchMode} />
     </Container>
   );
 };
@@ -30,6 +31,10 @@ const Container = styled.div`
   justify-content: space-between;
   padding: 40px;
   border-bottom: 1px solid var(--color-border);
+  h1 {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+  }
   img {
     width: 36px;
     background: #fff;

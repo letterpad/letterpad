@@ -67,7 +67,7 @@ function normalizePages(pages) {
   return pages.map(item => {
     return {
       type: item.type,
-      slug: item.slug.replace("/page/", ""),
+      slug: item.slug.replace("page/", ""),
       name: item.title,
       originalName: item.title,
     };
@@ -78,7 +78,7 @@ function normalizeCategories(categories) {
   return categories.map(item => {
     return {
       type: "category",
-      slug: item.slug.replace("/category/", ""),
+      slug: item.slug.replace("category/", ""),
       name: item.name,
       originalName: item.name,
     };

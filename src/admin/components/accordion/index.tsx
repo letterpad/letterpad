@@ -38,6 +38,10 @@ function Accordion(props) {
     }
   }
 
+  function resize() {
+    setHeightState(active ? "0px" : `${content.current.scrollHeight}px`);
+  }
+
   return (
     <Container className="accordion__section">
       <AccordionHead active={active} onClick={toggleAccordion}>

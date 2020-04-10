@@ -20,7 +20,7 @@ const applyConfirmStyle = () => `
       margin-left: 0px;
     }
 `;
-const StyledModal = styled.div<{ backDropColor: string }>`
+const StyledModal = styled.div<{ backDropColor: string; confirm?: boolean }>`
   opacity: 0;
   display: block;
   height: 100%;
@@ -95,7 +95,7 @@ const StyledModal = styled.div<{ backDropColor: string }>`
     left: 0px;
     width: 100vw;
     height: 100vh;
-    background: ${p => p.backDropColor || "#000"};
+    background: ${p => p.backDropColor || "var(--bg-base)"};
     opacity: 0.94;
   }
 `;

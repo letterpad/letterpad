@@ -32,7 +32,7 @@ export default {
 
       return taxonomies.map(item => {
         const type = item.type === "post_category" ? "category" : "tag";
-        item.slug = "/" + type + "/" + item.slug;
+        item.slug = type + "/" + item.slug;
         // promise
         const posts = item.getPosts();
         item.posts = {

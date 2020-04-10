@@ -299,7 +299,6 @@ const ImageWrapper = styled.div`
     overflow: hidden;
     border: 1px solid var(--color-border);
     position: relative;
-    background: var(--color-base);
     a {
       left: calc(100% - 20px);
       top: 2px;

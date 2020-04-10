@@ -57,7 +57,7 @@ const EditMediaInfo = styled.div`
         border: none;
         i {
           font-size: 1.6rem;
-          color: #fff;
+          color: color: var(--color-base);
         }
       }
       button:first-child {
