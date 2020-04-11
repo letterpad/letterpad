@@ -11,7 +11,7 @@ interface IOptionalProps extends WithNamespaces {
   updateOption: (option: SettingOptions, value: string) => void;
   label?: string;
 }
-const Optional: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
+const Integrations: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
   const [displayAuthor, setDisplayAuthor] = useState<boolean>(
     JSON.parse(data.displayAuthorInfo.value),
   );
@@ -26,23 +26,42 @@ const Optional: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
 
   return (
     <div>
-      <div className="form-group">
-        <Container className="switch-block">
-          <label className="custom-label">
-            {t("settings.additional.displayAuthor")}
-          </label>
-          &nbsp;&nbsp;&nbsp;
-          <label className="switch">
-            <input
-              type="checkbox"
-              onChange={changeAuthorDisplay}
-              checked={displayAuthor}
-            />
-            <span className="slider round" />
-          </label>
-        </Container>
-      </div>
+      <p>
+        <b>Cloudinary - </b>Enter cloudinary credentials to take advantage of
+        their CDN. You can register a free account at cloudinary.com All the
+        below details can be found from the dashboard.
+      </p>
+      <Input
+        label={t("settings.cdn.cloud_name")}
+        defaultValue={data.cloudinary_name.value || ""}
+        type="text"
+        placeholder={t("settings.cdn.cloud_name.placeholder")}
+        onBlur={e =>
+          updateOption(SettingOptions.CloudinaryName, e.target.value)
+        }
+      />
+      <Input
+        label={t("settings.cdn.cloudinary_key")}
+        defaultValue={data.cloudinary_key.value || ""}
+        type="text"
+        placeholder={t("settings.cdn.cloudinary_key.placeholder")}
+        onBlur={e => updateOption(SettingOptions.CloudinaryKey, e.target.value)}
+      />
+      <Input
+        label={t("settings.cdn.cloudinary_secret")}
+        defaultValue={data.cloudinary_secret.value || ""}
+        type="text"
+        placeholder={t("settings.cdn.cloudinary_secret.placeholder")}
+        onBlur={e =>
+          updateOption(SettingOptions.CloudinarySecret, e.target.value)
+        }
+      />
       <br />
+      <p>
+        <b>Disqus - </b>Use Disqus for to enable comments on your website.
+        Anyone with a disqus account can comment and this service is free to
+        use.
+      </p>
       <Input
         label={t("settings.additional.disqus")}
         defaultValue={data.disqus_id.value || ""}
@@ -51,12 +70,16 @@ const Optional: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
         onBlur={e => updateOption(SettingOptions.DisqusId, e.target.value)}
       />
       <br />
+      <p>
+        <b>Mailchimp & Email Subscriptions - </b>Integrate with mailchimp or
+        other email subscription providers. Enter the subscription HTML below.
+      </p>
       <SubscribeBlock>
         <TextArea
           label={t("settings.additional.subscribe")}
           defaultValue={data.subscribe_embed.value || ""}
           placeholder={t("settings.additional.subscribe.placeholder")}
-          rows={15}
+          rows={5}
           onBlur={e =>
             updateOption(SettingOptions.SubscribeEmbed, e.target.value)
           }
@@ -65,7 +88,7 @@ const Optional: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
           Optional: You may use{" "}
           <u>
             <a href="https://tinyletter.com/" target="_blank">
-              TinyLetter
+              TinyLetter{" "}
             </a>
           </u>
           to create a free embedable subscription form and send newsletters to
@@ -76,7 +99,7 @@ const Optional: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
   );
 };
 
-export default translate("translations")(Optional);
+export default translate("translations")(Integrations);
 
 const SubscribeBlock = styled.div`
   textarea {

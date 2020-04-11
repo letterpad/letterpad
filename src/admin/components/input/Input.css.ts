@@ -26,29 +26,15 @@ export const Container = styled.div`
     line-height: 1.42857143;
     height: 36px;
     &::-webkit-input-placeholder {
-      color: var(--base-shade-3);
+      color: var(--color-base);
+      opacity: 0.6;
     }
     color: var(--color-base);
-
-    &::-webkit-input-placeholder {
-      /* Chrome/Opera/Safari */
-      color: pink;
-    }
-    &::-moz-placeholder {
-      /* Firefox 19+ */
-      color: pink;
-    }
-    &:-ms-input-placeholder {
-      /* IE 10+ */
-      color: pink;
-    }
-    &:-moz-placeholder {
-      /* Firefox 18- */
-      color: pink;
-    }
   }
   textarea {
     height: auto;
+    border: 1px solid var(--color-border);
+    padding: 12px;
   }
   margin-bottom: 30px;
   input.pointer,

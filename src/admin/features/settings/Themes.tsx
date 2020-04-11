@@ -5,6 +5,8 @@ import { IThemeConfig } from "../../../types/types";
 import StyledGrid from "../../components/grid";
 import ThemeItem from "./themes/ThemeItem";
 import config from "../../../config";
+import { device } from "../devices";
+import styled from "styled-components";
 import utils from "../../../shared/util";
 
 interface IThemesProps {
@@ -39,7 +41,7 @@ const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
 
   return (
     <div>
-      <StyledGrid columns="repeat(auto-fit,minmax(250px,1fr))">
+      <Container>
         {themes.map((theme, idx) => (
           <ThemeItem
             key={idx}
@@ -48,9 +50,24 @@ const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
             name={theme.name}
           />
         ))}
-      </StyledGrid>
+      </Container>
     </div>
   );
 };
 
 export default Themes;
+
+const Container = styled.div`
+  display: grid;
+  height: auto;
+  grid-auto-flow: row;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 15px;
+
+  @media ${device.laptop} {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media ${device.tablet} {
+    grid-template-columns: 1fr;
+  }
+`;

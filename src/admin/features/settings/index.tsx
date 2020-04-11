@@ -4,12 +4,10 @@ import StyledSection, { SectionSizes } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 
 import Accordion from "../../components/accordion";
-import Css from "./Css";
+import Appearance from "./Appearance";
 import General from "./General";
-import ImagesCdn from "./ImagesCdn";
-import Messages from "./Messages";
+import Integrations from "./Integrations";
 import Navigation from "./Navigation";
-import Optional from "./Optional";
 import { RouteComponentProps } from "react-router";
 import Social from "./Social";
 import Themes from "./Themes";
@@ -71,6 +69,13 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
         <General data={settings} updateOption={setOption} />
       </Accordion>
       <Accordion
+        title={t(`settings.appearance.title`)}
+        subtitle={t(`settings.appearance.tagline`)}
+        tab="appearance"
+      >
+        <Appearance data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
         title={t(`settings.navigation.title`)}
         subtitle={t(`settings.navigation.tagline`)}
         tab="navigation"
@@ -85,18 +90,11 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
         <Social data={settings} updateOption={setOption} />
       </Accordion>
       <Accordion
-        title={t(`settings.optional.title`)}
-        subtitle={t(`settings.optional.tagline`)}
-        tab="optional"
+        title={t(`settings.integrations.title`)}
+        subtitle={t(`settings.integrations.tagline`)}
+        tab="integrations"
       >
-        <Optional data={settings} updateOption={setOption} />
-      </Accordion>
-      <Accordion
-        title={t(`settings.cloudinary.title`)}
-        subtitle={t(`settings.cloudinary.tagline`)}
-        tab="cloudinary"
-      >
-        <ImagesCdn data={settings} updateOption={setOption} />
+        <Integrations data={settings} updateOption={setOption} />
       </Accordion>
       <Accordion
         title={t(`settings.themes.title`)}
@@ -105,20 +103,14 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
       >
         <Themes data={settings} updateOption={setOption} />
       </Accordion>
-      <Accordion
-        title={t(`settings.styling.title`)}
-        subtitle={t(`settings.styling.tagline`)}
-        tab="styling"
-      >
-        <Css data={settings} updateOption={setOption} />
-      </Accordion>
-      <Accordion
+
+      {/* <Accordion
         title={t(`settings.messages.title`)}
         subtitle={t(`settings.messages.tagline`)}
         tab="messages"
       >
         <Messages data={settings} updateOption={setOption} />
-      </Accordion>
+      </Accordion> */}
     </StyledSection>
   );
 };

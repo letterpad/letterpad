@@ -104,10 +104,12 @@ export const Container = styled.div`
   }
   .switch-label {
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.8rem;
-    color: var(--color-text-primary)-light;
     transition: 0.2s color linear;
+    opacity: 0.6;
+    font-weight: 400;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+}
   }
   &.on .switch-on-text {
     color: var(--color-text-secondary);
