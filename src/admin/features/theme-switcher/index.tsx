@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { switchTheme } from "../../utility";
 
+if (["dark", "light"].includes(localStorage.theme)) {
+  delete localStorage.theme;
+}
 const ThemeContainer = styled.div`
   padding: 4px 40px;
   font-size: 0.9rem;

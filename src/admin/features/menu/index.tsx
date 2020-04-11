@@ -22,7 +22,7 @@ class Menu extends Component<IProps, any> {
 
   render() {
     const { t, router, stats } = this.props;
-    const selected = router.match.path;
+    const selected = router.location.pathname;
     return (
       <StyledMenu className="custom-menu">
         {buildMenu(DATA, selected, this.permissions, t, stats)}
@@ -64,7 +64,6 @@ const buildMenu = (
                   {item.slug === "posts" && stats.stats?.posts?.published}
                   {item.slug === "pages" && stats.stats?.pages?.published}
                   {item.slug === "tags" && stats.stats?.tags}
-                  {item.slug === "categories" && stats.stats?.categories}
                   {item.slug === "media" && stats.stats?.media}
                 </span>
               </StyledLink>

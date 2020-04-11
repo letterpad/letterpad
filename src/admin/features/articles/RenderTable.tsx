@@ -10,7 +10,7 @@ const columns = [
   { label: "Published", className: "published" },
   { label: "Author", className: "author" },
   { label: "Status", className: "status" },
-  { label: "Categories", className: "categories" },
+  { label: "Tags", className: "tags" },
 ];
 const RenderTable = ({ data, setSelection }) => {
   return (
@@ -61,8 +61,8 @@ const RenderTable = ({ data, setSelection }) => {
             <div className={"upper status"}>
               <div className={post.status}></div>
             </div>
-            <div className="small categories">
-              {post.categories.map(item => item.name).join(", ")}
+            <div className="small tags">
+              {post.tags.map(item => item.name).join(", ")}
             </div>
           </article>
         );

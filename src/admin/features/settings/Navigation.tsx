@@ -126,7 +126,6 @@ const SortableList = SortableContainer(
 function normalizeSlugs(menu) {
   return menu.map((item, idx) => {
     item.slug = item.slug
-      .replace("/category/", "")
       .replace("/tag/", "")
       .replace("/posts/", "")
       .replace("/page/", "");

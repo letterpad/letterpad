@@ -64,12 +64,9 @@ function DataConnector(
         };
 
         if (path === config.BASE_NAME + "/") {
-          filters.categorySlug = "/";
+          filters.tagSlug = "/";
         }
 
-        if (params.category) {
-          filters.categorySlug = params.category;
-        }
         if (params.tag) {
           filters.tagSlug = params.tag;
         }

@@ -18,16 +18,16 @@ import config from "../../../../config";
 import { useQuery } from "react-apollo";
 
 function useNavigationData() {
-  const [categories, setCategories] = useState<Taxonomy[]>([]);
+  const [tags, setTags] = useState<Taxonomy[]>([]);
   const [pages, setPages] = useState<Post[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const categoriesData = useQuery<TaxonomiesQuery, TaxonomiesQueryVariables>(
+  const tagsData = useQuery<TaxonomiesQuery, TaxonomiesQueryVariables>(
     QUERY_TAXONOMIES,
     {
       variables: {
         filters: {
-          type: TaxonomyType.PostCategory,
+          type: TaxonomyType.PostTag,
         },
       },
       fetchPolicy: "network-only",
@@ -41,16 +41,16 @@ function useNavigationData() {
   });
 
   useEffect(() => {
-    if (categoriesData.data && categoriesData.data.taxonomies.length > 0) {
-      setCategories(normalizeCategories(categoriesData.data.taxonomies));
+    if (tagsData.data && tagsData.data.taxonomies.length > 0) {
+      setTags(normalizeTags(tagsData.data.taxonomies));
     }
     if (pagesData.data && pagesData.data.posts.rows.length > 0) {
       setPages(normalizePages(pagesData.data.posts.rows));
     }
-    if (!categoriesData.loading && !pagesData.loading) {
+    if (!tagsData.loading && !pagesData.loading) {
       setLoading(false);
     }
-  }, [categoriesData.loading, pagesData.loading]);
+  }, [tagsData.loading, pagesData.loading]);
 
   const rss = {
     type: "rss",
@@ -58,7 +58,7 @@ function useNavigationData() {
     name: "Rss Feed of your site",
     originalName: "Rss",
   };
-  return { loading, data: addIds([...pages, ...categories, { ...rss }]) };
+  return { loading, data: addIds([...pages, ...tags, { ...rss }]) };
 }
 
 export { useNavigationData };
@@ -74,11 +74,11 @@ function normalizePages(pages) {
   });
 }
 
-function normalizeCategories(categories) {
-  return categories.map(item => {
+function normalizeTags(tags) {
+  return tags.map(item => {
     return {
-      type: "category",
-      slug: item.slug.replace("category/", ""),
+      type: "tag",
+      slug: item.slug.replace("tag/", ""),
       name: item.name,
       originalName: item.name,
     };

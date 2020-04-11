@@ -14,14 +14,18 @@ export const MenuItem = styled.li`
 
 export const StyledLink = styled(Link)`
   display: block;
-  &.active {
+  &.active:before,
+  &:hover:before {
+    content: ".";
+    position: absolute;
+    margin-left: -16px;
+    font-size: 2rem;
+    line-height: 0rem;
+  }
+  /* &:hover {
     font-weight: 600;
     color: var(--color-hover-primary);
-  }
-  &:hover {
-    font-weight: 600;
-    color: var(--color-hover-primary);
-  }
+  } */
   .menu-icon {
     margin-right: 8px;
     color: var(--color-text-3) !important;

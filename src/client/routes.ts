@@ -63,7 +63,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
         },
         Layout,
       ),
-      path: ["/posts/:category", "/category/:category", "/tag/:tag"],
+      path: ["/posts/:tag", "/tag/:tag"],
     },
     {
       exact: true,

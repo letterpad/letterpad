@@ -110,8 +110,8 @@ function isValidURL(url: string) {
 }
 
 function getToolTip(item) {
-  if (item.type === "category") {
-    return "Displays all posts having the category - " + item.originalName;
+  if (item.type === "tag") {
+    return "Displays all posts having the tag - " + item.originalName;
   }
   if (item.type === "page") {
     return "Displays page - " + item.originalName;

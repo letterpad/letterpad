@@ -12,7 +12,7 @@ function getMenuWithSanitizedSlug(menu) {
     if (item.type === "page") {
       to = "/page/" + item.slug;
     } else if (item.type === "custom") {
-      to = item.slug;
+      to = "/" + item.slug;
     }
     item.slug = to;
     return item;

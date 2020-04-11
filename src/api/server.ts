@@ -103,6 +103,6 @@ export default async (app: Express) => {
     }),
   );
   app.use(config.BASE_NAME + "/upload", upload);
-  app.get(config.BASE_NAME + config.rssPath, RssFeed);
+  app.get(config.BASE_NAME + "/" + config.rssPath, RssFeed);
   server.applyMiddleware({ app, path: pathname });
 };

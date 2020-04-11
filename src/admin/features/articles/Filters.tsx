@@ -20,19 +20,14 @@ const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
         query: QUERY_TAXONOMIES,
         variables: { filters: { type: TaxonomyType.PostTag } },
       });
-      const categories = await apolloClient(true).query({
-        query: QUERY_TAXONOMIES,
-        variables: { type: TaxonomyType.PostCategory },
-      });
       setTaxonomies({
         tags: tags.data.taxonomies,
-        categories: categories.data.taxonomies,
       });
     };
     fetchData();
   }, []);
 
-  const { tags, categories } = taxonomies;
+  const { tags } = taxonomies;
   return (
     <Container>
       <StyledSelect
@@ -76,21 +71,6 @@ const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
 
       <StyledSelect
         bold
-        onChange={status => changeFilter("category", status)}
-        selected={query.get("category")}
-        options={[
-          {
-            name: "Select Category",
-            value: null,
-          },
-          ...categories.map(category => {
-            return { name: category.name, value: category.name };
-          }),
-        ]}
-      />
-
-      <StyledSelect
-        bold
         onChange={sort => changeFilter("sortBy", sort)}
         selected={query.get("sortBy") || "newest"}
         options={[
@@ -117,6 +97,6 @@ const Container = styled.div`
   overflow-x: auto;
 
   @media ${device.mobile} {
-    margin-bottom:20px;
+    margin-bottom: 20px;
   }
 `;

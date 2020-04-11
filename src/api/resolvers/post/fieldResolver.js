@@ -10,32 +10,11 @@ export const addConditionsPlaceholder = async (root, args) => {
   };
 };
 
-export const resolveCateogoryFilter = async (root, args, { models }, err) => {
-  if (!args) return;
-  if (args.category) {
-    const { category } = args;
-    const taxCategory = await models.Taxonomy.findOne({
-      where: Sequelize.where(
-        Sequelize.fn("lower", Sequelize.col("name")),
-        Sequelize.fn("lower", category),
-      ),
-    });
-    if (!taxCategory) return null;
-    args.conditions.include.push({
-      model: models.PostTaxonomy,
-      where: { taxonomy_id: taxCategory.id },
-      require: true,
-    });
-  }
-
-  return args;
-};
-
 export const resolveMenuFilter = async (root, args, { models }) => {
   if (!args) return;
-  if (args.categorySlug) {
-    let { categorySlug } = args;
-    if (categorySlug === "/") {
+  if (args.tagSlug) {
+    let { tagSlug } = args;
+    if (tagSlug === "/") {
       // get the first menu item.
       const menuStr = await models.Setting.findOne({
         where: { option: "menu" },
@@ -43,18 +22,19 @@ export const resolveMenuFilter = async (root, args, { models }) => {
       const parsedMenu = JSON.parse(menuStr.dataValues.value);
 
       if (parsedMenu.length > 0) {
-        categorySlug = parsedMenu[0].slug;
+        tagSlug = parsedMenu[0].slug;
       }
     }
-    const taxCategory = await models.Taxonomy.findOne({
-      where: { slug: categorySlug, type: "post_category" },
+
+    const taxTag = await models.Taxonomy.findOne({
+      where: { slug: tagSlug, type: "post_tag" },
     });
 
-    if (!taxCategory) return null;
+    if (!taxTag) return null;
 
     args.conditions.include.push({
       model: models.PostTaxonomy,
-      where: { taxonomy_id: taxCategory.id },
+      where: { taxonomy_id: taxTag.id },
       require: true,
     });
   }
@@ -79,17 +59,6 @@ export const resolveTagFilter = async (root, args, { models }) => {
     });
   }
 
-  if (args.tagSlug) {
-    const taxTag = await models.Taxonomy.findOne({
-      where: { slug: args.tagSlug, type: "post_tag" },
-    });
-    if (!taxTag) return null;
-    args.conditions.include.push({
-      model: models.PostTaxonomy,
-      where: { taxonomy_id: taxTag.id },
-      require: true,
-    });
-  }
   return args;
 };
 
@@ -154,7 +123,9 @@ export const resolveOrderAndSort = async (root, args, { user }) => {
     ];
   }
   if (user && user.id) {
-    args.conditions.order = [["updatedAt", "DESC"]];
+    args.conditions.order = [
+      ["updatedAt", args.sortBy === "oldest" ? "ASC" : "DESC"],
+    ];
   }
 
   return args;
@@ -173,7 +144,7 @@ export const resolveSearchTerm = async (root, args) => {
 
 export const executePostCollectionQuery = async (root, args, { models }) => {
   if (!args) return;
-
+  console.log("object :", args.conditions);
   const result = await models.Post.findAndCountAll(args.conditions);
 
   return {

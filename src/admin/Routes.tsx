@@ -136,13 +136,6 @@ const Routes: React.FC<RouteComponentProps> = router => {
             />
             <SecuredRoute
               exact
-              path="/admin/categories"
-              type="post_category"
-              component={Taxonomy}
-              settings={settings}
-            />
-            <SecuredRoute
-              exact
               path="/admin/settings"
               component={Settings}
               settings={settings}

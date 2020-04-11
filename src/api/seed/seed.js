@@ -246,10 +246,10 @@ export async function insertMedia(models) {
 export async function insertSettings(models) {
   let menu = JSON.stringify([
     {
-      title: "Uncategorised",
-      originalName: "Uncategorised",
-      slug: "uncategorised",
-      type: "category",
+      title: "home",
+      originalName: "home",
+      slug: "home",
+      type: "tag",
     },
     {
       title: "Letterpad Typography",

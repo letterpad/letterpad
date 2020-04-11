@@ -85,7 +85,6 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
     const newTag = {
       id: 0,
       name: tag,
-      // type: this.props.for,
       slug: tag,
     };
     PostActions.addTaxonomy(newTag, this.type);
@@ -132,7 +131,7 @@ const formatTagsForBackend = (tags: Taxonomy[]) => {
   return tags.map(tag => {
     // eslint-disable-next-line no-unused-vars
     // @ts-ignore
-    const { label, value, desc, __typename, ...rest } = tag;
+    const { label, value, desc, __typename, type, posts, ...rest } = tag;
     return rest;
   });
 };

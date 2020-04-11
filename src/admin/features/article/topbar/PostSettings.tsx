@@ -73,14 +73,6 @@ const PostSettings: React.FC<IProps> = ({
             suggestions={[]}
           />
         )}
-        {post.type === PostTypes.Post && (
-          <Taxonomies
-            toggleVisibility={() => null}
-            post={post}
-            for={TaxonomyType.PostCategory}
-            suggestions={[]}
-          />
-        )}
         <FeaturedImage post={post} mediaProvider={MediaProvider.Unsplash} />
         <br />
         <Button btnSize="md" onClick={onDelete}>

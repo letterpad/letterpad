@@ -17,7 +17,8 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
   const [desc, setDesc] = useState<string>(taxonomy.desc || "");
 
   const onNameChange = value => {
-    setName(value);
+    const withOutSpace = value.replace(" ", "-");
+    setName(withOutSpace);
   };
 
   const onDescChange = value => {

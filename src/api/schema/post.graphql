@@ -24,7 +24,6 @@ enum MenuTypes {
 input PostsFilters {
   tag: String
   category: String
-  categorySlug: String
   tagSlug: String
   sortBy: PostSortBy
   status: PostStatusOptions

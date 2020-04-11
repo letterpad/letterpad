@@ -96,7 +96,7 @@ const StyledModal = styled.div<{ backDropColor: string; confirm?: boolean }>`
     width: 100vw;
     height: 100vh;
     background: ${p => p.backDropColor || "var(--bg-base)"};
-    opacity: 0.94;
+    opacity: 0.99;
   }
 `;
 export default StyledModal;

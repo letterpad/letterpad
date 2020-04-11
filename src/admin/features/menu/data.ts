@@ -41,15 +41,12 @@ const DATA: IAdminMenu[] = [
     icon: "fa-tag",
   },
   {
-    id: 4,
-    name: "menu.categories",
-    priority: 4,
-    permissions: [
-      EnumPermissions.ManageOwnPosts,
-      EnumPermissions.ManageAllPosts,
-    ],
-    slug: "categories",
-    icon: "fa-th",
+    id: 10,
+    name: "",
+    priority: 0,
+    permissions: [],
+    slug: "",
+    icon: "",
   },
   {
     id: 6,

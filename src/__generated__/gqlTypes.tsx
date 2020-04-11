@@ -361,7 +361,6 @@ export type PostFilters = {
 export type PostsFilters = {
   tag?: Maybe<Scalars["String"]>;
   category?: Maybe<Scalars["String"]>;
-  categorySlug?: Maybe<Scalars["String"]>;
   tagSlug?: Maybe<Scalars["String"]>;
   sortBy?: Maybe<PostSortBy>;
   status?: Maybe<PostStatusOptions>;

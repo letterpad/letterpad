@@ -15,8 +15,6 @@ const UpdateSlug: React.FC<IProps> = ({ slug, updatePost }) => {
     setSlug(slug);
   }, [slug]);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const postType = PostActions.getData().type;
-    if (!e.target.value.startsWith(postType + "/")) return;
     setSlug(e.target.value.trim());
     PostActions.setDraft({
       slug: e.target.value.trim(),
@@ -30,7 +28,7 @@ const UpdateSlug: React.FC<IProps> = ({ slug, updatePost }) => {
       <input
         onChange={onChange}
         placeholder="Path that will be displayed in url"
-        value={_slug}
+        value={_slug.replace("/page/", "").replace("/post/", "")}
       />
     </Container>
   );
