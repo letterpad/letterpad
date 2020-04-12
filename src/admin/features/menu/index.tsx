@@ -13,6 +13,7 @@ interface IProps extends WithNamespaces {
   settings: TypeSettings;
   router: RouteComponentProps;
   stats: StatsQuery;
+  close: () => void;
 }
 class Menu extends Component<IProps, any> {
   permissions =
@@ -21,11 +22,11 @@ class Menu extends Component<IProps, any> {
       : [];
 
   render() {
-    const { t, router, stats } = this.props;
+    const { t, router, stats, close } = this.props;
     const selected = router.location.pathname;
     return (
       <StyledMenu className="custom-menu">
-        {buildMenu(DATA, selected, this.permissions, t, stats)}
+        {buildMenu(DATA, selected, this.permissions, t, stats, close)}
       </StyledMenu>
     );
   }
@@ -37,6 +38,7 @@ const buildMenu = (
   permissions: string[],
   t,
   stats: StatsQuery,
+  close: () => void,
 ) => {
   return (
     <ul>
@@ -51,12 +53,13 @@ const buildMenu = (
         return (
           <MenuItem key={item.name}>
             {item.children && item.children.length > 0 ? (
-              buildMenu(item.children, selected, permissions, t, stats)
+              buildMenu(item.children, selected, permissions, t, stats, close)
             ) : (
               <StyledLink
                 className={isActive ? "active" : ""}
                 data-id={item.id}
                 to={slug}
+                onClick={close}
               >
                 {/* {item.icon && <i className={"menu-icon fa " + item.icon} />} */}
                 <span className="name">{t(item.name)}</span>

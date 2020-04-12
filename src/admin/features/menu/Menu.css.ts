@@ -9,7 +9,9 @@ export const StyledHeading = styled.div`
   letter-spacing: 1px;
 `;
 export const MenuItem = styled.li`
-  margin-bottom: 24px;
+  a {
+    padding: 12px 0px;
+  }
 `;
 
 export const StyledLink = styled(Link)`

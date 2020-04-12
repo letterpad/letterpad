@@ -39,6 +39,7 @@ export const TwoColumnLayout = ({ children, settings, router }) => {
             settings={settings}
             router={router}
             setSearchMode={() => setSearchMode(true)}
+            close={() => setSidebarOpen(false)}
           />
         </div>
         {sidebarOpen && <BackFade onClick={sidebarToggle} />}

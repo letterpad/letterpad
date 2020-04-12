@@ -15,6 +15,7 @@ interface IProps {
   settings: TypeSettings;
   router: RouteComponentProps;
   setSearchMode: () => void;
+  close: () => void;
 }
 
 let MEMO_STATS;
@@ -49,7 +50,12 @@ const Sidebar: React.FC<IProps> = props => {
           siteName={settings.site_title.value}
           setSearchMode={props.setSearchMode}
         />
-        <Menu settings={settings} router={router} stats={stats} />
+        <Menu
+          settings={settings}
+          router={router}
+          stats={stats}
+          close={props.close}
+        />
       </div>
       <ThemeSwitch />
       <div className="view-site">

@@ -115,7 +115,7 @@ export const List = styled.div`
       .cover-image,
       .author,
       .status,
-      .categories,
+      .tags,
       .published {
         display: none;
       }
@@ -128,7 +128,7 @@ export const List = styled.div`
     @media (min-width: 767px) and (max-width: 1300px) {
       grid-template-columns: minmax(300px, 1fr) auto 100px 100px;
       .cover-image,
-      .categories {
+      .tags {
         display: none;
       }
     }
