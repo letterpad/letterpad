@@ -76,8 +76,9 @@ export default async (app: Express) => {
   app.get(config.BASE_NAME + "/" + config.rssPath, RssFeed);
 
   if (USE_GRAPHQL_JIT) {
+    const graphqlEndpoint = config.BASE_NAME + "/graphql";
     app.use(
-      "/graphql",
+      graphqlEndpoint,
       graphqlMiddleware({
         getContext: context,
         onBeforeComplete({ operationKind }) {
@@ -88,7 +89,10 @@ export default async (app: Express) => {
         },
       }),
     );
-    app.use("/graphiql", graphiqlMiddleware({ graphqlEndpoint: "/graphql" }));
+    app.use(
+      config.BASE_NAME + "/graphiql",
+      graphiqlMiddleware({ graphqlEndpoint }),
+    );
   } else {
     const server = getApolloServer();
     server.applyMiddleware({ app, path: pathname });
