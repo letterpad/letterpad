@@ -329,8 +329,6 @@ export type OptionInputType = {
   social_facebook?: Maybe<Scalars["String"]>;
   social_instagram?: Maybe<Scalars["String"]>;
   social_github?: Maybe<Scalars["String"]>;
-  text_notfound?: Maybe<Scalars["String"]>;
-  text_posts_empty?: Maybe<Scalars["String"]>;
   displayAuthorInfo?: Maybe<Scalars["String"]>;
   cloudinary_key?: Maybe<Scalars["String"]>;
   cloudinary_name?: Maybe<Scalars["String"]>;
@@ -578,8 +576,6 @@ export type Setting = {
   social_facebook: Scalars["String"];
   social_instagram: Scalars["String"];
   social_github: Scalars["String"];
-  text_notfound: Scalars["String"];
-  text_posts_empty: Scalars["String"];
   displayAuthorInfo: Scalars["String"];
   cloudinary_key: Scalars["String"];
   cloudinary_name: Scalars["String"];
@@ -771,8 +767,6 @@ export type UpdateOptionsMutation = { __typename?: "Mutation" } & {
     | "social_facebook"
     | "social_instagram"
     | "social_github"
-    | "text_notfound"
-    | "text_posts_empty"
     | "displayAuthorInfo"
     | "cloudinary_key"
     | "cloudinary_name"
@@ -1137,8 +1131,6 @@ export type SettingsQuery = { __typename?: "Query" } & {
     | "social_facebook"
     | "social_instagram"
     | "social_github"
-    | "text_notfound"
-    | "text_posts_empty"
     | "displayAuthorInfo"
     | "cloudinary_key"
     | "cloudinary_name"

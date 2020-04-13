@@ -85,8 +85,6 @@ export type UpdateSettingOption =
   | { social_facebook: string }
   | { social_instagram: string }
   | { social_github: string }
-  | { text_notfound: string }
-  | { text_posts_empty: string }
   | { displayAuthorInfo: string }
   | { cloudinary_key: string }
   | { cloudinary_name: string }
