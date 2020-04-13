@@ -1,7 +1,7 @@
 import * as helperProps from "./helperProps";
 
 import { EnumContentType } from "./types";
-import { IRoutes } from "./ClientApp";
+import { IRoutes } from "./App";
 import LayoutConnector from "./LayoutConnector";
 import { NavigationType } from "../__generated__/gqlTypes";
 import { RouteProps } from "react-router";
