@@ -143,7 +143,6 @@ export const resolveSearchTerm = async (root, args) => {
 
 export const executePostCollectionQuery = async (root, args, { models }) => {
   if (!args) return;
-  console.log("object :", args.conditions);
   const result = await models.Post.findAndCountAll(args.conditions);
 
   return {

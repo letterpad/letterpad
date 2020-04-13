@@ -1,6 +1,5 @@
 import config from "../../config";
 import { requiresAdmin } from "../utils/permissions";
-import utils from "../../shared/util";
 
 const host = config.ROOT_URL + config.BASE_NAME;
 
@@ -11,7 +10,7 @@ function getMenuWithSanitizedSlug(menu) {
     switch (item.type) {
       case "tag":
       case "page":
-        item.slug = config.BASE_NAME + "/" + item.type + "/" + item.slug;
+        item.slug = item.type + "/" + item.slug;
         break;
       case "custom":
         item.slug = config.BASE_NAME + "/" + item.slug;
@@ -51,13 +50,13 @@ export default {
             setting.site_logo ||
             setting.site_favicon
           ) {
-            let value = { src: "", width: 0, height: 0 };
             try {
               if (value.src && !value.src.startsWith(host)) {
                 value.src = value.src.replace(host, "");
               }
             } catch (e) {
               console.log(e);
+              value = { src: "", width: 0, height: 0 };
               // no action
             }
             value = JSON.stringify(value);

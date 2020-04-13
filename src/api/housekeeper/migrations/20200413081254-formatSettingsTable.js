@@ -48,24 +48,27 @@ module.exports = {
     );
 
     // //  change menu structure
-    // const menu = await queryInterface.sequelize.query(
-    //   "SELECT value from setting WHERE option='menu'",
-    // );
-    // let parsedMenu = JSON.parse(menu[0][0].value);
+    const menu = await queryInterface.sequelize.query(
+      "SELECT value from setting WHERE option='menu'",
+    );
+    let parsedMenu = JSON.parse(menu[0][0].value);
 
-    // parsedMenu.map(item => {
-    //   item.label = item.title;
-    //   item.original_name = item.title;
-    //   delete item.title;
+    parsedMenu.map(item => {
+      item.label = item.title;
+      item.original_name = item.title;
+      if (item.type === "category") {
+        item.type = "tag";
+      }
+      delete item.title;
 
-    //   return item;
-    // });
-    // return queryInterface.sequelize.query(
-    //   // prettier-ignore
-    //   // eslint-disable-next-line quotes
-    //   "UPDATE setting SET `value`='" + JSON.stringify(parsedMenu) + "' WHERE `option`=\"menu\"",
-    //   { logging: console.log },
-    // );
+      return item;
+    });
+    return queryInterface.sequelize.query(
+      // prettier-ignore
+      // eslint-disable-next-line quotes
+      "UPDATE setting SET `value`='" + JSON.stringify(parsedMenu) + "' WHERE `option`=\"menu\"",
+      { logging: console.log },
+    );
   },
 
   down: async (queryInterface, Sequelize) => {

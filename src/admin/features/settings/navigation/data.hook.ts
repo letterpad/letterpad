@@ -1,6 +1,4 @@
 import {
-  Navigation,
-  NavigationQuery,
   NavigationType,
   Post,
   PostStatusOptions,
