@@ -97,6 +97,13 @@ export type ForgotPasswordResponse = {
   msg?: Maybe<Scalars["String"]>;
 };
 
+export type Image = {
+  __typename?: "Image";
+  src: Scalars["String"];
+  width: Scalars["Int"];
+  height: Scalars["Int"];
+};
+
 export type InputAuthor = {
   id: Scalars["Int"];
   email?: Maybe<Scalars["String"]>;
@@ -127,7 +134,19 @@ export type InputCreatePost = {
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
   tags?: Maybe<Array<Maybe<TaxonomyInputType>>>;
-  categories?: Maybe<Array<Maybe<TaxonomyInputType>>>;
+};
+
+export type InputImage = {
+  src?: Maybe<Scalars["String"]>;
+  width?: Maybe<Scalars["Int"]>;
+  height?: Maybe<Scalars["Int"]>;
+};
+
+export type InputNavigation = {
+  type?: Maybe<NavigationType>;
+  slug?: Maybe<Scalars["String"]>;
+  original_name?: Maybe<Scalars["String"]>;
+  label?: Maybe<Scalars["String"]>;
 };
 
 export type InputThemeSettings = {
@@ -194,11 +213,6 @@ export type MediaNode = {
   rows: Array<Media>;
 };
 
-export enum MenuTypes {
-  Category = "category",
-  Page = "page",
-}
-
 export type Mutation = {
   __typename?: "Mutation";
   register: AuthorResponse;
@@ -214,7 +228,7 @@ export type Mutation = {
   createPost: Response;
   updatePost: Response;
   deletePosts: Response;
-  updateOptions: Array<Setting>;
+  updateOptions: Setting;
   updateTaxonomy: EditTaxResponse;
   deleteTaxonomy: EditTaxResponse;
   updateThemes: Scalars["Boolean"];
@@ -288,7 +302,7 @@ export type MutationDeletePostsArgs = {
 };
 
 export type MutationUpdateOptionsArgs = {
-  options?: Maybe<Array<Maybe<OptionInputType>>>;
+  options: Array<OptionInputType>;
 };
 
 export type MutationUpdateTaxonomyArgs = {
@@ -313,10 +327,47 @@ export type MutationInsertThemesArgs = {
   settings: Array<InputThemeSettings>;
 };
 
+export type Navigation = {
+  __typename?: "Navigation";
+  type: NavigationType;
+  slug: Scalars["String"];
+  original_name: Scalars["String"];
+  label: Scalars["String"];
+};
+
+export enum NavigationType {
+  Tag = "tag",
+  Page = "page",
+  Custom = "custom",
+}
+
 export type OptionInputType = {
-  id?: Maybe<Scalars["Int"]>;
-  option?: Maybe<SettingOptions>;
-  value?: Maybe<Scalars["String"]>;
+  site_title?: Maybe<Scalars["String"]>;
+  site_tagline?: Maybe<Scalars["String"]>;
+  site_email?: Maybe<Scalars["String"]>;
+  site_url?: Maybe<Scalars["String"]>;
+  site_footer?: Maybe<Scalars["String"]>;
+  site_description?: Maybe<Scalars["String"]>;
+  subscribe_embed?: Maybe<Scalars["String"]>;
+  social_twitter?: Maybe<Scalars["String"]>;
+  social_facebook?: Maybe<Scalars["String"]>;
+  social_instagram?: Maybe<Scalars["String"]>;
+  social_github?: Maybe<Scalars["String"]>;
+  text_notfound?: Maybe<Scalars["String"]>;
+  text_posts_empty?: Maybe<Scalars["String"]>;
+  displayAuthorInfo?: Maybe<Scalars["String"]>;
+  cloudinary_key?: Maybe<Scalars["String"]>;
+  cloudinary_name?: Maybe<Scalars["String"]>;
+  cloudinary_secret?: Maybe<Scalars["String"]>;
+  menu?: Maybe<Array<InputNavigation>>;
+  css?: Maybe<Scalars["String"]>;
+  google_analytics?: Maybe<Scalars["String"]>;
+  locale?: Maybe<Scalars["String"]>;
+  theme?: Maybe<Scalars["String"]>;
+  disqus_id?: Maybe<Scalars["String"]>;
+  banner?: Maybe<InputImage>;
+  site_logo?: Maybe<InputImage>;
+  site_favicon?: Maybe<InputImage>;
 };
 
 export type Permission = {
@@ -370,7 +421,6 @@ export type PostFilters = {
 
 export type PostsFilters = {
   tag?: Maybe<Scalars["String"]>;
-  category?: Maybe<Scalars["String"]>;
   tagSlug?: Maybe<Scalars["String"]>;
   sortBy?: Maybe<PostSortBy>;
   status?: Maybe<PostStatusOptions>;
@@ -433,7 +483,7 @@ export type Query = {
   stats?: Maybe<Stats>;
   roles: Array<Role>;
   globalSearch?: Maybe<SearchResponse>;
-  settings: Array<Setting>;
+  settings: Setting;
   taxonomies: Array<Taxonomy>;
   themes: Array<Theme>;
 };
@@ -504,7 +554,6 @@ export type SearchData = {
 export type SearchFilters = {
   query?: Maybe<Scalars["String"]>;
   tag?: Maybe<Scalars["String"]>;
-  category?: Maybe<Scalars["String"]>;
   cursor?: Maybe<Scalars["Int"]>;
   featured?: Maybe<Scalars["Boolean"]>;
   page?: Maybe<Scalars["Int"]>;
@@ -544,39 +593,33 @@ export type SearchResults = {
 
 export type Setting = {
   __typename?: "Setting";
-  id: Scalars["Int"];
-  option: SettingOptions;
-  value: Scalars["String"];
+  site_title: Scalars["String"];
+  site_tagline: Scalars["String"];
+  site_email: Scalars["String"];
+  site_url: Scalars["String"];
+  site_footer: Scalars["String"];
+  site_description: Scalars["String"];
+  subscribe_embed: Scalars["String"];
+  social_twitter: Scalars["String"];
+  social_facebook: Scalars["String"];
+  social_instagram: Scalars["String"];
+  social_github: Scalars["String"];
+  text_notfound: Scalars["String"];
+  text_posts_empty: Scalars["String"];
+  displayAuthorInfo: Scalars["String"];
+  cloudinary_key: Scalars["String"];
+  cloudinary_name: Scalars["String"];
+  cloudinary_secret: Scalars["String"];
+  menu: Array<Navigation>;
+  css: Scalars["String"];
+  google_analytics: Scalars["String"];
+  locale: Scalars["String"];
+  theme: Scalars["String"];
+  disqus_id?: Maybe<Scalars["String"]>;
+  banner: Image;
+  site_logo: Image;
+  site_favicon: Image;
 };
-
-export enum SettingOptions {
-  SiteTitle = "site_title",
-  SiteTagline = "site_tagline",
-  SiteEmail = "site_email",
-  SiteUrl = "site_url",
-  SiteFooter = "site_footer",
-  SiteDescription = "site_description",
-  SubscribeEmbed = "subscribe_embed",
-  SocialTwitter = "social_twitter",
-  SocialFacebook = "social_facebook",
-  SocialInstagram = "social_instagram",
-  SocialGithub = "social_github",
-  TextNotfound = "text_notfound",
-  TextPostsEmpty = "text_posts_empty",
-  DisplayAuthorInfo = "displayAuthorInfo",
-  SiteLogo = "site_logo",
-  SiteFavicon = "site_favicon",
-  CloudinaryKey = "cloudinary_key",
-  CloudinaryName = "cloudinary_name",
-  CloudinarySecret = "cloudinary_secret",
-  Menu = "menu",
-  Css = "css",
-  GoogleAnalytics = "google_analytics",
-  Locale = "locale",
-  Theme = "theme",
-  DisqusId = "disqus_id",
-  Banner = "banner",
-}
 
 export type Social = {
   github?: Maybe<Scalars["String"]>;
@@ -617,12 +660,10 @@ export type TaxonomyInputType = {
 
 export enum TaxonomyType {
   PostTag = "post_tag",
-  PostCategory = "post_category",
 }
 
 export enum TaxonomyTypes {
   Tags = "tags",
-  Categories = "categories",
 }
 
 export type Theme = {
@@ -813,7 +854,9 @@ export type ResolversTypes = {
   SearchData: ResolverTypeWrapper<SearchData>;
   SearchResults: ResolverTypeWrapper<SearchResults>;
   Setting: ResolverTypeWrapper<Setting>;
-  SettingOptions: SettingOptions;
+  Navigation: ResolverTypeWrapper<Navigation>;
+  NavigationType: NavigationType;
+  Image: ResolverTypeWrapper<Image>;
   TaxonomyFilters: TaxonomyFilters;
   Theme: ResolverTypeWrapper<Theme>;
   ThemeSettings: ResolverTypeWrapper<ThemeSettings>;
@@ -833,9 +876,10 @@ export type ResolversTypes = {
   Response: ResolverTypeWrapper<Response>;
   InputUpdatePost: InputUpdatePost;
   OptionInputType: OptionInputType;
+  InputNavigation: InputNavigation;
+  InputImage: InputImage;
   EditTaxResponse: ResolverTypeWrapper<EditTaxResponse>;
   InputThemeSettings: InputThemeSettings;
-  MenuTypes: MenuTypes;
   PostTaxonomyNode: ResolverTypeWrapper<PostTaxonomyNode>;
   EnumPermissions: EnumPermissions;
   TaxonomyTypes: TaxonomyTypes;
@@ -878,7 +922,9 @@ export type ResolversParentTypes = {
   SearchData: SearchData;
   SearchResults: SearchResults;
   Setting: Setting;
-  SettingOptions: SettingOptions;
+  Navigation: Navigation;
+  NavigationType: NavigationType;
+  Image: Image;
   TaxonomyFilters: TaxonomyFilters;
   Theme: Theme;
   ThemeSettings: ThemeSettings;
@@ -898,9 +944,10 @@ export type ResolversParentTypes = {
   Response: Response;
   InputUpdatePost: InputUpdatePost;
   OptionInputType: OptionInputType;
+  InputNavigation: InputNavigation;
+  InputImage: InputImage;
   EditTaxResponse: EditTaxResponse;
   InputThemeSettings: InputThemeSettings;
-  MenuTypes: MenuTypes;
   PostTaxonomyNode: PostTaxonomyNode;
   EnumPermissions: EnumPermissions;
   TaxonomyTypes: TaxonomyTypes;
@@ -1014,6 +1061,16 @@ export type ForgotPasswordResponseResolvers<
 > = {
   ok?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   msg?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+};
+
+export type ImageResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["Image"] = ResolversParentTypes["Image"]
+> = {
+  src?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  width?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  height?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
@@ -1143,10 +1200,10 @@ export type MutationResolvers<
     RequireFields<MutationDeletePostsArgs, never>
   >;
   updateOptions?: Resolver<
-    Array<ResolversTypes["Setting"]>,
+    ResolversTypes["Setting"],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateOptionsArgs, never>
+    RequireFields<MutationUpdateOptionsArgs, "options">
   >;
   updateTaxonomy?: Resolver<
     ResolversTypes["EditTaxResponse"],
@@ -1172,6 +1229,17 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationInsertThemesArgs, "name" | "settings">
   >;
+};
+
+export type NavigationResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["Navigation"] = ResolversParentTypes["Navigation"]
+> = {
+  type?: Resolver<ResolversTypes["NavigationType"], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  original_name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  label?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
 export type PermissionResolvers<
@@ -1302,7 +1370,7 @@ export type QueryResolvers<
     RequireFields<QueryGlobalSearchArgs, never>
   >;
   settings?: Resolver<
-    Array<ResolversTypes["Setting"]>,
+    ResolversTypes["Setting"],
     ParentType,
     ContextType,
     RequireFields<QuerySettingsArgs, never>
@@ -1439,9 +1507,60 @@ export type SettingResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Setting"] = ResolversParentTypes["Setting"]
 > = {
-  id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  option?: Resolver<ResolversTypes["SettingOptions"], ParentType, ContextType>;
-  value?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_tagline?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_url?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_footer?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_description?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  subscribe_embed?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  social_twitter?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  social_facebook?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  social_instagram?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  social_github?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  text_notfound?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  text_posts_empty?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  displayAuthorInfo?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  cloudinary_key?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  cloudinary_name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  cloudinary_secret?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  menu?: Resolver<Array<ResolversTypes["Navigation"]>, ParentType, ContextType>;
+  css?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  google_analytics?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  locale?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  theme?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  disqus_id?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  banner?: Resolver<ResolversTypes["Image"], ParentType, ContextType>;
+  site_logo?: Resolver<ResolversTypes["Image"], ParentType, ContextType>;
+  site_favicon?: Resolver<ResolversTypes["Image"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
@@ -1579,10 +1698,12 @@ export type Resolvers<ContextType = Context> = {
   EditTaxResponse?: EditTaxResponseResolvers<ContextType>;
   Error?: ErrorResolvers<ContextType>;
   ForgotPasswordResponse?: ForgotPasswordResponseResolvers<ContextType>;
+  Image?: ImageResolvers<ContextType>;
   LoginResponse?: LoginResponseResolvers<ContextType>;
   Media?: MediaResolvers<ContextType>;
   MediaNode?: MediaNodeResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  Navigation?: NavigationResolvers<ContextType>;
   Permission?: PermissionResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   PostsNode?: PostsNodeResolvers<ContextType>;

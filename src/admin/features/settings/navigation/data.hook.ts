@@ -1,4 +1,7 @@
 import {
+  Navigation,
+  NavigationQuery,
+  NavigationType,
   Post,
   PostStatusOptions,
   PostTypes,
@@ -47,16 +50,17 @@ function useNavigationData() {
     if (pagesData.data && pagesData.data.posts.rows.length > 0) {
       setPages(normalizePages(pagesData.data.posts.rows));
     }
+
     if (!tagsData.loading && !pagesData.loading) {
       setLoading(false);
     }
   }, [tagsData.loading, pagesData.loading]);
 
   const rss = {
-    type: "rss",
+    type: NavigationType.Custom,
     slug: config.rssPath,
-    name: "Rss Feed of your site",
-    originalName: "Rss",
+    label: "Rss Feed of your site",
+    original_name: "Rss",
   };
   return { loading, data: addIds([...pages, ...tags, { ...rss }]) };
 }
@@ -66,10 +70,10 @@ export { useNavigationData };
 function normalizePages(pages) {
   return pages.map(item => {
     return {
-      type: item.type,
-      slug: item.slug.replace("page/", ""),
-      name: item.title,
-      originalName: item.title,
+      type: NavigationType.Page,
+      slug: filterSlug(item.slug),
+      label: item.title,
+      original_name: item.title,
     };
   });
 }
@@ -77,10 +81,10 @@ function normalizePages(pages) {
 function normalizeTags(tags) {
   return tags.map(item => {
     return {
-      type: "tag",
-      slug: item.slug.replace("tag/", ""),
-      name: item.name,
-      originalName: item.name,
+      type: NavigationType.Tag,
+      slug: filterSlug(item.slug),
+      label: item.name,
+      original_name: item.name,
     };
   });
 }
@@ -90,4 +94,8 @@ function addIds(arr) {
     item.id = idx;
     return item;
   });
+}
+
+function filterSlug(path) {
+  return path.split("/").pop();
 }

@@ -1,14 +1,16 @@
 import * as fs from "fs";
+
 import { Request, Response } from "express";
+
+import { IThemeConfig } from "../../../types/types";
 import { QUERY_SETTINGS } from "./../../../shared/queries/Queries";
 import { SettingsQuery } from "../../../__generated__/gqlTypes";
 import apolloClient from "../../../shared/apolloClient";
 import { clientOpts } from "..";
-import { IThemeConfig } from "../../../types/types";
-import { getDirectories } from "../../../shared/dir";
 import config from "../../../config";
-import { syncThemeSettings } from "../util";
 import { getDirPath } from "../../../dir";
+import { getDirectories } from "../../../shared/dir";
+import { syncThemeSettings } from "../util";
 
 const themesDir = getDirPath("client/themes");
 export const getThemes = async (req: Request, res: Response) => {
@@ -78,11 +80,7 @@ async function getCurrentTheme(req: Request) {
   if (!response.data.settings) {
     return null;
   }
-  let option = response.data.settings.find(
-    item => item && item.option === "theme",
-  );
-  if (option && option.value) {
-    currentTheme = option.value;
-  }
+  currentTheme = response.data.settings.theme;
+
   return currentTheme;
 }

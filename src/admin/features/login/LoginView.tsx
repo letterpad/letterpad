@@ -15,12 +15,12 @@ import Notifications, { notify } from "react-notify-toast";
 import React, { Component, ReactChild } from "react";
 
 import { RouteComponentProps } from "react-router";
-import { TypeSettings } from "../../../client/types";
+import { Setting } from "../../../__generated__/gqlTypes";
 import apolloClient from "../../../shared/apolloClient";
 import util from "../../../shared/util";
 
 interface ILoginProps {
-  settings: TypeSettings;
+  settings: Setting;
   router: RouteComponentProps;
 }
 
@@ -123,13 +123,11 @@ class LoginView extends Component<ILoginProps, ILoginState> {
   };
 
   render() {
-    const logoSrc = this.props.settings.site_logo.value;
-    let siteTitle = this.props.settings.site_title.value;
+    const logoSrc = this.props.settings.site_logo.src;
+    let siteTitle = this.props.settings.site_title;
     let logo;
     if (logoSrc) {
-      logo = (
-        <img src={this.props.settings.site_logo.value} height="100" />
-      ) as ReactChild;
+      logo = (<img src={logoSrc} height="100" />) as ReactChild;
     }
 
     return (

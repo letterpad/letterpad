@@ -16,14 +16,8 @@ enum PostTypes {
   post
 }
 
-enum MenuTypes {
-  category
-  page
-}
-
 input PostsFilters {
   tag: String
-  category: String
   tagSlug: String
   sortBy: PostSortBy
   status: PostStatusOptions
@@ -60,7 +54,6 @@ input InputCreatePost {
   status: PostStatusOptions
   slug: String
   tags: [TaxonomyInputType]
-  categories: [TaxonomyInputType]
 }
 
 input InputUpdatePost {
@@ -83,7 +76,6 @@ input InputUpdatePost {
 input SearchFilters {
   query: String
   tag: String
-  category: String
   cursor: Int
   featured: Boolean
   page: Int

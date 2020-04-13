@@ -32,7 +32,6 @@ export enum LayoutOptions {
 enum FilterOptions {
   page = "page",
   limit = "limit",
-  category = "category",
   tag = "tag",
   status = "status",
   sortBy = "sortBy",
@@ -71,7 +70,6 @@ const Articles: React.FC<IArticleListProps> = ({
       query.append(FilterOptions[key], value);
     }
     if (
-      query.get(FilterOptions.category.toString()) ||
       query.get(FilterOptions.tag.toString()) ||
       query.get(FilterOptions.status.toString())
     ) {
@@ -108,6 +106,7 @@ const Articles: React.FC<IArticleListProps> = ({
             <RenderTable
               data={(posts && posts.rows) || []}
               setSelection={setSelection}
+              type={type}
             />
           </React.Fragment>
         }

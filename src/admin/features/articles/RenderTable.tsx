@@ -12,7 +12,7 @@ const columns = [
   { label: "Status", className: "status" },
   { label: "Tags", className: "tags" },
 ];
-const RenderTable = ({ data, setSelection }) => {
+const RenderTable = ({ data, setSelection, type }) => {
   return (
     <List>
       <header>
@@ -62,6 +62,7 @@ const RenderTable = ({ data, setSelection }) => {
               <div className={post.status}></div>
             </div>
             <div className="small tags">
+              {type === "page" && "n/a"}
               {post.tags.map(item => item.name).join(", ")}
             </div>
           </article>

@@ -10,8 +10,20 @@ function Accordion(props) {
   const [setRotate, setRotateState] = useState("accordion__icon");
   const urlParams = new URLSearchParams(props.history.location.search);
 
-  const content = useRef(null);
+  const content = useRef<HTMLDivElement>(null);
+  const head = useRef<HTMLButtonElement>(null);
 
+  useEffect(() => {
+    if (active) {
+      setTimeout(() => {
+        if (!head.current) return;
+        head.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 500);
+    }
+  }, [active]);
   useEffect(() => {
     if (props.isActive) {
       toggleAccordion();
@@ -25,7 +37,33 @@ function Accordion(props) {
     }
   }, [urlParams.get("tab")]);
 
+  useEffect(() => {
+    if (!content.current) return;
+    // Options for the observer (which mutations to observe)
+    const config = { childList: true, subtree: true };
+
+    // Callback function to execute when mutations are observed
+    const callback = function(mutationsList, observer) {
+      for (let mutation of mutationsList) {
+        if (mutation.type === "childList") {
+          resize();
+        }
+      }
+    };
+
+    // Create an observer instance linked to the callback function
+    const observer = new MutationObserver(callback);
+
+    observer.observe(content.current, config);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   function toggleAccordion() {
+    if (!content.current) return;
+    // if (e) e.target.focus();
     setActiveState(!active);
     setHeightState(active ? "0px" : `${content.current.scrollHeight}px`);
     setRotateState(active ? "accordion__icon" : "accordion__icon rotate");
@@ -39,12 +77,14 @@ function Accordion(props) {
   }
 
   function resize() {
+    if (!content.current) return;
+    if (urlParams.get("tab") !== props.tab) return;
     setHeightState(active ? "0px" : `${content.current.scrollHeight}px`);
   }
 
   return (
     <Container className="accordion__section">
-      <AccordionHead active={active} onClick={toggleAccordion}>
+      <AccordionHead active={active} onClick={toggleAccordion} ref={head}>
         <div className="title">
           <h2 className="accordion__title">{props.title}</h2>
           <p className="accordion__subtitle">{props.subtitle}</p>

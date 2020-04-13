@@ -234,26 +234,6 @@ const postresolver = {
           return item;
         });
     },
-    categories: async post => {
-      const taxonomies = await post.getTaxonomies();
-      return taxonomies
-        .filter(item => item.type === "post_category")
-        .map(item => {
-          const type = "category";
-          item.slug = "/" + type + "/" + item.slug;
-          const posts = item.getPosts();
-          item.posts = {
-            count: posts.then(items => items.length),
-            rows: posts.then(rows =>
-              rows.map(post => {
-                post.dataValues = normalizePost(post.dataValues);
-                return post;
-              }),
-            ),
-          };
-          return item;
-        });
-    },
   },
 };
 

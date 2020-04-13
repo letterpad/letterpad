@@ -1,4 +1,4 @@
-import { TypeSettings } from "../types";
+import { Setting } from "./../../__generated__/gqlTypes";
 import config from "../../config";
 import { util } from "../common/util";
 import utils from "../../shared/util";
@@ -15,7 +15,7 @@ interface IProps {
   apolloState: object;
   initialData: object;
   head: string[];
-  settings: TypeSettings;
+  settings: Setting;
   styles: string;
   isStatic: boolean;
 }
@@ -75,9 +75,9 @@ export const getHtml = (data: IProps) => {
     INITIAL_STATE: initialState,
     INITIAL_DATA: JSON.stringify(initialData),
     NODE_ENV: process.env.NODE_ENV,
-    TRACKING_ID: settings.google_analytics.value,
-    FAVICON: settings.site_favicon.value,
-    GA_SCRIPT_TAG: settings.google_analytics.value
+    TRACKING_ID: settings.google_analytics,
+    FAVICON: settings.site_favicon.src,
+    GA_SCRIPT_TAG: settings.google_analytics
       ? '<script async src="https://www.googletagmanager.com/gtag/js?id=UA-19390409-3"></script>'
       : "",
     SCRIPT_TAGS: scripts,

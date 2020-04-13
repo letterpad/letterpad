@@ -31,10 +31,5 @@ export const PostFragmentAllFields = gql`
       name
       slug
     }
-    categories {
-      id
-      name
-      slug
-    }
   }
 `;

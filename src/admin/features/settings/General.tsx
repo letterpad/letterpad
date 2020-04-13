@@ -1,83 +1,80 @@
 import Input, { TextArea } from "../../components/input";
 import React, { useState } from "react";
-import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import { WithNamespaces, translate } from "react-i18next";
 
+import { Setting } from "../../../__generated__/gqlTypes";
 import StyledSelect from "../../components/select";
 import StyledSwitch from "../../components/switch";
+import { UpdateSettingOption } from "../../../types/types";
 
 interface IGeneralProps extends WithNamespaces {
-  data: { [option in SettingOptions]: Setting };
-  updateOption: (option: SettingOptions, value: string) => void;
+  data: Setting;
+  updateOption: (setting: UpdateSettingOption) => void;
 }
 
 const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
-  const { langOptions, selectedLanguage } = getLanguageOptions(
-    data.locale.value,
-  );
+  const { langOptions, selectedLanguage } = getLanguageOptions(data.locale);
 
   const switchLanguage = (value: string) => {
     const locales = {};
     Object.keys(langOptions).map(lang => {
       locales[lang] = value === lang;
     });
-    updateOption(SettingOptions.Locale, JSON.stringify(locales));
+    updateOption({ locale: JSON.stringify(locales) });
     i18n.changeLanguage(value);
   };
 
   const [displayAuthor, setDisplayAuthor] = useState<boolean>(
-    JSON.parse(data.displayAuthorInfo.value),
+    JSON.parse(data.displayAuthorInfo),
   );
 
   const changeAuthorDisplay = isSelected => {
     setDisplayAuthor(isSelected);
-    updateOption(SettingOptions.DisplayAuthorInfo, JSON.stringify(isSelected));
+    updateOption({ displayAuthorInfo: JSON.stringify(isSelected) });
   };
 
   return (
     <div>
       <Input
         label={t("settings.general.site.title")}
-        defaultValue={data.site_title.value}
+        defaultValue={data.site_title}
         type="text"
         placeholder={t("settings.general.site.title.placeholder")}
-        onBlur={e => updateOption(SettingOptions.SiteTitle, e.target.value)}
+        onBlur={e => updateOption({ site_title: e.target.value })}
       />
       <Input
         label={t("settings.general.site.tagline")}
-        defaultValue={data.site_tagline.value}
+        defaultValue={data.site_tagline}
         type="text"
         placeholder={t("settings.general.site.tagline.placeholder")}
-        onBlur={e => updateOption(SettingOptions.SiteTagline, e.target.value)}
+        onBlur={e => updateOption({ site_tagline: e.target.value })}
       />
       <Input
         label={t("settings.general.site.email")}
-        defaultValue={data.site_email.value}
+        defaultValue={data.site_email}
         type="email"
         placeholder="someone@somewhere.com"
-        onBlur={e => updateOption(SettingOptions.SiteEmail, e.target.value)}
+        onBlur={e => updateOption({ site_email: e.target.value })}
       />
       <TextArea
         label={t("settings.general.site.description")}
-        defaultValue={data.site_description.value}
+        defaultValue={data.site_description}
         placeholder={t("settings.general.site.description.placeholder")}
-        onBlur={e =>
-          updateOption(SettingOptions.SiteDescription, e.target.value)
-        }
+        onBlur={e => updateOption({ site_description: e.target.value })}
       />
       <Input
         label={t("settings.general.site.url")}
-        defaultValue={data.site_url.value}
+        defaultValue={data.site_url}
         type="text"
         placeholder={t("settings.general.site.url.placeholder")}
-        onBlur={e => updateOption(SettingOptions.SiteUrl, e.target.value)}
+        onBlur={e => updateOption({ site_url: e.target.value })}
       />
       <TextArea
         label={t("settings.general.site.footer") + "(html allowed)"}
-        defaultValue={data.site_footer.value}
+        defaultValue={data.site_footer}
         className="form-control"
         placeholder={t("settings.general.site.footer.placeholder")}
-        onBlur={e => updateOption(SettingOptions.SiteFooter, e.target.value)}
+        onBlur={e => updateOption({ site_footer: e.target.value })}
       />
       <div className="form-group">
         <StyledSwitch
@@ -90,12 +87,10 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
 
       <Input
         label={t("settings.general.site.ga")}
-        defaultValue={data.google_analytics.value}
+        defaultValue={data.google_analytics}
         type="text"
         placeholder={t("settings.general.site.ga.placeholder")}
-        onBlur={e =>
-          updateOption(SettingOptions.GoogleAnalytics, e.target.value)
-        }
+        onBlur={e => updateOption({ google_analytics: e.target.value })}
       />
       <StyledSelect
         label="Select language"

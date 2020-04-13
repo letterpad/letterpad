@@ -53,7 +53,7 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
           <InlineInput
             value={name}
             onChange={onNameChange}
-            placeholder="Category name"
+            placeholder="Tag name"
             onBlur={e => onBlur(name, "name")}
           />
         </div>

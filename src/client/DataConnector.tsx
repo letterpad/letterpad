@@ -47,7 +47,6 @@ function DataConnector(
               description={data.excerpt}
               path={props.router.location.pathname}
               contentType="article"
-              category={data.categories.map(cat => cat.name).join(",")}
               tags={data.tags.map(tag => tag.name).join(",")}
               image={data.cover_image.src}
               settings={props.settings || {}}

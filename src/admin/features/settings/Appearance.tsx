@@ -1,50 +1,52 @@
+import { Image, Setting } from "../../../__generated__/gqlTypes";
 import React, { createRef, useState } from "react";
-import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import { WithNamespaces, translate } from "react-i18next";
 
 import { TextArea } from "../../components/input";
+import { UpdateSettingOption } from "../../../types/types";
 import { notify } from "react-notify-toast";
 import styled from "styled-components";
 import { uploadFile } from "../../server/util";
 
 interface IMessagesProps extends WithNamespaces {
-  updateOption: (option: SettingOptions, value: string) => void;
-  data: { [option in SettingOptions]: Setting };
+  updateOption: (option: UpdateSettingOption) => void;
+  data: Setting;
 }
-const Messages: React.FC<IMessagesProps> = ({ t, updateOption, data }) => {
-  const parsedBanner = JSON.parse(data.banner.value);
 
+enum name {
+  banner,
+  site_logo,
+  site_favicon,
+}
+
+const Messages: React.FC<IMessagesProps> = ({ t, updateOption, data }) => {
   return (
     <div>
       <EditableImage
-        name={SettingOptions.SiteLogo}
-        updateOption={updateOption}
-        image={data.site_logo.value}
+        updateValue={(value: Image) => updateOption({ site_logo: value })}
+        image={data.site_logo.src}
         label="Upload Logo"
         height={50}
       />
       <EditableImage
-        name={SettingOptions.SiteFavicon}
-        updateOption={updateOption}
-        image={data.site_favicon.value}
+        updateValue={(value: Image) => updateOption({ site_favicon: value })}
+        image={data.site_favicon.src}
         label="Upload Favicon"
         height={20}
       />
       <EditableImage
-        name={SettingOptions.Banner}
-        updateOption={updateOption}
-        image={parsedBanner.src}
+        updateValue={(value: Image) => updateOption({ banner: value })}
+        image={data.banner.src}
         label="Upload Banner"
-        addSize={true}
         height={100}
       />
       <br />
       <TextArea
         label="Write CSS to further customize the theme"
         rows={7}
-        defaultValue={data.css.value || ""}
+        defaultValue={data.css || ""}
         placeholder="Additional CSS"
-        onChange={e => updateOption(SettingOptions.Css, e.target.value)}
+        onChange={e => updateOption({ css: e.target.value })}
       />
     </div>
   );
@@ -54,30 +56,22 @@ export default translate("translations")(Messages);
 
 interface IProps {
   image: string;
-  updateOption: (name: SettingOptions, value: string) => void;
-  name: SettingOptions;
+  updateValue: (value: Image) => void;
   label: string;
-  addSize?: boolean;
   height: number;
 }
 const EditableImage: React.FC<IProps> = ({
   image,
-  updateOption,
-  name,
+  updateValue,
   label,
-  addSize,
   height,
 }) => {
   const [src, setSrc] = useState<string>(image || "");
   const uploadInputRef = createRef<HTMLInputElement>();
 
   const update = (value: string, size: { width: number; height: number }) => {
-    if (addSize) {
-      const { width, height } = size;
-      updateOption(name, JSON.stringify({ src: value, width, height }));
-    } else {
-      updateOption(name, value);
-    }
+    const { width, height } = size;
+    updateValue({ src: value, width, height });
     setSrc(value);
   };
 

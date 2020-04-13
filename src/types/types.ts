@@ -1,11 +1,11 @@
 import { Author, EnumPermissions, EnumRoles } from "../__generated__/gqlTypes";
+import { Image, Navigation, Setting } from "./../__generated__/gqlTypes";
 
 import { RouteComponentProps } from "react-router-dom";
-import { TypeSettings } from "../client/types";
 
 export interface IAdminLayoutProps {
   exact: true;
-  settings: TypeSettings;
+  settings: Setting;
   type: "post_tag";
   path: "/admin/tags";
   layout: "none" | "b";
@@ -72,3 +72,31 @@ export interface IAdminMenu {
   icon: string;
   children?: IAdminMenu[];
 }
+
+export type UpdateSettingOption =
+  | { site_title: string }
+  | { site_tagline: string }
+  | { site_email: string }
+  | { site_url: string }
+  | { site_footer: string }
+  | { site_description: string }
+  | { subscribe_embed: string }
+  | { social_twitter: string }
+  | { social_facebook: string }
+  | { social_instagram: string }
+  | { social_github: string }
+  | { text_notfound: string }
+  | { text_posts_empty: string }
+  | { displayAuthorInfo: string }
+  | { cloudinary_key: string }
+  | { cloudinary_name: string }
+  | { cloudinary_secret: string }
+  | { css: string }
+  | { google_analytics: string }
+  | { locale: string }
+  | { theme: string }
+  | { disqus_id?: string }
+  | { banner: Image }
+  | { site_logo: Image }
+  | { site_favicon: Image }
+  | { menu: Navigation[] };

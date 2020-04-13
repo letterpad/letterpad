@@ -105,9 +105,49 @@ export const QUERY_ROLES = gql`
 export const QUERY_SETTINGS = gql`
   query settings {
     settings {
-      id
-      option
-      value
+      site_title
+      site_tagline
+      site_email
+      site_url
+      site_footer
+      site_description
+      subscribe_embed
+      social_twitter
+      social_facebook
+      social_instagram
+      social_github
+      text_notfound
+      text_posts_empty
+      displayAuthorInfo
+      cloudinary_key
+      cloudinary_name
+      cloudinary_secret
+      menu {
+        label
+        original_name
+        slug
+        type
+      }
+      css
+      google_analytics
+      locale
+      theme
+      disqus_id
+      banner {
+        src
+        width
+        height
+      }
+      site_logo {
+        src
+        width
+        height
+      }
+      site_favicon {
+        src
+        width
+        height
+      }
     }
   }
 `;
@@ -122,10 +162,6 @@ export const QUERY_GLOBAL_SEARCH = gql`
           title
         }
         posts {
-          id
-          title
-        }
-        categories {
           id
           title
         }
@@ -168,7 +204,6 @@ export const QUERY_STATS = gql`
         drafts
       }
       tags
-      categories
       media
     }
   }

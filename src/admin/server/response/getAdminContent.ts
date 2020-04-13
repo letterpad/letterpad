@@ -23,7 +23,7 @@ export const getAdminContent = async (_req, res) => {
 
   if (config.NODE_ENV === "production") {
     const settings = await fetchSettings();
-    theme = settings.theme.value;
+    theme = settings.theme;
   } else {
     theme = config.THEME;
   }

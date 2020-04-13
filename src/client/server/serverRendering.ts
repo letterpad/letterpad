@@ -2,7 +2,6 @@ import { ThemeSettings, ThemesQuery } from "./../../__generated__/gqlTypes";
 
 import { Express } from "express";
 import { QUERY_THEMES } from "./../../shared/queries/Queries";
-import RssFeed from "../../api/rssFeed";
 import apolloClient from "../../shared/apolloClient";
 import cache from "./cache";
 import config from "../../config";
@@ -34,7 +33,8 @@ const serverRendering = (app: Express) => {
     try {
       const client = apolloClient(false, { ssrMode: true });
       const settings = await fetchSettings();
-      let themeName = config.THEME || settings.theme.value;
+
+      let themeName = config.THEME || settings.theme;
       try {
         logger.debug("SSR - Fetched settings data", req.url);
         const content = await contentProvider({

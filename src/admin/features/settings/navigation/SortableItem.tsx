@@ -2,7 +2,7 @@ import { InputBox, Item } from "./SortableItem.css";
 import React, { useState } from "react";
 
 import { Button } from "../../../components/button";
-import { IMenu } from "../../../../client/types";
+import { Navigation } from "../../../../__generated__/gqlTypes";
 import ReactTooltip from "react-tooltip";
 import { SortableElement } from "react-sortable-hoc";
 
@@ -13,7 +13,7 @@ const SortableItem = SortableElement(props => {
   const [error, setError] = useState<string>("");
   const [nameError, setNameError] = useState<string>("");
 
-  const onInputChange = (change: IMenu) => {
+  const onInputChange = (change: Navigation) => {
     const changedItem = {
       ...item,
       ...change,
@@ -23,8 +23,8 @@ const SortableItem = SortableElement(props => {
       error: "",
     };
 
-    // check the title
-    if (changedItem.title.length === 0) {
+    // check the label
+    if (changedItem.label.length === 0) {
       error.nameError = "Cannot be empty";
     }
 
@@ -39,12 +39,14 @@ const SortableItem = SortableElement(props => {
       changedItem.type = "custom";
     } else {
       changedItem.type = itemFromDropdown.type;
-      changedItem.originalName = itemFromDropdown.originalName;
+      changedItem.original_name = itemFromDropdown.original_name;
     }
 
     setItem(changedItem);
     changedItem.hasError = error.error.length > 0 || error.nameError.length > 0;
-    onChange(changedItem);
+    if (!error.error) {
+      onChange(changedItem);
+    }
     setError(error.error);
     setNameError(error.nameError);
     setTimeout(ReactTooltip.rebuild, 0);
@@ -58,8 +60,8 @@ const SortableItem = SortableElement(props => {
       <InputBox hasError={nameError !== ""}>
         <input
           type="text"
-          value={item.title}
-          onChange={e => onInputChange({ ...item, title: e.target.value })}
+          value={item.label}
+          onChange={e => onInputChange({ ...item, label: e.target.value })}
           placeholder="Enter the name of this item"
         />
         <span className="error">{nameError}</span>
@@ -78,7 +80,7 @@ const SortableItem = SortableElement(props => {
           {...source.map(item => (
             <option
               key={item.slug}
-              label={item.type + " - " + item.name}
+              label={item.type + " - " + item.label}
               value={item.slug}
             ></option>
           ))}
@@ -111,10 +113,10 @@ function isValidURL(url: string) {
 
 function getToolTip(item) {
   if (item.type === "tag") {
-    return "Displays all posts having the tag - " + item.originalName;
+    return "Displays all posts having the tag - " + item.original_name;
   }
   if (item.type === "page") {
-    return "Displays page - " + item.originalName;
+    return "Displays page - " + item.original_name;
   }
   if (item.type === "custom") {
     return "This will be opened in a new tab.";

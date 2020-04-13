@@ -30,10 +30,7 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
     suggestions: [],
   };
 
-  type =
-    this.props.for === TaxonomyType.PostCategory
-      ? TaxonomyTypes.Categories
-      : TaxonomyTypes.Tags;
+  type = TaxonomyTypes.Tags;
 
   state = {
     tags: [],

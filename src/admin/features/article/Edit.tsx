@@ -154,6 +154,7 @@ class Edit extends Component<IProps> {
           type="file"
           multiple
         />
+        <div id="portal-root"></div>
       </StyledArticle>
     );
   }

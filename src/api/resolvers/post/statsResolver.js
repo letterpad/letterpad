@@ -24,9 +24,6 @@ export const statsResolver = async (root, args, { models }) => {
     where: { status: "draft", type: "page" },
   });
 
-  result.categories = await models.Taxonomy.count({
-    where: { type: "post_category" },
-  });
   result.tags = await models.Taxonomy.count({
     where: { type: "post_tag" },
   });

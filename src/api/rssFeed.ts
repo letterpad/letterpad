@@ -21,11 +21,11 @@ const RssFeed = async (req, res: Response) => {
       },
     });
     const feed = new RSS({
-      title: settings.site_title.value,
-      description: settings.site_description.value,
+      title: settings.site_title,
+      description: settings.site_description,
       feed_url: config.ROOT_URL + config.BASE_NAME + "/rss.xml",
       site_url: config.ROOT_URL + config.BASE_NAME,
-      image_url: settings.site_logo.value,
+      image_url: settings.site_logo,
       language: "en",
       ttl: "60",
     });
@@ -35,7 +35,7 @@ const RssFeed = async (req, res: Response) => {
         title: post.title,
         description: post.excerpt,
         url: post.slug, // link to the item
-        categories: post.categories.map(item => item.name), // optional - array of item categories
+        tags: post.tags.map(item => item.name), // optional - array of item categories
         author: post.author.fname + " " + post.author.lname, // optional - defaults to feed author property
         date: post.publishedAt, // any format that js Date can parse.
       });

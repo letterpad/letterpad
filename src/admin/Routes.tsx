@@ -17,16 +17,16 @@ import NavigationBuilder from "./features/settings/Navigation";
 import Notifications from "react-notify-toast";
 import ResetPassword from "./features/login/ResetPassword";
 import SecuredRoute from "./helpers/Secured";
+import { Setting } from "../__generated__/gqlTypes";
 import Settings from "./features/settings";
 import StaticSite from "./features/static-site";
 import Taxonomy from "./features/taxonomy";
 import { TwoColumnLayout } from "./features/layout";
-import { TypeSettings } from "../client/types";
 import { fetchSettings } from "../api/fetchSettings";
 import getI18nWithDefaultLang from "../shared/i18n/i18n";
 
 const Routes: React.FC<RouteComponentProps> = router => {
-  const [settings, setSettings] = useState<TypeSettings>();
+  const [settings, setSettings] = useState<Setting>();
 
   const setFavicon = (src: string) => {
     const favicon: HTMLLinkElement | null = document.querySelector(
@@ -39,7 +39,7 @@ const Routes: React.FC<RouteComponentProps> = router => {
     const loadSettings = async () => {
       const settings = await fetchSettings();
       setSettings(settings);
-      setFavicon(settings.site_favicon.value);
+      setFavicon(settings.site_favicon.src);
     };
     loadSettings();
   }, []);
@@ -48,7 +48,7 @@ const Routes: React.FC<RouteComponentProps> = router => {
     return <Loader />;
   }
 
-  const i18nConfig = getI18nConfig(settings.locale.value || "");
+  const i18nConfig = getI18nConfig(settings.locale || "");
   return (
     <I18nextProvider i18n={i18nConfig}>
       <Notifications />
@@ -61,9 +61,7 @@ const Routes: React.FC<RouteComponentProps> = router => {
         <Route
           exact
           path="/admin/login"
-          render={props => (
-            <LoginView router={props} settings={settings as TypeSettings} />
-          )}
+          render={props => <LoginView router={props} settings={settings} />}
         />
         <Route
           exact

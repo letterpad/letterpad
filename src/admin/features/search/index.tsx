@@ -72,11 +72,6 @@ const GlobalSearch: React.FC<IProps> = ({ t, onClose }) => {
               label="Pages"
             />
             <SearchItems
-              data={categories as SearchResults[]}
-              getLink={item => "posts?category=" + item.title}
-              label="Categories"
-            />
-            <SearchItems
               data={tags as SearchResults[]}
               getLink={item => "posts?tag=" + item.title}
               label="Tags"

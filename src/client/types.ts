@@ -1,9 +1,7 @@
 import {
-  MenuTypes,
   Post,
   PostsNode,
   Setting,
-  SettingOptions,
   ThemeSettings,
 } from "../__generated__/gqlTypes";
 
@@ -11,26 +9,16 @@ import ApolloClient from "apollo-client";
 import { IHelpers } from "./helperProps";
 import { RouteComponentProps } from "react-router";
 
-export type TypeSettings = { [option in SettingOptions]: Setting };
-
-export interface IMenu {
-  id: number;
-  title: string;
-  slug: string;
-  type: MenuTypes | string;
-}
-
 export enum EnumContentType {
   POSTS = "posts",
   POST = "post",
   PAGE = "page",
-  CATEGORY = "category",
   TAG = "tag",
 }
 
 export interface IRouteProps<T> {
   contentType: EnumContentType;
-  settings: TypeSettings;
+  settings: Setting;
   client: ApolloClient<any>;
   themeSettings: ThemeSettings[];
   initialProps?: any;
@@ -41,7 +29,6 @@ export interface IRouteProps<T> {
 
 export interface RouteParams {
   slug?: string;
-  category?: string;
   tag?: string;
   page_no?: string;
   query?: string;
@@ -53,7 +40,7 @@ export interface IThemeComponentProps<T> extends IRouteProps<T> {
 export interface IServerRenderProps {
   requestUrl: string;
   client: ApolloClient<any>;
-  settings: TypeSettings;
+  settings: Setting;
   isStatic: boolean;
   themeSettings: ThemeSettings[];
   request: { req: Express.Request; res: Express.Response };

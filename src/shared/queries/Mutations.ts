@@ -33,22 +33,57 @@ export const CREATE_POST = gql`
           name
           slug
         }
-        categories {
-          id
-          name
-          slug
-        }
       }
     }
   }
 `;
 
 export const UPDATE_OPTIONS = gql`
-  mutation updateOptions($options: [OptionInputType]) {
+  mutation updateOptions($options: [OptionInputType!]!) {
     updateOptions(options: $options) {
-      id
-      option
-      value
+      site_title
+      site_tagline
+      site_email
+      site_url
+      site_footer
+      site_description
+      subscribe_embed
+      social_twitter
+      social_facebook
+      social_instagram
+      social_github
+      text_notfound
+      text_posts_empty
+      displayAuthorInfo
+      cloudinary_key
+      cloudinary_name
+      cloudinary_secret
+      menu {
+        label
+        original_name
+        slug
+        type
+      }
+      css
+      google_analytics
+      locale
+      theme
+      disqus_id
+      banner {
+        src
+        width
+        height
+      }
+      site_logo {
+        src
+        width
+        height
+      }
+      site_favicon {
+        src
+        width
+        height
+      }
     }
   }
 `;
@@ -178,11 +213,6 @@ export const UPDATE_POST_QUERY = gql`
           src
         }
         tags {
-          id
-          name
-          slug
-        }
-        categories {
           id
           name
           slug

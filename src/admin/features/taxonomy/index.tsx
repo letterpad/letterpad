@@ -31,13 +31,6 @@ const texts = t => ({
     input1: t("tags.create.name.placeholder"),
     input2: t("tags.create.desc.placeholder"),
   },
-  post_category: {
-    title1: t("categories.title"),
-    subtitle1: t("categories.tagline"),
-    title2: t("categories.create"),
-    input1: t("categories.create.name.placeholder"),
-    input2: t("categories.create.desc.placeholder"),
-  },
 });
 
 interface ITaxonomyProps extends WithNamespaces {

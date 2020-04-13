@@ -1,5 +1,4 @@
 import { Op } from "sequelize";
-import { SettingOptions } from "../__generated__/gqlTypes";
 
 export const getCloudinarySettings = async settingModel => {
   const settings = await settingModel.findAll({
@@ -7,11 +6,7 @@ export const getCloudinarySettings = async settingModel => {
     attributes: ["value"],
     where: {
       option: {
-        [Op.or]: [
-          SettingOptions.CloudinaryKey,
-          SettingOptions.CloudinaryName,
-          SettingOptions.CloudinarySecret,
-        ],
+        [Op.or]: ["cloudinary_key", "cloudinary_name", "cloudinary_secret"],
       },
     },
   });

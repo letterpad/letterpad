@@ -1,38 +1,42 @@
 import { Container, Grid } from "./navigation/Navigation.css";
 import React, { useState } from "react";
-import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
+import { Navigation, NavigationType } from "../../../__generated__/gqlTypes";
 import { SortableContainer, arrayMove } from "react-sortable-hoc";
 import { WithNamespaces, translate } from "react-i18next";
 
 import { Button } from "../../components/button";
-import { IMenu } from "../../../client/types";
-import SortableItem from "./navigation/SortableItem";
-import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
-import apolloClient from "../../../shared/apolloClient";
-import { useNavigationData } from "./navigation/data.hook";
 
-interface IMenuWithError extends IMenu {
+import SortableItem from "./navigation/SortableItem";
+import { useNavigationData } from "./navigation/data.hook";
+import { UpdateSettingOption } from "../../../types/types";
+
+interface IMenuWithError extends Navigation {
   hasError?: boolean;
+  id: number;
 }
 interface INavigationBuilderProps extends WithNamespaces {
-  settings: { [option in SettingOptions]: Setting };
+  menuData: Navigation[];
+  updateOption: (setting: UpdateSettingOption) => void;
 }
 
-const Navigation: React.FC<INavigationBuilderProps> = ({ settings, t }) => {
+const Navigation: React.FC<INavigationBuilderProps> = ({
+  t,
+  menuData,
+  updateOption,
+}) => {
   const { data, loading } = useNavigationData();
-  const [menu, setMenu] = useState<IMenuWithError[]>([
-    ...addIds(normalizeSlugs(JSON.parse(settings.menu.value))),
-  ]);
+  const [menu, setMenu] = useState<IMenuWithError[]>([...addIds(menuData)]);
+
   if (loading) return null;
 
   const onSortEnd = async ({ oldIndex, newIndex }) => {
     const newOrder = arrayMove(menu, oldIndex, newIndex);
     setMenu(newOrder);
-    await save(settings.menu.option, newOrder);
+    await updateOption({ menu: prepareForBackend(newOrder) });
   };
 
   const generareId = () => {
-    const ids = menu.map(item => item.id);
+    const ids = menu.map(item => item.id) as number[];
     const id = Math.max.apply(null, ids);
 
     return id + 1;
@@ -41,10 +45,10 @@ const Navigation: React.FC<INavigationBuilderProps> = ({ settings, t }) => {
   const addNewRow = () => {
     const newItem = {
       id: generareId(),
-      title: "",
+      label: "",
       slug: "",
-      type: "",
-      originalName: "",
+      type: NavigationType.Custom,
+      original_name: "",
     };
     setMenu([...menu, newItem]);
   };
@@ -54,7 +58,7 @@ const Navigation: React.FC<INavigationBuilderProps> = ({ settings, t }) => {
     newMenu[index] = change;
     setMenu(newMenu);
 
-    await save(settings.menu.option, newMenu);
+    await updateOption({ menu: prepareForBackend(newMenu) });
   };
 
   const onRemove = async index => {
@@ -64,7 +68,7 @@ const Navigation: React.FC<INavigationBuilderProps> = ({ settings, t }) => {
     const newMenu = [...menu];
     newMenu.splice(index, 1);
     setMenu(newMenu);
-    await save(settings.menu.option, newMenu);
+    await updateOption({ menu: prepareForBackend(newMenu) });
   };
 
   return (
@@ -123,48 +127,17 @@ const SortableList = SortableContainer(
   },
 );
 
-function normalizeSlugs(menu) {
-  return menu.map((item, idx) => {
-    item.slug = item.slug
-      .replace("/tag/", "")
-      .replace("/posts/", "")
-      .replace("/page/", "");
-    item.id = idx;
-    return item;
-  });
-}
-
 function prepareForBackend(newMenu) {
   return newMenu.map(item => {
-    delete item.hasError;
-    delete item.id;
-    return item;
-  });
-}
-
-async function save(option, value) {
-  const errors = value.filter(item => item.hasError);
-  if (errors.length > 0) {
-    return;
-  }
-  const cleanMenu = prepareForBackend(JSON.parse(JSON.stringify(value)));
-
-  await apolloClient(true).mutate({
-    mutation: UPDATE_OPTIONS,
-    variables: {
-      options: [
-        {
-          option: option,
-          value: JSON.stringify(cleanMenu),
-        },
-      ],
-    },
+    const { label, slug, original_name, type } = item;
+    return { label, slug, original_name, type };
   });
 }
 
 function addIds(arr) {
   return arr.map((item, idx) => {
     item.id = idx;
+    item.slug = item.slug.split("/").pop();
     return item;
   });
 }

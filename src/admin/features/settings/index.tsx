@@ -1,5 +1,10 @@
+import {
+  OptionInputType,
+  Setting,
+  UpdateOptionsMutation,
+  UpdateOptionsMutationVariables,
+} from "../../../__generated__/gqlTypes";
 import React, { useEffect, useState } from "react";
-import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import StyledSection, { SectionSizes } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 
@@ -12,23 +17,18 @@ import { RouteComponentProps } from "react-router";
 import Social from "./Social";
 import Themes from "./Themes";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
+import { UpdateSettingOption } from "../../../types/types";
 import apolloClient from "../../../shared/apolloClient";
 import { notify } from "react-notify-toast";
 import utils from "../../../shared/util";
 
 interface ISettingsProps extends WithNamespaces {
   router: RouteComponentProps;
-  settings: { [option in SettingOptions]: Setting };
+  settings: Setting;
 }
 
-// type that the internal state accepts
-type TypeUpdatedOptions = { [option in keyof typeof SettingOptions]?: string };
-
-// Type that the api expects
-type TypeAPIUpdatedOptions = { option: string; value: string };
-
 const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
-  const [updatedOptions, setUpdatedOptions] = useState<TypeUpdatedOptions>({});
+  const [updatedOptions, setUpdatedOptions] = useState<OptionInputType[]>([]);
 
   useEffect(() => {
     if (Object.keys(updatedOptions).length > 0) {
@@ -36,24 +36,21 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
     }
   }, [updatedOptions]);
 
-  const setOption = (option: SettingOptions, value: string) => {
-    const newUpdates = { ...updatedOptions, [option]: value };
+  const setOption = (setting: UpdateSettingOption) => {
+    const newUpdates = { ...updatedOptions, ...setting };
     setUpdatedOptions(newUpdates);
   };
 
   const submitData = async (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
-    const settings: TypeAPIUpdatedOptions[] = [];
-    Object.keys(updatedOptions).forEach(option => {
-      settings.push({
-        option: option,
-        value: updatedOptions[option],
-      });
-    });
-    await apolloClient(true).mutate({
+
+    await apolloClient(true).mutate<
+      UpdateOptionsMutation,
+      UpdateOptionsMutationVariables
+    >({
       mutation: UPDATE_OPTIONS,
       variables: {
-        options: settings,
+        options: updatedOptions,
       },
     });
     notify.show("Site settings saved", "success", 3000);
@@ -80,7 +77,7 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
         subtitle={t(`settings.navigation.tagline`)}
         tab="navigation"
       >
-        <Navigation settings={settings} />
+        <Navigation menuData={settings.menu} updateOption={setOption} />
       </Accordion>
       <Accordion
         title={t(`settings.social.title`)}
@@ -103,14 +100,6 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
       >
         <Themes data={settings} updateOption={setOption} />
       </Accordion>
-
-      {/* <Accordion
-        title={t(`settings.messages.title`)}
-        subtitle={t(`settings.messages.tagline`)}
-        tab="messages"
-      >
-        <Messages data={settings} updateOption={setOption} />
-      </Accordion> */}
     </StyledSection>
   );
 };

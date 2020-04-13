@@ -1,27 +1,24 @@
 import Input, { TextArea } from "../../components/input";
 import React, { useState } from "react";
-import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 import { WithNamespaces, translate } from "react-i18next";
 
-import { Container } from "../../components/switch";
+import { Setting } from "../../../__generated__/gqlTypes";
+import { UpdateSettingOption } from "../../../types/types";
 import styled from "styled-components";
 
 interface IOptionalProps extends WithNamespaces {
-  data: { [option in SettingOptions]: Setting };
-  updateOption: (option: SettingOptions, value: string) => void;
+  data: Setting;
+  updateOption: (setting: UpdateSettingOption) => void;
   label?: string;
 }
 const Integrations: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
   const [displayAuthor, setDisplayAuthor] = useState<boolean>(
-    JSON.parse(data.displayAuthorInfo.value),
+    JSON.parse(data.displayAuthorInfo),
   );
 
   const changeAuthorDisplay = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplayAuthor(e.target.checked);
-    updateOption(
-      SettingOptions.DisplayAuthorInfo,
-      JSON.stringify(e.target.checked),
-    );
+    updateOption({ displayAuthorInfo: JSON.stringify(e.target.checked) });
   };
 
   return (
@@ -33,28 +30,24 @@ const Integrations: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
       </p>
       <Input
         label={t("settings.cdn.cloud_name")}
-        defaultValue={data.cloudinary_name.value || ""}
+        defaultValue={data.cloudinary_name || ""}
         type="text"
         placeholder={t("settings.cdn.cloud_name.placeholder")}
-        onBlur={e =>
-          updateOption(SettingOptions.CloudinaryName, e.target.value)
-        }
+        onBlur={e => updateOption({ cloudinary_name: e.target.value })}
       />
       <Input
         label={t("settings.cdn.cloudinary_key")}
-        defaultValue={data.cloudinary_key.value || ""}
+        defaultValue={data.cloudinary_key || ""}
         type="text"
         placeholder={t("settings.cdn.cloudinary_key.placeholder")}
-        onBlur={e => updateOption(SettingOptions.CloudinaryKey, e.target.value)}
+        onBlur={e => updateOption({ cloudinary_key: e.target.value })}
       />
       <Input
         label={t("settings.cdn.cloudinary_secret")}
-        defaultValue={data.cloudinary_secret.value || ""}
+        defaultValue={data.cloudinary_secret || ""}
         type="text"
         placeholder={t("settings.cdn.cloudinary_secret.placeholder")}
-        onBlur={e =>
-          updateOption(SettingOptions.CloudinarySecret, e.target.value)
-        }
+        onBlur={e => updateOption({ cloudinary_secret: e.target.value })}
       />
       <br />
       <p>
@@ -64,10 +57,10 @@ const Integrations: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
       </p>
       <Input
         label={t("settings.additional.disqus")}
-        defaultValue={data.disqus_id.value || ""}
+        defaultValue={data.disqus_id || ""}
         type="text"
         placeholder={t("settings.additional.disqus.placeholder")}
-        onBlur={e => updateOption(SettingOptions.DisqusId, e.target.value)}
+        onBlur={e => updateOption({ disqus_id: e.target.value })}
       />
       <br />
       <p>
@@ -77,12 +70,10 @@ const Integrations: React.FC<IOptionalProps> = ({ t, data, updateOption }) => {
       <SubscribeBlock>
         <TextArea
           label={t("settings.additional.subscribe")}
-          defaultValue={data.subscribe_embed.value || ""}
+          defaultValue={data.subscribe_embed || ""}
           placeholder={t("settings.additional.subscribe.placeholder")}
           rows={5}
-          onBlur={e =>
-            updateOption(SettingOptions.SubscribeEmbed, e.target.value)
-          }
+          onBlur={e => updateOption({ subscribe_embed: e.target.value })}
         />
         <small>
           Optional: You may use{" "}

@@ -16,14 +16,13 @@ export const resolveMenuFilter = async (root, args, { models }) => {
     let { tagSlug } = args;
     if (tagSlug === "/") {
       // get the first menu item.
-      const menuStr = await models.Setting.findOne({
+      const { value } = await models.Setting.findOne({
+        attributes: ["value"],
         where: { option: "menu" },
+        raw: true,
       });
-      const parsedMenu = JSON.parse(menuStr.dataValues.value);
 
-      if (parsedMenu.length > 0) {
-        tagSlug = parsedMenu[0].slug;
-      }
+      tagSlug = JSON.parse(value)[0].slug;
     }
 
     const taxTag = await models.Taxonomy.findOne({

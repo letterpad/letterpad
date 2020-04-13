@@ -1,16 +1,15 @@
-import { IMenu, TypeSettings } from "../../../client/types";
 import React, { Component } from "react";
+import { Setting, StatsQuery } from "../../../__generated__/gqlTypes";
 import StyledMenu, { MenuItem, StyledHeading, StyledLink } from "./Menu.css";
 import { WithNamespaces, translate } from "react-i18next";
 
 import DATA from "./data";
 import { IAdminMenu } from "../../../types/types";
 import { RouteComponentProps } from "react-router";
-import { StatsQuery } from "../../../__generated__/gqlTypes";
 import jwtDecode from "jwt-decode";
 
 interface IProps extends WithNamespaces {
-  settings: TypeSettings;
+  settings: Setting;
   router: RouteComponentProps;
   stats: StatsQuery;
   close: () => void;

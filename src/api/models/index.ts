@@ -8,8 +8,8 @@ import { Sequelize } from "sequelize";
 import Setting from "./setting";
 import Taxonomy from "./taxonomy";
 import Theme from "./theme";
-// const { dbConfig } = require("../../config/db.config");
 import dbConfig from "../../config/db.config";
+
 const env = process.env.NODE_ENV || "dev";
 const config = dbConfig[env];
 

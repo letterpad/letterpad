@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { Setting, StatsQuery } from "../../../__generated__/gqlTypes";
 
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import Menu from "../menu";
 import { QUERY_STATS } from "../../../shared/queries/Queries";
 import { RouteComponentProps } from "react-router";
-import { StatsQuery } from "../../../__generated__/gqlTypes";
 import StyledSidebar from "./Sidebar.css";
 import ThemeSwitch from "../theme-switcher";
-import { TypeSettings } from "../../../client/types";
 import apolloClient from "../../../shared/apolloClient";
 
 interface IProps {
-  settings: TypeSettings;
+  settings: Setting;
   router: RouteComponentProps;
   setSearchMode: () => void;
   close: () => void;
@@ -46,8 +45,8 @@ const Sidebar: React.FC<IProps> = props => {
     <StyledSidebar>
       <div className="sidebar-top">
         <Logo
-          src={settings.site_logo.value}
-          siteName={settings.site_title.value}
+          src={settings.site_logo.src}
+          siteName={settings.site_title}
           setSearchMode={props.setSearchMode}
         />
         <Menu

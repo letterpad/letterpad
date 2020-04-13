@@ -1,8 +1,7 @@
+import { IThemeConfig, UpdateSettingOption } from "../../../types/types";
 import React, { useEffect, useState } from "react";
-import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 
-import { IThemeConfig } from "../../../types/types";
-import StyledGrid from "../../components/grid";
+import { Setting } from "../../../__generated__/gqlTypes";
 import ThemeItem from "./themes/ThemeItem";
 import config from "../../../config";
 import { device } from "../devices";
@@ -10,8 +9,8 @@ import styled from "styled-components";
 import utils from "../../../shared/util";
 
 interface IThemesProps {
-  updateOption: (option: SettingOptions, value: string) => void;
-  data: { [option in SettingOptions]: Setting };
+  updateOption: (setting: UpdateSettingOption) => void;
+  data: Setting;
 }
 
 const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
@@ -36,7 +35,7 @@ const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
       return theme;
     });
     setThemes(modifiedThemes);
-    updateOption(SettingOptions.Theme, selectedTheme.folder_name);
+    updateOption({ theme: selectedTheme.folder_name });
   };
 
   return (
