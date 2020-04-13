@@ -38,22 +38,6 @@ const utils = {
     return item;
   },
 
-  getMetaTags: function getMetaTags(head = {}) {
-    let htmlAttrs = "";
-    let metaTags = Object.keys(head)
-      .map(function(item) {
-        if (item == "htmlAttributes") {
-          htmlAttrs = head[item].toString();
-          return "";
-        }
-        return head[item].toString();
-      })
-      .filter(function(x) {
-        return x;
-      })
-      .join("");
-    return { htmlAttrs: htmlAttrs, metaTags: metaTags };
-  },
   createStringFromProps: function createStringFromProps(props) {
     let string = "";
     Object.keys(props).map(function(key) {

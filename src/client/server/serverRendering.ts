@@ -45,8 +45,12 @@ const serverRendering = (app: Express) => {
           isStatic,
           request: { req, res },
         });
-        cache.set(req.url, content);
-        res.end(content);
+        // cache.set(req.url, content);
+        if (typeof content === "string") {
+          res.end(content);
+        } else {
+          content.pipe(res);
+        }
       } catch (e) {
         logger.error(e);
       }
