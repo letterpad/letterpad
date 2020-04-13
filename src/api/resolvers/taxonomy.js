@@ -31,24 +31,26 @@ export default {
 
       const taxonomies = await models.Taxonomy.findAll(conditions);
 
-      return taxonomies.map(item => {
-        const type = "tag";
-        item.slug = config.BASE_NAME + "/" + type + "/" + item.slug;
-        // promise
-        const posts = item.getPosts();
-        item.posts = {
-          count: posts.then(items => items.length),
-          rows: posts.then(rows =>
-            rows.map(post => {
-              post.dataValues = normalizePost(post.dataValues);
-              return post;
-            }),
-          ),
-        };
-        return item;
-      });
+      return taxonomies;
     },
   },
+
+  Taxonomy: {
+    async posts(taxonomy) {
+      const type = "tag";
+      taxonomy.slug = config.BASE_NAME + "/" + type + "/" + taxonomy.slug;
+      // promise
+      const posts = await taxonomy.getPosts();
+      return {
+        count: posts.length,
+        rows: posts.map(post => {
+          post.dataValues = normalizePost(post.dataValues);
+          return post;
+        }),
+      };
+    },
+  },
+
   Mutation: {
     updateTaxonomy: async (root, args, { models }) => {
       if (args.id == 0) {

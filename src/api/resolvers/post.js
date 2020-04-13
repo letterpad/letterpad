@@ -216,23 +216,7 @@ const postresolver = {
     },
     tags: async post => {
       const taxonomies = await post.getTaxonomies();
-      return taxonomies
-        .filter(item => item.type === "post_tag")
-        .map(item => {
-          const type = "tag";
-          item.slug = "/" + type + "/" + item.slug;
-          const posts = item.getPosts();
-          item.posts = {
-            count: posts.then(items => items.length),
-            rows: posts.then(rows =>
-              rows.map(post => {
-                post.dataValues = normalizePost(post.dataValues);
-                return post;
-              }),
-            ),
-          };
-          return item;
-        });
+      return taxonomies.filter(item => item.type === "post_tag");
     },
   },
 };
