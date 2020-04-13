@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useState } from "react";
 
 import Basic from "./Basic";
-import Button from "../../components/button";
+import { Button } from "../../components/button";
 import { CREATE_AUTHOR } from "../../../shared/queries/Mutations";
 import Loader from "../../components/loader";
 import { QUERY_ROLES } from "../../../shared/queries/Queries";

@@ -19,7 +19,6 @@ import ResetPassword from "./features/login/ResetPassword";
 import SecuredRoute from "./helpers/Secured";
 import { Setting } from "../__generated__/gqlTypes";
 import Settings from "./features/settings";
-import StaticSite from "./features/static-site";
 import Taxonomy from "./features/taxonomy";
 import { TwoColumnLayout } from "./features/layout";
 import { fetchSettings } from "../api/fetchSettings";
@@ -166,12 +165,6 @@ const Routes: React.FC<RouteComponentProps> = router => {
               exact
               path="/admin/authors/new"
               component={AuthorCreate}
-              settings={settings}
-            />
-            <SecuredRoute
-              exact
-              path="/admin/static-site"
-              component={StaticSite}
               settings={settings}
             />
             <SecuredRoute

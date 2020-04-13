@@ -20,25 +20,24 @@ import {
   Taxonomy,
   TaxonomyTypes,
   TaxonomiesQueryVariables,
+  TaxonomyType,
 } from "../../../__generated__/gqlTypes";
 import TaxonomyList from "./TaxonomyList";
 
 const texts = t => ({
-  post_tag: {
-    title1: t("tags.title"),
-    subtitle1: t("tags.tagline"),
-    title2: t("tags.create"),
-    input1: t("tags.create.name.placeholder"),
-    input2: t("tags.create.desc.placeholder"),
-  },
+  title1: t("tags.title"),
+  subtitle1: t("tags.tagline"),
+  title2: t("tags.create"),
+  input1: t("tags.create.name.placeholder"),
+  input2: t("tags.create.desc.placeholder"),
 });
 
 interface ITaxonomyProps extends WithNamespaces {
-  type: TaxonomyTypes;
+  type: TaxonomyType;
 }
 
 const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
-  const defaultTexts = texts(t)[type];
+  const defaultTexts = texts(t);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [createMode, setCreateMode] = useState<boolean>(false);
   const [taxonomies, setTaxonomies] = React.useState<Taxonomy[]>([]);
@@ -100,7 +99,10 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
 
     setTimeout(() => {
       const inputs = document.querySelectorAll(".scroller input");
-      inputs[inputs.length - 2].focus();
+      const lastLabelInput = inputs[inputs.length - 2];
+      if (lastLabelInput) {
+        (lastLabelInput as HTMLInputElement).focus();
+      }
     }, 0);
   };
 
@@ -128,14 +130,18 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
             const result = await updateTaxonomy(itemWithType);
             if (result.data && result.data.updateTaxonomy.ok) {
               itemWithType.id = result.data.updateTaxonomy.id as number;
-              setTaxonomies(
-                taxonomies.map(item => (item.id === 0 ? itemWithType : item)),
+              const data = (taxonomies as Taxonomy[]).map(item =>
+                item.id === 0 ? itemWithType : item,
               );
+              setTaxonomies(data);
               setCreateMode(false);
               setSelectedIds([]);
               setTimeout(() => {
                 const inputs = document.querySelectorAll(".scroller input");
-                inputs[inputs.length - 1].focus();
+                const lastInputBox = inputs[inputs.length - 1];
+                if (lastInputBox) {
+                  (lastInputBox as HTMLInputElement).focus();
+                }
               }, 0);
             } else {
               return;
