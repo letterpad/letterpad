@@ -8,6 +8,12 @@ const config = (() => {
   const BASE_NAME = isServer()
     ? process.env.BASE_NAME
     : (window as any).BASE_NAME;
+  const USE_GRAPHQL_JIT = isServer()
+    ? !(
+        process.env.USE_GRAPHQL_JIT === "false" ||
+        process.env.USE_GRAPHQL_JIT === "0"
+      )
+    : true;
 
   return {
     ROOT_URL,
@@ -19,6 +25,7 @@ const config = (() => {
       ? ROOT_URL + BASE_NAME + "/upload"
       : (window as any).UPLOAD_URL,
     APP_PORT: isServer() ? process.env.APP_PORT : (window as any).APP_PORT,
+    USE_GRAPHQL_JIT,
   };
 })();
 
