@@ -9,7 +9,7 @@
 import { ServerStyleSheet, StyleSheetManager } from "styled-components";
 
 import { ApolloProvider, renderToStringWithData } from "react-apollo";
-import ClientApp, { IRoutes } from "../ClientApp";
+import App, { IRoutes } from "../App";
 
 import { IServerRenderProps } from "../types";
 import React from "react";
@@ -40,7 +40,7 @@ const serverApp = async (props: IServerRenderProps) => {
       <StaticRouter {...opts}>
         <ApolloProvider client={client}>
           <StaticContext.Provider value={{ isStatic }}>
-            <ClientApp initialData={{ ...initialData }} />
+            <App initialData={{ ...initialData }} />
           </StaticContext.Provider>
         </ApolloProvider>
       </StaticRouter>

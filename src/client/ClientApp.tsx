@@ -1,58 +1,44 @@
-import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
-import { Setting, ThemeSettings } from "../__generated__/gqlTypes";
+import { hydrate, render } from "react-dom";
 
-import SEO from "./helpers/SEO";
-import getRoutes from "./routes";
+import { ApolloProvider } from "react-apollo";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+import React from "react";
+import { Setting } from "../__generated__/gqlTypes";
+import client from "../shared/apolloClient";
+import config from "../config";
 
-export interface IRoutes {
-  initialData: {
-    settings: Setting;
-    themeSettings: ThemeSettings[] | [];
-    initialProps?: {} | null;
-  };
-}
-
-class ClientApp extends Component<IRoutes, {}> {
-  applyCustomCSS = ({ css }) => {
-    if (typeof document == "undefined" || typeof css == "undefined")
-      return false;
-    const style = document.createElement("style");
-    style.setAttribute("type", "text/css");
-    style.innerText = css.value;
-    document.head.appendChild(style);
-  };
-
-  render() {
-    const settings = this.props.initialData.settings;
-    this.applyCustomCSS(settings);
-    const routes = getRoutes({ ...this.props.initialData });
-    return (
-      <>
-        <SEO
-          schema="Blog"
-          title={`${settings.site_title} | ${settings.site_tagline}`}
-          description={settings.site_description}
-          path="/"
-          image="/"
-          contentType="blog"
-          settings={settings}
-        />
-        <Switch>
-          {routes.map((route, i) => {
-            return (
-              <Route
-                key={i}
-                exact
-                path={route.path}
-                component={route.component}
-              />
-            );
-          })}
-        </Switch>
-      </>
-    );
+declare global {
+  interface Window {
+    ga: () => void;
+    __INITIAL_DATA__: {
+      settings: Setting;
+      themeSettings: [];
+      data: null;
+    };
   }
 }
 
-export default ClientApp;
+let initialData: any = {
+  settings: {},
+  themeSettings: [],
+  data: null,
+};
+if (window.__INITIAL_DATA__) {
+  initialData = window.__INITIAL_DATA__;
+}
+
+const LetterpadClient = (
+  <BrowserRouter basename={config.BASE_NAME}>
+    <ApolloProvider client={client(false)}>
+      <App initialData={initialData} />
+    </ApolloProvider>
+  </BrowserRouter>
+);
+
+const renderMethod = (module as any).hot ? render : hydrate;
+renderMethod(LetterpadClient, document.getElementById("app"));
+
+if ((module as any).hot) {
+  (module as any).hot.accept();
+}

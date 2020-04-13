@@ -20,7 +20,7 @@ module.exports = (args, name) => {
     stats: "normal",
     entry: {
       [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
-        path.join(__dirname, "../src/client/Run"),
+        path.join(__dirname, "../src/client/ClientApp"),
       ],
       [source + "/admin/public/dist/" + args.theme + "/admin"]: [
         path.join(__dirname, "../src/admin/app"),
