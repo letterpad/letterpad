@@ -1,4 +1,4 @@
-import { CoverImage, Post } from "../../../../__generated__/gqlTypes";
+import { Image, Post } from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
 import { WithNamespaces, translate } from "react-i18next";
 
@@ -19,9 +19,9 @@ interface IFeaturedImageProps extends WithNamespaces {
 class FeaturedImage extends Component<
   IFeaturedImageProps,
   {
-    imageList: CoverImage[];
+    imageList: Image[];
     fileExplorerOpen: boolean;
-    cover_image: CoverImage;
+    cover_image: Image;
     mediaProvider: MediaProvider;
   }
 > {
@@ -37,7 +37,7 @@ class FeaturedImage extends Component<
 
   // All the images available in the post can be used as a cover image.
   // This function sets the selection
-  setCoverImage = async (images: { [urls: string]: CoverImage }) => {
+  setImage = async (images: { [urls: string]: Image }) => {
     const cover_image = Object.values(images)[0];
     PostActions.setDraft({ cover_image });
     await PostActions.updatePost();
@@ -60,7 +60,7 @@ class FeaturedImage extends Component<
       notify.show(error, "error", 3000);
       return;
     }
-    await this.setCoverImage({ void: { src, width, height } });
+    await this.setImage({ void: { src, width, height } });
     this.toggleFileExplorer();
   };
 
@@ -72,7 +72,7 @@ class FeaturedImage extends Component<
     let isCustom = false;
     let { imageList, cover_image } = this.state;
     if (cover_image.src) {
-      isCustom = !(imageList as CoverImage[]).includes(cover_image);
+      isCustom = !(imageList as Image[]).includes(cover_image);
     }
 
     return (
@@ -82,9 +82,9 @@ class FeaturedImage extends Component<
           <CustomImage
             toggleFileExplorer={this.toggleFileExplorer}
             isCustom={isCustom}
-            coverImage={cover_image}
+            Image={cover_image}
             removeCustomImage={() =>
-              this.setCoverImage({
+              this.setImage({
                 void: { width: 0, height: 0, src: "" },
               })
             }
@@ -104,7 +104,7 @@ class FeaturedImage extends Component<
               }}
               isOpen={this.state.fileExplorerOpen}
               onClose={this.toggleFileExplorer}
-              onMediaInsert={this.setCoverImage}
+              onMediaInsert={this.setImage}
               addNewMedia={() => {
                 const inputFile = this.imageInputRef.current;
                 if (inputFile) {
@@ -129,20 +129,20 @@ export default translate("translations")(FeaturedImage);
 interface ICustomImageProps {
   toggleFileExplorer: () => void;
   removeCustomImage: () => void;
-  coverImage: CoverImage;
+  Image: Image;
   isCustom: boolean;
 }
 const CustomImage: React.FC<ICustomImageProps> = ({
   removeCustomImage,
   toggleFileExplorer,
-  coverImage,
+  Image,
   isCustom,
 }) => {
   let className = "custom-featured-image";
   if (isCustom) {
     className += " selected";
   }
-  if (!coverImage.src) {
+  if (!Image.src) {
     className += " no-image";
   }
   return (
@@ -150,8 +150,8 @@ const CustomImage: React.FC<ICustomImageProps> = ({
       className={className}
       onClick={isCustom ? removeCustomImage : toggleFileExplorer}
     >
-      <span className="handler">{coverImage.src ? "✕" : "+"}</span>
-      {isCustom && <img alt="" width="100%" src={coverImage.src} />}
+      <span className="handler">{Image.src ? "✕" : "+"}</span>
+      {isCustom && <img alt="" width="100%" src={Image.src} />}
     </div>
   );
 };

@@ -45,13 +45,6 @@ export type AuthorResponse = {
   data?: Maybe<Author>;
 };
 
-export type CoverImage = {
-  __typename?: "CoverImage";
-  src: Scalars["String"];
-  width: Scalars["Int"];
-  height: Scalars["Int"];
-};
-
 export type CreateAuthorResponse = {
   __typename?: "CreateAuthorResponse";
   ok: Scalars["Boolean"];
@@ -116,19 +109,13 @@ export type InputAuthor = {
   avatar?: Maybe<Scalars["String"]>;
 };
 
-export type InputCoverImage = {
-  src: Scalars["String"];
-  width: Scalars["Int"];
-  height: Scalars["Int"];
-};
-
 export type InputCreatePost = {
   title?: Maybe<Scalars["String"]>;
   html?: Maybe<Scalars["String"]>;
   md?: Maybe<Scalars["String"]>;
   authorId?: Maybe<Scalars["Int"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<InputCoverImage>;
+  cover_image?: Maybe<InputImage>;
   type?: Maybe<Scalars["String"]>;
   featured?: Maybe<Scalars["Boolean"]>;
   status?: Maybe<PostStatusOptions>;
@@ -170,7 +157,7 @@ export type InputUpdatePost = {
   authorId?: Maybe<Scalars["Int"]>;
   featured?: Maybe<Scalars["Boolean"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<InputCoverImage>;
+  cover_image?: Maybe<InputImage>;
   publishedAt?: Maybe<Scalars["Date"]>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
@@ -391,7 +378,7 @@ export type Post = {
   /** A breif summary of the post */
   excerpt: Scalars["String"];
   /** Convert image of the post */
-  cover_image: CoverImage;
+  cover_image: Image;
   /** Type of the post. Can be "page" or "post" */
   type: PostTypes;
   /** Status of the post */
@@ -836,7 +823,7 @@ export type ResolversTypes = {
   Date: ResolverTypeWrapper<Scalars["Date"]>;
   PostFilters: PostFilters;
   Post: ResolverTypeWrapper<Post>;
-  CoverImage: ResolverTypeWrapper<CoverImage>;
+  Image: ResolverTypeWrapper<Image>;
   PostTypes: PostTypes;
   PostStatusOptions: PostStatusOptions;
   Taxonomy: ResolverTypeWrapper<Taxonomy>;
@@ -856,7 +843,6 @@ export type ResolversTypes = {
   Setting: ResolverTypeWrapper<Setting>;
   Navigation: ResolverTypeWrapper<Navigation>;
   NavigationType: NavigationType;
-  Image: ResolverTypeWrapper<Image>;
   TaxonomyFilters: TaxonomyFilters;
   Theme: ResolverTypeWrapper<Theme>;
   ThemeSettings: ResolverTypeWrapper<ThemeSettings>;
@@ -871,13 +857,12 @@ export type ResolversTypes = {
   DeleteResponse: ResolverTypeWrapper<DeleteResponse>;
   UpdateResponse: ResolverTypeWrapper<UpdateResponse>;
   InputCreatePost: InputCreatePost;
-  InputCoverImage: InputCoverImage;
+  InputImage: InputImage;
   TaxonomyInputType: TaxonomyInputType;
   Response: ResolverTypeWrapper<Response>;
   InputUpdatePost: InputUpdatePost;
   OptionInputType: OptionInputType;
   InputNavigation: InputNavigation;
-  InputImage: InputImage;
   EditTaxResponse: ResolverTypeWrapper<EditTaxResponse>;
   InputThemeSettings: InputThemeSettings;
   PostTaxonomyNode: ResolverTypeWrapper<PostTaxonomyNode>;
@@ -904,7 +889,7 @@ export type ResolversParentTypes = {
   Date: Scalars["Date"];
   PostFilters: PostFilters;
   Post: Post;
-  CoverImage: CoverImage;
+  Image: Image;
   PostTypes: PostTypes;
   PostStatusOptions: PostStatusOptions;
   Taxonomy: Taxonomy;
@@ -924,7 +909,6 @@ export type ResolversParentTypes = {
   Setting: Setting;
   Navigation: Navigation;
   NavigationType: NavigationType;
-  Image: Image;
   TaxonomyFilters: TaxonomyFilters;
   Theme: Theme;
   ThemeSettings: ThemeSettings;
@@ -939,13 +923,12 @@ export type ResolversParentTypes = {
   DeleteResponse: DeleteResponse;
   UpdateResponse: UpdateResponse;
   InputCreatePost: InputCreatePost;
-  InputCoverImage: InputCoverImage;
+  InputImage: InputImage;
   TaxonomyInputType: TaxonomyInputType;
   Response: Response;
   InputUpdatePost: InputUpdatePost;
   OptionInputType: OptionInputType;
   InputNavigation: InputNavigation;
-  InputImage: InputImage;
   EditTaxResponse: EditTaxResponse;
   InputThemeSettings: InputThemeSettings;
   PostTaxonomyNode: PostTaxonomyNode;
@@ -993,16 +976,6 @@ export type AuthorResponseResolvers<
     ContextType
   >;
   data?: Resolver<Maybe<ResolversTypes["Author"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn<ParentType>;
-};
-
-export type CoverImageResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes["CoverImage"] = ResolversParentTypes["CoverImage"]
-> = {
-  src?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  width?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  height?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
@@ -1261,7 +1234,7 @@ export type PostResolvers<
   md?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   author?: Resolver<ResolversTypes["Author"], ParentType, ContextType>;
   excerpt?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  cover_image?: Resolver<ResolversTypes["CoverImage"], ParentType, ContextType>;
+  cover_image?: Resolver<ResolversTypes["Image"], ParentType, ContextType>;
   type?: Resolver<ResolversTypes["PostTypes"], ParentType, ContextType>;
   status?: Resolver<
     ResolversTypes["PostStatusOptions"],
@@ -1691,7 +1664,6 @@ export type Resolvers<ContextType = Context> = {
   AdjacentPosts?: AdjacentPostsResolvers<ContextType>;
   Author?: AuthorResolvers<ContextType>;
   AuthorResponse?: AuthorResponseResolvers<ContextType>;
-  CoverImage?: CoverImageResolvers<ContextType>;
   CreateAuthorResponse?: CreateAuthorResponseResolvers<ContextType>;
   Date?: GraphQLScalarType;
   DeleteResponse?: DeleteResponseResolvers<ContextType>;

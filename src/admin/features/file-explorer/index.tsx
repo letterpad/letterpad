@@ -1,4 +1,4 @@
-import { CoverImage, Media } from "../../../__generated__/gqlTypes";
+import { Image, Media } from "../../../__generated__/gqlTypes";
 import React, { useState } from "react";
 
 import FileItem from "./FileItem";
@@ -8,7 +8,7 @@ import Unsplash from "./providers/Unsplash";
 
 interface IFileExpolorerProps {
   multi: boolean;
-  onSelect: (urls: { [url: string]: CoverImage }) => void;
+  onSelect: (urls: { [url: string]: Image }) => void;
   mediaProvider: MediaProvider;
 }
 
@@ -17,9 +17,7 @@ const FileExplorer: React.FC<IFileExpolorerProps> = ({
   mediaProvider,
   multi,
 }) => {
-  const [selectedUrls, setSelection] = useState<{ [url: string]: CoverImage }>(
-    {},
-  );
+  const [selectedUrls, setSelection] = useState<{ [url: string]: Image }>({});
 
   const onMediaSelected = (media: Media) => {
     let urls = { ...selectedUrls };
@@ -28,17 +26,15 @@ const FileExplorer: React.FC<IFileExpolorerProps> = ({
     } else {
       urls[`${media.url}`] = {
         src: media.url,
-        width: media.width,
-        height: media.height,
+        width: media.width || 0,
+        height: media.height || 0,
       };
     }
     if (!multi) {
-      urls = {
-        [`${media.url}`]: {
-          src: media.url,
-          width: media.width,
-          height: media.height,
-        },
+      urls[`${media.url}`] = {
+        src: media.url,
+        width: media.width || 0,
+        height: media.height || 0,
       };
     }
     setSelection(urls);

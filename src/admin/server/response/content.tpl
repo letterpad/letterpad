@@ -26,6 +26,10 @@
     {{SCRIPT_TAGS}}
     <link href="{{BASE_NAME}}/admin/css/prism-theme.css" rel="stylesheet"/>
     <link href="{{BASE_NAME}}/admin/css/font-awesome.min.css" rel="stylesheet"/>
+
+    <script>
+        document.body.classList.add(localStorage.theme);
+    </script>
 </body>
 
 </html>

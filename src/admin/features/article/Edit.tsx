@@ -1,14 +1,12 @@
-import { CoverImage, Post } from "../../../__generated__/gqlTypes";
+import { Image, Post } from "../../../__generated__/gqlTypes";
 import React, { Component } from "react";
 
-import { EventBusInstance } from "../../../shared/eventBus";
 import FileExplorerModal from "../modals/FileExplorerModal";
 import LetterpadEditor from "letterpad-editor";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
 import ReactTooltip from "react-tooltip";
 import StyledArticle from "./Article.css";
-import { createGlobalStyle } from "styled-components";
 import { uploadFile } from "../../server/util";
 
 export enum MediaProvider {
@@ -44,7 +42,7 @@ class Edit extends Component<IProps> {
     });
   };
 
-  insertImageUrlInEditor = (images: { [url: string]: CoverImage }) => {
+  insertImageUrlInEditor = (images: { [url: string]: Image }) => {
     const urls = Object.keys(images);
     const insertPromises = urls.map(url => {
       return new Promise((resolve, reject) => {

@@ -35,13 +35,6 @@ export type AuthorResponse = {
   data?: Maybe<Author>;
 };
 
-export type CoverImage = {
-  __typename?: "CoverImage";
-  src: Scalars["String"];
-  width: Scalars["Int"];
-  height: Scalars["Int"];
-};
-
 export type CreateAuthorResponse = {
   __typename?: "CreateAuthorResponse";
   ok: Scalars["Boolean"];
@@ -106,19 +99,13 @@ export type InputAuthor = {
   avatar?: Maybe<Scalars["String"]>;
 };
 
-export type InputCoverImage = {
-  src: Scalars["String"];
-  width: Scalars["Int"];
-  height: Scalars["Int"];
-};
-
 export type InputCreatePost = {
   title?: Maybe<Scalars["String"]>;
   html?: Maybe<Scalars["String"]>;
   md?: Maybe<Scalars["String"]>;
   authorId?: Maybe<Scalars["Int"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<InputCoverImage>;
+  cover_image?: Maybe<InputImage>;
   type?: Maybe<Scalars["String"]>;
   featured?: Maybe<Scalars["Boolean"]>;
   status?: Maybe<PostStatusOptions>;
@@ -160,7 +147,7 @@ export type InputUpdatePost = {
   authorId?: Maybe<Scalars["Int"]>;
   featured?: Maybe<Scalars["Boolean"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<InputCoverImage>;
+  cover_image?: Maybe<InputImage>;
   publishedAt?: Maybe<Scalars["Date"]>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
@@ -381,7 +368,7 @@ export type Post = {
   /** A breif summary of the post */
   excerpt: Scalars["String"];
   /** Convert image of the post */
-  cover_image: CoverImage;
+  cover_image: Image;
   /** Type of the post. Can be "page" or "post" */
   type: PostTypes;
   /** Status of the post */
@@ -717,8 +704,8 @@ export type PostFieldsFragment = { __typename?: "Post" } & Pick<
   | "slug"
   | "type"
 > & {
-    cover_image: { __typename?: "CoverImage" } & Pick<
-      CoverImage,
+    cover_image: { __typename?: "Image" } & Pick<
+      Image,
       "width" | "height" | "src"
     >;
     author: { __typename?: "Author" } & Pick<
@@ -755,8 +742,8 @@ export type CreatePostMutation = { __typename?: "Mutation" } & {
           | "publishedAt"
         > & {
             author: { __typename?: "Author" } & Pick<Author, "username">;
-            cover_image: { __typename?: "CoverImage" } & Pick<
-              CoverImage,
+            cover_image: { __typename?: "Image" } & Pick<
+              Image,
               "src" | "width" | "height"
             >;
             tags: Array<
@@ -944,8 +931,8 @@ export type UpdatePostMutation = { __typename?: "Mutation" } & {
               Author,
               "username" | "lname" | "fname" | "avatar" | "bio"
             >;
-            cover_image: { __typename?: "CoverImage" } & Pick<
-              CoverImage,
+            cover_image: { __typename?: "Image" } & Pick<
+              Image,
               "width" | "height" | "src"
             >;
             tags: Array<
@@ -1309,8 +1296,8 @@ export type AdjacentPostsQuery = { __typename?: "Query" } & {
           Post,
           "title" | "slug" | "publishedAt"
         > & {
-            cover_image: { __typename?: "CoverImage" } & Pick<
-              CoverImage,
+            cover_image: { __typename?: "Image" } & Pick<
+              Image,
               "width" | "height" | "src"
             >;
           }
@@ -1320,8 +1307,8 @@ export type AdjacentPostsQuery = { __typename?: "Query" } & {
           Post,
           "title" | "slug" | "publishedAt"
         > & {
-            cover_image: { __typename?: "CoverImage" } & Pick<
-              CoverImage,
+            cover_image: { __typename?: "Image" } & Pick<
+              Image,
               "width" | "height" | "src"
             >;
           }

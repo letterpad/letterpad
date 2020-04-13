@@ -172,25 +172,13 @@ input PostsFilters {
   featured: Boolean
 }
 
-type CoverImage {
-  src: String!
-  width: Int!
-  height: Int!
-}
-
-input InputCoverImage {
-  src: String!
-  width: Int!
-  height: Int!
-}
-
 input InputCreatePost {
   title: String
   html: String
   md: String
   authorId: Int
   excerpt: String
-  cover_image: InputCoverImage
+  cover_image: InputImage
   type: String
   featured: Boolean
   status: PostStatusOptions
@@ -206,7 +194,7 @@ input InputUpdatePost {
   authorId: Int
   featured: Boolean
   excerpt: String
-  cover_image: InputCoverImage
+  cover_image: InputImage
   publishedAt: Date
   type: String
   status: PostStatusOptions
@@ -250,7 +238,7 @@ type Post {
   excerpt: String!
   
   # Convert image of the post
-  cover_image: CoverImage!
+  cover_image: Image!
   
   # Type of the post. Can be "page" or "post"
   type: PostTypes!
