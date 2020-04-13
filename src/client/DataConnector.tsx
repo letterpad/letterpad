@@ -90,7 +90,10 @@ function DataConnector(
                   />
                 ))}
                 {data.rows.map(item => (
-                  <link href={config.BASE_NAME + item.slug} rel="prerender" />
+                  <link
+                    href={config.BASE_NAME + "/" + item.slug}
+                    rel="prerender"
+                  />
                 ))}
               </Helmet>
             );

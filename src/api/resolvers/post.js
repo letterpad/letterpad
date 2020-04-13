@@ -51,7 +51,6 @@ const postresolver = {
      */
     posts: checkDisplayAccess
       .createResolver(addConditionsPlaceholder)
-      // .createResolver(resolveCateogoryFilter)
       .createResolver(resolveMenuFilter)
       .createResolver(resolveTagFilter)
       .createResolver(resolveAuthor)
@@ -243,7 +242,7 @@ export function normalizePost(post) {
       width: cover_image_width || 0,
       height: cover_image_height || 0,
     },
-    slug: config.BASE_NAME + "/" + rest.type + "/" + slug,
+    slug: rest.type + "/" + slug,
     publishedAt: getReadableDate(rest.publishedAt),
     updatedAt: getReadableDate(rest.updatedAt),
     createdAt: getReadableDate(rest.createdAt),
