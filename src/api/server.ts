@@ -74,7 +74,6 @@ export default async (app: Express) => {
   app.get(config.BASE_NAME + "/" + config.rssPath, RssFeed);
 
   if (config.USE_GRAPHQL_JIT) {
-    logger.info(">>>>>>>>>>>>> USING GRAPHQL JIT");
     const graphqlEndpoint = config.BASE_NAME + "/graphql";
     app.use(
       graphqlEndpoint,
