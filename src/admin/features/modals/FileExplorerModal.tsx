@@ -23,11 +23,14 @@ interface IProps extends WithNamespaces {
   isOpen: boolean;
   switchProvider: (mediaProvider: MediaProvider) => void;
 }
-
-class FileExplorerModal extends Component<IProps, any> {
+interface IState {
+  page: number;
+  selectedImageUrls: { [url: string]: Image };
+}
+class FileExplorerModal extends Component<IProps, IState> {
   state = {
     page: 1,
-    selectedImageUrls: [],
+    selectedImageUrls: {},
   };
 
   onSelect = (images: { [url: string]: Image }) => {
@@ -80,7 +83,7 @@ class FileExplorerModal extends Component<IProps, any> {
           <Button
             btnStyle="flat"
             onClick={() => {
-              this.setState({ selectedImageUrls: [], page: 1 });
+              this.setState({ selectedImageUrls: {}, page: 1 });
               switchProvider(nextProvider);
             }}
           >

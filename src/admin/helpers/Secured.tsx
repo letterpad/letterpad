@@ -1,6 +1,5 @@
 import { Redirect, Route } from "react-router-dom";
 
-import Layout from "../features/layout";
 import React from "react";
 import jwtDecode from "jwt-decode";
 

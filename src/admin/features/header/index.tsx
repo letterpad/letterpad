@@ -36,7 +36,7 @@ class Header extends Component<IProps, any> {
             <i className="material-icons">menu</i>
           </button>
           <Link className="navbar-brand brand" to={"/"}>
-            {settings.site_title.value}
+            {settings.site_title}
           </Link>
         </div>
 
