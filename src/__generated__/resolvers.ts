@@ -339,8 +339,6 @@ export type OptionInputType = {
   social_facebook?: Maybe<Scalars["String"]>;
   social_instagram?: Maybe<Scalars["String"]>;
   social_github?: Maybe<Scalars["String"]>;
-  text_notfound?: Maybe<Scalars["String"]>;
-  text_posts_empty?: Maybe<Scalars["String"]>;
   displayAuthorInfo?: Maybe<Scalars["String"]>;
   cloudinary_key?: Maybe<Scalars["String"]>;
   cloudinary_name?: Maybe<Scalars["String"]>;
@@ -588,8 +586,6 @@ export type Setting = {
   social_facebook: Scalars["String"];
   social_instagram: Scalars["String"];
   social_github: Scalars["String"];
-  text_notfound: Scalars["String"];
-  text_posts_empty: Scalars["String"];
   displayAuthorInfo: Scalars["String"];
   cloudinary_key: Scalars["String"];
   cloudinary_name: Scalars["String"];
@@ -1485,12 +1481,6 @@ export type SettingResolvers<
     ContextType
   >;
   social_github?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  text_notfound?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  text_posts_empty?: Resolver<
-    ResolversTypes["String"],
-    ParentType,
-    ContextType
-  >;
   displayAuthorInfo?: Resolver<
     ResolversTypes["String"],
     ParentType,

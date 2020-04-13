@@ -166,9 +166,9 @@ export async function insertAuthor(models) {
 export async function insertTaxonomy(models) {
   return models.Taxonomy.bulkCreate([
     {
-      name: "Uncategorised",
+      name: "Home",
       type: "post_tag",
-      slug: "uncategorised",
+      slug: "home",
     },
     {
       name: "first-post",
@@ -237,6 +237,20 @@ export async function insertMedia(models) {
 }
 
 export async function insertSettings(models) {
+  const menu = [
+    {
+      label: "home",
+      original_name: "home",
+      slug: "home",
+      type: "tag",
+    },
+    {
+      label: "Letterpad Typography",
+      original_name: "Letterpad Typography",
+      slug: "letterpad-typography",
+      type: "page",
+    },
+  ];
   let data = [
     {
       option: "site_title",
@@ -324,21 +338,7 @@ export async function insertSettings(models) {
     },
     {
       option: "menu",
-      value:
-        JSON.stringify[
-          ({
-            label: "home",
-            original_name: "home",
-            slug: "home",
-            type: "tag",
-          },
-          {
-            label: "Letterpad Typography",
-            original_name: "Letterpad Typography",
-            slug: "letterpad-typography",
-            type: "page",
-          })
-        ],
+      value: JSON.stringify(menu),
     },
     {
       option: "cloudinary_key",
