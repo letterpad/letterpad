@@ -32,8 +32,6 @@ import graphiqlMiddleware from "./graphiql";
 
 const MAX_UPLOAD_SIZE = parseInt(process.env["MAX_IMAGE_UPLOAD_SIZE"] || "10");
 
-const USE_GRAPHQL_JIT = true;
-
 export interface Context {
   user: object;
   error: any;
@@ -75,7 +73,8 @@ export default async (app: Express) => {
   app.use(config.BASE_NAME + "/upload", upload);
   app.get(config.BASE_NAME + "/" + config.rssPath, RssFeed);
 
-  if (USE_GRAPHQL_JIT) {
+  if (config.USE_GRAPHQL_JIT) {
+    logger.info(">>>>>>>>>>>>> USING GRAPHQL JIT");
     const graphqlEndpoint = config.BASE_NAME + "/graphql";
     app.use(
       graphqlEndpoint,
