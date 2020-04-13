@@ -2,6 +2,8 @@ import { IServerRenderProps } from "../types";
 import config from "../../config";
 import { getHtml } from "./html";
 import serverApp from "./serverApp";
+import documentRenderer from "./document-renderer";
+import { ReactElement } from "react";
 
 let styles;
 export const contentProvider = async (props: IServerRenderProps) => {
@@ -30,19 +32,21 @@ export const contentProvider = async (props: IServerRenderProps) => {
 
   const { html, apolloState, initialData, head, sheet } = response;
 
+  let styleElements: ReactElement[] = [];
+
   if (sheet) {
     styles = sheet.getStyleTags();
+    styleElements = sheet.getStyleElement();
     sheet.seal();
   }
-  const content = getHtml({
+
+  const content = documentRenderer({
+    appHtml: html,
+    styleElements,
     theme,
-    html,
     apolloState,
     initialData,
-    head,
-    settings,
-    styles,
-    isStatic,
   });
+
   return content;
 };

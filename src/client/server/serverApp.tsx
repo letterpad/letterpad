@@ -6,7 +6,7 @@
  *
  * This file will return a promise
  */
-const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
+import { ServerStyleSheet, StyleSheetManager } from "styled-components";
 
 import { ApolloProvider, renderToStringWithData } from "react-apollo";
 import ClientApp, { IRoutes } from "../ClientApp";
