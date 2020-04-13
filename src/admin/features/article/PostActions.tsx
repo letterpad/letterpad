@@ -9,7 +9,6 @@ import { EventBusInstance } from "../../../shared/eventBus";
 import { FetchResult } from "apollo-link";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 import client from "../../../shared/apolloClient";
-import { deepMerge } from "../../../shared/deepMerge";
 
 interface IPostActions {
   triggerEvent: (name: string, data: any) => void;
@@ -34,8 +33,12 @@ let PostActions: IPostActions = (() => {
     },
 
     setData: (data: Post) => {
-      draftData = { id: data.id };
-      postData = data; //deepMerge(postData || {}, data) as Post;
+      if (Object.keys(data).length > 0) {
+        draftData = { id: data.id };
+        postData = data;
+      } else {
+        postData = {} as Post;
+      }
       PostActions.triggerEvent("onPostChange", data);
     },
 

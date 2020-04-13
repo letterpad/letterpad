@@ -31,6 +31,8 @@ const App = () => {
 
 render(<App />, document.getElementById("app"));
 
+//@ts-ignore
 if (module.hot) {
+  //@ts-ignore
   module.hot.accept();
 }

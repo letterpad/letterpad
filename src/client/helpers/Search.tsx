@@ -1,6 +1,6 @@
 import React, { Component } from "react";
+
 import PropTypes from "prop-types";
-import { EventBusInstance } from "shared/eventBus";
 import { RouteComponentProps } from "react-router";
 
 export default class Search extends Component<

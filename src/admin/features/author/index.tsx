@@ -33,7 +33,7 @@ const Author: React.FC<IAdminRouteProps & WithNamespaces> = ({
   });
 
   useEffect(() => {
-    if (Object.keys(updatedAuthor).length > 1) {
+    if (Object.keys(updatedAuthor).length > 0) {
       utils.debounce(submitData, 500)();
     }
   }, [updatedAuthor]);
@@ -66,7 +66,11 @@ const Author: React.FC<IAdminRouteProps & WithNamespaces> = ({
 
   const setOption = (option: string, value: string) => {
     if (authorData && authorData[option] === value) return;
-    const updated = { ...updatedAuthor, [option]: value };
+    const updated = {
+      ...updatedAuthor,
+      [option]: value,
+      id: (authorData as Author).id as number,
+    };
     setUpdatedAuthor(updated);
   };
 

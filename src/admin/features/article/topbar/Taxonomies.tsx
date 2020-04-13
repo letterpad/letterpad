@@ -16,7 +16,7 @@ import apolloClient from "../../../../shared/apolloClient";
 interface ITaxonomyProps {
   post: Post;
   for: TaxonomyType;
-  suggestions: [];
+  suggestions: Taxonomy[];
   toggleVisibility: (e?: Event, flag?: boolean) => void;
 }
 
