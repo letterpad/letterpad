@@ -10,7 +10,8 @@ import Taxonomy from "./taxonomy";
 import Theme from "./theme";
 import dbConfig from "../../config/db.config";
 
-const env = process.env.NODE_ENV || "dev";
+let env = process.env.NODE_ENV || "dev";
+if (env === "development") env = "dev";
 const config = dbConfig[env];
 
 // establish  database connection

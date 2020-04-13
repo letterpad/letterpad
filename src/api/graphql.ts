@@ -158,6 +158,10 @@ interface ParsedGraphqlRequest {
 
 function parseGraphqlRequest(req: Request): ParsedGraphqlRequest {
   const parsedReq = req.body;
+  if (!parsedReq) {
+    throw new TypeError("requestBody is undefined");
+  }
+
   if (typeof parsedReq.query !== "string") {
     throw new TypeError("requestBody.query is not found");
   }
