@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { WithNamespaces, translate } from "react-i18next";
 
-import Button from "../../../components/button";
+import { Button } from "../../../components/button";
 import CheckBox from "../../../components/checkbox";
 import Input from "../../../components/input";
 import ModalHoc from "../../../components/modal";

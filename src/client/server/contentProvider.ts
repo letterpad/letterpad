@@ -6,7 +6,7 @@ import serverApp from "./serverApp";
 let styles;
 export const contentProvider = async (props: IServerRenderProps) => {
   const { settings, isStatic, themeSettings } = props;
-  let theme = settings.theme.value;
+  let theme = settings.theme;
   // In dev mode if a theme is explicitly called, then use that
   if (config.THEME) {
     theme = config.THEME;

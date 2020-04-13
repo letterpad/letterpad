@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { WithNamespaces, translate } from "react-i18next";
 
 import { Button } from "../../components/button";
-import { CoverImage } from "../../../__generated__/gqlTypes";
 import FileExplorer from "../file-explorer";
+import { Image } from "../../../__generated__/gqlTypes";
 import { MediaProvider } from "../article/Edit";
 import ModalHoc from "../../components/modal";
 import { notify } from "react-notify-toast";
@@ -16,7 +16,7 @@ const StyledBody = styled.div`
 `;
 
 interface IProps extends WithNamespaces {
-  onMediaInsert: (images: { [urls: string]: CoverImage }) => void;
+  onMediaInsert: (images: { [urls: string]: Image }) => void;
   onClose: () => void;
   mediaProvider: MediaProvider;
   addNewMedia: () => void;
@@ -30,7 +30,7 @@ class FileExplorerModal extends Component<IProps, any> {
     selectedImageUrls: [],
   };
 
-  onSelect = (images: { [url: string]: CoverImage }) => {
+  onSelect = (images: { [url: string]: Image }) => {
     this.setState({ selectedImageUrls: images });
   };
 

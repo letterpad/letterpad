@@ -4,7 +4,7 @@ import { ApolloProvider } from "react-apollo";
 import { BrowserRouter } from "react-router-dom";
 import ClientApp from "./ClientApp";
 import React from "react";
-import { TypeSettings } from "./types";
+import { Setting } from "../__generated__/gqlTypes";
 import client from "../shared/apolloClient";
 import config from "../config";
 
@@ -12,7 +12,7 @@ declare global {
   interface Window {
     ga: () => void;
     __INITIAL_DATA__: {
-      settings: TypeSettings;
+      settings: Setting;
       themeSettings: [];
       data: null;
     };

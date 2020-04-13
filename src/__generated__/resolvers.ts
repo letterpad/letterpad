@@ -45,13 +45,6 @@ export type AuthorResponse = {
   data?: Maybe<Author>;
 };
 
-export type CoverImage = {
-  __typename?: "CoverImage";
-  src: Scalars["String"];
-  width: Scalars["Int"];
-  height: Scalars["Int"];
-};
-
 export type CreateAuthorResponse = {
   __typename?: "CreateAuthorResponse";
   ok: Scalars["Boolean"];
@@ -75,6 +68,7 @@ export enum EnumPermissions {
   ManageAllPosts = "MANAGE_ALL_POSTS",
   ManageUsers = "MANAGE_USERS",
   ManageSettings = "MANAGE_SETTINGS",
+  ManageOwnPosts = "MANAGE_OWN_POSTS",
 }
 
 export enum EnumRoles {
@@ -96,6 +90,13 @@ export type ForgotPasswordResponse = {
   msg?: Maybe<Scalars["String"]>;
 };
 
+export type Image = {
+  __typename?: "Image";
+  src: Scalars["String"];
+  width: Scalars["Int"];
+  height: Scalars["Int"];
+};
+
 export type InputAuthor = {
   id: Scalars["Int"];
   email?: Maybe<Scalars["String"]>;
@@ -108,25 +109,31 @@ export type InputAuthor = {
   avatar?: Maybe<Scalars["String"]>;
 };
 
-export type InputCoverImage = {
-  src: Scalars["String"];
-  width: Scalars["Int"];
-  height: Scalars["Int"];
-};
-
 export type InputCreatePost = {
   title?: Maybe<Scalars["String"]>;
   html?: Maybe<Scalars["String"]>;
   md?: Maybe<Scalars["String"]>;
   authorId?: Maybe<Scalars["Int"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<InputCoverImage>;
+  cover_image?: Maybe<InputImage>;
   type?: Maybe<Scalars["String"]>;
   featured?: Maybe<Scalars["Boolean"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
   tags?: Maybe<Array<Maybe<TaxonomyInputType>>>;
-  categories?: Maybe<Array<Maybe<TaxonomyInputType>>>;
+};
+
+export type InputImage = {
+  src?: Maybe<Scalars["String"]>;
+  width?: Maybe<Scalars["Int"]>;
+  height?: Maybe<Scalars["Int"]>;
+};
+
+export type InputNavigation = {
+  type?: Maybe<NavigationType>;
+  slug?: Maybe<Scalars["String"]>;
+  original_name?: Maybe<Scalars["String"]>;
+  label?: Maybe<Scalars["String"]>;
 };
 
 export type InputThemeSettings = {
@@ -150,13 +157,12 @@ export type InputUpdatePost = {
   authorId?: Maybe<Scalars["Int"]>;
   featured?: Maybe<Scalars["Boolean"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<InputCoverImage>;
+  cover_image?: Maybe<InputImage>;
   publishedAt?: Maybe<Scalars["Date"]>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
   tags?: Maybe<Array<Maybe<TaxonomyInputType>>>;
-  categories?: Maybe<Array<Maybe<TaxonomyInputType>>>;
 };
 
 export type LoginResponse = {
@@ -193,11 +199,6 @@ export type MediaNode = {
   rows: Array<Media>;
 };
 
-export enum MenuTypes {
-  Category = "category",
-  Page = "page",
-}
-
 export type Mutation = {
   __typename?: "Mutation";
   register: AuthorResponse;
@@ -213,7 +214,7 @@ export type Mutation = {
   createPost: Response;
   updatePost: Response;
   deletePosts: Response;
-  updateOptions: Array<Setting>;
+  updateOptions: Setting;
   updateTaxonomy: EditTaxResponse;
   deleteTaxonomy: EditTaxResponse;
   updateThemes: Scalars["Boolean"];
@@ -287,7 +288,7 @@ export type MutationDeletePostsArgs = {
 };
 
 export type MutationUpdateOptionsArgs = {
-  options?: Maybe<Array<Maybe<OptionInputType>>>;
+  options: Array<OptionInputType>;
 };
 
 export type MutationUpdateTaxonomyArgs = {
@@ -312,10 +313,47 @@ export type MutationInsertThemesArgs = {
   settings: Array<InputThemeSettings>;
 };
 
+export type Navigation = {
+  __typename?: "Navigation";
+  type: NavigationType;
+  slug: Scalars["String"];
+  original_name: Scalars["String"];
+  label: Scalars["String"];
+};
+
+export enum NavigationType {
+  Tag = "tag",
+  Page = "page",
+  Custom = "custom",
+}
+
 export type OptionInputType = {
-  id?: Maybe<Scalars["Int"]>;
-  option?: Maybe<SettingOptions>;
-  value?: Maybe<Scalars["String"]>;
+  site_title?: Maybe<Scalars["String"]>;
+  site_tagline?: Maybe<Scalars["String"]>;
+  site_email?: Maybe<Scalars["String"]>;
+  site_url?: Maybe<Scalars["String"]>;
+  site_footer?: Maybe<Scalars["String"]>;
+  site_description?: Maybe<Scalars["String"]>;
+  subscribe_embed?: Maybe<Scalars["String"]>;
+  social_twitter?: Maybe<Scalars["String"]>;
+  social_facebook?: Maybe<Scalars["String"]>;
+  social_instagram?: Maybe<Scalars["String"]>;
+  social_github?: Maybe<Scalars["String"]>;
+  text_notfound?: Maybe<Scalars["String"]>;
+  text_posts_empty?: Maybe<Scalars["String"]>;
+  displayAuthorInfo?: Maybe<Scalars["String"]>;
+  cloudinary_key?: Maybe<Scalars["String"]>;
+  cloudinary_name?: Maybe<Scalars["String"]>;
+  cloudinary_secret?: Maybe<Scalars["String"]>;
+  menu?: Maybe<Array<InputNavigation>>;
+  css?: Maybe<Scalars["String"]>;
+  google_analytics?: Maybe<Scalars["String"]>;
+  locale?: Maybe<Scalars["String"]>;
+  theme?: Maybe<Scalars["String"]>;
+  disqus_id?: Maybe<Scalars["String"]>;
+  banner?: Maybe<InputImage>;
+  site_logo?: Maybe<InputImage>;
+  site_favicon?: Maybe<InputImage>;
 };
 
 export type Permission = {
@@ -339,7 +377,7 @@ export type Post = {
   /** A breif summary of the post */
   excerpt: Scalars["String"];
   /** Convert image of the post */
-  cover_image: CoverImage;
+  cover_image: Image;
   /** Type of the post. Can be "page" or "post" */
   type: PostTypes;
   /** Status of the post */
@@ -358,19 +396,16 @@ export type Post = {
   reading_time: Scalars["String"];
   /** Tags of the post */
   tags: Array<Taxonomy>;
-  /** Categories of the post */
-  categories: Array<Taxonomy>;
 };
 
 export type PostFilters = {
   id?: Maybe<Scalars["Int"]>;
   slug?: Maybe<Scalars["String"]>;
+  featured?: Maybe<Scalars["Boolean"]>;
 };
 
 export type PostsFilters = {
   tag?: Maybe<Scalars["String"]>;
-  category?: Maybe<Scalars["String"]>;
-  categorySlug?: Maybe<Scalars["String"]>;
   tagSlug?: Maybe<Scalars["String"]>;
   sortBy?: Maybe<PostSortBy>;
   status?: Maybe<PostStatusOptions>;
@@ -432,7 +467,8 @@ export type Query = {
   search?: Maybe<SearchOutput>;
   stats?: Maybe<Stats>;
   roles: Array<Role>;
-  settings: Array<Setting>;
+  globalSearch?: Maybe<SearchResponse>;
+  settings: Setting;
   taxonomies: Array<Taxonomy>;
   themes: Array<Theme>;
 };
@@ -462,6 +498,10 @@ export type QuerySearchArgs = {
   filters: SearchFilters;
 };
 
+export type QueryGlobalSearchArgs = {
+  keyword?: Maybe<Scalars["String"]>;
+};
+
 export type QuerySettingsArgs = {
   option?: Maybe<Scalars["String"]>;
 };
@@ -488,10 +528,16 @@ export type Role = {
   permissions?: Maybe<Array<Maybe<Permission>>>;
 };
 
+export type SearchData = {
+  __typename?: "SearchData";
+  pages?: Maybe<Array<Maybe<SearchResults>>>;
+  posts?: Maybe<Array<Maybe<SearchResults>>>;
+  tags?: Maybe<Array<Maybe<SearchResults>>>;
+};
+
 export type SearchFilters = {
   query?: Maybe<Scalars["String"]>;
   tag?: Maybe<Scalars["String"]>;
-  category?: Maybe<Scalars["String"]>;
   cursor?: Maybe<Scalars["Int"]>;
   featured?: Maybe<Scalars["Boolean"]>;
   page?: Maybe<Scalars["Int"]>;
@@ -505,6 +551,13 @@ export type SearchOutput = {
   rows?: Maybe<Array<Maybe<SearchResult>>>;
 };
 
+export type SearchResponse = {
+  __typename?: "SearchResponse";
+  ok: Scalars["Boolean"];
+  data?: Maybe<SearchData>;
+  errors?: Maybe<Array<Error>>;
+};
+
 export type SearchResult = {
   __typename?: "SearchResult";
   id?: Maybe<Scalars["Int"]>;
@@ -515,41 +568,42 @@ export type SearchResult = {
   featured?: Maybe<Scalars["Boolean"]>;
 };
 
-export type Setting = {
-  __typename?: "Setting";
-  id: Scalars["Int"];
-  option: SettingOptions;
-  value: Scalars["String"];
+export type SearchResults = {
+  __typename?: "SearchResults";
+  title?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["Int"]>;
+  type?: Maybe<Scalars["String"]>;
 };
 
-export enum SettingOptions {
-  SiteTitle = "site_title",
-  SiteTagline = "site_tagline",
-  SiteEmail = "site_email",
-  SiteUrl = "site_url",
-  SiteFooter = "site_footer",
-  SiteDescription = "site_description",
-  SubscribeEmbed = "subscribe_embed",
-  SocialTwitter = "social_twitter",
-  SocialFacebook = "social_facebook",
-  SocialInstagram = "social_instagram",
-  SocialGithub = "social_github",
-  TextNotfound = "text_notfound",
-  TextPostsEmpty = "text_posts_empty",
-  DisplayAuthorInfo = "displayAuthorInfo",
-  SiteLogo = "site_logo",
-  SiteFavicon = "site_favicon",
-  CloudinaryKey = "cloudinary_key",
-  CloudinaryName = "cloudinary_name",
-  CloudinarySecret = "cloudinary_secret",
-  Menu = "menu",
-  Css = "css",
-  GoogleAnalytics = "google_analytics",
-  Locale = "locale",
-  Theme = "theme",
-  DisqusId = "disqus_id",
-  Banner = "banner",
-}
+export type Setting = {
+  __typename?: "Setting";
+  site_title: Scalars["String"];
+  site_tagline: Scalars["String"];
+  site_email: Scalars["String"];
+  site_url: Scalars["String"];
+  site_footer: Scalars["String"];
+  site_description: Scalars["String"];
+  subscribe_embed: Scalars["String"];
+  social_twitter: Scalars["String"];
+  social_facebook: Scalars["String"];
+  social_instagram: Scalars["String"];
+  social_github: Scalars["String"];
+  text_notfound: Scalars["String"];
+  text_posts_empty: Scalars["String"];
+  displayAuthorInfo: Scalars["String"];
+  cloudinary_key: Scalars["String"];
+  cloudinary_name: Scalars["String"];
+  cloudinary_secret: Scalars["String"];
+  menu: Array<Navigation>;
+  css: Scalars["String"];
+  google_analytics: Scalars["String"];
+  locale: Scalars["String"];
+  theme: Scalars["String"];
+  disqus_id?: Maybe<Scalars["String"]>;
+  banner: Image;
+  site_logo: Image;
+  site_favicon: Image;
+};
 
 export type Social = {
   github?: Maybe<Scalars["String"]>;
@@ -563,7 +617,7 @@ export type Stats = {
   posts?: Maybe<PostStatus>;
   pages?: Maybe<PostStatus>;
   tags?: Maybe<Scalars["Int"]>;
-  categories?: Maybe<Scalars["Int"]>;
+  media?: Maybe<Scalars["Int"]>;
 };
 
 export type Taxonomy = {
@@ -572,6 +626,8 @@ export type Taxonomy = {
   name: Scalars["String"];
   desc?: Maybe<Scalars["String"]>;
   slug: Scalars["String"];
+  type?: Maybe<TaxonomyType>;
+  posts?: Maybe<PostsNode>;
 };
 
 export type TaxonomyFilters = {
@@ -587,12 +643,10 @@ export type TaxonomyInputType = {
 
 export enum TaxonomyType {
   PostTag = "post_tag",
-  PostCategory = "post_category",
 }
 
 export enum TaxonomyTypes {
   Tags = "tags",
-  Categories = "categories",
 }
 
 export type Theme = {
@@ -765,23 +819,27 @@ export type ResolversTypes = {
   Date: ResolverTypeWrapper<Scalars["Date"]>;
   PostFilters: PostFilters;
   Post: ResolverTypeWrapper<Post>;
-  CoverImage: ResolverTypeWrapper<CoverImage>;
+  Image: ResolverTypeWrapper<Image>;
   PostTypes: PostTypes;
   PostStatusOptions: PostStatusOptions;
   Taxonomy: ResolverTypeWrapper<Taxonomy>;
+  TaxonomyType: TaxonomyType;
+  PostsNode: ResolverTypeWrapper<PostsNode>;
   PostsFilters: PostsFilters;
   PostSortBy: PostSortBy;
-  PostsNode: ResolverTypeWrapper<PostsNode>;
   AdjacentPosts: ResolverTypeWrapper<AdjacentPosts>;
   SearchFilters: SearchFilters;
   SearchOutput: ResolverTypeWrapper<SearchOutput>;
   SearchResult: ResolverTypeWrapper<SearchResult>;
   Stats: ResolverTypeWrapper<Stats>;
   PostStatus: ResolverTypeWrapper<PostStatus>;
+  SearchResponse: ResolverTypeWrapper<SearchResponse>;
+  SearchData: ResolverTypeWrapper<SearchData>;
+  SearchResults: ResolverTypeWrapper<SearchResults>;
   Setting: ResolverTypeWrapper<Setting>;
-  SettingOptions: SettingOptions;
+  Navigation: ResolverTypeWrapper<Navigation>;
+  NavigationType: NavigationType;
   TaxonomyFilters: TaxonomyFilters;
-  TaxonomyType: TaxonomyType;
   Theme: ResolverTypeWrapper<Theme>;
   ThemeSettings: ResolverTypeWrapper<ThemeSettings>;
   ThemeSettingsUIInputTypes: ThemeSettingsUiInputTypes;
@@ -795,14 +853,14 @@ export type ResolversTypes = {
   DeleteResponse: ResolverTypeWrapper<DeleteResponse>;
   UpdateResponse: ResolverTypeWrapper<UpdateResponse>;
   InputCreatePost: InputCreatePost;
-  InputCoverImage: InputCoverImage;
+  InputImage: InputImage;
   TaxonomyInputType: TaxonomyInputType;
   Response: ResolverTypeWrapper<Response>;
   InputUpdatePost: InputUpdatePost;
   OptionInputType: OptionInputType;
+  InputNavigation: InputNavigation;
   EditTaxResponse: ResolverTypeWrapper<EditTaxResponse>;
   InputThemeSettings: InputThemeSettings;
-  MenuTypes: MenuTypes;
   PostTaxonomyNode: ResolverTypeWrapper<PostTaxonomyNode>;
   EnumPermissions: EnumPermissions;
   TaxonomyTypes: TaxonomyTypes;
@@ -827,23 +885,27 @@ export type ResolversParentTypes = {
   Date: Scalars["Date"];
   PostFilters: PostFilters;
   Post: Post;
-  CoverImage: CoverImage;
+  Image: Image;
   PostTypes: PostTypes;
   PostStatusOptions: PostStatusOptions;
   Taxonomy: Taxonomy;
+  TaxonomyType: TaxonomyType;
+  PostsNode: PostsNode;
   PostsFilters: PostsFilters;
   PostSortBy: PostSortBy;
-  PostsNode: PostsNode;
   AdjacentPosts: AdjacentPosts;
   SearchFilters: SearchFilters;
   SearchOutput: SearchOutput;
   SearchResult: SearchResult;
   Stats: Stats;
   PostStatus: PostStatus;
+  SearchResponse: SearchResponse;
+  SearchData: SearchData;
+  SearchResults: SearchResults;
   Setting: Setting;
-  SettingOptions: SettingOptions;
+  Navigation: Navigation;
+  NavigationType: NavigationType;
   TaxonomyFilters: TaxonomyFilters;
-  TaxonomyType: TaxonomyType;
   Theme: Theme;
   ThemeSettings: ThemeSettings;
   ThemeSettingsUIInputTypes: ThemeSettingsUiInputTypes;
@@ -857,14 +919,14 @@ export type ResolversParentTypes = {
   DeleteResponse: DeleteResponse;
   UpdateResponse: UpdateResponse;
   InputCreatePost: InputCreatePost;
-  InputCoverImage: InputCoverImage;
+  InputImage: InputImage;
   TaxonomyInputType: TaxonomyInputType;
   Response: Response;
   InputUpdatePost: InputUpdatePost;
   OptionInputType: OptionInputType;
+  InputNavigation: InputNavigation;
   EditTaxResponse: EditTaxResponse;
   InputThemeSettings: InputThemeSettings;
-  MenuTypes: MenuTypes;
   PostTaxonomyNode: PostTaxonomyNode;
   EnumPermissions: EnumPermissions;
   TaxonomyTypes: TaxonomyTypes;
@@ -910,16 +972,6 @@ export type AuthorResponseResolvers<
     ContextType
   >;
   data?: Resolver<Maybe<ResolversTypes["Author"]>, ParentType, ContextType>;
-  __isTypeOf?: isTypeOfResolverFn<ParentType>;
-};
-
-export type CoverImageResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes["CoverImage"] = ResolversParentTypes["CoverImage"]
-> = {
-  src?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  width?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  height?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
@@ -978,6 +1030,16 @@ export type ForgotPasswordResponseResolvers<
 > = {
   ok?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   msg?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+};
+
+export type ImageResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["Image"] = ResolversParentTypes["Image"]
+> = {
+  src?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  width?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  height?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
@@ -1107,10 +1169,10 @@ export type MutationResolvers<
     RequireFields<MutationDeletePostsArgs, never>
   >;
   updateOptions?: Resolver<
-    Array<ResolversTypes["Setting"]>,
+    ResolversTypes["Setting"],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateOptionsArgs, never>
+    RequireFields<MutationUpdateOptionsArgs, "options">
   >;
   updateTaxonomy?: Resolver<
     ResolversTypes["EditTaxResponse"],
@@ -1138,6 +1200,17 @@ export type MutationResolvers<
   >;
 };
 
+export type NavigationResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["Navigation"] = ResolversParentTypes["Navigation"]
+> = {
+  type?: Resolver<ResolversTypes["NavigationType"], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  original_name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  label?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+};
+
 export type PermissionResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Permission"] = ResolversParentTypes["Permission"]
@@ -1157,7 +1230,7 @@ export type PostResolvers<
   md?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   author?: Resolver<ResolversTypes["Author"], ParentType, ContextType>;
   excerpt?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  cover_image?: Resolver<ResolversTypes["CoverImage"], ParentType, ContextType>;
+  cover_image?: Resolver<ResolversTypes["Image"], ParentType, ContextType>;
   type?: Resolver<ResolversTypes["PostTypes"], ParentType, ContextType>;
   status?: Resolver<
     ResolversTypes["PostStatusOptions"],
@@ -1171,11 +1244,6 @@ export type PostResolvers<
   updatedAt?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   reading_time?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   tags?: Resolver<Array<ResolversTypes["Taxonomy"]>, ParentType, ContextType>;
-  categories?: Resolver<
-    Array<ResolversTypes["Taxonomy"]>,
-    ParentType,
-    ContextType
-  >;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
@@ -1259,8 +1327,14 @@ export type QueryResolvers<
   >;
   stats?: Resolver<Maybe<ResolversTypes["Stats"]>, ParentType, ContextType>;
   roles?: Resolver<Array<ResolversTypes["Role"]>, ParentType, ContextType>;
+  globalSearch?: Resolver<
+    Maybe<ResolversTypes["SearchResponse"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryGlobalSearchArgs, never>
+  >;
   settings?: Resolver<
-    Array<ResolversTypes["Setting"]>,
+    ResolversTypes["Setting"],
     ParentType,
     ContextType,
     RequireFields<QuerySettingsArgs, never>
@@ -1307,6 +1381,28 @@ export type RoleResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
+export type SearchDataResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["SearchData"] = ResolversParentTypes["SearchData"]
+> = {
+  pages?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["SearchResults"]>>>,
+    ParentType,
+    ContextType
+  >;
+  posts?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["SearchResults"]>>>,
+    ParentType,
+    ContextType
+  >;
+  tags?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["SearchResults"]>>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+};
+
 export type SearchOutputResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["SearchOutput"] = ResolversParentTypes["SearchOutput"]
@@ -1315,6 +1411,20 @@ export type SearchOutputResolvers<
   count?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   rows?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["SearchResult"]>>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+};
+
+export type SearchResponseResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["SearchResponse"] = ResolversParentTypes["SearchResponse"]
+> = {
+  ok?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  data?: Resolver<Maybe<ResolversTypes["SearchData"]>, ParentType, ContextType>;
+  errors?: Resolver<
+    Maybe<Array<ResolversTypes["Error"]>>,
     ParentType,
     ContextType
   >;
@@ -1342,13 +1452,74 @@ export type SearchResultResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
+export type SearchResultsResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["SearchResults"] = ResolversParentTypes["SearchResults"]
+> = {
+  title?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
+  type?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+};
+
 export type SettingResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Setting"] = ResolversParentTypes["Setting"]
 > = {
-  id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
-  option?: Resolver<ResolversTypes["SettingOptions"], ParentType, ContextType>;
-  value?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_tagline?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_url?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_footer?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  site_description?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  subscribe_embed?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  social_twitter?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  social_facebook?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  social_instagram?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  social_github?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  text_notfound?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  text_posts_empty?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  displayAuthorInfo?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  cloudinary_key?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  cloudinary_name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  cloudinary_secret?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  menu?: Resolver<Array<ResolversTypes["Navigation"]>, ParentType, ContextType>;
+  css?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  google_analytics?: Resolver<
+    ResolversTypes["String"],
+    ParentType,
+    ContextType
+  >;
+  locale?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  theme?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  disqus_id?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  banner?: Resolver<ResolversTypes["Image"], ParentType, ContextType>;
+  site_logo?: Resolver<ResolversTypes["Image"], ParentType, ContextType>;
+  site_favicon?: Resolver<ResolversTypes["Image"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
@@ -1367,7 +1538,7 @@ export type StatsResolvers<
     ContextType
   >;
   tags?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
-  categories?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
+  media?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
@@ -1379,6 +1550,12 @@ export type TaxonomyResolvers<
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   desc?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   slug?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  type?: Resolver<
+    Maybe<ResolversTypes["TaxonomyType"]>,
+    ParentType,
+    ContextType
+  >;
+  posts?: Resolver<Maybe<ResolversTypes["PostsNode"]>, ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 };
 
@@ -1472,17 +1649,18 @@ export type Resolvers<ContextType = Context> = {
   AdjacentPosts?: AdjacentPostsResolvers<ContextType>;
   Author?: AuthorResolvers<ContextType>;
   AuthorResponse?: AuthorResponseResolvers<ContextType>;
-  CoverImage?: CoverImageResolvers<ContextType>;
   CreateAuthorResponse?: CreateAuthorResponseResolvers<ContextType>;
   Date?: GraphQLScalarType;
   DeleteResponse?: DeleteResponseResolvers<ContextType>;
   EditTaxResponse?: EditTaxResponseResolvers<ContextType>;
   Error?: ErrorResolvers<ContextType>;
   ForgotPasswordResponse?: ForgotPasswordResponseResolvers<ContextType>;
+  Image?: ImageResolvers<ContextType>;
   LoginResponse?: LoginResponseResolvers<ContextType>;
   Media?: MediaResolvers<ContextType>;
   MediaNode?: MediaNodeResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  Navigation?: NavigationResolvers<ContextType>;
   Permission?: PermissionResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   PostsNode?: PostsNodeResolvers<ContextType>;
@@ -1491,8 +1669,11 @@ export type Resolvers<ContextType = Context> = {
   Query?: QueryResolvers<ContextType>;
   Response?: ResponseResolvers<ContextType>;
   Role?: RoleResolvers<ContextType>;
+  SearchData?: SearchDataResolvers<ContextType>;
   SearchOutput?: SearchOutputResolvers<ContextType>;
+  SearchResponse?: SearchResponseResolvers<ContextType>;
   SearchResult?: SearchResultResolvers<ContextType>;
+  SearchResults?: SearchResultsResolvers<ContextType>;
   Setting?: SettingResolvers<ContextType>;
   Stats?: StatsResolvers<ContextType>;
   Taxonomy?: TaxonomyResolvers<ContextType>;

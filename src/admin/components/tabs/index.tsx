@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { RouteComponentProps, withRouter } from "react-router";
 import StyledTabs, { StyledTab } from "./Tabs.css";
 
-interface ITabProps {
-  activeTab: string;
-  onChange: (name: string) => void;
+interface ITabProps extends RouteComponentProps {
+  defaultTab: string;
 }
 
-const Tabs: React.FC<ITabProps> = ({ activeTab, onChange, children }) => {
+const Tabs: React.FC<ITabProps> = ({ defaultTab, children, history }) => {
+  const [selectedTab, changeTab] = useState<string>(defaultTab);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(history.location.search);
+    changeTab(urlParams.get("tab") || defaultTab);
+  }, [document.location.search]);
+
   const onClickTabItem = (e: React.MouseEvent, tab: string) => {
     e.preventDefault();
-    onChange(tab);
+    history.push({
+      pathname: history.location.pathname,
+      search: "?tab=" + tab,
+    });
   };
 
   return (
@@ -23,7 +33,7 @@ const Tabs: React.FC<ITabProps> = ({ activeTab, onChange, children }) => {
             <StyledTab
               className="tab-item"
               key={label}
-              active={activeTab === label}
+              active={selectedTab === label}
               onClick={(e: React.MouseEvent) => onClickTabItem(e, label)}
             >
               {label}
@@ -35,7 +45,7 @@ const Tabs: React.FC<ITabProps> = ({ activeTab, onChange, children }) => {
         {React.Children.map(children, child => {
           if (!React.isValidElement(child)) return;
           const { label } = child.props;
-          if (label && label !== activeTab) return undefined;
+          if (label && label !== selectedTab) return undefined;
           return child;
         })}
       </section>
@@ -43,4 +53,4 @@ const Tabs: React.FC<ITabProps> = ({ activeTab, onChange, children }) => {
   );
 };
 
-export default Tabs;
+export default withRouter(Tabs);

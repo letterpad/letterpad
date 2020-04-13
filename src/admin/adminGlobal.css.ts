@@ -1,3 +1,5 @@
+import { darkTheme, lightTheme } from "./css-variables";
+
 import { createGlobalStyle } from "styled-components";
 
 export const NormalizeCss = createGlobalStyle`
@@ -11,10 +13,44 @@ html {
 	line-height: 1.15;
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
+    font-size: 86%;
+    overflow-x: hidden;
+    @media(min-width: 1441px) {
+        font-size: 96%;
+    }
 }
+
 body {
 	margin: 0;
+    background: var(--bg-base);
+    color: var(--color-base);
 }
+
+
+a {
+    color: var(--color-base);
+    transition: all 0.125s cubic-bezier(0.3, 0.1, 0.58, 1);
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    text-decoration: none;
+    outline: none;
+}
+a:hover {
+    color: var(--link-hover);
+}
+
+::-webkit-input-placeholder {
+    color: var(--color-muted) !important;
+    font-weight: 300;
+}
+
+hr {
+    border-top: 1px solid var(--color-border);
+}
+
 article,
 aside,
 footer,
@@ -118,10 +154,11 @@ input,
 optgroup,
 select,
 textarea {
-	font-family: sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 100%;
 	line-height: 1.15;
 	margin: 0;
+    font-size: 1rem;
     
 }
 
@@ -213,6 +250,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,500,600,700");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
+@import url('https://fonts.googleapis.com/css?family=Inter:100,300,400,500,600,700');
 
 /*! -----------------------------------------------------------------
     [Master Stylesheet]
@@ -230,15 +268,26 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         height: 100%;
     }
     body {
-        font-family: "Roboto", sans-serif;
+        /* font-family: "Roboto", sans-serif; */
+        font-family: 'Inter', sans-serif;
         line-height: 1.4;
-        font-size: 14px;
+        font-size: 1rem;
         font-weight: 400;
         -ms-overflow-style: scrollbar;
         overflow-x: hidden;
         overflow-y: auto;
         height: 100%;
+        &.theme-dark {
+            ${darkTheme}
+        }
+        &.theme-light {
+            ${lightTheme}
+        }
+        &.no-scroll {
+            overflow: hidden;
+        }
     }
+
     img {
         max-width: 100%;
     }
@@ -259,11 +308,6 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
     }
     input[type="search"]::-webkit-search-cancel-button {
         -webkit-appearance: searchfield-cancel-button;
-    }
-    .table {
-        tbody tr td:first-child, thead tr th:first-child {
-            padding-left: 16px !important;
-        }
     }
     
     .top-head {
@@ -288,7 +332,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         font-size: 12px;
     }
     .fs-normal {
-        font-size: 14px;
+        font-size: 0.95rem;
     }
     .fs-medium {
         font-size: 16px;
@@ -298,6 +342,9 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
     }
     .hide {
         display: none;
+    }
+    .theme-dark svg path {
+        fill: #fff
     }
     /*!------------------------------------------------------------------
         [Typography]
@@ -309,8 +356,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
     h4,
     h5,
     h6 {
-        font-family: "Roboto Condensed", sans-serif;
-        letter-spacing: 1px;
+        font-family: "Inter", sans-serif;
         font-weight: 400;
         margin: 24px 0 20px;
     }
@@ -330,7 +376,7 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         font-size: 16px;
     }
     h6 {
-        font-size: 14px;
+        font-size: 0.95rem;
     }
     p,
     ul,
@@ -348,13 +394,13 @@ export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googl
         border-radius: 2px;
         code {
             font-family: inherit;
-            font-size: 14px;
+            font-size: 0.95rem;
         }
     }
     blockquote {
         font-family: inherit;
         font-style: normal;
-        font-size: 16px;
+        font-size: 1.2rem;
         text-align: left;
         border-left: 4px solid var(--color-accent);
         padding: 2px 8px;
@@ -549,76 +595,41 @@ export const AdminGlobalStyle = createGlobalStyle`
 
     main {
         grid-area: content;
-        margin-top: 60px;
     }
 
-    body {
-        .main {
-            display: grid;
-            grid-template-areas:
-            "header header"
-            "nav content"
-            "footer footer";
-            grid-template-columns: 200px 1fr;
-            grid-template-rows: auto 1fr auto;
-        }
-
-        .collapsed {
-            nav,
-            main {
-                transform: translateX(-200px);
-                .content-area {
-                    width: 100vw;
-                }
-            }
-        }
-
-        @media (max-width: 767px) {
-            .content-area {
-            width: 100vw;
-            }
-        }
-        @media (max-width: 991px) {
-            .main {
-                grid-template-columns: 200px 1fr;
-            }
-        }
-    }
+    
 
     body.single {
         main .content-area > div {
             grid-gap: 0px;
         }
     }
-    .content-area {
-        overflow: auto;
-        overflow-x: hidden;
-        min-height: 100%;
+    .two-column .content-area {
+        width: auto;
+        height: auto;
     }
-    body.posts {
-        .content-area > div {
-            display: grid;
-            grid-template-columns: auto auto auto;
-            grid-gap: 12px;
-        }
-        @media (max-width: 991px) {
-            .content-area > div {
-                grid-template-columns: auto auto;
-            }
-        }
-        @media (max-width: 768px) {
-            .content-area > div {
-                grid-template-columns: auto;
-            }
-        }
-    }
-    @media (max-width: 768px) {
-        .content-area > .module-xs {
-            margin: 0px;
-        }
-    }
+    
     #letterpad-editor-toolbar-toggle-button {
         color: var(--color-border);
         border: 1px solid var(--color-border);
     }
+
+    [data-id="tooltip"] {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      padding: 12px 8px !important;
+      letter-spacing: 1px;
+      font-weight: 500 !important;
+      opacity: 1;
+    }
+    .block-toolbar {
+        [data-id="tooltip"] {
+            padding: 2px 8px !important;
+            font-weight: 500 !important;
+            opacity: 1 !important;
+            font-family: "Inter", sans-serif;
+        }
+    }
+
+
 `;

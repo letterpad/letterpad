@@ -34,10 +34,10 @@ function LayoutConnector(
     }, []);
 
     const analyticsAction = () => {
-      if (routeProps.settings.google_analytics.value) {
+      if (routeProps.settings.google_analytics) {
         setTimeout(() => {
           // @ts-ignore
-          gtag("config", routeProps.settings.google_analytics.value, {
+          gtag("config", routeProps.settings.google_analytics, {
             page_title: document.title,
             page_path: document.location.pathname,
           });
@@ -47,13 +47,8 @@ function LayoutConnector(
     return (
       <Layout
         Content={DataConnector(WrappedComponent, routeProps.contentType)}
-        contentType={routeProps.contentType}
-        settings={routeProps.settings}
-        client={routeProps.client}
-        themeSettings={routeProps.themeSettings}
-        initialProps={routeProps.initialProps}
         router={{ ...props }}
-        helpers={{ ...routeProps.helpers }}
+        {...routeProps}
       />
     );
   };

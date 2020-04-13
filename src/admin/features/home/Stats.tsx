@@ -49,12 +49,6 @@ function getStats(stats) {
       icon: "label",
       link: "/admin/tags",
     },
-    {
-      label: "Categories",
-      value: stats.categories,
-      icon: "folder",
-      link: "/admin/categories",
-    },
   ];
 
   const data = items.map((item, idx) => (

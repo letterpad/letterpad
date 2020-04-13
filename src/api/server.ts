@@ -17,6 +17,7 @@ import { Express, Response } from "express";
 import { fileLoader, mergeResolvers, mergeTypes } from "merge-graphql-schemas";
 
 import { ApolloServer } from "apollo-server-express";
+import RssFeed from "./rssFeed";
 import cache from "../client/server/cache";
 import config from "../config";
 import constants from "./utils/constants";
@@ -102,5 +103,6 @@ export default async (app: Express) => {
     }),
   );
   app.use(config.BASE_NAME + "/upload", upload);
+  app.get(config.BASE_NAME + "/" + config.rssPath, RssFeed);
   server.applyMiddleware({ app, path: pathname });
 };

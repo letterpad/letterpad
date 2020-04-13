@@ -76,6 +76,9 @@ export const editPostPerm = requiresAuth.createResolver(
 
 export const checkDisplayAccess = createResolver((root, args, context, err) => {
   //  if this is enduser, he should see only public posts.
+  if (!args.filters) {
+    args.filters = {};
+  }
   if (!context.user || !context.user.id) {
     args.filters.status = "publish";
     return args;

@@ -41,10 +41,6 @@ class Basic extends Component<any, any> {
     const avatar = this.state.avatar || "/admin/images/avatar.png";
     return (
       <section>
-        <StyledTitleHeader
-          title={t("profile.basic.title")}
-          subtitle={t("profile.basic.tagline")}
-        />
         <StyledInput
           label={t("common.fname")}
           defaultValue={this.props.data.fname}

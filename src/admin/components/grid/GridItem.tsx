@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import React from "react";
-// import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -11,7 +10,7 @@ const Wrapper = styled.div`
       width: 100%;
       object-fit: cover;
       background: var(--bg-sections);
-      border-radius: 8px;
+      border-radius: 2px;
     }
     .item-sticky {
       position: absolute;

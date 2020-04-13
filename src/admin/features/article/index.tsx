@@ -1,28 +1,19 @@
-import {
-  Query,
-  QueryPostArgs,
-  Setting,
-  SettingOptions,
-} from "../../../__generated__/gqlTypes";
+import { Query, QueryPostArgs, Setting } from "../../../__generated__/gqlTypes";
 
 import { Container } from "./Article.css";
 import Edit from "./Edit";
 import Loader from "../../components/loader";
 import OhSnap from "../../components/oh-snap";
-import PostActions from "./PostActions";
 import { QUERY_POST } from "../../../shared/queries/Queries";
 import React from "react";
 import TopBar from "./topbar";
-import config from "../../../config";
 import { useQuery } from "react-apollo";
-
-const host = config.ROOT_URL + config.BASE_NAME;
 
 interface IArticleProps {
   router: any;
   manageScroll: Function;
   theme: string;
-  settings: { [option in SettingOptions]: Setting };
+  settings: Setting;
 }
 
 const Article: React.FC<IArticleProps> = ({ theme, router }) => {
@@ -42,7 +33,7 @@ const Article: React.FC<IArticleProps> = ({ theme, router }) => {
       <OhSnap message="This page is either dead for good or restricted." />
     );
   }
-
+  // return null;
   return (
     <Container fullHeight>
       <TopBar edit router={router} post={data.post} />

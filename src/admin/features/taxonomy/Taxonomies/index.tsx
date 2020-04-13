@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import styled from "styled-components";
 
 import List from "./List";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   min-height: 300px;
@@ -24,15 +24,6 @@ const ListItem = styled.div<any>`
 `;
 
 class Taxonomies extends Component<any, any> {
-  // static propTypes = {
-  //   items: PropTypes.array.isRequired,
-  //   rowHeight: PropTypes.number.isRequired,
-  //   numRows: PropTypes.number,
-  //   handleSelect: PropTypes.func.isRequired,
-  //   size: PropTypes.object,
-  //   selectedIndex: PropTypes.number,
-  // };
-
   static defaultProps = {
     numRows: 4,
     rowHeight: 40,

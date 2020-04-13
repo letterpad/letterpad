@@ -10,9 +10,9 @@ module.exports = {
     menu.map(item => {
       delete item.disabled;
       delete item.id;
-      item.originalName = item.title;
+      item.original_name = item.title;
 
-      return menu;
+      return item;
     });
     return queryInterface.sequelize.query(
       // prettier-ignore

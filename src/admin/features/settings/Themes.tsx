@@ -1,16 +1,16 @@
+import { IThemeConfig, UpdateSettingOption } from "../../../types/types";
 import React, { useEffect, useState } from "react";
-import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 
-import { IThemeConfig } from "../../../types/types";
-import StyledGrid from "../../components/grid";
+import { Setting } from "../../../__generated__/gqlTypes";
 import ThemeItem from "./themes/ThemeItem";
 import config from "../../../config";
+import { device } from "../devices";
+import styled from "styled-components";
 import utils from "../../../shared/util";
 
 interface IThemesProps {
-  updateOption: (option: SettingOptions, value: string) => void;
-  data: { [option in SettingOptions]: Setting };
-  label: string;
+  updateOption: (setting: UpdateSettingOption) => void;
+  data: Setting;
 }
 
 const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
@@ -35,12 +35,12 @@ const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
       return theme;
     });
     setThemes(modifiedThemes);
-    updateOption(SettingOptions.Theme, selectedTheme.folder_name);
+    updateOption({ theme: selectedTheme.folder_name });
   };
 
   return (
     <div>
-      <StyledGrid columns="repeat(auto-fit,minmax(250px,1fr))">
+      <Container>
         {themes.map((theme, idx) => (
           <ThemeItem
             key={idx}
@@ -49,9 +49,24 @@ const Themes: React.FC<IThemesProps> = ({ updateOption }) => {
             name={theme.name}
           />
         ))}
-      </StyledGrid>
+      </Container>
     </div>
   );
 };
 
 export default Themes;
+
+const Container = styled.div`
+  display: grid;
+  height: auto;
+  grid-auto-flow: row;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 15px;
+
+  @media ${device.laptop} {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media ${device.tablet} {
+    grid-template-columns: 1fr;
+  }
+`;

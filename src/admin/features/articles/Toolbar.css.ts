@@ -2,19 +2,7 @@ import { LayoutOptions } from "./index";
 import styled from "styled-components";
 
 const StyledToolbar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 15px;
-
-  .left-block {
-    display: flex;
-    align-items: center;
-  }
-  .right-block {
-    display: flex;
-    align-items: center;
-  }
+  color: var(--color-text-3);
 `;
 
 interface ILayoutProps {

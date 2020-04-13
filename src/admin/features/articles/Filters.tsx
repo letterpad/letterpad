@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
-import StyledSelect from "../../components/select";
-import { translate } from "react-i18next";
+
 import { QUERY_TAXONOMIES } from "../../../shared/queries/Queries";
+import StyledSelect from "../../components/select";
+import { TaxonomyType } from "../../../__generated__/gqlTypes";
 import apolloClient from "../../../shared/apolloClient";
-import { TaxonomyTypes, TaxonomyType } from "../../../__generated__/gqlTypes";
+import { device } from "../devices";
+import styled from "styled-components";
+import { translate } from "react-i18next";
 
 const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
   const [taxonomies, setTaxonomies] = React.useState<any>({
     tags: [],
-    categories: [],
   });
 
   useEffect(() => {
@@ -17,21 +19,16 @@ const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
         query: QUERY_TAXONOMIES,
         variables: { filters: { type: TaxonomyType.PostTag } },
       });
-      const categories = await apolloClient(true).query({
-        query: QUERY_TAXONOMIES,
-        variables: { type: TaxonomyType.PostCategory },
-      });
       setTaxonomies({
         tags: tags.data.taxonomies,
-        categories: categories.data.taxonomies,
       });
     };
     fetchData();
   }, []);
 
-  const { tags, categories } = taxonomies;
+  const { tags } = taxonomies;
   return (
-    <div>
+    <Container>
       <StyledSelect
         bold
         onChange={status => changeFilter("status", status)}
@@ -73,21 +70,6 @@ const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
 
       <StyledSelect
         bold
-        onChange={status => changeFilter("category", status)}
-        selected={query.get("category")}
-        options={[
-          {
-            name: "Select Category",
-            value: null,
-          },
-          ...categories.map(category => {
-            return { name: category.name, value: category.name };
-          }),
-        ]}
-      />
-
-      <StyledSelect
-        bold
         onChange={sort => changeFilter("sortBy", sort)}
         selected={query.get("sortBy") || "newest"}
         options={[
@@ -101,8 +83,19 @@ const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
           },
         ]}
       />
-    </div>
+    </Container>
   );
 };
 
 export default translate("translations")(Filters);
+
+const Container = styled.div`
+  display: flex;
+  margin-bottom: 40px;
+  min-width: 100%;
+  overflow-x: auto;
+
+  @media ${device.mobile} {
+    margin-bottom: 20px;
+  }
+`;

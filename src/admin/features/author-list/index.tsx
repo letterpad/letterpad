@@ -1,6 +1,6 @@
 import { Author, AuthorsQuery } from "../../../__generated__/gqlTypes";
 import React, { useEffect, useState } from "react";
-import StyledSection, { Title } from "../../components/section";
+import StyledSection, { SectionSizes } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 
 import { Button } from "../../components/button";
@@ -15,8 +15,6 @@ import apolloClient from "../../../shared/apolloClient";
 interface IAuthorListProps extends WithNamespaces {
   router: RouteComponentProps;
 }
-
-// type MayBeAuthors = Author[] | [];
 
 const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
   const [authors, setAuthors] = useState<Author[]>();
@@ -42,16 +40,15 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
 
   return (
     <StyledSection
-      md
-      title={
-        <Title
-          title={t("authors.title")}
-          onClick={() => {
+      size={SectionSizes.md}
+      title={t("authors.title")}
+      rightToolbar={
+        <Actions
+          newAuthorAction={() => {
             router.history.push("/admin/authors/new");
           }}
         />
       }
-      subtitle={t("authors.tagline")}
     >
       <StyledAuthorList>
         {loading ? (
@@ -85,3 +82,13 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
 };
 
 export default translate("translations")(AuthorList);
+
+const Actions = ({ newAuthorAction }) => {
+  return (
+    <>
+      <Button btnSize="md" btnStyle="primary" onClick={newAuthorAction}>
+        New
+      </Button>
+    </>
+  );
+};

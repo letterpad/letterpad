@@ -51,17 +51,14 @@ export const seed = async (dbModels, autoExit = true) => {
   console.timeEnd("insert authors and taxonomies");
 
   console.time("insert posts, settings, media");
-  const [categories, tags] = await Promise.all([
-    models.Taxonomy.findAll({
-      where: { type: "post_category" },
-    }),
+  const [tags] = await Promise.all([
     models.Taxonomy.findAll({
       where: { type: "post_tag" },
     }),
   ]);
 
   await Promise.all([
-    ...posts.map(post => insertPost(post, models, categories, tags)),
+    ...posts.map(post => insertPost(post, models, tags)),
     insertSettings(models),
     insertMedia(models),
   ]);
@@ -170,7 +167,7 @@ export async function insertTaxonomy(models) {
   return models.Taxonomy.bulkCreate([
     {
       name: "Uncategorised",
-      type: "post_category",
+      type: "post_tag",
       slug: "uncategorised",
     },
     {
@@ -181,7 +178,7 @@ export async function insertTaxonomy(models) {
   ]);
 }
 
-export async function insertPost(params, models, categories, tags) {
+export async function insertPost(params, models, tags) {
   // get author  // 1 or 2
   const { md, html } = generatePost(params.type);
   let promises = [];
@@ -209,11 +206,7 @@ export async function insertPost(params, models, categories, tags) {
 
   promises = [admin.addPost(post)];
   if (params.type === "post") {
-    promises = [
-      ...promises,
-      post.addTaxonomy(categories[0]),
-      ...tags.map(tag => post.addTaxonomy(tag)),
-    ];
+    promises = [...promises, ...tags.map(tag => post.addTaxonomy(tag))];
   }
   return Promise.all(promises);
 }
@@ -244,21 +237,6 @@ export async function insertMedia(models) {
 }
 
 export async function insertSettings(models) {
-  let menu = JSON.stringify([
-    {
-      title: "Uncategorised",
-      originalName: "Uncategorised",
-      slug: "uncategorised",
-      type: "category",
-    },
-    {
-      title: "Letterpad Typography",
-      originalName: "Letterpad Typography",
-      slug: "letterpad-typography",
-      type: "page",
-    },
-  ]);
-
   let data = [
     {
       option: "site_title",
@@ -305,28 +283,24 @@ export async function insertSettings(models) {
       value: "https://www.github.com",
     },
     {
-      option: "text_notfound",
-      value: "Sorry, we went deep inside, but found nothing",
-    },
-    {
-      option: "text_posts_empty",
-      value: "Sorry, we couldn't find any posts",
-    },
-    {
       option: "displayAuthorInfo",
       value: true,
     },
     {
       option: "site_logo",
-      value: "/uploads/logo.png",
+      value: JSON.stringify({
+        src: "/uploads/logo.png",
+        width: 200,
+        height: 200,
+      }),
     },
     {
       option: "site_favicon",
-      value: "/uploads/logo.png",
-    },
-    {
-      option: "menu",
-      value: menu,
+      value: JSON.stringify({
+        src: "/uploads/logo.png",
+        width: 200,
+        height: 200,
+      }),
     },
     {
       option: "css",
@@ -347,6 +321,24 @@ export async function insertSettings(models) {
     {
       option: "disqus_id",
       value: "letterpad",
+    },
+    {
+      option: "menu",
+      value:
+        JSON.stringify[
+          ({
+            label: "home",
+            original_name: "home",
+            slug: "home",
+            type: "tag",
+          },
+          {
+            label: "Letterpad Typography",
+            original_name: "Letterpad Typography",
+            slug: "letterpad-typography",
+            type: "page",
+          })
+        ],
     },
     {
       option: "cloudinary_key",

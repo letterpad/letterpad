@@ -20,6 +20,7 @@ const config = {
   ROOT_URL: configFile.ROOT_URL,
   UPLOAD_URL: configFile.UPLOAD_URL,
   APP_PORT: configFile.APP_PORT,
+  rssPath: "rss.xml",
   defaultTitle: "Untitled",
   defaultSlug: "story",
   adminPath: "/admin",

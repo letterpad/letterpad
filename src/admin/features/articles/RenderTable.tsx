@@ -1,56 +1,84 @@
 import { Link } from "react-router-dom";
+import { List } from "./ArticleList.css";
 import React from "react";
-import { Table } from "./ArticleList.css";
+import { StyledCheckbox } from "../../components/checkbox/Checkbox.css";
 
-const RenderTable = ({ data, setSelection }) => {
+const columns = [
+  // { label: "Select", className: "selection-box" },
+  { label: "Image", className: "cover-image" },
+  { label: "Title", className: "title" },
+  { label: "Published", className: "published" },
+  { label: "Author", className: "author" },
+  { label: "Status", className: "status" },
+  { label: "Tags", className: "tags" },
+];
+const RenderTable = ({ data, setSelection, type }) => {
   return (
-    <Table
-      className="table"
-      columns={["", "Title", "Published At", "Author", "Status", "Category"]}
-    >
-      <thead>
-        <tr>
-          {["", "Title", "Published At", "Author", "Status", "Category"].map(
-            (colName, i) => (
-              <th key={i}>{colName}</th>
-            ),
-          )}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map(post => {
-          const authorName = post.author.fname + " " + post.author.lname;
-          return (
-            <tr key={post.slug}>
-              <td className="selection-box">
-                <input
-                  type="checkbox"
-                  id={"checkbox-" + post.id}
-                  onClick={() => setSelection(post.id)}
-                />
-                <label htmlFor={"checkbox-" + post.id} />
-              </td>
-              <td>
-                <Link to={"/admin/posts/" + post.id}>
-                  <div className="title">{post.title}</div>
+    <List>
+      <header>
+        {columns.map((item, i) => (
+          <div key={i} className={item.className}>
+            {item.label}
+          </div>
+        ))}
+      </header>
+      {data.map(post => {
+        const authorName = post.author.fname + " " + post.author.lname;
+        return (
+          <article key={post.slug}>
+            {/* <StyledCheckbox>
+              <input
+                type="checkbox"
+                id={"checkbox-" + post.id}
+                onClick={() => setSelection(post.id)}
+              />
+              <label htmlFor={"checkbox-" + post.id} />
+            </StyledCheckbox> */}
+            <div className="cover-image">
+              <div
+                style={{
+                  backgroundImage: `url('${post.cover_image.src}')`,
+                  backgroundColor: "var(--bg-sections)",
+                  border: "1px solid var(--color-border)",
+                  backgroundPosition: "center",
+                  width: "64px",
+                  height: "64px",
+                }}
+              ></div>
+            </div>
 
-                  <div className="small">{post.excerpt.slice(0, 60)}...</div>
-                </Link>
-              </td>
-              <td className="small">{post.publishedAt}</td>
-              <td className="small">{authorName}</td>
-              <td className={"upper status " + post.status}>
-                <span>{post.status}</span>
-              </td>
-              <td className="small">
-                {post.categories.map(item => item.name).join(", ")}
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </Table>
+            <div className="title">
+              <Link to={"/admin/posts/" + post.id}>
+                <div className="title">{post.title}</div>
+
+                <div className="small">
+                  {post.excerpt.substring(0, 90) + "..."}
+                </div>
+              </Link>
+            </div>
+            <div className="small published">{smallDate(post.publishedAt)}</div>
+            <div className="small author">{authorName}</div>
+            <div className={"upper status"}>
+              <div className={post.status}></div>
+            </div>
+            <div className="small tags">
+              {type === "page" && "n/a"}
+              {post.tags.map(item => item.name).join(", ")}
+            </div>
+          </article>
+        );
+      })}
+    </List>
   );
 };
 
 export default RenderTable;
+
+function smallDate(d) {
+  let date = new Date(d);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `${day}.${month}.${year}`;
+}

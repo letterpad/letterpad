@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
-import { CoverImage } from "../../__generated__/gqlTypes";
+import { Image } from "../../__generated__/gqlTypes";
 import { StaticContext } from "../Context";
 import config from "../../config";
 
-class LazyImage extends Component<CoverImage, { loaded: boolean }> {
+class LazyImage extends Component<Image, { loaded: boolean }> {
   state = {
     loaded: false,
   };

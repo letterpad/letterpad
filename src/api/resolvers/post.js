@@ -2,12 +2,11 @@ import {
   addConditionsPlaceholder,
   executePostCollectionQuery,
   resolveAuthor,
-  resolveCateogoryFilter,
   resolveMenuFilter,
   resolveOrderAndSort,
   resolvePagination,
   resolveSearchTerm,
-  resolveStatusAndType,
+  resolveStatusAndTypeAndFeatured,
   resolveTagFilter,
 } from "./post/fieldResolver";
 import {
@@ -52,12 +51,12 @@ const postresolver = {
      */
     posts: checkDisplayAccess
       .createResolver(addConditionsPlaceholder)
-      .createResolver(resolveCateogoryFilter)
+      // .createResolver(resolveCateogoryFilter)
       .createResolver(resolveMenuFilter)
       .createResolver(resolveTagFilter)
       .createResolver(resolveAuthor)
       .createResolver(resolvePagination)
-      .createResolver(resolveStatusAndType)
+      .createResolver(resolveStatusAndTypeAndFeatured)
       .createResolver(resolveOrderAndSort)
       .createResolver(resolveSearchTerm)
       .createResolver(executePostCollectionQuery)
@@ -222,16 +221,16 @@ const postresolver = {
         .map(item => {
           const type = "tag";
           item.slug = "/" + type + "/" + item.slug;
-          return item;
-        });
-    },
-    categories: async post => {
-      const taxonomies = await post.getTaxonomies();
-      return taxonomies
-        .filter(item => item.type === "post_category")
-        .map(item => {
-          const type = "category";
-          item.slug = "/" + type + "/" + item.slug;
+          const posts = item.getPosts();
+          item.posts = {
+            count: posts.then(items => items.length),
+            rows: posts.then(rows =>
+              rows.map(post => {
+                post.dataValues = normalizePost(post.dataValues);
+                return post;
+              }),
+            ),
+          };
           return item;
         });
     },
@@ -240,7 +239,7 @@ const postresolver = {
 
 export default postresolver;
 
-function normalizePost(post) {
+export function normalizePost(post) {
   let {
     cover_image_width,
     cover_image_height,
@@ -260,7 +259,7 @@ function normalizePost(post) {
       width: cover_image_width || 0,
       height: cover_image_height || 0,
     },
-    slug: "/" + rest.type + "/" + slug,
+    slug: config.BASE_NAME + "/" + rest.type + "/" + slug,
     publishedAt: getReadableDate(rest.publishedAt),
     updatedAt: getReadableDate(rest.updatedAt),
     createdAt: getReadableDate(rest.createdAt),

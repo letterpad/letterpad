@@ -1,80 +1,83 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 
 import PostActions from "../PostActions";
-import { TextArea } from "../../../components/input";
+import { TextArea } from "../../../components/textarea";
+import styled from "styled-components";
 import utils from "../../../../shared/util";
 
 interface IProps {
   excerpt: string;
   html: string;
+  updatePost: () => void;
 }
-interface IState {
-  chars: number;
-  excerpt: string;
-}
-class Excerpt extends Component<IProps, IState> {
-  maxLength = 160;
+const Excerpt: React.FC<IProps> = ({ excerpt, html, updatePost }) => {
+  const [description, setDescription] = useState<string>(excerpt);
+  const maxLength = 160;
 
-  state = {
-    chars: 0,
-    excerpt: this.props.excerpt,
-  };
-
-  componentDidMount() {
-    let { excerpt, html } = this.props;
+  useEffect(() => {
     const oldExcerpt = excerpt;
     if (!excerpt) {
       // the body will contain html characters. Remove all the tags and get plain text
       const tmp = document.createElement("DIV");
       tmp.innerHTML = html;
-
       excerpt = tmp.textContent || tmp.innerText || "";
-      if (excerpt.length > this.maxLength) {
-        excerpt = this.trimString(excerpt);
+      if (excerpt.length > maxLength) {
+        excerpt = trimString(excerpt, maxLength);
       }
-    } else if (excerpt.length > this.maxLength) {
-      excerpt = this.trimString(excerpt);
+    } else if (excerpt.length > maxLength) {
+      excerpt = trimString(excerpt, maxLength);
     }
     if (oldExcerpt !== excerpt) {
-      this.setData(excerpt);
+      setDescription(excerpt);
     }
-  }
+  }, []);
 
-  trimString = (str: string) => {
-    //trim the string to the maximum length
-    let trimmedString = str.substr(0, this.maxLength);
-    //re-trim if we are in the middle of a word
-    return (
-      trimmedString.substr(
-        0,
-        Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")),
-      ) + "..."
-    );
-  };
-
-  setData = (excerpt: string) => {
-    this.setState({ chars: excerpt.length, excerpt });
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const excerpt = e.target.value;
+    setDescription(excerpt);
     PostActions.setDraft({
       excerpt,
     });
-    utils.debounce(PostActions.updatePost, 200)();
+    utils.debounce(updatePost, 800)();
   };
 
-  render() {
-    return (
-      <div>
-        <TextArea
-          label={`Write a small introduction about this post - [${this.state.chars}/160]`}
-          maxLength={160}
-          placeholder="Write a small description"
-          value={this.state.excerpt}
-          onChange={e => {
-            this.setData(e.target.value);
-          }}
-        />
-      </div>
-    );
-  }
+  return (
+    <Container>
+      <label>Post Description</label>
+      <TextArea
+        autoAdjustHeight={true}
+        maxLength={maxLength}
+        onChange={onChange}
+        placeholder="Write a small description"
+      >
+        {description}
+      </TextArea>
+    </Container>
+  );
+};
+
+function trimString(str: string, maxLength) {
+  //trim the string to the maximum length
+  let trimmedString = str.substr(0, maxLength);
+  //re-trim if we are in the middle of a word
+  return (
+    trimmedString.substr(
+      0,
+      Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")),
+    ) + "..."
+  );
 }
 
 export default Excerpt;
+
+const Container = styled.div`
+  textarea {
+    border: 1px solid var(--color-border);
+    padding: 16px;
+    width: 100%;
+    font-weight: 400;
+    background: transparent;
+    color: var(--color-base);
+    line-height: 1.6;
+  }
+`;

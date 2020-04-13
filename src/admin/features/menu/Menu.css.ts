@@ -8,30 +8,40 @@ export const StyledHeading = styled.div`
   margin: 16px 0px 8px 8px;
   letter-spacing: 1px;
 `;
-export const MenuItem = styled.li``;
+export const MenuItem = styled.li`
+  a {
+    padding: 12px 0px;
+  }
+`;
 
 export const StyledLink = styled(Link)`
   display: block;
-  padding: 6px 8px;
-  margin: 1px 0px;
-  &.active {
+  &.active:before,
+  &:hover:before {
+    content: ".";
+    position: absolute;
+    margin-left: -16px;
+    font-size: 2rem;
+    line-height: 0rem;
+  }
+  /* &:hover {
     font-weight: 600;
     color: var(--color-hover-primary);
-  }
-  &:hover {
-    font-weight: 600;
-    color: var(--color-hover-primary);
-  }
+  } */
   .menu-icon {
     margin-right: 8px;
     color: var(--color-text-3) !important;
   }
+  display: flex;
+  justify-content: space-between;
+  .stats-item {
+    color: var(--color-muted);
+    font-weight: 400;
+  }
 `;
 const StyledMenu = styled.div`
-  height: calc(100vh - 128px);
   overflow-y: auto;
-  padding: 12px 0px 12px 12px;
-  font-size: 12px;
+  padding: 28px 40px;
 `;
 
 export default StyledMenu;

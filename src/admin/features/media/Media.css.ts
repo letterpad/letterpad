@@ -1,5 +1,23 @@
 import styled from "styled-components";
 
+export const Grid = styled.article`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 32px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
 export const StyledMedia = styled.div`
   display: grid;
   grid-template-areas: "header header" "nav content" "footer footer";
@@ -23,7 +41,7 @@ export const EditMediaWrapper = styled.div`
   }
 `;
 
-export const StyledItem = styled.div<{ checked: boolean }>`
+export const StyledItem = styled.div`
   .selection-box {
     position: relative;
     z-index: 99;
@@ -68,22 +86,4 @@ export const StyledItem = styled.div<{ checked: boolean }>`
     left: 5px;
     transition: all 0.1s ease;
   }
-  ${p =>
-    p.checked &&
-    `
-  label:after {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    transform: scale(1);
-  }
-  `}
-  ${p =>
-    !p.checked &&
-    `
-  label:after {
-    opacity: 0;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  }
-  `}
 `;
