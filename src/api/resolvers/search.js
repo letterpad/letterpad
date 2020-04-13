@@ -7,7 +7,6 @@ export default {
         posts: [],
         pages: [],
         tags: [],
-        categories: [],
       };
       const posts = await models.Post.findAll({
         attributes: ["id", "title", "type"],
@@ -43,8 +42,6 @@ export default {
         item.title = item.name;
         if (type === "post_tag") {
           data.tags.push(item);
-        } else {
-          data.categories.push(item);
         }
       });
 

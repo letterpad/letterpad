@@ -6,7 +6,6 @@ export const statsResolver = async (root, args, { models }) => {
     posts: { published: 0, drafts: 0 },
     pages: { published: 0, drafts: 0 },
     tags: 0,
-    categories: 0,
   };
   result.posts.published = await models.Post.count({
     where: { status: "publish", type: "post" },

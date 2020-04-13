@@ -153,7 +153,6 @@ export type InputUpdatePost = {
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
   tags?: Maybe<Array<Maybe<TaxonomyInputType>>>;
-  categories?: Maybe<Array<Maybe<TaxonomyInputType>>>;
 };
 
 export type LoginResponse = {
@@ -387,13 +386,12 @@ export type Post = {
   reading_time: Scalars["String"];
   /** Tags of the post */
   tags: Array<Taxonomy>;
-  /** Categories of the post */
-  categories: Array<Taxonomy>;
 };
 
 export type PostFilters = {
   id?: Maybe<Scalars["Int"]>;
   slug?: Maybe<Scalars["String"]>;
+  featured?: Maybe<Scalars["Boolean"]>;
 };
 
 export type PostsFilters = {
@@ -525,7 +523,6 @@ export type SearchData = {
   pages?: Maybe<Array<Maybe<SearchResults>>>;
   posts?: Maybe<Array<Maybe<SearchResults>>>;
   tags?: Maybe<Array<Maybe<SearchResults>>>;
-  categories?: Maybe<Array<Maybe<SearchResults>>>;
 };
 
 export type SearchFilters = {
@@ -610,7 +607,6 @@ export type Stats = {
   posts?: Maybe<PostStatus>;
   pages?: Maybe<PostStatus>;
   tags?: Maybe<Scalars["Int"]>;
-  categories?: Maybe<Scalars["Int"]>;
   media?: Maybe<Scalars["Int"]>;
 };
 

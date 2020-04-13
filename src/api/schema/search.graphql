@@ -8,7 +8,6 @@ type SearchData {
   pages: [SearchResults]
   posts: [SearchResults]
   tags: [SearchResults]
-  categories: [SearchResults]
 }
 
 type SearchResponse {

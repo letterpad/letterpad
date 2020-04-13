@@ -11,7 +11,6 @@ import { translate } from "react-i18next";
 const Filters: React.FC<any> = ({ query, t, changeFilter }) => {
   const [taxonomies, setTaxonomies] = React.useState<any>({
     tags: [],
-    categories: [],
   });
 
   useEffect(() => {

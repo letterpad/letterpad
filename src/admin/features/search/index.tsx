@@ -34,7 +34,6 @@ const GlobalSearch: React.FC<IProps> = ({ t, onClose }) => {
     posts: [],
     pages: [],
     tags: [],
-    categories: [],
   });
 
   const actionSearch = async (keyword: string) => {
@@ -53,7 +52,7 @@ const GlobalSearch: React.FC<IProps> = ({ t, onClose }) => {
     setState(results.data.globalSearch.data);
   };
 
-  const { posts, pages, tags, categories } = state;
+  const { posts, pages, tags } = state;
 
   return (
     <Container>

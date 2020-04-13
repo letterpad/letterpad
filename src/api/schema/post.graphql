@@ -58,7 +58,6 @@ input InputUpdatePost {
   status: PostStatusOptions
   slug: String
   tags: [TaxonomyInputType]
-  categories: [TaxonomyInputType]
 }
 
 input SearchFilters {
@@ -109,8 +108,6 @@ type Post {
   reading_time: String!
   # Tags of the post
   tags: [Taxonomy!]!
-  # Categories of the post
-  categories: [Taxonomy!]!
 }
 
 type PostsNode {
@@ -148,7 +145,6 @@ type Stats {
   posts: PostStatus
   pages: PostStatus
   tags: Int
-  categories: Int
   media: Int
 }
 

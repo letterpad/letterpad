@@ -200,7 +200,6 @@ input InputUpdatePost {
   status: PostStatusOptions
   slug: String
   tags: [TaxonomyInputType]
-  categories: [TaxonomyInputType]
 }
 
 input SearchFilters {
@@ -215,6 +214,7 @@ input SearchFilters {
 input PostFilters {
   id: Int
   slug: String
+  featured: Boolean
 }
 
 type Post {
@@ -266,9 +266,6 @@ type Post {
   
   # Tags of the post
   tags: [Taxonomy!]!
-  
-  # Categories of the post
-  categories: [Taxonomy!]!
 }
 
 type PostsNode {
@@ -307,7 +304,6 @@ type Stats {
   posts: PostStatus
   pages: PostStatus
   tags: Int
-  categories: Int
   media: Int
 }
 
@@ -362,7 +358,6 @@ type SearchData {
   pages: [SearchResults]
   posts: [SearchResults]
   tags: [SearchResults]
-  categories: [SearchResults]
 }
 
 type SearchResponse {
