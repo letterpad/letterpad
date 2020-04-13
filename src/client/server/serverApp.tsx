@@ -6,12 +6,11 @@
  *
  * This file will return a promise
  */
-const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
+import { ServerStyleSheet, StyleSheetManager } from "styled-components";
 
 import { ApolloProvider, renderToStringWithData } from "react-apollo";
 import ClientApp, { IRoutes } from "../ClientApp";
 
-import { Helmet } from "react-helmet";
 import { IServerRenderProps } from "../types";
 import React from "react";
 import { StaticContext } from "../Context";
@@ -60,7 +59,6 @@ const serverApp = async (props: IServerRenderProps) => {
       const content = await renderToStringWithData(serverApp);
       const initialState = client.extract();
       return {
-        head: Helmet.renderStatic(),
         html: content,
         initialData: { ...initialData, initialProps },
         apolloState: initialState,
