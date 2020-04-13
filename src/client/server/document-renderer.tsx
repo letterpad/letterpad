@@ -3,12 +3,14 @@ import ReactDOMServer from "react-dom/server";
 import Document, { DocumentProps } from "../document";
 import config from "../../config";
 import { Helmet } from "react-helmet";
+import { Setting } from "./../../__generated__/gqlTypes";
 
 export interface DocumentRendererParams {
   appHtml: string;
   theme: string;
   apolloState: object;
   initialData: object;
+  settings: Setting;
   styleElements: ReactElement[];
 }
 
@@ -18,6 +20,7 @@ export default function renderDocument({
   apolloState,
   initialData,
   styleElements,
+  settings,
 }: DocumentRendererParams) {
   const isDev = process.env.NODE_ENV !== "production";
   const host = config.ROOT_URL + config.BASE_NAME;
@@ -34,18 +37,27 @@ export default function renderDocument({
 
   const helmet = Helmet.renderStatic();
 
-  const scriptTags = bundles.map(src => <script src={src}></script>);
+  const bodyTags = [
+    ...bundles.map(src => <script src={src}></script>),
+    helmet.noscript.toComponent(),
+  ];
   const headTags = [
     <link rel="stylesheet" href={`${host}/${theme}/dist/client.min.css`} />,
+    helmet.title.toComponent(),
     helmet.meta.toComponent(),
+    helmet.style.toComponent(),
+    helmet.script.toComponent(),
+    helmet.link.toComponent(),
     ...styleElements,
   ];
 
   const props: DocumentProps = {
     appHtml,
     headTags,
-    scriptTags,
+    bodyTags,
     htmlAttrs: {},
+    trackingId: settings.google_analytics,
+    favIcon: settings.site_favicon.src,
     globals: {
       __APOLLO_STATE__: JSON.stringify(apolloState),
       __INITIAL_DATA__: JSON.stringify(initialData),
@@ -59,5 +71,5 @@ export default function renderDocument({
     },
   };
 
-  return ReactDOMServer.renderToString(<Document {...props} />);
+  return ReactDOMServer.renderToNodeStream(<Document {...props} />);
 }
