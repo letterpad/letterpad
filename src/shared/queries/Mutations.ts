@@ -52,8 +52,6 @@ export const UPDATE_OPTIONS = gql`
       social_facebook
       social_instagram
       social_github
-      text_notfound
-      text_posts_empty
       displayAuthorInfo
       cloudinary_key
       cloudinary_name

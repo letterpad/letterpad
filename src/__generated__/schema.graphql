@@ -397,8 +397,6 @@ type Setting {
   social_facebook: String!
   social_instagram: String!
   social_github: String!
-  text_notfound: String!
-  text_posts_empty: String!
   displayAuthorInfo: String!
   cloudinary_key: String!
   cloudinary_name: String!
@@ -439,8 +437,6 @@ input OptionInputType {
   social_facebook: String
   social_instagram: String
   social_github: String
-  text_notfound: String
-  text_posts_empty: String
   displayAuthorInfo: String
   cloudinary_key: String
   cloudinary_name: String
