@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
 
 import { IAuthor } from "../../../types/types";
 import { Link } from "react-router-dom";
+import { Setting } from "../../../__generated__/gqlTypes";
 import StyledHeader from "./Header.css";
 import StyledLink from "../../components/link";
 import User from "./User";
 import styled from "styled-components";
 
 interface IProps {
-  settings: { [option in SettingOptions]: Setting };
+  settings: Setting;
   sidebarToggle: () => void;
   author: IAuthor;
   switchTheme: (theme: string) => void;

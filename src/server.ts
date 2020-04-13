@@ -30,9 +30,9 @@ middlewares(app);
 staticPaths(app);
 
 // start the admin dashboard and the client. Both use the same server, but its nice to separate them
+apiServer(app);
 adminServer(app);
 clientServerRendering(app);
-apiServer(app);
 
 const server = app.listen(process.env.APP_PORT, function() {
   const addressInfo = server.address() as AddressInfo;

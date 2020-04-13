@@ -1,5 +1,5 @@
 export const darkTheme = `
-    --bg-base: #1C2429;
+    --bg-base: #171818;
     --bg-sections: #131B1F;
     --color-border: #283237;
     
@@ -7,7 +7,7 @@ export const darkTheme = `
 
     --color-text-1: #fff;
     --color-text-2: #9cb4c1;
-    --color-text-3: #417896;
+    --color-text-3: #808a90;
     --color-muted: #546877;
 
     --color-accent: #249fd3;
@@ -49,6 +49,8 @@ export const darkTheme = `
     0 10px 10px rgba(0, 0, 0, 0.22);
 
     --box-shadow-inset: inset 0px 2px 5px 0px rgba(0, 0, 0, 0.72);
+
+    --sidebar-shadow: 0px 0px 19px 1px #000000;
 `;
 
 export const lightTheme = `
@@ -56,7 +58,7 @@ export const lightTheme = `
     --bg-base: #f7f7f7;
     --color-border: #e6e6e6;
 
-    --color-base: #3d3d3d;
+    --color-base: #111213;
     --color-text-1: #595959;
     --color-text-2: #5a5a5a;
     --color-text-3: #7b7b7b;
@@ -94,7 +96,9 @@ export const lightTheme = `
 
     --box-shadow:  0 2px 6px rgba(150, 150, 150, 0.26),0 0px 6px rgba(210, 210, 210, 0.23);
     
-    --box-shadow-inset: inset -1px 3px 9px -3px rgba(0,0,0,0.32)
+    --box-shadow-inset: inset -1px 3px 9px -3px rgba(0,0,0,0.32);
+
+    --sidebar-shadow: 0px 0px 19px 1px #aaa;
 `;
 
 // export default { darkTheme, lightTheme };

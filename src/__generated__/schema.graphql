@@ -75,7 +75,8 @@ type Query {
   search(filters: SearchFilters!): SearchOutput
   stats: Stats
   roles: [Role!]!
-  settings(option: String): [Setting!]!
+  globalSearch(keyword: String): SearchResponse
+  settings(option: String): Setting!
   taxonomies(filters: TaxonomyFilters): [Taxonomy!]!
   themes(name: String): [Theme!]!
 }
@@ -94,7 +95,7 @@ type Mutation {
   createPost(data: InputCreatePost): Response!
   updatePost(data: InputUpdatePost): Response!
   deletePosts(ids: [Int!], deleteFromSystem: Boolean): Response!
-  updateOptions(options: [OptionInputType]): [Setting!]!
+  updateOptions(options: [OptionInputType!]!): Setting!
   updateTaxonomy(id: Int!, name: String, desc: String, type: TaxonomyType!, slug: String): EditTaxResponse!
   deleteTaxonomy(id: Int!): EditTaxResponse!
   updateThemes(name: String!, settings: [InputThemeSettings!]!): Boolean!
@@ -157,15 +158,8 @@ enum PostTypes {
   post
 }
 
-enum MenuTypes {
-  category
-  page
-}
-
 input PostsFilters {
   tag: String
-  category: String
-  categorySlug: String
   tagSlug: String
   sortBy: PostSortBy
   status: PostStatusOptions
@@ -178,31 +172,18 @@ input PostsFilters {
   featured: Boolean
 }
 
-type CoverImage {
-  src: String!
-  width: Int!
-  height: Int!
-}
-
-input InputCoverImage {
-  src: String!
-  width: Int!
-  height: Int!
-}
-
 input InputCreatePost {
   title: String
   html: String
   md: String
   authorId: Int
   excerpt: String
-  cover_image: InputCoverImage
+  cover_image: InputImage
   type: String
   featured: Boolean
   status: PostStatusOptions
   slug: String
   tags: [TaxonomyInputType]
-  categories: [TaxonomyInputType]
 }
 
 input InputUpdatePost {
@@ -213,19 +194,17 @@ input InputUpdatePost {
   authorId: Int
   featured: Boolean
   excerpt: String
-  cover_image: InputCoverImage
+  cover_image: InputImage
   publishedAt: Date
   type: String
   status: PostStatusOptions
   slug: String
   tags: [TaxonomyInputType]
-  categories: [TaxonomyInputType]
 }
 
 input SearchFilters {
   query: String
   tag: String
-  category: String
   cursor: Int
   featured: Boolean
   page: Int
@@ -235,6 +214,7 @@ input SearchFilters {
 input PostFilters {
   id: Int
   slug: String
+  featured: Boolean
 }
 
 type Post {
@@ -258,7 +238,7 @@ type Post {
   excerpt: String!
   
   # Convert image of the post
-  cover_image: CoverImage!
+  cover_image: Image!
   
   # Type of the post. Can be "page" or "post"
   type: PostTypes!
@@ -286,9 +266,6 @@ type Post {
   
   # Tags of the post
   tags: [Taxonomy!]!
-  
-  # Categories of the post
-  categories: [Taxonomy!]!
 }
 
 type PostsNode {
@@ -327,7 +304,7 @@ type Stats {
   posts: PostStatus
   pages: PostStatus
   tags: Int
-  categories: Int
+  media: Int
 }
 
 type SearchResult {
@@ -357,6 +334,7 @@ enum EnumPermissions {
   MANAGE_ALL_POSTS
   MANAGE_USERS
   MANAGE_SETTINGS
+  MANAGE_OWN_POSTS
 }
 
 type Role {
@@ -370,55 +348,120 @@ type Permission {
   name: String!
 }
 
-enum SettingOptions {
-  site_title
-  site_tagline
-  site_email
-  site_url
-  site_footer
-  site_description
-  subscribe_embed
-  social_twitter
-  social_facebook
-  social_instagram
-  social_github
-  text_notfound
-  text_posts_empty
-  displayAuthorInfo
-  site_logo
-  site_favicon
-  cloudinary_key
-  cloudinary_name
-  cloudinary_secret
-  menu
-  css
-  google_analytics
-  locale
-  theme
-  disqus_id
-  banner
+type SearchResults {
+  title: String
+  id: Int
+  type: String
+}
+
+type SearchData {
+  pages: [SearchResults]
+  posts: [SearchResults]
+  tags: [SearchResults]
+}
+
+type SearchResponse {
+  ok: Boolean!
+  data: SearchData
+  errors: [Error!]
+}
+
+enum NavigationType {
+  tag
+  page
+  custom
+}
+
+type Navigation {
+  type: NavigationType!
+  slug: String!
+  original_name: String!
+  label: String!
+}
+
+type Image {
+  src: String!
+  width: Int!
+  height: Int!
 }
 
 type Setting {
-  id: Int!
-  option: SettingOptions!
-  value: String!
+  site_title: String!
+  site_tagline: String!
+  site_email: String!
+  site_url: String!
+  site_footer: String!
+  site_description: String!
+  subscribe_embed: String!
+  social_twitter: String!
+  social_facebook: String!
+  social_instagram: String!
+  social_github: String!
+  text_notfound: String!
+  text_posts_empty: String!
+  displayAuthorInfo: String!
+  cloudinary_key: String!
+  cloudinary_name: String!
+  cloudinary_secret: String!
+  menu: [Navigation!]!
+  css: String!
+  google_analytics: String!
+  locale: String!
+  theme: String!
+  disqus_id: String
+  banner: Image!
+  site_logo: Image!
+  site_favicon: Image!
+}
+
+input InputNavigation {
+  type: NavigationType
+  slug: String
+  original_name: String
+  label: String
+}
+
+input InputImage {
+  src: String
+  width: Int
+  height: Int
 }
 
 input OptionInputType {
-  id: Int
-  option: SettingOptions
-  value: String
+  site_title: String
+  site_tagline: String
+  site_email: String
+  site_url: String
+  site_footer: String
+  site_description: String
+  subscribe_embed: String
+  social_twitter: String
+  social_facebook: String
+  social_instagram: String
+  social_github: String
+  text_notfound: String
+  text_posts_empty: String
+  displayAuthorInfo: String
+  cloudinary_key: String
+  cloudinary_name: String
+  cloudinary_secret: String
+  menu: [InputNavigation!]
+  css: String
+  google_analytics: String
+  locale: String
+  theme: String
+  disqus_id: String
+  banner: InputImage
+  site_logo: InputImage
+  site_favicon: InputImage
 }
 
 enum TaxonomyType {
   post_tag
-  post_category
 }
 
 enum TaxonomyTypes {
   tags
-  categories
 }
 
 type Taxonomy {
@@ -426,6 +469,8 @@ type Taxonomy {
   name: String!
   desc: String
   slug: String!
+  type: TaxonomyType
+  posts: PostsNode
 }
 
 input TaxonomyFilters {

@@ -1,18 +1,20 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+
+// import PropTypes from "prop-types";
 import StyledModal from "./Modal.css";
 
 //const ModalHoc = (WrappedComponent, id = "", classes = "") => {
 export default class ModalHoc extends Component {
-  static propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    onClose: PropTypes.func,
-    className: PropTypes.string,
-    title: PropTypes.string,
-    dialogClassName: PropTypes.string,
-    stateName: PropTypes.string,
-    children: PropTypes.node,
-  };
+  // static propTypes = {
+  //   isOpen: PropTypes.bool.isRequired,
+  //   onClose: PropTypes.func,
+  //   className: PropTypes.string,
+  //   title: PropTypes.string,
+  //   dialogClassName: PropTypes.string,
+  //   stateName: PropTypes.string,
+  //   children: PropTypes.node,
+  // };
 
   state = {
     isOpen: this.props.isOpen,
@@ -120,39 +122,4 @@ export default class ModalHoc extends Component {
       </StyledModal>
     );
   }
-
-  // render() {
-  //     let style = this.state.onEnter ? { display: "flex" } : {};
-  //     let modalClass = this.props.className || "";
-  //     let modalDialogClass = this.props.dialogClassName || "";
-  //     return (
-  //         <StyledModal full>
-  //             <div
-  //                 ref={this.modalWrapperRef}
-  //                 onClick={this.handleClick.bind(this)}
-  //                 className={
-  //                     "modal-window fade" +
-  //                     (this.state.onEnter ? " in " : "") +
-  //                     modalClass
-  //                 }
-  //                 style={style}
-  //                 role="dialog"
-  //             >
-  //                 <div className={"modal-dialog " + modalDialogClass}>
-  //                     <div className="modal-content">
-  //                         {this.props.children}
-  //                     </div>
-  //                 </div>
-  //             </div>
-  //             {this.state.isOpen ? (
-  //                 <div
-  //                     className={
-  //                         "modal-backdrop fade" +
-  //                         (this.state.onEnter ? " in" : "")
-  //                     }
-  //                 />
-  //             ) : null}
-  //         </StyledModal>
-  //     );
-  // }
 }

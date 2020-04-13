@@ -39,13 +39,13 @@ const StyledArticle = styled.article`
     background: #252424;
     color: #fff;
     padding: 4px 8px;
-    font-size: 14px;
+    font-size: 0.95rem;
   }
 
   .post-header {
-    max-width: 740px;
     margin: auto;
     padding: 0px 1rem;
+    width: 100%;
     border-bottom: solid 1px var(--color-border);
     @media (min-width: 740px) {
       width: 740px;
@@ -59,6 +59,9 @@ const StyledArticle = styled.article`
     width: 740px;
     margin: auto;
     padding: 0px 1rem;
+    @media (max-width: 767px) {
+      width: 100%;
+    }
     .lp-h1 {
       border-bottom: none;
     }

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import StyledInput, { TextArea } from "../../components/input";
 import { WithNamespaces, translate } from "react-i18next";
 
 import { Button } from "../../components/button";
@@ -6,64 +7,89 @@ import Loader from "../../components/loader";
 import { Media } from "../../../__generated__/gqlTypes";
 import ModalHoc from "../../components/modal";
 import StyledInfoModal from "./InfoModal.css";
-import StyledInput from "../../components/input";
 
 interface IEditMediaInfoProps extends WithNamespaces {
-  media: Media;
-  previous: () => void;
-  next: () => void;
+  media: Media[];
   onClose: () => void;
-  updateMedia: Function;
+  deleteMedia: (id: number, index: Media[]) => void;
+  updateMedia: (media: Media, index: Media[]) => void;
+  index: number;
 }
 
 class EditMediaInfo extends Component<IEditMediaInfoProps, any> {
   state = {
-    media: {
-      id: this.props.media.id,
-      name: this.props.media.name,
-      description: this.props.media.description,
-    },
+    media: this.props.media,
     saving: false,
+    index: this.props.index,
   };
 
   itemName = React.createRef<HTMLInputElement>();
-
-  static getDerivedStateFromProps(newProps: IEditMediaInfoProps, oldState) {
-    if (oldState.media.id === newProps.media.id) return null;
-    return {
-      media: {
-        id: newProps.media.id,
-        name: newProps.media.name,
-        description: newProps.media.description,
-      },
-    };
-  }
 
   componentDidMount() {
     if (this.itemName.current) {
       this.itemName.current.focus();
     }
+    window.addEventListener("keyup", this.handleKeyPress);
   }
 
-  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    if (e.target["name"]) {
-      this.setState({
-        media: { ...this.state.media, [e.target["name"]]: value },
-      });
+  componentWillUnmount() {
+    window.removeEventListener("keyup", this.handleKeyPress);
+  }
+
+  handleKeyPress = ({ keyCode }: { keyCode: number }) => {
+    if (keyCode === 37) {
+      this.goPrevious();
+    } else if (keyCode === 39) {
+      this.goNext();
     }
   };
 
-  goPrevious = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    this.updateMedia();
-    this.props.previous();
+  onChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const { value } = e.target;
+    if (e.target["name"]) {
+      const changedMedia = this.state.media.map((item, idx) => {
+        if (idx === this.state.index) {
+          return { ...item, [e.target["name"]]: value };
+        }
+        return item;
+      });
+      this.setState({ media: changedMedia });
+    }
   };
 
-  goNext = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    this.updateMedia();
-    this.props.next();
+  goPrevious = (e?: React.SyntheticEvent) => {
+    e && e.preventDefault();
+    const { index, media } = this.state;
+    const newState = { index: index - 1 };
+    const isFirstImage = index === 0;
+    if (isFirstImage) {
+      newState.index = media.length - 1;
+    }
+    this.setState(newState);
+  };
+
+  goNext = (e?: React.SyntheticEvent) => {
+    e && e.preventDefault();
+    const { index, media } = this.state;
+    const newState = { index: index + 1 };
+    const isLastImage = index === media.length - 1;
+    if (isLastImage) {
+      newState.index = 0;
+    }
+    this.setState(newState);
+  };
+
+  deleteMedia = async (e?: React.SyntheticEvent) => {
+    if (e) {
+      e.persist();
+    }
+    const changedMedia = this.state.media.filter((item, idx) => {
+      return idx !== this.state.index;
+    });
+
+    this.setState({ media: changedMedia });
+    this.props.deleteMedia(this.state.index, changedMedia);
+    this.goNext();
   };
 
   updateMedia = async (e?: React.SyntheticEvent) => {
@@ -71,64 +97,67 @@ class EditMediaInfo extends Component<IEditMediaInfoProps, any> {
       e.persist();
     }
     // get the old values
-    const { name, description } = this.props.media;
+    const { name, description } = this.props.media[this.state.index];
+    const currentMedia = this.state.media[this.state.index];
     // compare with current state to see if there is a change.
     if (
-      this.state.media.name !== name ||
-      this.state.media.description !== description
+      currentMedia.name !== name ||
+      currentMedia.description !== description
     ) {
       this.setState({ saving: true });
-      // if yes, update the backend.
-      const { id, name, description } = this.state.media;
-      this.props.updateMedia(id, name, description);
-      this.props.onClose();
+      this.props.updateMedia(currentMedia, this.state.media);
     }
   };
 
   render() {
-    const url = this.props.media.url;
+    const media = this.state.media[this.state.index];
+    const { url, name, description } = media;
     const { t } = this.props;
     return (
       <StyledInfoModal>
-        <ModalHoc title="Add info to your media" onClose={this.props.onClose}>
+        <ModalHoc onClose={this.props.onClose}>
           <div className="modal-body text-center">
             <div className="media-container">
               <div className="media-wrapper">
                 {this.state.saving && <Loader />}
                 <img src={url} />
+                <div className="navigation">
+                  <Button compact onClick={this.goPrevious}>
+                    <i className="fa fa-chevron-left"></i>
+                  </Button>{" "}
+                  <Button compact onClick={this.goNext}>
+                    <i className="fa fa-chevron-right"></i>
+                  </Button>
+                </div>
               </div>
 
               <div className="media-info">
-                <div className="navigation">
-                  <Button compact onClick={this.goPrevious}>
-                    <i className="fa fa-long-arrow-left" />
-                  </Button>{" "}
-                  <Button compact onClick={this.goNext}>
-                    <i className="fa fa-long-arrow-right" />
-                  </Button>
-                </div>
                 <StyledInput
                   label="Title"
-                  value={this.state.media.name || ""}
+                  value={name || ""}
                   placeholder="Give a name for this item"
                   name="name"
                   onChange={this.onChange}
                 />
-                <StyledInput
+                <TextArea
                   label="Description"
-                  value={this.state.media.description || ""}
+                  value={description || ""}
                   name="description"
                   placeholder="Write a short description about this item"
+                  rows={3}
                   onChange={this.onChange}
                 />
+                <div>
+                  <br />
+                  <Button btnStyle="danger" onClick={this.deleteMedia}>
+                    {t("common.delete")}
+                  </Button>
+                  <Button btnStyle="primary" onClick={this.updateMedia}>
+                    Update
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="modal-footer">
-            <Button onClick={this.props.onClose}>{t("common.cancel")}</Button>
-            <Button btnStyle="primary" onClick={this.updateMedia}>
-              Update
-            </Button>
           </div>
         </ModalHoc>
       </StyledInfoModal>

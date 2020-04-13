@@ -1,18 +1,13 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
+import { Setting, ThemeSettings } from "../__generated__/gqlTypes";
 
 import SEO from "./helpers/SEO";
-import { ThemeSettings } from "../__generated__/gqlTypes";
-import { TypeSettings } from "./types";
 import getRoutes from "./routes";
-
-/*!------------------------------------------------------------------
-[View Containers-]
-*/
 
 export interface IRoutes {
   initialData: {
-    settings: TypeSettings | {};
+    settings: Setting;
     themeSettings: ThemeSettings[] | [];
     initialProps?: {} | null;
   };
@@ -29,15 +24,15 @@ class ClientApp extends Component<IRoutes, {}> {
   };
 
   render() {
-    const settings = this.props.initialData.settings as TypeSettings;
+    const settings = this.props.initialData.settings;
     this.applyCustomCSS(settings);
     const routes = getRoutes({ ...this.props.initialData });
     return (
       <>
         <SEO
           schema="Blog"
-          title={`${settings.site_title.value} | ${settings.site_tagline.value}`}
-          description={settings.site_description.value}
+          title={`${settings.site_title} | ${settings.site_tagline}`}
+          description={settings.site_description}
           path="/"
           image="/"
           contentType="blog"

@@ -1,48 +1,96 @@
-enum SettingOptions {
-  site_title
-  site_tagline
-  site_email
-  site_url
-  site_footer
-  site_description
-  subscribe_embed
-  social_twitter
-  social_facebook
-  social_instagram
-  social_github
-  text_notfound
-  text_posts_empty
-  displayAuthorInfo
-  site_logo
-  site_favicon
-  cloudinary_key
-  cloudinary_name
-  cloudinary_secret
-  menu
-  css
-  google_analytics
-  locale
-  theme
-  disqus_id
-  banner
+enum NavigationType {
+  tag
+  page
+  custom
+}
+
+type Navigation {
+  type: NavigationType!
+  slug: String!
+  original_name: String!
+  label: String!
+}
+
+type Image {
+  src: String!
+  width: Int!
+  height: Int!
 }
 
 type Setting {
-  id: Int!
-  option: SettingOptions!
-  value: String!
+  site_title: String!
+  site_tagline: String!
+  site_email: String!
+  site_url: String!
+  site_footer: String!
+  site_description: String!
+  subscribe_embed: String!
+  social_twitter: String!
+  social_facebook: String!
+  social_instagram: String!
+  social_github: String!
+  text_notfound: String!
+  text_posts_empty: String!
+  displayAuthorInfo: String!
+  cloudinary_key: String!
+  cloudinary_name: String!
+  cloudinary_secret: String!
+  menu: [Navigation!]!
+  css: String!
+  google_analytics: String!
+  locale: String!
+  theme: String!
+  disqus_id: String
+  banner: Image!
+  site_logo: Image!
+  site_favicon: Image!
+}
+
+input InputNavigation {
+  type: NavigationType
+  slug: String
+  original_name: String
+  label: String
+}
+input InputImage {
+  src: String
+  width: Int
+  height: Int
 }
 
 input OptionInputType {
-  id: Int
-  option: SettingOptions
-  value: String
+  site_title: String
+  site_tagline: String
+  site_email: String
+  site_url: String
+  site_footer: String
+  site_description: String
+  subscribe_embed: String
+  social_twitter: String
+  social_facebook: String
+  social_instagram: String
+  social_github: String
+  text_notfound: String
+  text_posts_empty: String
+  displayAuthorInfo: String
+  cloudinary_key: String
+  cloudinary_name: String
+  cloudinary_secret: String
+  menu: [InputNavigation!]
+  css: String
+  google_analytics: String
+  locale: String
+  theme: String
+  disqus_id: String
+  banner: InputImage
+  site_logo: InputImage
+  site_favicon: InputImage
 }
 
 type Query {
-  settings(option: String): [Setting!]!
+  settings(option: String): Setting!
 }
 
 type Mutation {
-  updateOptions(options: [OptionInputType]): [Setting!]!
+  updateOptions(options: [OptionInputType!]!): Setting!
 }

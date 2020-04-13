@@ -1,29 +1,29 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 
 import { CREATE_POST } from "../../../shared/queries/Mutations";
+import { IAdminRouteProps } from "../../../types/types";
 import Loader from "../../components/loader";
 import PostActions from "./PostActions";
 import apolloClient from "../../../shared/apolloClient";
 import util from "../../../shared/util";
 
-export class CreateArticle extends Component<any, any> {
-  async componentDidMount() {
-    const { type } = this.props;
-    // This is going to hold all the changes done to the post.
-    PostActions.setData({});
+const CreateArticle: React.FC<IAdminRouteProps> = ({ router, type }) => {
+  useEffect(() => {
+    createPost().then(post => {
+      PostActions.setData({});
+      router.history.replace(`/admin/${util.plural[type]}/${post.id}`);
+      PostActions.setData(post);
+    });
+  }, []);
+
+  const createPost = async () => {
     const result = await apolloClient(true).mutate({
       mutation: CREATE_POST,
       variables: { data: { type } },
     });
-    const post = result.data.createPost.post;
-    PostActions.setData(post);
-    this.props.router.history.replace(`/admin/${util.plural[type]}/${post.id}`);
-  }
-
-  render() {
-    // We will redirect the user to the edit page, so no need of a UI here.
-    return <Loader />;
-  }
-}
+    return result.data.createPost.post;
+  };
+  return <Loader />;
+};
 
 export default CreateArticle;

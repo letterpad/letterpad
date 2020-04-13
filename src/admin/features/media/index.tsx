@@ -1,6 +1,6 @@
-import { EditMediaWrapper, StyledItem } from "./Media.css";
+import { EditMediaWrapper, Grid, StyledItem } from "./Media.css";
 import React, { Component } from "react";
-import StyledSection, { Title } from "../../components/section";
+import StyledSection, { SectionSizes } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 import { deleteMedias, getMedia, updateMedia } from "./actions";
 
@@ -9,10 +9,9 @@ import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
 import EditMediaInfo from "./EditMediaInfo";
 import { MediaNode } from "../../../__generated__/gqlTypes";
 import Paginate from "../../components/pagination";
+import Portal from "../portal";
 import { RouteComponentProps } from "react-router-dom";
-import StyledGrid from "../../components/grid";
 import StyledGridItem from "../../components/grid/GridItem";
-import { getReadableDate } from "../../../shared/date";
 import { notify } from "react-notify-toast";
 import { uploadFile } from "../../server/util";
 
@@ -31,7 +30,6 @@ interface IMediaState {
     rows: MediaNode["rows"];
   };
   displayInfo: boolean;
-  checkedItems: number[];
   selectedIndex: number;
   loading: boolean;
 }
@@ -46,8 +44,6 @@ class Media extends Component<IMMediaProps, IMediaState> {
       count: 0,
     },
     displayInfo: false,
-    // selectedItem: {},
-    checkedItems: [],
     selectedIndex: 0,
     loading: true,
   };
@@ -77,7 +73,6 @@ class Media extends Component<IMMediaProps, IMediaState> {
   static getDerivedStateFromProps(nextProps, prevState) {
     const newState = {
       ...prevState,
-      // items: { ...nextProps.media },
     };
     const { page } = nextProps.router.match.params;
     if (page && page !== prevState.page) {
@@ -94,23 +89,6 @@ class Media extends Component<IMMediaProps, IMediaState> {
     this.setState({
       confirmDelete: !this.state.confirmDelete,
     });
-  };
-
-  deleteSelectedMedia = async () => {
-    if (this.state.checkedItems.length > 0) {
-      await deleteMedias(this.state.checkedItems);
-      const rows = this.state.items.rows.filter(
-        item => !this.state.checkedItems.includes(item.id),
-      );
-      this.setState({
-        confirmDelete: false,
-        checkedItems: [],
-        items: {
-          ...this.state.items,
-          rows: rows,
-        },
-      });
-    }
   };
 
   editMedia = (e: React.SyntheticEvent, idx: number) => {
@@ -139,38 +117,6 @@ class Media extends Component<IMMediaProps, IMediaState> {
     this.fetchMedia();
   };
 
-  selectNextMedia = () => {
-    const { selectedIndex, items } = this.state;
-    const newState = { selectedIndex: selectedIndex + 1 };
-    const isLastImage = selectedIndex === items.rows.length - 1;
-    if (isLastImage) {
-      newState.selectedIndex = 0;
-    }
-    this.setState(newState);
-  };
-
-  selectPreviousMedia = () => {
-    const { selectedIndex, items } = this.state;
-    const newState = { selectedIndex: selectedIndex - 1 };
-    const isFirstImage = selectedIndex === 0;
-    if (isFirstImage) {
-      newState.selectedIndex = items.rows.length - 1;
-    }
-    this.setState(newState);
-  };
-
-  onMediaCheckBoxClick = (e: React.SyntheticEvent, id: number) => {
-    e.preventDefault();
-    let checkedItems = [...this.state.checkedItems];
-
-    if (checkedItems.includes(id)) {
-      checkedItems = checkedItems.filter(checkedIds => checkedIds !== id);
-    } else {
-      checkedItems.push(id);
-    }
-    this.setState({ checkedItems });
-  };
-
   goToNextPage = (e: React.SyntheticEvent, page: number) => {
     e.preventDefault();
     this.props.router.history.push({
@@ -181,30 +127,22 @@ class Media extends Component<IMMediaProps, IMediaState> {
 
   render() {
     const { t } = this.props;
-    const { checkedItems, items, displayInfo, selectedIndex } = this.state;
-    const deleteCount = checkedItems.length;
+    const { items, displayInfo, selectedIndex } = this.state;
 
     return (
       <StyledSection
-        md
-        title={
-          <Title
-            title={t("media.title")}
-            onClick={() => {
+        size={SectionSizes.md}
+        rightToolbar={
+          <Actions
+            newMediaAction={() => {
               if (this.uploadInputRef.current) {
                 this.uploadInputRef.current.click();
               }
             }}
           />
         }
-        subtitle={t("media.tagline")}
+        title={t("media.title")}
       >
-        {checkedItems.length > 0 && (
-          <Button btnStyle="danger" onClick={this.toggleDeleteModal}>
-            <i className="fa fa-trash" />
-            Delete
-          </Button>
-        )}
         <input
           ref={this.uploadInputRef}
           onChange={input =>
@@ -217,21 +155,9 @@ class Media extends Component<IMMediaProps, IMediaState> {
         />
         <br />
         <br />
-        <StyledGrid columns="repeat(auto-fit,minmax(200px,1fr))">
+        <Grid>
           {items.rows.map((media, idx) => (
-            <StyledItem
-              key={media.id}
-              checked={checkedItems.includes(media.id)}
-            >
-              <div className="selection-box">
-                <input
-                  type="checkbox"
-                  id={"checkbox-" + media.id}
-                  checked={checkedItems.includes(media.id)}
-                  onClick={e => this.onMediaCheckBoxClick(e, media.id)}
-                />
-                <label htmlFor={"checkbox-" + media.id} />
-              </div>
+            <StyledItem key={media.id}>
               <StyledGridItem
                 image={{
                   src: media.url,
@@ -240,38 +166,43 @@ class Media extends Component<IMMediaProps, IMediaState> {
                 }}
                 title={media.name || ""}
                 href="#"
-                line2={getReadableDate(media.createdAt)}
                 onClick={(e: React.SyntheticEvent) => this.editMedia(e, idx)}
               />
             </StyledItem>
           ))}
-        </StyledGrid>
+        </Grid>
         <Paginate
           count={items.count}
           page={parseInt(this.getUrlParams().get("page") || "1")}
           changePage={this.goToNextPage}
           limit={itemsPerPage}
         />
-        {this.state.confirmDelete && (
+        {/* {this.state.confirmDelete && (
           <ConfirmDeleteModal
             title="Confirm Delete"
-            text={`Are you sure you want to delete ${deleteCount} item${
-              deleteCount == 1 ? "" : "s"
-            }?`}
+            text={`Are you sure you want to delete this media`}
             onYes={this.deleteSelectedMedia}
             onClose={this.toggleDeleteModal}
           />
-        )}
+        )} */}
         {displayInfo && (
-          <EditMediaWrapper>
-            <EditMediaInfo
-              media={items.rows[selectedIndex]}
-              onClose={() => this.setState({ displayInfo: false })}
-              next={this.selectNextMedia}
-              previous={this.selectPreviousMedia}
-              updateMedia={updateMedia}
-            />
-          </EditMediaWrapper>
+          <Portal>
+            <EditMediaWrapper>
+              <EditMediaInfo
+                media={items.rows}
+                index={selectedIndex}
+                onClose={() => this.setState({ displayInfo: false })}
+                deleteMedia={(id, rows) => {
+                  this.setState({ items: { ...this.state.items, rows } });
+                  deleteMedias([id]);
+                }}
+                updateMedia={(change, rows) => {
+                  this.setState({ items: { ...this.state.items, rows } });
+                  updateMedia(change);
+                }}
+              />
+            </EditMediaWrapper>
+          </Portal>
         )}
       </StyledSection>
     );
@@ -279,3 +210,13 @@ class Media extends Component<IMMediaProps, IMediaState> {
 }
 
 export default translate("translations")(Media);
+
+const Actions = ({ newMediaAction }) => {
+  return (
+    <>
+      <Button btnSize="md" btnStyle="primary" onClick={newMediaAction}>
+        Add Media
+      </Button>
+    </>
+  );
+};

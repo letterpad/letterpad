@@ -1,112 +1,64 @@
-import React, { Component } from "react";
-import { StyledLayout, defaultStyles } from "./Layout.css";
-import { darkTheme, lightTheme } from "../../css-variables";
+import { BackFade, Layout, MobileMenu } from "./Layout.css";
+import React, { useEffect, useState } from "react";
 
-import Header from "../header";
+import { Link } from "react-router-dom";
+import Search from "../search/index";
 import Sidebar from "../sidebar";
-import styled from "styled-components";
+import { deviceSize } from "../devices";
 
-const CSSVariables = styled.div<any>`
-  ${props => (props.dark ? darkTheme : lightTheme)};
-`;
+export const TwoColumnLayout = ({ children, settings, router }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchMode, setSearchMode] = useState(false);
 
-const NoLayout = styled.div`
-  ${defaultStyles};
-`;
-const Layout = <P extends object>(
-  ComponentClass: React.ComponentType<P>,
-  props: any,
-) => {
-  const settings = props.settings;
-  let defaultTheme = "dark";
-  if (typeof localStorage !== "undefined" && localStorage.theme) {
-    defaultTheme = localStorage.theme;
-  }
-
-  return class extends Component<P> {
-    state = {
-      sidebarOpen: true,
-      theme: defaultTheme,
-    };
-
-    mounted = false;
-
-    componentDidMount() {
-      this.mounted = true;
-      if (typeof window !== "undefined") {
-        window.addEventListener("resize", this.onResize);
-
-        this.onResize();
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      if (document.body.clientWidth < parseInt(deviceSize.tablet)) {
+        setSidebarOpen(false);
       }
-    }
+    });
+  }, []);
 
-    componentWillUnmount() {
-      if (typeof window !== "undefined") {
-        window.removeEventListener("resize", this.onResize);
-      }
-    }
-
-    toggleSidebar = e => {
-      if (e.type == "mouseover") {
-        document.body.classList.add("hovering");
-      } else {
-        document.body.classList.remove("hovering");
-      }
-    };
-
-    onResize = () => {
-      if (!this.mounted) return false;
-      if (document.body.clientWidth < 991) {
-        this.setState({ sidebarOpen: false });
-      } else {
-        this.setState({ sidebarOpen: true });
-      }
-    };
-
-    sidebarToggle = () => {
-      this.setState({ sidebarOpen: !this.state.sidebarOpen });
-    };
-
-    switchTheme = theme => {
-      this.setState({ theme });
-      if (typeof localStorage !== "undefined") {
-        localStorage.theme = theme;
-      }
-    };
-
-    render() {
-      const _props = { ...props, router: { ...this.props } };
-      const classes = this.state.sidebarOpen ? "" : " collapsed";
-      const selectedTheme = { [this.state.theme]: true };
-      return (
-        <CSSVariables {...selectedTheme}>
-          {_props.layout == "none" ? (
-            <NoLayout>
-              <div className="content-area">
-                <ComponentClass {..._props} theme={this.state.theme} />
-              </div>
-            </NoLayout>
-          ) : (
-            <StyledLayout className={"main a two-column" + classes}>
-              <Header
-                sidebarToggle={this.sidebarToggle}
-                settings={settings}
-                author={_props.author}
-                switchTheme={this.switchTheme}
-                selectedTheme={this.state.theme}
-              />
-              <Sidebar {..._props} />
-              <main>
-                <div className="content-area">
-                  <ComponentClass {..._props} theme={this.state.theme} />
-                </div>
-              </main>
-            </StyledLayout>
-          )}
-        </CSSVariables>
-      );
-    }
+  const sidebarToggle = () => {
+    setSidebarOpen(!sidebarOpen);
   };
-};
 
-export default Layout;
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [sidebarOpen]);
+
+  return (
+    <>
+      {searchMode && <Search onClose={() => setSearchMode(false)} />}
+      <Layout sidebarOpen={sidebarOpen}>
+        <div className="sidebar">
+          <Sidebar
+            settings={settings}
+            router={router}
+            setSearchMode={() => setSearchMode(true)}
+            close={() => setSidebarOpen(false)}
+          />
+        </div>
+        {sidebarOpen && <BackFade onClick={sidebarToggle} />}
+        <main>
+          <div className="content-area">{children}</div>
+        </main>
+        <MobileMenu>
+          <Link to="#">
+            <img src={settings.site_logo.value} height="20" />
+          </Link>
+          <button onClick={() => setSearchMode(true)}>
+            <i className="fa fa-search"></i>
+          </button>
+          <button onClick={sidebarToggle}>
+            <i className={`fa fa-${sidebarOpen ? "times" : "bars"}`}></i>
+          </button>
+        </MobileMenu>
+      </Layout>
+      <div id="portal-root"></div>
+    </>
+  );
+};

@@ -8,7 +8,6 @@ import { getDateTime } from "../../../shared/date";
 import logger from "../../../shared/logger";
 import reading_time from "reading-time";
 import slugify from "../../../shared/slugify";
-import { updateMenuItem } from "../setting";
 
 const host = config.ROOT_URL + config.BASE_NAME;
 
@@ -34,7 +33,11 @@ export const updateTitleAndSlugAndFeatured = async (root, args, { models }) => {
     args.dataToUpdate.title = title;
   }
   if (slug) {
-    args.dataToUpdate.slug = slug;
+    args.dataToUpdate.slug = slug.replace("page/", "").replace("post/", "");
+    if (args.dataToUpdate.slug.length === 0) {
+      const _title = title || previousPost.dataValues.title;
+      args.dataToUpdate.slug = await slugify(models.Post, _title);
+    }
     logger.debug("Slug changed to :", args.dataToUpdate.slug);
   } else if (!title) {
     return args;
@@ -150,26 +153,19 @@ export const executeUpdatePost = async (root, args, { models }) => {
 };
 
 export const updateTaxonomies = async (root, args, { models }) => {
-  let { tags, categories, previousPost } = args;
-  if (!tags && !categories) return args;
+  let { tags, previousPost } = args;
+  if (!tags) return args;
   logger.debug("Updating taxonomies");
   const prevTaxonomies = await previousPost.getTaxonomies();
   if (!tags)
     tags = [...prevTaxonomies.filter(item => item.type === "post_tag")];
-  if (!categories)
-    categories = [
-      ...prevTaxonomies.filter(item => item.type === "post_category"),
-    ];
 
   tags = tags.map(tag => {
     tag.type = "post_tag";
     return tag;
   });
-  categories = categories.map(category => {
-    category.type = "post_category";
-    return category;
-  });
-  const taxonomies = [...tags, ...categories];
+
+  const taxonomies = [...tags];
   if (taxonomies && taxonomies.length > 0) {
     logger.debug("Removing all taxonomies");
     // remove the texonomy relation
@@ -224,9 +220,9 @@ export const updateMenuOnTitleChange = async (root, args, { models }) => {
   const parsedMenu = JSON.parse(menu.value);
 
   const updatedMenu = parsedMenu.map(item => {
-    if (dataToUpdate.title) {
+    if (dataToUpdate.label) {
       if (previousPost.dataValues.type === "page" && item.type === "page") {
-        item.originalName = dataToUpdate.title;
+        item.original_name = dataToUpdate.label;
       }
     }
     if (dataToUpdate.slug) {

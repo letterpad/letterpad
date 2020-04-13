@@ -6,15 +6,14 @@ export const StyledTitle = styled.div`
   justify-content: space-between;
 `;
 
-export const StyledItem = styled.div`
-  .selection-box {
-    position: relative;
-    z-index: 0;
-    left: 100%;
-    margin-left: -24px;
-    border-top-right-radius: 7px;
-    top: 10px;
-  }
+export const RoundedCheckbox = styled.div`
+  position: relative;
+  z-index: 99;
+  left: 100%;
+  margin-left: -24px;
+  border-top-right-radius: 7px;
+  top: 10px;
+
   [type="checkbox"]:checked,
   [type="checkbox"]:not(:checked) {
     position: absolute;
@@ -66,84 +65,6 @@ export const StyledItem = styled.div`
   }
 `;
 
-export const Table = styled.table<any>`
-  /* Remove spacing between table cells (from Normalize.css) */
-  border-collapse: collapse;
-  border-spacing: 0;
-  empty-cells: show;
-  border: 1px solid var(--color-border);
-  font-size: 14px;
-  width: 100%;
-  background: var(--bg-sections);
-  color: var(--color-text-3);
-  box-shadow: var(--box-shadow);
-  .small {
-    font-size: 12px;
-  }
-  .upper {
-    text-transform: uppercase;
-    padding: 2px 4px;
-    background: var(--color-base-2);
-  }
-  .title {
-    font-weight: 400;
-    padding: 6px 0px;
-    color: var(--color-text-2);
-  }
-  .status {
-    font-size: 11px;
-
-    &.publish {
-      color: var(--bg-hover-success);
-    }
-  }
-
-  caption {
-    color: #000;
-    font: italic 85%/1 arial, sans-serif;
-    padding: 1em 0;
-    text-align: center;
-  }
-
-  td,
-  th {
-    border-width: 0 0 0 1px;
-    font-size: inherit;
-    margin: 0;
-    overflow: visible; /*to make ths where the title is really long work*/
-    padding: 12px 0 12px 0px;
-  }
-
-  tbody tr:hover {
-    cursor: pointer;
-    background: var(--bg-base);
-  }
-
-  thead {
-    background-color: var(--bg-base);
-    color: var(--color-base);
-    text-align: left;
-    vertical-align: bottom;
-    border-bottom: 2px solid var(--color-border);
-    th {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      padding: 12px 0 12px 0px;
-    }
-  }
-
-  /* BORDERED TABLES */
-  td {
-    border-bottom: 2px solid var(--color-border);
-    text-align: left;
-  }
-  tbody > tr:last-child > td {
-    border-bottom-width: 0;
-  }
-`;
-
 export const Loader = styled.div<any>`
   width: 100%;
   height: 4px;
@@ -151,4 +72,95 @@ export const Loader = styled.div<any>`
   transition: 0.2s linear all;
 
   opacity: ${p => (p.loading ? 0.7 : 0)};
+`;
+
+export const List = styled.div`
+  article,
+  header {
+    display: grid;
+    grid-gap: 10px;
+    align-items: center;
+    grid-template-columns: 100px 1fr 100px 100px 100px 100px;
+    font-size: 0.95rem;
+    color: var(--color-text-3);
+    margin-bottom: 44px;
+    .title {
+      font-size: 1rem;
+      margin-bottom: 4px;
+      color: var(--color-base);
+      .small {
+        color: var(--color-text-3);
+        font-size: 0.95rem;
+      }
+    }
+    .status div {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      &.publish {
+        background: #49d049;
+      }
+      &.draft {
+        background: #e8bd6e;
+      }
+      &.trash {
+        background: red;
+      }
+    }
+    .cover-image div {
+      border-radius: 4px;
+    }
+
+    @media (max-width: 767px) {
+      .cover-image,
+      .author,
+      .status,
+      .tags,
+      .published {
+        display: none;
+      }
+      display: flex;
+      flex-direction: row;
+      > div {
+        width: 100%;
+      }
+    }
+    @media (min-width: 767px) and (max-width: 1300px) {
+      grid-template-columns: minmax(300px, 1fr) auto 100px 100px;
+      .cover-image,
+      .tags {
+        display: none;
+      }
+    }
+  }
+  header {
+    div {
+      color: var(--color-base) !important;
+      text-transform: uppercase;
+      font-size: 0.7rem !important;
+      letter-spacing: 1px;
+    }
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 12px;
+    margin-bottom: 38px;
+  }
+  @media (max-width: 767px) {
+    header {
+      display: none !important;
+    }
+    article {
+      margin-bottom: 24px;
+      display: flex;
+
+      /* flex-direction: row-reverse; */
+      align-items: center;
+    }
+  }
+`;
+
+export const Flex = styled.div`
+  display: flex;
+  .input-box {
+    margin: 0px;
+  }
 `;

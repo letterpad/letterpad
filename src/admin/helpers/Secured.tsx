@@ -4,7 +4,7 @@ import Layout from "../features/layout";
 import React from "react";
 import jwtDecode from "jwt-decode";
 
-const SecuredRoute: React.SFC<any> = (routeProps: any) => {
+const SecuredRoute: React.FC<any> = (routeProps: any) => {
   try {
     const { settings, component, type, path, exact, layout } = routeProps;
     const props = { exact, settings, type, path, layout };
@@ -16,7 +16,9 @@ const SecuredRoute: React.SFC<any> = (routeProps: any) => {
     return (
       <Route
         {...props}
-        component={Layout(Component, { ...props, author: user })}
+        render={router => {
+          return <Component {...props} author={user} router={router} />;
+        }}
       />
     );
   } catch (e) {

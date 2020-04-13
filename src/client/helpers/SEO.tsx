@@ -9,7 +9,6 @@ const getMetaTags = ({
   contentType,
   published,
   updated,
-  category,
   tags,
   twitter,
   image,
@@ -41,7 +40,6 @@ const getMetaTags = ({
     metaTags.push({ name: "article:published_time", content: published });
   if (updated)
     metaTags.push({ name: "article:modified_time", content: updated });
-  if (category) metaTags.push({ name: "article:section", content: category });
   if (tags) metaTags.push({ name: "article:tag", content: tags });
 
   return metaTags;
@@ -68,7 +66,6 @@ SEO.propTypes = {
   contentType: PropTypes.string,
   published: PropTypes.string,
   updated: PropTypes.string,
-  category: PropTypes.string,
   tags: PropTypes.string,
   twitter: PropTypes.string,
   image: PropTypes.string,

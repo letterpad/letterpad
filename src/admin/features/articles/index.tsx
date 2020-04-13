@@ -1,5 +1,5 @@
+import { Flex, Loader } from "./ArticleList.css";
 import { Link, RouteComponentProps } from "react-router-dom";
-import { Loader, StyledTitle } from "./ArticleList.css";
 import { PostTypes, PostsNode } from "../../../__generated__/gqlTypes";
 import React, { useState } from "react";
 import Section, { SectionSizes } from "../../components/section";
@@ -10,7 +10,6 @@ import ArticleHoc from "./ArticleHoc";
 import { Button } from "../../components/button";
 import Filters from "./Filters";
 import Paginate from "../../components/pagination";
-import RenderGrid from "./RenderGrid";
 import RenderTable from "./RenderTable";
 import Search from "./Search";
 import config from "../../../config";
@@ -28,13 +27,11 @@ interface IArticleListProps extends WithNamespaces {
 
 export enum LayoutOptions {
   list = "list",
-  grid = "grid",
 }
 
 enum FilterOptions {
   page = "page",
   limit = "limit",
-  category = "category",
   tag = "tag",
   status = "status",
   sortBy = "sortBy",
@@ -52,10 +49,6 @@ const Articles: React.FC<IArticleListProps> = ({
   posts,
   setSelection,
 }) => {
-  const [layout, setLayout] = useState<LayoutOptions>(
-    localStorage.layout || LayoutOptions.list,
-  );
-
   const getUrlParams = () => {
     return new URLSearchParams(router.history.location.search);
   };
@@ -77,7 +70,6 @@ const Articles: React.FC<IArticleListProps> = ({
       query.append(FilterOptions[key], value);
     }
     if (
-      query.get(FilterOptions.category.toString()) ||
       query.get(FilterOptions.tag.toString()) ||
       query.get(FilterOptions.status.toString())
     ) {
@@ -94,64 +86,28 @@ const Articles: React.FC<IArticleListProps> = ({
 
   return (
     <Section
-      size={SectionSizes.xs}
-      title={
-        <Title
-          title={type === "post" ? t("posts.title") : t("pages.title")}
-          creationLink={"/admin/" + (type === "post" ? "post-new" : "page-new")}
+      size={SectionSizes.md}
+      title={type === "post" ? t("posts.title") : t("pages.title")}
+      rightToolbar={
+        <Actions
+          createPost={"/admin/" + (type === "post" ? "post-new" : "page-new")}
+          onDelete={deleteSelectedPosts}
+          selectedPosts={selectedPosts}
         />
       }
-      subtitle={type === "post" ? t("posts.tagline") : t("pages.tagline")}
     >
       <div>
         <StyledToolbar className="action-bar">
-          <div className="left-block">
-            <Layout selected={layout}>
-              <i
-                className="fa fa-list list"
-                onClick={() => setLayout(LayoutOptions.list)}
-              />
-              <i
-                className="fa fa-th grid"
-                onClick={() => setLayout(LayoutOptions.grid)}
-              />
-            </Layout>
-            <Filters query={getUrlParams()} changeFilter={changeFilter} />
-            {selectedPosts.length > 0 && (
-              <Button
-                btnStyle="danger"
-                btnSize="xs"
-                onClick={deleteSelectedPosts}
-              >
-                <i className="fa fa-trash" />
-                Delete
-              </Button>
-            )}
-          </div>
-          <div className="right-block">
-            <Search
-              type="post"
-              searchPosts={changeFilter}
-              query={getUrlParams().get("query")}
-            />
-          </div>
+          <Filters query={getUrlParams()} changeFilter={changeFilter} />
         </StyledToolbar>
         {
           <React.Fragment>
             {<Loader loading={loading} />}
-            {layout === LayoutOptions.list && (
-              <RenderTable
-                data={(posts && posts.rows) || []}
-                setSelection={setSelection}
-              />
-            )}
-
-            {layout === LayoutOptions.grid && (
-              <RenderGrid
-                data={(posts && posts.rows) || []}
-                setSelection={setSelection}
-              />
-            )}
+            <RenderTable
+              data={(posts && posts.rows) || []}
+              setSelection={setSelection}
+              type={type}
+            />
           </React.Fragment>
         }
 
@@ -170,16 +126,24 @@ const Articles: React.FC<IArticleListProps> = ({
 
 export default translate("translations")(ArticleHoc(Articles));
 
-const Title = ({ title, creationLink }) => {
+const Actions = ({ createPost, onDelete, selectedPosts }) => {
   return (
-    <StyledTitle>
-      <span>{title}</span>
-      <Link to={creationLink}>
+    <Flex>
+      {/* {searchbox} */}
+      {selectedPosts.length > 0 && (
+        <>
+          <Button btnStyle="danger" btnSize="md" onClick={onDelete}>
+            Delete
+          </Button>
+          &nbsp; &nbsp;
+        </>
+      )}
+
+      <Link to={createPost}>
         <Button btnSize="md" btnStyle="primary">
-          <i className="fa fa-plus" />
           New
         </Button>
       </Link>
-    </StyledTitle>
+    </Flex>
   );
 };

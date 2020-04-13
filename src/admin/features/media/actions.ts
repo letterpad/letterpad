@@ -4,6 +4,7 @@ import {
 } from "./../../../shared/queries/Mutations";
 import {
   DeleteMediaMutation,
+  Media,
   MediaFilters,
   MediaQuery,
 } from "../../../__generated__/gqlTypes";
@@ -30,17 +31,9 @@ export const deleteMedias = async (ids: number[]) => {
   });
 };
 
-export const updateMedia = async (
-  id: number,
-  name: string,
-  description: string,
-) => {
+export const updateMedia = async (media: Media) => {
   await apolloClient(true).mutate<UpdateMediaMutation>({
     mutation: UPDATE_MEDIA,
-    variables: {
-      id,
-      name,
-      description,
-    },
+    variables: media,
   });
 };

@@ -18,8 +18,7 @@ const upload = async (req, res: Response) => {
   const { id } = req.user;
   const settings = await fetchSettings();
   const { cloudinary_key, cloudinary_name, cloudinary_secret } = settings;
-  const cdnEnabled =
-    cloudinary_key.value && cloudinary_name.value && cloudinary_secret.value;
+  const cdnEnabled = cloudinary_key && cloudinary_name && cloudinary_secret;
 
   logger.debug(`Received ${files.length} file/s to upload`);
 
@@ -31,9 +30,9 @@ const upload = async (req, res: Response) => {
         let result: IMediaUploadResult;
         if (cdnEnabled) {
           result = await uploadToCloudinary(file, {
-            api_key: cloudinary_key.value,
-            cloud_name: cloudinary_name.value,
-            api_secret: cloudinary_secret.value,
+            api_key: cloudinary_key,
+            cloud_name: cloudinary_name,
+            api_secret: cloudinary_secret,
           });
         } else {
           result = await uploadToInternal(file, uploadDir, id);

@@ -1,9 +1,9 @@
 import * as helperProps from "./helperProps";
 
-import { EnumContentType, TypeSettings } from "./types";
-
+import { EnumContentType } from "./types";
 import { IRoutes } from "./ClientApp";
 import LayoutConnector from "./LayoutConnector";
+import { NavigationType } from "../__generated__/gqlTypes";
 import { RouteProps } from "react-router";
 import apolloClient from "../shared/apolloClient";
 import config from "../config";
@@ -17,15 +17,15 @@ interface IRouteProps extends RouteProps {
 }
 
 const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
-  const settings = args.settings as TypeSettings;
+  const settings = args.settings;
   const { themeSettings } = args;
-  const home = getHomeSlug(settings);
+  const home = settings.menu[0];
   let theme = "";
 
   if (config.NODE_ENV === "dev") {
     theme = `${config.THEME}`;
   } else {
-    theme = `${settings.theme.value}`;
+    theme = `${settings.theme}`;
   }
   let Theme = require(`./themes/${theme}/app`).default;
   let { Home, Posts, Layout, Page, Post, NotFound, Search } = Theme;
@@ -44,7 +44,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
         Home,
         {
           contentType:
-            home.type === "category"
+            home.type === NavigationType.Tag
               ? EnumContentType.POSTS
               : EnumContentType.PAGE,
           ...commonProps,
@@ -63,7 +63,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
         },
         Layout,
       ),
-      path: ["/posts/:category", "/category/:category", "/tag/:tag"],
+      path: ["/posts/:tag", "/tag/:tag"],
     },
     {
       exact: true,
@@ -94,19 +94,19 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
       component: LayoutConnector(
         Search,
         {
-          contentType: EnumContentType.CATEGORY,
+          contentType: EnumContentType.TAG,
           ...commonProps,
         },
         Layout,
       ),
-      path: ["/category/:query", "/tag/:query"],
+      path: ["/tag/:query"],
     },
     {
       exact: true,
       component: LayoutConnector(
         Search,
         {
-          contentType: EnumContentType.CATEGORY,
+          contentType: EnumContentType.TAG,
           ...commonProps,
         },
         Layout,
@@ -130,10 +130,3 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
 };
 
 export default getRoutes;
-
-const getHomeSlug = (settings: TypeSettings) => {
-  const menu = JSON.parse(settings.menu.value);
-  // To get the homepage, parse the menu settings then take the first item as the home
-  let home = menu[0];
-  return home;
-};

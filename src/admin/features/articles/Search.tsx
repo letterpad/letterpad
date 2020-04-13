@@ -1,13 +1,8 @@
-import React, { PureComponent, ChangeEvent } from "react";
+import React, { ChangeEvent, PureComponent } from "react";
 
-import Input from "../../components/input";
+import styled from "styled-components";
 
 class Search extends PureComponent<any, any> {
-  // static propTypes = {
-  //   searchPosts: PropTypes.func,
-  //   query: PropTypes.string,
-  // };
-
   searchInput = React.createRef<HTMLInputElement>();
 
   state = {
@@ -21,7 +16,7 @@ class Search extends PureComponent<any, any> {
   }
 
   onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value.trim();
+    const query = e.target.value;
     this.setState({ query });
     if (query.length === 0) {
       this.handleClear();
@@ -41,15 +36,31 @@ class Search extends PureComponent<any, any> {
 
   render() {
     return (
-      <Input
-        ref={this.searchInput}
-        value={this.state.query}
-        onChange={this.onChange}
-        onKeyUp={this.onKeyUp}
-        placeholder="Search.."
-      />
+      <Container>
+        <input
+          ref={this.searchInput}
+          value={this.state.query}
+          onChange={this.onChange}
+          onKeyUp={this.onKeyUp}
+          placeholder="Search.."
+        />
+        <i className="fa fa-search"></i>
+      </Container>
     );
   }
 }
 
 export default Search;
+
+const Container = styled.div`
+  input {
+    padding: 11.5px;
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--color-base);
+  }
+  i {
+    left: -20px;
+  }
+`;

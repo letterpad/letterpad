@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import React from "react";
 
 const Paginate = ({ count, match, limit }) => {
   const totalPages = Array.from(Array(Math.ceil(count / limit || 6)));
@@ -16,11 +16,6 @@ const Paginate = ({ count, match, limit }) => {
       match.path == "/posts/:slug/page/:page_no"
     ) {
       to = "/posts/" + match.params.slug + "/page/" + page;
-    } else if (
-      match.path == "/category/:query" ||
-      match.path == "/category/:query/page/:page_no"
-    ) {
-      to = "/category/" + match.params.query + "/page/" + page;
     } else if (
       match.path == "/tag/:query" ||
       match.path == "/tag/:query/page/:page_no"

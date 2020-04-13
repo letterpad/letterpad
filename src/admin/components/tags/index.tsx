@@ -17,6 +17,13 @@ const customStyles = {
     ...provided,
     color: "var(--color-base)",
     background: "var(--bg-sections)",
+    fontSize: "14px",
+    marginTop: "0px",
+    borderRadius: "0px 0px 3px 2px",
+  }),
+  menuList: (provided, state) => ({
+    ...provided,
+    padding: "0px",
   }),
   indicatorContainer: (provided, state) => ({
     ...provided,
@@ -27,11 +34,15 @@ const customStyles = {
     background: "var(--bg-base)",
     color: "var(--color-base)",
     border: "1px solid var(--color-border)",
+    borderRadius: "2px",
+    "&:hover": {
+      border: "1px solid var(--color-border)",
+    },
   }),
   multiValue: (provided, state) => ({
     ...provided,
     background: "var(--color-accent)",
-    border: "1px solid var(--color-border)",
+    border: "1px solid var(--color-accent)",
     color: "#FFF",
   }),
   multiValueLabel: (provided, state) => ({
@@ -41,6 +52,11 @@ const customStyles = {
   input: (provided, state) => ({
     ...provided,
     color: "var(--color-base)",
+  }),
+  placeholder: (provided, state) => ({
+    ...provided,
+    color: "var(--color-muted)",
+    fontSize: "14px",
   }),
 };
 
@@ -58,13 +74,8 @@ export class StyledTags extends Component<any, any> {
   render() {
     return (
       <div>
-        <div className="meta-label">{this.props.name}</div>
-        <div className="x_content">
-          <div className="control-group">
-            <Select {...this.props} styles={customStyles} />
-          </div>
-        </div>
-        <hr />
+        <label>{this.props.name}</label>
+        <Select {...this.props} styles={customStyles} />
       </div>
     );
   }

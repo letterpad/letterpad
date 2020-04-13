@@ -24,12 +24,14 @@ const StyledSwitch: React.FC<any> = ({
         />
         <span className="slider round" />
       </label>
-      <span
-        className="switch-label switch-on-text"
-        onClick={() => onChange(true)}
-      >
-        {rightLabel}
-      </span>
+      {rightLabel && (
+        <span
+          className="switch-label switch-on-text"
+          onClick={() => onChange(true)}
+        >
+          {rightLabel}
+        </span>
+      )}
     </Container>
   );
 };
@@ -46,6 +48,8 @@ export default StyledSwitch;
 export const Container = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  height: 44px;
   .switch {
     margin: 0 20px;
     position: relative;
@@ -100,11 +104,12 @@ export const Container = styled.div`
   }
   .switch-label {
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--color-text-primary)-light;
     transition: 0.2s color linear;
+    opacity: 0.6;
+    font-weight: 400;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+}
   }
   &.on .switch-on-text {
     color: var(--color-text-secondary);

@@ -1,11 +1,9 @@
 enum TaxonomyType {
   post_tag
-  post_category
 }
 
 enum TaxonomyTypes {
   tags
-  categories
 }
 
 type Taxonomy {
@@ -13,6 +11,8 @@ type Taxonomy {
   name: String!
   desc: String
   slug: String!
+  type: TaxonomyType
+  posts: PostsNode
 }
 
 input TaxonomyFilters {

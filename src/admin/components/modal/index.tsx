@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 // import PropTypes from "prop-types";
 import StyledModal from "./Modal.css";
 
@@ -22,7 +23,7 @@ export default class ModalHoc extends Component<any, any> {
 
   modalWrapperRef = React.createRef();
 
-  timerIds:number[] = [];
+  timerIds: number[] = [];
 
   componentDidMount() {
     this.open();
@@ -106,14 +107,18 @@ export default class ModalHoc extends Component<any, any> {
       <StyledModal className={className} {...this.props}>
         <div className="backdrop" />
         <div className="modal-wrapper">
-          <div className="modal-header">
-            <h3>{this.props.title}</h3>
-            <div>
-              <i onClick={this.close} className="material-icons">
-                close
-              </i>
+          {this.props.title ? (
+            <div className="modal-header">
+              <h3>{this.props.title}</h3>
+              <div>
+                <i onClick={this.close} className="material-icons">
+                  close
+                </i>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div />
+          )}
           {this.props.children}
         </div>
       </StyledModal>

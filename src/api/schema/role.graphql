@@ -10,6 +10,7 @@ enum EnumPermissions {
   MANAGE_ALL_POSTS
   MANAGE_USERS
   MANAGE_SETTINGS
+  MANAGE_OWN_POSTS
 }
 
 type Role {
@@ -22,6 +23,7 @@ type Permission {
   id: Int!
   name: String!
 }
+
 type Query {
   roles: [Role!]!
 }

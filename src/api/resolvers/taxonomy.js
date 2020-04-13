@@ -1,3 +1,6 @@
+import config from "../../config";
+import { normalizePost } from "./post";
+
 export default {
   Query: {
     taxonomies: async (root, args, { models }) => {
@@ -27,27 +30,27 @@ export default {
       }
 
       const taxonomies = await models.Taxonomy.findAll(conditions);
+
       return taxonomies.map(item => {
-        const type = item.type === "post_category" ? "category" : "tag";
-        item.slug = "/" + type + "/" + item.slug;
+        const type = "tag";
+        item.slug = config.BASE_NAME + "/" + type + "/" + item.slug;
+        // promise
+        const posts = item.getPosts();
+        item.posts = {
+          count: posts.then(items => items.length),
+          rows: posts.then(rows =>
+            rows.map(post => {
+              post.dataValues = normalizePost(post.dataValues);
+              return post;
+            }),
+          ),
+        };
         return item;
       });
     },
   },
   Mutation: {
     updateTaxonomy: async (root, args, { models }) => {
-      if (!args.edit) {
-        let found = await models.Taxonomy.findOne({
-          where: { name: args.name, type: args.type },
-        });
-        if (found) {
-          return {
-            ok: false,
-            id: null,
-            errors: [{ message: "Already exist", path: "Taxonomy" }],
-          };
-        }
-      }
       if (args.id == 0) {
         //create
 
@@ -75,7 +78,7 @@ export default {
             where: { id: args.id },
           },
         );
-        if (args.type === "post_category") {
+        if (args.type === "post_tag") {
           // menu can have a category. update the slug and name
           const menu = await models.Setting.findOne({
             where: { option: "menu" },
@@ -83,9 +86,9 @@ export default {
           });
           const parsedMenu = JSON.parse(menu.value);
           const updatedMenu = parsedMenu.map(item => {
-            if (item.type === "category") {
+            if (item.type === "tag") {
               item.slug = args.slug;
-              item.originalName = args.name;
+              item.original_name = args.name;
             }
             return item;
           });

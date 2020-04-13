@@ -1,38 +1,34 @@
+import {
+  OptionInputType,
+  Setting,
+  UpdateOptionsMutation,
+  UpdateOptionsMutationVariables,
+} from "../../../__generated__/gqlTypes";
 import React, { useEffect, useState } from "react";
-import { Setting, SettingOptions } from "../../../__generated__/gqlTypes";
+import StyledSection, { SectionSizes } from "../../components/section";
 import { WithNamespaces, translate } from "react-i18next";
 
-import Css from "./Css";
+import Accordion from "../../components/accordion";
+import Appearance from "./Appearance";
 import General from "./General";
-import ImagesCdn from "./ImagesCdn";
-import Messages from "./Messages";
-import Optional from "./Optional";
+import Integrations from "./Integrations";
+import Navigation from "./Navigation";
 import { RouteComponentProps } from "react-router";
 import Social from "./Social";
-import StyledSection from "../../components/section";
-import StyledTitleHeader from "../../components/title-header";
-import Tabs from "../../components/tabs";
 import Themes from "./Themes";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
+import { UpdateSettingOption } from "../../../types/types";
 import apolloClient from "../../../shared/apolloClient";
 import { notify } from "react-notify-toast";
 import utils from "../../../shared/util";
 
 interface ISettingsProps extends WithNamespaces {
   router: RouteComponentProps;
-  settings: { [option in SettingOptions]: Setting };
+  settings: Setting;
 }
 
-// type that the internal state accepts
-type TypeUpdatedOptions = { [option in keyof typeof SettingOptions]?: string };
-
-// Type that the api expects
-type TypeAPIUpdatedOptions = { option: string; value: string };
-
 const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
-  const urlParams = new URLSearchParams(router.history.location.search);
-  const [updatedOptions, setUpdatedOptions] = useState<TypeUpdatedOptions>({});
-  const [selectedTab] = useState<string>(urlParams.get("tab") || "general");
+  const [updatedOptions, setUpdatedOptions] = useState<OptionInputType[]>([]);
 
   useEffect(() => {
     if (Object.keys(updatedOptions).length > 0) {
@@ -40,54 +36,70 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
     }
   }, [updatedOptions]);
 
-  const setOption = (option: SettingOptions, value: string) => {
-    const newUpdates = { ...updatedOptions, [option]: value };
+  const setOption = (setting: UpdateSettingOption) => {
+    const newUpdates = { ...updatedOptions, ...setting };
     setUpdatedOptions(newUpdates);
-  };
-
-  const handleTabChange = (page: string) => {
-    router.history.push({
-      pathname: router.history.location.pathname,
-      search: "?tab=" + page,
-    });
   };
 
   const submitData = async (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
-    const settings: TypeAPIUpdatedOptions[] = [];
-    Object.keys(updatedOptions).forEach(option => {
-      settings.push({
-        option: option,
-        value: updatedOptions[option],
-      });
-    });
-    await apolloClient(true).mutate({
+
+    await apolloClient(true).mutate<
+      UpdateOptionsMutation,
+      UpdateOptionsMutationVariables
+    >({
       mutation: UPDATE_OPTIONS,
       variables: {
-        options: settings,
+        options: updatedOptions,
       },
     });
     notify.show("Site settings saved", "success", 3000);
   };
 
   return (
-    <StyledSection>
-      <Tabs activeTab={selectedTab} onChange={handleTabChange}>
-        <StyledTitleHeader
-          title={t(`settings.${selectedTab}.title`)}
-          subtitle={t(`settings.${selectedTab}.tagline`)}
-        />
-
-        <General label="general" data={settings} updateOption={setOption} />
-        <Social label="social" data={settings} updateOption={setOption} />
-        <Optional label="optional" data={settings} updateOption={setOption} />
-        <ImagesCdn label="cdn" data={settings} updateOption={setOption} />
-        <Themes label="themes" data={settings} updateOption={setOption} />
-        <Css label="css" data={settings} updateOption={setOption} />
-        <Messages label="messages" data={settings} updateOption={setOption} />
-        <br />
-        <br />
-      </Tabs>
+    <StyledSection title="Sitewide Settings" size={SectionSizes.md}>
+      <Accordion
+        title={t(`settings.general.title`)}
+        subtitle={t(`settings.general.tagline`)}
+        tab="general"
+      >
+        <General data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.appearance.title`)}
+        subtitle={t(`settings.appearance.tagline`)}
+        tab="appearance"
+      >
+        <Appearance data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.navigation.title`)}
+        subtitle={t(`settings.navigation.tagline`)}
+        tab="navigation"
+      >
+        <Navigation menuData={settings.menu} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.social.title`)}
+        subtitle={t(`settings.social.tagline`)}
+        tab="social"
+      >
+        <Social data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.integrations.title`)}
+        subtitle={t(`settings.integrations.tagline`)}
+        tab="integrations"
+      >
+        <Integrations data={settings} updateOption={setOption} />
+      </Accordion>
+      <Accordion
+        title={t(`settings.themes.title`)}
+        subtitle={t(`settings.themes.tagline`)}
+        tab="themes"
+      >
+        <Themes data={settings} updateOption={setOption} />
+      </Accordion>
     </StyledSection>
   );
 };

@@ -10,9 +10,9 @@ const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
 
 import { ApolloProvider, renderToStringWithData } from "react-apollo";
 import ClientApp, { IRoutes } from "../ClientApp";
-import { IServerRenderProps, TypeSettings } from "../types";
 
 import { Helmet } from "react-helmet";
+import { IServerRenderProps } from "../types";
 import React from "react";
 import { StaticContext } from "../Context";
 import { StaticRouter } from "react-router";

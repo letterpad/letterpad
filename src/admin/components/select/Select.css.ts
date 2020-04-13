@@ -1,3 +1,4 @@
+import { device } from "../../features/devices";
 import styled from "styled-components";
 
 const StyledSelect = styled.div<any>`
@@ -12,6 +13,10 @@ const StyledSelect = styled.div<any>`
   ${props => props.bold && "font-weight: 500; font-size: 13px;"};
   display: inline-block;
   ${props => props.block && "display:block"};
+
+  @media ${device.mobile} {
+    font-size: 0.8rem;
+  }
   .select-name {
     padding: 4px 8px;
     cursor: pointer;

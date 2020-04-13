@@ -4,9 +4,9 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   margin-bottom: 40px;
   h3 {
-    font-size: 16px;
+    font-size: 1rem;
     margin-bottom: 8px;
-    font-weight: 300;
+    font-weight: 400;
     margin-top: 0px;
   }
   p {

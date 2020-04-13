@@ -3,12 +3,14 @@ import styled from "styled-components";
 const StyledTaxonomy = styled.section`
   .taxonomy-list {
     border: 1px solid var(--color-border);
-    background: var(--bg-sections);
+    border-radius: 4px;
+    padding: 16px;
+    color: var(--color-base);
   }
   .taxonomy-edit {
-    background: var(--bg-sections);
+    border-radius: 4px;
     border: 1px solid var(--color-border);
-    padding: 15px;
+    padding: 26px;
   }
   .input-box {
     flex: 1;
@@ -21,3 +23,7 @@ const StyledTaxonomy = styled.section`
 `;
 
 export default StyledTaxonomy;
+
+export const Flex = styled.div`
+  display: flex;
+`;

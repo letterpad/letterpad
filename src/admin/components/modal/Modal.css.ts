@@ -20,7 +20,7 @@ const applyConfirmStyle = () => `
       margin-left: 0px;
     }
 `;
-const StyledModal = styled.div<any>`
+const StyledModal = styled.div<{ backDropColor: string; confirm?: boolean }>`
   opacity: 0;
   display: block;
   height: 100%;
@@ -29,10 +29,10 @@ const StyledModal = styled.div<any>`
   top: 0;
   width: 100%;
   z-index: 999;
-  transition: 0.2s all linear;
+  /* transition: 0.2s all linear; */
   transform: scale(0.7);
   &.in {
-    opacity: 0.98;
+    opacity: 1;
     transform: scale(1);
   }
   &.onEnter {
@@ -48,13 +48,12 @@ const StyledModal = styled.div<any>`
   .modal-wrapper {
     height: 100%;
     display: grid;
-    grid-template-rows: 52px minmax(min-content, max-content) 52px;
+    grid-template-rows: 52px 1fr 52px;
     top: 0px;
     left: 0px;
     height: 100vh;
     width: 100vw;
     position: fixed;
-    background: var(--bg-sections);
     .modal-header {
       display: flex;
       justify-content: space-between;
@@ -96,8 +95,8 @@ const StyledModal = styled.div<any>`
     left: 0px;
     width: 100vw;
     height: 100vh;
-    background: var(--base-shade-4);
-    opacity: 1;
+    background: ${p => p.backDropColor || "var(--bg-base)"};
+    opacity: 0.99;
   }
 `;
 export default StyledModal;

@@ -1,17 +1,12 @@
 import { Link, RouteComponentProps } from "react-router-dom";
 import { Post, PostStatusOptions } from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
-import StyledTopBar, {
-  AutoSaveIndicator,
-  PostStatusText,
-  PublishBox,
-} from "./TopBar.css";
+import StyledTopBar, { AutoSaveIndicator, PostStatusText } from "./TopBar.css";
 
+import { Button } from "../../../components/button";
 import { EventBusInstance } from "../../../../shared/eventBus";
-import MetaDropdown from "./MetaDropdown";
 import PostActions from "../PostActions";
-import PublishDropdown from "./PublishDropdown";
-import StyledDropdown from "../../../components/dropdown";
+import PostSettings from "./PostSettings";
 import { notify } from "react-notify-toast";
 
 interface ITopbarProps {
@@ -22,10 +17,10 @@ interface ITopbarProps {
 }
 
 export class TopBar extends Component<ITopbarProps, any> {
+  prevPath = "/admin/" + this.props.post.type + "s";
   state = {
     post: this.props.post,
-    publishOpen: false,
-    metaOpen: false,
+    settingsOpen: false,
     saving: false,
   };
 
@@ -94,13 +89,20 @@ export class TopBar extends Component<ITopbarProps, any> {
     e.preventDefault();
     PostActions.setDraft({ status: PostStatusOptions.Trash });
     await PostActions.updatePost();
-    this.props.router.history.push("/admin/posts");
+    this.props.router.history.push(this.prevPath);
+  };
+
+  slideSettingsDrawer = (flag?: boolean) => {
+    if (flag) {
+      return this.setState({ settingsOpen: flag });
+    }
+    this.setState({ settingsOpen: !this.state.settingsOpen });
   };
 
   render() {
     const goBack = e => {
       e.preventDefault();
-      this.props.router.history.push("/admin/posts");
+      this.props.router.history.push(this.prevPath);
     };
 
     return (
@@ -125,40 +127,20 @@ export class TopBar extends Component<ITopbarProps, any> {
             </div>
           </AutoSaveIndicator>
         )}
-        <div className={"right-block "}>
-          <PublishBox>
-            <StyledDropdown
-              name="Publish"
-              className="publish"
-              render={(
-                isOpen: boolean,
-                toggleVisibility: (e?: Event, flag?: boolean) => void,
-              ) => {
-                if (!isOpen) return null;
-                return (
-                  <PublishDropdown
-                    toggleVisibility={toggleVisibility}
-                    post={this.props.post}
-                    updatePost={this.updatePost}
-                  />
-                );
-              }}
-            />
-
-            <StyledDropdown
-              name="Meta"
-              className="meta"
-              render={(close: () => void) => (
-                <MetaDropdown post={this.props.post} close={close} />
-              )}
-            />
-
-            <div>
-              <Link to="#" onClick={this.deleteAction}>
-                Trash
-              </Link>
-            </div>
-          </PublishBox>
+        <div className="right-block">
+          <Button
+            compact
+            btnStyle="flat"
+            btnSize="sm"
+            onClick={this.slideSettingsDrawer}
+          >
+            <i className="fa fa-cog" />
+          </Button>
+          <PostSettings
+            onDelete={this.deleteAction}
+            isOpen={this.state.settingsOpen}
+            toggleDisplay={this.slideSettingsDrawer}
+          />
         </div>
       </StyledTopBar>
     );

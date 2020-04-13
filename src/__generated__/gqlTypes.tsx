@@ -35,13 +35,6 @@ export type AuthorResponse = {
   data?: Maybe<Author>;
 };
 
-export type CoverImage = {
-  __typename?: "CoverImage";
-  src: Scalars["String"];
-  width: Scalars["Int"];
-  height: Scalars["Int"];
-};
-
 export type CreateAuthorResponse = {
   __typename?: "CreateAuthorResponse";
   ok: Scalars["Boolean"];
@@ -65,6 +58,7 @@ export enum EnumPermissions {
   ManageAllPosts = "MANAGE_ALL_POSTS",
   ManageUsers = "MANAGE_USERS",
   ManageSettings = "MANAGE_SETTINGS",
+  ManageOwnPosts = "MANAGE_OWN_POSTS",
 }
 
 export enum EnumRoles {
@@ -86,6 +80,13 @@ export type ForgotPasswordResponse = {
   msg?: Maybe<Scalars["String"]>;
 };
 
+export type Image = {
+  __typename?: "Image";
+  src: Scalars["String"];
+  width: Scalars["Int"];
+  height: Scalars["Int"];
+};
+
 export type InputAuthor = {
   id: Scalars["Int"];
   email?: Maybe<Scalars["String"]>;
@@ -98,25 +99,31 @@ export type InputAuthor = {
   avatar?: Maybe<Scalars["String"]>;
 };
 
-export type InputCoverImage = {
-  src: Scalars["String"];
-  width: Scalars["Int"];
-  height: Scalars["Int"];
-};
-
 export type InputCreatePost = {
   title?: Maybe<Scalars["String"]>;
   html?: Maybe<Scalars["String"]>;
   md?: Maybe<Scalars["String"]>;
   authorId?: Maybe<Scalars["Int"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<InputCoverImage>;
+  cover_image?: Maybe<InputImage>;
   type?: Maybe<Scalars["String"]>;
   featured?: Maybe<Scalars["Boolean"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
   tags?: Maybe<Array<Maybe<TaxonomyInputType>>>;
-  categories?: Maybe<Array<Maybe<TaxonomyInputType>>>;
+};
+
+export type InputImage = {
+  src?: Maybe<Scalars["String"]>;
+  width?: Maybe<Scalars["Int"]>;
+  height?: Maybe<Scalars["Int"]>;
+};
+
+export type InputNavigation = {
+  type?: Maybe<NavigationType>;
+  slug?: Maybe<Scalars["String"]>;
+  original_name?: Maybe<Scalars["String"]>;
+  label?: Maybe<Scalars["String"]>;
 };
 
 export type InputThemeSettings = {
@@ -140,13 +147,12 @@ export type InputUpdatePost = {
   authorId?: Maybe<Scalars["Int"]>;
   featured?: Maybe<Scalars["Boolean"]>;
   excerpt?: Maybe<Scalars["String"]>;
-  cover_image?: Maybe<InputCoverImage>;
+  cover_image?: Maybe<InputImage>;
   publishedAt?: Maybe<Scalars["Date"]>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
   tags?: Maybe<Array<Maybe<TaxonomyInputType>>>;
-  categories?: Maybe<Array<Maybe<TaxonomyInputType>>>;
 };
 
 export type LoginResponse = {
@@ -183,11 +189,6 @@ export type MediaNode = {
   rows: Array<Media>;
 };
 
-export enum MenuTypes {
-  Category = "category",
-  Page = "page",
-}
-
 export type Mutation = {
   __typename?: "Mutation";
   register: AuthorResponse;
@@ -203,7 +204,7 @@ export type Mutation = {
   createPost: Response;
   updatePost: Response;
   deletePosts: Response;
-  updateOptions: Array<Setting>;
+  updateOptions: Setting;
   updateTaxonomy: EditTaxResponse;
   deleteTaxonomy: EditTaxResponse;
   updateThemes: Scalars["Boolean"];
@@ -277,7 +278,7 @@ export type MutationDeletePostsArgs = {
 };
 
 export type MutationUpdateOptionsArgs = {
-  options?: Maybe<Array<Maybe<OptionInputType>>>;
+  options: Array<OptionInputType>;
 };
 
 export type MutationUpdateTaxonomyArgs = {
@@ -302,10 +303,47 @@ export type MutationInsertThemesArgs = {
   settings: Array<InputThemeSettings>;
 };
 
+export type Navigation = {
+  __typename?: "Navigation";
+  type: NavigationType;
+  slug: Scalars["String"];
+  original_name: Scalars["String"];
+  label: Scalars["String"];
+};
+
+export enum NavigationType {
+  Tag = "tag",
+  Page = "page",
+  Custom = "custom",
+}
+
 export type OptionInputType = {
-  id?: Maybe<Scalars["Int"]>;
-  option?: Maybe<SettingOptions>;
-  value?: Maybe<Scalars["String"]>;
+  site_title?: Maybe<Scalars["String"]>;
+  site_tagline?: Maybe<Scalars["String"]>;
+  site_email?: Maybe<Scalars["String"]>;
+  site_url?: Maybe<Scalars["String"]>;
+  site_footer?: Maybe<Scalars["String"]>;
+  site_description?: Maybe<Scalars["String"]>;
+  subscribe_embed?: Maybe<Scalars["String"]>;
+  social_twitter?: Maybe<Scalars["String"]>;
+  social_facebook?: Maybe<Scalars["String"]>;
+  social_instagram?: Maybe<Scalars["String"]>;
+  social_github?: Maybe<Scalars["String"]>;
+  text_notfound?: Maybe<Scalars["String"]>;
+  text_posts_empty?: Maybe<Scalars["String"]>;
+  displayAuthorInfo?: Maybe<Scalars["String"]>;
+  cloudinary_key?: Maybe<Scalars["String"]>;
+  cloudinary_name?: Maybe<Scalars["String"]>;
+  cloudinary_secret?: Maybe<Scalars["String"]>;
+  menu?: Maybe<Array<InputNavigation>>;
+  css?: Maybe<Scalars["String"]>;
+  google_analytics?: Maybe<Scalars["String"]>;
+  locale?: Maybe<Scalars["String"]>;
+  theme?: Maybe<Scalars["String"]>;
+  disqus_id?: Maybe<Scalars["String"]>;
+  banner?: Maybe<InputImage>;
+  site_logo?: Maybe<InputImage>;
+  site_favicon?: Maybe<InputImage>;
 };
 
 export type Permission = {
@@ -329,7 +367,7 @@ export type Post = {
   /** A breif summary of the post */
   excerpt: Scalars["String"];
   /** Convert image of the post */
-  cover_image: CoverImage;
+  cover_image: Image;
   /** Type of the post. Can be "page" or "post" */
   type: PostTypes;
   /** Status of the post */
@@ -348,19 +386,16 @@ export type Post = {
   reading_time: Scalars["String"];
   /** Tags of the post */
   tags: Array<Taxonomy>;
-  /** Categories of the post */
-  categories: Array<Taxonomy>;
 };
 
 export type PostFilters = {
   id?: Maybe<Scalars["Int"]>;
   slug?: Maybe<Scalars["String"]>;
+  featured?: Maybe<Scalars["Boolean"]>;
 };
 
 export type PostsFilters = {
   tag?: Maybe<Scalars["String"]>;
-  category?: Maybe<Scalars["String"]>;
-  categorySlug?: Maybe<Scalars["String"]>;
   tagSlug?: Maybe<Scalars["String"]>;
   sortBy?: Maybe<PostSortBy>;
   status?: Maybe<PostStatusOptions>;
@@ -422,7 +457,8 @@ export type Query = {
   search?: Maybe<SearchOutput>;
   stats?: Maybe<Stats>;
   roles: Array<Role>;
-  settings: Array<Setting>;
+  globalSearch?: Maybe<SearchResponse>;
+  settings: Setting;
   taxonomies: Array<Taxonomy>;
   themes: Array<Theme>;
 };
@@ -452,6 +488,10 @@ export type QuerySearchArgs = {
   filters: SearchFilters;
 };
 
+export type QueryGlobalSearchArgs = {
+  keyword?: Maybe<Scalars["String"]>;
+};
+
 export type QuerySettingsArgs = {
   option?: Maybe<Scalars["String"]>;
 };
@@ -478,10 +518,16 @@ export type Role = {
   permissions?: Maybe<Array<Maybe<Permission>>>;
 };
 
+export type SearchData = {
+  __typename?: "SearchData";
+  pages?: Maybe<Array<Maybe<SearchResults>>>;
+  posts?: Maybe<Array<Maybe<SearchResults>>>;
+  tags?: Maybe<Array<Maybe<SearchResults>>>;
+};
+
 export type SearchFilters = {
   query?: Maybe<Scalars["String"]>;
   tag?: Maybe<Scalars["String"]>;
-  category?: Maybe<Scalars["String"]>;
   cursor?: Maybe<Scalars["Int"]>;
   featured?: Maybe<Scalars["Boolean"]>;
   page?: Maybe<Scalars["Int"]>;
@@ -495,6 +541,13 @@ export type SearchOutput = {
   rows?: Maybe<Array<Maybe<SearchResult>>>;
 };
 
+export type SearchResponse = {
+  __typename?: "SearchResponse";
+  ok: Scalars["Boolean"];
+  data?: Maybe<SearchData>;
+  errors?: Maybe<Array<Error>>;
+};
+
 export type SearchResult = {
   __typename?: "SearchResult";
   id?: Maybe<Scalars["Int"]>;
@@ -505,41 +558,42 @@ export type SearchResult = {
   featured?: Maybe<Scalars["Boolean"]>;
 };
 
-export type Setting = {
-  __typename?: "Setting";
-  id: Scalars["Int"];
-  option: SettingOptions;
-  value: Scalars["String"];
+export type SearchResults = {
+  __typename?: "SearchResults";
+  title?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["Int"]>;
+  type?: Maybe<Scalars["String"]>;
 };
 
-export enum SettingOptions {
-  SiteTitle = "site_title",
-  SiteTagline = "site_tagline",
-  SiteEmail = "site_email",
-  SiteUrl = "site_url",
-  SiteFooter = "site_footer",
-  SiteDescription = "site_description",
-  SubscribeEmbed = "subscribe_embed",
-  SocialTwitter = "social_twitter",
-  SocialFacebook = "social_facebook",
-  SocialInstagram = "social_instagram",
-  SocialGithub = "social_github",
-  TextNotfound = "text_notfound",
-  TextPostsEmpty = "text_posts_empty",
-  DisplayAuthorInfo = "displayAuthorInfo",
-  SiteLogo = "site_logo",
-  SiteFavicon = "site_favicon",
-  CloudinaryKey = "cloudinary_key",
-  CloudinaryName = "cloudinary_name",
-  CloudinarySecret = "cloudinary_secret",
-  Menu = "menu",
-  Css = "css",
-  GoogleAnalytics = "google_analytics",
-  Locale = "locale",
-  Theme = "theme",
-  DisqusId = "disqus_id",
-  Banner = "banner",
-}
+export type Setting = {
+  __typename?: "Setting";
+  site_title: Scalars["String"];
+  site_tagline: Scalars["String"];
+  site_email: Scalars["String"];
+  site_url: Scalars["String"];
+  site_footer: Scalars["String"];
+  site_description: Scalars["String"];
+  subscribe_embed: Scalars["String"];
+  social_twitter: Scalars["String"];
+  social_facebook: Scalars["String"];
+  social_instagram: Scalars["String"];
+  social_github: Scalars["String"];
+  text_notfound: Scalars["String"];
+  text_posts_empty: Scalars["String"];
+  displayAuthorInfo: Scalars["String"];
+  cloudinary_key: Scalars["String"];
+  cloudinary_name: Scalars["String"];
+  cloudinary_secret: Scalars["String"];
+  menu: Array<Navigation>;
+  css: Scalars["String"];
+  google_analytics: Scalars["String"];
+  locale: Scalars["String"];
+  theme: Scalars["String"];
+  disqus_id?: Maybe<Scalars["String"]>;
+  banner: Image;
+  site_logo: Image;
+  site_favicon: Image;
+};
 
 export type Social = {
   github?: Maybe<Scalars["String"]>;
@@ -553,7 +607,7 @@ export type Stats = {
   posts?: Maybe<PostStatus>;
   pages?: Maybe<PostStatus>;
   tags?: Maybe<Scalars["Int"]>;
-  categories?: Maybe<Scalars["Int"]>;
+  media?: Maybe<Scalars["Int"]>;
 };
 
 export type Taxonomy = {
@@ -562,6 +616,8 @@ export type Taxonomy = {
   name: Scalars["String"];
   desc?: Maybe<Scalars["String"]>;
   slug: Scalars["String"];
+  type?: Maybe<TaxonomyType>;
+  posts?: Maybe<PostsNode>;
 };
 
 export type TaxonomyFilters = {
@@ -577,12 +633,10 @@ export type TaxonomyInputType = {
 
 export enum TaxonomyType {
   PostTag = "post_tag",
-  PostCategory = "post_category",
 }
 
 export enum TaxonomyTypes {
   Tags = "tags",
-  Categories = "categories",
 }
 
 export type Theme = {
@@ -646,8 +700,8 @@ export type PostFieldsFragment = { __typename?: "Post" } & Pick<
   | "slug"
   | "type"
 > & {
-    cover_image: { __typename?: "CoverImage" } & Pick<
-      CoverImage,
+    cover_image: { __typename?: "Image" } & Pick<
+      Image,
       "width" | "height" | "src"
     >;
     author: { __typename?: "Author" } & Pick<
@@ -655,9 +709,6 @@ export type PostFieldsFragment = { __typename?: "Post" } & Pick<
       "fname" | "lname" | "avatar" | "bio"
     >;
     tags: Array<
-      { __typename?: "Taxonomy" } & Pick<Taxonomy, "id" | "name" | "slug">
-    >;
-    categories: Array<
       { __typename?: "Taxonomy" } & Pick<Taxonomy, "id" | "name" | "slug">
     >;
   };
@@ -687,17 +738,11 @@ export type CreatePostMutation = { __typename?: "Mutation" } & {
           | "publishedAt"
         > & {
             author: { __typename?: "Author" } & Pick<Author, "username">;
-            cover_image: { __typename?: "CoverImage" } & Pick<
-              CoverImage,
+            cover_image: { __typename?: "Image" } & Pick<
+              Image,
               "src" | "width" | "height"
             >;
             tags: Array<
-              { __typename?: "Taxonomy" } & Pick<
-                Taxonomy,
-                "id" | "name" | "slug"
-              >
-            >;
-            categories: Array<
               { __typename?: "Taxonomy" } & Pick<
                 Taxonomy,
                 "id" | "name" | "slug"
@@ -709,13 +754,54 @@ export type CreatePostMutation = { __typename?: "Mutation" } & {
 };
 
 export type UpdateOptionsMutationVariables = {
-  options?: Maybe<Array<Maybe<OptionInputType>>>;
+  options: Array<OptionInputType>;
 };
 
 export type UpdateOptionsMutation = { __typename?: "Mutation" } & {
-  updateOptions: Array<
-    { __typename?: "Setting" } & Pick<Setting, "id" | "option" | "value">
-  >;
+  updateOptions: { __typename?: "Setting" } & Pick<
+    Setting,
+    | "site_title"
+    | "site_tagline"
+    | "site_email"
+    | "site_url"
+    | "site_footer"
+    | "site_description"
+    | "subscribe_embed"
+    | "social_twitter"
+    | "social_facebook"
+    | "social_instagram"
+    | "social_github"
+    | "text_notfound"
+    | "text_posts_empty"
+    | "displayAuthorInfo"
+    | "cloudinary_key"
+    | "cloudinary_name"
+    | "cloudinary_secret"
+    | "css"
+    | "google_analytics"
+    | "locale"
+    | "theme"
+    | "disqus_id"
+  > & {
+      menu: Array<
+        { __typename?: "Navigation" } & Pick<
+          Navigation,
+          "label" | "original_name" | "slug" | "type"
+        >
+      >;
+      banner: { __typename?: "Image" } & Pick<
+        Image,
+        "src" | "width" | "height"
+      >;
+      site_logo: { __typename?: "Image" } & Pick<
+        Image,
+        "src" | "width" | "height"
+      >;
+      site_favicon: { __typename?: "Image" } & Pick<
+        Image,
+        "src" | "width" | "height"
+      >;
+    };
 };
 
 export type InsertThemesMutationVariables = {
@@ -841,17 +927,11 @@ export type UpdatePostMutation = { __typename?: "Mutation" } & {
               Author,
               "username" | "lname" | "fname" | "avatar" | "bio"
             >;
-            cover_image: { __typename?: "CoverImage" } & Pick<
-              CoverImage,
+            cover_image: { __typename?: "Image" } & Pick<
+              Image,
               "width" | "height" | "src"
             >;
             tags: Array<
-              { __typename?: "Taxonomy" } & Pick<
-                Taxonomy,
-                "id" | "name" | "slug"
-              >
-            >;
-            categories: Array<
               { __typename?: "Taxonomy" } & Pick<
                 Taxonomy,
                 "id" | "name" | "slug"
@@ -1044,8 +1124,94 @@ export type RolesQuery = { __typename?: "Query" } & {
 export type SettingsQueryVariables = {};
 
 export type SettingsQuery = { __typename?: "Query" } & {
-  settings: Array<
-    { __typename?: "Setting" } & Pick<Setting, "id" | "option" | "value">
+  settings: { __typename?: "Setting" } & Pick<
+    Setting,
+    | "site_title"
+    | "site_tagline"
+    | "site_email"
+    | "site_url"
+    | "site_footer"
+    | "site_description"
+    | "subscribe_embed"
+    | "social_twitter"
+    | "social_facebook"
+    | "social_instagram"
+    | "social_github"
+    | "text_notfound"
+    | "text_posts_empty"
+    | "displayAuthorInfo"
+    | "cloudinary_key"
+    | "cloudinary_name"
+    | "cloudinary_secret"
+    | "css"
+    | "google_analytics"
+    | "locale"
+    | "theme"
+    | "disqus_id"
+  > & {
+      menu: Array<
+        { __typename?: "Navigation" } & Pick<
+          Navigation,
+          "label" | "original_name" | "slug" | "type"
+        >
+      >;
+      banner: { __typename?: "Image" } & Pick<
+        Image,
+        "src" | "width" | "height"
+      >;
+      site_logo: { __typename?: "Image" } & Pick<
+        Image,
+        "src" | "width" | "height"
+      >;
+      site_favicon: { __typename?: "Image" } & Pick<
+        Image,
+        "src" | "width" | "height"
+      >;
+    };
+};
+
+export type GlobalSearchQueryVariables = {
+  keyword?: Maybe<Scalars["String"]>;
+};
+
+export type GlobalSearchQuery = { __typename?: "Query" } & {
+  globalSearch: Maybe<
+    { __typename?: "SearchResponse" } & Pick<SearchResponse, "ok"> & {
+        data: Maybe<
+          { __typename?: "SearchData" } & {
+            pages: Maybe<
+              Array<
+                Maybe<
+                  { __typename?: "SearchResults" } & Pick<
+                    SearchResults,
+                    "id" | "title"
+                  >
+                >
+              >
+            >;
+            posts: Maybe<
+              Array<
+                Maybe<
+                  { __typename?: "SearchResults" } & Pick<
+                    SearchResults,
+                    "id" | "title"
+                  >
+                >
+              >
+            >;
+            tags: Maybe<
+              Array<
+                Maybe<
+                  { __typename?: "SearchResults" } & Pick<
+                    SearchResults,
+                    "id" | "title"
+                  >
+                >
+              >
+            >;
+          }
+        >;
+      }
   >;
 };
 
@@ -1057,8 +1223,14 @@ export type TaxonomiesQuery = { __typename?: "Query" } & {
   taxonomies: Array<
     { __typename?: "Taxonomy" } & Pick<
       Taxonomy,
-      "id" | "name" | "desc" | "slug"
-    >
+      "id" | "name" | "desc" | "slug" | "type"
+    > & {
+        posts: Maybe<
+          { __typename?: "PostsNode" } & Pick<PostsNode, "count"> & {
+              rows: Array<{ __typename?: "Post" } & Pick<Post, "id">>;
+            }
+        >;
+      }
   >;
 };
 
@@ -1066,7 +1238,7 @@ export type StatsQueryVariables = {};
 
 export type StatsQuery = { __typename?: "Query" } & {
   stats: Maybe<
-    { __typename?: "Stats" } & Pick<Stats, "tags" | "categories"> & {
+    { __typename?: "Stats" } & Pick<Stats, "tags" | "media"> & {
         posts: Maybe<
           { __typename?: "PostStatus" } & Pick<
             PostStatus,
@@ -1120,8 +1292,8 @@ export type AdjacentPostsQuery = { __typename?: "Query" } & {
           Post,
           "title" | "slug" | "publishedAt"
         > & {
-            cover_image: { __typename?: "CoverImage" } & Pick<
-              CoverImage,
+            cover_image: { __typename?: "Image" } & Pick<
+              Image,
               "width" | "height" | "src"
             >;
           }
@@ -1131,8 +1303,8 @@ export type AdjacentPostsQuery = { __typename?: "Query" } & {
           Post,
           "title" | "slug" | "publishedAt"
         > & {
-            cover_image: { __typename?: "CoverImage" } & Pick<
-              CoverImage,
+            cover_image: { __typename?: "Image" } & Pick<
+              Image,
               "width" | "height" | "src"
             >;
           }

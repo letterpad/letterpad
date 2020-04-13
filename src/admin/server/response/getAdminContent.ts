@@ -13,23 +13,24 @@ const host = config.ROOT_URL + config.BASE_NAME + "/";
 // convert the bundles into <script ...></script>
 const scripts = (theme: string) => utils.prepareScriptTags(getBundles(theme));
 // get the styles only in production. for dev, it will be injected by webpack
-const styleLinks = !isDev
-  ? utils.prepareStyleTags(host + "admin/dist/admin.min.css")
-  : "";
+const styleLinks = (theme: string) =>
+  !isDev
+    ? utils.prepareStyleTags(host + "admin/dist/" + theme + "/admin.min.css")
+    : "";
 
 export const getAdminContent = async (_req, res) => {
   let theme: string;
 
   if (config.NODE_ENV === "production") {
     const settings = await fetchSettings();
-    theme = settings.theme.value;
+    theme = settings.theme;
   } else {
     theme = config.THEME;
   }
   // replace template variables with values and return the html markup
   const content = utils.templateEngine(getTemplate(), {
     ...config,
-    STYLE_TAGS: styleLinks,
+    STYLE_TAGS: styleLinks(theme),
     INITIAL_STATE: initialState,
     NODE_ENV: process.env.NODE_ENV,
     SCRIPT_TAGS: scripts(theme),

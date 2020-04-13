@@ -20,7 +20,7 @@ export default styled.div`
     display: none;
     float: left;
     min-width: 160px;
-    font-size: 14px;
+    font-size: 0.95rem;
     text-align: left;
     list-style: none;
     background-color: var(--bg-base);
