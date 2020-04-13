@@ -78,6 +78,7 @@ function Accordion(props) {
 
   function resize() {
     if (!content.current) return;
+    const urlParams = new URLSearchParams(props.history.location.search);
     if (urlParams.get("tab") !== props.tab) return;
     setHeightState(active ? "0px" : `${content.current.scrollHeight}px`);
   }

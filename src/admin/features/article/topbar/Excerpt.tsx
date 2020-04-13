@@ -33,7 +33,8 @@ const Excerpt: React.FC<IProps> = ({ excerpt, html, updatePost }) => {
   }, []);
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(e.target.value);
+    const excerpt = e.target.value;
+    setDescription(excerpt);
     PostActions.setDraft({
       excerpt,
     });
