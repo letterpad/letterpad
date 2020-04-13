@@ -31,15 +31,17 @@ export default {
 
       const taxonomies = await models.Taxonomy.findAll(conditions);
 
-      return taxonomies;
+      const type = "tag";
+
+      return taxonomies.map(taxonomy => {
+        taxonomy.slug = config.BASE_NAME + "/" + type + "/" + taxonomy.slug;
+        return taxonomy;
+      });
     },
   },
 
   Taxonomy: {
     async posts(taxonomy) {
-      const type = "tag";
-      taxonomy.slug = config.BASE_NAME + "/" + type + "/" + taxonomy.slug;
-      // promise
       const posts = await taxonomy.getPosts();
       return {
         count: posts.length,
