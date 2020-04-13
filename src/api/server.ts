@@ -27,8 +27,12 @@ import middlewares from "./middlewares";
 import models from "./models/index";
 import path from "path";
 import upload from "./upload";
+import { graphqlMiddleware } from "./graphql";
+import graphiqlMiddleware from "./graphiql";
 
 const MAX_UPLOAD_SIZE = parseInt(process.env["MAX_IMAGE_UPLOAD_SIZE"] || "10");
+
+const USE_GRAPHQL_JIT = true;
 
 export interface Context {
   user: object;
@@ -49,11 +53,6 @@ export interface Context {
   response: Response;
 }
 
-const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));
-
-const resolvers = mergeResolvers(
-  fileLoader(path.join(__dirname, "./resolvers")),
-);
 const context = ({ req, res }): Context => ({
   user: req.user || {},
   error: req.error || null,
@@ -61,35 +60,6 @@ const context = ({ req, res }): Context => ({
   admin: req.headers.admin || false,
   models,
   response: res,
-});
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  formatError: error => {
-    console.log("error.message :", error.message);
-    logger.error(error.message, error.extensions, error, JSON.stringify(error));
-    return error;
-  },
-  plugins: [
-    {
-      requestDidStart({ request }) {
-        return {
-          didResolveOperation({ request }) {
-            if (request.query?.startsWith("mutation")) {
-              cache.clear();
-              logger.debug("Clearedcache");
-            }
-          },
-        };
-      },
-    },
-  ],
-  context: context,
-  introspection: true,
-  playground: {
-    endpoint: config.API_URL,
-  },
 });
 
 const { pathname } = new URL(config.API_URL);
@@ -104,5 +74,66 @@ export default async (app: Express) => {
   );
   app.use(config.BASE_NAME + "/upload", upload);
   app.get(config.BASE_NAME + "/" + config.rssPath, RssFeed);
-  server.applyMiddleware({ app, path: pathname });
+
+  if (USE_GRAPHQL_JIT) {
+    app.use(
+      "/graphql",
+      graphqlMiddleware({
+        getContext: context,
+        onBeforeComplete({ operationKind }) {
+          if (operationKind === "mutation") {
+            cache.clear();
+            logger.debug("Clearedcache");
+          }
+        },
+      }),
+    );
+    app.use("/graphiql", graphiqlMiddleware({ graphqlEndpoint: "/graphql" }));
+  } else {
+    const server = getApolloServer();
+    server.applyMiddleware({ app, path: pathname });
+  }
 };
+
+function getApolloServer() {
+  const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));
+
+  const resolvers = mergeResolvers(
+    fileLoader(path.join(__dirname, "./resolvers")),
+  );
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    formatError: error => {
+      console.log("error.message :", error.message);
+      logger.error(
+        error.message,
+        error.extensions,
+        error,
+        JSON.stringify(error),
+      );
+      return error;
+    },
+    plugins: [
+      {
+        requestDidStart({ request }) {
+          return {
+            didResolveOperation({ request }) {
+              if (request.query?.startsWith("mutation")) {
+                cache.clear();
+                logger.debug("Clearedcache");
+              }
+            },
+          };
+        },
+      },
+    ],
+    context: context,
+    introspection: true,
+    playground: {
+      endpoint: config.API_URL,
+    },
+  });
+
+  return server;
+}

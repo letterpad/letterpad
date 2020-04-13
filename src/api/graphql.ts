@@ -2,47 +2,69 @@ import { makeExecutableSchema } from "graphql-tools";
 import { fileLoader, mergeResolvers, mergeTypes } from "merge-graphql-schemas";
 import path from "path";
 import { Context } from "./server";
-import constants from "./utils/constants";
-import models from "./models/index";
 import { Handler, Request, Response } from "express";
-import { GraphQLSchema, parse, validate, print } from "graphql";
+import {
+  GraphQLSchema,
+  parse,
+  validate,
+  print,
+  OperationTypeNode,
+  OperationDefinitionNode,
+} from "graphql";
 import { compileQuery, isCompiledQuery, CompiledQuery } from "graphql-jit";
 
 type QueryStore = Map<string, CompiledQuery>;
+type GetContextFn = ({ req, res }: { req: Request; res: Response }) => Context;
+type OnBeforeCompleteFn = ({
+  operationKind,
+}: {
+  operationKind: OperationTypeNode;
+}) => void;
 
-export function graphqlMiddleware(): Handler {
+export function graphqlMiddleware({
+  getContext,
+  onBeforeComplete: onComplete,
+}: {
+  getContext: GetContextFn;
+  onBeforeComplete?: OnBeforeCompleteFn;
+}): Handler {
   const schema = getSchema();
 
   const queryStore: QueryStore = new Map();
 
   return (req, res) => {
-    graphqlHandler(schema, queryStore, req, res).catch(e => {
-      res.status(500);
-      console.error("Unexpected error handling graphql request:", e);
-      res.end(
-        JSON.stringify({
-          errors: [
-            {
-              message: `Unexpected error: ${e.message}`,
-            },
-          ],
-        }),
-      );
-    });
+    graphqlHandler(schema, queryStore, getContext, req, res, onComplete).catch(
+      e => {
+        res.status(500);
+        console.error("Unexpected error handling graphql request:", e);
+        res.end(
+          JSON.stringify({
+            errors: [
+              {
+                message: `Unexpected error: ${e.message}`,
+              },
+            ],
+          }),
+        );
+      },
+    );
   };
 }
 
 async function graphqlHandler(
   schema: GraphQLSchema,
   queryStore: QueryStore,
+  getContext: GetContextFn,
   req: Request,
   res: Response,
+  onBeforeComplete?: OnBeforeCompleteFn,
 ) {
   let query: string;
+  let operationName: string | undefined;
   let variables: { [key: string]: any } | undefined;
 
   try {
-    ({ query, variables } = parseGraphqlRequest(req));
+    ({ query, variables, operationName } = parseGraphqlRequest(req));
   } catch (e) {
     res.status(400);
     res.end(e.message);
@@ -69,7 +91,33 @@ async function graphqlHandler(
       return;
     }
 
-    const newCompiledQuery = compileQuery(schema, document);
+    /**
+     * If there is no operation name then take the first operation
+     */
+    if (!operationName) {
+      const firstOp = document.definitions.find(
+        def => def.kind === "OperationDefinition",
+      ) as OperationDefinitionNode;
+      if (!firstOp) {
+        res.status(400);
+        res.end(
+          JSON.stringify({
+            errors: [
+              {
+                message: "Must have at least 1 operation - query or mutation",
+              },
+            ],
+          }),
+        );
+        return;
+      }
+
+      if (firstOp.name) {
+        operationName = firstOp.name.value;
+      }
+    }
+
+    const newCompiledQuery = compileQuery(schema, document, operationName);
     if (!isCompiledQuery(newCompiledQuery)) {
       // Compilation Failure
       res.status(400);
@@ -87,11 +135,22 @@ async function graphqlHandler(
     variables,
   );
 
+  if (onBeforeComplete) {
+    const operationDef = document.definitions.find(
+      op => op.kind === "OperationDefinition",
+    ) as OperationDefinitionNode;
+
+    onBeforeComplete({
+      operationKind: operationDef.operation,
+    });
+  }
+
   res.end(JSON.stringify(executionResult));
 }
 
 interface ParsedGraphqlRequest {
   query: string;
+  operationName?: string;
   variables?: {
     [key: string]: any;
   };
@@ -104,17 +163,6 @@ function parseGraphqlRequest(req: Request): ParsedGraphqlRequest {
   }
 
   return parsedReq;
-}
-
-function getContext({ req, res }): Context {
-  return {
-    user: req.user || {},
-    error: req.error || null,
-    SECRET: constants.SECRET,
-    admin: req.headers.admin || false,
-    models,
-    response: res,
-  };
 }
 
 export function getSchema() {
