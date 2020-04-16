@@ -18,8 +18,14 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
   const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);
 
+  let mounted = false;
   useEffect(() => {
+    mounted = true;
     fetchInternalMedia();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const fetchInternalMedia = async (page = 1) => {
@@ -37,9 +43,10 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
       rows: result.data.media.rows,
       count: result.data.media.count,
     };
-
-    setData([...data, ...images.rows]);
-    setTotalCount(images.count);
+    if (mounted) {
+      setData([...data, ...images.rows]);
+      setTotalCount(images.count);
+    }
   };
 
   const loadMore = () => {

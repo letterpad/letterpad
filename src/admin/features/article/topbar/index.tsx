@@ -38,7 +38,9 @@ export class TopBar extends Component<ITopbarProps, any> {
       // Let the saving state stay atleast for half a second to show the loader.
       // Users should know we have auto-save option.
       setTimeout(() => {
-        this.setState({ saving: false });
+        if (this.mounted) {
+          this.setState({ saving: false });
+        }
       }, 500);
     });
   }
@@ -57,7 +59,7 @@ export class TopBar extends Component<ITopbarProps, any> {
       this.props.router.history.goBack();
     }
     // if the post is in edit mode, trigger the event
-    else if (this.props.edit) {
+    else if (this.props.edit && this.mounted) {
       eventName = "onPostUpdate";
       this.setState({ post });
     }

@@ -55,7 +55,9 @@ const PostSettings: React.FC<IProps> = ({
         <br />
         <br />
         <PublishOptions status={post.status} updatePost={updatePost} />
-        <FeaturedPost isFeatured={post.featured} updatePost={updatePost} />
+        {post.type === PostTypes.Post && (
+          <FeaturedPost isFeatured={post.featured} updatePost={updatePost} />
+        )}
         <Excerpt
           html={post.html}
           excerpt={post.excerpt}
@@ -101,8 +103,6 @@ const Container = styled.div<IContainerProps>`
   overflow-y: auto;
   background: var(--bg-base);
   z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr;
   padding: 24px;
   > div {
     label {
