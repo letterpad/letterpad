@@ -22,13 +22,13 @@ import cache from "../client/server/cache";
 import config from "../config";
 import constants from "./utils/constants";
 import fileUpload from "express-fileupload";
+import graphiqlMiddleware from "./graphiql";
+import { graphqlMiddleware } from "./graphql";
 import logger from "../shared/logger";
 import middlewares from "./middlewares";
 import models from "./models/index";
 import path from "path";
 import upload from "./upload";
-import { graphqlMiddleware } from "./graphql";
-import graphiqlMiddleware from "./graphiql";
 
 const MAX_UPLOAD_SIZE = parseInt(process.env["MAX_IMAGE_UPLOAD_SIZE"] || "10");
 
@@ -62,7 +62,7 @@ const context = ({ req, res }): Context => ({
 
 const { pathname } = new URL(config.API_URL);
 
-export default async (app: Express) => {
+const apiServer = async (app: Express) => {
   middlewares(app);
   app.use(
     fileUpload({
@@ -96,6 +96,8 @@ export default async (app: Express) => {
     server.applyMiddleware({ app, path: pathname });
   }
 };
+
+export default apiServer;
 
 function getApolloServer() {
   const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));

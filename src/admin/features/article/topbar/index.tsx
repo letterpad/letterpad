@@ -23,10 +23,14 @@ export class TopBar extends Component<ITopbarProps, any> {
     settingsOpen: false,
     saving: false,
   };
+  mounted = false;
 
   componentDidMount() {
+    this.mounted = true;
     EventBusInstance.on("ARTICLE_SAVING", () => {
-      this.setState({ saving: true });
+      if (this.mounted) {
+        this.setState({ saving: true });
+      }
     });
     EventBusInstance.on("ARTICLE_SAVED", () => {
       this.afterPostSave();
@@ -37,6 +41,10 @@ export class TopBar extends Component<ITopbarProps, any> {
         this.setState({ saving: false });
       }, 500);
     });
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   afterPostSave = () => {

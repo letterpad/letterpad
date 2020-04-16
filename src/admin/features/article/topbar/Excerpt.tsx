@@ -49,9 +49,8 @@ const Excerpt: React.FC<IProps> = ({ excerpt, html, updatePost }) => {
         maxLength={maxLength}
         onChange={onChange}
         placeholder="Write a small description"
-      >
-        {description}
-      </TextArea>
+        defaultValue={description}
+      ></TextArea>
     </Container>
   );
 };

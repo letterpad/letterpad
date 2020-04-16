@@ -24,9 +24,8 @@ export const resolveMenuFilter = async (root, args, { models }) => {
 
       tagSlug = JSON.parse(value)[0].slug;
     }
-
     const taxTag = await models.Taxonomy.findOne({
-      where: { slug: tagSlug, type: "post_tag" },
+      where: { slug: tagSlug },
     });
 
     if (!taxTag) return null;
@@ -37,6 +36,7 @@ export const resolveMenuFilter = async (root, args, { models }) => {
       require: true,
     });
   }
+  console.log("args.conditions :", args.conditions);
   return args;
 };
 

@@ -10,7 +10,7 @@ function getMenuWithSanitizedSlug(menu) {
     switch (item.type) {
       case "tag":
       case "page":
-        item.slug = item.type + "/" + item.slug;
+        item.slug = "/" + item.type + "/" + item.slug;
         break;
       case "custom":
         item.slug = config.BASE_NAME + "/" + item.slug;

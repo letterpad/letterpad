@@ -74,7 +74,6 @@ export default {
         };
       }
       const valid = await bcrypt.compare(password, author.password);
-
       if (!valid) {
         return {
           ok: false,
@@ -106,11 +105,7 @@ export default {
         SECRET,
         { expiresIn },
       );
-      // response.cookie("id", token, {
-      //   httpOnly: true,
-      //   secure: process.env.NODE_ENV === "production",
-      //   maxAge: 1000 * 60 * 60 * 24 * 30, // 7 days
-      // });
+      console.log("token :", token);
       return {
         ok: true,
         token,

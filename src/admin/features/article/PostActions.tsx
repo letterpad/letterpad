@@ -83,7 +83,6 @@ let PostActions: IPostActions = (() => {
 
     updatePost: async () => {
       const data = PostActions.getDraft();
-      console.log(data);
       EventBusInstance.publish("ARTICLE_SAVING");
       const update = await client().mutate<UpdatePostMutation>({
         mutation: UPDATE_POST_QUERY,

@@ -11,6 +11,7 @@ run_dev () {
     export NODE_ENV=dev
     
     # webpack --config ./webpack/webpack.dev.js --env.theme=$THEME
+    nodemon --watch ./src/api -e ts,js,graphql ./src/api/apiDevServer.ts &
     yarn ts-node ./src/start.ts --profile --json
 }
 
