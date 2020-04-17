@@ -619,6 +619,7 @@ export type Taxonomy = {
 export type TaxonomyFilters = {
   type?: Maybe<TaxonomyType>;
   active?: Maybe<Scalars["Boolean"]>;
+  name?: Maybe<Scalars["String"]>;
 };
 
 export type TaxonomyInputType = {

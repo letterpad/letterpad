@@ -35,6 +35,10 @@ class FeaturedImage extends Component<
     mediaProvider: this.props.mediaProvider,
   };
 
+  componentDidMount() {
+    this.setState({ cover_image: PostActions.getData().cover_image });
+  }
+
   // All the images available in the post can be used as a cover image.
   // This function sets the selection
   setImage = async (images: { [urls: string]: Image }) => {

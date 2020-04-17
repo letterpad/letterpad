@@ -9,12 +9,15 @@ export default {
         order: [["name", "ASC"]],
       };
       if (args.filters) {
-        let { active, type } = args.filters;
+        let { active, type, name } = args.filters;
         if (typeof active === "undefined") {
           active = true;
         }
         if (type) {
           conditions.where.type = type;
+        }
+        if (name) {
+          conditions.where.name = name;
         }
         if (active === true) {
           // return only active taxonomies

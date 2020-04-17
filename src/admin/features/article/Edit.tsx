@@ -31,7 +31,7 @@ class Edit extends Component<IProps> {
 
   imageInputRef = React.createRef<HTMLInputElement>();
 
-  componentDidMount() {
+  componentWillMount() {
     PostActions.setData(this.props.post);
   }
 

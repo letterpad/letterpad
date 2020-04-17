@@ -74,8 +74,8 @@ const PostSettings: React.FC<IProps> = ({
         )}
         <FeaturedImage post={post} mediaProvider={MediaProvider.Unsplash} />
         <br />
-        <Button btnSize="md" onClick={onDelete}>
-          Delete
+        <Button btnSize="md" onClick={onDelete} btnStyle="danger">
+          Delete Post
         </Button>
         <br />
         <br />

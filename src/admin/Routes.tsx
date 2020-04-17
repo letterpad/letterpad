@@ -137,6 +137,15 @@ const Routes: React.FC<RouteComponentProps> = router => {
               component={Taxonomy}
               settings={settings}
             />
+
+            <SecuredRoute
+              exact
+              path="/admin/tags/:tag"
+              type="post_tag"
+              component={Taxonomy}
+              settings={settings}
+            />
+
             <SecuredRoute
               exact
               path="/admin/settings"

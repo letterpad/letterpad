@@ -8,7 +8,7 @@ const applyConfirmStyle = () => `
     position: absolute;
     height: auto;
     box-shadow: var(--box-shadow);
-    background: var(--bg-sections);
+    background: var(--bg-base);
 
     .modal-body {
         max-height:80vh;

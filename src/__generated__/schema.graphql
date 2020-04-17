@@ -472,6 +472,7 @@ type Taxonomy {
 input TaxonomyFilters {
   type: TaxonomyType
   active: Boolean
+  name: String
 }
 
 type EditTaxResponse {

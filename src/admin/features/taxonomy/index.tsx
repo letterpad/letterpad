@@ -23,6 +23,7 @@ import {
   TaxonomyType,
 } from "../../../__generated__/gqlTypes";
 import TaxonomyList from "./TaxonomyList";
+import { RouteComponentProps } from "react-router";
 
 const texts = t => ({
   title1: t("tags.title"),
@@ -34,9 +35,10 @@ const texts = t => ({
 
 interface ITaxonomyProps extends WithNamespaces {
   type: TaxonomyType;
+  router: RouteComponentProps;
 }
 
-const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
+const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type, router }) => {
   const defaultTexts = texts(t);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [createMode, setCreateMode] = useState<boolean>(false);
@@ -50,12 +52,12 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
     }
     setSelectedIds([...uniqeIDs]);
   };
-
+  console.log("router.match.params):", router.match.params);
   const { data, loading } = useQuery<TaxonomiesQuery, TaxonomiesQueryVariables>(
     QUERY_TAXONOMIES,
     {
       variables: {
-        filters: { type, active: false },
+        filters: { type, active: false, name: router.match.params?.tag || "" },
       },
       fetchPolicy: "network-only",
     },
