@@ -122,7 +122,7 @@ const Input = styled.input`
 
 function getLinkedPostsUrl(type, name) {
   if (type === TaxonomyType.PostTag) {
-    return config.BASE_NAME + "posts?tag=" + name;
+    return config.BASE_NAME + "/posts?tag=" + name;
   }
-  return config.BASE_NAME + "posts?category=" + name;
+  return config.BASE_NAME + "/posts?category=" + name;
 }
