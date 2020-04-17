@@ -31,7 +31,7 @@ export const StyledCheckbox = styled.div`
       height: 16px;
       border-radius: 2px;
       border: 1px solid var(--color-border);
-      margin-top: -16px;
+      margin-top: -14px;
     }
 
     /* // Box hover */

@@ -93,7 +93,6 @@ const Author: React.FC<IAdminRouteProps & WithNamespaces> = ({
         );
       }
     }
-    notify.show("Author information saved", "success", 3000);
   };
 
   if (loading || !authorData) return <Loader />;

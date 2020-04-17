@@ -95,7 +95,7 @@ export const List = styled.div`
         background: #e8bd6e;
       }
       &.trash {
-        background: red;
+        background: #e4480b;
       }
     }
     .cover-image div {
