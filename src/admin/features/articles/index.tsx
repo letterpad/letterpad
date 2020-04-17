@@ -1,4 +1,3 @@
-import { Flex, Loader } from "./ArticleList.css";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { PostTypes, PostsNode } from "../../../__generated__/gqlTypes";
 import Section, { SectionSizes } from "../../components/section";
@@ -7,6 +6,7 @@ import { WithNamespaces, translate } from "react-i18next";
 import ArticleHoc from "./ArticleHoc";
 import { Button } from "../../components/button";
 import Filters from "./Filters";
+import { Flex } from "./ArticleList.css";
 import Paginate from "../../components/pagination";
 import React from "react";
 import RenderTable from "./RenderTable";
@@ -101,7 +101,6 @@ const Articles: React.FC<IArticleListProps> = ({
         </StyledToolbar>
         {
           <React.Fragment>
-            {<Loader loading={loading.toString()} />}
             <RenderTable
               data={(posts && posts.rows) || []}
               setSelection={setSelection}

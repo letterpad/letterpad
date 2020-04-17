@@ -65,18 +65,6 @@ export const RoundedCheckbox = styled.div`
   }
 `;
 
-interface ILoadingProps {
-  loading: string;
-}
-export const Loader = styled.div<ILoadingProps>`
-  width: 100%;
-  height: 4px;
-  background: var(--color-accent);
-  transition: 0.2s linear all;
-
-  opacity: ${p => (p.loading == "true" ? 0.7 : 0)};
-`;
-
 export const List = styled.div`
   article,
   header {

@@ -1,10 +1,10 @@
+import { EventBusInstance, Events } from "../../../../shared/eventBus";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { Post, PostStatusOptions } from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
 import StyledTopBar, { AutoSaveIndicator, PostStatusText } from "./TopBar.css";
 
 import { Button } from "../../../components/button";
-import { EventBusInstance } from "../../../../shared/eventBus";
 import PostActions from "../PostActions";
 import PostSettings from "./PostSettings";
 import { notify } from "react-notify-toast";
@@ -21,27 +21,12 @@ export class TopBar extends Component<ITopbarProps, any> {
   state = {
     post: this.props.post,
     settingsOpen: false,
-    saving: false,
   };
   mounted = false;
 
   componentDidMount() {
-    this.mounted = true;
-    EventBusInstance.on("ARTICLE_SAVING", () => {
-      if (this.mounted) {
-        this.setState({ saving: true });
-      }
-    });
-    EventBusInstance.on("ARTICLE_SAVED", () => {
+    EventBusInstance.on(Events.SAVED, () => {
       this.afterPostSave();
-      // updates are really fast.
-      // Let the saving state stay atleast for half a second to show the loader.
-      // Users should know we have auto-save option.
-      setTimeout(() => {
-        if (this.mounted) {
-          this.setState({ saving: false });
-        }
-      }, 500);
     });
   }
 
@@ -78,11 +63,7 @@ export class TopBar extends Component<ITopbarProps, any> {
   };
 
   updatePost = async () => {
-    this.setState({ saving: true });
     const update = await PostActions.updatePost();
-    setTimeout(() => {
-      this.setState({ saving: false });
-    }, 500);
 
     if (update.data && update.data.updatePost) {
       let { ok, errors } = update.data.updatePost;
@@ -128,15 +109,6 @@ export class TopBar extends Component<ITopbarProps, any> {
             {StatusGrammer[this.state.post.status]}
           </PostStatusText>
         </div>
-        {this.state.saving && (
-          <AutoSaveIndicator>
-            <div className="spinner">
-              <div className="bounce1" />
-              <div className="bounce2" />
-              <div className="bounce3" />
-            </div>
-          </AutoSaveIndicator>
-        )}
         <div className="right-block">
           <Button
             compact

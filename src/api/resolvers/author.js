@@ -1,11 +1,10 @@
-import { makeUrl, parseErrors } from "../../shared/util";
-
 import SendMail from "../utils/mail";
 import bcrypt from "bcryptjs";
 import config from "../../config";
 import { getEmailBody } from "../utils/common";
 import jwt from "jsonwebtoken";
 import { requiresAdmin } from "../utils/permissions";
+import utils from "../../shared/util";
 
 const host = config.ROOT_URL + config.BASE_NAME;
 
@@ -160,7 +159,7 @@ export default {
         } catch (e) {
           return {
             ok: false,
-            errors: parseErrors(e),
+            errors: utils.parseErrors(e),
           };
         }
       },
@@ -224,7 +223,7 @@ export default {
         } catch (e) {
           return {
             ok: false,
-            errors: parseErrors(e),
+            errors: utils.parseErrors(e),
           };
         }
       },
@@ -242,7 +241,7 @@ export default {
           throw new Error("Email does not exist");
         }
         await models.Author.update({ token }, { where: { id: author.id } });
-        const link = makeUrl(["/admin/reset-password", token]);
+        const link = utils.makeUrl(["/admin/reset-password", token]);
         const role = await models.Role.findOne({
           where: { id: author.roleId },
         });

@@ -30,8 +30,8 @@ export const StyledCheckbox = styled.div`
       width: 16px;
       height: 16px;
       border-radius: 2px;
-      /* background: var(--base-shade-2); */
       border: 1px solid var(--color-border);
+      margin-top: -16px;
     }
 
     /* // Box hover */

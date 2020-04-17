@@ -19,20 +19,20 @@ import Themes from "./Themes";
 import { UPDATE_OPTIONS } from "../../../shared/queries/Mutations";
 import { UpdateSettingOption } from "../../../types/types";
 import apolloClient from "../../../shared/apolloClient";
-import { notify } from "react-notify-toast";
-import utils from "../../../shared/util";
 
 interface ISettingsProps extends WithNamespaces {
   router: RouteComponentProps;
   settings: Setting;
 }
 
+let timeout;
 const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
   const [updatedOptions, setUpdatedOptions] = useState<OptionInputType[]>([]);
 
   useEffect(() => {
     if (Object.keys(updatedOptions).length > 0) {
-      utils.debounce(submitData, 500)();
+      clearTimeout(timeout);
+      timeout = setTimeout(submitData, 1000);
     }
   }, [updatedOptions]);
 
@@ -53,7 +53,6 @@ const Settings: React.FC<ISettingsProps> = ({ router, settings, t }) => {
         options: updatedOptions,
       },
     });
-    notify.show("Site settings saved", "success", 3000);
   };
 
   return (

@@ -1,3 +1,4 @@
+import { EventBusInstance, Events } from "../../../shared/eventBus";
 import {
   Post,
   Taxonomy,
@@ -5,7 +6,6 @@ import {
   UpdatePostMutation,
 } from "../../../__generated__/gqlTypes";
 
-import { EventBusInstance } from "../../../shared/eventBus";
 import { FetchResult } from "apollo-link";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 import client from "../../../shared/apolloClient";
@@ -83,7 +83,7 @@ let PostActions: IPostActions = (() => {
 
     updatePost: async () => {
       const data = PostActions.getDraft();
-      EventBusInstance.publish("ARTICLE_SAVING");
+      EventBusInstance.publish(Events.SAVING);
       const update = await client().mutate<UpdatePostMutation>({
         mutation: UPDATE_POST_QUERY,
         variables: {
@@ -92,7 +92,7 @@ let PostActions: IPostActions = (() => {
       });
       if (update.data) {
         PostActions.setData(update.data.updatePost.post as Post);
-        EventBusInstance.publish("ARTICLE_SAVED");
+        EventBusInstance.publish(Events.SAVED);
       }
       return update;
     },

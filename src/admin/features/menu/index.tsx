@@ -41,7 +41,7 @@ const buildMenu = (
 ) => {
   return (
     <ul>
-      {items.map(item => {
+      {items.map((item, idx) => {
         const slug = "/admin/" + item.slug;
         const isActive = selected === slug;
         let hasPerms = checkPerm(permissions, item.permissions);
@@ -49,6 +49,12 @@ const buildMenu = (
         if (!hasPerms) {
           return <div key={item.name} />;
         }
+        if (!item.name)
+          return (
+            <li key={idx}>
+              <br />
+            </li>
+          );
         return (
           <MenuItem key={item.name}>
             {item.children && item.children.length > 0 ? (

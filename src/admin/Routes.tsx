@@ -1,3 +1,4 @@
+import { LoadIndicator, SaveIndicator } from "./features/indicators";
 import React, { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -54,6 +55,8 @@ const Routes: React.FC<RouteComponentProps> = router => {
   return (
     <I18nextProvider i18n={i18nConfig}>
       <Notifications />
+      <SaveIndicator />
+      <LoadIndicator />
       <Switch>
         <Route
           exact
