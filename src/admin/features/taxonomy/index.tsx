@@ -52,7 +52,7 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type, router }) => {
     }
     setSelectedIds([...uniqeIDs]);
   };
-  console.log("router.match.params):", router.match.params);
+
   const { data, loading } = useQuery<TaxonomiesQuery, TaxonomiesQueryVariables>(
     QUERY_TAXONOMIES,
     {
@@ -130,6 +130,7 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type, router }) => {
           if (itemWithType.id === 0) {
             // create
             const result = await updateTaxonomy(itemWithType);
+            if (!result || !result.data) return;
             if (result.data && result.data.updateTaxonomy.ok) {
               itemWithType.id = result.data.updateTaxonomy.id as number;
               const data = (taxonomies as Taxonomy[]).map(item =>
@@ -145,8 +146,15 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type, router }) => {
                   (lastInputBox as HTMLInputElement).focus();
                 }
               }, 0);
-            } else {
-              return;
+            } else if (!result.data.updateTaxonomy.ok) {
+              const { errors } = result.data.updateTaxonomy;
+              if (errors && errors.length > 0) {
+                const errorMessage = errors
+                  .map(item => item.message)
+                  .join("\n");
+
+                notify.show(errorMessage, "error", 2000);
+              }
             }
           } else {
             updateTaxonomy(itemWithType);

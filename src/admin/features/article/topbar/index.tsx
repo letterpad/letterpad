@@ -37,8 +37,7 @@ export class TopBar extends Component<ITopbarProps, any> {
     });
 
     EventBusInstance.on(Events.DRAFT_CHANGED, () => {
-      const draft = PostActions.getDraft();
-      if (htmlEntities(draft.html) !== htmlEntities(this.props.post.html)) {
+      if (this.didBodyChange()) {
         this.setState({ canRepublish: true });
       }
     });
@@ -48,13 +47,19 @@ export class TopBar extends Component<ITopbarProps, any> {
     this.mounted = false;
   }
 
-  beforePostSave = () => {
+  didBodyChange = () => {
     const draft = PostActions.getDraft();
-    const post = PostActions.getData();
-    const bodyChanged = Object.keys(draft).includes("md");
+    if (!draft.html) return false;
+    if (htmlEntities(draft.html) !== htmlEntities(this.state.post.html)) {
+      return true;
+    }
+    return false;
+  };
 
+  beforePostSave = () => {
+    const post = PostActions.getData();
     const canRepublish = post.status === PostStatusOptions.Publish;
-    if (bodyChanged && canRepublish) {
+    if (this.didBodyChange() && canRepublish) {
       this.setState({ canRepublish });
     }
   };
@@ -109,9 +114,15 @@ export class TopBar extends Component<ITopbarProps, any> {
       e.preventDefault();
       this.props.router.history.push(this.prevPath);
     };
-    const { post } = this.state;
-    const isDraftState = this.state.post.status === PostStatusOptions.Draft;
-    const canRepublish = post.status === PostStatusOptions.Publish;
+
+    const isPublished = this.state.post.status === PostStatusOptions.Publish;
+
+    let publishLabel = "Publish";
+    let publishDisabled = false;
+    if (isPublished) {
+      publishLabel = this.state.canRepublish ? "Republish" : "Published";
+      publishDisabled = this.state.canRepublish ? false : true;
+    }
 
     return (
       <StyledTopBar className="article-top-bar">
@@ -127,14 +138,20 @@ export class TopBar extends Component<ITopbarProps, any> {
           </PostStatusText>
         </div>
         <div className="right-block">
-          {this.state.post.md.split(" ").length} words &nbsp;&nbsp;
+          {
+            this.state.post.md
+              .replace(/\n/, " ")
+              .trim()
+              .split(" ").length
+          }{" "}
+          words &nbsp;&nbsp;
           <Button
             btnStyle="primary"
             btnSize="sm"
             onClick={this.republishHtml}
-            disabled={!this.state.canRepublish && !isDraftState}
+            disabled={publishDisabled}
           >
-            {isDraftState ? "Publish" : "Publish new changes"}
+            {publishLabel}
           </Button>
           <Button
             compact

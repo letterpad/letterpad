@@ -57,6 +57,20 @@ export default {
 
   Mutation: {
     updateTaxonomy: async (root, args, { models }) => {
+      // checkif duplicate
+      const found = await models.Taxonomy.findOne({
+        where: { name: args.name },
+      });
+      if (found) {
+        return {
+          ok: false,
+          errors: [
+            { path: "", message: `The tag ${args.name} already exist.` },
+          ],
+          id: args.id,
+        };
+      }
+      const slug = createTaxonomySlug(args.name);
       if (args.id == 0) {
         //create
 
@@ -64,7 +78,7 @@ export default {
           name: args.name,
           desc: args.desc,
           type: args.type,
-          slug: args.slug.split("/").pop(),
+          slug,
         });
 
         return {
@@ -73,12 +87,12 @@ export default {
           id: item.id,
         };
       } else {
-        let id = await models.Taxonomy.update(
+        await models.Taxonomy.update(
           {
             name: args.name,
             desc: args.desc,
             type: args.type,
-            slug: args.slug.split("/").pop(),
+            slug,
           },
           {
             where: { id: args.id },
@@ -93,7 +107,7 @@ export default {
           const parsedMenu = JSON.parse(menu.value);
           const updatedMenu = parsedMenu.map(item => {
             if (item.type === "tag") {
-              item.slug = args.slug.split("/").pop();
+              item.slug = slug;
               item.original_name = args.name;
             }
             return item;
@@ -123,3 +137,11 @@ export default {
     },
   },
 };
+
+function createTaxonomySlug(name) {
+  return name
+    .toLowerCase()
+    .replace(/ /, "-")
+    .split("/")
+    .pop();
+}

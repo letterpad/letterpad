@@ -80,7 +80,7 @@ const SortableItem = SortableElement(props => {
           {...source.map(item => (
             <option
               key={item.slug}
-              label={item.type + " - " + item.label}
+              label={getSuggestionLabel(item)}
               value={item.slug}
             ></option>
           ))}
@@ -121,4 +121,11 @@ function getToolTip(item) {
   if (item.type === "custom") {
     return "This will be opened in a new tab.";
   }
+}
+
+function getSuggestionLabel(item) {
+  if (item.type === "tag") {
+    return `#tag - ${item.label}  (${item.postCount} post/s)`;
+  }
+  return `page - ${item.label}`;
 }

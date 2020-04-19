@@ -72,6 +72,7 @@ function normalizePages(pages) {
       slug: filterSlug(item.slug),
       label: item.title,
       original_name: item.title,
+      postCount: 0,
     };
   });
 }
@@ -83,6 +84,7 @@ function normalizeTags(tags) {
       slug: filterSlug(item.slug),
       label: item.name,
       original_name: item.name,
+      postCount: item.posts.count,
     };
   });
 }

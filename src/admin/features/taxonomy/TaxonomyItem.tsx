@@ -35,7 +35,6 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
   const onBlur = (value, key) => {
     if (value.length === 0) return;
     const updatedItem = { ...taxonomy, name, desc, [key]: value };
-    console.log("updatedItem :", updatedItem);
     onUpdate(updatedItem);
   };
 
