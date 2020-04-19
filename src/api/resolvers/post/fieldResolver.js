@@ -35,7 +35,6 @@ export const resolveMenuFilter = async (root, args, { models }) => {
       require: true,
     });
   }
-  console.log("args.conditions :", args.conditions);
   return args;
 };
 
