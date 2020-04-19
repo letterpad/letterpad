@@ -23,7 +23,6 @@ export const resolveMenuFilter = async (root, args, { models }) => {
       });
       tagSlug = JSON.parse(value)[0].slug;
     }
-    console.log("tagSlug :", tagSlug);
     const taxTag = await models.Taxonomy.findOne({
       where: { slug: tagSlug },
     });

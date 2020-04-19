@@ -1,4 +1,3 @@
-import config from "../../config";
 import { normalizePost } from "./post";
 
 export default {
@@ -37,7 +36,7 @@ export default {
       const type = "tag";
 
       return taxonomies.map(taxonomy => {
-        taxonomy.slug = config.BASE_NAME + "/" + type + "/" + taxonomy.slug;
+        taxonomy.slug = "/" + type + "/" + taxonomy.slug;
         return taxonomy;
       });
     },
@@ -65,7 +64,7 @@ export default {
           name: args.name,
           desc: args.desc,
           type: args.type,
-          slug: args.slug,
+          slug: args.slug.split("/").pop(),
         });
 
         return {
@@ -79,7 +78,7 @@ export default {
             name: args.name,
             desc: args.desc,
             type: args.type,
-            slug: args.slug,
+            slug: args.slug.split("/").pop(),
           },
           {
             where: { id: args.id },
@@ -94,7 +93,7 @@ export default {
           const parsedMenu = JSON.parse(menu.value);
           const updatedMenu = parsedMenu.map(item => {
             if (item.type === "tag") {
-              item.slug = args.slug;
+              item.slug = args.slug.split("/").pop();
               item.original_name = args.name;
             }
             return item;
