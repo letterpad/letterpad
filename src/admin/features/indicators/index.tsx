@@ -76,6 +76,7 @@ export const SaveContainer = styled.div`
     padding: 4px 8px;
     border: 1px solid #ded254;
     border-radius: 4px;
+    color: #000;
   }
 `;
 export const LoadContainer = styled.div`
