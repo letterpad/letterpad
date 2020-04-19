@@ -10,15 +10,21 @@ import { FetchResult } from "apollo-link";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 import client from "../../../shared/apolloClient";
 
+interface IPostActionArgs {
+  withHtml: boolean;
+}
 interface IPostActions {
   triggerEvent: (name: string, data: any) => void;
   setData: (data: Post) => void;
   setDraft: (data: { [T in keyof Partial<Post>]: Post[T] }) => void;
   getData: () => Post;
+  removeFromDraft: (key: keyof Partial<Post>) => void;
   getDraft: () => { [T in keyof Partial<Post>]: Post[T] };
   removeTaxonomy: (taxonomy: Taxonomy, type: TaxonomyTypes) => void;
   addTaxonomy: (taxonomy: Taxonomy, type: TaxonomyTypes) => void;
-  updatePost: () => Promise<FetchResult<UpdatePostMutation>>;
+  updatePost: (
+    params?: IPostActionArgs,
+  ) => Promise<FetchResult<UpdatePostMutation>>;
 }
 
 let PostActions: IPostActions = (() => {
@@ -47,6 +53,11 @@ let PostActions: IPostActions = (() => {
         ...draftData,
         ...data,
       };
+      EventBusInstance.publish(Events.DRAFT_CHANGED);
+    },
+
+    removeFromDraft: key => {
+      delete draftData[key];
     },
 
     getData: () => {
@@ -54,7 +65,7 @@ let PostActions: IPostActions = (() => {
     },
 
     getDraft: () => {
-      return draftData;
+      return { ...draftData };
     },
 
     removeTaxonomy: (taxonomy: Taxonomy, type: TaxonomyTypes) => {
@@ -81,9 +92,12 @@ let PostActions: IPostActions = (() => {
       }
     },
 
-    updatePost: async () => {
-      const data = PostActions.getDraft();
+    updatePost: async (params = { withHtml: false }) => {
       EventBusInstance.publish(Events.SAVING);
+      const data = PostActions.getDraft();
+      if (!params.withHtml) {
+        delete data.html;
+      }
       const update = await client().mutate<UpdatePostMutation>({
         mutation: UPDATE_POST_QUERY,
         variables: {

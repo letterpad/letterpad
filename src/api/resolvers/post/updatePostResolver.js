@@ -127,10 +127,12 @@ export const updateContent = async (root, args) => {
   if (excerpt) {
     args.dataToUpdate.excerpt = excerpt;
   }
-  if (!html) return args;
 
   try {
-    args.dataToUpdate.html = await setImageWidthAndHeightInHtml(html);
+    if (html) {
+      args.dataToUpdate.html = await setImageWidthAndHeightInHtml(html);
+      console.log("args.dataToUpdate.html :", args.dataToUpdate.html);
+    }
   } catch (e) {
     logger.error(e);
   }

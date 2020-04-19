@@ -67,6 +67,9 @@ class Edit extends Component<IProps> {
 
   onEditorChange = async change => {
     const { markdown, html } = change();
+    PostActions.setDraft({
+      html,
+    });
     if (markdown === PostActions.getData().md) return null;
     PostActions.setDraft({
       html,

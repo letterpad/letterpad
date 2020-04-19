@@ -35,9 +35,9 @@ const middlewareLinkAdmin = (token: string | null = null) => {
       const definations = operation.query.definitions;
       // @ts-ignore
       if (definations[0].operation === "mutation") {
-        EventBusInstance.publish(Events.SAVING);
+        //EventBusInstance.publish(Events.SAVING);
       } else {
-        EventBusInstance.publish(Events.LOADING);
+        //EventBusInstance.publish(Events.LOADING);
       }
     }
     operation.setContext({

@@ -25,11 +25,7 @@ export const SaveIndicator: React.FC = () => {
   if (!active) return null;
   return (
     <SaveContainer>
-      <div className="spinner">
-        <div className="bounce1" />
-        <div className="bounce2" />
-        <div className="bounce3" />
-      </div>
+      <span>-- Saving --</span>
     </SaveContainer>
   );
 };
@@ -53,26 +49,36 @@ export const LoadIndicator: React.FC = () => {
   }, []);
 
   if (!active) return null;
+
   return (
     <LoadContainer>
-      <span>LOADING...</span>
+      <div className="spinner">
+        <div className="bounce1" />
+        <div className="bounce2" />
+        <div className="bounce3" />
+      </div>
     </LoadContainer>
   );
 };
 
-export const LoadContainer = styled.div`
+export const SaveContainer = styled.div`
   position: fixed;
   z-index: 9999;
   width: 100%;
   height: 5px;
   left: 50%;
-  letter-spacing: 2px;
+  margin-left: -20px;
+  opacity: 0.8;
   font-size: 0.8rem;
-  margin-top: 10px;
+  margin-top: 5px;
   span {
+    background: #efe141;
+    padding: 4px 8px;
+    border: 1px solid #ded254;
+    border-radius: 4px;
   }
 `;
-export const SaveContainer = styled.div`
+export const LoadContainer = styled.div`
   position: fixed;
   z-index: 9999;
   left: 50%;

@@ -66,10 +66,13 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
 
   handleOnChange = (tags: Taxonomy[], a, b) => {
     if (a.action === "remove-value") {
-      PostActions.removeTaxonomy(a.removedValue, this.type);
-
-      this.setState({ tags: this.filterTaxonomyByType() });
-      setTimeout(() => this.props.toggleVisibility(undefined, true), 0);
+      if (this.state.tags.length > 1) {
+        PostActions.removeTaxonomy(a.removedValue, this.type);
+        this.setState({ tags: this.filterTaxonomyByType() });
+        setTimeout(() => this.props.toggleVisibility(undefined, true), 0);
+      } else {
+        alert("Posts should have atleast 1 tag.");
+      }
     } else if (a.action === "select-option") {
       PostActions.addTaxonomy(formatTagsForBackend([a.option])[0], this.type);
       this.setState({ tags });
@@ -79,10 +82,11 @@ export class Taxonomies extends Component<ITaxonomyProps, ITaxonomyState> {
 
   createNewTag = (tag: string) => {
     if (tag.trim().length === 0) return;
+    const tagWithoutSpace = tag.replace(" ", "-").toLocaleLowerCase();
     const newTag = {
       id: 0,
-      name: tag,
-      slug: tag,
+      name: tagWithoutSpace,
+      slug: tagWithoutSpace,
     };
     PostActions.addTaxonomy(newTag, this.type);
     this.setState({

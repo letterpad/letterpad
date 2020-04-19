@@ -13,6 +13,7 @@ import FeaturedPost from "./FeaturedPost";
 import { Link } from "react-router-dom";
 import { MediaProvider } from "../Edit";
 import PostActions from "../PostActions";
+import { PostStatusOptions } from "../../../../__generated__/resolvers";
 import PublishOptions from "./PublishOptions";
 import Taxonomies from "./Taxonomies";
 import UpdateSlug from "./UpdateSlug";
@@ -46,6 +47,12 @@ const PostSettings: React.FC<IProps> = ({
     e.preventDefault();
     toggleDisplay(false);
   };
+
+  const changeStatusToDraft = () => {
+    PostActions.setDraft({ status: PostStatusOptions.Draft });
+    PostActions.updatePost();
+  };
+
   return (
     <div>
       <Container isOpen={isOpen}>
@@ -54,7 +61,12 @@ const PostSettings: React.FC<IProps> = ({
         </Link>
         <br />
         <br />
-        <PublishOptions status={post.status} updatePost={updatePost} />
+        {post.status === PostStatusOptions.Publish && (
+          <Button btnSize="md" onClick={changeStatusToDraft} btnStyle="flat">
+            Unpublish Post
+          </Button>
+        )}
+        {/* <PublishOptions status={post.status} updatePost={updatePost} /> */}
         {post.type === PostTypes.Post && (
           <FeaturedPost isFeatured={post.featured} updatePost={updatePost} />
         )}

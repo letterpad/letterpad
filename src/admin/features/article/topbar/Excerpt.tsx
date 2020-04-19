@@ -43,7 +43,7 @@ const Excerpt: React.FC<IProps> = ({ excerpt, html, updatePost }) => {
 
   return (
     <Container>
-      <label>Post Description</label>
+      <label>Blog Post Description</label>
       <TextArea
         autoAdjustHeight={true}
         maxLength={maxLength}
@@ -51,6 +51,7 @@ const Excerpt: React.FC<IProps> = ({ excerpt, html, updatePost }) => {
         placeholder="Write a small description"
         defaultValue={description}
       ></TextArea>
+      <span className="counter">{description.length} / 160</span>
     </Container>
   );
 };
@@ -70,6 +71,7 @@ function trimString(str: string, maxLength) {
 export default Excerpt;
 
 const Container = styled.div`
+  position: relative;
   textarea {
     border: 1px solid var(--color-border);
     padding: 16px;
@@ -78,5 +80,12 @@ const Container = styled.div`
     background: transparent;
     color: var(--color-base);
     line-height: 1.6;
+  }
+  .counter {
+    position: absolute;
+    bottom: 8px;
+    left: 80%;
+    font-size: 0.7rem;
+    opacity: 0.6;
   }
 `;

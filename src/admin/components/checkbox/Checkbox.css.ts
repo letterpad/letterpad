@@ -30,7 +30,7 @@ export const StyledCheckbox = styled.div`
       width: 16px;
       height: 16px;
       border-radius: 2px;
-      border: 1px solid var(--color-border);
+      border: 1px solid;
       margin-top: -14px;
     }
 
@@ -66,7 +66,7 @@ export const StyledCheckbox = styled.div`
       content: "";
       position: absolute;
       left: 4px;
-      top: 4px;
+      top: -9px;
       background: white;
       width: 8px;
       height: 8px;

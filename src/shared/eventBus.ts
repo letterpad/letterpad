@@ -5,6 +5,7 @@ export const Events = {
   SAVED: "SAVED",
   LOADING: "LOADING",
   LOADED: "LOADED",
+  DRAFT_CHANGED: "DRAFT_CHANGED",
 };
 
 class EventBus {

@@ -14,7 +14,6 @@ apiApp.use(bodyParserMiddleWare);
 apiApp.use(bodyParser.json());
 
 apiServer(apiApp);
-
 apiApp.listen(1111, function() {
   console.log("Letterpad API listening at http://localhost:1111");
 });

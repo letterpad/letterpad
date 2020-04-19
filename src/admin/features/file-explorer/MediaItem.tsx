@@ -48,8 +48,8 @@ const Container = styled.article`
       height: 100%;
     }
   }
-  opacity: 0.6;
+  border: 2px solid transparent;
   &.selected {
-    opacity: 1;
+    border: 2px solid var(--color-base);
   }
 `;

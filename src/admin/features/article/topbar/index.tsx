@@ -2,11 +2,12 @@ import { EventBusInstance, Events } from "../../../../shared/eventBus";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { Post, PostStatusOptions } from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
-import StyledTopBar, { AutoSaveIndicator, PostStatusText } from "./TopBar.css";
+import StyledTopBar, { PostStatusText } from "./TopBar.css";
 
 import { Button } from "../../../components/button";
 import PostActions from "../PostActions";
 import PostSettings from "./PostSettings";
+import config from "../../../../config";
 import { notify } from "react-notify-toast";
 
 interface ITopbarProps {
@@ -17,16 +18,29 @@ interface ITopbarProps {
 }
 
 export class TopBar extends Component<ITopbarProps, any> {
-  prevPath = "/admin/" + this.props.post.type + "s";
+  prevPath = config.BASE_NAME + "/admin/" + this.props.post.type + "s";
   state = {
     post: this.props.post,
     settingsOpen: false,
+    canRepublish: false,
   };
-  mounted = false;
+  mounted = true;
+  previousHtml = "";
 
-  componentDidMount() {
+  componentWillMount() {
+    EventBusInstance.on(Events.SAVING, () => {
+      this.beforePostSave();
+    });
+
     EventBusInstance.on(Events.SAVED, () => {
       this.afterPostSave();
+    });
+
+    EventBusInstance.on(Events.DRAFT_CHANGED, () => {
+      const draft = PostActions.getDraft();
+      if (htmlEntities(draft.html) !== htmlEntities(this.props.post.html)) {
+        this.setState({ canRepublish: true });
+      }
     });
   }
 
@@ -34,31 +48,24 @@ export class TopBar extends Component<ITopbarProps, any> {
     this.mounted = false;
   }
 
+  beforePostSave = () => {
+    const draft = PostActions.getDraft();
+    const post = PostActions.getData();
+    const bodyChanged = Object.keys(draft).includes("md");
+
+    const canRepublish = post.status === PostStatusOptions.Publish;
+    if (bodyChanged && canRepublish) {
+      this.setState({ canRepublish });
+    }
+  };
+
   afterPostSave = () => {
     const post = PostActions.getData();
-    let eventName = "";
-    let notifyMessage = "";
     // if the status is trash, redirect the user to posts or pages depending on the post type.
     if (post.status === PostStatusOptions.Trash) {
-      notifyMessage = "Post trashed";
       this.props.router.history.goBack();
-    }
-    // if the post is in edit mode, trigger the event
-    else if (this.props.edit && this.mounted) {
-      eventName = "onPostUpdate";
+    } else if (this.mounted) {
       this.setState({ post });
-    }
-    if (notifyMessage) {
-      try {
-        // In tests notify will not work.
-        notify.show(notifyMessage, "success", 3000);
-      } catch (e) {
-        //... leave this empty
-      }
-    }
-    if (eventName) {
-      // Trigger an event. This will allow other components to listen to post create, update events
-      PostActions.triggerEvent(eventName, post);
     }
   };
 
@@ -80,7 +87,7 @@ export class TopBar extends Component<ITopbarProps, any> {
     e.preventDefault();
     PostActions.setDraft({ status: PostStatusOptions.Trash });
     await PostActions.updatePost();
-    this.props.router.history.push(this.prevPath);
+    document.location.href = this.prevPath;
   };
 
   slideSettingsDrawer = (flag?: boolean) => {
@@ -90,11 +97,21 @@ export class TopBar extends Component<ITopbarProps, any> {
     this.setState({ settingsOpen: !this.state.settingsOpen });
   };
 
+  republishHtml = async () => {
+    const withHtml = true;
+    PostActions.setDraft({ status: PostStatusOptions.Publish });
+    await PostActions.updatePost({ withHtml });
+    this.setState({ canRepublish: false });
+  };
+
   render() {
     const goBack = e => {
       e.preventDefault();
       this.props.router.history.push(this.prevPath);
     };
+    const { post } = this.state;
+    const isDraftState = this.state.post.status === PostStatusOptions.Draft;
+    const canRepublish = post.status === PostStatusOptions.Publish;
 
     return (
       <StyledTopBar className="article-top-bar">
@@ -110,6 +127,15 @@ export class TopBar extends Component<ITopbarProps, any> {
           </PostStatusText>
         </div>
         <div className="right-block">
+          {this.state.post.md.split(" ").length} words &nbsp;&nbsp;
+          <Button
+            btnStyle="primary"
+            btnSize="sm"
+            onClick={this.republishHtml}
+            disabled={!this.state.canRepublish && !isDraftState}
+          >
+            {isDraftState ? "Publish" : "Publish new changes"}
+          </Button>
           <Button
             compact
             btnStyle="flat"
@@ -136,3 +162,12 @@ const StatusGrammer = {
   draft: "In-Draft",
   trash: "In-Trash",
 };
+
+function htmlEntities(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&quot;");
+}

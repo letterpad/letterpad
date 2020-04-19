@@ -17,7 +17,6 @@ import { Link } from "react-router-dom";
 import ModalHoc from "../../components/modal";
 import { QUERY_GLOBAL_SEARCH } from "../../../shared/queries/Queries";
 import apolloClient from "../../../shared/apolloClient";
-import config from "../../../config";
 
 interface IProps extends WithNamespaces {
   onClose: () => void;
@@ -123,7 +122,7 @@ const SearchItems: React.FC<ISearchItemsProps> = ({
           <Link
             onClick={onClick}
             key={item.id + "-" + item.title}
-            to={config.BASE_NAME + "/admin/" + getLink(item)}
+            to={"/admin/" + getLink(item)}
             className="search-results-item"
           >
             {item.title}

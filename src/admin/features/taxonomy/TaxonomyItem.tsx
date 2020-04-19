@@ -17,7 +17,7 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
   const [desc, setDesc] = useState<string>(taxonomy.desc || "");
 
   const onNameChange = value => {
-    const withOutSpace = value.replace(" ", "-");
+    const withOutSpace = value.replace(" ", "-").toLowerCase();
     setName(withOutSpace);
   };
 
@@ -95,7 +95,7 @@ const InlineInput: React.FC<{
   placeholder: string;
   onChange: (value: string) => void;
   onBlur: (value: string) => void;
-  onKeyDown?: (e: React.SyntheticEvent) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }> = ({ value, onChange, placeholder, onBlur, onKeyDown }) => {
   return (
     <form>

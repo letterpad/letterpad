@@ -41,13 +41,22 @@ const Container = styled.div`
   .logo-container {
     width: 100px;
     height: 60px;
-    background-size: cover;
-    background-color: #333;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #fff;
   }
   img {
     width: 36px;
     background: #fff;
     padding: 4px;
     border-radius: 2px;
+  }
+  i {
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    &:hover {
+      background: #333;
+    }
   }
 `;
