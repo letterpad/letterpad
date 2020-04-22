@@ -32,6 +32,9 @@ class Post extends Model {
         md: {
           type: DataTypes.TEXT,
         },
+        md_draft: {
+          type: DataTypes.TEXT,
+        },
         excerpt: {
           type: DataTypes.STRING(400),
           defaultValue: "",
@@ -70,7 +73,9 @@ class Post extends Model {
         },
         publishedAt: {
           type: DataTypes.DATE,
-          defaultValue: getDateTime(+new Date()),
+        },
+        scheduledAt: {
+          type: DataTypes.DATE,
         },
       },
       {

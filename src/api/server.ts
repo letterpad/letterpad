@@ -1,18 +1,3 @@
-declare global {
-  namespace Express {
-    interface Request {
-      user: {
-        expiresIn: Date;
-        id: number;
-      };
-      error: any;
-    }
-    interface Headers {
-      authorization: string;
-    }
-  }
-}
-
 import { Express, Response } from "express";
 import { fileLoader, mergeResolvers, mergeTypes } from "merge-graphql-schemas";
 
@@ -28,7 +13,23 @@ import logger from "../shared/logger";
 import middlewares from "./middlewares";
 import models from "./models/index";
 import path from "path";
+import { publishScheduledPosts } from "./jobs";
 import upload from "./upload";
+
+declare global {
+  namespace Express {
+    interface Request {
+      user: {
+        expiresIn: Date;
+        id: number;
+      };
+      error: any;
+    }
+    interface Headers {
+      authorization: string;
+    }
+  }
+}
 
 const MAX_UPLOAD_SIZE = parseInt(process.env["MAX_IMAGE_UPLOAD_SIZE"] || "10");
 
@@ -95,6 +96,8 @@ const apiServer = async (app: Express) => {
     const server = getApolloServer();
     server.applyMiddleware({ app, path: pathname });
   }
+
+  publishScheduledPosts();
 };
 
 export default apiServer;

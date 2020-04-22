@@ -12,7 +12,7 @@ run_dev () {
     
     sh -c 'lsof -i :${PORT:-1111} -t | xargs kill'
     # webpack --config ./webpack/webpack.dev.js --env.theme=$THEME
-    nodemon --watch ./src/api -e ts,js,graphql ./src/api/apiDevServer.ts &
+    nodemon --watch ./src/api -e ts,js,graphql --exec 'ts-node' ./src/api/apiDevServer.ts &
     yarn ts-node ./src/start.ts --profile --json
 }
 

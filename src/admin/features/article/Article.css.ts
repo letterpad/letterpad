@@ -67,6 +67,25 @@ const StyledArticle = styled.article`
     }
     font-size: large;
   }
+  .lp-datepicker {
+    position: fixed;
+    z-index: 999;
+    top: 91px;
+    left: 100%;
+    margin-left: -330px;
+    .react-datepicker {
+      border-bottom-right-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+    footer {
+      background: white;
+      margin-top: -4px;
+      padding: 4px;
+      border-bottom-right-radius: 4px;
+      border-bottom-left-radius: 4px;
+      text-align: center;
+    }
+  }
 `;
 
 export default StyledArticle;

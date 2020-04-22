@@ -58,7 +58,10 @@ const clientConfig = args => {
             },
             "postcss-loader",
           ],
-          include: [path.join(__dirname, "../src/admin")],
+          include: [
+            path.join(__dirname, "../src/admin"),
+            path.join(__dirname, "../node_modules"),
+          ],
         },
       ],
     },

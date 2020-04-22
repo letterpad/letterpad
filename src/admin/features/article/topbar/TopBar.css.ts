@@ -49,7 +49,7 @@ export const PublishBox = styled.div`
 `;
 
 export const PostStatusText = styled.span<{ status: string }>`
-  font-size: 11px;
+  font-size: 0.8rem;
   margin-left: 30px;
   border: 1px solid var(--color-border);
   padding: 3px 6px;
@@ -62,4 +62,12 @@ export const PostStatusText = styled.span<{ status: string }>`
       : "var(--bg-danger)"};
 `;
 
+export const PostScheduledText = styled.span`
+  color: var(--bg-success);
+  font-size: 0.8rem;
+  margin-left: 8px;
+  border: 1px solid var(--color-border);
+  padding: 3px 6px;
+  border-radius: 4px;
+`;
 export default StyledTopBar;

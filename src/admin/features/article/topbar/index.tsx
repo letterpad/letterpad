@@ -1,10 +1,10 @@
+import { Button, ButtonGroup } from "../../../components/button";
 import { EventBusInstance, Events } from "../../../../shared/eventBus";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { Post, PostStatusOptions } from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
-import StyledTopBar, { PostStatusText } from "./TopBar.css";
+import StyledTopBar, { PostScheduledText, PostStatusText } from "./TopBar.css";
 
-import { Button } from "../../../components/button";
 import PostActions from "../PostActions";
 import PostSettings from "./PostSettings";
 import config from "../../../../config";
@@ -23,6 +23,7 @@ export class TopBar extends Component<ITopbarProps, any> {
     post: this.props.post,
     settingsOpen: false,
     canRepublish: false,
+    showPublishOptions: false,
   };
   mounted = true;
   previousHtml = "";
@@ -37,9 +38,16 @@ export class TopBar extends Component<ITopbarProps, any> {
     });
 
     EventBusInstance.on(Events.DRAFT_CHANGED, () => {
-      if (this.didBodyChange()) {
-        this.setState({ canRepublish: true });
-      }
+      // if (this.didBodyChange()) {
+      const draft = PostActions.getDraft();
+
+      this.setState({
+        canRepublish: this.state.post.md_draft.length > 0,
+        post: {
+          ...this.state.post,
+          ...draft,
+        },
+      });
     });
   }
 
@@ -102,11 +110,20 @@ export class TopBar extends Component<ITopbarProps, any> {
     this.setState({ settingsOpen: !this.state.settingsOpen });
   };
 
-  republishHtml = async () => {
+  showPublishOptions = () => {
+    if (this.state.post.status === PostStatusOptions.Publish) {
+      PostActions.setDraft({ status: PostStatusOptions.Publish });
+      return this.publishNow();
+    } else {
+      this.setState({ settingsOpen: true });
+    }
+  };
+
+  publishNow = async () => {
     const withHtml = true;
     PostActions.setDraft({ status: PostStatusOptions.Publish });
     await PostActions.updatePost({ withHtml });
-    this.setState({ canRepublish: false });
+    this.setState({ canRepublish: false, showPublishOptions: false });
   };
 
   render() {
@@ -116,14 +133,15 @@ export class TopBar extends Component<ITopbarProps, any> {
     };
 
     const isPublished = this.state.post.status === PostStatusOptions.Publish;
-
-    let publishLabel = "Publish";
-    let publishDisabled = false;
-    if (isPublished) {
-      publishLabel = this.state.canRepublish ? "Republish" : "Published";
-      publishDisabled = this.state.canRepublish ? false : true;
+    const isScheduled = this.state.post.scheduledAt !== null;
+    const canRepublish = this.state.post.md_draft.length > 0;
+    const publishDisabled = isPublished && !canRepublish;
+    let publishLabel = isPublished ? "Published" : "Publish";
+    if (canRepublish && isPublished) {
+      publishLabel = "RePublish";
     }
 
+    const { md, md_draft, status } = this.state.post;
     return (
       <StyledTopBar className="article-top-bar">
         <div className="left-block">
@@ -133,38 +151,40 @@ export class TopBar extends Component<ITopbarProps, any> {
             </span>
           </Link>
 
-          <PostStatusText status={this.state.post.status}>
-            {StatusGrammer[this.state.post.status]}
+          <PostStatusText status={status}>
+            {StatusGrammer[status]}
           </PostStatusText>
+
+          {isScheduled && <PostScheduledText>Scheduled</PostScheduledText>}
         </div>
         <div className="right-block">
-          {
-            this.state.post.md
-              .replace(/\n/, " ")
-              .trim()
-              .split(" ").length
-          }{" "}
-          words &nbsp;&nbsp;
+          {getWordCount(md_draft || md)} words &nbsp;&nbsp;
           <Button
-            btnStyle="primary"
+            btnStyle="success"
             btnSize="sm"
-            onClick={this.republishHtml}
+            onClick={this.showPublishOptions}
             disabled={publishDisabled}
           >
             {publishLabel}
           </Button>
-          <Button
-            compact
-            btnStyle="flat"
-            btnSize="sm"
-            onClick={this.slideSettingsDrawer}
-          >
-            <i className="fa fa-cog" />
-          </Button>
+          {isPublished && (
+            <Button
+              compact
+              btnStyle="flat"
+              btnSize="sm"
+              onClick={this.slideSettingsDrawer}
+            >
+              <i className="fa fa-cog" />
+            </Button>
+          )}
           <PostSettings
             onDelete={this.deleteAction}
             isOpen={this.state.settingsOpen}
             toggleDisplay={this.slideSettingsDrawer}
+            isPublished={isPublished}
+            isScheduled={isScheduled}
+            canRepublish={canRepublish}
+            post={this.state.post}
           />
         </div>
       </StyledTopBar>
@@ -187,4 +207,11 @@ function htmlEntities(str) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&quot;");
+}
+
+function getWordCount(text: string) {
+  return text
+    .replace(/\n/, " ")
+    .trim()
+    .split(" ").length;
 }

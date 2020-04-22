@@ -29,7 +29,7 @@ class FeaturedImage extends Component<
   uploadInputRef = React.createRef<HTMLInputElement>();
 
   state = {
-    cover_image: PostActions.getData().cover_image,
+    cover_image: this.props.post.cover_image,
     fileExplorerOpen: false,
     imageList: [],
     mediaProvider: this.props.mediaProvider,

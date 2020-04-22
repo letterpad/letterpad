@@ -49,6 +49,9 @@ let PostActions: IPostActions = (() => {
     },
 
     setDraft: data => {
+      if (data.md && !didBodyChange(data.md)) {
+        return;
+      }
       draftData = {
         ...draftData,
         ...data,
@@ -95,9 +98,9 @@ let PostActions: IPostActions = (() => {
     updatePost: async (params = { withHtml: false }) => {
       EventBusInstance.publish(Events.SAVING);
       const data = PostActions.getDraft();
-      if (!params.withHtml) {
-        delete data.html;
-      }
+      // if (!params.withHtml) {
+      //   delete data.html;
+      // }
       const update = await client().mutate<UpdatePostMutation>({
         mutation: UPDATE_POST_QUERY,
         variables: {
@@ -114,3 +117,20 @@ let PostActions: IPostActions = (() => {
 })();
 
 export default PostActions;
+
+const didBodyChange = md => {
+  const post = PostActions.getData();
+  if (htmlEntities(md) !== htmlEntities(post.md)) {
+    return true;
+  }
+  return false;
+};
+
+function htmlEntities(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&quot;");
+}

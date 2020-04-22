@@ -31,7 +31,7 @@ export const SaveIndicator: React.FC = () => {
 };
 
 export const LoadIndicator: React.FC = () => {
-  const [active, setActive] = useState(true);
+  const [active, setActive] = useState(false);
   useEffect(() => {
     EventBusInstance.on(Events.LOADING, () => {
       setActive(true);
