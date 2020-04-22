@@ -19,7 +19,8 @@
     "declaration": false,
     "sourceMap": true,
     "noImplicitAny": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.tsx"],
   "exclude": ["node_modules", "src/typings"]

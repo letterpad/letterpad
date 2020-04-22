@@ -1,3 +1,21 @@
+import { Express, Response } from "express";
+import { fileLoader, mergeResolvers, mergeTypes } from "merge-graphql-schemas";
+
+import { ApolloServer } from "apollo-server-express";
+import RssFeed from "./rssFeed";
+import cache from "../client/server/cache";
+import config from "../config";
+import constants from "./utils/constants";
+import fileUpload from "express-fileupload";
+import graphiqlMiddleware from "./graphiql";
+import { graphqlMiddleware } from "./graphql";
+import logger from "../shared/logger";
+import middlewares from "./middlewares";
+import models from "./models/index";
+import path from "path";
+import { publishScheduledPosts } from "./jobs";
+import upload from "./upload";
+
 declare global {
   namespace Express {
     interface Request {
@@ -12,23 +30,6 @@ declare global {
     }
   }
 }
-
-import { Express, Response } from "express";
-import { fileLoader, mergeResolvers, mergeTypes } from "merge-graphql-schemas";
-
-import { ApolloServer } from "apollo-server-express";
-import RssFeed from "./rssFeed";
-import cache from "../client/server/cache";
-import config from "../config";
-import constants from "./utils/constants";
-import fileUpload from "express-fileupload";
-import logger from "../shared/logger";
-import middlewares from "./middlewares";
-import models from "./models/index";
-import path from "path";
-import upload from "./upload";
-import { graphqlMiddleware } from "./graphql";
-import graphiqlMiddleware from "./graphiql";
 
 const MAX_UPLOAD_SIZE = parseInt(process.env["MAX_IMAGE_UPLOAD_SIZE"] || "10");
 
@@ -62,7 +63,7 @@ const context = ({ req, res }): Context => ({
 
 const { pathname } = new URL(config.API_URL);
 
-export default async (app: Express) => {
+const apiServer = async (app: Express) => {
   middlewares(app);
   app.use(
     fileUpload({
@@ -95,7 +96,11 @@ export default async (app: Express) => {
     const server = getApolloServer();
     server.applyMiddleware({ app, path: pathname });
   }
+
+  publishScheduledPosts();
 };
+
+export default apiServer;
 
 function getApolloServer() {
   const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));

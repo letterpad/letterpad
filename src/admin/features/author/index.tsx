@@ -33,7 +33,8 @@ const Author: React.FC<IAdminRouteProps & WithNamespaces> = ({
   });
 
   useEffect(() => {
-    if (Object.keys(updatedAuthor).length > 0) {
+    // updatedAuthor will always have the id. If there are more keys, then we will update.
+    if (Object.keys(updatedAuthor).length > 1) {
       utils.debounce(submitData, 500)();
     }
   }, [updatedAuthor]);
@@ -76,13 +77,22 @@ const Author: React.FC<IAdminRouteProps & WithNamespaces> = ({
 
   const submitData = async (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
-    await apolloClient(true).mutate<UpdateAuthorMutation>({
+    const { data } = await apolloClient(true).mutate<UpdateAuthorMutation>({
       mutation: UPDATE_AUTHOR,
       variables: {
         author: updatedAuthor as InputAuthor,
       },
     });
-    notify.show("Author information saved", "success", 3000);
+    if (data && data.updateAuthor) {
+      const { errors } = data.updateAuthor;
+      if (errors && errors.length > 0) {
+        return notify.show(
+          errors.map(err => err.message).join("<br/>"),
+          "error",
+          3000,
+        );
+      }
+    }
   };
 
   if (loading || !authorData) return <Loader />;

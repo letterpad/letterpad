@@ -1,5 +1,13 @@
 const slice = [].slice;
 
+export const Events = {
+  SAVING: "SAVING",
+  SAVED: "SAVED",
+  LOADING: "LOADING",
+  LOADED: "LOADED",
+  DRAFT_CHANGED: "DRAFT_CHANGED",
+};
+
 class EventBus {
   nextSubscriptionIndex: number = 0;
   callbacks: {

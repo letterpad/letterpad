@@ -1,3 +1,4 @@
+import { EventBusInstance, Events } from "../../../shared/eventBus";
 import {
   Post,
   Taxonomy,
@@ -5,20 +6,25 @@ import {
   UpdatePostMutation,
 } from "../../../__generated__/gqlTypes";
 
-import { EventBusInstance } from "../../../shared/eventBus";
 import { FetchResult } from "apollo-link";
 import { UPDATE_POST_QUERY } from "../../../shared/queries/Mutations";
 import client from "../../../shared/apolloClient";
 
+interface IPostActionArgs {
+  withHtml: boolean;
+}
 interface IPostActions {
   triggerEvent: (name: string, data: any) => void;
   setData: (data: Post) => void;
   setDraft: (data: { [T in keyof Partial<Post>]: Post[T] }) => void;
   getData: () => Post;
+  removeFromDraft: (key: keyof Partial<Post>) => void;
   getDraft: () => { [T in keyof Partial<Post>]: Post[T] };
   removeTaxonomy: (taxonomy: Taxonomy, type: TaxonomyTypes) => void;
   addTaxonomy: (taxonomy: Taxonomy, type: TaxonomyTypes) => void;
-  updatePost: () => Promise<FetchResult<UpdatePostMutation>>;
+  updatePost: (
+    params?: IPostActionArgs,
+  ) => Promise<FetchResult<UpdatePostMutation>>;
 }
 
 let PostActions: IPostActions = (() => {
@@ -43,10 +49,18 @@ let PostActions: IPostActions = (() => {
     },
 
     setDraft: data => {
+      if (data.md && !didBodyChange(data.md)) {
+        return;
+      }
       draftData = {
         ...draftData,
         ...data,
       };
+      EventBusInstance.publish(Events.DRAFT_CHANGED);
+    },
+
+    removeFromDraft: key => {
+      delete draftData[key];
     },
 
     getData: () => {
@@ -54,7 +68,7 @@ let PostActions: IPostActions = (() => {
     },
 
     getDraft: () => {
-      return draftData;
+      return { ...draftData };
     },
 
     removeTaxonomy: (taxonomy: Taxonomy, type: TaxonomyTypes) => {
@@ -81,10 +95,12 @@ let PostActions: IPostActions = (() => {
       }
     },
 
-    updatePost: async () => {
+    updatePost: async (params = { withHtml: false }) => {
+      EventBusInstance.publish(Events.SAVING);
       const data = PostActions.getDraft();
-      console.log(data);
-      EventBusInstance.publish("ARTICLE_SAVING");
+      // if (!params.withHtml) {
+      //   delete data.html;
+      // }
       const update = await client().mutate<UpdatePostMutation>({
         mutation: UPDATE_POST_QUERY,
         variables: {
@@ -93,7 +109,7 @@ let PostActions: IPostActions = (() => {
       });
       if (update.data) {
         PostActions.setData(update.data.updatePost.post as Post);
-        EventBusInstance.publish("ARTICLE_SAVED");
+        EventBusInstance.publish(Events.SAVED);
       }
       return update;
     },
@@ -101,3 +117,20 @@ let PostActions: IPostActions = (() => {
 })();
 
 export default PostActions;
+
+const didBodyChange = md => {
+  const post = PostActions.getData();
+  if (htmlEntities(md) !== htmlEntities(post.md)) {
+    return true;
+  }
+  return false;
+};
+
+function htmlEntities(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&quot;");
+}

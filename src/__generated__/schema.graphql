@@ -196,6 +196,7 @@ input InputUpdatePost {
   excerpt: String
   cover_image: InputImage
   publishedAt: Date
+  scheduledAt: Date
   type: String
   status: PostStatusOptions
   slug: String
@@ -231,6 +232,9 @@ type Post {
   # Markdown content of the post
   md: String!
   
+  # Draft for republishing content
+  md_draft: String!
+  
   # Author information of the post
   author: Author!
   
@@ -257,6 +261,9 @@ type Post {
   
   # The published date of the post
   publishedAt: Date!
+  
+  # The date scheduled to publish the post
+  scheduledAt: Date
   
   # Last updated date of the post
   updatedAt: Date!
@@ -472,6 +479,7 @@ type Taxonomy {
 input TaxonomyFilters {
   type: TaxonomyType
   active: Boolean
+  name: String
 }
 
 type EditTaxResponse {

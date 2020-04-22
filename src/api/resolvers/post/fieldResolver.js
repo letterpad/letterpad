@@ -21,12 +21,10 @@ export const resolveMenuFilter = async (root, args, { models }) => {
         where: { option: "menu" },
         raw: true,
       });
-
       tagSlug = JSON.parse(value)[0].slug;
     }
-
     const taxTag = await models.Taxonomy.findOne({
-      where: { slug: tagSlug, type: "post_tag" },
+      where: { slug: tagSlug },
     });
 
     if (!taxTag) return null;

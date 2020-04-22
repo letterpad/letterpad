@@ -23,6 +23,7 @@ import {
   TaxonomyType,
 } from "../../../__generated__/gqlTypes";
 import TaxonomyList from "./TaxonomyList";
+import { RouteComponentProps } from "react-router";
 
 const texts = t => ({
   title1: t("tags.title"),
@@ -34,9 +35,10 @@ const texts = t => ({
 
 interface ITaxonomyProps extends WithNamespaces {
   type: TaxonomyType;
+  router: RouteComponentProps;
 }
 
-const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
+const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type, router }) => {
   const defaultTexts = texts(t);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [createMode, setCreateMode] = useState<boolean>(false);
@@ -55,7 +57,7 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
     QUERY_TAXONOMIES,
     {
       variables: {
-        filters: { type, active: false },
+        filters: { type, active: false, name: router.match.params?.tag || "" },
       },
       fetchPolicy: "network-only",
     },
@@ -128,6 +130,7 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
           if (itemWithType.id === 0) {
             // create
             const result = await updateTaxonomy(itemWithType);
+            if (!result || !result.data) return;
             if (result.data && result.data.updateTaxonomy.ok) {
               itemWithType.id = result.data.updateTaxonomy.id as number;
               const data = (taxonomies as Taxonomy[]).map(item =>
@@ -143,8 +146,15 @@ const Taxonomy: React.FC<ITaxonomyProps> = ({ t, type }) => {
                   (lastInputBox as HTMLInputElement).focus();
                 }
               }, 0);
-            } else {
-              return;
+            } else if (!result.data.updateTaxonomy.ok) {
+              const { errors } = result.data.updateTaxonomy;
+              if (errors && errors.length > 0) {
+                const errorMessage = errors
+                  .map(item => item.message)
+                  .join("\n");
+
+                notify.show(errorMessage, "error", 2000);
+              }
             }
           } else {
             updateTaxonomy(itemWithType);

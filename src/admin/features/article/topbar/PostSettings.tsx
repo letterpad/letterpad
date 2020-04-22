@@ -1,20 +1,28 @@
+import "react-datepicker/dist/react-datepicker.css";
+
+import { Button, ButtonGroup } from "../../../components/button";
+import { EventBusInstance, Events } from "../../../../shared/eventBus";
 import {
   Post,
+  PostStatusOptions,
   PostTypes,
   TaxonomyType,
 } from "../../../../__generated__/gqlTypes";
 import React, { useEffect, useState } from "react";
 
-import { Button } from "../../../components/button";
 import CloseIcon from "../../../public/images/Close";
+import DatePicker from "react-datepicker";
 import Excerpt from "./Excerpt";
 import FeaturedImage from "./FeaturedImage";
 import FeaturedPost from "./FeaturedPost";
+import { Container as LabelBox } from "../../../components/input/Input.css";
 import { Link } from "react-router-dom";
 import { MediaProvider } from "../Edit";
+import Portal from "../../portal";
 import PostActions from "../PostActions";
-import PublishOptions from "./PublishOptions";
+import PublishModal from "./PublishModal";
 import Taxonomies from "./Taxonomies";
+import Unpublish from "./Unpublish";
 import UpdateSlug from "./UpdateSlug";
 import styled from "styled-components";
 
@@ -22,40 +30,187 @@ interface IProps {
   onDelete: (e: React.SyntheticEvent) => void;
   isOpen: boolean;
   toggleDisplay: (flag: boolean) => void;
+  isPublished: boolean;
+  canRepublish: boolean;
+  isScheduled: boolean;
+  post: Post;
 }
 
 const PostSettings: React.FC<IProps> = ({
   onDelete,
   isOpen,
   toggleDisplay,
+  isPublished,
+  post,
+  isScheduled,
 }) => {
-  const [post, setPost] = useState<Post>(PostActions.getData());
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
 
   useEffect(() => {
-    setPost(PostActions.getData());
-  }, [isOpen]);
+    if (post.scheduledAt) {
+      setStartDate(new Date(post.scheduledAt));
+    } else {
+      setStartDate(new Date());
+    }
+  }, [post.scheduledAt]);
+
+  useEffect(() => {
+    document.addEventListener("click", detectClick);
+    return () => {
+      return document.removeEventListener("click", detectClick);
+    };
+  }, []);
+
+  const detectClick = e => {
+    let targetElement = e.target;
+    if (!targetElement) return;
+
+    do {
+      if (
+        targetElement &&
+        targetElement.classList &&
+        targetElement.classList.contains("react-datepicker")
+      ) {
+        // This is a click inside. Do nothing, just return.
+        console.log("inside");
+        return;
+      }
+      // Go up the DOM
+      targetElement = targetElement.parentNode;
+    } while (targetElement);
+
+    // This is a click outside.
+    if (showCalendar) {
+      setShowCalendar(false);
+    }
+  };
+
+  let currentHour = new Date().getHours();
+  const selectedDateIsToday = new Date().getDate() === startDate.getDate();
+  if (!selectedDateIsToday) currentHour = 0;
+
+  const doPublish = async () => {
+    PostActions.setDraft({ status: PostStatusOptions.Publish });
+    await PostActions.updatePost();
+
+    setShowCalendar(false);
+  };
 
   if (!post) return null;
 
   const updatePost = async () => {
     await PostActions.updatePost();
-    setPost(PostActions.getData());
   };
 
   const closeDrawer = (e: React.SyntheticEvent) => {
     e.preventDefault();
     toggleDisplay(false);
   };
+
+  const showPublishOptions = () => {
+    setShowCalendar(true);
+  };
+
   return (
     <div>
       <Container isOpen={isOpen}>
-        <Link to="#" onClick={closeDrawer}>
-          <CloseIcon />
-        </Link>
+        <header>
+          <Link to="#" onClick={closeDrawer}>
+            <CloseIcon />
+          </Link>
+
+          <ButtonGroup>
+            <Button
+              btnSize="sm"
+              btnStyle="success"
+              onClick={doPublish}
+              disabled={isPublished}
+            >
+              Publish Now
+            </Button>
+            <Button
+              compact
+              btnStyle="primary"
+              btnSize="sm"
+              onClick={showPublishOptions}
+              disabled={isPublished}
+            >
+              <i className="fa fa-calendar" />
+            </Button>
+          </ButtonGroup>
+        </header>
+        <ButtonGroup>
+          {!isPublished && (
+            <div>
+              {showCalendar && (
+                <Portal>
+                  <div className="lp-datepicker">
+                    <DatePicker
+                      selected={startDate}
+                      onChange={newDate => {
+                        setStartDate(newDate);
+                        PostActions.setDraft({ scheduledAt: newDate });
+                      }}
+                      minDate={new Date()}
+                      showTimeSelect
+                      minTime={
+                        new Date(new Date().setHours(currentHour, 0, 0, 0))
+                      }
+                      maxTime={new Date(new Date().setHours(23, 59, 0, 0))}
+                      placeholderText="Select a date"
+                      dateFormat="MMMM d, yyyy - h:mm aa"
+                      inline
+                    />
+                    <footer>
+                      <Button
+                        btnSize="sm"
+                        onClick={() => {
+                          setShowCalendar(false);
+                          PostActions.setDraft({ scheduledAt: null });
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        btnSize="sm"
+                        onClick={() => {
+                          setShowCalendar(false);
+                          PostActions.updatePost();
+                        }}
+                      >
+                        Publish Later
+                      </Button>
+                    </footer>
+                  </div>
+                </Portal>
+              )}
+            </div>
+          )}
+        </ButtonGroup>
         <br />
         <br />
-        <PublishOptions status={post.status} updatePost={updatePost} />
-        <FeaturedPost isFeatured={post.featured} updatePost={updatePost} />
+        {isScheduled && (
+          <LabelBox>
+            <label>Posting on:</label>
+            {new Date(startDate).toLocaleString()}{" "}
+            <Button
+              btnStyle="link"
+              btnSize="xs"
+              onClick={() => {
+                PostActions.setDraft({ scheduledAt: null });
+                PostActions.updatePost();
+              }}
+              style={{ color: "#f1410b" }}
+            >
+              delete
+            </Button>
+          </LabelBox>
+        )}
+        <Unpublish status={post.status} updatePost={updatePost} />
+        {post.type === PostTypes.Post && (
+          <FeaturedPost isFeatured={post.featured} updatePost={updatePost} />
+        )}
         <Excerpt
           html={post.html}
           excerpt={post.excerpt}
@@ -72,18 +227,26 @@ const PostSettings: React.FC<IProps> = ({
         )}
         <FeaturedImage post={post} mediaProvider={MediaProvider.Unsplash} />
         <br />
-        <Button btnSize="md" onClick={onDelete}>
-          Delete
+        <Button btnSize="md" onClick={onDelete} btnStyle="danger">
+          Delete Post
         </Button>
         <br />
         <br />
       </Container>
+      {/* {displayPublishUi && (
+        <Portal>
+          <PublishModal
+            onClose={() => setDisplayPublishUi(false)}
+            publishNow={() => {}}
+          />
+        </Portal>
+      )} */}
       {isOpen && <BackFade onClick={closeDrawer} />}
     </div>
   );
 };
 
-export default PostSettings;
+export default React.memo(PostSettings);
 
 interface IContainerProps {
   isOpen: boolean;
@@ -100,9 +263,7 @@ const Container = styled.div<IContainerProps>`
   height: 100vh;
   overflow-y: auto;
   background: var(--bg-base);
-  z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr;
+  z-index: 9;
   padding: 24px;
   > div {
     label {
@@ -119,6 +280,11 @@ const Container = styled.div<IContainerProps>`
   button {
     text-transform: uppercase;
     font-size: 0.8rem;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 `;
 

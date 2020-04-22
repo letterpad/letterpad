@@ -18,16 +18,17 @@ type Taxonomy {
 input TaxonomyFilters {
   type: TaxonomyType
   active: Boolean
-}
-
-type Query {
-  taxonomies(filters: TaxonomyFilters): [Taxonomy!]!
+  name: String
 }
 
 type EditTaxResponse {
   ok: Boolean!
   id: Int
   errors: [Error!]
+}
+
+type Query {
+  taxonomies(filters: TaxonomyFilters): [Taxonomy!]!
 }
 
 type Mutation {

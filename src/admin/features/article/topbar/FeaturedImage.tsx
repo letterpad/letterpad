@@ -29,11 +29,15 @@ class FeaturedImage extends Component<
   uploadInputRef = React.createRef<HTMLInputElement>();
 
   state = {
-    cover_image: PostActions.getData().cover_image,
+    cover_image: this.props.post.cover_image,
     fileExplorerOpen: false,
     imageList: [],
     mediaProvider: this.props.mediaProvider,
   };
+
+  componentDidMount() {
+    this.setState({ cover_image: PostActions.getData().cover_image });
+  }
 
   // All the images available in the post can be used as a cover image.
   // This function sets the selection

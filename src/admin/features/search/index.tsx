@@ -10,23 +10,16 @@ import {
   SearchData,
   SearchResults,
 } from "../../../__generated__/gqlTypes";
-import React, { InputHTMLAttributes, useState } from "react";
+import React, { InputHTMLAttributes, useEffect, useRef, useState } from "react";
 import { WithNamespaces, translate } from "react-i18next";
 
 import { Link } from "react-router-dom";
 import ModalHoc from "../../components/modal";
 import { QUERY_GLOBAL_SEARCH } from "../../../shared/queries/Queries";
 import apolloClient from "../../../shared/apolloClient";
-import config from "../../../config";
 
 interface IProps extends WithNamespaces {
   onClose: () => void;
-}
-
-interface ISearchItemsProps {
-  data: SearchResults[];
-  label: string;
-  getLink: (item: any) => string;
 }
 
 const GlobalSearch: React.FC<IProps> = ({ t, onClose }) => {
@@ -64,16 +57,19 @@ const GlobalSearch: React.FC<IProps> = ({ t, onClose }) => {
               data={posts as SearchResults[]}
               getLink={item => "pages/" + item.id}
               label="Posts"
+              onClick={onClose}
             />
             <SearchItems
               data={pages as SearchResults[]}
               getLink={item => "posts/" + item.id}
               label="Pages"
+              onClick={onClose}
             />
             <SearchItems
               data={tags as SearchResults[]}
-              getLink={item => "posts?tag=" + item.title}
+              getLink={item => "tags/" + item.title}
               label="Tags"
+              onClick={onClose}
             />
           </SearchBody>
         </div>
@@ -85,9 +81,16 @@ const GlobalSearch: React.FC<IProps> = ({ t, onClose }) => {
 export default translate("translations")(GlobalSearch);
 
 const SearchBox: React.FC<InputHTMLAttributes<HTMLInputElement>> = props => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  });
   return (
     <SearchInputBox>
       <input
+        ref={inputRef}
         type="text"
         placeholder="Enter a keyword and press enter"
         {...props}
@@ -97,7 +100,19 @@ const SearchBox: React.FC<InputHTMLAttributes<HTMLInputElement>> = props => {
   );
 };
 
-const SearchItems: React.FC<ISearchItemsProps> = ({ data, label, getLink }) => {
+interface ISearchItemsProps {
+  data: SearchResults[];
+  label: string;
+  getLink: (item: any) => string;
+  onClick: () => void;
+}
+
+const SearchItems: React.FC<ISearchItemsProps> = ({
+  data,
+  label,
+  getLink,
+  onClick,
+}) => {
   if (data.length === 0) return null;
   return (
     <SearchItemGroup>
@@ -105,7 +120,9 @@ const SearchItems: React.FC<ISearchItemsProps> = ({ data, label, getLink }) => {
       <div className="search-results">
         {data.map(item => (
           <Link
-            to={config.BASE_NAME + getLink(item)}
+            onClick={onClick}
+            key={item.id + "-" + item.title}
+            to={"/admin/" + getLink(item)}
             className="search-results-item"
           >
             {item.title}

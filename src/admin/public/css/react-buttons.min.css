@@ -188,6 +188,72 @@ fieldset[disabled] .buttons---btn-primary---Wp1wb.buttons---focus---1kVJZ {
   background-repeat: repeat-x;
   border-color: #222;
 }
+.buttons---btn-success---1kbT5 {
+  color: #fff;
+  background-color: #28a745;
+  background-image: -webkit-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: -moz-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: -o-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: -ms-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: linear-gradient(to bottom, #28a745 0%, #28a745 100%);
+  background-repeat: repeat-x;
+  border-color: #28a745;
+}
+.buttons---btn-success---1kbT5
+  > [class*="loader-container"]
+  > [class*="loader"] {
+  border-color: rgba(255, 255, 255, 0.4);
+  border-left-color: #28a745;
+}
+.buttons---btn-success---1kbT5:active,
+.buttons---btn-success---1kbT5.buttons---active---2-a32 {
+  color: #fff;
+  background-color: #28a745;
+  background-image: none;
+  border-color: #28a745;
+  -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15) inset;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15) inset;
+}
+.buttons---btn-success---1kbT5:focus,
+.buttons---btn-success---1kbT5.buttons---focus---1kVJZ {
+  color: #fff;
+  border-color: #28a745;
+  -webkit-box-shadow: 0 0 1px #28a745 inset;
+  box-shadow: 0 0 1px #28a745 inset;
+}
+.buttons---btn-success---1kbT5:hover,
+.buttons---btn-success---1kbT5.buttons---hover---42FF2 {
+  color: #fff;
+  background-color: #28a745;
+  background-image: -webkit-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: -moz-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: -o-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: -ms-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: linear-gradient(to bottom, #28a745 0%, #28a745 100%);
+  background-repeat: repeat-x;
+  border-color: #28a745;
+}
+.buttons---btn-success---1kbT5.buttons---disabled---eCY9b:hover,
+.buttons---btn-success---1kbT5[disabled]:hover,
+fieldset[disabled] .buttons---btn-success---1kbT5:hover,
+.buttons---btn-success---1kbT5.buttons---disabled---eCY9b.buttons---hover---42FF2,
+.buttons---btn-success---1kbT5[disabled].buttons---hover---42FF2,
+fieldset[disabled] .buttons---btn-success---1kbT5.buttons---hover---42FF2,
+.buttons---btn-success---1kbT5.buttons---disabled---eCY9b:focus,
+.buttons---btn-success---1kbT5[disabled]:focus,
+fieldset[disabled] .buttons---btn-success---1kbT5:focus,
+.buttons---btn-success---1kbT5.buttons---disabled---eCY9b.buttons---focus---1kVJZ,
+.buttons---btn-success---1kbT5[disabled].buttons---focus---1kVJZ,
+fieldset[disabled] .buttons---btn-success---1kbT5.buttons---focus---1kVJZ {
+  background-color: #28a745;
+  background-image: -webkit-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: -moz-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: -o-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: -ms-linear-gradient(top, #28a745 0%, #28a745 100%);
+  background-image: linear-gradient(to bottom, #28a745 0%, #28a745 100%);
+  background-repeat: repeat-x;
+  border-color: #28a745;
+}
 .theme-dark .buttons---btn-primary---Wp1wb {
   color: #000;
   background-color: #fff;

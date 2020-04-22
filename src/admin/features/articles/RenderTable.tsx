@@ -40,7 +40,7 @@ const RenderTable = ({ data, setSelection, type }) => {
                   backgroundImage: `url('${post.cover_image.src}')`,
                   backgroundColor: "var(--bg-sections)",
                   border: "1px solid var(--color-border)",
-                  backgroundPosition: "center",
+                  backgroundSize: "cover",
                   width: "64px",
                   height: "64px",
                 }}

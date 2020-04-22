@@ -61,7 +61,7 @@ const Sidebar = styled.div`
     display: flex;
     border-top: 1px solid var(--color-border);
     align-items: center;
-    padding: 30px 40px;
+    padding: 0px 40px;
     color: var(--color-base);
   }
 `;

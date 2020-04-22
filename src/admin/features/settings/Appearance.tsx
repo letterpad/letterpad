@@ -136,7 +136,7 @@ const ImageWrapper = styled.div<{ hasImage: boolean }>`
   a {
     text-transform: uppercase;
     font-size: 0.7rem;
-    color: ${p => (p.hasImage ? "red" : "var(--color-base)")};
+    color: ${p => (p.hasImage ? "#e4480b" : "var(--color-base)")};
   }
   label {
     opacity: 0.6;

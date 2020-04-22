@@ -12,18 +12,6 @@ export const Container = styled.section<ISectionProps>`
   background-position: center center;
   background-size: cover;
   padding: 60px;
-  /* padding: ${props => {
-    switch (props.size) {
-      case SectionSizes.sm:
-        return "8px";
-      case SectionSizes.xs:
-        return "16px";
-      case SectionSizes.md:
-        return "48px 72px";
-      default:
-        return "16px";
-    }
-  }}; */
 
   @media ${device.laptop} {
     padding: 40px;
@@ -34,7 +22,7 @@ export const Container = styled.section<ISectionProps>`
   @media ${device.mobile} {
     padding: 16px;
   }
-  
+
   .section-header {
     margin-bottom: 36px;
     color: var(--color-text-2);
@@ -63,6 +51,17 @@ export const Container = styled.section<ISectionProps>`
 
   .material-icons {
     font-size: 1rem;
+  }
+
+  label {
+    opacity: 0.6;
+    font-weight: 400;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
   }
 `;
 

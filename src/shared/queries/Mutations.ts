@@ -23,6 +23,7 @@ export const CREATE_POST = gql`
         featured
         createdAt
         publishedAt
+        scheduledAt
         cover_image {
           src
           width
@@ -190,6 +191,7 @@ export const UPDATE_POST_QUERY = gql`
         id
         title
         md
+        md_draft
         html
         author {
           username
@@ -205,6 +207,7 @@ export const UPDATE_POST_QUERY = gql`
         featured
         createdAt
         publishedAt
+        scheduledAt
         cover_image {
           width
           height

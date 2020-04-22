@@ -1,4 +1,5 @@
 import { ApolloLink, from } from "apollo-link";
+import { EventBusInstance, Events } from "./eventBus";
 
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -30,6 +31,18 @@ const middlewareLinkAdmin = (token: string | null = null) => {
       headers = {
         authorization: localStorage.token,
       };
+
+      const definations = operation.query.definitions;
+      // @ts-ignore
+      if (definations[0].operation === "mutation") {
+        // ignore login mutation
+        // @ts-ignore
+        if (definations[0].name.value !== "login") {
+          EventBusInstance.publish(Events.SAVING);
+        }
+      } else {
+        EventBusInstance.publish(Events.LOADING);
+      }
     }
     operation.setContext({
       headers,
@@ -45,6 +58,7 @@ const middlewareLinkAdmin = (token: string | null = null) => {
         const refreshToken = headers.get("x-refresh-token");
         if (refreshToken) {
           localStorage.token = refreshToken;
+          EventBusInstance.publish(Events.LOADED);
         }
       }
       return response;

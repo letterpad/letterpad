@@ -1,8 +1,8 @@
 import { Image, Post } from "../../../__generated__/gqlTypes";
+import LetterpadEditor, { mdToHtml } from "letterpad-editor";
 import React, { Component } from "react";
 
 import FileExplorerModal from "../modals/FileExplorerModal";
-import LetterpadEditor from "letterpad-editor";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
 import ReactTooltip from "react-tooltip";
@@ -31,7 +31,7 @@ class Edit extends Component<IProps> {
 
   imageInputRef = React.createRef<HTMLInputElement>();
 
-  componentDidMount() {
+  componentWillMount() {
     PostActions.setData(this.props.post);
   }
 
@@ -67,7 +67,7 @@ class Edit extends Component<IProps> {
 
   onEditorChange = async change => {
     const { markdown, html } = change();
-    if (markdown === PostActions.getData().md) return null;
+
     PostActions.setDraft({
       html,
       md: markdown,
@@ -75,7 +75,7 @@ class Edit extends Component<IProps> {
     clearInterval(this.postSaveTimer);
     this.postSaveTimer = setTimeout(async () => {
       const update = await PostActions.updatePost();
-    }, 1000);
+    }, 200);
   };
 
   uploadImage = async (files: FileList) => {
@@ -92,6 +92,11 @@ class Edit extends Component<IProps> {
 
   onBeforeRender = editor => {
     this.editor = editor;
+  };
+
+  onEditorLoad = change => {
+    const { html } = change();
+    // PostActions.setDraft({ html });
   };
 
   switchMediaProvider = (mediaProvider: MediaProvider) => {
@@ -121,10 +126,11 @@ class Edit extends Component<IProps> {
             getEditorInstance={this.onBeforeRender}
             //@ts-ignore
             uploadImage={(file: File) => this.uploadImage([file])}
-            defaultValue={post.md}
+            defaultValue={post.md_draft || post.md}
             tooltip={Tooltip}
             onChange={this.onEditorChange}
             placeholder="Write a story.."
+            onLoad={this.onEditorLoad}
           />
           {this.state.fileExplorerOpen && (
             <FileExplorerModal

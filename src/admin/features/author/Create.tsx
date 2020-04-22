@@ -76,7 +76,7 @@ const CreateAuthor: React.FC<ICreateAuthorProps> = ({ router }) => {
     }
   };
 
-  if (loading || !loading) {
+  if (loading) {
     return <Loader />;
   }
   return (

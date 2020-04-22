@@ -29,8 +29,9 @@ middlewares(app);
 // Take care of static assets.
 staticPaths(app);
 
-// start the admin dashboard and the client. Both use the same server, but its nice to separate them
-apiServer(app);
+if (process.env.NODE_ENV === "production") {
+  apiServer(app);
+}
 adminServer(app);
 clientServerRendering(app);
 

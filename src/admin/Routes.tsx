@@ -1,3 +1,4 @@
+import { LoadIndicator, SaveIndicator } from "./features/indicators";
 import React, { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -24,6 +25,8 @@ import { TwoColumnLayout } from "./features/layout";
 import { fetchSettings } from "../api/fetchSettings";
 import getI18nWithDefaultLang from "../shared/i18n/i18n";
 
+let i18nConfig;
+
 const Routes: React.FC<RouteComponentProps> = router => {
   const [settings, setSettings] = useState<Setting>();
 
@@ -46,11 +49,14 @@ const Routes: React.FC<RouteComponentProps> = router => {
   if (!settings) {
     return <Loader />;
   }
-
-  const i18nConfig = getI18nConfig(settings.locale || "");
+  if (!i18nConfig) {
+    i18nConfig = getI18nConfig(settings.locale || "");
+  }
   return (
     <I18nextProvider i18n={i18nConfig}>
       <Notifications />
+      <SaveIndicator />
+      <LoadIndicator />
       <Switch>
         <Route
           exact
@@ -131,6 +137,15 @@ const Routes: React.FC<RouteComponentProps> = router => {
               component={Taxonomy}
               settings={settings}
             />
+
+            <SecuredRoute
+              exact
+              path="/admin/tags/:tag"
+              type="post_tag"
+              component={Taxonomy}
+              settings={settings}
+            />
+
             <SecuredRoute
               exact
               path="/admin/settings"
