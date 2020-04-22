@@ -1,4 +1,3 @@
-import config from "../../config";
 import { normalizePost } from "./post";
 
 export default {
@@ -9,12 +8,15 @@ export default {
         order: [["name", "ASC"]],
       };
       if (args.filters) {
-        let { active, type } = args.filters;
+        let { active, type, name } = args.filters;
         if (typeof active === "undefined") {
           active = true;
         }
         if (type) {
           conditions.where.type = type;
+        }
+        if (name) {
+          conditions.where.name = name;
         }
         if (active === true) {
           // return only active taxonomies
@@ -34,7 +36,7 @@ export default {
       const type = "tag";
 
       return taxonomies.map(taxonomy => {
-        taxonomy.slug = config.BASE_NAME + "/" + type + "/" + taxonomy.slug;
+        taxonomy.slug = "/" + type + "/" + taxonomy.slug;
         return taxonomy;
       });
     },
@@ -55,6 +57,20 @@ export default {
 
   Mutation: {
     updateTaxonomy: async (root, args, { models }) => {
+      // checkif duplicate
+      const found = await models.Taxonomy.findOne({
+        where: { name: args.name },
+      });
+      if (found) {
+        return {
+          ok: false,
+          errors: [
+            { path: "", message: `The tag ${args.name} already exist.` },
+          ],
+          id: args.id,
+        };
+      }
+      const slug = createTaxonomySlug(args.name);
       if (args.id == 0) {
         //create
 
@@ -62,7 +78,7 @@ export default {
           name: args.name,
           desc: args.desc,
           type: args.type,
-          slug: args.slug,
+          slug,
         });
 
         return {
@@ -71,12 +87,12 @@ export default {
           id: item.id,
         };
       } else {
-        let id = await models.Taxonomy.update(
+        await models.Taxonomy.update(
           {
             name: args.name,
             desc: args.desc,
             type: args.type,
-            slug: args.slug,
+            slug,
           },
           {
             where: { id: args.id },
@@ -91,7 +107,7 @@ export default {
           const parsedMenu = JSON.parse(menu.value);
           const updatedMenu = parsedMenu.map(item => {
             if (item.type === "tag") {
-              item.slug = args.slug;
+              item.slug = slug;
               item.original_name = args.name;
             }
             return item;
@@ -121,3 +137,11 @@ export default {
     },
   },
 };
+
+function createTaxonomySlug(name) {
+  return name
+    .toLowerCase()
+    .replace(/ /, "-")
+    .split("/")
+    .pop();
+}

@@ -1,4 +1,5 @@
 const ROOT_URL = "http://localhost:4040";
+const API_URL = "http://localhost:1111";
 
 function isServer() {
   return typeof window === "undefined";
@@ -14,8 +15,8 @@ const USE_GRAPHQL_JIT = isServer()
 export default {
   APP_PORT: 4040,
   ROOT_URL: ROOT_URL,
-  API_URL: ROOT_URL + "/graphql",
-  UPLOAD_URL: ROOT_URL + "/upload",
+  API_URL: API_URL + "/graphql",
+  UPLOAD_URL: API_URL + "/upload",
   USE_GRAPHQL_JIT,
   BASE_NAME: "",
 };

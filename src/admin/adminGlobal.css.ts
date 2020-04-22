@@ -610,8 +610,15 @@ export const AdminGlobalStyle = createGlobalStyle`
     }
     
     #letterpad-editor-toolbar-toggle-button {
-        color: var(--color-border);
-        border: 1px solid var(--color-border);
+        color: var(--color-base);
+        border: 1px solid var(--color-base);
+        opacity: 0.7;
+    }
+    .block-toolbar  {
+        .button {
+            margin-right: 6px;
+        }
+        border-radius: 20px;
     }
 
     [data-id="tooltip"] {

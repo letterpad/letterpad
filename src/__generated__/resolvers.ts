@@ -159,6 +159,7 @@ export type InputUpdatePost = {
   excerpt?: Maybe<Scalars["String"]>;
   cover_image?: Maybe<InputImage>;
   publishedAt?: Maybe<Scalars["Date"]>;
+  scheduledAt?: Maybe<Scalars["Date"]>;
   type?: Maybe<Scalars["String"]>;
   status?: Maybe<PostStatusOptions>;
   slug?: Maybe<Scalars["String"]>;
@@ -370,6 +371,8 @@ export type Post = {
   html: Scalars["String"];
   /** Markdown content of the post */
   md: Scalars["String"];
+  /** Draft for republishing content */
+  md_draft: Scalars["String"];
   /** Author information of the post */
   author: Author;
   /** A breif summary of the post */
@@ -388,6 +391,8 @@ export type Post = {
   createdAt: Scalars["Date"];
   /** The published date of the post */
   publishedAt: Scalars["Date"];
+  /** The date scheduled to publish the post */
+  scheduledAt?: Maybe<Scalars["Date"]>;
   /** Last updated date of the post */
   updatedAt: Scalars["Date"];
   /** Reading time of the post in minutes */
@@ -629,6 +634,7 @@ export type Taxonomy = {
 export type TaxonomyFilters = {
   type?: Maybe<TaxonomyType>;
   active?: Maybe<Scalars["Boolean"]>;
+  name?: Maybe<Scalars["String"]>;
 };
 
 export type TaxonomyInputType = {
@@ -1224,6 +1230,7 @@ export type PostResolvers<
   title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   html?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   md?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  md_draft?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   author?: Resolver<ResolversTypes["Author"], ParentType, ContextType>;
   excerpt?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   cover_image?: Resolver<ResolversTypes["Image"], ParentType, ContextType>;
@@ -1237,6 +1244,11 @@ export type PostResolvers<
   slug?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   publishedAt?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
+  scheduledAt?: Resolver<
+    Maybe<ResolversTypes["Date"]>,
+    ParentType,
+    ContextType
+  >;
   updatedAt?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   reading_time?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   tags?: Resolver<Array<ResolversTypes["Taxonomy"]>, ParentType, ContextType>;

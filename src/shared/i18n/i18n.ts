@@ -12,7 +12,7 @@ const getI18nWithDefaultLang = lang => {
     // Using simple hardcoded resources for simple example
     resources,
     fallbackLng: "en",
-    debug: true,
+    debug: false,
 
     // have a common namespace used around the full app
     ns: ["translations"],

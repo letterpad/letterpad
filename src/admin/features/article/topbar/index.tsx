@@ -1,12 +1,13 @@
+import { Button, ButtonGroup } from "../../../components/button";
+import { EventBusInstance, Events } from "../../../../shared/eventBus";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { Post, PostStatusOptions } from "../../../../__generated__/gqlTypes";
 import React, { Component } from "react";
-import StyledTopBar, { AutoSaveIndicator, PostStatusText } from "./TopBar.css";
+import StyledTopBar, { PostScheduledText, PostStatusText } from "./TopBar.css";
 
-import { Button } from "../../../components/button";
-import { EventBusInstance } from "../../../../shared/eventBus";
 import PostActions from "../PostActions";
 import PostSettings from "./PostSettings";
+import config from "../../../../config";
 import { notify } from "react-notify-toast";
 
 interface ITopbarProps {
@@ -17,62 +18,72 @@ interface ITopbarProps {
 }
 
 export class TopBar extends Component<ITopbarProps, any> {
-  prevPath = "/admin/" + this.props.post.type + "s";
+  prevPath = config.BASE_NAME + "/admin/" + this.props.post.type + "s";
   state = {
     post: this.props.post,
     settingsOpen: false,
-    saving: false,
+    canRepublish: false,
+    showPublishOptions: false,
   };
+  mounted = true;
+  previousHtml = "";
 
-  componentDidMount() {
-    EventBusInstance.on("ARTICLE_SAVING", () => {
-      this.setState({ saving: true });
+  componentWillMount() {
+    EventBusInstance.on(Events.SAVING, () => {
+      this.beforePostSave();
     });
-    EventBusInstance.on("ARTICLE_SAVED", () => {
+
+    EventBusInstance.on(Events.SAVED, () => {
       this.afterPostSave();
-      // updates are really fast.
-      // Let the saving state stay atleast for half a second to show the loader.
-      // Users should know we have auto-save option.
-      setTimeout(() => {
-        this.setState({ saving: false });
-      }, 500);
+    });
+
+    EventBusInstance.on(Events.DRAFT_CHANGED, () => {
+      // if (this.didBodyChange()) {
+      const draft = PostActions.getDraft();
+
+      this.setState({
+        canRepublish: this.state.post.md_draft.length > 0,
+        post: {
+          ...this.state.post,
+          ...draft,
+        },
+      });
     });
   }
 
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
+  didBodyChange = () => {
+    const draft = PostActions.getDraft();
+    if (!draft.html) return false;
+    if (htmlEntities(draft.html) !== htmlEntities(this.state.post.html)) {
+      return true;
+    }
+    return false;
+  };
+
+  beforePostSave = () => {
+    const post = PostActions.getData();
+    const canRepublish = post.status === PostStatusOptions.Publish;
+    if (this.didBodyChange() && canRepublish) {
+      this.setState({ canRepublish });
+    }
+  };
+
   afterPostSave = () => {
     const post = PostActions.getData();
-    let eventName = "";
-    let notifyMessage = "";
     // if the status is trash, redirect the user to posts or pages depending on the post type.
     if (post.status === PostStatusOptions.Trash) {
-      notifyMessage = "Post trashed";
       this.props.router.history.goBack();
-    }
-    // if the post is in edit mode, trigger the event
-    else if (this.props.edit) {
-      eventName = "onPostUpdate";
+    } else if (this.mounted) {
       this.setState({ post });
-    }
-    if (notifyMessage) {
-      try {
-        // In tests notify will not work.
-        notify.show(notifyMessage, "success", 3000);
-      } catch (e) {
-        //... leave this empty
-      }
-    }
-    if (eventName) {
-      // Trigger an event. This will allow other components to listen to post create, update events
-      PostActions.triggerEvent(eventName, post);
     }
   };
 
   updatePost = async () => {
-    this.setState({ saving: true });
     const update = await PostActions.updatePost();
-    setTimeout(() => {
-      this.setState({ saving: false });
-    }, 500);
 
     if (update.data && update.data.updatePost) {
       let { ok, errors } = update.data.updatePost;
@@ -89,7 +100,7 @@ export class TopBar extends Component<ITopbarProps, any> {
     e.preventDefault();
     PostActions.setDraft({ status: PostStatusOptions.Trash });
     await PostActions.updatePost();
-    this.props.router.history.push(this.prevPath);
+    document.location.href = this.prevPath;
   };
 
   slideSettingsDrawer = (flag?: boolean) => {
@@ -99,12 +110,38 @@ export class TopBar extends Component<ITopbarProps, any> {
     this.setState({ settingsOpen: !this.state.settingsOpen });
   };
 
+  showPublishOptions = () => {
+    if (this.state.post.status === PostStatusOptions.Publish) {
+      PostActions.setDraft({ status: PostStatusOptions.Publish });
+      return this.publishNow();
+    } else {
+      this.setState({ settingsOpen: true });
+    }
+  };
+
+  publishNow = async () => {
+    const withHtml = true;
+    PostActions.setDraft({ status: PostStatusOptions.Publish });
+    await PostActions.updatePost({ withHtml });
+    this.setState({ canRepublish: false, showPublishOptions: false });
+  };
+
   render() {
     const goBack = e => {
       e.preventDefault();
       this.props.router.history.push(this.prevPath);
     };
 
+    const isPublished = this.state.post.status === PostStatusOptions.Publish;
+    const isScheduled = this.state.post.scheduledAt !== null;
+    const canRepublish = this.state.post.md_draft.length > 0;
+    const publishDisabled = isPublished && !canRepublish;
+    let publishLabel = isPublished ? "Published" : "Publish";
+    if (canRepublish && isPublished) {
+      publishLabel = "RePublish";
+    }
+
+    const { md, md_draft, status } = this.state.post;
     return (
       <StyledTopBar className="article-top-bar">
         <div className="left-block">
@@ -114,32 +151,40 @@ export class TopBar extends Component<ITopbarProps, any> {
             </span>
           </Link>
 
-          <PostStatusText status={this.state.post.status}>
-            {StatusGrammer[this.state.post.status]}
+          <PostStatusText status={status}>
+            {StatusGrammer[status]}
           </PostStatusText>
+
+          {isScheduled && <PostScheduledText>Scheduled</PostScheduledText>}
         </div>
-        {this.state.saving && (
-          <AutoSaveIndicator>
-            <div className="spinner">
-              <div className="bounce1" />
-              <div className="bounce2" />
-              <div className="bounce3" />
-            </div>
-          </AutoSaveIndicator>
-        )}
         <div className="right-block">
+          {getWordCount(md_draft || md)} words &nbsp;&nbsp;
           <Button
-            compact
-            btnStyle="flat"
+            btnStyle="success"
             btnSize="sm"
-            onClick={this.slideSettingsDrawer}
+            onClick={this.showPublishOptions}
+            disabled={publishDisabled}
           >
-            <i className="fa fa-cog" />
+            {publishLabel}
           </Button>
+          {isPublished && (
+            <Button
+              compact
+              btnStyle="flat"
+              btnSize="sm"
+              onClick={this.slideSettingsDrawer}
+            >
+              <i className="fa fa-cog" />
+            </Button>
+          )}
           <PostSettings
             onDelete={this.deleteAction}
             isOpen={this.state.settingsOpen}
             toggleDisplay={this.slideSettingsDrawer}
+            isPublished={isPublished}
+            isScheduled={isScheduled}
+            canRepublish={canRepublish}
+            post={this.state.post}
           />
         </div>
       </StyledTopBar>
@@ -154,3 +199,19 @@ const StatusGrammer = {
   draft: "In-Draft",
   trash: "In-Trash",
 };
+
+function htmlEntities(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&quot;");
+}
+
+function getWordCount(text: string) {
+  return text
+    .replace(/\n/, " ")
+    .trim()
+    .split(" ").length;
+}

@@ -40,41 +40,41 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
         defaultValue={data.site_title}
         type="text"
         placeholder={t("settings.general.site.title.placeholder")}
-        onBlur={e => updateOption({ site_title: e.target.value })}
+        onChange={e => updateOption({ site_title: e.target.value })}
       />
       <Input
         label={t("settings.general.site.tagline")}
         defaultValue={data.site_tagline}
         type="text"
         placeholder={t("settings.general.site.tagline.placeholder")}
-        onBlur={e => updateOption({ site_tagline: e.target.value })}
+        onChange={e => updateOption({ site_tagline: e.target.value })}
       />
       <Input
         label={t("settings.general.site.email")}
         defaultValue={data.site_email}
         type="email"
         placeholder="someone@somewhere.com"
-        onBlur={e => updateOption({ site_email: e.target.value })}
+        onChange={e => updateOption({ site_email: e.target.value })}
       />
       <TextArea
         label={t("settings.general.site.description")}
         defaultValue={data.site_description}
         placeholder={t("settings.general.site.description.placeholder")}
-        onBlur={e => updateOption({ site_description: e.target.value })}
+        onChange={e => updateOption({ site_description: e.target.value })}
       />
       <Input
         label={t("settings.general.site.url")}
         defaultValue={data.site_url}
         type="text"
         placeholder={t("settings.general.site.url.placeholder")}
-        onBlur={e => updateOption({ site_url: e.target.value })}
+        onChange={e => updateOption({ site_url: e.target.value })}
       />
       <TextArea
         label={t("settings.general.site.footer") + "(html allowed)"}
         defaultValue={data.site_footer}
         className="form-control"
         placeholder={t("settings.general.site.footer.placeholder")}
-        onBlur={e => updateOption({ site_footer: e.target.value })}
+        onChange={e => updateOption({ site_footer: e.target.value })}
       />
       <div className="form-group">
         <StyledSwitch
@@ -90,7 +90,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
         defaultValue={data.google_analytics}
         type="text"
         placeholder={t("settings.general.site.ga.placeholder")}
-        onBlur={e => updateOption({ google_analytics: e.target.value })}
+        onChange={e => updateOption({ google_analytics: e.target.value })}
       />
       <StyledSelect
         label="Select language"

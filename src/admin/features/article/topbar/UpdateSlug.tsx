@@ -16,6 +16,7 @@ const UpdateSlug: React.FC<IProps> = ({ slug, updatePost }) => {
   }, [slug]);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSlug(e.target.value.trim());
+    if (e.target.value.trim() === "") return;
     PostActions.setDraft({
       slug: e.target.value.trim(),
     });
@@ -28,8 +29,15 @@ const UpdateSlug: React.FC<IProps> = ({ slug, updatePost }) => {
       <input
         onChange={onChange}
         placeholder="Path that will be displayed in url"
-        value={_slug.replace("/page/", "").replace("/post/", "")}
+        value={_slug.split("/").pop()}
       />
+      <br />
+      <span>
+        <strong>Preview:</strong>&nbsp;
+        <a href={_slug} target="_blank">
+          {_slug}
+        </a>
+      </span>
     </Container>
   );
 };
@@ -44,5 +52,11 @@ const Container = styled.div`
     font-weight: 400;
     background: transparent;
     color: var(--color-base);
+  }
+
+  span {
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
 `;

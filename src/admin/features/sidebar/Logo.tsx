@@ -10,7 +10,10 @@ const Logo: React.FC<IProps> = ({ src, siteName, setSearchMode }) => {
   if (src) {
     return (
       <Container className="sidebar-header">
-        <img src={src} alt={siteName} />
+        <div
+          className="logo-container"
+          style={{ backgroundImage: `url('${src}')` }}
+        ></div>
         <i className="fa fa-search" onClick={setSearchMode} />
       </Container>
     );
@@ -35,10 +38,25 @@ const Container = styled.div`
     font-size: 1.2rem;
     text-transform: uppercase;
   }
+  .logo-container {
+    width: 100px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #fff;
+  }
   img {
     width: 36px;
     background: #fff;
     padding: 4px;
     border-radius: 2px;
+  }
+  i {
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    &:hover {
+      background: #333;
+    }
   }
 `;

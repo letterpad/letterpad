@@ -1,17 +1,16 @@
-import { Flex, Loader } from "./ArticleList.css";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { PostTypes, PostsNode } from "../../../__generated__/gqlTypes";
-import React, { useState } from "react";
 import Section, { SectionSizes } from "../../components/section";
-import StyledToolbar, { Layout } from "./Toolbar.css";
 import { WithNamespaces, translate } from "react-i18next";
 
 import ArticleHoc from "./ArticleHoc";
 import { Button } from "../../components/button";
 import Filters from "./Filters";
+import { Flex } from "./ArticleList.css";
 import Paginate from "../../components/pagination";
+import React from "react";
 import RenderTable from "./RenderTable";
-import Search from "./Search";
+import StyledToolbar from "./Toolbar.css";
 import config from "../../../config";
 
 interface IArticleListProps extends WithNamespaces {
@@ -102,7 +101,6 @@ const Articles: React.FC<IArticleListProps> = ({
         </StyledToolbar>
         {
           <React.Fragment>
-            {<Loader loading={loading} />}
             <RenderTable
               data={(posts && posts.rows) || []}
               setSelection={setSelection}

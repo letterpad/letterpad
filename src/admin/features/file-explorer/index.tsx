@@ -1,8 +1,8 @@
 import { Image, Media } from "../../../__generated__/gqlTypes";
 import React, { useState } from "react";
 
-import FileItem from "./FileItem";
 import Internal from "./providers/Internal";
+import MediaItem from "./MediaItem";
 import { MediaProvider } from "../article/Edit";
 import Unsplash from "./providers/Unsplash";
 
@@ -43,7 +43,7 @@ const FileExplorer: React.FC<IFileExpolorerProps> = ({
 
   const renderer = (items: Media[]) => {
     return items.map(media => (
-      <FileItem
+      <MediaItem
         key={media.id}
         media={media}
         isSelected={selectedUrls[media.url]}

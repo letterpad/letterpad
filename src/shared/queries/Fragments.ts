@@ -5,10 +5,12 @@ export const PostFragmentAllFields = gql`
     id
     title
     md
+    md_draft
     html
     status
     createdAt
     publishedAt
+    scheduledAt
     updatedAt
     excerpt
     reading_time

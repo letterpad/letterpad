@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-// import PropTypes from "prop-types";
 import StyledModal from "./Modal.css";
 
 export default class ModalHoc extends Component<any, any> {
@@ -21,16 +20,20 @@ export default class ModalHoc extends Component<any, any> {
     isVisible: false,
   };
 
+  mounted = false;
+
   modalWrapperRef = React.createRef();
 
   timerIds: number[] = [];
 
   componentDidMount() {
+    this.mounted = true;
     this.open();
   }
 
   componentWillUnmount() {
     this.clearSetUp();
+    this.mounted = false;
   }
 
   shouldComponentUpdate(_nextProps, nextState) {
@@ -41,10 +44,12 @@ export default class ModalHoc extends Component<any, any> {
   }
 
   open = () => {
-    this.setUp();
-    this.setState({ isOpen: true });
-    this.timerIds.push(window.setTimeout(this.onEnter, 0));
-    this.timerIds.push(window.setTimeout(this.onRemoveAppear, 200));
+    if (this.mounted) {
+      this.setUp();
+      this.setState({ isOpen: true });
+      this.timerIds.push(window.setTimeout(this.onEnter, 0));
+      this.timerIds.push(window.setTimeout(this.onRemoveAppear, 200));
+    }
   };
 
   close = () => {
@@ -64,11 +69,15 @@ export default class ModalHoc extends Component<any, any> {
   };
 
   onEnter = () => {
-    this.setState({ onEnter: true });
+    if (this.mounted) {
+      this.setState({ onEnter: true });
+    }
   };
 
   onRemoveAppear = () => {
-    this.setState({ onEnter: false, isVisible: true });
+    if (this.mounted) {
+      this.setState({ onEnter: false, isVisible: true });
+    }
   };
 
   onLeave = () => {

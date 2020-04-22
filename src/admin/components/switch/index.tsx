@@ -1,8 +1,14 @@
-import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
-const StyledSwitch: React.FC<any> = ({
+interface IProps {
+  onChange: (state: boolean) => void;
+  leftLabel: string;
+  rightLabel?: string;
+  isSelected: boolean;
+}
+
+const StyledSwitch: React.FC<IProps> = ({
   onChange,
   leftLabel,
   rightLabel,
@@ -34,13 +40,6 @@ const StyledSwitch: React.FC<any> = ({
       )}
     </Container>
   );
-};
-
-StyledSwitch.propTypes = {
-  leftLabel: PropTypes.string.isRequired,
-  rightLabel: PropTypes.string.isRequired,
-  isSelected: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired,
 };
 
 export default StyledSwitch;

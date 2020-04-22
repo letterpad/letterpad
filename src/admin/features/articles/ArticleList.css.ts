@@ -65,15 +65,6 @@ export const RoundedCheckbox = styled.div`
   }
 `;
 
-export const Loader = styled.div<any>`
-  width: 100%;
-  height: 4px;
-  background: var(--color-accent);
-  transition: 0.2s linear all;
-
-  opacity: ${p => (p.loading ? 0.7 : 0)};
-`;
-
 export const List = styled.div`
   article,
   header {
@@ -104,7 +95,7 @@ export const List = styled.div`
         background: #e8bd6e;
       }
       &.trash {
-        background: red;
+        background: #e4480b;
       }
     }
     .cover-image div {

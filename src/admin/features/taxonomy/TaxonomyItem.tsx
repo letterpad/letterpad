@@ -17,7 +17,7 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
   const [desc, setDesc] = useState<string>(taxonomy.desc || "");
 
   const onNameChange = value => {
-    const withOutSpace = value.replace(" ", "-");
+    const withOutSpace = value.replace(" ", "-").toLowerCase();
     setName(withOutSpace);
   };
 
@@ -25,9 +25,16 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
     setDesc(value);
   };
 
+  const disallowEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const isEnter = e.keyCode === 13;
+    if (isEnter) {
+      e.preventDefault();
+    }
+  };
+
   const onBlur = (value, key) => {
     if (value.length === 0) return;
-    const updatedItem = { ...taxonomy, [key]: value };
+    const updatedItem = { ...taxonomy, name, desc, [key]: value };
     onUpdate(updatedItem);
   };
 
@@ -55,6 +62,7 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
             onChange={onNameChange}
             placeholder="Tag name"
             onBlur={e => onBlur(name, "name")}
+            onKeyDown={disallowEnter}
           />
         </div>
       </div>
@@ -63,7 +71,8 @@ const TaxonomyItem: React.FC<IProps> = ({ taxonomy, onUpdate, onSelect }) => {
           value={desc}
           onChange={onDescChange}
           placeholder="Enter a description"
-          onBlur={e => onBlur(name, "desc")}
+          onBlur={e => onBlur(desc, "desc")}
+          onKeyDown={disallowEnter}
         />
       </div>
       <div className="linked-posts">
@@ -85,7 +94,8 @@ const InlineInput: React.FC<{
   placeholder: string;
   onChange: (value: string) => void;
   onBlur: (value: string) => void;
-}> = ({ value, onChange, placeholder, onBlur }) => {
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+}> = ({ value, onChange, placeholder, onBlur, onKeyDown }) => {
   return (
     <form>
       <Input
@@ -95,6 +105,7 @@ const InlineInput: React.FC<{
         onChange={e => onChange(e.target.value)}
         onBlur={e => onBlur(e.target.value)}
         placeholder={placeholder}
+        onKeyDown={onKeyDown}
       />
     </form>
   );
@@ -110,7 +121,7 @@ const Input = styled.input`
 
 function getLinkedPostsUrl(type, name) {
   if (type === TaxonomyType.PostTag) {
-    return config.BASE_NAME + "posts?tag=" + name;
+    return config.BASE_NAME + "/admin/posts?tag=" + name;
   }
-  return config.BASE_NAME + "posts?category=" + name;
+  return config.BASE_NAME + "/admin/posts?category=" + name;
 }

@@ -1,8 +1,8 @@
 import { hydrate, render } from "react-dom";
 
 import { ApolloProvider } from "react-apollo";
-import { BrowserRouter } from "react-router-dom";
 import App from "./App";
+import { BrowserRouter } from "react-router-dom";
 import React from "react";
 import { Setting } from "../__generated__/gqlTypes";
 import client from "../shared/apolloClient";
