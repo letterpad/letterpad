@@ -405,6 +405,7 @@ export type PostFilters = {
   id?: Maybe<Scalars["Int"]>;
   slug?: Maybe<Scalars["String"]>;
   featured?: Maybe<Scalars["Boolean"]>;
+  previewHash?: Maybe<Scalars["String"]>;
 };
 
 export type PostsFilters = {

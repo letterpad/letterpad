@@ -19,6 +19,7 @@ const config = {
   API_URL: configFile.API_URL,
   ROOT_URL: configFile.ROOT_URL,
   UPLOAD_URL: configFile.UPLOAD_URL,
+  HASH_URL: configFile.HASH_URL,
   APP_PORT: configFile.APP_PORT,
   USE_GRAPHQL_JIT: configFile.USE_GRAPHQL_JIT,
   rssPath: "rss.xml",

@@ -29,10 +29,17 @@ function DataConnector(
     switch (contentType) {
       case EnumContentType.PAGE:
       case EnumContentType.POST: {
+        const { previewHash, slug } = props.router.match.params;
+        const filters: { previewHash?: string; slug?: string } = {};
+        if (previewHash) {
+          filters.previewHash = previewHash;
+        } else {
+          filters.slug = slug;
+        }
         const result = useQuery<PostQuery, PostQueryVariables>(QUERY_POST, {
           variables: {
             filters: {
-              slug: props.router.match.params.slug,
+              ...filters,
             },
           },
           fetchPolicy: "network-only",

@@ -246,11 +246,7 @@ template {
 	display: none;
 }
 `;
-export const AdminBaseStyle = createGlobalStyle`@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900");
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,500,600,700");
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
-@import url('https://fonts.googleapis.com/css?family=Inter:100,300,400,500,600,700');
+export const AdminBaseStyle = createGlobalStyle`
 
 /*! -----------------------------------------------------------------
     [Master Stylesheet]
