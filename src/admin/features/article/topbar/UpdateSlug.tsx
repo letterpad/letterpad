@@ -32,12 +32,7 @@ const UpdateSlug: React.FC<IProps> = ({ slug, updatePost }) => {
         value={_slug.split("/").pop()}
       />
       <br />
-      <span>
-        <strong>Preview:</strong>&nbsp;
-        <a href={_slug} target="_blank">
-          {_slug}
-        </a>
-      </span>
+      <span>{_slug}</span>
     </Container>
   );
 };

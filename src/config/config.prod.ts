@@ -21,6 +21,9 @@ const config = (() => {
     API_URL: isServer()
       ? ROOT_URL + BASE_NAME + "/graphql"
       : (window as any).API_URL,
+    HASH_URL: isServer()
+      ? ROOT_URL + BASE_NAME + "/getHashFromPostId"
+      : (window as any).HASH_URL,
     UPLOAD_URL: isServer()
       ? ROOT_URL + BASE_NAME + "/upload"
       : (window as any).UPLOAD_URL,

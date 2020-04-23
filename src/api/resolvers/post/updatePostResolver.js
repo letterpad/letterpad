@@ -146,7 +146,7 @@ export const updateContent = async (root, args) => {
   }
 
   try {
-    if (html) {
+    if (html && status === "publish") {
       args.dataToUpdate.html = await setImageWidthAndHeightInHtml(html);
       console.log("args.dataToUpdate.html :", args.dataToUpdate.html);
     }

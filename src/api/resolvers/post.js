@@ -30,10 +30,13 @@ import Fuse from "fuse.js";
 import Sequelize from "sequelize";
 import { _createPost } from "../models/post";
 import config from "../../config";
+import crypto from "crypto";
+import { decrypt } from "../utils/crypto";
 import { deletePostResolver } from "./post/deletePostResolver";
 import { getReadableDate } from "../../shared/date";
 import { innertext } from "../utils/common";
 import logger from "../../shared/logger";
+import { mdToHtml } from "letterpad-editor";
 import { statsResolver } from "./post/statsResolver";
 
 const host = config.ROOT_URL + config.BASE_NAME;
@@ -75,16 +78,26 @@ const postresolver = {
      */
     post: checkDisplayAccess.createResolver(async (root, args, { models }) => {
       logger.debug("Reached resolver: post");
-      const conditions = { where: { ...args.filters } };
+      const { previewHash, ...filters } = args.filters;
+      const conditions = { where: { ...filters } };
       if (args.filters.id) {
         conditions.where.id = args.filters.id;
       }
       if (args.filters.slug) {
         conditions.where.slug = args.filters.slug;
       }
+      if (previewHash) {
+        console.log("decrypt(previewHash) :>> ", decrypt(previewHash));
+        conditions.where.id = decrypt(previewHash);
+      }
       let post = await models.Post.findOne(conditions);
       if (post) {
         post.dataValues = normalizePost(post.dataValues);
+        if (previewHash && post.dataValues.md_draft) {
+          // if the post is published and this is preview for republish,
+          // then the html content will comee from md_draft
+          post.dataValues.html = mdToHtml(post.dataValues.md_draft);
+        }
       }
       return post;
     }),

@@ -216,6 +216,7 @@ input PostFilters {
   id: Int
   slug: String
   featured: Boolean
+  previewHash: String
 }
 
 type Post {

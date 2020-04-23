@@ -7,6 +7,7 @@ import cache from "../client/server/cache";
 import config from "../config";
 import constants from "./utils/constants";
 import fileUpload from "express-fileupload";
+import { getHashFromPostId } from "./getHashFromPostId";
 import graphiqlMiddleware from "./graphiql";
 import { graphqlMiddleware } from "./graphql";
 import logger from "../shared/logger";
@@ -73,6 +74,7 @@ const apiServer = async (app: Express) => {
   );
   app.use(config.BASE_NAME + "/upload", upload);
   app.get(config.BASE_NAME + "/" + config.rssPath, RssFeed);
+  app.get(config.BASE_NAME + "/getHashFromPostId", getHashFromPostId);
 
   if (config.USE_GRAPHQL_JIT) {
     const graphqlEndpoint = config.BASE_NAME + "/graphql";
