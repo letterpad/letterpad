@@ -87,6 +87,7 @@ const postresolver = {
         conditions.where.slug = args.filters.slug;
       }
       if (previewHash) {
+        console.log("decrypt(previewHash) :>> ", decrypt(previewHash));
         conditions.where.id = decrypt(previewHash);
       }
       let post = await models.Post.findOne(conditions);

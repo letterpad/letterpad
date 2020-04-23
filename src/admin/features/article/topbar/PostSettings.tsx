@@ -1,7 +1,6 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import { Button, ButtonGroup } from "../../../components/button";
-import { EventBusInstance, Events } from "../../../../shared/eventBus";
 import {
   Post,
   PostStatusOptions,
@@ -20,10 +19,10 @@ import { Link } from "react-router-dom";
 import { MediaProvider } from "../Edit";
 import Portal from "../../portal";
 import PostActions from "../PostActions";
-import PublishModal from "./PublishModal";
 import Taxonomies from "./Taxonomies";
 import Unpublish from "./Unpublish";
 import UpdateSlug from "./UpdateSlug";
+import config from "../../../../config";
 import styled from "styled-components";
 
 interface IProps {
@@ -46,6 +45,7 @@ const PostSettings: React.FC<IProps> = ({
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
+  const [previewUrl, setPreview] = useState("");
 
   useEffect(() => {
     if (post.scheduledAt) {
@@ -60,6 +60,18 @@ const PostSettings: React.FC<IProps> = ({
     return () => {
       return document.removeEventListener("click", detectClick);
     };
+  }, []);
+
+  useEffect(() => {
+    fetch(config.HASH_URL + "?id=" + post.id, {
+      headers: {
+        authorization: localStorage.token,
+      },
+    })
+      .then(res => res.text())
+      .then(hash => {
+        setPreview(config.BASE_NAME + "/preview/post/" + hash);
+      });
   }, []);
 
   const detectClick = e => {
@@ -189,6 +201,10 @@ const PostSettings: React.FC<IProps> = ({
           )}
         </ButtonGroup>
         <br />
+        <a href={previewUrl} className="preview-link" target="_blank">
+          Preview this {post.type}
+        </a>
+        <br />
         <br />
         {isScheduled && (
           <LabelBox>
@@ -233,14 +249,7 @@ const PostSettings: React.FC<IProps> = ({
         <br />
         <br />
       </Container>
-      {/* {displayPublishUi && (
-        <Portal>
-          <PublishModal
-            onClose={() => setDisplayPublishUi(false)}
-            publishNow={() => {}}
-          />
-        </Portal>
-      )} */}
+
       {isOpen && <BackFade onClick={closeDrawer} />}
     </div>
   );
@@ -285,6 +294,12 @@ const Container = styled.div<IContainerProps>`
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .preview-link {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    text-decoration: underline;
+    margin-top: 24px;
   }
 `;
 
