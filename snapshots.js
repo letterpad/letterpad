@@ -1,5 +1,10 @@
 module.exports = {
   "Create Post": {
+    "Creates a new post and updates it with featured image": {
+      "1": {
+        "src": "https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjMxNTc2fQ"
+      }
+    },
     "Create a new Post and publishes it": {
       "1": {
         "id": 3,
@@ -96,11 +101,6 @@ module.exports = {
             "slug": "/tag/baz-bam"
           }
         ]
-      }
-    },
-    "Creates a new post and updates it with featured image": {
-      "1": {
-        "src": "https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjMxNTc2fQ"
       }
     }
   },
