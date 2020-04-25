@@ -65,6 +65,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   return (
     <div>
       <Input
+        data-testid="input-unsplash"
         onKeyUp={onKeyUp}
         placeholder="Search free high resolution photos from Unsplash"
         autoFocus

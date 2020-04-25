@@ -6,6 +6,7 @@ import {
 import config from "../../../config";
 import { getDateTime } from "../../../shared/date";
 import logger from "../../../shared/logger";
+import { mdToHtml } from "letterpad-editor";
 import reading_time from "reading-time";
 import slugify from "../../../shared/slugify";
 
@@ -126,32 +127,39 @@ export const updateReadingTime = async (root, args) => {
 export const updateContent = async (root, args) => {
   let { html, md, excerpt, previousPost, status } = args;
 
-  if (!status) {
-    if (previousPost.dataValues.status === "draft" && md) {
-      args.dataToUpdate.md = md;
-      args.dataToUpdate.md_draft = "";
-    } else if (previousPost.dataValues.status === "publish" && md) {
-      args.dataToUpdate.md_draft = md;
-    }
-  } else if (status === "publish") {
-    args.dataToUpdate.md = previousPost.dataValues.md_draft;
-    args.dataToUpdate.md_draft = "";
-  } else if (status === "draft" && md) {
+  if (!status && previousPost.dataValues.status === "publish") {
+    args.dataToUpdate.md_draft = md;
+  } else if (md && html) {
     args.dataToUpdate.md = md;
-    args.dataToUpdate.md_draft = "";
+    try {
+      args.dataToUpdate.html = await setImageWidthAndHeightInHtml(html);
+    } catch (error) {
+      logger.error(error);
+    }
+
+    // just republished
+    if (previousPost.dataValues.status === "publish" && status === "publish") {
+      args.dataToUpdate.md_draft = "";
+    }
+  } else {
+    // just republished
+    if (previousPost.dataValues.status === "publish" && status === "publish") {
+      if (previousPost.dataValues.md_draft) {
+        args.dataToUpdate.md = previousPost.dataValues.md_draft;
+        try {
+          args.dataToUpdate.html = await setImageWidthAndHeightInHtml(
+            mdToHtml(previousPost.dataValues.md_draft),
+          );
+        } catch (error) {
+          logger.error(error);
+        }
+      }
+      args.dataToUpdate.md_draft = "";
+    }
   }
 
   if (excerpt) {
     args.dataToUpdate.excerpt = excerpt;
-  }
-
-  try {
-    if (html && status === "publish") {
-      args.dataToUpdate.html = await setImageWidthAndHeightInHtml(html);
-      console.log("args.dataToUpdate.html :", args.dataToUpdate.html);
-    }
-  } catch (e) {
-    logger.error(e);
   }
   return args;
 };

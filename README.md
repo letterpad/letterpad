@@ -3,28 +3,12 @@
 <img src="banner.jpg">
 
 <p align="center">
-  An open-source and a high performant publishing engine for blogs <br/>
-  with state-of-the-art technology.
+  An open-source and a high performant publishing engine for pesonal blogs. <br/>
 </p>
 
 <br/>
 
-It uses React, Graphql, Express and Sequelize ORM. Few of the core features are listed below:
-
-- Server side rendering
-- Static Site creation
-- Multi author support
-- Comments (Disqus integration)
-- Google Analytics
-- Theme support
-- Multi-level navigation
-- Image optimizer
-- Styled-components
-- GraphQL
-- Roles - Admin, Reviewer, Author, Reader
-- Markdown and RichText editor
-- Search Engine Optimised
-- Multi-language support with react-i18next (currently en, fr and pl)
+Written in Typescript, React, Graphql, Express and Sequelize ORM.
 
 ## Contents
 
@@ -37,7 +21,8 @@ It uses React, Graphql, Express and Sequelize ORM. Few of the core features are 
 ## Demo
 
 To check letterpad in action, check out this [Demo Site](https://letterpad.app/demo).
-You can visit the [Admin Panel](https://letterpad.app/demo/admin/login) and login with
+You can visit the [Admin Panel](https://letterpad.app/demo/admin/login). It will auto log you in.
+However, the credentials are:
 
 ```
 Email: demo@demo.com
@@ -85,6 +70,12 @@ yarn build # creates a /dist folder
 yarn prod  # run production
 ```
 
+To build all the themes together, run
+
+```sh
+yarn buildAllThemes
+```
+
 ## Additional Links:
 
 - [Installing in Production](https://medium.com/@ajaxtown/installing-letterpad-in-digital-ocean-8ed53c66b114)
@@ -95,7 +86,7 @@ yarn prod  # run production
 
 ## Contribute
 
-Letterpad is in its early stages and requires support to move ahead. You can contribute through various ways like
+Letterpad has reached a state of maturity but still has not released v1.0. You can contribute through various ways like
 testing, ideas, recommendations, fixing bugs, documentation, logo design, assets, etc. You can join the slack channel (letterpad.slack.com) for discussions. Thanks.
 
 ## Contributors

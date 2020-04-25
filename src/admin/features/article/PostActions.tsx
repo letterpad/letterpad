@@ -98,9 +98,6 @@ let PostActions: IPostActions = (() => {
     updatePost: async (params = { withHtml: false }) => {
       EventBusInstance.publish(Events.SAVING);
       const data = PostActions.getDraft();
-      // if (!params.withHtml) {
-      //   delete data.html;
-      // }
       const update = await client().mutate<UpdatePostMutation>({
         mutation: UPDATE_POST_QUERY,
         variables: {
@@ -109,6 +106,7 @@ let PostActions: IPostActions = (() => {
       });
       if (update.data) {
         PostActions.setData(update.data.updatePost.post as Post);
+        draftData = { id: postData.id };
         EventBusInstance.publish(Events.SAVED);
       }
       return update;

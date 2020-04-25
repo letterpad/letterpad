@@ -151,6 +151,7 @@ const CustomImage: React.FC<ICustomImageProps> = ({
   }
   return (
     <div
+      data-testid="featured-image"
       className={className}
       onClick={isCustom ? removeCustomImage : toggleFileExplorer}
     >

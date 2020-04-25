@@ -1,8 +1,8 @@
 import { Image, Post } from "../../../__generated__/gqlTypes";
-import LetterpadEditor, { mdToHtml } from "letterpad-editor";
 import React, { Component } from "react";
 
 import FileExplorerModal from "../modals/FileExplorerModal";
+import LetterpadEditor from "letterpad-editor";
 import PostActions from "./PostActions";
 import PostTitle from "./PostTitle";
 import ReactTooltip from "react-tooltip";
@@ -94,11 +94,6 @@ class Edit extends Component<IProps> {
     this.editor = editor;
   };
 
-  onEditorLoad = change => {
-    const { html } = change();
-    // PostActions.setDraft({ html });
-  };
-
   switchMediaProvider = (mediaProvider: MediaProvider) => {
     this.setState({ mediaProvider });
   };
@@ -130,7 +125,6 @@ class Edit extends Component<IProps> {
             tooltip={Tooltip}
             onChange={this.onEditorChange}
             placeholder="Write a story.."
-            onLoad={this.onEditorLoad}
           />
           {this.state.fileExplorerOpen && (
             <FileExplorerModal

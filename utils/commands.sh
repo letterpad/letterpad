@@ -16,8 +16,29 @@ run_dev () {
     yarn ts-node ./src/start.ts --profile --json
 }
 
+run_qa () {
+    clean_up
+    THEME=$1
+    if [ -z "$THEME" ]; then
+        THEME=hugo
+    fi
+    
+    export THEME=$THEME
+    export NODE_ENV=test
+    yarn seed
+    sh -c 'lsof -i :${PORT:-1111} -t | xargs kill'
+    nodemon --watch ./src/api -e ts,js,graphql --exec 'ts-node' ./src/api/apiDevServer.ts &
+    yarn ts-node ./src/start.ts --profile --json 
+}
+
+
 run_production () {
+    export NODE_ENV=production
     node ./dist/server.js
+}
+
+run_cypress () {
+    start-server-and-test qa http://localhost:4040 cypress:run
 }
 
 build_all_themes () {
@@ -96,6 +117,8 @@ THEME=$2
 
 if [ "$COMMAND" = "runDev" ]; then
     run_dev $THEME
+elif [ "$COMMAND" = "runQa" ]; then
+    run_qa $THEME
 elif [ "$COMMAND" = "build" ]; then
     build_letterpad_with_theme $THEME
 elif [ "$COMMAND" = "buildAllThemes" ]; then
@@ -106,6 +129,8 @@ elif [ "$COMMAND" = "buildAdmin" ]; then
     build_admin
 elif [ "$COMMAND" = "runProd" ]; then
     run_production
+elif [ "$COMMAND" = "runCypress" ]; then
+    run_cypress
 elif [ "$COMMAND" = "cleanUp" ]; then
     clean_up
 fi

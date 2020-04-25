@@ -7,7 +7,6 @@ import StyledTopBar, { PostScheduledText, PostStatusText } from "./TopBar.css";
 
 import PostActions from "../PostActions";
 import PostSettings from "./PostSettings";
-import config from "../../../../config";
 import { notify } from "react-notify-toast";
 
 interface ITopbarProps {
@@ -18,7 +17,7 @@ interface ITopbarProps {
 }
 
 export class TopBar extends Component<ITopbarProps, any> {
-  prevPath = config.BASE_NAME + "/admin/" + this.props.post.type + "s";
+  prevPath = "/admin/" + this.props.post.type + "s";
   state = {
     post: this.props.post,
     settingsOpen: false,
@@ -145,7 +144,7 @@ export class TopBar extends Component<ITopbarProps, any> {
     return (
       <StyledTopBar className="article-top-bar">
         <div className="left-block">
-          <Link to="#" onClick={goBack}>
+          <Link to="#" onClick={goBack} data-testid="go-back">
             <span className="material-icons" style={{ fontSize: 34 }}>
               keyboard_arrow_left
             </span>
@@ -173,6 +172,7 @@ export class TopBar extends Component<ITopbarProps, any> {
               btnStyle="flat"
               btnSize="sm"
               onClick={this.slideSettingsDrawer}
+              data-testid="cog-settings"
             >
               <i className="fa fa-cog" />
             </Button>

@@ -24,7 +24,7 @@ const UpdateSlug: React.FC<IProps> = ({ slug, updatePost }) => {
   };
 
   return (
-    <Container>
+    <Container className="slug">
       <label>Path (displayed in url)</label>
       <input
         onChange={onChange}
