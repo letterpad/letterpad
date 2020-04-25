@@ -87,10 +87,12 @@ const postresolver = {
         conditions.where.slug = args.filters.slug;
       }
       if (previewHash) {
-        console.log("decrypt(previewHash) :>> ", decrypt(previewHash));
         conditions.where.id = decrypt(previewHash);
+        delete conditions.where.status;
       }
+
       let post = await models.Post.findOne(conditions);
+
       if (post) {
         post.dataValues = normalizePost(post.dataValues);
         if (previewHash && post.dataValues.md_draft) {

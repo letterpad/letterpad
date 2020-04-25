@@ -13,6 +13,7 @@ import Home from "./features/home";
 import { I18nextProvider } from "react-i18next";
 import Loader from "./components/loader";
 import LoginView from "./features/login/LoginView";
+import Logout from "./features/logout/Logout";
 import Media from "./features/media";
 import NavigationBuilder from "./features/settings/Navigation";
 import Notifications from "react-notify-toast";
@@ -186,6 +187,12 @@ const Routes: React.FC<RouteComponentProps> = router => {
               exact
               path="/admin/media"
               component={Media}
+              settings={settings}
+            />
+            <SecuredRoute
+              exact
+              path="/admin/logout"
+              component={Logout}
               settings={settings}
             />
           </TwoColumnLayout>

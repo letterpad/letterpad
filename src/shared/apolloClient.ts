@@ -74,6 +74,7 @@ const errorLink = onError(({ networkError }) => {
     "statusCode" in networkError &&
     networkError.statusCode === 401
   ) {
+    delete localStorage.token;
     window.location.href = config.BASE_NAME + "/admin/login";
   }
 });

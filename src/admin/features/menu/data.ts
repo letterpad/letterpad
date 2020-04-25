@@ -72,6 +72,14 @@ const DATA: IAdminMenu[] = [
     slug: "settings",
     icon: "fa-user",
   },
+  {
+    id: 11,
+    name: "menu.logout",
+    priority: 3,
+    permissions: [],
+    slug: "logout",
+    icon: "fa-user",
+  },
 ];
 
 export default DATA;

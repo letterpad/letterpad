@@ -21,6 +21,7 @@
         window.UPLOAD_URL = "{{UPLOAD_URL}}";
         window.APP_PORT = {{APP_PORT}};
         window.BASE_NAME = "{{BASE_NAME}}";
+        window.HASH_URL = "{{HASH_URL}}";
     </script>
 
     {{SCRIPT_TAGS}}
