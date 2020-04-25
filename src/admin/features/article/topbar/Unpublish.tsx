@@ -17,7 +17,7 @@ const Unpublish: React.FC<IProps> = ({ status, updatePost }) => {
   const isPublished = status === PostStatusOptions.Publish;
 
   return (
-    <Container>
+    <Container data-testid="switch-unpublish">
       <StyledSwitch
         leftLabel="Unpublish this post"
         isSelected={isPublished}

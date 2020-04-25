@@ -2,15 +2,22 @@ import React, { useEffect, useState } from "react";
 
 import PostActions from "../PostActions";
 import { TextArea } from "../../../components/textarea";
+import { mdToHtml } from "letterpad-editor";
 import styled from "styled-components";
 import utils from "../../../../shared/util";
 
 interface IProps {
   excerpt: string;
-  html: string;
+  md: string;
   updatePost: () => void;
+  isSettingsOpen: boolean;
 }
-const Excerpt: React.FC<IProps> = ({ excerpt, html, updatePost }) => {
+const Excerpt: React.FC<IProps> = ({
+  excerpt,
+  md,
+  updatePost,
+  isSettingsOpen,
+}) => {
   const [description, setDescription] = useState<string>(excerpt);
   const maxLength = 160;
 
@@ -19,7 +26,8 @@ const Excerpt: React.FC<IProps> = ({ excerpt, html, updatePost }) => {
     if (!excerpt) {
       // the body will contain html characters. Remove all the tags and get plain text
       const tmp = document.createElement("DIV");
-      tmp.innerHTML = html;
+      if (md === "") md = PostActions.getData().md;
+      tmp.innerHTML = mdToHtml(md);
       excerpt = tmp.textContent || tmp.innerText || "";
       if (excerpt.length > maxLength) {
         excerpt = trimString(excerpt, maxLength);
@@ -28,9 +36,13 @@ const Excerpt: React.FC<IProps> = ({ excerpt, html, updatePost }) => {
       excerpt = trimString(excerpt, maxLength);
     }
     if (oldExcerpt !== excerpt) {
-      setDescription(excerpt);
+      const formattedExcerpt = excerpt.replace(/\n/, "");
+      setDescription(formattedExcerpt);
+      PostActions.setDraft({
+        excerpt: formattedExcerpt,
+      });
     }
-  }, []);
+  }, [isSettingsOpen]);
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const excerpt = e.target.value;
@@ -45,6 +57,7 @@ const Excerpt: React.FC<IProps> = ({ excerpt, html, updatePost }) => {
     <Container>
       <label>Blog Post Description</label>
       <TextArea
+        data-testid="excerpt"
         autoAdjustHeight={true}
         maxLength={maxLength}
         onChange={onChange}

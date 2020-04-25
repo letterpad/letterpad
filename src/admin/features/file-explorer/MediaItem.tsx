@@ -20,7 +20,7 @@ const MediaItem: React.FC<IProps> = ({
 
   const classes = isSelected ? " selected" : "";
   return (
-    <Container className={classes} onClick={onSelect}>
+    <Container data-testid="media-item" className={classes} onClick={onSelect}>
       <div className="post-thumbnail">
         <img src={media.url} />
       </div>

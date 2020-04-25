@@ -143,6 +143,7 @@ class LoginView extends Component<ILoginProps, ILoginState> {
                 value={this.state.loginEmail}
                 onChange={this.onloginEmailChange}
                 autoComplete="off"
+                data-testid="input-email"
               />
             </InputBlock>
             <InputBlock>
@@ -157,6 +158,7 @@ class LoginView extends Component<ILoginProps, ILoginState> {
                     this.login();
                   }
                 }}
+                data-testid="input-password"
               />
             </InputBlock>
             <Row justify="space-between">
@@ -178,7 +180,9 @@ class LoginView extends Component<ILoginProps, ILoginState> {
             </Row>
             <br />
             <Row justify="center">
-              <Button onClick={this.login}>Login</Button>
+              <Button onClick={this.login} data-testid="btn-login">
+                Login
+              </Button>
             </Row>
           </Block>
           <Block isVisible={!this.state.loginView}>
