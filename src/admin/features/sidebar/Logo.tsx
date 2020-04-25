@@ -40,10 +40,9 @@ const Container = styled.div`
   }
   .logo-container {
     width: 100px;
-    height: 60px;
+    height: 50px;
     background-size: contain;
     background-repeat: no-repeat;
-    background-color: #fff;
   }
   img {
     width: 36px;

@@ -53,6 +53,10 @@ class LoginView extends Component<ILoginProps, ILoginState> {
         },
       );
     }
+
+    if (localStorage.token) {
+      this.props.router.history.push("/admin/posts");
+    }
   }
 
   onloginEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {

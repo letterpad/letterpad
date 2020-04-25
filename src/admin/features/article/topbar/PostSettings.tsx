@@ -201,7 +201,12 @@ const PostSettings: React.FC<IProps> = ({
           )}
         </ButtonGroup>
         <br />
-        <a href={previewUrl} className="preview-link" target="_blank">
+        <a
+          href={previewUrl}
+          className="preview-link"
+          target="_blank"
+          data-testid="link-preview"
+        >
           Preview this {post.type}
         </a>
         <br />

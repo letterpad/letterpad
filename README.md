@@ -1,6 +1,6 @@
 &middot; [![Backers on Open Collective](https://opencollective.com/letterpad/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/letterpad/sponsors/badge.svg)](#sponsors) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/letterpad/letterpad/blob/master/LICENSE)
 
-<img src="banner.jpg">
+<img src="banner.png">
 
 <p align="center">
   An open-source and a high performant publishing engine for pesonal blogs. <br/>

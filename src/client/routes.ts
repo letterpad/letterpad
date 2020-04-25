@@ -68,30 +68,6 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
     {
       exact: true,
       component: LayoutConnector(
-        Post,
-        {
-          contentType: EnumContentType.POST,
-          ...commonProps,
-        },
-        Layout,
-      ),
-      path: ["/preview/post/:previewHash"],
-    },
-    {
-      exact: true,
-      component: LayoutConnector(
-        Post,
-        {
-          contentType: EnumContentType.PAGE,
-          ...commonProps,
-        },
-        Layout,
-      ),
-      path: ["/preview/page/:previewHash"],
-    },
-    {
-      exact: true,
-      component: LayoutConnector(
         Page,
         {
           contentType: EnumContentType.PAGE,
@@ -99,7 +75,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
         },
         Layout,
       ),
-      path: ["/page/:slug"],
+      path: ["/page/:slug", "/preview/page/:previewHash"],
     },
     {
       exact: true,
@@ -111,7 +87,7 @@ const getRoutes = (args: IRoutes["initialData"]): IRouteProps[] => {
         },
         Layout,
       ),
-      path: ["/post/:slug"],
+      path: ["/post/:slug", "/preview/post/:previewHash"],
     },
     {
       exact: true,
