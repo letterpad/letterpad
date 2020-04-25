@@ -182,7 +182,7 @@ export const executeUpdatePost = async (root, args, { models }) => {
 export const updateTaxonomies = async (root, args, { models }) => {
   let { tags, previousPost } = args;
   if (!tags) return args;
-  logger.debug("Updating taxonomies");
+  logger.debug("Updating taxonomies", tags);
   const prevTaxonomies = await previousPost.getTaxonomies();
   if (!tags)
     tags = [...prevTaxonomies.filter(item => item.type === "post_tag")];
@@ -199,6 +199,7 @@ export const updateTaxonomies = async (root, args, { models }) => {
     await previousPost.setTaxonomies([]);
     await Promise.all(
       taxonomies.map(async taxonomy => {
+        logger.info("processing taxonomy", taxonomy);
         let taxItem = null;
         // add relation with existing taxonomies
         if (taxonomy.id !== 0) {
