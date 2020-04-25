@@ -104,7 +104,6 @@ export default {
         SECRET,
         { expiresIn },
       );
-      console.log("token :", token);
       return {
         ok: true,
         token,
