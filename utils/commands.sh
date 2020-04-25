@@ -38,7 +38,10 @@ run_production () {
 }
 
 run_cypress () {
-    start-server-and-test qa http://localhost:4040 cypress:run
+    export NODE_ENV=production
+    yarn build
+    yarn seed
+    start-server-and-test prod http://localhost:4040 cypress:run
 }
 
 build_all_themes () {

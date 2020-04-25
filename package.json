@@ -24,10 +24,7 @@
     "preinstall": "./utils/preinstall.sh",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "testDev": "start-server-and-test qa http://localhost:4040 cypress:open",
-    "pretest": "yarn build & yarn seed",
-    "test": "start-server-and-test prod http://localhost:4040 cypress:run",
-    "testInGithub": "./utils/commands.sh runCypress"
+    "testDev": "start-server-and-test qa http://localhost:4040 cypress:open"
   },
   "env": {
     "jest": true

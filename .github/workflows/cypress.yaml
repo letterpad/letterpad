@@ -8,13 +8,14 @@ jobs:
         uses: actions/checkout@v1
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
-      - name: Install
-        run: yarn
       - name: Rename Environment file
         run: cp sample.env .env
       - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
+          build: yarn run build
+          start: yarn prod
+          wait-on: "http://localhost:4040"
           browser: chrome
           headless: true
-          command: "yarn testInGithub"
+          command: cypress:run

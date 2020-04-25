@@ -29,8 +29,6 @@ const path = require("path");
 
 require("@cypress/snapshot").register({ useRelativeSnapshots: true });
 
-import { QUERY_POST } from "../../src/shared/queries/Queries";
-import apolloClient from "../../src/shared/apolloClient";
 Cypress.Commands.add("dbReset", () => {
   downloadFile(
     "https://playground.ajaxtown.com/letterpad_demo.sqlite",
@@ -48,14 +46,49 @@ Cypress.Commands.add("login", () => {
 });
 
 Cypress.Commands.add("getPost", slug => {
-  return apolloClient()
-    .query({
-      query: QUERY_POST,
-      variables: {
-        filters: { slug },
-      },
-    })
-    .then(({ data }) => data.post);
+  fetch("http://localhost:4040/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: `{ 
+        post(filters: { slug:${slug}}) {
+          id
+          title
+          md
+          md_draft
+          html
+          status
+          createdAt
+          publishedAt
+          scheduledAt
+          updatedAt
+          excerpt
+          reading_time
+          featured
+          cover_image {
+            width
+            height
+            src
+          }
+          slug
+          type
+          author {
+            fname
+            lname
+            avatar
+            bio
+          }
+          tags {
+            id
+            name
+            slug
+          } 
+        } 
+      }`,
+    }),
+  })
+    .then(res => res.json())
+    .then(res => res.data.post);
 });
 
 const downloadFile = async (url, path) => {
