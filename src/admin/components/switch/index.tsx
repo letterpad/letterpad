@@ -6,6 +6,7 @@ interface IProps {
   leftLabel: string;
   rightLabel?: string;
   isSelected: boolean;
+  className?: string;
 }
 
 const StyledSwitch: React.FC<IProps> = ({
@@ -13,9 +14,10 @@ const StyledSwitch: React.FC<IProps> = ({
   leftLabel,
   rightLabel,
   isSelected,
+  className,
 }) => {
   return (
-    <Container>
+    <Container className={className}>
       <span
         className="switch-label switch-off-text"
         onClick={() => onChange(false)}

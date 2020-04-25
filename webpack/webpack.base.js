@@ -14,6 +14,9 @@ module.exports = (args, name) => {
     source = "src";
     env = "development";
   }
+  if (args.NODE_ENV === "test") {
+    env = "test";
+  }
   const config = {
     mode: env, // for production we use this mode to ignore uglify plugin. it is slow.
     devtool: "#source-map",

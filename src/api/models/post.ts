@@ -34,6 +34,7 @@ class Post extends Model {
         },
         md_draft: {
           type: DataTypes.TEXT,
+          defaultValue: "",
         },
         excerpt: {
           type: DataTypes.STRING(400),

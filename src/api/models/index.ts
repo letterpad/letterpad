@@ -12,6 +12,8 @@ import dbConfig from "../../config/db.config";
 
 let env = process.env.NODE_ENV || "dev";
 if (env === "development") env = "dev";
+if (env === "test") env = "test";
+
 const config = dbConfig[env];
 
 // establish  database connection

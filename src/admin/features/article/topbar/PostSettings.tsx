@@ -128,7 +128,7 @@ const PostSettings: React.FC<IProps> = ({
     <div>
       <Container isOpen={isOpen}>
         <header>
-          <Link to="#" onClick={closeDrawer}>
+          <Link to="#" onClick={closeDrawer} data-testid="close-settings">
             <CloseIcon />
           </Link>
 
@@ -228,9 +228,10 @@ const PostSettings: React.FC<IProps> = ({
           <FeaturedPost isFeatured={post.featured} updatePost={updatePost} />
         )}
         <Excerpt
-          html={post.html}
+          md={post.md}
           excerpt={post.excerpt}
           updatePost={updatePost}
+          isSettingsOpen={isOpen}
         />
         <UpdateSlug slug={post.slug} updatePost={updatePost} />
         {post.type === PostTypes.Post && (
