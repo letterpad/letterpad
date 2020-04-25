@@ -46,12 +46,12 @@ Cypress.Commands.add("login", () => {
 });
 
 Cypress.Commands.add("getPost", slug => {
-  fetch("http://localhost:4040/graphql", {
+  return fetch(`http://localhost:${Cypress.env("PORT")}/graphql`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query: `{ 
-        post(filters: { slug:${slug}}) {
+        post(filters: { slug:"${slug}"}) {
           id
           title
           md

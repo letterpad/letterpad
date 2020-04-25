@@ -67,11 +67,19 @@ describe("Create Post", () => {
     cy.getPost(post.expectedSlug).then(post => {
       delete post.createdAt;
       delete post.publishedAt;
-      delete post.publishedAt;
+      delete post.updatedAt;
       cy.wrap(post).snapshot();
     });
   });
 
+  // it.only("test api", () => {
+  //   cy.getPost(post.expectedSlug).then(post => {
+  //     delete post.createdAt;
+  //     delete post.publishedAt;
+  //     delete post.updatedAt;
+  //     cy.wrap(post).snapshot();
+  //   });
+  // });
   it("updates the previously created post and republishes it", () => {
     cy.get("article a")
       .first()
@@ -104,7 +112,7 @@ describe("Create Post", () => {
     cy.getPost(post.expectedSlug).then(post => {
       delete post.createdAt;
       delete post.publishedAt;
-      delete post.publishedAt;
+      delete post.updatedAt;
       cy.wrap(post).snapshot();
     });
   });
