@@ -182,7 +182,7 @@ export const executeUpdatePost = async (root, args, { models }) => {
 export const updateTaxonomies = async (root, args, { models }) => {
   let { tags, previousPost } = args;
   if (!tags) return args;
-  logger.debug("Updating taxonomies");
+  logger.debug("Updating taxonomies", tags);
   const prevTaxonomies = await previousPost.getTaxonomies();
   if (!tags)
     tags = [...prevTaxonomies.filter(item => item.type === "post_tag")];
@@ -195,23 +195,25 @@ export const updateTaxonomies = async (root, args, { models }) => {
   const taxonomies = [...tags];
   if (taxonomies && taxonomies.length > 0) {
     logger.debug("Removing all taxonomies");
-    // remove the texonomy relation
+    // remove the taxonomy relation
     await previousPost.setTaxonomies([]);
-    await Promise.all(
-      taxonomies.map(async taxonomy => {
-        let taxItem = null;
-        // add relation with existing taxonomies
-        if (taxonomy.id !== 0) {
-          taxItem = await models.Taxonomy.findOne({
-            where: { id: taxonomy.id },
-          });
-          const result = await previousPost.addTaxonomy(taxItem);
-          logger.debug(
-            `Added existing taxonomy (${taxonomy.name}) with id`,
-            taxonomy.id,
-          );
-          return result;
-        }
+
+    for (let i = 0; i < taxonomies.length; i++) {
+      const taxonomy = taxonomies[i];
+
+      logger.info("processing taxonomy", taxonomy);
+      let taxItem = null;
+      // add relation with existing taxonomies
+      if (taxonomy.id !== 0) {
+        taxItem = await models.Taxonomy.findOne({
+          where: { id: taxonomy.id },
+        });
+        await previousPost.addTaxonomy(taxItem);
+        logger.debug(
+          `Added existing taxonomy (${taxonomy.name}) with id`,
+          taxonomy.id,
+        );
+      } else {
         // taxonomies needs to be created
         taxItem = await models.Taxonomy.findOrCreate({
           where: {
@@ -229,9 +231,9 @@ export const updateTaxonomies = async (root, args, { models }) => {
         });
         logger.debug("Linking taxonomy to post", taxonomy.name);
         // add relation
-        return await previousPost.addTaxonomy(taxItem);
-      }),
-    );
+        await previousPost.addTaxonomy(taxItem);
+      }
+    }
   }
   return args;
 };

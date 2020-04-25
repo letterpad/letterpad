@@ -11,6 +11,7 @@ hot
 src/client/themes/*
 src/admin/public/dist
 *hot*js*
+!snapshots.js
 data/*
 !data/.gitkeep 
 yarn-error.log
@@ -33,3 +34,6 @@ vendor~src
 src/public/uploads
 coverage
 .nyc_output
+cypress/screenshots
+cypress/videos
+cypress/fixtures

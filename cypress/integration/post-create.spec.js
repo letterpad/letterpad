@@ -50,13 +50,12 @@ describe("Create Post", () => {
 
     cy.get(".slug input").should("have.value", post.expectedSlug);
 
-    // add a new tag
-    post.tags.forEach(tag => {
-      cy.wait(500);
+    for (let i = 0; i < post.tags.length; i++) {
       cy.get("#react-select-2-input")
-        .type(tag)
+        .type(post.tags[i])
         .type("{enter}");
-    });
+      cy.wait(1000);
+    }
 
     cy.get("[data-testid='close-settings']").click();
 
