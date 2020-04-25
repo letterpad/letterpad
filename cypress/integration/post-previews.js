@@ -19,6 +19,7 @@ describe("Preview", () => {
       .contains("Publish")
       .click();
 
+    cy.wait(1000);
     cy.get("[data-testid='link-preview']")
       .should("have.attr", "href")
       .then(src => {
@@ -60,7 +61,7 @@ describe("Preview", () => {
     cy.wait(1000);
 
     cy.get("[data-testid='cog-settings']").click();
-
+    cy.wait(1000);
     cy.get("[data-testid='link-preview']")
       .should("have.attr", "href")
       .then(src => {
