@@ -56,7 +56,7 @@ describe("Create Post", () => {
         .type("{enter}");
       cy.wait(1000);
     }
-    cy.wait(1000);
+    cy.wait(5000);
 
     cy.get("[data-testid='close-settings']").click();
 
