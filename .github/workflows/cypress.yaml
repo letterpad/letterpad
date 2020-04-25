@@ -10,6 +10,8 @@ jobs:
       # and run all Cypress tests
       - name: Install
         run: yarn
+      - name: Rename Environment file
+        run: cp sample.env .env
       - name: Cypress run
         uses: cypress-io/github-action@v1
         with:
