@@ -197,42 +197,47 @@ export const updateTaxonomies = async (root, args, { models }) => {
     logger.debug("Removing all taxonomies");
     // remove the texonomy relation
     await previousPost.setTaxonomies([]);
-    await Promise.all(
-      taxonomies.map(async taxonomy => {
-        logger.info("processing taxonomy", taxonomy);
-        let taxItem = null;
-        // add relation with existing taxonomies
-        if (taxonomy.id !== 0) {
-          taxItem = await models.Taxonomy.findOne({
-            where: { id: taxonomy.id },
-          });
-          const result = await previousPost.addTaxonomy(taxItem);
-          logger.debug(
-            `Added existing taxonomy (${taxonomy.name}) with id`,
-            taxonomy.id,
-          );
-          return result;
-        }
-        // taxonomies needs to be created
-        taxItem = await models.Taxonomy.findOrCreate({
-          where: {
-            name: taxonomy.name,
-            type: taxonomy.type,
-            slug: taxonomy.name.toLowerCase(),
-          },
-        });
-        logger.debug(`Added new taxonomy (${taxonomy.name})`);
+
+    const promises = [];
+
+    for (let i = 0; i < taxonomies.length; i++) {
+      const taxonomy = taxonomies[i];
+
+      logger.info("processing taxonomy", taxonomy);
+      let taxItem = null;
+      // add relation with existing taxonomies
+      if (taxonomy.id !== 0) {
         taxItem = await models.Taxonomy.findOne({
-          where: {
-            name: taxonomy.name,
-            type: taxonomy.type,
-          },
+          where: { id: taxonomy.id },
         });
-        logger.debug("Linking taxonomy to post", taxonomy.name);
-        // add relation
-        return await previousPost.addTaxonomy(taxItem);
-      }),
-    );
+        const result = await previousPost.addTaxonomy(taxItem);
+        logger.debug(
+          `Added existing taxonomy (${taxonomy.name}) with id`,
+          taxonomy.id,
+        );
+        return result;
+      }
+      // taxonomies needs to be created
+      taxItem = await models.Taxonomy.findOrCreate({
+        where: {
+          name: taxonomy.name,
+          type: taxonomy.type,
+          slug: taxonomy.name.toLowerCase(),
+        },
+      });
+      logger.debug(`Added new taxonomy (${taxonomy.name})`);
+      taxItem = await models.Taxonomy.findOne({
+        where: {
+          name: taxonomy.name,
+          type: taxonomy.type,
+        },
+      });
+      logger.debug("Linking taxonomy to post", taxonomy.name);
+      // add relation
+      promises.push(previousPost.addTaxonomy(taxItem));
+    }
+
+    await Promise.all(promises);
   }
   return args;
 };
