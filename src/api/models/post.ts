@@ -105,7 +105,7 @@ export async function _createPost(data, models) {
     const newPost = await models.Post.create(data);
 
     const defaultTaxonomy = await models.Taxonomy.findOne({
-      where: { id: 1 },
+      where: { id: 2 },
     });
     await newPost.addTaxonomy(defaultTaxonomy);
     const post = await models.Post.findOne({ where: { id: newPost.id } });
