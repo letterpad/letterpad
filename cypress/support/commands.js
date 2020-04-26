@@ -145,6 +145,7 @@ Cypress.Commands.add("createPost", props => {
 });
 
 Cypress.Commands.add("settingsPanel", open => {
+  cy.wait(500);
   if (open) {
     cy.get("[data-testid='button-settings']").click({ force: true });
   } else {
