@@ -18,4 +18,5 @@ jobs:
           wait-on: "http://localhost:4040"
           browser: chrome
           headless: true
+          parallel: true
           command: yarn cypress run --env PORT=4040

@@ -15,10 +15,29 @@
 /**
  * @type {Cypress.PluginConfig}
  */
+
+const fs = require("fs");
+const path = require("path");
+
+// import models from "../../src/api/models";
+// import { seed } from "../../src/api/seed/seed";
+
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
   require("@cypress/code-coverage/task")(on, config);
 
+  on("task", {
+    resetDb({ dbName }) {
+      // return seed(models, false);
+      const dbFile = path.join(__dirname, "../../data/", dbName);
+      try {
+        fs.unlinkSync(dbFile);
+      } catch (e) {
+        console.log("Not found");
+      }
+      return true;
+    },
+  });
   return config;
 };

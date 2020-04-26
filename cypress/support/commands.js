@@ -25,15 +25,18 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 const fs = require("fs");
-const path = require("path");
 
 require("@cypress/snapshot").register({ useRelativeSnapshots: true });
 
 Cypress.Commands.add("dbReset", () => {
-  downloadFile(
-    "https://playground.ajaxtown.com/letterpad_demo.sqlite",
-    path.join(__dirname, "../../data/letterpad.sqlite"),
-  );
+  const env = Cypress.env("NODE_ENV") || "production";
+  let dbName = "lettepad.sqlite";
+  if (env === "test") {
+    dbName = "test.sqlite";
+  }
+
+  cy.task("resetDb", { dbName }, { timeout: 30000 });
+  cy.visit("http://localhost:4040");
 });
 
 Cypress.Commands.add("login", () => {
@@ -91,16 +94,74 @@ Cypress.Commands.add("getPost", slug => {
     .then(res => res.data.post);
 });
 
-const downloadFile = async (url, path) => {
-  const res = await fetch(url);
-  const fileStream = fs.createWriteStream(path);
-  await new Promise((resolve, reject) => {
-    res.body.pipe();
-    res.body.on("error", err => {
-      reject(err);
-    });
-    fileStream.on("finish", function() {
-      resolve();
-    });
-  });
-};
+Cypress.Commands.add("createPost", props => {
+  let { title, body, tags, excerpt, featured, status } = props;
+
+  cy.get("a[href*='/admin/post-new']").click();
+
+  if (!title) {
+    title = "A new Post";
+  }
+  if (!body) {
+    body = "This is the body a new post";
+  }
+  // write title and body
+  cy.get(".post-header div")
+    .type(title)
+    .tab()
+    .type(body);
+
+  cy.wait(1000);
+
+  if (tags || excerpt || featured) {
+    // open settings
+
+    cy.settingsPanel(true);
+
+    if (status === "publish") {
+      // publish now
+      cy.get("[data-testid='button-publishnow']").click();
+
+      // publish now is disabled
+      cy.get("[data-testid='button-publishnow']").should("be.disabled");
+
+      // switch unpublish should be enabled
+      cy.get("[data-testid='switch-unpublish'] input").should("be.checked");
+    }
+
+    for (let i = 0; i < tags.length; i++) {
+      cy.get("#react-select-2-input")
+        .type(tags[i])
+        .type("{enter}");
+      cy.wait(500);
+    }
+
+    if (featured) {
+      cy.get("[data-testid='switch-featured'] input").check();
+      cy.get("[data-testid='switch-featured'] input").should("be.checked");
+    }
+    cy.settingsPanel(false);
+  }
+});
+
+Cypress.Commands.add("settingsPanel", open => {
+  cy.wait(500);
+  if (open) {
+    cy.get("[data-testid='button-settings']").click({ force: true });
+  } else {
+    cy.get("[data-testid='close-settings']").click({ force: true });
+  }
+});
+
+Cypress.Commands.add("addNavigationItem", ({ label, slug }) => {
+  cy.get("button")
+    .contains("New")
+    .click();
+
+  cy.get("[data-testid='empty-label-item']")
+    .type(label)
+    .tab()
+    .type(slug)
+    .tab();
+  cy.wait(1000);
+});
