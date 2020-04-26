@@ -15,24 +15,48 @@ describe("Settings", () => {
     cy.get("[data-testid='google_analytics']").type("1");
   });
 
-  it.only("Navigation", () => {
+  it("Navigation", () => {
+    //create a post first to test.
+    const title = "A new post to test navigation";
+    const body = "Testing post navigation body";
+    const tag = "hello-world";
+    const navLabel = "Hello World";
+
+    cy.createPost({
+      title: title,
+      body: body,
+      tags: [tag],
+      status: "publish",
+    });
+
+    cy.get("[data-testid='go-back']").click();
+
     cy.get("a[href*='/admin/settings']").click();
     cy.get("[data-testid='tab-navigation']").click();
 
     cy.wait(1000);
-    cy.get("button")
-      .contains("New")
-      .click();
-
-    cy.get("[data-testid='empty-label-item']")
-      .type("First Post Tag")
-      .tab()
-      .type("first-post")
-      .tab();
-    cy.wait(1000);
+    cy.addNavigationItem({ label: navLabel, slug: tag });
 
     cy.visit("http://localhost:4040");
-    cy.contains("First Post Tag").click();
-    cy.contains("Welcome to Letterpad");
+
+    cy.contains(navLabel).click();
+    cy.contains(title);
+    cy.contains(body);
+  });
+
+  it("Navigation tag as home page", () => {
+    cy.get("a[href*='/admin/settings']").click();
+    cy.get("[data-testid='tab-navigation']").click();
+
+    cy.get("[data-testid='button-nav-delete']").each($ele => {
+      $ele.click();
+    });
+    const title = "A new post to test navigation";
+    const tag = "hello-world";
+    const navLabel = "Hello World";
+
+    cy.addNavigationItem({ label: navLabel, slug: tag });
+    cy.visit("http://localhost:4040");
+    cy.contains(title);
   });
 });

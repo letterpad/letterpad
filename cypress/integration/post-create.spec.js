@@ -14,50 +14,23 @@ describe("Create Post", () => {
   });
 
   it("Create a new Post and publishes it", () => {
-    cy.get("a[href*='/admin/post-new']").click();
-
-    // write title and body
-    cy.get(".post-header div")
-      .type(post.title)
-      .tab()
-      .type(post.body);
-
-    cy.wait(1000);
-
-    // open settings
-    cy.get("button")
-      .contains("Publish")
-      .click();
-
-    // publish now
-    cy.get("button")
-      .contains("Publish Now")
-      .click();
-
-    // publish now is disabled
-    cy.get("button")
-      .contains("Publish Now")
-      .should("be.disabled");
-
-    // switch unpublish should be enabled
-    cy.get("[data-testid='switch-unpublish'] input").should("be.checked");
+    cy.createPost({
+      title: "A new post",
+      body:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      tags: ["foo", "foo bar", "BAZ BAM"],
+      status: "publish",
+    });
 
     // excerpt should exist
     cy.get("[data-testid='excerpt']").should(
       "have.value",
-      post.expectedExcerpt,
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when...",
     );
-
+    cy.settingsPanel(true);
     cy.get(".slug input").should("have.value", post.expectedSlug);
 
-    for (let i = 0; i < post.tags.length; i++) {
-      cy.get("#react-select-2-input")
-        .type(post.tags[i])
-        .type("{enter}");
-      cy.wait(1000);
-    }
-
-    cy.get("[data-testid='close-settings']").click();
+    cy.settingsPanel(false);
 
     cy.get("[data-testid='go-back']").click();
 
@@ -109,19 +82,12 @@ describe("Create Post", () => {
   });
 
   it("Creates a new post with same title and checks if the slug is different", () => {
-    cy.get("a[href*='/admin/post-new']").click();
-
-    // write title and body
-    cy.get(".post-header div")
-      .type(post.title)
-      .tab()
-      .type("something");
-
-    cy.wait(1000);
-    cy.get("button")
-      .contains("Publish")
-      .click();
-
+    cy.createPost({
+      title: "A new post",
+      body:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    });
+    cy.settingsPanel(true);
     cy.get(".slug input").should("have.value", post.expectedSlug + "-1");
   });
 
@@ -130,11 +96,7 @@ describe("Create Post", () => {
       .first()
       .click({ force: true });
 
-    cy.get("button")
-      .contains("Publish")
-      .click();
-    // cy.get("[data-testid='cog-settings']").click();
-    cy.wait(1000);
+    cy.settingsPanel(true);
 
     cy.get("[data-testid='featured-image']").click();
 

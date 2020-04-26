@@ -138,6 +138,7 @@ const PostSettings: React.FC<IProps> = ({
               btnStyle="success"
               onClick={doPublish}
               disabled={isPublished}
+              data-testid="button-publishnow"
             >
               Publish Now
             </Button>

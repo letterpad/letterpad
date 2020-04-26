@@ -89,7 +89,13 @@ const SortableItem = SortableElement(props => {
         </datalist>
       </div>
       <i className="fa fa-info" data-tip={getToolTip(item)} />
-      <Button btnStyle="danger" compact btnSize="xs" onClick={onRemove}>
+      <Button
+        btnStyle="danger"
+        compact
+        btnSize="xs"
+        onClick={onRemove}
+        data-testid="button-nav-delete"
+      >
         <i className="fa fa-trash" />
       </Button>
       <ReactTooltip />

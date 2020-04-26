@@ -157,12 +157,15 @@ export class TopBar extends Component<ITopbarProps, any> {
           {isScheduled && <PostScheduledText>Scheduled</PostScheduledText>}
         </div>
         <div className="right-block">
-          {getWordCount(md_draft || md)} words &nbsp;&nbsp;
+          <span data-testid="word-count">
+            {getWordCount(md_draft || md)} words &nbsp;&nbsp;
+          </span>
           <Button
             btnStyle="success"
             btnSize="sm"
             onClick={this.showPublishOptions}
             disabled={publishDisabled}
+            data-testid={!isPublished ? "button-settings" : "button-republish"}
           >
             {publishLabel}
           </Button>
@@ -172,7 +175,7 @@ export class TopBar extends Component<ITopbarProps, any> {
               btnStyle="flat"
               btnSize="sm"
               onClick={this.slideSettingsDrawer}
-              data-testid="cog-settings"
+              data-testid="button-settings"
             >
               <i className="fa fa-cog" />
             </Button>

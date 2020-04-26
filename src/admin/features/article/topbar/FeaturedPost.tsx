@@ -18,7 +18,7 @@ const FeaturedPost: React.FC<IProps> = ({ isFeatured, updatePost }) => {
   };
 
   return (
-    <Container>
+    <Container data-testid="switch-featured">
       <StyledSwitch
         leftLabel={"Mark as Featured Post"}
         isSelected={isFeatured}
