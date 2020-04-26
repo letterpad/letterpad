@@ -36,6 +36,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
   return (
     <div>
       <Input
+        data-testid="site_title"
         label={t("settings.general.site.title")}
         defaultValue={data.site_title}
         type="text"
@@ -43,6 +44,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
         onChange={e => updateOption({ site_title: e.target.value })}
       />
       <Input
+        data-testid="site_tagline"
         label={t("settings.general.site.tagline")}
         defaultValue={data.site_tagline}
         type="text"
@@ -50,6 +52,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
         onChange={e => updateOption({ site_tagline: e.target.value })}
       />
       <Input
+        data-testid="site_email"
         label={t("settings.general.site.email")}
         defaultValue={data.site_email}
         type="email"
@@ -57,12 +60,14 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
         onChange={e => updateOption({ site_email: e.target.value })}
       />
       <TextArea
+        data-testid="site_description"
         label={t("settings.general.site.description")}
         defaultValue={data.site_description}
         placeholder={t("settings.general.site.description.placeholder")}
         onChange={e => updateOption({ site_description: e.target.value })}
       />
       <Input
+        data-testid="site_url"
         label={t("settings.general.site.url")}
         defaultValue={data.site_url}
         type="text"
@@ -70,6 +75,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
         onChange={e => updateOption({ site_url: e.target.value })}
       />
       <TextArea
+        data-testid="site_footer"
         label={t("settings.general.site.footer") + "(html allowed)"}
         defaultValue={data.site_footer}
         className="form-control"
@@ -86,6 +92,7 @@ const General: React.FC<IGeneralProps> = ({ data, updateOption, t, i18n }) => {
       </div>
 
       <Input
+        data-testid="google_analytics"
         label={t("settings.general.site.ga")}
         defaultValue={data.google_analytics}
         type="text"

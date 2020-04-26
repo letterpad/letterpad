@@ -85,7 +85,12 @@ function Accordion(props) {
 
   return (
     <Container className="accordion__section">
-      <AccordionHead active={active} onClick={toggleAccordion} ref={head}>
+      <AccordionHead
+        data-testid={"tab-" + props.tab}
+        active={active}
+        onClick={toggleAccordion}
+        ref={head}
+      >
         <div className="title">
           <h2 className="accordion__title">{props.title}</h2>
           <p className="accordion__subtitle">{props.subtitle}</p>

@@ -53,7 +53,7 @@ const SortableItem = SortableElement(props => {
   };
 
   return (
-    <Item>
+    <Item data-testid="item-sortable">
       <div className="icon-box">
         <i className="fa fa-bars dragger" />
       </div>
@@ -62,6 +62,7 @@ const SortableItem = SortableElement(props => {
           type="text"
           value={item.label}
           onChange={e => onInputChange({ ...item, label: e.target.value })}
+          data-testid={item.label === "" ? "empty-label-item" : ""}
           placeholder="Enter the name of this item"
         />
         <span className="error">{nameError}</span>
@@ -72,6 +73,7 @@ const SortableItem = SortableElement(props => {
             list="menu-items"
             placeholder="Select or enter a custom url"
             value={item.slug}
+            data-testid={item.slug === "" ? "empty-slug-item" : ""}
             onChange={e => onInputChange({ ...item, slug: e.target.value })}
           />
           <span className="error">{error}</span>
@@ -87,7 +89,13 @@ const SortableItem = SortableElement(props => {
         </datalist>
       </div>
       <i className="fa fa-info" data-tip={getToolTip(item)} />
-      <Button btnStyle="danger" compact btnSize="xs" onClick={onRemove}>
+      <Button
+        btnStyle="danger"
+        compact
+        btnSize="xs"
+        onClick={onRemove}
+        data-testid="button-nav-delete"
+      >
         <i className="fa fa-trash" />
       </Button>
       <ReactTooltip />

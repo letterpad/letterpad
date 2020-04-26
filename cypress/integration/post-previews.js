@@ -41,16 +41,14 @@ describe("Preview", () => {
     cy.wait(1000);
 
     // open settings
-    cy.get("button")
-      .contains("Publish")
-      .click();
+    cy.settingsPanel(true);
 
     // publish now
     cy.get("button")
       .contains("Publish Now")
       .click();
 
-    cy.get("[data-testid='close-settings']").click();
+    cy.settingsPanel(true);
 
     // post is published now. change some stuff
     // change body
@@ -60,7 +58,7 @@ describe("Preview", () => {
 
     cy.wait(1000);
 
-    cy.get("[data-testid='cog-settings']").click();
+    cy.settingsPanel(false);
     cy.wait(1000);
     cy.get("[data-testid='link-preview']")
       .should("have.attr", "href")
