@@ -146,9 +146,9 @@ Cypress.Commands.add("createPost", props => {
 
 Cypress.Commands.add("settingsPanel", open => {
   if (open) {
-    cy.get("[data-testid='button-settings']").click();
+    cy.get("[data-testid='button-settings']").click({ force: true });
   } else {
-    cy.get("[data-testid='close-settings']").click();
+    cy.get("[data-testid='close-settings']").click({ force: true });
   }
 });
 
