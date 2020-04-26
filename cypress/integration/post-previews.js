@@ -41,9 +41,7 @@ describe("Preview", () => {
     cy.wait(1000);
 
     // open settings
-    cy.get("button")
-      .contains("Publish")
-      .click();
+    cy.settingsPanel(true);
 
     // publish now
     cy.get("button")
