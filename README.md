@@ -6,6 +6,8 @@
   An open-source and a high performant publishing engine for pesonal blogs. <br/>
 </p>
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/letterpad/letterpad/tree/deploy-to-heroku)
+
 <br/>
 
 Written in Typescript, React, Graphql, Express and Sequelize ORM.

@@ -1,0 +1,7 @@
+{
+  "name": "Letterpad",
+  "description": "A CMS for personal blogging",
+  "repository": "https://github.com/letterpad/letterpad ",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "express", "static"]
+}
