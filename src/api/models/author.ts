@@ -11,10 +11,6 @@ class Author extends Model {
     super.init.call(
       this,
       {
-        username: {
-          type: DataTypes.STRING,
-          defaultValue: "",
-        },
         password: {
           type: DataTypes.STRING,
           allowNull: false,
@@ -33,11 +29,7 @@ class Author extends Model {
           type: DataTypes.STRING,
           defaultValue: "{}",
         },
-        fname: {
-          type: DataTypes.STRING,
-          defaultValue: "",
-        },
-        lname: {
+        name: {
           type: DataTypes.STRING,
           defaultValue: "",
         },

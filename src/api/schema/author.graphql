@@ -14,10 +14,8 @@ type TypeSocial {
 
 type Author {
   id: Int
-  username: String
   email: String
-  fname: String!
-  lname: String!
+  name: String!
   social: TypeSocial
   role: Role
   bio: String
@@ -50,8 +48,7 @@ type CreateAuthorResponse {
 input InputAuthor {
   id: Int!
   email: String
-  fname: String
-  lname: String
+  name: String
   bio: String
   social: Social
   password: String
@@ -60,31 +57,21 @@ input InputAuthor {
 }
 
 type Query {
-  author(id: Int!, username: String): Author!
+  author(id: Int!, email: String): Author!
   authors: [Author!]!
   me: Author
   validateToken: CreateAuthorResponse
 }
 
 type Mutation {
-  register(
-    username: String!
-    password: String!
-    email: String!
-  ): AuthorResponse!
-  login(
-    username: String
-    email: String
-    password: String!
-    remember: Boolean
-  ): LoginResponse!
+  register(password: String!, email: String!): AuthorResponse!
+  login(email: String, password: String!, remember: Boolean): LoginResponse!
   forgotPassword(email: String!): ForgotPasswordResponse!
   resetPassword(password: String!, token: String!): ForgotPasswordResponse!
   updateAuthor(author: InputAuthor!): AuthorResponse
   createAuthor(
     email: String!
-    fname: String
-    lname: String
+    name: String
     roleName: EnumRoles
   ): CreateAuthorResponse!
 }

@@ -85,7 +85,7 @@ class LoginView extends Component<ILoginProps, ILoginState> {
     const loginResult = await apolloClient().mutate({
       mutation: LOGIN_QUERY,
       variables: {
-        username: this.state.loginEmail,
+        email: this.state.loginEmail,
         password: this.state.password,
         remember: this.state.rememberMe,
       },
@@ -143,7 +143,7 @@ class LoginView extends Component<ILoginProps, ILoginState> {
             <InputBlock>
               <input
                 type="text"
-                placeholder="Enter your username"
+                placeholder="Enter your email"
                 value={this.state.loginEmail}
                 onChange={this.onloginEmailChange}
                 autoComplete="off"
@@ -191,7 +191,7 @@ class LoginView extends Component<ILoginProps, ILoginState> {
           </Block>
           <Block isVisible={!this.state.loginView}>
             <InputBlock>
-              <label htmlFor="username">Enter your email</label>
+              <label htmlFor="email">Enter your email</label>
               <br />
               <br />
               <input

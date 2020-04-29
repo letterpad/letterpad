@@ -18,10 +18,8 @@ export type AdjacentPosts = {
 export type Author = {
   __typename?: "Author";
   id?: Maybe<Scalars["Int"]>;
-  username?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
-  fname: Scalars["String"];
-  lname: Scalars["String"];
+  name: Scalars["String"];
   social?: Maybe<TypeSocial>;
   role?: Maybe<Role>;
   bio?: Maybe<Scalars["String"]>;
@@ -90,8 +88,7 @@ export type Image = {
 export type InputAuthor = {
   id: Scalars["Int"];
   email?: Maybe<Scalars["String"]>;
-  fname?: Maybe<Scalars["String"]>;
-  lname?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
   bio?: Maybe<Scalars["String"]>;
   social?: Maybe<Social>;
   password?: Maybe<Scalars["String"]>;
@@ -213,13 +210,11 @@ export type Mutation = {
 };
 
 export type MutationRegisterArgs = {
-  username: Scalars["String"];
   password: Scalars["String"];
   email: Scalars["String"];
 };
 
 export type MutationLoginArgs = {
-  username?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
   password: Scalars["String"];
   remember?: Maybe<Scalars["Boolean"]>;
@@ -240,8 +235,7 @@ export type MutationUpdateAuthorArgs = {
 
 export type MutationCreateAuthorArgs = {
   email: Scalars["String"];
-  fname?: Maybe<Scalars["String"]>;
-  lname?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
   roleName?: Maybe<EnumRoles>;
 };
 
@@ -469,7 +463,7 @@ export type Query = {
 
 export type QueryAuthorArgs = {
   id: Scalars["Int"];
-  username?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
 };
 
 export type QueryMediaArgs = {
@@ -709,10 +703,7 @@ export type PostFieldsFragment = { __typename?: "Post" } & Pick<
       Image,
       "width" | "height" | "src"
     >;
-    author: { __typename?: "Author" } & Pick<
-      Author,
-      "fname" | "lname" | "avatar" | "bio"
-    >;
+    author: { __typename?: "Author" } & Pick<Author, "name" | "avatar" | "bio">;
     tags: Array<
       { __typename?: "Taxonomy" } & Pick<Taxonomy, "id" | "name" | "slug">
     >;
@@ -743,7 +734,7 @@ export type CreatePostMutation = { __typename?: "Mutation" } & {
           | "publishedAt"
           | "scheduledAt"
         > & {
-            author: { __typename?: "Author" } & Pick<Author, "username">;
+            author: { __typename?: "Author" } & Pick<Author, "name">;
             cover_image: { __typename?: "Image" } & Pick<
               Image,
               "src" | "width" | "height"
@@ -887,8 +878,7 @@ export type UpdateAuthorMutation = { __typename?: "Mutation" } & {
 
 export type CreateAuthorMutationVariables = {
   email: Scalars["String"];
-  fname?: Maybe<Scalars["String"]>;
-  lname?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
   roleName?: Maybe<EnumRoles>;
 };
 
@@ -931,7 +921,7 @@ export type UpdatePostMutation = { __typename?: "Mutation" } & {
         > & {
             author: { __typename?: "Author" } & Pick<
               Author,
-              "username" | "lname" | "fname" | "avatar" | "bio"
+              "name" | "avatar" | "bio"
             >;
             cover_image: { __typename?: "Image" } & Pick<
               Image,
@@ -987,7 +977,7 @@ export type UpdateMediaMutation = { __typename?: "Mutation" } & {
 };
 
 export type LoginMutationVariables = {
-  username: Scalars["String"];
+  email: Scalars["String"];
   password: Scalars["String"];
 };
 
@@ -1071,7 +1061,7 @@ export type AuthorsQuery = { __typename?: "Query" } & {
   authors: Array<
     { __typename?: "Author" } & Pick<
       Author,
-      "id" | "email" | "fname" | "lname" | "username" | "avatar" | "bio"
+      "id" | "email" | "name" | "avatar" | "bio"
     > & {
         social: Maybe<
           { __typename?: "TypeSocial" } & Pick<
@@ -1101,7 +1091,7 @@ export type AuthorQueryVariables = {
 export type AuthorQuery = { __typename?: "Query" } & {
   author: { __typename?: "Author" } & Pick<
     Author,
-    "id" | "username" | "email" | "fname" | "lname" | "avatar" | "bio"
+    "id" | "email" | "name" | "avatar" | "bio"
   > & {
       social: Maybe<
         { __typename?: "TypeSocial" } & Pick<
