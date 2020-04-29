@@ -98,7 +98,7 @@ export default {
           id: author.id,
           role: role.name,
           permissions: permissionNames,
-          name: author.fname,
+          name: author.name,
           expiresIn,
         },
         SECRET,
@@ -201,7 +201,7 @@ export default {
           });
 
           const variables = {
-            name: newArgs.fname,
+            name: newArgs.name,
             email: newArgs.email,
             password: randomPassword,
             rolename: role.name,
@@ -246,7 +246,7 @@ export default {
         });
 
         const variables = {
-          name: author.fname,
+          name: author.name,
           email: args.email,
           link,
         };

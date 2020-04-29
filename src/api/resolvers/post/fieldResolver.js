@@ -64,7 +64,7 @@ export const resolveAuthor = async (root, args, { models }) => {
   if (args.author) {
     const authorCondition = {
       where: {
-        fname: { [Sequelize.Op.like]: "%" + author + "%" },
+        name: { [Sequelize.Op.like]: "%" + author + "%" },
       },
     };
     const author = await models.Author.findOne(authorCondition);

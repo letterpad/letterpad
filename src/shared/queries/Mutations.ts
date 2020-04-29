@@ -14,7 +14,7 @@ export const CREATE_POST = gql`
         md
         html
         author {
-          username
+          name
         }
         status
         type
@@ -158,18 +158,8 @@ export const UPDATE_AUTHOR = gql`
 `;
 
 export const CREATE_AUTHOR = gql`
-  mutation createAuthor(
-    $email: String!
-    $fname: String
-    $lname: String
-    $roleName: EnumRoles
-  ) {
-    createAuthor(
-      email: $email
-      fname: $fname
-      lname: $lname
-      roleName: $roleName
-    ) {
+  mutation createAuthor($email: String!, $name: String, $roleName: EnumRoles) {
+    createAuthor(email: $email, name: $name, roleName: $roleName) {
       ok
       errors {
         path
@@ -194,9 +184,7 @@ export const UPDATE_POST_QUERY = gql`
         md_draft
         html
         author {
-          username
-          lname
-          fname
+          name
           avatar
           bio
         }
@@ -254,8 +242,8 @@ export const UPDATE_MEDIA = gql`
 `;
 
 export const LOGIN_QUERY = gql`
-  mutation login($username: String!, $password: String!) {
-    login(email: $username, password: $password) {
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
       ok
       token
       errors {

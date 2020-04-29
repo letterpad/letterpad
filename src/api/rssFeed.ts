@@ -36,7 +36,7 @@ const RssFeed = async (req, res: Response) => {
         description: post.excerpt,
         url: post.slug, // link to the item
         tags: post.tags.map(item => item.name), // optional - array of item categories
-        author: post.author.fname + " " + post.author.lname, // optional - defaults to feed author property
+        author: post.author.name, // optional - defaults to feed author property
         date: post.publishedAt, // any format that js Date can parse.
       });
     });

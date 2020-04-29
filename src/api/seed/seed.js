@@ -127,8 +127,7 @@ export async function insertRolePermData(models) {
 export async function insertAuthor(models) {
   return await models.Author.bulkCreate([
     {
-      fname: "John",
-      lname: "Dave",
+      name: "John",
       email: "demo@demo.com",
       password: bcrypt.hashSync("demo", 12),
       social: JSON.stringify({
@@ -144,8 +143,7 @@ export async function insertAuthor(models) {
         "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
     },
     {
-      fname: "Jim",
-      lname: "Parker",
+      name: "Jim Parker",
       email: "author@letterpad.app",
       password: bcrypt.hashSync("demo", 12),
       social: JSON.stringify({

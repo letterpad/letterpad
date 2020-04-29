@@ -46,9 +46,7 @@ export const QUERY_AUTHORS = gql`
     authors {
       id
       email
-      fname
-      lname
-      username
+      name
       avatar
       bio
       social {
@@ -71,10 +69,8 @@ export const QUERY_AUTHOR = gql`
   query author($id: Int!) {
     author(id: $id) {
       id
-      username
       email
-      fname
-      lname
+      name
       social {
         facebook
         instagram

@@ -76,8 +76,7 @@ Cypress.Commands.add("getPost", slug => {
           slug
           type
           author {
-            fname
-            lname
+            name
             avatar
             bio
           }
