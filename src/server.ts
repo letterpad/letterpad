@@ -51,4 +51,7 @@ function configureEnvironment() {
   if (process.env.NODE_HOME === "/app/.heroku/node") {
     process.env.APP_PORT = process.env.PORT;
   }
+  if (process.env.HEROKU_APP_NAME) {
+    process.env.ROOT_URL = `https://${process.env.HEROKU_APP_NAME}/herokuapp.com`;
+  }
 }
