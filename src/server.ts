@@ -9,7 +9,7 @@ try {
   configureEnvironment();
 } catch (e) {
   throw Error(
-    "The `.env` does not exist. Did you forget to rename `.env.sample` to `.env` ?",
+    "The `.env` does not exist. Did you forget to rename `sample.env` to `.env` ?",
   );
 }
 const noop = () => undefined;
@@ -50,5 +50,8 @@ function configureEnvironment() {
   // in the environment variable.
   if (process.env.NODE_HOME === "/app/.heroku/node") {
     process.env.APP_PORT = process.env.PORT;
+  }
+  if (process.env.CONFIRM_APP_NAME) {
+    process.env.ROOT_URL = `https://${process.env.CONFIRM_APP_NAME}.herokuapp.com`;
   }
 }

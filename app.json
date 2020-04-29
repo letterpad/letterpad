@@ -1,0 +1,12 @@
+{
+  "name": "Letterpad",
+  "description": "A CMS for personal blogging",
+  "repository": "https://github.com/letterpad/letterpad ",
+  "logo": "https://raw.githubusercontent.com/letterpad/letterpad/master/src/api/seed/uploads/logo.png",
+  "keywords": ["node", "express", "static"],
+  "env": {
+    "CONFIRM_APP_NAME": {
+      "required": true
+    }
+  }
+}

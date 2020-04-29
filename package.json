@@ -24,7 +24,9 @@
     "preinstall": "./utils/preinstall.sh",
     "cypress:open": "cypress open --env PORT=1111,NODE_ENV=test",
     "cypress:run": "cypress run --env PORT=1111,NODE_ENV=test",
-    "testDev": "start-server-and-test qa http://localhost:4040 cypress:open"
+    "testDev": "start-server-and-test qa http://localhost:4040 cypress:open",
+    "heroku-prebuild": "cp sample.env .env",
+    "heroku-postbuild": "yarn buildAllThemes"
   },
   "env": {
     "jest": true
