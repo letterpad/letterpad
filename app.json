@@ -5,7 +5,7 @@
   "logo": "https://node-js-sample.herokuapp.com/node.png",
   "keywords": ["node", "express", "static"],
   "env": {
-    "HEROKU_APP_NAME": {
+    "CONFIRM_APP_NAME": {
       "required": true
     }
   }
