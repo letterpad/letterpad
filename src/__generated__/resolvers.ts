@@ -28,10 +28,8 @@ export type AdjacentPosts = {
 export type Author = {
   __typename?: "Author";
   id?: Maybe<Scalars["Int"]>;
-  username?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
-  fname: Scalars["String"];
-  lname: Scalars["String"];
+  name: Scalars["String"];
   social?: Maybe<TypeSocial>;
   role?: Maybe<Role>;
   bio?: Maybe<Scalars["String"]>;
@@ -100,8 +98,7 @@ export type Image = {
 export type InputAuthor = {
   id: Scalars["Int"];
   email?: Maybe<Scalars["String"]>;
-  fname?: Maybe<Scalars["String"]>;
-  lname?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
   bio?: Maybe<Scalars["String"]>;
   social?: Maybe<Social>;
   password?: Maybe<Scalars["String"]>;
@@ -223,13 +220,11 @@ export type Mutation = {
 };
 
 export type MutationRegisterArgs = {
-  username: Scalars["String"];
   password: Scalars["String"];
   email: Scalars["String"];
 };
 
 export type MutationLoginArgs = {
-  username?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
   password: Scalars["String"];
   remember?: Maybe<Scalars["Boolean"]>;
@@ -250,8 +245,7 @@ export type MutationUpdateAuthorArgs = {
 
 export type MutationCreateAuthorArgs = {
   email: Scalars["String"];
-  fname?: Maybe<Scalars["String"]>;
-  lname?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
   roleName?: Maybe<EnumRoles>;
 };
 
@@ -479,7 +473,7 @@ export type Query = {
 
 export type QueryAuthorArgs = {
   id: Scalars["Int"];
-  username?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
 };
 
 export type QueryMediaArgs = {
@@ -949,10 +943,8 @@ export type AuthorResolvers<
   ParentType extends ResolversParentTypes["Author"] = ResolversParentTypes["Author"]
 > = {
   id?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
-  username?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  fname?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  lname?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   social?: Resolver<
     Maybe<ResolversTypes["TypeSocial"]>,
     ParentType,
@@ -1097,7 +1089,7 @@ export type MutationResolvers<
     ResolversTypes["AuthorResponse"],
     ParentType,
     ContextType,
-    RequireFields<MutationRegisterArgs, "username" | "password" | "email">
+    RequireFields<MutationRegisterArgs, "password" | "email">
   >;
   login?: Resolver<
     ResolversTypes["LoginResponse"],

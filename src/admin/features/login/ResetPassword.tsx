@@ -62,7 +62,7 @@ class ResetPassword extends Component<any, any> {
         <div className="login">
           <Notifications />
           <form>
-            <label htmlFor="username">New Password</label>
+            <label htmlFor="password">New Password</label>
             <input
               type="password"
               className="form-control"

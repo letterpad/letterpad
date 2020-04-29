@@ -60,7 +60,7 @@ const AuthorList: React.FC<IAuthorListProps> = ({ t, router }) => {
           >
             {authors &&
               authors.map(author => {
-                const authorName = author.fname + " " + author.lname;
+                const authorName = author.name;
                 return (
                   <StyledGridItem
                     key={author.email}

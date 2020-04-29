@@ -45,10 +45,11 @@ Run the below commands to install:
 git clone https://github.com/letterpad/letterpad.git
 cd letterpad
 yarn install
+
+# Replace sample.env to .env
+
 yarn dev
 ```
-
-At this point an environment file has been created at the root by the name `.env`.
 
 **Optional:**
 

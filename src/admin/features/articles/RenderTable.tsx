@@ -23,7 +23,7 @@ const RenderTable = ({ data, setSelection, type }) => {
         ))}
       </header>
       {data.map(post => {
-        const authorName = post.author.fname + " " + post.author.lname;
+        const authorName = post.author.name;
         return (
           <article key={post.slug}>
             {/* <StyledCheckbox>

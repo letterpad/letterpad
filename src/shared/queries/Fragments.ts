@@ -23,8 +23,7 @@ export const PostFragmentAllFields = gql`
     slug
     type
     author {
-      fname
-      lname
+      name
       avatar
       bio
     }

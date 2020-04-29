@@ -42,19 +42,11 @@ class Basic extends Component<any, any> {
     return (
       <section>
         <StyledInput
-          label={t("common.fname")}
-          defaultValue={this.props.data.fname}
+          label={t("common.name")}
+          defaultValue={this.props.data.name}
           type="text"
-          placeholder={t("profile.fname.placeholder")}
-          onBlur={e => this.updateOption("fname", e.target.value)}
-        />
-
-        <StyledInput
-          label={t("common.lname")}
-          defaultValue={this.props.data.lname}
-          type="text"
-          placeholder={t("profile.lname.placeholder")}
-          onBlur={e => this.updateOption("lname", e.target.value)}
+          placeholder={t("profile.name.placeholder")}
+          onBlur={e => this.updateOption("name", e.target.value)}
         />
 
         <StyledInput
