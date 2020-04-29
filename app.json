@@ -3,5 +3,13 @@
   "description": "A CMS for personal blogging",
   "repository": "https://github.com/letterpad/letterpad ",
   "logo": "https://node-js-sample.herokuapp.com/node.png",
-  "keywords": ["node", "express", "static"]
+  "keywords": ["node", "express", "static"],
+  "env": {
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "HEROKU_PARENT_APP_NAME": {
+      "required": true
+    }
+  }
 }
