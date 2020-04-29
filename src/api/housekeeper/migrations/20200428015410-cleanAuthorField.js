@@ -3,11 +3,11 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const tableDefinition = await queryInterface.describeTable("author");
-
-    if (tableDefinition.fname) {
-      await queryInterface.removeColumn("author", "lname");
-      await queryInterface.removeColumn("author", "username");
-      await queryInterface.renameColumn("author", "fname", "name");
+    console.log(tableDefinition);
+    if (!tableDefinition.name) {
+      await queryInterface.sequelize.query(
+        "ALTER TABLE author RENAME `fname` TO `name`",
+      );
     }
   },
 
