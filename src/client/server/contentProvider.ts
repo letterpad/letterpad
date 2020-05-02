@@ -21,6 +21,8 @@ export const contentProvider = async (props: IServerRenderProps) => {
   if (config.NODE_ENV === "production") {
     try {
       //@ts-ignore
+      props.request.res.type("html");
+      //@ts-ignore
       props.request.res.write("<!DOCTYPE html>");
       response = await serverApp(props);
     } catch (e) {
