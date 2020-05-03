@@ -5,29 +5,37 @@ Welcome to Letterpad!
 
 We hope you will have a great writing experience while using Letterpad. This post will walk you through the basics of using Letterpad and publishing your first post.
 
-From the menu, select posts on the left side and then click on new to write your first post. Your posts needs to be in a particular category so that you can attach them to the menu. By default, all posts have a Uncategorized category. You will find the Publish option at the top where you can create a new Category and it will get linked to the current post. 
+From the left side navigation menu, select posts and then click on **New** to write your first post. Your posts needs to be tagged so that you can attach one of those tag to the menu. By default, all posts will have the default tag - **first-post**. 
 
-> Categories help in grouping your posts together and then you can have this category in the navigation menu item. 
+You will find the Publish option at the top right corner. Clicking that will open up a side menu where you can add a new tag or delete an existing tag.
 
-To set the navigation menu, go to the Navigation Menu item on the left side and click the category that you would like to have on the menu. After doing so, you will be able to drag the menu items in the order you want them to be.
 
-You also create pages in the same way like posts, but pages dont have a category. Since pages are static, you can directly add a page to the navigation menu.
+> Tags help in grouping your posts together and then you can have this tag in the navigation menu item. 
 
-We are constantly working on making Letterpad CMS better, so if you have suggestions, visit out github page at [https://github.com/letterpad/letterpad](https://github.com/letterpad/letterpad) and create a issue or you can write us on Twitter at [https://twitter.com/letterpad\_cms](https://twitter.com/letterpad_cms).
+To set the navigation menu, go to the Navigation Menu item on the left side and click on **New.** Here you can add the label of the new navigation menu item and also select the tag for which you want the collection of posts to be displayed. You can also drag the menu items in the order you want them to be. 
+
+> The first menu item in the navigation menu will always be Home.
+
+You can also create pages in the same way like posts, but pages dont have a tag. Since pages are static, you can directly add a page to the navigation menu.
+
+We are constantly working on making Letterpad CMS better, so if you have suggestions, visit out github page at [https://github.com/letterpad/letterpad](https://github.com/letterpad/letterpad) and create a issue or you can write us on Twitter at [https://twitter.com/letterpad_cms](https://twitter.com/letterpad_cms).
 
 Thank you,
-Letterpad Team    
-    
+Letterpad Team
 `,
     html: `
-    <div class='lp-editor' id='letterpad-editor-container'><p>Welcome to Letterpad!</p>
+<div class="lp-editor" id="letterpad-editor-container"><p>Welcome to Letterpad!</p>
 <p>We hope you will have a great writing experience while using Letterpad. This post will walk you through the basics of using Letterpad and publishing your first post.</p>
-<p>From the menu, select posts on the left side and then click on new to write your first post. Your posts needs to be in a particular category so that you can attach them to the menu. By default, all posts have a Uncategorized category. You will find the Publish option at the top where you can create a new Category and it will get linked to the current post.</p>
+<p>From the left side navigation menu, select posts and then click on <strong>New</strong> to write your first post. Your posts needs to be tagged so that you can attach one of those tag to the menu. By default, all posts will have the default tag - <strong>first-post</strong>.</p>
+<p>You will find the Publish option at the top right corner. Clicking that will open up a side menu where you can add a new tag or delete an existing tag.</p>
 <blockquote>
-<p>Categories help in grouping your posts together and then you can have this category in the navigation menu item.</p>
+<p>Tags help in grouping your posts together and then you can have this tag in the navigation menu item.</p>
 </blockquote>
-<p>To set the navigation menu, go to the Navigation Menu item on the left side and click the category that you would like to have on the menu. After doing so, you will be able to drag the menu items in the order you want them to be.</p>
-<p>You also create pages in the same way like posts, but pages dont have a category. Since pages are static, you can directly add a page to the navigation menu.</p>
+<p>To set the navigation menu, go to the Navigation Menu item on the left side and click on <strong>New.</strong> Here you can add the label of the new navigation menu item and also select the tag for which you want the collection of posts to be displayed. You can also drag the menu items in the order you want them to be.</p>
+<blockquote>
+<p>The first menu item in the navigation menu will always be Home.</p>
+</blockquote>
+<p>You can also create pages in the same way like posts, but pages dont have a tag. Since pages are static, you can directly add a page to the navigation menu.</p>
 <p>We are constantly working on making Letterpad CMS better, so if you have suggestions, visit out github page at <a href="https://github.com/letterpad/letterpad">https://github.com/letterpad/letterpad</a> and create a issue or you can write us on Twitter at <a href="https://twitter.com/letterpad_cms">https://twitter.com/letterpad_cms</a>.</p>
 <p>Thank you,
 Letterpad Team</p>

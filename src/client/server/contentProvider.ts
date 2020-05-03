@@ -1,8 +1,8 @@
 import { IServerRenderProps } from "../types";
-import config from "../../config";
-import serverApp from "./serverApp";
-import documentRenderer from "./document-renderer";
 import { ReactElement } from "react";
+import config from "../../config";
+import documentRenderer from "./document-renderer";
+import serverApp from "./serverApp";
 
 export const contentProvider = async (props: IServerRenderProps) => {
   const { settings, themeSettings } = props;
@@ -20,6 +20,10 @@ export const contentProvider = async (props: IServerRenderProps) => {
   };
   if (config.NODE_ENV === "production") {
     try {
+      //@ts-ignore
+      props.request.res.type("html");
+      //@ts-ignore
+      props.request.res.write("<!DOCTYPE html>");
       response = await serverApp(props);
     } catch (e) {
       console.log(e);
