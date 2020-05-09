@@ -131,14 +131,14 @@ class LoginView extends Component<ILoginProps, ILoginState> {
     let siteTitle = this.props.settings.site_title;
     let logo;
     if (logoSrc) {
-      logo = (<img src={logoSrc} height="100" />) as ReactChild;
+      logo = (<img src={logoSrc} height="80" />) as ReactChild;
     }
 
     return (
       <Container>
         <div className="login">
           <Notifications />
-          <Brand>{logo || siteTitle}</Brand>
+          {/* <Brand>{logo || siteTitle}</Brand> */}
           <Block isVisible={this.state.loginView}>
             <InputBlock>
               <input
@@ -185,15 +185,12 @@ class LoginView extends Component<ILoginProps, ILoginState> {
             <br />
             <Row justify="center">
               <Button onClick={this.login} data-testid="btn-login">
-                Login
+                Enter Now
               </Button>
             </Row>
           </Block>
           <Block isVisible={!this.state.loginView}>
             <InputBlock>
-              <label htmlFor="email">Enter your email</label>
-              <br />
-              <br />
               <input
                 type="email"
                 placeholder="Enter your email"
@@ -203,13 +200,12 @@ class LoginView extends Component<ILoginProps, ILoginState> {
               />
             </InputBlock>
             <br />
-            <br />
             <Row justify="space-between">
               <Button contained secondary onClick={this.showLoginView}>
                 Cancel
               </Button>
               &nbsp;&nbsp;
-              <Button onClick={this.forgotPassword}>Submit</Button>
+              <Button onClick={this.forgotPassword}>Reset Password</Button>
             </Row>
           </Block>
         </div>
