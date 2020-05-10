@@ -76,7 +76,7 @@
     "isomorphic-fetch": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
-    "letterpad-editor": "^0.0.27",
+    "letterpad-editor": "^0.0.29",
     "markdown-it": "^10.0.0",
     "markdown-it-replace-link": "^1.0.1",
     "markdown-it-video": "^0.6.3",
