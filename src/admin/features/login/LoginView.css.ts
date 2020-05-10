@@ -11,16 +11,15 @@ export const Container = styled.div`
   flex-direction: column;
   height: 100vh;
   /* background: url("/admin/images/login_bg.jpg"); */
-  background: #45a760;
+  background: #fff;
   background-repeat: no-repeat;
   background-size: cover;
 
   .login {
     margin-top: 40px;
-    border: 1px solid #eee;
+    border: 1px solid #dae1e3;
     padding: 40px;
-    background: #ffffff;
-    box-shadow: 0px 3px 11px -7px #000;
+    background: #f8fbfd;
     border-radius: 9px;
     width: 460px;
   }
@@ -43,10 +42,8 @@ export const Brand = styled.div`
   margin-bottom: 14px;
   font-family: "Source Sans Pro", sans-serif;
   img {
-    background: #040404;
     padding: 13px;
     margin-bottom: 30px;
-    border-radius: 10px;
   }
 `;
 
@@ -70,7 +67,7 @@ export const InputBlock = styled.div`
     border: 1px solid #cecece;
     padding: 12px 6px;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 4px;
   }
   a {
     color: #44a760;
@@ -87,7 +84,11 @@ export const Button = styled.button<IButtonProps>`
   border: 1px solid #7170703d;
   cursor: pointer;
   border-radius: 3px;
-  background: ${p => (p.secondary ? "#d6d6d6" : "#56af76")};
+
+  background: linear-gradient(#4ab6f0, #2fa5e4 60%, #2fa5e4 90%, #38a9e5);
+  box-shadow: inset 0 1px 0 hsla(0, 0%, 100%, 0.1);
+  /* background: ${p => (p.secondary ? "#d6d6d6" : "#56af76")}; */
   width: 100%;
-  color: ${p => (p.secondary ? "#585454" : "#fff")};
+  color: #fff;
+  /* color: ${p => (p.secondary ? "#585454" : "#fff")}; */
 `;
