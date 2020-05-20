@@ -16,6 +16,7 @@ import { seed } from "../../api/seed/seed";
 const { pathname } = new URL(config.API_URL);
 const serverRendering = (app: Express) => {
   app.get("*", async (req, res, next) => {
+    res.setHeader("content-type", "text/html");
     if (cache.has(req.url)) {
       return res.send(cache.get(req.url));
     }
@@ -45,8 +46,8 @@ const serverRendering = (app: Express) => {
           isStatic,
           request: { req, res },
         });
-        if (req.path.indexOf("rss.xml") === -1) {
-          res.type("html");
+        if (req.path.indexOf("rss.xml") >= 0) {
+          res.setHeader("content-type", "application/xml");
         }
         if (typeof content === "string") {
           cache.set(req.url, content);
