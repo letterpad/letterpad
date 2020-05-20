@@ -46,7 +46,7 @@ module.exports = (args, name) => {
     },
     plugins: [
       new WebpackBar({ name: name }),
-      new FormatStats(),
+      new FormatStats({ env }),
       new webpack.DefinePlugin({
         "process.env": {
           NODE_ENV: JSON.stringify(env),
