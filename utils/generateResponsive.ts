@@ -96,7 +96,6 @@ async function replaceInternalImagesWithCDN(html) {
       try {
         let { src, width, height } = await uploadToCloudinaryInternal(file);
         if (src !== "") {
-          src = src.replace("http://", "https://");
           $el.attr("height", height.toString());
           $el.attr("width", width.toString());
           $el.attr("src", src);

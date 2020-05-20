@@ -16,10 +16,11 @@ import { seed } from "../../api/seed/seed";
 const { pathname } = new URL(config.API_URL);
 const serverRendering = (app: Express) => {
   app.get("*", async (req, res, next) => {
+    res.setHeader("content-type", "text/html");
     if (cache.has(req.url)) {
       return res.send(cache.get(req.url));
     }
-    if (!hasDatabase()) {
+    if (!(await hasDatabase())) {
       try {
         await seed(models, false);
       } catch (e) {
@@ -45,6 +46,9 @@ const serverRendering = (app: Express) => {
           isStatic,
           request: { req, res },
         });
+        if (req.path.indexOf("rss.xml") >= 0) {
+          res.setHeader("content-type", "application/xml");
+        }
         if (typeof content === "string") {
           cache.set(req.url, content);
           res.end(content);
@@ -63,14 +67,19 @@ const serverRendering = (app: Express) => {
 
 export default serverRendering;
 
-function hasDatabase() {
+async function hasDatabase() {
   if (process.env.DB_TYPE === "sqlite") {
     if (!fs.existsSync(getFile("letterpad"))) {
       return false;
     }
+  } else {
+    try {
+      await fetchSettings();
+    } catch {
+      return false;
+    }
   }
   return true;
-  // check for other databases
 }
 
 /**
