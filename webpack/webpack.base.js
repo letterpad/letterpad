@@ -2,8 +2,8 @@ const webpack = require("webpack");
 const path = require("path");
 const fs = require("fs");
 const WebpackBar = require("webpackbar");
-
 const babelRc = fs.readFileSync(path.resolve(__dirname, "../.babelrc"));
+const FormatStats = require("./build");
 
 module.exports = (args, name) => {
   let source = "";
@@ -18,30 +18,16 @@ module.exports = (args, name) => {
     env = "test";
   }
   const config = {
-    mode: env, // for production we use this mode to ignore uglify plugin. it is slow.
+    mode: env,
     devtool: "#source-map",
-    stats: "normal",
+    stats: "errors-only",
     entry: {
       [source + "/client/themes/" + args.theme + "/public/dist/client"]: [
         path.join(__dirname, "../src/client/ClientApp"),
       ],
-      [source + "/admin/public/dist/" + args.theme + "/admin"]: [
+      [source + "/admin/public/dist/admin"]: [
         path.join(__dirname, "../src/admin/app"),
       ],
-    },
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          default: false,
-          commons: {
-            test: /react|redux|react-apollo|react-dom|apollo-client|graphql|apollo-utilities/,
-            name: "vendor",
-            chunks: "all",
-            minChunks: 2,
-            filename: "public/js/" + args.theme + "/[name]-bundle.min.js",
-          },
-        },
-      },
     },
     resolve: {
       alias: {
@@ -60,6 +46,7 @@ module.exports = (args, name) => {
     },
     plugins: [
       new WebpackBar({ name: name }),
+      new FormatStats({ env }),
       new webpack.DefinePlugin({
         "process.env": {
           NODE_ENV: JSON.stringify(env),
