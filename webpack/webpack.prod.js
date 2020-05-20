@@ -69,7 +69,7 @@ const clientConfig = args => {
           from:
             __dirname + "/../src/client/themes/" + args.theme + "/public/**",
           to: __dirname + "/..",
-          ignore: ["*.css", "*.ts"],
+          ignore: ["*.ts"],
           transformPath(targetPath) {
             return targetPath.replace("src", "dist");
           },
