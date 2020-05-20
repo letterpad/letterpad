@@ -1,9 +1,10 @@
-import React, { ReactElement } from "react";
-import ReactDOMServer from "react-dom/server";
 import Document, { DocumentProps } from "../document";
-import config from "../../config";
+import React, { ReactElement } from "react";
+
 import { Helmet } from "react-helmet";
+import ReactDOMServer from "react-dom/server";
 import { Setting } from "./../../__generated__/gqlTypes";
+import config from "../../config";
 
 export interface DocumentRendererParams {
   appHtml: string;
@@ -26,13 +27,9 @@ export default function renderDocument({
   const host = config.ROOT_URL + config.BASE_NAME;
   let devBundles = [
     `${host}/static/src/public/js/hot-reload-bundle.js`,
-    `${host}/static/src/public/js/${theme}/vendor-bundle.js`,
     `${host}/static/src/client/themes/${theme}/public/dist/client-bundle.js`,
   ];
-  const prodBundles = [
-    `${host}/js/${theme}/vendor-bundle.min.js`,
-    `${host}/${theme}/dist/client-bundle.min.js`,
-  ];
+  const prodBundles = [`${host}/${theme}/dist/client-bundle.min.js`];
   const bundles = isDev ? devBundles : prodBundles;
 
   const helmet = Helmet.renderStatic();

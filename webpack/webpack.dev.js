@@ -25,15 +25,15 @@ const clientConfig = args => {
       ignored: [/node_modules([\\]+|\/)+(?!\some_npm_module_name)/],
     },
     plugins: [new webpack.HotModuleReplacementPlugin()],
-    optimization: {
-      minimize: false,
-      runtimeChunk: {
-        name: "src/public/js/" + args.theme + "/vendor",
-      },
-      removeAvailableModules: false,
-      removeEmptyChunks: false,
-      splitChunks: false,
-    },
+    // optimization: {
+    //   minimize: false,
+    //   runtimeChunk: {
+    //     name: "src/public/js/" + args.theme + "/vendor",
+    //   },
+    //   removeAvailableModules: false,
+    //   removeEmptyChunks: false,
+    //   splitChunks: false,
+    // },
     module: {
       rules: [
         {
