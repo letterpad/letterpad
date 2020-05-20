@@ -21,7 +21,9 @@ export default function renderDocument({ settings }: DocumentRendererParams) {
   const bundles = isDev ? devBundles : prodBundles;
 
   const bodyTags = [...bundles.map(src => <script src={src}></script>)];
-  const headTags: JSX.Element[] = [];
+  const headTags: JSX.Element[] = [
+    <link rel="stylesheet" href={`${host}/admin/css/font-awesome.min.css`} />,
+  ];
   if (!isDev) {
     headTags.push(
       <link rel="stylesheet" href={`${host}/admin/css/admin.min.css`} />,
