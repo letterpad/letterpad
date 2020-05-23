@@ -41,15 +41,17 @@ const clientConfig = args => {
           from: __dirname + "/../src/admin/public",
           to: __dirname + "/../dist/admin/public",
           force: true,
+          ignore: ["*.css", "*.ts"],
+        },
+        {
+          from: __dirname + "/../src/admin/public/css/font-awesome.min.css",
+          to: __dirname + "/../dist/admin/public/css",
+          force: true,
         },
         {
           from: __dirname + "/../src/api/schema",
           to: __dirname + "/../dist/api/schema",
           force: true,
-        },
-        {
-          from: __dirname + "/../src/admin/server/response/content.tpl",
-          to: __dirname + "/../dist/admin/server/response/content.tpl",
         },
         {
           from: __dirname + "/../src/api/seed/uploads",
@@ -67,10 +69,12 @@ const clientConfig = args => {
           from:
             __dirname + "/../src/client/themes/" + args.theme + "/public/**",
           to: __dirname + "/..",
+          ignore: ["*.ts"],
           transformPath(targetPath) {
             return targetPath.replace("src", "dist");
           },
         },
+
         {
           from: __dirname + "/../src/client/themes/" + args.theme + "/*.json",
           to: __dirname + "/..",
