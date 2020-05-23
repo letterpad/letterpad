@@ -62,7 +62,7 @@ build_all_themes () {
 }
 
 build_letterpad_with_theme () {
-    clean_up
+    clean_up 
     
     THEME=$1
     if [ -z "$THEME" ]; then
@@ -70,7 +70,6 @@ build_letterpad_with_theme () {
     fi
     
     export THEME=$THEME
-    export BUILD_RUNNING=true
     yarn tsc --build tsconfig.build.json &
     yarn tsc --build "src/client/themes/$THEME/tsconfig.json" &
     yarn webpack --env.NODE_ENV=production --config webpack/webpack.prod.js --env.theme=$THEME
@@ -100,19 +99,17 @@ build_admin () {
 }
 
 clean_up() {
-    rm *.hot-update.json || :
-    echo "Removed *.hot-update.json"
+    rm *.hot-update.json || : 
     rm -rf runtime~src || :
-    echo "Removed runtime~src"
     rm -rf src/admin/public/dist || :
-    echo "Removed admin public dist"
+
     for d in src/client/themes/*/  ; do
         dist="${d}public/dist"
-        echo "Removed $dist"
         rm -rf  "$dist" || :
     done
     rm -rf dist || :
     rm vendor-zip.zip  || :
+    echo "Cleaned up"
 }
 
 COMMAND=$1

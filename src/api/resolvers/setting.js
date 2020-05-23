@@ -29,8 +29,15 @@ const SECURE_SETTINGS = [
 export default {
   Query: {
     settings: async (root, args, { models, user }) => {
-      const settings = await models.Setting.findAll({ where: args, raw: true });
-      return normalizeSettings(settings, user);
+      try {
+        const settings = await models.Setting.findAll({
+          where: args,
+          raw: true,
+        });
+        return normalizeSettings(settings, user);
+      } catch (e) {
+        throw new Error("Table does not  exist");
+      }
     },
   },
   Mutation: {

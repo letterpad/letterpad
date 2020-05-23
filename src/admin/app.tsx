@@ -1,4 +1,5 @@
 import "isomorphic-fetch";
+import "./public/css/admin.css";
 
 import {
   AdminBaseStyle,

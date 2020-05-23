@@ -55,11 +55,9 @@ export default async function resizeImage({
 export async function getImageDimensions(
   url: string,
 ): Promise<{ width: number; height: number; type: string }> {
-  const withHttp = url.replace("https://", "http://");
-
   const actionToTry = () =>
     new Promise((resolve, reject) =>
-      http.get(new URL(withHttp), function(response) {
+      http.get(new URL(url), function(response) {
         const chunks: Uint8Array[] = [];
         response
           .on("data", function(chunk: Uint8Array) {
