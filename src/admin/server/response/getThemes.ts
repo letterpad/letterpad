@@ -10,6 +10,7 @@ import { clientOpts } from "..";
 import config from "../../../config";
 import { getDirPath } from "../../../dir";
 import { getDirectories } from "../../../shared/dir";
+import path from "path";
 import { syncThemeSettings } from "../util";
 
 const themesDir = getDirPath("client/themes");
@@ -22,11 +23,14 @@ export const getThemes = async (req: Request, res: Response) => {
     // of those folder has a "config.json" file. If found, we will assume that
     // as a valid theme.
     getDirectories(themesDir).map(themePath => {
-      if (fs.existsSync(themePath + "/config.json")) {
+      const configJson = path.join(themePath, "config.json");
+      const settingsJson = path.join(themePath, "settings.json");
+
+      if (fs.existsSync(configJson)) {
         // delete cache to get updated file
-        delete require.cache[require.resolve(themePath + "/config.json")];
+        delete require.cache[require.resolve(configJson)];
         // get all the contents from the "config" file.
-        const contents = require(themePath + "/config.json");
+        const contents = require(configJson);
         const themeConfig: IThemeConfig = Object.assign({}, contents);
         const theme_name = themePath.split("/").pop() as string;
         // check if it has a thumbnail without http
@@ -35,7 +39,7 @@ export const getThemes = async (req: Request, res: Response) => {
             config.BASE_NAME + "/" + theme_name + themeConfig.thumbnail;
         }
         // check the theme has settings
-        const hasSettings = fs.existsSync(themePath + "/settings.json");
+        const hasSettings = fs.existsSync(settingsJson);
 
         themeConfig.active = theme_name === currentTheme;
         themeConfig.settings = hasSettings;
@@ -44,11 +48,8 @@ export const getThemes = async (req: Request, res: Response) => {
         // get default settings of all themes from files
         if (hasSettings) {
           // we need to delete the cache, to get updated settings file
-          delete require.cache[require.resolve(themePath + "/settings.json")];
-          const defaultSettings = require(themePath + "/settings.json");
-          defaultSettings.forEach(setting => {
-            setting.changedValue = setting.defaultValue;
-          });
+          delete require.cache[require.resolve(settingsJson)];
+          const defaultSettings = require(require.resolve(settingsJson));
           newSettings.push({
             name: theme_name,
             settings: defaultSettings,

@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import appoloClient from "../../../../shared/apolloClient";
-import styled from "styled-components";
-
-import { QUERY_THEMES } from "../../../../shared/queries/Queries";
-import { UPDATE_THEME_SETTINGS } from "../../../../shared/queries/Mutations";
-import ThemeSettingsModal from "./ThemeSettingsModal";
-import StyledItem from "./ThemeItem.css";
-import { IThemeConfig } from "../../../../types/types";
 import {
-  UpdateThemesMutation,
+  ThemeSettings,
   ThemesQuery,
   ThemesQueryVariables,
-  ThemeSettings,
+  UpdateThemesMutation,
 } from "../../../../__generated__/gqlTypes";
+
+import { IThemeConfig } from "../../../../types/types";
+import { QUERY_THEMES } from "../../../../shared/queries/Queries";
+import StyledItem from "./ThemeItem.css";
+import ThemeSettingsModal from "./ThemeSettingsModal";
+import { UPDATE_THEME_SETTINGS } from "../../../../shared/queries/Mutations";
+import appoloClient from "../../../../shared/apolloClient";
+import styled from "styled-components";
 
 const SettingsLink = styled.a`
   text-decoration: none;

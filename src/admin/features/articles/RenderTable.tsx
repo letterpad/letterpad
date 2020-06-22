@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { List } from "./ArticleList.css";
 import React from "react";
-import { StyledCheckbox } from "../../components/checkbox/Checkbox.css";
 
 const columns = [
   // { label: "Select", className: "selection-box" },

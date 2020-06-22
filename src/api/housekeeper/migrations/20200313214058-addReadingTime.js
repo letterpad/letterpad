@@ -2,10 +2,10 @@
 const readingTime = require("reading-time");
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const tableDefinition = await queryInterface.describeTable("post");
+    const tableDefinition = await queryInterface.describeTable("Post");
 
     if (tableDefinition.reading_time) return Promise.resolve();
-    await queryInterface.addColumn("post", "reading_time", {
+    await queryInterface.addColumn("Post", "reading_time", {
       type: Sequelize.STRING,
     });
 
@@ -29,6 +29,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return await queryInterface.removeColumn("post", "reading_time");
+    return await queryInterface.removeColumn("Post", "reading_time");
   },
 };
