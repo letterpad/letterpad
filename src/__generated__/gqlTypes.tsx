@@ -126,7 +126,6 @@ export type InputNavigation = {
 export type InputThemeSettings = {
   name: Scalars["String"];
   type: ThemeSettingsUiInputTypes;
-  tag: ThemeSettingsUiTags;
   options?: Maybe<Array<Maybe<Scalars["String"]>>>;
   placeholder?: Maybe<Scalars["String"]>;
   defaultValue?: Maybe<Scalars["String"]>;
@@ -646,7 +645,6 @@ export type ThemeSettings = {
   __typename?: "ThemeSettings";
   name: Scalars["String"];
   type: ThemeSettingsUiInputTypes;
-  tag: ThemeSettingsUiTags;
   options?: Maybe<Array<Maybe<Scalars["String"]>>>;
   placeholder?: Maybe<Scalars["String"]>;
   defaultValue?: Maybe<Scalars["String"]>;
@@ -660,10 +658,6 @@ export enum ThemeSettingsUiInputTypes {
   Radio = "radio",
   Text = "text",
   Checkbox = "checkbox",
-}
-
-export enum ThemeSettingsUiTags {
-  Input = "input",
   Select = "select",
 }
 
@@ -1261,7 +1255,6 @@ export type ThemesQuery = { __typename?: "Query" } & {
             ThemeSettings,
             | "name"
             | "type"
-            | "tag"
             | "defaultValue"
             | "changedValue"
             | "helpText"

@@ -2,22 +2,21 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const tableDefinition = await queryInterface.describeTable("author");
-    console.log(tableDefinition);
+    const tableDefinition = await queryInterface.describeTable("Author");
     if (!tableDefinition.name) {
       await queryInterface.sequelize.query(
-        "ALTER TABLE author RENAME `fname` TO `name`",
+        'ALTER TABLE "Author" RENAME fname TO name',
       );
     }
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn("author", "lname", {
+    await queryInterface.addColumn("Author", "lname", {
       type: Sequelize.STRING,
     });
-    await queryInterface.addColumn("author", "username", {
+    await queryInterface.addColumn("Author", "username", {
       type: Sequelize.STRING,
     });
-    await queryInterface.renameColumn("author", "name", "fname");
+    await queryInterface.renameColumn("Author", "name", "fname");
   },
 };

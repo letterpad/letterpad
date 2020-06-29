@@ -3,7 +3,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const src = await queryInterface.sequelize.query(
-      "SELECT value from setting WHERE option='menu'",
+      "SELECT value from \"Setting\" WHERE option='menu'",
     );
     let menu = JSON.parse(src[0][0].value);
 
@@ -17,7 +17,7 @@ module.exports = {
     return queryInterface.sequelize.query(
       // prettier-ignore
       // eslint-disable-next-line quotes
-      "UPDATE setting SET `value`='" + JSON.stringify(menu) + "' WHERE `option`=\"menu\"",
+      "UPDATE \"Setting\" SET value='" + JSON.stringify(menu) + "' WHERE option='menu'",
       { logging: console.log },
     );
   },

@@ -3,7 +3,8 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const src = await queryInterface.sequelize.query(
-      "SELECT value from setting WHERE option='banner'",
+      "SELECT value from \"Setting\" WHERE option='banner'",
+      { logging: console.log },
     );
     let value = src[0][0].value;
     try {
@@ -20,14 +21,14 @@ module.exports = {
     return queryInterface.sequelize.query(
       // prettier-ignore
       // eslint-disable-next-line quotes
-      "UPDATE setting SET `value`='" + value + "' WHERE `option`=\"banner\"",
+      "UPDATE \"Setting\" SET value='" + value + "' WHERE option='banner'",
       { logging: console.log },
     );
   },
 
   down: async (queryInterface, Sequelize) => {
     const src = await queryInterface.sequelize.query(
-      "SELECT value from setting WHERE option='banner'",
+      "SELECT value from \"Setting\" WHERE option='banner'",
     );
     let value = src;
     try {
@@ -35,7 +36,7 @@ module.exports = {
       return queryInterface.sequelize.query(
         // prettier-ignore
         // eslint-disable-next-line quotes
-        "UPDATE setting SET `value`='" + value.src + "' WHERE `option`=\"banner\"",
+        "UPDATE \"Setting\" SET value='" + value.src + "' WHERE option=\"banner\"",
         { logging: console.log },
       );
     } catch (e) {

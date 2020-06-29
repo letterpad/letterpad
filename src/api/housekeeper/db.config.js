@@ -19,6 +19,7 @@ module.exports = config;
 function getConfigs() {
   const getFile = name => {
     const dbFile = name + ".sqlite";
+
     return path.join(__dirname, "../../../data/", dbFile);
   };
 

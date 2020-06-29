@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledRadio = styled.div`
   .horizontal {
     display: flex;
-    justify-content: center;
+    justify-content: left;
   }
   .radio {
     margin: 0.5rem;
@@ -16,7 +16,7 @@ const StyledRadio = styled.div`
           content: "";
           background: var(--bg-sections);
           border-radius: 100%;
-          border: 1px solid #eee;
+          border: 1px solid #aaa;
           display: inline-block;
           width: 1.4em;
           height: 1.4em;
@@ -32,7 +32,7 @@ const StyledRadio = styled.div`
       &:checked {
         + .radio-label {
           &:before {
-            background-color: #ddd;
+            background-color: #aaa;
           }
         }
       }

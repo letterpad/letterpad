@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import styled from "styled-components";
 
 const CheckBox = props => {
@@ -52,6 +53,8 @@ const Container = styled.div`
       margin-right: 0px;
     }
     cursor: pointer;
+    display: flex;
+    align-items: center;
   }
   input[type="checkbox"] {
     display: none;
@@ -60,7 +63,7 @@ const Container = styled.div`
     width: 15px;
     height: 15px;
     background: var(--bg-sections);
-    border: 1px solid #eee;
+    border: 1px solid #aaa;
     display: block;
     content: "";
     float: left;
@@ -68,13 +71,11 @@ const Container = styled.div`
     cursor: pointer;
   }
   input[type="checkbox"]:checked + label::before {
-    box-shadow: inset 0px 0px 0px 8px #eee;
-    background: var(--bg-sections);
+    background: #aaa;
   }
   .checkbox-group {
     display: flex;
     align-items: center;
-    justify-content: center;
   }
 `;
 

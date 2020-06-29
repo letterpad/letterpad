@@ -108,7 +108,7 @@
     "regenerator-runtime": "^0.13.3",
     "rimraf": "^3.0.0",
     "rss": "^1.2.2",
-    "sequelize": "^5.18.4",
+    "sequelize": "^5.21.13",
     "sequelize-cli": "^5.5.1",
     "sharp": "^0.24.0",
     "sqlite3": "^4.1.1",
