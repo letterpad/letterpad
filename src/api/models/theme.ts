@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 
 class Theme extends Model {
   static associate(_models) {}
@@ -11,7 +11,7 @@ class Theme extends Model {
           type: DataTypes.STRING,
         },
         value: {
-          type: DataTypes.STRING,
+          type: DataTypes.TEXT,
         },
         settings: {
           type: DataTypes.STRING,

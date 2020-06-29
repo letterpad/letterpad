@@ -3,7 +3,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const src = await queryInterface.sequelize.query(
-      "SELECT value from setting WHERE option='site_logo'",
+      "SELECT value from \"Setting\" WHERE option='site_logo'",
     );
     let value = src[0][0].value;
     try {
@@ -20,13 +20,13 @@ module.exports = {
     await queryInterface.sequelize.query(
       // prettier-ignore
       // eslint-disable-next-line quotes
-      "UPDATE setting SET `value`='" + value + "' WHERE `option`=\"site_logo\"",
+      "UPDATE \"Setting\" SET value='" + value + "' WHERE option='site_logo'",
       { logging: console.log },
     );
 
     // site favicon
     const srcFav = await queryInterface.sequelize.query(
-      "SELECT value from setting WHERE option='site_favicon'",
+      "SELECT value from \"Setting\" WHERE option='site_favicon'",
     );
     let valueFav = srcFav[0][0].value;
     try {
@@ -43,13 +43,13 @@ module.exports = {
     await queryInterface.sequelize.query(
       // prettier-ignore
       // eslint-disable-next-line quotes
-      "UPDATE setting SET `value`='" + valueFav + "' WHERE `option`=\"site_favicon\"",
+      "UPDATE \"Setting\" SET value='" + valueFav + "' WHERE option='site_favicon'",
       { logging: console.log },
     );
 
     // //  change menu structure
     const menu = await queryInterface.sequelize.query(
-      "SELECT value from setting WHERE option='menu'",
+      "SELECT value from \"Setting\" WHERE option='menu'",
     );
     let parsedMenu = JSON.parse(menu[0][0].value);
 
@@ -66,14 +66,14 @@ module.exports = {
     return queryInterface.sequelize.query(
       // prettier-ignore
       // eslint-disable-next-line quotes
-      "UPDATE setting SET `value`='" + JSON.stringify(parsedMenu) + "' WHERE `option`=\"menu\"",
+      "UPDATE \"Setting\" SET value='" + JSON.stringify(parsedMenu) + "' WHERE option='menu'",
       { logging: console.log },
     );
   },
 
   down: async (queryInterface, Sequelize) => {
     const src = await queryInterface.sequelize.query(
-      "SELECT value from setting WHERE option='site_logo'",
+      "SELECT value from \"Setting\" WHERE option='site_logo'",
     );
     let value = src;
     try {
@@ -81,7 +81,7 @@ module.exports = {
       return queryInterface.sequelize.query(
         // prettier-ignore
         // eslint-disable-next-line quotes
-        "UPDATE setting SET `value`='" + value.src + "' WHERE `option`=\"site_logo\"",
+        "UPDATE \"Setting\" SET value='" + value.src + "' WHERE option='site_logo'",
         { logging: console.log },
       );
     } catch (e) {
@@ -89,7 +89,7 @@ module.exports = {
     }
 
     const srcFav = await queryInterface.sequelize.query(
-      "SELECT value from setting WHERE option='site_favicon'",
+      "SELECT value from \"Setting\" WHERE option='site_favicon'",
     );
     let valueFav = srcFav;
     try {
@@ -97,7 +97,7 @@ module.exports = {
       return queryInterface.sequelize.query(
         // prettier-ignore
         // eslint-disable-next-line quotes
-        "UPDATE setting SET `value`='" + valueFav.src + "' WHERE `option`=\"site_favicon\"",
+        "UPDATE \"Setting\" SET value='" + valueFav.src + "' WHERE option='site_favicon'",
         { logging: console.log },
       );
     } catch (e) {
@@ -106,7 +106,7 @@ module.exports = {
 
     //  change menu structure
     const menu = await queryInterface.sequelize.query(
-      "SELECT value from setting WHERE option='menu'",
+      "SELECT value from \"Setting\" WHERE option='menu'",
     );
     let parsedMenu = JSON.parse(menu[0][0].value);
 
@@ -120,7 +120,7 @@ module.exports = {
     return queryInterface.sequelize.query(
       // prettier-ignore
       // eslint-disable-next-line quotes
-      "UPDATE setting SET `value`='" + JSON.stringify(parsedMenu) + "' WHERE `option`=\"menu\"",
+      "UPDATE \"Setting\" SET value='" + JSON.stringify(parsedMenu) + "' WHERE option='menu'",
       { logging: console.log },
     );
   },

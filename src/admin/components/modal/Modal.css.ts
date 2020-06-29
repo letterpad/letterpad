@@ -76,6 +76,9 @@ const StyledModal = styled.div<{ backDropColor?: string; confirm?: boolean }>`
       max-height: calc(100vh - 106px);
       padding: 20px 16px;
       text-align: center;
+      &.left {
+        text-align: left;
+      }
     }
     .modal-footer {
       display: flex;

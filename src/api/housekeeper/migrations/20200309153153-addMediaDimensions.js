@@ -2,16 +2,16 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const tableDefinition = await queryInterface.describeTable("media");
+    const tableDefinition = await queryInterface.describeTable("Media");
 
     if (tableDefinition.width) return Promise.resolve();
 
     return [
       // add column md
-      await queryInterface.addColumn("media", "width", {
+      await queryInterface.addColumn("Media", "width", {
         type: Sequelize.INTEGER,
       }),
-      await queryInterface.addColumn("media", "height", {
+      await queryInterface.addColumn("Media", "height", {
         type: Sequelize.INTEGER,
       }),
     ];
@@ -19,8 +19,8 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     return [
-      await queryInterface.removeColumn("media", "width"),
-      await queryInterface.removeColumn("media", "height"),
+      await queryInterface.removeColumn("Media", "width"),
+      await queryInterface.removeColumn("Media", "height"),
     ];
   },
 };
