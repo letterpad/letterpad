@@ -3,14 +3,6 @@ import React, { Component } from "react";
 import StyledSelect from "./Select.css";
 
 class Select extends Component<any, any> {
-  // static propTypes = {
-  //   options: PropTypes.array,
-  //   selected: PropTypes.string,
-  //   onChange: PropTypes.func,
-  //   bold: PropTypes.any,
-  //   label: PropTypes.any,
-  // };
-
   rootRef = React.createRef<HTMLDivElement>();
 
   state = {
@@ -21,7 +13,9 @@ class Select extends Component<any, any> {
 
   componentDidMount() {
     const { options, selected } = this.props;
-    const option = options.filter(option => selected.includes(option.value));
+    const option = options.filter(
+      option => selected && selected.includes(option.value),
+    );
     if (option.length > 0) {
       this.setState({ selected: option[0].name });
     }
