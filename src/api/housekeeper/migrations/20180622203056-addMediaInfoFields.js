@@ -3,7 +3,7 @@
 module.exports = {
   up: function(queryInterface, Sequelize) {
     // logic for transforming into the new state
-    const tableName = "media";
+    const tableName = "Media";
     return Promise.all([
       queryInterface.describeTable(tableName).then(tableDefinition => {
         if (tableDefinition.name) return Promise.resolve();

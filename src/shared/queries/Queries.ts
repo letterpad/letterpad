@@ -210,7 +210,6 @@ export const QUERY_THEMES = gql`
       settings {
         name
         type
-        tag
         defaultValue
         changedValue
         helpText

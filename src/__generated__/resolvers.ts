@@ -136,7 +136,6 @@ export type InputNavigation = {
 export type InputThemeSettings = {
   name: Scalars["String"];
   type: ThemeSettingsUiInputTypes;
-  tag: ThemeSettingsUiTags;
   options?: Maybe<Array<Maybe<Scalars["String"]>>>;
   placeholder?: Maybe<Scalars["String"]>;
   defaultValue?: Maybe<Scalars["String"]>;
@@ -656,7 +655,6 @@ export type ThemeSettings = {
   __typename?: "ThemeSettings";
   name: Scalars["String"];
   type: ThemeSettingsUiInputTypes;
-  tag: ThemeSettingsUiTags;
   options?: Maybe<Array<Maybe<Scalars["String"]>>>;
   placeholder?: Maybe<Scalars["String"]>;
   defaultValue?: Maybe<Scalars["String"]>;
@@ -670,10 +668,6 @@ export enum ThemeSettingsUiInputTypes {
   Radio = "radio",
   Text = "text",
   Checkbox = "checkbox",
-}
-
-export enum ThemeSettingsUiTags {
-  Input = "input",
   Select = "select",
 }
 
@@ -840,7 +834,6 @@ export type ResolversTypes = {
   Theme: ResolverTypeWrapper<Theme>;
   ThemeSettings: ResolverTypeWrapper<ThemeSettings>;
   ThemeSettingsUIInputTypes: ThemeSettingsUiInputTypes;
-  ThemeSettingsUITags: ThemeSettingsUiTags;
   Mutation: ResolverTypeWrapper<Context>;
   AuthorResponse: ResolverTypeWrapper<AuthorResponse>;
   LoginResponse: ResolverTypeWrapper<LoginResponse>;
@@ -906,7 +899,6 @@ export type ResolversParentTypes = {
   Theme: Theme;
   ThemeSettings: ThemeSettings;
   ThemeSettingsUIInputTypes: ThemeSettingsUiInputTypes;
-  ThemeSettingsUITags: ThemeSettingsUiTags;
   Mutation: Context;
   AuthorResponse: AuthorResponse;
   LoginResponse: LoginResponse;
@@ -1574,11 +1566,6 @@ export type ThemeSettingsResolvers<
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   type?: Resolver<
     ResolversTypes["ThemeSettingsUIInputTypes"],
-    ParentType,
-    ContextType
-  >;
-  tag?: Resolver<
-    ResolversTypes["ThemeSettingsUITags"],
     ParentType,
     ContextType
   >;

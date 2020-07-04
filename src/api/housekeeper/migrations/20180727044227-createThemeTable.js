@@ -15,7 +15,7 @@ module.exports = {
       value: {
         type: Sequelize.STRING,
       },
-      settings: {
+      Settings: {
         type: Sequelize.STRING,
       },
     });

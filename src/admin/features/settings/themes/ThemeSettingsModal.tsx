@@ -51,54 +51,51 @@ const ThemeSettingsModal: React.FC<IProps> = props => {
    * Parse the json data and build the UI
    */
   const themeSettings = data.map((ui, idx) => {
-    switch (ui.tag) {
-      case "input":
-        switch (ui.type) {
-          case "text":
-            return (
-              <div>
-                <Input
-                  label={ui.label}
-                  key={idx}
-                  value={ui.changedValue || ui.defaultValue || ""}
-                  onBlur={e => getChangedValues(ui.name, e.target.value)}
-                />
-                <br />
-              </div>
-            );
-          case "radio":
-            return (
-              <div>
-                <RadioBox
-                  defaultValue={ui.changedValue || ui.defaultValue}
-                  label={ui.label}
-                  options={ui.options}
-                  key={idx}
-                  onChange={(selected: string) =>
-                    getChangedValues(ui.name, selected)
-                  }
-                />
-                <br />
-              </div>
-            );
-          case "checkbox":
-            return (
-              <div>
-                <CheckBox
-                  label={ui.label}
-                  defaultValue={
-                    ui.changedValue?.split("|") || ui.defaultValue?.split("|")
-                  }
-                  key={idx}
-                  for={ui.name}
-                  options={ui.options}
-                  onChange={selected => getChangedValues(ui.name, selected)}
-                />
-                <br />
-              </div>
-            );
-        }
-        break;
+    switch (ui.type) {
+      case "text":
+        return (
+          <div>
+            <Input
+              label={ui.label}
+              key={idx}
+              value={ui.changedValue || ui.defaultValue || ""}
+              onBlur={e => getChangedValues(ui.name, e.target.value)}
+            />
+            <br />
+          </div>
+        );
+      case "radio":
+        return (
+          <div>
+            <RadioBox
+              defaultValue={ui.changedValue || ui.defaultValue}
+              label={ui.label}
+              options={ui.options}
+              key={idx}
+              onChange={(selected: string) =>
+                getChangedValues(ui.name, selected)
+              }
+            />
+            <br />
+          </div>
+        );
+      case "checkbox":
+        return (
+          <div>
+            <CheckBox
+              label={ui.label}
+              defaultValue={
+                ui.changedValue?.split("|") || ui.defaultValue?.split("|")
+              }
+              key={idx}
+              for={ui.name}
+              options={ui.options}
+              onChange={selected => getChangedValues(ui.name, selected)}
+            />
+            <br />
+          </div>
+        );
+
       case "select":
         if (!ui.options) break;
         return (
@@ -111,7 +108,9 @@ const ThemeSettingsModal: React.FC<IProps> = props => {
               options={ui.options.map(option => {
                 return { value: option, name: option };
               })}
-              selected={ui.changedValue || ui.defaultValue}
+              selected={
+                ui.changedValue?.split("|") || ui.defaultValue?.split("|")
+              }
               onChange={value => getChangedValues(ui.name, value)}
             />
             <br />
@@ -129,7 +128,7 @@ const ThemeSettingsModal: React.FC<IProps> = props => {
       title={<span>Theme settings - {name}</span>}
       onClose={onClose}
     >
-      <div className="modal-body">
+      <div className="modal-body left">
         {themeSettings}
         <div className="p-t-20" />
       </div>
