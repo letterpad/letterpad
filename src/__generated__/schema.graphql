@@ -486,21 +486,16 @@ type EditTaxResponse {
   errors: [Error!]
 }
 
-enum ThemeSettingsUITags {
-  input
-  select
-}
-
 enum ThemeSettingsUIInputTypes {
   radio
   text
   checkbox
+  select
 }
 
 type ThemeSettings {
   name: String!
   type: ThemeSettingsUIInputTypes!
-  tag: ThemeSettingsUITags!
   options: [String]
   placeholder: String
   defaultValue: String
@@ -513,7 +508,6 @@ type ThemeSettings {
 input InputThemeSettings {
   name: String!
   type: ThemeSettingsUIInputTypes!
-  tag: ThemeSettingsUITags!
   options: [String]
   placeholder: String
   defaultValue: String

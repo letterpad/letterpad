@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
-      "setting",
+      "Setting",
       [
         {
           option: "subscribe_embed",
@@ -19,7 +19,7 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete("setting", [
+    return queryInterface.bulkDelete("Setting", [
       {
         option: "subscribe_embed",
       },

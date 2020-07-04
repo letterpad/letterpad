@@ -3,9 +3,7 @@ import styled from "styled-components";
 
 const StyledSelect = styled.div<any>`
   label {
-    color: var(--base-shade-3);
-    font-weight: 500;
-    font-size: 13px;
+    font-weight: 400;
     display: inline-block;
     max-width: 100%;
     margin-bottom: 5px;
@@ -18,7 +16,7 @@ const StyledSelect = styled.div<any>`
     font-size: 0.8rem;
   }
   .select-name {
-    padding: 4px 8px;
+    padding: 0.5rem;
     cursor: pointer;
     display: flex;
     align-items: center;

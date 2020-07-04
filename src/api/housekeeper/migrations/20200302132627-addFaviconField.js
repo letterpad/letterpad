@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
-      "setting",
+      "Setting",
       [
         {
           option: "site_favicon",
@@ -19,7 +19,7 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete("setting", [
+    return queryInterface.bulkDelete("Setting", [
       {
         option: "site_favicon",
       },

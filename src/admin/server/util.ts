@@ -91,15 +91,9 @@ export const syncThemeSettings = async (
             oldSetting && setting && oldSetting.name === setting.name,
         );
         if (settingFound && settingFound.changedValue) {
-          if (
-            setting.type !== ThemeSettingsUiInputTypes.Text &&
-            setting.options &&
-            !setting.options.includes(settingFound.changedValue)
-          ) {
-            setting.changedValue = setting.defaultValue;
-          } else {
-            setting.changedValue = settingFound.changedValue;
-          }
+          setting.changedValue = settingFound.changedValue;
+        } else {
+          setting.changedValue = setting.defaultValue;
         }
         return setting;
       });
