@@ -63,7 +63,7 @@
     "cors": "^2.8.5",
     "disqus-react": "^1.0.7",
     "express": "^4.17.1",
-    "express-fileupload": "^1.1.6-alpha.4",
+    "express-fileupload": "^1.1.9",
     "fuse.js": "^3.4.5",
     "graphql": "^14.5.4",
     "graphql-jit": "^0.4.3",
