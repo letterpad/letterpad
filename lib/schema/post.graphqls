@@ -1,0 +1,47 @@
+type Post {
+  # identifier of the post. This is unique
+  id: Int
+  # Title of the post
+  title: String
+  # The html content of the post
+  html: String
+  # The md content of the post
+  md: String
+  # Small description of the post
+  excerpt: String
+  # Draft made to the post in md format
+  md_draft: String
+}
+
+enum PostStatusOptions {
+  publish
+  draft
+  trash
+}
+
+input PostFilters {
+  id: Int
+  slug: String
+  featured: Boolean
+  previewHash: String
+  status: PostStatusOptions
+}
+
+enum PostTypes {
+  post
+  page
+}
+
+input PostsFilters {
+  id: Int
+  type: PostTypes
+  slug: String
+  featured: Boolean
+  previewHash: String
+  status: PostStatusOptions
+}
+
+type Query {
+  post(filters: PostFilters): Post!
+  posts(filters: PostsFilters): [Post]!
+}

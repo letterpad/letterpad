@@ -1,0 +1,8 @@
+fragment Partial on Post {
+  id
+  title
+  html
+  excerpt
+  md
+  md_draft
+}

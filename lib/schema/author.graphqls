@@ -1,0 +1,9 @@
+type Author {
+  id: Int
+  email: String
+  name: String!
+  social: String!
+  role: String!
+  bio: String
+  avatar: String
+}

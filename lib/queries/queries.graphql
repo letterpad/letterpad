@@ -1,0 +1,7 @@
+# import Partial from './partial.graphql'
+
+query Post($filters: PostFilters) {
+  post(filters: $filters) {
+    ...Partial
+  }
+}
