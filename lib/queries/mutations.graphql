@@ -1,7 +1,0 @@
-mutation UpdateName($title: String!) {
-  updateName(title: $title) {
-    id
-    title
-    excerpt
-  }
-}

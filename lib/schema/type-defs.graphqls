@@ -1,3 +1,18 @@
-type Mutation {
-  updateName(title: String!): Post!
+scalar Date
+
+type Error {
+  path: String!
+  message: String
+}
+
+type Response {
+  ok: Boolean!
+  post: Post
+  errors: [Error!]
+}
+
+type Image {
+  src: String!
+  width: Int
+  height: Int
 }

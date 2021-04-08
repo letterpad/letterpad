@@ -11,6 +11,19 @@ type Post {
   excerpt: String
   # Draft made to the post in md format
   md_draft: String
+  # Slug
+  slug: String
+  # Cover image
+  cover_image: Image
+  # Is the post featured
+  featured: Boolean
+  # total reading time
+  reading_time: String
+  status: String
+  type: PostTypes
+  createdAt: String
+  publishedAt: String
+  scheduledAt: String
 }
 
 enum PostStatusOptions {
@@ -32,6 +45,11 @@ enum PostTypes {
   page
 }
 
+enum SortBy {
+  ASC
+  DESC
+}
+
 input PostsFilters {
   id: Int
   type: PostTypes
@@ -39,9 +57,75 @@ input PostsFilters {
   featured: Boolean
   previewHash: String
   status: PostStatusOptions
+  tagSlug: String
+  tag: String
+  author: String
+  cursor: Int
+  page: Int
+  offset: Int
+  limit: Int
+  sortBy: SortBy
 }
 
 type Query {
   post(filters: PostFilters): Post!
   posts(filters: PostsFilters): [Post]!
+}
+
+input TaxonomyInputType {
+  id: Int
+  name: String
+  slug: String
+}
+
+input InputImage {
+  src: String!
+  width: Int
+  height: Int
+}
+
+input TaxonomyInputType {
+  id: Int!
+  name: String!
+  slug: String!
+}
+
+input InputCreatePost {
+  title: String
+  html: String
+  md: String
+  # authorId: Int
+  excerpt: String
+  cover_image: InputImage
+  type: PostTypes
+  featured: Boolean
+  status: PostStatusOptions
+  slug: String
+  # tags: [TaxonomyInputType]
+}
+
+input InputUpdatePost {
+  id: Int!
+  title: String
+  html: String
+  md: String
+  authorId: Int
+  featured: Boolean
+  excerpt: String
+  cover_image: InputImage
+  publishedAt: Date
+  scheduledAt: Date
+  updatedAt: Date
+  type: PostTypes
+  status: PostStatusOptions
+  slug: String
+  tags: [TaxonomyInputType!]
+}
+
+type Mutation {
+  createPost(data: InputCreatePost): Response!
+
+  updatePost(data: InputUpdatePost): Response!
+
+  # deletePosts(ids: [Int!], deleteFromSystem: Boolean): Response!
 }

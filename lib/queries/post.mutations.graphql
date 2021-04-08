@@ -1,0 +1,22 @@
+# import Partial from './partial.graphql'
+
+mutation createPost($data: InputCreatePost) {
+  createPost(data: $data) {
+    ok
+    errors {
+      path
+      message
+    }
+    post {
+      ...Partial
+      # author {
+      #   name
+      # }
+      # tags {
+      #   id
+      #   name
+      #   slug
+      # }
+    }
+  }
+}

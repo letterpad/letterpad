@@ -3,6 +3,18 @@ fragment Partial on Post {
   title
   html
   excerpt
+  featured
   md
   md_draft
+  type
+  slug
+  status
+  createdAt
+  publishedAt
+  scheduledAt
+  cover_image {
+    src
+    width
+    height
+  }
 }

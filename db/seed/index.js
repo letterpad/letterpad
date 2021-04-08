@@ -16,7 +16,7 @@ const { seed } = require("./seed");
 
 (async () => {
   // await models.sequelize.sync({ force: true });
-  const role = await models.Role.findOne({ where: { id: 1 } });
+  const post = await models.Post.findOne({ where: { id: 1 } });
   const perms = await role.getPermissions();
   console.log("perms :>> ", perms);
 })();

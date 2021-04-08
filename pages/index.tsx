@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { signIn } from "next-auth/client";
+
 import { useState } from "react";
-import { useUpdateNameMutation } from "../lib/queries/mutations.graphql";
+// import { useUpdateNameMutation } from "../lib/queries/mutations.graphql";
 // import { useViewerQuery, ViewerDocument } from "../lib/queries/queries.graphql";
+import { signIn, signOut, useSession } from "next-auth/client";
 
 import { initializeApollo } from "../lib/apollo";
 
@@ -12,8 +13,8 @@ const password = "12345";
 const Index = () => {
   // const { viewer } = useViewerQuery().data!;
   const [newName, setNewName] = useState("");
-  const [updateNameMutation] = useUpdateNameMutation();
-
+  // const [updateNameMutation] = useUpdateNameMutation();
+  const [session, loading] = useSession();
   const onChangeName = () => {
     // updateNameMutation({
     //   variables: {
@@ -52,6 +53,23 @@ const Index = () => {
       callbackUrl: `${window.location.origin}/protected`,
     });
   };
+
+  return (
+    <>
+      {!session && (
+        <>
+          Not signed in <br />
+          <button onClick={signIn}>Sign in</button>
+        </>
+      )}
+      {session && (
+        <>
+          Signed in as {session.user.name} <br />
+          <button onClick={signOut}>Sign out</button>
+        </>
+      )}
+    </>
+  );
 
   return (
     <div>

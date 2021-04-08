@@ -27,15 +27,13 @@ export class Taxonomy
   public readonly updatedAt!: Date;
 
   // public addTaxonomy!: HasManyAddAssociationMixin<Post, number>;
-
-  public associate!: {};
 }
 
 export default function initTaxonomy(sequelize) {
   Taxonomy.init(
     {
       id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
@@ -68,7 +66,7 @@ export default function initTaxonomy(sequelize) {
 export function associateTaxonomy(): void {
   // Here we associate which actually populates out pre-declared `association` static and other methods.
   Taxonomy.belongsToMany(Post, {
-    through: "PostTaxonomy",
+    through: Taxonomy,
     // as: "posttaxonomy",
   });
 }

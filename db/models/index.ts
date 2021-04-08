@@ -23,7 +23,6 @@ if (env === envs.development) env = envs.development;
 if (env === envs.test) env = envs.test;
 
 const config = dbConfig[env];
-console.log("config :>> ", config);
 // establish  database connection
 export const conn = new Sequelize(
   config.database,
@@ -38,7 +37,7 @@ export const conn = new Sequelize(
 export const modelsMap = {
   Taxonomy: Taxonomy(conn),
   Setting: Setting(conn),
-  PostTaxonomy: PostTaxonomy(conn),
+  // PostTaxonomy: PostTaxonomy(conn),
   Media: Media(conn),
   Post: Post(conn),
   Author: Author(conn),
@@ -48,7 +47,7 @@ export const modelsMap = {
 const models = { Sequelize: Sequelize, sequelize: conn, ...modelsMap };
 
 associateTaxonomy();
-associatePostTaxonomy();
+// associatePostTaxonomy();
 associatePost();
 associateAuthor();
 associateRole();
