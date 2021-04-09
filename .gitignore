@@ -36,3 +36,4 @@ yarn-error.log*
 *.d.ts
 
 __generated__/*
+data/*

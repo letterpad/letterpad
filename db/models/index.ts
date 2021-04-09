@@ -2,7 +2,6 @@ import Author, { associateAuthor } from "./author";
 import Media from "./media";
 import Permission, { associatePermission } from "./permission";
 import Post, { associatePost } from "./post";
-import PostTaxonomy, { associatePostTaxonomy } from "./postTaxonomy";
 import Role, { associateRole } from "./role";
 import { Sequelize } from "sequelize";
 import Setting from "./setting";
@@ -37,7 +36,6 @@ export const conn = new Sequelize(
 export const modelsMap = {
   Taxonomy: Taxonomy(conn),
   Setting: Setting(conn),
-  // PostTaxonomy: PostTaxonomy(conn),
   Media: Media(conn),
   Post: Post(conn),
   Author: Author(conn),
@@ -47,7 +45,6 @@ export const modelsMap = {
 const models = { Sequelize: Sequelize, sequelize: conn, ...modelsMap };
 
 associateTaxonomy();
-// associatePostTaxonomy();
 associatePost();
 associateAuthor();
 associateRole();

@@ -1,7 +1,8 @@
 import { Author } from "./author";
-import { PostTaxonomy } from "./postTaxonomy";
 import { Taxonomy } from "./taxonomy";
 import {
+  Association,
+  BelongsToManySetAssociationsMixin,
   DataTypes,
   HasManyAddAssociationMixin,
   HasManyCountAssociationsMixin,
@@ -12,6 +13,7 @@ import {
   Optional,
 } from "sequelize";
 import config from "../../config";
+import { PostStatusOptions, PostTypes } from "../../lib/type-defs.graphqls";
 
 export interface PostAttributes {
   id: number;
@@ -22,15 +24,17 @@ export interface PostAttributes {
   md: string;
   md_draft: string;
   cover_image: string;
-  cover_image_width: string;
-  cover_image_height: string;
-  type: string;
+  cover_image_width: number;
+  cover_image_height: number;
+  type: PostTypes;
   featured: boolean;
-  status: string;
+  status: PostStatusOptions;
   slug: string;
   reading_time: string;
   publishedAt: Date;
   scheduledAt: Date;
+  updatedAt: Date;
+  createdAt: Date;
 }
 
 export interface PostCreationAttributes
@@ -47,11 +51,11 @@ export class Post
   public md!: string;
   public md_draft!: string;
   public cover_image!: string;
-  public cover_image_width!: string;
-  public cover_image_height!: string;
-  public type!: string;
+  public cover_image_width!: number;
+  public cover_image_height!: number;
+  public type!: PostTypes;
   public featured!: boolean;
-  public status!: string;
+  public status!: PostStatusOptions;
   public slug!: string;
   public reading_time!: string;
   public publishedAt!: Date;
@@ -61,17 +65,22 @@ export class Post
   public readonly updatedAt!: Date;
 
   public getTaxonomies!: HasManyGetAssociationsMixin<Taxonomy>; // Note the null assertions!
-  public addTaxonomies!: HasManyAddAssociationMixin<Taxonomy, number>;
-  public hasTaxonomy!: HasManyHasAssociationMixin<Taxonomy, number>;
+  public setTaxonomies!: BelongsToManySetAssociationsMixin<Taxonomy, number>;
+  public addTaxonomy!: HasManyAddAssociationMixin<Taxonomy, number>;
+  public hasTaxonomy!: HasManyHasAssociationMixin<Taxonomy, Taxonomy["id"]>;
   public countTaxonomy!: HasManyCountAssociationsMixin;
   public createTaxonomy!: HasManyCreateAssociationMixin<Taxonomy>;
+
+  public static associations: {
+    tags: Association<Post, Taxonomy>;
+  };
 }
 
 export default function initPost(sequelize) {
   Post.init(
     {
       id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
@@ -131,6 +140,12 @@ export default function initPost(sequelize) {
       scheduledAt: {
         type: DataTypes.DATE,
       },
+      updatedAt: {
+        type: DataTypes.DATE,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+      },
     },
     {
       tableName: "posts",
@@ -143,9 +158,9 @@ export default function initPost(sequelize) {
 
 export function associatePost(): void {
   Post.belongsToMany(Taxonomy, {
-    through: "PostTaxonomy",
+    through: "postTaxonomies",
     as: "taxonomies",
   });
-  Post.hasMany(PostTaxonomy);
-  Post.belongsTo(Author, { foreignKey: "authorId" });
+  Post.hasMany(Taxonomy);
+  Post.belongsTo(Author, { foreignKey: "AuthorId" });
 }
