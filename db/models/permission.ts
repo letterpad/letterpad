@@ -19,7 +19,7 @@ export class Permission
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  // public addTaxonomy!: HasManyAddAssociationMixin<Post, number>;
+  // public addTags!: HasManyAddAssociationMixin<Post, number>;
 }
 
 export default function initPermission(sequelize) {

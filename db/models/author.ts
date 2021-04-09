@@ -12,6 +12,7 @@ import {
   HasManyCreateAssociationMixin,
   Optional,
 } from "sequelize";
+import restoreSequelizeAttributesOnClass from "./_tooling";
 
 // These are all the attributes in the User model
 interface AuthorAttributes {
@@ -60,6 +61,17 @@ export class Author
   public static associations: {
     posts: Association<Author, Post>;
   };
+
+  constructor(...args) {
+    super(...args);
+    restoreSequelizeAttributesOnClass(new.target, this, [
+      "getPosts",
+      "addPost",
+      "hasPost",
+      "countPosts",
+      "createPost",
+    ]);
+  }
 }
 export default function initAuthor(sequelize: Sequelize) {
   Author.init(

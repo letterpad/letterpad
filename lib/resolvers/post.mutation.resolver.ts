@@ -1,4 +1,4 @@
-import { Taxonomy } from "./../../db/models/taxonomy";
+import { Tags } from "./../../db/models/tags";
 import { PostStatusOptions } from "./../../__generated__/lib/type-defs.graphqls";
 import { PostAttributes } from "./../../db/models/post";
 import { ResolverContext } from "./../apollo";
@@ -42,10 +42,10 @@ const Mutation: Required<MutationResolvers<ResolverContext>> = {
     }
     const newPost = await context.models.Post.create(args.data as any);
 
-    const defaultTaxonomy = await context.models.Taxonomy.findOne({
+    const defaultTags = await context.models.Tags.findOne({
       where: { id: 2 },
     });
-    if (defaultTaxonomy) await newPost.addTaxonomy(defaultTaxonomy);
+    if (defaultTags) await newPost.addTags(defaultTags);
 
     return {
       ok: true,
@@ -189,55 +189,55 @@ const Mutation: Required<MutationResolvers<ResolverContext>> = {
     if (args.data.excerpt) {
       data.excerpt = args.data.excerpt;
     }
-    const _previousPostRaw = await context.models.Post.findOne({
-      where: { id: args.data.id },
-    });
-    // const prevTaxonomies = await previousPostRaw.getTaxonomies();
-    if (args.data.tags && _previousPostRaw) {
-      logger.debug("Updating taxonomies", args.data.tags);
+    const tag = await context.models.Tags.findOne({ where: { id: 3 } });
+    if (tag) {
+      const posts = await tag.getPosts();
+      console.log(posts.length);
+    }
 
-      const taxonomies = [...args.data.tags];
+    // const prevTags = await previousPostRaw.getTags();
+    if (args.data.tags && previousPostRaw) {
+      logger.debug("Updating Tags", args.data.tags);
 
-      if (taxonomies && taxonomies.length > 0) {
-        logger.debug("Removing all taxonomies");
-        // remove the taxonomy relation
-        await _previousPostRaw.setTaxonomies([]);
+      const Tags = [...args.data.tags];
 
-        for (let i = 0; i < taxonomies.length; i++) {
-          const taxonomy = taxonomies[i];
+      if (Tags && Tags.length > 0) {
+        logger.debug("Removing all Tags");
+        // remove the tags relation
+        await previousPostRaw.setTags([]);
 
-          logger.info("processing taxonomy", taxonomy);
-          let taxItem: Taxonomy | null = null;
-          // add relation with existing taxonomies
-          if (taxonomy.id !== 0) {
-            taxItem = await context.models.Taxonomy.findOne({
-              where: { id: taxonomy.id },
+        for (let i = 0; i < Tags.length; i++) {
+          const tags = Tags[i];
+
+          logger.info("processing tags", tags);
+          let taxItem: Tags | null = null;
+          // add relation with existing Tags
+          if (tags.id !== 0) {
+            taxItem = await context.models.Tags.findOne({
+              where: { id: tags.id },
             });
             if (taxItem) {
-              await _previousPostRaw.addTaxonomy(taxItem);
+              await previousPostRaw.addTags(taxItem);
             }
-            logger.debug(
-              `Added existing taxonomy (${taxonomy.name}) with id`,
-              taxonomy.id,
-            );
+            logger.debug(`Added existing tags (${tags.name}) with id`, tags.id);
           } else {
-            // taxonomies needs to be created
-            await context.models.Taxonomy.findOrCreate({
+            // Tags needs to be created
+            await context.models.Tags.findOrCreate({
               where: {
-                name: taxonomy.name,
-                slug: taxonomy.name.toLowerCase(),
+                name: tags.name,
+                slug: tags.name.toLowerCase(),
               },
             });
-            logger.debug(`Added new taxonomy (${taxonomy.name})`);
-            taxItem = await context.models.Taxonomy.findOne({
+            logger.debug(`Added new tags (${tags.name})`);
+            taxItem = await context.models.Tags.findOne({
               where: {
-                name: taxonomy.name,
+                name: tags.name,
               },
             });
-            logger.debug("Linking taxonomy to post", taxonomy.name);
+            logger.debug("Linking tags to post", tags.name);
             // add relation
             if (taxItem) {
-              await _previousPostRaw.addTaxonomy(taxItem);
+              await previousPostRaw.addTags(taxItem);
             }
           }
         }

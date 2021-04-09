@@ -16,16 +16,22 @@ import models from "../models";
 const { seed } = require("./seed");
 
 (async () => {
-  await models.sequelize.sync({ force: true });
+  // await models.sequelize.sync({ force: true });
   // const post = await models.Post.findOne({ where: { id: 1 } });
   // if (!post) return;
-  // await post.setTaxonomies([]);
-  // await post.createTaxonomy({ slug: "hello", name: "hello" });
-  // const taxonomies = await post.getTaxonomies();
-  // console.log("post :>> ", taxonomies);
+  // console.log(post.id);
+  // await post.setTags([]);
+  // await post.createTags({ slug: "hello", name: "hello" });
+  // const Tags = await post.getTags();
+  // console.log("post :>> ", Tags);
+  const author = await models.Author.findOne({ where: { id: 2 } });
+  if (author) {
+    const posts = await author.hasPost(2);
+    console.log(posts);
+  }
 })();
 
-seed(models).catch(e => {
-  console.error(e);
-  process.exit(1);
-});
+// seed(models).catch(e => {
+//   console.error(e);
+//   process.exit(1);
+// });

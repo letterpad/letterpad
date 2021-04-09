@@ -1,5 +1,5 @@
 import { Author } from "./author";
-import { Taxonomy } from "./taxonomy";
+import { Tags } from "./tags";
 import {
   Association,
   BelongsToManySetAssociationsMixin,
@@ -14,6 +14,7 @@ import {
 } from "sequelize";
 import config from "../../config";
 import { PostStatusOptions, PostTypes } from "../../lib/type-defs.graphqls";
+import restoreSequelizeAttributesOnClass from "./_tooling";
 
 export interface PostAttributes {
   id: number;
@@ -37,12 +38,11 @@ export interface PostAttributes {
   createdAt: Date;
 }
 
-export interface PostCreationAttributes
-  extends Optional<PostAttributes, "id"> {}
+export interface PostCreationAttributes extends Optional<PostAttributes, "id"> {
+  // setTags: BelongsToManySetAssociationsMixin<Tags, number>;
+}
 
-export class Post
-  extends Model<PostAttributes, PostCreationAttributes>
-  implements PostAttributes {
+export class Post extends Model {
   public id!: number;
   public authorId!: number;
   public title!: string;
@@ -64,16 +64,28 @@ export class Post
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public getTaxonomies!: HasManyGetAssociationsMixin<Taxonomy>; // Note the null assertions!
-  public setTaxonomies!: BelongsToManySetAssociationsMixin<Taxonomy, number>;
-  public addTaxonomy!: HasManyAddAssociationMixin<Taxonomy, number>;
-  public hasTaxonomy!: HasManyHasAssociationMixin<Taxonomy, Taxonomy["id"]>;
-  public countTaxonomy!: HasManyCountAssociationsMixin;
-  public createTaxonomy!: HasManyCreateAssociationMixin<Taxonomy>;
+  public getTags!: HasManyGetAssociationsMixin<Tags>; // Note the null assertions!
+  public setTags!: BelongsToManySetAssociationsMixin<Tags, Tags["id"]>;
+  public addTag!: HasManyAddAssociationMixin<Tags, Tags["id"]>;
+  public hasTagById!: HasManyHasAssociationMixin<Tags, Tags["id"]>;
+  public countTags!: HasManyCountAssociationsMixin;
+  public createTag!: HasManyCreateAssociationMixin<Tags>;
 
   public static associations: {
-    tags: Association<Post, Taxonomy>;
+    tags: Association<Post, Tags>;
   };
+
+  constructor(...args) {
+    super(...args);
+    restoreSequelizeAttributesOnClass(new.target, this, [
+      "setTags",
+      "getTags",
+      "addTag",
+      "hasTagById",
+      "countTags",
+      "createTag",
+    ]);
+  }
 }
 
 export default function initPost(sequelize) {
@@ -156,11 +168,13 @@ export default function initPost(sequelize) {
   return Post;
 }
 
-export function associatePost(): void {
-  Post.belongsToMany(Taxonomy, {
-    through: "postTaxonomies",
-    as: "taxonomies",
+export function associatePost(Post) {
+  Post.belongsToMany(Tags, {
+    through: "postTags",
+    foreignKey: "post_id",
   });
-  Post.hasMany(Taxonomy);
+  // Post.hasMany(Tags);
   Post.belongsTo(Author, { foreignKey: "AuthorId" });
+
+  return Post;
 }

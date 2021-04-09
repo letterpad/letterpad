@@ -45,14 +45,14 @@ export const seed = async (dbModels, autoExit = true) => {
   await insertRolePermData(models);
   console.timeEnd("insert roles and permissions");
 
-  console.time("insert authors and taxonomies");
-  await Promise.all([insertAuthor(models), insertTaxonomy(models)]);
+  console.time("insert authors and Tags");
+  await Promise.all([insertAuthor(models), insertTags(models)]);
 
-  console.timeEnd("insert authors and taxonomies");
+  console.timeEnd("insert authors and Tags");
 
   console.time("insert posts, settings, media");
   const [tags] = await Promise.all([
-    models.Taxonomy.findAll({
+    models.Tags.findAll({
       where: { type: "post_tag" },
     }),
   ]);
@@ -161,8 +161,8 @@ export async function insertAuthor(models) {
   ]);
 }
 
-export async function insertTaxonomy(models) {
-  return models.Taxonomy.bulkCreate([
+export async function insertTags(models) {
+  return models.Tags.bulkCreate([
     {
       name: "Home",
       type: "post_tag",
@@ -204,7 +204,7 @@ export async function insertPost(params, models, tags) {
 
   promises = [admin.addPost(post)];
   if (params.type === "post") {
-    promises = [...promises, ...tags.map(tag => post.addTaxonomy(tag))];
+    promises = [...promises, ...tags.map(tag => post.addTags(tag))];
   }
   return Promise.all(promises);
 }

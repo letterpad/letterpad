@@ -21,9 +21,9 @@ type Post {
   reading_time: String
   status: String
   type: PostTypes
-  createdAt: String
-  publishedAt: String
-  scheduledAt: String
+  createdAt: Date
+  publishedAt: Date
+  scheduledAt: Date
 }
 
 enum PostStatusOptions {
@@ -72,7 +72,7 @@ type Query {
   posts(filters: PostsFilters): [Post]!
 }
 
-input TaxonomyInputType {
+input TagsInputType {
   id: Int
   name: String
   slug: String
@@ -84,7 +84,7 @@ input InputImage {
   height: Int
 }
 
-input TaxonomyInputType {
+input TagsInputType {
   id: Int!
   name: String!
   slug: String!
@@ -101,7 +101,7 @@ input InputCreatePost {
   featured: Boolean
   status: PostStatusOptions
   slug: String
-  # tags: [TaxonomyInputType]
+  # tags: [TagsInputType]
 }
 
 input InputUpdatePost {
@@ -119,7 +119,7 @@ input InputUpdatePost {
   type: PostTypes
   status: PostStatusOptions
   slug: String
-  tags: [TaxonomyInputType!]
+  tags: [TagsInputType!]
 }
 
 type Mutation {

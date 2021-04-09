@@ -5,7 +5,7 @@ import Post, { associatePost } from "./post";
 import Role, { associateRole } from "./role";
 import { Sequelize } from "sequelize";
 import Setting from "./setting";
-import Taxonomy, { associateTaxonomy } from "./taxonomy";
+import Tags, { associateTags } from "./tags";
 import dbConfig from "../../config/db.config";
 
 enum envs {
@@ -34,7 +34,7 @@ export const conn = new Sequelize(
 );
 
 export const modelsMap = {
-  Taxonomy: Taxonomy(conn),
+  Tags: Tags(conn),
   Setting: Setting(conn),
   Media: Media(conn),
   Post: Post(conn),
@@ -42,12 +42,13 @@ export const modelsMap = {
   Role: Role(conn),
   Permission: Permission(conn),
 };
-const models = { Sequelize: Sequelize, sequelize: conn, ...modelsMap };
 
-associateTaxonomy();
-associatePost();
+associateTags();
+modelsMap.Post = associatePost(modelsMap.Post);
 associateAuthor();
 associateRole();
 associatePermission();
+
+const models = { Sequelize: Sequelize, sequelize: conn, ...modelsMap };
 
 export default models;

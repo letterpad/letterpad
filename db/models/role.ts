@@ -7,6 +7,7 @@ import {
   Optional,
 } from "sequelize";
 import config from "../../config";
+import restoreSequelizeAttributesOnClass from "./_tooling";
 
 export interface RoleAttributes {
   id: number;
@@ -26,6 +27,11 @@ export class Role
   public readonly updatedAt!: Date;
 
   public getPermissions!: HasManyGetAssociationsMixin<Permission>;
+
+  constructor(...args) {
+    super(...args);
+    restoreSequelizeAttributesOnClass(new.target, this, ["getPermissions"]);
+  }
 }
 
 export default function initRole(sequelize) {

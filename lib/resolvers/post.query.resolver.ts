@@ -49,14 +49,14 @@ const Query: Required<QueryResolvers<ResolverContext>> = {
         });
         tagSlug = JSON.parse(value)[0].slug;
       }
-      const taxTag = await _context.models.Taxonomy.findOne({
+      const taxTag = await _context.models.Tags.findOne({
         where: { slug: tagSlug },
       });
 
       if (taxTag) {
         query.conditions.include.push({
-          model: _context.models.PostTaxonomy,
-          where: { taxonomy_id: taxTag.getDataValue("id") },
+          model: _context.models.PostTags,
+          where: { tags_id: taxTag.getDataValue("id") },
           require: true,
         });
       }
@@ -65,7 +65,7 @@ const Query: Required<QueryResolvers<ResolverContext>> = {
     // resolve tag filter
 
     if (args.filters.tag) {
-      const taxTag = await _context.models.Taxonomy.findOne({
+      const taxTag = await _context.models.Tags.findOne({
         where: Sequelize.where(
           Sequelize.fn("lower", Sequelize.col("name")),
           Sequelize.fn("lower", args.filters.tag),
@@ -73,8 +73,8 @@ const Query: Required<QueryResolvers<ResolverContext>> = {
       });
       if (taxTag) {
         query.conditions.include.push({
-          model: _context.models.PostTaxonomy,
-          where: { taxonomy_id: taxTag.getDataValue("id") },
+          model: _context.models.PostTags,
+          where: { tags_id: taxTag.getDataValue("id") },
           require: true,
         });
       }
