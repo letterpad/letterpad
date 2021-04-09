@@ -5,3 +5,15 @@ query Post($filters: PostFilters) {
     ...Partial
   }
 }
+
+query Login($data: LoginData) {
+  login(data: $data) {
+    status
+    data {
+      name
+      email
+      role
+      avatar
+    }
+  }
+}

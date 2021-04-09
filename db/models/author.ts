@@ -1,3 +1,4 @@
+import { Social } from "./../../__generated__/lib/type-defs.graphqls";
 import { Role } from "./role";
 import { Post } from "./post";
 import {
@@ -11,6 +12,7 @@ import {
   HasManyCountAssociationsMixin,
   HasManyCreateAssociationMixin,
   Optional,
+  HasOneGetAssociationMixin,
 } from "sequelize";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 
@@ -22,7 +24,7 @@ interface AuthorAttributes {
   bio: string;
   password: string;
   avatar: string;
-  social: JSON;
+  social: Social;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -39,7 +41,7 @@ export class Author
   public bio!: string;
   public password!: string;
   public avatar!: string;
-  public social!: JSON;
+  public social!: Social;
 
   // timestamps!
   public readonly createdAt!: Date;
@@ -53,6 +55,8 @@ export class Author
   public hasPost!: HasManyHasAssociationMixin<Post, number>;
   public countPosts!: HasManyCountAssociationsMixin;
   public createPost!: HasManyCreateAssociationMixin<Post>;
+  public setRole!: HasManyHasAssociationMixin<Role, number>;
+  public getRole!: HasOneGetAssociationMixin<Role>;
 
   // You can also pre-declare possible inclusions, these will only be populated if you
   // actively include a relation.
@@ -70,6 +74,8 @@ export class Author
       "hasPost",
       "countPosts",
       "createPost",
+      "setRole",
+      "getRole",
     ]);
   }
 }
@@ -104,6 +110,11 @@ export default function initAuthor(sequelize: Sequelize) {
       social: {
         type: new DataTypes.STRING(128),
         allowNull: true,
+        get() {
+          const social = this.getDataValue("social");
+          if (social) return JSON.parse(social as string);
+          return {};
+        },
       },
     },
     {
@@ -120,5 +131,5 @@ export function associateAuthor(): void {
     sourceKey: "id",
   });
 
-  Author.hasOne(Role);
+  Author.belongsTo(Role, { as: "role" });
 }

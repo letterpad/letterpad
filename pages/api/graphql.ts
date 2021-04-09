@@ -6,9 +6,8 @@ import { schema } from "../../lib/schema";
 const apolloServer = new ApolloServer({
   schema,
   context: async ({ req }) => {
-    // const session = await getSession({ req });
-
-    return { session: {}, models: models };
+    const session = await getSession({ req });
+    return { session, models: models };
   },
 });
 

@@ -1,9 +1,29 @@
+type Social {
+  twitter: String
+  facebook: String
+  github: String
+  instagram: String
+}
 type Author {
   id: Int
   email: String
-  name: String!
-  social: String!
-  role: String!
+  name: String
+  social: Social
+  role: String
   bio: String
   avatar: String
+}
+
+input LoginData {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  status: Boolean!
+  data: Author
+}
+
+type Query {
+  login(data: LoginData): LoginResponse
 }

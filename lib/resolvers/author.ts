@@ -1,24 +1,27 @@
 import { QueryResolvers, MutationResolvers } from "../type-defs.graphqls";
 import { ResolverContext } from "../apollo";
 
-const userProfile = {
-  id: 1,
-  title: "John Smith",
-  html: "html",
-  excerpt: "md",
-  md: "md",
-  md_draft: "md",
-};
+const Query: QueryResolvers<ResolverContext> = {
+  async login(_parent, args, context, _info) {
+    const author = await context?.models?.Author.findOne({
+      logging: console.log,
+      where: { email: args.data?.email, password: args.data?.password },
+    });
+    if (author) {
+      const role = await author.getRole();
+      return {
+        status: true,
+        data: {
+          ...author,
+          social: JSON.parse(author.social as string),
+          role: role ? role.name : "Guest",
+        },
+      };
+    }
 
-// const Query: Required<QueryResolvers<ResolverContext>> = {
-//   async post(_parent, _args, _context, _info) {
-//     const post = await _context.models.Post.findOne({
-//       where: { id: 1 },
-//     });
-//     console.log("post.id :>> ", post.toJSON());
-//     return post.toJSON();
-//   },
-// };
+    return { status: false, data: {} };
+  },
+};
 
 // const Mutation: Required<MutationResolvers<ResolverContext>> = {
 //   // updateName(_parent, _args, _context, _info) {
@@ -27,4 +30,4 @@ const userProfile = {
 //   // },
 // };
 
-export default {};
+export default { Query };

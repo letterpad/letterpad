@@ -33,6 +33,4 @@ const config = {
   THEME: currentTheme,
 };
 
-logger.debug("Using config => ", config);
-
 export default config;
