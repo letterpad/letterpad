@@ -6,6 +6,7 @@ import {
   NormalizedCacheObject,
 } from "@apollo/client";
 import models from "../db/models";
+import { Session } from "next-auth";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -13,6 +14,7 @@ export type ResolverContext = {
   req?: IncomingMessage;
   res?: ServerResponse;
   models?: typeof models;
+  session?: Session;
 };
 
 function createIsomorphLink(context: ResolverContext = {}) {

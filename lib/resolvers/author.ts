@@ -4,7 +4,6 @@ import { ResolverContext } from "../apollo";
 const Query: QueryResolvers<ResolverContext> = {
   async login(_parent, args, context, _info) {
     const author = await context?.models?.Author.findOne({
-      logging: console.log,
       where: { email: args.data?.email, password: args.data?.password },
     });
     if (author) {

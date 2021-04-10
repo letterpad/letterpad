@@ -1,5 +1,12 @@
+import {
+  LoginDocument,
+  LoginQuery,
+  LoginQueryVariables,
+} from "./../../../__generated__/lib/queries/queries.graphql";
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
+import { initializeApollo } from "../../../lib/apollo";
+import models from "../../../db/models";
 
 const providers = [
   Providers.Credentials({
@@ -9,39 +16,32 @@ const providers = [
       password: { label: "Password", type: "password" },
     },
     authorize: async credentials => {
-      const user = {
-        name: "Abhishek",
-        accessToken: credentials.csrfToken,
-      };
+      const apolloClient = initializeApollo({}, { models: models });
 
-      if (user) {
-        return user;
-      } else {
-        return null;
-      }
+      const result = await apolloClient.query<LoginQuery, LoginQueryVariables>({
+        query: LoginDocument,
+        variables: {
+          data: {
+            email: credentials.email,
+            password: credentials.password,
+          },
+        },
+      });
+
+      return (
+        { ...result.data.login?.data, accessToken: credentials.csrfToken } || {}
+      );
     },
   }),
 ];
 
-const callbacks = {
-  // Getting the JWT token from API response
-  async jwt(token, user) {
-    if (user) {
-      token.accessToken = user.accessToken;
-    }
-
-    return token;
-  },
-
-  async session(session, token) {
-    session.accessToken = token.accessToken;
-    return session;
-  },
-};
-
 const options = {
   providers,
-  callbacks,
+  // callbacks,
+  jwt: {
+    encryption: true,
+    secret: "mmm",
+  },
 };
 
-export default (req, res) => NextAuth(req, res, options);
+export default (req, res) => NextAuth(req, res, { ...options, theme: "light" });
