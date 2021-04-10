@@ -1,32 +1,29 @@
-import { QueryResolvers, MutationResolvers } from "../type-defs.graphqls";
+import { MutationResolvers, Role } from "../type-defs.graphqls";
 import { ResolverContext } from "../apollo";
+import { Permissions } from "../../__generated__/lib/type-defs.graphqls";
 
-const Query: QueryResolvers<ResolverContext> = {
+const Mutation: MutationResolvers<ResolverContext> = {
   async login(_parent, args, context, _info) {
     const author = await context?.models?.Author.findOne({
       where: { email: args.data?.email, password: args.data?.password },
     });
     if (author) {
       const role = await author.getRole();
+      const per = await role.getPermissions();
+      const permArr = per.map(p => p.name) as Permissions[];
       return {
         status: true,
         data: {
           ...author,
           social: JSON.parse(author.social as string),
-          role: role ? role.name : "Guest",
+          role: role ? (role.name as Role) : Role.Reader,
+          permissions: permArr,
         },
       };
     }
 
-    return { status: false, data: {} };
+    return { status: false };
   },
 };
 
-// const Mutation: Required<MutationResolvers<ResolverContext>> = {
-//   // updateName(_parent, _args, _context, _info) {
-//   //   userProfile.title = _args.title;
-//   //   return userProfile;
-//   // },
-// };
-
-export default { Query };
+export default { Mutation };

@@ -1,7 +1,6 @@
 import { Permission } from "./permission";
 import {
   DataTypes,
-  HasManyAddAssociationMixin,
   HasManyGetAssociationsMixin,
   Model,
   Optional,

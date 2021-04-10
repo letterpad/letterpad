@@ -1,12 +1,13 @@
 import {
   LoginDocument,
-  LoginQuery,
-  LoginQueryVariables,
+  LoginMutation,
+  LoginMutationVariables,
 } from "./../../../__generated__/lib/queries/queries.graphql";
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { initializeApollo } from "../../../lib/apollo";
 import models from "../../../db/models";
+import { SessionData } from "../../../lib/types";
 
 const providers = [
   Providers.Credentials({
@@ -18,8 +19,11 @@ const providers = [
     authorize: async credentials => {
       const apolloClient = initializeApollo({}, { models: models });
 
-      const result = await apolloClient.query<LoginQuery, LoginQueryVariables>({
-        query: LoginDocument,
+      const result = await apolloClient.mutate<
+        LoginMutation,
+        LoginMutationVariables
+      >({
+        mutation: LoginDocument,
         variables: {
           data: {
             email: credentials.email,
@@ -27,17 +31,38 @@ const providers = [
           },
         },
       });
-
-      return (
-        { ...result.data.login?.data, accessToken: credentials.csrfToken } || {}
-      );
+      if (result && result.data) {
+        return {
+          ...result.data.login?.data,
+          accessToken: credentials.csrfToken,
+        };
+      }
+      return {};
     },
   }),
 ];
 
 const options = {
   providers,
-  // callbacks,
+  callbacks: {
+    jwt: async (token: any, user: Required<SessionData>) => {
+      //  "user" parameter is the object received from "authorize"
+      //  "token" is being send to "session" callback...
+      //  ...so we set "user" param of "token" to object from "authorize"...
+      //  ...and return it...
+      if (user && token) {
+        token.role = user.role;
+        token.avatar = user.avatar;
+        token.permissions = user.permissions;
+        token.id = user.id;
+      }
+      return Promise.resolve(token);
+    },
+    session: async (session, user: SessionData) => {
+      session.user = user;
+      return Promise.resolve(session);
+    },
+  },
   jwt: {
     encryption: true,
     secret: "mmm",
