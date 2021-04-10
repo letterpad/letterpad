@@ -16,3 +16,18 @@ type Image {
   width: Int
   height: Int
 }
+
+enum Role {
+  ADMIN
+  REVIEWER
+  READER
+  AUTHOR
+}
+
+enum Permissions {
+  MANAGE_OWN_POSTS
+  READ_ONLY_POSTS
+  MANAGE_ALL_POSTS
+  MANAGE_USERS
+  MANAGE_SETTINGS
+}

@@ -6,7 +6,7 @@ query Post($filters: PostFilters) {
   }
 }
 
-query Login($data: LoginData) {
+mutation Login($data: LoginData) {
   login(data: $data) {
     status
     data {

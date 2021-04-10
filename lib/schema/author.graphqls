@@ -4,14 +4,16 @@ type Social {
   github: String
   instagram: String
 }
+
 type Author {
-  id: Int
-  email: String
-  name: String
+  id: Int!
+  email: String!
+  name: String!
   social: Social
-  role: String
+  role: Role!
+  permissions: [Permissions!]!
   bio: String
-  avatar: String
+  avatar: String!
 }
 
 input LoginData {
@@ -24,6 +26,6 @@ type LoginResponse {
   data: Author
 }
 
-type Query {
+type Mutation {
   login(data: LoginData): LoginResponse
 }
