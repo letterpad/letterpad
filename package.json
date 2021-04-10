@@ -22,7 +22,7 @@
     "graphql": "15.3.0",
     "image-size": "^0.9.7",
     "letterpad-editor": "^0.0.29",
-    "next": "latest",
+    "next": "10.0.9",
     "next-auth": "^3.13.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
