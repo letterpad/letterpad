@@ -1,0 +1,33 @@
+type Tags {
+  id: Int!
+  name: String!
+  desc: String
+  slug: String!
+  # posts: PostsNode
+}
+
+input TagsFilters {
+  active: Boolean
+  name: String
+}
+
+type EditTaxResponse {
+  ok: Boolean!
+  id: Int
+  errors: [Error!]
+}
+
+# type Query {
+#   taxonomies(filters: TagsFilters): [Tags!]!
+# }
+
+# type Mutation {
+#   updateTags(
+#     id: Int!
+#     name: String
+#     desc: String
+#     type: TagsType!
+#     slug: String
+#   ): EditTaxResponse!
+#   deleteTags(id: Int!): EditTaxResponse!
+# }

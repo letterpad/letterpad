@@ -4,17 +4,14 @@ import { PostAttributes } from "./../../db/models/post";
 import { ResolverContext } from "./../apollo";
 import reading_time from "reading-time";
 import { mdToHtml } from "letterpad-editor";
-import {
-  MutationResolvers,
-  Post,
-} from "../../__generated__/lib/type-defs.graphqls";
+import { MutationResolvers } from "../../__generated__/lib/type-defs.graphqls";
 
 import {
   slugify,
-  getReadableDate,
   getDateTime,
   getImageDimensions,
   setImageWidthAndHeightInHtml,
+  normalizePost,
 } from "./helpers";
 import config from "../../config";
 import logger from "../../shared/logger";
@@ -45,7 +42,7 @@ const Mutation: Required<MutationResolvers<ResolverContext>> = {
     const defaultTags = await context.models.Tags.findOne({
       where: { id: 2 },
     });
-    if (defaultTags) await newPost.addTags(defaultTags);
+    if (defaultTags) await newPost.addTag(defaultTags);
 
     return {
       ok: true,
@@ -217,7 +214,7 @@ const Mutation: Required<MutationResolvers<ResolverContext>> = {
               where: { id: tags.id },
             });
             if (taxItem) {
-              await previousPostRaw.addTags(taxItem);
+              await previousPostRaw.addTag(taxItem);
             }
             logger.debug(`Added existing tags (${tags.name}) with id`, tags.id);
           } else {
@@ -237,7 +234,7 @@ const Mutation: Required<MutationResolvers<ResolverContext>> = {
             logger.debug("Linking tags to post", tags.name);
             // add relation
             if (taxItem) {
-              await previousPostRaw.addTags(taxItem);
+              await previousPostRaw.addTag(taxItem);
             }
           }
         }
@@ -257,35 +254,6 @@ const Mutation: Required<MutationResolvers<ResolverContext>> = {
   //   return result;
   // }),
 };
-
-export function normalizePost(postFromDb: PostAttributes): Post {
-  let {
-    cover_image_width,
-    cover_image_height,
-    cover_image,
-    slug,
-    ...rest
-  } = postFromDb;
-  if (cover_image && cover_image.startsWith("/")) {
-    cover_image = host + "/" + cover_image;
-  }
-
-  // normalize cover image
-  const post = {
-    ...rest,
-    cover_image: {
-      src: cover_image || "",
-      width: cover_image_width || 0,
-      height: cover_image_height || 0,
-    },
-    slug: "/" + rest.type + "/" + slug,
-    publishedAt: (getReadableDate(rest.publishedAt) as unknown) as Date,
-    updatedAt: (getReadableDate(rest.updatedAt) as unknown) as Date,
-    createdAt: (getReadableDate(rest.createdAt) as unknown) as Date,
-  };
-
-  return post;
-}
 
 function isFirstTitleCreation(prevTitle: string, newTitle: string) {
   if (prevTitle === "" && newTitle !== "") {

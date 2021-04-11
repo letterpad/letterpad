@@ -1,3 +1,5 @@
+import { SessionData } from "./types";
+import { getSession } from "next-auth/client";
 import { IncomingMessage, ServerResponse } from "http";
 import { useMemo } from "react";
 import {
@@ -6,7 +8,6 @@ import {
   NormalizedCacheObject,
 } from "@apollo/client";
 import models from "../db/models";
-import { Session } from "next-auth";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -14,7 +15,7 @@ export type ResolverContext = {
   req?: IncomingMessage;
   res?: ServerResponse;
   models?: typeof models;
-  session?: Session;
+  session?: Promise<SessionData | null>;
 };
 
 function createIsomorphLink(context: ResolverContext = {}) {
@@ -45,6 +46,14 @@ export function initializeApollo(
   // a custom context which will be used by `SchemaLink` to server render pages
   context?: ResolverContext,
 ) {
+  if (context) {
+    const session = getSession({
+      req: context.req,
+    }) as Promise<SessionData | null>;
+    if (session !== null) {
+      context = { ...context, session };
+    }
+  }
   const _apolloClient = apolloClient ?? createApolloClient(context);
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state

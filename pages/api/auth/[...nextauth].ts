@@ -6,8 +6,8 @@ import {
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { initializeApollo } from "../../../lib/apollo";
-import models from "../../../db/models";
 import { SessionData } from "../../../lib/types";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const providers = [
   Providers.Credentials({
@@ -17,7 +17,7 @@ const providers = [
       password: { label: "Password", type: "password" },
     },
     authorize: async credentials => {
-      const apolloClient = initializeApollo({}, { models: models });
+      const apolloClient = initializeApollo({});
 
       const result = await apolloClient.mutate<
         LoginMutation,
@@ -45,7 +45,7 @@ const providers = [
 const options = {
   providers,
   callbacks: {
-    jwt: async (token: any, user: Required<SessionData>) => {
+    jwt: async (token: any, user: Required<SessionData["user"]>) => {
       //  "user" parameter is the object received from "authorize"
       //  "token" is being send to "session" callback...
       //  ...so we set "user" param of "token" to object from "authorize"...
@@ -58,15 +58,16 @@ const options = {
       }
       return Promise.resolve(token);
     },
-    session: async (session, user: SessionData) => {
+    session: async (session: any, user: SessionData["user"]) => {
       session.user = user;
       return Promise.resolve(session);
     },
   },
   jwt: {
     encryption: true,
-    secret: "mmm",
+    secret: process.env.SECRET_KEY,
   },
 };
 
-export default (req, res) => NextAuth(req, res, { ...options, theme: "light" });
+export default (req: NextApiRequest, res: NextApiResponse) =>
+  NextAuth(req, res, options);

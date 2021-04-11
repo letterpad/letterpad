@@ -11,6 +11,7 @@ import {
   HasManyHasAssociationMixin,
   Model,
   Optional,
+  BelongsToGetAssociationMixin,
 } from "sequelize";
 import config from "../../config";
 import { PostStatusOptions, PostTypes } from "../../lib/type-defs.graphqls";
@@ -65,6 +66,7 @@ export class Post extends Model {
   public readonly updatedAt!: Date;
 
   public getTags!: HasManyGetAssociationsMixin<Tags>; // Note the null assertions!
+  public getAuthor!: BelongsToGetAssociationMixin<Author>;
   public setTags!: BelongsToManySetAssociationsMixin<Tags, Tags["id"]>;
   public addTag!: HasManyAddAssociationMixin<Tags, Tags["id"]>;
   public hasTagById!: HasManyHasAssociationMixin<Tags, Tags["id"]>;
@@ -84,6 +86,7 @@ export class Post extends Model {
       "hasTagById",
       "countTags",
       "createTag",
+      "getAuthor",
     ]);
   }
 }

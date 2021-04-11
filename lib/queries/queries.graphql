@@ -14,6 +14,7 @@ mutation Login($data: LoginData) {
       email
       role
       avatar
+      permissions
     }
   }
 }

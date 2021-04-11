@@ -1,29 +1,40 @@
 type Post {
-  # identifier of the post. This is unique
+  # Primary key
   id: Int
   # Title of the post
   title: String
-  # The html content of the post
+  # Html content of the post
   html: String
-  # The md content of the post
+  # Markdown content of the post
   md: String
-  # Small description of the post
-  excerpt: String
-  # Draft made to the post in md format
+  # Draft for republishing content
   md_draft: String
-  # Slug
-  slug: String
-  # Cover image
+  # Author information of the post
+  author: Author
+  # A breif summary of the post
+  excerpt: String
+  # Convert image of the post
   cover_image: Image
-  # Is the post featured
-  featured: Boolean
-  # total reading time
-  reading_time: String
-  status: String
+  # Type of the post. Can be "page" or "post"
   type: PostTypes
+  # Status of the post
+  status: PostStatusOptions
+  # Featured post
+  featured: Boolean
+  # The uri of the post
+  slug: String
+  # The creation date of the post
   createdAt: Date
+  # The published date of the post
   publishedAt: Date
+  # The date scheduled to publish the post
   scheduledAt: Date
+  # Last updated date of the post
+  updatedAt: Date
+  # Reading time of the post in minutes
+  reading_time: String
+  # Tags of the post
+  tags: [Tags!]
 }
 
 enum PostStatusOptions {
@@ -57,9 +68,12 @@ input PostsFilters {
   featured: Boolean
   previewHash: String
   status: PostStatusOptions
-  tagSlug: String
-  tag: String
+  # name of author. entering  this field will ignore tagSlug and tag
   author: String
+  # url of a tag. entering this field will ignore tag
+  tagSlug: String
+  # name of a tag.
+  tag: String
   cursor: Int
   page: Int
   offset: Int

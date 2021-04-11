@@ -2,8 +2,10 @@ import http from "http";
 import cheerio from "cheerio";
 import sizeOf from "image-size";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
-import { Post } from "./../../db/models/post";
+import { Post as ModelPost, PostAttributes } from "./../../db/models/post";
 import logger from "../../shared/logger";
+import config from "../../config";
+import { Post } from "../../__generated__/lib/type-defs.graphqls";
 
 function toSlug(str: string): string {
   return str
@@ -17,7 +19,7 @@ function toSlug(str: string): string {
 }
 
 export async function slugify(
-  PostModel: typeof Post,
+  PostModel: typeof ModelPost,
   slug: string,
 ): Promise<string> {
   slug = toSlug(slug);
@@ -114,3 +116,33 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
   }
   return $.html();
 };
+
+export function normalizePost(postFromDb: PostAttributes): Post {
+  const host = config.ROOT_URL + config.BASE_NAME;
+  let {
+    cover_image_width,
+    cover_image_height,
+    cover_image,
+    slug,
+    ...rest
+  } = postFromDb;
+  if (cover_image && cover_image.startsWith("/")) {
+    cover_image = host + "/" + cover_image;
+  }
+
+  // normalize cover image
+  const post = {
+    ...rest,
+    cover_image: {
+      src: cover_image || "",
+      width: cover_image_width || 0,
+      height: cover_image_height || 0,
+    },
+    slug: "/" + rest.type + "/" + slug,
+    publishedAt: (getReadableDate(rest.publishedAt) as unknown) as Date,
+    updatedAt: (getReadableDate(rest.updatedAt) as unknown) as Date,
+    createdAt: (getReadableDate(rest.createdAt) as unknown) as Date,
+  };
+
+  return post;
+}

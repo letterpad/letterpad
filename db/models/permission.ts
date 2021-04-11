@@ -1,6 +1,6 @@
-import { Role } from "./role";
 import { DataTypes, Model, Optional } from "sequelize";
-import config from "../../config";
+
+import restoreSequelizeAttributesOnClass from "./_tooling";
 
 export interface PermissionAttributes {
   id: number;
@@ -19,7 +19,10 @@ export class Permission
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  // public addTags!: HasManyAddAssociationMixin<Post, number>;
+  constructor(...args) {
+    super(...args);
+    restoreSequelizeAttributesOnClass(new.target, this, []);
+  }
 }
 
 export default function initPermission(sequelize) {

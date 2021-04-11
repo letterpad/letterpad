@@ -1,174 +1,230 @@
-import { Op, Sequelize } from "sequelize";
+import { PostTypes } from "./../../__generated__/lib/queries/partial.graphql";
+import { Op, Order } from "sequelize";
 import {
-  MutationResolvers,
+  Permissions,
+  PostFilters,
   PostStatusOptions,
-  PostTypes,
   SortBy,
 } from "../../__generated__/lib/type-defs.graphqls";
 import { QueryResolvers } from "../type-defs.graphqls";
 import { ResolverContext } from "../apollo";
 import { decrypt } from "../utils/crypto";
-// import { PostTypes } from "../types";
+import models from "../../db/models";
+import { normalizePost } from "./helpers";
+import config from "../../config";
 
-const Query: Required<QueryResolvers<ResolverContext>> = {
+interface IPostCondition {
+  conditions: {
+    order: Order;
+    include: any;
+    where: {
+      id?: number | {};
+      featured?: boolean;
+      status: { [Op.ne]: PostStatusOptions.Trash };
+      type?: PostTypes;
+      author_id?: number;
+    };
+    limit: number;
+    offset?: number;
+    sortBy: "ASC" | "DESC";
+  };
+}
+const host = config.ROOT_URL + config.BASE_NAME;
+
+const Post = {
+  author: async post => {
+    const author = await post.getAuthor();
+    if (author && author.avatar.startsWith("/")) {
+      author.avatar = host + author.avatar;
+    }
+    return author;
+  },
+  tags: async post => {
+    const taxonomies = await post.getTags();
+    return taxonomies.map(item => {
+      item.slug = "/tag/" + item.slug;
+      return item;
+    });
+  },
+};
+
+const Query: QueryResolvers<ResolverContext> = {
   /**
    * Query to take care of multiple post in one page.
    * Used for Search and Admin posts and pages list.
    */
-  async posts(_parent, args, _context, _info) {
-    // if (!args.filters.type) {
-    //   args.filters.type = PostTypes.Post;
-    // }
+  async posts(_parent, args, context, _info) {
     // the query params can be a type of the post
-    const query = {
-      ...args.filters,
+
+    const query: IPostCondition = {
       conditions: {
-        order: [["publishedAt", SortBy.Desc]] as any,
+        order: [["publishedAt", SortBy.Desc]],
         include: [],
+        sortBy: "DESC",
         where: {
-          id: null,
+          id: 0,
           featured: false,
           status: { [Op.ne]: PostStatusOptions.Trash },
-          type: "",
+          type: PostTypes.Post,
+          author_id: 0,
         },
         limit: 20,
         offset: 0,
       },
     };
 
-    // resolve menu filter
-
-    if (args.filters.tagSlug) {
-      let { tagSlug } = args.filters;
-      if (tagSlug === "/") {
-        // get the first menu item.
-        const { value } = await _context.models.Setting.findOne({
-          attributes: ["value"],
-          where: { option: "menu" },
-          raw: true,
-        });
-        tagSlug = JSON.parse(value)[0].slug;
-      }
-      const taxTag = await _context.models.Tags.findOne({
-        where: { slug: tagSlug },
-      });
-
-      if (taxTag) {
-        query.conditions.include.push({
-          model: _context.models.PostTags,
-          where: { tags_id: taxTag.getDataValue("id") },
-          require: true,
-        });
-      }
-    }
-
-    // resolve tag filter
-
-    if (args.filters.tag) {
-      const taxTag = await _context.models.Tags.findOne({
-        where: Sequelize.where(
-          Sequelize.fn("lower", Sequelize.col("name")),
-          Sequelize.fn("lower", args.filters.tag),
-        ),
-      });
-      if (taxTag) {
-        query.conditions.include.push({
-          model: _context.models.PostTags,
-          where: { tags_id: taxTag.getDataValue("id") },
-          require: true,
-        });
-      }
-    }
-
-    // resolve author
-    if (args.filters.author) {
-      const authorCondition = {
-        where: {
-          name: { [Op.eq]: args.filters.author },
-        },
-      };
-      const author = await _context.models.Author.findOne(authorCondition);
-
-      if (author) {
-        query.conditions.include.push({
-          model: _context.models.Author,
-          where: { id: author.getDataValue("id") },
-          require: true,
-        });
-      }
-    }
-
-    // pagination
-    if (args.filters.cursor) {
-      query.conditions.where.id = { [Op.gt]: args.filters.cursor };
+    // id
+    if (args?.filters?.id) {
+      query.conditions.where.id = args.filters.id;
     } else {
       delete query.conditions.where.id;
     }
 
-    if (args.filters.page) {
+    // pagination
+    if (args?.filters?.cursor) {
+      query.conditions.where.id = { [Op.gt]: args.filters.cursor };
+    }
+
+    if (args?.filters?.page) {
       query.conditions.offset =
         (args.filters.page - 1) * query.conditions.limit;
     } else {
       delete query.conditions.offset;
     }
 
-    if (args.filters.limit) {
+    if (args?.filters?.limit) {
       query.conditions.limit = args.filters.limit;
     }
 
     // resolve status type and filter
-    if (args.filters.featured) {
+    if (args?.filters?.featured) {
       query.conditions.where.featured = args.filters.featured;
     } else {
       delete query.conditions.where.featured;
     }
 
     // resolve type
-    if (args.filters.type) {
+    if (args?.filters?.type) {
       query.conditions.where.type = args.filters.type;
-    } else {
-      delete query.conditions.where.type;
     }
 
     // resolve status
-    if (args.filters.status) {
+    if (args?.filters?.status) {
       query.conditions.where.status = { [Op.eq]: args.filters.status } as any;
     }
 
     // sort
-    if (args.filters.sortBy) {
+    if (args?.filters?.sortBy) {
       query.conditions.order = [["publishedAt", args.filters.sortBy]];
     }
 
-    // if (user && user.id) {
-    //   args.conditions.order = [
-    //     ["updatedAt", args.sortBy === "oldest" ? "ASC" : "DESC"],
-    //   ];
-    // }
+    if (context && context.session && args?.filters?.sortBy) {
+      query.conditions.order = [["updatedAt", args.filters.sortBy]];
+    }
 
-    const posts = await _context.models.Post.findAll(query.conditions);
+    // resolve author
+    if (args?.filters?.author) {
+      const author = await models.Author.findOne({
+        where: { name: args.filters.author },
+      });
+      delete query.conditions.where.author_id;
 
-    return posts.map(post => post.toJSON());
+      if (author) {
+        const posts = await author.getPosts(query.conditions);
+        return posts.map(p => normalizePost(p));
+      }
+    } else {
+      delete query.conditions.where.author_id;
+    }
+
+    // resolve menu filter
+
+    if (args?.filters?.tagSlug) {
+      let { tagSlug } = args.filters;
+      if (tagSlug === "/") {
+        // get the first menu item.
+        const setting = await models.Setting.findOne({
+          attributes: ["value"],
+          where: { option: "menu" },
+          raw: true,
+        });
+
+        tagSlug = setting ? JSON.parse(setting.value)[0].slug : null;
+      }
+
+      const taxTag = await models.Tags.findOne({
+        where: { slug: tagSlug },
+      });
+
+      if (taxTag) {
+        const posts = await taxTag.getPosts(query.conditions);
+        return posts.map(p => normalizePost(p));
+      }
+
+      return [];
+    }
+
+    // resolve tag filter
+    if (args?.filters?.tag) {
+      const tag = await models.Tags.findOne({
+        where: { name: args.filters.tag },
+      });
+
+      if (tag) {
+        const posts = await tag.getPosts(query.conditions);
+        return posts.map(p => normalizePost(p));
+      } else {
+        return [];
+      }
+    }
+
+    const posts = await models.Post.findAll(query.conditions);
+
+    return posts.map(post => normalizePost(post));
   },
 
-  async post(_parent, args, _context, _info) {
+  async post(_parent, args, context, _info) {
+    if (!args.filters) return {};
+    const session = await context.session;
+
     const { previewHash, ...filters } = args.filters;
-    const conditions = { where: { ...filters } };
+    const conditions = {
+      where: { ...filters, author_id: 0 } as PostFilters & {
+        author_id?: number;
+      },
+    };
+
+    if (session?.user.permissions) {
+      //  Author should not see others posts from admin panel
+      if (session.user.permissions.includes(Permissions.ManageOwnPosts)) {
+        conditions.where.author_id = session.user.id;
+      } else {
+        delete conditions.where.author_id;
+      }
+    }
+
+    if (!session) {
+      conditions.where.status = PostStatusOptions.Publish;
+      delete conditions.where.author_id;
+    }
+
     if (args.filters.id) {
       conditions.where.id = args.filters.id;
     }
+
     if (args.filters.slug) {
       conditions.where.slug = args.filters.slug;
     }
+
     if (previewHash) {
       conditions.where.id = Number(decrypt(previewHash));
       delete conditions.where.status;
     }
 
-    const post = await _context.models.Post.findOne(conditions);
+    const post = await models.Post.findOne(conditions);
 
-    return post.toJSON();
+    return post ? normalizePost(post) : {};
   },
 };
 
-export default { Query };
+export default { Query, Post };
