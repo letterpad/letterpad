@@ -116,33 +116,3 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
   }
   return $.html();
 };
-
-export function normalizePost(postFromDb: PostAttributes): Post {
-  const host = config.ROOT_URL + config.BASE_NAME;
-  let {
-    cover_image_width,
-    cover_image_height,
-    cover_image,
-    slug,
-    ...rest
-  } = postFromDb;
-  if (cover_image && cover_image.startsWith("/")) {
-    cover_image = host + "/" + cover_image;
-  }
-
-  // normalize cover image
-  const post = {
-    ...rest,
-    cover_image: {
-      src: cover_image || "",
-      width: cover_image_width || 0,
-      height: cover_image_height || 0,
-    },
-    slug: "/" + rest.type + "/" + slug,
-    publishedAt: (getReadableDate(rest.publishedAt) as unknown) as Date,
-    updatedAt: (getReadableDate(rest.updatedAt) as unknown) as Date,
-    createdAt: (getReadableDate(rest.createdAt) as unknown) as Date,
-  };
-
-  return post;
-}

@@ -24,11 +24,18 @@ const { seed } = require("./seed");
   // await post.createTags({ slug: "hello", name: "hello" });
   // const Tags = await post.getTags();
   // console.log("post :>> ", Tags);
-  const author = await models.Author.findOne({ where: { id: 2 } });
-  if (author) {
-    const posts = await author.hasPost(2);
-    console.log(posts);
-  }
+  // const author = await models.Author.findOne({ where: { id: 1 } });
+  // if (author) {
+  //   const role = await author.getRole();
+  //   const perm = await role.getPermissions();
+  //   perm.map(a => console.log(a.name));
+  //   // console.log("author.social :>> ", author.social);
+  // }
+
+  const post = await models.Post.findOne({ where: { id: 1 } });
+  const tags = await post.getTags();
+  const t = tags.map(tag => tag.get());
+  console.log("t :>> ", t);
 })();
 
 // seed(models).catch(e => {

@@ -11,7 +11,6 @@ import {
   getDateTime,
   getImageDimensions,
   setImageWidthAndHeightInHtml,
-  normalizePost,
 } from "./helpers";
 import config from "../../config";
 import logger from "../../shared/logger";
@@ -19,12 +18,12 @@ import { updatePostOptionalArgs } from "../types";
 
 const host = config.ROOT_URL + config.BASE_NAME;
 
-const Mutation: Required<MutationResolvers<ResolverContext>> = {
+const Mutation: MutationResolvers<ResolverContext> = {
   async createPost(_parent, args, context, _info) {
     if (!args.data || !context.models) {
       return {
         ok: false,
-        post: {},
+        post: null,
       };
     }
     // _args.data.authorId = user.id;
@@ -46,7 +45,7 @@ const Mutation: Required<MutationResolvers<ResolverContext>> = {
 
     return {
       ok: true,
-      post: normalizePost(newPost.toJSON() as PostAttributes),
+      post: newPost.get(),
     };
   },
 
@@ -54,7 +53,7 @@ const Mutation: Required<MutationResolvers<ResolverContext>> = {
     if (!args.data || !context.models) {
       return {
         ok: false,
-        post: {},
+        post: null,
       };
     }
     const previousPostRaw = await context.models.Post.findOne({
@@ -104,7 +103,10 @@ const Mutation: Required<MutationResolvers<ResolverContext>> = {
     // date and status
     if (isPublishingLive(previousPost.status, args.data.status)) {
       data.publishedAt = currentTime;
-      logger.debug("Post status changed from draft to publish - ", currentTime);
+      logger.debug(
+        "Post status changed from draft to published - ",
+        currentTime,
+      );
       data.scheduledAt = null;
     }
 
@@ -266,7 +268,7 @@ function isPublishingLive(
   newStatus?: PostStatusOptions | null,
 ) {
   return (
-    newStatus === PostStatusOptions.Publish &&
+    newStatus === PostStatusOptions.Published &&
     oldStatus === PostStatusOptions.Draft
   );
 }
@@ -276,14 +278,14 @@ function rePublished(
   currentStatus?: PostStatusOptions | null,
 ) {
   return (
-    prevStatus === PostStatusOptions.Publish &&
-    currentStatus === PostStatusOptions.Publish
+    prevStatus === PostStatusOptions.Published &&
+    currentStatus === PostStatusOptions.Published
   );
 }
 function savingDraft(
   prevStatus: PostStatusOptions,
   statusArg?: PostStatusOptions | null,
 ) {
-  return !statusArg && prevStatus === PostStatusOptions.Publish;
+  return !statusArg && prevStatus === PostStatusOptions.Published;
 }
 export default { Mutation };

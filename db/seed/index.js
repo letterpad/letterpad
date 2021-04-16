@@ -16,12 +16,12 @@ const { seed } = require("./seed");
 
 (async () => {
   // await models.sequelize.sync({ force: true });
-  const post = await models.Post.findOne({ where: { id: 1 } });
-  const perms = await role.getPermissions();
-  console.log("perms :>> ", perms);
+  // const post = await models.Post.findOne({ where: { id: 1 } });
+  // const perms = await role.getPermissions();
+  // console.log("perms :>> ", perms);
 })();
 
-// seed(models).catch(e => {
-//   console.error(e);
-//   process.exit(1);
-// });
+seed(models).catch(e => {
+  console.error(e);
+  process.exit(1);
+});

@@ -1,3 +1,4 @@
+import { PostAttributes } from "./../../db/models/post";
 import { PostTypes } from "./../../__generated__/lib/queries/partial.graphql";
 import { Op, Order } from "sequelize";
 import {
@@ -10,8 +11,6 @@ import { QueryResolvers } from "../type-defs.graphqls";
 import { ResolverContext } from "../apollo";
 import { decrypt } from "../utils/crypto";
 import models from "../../db/models";
-import { normalizePost } from "./helpers";
-import config from "../../config";
 
 interface IPostCondition {
   conditions: {
@@ -20,7 +19,7 @@ interface IPostCondition {
     where: {
       id?: number | {};
       featured?: boolean;
-      status: { [Op.ne]: PostStatusOptions.Trash };
+      status: { [Op.ne]: PostStatusOptions.Trashed };
       type?: PostTypes;
       author_id?: number;
     };
@@ -29,22 +28,22 @@ interface IPostCondition {
     sortBy: "ASC" | "DESC";
   };
 }
-const host = config.ROOT_URL + config.BASE_NAME;
 
 const Post = {
-  author: async post => {
-    const author = await post.getAuthor();
-    if (author && author.avatar.startsWith("/")) {
-      author.avatar = host + author.avatar;
+  author: async ({ id }: PostAttributes) => {
+    const post = await models.Post.findOne({ where: { id: id } });
+    if (post) {
+      const author = await post.getAuthor();
+      return author.get();
     }
-    return author;
+    return {};
   },
-  tags: async post => {
-    const taxonomies = await post.getTags();
-    return taxonomies.map(item => {
-      item.slug = "/tag/" + item.slug;
-      return item;
-    });
+  tags: async ({ id }: PostAttributes) => {
+    const post = await models.Post.findOne({ where: { id: id } });
+    if (post) {
+      const tags = await post.getTags();
+      return tags.map(tag => tag.get());
+    }
   },
 };
 
@@ -64,7 +63,7 @@ const Query: QueryResolvers<ResolverContext> = {
         where: {
           id: 0,
           featured: false,
-          status: { [Op.ne]: PostStatusOptions.Trash },
+          status: { [Op.ne]: PostStatusOptions.Trashed },
           type: PostTypes.Post,
           author_id: 0,
         },
@@ -131,7 +130,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
       if (author) {
         const posts = await author.getPosts(query.conditions);
-        return posts.map(p => normalizePost(p));
+        return posts.map(p => p.get());
       }
     } else {
       delete query.conditions.where.author_id;
@@ -158,7 +157,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
       if (taxTag) {
         const posts = await taxTag.getPosts(query.conditions);
-        return posts.map(p => normalizePost(p));
+        return posts.map(p => p.get());
       }
 
       return [];
@@ -172,7 +171,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
       if (tag) {
         const posts = await tag.getPosts(query.conditions);
-        return posts.map(p => normalizePost(p));
+        return posts.map(p => p.get());
       } else {
         return [];
       }
@@ -180,7 +179,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
     const posts = await models.Post.findAll(query.conditions);
 
-    return posts.map(post => normalizePost(post));
+    return posts.map(post => post.get());
   },
 
   async post(_parent, args, context, _info) {
@@ -204,7 +203,7 @@ const Query: QueryResolvers<ResolverContext> = {
     }
 
     if (!session) {
-      conditions.where.status = PostStatusOptions.Publish;
+      conditions.where.status = PostStatusOptions.Published;
       delete conditions.where.author_id;
     }
 
@@ -223,7 +222,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
     const post = await models.Post.findOne(conditions);
 
-    return post ? normalizePost(post) : {};
+    return post ? post.get() : {};
   },
 };
 

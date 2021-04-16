@@ -72,6 +72,9 @@ export default function initTags(sequelize) {
       slug: {
         type: DataTypes.STRING,
         defaultValue: config.defaultTitle,
+        get() {
+          return "/tag/" + this.slug;
+        },
       },
       type: {
         type: DataTypes.STRING,

@@ -16,6 +16,9 @@ import {
 import config from "../../config";
 import { PostStatusOptions, PostTypes } from "../../lib/type-defs.graphqls";
 import restoreSequelizeAttributesOnClass from "./_tooling";
+import { getReadableDate } from "../../lib/resolvers/helpers";
+
+const host = config.ROOT_URL + config.BASE_NAME;
 
 export interface PostAttributes {
   id: number;
@@ -120,6 +123,16 @@ export default function initPost(sequelize) {
       cover_image: {
         type: DataTypes.STRING,
         defaultValue: "",
+        get() {
+          if (this.cover_image && this.cover_image.startsWith("/")) {
+            this.cover_image = host + "/" + this.cover_image;
+          }
+          return {
+            src: this.cover_image,
+            width: this.cover_image_width,
+            height: this.cover_image_height,
+          };
+        },
       },
       cover_image_width: {
         type: DataTypes.INTEGER,
@@ -144,6 +157,9 @@ export default function initPost(sequelize) {
       slug: {
         type: DataTypes.STRING,
         defaultValue: "",
+        get() {
+          return "/" + this.type + "/" + this.slug;
+        },
       },
       reading_time: {
         type: DataTypes.STRING,
@@ -151,15 +167,27 @@ export default function initPost(sequelize) {
       },
       publishedAt: {
         type: DataTypes.DATE,
+        get() {
+          return getReadableDate(this.publishedAt);
+        },
       },
       scheduledAt: {
         type: DataTypes.DATE,
+        get() {
+          return this.scheduledAt ? getReadableDate(this.scheduledAt) : "";
+        },
       },
       updatedAt: {
         type: DataTypes.DATE,
+        get() {
+          return getReadableDate(this.updatedAt);
+        },
       },
       createdAt: {
         type: DataTypes.DATE,
+        get() {
+          return getReadableDate(this.createdAt);
+        },
       },
     },
     {
@@ -177,7 +205,7 @@ export function associatePost(Post) {
     foreignKey: "post_id",
   });
   // Post.hasMany(Tags);
-  Post.belongsTo(Author, { foreignKey: "AuthorId" });
+  Post.belongsTo(Author, { foreignKey: "author_id" });
 
   return Post;
 }

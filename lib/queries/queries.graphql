@@ -3,6 +3,42 @@
 query Post($filters: PostFilters) {
   post(filters: $filters) {
     ...Partial
+    author {
+      name
+      social {
+        github
+        twitter
+        instagram
+      }
+      bio
+    }
+    tags {
+      id
+      name
+      desc
+      slug
+    }
+  }
+}
+
+query Posts($filters: PostsFilters) {
+  posts(filters: $filters) {
+    ...Partial
+    author {
+      name
+      social {
+        github
+        twitter
+        instagram
+      }
+      bio
+    }
+    tags {
+      id
+      name
+      desc
+      slug
+    }
   }
 }
 
@@ -15,6 +51,52 @@ mutation Login($data: LoginData) {
       role
       avatar
       permissions
+    }
+  }
+}
+
+query settings {
+  settings {
+    site_title
+    site_tagline
+    site_email
+    site_url
+    site_footer
+    site_description
+    subscribe_embed
+    social_twitter
+    social_facebook
+    social_instagram
+    social_github
+    displayAuthorInfo
+    cloudinary_key
+    cloudinary_name
+    cloudinary_secret
+    menu {
+      label
+      original_name
+      slug
+      type
+    }
+    css
+    google_analytics
+    locale
+    theme
+    disqus_id
+    banner {
+      src
+      width
+      height
+    }
+    site_logo {
+      src
+      width
+      height
+    }
+    site_favicon {
+      src
+      width
+      height
     }
   }
 }

@@ -1,4 +1,5 @@
 import { DataTypes, Model, Optional } from "sequelize";
+import { Author } from "./author";
 
 export interface MediaAttributes {
   id: number;

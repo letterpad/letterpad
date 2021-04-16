@@ -15,6 +15,10 @@ import {
   HasOneGetAssociationMixin,
 } from "sequelize";
 import restoreSequelizeAttributesOnClass from "./_tooling";
+import config from "../../config";
+import { Media } from "./media";
+
+const host = config.ROOT_URL + config.BASE_NAME;
 
 // These are all the attributes in the User model
 interface AuthorAttributes {
@@ -52,6 +56,7 @@ export class Author
   // these will not exist until `Model.init` was called.
   public getPosts!: HasManyGetAssociationsMixin<Post>; // Note the null assertions!
   public addPost!: HasManyAddAssociationMixin<Post, number>;
+  public addMedia!: HasManyAddAssociationMixin<Media, number>;
   public hasPost!: HasManyHasAssociationMixin<Post, number>;
   public countPosts!: HasManyCountAssociationsMixin;
   public createPost!: HasManyCreateAssociationMixin<Post>;
@@ -106,6 +111,12 @@ export default function initAuthor(sequelize: Sequelize) {
       avatar: {
         type: new DataTypes.STRING(128),
         allowNull: true,
+        get() {
+          if (this.avatar.startsWith("/")) {
+            return host + this.avatar;
+          }
+          return this.avatar;
+        },
       },
       social: {
         type: new DataTypes.STRING(128),
@@ -132,4 +143,6 @@ export function associateAuthor(): void {
   });
 
   Author.belongsTo(Role, { as: "role" });
+
+  Author.hasMany(Media, { sourceKey: "id" });
 }

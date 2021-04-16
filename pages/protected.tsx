@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/client";
+import { getSession, useSession } from "next-auth/client";
+import {
+  PostDocument,
+  PostQuery,
+  PostQueryVariables,
+} from "../__generated__/lib/queries/queries.graphql";
+import { initializeApollo } from "../lib/apollo";
 
-export default function Page() {
+export default function Page(pageProps) {
   const [session, loading] = useSession();
   const [content, setContent] = useState();
 
@@ -13,6 +19,8 @@ export default function Page() {
     return <div>Access denied</div>;
   }
 
+  console.log("pageProps :>> ", pageProps);
+
   // If session exists, display content
   return (
     <div>
@@ -22,4 +30,23 @@ export default function Page() {
       </p>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const apolloClient = await initializeApollo({}, context);
+
+  const post = await apolloClient.query<PostQuery, PostQueryVariables>({
+    query: PostDocument,
+    variables: {
+      filters: {
+        id: 1,
+      },
+    },
+  });
+
+  return {
+    props: {
+      data: post.data,
+    },
+  };
 }

@@ -95,9 +95,9 @@ const Index = () => {
 // export async function getStaticProps() {
 //   const apolloClient = initializeApollo();
 
-//   await apolloClient.query({
-//     query: ViewerDocument,
-//   });
+//   // await apolloClient.query({
+//   //   query: ViewerDocument,
+//   // });
 
 //   return {
 //     props: {
