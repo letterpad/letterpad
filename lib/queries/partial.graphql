@@ -12,6 +12,8 @@ fragment Partial on Post {
   createdAt
   publishedAt
   scheduledAt
+  updatedAt
+  reading_time
   cover_image {
     src
     width

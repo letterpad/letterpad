@@ -6,6 +6,7 @@ import {
   Post,
   PostStatusOptions,
 } from "../../../__generated__/lib/type-defs.graphqls";
+import Tags from "./tags";
 
 const { TextArea } = Input;
 
@@ -23,8 +24,6 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
   const onClose = () => {
     setVisible(false);
   };
-
-  const onChange = () => {};
 
   return (
     <>
@@ -45,12 +44,22 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
           </Tooltip>
 
           <Checkbox
-            onChange={onChange}
+            onChange={e =>
+              setPostAttribute(
+                "status",
+                e.target.checked
+                  ? PostStatusOptions.Published
+                  : PostStatusOptions.Draft,
+              )
+            }
             checked={post.status === PostStatusOptions.Published}
           >
             Unpublish this post
           </Checkbox>
-          <Checkbox onChange={onChange} checked={post.featured}>
+          <Checkbox
+            onChange={e => setPostAttribute("featured", e.target.checked)}
+            checked={post.featured}
+          >
             Mark as featured post
           </Checkbox>
           <div>
@@ -58,29 +67,18 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
             <TextArea
               showCount
               maxLength={160}
-              onChange={onChange}
+              onChange={e => setPostAttribute("excerpt", e.target.value)}
               value={post.excerpt}
             />
           </div>
           <div>
             <label>Path</label>
-            <Input onChange={onChange} value={post.slug} />
+            <Input
+              onChange={e => setPostAttribute("slug", e.target.value)}
+              value={post.slug}
+            />
           </div>
-          <div>
-            <label>Tags</label>
-            {post.tags.map(tag => (
-              <Tag
-                key={tag.name}
-                closable
-                onClose={() => {
-                  const tags = post.tags.filter(ele => ele.name !== tag.name);
-                  setPostAttribute("tags", tags);
-                }}
-              >
-                {tag.name}
-              </Tag>
-            ))}
-          </div>
+          <Tags post={post} setPostAttribute={setPostAttribute} />
           <div>
             <label>Cover Image</label>
             <ImageUpload url={post.cover_image.src} />

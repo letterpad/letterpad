@@ -16,8 +16,12 @@ const { seed } = require("./seed");
 
 (async () => {
   // await models.sequelize.sync({ force: true });
-  // const post = await models.Post.findOne({ where: { id: 1 } });
+  const author = await models.Author.findOne({ where: { id: 1 } });
+  const media = await models.Media.findOne({ where: { id: 3 } });
+  await author.addMedia(media);
+  // const role = await models.Role.findOne({ where: { id: 1 } });
   // const perms = await role.getPermissions();
+  // await author.addRole(role);
   // console.log("perms :>> ", perms);
 })();
 

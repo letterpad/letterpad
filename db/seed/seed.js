@@ -47,8 +47,15 @@ export const seed = async (dbModels, autoExit = true) => {
 
   console.time("insert authors and Tags");
   await Promise.all([insertAuthor(models), insertTags(models)]);
-
   console.timeEnd("insert authors and Tags");
+
+  console.time("Asssign Role to author");
+  const role = await models.Role.findOne({ where: { id: 1 } });
+  const authors = await models.Author.findAll();
+  authors.map(async author => {
+    await author.setRole(role);
+  });
+  console.timeEnd("Asssign Role to author");
 
   console.time("insert posts, settings, media");
   const [tags] = await Promise.all([
@@ -136,7 +143,6 @@ export async function insertAuthor(models) {
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
-      RoleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar:
@@ -152,7 +158,6 @@ export async function insertAuthor(models) {
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
-      RoleId: 1,
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar:

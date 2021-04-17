@@ -34,7 +34,6 @@ const PostTitle: React.FC<IPostTitleProps> = ({
     <Input
       onBlur={async (e: React.FocusEvent<HTMLInputElement>) => {
         onTitleChange(e.target.innerText);
-        // await PostActions.updatePost();
       }}
       contentEditable={true}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

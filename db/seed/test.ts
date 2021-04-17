@@ -32,10 +32,12 @@ const { seed } = require("./seed");
   //   // console.log("author.social :>> ", author.social);
   // }
 
-  const post = await models.Post.findOne({ where: { id: 1 } });
-  const tags = await post.getTags();
-  const t = tags.map(tag => tag.get());
-  console.log("t :>> ", t);
+  const s = await models.Setting.findOne({
+    raw: true,
+    where: { option: "menu" },
+  });
+
+  console.log("a :>> ", s.get());
 })();
 
 // seed(models).catch(e => {

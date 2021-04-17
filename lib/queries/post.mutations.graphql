@@ -9,14 +9,35 @@ mutation createPost($data: InputCreatePost) {
     }
     post {
       ...Partial
-      # author {
-      #   name
-      # }
-      # tags {
-      #   id
-      #   name
-      #   slug
-      # }
+      author {
+        name
+      }
+      tags {
+        id
+        name
+        slug
+      }
+    }
+  }
+}
+
+mutation updatePost($data: InputUpdatePost) {
+  updatePost(data: $data) {
+    ok
+    errors {
+      path
+      message
+    }
+    post {
+      ...Partial
+      author {
+        name
+      }
+      tags {
+        id
+        name
+        slug
+      }
     }
   }
 }

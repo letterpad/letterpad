@@ -46,6 +46,7 @@ mutation Login($data: LoginData) {
   login(data: $data) {
     status
     data {
+      id
       name
       email
       role

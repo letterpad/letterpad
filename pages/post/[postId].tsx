@@ -4,16 +4,28 @@ import {
   PostQuery,
   PostQueryVariables,
 } from "../../__generated__/lib/queries/queries.graphql";
+import {
+  UpdatePostDocument,
+  UpdatePostMutation,
+  UpdatePostMutationVariables,
+} from "../../__generated__/lib/queries/post.mutations.graphql";
 import LetterpadEditor from "letterpad-editor";
 import { initializeApollo } from "../../lib/apollo";
 import { Layout, PageHeader, Tag } from "antd";
 import { useRouter } from "next/router";
 import PostTitle from "./PostTitle";
 import Actions from "./actions";
-import { PostStatusOptions } from "../../__generated__/lib/type-defs.graphqls";
+import {
+  Post,
+  PostStatusOptions,
+} from "../../__generated__/lib/type-defs.graphqls";
 import { useState } from "react";
 import { uploadFile } from "../../shared/upload";
+import { removeTypenames } from "../../shared/removeTypenames";
+
 const { Content, Footer } = Layout;
+
+type ValueOf<T> = T[keyof T];
 
 export default function Page(pageProps) {
   const router = useRouter();
@@ -28,16 +40,18 @@ export default function Page(pageProps) {
   }
 
   const tagColor =
-    post.status === PostStatusOptions.Published ? "green" : "transparent";
+    post.status === PostStatusOptions.Published ? "green" : "orange";
 
   const uploadImage = async (files: FileList) => {
     const uploadedFiles = await uploadFile({ files, type: "post_image" });
     return uploadedFiles[0].src;
   };
 
-  const setPostAttribute = (key, value) => {
+  const setPostAttribute = async (key: keyof Post, value: ValueOf<Post>) => {
     setPost({ ...post, [key]: value });
+    updatePostRequest(key, value, post.id, setPost);
   };
+
   return (
     <Layout>
       <PageHeader
@@ -58,9 +72,7 @@ export default function Page(pageProps) {
             text={post.title}
             placeholder="Enter a title"
             onChange={(value: string) => {
-              // PostActions.setDraft({
-              //   title: value,
-              // });
+              setPostAttribute("title", value);
             }}
           />
 
@@ -85,7 +97,6 @@ export default function Page(pageProps) {
 
 export async function getServerSideProps(context) {
   const apolloClient = await initializeApollo({}, context);
-
   const post = await apolloClient.query<PostQuery, PostQueryVariables>({
     query: PostDocument,
     variables: {
@@ -94,9 +105,40 @@ export async function getServerSideProps(context) {
       },
     },
   });
+
   return {
     props: {
       data: post.data,
     },
   };
 }
+
+const updatePostRequest = async (
+  key: keyof Post,
+  value: ValueOf<Post>,
+  postId: number,
+  onFail: (post: Post) => void,
+) => {
+  const apolloClient = await initializeApollo();
+  const result = await apolloClient.mutate<
+    UpdatePostMutation,
+    UpdatePostMutationVariables
+  >({
+    mutation: UpdatePostDocument,
+    variables: {
+      data: { ...removeTypenames({ [key]: value }), id: postId },
+    },
+  });
+
+  if (result.errors?.length) {
+    const postData = await apolloClient.query<PostQuery, PostQueryVariables>({
+      query: PostDocument,
+      variables: {
+        filters: {
+          id: postId,
+        },
+      },
+    });
+    onFail(postData.data.post);
+  }
+};

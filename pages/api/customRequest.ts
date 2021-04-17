@@ -103,7 +103,7 @@ export default async (
             "/uploads/" + filename,
           );
         }
-        await upsertMedia(result, session.user.email);
+        await upsertMedia(result, session.user.id);
         output.push(result);
       } catch (e) {
         logger.error(e);
@@ -113,22 +113,15 @@ export default async (
   }
 
   res.json(output);
-
-  res.json([
-    {
-      src:
-        "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
-    },
-  ]);
 };
 
-export async function upsertMedia(result: IMediaUploadResult, email: string) {
+export async function upsertMedia(result: IMediaUploadResult, id: number) {
   let media = await models.Media.findOne({
     where: {
       url: result.src,
     },
   });
-  const author = await models.Author.findOne({ where: { email } });
+  const author = await models.Author.findOne({ where: { id } });
   if (!author) {
     return;
   }

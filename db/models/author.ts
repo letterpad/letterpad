@@ -81,6 +81,7 @@ export class Author
       "createPost",
       "setRole",
       "getRole",
+      "addMedia",
     ]);
   }
 }
