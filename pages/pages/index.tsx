@@ -90,7 +90,7 @@ export default function Page(pageProps) {
       <Content style={{ margin: "24px 16px 0" }}>
         <div
           className="site-layout-background"
-          style={{ padding: 24, minHeight: "77vh" }}
+          style={{ padding: 24, minHeight: 360 }}
         >
           <Table columns={columns} dataSource={data} />
         </div>
@@ -106,7 +106,7 @@ export async function getServerSideProps(context) {
     query: PostsDocument,
     variables: {
       filters: {
-        type: PostTypes.Post,
+        type: PostTypes.Page,
       },
     },
   });
