@@ -1,3 +1,8 @@
+import { getSession } from "next-auth/client";
+import {
+  // Author as AuthorType,
+  QueryResolvers,
+} from "./../../__generated__/lib/type-defs.graphqls";
 import { ResolverContext } from "../apollo";
 import {
   MutationResolvers,
@@ -5,6 +10,8 @@ import {
   Role,
 } from "../../__generated__/lib/type-defs.graphqls";
 import models from "../../db/models";
+import bcrypt from "bcryptjs";
+import { getModifiedSession } from "./helpers";
 
 const Author = {
   role: async author => {
@@ -32,6 +39,21 @@ const Author = {
   },
 };
 
+const Query: QueryResolvers<ResolverContext> = {
+  async me(_parent, _args, context, _info) {
+    const session = await context.session;
+    if (!session) {
+      return null;
+    }
+
+    const author = await models.Author.findOne({
+      where: { id: session.user.id },
+    });
+
+    return author?.get();
+  },
+};
+
 const Mutation: MutationResolvers<ResolverContext> = {
   async login(_parent, args, _context, _info) {
     const author = await models.Author.findOne({
@@ -54,6 +76,37 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     return { status: false };
   },
+  async updateAuthor(_root, args, context) {
+    const session = await getModifiedSession(context);
+    if (session?.user.id !== args.author.id) {
+      return {
+        ok: true,
+        errors: [{ message: "No session", path: "updateAuthor resolver" }],
+      };
+    }
+    try {
+      const dataToUpdate = { ...args.author };
+
+      if (args.author.password) {
+        dataToUpdate.password = await bcrypt.hash(args.author.password, 12);
+      }
+
+      await models.Author.update(dataToUpdate as any, {
+        where: { id: args.author.id },
+      });
+
+      return {
+        ok: true,
+        errors: [],
+      };
+    } catch (e) {
+      console.log("e :>> ", e);
+      return {
+        ok: false,
+        errors: e, //utils.parseErrors(e),
+      };
+    }
+  },
 };
 
-export default { Mutation, Author };
+export default { Mutation, Author, Query };

@@ -6,3 +6,5 @@ plugins:
   - typescript-operations
   - typescript-react-apollo
 cacheDir: __generated__
+config:
+  maybeValue: T

@@ -13,13 +13,14 @@ const menuItems = {
   "/pages": "2",
   "/media": "3",
   "/tags": "4",
+  "/profile": "5",
 };
 
 const CustomLayout = ({ children }) => {
   const router = useRouter();
 
   const { pathname } = router;
-  console.log("menuItems[pathname] :>> ", menuItems[pathname]);
+
   return (
     <Layout>
       <Sider
@@ -62,6 +63,13 @@ const CustomLayout = ({ children }) => {
           </Menu.Item>
           <Menu.Item key={menuItems["/tags"]} icon={<UserOutlined />}>
             Tags
+          </Menu.Item>
+          <Menu.Item
+            key={menuItems["/profile"]}
+            icon={<UserOutlined />}
+            onClick={() => router.push("/profile")}
+          >
+            Profile
           </Menu.Item>
         </Menu>
       </Sider>

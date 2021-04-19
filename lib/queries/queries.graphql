@@ -42,6 +42,59 @@ query Posts($filters: PostsFilters) {
   }
 }
 
+query Media($filters: MediaFilters) {
+  media(filters: $filters) {
+    count
+    rows {
+      id
+      url
+      authorId
+      createdAt
+      name
+      description
+      width
+      height
+    }
+  }
+}
+
+query Me {
+  me {
+    id
+    name
+    social {
+      github
+      twitter
+      instagram
+      facebook
+    }
+    email
+    bio
+    avatar
+  }
+}
+
+mutation UpdateAuthor($author: InputAuthor!) {
+  updateAuthor(author: $author) {
+    ok
+    errors {
+      path
+      message
+    }
+    data {
+      name
+      social {
+        github
+        twitter
+        instagram
+        facebook
+      }
+      bio
+      avatar
+    }
+  }
+}
+
 mutation Login($data: LoginData) {
   login(data: $data) {
     status

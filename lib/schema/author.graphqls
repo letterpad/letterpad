@@ -7,13 +7,13 @@ type Social {
 
 type Author {
   id: Int!
-  email: String!
-  name: String!
+  email: String
+  name: String
   social: Social
-  role: Role!
-  permissions: [Permissions!]!
+  role: Role
+  permissions: [Permissions!]
   bio: String
-  avatar: String!
+  avatar: String
 }
 
 input LoginData {
@@ -26,6 +26,34 @@ type LoginResponse {
   data: Author
 }
 
+input InputSocial {
+  twitter: String
+  facebook: String
+  github: String
+  instagram: String
+}
+input InputAuthor {
+  id: Int!
+  email: String
+  name: String
+  bio: String
+  social: InputSocial
+  password: String
+  roleId: Int
+  avatar: String
+}
+
+type AuthorResponse {
+  ok: Boolean!
+  errors: [Error!]
+  data: Author
+}
+
+type Query {
+  me: Author
+}
+
 type Mutation {
   login(data: LoginData): LoginResponse
+  updateAuthor(author: InputAuthor!): AuthorResponse
 }

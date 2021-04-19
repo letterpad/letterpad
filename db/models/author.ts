@@ -113,19 +113,24 @@ export default function initAuthor(sequelize: Sequelize) {
         type: new DataTypes.STRING(128),
         allowNull: true,
         get() {
-          if (this.avatar.startsWith("/")) {
-            return host + this.avatar;
+          const avatar = this.getDataValue("avatar");
+          if (avatar) {
+            if (avatar.startsWith("/")) {
+              return host + avatar;
+            }
           }
-          return this.avatar;
+          return "";
         },
       },
       social: {
         type: new DataTypes.STRING(128),
         allowNull: true,
+        set(value) {
+          this.setDataValue("social", JSON.stringify(value) as Social);
+        },
         get() {
-          const social = this.getDataValue("social");
-          if (social) return JSON.parse(social as string);
-          return {};
+          const social = this.getDataValue("social") as string;
+          return JSON.parse(social);
         },
       },
     },

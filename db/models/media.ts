@@ -1,5 +1,6 @@
+import { getReadableDate } from "./../../lib/resolvers/helpers";
 import { DataTypes, Model, Optional } from "sequelize";
-import { Author } from "./author";
+import config from "../../config";
 
 export interface MediaAttributes {
   id: number;
@@ -8,6 +9,8 @@ export interface MediaAttributes {
   width: number;
   height: number;
   description: string;
+  updatedAt: Date;
+  createdAt: Date;
 }
 
 export interface MediaCreationAttributes
@@ -42,6 +45,12 @@ export default function initMedia(sequelize) {
       },
       url: {
         type: DataTypes.STRING,
+        get() {
+          if (this.getDataValue("url").startsWith("/")) {
+            return config.BASE_NAME + this.getDataValue("url");
+          }
+          return this.getDataValue("url");
+        },
       },
       width: {
         type: DataTypes.NUMBER,
@@ -51,6 +60,18 @@ export default function initMedia(sequelize) {
       },
       description: {
         type: DataTypes.STRING,
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        get() {
+          return getReadableDate(this.getDataValue("updatedAt"));
+        },
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        get() {
+          return getReadableDate(this.getDataValue("createdAt"));
+        },
       },
     },
     {

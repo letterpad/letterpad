@@ -1,3 +1,4 @@
+import { SessionData } from "./../types";
 import http from "http";
 import cheerio from "cheerio";
 import sizeOf from "image-size";
@@ -6,6 +7,7 @@ import { Post as ModelPost, PostAttributes } from "./../../db/models/post";
 import logger from "../../shared/logger";
 import config from "../../config";
 import { Post } from "../../__generated__/lib/type-defs.graphqls";
+import { getSession } from "next-auth/client";
 
 function toSlug(str: string): string {
   return str
@@ -116,3 +118,8 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
   }
   return $.html();
 };
+
+export async function getModifiedSession(context) {
+  const session = await getSession(context);
+  return session ? (session as SessionData) : null;
+}

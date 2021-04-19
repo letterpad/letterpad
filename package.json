@@ -16,6 +16,7 @@
     "@graphql-tools/load-files": "6.0.18",
     "@graphql-tools/merge": "6.0.18",
     "@graphql-tools/schema": "6.0.18",
+    "@types/bcryptjs": "^2.4.2",
     "@types/styled-components": "^5.1.9",
     "antd": "^4.15.1",
     "apollo-server-micro": "^2.16.1",
