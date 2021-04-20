@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { Upload, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { IMediaUploadResult } from "../../lib/types";
+import { UploadChangeParam } from "antd/lib/upload";
+import Modal from "antd/lib/modal/Modal";
 
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  const a = reader.readAsDataURL(img);
-  return a;
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
 }
 
-function beforeUpload(file) {
+function beforeUpload(file: File) {
   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
   if (!isJpgOrPng) {
     message.error("You can only upload JPG/PNG file!");
@@ -21,22 +26,42 @@ function beforeUpload(file) {
   return isJpgOrPng && isLt2M;
 }
 
-const ImageUpload = ({ url }) => {
-  const [imageUrl, setImageimageUrl] = useState(url || "");
+interface IProps {
+  url: string;
+  name: string;
+  onDone: (response: IMediaUploadResult[]) => void;
+}
+const ImageUpload = ({ url, onDone, name }: IProps) => {
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
   const [loading, setLoading] = useState(false);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [fileList, setFileList] = useState<UploadChangeParam["fileList"]>([
+    { url, status: "done", uid: "1", size: 200, name },
+  ]);
 
-  const handleChange = info => {
+  const handleChange = async (info: UploadChangeParam) => {
     if (info.file.status === "uploading") {
       setLoading(true);
+    } else if (info.file.status === "done") {
+      setLoading(false);
+      onDone(info.file.response);
+      setFileList(info.fileList);
       return;
     }
-    if (info.file.status === "done") {
-      // Get this imageUrl from response in real world.
-      getBase64(info.file.originFileObj, imageimageUrl => {
-        setImageimageUrl(imageimageUrl);
-        setLoading(true);
-      });
+    setFileList(info.fileList);
+  };
+
+  const handlePreview = async file => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
     }
+
+    setPreviewVisible(true);
+    setPreviewUrl(file.url || file.preview);
+    setPreviewTitle(
+      file.name || file.url.substring(file.url.lastIndexOf("/") + 1),
+    );
   };
 
   const uploadButton = (
@@ -47,35 +72,33 @@ const ImageUpload = ({ url }) => {
   );
 
   return (
-    <Upload
-      name="avatar"
-      listType="picture-card"
-      className="avatar-uploader"
-      showUploadList={false}
-      //   action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-      beforeUpload={beforeUpload}
-      onChange={handleChange}
-      onPreview={async file => {
-        let src = file.url;
-        if (!src) {
-          src = await new Promise(resolve => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file.originFileObj);
-            reader.onload = () => resolve(reader.result);
-          });
-        }
-        const image = new Image();
-        image.src = src;
-        const imgWindow = window.open(src);
-        imgWindow.document.write(image.outerHTML);
-      }}
-    >
-      {imageUrl ? (
-        <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
-      ) : (
-        uploadButton
-      )}
-    </Upload>
+    <>
+      <Upload
+        name="avatar"
+        listType="picture-card"
+        className="avatar-uploader"
+        showUploadList={true}
+        action="/api/customRequest"
+        beforeUpload={beforeUpload}
+        onChange={handleChange}
+        fileList={fileList}
+        onPreview={handlePreview}
+      >
+        {fileList.length === 0 && uploadButton}
+      </Upload>
+      <Modal
+        visible={previewVisible}
+        title={previewTitle}
+        footer={null}
+        onCancel={() => {
+          setPreviewVisible(false);
+          setPreviewUrl("");
+          setPreviewTitle("");
+        }}
+      >
+        <img alt="example" style={{ width: "100%" }} src={previewUrl} />
+      </Modal>
+    </>
   );
 };
 

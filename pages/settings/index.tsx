@@ -131,12 +131,43 @@ export default function Settings({ data }: { data: Setting }) {
             </Collapse>
             <Collapse defaultActiveKey={["1"]}>
               <Panel header="Appearance" key="1">
-                <Form.Item label="Site Tagline">
-                  <Input
-                    size="middle"
-                    value={settings.site_tagline}
-                    onBlur={updateSettings}
-                    onChange={e => onChange("site_tagline", e.target.value)}
+                <Form.Item label="Logo">
+                  <ImageUpload
+                    name="Logo"
+                    url={settings.site_logo.src}
+                    onDone={([res]) =>
+                      onChange("site_logo", {
+                        src: res.src,
+                        width: res.size.width,
+                        height: res.size.height,
+                      })
+                    }
+                  />
+                </Form.Item>
+                <Form.Item label="Favicon">
+                  <ImageUpload
+                    name="Favicon"
+                    url={settings.site_favicon.src}
+                    onDone={([res]) =>
+                      onChange("site_favicon", {
+                        src: res.src,
+                        width: res.size.width,
+                        height: res.size.height,
+                      })
+                    }
+                  />
+                </Form.Item>
+                <Form.Item label="Banner">
+                  <ImageUpload
+                    name="Banner"
+                    url={settings.banner.src}
+                    onDone={([res]) =>
+                      onChange("banner", {
+                        src: res.src,
+                        width: res.size.width,
+                        height: res.size.height,
+                      })
+                    }
                   />
                 </Form.Item>
               </Panel>
