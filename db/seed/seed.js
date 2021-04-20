@@ -305,19 +305,19 @@ export async function insertSettings(models) {
     },
     {
       option: "site_logo",
-      value: JSON.stringify({
+      value: {
         src: "/uploads/logo.png",
         width: 200,
         height: 200,
-      }),
+      },
     },
     {
       option: "site_favicon",
-      value: JSON.stringify({
+      value: {
         src: "/uploads/logo.png",
         width: 200,
         height: 200,
-      }),
+      },
     },
     {
       option: "css",
@@ -341,7 +341,7 @@ export async function insertSettings(models) {
     },
     {
       option: "menu",
-      value: JSON.stringify(menu),
+      value: menu,
     },
     {
       option: "cloudinary_key",
@@ -357,12 +357,12 @@ export async function insertSettings(models) {
     },
     {
       option: "banner",
-      value: JSON.stringify({
+      value: {
         src:
           "https://images.unsplash.com/photo-1435224668334-0f82ec57b605?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
         width: 1502,
         height: 900,
-      }),
+      },
     },
   ];
 

@@ -1,0 +1,157 @@
+import { InputBox, Item } from "./SortableItem.css";
+import React, { useState } from "react";
+
+import ReactTooltip from "react-tooltip";
+import { SortableElement } from "react-sortable-hoc";
+import { Tooltip } from "antd";
+import {
+  Navigation,
+  NavigationType,
+} from "../../../__generated__/lib/type-defs.graphqls";
+import {
+  DeleteOutlined,
+  InfoCircleOutlined,
+  MenuOutlined,
+} from "@ant-design/icons";
+
+interface IProps {
+  source: Navigation[];
+  value: Navigation;
+  onChange: (change: any) => void;
+  onRemove: (e: MouseEvent<HTMLSpanElement>) => void;
+}
+
+interface INavigationUI extends Omit<Navigation, "type"> {
+  hasError?: boolean;
+  type: NavigationType | "";
+}
+
+const SortableItem = SortableElement((props: IProps) => {
+  const { value, source, onChange, onRemove } = props;
+
+  const [item, setItem] = useState<INavigationUI>(value);
+  const [error, setError] = useState<string>("");
+  const [nameError, setNameError] = useState<string>("");
+
+  const onInputChange = (change: INavigationUI) => {
+    const changedItem = {
+      ...item,
+      ...change,
+    };
+    const error = {
+      nameError: "",
+      error: "",
+    };
+
+    // check the label
+    if (changedItem.label.length === 0) {
+      error.nameError = "Cannot be empty";
+    }
+
+    // check the slug
+    const itemFromDropdown = getItemBySlug(source, changedItem.slug);
+    const isCustomUrl = isValidURL(changedItem.slug);
+
+    if (!itemFromDropdown && !isCustomUrl) {
+      error.error = "Should be an url or an item from dropdown";
+      changedItem.type = "";
+    } else if (isCustomUrl) {
+      changedItem.type = NavigationType.Custom;
+    } else if (itemFromDropdown) {
+      changedItem.type = itemFromDropdown.type;
+      changedItem.original_name = itemFromDropdown.original_name;
+      changedItem.slug = itemFromDropdown.slug.split("/").pop() as string;
+    }
+
+    setItem(changedItem);
+    changedItem.hasError = error.error.length > 0 || error.nameError.length > 0;
+    if (!error.error) {
+      onChange(changedItem);
+    }
+    setError(error.error);
+    setNameError(error.nameError);
+    setTimeout(ReactTooltip.rebuild, 0);
+  };
+
+  return (
+    <Item data-testid="item-sortable">
+      <div className="icon-box">
+        <MenuOutlined className="dragger" />
+      </div>
+      <InputBox hasError={nameError !== ""}>
+        <input
+          type="text"
+          value={item.label}
+          onChange={e => onInputChange({ ...item, label: e.target.value })}
+          data-testid={item.label === "" ? "empty-label-item" : ""}
+          placeholder="Enter the name of this item"
+        />
+        <span className="error">{nameError}</span>
+      </InputBox>
+      <div>
+        <InputBox hasError={error !== ""}>
+          <input
+            list="menu-items"
+            placeholder="Select or enter a custom url"
+            value={item.slug}
+            data-testid={item.slug === "" ? "empty-slug-item" : ""}
+            onChange={e => onInputChange({ ...item, slug: e.target.value })}
+          />
+          <span className="error">{error}</span>
+        </InputBox>
+        <datalist id="menu-items">
+          {source.map(item => (
+            <option
+              key={item.slug}
+              label={getSuggestionLabel(item)}
+              value={item.slug}
+            ></option>
+          ))}
+        </datalist>
+      </div>
+      <Tooltip title={getToolTip(item)}>
+        <InfoCircleOutlined />
+      </Tooltip>
+
+      <DeleteOutlined onClick={onRemove} data-testid="button-nav-delete" />
+
+      <ReactTooltip />
+    </Item>
+  );
+});
+
+export default SortableItem;
+
+function getItemBySlug(data: Navigation[], slug: string) {
+  const arr = data.filter(item => item.slug === slug);
+  if (arr) {
+    return arr[0];
+  }
+  return null;
+}
+
+function isValidURL(url: string) {
+  var res = url.match(
+    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
+  );
+  return res !== null;
+}
+
+function getToolTip(item: INavigationUI) {
+  if (item.type === NavigationType.Tag) {
+    return "Displays all posts having the tag - " + item.original_name;
+  }
+  if (item.type === NavigationType.Page) {
+    return "Displays page - " + item.original_name;
+  }
+  if (item.type === NavigationType.Custom) {
+    return "This will be opened in a new tab.";
+  }
+}
+
+function getSuggestionLabel(item) {
+  if (item.type === "tag") {
+    return `#tag - ${item.label}  (${item.postCount} post/s)`;
+  }
+  return `page - ${item.label}`;
+}

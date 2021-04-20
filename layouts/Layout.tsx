@@ -14,6 +14,7 @@ const menuItems = {
   "/media": "3",
   "/tags": "4",
   "/profile": "5",
+  "/settings": "6",
 };
 
 const CustomLayout = ({ children }) => {
@@ -70,6 +71,13 @@ const CustomLayout = ({ children }) => {
             onClick={() => router.push("/profile")}
           >
             Profile
+          </Menu.Item>
+          <Menu.Item
+            key={menuItems["/settings"]}
+            icon={<UserOutlined />}
+            onClick={() => router.push("/settings")}
+          >
+            Settings
           </Menu.Item>
         </Menu>
       </Sider>

@@ -1,6 +1,6 @@
 import { PostAttributes } from "./../../db/models/post";
 import { PostTypes } from "./../../__generated__/lib/queries/partial.graphql";
-import { Op, Order } from "sequelize";
+import { fn, Op, Order } from "sequelize";
 import {
   Permissions,
   PostFilters,
@@ -130,7 +130,16 @@ const Query: QueryResolvers<ResolverContext> = {
 
       if (author) {
         const posts = await author.getPosts(query.conditions);
-        return posts.map(p => p.get());
+
+        return {
+          count: await author.countPosts(query.conditions),
+          rows: posts.map(p => p.get()),
+        };
+      } else {
+        return {
+          count: 0,
+          rows: [],
+        };
       }
     } else {
       delete query.conditions.where.author_id;
@@ -157,10 +166,16 @@ const Query: QueryResolvers<ResolverContext> = {
 
       if (taxTag) {
         const posts = await taxTag.getPosts(query.conditions);
-        return posts.map(p => p.get());
+        return {
+          rows: posts.map(p => p.get()),
+          count: await taxTag.countPosts(query.conditions),
+        };
       }
 
-      return [];
+      return {
+        rows: [],
+        count: 0,
+      };
     }
 
     // resolve tag filter
@@ -171,15 +186,25 @@ const Query: QueryResolvers<ResolverContext> = {
 
       if (tag) {
         const posts = await tag.getPosts(query.conditions);
-        return posts.map(p => p.get());
+        return {
+          rows: posts.map(p => p.get()),
+          count: await tag.countPosts(query.conditions),
+        };
       } else {
-        return [];
+        return {
+          rows: [],
+          count: 0,
+        };
       }
     }
 
     const posts = await models.Post.findAll(query.conditions);
+    const count = await models.Post.count(query.conditions);
 
-    return posts.map(post => post.get());
+    return {
+      rows: posts.map(post => post.get()),
+      count,
+    };
   },
 
   async post(_parent, args, context, _info) {

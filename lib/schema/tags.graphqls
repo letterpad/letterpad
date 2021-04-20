@@ -3,7 +3,7 @@ type Tags {
   name: String!
   desc: String
   slug: String!
-  # posts: PostsNode
+  posts: PostsNode
 }
 
 input TagsFilters {
@@ -17,9 +17,9 @@ type EditTaxResponse {
   errors: [Error!]
 }
 
-# type Query {
-#   taxonomies(filters: TagsFilters): [Tags!]!
-# }
+type Query {
+  tags(filters: TagsFilters): [Tags!]!
+}
 
 # type Mutation {
 #   updateTags(

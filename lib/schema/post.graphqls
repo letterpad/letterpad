@@ -81,9 +81,14 @@ input PostsFilters {
   sortBy: SortBy
 }
 
+type PostsNode {
+  count: Int!
+  rows: [Post!]!
+}
+
 type Query {
   post(filters: PostFilters): Post!
-  posts(filters: PostsFilters): [Post]!
+  posts(filters: PostsFilters): PostsNode
 }
 
 input InputImage {

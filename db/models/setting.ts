@@ -1,10 +1,21 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import config from "../../config";
+import {
+  Image,
+  Navigation,
+  Setting as Option,
+} from "../../__generated__/lib/type-defs.graphqls";
+import restoreSequelizeAttributesOnClass from "./_tooling";
+
+// interface ModelOption extends Omit<Option, "menu"> {
+interface ModelOption extends Option {}
+
+type ValueOf<T> = T[keyof T];
 
 export interface SettingAttributes {
   id: number;
-  option: string;
-  value: string;
+  option: keyof ModelOption;
+  value: ValueOf<ModelOption>;
 }
 
 export interface SettingCreationAttributes
@@ -14,11 +25,16 @@ export class Setting
   extends Model<SettingAttributes, SettingCreationAttributes>
   implements SettingAttributes {
   public id!: number;
-  public option!: string;
-  public value!: string;
+  public option!: keyof Option;
+  public value!: ValueOf<ModelOption>;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  constructor(...args) {
+    super(...args);
+    restoreSequelizeAttributesOnClass(new.target, this, []);
+  }
 }
 
 export default function initSetting(sequelize) {
@@ -31,11 +47,20 @@ export default function initSetting(sequelize) {
       },
       option: {
         type: DataTypes.STRING,
-        defaultValue: config.defaultTitle,
       },
       value: {
         type: DataTypes.STRING,
-        defaultValue: config.defaultTitle,
+        get() {
+          const option = this.getDataValue("option") as keyof ModelOption;
+          const value = this.value;
+          if (["banner", "site_logo", "site_favicon"].includes(option)) {
+            return JSON.parse(value as string);
+          }
+          if (option === "menu") {
+            return getMenuWithSanitizedSlug(JSON.parse(value as string));
+          }
+          return value;
+        },
       },
     },
     {
@@ -45,4 +70,19 @@ export default function initSetting(sequelize) {
   );
 
   return Setting;
+}
+
+function getMenuWithSanitizedSlug(menu: Navigation[]) {
+  return menu.map(item => {
+    switch (item.type) {
+      case "tag":
+      case "page":
+        item.slug = "/" + item.type + "/" + item.slug;
+        break;
+      case "custom":
+        item.slug = config.BASE_NAME + "/" + item.slug;
+        break;
+    }
+    return item;
+  });
 }

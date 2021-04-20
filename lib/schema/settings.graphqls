@@ -79,9 +79,9 @@ input OptionInputType {
 }
 
 type Query {
-  settings(option: String): Setting!
+  settings(option: String): Setting
 }
 
 type Mutation {
-  updateOptions(options: [OptionInputType!]!): Setting!
+  updateOptions(options: [OptionInputType!]!): Setting
 }
