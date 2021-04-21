@@ -86,9 +86,22 @@ type PostsNode {
   rows: [Post!]!
 }
 
+type PostCountsByStatus {
+  published: Int
+  drafts: Int
+}
+
+type Stats {
+  posts: PostCountsByStatus
+  pages: PostCountsByStatus
+  tags: Int
+  media: Int
+}
+
 type Query {
   post(filters: PostFilters): Post!
   posts(filters: PostsFilters): PostsNode
+  stats: Stats
 }
 
 input InputImage {

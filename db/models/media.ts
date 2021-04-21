@@ -10,8 +10,8 @@ export interface MediaAttributes {
   width: number;
   height: number;
   description: string;
-  // updatedAt: Date;
-  // createdAt: Date;
+  updatedAt: Date;
+  createdAt: Date;
 }
 
 export interface MediaCreationAttributes
@@ -59,18 +59,18 @@ export default function initMedia(sequelize) {
       description: {
         type: DataTypes.STRING,
       },
-      // updatedAt: {
-      //   type: DataTypes.DATE,
-      //   get() {
-      //     return getReadableDate(this.getDataValue("updatedAt"));
-      //   },
-      // },
-      // createdAt: {
-      //   type: DataTypes.DATE,
-      //   get() {
-      //     return getReadableDate(this.getDataValue("createdAt"));
-      //   },
-      // },
+      updatedAt: {
+        type: DataTypes.DATE,
+        get() {
+          return getReadableDate(this.getDataValue("updatedAt"));
+        },
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        get() {
+          return getReadableDate(this.getDataValue("createdAt"));
+        },
+      },
     },
     {
       tableName: "media",

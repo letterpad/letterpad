@@ -39,7 +39,7 @@ export default function Settings({ data }: { data: Setting }) {
         options: draft,
       },
     });
-
+    localStorage.settings = JSON.stringify(settings);
     setDraft({});
   };
 

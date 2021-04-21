@@ -1,26 +1,32 @@
-import { useRouter } from "next/router";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { Menu } from "antd";
-import Layout, { Footer, Header } from "antd/lib/layout/layout";
+import { MenuOutlined } from "@ant-design/icons";
+import { Button, Drawer } from "antd";
+import Layout, { Footer } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
+import { Setting, Stats } from "../__generated__/lib/type-defs.graphqls";
+import {
+  StatsQuery,
+  StatsQueryVariables,
+  StatsDocument,
+} from "../__generated__/lib/queries/queries.graphql";
+import { useEffect, useState } from "react";
+import { initializeApollo } from "../lib/apollo";
+import styled from "styled-components";
+import Navigation from "./Menu";
+import "antd/dist/antd.css";
 
-const menuItems = {
-  "/posts": "1",
-  "/pages": "2",
-  "/media": "3",
-  "/tags": "4",
-  "/profile": "5",
-  "/settings": "6",
-};
+interface IProps {
+  settings: Setting;
+  children: any;
+}
 
-const CustomLayout = ({ children }) => {
-  const router = useRouter();
+const CustomLayout = ({ children, settings }: IProps) => {
+  const [stats, setStats] = useState<Stats>();
+  const [collapsed, setCollapsed] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-  const { pathname } = router;
+  useEffect(() => {
+    getStats().then(res => setStats(res));
+  }, []);
 
   return (
     <Layout>
@@ -32,60 +38,47 @@ const CustomLayout = ({ children }) => {
         }}
         onCollapse={(collapsed, type) => {
           console.log(collapsed, type);
+          setCollapsed(collapsed);
+          if (!collapsed) {
+            setVisible(false);
+          }
+        }}
+        style={{
+          overflow: "auto",
+          height: "100vh",
+          position: "fixed",
+          left: 0,
+          zIndex: 9999,
         }}
       >
         <div className="logo" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={[menuItems[pathname]]}
-        >
-          <Menu.Item
-            key={menuItems["/posts"]}
-            icon={<UserOutlined />}
-            onClick={() => router.push("/posts")}
-          >
-            Posts
-          </Menu.Item>
-          <Menu.Item
-            key={menuItems["/pages"]}
-            icon={<VideoCameraOutlined />}
-            onClick={() => router.push("/pages")}
-            isSelected={true}
-          >
-            Pages
-          </Menu.Item>
-          <Menu.Item
-            key={menuItems["/media"]}
-            icon={<UploadOutlined />}
-            onClick={() => router.push("/media")}
-          >
-            Media
-          </Menu.Item>
-          <Menu.Item key={menuItems["/tags"]} icon={<UserOutlined />}>
-            Tags
-          </Menu.Item>
-          <Menu.Item
-            key={menuItems["/profile"]}
-            icon={<UserOutlined />}
-            onClick={() => router.push("/profile")}
-          >
-            Profile
-          </Menu.Item>
-          <Menu.Item
-            key={menuItems["/settings"]}
-            icon={<UserOutlined />}
-            onClick={() => router.push("/settings")}
-          >
-            Settings
-          </Menu.Item>
-        </Menu>
+        <Navigation stats={stats} />
       </Sider>
-      <Layout>
-        <Header
-          className="site-layout-sub-header-background"
-          style={{ padding: 0 }}
-        />
+      <Layout
+        className="site-layout"
+        style={{
+          marginLeft: collapsed ? 0 : 200,
+        }}
+      >
+        <nav className="navbar">
+          {collapsed && !visible && (
+            <Button
+              className="menu"
+              type="primary"
+              icon={<MenuOutlined />}
+              onClick={() => setVisible(true)}
+            />
+          )}
+          <StyledDrawer
+            placement="left"
+            width={200}
+            theme="dark"
+            onClose={() => setVisible(false)}
+            visible={visible}
+          >
+            <Navigation stats={stats} />
+          </StyledDrawer>
+        </nav>
         {children}
         <Footer style={{ textAlign: "center" }}>Letterpad</Footer>
       </Layout>
@@ -94,3 +87,21 @@ const CustomLayout = ({ children }) => {
 };
 
 export default CustomLayout;
+
+async function getStats() {
+  const client = initializeApollo();
+  const stats = await client.query<StatsQuery, StatsQueryVariables>({
+    query: StatsDocument,
+  });
+
+  return stats.data.stats;
+}
+
+const StyledDrawer = styled(Drawer)`
+  .ant-drawer-content {
+    background: @layout-sider-background;
+  }
+  .ant-drawer-body {
+    padding: 0px;
+  }
+`;

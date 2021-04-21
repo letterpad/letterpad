@@ -77,7 +77,7 @@ export default function Page(pageProps) {
     return <div>Access denied</div>;
   }
 
-  const data = pageProps.data.posts.map(post => {
+  const data = pageProps.data.posts.rows.map(post => {
     return {
       ...post,
       key: post.id,

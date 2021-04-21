@@ -92,6 +92,21 @@ query Tags {
   }
 }
 
+query Stats {
+  stats {
+    posts {
+      published
+      drafts
+    }
+    pages {
+      published
+      drafts
+    }
+    tags
+    media
+  }
+}
+
 mutation UpdateAuthor($author: InputAuthor!) {
   updateAuthor(author: $author) {
     ok

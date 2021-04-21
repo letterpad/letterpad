@@ -81,7 +81,17 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
           <Tags post={post} setPostAttribute={setPostAttribute} />
           <div>
             <label>Cover Image</label>
-            <ImageUpload url={post.cover_image.src} />
+            <ImageUpload
+              name="Cover Image"
+              url={post.cover_image.src}
+              onDone={([res]) => {
+                setPostAttribute("cover_image", {
+                  src: res.src,
+                  width: res.size.width,
+                  height: res.size.height,
+                });
+              }}
+            />
           </div>
           <Button type="primary" danger>
             Delete Post

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Upload, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { IMediaUploadResult } from "../../lib/types";
@@ -36,10 +36,14 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
   const [previewTitle, setPreviewTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
-  const [fileList, setFileList] = useState<UploadChangeParam["fileList"]>([
-    { url, status: "done", uid: "1", size: 200, name },
-  ]);
+  const [fileList, setFileList] = useState<UploadChangeParam["fileList"]>([]);
 
+  useEffect(() => {
+    if (url) {
+      // @ts-ignore
+      setFileList([{ url, status: "done", uid: "1", size: 200, name }]);
+    }
+  }, []);
   const handleChange = async (info: UploadChangeParam) => {
     if (info.file.status === "uploading") {
       setLoading(true);

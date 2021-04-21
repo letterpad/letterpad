@@ -1,3 +1,14 @@
 {
-  "presets": ["next/babel"]
+  "presets": ["next/babel"],
+  "plugins": [
+    [
+      "styless",
+      {
+        "import": "~antd/lib/style/themes/default.less",
+        "lessOptions": {
+          "javascriptEnabled": true
+        }
+      }
+    ]
+  ]
 }

@@ -1,3 +1,4 @@
+import { path } from "path";
 import { Author } from "./author";
 import { Tags } from "./tags";
 import {
@@ -125,7 +126,7 @@ export default function initPost(sequelize) {
         defaultValue: "",
         get() {
           if (this.cover_image && this.cover_image.startsWith("/")) {
-            this.cover_image = host + "/" + this.cover_image;
+            this.cover_image = path.join(host, this.cover_image);
           }
           return {
             src: this.cover_image,

@@ -1,5 +1,6 @@
 import { getSession } from "next-auth/client";
 import {
+  InputAuthor,
   // Author as AuthorType,
   QueryResolvers,
 } from "./../../__generated__/lib/type-defs.graphqls";
@@ -12,6 +13,13 @@ import {
 import models from "../../db/models";
 import bcrypt from "bcryptjs";
 import { getModifiedSession } from "./helpers";
+import config from "../../config";
+
+const host = config.ROOT_URL + config.BASE_NAME;
+
+interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
+  social: string;
+}
 
 const Author = {
   role: async author => {
@@ -49,8 +57,16 @@ const Query: QueryResolvers<ResolverContext> = {
     const author = await models.Author.findOne({
       where: { id: session.user.id },
     });
+    if (author && author.social) {
+      author.social = JSON.parse(author.social);
+    }
+    if (author && author.avatar) {
+      if (author.avatar.startsWith("/")) {
+        author.avatar = host + author.avatar;
+      }
+    }
 
-    return author?.get();
+    return author;
   },
 };
 
@@ -85,12 +101,15 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
     try {
-      const dataToUpdate = { ...args.author };
+      const dataToUpdate = { ...args.author } as InputAuthorForDb;
 
       if (args.author.password) {
         dataToUpdate.password = await bcrypt.hash(args.author.password, 12);
       }
 
+      if (args.author.social) {
+        dataToUpdate.social = JSON.stringify(args.author.social);
+      }
       await models.Author.update(dataToUpdate as any, {
         where: { id: args.author.id },
       });
@@ -100,7 +119,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
         errors: [],
       };
     } catch (e) {
-      console.log("e :>> ", e);
       return {
         ok: false,
         errors: e, //utils.parseErrors(e),

@@ -1,6 +1,7 @@
 import { PostAttributes } from "./../../db/models/post";
 import { PostTypes } from "./../../__generated__/lib/queries/partial.graphql";
 import { fn, Op, Order } from "sequelize";
+import { getModifiedSession } from "./helpers";
 import {
   Permissions,
   PostFilters,
@@ -11,6 +12,7 @@ import { QueryResolvers } from "../type-defs.graphqls";
 import { ResolverContext } from "../apollo";
 import { decrypt } from "../utils/crypto";
 import models from "../../db/models";
+import logger from "../../shared/logger";
 
 interface IPostCondition {
   conditions: {
@@ -209,7 +211,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
   async post(_parent, args, context, _info) {
     if (!args.filters) return {};
-    const session = await context.session;
+    const session = await getModifiedSession(context);
 
     const { previewHash, ...filters } = args.filters;
     const conditions = {
@@ -244,10 +246,41 @@ const Query: QueryResolvers<ResolverContext> = {
       conditions.where.id = Number(decrypt(previewHash));
       delete conditions.where.status;
     }
-
+    console.log("conditions :>> ", conditions);
     const post = await models.Post.findOne(conditions);
 
     return post ? post.get() : {};
+  },
+
+  async stats(root, args, context) {
+    logger.debug("Reached resolver: stats");
+    const result = {
+      posts: { published: 0, drafts: 0 },
+      pages: { published: 0, drafts: 0 },
+      tags: 0,
+      media: 0,
+    };
+    result.posts.published = await models.Post.count({
+      where: { status: PostStatusOptions.Published, type: PostTypes.Post },
+    });
+
+    result.posts.drafts = await models.Post.count({
+      where: { status: PostStatusOptions.Draft, type: PostTypes.Post },
+    });
+
+    result.pages.published = await models.Post.count({
+      where: { status: PostStatusOptions.Published, type: PostTypes.Page },
+    });
+
+    result.pages.drafts = await models.Post.count({
+      where: { status: PostStatusOptions.Draft, type: PostTypes.Page },
+    });
+
+    result.tags = await models.Tags.count();
+
+    result.media = await models.Media.count();
+
+    return result;
   },
 };
 

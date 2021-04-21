@@ -18,8 +18,6 @@ import restoreSequelizeAttributesOnClass from "./_tooling";
 import config from "../../config";
 import { Media } from "./media";
 
-const host = config.ROOT_URL + config.BASE_NAME;
-
 // These are all the attributes in the User model
 interface AuthorAttributes {
   id: number;
@@ -28,7 +26,7 @@ interface AuthorAttributes {
   bio: string;
   password: string;
   avatar: string;
-  social: Social;
+  social: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -45,7 +43,7 @@ export class Author
   public bio!: string;
   public password!: string;
   public avatar!: string;
-  public social!: Social;
+  public social!: string;
 
   // timestamps!
   public readonly createdAt!: Date;
@@ -112,26 +110,10 @@ export default function initAuthor(sequelize: Sequelize) {
       avatar: {
         type: new DataTypes.STRING(128),
         allowNull: true,
-        get() {
-          const avatar = this.getDataValue("avatar");
-          if (avatar) {
-            if (avatar.startsWith("/")) {
-              return host + avatar;
-            }
-          }
-          return "";
-        },
       },
       social: {
         type: new DataTypes.STRING(128),
         allowNull: true,
-        set(value) {
-          this.setDataValue("social", JSON.stringify(value) as Social);
-        },
-        get() {
-          const social = this.getDataValue("social") as string;
-          return JSON.parse(social);
-        },
       },
     },
     {

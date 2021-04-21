@@ -14,23 +14,27 @@ import {
   getDateTime,
   getImageDimensions,
   setImageWidthAndHeightInHtml,
+  getModifiedSession,
 } from "./helpers";
 import config from "../../config";
 import logger from "../../shared/logger";
-import { updatePostOptionalArgs } from "../types";
 import models from "../../db/models";
 
 const host = config.ROOT_URL + config.BASE_NAME;
 
 const Mutation: MutationResolvers<ResolverContext> = {
   async createPost(_parent, args, context, _info) {
-    if (!args.data || !models) {
+    const session = await getModifiedSession(context);
+
+    if (!args.data || !session) {
       return {
         ok: false,
-        post: null,
+        post: {},
       };
     }
-    // _args.data.authorId = user.id;
+    const author = await models.Author.findOne({
+      where: { id: session.user.id },
+    });
     args.data.slug = await slugify(models.Post, config.defaultSlug);
     if (!args.data.md) {
       args.data.md = "";
@@ -40,16 +44,18 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (!args.data.title) {
       args.data.title = "";
     }
-    const newPost = await models.Post.create(args.data as any);
+    console.log("args.data :>> ", args.data);
+    const newPost = await author?.createPost(args.data as any);
 
     const defaultTags = await models.Tags.findOne({
       where: { id: 2 },
     });
-    if (defaultTags) await newPost.addTag(defaultTags);
+    if (defaultTags) await newPost?.addTag(defaultTags);
 
     return {
       ok: true,
-      post: newPost.get(),
+      post: newPost?.get(),
+      errors: [],
     };
   },
 

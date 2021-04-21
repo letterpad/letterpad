@@ -27,7 +27,7 @@ export default function Profile({ data }: { data: Author }) {
   const [me, setMe] = useState(data);
   const [draft, setDraft] = useState({ id: me.id });
 
-  const updateAuthor = async () => {
+  const updateAuthor = async (data: Author = draft) => {
     const apolloClient = initializeApollo();
 
     await apolloClient.mutate<
@@ -36,7 +36,7 @@ export default function Profile({ data }: { data: Author }) {
     >({
       mutation: UpdateAuthorDocument,
       variables: {
-        author: draft,
+        author: data,
       },
     });
 
@@ -74,14 +74,14 @@ export default function Profile({ data }: { data: Author }) {
                   <Input
                     size="middle"
                     value={me.name}
-                    onBlur={updateAuthor}
+                    onBlur={() => updateAuthor()}
                     onChange={e => onChange("name", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Short Bio">
                   <Input.TextArea
                     value={me.bio}
-                    onBlur={updateAuthor}
+                    onBlur={() => updateAuthor()}
                     onChange={e => onChange("bio", e.target.value)}
                   />
                 </Form.Item>
@@ -89,12 +89,18 @@ export default function Profile({ data }: { data: Author }) {
                   <Input
                     size="middle"
                     value={me.email}
-                    onBlur={updateAuthor}
+                    onBlur={() => updateAuthor()}
                     onChange={e => onChange("email", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Avatar">
-                  <ImageUpload url="" />
+                  <ImageUpload
+                    url={me.avatar || ""}
+                    name="Avatar"
+                    onDone={([res]) => {
+                      updateAuthor({ avatar: res.src, id: me.id });
+                    }}
+                  />
                 </Form.Item>
               </Panel>
               <Panel header="Social Information" key="2">
@@ -102,7 +108,7 @@ export default function Profile({ data }: { data: Author }) {
                   <Input
                     size="middle"
                     value={me.social?.twitter}
-                    onBlur={updateAuthor}
+                    onBlur={() => updateAuthor()}
                     onChange={e => onSocialChange("twitter", e.target.value)}
                   />
                 </Form.Item>
@@ -110,7 +116,7 @@ export default function Profile({ data }: { data: Author }) {
                   <Input
                     size="middle"
                     value={me.social?.facebook}
-                    onBlur={updateAuthor}
+                    onBlur={() => updateAuthor()}
                     onChange={e => onSocialChange("facebook", e.target.value)}
                   />
                 </Form.Item>
@@ -118,7 +124,7 @@ export default function Profile({ data }: { data: Author }) {
                   <Input
                     size="middle"
                     value={me.social?.instagram}
-                    onBlur={updateAuthor}
+                    onBlur={() => updateAuthor()}
                     onChange={e => onSocialChange("instagram", e.target.value)}
                   />
                 </Form.Item>
@@ -126,7 +132,7 @@ export default function Profile({ data }: { data: Author }) {
                   <Input
                     size="middle"
                     value={me.social?.github}
-                    onBlur={updateAuthor}
+                    onBlur={() => updateAuthor()}
                     onChange={e => onSocialChange("github", e.target.value)}
                   />
                 </Form.Item>
