@@ -246,7 +246,6 @@ const Query: QueryResolvers<ResolverContext> = {
       conditions.where.id = Number(decrypt(previewHash));
       delete conditions.where.status;
     }
-    console.log("conditions :>> ", conditions);
     const post = await models.Post.findOne(conditions);
 
     return post ? post.get() : {};

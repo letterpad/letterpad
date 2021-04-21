@@ -11,7 +11,7 @@ import {
 } from "../../__generated__/lib/queries/post.mutations.graphql";
 import LetterpadEditor from "letterpad-editor";
 import { initializeApollo } from "../../lib/apollo";
-import { Layout, PageHeader, Tag } from "antd";
+import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import PostTitle from "./PostTitle";
 import Actions from "./actions";
@@ -22,15 +22,22 @@ import {
 import { useState } from "react";
 import { uploadFile } from "../../shared/upload";
 import { removeTypenames } from "../../shared/removeTypenames";
+import FileExplorer from "./FileExplorer";
 
 const { Content, Footer } = Layout;
 
 type ValueOf<T> = T[keyof T];
-
+export enum MediaProvider {
+  Unsplash = "unsplash",
+  Letterpad = "letterpad",
+}
 export default function Page(pageProps) {
+  let changeTimeout;
   const router = useRouter();
   const [session, loading] = useSession();
   const [post, setPost] = useState(pageProps.data.post);
+  const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
+  const [mediaProvider, setMediaProvider] = useState(MediaProvider.Unsplash);
 
   if (typeof window !== "undefined" && loading) return null;
 
@@ -42,7 +49,7 @@ export default function Page(pageProps) {
   const tagColor =
     post.status === PostStatusOptions.Published ? "green" : "orange";
 
-  const uploadImage = async (files: FileList) => {
+  const uploadImage = async (files: File[]) => {
     const uploadedFiles = await uploadFile({ files, type: "post_image" });
     return uploadedFiles[0].src;
   };
@@ -50,6 +57,16 @@ export default function Page(pageProps) {
   const setPostAttribute = async (key: keyof Post, value: ValueOf<Post>) => {
     setPost({ ...post, [key]: value });
     updatePostRequest(key, value, post.id, setPost);
+  };
+
+  const onMediaBrowse = () => {
+    setMediaProvider(MediaProvider.Unsplash);
+    setFileExplorerOpen(true);
+  };
+
+  const onFileExplorerClose = () => {
+    setMediaProvider(MediaProvider.Letterpad);
+    setFileExplorerOpen(false);
   };
 
   return (
@@ -68,23 +85,39 @@ export default function Page(pageProps) {
           className="site-layout-background"
           style={{ maxWidth: 760, minHeight: 360, margin: "auto" }}
         >
-          <PostTitle
-            text={post.title}
+          <Input
+            style={{ padding: 0, fontSize: 38 }}
+            value={post.title}
+            size="large"
             placeholder="Enter a title"
-            onChange={(value: string) => {
-              setPostAttribute("title", value);
+            bordered={false}
+            onChange={e => {
+              setPostAttribute("title", e.target.value);
             }}
           />
-
           <LetterpadEditor
-            // onImageBrowse={this.onMediaBrowse}
-            // getEditorInstance={this.onBeforeRender}
-            //@ts-ignore
+            onImageBrowse={onMediaBrowse}
             uploadImage={(file: File) => uploadImage([file])}
             defaultValue={post.md_draft || post.md}
-            // tooltip={Tooltip}
-            onChange={() => {}}
+            tooltip={_Tooltip}
+            onChange={change => {
+              clearTimeout(changeTimeout);
+              changeTimeout = setTimeout(() => {
+                const { html, markdown } = change();
+                if (markdown !== post.md) {
+                  setPostAttribute("html", html);
+                  setPostAttribute("md", markdown);
+                }
+              }, 2000);
+            }}
             placeholder="Write a story.."
+          />
+          <FileExplorer
+            multi={true}
+            mediaProvider={mediaProvider}
+            isVisible={fileExplorerOpen}
+            handleCancel={onFileExplorerClose}
+            switchProvider={mediaProvider => setMediaProvider(mediaProvider)}
           />
         </div>
       </Content>
@@ -96,7 +129,7 @@ export default function Page(pageProps) {
 }
 
 export async function getServerSideProps(context) {
-  const apolloClient = await initializeApollo({}, context);
+  const apolloClient = initializeApollo({}, context);
   const post = await apolloClient.query<PostQuery, PostQueryVariables>({
     query: PostDocument,
     variables: {
@@ -119,7 +152,7 @@ const updatePostRequest = async (
   postId: number,
   onFail: (post: Post) => void,
 ) => {
-  const apolloClient = await initializeApollo();
+  const apolloClient = initializeApollo();
   const result = await apolloClient.mutate<
     UpdatePostMutation,
     UpdatePostMutationVariables
@@ -141,4 +174,12 @@ const updatePostRequest = async (
     });
     onFail(postData.data.post);
   }
+};
+
+const _Tooltip: React.FC<any> = ({ children, tooltip }) => {
+  return (
+    <Tooltip title={tooltip}>
+      <span>{children}</span>
+    </Tooltip>
+  );
 };

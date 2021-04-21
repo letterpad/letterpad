@@ -19,8 +19,6 @@ export default function Page(pageProps) {
     return <div>Access denied</div>;
   }
 
-  console.log("pageProps :>> ", pageProps);
-
   // If session exists, display content
   return (
     <div>

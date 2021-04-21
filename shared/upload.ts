@@ -1,5 +1,5 @@
 interface IUploadFileProps {
-  files: FileList;
+  files: File[];
   type?: string;
 }
 

@@ -44,7 +44,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (!args.data.title) {
       args.data.title = "";
     }
-    console.log("args.data :>> ", args.data);
     const newPost = await author?.createPost(args.data as any);
 
     const defaultTags = await models.Tags.findOne({
