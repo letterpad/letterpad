@@ -1,3 +1,4 @@
+// @ts-nocheck
 const reset = "\x1b[0m";
 const bright = "\x1b[1m";
 const dim = "\x1b[2m";
@@ -84,10 +85,7 @@ function getCaller() {
       // at /Users/abhi/www/letterpad/src/client/server/dispatcher.ts:29:10
       const getLineThree = e.stack.split("at ")[3];
       // [/Users/abhi/www/letterpad/src/client/server/dispatcher.ts:29:10]
-      const getLastTwoSlashItem = getLineThree
-        .split("/")
-        .slice(1)
-        .splice(-2);
+      const getLastTwoSlashItem = getLineThree.split("/").slice(1).splice(-2);
       // [server, dispatcher.ts:29:10]
       const getFileName =
         getLastTwoSlashItem[0] +

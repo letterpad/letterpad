@@ -46,7 +46,8 @@ function useNavigationData() {
       if (tagsData.data && tagsData.data.tags.length > 0) {
         setTags(normalizeTags(tagsData.data.tags));
       }
-      if (pagesData.data && pagesData.data?.posts?.rows?.length > 0) {
+      const rows = pagesData?.data?.posts?.rows;
+      if (pagesData.data && rows && rows.length > 0) {
         setPages(normalizePages(pagesData.data.posts));
       }
 

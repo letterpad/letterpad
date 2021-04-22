@@ -3,10 +3,9 @@ import http from "http";
 import cheerio from "cheerio";
 import sizeOf from "image-size";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
-import { Post as ModelPost, PostAttributes } from "../db/models/post";
+import { Post as ModelPost } from "../db/models/post";
 import logger from "../../../shared/logger";
-import config from "../../../config";
-import { Post } from "../../../__generated__/src/graphql/type-defs.graphqls";
+
 import { getSession } from "next-auth/client";
 
 function toSlug(str: string): string {
@@ -108,6 +107,7 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
     const $el = $(el);
     $el.attr("loading", "lazy");
     let src = $el.attr("src");
+    if (!src) return;
     if (!src.startsWith("http")) return;
     logger.debug("Getting dimensions of ", src);
     const size = await getImageDimensions(src);
@@ -121,5 +121,5 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
 
 export async function getModifiedSession(context) {
   const session = await getSession(context);
-  return session ? (session as SessionData) : null;
+  return session ? ((session as unknown) as SessionData) : null;
 }

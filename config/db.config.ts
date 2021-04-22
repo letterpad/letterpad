@@ -46,6 +46,7 @@ export const dbConfig: IDbConfig = {
     logging: false,
     define: {
       underscored: true,
+      raw: false,
     },
   },
 };

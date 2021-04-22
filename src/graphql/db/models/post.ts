@@ -23,7 +23,7 @@ const host = config.ROOT_URL + config.BASE_NAME;
 
 export interface PostAttributes {
   id: number;
-  // authorId: number;
+  author_id: number;
   title: string;
   excerpt: string;
   html: string;
@@ -49,7 +49,7 @@ export interface PostCreationAttributes extends Optional<PostAttributes, "id"> {
 
 export class Post extends Model {
   public id!: number;
-  public authorId!: number;
+  public author_id!: number;
   public title!: string;
   public excerpt!: string;
   public html!: string;
@@ -206,7 +206,9 @@ export function associatePost(Post) {
     foreignKey: "post_id",
   });
   // Post.hasMany(Tags);
-  Post.belongsTo(Author, { foreignKey: "author_id" });
+  Post.belongsTo(Author, {
+    foreignKey: "author_id",
+  });
 
   return Post;
 }

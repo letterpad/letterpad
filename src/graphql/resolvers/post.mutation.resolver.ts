@@ -251,7 +251,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         }
       }
     }
-    console.log(dataToUpdate);
+
     await models.Post.update(dataToUpdate, {
       where: { id: args.data.id },
     });

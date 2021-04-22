@@ -1,4 +1,8 @@
 module.exports = {
+  compress: false,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   async redirects() {
     return [
       {

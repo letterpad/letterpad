@@ -1,6 +1,6 @@
 import { getReadableDate } from "../../resolvers/helpers";
 import { DataTypes, Model, Optional } from "sequelize";
-import config from "../../../../config";
+
 import restoreSequelizeAttributesOnClass from "./_tooling";
 
 export interface MediaAttributes {

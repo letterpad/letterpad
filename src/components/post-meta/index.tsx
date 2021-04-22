@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Tooltip, Input, Drawer, Button, Checkbox, Tag, Space } from "antd";
+import { Tooltip, Input, Drawer, Button, Checkbox, Space } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import ImageUpload from "../ImageUpload";
 import {

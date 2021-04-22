@@ -1,13 +1,11 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import config from "../../../../config";
 import {
-  Image,
   Navigation,
   Setting as Option,
 } from "../../../../__generated__/src/graphql/type-defs.graphqls";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 
-// interface ModelOption extends Omit<Option, "menu"> {
 interface ModelOption extends Option {}
 
 type ValueOf<T> = T[keyof T];

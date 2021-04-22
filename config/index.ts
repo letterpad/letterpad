@@ -1,6 +1,5 @@
 import configDev from "./config.dev";
 import configProd from "./config.prod";
-import logger from "../shared/logger";
 
 let currentEnv =
   typeof window !== "undefined"

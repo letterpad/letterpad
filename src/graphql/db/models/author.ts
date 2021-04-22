@@ -1,4 +1,3 @@
-import { Social } from "../../../../__generated__/src/graphql/type-defs.graphqls";
 import { Role } from "./role";
 import { Post } from "./post";
 import {
@@ -15,7 +14,7 @@ import {
   HasOneGetAssociationMixin,
 } from "sequelize";
 import restoreSequelizeAttributesOnClass from "./_tooling";
-import config from "../../../../config";
+
 import { Media } from "./media";
 
 // These are all the attributes in the User model
@@ -128,9 +127,10 @@ export default function initAuthor(sequelize: Sequelize) {
 export function associateAuthor(): void {
   Author.hasMany(Post, {
     sourceKey: "id",
+    foreignKey: "author_id",
   });
 
-  Author.belongsTo(Role, { as: "role" });
+  Author.belongsTo(Role, { as: "role", foreignKey: "role_id" });
 
-  Author.hasMany(Media, { sourceKey: "id" });
+  Author.hasMany(Media, { sourceKey: "id", foreignKey: "author_id" });
 }

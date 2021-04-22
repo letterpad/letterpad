@@ -15,17 +15,20 @@ const models = require("../models/index").default;
 const { seed } = require("./seed");
 
 (async () => {
-  // await models.sequelize.sync({ force: true });
-  const author = await models.Author.findOne({ where: { id: 1 } });
-  const media = await models.Media.findOne({ where: { id: 3 } });
-  await author.addMedia(media);
-  // const role = await models.Role.findOne({ where: { id: 1 } });
-  // const perms = await role.getPermissions();
-  // await author.addRole(role);
-  // console.log("perms :>> ", perms);
+  console.log("models :>> ", Object.keys(models.Post.rawAttributes));
+  // // await models.Post.get("author_id");
+  const post = await models.Post.findOne({
+    where: {
+      id: 1,
+    },
+  });
+  if (post) {
+    const author = await post.getTags();
+    console.log("author :>> ", author);
+  }
 })();
 
-seed(models).catch(e => {
-  console.error(e);
-  process.exit(1);
-});
+// seed(models).catch(e => {
+//   console.error(e);
+//   process.exit(1);
+// });

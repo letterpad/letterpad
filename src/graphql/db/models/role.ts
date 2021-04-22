@@ -58,5 +58,6 @@ export default function initRole(sequelize) {
 export function associateRole(): void {
   Role.belongsToMany(Permission, {
     through: "rolePermissions",
+    foreignKey: "role_id",
   });
 }

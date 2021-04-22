@@ -60,6 +60,7 @@ const options = {
     },
     session: async (session: any, user: SessionData["user"]) => {
       session.user = user;
+
       return Promise.resolve(session);
     },
   },

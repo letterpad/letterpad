@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/client";
 import {
   PostDocument,
+  Post as PostType,
   PostQuery,
   PostQueryVariables,
 } from "../../../__generated__/src/graphql/queries/queries.graphql";
@@ -14,10 +15,7 @@ import { initializeApollo } from "../../graphql/apollo";
 import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import Actions from "../../components/post-meta";
-import {
-  Post,
-  PostStatusOptions,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { PostStatusOptions } from "../../../__generated__/src/graphql/type-defs.graphqls";
 import { useState } from "react";
 import { uploadFile } from "../../../shared/upload";
 import { removeTypenames } from "../../../shared/removeTypenames";
@@ -54,7 +52,10 @@ function Post(pageProps) {
     return uploadedFiles[0].src;
   };
 
-  const setPostAttribute = async (key: keyof Post, value: ValueOf<Post>) => {
+  const setPostAttribute = async (
+    key: keyof PostType,
+    value: ValueOf<PostType>,
+  ) => {
     setPost({ ...post, [key]: value });
     updatePostRequest(key, value, post.id, setPost);
   };
@@ -149,10 +150,10 @@ export async function getServerSideProps(context) {
 }
 
 const updatePostRequest = async (
-  key: keyof Post,
-  value: ValueOf<Post>,
+  key: keyof PostType,
+  value: ValueOf<PostType>,
   postId: number,
-  onFail: (post: Post) => void,
+  onFail: (post: PostType) => void,
 ) => {
   const apolloClient = initializeApollo();
   const result = await apolloClient.mutate<

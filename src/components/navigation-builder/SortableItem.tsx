@@ -1,5 +1,5 @@
 import { InputBox, Item } from "./SortableItem.css";
-import React, { MouseEventHandler, useState } from "react";
+import React, { useState } from "react";
 
 import ReactTooltip from "react-tooltip";
 import { SortableElement } from "react-sortable-hoc";
@@ -18,7 +18,7 @@ interface IProps {
   source: Navigation[];
   value: Navigation;
   onChange: (change: any) => void;
-  onRemove: (e: MouseEventHandler<HTMLSpanElement>) => void;
+  onRemove: (e: React.MouseEvent) => void;
 }
 
 interface INavigationUI extends Omit<Navigation, "type"> {

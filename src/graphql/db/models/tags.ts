@@ -1,4 +1,3 @@
-import { PostTags } from "./postTags";
 import { Post } from "./post";
 import {
   BelongsToManySetAssociationsMixin,

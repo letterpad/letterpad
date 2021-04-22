@@ -8,7 +8,16 @@ export default function restoreSequelizeAttributesOnClass(
   methods: string[],
 ): void {
   methods.forEach(method => {
-    self[method] = (self as any).__proto__[method];
+    const fnToAttach = method
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .split(" ")
+      .pop();
+    const devAssociationFn = (self as any).__proto__[method];
+    const prodAssociationFn = (self as any).__proto__[
+      method + "_" + fnToAttach
+    ];
+
+    self[method] = devAssociationFn || prodAssociationFn;
   });
   [
     ...Object.keys(newTarget.rawAttributes),

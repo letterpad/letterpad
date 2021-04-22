@@ -1,7 +1,5 @@
-import { getSession } from "next-auth/client";
 import {
   InputAuthor,
-  // Author as AuthorType,
   QueryResolvers,
 } from "../../../__generated__/src/graphql/type-defs.graphqls";
 import { ResolverContext } from "../apollo";
@@ -22,10 +20,9 @@ interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
 }
 
 const Author = {
-  role: async author => {
-    if (author.role) {
-      return author.role;
-    }
+  role: async ({ id }) => {
+    const author = await models.Author.findOne({ where: { id } });
+    if (!author) return;
     try {
       const role = await author.getRole();
       return role.name;
@@ -33,10 +30,10 @@ const Author = {
       throw new Error(e);
     }
   },
-  permissions: async author => {
-    if (author.permissions) {
-      return author.permissions;
-    }
+  permissions: async ({ id }) => {
+    const author = await models.Author.findOne({ where: { id } });
+    if (!author) return;
+
     try {
       const role = await author.getRole();
       const permissions = await role.getPermissions();
@@ -76,18 +73,22 @@ const Mutation: MutationResolvers<ResolverContext> = {
       where: { email: args.data?.email, password: args.data?.password },
     });
     if (author) {
-      const role = await author.getRole();
-      const per = await role.getPermissions();
-      const permArr = per.map(p => p.name) as Permissions[];
-      return {
-        status: true,
-        data: {
-          ...author,
-          social: JSON.parse(author.social as string),
-          role: role ? (role.name as Role) : Role.Reader,
-          permissions: permArr,
-        },
-      };
+      try {
+        // const role = await author.getRole();
+        // const per = await role.getPermissions();
+        // const permArr = per.map(p => p.name) as Permissions[];
+        return {
+          status: true,
+          data: {
+            ...author,
+            social: JSON.parse(author.social as string),
+            // role: role ? (role.name as Role) : Role.Reader,
+            // permissions: permArr,
+          },
+        };
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     return { status: false };

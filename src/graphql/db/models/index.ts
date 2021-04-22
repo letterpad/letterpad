@@ -1,5 +1,5 @@
 import Author, { associateAuthor } from "./author";
-import Media, { associateMedia } from "./media";
+import Media from "./media";
 import Permission, { associatePermission } from "./permission";
 import Post, { associatePost } from "./post";
 import Role, { associateRole } from "./role";
