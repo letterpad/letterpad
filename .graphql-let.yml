@@ -1,5 +1,5 @@
-schema: "lib/schema/**/*.graphqls"
-schemaEntrypoint: "lib/type-defs.graphqls"
+schema: "src/graphql/schema/**/*.graphqls"
+schemaEntrypoint: "src/graphql/type-defs.graphqls"
 documents: "**/*.graphql"
 plugins:
   - typescript
