@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/client";
+import withAuthCheck from "../hoc/withAuth";
 import {
   PostsDocument,
   PostsQuery,
@@ -66,17 +66,7 @@ const columns = [
     key: "publishedAt",
   },
 ];
-
-export default function Page(pageProps) {
-  const [session, loading] = useSession();
-
-  if (typeof window !== "undefined" && loading) return null;
-
-  // If no session exists, display access denied message
-  if (!session) {
-    return <div>Access denied</div>;
-  }
-
+function Pages(pageProps) {
   const data = pageProps.data.posts.rows.map(post => {
     return {
       ...post,
@@ -98,6 +88,8 @@ export default function Page(pageProps) {
     </CustomLayout>
   );
 }
+
+export default withAuthCheck(Pages);
 
 export async function getServerSideProps(context) {
   const apolloClient = initializeApollo({}, context);

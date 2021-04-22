@@ -7,6 +7,7 @@ import {
 
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import { signout, signin } from "next-auth/client";
 
 const menuItems = {
   "/posts": "1",
@@ -15,6 +16,7 @@ const menuItems = {
   "/tags": "4",
   "/profile": "5",
   "/settings": "6",
+  "/logout": "7",
 };
 
 const Navigation = ({ stats }) => {
@@ -77,6 +79,17 @@ const Navigation = ({ stats }) => {
         onClick={() => router.push("/settings")}
       >
         Settings
+      </Menu.Item>
+      <Menu.Item
+        key={menuItems["/logout"]}
+        icon={<UserOutlined />}
+        onClick={() =>
+          signout({
+            redirect: true,
+          })
+        }
+      >
+        Logout
       </Menu.Item>
     </Menu>
   );

@@ -11,6 +11,7 @@ import {
   MediaNode,
   Setting,
 } from "../../__generated__/src/graphql/type-defs.graphqls";
+import withAuthCheck from "../hoc/withAuth";
 
 const Media = ({
   data,
@@ -48,10 +49,10 @@ const Media = ({
   );
 };
 
-export default Media;
+export default withAuthCheck(Media);
 
 export async function getServerSideProps(context) {
-  const apolloClient = await initializeApollo({}, context);
+  const apolloClient = initializeApollo({}, context);
 
   const media = await apolloClient.query<MediaQuery, MediaQueryVariables>({
     query: MediaDocument,

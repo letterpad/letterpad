@@ -185,7 +185,7 @@ export async function insertPost(params, models, tags) {
   // get author  // 1 or 2
   const { md, html } = generatePost(params.type);
   let promises = [];
-  const randomAuthorId = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
+  const randomAuthorId = 1; //Math.floor(Math.random() * (2 - 1 + 1)) + 1;
   let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
   const title =
     params.type === "post" ? "Welcome to Letterpad" : "Letterpad Typography";

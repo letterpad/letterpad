@@ -22,6 +22,7 @@ import { useState } from "react";
 import { uploadFile } from "../../../shared/upload";
 import { removeTypenames } from "../../../shared/removeTypenames";
 import FileExplorer from "../../components/file-explorer";
+import withAuthCheck from "../../hoc/withAuth";
 
 const { Content, Footer } = Layout;
 
@@ -30,7 +31,7 @@ export enum MediaProvider {
   Unsplash = "unsplash",
   Letterpad = "letterpad",
 }
-export default function Page(pageProps) {
+function Post(pageProps) {
   let changeTimeout;
   const router = useRouter();
   const [session, loading] = useSession();
@@ -126,6 +127,8 @@ export default function Page(pageProps) {
     </Layout>
   );
 }
+
+export default withAuthCheck(Post);
 
 export async function getServerSideProps(context) {
   const apolloClient = initializeApollo({}, context);

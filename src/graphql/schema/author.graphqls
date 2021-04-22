@@ -6,7 +6,7 @@ type Social {
 }
 
 type Author {
-  id: Int!
+  id: Int
   email: String
   name: String
   social: Social

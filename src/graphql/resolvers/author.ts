@@ -49,9 +49,9 @@ const Author = {
 
 const Query: QueryResolvers<ResolverContext> = {
   async me(_parent, _args, context, _info) {
-    const session = await context.session;
+    const session = await getModifiedSession(context);
     if (!session) {
-      return null;
+      return {};
     }
 
     const author = await models.Author.findOne({
@@ -66,7 +66,7 @@ const Query: QueryResolvers<ResolverContext> = {
       }
     }
 
-    return author;
+    return author ? author : {};
   },
 };
 

@@ -11,14 +11,14 @@ import {
 } from "../../__generated__/src/graphql/queries/queries.graphql";
 import { useEffect, useState } from "react";
 import { OptionInputType } from "../../__generated__/src/graphql/type-defs.graphqls";
-
+import withAuthCheck from "../hoc/withAuth";
 import Navigation from "../components/navigation-builder";
 
 const { Panel } = Collapse;
 
 type ValueOf<T> = T[keyof T];
 
-export default function Settings(props: { settings: Setting }) {
+function Settings(props: { settings: Setting }) {
   const [settings, setSettings] = useState(props.settings);
   const [draft, setDraft] = useState<OptionInputType>({});
 
@@ -249,3 +249,5 @@ export default function Settings(props: { settings: Setting }) {
     </CustomLayout>
   );
 }
+
+export default withAuthCheck(Settings);

@@ -19,18 +19,14 @@ import {
   Setting,
 } from "../../__generated__/src/graphql/type-defs.graphqls";
 import { removeTypenames } from "../../shared/removeTypenames";
+import withAuthCheck from "../hoc/withAuth";
 
 const { Panel } = Collapse;
 
 type ValueOf<T> = T[keyof T];
 
-export default function Profile({
-  data,
-  settings,
-}: {
-  data: Author;
-  settings: Setting;
-}) {
+function Profile({ data, settings }: { data: Author; settings: Setting }) {
+  debugger;
   const [me, setMe] = useState(data);
   const [draft, setDraft] = useState({ id: me.id });
 
@@ -160,8 +156,10 @@ export default function Profile({
   );
 }
 
+export default withAuthCheck(Profile);
+
 export async function getServerSideProps(context) {
-  const apolloClient = await initializeApollo({}, context);
+  const apolloClient = initializeApollo({}, context);
 
   const me = await apolloClient.query<MeQuery, MeQueryVariables>({
     query: MeDocument,

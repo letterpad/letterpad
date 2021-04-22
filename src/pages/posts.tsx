@@ -20,7 +20,7 @@ const { Content } = Layout;
 import CustomLayout from "../layouts/Layout";
 import { PostsNode } from "../graphql/type-defs.graphqls";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import withAuthCheck from "../hoc/withAuth";
 
 const columns = [
   {
@@ -76,21 +76,8 @@ interface IProps {
   settings: Setting;
 }
 
-export default function Posts({ data, settings }: IProps) {
-  const [session, loading] = useSession();
+function Posts({ data, settings }: IProps) {
   const router = useRouter();
-  if (typeof window !== "undefined" && loading) return null;
-
-  useEffect(() => {
-    if (!session) {
-      signIn();
-    }
-  }, []);
-
-  // If no session exists, display access denied message
-  if (!session) {
-    return <div>Access denied</div>;
-  }
 
   const posts = data.rows.map(post => {
     return {
@@ -146,3 +133,5 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+export default withAuthCheck(Posts);

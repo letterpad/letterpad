@@ -10,7 +10,7 @@ try {
   //
 }
 const env = require("node-env-file");
-env(__dirname + "../../../.env.development.local");
+env(__dirname + "../../../../../.env.development.local");
 const models = require("../models/index").default;
 const { seed } = require("./seed");
 
