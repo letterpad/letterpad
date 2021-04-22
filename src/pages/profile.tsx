@@ -11,52 +11,67 @@ import {
   UpdateAuthorMutationVariables,
   UpdateAuthorDocument,
 } from "../../__generated__/src/graphql/queries/queries.graphql";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   InputAuthor,
   Social,
   Author,
   Setting,
+  MeResponse,
 } from "../../__generated__/src/graphql/type-defs.graphqls";
 import { removeTypenames } from "../../shared/removeTypenames";
 import withAuthCheck from "../hoc/withAuth";
+import { Optional } from "../../shared/types";
 
 const { Panel } = Collapse;
 
 type ValueOf<T> = T[keyof T];
 
-function Profile({ data, settings }: { data: Author; settings: Setting }) {
-  debugger;
-  const [me, setMe] = useState(data);
-  const [draft, setDraft] = useState({ id: me.id });
+function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
+  const [me, setMe] = useState<Author>();
+  const [draft, setDraft] = useState<InputAuthor>();
 
-  const updateAuthor = async (data: Author = draft) => {
+  useEffect(() => {
+    if (data.__typename === "Author") {
+      setMe(data as Author);
+      setDraft({ id: data.id });
+    }
+  }, []);
+
+  const updateAuthor = async (data?: InputAuthor) => {
     const apolloClient = initializeApollo();
 
+    if (!me) return;
+
+    if (!data) {
+      data = { id: me.id };
+    }
     await apolloClient.mutate<
       UpdateAuthorMutation,
       UpdateAuthorMutationVariables
     >({
       mutation: UpdateAuthorDocument,
       variables: {
-        author: data,
+        author: { ...draft, ...data },
       },
     });
-
-    setDraft({ id: me.id });
   };
 
   const onChange = (key: keyof InputAuthor, value: ValueOf<InputAuthor>) => {
-    setMe({ ...me, [key]: value });
-    setDraft({ [key]: value, id: me.id });
+    if (me) {
+      setMe({ ...me, [key]: value });
+      setDraft({ [key]: value, id: me.id });
+    }
   };
 
   const onSocialChange = (key: keyof Social, value: string) => {
-    if (me.social) {
+    if (me && me.social) {
       const social = { ...removeTypenames(me.social), [key]: value };
       onChange("social", social);
     }
   };
+
+  if (!me) return null;
 
   return (
     <CustomLayout settings={settings}>
@@ -164,6 +179,7 @@ export async function getServerSideProps(context) {
   const me = await apolloClient.query<MeQuery, MeQueryVariables>({
     query: MeDocument,
   });
+
   return {
     props: {
       data: me.data.me,

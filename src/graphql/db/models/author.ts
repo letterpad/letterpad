@@ -16,6 +16,11 @@ import {
 import restoreSequelizeAttributesOnClass from "./_tooling";
 
 import { Media } from "./media";
+import {
+  Social,
+  Role as QraphqlRole,
+  Permissions as GraqhqlPermissions,
+} from "../../../../__generated__/src/graphql/type-defs.graphqls";
 
 // These are all the attributes in the User model
 interface AuthorAttributes {
@@ -25,24 +30,25 @@ interface AuthorAttributes {
   bio: string;
   password: string;
   avatar: string;
-  social: string;
+  social: Social;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-// Some attributes are optional in `User.build` and `User.create` calls
 interface AuthorCreationAttributes extends Optional<AuthorAttributes, "id"> {}
 
 export class Author
   extends Model<AuthorAttributes, AuthorCreationAttributes>
   implements AuthorAttributes {
-  public id!: number; // Note that the `null assertion` `!` is required in strict mode.
+  public id!: number;
   public name!: string;
   public email!: string;
   public bio!: string;
   public password!: string;
   public avatar!: string;
-  public social!: string;
+  public social!: Social;
+  public role!: QraphqlRole;
+  public permissions!: GraqhqlPermissions[];
 
   // timestamps!
   public readonly createdAt!: Date;

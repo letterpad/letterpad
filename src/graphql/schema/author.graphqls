@@ -6,14 +6,14 @@ type Social {
 }
 
 type Author {
-  id: Int
-  email: String
-  name: String
+  id: Int!
+  email: String!
+  name: String!
   social: Social
-  role: Role
-  permissions: [Permissions!]
-  bio: String
-  avatar: String
+  bio: String!
+  role: Role!
+  permissions: [Permissions!]!
+  avatar: String!
 }
 
 input LoginData {
@@ -49,8 +49,14 @@ type AuthorResponse {
   data: Author
 }
 
+type AuthorNotFoundError {
+  message: String!
+}
+
+union MeResponse = Author | AuthorNotFoundError
+
 type Query {
-  me: Author
+  me: MeResponse
 }
 
 type Mutation {

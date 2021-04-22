@@ -63,17 +63,22 @@ query Media($filters: MediaFilters) {
 
 query Me {
   me {
-    id
-    name
-    social {
-      github
-      twitter
-      instagram
-      facebook
+    ... on Author {
+      id
+      name
+      social {
+        github
+        twitter
+        instagram
+        facebook
+      }
+      email
+      bio
+      avatar
     }
-    email
-    bio
-    avatar
+    ... on AuthorNotFoundError {
+      message
+    }
   }
 }
 

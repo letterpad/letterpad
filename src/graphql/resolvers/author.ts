@@ -48,22 +48,25 @@ const Query: QueryResolvers<ResolverContext> = {
   async me(_parent, _args, context, _info) {
     const session = await getModifiedSession(context);
     if (!session) {
-      return {};
+      return { __typename: "AuthorNotFoundError", message: "Invalid Session" };
     }
 
     const author = await models.Author.findOne({
-      where: { id: session.user.id },
+      where: {
+        id: session.user.id,
+      },
     });
     if (author && author.social) {
-      author.social = JSON.parse(author.social);
+      author.social = JSON.parse((author.social as string) || "{}");
     }
     if (author && author.avatar) {
       if (author.avatar.startsWith("/")) {
         author.avatar = host + author.avatar;
       }
     }
-
-    return author ? author : {};
+    return author
+      ? { ...author, __typename: "Author" }
+      : { __typename: "AuthorNotFoundError", message: "" };
   },
 };
 
