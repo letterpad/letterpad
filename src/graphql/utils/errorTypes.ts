@@ -8,7 +8,7 @@ export class UnauthorizedError extends Error {
 
 export class NotFoundError extends Error {
   statusCode = 404;
-  constructor({ statusCode = 404, msg }) {
+  constructor({ statusCode = 404 }) {
     super("Page not found");
     this.statusCode = statusCode;
   }

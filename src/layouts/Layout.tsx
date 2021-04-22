@@ -22,7 +22,7 @@ interface IProps {
   children: any;
 }
 
-const CustomLayout = ({ children, settings }: IProps) => {
+const CustomLayout = ({ children }: IProps) => {
   const [stats, setStats] = useState<Stats>();
   const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);

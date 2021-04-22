@@ -7,7 +7,7 @@ import {
 
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { signout, signin } from "next-auth/client";
+import { signout } from "next-auth/client";
 
 const menuItems = {
   "/posts": "1",

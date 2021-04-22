@@ -1,5 +1,5 @@
 import { PostAttributes } from "../db/models/post";
-import { fn, Op, Order } from "sequelize";
+import { Op, Order } from "sequelize";
 import { getModifiedSession } from "./helpers";
 import {
   Permissions,
@@ -251,7 +251,7 @@ const Query: QueryResolvers<ResolverContext> = {
     return post ? post.get() : {};
   },
 
-  async stats(root, args, context) {
+  async stats() {
     logger.debug("Reached resolver: stats");
     const result = {
       posts: { published: 0, drafts: 0 },

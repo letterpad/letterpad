@@ -42,7 +42,7 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Tags = {
-  async posts({ id }, args) {
+  async posts({ id }) {
     const tag = await models.Tags.findOne({ where: { id } });
     const posts = await tag?.getPosts({ where: { status: "published" } });
     return {

@@ -1,8 +1,8 @@
 import { AppProps } from "next/app";
 import { ApolloProvider } from "@apollo/client";
 import { initializeApollo, useApollo } from "../graphql/apollo";
-import { Provider, useSession } from "next-auth/client";
-import Router, { useRouter } from "next/router";
+import { Provider } from "next-auth/client";
+import Router from "next/router";
 import "antd/dist/antd.css";
 import "../../styles/globals.css";
 import NProgress from "nprogress";

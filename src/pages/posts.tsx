@@ -1,4 +1,3 @@
-import { signIn, useSession } from "next-auth/client";
 import {
   PostsDocument,
   PostsQuery,
