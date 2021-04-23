@@ -11,14 +11,9 @@ import { PostQuery } from "../../../__generated__/src/graphql/queries/queries.gr
 
 const { TextArea } = Input;
 
-type ValueOf<T> = T[keyof T];
-
 interface IProps {
   post: PostQuery["post"];
-  setPostAttribute: (
-    key: keyof InputUpdatePost,
-    value: ValueOf<InputUpdatePost>,
-  ) => void;
+  setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => void;
 }
 const Actions = ({ post, setPostAttribute }: IProps) => {
   const [visible, setVisible] = useState(false);
@@ -50,19 +45,18 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
 
           <Checkbox
             onChange={e =>
-              setPostAttribute(
-                "status",
-                e.target.checked
+              setPostAttribute({
+                status: e.target.checked
                   ? PostStatusOptions.Published
                   : PostStatusOptions.Draft,
-              )
+              })
             }
             checked={post.status === PostStatusOptions.Published}
           >
             Unpublish this post
           </Checkbox>
           <Checkbox
-            onChange={e => setPostAttribute("featured", e.target.checked)}
+            onChange={e => setPostAttribute({ featured: e.target.checked })}
             checked={post.featured}
           >
             Mark as featured post
@@ -72,14 +66,14 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
             <TextArea
               showCount
               maxLength={160}
-              onChange={e => setPostAttribute("excerpt", e.target.value)}
+              onChange={e => setPostAttribute({ excerpt: e.target.value })}
               value={post.excerpt}
             />
           </div>
           <div>
             <label>Path</label>
             <Input
-              onChange={e => setPostAttribute("slug", e.target.value)}
+              onChange={e => setPostAttribute({ slug: e.target.value })}
               value={post.slug}
             />
           </div>
@@ -90,10 +84,12 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
               name="Cover Image"
               url={post.cover_image.src}
               onDone={([res]) => {
-                setPostAttribute("cover_image", {
-                  src: res.src,
-                  width: res.size.width,
-                  height: res.size.height,
+                setPostAttribute({
+                  cover_image: {
+                    src: res.src,
+                    width: res.size.width,
+                    height: res.size.height,
+                  },
                 });
               }}
             />

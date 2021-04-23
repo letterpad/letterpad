@@ -151,6 +151,10 @@ union PostResponse = Post | PostError
 
 union PostsResponse = PostsNode | PostError
 
+union CreatePostResponse = Post | PostError
+
+union UpdatePostResponse = Post | PostError
+
 type Query {
   post(filters: PostFilters): PostResponse!
   posts(filters: PostsFilters): PostsResponse!
@@ -158,9 +162,9 @@ type Query {
 }
 
 type Mutation {
-  createPost(data: InputCreatePost): Response!
+  createPost(data: InputCreatePost): CreatePostResponse!
 
-  updatePost(data: InputUpdatePost): Response!
+  updatePost(data: InputUpdatePost): UpdatePostResponse!
 
   # deletePosts(ids: [Int!], deleteFromSystem: Boolean): Response!
 }

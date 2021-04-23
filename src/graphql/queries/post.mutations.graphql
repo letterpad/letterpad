@@ -2,12 +2,7 @@
 
 mutation createPost($data: InputCreatePost) {
   createPost(data: $data) {
-    ok
-    errors {
-      path
-      message
-    }
-    post {
+    ... on Post {
       ...Partial
       author {
         name
@@ -17,18 +12,16 @@ mutation createPost($data: InputCreatePost) {
         name
         slug
       }
+    }
+    ... on PostError {
+      message
     }
   }
 }
 
 mutation updatePost($data: InputUpdatePost) {
   updatePost(data: $data) {
-    ok
-    errors {
-      path
-      message
-    }
-    post {
+    ... on Post {
       ...Partial
       author {
         name
@@ -38,6 +31,10 @@ mutation updatePost($data: InputUpdatePost) {
         name
         slug
       }
+    }
+
+    ... on PostError {
+      message
     }
   }
 }

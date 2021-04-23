@@ -5,6 +5,7 @@ import {
   PostQuery,
   PostQueryVariables,
   PostResponse,
+  InputUpdatePost,
 } from "../../../__generated__/src/graphql/queries/queries.graphql";
 import {
   UpdatePostDocument,
@@ -41,8 +42,6 @@ function Post({ data }: { data: PostResponse }) {
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [mediaProvider, setMediaProvider] = useState(MediaProvider.Unsplash);
 
-  if (typeof window !== "undefined" && loading) return null;
-
   useEffect(() => {
     if (data.__typename === "Post") {
       setPost(data);
@@ -67,9 +66,9 @@ function Post({ data }: { data: PostResponse }) {
     return uploadedFiles[0].src;
   };
 
-  const setPostAttribute = async (key: keyof IPost, value: ValueOf<IPost>) => {
-    setPost({ ...post, [key]: value });
-    updatePostRequest(key, value, post.id, setPost);
+  const setPostAttribute = async (attrs: Omit<InputUpdatePost, "id">) => {
+    setPost({ ...post, ...attrs });
+    updatePostRequest(attrs, post.id);
   };
 
   const onMediaBrowse = () => {
@@ -84,6 +83,13 @@ function Post({ data }: { data: PostResponse }) {
 
   const tagColor =
     post.status === PostStatusOptions.Published ? "green" : "orange";
+
+  if (typeof window !== "undefined" && loading)
+    return (
+      <Layout>
+        <span />
+      </Layout>
+    );
 
   return (
     <Layout>
@@ -108,7 +114,7 @@ function Post({ data }: { data: PostResponse }) {
             placeholder="Enter a title"
             bordered={false}
             onChange={e => {
-              setPostAttribute("title", e.target.value);
+              setPostAttribute({ title: e.target.value });
             }}
           />
           <LetterpadEditor
@@ -121,8 +127,7 @@ function Post({ data }: { data: PostResponse }) {
               changeTimeout = setTimeout(() => {
                 const { html, markdown } = change();
                 if (markdown !== post.md) {
-                  setPostAttribute("html", html);
-                  setPostAttribute("md", markdown);
+                  setPostAttribute({ html, md: markdown });
                 }
               }, 2000);
             }}
@@ -159,39 +164,22 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      data: post.data,
+      data: post.data.post,
     },
   };
 }
 
 const updatePostRequest = async (
-  key: keyof IPost,
-  value: ValueOf<IPost>,
+  attrs: Omit<InputUpdatePost, "id">,
   postId: number,
-  onFail: (post: PostQuery["post"]) => void,
 ) => {
   const apolloClient = initializeApollo();
-  const result = await apolloClient.mutate<
-    UpdatePostMutation,
-    UpdatePostMutationVariables
-  >({
+  await apolloClient.mutate<UpdatePostMutation, UpdatePostMutationVariables>({
     mutation: UpdatePostDocument,
     variables: {
-      data: { ...removeTypenames({ [key]: value }), id: postId },
+      data: { ...removeTypenames(attrs), id: postId },
     },
   });
-
-  if (result.errors?.length) {
-    const postData = await apolloClient.query<PostQuery, PostQueryVariables>({
-      query: PostDocument,
-      variables: {
-        filters: {
-          id: postId,
-        },
-      },
-    });
-    if (postData.data.post.__typename === "Post") onFail(postData.data.post);
-  }
 };
 
 const _Tooltip: React.FC<any> = ({ children, tooltip }) => {

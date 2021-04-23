@@ -9,10 +9,7 @@ type ValueOf<T> = T[keyof T];
 
 interface IProps {
   post: PostQuery["post"];
-  setPostAttribute: (
-    key: keyof InputUpdatePost,
-    value: ValueOf<InputUpdatePost>,
-  ) => void;
+  setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => void;
 }
 
 const Tags = ({ post, setPostAttribute }: IProps) => {
@@ -24,10 +21,12 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
   const handleInputConfirm = () => {
     setInputVisible(false);
     if (inputValue && post.tags) {
-      setPostAttribute("tags", [
-        ...post.tags,
-        { id: 0, name: inputValue, slug: inputValue, desc: "" },
-      ]);
+      setPostAttribute({
+        tags: [
+          ...post.tags,
+          { id: 0, name: inputValue, slug: inputValue, desc: "" },
+        ],
+      });
       setInputValue("");
     }
   };
@@ -40,8 +39,9 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
           key={tag.name}
           closable
           onClose={() => {
-            const tags = post.tags?.filter(ele => ele.name !== tag.name);
-            setPostAttribute("tags", tags);
+            if (!post.tags) return;
+            const tags = post.tags.filter(ele => ele.name !== tag.name);
+            setPostAttribute({ tags });
           }}
         >
           {tag.name}

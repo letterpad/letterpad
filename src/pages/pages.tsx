@@ -98,8 +98,9 @@ function Pages({ data, settings }: IProps) {
     }
   }, []);
 
-  if (error) return <ErrorMessage description={error} title="Error" />;
-
+  if (postsNode.__typename !== "PostsNode" || error) {
+    return <ErrorMessage description={error} title="Error" />;
+  }
   // If session exists, display content
   return (
     <CustomLayout settings={settings}>
@@ -108,7 +109,7 @@ function Pages({ data, settings }: IProps) {
           className="site-layout-background"
           style={{ padding: 24, minHeight: 360 }}
         >
-          <Table columns={columns} dataSource={postsNode?.rows} />
+          <Table columns={columns} dataSource={postsNode.rows} />
         </div>
       </Content>
     </CustomLayout>
@@ -130,7 +131,7 @@ export async function getServerSideProps(context) {
   });
   return {
     props: {
-      data: post.data,
+      data: post.data.posts,
     },
   };
 }

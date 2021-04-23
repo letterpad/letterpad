@@ -212,6 +212,7 @@ const Query: QueryResolvers<ResolverContext> = {
         count,
       };
     } catch (e) {
+      console.log(e);
       return { __typename: "PostError", message: e.message };
     }
   },
