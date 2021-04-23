@@ -1,9 +1,10 @@
 import { useSession } from "next-auth/client";
 import {
   PostDocument,
-  Post as PostType,
+  Post as IPost,
   PostQuery,
   PostQueryVariables,
+  PostResponse,
 } from "../../../__generated__/src/graphql/queries/queries.graphql";
 import {
   UpdatePostDocument,
@@ -16,11 +17,12 @@ import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import Actions from "../../components/post-meta";
 import { PostStatusOptions } from "../../../__generated__/src/graphql/type-defs.graphqls";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { uploadFile } from "../../../shared/upload";
 import { removeTypenames } from "../../../shared/removeTypenames";
 import FileExplorer from "../../components/file-explorer";
 import withAuthCheck from "../../hoc/withAuth";
+import ErrorMessage from "../../components/ErrorMessage";
 
 const { Content, Footer } = Layout;
 
@@ -29,33 +31,43 @@ export enum MediaProvider {
   Unsplash = "unsplash",
   Letterpad = "letterpad",
 }
-function Post(pageProps) {
+function Post({ data }: { data: PostResponse }) {
   let changeTimeout;
+
   const router = useRouter();
   const [session, loading] = useSession();
-  const [post, setPost] = useState(pageProps.data.post);
+  const [post, setPost] = useState<PostQuery["post"]>();
+  const [error, setError] = useState("");
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [mediaProvider, setMediaProvider] = useState(MediaProvider.Unsplash);
 
   if (typeof window !== "undefined" && loading) return null;
+
+  useEffect(() => {
+    if (data.__typename === "Post") {
+      setPost(data);
+    }
+
+    if (data.__typename === "PostError") {
+      setError(data.message);
+    }
+  }, []);
 
   // If no session exists, display access denied message
   if (!session) {
     return <div>Access denied</div>;
   }
 
-  const tagColor =
-    post.status === PostStatusOptions.Published ? "green" : "orange";
+  if (!post || post.__typename !== "Post") {
+    return <ErrorMessage title="Error" description={error} />;
+  }
 
   const uploadImage = async (files: File[]) => {
     const uploadedFiles = await uploadFile({ files, type: "post_image" });
     return uploadedFiles[0].src;
   };
 
-  const setPostAttribute = async (
-    key: keyof PostType,
-    value: ValueOf<PostType>,
-  ) => {
+  const setPostAttribute = async (key: keyof IPost, value: ValueOf<IPost>) => {
     setPost({ ...post, [key]: value });
     updatePostRequest(key, value, post.id, setPost);
   };
@@ -69,6 +81,9 @@ function Post(pageProps) {
     setMediaProvider(MediaProvider.Letterpad);
     setFileExplorerOpen(false);
   };
+
+  const tagColor =
+    post.status === PostStatusOptions.Published ? "green" : "orange";
 
   return (
     <Layout>
@@ -150,10 +165,10 @@ export async function getServerSideProps(context) {
 }
 
 const updatePostRequest = async (
-  key: keyof PostType,
-  value: ValueOf<PostType>,
+  key: keyof IPost,
+  value: ValueOf<IPost>,
   postId: number,
-  onFail: (post: PostType) => void,
+  onFail: (post: PostQuery["post"]) => void,
 ) => {
   const apolloClient = initializeApollo();
   const result = await apolloClient.mutate<
@@ -175,7 +190,7 @@ const updatePostRequest = async (
         },
       },
     });
-    onFail(postData.data.post);
+    if (postData.data.post.__typename === "Post") onFail(postData.data.post);
   }
 };
 

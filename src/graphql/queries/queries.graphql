@@ -2,32 +2,11 @@
 
 query Post($filters: PostFilters) {
   post(filters: $filters) {
-    ...Partial
-    author {
-      name
-      social {
-        github
-        twitter
-        instagram
-      }
-      bio
-    }
-    tags {
-      id
-      name
-      desc
-      slug
-    }
-  }
-}
-
-query Posts($filters: PostsFilters) {
-  posts(filters: $filters) {
-    count
-    rows {
+    ... on Post {
       ...Partial
       author {
         name
+        avatar
         social {
           github
           twitter
@@ -41,6 +20,40 @@ query Posts($filters: PostsFilters) {
         desc
         slug
       }
+    }
+
+    ... on PostError {
+      message
+    }
+  }
+}
+
+query Posts($filters: PostsFilters) {
+  posts(filters: $filters) {
+    ... on PostsNode {
+      count
+      rows {
+        ...Partial
+        author {
+          name
+          social {
+            github
+            twitter
+            instagram
+          }
+          bio
+        }
+        tags {
+          id
+          name
+          desc
+          slug
+        }
+      }
+    }
+
+    ... on PostError {
+      message
     }
   }
 }

@@ -55,8 +55,6 @@ const Query: QueryResolvers<ResolverContext> = {
    * Used for Search and Admin posts and pages list.
    */
   async posts(_parent, args, context, _info) {
-    // the query params can be a type of the post
-
     const query: IPostCondition = {
       conditions: {
         order: [["publishedAt", SortBy.Desc]],
@@ -73,144 +71,155 @@ const Query: QueryResolvers<ResolverContext> = {
         offset: 0,
       },
     };
-
-    // id
-    if (args?.filters?.id) {
-      query.conditions.where.id = args.filters.id;
-    } else {
-      delete query.conditions.where.id;
-    }
-
-    // pagination
-    if (args?.filters?.cursor) {
-      query.conditions.where.id = { [Op.gt]: args.filters.cursor };
-    }
-
-    if (args?.filters?.page) {
-      query.conditions.offset =
-        (args.filters.page - 1) * query.conditions.limit;
-    } else {
-      delete query.conditions.offset;
-    }
-
-    if (args?.filters?.limit) {
-      query.conditions.limit = args.filters.limit;
-    }
-
-    // resolve status type and filter
-    if (args?.filters?.featured) {
-      query.conditions.where.featured = args.filters.featured;
-    } else {
-      delete query.conditions.where.featured;
-    }
-
-    // resolve type
-    if (args?.filters?.type) {
-      query.conditions.where.type = args.filters.type;
-    }
-
-    // resolve status
-    if (args?.filters?.status) {
-      query.conditions.where.status = { [Op.eq]: args.filters.status } as any;
-    }
-
-    // sort
-    if (args?.filters?.sortBy) {
-      query.conditions.order = [["publishedAt", args.filters.sortBy]];
-    }
-
-    if (context && context.session && args?.filters?.sortBy) {
-      query.conditions.order = [["updatedAt", args.filters.sortBy]];
-    }
-
-    // resolve author
-    if (args?.filters?.author) {
-      const author = await models.Author.findOne({
-        where: { name: args.filters.author },
-      });
-      delete query.conditions.where.author_id;
-
-      if (author) {
-        const posts = await author.getPosts(query.conditions);
-
-        return {
-          count: await author.countPosts(query.conditions),
-          rows: posts.map(p => p.get()),
-        };
+    try {
+      // id
+      if (args?.filters?.id) {
+        query.conditions.where.id = args.filters.id;
       } else {
-        return {
-          count: 0,
-          rows: [],
-        };
+        delete query.conditions.where.id;
       }
-    } else {
-      delete query.conditions.where.author_id;
-    }
 
-    // resolve menu filter
+      // pagination
+      if (args?.filters?.cursor) {
+        query.conditions.where.id = { [Op.gt]: args.filters.cursor };
+      }
 
-    if (args?.filters?.tagSlug) {
-      let { tagSlug } = args.filters;
-      if (tagSlug === "/") {
-        // get the first menu item.
-        const setting = await models.Setting.findOne({
-          attributes: ["value"],
-          where: { option: "menu" },
-          raw: true,
+      if (args?.filters?.page) {
+        query.conditions.offset =
+          (args.filters.page - 1) * query.conditions.limit;
+      } else {
+        delete query.conditions.offset;
+      }
+
+      if (args?.filters?.limit) {
+        query.conditions.limit = args.filters.limit;
+      }
+
+      // resolve status type and filter
+      if (args?.filters?.featured) {
+        query.conditions.where.featured = args.filters.featured;
+      } else {
+        delete query.conditions.where.featured;
+      }
+
+      // resolve type
+      if (args?.filters?.type) {
+        query.conditions.where.type = args.filters.type;
+      }
+
+      // resolve status
+      if (args?.filters?.status) {
+        query.conditions.where.status = { [Op.eq]: args.filters.status } as any;
+      }
+
+      // sort
+      if (args?.filters?.sortBy) {
+        query.conditions.order = [["publishedAt", args.filters.sortBy]];
+      }
+
+      if (context && context.session && args?.filters?.sortBy) {
+        query.conditions.order = [["updatedAt", args.filters.sortBy]];
+      }
+
+      // resolve author
+      if (args?.filters?.author) {
+        const author = await models.Author.findOne({
+          where: { name: args.filters.author },
+        });
+        delete query.conditions.where.author_id;
+
+        if (author) {
+          const posts = await author.getPosts(query.conditions);
+
+          return {
+            __typename: "PostsNode",
+            count: await author.countPosts(query.conditions),
+            rows: posts.map(p => p.get()),
+          };
+        } else {
+          return {
+            __typename: "PostsNode",
+            count: 0,
+            rows: [],
+          };
+        }
+      } else {
+        delete query.conditions.where.author_id;
+      }
+
+      // resolve menu filter
+
+      if (args?.filters?.tagSlug) {
+        let { tagSlug } = args.filters;
+        if (tagSlug === "/") {
+          // get the first menu item.
+          const setting = await models.Setting.findOne({
+            attributes: ["value"],
+            where: { option: "menu" },
+            raw: true,
+          });
+
+          if (setting && typeof setting.value === "string")
+            tagSlug = JSON.parse(setting.value)[0].slug;
+        }
+
+        const taxTag = await models.Tags.findOne({
+          where: { slug: tagSlug },
         });
 
-        tagSlug = setting ? JSON.parse(setting.value)[0].slug : null;
-      }
+        if (taxTag) {
+          const posts = await taxTag.getPosts(query.conditions);
+          return {
+            rows: posts.map(p => p.get()),
+            count: await taxTag.countPosts(query.conditions),
+          };
+        }
 
-      const taxTag = await models.Tags.findOne({
-        where: { slug: tagSlug },
-      });
-
-      if (taxTag) {
-        const posts = await taxTag.getPosts(query.conditions);
         return {
-          rows: posts.map(p => p.get()),
-          count: await taxTag.countPosts(query.conditions),
-        };
-      }
-
-      return {
-        rows: [],
-        count: 0,
-      };
-    }
-
-    // resolve tag filter
-    if (args?.filters?.tag) {
-      const tag = await models.Tags.findOne({
-        where: { name: args.filters.tag },
-      });
-
-      if (tag) {
-        const posts = await tag.getPosts(query.conditions);
-        return {
-          rows: posts.map(p => p.get()),
-          count: await tag.countPosts(query.conditions),
-        };
-      } else {
-        return {
+          __typename: "PostsNode",
           rows: [],
           count: 0,
         };
       }
+
+      // resolve tag filter
+      if (args?.filters?.tag) {
+        const tag = await models.Tags.findOne({
+          where: { name: args.filters.tag },
+        });
+
+        if (tag) {
+          const posts = await tag.getPosts(query.conditions);
+          return {
+            rows: posts.map(p => p.get()),
+            count: await tag.countPosts(query.conditions),
+          };
+        } else {
+          return {
+            __typename: "PostsNode",
+            rows: [],
+            count: 0,
+          };
+        }
+      }
+
+      const posts = await models.Post.findAll(query.conditions);
+      const count = await models.Post.count(query.conditions);
+
+      return {
+        __typename: "PostsNode",
+        rows: posts.map(post => post.get()),
+        count,
+      };
+    } catch (e) {
+      return { __typename: "PostError", message: e.message };
     }
-
-    const posts = await models.Post.findAll(query.conditions);
-    const count = await models.Post.count(query.conditions);
-
-    return {
-      rows: posts.map(post => post.get()),
-      count,
-    };
   },
 
   async post(_parent, args, context, _info) {
-    if (!args.filters) return {};
+    const error = { __typename: "PostError", message: "" };
+    if (!args.filters) return { ...error, message: "Missing arguments" };
+
     const session = await getModifiedSession(context);
 
     const { previewHash, ...filters } = args.filters;
@@ -248,7 +257,9 @@ const Query: QueryResolvers<ResolverContext> = {
     }
     const post = await models.Post.findOne(conditions);
 
-    return post ? post.get() : {};
+    return post
+      ? { ...post.get(), __typename: "Post" }
+      : { ...error, message: "Post not found" };
   },
 
   async stats() {

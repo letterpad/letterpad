@@ -2,18 +2,24 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Input, Tag } from "antd";
 import { useState } from "react";
 import styled from "styled-components";
-import { Post } from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { PostQuery } from "../../../__generated__/src/graphql/queries/queries.graphql";
+import { InputUpdatePost } from "../../../__generated__/src/graphql/type-defs.graphqls";
 
 type ValueOf<T> = T[keyof T];
 
 interface IProps {
-  post: Post;
-  setPostAttribute: (key: keyof Post, value: ValueOf<Post>) => void;
+  post: PostQuery["post"];
+  setPostAttribute: (
+    key: keyof InputUpdatePost,
+    value: ValueOf<InputUpdatePost>,
+  ) => void;
 }
 
 const Tags = ({ post, setPostAttribute }: IProps) => {
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
+
+  if (post.__typename !== "Post") return null;
 
   const handleInputConfirm = () => {
     setInputVisible(false);

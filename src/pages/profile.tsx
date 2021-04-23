@@ -21,7 +21,7 @@ import {
 } from "../../__generated__/src/graphql/type-defs.graphqls";
 import { removeTypenames } from "../../shared/removeTypenames";
 import withAuthCheck from "../hoc/withAuth";
-import { Optional } from "../../shared/types";
+import ErrorMessage from "../components/ErrorMessage";
 
 const { Panel } = Collapse;
 
@@ -30,11 +30,16 @@ type ValueOf<T> = T[keyof T];
 function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
   const [me, setMe] = useState<Author>();
   const [draft, setDraft] = useState<InputAuthor>();
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (data.__typename === "Author") {
       setMe(data as Author);
       setDraft({ id: data.id });
+    }
+
+    if (data.__typename === "AuthorNotFoundError") {
+      setError(data.message);
     }
   }, []);
 
@@ -72,7 +77,7 @@ function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
   };
 
   if (!me) return null;
-
+  if (error) return <ErrorMessage title="Profile" description={error} />;
   return (
     <CustomLayout settings={settings}>
       <Content style={{ margin: "24px 16px 0" }}>

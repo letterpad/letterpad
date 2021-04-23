@@ -17,9 +17,11 @@ import {
 } from "../../__generated__/src/graphql/type-defs.graphqls";
 const { Content } = Layout;
 import CustomLayout from "../layouts/Layout";
-import { PostsNode } from "../graphql/type-defs.graphqls";
+import { PostsResponse } from "../graphql/type-defs.graphqls";
 import { useRouter } from "next/router";
 import withAuthCheck from "../hoc/withAuth";
+import { useEffect, useState } from "react";
+import ErrorMessage from "../components/ErrorMessage";
 
 const columns = [
   {
@@ -71,21 +73,37 @@ const columns = [
 ];
 
 interface IProps {
-  data: PostsNode;
+  data: PostsResponse;
   settings: Setting;
 }
 
 function Posts({ data, settings }: IProps) {
   const router = useRouter();
-
-  const posts = data.rows.map(post => {
-    return {
-      ...post,
-      key: post.id,
-    };
+  const [postsNode, setPostsNode] = useState<PostsQuery["posts"]>({
+    count: 0,
+    rows: [],
   });
 
-  // If session exists, display content
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (data.__typename === "PostsNode") {
+      const rows = data.rows.map(post => {
+        return {
+          ...post,
+          key: post.id,
+        };
+      });
+      setPostsNode({ ...data, rows });
+    }
+
+    if (data.__typename === "PostError") {
+      setError(data.message);
+    }
+  }, []);
+
+  if (error) return <ErrorMessage description={error} title="Error" />;
+
   return (
     <CustomLayout settings={settings}>
       <PageHeader
@@ -108,7 +126,7 @@ function Posts({ data, settings }: IProps) {
           className="site-layout-background"
           style={{ padding: 24, minHeight: "77vh" }}
         >
-          <Table columns={columns} dataSource={posts} />
+          <Table columns={columns} dataSource={postsNode?.rows} />
         </div>
       </Content>
     </CustomLayout>

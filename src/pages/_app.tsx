@@ -13,6 +13,7 @@ import {
 } from "../graphql/queries/queries.graphql";
 import { useEffect, useState } from "react";
 import { Setting } from "../../__generated__/src/graphql/type-defs.graphqls";
+import { LetterpadProvider } from "../context/LetterpadProvider";
 
 NProgress.configure({ showSpinner: true });
 Router.events.on("routeChangeStart", _url => {
@@ -23,12 +24,12 @@ Router.events.on("routeChangeError", () => NProgress.done());
 
 export default function App({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps.initialApolloState);
-  const [settings, setSettings] = useState<null | Setting>();
+  const [settings, setSettings] = useState<null | Setting>(null);
 
   useEffect(() => {
     if (!settings) {
       getSettings().then(res => {
-        setSettings(res.data.settings);
+        setSettings(res.data.settings as Setting);
         if (localStorage) {
           localStorage.settings = JSON.stringify(res.data.settings);
         }
@@ -37,11 +38,13 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <Provider session={pageProps.session}>
-      <ApolloProvider client={apolloClient}>
-        <Component {...pageProps} settings={settings} />
-      </ApolloProvider>
-    </Provider>
+    <LetterpadProvider value={settings}>
+      <Provider session={pageProps.session}>
+        <ApolloProvider client={apolloClient}>
+          <Component {...pageProps} settings={settings} />
+        </ApolloProvider>
+      </Provider>
+    </LetterpadProvider>
   );
 }
 

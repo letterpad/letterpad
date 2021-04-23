@@ -13,10 +13,14 @@ import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import {
   Author,
   Image,
+  Setting,
   Tags,
 } from "../../__generated__/src/graphql/type-defs.graphqls";
 const { Content } = Layout;
 import CustomLayout from "../layouts/Layout";
+import { PostsResponse } from "../graphql/type-defs.graphqls";
+import { useEffect, useState } from "react";
+import ErrorMessage from "../components/ErrorMessage";
 
 const columns = [
   {
@@ -66,23 +70,45 @@ const columns = [
     key: "publishedAt",
   },
 ];
-function Pages(pageProps) {
-  const data = pageProps.data.posts.rows.map(post => {
-    return {
-      ...post,
-      key: post.id,
-    };
+
+interface IProps {
+  data: PostsResponse;
+  settings: Setting;
+}
+
+function Pages({ data, settings }: IProps) {
+  const [postsNode, setPostsNode] = useState<PostsQuery["posts"]>({
+    count: 0,
+    rows: [],
   });
+  const [error, setError] = useState("");
+  useEffect(() => {
+    if (data.__typename === "PostsNode") {
+      const rows = data.rows.map(post => {
+        return {
+          ...post,
+          key: post.id,
+        };
+      });
+      setPostsNode({ ...data, rows });
+    }
+
+    if (data.__typename === "PostError") {
+      setError(data.message);
+    }
+  }, []);
+
+  if (error) return <ErrorMessage description={error} title="Error" />;
 
   // If session exists, display content
   return (
-    <CustomLayout settings={pageProps.settings}>
+    <CustomLayout settings={settings}>
       <Content style={{ margin: "24px 16px 0" }}>
         <div
           className="site-layout-background"
           style={{ padding: 24, minHeight: 360 }}
         >
-          <Table columns={columns} dataSource={data} />
+          <Table columns={columns} dataSource={postsNode?.rows} />
         </div>
       </Content>
     </CustomLayout>

@@ -3,18 +3,22 @@ import { Tooltip, Input, Drawer, Button, Checkbox, Space } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import ImageUpload from "../ImageUpload";
 import {
-  Post,
+  InputUpdatePost,
   PostStatusOptions,
 } from "../../../__generated__/src/graphql/type-defs.graphqls";
 import Tags from "./tags";
+import { PostQuery } from "../../../__generated__/src/graphql/queries/queries.graphql";
 
 const { TextArea } = Input;
 
 type ValueOf<T> = T[keyof T];
 
 interface IProps {
-  post: Required<Post>;
-  setPostAttribute: (key: keyof Post, value: ValueOf<Post>) => void;
+  post: PostQuery["post"];
+  setPostAttribute: (
+    key: keyof InputUpdatePost,
+    value: ValueOf<InputUpdatePost>,
+  ) => void;
 }
 const Actions = ({ post, setPostAttribute }: IProps) => {
   const [visible, setVisible] = useState(false);
@@ -25,6 +29,7 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
     setVisible(false);
   };
 
+  if (post.__typename !== "Post") return null;
   return (
     <>
       <Button type="primary" onClick={showDrawer}>
