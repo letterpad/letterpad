@@ -1,3 +1,4 @@
+import { MutationResolvers } from "./../../../__generated__/src/graphql/type-defs.graphqls";
 import { ResolverContext } from "../apollo";
 import { QueryResolvers } from "../../../__generated__/src/graphql/type-defs.graphqls";
 import models from "../db/models";
@@ -46,10 +47,35 @@ const Tags = {
     const tag = await models.Tags.findOne({ where: { id } });
     const posts = await tag?.getPosts({ where: { status: "published" } });
     return {
+      __typename: "PostsNode",
       count: posts?.length,
       rows: posts?.map(post => post?.get()),
     };
   },
 };
 
-export default { Query, Tags };
+const Mutation: MutationResolvers<ResolverContext> = {
+  async updateTags(_root, args, _context) {
+    if (!args.data) {
+      return {
+        __typename: "TagsError",
+        message: "Arguments on found inside object data.",
+      };
+    }
+    const tags = await models.Tags.update(args.data, {
+      where: { id: args.data.id },
+    });
+
+    if (!tags) {
+      return {
+        __typename: "TagsError",
+        message: "Failed to update tags",
+      };
+    }
+    return {
+      __typename: "EditTaxResponse",
+      ok: true,
+    };
+  },
+};
+export default { Query, Tags, Mutation };

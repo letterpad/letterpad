@@ -3,7 +3,7 @@ type Tags {
   name: String!
   desc: String
   slug: String!
-  posts: PostsNode
+  posts: PostsResponse!
 }
 
 input TagsFilters {
@@ -13,21 +13,27 @@ input TagsFilters {
 
 type EditTaxResponse {
   ok: Boolean!
-  id: Int
-  errors: [Error!]
 }
 
 type Query {
   tags(filters: TagsFilters): [Tags!]!
 }
 
-# type Mutation {
-#   updateTags(
-#     id: Int!
-#     name: String
-#     desc: String
-#     type: TagsType!
-#     slug: String
-#   ): EditTaxResponse!
-#   deleteTags(id: Int!): EditTaxResponse!
-# }
+type TagsError implements LetterpadError {
+  message: String!
+}
+
+union UpdateTagsResponse = EditTaxResponse | TagsError
+
+input InputTags {
+  id: Int!
+  name: String
+  desc: String
+  slug: String
+}
+
+type Mutation {
+  updateTags(data: InputTags): UpdateTagsResponse!
+
+  # deleteTags(id: Int!): EditTaxResponse!
+}

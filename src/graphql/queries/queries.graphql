@@ -102,9 +102,11 @@ query Tags {
     desc
     slug
     posts {
-      count
-      rows {
-        id
+      ... on PostsNode {
+        count
+        rows {
+          id
+        }
       }
     }
   }
@@ -156,6 +158,17 @@ mutation Login($data: LoginData) {
       role
       avatar
       permissions
+    }
+  }
+}
+
+mutation UpdateTags($data: InputTags) {
+  updateTags(data: $data) {
+    ... on EditTaxResponse {
+      ok
+    }
+    ... on TagsError {
+      message
     }
   }
 }

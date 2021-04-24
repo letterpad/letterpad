@@ -60,7 +60,11 @@ const Navigation = ({ stats }) => {
           <span className="count">{stats?.media}</span>
         </SpaceBetween>
       </Menu.Item>
-      <Menu.Item key={menuItems["/tags"]} icon={<UserOutlined />}>
+      <Menu.Item
+        key={menuItems["/tags"]}
+        icon={<UserOutlined />}
+        onClick={() => router.push("/tags")}
+      >
         <SpaceBetween>
           <span>Tags</span>
           <span className="count">{stats?.tags}</span>
@@ -99,7 +103,7 @@ export default Navigation;
 
 const SpaceBetween = styled.span`
   span.count {
-    right: 24px;
-    position: absolute;
+    right: 24px !important;
+    position: absolute !important;
   }
 `;
