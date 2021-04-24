@@ -5,6 +5,7 @@ import ImageUpload from "../ImageUpload";
 import {
   InputUpdatePost,
   PostStatusOptions,
+  PostTypes,
 } from "../../../__generated__/src/graphql/type-defs.graphqls";
 import Tags from "./tags";
 import { PostQuery } from "../../../__generated__/src/graphql/queries/queries.graphql";
@@ -25,6 +26,10 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
   };
 
   if (post.__typename !== "Post") return null;
+
+  const isPublished = post.status === PostStatusOptions.Published;
+  const isPost = post.type === PostTypes.Post;
+  const postVerb = isPost ? "Post" : "Page";
   return (
     <>
       <Button type="primary" onClick={showDrawer}>
@@ -51,18 +56,22 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
                   : PostStatusOptions.Draft,
               })
             }
-            checked={post.status === PostStatusOptions.Published}
+            checked={isPublished}
           >
-            Unpublish this post
+            {isPublished
+              ? `Unpublish this ${postVerb}`
+              : `Publish this ${postVerb}`}
           </Checkbox>
-          <Checkbox
-            onChange={e => setPostAttribute({ featured: e.target.checked })}
-            checked={post.featured}
-          >
-            Mark as featured post
-          </Checkbox>
+          {isPost && (
+            <Checkbox
+              onChange={e => setPostAttribute({ featured: e.target.checked })}
+              checked={post.featured}
+            >
+              {post.featured ? "Remove from featured" : "Mark as featured post"}
+            </Checkbox>
+          )}
           <div>
-            <label>Post Description</label>
+            <label>{postVerb} Description</label>
             <TextArea
               showCount
               maxLength={160}
@@ -77,7 +86,7 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
               value={post.slug}
             />
           </div>
-          <Tags post={post} setPostAttribute={setPostAttribute} />
+          {isPost && <Tags post={post} setPostAttribute={setPostAttribute} />}
           <div>
             <label>Cover Image</label>
             <ImageUpload
@@ -95,7 +104,7 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
             />
           </div>
           <Button type="primary" danger>
-            Delete Post
+            Delete {postVerb}
           </Button>
         </Space>
       </Drawer>

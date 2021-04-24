@@ -32,7 +32,7 @@ const CustomLayout = ({ children }: IProps) => {
   }, []);
 
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh" }}>
       <Sider
         breakpoint="lg"
         collapsedWidth="0"

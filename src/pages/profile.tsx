@@ -1,4 +1,4 @@
-import { Collapse, Form, Input } from "antd";
+import { Collapse, Form, Input, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "../layouts/Layout";
 import { initializeApollo } from "../graphql/apollo";
@@ -80,6 +80,12 @@ function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
   if (error) return <ErrorMessage title="Profile" description={error} />;
   return (
     <CustomLayout settings={settings}>
+      <PageHeader
+        onBack={() => window.history.back()}
+        className="site-page-header"
+        title="Profile"
+        style={{ padding: 10 }}
+      ></PageHeader>
       <Content style={{ margin: "24px 16px 0" }}>
         <div
           className="site-layout-background"

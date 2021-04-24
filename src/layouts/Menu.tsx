@@ -1,5 +1,11 @@
 import { Menu } from "antd/";
 import {
+  ContainerOutlined,
+  FileImageOutlined,
+  FileTextOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+  TagsOutlined,
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
@@ -31,7 +37,7 @@ const Navigation = ({ stats }) => {
     >
       <Menu.Item
         key={menuItems["/posts"]}
-        icon={<UserOutlined />}
+        icon={<ContainerOutlined />}
         onClick={() => router.push("/posts")}
       >
         <SpaceBetween>
@@ -41,7 +47,7 @@ const Navigation = ({ stats }) => {
       </Menu.Item>
       <Menu.Item
         key={menuItems["/pages"]}
-        icon={<VideoCameraOutlined />}
+        icon={<FileTextOutlined />}
         onClick={() => router.push("/pages")}
         isSelected={true}
       >
@@ -52,7 +58,7 @@ const Navigation = ({ stats }) => {
       </Menu.Item>
       <Menu.Item
         key={menuItems["/media"]}
-        icon={<UploadOutlined />}
+        icon={<FileImageOutlined />}
         onClick={() => router.push("/media")}
       >
         <SpaceBetween>
@@ -62,7 +68,7 @@ const Navigation = ({ stats }) => {
       </Menu.Item>
       <Menu.Item
         key={menuItems["/tags"]}
-        icon={<UserOutlined />}
+        icon={<TagsOutlined />}
         onClick={() => router.push("/tags")}
       >
         <SpaceBetween>
@@ -79,14 +85,14 @@ const Navigation = ({ stats }) => {
       </Menu.Item>
       <Menu.Item
         key={menuItems["/settings"]}
-        icon={<UserOutlined />}
+        icon={<SettingOutlined />}
         onClick={() => router.push("/settings")}
       >
         Settings
       </Menu.Item>
       <Menu.Item
         key={menuItems["/logout"]}
-        icon={<UserOutlined />}
+        icon={<LogoutOutlined />}
         onClick={() =>
           signout({
             redirect: true,

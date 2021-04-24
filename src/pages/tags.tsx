@@ -1,4 +1,4 @@
-import { Table, Button, Popconfirm } from "antd";
+import { Table, Button, Popconfirm, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { useState } from "react";
 import { Setting } from "../../__generated__/src/graphql/queries/post.mutations.graphql";
@@ -116,6 +116,12 @@ const EditableTable = ({
 
   return (
     <CustomLayout settings={settings}>
+      <PageHeader
+        onBack={() => window.history.back()}
+        className="site-page-header"
+        title="Tags"
+        style={{ padding: 10 }}
+      ></PageHeader>
       <Content style={{ margin: "24px 16px 0" }}>
         <div>
           <Button

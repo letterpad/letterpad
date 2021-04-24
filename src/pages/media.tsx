@@ -1,4 +1,4 @@
-import { Image, Row, Col, Card } from "antd";
+import { Image, Row, Col, Card, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "../layouts/Layout";
 import { initializeApollo } from "../graphql/apollo";
@@ -22,6 +22,12 @@ const Media = ({
 }) => {
   return (
     <CustomLayout settings={settings}>
+      <PageHeader
+        onBack={() => window.history.back()}
+        className="site-page-header"
+        title="Media"
+        style={{ padding: 10 }}
+      ></PageHeader>
       <Content style={{ margin: "24px 16px 0" }}>
         <div
           className="site-layout-background"

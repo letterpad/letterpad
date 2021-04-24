@@ -8,7 +8,7 @@ import {
 } from "../../__generated__/src/graphql/queries/queries.graphql";
 import { useRouter } from "next/router";
 import { initializeApollo } from "../graphql/apollo";
-import { Layout, Table } from "antd";
+import { Button, Layout, PageHeader, Table } from "antd";
 
 import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import {
@@ -62,6 +62,20 @@ function Pages({ settings }: IProps) {
 
   return (
     <CustomLayout settings={settings}>
+      <PageHeader
+        className="site-page-header"
+        onBack={() => window.history.back()}
+        title="Posts"
+        extra={[
+          <Button
+            key="1"
+            type="primary"
+            onClick={() => router.push("/page/create")}
+          >
+            New Page
+          </Button>,
+        ]}
+      ></PageHeader>
       <Content style={{ margin: "24px 16px 0" }}>
         <div
           className="site-layout-background"

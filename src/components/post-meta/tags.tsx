@@ -5,8 +5,6 @@ import styled from "styled-components";
 import { PostQuery } from "../../../__generated__/src/graphql/queries/queries.graphql";
 import { InputUpdatePost } from "../../../__generated__/src/graphql/type-defs.graphqls";
 
-type ValueOf<T> = T[keyof T];
-
 interface IProps {
   post: PostQuery["post"];
   setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => void;
@@ -21,9 +19,13 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
   const handleInputConfirm = () => {
     setInputVisible(false);
     if (inputValue && post.tags) {
+      const tags = post.tags.map(tag => {
+        const { id, slug, name, desc } = tag;
+        return { id, slug, name, desc: desc || "" };
+      });
       setPostAttribute({
         tags: [
-          ...post.tags,
+          ...tags,
           { id: 0, name: inputValue, slug: inputValue, desc: "" },
         ],
       });
@@ -34,13 +36,19 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
   return (
     <Wrapper>
       <label>Tags</label>
+      <br />
       {post.tags?.map(tag => (
         <Tag
           key={tag.name}
           closable
           onClose={() => {
             if (!post.tags) return;
-            const tags = post.tags.filter(ele => ele.name !== tag.name);
+            const tags = post.tags
+              .filter(ele => ele.name !== tag.name)
+              .map(tag => {
+                const { id, slug, name, desc } = tag;
+                return { id, slug, name, desc: desc || "" };
+              });
             setPostAttribute({ tags });
           }}
         >

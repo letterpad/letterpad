@@ -1,7 +1,6 @@
 import { useSession } from "next-auth/client";
 import {
   PostDocument,
-  Post as IPost,
   PostQuery,
   PostQueryVariables,
   PostResponse,
@@ -17,7 +16,10 @@ import { initializeApollo } from "../../graphql/apollo";
 import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import Actions from "../../components/post-meta";
-import { PostStatusOptions } from "../../../__generated__/src/graphql/type-defs.graphqls";
+import {
+  PostStatusOptions,
+  PostTypes,
+} from "../../../__generated__/src/graphql/type-defs.graphqls";
 import { useEffect, useState } from "react";
 import { uploadFile } from "../../../shared/upload";
 import { removeTypenames } from "../../../shared/removeTypenames";
@@ -25,9 +27,8 @@ import FileExplorer from "../../components/file-explorer";
 import withAuthCheck from "../../hoc/withAuth";
 import ErrorMessage from "../../components/ErrorMessage";
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
-type ValueOf<T> = T[keyof T];
 export enum MediaProvider {
   Unsplash = "unsplash",
   Letterpad = "letterpad",
@@ -91,13 +92,15 @@ function Post({ data }: { data: PostResponse }) {
       </Layout>
     );
 
+  const isPost = post.type === PostTypes.Post;
+
   return (
     <Layout>
       <PageHeader
         className="site-page-header"
         title="&nbsp;"
         style={{ padding: 10 }}
-        onBack={() => router.push("/posts")}
+        onBack={() => router.push(isPost ? "/posts" : "/pages")}
         extra={[<Actions post={post} setPostAttribute={setPostAttribute} />]}
         tags={<Tag color={tagColor}>{post.status}</Tag>}
       ></PageHeader>
@@ -142,9 +145,6 @@ function Post({ data }: { data: PostResponse }) {
           />
         </div>
       </Content>
-      <Footer style={{ textAlign: "center" }}>
-        Ant Design ©2018 Created by Ant UED
-      </Footer>
     </Layout>
   );
 }
