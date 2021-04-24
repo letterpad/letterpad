@@ -6,6 +6,9 @@ import {
   UpdateTagsMutationVariables,
   UpdateTagsMutation,
   UpdateTagsDocument,
+  DeleteTagsMutation,
+  DeleteTagsMutationVariables,
+  DeleteTagsDocument,
 } from "../../__generated__/src/graphql/queries/queries.graphql";
 import {
   TagsQuery,
@@ -22,6 +25,7 @@ interface DataType {
   name: string;
   id: number;
   desc: string;
+  slug: string;
   posts: number;
 }
 
@@ -44,52 +48,15 @@ const EditableTable = ({
   );
   const [count, setCount] = useState(2);
 
-  const headers = [
-    {
-      title: "name",
-      dataIndex: "name",
-      width: "30%",
-      editable: true,
-      required: true,
-    },
-    {
-      title: "desc",
-      dataIndex: "desc",
-      editable: true,
-      required: false,
-      render: (_, record: { key: React.Key }) => {
-        // console.log(text, record);
-        return (
-          _ || (
-            <Button type="dashed" size="small">
-              Edit
-            </Button>
-          )
-        );
-      },
-    },
-    {
-      title: "posts",
-      dataIndex: "posts",
-    },
-    {
-      title: "operation",
-      dataIndex: "operation",
-      render: (_, record: { key: React.Key }) =>
-        dataSource.length >= 1 ? (
-          <Popconfirm
-            title="Sure to delete?"
-            onConfirm={() => handleDelete(record.key)}
-          >
-            <a>Delete</a>
-          </Popconfirm>
-        ) : null,
-    },
-  ];
-
-  const handleDelete = (key: React.Key) => {
+  const handleDelete = async (key: React.Key) => {
+    const tagToDelete = [...dataSource].filter(item => item.key === key);
+    if (tagToDelete.length > 0 && tagToDelete[0].id > 0) {
+      await deleteTagApi(tagToDelete[0].id);
+    }
     setDataSource([...dataSource].filter(item => item.key !== key));
   };
+
+  const headers = getHeaders(dataSource, handleDelete);
 
   const components = {
     body: {
@@ -116,11 +83,12 @@ const EditableTable = ({
 
   const handleAdd = () => {
     const newData: DataType = {
-      key: count,
+      key: count + 1,
       name: `new-tag-${count}`,
       id: 0,
       desc: "",
       posts: 0,
+      slug: `new-tag-${count}`,
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1);
@@ -186,4 +154,64 @@ export async function getServerSideProps(context) {
       data,
     },
   };
+}
+
+async function deleteTagApi(id) {
+  const apolloClient = initializeApollo();
+
+  const tags = await apolloClient.mutate<
+    DeleteTagsMutation,
+    DeleteTagsMutationVariables
+  >({
+    mutation: DeleteTagsDocument,
+    variables: {
+      id,
+    },
+  });
+
+  return tags.data?.deleteTags;
+}
+
+function getHeaders(dataSource, handleDelete) {
+  return [
+    {
+      title: "name",
+      dataIndex: "name",
+      width: "30%",
+      editable: true,
+      required: true,
+    },
+    {
+      title: "desc",
+      dataIndex: "desc",
+      editable: true,
+      required: false,
+      render: (_, record: { key: React.Key }) => {
+        return (
+          _ || (
+            <Button type="dashed" size="small">
+              Edit
+            </Button>
+          )
+        );
+      },
+    },
+    {
+      title: "posts",
+      dataIndex: "posts",
+    },
+    {
+      title: "operation",
+      dataIndex: "operation",
+      render: (_, record: { key: React.Key }) =>
+        dataSource.length >= 1 ? (
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={() => handleDelete(record.key)}
+          >
+            <a>Delete</a>
+          </Popconfirm>
+        ) : null,
+    },
+  ];
 }

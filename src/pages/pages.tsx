@@ -1,11 +1,12 @@
 import withAuthCheck from "../hoc/withAuth";
 import {
   PostsDocument,
+  PostsFilters,
   PostsQuery,
   PostsQueryVariables,
   PostTypes,
 } from "../../__generated__/src/graphql/queries/queries.graphql";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { initializeApollo } from "../graphql/apollo";
 import { Layout, Table } from "antd";
 
@@ -14,13 +15,91 @@ import {
   Author,
   Image,
   Setting,
-  Tags,
 } from "../../__generated__/src/graphql/type-defs.graphqls";
 const { Content } = Layout;
 import CustomLayout from "../layouts/Layout";
-import { PostsResponse } from "../graphql/type-defs.graphqls";
 import { useEffect, useState } from "react";
 import ErrorMessage from "../components/ErrorMessage";
+import Filters from "../components/filters";
+
+interface IProps {
+  settings: Setting;
+}
+
+function Pages({ settings }: IProps) {
+  const [postsNode, setPostsNode] = useState<PostsQuery["posts"]>({
+    count: 0,
+    rows: [],
+  });
+  const [filters, setFilters] = useState<PostsFilters>({});
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    fetchPosts(filters);
+  }, [JSON.stringify(filters)]);
+
+  const fetchPosts = async (filters = {}) => {
+    const posts = await fetchPostsFromAPI(filters);
+    if (posts.__typename === "PostsNode") {
+      const rows = posts.rows.map(post => {
+        return {
+          ...post,
+          key: post.id,
+        };
+      });
+      setPostsNode({ ...posts, rows });
+    }
+
+    if (posts.__typename === "PostError") {
+      setError(posts.message);
+    }
+  };
+
+  if (postsNode.__typename !== "PostsNode" || error) {
+    return <ErrorMessage description={error} title="Error" />;
+  }
+
+  return (
+    <CustomLayout settings={settings}>
+      <Content style={{ margin: "24px 16px 0" }}>
+        <div
+          className="site-layout-background"
+          style={{ padding: 24, minHeight: 360 }}
+        >
+          <Filters
+            onStatusChange={status => setFilters({ ...filters, status })}
+            onOrderChange={sortBy => setFilters({ ...filters, sortBy })}
+          />
+          <Table
+            columns={columns}
+            dataSource={postsNode.rows}
+            onRow={row => ({
+              onClick: () => router.push("/post/" + row.id),
+            })}
+          />
+        </div>
+      </Content>
+    </CustomLayout>
+  );
+}
+
+export default withAuthCheck(Pages);
+
+async function fetchPostsFromAPI(filters: PostsFilters) {
+  const apolloClient = initializeApollo();
+
+  const post = await apolloClient.query<PostsQuery, PostsQueryVariables>({
+    query: PostsDocument,
+    variables: {
+      filters: {
+        type: PostTypes.Page,
+        ...filters,
+      },
+    },
+  });
+  return post.data.posts;
+}
 
 const columns = [
   {
@@ -34,11 +113,6 @@ const columns = [
     title: "Title",
     dataIndex: "title",
     key: "title",
-    render: (title: string, record) => (
-      <Link href={"/post/" + record.id}>
-        <a>{title}</a>
-      </Link>
-    ),
   },
   {
     title: "Description",
@@ -59,79 +133,8 @@ const columns = [
     key: "status",
   },
   {
-    title: "Tags",
-    dataIndex: "tags",
-    key: "tags",
-    render: (tags: Tags[]) => tags.map(tag => tag.name).join(", "),
-  },
-  {
     title: "Published",
     dataIndex: "publishedAt",
     key: "publishedAt",
   },
 ];
-
-interface IProps {
-  data: PostsResponse;
-  settings: Setting;
-}
-
-function Pages({ data, settings }: IProps) {
-  const [postsNode, setPostsNode] = useState<PostsQuery["posts"]>({
-    count: 0,
-    rows: [],
-  });
-  const [error, setError] = useState("");
-  useEffect(() => {
-    if (data.__typename === "PostsNode") {
-      const rows = data.rows.map(post => {
-        return {
-          ...post,
-          key: post.id,
-        };
-      });
-      setPostsNode({ ...data, rows });
-    }
-
-    if (data.__typename === "PostError") {
-      setError(data.message);
-    }
-  }, []);
-
-  if (postsNode.__typename !== "PostsNode" || error) {
-    return <ErrorMessage description={error} title="Error" />;
-  }
-  // If session exists, display content
-  return (
-    <CustomLayout settings={settings}>
-      <Content style={{ margin: "24px 16px 0" }}>
-        <div
-          className="site-layout-background"
-          style={{ padding: 24, minHeight: 360 }}
-        >
-          <Table columns={columns} dataSource={postsNode.rows} />
-        </div>
-      </Content>
-    </CustomLayout>
-  );
-}
-
-export default withAuthCheck(Pages);
-
-export async function getServerSideProps(context) {
-  const apolloClient = initializeApollo({}, context);
-
-  const post = await apolloClient.query<PostsQuery, PostsQueryVariables>({
-    query: PostsDocument,
-    variables: {
-      filters: {
-        type: PostTypes.Page,
-      },
-    },
-  });
-  return {
-    props: {
-      data: post.data.posts,
-    },
-  };
-}

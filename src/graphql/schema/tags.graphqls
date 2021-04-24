@@ -23,7 +23,12 @@ type TagsError implements LetterpadError {
   message: String!
 }
 
+type DeleteTagsResult {
+  ok: Boolean!
+}
+
 union UpdateTagsResponse = EditTaxResponse | TagsError
+union DeleteTagsResponse = DeleteTagsResult | TagsError
 
 input InputTags {
   id: Int!
@@ -34,6 +39,5 @@ input InputTags {
 
 type Mutation {
   updateTags(data: InputTags): UpdateTagsResponse!
-
-  # deleteTags(id: Int!): EditTaxResponse!
+  deleteTags(id: Int!): DeleteTagsResponse!
 }

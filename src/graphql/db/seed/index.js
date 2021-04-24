@@ -14,21 +14,21 @@ env(__dirname + "../../../../../.env.development.local");
 const models = require("../models/index").default;
 const { seed } = require("./seed");
 
-(async () => {
-  console.log("models :>> ", Object.keys(models.Post.rawAttributes));
-  // // await models.Post.get("author_id");
-  const post = await models.Post.findOne({
-    where: {
-      id: 1,
-    },
-  });
-  if (post) {
-    const author = await post.getTags();
-    console.log("author :>> ", author);
-  }
-})();
+// (async () => {
+//   console.log("models :>> ", Object.keys(models.Post.rawAttributes));
+//   // // await models.Post.get("author_id");
+//   const post = await models.Post.findOne({
+//     where: {
+//       id: 1,
+//     },
+//   });
+//   if (post) {
+//     const author = await post.getTags();
+//     console.log("author :>> ", author);
+//   }
+// })();
 
-// seed(models).catch(e => {
-//   console.error(e);
-//   process.exit(1);
-// });
+seed(models).catch(e => {
+  console.error(e);
+  process.exit(1);
+});

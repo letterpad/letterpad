@@ -77,5 +77,29 @@ const Mutation: MutationResolvers<ResolverContext> = {
       ok: true,
     };
   },
+
+  async deleteTags(_root, args, _context) {
+    if (!args.id) {
+      return {
+        __typename: "TagsError",
+        message: "Arguments on found inside object data.",
+      };
+    }
+
+    const deleteRowCount = await models.Tags.destroy({
+      where: { id: args.id },
+    });
+
+    if (deleteRowCount === 1) {
+      return {
+        __typename: "DeleteTagsResult",
+        ok: true,
+      };
+    }
+    return {
+      __typename: "TagsError",
+      message: "Unable to delete tag.",
+    };
+  },
 };
 export default { Query, Tags, Mutation };

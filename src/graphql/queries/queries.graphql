@@ -173,6 +173,17 @@ mutation UpdateTags($data: InputTags) {
   }
 }
 
+mutation DeleteTags($id: Int!) {
+  deleteTags(id: $id) {
+    ... on DeleteTagsResult {
+      ok
+    }
+    ... on TagsError {
+      message
+    }
+  }
+}
+
 query settings {
   settings {
     site_title

@@ -114,7 +114,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
       // sort
       if (args?.filters?.sortBy) {
-        query.conditions.order = [["publishedAt", args.filters.sortBy]];
+        query.conditions.order = [["updatedAt", args.filters.sortBy]];
       }
 
       if (context && context.session && args?.filters?.sortBy) {
@@ -202,7 +202,7 @@ const Query: QueryResolvers<ResolverContext> = {
           };
         }
       }
-
+      console.log(query.conditions);
       const posts = await models.Post.findAll(query.conditions);
       const count = await models.Post.count(query.conditions);
 
