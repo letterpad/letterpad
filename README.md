@@ -2,7 +2,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First seed the database using
+
+```bash
+yarn seed
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
