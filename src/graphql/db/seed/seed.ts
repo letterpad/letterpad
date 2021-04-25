@@ -1,45 +1,46 @@
+import dbModels from "./../models/index";
 import bcrypt from "bcryptjs";
-// import copydir from "copy-dir";
+import copydir from "copy-dir";
 import generatePost from "./contentGenerator";
-// import mkdirp from "mkdirp";
+import mkdirp from "mkdirp";
 import path from "path";
 import posts from "./posts";
-// import { promisify } from "util";
-// import rimraf from "rimraf";
+import { promisify } from "util";
+import rimraf from "rimraf";
 
-// const mkdirpAsync = promisify(mkdirp);
-// const rimrafAsync = promisify(rimraf);
-// const copydirAsync = promisify(copydir);
+const mkdirpAsync = promisify(mkdirp);
+const rimrafAsync = promisify(rimraf);
+const copydirAsync = promisify(copydir);
 
-// // All paths are relative to this file
-// const dataDir = "../../../data";
-// const publicUploadsDir = "../../public/uploads";
-// const uploadsSourceDir = "./uploads";
+// All paths are relative to this file
+const dataDir = "../../../../data";
+const publicUploadsDir = "../../../../public/uploads";
+const uploadsSourceDir = "./uploads";
 
 function absPath(p) {
   return path.join(__dirname, p);
 }
 
-let models = null;
-export const seed = async (dbModels, autoExit = true) => {
-  models = dbModels;
+let models: typeof dbModels;
+export const seed = async (_models: typeof dbModels, autoExit = true) => {
+  models = _models;
 
-  //   console.time("ensure data directories");
-  //   await Promise.all([
-  //     mkdirpAsync(absPath(dataDir)),
-  //     mkdirpAsync(absPath(publicUploadsDir)),
-  //   ]);
-  //   console.timeEnd("ensure data directories");
+  console.time("ensure data directories");
+  await Promise.all([
+    mkdirpAsync(absPath(dataDir)),
+    mkdirpAsync(absPath(publicUploadsDir)),
+  ]);
+  console.timeEnd("ensure data directories");
 
   console.time("sync sequelize models");
   await models.sequelize.sync({ force: true });
   console.timeEnd("sync sequelize models");
 
   // do some clean first. delete the uploads folder
-  //   console.time("sync uploads");
-  //   await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
-  //   await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
-  //   console.timeEnd("sync uploads");
+  console.time("sync uploads");
+  await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
+  await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
+  console.timeEnd("sync uploads");
 
   console.time("insert roles and permissions");
   await insertRolePermData(models);
@@ -52,9 +53,11 @@ export const seed = async (dbModels, autoExit = true) => {
   console.time("Asssign Role to author");
   const role = await models.Role.findOne({ where: { id: 1 } });
   const authors = await models.Author.findAll();
-  authors.map(async author => {
-    await author.setRole(role);
-  });
+  if (role && authors) {
+    authors.map(async author => {
+      await author.setRole(role);
+    });
+  }
   console.timeEnd("Asssign Role to author");
 
   console.time("insert posts, settings, media");
@@ -181,10 +184,10 @@ export async function insertTags(models) {
   ]);
 }
 
-export async function insertPost(params, models, tags) {
+export async function insertPost(params, models: typeof dbModels, tags) {
   // get author  // 1 or 2
   const { md, html } = generatePost(params.type);
-  let promises = [];
+  let promises: any[] = [];
   const randomAuthorId = 1; //Math.floor(Math.random() * (2 - 1 + 1)) + 1;
   let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
   const title =
@@ -206,12 +209,14 @@ export async function insertPost(params, models, tags) {
     publishedAt: new Date(),
     reading_time: "5 mins",
   });
+  if (admin && post) {
+    promises = [admin.addPost(post)];
+    if (params.type === "post") {
+      promises = [...promises, ...tags.map(tag => post.addTag(tag))];
+    }
 
-  promises = [admin.addPost(post)];
-  if (params.type === "post") {
-    promises = [...promises, ...tags.map(tag => post.addTags(tag))];
+    return Promise.all(promises);
   }
-  return Promise.all(promises);
 }
 
 export async function insertMedia(models) {
