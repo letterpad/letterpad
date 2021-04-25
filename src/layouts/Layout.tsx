@@ -16,13 +16,14 @@ import { initializeApollo } from "../graphql/apollo";
 import styled from "styled-components";
 import Navigation from "./Menu";
 import "antd/dist/antd.css";
+import Logo from "../components/Logo";
 
 interface IProps {
   settings: Setting;
   children: any;
 }
 
-const CustomLayout = ({ children }: IProps) => {
+const CustomLayout = ({ children, settings }: IProps) => {
   const [stats, setStats] = useState<Stats>();
   const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -54,7 +55,7 @@ const CustomLayout = ({ children }: IProps) => {
           zIndex: 9999,
         }}
       >
-        <div className="logo" />
+        <Logo src={settings.site_logo.src} />
         <Navigation stats={stats} />
       </Sider>
       <Layout
@@ -79,6 +80,7 @@ const CustomLayout = ({ children }: IProps) => {
             onClose={() => setVisible(false)}
             visible={visible}
           >
+            <Logo src={settings.site_logo.src} />
             <Navigation stats={stats} />
           </StyledDrawer>
         </nav>
