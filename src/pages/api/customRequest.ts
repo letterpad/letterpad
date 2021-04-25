@@ -8,7 +8,7 @@ import {
 import {
   SettingsQuery,
   SettingsQueryVariables,
-} from "../../../__generated__/src/graphql/queries/queries.graphql";
+} from "@/__generated__/queries/queries.graphql";
 import { getSession } from "next-auth/client";
 import { initializeApollo } from "../../graphql/apollo";
 import { SettingsDocument } from "../../graphql/queries/queries.graphql";

@@ -5,12 +5,12 @@ import {
   PostQueryVariables,
   PostResponse,
   InputUpdatePost,
-} from "../../../__generated__/src/graphql/queries/queries.graphql";
+} from "@/__generated__/queries/queries.graphql";
 import {
   UpdatePostDocument,
   UpdatePostMutation,
   UpdatePostMutationVariables,
-} from "../../../__generated__/src/graphql/queries/post.mutations.graphql";
+} from "@/__generated__/queries/post.mutations.graphql";
 import LetterpadEditor from "letterpad-editor";
 import { initializeApollo } from "../../graphql/apollo";
 import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";
@@ -19,7 +19,7 @@ import Actions from "../../components/post-meta";
 import {
   PostStatusOptions,
   PostTypes,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/type-defs.graphqls";
 import { useEffect, useState } from "react";
 import { uploadFile } from "../../../shared/upload";
 import { removeTypenames } from "../../../shared/removeTypenames";

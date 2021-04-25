@@ -4,7 +4,7 @@ import {
   MutationResolvers,
   Setting,
   InputImage,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/type-defs.graphqls";
 import fs from "fs";
 import path from "path";
 import models from "../db/models";

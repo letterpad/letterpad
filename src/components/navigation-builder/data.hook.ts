@@ -6,15 +6,11 @@ import {
   TagsQuery,
   TagsQueryVariables,
   NavigationType,
-} from "../../../__generated__/src/graphql/queries/queries.graphql";
+} from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
 
 import { initializeApollo } from "../../graphql/apollo";
-import {
-  Post,
-  PostTypes,
-  Tags,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { Post, PostTypes, Tags } from "@/__generated__/type-defs.graphqls";
 import config from "../../../config";
 
 function useNavigationData() {

@@ -6,11 +6,8 @@ import {
   MediaDocument,
   MediaQuery,
   MediaQueryVariables,
-} from "../../__generated__/src/graphql/queries/queries.graphql";
-import {
-  MediaNode,
-  Setting,
-} from "../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/queries/queries.graphql";
+import { MediaNode, Setting } from "@/__generated__/type-defs.graphqls";
 import withAuthCheck from "../hoc/withAuth";
 
 const Media = ({

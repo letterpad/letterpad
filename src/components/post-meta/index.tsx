@@ -6,9 +6,9 @@ import {
   InputUpdatePost,
   PostStatusOptions,
   PostTypes,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/type-defs.graphqls";
 import Tags from "./tags";
-import { PostQuery } from "../../../__generated__/src/graphql/queries/queries.graphql";
+import { PostQuery } from "@/__generated__/queries/queries.graphql";
 
 const { TextArea } = Input;
 

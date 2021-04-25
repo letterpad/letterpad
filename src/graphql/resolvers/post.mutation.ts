@@ -2,12 +2,12 @@ import { Tags } from "../db/models/tags";
 import {
   PostStatusOptions,
   PostTypes,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/type-defs.graphqls";
 import { PostAttributes } from "../db/models/post";
 import { ResolverContext } from "../apollo";
 import reading_time from "reading-time";
 import { mdToHtml } from "letterpad-editor";
-import { MutationResolvers } from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { MutationResolvers } from "@/__generated__/type-defs.graphqls";
 
 import {
   slugify,

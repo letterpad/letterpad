@@ -8,7 +8,7 @@ import { useNavigationData } from "./data.hook";
 import {
   Navigation as NavigationItemType,
   NavigationType,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/type-defs.graphqls";
 import { Button } from "antd";
 
 interface IMenuWithError extends NavigationItemType {

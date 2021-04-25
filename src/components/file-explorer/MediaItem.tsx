@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { getReadableDate } from "../../../shared/utils";
 
-import { Media } from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { Media } from "@/__generated__/type-defs.graphqls";
 
 interface IProps {
   media: Media;

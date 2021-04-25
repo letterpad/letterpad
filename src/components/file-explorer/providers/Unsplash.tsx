@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import InfiniteScrollList from "../InfiniteScrollList";
 import config from "../../../../config";
-import { Media } from "../../../../__generated__/src/graphql/type-defs.graphqls";
+import { Media } from "@/__generated__/type-defs.graphqls";
 import { Input } from "antd";
 
 interface IProps {

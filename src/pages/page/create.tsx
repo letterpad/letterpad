@@ -6,12 +6,12 @@ import {
   CreatePostMutation,
   CreatePostMutationVariables,
 } from "../../graphql/queries/post.mutations.graphql";
-import { CreatePostDocument } from "../../../__generated__/src/graphql/queries/post.mutations.graphql";
-import { PostTypes } from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { CreatePostDocument } from "@/__generated__/queries/post.mutations.graphql";
+import { PostTypes } from "@/__generated__/type-defs.graphqls";
 import {
   CreatePostResponse,
   Setting,
-} from "../../../__generated__/src/graphql/queries/queries.graphql";
+} from "@/__generated__/queries/queries.graphql";
 import ErrorMessage from "../../components/ErrorMessage";
 
 interface IProps {

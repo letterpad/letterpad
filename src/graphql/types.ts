@@ -1,5 +1,5 @@
 import { NextApiRequest } from "next";
-import { Author } from "../../__generated__/src/graphql/type-defs.graphqls";
+import { Author } from "@/__generated__/type-defs.graphqls";
 import { Post } from "./type-defs.graphqls";
 
 export enum ROLES {

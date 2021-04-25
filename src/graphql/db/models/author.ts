@@ -20,7 +20,7 @@ import {
   Social,
   Role as QraphqlRole,
   Permissions as GraqhqlPermissions,
-} from "../../../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/type-defs.graphqls";
 
 // These are all the attributes in the User model
 interface AuthorAttributes {

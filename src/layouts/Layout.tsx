@@ -2,15 +2,12 @@ import { MenuOutlined } from "@ant-design/icons";
 import { Button, Drawer } from "antd";
 import Layout, { Footer } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
-import {
-  Setting,
-  Stats,
-} from "../../__generated__/src/graphql/type-defs.graphqls";
+import { Setting, Stats } from "@/__generated__/type-defs.graphqls";
 import {
   StatsQuery,
   StatsQueryVariables,
   StatsDocument,
-} from "../../__generated__/src/graphql/queries/queries.graphql";
+} from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
 import { initializeApollo } from "../graphql/apollo";
 import styled from "styled-components";

@@ -3,7 +3,7 @@ import { Select, Space } from "antd";
 import {
   PostStatusOptions,
   SortBy,
-} from "../../../__generated__/src/graphql/queries/queries.graphql";
+} from "@/__generated__/queries/queries.graphql";
 
 interface IProps {
   onStatusChange?: (status: PostStatusOptions) => void;

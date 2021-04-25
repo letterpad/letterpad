@@ -4,7 +4,7 @@ import {
   PostsQuery,
   PostsQueryVariables,
   PostTypes,
-} from "../../__generated__/src/graphql/queries/queries.graphql";
+} from "@/__generated__/queries/queries.graphql";
 import { initializeApollo } from "../graphql/apollo";
 import { Button, Layout, PageHeader, Table } from "antd";
 import Filters from "../components/filters";
@@ -12,12 +12,12 @@ import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import {
   Author,
   Image,
+  PostsResponse,
   Setting,
   Tags,
-} from "../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/type-defs.graphqls";
 const { Content } = Layout;
 import CustomLayout from "../layouts/Layout";
-import { PostsResponse } from "../graphql/type-defs.graphqls";
 import { useRouter } from "next/router";
 import withAuthCheck from "../hoc/withAuth";
 import { useEffect, useState } from "react";

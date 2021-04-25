@@ -4,10 +4,7 @@ import React, { useState } from "react";
 import ReactTooltip from "react-tooltip";
 import { SortableElement } from "react-sortable-hoc";
 import { Tooltip } from "antd";
-import {
-  Navigation,
-  NavigationType,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { Navigation, NavigationType } from "@/__generated__/type-defs.graphqls";
 import {
   DeleteOutlined,
   InfoCircleOutlined,
