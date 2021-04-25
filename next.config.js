@@ -3,6 +3,9 @@ module.exports = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  future: {
+    webpack5: true,
+  },
   async redirects() {
     return [
       {

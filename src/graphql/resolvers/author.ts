@@ -57,7 +57,7 @@ const Query: QueryResolvers<ResolverContext> = {
     }
     if (author && author.avatar) {
       if (author.avatar.startsWith("/")) {
-        author.avatar = host + author.avatar;
+        author.avatar = new URL(author.avatar, host).href;
       }
     }
     return author

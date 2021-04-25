@@ -56,10 +56,10 @@ function Pages({ settings }: IProps) {
     }
   };
 
-  if (postsNode.__typename !== "PostsNode" || error) {
+  if (error) {
     return <ErrorMessage description={error} title="Error" />;
   }
-
+  const source = postsNode.__typename === "PostsNode" ? postsNode.rows : [];
   return (
     <CustomLayout settings={settings}>
       <PageHeader
@@ -87,7 +87,7 @@ function Pages({ settings }: IProps) {
           />
           <Table
             columns={columns}
-            dataSource={postsNode.rows}
+            dataSource={source}
             onRow={row => ({
               onClick: () => router.push("/post/" + row.id),
             })}

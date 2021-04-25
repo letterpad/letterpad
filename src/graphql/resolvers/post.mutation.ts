@@ -139,7 +139,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         if (!width && !height) {
           if (src.startsWith("/")) {
             // this is internal image
-            src = host + src;
+            src = new URL(src, host).href;
           }
           try {
             const imageSize = await getImageDimensions(src);

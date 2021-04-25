@@ -126,7 +126,7 @@ export default function initPost(sequelize) {
         defaultValue: "",
         get() {
           if (this.cover_image && this.cover_image.startsWith("/")) {
-            this.cover_image = path.join(host, this.cover_image);
+            this.cover_image = new URL(this.cover_image, host).href;
           }
           return {
             src: this.cover_image,
