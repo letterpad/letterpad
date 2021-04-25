@@ -13,6 +13,7 @@ import { decrypt } from "../utils/crypto";
 import models from "../db/models";
 import logger from "../../../shared/logger";
 import { PostTypes } from "../../../__generated__/src/graphql/type-defs.graphqls";
+import debug from "debug";
 
 interface IPostCondition {
   conditions: {
@@ -55,6 +56,7 @@ const Query: QueryResolvers<ResolverContext> = {
    * Used for Search and Admin posts and pages list.
    */
   async posts(_parent, args, context, _info) {
+    debug("letterpad:post:update")("Reached posts query");
     const query: IPostCondition = {
       conditions: {
         order: [["publishedAt", SortBy.Desc]],
@@ -121,7 +123,6 @@ const Query: QueryResolvers<ResolverContext> = {
         query.conditions.order = [["updatedAt", args.filters.sortBy]];
       }
 
-      // resolve author
       if (args?.filters?.author) {
         const author = await models.Author.findOne({
           where: { name: args.filters.author },
@@ -202,9 +203,9 @@ const Query: QueryResolvers<ResolverContext> = {
           };
         }
       }
-      console.log(query.conditions);
       const posts = await models.Post.findAll(query.conditions);
       const count = await models.Post.count(query.conditions);
+      debug("letterpad:post:update")(query.conditions);
 
       return {
         __typename: "PostsNode",
@@ -212,7 +213,7 @@ const Query: QueryResolvers<ResolverContext> = {
         count,
       };
     } catch (e) {
-      console.log(e);
+      debug("letterpad:post:update")(e);
       return { __typename: "PostError", message: e.message };
     }
   },
