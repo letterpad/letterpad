@@ -32,6 +32,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
     getStats().then(res => setStats(res));
   }, []);
 
+  if (!settings) return null;
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
