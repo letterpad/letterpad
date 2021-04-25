@@ -3,7 +3,7 @@ import config from "../../../../config";
 import {
   Navigation,
   Setting as Option,
-} from "../../../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/type-defs.graphqls";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 
 interface ModelOption extends Option {}

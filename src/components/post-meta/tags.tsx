@@ -2,8 +2,8 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Input, Tag } from "antd";
 import { useState } from "react";
 import styled from "styled-components";
-import { PostQuery } from "../../../__generated__/src/graphql/queries/queries.graphql";
-import { InputUpdatePost } from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { PostQuery } from "@/__generated__/queries/queries.graphql";
+import { InputUpdatePost } from "@/__generated__/type-defs.graphqls";
 
 interface IProps {
   post: PostQuery["post"];

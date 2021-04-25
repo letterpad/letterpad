@@ -1,9 +1,9 @@
 import {
   InputAuthor,
   QueryResolvers,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/type-defs.graphqls";
 import { ResolverContext } from "../apollo";
-import { MutationResolvers } from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { MutationResolvers } from "@/__generated__/type-defs.graphqls";
 import models from "../db/models";
 import bcrypt from "bcryptjs";
 import { getModifiedSession } from "./helpers";

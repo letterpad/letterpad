@@ -4,8 +4,8 @@ import {
   MediaQuery,
   MediaQueryVariables,
 } from "../../../graphql/queries/queries.graphql";
-import { MediaDocument } from "../../../../__generated__/src/graphql/queries/queries.graphql";
-import { Media } from "../../../../__generated__/src/graphql/type-defs.graphqls";
+import { MediaDocument } from "@/__generated__/queries/queries.graphql";
+import { Media } from "@/__generated__/type-defs.graphqls";
 import InfiniteScrollList from "../InfiniteScrollList";
 
 interface IProps {

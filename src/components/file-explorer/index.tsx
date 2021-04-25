@@ -2,10 +2,7 @@ import Modal from "antd/lib/modal/Modal";
 import { MediaProvider } from "../../pages/post/[postId]";
 import Internal from "./providers/Internal";
 import Unsplash from "./providers/Unsplash";
-import {
-  Image,
-  Media,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { Image, Media } from "@/__generated__/type-defs.graphqls";
 import { Button } from "antd";
 import MediaItem from "./MediaItem";
 import { useState } from "react";

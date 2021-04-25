@@ -1,6 +1,6 @@
 import { MutationResolvers } from "./../../../__generated__/src/graphql/type-defs.graphqls";
 import { ResolverContext } from "../apollo";
-import { QueryResolvers } from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { QueryResolvers } from "@/__generated__/type-defs.graphqls";
 import models from "../db/models";
 
 const Query: QueryResolvers<ResolverContext> = {

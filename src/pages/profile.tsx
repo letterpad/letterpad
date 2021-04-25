@@ -10,7 +10,7 @@ import {
   UpdateAuthorMutation,
   UpdateAuthorMutationVariables,
   UpdateAuthorDocument,
-} from "../../__generated__/src/graphql/queries/queries.graphql";
+} from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
 import {
   InputAuthor,
@@ -18,7 +18,7 @@ import {
   Author,
   Setting,
   MeResponse,
-} from "../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/type-defs.graphqls";
 import { removeTypenames } from "../../shared/removeTypenames";
 import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "../components/ErrorMessage";

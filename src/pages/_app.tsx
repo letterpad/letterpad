@@ -12,7 +12,7 @@ import {
   SettingsQueryVariables,
 } from "../graphql/queries/queries.graphql";
 import { useEffect, useState } from "react";
-import { Setting } from "../../__generated__/src/graphql/type-defs.graphqls";
+import { Setting } from "@/__generated__/type-defs.graphqls";
 import { LetterpadProvider } from "../context/LetterpadProvider";
 
 NProgress.configure({ showSpinner: true });

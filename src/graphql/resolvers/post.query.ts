@@ -6,13 +6,13 @@ import {
   PostFilters,
   PostStatusOptions,
   SortBy,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+} from "@/__generated__/type-defs.graphqls";
 import { QueryResolvers } from "../type-defs.graphqls";
 import { ResolverContext } from "../apollo";
 import { decrypt } from "../utils/crypto";
 import models from "../db/models";
 import logger from "../../../shared/logger";
-import { PostTypes } from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { PostTypes } from "@/__generated__/type-defs.graphqls";
 import debug from "debug";
 
 interface IPostCondition {

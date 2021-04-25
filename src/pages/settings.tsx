@@ -8,9 +8,9 @@ import {
   UpdateOptionsMutationVariables,
   UpdateOptionsDocument,
   Setting,
-} from "../../__generated__/src/graphql/queries/queries.graphql";
+} from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
-import { OptionInputType } from "../../__generated__/src/graphql/type-defs.graphqls";
+import { OptionInputType } from "@/__generated__/type-defs.graphqls";
 import withAuthCheck from "../hoc/withAuth";
 import Navigation from "../components/navigation-builder";
 

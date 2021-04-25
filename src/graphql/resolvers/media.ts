@@ -2,10 +2,7 @@ import { Op, Order } from "sequelize";
 import { ResolverContext } from "../apollo";
 import models from "../db/models";
 import { getModifiedSession } from "./helpers";
-import {
-  QueryResolvers,
-  SortBy,
-} from "../../../__generated__/src/graphql/type-defs.graphqls";
+import { QueryResolvers, SortBy } from "@/__generated__/type-defs.graphqls";
 
 interface IMediaConditions {
   limit: number;

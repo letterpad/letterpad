@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["src/components/*"],
+      "@/__generated__/*": ["__generated__/src/graphql/*"]
+    },
     "allowJs": true,
     "alwaysStrict": true,
     "esModuleInterop": true,
