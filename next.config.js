@@ -6,11 +6,12 @@ module.exports = {
   future: {
     webpack5: true,
   },
+  basePath: "/admin",
   async redirects() {
     return [
       {
         source: "/",
-        destination: "/posts",
+        destination: "/admin/posts",
         permanent: true,
       },
     ];

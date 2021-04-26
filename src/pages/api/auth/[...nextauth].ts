@@ -45,6 +45,9 @@ const providers = [
 const options = {
   providers,
   callbacks: {
+    async signIn(_user, _account, _profile) {
+      return "/posts";
+    },
     jwt: async (token: any, user: Required<SessionData["user"]>) => {
       //  "user" parameter is the object received from "authorize"
       //  "token" is being send to "session" callback...

@@ -39,7 +39,10 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <LetterpadProvider value={settings}>
-      <Provider session={pageProps.session}>
+      <Provider
+        session={pageProps.session}
+        options={{ basePath: "/admin/api/auth" }}
+      >
         <ApolloProvider client={apolloClient}>
           <Component {...pageProps} settings={settings} />
         </ApolloProvider>
