@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-// import Input from "../../../components/input";
+// import Input from "@/components/input";
 
 import InfiniteScrollList from "../InfiniteScrollList";
 import config from "../../../../config";

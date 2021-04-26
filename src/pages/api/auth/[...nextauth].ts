@@ -5,8 +5,8 @@ import {
 } from "@/__generated__/queries/queries.graphql";
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import { initializeApollo } from "../../../graphql/apollo";
-import { SessionData } from "../../../graphql/types";
+import { initializeApollo } from "@/graphql/apollo";
+import { SessionData } from "@/graphql/types";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const providers = [
