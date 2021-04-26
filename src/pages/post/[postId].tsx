@@ -12,10 +12,10 @@ import {
   UpdatePostMutationVariables,
 } from "@/__generated__/queries/post.mutations.graphql";
 import LetterpadEditor from "letterpad-editor";
-import { initializeApollo } from "../../graphql/apollo";
+import { initializeApollo } from "@/graphql/apollo";
 import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
-import Actions from "../../components/post-meta";
+import Actions from "@/components/post-meta";
 import {
   PostStatusOptions,
   PostTypes,
@@ -23,9 +23,9 @@ import {
 import { useEffect, useState } from "react";
 import { uploadFile } from "../../../shared/upload";
 import { removeTypenames } from "../../../shared/removeTypenames";
-import FileExplorer from "../../components/file-explorer";
+import FileExplorer from "@/components/file-explorer";
 import withAuthCheck from "../../hoc/withAuth";
-import ErrorMessage from "../../components/ErrorMessage";
+import ErrorMessage from "@/components/ErrorMessage";
 
 const { Content } = Layout;
 

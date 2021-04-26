@@ -1,4 +1,4 @@
-import { BlobCorrected, IMediaUploadResult } from "../../../graphql/types";
+import { BlobCorrected, IMediaUploadResult } from "@/graphql/types";
 import fs from "fs";
 import { imageSize } from "image-size";
 

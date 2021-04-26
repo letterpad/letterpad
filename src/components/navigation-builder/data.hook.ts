@@ -9,7 +9,7 @@ import {
 } from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
 
-import { initializeApollo } from "../../graphql/apollo";
+import { initializeApollo } from "@/graphql/apollo";
 import { Post, PostTypes, Tags } from "@/__generated__/type-defs.graphqls";
 import config from "../../../config";
 

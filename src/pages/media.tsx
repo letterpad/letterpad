@@ -1,7 +1,7 @@
 import { Image, Row, Col, Card, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import CustomLayout from "../layouts/Layout";
-import { initializeApollo } from "../graphql/apollo";
+import CustomLayout from "@/components/layouts/Layout";
+import { initializeApollo } from "@/graphql/apollo";
 import {
   MediaDocument,
   MediaQuery,

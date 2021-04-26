@@ -7,16 +7,16 @@ import {
   PostTypes,
 } from "@/__generated__/queries/queries.graphql";
 import { useRouter } from "next/router";
-import { initializeApollo } from "../graphql/apollo";
+import { initializeApollo } from "@/graphql/apollo";
 import { Button, Layout, PageHeader, Table } from "antd";
 
 import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import { Author, Image, Setting } from "@/__generated__/type-defs.graphqls";
 const { Content } = Layout;
-import CustomLayout from "../layouts/Layout";
+import CustomLayout from "@/components/layouts/Layout";
 import { useEffect, useState } from "react";
-import ErrorMessage from "../components/ErrorMessage";
-import Filters from "../components/filters";
+import ErrorMessage from "@/components/ErrorMessage";
+import Filters from "@/components/filters";
 
 interface IProps {
   settings: Setting;

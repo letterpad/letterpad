@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Upload, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { IMediaUploadResult } from "../graphql/types";
+import { IMediaUploadResult } from "@/graphql/types";
 import { UploadChangeParam } from "antd/lib/upload";
 import Modal from "antd/lib/modal/Modal";
 
