@@ -82,7 +82,7 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={true}
-        action="/api/customRequest"
+        action="/admin/api/customRequest"
         beforeUpload={beforeUpload}
         onChange={handleChange}
         fileList={fileList}

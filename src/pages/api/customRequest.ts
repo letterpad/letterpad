@@ -99,7 +99,7 @@ export default async (
           result = await uploadToInternal(
             file,
             uploadPath,
-            "/uploads/" + filename,
+            "/admin/uploads/" + filename,
           );
         }
         await upsertMedia(result, session.user.id);

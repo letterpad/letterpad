@@ -12,7 +12,7 @@ export const uploadFile = ({ files, type }: IUploadFileProps) => {
     data.append(`file`, files[i]);
   }
 
-  return fetch("/api/customRequest", {
+  return fetch("/admin/api/customRequest", {
     method: "post",
     body: data,
     headers: {

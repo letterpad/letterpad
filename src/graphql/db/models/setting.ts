@@ -5,7 +5,7 @@ import {
   Setting as Option,
 } from "@/__generated__/type-defs.graphqls";
 import restoreSequelizeAttributesOnClass from "./_tooling";
-
+const host = config.ROOT_URL;
 interface ModelOption extends Option {}
 
 type ValueOf<T> = T[keyof T];
@@ -52,7 +52,9 @@ export default function initSetting(sequelize) {
           const option = this.getDataValue("option") as keyof ModelOption;
           const value = this.value;
           if (["banner", "site_logo", "site_favicon"].includes(option)) {
-            return JSON.parse(value as string);
+            const img = JSON.parse(value as string);
+            img.src = host + img.src;
+            return img;
           }
           if (option === "menu") {
             return getMenuWithSanitizedSlug(JSON.parse(value as string));

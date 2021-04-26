@@ -1,4 +1,4 @@
-const ROOT_URL = "http://localhost:3000";
+const ROOT_URL = "http://localhost:3000/admin";
 const API_URL = "http://localhost:1111";
 
 function isServer() {
