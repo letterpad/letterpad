@@ -101,7 +101,16 @@ function Post({ data }: { data: PostResponse }) {
         title="&nbsp;"
         style={{ padding: 10 }}
         onBack={() => router.push(isPost ? "/posts" : "/pages")}
-        extra={[<Actions post={post} setPostAttribute={setPostAttribute} />]}
+        extra={[
+          <Actions
+            post={post}
+            setPostAttribute={setPostAttribute}
+            deletePost={() => {
+              setPostAttribute({ status: PostStatusOptions.Trashed });
+              router.push(isPost ? "/posts" : "/pages");
+            }}
+          />,
+        ]}
         tags={<Tag color={tagColor}>{post.status}</Tag>}
       ></PageHeader>
 

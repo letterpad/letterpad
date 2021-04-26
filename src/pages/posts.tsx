@@ -113,6 +113,7 @@ async function fetchPostsFromAPI(filters: PostsFilters) {
         ...filters,
       },
     },
+    fetchPolicy: "network-only",
   });
   return post.data.posts;
 }
@@ -155,8 +156,8 @@ const columns = [
     render: (tags: Tags[]) => tags.map(tag => tag.name).join(", "),
   },
   {
-    title: "Published",
-    dataIndex: "publishedAt",
-    key: "publishedAt",
+    title: "Updated At",
+    dataIndex: "updatedAt",
+    key: "updatedAt",
   },
 ];

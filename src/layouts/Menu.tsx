@@ -1,4 +1,5 @@
 import { Menu } from "antd/";
+
 import {
   ContainerOutlined,
   FileImageOutlined,
@@ -6,13 +7,10 @@ import {
   LogoutOutlined,
   SettingOutlined,
   TagsOutlined,
-  UploadOutlined,
   UserOutlined,
-  VideoCameraOutlined,
 } from "@ant-design/icons";
 
 import { useRouter } from "next/router";
-import styled from "styled-components";
 import { signout } from "next-auth/client";
 
 const menuItems = {
@@ -23,6 +21,10 @@ const menuItems = {
   "/profile": "5",
   "/settings": "6",
   "/logout": "7",
+};
+
+const countStyle = {
+  right: 24,
 };
 
 const Navigation = ({ stats }) => {
@@ -40,10 +42,10 @@ const Navigation = ({ stats }) => {
         icon={<ContainerOutlined />}
         onClick={() => router.push("/posts")}
       >
-        <SpaceBetween>
-          <span>Posts</span>
-          <span className="count">{stats?.posts?.published}</span>
-        </SpaceBetween>
+        <span>Posts</span>
+        <span style={{ ...countStyle, position: "absolute" }}>
+          {stats?.posts?.published}
+        </span>
       </Menu.Item>
       <Menu.Item
         key={menuItems["/pages"]}
@@ -51,30 +53,30 @@ const Navigation = ({ stats }) => {
         onClick={() => router.push("/pages")}
         isSelected={true}
       >
-        <SpaceBetween>
-          <span>Pages</span>
-          <span className="count">{stats?.pages?.published}</span>
-        </SpaceBetween>
+        <span>Pages</span>
+        <span style={{ ...countStyle, position: "absolute" }}>
+          {stats?.pages?.published}
+        </span>
       </Menu.Item>
       <Menu.Item
         key={menuItems["/media"]}
         icon={<FileImageOutlined />}
         onClick={() => router.push("/media")}
       >
-        <SpaceBetween>
-          <span>Media</span>
-          <span className="count">{stats?.media}</span>
-        </SpaceBetween>
+        <span>Media</span>
+        <span style={{ ...countStyle, position: "absolute" }}>
+          {stats?.media}
+        </span>
       </Menu.Item>
       <Menu.Item
         key={menuItems["/tags"]}
         icon={<TagsOutlined />}
         onClick={() => router.push("/tags")}
       >
-        <SpaceBetween>
-          <span>Tags</span>
-          <span className="count">{stats?.tags}</span>
-        </SpaceBetween>
+        <span>Tags</span>
+        <span style={{ ...countStyle, position: "absolute" }}>
+          {stats?.tags}
+        </span>
       </Menu.Item>
       <Menu.Item
         key={menuItems["/profile"]}
@@ -106,10 +108,3 @@ const Navigation = ({ stats }) => {
 };
 
 export default Navigation;
-
-const SpaceBetween = styled.span`
-  span.count {
-    right: 24px !important;
-    position: absolute !important;
-  }
-`;
