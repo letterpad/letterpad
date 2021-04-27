@@ -3,14 +3,13 @@ import React, { useState } from "react";
 // import Input from "@/components/input";
 
 import InfiniteScrollList from "../InfiniteScrollList";
-import config from "../../../../config";
 import { Media } from "@/__generated__/type-defs.graphqls";
 import { Input } from "antd";
 
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];
 }
-const url = config.BASE_NAME + "/api/unsplash";
+const url = new URL("/api/unsplash", process.env.ROOT_URL);
 
 const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const [query, setQuery] = useState("");

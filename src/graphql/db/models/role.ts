@@ -5,7 +5,6 @@ import {
   Model,
   Optional,
 } from "sequelize";
-import config from "../../../../config";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 
 export interface RoleAttributes {
@@ -43,7 +42,6 @@ export default function initRole(sequelize) {
       },
       name: {
         type: DataTypes.STRING,
-        defaultValue: config.defaultTitle,
       },
     },
     {
