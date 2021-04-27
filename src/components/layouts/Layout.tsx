@@ -9,11 +9,11 @@ import {
   StatsDocument,
 } from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
-import { initializeApollo } from "../graphql/apollo";
 import styled from "styled-components";
 import Navigation from "./Menu";
 import "antd/dist/antd.css";
-import Logo from "../components/Logo";
+import Logo from "../Logo";
+import { initializeApollo } from "@/graphql/apollo";
 
 interface IProps {
   settings: Setting;

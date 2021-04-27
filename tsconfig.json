@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["src/components/*"],
-      "@/__generated__/*": ["__generated__/src/graphql/*"]
+      "@/__generated__/*": ["__generated__/src/graphql/*"],
+      "@/graphql/*": ["src/graphql/*"]
     },
     "allowJs": true,
     "alwaysStrict": true,

@@ -1,3 +1,4 @@
+import nextConfig from "../next.config";
 interface IUploadFileProps {
   files: File[];
   type?: string;
@@ -12,7 +13,7 @@ export const uploadFile = ({ files, type }: IUploadFileProps) => {
     data.append(`file`, files[i]);
   }
 
-  return fetch("/api/customRequest", {
+  return fetch(nextConfig.basePath + "/api/customRequest", {
     method: "post",
     body: data,
     headers: {

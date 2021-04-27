@@ -1,8 +1,8 @@
 import { Collapse, Form, Input, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import CustomLayout from "../layouts/Layout";
-import { initializeApollo } from "../graphql/apollo";
-import ImageUpload from "../components/ImageUpload";
+import CustomLayout from "@/components/layouts/Layout";
+import { initializeApollo } from "@/graphql/apollo";
+import ImageUpload from "@/components/ImageUpload";
 import {
   MeDocument,
   MeQuery,
@@ -21,7 +21,7 @@ import {
 } from "@/__generated__/type-defs.graphqls";
 import { removeTypenames } from "../../shared/removeTypenames";
 import withAuthCheck from "../hoc/withAuth";
-import ErrorMessage from "../components/ErrorMessage";
+import ErrorMessage from "@/components/ErrorMessage";
 
 const { Panel } = Collapse;
 

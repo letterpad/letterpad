@@ -1,18 +1,18 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import CustomLayout from "../../layouts/Layout";
-import { initializeApollo } from "../../graphql/apollo";
+import CustomLayout from "@/components/layouts/Layout";
+import { initializeApollo } from "@/graphql/apollo";
 import {
   CreatePostMutation,
   CreatePostMutationVariables,
-} from "../../graphql/queries/post.mutations.graphql";
+} from "@/graphql/queries/post.mutations.graphql";
 import { CreatePostDocument } from "@/__generated__/queries/post.mutations.graphql";
 import { PostTypes } from "@/__generated__/type-defs.graphqls";
 import {
   CreatePostResponse,
   Setting,
 } from "@/__generated__/queries/queries.graphql";
-import ErrorMessage from "../../components/ErrorMessage";
+import ErrorMessage from "@/components/ErrorMessage";
 
 interface IProps {
   data: CreatePostResponse;

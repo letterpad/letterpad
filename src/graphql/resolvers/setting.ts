@@ -9,14 +9,12 @@ import fs from "fs";
 import path from "path";
 import models from "../db/models";
 import { getModifiedSession } from "./helpers";
-import config from "../../../config";
 
 const SECURE_SETTINGS = [
   "cloudinary_key",
   "cloudinary_name",
   "cloudinary_secret",
 ];
-const host = config.ROOT_URL + config.BASE_NAME;
 
 const cssPath = path.join(process.cwd(), "public/css/custom.css");
 const Query: QueryResolvers<ResolverContext> = {
@@ -54,8 +52,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
       if (["banner", "site_logo", "site_favicon"].includes(option)) {
         value = value as InputImage;
-        if (value && !value.src.startsWith(host)) {
-          value.src = value.src.replace(host, "");
+        if (value && !value.src.startsWith(process.env.ROOT_URL)) {
+          value.src = value.src.replace(process.env.ROOT_URL, "");
           value = JSON.stringify(value);
         }
       } else if (option === "menu") {

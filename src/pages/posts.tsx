@@ -5,9 +5,9 @@ import {
   PostsQueryVariables,
   PostTypes,
 } from "@/__generated__/queries/queries.graphql";
-import { initializeApollo } from "../graphql/apollo";
+import { initializeApollo } from "@/graphql/apollo";
 import { Button, Layout, PageHeader, Table } from "antd";
-import Filters from "../components/filters";
+import Filters from "@/components/filters";
 import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import {
   Author,
@@ -17,11 +17,11 @@ import {
   Tags,
 } from "@/__generated__/type-defs.graphqls";
 const { Content } = Layout;
-import CustomLayout from "../layouts/Layout";
+import CustomLayout from "@/components/layouts/Layout";
 import { useRouter } from "next/router";
 import withAuthCheck from "../hoc/withAuth";
 import { useEffect, useState } from "react";
-import ErrorMessage from "../components/ErrorMessage";
+import ErrorMessage from "@/components/ErrorMessage";
 
 interface IProps {
   data: PostsResponse;

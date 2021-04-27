@@ -1,5 +1,4 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import config from "../../../../config";
 import {
   Navigation,
   Setting as Option,
@@ -52,7 +51,9 @@ export default function initSetting(sequelize) {
           const option = this.getDataValue("option") as keyof ModelOption;
           const value = this.value;
           if (["banner", "site_logo", "site_favicon"].includes(option)) {
-            return JSON.parse(value as string);
+            const img = JSON.parse(value as string);
+            img.src = new URL(img.src, process.env.ROOT_URL);
+            return img;
           }
           if (option === "menu") {
             return getMenuWithSanitizedSlug(JSON.parse(value as string));
@@ -78,7 +79,7 @@ function getMenuWithSanitizedSlug(menu: Navigation[]) {
         item.slug = "/" + item.type + "/" + item.slug;
         break;
       case "custom":
-        item.slug = config.BASE_NAME + "/" + item.slug;
+        item.slug = item.slug;
         break;
     }
     return item;
