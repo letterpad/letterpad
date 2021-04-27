@@ -1,7 +1,13 @@
-// @ts-nocheck
-// This page is never called. It is always redirected to /posts.
-// This has been configured in next.config.js
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-const NoPage = () => null;
+const NoPage = () => {
+  const router = useRouter();
+  useEffect(() => {
+    router.push("/posts");
+  });
+
+  return null;
+};
 
 export default NoPage;
