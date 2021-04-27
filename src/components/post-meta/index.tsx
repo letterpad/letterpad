@@ -15,8 +15,9 @@ const { TextArea } = Input;
 interface IProps {
   post: PostQuery["post"];
   setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => void;
+  deletePost: () => void;
 }
-const Actions = ({ post, setPostAttribute }: IProps) => {
+const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
     setVisible(true);
@@ -103,7 +104,7 @@ const Actions = ({ post, setPostAttribute }: IProps) => {
               }}
             />
           </div>
-          <Button type="primary" danger>
+          <Button type="primary" danger onClick={deletePost}>
             Delete {postVerb}
           </Button>
         </Space>
