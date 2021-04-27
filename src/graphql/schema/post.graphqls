@@ -49,6 +49,7 @@ input PostFilters {
   featured: Boolean
   previewHash: String
   status: PostStatusOptions
+  type: PostTypes
 }
 
 enum PostTypes {

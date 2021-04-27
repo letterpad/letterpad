@@ -6,6 +6,8 @@ import Router from "next/router";
 import "antd/dist/antd.css";
 import "../../styles/globals.css";
 import NProgress from "nprogress";
+import nextConfig from "../../next.config";
+
 import {
   SettingsDocument,
   SettingsQuery,
@@ -41,7 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <LetterpadProvider value={settings}>
       <Provider
         session={pageProps.session}
-        options={{ basePath: "/admin/api/auth" }}
+        options={{ basePath: nextConfig.basePath + "/api/auth" }}
       >
         <ApolloProvider client={apolloClient}>
           <Component {...pageProps} settings={settings} />

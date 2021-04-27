@@ -9,7 +9,6 @@ import {
   Model,
   Optional,
 } from "sequelize";
-import config from "../../../../config";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 
 export interface TagsAttributes {
@@ -17,7 +16,6 @@ export interface TagsAttributes {
   name: string;
   desc: string;
   slug: string;
-  type: string;
 }
 
 export interface TagsCreationAttributes
@@ -30,7 +28,6 @@ export class Tags
   public name!: string;
   public desc!: string;
   public slug!: string;
-  public type!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -62,22 +59,16 @@ export default function initTags(sequelize) {
       },
       name: {
         type: DataTypes.STRING,
-        defaultValue: config.defaultTitle,
       },
       desc: {
         type: DataTypes.STRING,
-        defaultValue: config.defaultTitle,
+        defaultValue: "",
       },
       slug: {
         type: DataTypes.STRING,
-        defaultValue: config.defaultTitle,
         get() {
           return "/tag/" + this.slug;
         },
-      },
-      type: {
-        type: DataTypes.STRING,
-        defaultValue: config.defaultTitle,
       },
     },
     {

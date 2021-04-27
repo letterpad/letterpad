@@ -20,9 +20,10 @@ import { uploadToInternal } from "./providers/internal";
 import models from "@/graphql/db/models";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
+import nextConfig from "../../../next.config";
+
 const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");
-
 // for parsing multipart/form-data
 // note that Multer limits to 1MB file size by default
 const multerAny = initMiddleware(upload.any());
@@ -99,7 +100,7 @@ export default async (
           result = await uploadToInternal(
             file,
             uploadPath,
-            "/admin/uploads/" + filename,
+            nextConfig.basePath + "/uploads/" + filename,
           );
         }
         await upsertMedia(result, session.user.id);
