@@ -9,9 +9,8 @@ import {
 } from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
 
-import { initializeApollo } from "../../graphql/apollo";
+import { initializeApollo } from "@/graphql/apollo";
 import { Post, PostTypes, Tags } from "@/__generated__/type-defs.graphqls";
-import config from "../../../config";
 
 function useNavigationData() {
   const [tags, setTags] = useState<Tags[]>([]);
@@ -56,7 +55,7 @@ function useNavigationData() {
 
   const rss = {
     type: NavigationType.Custom,
-    slug: config.rssPath,
+    slug: "rss.xml",
     label: "Rss Feed of your site",
     original_name: "Rss",
   };

@@ -1,6 +1,6 @@
-import { BlobCorrected } from "../../../graphql/types";
+import { BlobCorrected } from "@/graphql/types";
 import Cloudinary from "cloudinary";
-import { IMediaUploadResult } from "../../../graphql/types";
+import { IMediaUploadResult } from "@/graphql/types";
 import fs from "fs";
 
 interface IOptions {

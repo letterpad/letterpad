@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { initializeApollo } from "../../../graphql/apollo";
+import { initializeApollo } from "@/graphql/apollo";
 import {
   MediaQuery,
   MediaQueryVariables,
-} from "../../../graphql/queries/queries.graphql";
+} from "@/graphql/queries/queries.graphql";
 import { MediaDocument } from "@/__generated__/queries/queries.graphql";
 import { Media } from "@/__generated__/type-defs.graphqls";
 import InfiniteScrollList from "../InfiniteScrollList";

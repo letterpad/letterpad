@@ -1,6 +1,6 @@
 import { Alert } from "antd";
 import { useContext } from "react";
-import CustomLayout from "../layouts/Layout";
+import CustomLayout from "@/components/layouts/Layout";
 import { LetterpadContext } from "../context/LetterpadProvider";
 import { Content } from "antd/lib/layout/layout";
 

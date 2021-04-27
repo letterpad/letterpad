@@ -1,16 +1,18 @@
 import { AppProps } from "next/app";
 import { ApolloProvider } from "@apollo/client";
-import { initializeApollo, useApollo } from "../graphql/apollo";
+import { initializeApollo, useApollo } from "@/graphql/apollo";
 import { Provider } from "next-auth/client";
 import Router from "next/router";
 import "antd/dist/antd.css";
 import "../../styles/globals.css";
 import NProgress from "nprogress";
+import nextConfig from "../../next.config";
+
 import {
   SettingsDocument,
   SettingsQuery,
   SettingsQueryVariables,
-} from "../graphql/queries/queries.graphql";
+} from "@/graphql/queries/queries.graphql";
 import { useEffect, useState } from "react";
 import { Setting } from "@/__generated__/type-defs.graphqls";
 import { LetterpadProvider } from "../context/LetterpadProvider";
@@ -39,7 +41,10 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <LetterpadProvider value={settings}>
-      <Provider session={pageProps.session}>
+      <Provider
+        session={pageProps.session}
+        options={{ basePath: nextConfig.basePath + "/api/auth" }}
+      >
         <ApolloProvider client={apolloClient}>
           <Component {...pageProps} settings={settings} />
         </ApolloProvider>

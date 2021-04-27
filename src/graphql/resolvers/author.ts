@@ -7,9 +7,6 @@ import { MutationResolvers } from "@/__generated__/type-defs.graphqls";
 import models from "../db/models";
 import bcrypt from "bcryptjs";
 import { getModifiedSession } from "./helpers";
-import config from "../../../config";
-
-const host = config.ROOT_URL + config.BASE_NAME;
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -57,7 +54,7 @@ const Query: QueryResolvers<ResolverContext> = {
     }
     if (author && author.avatar) {
       if (author.avatar.startsWith("/")) {
-        author.avatar = new URL(author.avatar, host).href;
+        author.avatar = new URL(author.avatar, process.env.ROOT_URL).href;
       }
     }
     return author

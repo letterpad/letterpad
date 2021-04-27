@@ -4,25 +4,26 @@ import {
   IMediaUploadResult,
   NextApiRequestWithFormData,
   SessionData,
-} from "../../graphql/types";
+} from "@/graphql/types";
 import {
   SettingsQuery,
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
 import { getSession } from "next-auth/client";
-import { initializeApollo } from "../../graphql/apollo";
-import { SettingsDocument } from "../../graphql/queries/queries.graphql";
+import { initializeApollo } from "@/graphql/apollo";
+import { SettingsDocument } from "@/graphql/queries/queries.graphql";
 import logger from "../../../shared/logger";
 import path from "path";
 import multer from "multer";
 import { uploadToCloudinary } from "./providers/cloudinary";
 import { uploadToInternal } from "./providers/internal";
-import models from "../../graphql/db/models";
+import models from "@/graphql/db/models";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
+import nextConfig from "../../../next.config";
+
 const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");
-
 // for parsing multipart/form-data
 // note that Multer limits to 1MB file size by default
 const multerAny = initMiddleware(upload.any());
@@ -99,7 +100,7 @@ export default async (
           result = await uploadToInternal(
             file,
             uploadPath,
-            "/uploads/" + filename,
+            nextConfig.basePath + "/uploads/" + filename,
           );
         }
         await upsertMedia(result, session.user.id);

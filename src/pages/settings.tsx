@@ -1,8 +1,8 @@
 import { Collapse, Form, Input, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import CustomLayout from "../layouts/Layout";
-import { initializeApollo } from "../graphql/apollo";
-import ImageUpload from "../components/ImageUpload";
+import CustomLayout from "@/components/layouts/Layout";
+import { initializeApollo } from "@/graphql/apollo";
+import ImageUpload from "@/components/ImageUpload";
 import {
   UpdateOptionsMutation,
   UpdateOptionsMutationVariables,
@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { OptionInputType } from "@/__generated__/type-defs.graphqls";
 import withAuthCheck from "../hoc/withAuth";
-import Navigation from "../components/navigation-builder";
+import Navigation from "@/components/navigation-builder";
 
 const { Panel } = Collapse;
 

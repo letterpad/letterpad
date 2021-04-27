@@ -16,11 +16,8 @@ import {
   setImageWidthAndHeightInHtml,
   getModifiedSession,
 } from "./helpers";
-import config from "../../../config";
 import logger from "../../../shared/logger";
 import models from "../db/models";
-
-const host = config.ROOT_URL + config.BASE_NAME;
 
 const Mutation: MutationResolvers<ResolverContext> = {
   async createPost(_parent, args, context, _info) {
@@ -42,7 +39,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         message: "Author not found",
       };
     }
-    args.data.slug = await slugify(models.Post, config.defaultSlug);
+    args.data.slug = await slugify(models.Post, "untitled");
     if (!args.data.md) {
       args.data.md = "";
       args.data.html = "";
@@ -134,12 +131,15 @@ const Mutation: MutationResolvers<ResolverContext> = {
       // cover image
       if (args.data.cover_image) {
         const { width, height } = args.data.cover_image;
-        let src = args.data.cover_image.src.replace(host, "");
+        let src = args.data.cover_image.src.replace(
+          process.env.ROOT_URL || "",
+          "",
+        );
         dataToUpdate.cover_image = src;
         if (!width && !height) {
           if (src.startsWith("/")) {
             // this is internal image
-            src = new URL(src, host).href;
+            src = new URL(src, process.env.ROOT_URL).href;
           }
           try {
             const imageSize = await getImageDimensions(src);

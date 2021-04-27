@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Upload, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { IMediaUploadResult } from "../graphql/types";
+import { IMediaUploadResult } from "@/graphql/types";
 import { UploadChangeParam } from "antd/lib/upload";
 import Modal from "antd/lib/modal/Modal";
+import nextConfig from "../../next.config";
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -82,7 +83,7 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={true}
-        action="/api/customRequest"
+        action={nextConfig.basePath + "/api/customRequest"}
         beforeUpload={beforeUpload}
         onChange={handleChange}
         fileList={fileList}

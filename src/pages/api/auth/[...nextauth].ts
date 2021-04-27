@@ -5,8 +5,8 @@ import {
 } from "@/__generated__/queries/queries.graphql";
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import { initializeApollo } from "../../../graphql/apollo";
-import { SessionData } from "../../../graphql/types";
+import { initializeApollo } from "@/graphql/apollo";
+import { SessionData } from "@/graphql/types";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const providers = [
@@ -45,6 +45,9 @@ const providers = [
 const options = {
   providers,
   callbacks: {
+    async signIn(_user, _account, _profile) {
+      return "/posts";
+    },
     jwt: async (token: any, user: Required<SessionData["user"]>) => {
       //  "user" parameter is the object received from "authorize"
       //  "token" is being send to "session" callback...

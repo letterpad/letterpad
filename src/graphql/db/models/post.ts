@@ -1,4 +1,3 @@
-import path from "path";
 import { Author } from "./author";
 import { Tags } from "./tags";
 import {
@@ -14,12 +13,9 @@ import {
   Optional,
   BelongsToGetAssociationMixin,
 } from "sequelize";
-import config from "../../../../config";
 import { PostStatusOptions, PostTypes } from "../../type-defs.graphqls";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 import { getReadableDate } from "../../resolvers/helpers";
-
-const host = config.ROOT_URL + config.BASE_NAME;
 
 export interface PostAttributes {
   id: number;
@@ -105,7 +101,7 @@ export default function initPost(sequelize) {
       },
       title: {
         type: DataTypes.STRING,
-        defaultValue: config.defaultTitle,
+        defaultValue: "Untitled",
       },
       html: {
         type: DataTypes.TEXT,
@@ -126,7 +122,10 @@ export default function initPost(sequelize) {
         defaultValue: "",
         get() {
           if (this.cover_image && this.cover_image.startsWith("/")) {
-            this.cover_image = new URL(this.cover_image, host).href;
+            this.cover_image = new URL(
+              this.cover_image,
+              process.env.ROOT_URL,
+            ).href;
           }
           return {
             src: this.cover_image,
