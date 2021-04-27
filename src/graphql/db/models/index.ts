@@ -44,11 +44,10 @@ export const modelsMap = {
 };
 
 associateTags();
-modelsMap.Post = associatePost(modelsMap.Post);
+associatePost();
 associateAuthor();
 associateRole();
 associatePermission();
-// associateMedia();
 
 const models = { Sequelize: Sequelize, sequelize: conn, ...modelsMap };
 

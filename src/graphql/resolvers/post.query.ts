@@ -57,6 +57,21 @@ const Query: QueryResolvers<ResolverContext> = {
    */
   async posts(_parent, args, context, _info) {
     debug("letterpad:post:update")("Reached posts query");
+
+    let author_id = 0;
+    const session = await getModifiedSession(context);
+
+    if (session?.user) {
+      author_id = session.user.id;
+    } else if (context.clientEmail) {
+      const author = await models.Author.findOne({
+        where: { email: context.clientEmail },
+      });
+      if (author) {
+        author_id = author.id;
+      }
+    }
+
     const query: IPostCondition = {
       conditions: {
         order: [["publishedAt", SortBy.Desc]],
@@ -67,7 +82,7 @@ const Query: QueryResolvers<ResolverContext> = {
           featured: false,
           status: { [Op.ne]: PostStatusOptions.Trashed },
           type: PostTypes.Post,
-          author_id: 0,
+          author_id,
         },
         limit: 20,
         offset: 0,
@@ -123,30 +138,30 @@ const Query: QueryResolvers<ResolverContext> = {
         query.conditions.order = [["updatedAt", args.filters.sortBy]];
       }
 
-      if (args?.filters?.author) {
-        const author = await models.Author.findOne({
-          where: { name: args.filters.author },
-        });
-        delete query.conditions.where.author_id;
+      // if (args?.filters?.author) {
+      //   const author = await models.Author.findOne({
+      //     where: { name: args.filters.author },
+      //   });
+      //   delete query.conditions.where.author_id;
 
-        if (author) {
-          const posts = await author.getPosts(query.conditions);
+      //   if (author) {
+      //     const posts = await author.getPosts(query.conditions);
 
-          return {
-            __typename: "PostsNode",
-            count: await author.countPosts(query.conditions),
-            rows: posts.map(p => p.get()),
-          };
-        } else {
-          return {
-            __typename: "PostsNode",
-            count: 0,
-            rows: [],
-          };
-        }
-      } else {
-        delete query.conditions.where.author_id;
-      }
+      //     return {
+      //       __typename: "PostsNode",
+      //       count: await author.countPosts(query.conditions),
+      //       rows: posts.map(p => p.get()),
+      //     };
+      //   } else {
+      //     return {
+      //       __typename: "PostsNode",
+      //       count: 0,
+      //       rows: [],
+      //     };
+      //   }
+      // } else {
+      //   delete query.conditions.where.author_id;
+      // }
 
       // resolve menu filter
 
@@ -154,14 +169,14 @@ const Query: QueryResolvers<ResolverContext> = {
         let { tagSlug } = args.filters;
         if (tagSlug === "/") {
           // get the first menu item.
-          const setting = await models.Setting.findOne({
-            attributes: ["value"],
-            where: { option: "menu" },
-            raw: true,
+          const author = await models.Author.findOne({
+            where: { id: author_id },
           });
+          const setting = await author?.getSetting();
 
-          if (setting && typeof setting.value === "string")
-            tagSlug = JSON.parse(setting.value)[0].slug;
+          if (setting) {
+            tagSlug = JSON.parse(setting.menu)[0].slug;
+          }
         }
 
         const taxTag = await models.Tags.findOne({

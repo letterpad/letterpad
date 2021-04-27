@@ -199,7 +199,7 @@ export default function initPost(sequelize) {
   return Post;
 }
 
-export function associatePost(Post) {
+export function associatePost() {
   Post.belongsToMany(Tags, {
     through: "postTags",
     foreignKey: "post_id",

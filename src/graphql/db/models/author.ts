@@ -21,6 +21,7 @@ import {
   Role as QraphqlRole,
   Permissions as GraqhqlPermissions,
 } from "@/__generated__/type-defs.graphqls";
+import { Setting } from "./setting";
 
 // These are all the attributes in the User model
 interface AuthorAttributes {
@@ -65,6 +66,8 @@ export class Author
   public createPost!: HasManyCreateAssociationMixin<Post>;
   public setRole!: HasManyHasAssociationMixin<Role, number>;
   public getRole!: HasOneGetAssociationMixin<Role>;
+  public setSetting!: HasManyHasAssociationMixin<Setting, number>;
+  public getSetting!: HasOneGetAssociationMixin<Setting>;
 
   // You can also pre-declare possible inclusions, these will only be populated if you
   // actively include a relation.
@@ -85,6 +88,8 @@ export class Author
       "setRole",
       "getRole",
       "addMedia",
+      "setSetting",
+      "getSetting",
     ]);
   }
 }
@@ -137,6 +142,7 @@ export function associateAuthor(): void {
   });
 
   Author.belongsTo(Role, { as: "role", foreignKey: "role_id" });
+  Author.belongsTo(Setting, { as: "setting", foreignKey: "setting_id" });
 
   Author.hasMany(Media, { sourceKey: "id", foreignKey: "author_id" });
 }

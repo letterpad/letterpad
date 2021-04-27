@@ -5,7 +5,9 @@ import { schema } from "@/graphql/schema";
 const apolloServer = new ApolloServer({
   schema,
   context: async context => {
-    return { ...context, models };
+    const authHeader = context.req?.headers.authorization;
+    const clientEmail = authHeader.split(/\s+/).pop() || "";
+    return { ...context, models, clientEmail };
   },
 });
 

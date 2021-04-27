@@ -17,6 +17,7 @@ export type ResolverContext = {
   res?: ServerResponse;
   models?: typeof models;
   session?: Promise<SessionData | null>;
+  clientEmail?: string;
 };
 
 function createIsomorphLink(context: ResolverContext = {}) {

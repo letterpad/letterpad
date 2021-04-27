@@ -54,18 +54,16 @@ export const seed = async (_models: typeof dbModels, autoExit = true) => {
   const role = await models.Role.findOne({ where: { id: 1 } });
   const authors = await models.Author.findAll();
   if (role && authors) {
-    authors.map(async author => {
-      await author.setRole(role);
-    });
+    await Promise.all([
+      ...authors.map(async author => {
+        await author.setRole(role);
+      }),
+    ]);
   }
   console.timeEnd("Asssign Role to author");
 
   console.time("insert posts, settings, media");
-  const [tags] = await Promise.all([
-    models.Tags.findAll({
-      where: { type: "post_tag" },
-    }),
-  ]);
+  const [tags] = await Promise.all([models.Tags.findAll()]);
 
   await Promise.all([
     ...posts.map(post => insertPost(post, models, tags)),
@@ -73,11 +71,20 @@ export const seed = async (_models: typeof dbModels, autoExit = true) => {
     insertMedia(models),
   ]);
   console.timeEnd("insert posts, settings, media");
-  if (autoExit) {
-    process.exit(0);
-  } else {
-    return null;
+
+  console.time("Asssign Setting to author");
+  const setting = await models.Setting.findOne({
+    where: { id: 1 },
+  });
+  // const _authors = await models.Author.findAll();
+  if (setting && authors) {
+    await Promise.all([
+      ...authors.map(async author => {
+        return await author.setSetting(setting);
+      }),
+    ]);
   }
+  console.timeEnd("Asssign Setting to author");
 };
 
 export async function insertRolePermData(models) {
@@ -244,7 +251,7 @@ export async function insertMedia(models) {
   ]);
 }
 
-export async function insertSettings(models) {
+export async function insertSettings(models: typeof dbModels) {
   const menu = [
     {
       label: "home",
@@ -259,117 +266,45 @@ export async function insertSettings(models) {
       type: "page",
     },
   ];
-  let data = [
-    {
-      option: "site_title",
-      value: "Letterpad",
-    },
-    {
-      option: "site_tagline",
-      value: "Compose a story",
-    },
-    {
-      option: "site_email",
-      value: "admin@letterpad.app",
-    },
-    {
-      option: "site_url",
-      value: "https://letterpad.app/demo",
-    },
-    {
-      option: "site_footer",
-      value: "",
-    },
-    {
-      option: "site_description",
-      value: "",
-    },
-    {
-      option: "subscribe_embed",
-      value: "",
-    },
-    {
-      option: "social_twitter",
-      value: "https://twitter.com",
-    },
-    {
-      option: "social_facebook",
-      value: "https://facebook.com",
-    },
-    {
-      option: "social_instagram",
-      value: "https://instagram.com",
-    },
-    {
-      option: "social_github",
-      value: "https://www.github.com",
-    },
-    {
-      option: "displayAuthorInfo",
-      value: true,
-    },
-    {
-      option: "site_logo",
-      value: JSON.stringify({
-        src: "/uploads/logo.png",
-        width: 200,
-        height: 200,
-      }),
-    },
-    {
-      option: "site_favicon",
-      value: JSON.stringify({
-        src: "/uploads/logo.png",
-        width: 200,
-        height: 200,
-      }),
-    },
-    {
-      option: "css",
-      value: "",
-    },
-    {
-      option: "google_analytics",
-      value: "UA-120251616-1",
-    },
-    {
-      option: "locale",
-      value: JSON.stringify({ en: true, fr: false, pl: false }),
-    },
-    {
-      option: "theme",
-      value: "hugo",
-    },
-    {
-      option: "disqus_id",
-      value: "letterpad",
-    },
-    {
-      option: "menu",
-      value: JSON.stringify(menu),
-    },
-    {
-      option: "cloudinary_key",
-      value: "",
-    },
-    {
-      option: "cloudinary_name",
-      value: "",
-    },
-    {
-      option: "cloudinary_secret",
-      value: "",
-    },
-    {
-      option: "banner",
-      value: JSON.stringify({
-        src:
-          "https://images.unsplash.com/photo-1435224668334-0f82ec57b605?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-        width: 1502,
-        height: 900,
-      }),
-    },
-  ];
+  let data = {
+    site_title: "Letterpad",
+    site_tagline: "Compose a story",
+    site_email: "admin@letterpad.app",
+    site_url: "https://letterpad.app/demo",
+    site_footer: "",
+    site_description: "",
+    subscribe_embed: "",
+    social_twitter: "https://twitter.com",
+    social_facebook: "https://facebook.com",
+    social_instagram: "https://instagram.com",
+    social_github: "https://www.github.com",
+    displayAuthorInfo: true,
+    site_logo: JSON.stringify({
+      src: "/uploads/logo.png",
+      width: 200,
+      height: 200,
+    }),
+    site_favicon: JSON.stringify({
+      src: "/uploads/logo.png",
+      width: 200,
+      height: 200,
+    }),
+    css: "",
+    google_analytics: "UA-120251616-1",
+    locale: JSON.stringify({ en: true, fr: false, pl: false }),
+    theme: "hugo",
+    disqus_id: "letterpad",
+    menu: JSON.stringify(menu),
+    cloudinary_key: "",
+    cloudinary_name: "",
+    cloudinary_secret: "",
+    banner: JSON.stringify({
+      src:
+        "https://images.unsplash.com/photo-1435224668334-0f82ec57b605?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+      width: 1502,
+      height: 900,
+    }),
+  };
 
-  return models.Setting.bulkCreate(data);
+  return models.Setting.create(data);
 }

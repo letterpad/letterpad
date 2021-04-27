@@ -1,18 +1,34 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import {
-  Navigation,
-  Setting as Option,
-} from "@/__generated__/type-defs.graphqls";
+import { Navigation } from "@/__generated__/type-defs.graphqls";
 import restoreSequelizeAttributesOnClass from "./_tooling";
-
-interface ModelOption extends Option {}
-
-type ValueOf<T> = T[keyof T];
+import { Author } from "./author";
 
 export interface SettingAttributes {
   id: number;
-  option: keyof ModelOption;
-  value: ValueOf<ModelOption>;
+  site_title: string;
+  site_tagline: string;
+  site_email: string;
+  site_url: string;
+  site_footer: string;
+  site_description: string;
+  subscribe_embed: string;
+  social_twitter: string;
+  social_facebook: string;
+  social_instagram: string;
+  social_github: string;
+  displayAuthorInfo: boolean;
+  cloudinary_key: string;
+  cloudinary_name: string;
+  cloudinary_secret: string;
+  menu: string;
+  css: string;
+  google_analytics: string;
+  locale: string;
+  theme: string;
+  disqus_id: string;
+  banner: string;
+  site_logo: string;
+  site_favicon: string;
 }
 
 export interface SettingCreationAttributes
@@ -22,8 +38,30 @@ export class Setting
   extends Model<SettingAttributes, SettingCreationAttributes>
   implements SettingAttributes {
   public id!: number;
-  public option!: keyof Option;
-  public value!: ValueOf<ModelOption>;
+  public site_title!: string;
+  public site_tagline!: string;
+  public site_email!: string;
+  public site_url!: string;
+  public site_footer!: string;
+  public site_description!: string;
+  public subscribe_embed!: string;
+  public social_twitter!: string;
+  public social_facebook!: string;
+  public social_instagram!: string;
+  public social_github!: string;
+  public displayAuthorInfo!: boolean;
+  public cloudinary_key!: string;
+  public cloudinary_name!: string;
+  public cloudinary_secret!: string;
+  public menu!: string;
+  public css!: string;
+  public google_analytics!: string;
+  public locale!: string;
+  public theme!: string;
+  public disqus_id!: string;
+  public banner!: string;
+  public site_logo!: string;
+  public site_favicon!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -42,23 +80,122 @@ export default function initSetting(sequelize) {
         autoIncrement: true,
         primaryKey: true,
       },
-      option: {
+      site_title: {
         type: DataTypes.STRING,
+        defaultValue: "",
       },
-      value: {
+      site_tagline: {
         type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      site_email: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      site_url: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      site_footer: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      site_description: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      subscribe_embed: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      social_twitter: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      social_facebook: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      social_instagram: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      social_github: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      displayAuthorInfo: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
+      cloudinary_key: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      cloudinary_name: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      cloudinary_secret: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      menu: {
+        type: DataTypes.STRING,
+        defaultValue: "",
         get() {
-          const option = this.getDataValue("option") as keyof ModelOption;
-          const value = this.value;
-          if (["banner", "site_logo", "site_favicon"].includes(option)) {
-            const img = JSON.parse(value as string);
-            img.src = new URL(img.src, process.env.ROOT_URL);
-            return img;
-          }
-          if (option === "menu") {
-            return getMenuWithSanitizedSlug(JSON.parse(value as string));
-          }
-          return value;
+          const value = this.menu;
+          return getMenuWithSanitizedSlug(JSON.parse(value as string));
+        },
+      },
+      css: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      google_analytics: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      locale: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      theme: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      disqus_id: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
+      banner: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+        get() {
+          const value = this.banner;
+          const img = JSON.parse(value as string);
+          img.src = new URL(img.src, process.env.ROOT_URL);
+          return img;
+        },
+      },
+      site_logo: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+        get() {
+          const value = this.site_logo;
+          const img = JSON.parse(value as string);
+          img.src = new URL(img.src, process.env.ROOT_URL);
+          return img;
+        },
+      },
+      site_favicon: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+        get() {
+          const value = this.site_favicon;
+          const img = JSON.parse(value as string);
+          img.src = new URL(img.src, process.env.ROOT_URL);
+          return img;
         },
       },
     },

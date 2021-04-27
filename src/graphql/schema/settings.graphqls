@@ -23,7 +23,7 @@ type Setting {
   social_facebook: String!
   social_instagram: String!
   social_github: String!
-  displayAuthorInfo: String!
+  displayAuthorInfo: Boolean!
   cloudinary_key: String!
   cloudinary_name: String!
   cloudinary_secret: String!
@@ -63,7 +63,7 @@ input OptionInputType {
   social_facebook: String
   social_instagram: String
   social_github: String
-  displayAuthorInfo: String
+  displayAuthorInfo: Boolean
   cloudinary_key: String
   cloudinary_name: String
   cloudinary_secret: String
@@ -79,7 +79,7 @@ input OptionInputType {
 }
 
 type Query {
-  settings(option: String): Setting
+  settings: Setting
 }
 
 type Mutation {
