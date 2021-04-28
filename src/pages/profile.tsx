@@ -44,7 +44,7 @@ function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
   }, []);
 
   const updateAuthor = async (data?: InputAuthor) => {
-    const apolloClient = initializeApollo();
+    const apolloClient = await initializeApollo();
 
     if (!me) return;
 
@@ -185,7 +185,7 @@ function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
 export default withAuthCheck(Profile);
 
 export async function getServerSideProps(context) {
-  const apolloClient = initializeApollo({}, context);
+  const apolloClient = await initializeApollo({}, context);
 
   const me = await apolloClient.query<MeQuery, MeQueryVariables>({
     query: MeDocument,

@@ -83,7 +83,12 @@ const CustomLayout = ({ children, settings }: IProps) => {
           </StyledDrawer>
         </nav>
         {children}
-        <Footer style={{ textAlign: "center" }}>Letterpad</Footer>
+        <Footer style={{ textAlign: "center" }}>
+          Letterpad <br />
+          <small>
+            Client Token: <strong>{settings.client_token}</strong>
+          </small>
+        </Footer>
       </Layout>
     </Layout>
   );
@@ -92,7 +97,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
 export default CustomLayout;
 
 async function getStats() {
-  const client = initializeApollo();
+  const client = await initializeApollo();
   const stats = await client.query<StatsQuery, StatsQueryVariables>({
     query: StatsDocument,
   });

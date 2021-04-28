@@ -1,7 +1,6 @@
 import { Op, Order } from "sequelize";
 import { ResolverContext } from "../apollo";
 import models from "../db/models";
-import { getModifiedSession } from "./helpers";
 import { QueryResolvers, SortBy } from "@/__generated__/type-defs.graphqls";
 
 interface IMediaConditions {
@@ -15,10 +14,9 @@ interface IMediaConditions {
 }
 
 const Query: QueryResolvers<ResolverContext> = {
-  media: async (_root, args, context) => {
-    const session = await getModifiedSession(context);
-
-    if (!session) {
+  media: async (_root, args, { session }) => {
+    console.log("session media :>> ", session);
+    if (!session?.user) {
       return {
         count: 0,
         rows: [],
@@ -49,6 +47,8 @@ const Query: QueryResolvers<ResolverContext> = {
       }
     }
     const result = await models.Media.findAndCountAll(conditions);
+
+    console.log("result :>> ", result);
     if (result) {
       const rows = result.rows.map(item => item.get());
       return {

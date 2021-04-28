@@ -14,6 +14,14 @@ env(__dirname + "../../../../../.env.development.local");
 const models = require("../models/index").default;
 const { seed } = require("./seed");
 
+(async () => {
+  const author = await models.Author.findOne({ where: { id: 1 } });
+  console.log("author :>> ", author);
+  const tag = await author.createTag({ name: "wow", slug: "wow" });
+  console.log(tag);
+  // console.log(hasTag);
+})();
+
 seed(models)
   .catch(e => {
     console.error(e);

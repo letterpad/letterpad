@@ -16,9 +16,9 @@ function useNavigationData() {
   const [tags, setTags] = useState<Tags[]>([]);
   const [pages, setPages] = useState<Post[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const client = initializeApollo();
 
   async function fetchData() {
+    const client = await initializeApollo();
     const tagsData = await client.query<TagsQuery, TagsQueryVariables>({
       query: TagsDocument,
     });

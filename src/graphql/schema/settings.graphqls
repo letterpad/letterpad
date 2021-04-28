@@ -36,6 +36,7 @@ type Setting {
   banner: Image!
   site_logo: Image!
   site_favicon: Image!
+  client_token: String!
 }
 
 input InputNavigation {

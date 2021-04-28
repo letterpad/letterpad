@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const InternalMedia: React.FC<IProps> = ({ renderer }) => {
-  const client = initializeApollo();
+  const client = await initializeApollo();
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);

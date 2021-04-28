@@ -8,7 +8,6 @@ import {
 import fs from "fs";
 import path from "path";
 import models from "../db/models";
-import { getModifiedSession } from "./helpers";
 import { Op } from "sequelize";
 
 type ValueOf<T> = T[keyof T];
@@ -20,19 +19,10 @@ const SECURE_SETTINGS = [
 
 const cssPath = path.join(process.cwd(), "public/css/custom.css");
 const Query: QueryResolvers<ResolverContext> = {
-  settings: async (_root, _args = {}, context) => {
-    const session = await getModifiedSession(context);
-
-    const where = [];
-    if (session?.user.id) {
-      where.push({ id: session.user.id });
-    } else if (context.clientEmail) {
-      where.push({ email: context.clientEmail });
-    }
+  settings: async (_root, _args = {}, { session, author_id }) => {
+    const authorId = session?.user.id || author_id;
     const author = await models.Author.findOne({
-      where: {
-        [Op.or]: where,
-      },
+      where: { id: authorId },
     });
 
     const setting = await author?.getSetting();
@@ -49,9 +39,7 @@ const Query: QueryResolvers<ResolverContext> = {
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {
-  updateOptions: async (_root, args, context) => {
-    const session = await getModifiedSession(context);
-
+  updateOptions: async (_root, args, { session }) => {
     if (!session?.user) return {} as Setting;
 
     const author = await models.Author.findOne({

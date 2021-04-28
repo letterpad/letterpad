@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { Navigation } from "@/__generated__/type-defs.graphqls";
 import restoreSequelizeAttributesOnClass from "./_tooling";
-import { Author } from "./author";
+import jwt from "jsonwebtoken";
 
 export interface SettingAttributes {
   id: number;
@@ -29,6 +29,7 @@ export interface SettingAttributes {
   banner: string;
   site_logo: string;
   site_favicon: string;
+  client_token: string;
 }
 
 export interface SettingCreationAttributes
@@ -62,6 +63,7 @@ export class Setting
   public banner!: string;
   public site_logo!: string;
   public site_favicon!: string;
+  public client_token!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -164,6 +166,10 @@ export default function initSetting(sequelize) {
         type: DataTypes.STRING,
         defaultValue: "",
       },
+      client_token: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
       disqus_id: {
         type: DataTypes.STRING,
         defaultValue: "",
@@ -174,7 +180,9 @@ export default function initSetting(sequelize) {
         get() {
           const value = this.banner;
           const img = JSON.parse(value as string);
-          img.src = new URL(img.src, process.env.ROOT_URL);
+          if (!img.src.startsWith("http")) {
+            img.src = process.env.ROOT_URL + img.src;
+          }
           return img;
         },
       },
@@ -184,7 +192,9 @@ export default function initSetting(sequelize) {
         get() {
           const value = this.site_logo;
           const img = JSON.parse(value as string);
-          img.src = new URL(img.src, process.env.ROOT_URL);
+          if (!img.src.startsWith("http")) {
+            img.src = process.env.ROOT_URL + img.src;
+          }
           return img;
         },
       },
@@ -194,7 +204,9 @@ export default function initSetting(sequelize) {
         get() {
           const value = this.site_favicon;
           const img = JSON.parse(value as string);
-          img.src = new URL(img.src, process.env.ROOT_URL);
+          if (!img.src.startsWith("http")) {
+            img.src = process.env.ROOT_URL + img.src;
+          }
           return img;
         },
       },

@@ -6,7 +6,6 @@ import { ResolverContext } from "../apollo";
 import { MutationResolvers } from "@/__generated__/type-defs.graphqls";
 import models from "../db/models";
 import bcrypt from "bcryptjs";
-import { getModifiedSession } from "./helpers";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -38,9 +37,8 @@ const Author = {
 };
 
 const Query: QueryResolvers<ResolverContext> = {
-  async me(_parent, _args, context, _info) {
-    const session = await getModifiedSession(context);
-    if (!session) {
+  async me(_parent, _args, { session }, _info) {
+    if (!session?.user) {
       return { __typename: "AuthorNotFoundError", message: "Invalid Session" };
     }
 
@@ -89,8 +87,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     return { status: false };
   },
-  async updateAuthor(_root, args, context) {
-    const session = await getModifiedSession(context);
+  async updateAuthor(_root, args, { session }) {
     if (session?.user.id !== args.author.id) {
       return {
         ok: true,

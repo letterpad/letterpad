@@ -28,6 +28,7 @@
     "debug": "^4.3.1",
     "graphql": "15.3.0",
     "image-size": "^0.9.7",
+    "jsonwebtoken": "^8.5.1",
     "letterpad-editor": "^0.0.29",
     "md5": "^2.3.0",
     "multer": "^1.4.2",

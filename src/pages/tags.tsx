@@ -104,7 +104,7 @@ const EditableTable = ({
     });
 
     const { name, id, desc, slug } = row;
-    const client = initializeApollo();
+    const client = await initializeApollo();
     await client.mutate<UpdateTagsMutation, UpdateTagsMutationVariables>({
       mutation: UpdateTagsDocument,
       variables: {
@@ -147,23 +147,36 @@ const EditableTable = ({
 export default EditableTable;
 
 export async function getServerSideProps(context) {
-  const apolloClient = initializeApollo({}, context);
+  const apolloClient = await initializeApollo({}, context);
 
   const tags = await apolloClient.query<TagsQuery, TagsQueryVariables>({
     query: TagsDocument,
   });
-  const data = tags.data.tags.map(item => {
-    return { ...item, posts: item.posts?.count };
-  });
-  return {
-    props: {
-      data,
-    },
-  };
+  if (tags.data.tags?.__typename === "TagsNode") {
+    const data = tags.data.tags.rows.map(item => {
+      return { ...item, posts: item.posts?.count };
+    });
+    return {
+      props: {
+        data,
+        error: "",
+      },
+    };
+  } else {
+    return {
+      props: {
+        data: [],
+        error:
+          tags.data.tags?.__typename === "TagsError"
+            ? tags.data.tags.message
+            : "",
+      },
+    };
+  }
 }
 
 async function deleteTagApi(id) {
-  const apolloClient = initializeApollo();
+  const apolloClient = await initializeApollo();
 
   const tags = await apolloClient.mutate<
     DeleteTagsMutation,

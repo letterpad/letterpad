@@ -22,6 +22,7 @@ import {
   Permissions as GraqhqlPermissions,
 } from "@/__generated__/type-defs.graphqls";
 import { Setting } from "./setting";
+import { Tags } from "./tags";
 
 // These are all the attributes in the User model
 interface AuthorAttributes {
@@ -61,6 +62,9 @@ export class Author
   public getPosts!: HasManyGetAssociationsMixin<Post>; // Note the null assertions!
   public addPost!: HasManyAddAssociationMixin<Post, number>;
   public addMedia!: HasManyAddAssociationMixin<Media, number>;
+  public createTag!: HasManyCreateAssociationMixin<Tags>;
+  public getTags!: HasManyGetAssociationsMixin<Tags>;
+  public hasTag!: HasManyHasAssociationMixin<Tags, number>;
   public hasPost!: HasManyHasAssociationMixin<Post, number>;
   public countPosts!: HasManyCountAssociationsMixin;
   public createPost!: HasManyCreateAssociationMixin<Post>;
@@ -90,6 +94,9 @@ export class Author
       "addMedia",
       "setSetting",
       "getSetting",
+      "createTag",
+      "getTags",
+      "hasTag",
     ]);
   }
 }
@@ -145,4 +152,5 @@ export function associateAuthor(): void {
   Author.belongsTo(Setting, { as: "setting", foreignKey: "setting_id" });
 
   Author.hasMany(Media, { sourceKey: "id", foreignKey: "author_id" });
+  Author.hasMany(Tags, { sourceKey: "id", foreignKey: "author_id" });
 }

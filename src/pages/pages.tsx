@@ -97,7 +97,7 @@ function Pages({ settings }: IProps) {
 export default withAuthCheck(Pages);
 
 async function fetchPostsFromAPI(filters: PostsFilters) {
-  const apolloClient = initializeApollo();
+  const apolloClient = await initializeApollo();
 
   const post = await apolloClient.query<PostsQuery, PostsQueryVariables>({
     query: PostsDocument,

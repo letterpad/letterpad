@@ -97,17 +97,24 @@ query Me {
 
 query Tags {
   tags {
-    name
-    id
-    desc
-    slug
-    posts {
-      ... on PostsNode {
-        count
-        rows {
-          id
+    ... on TagsNode {
+      rows {
+        name
+        id
+        desc
+        slug
+        posts {
+          ... on PostsNode {
+            count
+            rows {
+              id
+            }
+          }
         }
       }
+    }
+    ... on TagsError {
+      message
     }
   }
 }
@@ -201,6 +208,7 @@ query settings {
     cloudinary_key
     cloudinary_name
     cloudinary_secret
+    client_token
     menu {
       label
       original_name

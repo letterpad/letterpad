@@ -41,7 +41,7 @@ const CreatePost = ({ settings, data }: IProps) => {
 export default CreatePost;
 
 export async function getServerSideProps(context) {
-  const apolloClient = initializeApollo({}, context);
+  const apolloClient = await initializeApollo({}, context);
 
   const post = await apolloClient.mutate<
     CreatePostMutation,

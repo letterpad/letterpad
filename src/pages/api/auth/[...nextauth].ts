@@ -17,7 +17,7 @@ const providers = [
       password: { label: "Password", type: "password" },
     },
     authorize: async credentials => {
-      const apolloClient = initializeApollo({});
+      const apolloClient = await initializeApollo({});
 
       const result = await apolloClient.mutate<
         LoginMutation,

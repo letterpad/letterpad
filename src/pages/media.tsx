@@ -55,7 +55,7 @@ const Media = ({
 export default withAuthCheck(Media);
 
 export async function getServerSideProps(context) {
-  const apolloClient = initializeApollo({}, context);
+  const apolloClient = await initializeApollo({}, context);
 
   const media = await apolloClient.query<MediaQuery, MediaQueryVariables>({
     query: MediaDocument,

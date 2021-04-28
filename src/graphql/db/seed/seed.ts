@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import dbModels from "./../models/index";
 import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
@@ -76,11 +77,22 @@ export const seed = async (_models: typeof dbModels, autoExit = true) => {
   const setting = await models.Setting.findOne({
     where: { id: 1 },
   });
-  // const _authors = await models.Author.findAll();
   if (setting && authors) {
     await Promise.all([
       ...authors.map(async author => {
-        return await author.setSetting(setting);
+        const token = jwt.sign(
+          {
+            id: 1,
+          },
+          process.env.SECRET_KEY,
+          {
+            algorithm: "HS256",
+          },
+        );
+        return Promise.all([
+          setting.update({ client_token: token }),
+          author.setSetting(setting),
+        ]);
       }),
     ]);
   }
@@ -176,19 +188,24 @@ export async function insertAuthor(models) {
   ]);
 }
 
-export async function insertTags(models) {
-  return models.Tags.bulkCreate([
+export async function insertTags(models: typeof dbModels) {
+  const author = await models.Author.findOne({ where: { id: 1 } });
+  const tags = [
     {
       name: "Home",
-      type: "post_tag",
       slug: "home",
+      desc: "",
     },
     {
       name: "first-post",
-      type: "post_tag",
       slug: "first-post",
+      desc: "",
     },
-  ]);
+  ];
+
+  if (author) {
+    return Promise.all([...tags.map(tag => author.createTag(tag))]);
+  }
 }
 
 export async function insertPost(params, models: typeof dbModels, tags) {
@@ -298,6 +315,7 @@ export async function insertSettings(models: typeof dbModels) {
     cloudinary_key: "",
     cloudinary_name: "",
     cloudinary_secret: "",
+    clientToken: "",
     banner: JSON.stringify({
       src:
         "https://images.unsplash.com/photo-1435224668334-0f82ec57b605?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",

@@ -103,7 +103,7 @@ function Posts({ settings }: IProps) {
 export default withAuthCheck(Posts);
 
 async function fetchPostsFromAPI(filters: PostsFilters) {
-  const apolloClient = initializeApollo();
+  const apolloClient = await initializeApollo();
 
   const post = await apolloClient.query<PostsQuery, PostsQueryVariables>({
     query: PostsDocument,

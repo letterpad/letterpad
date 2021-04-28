@@ -161,7 +161,7 @@ function Post({ data }: { data: PostResponse }) {
 export default withAuthCheck(Post);
 
 export async function getServerSideProps(context) {
-  const apolloClient = initializeApollo({}, context);
+  const apolloClient = await initializeApollo({}, context);
   const post = await apolloClient.query<PostQuery, PostQueryVariables>({
     query: PostDocument,
     variables: {
@@ -182,7 +182,7 @@ const updatePostRequest = async (
   attrs: Omit<InputUpdatePost, "id">,
   postId: number,
 ) => {
-  const apolloClient = initializeApollo();
+  const apolloClient = await initializeApollo();
   await apolloClient.mutate<UpdatePostMutation, UpdatePostMutationVariables>({
     mutation: UpdatePostDocument,
     variables: {

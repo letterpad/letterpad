@@ -1,5 +1,9 @@
 import { AppProps } from "next/app";
-import { ApolloProvider } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloProvider,
+  NormalizedCacheObject,
+} from "@apollo/client";
 import { initializeApollo, useApollo } from "@/graphql/apollo";
 import { Provider } from "next-auth/client";
 import Router from "next/router";
@@ -27,6 +31,7 @@ Router.events.on("routeChangeError", () => NProgress.done());
 export default function App({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps.initialApolloState);
   const [settings, setSettings] = useState<null | Setting>(null);
+  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
 
   useEffect(() => {
     if (!settings) {
@@ -37,15 +42,19 @@ export default function App({ Component, pageProps }: AppProps) {
         }
       });
     }
+    apolloClient.then(client => {
+      setClient(client);
+    });
   }, []);
 
+  if (!client || !settings) return null;
   return (
     <LetterpadProvider value={settings}>
       <Provider
         session={pageProps.session}
         options={{ basePath: nextConfig.basePath + "/api/auth" }}
       >
-        <ApolloProvider client={apolloClient}>
+        <ApolloProvider client={client}>
           <Component {...pageProps} settings={settings} />
         </ApolloProvider>
       </Provider>
@@ -54,7 +63,7 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 
 async function getSettings() {
-  const client = initializeApollo();
+  const client = await initializeApollo();
   const settings = await client.query<SettingsQuery, SettingsQueryVariables>({
     query: SettingsDocument,
   });

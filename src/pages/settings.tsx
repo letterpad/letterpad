@@ -23,7 +23,7 @@ function Settings(props: { settings: Setting }) {
   const [draft, setDraft] = useState<OptionInputType>({});
 
   const updateSettings = async () => {
-    const apolloClient = initializeApollo();
+    const apolloClient = await initializeApollo();
 
     if (Object.keys(draft).length === 0) return;
 
