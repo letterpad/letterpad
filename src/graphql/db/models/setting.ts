@@ -234,3 +234,59 @@ function getMenuWithSanitizedSlug(menu: Navigation[]) {
     return item;
   });
 }
+
+const menu = [
+  {
+    label: "home",
+    original_name: "home",
+    slug: "home",
+    type: "tag",
+  },
+  {
+    label: "Letterpad Typography",
+    original_name: "Letterpad Typography",
+    slug: "letterpad-typography",
+    type: "page",
+  },
+];
+
+export const settingsData = {
+  site_title: "Letterpad",
+  site_tagline: "Compose a story",
+  site_email: "admin@letterpad.app",
+  site_url: "https://letterpad.app/demo",
+  site_footer: "",
+  site_description: "",
+  subscribe_embed: "",
+  social_twitter: "https://twitter.com",
+  social_facebook: "https://facebook.com",
+  social_instagram: "https://instagram.com",
+  social_github: "https://www.github.com",
+  displayAuthorInfo: true,
+  site_logo: JSON.stringify({
+    src: "/uploads/logo.png",
+    width: 200,
+    height: 200,
+  }),
+  site_favicon: JSON.stringify({
+    src: "/uploads/logo.png",
+    width: 200,
+    height: 200,
+  }),
+  css: "",
+  google_analytics: "UA-120251616-1",
+  locale: JSON.stringify({ en: true, fr: false, pl: false }),
+  theme: "hugo",
+  disqus_id: "letterpad",
+  menu: JSON.stringify(menu),
+  cloudinary_key: "",
+  cloudinary_name: "",
+  cloudinary_secret: "",
+  client_token: "",
+  banner: JSON.stringify({
+    src:
+      "https://images.unsplash.com/photo-1435224668334-0f82ec57b605?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+    width: 1502,
+    height: 900,
+  }),
+};

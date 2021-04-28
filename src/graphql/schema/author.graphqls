@@ -43,17 +43,31 @@ input InputAuthor {
   avatar: String
 }
 
+input InputCreateAuthor {
+  email: String!
+  site_title: String!
+  name: String!
+  password: String!
+  token: String!
+}
+
 type AuthorResponse {
   ok: Boolean!
   errors: [Error!]
   data: Author
 }
 
-type AuthorNotFoundError {
+type AuthorNotFoundError implements LetterpadError {
+  message: String!
+}
+
+type CreateAuthorError implements LetterpadError {
   message: String!
 }
 
 union MeResponse = Author | AuthorNotFoundError
+
+union CreateAuthorResponse = Author | CreateAuthorError
 
 type Query {
   me: MeResponse
@@ -62,4 +76,5 @@ type Query {
 type Mutation {
   login(data: LoginData): LoginResponse
   updateAuthor(author: InputAuthor!): AuthorResponse
+  createAuthor(data: InputCreateAuthor!): CreateAuthorResponse
 }

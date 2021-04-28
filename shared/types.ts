@@ -5,6 +5,7 @@ declare global {
       ROOT_URL: string;
       PWD: string;
       SECRET_KEY: string;
+      RECAPTCHA_KEY: string;
     }
   }
 }
