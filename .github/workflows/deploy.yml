@@ -8,11 +8,11 @@ jobs:
   job_one:
     name: Deploy
     runs-on: ubuntu-latest
-      steps:
+    steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: '14'
+          node-version: "14"
       - uses: borales/actions-yarn@v2.0.0
         with:
           cmd: install # will run `yarn install` command
