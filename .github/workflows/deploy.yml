@@ -18,3 +18,4 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           source: "."
           target: /var/www/html/letterpad-next
+          debug: true
