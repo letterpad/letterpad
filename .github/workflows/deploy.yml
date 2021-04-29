@@ -15,6 +15,6 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
-          key: ${{ secrets.KEY }}
+          key: ${{ secrets.DEPLOY_KEY }}
           source: "."
           target: "/var/www/html/letterpad-next"
