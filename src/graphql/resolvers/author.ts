@@ -1,3 +1,5 @@
+import { Subjects } from "./../../mail/index";
+import Cryptr from "cryptr";
 import jwt from "jsonwebtoken";
 import {
   InputAuthor,
@@ -12,6 +14,10 @@ import bcrypt from "bcryptjs";
 import { settingsData } from "../db/models/setting";
 import { validateCaptcha } from "./helpers";
 import generatePost from "../db/seed/contentGenerator";
+import sendMail from "src/mail";
+import templates from "src/mail/templates";
+
+const cryptr = new Cryptr(process.env.SECRET_KEY);
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -99,6 +105,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       password: bcrypt.hashSync(args.data.password, 12),
       name: args.data.name,
       avatar: "",
+      verified: false,
       social: JSON.stringify({
         twitter: "",
         facebook: "",
@@ -132,7 +139,15 @@ const Mutation: MutationResolvers<ResolverContext> = {
       });
       await newPost.addTag(newTag);
       await newAuthor.createPost(page);
-
+      //saha
+      await sendMail({
+        to: newAuthor.email,
+        subject: Subjects.VERIFY_EMAIL,
+        html: templates.verifyEmail({
+          name: newAuthor.name,
+          verifyToken: cryptr.encrypt(newAuthor.email),
+        }),
+      });
       return { ...newAuthor, __typename: "Author" };
     }
     return {

@@ -33,6 +33,7 @@ interface AuthorAttributes {
   password: string;
   avatar: string;
   social: Social;
+  verified: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -48,6 +49,7 @@ export class Author
   public bio!: string;
   public password!: string;
   public avatar!: string;
+  public verified!: boolean;
   public social!: Social;
   public role!: QraphqlRole;
   public permissions!: GraqhqlPermissions[];
@@ -135,6 +137,10 @@ export default function initAuthor(sequelize: Sequelize) {
       social: {
         type: new DataTypes.STRING(128),
         allowNull: true,
+      },
+      verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     {

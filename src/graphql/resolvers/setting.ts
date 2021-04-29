@@ -8,7 +8,6 @@ import {
 import fs from "fs";
 import path from "path";
 import models from "../db/models";
-import { Op } from "sequelize";
 
 type ValueOf<T> = T[keyof T];
 const SECURE_SETTINGS = [
@@ -21,7 +20,7 @@ const cssPath = path.join(process.cwd(), "public/css/custom.css");
 const Query: QueryResolvers<ResolverContext> = {
   settings: async (_root, _args = {}, { session, author_id }) => {
     const authorId = session?.user.id || author_id;
-
+    console.log("session :>> ", session);
     if (!authorId) {
       return {
         __typename: "SettingError",

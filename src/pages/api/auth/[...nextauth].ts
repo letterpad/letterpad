@@ -71,6 +71,9 @@ const options = {
     encryption: true,
     secret: process.env.SECRET_KEY,
   },
+  pages: {
+    // signIn: "/login",
+  },
 };
 
 export default (req: NextApiRequest, res: NextApiResponse) =>

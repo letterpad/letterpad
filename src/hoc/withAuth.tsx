@@ -18,12 +18,16 @@ const withAuthCheck = <T extends object>(
     const [settings, setSettings] = useState<null | Setting>(null);
     const router = useRouter();
     useEffect(() => {
-      console.log(session);
+      if (!loading && !session?.user.id) {
+        router.push("/api/auth/signin");
+      }
       if (!settings) {
         getSettings()
           .then(res => {
             if (res.data.settings?.__typename === "Setting") {
               setSettings(res.data.settings as Setting);
+            } else if (res.data.settings?.__typename === "SettingError") {
+              router.push("/api/auth/signin");
             } else {
               if (!session && !loading) {
                 router.push("/api/auth/signin");

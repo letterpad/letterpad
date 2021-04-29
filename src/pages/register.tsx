@@ -8,6 +8,7 @@ import {
   CreateAuthorMutationVariables,
   CreateAuthorDocument,
 } from "@/__generated__/queries/mutations.graphql";
+import { useRouter } from "next/router";
 
 const layout = {
   labelCol: {
@@ -34,6 +35,7 @@ const validateMessages = {
 const Register = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [enabled, setEnabled] = useState(true);
+  const router = useRouter();
 
   const onFinish = async (values: any) => {
     setEnabled(false);
@@ -45,6 +47,8 @@ const Register = () => {
       const result = await createAuthor(values);
       if (!result?.status) {
         setEnabled(true);
+      } else {
+        router.push("/messages/registered");
       }
     }
   };

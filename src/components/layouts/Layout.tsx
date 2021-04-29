@@ -11,7 +11,6 @@ import {
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navigation from "./Menu";
-import "antd/dist/antd.css";
 import Logo from "../Logo";
 import { initializeApollo } from "@/graphql/apollo";
 

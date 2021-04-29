@@ -7,7 +7,7 @@ import {
 import { useApollo } from "@/graphql/apollo";
 import { Provider } from "next-auth/client";
 import Router from "next/router";
-import "antd/dist/antd.css";
+import "antd/dist/antd.dark.css";
 import "../../styles/globals.css";
 import NProgress from "nprogress";
 import nextConfig from "../../next.config";
@@ -32,6 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   if (!client) return null;
+
   return (
     <Provider
       session={pageProps.session}
