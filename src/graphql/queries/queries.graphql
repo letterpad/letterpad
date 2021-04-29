@@ -191,49 +191,65 @@ mutation DeleteTags($id: Int!) {
   }
 }
 
+mutation CreateAuthor($data: InputCreateAuthor!) {
+  createAuthor(data: $data) {
+    ... on Author {
+      name
+    }
+    ... on CreateAuthorError {
+      message
+    }
+  }
+}
+
 query settings {
   settings {
-    site_title
-    site_tagline
-    site_email
-    site_url
-    site_footer
-    site_description
-    subscribe_embed
-    social_twitter
-    social_facebook
-    social_instagram
-    social_github
-    displayAuthorInfo
-    cloudinary_key
-    cloudinary_name
-    cloudinary_secret
-    client_token
-    menu {
-      label
-      original_name
-      slug
-      type
+    ... on Setting {
+      site_title
+      site_tagline
+      site_email
+      site_url
+      site_footer
+      site_description
+      subscribe_embed
+      social_twitter
+      social_facebook
+      social_instagram
+      social_github
+      displayAuthorInfo
+      cloudinary_key
+      cloudinary_name
+      cloudinary_secret
+      client_token
+      menu {
+        label
+        original_name
+        slug
+        type
+      }
+      css
+      google_analytics
+      locale
+      theme
+      disqus_id
+      banner {
+        src
+        width
+        height
+      }
+      site_logo {
+        src
+        width
+        height
+      }
+      site_favicon {
+        src
+        width
+        height
+      }
     }
-    css
-    google_analytics
-    locale
-    theme
-    disqus_id
-    banner {
-      src
-      width
-      height
-    }
-    site_logo {
-      src
-      width
-      height
-    }
-    site_favicon {
-      src
-      width
-      height
+    ... on SettingError {
+      message
     }
   }
 }

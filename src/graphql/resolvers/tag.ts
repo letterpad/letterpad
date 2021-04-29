@@ -39,7 +39,7 @@ const Query: QueryResolvers<ResolverContext> = {
       }
     }
 
-    if (session?.user) {
+    if (session?.user.id) {
       const author = await models.Author.findOne({
         where: { id: session.user.id },
       });

@@ -13,11 +13,8 @@ const apolloServer = new ApolloServer({
 
     try {
       const tokenData = jwt.verify(token, process.env.SECRET_KEY);
-      console.log("tokenData :>> ", tokenData);
       author_id = tokenData.id;
-    } catch (e) {
-      console.log("veify failed");
-    }
+    } catch (e) {}
 
     const session = await getSession(context);
 

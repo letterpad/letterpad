@@ -21,21 +21,35 @@ const cssPath = path.join(process.cwd(), "public/css/custom.css");
 const Query: QueryResolvers<ResolverContext> = {
   settings: async (_root, _args = {}, { session, author_id }) => {
     const authorId = session?.user.id || author_id;
+
+    if (!authorId) {
+      return {
+        __typename: "SettingError",
+        message: "Setting related to author:null not found",
+      };
+    }
     const author = await models.Author.findOne({
       where: { id: authorId },
     });
 
     const setting = await author?.getSetting();
 
-    if (!setting) return {} as Setting;
+    if (!setting)
+      return {
+        __typename: "SettingError",
+        message: "Setting related to author:null not found",
+      };
 
     SECURE_SETTINGS.forEach(securedKey => {
-      if (!session?.user) {
+      if (!session?.user.id) {
         setting.setDataValue(securedKey, "");
       }
     });
 
-    return (setting.get() as unknown) as Setting;
+    return {
+      __typename: "Setting",
+      ...((setting.get() as unknown) as Setting),
+    };
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {

@@ -36,7 +36,6 @@ function Settings(props: { settings: Setting }) {
         options: draft,
       },
     });
-    localStorage.settings = JSON.stringify(settings);
     setDraft({});
   };
 

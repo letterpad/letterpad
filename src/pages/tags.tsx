@@ -1,6 +1,6 @@
 import { Table, Button, Popconfirm, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Setting } from "@/__generated__/queries/post.mutations.graphql";
 import {
   UpdateTagsMutationVariables,
@@ -18,6 +18,7 @@ import { EditableCell, EditableRow } from "@/components/ediitable-table";
 import { initializeApollo } from "@/graphql/apollo";
 import { TagsDocument } from "@/graphql/queries/queries.graphql";
 import CustomLayout from "@/components/layouts/Layout";
+import withAuthCheck from "src/hoc/withAuth";
 type EditableTableProps = Parameters<typeof Table>[0];
 
 interface DataType {
@@ -31,22 +32,25 @@ interface DataType {
 
 type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
 
-const EditableTable = ({
-  data,
-  settings,
-}: {
-  data: DataType[];
-  settings: Setting;
-}) => {
-  const [dataSource, setDataSource] = useState<DataType[]>(
-    data.map(item => ({
-      ...item,
-      key: item.id,
-      posts: item.posts,
-      desc: item.desc,
-    })),
-  );
-  const [count, setCount] = useState(2);
+const EditableTable = ({ settings }: { settings: Setting }) => {
+  const [dataSource, setDataSource] = useState<DataType[]>([]);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    fetchTags().then(response => {
+      if (!response.props.error) {
+        setDataSource(
+          response.props.data.map(item => ({
+            ...item,
+            key: item.id,
+            posts: item.posts,
+            desc: item.desc || "",
+          })),
+        );
+        setCount(response.props.data.length + 1);
+      }
+    });
+  }, []);
 
   const handleDelete = async (key: React.Key) => {
     const tagToDelete = [...dataSource].filter(item => item.key === key);
@@ -144,10 +148,10 @@ const EditableTable = ({
   );
 };
 
-export default EditableTable;
+export default withAuthCheck(EditableTable);
 
-export async function getServerSideProps(context) {
-  const apolloClient = await initializeApollo({}, context);
+export async function fetchTags() {
+  const apolloClient = await initializeApollo();
 
   const tags = await apolloClient.query<TagsQuery, TagsQueryVariables>({
     query: TagsDocument,

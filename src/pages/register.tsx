@@ -1,10 +1,13 @@
-import {
-  GoogleReCaptchaProvider,
-  GoogleReCaptcha,
-} from "react-google-recaptcha-v3";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { Row, Form, Input, Button, Col } from "antd";
 import { useState } from "react";
+import { initializeApollo } from "@/graphql/apollo";
+import {
+  CreateAuthorMutation,
+  CreateAuthorMutationVariables,
+  CreateAuthorDocument,
+} from "@/__generated__/queries/queries.graphql";
 
 const layout = {
   labelCol: {
@@ -31,12 +34,18 @@ const validateMessages = {
 const Register = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [enabled, setEnabled] = useState(true);
+
   const onFinish = async (values: any) => {
     setEnabled(false);
     if (executeRecaptcha) {
-      const result = await executeRecaptcha("register");
-      values.token = result;
-      console.log("values :>> ", values);
+      const token = await executeRecaptcha("register");
+      values.token = token;
+      console.log("token :>> ", token);
+      delete values.confirmPassword;
+      const result = await createAuthor(values);
+      if (!result?.status) {
+        setEnabled(true);
+      }
     }
   };
 
@@ -115,12 +124,6 @@ const Register = () => {
           >
             <Input name="passwordTwo" type="password" />
           </Form.Item>
-          {/* <GoogleReCaptcha
-            onVerify={token => {
-              setToken(token);
-            }}
-          /> */}
-
           <Form.Item
             wrapperCol={{
               ...layout.wrapperCol,
@@ -140,11 +143,39 @@ const Register = () => {
 
 const Provider = () => {
   return (
-    <GoogleReCaptchaProvider
-      reCaptchaKey={"6LdCsL0aAAAAAPbGhkyrhAcr4I_-DkVZYabIkaEa"}
-    >
+    <GoogleReCaptchaProvider reCaptchaKey="6LdCsL0aAAAAAPbGhkyrhAcr4I_-DkVZYabIkaEa">
       <Register />
     </GoogleReCaptchaProvider>
   );
 };
 export default Provider;
+
+async function createAuthor(
+  data,
+): Promise<{ status: boolean; message: string } | null> {
+  const client = await initializeApollo();
+
+  const result = await client.mutate<
+    CreateAuthorMutation,
+    CreateAuthorMutationVariables
+  >({
+    mutation: CreateAuthorDocument,
+    variables: {
+      data,
+    },
+  });
+
+  if (result.data?.createAuthor?.__typename === "CreateAuthorError") {
+    return {
+      status: false,
+      message: result.data.createAuthor.message,
+    };
+  }
+  if (result.data?.createAuthor?.__typename === "Author") {
+    return {
+      status: true,
+      message: "",
+    };
+  }
+  return null;
+}

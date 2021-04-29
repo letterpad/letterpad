@@ -1,5 +1,8 @@
+import jwt from "jsonwebtoken";
 import {
   InputAuthor,
+  PostStatusOptions,
+  PostTypes,
   QueryResolvers,
 } from "@/__generated__/type-defs.graphqls";
 import { ResolverContext } from "../apollo";
@@ -7,6 +10,8 @@ import { MutationResolvers } from "@/__generated__/type-defs.graphqls";
 import models from "../db/models";
 import bcrypt from "bcryptjs";
 import { settingsData } from "../db/models/setting";
+import { validateCaptcha } from "./helpers";
+import generatePost from "../db/seed/contentGenerator";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -63,13 +68,14 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  async createAuthor(_, args, context) {
+  async createAuthor(_, args) {
     if (args.data.token) {
-      const response = await fetch(
-        `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_KEY}&response=${args.data.token}`,
-      ).then(res => res.json());
+      const response = await validateCaptcha(
+        process.env.RECAPTCHA_KEY,
+        args.data.token,
+      );
 
-      if (!response.success) {
+      if (!response) {
         return {
           __typename: "CreateAuthorError",
           message: "Are you not a human ?",
@@ -107,10 +113,27 @@ const Mutation: MutationResolvers<ResolverContext> = {
       const setting = await models.Setting.create({
         ...settingsData,
         site_title: args.data.site_title,
+        client_token: jwt.sign(
+          {
+            id: newAuthor,
+          },
+          process.env.SECRET_KEY,
+          {
+            algorithm: "HS256",
+          },
+        ),
       });
       await newAuthor.setSetting(setting);
+      const { post, page } = getWelcomePostAndPage();
+      const newPost = await newAuthor.createPost(post);
+      const newTag = await newAuthor.createTag({
+        name: "first-post",
+        slug: "first-post",
+      });
+      await newPost.addTag(newTag);
+      await newAuthor.createPost(page);
 
-      return newAuthor;
+      return { ...newAuthor, __typename: "Author" };
     }
     return {
       __typename: "CreateAuthorError",
@@ -119,20 +142,21 @@ const Mutation: MutationResolvers<ResolverContext> = {
   },
   async login(_parent, args, _context, _info) {
     const author = await models.Author.findOne({
-      where: { email: args.data?.email, password: args.data?.password },
+      where: { email: args.data?.email },
     });
+
     if (author) {
+      const authenticated = await bcrypt.compare(
+        args.data?.password || "",
+        author.password,
+      );
+      if (!authenticated) return { status: false };
       try {
-        // const role = await author.getRole();
-        // const per = await role.getPermissions();
-        // const permArr = per.map(p => p.name) as Permissions[];
         return {
           status: true,
           data: {
             ...author,
             social: JSON.parse(author.social as string),
-            // role: role ? (role.name as Role) : Role.Reader,
-            // permissions: permArr,
           },
         };
       } catch (e) {
@@ -177,3 +201,51 @@ const Mutation: MutationResolvers<ResolverContext> = {
 };
 
 export default { Mutation, Author, Query };
+
+function getWelcomePostAndPage() {
+  const post_cover =
+    "https://images.unsplash.com/photo-1516035054744-d474c5209db5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80";
+
+  let { md, html } = generatePost(PostTypes.Post);
+  let title = "Welcome to Letterpad";
+
+  const post = {
+    title: "Welcome to Letterpad",
+    md: md,
+    html: html,
+    excerpt:
+      "You can use this space to write a small description about the topic. This will be helpful in SEO.",
+    cover_image: post_cover,
+    cover_image_width: 1500,
+    cover_image_height: 900,
+    type: PostTypes.Post,
+    status: PostStatusOptions.Published,
+    slug: title.toLocaleLowerCase().replace(/ /g, "-"),
+    createdAt: new Date(),
+    publishedAt: new Date(),
+    reading_time: "5 mins",
+  };
+
+  const pageContent = generatePost(PostTypes.Page);
+  title = "Letterpad Typography";
+
+  const page = {
+    title,
+    type: PostTypes.Page,
+    md: pageContent.md,
+    html: pageContent.html,
+    status: PostStatusOptions.Published,
+    excerpt:
+      "You can use this space to write a small description about this page. This will be helpful in SEO.",
+    slug: title.toLocaleLowerCase().replace(/ /g, "-"),
+    cover_image:
+      "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+    cover_image_width: 1482,
+    cover_image_height: 900,
+    createdAt: new Date(),
+    publishedAt: new Date(),
+    md_draft: "",
+  };
+
+  return { page, post };
+}

@@ -79,8 +79,14 @@ input OptionInputType {
   site_favicon: InputImage
 }
 
+type SettingError implements LetterpadError {
+  message: String!
+}
+
+union SettingResponse = Setting | SettingError
+
 type Query {
-  settings: Setting
+  settings: SettingResponse!
 }
 
 type Mutation {

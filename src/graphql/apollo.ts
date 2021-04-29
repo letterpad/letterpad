@@ -18,6 +18,7 @@ export type ResolverContext = {
   models?: typeof models;
   session?: SessionData;
   clientEmail?: string;
+  author_id?: number;
 };
 
 function createIsomorphLink(context: ResolverContext = {}) {
