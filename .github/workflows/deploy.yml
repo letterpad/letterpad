@@ -17,4 +17,4 @@ jobs:
           port: ${{ secrets.PORT }}
           key: ${{ secrets.DEPLOY_KEY }}
           source: "."
-          target: "/var/www/html/letterpad-next"
+          target: /var/www/html/letterpad-next
