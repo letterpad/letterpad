@@ -7,10 +7,12 @@ import {
   MeDocument,
   MeQuery,
   MeQueryVariables,
+} from "@/__generated__/queries/queries.graphql";
+import {
   UpdateAuthorMutation,
   UpdateAuthorMutationVariables,
   UpdateAuthorDocument,
-} from "@/__generated__/queries/queries.graphql";
+} from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
 import {
   InputAuthor,
@@ -27,20 +29,25 @@ const { Panel } = Collapse;
 
 type ValueOf<T> = T[keyof T];
 
-function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
+function Profile({ settings }: { settings: Setting }) {
   const [me, setMe] = useState<Author>();
   const [draft, setDraft] = useState<InputAuthor>();
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (data.__typename === "Author") {
-      setMe(data as Author);
-      setDraft({ id: data.id });
-    }
+    fetchAuthor().then(response => {
+      if (!response) {
+        return;
+      }
 
-    if (data.__typename === "AuthorNotFoundError") {
-      setError(data.message);
-    }
+      if (response.status && response.author) {
+        setMe(response.author as Author);
+      }
+
+      if (!response.status) {
+        setError(response.message);
+      }
+    });
   }, []);
 
   const updateAuthor = async (data?: InputAuthor) => {
@@ -57,7 +64,7 @@ function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
     >({
       mutation: UpdateAuthorDocument,
       variables: {
-        author: { ...draft, ...data },
+        author: { ...draft, ...data, id: me.id },
       },
     });
   };
@@ -184,16 +191,24 @@ function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
 
 export default withAuthCheck(Profile);
 
-export async function getServerSideProps(context) {
-  const apolloClient = await initializeApollo({}, context);
-
+export async function fetchAuthor() {
+  const apolloClient = await initializeApollo();
   const me = await apolloClient.query<MeQuery, MeQueryVariables>({
     query: MeDocument,
   });
 
-  return {
-    props: {
-      data: me.data.me,
-    },
-  };
+  if (me.data.me?.__typename === "Author") {
+    return {
+      author: me.data.me,
+      message: "",
+      status: true,
+    };
+  }
+  if (me.data.me?.__typename === "AuthorNotFoundError") {
+    return {
+      author: null,
+      message: me.data.me.message,
+      status: false,
+    };
+  }
 }

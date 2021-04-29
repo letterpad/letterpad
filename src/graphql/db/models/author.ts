@@ -67,6 +67,8 @@ export class Author
   public hasTag!: HasManyHasAssociationMixin<Tags, number>;
   public hasPost!: HasManyHasAssociationMixin<Post, number>;
   public countPosts!: HasManyCountAssociationsMixin;
+  public countTags!: HasManyCountAssociationsMixin;
+  public countMedia!: HasManyCountAssociationsMixin;
   public createPost!: HasManyCreateAssociationMixin<Post>;
   public setRole!: HasManyHasAssociationMixin<Role, number>;
   public getRole!: HasOneGetAssociationMixin<Role>;
@@ -88,6 +90,8 @@ export class Author
       "addPost",
       "hasPost",
       "countPosts",
+      "countTags",
+      "countMedia",
       "createPost",
       "setRole",
       "getRole",

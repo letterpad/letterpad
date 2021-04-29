@@ -121,82 +121,20 @@ query Tags {
 
 query Stats {
   stats {
-    posts {
-      published
-      drafts
-    }
-    pages {
-      published
-      drafts
-    }
-    tags
-    media
-  }
-}
-
-mutation UpdateAuthor($author: InputAuthor!) {
-  updateAuthor(author: $author) {
-    ok
-    errors {
-      path
-      message
-    }
-    data {
-      name
-      social {
-        github
-        twitter
-        instagram
-        facebook
+    ... on Stats {
+      posts {
+        published
+        drafts
       }
-      bio
-      avatar
+      pages {
+        published
+        drafts
+      }
+      tags
+      media
     }
-  }
-}
 
-mutation Login($data: LoginData) {
-  login(data: $data) {
-    status
-    data {
-      id
-      name
-      email
-      role
-      avatar
-      permissions
-    }
-  }
-}
-
-mutation UpdateTags($data: InputTags) {
-  updateTags(data: $data) {
-    ... on EditTaxResponse {
-      ok
-    }
-    ... on TagsError {
-      message
-    }
-  }
-}
-
-mutation DeleteTags($id: Int!) {
-  deleteTags(id: $id) {
-    ... on DeleteTagsResult {
-      ok
-    }
-    ... on TagsError {
-      message
-    }
-  }
-}
-
-mutation CreateAuthor($data: InputCreateAuthor!) {
-  createAuthor(data: $data) {
-    ... on Author {
-      name
-    }
-    ... on CreateAuthorError {
+    ... on StatsError {
       message
     }
   }
@@ -250,52 +188,6 @@ query settings {
     }
     ... on SettingError {
       message
-    }
-  }
-}
-
-mutation UpdateOptions($options: [OptionInputType!]!) {
-  updateOptions(options: $options) {
-    site_title
-    site_tagline
-    site_email
-    site_url
-    site_footer
-    site_description
-    subscribe_embed
-    social_twitter
-    social_facebook
-    social_instagram
-    social_github
-    displayAuthorInfo
-    cloudinary_key
-    cloudinary_name
-    cloudinary_secret
-    menu {
-      label
-      original_name
-      slug
-      type
-    }
-    css
-    google_analytics
-    locale
-    theme
-    disqus_id
-    banner {
-      src
-      width
-      height
-    }
-    site_logo {
-      src
-      width
-      height
-    }
-    site_favicon {
-      src
-      width
-      height
     }
   }
 }

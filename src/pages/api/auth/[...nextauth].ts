@@ -2,7 +2,7 @@ import {
   LoginDocument,
   LoginMutation,
   LoginMutationVariables,
-} from "@/__generated__/queries/queries.graphql";
+} from "@/__generated__/queries/mutations.graphql";
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { initializeApollo } from "@/graphql/apollo";

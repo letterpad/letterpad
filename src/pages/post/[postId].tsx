@@ -10,7 +10,7 @@ import {
   UpdatePostDocument,
   UpdatePostMutation,
   UpdatePostMutationVariables,
-} from "@/__generated__/queries/post.mutations.graphql";
+} from "@/__generated__/queries/mutations.graphql";
 import LetterpadEditor from "letterpad-editor";
 import { initializeApollo } from "@/graphql/apollo";
 import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";

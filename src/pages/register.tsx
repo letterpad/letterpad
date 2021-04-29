@@ -7,7 +7,7 @@ import {
   CreateAuthorMutation,
   CreateAuthorMutationVariables,
   CreateAuthorDocument,
-} from "@/__generated__/queries/queries.graphql";
+} from "@/__generated__/queries/mutations.graphql";
 
 const layout = {
   labelCol: {

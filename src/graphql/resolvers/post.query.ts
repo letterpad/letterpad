@@ -263,7 +263,7 @@ const Query: QueryResolvers<ResolverContext> = {
       : { ...error, message: "Post not found" };
   },
 
-  async stats() {
+  async stats(_, _args, { session }) {
     logger.debug("Reached resolver: stats");
     const result = {
       posts: { published: 0, drafts: 0 },
@@ -271,27 +271,60 @@ const Query: QueryResolvers<ResolverContext> = {
       tags: 0,
       media: 0,
     };
-    result.posts.published = await models.Post.count({
-      where: { status: PostStatusOptions.Published, type: PostTypes.Post },
+    const author_id = session?.user.id;
+
+    if (!author_id) {
+      return {
+        __typename: "StatsError",
+        message: "Couldnt find author in session",
+      };
+    }
+
+    const author = await models.Author.findOne({ where: { id: author_id } });
+
+    if (!author) {
+      return {
+        __typename: "StatsError",
+        message: "Couldnt find author",
+      };
+    }
+
+    result.posts.published = await author.countPosts({
+      where: {
+        status: PostStatusOptions.Published,
+        type: PostTypes.Post,
+      },
     });
 
-    result.posts.drafts = await models.Post.count({
-      where: { status: PostStatusOptions.Draft, type: PostTypes.Post },
+    result.posts.drafts = await author.countPosts({
+      where: {
+        status: PostStatusOptions.Draft,
+        type: PostTypes.Post,
+      },
     });
 
-    result.pages.published = await models.Post.count({
-      where: { status: PostStatusOptions.Published, type: PostTypes.Page },
+    result.pages.published = await author.countPosts({
+      where: {
+        status: PostStatusOptions.Published,
+        type: PostTypes.Page,
+      },
     });
 
-    result.pages.drafts = await models.Post.count({
-      where: { status: PostStatusOptions.Draft, type: PostTypes.Page },
+    result.pages.drafts = await author.countPosts({
+      where: {
+        status: PostStatusOptions.Draft,
+        type: PostTypes.Page,
+      },
     });
 
-    result.tags = await models.Tags.count();
+    result.tags = await author.countTags();
 
-    result.media = await models.Media.count();
+    result.media = await author.countMedia();
 
-    return result;
+    return {
+      __typename: "Stats",
+      ...result,
+    };
   },
 };
 

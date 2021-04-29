@@ -1,7 +1,6 @@
 import { Table, Button, Popconfirm, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { useEffect, useState } from "react";
-import { Setting } from "@/__generated__/queries/post.mutations.graphql";
 import {
   UpdateTagsMutationVariables,
   UpdateTagsMutation,
@@ -9,10 +8,11 @@ import {
   DeleteTagsMutation,
   DeleteTagsMutationVariables,
   DeleteTagsDocument,
-} from "@/__generated__/queries/queries.graphql";
+} from "@/__generated__/queries/mutations.graphql";
 import {
   TagsQuery,
   TagsQueryVariables,
+  Setting,
 } from "@/__generated__/queries/queries.graphql";
 import { EditableCell, EditableRow } from "@/components/ediitable-table";
 import { initializeApollo } from "@/graphql/apollo";

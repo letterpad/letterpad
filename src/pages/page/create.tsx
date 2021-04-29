@@ -5,8 +5,8 @@ import { initializeApollo } from "@/graphql/apollo";
 import {
   CreatePostMutation,
   CreatePostMutationVariables,
-} from "@/graphql/queries/post.mutations.graphql";
-import { CreatePostDocument } from "@/__generated__/queries/post.mutations.graphql";
+} from "@/graphql/queries/mutations.graphql";
+import { CreatePostDocument } from "@/__generated__/queries/mutations.graphql";
 import { PostTypes } from "@/__generated__/type-defs.graphqls";
 import {
   CreatePostResponse,
