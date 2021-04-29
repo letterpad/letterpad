@@ -12,7 +12,7 @@ jobs:
       - name: copy file via ssh key
         uses: nogsantos/scp-deploy@master
         with:
-          host: ${{ secrets.HOST }}
+          host: 130.211.80.253
           user: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.DEPLOY_KEY }}
