@@ -1,19 +1,20 @@
 name: Deployment Workflow
 on:
   push:
-    branches: [*]
+    branches:
+      - "*"
 
-jobs: 
+jobs:
   job_one:
     name: Deploy
     runs-on: ubuntu-latest
-    steps: 
-    - name: copy file via ssh key
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        port: ${{ secrets.PORT }}
-        key: ${{ secrets.KEY }}
-        source: "."
-        target: "/var/www/html/letterpad-next"
+    steps:
+      - name: copy file via ssh key
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          source: "."
+          target: "/var/www/html/letterpad-next"
