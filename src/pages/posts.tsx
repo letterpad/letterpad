@@ -64,7 +64,7 @@ function Posts({ settings }: IProps) {
   const source = postsNode.__typename === "PostsNode" ? postsNode.rows : [];
 
   return (
-    <CustomLayout settings={settings}>
+    <>
       <PageHeader
         className="site-page-header"
         onBack={() => window.history.back()}
@@ -97,10 +97,13 @@ function Posts({ settings }: IProps) {
           />
         </div>
       </Content>
-    </CustomLayout>
+    </>
   );
 }
-export default withAuthCheck(Posts);
+
+const PostsWithAuth = withAuthCheck(Posts);
+PostsWithAuth.layout = CustomLayout;
+export default PostsWithAuth;
 
 async function fetchPostsFromAPI(filters: PostsFilters) {
   const apolloClient = await initializeApollo();

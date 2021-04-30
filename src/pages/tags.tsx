@@ -119,7 +119,7 @@ const EditableTable = ({ settings }: { settings: Setting }) => {
   };
 
   return (
-    <CustomLayout settings={settings}>
+    <>
       <PageHeader
         onBack={() => window.history.back()}
         className="site-page-header"
@@ -144,11 +144,13 @@ const EditableTable = ({ settings }: { settings: Setting }) => {
           />
         </div>
       </Content>
-    </CustomLayout>
+    </>
   );
 };
 
-export default withAuthCheck(EditableTable);
+const EditableTableWithAuth = withAuthCheck(EditableTable);
+EditableTableWithAuth.layout = CustomLayout;
+export default EditableTableWithAuth;
 
 export async function fetchTags() {
   const apolloClient = await initializeApollo();

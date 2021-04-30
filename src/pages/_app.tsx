@@ -4,15 +4,21 @@ import {
   ApolloProvider,
   NormalizedCacheObject,
 } from "@apollo/client";
-import { useApollo } from "@/graphql/apollo";
+import { initializeApollo, useApollo } from "@/graphql/apollo";
 import { Provider } from "next-auth/client";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import "antd/dist/antd.dark.css";
 import "../../styles/globals.css";
 import NProgress from "nprogress";
 import nextConfig from "../../next.config";
-
+import type { Page } from "../page";
 import { useEffect, useState } from "react";
+import {
+  Setting,
+  SettingsDocument,
+  SettingsQuery,
+  SettingsQueryVariables,
+} from "@/__generated__/queries/queries.graphql";
 
 NProgress.configure({ showSpinner: true });
 Router.events.on("routeChangeStart", _url => {
@@ -21,17 +27,38 @@ Router.events.on("routeChangeStart", _url => {
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
-export default function App({ Component, pageProps }: AppProps) {
-  const apolloClient = useApollo(pageProps.initialApolloState);
-  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
+type Props = AppProps & {
+  Component: Page;
+};
 
+export default function App({ Component, pageProps }: Props) {
+  const apolloClient = useApollo(pageProps.initialApolloState);
+  const [settings, setSettings] = useState<null | Setting>(null);
+  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
+  const router = useRouter();
   useEffect(() => {
     apolloClient.then(client => {
       setClient(client);
     });
+
+    if (!settings) {
+      getSettings()
+        .then(res => {
+          if (res.data.settings?.__typename === "Setting") {
+            setSettings(res.data.settings as Setting);
+          } else if (res.data.settings?.__typename === "SettingError") {
+            router.push("/api/auth/signin");
+          }
+        })
+        .catch(e => {
+          router.push("/api/auth/signin");
+        });
+    }
   }, []);
 
-  if (!client) return null;
+  if (!client || !settings) return null;
+
+  const Layout = Component.layout || (children => <>{children}</>);
 
   return (
     <Provider
@@ -39,8 +66,19 @@ export default function App({ Component, pageProps }: AppProps) {
       options={{ basePath: nextConfig.basePath + "/api/auth" }}
     >
       <ApolloProvider client={client}>
-        <Component {...pageProps} />
+        <Layout settings={settings}>
+          <Component {...pageProps} settings={settings} />
+        </Layout>
       </ApolloProvider>
     </Provider>
   );
+}
+
+async function getSettings() {
+  const client = await initializeApollo();
+  const settings = await client.query<SettingsQuery, SettingsQueryVariables>({
+    query: SettingsDocument,
+  });
+
+  return settings;
 }

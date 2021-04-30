@@ -159,7 +159,7 @@ export async function insertAuthor(models) {
     {
       name: "John",
       email: "demo@demo.com",
-      password: "123", //bcrypt.hashSync("demo", 12),
+      password: bcrypt.hashSync("demo", 12),
       social: JSON.stringify({
         twitter: "https://twitter.com",
         facebook: "https://facebook.com",

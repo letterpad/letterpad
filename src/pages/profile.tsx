@@ -29,7 +29,7 @@ const { Panel } = Collapse;
 
 type ValueOf<T> = T[keyof T];
 
-function Profile({ settings }: { settings: Setting }) {
+function Profile() {
   const [me, setMe] = useState<Author>();
   const [draft, setDraft] = useState<InputAuthor>();
   const [error, setError] = useState("");
@@ -86,7 +86,7 @@ function Profile({ settings }: { settings: Setting }) {
   if (!me) return null;
   if (error) return <ErrorMessage title="Profile" description={error} />;
   return (
-    <CustomLayout settings={settings}>
+    <>
       <PageHeader
         onBack={() => window.history.back()}
         className="site-page-header"
@@ -185,11 +185,13 @@ function Profile({ settings }: { settings: Setting }) {
           </Form>
         </div>
       </Content>
-    </CustomLayout>
+    </>
   );
 }
 
-export default withAuthCheck(Profile);
+const ProfileWithAuth = withAuthCheck(Profile);
+ProfileWithAuth.layout = CustomLayout;
+export default ProfileWithAuth;
 
 export async function fetchAuthor() {
   const apolloClient = await initializeApollo();

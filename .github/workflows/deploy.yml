@@ -39,4 +39,4 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             cd /var/www/html/letterpad-next
-            touch hello.txt
+            pm2 restart nextjs

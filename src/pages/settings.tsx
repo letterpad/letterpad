@@ -53,7 +53,7 @@ function Settings(props: { settings: Setting }) {
   };
 
   return (
-    <CustomLayout settings={settings}>
+    <>
       <PageHeader
         onBack={() => window.history.back()}
         className="site-page-header"
@@ -251,8 +251,9 @@ function Settings(props: { settings: Setting }) {
           </Form>
         </div>
       </Content>
-    </CustomLayout>
+    </>
   );
 }
-
-export default withAuthCheck(Settings);
+const SettingsWithAuth = withAuthCheck(Settings);
+SettingsWithAuth.layout = CustomLayout;
+export default SettingsWithAuth;
