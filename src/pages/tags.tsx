@@ -18,7 +18,7 @@ import { EditableCell, EditableRow } from "@/components/ediitable-table";
 import { initializeApollo } from "@/graphql/apollo";
 import { TagsDocument } from "@/graphql/queries/queries.graphql";
 import CustomLayout from "@/components/layouts/Layout";
-import withAuthCheck from "src/hoc/withAuth";
+import withAuthCheck from "../hoc/withAuth";
 type EditableTableProps = Parameters<typeof Table>[0];
 
 interface DataType {

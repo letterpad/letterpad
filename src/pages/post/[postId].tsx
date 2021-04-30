@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/client";
 import {
   PostDocument,
   PostQuery,
@@ -37,7 +36,7 @@ function Post({ data }: { data: PostResponse }) {
   let changeTimeout;
 
   const router = useRouter();
-  const [session, loading] = useSession();
+
   const [post, setPost] = useState<PostQuery["post"]>();
   const [error, setError] = useState("");
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
@@ -52,11 +51,6 @@ function Post({ data }: { data: PostResponse }) {
       setError(data.message);
     }
   }, []);
-
-  // If no session exists, display access denied message
-  if (!session) {
-    return <div>Access denied</div>;
-  }
 
   if (!post || post.__typename !== "Post") {
     return <ErrorMessage title="Error" description={error} />;
@@ -85,7 +79,7 @@ function Post({ data }: { data: PostResponse }) {
   const tagColor =
     post.status === PostStatusOptions.Published ? "green" : "orange";
 
-  if (typeof window !== "undefined" && loading)
+  if (typeof window !== "undefined")
     return (
       <Layout>
         <span />

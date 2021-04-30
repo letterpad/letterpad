@@ -53,7 +53,8 @@ export async function initializeApollo(
 ) {
   let session;
   if (typeof window === "undefined") {
-    session = await getSession(context);
+    const isBuildRunning = process.env.NEXT_PHASE === "phase-production-build";
+    if (!isBuildRunning) session = await getSession(context);
   }
   const _apolloClient =
     apolloClient ?? createApolloClient({ ...context, session });
