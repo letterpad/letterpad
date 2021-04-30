@@ -20,7 +20,10 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
       - run: yarn install
-      - run: yarn run build
+      - name: Install Build
+        run: yarn run build
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_LP_KEY }}
       - name: Deploy to Google
         uses: appleboy/scp-action@master
         with:
