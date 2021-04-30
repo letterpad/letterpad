@@ -20,16 +20,21 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
       - run: yarn install
-      - run: yarn run build
-      - name: Deploy to Google
-        uses: appleboy/scp-action@master
+      # - run: yarn run build
+      # - name: Deploy to Google
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: 130.211.80.253
+      #     username: ${{ secrets.USERNAME }}
+      #     port: ${{ secrets.PORT }}
+      #     key: ${{ secrets.DEPLOY_KEY }}
+      #     source: "."
+      #     target: /var/www/html/letterpad-next
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
         with:
           host: 130.211.80.253
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.DEPLOY_KEY }}
-          source: "."
-          target: /var/www/html/letterpad-next
-          script: |
-            cd /var/www/html/letterpad-next
-            touch hello.txt
+          script: whoami
