@@ -14,6 +14,11 @@ module.exports = {
         destination: "/admin/posts",
         permanent: true,
       },
+      {
+        source: "/admin",
+        destination: "/admin/posts",
+        permanent: true,
+      },
     ];
   },
   webpack(config, options) {
