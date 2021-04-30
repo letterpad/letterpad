@@ -13,8 +13,10 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "14"
-      - run: npm install
-      - run: npm run build
+      - name: Install Yarn
+        run: npm install -g yarn
+      - run: yarn install
+      - run: yarn run build
       - name: copy file via ssh key
         uses: appleboy/scp-action@master
         with:
