@@ -13,11 +13,15 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "14"
+      - uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install Yarn
         run: npm install -g yarn
       - run: yarn install
       - run: yarn run build
-      - name: copy file via ssh key
+      - name: Deploy to Google
         uses: appleboy/scp-action@master
         with:
           host: 130.211.80.253
@@ -26,4 +30,6 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           source: "."
           target: /var/www/html/letterpad-next
-          debug: true
+          script: |
+            node -v
+            pwd
