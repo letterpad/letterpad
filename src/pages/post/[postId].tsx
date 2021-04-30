@@ -79,13 +79,6 @@ function Post({ data }: { data: PostResponse }) {
   const tagColor =
     post.status === PostStatusOptions.Published ? "green" : "orange";
 
-  if (typeof window !== "undefined")
-    return (
-      <Layout>
-        <span />
-      </Layout>
-    );
-
   const isPost = post.type === PostTypes.Post;
 
   return (

@@ -58,7 +58,11 @@ export default function App({ Component, pageProps }: Props) {
 
   if (!client || !settings) return null;
 
-  const Layout = Component.layout || (children => <>{children}</>);
+  const Layout =
+    Component.layout ||
+    (({ children }) => {
+      return <>{children}</>;
+    });
 
   return (
     <Provider

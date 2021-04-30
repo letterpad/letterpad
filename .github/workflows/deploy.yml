@@ -41,4 +41,4 @@ jobs:
           port: ${{ secrets.PORT }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
-            /usr/local/bin/pm2 restart letterpad-admin
+            pm2 restart letterpad-admin

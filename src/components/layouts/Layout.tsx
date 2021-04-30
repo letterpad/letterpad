@@ -85,7 +85,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
         <Footer style={{ textAlign: "center" }}>
           Letterpad <br />
           <small>
-            Client Token: <strong>{settings.client_token}</strong>
+            {/* Client Token: <strong>{settings.client_token}</strong> */}
           </small>
         </Footer>
       </Layout>
