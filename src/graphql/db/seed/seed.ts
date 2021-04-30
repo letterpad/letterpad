@@ -67,11 +67,9 @@ export const seed = async (_models: typeof dbModels, autoExit = true) => {
   console.time("insert posts, settings, media");
   const [tags] = await Promise.all([models.Tags.findAll()]);
 
-  await Promise.all([
-    ...posts.map(post => insertPost(post, models, tags)),
-    insertSettings(models),
-    insertMedia(models),
-  ]);
+  await Promise.all([...posts.map(post => insertPost(post, models, tags))]);
+  await insertSettings();
+  await insertMedia();
   console.timeEnd("insert posts, settings, media");
 
   console.time("Asssign Setting to author");
@@ -244,31 +242,34 @@ export async function insertPost(params, models: typeof dbModels, tags) {
   }
 }
 
-export async function insertMedia(models) {
-  return models.Media.bulkCreate([
-    {
+export async function insertMedia() {
+  const author = await models.Author.findOne({ where: { id: 1 } });
+  if (author) {
+    await author.createMedia({
       url:
         "https://images.unsplash.com/photo-1473181488821-2d23949a045a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
-      AuthorId: 1,
       name: "Blueberries",
       width: 1350,
       height: 900,
       description:
         "Write a description about this image. You never know how this image can break the internet",
-    },
-    {
+    });
+
+    await author.createMedia({
       url:
         "https://images.unsplash.com/photo-1524654458049-e36be0721fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-      AuthorId: 1,
       width: 1350,
       height: 900,
       name: "I love the beach and its smell",
       description:
         "Write a description about this image. You never know how this image can break the internet",
-    },
-  ]);
+    });
+  }
 }
 
-export async function insertSettings(models: typeof dbModels) {
-  return models.Setting.create(settingsData);
+export async function insertSettings() {
+  const author = await models.Author.findOne({ where: { id: 1 } });
+  if (author) {
+    return author.createSetting(settingsData);
+  }
 }

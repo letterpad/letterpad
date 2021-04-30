@@ -4,6 +4,7 @@ import {
   PostQueryVariables,
   PostResponse,
   InputUpdatePost,
+  PostsDocument,
 } from "@/__generated__/queries/queries.graphql";
 import {
   UpdatePostDocument,
@@ -104,7 +105,7 @@ function Post({ data }: { data: PostResponse }) {
       <Content style={{ margin: "24px 16px 0" }}>
         <div
           className="site-layout-background"
-          style={{ maxWidth: 760, minHeight: 360, margin: "auto" }}
+          style={{ maxWidth: 760, minHeight: "72vh", margin: "auto" }}
         >
           <Input
             style={{ padding: 0, fontSize: 38 }}
@@ -117,6 +118,7 @@ function Post({ data }: { data: PostResponse }) {
             }}
           />
           <LetterpadEditor
+            dark
             onImageBrowse={onMediaBrowse}
             uploadImage={(file: File) => uploadImage([file])}
             defaultValue={post.md_draft || post.md}

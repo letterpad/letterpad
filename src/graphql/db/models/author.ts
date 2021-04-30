@@ -71,7 +71,9 @@ export class Author
   public countPosts!: HasManyCountAssociationsMixin;
   public countTags!: HasManyCountAssociationsMixin;
   public countMedia!: HasManyCountAssociationsMixin;
+  public createMedia!: HasManyCreateAssociationMixin<Media>;
   public createPost!: HasManyCreateAssociationMixin<Post>;
+  public createSetting!: HasManyCreateAssociationMixin<Setting>;
   public setRole!: HasManyHasAssociationMixin<Role, number>;
   public getRole!: HasOneGetAssociationMixin<Role>;
   public setSetting!: HasManyHasAssociationMixin<Setting, number>;
@@ -103,6 +105,8 @@ export class Author
       "createTag",
       "getTags",
       "hasTag",
+      "createMedia",
+      "createSetting",
     ]);
   }
 }

@@ -126,8 +126,11 @@ const EditableTable = ({ settings }: { settings: Setting }) => {
         title="Tags"
         style={{ padding: 10 }}
       ></PageHeader>
-      <Content style={{ margin: "24px 16px 0" }}>
-        <div>
+      <Content style={{ margin: "16px 0px 0" }}>
+        <div
+          className="site-layout-background"
+          style={{ padding: 24, minHeight: "72vh" }}
+        >
           <Button
             onClick={handleAdd}
             type="primary"

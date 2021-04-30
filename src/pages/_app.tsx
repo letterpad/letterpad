@@ -4,10 +4,11 @@ import {
   ApolloProvider,
   NormalizedCacheObject,
 } from "@apollo/client";
+import Head from "next/head";
 import { initializeApollo, useApollo } from "@/graphql/apollo";
 import { Provider } from "next-auth/client";
 import Router, { useRouter } from "next/router";
-import "antd/dist/antd.dark.css";
+// import "antd/dist/antd.dark.css";
 import "../../styles/globals.css";
 import NProgress from "nprogress";
 import nextConfig from "../../next.config";
@@ -69,6 +70,10 @@ export default function App({ Component, pageProps }: Props) {
       session={pageProps.session}
       options={{ basePath: nextConfig.basePath + "/api/auth" }}
     >
+      <Head>
+        <link rel="icon" href={nextConfig.basePath + "/uploads/logo.png"} />
+        <link rel="stylesheet" href={nextConfig.basePath + "/css/antd.css"} />
+      </Head>
       <ApolloProvider client={client}>
         <Layout settings={settings}>
           <Component {...pageProps} settings={settings} />

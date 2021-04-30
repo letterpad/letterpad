@@ -99,6 +99,7 @@ async function getStats() {
   const client = await initializeApollo();
   const stats = await client.query<StatsQuery, StatsQueryVariables>({
     query: StatsDocument,
+    fetchPolicy: "network-only",
   });
 
   return stats.data.stats;

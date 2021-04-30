@@ -64,7 +64,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
     };
   },
 
-  async updatePost(_parent, args, _context, _info) {
+  async updatePost(_parent, args, context, _info) {
+    if (!context.session?.user) {
+      return {
+        __typename: "PostError",
+        message: "Authentication failed",
+      };
+    }
     try {
       if (!args.data) {
         return {
@@ -110,7 +116,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       ) {
         dataToUpdate.slug = await slugify(models.Post, args.data.title);
         dataToUpdate.title = args.data.title || previousPost.title;
-        logger.debug("Slug created:", args.data.slug);
+        logger.debug("Slug created:", dataToUpdate.slug);
       } else if (args.data.title) {
         dataToUpdate.title = args.data.title;
       }
@@ -211,6 +217,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
 
       await updateMenuOnTitleChange(
+        context.session.user.id,
         previousPostRaw.type,
         dataToUpdate.title,
         dataToUpdate.slug,
@@ -317,20 +324,19 @@ function savingDraft(
 }
 
 async function updateMenuOnTitleChange(
+  authorId: number,
   postType?: PostTypes,
   title?: string,
   slug?: string,
 ) {
   if (!title && !slug) return false;
-  const menu = await models.Setting.findOne({
-    attributes: ["value"],
-    where: { option: "menu" },
-    raw: true,
-  });
-  if (!menu?.value) return false;
-  if (typeof menu?.value !== "string") return false;
+  const author = await models.Author.findOne({ where: { id: authorId } });
+  if (!author) return false;
+  const setting = await author.getSetting();
 
-  const parsedMenu = JSON.parse(menu.value);
+  if (typeof setting?.menu !== "string") return false;
+
+  const parsedMenu = JSON.parse(setting.menu);
   const isPage = postType === PostTypes.Page;
 
   const updatedMenu = parsedMenu.map(item => {
@@ -346,11 +352,8 @@ async function updateMenuOnTitleChange(
     }
     return item;
   });
-
-  await models.Setting.update(
-    { value: JSON.stringify(updatedMenu) },
-    { where: { option: "menu" } },
-  );
+  setting.setDataValue("menu", JSON.stringify(updatedMenu));
+  await author.setSetting(setting);
 }
 
 export default { Mutation };

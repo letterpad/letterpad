@@ -2,6 +2,7 @@ import { getReadableDate } from "../../resolvers/helpers";
 import { DataTypes, Model, Optional } from "sequelize";
 
 import restoreSequelizeAttributesOnClass from "./_tooling";
+import { Author } from "./author";
 
 export interface MediaAttributes {
   id: number;
@@ -74,9 +75,19 @@ export default function initMedia(sequelize) {
     },
     {
       tableName: "media",
+      name: {
+        singular: "Media",
+        plural: "Media",
+      },
       sequelize, // passing the `sequelize` instance is required
     },
   );
 
   return Media;
+}
+
+export function associateMedia() {
+  Media.belongsTo(Author, {
+    foreignKey: "author_id",
+  });
 }

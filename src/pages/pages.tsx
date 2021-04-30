@@ -72,10 +72,10 @@ function Pages({ settings }: IProps) {
           </Button>,
         ]}
       ></PageHeader>
-      <Content style={{ margin: "24px 16px 0" }}>
+      <Content style={{ margin: "16px 0px 0" }}>
         <div
           className="site-layout-background"
-          style={{ padding: 24, minHeight: 360 }}
+          style={{ padding: 24, minHeight: "72vh" }}
         >
           <Filters
             onStatusChange={status => setFilters({ ...filters, status })}

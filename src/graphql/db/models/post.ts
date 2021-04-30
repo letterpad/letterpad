@@ -208,6 +208,5 @@ export function associatePost() {
   Post.belongsTo(Author, {
     foreignKey: "author_id",
   });
-
   return Post;
 }
