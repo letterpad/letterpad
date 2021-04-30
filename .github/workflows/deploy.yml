@@ -31,5 +31,5 @@ jobs:
           source: "."
           target: /var/www/html/letterpad-next
           script: |
-            node -v
-            pwd
+            cd /var/www/html/letterpad-next
+            touch hello.txt
