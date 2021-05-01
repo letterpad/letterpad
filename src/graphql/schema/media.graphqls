@@ -1,12 +1,12 @@
 type Media {
-  id: Int
+  id: Int!
   authorId: Int
   url: String!
-  createdAt: Date
-  name: String
-  width: Int
-  height: Int
-  description: String
+  createdAt: Date!
+  name: String!
+  width: Int!
+  height: Int!
+  description: String!
 }
 
 type MediaNode {
@@ -14,13 +14,12 @@ type MediaNode {
   rows: [Media!]!
 }
 
-type DeleteResponse {
+type MediaDeleteResult {
   ok: Boolean!
 }
 
-type UpdateResponse {
+type MediaUpdateResult {
   ok: Boolean!
-  errors: [Error]
 }
 
 input MediaFilters {
@@ -35,8 +34,21 @@ type Query {
   media(filters: MediaFilters): MediaNode!
 }
 
-# type Mutation {
-#   insertMedia(url: String): Media
-#   deleteMedia(ids: [Int!]!): DeleteResponse
-#   updateMedia(id: Int!, name: String, description: String): UpdateResponse
-# }
+type MediaError implements LetterpadError {
+  message: String!
+}
+
+input InputUpdateMedia {
+  id: Int!
+  name: String
+  description: String
+}
+
+union MediaDeleteResponse = MediaDeleteResult | MediaError
+union MediaUpdateResponse = MediaUpdateResult | MediaError
+
+type Mutation {
+  #   insertMedia(url: String): Media
+  deleteMedia(ids: [Int!]!): MediaDeleteResponse
+  updateMedia(data: InputUpdateMedia!): MediaUpdateResponse
+}

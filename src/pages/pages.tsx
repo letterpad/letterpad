@@ -61,7 +61,7 @@ function Pages({ settings }: IProps) {
       <PageHeader
         className="site-page-header"
         onBack={() => window.history.back()}
-        title="Posts"
+        title="Pages"
         extra={[
           <Button
             key="1"

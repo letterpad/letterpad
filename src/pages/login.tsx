@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Form, Input, Button, Checkbox, Row, Col } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { signIn } from "next-auth/client";
 
 const layout = {
   labelCol: {
@@ -17,8 +18,13 @@ const layout = {
 };
 
 const NormalLoginForm = () => {
-  const onFinish = values => {
-    console.log("Received values of form: ", values);
+  const onFinish = async values => {
+    const result = await signIn("credentials", {
+      redirect: true,
+      password: values.password,
+      email: values.email,
+      callbackUrl: "/admin/pages",
+    });
   };
 
   return (
@@ -32,22 +38,20 @@ const NormalLoginForm = () => {
             remember: true,
           }}
           onFinish={onFinish}
-          autoComplete="chrome-off"
         >
           <Form.Item
-            name="username"
-            label="Username"
+            name="email"
+            label="Email"
             rules={[
               {
                 required: true,
-                message: "Please input your Username!",
+                message: "Please input your Email!",
               },
             ]}
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
-              autoComplete="chrome-off"
+              placeholder="Email"
             />
           </Form.Item>
           <Form.Item
@@ -64,7 +68,6 @@ const NormalLoginForm = () => {
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
-              autoComplete="chrome-off"
               value=""
             />
           </Form.Item>

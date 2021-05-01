@@ -13,6 +13,7 @@ export interface MediaAttributes {
   description: string;
   updatedAt?: Date;
   createdAt?: Date;
+  author_id?: number;
 }
 
 export interface MediaCreationAttributes
@@ -30,6 +31,8 @@ export class Media
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  public readonly author_id?: number;
 
   constructor(...args) {
     super(...args);

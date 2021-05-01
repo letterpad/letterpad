@@ -31,6 +31,7 @@ const providers = [
           },
         },
       });
+
       if (result && result.data) {
         return {
           ...result.data.login?.data,
@@ -45,8 +46,10 @@ const providers = [
 const options = {
   providers,
   callbacks: {
-    async signIn(_user, _account, _profile) {
-      return "/posts";
+    redirect: async (url: string, baseUrl: string) => {
+      return url.startsWith(baseUrl)
+        ? Promise.resolve(url)
+        : Promise.resolve(process.env.ROOT_URL + "/posts");
     },
     jwt: async (token: any, user: Required<SessionData["user"]>) => {
       //  "user" parameter is the object received from "authorize"

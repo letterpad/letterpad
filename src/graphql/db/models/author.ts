@@ -12,6 +12,7 @@ import {
   HasManyCreateAssociationMixin,
   Optional,
   HasOneGetAssociationMixin,
+  HasOneSetAssociationMixin,
 } from "sequelize";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 
@@ -61,23 +62,28 @@ export class Author
   // Since TS cannot determine model association at compile time
   // we have to declare them here purely virtually
   // these will not exist until `Model.init` was called.
-  public getPosts!: HasManyGetAssociationsMixin<Post>; // Note the null assertions!
   public addPost!: HasManyAddAssociationMixin<Post, number>;
+  public createPost!: HasManyCreateAssociationMixin<Post>;
+  public countPosts!: HasManyCountAssociationsMixin;
+  public getPosts!: HasManyGetAssociationsMixin<Post>; // Note the null assertions!
+  public hasPost!: HasManyHasAssociationMixin<Post, number>;
+
   public addMedia!: HasManyAddAssociationMixin<Media, number>;
+  public countMedia!: HasManyCountAssociationsMixin;
+  public createMedia!: HasManyCreateAssociationMixin<Media>;
+  public setMedia!: HasOneSetAssociationMixin<Media, number>;
+
+  public countTags!: HasManyCountAssociationsMixin;
   public createTag!: HasManyCreateAssociationMixin<Tags>;
   public getTags!: HasManyGetAssociationsMixin<Tags>;
   public hasTag!: HasManyHasAssociationMixin<Tags, number>;
-  public hasPost!: HasManyHasAssociationMixin<Post, number>;
-  public countPosts!: HasManyCountAssociationsMixin;
-  public countTags!: HasManyCountAssociationsMixin;
-  public countMedia!: HasManyCountAssociationsMixin;
-  public createMedia!: HasManyCreateAssociationMixin<Media>;
-  public createPost!: HasManyCreateAssociationMixin<Post>;
-  public createSetting!: HasManyCreateAssociationMixin<Setting>;
-  public setRole!: HasManyHasAssociationMixin<Role, number>;
+
+  public setRole!: HasOneSetAssociationMixin<Role, number>;
   public getRole!: HasOneGetAssociationMixin<Role>;
-  public setSetting!: HasManyHasAssociationMixin<Setting, number>;
+
+  public createSetting!: HasManyCreateAssociationMixin<Setting>;
   public getSetting!: HasOneGetAssociationMixin<Setting>;
+  public setSetting!: HasOneSetAssociationMixin<Setting, number>;
 
   // You can also pre-declare possible inclusions, these will only be populated if you
   // actively include a relation.
@@ -105,7 +111,6 @@ export class Author
       "createTag",
       "getTags",
       "hasTag",
-      "createMedia",
       "createSetting",
     ]);
   }

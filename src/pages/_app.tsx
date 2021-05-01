@@ -8,7 +8,6 @@ import Head from "next/head";
 import { initializeApollo, useApollo } from "@/graphql/apollo";
 import { Provider } from "next-auth/client";
 import Router, { useRouter } from "next/router";
-// import "antd/dist/antd.dark.css";
 import "../../styles/globals.css";
 import NProgress from "nprogress";
 import nextConfig from "../../next.config";
@@ -20,6 +19,8 @@ import {
   SettingsQuery,
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
+
+import "antd/dist/antd.css";
 
 NProgress.configure({ showSpinner: true });
 Router.events.on("routeChangeStart", _url => {
@@ -43,6 +44,7 @@ export default function App({ Component, pageProps }: Props) {
     });
 
     if (!settings) {
+      if (!Component.layout) return;
       getSettings()
         .then(res => {
           if (res.data.settings?.__typename === "Setting") {
@@ -57,13 +59,10 @@ export default function App({ Component, pageProps }: Props) {
     }
   }, []);
 
-  if (!client || !settings) return null;
+  if (!client) return null;
+  if (Component.hasAuth && !settings) return null;
 
-  const Layout =
-    Component.layout ||
-    (({ children }) => {
-      return <>{children}</>;
-    });
+  const Layout = Component.layout;
 
   return (
     <Provider
@@ -72,12 +71,15 @@ export default function App({ Component, pageProps }: Props) {
     >
       <Head>
         <link rel="icon" href={nextConfig.basePath + "/uploads/logo.png"} />
-        <link rel="stylesheet" href={nextConfig.basePath + "/css/antd.css"} />
       </Head>
       <ApolloProvider client={client}>
-        <Layout settings={settings}>
-          <Component {...pageProps} settings={settings} />
-        </Layout>
+        {Layout && settings ? (
+          <Layout settings={settings}>
+            <Component {...pageProps} settings={settings} />
+          </Layout>
+        ) : (
+          <Component {...pageProps} />
+        )}
       </ApolloProvider>
     </Provider>
   );

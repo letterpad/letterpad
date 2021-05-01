@@ -152,3 +152,25 @@ mutation updatePost($data: InputUpdatePost) {
     }
   }
 }
+
+mutation UpdateMedia($data: InputUpdateMedia!) {
+  updateMedia(data: $data) {
+    ... on MediaUpdateResult {
+      ok
+    }
+    ... on MediaError {
+      message
+    }
+  }
+}
+
+mutation DeleteMedia($ids: [Int!]!) {
+  deleteMedia(ids: $ids) {
+    ... on MediaDeleteResult {
+      ok
+    }
+    ... on MediaError {
+      message
+    }
+  }
+}

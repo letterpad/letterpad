@@ -1,15 +1,4 @@
-import {
-  Image as AntImage,
-  Row,
-  Col,
-  Card,
-  PageHeader,
-  Space,
-  Modal,
-  Input,
-  Button,
-  Popconfirm,
-} from "antd";
+import { Row, Col, PageHeader, Space, Button, Popconfirm, message } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Image from "next/image";
 import CustomLayout from "@/components/layouts/Layout";
@@ -23,21 +12,49 @@ import {
 import { MediaNode, Setting } from "@/__generated__/type-defs.graphqls";
 import withAuthCheck from "../hoc/withAuth";
 import { useState } from "react";
+import { deleteImageAPI, updateImageAPI } from "src/helpers";
+import MediaUpdateModal from "@/components/modals/media-update-modal";
+
+const key = "updatable";
 
 const Media = ({
-  data,
-  settings,
+  _data,
 }: {
   settings: Setting;
-  data: { media: MediaNode };
+  _data: { media: MediaNode };
 }) => {
-  const [preview, setPreview] = useState<Required<IMedia> | undefined>();
+  const [preview, setPreview] = useState<IMedia | undefined>();
+  const [data, setData] = useState<MediaNode>({
+    count: _data.media.count,
+    rows: _data.media.rows,
+  });
 
-  const deleteImage = img => {
-    console.log("img :>> ", img);
+  const deleteImage = async (img: IMedia) => {
+    const res = await deleteImageAPI(img);
+    if (res.data?.deleteMedia?.__typename === "MediaDeleteResult") {
+      const rows = data.rows.filter(item => item.id !== img.id);
+      setData({ rows, count: data.count - 1 });
+    }
   };
+
+  const updateImage = async (img: IMedia) => {
+    message.loading({ content: "Updating, Please wait...", key });
+    const res = await updateImageAPI(img);
+    if (res?.__typename === "MediaUpdateResult") {
+      message.success({ content: "Updated", key, duration: 3 });
+      const updateSrc = data.rows.map(item =>
+        item.id === img.id ? { ...img } : item,
+      );
+      setData({ ...data, rows: updateSrc });
+    }
+    if (res?.__typename === "MediaError") {
+      message.error({ content: res.message, key, duration: 3 });
+    }
+    setPreview(undefined);
+  };
+
   return (
-    <CustomLayout settings={settings}>
+    <>
       <PageHeader
         onBack={() => window.history.back()}
         className="site-page-header"
@@ -51,17 +68,24 @@ const Media = ({
         >
           <Space>
             <Row gutter={[24, 24]} justify="start">
-              {data.media.rows.map(image => {
+              {data.rows.map(image => {
                 return (
                   <Col xs={12} sm={6} xl={4} key={image.id}>
-                    <Image
-                      src={image.url}
-                      width={image.width || 100}
-                      height={image.height || 200}
-                      loading="lazy"
-                      layout="intrinsic"
-                      onClick={() => setPreview(image)}
-                    />
+                    <a
+                      href="#"
+                      onClick={e => {
+                        e.preventDefault();
+                        setPreview(image);
+                      }}
+                    >
+                      <Image
+                        src={image.url}
+                        width={image.width || 100}
+                        height={image.height || 200}
+                        loading="lazy"
+                        layout="intrinsic"
+                      />
+                    </a>
                     <Popconfirm
                       title="Are you sure to delete this image?"
                       onConfirm={e => deleteImage(image)}
@@ -79,45 +103,19 @@ const Media = ({
             </Row>
           </Space>
         </div>
-        <Modal
-          title={preview?.name}
-          style={{ top: 20 }}
-          visible={!!preview?.id}
-          // onOk={() => this.setModal1Visible(false)}
-          onCancel={() => setPreview(undefined)}
-        >
-          {preview?.url && (
-            <Image
-              src={preview.url}
-              loading="lazy"
-              width={preview.width}
-              height={preview.height}
-            />
-          )}
-          <Input
-            value={preview?.name}
-            onChange={e => {
-              if (preview) {
-                setPreview({ ...preview, name: e.target.value });
-              }
-            }}
-          />
-          <Input.TextArea
-            placeholder="Description of this image"
-            value={preview?.description}
-            onChange={e => {
-              if (preview) {
-                setPreview({ ...preview, description: e.target.value });
-              }
-            }}
-          />
-        </Modal>
+        <MediaUpdateModal
+          img={preview}
+          onChange={setPreview}
+          onUpdate={updateImage}
+        />
       </Content>
-    </CustomLayout>
+    </>
   );
 };
 
-export default withAuthCheck(Media);
+const MediaWithAuth = withAuthCheck(Media);
+MediaWithAuth.layout = CustomLayout;
+export default MediaWithAuth;
 
 export async function getServerSideProps(context) {
   const apolloClient = await initializeApollo({}, context);
@@ -130,7 +128,7 @@ export async function getServerSideProps(context) {
   });
   return {
     props: {
-      data: media.data,
+      _data: media.data,
     },
   };
 }

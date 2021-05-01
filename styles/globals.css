@@ -98,3 +98,11 @@ a {
     transform: rotate(360deg);
   }
 }
+@media (max-width: 900px) {
+  .register .ant-form-item {
+    margin-bottom: 12px;
+  }
+  .register .ant-form-item-label {
+    padding-bottom: 0px;
+  }
+}

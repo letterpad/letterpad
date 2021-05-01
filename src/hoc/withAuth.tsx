@@ -5,7 +5,7 @@ import { useEffect } from "react";
 const withAuthCheck = <T extends object>(
   WrappedComponent: React.ComponentType<T>,
 ) => {
-  return (props: T) => {
+  const ComponentWithAuth = (props: T) => {
     const [session, loading] = useSession();
     const router = useRouter();
     useEffect(() => {
@@ -17,6 +17,8 @@ const withAuthCheck = <T extends object>(
     if (!session) return null;
     return <WrappedComponent {...props} />;
   };
+  ComponentWithAuth.hasAuth = true;
+  ComponentWithAuth.layout = null;
+  return ComponentWithAuth;
 };
-
 export default withAuthCheck;
