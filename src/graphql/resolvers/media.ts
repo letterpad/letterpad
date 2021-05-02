@@ -48,7 +48,6 @@ const Query: QueryResolvers<ResolverContext> = {
     }
     const result = await models.Media.findAndCountAll(conditions);
 
-    console.log("result :>> ", result);
     if (result) {
       const rows = result.rows.map(item => item.get());
       return {
