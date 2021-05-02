@@ -9,12 +9,23 @@ const apolloServer = new ApolloServer({
   context: async context => {
     const authHeader = context.req?.headers.authorization || "";
     const token = authHeader.split(/\s+/).pop() || "";
-    let author_id = {};
-
+    let author_id;
     try {
-      const tokenData = jwt.verify(token, process.env.SECRET_KEY);
-      author_id = tokenData.id;
-    } catch (e) {}
+      const { host } = context.req.headers;
+      if (host && host.includes("letterpad.app")) {
+        const username = host.split(".")[0];
+        const author = await models.Author.findOne({
+          attributes: ["id"],
+          where: { username },
+        });
+        if (author) author_id = author.id;
+      } else {
+        const tokenData = jwt.verify(token, process.env.SECRET_KEY);
+        author_id = tokenData.id;
+      }
+    } catch (e) {
+      console.log("e :>> ", e);
+    }
 
     const session = await getSession(context);
 

@@ -17,7 +17,6 @@ export type ResolverContext = {
   res?: ServerResponse;
   models?: typeof models;
   session?: SessionData;
-  clientEmail?: string;
   author_id?: number;
 };
 

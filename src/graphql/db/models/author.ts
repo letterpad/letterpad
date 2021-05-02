@@ -35,6 +35,7 @@ interface AuthorAttributes {
   avatar: string;
   social: Social;
   verified: boolean;
+  username: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -50,6 +51,7 @@ export class Author
   public bio!: string;
   public password!: string;
   public avatar!: string;
+  public username!: string;
   public verified!: boolean;
   public social!: Social;
   public role!: QraphqlRole;
@@ -124,6 +126,10 @@ export default function initAuthor(sequelize: Sequelize) {
         primaryKey: true,
       },
       name: {
+        type: new DataTypes.STRING(128),
+        allowNull: false,
+      },
+      username: {
         type: new DataTypes.STRING(128),
         allowNull: false,
       },

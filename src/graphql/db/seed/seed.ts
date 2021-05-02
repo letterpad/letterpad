@@ -164,6 +164,7 @@ export async function insertAuthor(models) {
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
+      username: "demo",
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar:
@@ -172,6 +173,7 @@ export async function insertAuthor(models) {
     {
       name: "Jim Parker",
       email: "author@letterpad.app",
+      username: "author",
       password: bcrypt.hashSync("demo", 12),
       social: JSON.stringify({
         twitter: "https://twitter.com",
@@ -268,8 +270,9 @@ export async function insertMedia() {
 }
 
 export async function insertSettings() {
-  const author = await models.Author.findOne({ where: { id: 1 } });
-  if (author) {
-    return author.createSetting(settingsData);
-  }
+  const authors = await models.Author.findAll();
+
+  return Promise.all([
+    ...authors.map(author => author.createSetting(settingsData)),
+  ]);
 }

@@ -79,6 +79,7 @@ query Me {
     ... on Author {
       id
       name
+      username
       social {
         github
         twitter

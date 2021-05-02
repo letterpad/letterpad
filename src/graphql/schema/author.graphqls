@@ -8,6 +8,7 @@ type Social {
 type Author {
   id: Int!
   email: String!
+  username: String!
   name: String!
   social: Social
   bio: String!
