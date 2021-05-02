@@ -8,9 +8,10 @@ const apolloServer = new ApolloServer({
   schema,
   context: async context => {
     const authHeader = context.req?.headers.authorization || "";
-    const token = authHeader.split(/\s+/).pop() || "";
+
     let author_id;
     try {
+      console.log("context.req.headers :>> ", context.req.headers);
       const { host } = context.req.headers;
       if (host && host.includes("letterpad.app")) {
         const username = host.split(".")[0];
@@ -19,7 +20,8 @@ const apolloServer = new ApolloServer({
           where: { username },
         });
         if (author) author_id = author.id;
-      } else {
+      } else if (authHeader) {
+        const token = authHeader.split(/\s+/).pop() || "";
         const tokenData = jwt.verify(token, process.env.SECRET_KEY);
         author_id = tokenData.id;
       }
