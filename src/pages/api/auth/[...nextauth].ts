@@ -47,6 +47,8 @@ const options = {
   providers,
   callbacks: {
     redirect: async (url: string, baseUrl: string) => {
+      console.log("url :>> ", url);
+      console.log("basseUrl :>> ", baseUrl);
       return url.startsWith(baseUrl)
         ? Promise.resolve(url)
         : Promise.resolve(process.env.ROOT_URL + "/posts");
