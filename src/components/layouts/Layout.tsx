@@ -1,5 +1,5 @@
 import { MenuOutlined } from "@ant-design/icons";
-import { Button, Drawer } from "antd";
+import { Button, Drawer, Switch } from "antd";
 import Layout, { Footer } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
 import { Setting, Stats } from "@/__generated__/type-defs.graphqls";
@@ -29,6 +29,25 @@ const CustomLayout = ({ children, settings }: IProps) => {
   }, []);
 
   if (!settings) return null;
+  const ThemeSwitcher = () => {
+    return (
+      <>
+        Light
+        <Switch
+          defaultChecked
+          onChange={checked => {
+            const theme = document.querySelector("#theme");
+            if (checked) {
+              theme?.setAttribute("href", "/admin/css/antd.dark.css");
+            } else {
+              theme?.setAttribute("href", "/admin/css/antd.css");
+            }
+          }}
+        />
+        Dark
+      </>
+    );
+  };
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
@@ -54,6 +73,8 @@ const CustomLayout = ({ children, settings }: IProps) => {
       >
         <Logo src={settings.site_logo.src} />
         <Navigation stats={stats} />
+
+        <ThemeSwitcher />
       </Sider>
       <Layout
         className="site-layout"
@@ -79,15 +100,21 @@ const CustomLayout = ({ children, settings }: IProps) => {
           >
             <Logo src={settings.site_logo.src} />
             <Navigation stats={stats} />
+            <ThemeSwitcher />
           </StyledDrawer>
         </nav>
-        {children}
-        <Footer style={{ textAlign: "center" }}>
+        <div style={{ minHeight: "calc(100vh - 80px)" }}>{children}</div>
+        <StyledFooter
+          style={{
+            textAlign: "center",
+            background: "@layout-header-background",
+          }}
+        >
           Letterpad <br />
           <small>
             {/* Client Token: <strong>{settings.client_token}</strong> */}
           </small>
-        </Footer>
+        </StyledFooter>
       </Layout>
     </Layout>
   );
@@ -112,4 +139,8 @@ const StyledDrawer = styled(Drawer)`
   .ant-drawer-body {
     padding: 0px;
   }
+`;
+
+const StyledFooter = styled(Footer)`
+  background: @layout-sider-background;
 `;

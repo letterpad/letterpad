@@ -59,13 +59,9 @@ const Media = ({
         onBack={() => window.history.back()}
         className="site-page-header"
         title="Media"
-        style={{ padding: 10 }}
       ></PageHeader>
       <Content style={{ margin: "16px 0px 0" }}>
-        <div
-          className="site-layout-background"
-          style={{ padding: 24, minHeight: "72vh" }}
-        >
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Space>
             <Row gutter={[24, 24]} justify="start">
               {data.rows.map(image => {

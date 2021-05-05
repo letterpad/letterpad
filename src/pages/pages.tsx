@@ -73,10 +73,7 @@ function Pages({ settings }: IProps) {
         ]}
       ></PageHeader>
       <Content style={{ margin: "16px 0px 0" }}>
-        <div
-          className="site-layout-background"
-          style={{ padding: 24, minHeight: "72vh" }}
-        >
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Filters
             onStatusChange={status => setFilters({ ...filters, status })}
             onOrderChange={sortBy => setFilters({ ...filters, sortBy })}

@@ -20,7 +20,7 @@ import {
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
 
-import "antd/dist/antd.css";
+// import "antd/dist/antd.css";
 
 NProgress.configure({ showSpinner: true });
 Router.events.on("routeChangeStart", _url => {
@@ -44,7 +44,7 @@ export default function App({ Component, pageProps }: Props) {
     });
 
     if (!settings) {
-      if (!Component.layout) return;
+      if (!Component.hasAuth) return;
       getSettings()
         .then(res => {
           if (res.data.settings?.__typename === "Setting") {
@@ -70,6 +70,7 @@ export default function App({ Component, pageProps }: Props) {
       options={{ basePath: nextConfig.basePath + "/api/auth" }}
     >
       <Head>
+        <link rel="stylesheet" id="theme" href={nextConfig.basePath + "/css/antd.dark.css"} />
         <link rel="icon" href={nextConfig.basePath + "/uploads/logo.png"} />
       </Head>
       <ApolloProvider client={client}>

@@ -9,6 +9,11 @@ import { initializeApollo } from "@/graphql/apollo";
 import { SessionData } from "@/graphql/types";
 import { NextApiRequest, NextApiResponse } from "next";
 
+interface ICredentials {
+  email: string;
+  password: string;
+  csrfToken: string;
+}
 const providers = [
   Providers.Credentials({
     name: "Credentials",
@@ -16,7 +21,7 @@ const providers = [
       email: { label: "Email" },
       password: { label: "Password", type: "password" },
     },
-    authorize: async credentials => {
+    authorize: async (credentials: ICredentials) => {
       const apolloClient = await initializeApollo({});
 
       const result = await apolloClient.mutate<
@@ -49,9 +54,12 @@ const options = {
     redirect: async (url: string, baseUrl: string) => {
       console.log("url :>> ", url);
       console.log("basseUrl :>> ", baseUrl);
-      return url.startsWith(baseUrl)
-        ? Promise.resolve(url)
-        : Promise.resolve(process.env.ROOT_URL + "/posts");
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
+
+      console.log("process.env.ROOT_URL :>> ", process.env.ROOT_URL);
+      return process.env.ROOT_URL + "/posts";
     },
     jwt: async (token: any, user: Required<SessionData["user"]>) => {
       //  "user" parameter is the object received from "authorize"

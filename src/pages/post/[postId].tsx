@@ -2,9 +2,7 @@ import {
   PostDocument,
   PostQuery,
   PostQueryVariables,
-  PostResponse,
   InputUpdatePost,
-  PostsDocument,
 } from "@/__generated__/queries/queries.graphql";
 import {
   UpdatePostDocument,
@@ -33,7 +31,7 @@ export enum MediaProvider {
   Unsplash = "unsplash",
   Letterpad = "letterpad",
 }
-function Post({ data }: { data: PostResponse }) {
+function Post() {
   let changeTimeout;
 
   const router = useRouter();
@@ -44,14 +42,18 @@ function Post({ data }: { data: PostResponse }) {
   const [mediaProvider, setMediaProvider] = useState(MediaProvider.Unsplash);
 
   useEffect(() => {
-    if (data.__typename === "Post") {
-      setPost(data);
-    }
+    const { postId } = router.query;
+    if (!postId) return;
+    getPost(parseInt(postId as string)).then(data => {
+      if (data.__typename === "Post") {
+        setPost(data);
+      }
 
-    if (data.__typename === "PostError") {
-      setError(data.message);
-    }
-  }, []);
+      if (data.__typename === "PostError") {
+        setError(data.message);
+      }
+    });
+  }, [router]);
 
   if (!post || post.__typename !== "Post") {
     return <ErrorMessage title="Error" description={error} />;
@@ -83,7 +85,7 @@ function Post({ data }: { data: PostResponse }) {
   const isPost = post.type === PostTypes.Post;
 
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh" }}>
       <PageHeader
         className="site-page-header"
         title="&nbsp;"
@@ -105,7 +107,7 @@ function Post({ data }: { data: PostResponse }) {
       <Content style={{ margin: "24px 16px 0" }}>
         <div
           className="site-layout-background"
-          style={{ maxWidth: 760, minHeight: "72vh", margin: "auto" }}
+          style={{ maxWidth: 760, margin: "auto" }}
         >
           <Input
             style={{ padding: 0, fontSize: 38 }}
@@ -149,22 +151,17 @@ function Post({ data }: { data: PostResponse }) {
 
 export default withAuthCheck(Post);
 
-export async function getServerSideProps(context) {
-  const apolloClient = await initializeApollo({}, context);
+async function getPost(postId: number) {
+  const apolloClient = await initializeApollo();
   const post = await apolloClient.query<PostQuery, PostQueryVariables>({
     query: PostDocument,
     variables: {
       filters: {
-        id: parseInt(context.query.postId),
+        id: postId,
       },
     },
   });
-
-  return {
-    props: {
-      data: post.data.post,
-    },
-  };
+  return post.data.post;
 }
 
 const updatePostRequest = async (

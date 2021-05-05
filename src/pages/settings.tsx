@@ -58,13 +58,9 @@ function Settings(props: { settings: Setting }) {
         onBack={() => window.history.back()}
         className="site-page-header"
         title="Settings"
-        style={{ padding: 10 }}
       ></PageHeader>
       <Content style={{ margin: "16px 0px 0" }}>
-        <div
-          className="site-layout-background"
-          style={{ padding: 24, minHeight: "72vh" }}
-        >
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
