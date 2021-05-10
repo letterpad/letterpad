@@ -105,6 +105,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       password: bcrypt.hashSync(args.data.password, 12),
       name: args.data.name,
       avatar: "",
+      username: "",
       verified: false,
       social: JSON.stringify({
         twitter: "",
@@ -210,6 +211,74 @@ const Mutation: MutationResolvers<ResolverContext> = {
       return {
         ok: false,
         errors: e, //utils.parseErrors(e),
+      };
+    }
+  },
+  async forgotPassword(_root, args) {
+    try {
+      const email = args.email;
+      const token = jwt.sign({ email }, process.env.SECRET_KEY, {
+        expiresIn: 10 * 60 * 1000,
+      });
+      const author = await models.Author.findOne({
+        where: { email },
+      });
+      if (!author) {
+        throw new Error("Email does not exist");
+      }
+
+      await sendMail({
+        to: author.email,
+        subject: Subjects.FORGOT_PASSWORD,
+        html: templates.forgotPasswordEmail({
+          name: author.name,
+          token: token,
+        }),
+      });
+
+      return {
+        ok: true,
+        msg: "Check your email to recover your password",
+      };
+    } catch (e) {
+      return {
+        ok: false,
+        msg: "Something unexpected happened",
+      };
+    }
+  },
+  async resetPassword(_root, args, context) {
+    try {
+      const token = args.token;
+      const isValidToken = jwt.verify(token, process.env.SECRET_KEY);
+      if (!isValidToken) {
+        throw new Error("Token is not valid");
+      }
+
+      const authorEmail = jwt.decode(token);
+
+      const author = await models.Author.findOne({
+        where: { email: authorEmail },
+      });
+
+      if (!author) {
+        throw new Error("Invalid token for changing password");
+      }
+      const newPassword = await bcrypt.hash(args.password, 12);
+
+      await models.Author.update(
+        { password: newPassword },
+        { where: { id: author.id } },
+      );
+
+      return {
+        ok: true,
+        msg: "Password changed successfully",
+      };
+    } catch (e) {
+      return {
+        ok: false,
+        msg: e.message,
       };
     }
   },

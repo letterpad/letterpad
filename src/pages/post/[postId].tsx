@@ -83,7 +83,10 @@ function Post() {
     post.status === PostStatusOptions.Published ? "green" : "orange";
 
   const isPost = post.type === PostTypes.Post;
-
+  let editor;
+  const setRef = _editor => {
+    editor = _editor;
+  };
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <PageHeader
@@ -93,6 +96,7 @@ function Post() {
         onBack={() => router.push(isPost ? "/posts" : "/pages")}
         extra={[
           <Actions
+            key="actions"
             post={post}
             setPostAttribute={setPostAttribute}
             deletePost={() => {
@@ -120,7 +124,7 @@ function Post() {
             }}
           />
           <LetterpadEditor
-            dark
+            dark={localStorage.theme === "dark"}
             onImageBrowse={onMediaBrowse}
             uploadImage={(file: File) => uploadImage([file])}
             defaultValue={post.md_draft || post.md}
@@ -135,6 +139,7 @@ function Post() {
               }, 2000);
             }}
             placeholder="Write a story.."
+            ref={setRef}
           />
           <FileExplorer
             multi={true}

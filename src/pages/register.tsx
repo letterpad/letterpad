@@ -48,8 +48,7 @@ const Register = () => {
       delete values.confirmPassword;
       const result = await createAuthor(values);
       if (!result?.status) {
-        message.success({ content: "Succcess", key, duration: 5 });
-        // message.error({ content: result?.message, key, duration: 5 });
+        message.error({ content: result?.message, key, duration: 5 });
         setEnabled(true);
       } else {
         message.success({ content: "Succcess", key, duration: 5 });
@@ -59,7 +58,7 @@ const Register = () => {
   };
 
   return (
-    <div style={{ minHeight: "100vh", paddingTop: 100, background: "#eee" }}>
+    <div style={{ minHeight: "100vh", paddingTop: 100 }}>
       <Row justify="center" align="middle">
         <p>
           <img src="/admin/uploads/logo.png" width={60} />

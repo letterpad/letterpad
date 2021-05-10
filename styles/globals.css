@@ -106,3 +106,15 @@ a {
     padding-bottom: 0px;
   }
 }
+
+table tr {
+  cursor: pointer;
+}
+
+.lp-editor * {
+  font-size: 100%;
+}
+
+.lp-editor .code-block pre {
+  font-family: "Fira Code";
+}

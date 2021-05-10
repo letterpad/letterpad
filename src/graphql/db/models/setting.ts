@@ -1,7 +1,6 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { Navigation } from "@/__generated__/type-defs.graphqls";
 import restoreSequelizeAttributesOnClass from "./_tooling";
-import jwt from "jsonwebtoken";
 import { Author } from "./author";
 
 export interface SettingAttributes {

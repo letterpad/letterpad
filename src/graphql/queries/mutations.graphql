@@ -174,3 +174,17 @@ mutation DeleteMedia($ids: [Int!]!) {
     }
   }
 }
+
+mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email) {
+    ok
+    message
+  }
+}
+
+mutation ResetPassword($password: String!, $token: String!) {
+  resetPassword(password: $password, token: $token) {
+    ok
+    message
+  }
+}

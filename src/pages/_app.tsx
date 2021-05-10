@@ -19,6 +19,7 @@ import {
   SettingsQuery,
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
+import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 
 // import "antd/dist/antd.css";
 
@@ -63,14 +64,17 @@ export default function App({ Component, pageProps }: Props) {
   if (Component.hasAuth && !settings) return null;
 
   const Layout = Component.layout;
-
+  if (!Layout) {
+    setTimeout(() => {
+      ThemeSwitcher.switch(localStorage.theme);
+    }, 0);
+  }
   return (
     <Provider
       session={pageProps.session}
       options={{ basePath: nextConfig.basePath + "/api/auth" }}
     >
       <Head>
-        <link rel="stylesheet" id="theme" href={nextConfig.basePath + "/css/antd.dark.css"} />
         <link rel="icon" href={nextConfig.basePath + "/uploads/logo.png"} />
       </Head>
       <ApolloProvider client={client}>

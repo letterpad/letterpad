@@ -8,6 +8,7 @@ import Providers from "next-auth/providers";
 import { initializeApollo } from "@/graphql/apollo";
 import { SessionData } from "@/graphql/types";
 import { NextApiRequest, NextApiResponse } from "next";
+import nextConfig from "next.config";
 
 interface ICredentials {
   email: string;
@@ -37,6 +38,8 @@ const providers = [
         },
       });
 
+      console.log("result :>> ", result);
+
       if (result && result.data) {
         return {
           ...result.data.login?.data,
@@ -52,13 +55,9 @@ const options = {
   providers,
   callbacks: {
     redirect: async (url: string, baseUrl: string) => {
-      console.log("url :>> ", url);
-      console.log("basseUrl :>> ", baseUrl);
       if (url.startsWith(baseUrl)) {
         return url;
       }
-
-      console.log("process.env.ROOT_URL :>> ", process.env.ROOT_URL);
       return process.env.ROOT_URL + "/posts";
     },
     jwt: async (token: any, user: Required<SessionData["user"]>) => {
@@ -85,7 +84,7 @@ const options = {
     secret: process.env.SECRET_KEY,
   },
   pages: {
-    // signIn: "/login",
+    signIn: `${nextConfig.basePath}/login`,
   },
 };
 

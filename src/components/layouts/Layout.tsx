@@ -1,5 +1,5 @@
 import { MenuOutlined } from "@ant-design/icons";
-import { Button, Drawer, Switch } from "antd";
+import { Button, Drawer } from "antd";
 import Layout, { Footer } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
 import { Setting, Stats } from "@/__generated__/type-defs.graphqls";
@@ -13,6 +13,7 @@ import styled from "styled-components";
 import Navigation from "./Menu";
 import Logo from "../Logo";
 import { initializeApollo } from "@/graphql/apollo";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 interface IProps {
   settings: Setting;
@@ -25,29 +26,15 @@ const CustomLayout = ({ children, settings }: IProps) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    getStats().then(res => setStats(res));
+    getStats().then(res => {
+      if (res?.__typename === "Stats") {
+        setStats(res);
+      }
+    });
   }, []);
 
   if (!settings) return null;
-  const ThemeSwitcher = () => {
-    return (
-      <>
-        Light
-        <Switch
-          defaultChecked
-          onChange={checked => {
-            const theme = document.querySelector("#theme");
-            if (checked) {
-              theme?.setAttribute("href", "/admin/css/antd.dark.css");
-            } else {
-              theme?.setAttribute("href", "/admin/css/antd.css");
-            }
-          }}
-        />
-        Dark
-      </>
-    );
-  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider

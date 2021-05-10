@@ -5,7 +5,15 @@ const templates = {
       `Welcome to letterpad! 
         <p>Please click the button below to verify your email.</p>`,
       `<a href="${process.env.ROOT_URL}/api/verify/${verifyToken}">Verify Email</a>`,
-      `If you have received this email by mistake, you can safely ignore this email.`,
+      `If you have received this by mistake, you can safely ignore this email.`,
+    );
+  },
+  forgotPasswordEmail: ({ name, token }) => {
+    return getTemplate(
+      name,
+      `<p>A request has been received to change the password for your Letterpad account.</p>`,
+      `<a href="${process.env.ROOT_URL}/resetPassword?token=${token}">Change Password</a>`,
+      `If you have received this by mistake, you can safely ignore this email.`,
     );
   },
 };

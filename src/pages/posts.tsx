@@ -140,13 +140,13 @@ const columns = [
     key: "excerpt",
     responsive: ["md"] as Breakpoint[],
   },
-  {
-    title: "Author",
-    dataIndex: "author",
-    key: "author",
-    responsive: ["lg"] as Breakpoint[],
-    render: (author: Author) => author.name,
-  },
+  // {
+  //   title: "Author",
+  //   dataIndex: "author",
+  //   key: "author",
+  //   responsive: ["lg"] as Breakpoint[],
+  //   render: (author: Author) => author.name,
+  // },
   {
     title: "Status",
     dataIndex: "status",
@@ -158,9 +158,9 @@ const columns = [
     key: "tags",
     render: (tags: Tags[]) => tags.map(tag => tag.name).join(", "),
   },
-  {
-    title: "Updated At",
-    dataIndex: "updatedAt",
-    key: "updatedAt",
-  },
+  // {
+  //   title: "Updated At",
+  //   dataIndex: "updatedAt",
+  //   key: "updatedAt",
+  // },
 ];

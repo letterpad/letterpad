@@ -71,6 +71,11 @@ union MeResponse = Author | AuthorNotFoundError
 
 union CreateAuthorResponse = Author | CreateAuthorError
 
+type ForgotPasswordResponse {
+  ok: Boolean!
+  message: String
+}
+
 type Query {
   me: MeResponse
 }
@@ -79,4 +84,6 @@ type Mutation {
   login(data: LoginData): LoginResponse
   updateAuthor(author: InputAuthor!): AuthorResponse
   createAuthor(data: InputCreateAuthor!): CreateAuthorResponse
+  forgotPassword(email: String!): ForgotPasswordResponse!
+  resetPassword(password: String!, token: String!): ForgotPasswordResponse!
 }

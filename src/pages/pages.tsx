@@ -129,13 +129,13 @@ const columns = [
     key: "excerpt",
     responsive: ["md"] as Breakpoint[],
   },
-  {
-    title: "Author",
-    dataIndex: "author",
-    key: "author",
-    responsive: ["lg"] as Breakpoint[],
-    render: (author: Author) => author.name,
-  },
+  // {
+  //   title: "Author",
+  //   dataIndex: "author",
+  //   key: "author",
+  //   responsive: ["lg"] as Breakpoint[],
+  //   render: (author: Author) => author.name,
+  // },
   {
     title: "Status",
     dataIndex: "status",

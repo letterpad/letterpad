@@ -5,7 +5,7 @@ if (process.env.SENDGRID_API_KEY) {
 
 export enum Subjects {
   VERIFY_EMAIL = "Verify Email",
-  RESET_PASSWORD = "Reset your password",
+  FORGOT_PASSWORD = "Forgot Password ?",
 }
 
 interface Mail {
