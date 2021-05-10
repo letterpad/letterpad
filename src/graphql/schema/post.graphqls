@@ -88,15 +88,15 @@ type PostsNode {
 }
 
 type PostCountsByStatus {
-  published: Int
-  drafts: Int
+  published: Int!
+  drafts: Int!
 }
 
 type Stats {
-  posts: PostCountsByStatus
-  pages: PostCountsByStatus
-  tags: Int
-  media: Int
+  posts: PostCountsByStatus!
+  pages: PostCountsByStatus!
+  tags: Int!
+  media: Int!
 }
 
 input InputImage {
@@ -148,6 +148,10 @@ type PostError implements LetterpadError {
   message: String!
 }
 
+type StatsError implements LetterpadError {
+  message: String!
+}
+
 union PostResponse = Post | PostError
 
 union PostsResponse = PostsNode | PostError
@@ -156,10 +160,12 @@ union CreatePostResponse = Post | PostError
 
 union UpdatePostResponse = Post | PostError
 
+union StatsResponse = Stats | StatsError
+
 type Query {
   post(filters: PostFilters): PostResponse!
   posts(filters: PostsFilters): PostsResponse!
-  stats: Stats
+  stats: StatsResponse
 }
 
 type Mutation {

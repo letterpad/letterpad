@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-// import Input from "@/components/input";
-
 import InfiniteScrollList from "../InfiniteScrollList";
 import { Media } from "@/__generated__/type-defs.graphqls";
 import { Input } from "antd";
@@ -9,9 +7,8 @@ import { Input } from "antd";
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];
 }
-const url = new URL("/api/unsplash", process.env.ROOT_URL);
-
 const Unsplash: React.FC<IProps> = ({ renderer }) => {
+  const url = new URL("/api/unsplash", process.env.ROOT_URL);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Media[]>([]);

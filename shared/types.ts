@@ -4,6 +4,9 @@ declare global {
     interface ProcessEnv {
       ROOT_URL: string;
       PWD: string;
+      SECRET_KEY: string;
+      RECAPTCHA_KEY: string;
+      SENDGRID_API_KEY: string;
     }
   }
 }

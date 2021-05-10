@@ -1,16 +1,14 @@
-import { useSession } from "next-auth/client";
 import {
   PostDocument,
   PostQuery,
   PostQueryVariables,
-  PostResponse,
   InputUpdatePost,
 } from "@/__generated__/queries/queries.graphql";
 import {
   UpdatePostDocument,
   UpdatePostMutation,
   UpdatePostMutationVariables,
-} from "@/__generated__/queries/post.mutations.graphql";
+} from "@/__generated__/queries/mutations.graphql";
 import LetterpadEditor from "letterpad-editor";
 import { initializeApollo } from "@/graphql/apollo";
 import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";
@@ -33,30 +31,29 @@ export enum MediaProvider {
   Unsplash = "unsplash",
   Letterpad = "letterpad",
 }
-function Post({ data }: { data: PostResponse }) {
+function Post() {
   let changeTimeout;
 
   const router = useRouter();
-  const [session, loading] = useSession();
+
   const [post, setPost] = useState<PostQuery["post"]>();
   const [error, setError] = useState("");
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [mediaProvider, setMediaProvider] = useState(MediaProvider.Unsplash);
 
   useEffect(() => {
-    if (data.__typename === "Post") {
-      setPost(data);
-    }
+    const { postId } = router.query;
+    if (!postId) return;
+    getPost(parseInt(postId as string)).then(data => {
+      if (data.__typename === "Post") {
+        setPost(data);
+      }
 
-    if (data.__typename === "PostError") {
-      setError(data.message);
-    }
-  }, []);
-
-  // If no session exists, display access denied message
-  if (!session) {
-    return <div>Access denied</div>;
-  }
+      if (data.__typename === "PostError") {
+        setError(data.message);
+      }
+    });
+  }, [router]);
 
   if (!post || post.__typename !== "Post") {
     return <ErrorMessage title="Error" description={error} />;
@@ -85,17 +82,13 @@ function Post({ data }: { data: PostResponse }) {
   const tagColor =
     post.status === PostStatusOptions.Published ? "green" : "orange";
 
-  if (typeof window !== "undefined" && loading)
-    return (
-      <Layout>
-        <span />
-      </Layout>
-    );
-
   const isPost = post.type === PostTypes.Post;
-
+  let editor;
+  const setRef = _editor => {
+    editor = _editor;
+  };
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh" }}>
       <PageHeader
         className="site-page-header"
         title="&nbsp;"
@@ -103,6 +96,7 @@ function Post({ data }: { data: PostResponse }) {
         onBack={() => router.push(isPost ? "/posts" : "/pages")}
         extra={[
           <Actions
+            key="actions"
             post={post}
             setPostAttribute={setPostAttribute}
             deletePost={() => {
@@ -117,7 +111,7 @@ function Post({ data }: { data: PostResponse }) {
       <Content style={{ margin: "24px 16px 0" }}>
         <div
           className="site-layout-background"
-          style={{ maxWidth: 760, minHeight: 360, margin: "auto" }}
+          style={{ maxWidth: 760, margin: "auto" }}
         >
           <Input
             style={{ padding: 0, fontSize: 38 }}
@@ -130,6 +124,7 @@ function Post({ data }: { data: PostResponse }) {
             }}
           />
           <LetterpadEditor
+            dark={localStorage.theme === "dark"}
             onImageBrowse={onMediaBrowse}
             uploadImage={(file: File) => uploadImage([file])}
             defaultValue={post.md_draft || post.md}
@@ -144,6 +139,7 @@ function Post({ data }: { data: PostResponse }) {
               }, 2000);
             }}
             placeholder="Write a story.."
+            ref={setRef}
           />
           <FileExplorer
             multi={true}
@@ -160,29 +156,24 @@ function Post({ data }: { data: PostResponse }) {
 
 export default withAuthCheck(Post);
 
-export async function getServerSideProps(context) {
-  const apolloClient = initializeApollo({}, context);
+async function getPost(postId: number) {
+  const apolloClient = await initializeApollo();
   const post = await apolloClient.query<PostQuery, PostQueryVariables>({
     query: PostDocument,
     variables: {
       filters: {
-        id: parseInt(context.query.postId),
+        id: postId,
       },
     },
   });
-
-  return {
-    props: {
-      data: post.data.post,
-    },
-  };
+  return post.data.post;
 }
 
 const updatePostRequest = async (
   attrs: Omit<InputUpdatePost, "id">,
   postId: number,
 ) => {
-  const apolloClient = initializeApollo();
+  const apolloClient = await initializeApollo();
   await apolloClient.mutate<UpdatePostMutation, UpdatePostMutationVariables>({
     mutation: UpdatePostDocument,
     variables: {

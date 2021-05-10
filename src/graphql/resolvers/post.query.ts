@@ -1,6 +1,5 @@
 import { PostAttributes } from "../db/models/post";
 import { Op, Order } from "sequelize";
-import { getModifiedSession } from "./helpers";
 import {
   Permissions,
   PostFilters,
@@ -55,8 +54,10 @@ const Query: QueryResolvers<ResolverContext> = {
    * Query to take care of multiple post in one page.
    * Used for Search and Admin posts and pages list.
    */
-  async posts(_parent, args, context, _info) {
+  async posts(_parent, args, { session, author_id }, _info) {
     debug("letterpad:post:update")("Reached posts query");
+    let authorId = session?.user.id || author_id;
+
     const query: IPostCondition = {
       conditions: {
         order: [["publishedAt", SortBy.Desc]],
@@ -67,7 +68,7 @@ const Query: QueryResolvers<ResolverContext> = {
           featured: false,
           status: { [Op.ne]: PostStatusOptions.Trashed },
           type: PostTypes.Post,
-          author_id: 0,
+          author_id: authorId,
         },
         limit: 20,
         offset: 0,
@@ -119,34 +120,34 @@ const Query: QueryResolvers<ResolverContext> = {
         query.conditions.order = [["updatedAt", args.filters.sortBy]];
       }
 
-      if (context && context.session && args?.filters?.sortBy) {
+      if (session && args?.filters?.sortBy) {
         query.conditions.order = [["updatedAt", args.filters.sortBy]];
       }
 
-      if (args?.filters?.author) {
-        const author = await models.Author.findOne({
-          where: { name: args.filters.author },
-        });
-        delete query.conditions.where.author_id;
+      // if (args?.filters?.author) {
+      //   const author = await models.Author.findOne({
+      //     where: { name: args.filters.author },
+      //   });
+      //   delete query.conditions.where.author_id;
 
-        if (author) {
-          const posts = await author.getPosts(query.conditions);
+      //   if (author) {
+      //     const posts = await author.getPosts(query.conditions);
 
-          return {
-            __typename: "PostsNode",
-            count: await author.countPosts(query.conditions),
-            rows: posts.map(p => p.get()),
-          };
-        } else {
-          return {
-            __typename: "PostsNode",
-            count: 0,
-            rows: [],
-          };
-        }
-      } else {
-        delete query.conditions.where.author_id;
-      }
+      //     return {
+      //       __typename: "PostsNode",
+      //       count: await author.countPosts(query.conditions),
+      //       rows: posts.map(p => p.get()),
+      //     };
+      //   } else {
+      //     return {
+      //       __typename: "PostsNode",
+      //       count: 0,
+      //       rows: [],
+      //     };
+      //   }
+      // } else {
+      //   delete query.conditions.where.author_id;
+      // }
 
       // resolve menu filter
 
@@ -154,14 +155,14 @@ const Query: QueryResolvers<ResolverContext> = {
         let { tagSlug } = args.filters;
         if (tagSlug === "/") {
           // get the first menu item.
-          const setting = await models.Setting.findOne({
-            attributes: ["value"],
-            where: { option: "menu" },
-            raw: true,
+          const author = await models.Author.findOne({
+            where: { id: authorId },
           });
+          const setting = await author?.getSetting();
 
-          if (setting && typeof setting.value === "string")
-            tagSlug = JSON.parse(setting.value)[0].slug;
+          if (setting) {
+            tagSlug = JSON.parse(setting.menu)[0].slug;
+          }
         }
 
         const taxTag = await models.Tags.findOne({
@@ -218,11 +219,9 @@ const Query: QueryResolvers<ResolverContext> = {
     }
   },
 
-  async post(_parent, args, context, _info) {
+  async post(_parent, args, { session }, _info) {
     const error = { __typename: "PostError", message: "" };
     if (!args.filters) return { ...error, message: "Missing arguments" };
-
-    const session = await getModifiedSession(context);
 
     const { previewHash, ...filters } = args.filters;
     const conditions = {
@@ -240,7 +239,7 @@ const Query: QueryResolvers<ResolverContext> = {
       }
     }
 
-    if (!session) {
+    if (!session?.user) {
       conditions.where.status = PostStatusOptions.Published;
       delete conditions.where.author_id;
     }
@@ -264,7 +263,7 @@ const Query: QueryResolvers<ResolverContext> = {
       : { ...error, message: "Post not found" };
   },
 
-  async stats() {
+  async stats(_, _args, { session }) {
     logger.debug("Reached resolver: stats");
     const result = {
       posts: { published: 0, drafts: 0 },
@@ -272,27 +271,60 @@ const Query: QueryResolvers<ResolverContext> = {
       tags: 0,
       media: 0,
     };
-    result.posts.published = await models.Post.count({
-      where: { status: PostStatusOptions.Published, type: PostTypes.Post },
+    const author_id = session?.user.id;
+
+    if (!author_id) {
+      return {
+        __typename: "StatsError",
+        message: "Couldnt find author in session",
+      };
+    }
+
+    const author = await models.Author.findOne({ where: { id: author_id } });
+
+    if (!author) {
+      return {
+        __typename: "StatsError",
+        message: "Couldnt find author",
+      };
+    }
+
+    result.posts.published = await author.countPosts({
+      where: {
+        status: PostStatusOptions.Published,
+        type: PostTypes.Post,
+      },
     });
 
-    result.posts.drafts = await models.Post.count({
-      where: { status: PostStatusOptions.Draft, type: PostTypes.Post },
+    result.posts.drafts = await author.countPosts({
+      where: {
+        status: PostStatusOptions.Draft,
+        type: PostTypes.Post,
+      },
     });
 
-    result.pages.published = await models.Post.count({
-      where: { status: PostStatusOptions.Published, type: PostTypes.Page },
+    result.pages.published = await author.countPosts({
+      where: {
+        status: PostStatusOptions.Published,
+        type: PostTypes.Page,
+      },
     });
 
-    result.pages.drafts = await models.Post.count({
-      where: { status: PostStatusOptions.Draft, type: PostTypes.Page },
+    result.pages.drafts = await author.countPosts({
+      where: {
+        status: PostStatusOptions.Draft,
+        type: PostTypes.Page,
+      },
     });
 
-    result.tags = await models.Tags.count();
+    result.tags = await author.countTags();
 
-    result.media = await models.Media.count();
+    result.media = await author.countMedia();
 
-    return result;
+    return {
+      __typename: "Stats",
+      ...result,
+    };
   },
 };
 

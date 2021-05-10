@@ -1,11 +1,19 @@
+import { GroupOption, Includeable, Order } from "sequelize";
 import { MutationResolvers } from "./../../../__generated__/src/graphql/type-defs.graphqls";
 import { ResolverContext } from "../apollo";
 import { QueryResolvers } from "@/__generated__/type-defs.graphqls";
 import models from "../db/models";
 
 const Query: QueryResolvers<ResolverContext> = {
-  async tags(_root, args, _context) {
-    let conditions = {
+  async tags(_root, args, { session, author_id }) {
+    let conditions: {
+      where: {
+        name?: string;
+      };
+      group?: GroupOption;
+      include?: Includeable | Includeable[];
+      order: Order;
+    } = {
       where: {},
       order: [["name", "ASC"]],
     };
@@ -31,14 +39,36 @@ const Query: QueryResolvers<ResolverContext> = {
       }
     }
 
-    const taxonomies = await models.Tags.findAll(conditions);
+    if (session?.user.id) {
+      const author = await models.Author.findOne({
+        where: { id: session.user.id },
+      });
+      if (author) {
+        const tags = await author.getTags(conditions);
+        return {
+          __typename: "TagsNode",
+          rows: tags.map(tag => tag.get()),
+        };
+      }
+    }
 
-    const type = "tag";
+    if (author_id) {
+      const author = await models.Author.findOne({
+        where: { id: author_id },
+      });
+      if (author) {
+        const tags = await author.getTags(conditions);
+        return {
+          __typename: "TagsNode",
+          rows: tags.map(tag => tag.get()),
+        };
+      }
+    }
 
-    return taxonomies.map(taxonomy => {
-      taxonomy.slug = "/" + type + "/" + taxonomy.slug;
-      return taxonomy;
-    });
+    return {
+      __typename: "TagsError",
+      message: "Missing or invalid token or session",
+    };
   },
 };
 
@@ -55,18 +85,35 @@ const Tags = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  async updateTags(_root, args, _context) {
-    if (!args.data) {
+  async updateTags(_root, args, { session }) {
+    if (!session?.user) {
       return {
         __typename: "TagsError",
-        message: "Arguments on found inside object data.",
+        message: "No session found",
       };
     }
-    const tags = await models.Tags.update(args.data, {
-      where: { id: args.data.id },
+
+    const author = await models.Author.findOne({
+      where: { id: session.user.id },
     });
 
-    if (!tags) {
+    if (!args.data || !author) {
+      return {
+        __typename: "TagsError",
+        message: "Incorrect arguments",
+      };
+    }
+
+    let tag: unknown;
+    if (args.data.id === 0) {
+      tag = await author.createTag(args.data);
+    } else {
+      tag = await models.Tags.update(args.data, {
+        where: { id: args.data.id },
+      });
+    }
+
+    if (!tag) {
       return {
         __typename: "TagsError",
         message: "Failed to update tags",
@@ -82,7 +129,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (!args.id) {
       return {
         __typename: "TagsError",
-        message: "Arguments on found inside object data.",
+        message: "Incorrect arguments",
       };
     }
 

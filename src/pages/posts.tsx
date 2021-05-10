@@ -64,7 +64,7 @@ function Posts({ settings }: IProps) {
   const source = postsNode.__typename === "PostsNode" ? postsNode.rows : [];
 
   return (
-    <CustomLayout settings={settings}>
+    <>
       <PageHeader
         className="site-page-header"
         onBack={() => window.history.back()}
@@ -97,13 +97,16 @@ function Posts({ settings }: IProps) {
           />
         </div>
       </Content>
-    </CustomLayout>
+    </>
   );
 }
-export default withAuthCheck(Posts);
+
+const PostsWithAuth = withAuthCheck(Posts);
+PostsWithAuth.layout = CustomLayout;
+export default PostsWithAuth;
 
 async function fetchPostsFromAPI(filters: PostsFilters) {
-  const apolloClient = initializeApollo();
+  const apolloClient = await initializeApollo();
 
   const post = await apolloClient.query<PostsQuery, PostsQueryVariables>({
     query: PostsDocument,
@@ -137,13 +140,13 @@ const columns = [
     key: "excerpt",
     responsive: ["md"] as Breakpoint[],
   },
-  {
-    title: "Author",
-    dataIndex: "author",
-    key: "author",
-    responsive: ["lg"] as Breakpoint[],
-    render: (author: Author) => author.name,
-  },
+  // {
+  //   title: "Author",
+  //   dataIndex: "author",
+  //   key: "author",
+  //   responsive: ["lg"] as Breakpoint[],
+  //   render: (author: Author) => author.name,
+  // },
   {
     title: "Status",
     dataIndex: "status",
@@ -155,9 +158,9 @@ const columns = [
     key: "tags",
     render: (tags: Tags[]) => tags.map(tag => tag.name).join(", "),
   },
-  {
-    title: "Updated At",
-    dataIndex: "updatedAt",
-    key: "updatedAt",
-  },
+  // {
+  //   title: "Updated At",
+  //   dataIndex: "updatedAt",
+  //   key: "updatedAt",
+  // },
 ];

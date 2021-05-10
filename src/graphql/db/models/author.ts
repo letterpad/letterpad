@@ -12,6 +12,7 @@ import {
   HasManyCreateAssociationMixin,
   Optional,
   HasOneGetAssociationMixin,
+  HasOneSetAssociationMixin,
 } from "sequelize";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 
@@ -21,6 +22,8 @@ import {
   Role as QraphqlRole,
   Permissions as GraqhqlPermissions,
 } from "@/__generated__/type-defs.graphqls";
+import { Setting } from "./setting";
+import { Tags } from "./tags";
 
 // These are all the attributes in the User model
 interface AuthorAttributes {
@@ -31,6 +34,8 @@ interface AuthorAttributes {
   password: string;
   avatar: string;
   social: Social;
+  verified: boolean;
+  username: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -46,6 +51,8 @@ export class Author
   public bio!: string;
   public password!: string;
   public avatar!: string;
+  public username!: string;
+  public verified!: boolean;
   public social!: Social;
   public role!: QraphqlRole;
   public permissions!: GraqhqlPermissions[];
@@ -57,14 +64,28 @@ export class Author
   // Since TS cannot determine model association at compile time
   // we have to declare them here purely virtually
   // these will not exist until `Model.init` was called.
-  public getPosts!: HasManyGetAssociationsMixin<Post>; // Note the null assertions!
   public addPost!: HasManyAddAssociationMixin<Post, number>;
-  public addMedia!: HasManyAddAssociationMixin<Media, number>;
-  public hasPost!: HasManyHasAssociationMixin<Post, number>;
-  public countPosts!: HasManyCountAssociationsMixin;
   public createPost!: HasManyCreateAssociationMixin<Post>;
-  public setRole!: HasManyHasAssociationMixin<Role, number>;
+  public countPosts!: HasManyCountAssociationsMixin;
+  public getPosts!: HasManyGetAssociationsMixin<Post>; // Note the null assertions!
+  public hasPost!: HasManyHasAssociationMixin<Post, number>;
+
+  public addMedia!: HasManyAddAssociationMixin<Media, number>;
+  public countMedia!: HasManyCountAssociationsMixin;
+  public createMedia!: HasManyCreateAssociationMixin<Media>;
+  public setMedia!: HasOneSetAssociationMixin<Media, number>;
+
+  public countTags!: HasManyCountAssociationsMixin;
+  public createTag!: HasManyCreateAssociationMixin<Tags>;
+  public getTags!: HasManyGetAssociationsMixin<Tags>;
+  public hasTag!: HasManyHasAssociationMixin<Tags, number>;
+
+  public setRole!: HasOneSetAssociationMixin<Role, number>;
   public getRole!: HasOneGetAssociationMixin<Role>;
+
+  public createSetting!: HasManyCreateAssociationMixin<Setting>;
+  public getSetting!: HasOneGetAssociationMixin<Setting>;
+  public setSetting!: HasOneSetAssociationMixin<Setting, number>;
 
   // You can also pre-declare possible inclusions, these will only be populated if you
   // actively include a relation.
@@ -81,10 +102,18 @@ export class Author
       "addPost",
       "hasPost",
       "countPosts",
+      "countTags",
+      "countMedia",
       "createPost",
       "setRole",
       "getRole",
       "addMedia",
+      "setSetting",
+      "getSetting",
+      "createTag",
+      "getTags",
+      "hasTag",
+      "createSetting",
     ]);
   }
 }
@@ -97,6 +126,10 @@ export default function initAuthor(sequelize: Sequelize) {
         primaryKey: true,
       },
       name: {
+        type: new DataTypes.STRING(128),
+        allowNull: false,
+      },
+      username: {
         type: new DataTypes.STRING(128),
         allowNull: false,
       },
@@ -120,6 +153,10 @@ export default function initAuthor(sequelize: Sequelize) {
         type: new DataTypes.STRING(128),
         allowNull: true,
       },
+      verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       tableName: "authors",
@@ -137,6 +174,8 @@ export function associateAuthor(): void {
   });
 
   Author.belongsTo(Role, { as: "role", foreignKey: "role_id" });
+  Author.belongsTo(Setting, { as: "setting", foreignKey: "setting_id" });
 
   Author.hasMany(Media, { sourceKey: "id", foreignKey: "author_id" });
+  Author.hasMany(Tags, { sourceKey: "id", foreignKey: "author_id" });
 }

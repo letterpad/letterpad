@@ -1,15 +1,15 @@
 import { useSession } from "next-auth/client";
-import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const withAuthCheck = <T extends object>(
   WrappedComponent: React.ComponentType<T>,
 ) => {
-  return (props: T) => {
+  const ComponentWithAuth = (props: T) => {
     const [session, loading] = useSession();
     const router = useRouter();
     useEffect(() => {
-      if (!session && !loading) {
+      if (!loading && !session?.user.id) {
         router.push("/api/auth/signin");
       }
     }, [loading]);
@@ -17,6 +17,8 @@ const withAuthCheck = <T extends object>(
     if (!session) return null;
     return <WrappedComponent {...props} />;
   };
+  ComponentWithAuth.hasAuth = true;
+  ComponentWithAuth.layout = null;
+  return ComponentWithAuth;
 };
-
 export default withAuthCheck;

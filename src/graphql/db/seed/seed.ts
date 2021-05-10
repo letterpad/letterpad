@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import dbModels from "./../models/index";
 import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
@@ -7,6 +8,7 @@ import path from "path";
 import posts from "./posts";
 import { promisify } from "util";
 import rimraf from "rimraf";
+import { settingsData } from "../models/setting";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -54,30 +56,46 @@ export const seed = async (_models: typeof dbModels, autoExit = true) => {
   const role = await models.Role.findOne({ where: { id: 1 } });
   const authors = await models.Author.findAll();
   if (role && authors) {
-    authors.map(async author => {
-      await author.setRole(role);
-    });
+    await Promise.all([
+      ...authors.map(async author => {
+        await author.setRole(role);
+      }),
+    ]);
   }
   console.timeEnd("Asssign Role to author");
 
   console.time("insert posts, settings, media");
-  const [tags] = await Promise.all([
-    models.Tags.findAll({
-      where: { type: "post_tag" },
-    }),
-  ]);
+  const [tags] = await Promise.all([models.Tags.findAll()]);
 
-  await Promise.all([
-    ...posts.map(post => insertPost(post, models, tags)),
-    insertSettings(models),
-    insertMedia(models),
-  ]);
+  await Promise.all([...posts.map(post => insertPost(post, models, tags))]);
+  await insertSettings();
+  await insertMedia();
   console.timeEnd("insert posts, settings, media");
-  if (autoExit) {
-    process.exit(0);
-  } else {
-    return null;
+
+  console.time("Asssign Setting to author");
+  const setting = await models.Setting.findOne({
+    where: { id: 1 },
+  });
+  if (setting && authors) {
+    await Promise.all([
+      ...authors.map(async author => {
+        const token = jwt.sign(
+          {
+            id: 1,
+          },
+          process.env.SECRET_KEY,
+          {
+            algorithm: "HS256",
+          },
+        );
+        return Promise.all([
+          setting.update({ client_token: token }),
+          author.setSetting(setting),
+        ]);
+      }),
+    ]);
   }
+  console.timeEnd("Asssign Setting to author");
 };
 
 export async function insertRolePermData(models) {
@@ -139,13 +157,14 @@ export async function insertAuthor(models) {
     {
       name: "John",
       email: "demo@demo.com",
-      password: "123", //bcrypt.hashSync("demo", 12),
+      password: bcrypt.hashSync("demo", 12),
       social: JSON.stringify({
         twitter: "https://twitter.com",
         facebook: "https://facebook.com",
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
+      username: "demo",
       bio:
         "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar:
@@ -154,6 +173,7 @@ export async function insertAuthor(models) {
     {
       name: "Jim Parker",
       email: "author@letterpad.app",
+      username: "author",
       password: bcrypt.hashSync("demo", 12),
       social: JSON.stringify({
         twitter: "https://twitter.com",
@@ -169,19 +189,24 @@ export async function insertAuthor(models) {
   ]);
 }
 
-export async function insertTags(models) {
-  return models.Tags.bulkCreate([
+export async function insertTags(models: typeof dbModels) {
+  const author = await models.Author.findOne({ where: { id: 1 } });
+  const tags = [
     {
       name: "Home",
-      type: "post_tag",
       slug: "home",
+      desc: "",
     },
     {
       name: "first-post",
-      type: "post_tag",
       slug: "first-post",
+      desc: "",
     },
-  ]);
+  ];
+
+  if (author) {
+    return Promise.all([...tags.map(tag => author.createTag(tag))]);
+  }
 }
 
 export async function insertPost(params, models: typeof dbModels, tags) {
@@ -219,157 +244,35 @@ export async function insertPost(params, models: typeof dbModels, tags) {
   }
 }
 
-export async function insertMedia(models) {
-  return models.Media.bulkCreate([
-    {
+export async function insertMedia() {
+  const author = await models.Author.findOne({ where: { id: 1 } });
+  if (author) {
+    await author.createMedia({
       url:
         "https://images.unsplash.com/photo-1473181488821-2d23949a045a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
-      AuthorId: 1,
       name: "Blueberries",
       width: 1350,
       height: 900,
       description:
         "Write a description about this image. You never know how this image can break the internet",
-    },
-    {
+    });
+
+    await author.createMedia({
       url:
         "https://images.unsplash.com/photo-1524654458049-e36be0721fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-      AuthorId: 1,
       width: 1350,
       height: 900,
       name: "I love the beach and its smell",
       description:
         "Write a description about this image. You never know how this image can break the internet",
-    },
-  ]);
+    });
+  }
 }
 
-export async function insertSettings(models) {
-  const menu = [
-    {
-      label: "home",
-      original_name: "home",
-      slug: "home",
-      type: "tag",
-    },
-    {
-      label: "Letterpad Typography",
-      original_name: "Letterpad Typography",
-      slug: "letterpad-typography",
-      type: "page",
-    },
-  ];
-  let data = [
-    {
-      option: "site_title",
-      value: "Letterpad",
-    },
-    {
-      option: "site_tagline",
-      value: "Compose a story",
-    },
-    {
-      option: "site_email",
-      value: "admin@letterpad.app",
-    },
-    {
-      option: "site_url",
-      value: "https://letterpad.app/demo",
-    },
-    {
-      option: "site_footer",
-      value: "",
-    },
-    {
-      option: "site_description",
-      value: "",
-    },
-    {
-      option: "subscribe_embed",
-      value: "",
-    },
-    {
-      option: "social_twitter",
-      value: "https://twitter.com",
-    },
-    {
-      option: "social_facebook",
-      value: "https://facebook.com",
-    },
-    {
-      option: "social_instagram",
-      value: "https://instagram.com",
-    },
-    {
-      option: "social_github",
-      value: "https://www.github.com",
-    },
-    {
-      option: "displayAuthorInfo",
-      value: true,
-    },
-    {
-      option: "site_logo",
-      value: JSON.stringify({
-        src: "/uploads/logo.png",
-        width: 200,
-        height: 200,
-      }),
-    },
-    {
-      option: "site_favicon",
-      value: JSON.stringify({
-        src: "/uploads/logo.png",
-        width: 200,
-        height: 200,
-      }),
-    },
-    {
-      option: "css",
-      value: "",
-    },
-    {
-      option: "google_analytics",
-      value: "UA-120251616-1",
-    },
-    {
-      option: "locale",
-      value: JSON.stringify({ en: true, fr: false, pl: false }),
-    },
-    {
-      option: "theme",
-      value: "hugo",
-    },
-    {
-      option: "disqus_id",
-      value: "letterpad",
-    },
-    {
-      option: "menu",
-      value: JSON.stringify(menu),
-    },
-    {
-      option: "cloudinary_key",
-      value: "",
-    },
-    {
-      option: "cloudinary_name",
-      value: "",
-    },
-    {
-      option: "cloudinary_secret",
-      value: "",
-    },
-    {
-      option: "banner",
-      value: JSON.stringify({
-        src:
-          "https://images.unsplash.com/photo-1435224668334-0f82ec57b605?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-        width: 1502,
-        height: 900,
-      }),
-    },
-  ];
+export async function insertSettings() {
+  const authors = await models.Author.findAll();
 
-  return models.Setting.bulkCreate(data);
+  return Promise.all([
+    ...authors.map(author => author.createSetting(settingsData)),
+  ]);
 }

@@ -8,7 +8,7 @@ import {
   UpdateOptionsMutationVariables,
   UpdateOptionsDocument,
   Setting,
-} from "@/__generated__/queries/queries.graphql";
+} from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
 import { OptionInputType } from "@/__generated__/type-defs.graphqls";
 import withAuthCheck from "../hoc/withAuth";
@@ -23,7 +23,7 @@ function Settings(props: { settings: Setting }) {
   const [draft, setDraft] = useState<OptionInputType>({});
 
   const updateSettings = async () => {
-    const apolloClient = initializeApollo();
+    const apolloClient = await initializeApollo();
 
     if (Object.keys(draft).length === 0) return;
 
@@ -36,7 +36,6 @@ function Settings(props: { settings: Setting }) {
         options: draft,
       },
     });
-    localStorage.settings = JSON.stringify(settings);
     setDraft({});
   };
 
@@ -54,18 +53,14 @@ function Settings(props: { settings: Setting }) {
   };
 
   return (
-    <CustomLayout settings={settings}>
+    <>
       <PageHeader
         onBack={() => window.history.back()}
         className="site-page-header"
         title="Settings"
-        style={{ padding: 10 }}
       ></PageHeader>
-      <Content style={{ margin: "24px 16px 0" }}>
-        <div
-          className="site-layout-background"
-          style={{ padding: 24, minHeight: 360 }}
-        >
+      <Content style={{ margin: "16px 0px 0" }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
@@ -252,8 +247,9 @@ function Settings(props: { settings: Setting }) {
           </Form>
         </div>
       </Content>
-    </CustomLayout>
+    </>
   );
 }
-
-export default withAuthCheck(Settings);
+const SettingsWithAuth = withAuthCheck(Settings);
+SettingsWithAuth.layout = CustomLayout;
+export default SettingsWithAuth;
