@@ -13,7 +13,6 @@ interface IProps {
 }
 
 const InternalMedia: React.FC<IProps> = ({ renderer }) => {
-  const client = initializeApollo();
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -29,6 +28,7 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
   }, []);
 
   const fetchInternalMedia = async (page = 1) => {
+    const client = await initializeApollo();
     const result = await client.query<MediaQuery, MediaQueryVariables>({
       query: MediaDocument,
       variables: {

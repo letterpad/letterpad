@@ -8,12 +8,14 @@ type Social {
 type Author {
   id: Int!
   email: String!
+  username: String!
   name: String!
   social: Social
   bio: String!
   role: Role!
   permissions: [Permissions!]!
   avatar: String!
+  verified: Boolean
 }
 
 input LoginData {
@@ -43,17 +45,36 @@ input InputAuthor {
   avatar: String
 }
 
+input InputCreateAuthor {
+  email: String!
+  site_title: String!
+  name: String!
+  password: String!
+  token: String!
+}
+
 type AuthorResponse {
   ok: Boolean!
   errors: [Error!]
   data: Author
 }
 
-type AuthorNotFoundError {
+type AuthorNotFoundError implements LetterpadError {
+  message: String!
+}
+
+type CreateAuthorError implements LetterpadError {
   message: String!
 }
 
 union MeResponse = Author | AuthorNotFoundError
+
+union CreateAuthorResponse = Author | CreateAuthorError
+
+type ForgotPasswordResponse {
+  ok: Boolean!
+  message: String
+}
 
 type Query {
   me: MeResponse
@@ -62,4 +83,7 @@ type Query {
 type Mutation {
   login(data: LoginData): LoginResponse
   updateAuthor(author: InputAuthor!): AuthorResponse
+  createAuthor(data: InputCreateAuthor!): CreateAuthorResponse
+  forgotPassword(email: String!): ForgotPasswordResponse!
+  resetPassword(password: String!, token: String!): ForgotPasswordResponse!
 }

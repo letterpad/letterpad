@@ -1,5 +1,5 @@
 import Author, { associateAuthor } from "./author";
-import Media from "./media";
+import Media, { associateMedia } from "./media";
 import Permission, { associatePermission } from "./permission";
 import Post, { associatePost } from "./post";
 import Role, { associateRole } from "./role";
@@ -44,11 +44,11 @@ export const modelsMap = {
 };
 
 associateTags();
-modelsMap.Post = associatePost(modelsMap.Post);
+associatePost();
 associateAuthor();
 associateRole();
 associatePermission();
-// associateMedia();
+associateMedia();
 
 const models = { Sequelize: Sequelize, sequelize: conn, ...modelsMap };
 

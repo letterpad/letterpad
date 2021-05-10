@@ -1,12 +1,9 @@
-import { SessionData } from "../types";
 import http from "http";
 import cheerio from "cheerio";
 import sizeOf from "image-size";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { Post as ModelPost } from "../db/models/post";
 import logger from "../../../shared/logger";
-
-import { getSession } from "next-auth/client";
 
 function toSlug(str: string): string {
   return str
@@ -119,7 +116,22 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
   return $.html();
 };
 
-export async function getModifiedSession(context) {
-  const session = await getSession(context);
-  return session ? ((session as unknown) as SessionData) : null;
+interface ICaptchaResult {
+  success: boolean;
+  challenge_ts: string;
+  hostname: string;
+  score: number;
+  action: string;
+}
+
+export async function validateCaptcha(serverKey: string, clientToken: string) {
+  const response: ICaptchaResult = await fetch(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${serverKey}&response=${clientToken}`,
+  ).then(res => res.json());
+
+  if (response.success) {
+    return true;
+  }
+  console.log(response);
+  return false;
 }

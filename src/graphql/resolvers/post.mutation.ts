@@ -14,16 +14,13 @@ import {
   getDateTime,
   getImageDimensions,
   setImageWidthAndHeightInHtml,
-  getModifiedSession,
 } from "./helpers";
 import logger from "../../../shared/logger";
 import models from "../db/models";
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  async createPost(_parent, args, context, _info) {
-    const session = await getModifiedSession(context);
-
-    if (!args.data || !session) {
+  async createPost(_parent, args, { session }, _info) {
+    if (!args.data || !session?.user) {
       return {
         __typename: "PostError",
         message: "Session not found",
@@ -67,7 +64,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
     };
   },
 
-  async updatePost(_parent, args, _context, _info) {
+  async updatePost(_parent, args, context, _info) {
+    if (!context.session?.user) {
+      return {
+        __typename: "PostError",
+        message: "Authentication failed",
+      };
+    }
     try {
       if (!args.data) {
         return {
@@ -98,7 +101,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           .replace("/page/", "");
       }
 
-      const previousPost = previousPostRaw.toJSON() as PostAttributes;
+      const previousPost = previousPostRaw.get() as PostAttributes;
 
       // slug and title
       if (dataToUpdate.slug) {
@@ -113,7 +116,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       ) {
         dataToUpdate.slug = await slugify(models.Post, args.data.title);
         dataToUpdate.title = args.data.title || previousPost.title;
-        logger.debug("Slug created:", args.data.slug);
+        logger.debug("Slug created:", dataToUpdate.slug);
       } else if (args.data.title) {
         dataToUpdate.title = args.data.title;
       }
@@ -214,6 +217,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
 
       await updateMenuOnTitleChange(
+        context.session.user.id,
         previousPostRaw.type,
         dataToUpdate.title,
         dataToUpdate.slug,
@@ -222,48 +226,41 @@ const Mutation: MutationResolvers<ResolverContext> = {
       if (args.data.tags && previousPostRaw) {
         logger.debug("Updating Tags", args.data.tags);
 
-        const Tags = [...args.data.tags];
+        const tags = [...args.data.tags];
 
-        if (Tags && Tags.length > 0) {
+        if (tags && tags.length > 0) {
           logger.debug("Removing all Tags");
           // remove the tags relation
           await previousPostRaw.setTags([]);
 
-          for (let i = 0; i < Tags.length; i++) {
-            const tags = Tags[i];
+          for (let i = 0; i < tags.length; i++) {
+            const tag = tags[i];
 
-            logger.info("processing tags", tags);
-            let taxItem: Tags | null = null;
+            logger.info("processing tag", tag);
             // add relation with existing Tags
-            if (tags.id !== 0) {
-              taxItem = await models.Tags.findOne({
-                where: { id: tags.id },
+            if (tag.id > 0) {
+              const tagFound = await models.Tags.findOne({
+                where: { id: tag.id },
               });
-              if (taxItem) {
-                await previousPostRaw.addTag(taxItem);
+              if (tagFound) {
+                await previousPostRaw.addTag(tagFound);
               }
-              logger.debug(
-                `Added existing tags (${tags.name}) with id`,
-                tags.id,
-              );
+              logger.debug(`Added existing tags (${tag.name}) with id`, tag.id);
             } else {
-              // Tags needs to be created
-              await models.Tags.findOrCreate({
-                where: {
-                  name: tags.name,
-                  slug: tags.name.toLowerCase(),
-                },
+              const author = await previousPostRaw.getAuthor();
+              const tagsFound = await author.getTags({
+                where: { name: tag.name },
               });
-              logger.debug(`Added new tags (${tags.name})`);
-              taxItem = await models.Tags.findOne({
-                where: {
-                  name: tags.name,
-                },
-              });
-              logger.debug("Linking tags to post", tags.name);
-              // add relation
-              if (taxItem) {
-                await previousPostRaw.addTag(taxItem);
+              if (tagsFound.length === 0) {
+                const newTag = await author.createTag({
+                  name: tag.name,
+                  slug: tag.name.toLowerCase(),
+                });
+                if (newTag) {
+                  logger.debug(`Created new tag (${tag.name})`);
+                  await previousPostRaw.addTag(newTag);
+                  logger.debug("Linked tags to post", tag.name);
+                }
               }
             }
           }
@@ -327,20 +324,19 @@ function savingDraft(
 }
 
 async function updateMenuOnTitleChange(
+  authorId: number,
   postType?: PostTypes,
   title?: string,
   slug?: string,
 ) {
   if (!title && !slug) return false;
-  const menu = await models.Setting.findOne({
-    attributes: ["value"],
-    where: { option: "menu" },
-    raw: true,
-  });
-  if (!menu?.value) return false;
-  if (typeof menu?.value !== "string") return false;
+  const author = await models.Author.findOne({ where: { id: authorId } });
+  if (!author) return false;
+  const setting = await author.getSetting();
 
-  const parsedMenu = JSON.parse(menu.value);
+  if (typeof setting?.menu !== "string") return false;
+
+  const parsedMenu = JSON.parse(setting.menu);
   const isPage = postType === PostTypes.Page;
 
   const updatedMenu = parsedMenu.map(item => {
@@ -356,11 +352,8 @@ async function updateMenuOnTitleChange(
     }
     return item;
   });
-
-  await models.Setting.update(
-    { value: JSON.stringify(updatedMenu) },
-    { where: { option: "menu" } },
-  );
+  setting.setDataValue("menu", JSON.stringify(updatedMenu));
+  await author.setSetting(setting);
 }
 
 export default { Mutation };

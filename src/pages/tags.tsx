@@ -1,7 +1,6 @@
 import { Table, Button, Popconfirm, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import { useState } from "react";
-import { Setting } from "@/__generated__/queries/post.mutations.graphql";
+import { useEffect, useState } from "react";
 import {
   UpdateTagsMutationVariables,
   UpdateTagsMutation,
@@ -9,15 +8,17 @@ import {
   DeleteTagsMutation,
   DeleteTagsMutationVariables,
   DeleteTagsDocument,
-} from "@/__generated__/queries/queries.graphql";
+} from "@/__generated__/queries/mutations.graphql";
 import {
   TagsQuery,
   TagsQueryVariables,
+  Setting,
 } from "@/__generated__/queries/queries.graphql";
 import { EditableCell, EditableRow } from "@/components/ediitable-table";
 import { initializeApollo } from "@/graphql/apollo";
 import { TagsDocument } from "@/graphql/queries/queries.graphql";
 import CustomLayout from "@/components/layouts/Layout";
+import withAuthCheck from "../hoc/withAuth";
 type EditableTableProps = Parameters<typeof Table>[0];
 
 interface DataType {
@@ -31,22 +32,25 @@ interface DataType {
 
 type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
 
-const EditableTable = ({
-  data,
-  settings,
-}: {
-  data: DataType[];
-  settings: Setting;
-}) => {
-  const [dataSource, setDataSource] = useState<DataType[]>(
-    data.map(item => ({
-      ...item,
-      key: item.id,
-      posts: item.posts,
-      desc: item.desc,
-    })),
-  );
-  const [count, setCount] = useState(2);
+const EditableTable = ({ settings }: { settings: Setting }) => {
+  const [dataSource, setDataSource] = useState<DataType[]>([]);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    fetchTags().then(response => {
+      if (!response.props.error) {
+        setDataSource(
+          response.props.data.map(item => ({
+            ...item,
+            key: item.id,
+            posts: item.posts,
+            desc: item.desc || "",
+          })),
+        );
+        setCount(response.props.data.length + 1);
+      }
+    });
+  }, []);
 
   const handleDelete = async (key: React.Key) => {
     const tagToDelete = [...dataSource].filter(item => item.key === key);
@@ -104,7 +108,7 @@ const EditableTable = ({
     });
 
     const { name, id, desc, slug } = row;
-    const client = initializeApollo();
+    const client = await initializeApollo();
     await client.mutate<UpdateTagsMutation, UpdateTagsMutationVariables>({
       mutation: UpdateTagsDocument,
       variables: {
@@ -115,15 +119,14 @@ const EditableTable = ({
   };
 
   return (
-    <CustomLayout settings={settings}>
+    <>
       <PageHeader
         onBack={() => window.history.back()}
         className="site-page-header"
         title="Tags"
-        style={{ padding: 10 }}
       ></PageHeader>
-      <Content style={{ margin: "24px 16px 0" }}>
-        <div>
+      <Content style={{ margin: "16px 0px 0" }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Button
             onClick={handleAdd}
             type="primary"
@@ -140,30 +143,45 @@ const EditableTable = ({
           />
         </div>
       </Content>
-    </CustomLayout>
+    </>
   );
 };
 
-export default EditableTable;
+const EditableTableWithAuth = withAuthCheck(EditableTable);
+EditableTableWithAuth.layout = CustomLayout;
+export default EditableTableWithAuth;
 
-export async function getServerSideProps(context) {
-  const apolloClient = initializeApollo({}, context);
+export async function fetchTags() {
+  const apolloClient = await initializeApollo();
 
   const tags = await apolloClient.query<TagsQuery, TagsQueryVariables>({
     query: TagsDocument,
   });
-  const data = tags.data.tags.map(item => {
-    return { ...item, posts: item.posts?.count };
-  });
-  return {
-    props: {
-      data,
-    },
-  };
+  if (tags.data.tags?.__typename === "TagsNode") {
+    const data = tags.data.tags.rows.map(item => {
+      return { ...item, posts: item.posts?.count };
+    });
+    return {
+      props: {
+        data,
+        error: "",
+      },
+    };
+  } else {
+    return {
+      props: {
+        data: [],
+        error:
+          tags.data.tags?.__typename === "TagsError"
+            ? tags.data.tags.message
+            : "",
+      },
+    };
+  }
 }
 
 async function deleteTagApi(id) {
-  const apolloClient = initializeApollo();
+  const apolloClient = await initializeApollo();
 
   const tags = await apolloClient.mutate<
     DeleteTagsMutation,

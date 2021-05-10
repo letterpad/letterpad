@@ -23,7 +23,7 @@ type Setting {
   social_facebook: String!
   social_instagram: String!
   social_github: String!
-  displayAuthorInfo: String!
+  displayAuthorInfo: Boolean!
   cloudinary_key: String!
   cloudinary_name: String!
   cloudinary_secret: String!
@@ -36,6 +36,7 @@ type Setting {
   banner: Image!
   site_logo: Image!
   site_favicon: Image!
+  client_token: String!
 }
 
 input InputNavigation {
@@ -63,7 +64,7 @@ input OptionInputType {
   social_facebook: String
   social_instagram: String
   social_github: String
-  displayAuthorInfo: String
+  displayAuthorInfo: Boolean
   cloudinary_key: String
   cloudinary_name: String
   cloudinary_secret: String
@@ -78,8 +79,14 @@ input OptionInputType {
   site_favicon: InputImage
 }
 
+type SettingError implements LetterpadError {
+  message: String!
+}
+
+union SettingResponse = Setting | SettingError
+
 type Query {
-  settings(option: String): Setting
+  settings: SettingResponse!
 }
 
 type Mutation {

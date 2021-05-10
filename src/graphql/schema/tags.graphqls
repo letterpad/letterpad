@@ -15,10 +15,6 @@ type EditTaxResponse {
   ok: Boolean!
 }
 
-type Query {
-  tags(filters: TagsFilters): [Tags!]!
-}
-
 type TagsError implements LetterpadError {
   message: String!
 }
@@ -35,6 +31,15 @@ input InputTags {
   name: String
   desc: String
   slug: String
+}
+
+type TagsNode {
+  rows: [Tags!]!
+}
+union TagsResponse = TagsNode | TagsError
+
+type Query {
+  tags(filters: TagsFilters): TagsResponse
 }
 
 type Mutation {

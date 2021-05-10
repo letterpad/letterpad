@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons";
 
 import { useRouter } from "next/router";
-import { signout } from "next-auth/client";
+import { signOut } from "next-auth/client";
 
 const menuItems = {
   "/posts": "1",
@@ -96,7 +96,7 @@ const Navigation = ({ stats }) => {
         key={menuItems["/logout"]}
         icon={<LogoutOutlined />}
         onClick={() =>
-          signout({
+          signOut({
             redirect: true,
           })
         }

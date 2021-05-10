@@ -7,10 +7,12 @@ import {
   MeDocument,
   MeQuery,
   MeQueryVariables,
+} from "@/__generated__/queries/queries.graphql";
+import {
   UpdateAuthorMutation,
   UpdateAuthorMutationVariables,
   UpdateAuthorDocument,
-} from "@/__generated__/queries/queries.graphql";
+} from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
 import {
   InputAuthor,
@@ -27,24 +29,29 @@ const { Panel } = Collapse;
 
 type ValueOf<T> = T[keyof T];
 
-function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
+function Profile() {
   const [me, setMe] = useState<Author>();
   const [draft, setDraft] = useState<InputAuthor>();
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (data.__typename === "Author") {
-      setMe(data as Author);
-      setDraft({ id: data.id });
-    }
+    fetchAuthor().then(response => {
+      if (!response) {
+        return;
+      }
 
-    if (data.__typename === "AuthorNotFoundError") {
-      setError(data.message);
-    }
+      if (response.status && response.author) {
+        setMe(response.author as Author);
+      }
+
+      if (!response.status) {
+        setError(response.message);
+      }
+    });
   }, []);
 
   const updateAuthor = async (data?: InputAuthor) => {
-    const apolloClient = initializeApollo();
+    const apolloClient = await initializeApollo();
 
     if (!me) return;
 
@@ -57,7 +64,7 @@ function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
     >({
       mutation: UpdateAuthorDocument,
       variables: {
-        author: { ...draft, ...data },
+        author: { ...draft, ...data, id: me.id },
       },
     });
   };
@@ -79,18 +86,14 @@ function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
   if (!me) return null;
   if (error) return <ErrorMessage title="Profile" description={error} />;
   return (
-    <CustomLayout settings={settings}>
+    <>
       <PageHeader
         onBack={() => window.history.back()}
         className="site-page-header"
         title="Profile"
-        style={{ padding: 10 }}
       ></PageHeader>
-      <Content style={{ margin: "24px 16px 0" }}>
-        <div
-          className="site-layout-background"
-          style={{ padding: 24, minHeight: 360 }}
-        >
+      <Content style={{ margin: "16px 0px 0" }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
@@ -178,22 +181,32 @@ function Profile({ data, settings }: { data: MeResponse; settings: Setting }) {
           </Form>
         </div>
       </Content>
-    </CustomLayout>
+    </>
   );
 }
 
-export default withAuthCheck(Profile);
+const ProfileWithAuth = withAuthCheck(Profile);
+ProfileWithAuth.layout = CustomLayout;
+export default ProfileWithAuth;
 
-export async function getServerSideProps(context) {
-  const apolloClient = initializeApollo({}, context);
-
+export async function fetchAuthor() {
+  const apolloClient = await initializeApollo();
   const me = await apolloClient.query<MeQuery, MeQueryVariables>({
     query: MeDocument,
   });
 
-  return {
-    props: {
-      data: me.data.me,
-    },
-  };
+  if (me.data.me?.__typename === "Author") {
+    return {
+      author: me.data.me,
+      message: "",
+      status: true,
+    };
+  }
+  if (me.data.me?.__typename === "AuthorNotFoundError") {
+    return {
+      author: null,
+      message: me.data.me.message,
+      status: false,
+    };
+  }
 }

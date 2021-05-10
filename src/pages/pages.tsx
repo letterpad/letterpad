@@ -57,11 +57,11 @@ function Pages({ settings }: IProps) {
   }
   const source = postsNode.__typename === "PostsNode" ? postsNode.rows : [];
   return (
-    <CustomLayout settings={settings}>
+    <>
       <PageHeader
         className="site-page-header"
         onBack={() => window.history.back()}
-        title="Posts"
+        title="Pages"
         extra={[
           <Button
             key="1"
@@ -72,11 +72,8 @@ function Pages({ settings }: IProps) {
           </Button>,
         ]}
       ></PageHeader>
-      <Content style={{ margin: "24px 16px 0" }}>
-        <div
-          className="site-layout-background"
-          style={{ padding: 24, minHeight: 360 }}
-        >
+      <Content style={{ margin: "16px 0px 0" }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Filters
             onStatusChange={status => setFilters({ ...filters, status })}
             onOrderChange={sortBy => setFilters({ ...filters, sortBy })}
@@ -90,14 +87,16 @@ function Pages({ settings }: IProps) {
           />
         </div>
       </Content>
-    </CustomLayout>
+    </>
   );
 }
 
-export default withAuthCheck(Pages);
+const PagesWithAuth = withAuthCheck(Pages);
+PagesWithAuth.layout = CustomLayout;
+export default PagesWithAuth;
 
 async function fetchPostsFromAPI(filters: PostsFilters) {
-  const apolloClient = initializeApollo();
+  const apolloClient = await initializeApollo();
 
   const post = await apolloClient.query<PostsQuery, PostsQueryVariables>({
     query: PostsDocument,
@@ -130,13 +129,13 @@ const columns = [
     key: "excerpt",
     responsive: ["md"] as Breakpoint[],
   },
-  {
-    title: "Author",
-    dataIndex: "author",
-    key: "author",
-    responsive: ["lg"] as Breakpoint[],
-    render: (author: Author) => author.name,
-  },
+  // {
+  //   title: "Author",
+  //   dataIndex: "author",
+  //   key: "author",
+  //   responsive: ["lg"] as Breakpoint[],
+  //   render: (author: Author) => author.name,
+  // },
   {
     title: "Status",
     dataIndex: "status",

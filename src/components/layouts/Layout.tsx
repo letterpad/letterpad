@@ -11,9 +11,9 @@ import {
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navigation from "./Menu";
-import "antd/dist/antd.css";
 import Logo from "../Logo";
 import { initializeApollo } from "@/graphql/apollo";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 interface IProps {
   settings: Setting;
@@ -21,12 +21,16 @@ interface IProps {
 }
 
 const CustomLayout = ({ children, settings }: IProps) => {
-  const [stats, setStats] = useState<Stats>();
+  const [stats, setStats] = useState<Stats>({});
   const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    getStats().then(res => setStats(res));
+    getStats().then(res => {
+      if (res?.__typename === "Stats") {
+        setStats(res);
+      }
+    });
   }, []);
 
   if (!settings) return null;
@@ -55,6 +59,8 @@ const CustomLayout = ({ children, settings }: IProps) => {
       >
         <Logo src={settings.site_logo.src} />
         <Navigation stats={stats} />
+
+        <ThemeSwitcher />
       </Sider>
       <Layout
         className="site-layout"
@@ -80,10 +86,21 @@ const CustomLayout = ({ children, settings }: IProps) => {
           >
             <Logo src={settings.site_logo.src} />
             <Navigation stats={stats} />
+            <ThemeSwitcher />
           </StyledDrawer>
         </nav>
-        {children}
-        <Footer style={{ textAlign: "center" }}>Letterpad</Footer>
+        <div style={{ minHeight: "calc(100vh - 80px)" }}>{children}</div>
+        <StyledFooter
+          style={{
+            textAlign: "center",
+            background: "@layout-header-background",
+          }}
+        >
+          Letterpad <br />
+          <small>
+            {/* Client Token: <strong>{settings.client_token}</strong> */}
+          </small>
+        </StyledFooter>
       </Layout>
     </Layout>
   );
@@ -92,9 +109,10 @@ const CustomLayout = ({ children, settings }: IProps) => {
 export default CustomLayout;
 
 async function getStats() {
-  const client = initializeApollo();
+  const client = await initializeApollo();
   const stats = await client.query<StatsQuery, StatsQueryVariables>({
     query: StatsDocument,
+    fetchPolicy: "network-only",
   });
 
   return stats.data.stats;
@@ -107,4 +125,8 @@ const StyledDrawer = styled(Drawer)`
   .ant-drawer-body {
     padding: 0px;
   }
+`;
+
+const StyledFooter = styled(Footer)`
+  background: @layout-sider-background;
 `;

@@ -57,7 +57,7 @@ export default async (
     files = [files];
   }
 
-  const apollo = initializeApollo();
+  const apollo = await initializeApollo();
   const settings = await apollo.query<SettingsQuery, SettingsQueryVariables>({
     query: SettingsDocument,
     fetchPolicy: "network-only",

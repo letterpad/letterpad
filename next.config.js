@@ -1,7 +1,9 @@
 module.exports = {
-  compress: false,
   typescript: {
     ignoreBuildErrors: true,
+  },
+  images: {
+    domains: ["images.unsplash.com"],
   },
   future: {
     webpack5: true,
@@ -11,6 +13,11 @@ module.exports = {
     return [
       {
         source: "/",
+        destination: "/admin/posts",
+        permanent: true,
+      },
+      {
+        source: "/admin",
         destination: "/admin/posts",
         permanent: true,
       },

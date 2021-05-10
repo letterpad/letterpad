@@ -1,9 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 90%;
 }
 
 a {
@@ -95,4 +97,24 @@ a {
   100% {
     transform: rotate(360deg);
   }
+}
+@media (max-width: 900px) {
+  .register .ant-form-item {
+    margin-bottom: 12px;
+  }
+  .register .ant-form-item-label {
+    padding-bottom: 0px;
+  }
+}
+
+table tr {
+  cursor: pointer;
+}
+
+.lp-editor * {
+  font-size: 100%;
+}
+
+.lp-editor .code-block pre {
+  font-family: "Fira Code";
 }

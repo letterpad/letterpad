@@ -2,6 +2,14 @@
   "presets": ["next/babel"],
   "plugins": [
     [
+      "styled-components",
+      {
+        "ssr": false,
+        "displayName": true,
+        "preprocess": false
+      }
+    ],
+    [
       "styless",
       {
         "import": "~antd/lib/style/themes/default.less",
