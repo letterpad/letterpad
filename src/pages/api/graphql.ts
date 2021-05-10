@@ -20,6 +20,7 @@ const apolloServer = new ApolloServer({
     const session = await getSession(context);
     return { ...context, models, author_id, session };
   },
+  introspection: true,
 });
 
 export const config = {
