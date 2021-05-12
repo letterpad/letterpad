@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import InfiniteScrollList from "../InfiniteScrollList";
 import { Media } from "@/__generated__/type-defs.graphqls";
 import { Input } from "antd";
+import nextConfig from "next.config";
 
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];
 }
 const Unsplash: React.FC<IProps> = ({ renderer }) => {
-  const url = new URL("/api/unsplash", process.env.ROOT_URL);
+  const url = (nextConfig.basePath + "/api/unsplash").replace("//api", "");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Media[]>([]);

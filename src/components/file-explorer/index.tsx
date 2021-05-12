@@ -13,6 +13,7 @@ interface IProps {
   mediaProvider: MediaProvider;
   switchProvider: (provider: MediaProvider) => void;
   multi: boolean;
+  onInsert: (images: { [urls: string]: Image }) => Promise<unknown[]>;
 }
 const FileExplorer = ({
   isVisible,
@@ -20,6 +21,7 @@ const FileExplorer = ({
   mediaProvider,
   switchProvider,
   multi,
+  onInsert,
 }: IProps) => {
   const isUnsplash = mediaProvider === MediaProvider.Unsplash;
   const isInternal = mediaProvider === MediaProvider.Letterpad;
@@ -30,9 +32,15 @@ const FileExplorer = ({
 
   const [selectedUrls, setSelection] = useState<{ [url: string]: Image }>({});
 
-  // const onSelect = (images: { [url: string]: Image }) => {
-  //   setSelection(images);
-  // };
+  const insertMedia = async () => {
+    // get only the urls in an array
+    try {
+      await onInsert(selectedUrls);
+    } catch (e) {
+      // notify.show("Something unexpected happened.", "error");
+    }
+    setTimeout(handleCancel, 0);
+  };
 
   const onMediaSelected = (media: Media) => {
     let urls = { ...selectedUrls };
@@ -66,7 +74,7 @@ const FileExplorer = ({
       />
     ));
   };
-
+  const hasSelectedImages = Object.keys(selectedUrls).length > 0;
   if (!isVisible) return null;
   return (
     <Modal
@@ -77,6 +85,11 @@ const FileExplorer = ({
         <Button key="back" onClick={handleCancel}>
           Cancel
         </Button>,
+        hasSelectedImages ? (
+          <Button key="insert" onClick={insertMedia}>
+            Insert
+          </Button>
+        ) : null,
         <Button type="primary" onClick={() => switchProvider(toggleProvider)}>
           {isUnsplash ? "My Media" : "Search Online"}
         </Button>,

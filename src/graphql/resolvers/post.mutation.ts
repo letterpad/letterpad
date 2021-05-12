@@ -65,7 +65,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
   },
 
   async updatePost(_parent, args, context, _info) {
-    if (!context.session?.user) {
+    if (!context.session?.user.id) {
       return {
         __typename: "PostError",
         message: "Authentication failed",

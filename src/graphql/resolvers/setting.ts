@@ -1,8 +1,9 @@
+import { Navigation } from "./../../../__generated__/src/graphql/type-defs.graphqls";
 import { ResolverContext } from "../apollo";
-import {
+import type {
   QueryResolvers,
   MutationResolvers,
-  Setting,
+  Setting as SettingType,
   InputImage,
 } from "@/__generated__/type-defs.graphqls";
 import fs from "fs";
@@ -17,6 +18,37 @@ const SECURE_SETTINGS = [
 ];
 
 const cssPath = path.join(process.cwd(), "public/css/custom.css");
+
+const Setting = {
+  menu: ({ menu }) => {
+    return getMenuWithSanitizedSlug(JSON.parse(menu as string));
+  },
+
+  banner: ({ banner }) => {
+    const img = JSON.parse(banner as string);
+    if (img.src && !img.src.startsWith("http")) {
+      img.src = process.env.ROOT_URL + img.src;
+    }
+    return img;
+  },
+
+  site_logo: ({ site_logo }) => {
+    const img = JSON.parse(site_logo as string);
+    if (img.src && !img.src.startsWith("http")) {
+      img.src = process.env.ROOT_URL + img.src;
+    }
+    return img;
+  },
+
+  site_favicon: ({ site_favicon }) => {
+    const img = JSON.parse(site_favicon as string);
+    if (img.src && !img.src.startsWith("http")) {
+      img.src = process.env.ROOT_URL + img.src;
+    }
+    return img;
+  },
+};
+
 const Query: QueryResolvers<ResolverContext> = {
   settings: async (_root, _args = {}, { session, author_id }) => {
     const authorId = session?.user.id || author_id;
@@ -46,25 +78,27 @@ const Query: QueryResolvers<ResolverContext> = {
 
     return {
       __typename: "Setting",
-      ...((setting.get() as unknown) as Setting),
+      ...((setting as unknown) as SettingType),
     };
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {
   updateOptions: async (_root, args, { session }) => {
-    if (!session?.user) return {} as Setting;
+    if (!session?.user.id) return {} as SettingType;
 
     const author = await models.Author.findOne({
       where: { id: session.user.id },
     });
-    const _setting = await author?.getSetting();
+
+    if (!author) return {};
+    const _setting = await author.getSetting();
 
     let promises = args.options.map(setting => {
       const option = Object.keys(setting)[0] as keyof Omit<
-        Setting,
+        SettingType,
         "__typename"
       >;
-      let value = Object.values(setting)[0] as ValueOf<Setting>;
+      let value = Object.values(setting)[0] as ValueOf<SettingType>;
 
       if (setting.css) {
         fs.writeFileSync(cssPath, setting.css);
@@ -80,7 +114,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
         value = JSON.stringify(value);
       }
 
-      return _setting?.setDataValue(option, value);
+      // return _setting?.setDataValue(option, value);
+      return models.Setting.update(
+        { [option]: value },
+        { where: { id: _setting.id }, logging: true },
+      );
     });
 
     try {
@@ -92,9 +130,25 @@ const Mutation: MutationResolvers<ResolverContext> = {
     const setting = await models.Setting.findOne({
       where: { id: session.user.id },
     });
+    const a = (setting as unknown) as SettingType;
 
-    return (setting as unknown) as Setting;
+    return a;
   },
 };
 
-export default { Query, Mutation };
+export default { Query, Mutation, Setting };
+
+function getMenuWithSanitizedSlug(menu: Navigation[]) {
+  return menu.map(item => {
+    switch (item.type) {
+      case "tag":
+      case "page":
+        item.slug = "/" + item.type + "/" + item.slug;
+        break;
+      case "custom":
+        item.slug = item.slug;
+        break;
+    }
+    return item;
+  });
+}

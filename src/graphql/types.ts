@@ -49,3 +49,13 @@ export type BlobCorrected = Blob & {
   originalname: string;
   hash: string;
 };
+
+interface IImageAttrs {
+  src: string;
+  sizes: string;
+  "data-srcset": string;
+  srcset: string[];
+  width: string;
+  loading: "lazy";
+}
+export type IImageAttrsResult = IImageAttrs | {};

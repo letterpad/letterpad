@@ -31,10 +31,22 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
   const isPublished = post.status === PostStatusOptions.Published;
   const isPost = post.type === PostTypes.Post;
   const postVerb = isPost ? "Post" : "Page";
+  const rePublishBtnDisabled = post.md_draft === "" || post.md_draft == post.md;
   return (
     <>
       <Button type="primary" onClick={showDrawer}>
         Open
+      </Button>
+      <Button
+        type="primary"
+        disabled={rePublishBtnDisabled}
+        onClick={e => {
+          setPostAttribute({
+            status: PostStatusOptions.Published,
+          });
+        }}
+      >
+        Republish
       </Button>
       <Drawer
         title="Settings"

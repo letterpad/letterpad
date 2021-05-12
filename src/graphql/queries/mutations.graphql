@@ -139,6 +139,8 @@ mutation updatePost($data: InputUpdatePost) {
       ...Partial
       author {
         name
+        bio
+        avatar
       }
       tags {
         id
