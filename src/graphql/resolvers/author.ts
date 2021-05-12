@@ -160,7 +160,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
     const author = await models.Author.findOne({
       where: { email: args.data?.email },
     });
-
     if (author) {
       const authenticated = await bcrypt.compare(
         args.data?.password || "",

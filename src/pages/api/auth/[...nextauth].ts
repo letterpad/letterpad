@@ -24,7 +24,6 @@ const providers = [
     },
     authorize: async (credentials: ICredentials) => {
       const apolloClient = await initializeApollo({});
-
       const result = await apolloClient.mutate<
         LoginMutation,
         LoginMutationVariables

@@ -13,6 +13,7 @@ import models from "../db/models";
 import logger from "../../../shared/logger";
 import { PostTypes } from "@/__generated__/type-defs.graphqls";
 import debug from "debug";
+import { setResponsiveImages } from "./helpers";
 
 interface IPostCondition {
   conditions: {
@@ -46,6 +47,9 @@ const Post = {
       const tags = await post.getTags();
       return tags.map(tag => tag.get());
     }
+  },
+  html: async ({ html }) => {
+    return setResponsiveImages(html);
   },
 };
 
@@ -115,6 +119,12 @@ const Query: QueryResolvers<ResolverContext> = {
         query.conditions.where.status = { [Op.eq]: args.filters.status } as any;
       }
 
+      if (!session?.user.id) {
+        query.conditions.where.status = {
+          [Op.eq]: PostStatusOptions.Published,
+        } as any;
+      }
+
       // sort
       if (args?.filters?.sortBy) {
         query.conditions.order = [["updatedAt", args.filters.sortBy]];
@@ -166,17 +176,17 @@ const Query: QueryResolvers<ResolverContext> = {
         }
 
         const taxTag = await models.Tags.findOne({
-          where: { slug: tagSlug },
+          where: { slug: tagSlug.split("/").pop() as string },
         });
 
         if (taxTag) {
           const posts = await taxTag.getPosts(query.conditions);
           return {
+            __typename: "PostsNode",
             rows: posts.map(p => p.get()),
             count: await taxTag.countPosts(query.conditions),
           };
         }
-
         return {
           __typename: "PostsNode",
           rows: [],
@@ -189,7 +199,6 @@ const Query: QueryResolvers<ResolverContext> = {
         const tag = await models.Tags.findOne({
           where: { name: args.filters.tag },
         });
-
         if (tag) {
           const posts = await tag.getPosts(query.conditions);
           return {
@@ -204,6 +213,7 @@ const Query: QueryResolvers<ResolverContext> = {
           };
         }
       }
+
       const posts = await models.Post.findAll(query.conditions);
       const count = await models.Post.count(query.conditions);
       debug("letterpad:post:update")(query.conditions);
@@ -239,7 +249,7 @@ const Query: QueryResolvers<ResolverContext> = {
       }
     }
 
-    if (!session?.user) {
+    if (!session?.user.id) {
       conditions.where.status = PostStatusOptions.Published;
       delete conditions.where.author_id;
     }
@@ -249,7 +259,7 @@ const Query: QueryResolvers<ResolverContext> = {
     }
 
     if (args.filters.slug) {
-      conditions.where.slug = args.filters.slug;
+      conditions.where.slug = args.filters.slug.split("/").pop();
     }
 
     if (previewHash) {

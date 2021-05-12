@@ -145,10 +145,6 @@ export default function initSetting(sequelize) {
       menu: {
         type: DataTypes.STRING,
         defaultValue: "",
-        get() {
-          const value = this.menu;
-          return getMenuWithSanitizedSlug(JSON.parse(value as string));
-        },
       },
       css: {
         type: DataTypes.STRING,
@@ -177,38 +173,14 @@ export default function initSetting(sequelize) {
       banner: {
         type: DataTypes.STRING,
         defaultValue: "",
-        get() {
-          const value = this.banner;
-          const img = JSON.parse(value as string);
-          if (!img.src.startsWith("http")) {
-            img.src = process.env.ROOT_URL + img.src;
-          }
-          return img;
-        },
       },
       site_logo: {
         type: DataTypes.STRING,
         defaultValue: "",
-        get() {
-          const value = this.site_logo;
-          const img = JSON.parse(value as string);
-          if (!img.src.startsWith("http")) {
-            img.src = process.env.ROOT_URL + img.src;
-          }
-          return img;
-        },
       },
       site_favicon: {
         type: DataTypes.STRING,
         defaultValue: "",
-        get() {
-          const value = this.site_favicon;
-          const img = JSON.parse(value as string);
-          if (!img.src.startsWith("http")) {
-            img.src = process.env.ROOT_URL + img.src;
-          }
-          return img;
-        },
       },
     },
     {
@@ -223,21 +195,6 @@ export default function initSetting(sequelize) {
 export function associateSetting(): void {
   Setting.belongsTo(Author, {
     foreignKey: "setting_id",
-  });
-}
-
-function getMenuWithSanitizedSlug(menu: Navigation[]) {
-  return menu.map(item => {
-    switch (item.type) {
-      case "tag":
-      case "page":
-        item.slug = "/" + item.type + "/" + item.slug;
-        break;
-      case "custom":
-        item.slug = item.slug;
-        break;
-    }
-    return item;
   });
 }
 

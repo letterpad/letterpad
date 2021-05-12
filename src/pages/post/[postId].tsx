@@ -15,6 +15,7 @@ import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import Actions from "@/components/post-meta";
 import {
+  Image,
   PostStatusOptions,
   PostTypes,
 } from "@/__generated__/type-defs.graphqls";
@@ -31,9 +32,9 @@ export enum MediaProvider {
   Unsplash = "unsplash",
   Letterpad = "letterpad",
 }
+let editor;
 function Post() {
   let changeTimeout;
-
   const router = useRouter();
 
   const [post, setPost] = useState<PostQuery["post"]>();
@@ -66,7 +67,10 @@ function Post() {
 
   const setPostAttribute = async (attrs: Omit<InputUpdatePost, "id">) => {
     setPost({ ...post, ...attrs });
-    updatePostRequest(attrs, post.id);
+    const result = await updatePostRequest(attrs, post.id);
+    if (result.data?.updatePost.__typename === "Post") {
+      setPost(result.data.updatePost);
+    }
   };
 
   const onMediaBrowse = () => {
@@ -79,11 +83,27 @@ function Post() {
     setFileExplorerOpen(false);
   };
 
+  const insertImageUrlInEditor = async (images: { [url: string]: Image }) => {
+    const urls = Object.keys(images);
+    const insertPromises = urls.map(url => {
+      return new Promise((resolve, reject) => {
+        try {
+          editor.insertImageUrl(url);
+          resolve(true);
+        } catch (e) {
+          reject();
+          console.error(e);
+        }
+      });
+    });
+    return Promise.all(insertPromises);
+  };
+
   const tagColor =
     post.status === PostStatusOptions.Published ? "green" : "orange";
 
   const isPost = post.type === PostTypes.Post;
-  let editor;
+
   const setRef = _editor => {
     editor = _editor;
   };
@@ -125,6 +145,7 @@ function Post() {
           />
           <LetterpadEditor
             dark={localStorage.theme === "dark"}
+            getEditorInstance={setRef}
             onImageBrowse={onMediaBrowse}
             uploadImage={(file: File) => uploadImage([file])}
             defaultValue={post.md_draft || post.md}
@@ -139,13 +160,14 @@ function Post() {
               }, 2000);
             }}
             placeholder="Write a story.."
-            ref={setRef}
+            // ref={setRef}
           />
           <FileExplorer
             multi={true}
             mediaProvider={mediaProvider}
             isVisible={fileExplorerOpen}
             handleCancel={onFileExplorerClose}
+            onInsert={insertImageUrlInEditor}
             switchProvider={mediaProvider => setMediaProvider(mediaProvider)}
           />
         </div>
@@ -174,7 +196,10 @@ const updatePostRequest = async (
   postId: number,
 ) => {
   const apolloClient = await initializeApollo();
-  await apolloClient.mutate<UpdatePostMutation, UpdatePostMutationVariables>({
+  return await apolloClient.mutate<
+    UpdatePostMutation,
+    UpdatePostMutationVariables
+  >({
     mutation: UpdatePostDocument,
     variables: {
       data: { ...removeTypenames(attrs), id: postId },

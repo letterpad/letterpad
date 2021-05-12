@@ -16,7 +16,10 @@ function getBase64(file) {
 }
 
 function beforeUpload(file: File) {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+  const isJpgOrPng =
+    file.type === "image/jpeg" ||
+    file.type === "image/png" ||
+    file.type === "image/webp";
   if (!isJpgOrPng) {
     message.error("You can only upload JPG/PNG file!");
   }
@@ -45,6 +48,7 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
       setFileList([{ url, status: "done", uid: "1", size: 200, name }]);
     }
   }, []);
+
   const handleChange = async (info: UploadChangeParam) => {
     if (info.file.status === "uploading") {
       setLoading(true);
@@ -53,6 +57,15 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
       onDone(info.file.response);
       setFileList(info.fileList);
       return;
+    } else if (info.file.status === "removed") {
+      onDone([
+        {
+          src: "",
+          name: "",
+          error: "",
+          size: { width: 0, height: 0, type: "" },
+        },
+      ]);
     }
     setFileList(info.fileList);
   };

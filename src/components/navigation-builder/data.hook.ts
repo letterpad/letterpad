@@ -12,7 +12,12 @@ import { useEffect, useState } from "react";
 import { initializeApollo } from "@/graphql/apollo";
 import { Post, PostTypes, Tags } from "@/__generated__/type-defs.graphqls";
 
-function useNavigationData() {
+interface IReturn {
+  loading: boolean;
+  collection: Post[] | [] | Tags[];
+}
+
+function useNavigationData(): IReturn {
   const [tags, setTags] = useState<Tags[]>([]);
   const [pages, setPages] = useState<Post[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -38,12 +43,17 @@ function useNavigationData() {
   useEffect(() => {
     async function init() {
       const { tagsData, pagesData } = await fetchData();
-      if (tagsData.data && tagsData.data.tags.length > 0) {
-        setTags(normalizeTags(tagsData.data.tags));
+      if (tagsData.data.tags?.__typename === "TagsNode") {
+        if (tagsData.data.tags.rows.length > 0) {
+          setTags(normalizeTags(tagsData.data.tags.rows));
+        }
       }
-      const rows = pagesData?.data?.posts?.rows;
-      if (pagesData.data && rows && rows.length > 0) {
-        setPages(normalizePages(pagesData.data.posts));
+
+      if (pagesData.data.posts.__typename === "PostsNode") {
+        const { rows } = pagesData.data.posts;
+        if (pagesData.data && rows && rows.length > 0) {
+          setPages(normalizePages(pagesData.data.posts));
+        }
       }
 
       if (!tagsData.loading && !pagesData.loading) {
@@ -59,7 +69,7 @@ function useNavigationData() {
     label: "Rss Feed of your site",
     original_name: "Rss",
   };
-  return { loading, data: addIds([...pages, ...tags, { ...rss }]) };
+  return { loading, collection: addIds([...pages, ...tags, { ...rss }]) };
 }
 
 export { useNavigationData };

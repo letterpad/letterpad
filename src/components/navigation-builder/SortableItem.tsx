@@ -34,6 +34,7 @@ const SortableItem = SortableElement((props: IProps) => {
     const changedItem = {
       ...item,
       ...change,
+      slug: change.slug.split("/").pop(),
     };
     const error = {
       nameError: "",
@@ -51,7 +52,7 @@ const SortableItem = SortableElement((props: IProps) => {
 
     if (!itemFromDropdown && !isCustomUrl) {
       error.error = "Should be an url or an item from dropdown";
-      changedItem.type = "";
+      // changedItem.type = "";
     } else if (isCustomUrl) {
       changedItem.type = NavigationType.Custom;
     } else if (itemFromDropdown) {
@@ -120,7 +121,7 @@ const SortableItem = SortableElement((props: IProps) => {
 export default SortableItem;
 
 function getItemBySlug(data: Navigation[], slug: string) {
-  const arr = data.filter(item => item.slug === slug);
+  const arr = data.filter(item => item.slug === "/" + item.type + "/" + slug);
   if (arr) {
     return arr[0];
   }
@@ -128,7 +129,8 @@ function getItemBySlug(data: Navigation[], slug: string) {
 }
 
 function isValidURL(url: string) {
-  var res = url.match(
+  if (!url) return false;
+  const res = url.match(
     /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
   );
   return res !== null;

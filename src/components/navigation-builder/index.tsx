@@ -1,30 +1,20 @@
 import { Container, Grid } from "./Navigation.css";
 import React, { useState } from "react";
-import { SortableContainer, arrayMove } from "react-sortable-hoc";
-
-import SortableItem from "./SortableItem";
+import { arrayMove } from "react-sortable-hoc";
 import { useNavigationData } from "./data.hook";
-
 import {
   Navigation as NavigationItemType,
   NavigationType,
 } from "@/__generated__/type-defs.graphqls";
 import { Button } from "antd";
-
-interface IMenuWithError extends NavigationItemType {
-  hasError?: boolean;
-  id: number;
-}
-interface INavigationBuilderProps {
-  menuData: NavigationItemType[];
-  updateOption: (menu: NavigationItemType[]) => void;
-}
+import SortableList from "./SortableList";
+import { IMenuWithError, INavigationBuilderProps } from "shared/types";
 
 const Navigation: React.FC<INavigationBuilderProps> = ({
   menuData,
   updateOption,
 }) => {
-  const { data, loading } = useNavigationData();
+  const { collection, loading } = useNavigationData();
   const [menu, setMenu] = useState<IMenuWithError[]>([...addIds(menuData)]);
 
   if (loading) return null;
@@ -84,17 +74,17 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
         <SortableList
           items={menu}
           onSortEnd={onSortEnd}
-          source={data}
+          source={collection}
           onChange={onChange}
           onRemove={onRemove}
           hideSortableGhost={false}
           lockAxis="y"
           lockToContainerEdges={true}
-          useDragHandle={true}
-          shouldCancelStart={e => {
-            //@ts-ignore
-            return !e.target.classList.contains("dragger");
-          }}
+          pressThreshold={100}
+          // shouldCancelStart={e => {
+          //   //@ts-ignore
+          //   return !e.target.classList.contains("dragger");
+          // }}
         />
       </div>
       <Button size="small" type="primary" onClick={addNewRow}>
@@ -105,27 +95,6 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
 };
 
 export default Navigation;
-
-const SortableList = SortableContainer(
-  ({ items, source, onChange, onRemove }) => {
-    return (
-      <div>
-        {items.map((value, index: number) => (
-          <SortableItem
-            key={value.id}
-            index={index}
-            value={value}
-            source={source}
-            onChange={change => onChange(index, change)}
-            onRemove={_e => {
-              onRemove(index);
-            }}
-          />
-        ))}
-      </div>
-    );
-  },
-);
 
 function prepareForBackend(newMenu: NavigationItemType[]) {
   return newMenu.map(item => {

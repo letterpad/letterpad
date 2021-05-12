@@ -100,7 +100,7 @@ export default async (
           result = await uploadToInternal(
             file,
             uploadPath,
-            nextConfig.basePath + "/uploads/" + filename,
+            "/uploads/" + filename,
           );
         }
         await upsertMedia(result, session.user.id);
