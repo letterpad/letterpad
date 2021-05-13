@@ -261,6 +261,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
                   await previousPostRaw.addTag(newTag);
                   logger.debug("Linked tags to post", tag.name);
                 }
+              } else {
+                await previousPostRaw.addTag(tagsFound[0]);
+                logger.debug("Linked tags to post", tag.name);
               }
             }
           }

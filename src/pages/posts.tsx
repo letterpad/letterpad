@@ -67,7 +67,6 @@ function Posts({ settings }: IProps) {
     <>
       <PageHeader
         className="site-page-header"
-        onBack={() => window.history.back()}
         title="Posts"
         extra={[
           <Button

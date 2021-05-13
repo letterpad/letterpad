@@ -120,11 +120,7 @@ const EditableTable = ({ settings }: { settings: Setting }) => {
 
   return (
     <>
-      <PageHeader
-        onBack={() => window.history.back()}
-        className="site-page-header"
-        title="Tags"
-      ></PageHeader>
+      <PageHeader className="site-page-header" title="Tags"></PageHeader>
       <Content style={{ margin: "16px 0px 0" }}>
         <div className="site-layout-background" style={{ padding: 24 }}>
           <Button

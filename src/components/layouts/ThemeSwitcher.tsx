@@ -21,8 +21,8 @@ const ThemeSwitcher = () => {
   return (
     <div style={{ position: "absolute", bottom: "0px", padding: "20px" }}>
       <Switch
-        checkedChildren="light"
-        unCheckedChildren="dark"
+        checkedChildren="🔆"
+        unCheckedChildren="☽"
         checked={theme === "dark"}
         size="small"
         onChange={checked => switchTheme(checked ? "dark" : "light")}

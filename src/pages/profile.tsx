@@ -87,11 +87,7 @@ function Profile() {
   if (error) return <ErrorMessage title="Profile" description={error} />;
   return (
     <>
-      <PageHeader
-        onBack={() => window.history.back()}
-        className="site-page-header"
-        title="Profile"
-      ></PageHeader>
+      <PageHeader className="site-page-header" title="Profile"></PageHeader>
       <Content style={{ margin: "16px 0px 0" }}>
         <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
