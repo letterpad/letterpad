@@ -55,11 +55,7 @@ const Media = ({
 
   return (
     <>
-      <PageHeader
-        onBack={() => window.history.back()}
-        className="site-page-header"
-        title="Media"
-      ></PageHeader>
+      <PageHeader className="site-page-header" title="Media"></PageHeader>
       <Content style={{ margin: "16px 0px 0" }}>
         <div className="site-layout-background" style={{ padding: 24 }}>
           <Space>
