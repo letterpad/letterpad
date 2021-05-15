@@ -101,6 +101,7 @@ const NormalLoginForm = () => {
   return (
     <Container>
       <div className="login">
+        <h1>Letterpad</h1>
         <Block isVisible={loginView}>
           <InputBlock>
             <input

@@ -14,7 +14,16 @@ export const Container = styled.div`
   background: #fff;
   background-repeat: no-repeat;
   background-size: cover;
-
+  height: 100vh;
+  h1 {
+    color: #3fb1ec;
+    font-weight: 700;
+    margin: 0px 10px 10px;
+    font-family: system-ui;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    /* text-align: right; */
+  }
   .login {
     margin-top: 40px;
     border: 1px solid #dae1e3;
@@ -22,6 +31,16 @@ export const Container = styled.div`
     background: #f8fbfd;
     border-radius: 9px;
     width: 460px;
+
+    .error {
+      color: #ee7979;
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+    @media (max-width: 800px) {
+      width: 90vw;
+    }
   }
 `;
 interface IRowProps {

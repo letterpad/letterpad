@@ -84,7 +84,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       if (!response) {
         return {
           __typename: "CreateAuthorError",
-          message: "Are you not a human ?",
+          message: "We cannot allow you at the moment.",
         };
       }
     }
@@ -171,7 +171,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
     const author = await models.Author.findOne({
       where: { email: args.data?.email },
     });
+
     if (author) {
+      if (!author?.verified) {
+        return { status: false };
+      }
       const authenticated = await bcrypt.compare(
         args.data?.password || "",
         author.password,
