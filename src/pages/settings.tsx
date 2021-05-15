@@ -240,6 +240,18 @@ function Settings(props: { settings: Setting }) {
                 </Form.Item>
               </Panel>
             </Collapse>
+
+            <Collapse defaultActiveKey={["1"]}>
+              <Panel header="Keys" key="1">
+                <Form.Item label="Client Authorization Key">
+                  <Input
+                    size="middle"
+                    value={settings.client_token}
+                    disabled={true}
+                  />
+                </Form.Item>
+              </Panel>
+            </Collapse>
           </Form>
         </div>
       </Content>

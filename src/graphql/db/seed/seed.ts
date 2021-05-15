@@ -153,7 +153,7 @@ export async function insertRolePermData(models) {
 }
 
 export async function insertAuthor(models) {
-  return await models.Author.bulkCreate([
+  return models.Author.bulkCreate([
     {
       name: "John",
       email: "demo@demo.com",
@@ -165,8 +165,8 @@ export async function insertAuthor(models) {
         instagram: "https://instagram.com",
       }),
       username: "demo",
-      bio:
-        "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
+      verified: true,
+      bio: "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar:
         "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
     },
@@ -175,14 +175,14 @@ export async function insertAuthor(models) {
       email: "author@letterpad.app",
       username: "author",
       password: bcrypt.hashSync("demo", 12),
+      verified: true,
       social: JSON.stringify({
         twitter: "https://twitter.com",
         facebook: "https://facebook.com",
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
-      bio:
-        "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
+      bio: "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
       avatar:
         "https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
     },
@@ -248,8 +248,7 @@ export async function insertMedia() {
   const author = await models.Author.findOne({ where: { id: 1 } });
   if (author) {
     await author.createMedia({
-      url:
-        "https://images.unsplash.com/photo-1473181488821-2d23949a045a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+      url: "https://images.unsplash.com/photo-1473181488821-2d23949a045a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
       name: "Blueberries",
       width: 1350,
       height: 900,
@@ -258,8 +257,7 @@ export async function insertMedia() {
     });
 
     await author.createMedia({
-      url:
-        "https://images.unsplash.com/photo-1524654458049-e36be0721fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+      url: "https://images.unsplash.com/photo-1524654458049-e36be0721fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
       width: 1350,
       height: 900,
       name: "I love the beach and its smell",
