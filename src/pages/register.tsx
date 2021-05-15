@@ -45,7 +45,6 @@ const Register = () => {
     if (executeRecaptcha) {
       const token = await executeRecaptcha("register");
       values.token = token;
-      delete values.confirmPassword;
       const result = await createAuthor(values);
       if (!result?.status) {
         message.error({ content: result?.message, key, duration: 5 });
@@ -64,7 +63,7 @@ const Register = () => {
           <img src="/admin/uploads/logo.png" width={60} />
         </p>
       </Row>
-      <Row justify="center" align="middle">
+      <Row justify="center" align="middle" style={{ padding: "0 20px" }}>
         <Col md={16} lg={12}>
           <Form
             {...layout}
@@ -98,6 +97,28 @@ const Register = () => {
               <Input />
             </Form.Item>
             <Form.Item
+              name={["username"]}
+              label="Username"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter a username",
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value.match(/^[a-z0-9]+$/i)) {
+                      return Promise.reject(
+                        new Error("Cannot contain space or special characters"),
+                      );
+                    }
+                    return Promise.resolve();
+                  },
+                }),
+              ]}
+            >
+              <Input placeholder="eg. john. ( john.letterpad.app )" />
+            </Form.Item>
+            <Form.Item
               name={["email"]}
               label="Email"
               rules={[
@@ -116,28 +137,6 @@ const Register = () => {
               ]}
             >
               <Input type="password" />
-            </Form.Item>
-            <Form.Item
-              label="Confirm Password"
-              name={["confirmPassword"]}
-              dependencies={["password"]}
-              rules={[
-                { required: true, message: "Please confirm your password" },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue(["password"]) === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      new Error(
-                        "The two passwords that you entered do not match!",
-                      ),
-                    );
-                  },
-                }),
-              ]}
-            >
-              <Input name="passwordTwo" type="password" />
             </Form.Item>
             <Form.Item
               wrapperCol={{

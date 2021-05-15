@@ -49,6 +49,7 @@ input InputCreateAuthor {
   email: String!
   site_title: String!
   name: String!
+  username: String!
   password: String!
   token: String!
 }

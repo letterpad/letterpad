@@ -16,7 +16,6 @@ export default function generatePost(type) {
 
 function postMd() {
   return `
-  ## Welcome to Letterpad!
   
   We hope you will have a great writing experience while using Letterpad. This post will walk you through the basics of using Letterpad and publishing your first post.
   

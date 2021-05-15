@@ -33,6 +33,12 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
     }
   };
 
+  const tagInputRef = ref => {
+    if (ref) {
+      ref.input.focus();
+    }
+  };
+
   return (
     <Wrapper>
       <label>Tags</label>
@@ -64,6 +70,7 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
           onChange={e => setInputValue(e.target.value)}
           onBlur={handleInputConfirm}
           onPressEnter={handleInputConfirm}
+          ref={tagInputRef}
         />
       )}
       {!inputVisible && (
@@ -84,7 +91,6 @@ export default Tags;
 
 const Wrapper = styled.div`
   .site-tag-plus {
-    background: #fff;
     border-style: dashed;
   }
   .edit-tag {

@@ -88,7 +88,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         };
       }
     }
-    const author = await models.Author.findOne({
+    let author = await models.Author.findOne({
       where: { email: args.data?.email },
     });
 
@@ -99,13 +99,24 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
 
+    author = await models.Author.findOne({
+      where: { username: args.data?.username },
+    });
+
+    if (author) {
+      return {
+        __typename: "CreateAuthorError",
+        message: "Username already exist",
+      };
+    }
+
     const newAuthor = await models.Author.create({
       email: args.data.email,
       bio: "",
       password: bcrypt.hashSync(args.data.password, 12),
       name: args.data.name,
       avatar: "",
-      username: "",
+      username: args.data.username,
       verified: false,
       social: JSON.stringify({
         twitter: "",
@@ -140,7 +151,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       });
       await newPost.addTag(newTag);
       await newAuthor.createPost(page);
-      //saha
+
       await sendMail({
         to: newAuthor.email,
         subject: Subjects.VERIFY_EMAIL,
