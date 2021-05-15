@@ -160,7 +160,6 @@ const Query: QueryResolvers<ResolverContext> = {
       // }
 
       // resolve menu filter
-
       if (args?.filters?.tagSlug) {
         let { tagSlug } = args.filters;
         if (tagSlug === "/") {
@@ -176,7 +175,10 @@ const Query: QueryResolvers<ResolverContext> = {
         }
 
         const taxTag = await models.Tags.findOne({
-          where: { slug: tagSlug.split("/").pop() as string },
+          where: {
+            slug: tagSlug.split("/").pop() as string,
+            author_id,
+          },
         });
 
         if (taxTag) {
@@ -197,7 +199,7 @@ const Query: QueryResolvers<ResolverContext> = {
       // resolve tag filter
       if (args?.filters?.tag) {
         const tag = await models.Tags.findOne({
-          where: { name: args.filters.tag },
+          where: { name: args.filters.tag, author_id },
         });
         if (tag) {
           const posts = await tag.getPosts(query.conditions);

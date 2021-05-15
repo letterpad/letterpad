@@ -16,6 +16,7 @@ export interface TagsAttributes {
   name: string;
   desc: string;
   slug: string;
+  // author_id: number;
 }
 
 export interface TagsCreationAttributes
@@ -23,11 +24,13 @@ export interface TagsCreationAttributes
 
 export class Tags
   extends Model<TagsAttributes, TagsCreationAttributes>
-  implements TagsAttributes {
+  implements TagsAttributes
+{
   public id!: number;
   public name!: string;
   public desc!: string;
   public slug!: string;
+  public author_id!: number;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
