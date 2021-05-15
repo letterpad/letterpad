@@ -134,7 +134,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         site_title: args.data.site_title,
         client_token: jwt.sign(
           {
-            id: newAuthor,
+            id: newAuthor.id,
           },
           process.env.SECRET_KEY,
           {

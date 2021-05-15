@@ -4,7 +4,7 @@ const templates = {
       name,
       `Welcome to letterpad! 
         <p>Please click the button below to verify your email.</p>`,
-      `<a href="${process.env.ROOT_URL}/api/verify/${verifyToken}">Verify Email</a>`,
+      `<a href="${process.env.ROOT_URL}/api/verify?token=${verifyToken}">Verify Email</a>`,
       `If you have received this by mistake, you can safely ignore this email.`,
     );
   },
