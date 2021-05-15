@@ -25,6 +25,9 @@ jobs:
 
       - run: yarn install
 
+      - name: Seed db
+        run: yarn seed
+
       - name: Install Build
         run: yarn run build
         env:

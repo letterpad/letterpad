@@ -1,8 +1,9 @@
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { Row, Form, Input, Button, Col, message } from "antd";
-import { useState } from "react";
-import { initializeApollo } from "@/graphql/apollo";
+import {
+  GoogleReCaptchaProvider,
+  useGoogleReCaptcha,
+} from "react-google-recaptcha-v3";
+import React, { useState } from "react";
+
 import {
   CreateAuthorMutation,
   CreateAuthorMutationVariables,
@@ -10,160 +11,188 @@ import {
 } from "@/__generated__/queries/mutations.graphql";
 import { useRouter } from "next/router";
 
-const layout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 24 },
-    md: { span: 8 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 24 },
-    md: { span: 12 },
-  },
+import {
+  Block,
+  // Brand,
+  Button,
+  Container,
+  InputBlock,
+  Row,
+} from "../components/login.css";
+import { message } from "antd";
+import { initializeApollo } from "@/graphql/apollo";
+
+const key = "register";
+const fields = {
+  site_title: "",
+  username: "",
+  email: "",
+  password: "",
+  name: "",
 };
 
-const validateMessages = {
-  required: "${label} is required!",
-  types: {
-    email: "${label} is not a valid email!",
-    number: "${label} is not a valid number!",
-    url: "${label} is not a valid url!",
-  },
-};
-
-const Register = () => {
+const RegisterForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const [enabled, setEnabled] = useState(true);
+
+  const [form, setForm] = useState(fields);
+
+  const [errors, setErrors] = useState(fields);
+
+  const [processing, setProcessing] = useState(false);
+
   const router = useRouter();
 
-  const onFinish = async (values: any) => {
-    setEnabled(false);
-    const key = "updatable";
+  const registerAction = async () => {
+    setProcessing(true);
+    setErrors(fields);
+    const errorObj = validate(form);
 
-    message.loading({ content: "Please wait...", key });
+    const newErrors = Object.keys(errorObj).filter(
+      field => errorObj[field] !== "",
+    );
+
+    if (newErrors.length > 0) {
+      setErrors({ ...fields, ...errorObj });
+      setProcessing(false);
+      return;
+    }
+    message.loading({
+      content: "Please wait",
+      key,
+      duration: 5,
+    });
     if (executeRecaptcha) {
       const token = await executeRecaptcha("register");
-      values.token = token;
-      const result = await createAuthor(values);
+      const formWithToken = { ...form, token };
+
+      const result = await createAuthor(formWithToken);
       if (!result?.status) {
         message.error({ content: result?.message, key, duration: 5 });
-        setEnabled(true);
       } else {
         message.success({ content: "Succcess", key, duration: 5 });
         router.push("/messages/registered");
       }
     }
+
+    setProcessing(false);
   };
 
   return (
-    <div style={{ minHeight: "100vh", paddingTop: 100 }}>
-      <Row justify="center" align="middle">
-        <p>
-          <img src="/admin/uploads/logo.png" width={60} />
-        </p>
-      </Row>
-      <Row justify="center" align="middle" style={{ padding: "0 20px" }}>
-        <Col md={16} lg={12}>
-          <Form
-            {...layout}
-            name="nest-messages"
-            onFinish={onFinish}
-            validateMessages={validateMessages}
-            className={"register"}
-          >
-            <Form.Item
-              name={["site_title"]}
-              label="Site Title"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the title of your site",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name={["name"]}
-              label="Full Name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your name",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name={["username"]}
-              label="Username"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter a username",
-                },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value.match(/^[a-z0-9]+$/i)) {
-                      return Promise.reject(
-                        new Error("Cannot contain space or special characters"),
-                      );
-                    }
-                    return Promise.resolve();
-                  },
-                }),
-              ]}
-            >
-              <Input placeholder="eg. john. ( john.letterpad.app )" />
-            </Form.Item>
-            <Form.Item
-              name={["email"]}
-              label="Email"
-              rules={[
-                { type: "email", message: "Email is not valid" },
-                { required: true, message: "Please enter your email" },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name={["password"]}
-              label="Password"
-              rules={[
-                { type: "string" },
-                { required: true, message: "Please enter a password" },
-              ]}
-            >
-              <Input type="password" />
-            </Form.Item>
-            <Form.Item
-              wrapperCol={{
-                ...layout.wrapperCol,
-                xs: { offset: 0 },
-                sm: { offset: 8 },
+    <Container>
+      <div className="login">
+        <h1>Letterpad</h1>
+        <Block isVisible={true}>
+          <InputBlock>
+            <input
+              type="text"
+              placeholder="Enter a title of your blog"
+              value={form.site_title}
+              onChange={e => setForm({ ...form, site_title: e.target.value })}
+              autoComplete="off"
+              data-testid="input-email"
+            />
+            {errors.site_title && (
+              <span className="error">{errors.site_title}</span>
+            )}
+          </InputBlock>
+          <InputBlock>
+            <input
+              type="text"
+              placeholder="Enter your name as an author"
+              value={form.name}
+              onChange={e => setForm({ ...form, name: e.target.value })}
+              autoComplete="off"
+              data-testid="input-email"
+            />
+            {errors.name && <span className="error">{errors.name}</span>}
+          </InputBlock>
+          <InputBlock>
+            <input
+              type="text"
+              placeholder="Enter a username ( username.letterpad.app )"
+              value={form.username}
+              onChange={e => setForm({ ...form, username: e.target.value })}
+              autoComplete="off"
+              data-testid="input-email"
+            />
+            {errors.username && (
+              <span className="error">{errors.username}</span>
+            )}
+          </InputBlock>
+          <InputBlock>
+            <input
+              type="text"
+              placeholder="Enter your email"
+              value={form.email}
+              onChange={e => setForm({ ...form, email: e.target.value })}
+              autoComplete="off"
+              data-testid="input-email"
+            />
+            {errors.email && <span className="error">{errors.email}</span>}
+          </InputBlock>
+          <InputBlock>
+            <input
+              type="password"
+              placeholder="Enter a new password"
+              onChange={e => setForm({ ...form, password: e.target.value })}
+              value={form.password}
+              autoComplete="off"
+              onKeyUp={(e: React.KeyboardEvent) => {
+                if (e.keyCode === 13) {
+                  registerAction();
+                }
               }}
+              data-testid="input-password"
+            />
+            {errors.password && (
+              <span className="error">{errors.password}</span>
+            )}
+          </InputBlock>
+          <br />
+          <Row justify="center">
+            <Button
+              onClick={registerAction}
+              data-testid="btn-login"
+              disabled={processing}
             >
-              <Button type="primary" htmlType="submit" disabled={!enabled}>
-                Register
-              </Button>
-            </Form.Item>
-          </Form>
-        </Col>
-      </Row>
-    </div>
+              Register
+            </Button>
+          </Row>
+        </Block>
+      </div>
+    </Container>
   );
 };
 
 const Provider = () => {
   return (
     <GoogleReCaptchaProvider reCaptchaKey="6LdCsL0aAAAAAPbGhkyrhAcr4I_-DkVZYabIkaEa">
-      <Register />
+      <RegisterForm />
     </GoogleReCaptchaProvider>
   );
 };
 export default Provider;
+
+function validate(form: typeof fields) {
+  const sanitisedForm = { ...form };
+  const errors: typeof fields = { ...fields };
+  for (const field in form) {
+    sanitisedForm[field] = form[field].trim();
+    if (sanitisedForm[field].length === 0) {
+      errors[field] = `${field.replace("_", " ")} cannot be empty`;
+    }
+  }
+
+  if (!/^[a-z0-9]+$/i.test(sanitisedForm.username)) {
+    errors.username = "Username cannot contain spaces or special characters";
+  }
+
+  if (sanitisedForm.password.length < 6) {
+    errors.password = "Password should have minimum 6 characters";
+  }
+
+  return errors;
+}
 
 async function createAuthor(
   data,
