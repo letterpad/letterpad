@@ -174,27 +174,34 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     if (author) {
       if (!author?.verified) {
-        return { status: false };
+        return {
+          __typename: "LoginError",
+          message: "Your email id is not verified yet.",
+        };
       }
       const authenticated = await bcrypt.compare(
         args.data?.password || "",
         author.password,
       );
-      if (!authenticated) return { status: false };
+      if (!authenticated)
+        return {
+          __typename: "LoginError",
+          message: "Incorrect credentials",
+        };
       try {
         return {
-          status: true,
-          data: {
-            ...author,
-            social: JSON.parse(author.social as string),
-          },
+          __typename: "Author",
+          ...author,
+          social: JSON.parse(author.social as string),
         };
       } catch (e) {
         console.log(e);
       }
     }
-
-    return { status: false };
+    return {
+      __typename: "LoginError",
+      message: "Incorrect email id",
+    };
   },
   async updateAuthor(_root, args, { session }) {
     if (session?.user.id !== args.author.id) {

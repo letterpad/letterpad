@@ -16,16 +16,12 @@ type Author {
   permissions: [Permissions!]!
   avatar: String!
   verified: Boolean
+  accessToken: String
 }
 
 input LoginData {
   email: String!
   password: String!
-}
-
-type LoginResponse {
-  status: Boolean!
-  data: Author
 }
 
 input InputSocial {
@@ -68,9 +64,15 @@ type CreateAuthorError implements LetterpadError {
   message: String!
 }
 
+type LoginError implements LetterpadError {
+  message: String!
+}
+
 union MeResponse = Author | AuthorNotFoundError
 
 union CreateAuthorResponse = Author | CreateAuthorError
+
+union LoginResponse = Author | LoginError
 
 type ForgotPasswordResponse {
   ok: Boolean!
