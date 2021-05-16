@@ -14,6 +14,7 @@ import logger from "../../../shared/logger";
 import { PostTypes } from "@/__generated__/type-defs.graphqls";
 import debug from "debug";
 import { setResponsiveImages } from "./helpers";
+import { getHtmlFromMarkdown } from "letterpad-editor/dist/mdToHtml";
 
 interface IPostCondition {
   conditions: {
@@ -134,31 +135,6 @@ const Query: QueryResolvers<ResolverContext> = {
         query.conditions.order = [["updatedAt", args.filters.sortBy]];
       }
 
-      // if (args?.filters?.author) {
-      //   const author = await models.Author.findOne({
-      //     where: { name: args.filters.author },
-      //   });
-      //   delete query.conditions.where.author_id;
-
-      //   if (author) {
-      //     const posts = await author.getPosts(query.conditions);
-
-      //     return {
-      //       __typename: "PostsNode",
-      //       count: await author.countPosts(query.conditions),
-      //       rows: posts.map(p => p.get()),
-      //     };
-      //   } else {
-      //     return {
-      //       __typename: "PostsNode",
-      //       count: 0,
-      //       rows: [],
-      //     };
-      //   }
-      // } else {
-      //   delete query.conditions.where.author_id;
-      // }
-
       // resolve menu filter
       if (args?.filters?.tagSlug) {
         let { tagSlug } = args.filters;
@@ -241,7 +217,6 @@ const Query: QueryResolvers<ResolverContext> = {
         author_id?: number;
       },
     };
-
     if (session?.user.permissions) {
       //  Author should not see others posts from admin panel
       if (session.user.permissions.includes(Permissions.ManageOwnPosts)) {
@@ -269,10 +244,12 @@ const Query: QueryResolvers<ResolverContext> = {
       delete conditions.where.status;
     }
     const post = await models.Post.findOne(conditions);
+    if (post) {
+      const html = previewHash ? getHtmlFromMarkdown(post.md_draft) : post.html;
 
-    return post
-      ? { ...post.get(), __typename: "Post" }
-      : { ...error, message: "Post not found" };
+      return { ...post.get(), html, __typename: "Post" };
+    }
+    return { ...error, message: "Post not found" };
   },
 
   async stats(_, _args, { session }) {

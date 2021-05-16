@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Tooltip, Input, Drawer, Button, Checkbox, Space } from "antd";
-import { EyeOutlined } from "@ant-design/icons";
+import { EyeOutlined, SettingOutlined } from "@ant-design/icons";
 import ImageUpload from "../ImageUpload";
 import {
   InputUpdatePost,
@@ -9,6 +9,7 @@ import {
 } from "@/__generated__/type-defs.graphqls";
 import Tags from "./tags";
 import { PostQuery } from "@/__generated__/queries/queries.graphql";
+import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
 
 const { TextArea } = Input;
 
@@ -16,9 +17,12 @@ interface IProps {
   post: PostQuery["post"];
   setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => void;
   deletePost: () => void;
+  postHash: string;
 }
-const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
+const Actions = ({ post, setPostAttribute, deletePost, postHash }: IProps) => {
   const [visible, setVisible] = useState(false);
+  const settings = useSettingsQuery();
+
   const showDrawer = () => {
     setVisible(true);
   };
@@ -32,11 +36,9 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
   const isPost = post.type === PostTypes.Post;
   const postVerb = isPost ? "Post" : "Page";
   const rePublishBtnDisabled = post.md_draft === "" || post.md_draft == post.md;
+
   return (
     <>
-      <Button type="primary" onClick={showDrawer}>
-        Open
-      </Button>
       <Button
         type="primary"
         disabled={rePublishBtnDisabled}
@@ -48,6 +50,9 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
       >
         Republish
       </Button>
+      <Button type="primary" onClick={showDrawer}>
+        <SettingOutlined />
+      </Button>
       <Drawer
         title="Settings"
         placement="right"
@@ -58,7 +63,18 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
       >
         <Space direction="vertical" size="middle">
           <Tooltip title="Preview">
-            <Button type="ghost" shape="circle" icon={<EyeOutlined />} />
+            <Button
+              type="ghost"
+              shape="circle"
+              icon={<EyeOutlined />}
+              onClick={() => {
+                if (settings.data?.settings.__typename === "Setting") {
+                  window.open(
+                    settings.data.settings.site_url + "/preview/" + postHash,
+                  );
+                }
+              }}
+            />
           </Tooltip>
 
           <Checkbox
@@ -87,6 +103,7 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
             <label>{postVerb} Description</label>
             <TextArea
               showCount
+              rows={3}
               maxLength={160}
               onChange={e => setPostAttribute({ excerpt: e.target.value })}
               value={post.excerpt}

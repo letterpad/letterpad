@@ -20,7 +20,6 @@ import { uploadToInternal } from "./providers/internal";
 import models from "@/graphql/db/models";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
-import nextConfig from "../../../next.config";
 
 const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");
@@ -42,7 +41,7 @@ export default async (
 ) => {
   await multerAny(req, res);
   const _session = await getSession({ req });
-  const session = (_session as unknown) as SessionData;
+  const session = _session as unknown as SessionData;
   if (!session || !session.user) return res.status(401).send("Unauthorized");
 
   // This operation expects a single file upload.
@@ -64,11 +63,8 @@ export default async (
   });
 
   if (!settings) return null;
-  const {
-    cloudinary_key,
-    cloudinary_name,
-    cloudinary_secret,
-  } = settings.data.settings;
+  const { cloudinary_key, cloudinary_name, cloudinary_secret } =
+    settings.data.settings;
 
   const cdnEnabled = cloudinary_key && cloudinary_name && cloudinary_secret;
 

@@ -16,7 +16,7 @@ export type ResolverContext = {
   req?: IncomingMessage;
   res?: ServerResponse;
   models?: typeof models;
-  session?: SessionData;
+  session?: { user: SessionData };
   author_id?: number;
 };
 
