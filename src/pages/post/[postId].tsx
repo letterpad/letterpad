@@ -25,6 +25,7 @@ import { removeTypenames } from "../../../shared/removeTypenames";
 import FileExplorer from "@/components/file-explorer";
 import withAuthCheck from "../../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
+import nextConfig from "next.config";
 
 const { Content } = Layout;
 
@@ -41,6 +42,7 @@ function Post() {
   const [error, setError] = useState("");
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [mediaProvider, setMediaProvider] = useState(MediaProvider.Unsplash);
+  const [postHash, setPostHash] = useState("");
 
   useEffect(() => {
     const { postId } = router.query;
@@ -48,6 +50,10 @@ function Post() {
     getPost(parseInt(postId as string)).then(data => {
       if (data.__typename === "Post") {
         setPost(data);
+
+        fetch(nextConfig.basePath + "/api/getPostHash?id=" + data.id)
+          .then(res => res.text())
+          .then(setPostHash);
       }
 
       if (data.__typename === "PostError") {
@@ -107,6 +113,7 @@ function Post() {
   const setRef = _editor => {
     editor = _editor;
   };
+  console.log("postHash :>> ", postHash);
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <PageHeader
@@ -119,6 +126,7 @@ function Post() {
             key="actions"
             post={post}
             setPostAttribute={setPostAttribute}
+            postHash={postHash}
             deletePost={() => {
               setPostAttribute({ status: PostStatusOptions.Trashed });
               router.push(isPost ? "/posts" : "/pages");
