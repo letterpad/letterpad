@@ -2,6 +2,7 @@ import {
   LoginDocument,
   LoginMutation,
   LoginMutationVariables,
+  LoginResponse,
 } from "@/__generated__/queries/mutations.graphql";
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
@@ -22,7 +23,7 @@ const providers = [
       email: { label: "Email" },
       password: { label: "Password", type: "password" },
     },
-    authorize: async (credentials: ICredentials) => {
+    authorize: async (credentials: ICredentials): Promise<LoginResponse> => {
       const apolloClient = await initializeApollo({});
       const result = await apolloClient.mutate<
         LoginMutation,
@@ -37,15 +38,22 @@ const providers = [
         },
       });
 
-      console.log("result :>> ", result);
-
-      if (result && result.data) {
+      if (result.data?.login?.__typename === "Author") {
         return {
-          ...result.data.login?.data,
+          ...result.data.login,
           accessToken: credentials.csrfToken,
         };
       }
-      return {};
+
+      if (result.data?.login?.__typename === "LoginError") {
+        return result.data.login;
+      }
+
+      return {
+        __typename: "LoginError",
+        message:
+          "We are facing issues logging you in. Please try after sometime",
+      };
     },
   }),
 ];
@@ -59,22 +67,29 @@ const options = {
       }
       return process.env.ROOT_URL + "/posts";
     },
-    jwt: async (token: any, user: Required<SessionData["user"]>) => {
+    jwt: async (token: any, user: Required<LoginResponse>) => {
       //  "user" parameter is the object received from "authorize"
       //  "token" is being send to "session" callback...
       //  ...so we set "user" param of "token" to object from "authorize"...
       //  ...and return it...
-      if (user && token) {
+      if (user && token && user.__typename === "Author") {
         token.role = user.role;
         token.avatar = user.avatar;
         token.permissions = user.permissions;
         token.id = user.id;
+        token.__typename = "SessionData";
+      }
+      if (user && user.__typename === "LoginError") {
+        return Promise.resolve({ ...user });
       }
       return Promise.resolve(token);
     },
-    session: async (session: any, user: SessionData["user"]) => {
-      session.user = user;
-
+    session: async (session: any, user: LoginResponse) => {
+      if (user.__typename === "LoginError") {
+        session.user = user;
+        return Promise.resolve(session);
+      }
+      session.user = { ...user };
       return Promise.resolve(session);
     },
   },

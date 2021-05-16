@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { getSession, signIn } from "next-auth/client";
-import nextConfig from "next.config";
-import { SessionData } from "@/graphql/types";
+import nextConfig, { basePath } from "next.config";
 import {
   Block,
   // Brand,
@@ -19,9 +18,12 @@ import {
   ForgotPasswordMutationVariables,
 } from "@/__generated__/queries/mutations.graphql";
 import { useRouter } from "next/router";
+import { SessionData } from "../graphql/types";
+import { LoginError } from "@/__generated__/queries/partial.graphql";
 
 const key = "login";
 
+type SessionResponse = { user: LoginError | SessionData };
 const NormalLoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,12 +38,18 @@ const NormalLoginForm = () => {
       email: email,
       callbackUrl: nextConfig.basePath + "/pages",
     });
-    const session = (await getSession()) as SessionData | null;
-    if (session && session.user.id && result?.url) {
+    const session = (await getSession()) as SessionResponse;
+    if (session.user.__typename === "LoginError") {
+      message.error({ content: session.user.message, key, duration: 5 });
+      return;
+    }
+    if (session.user.__typename === "SessionData") {
       message.success({ content: "Verified..", key, duration: 5 });
-      document.location.href = result.url;
-    } else {
-      message.error({ content: "Incorrect credentials", key, duration: 5 });
+      if (result && result.url) {
+        document.location.href = result.url;
+      } else {
+        document.location.href = basePath + "/posts";
+      }
     }
   };
 

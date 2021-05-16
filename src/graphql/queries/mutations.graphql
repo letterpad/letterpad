@@ -2,14 +2,19 @@
 
 mutation Login($data: LoginData) {
   login(data: $data) {
-    status
-    data {
+    ... on Author {
       id
       name
       email
       role
       avatar
       permissions
+      bio
+      username
+    }
+
+    ... on LoginError {
+      message
     }
   }
 }
