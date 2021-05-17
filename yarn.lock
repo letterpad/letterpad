@@ -7011,10 +7011,10 @@ less@3.9.0:
     request "^2.83.0"
     source-map "~0.6.0"
 
-letterpad-editor@^0.0.32:
-  version "0.0.32"
-  resolved "https://registry.yarnpkg.com/letterpad-editor/-/letterpad-editor-0.0.32.tgz#b722830a7138011b30085fd030eab691315057c3"
-  integrity sha512-AQu6wJsECGnjHWBNMJ2xG6k6DPjHqUm33/U6TvdQOekkNmLMtxAlglV/xt51UlkkncCWRLEobATY/zd4y7LhYg==
+letterpad-editor@^0.0.33:
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/letterpad-editor/-/letterpad-editor-0.0.33.tgz#a3fd5b48ade32793c26f3444e34289a0a599d266"
+  integrity sha512-O8Tyddmzd1Ee62dYkZe+R80L/P/58T0HgaL9C1ULWOVtSJiyYyB8BDljc0iLDOmlnpTwwRpJ7fMKsbRv0nwvCQ==
   dependencies:
     "@domoinc/slate-edit-table" "0.22.2"
     "@tommoor/slate-edit-list" "0.19.0-0"

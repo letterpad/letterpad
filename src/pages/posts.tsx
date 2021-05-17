@@ -30,6 +30,7 @@ interface IProps {
 
 function Posts({ settings }: IProps) {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<PostsFilters>({});
 
   const [postsNode, setPostsNode] = useState<PostsQuery["posts"]>({
@@ -45,6 +46,7 @@ function Posts({ settings }: IProps) {
 
   const fetchPosts = async (filters = {}) => {
     const posts = await fetchPostsFromAPI(filters);
+    setLoading(false);
     if (posts.__typename === "PostsNode") {
       const rows = posts.rows.map(post => {
         return {
@@ -90,6 +92,7 @@ function Posts({ settings }: IProps) {
           <Table
             columns={columns}
             dataSource={source}
+            loading={loading}
             onRow={row => ({
               onClick: () => router.push("/post/" + row.id),
             })}

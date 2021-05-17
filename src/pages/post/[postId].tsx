@@ -89,12 +89,14 @@ function Post() {
     setFileExplorerOpen(false);
   };
 
-  const insertImageUrlInEditor = async (images: { [url: string]: Image }) => {
+  const insertImageUrlInEditor = async (images: {
+    [url: string]: Image & { alt: string };
+  }) => {
     const urls = Object.keys(images);
     const insertPromises = urls.map(url => {
       return new Promise((resolve, reject) => {
         try {
-          editor.insertImageUrl(url);
+          editor.insertImageUrl(url, images[url].alt || "");
           resolve(true);
         } catch (e) {
           reject();

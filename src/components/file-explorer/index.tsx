@@ -13,7 +13,9 @@ interface IProps {
   mediaProvider: MediaProvider;
   switchProvider: (provider: MediaProvider) => void;
   multi: boolean;
-  onInsert: (images: { [urls: string]: Image }) => Promise<unknown[]>;
+  onInsert: (images: {
+    [urls: string]: Image & { alt: string };
+  }) => Promise<unknown[]>;
 }
 const FileExplorer = ({
   isVisible,
@@ -30,7 +32,9 @@ const FileExplorer = ({
     ? MediaProvider.Letterpad
     : MediaProvider.Unsplash;
 
-  const [selectedUrls, setSelection] = useState<{ [url: string]: Image }>({});
+  const [selectedUrls, setSelection] = useState<{
+    [url: string]: Image & { alt: string };
+  }>({});
 
   const insertMedia = async () => {
     // get only the urls in an array
@@ -51,6 +55,7 @@ const FileExplorer = ({
         src: media.url,
         width: media.width || 0,
         height: media.height || 0,
+        alt: media.description,
       };
     }
     if (!multi) {
@@ -58,10 +63,10 @@ const FileExplorer = ({
         src: media.url,
         width: media.width || 0,
         height: media.height || 0,
+        alt: media.description,
       };
     }
     setSelection(urls);
-    // onSelect(urls);
   };
 
   const renderer = (media: Media[]) => {

@@ -30,7 +30,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
         return {
           id: item.id,
           url: item.urls.regular,
-          description: item.description,
+          description: item.alt_description,
           createdAt: item.created_at,
           width: item.width,
           height: item.height,
