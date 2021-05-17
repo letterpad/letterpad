@@ -37,10 +37,10 @@ export default apolloServer.createHandler({
 });
 
 async function getAuthorFromSubdomain(context) {
-  const { host } = context.req.headers;
-  logger.debug("Host for checking subdomain - ", host);
-  if (host && host.includes("letterpad.app")) {
-    const username = host.split(".")[0];
+  const { identifier } = context.req.headers;
+  logger.debug("Host for checking subdomain - ", identifier);
+  if (identifier && identifier.includes("letterpad.app")) {
+    const username = identifier.split(".")[0];
     const author = await models.Author.findOne({
       attributes: ["id"],
       where: { username },
