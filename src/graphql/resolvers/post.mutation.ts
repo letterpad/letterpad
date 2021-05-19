@@ -140,10 +140,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
         );
         dataToUpdate.cover_image = src;
         if (!width && !height) {
-          if (src.startsWith("/")) {
-            // this is internal image
-            src = new URL(src, process.env.ROOT_URL).href;
-          }
           try {
             const imageSize = await getImageDimensions(src);
             dataToUpdate.cover_image_width = imageSize.width;
@@ -233,9 +229,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           // remove the tags relation
           await previousPostRaw.setTags([]);
 
-          for (let i = 0; i < tags.length; i++) {
-            const tag = tags[i];
-
+          for (const tag of tags) {
             logger.info("processing tag", tag);
             // add relation with existing Tags
             if (tag.id > 0) {

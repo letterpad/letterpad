@@ -69,14 +69,6 @@ const CustomLayout = ({ children, settings }: IProps) => {
         }}
       >
         <nav className="navbar">
-          {collapsed && !visible && (
-            <Button
-              className="menu"
-              type="primary"
-              icon={<MenuOutlined />}
-              onClick={() => setVisible(true)}
-            />
-          )}
           <StyledDrawer
             placement="left"
             width={200}
@@ -89,7 +81,23 @@ const CustomLayout = ({ children, settings }: IProps) => {
             <ThemeSwitcher />
           </StyledDrawer>
         </nav>
-        <div style={{ minHeight: "calc(100vh - 80px)" }}>{children}</div>
+
+        <div style={{ minHeight: "72px", padding: 20 }}>
+          {collapsed && !visible && (
+            <>
+              <Button
+                className="menu"
+                type="ghost"
+                icon={<MenuOutlined />}
+                onClick={() => setVisible(true)}
+                size="middle"
+              />
+              &nbsp;&nbsp;&nbsp;
+              <img src={settings.site_logo.src} height={32} />
+            </>
+          )}
+        </div>
+        <div style={{ minHeight: "calc(100vh - 152px)" }}>{children}</div>
         <StyledFooter
           style={{
             textAlign: "center",
