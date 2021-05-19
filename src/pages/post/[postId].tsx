@@ -115,7 +115,7 @@ function Post() {
   const setRef = _editor => {
     editor = _editor;
   };
-  console.log("postHash :>> ", postHash);
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <PageHeader

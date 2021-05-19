@@ -39,7 +39,23 @@ const Actions = ({ post, setPostAttribute, deletePost, postHash }: IProps) => {
 
   return (
     <>
+      <Tooltip title="Preview">
+        <Button
+          type="ghost"
+          shape="circle"
+          size="small"
+          icon={<EyeOutlined />}
+          onClick={() => {
+            if (settings.data?.settings.__typename === "Setting") {
+              window.open(
+                settings.data.settings.site_url + "/preview/" + postHash,
+              );
+            }
+          }}
+        />
+      </Tooltip>
       <Button
+        size="small"
         type="primary"
         disabled={rePublishBtnDisabled}
         onClick={e => {
@@ -50,7 +66,7 @@ const Actions = ({ post, setPostAttribute, deletePost, postHash }: IProps) => {
       >
         Republish
       </Button>
-      <Button type="primary" onClick={showDrawer}>
+      <Button type="primary" onClick={showDrawer} size="small">
         <SettingOutlined />
       </Button>
       <Drawer
@@ -62,21 +78,6 @@ const Actions = ({ post, setPostAttribute, deletePost, postHash }: IProps) => {
         width={320}
       >
         <Space direction="vertical" size="middle">
-          <Tooltip title="Preview">
-            <Button
-              type="ghost"
-              shape="circle"
-              icon={<EyeOutlined />}
-              onClick={() => {
-                if (settings.data?.settings.__typename === "Setting") {
-                  window.open(
-                    settings.data.settings.site_url + "/preview/" + postHash,
-                  );
-                }
-              }}
-            />
-          </Tooltip>
-
           <Checkbox
             onChange={e =>
               setPostAttribute({

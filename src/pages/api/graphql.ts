@@ -21,6 +21,7 @@ const apolloServer = new ApolloServer({
       console.log("e :>> ", e);
     }
     const session = await getSession(context);
+
     return { ...context, models, author_id, session };
   },
   introspection: true,
