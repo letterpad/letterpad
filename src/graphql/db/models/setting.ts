@@ -218,7 +218,7 @@ export const settingsData = {
   site_title: "Letterpad",
   site_tagline: "Compose a story",
   site_email: "admin@letterpad.app",
-  site_url: "https://letterpad.app/demo",
+  site_url: "https://demo.letterpad.app",
   site_footer: "",
   site_description: "",
   subscribe_embed: "",

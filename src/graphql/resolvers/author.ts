@@ -16,6 +16,7 @@ import { validateCaptcha } from "./helpers";
 import generatePost from "../db/seed/contentGenerator";
 import sendMail from "src/mail";
 import templates from "src/mail/templates";
+import siteConfig from "config/site.config";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 
@@ -127,10 +128,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
     });
 
     const role = await models.Role.findOne({ where: { id: 1 } });
+
     if (newAuthor && role) {
       await newAuthor.setRole(role);
       const setting = await models.Setting.create({
         ...settingsData,
+        site_url: `https://${args.data.username}.letterpad.app`,
         site_title: args.data.site_title,
         client_token: jwt.sign(
           {
@@ -146,8 +149,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
       const { post, page } = getWelcomePostAndPage();
       const newPost = await newAuthor.createPost(post);
       const newTag = await newAuthor.createTag({
-        name: "first-post",
-        slug: "first-post",
+        name: siteConfig.first_post_tag,
+        slug: siteConfig.first_post_tag,
       });
       await newPost.addTag(newTag);
       await newAuthor.createPost(page);
