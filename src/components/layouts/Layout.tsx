@@ -14,6 +14,7 @@ import Navigation from "./Menu";
 import Logo from "../Logo";
 import { initializeApollo } from "@/graphql/apollo";
 import ThemeSwitcher from "./ThemeSwitcher";
+import siteConfig from "config/site.config";
 
 interface IProps {
   settings: Setting;
@@ -42,10 +43,9 @@ const CustomLayout = ({ children, settings }: IProps) => {
         onBreakpoint={broken => {
           console.log(broken);
         }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-          setCollapsed(collapsed);
-          if (!collapsed) {
+        onCollapse={isCollapsed => {
+          setCollapsed(isCollapsed);
+          if (!isCollapsed) {
             setVisible(false);
           }
         }}
@@ -59,7 +59,6 @@ const CustomLayout = ({ children, settings }: IProps) => {
       >
         <Logo src={settings.site_logo.src} />
         <Navigation stats={stats} />
-
         <ThemeSwitcher />
       </Sider>
       <Layout
@@ -82,7 +81,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
           </StyledDrawer>
         </nav>
 
-        <div style={{ minHeight: "72px", padding: 20 }}>
+        <div style={{ minHeight: siteConfig.header_height, padding: 20 }}>
           {collapsed && !visible && (
             <>
               <Button
@@ -93,7 +92,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
                 size="middle"
               />
               &nbsp;&nbsp;&nbsp;
-              <img src={settings.site_logo.src} height={32} />
+              <img src={settings.site_logo.src} height={40} />
             </>
           )}
         </div>
