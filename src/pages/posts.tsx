@@ -13,6 +13,7 @@ import {
   Author,
   Image,
   PostsResponse,
+  PostStatusOptions,
   Setting,
   Tags,
 } from "@/__generated__/type-defs.graphqls";
@@ -97,6 +98,21 @@ function Posts({ settings }: IProps) {
               onClick: () => router.push("/post/" + row.id),
             })}
           />
+          <style jsx>{`
+            :global(.post-status) {
+              width: 10px;
+              height: 10px;
+              display: block;
+              border-radius: 50%;
+              margin-left: 10px;
+            }
+            :global(.post-status-published) {
+              background: green;
+            }
+            :global(.post-status-draft) {
+              background: orange;
+            }
+          `}</style>
         </div>
       </Content>
     </>
@@ -142,17 +158,13 @@ const columns = [
     key: "excerpt",
     responsive: ["md"] as Breakpoint[],
   },
-  // {
-  //   title: "Author",
-  //   dataIndex: "author",
-  //   key: "author",
-  //   responsive: ["lg"] as Breakpoint[],
-  //   render: (author: Author) => author.name,
-  // },
   {
     title: "Status",
     dataIndex: "status",
     key: "status",
+    render: (status: PostStatusOptions) => (
+      <span className={`post-status post-status-${status}`} />
+    ),
   },
   {
     title: "Tags",
@@ -160,9 +172,4 @@ const columns = [
     key: "tags",
     render: (tags: Tags[]) => tags.map(tag => tag.name).join(", "),
   },
-  // {
-  //   title: "Updated At",
-  //   dataIndex: "updatedAt",
-  //   key: "updatedAt",
-  // },
 ];

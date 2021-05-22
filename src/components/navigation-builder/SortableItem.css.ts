@@ -12,14 +12,14 @@ export const Item = styled(Grid)`
     padding-top: 4px;
   }
 
-  input {
+  /* input {
     padding: 8px 6px;
     border-radius: 4px;
     border: 1px solid var(--color-border);
     width: 100%;
     background: var(--bg-base);
     color: var(--color-base);
-  }
+  } */
 
   .input-box {
     height: 40px;
