@@ -3,7 +3,7 @@ import SortableItem from "./SortableItem";
 
 const SortableList = ({ items, source, onChange, onRemove }) => {
   return (
-    <div>
+    <div style={{ padding: "20px 0" }}>
       {items.map((value, index: number) => (
         <div key={value.id} id={"item_" + value.id}>
           <SortableItem

@@ -56,6 +56,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
           left: 0,
           zIndex: 9999,
         }}
+        width={siteConfig.sidebar_width}
       >
         <Logo src={settings.site_logo.src} />
         <Navigation stats={stats} />
@@ -64,7 +65,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
       <Layout
         className="site-layout"
         style={{
-          marginLeft: collapsed ? 0 : 200,
+          marginLeft: collapsed ? 0 : siteConfig.sidebar_width,
         }}
       >
         <nav className="navbar">
