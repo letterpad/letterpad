@@ -15,6 +15,7 @@ import withAuthCheck from "../hoc/withAuth";
 import Navigation from "@/components/navigation-builder";
 
 const { Panel } = Collapse;
+const { TextArea } = Input;
 
 type ValueOf<T> = T[keyof T];
 
@@ -162,6 +163,16 @@ function Settings(props: { settings: Setting }) {
                         height: res.size.height,
                       })
                     }
+                  />
+                </Form.Item>
+                <Form.Item label="CSS">
+                  <TextArea
+                    value={settings.css}
+                    onChange={e => {
+                      onChange("css", e.target.value);
+                    }}
+                    placeholder="Add css to customise your website"
+                    autoSize={{ minRows: 5, maxRows: 50 }}
                   />
                 </Form.Item>
               </Panel>

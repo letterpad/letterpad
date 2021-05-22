@@ -73,10 +73,7 @@ function Post() {
 
   const setPostAttribute = async (attrs: Omit<InputUpdatePost, "id">) => {
     setPost({ ...post, ...attrs });
-    const result = await updatePostRequest(attrs, post.id);
-    if (result.data?.updatePost.__typename === "Post") {
-      setPost(result.data.updatePost);
-    }
+    await updatePostRequest(attrs, post.id);
   };
 
   const onMediaBrowse = () => {
