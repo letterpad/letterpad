@@ -15,6 +15,7 @@ import Logo from "../Logo";
 import { initializeApollo } from "@/graphql/apollo";
 import ThemeSwitcher from "./ThemeSwitcher";
 import siteConfig from "config/site.config";
+import { useSession } from "next-auth/client";
 
 interface IProps {
   settings: Setting;
@@ -25,6 +26,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
   const [stats, setStats] = useState<Stats>({});
   const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [user] = useSession();
 
   useEffect(() => {
     getStats().then(res => {
@@ -82,20 +84,35 @@ const CustomLayout = ({ children, settings }: IProps) => {
           </StyledDrawer>
         </nav>
 
-        <div style={{ minHeight: siteConfig.header_height, padding: 20 }}>
-          {collapsed && !visible && (
-            <>
-              <Button
-                className="menu"
-                type="ghost"
-                icon={<MenuOutlined />}
-                onClick={() => setVisible(true)}
-                size="middle"
-              />
-              &nbsp;&nbsp;&nbsp;
-              <img src={settings.site_logo.src} height={40} />
-            </>
-          )}
+        <div
+          style={{
+            minHeight: siteConfig.header_height,
+            padding: 20,
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <div>
+            {collapsed && !visible && (
+              <>
+                <img src={settings.site_logo.src} height={40} />
+                &nbsp;&nbsp;&nbsp;
+                <Button
+                  className="menu"
+                  type="ghost"
+                  icon={<MenuOutlined />}
+                  onClick={() => setVisible(true)}
+                  size="middle"
+                />
+              </>
+            )}
+          </div>
+          <div>
+            <a href={settings.site_url} target="_blank">
+              View Site
+            </a>
+            &nbsp;&nbsp; •&nbsp;&nbsp;Welcome back {user?.user?.name}
+          </div>
         </div>
         <div style={{ minHeight: "calc(100vh - 152px)" }}>{children}</div>
         <StyledFooter
