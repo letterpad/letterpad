@@ -20,7 +20,7 @@ import {
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
 import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
-
+import "lazysizes";
 // import "antd/dist/antd.css";
 
 NProgress.configure({ showSpinner: true });

@@ -14,6 +14,7 @@ import withAuthCheck from "../hoc/withAuth";
 import { useState } from "react";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
 import MediaUpdateModal from "@/components/modals/media-update-modal";
+import Head from "next/head";
 
 const key = "updatable";
 
@@ -55,6 +56,9 @@ const Media = ({
 
   return (
     <>
+      <Head>
+        <title>Media</title>
+      </Head>
       <PageHeader className="site-page-header" title="Media"></PageHeader>
       <Content style={{ margin: "16px 0px 0" }}>
         <div className="site-layout-background" style={{ padding: 24 }}>

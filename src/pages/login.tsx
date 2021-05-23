@@ -3,11 +3,9 @@ import { getSession, signIn } from "next-auth/client";
 import nextConfig, { basePath } from "next.config";
 import {
   Block,
-  // Brand,
   Button,
   Container,
   InputBlock,
-  RememberMeBlock,
   Row,
 } from "../components/login.css";
 import { message } from "antd";
@@ -20,6 +18,7 @@ import {
 import { useRouter } from "next/router";
 import { SessionData } from "../graphql/types";
 import { LoginError } from "@/__generated__/queries/partial.graphql";
+import Head from "next/head";
 
 const key = "login";
 
@@ -108,6 +107,9 @@ const NormalLoginForm = () => {
 
   return (
     <Container>
+      <Head>
+        <title>Login</title>
+      </Head>
       <div className="login">
         <h1>Letterpad</h1>
         <Block isVisible={loginView}>

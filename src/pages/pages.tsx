@@ -10,19 +10,21 @@ import { useRouter } from "next/router";
 import { initializeApollo } from "@/graphql/apollo";
 import { Button, Layout, PageHeader, Table } from "antd";
 
-import { Breakpoint } from "antd/lib/_util/responsiveObserve";
-import { Author, Image, Setting } from "@/__generated__/type-defs.graphqls";
+import { Setting } from "@/__generated__/type-defs.graphqls";
 const { Content } = Layout;
 import CustomLayout from "@/components/layouts/Layout";
 import { useEffect, useState } from "react";
 import ErrorMessage from "@/components/ErrorMessage";
 import Filters from "@/components/filters";
+import Head from "next/head";
+import { postsStyles } from "@/components/posts.css";
+import { columns } from "@/components/posts";
 
 interface IProps {
   settings: Setting;
 }
 
-function Pages({ settings }: IProps) {
+function Pages() {
   const [loading, setLoading] = useState(true);
   const [postsNode, setPostsNode] = useState<PostsQuery["posts"]>({
     count: 0,
@@ -36,8 +38,8 @@ function Pages({ settings }: IProps) {
     fetchPosts(filters);
   }, [JSON.stringify(filters)]);
 
-  const fetchPosts = async (filters = {}) => {
-    const posts = await fetchPostsFromAPI(filters);
+  const fetchPosts = async (args = {}) => {
+    const posts = await fetchPostsFromAPI(args);
     setLoading(false);
     if (posts.__typename === "PostsNode") {
       const rows = posts.rows.map(post => {
@@ -60,6 +62,9 @@ function Pages({ settings }: IProps) {
   const source = postsNode.__typename === "PostsNode" ? postsNode.rows : [];
   return (
     <>
+      <Head>
+        <title>Pages</title>
+      </Head>
       <PageHeader
         className="site-page-header"
         title="Pages"
@@ -88,6 +93,7 @@ function Pages({ settings }: IProps) {
             })}
           />
         </div>
+        <style jsx>{postsStyles}</style>
       </Content>
     </>
   );
@@ -111,41 +117,3 @@ async function fetchPostsFromAPI(filters: PostsFilters) {
   });
   return post.data.posts;
 }
-
-const columns = [
-  {
-    title: "Image",
-    dataIndex: "cover_image",
-    key: "cover_image",
-    responsive: ["md"] as Breakpoint[],
-    render: (cover_image: Image) => <img src={cover_image.src} width={80} />,
-  },
-  {
-    title: "Title",
-    dataIndex: "title",
-    key: "title",
-  },
-  {
-    title: "Description",
-    dataIndex: "excerpt",
-    key: "excerpt",
-    responsive: ["md"] as Breakpoint[],
-  },
-  // {
-  //   title: "Author",
-  //   dataIndex: "author",
-  //   key: "author",
-  //   responsive: ["lg"] as Breakpoint[],
-  //   render: (author: Author) => author.name,
-  // },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-  },
-  {
-    title: "Published",
-    dataIndex: "publishedAt",
-    key: "publishedAt",
-  },
-];

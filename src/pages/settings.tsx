@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { OptionInputType } from "@/__generated__/type-defs.graphqls";
 import withAuthCheck from "../hoc/withAuth";
 import Navigation from "@/components/navigation-builder";
+import Head from "next/head";
 
 const { Panel } = Collapse;
 const { TextArea } = Input;
@@ -55,6 +56,9 @@ function Settings(props: { settings: Setting }) {
 
   return (
     <>
+      <Head>
+        <title>Settings</title>
+      </Head>
       <PageHeader className="site-page-header" title="Settings"></PageHeader>
       <Content style={{ margin: "16px 0px 0" }}>
         <div className="site-layout-background" style={{ padding: 24 }}>

@@ -3,7 +3,7 @@ import {
   useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
 import React, { useState } from "react";
-
+import Head from "next/head";
 import {
   CreateAuthorMutation,
   CreateAuthorMutationVariables,
@@ -79,6 +79,9 @@ const RegisterForm = () => {
 
   return (
     <Container>
+      <Head>
+        <title>Register</title>
+      </Head>
       <div className="login">
         <h1>Letterpad</h1>
         <Block isVisible={true}>
