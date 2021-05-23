@@ -1,3 +1,4 @@
+import { setResponsiveImages } from "./../utils/imageAttributs";
 import { PostAttributes } from "../db/models/post";
 import { Op, Order } from "sequelize";
 import {
@@ -5,15 +6,14 @@ import {
   PostFilters,
   PostStatusOptions,
   SortBy,
+  PostTypes,
 } from "@/__generated__/type-defs.graphqls";
 import { QueryResolvers } from "../type-defs.graphqls";
 import { ResolverContext } from "../apollo";
 import { decrypt } from "../utils/crypto";
 import models from "../db/models";
 import logger from "../../../shared/logger";
-import { PostTypes } from "@/__generated__/type-defs.graphqls";
 import debug from "debug";
-import { setResponsiveImages } from "./helpers";
 import { getHtmlFromMarkdown } from "letterpad-editor/dist/mdToHtml";
 
 interface IPostCondition {

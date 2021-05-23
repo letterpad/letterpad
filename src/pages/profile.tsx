@@ -18,12 +18,11 @@ import {
   InputAuthor,
   Social,
   Author,
-  Setting,
-  MeResponse,
 } from "@/__generated__/type-defs.graphqls";
 import { removeTypenames } from "../../shared/removeTypenames";
 import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
+import Head from "next/head";
 
 const { Panel } = Collapse;
 
@@ -87,6 +86,9 @@ function Profile() {
   if (error) return <ErrorMessage title="Profile" description={error} />;
   return (
     <>
+      <Head>
+        <title>Profile</title>
+      </Head>
       <PageHeader className="site-page-header" title="Profile"></PageHeader>
       <Content style={{ margin: "16px 0px 0" }}>
         <div className="site-layout-background" style={{ padding: 24 }}>

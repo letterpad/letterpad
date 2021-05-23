@@ -15,6 +15,7 @@ import {
   Row,
   Block,
 } from "@/components/login.css";
+import Head from "next/head";
 
 const key = "change-password";
 
@@ -76,6 +77,9 @@ const ResetPassword = () => {
 
   return (
     <Container>
+      <Head>
+        <title>Reset password</title>
+      </Head>
       <Block isVisible={true}>
         <div className="login">
           <InputBlock>

@@ -19,6 +19,8 @@ import { initializeApollo } from "@/graphql/apollo";
 import { TagsDocument } from "@/graphql/queries/queries.graphql";
 import CustomLayout from "@/components/layouts/Layout";
 import withAuthCheck from "../hoc/withAuth";
+import Head from "next/head";
+
 type EditableTableProps = Parameters<typeof Table>[0];
 
 interface DataType {
@@ -120,6 +122,9 @@ const EditableTable = ({ settings }: { settings: Setting }) => {
 
   return (
     <>
+      <Head>
+        <title>Tags</title>
+      </Head>
       <PageHeader className="site-page-header" title="Tags"></PageHeader>
       <Content style={{ margin: "16px 0px 0" }}>
         <div className="site-layout-background" style={{ padding: 24 }}>
