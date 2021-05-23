@@ -143,9 +143,15 @@ mutation updatePost($data: InputUpdatePost) {
     ... on Post {
       ...Partial
       author {
+        id
         name
-        bio
         avatar
+        social {
+          github
+          twitter
+          instagram
+        }
+        bio
       }
       tags {
         id
