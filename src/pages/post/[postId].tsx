@@ -22,10 +22,12 @@ import {
 import { useEffect, useState } from "react";
 import { uploadFile } from "../../../shared/upload";
 import { removeTypenames } from "../../../shared/removeTypenames";
+import { debounce } from "../../../shared/utils";
 import FileExplorer from "@/components/file-explorer";
 import withAuthCheck from "../../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import nextConfig from "next.config";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const { Content } = Layout;
 
@@ -33,11 +35,28 @@ export enum MediaProvider {
   Unsplash = "unsplash",
   Letterpad = "letterpad",
 }
+
+const updatePostRequest = async (
+  attrs: Omit<InputUpdatePost, "id">,
+  postId: number,
+) => {
+  const apolloClient = await initializeApollo();
+  return apolloClient.mutate<UpdatePostMutation, UpdatePostMutationVariables>({
+    mutation: UpdatePostDocument,
+    variables: {
+      data: { ...removeTypenames(attrs), id: postId },
+    },
+  });
+};
+
+const debounceUpdatePost = debounce(updatePostRequest, 1000);
+
 let editor;
+
 function Post() {
-  let changeTimeout;
   const router = useRouter();
 
+  const [updating, setUpdating] = useState(false);
   const [post, setPost] = useState<PostQuery["post"]>();
   const [error, setError] = useState("");
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
@@ -72,8 +91,21 @@ function Post() {
   };
 
   const setPostAttribute = async (attrs: Omit<InputUpdatePost, "id">) => {
-    setPost({ ...post, ...attrs });
-    await updatePostRequest(attrs, post.id);
+    // if post is already published and new content is added, then save this as draft
+    if (post.status === PostStatusOptions.Published && attrs.md) {
+      setPost({ ...post, md_draft: attrs.md });
+    }
+    // if the post is published or republished, remove draft
+    else if (attrs.status === PostStatusOptions.Published) {
+      setPost({ ...post, ...attrs, md_draft: "", md: post.md_draft });
+    }
+    // save the other attributes of post
+    else {
+      setPost({ ...post, ...attrs });
+    }
+    setUpdating(true);
+    await debounceUpdatePost(attrs, post.id);
+    setUpdating(false);
   };
 
   const onMediaBrowse = () => {
@@ -121,6 +153,7 @@ function Post() {
         style={{ padding: 10 }}
         onBack={() => router.push(isPost ? "/posts" : "/pages")}
         extra={[
+          <LoadingOutlined spin hidden={!updating} key="updating" />,
           <Actions
             key="actions"
             post={post}
@@ -158,13 +191,10 @@ function Post() {
             defaultValue={post.md_draft || post.md}
             tooltip={_Tooltip}
             onChange={change => {
-              clearTimeout(changeTimeout);
-              changeTimeout = setTimeout(() => {
-                const { html, markdown } = change();
-                if (markdown !== post.md) {
-                  setPostAttribute({ html, md: markdown });
-                }
-              }, 2000);
+              const { html, markdown } = change();
+              if (markdown !== post.md) {
+                setPostAttribute({ html, md: markdown });
+              }
             }}
             placeholder="Write a story.."
             // ref={setRef}
@@ -197,22 +227,6 @@ async function getPost(postId: number) {
   });
   return post.data.post;
 }
-
-const updatePostRequest = async (
-  attrs: Omit<InputUpdatePost, "id">,
-  postId: number,
-) => {
-  const apolloClient = await initializeApollo();
-  return await apolloClient.mutate<
-    UpdatePostMutation,
-    UpdatePostMutationVariables
-  >({
-    mutation: UpdatePostDocument,
-    variables: {
-      data: { ...removeTypenames(attrs), id: postId },
-    },
-  });
-};
 
 const _Tooltip: React.FC<any> = ({ children, tooltip }) => {
   return (

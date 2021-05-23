@@ -5,6 +5,7 @@ query Post($filters: PostFilters) {
     ... on Post {
       ...Partial
       author {
+        id
         name
         avatar
         social {
