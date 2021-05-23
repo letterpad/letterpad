@@ -28,6 +28,7 @@ import withAuthCheck from "../../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import nextConfig from "next.config";
 import { LoadingOutlined } from "@ant-design/icons";
+import Head from "next/head";
 
 const { Content } = Layout;
 
@@ -147,6 +148,9 @@ function Post() {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
+      <Head>
+        <title>Editing - {post.title}</title>
+      </Head>
       <PageHeader
         className="site-page-header"
         title="&nbsp;"
