@@ -203,6 +203,11 @@ function Post() {
             placeholder="Write a story.."
             // ref={setRef}
           />
+          <style jsx global>{`
+            .block-toolbar span span {
+              display: block;
+            }
+          `}</style>
           <FileExplorer
             multi={true}
             mediaProvider={mediaProvider}
