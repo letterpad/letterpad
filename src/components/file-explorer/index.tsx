@@ -36,6 +36,11 @@ const FileExplorer = ({
     [url: string]: Image & { alt: string };
   }>({});
 
+  const closeWindow = () => {
+    setSelection({});
+    handleCancel();
+  };
+
   const insertMedia = async () => {
     // get only the urls in an array
     try {
@@ -43,7 +48,7 @@ const FileExplorer = ({
     } catch (e) {
       // notify.show("Something unexpected happened.", "error");
     }
-    setTimeout(handleCancel, 0);
+    setTimeout(closeWindow, 0);
   };
 
   const onMediaSelected = (media: Media) => {
@@ -85,9 +90,9 @@ const FileExplorer = ({
     <Modal
       title="Media"
       visible={isVisible}
-      onCancel={handleCancel}
+      onCancel={closeWindow}
       footer={[
-        <Button key="back" onClick={handleCancel}>
+        <Button key="back" onClick={closeWindow}>
           Cancel
         </Button>,
         hasSelectedImages ? (
@@ -95,7 +100,13 @@ const FileExplorer = ({
             Insert
           </Button>
         ) : null,
-        <Button type="primary" onClick={() => switchProvider(toggleProvider)}>
+        <Button
+          type="primary"
+          onClick={() => {
+            setSelection({});
+            switchProvider(toggleProvider);
+          }}
+        >
           {isUnsplash ? "My Media" : "Search Online"}
         </Button>,
       ]}
