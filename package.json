@@ -35,7 +35,7 @@
     "letterpad-editor": "^0.0.33",
     "md5": "^2.3.0",
     "multer": "^1.4.2",
-    "next": "10.2.0",
+    "next": "10.2.3",
     "next-auth": "^3.19.8",
     "nprogress": "^0.2.0",
     "react": "^16.13.1",

@@ -5,7 +5,7 @@ import { Provider } from "next-auth/client";
 import { useRouter } from "next/router";
 import nextConfig from "../../next.config";
 import type { Page } from "../page";
-import { useEffect, useState } from "react";
+import { Children, PropsWithChildren, useEffect, useState } from "react";
 import { Setting } from "@/__generated__/queries/queries.graphql";
 import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import "lazysizes";
@@ -58,16 +58,20 @@ export default function App({ Component, pageProps }: Props) {
     init();
   }, []);
 
-  const Layout = Component.layout;
+  const Layout = Component.layout || NoLayout;
   if (!apolloClient || !settings || !Layout) return null;
 
   return (
     <Main
       apolloClient={apolloClient}
-      Layout={Layout}
       Component={Component}
+      Layout={Layout}
       props={pageProps}
       settings={settings}
     />
   );
+}
+
+function NoLayout({ children }: PropsWithChildren<{ settings: Setting }>) {
+  return <>{children}</>;
 }
