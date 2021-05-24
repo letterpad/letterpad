@@ -43,12 +43,12 @@ export default async (
   await multerAny(req, res);
   const _session = await getSession({ req });
   const session = _session as unknown as SessionData;
-  if (!session || !session.user) return res.status(401).send("Unauthorized");
+  if (!session || !session.user.id) return res.status(401).send("Unauthorized");
 
   // This operation expects a single file upload.
   if (!req.files?.length || req.files.length > 1) {
     res.statusCode = 400;
-    res.end();
+    res.status(501).end("The request can contain only 1 file");
     return;
   }
 
@@ -56,12 +56,14 @@ export default async (
   if (!Array.isArray(files)) {
     files = [files];
   }
-
-  const apollo = await initializeApollo();
+  const apollo = await initializeApollo({}, { req });
   const settings = await apollo.query<SettingsQuery, SettingsQueryVariables>({
     query: SettingsDocument,
     fetchPolicy: "network-only",
   });
+  if (settings.data.settings.__typename === "SettingError") {
+    return res.status(501).end(settings.data.settings.message);
+  }
 
   if (!settings || settings.data.settings.__typename !== "Setting") return null;
 
@@ -89,11 +91,13 @@ export default async (
       try {
         let result: IMediaUploadResult;
         if (cdnEnabled) {
+          console.log("cdnEnabled :>> ", cdnEnabled);
           result = await uploadToCloudinary(file, uploadPath, {
             api_key: cloudinary_key,
             cloud_name: cloudinary_name,
             api_secret: cloudinary_secret,
           });
+          console.log("result :>> ", result);
         } else {
           result = await uploadToInternal(
             file,

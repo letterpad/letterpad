@@ -17,7 +17,7 @@ const withAuthCheck = <T extends object>(
     if (!session) return null;
     return <WrappedComponent {...props} />;
   };
-  ComponentWithAuth.hasAuth = true;
+  ComponentWithAuth.needsAuth = true;
   ComponentWithAuth.layout = null;
   return ComponentWithAuth;
 };

@@ -15,7 +15,7 @@ export async function uploadToCloudinary(
 ): Promise<IMediaUploadResult> {
   Cloudinary.v2.config(options);
 
-  return await new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const fileExistsInternally = fs.existsSync(uploadPath);
     if (!fileExistsInternally) fs.writeFileSync(uploadPath, file.buffer);
     Cloudinary.v2.uploader.upload(
