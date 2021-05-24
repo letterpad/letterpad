@@ -1,34 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Upload, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { IMediaUploadResult } from "@/graphql/types";
 import { UploadChangeParam } from "antd/lib/upload";
 import Modal from "antd/lib/modal/Modal";
 import nextConfig from "../../next.config";
-
-function getBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
-}
-
-function beforeUpload(file: File) {
-  const isJpgOrPng =
-    file.type === "image/jpeg" ||
-    file.type === "image/png" ||
-    file.type === "image/webp";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
-  }
-  return isJpgOrPng && isLt2M;
-}
+import FileExplorer from "./file-explorer";
+import { getBase64 } from "shared/utils";
 
 interface IProps {
   url: string;
@@ -41,13 +19,15 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
   const [loading, setLoading] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [fileList, setFileList] = useState<UploadChangeParam["fileList"]>([]);
+  const [explorerVisible, setExplorerVisible] = useState(false);
 
+  const ref = useRef();
   useEffect(() => {
     if (url) {
       // @ts-ignore
       setFileList([{ url, status: "done", uid: "1", size: 200, name }]);
     }
-  }, []);
+  }, [url]);
 
   const handleChange = async (info: UploadChangeParam) => {
     if (info.file.status === "uploading") {
@@ -91,19 +71,28 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
 
   return (
     <>
-      <Upload
-        name="avatar"
-        listType="picture-card"
-        className="avatar-uploader"
-        showUploadList={true}
-        action={nextConfig.basePath + "/api/customRequest"}
-        beforeUpload={beforeUpload}
-        onChange={handleChange}
-        fileList={fileList}
-        onPreview={handlePreview}
+      <div
+        onClick={e => {
+          if (fileList.length > 0) return;
+          setExplorerVisible(true);
+        }}
       >
-        {fileList.length === 0 && uploadButton}
-      </Upload>
+        <Upload
+          openFileDialogOnClick={false}
+          name="avatar"
+          listType="picture-card"
+          className="avatar-uploader"
+          showUploadList={true}
+          action={nextConfig.basePath + "/api/customRequest"}
+          beforeUpload={beforeUpload}
+          onChange={handleChange}
+          fileList={fileList}
+          onPreview={handlePreview}
+          ref={ref}
+        >
+          {fileList.length === 0 && uploadButton}
+        </Upload>
+      </div>
       <Modal
         visible={previewVisible}
         title={previewTitle}
@@ -116,8 +105,46 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
       >
         <img alt="example" style={{ width: "100%" }} src={previewUrl} />
       </Modal>
+      <FileExplorer
+        isVisible={explorerVisible}
+        handleCancel={() => setExplorerVisible(false)}
+        onInsert={async files => {
+          const result: IMediaUploadResult[] = [];
+          for (url in files) {
+            const item = files[url];
+            result.push({
+              src: url,
+              name: "does-not-matter",
+              error: "",
+              size: {
+                width: item.width || 0,
+                height: item.height || 0,
+                type: "",
+              },
+            });
+          }
+          onDone(result);
+          setExplorerVisible(false);
+          return Promise.resolve(result);
+        }}
+      />
     </>
   );
 };
 
 export default ImageUpload;
+
+export function beforeUpload(file: File) {
+  const isJpgOrPng =
+    file.type === "image/jpeg" ||
+    file.type === "image/png" ||
+    file.type === "image/webp";
+  if (!isJpgOrPng) {
+    message.error("You can only upload JPG/PNG file!");
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error("Image must smaller than 2MB!");
+  }
+  return isJpgOrPng && isLt2M;
+}

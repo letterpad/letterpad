@@ -20,6 +20,7 @@ import { uploadToInternal } from "./providers/internal";
 import models from "@/graphql/db/models";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
+import nextConfig from "next.config";
 
 const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");
@@ -62,7 +63,8 @@ export default async (
     fetchPolicy: "network-only",
   });
 
-  if (!settings) return null;
+  if (!settings || settings.data.settings.__typename !== "Setting") return null;
+
   const { cloudinary_key, cloudinary_name, cloudinary_secret } =
     settings.data.settings;
 
@@ -96,7 +98,7 @@ export default async (
           result = await uploadToInternal(
             file,
             uploadPath,
-            "/uploads/" + filename,
+            nextConfig.basePath + "/uploads/" + filename,
           );
         }
         await upsertMedia(result, session.user.id);
