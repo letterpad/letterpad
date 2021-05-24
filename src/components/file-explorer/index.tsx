@@ -5,26 +5,30 @@ import Unsplash from "./providers/Unsplash";
 import { Image, Media } from "@/__generated__/type-defs.graphqls";
 import { Button } from "antd";
 import MediaItem from "./MediaItem";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { uploadFile } from "shared/upload";
+
+type ImageInput = {
+  [urls: string]: Image & { alt: string };
+};
 
 interface IProps {
   isVisible: boolean;
   handleCancel: () => void;
-  mediaProvider: MediaProvider;
-  switchProvider: (provider: MediaProvider) => void;
-  multi: boolean;
-  onInsert: (images: {
-    [urls: string]: Image & { alt: string };
-  }) => Promise<unknown[]>;
+  multi?: boolean;
+  onInsert: (images: ImageInput) => Promise<unknown[]>;
+  onImageFile?: (image: File[]) => Promise<string[]>;
 }
 const FileExplorer = ({
   isVisible,
   handleCancel,
-  mediaProvider,
-  switchProvider,
-  multi,
+  multi = true,
   onInsert,
 }: IProps) => {
+  const [mediaProvider, setMediaProvider] = useState<MediaProvider>(
+    MediaProvider.Letterpad,
+  );
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
   const isUnsplash = mediaProvider === MediaProvider.Unsplash;
   const isInternal = mediaProvider === MediaProvider.Letterpad;
 
@@ -32,9 +36,7 @@ const FileExplorer = ({
     ? MediaProvider.Letterpad
     : MediaProvider.Unsplash;
 
-  const [selectedUrls, setSelection] = useState<{
-    [url: string]: Image & { alt: string };
-  }>({});
+  const [selectedUrls, setSelection] = useState<ImageInput>({});
 
   const closeWindow = () => {
     setSelection({});
@@ -88,6 +90,8 @@ const FileExplorer = ({
   if (!isVisible) return null;
   return (
     <Modal
+      centered
+      width="60vw"
       title="Media"
       visible={isVisible}
       onCancel={closeWindow}
@@ -100,11 +104,21 @@ const FileExplorer = ({
             Insert
           </Button>
         ) : null,
+        isInternal ? (
+          <Button
+            key="upload"
+            onClick={() => {
+              hiddenInputRef.current?.click();
+            }}
+          >
+            Browse
+          </Button>
+        ) : null,
         <Button
           type="primary"
           onClick={() => {
             setSelection({});
-            switchProvider(toggleProvider);
+            setMediaProvider(toggleProvider);
           }}
         >
           {isUnsplash ? "My Media" : "Search Online"}
@@ -113,6 +127,21 @@ const FileExplorer = ({
     >
       {isInternal && <Internal renderer={renderer} />}
       {isUnsplash && <Unsplash renderer={renderer} />}
+      <input
+        type="file"
+        ref={hiddenInputRef}
+        style={{ display: "none" }}
+        onChange={async e => {
+          if (!e.target.files) return;
+          const [result] = await uploadFile({
+            files: e.target.files,
+            type: "cover_image",
+          });
+          let urls = { ...selectedUrls };
+          urls[`${result.src}`] = { ...result, alt: "" };
+          onInsert(urls);
+        }}
+      />
     </Modal>
   );
 };

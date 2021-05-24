@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import InfiniteScrollList from "../InfiniteScrollList";
 import { Media } from "@/__generated__/type-defs.graphqls";
@@ -15,7 +15,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);
 
-  const fetchUnsplashMedia = async (page = 1, query: string) => {
+  const fetchUnsplashMedia = async () => {
     // unsplash.com/page/1/query/forest
     const endpoint = url + "?page=" + page + "&query=" + query;
 
@@ -40,24 +40,27 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     };
 
     setData([...data, ...images.rows]);
+
     setTotalCount(images.count);
   };
+
+  useEffect(() => {
+    fetchUnsplashMedia();
+  }, [query, page]);
 
   const onKeyUp = async e => {
     const search = e.target.value.trim();
     if (search.length > 0) {
       if (e.keyCode === 13) {
+        setQuery(search);
         setData([]);
-        return fetchUnsplashMedia(page, query);
       }
-      return setQuery(search);
     }
   };
 
   const loadMore = () => {
     const nextPage = page + 1;
     setPage(nextPage);
-    fetchUnsplashMedia(nextPage, query);
   };
 
   const jsxElements = renderer(data);

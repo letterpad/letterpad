@@ -61,7 +61,6 @@ function Post() {
   const [post, setPost] = useState<PostQuery["post"]>();
   const [error, setError] = useState("");
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
-  const [mediaProvider, setMediaProvider] = useState(MediaProvider.Unsplash);
   const [postHash, setPostHash] = useState("");
 
   useEffect(() => {
@@ -110,12 +109,10 @@ function Post() {
   };
 
   const onMediaBrowse = () => {
-    setMediaProvider(MediaProvider.Unsplash);
     setFileExplorerOpen(true);
   };
 
   const onFileExplorerClose = () => {
-    setMediaProvider(MediaProvider.Letterpad);
     setFileExplorerOpen(false);
   };
 
@@ -210,11 +207,9 @@ function Post() {
           `}</style>
           <FileExplorer
             multi={true}
-            mediaProvider={mediaProvider}
             isVisible={fileExplorerOpen}
             handleCancel={onFileExplorerClose}
             onInsert={insertImageUrlInEditor}
-            switchProvider={mediaProvider => setMediaProvider(mediaProvider)}
           />
         </div>
       </Content>

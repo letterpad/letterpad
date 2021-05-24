@@ -1,6 +1,7 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import React from "react";
 import styled from "styled-components";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface IInfiniteScrollListProps {
   data: any;
@@ -20,12 +21,7 @@ const InfiniteScrollList = ({
         dataLength={data.length}
         next={loadMore}
         hasMore={data.length < count}
-        loader={
-          <img
-            src="https://res.cloudinary.com/chuloo/image/upload/v1550093026/scotch-logo-gif_jq4tgr.gif"
-            alt="loading"
-          />
-        }
+        loader={<LoadingOutlined spin style={{ padding: 40 }} />}
       >
         <div className="image-grid">{data}</div>
       </InfiniteScroll>

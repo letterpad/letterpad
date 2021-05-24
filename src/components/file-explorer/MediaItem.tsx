@@ -32,7 +32,7 @@ const MediaItem: React.FC<IProps> = ({
           </div>
         </div>
         <div className="post-content">
-          <div className="post-time">{getReadableDate(media.createdAt)}</div>
+          <div className="post-name">{media.name}</div>
         </div>
       </div>
     </Container>
@@ -44,7 +44,7 @@ const Container = styled.article`
   .post-thumbnail {
     height: 150px;
     img {
-      object-fit: contain;
+      object-fit: cover;
       width: 100%;
       height: 100%;
     }
@@ -52,5 +52,8 @@ const Container = styled.article`
   border: 2px solid transparent;
   &.selected {
     border: 2px solid var(--color-base);
+  }
+  .post-name {
+    font-size: x-small;
   }
 `;

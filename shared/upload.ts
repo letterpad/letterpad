@@ -1,14 +1,19 @@
+import { IMediaUploadResult } from "@/graphql/types";
 import nextConfig from "../next.config";
 interface IUploadFileProps {
-  files: File[];
+  files: File[] | FileList;
   type?: string;
 }
 
-export const uploadFile = ({ files, type }: IUploadFileProps) => {
+export const uploadFile = ({
+  files,
+  type,
+}: IUploadFileProps): Promise<IMediaUploadResult[]> => {
   const data: FormData = new FormData();
   if (type) {
     data.append("type", type);
   }
+
   for (let i = 0; i < files.length; i++) {
     data.append(`file`, files[i]);
   }
