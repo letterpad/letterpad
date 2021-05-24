@@ -52,6 +52,11 @@ export async function initializeApollo(
 ) {
   let session;
   if (typeof window === "undefined") {
+    if (!context) {
+      throw new Error(
+        "`initializeApollo` has been called without setting a context",
+      );
+    }
     const isBuildRunning = process.env.NEXT_PHASE === "phase-production-build";
     if (!isBuildRunning) session = await getSession(context);
   }
@@ -72,6 +77,5 @@ export async function initializeApollo(
 }
 
 export function useApollo(initialState: any) {
-  const store = useMemo(() => initializeApollo(initialState), [initialState]);
-  return store;
+  return useMemo(() => initializeApollo(initialState), [initialState]);
 }

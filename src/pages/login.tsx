@@ -139,12 +139,6 @@ const NormalLoginForm = () => {
             />
           </InputBlock>
           <Row justify="space-between">
-            {/* <RememberMeBlock>
-              <label>
-                <input type="checkbox" onClick={onRememberMeChange} />
-                <span className="label-text"> Remember me</span>
-              </label>
-            </RememberMeBlock> */}
             <InputBlock>
               <a onClick={showLostPasswordView} className="forgot-pwd" href="#">
                 Forgot password ?

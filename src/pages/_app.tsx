@@ -1,100 +1,73 @@
 import { AppProps } from "next/app";
-import {
-  ApolloClient,
-  ApolloProvider,
-  NormalizedCacheObject,
-} from "@apollo/client";
-import Head from "next/head";
-import { initializeApollo, useApollo } from "@/graphql/apollo";
+import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import { useApollo } from "@/graphql/apollo";
 import { Provider } from "next-auth/client";
-import Router, { useRouter } from "next/router";
-import "../../styles/globals.css";
-import NProgress from "nprogress";
+import { useRouter } from "next/router";
 import nextConfig from "../../next.config";
 import type { Page } from "../page";
 import { useEffect, useState } from "react";
-import {
-  Setting,
-  SettingsDocument,
-  SettingsQuery,
-  SettingsQueryVariables,
-} from "@/__generated__/queries/queries.graphql";
+import { Setting } from "@/__generated__/queries/queries.graphql";
 import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import "lazysizes";
-// import "antd/dist/antd.css";
+import Main from "@/components/main";
+import { getSettings, initPageProgress } from "shared/utils";
 
-NProgress.configure({ showSpinner: true });
-Router.events.on("routeChangeStart", _url => {
-  NProgress.start();
-});
-Router.events.on("routeChangeComplete", () => NProgress.done());
-Router.events.on("routeChangeError", () => NProgress.done());
+import "../../styles/globals.css";
 
 type Props = AppProps & {
   Component: Page;
 };
 
 export default function App({ Component, pageProps }: Props) {
-  const apolloClient = useApollo(pageProps.initialApolloState);
-  const [settings, setSettings] = useState<null | Setting>(null);
-  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
-  const router = useRouter();
-  useEffect(() => {
-    apolloClient.then(client => {
-      setClient(client);
-    });
+  if (typeof window === "undefined") return null;
 
-    if (!settings) {
-      if (!Component.hasAuth) return;
-      getSettings()
-        .then(res => {
-          if (res.data.settings?.__typename === "Setting") {
-            setSettings(res.data.settings as Setting);
-          } else if (res.data.settings?.__typename === "SettingError") {
-            router.push("/api/auth/signin");
-          }
-        })
-        .catch(e => {
-          router.push("/api/auth/signin");
-        });
+  const apolloClientPromise = useApollo(pageProps.initialApolloState);
+  const [settings, setSettings] = useState<null | Setting>(null);
+  const [apolloClient, setClient] =
+    useState<ApolloClient<NormalizedCacheObject>>();
+  const router = useRouter();
+
+  const ComponentRequiresAuth = Component.needsAuth;
+
+  if (!ComponentRequiresAuth) {
+    return (
+      <Provider
+        session={pageProps.session}
+        options={{ basePath: nextConfig.basePath + "/api/auth" }}
+      >
+        <Component {...pageProps} />
+      </Provider>
+    );
+  }
+
+  useEffect(() => {
+    ThemeSwitcher.switch(localStorage.theme);
+    initPageProgress();
+
+    async function init() {
+      const client = await apolloClientPromise;
+      setClient(client);
+
+      const { data } = await getSettings();
+      if (data.settings?.__typename === "Setting") {
+        setSettings(data.settings);
+      } else if (data.settings?.__typename === "SettingError") {
+        router.push("/api/auth/signin");
+      }
     }
+    init();
   }, []);
 
-  if (!client) return null;
-  if (Component.hasAuth && !settings) return null;
-
   const Layout = Component.layout;
-  if (!Layout) {
-    setTimeout(() => {
-      ThemeSwitcher.switch(localStorage.theme);
-    }, 0);
-  }
+  if (!apolloClient || !settings || !Layout) return null;
+
   return (
-    <Provider
-      session={pageProps.session}
-      options={{ basePath: nextConfig.basePath + "/api/auth" }}
-    >
-      <Head>
-        <link rel="icon" href={nextConfig.basePath + "/uploads/logo.png"} />
-      </Head>
-      <ApolloProvider client={client}>
-        {Layout && settings ? (
-          <Layout settings={settings}>
-            <Component {...pageProps} settings={settings} />
-          </Layout>
-        ) : (
-          <Component {...pageProps} />
-        )}
-      </ApolloProvider>
-    </Provider>
+    <Main
+      apolloClient={apolloClient}
+      Layout={Layout}
+      Component={Component}
+      props={pageProps}
+      settings={settings}
+    />
   );
-}
-
-async function getSettings() {
-  const client = await initializeApollo();
-  const settings = await client.query<SettingsQuery, SettingsQueryVariables>({
-    query: SettingsDocument,
-  });
-
-  return settings;
 }

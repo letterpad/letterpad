@@ -1,3 +1,12 @@
+import { initializeApollo } from "@/graphql/apollo";
+import {
+  SettingsDocument,
+  SettingsQuery,
+  SettingsQueryVariables,
+} from "@/__generated__/queries/queries.graphql";
+import Router from "next/router";
+import NProgress from "nprogress";
+
 export const getReadableDate = (timestamp: Date) => {
   return new Date(timestamp).toLocaleString("en-us", {
     month: "long",
@@ -27,4 +36,20 @@ export function getBase64(file: File) {
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
   });
+}
+
+export async function getSettings() {
+  const client = await initializeApollo();
+  return client.query<SettingsQuery, SettingsQueryVariables>({
+    query: SettingsDocument,
+  });
+}
+
+export function initPageProgress() {
+  NProgress.configure({ showSpinner: true });
+  Router.events.on("routeChangeStart", _url => {
+    NProgress.start();
+  });
+  Router.events.on("routeChangeComplete", () => NProgress.done());
+  Router.events.on("routeChangeError", () => NProgress.done());
 }
