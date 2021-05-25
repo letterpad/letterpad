@@ -1,3 +1,4 @@
+import { SessionData } from "@/graphql/types";
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -9,7 +10,8 @@ const withAuthCheck = <T extends object>(
     const [session, loading] = useSession();
     const router = useRouter();
     useEffect(() => {
-      if (!loading && !session?.user.id) {
+      const _session = session as unknown as { user: SessionData };
+      if (!loading && !_session?.user?.id) {
         router.push("/api/auth/signin");
       }
     }, [loading]);

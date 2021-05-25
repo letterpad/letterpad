@@ -58,7 +58,7 @@ const Actions = ({ post, setPostAttribute, deletePost, postHash }: IProps) => {
         size="small"
         type="primary"
         disabled={rePublishBtnDisabled}
-        onClick={e => {
+        onClick={() => {
           setPostAttribute({
             status: PostStatusOptions.Published,
           });

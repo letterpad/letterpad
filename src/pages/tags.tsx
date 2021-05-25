@@ -12,7 +12,6 @@ import {
 import {
   TagsQuery,
   TagsQueryVariables,
-  Setting,
 } from "@/__generated__/queries/queries.graphql";
 import { EditableCell, EditableRow } from "@/components/ediitable-table";
 import { initializeApollo } from "@/graphql/apollo";
@@ -34,7 +33,7 @@ interface DataType {
 
 type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
 
-const EditableTable = ({ settings }: { settings: Setting }) => {
+const EditableTable = () => {
   const [dataSource, setDataSource] = useState<DataType[]>([]);
   const [count, setCount] = useState(0);
 
@@ -160,7 +159,9 @@ export async function fetchTags() {
   });
   if (tags.data.tags?.__typename === "TagsNode") {
     const data = tags.data.tags.rows.map(item => {
-      return { ...item, posts: item.posts?.count };
+      const count =
+        item.posts.__typename === "PostsNode" ? item.posts.count : 0;
+      return { ...item, posts: count };
     });
     return {
       props: {
@@ -211,7 +212,7 @@ function getHeaders(dataSource, handleDelete) {
       dataIndex: "desc",
       editable: true,
       required: false,
-      render: (_, record: { key: React.Key }) => {
+      render: (_, _record: { key: React.Key }) => {
         return (
           _ || (
             <Button type="dashed" size="small">

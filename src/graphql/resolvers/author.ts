@@ -271,7 +271,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
   },
-  async resetPassword(_root, args, context) {
+  async resetPassword(_root, args) {
     try {
       const token = args.token;
       const isValidToken = jwt.verify(token, process.env.SECRET_KEY);

@@ -78,7 +78,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
     return {
       __typename: "Setting",
-      ...((setting as unknown) as SettingType),
+      ...(setting as unknown as SettingType),
     };
   },
 };
@@ -130,7 +130,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     const setting = await models.Setting.findOne({
       where: { id: session.user.id },
     });
-    const a = (setting as unknown) as SettingType;
+    const a = setting as unknown as SettingType;
 
     return a;
   },

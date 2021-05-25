@@ -8,7 +8,6 @@ import {
 import { initializeApollo } from "@/graphql/apollo";
 import { Button, Layout, PageHeader, Table } from "antd";
 import Filters from "@/components/filters";
-import { PostsResponse, Setting } from "@/__generated__/type-defs.graphqls";
 const { Content } = Layout;
 import CustomLayout from "@/components/layouts/Layout";
 import { useRouter } from "next/router";
@@ -18,11 +17,6 @@ import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
 import { postsStyles } from "@/components/posts.css";
 import { postsColumns } from "@/components/posts";
-
-interface IProps {
-  data: PostsResponse;
-  settings: Setting;
-}
 
 function Posts() {
   const router = useRouter();

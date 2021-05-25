@@ -9,8 +9,6 @@ import {
 import { useRouter } from "next/router";
 import { initializeApollo } from "@/graphql/apollo";
 import { Button, Layout, PageHeader, Table } from "antd";
-
-import { Setting } from "@/__generated__/type-defs.graphqls";
 const { Content } = Layout;
 import CustomLayout from "@/components/layouts/Layout";
 import { useEffect, useState } from "react";
@@ -19,10 +17,6 @@ import Filters from "@/components/filters";
 import Head from "next/head";
 import { postsStyles } from "@/components/posts.css";
 import { columns } from "@/components/posts";
-
-interface IProps {
-  settings: Setting;
-}
 
 function Pages() {
   const [loading, setLoading] = useState(true);

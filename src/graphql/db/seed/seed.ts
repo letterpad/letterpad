@@ -24,7 +24,7 @@ function absPath(p) {
 }
 
 let models: typeof dbModels;
-export const seed = async (_models: typeof dbModels, autoExit = true) => {
+export const seed = async (_models: typeof dbModels) => {
   models = _models;
 
   console.time("ensure data directories");
@@ -40,6 +40,7 @@ export const seed = async (_models: typeof dbModels, autoExit = true) => {
 
   // do some clean first. delete the uploads folder
   console.time("sync uploads");
+  //@ts-ignore
   await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
   await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
   console.timeEnd("sync uploads");

@@ -84,7 +84,7 @@ const Media = ({
                     </a>
                     <Popconfirm
                       title="Are you sure to delete this image?"
-                      onConfirm={e => deleteImage(image)}
+                      onConfirm={() => deleteImage(image)}
                       // onCancel={cancel}
                       okText="Yes"
                       cancelText="No"

@@ -23,7 +23,7 @@ interface IProps {
 }
 
 const CustomLayout = ({ children, settings }: IProps) => {
-  const [stats, setStats] = useState<Stats>({});
+  const [stats, setStats] = useState<Stats | {}>({});
   const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);
   const [user] = useSession();

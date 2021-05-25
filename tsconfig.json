@@ -26,5 +26,5 @@
     "target": "esnext"
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": ["src/**/*", "__generated__/**/*"]
 }

@@ -48,13 +48,8 @@ export const getImageAttrs = (
   };
 };
 
-export const setResponsiveImages = (
-  html: string,
-  sizes?: number[],
-  srcSizes?: string,
-) => {
+export const setResponsiveImages = (html: string, sizes?: number[]) => {
   if (!sizes) sizes = [480, 720, 960, 1200, 1440, 1600, 2000];
-  // if (!srcSizes) srcSizes = `(max-width: 720px) 100vw, 720px`;
 
   const re = /<img\s+[^>]*src="([^"]*)"[^>]*>/g;
   const htmlWithResponsiveImages = html.replace(re, (str, src) => {

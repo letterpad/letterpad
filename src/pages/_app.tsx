@@ -5,7 +5,7 @@ import { Provider } from "next-auth/client";
 import { useRouter } from "next/router";
 import nextConfig from "../../next.config";
 import type { Page } from "../page";
-import { Children, PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { Setting } from "@/__generated__/queries/queries.graphql";
 import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import "lazysizes";
