@@ -128,10 +128,10 @@ const Query: QueryResolvers<ResolverContext> = {
 
       // sort
       if (args?.filters?.sortBy) {
-        query.conditions.order = [["updatedAt", args.filters.sortBy]];
+        query.conditions.order = [["publishedAt", args.filters.sortBy]];
       }
 
-      if (session && args?.filters?.sortBy) {
+      if (session?.user.id && args?.filters?.sortBy) {
         query.conditions.order = [["updatedAt", args.filters.sortBy]];
       }
 

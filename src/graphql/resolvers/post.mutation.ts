@@ -92,7 +92,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
       const currentTime = getDateTime(new Date().getTime());
 
       const dataToUpdate: any = {
-        publishedAt: currentTime,
         updatedAt: currentTime,
       };
       if (args.data.slug) {
@@ -123,7 +122,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
       // date and status
       if (isPublishingLive(previousPost.status, args.data.status)) {
-        dataToUpdate.publishedAt = currentTime;
+        if (!previousPostRaw.publishedAt) {
+          dataToUpdate.publishedAt = currentTime;
+        }
         logger.debug(
           "Post status changed from draft to published - ",
           currentTime,

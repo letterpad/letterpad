@@ -59,7 +59,8 @@ export default function App({ Component, pageProps }: Props) {
   }, []);
 
   const Layout = Component.layout || NoLayout;
-  if (!apolloClient || !settings || !Layout) return null;
+
+  if (!apolloClient || !settings) return null;
 
   return (
     <Main
