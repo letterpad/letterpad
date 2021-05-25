@@ -72,7 +72,7 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
   return (
     <>
       <div
-        onClick={e => {
+        onClick={() => {
           if (fileList.length > 0) return;
           setExplorerVisible(true);
         }}

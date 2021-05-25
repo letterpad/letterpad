@@ -55,5 +55,6 @@ function getAuthorFromAuthHeader(authHeader: string) {
   const token = authHeader.split(/\s+/).pop() || "";
   const tokenData = jwt.verify(token, process.env.SECRET_KEY);
   logger.debug("Authorisation Header to tokenData  - ", tokenData);
+  //@ts-ignore
   return tokenData?.id;
 }

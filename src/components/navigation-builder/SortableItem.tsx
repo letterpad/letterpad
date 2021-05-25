@@ -36,16 +36,16 @@ const SortableItem = SortableElement((props: IProps) => {
     const changedItem = {
       ...item,
       ...change,
-      slug: change.slug.split("/").pop(),
+      slug: change.slug.split("/").pop() as string,
     };
-    const error = {
+    const tmpError = {
       nameError: "",
       error: "",
     };
 
     // check the label
     if (changedItem.label.length === 0) {
-      error.nameError = "Cannot be empty";
+      tmpError.nameError = "Cannot be empty";
     }
 
     // check the slug
@@ -53,8 +53,7 @@ const SortableItem = SortableElement((props: IProps) => {
     const isCustomUrl = isValidURL(changedItem.slug);
 
     if (!itemFromDropdown && !isCustomUrl) {
-      error.error = "Should be an url or an item from dropdown";
-      // changedItem.type = "";
+      tmpError.error = "Should be an url or an item from dropdown";
     } else if (isCustomUrl) {
       changedItem.type = NavigationType.Custom;
     } else if (itemFromDropdown) {
@@ -64,12 +63,13 @@ const SortableItem = SortableElement((props: IProps) => {
     }
 
     setItem(changedItem);
-    changedItem.hasError = error.error.length > 0 || error.nameError.length > 0;
-    if (!error.error) {
+    changedItem.hasError =
+      tmpError.error.length > 0 || tmpError.nameError.length > 0;
+    if (!tmpError.error) {
       onChange(changedItem);
     }
-    setError(error.error);
-    setNameError(error.nameError);
+    setError(tmpError.error);
+    setNameError(tmpError.nameError);
     setTimeout(ReactTooltip.rebuild, 0);
   };
 

@@ -1,8 +1,11 @@
-import { MutationResolvers } from "./../../../__generated__/src/graphql/type-defs.graphqls";
+import {
+  MutationResolvers,
+  QueryResolvers,
+  SortBy,
+} from "@/__generated__/type-defs.graphqls";
 import { Op, Order } from "sequelize";
 import { ResolverContext } from "../apollo";
 import models from "../db/models";
-import { QueryResolvers, SortBy } from "@/__generated__/type-defs.graphqls";
 
 interface IMediaConditions {
   limit: number;

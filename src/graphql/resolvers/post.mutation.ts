@@ -1,5 +1,5 @@
-import { Tags } from "../db/models/tags";
 import {
+  MutationResolvers,
   PostStatusOptions,
   PostTypes,
 } from "@/__generated__/type-defs.graphqls";
@@ -7,7 +7,6 @@ import { PostAttributes } from "../db/models/post";
 import { ResolverContext } from "../apollo";
 import reading_time from "reading-time";
 import { mdToHtml } from "letterpad-editor";
-import { MutationResolvers } from "@/__generated__/type-defs.graphqls";
 
 import {
   slugify,

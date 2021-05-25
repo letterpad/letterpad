@@ -1,5 +1,4 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import { Navigation } from "@/__generated__/type-defs.graphqls";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 import { Author } from "./author";
 

@@ -1,3 +1,4 @@
+//@ts-nocheck
 try {
   // this is required only in dev environment as we have import statements in dependency modules.
   // In production, this wont be required.

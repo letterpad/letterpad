@@ -42,7 +42,7 @@ export default async (
 ) => {
   await multerAny(req, res);
   const _session = await getSession({ req });
-  const session = _session as unknown as SessionData;
+  const session = _session as unknown as { user: SessionData };
   if (!session || !session.user.id) return res.status(401).send("Unauthorized");
 
   // This operation expects a single file upload.
@@ -97,7 +97,6 @@ export default async (
             cloud_name: cloudinary_name,
             api_secret: cloudinary_secret,
           });
-          console.log("result :>> ", result);
         } else {
           result = await uploadToInternal(
             file,
