@@ -196,10 +196,15 @@ export default function initPost(sequelize) {
   return Post;
 }
 
+export const postTags = {
+  name: "postTags",
+  fk: "post_id",
+};
+
 export function associatePost() {
   Post.belongsToMany(Tags, {
-    through: "postTags",
-    foreignKey: "post_id",
+    through: postTags.name,
+    foreignKey: postTags.fk,
   });
   // Post.hasMany(Tags);
   Post.belongsTo(Author, {
