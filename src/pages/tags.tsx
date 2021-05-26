@@ -160,7 +160,7 @@ export async function fetchTags() {
   if (tags.data.tags?.__typename === "TagsNode") {
     const data = tags.data.tags.rows.map(item => {
       const count =
-        item.posts.__typename === "PostsNode" ? item.posts.count : 0;
+        item.posts?.__typename === "PostsNode" ? item.posts.count : 0;
       return { ...item, posts: count };
     });
     return {

@@ -29,7 +29,7 @@ const SortableItem = SortableElement((props: IProps) => {
   const { value, source, onChange, onRemove } = props;
 
   const [item, setItem] = useState<INavigationUI>(value);
-  const [error, setError] = useState<string>("");
+  // const [, setError] = useState<string>("");
   const [nameError, setNameError] = useState<string>("");
 
   const onInputChange = (change: INavigationUI) => {
@@ -50,13 +50,9 @@ const SortableItem = SortableElement((props: IProps) => {
 
     // check the slug
     const itemFromDropdown = getItemBySlug(source, changedItem.slug);
-    const isCustomUrl = isValidURL(changedItem.slug);
+    // const isCustomUrl = isValidURL(changedItem.slug);
 
-    if (!itemFromDropdown && !isCustomUrl) {
-      tmpError.error = "Should be an url or an item from dropdown";
-    } else if (isCustomUrl) {
-      changedItem.type = NavigationType.Custom;
-    } else if (itemFromDropdown) {
+    if (itemFromDropdown) {
       changedItem.type = itemFromDropdown.type;
       changedItem.original_name = itemFromDropdown.original_name;
       changedItem.slug = itemFromDropdown.slug.split("/").pop() as string;
@@ -68,7 +64,7 @@ const SortableItem = SortableElement((props: IProps) => {
     if (!tmpError.error) {
       onChange(changedItem);
     }
-    setError(tmpError.error);
+
     setNameError(tmpError.nameError);
     setTimeout(ReactTooltip.rebuild, 0);
   };
@@ -122,14 +118,6 @@ function getItemBySlug(data: Navigation[], slug: string) {
     return arr[0];
   }
   return null;
-}
-
-function isValidURL(url: string) {
-  if (!url) return false;
-  const res = url.match(
-    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
-  );
-  return res !== null;
 }
 
 function getToolTip(item: INavigationUI) {

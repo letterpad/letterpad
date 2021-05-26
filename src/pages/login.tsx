@@ -9,16 +9,11 @@ import {
   Row,
 } from "../components/login.css";
 import { message } from "antd";
-import { initializeApollo } from "@/graphql/apollo";
-import {
-  ForgotPasswordDocument,
-  ForgotPasswordMutation,
-  ForgotPasswordMutationVariables,
-} from "@/__generated__/queries/mutations.graphql";
 import { useRouter } from "next/router";
 import { SessionData } from "../graphql/types";
 import { LoginError } from "@/__generated__/queries/partial.graphql";
 import Head from "next/head";
+import { useForgotPasswordMutation } from "@/graphql/queries/mutations.graphql";
 
 const key = "login";
 
@@ -27,6 +22,8 @@ const NormalLoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginView, setLoginView] = useState(true);
+  const [forgotPassword] = useForgotPasswordMutation();
+
   const router = useRouter();
 
   const doLogin = async () => {
@@ -68,16 +65,7 @@ const NormalLoginForm = () => {
     const sanitisedLoginEmail = email.trim();
     if (sanitisedLoginEmail.length > 0) {
       e.currentTarget.disabled = true;
-      const client = await initializeApollo();
-      const res = await client.mutate<
-        ForgotPasswordMutation,
-        ForgotPasswordMutationVariables
-      >({
-        mutation: ForgotPasswordDocument,
-        variables: {
-          email: email,
-        },
-      });
+      const res = await forgotPassword({ variables: { email } });
       const data = res.data?.forgotPassword;
 
       if (data?.ok) {

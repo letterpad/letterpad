@@ -62,7 +62,7 @@ const Query: QueryResolvers<ResolverContext> = {
   async posts(_parent, args, { session, author_id }, _info) {
     debug("letterpad:post:update")("Reached posts query");
     let authorId = session?.user.id || author_id;
-    if (!author_id) {
+    if (!authorId) {
       return { __typename: "PostError", message: "Author Id not found" };
     }
     const query: IPostCondition = {

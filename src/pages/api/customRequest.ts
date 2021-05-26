@@ -127,12 +127,14 @@ export async function upsertMedia(result: IMediaUploadResult, id: number) {
     return;
   }
   if (!media) {
+    /*@TODO - Convert this to a graphql query */
     media = await models.Media.create({
       url: result.src,
       name: result.name,
       description: "",
       height: result.size.height,
       width: result.size.width,
+      createdAt: new Date(),
     });
   }
   if (media) {
