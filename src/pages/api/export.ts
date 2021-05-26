@@ -2,7 +2,7 @@ import fs from "fs";
 import models from "@/graphql/db/models";
 import { Author } from "@/graphql/db/models/author";
 
-const ImportExport = async (req, res) => {
+const ImportExport = async (_req, res) => {
   const authors = await models.Author.findAll();
 
   const data: any = { common: {}, authors: {} };

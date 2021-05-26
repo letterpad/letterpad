@@ -9,7 +9,8 @@
     "build": "yarn codegen && next build",
     "test": "yarn codegen && jest",
     "start": "next start",
-    "seed": "ts-node --transpile-only ./src/graphql/db/seed"
+    "seed": "ts-node --transpile-only ./src/graphql/db/seed",
+    "type-check": "yarn tsc"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
