@@ -6,6 +6,24 @@ import { Content } from "antd/lib/layout/layout";
 import nextConfig from "next.config";
 import { UploadOutlined } from "@ant-design/icons";
 
+// If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to register first. This will allow you to setup letterpad with mysql. Then login and import the data to populate the exisiting data in mysql.
+
+const Info = () => {
+  return (
+    <ol>
+      <li>Prepare a backup by exporting your blog content</li>
+      <li>
+        Change `.env.production.local` with the appropriate database option
+      </li>
+      <li>
+        Do a fresh registration. Since the new mysql database does not have any
+        information about you, the registration process will create the
+        necessary tables and allow you to login.
+      </li>
+      <li>Come back to this page and import the data.</li>
+    </ol>
+  );
+};
 const Migrate = () => {
   return (
     <>
@@ -15,13 +33,6 @@ const Migrate = () => {
       <PageHeader className="site-page-header" title="Migrate"></PageHeader>
       <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
-          <Alert
-            message="If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to register first. This will allow you to setup letterpad with mysql. Then login and import the data to populate the exisiting data in mysql."
-            type="info"
-            showIcon
-            style={{ marginBottom: 40 }}
-          />
-
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
@@ -51,6 +62,13 @@ const Migrate = () => {
               </Upload>
             </Form.Item>
           </Form>
+          <Alert
+            description={<Info />}
+            message="Migrating from sqlite3 to mysql"
+            type="info"
+            showIcon
+            style={{ marginTop: 40 }}
+          />
         </div>
       </Content>
     </>
