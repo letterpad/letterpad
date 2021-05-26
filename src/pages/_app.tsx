@@ -50,10 +50,9 @@ export default function App({ Component, pageProps }: Props) {
 
       const { data } = await getSettings();
       if (data.settings?.__typename === "Setting") {
-        setSettings(data.settings);
-      } else if (data.settings?.__typename === "SettingError") {
-        router.push("/api/auth/signin");
+        return setSettings(data.settings);
       }
+      router.push("/api/auth/signin");
     }
     init();
   }, []);

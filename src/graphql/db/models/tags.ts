@@ -10,13 +10,15 @@ import {
   Optional,
 } from "sequelize";
 import restoreSequelizeAttributesOnClass from "./_tooling";
+import { PostsResponse } from "@/__generated__/queries/mutations.graphql";
 
 export interface TagsAttributes {
   id: number;
   name: string;
   desc: string;
   slug: string;
-  // author_id: number;
+  posts?: PostsResponse;
+  author_id?: number;
 }
 
 export interface TagsCreationAttributes
@@ -34,6 +36,7 @@ export class Tags
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+  public readonly posts!: PostsResponse;
 
   public getPosts!: HasManyGetAssociationsMixin<Post>; // Note the null assertions!
   public createPost!: HasManyCreateAssociationMixin<Post>; // Note the null assertions!

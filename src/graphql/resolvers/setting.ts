@@ -1,14 +1,15 @@
-import { Navigation } from "./../../../__generated__/src/graphql/type-defs.graphqls";
 import { ResolverContext } from "../apollo";
 import type {
   QueryResolvers,
   MutationResolvers,
   Setting as SettingType,
   InputImage,
+  Navigation,
 } from "@/__generated__/type-defs.graphqls";
 import fs from "fs";
 import path from "path";
 import models from "../db/models";
+import { settingsData } from "../db/models/setting";
 
 type ValueOf<T> = T[keyof T];
 const SECURE_SETTINGS = [
@@ -72,6 +73,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
     SECURE_SETTINGS.forEach(securedKey => {
       if (!session?.user.id) {
+        //@ts-ignore
         setting.setDataValue(securedKey, "");
       }
     });
@@ -84,13 +86,21 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 const Mutation: MutationResolvers<ResolverContext> = {
   updateOptions: async (_root, args, { session }) => {
-    if (!session?.user.id) return {} as SettingType;
+    const parsedMockData = {
+      ...settingsData,
+      menu: JSON.parse(settingsData.menu),
+      banner: JSON.parse(settingsData.banner),
+      site_logo: JSON.parse(settingsData.site_logo),
+      site_favicon: JSON.parse(settingsData.site_favicon),
+    };
+
+    if (!session?.user.id) return parsedMockData;
 
     const author = await models.Author.findOne({
       where: { id: session.user.id },
     });
 
-    if (!author) return {};
+    if (!author) return parsedMockData;
     const _setting = await author.getSetting();
 
     let promises = args.options.map(setting => {
@@ -113,8 +123,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
       } else if (setting.menu) {
         value = JSON.stringify(value);
       }
-
-      // return _setting?.setDataValue(option, value);
       return models.Setting.update(
         { [option]: value },
         { where: { id: _setting.id }, logging: true },
@@ -130,9 +138,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
     const setting = await models.Setting.findOne({
       where: { id: session.user.id },
     });
-    const a = setting as unknown as SettingType;
-
-    return a;
+    if (!setting) {
+      return parsedMockData;
+    }
+    return setting.get() as unknown as SettingType;
   },
 };
 

@@ -3,7 +3,7 @@ type Tags {
   name: String!
   desc: String
   slug: String!
-  posts: PostsResponse!
+  posts: PostsResponse
 }
 
 input TagsFilters {

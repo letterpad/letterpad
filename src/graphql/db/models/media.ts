@@ -12,7 +12,7 @@ export interface MediaAttributes {
   height: number;
   description: string;
   updatedAt?: Date;
-  createdAt?: Date;
+  createdAt: Date;
   author_id?: number;
 }
 
@@ -21,7 +21,8 @@ export interface MediaCreationAttributes
 
 export class Media
   extends Model<MediaAttributes, MediaCreationAttributes>
-  implements MediaAttributes {
+  implements MediaAttributes
+{
   public id!: number;
   public name!: string;
   public url!: string;
