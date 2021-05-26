@@ -17,6 +17,7 @@ import generatePost from "../db/seed/contentGenerator";
 import sendMail from "src/mail";
 import templates from "src/mail/templates";
 import siteConfig from "config/site.config";
+import { seed } from "../db/seed/seed";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 
@@ -89,6 +90,15 @@ const Mutation: MutationResolvers<ResolverContext> = {
         };
       }
     }
+
+    // await seed(models);
+    // try {
+    //   await models.sequelize.query("SELECT * FROM 'author'");
+    // } catch (e) {
+    //   if (e.name === "SequelizeDatabaseError") {
+    //     await seed(models, false);
+    //   }
+    // }
     let author = await models.Author.findOne({
       where: { email: args.data?.email },
     });

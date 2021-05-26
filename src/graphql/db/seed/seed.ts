@@ -24,26 +24,30 @@ function absPath(p) {
 }
 
 let models: typeof dbModels;
-export const seed = async (_models: typeof dbModels) => {
+export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   models = _models;
 
-  console.time("ensure data directories");
-  await Promise.all([
-    mkdirpAsync(absPath(dataDir)),
-    mkdirpAsync(absPath(publicUploadsDir)),
-  ]);
-  console.timeEnd("ensure data directories");
+  if (folderCheck) {
+    console.time("ensure data directories");
+    await Promise.all([
+      mkdirpAsync(absPath(dataDir)),
+      mkdirpAsync(absPath(publicUploadsDir)),
+    ]);
+    console.timeEnd("ensure data directories");
+  }
 
   console.time("sync sequelize models");
   await models.sequelize.sync({ force: true });
   console.timeEnd("sync sequelize models");
 
-  // do some clean first. delete the uploads folder
-  console.time("sync uploads");
-  //@ts-ignore
-  await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
-  await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
-  console.timeEnd("sync uploads");
+  if (folderCheck) {
+    // do some clean first. delete the uploads folder
+    console.time("sync uploads");
+    //@ts-ignore
+    await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
+    await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
+    console.timeEnd("sync uploads");
+  }
 
   console.time("insert roles and permissions");
   await insertRolePermData(models);
