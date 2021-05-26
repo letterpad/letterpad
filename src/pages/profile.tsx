@@ -90,7 +90,7 @@ function Profile() {
         <title>Profile</title>
       </Head>
       <PageHeader className="site-page-header" title="Profile"></PageHeader>
-      <Content style={{ margin: "16px 0px 0" }}>
+      <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
             labelCol={{ span: 4 }}

@@ -125,7 +125,7 @@ const EditableTable = () => {
         <title>Tags</title>
       </Head>
       <PageHeader className="site-page-header" title="Tags"></PageHeader>
-      <Content style={{ margin: "16px 0px 0" }}>
+      <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
           <Button
             onClick={handleAdd}

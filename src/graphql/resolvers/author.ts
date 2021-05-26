@@ -91,14 +91,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
     }
 
-    // await seed(models);
-    // try {
-    //   await models.sequelize.query("SELECT * FROM 'author'");
-    // } catch (e) {
-    //   if (e.name === "SequelizeDatabaseError") {
-    //     await seed(models, false);
-    //   }
-    // }
+    try {
+      await models.sequelize.query("SELECT * FROM 'author'");
+    } catch (e) {
+      if (e.name === "SequelizeDatabaseError") {
+        await seed(models, false);
+      }
+    }
     let author = await models.Author.findOne({
       where: { email: args.data?.email },
     });

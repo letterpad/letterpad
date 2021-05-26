@@ -7,6 +7,7 @@ import {
   LogoutOutlined,
   SettingOutlined,
   TagsOutlined,
+  UploadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 
@@ -95,7 +96,7 @@ const Navigation = ({ stats }) => {
       </Menu.Item>
       <Menu.Item
         key={menuItems["/migrate"]}
-        icon={<SettingOutlined />}
+        icon={<UploadOutlined />}
         onClick={() => router.push("/migrate")}
       >
         Migrate
