@@ -106,6 +106,7 @@ export class Author
       "countPosts",
       "countTags",
       "countMedia",
+      "createMedia",
       "getMedia",
       "addMedia",
       "createPost",

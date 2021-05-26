@@ -60,7 +60,7 @@ const Media = ({
         <title>Media</title>
       </Head>
       <PageHeader className="site-page-header" title="Media"></PageHeader>
-      <Content style={{ margin: "16px 0px 0" }}>
+      <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
           <Space>
             <Row gutter={[24, 24]} justify="start">

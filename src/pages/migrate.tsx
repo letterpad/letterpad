@@ -1,10 +1,9 @@
 import withAuthCheck from "../hoc/withAuth";
 import CustomLayout from "@/components/layouts/Layout";
 import Head from "next/head";
-import { Input, PageHeader, Form, Button, Upload } from "antd";
+import { PageHeader, Form, Button, Upload, Alert } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import nextConfig from "next.config";
-import { getDateTime } from "@/graphql/resolvers/helpers";
 import { UploadOutlined } from "@ant-design/icons";
 
 const Migrate = () => {
@@ -14,8 +13,15 @@ const Migrate = () => {
         <title>Profile</title>
       </Head>
       <PageHeader className="site-page-header" title="Migrate"></PageHeader>
-      <Content style={{ margin: "16px 0px 0" }}>
+      <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
+          <Alert
+            message="If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to register first. This will allow you to setup letterpad with mysql. Then login and import the data to populate the exisiting data in mysql."
+            type="info"
+            showIcon
+            style={{ marginBottom: 40 }}
+          />
+
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
@@ -24,6 +30,7 @@ const Migrate = () => {
           >
             <Form.Item label="Export Data">
               <Button
+                type="link"
                 onClick={() => {
                   fetch(nextConfig.basePath + "/api/export")
                     .then(res => res.blob())
@@ -35,6 +42,7 @@ const Migrate = () => {
             </Form.Item>
             <Form.Item label="Import Data">
               <Upload
+                type="drag"
                 name="import"
                 accept=".json"
                 action={nextConfig.basePath + "/api/import"}
