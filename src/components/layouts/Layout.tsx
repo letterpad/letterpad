@@ -23,6 +23,7 @@ interface IProps {
 }
 
 const CustomLayout = ({ children, settings }: IProps) => {
+  if (typeof window === "undefined") return null;
   const [stats, setStats] = useState<Stats | {}>({});
   const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);
