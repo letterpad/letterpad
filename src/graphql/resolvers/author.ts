@@ -18,7 +18,7 @@ import sendMail from "src/mail";
 import templates from "src/mail/templates";
 import siteConfig from "config/site.config";
 import { seed } from "../db/seed/seed";
-import { getDateTime } from "shared/utils";
+import { getDateTime } from "../../../shared/utils";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 

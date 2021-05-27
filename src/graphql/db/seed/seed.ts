@@ -9,7 +9,7 @@ import posts from "./posts";
 import { promisify } from "util";
 import rimraf from "rimraf";
 import { settingsData } from "../models/setting";
-import { getDateTime } from "shared/utils";
+import { getDateTime } from "../../../../shared/utils";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);

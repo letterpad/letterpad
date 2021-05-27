@@ -10,7 +10,7 @@ import { Setting } from "@/__generated__/queries/queries.graphql";
 import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import "lazysizes";
 import Main from "@/components/main";
-import { getSettings, initPageProgress } from "shared/utils";
+import { getSettings, initPageProgress } from "../../shared/utils";
 import dynamic from "next/dynamic";
 
 import "../../styles/globals.css";
