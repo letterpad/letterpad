@@ -15,6 +15,10 @@ export const getReadableDate = (timestamp: Date) => {
   });
 };
 
+export const getDateTime = (d: Date = new Date()) => {
+  return new Date(d).toLocaleString().replace(/\//g, "-");
+};
+
 export function debounce<Params extends any[]>(
   func: (...args: Params) => any,
   timeout: number,
