@@ -15,8 +15,23 @@ export const getReadableDate = (timestamp: Date) => {
   });
 };
 
-export const getDateTime = (d: Date = new Date()) => {
-  return new Date(d).toLocaleString().replace(/\//g, "-").replace(",", "");
+export const getDateTime = (d?: Date) => {
+  const m = d ? new Date(d) : new Date();
+
+  const dateString =
+    m.getUTCFullYear() +
+    "-" +
+    ("0" + (m.getUTCMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + m.getUTCDate()).slice(-2) +
+    " " +
+    ("0" + m.getUTCHours()).slice(-2) +
+    ":" +
+    ("0" + m.getUTCMinutes()).slice(-2) +
+    ":" +
+    ("0" + m.getUTCSeconds()).slice(-2);
+
+  return dateString;
 };
 
 export function debounce<Params extends any[]>(
