@@ -36,13 +36,13 @@ export default ImportExport;
 
 async function getContent(author: Author) {
   // settings
-  const setting = await author.getSetting();
+  const setting = await author.getSetting({ raw: true });
   // posts
-  const posts = await author.getPosts();
+  const posts = await author.getPosts({ raw: true });
   // tags
-  const tags = await author.getTags();
+  const tags = await author.getTags({ raw: true });
   // media
-  const media = await author.getMedia();
+  const media = await author.getMedia({ raw: true });
   // postTagsRelation
   const [postTags] = await models.sequelize.query(
     `SELECT * FROM postTags WHERE post_id IN (${posts
