@@ -9,6 +9,10 @@ const ImportExport = async (_req, res) => {
 
   data.common.permissions = await models.Permission.findAll();
   data.common.roles = await models.Role.findAll();
+  const [rolePermissions] = await models.sequelize.query(
+    `SELECT * FROM rolePermissions`,
+  );
+  data.common.rolePermissions = rolePermissions;
 
   for (const author of authors) {
     data.authors[author.email] = await getContent(author);

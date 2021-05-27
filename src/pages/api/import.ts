@@ -25,15 +25,23 @@ interface PostTags {
   tag_id: number;
 }
 
+interface RolePermissions {
+  created_at: string;
+  updated_at: string;
+  role_id: number;
+  permission_id: number;
+}
+
 interface IImport {
   common: {
     roles: RoleAttributes[];
     permissions: PermissionAttributes[];
+    rolePermissions: RolePermissions[];
   };
   authors: {
     [email: string]: {
       posts: PostAttributes[];
-      settings: SettingAttributes;
+      setting: SettingAttributes;
       tags: TagsAttributes[];
       media: MediaAttributes[];
       author: AuthorAttributes;
@@ -56,9 +64,23 @@ const ImportExport = async (req, res) => {
     ...data.common.roles.map(role => models.Role.create(role)),
   ]);
 
+  if (data.common.rolePermissions.length > 0) {
+    await models.sequelize.query(
+      `INSERT INTO rolePermissions (created_at, updated_at, role_id, permission_id) VALUES ${data.common.rolePermissions
+        .map(() => "(?)")
+        .join(",")};`,
+      {
+        replacements: data.common.rolePermissions.map(rp => {
+          return [rp.created_at, rp.updated_at, rp.role_id, rp.permission_id];
+        }),
+        type: "INSERT",
+      },
+    );
+  }
+
   for (const email in data.authors) {
     const authorsData = data.authors[email];
-    await models.Setting.create(authorsData.settings);
+    await models.Setting.create(authorsData.setting);
     await models.Author.create(authorsData.author);
     await Promise.all([
       ...authorsData.tags.map(tag => models.Tags.create(tag)),

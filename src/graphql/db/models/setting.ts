@@ -144,7 +144,6 @@ export default function initSetting(sequelize) {
       },
       menu: {
         type: DataTypes.STRING,
-        defaultValue: "",
       },
       css: {
         type: DataTypes.STRING,
