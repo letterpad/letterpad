@@ -8,7 +8,7 @@ import multer from "multer";
 import initMiddleware from "./middleware";
 import { PostAttributes } from "@/graphql/db/models/post";
 import { TagsAttributes } from "@/graphql/db/models/tags";
-import { getDateTime } from "shared/utils";
+import { getDateTime } from "../../../shared/utils";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());

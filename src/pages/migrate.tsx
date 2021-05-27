@@ -5,7 +5,7 @@ import { PageHeader, Form, Button, Upload, Alert } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import nextConfig from "next.config";
 import { UploadOutlined } from "@ant-design/icons";
-import { getDateTime } from "shared/utils";
+import { getDateTime } from "../../shared/utils";
 
 // If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to register first. This will allow you to setup letterpad with mysql. Then login and import the data to populate the exisiting data in mysql.
 
