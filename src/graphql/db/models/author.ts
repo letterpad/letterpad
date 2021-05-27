@@ -150,11 +150,11 @@ export default function initAuthor(sequelize: Sequelize) {
         allowNull: true,
       },
       avatar: {
-        type: new DataTypes.STRING(128),
+        type: new DataTypes.STRING(256),
         allowNull: true,
       },
       social: {
-        type: new DataTypes.STRING(128),
+        type: new DataTypes.STRING(256),
         allowNull: true,
       },
       verified: {
