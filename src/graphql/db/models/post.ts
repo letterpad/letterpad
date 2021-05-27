@@ -164,12 +164,14 @@ export default function initPost(sequelize) {
       },
       publishedAt: {
         type: DataTypes.DATE,
+        allowNull: true,
         get() {
           return getReadableDate(this.publishedAt);
         },
       },
       scheduledAt: {
         type: DataTypes.DATE,
+        allowNull: true,
         get() {
           return this.scheduledAt ? getReadableDate(this.scheduledAt) : "";
         },
