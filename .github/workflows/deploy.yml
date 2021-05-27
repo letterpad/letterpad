@@ -25,13 +25,13 @@ jobs:
 
       - run: yarn install
 
-      - name: Type check
-        run: yarn type-check
-
       - name: Install Build
         run: yarn run build
         env:
           SECRET_KEY: ${{ secrets.SECRET_LP_KEY }}
+
+      - name: Type check
+        run: yarn type-check
 
       - name: Deploy to Google
         uses: appleboy/scp-action@master
