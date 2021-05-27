@@ -9,6 +9,7 @@ import posts from "./posts";
 import { promisify } from "util";
 import rimraf from "rimraf";
 import { settingsData } from "../models/setting";
+import { getDateTime } from "shared/utils";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -235,8 +236,8 @@ export async function insertPost(params, models: typeof dbModels, tags) {
     type: params.type,
     status: params.status,
     slug: slug,
-    createdAt: new Date(),
-    publishedAt: new Date(),
+    createdAt: getDateTime(),
+    publishedAt: getDateTime(),
     reading_time: "5 mins",
   });
   if (admin && post) {

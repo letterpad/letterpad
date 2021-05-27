@@ -5,6 +5,7 @@ import { PageHeader, Form, Button, Upload, Alert } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import nextConfig from "next.config";
 import { UploadOutlined } from "@ant-design/icons";
+import { getDateTime } from "shared/utils";
 
 // If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to register first. This will allow you to setup letterpad with mysql. Then login and import the data to populate the exisiting data in mysql.
 
@@ -79,25 +80,12 @@ const MediaWithAuth = withAuthCheck(Migrate);
 MediaWithAuth.layout = CustomLayout;
 export default MediaWithAuth;
 
-const today = function () {
-  const d = new Date();
-  return (
-    (d.getDate() < 10 ? "0" : "") +
-    d.getDate() +
-    "/" +
-    (d.getMonth() + 1 < 10 ? "0" : "") +
-    (d.getMonth() + 1) +
-    "/" +
-    d.getFullYear()
-  );
-};
-
 function download(blob: Blob) {
   const a = document.createElement("a");
   document.body.appendChild(a);
   const url = window.URL.createObjectURL(blob);
   a.href = url;
-  a.download = `lp-data-${today()}.json`;
+  a.download = `lp-data-${getDateTime()}.json`;
   a.click();
   setTimeout(() => {
     window.URL.revokeObjectURL(url);

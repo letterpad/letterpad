@@ -8,6 +8,7 @@ import multer from "multer";
 import initMiddleware from "./middleware";
 import { PostAttributes } from "@/graphql/db/models/post";
 import { TagsAttributes } from "@/graphql/db/models/tags";
+import { getDateTime } from "shared/utils";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -19,15 +20,15 @@ export const config = {
 };
 
 interface PostTags {
-  created_at: string;
-  updated_at: string;
+  created_at: Date;
+  updated_at: Date;
   post_id: number;
   tag_id: number;
 }
 
 interface RolePermissions {
-  created_at: string;
-  updated_at: string;
+  created_at: Date;
+  updated_at: Date;
   role_id: number;
   permission_id: number;
 }
@@ -71,7 +72,12 @@ const ImportExport = async (req, res) => {
         .join(",")};`,
       {
         replacements: data.common.rolePermissions.map(rp => {
-          return [rp.created_at, rp.updated_at, rp.role_id, rp.permission_id];
+          return [
+            getDateTime(rp.created_at),
+            getDateTime(rp.updated_at),
+            rp.role_id,
+            rp.permission_id,
+          ];
         }),
         type: "INSERT",
       },
@@ -105,7 +111,12 @@ const ImportExport = async (req, res) => {
           .join(",")};`,
         {
           replacements: authorsData.postTags.map(tag => {
-            return [tag.created_at, tag.updated_at, tag.tag_id, tag.post_id];
+            return [
+              getDateTime(tag.created_at),
+              getDateTime(tag.updated_at),
+              tag.tag_id,
+              tag.post_id,
+            ];
           }),
           type: "INSERT",
         },
