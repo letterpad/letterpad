@@ -6,7 +6,7 @@ import { UploadChangeParam } from "antd/lib/upload";
 import Modal from "antd/lib/modal/Modal";
 import nextConfig from "../../next.config";
 import FileExplorer from "./file-explorer";
-import { getBase64 } from "shared/utils";
+import { getBase64 } from "../../shared/utils";
 
 interface IProps {
   url: string;

@@ -22,8 +22,11 @@ const providers = [
       email: { label: "Email" },
       password: { label: "Password", type: "password" },
     },
-    authorize: async (credentials: ICredentials): Promise<LoginResponse> => {
-      const apolloClient = await initializeApollo({});
+    authorize: async (
+      credentials: ICredentials,
+      req,
+    ): Promise<LoginResponse> => {
+      const apolloClient = await initializeApollo({}, { req });
       const result = await apolloClient.mutate<
         LoginMutation,
         LoginMutationVariables

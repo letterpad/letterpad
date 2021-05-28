@@ -17,6 +17,8 @@ import generatePost from "../db/seed/contentGenerator";
 import sendMail from "src/mail";
 import templates from "src/mail/templates";
 import siteConfig from "config/site.config";
+import { seed } from "../db/seed/seed";
+import { getDateTime } from "../../../shared/utils";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 
@@ -87,6 +89,14 @@ const Mutation: MutationResolvers<ResolverContext> = {
           __typename: "CreateAuthorError",
           message: "We cannot allow you at the moment.",
         };
+      }
+    }
+
+    try {
+      await models.sequelize.query("SELECT * FROM 'author'");
+    } catch (e) {
+      if (e.name === "SequelizeDatabaseError") {
+        await seed(models, false);
       }
     }
     let author = await models.Author.findOne({
@@ -329,8 +339,8 @@ function getWelcomePostAndPage() {
     type: PostTypes.Post,
     status: PostStatusOptions.Published,
     slug: title.toLocaleLowerCase().replace(/ /g, "-"),
-    createdAt: new Date(),
-    publishedAt: new Date(),
+    createdAt: getDateTime(),
+    publishedAt: getDateTime(),
     reading_time: "5 mins",
   };
 
@@ -350,8 +360,8 @@ function getWelcomePostAndPage() {
       "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
     cover_image_width: 1482,
     cover_image_height: 900,
-    createdAt: new Date(),
-    publishedAt: new Date(),
+    createdAt: getDateTime(),
+    publishedAt: getDateTime(),
     md_draft: "",
   };
 

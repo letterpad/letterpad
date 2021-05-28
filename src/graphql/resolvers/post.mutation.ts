@@ -10,12 +10,12 @@ import { mdToHtml } from "letterpad-editor";
 
 import {
   slugify,
-  getDateTime,
   getImageDimensions,
   setImageWidthAndHeightInHtml,
 } from "./helpers";
 import logger from "../../../shared/logger";
 import models from "../db/models";
+import { getDateTime } from "../../../shared/utils";
 
 const Mutation: MutationResolvers<ResolverContext> = {
   async createPost(_parent, args, { session }, _info) {
@@ -88,7 +88,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         };
       }
 
-      const currentTime = getDateTime(new Date().getTime());
+      const currentTime = getDateTime(new Date());
 
       const dataToUpdate: any = {
         updatedAt: currentTime,

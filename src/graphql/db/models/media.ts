@@ -56,10 +56,10 @@ export default function initMedia(sequelize) {
         type: DataTypes.STRING,
       },
       width: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
       },
       height: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
       },
       description: {
         type: DataTypes.STRING,

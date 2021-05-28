@@ -9,7 +9,8 @@
     "build": "yarn codegen && next build",
     "test": "yarn codegen && jest",
     "start": "next start",
-    "seed": "ts-node --transpile-only ./src/graphql/db/seed"
+    "seed": "ts-node --transpile-only ./src/graphql/db/seed",
+    "type-check": "yarn tsc"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
@@ -35,8 +36,9 @@
     "letterpad-editor": "^0.0.33",
     "md5": "^2.3.0",
     "multer": "^1.4.2",
+    "mysql2": "^2.2.5",
     "next": "10.2.3",
-    "next-auth": "^3.19.8",
+    "next-auth": "^3.23.3",
     "nprogress": "^0.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

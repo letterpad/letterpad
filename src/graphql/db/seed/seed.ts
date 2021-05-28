@@ -24,26 +24,30 @@ function absPath(p) {
 }
 
 let models: typeof dbModels;
-export const seed = async (_models: typeof dbModels) => {
+export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   models = _models;
 
-  console.time("ensure data directories");
-  await Promise.all([
-    mkdirpAsync(absPath(dataDir)),
-    mkdirpAsync(absPath(publicUploadsDir)),
-  ]);
-  console.timeEnd("ensure data directories");
+  if (folderCheck) {
+    console.time("ensure data directories");
+    await Promise.all([
+      mkdirpAsync(absPath(dataDir)),
+      mkdirpAsync(absPath(publicUploadsDir)),
+    ]);
+    console.timeEnd("ensure data directories");
+  }
 
   console.time("sync sequelize models");
   await models.sequelize.sync({ force: true });
   console.timeEnd("sync sequelize models");
 
-  // do some clean first. delete the uploads folder
-  console.time("sync uploads");
-  //@ts-ignore
-  await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
-  await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
-  console.timeEnd("sync uploads");
+  if (folderCheck) {
+    // do some clean first. delete the uploads folder
+    console.time("sync uploads");
+    //@ts-ignore
+    await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
+    await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
+    console.timeEnd("sync uploads");
+  }
 
   console.time("insert roles and permissions");
   await insertRolePermData(models);
@@ -167,7 +171,7 @@ export async function insertAuthor(models) {
       }),
       username: "demo",
       verified: true,
-      bio: "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
+      bio: "You can some information about yourself for the world to know you a little better.",
       avatar:
         "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
     },
@@ -183,7 +187,7 @@ export async function insertAuthor(models) {
         github: "https://github.com",
         instagram: "https://instagram.com",
       }),
-      bio: "Provident quis sed perferendis sed. Sed quo nam eum. Est quos beatae magnam ipsa ut cupiditate nostrum officiis. Vel hic sit voluptatem. Minus minima quis omnis.",
+      bio: "You can some information about yourself for the world to know you a little better.",
       avatar:
         "https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
     },
@@ -231,8 +235,8 @@ export async function insertPost(params, models: typeof dbModels, tags) {
     type: params.type,
     status: params.status,
     slug: slug,
-    createdAt: new Date(),
-    publishedAt: new Date(),
+    createdAt: getDateTime(),
+    publishedAt: getDateTime(),
     reading_time: "5 mins",
   });
   if (admin && post) {
@@ -275,3 +279,21 @@ export async function insertSettings() {
     ...authors.map(author => author.createSetting(settingsData)),
   ]);
 }
+
+export const getDateTime = (d?: Date) => {
+  const m = d ? new Date(d) : new Date();
+
+  return (
+    m.getUTCFullYear() +
+    "-" +
+    ("0" + (m.getUTCMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + m.getUTCDate()).slice(-2) +
+    " " +
+    ("0" + m.getUTCHours()).slice(-2) +
+    ":" +
+    ("0" + m.getUTCMinutes()).slice(-2) +
+    ":" +
+    ("0" + m.getUTCSeconds()).slice(-2)
+  );
+};
