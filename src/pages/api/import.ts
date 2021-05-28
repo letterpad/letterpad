@@ -99,7 +99,7 @@ const ImportExport = async (req, res) => {
       ...authorsData.posts.map(post =>
         models.Post.create({
           ...post,
-          cover_image: JSON.stringify(post.cover_image),
+          cover_image: post.cover_image,
         }),
       ),
     ]);
