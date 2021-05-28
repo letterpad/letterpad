@@ -26,7 +26,7 @@ import { Setting } from "./setting";
 import { Tags } from "./tags";
 
 // These are all the attributes in the User model
-interface AuthorAttributes {
+export interface AuthorAttributes {
   id: number;
   name: string;
   email: string;
@@ -44,7 +44,8 @@ interface AuthorCreationAttributes extends Optional<AuthorAttributes, "id"> {}
 
 export class Author
   extends Model<AuthorAttributes, AuthorCreationAttributes>
-  implements AuthorAttributes {
+  implements AuthorAttributes
+{
   public id!: number;
   public name!: string;
   public email!: string;
@@ -74,6 +75,7 @@ export class Author
   public countMedia!: HasManyCountAssociationsMixin;
   public createMedia!: HasManyCreateAssociationMixin<Media>;
   public setMedia!: HasOneSetAssociationMixin<Media, number>;
+  public getMedia!: HasManyGetAssociationsMixin<Media>; // Note the null assertions!
 
   public countTags!: HasManyCountAssociationsMixin;
   public createTag!: HasManyCreateAssociationMixin<Tags>;
@@ -104,10 +106,12 @@ export class Author
       "countPosts",
       "countTags",
       "countMedia",
+      "createMedia",
+      "getMedia",
+      "addMedia",
       "createPost",
       "setRole",
       "getRole",
-      "addMedia",
       "setSetting",
       "getSetting",
       "createTag",
@@ -146,11 +150,11 @@ export default function initAuthor(sequelize: Sequelize) {
         allowNull: true,
       },
       avatar: {
-        type: new DataTypes.STRING(128),
+        type: new DataTypes.STRING(256),
         allowNull: true,
       },
       social: {
-        type: new DataTypes.STRING(128),
+        type: new DataTypes.STRING(256),
         allowNull: true,
       },
       verified: {

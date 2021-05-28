@@ -7,6 +7,7 @@ import {
   LogoutOutlined,
   SettingOutlined,
   TagsOutlined,
+  UploadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 
@@ -20,7 +21,8 @@ const menuItems = {
   "/tags": "4",
   "/profile": "5",
   "/settings": "6",
-  "/logout": "7",
+  "/migrate": "7",
+  "/logout": "8",
 };
 
 const countStyle = {
@@ -91,6 +93,13 @@ const Navigation = ({ stats }) => {
         onClick={() => router.push("/settings")}
       >
         Settings
+      </Menu.Item>
+      <Menu.Item
+        key={menuItems["/migrate"]}
+        icon={<UploadOutlined />}
+        onClick={() => router.push("/migrate")}
+      >
+        Migrate
       </Menu.Item>
       <Menu.Item
         key={menuItems["/logout"]}

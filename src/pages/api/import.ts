@@ -1,0 +1,130 @@
+import { AuthorAttributes } from "./../../graphql/db/models/author";
+import { RoleAttributes } from "./../../graphql/db/models/role";
+import { PermissionAttributes } from "./../../graphql/db/models/permission";
+import { MediaAttributes } from "./../../graphql/db/models/media";
+import { SettingAttributes } from "./../../graphql/db/models/setting";
+import models from "@/graphql/db/models";
+import multer from "multer";
+import initMiddleware from "./middleware";
+import { PostAttributes } from "@/graphql/db/models/post";
+import { TagsAttributes } from "@/graphql/db/models/tags";
+import { getDateTime } from "../../../shared/utils";
+
+const upload = multer();
+const multerAny = initMiddleware(upload.any());
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+interface PostTags {
+  created_at: Date;
+  updated_at: Date;
+  post_id: number;
+  tag_id: number;
+}
+
+interface RolePermissions {
+  created_at: Date;
+  updated_at: Date;
+  role_id: number;
+  permission_id: number;
+}
+
+interface IImport {
+  common: {
+    roles: RoleAttributes[];
+    permissions: PermissionAttributes[];
+    rolePermissions: RolePermissions[];
+  };
+  authors: {
+    [email: string]: {
+      posts: PostAttributes[];
+      setting: SettingAttributes;
+      tags: TagsAttributes[];
+      media: MediaAttributes[];
+      author: AuthorAttributes;
+      postTags: PostTags[];
+    };
+  };
+}
+
+const ImportExport = async (req, res) => {
+  await multerAny(req, res);
+  const data: IImport = JSON.parse(req.files[0].buffer.toString());
+  await models.sequelize.sync({ force: true });
+
+  await Promise.all([
+    ...data.common.permissions.map(permission =>
+      models.Permission.create(permission),
+    ),
+  ]);
+  await Promise.all([
+    ...data.common.roles.map(role => models.Role.create(role)),
+  ]);
+
+  if (data.common.rolePermissions.length > 0) {
+    await models.sequelize.query(
+      `INSERT INTO rolePermissions (created_at, updated_at, role_id, permission_id) VALUES ${data.common.rolePermissions
+        .map(() => "(?)")
+        .join(",")};`,
+      {
+        replacements: data.common.rolePermissions.map(rp => {
+          return [
+            getDateTime(rp.created_at),
+            getDateTime(rp.updated_at),
+            rp.role_id,
+            rp.permission_id,
+          ];
+        }),
+        type: "INSERT",
+      },
+    );
+  }
+
+  for (const email in data.authors) {
+    const authorsData = data.authors[email];
+    await models.Setting.create(authorsData.setting);
+    await models.Author.create(authorsData.author);
+    await Promise.all([
+      ...authorsData.tags.map(tag => models.Tags.create(tag)),
+    ]);
+    await Promise.all([
+      ...authorsData.media.map(item => models.Media.create(item)),
+    ]);
+
+    await Promise.all([
+      ...authorsData.posts.map(post =>
+        models.Post.create({
+          ...post,
+          cover_image: post.cover_image,
+        }),
+      ),
+    ]);
+
+    if (authorsData.postTags.length > 0) {
+      await models.sequelize.query(
+        `INSERT INTO postTags (created_at, updated_at, tag_id, post_id) VALUES ${authorsData.postTags
+          .map(() => "(?)")
+          .join(",")};`,
+        {
+          replacements: authorsData.postTags.map(tag => {
+            return [
+              getDateTime(tag.created_at),
+              getDateTime(tag.updated_at),
+              tag.tag_id,
+              tag.post_id,
+            ];
+          }),
+          type: "INSERT",
+        },
+      );
+    }
+  }
+
+  res.end("Import complete");
+};
+
+export default ImportExport;

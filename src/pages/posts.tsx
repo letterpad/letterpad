@@ -73,7 +73,7 @@ function Posts() {
           </Button>,
         ]}
       ></PageHeader>
-      <Content style={{ margin: "16px 0px 0" }}>
+      <Content>
         <div
           className="site-layout-background"
           style={{ padding: 24, minHeight: "77vh" }}

@@ -10,7 +10,8 @@ import { Setting } from "@/__generated__/queries/queries.graphql";
 import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import "lazysizes";
 import Main from "@/components/main";
-import { getSettings, initPageProgress } from "shared/utils";
+import { getSettings, initPageProgress } from "../../shared/utils";
+import dynamic from "next/dynamic";
 
 import "../../styles/globals.css";
 
@@ -18,8 +19,8 @@ type Props = AppProps & {
   Component: Page;
 };
 
-export default function App({ Component, pageProps }: Props) {
-  if (typeof window === "undefined") return null;
+function App({ Component, pageProps }: Props) {
+  // if (typeof window === "undefined") return null;
 
   const apolloClientPromise = useApollo(pageProps.initialApolloState);
   const [settings, setSettings] = useState<null | Setting>(null);
@@ -75,3 +76,7 @@ export default function App({ Component, pageProps }: Props) {
 function NoLayout({ children }: PropsWithChildren<{ settings: Setting }>) {
   return <>{children}</>;
 }
+
+export default dynamic(() => Promise.resolve(App), {
+  ssr: false,
+});

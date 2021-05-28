@@ -33,6 +33,7 @@ yarn-error.log*
 .vercel
 
 *.d.ts
+!src/page.d.ts
 
 __generated__/*
 data/*

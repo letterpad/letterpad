@@ -164,12 +164,14 @@ export default function initPost(sequelize) {
       },
       publishedAt: {
         type: DataTypes.DATE,
+        allowNull: true,
         get() {
           return getReadableDate(this.publishedAt);
         },
       },
       scheduledAt: {
         type: DataTypes.DATE,
+        allowNull: true,
         get() {
           return this.scheduledAt ? getReadableDate(this.scheduledAt) : "";
         },
@@ -196,10 +198,15 @@ export default function initPost(sequelize) {
   return Post;
 }
 
+export const postTags = {
+  name: "postTags",
+  fk: "post_id",
+};
+
 export function associatePost() {
   Post.belongsToMany(Tags, {
-    through: "postTags",
-    foreignKey: "post_id",
+    through: postTags.name,
+    foreignKey: postTags.fk,
   });
   // Post.hasMany(Tags);
   Post.belongsTo(Author, {

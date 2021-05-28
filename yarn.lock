@@ -1079,6 +1079,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.14.0":
+  version "7.14.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.0.tgz#46794bc20b612c5f75e62dd071e24dfd95f1cbe6"
+  integrity sha512-JELkvo/DlpNdJ7dlyw/eY7E0suy5i5GQH+Vlxaq1nsNJ+H7f4Vtv3jMeCEgRhZZQFXTjldYfQgv2qmM6M1v5wA==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.12.13", "@babel/template@^7.3.3":
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.12.13.tgz#530265be8a2589dbb37523844c5bcb55947fb327"
@@ -1843,17 +1850,19 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@next-auth/prisma-legacy-adapter@canary":
-  version "0.0.1-canary.115"
-  resolved "https://registry.yarnpkg.com/@next-auth/prisma-legacy-adapter/-/prisma-legacy-adapter-0.0.1-canary.115.tgz#ef291c865f1ce9d85f660c85b0b0be16bd89c641"
-  integrity sha512-rIIisYBvVtxDbY9Lbm+HOLbZyOaaEmtGc9wDN3tJLDUu3sLJOXNN7Pz29ThS+gf2lpMxXnfvk587hxGrnhCghQ==
-
-"@next-auth/typeorm-legacy-adapter@canary":
-  version "0.0.2-canary.117"
-  resolved "https://registry.yarnpkg.com/@next-auth/typeorm-legacy-adapter/-/typeorm-legacy-adapter-0.0.2-canary.117.tgz#c71f7e5f3b474e8b292acaa8ad69d2a4537f93ba"
-  integrity sha512-sYJZPWMsM1ZTJcl749UojYDF4q8+ZiYcrR7rM4SACc0qiA9VBdOYUUMUMpQoazKOiwo1rWDKu4wHPt6CdV0ctQ==
+"@next-auth/prisma-legacy-adapter@0.0.1-canary.127":
+  version "0.0.1-canary.127"
+  resolved "https://registry.yarnpkg.com/@next-auth/prisma-legacy-adapter/-/prisma-legacy-adapter-0.0.1-canary.127.tgz#09223de6d0350e53afc4bd0dda056a2fde27d8d3"
+  integrity sha512-Pd2Y8b1ibDywrndbj3751VNKv1mVcg2w0uNIi01EBVkm5pqA1X+VnKWbPeHfh4arLYw93RPCvfLbWBZS7J1gZQ==
   dependencies:
-    crypto-js "^4.0.0"
+    "@babel/runtime" "^7.14.0"
+
+"@next-auth/typeorm-legacy-adapter@0.0.2-canary.129":
+  version "0.0.2-canary.129"
+  resolved "https://registry.yarnpkg.com/@next-auth/typeorm-legacy-adapter/-/typeorm-legacy-adapter-0.0.2-canary.129.tgz#ec17c4561155281bd1504b5b38542234b4b162b1"
+  integrity sha512-xEGz3TzBzz+5nXQ6BnC++KGfxTOAgztL32ZRLq47UKz9M0kFBP6pCMJjTszltsBHYUI/Wac2IG2egMTpHtppiQ==
+  dependencies:
+    "@babel/runtime" "^7.14.0"
     require_optional "^1.0.1"
     typeorm "^0.2.30"
 
@@ -4167,11 +4176,6 @@ crypto-browserify@3.12.0, crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
-crypto-js@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.0.0.tgz#2904ab2677a9d042856a2ea2ef80de92e4a36dcc"
-  integrity sha512-bzHZN8Pn+gS7DQA6n+iUmBfl0hO5DJq++QP3U6uTucDtk/0iGpXd/Gg7CGR0p8tJhofJyaKoWBuJI4eAO00BBg==
-
 cryptr@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/cryptr/-/cryptr-6.0.2.tgz#3f9e97f825ffb93f425eb24068efbb6a652bf947"
@@ -4412,6 +4416,11 @@ delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
   integrity sha1-hMbhWbgZBP3KWaDvRM2HDTElD5o=
+
+denque@^1.4.1:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/denque/-/denque-1.5.0.tgz#773de0686ff2d8ec2ff92914316a47b73b1c73de"
+  integrity sha512-CYiCSgIF1p6EUByQPlGkKnP1M9g0ZV3qMIrqMqZqdwazygIA/YP2vrbcyl1h/WppKJTdl1F85cXIle+394iDAQ==
 
 depd@1.1.1:
   version "1.1.1"
@@ -5208,6 +5217,13 @@ gauge@~2.7.3:
     string-width "^1.0.1"
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
+
+generate-function@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/generate-function/-/generate-function-2.3.1.tgz#f069617690c10c868e73b8465746764f97c3479f"
+  integrity sha512-eeB5GfMNeevm/GRYq20ShmsaGcmI81kIX2K9XQx5miC8KdHaC6Jm0qQ8ZNeGOi7wYB8OsdxKs+Y2oVuTFuVwKQ==
+  dependencies:
+    is-property "^1.0.2"
 
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
@@ -6184,6 +6200,11 @@ is-promise@^2.1.0:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/is-promise/-/is-promise-2.2.2.tgz#39ab959ccbf9a774cf079f7b40c7a26f763135f1"
   integrity sha512-+lP4/6lKUBfQjZ2pdxThZvLUAafmZb8OAxFb8XXtiQmS35INgr85hdOGoEs124ez1FCnZJt6jau/T+alh58QFQ==
+
+is-property@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/is-property/-/is-property-1.0.2.tgz#57fe1c4e48474edd65b09911f26b1cd4095dda84"
+  integrity sha1-V/4cTkhHTt1lsJkR8msc1Ald2oQ=
 
 is-regex@^1.1.2:
   version "1.1.2"
@@ -7297,6 +7318,14 @@ lowercase-keys@^2.0.0:
   resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-2.0.0.tgz#2603e78b7b4b0006cbca2fbcc8a3202558ac9479"
   integrity sha512-tqNXrS78oMOE73NMxK4EMLQsQowWf8jKooH9g7xPavRT706R6bkQJ6DY2Te7QukaZsulxa30wQ7bk0pm4XiHmA==
 
+lru-cache@^4.1.3:
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.1.5.tgz#8bbe50ea85bed59bc9e33dcab8235ee9bcf443cd"
+  integrity sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==
+  dependencies:
+    pseudomap "^1.0.2"
+    yallist "^2.1.2"
+
 lru-cache@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-6.0.0.tgz#6d6fe6570ebd96aaf90fcad1dafa3b2566db3a94"
@@ -7596,6 +7625,20 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
+mysql2@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-2.2.5.tgz#72624ffb4816f80f96b9c97fedd8c00935f9f340"
+  integrity sha512-XRqPNxcZTpmFdXbJqb+/CtYVLCx14x1RTeNMD4954L331APu75IC74GDqnZMEt1kwaXy6TySo55rF2F3YJS78g==
+  dependencies:
+    denque "^1.4.1"
+    generate-function "^2.3.1"
+    iconv-lite "^0.6.2"
+    long "^4.0.0"
+    lru-cache "^6.0.0"
+    named-placeholders "^1.1.2"
+    seq-queue "^0.0.5"
+    sqlstring "^2.3.2"
+
 mz@^2.4.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/mz/-/mz-2.7.0.tgz#95008057a56cafadc2bc63dde7f9ff6955948e32"
@@ -7604,6 +7647,13 @@ mz@^2.4.0:
     any-promise "^1.0.0"
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
+
+named-placeholders@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/named-placeholders/-/named-placeholders-1.1.2.tgz#ceb1fbff50b6b33492b5cf214ccf5e39cef3d0e8"
+  integrity sha512-wiFWqxoLL3PGVReSZpjLVxyJ1bRqe+KKJVbr4hGs1KWfTZTQyezHFBbuKj9hsizHyGV2ne7EMjHdxEGAybD5SA==
+  dependencies:
+    lru-cache "^4.1.3"
 
 nanoid@^3.1.22:
   version "3.1.22"
@@ -7648,14 +7698,14 @@ needle@^2.2.1:
     iconv-lite "^0.4.4"
     sax "^1.2.4"
 
-next-auth@^3.19.8:
-  version "3.19.8"
-  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-3.19.8.tgz#32331f33dd73b46ec5c774735a9db78f9dbba3c7"
-  integrity sha512-BB3h3JedZrQ/usB5JFdJSxQcSsMopT8/RfboGAVIASfH7Lyu2PddZnlM1YlmqDZ90lHeFd2AfrxxCYX7HdDcKg==
+next-auth@^3.23.3:
+  version "3.23.3"
+  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-3.23.3.tgz#810b6c0362bd48ee1be2831fef270b89359522fd"
+  integrity sha512-e+As4q+uA4MnnL36P3JxKRKEvy2iPXn8AZ8A8v3wbAc91K6YVgjfDMs+uU30jYAV58u7CnWdypHCRUkF/5WDDA==
   dependencies:
-    "@next-auth/prisma-legacy-adapter" canary
-    "@next-auth/typeorm-legacy-adapter" canary
-    crypto-js "^4.0.0"
+    "@babel/runtime" "^7.14.0"
+    "@next-auth/prisma-legacy-adapter" "0.0.1-canary.127"
+    "@next-auth/typeorm-legacy-adapter" "0.0.2-canary.129"
     futoin-hkdf "^1.3.2"
     jose "^1.27.2"
     jsonwebtoken "^8.5.1"
@@ -7665,8 +7715,6 @@ next-auth@^3.19.8:
     preact "^10.4.1"
     preact-render-to-string "^5.1.14"
     querystring "^0.2.0"
-    require_optional "^1.0.1"
-    typeorm "^0.2.30"
 
 next@10.2.3:
   version "10.2.3"
@@ -8490,6 +8538,11 @@ prr@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/prr/-/prr-1.0.1.tgz#d3fc114ba06995a45ec6893f484ceb1d78f5f476"
   integrity sha1-0/wRS6BplaRexok/SEzrHXj19HY=
+
+pseudomap@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
+  integrity sha1-8FKijacOYYkX7wqKw0wa5aaChrM=
 
 psl@^1.1.28, psl@^1.1.33:
   version "1.8.0"
@@ -9576,6 +9629,11 @@ sentence-case@^3.0.4:
     tslib "^2.0.3"
     upper-case-first "^2.0.2"
 
+seq-queue@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/seq-queue/-/seq-queue-0.0.5.tgz#d56812e1c017a6e4e7c3e3a37a1da6d78dd3c93e"
+  integrity sha1-1WgS4cAXpuTnw+Ojeh2m143TyT4=
+
 sequelize-pool@^6.0.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/sequelize-pool/-/sequelize-pool-6.1.0.tgz#caaa0c1e324d3c2c3a399fed2c7998970925d668"
@@ -9975,6 +10033,11 @@ sqlite3@^5.0.2:
     node-pre-gyp "^0.11.0"
   optionalDependencies:
     node-gyp "3.x"
+
+sqlstring@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/sqlstring/-/sqlstring-2.3.2.tgz#cdae7169389a1375b18e885f2e60b3e460809514"
+  integrity sha512-vF4ZbYdKS8OnoJAWBmMxCQDkiEBkGQYU7UZPtL8flbDRSNkhaXvRJ279ZtI6M+zDaQovVU4tuRgzK5fVhvFAhg==
 
 sse-z@0.3.0:
   version "0.3.0"
@@ -11212,6 +11275,11 @@ y18n@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-5.0.5.tgz#8769ec08d03b1ea2df2500acef561743bbb9ab18"
   integrity sha512-hsRUr4FFrvhhRH12wOdfs38Gy7k2FFzB9qgN9v3aLykRq0dRcdcpz5C9FxdS2NuhOrI/628b/KSTJ3rwHysYSg==
+
+yallist@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/yallist/-/yallist-2.1.2.tgz#1c11f9218f076089a47dd512f93c6699a6a81d52"
+  integrity sha1-HBH5IY8HYImkfdUS+TxmmaaoHVI=
 
 yallist@^3.0.0, yallist@^3.0.3:
   version "3.1.1"
