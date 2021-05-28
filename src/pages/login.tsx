@@ -38,7 +38,23 @@ const NormalLoginForm = () => {
       email: email,
       callbackUrl: nextConfig.basePath + "/pages",
     });
+    if (result && result.error) {
+      message.error({
+        content: result.error,
+        key,
+        duration: 5,
+      });
+      return;
+    }
     const session = (await getSession()) as SessionResponse;
+    if (!session) {
+      message.error({
+        content: "The request could not be processed at this time.",
+        key,
+        duration: 5,
+      });
+      return;
+    }
     if (session.user.__typename === "LoginError") {
       message.error({ content: session.user.message, key, duration: 5 });
       return;

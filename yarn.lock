@@ -1079,6 +1079,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.14.0":
+  version "7.14.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.0.tgz#46794bc20b612c5f75e62dd071e24dfd95f1cbe6"
+  integrity sha512-JELkvo/DlpNdJ7dlyw/eY7E0suy5i5GQH+Vlxaq1nsNJ+H7f4Vtv3jMeCEgRhZZQFXTjldYfQgv2qmM6M1v5wA==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.12.13", "@babel/template@^7.3.3":
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.12.13.tgz#530265be8a2589dbb37523844c5bcb55947fb327"
@@ -1843,17 +1850,19 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@next-auth/prisma-legacy-adapter@canary":
-  version "0.0.1-canary.115"
-  resolved "https://registry.yarnpkg.com/@next-auth/prisma-legacy-adapter/-/prisma-legacy-adapter-0.0.1-canary.115.tgz#ef291c865f1ce9d85f660c85b0b0be16bd89c641"
-  integrity sha512-rIIisYBvVtxDbY9Lbm+HOLbZyOaaEmtGc9wDN3tJLDUu3sLJOXNN7Pz29ThS+gf2lpMxXnfvk587hxGrnhCghQ==
-
-"@next-auth/typeorm-legacy-adapter@canary":
-  version "0.0.2-canary.117"
-  resolved "https://registry.yarnpkg.com/@next-auth/typeorm-legacy-adapter/-/typeorm-legacy-adapter-0.0.2-canary.117.tgz#c71f7e5f3b474e8b292acaa8ad69d2a4537f93ba"
-  integrity sha512-sYJZPWMsM1ZTJcl749UojYDF4q8+ZiYcrR7rM4SACc0qiA9VBdOYUUMUMpQoazKOiwo1rWDKu4wHPt6CdV0ctQ==
+"@next-auth/prisma-legacy-adapter@0.0.1-canary.127":
+  version "0.0.1-canary.127"
+  resolved "https://registry.yarnpkg.com/@next-auth/prisma-legacy-adapter/-/prisma-legacy-adapter-0.0.1-canary.127.tgz#09223de6d0350e53afc4bd0dda056a2fde27d8d3"
+  integrity sha512-Pd2Y8b1ibDywrndbj3751VNKv1mVcg2w0uNIi01EBVkm5pqA1X+VnKWbPeHfh4arLYw93RPCvfLbWBZS7J1gZQ==
   dependencies:
-    crypto-js "^4.0.0"
+    "@babel/runtime" "^7.14.0"
+
+"@next-auth/typeorm-legacy-adapter@0.0.2-canary.129":
+  version "0.0.2-canary.129"
+  resolved "https://registry.yarnpkg.com/@next-auth/typeorm-legacy-adapter/-/typeorm-legacy-adapter-0.0.2-canary.129.tgz#ec17c4561155281bd1504b5b38542234b4b162b1"
+  integrity sha512-xEGz3TzBzz+5nXQ6BnC++KGfxTOAgztL32ZRLq47UKz9M0kFBP6pCMJjTszltsBHYUI/Wac2IG2egMTpHtppiQ==
+  dependencies:
+    "@babel/runtime" "^7.14.0"
     require_optional "^1.0.1"
     typeorm "^0.2.30"
 
@@ -4166,11 +4175,6 @@ crypto-browserify@3.12.0, crypto-browserify@^3.11.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
-
-crypto-js@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.0.0.tgz#2904ab2677a9d042856a2ea2ef80de92e4a36dcc"
-  integrity sha512-bzHZN8Pn+gS7DQA6n+iUmBfl0hO5DJq++QP3U6uTucDtk/0iGpXd/Gg7CGR0p8tJhofJyaKoWBuJI4eAO00BBg==
 
 cryptr@^6.0.2:
   version "6.0.2"
@@ -7694,14 +7698,14 @@ needle@^2.2.1:
     iconv-lite "^0.4.4"
     sax "^1.2.4"
 
-next-auth@^3.19.8:
-  version "3.19.8"
-  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-3.19.8.tgz#32331f33dd73b46ec5c774735a9db78f9dbba3c7"
-  integrity sha512-BB3h3JedZrQ/usB5JFdJSxQcSsMopT8/RfboGAVIASfH7Lyu2PddZnlM1YlmqDZ90lHeFd2AfrxxCYX7HdDcKg==
+next-auth@^3.23.3:
+  version "3.23.3"
+  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-3.23.3.tgz#810b6c0362bd48ee1be2831fef270b89359522fd"
+  integrity sha512-e+As4q+uA4MnnL36P3JxKRKEvy2iPXn8AZ8A8v3wbAc91K6YVgjfDMs+uU30jYAV58u7CnWdypHCRUkF/5WDDA==
   dependencies:
-    "@next-auth/prisma-legacy-adapter" canary
-    "@next-auth/typeorm-legacy-adapter" canary
-    crypto-js "^4.0.0"
+    "@babel/runtime" "^7.14.0"
+    "@next-auth/prisma-legacy-adapter" "0.0.1-canary.127"
+    "@next-auth/typeorm-legacy-adapter" "0.0.2-canary.129"
     futoin-hkdf "^1.3.2"
     jose "^1.27.2"
     jsonwebtoken "^8.5.1"
@@ -7711,8 +7715,6 @@ next-auth@^3.19.8:
     preact "^10.4.1"
     preact-render-to-string "^5.1.14"
     querystring "^0.2.0"
-    require_optional "^1.0.1"
-    typeorm "^0.2.30"
 
 next@10.2.3:
   version "10.2.3"

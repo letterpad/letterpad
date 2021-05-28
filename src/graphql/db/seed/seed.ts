@@ -9,7 +9,6 @@ import posts from "./posts";
 import { promisify } from "util";
 import rimraf from "rimraf";
 import { settingsData } from "../models/setting";
-import { getDateTime } from "../../../../shared/utils";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -280,3 +279,21 @@ export async function insertSettings() {
     ...authors.map(author => author.createSetting(settingsData)),
   ]);
 }
+
+export const getDateTime = (d?: Date) => {
+  const m = d ? new Date(d) : new Date();
+
+  return (
+    m.getUTCFullYear() +
+    "-" +
+    ("0" + (m.getUTCMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + m.getUTCDate()).slice(-2) +
+    " " +
+    ("0" + m.getUTCHours()).slice(-2) +
+    ":" +
+    ("0" + m.getUTCMinutes()).slice(-2) +
+    ":" +
+    ("0" + m.getUTCSeconds()).slice(-2)
+  );
+};
