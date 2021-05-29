@@ -1,6 +1,4 @@
-import jwt from "jsonwebtoken";
 import dbModels from "./../models/index";
-import bcrypt from "bcryptjs";
 import copydir from "copy-dir";
 import generatePost from "./contentGenerator";
 import mkdirp from "mkdirp";
@@ -8,7 +6,8 @@ import path from "path";
 import posts from "./posts";
 import { promisify } from "util";
 import rimraf from "rimraf";
-import { settingsData } from "../models/setting";
+import { createAuthor } from "../../../graphql/resolvers/author";
+import { ROLES } from "../../../graphql/types";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -39,7 +38,6 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   console.time("sync sequelize models");
   await models.sequelize.sync({ force: true });
   console.timeEnd("sync sequelize models");
-
   if (folderCheck) {
     // do some clean first. delete the uploads folder
     console.time("sync uploads");
@@ -54,53 +52,15 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   console.timeEnd("insert roles and permissions");
 
   console.time("insert authors and Tags");
-  await Promise.all([insertAuthor(models), insertTags(models)]);
+  await Promise.all([insertAuthor(), insertTags(models)]);
   console.timeEnd("insert authors and Tags");
-
-  console.time("Asssign Role to author");
-  const role = await models.Role.findOne({ where: { id: 1 } });
-  const authors = await models.Author.findAll();
-  if (role && authors) {
-    await Promise.all([
-      ...authors.map(async author => {
-        await author.setRole(role);
-      }),
-    ]);
-  }
-  console.timeEnd("Asssign Role to author");
 
   console.time("insert posts, settings, media");
   const [tags] = await Promise.all([models.Tags.findAll()]);
 
   await Promise.all([...posts.map(post => insertPost(post, models, tags))]);
-  await insertSettings();
   await insertMedia();
   console.timeEnd("insert posts, settings, media");
-
-  console.time("Asssign Setting to author");
-  const setting = await models.Setting.findOne({
-    where: { id: 1 },
-  });
-  if (setting && authors) {
-    await Promise.all([
-      ...authors.map(async author => {
-        const token = jwt.sign(
-          {
-            id: 1,
-          },
-          process.env.SECRET_KEY,
-          {
-            algorithm: "HS256",
-          },
-        );
-        return Promise.all([
-          setting.update({ client_token: token }),
-          author.setSetting(setting),
-        ]);
-      }),
-    ]);
-  }
-  console.timeEnd("Asssign Setting to author");
 };
 
 export async function insertRolePermData(models) {
@@ -157,41 +117,36 @@ export async function insertRolePermData(models) {
   return Promise.all([admin(), reviewer(), reader(), author()]);
 }
 
-export async function insertAuthor(models) {
-  return models.Author.bulkCreate([
-    {
-      name: "John",
-      email: "demo@demo.com",
-      password: bcrypt.hashSync("demo", 12),
-      social: JSON.stringify({
-        twitter: "https://twitter.com",
-        facebook: "https://facebook.com",
-        github: "https://github.com",
-        instagram: "https://instagram.com",
-      }),
-      username: "demo",
-      verified: true,
-      bio: "You can some information about yourself for the world to know you a little better.",
-      avatar:
-        "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
+export async function insertAuthor() {
+  const demoAuthor = createAuthor({
+    name: "Demo Author",
+    email: "demo@demo.com",
+    username: "demo",
+    password: "demo",
+    site_title: "Demo Account",
+    social: {
+      twitter: "https://twitter.com",
+      facebook: "https://facebook.com",
+      github: "https://github.com",
+      instagram: "https://instagram.com",
     },
-    {
-      name: "Jim Parker",
-      email: "author@letterpad.app",
-      username: "author",
-      password: bcrypt.hashSync("demo", 12),
-      verified: true,
-      social: JSON.stringify({
-        twitter: "https://twitter.com",
-        facebook: "https://facebook.com",
-        github: "https://github.com",
-        instagram: "https://instagram.com",
-      }),
-      bio: "You can some information about yourself for the world to know you a little better.",
-      avatar:
-        "https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
-    },
-  ]);
+    verified: true,
+    bio: "You can some information about yourself for the world to know you a little better.",
+    avatar:
+      "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
+    rolename: ROLES.AUTHOR,
+  });
+
+  const adminAuthor = createAuthor({
+    name: "Admin",
+    email: "admin@admin.com",
+    username: "admin",
+    password: "admin",
+    site_title: "Admin Account",
+    verified: true,
+    rolename: ROLES.ADMIN,
+  });
+  return Promise.all([adminAuthor, demoAuthor]);
 }
 
 export async function insertTags(models: typeof dbModels) {
@@ -218,8 +173,8 @@ export async function insertPost(params, models: typeof dbModels, tags) {
   // get author  // 1 or 2
   const { md, html } = generatePost(params.type);
   let promises: any[] = [];
-  const randomAuthorId = 1; //Math.floor(Math.random() * (2 - 1 + 1)) + 1;
-  let admin = await models.Author.findOne({ where: { id: randomAuthorId } });
+  const authorId = 2;
+  let author = await models.Author.findOne({ where: { id: authorId } });
   const title =
     params.type === "post" ? "Welcome to Letterpad" : "Letterpad Typography";
   const slug = title.toLocaleLowerCase().replace(/ /g, "-");
@@ -231,7 +186,7 @@ export async function insertPost(params, models: typeof dbModels, tags) {
     excerpt:
       "You can use this space to write a small description about the topic. This will be helpful in SEO.",
     cover_image: params.cover_image,
-    authorId: randomAuthorId,
+    authorId: authorId,
     type: params.type,
     status: params.status,
     slug: slug,
@@ -239,8 +194,8 @@ export async function insertPost(params, models: typeof dbModels, tags) {
     publishedAt: getDateTime(),
     reading_time: "5 mins",
   });
-  if (admin && post) {
-    promises = [admin.addPost(post)];
+  if (author && post) {
+    promises = [author.addPost(post)];
     if (params.type === "post") {
       promises = [...promises, ...tags.map(tag => post.addTag(tag))];
     }
@@ -270,14 +225,6 @@ export async function insertMedia() {
         "Write a description about this image. You never know how this image can break the internet",
     });
   }
-}
-
-export async function insertSettings() {
-  const authors = await models.Author.findAll();
-
-  return Promise.all([
-    ...authors.map(author => author.createSetting(settingsData)),
-  ]);
 }
 
 export const getDateTime = (d?: Date) => {

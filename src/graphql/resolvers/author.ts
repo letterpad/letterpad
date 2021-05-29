@@ -2,13 +2,15 @@ import { Subjects } from "./../../mail/index";
 import Cryptr from "cryptr";
 import jwt from "jsonwebtoken";
 import {
+  MutationResolvers,
   InputAuthor,
   PostStatusOptions,
   PostTypes,
   QueryResolvers,
+  Social,
+  Author,
 } from "@/__generated__/type-defs.graphqls";
 import { ResolverContext } from "../apollo";
-import { MutationResolvers } from "@/__generated__/type-defs.graphqls";
 import models from "../db/models";
 import bcrypt from "bcryptjs";
 import { settingsData } from "../db/models/setting";
@@ -19,6 +21,7 @@ import templates from "src/mail/templates";
 import siteConfig from "config/site.config";
 import { seed } from "../db/seed/seed";
 import { getDateTime } from "../../../shared/utils";
+import { ROLES } from "../types";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 
@@ -53,7 +56,7 @@ const Author = {
 
 const Query: QueryResolvers<ResolverContext> = {
   async me(_parent, _args, { session }, _info) {
-    if (!session?.user) {
+    if (!session?.user.id) {
       return { __typename: "AuthorNotFoundError", message: "Invalid Session" };
     }
 
@@ -62,17 +65,17 @@ const Query: QueryResolvers<ResolverContext> = {
         id: session.user.id,
       },
     });
-    if (author && author.social) {
-      author.social = JSON.parse((author.social as string) || "{}");
+    if (!author) {
+      return { __typename: "AuthorNotFoundError", message: "" };
     }
-    if (author && author.avatar) {
-      if (author.avatar.startsWith("/")) {
-        author.avatar = new URL(author.avatar, process.env.ROOT_URL).href;
-      }
+    if (author.social) {
+      author.social = JSON.parse(author.social || "{}");
     }
-    return author
-      ? { ...author, __typename: "Author" }
-      : { __typename: "AuthorNotFoundError", message: "" };
+    if (author.avatar && author.avatar.startsWith("/")) {
+      author.avatar = new URL(author.avatar, process.env.ROOT_URL).href;
+    }
+    const a = author.get() as unknown as Author;
+    return { ...a, __typename: "Author" };
   },
 };
 
@@ -92,13 +95,20 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
     }
 
-    try {
-      await models.sequelize.query("SELECT * FROM 'author'");
-    } catch (e) {
-      if (e.name === "SequelizeDatabaseError") {
-        await seed(models, false);
-      }
+    const dbSeeded = await isDatabaseSeeded();
+    if (!dbSeeded) {
+      await seed(models, false);
+      await createAuthor({
+        email: "admin@xxx.com",
+        username: "admin",
+        rolename: ROLES.ADMIN,
+        site_title: "",
+        verified: true,
+        password: "admin",
+        name: "Admin",
+      });
     }
+
     let author = await models.Author.findOne({
       where: { email: args.data?.email },
     });
@@ -121,41 +131,15 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
 
-    const newAuthor = await models.Author.create({
+    const newAuthor = await createAuthor({
       email: args.data.email,
-      bio: "",
-      password: bcrypt.hashSync(args.data.password, 12),
-      name: args.data.name,
-      avatar: "",
       username: args.data.username,
-      verified: false,
-      social: JSON.stringify({
-        twitter: "",
-        facebook: "",
-        github: "",
-        instagram: "",
-      }) as any,
+      site_title: "",
+      password: args.data.password,
+      name: args.data.name,
     });
 
-    const role = await models.Role.findOne({ where: { id: 1 } });
-
-    if (newAuthor && role) {
-      await newAuthor.setRole(role);
-      const setting = await models.Setting.create({
-        ...settingsData,
-        site_url: `https://${args.data.username}.letterpad.app`,
-        site_title: args.data.site_title,
-        client_token: jwt.sign(
-          {
-            id: newAuthor.id,
-          },
-          process.env.SECRET_KEY,
-          {
-            algorithm: "HS256",
-          },
-        ),
-      });
-      await newAuthor.setSetting(setting);
+    if (newAuthor) {
       const { post, page } = getWelcomePostAndPage();
       const newPost = await newAuthor.createPost(post);
       const newTag = await newAuthor.createTag({
@@ -173,7 +157,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
           verifyToken: cryptr.encrypt(newAuthor.email),
         }),
       });
-      return { ...newAuthor, __typename: "Author" };
+      const a = newAuthor.get() as unknown as Author;
+      return { ...a, __typename: "Author" };
     }
     return {
       __typename: "CreateAuthorError",
@@ -205,7 +190,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         return {
           __typename: "Author",
           ...author,
-          social: JSON.parse(author.social as string),
+          social: JSON.parse(author.social),
         };
       } catch (e) {
         console.log(e);
@@ -366,4 +351,78 @@ function getWelcomePostAndPage() {
   };
 
   return { page, post };
+}
+
+async function isDatabaseSeeded(): Promise<boolean> {
+  try {
+    await models.sequelize.query("SELECT * FROM 'author'");
+    return true;
+  } catch (e) {
+    if (e.name === "SequelizeDatabaseError") {
+      return false;
+    }
+  }
+  return false;
+}
+
+interface ICreateAuthor {
+  email: string;
+  name: string;
+  username: string;
+  rolename?: ROLES;
+  verified?: boolean;
+  password: string;
+  site_title: string;
+  bio?: string;
+  avatar?: string;
+  social?: Social;
+}
+
+export async function createAuthor({
+  email,
+  name,
+  username,
+  rolename = ROLES.AUTHOR,
+  verified = false,
+  password,
+  site_title,
+  bio = "",
+  avatar = "",
+  social = {
+    twitter: "",
+    facebook: "",
+    github: "",
+    instagram: "",
+  },
+}: ICreateAuthor) {
+  const role = await models.Role.findOne({ where: { name: rolename } });
+  const author = await models.Author.create({
+    name,
+    bio,
+    username,
+    verified,
+    email,
+    password: bcrypt.hashSync(password, 12),
+    avatar,
+    social: JSON.stringify(social),
+  });
+  if (author && role) {
+    author.setRole(role);
+    const setting = await models.Setting.create({
+      ...settingsData,
+      site_url: `https://${username}.letterpad.app`,
+      site_title,
+      client_token: jwt.sign(
+        {
+          id: author.id,
+        },
+        process.env.SECRET_KEY,
+        {
+          algorithm: "HS256",
+        },
+      ),
+    });
+    author.setSetting(setting);
+  }
+  return author;
 }

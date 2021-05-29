@@ -1,3 +1,5 @@
+import { Setting } from "./../__generated__/src/graphql/type-defs.graphqls";
+import { SessionData } from "@/graphql/types";
 import { Navigation } from "@/__generated__/type-defs.graphqls";
 
 export type Optional<T> = { [P in keyof T]?: T[P] };
@@ -20,4 +22,9 @@ export interface IMenuWithError extends Navigation {
 export interface INavigationBuilderProps {
   menuData: Navigation[];
   updateOption: (menu: Navigation[]) => void;
+}
+
+export interface IAuthComponentProps {
+  session: SessionData;
+  settings: Setting;
 }
