@@ -89,7 +89,7 @@ const SortableItem = SortableElement((props: IProps) => {
           defaultValue={item.slug}
           style={{ width: "100%" }}
           size="middle"
-          onChange={value => onInputChange({ ...item, slug: value })}
+          onChange={slug => onInputChange({ ...item, slug })}
         >
           <OptGroup label="Tags - collection of post">
             {getOptions(source, NavigationType.Tag)}
