@@ -53,6 +53,7 @@ export async function initializeApollo(
   let session;
   if (typeof window === "undefined") {
     if (!context) {
+      throw new Error("woo");
       console.warn(
         "`initializeApollo` has been called without setting a context",
       );

@@ -1,9 +1,19 @@
+import { SessionData } from "./../../graphql/types";
 import fs from "fs";
 import models from "@/graphql/db/models";
 import { Author } from "@/graphql/db/models/author";
+import { getSession } from "next-auth/client";
+import { Role } from "@/__generated__/type-defs.graphqls";
 
-const ImportExport = async (_req, res) => {
-  const authors = await models.Author.findAll();
+const Export = async (req, res) => {
+  const _session = await getSession({ req });
+  const session = _session as unknown as { user: SessionData };
+  if (!session?.user?.email) return res.send("No session found");
+
+  let authors = await models.Author.findAll();
+  if (session.user.role !== Role.Admin) {
+    authors = await models.Author.findAll({ where: { id: session.user.id } });
+  }
 
   const data: any = { common: {}, authors: {} };
 
@@ -32,7 +42,7 @@ const ImportExport = async (_req, res) => {
   readStream.pipe(res);
 };
 
-export default ImportExport;
+export default Export;
 
 async function getContent(author: Author) {
   // settings
