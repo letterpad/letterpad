@@ -134,7 +134,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     const newAuthor = await createAuthor({
       email: args.data.email,
       username: args.data.username,
-      site_title: "",
+      site_title: args.data.site_title || "",
       password: args.data.password,
       name: args.data.name,
     });
