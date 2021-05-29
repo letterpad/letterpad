@@ -128,6 +128,7 @@ function Profile() {
                     url={me.avatar || ""}
                     name="Avatar"
                     onDone={([res]) => {
+                      onChange("avatar", res.src);
                       updateAuthor({ avatar: res.src, id: me.id });
                     }}
                   />
