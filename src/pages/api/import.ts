@@ -139,6 +139,14 @@ export default Import;
 
 async function removeAllDataAndImport(data: IImport) {
   await models.sequelize.sync({ force: true });
+  await Promise.all([
+    ...data.common.permissions.map(permission =>
+      models.Permission.create(permission),
+    ),
+  ]);
+  await Promise.all([
+    ...data.common.roles.map(role => models.Role.create(role)),
+  ]);
   if (data.common.rolePermissions.length > 0) {
     await models.sequelize.query(
       `INSERT INTO rolePermissions (created_at, updated_at, role_id, permission_id) VALUES ${data.common.rolePermissions
@@ -157,14 +165,6 @@ async function removeAllDataAndImport(data: IImport) {
       },
     );
   }
-  await Promise.all([
-    ...data.common.permissions.map(permission =>
-      models.Permission.create(permission),
-    ),
-  ]);
-  await Promise.all([
-    ...data.common.roles.map(role => models.Role.create(role)),
-  ]);
 }
 
 async function removeUserDataAndImport(author: Author, data: IAuthorData) {
