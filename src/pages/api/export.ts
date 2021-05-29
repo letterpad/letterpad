@@ -10,19 +10,19 @@ const Export = async (req, res) => {
   const session = _session as unknown as { user: SessionData };
   if (!session?.user?.email) return res.send("No session found");
 
+  const data: any = { common: {}, authors: {} };
   let authors = await models.Author.findAll();
+
   if (session.user.role !== Role.Admin) {
     authors = await models.Author.findAll({ where: { id: session.user.id } });
+  } else {
+    data.common.permissions = await models.Permission.findAll();
+    data.common.roles = await models.Role.findAll();
+    const [rolePermissions] = await models.sequelize.query(
+      `SELECT * FROM rolePermissions`,
+    );
+    data.common.rolePermissions = rolePermissions;
   }
-
-  const data: any = { common: {}, authors: {} };
-
-  data.common.permissions = await models.Permission.findAll();
-  data.common.roles = await models.Role.findAll();
-  const [rolePermissions] = await models.sequelize.query(
-    `SELECT * FROM rolePermissions`,
-  );
-  data.common.rolePermissions = rolePermissions;
 
   for (const author of authors) {
     data.authors[author.email] = await getContent(author);
