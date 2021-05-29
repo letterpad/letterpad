@@ -8,7 +8,7 @@ import {
   PostTypes,
   QueryResolvers,
   Social,
-  Author,
+  Author as AuthorType,
 } from "@/__generated__/type-defs.graphqls";
 import { ResolverContext } from "../apollo";
 import models from "../db/models";
@@ -74,7 +74,7 @@ const Query: QueryResolvers<ResolverContext> = {
     if (author.avatar && author.avatar.startsWith("/")) {
       author.avatar = new URL(author.avatar, process.env.ROOT_URL).href;
     }
-    const a = author.get() as unknown as Author;
+    const a = author.get() as unknown as AuthorType;
     return { ...a, __typename: "Author" };
   },
 };
@@ -157,7 +157,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           verifyToken: cryptr.encrypt(newAuthor.email),
         }),
       });
-      const a = newAuthor.get() as unknown as Author;
+      const a = newAuthor.get() as unknown as AuthorType;
       return { ...a, __typename: "Author" };
     }
     return {
