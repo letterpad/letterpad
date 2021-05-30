@@ -4,10 +4,11 @@ import models from "@/graphql/db/models";
 import multer from "multer";
 import initMiddleware from "./middleware";
 import { getDateTime } from "../../../shared/utils";
-import { SessionData } from "@/graphql/types";
+import { ROLES, SessionData } from "@/graphql/types";
 import { Role } from "@/__generated__/type-defs.graphqls";
 import { IAuthorData, IImportExportData } from "./importExportTypes";
 import { insertRolePermData } from "@/graphql/db/seed/seed";
+import { createAuthor } from "@/graphql/resolvers/author";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -32,7 +33,16 @@ const Import = async (req, res) => {
 
   if (session.user.role === Role.Admin) {
     await models.sequelize.sync({ force: true });
-    await insertRolePermData();
+    await insertRolePermData(models);
+    await createAuthor({
+      email: "admin@xxx.com",
+      username: "admin",
+      rolename: ROLES.ADMIN,
+      site_title: "",
+      verified: true,
+      password: "admin",
+      name: "Admin",
+    });
   } else {
     if (Object.keys(data.authors).length > 1) {
       return res.status(401).send({
@@ -56,11 +66,13 @@ const Import = async (req, res) => {
   for (const email in sanitizedData) {
     const authorsData = data.authors[email];
     let author = await models.Author.findOne({ where: { email } });
-    if (session.user.email === email) {
+    if (!author) {
       //@ts-ignore author
-      const { id, role_id, setting_id, ...sanitizedAuthor } = author;
+      const { id, role_id, setting_id, ...sanitizedAuthor } =
+        authorsData["author"];
       author = await models.Author.create(sanitizedAuthor);
     }
+
     if (!author) {
       return res.send({
         success: false,
@@ -75,7 +87,9 @@ const Import = async (req, res) => {
       author.setRole(role);
     }
 
-    await removeUserData(author);
+    if (session.user.role !== Role.Admin) {
+      await removeUserData(author);
+    }
     await author.createSetting(authorsData.setting);
     await Promise.all([
       ...authorsData.tags.map(tag => models.Tags.create(tag)),

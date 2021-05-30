@@ -48,7 +48,7 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   }
 
   console.time("insert roles and permissions");
-  await insertRolePermData();
+  await insertRolePermData(models);
   console.timeEnd("insert roles and permissions");
 
   console.time("insert authors and Tags");
@@ -64,7 +64,7 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   console.timeEnd("insert posts, settings, media");
 };
 
-export async function insertRolePermData() {
+export async function insertRolePermData(models: typeof dbModels) {
   const [
     MANAGE_OWN_POSTS,
     READ_ONLY_POSTS,
@@ -119,6 +119,16 @@ export async function insertRolePermData() {
 }
 
 export async function insertAuthor() {
+  const adminAuthor = createAuthor({
+    name: "Admin",
+    email: "admin@admin.com",
+    username: "admin",
+    password: "admin",
+    site_title: "Admin Account",
+    verified: true,
+    rolename: ROLES.ADMIN,
+  });
+
   const demoAuthor = createAuthor({
     name: "Demo Author",
     email: "demo@demo.com",
@@ -138,20 +148,11 @@ export async function insertAuthor() {
     rolename: ROLES.AUTHOR,
   });
 
-  const adminAuthor = createAuthor({
-    name: "Admin",
-    email: "admin@admin.com",
-    username: "admin",
-    password: "admin",
-    site_title: "Admin Account",
-    verified: true,
-    rolename: ROLES.ADMIN,
-  });
   return Promise.all([adminAuthor, demoAuthor]);
 }
 
 export async function insertTags() {
-  const author = await models.Author.findOne({ where: { id: 1 } });
+  const author = await models.Author.findOne({ where: { username: "admin" } });
   const tags = [
     {
       name: "Home",

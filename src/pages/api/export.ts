@@ -54,7 +54,7 @@ async function getContent(author: Author): Promise<IAuthorData> {
       desc,
       slug,
     }));
-    postWithTags.push({ ...post.get(), tags });
+    postWithTags.push({ ...post, tags });
   }
   // tags
   const tags = await author.getTags({ raw: true });
