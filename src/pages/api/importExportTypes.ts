@@ -11,7 +11,7 @@ import { TagsAttributes } from "@/graphql/db/models/tags";
 
 interface ITagSanitized {
   name: string;
-  desc: string;
+  desc?: string;
   slug: string;
 }
 interface IPostSanitized
