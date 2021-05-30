@@ -50,10 +50,15 @@ const Import = async (req, res) => {
   }
 
   const sanitizedData = sanitizeForeignData(data.authors);
-  console.log("sanitizedData :>> ", sanitizedData);
+
   for (const email in sanitizedData) {
     const authorsData = data.authors[email];
-    const author = await models.Author.findOne({ where: { email } });
+    let author = await models.Author.findOne({ where: { email } });
+    if (session.user.role === Role.Admin) {
+      //@ts-ignore author
+      const { id, role_id, setting_id, ...sanitizedAuthor } = author;
+      author = await models.Author.create(sanitizedAuthor);
+    }
     if (!author) {
       return res.send({
         success: false,
@@ -140,6 +145,7 @@ function sanitizeForeignData(authors: IImportExportData["authors"]) {
   for (const email in authors) {
     const authorData: IAuthorData = authors[email];
     sanitizedData[email] = authorData;
+
     //posts
     const posts = authorData.posts.map(post => {
       // @ts-ignore
