@@ -29,12 +29,14 @@ const Import = async (req, res) => {
     });
 
   const data: IImportExportData = JSON.parse(req.files[0].buffer.toString());
+  // const isLoggedInUserAuthor = session.user.role === Role.Author;
+  const isLoggedInUserAdmin = session.user.role === Role.Admin;
 
-  if (session.user.role === Role.Admin) {
+  if (isLoggedInUserAdmin) {
     await models.sequelize.sync({ force: true });
     await insertRolePermData(models);
     await createAuthor({
-      email: "admin@xxx.com",
+      email: "admin@admin.com",
       username: "admin",
       rolename: ROLES.ADMIN,
       site_title: "",
@@ -63,9 +65,9 @@ const Import = async (req, res) => {
   const sanitizedData = sanitizeForeignData(data.authors);
 
   for (const email in sanitizedData) {
-    const authorsData = data.authors[email];
+    const authorsData = sanitizedData[email];
     let author = await models.Author.findOne({ where: { email } });
-    if (!author) {
+    if (!author && isLoggedInUserAdmin) {
       //@ts-ignore author
       const { id, role_id, setting_id, ...sanitizedAuthor } =
         authorsData["author"];
@@ -90,11 +92,9 @@ const Import = async (req, res) => {
       await removeUserData(author);
     }
     await author.createSetting(authorsData.setting);
+
     await Promise.all([
-      ...authorsData.tags.map(tag => models.Tags.create(tag)),
-    ]);
-    await Promise.all([
-      ...authorsData.media.map(item => models.Media.create(item)),
+      ...authorsData.media.map(item => author?.createMedia(item)),
     ]);
 
     for (const data of authorsData.posts) {
@@ -106,7 +106,15 @@ const Import = async (req, res) => {
       });
 
       for (const tag of tags) {
-        await newPost.createTag({ ...tag });
+        const existingTag = await models.Tags.findOne({
+          where: { name: tag.name, author_id: author.id },
+        });
+        if (existingTag) {
+          newPost.addTag(existingTag);
+        } else {
+          const created = await author.createTag({ ...tag });
+          if (created) newPost.addTag(created);
+        }
       }
     }
   }
