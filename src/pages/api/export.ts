@@ -49,7 +49,7 @@ async function getContent(author: Author): Promise<IAuthorData> {
   // settings
   const setting = await author.getSetting({ raw: true });
   // posts. we still need to add the tags to this.
-  const posts = await author.getPosts({ raw: true });
+  const posts = await author.getPosts();
 
   const postWithTags: IAuthorData["posts"] = [];
   //posts with tags
@@ -60,7 +60,7 @@ async function getContent(author: Author): Promise<IAuthorData> {
       desc,
       slug,
     }));
-    postWithTags.push({ ...post, tags });
+    postWithTags.push({ ...post.get(), tags });
   }
   // tags
   const tags = await author.getTags({ raw: true });

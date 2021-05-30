@@ -1,0 +1,394 @@
+{
+  "common": {
+    "permissions": [
+      {
+        "id": 1,
+        "name": "MANAGE_OWN_POSTS",
+        "createdAt": "2021-05-30T15:18:49.220Z",
+        "updatedAt": "2021-05-30T15:18:49.220Z"
+      },
+      {
+        "id": 2,
+        "name": "READ_ONLY_POSTS",
+        "createdAt": "2021-05-30T15:18:49.220Z",
+        "updatedAt": "2021-05-30T15:18:49.220Z"
+      },
+      {
+        "id": 3,
+        "name": "MANAGE_ALL_POSTS",
+        "createdAt": "2021-05-30T15:18:49.221Z",
+        "updatedAt": "2021-05-30T15:18:49.221Z"
+      },
+      {
+        "id": 4,
+        "name": "MANAGE_USERS",
+        "createdAt": "2021-05-30T15:18:49.221Z",
+        "updatedAt": "2021-05-30T15:18:49.221Z"
+      },
+      {
+        "id": 5,
+        "name": "MANAGE_SETTINGS",
+        "createdAt": "2021-05-30T15:18:49.221Z",
+        "updatedAt": "2021-05-30T15:18:49.221Z"
+      }
+    ],
+    "roles": [
+      {
+        "id": 1,
+        "name": "ADMIN",
+        "createdAt": "2021-05-30T15:18:49.229Z",
+        "updatedAt": "2021-05-30T15:18:49.229Z"
+      },
+      {
+        "id": 2,
+        "name": "REVIEWER",
+        "createdAt": "2021-05-30T15:18:49.229Z",
+        "updatedAt": "2021-05-30T15:18:49.229Z"
+      },
+      {
+        "id": 3,
+        "name": "READER",
+        "createdAt": "2021-05-30T15:18:49.230Z",
+        "updatedAt": "2021-05-30T15:18:49.230Z"
+      },
+      {
+        "id": 4,
+        "name": "AUTHOR",
+        "createdAt": "2021-05-30T15:18:49.230Z",
+        "updatedAt": "2021-05-30T15:18:49.230Z"
+      }
+    ],
+    "rolePermissions": [
+      {
+        "created_at": "2021-05-30 15:18:49.239 +00:00",
+        "updated_at": "2021-05-30 15:18:49.239 +00:00",
+        "role_id": 1,
+        "permission_id": 2
+      },
+      {
+        "created_at": "2021-05-30 15:18:49.241 +00:00",
+        "updated_at": "2021-05-30 15:18:49.241 +00:00",
+        "role_id": 1,
+        "permission_id": 3
+      },
+      {
+        "created_at": "2021-05-30 15:18:49.241 +00:00",
+        "updated_at": "2021-05-30 15:18:49.241 +00:00",
+        "role_id": 1,
+        "permission_id": 4
+      },
+      {
+        "created_at": "2021-05-30 15:18:49.241 +00:00",
+        "updated_at": "2021-05-30 15:18:49.241 +00:00",
+        "role_id": 1,
+        "permission_id": 5
+      },
+      {
+        "created_at": "2021-05-30 15:18:49.241 +00:00",
+        "updated_at": "2021-05-30 15:18:49.241 +00:00",
+        "role_id": 4,
+        "permission_id": 1
+      },
+      {
+        "created_at": "2021-05-30 15:18:49.242 +00:00",
+        "updated_at": "2021-05-30 15:18:49.242 +00:00",
+        "role_id": 1,
+        "permission_id": 1
+      },
+      {
+        "created_at": "2021-05-30 15:18:49.242 +00:00",
+        "updated_at": "2021-05-30 15:18:49.242 +00:00",
+        "role_id": 2,
+        "permission_id": 3
+      },
+      {
+        "created_at": "2021-05-30 15:18:49.242 +00:00",
+        "updated_at": "2021-05-30 15:18:49.242 +00:00",
+        "role_id": 3,
+        "permission_id": 2
+      }
+    ]
+  },
+  "authors": {
+    "demo@demo.com": {
+      "author": {
+        "id": 1,
+        "name": "Demo Author",
+        "username": "demo",
+        "email": "demo@demo.com",
+        "password": "$2a$12$IeH68/wuKYt2OXc8cGZDH.4A2ad96tDhMppm1oc1WmtPQ5pay5EbK",
+        "bio": "You can some information about yourself for the world to know you a little better.",
+        "avatar": "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
+        "social": "{\"twitter\":\"https://twitter.com\",\"facebook\":\"https://facebook.com\",\"github\":\"https://github.com\",\"instagram\":\"https://instagram.com\"}",
+        "verified": true,
+        "createdAt": "2021-05-30T15:18:49.506Z",
+        "updatedAt": "2021-05-30T15:18:49.769Z",
+        "role_id": 4,
+        "setting_id": 1
+      },
+      "setting": {
+        "id": 1,
+        "site_title": "Demo Account",
+        "site_tagline": "Compose a story",
+        "site_email": "admin@letterpad.app",
+        "site_url": "https://demo.letterpad.app",
+        "site_footer": "",
+        "site_description": "",
+        "subscribe_embed": "",
+        "social_twitter": "",
+        "social_facebook": "",
+        "social_instagram": "",
+        "social_github": "",
+        "displayAuthorInfo": 1,
+        "cloudinary_key": "",
+        "cloudinary_name": "",
+        "cloudinary_secret": "",
+        "menu": "[{\"label\":\"home\",\"original_name\":\"home\",\"slug\":\"first-post\",\"type\":\"tag\"},{\"label\":\"Letterpad Typography\",\"original_name\":\"Letterpad Typography\",\"slug\":\"letterpad-typography\",\"type\":\"page\"}]",
+        "css": "",
+        "google_analytics": "UA-120251616-1",
+        "locale": "{\"en\":true,\"fr\":false,\"pl\":false}",
+        "theme": "hugo",
+        "client_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjIyMzg3OTI5fQ.b_-CLr7JZUyXaXfzpB5KYMAuTND1wSro9FW5YNH7mI8",
+        "disqus_id": "",
+        "banner": "{\"src\":\"https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2850&q=80\",\"width\":1502,\"height\":900}",
+        "site_logo": "{\"src\":\"/uploads/logo.png\",\"width\":200,\"height\":200}",
+        "site_favicon": "{\"src\":\"/uploads/logo.png\",\"width\":200,\"height\":200}",
+        "createdAt": "2021-05-30 15:18:49.763 +00:00",
+        "updatedAt": "2021-05-30 15:18:49.763 +00:00"
+      },
+      "tags": [
+        {
+          "id": 1,
+          "name": "Home",
+          "desc": "",
+          "slug": "home",
+          "createdAt": "2021-05-30 15:18:49.776 +00:00",
+          "updatedAt": "2021-05-30 15:18:49.776 +00:00",
+          "author_id": 1
+        },
+        {
+          "id": 2,
+          "name": "first-post",
+          "desc": "",
+          "slug": "first-post",
+          "createdAt": "2021-05-30 15:18:49.776 +00:00",
+          "updatedAt": "2021-05-30 15:18:49.776 +00:00",
+          "author_id": 1
+        }
+      ],
+      "posts": [],
+      "media": [
+        {
+          "id": 1,
+          "name": "Blueberries",
+          "url": "https://images.unsplash.com/photo-1473181488821-2d23949a045a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+          "width": 1350,
+          "height": 900,
+          "description": "Write a description about this image. You never know how this image can break the internet",
+          "updatedAt": "2021-05-30 15:18:49.828 +00:00",
+          "createdAt": "2021-05-30 15:18:49.828 +00:00",
+          "author_id": 1
+        },
+        {
+          "id": 2,
+          "name": "I love the beach and its smell",
+          "url": "https://images.unsplash.com/photo-1524654458049-e36be0721fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+          "width": 1350,
+          "height": 900,
+          "description": "Write a description about this image. You never know how this image can break the internet",
+          "updatedAt": "2021-05-30 15:18:49.829 +00:00",
+          "createdAt": "2021-05-30 15:18:49.829 +00:00",
+          "author_id": 1
+        }
+      ]
+    },
+    "admin@admin.com": {
+      "author": {
+        "id": 2,
+        "name": "Admin",
+        "username": "admin",
+        "email": "admin@admin.com",
+        "password": "$2a$12$ey0f8iPFN/lcchfWxtI30uRk.SekezbdC.MJq058HqSXBwcnwjHAS",
+        "bio": "",
+        "avatar": "",
+        "social": "{\"twitter\":\"\",\"facebook\":\"\",\"github\":\"\",\"instagram\":\"\"}",
+        "verified": true,
+        "createdAt": "2021-05-30T15:18:49.757Z",
+        "updatedAt": "2021-05-30T15:18:49.772Z",
+        "role_id": 1,
+        "setting_id": 2
+      },
+      "setting": {
+        "id": 2,
+        "site_title": "Admin Account",
+        "site_tagline": "Compose a story",
+        "site_email": "admin@letterpad.app",
+        "site_url": "https://admin.letterpad.app",
+        "site_footer": "",
+        "site_description": "",
+        "subscribe_embed": "",
+        "social_twitter": "",
+        "social_facebook": "",
+        "social_instagram": "",
+        "social_github": "",
+        "displayAuthorInfo": 1,
+        "cloudinary_key": "",
+        "cloudinary_name": "",
+        "cloudinary_secret": "",
+        "menu": "[{\"label\":\"home\",\"original_name\":\"home\",\"slug\":\"first-post\",\"type\":\"tag\"},{\"label\":\"Letterpad Typography\",\"original_name\":\"Letterpad Typography\",\"slug\":\"letterpad-typography\",\"type\":\"page\"}]",
+        "css": "",
+        "google_analytics": "UA-120251616-1",
+        "locale": "{\"en\":true,\"fr\":false,\"pl\":false}",
+        "theme": "hugo",
+        "client_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjIyMzg3OTI5fQ.SqoYN3LWyAMIlDfMN7AkU_5nDgaW56a_3nDeIgK-HsE",
+        "disqus_id": "",
+        "banner": "{\"src\":\"https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2850&q=80\",\"width\":1502,\"height\":900}",
+        "site_logo": "{\"src\":\"/uploads/logo.png\",\"width\":200,\"height\":200}",
+        "site_favicon": "{\"src\":\"/uploads/logo.png\",\"width\":200,\"height\":200}",
+        "createdAt": "2021-05-30 15:18:49.766 +00:00",
+        "updatedAt": "2021-05-30 15:18:49.766 +00:00"
+      },
+      "tags": [],
+      "posts": [
+        {
+          "cover_image": {
+            "src": "https://images.unsplash.com/photo-1485487656106-d6aa01db3271?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2812&q=80",
+            "width": 0,
+            "height": 0
+          },
+          "slug": "/post/welcome-to-letterpad",
+          "publishedAt": "May 30, 2021",
+          "scheduledAt": "",
+          "updatedAt": "May 30, 2021",
+          "createdAt": "May 30, 2021",
+          "id": 1,
+          "title": "Welcome to Letterpad",
+          "html": "<div class='lp-editor' id='letterpad-editor-container'><p>We hope you will have a great writing experience while using Letterpad. This post will walk you through the basics of using Letterpad and publishing your first post.</p>\n<p>From the left side navigation menu, select posts and then click on <strong>New</strong> to write your first post. Your posts needs to be tagged so that you can attach one of those tag to the menu. By default, all posts will have the default tag - <strong>first-post</strong>.</p>\n<p>You will find the Publish option at the top right corner. Clicking that will open up a side menu where you can add a new tag or delete an existing tag.</p>\n<blockquote>\n<p>Tags help in grouping your posts together and then you can have this tag in the navigation menu item.</p>\n</blockquote>\n<p>To set the navigation menu, go to the Navigation Menu item on the left side and click on <strong>New.</strong> Here you can add the label of the new navigation menu item and also select the tag for which you want the collection of posts to be displayed. You can also drag the menu items in the order you want them to be.</p>\n<blockquote>\n<p>The first menu item in the navigation menu will always be Home.</p>\n</blockquote>\n<p>You can also create pages in the same way like posts, but pages dont have a tag. Since pages are static, you can directly add a page to the navigation menu.</p>\n<p>We are constantly working on making Letterpad CMS better, so if you have suggestions, visit out github page at <a href=\"https://github.com/letterpad/letterpad\">https://github.com/letterpad/letterpad</a> and create a issue or you can write us on Twitter at <a href=\"https://twitter.com/letterpad_cms\">https://twitter.com/letterpad_cms</a>.</p>\n<p>Thank you,</p>\n<p>Letterpad Team</p>\n</div>",
+          "md": "\n  \n  We hope you will have a great writing experience while using Letterpad. This post will walk you through the basics of using Letterpad and publishing your first post.\n  \n  From the left side navigation menu, select posts and then click on **New** to write your first post. Your posts needs to be tagged so that you can attach one of those tag to the menu. By default, all posts will have the default tag - **first-post**. \n  \n  You will find the Publish option at the top right corner. Clicking that will open up a side menu where you can add a new tag or delete an existing tag.\n  \n  \n  > Tags help in grouping your posts together and then you can have this tag in the navigation menu item. \n  \n  To set the navigation menu, go to the Navigation Menu item on the left side and click on **New.** Here you can add the label of the new navigation menu item and also select the tag for which you want the collection of posts to be displayed. You can also drag the menu items in the order you want them to be. \n  \n  > The first menu item in the navigation menu will always be Home.\n  \n  You can also create pages in the same way like posts, but pages dont have a tag. Since pages are static, you can directly add a page to the navigation menu.\n  \n  We are constantly working on making Letterpad CMS better, so if you have suggestions, visit out github page at [https://github.com/letterpad/letterpad](https://github.com/letterpad/letterpad) and create a issue or you can write us on Twitter at [https://twitter.com/letterpad_cms](https://twitter.com/letterpad_cms).\n  \n  Thank you,\n  \n  Letterpad Team\n  ",
+          "md_draft": "",
+          "excerpt": "You can use this space to write a small description about the topic. This will be helpful in SEO.",
+          "cover_image_width": 0,
+          "cover_image_height": 0,
+          "type": "post",
+          "featured": false,
+          "status": "published",
+          "reading_time": "5 mins",
+          "author_id": 2,
+          "tags": [
+            {
+              "name": "Home",
+              "desc": "",
+              "slug": "home"
+            },
+            {
+              "name": "first-post",
+              "desc": "",
+              "slug": "first-post"
+            }
+          ]
+        },
+        {
+          "cover_image": {
+            "src": "https://images.unsplash.com/photo-1508341421810-36b8fc06075b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2867&q=80",
+            "width": 0,
+            "height": 0
+          },
+          "slug": "/post/welcome-to-letterpad",
+          "publishedAt": "May 30, 2021",
+          "scheduledAt": "",
+          "updatedAt": "May 30, 2021",
+          "createdAt": "May 30, 2021",
+          "id": 2,
+          "title": "Welcome to Letterpad",
+          "html": "<div class='lp-editor' id='letterpad-editor-container'><p>We hope you will have a great writing experience while using Letterpad. This post will walk you through the basics of using Letterpad and publishing your first post.</p>\n<p>From the left side navigation menu, select posts and then click on <strong>New</strong> to write your first post. Your posts needs to be tagged so that you can attach one of those tag to the menu. By default, all posts will have the default tag - <strong>first-post</strong>.</p>\n<p>You will find the Publish option at the top right corner. Clicking that will open up a side menu where you can add a new tag or delete an existing tag.</p>\n<blockquote>\n<p>Tags help in grouping your posts together and then you can have this tag in the navigation menu item.</p>\n</blockquote>\n<p>To set the navigation menu, go to the Navigation Menu item on the left side and click on <strong>New.</strong> Here you can add the label of the new navigation menu item and also select the tag for which you want the collection of posts to be displayed. You can also drag the menu items in the order you want them to be.</p>\n<blockquote>\n<p>The first menu item in the navigation menu will always be Home.</p>\n</blockquote>\n<p>You can also create pages in the same way like posts, but pages dont have a tag. Since pages are static, you can directly add a page to the navigation menu.</p>\n<p>We are constantly working on making Letterpad CMS better, so if you have suggestions, visit out github page at <a href=\"https://github.com/letterpad/letterpad\">https://github.com/letterpad/letterpad</a> and create a issue or you can write us on Twitter at <a href=\"https://twitter.com/letterpad_cms\">https://twitter.com/letterpad_cms</a>.</p>\n<p>Thank you,</p>\n<p>Letterpad Team</p>\n</div>",
+          "md": "\n  \n  We hope you will have a great writing experience while using Letterpad. This post will walk you through the basics of using Letterpad and publishing your first post.\n  \n  From the left side navigation menu, select posts and then click on **New** to write your first post. Your posts needs to be tagged so that you can attach one of those tag to the menu. By default, all posts will have the default tag - **first-post**. \n  \n  You will find the Publish option at the top right corner. Clicking that will open up a side menu where you can add a new tag or delete an existing tag.\n  \n  \n  > Tags help in grouping your posts together and then you can have this tag in the navigation menu item. \n  \n  To set the navigation menu, go to the Navigation Menu item on the left side and click on **New.** Here you can add the label of the new navigation menu item and also select the tag for which you want the collection of posts to be displayed. You can also drag the menu items in the order you want them to be. \n  \n  > The first menu item in the navigation menu will always be Home.\n  \n  You can also create pages in the same way like posts, but pages dont have a tag. Since pages are static, you can directly add a page to the navigation menu.\n  \n  We are constantly working on making Letterpad CMS better, so if you have suggestions, visit out github page at [https://github.com/letterpad/letterpad](https://github.com/letterpad/letterpad) and create a issue or you can write us on Twitter at [https://twitter.com/letterpad_cms](https://twitter.com/letterpad_cms).\n  \n  Thank you,\n  \n  Letterpad Team\n  ",
+          "md_draft": "",
+          "excerpt": "You can use this space to write a small description about the topic. This will be helpful in SEO.",
+          "cover_image_width": 0,
+          "cover_image_height": 0,
+          "type": "post",
+          "featured": false,
+          "status": "published",
+          "reading_time": "5 mins",
+          "author_id": 2,
+          "tags": [
+            {
+              "name": "Home",
+              "desc": "",
+              "slug": "home"
+            },
+            {
+              "name": "first-post",
+              "desc": "",
+              "slug": "first-post"
+            }
+          ]
+        },
+        {
+          "cover_image": {
+            "src": "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+            "width": 0,
+            "height": 0
+          },
+          "slug": "/page/letterpad-typography",
+          "publishedAt": "May 30, 2021",
+          "scheduledAt": "",
+          "updatedAt": "May 30, 2021",
+          "createdAt": "May 30, 2021",
+          "id": 3,
+          "title": "Letterpad Typography",
+          "html": "<div class='lp-editor' id='letterpad-editor-container'><p>You may choose to use markdown or the inline editing toolbars for writing text. The toolbar can be found by writing a text and selecting it or by clicking the + icon on every new line.</p>\n<h1>h1 Heading 1</h1>\n<h2>h2 Heading</h2>\n<h3>h3 Heading</h3>\n<h4>h4 Heading</h4>\n<h5>h5 Heading</h5>\n<h6>h6 Heading</h6>\n<h2>Horizontal Rules</h2>\n<hr>\n<h1>Emphasis</h1>\n<p><strong>This is bold text</strong></p>\n<p><strong>This is underlined text</strong></p>\n<p><em>This is italic text</em></p>\n<p><s>Strikethrough</s></p>\n<hr>\n<h2>Blockquotes</h2>\n<blockquote>\n<p>Blockquotes can also be nested...</p>\n<blockquote>\n<p>...by using additional greater-than signs right next to each other...</p>\n<blockquote>\n<p>...or with spaces between arrows.</p>\n</blockquote>\n</blockquote>\n</blockquote>\n<hr>\n<h2>Lists</h2>\n<ul>\n<li>Create a list by starting a line with +, - or * followed by a space.</li>\n<li>Sub-lists are made by tab:\n<ul>\n<li>Marker character change forces new list start:\n<ul>\n<li>Ac tristique libero volutpat at</li>\n<li>Facilisis in pretium nisl aliquet</li>\n<li>Nulla volutpat aliquam velit</li>\n</ul>\n</li>\n</ul>\n</li>\n<li>Very easy!</li>\n</ul>\n<h2>Code</h2>\n<p>Inline <code>code</code> can be written by wrapping the text inside backticks `.</p>\n<p>You can write codeblock with syntax highlighting by two backticks.</p>\n<pre class=\"language-javascript\"><code class=\"language-javascript\"><span class=\"token comment\">// Some comments</span>\n<span class=\"token keyword\">var</span> a <span class=\"token operator\">=</span> <span class=\"token number\">1</span><span class=\"token punctuation\">;</span>\n<span class=\"token keyword\">var</span> b <span class=\"token operator\">=</span> <span class=\"token number\">2</span><span class=\"token punctuation\">;</span>\n<span class=\"token keyword\">var</span> sum <span class=\"token operator\">=</span> a <span class=\"token operator\">+</span> b<span class=\"token punctuation\">;</span>\ncosnole<span class=\"token punctuation\">.</span><span class=\"token function\">log</span><span class=\"token punctuation\">(</span>sum<span class=\"token punctuation\">)</span><span class=\"token punctuation\">;</span> <span class=\"token comment\">// 3</span>\n\n</code></pre>\n<hr>\n<h2>Embeds</h2>\n<p>You can embed spotify, youtube and gist links by just pasting the link.</p>\n<iframe width=\"100%\" height=\"200px\" frameBorder=\"0\" src=\"data:text/html;base64,PGh0bWw+PGhlYWQ+PGJhc2UgdGFyZ2V0PSJfcGFyZW50Ij48c3R5bGU+KnsgZm9udC1zaXplOjEycHg7IH0gYm9keSB7IG1hcmdpbjogMDsgfSAuZ2lzdCAuYmxvYi13cmFwcGVyLmRhdGEgeyBtYXgtaGVpZ2h0OjE1MHB4OyBvdmVyZmxvdzphdXRvOyB9PC9zdHlsZT48L2hlYWQ+PGJvZHk+PHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiIHNyYz0iaHR0cHM6Ly9naXN0LmdpdGh1Yi5jb20vZjZiMjM0ZGMxMGM0MmIzMmE1MDNiNTc0ZTNmYzZiNTguanMiPjwvc2NyaXB0PjwvYm9keT48L2h0bWw+\" ></iframe>\n<h2>Tables</h2>\n<table>\n<thead>\n<tr>\n<th style=\"text-align:left\">Option</th>\n<th style=\"text-align:left\">Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style=\"text-align:left\">data</td>\n<td style=\"text-align:left\">path to data files to supply the data that will be passed into templates.</td>\n</tr>\n<tr>\n<td style=\"text-align:left\">engine</td>\n<td style=\"text-align:left\">engine to be used for processing templates. Handlebars is the default.</td>\n</tr>\n<tr>\n<td style=\"text-align:left\">ext</td>\n<td style=\"text-align:left\">extension to be used for dest files.</td>\n</tr>\n</tbody>\n</table>\n<p>Right aligned columns</p>\n<table>\n<thead>\n<tr>\n<th style=\"text-align:right\">Option</th>\n<th style=\"text-align:right\">Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style=\"text-align:right\">data</td>\n<td style=\"text-align:right\">path to data files to supply the data that will be passed into templates.</td>\n</tr>\n<tr>\n<td style=\"text-align:right\">engine</td>\n<td style=\"text-align:right\">engine to be used for processing templates. Handlebars is the default.</td>\n</tr>\n<tr>\n<td style=\"text-align:right\">ext</td>\n<td style=\"text-align:right\">extension to be used for dest files.</td>\n</tr>\n</tbody>\n</table>\n<h2>Links</h2>\n<p>You can wrap <a href=\"http://google.com\">certain text with link</a> or just have the url <a href=\"http://google.com\">http://google.com</a> which will automatically convert into a link.</p>\n<h2>Images</h2>\n<p><figure><img src=\"https://images.unsplash.com/photo-1511497584788-876760111969?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1789&amp;q=80\" alt=\"Smoky morning in Cascades\"><figcaption>Smoky morning in Cascades</figcaption></figure></p>\n<p>You can also highlight newly added text by wrapping the text between two ++ followed by a space.\n++This is a newly added text++</p>\n</div>",
+          "md": "\n  You may choose to use markdown or the inline editing toolbars for writing text. The toolbar can be found by writing a text and selecting it or by clicking the + icon on every new line. \n  # h1 Heading 1\n  \n  \n  ## h2 Heading\n  \n  \n  ### h3 Heading\n  \n  \n  #### h4 Heading\n  \n  \n  ##### h5 Heading\n  \n  \n  ###### h6 Heading\n  \n  \n  ## Horizontal Rules\n  \n  ---\n  # Emphasis\n  \n  **This is bold text**\n  \n  __This is underlined text__\n  \n  _This is italic text_\n  \n  ~~Strikethrough~~\n  \n  ---\n  \n  ## Blockquotes\n  \n  \n  > Blockquotes can also be nested...\n  > > ...by using additional greater-than signs right next to each other...\n  > > > ...or with spaces between arrows.\n  \n  ---\n  \n  ## Lists\n  \n  * Create a list by starting a line with +, - or * followed by a space.\n  * Sub-lists are made by tab:\n      * Marker character change forces new list start:\n        * Ac tristique libero volutpat at\n        * Facilisis in pretium nisl aliquet\n        * Nulla volutpat aliquam velit\n  * Very easy!\n  \n  \n  ## Code\n  \n  Inline `code` can be written by wrapping the text inside backticks `.\n  \n  You can write codeblock with syntax highlighting by two backticks.\n  \n  ```javascript\n  // Some comments\n  var a = 1;\n  var b = 2;\n  var sum = a + b;\n  cosnole.log(sum); // 3\n  \n  ```\n  \n  ---\n  \n  ## Embeds\n  \n  You can embed spotify, youtube and gist links by just pasting the link.\n  \n  \n  [https://gist.github.com/ajaxtown/f6b234dc10c42b32a503b574e3fc6b58](https://gist.github.com/ajaxtown/f6b234dc10c42b32a503b574e3fc6b58)\n  \n  ## Tables\n  \n  | Option | Description |\n  |:--- |:--- |\n  | data | path to data files to supply the data that will be passed into templates. |\n  | engine | engine to be used for processing templates. Handlebars is the default. |\n  | ext | extension to be used for dest files. |\n  \n  Right aligned columns\n  \n  | Option | Description |\n  | ---:| ---:|\n  | data | path to data files to supply the data that will be passed into templates. |\n  | engine | engine to be used for processing templates. Handlebars is the default. |\n  | ext | extension to be used for dest files. |\n  \n  \n  ## Links\n  \n  You can wrap [certain text with link](http://google.com) or just have the url [http://google.com](http://google.com) which will automatically convert into a link.\n  \n  ## Images\n  \n  ![Smoky morning in Cascades](https://images.unsplash.com/photo-1511497584788-876760111969?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1789&q=80)\n  \n  You can also highlight newly added text by wrapping the text between two ++ followed by a space.\n  ++This is a newly added text++\n  ",
+          "md_draft": "",
+          "excerpt": "You can use this space to write a small description about the topic. This will be helpful in SEO.",
+          "cover_image_width": 0,
+          "cover_image_height": 0,
+          "type": "page",
+          "featured": false,
+          "status": "published",
+          "reading_time": "5 mins",
+          "author_id": 2,
+          "tags": []
+        },
+        {
+          "cover_image": {
+            "src": "https://images.unsplash.com/photo-1541372988432-74d8177a3944?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2944&q=80",
+            "width": 0,
+            "height": 0
+          },
+          "slug": "/post/welcome-to-letterpad",
+          "publishedAt": "May 30, 2021",
+          "scheduledAt": "",
+          "updatedAt": "May 30, 2021",
+          "createdAt": "May 30, 2021",
+          "id": 4,
+          "title": "Welcome to Letterpad",
+          "html": "<div class='lp-editor' id='letterpad-editor-container'><p>We hope you will have a great writing experience while using Letterpad. This post will walk you through the basics of using Letterpad and publishing your first post.</p>\n<p>From the left side navigation menu, select posts and then click on <strong>New</strong> to write your first post. Your posts needs to be tagged so that you can attach one of those tag to the menu. By default, all posts will have the default tag - <strong>first-post</strong>.</p>\n<p>You will find the Publish option at the top right corner. Clicking that will open up a side menu where you can add a new tag or delete an existing tag.</p>\n<blockquote>\n<p>Tags help in grouping your posts together and then you can have this tag in the navigation menu item.</p>\n</blockquote>\n<p>To set the navigation menu, go to the Navigation Menu item on the left side and click on <strong>New.</strong> Here you can add the label of the new navigation menu item and also select the tag for which you want the collection of posts to be displayed. You can also drag the menu items in the order you want them to be.</p>\n<blockquote>\n<p>The first menu item in the navigation menu will always be Home.</p>\n</blockquote>\n<p>You can also create pages in the same way like posts, but pages dont have a tag. Since pages are static, you can directly add a page to the navigation menu.</p>\n<p>We are constantly working on making Letterpad CMS better, so if you have suggestions, visit out github page at <a href=\"https://github.com/letterpad/letterpad\">https://github.com/letterpad/letterpad</a> and create a issue or you can write us on Twitter at <a href=\"https://twitter.com/letterpad_cms\">https://twitter.com/letterpad_cms</a>.</p>\n<p>Thank you,</p>\n<p>Letterpad Team</p>\n</div>",
+          "md": "\n  \n  We hope you will have a great writing experience while using Letterpad. This post will walk you through the basics of using Letterpad and publishing your first post.\n  \n  From the left side navigation menu, select posts and then click on **New** to write your first post. Your posts needs to be tagged so that you can attach one of those tag to the menu. By default, all posts will have the default tag - **first-post**. \n  \n  You will find the Publish option at the top right corner. Clicking that will open up a side menu where you can add a new tag or delete an existing tag.\n  \n  \n  > Tags help in grouping your posts together and then you can have this tag in the navigation menu item. \n  \n  To set the navigation menu, go to the Navigation Menu item on the left side and click on **New.** Here you can add the label of the new navigation menu item and also select the tag for which you want the collection of posts to be displayed. You can also drag the menu items in the order you want them to be. \n  \n  > The first menu item in the navigation menu will always be Home.\n  \n  You can also create pages in the same way like posts, but pages dont have a tag. Since pages are static, you can directly add a page to the navigation menu.\n  \n  We are constantly working on making Letterpad CMS better, so if you have suggestions, visit out github page at [https://github.com/letterpad/letterpad](https://github.com/letterpad/letterpad) and create a issue or you can write us on Twitter at [https://twitter.com/letterpad_cms](https://twitter.com/letterpad_cms).\n  \n  Thank you,\n  \n  Letterpad Team\n  ",
+          "md_draft": "",
+          "excerpt": "You can use this space to write a small description about the topic. This will be helpful in SEO.",
+          "cover_image_width": 0,
+          "cover_image_height": 0,
+          "type": "post",
+          "featured": false,
+          "status": "published",
+          "reading_time": "5 mins",
+          "author_id": 2,
+          "tags": [
+            {
+              "name": "Home",
+              "desc": "",
+              "slug": "home"
+            },
+            {
+              "name": "first-post",
+              "desc": "",
+              "slug": "first-post"
+            }
+          ]
+        }
+      ],
+      "media": []
+    }
+  }
+}
