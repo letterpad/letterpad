@@ -54,7 +54,6 @@ const Import = async (req, res) => {
   for (const email in sanitizedData) {
     const authorsData = data.authors[email];
     const author = await models.Author.findOne({ where: { email } });
-    console.log("author.id :>> ", author.id);
     if (!author) {
       return res.send({
         success: false,
