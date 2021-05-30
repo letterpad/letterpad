@@ -54,7 +54,11 @@ async function getContent(author: Author): Promise<IAuthorData> {
       desc,
       slug,
     }));
-    postWithTags.push({ ...post, tags });
+
+    // dataValues is to ignore adding all meta properties of model and to avoid
+    // we cannot use .JSON() as that will execute getters.
+    //@ts-ignore
+    postWithTags.push({ ...post.dataValues, tags });
   }
   // tags
   const tags = await author.getTags({ raw: true });
