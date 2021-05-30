@@ -1,17 +1,12 @@
 import { getSession } from "next-auth/client";
-import { Author, AuthorAttributes } from "./../../graphql/db/models/author";
-import { RoleAttributes } from "./../../graphql/db/models/role";
-import { PermissionAttributes } from "./../../graphql/db/models/permission";
-import { MediaAttributes } from "./../../graphql/db/models/media";
-import { SettingAttributes } from "./../../graphql/db/models/setting";
+import { Author } from "./../../graphql/db/models/author";
 import models from "@/graphql/db/models";
 import multer from "multer";
 import initMiddleware from "./middleware";
-import { PostAttributes } from "@/graphql/db/models/post";
-import { TagsAttributes } from "@/graphql/db/models/tags";
 import { getDateTime } from "../../../shared/utils";
 import { SessionData } from "@/graphql/types";
 import { Role } from "@/__generated__/type-defs.graphqls";
+import { IAuthorData, IImportExportData } from "./importExportTypes";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -21,39 +16,6 @@ export const config = {
     bodyParser: false,
   },
 };
-
-interface PostTags {
-  created_at: Date;
-  updated_at: Date;
-  post_id: number;
-  tag_id: number;
-}
-
-interface RolePermissions {
-  created_at: Date;
-  updated_at: Date;
-  role_id: number;
-  permission_id: number;
-}
-
-interface IAuthorData {
-  posts: PostAttributes[];
-  setting: SettingAttributes;
-  tags: TagsAttributes[];
-  media: MediaAttributes[];
-  author: AuthorAttributes;
-  postTags: PostTags[];
-}
-interface IImport {
-  common: {
-    roles: RoleAttributes[];
-    permissions: PermissionAttributes[];
-    rolePermissions: RolePermissions[];
-  };
-  authors: {
-    [email: string]: IAuthorData;
-  };
-}
 
 const Import = async (req, res) => {
   await multerAny(req, res);
@@ -65,11 +27,17 @@ const Import = async (req, res) => {
       message: "No session found",
     });
 
-  const data: IImport = JSON.parse(req.files[0].buffer.toString());
+  const data: IImportExportData = JSON.parse(req.files[0].buffer.toString());
 
   if (session.user.role === Role.Admin) {
-    await removeAllDataAndImport(data);
+    await removeAllDataAndImportCommons(data);
   } else {
+    if (Object.keys(data.authors).length > 1) {
+      return res.status(401).send({
+        success: false,
+        message: "You are not allowed to import multiple authors",
+      });
+    }
     const author = await models.Author.findOne({
       where: { id: session.user.id },
     });
@@ -79,20 +47,22 @@ const Import = async (req, res) => {
         message: "This author does not exist",
       });
     }
-    const hasErrors = validate(author, data.authors[session.user.email]);
-    if (hasErrors.length > 0) {
-      return res.send({
-        success: false,
-        message: hasErrors[0],
-      });
-    }
-    await removeUserDataAndImport(author, data.authors[session.user.email]);
   }
 
-  for (const email in data.authors) {
+  const sanitizedData = sanitizeForeignData(data.authors);
+  console.log("sanitizedData :>> ", sanitizedData);
+  for (const email in sanitizedData) {
     const authorsData = data.authors[email];
-    await models.Setting.create(authorsData.setting);
-    await models.Author.create(authorsData.author);
+    const author = await models.Author.findOne({ where: { email } });
+    console.log("author.id :>> ", author.id);
+    if (!author) {
+      return res.send({
+        success: false,
+        message: `The author ${email} does not exist`,
+      });
+    }
+    await removeUserData(author);
+    await author.createSetting(authorsData.setting);
     await Promise.all([
       ...authorsData.tags.map(tag => models.Tags.create(tag)),
     ]);
@@ -100,32 +70,17 @@ const Import = async (req, res) => {
       ...authorsData.media.map(item => models.Media.create(item)),
     ]);
 
-    await Promise.all([
-      ...authorsData.posts.map(post =>
-        models.Post.create({
-          ...post,
-          cover_image: post.cover_image,
-        }),
-      ),
-    ]);
+    for (const data of authorsData.posts) {
+      //@ts-ignore
+      const { tags, ...post } = data;
+      const newPost = await author.createPost({
+        ...data,
+        cover_image: data.cover_image,
+      });
 
-    if (authorsData.postTags.length > 0) {
-      await models.sequelize.query(
-        `INSERT INTO postTags (created_at, updated_at, tag_id, post_id) VALUES ${authorsData.postTags
-          .map(() => "(?)")
-          .join(",")};`,
-        {
-          replacements: authorsData.postTags.map(tag => {
-            return [
-              getDateTime(tag.created_at),
-              getDateTime(tag.updated_at),
-              tag.tag_id,
-              tag.post_id,
-            ];
-          }),
-          type: "INSERT",
-        },
-      );
+      for (const tag of tags) {
+        await newPost.createTag({ ...tag });
+      }
     }
   }
 
@@ -137,7 +92,7 @@ const Import = async (req, res) => {
 
 export default Import;
 
-async function removeAllDataAndImport(data: IImport) {
+async function removeAllDataAndImportCommons(data: IImportExportData) {
   await models.sequelize.sync({ force: true });
   await Promise.all([
     ...data.common.permissions.map(permission =>
@@ -167,90 +122,56 @@ async function removeAllDataAndImport(data: IImport) {
   }
 }
 
-async function removeUserDataAndImport(author: Author, data: IAuthorData) {
-  // remove author
-  await models.Author.destroy({ where: { id: data.author.id } });
-
+async function removeUserData(author: Author) {
   // remove setting
   await models.Setting.destroy({ where: { id: author.setting_id } });
 
   // remove tags
-  await models.Tags.destroy({ where: { author_id: data.author.id } });
+  await models.Tags.destroy({ where: { author_id: author.id } });
 
   // remove posts. also removes relationship with tags
-  await models.Post.destroy({ where: { author_id: data.author.id } });
+  await models.Post.destroy({ where: { author_id: author.id } });
 
   // remove media
-  await models.Media.destroy({ where: { author_id: data.author.id } });
+  await models.Media.destroy({ where: { author_id: author.id } });
 }
 
-function validate(author: Author, data: IAuthorData): string[] {
-  //@ts-ignore - setting_id and role_id are relational attributes
-  const { email, id, setting_id, role_id } = author;
+function sanitizeForeignData(authors: IImportExportData["authors"]) {
+  const sanitizedData: IImportExportData["authors"] = {};
+  for (const email in authors) {
+    const authorData: IAuthorData = authors[email];
+    sanitizedData[email] = authorData;
+    //posts
+    const posts = authorData.posts.map(post => {
+      // @ts-ignore
+      const { id, author_id, ...rest } = post;
+      return rest;
+    });
 
-  const postIds = data.posts.map(post => post.id);
-  const tagIds = data.tags.map(tag => tag.id);
+    sanitizedData[email].posts = posts;
 
-  let errors = data.posts.reduce((err: string[], post) => {
-    const isValid = post.author_id == id;
-    if (!isValid) {
-      err.push("Invalid author id in posts");
-    }
-    return err;
-  }, []);
+    // tags
+    const tags = authorData.tags.map(tag => {
+      // @ts-ignore
+      const { id, author_id, ...rest } = tag;
+      return rest;
+    });
 
-  if (errors.length > 0) {
-    return errors;
+    sanitizedData[email].tags = tags;
+
+    // settings
+    // @ts-ignore
+    const { id, ...setting } = authorData.setting;
+    sanitizedData[email].setting = setting;
+
+    // media
+    const media = authorData.media.map(item => {
+      // @ts-ignore
+      const { id, author_id, ...rest } = item;
+      return rest;
+    });
+
+    sanitizedData[email].media = media;
   }
-
-  errors = data.media.reduce((err: string[], item) => {
-    const isValid = item.author_id == id;
-    if (!isValid) {
-      err.push("Invalid author id in media");
-    }
-    return err;
-  }, []);
-
-  if (errors.length > 0) {
-    return errors;
-  }
-
-  errors = data.tags.reduce((err: string[], tag) => {
-    const isTrue = tag.author_id == id;
-    if (!isTrue) {
-      err.push("Invalid author id in tags");
-    }
-    return err;
-  }, []);
-
-  if (errors.length > 0) {
-    return errors;
-  }
-
-  const validSetting = data.setting.id === setting_id;
-
-  if (!validSetting) {
-    return ["Invalid setting id"];
-  }
-
-  const validAuthor =
-    data.author.id === id &&
-    data.author.role_id === role_id &&
-    data.author.setting_id === setting_id &&
-    data.author.email === email;
-
-  if (!validAuthor) {
-    return ["Invalid author data"];
-  }
-
-  errors = data.postTags.reduce((err: string[], item) => {
-    const isValid =
-      postIds.includes(item.post_id) && tagIds.includes(item.tag_id);
-    if (!isValid) {
-      err.push("Invalid post and tags relation");
-    }
-    return err;
-  }, []);
-
-  return errors;
+  return sanitizedData;
 }

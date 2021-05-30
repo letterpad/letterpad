@@ -1,3 +1,4 @@
+import { IAuthorData } from "./importExportTypes";
 import { SessionData } from "./../../graphql/types";
 import fs from "fs";
 import models from "@/graphql/db/models";
@@ -44,21 +45,27 @@ const Export = async (req, res) => {
 
 export default Export;
 
-async function getContent(author: Author) {
+async function getContent(author: Author): Promise<IAuthorData> {
   // settings
   const setting = await author.getSetting({ raw: true });
-  // posts
+  // posts. we still need to add the tags to this.
   const posts = await author.getPosts({ raw: true });
+
+  const postWithTags: IAuthorData["posts"] = [];
+  //posts with tags
+  for (const post of posts) {
+    const rawTags = await post.getTags({ raw: true });
+    const tags = rawTags.map(({ name, desc, slug }) => ({
+      name,
+      desc,
+      slug,
+    }));
+    postWithTags.push({ ...post, tags });
+  }
   // tags
   const tags = await author.getTags({ raw: true });
   // media
   const media = await author.getMedia({ raw: true });
-  // postTagsRelation
-  const [postTags] = await models.sequelize.query(
-    `SELECT * FROM postTags WHERE post_id IN (${posts
-      .map(p => p.id)
-      .join(",")})`,
-  );
 
-  return { author, setting, tags, posts, media, postTags };
+  return { author, setting, tags, posts: postWithTags, media };
 }
