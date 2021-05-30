@@ -48,7 +48,7 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   }
 
   console.time("insert roles and permissions");
-  await insertRolePermData(models);
+  await insertRolePermData();
   console.timeEnd("insert roles and permissions");
 
   console.time("insert authors and Tags");
@@ -64,7 +64,7 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   console.timeEnd("insert posts, settings, media");
 };
 
-export async function insertRolePermData(models) {
+export async function insertRolePermData() {
   const [
     MANAGE_OWN_POSTS,
     READ_ONLY_POSTS,

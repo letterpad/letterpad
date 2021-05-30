@@ -7,6 +7,7 @@ import { getDateTime } from "../../../shared/utils";
 import { SessionData } from "@/graphql/types";
 import { Role } from "@/__generated__/type-defs.graphqls";
 import { IAuthorData, IImportExportData } from "./importExportTypes";
+import { insertRolePermData } from "@/graphql/db/seed/seed";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -30,7 +31,8 @@ const Import = async (req, res) => {
   const data: IImportExportData = JSON.parse(req.files[0].buffer.toString());
 
   if (session.user.role === Role.Admin) {
-    await removeAllDataAndImportCommons(data);
+    await models.sequelize.sync({ force: true });
+    await insertRolePermData();
   } else {
     if (Object.keys(data.authors).length > 1) {
       return res.status(401).send({
@@ -54,7 +56,7 @@ const Import = async (req, res) => {
   for (const email in sanitizedData) {
     const authorsData = data.authors[email];
     let author = await models.Author.findOne({ where: { email } });
-    if (session.user.role === Role.Admin) {
+    if (session.user.email === email) {
       //@ts-ignore author
       const { id, role_id, setting_id, ...sanitizedAuthor } = author;
       author = await models.Author.create(sanitizedAuthor);
@@ -65,6 +67,14 @@ const Import = async (req, res) => {
         message: `The author ${email} does not exist`,
       });
     }
+
+    const role = await models.Role.findOne({
+      where: { name: session.user.role },
+    });
+    if (role) {
+      author.setRole(role);
+    }
+
     await removeUserData(author);
     await author.createSetting(authorsData.setting);
     await Promise.all([
@@ -95,36 +105,6 @@ const Import = async (req, res) => {
 };
 
 export default Import;
-
-async function removeAllDataAndImportCommons(data: IImportExportData) {
-  await models.sequelize.sync({ force: true });
-  await Promise.all([
-    ...data.common.permissions.map(permission =>
-      models.Permission.create(permission),
-    ),
-  ]);
-  await Promise.all([
-    ...data.common.roles.map(role => models.Role.create(role)),
-  ]);
-  if (data.common.rolePermissions.length > 0) {
-    await models.sequelize.query(
-      `INSERT INTO rolePermissions (created_at, updated_at, role_id, permission_id) VALUES ${data.common.rolePermissions
-        .map(() => "(?)")
-        .join(",")};`,
-      {
-        replacements: data.common.rolePermissions.map(rp => {
-          return [
-            getDateTime(rp.created_at),
-            getDateTime(rp.updated_at),
-            rp.role_id,
-            rp.permission_id,
-          ];
-        }),
-        type: "INSERT",
-      },
-    );
-  }
-}
 
 async function removeUserData(author: Author) {
   // remove setting
