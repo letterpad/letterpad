@@ -16,6 +16,7 @@ import {
 import { PostStatusOptions, PostTypes } from "../../type-defs.graphqls";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 import { getReadableDate } from "../../resolvers/helpers";
+import { TagsNode } from "@/__generated__/type-defs.graphqls";
 
 export interface PostAttributes {
   id: number;
@@ -37,6 +38,7 @@ export interface PostAttributes {
   scheduledAt: Date;
   updatedAt: Date;
   createdAt: Date;
+  tags?: TagsNode["rows"];
 }
 
 export interface PostCreationAttributes extends Optional<PostAttributes, "id"> {

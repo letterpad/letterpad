@@ -52,7 +52,8 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   console.timeEnd("insert roles and permissions");
 
   console.time("insert authors and Tags");
-  await Promise.all([insertAuthor(), insertTags(models)]);
+  await insertAuthor();
+  await insertTags();
   console.timeEnd("insert authors and Tags");
 
   console.time("insert posts, settings, media");
@@ -149,7 +150,7 @@ export async function insertAuthor() {
   return Promise.all([adminAuthor, demoAuthor]);
 }
 
-export async function insertTags(models: typeof dbModels) {
+export async function insertTags() {
   const author = await models.Author.findOne({ where: { id: 1 } });
   const tags = [
     {
