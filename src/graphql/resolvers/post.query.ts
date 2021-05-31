@@ -209,13 +209,18 @@ const Query: QueryResolvers<ResolverContext> = {
     }
   },
 
-  async post(_parent, args, { session }, _info) {
+  async post(_parent, args, { session, author_id }, _info) {
     const error = { __typename: "PostError", message: "" };
     if (!args.filters) return { ...error, message: "Missing arguments" };
 
+    const authorId = session?.user.id || author_id;
+
+    if (!authorId) {
+      return { ...error, message: "No author found for this post." };
+    }
     const { previewHash, ...filters } = args.filters;
     const conditions = {
-      where: { ...filters, author_id: 0 } as PostFilters & {
+      where: { ...filters, author_id: authorId } as PostFilters & {
         author_id?: number;
       },
     };
@@ -223,14 +228,11 @@ const Query: QueryResolvers<ResolverContext> = {
       //  Author should not see others posts from admin panel
       if (session.user.permissions.includes(Permissions.ManageOwnPosts)) {
         conditions.where.author_id = session.user.id;
-      } else {
-        delete conditions.where.author_id;
       }
     }
 
     if (!session?.user.id) {
       conditions.where.status = PostStatusOptions.Published;
-      delete conditions.where.author_id;
     }
 
     if (args.filters.id) {

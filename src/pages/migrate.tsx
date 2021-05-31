@@ -6,6 +6,8 @@ import { Content } from "antd/lib/layout/layout";
 import nextConfig from "next.config";
 import { UploadOutlined } from "@ant-design/icons";
 import { getDateTime } from "../../shared/utils";
+import { IAuthComponentProps } from "shared/types";
+import { Role } from "@/__generated__/type-defs.graphqls";
 
 // If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to register first. This will allow you to setup letterpad with mysql. Then login and import the data to populate the exisiting data in mysql.
 
@@ -25,7 +27,7 @@ const Info = () => {
     </ol>
   );
 };
-const Migrate = () => {
+const Migrate = ({ session }: IAuthComponentProps) => {
   return (
     <>
       <Head>
@@ -63,13 +65,15 @@ const Migrate = () => {
               </Upload>
             </Form.Item>
           </Form>
-          <Alert
-            description={<Info />}
-            message="Migrating from sqlite3 to mysql"
-            type="info"
-            showIcon
-            style={{ marginTop: 40 }}
-          />
+          {session.role === Role.Admin && (
+            <Alert
+              description={<Info />}
+              message="Migrating from sqlite3 to mysql"
+              type="info"
+              showIcon
+              style={{ marginTop: 40 }}
+            />
+          )}
         </div>
       </Content>
     </>

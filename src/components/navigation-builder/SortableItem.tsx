@@ -36,8 +36,9 @@ const SortableItem = SortableElement((props: IProps) => {
     const changedItem = {
       ...item,
       ...change,
-      slug: change.slug.split("/").pop() as string,
     };
+    changedItem.slug = changedItem.slug.split("/").pop() as string;
+
     const tmpError = {
       nameError: "",
       error: "",
@@ -50,7 +51,6 @@ const SortableItem = SortableElement((props: IProps) => {
 
     // check the slug
     const itemFromDropdown = getItemBySlug(source, changedItem.slug);
-    // const isCustomUrl = isValidURL(changedItem.slug);
 
     if (itemFromDropdown) {
       changedItem.type = itemFromDropdown.type;
@@ -89,7 +89,7 @@ const SortableItem = SortableElement((props: IProps) => {
           defaultValue={item.slug}
           style={{ width: "100%" }}
           size="middle"
-          // onChange={handleChange}
+          onChange={slug => onInputChange({ ...item, slug })}
         >
           <OptGroup label="Tags - collection of post">
             {getOptions(source, NavigationType.Tag)}

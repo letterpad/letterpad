@@ -20,8 +20,6 @@ type Props = AppProps & {
 };
 
 function App({ Component, pageProps }: Props) {
-  // if (typeof window === "undefined") return null;
-
   const apolloClientPromise = useApollo(pageProps.initialApolloState);
   const [settings, setSettings] = useState<null | Setting>(null);
   const [apolloClient, setClient] =
@@ -67,7 +65,7 @@ function App({ Component, pageProps }: Props) {
       apolloClient={apolloClient}
       Component={Component}
       Layout={Layout}
-      props={pageProps}
+      props={{ ...pageProps }}
       settings={settings}
     />
   );
