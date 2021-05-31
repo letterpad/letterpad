@@ -18,7 +18,6 @@ import restoreSequelizeAttributesOnClass from "./_tooling";
 
 import { Media } from "./media";
 import {
-  Social,
   Role as QraphqlRole,
   Permissions as GraqhqlPermissions,
 } from "@/__generated__/type-defs.graphqls";
@@ -33,11 +32,13 @@ export interface AuthorAttributes {
   bio: string;
   password: string;
   avatar: string;
-  social: Social;
+  social: string;
   verified: boolean;
   username: string;
   createdAt?: Date;
   updatedAt?: Date;
+  role_id?: number;
+  setting_id?: number;
 }
 
 interface AuthorCreationAttributes extends Optional<AuthorAttributes, "id"> {}
@@ -54,9 +55,11 @@ export class Author
   public avatar!: string;
   public username!: string;
   public verified!: boolean;
-  public social!: Social;
+  public social!: string;
   public role!: QraphqlRole;
   public permissions!: GraqhqlPermissions[];
+  public role_id!: number;
+  public setting_id!: number;
 
   // timestamps!
   public readonly createdAt!: Date;

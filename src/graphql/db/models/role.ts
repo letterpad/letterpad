@@ -1,6 +1,7 @@
 import { Permission } from "./permission";
 import {
   DataTypes,
+  HasManyAddAssociationMixin,
   HasManyGetAssociationsMixin,
   Model,
   Optional,
@@ -17,7 +18,8 @@ export interface RoleCreationAttributes
 
 export class Role
   extends Model<RoleAttributes, RoleCreationAttributes>
-  implements RoleAttributes {
+  implements RoleAttributes
+{
   public id!: number;
   public name!: string;
 
@@ -25,10 +27,17 @@ export class Role
   public readonly updatedAt!: Date;
 
   public getPermissions!: HasManyGetAssociationsMixin<Permission>;
+  public addPermission!: HasManyAddAssociationMixin<
+    Permission,
+    Permission["id"]
+  >;
 
   constructor(...args) {
     super(...args);
-    restoreSequelizeAttributesOnClass(new.target, this, ["getPermissions"]);
+    restoreSequelizeAttributesOnClass(new.target, this, [
+      "getPermissions",
+      "addPermission",
+    ]);
   }
 }
 

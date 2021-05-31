@@ -23,7 +23,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "esnext"
+    "target": "es2019"
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*", "__generated__/**/*"]

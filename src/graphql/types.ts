@@ -26,7 +26,10 @@ export type updatePostOptionalArgs = {
   cover_image_height: number;
 } & Omit<Post, "cover_image" | "cover_image_width" | "cover_image_height">;
 
-type Session = Pick<Author, "id" | "email" | "role" | "permissions" | "avatar">;
+export type Session = Pick<
+  Author,
+  "id" | "email" | "role" | "permissions" | "avatar"
+>;
 
 export interface SessionData extends Session {
   __typename: "SessionData";

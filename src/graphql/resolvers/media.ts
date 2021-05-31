@@ -19,14 +19,14 @@ interface IMediaConditions {
 
 const Query: QueryResolvers<ResolverContext> = {
   media: async (_root, args, { session }) => {
-    if (!session?.user) {
+    if (!session?.user.id) {
       return {
         count: 0,
         rows: [],
       };
     }
     const conditions: IMediaConditions = {
-      where: {},
+      where: { author_id: session.user.id },
       limit: 20,
       order: [["id", SortBy.Desc]],
     };

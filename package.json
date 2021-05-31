@@ -9,7 +9,8 @@
     "build": "yarn codegen && next build",
     "test": "yarn codegen && jest",
     "start": "next start",
-    "seed": "ts-node --transpile-only ./src/graphql/db/seed",
+    "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed",
+    "seed1": "npx babel-node --presets @babel/preset-env ./src/graphql/db/seed",
     "type-check": "yarn tsc"
   },
   "dependencies": {
@@ -72,6 +73,7 @@
     "jest": "26.4.0",
     "node-env-file": "^0.1.8",
     "react-test-renderer": "16.13.1",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^3.9.7",
     "yaml-loader": "0.6.0"
   }

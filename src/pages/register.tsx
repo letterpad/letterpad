@@ -111,12 +111,16 @@ const RegisterForm = () => {
           <InputBlock>
             <input
               type="text"
-              placeholder="Enter a username ( username.letterpad.app )"
+              placeholder="Enter a username"
               value={form.username}
               onChange={e => setForm({ ...form, username: e.target.value })}
               autoComplete="off"
               data-testid="input-email"
+              style={{ width: 200 }}
             />
+            <span style={{ fontSize: 15, letterSpacing: 2 }}>
+              &nbsp;&nbsp;.letterpad.app
+            </span>
             {errors.username && (
               <span className="error">{errors.username}</span>
             )}
