@@ -8,6 +8,7 @@ import { Role } from "@/__generated__/type-defs.graphqls";
 import { IAuthorData, IImportExportData } from "./importExportTypes";
 import { insertRolePermData } from "@/graphql/db/seed/seed";
 import { createAuthor } from "@/graphql/resolvers/author";
+import jwt from "jsonwebtoken";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -91,6 +92,15 @@ const Import = async (req, res) => {
     if (session.user.role !== Role.Admin) {
       await removeUserData(author);
     }
+    authorsData.setting.client_token = jwt.sign(
+      {
+        id: author.id,
+      },
+      process.env.SECRET_KEY,
+      {
+        algorithm: "HS256",
+      },
+    );
     await author.createSetting(authorsData.setting);
 
     await Promise.all([

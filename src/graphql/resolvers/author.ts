@@ -355,7 +355,7 @@ function getWelcomePostAndPage() {
 
 async function isDatabaseSeeded(): Promise<boolean> {
   try {
-    await models.sequelize.query("SELECT * FROM 'author'");
+    await models.sequelize.query("SELECT * FROM 'authors'");
     return true;
   } catch (e) {
     if (e.name === "SequelizeDatabaseError") {
