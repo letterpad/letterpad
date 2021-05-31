@@ -140,17 +140,21 @@ const Import = async (req, res) => {
 export default Import;
 
 async function removeUserData(author: Author) {
-  // remove setting
-  await models.Setting.destroy({ where: { id: author.setting_id } });
+  if (author.setting_id) {
+    // remove setting
+    await models.Setting.destroy({ where: { id: author.setting_id } });
+  }
 
-  // remove tags
-  await models.Tags.destroy({ where: { author_id: author.id } });
+  if (author.id) {
+    // remove tags
+    await models.Tags.destroy({ where: { author_id: author.id } });
 
-  // remove posts. also removes relationship with tags
-  await models.Post.destroy({ where: { author_id: author.id } });
+    // remove posts. also removes relationship with tags
+    await models.Post.destroy({ where: { author_id: author.id } });
 
-  // remove media
-  await models.Media.destroy({ where: { author_id: author.id } });
+    // remove media
+    await models.Media.destroy({ where: { author_id: author.id } });
+  }
 }
 
 function sanitizeForeignData(authors: IImportExportData["authors"]) {
