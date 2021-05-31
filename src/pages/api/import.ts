@@ -33,11 +33,13 @@ const Import = async (req, res) => {
   // const isLoggedInUserAuthor = session.user.role === Role.Author;
   const isLoggedInUserAdmin = session.user.role === Role.Admin;
 
+  const adminEmail = "admin@admin.com";
+
   if (isLoggedInUserAdmin) {
     await models.sequelize.sync({ force: true });
     await insertRolePermData(models);
     await createAuthor({
-      email: "admin@admin.com",
+      email: adminEmail,
       username: "admin",
       rolename: ROLES.ADMIN,
       site_title: "",
@@ -64,7 +66,11 @@ const Import = async (req, res) => {
   }
 
   const sanitizedData = sanitizeForeignData(data.authors);
-
+  delete sanitizedData[adminEmail];
+  const role = await models.Role.findOne({
+    where: { name: ROLES.AUTHOR },
+  });
+  // none of the authors from here are admin
   for (const email in sanitizedData) {
     const authorsData = sanitizedData[email];
     let author = await models.Author.findOne({ where: { email } });
@@ -82,16 +88,12 @@ const Import = async (req, res) => {
       });
     }
 
-    const role = await models.Role.findOne({
-      where: { name: session.user.role },
-    });
     if (role) {
       author.setRole(role);
     }
 
-    if (session.user.role !== Role.Admin) {
-      await removeUserData(author);
-    }
+    await removeUserData(author);
+
     authorsData.setting.client_token = jwt.sign(
       {
         id: author.id,
