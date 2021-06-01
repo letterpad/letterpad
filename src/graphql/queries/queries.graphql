@@ -1,5 +1,18 @@
 # import Partial from './partial.graphql'
 
+query Tag($slug: String!) {
+  tag(slug: $slug) {
+    ... on Tags {
+      name
+      slug
+      desc
+    }
+    ... on TagResultError {
+      message
+    }
+  }
+}
+
 query Post($filters: PostFilters) {
   post(filters: $filters) {
     ... on Post {
