@@ -5,7 +5,38 @@ import { QueryResolvers } from "@/__generated__/type-defs.graphqls";
 import models from "../db/models";
 
 const Query: QueryResolvers<ResolverContext> = {
+  async tag(_root, args, { session, author_id }) {
+    const authorId = session?.user.id || author_id;
+
+    if (!authorId) {
+      return {
+        __typename: "TagResultError",
+        message: "You dont have access to get this resource",
+      };
+    }
+
+    const tag = await models.Tags.findOne({ where: { slug: args.slug } });
+
+    if (tag) {
+      return {
+        __typename: "Tags",
+        ...tag.get(),
+      };
+    }
+    return {
+      __typename: "TagResultError",
+      message: "Tag not found",
+    };
+  },
   async tags(_root, args, { session, author_id }) {
+    const authorId = session?.user.id || author_id;
+
+    if (!authorId) {
+      return {
+        __typename: "TagsError",
+        message: "Missing or invalid token or session",
+      };
+    }
     let conditions: {
       where: {
         name?: string;
@@ -39,30 +70,15 @@ const Query: QueryResolvers<ResolverContext> = {
       }
     }
 
-    if (session?.user.id) {
-      const author = await models.Author.findOne({
-        where: { id: session.user.id },
-      });
-      if (author) {
-        const tags = await author.getTags(conditions);
-        return {
-          __typename: "TagsNode",
-          rows: tags.map(tag => tag.get()),
-        };
-      }
-    }
-
-    if (author_id) {
-      const author = await models.Author.findOne({
-        where: { id: author_id },
-      });
-      if (author) {
-        const tags = await author.getTags(conditions);
-        return {
-          __typename: "TagsNode",
-          rows: tags.map(tag => tag.get()),
-        };
-      }
+    const author = await models.Author.findOne({
+      where: { id: authorId },
+    });
+    if (author) {
+      const tags = await author.getTags(conditions);
+      return {
+        __typename: "TagsNode",
+        rows: tags.map(tag => tag.get()),
+      };
     }
 
     return {

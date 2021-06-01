@@ -23,6 +23,10 @@ type DeleteTagsResult {
   ok: Boolean!
 }
 
+type TagResultError implements LetterpadError {
+  message: String!
+}
+
 union UpdateTagsResponse = EditTaxResponse | TagsError
 union DeleteTagsResponse = DeleteTagsResult | TagsError
 
@@ -37,9 +41,11 @@ type TagsNode {
   rows: [Tags!]!
 }
 union TagsResponse = TagsNode | TagsError
+union TagResponse = TagResultError | Tags
 
 type Query {
-  tags(filters: TagsFilters): TagsResponse
+  tags(filters: TagsFilters): TagsResponse!
+  tag(slug: String!): TagResponse!
 }
 
 type Mutation {
