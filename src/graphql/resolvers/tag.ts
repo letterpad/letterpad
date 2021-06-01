@@ -105,6 +105,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
 
     let tag: unknown;
+    args.data.slug = args.data.slug?.split("/").pop();
     if (args.data.id === 0) {
       tag = await author.createTag(args.data);
     } else {
