@@ -31,7 +31,7 @@ export function convertGhostToLetterpad(
       excerpt: post.meta_description || "",
       cover_image: post.image || "",
       featured: !!post.featured,
-      md: post.markdown,
+      md: post.markdown.replace(/#([A-Za-z0-9])/gi, "# $1"),
       html: mdToHtml(post.markdown),
       updatedAt: post.updated_at,
       publishedAt: post.published_at,
