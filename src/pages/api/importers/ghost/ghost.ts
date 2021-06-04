@@ -11,7 +11,6 @@ import {
   ITagSanitized,
 } from "../../importExportTypes";
 import { IGhostDb, IGhostSettings, IImportExportGhostData } from "./types";
-import { mdToHtml } from "letterpad-editor";
 const TurndownService = require("turndown");
 
 const turndownService = new TurndownService();
