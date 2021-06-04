@@ -54,10 +54,20 @@ const Migrate = ({ session }: IAuthComponentProps) => {
                 Download
               </Button>
             </Form.Item>
-            <Form.Item label="Import Data">
+            <Form.Item label="Import Letterpad Data">
               <Upload
                 type="drag"
                 name="import"
+                accept=".json"
+                action={nextConfig.basePath + "/api/import"}
+              >
+                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              </Upload>
+            </Form.Item>
+            <Form.Item label="Import Ghost Data">
+              <Upload
+                type="drag"
+                name="ghost"
                 accept=".json"
                 action={nextConfig.basePath + "/api/import"}
               >

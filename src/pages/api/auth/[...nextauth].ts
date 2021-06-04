@@ -79,6 +79,7 @@ const options = {
         token.avatar = user.avatar;
         token.permissions = user.permissions;
         token.id = user.id;
+        token.username = user.username;
         token.__typename = "SessionData";
       }
       if (user && user.__typename === "LoginError") {

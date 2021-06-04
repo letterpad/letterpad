@@ -28,7 +28,7 @@ export type updatePostOptionalArgs = {
 
 export type Session = Pick<
   Author,
-  "id" | "email" | "role" | "permissions" | "avatar"
+  "id" | "email" | "role" | "permissions" | "avatar" | "username"
 >;
 
 export interface SessionData extends Session {

@@ -6,9 +6,11 @@ import initMiddleware from "./middleware";
 import { ROLES, SessionData } from "@/graphql/types";
 import { Role } from "@/__generated__/type-defs.graphqls";
 import { IAuthorData, IImportExportData } from "./importExportTypes";
+
 import { insertRolePermData } from "@/graphql/db/seed/seed";
 import { createAuthor } from "@/graphql/resolvers/author";
 import jwt from "jsonwebtoken";
+import { convertGhostToLetterpad } from "./importers/ghost/ghost";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -29,8 +31,14 @@ const Import = async (req, res) => {
       message: "No session found",
     });
 
-  const data: IImportExportData = JSON.parse(req.files[0].buffer.toString());
-  // const isLoggedInUserAuthor = session.user.role === Role.Author;
+  let data: IImportExportData = JSON.parse(req.files[0].buffer.toString());
+
+  const importName = req.files[0].fieldname;
+  if (importName === "ghost") {
+    const ghostData = JSON.parse(req.files[0].buffer.toString());
+    data = convertGhostToLetterpad(ghostData, session.user);
+    console.log("data :>> ", data);
+  }
   const isLoggedInUserAdmin = session.user.role === Role.Admin;
 
   const adminEmail = "admin@admin.com";
@@ -62,6 +70,10 @@ const Import = async (req, res) => {
         success: false,
         message: "This author does not exist",
       });
+    }
+    // when importing from other cms, set the current password of the author
+    if (data.authors[session.user.email].author.password === "") {
+      data.authors[session.user.email].author.password = author.password;
     }
   }
 

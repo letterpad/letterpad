@@ -35,7 +35,7 @@ export interface PostAttributes {
   slug: string;
   reading_time: string;
   publishedAt: Date;
-  scheduledAt: Date;
+  scheduledAt?: Date;
   updatedAt: Date;
   createdAt: Date;
   tags?: TagsNode["rows"];
@@ -118,6 +118,7 @@ export default function initPost(sequelize) {
       excerpt: {
         type: DataTypes.STRING(400),
         defaultValue: "",
+        allowNull: true,
       },
       cover_image: {
         type: DataTypes.STRING,
