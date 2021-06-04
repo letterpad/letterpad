@@ -5,6 +5,7 @@ import models from "@/graphql/db/models";
 import { schema } from "@/graphql/schema";
 import logger from "shared/logger";
 
+const authHeaderPrefix = "Basic ";
 const apolloServer = new ApolloServer({
   schema,
   context: async context => {
@@ -13,7 +14,7 @@ const apolloServer = new ApolloServer({
     try {
       author_id = await getAuthorFromSubdomain(context);
       logger.debug("Author from subdomain - ", author_id);
-      if (!author_id && authHeader) {
+      if (!author_id && authHeader.length > authHeaderPrefix.length) {
         author_id = getAuthorFromAuthHeader(authHeader);
         logger.debug("Author from header - ", author_id);
       }
