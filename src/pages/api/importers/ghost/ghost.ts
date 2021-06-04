@@ -10,7 +10,7 @@ import {
   IAuthorData,
   ITagSanitized,
 } from "../../importExportTypes";
-import { IGhostDb, IGhostSettings, IImportExportGhostData } from "./ghost.d";
+import { IGhostDb, IGhostSettings, IImportExportGhostData } from "./types";
 import { mdToHtml } from "letterpad-editor";
 
 export function convertGhostToLetterpad(
