@@ -16,9 +16,9 @@ interface IGhostPosts {
   uuid: string;
   title: string;
   slug: string;
-  markdown: string;
+  mobiledoc: string;
   html: string;
-  image: string;
+  feature_image: string;
   featured: number;
   page: number;
   status: "published" | "draft";

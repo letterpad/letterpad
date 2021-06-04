@@ -12,6 +12,9 @@ import {
 } from "../../importExportTypes";
 import { IGhostDb, IGhostSettings, IImportExportGhostData } from "./types";
 import { mdToHtml } from "letterpad-editor";
+const TurndownService = require("turndown");
+
+const turndownService = new TurndownService();
 
 export function convertGhostToLetterpad(
   data: IImportExportGhostData,
@@ -29,10 +32,10 @@ export function convertGhostToLetterpad(
     posts.push({
       title: post.title || "",
       excerpt: post.meta_description || "",
-      cover_image: post.image || "",
+      cover_image: post.feature_image || "",
       featured: !!post.featured,
-      md: post.markdown.replace(/#([A-Za-z0-9])/gi, "# $1"),
-      html: mdToHtml(post.markdown),
+      md: turndownService.turndown(post.html),
+      html: post.html,
       updatedAt: post.updated_at,
       publishedAt: post.published_at,
       createdAt: post.created_at,
