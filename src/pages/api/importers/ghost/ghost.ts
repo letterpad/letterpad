@@ -11,6 +11,8 @@ import {
   ITagSanitized,
 } from "../../importExportTypes";
 import { IGhostDb, IGhostSettings, IImportExportGhostData } from "./types";
+import reading_time from "reading-time";
+
 const TurndownService = require("turndown");
 
 const turndownService = new TurndownService();
@@ -28,12 +30,13 @@ export function convertGhostToLetterpad(
   const postTagsMapper = getPostTagsMapper(data.db[0].data);
 
   data.db[0].data.posts.forEach(post => {
+    const md = turndownService.turndown(post.html);
     posts.push({
       title: post.title || "",
       excerpt: post.meta_description || "",
       cover_image: post.feature_image || "",
       featured: !!post.featured,
-      md: turndownService.turndown(post.html),
+      md,
       html: post.html,
       updatedAt: post.updated_at,
       publishedAt: post.published_at,
@@ -44,7 +47,7 @@ export function convertGhostToLetterpad(
       status: post.status as PostStatusOptions,
       cover_image_height: 0,
       cover_image_width: 0,
-      reading_time: "",
+      reading_time: reading_time(md).text,
       tags: postTagsMapper[post.id] || [],
     });
   });
@@ -68,7 +71,13 @@ function getPostTagsMapper(data: IGhostDb["data"]) {
 
   data.posts_tags.forEach(relation => {
     if (!mapper[relation.post_id]) {
-      mapper[relation.post_id] = [] as ITagSanitized[];
+      mapper[relation.post_id] = [
+        {
+          slug: "home",
+          name: "Home",
+          desc: "",
+        },
+      ] as ITagSanitized[];
     }
     const tagId = relation.tag_id;
     const tag = data.tags
@@ -106,7 +115,7 @@ function getAuthor(
       verified: true,
       password: "",
       username: session.username,
-      social: JSON.stringify({}),
+      social: {},
     };
   }
   return null;
@@ -116,11 +125,11 @@ function getSetting(setting: IGhostSettings[]): IAuthorData["setting"] {
   const ghostSettingObj: Optional<IAuthorData["setting"]> = {};
   setting.forEach(item => {
     if (item.key === "cover") {
-      ghostSettingObj.banner = JSON.stringify({
+      ghostSettingObj.banner = {
         src: item.value,
         width: 0,
         height: 0,
-      });
+      };
     }
     if (item.key === "description") {
       ghostSettingObj.site_description = item.value;
@@ -130,11 +139,11 @@ function getSetting(setting: IGhostSettings[]): IAuthorData["setting"] {
     }
 
     if (item.key === "logo") {
-      ghostSettingObj.site_logo = JSON.stringify({
+      ghostSettingObj.site_logo = {
         src: item.value,
         width: 0,
         height: 0,
-      });
+      };
     }
     if (item.key === "title") {
       ghostSettingObj.site_title = item.value;

@@ -30,7 +30,6 @@ type Setting {
   menu: [Navigation!]!
   css: String!
   google_analytics: String!
-  locale: String!
   theme: String!
   disqus_id: String
   banner: Image!
@@ -71,7 +70,6 @@ input OptionInputType {
   menu: [InputNavigation!]
   css: String
   google_analytics: String
-  locale: String
   theme: String
   disqus_id: String
   banner: InputImage

@@ -174,10 +174,11 @@ function Post() {
           className="site-layout-background"
           style={{ maxWidth: 760, margin: "auto" }}
         >
-          <Input
-            style={{ padding: 0, fontSize: 38 }}
+          <Input.TextArea
+            style={{ padding: 0, fontSize: 38, lineHeight: 1 }}
             value={post.title}
-            size="large"
+            rows={2}
+            autoSize={true}
             placeholder="Enter a title"
             bordered={false}
             onChange={e => {

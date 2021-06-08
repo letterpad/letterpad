@@ -148,7 +148,7 @@ const Query: QueryResolvers<ResolverContext> = {
           const setting = await author?.getSetting();
 
           if (setting) {
-            tagSlug = JSON.parse(setting.menu)[0].slug;
+            tagSlug = setting.menu[0].slug;
           }
         }
 
@@ -249,7 +249,9 @@ const Query: QueryResolvers<ResolverContext> = {
     }
     const post = await models.Post.findOne(conditions);
     if (post) {
-      const html = previewHash ? getHtmlFromMarkdown(post.md_draft) : post.html;
+      const html = previewHash
+        ? getHtmlFromMarkdown(post.md_draft || post.md)
+        : post.html;
 
       return { ...post.get(), html, __typename: "Post" };
     }

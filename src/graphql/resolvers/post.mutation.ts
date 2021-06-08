@@ -12,14 +12,15 @@ import {
   slugify,
   getImageDimensions,
   setImageWidthAndHeightInHtml,
+  capitalize,
 } from "./helpers";
 import logger from "../../../shared/logger";
 import models from "../db/models";
 import { getDateTime } from "../../../shared/utils";
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  async createPost(_parent, args, { session }, _info) {
-    if (!args.data || !session?.user) {
+  async createPost(_parent, args, { session }) {
+    if (!args.data || !session?.user.id) {
       return {
         __typename: "PostError",
         message: "Session not found",
@@ -35,15 +36,15 @@ const Mutation: MutationResolvers<ResolverContext> = {
         message: "Author not found",
       };
     }
-    args.data.slug = await slugify(models.Post, "untitled");
+    if (!args.data.slug) {
+      args.data.slug = await slugify(models.Post, "untitled");
+    }
+
     if (!args.data.md) {
       args.data.md = "";
       args.data.html = "";
     }
-    // add an empty string for title
-    if (!args.data.title) {
-      args.data.title = "";
-    }
+
     const newPost = await author?.createPost(args.data as any);
 
     if (newPost) {
@@ -331,12 +332,9 @@ async function updateMenuOnTitleChange(
   if (!author) return false;
   const setting = await author.getSetting();
 
-  if (typeof setting?.menu !== "string") return false;
-
-  const parsedMenu = JSON.parse(setting.menu);
   const isPage = postType === PostTypes.Page;
 
-  const updatedMenu = parsedMenu.map(item => {
+  const updatedMenu = setting.menu.map(item => {
     if (title) {
       if (isPage && item.type === "page") {
         item.original_name = title;
@@ -349,7 +347,7 @@ async function updateMenuOnTitleChange(
     }
     return item;
   });
-  setting.setDataValue("menu", JSON.stringify(updatedMenu));
+  setting.setDataValue("menu", updatedMenu);
   await author.setSetting(setting);
 }
 

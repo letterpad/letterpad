@@ -20,6 +20,7 @@ import { Media } from "./media";
 import {
   Role as QraphqlRole,
   Permissions as GraqhqlPermissions,
+  Social,
 } from "@/__generated__/type-defs.graphqls";
 import { Setting } from "./setting";
 import { Tags } from "./tags";
@@ -32,7 +33,7 @@ export interface AuthorAttributes {
   bio: string;
   password: string;
   avatar: string;
-  social: string;
+  social: Social;
   verified: boolean;
   username: string;
   createdAt?: Date;
@@ -55,7 +56,7 @@ export class Author
   public avatar!: string;
   public username!: string;
   public verified!: boolean;
-  public social!: string;
+  public social!: Social;
   public role!: QraphqlRole;
   public permissions!: GraqhqlPermissions[];
   public role_id!: number;
@@ -157,8 +158,9 @@ export default function initAuthor(sequelize: Sequelize) {
         allowNull: true,
       },
       social: {
-        type: new DataTypes.STRING(256),
+        type: DataTypes.JSON,
         allowNull: true,
+        defaultValue: {},
       },
       verified: {
         type: DataTypes.BOOLEAN,

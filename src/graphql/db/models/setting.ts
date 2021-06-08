@@ -1,6 +1,11 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 import { Author } from "./author";
+import {
+  Image,
+  Navigation,
+  NavigationType,
+} from "@/__generated__/type-defs.graphqls";
 
 export interface SettingAttributes {
   id: number;
@@ -19,15 +24,14 @@ export interface SettingAttributes {
   cloudinary_key: string;
   cloudinary_name: string;
   cloudinary_secret: string;
-  menu: string;
+  menu: Navigation[];
   css: string;
   google_analytics: string;
-  locale: string;
   theme: string;
   disqus_id: string;
-  banner: string;
-  site_logo: string;
-  site_favicon: string;
+  banner: Image;
+  site_logo: Image;
+  site_favicon: Image;
   client_token: string;
 }
 
@@ -54,15 +58,14 @@ export class Setting
   public cloudinary_key!: string;
   public cloudinary_name!: string;
   public cloudinary_secret!: string;
-  public menu!: string;
+  public menu!: Navigation[];
   public css!: string;
   public google_analytics!: string;
-  public locale!: string;
   public theme!: string;
   public disqus_id!: string;
-  public banner!: string;
-  public site_logo!: string;
-  public site_favicon!: string;
+  public banner!: Image;
+  public site_logo!: Image;
+  public site_favicon!: Image;
   public client_token!: string;
 
   public readonly createdAt!: Date;
@@ -143,17 +146,13 @@ export default function initSetting(sequelize) {
         defaultValue: "",
       },
       menu: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
       },
       css: {
         type: DataTypes.STRING,
         defaultValue: "",
       },
       google_analytics: {
-        type: DataTypes.STRING,
-        defaultValue: "",
-      },
-      locale: {
         type: DataTypes.STRING,
         defaultValue: "",
       },
@@ -170,16 +169,16 @@ export default function initSetting(sequelize) {
         defaultValue: "",
       },
       banner: {
-        type: DataTypes.STRING,
-        defaultValue: "",
+        type: DataTypes.JSON,
+        defaultValue: {},
       },
       site_logo: {
-        type: DataTypes.STRING,
-        defaultValue: "",
+        type: DataTypes.JSON,
+        defaultValue: {},
       },
       site_favicon: {
-        type: DataTypes.STRING,
-        defaultValue: "",
+        type: DataTypes.JSON,
+        defaultValue: {},
       },
     },
     {
@@ -201,14 +200,14 @@ const menu = [
   {
     label: "home",
     original_name: "home",
-    slug: "first-post",
-    type: "tag",
+    slug: "home",
+    type: NavigationType.Tag,
   },
   {
-    label: "Letterpad Typography",
-    original_name: "Letterpad Typography",
+    label: "Page",
+    original_name: "Page",
     slug: "letterpad-typography",
-    type: "page",
+    type: NavigationType.Page,
   },
 ];
 
@@ -225,29 +224,28 @@ export const settingsData = {
   social_instagram: "",
   social_github: "",
   displayAuthorInfo: true,
-  site_logo: JSON.stringify({
+  site_logo: {
     src: "/uploads/logo.png",
     width: 200,
     height: 200,
-  }),
-  site_favicon: JSON.stringify({
+  },
+  site_favicon: {
     src: "/uploads/logo.png",
     width: 200,
     height: 200,
-  }),
+  },
   css: "",
   google_analytics: "UA-120251616-1",
-  locale: JSON.stringify({ en: true, fr: false, pl: false }),
   theme: "hugo",
   disqus_id: "",
-  menu: JSON.stringify(menu),
+  menu: menu,
   cloudinary_key: "",
   cloudinary_name: "",
   cloudinary_secret: "",
   client_token: "",
-  banner: JSON.stringify({
+  banner: {
     src: "https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2850&q=80",
     width: 1502,
     height: 900,
-  }),
+  },
 };

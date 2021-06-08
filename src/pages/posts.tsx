@@ -67,7 +67,7 @@ function Posts() {
           <Button
             key="1"
             type="primary"
-            onClick={() => router.push("/post/create")}
+            onClick={() => router.push(`/api/create?type=${PostTypes.Post}`)}
           >
             New Post
           </Button>,
