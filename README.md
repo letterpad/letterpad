@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Letterpad Admin is the dashboard for publishing blogs.
 
-## Getting Started
+## Running Letterpad on Production Mode
 
-First seed the database using
+There are few things that you should know before running letterpad in a production environment.
+
+- In the root folder, you will find a file `env.development.local`. Clone is file and rename it to `env.production.local`. The most import key is `SECRET_KEY`, set the value of this key to something different. This key is used to encrypt passwords, sessions and preview links.
+
+- Letterpad runs on the url `/admin`. If you would like to run the admin dashboard in the root url,
+  edit `next.config.js` and remove the basePath. Also open `env.production.local` and remove the `/admin` from all the urls.
+
+- Run the below commands.
 
 ```bash
+yarn install
+yarn seed
+yarn build
+yarn start # starts the server
+```
+
+- Open http://localhost:3000/admin
+
+- Login with demo account
+
+```
+Email - demo@demo.com
+Password - demo
+```
+
+---
+
+## Running Letterpad on Development Mode
+
+First install the node modules and seed the database using
+
+```bash
+yarn install
 yarn seed
 ```
 
 Then, run the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser. You can login with the test account mentioned below
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```
+Email - demo@demo.com
+Password - demo
+```
 
-## Learn More
+---
 
+Letterpad has been developed using Next.js.
 To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

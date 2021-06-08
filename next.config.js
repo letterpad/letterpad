@@ -1,3 +1,5 @@
+const basePath = "/admin";
+
 module.exports = {
   typescript: {
     ignoreBuildErrors: true,
@@ -5,17 +7,17 @@ module.exports = {
   images: {
     domains: ["images.unsplash.com"],
   },
-  basePath: "/admin",
+  basePath,
   async redirects() {
     return [
       {
         source: "/",
-        destination: "/admin/posts",
+        destination: `${basePath}/posts`,
         permanent: true,
       },
       {
         source: "/admin",
-        destination: "/admin/posts",
+        destination: `${basePath}/posts`,
         permanent: true,
       },
     ];

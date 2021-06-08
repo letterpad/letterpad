@@ -103,7 +103,7 @@ const NormalLoginForm = () => {
           key,
           duration: 5,
         });
-        router.push("/admin/login");
+        router.push(`${nextConfig.basePath}/login`);
       } else {
         e.currentTarget.disabled = false;
         message.warn({
