@@ -1,4 +1,5 @@
 import { Switch } from "antd";
+import nextConfig from "next.config";
 import { useEffect, useState } from "react";
 
 const ThemeSwitcher = () => {
@@ -34,9 +35,9 @@ const ThemeSwitcher = () => {
 ThemeSwitcher.switch = color => {
   const $theme = document.querySelector("#theme");
   if (color === "dark") {
-    $theme?.setAttribute("href", "/admin/css/antd.dark.css");
+    $theme?.setAttribute("href", `${nextConfig.basePath}/css/antd.dark.css`);
   } else {
-    $theme?.setAttribute("href", "/admin/css/antd.css");
+    $theme?.setAttribute("href", `${nextConfig.basePath}/css/antd.css`);
   }
   localStorage.theme = color;
 };

@@ -16,6 +16,7 @@ import {
   Block,
 } from "@/components/login.css";
 import Head from "next/head";
+import nextConfig from "next.config";
 
 const key = "change-password";
 
@@ -63,7 +64,7 @@ const ResetPassword = () => {
         duration: 1000,
         key,
       });
-      router.push("/admin/login");
+      router.push(`${nextConfig.basePath}/login`);
     } else if (!data?.ok) {
       message.error({
         content:
