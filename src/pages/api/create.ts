@@ -26,7 +26,11 @@ const Create = async (
         data: { type: type as PostTypes },
       },
     });
-    res.redirect(nextConfig.basePath + "/post/" + post.data?.createPost.id);
+    if (post.data?.createPost.__typename === "Post") {
+      res.redirect(nextConfig.basePath + "/post/" + post.data.createPost.id);
+      return;
+    }
+    res.send("Post creation failed");
   } catch (e) {
     res.send(e.message);
   }
