@@ -34,6 +34,7 @@ export const columns = [
     title: "Description",
     dataIndex: "excerpt",
     key: "excerpt",
+    width: "45%",
     responsive: ["md"] as Breakpoint[],
   },
   {
@@ -45,9 +46,9 @@ export const columns = [
     ),
   },
   {
-    title: "Published",
-    dataIndex: "publishedAt",
-    key: "publishedAt",
+    title: "Updated",
+    dataIndex: "updatedAt",
+    key: "updatedAt",
   },
 ];
 
@@ -57,6 +58,7 @@ export const postsColumns = [
     title: "Tags",
     dataIndex: "tags",
     key: "tags",
+    responsive: ["md"] as Breakpoint[],
     render: (tags: Tags[]) => tags.map(tag => tag.name).join(", "),
   },
 ];

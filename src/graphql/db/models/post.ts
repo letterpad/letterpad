@@ -103,7 +103,7 @@ export default function initPost(sequelize) {
       },
       title: {
         type: DataTypes.STRING,
-        defaultValue: "Untitled",
+        defaultValue: "",
       },
       html: {
         type: DataTypes.TEXT,

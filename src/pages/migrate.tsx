@@ -31,7 +31,7 @@ const Migrate = ({ session }: IAuthComponentProps) => {
   return (
     <>
       <Head>
-        <title>Profile</title>
+        <title>Migrate</title>
       </Head>
       <PageHeader className="site-page-header" title="Migrate"></PageHeader>
       <Content>

@@ -77,7 +77,6 @@ mutation UpdateOptions($options: [OptionInputType!]!) {
     }
     css
     google_analytics
-    locale
     theme
     disqus_id
     banner {

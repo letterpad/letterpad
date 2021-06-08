@@ -68,9 +68,7 @@ const Query: QueryResolvers<ResolverContext> = {
     if (!author) {
       return { __typename: "AuthorNotFoundError", message: "" };
     }
-    if (author.social) {
-      author.social = JSON.parse(author.social || "{}");
-    }
+
     if (author.avatar && author.avatar.startsWith("/")) {
       author.avatar = new URL(author.avatar, process.env.ROOT_URL).href;
     }
@@ -190,7 +188,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
         return {
           __typename: "Author",
           ...author,
-          social: JSON.parse(author.social),
         };
       } catch (e) {
         console.log(e);
@@ -215,9 +212,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
         dataToUpdate.password = await bcrypt.hash(args.author.password, 12);
       }
 
-      if (args.author.social) {
-        dataToUpdate.social = JSON.stringify(args.author.social);
-      }
       await models.Author.update(dataToUpdate as any, {
         where: { id: args.author.id },
       });
@@ -404,7 +398,7 @@ export async function createAuthor({
     email,
     password: bcrypt.hashSync(password, 12),
     avatar,
-    social: JSON.stringify(social),
+    social: social,
   });
   if (author && role) {
     author.setRole(role);

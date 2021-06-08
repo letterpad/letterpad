@@ -5,12 +5,15 @@ import multer from "multer";
 import initMiddleware from "./middleware";
 import { ROLES, SessionData } from "@/graphql/types";
 import { Role } from "@/__generated__/type-defs.graphqls";
-import { IAuthorData, IImportExportData } from "./importExportTypes";
+import {
+  IAuthorData,
+  IImportExportData,
+  ITagSanitized,
+} from "./importExportTypes";
 
-import { insertRolePermData } from "@/graphql/db/seed/seed";
-import { createAuthor } from "@/graphql/resolvers/author";
 import jwt from "jsonwebtoken";
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
+import { Post } from "@/graphql/db/models/post";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -22,69 +25,63 @@ export const config = {
 };
 
 const Import = async (req, res) => {
-  await multerAny(req, res);
-  const _session = await getSession({ req });
-  const session = _session as unknown as { user: SessionData };
-  if (!session?.user?.email)
-    return res.status(401).send({
-      success: false,
-      message: "No session found",
-    });
-
-  let data: IImportExportData = JSON.parse(req.files[0].buffer.toString());
-
-  const importName = req.files[0].fieldname;
-  if (importName === "ghost") {
-    const ghostData = JSON.parse(req.files[0].buffer.toString());
-    data = convertGhostToLetterpad(ghostData, session.user);
-    console.log("data :>> ", data);
-  }
-  const isLoggedInUserAdmin = session.user.role === Role.Admin;
-
-  const adminEmail = "admin@admin.com";
-
-  if (isLoggedInUserAdmin) {
-    await models.sequelize.sync({ force: true });
-    await insertRolePermData(models);
-    await createAuthor({
-      email: adminEmail,
-      username: "admin",
-      rolename: ROLES.ADMIN,
-      site_title: "",
-      verified: true,
-      password: "admin",
-      name: "Admin",
-    });
-  } else {
-    if (Object.keys(data.authors).length > 1) {
+  try {
+    await multerAny(req, res);
+    const _session = await getSession({ req });
+    const session = _session as unknown as { user: SessionData };
+    if (!session?.user?.email)
       return res.status(401).send({
         success: false,
-        message: "You are not allowed to import multiple authors",
+        message: "No session found",
       });
-    }
-    const author = await models.Author.findOne({
-      where: { id: session.user.id },
-    });
-    if (!author) {
-      return res.send({
-        success: false,
-        message: "This author does not exist",
-      });
-    }
-    // when importing from other cms, set the current password of the author
-    if (data.authors[session.user.email].author.password === "") {
-      data.authors[session.user.email].author.password = author.password;
-    }
-  }
 
-  const sanitizedData = sanitizeForeignData(data.authors);
-  delete sanitizedData[adminEmail];
+    let data: IImportExportData = JSON.parse(req.files[0].buffer.toString());
+
+    const importName = req.files[0].fieldname;
+    if (importName === "ghost") {
+      const ghostData = JSON.parse(req.files[0].buffer.toString());
+      data = convertGhostToLetterpad(ghostData, session.user);
+    }
+    const isLoggedInUserAdmin = session.user.role === Role.Admin;
+
+    if (!isLoggedInUserAdmin) {
+      const author = await validateSingleAuthorImport(res, data, session.user);
+      if (!author) {
+        return res.send({
+          success: false,
+          message: "This author does not exist",
+        });
+      }
+      // when importing from other cms, set the current password of the author
+      if (data.authors[session.user.email].author.password === "") {
+        data.authors[session.user.email].author.password = author.password;
+      }
+    }
+
+    const sanitizedData = sanitizeForeignData(data.authors);
+    const response = await startImport(sanitizedData, isLoggedInUserAdmin);
+
+    return res.send(response);
+  } catch (e) {
+    res.status(501).send({
+      success: false,
+      message: e.message,
+    });
+  }
+};
+
+export default Import;
+
+async function startImport(
+  data: { [email: string]: IAuthorData },
+  isLoggedInUserAdmin: boolean,
+) {
   const role = await models.Role.findOne({
     where: { name: ROLES.AUTHOR },
   });
-  // none of the authors from here are admin
-  for (const email in sanitizedData) {
-    const authorsData = sanitizedData[email];
+
+  for (const email in data) {
+    const authorsData = data[email];
     let author = await models.Author.findOne({ where: { email } });
     if (!author && isLoggedInUserAdmin) {
       //@ts-ignore author
@@ -94,10 +91,10 @@ const Import = async (req, res) => {
     }
 
     if (!author) {
-      return res.send({
+      return {
         success: false,
         message: `The author ${email} does not exist`,
-      });
+      };
     }
 
     if (role) {
@@ -128,28 +125,32 @@ const Import = async (req, res) => {
         ...data,
         cover_image: data.cover_image,
       });
-
-      for (const tag of tags) {
-        const existingTag = await models.Tags.findOne({
-          where: { name: tag.name, author_id: author.id },
-        });
-        if (existingTag) {
-          newPost.addTag(existingTag);
-        } else {
-          const created = await author.createTag({ ...tag });
-          if (created) newPost.addTag(created);
-        }
-      }
+      addTagsToPost(newPost, tags, author);
     }
   }
-
-  return res.send({
+  return {
     success: true,
     message: "Import complete",
-  });
-};
+  };
+}
 
-export default Import;
+async function addTagsToPost(
+  post: Post,
+  tags: ITagSanitized[],
+  author: Author,
+) {
+  for (const tag of tags) {
+    const existingTag = await models.Tags.findOne({
+      where: { name: tag.name, author_id: author.id },
+    });
+    if (existingTag) {
+      post.addTag(existingTag);
+    } else {
+      const created = await author.createTag({ ...tag });
+      if (created) post.addTag(created);
+    }
+  }
+}
 
 async function removeUserData(author: Author) {
   if (author.setting_id) {
@@ -208,4 +209,21 @@ function sanitizeForeignData(authors: IImportExportData["authors"]) {
     sanitizedData[email].media = media;
   }
   return sanitizedData;
+}
+
+async function validateSingleAuthorImport(
+  res,
+  data: IImportExportData,
+  sessionUser: SessionData,
+): Promise<Author | null> {
+  if (Object.keys(data.authors).length > 1) {
+    res.status(401).send({
+      success: false,
+      message: "You are not allowed to import multiple authors",
+    });
+    return null;
+  }
+  return models.Author.findOne({
+    where: { id: sessionUser.id },
+  });
 }

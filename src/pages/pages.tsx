@@ -66,7 +66,7 @@ function Pages() {
           <Button
             key="1"
             type="primary"
-            onClick={() => router.push("/page/create")}
+            onClick={() => router.push(`/api/create?type=${PostTypes.Page}`)}
           >
             New Page
           </Button>,

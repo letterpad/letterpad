@@ -182,7 +182,6 @@ query settings {
       }
       css
       google_analytics
-      locale
       theme
       disqus_id
       banner {

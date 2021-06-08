@@ -22,31 +22,28 @@ const cssPath = path.join(process.cwd(), "public/css/custom.css");
 
 const Setting = {
   menu: ({ menu }) => {
-    return getMenuWithSanitizedSlug(JSON.parse(menu as string));
+    return getMenuWithSanitizedSlug(menu);
   },
 
   banner: ({ banner }) => {
-    const img = JSON.parse(banner as string);
-    if (img.src && !img.src.startsWith("http")) {
-      img.src = process.env.ROOT_URL + img.src;
+    if (banner.src && !banner.src.startsWith("http")) {
+      banner.src = process.env.ROOT_URL + banner.src;
     }
-    return img;
+    return banner;
   },
 
   site_logo: ({ site_logo }) => {
-    const img = JSON.parse(site_logo as string);
-    if (img.src && !img.src.startsWith("http")) {
-      img.src = process.env.ROOT_URL + img.src;
+    if (site_logo.src && !site_logo.src.startsWith("http")) {
+      site_logo.src = process.env.ROOT_URL + site_logo.src;
     }
-    return img;
+    return site_logo;
   },
 
   site_favicon: ({ site_favicon }) => {
-    const img = JSON.parse(site_favicon as string);
-    if (img.src && !img.src.startsWith("http")) {
-      img.src = process.env.ROOT_URL + img.src;
+    if (site_favicon.src && !site_favicon.src.startsWith("http")) {
+      site_favicon.src = process.env.ROOT_URL + site_favicon.src;
     }
-    return img;
+    return site_favicon;
   },
 };
 
@@ -86,21 +83,13 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 const Mutation: MutationResolvers<ResolverContext> = {
   updateOptions: async (_root, args, { session }) => {
-    const parsedMockData = {
-      ...settingsData,
-      menu: JSON.parse(settingsData.menu),
-      banner: JSON.parse(settingsData.banner),
-      site_logo: JSON.parse(settingsData.site_logo),
-      site_favicon: JSON.parse(settingsData.site_favicon),
-    };
-
-    if (!session?.user.id) return parsedMockData;
+    if (!session?.user.id) return settingsData;
 
     const author = await models.Author.findOne({
       where: { id: session.user.id },
     });
 
-    if (!author) return parsedMockData;
+    if (!author) return settingsData;
     const _setting = await author.getSetting();
 
     let promises = args.options.map(setting => {
@@ -118,10 +107,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         value = value as InputImage;
         if (value && !value.src.startsWith(process.env.ROOT_URL)) {
           value.src = value.src.replace(process.env.ROOT_URL, "");
-          value = JSON.stringify(value);
         }
-      } else if (setting.menu) {
-        value = JSON.stringify(value);
       }
       return models.Setting.update(
         { [option]: value },
@@ -139,7 +125,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       where: { id: session.user.id },
     });
     if (!setting) {
-      return parsedMockData;
+      return settingsData;
     }
     return setting.get() as unknown as SettingType;
   },
@@ -153,9 +139,6 @@ function getMenuWithSanitizedSlug(menu: Navigation[]) {
       case "tag":
       case "page":
         item.slug = "/" + item.type + "/" + item.slug;
-        break;
-      case "custom":
-        item.slug = item.slug;
         break;
     }
     return item;
