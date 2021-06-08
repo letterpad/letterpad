@@ -12,7 +12,6 @@ import {
   slugify,
   getImageDimensions,
   setImageWidthAndHeightInHtml,
-  capitalize,
 } from "./helpers";
 import logger from "../../../shared/logger";
 import models from "../db/models";
