@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   padding: 40px 0px;
+  overflow: scroll;
   border-radius: 2px;
   .toolbar {
     margin-bottom: 40px;

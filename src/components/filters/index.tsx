@@ -17,7 +17,7 @@ const Filters = ({ onStatusChange, onOrderChange }: IProps) => {
 
   return (
     <>
-      <Space>
+      <>
         {hasStatusChange && (
           <Select
             style={{ width: 110 }}
@@ -25,7 +25,6 @@ const Filters = ({ onStatusChange, onOrderChange }: IProps) => {
             placeholder="Status"
             allowClear
             size="middle"
-            bordered={false}
           >
             {Object.keys(PostStatusOptions).map(key => {
               return (
@@ -38,7 +37,6 @@ const Filters = ({ onStatusChange, onOrderChange }: IProps) => {
         )}
         {hasOrderChange && (
           <Select
-            bordered={false}
             style={{ width: 100 }}
             onChange={onOrderChange}
             placeholder="Order by"
@@ -54,7 +52,7 @@ const Filters = ({ onStatusChange, onOrderChange }: IProps) => {
             })}
           </Select>
         )}
-      </Space>
+      </>
       <br />
       <br />
     </>

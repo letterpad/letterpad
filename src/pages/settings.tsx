@@ -14,9 +14,15 @@ import { OptionInputType } from "@/__generated__/type-defs.graphqls";
 import withAuthCheck from "../hoc/withAuth";
 import Navigation from "@/components/navigation-builder";
 import Head from "next/head";
+import Editor from "react-simple-code-editor";
+
+import highlight from "highlight.js";
+import hljs from "highlight.js/lib/core";
+import hljsCssLang from "highlight.js/lib/languages/css";
+hljs.registerLanguage("css", hljsCssLang);
+import "highlight.js/styles/night-owl.css";
 
 const { Panel } = Collapse;
-const { TextArea } = Input;
 
 type ValueOf<T> = T[keyof T];
 
@@ -170,14 +176,48 @@ function Settings(props: { settings: Setting }) {
                   />
                 </Form.Item>
                 <Form.Item label="CSS">
-                  <TextArea
+                  {/* <TextArea
                     value={settings.css}
-                    onChange={e => {
-                      onChange("css", e.target.value);
-                    }}
+                    onChange={e => {}}
                     placeholder="Add css to customise your website"
                     autoSize={{ minRows: 5, maxRows: 50 }}
-                  />
+                  /> */}
+                  <div id="css-editor">
+                    <Editor
+                      value={settings.css}
+                      onValueChange={code => {
+                        onChange("css", code);
+                      }}
+                      className="hljs"
+                      placeholder="Add css to customise your website"
+                      // highlight={code => highlight(code, languages.js)}
+                      highlight={code => {
+                        console.log(
+                          'highlight.highlight(code, { language: "css" }).value :>> ',
+                          highlight.highlight(code, { language: "css" }).value,
+                        );
+                        return highlight.highlight(code, { language: "css" })
+                          .value;
+                      }}
+                      padding={10}
+                      style={{
+                        fontFamily: '"Fira code", "Fira Mono", monospace',
+                        fontSize: 13,
+                      }}
+                    />
+                  </div>
+                  <style jsx>{`
+                    #css-editor {
+                      flex: 1;
+                      overflow: auto;
+                      height: 600px;
+                      border: 1px solid #333;
+                      width: 600px;
+                      @media (max-width: 967px) {
+                        width: 70vw;
+                      }
+                    }
+                  `}</style>
                 </Form.Item>
               </Panel>
             </Collapse>

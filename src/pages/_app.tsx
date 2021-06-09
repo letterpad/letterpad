@@ -28,6 +28,25 @@ function App({ Component, pageProps }: Props) {
 
   const ComponentRequiresAuth = Component.needsAuth;
 
+  useEffect(() => {
+    if (ComponentRequiresAuth) {
+      ThemeSwitcher.switch(localStorage.theme);
+      initPageProgress();
+
+      async function init() {
+        const client = await apolloClientPromise;
+        setClient(client);
+
+        const { data } = await getSettings();
+        if (data.settings?.__typename === "Setting") {
+          return setSettings(data.settings);
+        }
+        router.push("/api/auth/signin");
+      }
+      init();
+    }
+  }, []);
+
   if (!ComponentRequiresAuth) {
     return (
       <Provider
@@ -38,23 +57,6 @@ function App({ Component, pageProps }: Props) {
       </Provider>
     );
   }
-
-  useEffect(() => {
-    ThemeSwitcher.switch(localStorage.theme);
-    initPageProgress();
-
-    async function init() {
-      const client = await apolloClientPromise;
-      setClient(client);
-
-      const { data } = await getSettings();
-      if (data.settings?.__typename === "Setting") {
-        return setSettings(data.settings);
-      }
-      router.push("/api/auth/signin");
-    }
-    init();
-  }, []);
 
   const Layout = Component.layout || NoLayout;
 
