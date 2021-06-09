@@ -1,0 +1,100 @@
+.banner {
+  display: none;
+}
+.site-header,
+.brand-wrapper {
+  height: inherit !important;
+  background: none !important;
+  position: inherit !important;
+}
+
+h1.site-title {
+  font-size: var(--text-md) !important;
+  font-family: inherit !important;
+}
+
+/*.site-brand-text {
+  top: var(--space-lg) !important;
+  right: var(--margin) !important;
+  -webkit-transform: translate(0%, -50%) !important;
+  -ms-transform: translate(0%, -50%) !important;
+  transform: translate(0%, -50%) !important;
+}*/
+
+.site-brand-text {
+   position: relative !important;
+   left: auto !important;
+   transform: translate(-0%,-0%) !important;
+   margin-bottom: 80px;
+}
+
+.site-brand-text .wrapper {
+  background: none !important;
+  color: var(--color-text) !important;
+}
+
+.post {
+  box-shadow: none !important;
+}
+@media (min-width: 767px) {
+  .post-feed {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    grid-gap: var(--space-lg) !important;
+  }
+
+  .post-card {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-basis: auto !important;
+    min-height: 0 !important;
+  }
+  .post-card-content {
+    flex: inherit !important;
+    padding: var(--space-sm) !important;
+  }
+  .post-card-content-top {
+    padding: var(--space-sm) !important;
+  }
+  .post-card-image {
+    position: relative !important;
+    height: 200px !important;
+  }
+}
+.post-card-title {
+  font-family: system-ui !important;
+   font-size: var(--text-lg) !important;
+}
+
+@media (min-width: 767px) {
+  .post:nth-child(7n + 1) p {
+    font-size: inherit !important;
+  }
+  .post-card-image-link {
+    border-radius: inherit !important;
+    flex: none !important;
+  }
+  .post-card-image {
+    width: var(--xxsmall) !important;
+  }
+}
+/* .post:nth-child(7n + 1) .post-card-title {
+  font-size: var(--text-lg) !important;
+} */
+
+@media (min-width: 767px) {
+  .post:nth-child(7n + 1) p {
+    font-size: inherit !important;
+  }
+}
+.site-nav {
+  position: relative !important;
+}
+
+:root {
+  --color-bg: #fff !important;
+  --color-post-bg: #fff !important;
+  --color-text: #333 !important;
+}
