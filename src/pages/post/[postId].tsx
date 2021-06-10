@@ -175,7 +175,12 @@ function Post() {
           style={{ maxWidth: 760, margin: "auto" }}
         >
           <Input.TextArea
-            style={{ padding: 0, fontSize: 38, lineHeight: 1 }}
+            style={{
+              padding: 0,
+              fontSize: 38,
+              lineHeight: 1,
+              marginBottom: 40,
+            }}
             value={post.title}
             rows={2}
             autoSize={true}
@@ -183,6 +188,12 @@ function Post() {
             bordered={false}
             onChange={e => {
               setPostAttribute({ title: e.target.value });
+            }}
+            onKeyPress={e => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                editor.focus();
+              }
             }}
           />
           <LetterpadEditor
