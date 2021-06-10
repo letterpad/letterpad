@@ -1,4 +1,4 @@
-import { Select, Space } from "antd";
+import { Select } from "antd";
 
 import {
   PostStatusOptions,
@@ -9,7 +9,7 @@ interface IProps {
   onStatusChange?: (status: PostStatusOptions) => void;
   onOrderChange?: (order: SortBy) => void;
   onTagChange?: (slug: string) => void;
-  allTags: { name: string; slug: string }[];
+  allTags?: { name: string; slug: string }[];
 }
 const Option = Select.Option;
 
