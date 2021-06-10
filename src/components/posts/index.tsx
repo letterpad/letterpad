@@ -29,14 +29,15 @@ export const columns = [
     title: "Title",
     dataIndex: "title",
     key: "title",
-  },
-  {
-    title: "Description",
-    dataIndex: "excerpt",
-    key: "excerpt",
     width: "45%",
-    responsive: ["md"] as Breakpoint[],
   },
+  // {
+  //   title: "Description",
+  //   dataIndex: "excerpt",
+  //   key: "excerpt",
+  //   width: "45%",
+  //   responsive: ["md"] as Breakpoint[],
+  // },
   {
     title: "Status",
     dataIndex: "status",

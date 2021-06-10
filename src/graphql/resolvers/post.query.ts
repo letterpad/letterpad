@@ -15,6 +15,7 @@ import models from "../db/models";
 import logger from "../../../shared/logger";
 import debug from "debug";
 import { getHtmlFromMarkdown } from "letterpad-editor/dist/mdToHtml";
+import { addGalleryWrapper } from "../utils/addGalleryWrappr";
 
 interface IPostCondition {
   conditions: {
@@ -50,7 +51,7 @@ const Post = {
     }
   },
   html: async ({ html }) => {
-    return setResponsiveImages(html);
+    return addGalleryWrapper(setResponsiveImages(html));
   },
 };
 
@@ -155,7 +156,7 @@ const Query: QueryResolvers<ResolverContext> = {
         const taxTag = await models.Tags.findOne({
           where: {
             slug: tagSlug.split("/").pop() as string,
-            author_id,
+            author_id: authorId,
           },
         });
 

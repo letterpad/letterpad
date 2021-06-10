@@ -8,12 +8,20 @@ import {
 interface IProps {
   onStatusChange?: (status: PostStatusOptions) => void;
   onOrderChange?: (order: SortBy) => void;
+  onTagChange?: (slug: string) => void;
+  allTags: { name: string; slug: string }[];
 }
 const Option = Select.Option;
 
-const Filters = ({ onStatusChange, onOrderChange }: IProps) => {
+const Filters = ({
+  onStatusChange,
+  onOrderChange,
+  onTagChange,
+  allTags,
+}: IProps) => {
   const hasStatusChange = typeof onStatusChange === "function";
   const hasOrderChange = typeof onOrderChange === "function";
+  const hasTagChange = typeof onTagChange === "function";
 
   return (
     <>
@@ -47,6 +55,23 @@ const Filters = ({ onStatusChange, onOrderChange }: IProps) => {
               return (
                 <Option key={key} value={SortBy[key]}>
                   {key}
+                </Option>
+              );
+            })}
+          </Select>
+        )}
+        {hasTagChange && (
+          <Select
+            style={{ width: 120 }}
+            onChange={onTagChange}
+            placeholder="By Tag"
+            allowClear
+            size="middle"
+          >
+            {allTags.map(tag => {
+              return (
+                <Option key={tag.name} value={tag.slug}>
+                  {tag.name}
                 </Option>
               );
             })}

@@ -73,7 +73,7 @@ function Pages() {
         ]}
       ></PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 24 }}>
+        <div className="site-layout-background" style={{ padding: 16 }}>
           <Filters
             onStatusChange={status => setFilters({ ...filters, status })}
             onOrderChange={sortBy => setFilters({ ...filters, sortBy })}

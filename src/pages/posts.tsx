@@ -17,12 +17,13 @@ import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
 import { postsStyles } from "@/components/posts.css";
 import { postsColumns } from "@/components/posts";
+import { fetchTags } from "./tags";
 
 function Posts() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<PostsFilters>({});
-
+  const [allTags, setAllTags] = useState<{ slug: string; name: string }[]>([]);
   const [postsNode, setPostsNode] = useState<PostsQuery["posts"]>({
     count: 0,
     rows: [],
@@ -32,6 +33,21 @@ function Posts() {
 
   useEffect(() => {
     fetchPosts(filters);
+    fetchTags().then(response => {
+      if (!response.props.error) {
+        const uniqueData = [
+          ...response.props.data
+            .reduce((map, obj) => map.set(obj.slug, obj), new Map())
+            .values(),
+        ];
+        setAllTags(
+          uniqueData.map(tag => ({
+            slug: tag.slug,
+            name: tag.name,
+          })),
+        );
+      }
+    });
   }, [JSON.stringify(filters)]);
 
   const fetchPosts = async (args = {}) => {
@@ -76,11 +92,13 @@ function Posts() {
       <Content>
         <div
           className="site-layout-background"
-          style={{ padding: 24, minHeight: "77vh" }}
+          style={{ padding: 16, minHeight: "77vh" }}
         >
           <Filters
             onStatusChange={status => setFilters({ ...filters, status })}
             onOrderChange={sortBy => setFilters({ ...filters, sortBy })}
+            onTagChange={tagSlug => setFilters({ ...filters, tagSlug })}
+            allTags={allTags}
           />
           <Table
             columns={postsColumns}

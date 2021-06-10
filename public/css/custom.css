@@ -13,14 +13,6 @@ h1.site-title {
   font-family: inherit !important;
 }
 
-/*.site-brand-text {
-  top: var(--space-lg) !important;
-  right: var(--margin) !important;
-  -webkit-transform: translate(0%, -50%) !important;
-  -ms-transform: translate(0%, -50%) !important;
-  transform: translate(0%, -50%) !important;
-}*/
-
 .site-brand-text {
    position: relative !important;
    left: auto !important;
