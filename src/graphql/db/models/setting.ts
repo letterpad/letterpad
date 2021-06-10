@@ -149,7 +149,7 @@ export default function initSetting(sequelize) {
         type: DataTypes.JSON,
       },
       css: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         defaultValue: "",
       },
       google_analytics: {
