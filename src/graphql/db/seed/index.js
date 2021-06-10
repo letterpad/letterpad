@@ -1,5 +1,9 @@
 const env = require("node-env-file");
-env(__dirname + "../../../../../.env.development.local");
+if (process.env.NODE_ENV === "production") {
+  env(__dirname + "../../../../../.env.production.local");
+} else {
+  env(__dirname + "../../../../../.env.development.local");
+}
 const models = require("../models/index").default;
 const { seed } = require("./seed");
 const { Op } = require("sequelize");
