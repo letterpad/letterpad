@@ -61,7 +61,7 @@ const Media = ({
       </Head>
       <PageHeader className="site-page-header" title="Media"></PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 24 }}>
+        <div className="site-layout-background" style={{ padding: 16 }}>
           <Space>
             <Row gutter={[24, 24]} justify="start">
               {data.rows.map(image => {
