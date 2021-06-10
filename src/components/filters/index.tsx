@@ -60,7 +60,7 @@ const Filters = ({
             })}
           </Select>
         )}
-        {hasTagChange && (
+        {hasTagChange && allTags && (
           <Select
             style={{ width: 120 }}
             onChange={onTagChange}
