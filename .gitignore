@@ -37,3 +37,4 @@ yarn-error.log*
 
 __generated__/*
 data/*
+.env.production.local
