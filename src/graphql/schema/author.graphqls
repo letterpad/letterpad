@@ -1,0 +1,92 @@
+type Social {
+  twitter: String
+  facebook: String
+  github: String
+  instagram: String
+}
+
+type Author {
+  id: Int!
+  email: String!
+  username: String!
+  name: String!
+  social: Social
+  bio: String!
+  role: Role!
+  permissions: [Permissions!]!
+  avatar: String!
+  verified: Boolean
+  accessToken: String
+}
+
+input LoginData {
+  email: String!
+  password: String!
+}
+
+input InputSocial {
+  twitter: String
+  facebook: String
+  github: String
+  instagram: String
+}
+input InputAuthor {
+  id: Int!
+  email: String
+  name: String
+  bio: String
+  social: InputSocial
+  password: String
+  roleId: Int
+  avatar: String
+}
+
+input InputCreateAuthor {
+  email: String!
+  site_title: String!
+  name: String!
+  username: String!
+  password: String!
+  token: String!
+}
+
+type AuthorResponse {
+  ok: Boolean!
+  errors: [Error!]
+  data: Author
+}
+
+type AuthorNotFoundError implements LetterpadError {
+  message: String!
+}
+
+type CreateAuthorError implements LetterpadError {
+  message: String!
+}
+
+type LoginError implements LetterpadError {
+  message: String!
+}
+
+union MeResponse = Author | AuthorNotFoundError
+
+union CreateAuthorResponse = Author | CreateAuthorError
+
+union LoginResponse = Author | LoginError
+
+type ForgotPasswordResponse {
+  ok: Boolean!
+  message: String
+}
+
+type Query {
+  me: MeResponse
+}
+
+type Mutation {
+  login(data: LoginData): LoginResponse
+  updateAuthor(author: InputAuthor!): AuthorResponse
+  createAuthor(data: InputCreateAuthor!): CreateAuthorResponse
+  forgotPassword(email: String!): ForgotPasswordResponse!
+  resetPassword(password: String!, token: String!): ForgotPasswordResponse!
+}

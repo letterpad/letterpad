@@ -1,0 +1,92 @@
+enum NavigationType {
+  tag
+  page
+  custom
+}
+
+type Navigation {
+  type: NavigationType!
+  slug: String!
+  original_name: String!
+  label: String!
+}
+
+type Setting {
+  site_title: String!
+  site_tagline: String!
+  site_email: String!
+  site_url: String!
+  site_footer: String!
+  site_description: String!
+  subscribe_embed: String!
+  social_twitter: String!
+  social_facebook: String!
+  social_instagram: String!
+  social_github: String!
+  displayAuthorInfo: Boolean!
+  cloudinary_key: String!
+  cloudinary_name: String!
+  cloudinary_secret: String!
+  menu: [Navigation!]!
+  css: String!
+  google_analytics: String!
+  theme: String!
+  disqus_id: String
+  banner: Image!
+  site_logo: Image!
+  site_favicon: Image!
+  client_token: String!
+}
+
+input InputNavigation {
+  type: NavigationType
+  slug: String
+  original_name: String
+  label: String
+}
+
+input InputImage {
+  src: String
+  width: Int
+  height: Int
+}
+
+input OptionInputType {
+  site_title: String
+  site_tagline: String
+  site_email: String
+  site_url: String
+  site_footer: String
+  site_description: String
+  subscribe_embed: String
+  social_twitter: String
+  social_facebook: String
+  social_instagram: String
+  social_github: String
+  displayAuthorInfo: Boolean
+  cloudinary_key: String
+  cloudinary_name: String
+  cloudinary_secret: String
+  menu: [InputNavigation!]
+  css: String
+  google_analytics: String
+  theme: String
+  disqus_id: String
+  banner: InputImage
+  site_logo: InputImage
+  site_favicon: InputImage
+}
+
+type SettingError implements LetterpadError {
+  message: String!
+}
+
+union SettingResponse = Setting | SettingError
+
+type Query {
+  settings: SettingResponse!
+}
+
+type Mutation {
+  updateOptions(options: [OptionInputType!]!): Setting
+}

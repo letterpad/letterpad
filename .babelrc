@@ -1,28 +1,30 @@
 {
   "presets": [
     [
-      "@babel/preset-env",
+      "next/babel",
       {
-        "targets": {
-          "node": 11
-        },
-        "useBuiltIns": "entry",
-        "corejs": 3,
-        "loose": true,
-        "modules": false
+        "styled-jsx": {
+          "plugins": ["styled-jsx-plugin-sass"]
+        }
       }
-    ],
-    "@babel/react"
+    ]
   ],
   "plugins": [
-    "@babel/plugin-proposal-class-properties",
-    "istanbul",
     [
-      "babel-plugin-styled-components",
+      "styled-components",
       {
-        "ssr": true,
-        "displayName": false,
-        "pure": true
+        "ssr": false,
+        "displayName": true,
+        "preprocess": false
+      }
+    ],
+    [
+      "styless",
+      {
+        "import": "~antd/lib/style/themes/default.less",
+        "lessOptions": {
+          "javascriptEnabled": true
+        }
       }
     ]
   ]

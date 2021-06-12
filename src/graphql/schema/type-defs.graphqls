@@ -1,0 +1,37 @@
+scalar Date
+
+type Error {
+  path: String!
+  message: String
+}
+
+type Response {
+  ok: Boolean!
+  post: Post
+  errors: [Error!]
+}
+
+type Image {
+  src: String!
+  width: Int
+  height: Int
+}
+
+enum Role {
+  ADMIN
+  REVIEWER
+  READER
+  AUTHOR
+}
+
+enum Permissions {
+  MANAGE_OWN_POSTS
+  READ_ONLY_POSTS
+  MANAGE_ALL_POSTS
+  MANAGE_USERS
+  MANAGE_SETTINGS
+}
+
+interface LetterpadError {
+  message: String!
+}
