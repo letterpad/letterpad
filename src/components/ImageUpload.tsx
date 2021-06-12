@@ -6,7 +6,7 @@ import { UploadChangeParam } from "antd/lib/upload";
 import Modal from "antd/lib/modal/Modal";
 import nextConfig from "../../next.config";
 import FileExplorer from "./file-explorer";
-import { getBase64 } from "../../shared/utils";
+import { getBase64 } from "./../shared/utils";
 
 interface IProps {
   url: string;
@@ -50,7 +50,7 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
     setFileList(info.fileList);
   };
 
-  const handlePreview = async file => {
+  const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -83,7 +83,7 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
           listType="picture-card"
           className="avatar-uploader"
           showUploadList={true}
-          action={nextConfig.basePath + "/api/customRequest"}
+          action={nextConfig.basePath + "/api/uploadApi"}
           beforeUpload={beforeUpload}
           onChange={handleChange}
           fileList={fileList}
@@ -108,7 +108,7 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
       <FileExplorer
         isVisible={explorerVisible}
         handleCancel={() => setExplorerVisible(false)}
-        onInsert={async files => {
+        onInsert={async (files) => {
           const result: IMediaUploadResult[] = [];
           for (url in files) {
             const item = files[url];

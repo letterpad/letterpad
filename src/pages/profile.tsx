@@ -15,7 +15,7 @@ import {
 } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
 import { InputAuthor, Social, Author } from "@/__generated__/__types__";
-import { removeTypenames } from "../../shared/removeTypenames";
+import { removeTypenames } from "../shared/utils";
 import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";

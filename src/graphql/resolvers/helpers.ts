@@ -3,7 +3,7 @@ import cheerio from "cheerio";
 import sizeOf from "image-size";
 import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { Post as ModelPost } from "../db/models/post";
-import logger from "../../../shared/logger";
+import logger from "./../../shared/logger";
 
 function toSlug(str: string): string {
   return str
@@ -108,7 +108,7 @@ interface ICaptchaResult {
 export async function validateCaptcha(serverKey: string, clientToken: string) {
   const response: ICaptchaResult = await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${serverKey}&response=${clientToken}`,
-  ).then(res => res.json());
+  ).then((res) => res.json());
 
   if (response.success) {
     return true;

@@ -4,12 +4,11 @@ import Image from "next/image";
 import CustomLayout from "@/components/layouts/Layout";
 import { initializeApollo } from "@/graphql/apollo";
 import {
-  Media as IMedia,
   MediaDocument,
   MediaQuery,
   MediaQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
-import { MediaNode, Setting } from "@/__generated__/__types__";
+import { MediaNode, Setting, Media as IMedia } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
 import { useState } from "react";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";

@@ -6,7 +6,7 @@ import { Image, Media } from "@/__generated__/__types__";
 import { Button } from "antd";
 import MediaItem from "./MediaItem";
 import { useRef, useState } from "react";
-import { uploadFile } from "shared/upload";
+import { uploadFile } from "../../shared/utils";
 
 type ImageInput = {
   [urls: string]: Image & { alt: string };

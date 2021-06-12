@@ -1,4 +1,4 @@
-import { Optional } from "../../../../../shared/types";
+import { Optional } from "./../../../../shared/types";
 import { settingsData } from "@/graphql/db/models/setting";
 import { SessionData } from "@/graphql/types";
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";

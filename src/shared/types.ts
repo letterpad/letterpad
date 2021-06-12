@@ -1,6 +1,5 @@
-import { Setting } from "./../__generated__/src/graphql/__types__";
 import { SessionData } from "@/graphql/types";
-import { Navigation } from "@/__generated__/__types__";
+import { Navigation, Setting } from "@/__generated__/__types__";
 
 export type Optional<T> = { [P in keyof T]?: T[P] };
 declare global {
@@ -27,4 +26,9 @@ export interface INavigationBuilderProps {
 export interface IAuthComponentProps {
   session: SessionData;
   settings: Setting;
+}
+
+export interface IUploadFileProps {
+  files: File[] | FileList;
+  type?: string;
 }

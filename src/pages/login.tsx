@@ -10,8 +10,7 @@ import {
 } from "../components/login.css";
 import { message } from "antd";
 import { useRouter } from "next/router";
-import { SessionData } from "../graphql/types";
-import { LoginError } from "@/__generated__/queries/partial.graphql";
+import { SessionData } from "@/graphql/types";
 import Head from "next/head";
 import { initializeApollo } from "@/graphql/apollo";
 import {
@@ -19,6 +18,7 @@ import {
   ForgotPasswordMutation,
   ForgotPasswordMutationVariables,
 } from "@/__generated__/queries/mutations.graphql";
+import { LoginError } from "@/__generated__/__types__";
 
 const key = "login";
 
@@ -69,12 +69,12 @@ const NormalLoginForm = () => {
     }
   };
 
-  const showLostPasswordView = e => {
+  const showLostPasswordView = (e) => {
     e.preventDefault();
     setLoginView(false);
   };
 
-  const showLoginView = e => {
+  const showLoginView = (e) => {
     e.preventDefault();
     setLoginView(true);
   };
@@ -135,7 +135,7 @@ const NormalLoginForm = () => {
               type="text"
               placeholder="Enter your email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               autoComplete="off"
               data-testid="input-email"
             />
@@ -144,7 +144,7 @@ const NormalLoginForm = () => {
             <input
               type="password"
               placeholder="Enter your password"
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               value={password}
               autoComplete="off"
               onKeyUp={(e: React.KeyboardEvent) => {
@@ -175,7 +175,7 @@ const NormalLoginForm = () => {
               type="email"
               placeholder="Enter your email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               autoComplete="off"
             />
           </InputBlock>

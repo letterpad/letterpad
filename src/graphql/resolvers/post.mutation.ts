@@ -13,9 +13,9 @@ import {
   getImageDimensions,
   setImageWidthAndHeightInHtml,
 } from "./helpers";
-import logger from "../../../shared/logger";
+import logger from "./../../shared/logger";
 import models from "../db/models";
-import { getDateTime } from "../../../shared/utils";
+import { getDateTime } from "./../../shared/utils";
 
 const Mutation: MutationResolvers<ResolverContext> = {
   async createPost(_parent, args, { session }) {

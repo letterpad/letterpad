@@ -12,7 +12,7 @@ import {
 import { getSession } from "next-auth/client";
 import { initializeApollo } from "@/graphql/apollo";
 import { SettingsDocument } from "@/graphql/queries/queries.graphql";
-import logger from "../../../shared/logger";
+import logger from "./../../shared/logger";
 import path from "path";
 import multer from "multer";
 import { uploadToCloudinary } from "./providers/cloudinary";

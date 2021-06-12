@@ -7,12 +7,12 @@ import {
   PostStatusOptions,
   SortBy,
   PostTypes,
+  QueryResolvers,
 } from "@/__generated__/__types__";
-import { QueryResolvers } from "../__types__";
 import { ResolverContext } from "../apollo";
 import { decrypt } from "../utils/crypto";
 import models from "../db/models";
-import logger from "../../../shared/logger";
+import logger from "./../../shared/logger";
 import debug from "debug";
 import { getHtmlFromMarkdown } from "letterpad-editor/dist/mdToHtml";
 import { addGalleryWrapper } from "../utils/addGalleryWrappr";

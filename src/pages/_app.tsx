@@ -6,11 +6,11 @@ import { useRouter } from "next/router";
 import nextConfig from "../../next.config";
 import type { Page } from "../page";
 import { PropsWithChildren, useEffect, useState } from "react";
-import { Setting } from "@/__generated__/queries/queries.graphql";
+import { Setting } from "@/__generated__/__types__";
 import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import "lazysizes";
 import Main from "@/components/main";
-import { getSettings, initPageProgress } from "../../shared/utils";
+import { getSettings, initPageProgress } from "./../shared/utils";
 import dynamic from "next/dynamic";
 
 import "../../styles/globals.css";

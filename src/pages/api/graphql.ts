@@ -3,7 +3,7 @@ import { getSession } from "next-auth/client";
 import { ApolloServer } from "apollo-server-micro";
 import models from "@/graphql/db/models";
 import { schema } from "@/graphql/schema";
-import logger from "shared/logger";
+import logger from "../../shared/logger";
 
 const authHeaderPrefix = "Basic ";
 const apolloServer = new ApolloServer({

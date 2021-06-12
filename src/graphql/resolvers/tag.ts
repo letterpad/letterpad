@@ -1,7 +1,6 @@
 import { GroupOption, Includeable, Order } from "sequelize";
-import { MutationResolvers } from "./../../../__generated__/src/graphql/__types__";
 import { ResolverContext } from "../apollo";
-import { QueryResolvers } from "@/__generated__/__types__";
+import { QueryResolvers, MutationResolvers } from "@/__generated__/__types__";
 import models from "../db/models";
 
 const Query: QueryResolvers<ResolverContext> = {

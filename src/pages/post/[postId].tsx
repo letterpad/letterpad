@@ -2,7 +2,6 @@ import {
   PostDocument,
   PostQuery,
   PostQueryVariables,
-  InputUpdatePost,
 } from "@/__generated__/queries/queries.graphql";
 import {
   UpdatePostDocument,
@@ -14,11 +13,14 @@ import { initializeApollo } from "@/graphql/apollo";
 import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import Actions from "@/components/post-meta";
-import { Image, PostStatusOptions, PostTypes } from "@/__generated__/__types__";
+import {
+  Image,
+  PostStatusOptions,
+  PostTypes,
+  InputUpdatePost,
+} from "@/__generated__/__types__";
 import { useEffect, useState } from "react";
-import { uploadFile } from "../../../shared/upload";
-import { removeTypenames } from "../../../shared/removeTypenames";
-import { debounce } from "../../../shared/utils";
+import { debounce, uploadFile, removeTypenames } from "./../../shared/utils";
 import FileExplorer from "@/components/file-explorer";
 import withAuthCheck from "../../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
@@ -45,7 +47,6 @@ const updatePostRequest = async (
     },
   });
 };
-
 const debounceUpdatePost = debounce(updatePostRequest, 1000);
 
 let editor;
