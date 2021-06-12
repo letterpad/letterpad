@@ -6,7 +6,7 @@ import {
   InputUpdatePost,
   PostStatusOptions,
   PostTypes,
-} from "@/__generated__/type-defs.graphqls";
+} from "@/__generated__/__types__";
 import Tags from "./tags";
 import { PostQuery } from "@/__generated__/queries/queries.graphql";
 import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
@@ -79,7 +79,7 @@ const Actions = ({ post, setPostAttribute, deletePost, postHash }: IProps) => {
       >
         <Space direction="vertical" size="middle">
           <Checkbox
-            onChange={e =>
+            onChange={(e) =>
               setPostAttribute({
                 status: e.target.checked
                   ? PostStatusOptions.Published
@@ -94,7 +94,7 @@ const Actions = ({ post, setPostAttribute, deletePost, postHash }: IProps) => {
           </Checkbox>
           {isPost && (
             <Checkbox
-              onChange={e => setPostAttribute({ featured: e.target.checked })}
+              onChange={(e) => setPostAttribute({ featured: e.target.checked })}
               checked={post.featured}
             >
               {post.featured ? "Remove from featured" : "Mark as featured post"}
@@ -106,14 +106,14 @@ const Actions = ({ post, setPostAttribute, deletePost, postHash }: IProps) => {
               showCount
               rows={3}
               maxLength={160}
-              onChange={e => setPostAttribute({ excerpt: e.target.value })}
+              onChange={(e) => setPostAttribute({ excerpt: e.target.value })}
               value={post.excerpt}
             />
           </div>
           <div>
             <label>Path</label>
             <Input
-              onChange={e => setPostAttribute({ slug: e.target.value })}
+              onChange={(e) => setPostAttribute({ slug: e.target.value })}
               value={post.slug}
             />
           </div>

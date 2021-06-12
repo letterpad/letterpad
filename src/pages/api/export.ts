@@ -4,7 +4,7 @@ import fs from "fs";
 import models from "@/graphql/db/models";
 import { Author } from "@/graphql/db/models/author";
 import { getSession } from "next-auth/client";
-import { Role } from "@/__generated__/type-defs.graphqls";
+import { Role } from "@/__generated__/__types__";
 
 const Export = async (req, res) => {
   const _session = await getSession({ req });

@@ -1,6 +1,6 @@
-import { Setting } from "./../__generated__/src/graphql/type-defs.graphqls";
+import { Setting } from "./../__generated__/src/graphql/__types__";
 import { SessionData } from "@/graphql/types";
-import { Navigation } from "@/__generated__/type-defs.graphqls";
+import { Navigation } from "@/__generated__/__types__";
 
 export type Optional<T> = { [P in keyof T]?: T[P] };
 declare global {

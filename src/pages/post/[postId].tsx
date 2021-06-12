@@ -14,11 +14,7 @@ import { initializeApollo } from "@/graphql/apollo";
 import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import Actions from "@/components/post-meta";
-import {
-  Image,
-  PostStatusOptions,
-  PostTypes,
-} from "@/__generated__/type-defs.graphqls";
+import { Image, PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { useEffect, useState } from "react";
 import { uploadFile } from "../../../shared/upload";
 import { removeTypenames } from "../../../shared/removeTypenames";
@@ -66,12 +62,12 @@ function Post() {
   useEffect(() => {
     const { postId } = router.query;
     if (!postId) return;
-    getPost(parseInt(postId as string)).then(data => {
+    getPost(parseInt(postId as string)).then((data) => {
       if (data.__typename === "Post") {
         setPost(data);
 
         fetch(nextConfig.basePath + "/api/getPostHash?id=" + data.id)
-          .then(res => res.text())
+          .then((res) => res.text())
           .then(setPostHash);
       }
 
@@ -120,7 +116,7 @@ function Post() {
     [url: string]: Image & { alt: string };
   }) => {
     const urls = Object.keys(images);
-    const insertPromises = urls.map(url => {
+    const insertPromises = urls.map((url) => {
       return new Promise((resolve, reject) => {
         try {
           editor.insertImageUrl(url, images[url].alt || "");
@@ -139,7 +135,7 @@ function Post() {
 
   const isPost = post.type === PostTypes.Post;
 
-  const setRef = _editor => {
+  const setRef = (_editor) => {
     editor = _editor;
   };
 
@@ -186,10 +182,10 @@ function Post() {
             autoSize={true}
             placeholder="Enter a title"
             bordered={false}
-            onChange={e => {
+            onChange={(e) => {
               setPostAttribute({ title: e.target.value });
             }}
-            onKeyPress={e => {
+            onKeyPress={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
                 editor.focus();
@@ -203,7 +199,7 @@ function Post() {
             uploadImage={(file: File) => uploadImage([file])}
             defaultValue={post.md_draft || post.md}
             tooltip={_Tooltip}
-            onChange={change => {
+            onChange={(change) => {
               const { html, markdown } = change();
               if (markdown !== post.md) {
                 setPostAttribute({ html, md: markdown });

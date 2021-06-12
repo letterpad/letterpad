@@ -2,7 +2,7 @@ import { MenuOutlined } from "@ant-design/icons";
 import { Button, Drawer } from "antd";
 import Layout, { Footer } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
-import { Setting, Stats } from "@/__generated__/type-defs.graphqls";
+import { Setting, Stats } from "@/__generated__/__types__";
 import {
   StatsQuery,
   StatsQueryVariables,
@@ -30,7 +30,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
   const [user] = useSession();
 
   useEffect(() => {
-    getStats().then(res => {
+    getStats().then((res) => {
       if (res?.__typename === "Stats") {
         setStats(res);
       }
@@ -43,10 +43,10 @@ const CustomLayout = ({ children, settings }: IProps) => {
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
-        onBreakpoint={broken => {
+        onBreakpoint={(broken) => {
           console.log(broken);
         }}
-        onCollapse={isCollapsed => {
+        onCollapse={(isCollapsed) => {
           setCollapsed(isCollapsed);
           if (!isCollapsed) {
             setVisible(false);

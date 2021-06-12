@@ -5,7 +5,7 @@ import type {
   Setting as SettingType,
   InputImage,
   Navigation,
-} from "@/__generated__/type-defs.graphqls";
+} from "@/__generated__/__types__";
 import fs from "fs";
 import path from "path";
 import models from "../db/models";
@@ -68,7 +68,7 @@ const Query: QueryResolvers<ResolverContext> = {
         message: "Setting related to author:null not found",
       };
 
-    SECURE_SETTINGS.forEach(securedKey => {
+    SECURE_SETTINGS.forEach((securedKey) => {
       if (!session?.user.id) {
         //@ts-ignore
         setting.setDataValue(securedKey, "");
@@ -92,7 +92,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (!author) return settingsData;
     const _setting = await author.getSetting();
 
-    let promises = args.options.map(setting => {
+    let promises = args.options.map((setting) => {
       const option = Object.keys(setting)[0] as keyof Omit<
         SettingType,
         "__typename"
@@ -111,7 +111,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
       return models.Setting.update(
         { [option]: value },
-        { where: { id: _setting.id }, logging: true },
+        { where: { id: _setting.id } },
       );
     });
 
@@ -134,7 +134,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
 export default { Query, Mutation, Setting };
 
 function getMenuWithSanitizedSlug(menu: Navigation[]) {
-  return menu.map(item => {
+  return menu.map((item) => {
     switch (item.type) {
       case "tag":
       case "page":

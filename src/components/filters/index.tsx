@@ -1,9 +1,6 @@
 import { Select } from "antd";
 
-import {
-  PostStatusOptions,
-  SortBy,
-} from "@/__generated__/queries/queries.graphql";
+import { PostStatusOptions, SortBy } from "@/__generated__/__types__";
 
 interface IProps {
   onStatusChange?: (status: PostStatusOptions) => void;
@@ -34,7 +31,7 @@ const Filters = ({
             allowClear
             size="middle"
           >
-            {Object.keys(PostStatusOptions).map(key => {
+            {Object.keys(PostStatusOptions).map((key) => {
               return (
                 <Option key={key} value={PostStatusOptions[key]}>
                   {key}
@@ -51,7 +48,7 @@ const Filters = ({
             allowClear
             size="middle"
           >
-            {Object.keys(SortBy).map(key => {
+            {Object.keys(SortBy).map((key) => {
               return (
                 <Option key={key} value={SortBy[key]}>
                   {key}
@@ -68,7 +65,7 @@ const Filters = ({
             allowClear
             size="middle"
           >
-            {allTags.map(tag => {
+            {allTags.map((tag) => {
               return (
                 <Option key={tag.name} value={tag.slug}>
                   {tag.name}

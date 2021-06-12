@@ -1,6 +1,6 @@
 import { NextApiRequest } from "next";
-import { Author } from "@/__generated__/type-defs.graphqls";
-import { Post } from "./type-defs.graphqls";
+import { Author } from "@/__generated__/__types__";
+import { Post } from "./__types__";
 
 export enum ROLES {
   ADMIN = "ADMIN",

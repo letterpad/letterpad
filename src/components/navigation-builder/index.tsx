@@ -5,7 +5,7 @@ import { useNavigationData } from "./data.hook";
 import {
   Navigation as NavigationItemType,
   NavigationType,
-} from "@/__generated__/type-defs.graphqls";
+} from "@/__generated__/__types__";
 import { Button } from "antd";
 import SortableList from "./SortableList";
 import { IMenuWithError, INavigationBuilderProps } from "shared/types";
@@ -26,7 +26,7 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
   };
 
   const generareId = () => {
-    const ids = menu.map(item => item.id) as number[];
+    const ids = menu.map((item) => item.id) as number[];
     const id = Math.max.apply(null, ids);
 
     return id + 1;
@@ -51,7 +51,7 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
     updateOption(prepareForBackend(newMenu));
   };
 
-  const onRemove = async index => {
+  const onRemove = async (index) => {
     if (menu.length === 1) {
       return alert("Navigation menu cannot be empty");
     }
@@ -97,7 +97,7 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
 export default Navigation;
 
 function prepareForBackend(newMenu: NavigationItemType[]) {
-  return newMenu.map(item => {
+  return newMenu.map((item) => {
     const { label, slug, original_name, type } = item;
     return { label, slug, original_name, type };
   });

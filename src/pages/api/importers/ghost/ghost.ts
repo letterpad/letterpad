@@ -1,10 +1,7 @@
 import { Optional } from "../../../../../shared/types";
 import { settingsData } from "@/graphql/db/models/setting";
 import { SessionData } from "@/graphql/types";
-import {
-  PostStatusOptions,
-  PostTypes,
-} from "@/__generated__/type-defs.graphqls";
+import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import {
   IImportExportData,
   IAuthorData,
@@ -29,7 +26,7 @@ export function convertGhostToLetterpad(
   }
   const postTagsMapper = getPostTagsMapper(data.db[0].data);
 
-  data.db[0].data.posts.forEach(post => {
+  data.db[0].data.posts.forEach((post) => {
     const md = turndownService.turndown(post.html);
     posts.push({
       title: post.title || "",
@@ -69,7 +66,7 @@ export function convertGhostToLetterpad(
 function getPostTagsMapper(data: IGhostDb["data"]) {
   const mapper: { [id: number]: ITagSanitized[] } = {};
 
-  data.posts_tags.forEach(relation => {
+  data.posts_tags.forEach((relation) => {
     if (!mapper[relation.post_id]) {
       mapper[relation.post_id] = [
         {
@@ -81,8 +78,8 @@ function getPostTagsMapper(data: IGhostDb["data"]) {
     }
     const tagId = relation.tag_id;
     const tag = data.tags
-      .filter(_tag => _tag.id === tagId)
-      .map(_tag => {
+      .filter((_tag) => _tag.id === tagId)
+      .map((_tag) => {
         return {
           slug: _tag.slug,
           name: _tag.name,
@@ -123,7 +120,7 @@ function getAuthor(
 
 function getSetting(setting: IGhostSettings[]): IAuthorData["setting"] {
   const ghostSettingObj: Optional<IAuthorData["setting"]> = {};
-  setting.forEach(item => {
+  setting.forEach((item) => {
     if (item.key === "cover") {
       ghostSettingObj.banner = {
         src: item.value,

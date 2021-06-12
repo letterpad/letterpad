@@ -1,11 +1,10 @@
 import withAuthCheck from "../hoc/withAuth";
 import {
   PostsDocument,
-  PostsFilters,
   PostsQuery,
   PostsQueryVariables,
-  PostTypes,
 } from "@/__generated__/queries/queries.graphql";
+import { PostsFilters, PostTypes } from "@/__generated__/__types__";
 import { useRouter } from "next/router";
 import { initializeApollo } from "@/graphql/apollo";
 import { Button, Layout, PageHeader, Table } from "antd";
@@ -36,7 +35,7 @@ function Pages() {
     const posts = await fetchPostsFromAPI(args);
     setLoading(false);
     if (posts.__typename === "PostsNode") {
-      const rows = posts.rows.map(post => {
+      const rows = posts.rows.map((post) => {
         return {
           ...post,
           key: post.id,
@@ -75,14 +74,14 @@ function Pages() {
       <Content>
         <div className="site-layout-background" style={{ padding: 16 }}>
           <Filters
-            onStatusChange={status => setFilters({ ...filters, status })}
-            onOrderChange={sortBy => setFilters({ ...filters, sortBy })}
+            onStatusChange={(status) => setFilters({ ...filters, status })}
+            onOrderChange={(sortBy) => setFilters({ ...filters, sortBy })}
           />
           <Table
             columns={columns}
             dataSource={source}
             loading={loading}
-            onRow={row => ({
+            onRow={(row) => ({
               onClick: () => router.push("/post/" + row.id),
             })}
           />

@@ -9,7 +9,7 @@ import {
   QueryResolvers,
   Social,
   Author as AuthorType,
-} from "@/__generated__/type-defs.graphqls";
+} from "@/__generated__/__types__";
 import { ResolverContext } from "../apollo";
 import models from "../db/models";
 import bcrypt from "bcryptjs";
@@ -47,7 +47,7 @@ const Author = {
     try {
       const role = await author.getRole();
       const permissions = await role.getPermissions();
-      return permissions.map(p => p.name);
+      return permissions.map((p) => p.name);
     } catch (e) {
       throw new Error(e);
     }

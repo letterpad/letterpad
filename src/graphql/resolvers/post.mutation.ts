@@ -2,7 +2,7 @@ import {
   MutationResolvers,
   PostStatusOptions,
   PostTypes,
-} from "@/__generated__/type-defs.graphqls";
+} from "@/__generated__/__types__";
 import { PostAttributes } from "../db/models/post";
 import { ResolverContext } from "../apollo";
 import reading_time from "reading-time";
@@ -333,7 +333,7 @@ async function updateMenuOnTitleChange(
 
   const isPage = postType === PostTypes.Page;
 
-  const updatedMenu = setting.menu.map(item => {
+  const updatedMenu = setting.menu.map((item) => {
     if (title) {
       if (isPage && item.type === "page") {
         item.original_name = title;

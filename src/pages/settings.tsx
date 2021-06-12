@@ -10,7 +10,7 @@ import {
   Setting,
 } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
-import { OptionInputType } from "@/__generated__/type-defs.graphqls";
+import { OptionInputType } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
 import Navigation from "@/components/navigation-builder";
 import Head from "next/head";
@@ -81,7 +81,7 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.site_title}
                     onBlur={updateSettings}
-                    onChange={e => onChange("site_title", e.target.value)}
+                    onChange={(e) => onChange("site_title", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Site Tagline">
@@ -89,7 +89,7 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.site_tagline}
                     onBlur={updateSettings}
-                    onChange={e => onChange("site_tagline", e.target.value)}
+                    onChange={(e) => onChange("site_tagline", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Site Email">
@@ -97,7 +97,7 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.site_email}
                     onBlur={updateSettings}
-                    onChange={e => onChange("site_email", e.target.value)}
+                    onChange={(e) => onChange("site_email", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Short Description">
@@ -105,7 +105,9 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.site_description}
                     onBlur={updateSettings}
-                    onChange={e => onChange("site_description", e.target.value)}
+                    onChange={(e) =>
+                      onChange("site_description", e.target.value)
+                    }
                   />
                 </Form.Item>
                 <Form.Item label="Site Url">
@@ -113,7 +115,7 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.site_url}
                     onBlur={updateSettings}
-                    onChange={e => onChange("site_url", e.target.value)}
+                    onChange={(e) => onChange("site_url", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Footer Description">
@@ -121,7 +123,7 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.site_footer}
                     onBlur={updateSettings}
-                    onChange={e => onChange("site_footer", e.target.value)}
+                    onChange={(e) => onChange("site_footer", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Google Analytics">
@@ -129,7 +131,9 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.google_analytics}
                     onBlur={updateSettings}
-                    onChange={e => onChange("google_analytics", e.target.value)}
+                    onChange={(e) =>
+                      onChange("google_analytics", e.target.value)
+                    }
                   />
                 </Form.Item>
               </Panel>
@@ -185,13 +189,13 @@ function Settings(props: { settings: Setting }) {
                   <div id="css-editor">
                     <Editor
                       value={settings.css}
-                      onValueChange={code => {
+                      onValueChange={(code) => {
                         onChange("css", code);
                       }}
                       className="hljs"
                       placeholder="Add css to customise your website"
                       // highlight={code => highlight(code, languages.js)}
-                      highlight={code => {
+                      highlight={(code) => {
                         console.log(
                           'highlight.highlight(code, { language: "css" }).value :>> ',
                           highlight.highlight(code, { language: "css" }).value,
@@ -225,7 +229,7 @@ function Settings(props: { settings: Setting }) {
               <Panel header="Navigation" key="1">
                 <Navigation
                   menuData={settings.menu}
-                  updateOption={option => onChange("menu", option)}
+                  updateOption={(option) => onChange("menu", option)}
                 />
               </Panel>
             </Collapse>
@@ -236,7 +240,7 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.social_twitter}
                     onBlur={updateSettings}
-                    onChange={e => onChange("social_twitter", e.target.value)}
+                    onChange={(e) => onChange("social_twitter", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Facebook">
@@ -244,7 +248,9 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.social_facebook}
                     onBlur={updateSettings}
-                    onChange={e => onChange("social_facebook", e.target.value)}
+                    onChange={(e) =>
+                      onChange("social_facebook", e.target.value)
+                    }
                   />
                 </Form.Item>
                 <Form.Item label="Instagram">
@@ -252,7 +258,9 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.social_instagram}
                     onBlur={updateSettings}
-                    onChange={e => onChange("social_instagram", e.target.value)}
+                    onChange={(e) =>
+                      onChange("social_instagram", e.target.value)
+                    }
                   />
                 </Form.Item>
                 <Form.Item label="Github">
@@ -260,7 +268,7 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.social_github}
                     onBlur={updateSettings}
-                    onChange={e => onChange("social_github", e.target.value)}
+                    onChange={(e) => onChange("social_github", e.target.value)}
                   />
                 </Form.Item>
               </Panel>
@@ -272,7 +280,9 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.cloudinary_name}
                     onBlur={updateSettings}
-                    onChange={e => onChange("cloudinary_name", e.target.value)}
+                    onChange={(e) =>
+                      onChange("cloudinary_name", e.target.value)
+                    }
                   />
                 </Form.Item>
                 <Form.Item label="Cloudinary Key">
@@ -280,7 +290,7 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.cloudinary_key}
                     onBlur={updateSettings}
-                    onChange={e => onChange("cloudinary_key", e.target.value)}
+                    onChange={(e) => onChange("cloudinary_key", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Cloudinary Secret">
@@ -288,7 +298,7 @@ function Settings(props: { settings: Setting }) {
                     size="middle"
                     value={settings.cloudinary_secret}
                     onBlur={updateSettings}
-                    onChange={e =>
+                    onChange={(e) =>
                       onChange("cloudinary_secret", e.target.value)
                     }
                   />

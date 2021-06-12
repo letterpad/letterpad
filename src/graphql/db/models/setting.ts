@@ -1,11 +1,7 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import restoreSequelizeAttributesOnClass from "./_tooling";
 import { Author } from "./author";
-import {
-  Image,
-  Navigation,
-  NavigationType,
-} from "@/__generated__/type-defs.graphqls";
+import { Image, Navigation, NavigationType } from "@/__generated__/__types__";
 
 export interface SettingAttributes {
   id: number;
