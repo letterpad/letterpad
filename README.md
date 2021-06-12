@@ -1,6 +1,6 @@
 Letterpad Admin is the dashboard for publishing blogs.
 
-## Running Letterpad on Production Mode
+## Running Letterpad Admin on Production Mode
 
 There are few things that you should know before running letterpad in a production environment.
 
@@ -58,3 +58,7 @@ To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+## Letterpad Client
+
+We also have a letterpad client which you can find in [this repository](https://github.com/letterpad/letterpad-client).
