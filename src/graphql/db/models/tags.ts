@@ -10,7 +10,7 @@ import {
   Optional,
 } from "sequelize";
 import restoreSequelizeAttributesOnClass from "./_tooling";
-import { PostsResponse } from "@/__generated__/queries/mutations.graphql";
+import { PostsResponse } from "@/__generated__/__types__";
 
 export interface TagsAttributes {
   id: number;

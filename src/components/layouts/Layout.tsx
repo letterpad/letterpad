@@ -71,7 +71,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
           marginLeft: collapsed ? 0 : siteConfig.sidebar_width,
         }}
       >
-        <nav className="navbar">
+        <nav className="navbar ">
           <StyledDrawer
             placement="left"
             width={200}
@@ -79,9 +79,11 @@ const CustomLayout = ({ children, settings }: IProps) => {
             onClose={() => setVisible(false)}
             visible={visible}
           >
-            <Logo src={settings.site_logo.src} />
-            <Navigation stats={stats} />
-            <ThemeSwitcher />
+            <div className="ant-dropdown-menu-dark" style={{ height: "100%" }}>
+              <Logo src={settings.site_logo.src} />
+              <Navigation stats={stats} />
+              <ThemeSwitcher />
+            </div>
           </StyledDrawer>
         </nav>
 
@@ -112,21 +114,20 @@ const CustomLayout = ({ children, settings }: IProps) => {
             <a href={settings.site_url} target="_blank">
               View Site
             </a>
-            &nbsp;&nbsp; •&nbsp;&nbsp;Welcome back {user?.user?.name}
+            &nbsp;&nbsp; •&nbsp;&nbsp;{user?.user?.name}
           </div>
         </div>
         <div style={{ minHeight: "calc(100vh - 152px)" }}>{children}</div>
-        <StyledFooter
+        <Footer
           style={{
             textAlign: "center",
-            background: "@layout-header-background",
           }}
         >
           Letterpad <br />
           <small>
             {/* Client Token: <strong>{settings.client_token}</strong> */}
           </small>
-        </StyledFooter>
+        </Footer>
       </Layout>
     </Layout>
   );
@@ -145,14 +146,7 @@ async function getStats() {
 }
 
 const StyledDrawer = styled(Drawer)`
-  .ant-drawer-content {
-    background: @layout-sider-background;
-  }
   .ant-drawer-body {
     padding: 0px;
   }
-`;
-
-const StyledFooter = styled(Footer)`
-  background: @layout-sider-background;
 `;

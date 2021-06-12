@@ -1,11 +1,14 @@
 import { initializeApollo } from "@/graphql/apollo";
+import { IMediaUploadResult } from "@/graphql/types";
 import {
   SettingsDocument,
   SettingsQuery,
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
+import nextConfig from "next.config";
 import Router from "next/router";
 import NProgress from "nprogress";
+import { IUploadFileProps } from "./types";
 
 export const getReadableDate = (timestamp: Date) => {
   return new Date(timestamp).toLocaleString("en-us", {
@@ -42,7 +45,7 @@ export function debounce<Params extends any[]>(
 
   return (...args: Params) => {
     clearTimeout(timer);
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       timer = setTimeout(() => resolve(func(...args)), timeout);
     });
   };
@@ -53,7 +56,7 @@ export function getBase64(file: File) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
   });
 }
 
@@ -64,9 +67,49 @@ export async function getSettings() {
   });
 }
 
+export const uploadFile = async ({
+  files,
+  type,
+}: IUploadFileProps): Promise<IMediaUploadResult[]> => {
+  const data: FormData = new FormData();
+  if (type) {
+    data.append("type", type);
+  }
+
+  for (let i = 0; i < files.length; i++) {
+    data.append(`file`, files[i]);
+  }
+
+  return fetch(nextConfig.basePath + "/api/uploadApi", {
+    method: "post",
+    body: data,
+    headers: {
+      authorization: localStorage["next-auth.session-token"],
+    },
+  })
+    .then((data) => {
+      return data.json();
+    })
+    .then(async (image) => {
+      return image;
+    });
+};
+
+export function removeTypenames<T>(data: T): Omit<T, "__typename"> {
+  const omitTypename = <K extends string>(key: K, value: T) => {
+    if (typeof key === "string" && key === "__typename") {
+      return undefined;
+    }
+    return value;
+  };
+
+  return JSON.parse(JSON.stringify(data), omitTypename);
+}
+
+
 export function initPageProgress() {
   NProgress.configure({ showSpinner: true });
-  Router.events.on("routeChangeStart", _url => {
+  Router.events.on("routeChangeStart", (_url) => {
     NProgress.start();
   });
   Router.events.on("routeChangeComplete", () => NProgress.done());

@@ -1,5 +1,5 @@
-import logger from "../../../shared/logger";
-const ENCRYPTION_KEY = process.env.SECRET_KEY as string;
+import logger from "./../../shared/logger";
+const ENCRYPTION_KEY = process.env.SECRET_KEY;
 
 if (!ENCRYPTION_KEY) {
   logger.error("Missong SECRET_KEY in .env file");

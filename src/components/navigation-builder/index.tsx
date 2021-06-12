@@ -8,7 +8,7 @@ import {
 } from "@/__generated__/__types__";
 import { Button } from "antd";
 import SortableList from "./SortableList";
-import { IMenuWithError, INavigationBuilderProps } from "shared/types";
+import { IMenuWithError, INavigationBuilderProps } from "../../shared/types";
 
 const Navigation: React.FC<INavigationBuilderProps> = ({
   menuData,

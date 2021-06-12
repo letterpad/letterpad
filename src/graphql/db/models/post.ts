@@ -13,10 +13,14 @@ import {
   Optional,
   BelongsToGetAssociationMixin,
 } from "sequelize";
-import { PostStatusOptions, PostTypes } from "../../__types__";
+
 import restoreSequelizeAttributesOnClass from "./_tooling";
 import { getReadableDate } from "../../resolvers/helpers";
-import { TagsNode } from "@/__generated__/__types__";
+import {
+  TagsNode,
+  PostStatusOptions,
+  PostTypes,
+} from "@/__generated__/__types__";
 
 export interface PostAttributes {
   id: number;

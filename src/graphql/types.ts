@@ -1,6 +1,5 @@
 import { NextApiRequest } from "next";
-import { Author } from "@/__generated__/__types__";
-import { Post } from "./__types__";
+import { Author, Post } from "@/__generated__/__types__";
 
 export enum ROLES {
   ADMIN = "ADMIN",
@@ -60,7 +59,7 @@ interface IImageAttrs {
   src: string;
   sizes: string;
   "data-srcset": string;
-  srcSet: string[];
+  srcSet: string;
   width: string;
   loading: "lazy";
 }

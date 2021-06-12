@@ -7,10 +7,9 @@ import {
   UpdateOptionsMutation,
   UpdateOptionsMutationVariables,
   UpdateOptionsDocument,
-  Setting,
 } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
-import { OptionInputType } from "@/__generated__/__types__";
+import { Setting, OptionInputType } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
 import Navigation from "@/components/navigation-builder";
 import Head from "next/head";

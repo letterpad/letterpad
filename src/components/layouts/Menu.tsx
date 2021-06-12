@@ -53,7 +53,7 @@ const Navigation = ({ stats }) => {
         key={menuItems["/pages"]}
         icon={<FileTextOutlined />}
         onClick={() => router.push("/pages")}
-        isSelected={true}
+        // isSelected={true}
       >
         <span>Pages</span>
         <span style={{ ...countStyle, position: "absolute" }}>

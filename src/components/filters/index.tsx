@@ -25,7 +25,7 @@ const Filters = ({
       <>
         {hasStatusChange && (
           <Select
-            style={{ width: 110 }}
+            style={{ width: 105 }}
             onChange={onStatusChange}
             placeholder="Status"
             allowClear
@@ -59,7 +59,7 @@ const Filters = ({
         )}
         {hasTagChange && allTags && (
           <Select
-            style={{ width: 120 }}
+            style={{ width: 118 }}
             onChange={onTagChange}
             placeholder="By Tag"
             allowClear
