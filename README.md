@@ -1,5 +1,11 @@
 Letterpad Admin is the dashboard for publishing blogs.
 
+## Demo: 
+https://letterpad.app/admin/login
+
+User Id: demo@demo.com
+Password: demo
+
 ## Running Letterpad Admin on Production Mode
 
 There are few things that you should know before running letterpad in a production environment.
@@ -62,3 +68,7 @@ To learn more about Next.js, take a look at the following resources:
 ## Letterpad Client
 
 We also have a letterpad client which you can find in [this repository](https://github.com/letterpad/letterpad-client).
+Demo: https://demo.letterpad.app
+
+## Contribute
+You are welcome to contribute to the project. If you find any bugs, please create an issue or a pull request.
