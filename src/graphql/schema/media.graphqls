@@ -1,0 +1,54 @@
+type Media {
+  id: Int!
+  authorId: Int
+  url: String!
+  createdAt: Date!
+  name: String!
+  width: Int!
+  height: Int!
+  description: String!
+}
+
+type MediaNode {
+  count: Int!
+  rows: [Media!]!
+}
+
+type MediaDeleteResult {
+  ok: Boolean!
+}
+
+type MediaUpdateResult {
+  ok: Boolean!
+}
+
+input MediaFilters {
+  id: Int
+  cursor: Int
+  limit: Int
+  page: Int
+  authorId: Int
+}
+
+type Query {
+  media(filters: MediaFilters): MediaNode!
+}
+
+type MediaError implements LetterpadError {
+  message: String!
+}
+
+input InputUpdateMedia {
+  id: Int!
+  name: String
+  description: String
+}
+
+union MediaDeleteResponse = MediaDeleteResult | MediaError
+union MediaUpdateResponse = MediaUpdateResult | MediaError
+
+type Mutation {
+  #   insertMedia(url: String): Media
+  deleteMedia(ids: [Int!]!): MediaDeleteResponse
+  updateMedia(data: InputUpdateMedia!): MediaUpdateResponse
+}

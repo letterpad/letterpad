@@ -1,0 +1,177 @@
+type Post {
+  # Primary key
+  id: Int!
+  # Title of the post
+  title: String!
+  # Html content of the post
+  html: String!
+  # Markdown content of the post
+  md: String!
+  # Draft for republishing content
+  md_draft: String!
+  # Author information of the post
+  author: Author!
+  # A breif summary of the post
+  excerpt: String!
+  # Convert image of the post
+  cover_image: Image!
+  # Type of the post. Can be "page" or "post"
+  type: PostTypes!
+  # Status of the post
+  status: PostStatusOptions!
+  # Featured post
+  featured: Boolean!
+  # The uri of the post
+  slug: String!
+  # The creation date of the post
+  createdAt: Date!
+  # The published date of the post
+  publishedAt: Date!
+  # The date scheduled to published the post
+  scheduledAt: Date!
+  # Last updated date of the post
+  updatedAt: Date!
+  # Reading time of the post in minutes
+  reading_time: String!
+  # Tags of the post
+  tags: [Tags!]!
+}
+
+enum PostStatusOptions {
+  published
+  draft
+  trashed
+}
+
+input PostFilters {
+  id: Int
+  slug: String
+  featured: Boolean
+  previewHash: String
+  status: PostStatusOptions
+  type: PostTypes
+}
+
+enum PostTypes {
+  post
+  page
+}
+
+enum SortBy {
+  ASC
+  DESC
+}
+
+input PostsFilters {
+  id: Int
+  type: PostTypes
+  slug: String
+  featured: Boolean
+  previewHash: String
+  status: PostStatusOptions
+  # name of author. entering  this field will ignore tagSlug and tag
+  author: String
+  # url of a tag. entering this field will ignore tag
+  tagSlug: String
+  # name of a tag.
+  tag: String
+  cursor: Int
+  page: Int
+  offset: Int
+  limit: Int
+  sortBy: SortBy
+}
+
+type PostsNode {
+  count: Int!
+  rows: [Post!]!
+}
+
+type PostCountsByStatus {
+  published: Int!
+  drafts: Int!
+}
+
+type Stats {
+  posts: PostCountsByStatus!
+  pages: PostCountsByStatus!
+  tags: Int!
+  media: Int!
+}
+
+input InputImage {
+  src: String!
+  width: Int
+  height: Int
+}
+
+input TagsInputType {
+  id: Int!
+  name: String!
+  slug: String!
+  desc: String!
+}
+
+input InputCreatePost {
+  title: String
+  html: String
+  md: String
+  # authorId: Int
+  excerpt: String
+  cover_image: InputImage
+  type: PostTypes
+  featured: Boolean
+  status: PostStatusOptions
+  slug: String
+  tags: [TagsInputType]
+}
+
+input InputUpdatePost {
+  id: Int!
+  title: String
+  html: String
+  md: String
+  md_draft: String
+  featured: Boolean
+  excerpt: String
+  cover_image: InputImage
+  publishedAt: Date
+  scheduledAt: Date
+  updatedAt: Date
+  type: PostTypes
+  status: PostStatusOptions
+  slug: String
+  tags: [TagsInputType!]
+}
+
+type PostError implements LetterpadError {
+  message: String!
+}
+
+type StatsError implements LetterpadError {
+  message: String!
+}
+
+union PostResponse = Post | PostError
+
+union PostsResponse = PostsNode | PostError
+
+union CreatePostResponse = Post | PostError
+
+union UpdatePostResponse = Post | PostError
+
+union StatsResponse = Stats | StatsError
+
+type Query {
+  post(filters: PostFilters): PostResponse!
+  posts(filters: PostsFilters): PostsResponse!
+  stats: StatsResponse
+}
+
+type Mutation {
+  createPost(data: InputCreatePost): CreatePostResponse!
+
+  updatePost(data: InputUpdatePost): UpdatePostResponse!
+
+  # deletePosts(ids: [Int!], deleteFromSystem: Boolean): Response!
+}

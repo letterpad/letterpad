@@ -1,0 +1,54 @@
+name: Deployment Workflow
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  job_one:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - run: yarn install
+
+      - name: Run Build
+        run: yarn run build
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_LP_KEY }}
+
+      - name: Type check
+        run: yarn type-check
+
+      - name: Deploy to Google
+        uses: appleboy/scp-action@master
+        with:
+          host: 130.211.80.253
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          source: "."
+          target: /var/www/html/letterpad-admin
+
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: 130.211.80.253
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            pm2 restart letterpad-admin

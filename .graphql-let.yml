@@ -1,0 +1,10 @@
+schema: "src/graphql/schema/**/*.graphqls"
+schemaEntrypoint: "src/graphql/type-defs.graphqls"
+documents: "**/*.graphql"
+plugins:
+  - typescript
+  - typescript-operations
+  - typescript-react-apollo
+cacheDir: __generated__
+config:
+  maybeValue: T

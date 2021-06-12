@@ -1,0 +1,22 @@
+fragment Partial on Post {
+  id
+  title
+  html
+  excerpt
+  featured
+  md
+  md_draft
+  type
+  slug
+  status
+  createdAt
+  publishedAt
+  scheduledAt
+  updatedAt
+  reading_time
+  cover_image {
+    src
+    width
+    height
+  }
+}
