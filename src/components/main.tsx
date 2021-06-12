@@ -1,4 +1,4 @@
-import { Setting } from "@/__generated__/type-defs.graphqls";
+import { Setting } from "@/__generated__/__types__";
 import {
   ApolloClient,
   ApolloProvider,

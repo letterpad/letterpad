@@ -1,9 +1,5 @@
 import { getImageAttrs } from "@/graphql/utils/imageAttributs";
-import {
-  Image,
-  PostStatusOptions,
-  Tags,
-} from "@/__generated__/type-defs.graphqls";
+import { Image, PostStatusOptions, Tags } from "@/__generated__/__types__";
 import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 
 export const columns = [
@@ -60,6 +56,6 @@ export const postsColumns = [
     dataIndex: "tags",
     key: "tags",
     responsive: ["md"] as Breakpoint[],
-    render: (tags: Tags[]) => tags.map(tag => tag.name).join(", "),
+    render: (tags: Tags[]) => tags.map((tag) => tag.name).join(", "),
   },
 ];

@@ -5,6 +5,7 @@
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],
       "@/__generated__/*": ["__generated__/src/graphql/*"],
+      "@/__generated__/__types__": ["__generated__/__types__.tsx"],
       "@/graphql/*": ["src/graphql/*"]
     },
     "allowJs": true,

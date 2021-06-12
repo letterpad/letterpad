@@ -8,15 +8,23 @@ import logger from "shared/logger";
 const authHeaderPrefix = "Basic ";
 const apolloServer = new ApolloServer({
   schema,
-  context: async context => {
+  context: async (context) => {
     const authHeader = context.req?.headers.authorization || "";
     let author_id;
     try {
       author_id = await getAuthorFromSubdomain(context);
-      logger.debug("Author from subdomain - ", author_id);
+      if (author_id) {
+        logger.debug("Author from subdomain - ", author_id);
+      }
+
       if (!author_id && authHeader.length > authHeaderPrefix.length) {
         author_id = getAuthorFromAuthHeader(authHeader);
-        logger.debug("Author from header - ", author_id);
+        if (author_id) {
+          logger.debug(
+            "Author from Authorization header after decrypting - ",
+            author_id,
+          );
+        }
       }
     } catch (e) {
       console.log("e :>> ", e);

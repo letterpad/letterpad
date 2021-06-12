@@ -1,4 +1,4 @@
-import { Media } from "@/__generated__/type-defs.graphqls";
+import { Media } from "@/__generated__/__types__";
 import { Input } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import Image from "next/image";
@@ -31,7 +31,7 @@ const MediaUpdateModal = ({
       )}
       <Input
         value={img?.name}
-        onChange={e => {
+        onChange={(e) => {
           if (img) {
             onChange({ ...img, name: e.target.value });
           }
@@ -40,7 +40,7 @@ const MediaUpdateModal = ({
       <Input.TextArea
         placeholder="Description of this image"
         value={img?.description}
-        onChange={e => {
+        onChange={(e) => {
           if (img) {
             onChange({ ...img, description: e.target.value });
           }

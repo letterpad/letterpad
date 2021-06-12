@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import ReactTooltip from "react-tooltip";
 import { SortableElement } from "react-sortable-hoc";
 import { Tooltip, Select, Input } from "antd";
-import { Navigation, NavigationType } from "@/__generated__/type-defs.graphqls";
+import { Navigation, NavigationType } from "@/__generated__/__types__";
 import {
   DeleteOutlined,
   InfoCircleOutlined,
@@ -77,7 +77,7 @@ const SortableItem = SortableElement((props: IProps) => {
       <InputBox hasError={nameError !== ""}>
         <Input
           value={item.label}
-          onChange={e => onInputChange({ ...item, label: e.target.value })}
+          onChange={(e) => onInputChange({ ...item, label: e.target.value })}
           data-testid={item.label === "" ? "empty-label-item" : ""}
           placeholder="Enter the name of this item"
           size="middle"
@@ -89,7 +89,7 @@ const SortableItem = SortableElement((props: IProps) => {
           defaultValue={item.slug}
           style={{ width: "100%" }}
           size="middle"
-          onChange={slug => onInputChange({ ...item, slug })}
+          onChange={(slug) => onInputChange({ ...item, slug })}
         >
           <OptGroup label="Tags - collection of post">
             {getOptions(source, NavigationType.Tag)}
@@ -113,7 +113,7 @@ const SortableItem = SortableElement((props: IProps) => {
 export default SortableItem;
 
 function getItemBySlug(data: Navigation[], slug: string) {
-  const arr = data.filter(item => item.slug === "/" + item.type + "/" + slug);
+  const arr = data.filter((item) => item.slug === "/" + item.type + "/" + slug);
   if (arr) {
     return arr[0];
   }
@@ -141,8 +141,8 @@ function getSuggestionLabel(item) {
 
 function getOptions(source: Navigation[], type: NavigationType) {
   return source
-    .filter(navItem => navItem.type === type)
-    .map(navItem => (
+    .filter((navItem) => navItem.type === type)
+    .map((navItem) => (
       <Option key={navItem.slug} value={navItem.slug}>
         {getSuggestionLabel(navItem)}
       </Option>

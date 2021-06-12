@@ -10,7 +10,7 @@ import {
   UpdateMediaMutation,
 } from "@/__generated__/queries/mutations.graphql";
 import { initializeApollo } from "./graphql/apollo";
-import { Media } from "@/__generated__/type-defs.graphqls";
+import { Media } from "@/__generated__/__types__";
 
 export const deleteImageAPI = async (img: Media) => {
   const client = await initializeApollo();

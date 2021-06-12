@@ -1,7 +1,7 @@
 import { GroupOption, Includeable, Order } from "sequelize";
-import { MutationResolvers } from "./../../../__generated__/src/graphql/type-defs.graphqls";
+import { MutationResolvers } from "./../../../__generated__/src/graphql/__types__";
 import { ResolverContext } from "../apollo";
-import { QueryResolvers } from "@/__generated__/type-defs.graphqls";
+import { QueryResolvers } from "@/__generated__/__types__";
 import models from "../db/models";
 
 const Query: QueryResolvers<ResolverContext> = {
@@ -77,7 +77,7 @@ const Query: QueryResolvers<ResolverContext> = {
       const tags = await author.getTags(conditions);
       return {
         __typename: "TagsNode",
-        rows: tags.map(tag => tag.get()),
+        rows: tags.map((tag) => tag.get()),
       };
     }
 
@@ -95,7 +95,7 @@ const Tags = {
     return {
       __typename: "PostsNode",
       count: posts?.length,
-      rows: posts?.map(post => post?.get()),
+      rows: posts?.map((post) => post?.get()),
     };
   },
 };

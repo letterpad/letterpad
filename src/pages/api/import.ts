@@ -4,7 +4,7 @@ import models from "@/graphql/db/models";
 import multer from "multer";
 import initMiddleware from "./middleware";
 import { ROLES, SessionData } from "@/graphql/types";
-import { Role } from "@/__generated__/type-defs.graphqls";
+import { Role } from "@/__generated__/__types__";
 import {
   IAuthorData,
   IImportExportData,
@@ -115,7 +115,7 @@ async function startImport(
     await author.createSetting(authorsData.setting);
 
     await Promise.all([
-      ...authorsData.media.map(item => author?.createMedia(item)),
+      ...authorsData.media.map((item) => author?.createMedia(item)),
     ]);
 
     for (const data of authorsData.posts) {
@@ -177,7 +177,7 @@ function sanitizeForeignData(authors: IImportExportData["authors"]) {
     sanitizedData[email] = authorData;
 
     //posts
-    const posts = authorData.posts.map(post => {
+    const posts = authorData.posts.map((post) => {
       // @ts-ignore
       const { id, author_id, ...rest } = post;
       return rest;
@@ -186,7 +186,7 @@ function sanitizeForeignData(authors: IImportExportData["authors"]) {
     sanitizedData[email].posts = posts;
 
     // tags
-    const tags = authorData.tags.map(tag => {
+    const tags = authorData.tags.map((tag) => {
       // @ts-ignore
       const { id, author_id, ...rest } = tag;
       return rest;
@@ -200,7 +200,7 @@ function sanitizeForeignData(authors: IImportExportData["authors"]) {
     sanitizedData[email].setting = setting;
 
     // media
-    const media = authorData.media.map(item => {
+    const media = authorData.media.map((item) => {
       // @ts-ignore
       const { id, author_id, ...rest } = item;
       return rest;

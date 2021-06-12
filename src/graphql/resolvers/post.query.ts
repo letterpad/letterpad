@@ -7,8 +7,8 @@ import {
   PostStatusOptions,
   SortBy,
   PostTypes,
-} from "@/__generated__/type-defs.graphqls";
-import { QueryResolvers } from "../type-defs.graphqls";
+} from "@/__generated__/__types__";
+import { QueryResolvers } from "../__types__";
 import { ResolverContext } from "../apollo";
 import { decrypt } from "../utils/crypto";
 import models from "../db/models";
@@ -47,7 +47,7 @@ const Post = {
     const post = await models.Post.findOne({ where: { id: id } });
     if (post) {
       const tags = await post.getTags();
-      return tags.map(tag => tag.get());
+      return tags.map((tag) => tag.get());
     }
   },
   html: async ({ html }) => {
@@ -164,7 +164,7 @@ const Query: QueryResolvers<ResolverContext> = {
           const posts = await taxTag.getPosts(query.conditions);
           return {
             __typename: "PostsNode",
-            rows: posts.map(p => p.get()),
+            rows: posts.map((p) => p.get()),
             count: await taxTag.countPosts(query.conditions),
           };
         }
@@ -183,7 +183,7 @@ const Query: QueryResolvers<ResolverContext> = {
         if (tag) {
           const posts = await tag.getPosts(query.conditions);
           return {
-            rows: posts.map(p => p.get()),
+            rows: posts.map((p) => p.get()),
             count: await tag.countPosts(query.conditions),
           };
         } else {
@@ -201,7 +201,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
       return {
         __typename: "PostsNode",
-        rows: posts.map(post => post.get()),
+        rows: posts.map((post) => post.get()),
         count,
       };
     } catch (e) {

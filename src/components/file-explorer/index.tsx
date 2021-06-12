@@ -2,7 +2,7 @@ import Modal from "antd/lib/modal/Modal";
 import { MediaProvider } from "../../pages/post/[postId]";
 import Internal from "./providers/Internal";
 import Unsplash from "./providers/Unsplash";
-import { Image, Media } from "@/__generated__/type-defs.graphqls";
+import { Image, Media } from "@/__generated__/__types__";
 import { Button } from "antd";
 import MediaItem from "./MediaItem";
 import { useRef, useState } from "react";
@@ -77,7 +77,7 @@ const FileExplorer = ({
   };
 
   const renderer = (media: Media[]) => {
-    return media.map(item => (
+    return media.map((item) => (
       <MediaItem
         key={item.id}
         media={item}
@@ -131,7 +131,7 @@ const FileExplorer = ({
         type="file"
         ref={hiddenInputRef}
         style={{ display: "none" }}
-        onChange={async e => {
+        onChange={async (e) => {
           if (!e.target.files) return;
           const [result] = await uploadFile({
             files: e.target.files,

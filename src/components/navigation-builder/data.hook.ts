@@ -5,12 +5,16 @@ import {
   TagsDocument,
   TagsQuery,
   TagsQueryVariables,
-  NavigationType,
 } from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
 
 import { initializeApollo } from "@/graphql/apollo";
-import { Post, PostTypes, Tags } from "@/__generated__/type-defs.graphqls";
+import {
+  Post,
+  PostTypes,
+  Tags,
+  NavigationType,
+} from "@/__generated__/__types__";
 
 interface IReturn {
   loading: boolean;
@@ -75,7 +79,7 @@ function useNavigationData(): IReturn {
 export { useNavigationData };
 
 function normalizePages(pages) {
-  return pages.rows.map(item => {
+  return pages.rows.map((item) => {
     return {
       type: NavigationType.Page,
       slug: filterSlug(item.slug),
@@ -87,7 +91,7 @@ function normalizePages(pages) {
 }
 
 function normalizeTags(tags) {
-  return tags.map(item => {
+  return tags.map((item) => {
     return {
       type: NavigationType.Tag,
       slug: filterSlug(item.slug),

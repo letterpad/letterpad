@@ -3,7 +3,7 @@ import { Input, Tag } from "antd";
 import { useState } from "react";
 import styled from "styled-components";
 import { PostQuery } from "@/__generated__/queries/queries.graphql";
-import { InputUpdatePost } from "@/__generated__/type-defs.graphqls";
+import { InputUpdatePost } from "@/__generated__/__types__";
 
 interface IProps {
   post: PostQuery["post"];
@@ -19,7 +19,7 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
   const handleInputConfirm = () => {
     setInputVisible(false);
     if (inputValue && post.tags) {
-      const tags = post.tags.map(tag => {
+      const tags = post.tags.map((tag) => {
         const { id, slug, name, desc } = tag;
         return { id, slug, name, desc: desc || "" };
       });
@@ -33,7 +33,7 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
     }
   };
 
-  const tagInputRef = ref => {
+  const tagInputRef = (ref) => {
     if (ref) {
       ref.input.focus();
     }
@@ -43,15 +43,15 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
     <Wrapper>
       <label>Tags</label>
       <br />
-      {post.tags?.map(tag => (
+      {post.tags?.map((tag) => (
         <Tag
           key={tag.name}
           closable
           onClose={() => {
             if (!post.tags) return;
             const tags = post.tags
-              .filter(ele => ele.name !== tag.name)
-              .map(tag => {
+              .filter((ele) => ele.name !== tag.name)
+              .map((tag) => {
                 const { id, slug, name, desc } = tag;
                 return { id, slug, name, desc: desc || "" };
               });
@@ -67,7 +67,7 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
           size="small"
           className="tag-input"
           value={inputValue}
-          onChange={e => setInputValue(e.target.value)}
+          onChange={(e) => setInputValue(e.target.value)}
           onBlur={handleInputConfirm}
           onPressEnter={handleInputConfirm}
           ref={tagInputRef}

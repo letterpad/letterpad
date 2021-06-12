@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import InfiniteScrollList from "../InfiniteScrollList";
-import { Media } from "@/__generated__/type-defs.graphqls";
+import { Media } from "@/__generated__/__types__";
 import { Input } from "antd";
 import nextConfig from "next.config";
 
@@ -21,12 +21,12 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
 
     const { rows, count }: { rows: any; count: number } = await fetch(
       endpoint,
-    ).then(data => {
+    ).then((data) => {
       return data.json();
     });
 
     const images = {
-      rows: rows.map(item => {
+      rows: rows.map((item) => {
         return {
           id: item.id,
           url: item.urls.regular,
@@ -48,7 +48,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     fetchUnsplashMedia();
   }, [query, page]);
 
-  const onKeyUp = async e => {
+  const onKeyUp = async (e) => {
     const search = e.target.value.trim();
     if (search.length > 0) {
       if (e.keyCode === 13) {

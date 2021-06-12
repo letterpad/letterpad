@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Media } from "@/__generated__/type-defs.graphqls";
+import { Media } from "@/__generated__/__types__";
 
 interface IProps {
   media: Media;

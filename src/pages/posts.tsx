@@ -1,10 +1,10 @@
 import {
-  PostsFilters,
   PostsDocument,
   PostsQuery,
   PostsQueryVariables,
-  PostTypes,
 } from "@/__generated__/queries/queries.graphql";
+import { PostsFilters, PostTypes } from "@/__generated__/__types__";
+
 import { initializeApollo } from "@/graphql/apollo";
 import { Button, Layout, PageHeader, Table } from "antd";
 import Filters from "@/components/filters";
@@ -33,7 +33,7 @@ function Posts() {
 
   useEffect(() => {
     fetchPosts(filters);
-    fetchTags().then(response => {
+    fetchTags().then((response) => {
       if (!response.props.error) {
         const uniqueData = [
           ...response.props.data
@@ -41,7 +41,7 @@ function Posts() {
             .values(),
         ];
         setAllTags(
-          uniqueData.map(tag => ({
+          uniqueData.map((tag) => ({
             slug: tag.slug,
             name: tag.name,
           })),
@@ -54,7 +54,7 @@ function Posts() {
     const posts = await fetchPostsFromAPI(args);
     setLoading(false);
     if (posts.__typename === "PostsNode") {
-      const rows = posts.rows.map(post => {
+      const rows = posts.rows.map((post) => {
         return {
           ...post,
           key: post.id,
@@ -95,16 +95,16 @@ function Posts() {
           style={{ padding: 16, minHeight: "77vh" }}
         >
           <Filters
-            onStatusChange={status => setFilters({ ...filters, status })}
-            onOrderChange={sortBy => setFilters({ ...filters, sortBy })}
-            onTagChange={tagSlug => setFilters({ ...filters, tagSlug })}
+            onStatusChange={(status) => setFilters({ ...filters, status })}
+            onOrderChange={(sortBy) => setFilters({ ...filters, sortBy })}
+            onTagChange={(tagSlug) => setFilters({ ...filters, tagSlug })}
             allTags={allTags}
           />
           <Table
             columns={postsColumns}
             dataSource={source}
             loading={loading}
-            onRow={row => ({
+            onRow={(row) => ({
               onClick: () => router.push("/post/" + row.id),
             })}
           />

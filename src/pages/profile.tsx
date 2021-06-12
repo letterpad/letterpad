@@ -14,11 +14,7 @@ import {
   UpdateAuthorDocument,
 } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
-import {
-  InputAuthor,
-  Social,
-  Author,
-} from "@/__generated__/type-defs.graphqls";
+import { InputAuthor, Social, Author } from "@/__generated__/__types__";
 import { removeTypenames } from "../../shared/removeTypenames";
 import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
@@ -34,7 +30,7 @@ function Profile() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchAuthor().then(response => {
+    fetchAuthor().then((response) => {
       if (!response) {
         return;
       }
@@ -105,14 +101,14 @@ function Profile() {
                     size="middle"
                     value={me.name}
                     onBlur={() => updateAuthor()}
-                    onChange={e => onChange("name", e.target.value)}
+                    onChange={(e) => onChange("name", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Short Bio">
                   <Input.TextArea
                     value={me.bio}
                     onBlur={() => updateAuthor()}
-                    onChange={e => onChange("bio", e.target.value)}
+                    onChange={(e) => onChange("bio", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Email">
@@ -120,7 +116,7 @@ function Profile() {
                     size="middle"
                     value={me.email}
                     onBlur={() => updateAuthor()}
-                    onChange={e => onChange("email", e.target.value)}
+                    onChange={(e) => onChange("email", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Avatar">
@@ -140,7 +136,7 @@ function Profile() {
                     size="middle"
                     value={me.social?.twitter}
                     onBlur={() => updateAuthor()}
-                    onChange={e => onSocialChange("twitter", e.target.value)}
+                    onChange={(e) => onSocialChange("twitter", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Facebook">
@@ -148,7 +144,7 @@ function Profile() {
                     size="middle"
                     value={me.social?.facebook}
                     onBlur={() => updateAuthor()}
-                    onChange={e => onSocialChange("facebook", e.target.value)}
+                    onChange={(e) => onSocialChange("facebook", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Instagram">
@@ -156,7 +152,9 @@ function Profile() {
                     size="middle"
                     value={me.social?.instagram}
                     onBlur={() => updateAuthor()}
-                    onChange={e => onSocialChange("instagram", e.target.value)}
+                    onChange={(e) =>
+                      onSocialChange("instagram", e.target.value)
+                    }
                   />
                 </Form.Item>
                 <Form.Item label="Github">
@@ -164,7 +162,7 @@ function Profile() {
                     size="middle"
                     value={me.social?.github}
                     onBlur={() => updateAuthor()}
-                    onChange={e => onSocialChange("github", e.target.value)}
+                    onChange={(e) => onSocialChange("github", e.target.value)}
                   />
                 </Form.Item>
               </Panel>
@@ -172,7 +170,7 @@ function Profile() {
                 <Form.Item label="Password">
                   <Input
                     size="middle"
-                    onChange={e => onChange("password", e.target.value)}
+                    onChange={(e) => onChange("password", e.target.value)}
                   />
                 </Form.Item>
               </Panel>

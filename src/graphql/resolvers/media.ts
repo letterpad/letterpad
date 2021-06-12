@@ -2,7 +2,7 @@ import {
   MutationResolvers,
   QueryResolvers,
   SortBy,
-} from "@/__generated__/type-defs.graphqls";
+} from "@/__generated__/__types__";
 import { Op, Order } from "sequelize";
 import { ResolverContext } from "../apollo";
 import models from "../db/models";
@@ -52,7 +52,7 @@ const Query: QueryResolvers<ResolverContext> = {
     const result = await models.Media.findAndCountAll(conditions);
 
     if (result) {
-      const rows = result.rows.map(item => item.get());
+      const rows = result.rows.map((item) => item.get());
       return {
         count: result.count,
         rows: rows,
@@ -84,7 +84,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
     await Promise.all([
-      ...args.ids.map(id =>
+      ...args.ids.map((id) =>
         models.Media.destroy({ where: { id: id, author_id: session.user.id } }),
       ),
     ]);

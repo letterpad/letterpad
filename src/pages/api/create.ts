@@ -7,7 +7,7 @@ import {
   CreatePostMutation,
   CreatePostMutationVariables,
 } from "@/__generated__/queries/mutations.graphql";
-import { PostTypes } from "@/__generated__/type-defs.graphqls";
+import { PostTypes } from "@/__generated__/__types__";
 
 const Create = async (
   req: NextApiRequestWithFormData,

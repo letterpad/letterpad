@@ -7,7 +7,7 @@ import nextConfig from "next.config";
 import { UploadOutlined } from "@ant-design/icons";
 import { getDateTime } from "../../shared/utils";
 import { IAuthComponentProps } from "shared/types";
-import { Role } from "@/__generated__/type-defs.graphqls";
+import { Role } from "@/__generated__/__types__";
 
 // If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to register first. This will allow you to setup letterpad with mysql. Then login and import the data to populate the exisiting data in mysql.
 
@@ -47,7 +47,7 @@ const Migrate = ({ session }: IAuthComponentProps) => {
                 type="link"
                 onClick={() => {
                   fetch(nextConfig.basePath + "/api/export")
-                    .then(res => res.blob())
+                    .then((res) => res.blob())
                     .then(download);
                 }}
               >
