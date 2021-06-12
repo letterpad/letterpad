@@ -60,7 +60,7 @@ interface IImageAttrs {
   src: string;
   sizes: string;
   "data-srcset": string;
-  srcset: string[];
+  srcSet: string[];
   width: string;
   loading: "lazy";
 }

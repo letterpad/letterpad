@@ -14,15 +14,21 @@ h1.site-title {
 }
 
 .site-brand-text {
-   position: relative !important;
-   left: auto !important;
-   transform: translate(-0%,-0%) !important;
-   margin-bottom: 80px;
+  position: relative !important;
+  left: auto !important;
+  transform: translate(-0%, -0%) !important;
+  margin-bottom: 80px;
 }
 
 .site-brand-text .wrapper {
   background: none !important;
   color: var(--color-text) !important;
+}
+
+.site-description {
+  font-size: var(--text-sm) !important;
+  font-style: normal !important;
+  margin-top: var(--space-xs) !important;
 }
 
 .post {
@@ -57,7 +63,7 @@ h1.site-title {
 }
 .post-card-title {
   font-family: system-ui !important;
-   font-size: var(--text-lg) !important;
+  font-size: var(--text-lg) !important;
 }
 
 @media (min-width: 767px) {
