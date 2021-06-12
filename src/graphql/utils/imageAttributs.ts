@@ -18,12 +18,12 @@ export const getImageAttrs = (
   const url = new URL(src);
 
   if (url.hostname.includes("cloudinary")) {
-    const srcSet = sizes.map(w => makeCloudinaryImage(src, w)).join(", ");
+    const srcSet = sizes.map((w) => makeCloudinaryImage(src, w)).join(", ");
     return {
       src: makeCloudinaryUrl(src, sizes[sizes.length - 1]),
       sizes: srcSizes,
       "data-srcset": srcSet,
-      srcset: [base64Url],
+      srcSet: [base64Url],
       width: "100%",
       loading: "lazy",
       class: "lazyload",
@@ -32,12 +32,12 @@ export const getImageAttrs = (
 
   if (url.hostname.includes("unsplash")) {
     base64Url = makeUnsplashUrl(src, 30);
-    const srcSet = sizes.map(w => makeUnsplashImage(src, w)).join(", ");
+    const srcSet = sizes.map((w) => makeUnsplashImage(src, w)).join(", ");
     return {
       src: makeUnsplashUrl(src, sizes[sizes.length - 1]),
       sizes: srcSizes,
       "data-srcset": srcSet,
-      srcset: [base64Url],
+      srcSet: [base64Url],
       loading: "lazy",
       class: "lazyload",
     };
@@ -56,7 +56,7 @@ export const setResponsiveImages = (html: string, sizes?: number[]) => {
     const attrs = getImageAttrs(src, sizes);
     if (Object.keys(attrs).length > 0) {
       let attrString = "";
-      Object.keys(attrs).forEach(key => {
+      Object.keys(attrs).forEach((key) => {
         attrString += `${key}='${attrs[key]}' `;
       });
       return str.replace(`src="${src}"`, attrString);
