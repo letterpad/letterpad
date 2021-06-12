@@ -1,5 +1,0 @@
-{
-  "extends": "./tsconfig.compiler.json",
-  "include": ["./src/**/*.ts", "./src/**/*.js"],
-  "exclude": ["./src/client/themes"]
-}
