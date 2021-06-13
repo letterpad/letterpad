@@ -89,60 +89,69 @@ const FileExplorer = ({
   const hasSelectedImages = Object.keys(selectedUrls).length > 0;
   if (!isVisible) return null;
   return (
-    <Modal
-      centered
-      width="60vw"
-      title="Media"
-      visible={isVisible}
-      onCancel={closeWindow}
-      footer={[
-        <Button key="back" onClick={closeWindow}>
-          Cancel
-        </Button>,
-        hasSelectedImages ? (
-          <Button key="insert" onClick={insertMedia}>
-            Insert
-          </Button>
-        ) : null,
-        isInternal ? (
+    <>
+      <Modal
+        centered
+        className="file-explorer"
+        title="Media"
+        visible={isVisible}
+        onCancel={closeWindow}
+        footer={[
+          <Button key="back" onClick={closeWindow}>
+            Cancel
+          </Button>,
+          hasSelectedImages ? (
+            <Button key="insert" onClick={insertMedia}>
+              Insert
+            </Button>
+          ) : null,
+          isInternal ? (
+            <Button
+              key="upload"
+              onClick={() => {
+                hiddenInputRef.current?.click();
+              }}
+            >
+              Browse
+            </Button>
+          ) : null,
           <Button
-            key="upload"
+            type="primary"
             onClick={() => {
-              hiddenInputRef.current?.click();
+              setSelection({});
+              setMediaProvider(toggleProvider);
             }}
           >
-            Browse
-          </Button>
-        ) : null,
-        <Button
-          type="primary"
-          onClick={() => {
-            setSelection({});
-            setMediaProvider(toggleProvider);
+            {isUnsplash ? "My Media" : "Search Online"}
+          </Button>,
+        ]}
+      >
+        {isInternal && <Internal renderer={renderer} />}
+        {isUnsplash && <Unsplash renderer={renderer} />}
+        <input
+          type="file"
+          ref={hiddenInputRef}
+          style={{ display: "none" }}
+          onChange={async (e) => {
+            if (!e.target.files) return;
+            const [result] = await uploadFile({
+              files: e.target.files,
+              type: "cover_image",
+            });
+            let urls = { ...selectedUrls };
+            urls[`${result.src}`] = { ...result, alt: "" };
+            onInsert(urls);
           }}
-        >
-          {isUnsplash ? "My Media" : "Search Online"}
-        </Button>,
-      ]}
-    >
-      {isInternal && <Internal renderer={renderer} />}
-      {isUnsplash && <Unsplash renderer={renderer} />}
-      <input
-        type="file"
-        ref={hiddenInputRef}
-        style={{ display: "none" }}
-        onChange={async (e) => {
-          if (!e.target.files) return;
-          const [result] = await uploadFile({
-            files: e.target.files,
-            type: "cover_image",
-          });
-          let urls = { ...selectedUrls };
-          urls[`${result.src}`] = { ...result, alt: "" };
-          onInsert(urls);
-        }}
-      />
-    </Modal>
+        />
+      </Modal>
+      <style jsx>{`
+        :global(.file-explorer) {
+          @media (min-width: 991px) {
+            width: 60vw !important;
+          }
+        }
+      `}</style>
+    </>
   );
 };
 

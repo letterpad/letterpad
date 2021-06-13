@@ -4,13 +4,14 @@
   "author": "",
   "license": "MIT",
   "scripts": {
+    "postinstall": "cd client && yarn install ",
     "codegen": "graphql-let",
+    "client": "concurrently -k 'yarn dev' 'yarn --cwd client dev'",
     "dev": "yarn codegen && next",
     "build": "yarn codegen && next build",
     "test": "yarn codegen && jest",
     "start": "next start",
     "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed",
-    "seed1": "npx babel-node --presets @babel/preset-env ./src/graphql/db/seed",
     "type-check": "yarn tsc"
   },
   "dependencies": {
@@ -74,6 +75,7 @@
     "babel-jest": "26.3.0",
     "babel-plugin-styled-components": "^1.12.0",
     "babel-plugin-styless": "^1.4.25",
+    "concurrently": "^6.2.0",
     "graphql-let": "0.x",
     "graphql-tag": "2.11.0",
     "jest": "26.4.0",

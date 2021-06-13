@@ -206,6 +206,7 @@ function Settings(props: { settings: Setting }) {
                       style={{
                         fontFamily: '"Fira code", "Fira Mono", monospace',
                         fontSize: 13,
+                        height: "100%",
                       }}
                     />
                   </div>
