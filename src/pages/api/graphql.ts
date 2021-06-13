@@ -26,6 +26,15 @@ const apolloServer = new ApolloServer({
           );
         }
       }
+      if (process.env.NODE_ENV !== "production") {
+        logger.debug("development mode");
+        const author = await models.Author.findOne({
+          where: { email: "demo@demo.com" },
+        });
+        if (author) {
+          author_id = author.id;
+        }
+      }
     } catch (e) {
       console.log("e :>> ", e);
     }
