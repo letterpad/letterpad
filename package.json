@@ -4,7 +4,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "postinstall": "yarn --cwd client install",
+    "postinstall": "git submodule update && yarn --cwd client install",
     "codegen": "graphql-let",
     "client": "concurrently -k 'yarn dev' 'yarn --cwd client dev'",
     "dev": "yarn codegen && next",
