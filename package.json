@@ -6,6 +6,7 @@
   "scripts": {
     "postinstall": "cd client && yarn install ",
     "codegen": "graphql-let",
+    "client": "concurrently -k 'yarn dev' 'yarn --cwd client dev'",
     "dev": "yarn codegen && next",
     "build": "yarn codegen && next build",
     "test": "yarn codegen && jest",
@@ -74,6 +75,7 @@
     "babel-jest": "26.3.0",
     "babel-plugin-styled-components": "^1.12.0",
     "babel-plugin-styless": "^1.4.25",
+    "concurrently": "^6.2.0",
     "graphql-let": "0.x",
     "graphql-tag": "2.11.0",
     "jest": "26.4.0",
