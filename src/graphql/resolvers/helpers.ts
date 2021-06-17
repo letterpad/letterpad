@@ -69,7 +69,7 @@ export async function getImageDimensions(
             return reject(err);
           });
       }),
-    ) as Promise<ISizeCalculationResult>;
+    );
 
   const response = actionToTry();
   return response as Promise<{ width: number; height: number; type: string }>;
@@ -89,7 +89,6 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
     if (!src.startsWith("http")) return;
     logger.debug("Getting dimensions of ", src);
     const size = await getImageDimensions(src);
-    // src = src.replace("http://", "https://");
     $el.attr("height", size.height.toString());
     $el.attr("width", size.width.toString());
     logger.info("Image width x height", { ...size });
@@ -113,6 +112,5 @@ export async function validateCaptcha(serverKey: string, clientToken: string) {
   if (response.success) {
     return true;
   }
-  console.log(response);
   return false;
 }
