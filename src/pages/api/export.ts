@@ -1,4 +1,4 @@
-import { IAuthorData } from "./importExportTypes";
+import { IAuthorData, IImportExportData } from "./importExportTypes";
 import { SessionData } from "./../../graphql/types";
 import fs from "fs";
 import models from "@/graphql/db/models";
@@ -11,7 +11,7 @@ const Export = async (req, res) => {
   const session = _session as unknown as { user: SessionData };
   if (!session?.user?.email) return res.send("No session found");
 
-  const data: any = { authors: {} };
+  const data: IImportExportData = { authors: {} };
   let authors = await models.Author.findAll();
   const isAdmin = session.user.role === Role.Admin;
 

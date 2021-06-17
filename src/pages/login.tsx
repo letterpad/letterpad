@@ -39,24 +39,16 @@ const NormalLoginForm = () => {
       callbackUrl: nextConfig.basePath + "/pages",
     });
     if (result && result.error) {
-      message.error({
-        content: result.error,
-        key,
-        duration: 5,
-      });
+      error(result.error);
       return;
     }
     const session = (await getSession()) as SessionResponse;
     if (!session) {
-      message.error({
-        content: "The request could not be processed at this time.",
-        key,
-        duration: 5,
-      });
+      error("The request could not be processed at this time.");
       return;
     }
     if (session.user.__typename === "LoginError") {
-      message.error({ content: session.user.message, key, duration: 5 });
+      error(session.user.message);
       return;
     }
     if (session.user.__typename === "SessionData") {
@@ -98,27 +90,14 @@ const NormalLoginForm = () => {
       const data = res.data?.forgotPassword;
 
       if (data?.ok) {
-        message.success({
-          content: "Check your email to reset your password!",
-          key,
-          duration: 5,
-        });
+        success("Check your email to reset your password!");
         router.push(`${nextConfig.basePath}/login`);
       } else {
         e.currentTarget.disabled = false;
-        message.warn({
-          content:
-            data?.message || "Something wrong hapenned. Please try again.",
-          key,
-          duration: 5,
-        });
+        warn(data?.message || "Something wrong hapenned. Please try again.");
       }
     } else {
-      message.warn({
-        content: "Email field is mandatory",
-        key,
-        duration: 5,
-      });
+      warn("Email field is mandatory");
     }
   };
 
@@ -194,3 +173,14 @@ const NormalLoginForm = () => {
 };
 
 export default NormalLoginForm;
+
+function error(content: string) {
+  message.error({ content, key, duration: 5 });
+}
+
+function warn(content: string) {
+  message.warn({ content, key, duration: 5 });
+}
+function success(content: string) {
+  message.success({ content, key, duration: 5 });
+}

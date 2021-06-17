@@ -64,3 +64,15 @@ interface IImageAttrs {
   loading: "lazy";
 }
 export type IImageAttrsResult = IImageAttrs | {};
+
+interface IProcessEnv {
+  DB_USER?: string;
+  DB_URL: string;
+  DB_NAME?: string;
+  DB_PASSWORD?: string;
+  DB_TYPE?: string;
+}
+
+declare namespace NodeJS {
+  export interface ProcessEnv extends IProcessEnv {}
+}
