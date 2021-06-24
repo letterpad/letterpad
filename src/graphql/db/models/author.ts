@@ -14,7 +14,6 @@ import {
   HasOneGetAssociationMixin,
   HasOneSetAssociationMixin,
 } from "sequelize";
-import restoreSequelizeAttributesOnClass from "./_tooling";
 
 import { Media } from "./media";
 import {
@@ -46,8 +45,7 @@ interface AuthorCreationAttributes extends Optional<AuthorAttributes, "id"> {}
 
 export class Author
   extends Model<AuthorAttributes, AuthorCreationAttributes>
-  implements AuthorAttributes
-{
+  implements AuthorAttributes {
   public id!: number;
   public name!: string;
   public email!: string;
@@ -103,26 +101,6 @@ export class Author
 
   constructor(...args) {
     super(...args);
-    restoreSequelizeAttributesOnClass(new.target, this, [
-      "getPosts",
-      "addPost",
-      "hasPost",
-      "countPosts",
-      "countTags",
-      "countMedia",
-      "createMedia",
-      "getMedia",
-      "addMedia",
-      "createPost",
-      "setRole",
-      "getRole",
-      "setSetting",
-      "getSetting",
-      "createTag",
-      "getTags",
-      "hasTag",
-      "createSetting",
-    ]);
   }
 }
 export default function initAuthor(sequelize: Sequelize) {
