@@ -77,7 +77,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
     return {
       __typename: "Setting",
-      ...(setting as unknown as SettingType),
+      ...((setting as unknown) as SettingType),
     };
   },
 };
@@ -127,7 +127,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (!setting) {
       return settingsData;
     }
-    return setting.get() as unknown as SettingType;
+    return (setting.get() as unknown) as SettingType;
   },
 };
 

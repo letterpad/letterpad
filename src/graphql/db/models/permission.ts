@@ -1,7 +1,5 @@
 import { DataTypes, Model, Optional } from "sequelize";
 
-import restoreSequelizeAttributesOnClass from "./_tooling";
-
 export interface PermissionAttributes {
   id: number;
   name: string;
@@ -21,7 +19,6 @@ export class Permission
 
   constructor(...args) {
     super(...args);
-    restoreSequelizeAttributesOnClass(new.target, this, []);
   }
 }
 
