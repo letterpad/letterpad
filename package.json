@@ -78,6 +78,8 @@
     "graphql-let": "0.x",
     "graphql-tag": "2.11.0",
     "jest": "26.4.0",
+    "less-loader": "^10.0.0",
+    "next-with-less": "^0.3.0",
     "node-env-file": "^0.1.8",
     "node-sass": "^6.0.0",
     "postcss-nested": "^5.0.5",

@@ -14,7 +14,12 @@ import { getSettings, initPageProgress } from "./../shared/utils";
 import dynamic from "next/dynamic";
 
 import "../../styles/globals.css";
+// // import "antd/lib/style/components.less";
+// import "antd/lib/style/themes/default.less";
+// // import "antd/dist/antd.less";
+// import "antd/lib/style/dark.less";
 
+import "../../styles/variables.less";
 type Props = AppProps & {
   Component: Page;
 };

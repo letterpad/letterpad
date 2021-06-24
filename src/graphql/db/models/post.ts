@@ -128,11 +128,18 @@ export default function initPost(sequelize) {
         type: DataTypes.STRING,
         defaultValue: "",
         get() {
-          if (this.cover_image && this.cover_image.startsWith("/")) {
+          console.log(
+            'this.getDataValue("cover_image) :>> ',
+            this.getDataValue("cover_image"),
+          );
+          if (
+            this.getDataValue("cover_image") &&
+            this.getDataValue("cover_image").startsWith("/")
+          ) {
             this.cover_image = process.env.ROOT_URL + this.cover_image;
           }
           return {
-            src: this.cover_image,
+            src: this.getDataValue("cover_image"),
             width: this.cover_image_width,
             height: this.cover_image_height,
           };
@@ -162,7 +169,7 @@ export default function initPost(sequelize) {
         type: DataTypes.STRING,
         defaultValue: "",
         get() {
-          return "/" + this.type + "/" + this.slug;
+          return "/" + this.type + "/" + this.getDataValue("slug");
         },
       },
       reading_time: {
@@ -173,26 +180,32 @@ export default function initPost(sequelize) {
         type: DataTypes.DATE,
         allowNull: true,
         get() {
-          return getReadableDate(this.publishedAt);
+          return getReadableDate(this.getDataValue("publishedAt"));
         },
       },
       scheduledAt: {
         type: DataTypes.DATE,
         allowNull: true,
         get() {
-          return this.scheduledAt ? getReadableDate(this.scheduledAt) : "";
+          return this.getDataValue("scheduledAt")
+            ? getReadableDate(this.getDataValue("scheduledAt"))
+            : "";
         },
       },
       updatedAt: {
         type: DataTypes.DATE,
         get() {
-          return getReadableDate(this.updatedAt);
+          return this.getDataValue("updatedAt")
+            ? getReadableDate(this.getDataValue("updatedAt"))
+            : "";
         },
       },
       createdAt: {
         type: DataTypes.DATE,
         get() {
-          return getReadableDate(this.createdAt);
+          return this.getDataValue("createdAt")
+            ? getReadableDate(this.getDataValue("createdAt"))
+            : "";
         },
       },
     },

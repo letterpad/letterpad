@@ -118,3 +118,7 @@ table tr {
 .lp-editor .code-block pre {
   font-family: "Fira Code";
 }
+
+:root {
+  --primary-color: orange;
+}

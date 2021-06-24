@@ -26,18 +26,20 @@ const ThemeSwitcher = () => {
         unCheckedChildren="☽"
         checked={theme === "dark"}
         size="small"
-        onChange={checked => switchTheme(checked ? "dark" : "light")}
+        onChange={(checked) => switchTheme(checked ? "dark" : "light")}
       />
     </div>
   );
 };
 
-ThemeSwitcher.switch = color => {
-  const $theme = document.querySelector("#theme");
+ThemeSwitcher.switch = (color) => {
+  const $body = document.body;
   if (color === "dark") {
-    $theme?.setAttribute("href", `${nextConfig.basePath}/css/antd.dark.css`);
+    $body.classList.remove("light");
+    $body.classList.add("dark");
   } else {
-    $theme?.setAttribute("href", `${nextConfig.basePath}/css/antd.css`);
+    $body.classList.remove("dark");
+    $body.classList.add("light");
   }
   localStorage.theme = color;
 };
