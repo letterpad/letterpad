@@ -74,11 +74,8 @@ const Query: QueryResolvers<ResolverContext> = {
         setting.setDataValue(securedKey, "");
       }
     });
-
-    return {
-      __typename: "Setting",
-      ...(setting as unknown as SettingType),
-    };
+    (setting as any).__typename = "Setting";
+    return setting;
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {
@@ -127,7 +124,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (!setting) {
       return settingsData;
     }
-    return setting.get() as unknown as SettingType;
+    return (setting.get() as unknown) as SettingType;
   },
 };
 

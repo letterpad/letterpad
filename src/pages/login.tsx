@@ -12,26 +12,23 @@ import { message } from "antd";
 import { useRouter } from "next/router";
 import { SessionData } from "@/graphql/types";
 import Head from "next/head";
-import { initializeApollo } from "@/graphql/apollo";
-import {
-  ForgotPasswordDocument,
-  ForgotPasswordMutation,
-  ForgotPasswordMutationVariables,
-} from "@/__generated__/queries/mutations.graphql";
+import { useForgotPasswordMutation } from "@/__generated__/queries/mutations.graphql";
 import { LoginError } from "@/__generated__/__types__";
 
 const key = "login";
 
 type SessionResponse = { user: LoginError | SessionData };
-const NormalLoginForm = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginView, setLoginView] = useState(true);
+  const [forgotPasswordMutation] = useForgotPasswordMutation();
 
   const router = useRouter();
 
   const doLogin = async () => {
     message.loading({ content: "Please wait...", key });
+
     const result = await signIn("credentials", {
       redirect: false,
       password: password,
@@ -39,24 +36,16 @@ const NormalLoginForm = () => {
       callbackUrl: nextConfig.basePath + "/pages",
     });
     if (result && result.error) {
-      message.error({
-        content: result.error,
-        key,
-        duration: 5,
-      });
+      error(result.error);
       return;
     }
     const session = (await getSession()) as SessionResponse;
     if (!session) {
-      message.error({
-        content: "The request could not be processed at this time.",
-        key,
-        duration: 5,
-      });
+      error("The request could not be processed at this time.");
       return;
     }
     if (session.user.__typename === "LoginError") {
-      message.error({ content: session.user.message, key, duration: 5 });
+      error(session.user.message);
       return;
     }
     if (session.user.__typename === "SessionData") {
@@ -85,40 +74,18 @@ const NormalLoginForm = () => {
     const sanitisedLoginEmail = email.trim();
     if (sanitisedLoginEmail.length > 0) {
       e.currentTarget.disabled = true;
-      const client = await initializeApollo();
-      const res = await client.mutate<
-        ForgotPasswordMutation,
-        ForgotPasswordMutationVariables
-      >({
-        mutation: ForgotPasswordDocument,
-        variables: {
-          email: email,
-        },
-      });
+      const res = await forgotPasswordMutation({ variables: { email } });
       const data = res.data?.forgotPassword;
 
       if (data?.ok) {
-        message.success({
-          content: "Check your email to reset your password!",
-          key,
-          duration: 5,
-        });
+        success("Check your email to reset your password!");
         router.push(`${nextConfig.basePath}/login`);
       } else {
         e.currentTarget.disabled = false;
-        message.warn({
-          content:
-            data?.message || "Something wrong hapenned. Please try again.",
-          key,
-          duration: 5,
-        });
+        warn(data?.message || "Something wrong hapenned. Please try again.");
       }
     } else {
-      message.warn({
-        content: "Email field is mandatory",
-        key,
-        duration: 5,
-      });
+      warn("Email field is mandatory");
     }
   };
 
@@ -193,4 +160,15 @@ const NormalLoginForm = () => {
   );
 };
 
-export default NormalLoginForm;
+export default Login;
+
+function error(content: string) {
+  message.error({ content, key, duration: 5 });
+}
+
+function warn(content: string) {
+  message.warn({ content, key, duration: 5 });
+}
+function success(content: string) {
+  message.success({ content, key, duration: 5 });
+}

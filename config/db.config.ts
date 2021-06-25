@@ -1,14 +1,16 @@
-const path = require("path");
+import { Dialect, Options } from "sequelize/types";
 
-export const getFile = name => {
+import path from "path";
+
+export const getFile = (name: string) => {
   const dbFile = name + ".sqlite";
   return path.join(process.cwd(), "/data/", dbFile);
 };
 
 type IDbConfig = {
-  development: any;
-  test: any;
-  production: any;
+  development: Options;
+  test: Options;
+  production: Options;
 };
 export const dbConfig: IDbConfig = {
   development: {
@@ -16,12 +18,11 @@ export const dbConfig: IDbConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    dialect: process.env.DB_TYPE,
+    dialect: process.env.DB_TYPE as Dialect,
     storage: getFile("letterpad"),
     logging: false,
     define: {
       underscored: true,
-      raw: false,
     },
   },
   test: {
@@ -29,7 +30,7 @@ export const dbConfig: IDbConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    dialect: process.env.DB_TYPE,
+    dialect: process.env.DB_TYPE as Dialect,
     storage: getFile("test"),
     logging: false,
     define: {
@@ -41,12 +42,11 @@ export const dbConfig: IDbConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    dialect: process.env.DB_TYPE,
+    dialect: process.env.DB_TYPE as Dialect,
     storage: getFile("letterpad"),
     logging: false,
     define: {
       underscored: true,
-      raw: false,
     },
   },
 };

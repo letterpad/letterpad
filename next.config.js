@@ -1,4 +1,5 @@
 const basePath = "/admin";
+const path = require("path");
 
 module.exports = {
   typescript: {

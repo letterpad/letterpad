@@ -9,7 +9,7 @@ import { getDateTime } from "./../shared/utils";
 import { IAuthComponentProps } from "./../shared/types";
 import { Role } from "@/__generated__/__types__";
 
-// If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to register first. This will allow you to setup letterpad with mysql. Then login and import the data to populate the exisiting data in mysql.
+// If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to /admin/register first. This will allow you to seed letterpad with mysql. Then login and import the data to populate the exisiting data in mysql.
 
 const Info = () => {
   return (
