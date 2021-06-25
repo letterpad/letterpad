@@ -1,32 +1,24 @@
-import { Row, Col, PageHeader, Space, Button, Popconfirm, message } from "antd";
+import { Row, PageHeader, Space, message } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import Image from "next/image";
+
 import CustomLayout from "@/components/layouts/Layout";
-import { initializeApollo } from "@/graphql/apollo";
-import {
-  MediaDocument,
-  MediaQuery,
-  MediaQueryVariables,
-} from "@/__generated__/queries/queries.graphql";
-import { MediaNode, Setting, Media as IMedia } from "@/__generated__/__types__";
+import { useMediaQuery } from "@/__generated__/queries/queries.graphql";
+import { MediaNode, Media as IMedia } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
 import { useState } from "react";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
 import MediaUpdateModal from "@/components/modals/media-update-modal";
 import Head from "next/head";
+import MediaItem from "@/components/MediaItem";
 
 const key = "updatable";
 
-const Media = ({
-  _data,
-}: {
-  settings: Setting;
-  _data: { media: MediaNode };
-}) => {
+const Media = () => {
+  const mediaQ = useMediaQuery({ variables: { filters: {} } });
   const [preview, setPreview] = useState<IMedia | undefined>();
   const [data, setData] = useState<MediaNode>({
-    count: _data.media.count,
-    rows: _data.media.rows,
+    count: mediaQ.data?.media.count || 0,
+    rows: mediaQ.data?.media.rows || [],
   });
 
   const deleteImage = async (img: IMedia) => {
@@ -63,38 +55,14 @@ const Media = ({
         <div className="site-layout-background" style={{ padding: 16 }}>
           <Space>
             <Row gutter={[24, 24]} justify="start">
-              {data.rows.map((image) => {
-                return (
-                  <Col xs={12} sm={6} xl={4} key={image.id}>
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setPreview(image);
-                      }}
-                    >
-                      <Image
-                        src={image.url}
-                        width={image.width || 100}
-                        height={image.height || 200}
-                        loading="lazy"
-                        layout="intrinsic"
-                      />
-                    </a>
-                    <Popconfirm
-                      title="Are you sure to delete this image?"
-                      onConfirm={() => deleteImage(image)}
-                      // onCancel={cancel}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button size="small" type="link" danger>
-                        Delete
-                      </Button>
-                    </Popconfirm>
-                  </Col>
-                );
-              })}
+              {data.rows.map((image) => (
+                <MediaItem
+                  image={image}
+                  deleteImage={deleteImage}
+                  key={image.id}
+                  setPreview={setPreview}
+                />
+              ))}
             </Row>
           </Space>
         </div>
@@ -111,19 +79,3 @@ const Media = ({
 const MediaWithAuth = withAuthCheck(Media);
 MediaWithAuth.layout = CustomLayout;
 export default MediaWithAuth;
-
-export async function getServerSideProps(context) {
-  const apolloClient = await initializeApollo({}, context);
-
-  const media = await apolloClient.query<MediaQuery, MediaQueryVariables>({
-    query: MediaDocument,
-    variables: {
-      filters: {},
-    },
-  });
-  return {
-    props: {
-      _data: media.data,
-    },
-  };
-}
