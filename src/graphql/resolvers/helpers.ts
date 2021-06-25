@@ -1,7 +1,6 @@
 import https from "https";
 import cheerio from "cheerio";
 import sizeOf from "image-size";
-import { ISizeCalculationResult } from "image-size/dist/types/interface";
 import { Post as ModelPost } from "../db/models/post";
 import logger from "./../../shared/logger";
 
