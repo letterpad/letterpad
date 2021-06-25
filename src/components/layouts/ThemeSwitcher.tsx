@@ -34,13 +34,20 @@ const ThemeSwitcher = () => {
 
 ThemeSwitcher.switch = (color) => {
   const $body = document.body;
+  let stylePath = "/css/antd.css";
   if (color === "dark") {
+    stylePath = "/css/antd.dark.css";
     $body.classList.remove("light");
     $body.classList.add("dark");
   } else {
     $body.classList.remove("dark");
     $body.classList.add("light");
   }
+  const $style = document.querySelector("#theme");
+  if ($style) {
+    $style.setAttribute("href", nextConfig.basePath + stylePath);
+  }
+
   localStorage.theme = color;
 };
 export default ThemeSwitcher;

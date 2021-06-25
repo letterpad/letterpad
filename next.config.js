@@ -1,20 +1,7 @@
 const basePath = "/admin";
-const withLess = require("next-with-less");
 const path = require("path");
 
-const pathToLessFileWithVariables = path.resolve(
-  "node_modules/antd/lib/style/themes/dark.less",
-);
-
-module.exports = withLess({
-  lessLoaderOptions: {
-    // additionalData: (content) =>
-    //   `${content}\n\n@import '${pathToLessFileWithVariables}';`,
-    lessOptions: {
-      modifyVars: {},
-      javascriptEnabled: true,
-    },
-  },
+module.exports = {
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -57,4 +44,4 @@ module.exports = withLess({
 
     return config;
   },
-});
+};

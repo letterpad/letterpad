@@ -1,7 +1,7 @@
 {
-  "name": "with-typescript-graphql",
-  "version": "0.1.0",
-  "author": "",
+  "name": "letterpad-admin",
+  "version": "2.0.0",
+  "author": "Abhishek Saha",
   "license": "MIT",
   "scripts": {
     "codegen": "graphql-let",
@@ -78,10 +78,7 @@
     "graphql-let": "0.x",
     "graphql-tag": "2.11.0",
     "jest": "26.4.0",
-    "less-loader": "^10.0.0",
-    "next-with-less": "^0.3.0",
     "node-env-file": "^0.1.8",
-    "node-sass": "^6.0.0",
     "postcss-nested": "^5.0.5",
     "react-test-renderer": "16.13.1",
     "styled-jsx-plugin-sass": "^1.0.0",
