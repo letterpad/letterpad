@@ -1,7 +1,6 @@
 import { getReadableDate } from "../../resolvers/helpers";
 import { DataTypes, Model, Optional } from "sequelize";
 
-import restoreSequelizeAttributesOnClass from "./_tooling";
 import { Author } from "./author";
 
 export interface MediaAttributes {
@@ -21,8 +20,7 @@ export interface MediaCreationAttributes
 
 export class Media
   extends Model<MediaAttributes, MediaCreationAttributes>
-  implements MediaAttributes
-{
+  implements MediaAttributes {
   public id!: number;
   public name!: string;
   public url!: string;
@@ -37,7 +35,6 @@ export class Media
 
   constructor(...args) {
     super(...args);
-    restoreSequelizeAttributesOnClass(new.target, this, []);
   }
 }
 

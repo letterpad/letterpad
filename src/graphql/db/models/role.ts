@@ -6,7 +6,6 @@ import {
   Model,
   Optional,
 } from "sequelize";
-import restoreSequelizeAttributesOnClass from "./_tooling";
 
 export interface RoleAttributes {
   id: number;
@@ -18,8 +17,7 @@ export interface RoleCreationAttributes
 
 export class Role
   extends Model<RoleAttributes, RoleCreationAttributes>
-  implements RoleAttributes
-{
+  implements RoleAttributes {
   public id!: number;
   public name!: string;
 
@@ -34,10 +32,6 @@ export class Role
 
   constructor(...args) {
     super(...args);
-    restoreSequelizeAttributesOnClass(new.target, this, [
-      "getPermissions",
-      "addPermission",
-    ]);
   }
 }
 
