@@ -9,7 +9,7 @@ import {
   Model,
   Optional,
 } from "sequelize";
-import restoreSequelizeAttributesOnClass from "./_tooling";
+
 import { PostsResponse } from "@/__generated__/__types__";
 
 export interface TagsAttributes {
@@ -26,8 +26,7 @@ export interface TagsCreationAttributes
 
 export class Tags
   extends Model<TagsAttributes, TagsCreationAttributes>
-  implements TagsAttributes
-{
+  implements TagsAttributes {
   public id!: number;
   public name!: string;
   public desc!: string;
@@ -46,12 +45,6 @@ export class Tags
 
   constructor(...args) {
     super(...args);
-    restoreSequelizeAttributesOnClass(new.target, this, [
-      "getPosts",
-      "createPost",
-      "countPosts",
-      "hasPostById",
-    ]);
   }
 }
 
@@ -73,7 +66,7 @@ export default function initTags(sequelize) {
       slug: {
         type: DataTypes.STRING,
         get() {
-          return "/tag/" + this.slug;
+          return "/tag/" + this.getDataValue("slug");
         },
       },
     },

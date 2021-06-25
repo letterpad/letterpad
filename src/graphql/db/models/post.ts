@@ -14,7 +14,6 @@ import {
   BelongsToGetAssociationMixin,
 } from "sequelize";
 
-import restoreSequelizeAttributesOnClass from "./_tooling";
 import { getReadableDate } from "../../resolvers/helpers";
 import {
   TagsNode,
@@ -71,7 +70,7 @@ export class Post extends Model {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public getTags!: HasManyGetAssociationsMixin<Tags>; // Note the null assertions!
+  public getTags!: HasManyGetAssociationsMixin<Tags>;
   public getAuthor!: BelongsToGetAssociationMixin<Author>;
   public setTags!: BelongsToManySetAssociationsMixin<Tags, Tags["id"]>;
   public addTag!: HasManyAddAssociationMixin<Tags, Tags["id"]>;
@@ -85,15 +84,6 @@ export class Post extends Model {
 
   constructor(...args) {
     super(...args);
-    restoreSequelizeAttributesOnClass(new.target, this, [
-      "setTags",
-      "getTags",
-      "addTag",
-      "hasTagById",
-      "countTags",
-      "createTag",
-      "getAuthor",
-    ]);
   }
 }
 
@@ -128,11 +118,12 @@ export default function initPost(sequelize) {
         type: DataTypes.STRING,
         defaultValue: "",
         get() {
-          if (this.cover_image && this.cover_image.startsWith("/")) {
-            this.cover_image = process.env.ROOT_URL + this.cover_image;
+          const cImage = this.getDataValue("cover_image");
+          if (cImage && cImage.startsWith("/")) {
+            this.cover_image = process.env.ROOT_URL + cImage;
           }
           return {
-            src: this.cover_image,
+            src: cImage,
             width: this.cover_image_width,
             height: this.cover_image_height,
           };
@@ -162,7 +153,7 @@ export default function initPost(sequelize) {
         type: DataTypes.STRING,
         defaultValue: "",
         get() {
-          return "/" + this.type + "/" + this.slug;
+          return "/" + this.type + "/" + this.getDataValue("slug");
         },
       },
       reading_time: {
@@ -173,26 +164,28 @@ export default function initPost(sequelize) {
         type: DataTypes.DATE,
         allowNull: true,
         get() {
-          return getReadableDate(this.publishedAt);
+          return getReadableDate(this.getDataValue("publishedAt"));
         },
       },
       scheduledAt: {
         type: DataTypes.DATE,
         allowNull: true,
         get() {
-          return this.scheduledAt ? getReadableDate(this.scheduledAt) : "";
+          return this.getDataValue("scheduledAt")
+            ? getReadableDate(this.getDataValue("scheduledAt"))
+            : "";
         },
       },
       updatedAt: {
         type: DataTypes.DATE,
         get() {
-          return getReadableDate(this.updatedAt);
+          return getReadableDate(this.getDataValue("updatedAt"));
         },
       },
       createdAt: {
         type: DataTypes.DATE,
         get() {
-          return getReadableDate(this.createdAt);
+          return getReadableDate(this.getDataValue("createdAt"));
         },
       },
     },
