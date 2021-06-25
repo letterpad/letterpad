@@ -24,9 +24,9 @@ if (env === envs.test) env = envs.test;
 const config = dbConfig[env];
 // establish  database connection
 export const conn = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
+  config.database as string,
+  config.username as string,
+  config.password as string,
   {
     ...config,
     dialect: config.dialect || "sqlite",
