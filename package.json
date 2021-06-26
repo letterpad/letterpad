@@ -41,7 +41,7 @@
     "multer": "^1.4.2",
     "mysql2": "^2.2.5",
     "next": "11.0.1",
-    "next-auth": "^3.23.3",
+    "next-auth": "^3.27.0",
     "nprogress": "^0.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
