@@ -12,23 +12,26 @@ import { message } from "antd";
 import { useRouter } from "next/router";
 import { SessionData } from "@/graphql/types";
 import Head from "next/head";
-import { useForgotPasswordMutation } from "@/__generated__/queries/mutations.graphql";
+import { initializeApollo } from "@/graphql/apollo";
+import {
+  ForgotPasswordDocument,
+  ForgotPasswordMutation,
+  ForgotPasswordMutationVariables,
+} from "@/__generated__/queries/mutations.graphql";
 import { LoginError } from "@/__generated__/__types__";
 
 const key = "login";
 
 type SessionResponse = { user: LoginError | SessionData };
-const Login = () => {
+const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginView, setLoginView] = useState(true);
-  const [forgotPasswordMutation] = useForgotPasswordMutation();
 
   const router = useRouter();
 
   const doLogin = async () => {
     message.loading({ content: "Please wait...", key });
-
     const result = await signIn("credentials", {
       redirect: false,
       password: password,
@@ -74,7 +77,16 @@ const Login = () => {
     const sanitisedLoginEmail = email.trim();
     if (sanitisedLoginEmail.length > 0) {
       e.currentTarget.disabled = true;
-      const res = await forgotPasswordMutation({ variables: { email } });
+      const client = await initializeApollo();
+      const res = await client.mutate<
+        ForgotPasswordMutation,
+        ForgotPasswordMutationVariables
+      >({
+        mutation: ForgotPasswordDocument,
+        variables: {
+          email: email,
+        },
+      });
       const data = res.data?.forgotPassword;
 
       if (data?.ok) {
@@ -160,7 +172,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginForm;
 
 function error(content: string) {
   message.error({ content, key, duration: 5 });
