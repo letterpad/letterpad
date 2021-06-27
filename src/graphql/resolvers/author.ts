@@ -72,8 +72,8 @@ const Query: QueryResolvers<ResolverContext> = {
     if (author.avatar && author.avatar.startsWith("/")) {
       author.avatar = new URL(author.avatar, process.env.ROOT_URL).href;
     }
-    const a = author.get() as unknown as AuthorType;
-    return { ...a, __typename: "Author" };
+    const resolvedAuthor = author.get() as unknown as AuthorType;
+    return { ...resolvedAuthor, __typename: "Author" };
   },
 };
 
@@ -166,7 +166,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
   async login(_parent, args, _context, _info) {
     const author = await models.Author.findOne({
       where: { email: args.data?.email },
-      raw: true
+      raw: true,
     });
 
     if (author) {

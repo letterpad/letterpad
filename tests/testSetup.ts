@@ -30,6 +30,10 @@ export const createApolloTestServer = async () => {
     playground: true,
     context: async ({ req, res }) => {
       const author_id = await getAuthorIdFromRequest({ req });
+      session.user = {
+        ...session.user,
+        id: (req.headers.sessionid || session.user.id) as number,
+      };
 
       return { req, res, models, author_id, session };
     },
@@ -38,7 +42,7 @@ export const createApolloTestServer = async () => {
 
 let server;
 beforeAll(async () => {
-  await seed(models); 
+  await seed(models);
   const author = await models.Author.findOne({
     where: { email: "demo@demo.com" },
   });
