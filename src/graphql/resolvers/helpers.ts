@@ -4,7 +4,7 @@ import sizeOf from "image-size";
 import { Post as ModelPost } from "../db/models/post";
 import logger from "./../../shared/logger";
 
-function toSlug(str: string): string {
+export function toSlug(str: string): string {
   return str
     .toLowerCase()
     .replace(/[^\w\s\-]/g, " ")
