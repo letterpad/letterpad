@@ -16,9 +16,9 @@ import bcrypt from "bcryptjs";
 import { settingsData } from "../db/models/setting";
 import { validateCaptcha } from "./helpers";
 import generatePost from "../db/seed/contentGenerator";
-import sendMail from "src/mail";
-import templates from "src/mail/templates";
-import siteConfig from "config/site.config";
+import sendMail from "../../mail";
+import templates from "../../mail/templates";
+import siteConfig from "../../../config/site.config";
 import { seed } from "../db/seed/seed";
 import { getDateTime } from "./../../shared/utils";
 import { ROLES } from "../types";
@@ -179,15 +179,17 @@ const Mutation: MutationResolvers<ResolverContext> = {
         args.data?.password || "",
         author.password,
       );
+
       if (!authenticated)
         return {
           __typename: "LoginError",
           message: "Incorrect credentials",
         };
+
       try {
         return {
           __typename: "Author",
-          ...author,
+          ...author.get(),
         };
       } catch (e) {
         console.log(e);
