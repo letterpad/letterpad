@@ -166,6 +166,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
   async login(_parent, args, _context, _info) {
     const author = await models.Author.findOne({
       where: { email: args.data?.email },
+      raw: true,
     });
 
     if (author) {
@@ -189,7 +190,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       try {
         return {
           __typename: "Author",
-          ...author.get(),
+          ...author,
         };
       } catch (e) {
         console.log(e);
