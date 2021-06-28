@@ -10,7 +10,7 @@ import {
   Optional,
 } from "sequelize";
 
-import { PostsResponse } from "@/__generated__/__types__";
+import { PostsResponse } from "../../../../__generated__/__types__";
 
 export interface TagsAttributes {
   id: number;
@@ -26,7 +26,8 @@ export interface TagsCreationAttributes
 
 export class Tags
   extends Model<TagsAttributes, TagsCreationAttributes>
-  implements TagsAttributes {
+  implements TagsAttributes
+{
   public id!: number;
   public name!: string;
   public desc!: string;

@@ -19,7 +19,7 @@ import {
   TagsNode,
   PostStatusOptions,
   PostTypes,
-} from "@/__generated__/__types__";
+} from "../../../../__generated__/__types__";
 
 export interface PostAttributes {
   id: number;
