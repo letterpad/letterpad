@@ -8,6 +8,7 @@ import { promisify } from "util";
 import rimraf from "rimraf";
 import { createAuthor } from "../../../graphql/resolvers/author";
 import { ROLES } from "../../../graphql/types";
+import { toSlug } from "@/graphql/resolvers/helpers";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -59,7 +60,7 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   console.time("insert posts, media");
   const [tags] = await Promise.all([models.Tags.findAll()]);
 
-  await Promise.all([...posts.map(post => insertPost(post, models, tags))]);
+  await Promise.all([...posts.map((post) => insertPost(post, models, tags))]);
   await insertMedia();
   console.timeEnd("insert posts, settings, media");
 };
@@ -167,7 +168,7 @@ export async function insertTags() {
   ];
 
   if (author) {
-    return Promise.all([...tags.map(tag => author.createTag(tag))]);
+    return Promise.all([...tags.map((tag) => author.createTag(tag))]);
   }
 }
 
@@ -179,7 +180,7 @@ export async function insertPost(params, models: typeof dbModels, tags) {
   let author = await models.Author.findOne({ where: { id: authorId } });
   const title =
     params.type === "post" ? "Welcome to Letterpad" : "Letterpad Typography";
-  const slug = title.toLocaleLowerCase().replace(/ /g, "-");
+  const slug = toSlug(title);
 
   let post = await models.Post.create({
     title,
@@ -199,7 +200,7 @@ export async function insertPost(params, models: typeof dbModels, tags) {
   if (author && post) {
     promises = [author.addPost(post)];
     if (params.type === "post") {
-      promises = [...promises, ...tags.map(tag => post.addTag(tag))];
+      promises = [...promises, ...tags.map((tag) => post.addTag(tag))];
     }
 
     return Promise.all(promises);

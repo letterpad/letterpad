@@ -12,10 +12,13 @@ import {
   slugify,
   getImageDimensions,
   setImageWidthAndHeightInHtml,
+  toSlug,
 } from "./helpers";
 import logger from "./../../shared/logger";
 import models from "../db/models";
 import { getDateTime } from "./../../shared/utils";
+
+export const slugOfUntitledPost = "untitled";
 
 const Mutation: MutationResolvers<ResolverContext> = {
   async createPost(_parent, args, { session }) {
@@ -36,7 +39,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
     if (!args.data.slug) {
-      args.data.slug = await slugify(models.Post, "untitled");
+      const slug = args.data.title
+        ? toSlug(args.data.title)
+        : slugOfUntitledPost;
+      args.data.slug = await slugify(models.Post, slug);
     }
 
     if (!args.data.md) {
@@ -47,11 +53,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
     const newPost = await author?.createPost(args.data as any);
 
     if (newPost) {
-      const defaultTags = await models.Tags.findOne({
-        where: { id: newPost.id },
-      });
-      if (defaultTags) await newPost.addTag(defaultTags);
-
       return {
         __typename: "Post",
         ...newPost.get(),
@@ -103,11 +104,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
       // slug and title
       if (dataToUpdate.slug) {
-        if (dataToUpdate.slug.length === 0) {
-          const title = args.data.title || previousPost.title;
-          dataToUpdate.slug = await slugify(models.Post, title);
-          logger.debug("Slug changed to :", args.data.slug);
-        }
+        dataToUpdate.slug = await slugify(models.Post, dataToUpdate.slug);
+        logger.debug("Slug changed to :", args.data.slug);
       } else if (
         args.data.title &&
         isFirstTitleCreation(previousPost.title, args.data.title)
@@ -115,7 +113,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
         dataToUpdate.slug = await slugify(models.Post, args.data.title);
         dataToUpdate.title = args.data.title || previousPost.title;
         logger.debug("Slug created:", dataToUpdate.slug);
-      } else if (args.data.title) {
+      }
+      if (args.data.title) {
         dataToUpdate.title = args.data.title;
       }
 

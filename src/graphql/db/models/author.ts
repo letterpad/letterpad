@@ -45,7 +45,8 @@ interface AuthorCreationAttributes extends Optional<AuthorAttributes, "id"> {}
 
 export class Author
   extends Model<AuthorAttributes, AuthorCreationAttributes>
-  implements AuthorAttributes {
+  implements AuthorAttributes
+{
   public id!: number;
   public name!: string;
   public email!: string;

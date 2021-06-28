@@ -5,7 +5,7 @@ import {
   SettingsQuery,
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
-import nextConfig from "next.config";
+import nextConfig from "../../next.config";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { IUploadFileProps } from "./types";
@@ -105,7 +105,6 @@ export function removeTypenames<T>(data: T): Omit<T, "__typename"> {
 
   return JSON.parse(JSON.stringify(data), omitTypename);
 }
-
 
 export function initPageProgress() {
   NProgress.configure({ showSpinner: true });

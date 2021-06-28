@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "rootDir": "./",
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],
-      "@/__generated__/*": ["__generated__/src/graphql/*"],
-      "@/__generated__/__types__": ["__generated__/__types__.tsx"],
+
+      "@/__generated__/*": ["__generated__/src/graphql/*", "__generated__/*"],
+      "@/graphql/db/models": ["src/graphql/db/models"],
+      "@/graphql/schema": ["src/graphql/schema"],
       "@/graphql/*": ["src/graphql/*"]
     },
     "allowJs": true,
@@ -28,5 +31,10 @@
     "target": "es2019"
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*", "__generated__/**/*", "postcss.config.js"]
+  "include": [
+    "src/**/*",
+    "__generated__/**/*",
+    "postcss.config.js",
+    "tests/**/*"
+  ]
 }

@@ -26,7 +26,8 @@ export interface TagsCreationAttributes
 
 export class Tags
   extends Model<TagsAttributes, TagsCreationAttributes>
-  implements TagsAttributes {
+  implements TagsAttributes
+{
   public id!: number;
   public name!: string;
   public desc!: string;

@@ -4,7 +4,7 @@ import sizeOf from "image-size";
 import { Post as ModelPost } from "../db/models/post";
 import logger from "./../../shared/logger";
 
-function toSlug(str: string): string {
+export function toSlug(str: string): string {
   return str
     .toLowerCase()
     .replace(/[^\w\s\-]/g, " ")
@@ -104,6 +104,7 @@ interface ICaptchaResult {
 }
 
 export async function validateCaptcha(serverKey: string, clientToken: string) {
+  if (process.env.NODE_ENV === "test") return true;
   const response: ICaptchaResult = await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${serverKey}&response=${clientToken}`,
   ).then((res) => res.json());
