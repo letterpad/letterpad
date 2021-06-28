@@ -45,19 +45,7 @@ export const createApolloTestServer = async () => {
 let server;
 beforeAll(async () => {
   await seed(models);
-  const author = await models.Author.findOne({
-    where: { email: "demo@demo.com" },
-  });
-
-  if (!author) {
-    throw new Error("Author is not defined");
-  }
-  const setting = await author.getSetting();
-  if (!setting) {
-    throw new Error("Setting is not defined");
-  }
   server = await createApolloTestServer();
-
   const { url } = await server.listen({ port: 3000 });
   console.log("server listening at " + url);
 });
