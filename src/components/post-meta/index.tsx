@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Tooltip, Input, Drawer, Button, Checkbox, Space } from "antd";
+import { Row, Col, Tooltip, Input, Drawer, Button, Space, Switch } from "antd";
 import { EyeOutlined, SettingOutlined } from "@ant-design/icons";
 import ImageUpload from "../ImageUpload";
 import {
@@ -78,28 +78,36 @@ const Actions = ({ post, setPostAttribute, deletePost, postHash }: IProps) => {
         width={320}
       >
         <Space direction="vertical" size="middle">
-          <Checkbox
-            onChange={(e) =>
-              setPostAttribute({
-                status: e.target.checked
-                  ? PostStatusOptions.Published
-                  : PostStatusOptions.Draft,
-              })
-            }
-            checked={isPublished}
-          >
-            {isPublished
-              ? `Unpublish this ${postVerb}`
-              : `Publish this ${postVerb}`}
-          </Checkbox>
-          {isPost && (
-            <Checkbox
-              onChange={(e) => setPostAttribute({ featured: e.target.checked })}
-              checked={post.featured}
-            >
-              {post.featured ? "Remove from featured" : "Mark as featured post"}
-            </Checkbox>
-          )}
+          <Row justify="space-between">
+            <Col span={20}>Published</Col>
+            <Col span={4}>
+              <Switch
+                size="small"
+                checked={isPublished}
+                onChange={(change) => {
+                  setPostAttribute({
+                    status: change
+                      ? PostStatusOptions.Published
+                      : PostStatusOptions.Draft,
+                  });
+                }}
+              />
+            </Col>
+          </Row>
+          <Row justify="space-between" hidden={!isPost}>
+            <Col span={20}>Featured</Col>
+            <Col span={4}>
+              <Switch
+                size="small"
+                checked={post.featured}
+                onChange={(change) => {
+                  setPostAttribute({
+                    featured: change,
+                  });
+                }}
+              />
+            </Col>
+          </Row>
           <div>
             <label>{postVerb} Description</label>
             <TextArea

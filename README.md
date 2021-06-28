@@ -1,6 +1,7 @@
 Letterpad Admin is the dashboard for publishing blogs.
 
-## Demo: 
+## Demo:
+
 https://letterpad.app/admin/login
 
 User Id: demo@demo.com
@@ -10,7 +11,7 @@ Password: demo
 
 There are few things that you should know before running letterpad in a production environment.
 
-- In the root folder, you will find a file `env.development.local`. Clone is file and rename it to `env.production.local`. The most import key is `SECRET_KEY`, set the value of this key to something different. This key is used to encrypt passwords, sessions and preview links.
+- In the root folder, you will find a file `env.development.local`. Clone is file and rename it to `env.production.local`. The most important key is `SECRET_KEY`, set the value of this key to something different. This key is used to encrypt passwords, sessions and preview links.
 
 - Letterpad runs on the url `/admin`. If you would like to run the admin dashboard in the root url,
   edit `next.config.js` and remove the basePath. Also open `env.production.local` and remove the `/admin` from all the urls.
@@ -50,7 +51,7 @@ Then, run the development server:
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser. You can login with the test account mentioned below
+Open [http://localhost:3000/admin](http://localhost:3000/admin) with your browser. You can login with the test account mentioned below
 
 ```
 Email - demo@demo.com
@@ -71,4 +72,5 @@ We also have a letterpad client which you can find in [this repository](https://
 Demo: https://demo.letterpad.app
 
 ## Contribute
+
 You are welcome to contribute to the project. If you find any bugs, please create an issue or a pull request.
