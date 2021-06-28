@@ -4,7 +4,7 @@ import {
 } from "./../../../__generated__/src/graphql/queries/mutations.graphql";
 import { API } from "../../../tests/testClient";
 import { toSlug } from "./helpers";
-import { PostStatusOptions } from "@/__generated__/__types__";
+import { PostStatusOptions } from "../../../__generated__/__types__";
 
 const title = "New Post";
 describe("Test Post Query Graphql API", () => {
