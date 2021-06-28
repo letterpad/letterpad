@@ -10,7 +10,7 @@ import {
   Optional,
 } from "sequelize";
 
-import { PostsResponse } from "../../../../__generated__/__types__";
+import { PostsResponse } from "@/__generated__/__types__";
 
 export interface TagsAttributes {
   id: number;

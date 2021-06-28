@@ -20,7 +20,7 @@ import {
   Role as QraphqlRole,
   Permissions as GraqhqlPermissions,
   Social,
-} from "../../../../__generated__/__types__";
+} from "@/__generated__/__types__";
 import { Setting } from "./setting";
 import { Tags } from "./tags";
 

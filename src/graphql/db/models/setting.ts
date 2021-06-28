@@ -1,11 +1,7 @@
 import { DataTypes, Model, Optional } from "sequelize";
 
 import { Author } from "./author";
-import {
-  Image,
-  Navigation,
-  NavigationType,
-} from "../../../../__generated__/__types__";
+import { Image, Navigation, NavigationType } from "@/__generated__/__types__";
 
 export interface SettingAttributes {
   id: number;
