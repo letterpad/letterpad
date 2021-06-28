@@ -6,9 +6,6 @@ import {
   TagDocument,
   TagsDocument,
 } from "./../../../__generated__/src/graphql/queries/queries.graphql";
-// import { UpdateOptionsDocument } from "../../../__generated__/src/graphql/queries/mutations.graphql";
-// import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
-// import models from "../db/models";
 import { API } from "../../../tests/testClient";
 
 describe("Test Tags Graphql API", () => {
