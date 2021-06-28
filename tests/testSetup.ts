@@ -30,10 +30,12 @@ export const createApolloTestServer = async () => {
     playground: true,
     context: async ({ req, res }) => {
       const author_id = await getAuthorIdFromRequest({ req });
-      session.user = {
-        ...session.user,
-        id: (req.headers.sessionid || session.user.id) as number,
-      };
+      if (req.headers.sessionid != "undefined") {
+        session.user = {
+          ...session.user,
+          id: req.headers.sessionid as unknown as number,
+        };
+      }
 
       return { req, res, models, author_id, session };
     },
