@@ -1,11 +1,11 @@
 import getAuthorIdFromRequest from "../src/shared/getAuthorIdFromRequest";
 const env = require("node-env-file");
-if (process.env.NODE_ENV === "production") {
-  env(__dirname + "/../.env.production.local");
-} else {
-  env(__dirname + "/../.env.development.local");
-}
-
+// if (process.env.NODE_ENV === "production") {
+//   env(__dirname + "/../.env.production.local");
+// } else {
+// }
+env(__dirname + "/../.env.development.local");
+console.log(process.env.NODE_ENV);
 import { ApolloServer } from "apollo-server";
 import models from "../src/graphql/db/models";
 import { schema } from "../src/graphql/schema";
