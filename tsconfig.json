@@ -5,7 +5,7 @@
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],
-      "@/__generated__/__types__": ["__generated__/__types__.tsx"],
+      "@/__generated__/__types__": ["__generated__/__types__"],
       "@/__generated__/*": ["__generated__/src/graphql/*"],
       "@/graphql/db/models": ["src/graphql/db/models"],
       "@/graphql/schema": ["src/graphql/schema"],
