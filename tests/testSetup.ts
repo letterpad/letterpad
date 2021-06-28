@@ -5,8 +5,6 @@ const env = require("node-env-file");
 // } else {
 // }
 env(__dirname + "/../.env.development.local");
-require("ts-node/register");
-require("tsconfig-paths/register");
 
 import { ApolloServer } from "apollo-server";
 import models from "../src/graphql/db/models";
