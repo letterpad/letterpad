@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { getSession, signIn } from "next-auth/client";
-import config, { basePath } from "next.config";
 import {
   Block,
   Button,
@@ -56,7 +55,7 @@ const LoginForm = () => {
       if (result && result.url) {
         document.location.href = result.url;
       } else {
-        document.location.href = basePath + "/posts";
+        document.location.href = process.env.basePath + "/posts";
       }
     }
   };
