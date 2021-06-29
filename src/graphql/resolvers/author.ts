@@ -22,6 +22,7 @@ import siteConfig from "../../../config/site.config";
 import { seed } from "../db/seed/seed";
 import { getDateTime } from "./../../shared/utils";
 import { ROLES } from "../types";
+import logger from "../../shared/logger";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 
@@ -95,6 +96,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     const dbSeeded = await isDatabaseSeeded();
     if (!dbSeeded) {
+      logger.debug("Database not seeded. Seeding now.");
       await seed(models, false);
       await createAuthor({
         email: "admin@xxx.com",
@@ -352,7 +354,7 @@ function getWelcomePostAndPage() {
 
 async function isDatabaseSeeded(): Promise<boolean> {
   try {
-    await models.sequelize.query("SELECT * FROM 'authors'");
+    await models.sequelize.query("SELECT * FROM authors");
     return true;
   } catch (e) {
     if (e.name === "SequelizeDatabaseError") {

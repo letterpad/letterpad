@@ -81,11 +81,11 @@ export default function initSetting(sequelize) {
         primaryKey: true,
       },
       site_title: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         defaultValue: "",
       },
       site_tagline: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(160),
         defaultValue: "",
       },
       site_email: {
@@ -101,7 +101,7 @@ export default function initSetting(sequelize) {
         defaultValue: "",
       },
       site_description: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(500),
         defaultValue: "",
       },
       subscribe_embed: {

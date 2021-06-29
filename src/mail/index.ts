@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail";
+import logger from "src/shared/logger";
 if (process.env.SENDGRID_API_KEY) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 }
@@ -17,12 +18,11 @@ interface Mail {
 
 export default async function sendMail(data: Mail) {
   try {
-    const status = await sgMail.send({
+    return await sgMail.send({
       from: "letterpad@ajaxtown.com",
       ...data,
     });
-    return status;
   } catch (e) {
-    console.log("e :>> ", e);
+    logger.error("Could not send mail");
   }
 }
