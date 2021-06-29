@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getSession, signIn } from "next-auth/client";
-import nextConfig, { basePath } from "next.config";
+import config, { basePath } from "next.config";
 import {
   Block,
   Button,
@@ -36,7 +36,7 @@ const LoginForm = () => {
       redirect: false,
       password: password,
       email: email,
-      callbackUrl: nextConfig.basePath + "/pages",
+      callbackUrl: process.env.basePath + "/pages",
     });
     if (result && result.error) {
       error(result.error);
@@ -91,7 +91,7 @@ const LoginForm = () => {
 
       if (data?.ok) {
         success("Check your email to reset your password!");
-        router.push(`${nextConfig.basePath}/login`);
+        router.push(`${process.env.basePath}/login`);
       } else {
         e.currentTarget.disabled = false;
         warn(data?.message || "Something wrong hapenned. Please try again.");

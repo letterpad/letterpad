@@ -14,6 +14,7 @@ import {
 import jwt from "jsonwebtoken";
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
 import { Post } from "@/graphql/db/models/post";
+import { withSentry } from "@sentry/nextjs";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -70,7 +71,7 @@ const Import = async (req, res) => {
   }
 };
 
-export default Import;
+export default withSentry(Import);
 
 async function startImport(
   data: { [email: string]: IAuthorData },

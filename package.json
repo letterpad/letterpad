@@ -20,6 +20,7 @@
     "@graphql-tools/merge": "6.0.18",
     "@graphql-tools/schema": "6.0.18",
     "@sendgrid/mail": "^7.4.2",
+    "@sentry/nextjs": "^6.8.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/styled-components": "^5.1.9",
     "antd": "^4.15.1",

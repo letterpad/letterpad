@@ -20,7 +20,6 @@ import { uploadToInternal } from "./providers/internal";
 import models from "@/graphql/db/models";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
-import nextConfig from "next.config";
 
 const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");

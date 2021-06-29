@@ -1,6 +1,5 @@
 import { NextApiResponse } from "next";
 import { NextApiRequestWithFormData } from "./../../graphql/types";
-import nextConfig from "next.config";
 import { initializeApollo } from "@/graphql/apollo";
 import {
   CreatePostDocument,
@@ -27,7 +26,7 @@ const Create = async (
       },
     });
     if (post.data?.createPost.__typename === "Post") {
-      res.redirect(nextConfig.basePath + "/post/" + post.data.createPost.id);
+      res.redirect(process.env.basePath + "/post/" + post.data.createPost.id);
       return;
     }
     res.send("Post creation failed");
