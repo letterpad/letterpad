@@ -11,6 +11,7 @@ export const apolloServer = new ApolloServer({
     const author_id = await getAuthorIdFromRequest({ req: context.req });
     return { ...context, models, author_id, session };
   },
+  playground: true,
   introspection: true,
 });
 
