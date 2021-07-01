@@ -7,6 +7,7 @@ import {
   CreatePostMutationVariables,
 } from "@/__generated__/queries/mutations.graphql";
 import { PostTypes } from "@/__generated__/__types__";
+import logger from "../../shared/logger";
 
 const Create = async (
   req: NextApiRequestWithFormData,
@@ -31,6 +32,7 @@ const Create = async (
     }
     res.send("Post creation failed");
   } catch (e) {
+    logger.error(e);
     res.send(e.message);
   }
 };

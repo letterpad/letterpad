@@ -15,6 +15,7 @@ import jwt from "jsonwebtoken";
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
 import { Post } from "@/graphql/db/models/post";
 import { withSentry } from "@sentry/nextjs";
+import logger from "../../shared/logger";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -64,6 +65,7 @@ const Import = async (req, res) => {
 
     return res.send(response);
   } catch (e) {
+    logger.error(e);
     res.status(501).send({
       success: false,
       message: e.message,

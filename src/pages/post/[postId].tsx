@@ -26,6 +26,7 @@ import withAuthCheck from "../../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import { LoadingOutlined } from "@ant-design/icons";
 import Head from "next/head";
+import logger from "../../shared/logger";
 
 const { Content } = Layout;
 
@@ -123,7 +124,7 @@ function Post() {
           resolve(true);
         } catch (e) {
           reject();
-          console.error(e);
+          logger.error(e);
         }
       });
     });

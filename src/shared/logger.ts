@@ -1,4 +1,5 @@
 // @ts-nocheck
+import * as Sentry from "@sentry/nextjs";
 const reset = "\x1b[0m";
 const bright = "\x1b[1m";
 const dim = "\x1b[2m";
@@ -44,6 +45,11 @@ class logger {
   static error(...params: any[]) {
     const caller = getCaller();
     const [message, ...rest] = params;
+    if (typeof message === "string") {
+      Sentry.captureMessage(message);
+    } else {
+      Sentry.captureException(message);
+    }
     print("error", caller, message, red, rest);
   }
 

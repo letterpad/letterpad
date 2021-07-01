@@ -64,6 +64,9 @@ const SentryWebpackPluginOptions = {
   silent: true, // Suppresses all logs
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
+  errorHandler: (err, invokeErr) => {
+    console.log(err);
+  },
 };
 
 // Make sure adding Sentry options is the last code to run before exporting, to

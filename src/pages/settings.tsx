@@ -195,10 +195,6 @@ function Settings(props: { settings: Setting }) {
                       placeholder="Add css to customise your website"
                       // highlight={code => highlight(code, languages.js)}
                       highlight={(code) => {
-                        console.log(
-                          'highlight.highlight(code, { language: "css" }).value :>> ',
-                          highlight.highlight(code, { language: "css" }).value,
-                        );
                         return highlight.highlight(code, { language: "css" })
                           .value;
                       }}

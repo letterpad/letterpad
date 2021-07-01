@@ -90,7 +90,6 @@ export default async (
       try {
         let result: IMediaUploadResult;
         if (cdnEnabled) {
-          console.log("cdnEnabled :>> ", cdnEnabled);
           result = await uploadToCloudinary(file, uploadPath, {
             api_key: cloudinary_key,
             cloud_name: cloudinary_name,

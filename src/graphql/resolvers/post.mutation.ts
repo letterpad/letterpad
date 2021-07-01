@@ -282,7 +282,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         ...post.get(),
       };
     } catch (e) {
-      console.log(e);
+      logger.error(e);
     }
   },
 };
