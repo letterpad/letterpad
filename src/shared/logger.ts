@@ -28,8 +28,6 @@ const BGcyan = "\x1b[46m";
 const BGwhite = "\x1b[47m";
 
 class logger {
-  color = "black";
-
   static debug(...params: any[]) {
     const caller = getCaller();
     const [message, ...rest] = params;
