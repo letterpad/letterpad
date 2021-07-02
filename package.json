@@ -11,6 +11,7 @@
     "test": "yarn codegen && jest --runInBand",
     "start": "next start",
     "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed",
+    "sync-models": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/syncModels",
     "type-check": "yarn tsc"
   },
   "dependencies": {

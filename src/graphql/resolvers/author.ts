@@ -1,3 +1,4 @@
+import { callbacks } from "../../shared/callbacks";
 import { Subjects } from "./../../mail/index";
 import Cryptr from "cryptr";
 import jwt from "jsonwebtoken";
@@ -219,7 +220,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       await models.Author.update(dataToUpdate as any, {
         where: { id: args.author.id },
       });
-
+      callbacks.AUTHOR_UPDATE();
       return {
         ok: true,
         errors: [],

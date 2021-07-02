@@ -303,13 +303,16 @@ function Settings(props: { settings: Setting }) {
             </Collapse>
 
             <Collapse defaultActiveKey={["1"]}>
-              <Panel header="Keys" key="1">
+              <Panel header="Client Key and Deployment" key="1">
                 <Form.Item label="Client Authorization Key">
                   <Input.TextArea
                     rows={4}
                     value={settings.client_token}
                     disabled={true}
                   />
+                </Form.Item>
+                <Form.Item label="Deploy Ping URL">
+                  <Input value={settings.ping_url} />
                 </Form.Item>
               </Panel>
             </Collapse>
