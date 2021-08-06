@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { Col, Button, Popconfirm } from "antd";
-import { Media } from "@/__generated__/__types__";
+import {Col, Button, Popconfirm} from "antd";
+import {Media} from "@/__generated__/__types__";
 
 interface IProps {
   image: Media;
@@ -8,7 +8,7 @@ interface IProps {
   deleteImage: (img: Media) => Promise<void>;
 }
 
-const MediaItem = ({ image, setPreview, deleteImage }: IProps) => {
+const MediaItem = ({image, setPreview, deleteImage}: IProps) => {
   return (
     <Col xs={12} sm={6} xl={4} key={image.id}>
       <a

@@ -6,8 +6,6 @@ import {
 import { PostAttributes } from "../db/models/post";
 import { ResolverContext } from "../apollo";
 import reading_time from "reading-time";
-import { mdToHtml } from "letterpad-editor";
-
 import {
   slugify,
   getImageDimensions,
@@ -17,6 +15,7 @@ import {
 import logger from "./../../shared/logger";
 import models from "../db/models";
 import { getDateTime } from "./../../shared/utils";
+import { mdToHtml } from "../../shared/converter";
 
 export const slugOfUntitledPost = "untitled";
 
