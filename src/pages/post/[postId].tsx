@@ -8,7 +8,7 @@ import {
   UpdatePostMutation,
   UpdatePostMutationVariables,
 } from "@/__generated__/queries/mutations.graphql";
-import LetterpadEditor from "letterpad-editor";
+// import LetterpadEditor from "letterpad-editor";
 import { initializeApollo } from "@/graphql/apollo";
 import { Input, Layout, PageHeader, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
@@ -27,6 +27,12 @@ import ErrorMessage from "@/components/ErrorMessage";
 import nextConfig from "next.config";
 import { LoadingOutlined } from "@ant-design/icons";
 import Head from "next/head";
+import { mdToHtml } from "src/shared/converter";
+import dynamic from "next/dynamic";
+
+const LetterpadEditor = dynamic(() => import("letterpad-editor"), {
+  ssr: false,
+});
 
 const { Content } = Layout;
 
@@ -50,6 +56,7 @@ const updatePostRequest = async (
 const debounceUpdatePost = debounce(updatePostRequest, 1000);
 
 let editor;
+let insertImage;
 
 function Post() {
   const router = useRouter();
@@ -82,11 +89,6 @@ function Post() {
     return <ErrorMessage title="Error" description={error} />;
   }
 
-  const uploadImage = async (files: File[]) => {
-    const uploadedFiles = await uploadFile({ files, type: "post_image" });
-    return uploadedFiles[0].src;
-  };
-
   const setPostAttribute = async (attrs: Omit<InputUpdatePost, "id">) => {
     // if post is already published and new content is added, then save this as draft
     if (post.status === PostStatusOptions.Published && attrs.md) {
@@ -117,18 +119,9 @@ function Post() {
     [url: string]: Image & { alt: string };
   }) => {
     const urls = Object.keys(images);
-    const insertPromises = urls.map((url) => {
-      return new Promise((resolve, reject) => {
-        try {
-          editor.insertImageUrl(url, images[url].alt || "");
-          resolve(true);
-        } catch (e) {
-          reject();
-          console.error(e);
-        }
-      });
+    urls.forEach((url) => {
+      insertImage({ url, caption: images[url].alt || "" });
     });
-    return Promise.all(insertPromises);
   };
 
   const tagColor =
@@ -136,9 +129,9 @@ function Post() {
 
   const isPost = post.type === PostTypes.Post;
 
-  const setRef = (_editor) => {
-    editor = _editor;
-  };
+  // const setRef = (_editor) => {
+  //   editor = _editor;
+  // };
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -195,16 +188,15 @@ function Post() {
           />
           <LetterpadEditor
             dark={localStorage.theme === "dark"}
-            getEditorInstance={setRef}
-            onImageBrowse={onMediaBrowse}
-            uploadImage={(file: File) => uploadImage([file])}
-            defaultValue={post.md_draft || post.md}
-            tooltip={_Tooltip}
-            onChange={(change) => {
-              const { html, markdown } = change();
-              if (markdown !== post.md) {
-                setPostAttribute({ html, md: markdown });
-              }
+            // getEditorInstance={setRef}
+            onImageClick={(insert) => {
+              insertImage = insert;
+              onMediaBrowse();
+            }}
+            // uploadImage={(file: File) => uploadImage([file])}
+            html={mdToHtml(post.md_draft || post.md)}
+            onChange={(html) => {
+              setPostAttribute({ html, md: "# hello" });
             }}
             placeholder="Write a story.."
             // ref={setRef}
@@ -241,10 +233,10 @@ async function getPost(postId: number) {
   return post.data.post;
 }
 
-const _Tooltip: React.FC<any> = ({ children, tooltip }) => {
-  return (
-    <Tooltip title={tooltip}>
-      <span>{children}</span>
-    </Tooltip>
-  );
-};
+// const _Tooltip: React.FC<any> = ({ children, tooltip }) => {
+//   return (
+//     <Tooltip title={tooltip}>
+//       <span>{children}</span>
+//     </Tooltip>
+//   );
+// };

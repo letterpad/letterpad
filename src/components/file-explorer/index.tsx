@@ -16,7 +16,7 @@ interface IProps {
   isVisible: boolean;
   handleCancel: () => void;
   multi?: boolean;
-  onInsert: (images: ImageInput) => Promise<unknown[]>;
+  onInsert: (images: ImageInput) => void;
   onImageFile?: (image: File[]) => Promise<string[]>;
 }
 const FileExplorer = ({
@@ -116,6 +116,7 @@ const FileExplorer = ({
             </Button>
           ) : null,
           <Button
+            key="provider"
             type="primary"
             onClick={() => {
               setSelection({});

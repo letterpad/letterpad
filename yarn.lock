@@ -1168,6 +1168,14 @@
     immutable "~3.7.4"
     prop-types "^15.5.8"
 
+"@draft-js-plugins/focus@^4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@draft-js-plugins/focus/-/focus-4.1.2.tgz#4ea65cd54988c5605f657b08d04f3479dffa7ee8"
+  integrity sha512-1jiQiJEeYZbaAkHPEw+IDl5ye19NGASfc4dz8Tedrb6zYJbr0sQpSp3IACdJ424TciMhecyPsAKIflTE7yScOQ==
+  dependencies:
+    clsx "^1.0.4"
+    immutable "~3.7.4"
+
 "@draft-js-plugins/hashtag@^4.2.1":
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@draft-js-plugins/hashtag/-/hashtag-4.2.1.tgz#c8cc90587915c049f9c35ab441e6bc64a9476f28"
@@ -7462,14 +7470,15 @@ less@3.9.0:
     request "^2.83.0"
     source-map "~0.6.0"
 
-letterpad-editor@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/letterpad-editor/-/letterpad-editor-1.0.2.tgz#0745331c7738891445867e4e99312a9791605bf1"
-  integrity sha512-PmEOB5lRJnejjXPRjkjav9X49B6P1rm7WTSLqkJK1L35LuWx5aS0wvdJFaLAdRS9aLtoGbpXMr7sMdJZFGqWCA==
+letterpad-editor@^1.0.16:
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/letterpad-editor/-/letterpad-editor-1.0.16.tgz#46da613561c1164760e355b29d71d6a31921fea1"
+  integrity sha512-DmusQ4u7Apr624lK193y1s+l8QKlGziYIzECjT6lg2ekaCxP8v7vxi+BRujretbwpsUNqadUcjvzzb5znge2vA==
   dependencies:
     "@draft-js-plugins/anchor" "^4.1.3"
     "@draft-js-plugins/counter" "^4.1.1"
     "@draft-js-plugins/editor" "^4.1.0"
+    "@draft-js-plugins/focus" "^4.1.2"
     "@draft-js-plugins/hashtag" "^4.2.1"
     "@draft-js-plugins/inline-toolbar" "^4.1.2"
     "@draft-js-plugins/linkify" "^4.1.1"

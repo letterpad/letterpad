@@ -5,9 +5,8 @@ const clientId =
 const unsplash = async (req, res) => {
   const { page, query } = req.query;
   const endpoint = `${unsplashUrl}?client_id=${clientId}&query=${query}&page=${page}&per_page=21`;
-
   try {
-    const response = await fetch(endpoint).then(data => data.json());
+    const response = await fetch(endpoint).then((data) => data.json());
     res.json({
       rows: response.results,
       count: response.total,
