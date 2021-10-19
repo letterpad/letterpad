@@ -1,13 +1,8 @@
 import withAuthCheck from "../hoc/withAuth";
-import {
-  PostsDocument,
-  PostsQuery,
-  PostsQueryVariables,
-} from "@/__generated__/queries/queries.graphql";
-import { PostsFilters, PostTypes } from "@/__generated__/__types__";
+import { PostsQuery } from "@/__generated__/queries/queries.graphql";
+import { PostTypes } from "@/__generated__/__types__";
 import { useRouter } from "next/router";
-import { initializeApollo } from "@/graphql/apollo";
-import { Button, Layout, PageHeader, Table } from "antd";
+import { Layout, Table } from "antd";
 const { Content } = Layout;
 import CustomLayout from "@/components/layouts/Layout";
 import { useEffect, useState } from "react";
@@ -16,6 +11,8 @@ import Filters from "@/components/filters";
 import Head from "next/head";
 import { postsStyles } from "@/components/posts.css";
 import { columns } from "@/components/posts";
+import { fetchPosts } from "@/components/posts/api";
+import { Header } from "@/components/posts/header";
 
 function Pages() {
   const [loading, setLoading] = useState(true);
@@ -23,29 +20,21 @@ function Pages() {
     count: 0,
     rows: [],
   });
-  const [filters, setFilters] = useState<PostsFilters>({});
+
   const [error, setError] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    fetchPosts(filters);
-  }, [JSON.stringify(filters)]);
+    getPages();
+  }, []);
 
-  const fetchPosts = async (args = {}) => {
-    const posts = await fetchPostsFromAPI(args);
-    setLoading(false);
-    if (posts.__typename === "PostsNode") {
-      const rows = posts.rows.map((post) => {
-        return {
-          ...post,
-          key: post.id,
-        };
-      });
-      setPostsNode({ ...posts, rows });
-    }
-
-    if (posts.__typename === "PostError") {
-      setError(posts.message);
+  const getPages = async () => {
+    try {
+      const posts = await fetchPosts(PostTypes.Page);
+      setLoading(false);
+      if (posts) setPostsNode(posts);
+    } catch (e) {
+      setError((e as Error).message);
     }
   };
 
@@ -58,25 +47,10 @@ function Pages() {
       <Head>
         <title>Pages</title>
       </Head>
-      <PageHeader
-        className="site-page-header"
-        title="Pages"
-        extra={[
-          <Button
-            key="1"
-            type="primary"
-            onClick={() => router.push(`/api/create?type=${PostTypes.Page}`)}
-          >
-            New Page
-          </Button>,
-        ]}
-      ></PageHeader>
+      <Header type={PostTypes.Page} title="Pages" />
       <Content>
         <div className="site-layout-background" style={{ padding: 16 }}>
-          <Filters
-            onStatusChange={(status) => setFilters({ ...filters, status })}
-            onOrderChange={(sortBy) => setFilters({ ...filters, sortBy })}
-          />
+          <Filters showTags={false} />
           <Table
             columns={columns}
             dataSource={source}
@@ -95,18 +69,3 @@ function Pages() {
 const PagesWithAuth = withAuthCheck(Pages);
 PagesWithAuth.layout = CustomLayout;
 export default PagesWithAuth;
-
-async function fetchPostsFromAPI(filters: PostsFilters) {
-  const apolloClient = await initializeApollo();
-
-  const post = await apolloClient.query<PostsQuery, PostsQueryVariables>({
-    query: PostsDocument,
-    variables: {
-      filters: {
-        type: PostTypes.Page,
-        ...filters,
-      },
-    },
-  });
-  return post.data.posts;
-}

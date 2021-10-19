@@ -109,20 +109,19 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
         isVisible={explorerVisible}
         handleCancel={() => setExplorerVisible(false)}
         onInsert={async (files) => {
-          const result: IMediaUploadResult[] = [];
-          for (url in files) {
-            const item = files[url];
-            result.push({
+          const result: IMediaUploadResult[] = files.map((item) => {
+            return {
               src: url,
               name: "does-not-matter",
               error: "",
               size: {
-                width: item.width || 0,
-                height: item.height || 0,
+                width: (item.width || 0) as number,
+                height: (item.height || 0) as number,
                 type: "",
               },
-            });
-          }
+            };
+          });
+
           onDone(result);
           setExplorerVisible(false);
           return Promise.resolve(result);

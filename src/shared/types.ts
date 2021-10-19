@@ -32,3 +32,8 @@ export interface IUploadFileProps {
   files: File[] | FileList;
   type?: string;
 }
+
+export enum MediaProvider {
+  Unsplash = "unsplash",
+  Letterpad = "letterpad",
+}

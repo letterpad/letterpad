@@ -1,34 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Tooltip, Input, Drawer, Button, Space, Switch } from "antd";
 import { EyeOutlined, SettingOutlined } from "@ant-design/icons";
 import ImageUpload from "../ImageUpload";
-import {
-  InputUpdatePost,
-  PostStatusOptions,
-  PostTypes,
-} from "@/__generated__/__types__";
+import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import Tags from "./tags";
-import { PostQuery } from "@/__generated__/queries/queries.graphql";
+import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
+import { getPostHash } from "./api";
+import { PostContextType } from "../post/types";
 
 const { TextArea } = Input;
 
 interface IProps {
-  post: PostQuery["post"];
-  setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => void;
+  post: PostWithAuthorAndTagsFragment;
+  setPostAttribute: PostContextType["setPostAttribute"];
   deletePost: () => void;
-  postHash: string;
 }
-const Actions = ({ post, setPostAttribute, deletePost, postHash }: IProps) => {
+const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
+  if (post && post.__typename !== "Post") return null;
+
   const [visible, setVisible] = useState(false);
+  const [postHash, setPostHash] = useState("");
   const settings = useSettingsQuery();
 
-  const showDrawer = () => {
-    setVisible(true);
-  };
-  const onClose = () => {
-    setVisible(false);
-  };
+  useEffect(() => {
+    getPostHash(post.id).then(setPostHash);
+  }, [post.id]);
+
+  const showDrawer = () => setVisible(true);
+  const onClose = () => setVisible(false);
 
   if (post.__typename !== "Post") return null;
 

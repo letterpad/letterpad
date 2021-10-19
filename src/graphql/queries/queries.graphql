@@ -1,4 +1,4 @@
-# import Partial from './partial.graphql'
+# import './partial.graphql'
 
 query Tag($slug: String!) {
   tag(slug: $slug) {
@@ -16,24 +16,7 @@ query Tag($slug: String!) {
 query Post($filters: PostFilters) {
   post(filters: $filters) {
     ... on Post {
-      ...Partial
-      author {
-        id
-        name
-        avatar
-        social {
-          github
-          twitter
-          instagram
-        }
-        bio
-      }
-      tags {
-        id
-        name
-        desc
-        slug
-      }
+      ...PostWithAuthorAndTags
     }
 
     ... on PostError {

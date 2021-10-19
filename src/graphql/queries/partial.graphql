@@ -20,3 +20,24 @@ fragment Partial on Post {
     height
   }
 }
+
+fragment PostWithAuthorAndTags on Post {
+  ...Partial
+  author {
+    id
+    name
+    avatar
+    social {
+      github
+      twitter
+      instagram
+    }
+    bio
+  }
+  tags {
+    id
+    name
+    desc
+    slug
+  }
+}
