@@ -111,8 +111,9 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
         onInsert={async (files) => {
           const result: IMediaUploadResult[] = files.map((item) => {
             return {
-              src: url,
+              src: item.src,
               name: "does-not-matter",
+              caption: item.caption,
               error: "",
               size: {
                 width: (item.width || 0) as number,

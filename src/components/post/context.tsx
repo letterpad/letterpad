@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useMemo, useState, createContext } from "react";
 import {
   updatePostApi,
   updatePostDraftAttributes,
@@ -6,8 +6,8 @@ import {
 import usePost from "@/components/post/usePost";
 import { InputUpdatePost } from "@/__generated__/__types__";
 import { useContext } from "react";
-import { Helpers } from "letterpad-editor";
 import { PostContextType } from "@/components/post/types";
+import { EditorHelpers } from "letterpad-editor";
 
 export const PostContext = createContext<Partial<PostContextType>>({});
 
@@ -15,7 +15,7 @@ export const PostProvider: React.FC = ({ children }) => {
   const [updating, setUpdating] = useState(false);
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const { post, error, setPost } = usePost();
-  const [helpers, setHelpers] = useState<Helpers>();
+  const [helpers, setHelpers] = useState<EditorHelpers>();
 
   const setPostAttribute = async (attrs: Omit<InputUpdatePost, "id">) => {
     if (post) {
@@ -45,9 +45,11 @@ export const PostProvider: React.FC = ({ children }) => {
     onFileExplorerClose,
   };
 
-  return (
-    <PostContext.Provider value={context}>{children}</PostContext.Provider>
-  );
+  return useMemo(() => {
+    return (
+      <PostContext.Provider value={context}>{children}</PostContext.Provider>
+    );
+  }, [context]);
 };
 
 export const usePostContext = () => useContext(PostContext);

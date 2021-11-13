@@ -1,6 +1,7 @@
+import { Editor } from "letterpad-editor";
 import dynamic from "next/dynamic";
-import { mdToHtml } from "src/shared/converter";
-import { memo } from "react";
+// import { mdToHtml } from "src/shared/converter";
+import { memo, useMemo, useRef } from "react";
 import { usePostContext } from "../context";
 
 const LetterpadEditor = dynamic(() => import("letterpad-editor"), {
@@ -11,19 +12,21 @@ interface Props {
   text: string;
 }
 
-const Editor: React.FC<Props> = ({ text }) => {
+const LpEditor: React.FC<Props> = ({ text }) => {
   const { setHelpers, onMediaBrowse, setPostAttribute } = usePostContext();
+  const editorRef = useRef<Editor>(null);
   return (
     <>
       <LetterpadEditor
         dark={localStorage.theme === "dark"}
         onImageClick={onMediaBrowse}
-        html={mdToHtml(text)}
+        html={text}
         onChange={(html) =>
-          setPostAttribute && setPostAttribute({ html, md: "# hello" })
+          html !== text && setPostAttribute && setPostAttribute({ html })
         }
         placeholder="Write a story.."
         setHelpers={setHelpers}
+        editorRef={editorRef}
       />
       <style jsx global>{`
         .block-toolbar span span {
@@ -34,4 +37,4 @@ const Editor: React.FC<Props> = ({ text }) => {
   );
 };
 
-export default memo(Editor);
+export default memo(LpEditor);

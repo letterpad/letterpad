@@ -5,10 +5,8 @@ type Post {
   title: String!
   # Html content of the post
   html: String!
-  # Markdown content of the post
-  md: String!
   # Draft for republishing content
-  md_draft: String!
+  html_draft: String!
   # Author information of the post
   author: Author!
   # A breif summary of the post
@@ -115,7 +113,6 @@ input TagsInputType {
 input InputCreatePost {
   title: String
   html: String
-  md: String
   # authorId: Int
   excerpt: String
   cover_image: InputImage
@@ -130,8 +127,7 @@ input InputUpdatePost {
   id: Int!
   title: String
   html: String
-  md: String
-  md_draft: String
+  html_draft: String
   featured: Boolean
   excerpt: String
   cover_image: InputImage

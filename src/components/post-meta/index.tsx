@@ -35,7 +35,8 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
   const isPublished = post.status === PostStatusOptions.Published;
   const isPost = post.type === PostTypes.Post;
   const postVerb = isPost ? "Post" : "Page";
-  const rePublishBtnDisabled = post.md_draft === "" || post.md_draft == post.md;
+  const rePublishBtnDisabled =
+    post.html_draft === "" || post.html_draft == post.html;
 
   return (
     <>

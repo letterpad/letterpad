@@ -251,7 +251,7 @@ const Query: QueryResolvers<ResolverContext> = {
     const post = await models.Post.findOne(conditions);
     if (post) {
       const html = previewHash
-        ? mdToHtml(post.md_draft || post.md)
+        ? mdToHtml(post.html_draft || post.html)
         : post.html;
 
       return { ...post.get(), html, __typename: "Post" };

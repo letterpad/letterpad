@@ -44,8 +44,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
       args.data.slug = await slugify(models.Post, slug);
     }
 
-    if (!args.data.md) {
-      args.data.md = "";
+    if (!args.data.html) {
+      args.data.html = "";
       args.data.html = "";
     }
 
@@ -162,9 +162,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
 
       // reading time
-      if (args.data.md && args.data.md !== previousPost.md) {
+      if (args.data.html && args.data.html !== previousPost.html) {
         // update reading time
-        dataToUpdate.reading_time = reading_time(args.data.md).text;
+        dataToUpdate.reading_time = reading_time(args.data.html).text;
         logger.debug("Reading time: ", dataToUpdate.reading_time);
       }
 
@@ -173,9 +173,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
       // update content
       if (savingDraft(previousPost.status, args.data.status)) {
-        dataToUpdate.md_draft = args.data.md;
-      } else if (args.data.md && args.data.html) {
-        dataToUpdate.md = args.data.md;
+        dataToUpdate.html_draft = args.data.html;
+      } else if (args.data.html) {
+        dataToUpdate.html = args.data.html;
         try {
           dataToUpdate.html = await setImageWidthAndHeightInHtml(
             args.data.html,
@@ -186,20 +186,20 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
         // just republished
         if (rePublished(previousPost.status, args.data.status)) {
-          dataToUpdate.md_draft = "";
+          dataToUpdate.html_draft = "";
         }
       } else if (rePublished(previousPost.status, args.data.status)) {
-        if (previousPost.md_draft) {
-          dataToUpdate.md = previousPost.md_draft;
+        if (previousPost.html_draft) {
+          dataToUpdate.html = previousPost.html_draft;
           try {
             dataToUpdate.html = await setImageWidthAndHeightInHtml(
-              mdToHtml(previousPost.md_draft),
+              mdToHtml(previousPost.html_draft),
             );
           } catch (error) {
             logger.error(error);
           }
         }
-        dataToUpdate.md_draft = "";
+        dataToUpdate.html_draft = "";
       }
 
       if (args.data.excerpt) {

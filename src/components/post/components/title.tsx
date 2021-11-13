@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Input } from "antd";
 import { usePostContext } from "../context";
 
@@ -37,4 +38,4 @@ const Title: React.FC<Props> = ({ title, onEnter }) => {
   );
 };
 
-export default Title;
+export default memo(Title);

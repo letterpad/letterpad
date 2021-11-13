@@ -308,12 +308,11 @@ function getWelcomePostAndPage() {
   const post_cover =
     "https://images.unsplash.com/photo-1516035054744-d474c5209db5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80";
 
-  let { md, html } = generatePost(PostTypes.Post);
+  let { html } = generatePost(PostTypes.Post);
   let title = "Welcome to Letterpad";
 
   const post = {
     title: "Welcome to Letterpad",
-    md: md,
     html: html,
     excerpt:
       "You can use this space to write a small description about the topic. This will be helpful in SEO.",
@@ -334,7 +333,6 @@ function getWelcomePostAndPage() {
   const page = {
     title,
     type: PostTypes.Page,
-    md: pageContent.md,
     html: pageContent.html,
     status: PostStatusOptions.Published,
     excerpt:
@@ -346,7 +344,7 @@ function getWelcomePostAndPage() {
     cover_image_height: 900,
     createdAt: getDateTime(),
     publishedAt: getDateTime(),
-    md_draft: "",
+    html_draft: "",
   };
 
   return { page, post };

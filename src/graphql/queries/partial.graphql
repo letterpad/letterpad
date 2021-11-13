@@ -4,8 +4,7 @@ fragment Partial on Post {
   html
   excerpt
   featured
-  md
-  md_draft
+  html_draft
   type
   slug
   status
