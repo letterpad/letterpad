@@ -28,7 +28,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2019"
+    "target": "ES5"
   },
   "exclude": ["node_modules"],
   "include": [
