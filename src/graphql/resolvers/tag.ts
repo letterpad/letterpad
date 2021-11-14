@@ -74,7 +74,6 @@ const Query: QueryResolvers<ResolverContext> = {
     });
     if (author) {
       const tags = await author.getTags(conditions);
-      console.log(tags);
       return {
         __typename: "TagsNode",
         rows: tags.map((tag) => tag.get()),
