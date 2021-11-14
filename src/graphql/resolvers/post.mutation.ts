@@ -174,6 +174,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       // update content
       if (savingDraft(previousPost.status, args.data.status)) {
         dataToUpdate.html_draft = args.data.html;
+        logger.debug("This is draft content...");
       } else if (args.data.html) {
         dataToUpdate.html = args.data.html;
         try {
@@ -183,9 +184,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
         } catch (error) {
           logger.error(error);
         }
-
+        logger.debug("This is live content");
         // just republished
         if (rePublished(previousPost.status, args.data.status)) {
+          logger.debug("Republishing. Cleaning draft...");
           dataToUpdate.html_draft = "";
         }
       } else if (rePublished(previousPost.status, args.data.status)) {
@@ -193,7 +195,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           dataToUpdate.html = previousPost.html_draft;
           try {
             dataToUpdate.html = await setImageWidthAndHeightInHtml(
-              mdToHtml(previousPost.html_draft),
+              previousPost.html_draft,
             );
           } catch (error) {
             logger.error(error);
@@ -313,9 +315,12 @@ function rePublished(
 }
 function savingDraft(
   prevStatus: PostStatusOptions,
-  statusArg?: PostStatusOptions | null,
+  statusArg?: PostStatusOptions,
 ) {
-  return !statusArg && prevStatus === PostStatusOptions.Published;
+  if (statusArg === PostStatusOptions.Draft) return true;
+  if (prevStatus === PostStatusOptions.Draft && !statusArg) return true;
+
+  return false;
 }
 
 async function updateMenuOnTitleChange(

@@ -52,7 +52,7 @@ input InputCreateAuthor {
 
 type AuthorResponse {
   ok: Boolean!
-  errors: [Error!]
+  errors: [Error]
   data: Author
 }
 
