@@ -181,7 +181,6 @@ export async function insertPost(params, models: typeof dbModels, tags) {
   const title =
     params.type === "post" ? "Welcome to Letterpad" : "Letterpad Typography";
   const slug = toSlug(title);
-  console.log(html);
   let post = await models.Post.create({
     title,
     html: html,

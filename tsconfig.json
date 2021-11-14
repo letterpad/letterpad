@@ -5,8 +5,8 @@
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],
-      "@/*": ["src/*"],
       "@/__generated__/*": ["__generated__/src/graphql/*", "__generated__/*"],
+      "@/*": ["src/*"],
       "@/graphql/db/models": ["src/graphql/db/models"],
       "@/graphql/schema": ["src/graphql/schema"],
       "@/graphql/*": ["src/graphql/*"]

@@ -15,7 +15,6 @@ import {
 import logger from "./../../shared/logger";
 import models from "../db/models";
 import { getDateTime } from "./../../shared/utils";
-import { mdToHtml } from "../../shared/converter";
 
 export const slugOfUntitledPost = "untitled";
 
@@ -319,6 +318,7 @@ function savingDraft(
 ) {
   if (statusArg === PostStatusOptions.Draft) return true;
   if (prevStatus === PostStatusOptions.Draft && !statusArg) return true;
+  if (prevStatus === PostStatusOptions.Published && !statusArg) return true;
 
   return false;
 }

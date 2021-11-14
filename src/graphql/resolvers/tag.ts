@@ -142,13 +142,15 @@ const Mutation: MutationResolvers<ResolverContext> = {
   },
 
   async deleteTags(_root, args, _context) {
+    console.log(args.id);
     if (!args.id) {
       return {
         __typename: "TagsError",
         message: "Incorrect arguments",
       };
     }
-
+    const tags = await models.Tags.findAll();
+    console.log(tags);
     const deleteRowCount = await models.Tags.destroy({
       where: { id: args.id },
     });

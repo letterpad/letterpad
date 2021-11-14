@@ -81,6 +81,7 @@ async function startImport(
   });
 
   for (const email in data) {
+    console.log(email);
     const authorsData = data[email];
     let author = await models.Author.findOne({ where: { email } });
     if (!author && isLoggedInUserAdmin) {
