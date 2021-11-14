@@ -1,7 +1,7 @@
 import usePost from "@/components/post/usePost";
-import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
+import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { InputUpdatePost } from "@/__generated__/__types__";
-import { Helpers } from "letterpad-editor";
+import { EditorHelpers } from "letterpad-editor";
 import { Dispatch, SetStateAction } from "react";
 
 export type PostContextType = {
@@ -10,8 +10,8 @@ export type PostContextType = {
   fileExplorerOpen: boolean;
   post: PostWithAuthorAndTagsFragment | undefined;
   setPost: ReturnType<typeof usePost>["setPost"];
-  helpers: Helpers | undefined;
-  setHelpers: (helpers: Helpers) => void;
+  helpers: EditorHelpers | undefined;
+  setHelpers: (helpers: EditorHelpers) => void;
   error: string;
   setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => Promise<void>;
   onFileExplorerClose: () => void;

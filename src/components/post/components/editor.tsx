@@ -1,7 +1,7 @@
 import { Editor } from "letterpad-editor";
 import dynamic from "next/dynamic";
 // import { mdToHtml } from "src/shared/converter";
-import { memo, useMemo, useRef } from "react";
+import { memo, useRef } from "react";
 import { usePostContext } from "../context";
 
 const LetterpadEditor = dynamic(() => import("letterpad-editor"), {
