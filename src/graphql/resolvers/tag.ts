@@ -74,6 +74,7 @@ const Query: QueryResolvers<ResolverContext> = {
     });
     if (author) {
       const tags = await author.getTags(conditions);
+      console.log(tags);
       return {
         __typename: "TagsNode",
         rows: tags.map((tag) => tag.get()),
@@ -142,7 +143,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
   },
 
   async deleteTags(_root, args, _context) {
-    console.log(args.id);
     if (!args.id) {
       return {
         __typename: "TagsError",
@@ -150,7 +150,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
     const tags = await models.Tags.findAll();
-    console.log(tags);
     const deleteRowCount = await models.Tags.destroy({
       where: { id: args.id },
     });
