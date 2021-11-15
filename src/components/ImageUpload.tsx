@@ -9,7 +9,7 @@ import FileExplorer from "./file-explorer";
 import { getBase64 } from "./../shared/utils";
 
 interface IProps {
-  url: string;
+  url?: string;
   name: string;
   onDone: (response: IMediaUploadResult[]) => void;
 }

@@ -4,10 +4,10 @@ import { EyeOutlined, SettingOutlined } from "@ant-design/icons";
 import ImageUpload from "../ImageUpload";
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import Tags from "./tags";
-import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
 import { getPostHash } from "./api";
 import { PostContextType } from "../post/types";
+import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 
 const { TextArea } = Input;
 
