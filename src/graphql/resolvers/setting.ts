@@ -103,8 +103,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
       if (setting.banner || setting.site_logo || setting.site_favicon) {
         value = value as InputImage;
-        if (value && value.src.startsWith(process.env.ROOT_URL)) {
-          value.src = value.src.replace(process.env.ROOT_URL, "");
+        if (value && value.src?.startsWith(process.env.ROOT_URL)) {
+          value.src = value.src?.replace(process.env.ROOT_URL, "");
         }
       }
       logger.info(
