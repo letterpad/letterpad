@@ -38,7 +38,20 @@
         "cloudinary_key": "",
         "cloudinary_name": "",
         "cloudinary_secret": "",
-        "menu": "[{\"label\":\"home\",\"original_name\":\"home\",\"slug\":\"home\",\"type\":\"tag\"},{\"label\":\"Page\",\"original_name\":\"Page\",\"slug\":\"letterpad-typography\",\"type\":\"page\"}]",
+        "menu": [
+          {
+            "label": "home",
+            "original_name": "home",
+            "slug": "home",
+            "type": "tag"
+          },
+          {
+            "label": "Page",
+            "original_name": "Page",
+            "slug": "letterpad-typography",
+            "type": "page"
+          }
+        ],
         "css": "",
         "google_analytics": "UA-120251616-1",
         "theme": "hugo",
@@ -115,7 +128,20 @@
         "cloudinary_key": "",
         "cloudinary_name": "",
         "cloudinary_secret": "",
-        "menu": "[{\"label\":\"home\",\"original_name\":\"home\",\"slug\":\"home\",\"type\":\"tag\"},{\"label\":\"Page\",\"original_name\":\"Page\",\"slug\":\"letterpad-typography\",\"type\":\"page\"}]",
+        "menu": [
+          {
+            "label": "home",
+            "original_name": "home",
+            "slug": "home",
+            "type": "tag"
+          },
+          {
+            "label": "Page",
+            "original_name": "Page",
+            "slug": "letterpad-typography",
+            "type": "page"
+          }
+        ],
         "css": "",
         "google_analytics": "UA-120251616-1",
         "theme": "hugo",
@@ -301,7 +327,14 @@
         "cloudinary_key": "524167117469375",
         "cloudinary_name": "abhisheksaha",
         "cloudinary_secret": "hvPN1BsdMAh-qwdwY7gVoTu5-m0",
-        "menu": "[{\"slug\":\"home\",\"type\":\"tag\",\"label\":\"home\",\"original_name\":\"home\"}]",
+        "menu": [
+          {
+            "slug": "home",
+            "type": "tag",
+            "label": "home",
+            "original_name": "home"
+          }
+        ],
         "css": ".banner {\n  display: none;\n}\n.site-header,\n.brand-wrapper {\n  height: inherit !important;\n  background: none !important;\n  position: inherit !important;\n}\n\nh1.site-title {\n  font-size: var(--text-md) !important;\n  font-family: inherit !important;\n}\n\n.site-brand-text {\n   position: relative !important;\n   left: auto !important;\n   transform: translate(-0%,-0%) !important;\n   margin-bottom: 80px;\n}\n\n.site-brand-text .wrapper {\n  background: none !important;\n  color: var(--color-text) !important;\n}\n\n.post {\n  box-shadow: none !important;\n}\n@media (min-width: 767px) {\n  .post-feed {\n    display: flex !important;\n    flex-wrap: nowrap !important;\n    flex-direction: column !important;\n    grid-template-columns: none !important;\n    grid-gap: var(--space-lg) !important;\n  }\n\n  .post-card {\n    display: flex !important;\n    flex-direction: row !important;\n    flex-basis: auto !important;\n    min-height: 0 !important;\n  }\n  .post-card-content {\n    flex: inherit !important;\n    padding: var(--space-sm) !important;\n  }\n  .post-card-content-top {\n    padding: var(--space-sm) !important;\n  }\n  .post-card-image {\n    position: relative !important;\n    height: 200px !important;\n  }\n}\n.post-card-title {\n  font-family: system-ui !important;\n   font-size: var(--text-lg) !important;\n}\n\n@media (min-width: 767px) {\n  .post:nth-child(7n + 1) p {\n    font-size: inherit !important;\n  }\n  .post-card-image-link {\n    border-radius: inherit !important;\n    flex: none !important;\n  }\n  .post-card-image {\n    width: var(--xxsmall) !important;\n  }\n}\n/* .post:nth-child(7n + 1) .post-card-title {\n  font-size: var(--text-lg) !important;\n} */\n\n@media (min-width: 767px) {\n  .post:nth-child(7n + 1) p {\n    font-size: inherit !important;\n  }\n}\n\n.site-nav {\n  position: relative !important;\n}\n\n:root {\n  --color-bg: #fff !important;\n  --color-post-bg: #fff !important;\n  --color-text: #333 !important;\n}\n",
         "google_analytics": "UA-120251616-1",
         "theme": "hugo",

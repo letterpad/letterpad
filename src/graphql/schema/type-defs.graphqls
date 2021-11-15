@@ -12,7 +12,7 @@ type Response {
 }
 
 type Image {
-  src: String!
+  src: String
   width: Int
   height: Int
 }
