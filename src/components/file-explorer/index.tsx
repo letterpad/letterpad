@@ -1,22 +1,20 @@
 import Modal from "antd/lib/modal/Modal";
-import { MediaProvider } from "../../pages/post/[postId]";
+
 import Internal from "./providers/Internal";
 import Unsplash from "./providers/Unsplash";
-import { Image, Media } from "@/__generated__/__types__";
+import { Media } from "@/__generated__/__types__";
 import { Button } from "antd";
 import MediaItem from "./MediaItem";
 import { useRef, useState } from "react";
 import { uploadFile } from "../../shared/utils";
-
-type ImageInput = {
-  [urls: string]: Image & { alt: string };
-};
+import { MediaProvider } from "src/shared/types";
+import { TypeMediaInsert } from "letterpad-editor";
 
 interface IProps {
   isVisible: boolean;
   handleCancel: () => void;
   multi?: boolean;
-  onInsert: (images: ImageInput) => Promise<unknown[]>;
+  onInsert: (images: TypeMediaInsert[]) => void;
   onImageFile?: (image: File[]) => Promise<string[]>;
 }
 const FileExplorer = ({
@@ -36,7 +34,9 @@ const FileExplorer = ({
     ? MediaProvider.Letterpad
     : MediaProvider.Unsplash;
 
-  const [selectedUrls, setSelection] = useState<ImageInput>({});
+  const [selectedUrls, setSelection] = useState<{
+    [urls: string]: TypeMediaInsert;
+  }>({});
 
   const closeWindow = () => {
     setSelection({});
@@ -46,7 +46,7 @@ const FileExplorer = ({
   const insertMedia = async () => {
     // get only the urls in an array
     try {
-      await onInsert(selectedUrls);
+      await onInsert(Object.values(selectedUrls));
     } catch (e) {
       // notify.show("Something unexpected happened.", "error");
     }
@@ -62,7 +62,7 @@ const FileExplorer = ({
         src: media.url,
         width: media.width || 0,
         height: media.height || 0,
-        alt: media.description,
+        caption: media.description,
       };
     }
     if (!multi) {
@@ -70,7 +70,7 @@ const FileExplorer = ({
         src: media.url,
         width: media.width || 0,
         height: media.height || 0,
-        alt: media.description,
+        caption: media.description,
       };
     }
     setSelection(urls);
@@ -116,6 +116,7 @@ const FileExplorer = ({
             </Button>
           ) : null,
           <Button
+            key="provider"
             type="primary"
             onClick={() => {
               setSelection({});
@@ -139,8 +140,8 @@ const FileExplorer = ({
               type: "cover_image",
             });
             let urls = { ...selectedUrls };
-            urls[`${result.src}`] = { ...result, alt: "" };
-            onInsert(urls);
+            urls[`${result.src}`] = { ...result, caption: "" };
+            onInsert(Object.values(urls));
           }}
         />
       </Modal>

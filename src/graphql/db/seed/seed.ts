@@ -174,17 +174,15 @@ export async function insertTags() {
 
 export async function insertPost(params, models: typeof dbModels, tags) {
   // get author  // 1 or 2
-  const { md, html } = generatePost(params.type);
+  const { html } = generatePost(params.type);
   let promises: any[] = [];
   const authorId = 2;
   let author = await models.Author.findOne({ where: { id: authorId } });
   const title =
     params.type === "post" ? "Welcome to Letterpad" : "Letterpad Typography";
   const slug = toSlug(title);
-
   let post = await models.Post.create({
     title,
-    md: md,
     html: html,
     excerpt:
       "You can use this space to write a small description about the topic. This will be helpful in SEO.",

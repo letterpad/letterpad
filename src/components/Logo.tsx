@@ -1,6 +1,7 @@
 import siteConfig from "config/site.config";
 
-const Logo = ({ src }: { src: string }) => {
+const Logo = ({ src }: { src?: string }) => {
+  if (src) return null;
   return (
     <img
       src={src}

@@ -1,6 +1,6 @@
 import css from "styled-jsx/css";
 
-export const postsStyles = css.scope`
+export const postsStyles = css`
   :global(.post-status) {
     width: 10px;
     height: 10px;

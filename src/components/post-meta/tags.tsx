@@ -2,11 +2,11 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Input, Tag } from "antd";
 import { useState } from "react";
 import styled from "styled-components";
-import { PostQuery } from "@/__generated__/queries/queries.graphql";
 import { InputUpdatePost } from "@/__generated__/__types__";
+import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 
 interface IProps {
-  post: PostQuery["post"];
+  post: PostWithAuthorAndTagsFragment;
   setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => void;
 }
 

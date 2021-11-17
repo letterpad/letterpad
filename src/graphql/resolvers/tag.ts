@@ -148,7 +148,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
         message: "Incorrect arguments",
       };
     }
-
     const deleteRowCount = await models.Tags.destroy({
       where: { id: args.id },
     });

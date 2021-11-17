@@ -4,8 +4,7 @@ fragment Partial on Post {
   html
   excerpt
   featured
-  md
-  md_draft
+  html_draft
   type
   slug
   status
@@ -18,5 +17,26 @@ fragment Partial on Post {
     src
     width
     height
+  }
+}
+
+fragment PostWithAuthorAndTags on Post {
+  ...Partial
+  author {
+    id
+    name
+    avatar
+    social {
+      github
+      twitter
+      instagram
+    }
+    bio
+  }
+  tags {
+    id
+    name
+    desc
+    slug
   }
 }

@@ -60,16 +60,21 @@ const Query: QueryResolvers<ResolverContext> = {
     if (!session?.user.id) {
       return { __typename: "AuthorNotFoundError", message: "Invalid Session" };
     }
-
+    console.log(session.user.id);
     const author = await models.Author.findOne({
       where: {
         id: session.user.id,
       },
     });
+
     if (!author) {
       return { __typename: "AuthorNotFoundError", message: "" };
     }
-
+    try {
+      author.social = JSON.parse(author.social as string);
+    } catch (e) {
+      //
+    }
     if (author.avatar && author.avatar.startsWith("/")) {
       author.avatar = new URL(author.avatar, process.env.ROOT_URL).href;
     }
@@ -217,18 +222,29 @@ const Mutation: MutationResolvers<ResolverContext> = {
         dataToUpdate.password = await bcrypt.hash(args.author.password, 12);
       }
 
+      logger.info("Updating Author => ", dataToUpdate);
       await models.Author.update(dataToUpdate as any, {
         where: { id: args.author.id },
+        logging: true,
       });
-
+      const author = await models.Author.findOne({
+        where: { id: args.author.id },
+      });
+      if (author) {
+        try {
+          author.social = JSON.parse(author.social as string);
+        } catch (e) {
+          //
+        }
+      }
       return {
         ok: true,
-        errors: [],
+        data: author || undefined,
       };
-    } catch (e) {
+    } catch (e: any) {
       return {
         ok: false,
-        errors: e, //utils.parseErrors(e),
+        errors: [{ message: e.message, path: "updateAuthor resolver" }],
       };
     }
   },
@@ -244,7 +260,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
       if (!author) {
         throw new Error("Email does not exist");
       }
-
       await sendMail({
         to: author.email,
         subject: Subjects.FORGOT_PASSWORD,
@@ -293,7 +308,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         ok: true,
         msg: "Password changed successfully",
       };
-    } catch (e) {
+    } catch (e: any) {
       return {
         ok: false,
         msg: e.message,
@@ -308,12 +323,11 @@ function getWelcomePostAndPage() {
   const post_cover =
     "https://images.unsplash.com/photo-1516035054744-d474c5209db5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80";
 
-  let { md, html } = generatePost(PostTypes.Post);
+  let { html } = generatePost(PostTypes.Post);
   let title = "Welcome to Letterpad";
 
   const post = {
     title: "Welcome to Letterpad",
-    md: md,
     html: html,
     excerpt:
       "You can use this space to write a small description about the topic. This will be helpful in SEO.",
@@ -334,7 +348,6 @@ function getWelcomePostAndPage() {
   const page = {
     title,
     type: PostTypes.Page,
-    md: pageContent.md,
     html: pageContent.html,
     status: PostStatusOptions.Published,
     excerpt:
@@ -346,7 +359,7 @@ function getWelcomePostAndPage() {
     cover_image_height: 900,
     createdAt: getDateTime(),
     publishedAt: getDateTime(),
-    md_draft: "",
+    html_draft: "",
   };
 
   return { page, post };

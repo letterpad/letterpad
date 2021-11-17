@@ -14,8 +14,8 @@ import { decrypt } from "../utils/crypto";
 import models from "../db/models";
 import logger from "./../../shared/logger";
 import debug from "debug";
-import { getHtmlFromMarkdown } from "letterpad-editor/dist/mdToHtml";
 import { addGalleryWrapper } from "../utils/addGalleryWrappr";
+import { mdToHtml } from "../../shared/converter";
 
 interface IPostCondition {
   conditions: {
@@ -251,7 +251,7 @@ const Query: QueryResolvers<ResolverContext> = {
     const post = await models.Post.findOne(conditions);
     if (post) {
       const html = previewHash
-        ? getHtmlFromMarkdown(post.md_draft || post.md)
+        ? mdToHtml(post.html_draft || post.html)
         : post.html;
 
       return { ...post.get(), html, __typename: "Post" };

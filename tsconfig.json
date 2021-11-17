@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "rootDir": "./",
+
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],
-
       "@/__generated__/*": ["__generated__/src/graphql/*", "__generated__/*"],
+      "@/*": ["src/*"],
       "@/graphql/db/models": ["src/graphql/db/models"],
       "@/graphql/schema": ["src/graphql/schema"],
       "@/graphql/*": ["src/graphql/*"]
@@ -28,7 +28,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2019"
+    "target": "es6"
   },
   "exclude": ["node_modules"],
   "include": [

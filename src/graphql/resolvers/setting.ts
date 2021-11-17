@@ -10,6 +10,7 @@ import fs from "fs";
 import path from "path";
 import models from "../db/models";
 import { settingsData } from "../db/models/setting";
+import logger from "@/shared/logger";
 
 type ValueOf<T> = T[keyof T];
 const SECURE_SETTINGS = [
@@ -102,10 +103,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
       if (setting.banner || setting.site_logo || setting.site_favicon) {
         value = value as InputImage;
-        if (value && value.src.startsWith(process.env.ROOT_URL)) {
-          value.src = value.src.replace(process.env.ROOT_URL, "");
+        if (value && value.src?.startsWith(process.env.ROOT_URL)) {
+          value.src = value.src?.replace(process.env.ROOT_URL, "");
         }
       }
+      logger.info(
+        `Updating settings with id ${_setting.id}- ` + option + " : " + value,
+      );
       return models.Setting.update(
         { [option]: value },
         { where: { id: _setting.id } },

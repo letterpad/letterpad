@@ -10,10 +10,6 @@ import {
 import { IGhostDb, IGhostSettings, IImportExportGhostData } from "./types";
 import reading_time from "reading-time";
 
-const TurndownService = require("turndown");
-
-const turndownService = new TurndownService();
-
 export function convertGhostToLetterpad(
   data: IImportExportGhostData,
   user: SessionData,
@@ -27,24 +23,22 @@ export function convertGhostToLetterpad(
   const postTagsMapper = getPostTagsMapper(data.db[0].data);
 
   data.db[0].data.posts.forEach((post) => {
-    const md = turndownService.turndown(post.html);
     posts.push({
       title: post.title || "",
       excerpt: post.meta_description || "",
       cover_image: post.feature_image || "",
       featured: !!post.featured,
-      md,
       html: post.html,
       updatedAt: post.updated_at,
       publishedAt: post.published_at,
       createdAt: post.created_at,
       type: post.page ? PostTypes.Page : PostTypes.Post,
       slug: post.slug,
-      md_draft: "",
+      html_draft: "",
       status: post.status as PostStatusOptions,
       cover_image_height: 0,
       cover_image_width: 0,
-      reading_time: reading_time(md).text,
+      reading_time: reading_time(post.html).text,
       tags: postTagsMapper[post.id] || [],
     });
   });

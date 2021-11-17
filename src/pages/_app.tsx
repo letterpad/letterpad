@@ -1,3 +1,4 @@
+import React from "react";
 import { AppProps } from "next/app";
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { useApollo } from "@/graphql/apollo";

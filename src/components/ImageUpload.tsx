@@ -9,7 +9,7 @@ import FileExplorer from "./file-explorer";
 import { getBase64 } from "./../shared/utils";
 
 interface IProps {
-  url: string;
+  url?: string;
   name: string;
   onDone: (response: IMediaUploadResult[]) => void;
 }
@@ -109,20 +109,20 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
         isVisible={explorerVisible}
         handleCancel={() => setExplorerVisible(false)}
         onInsert={async (files) => {
-          const result: IMediaUploadResult[] = [];
-          for (url in files) {
-            const item = files[url];
-            result.push({
-              src: url,
+          const result: IMediaUploadResult[] = files.map((item) => {
+            return {
+              src: item.src,
               name: "does-not-matter",
+              caption: item.caption,
               error: "",
               size: {
-                width: item.width || 0,
-                height: item.height || 0,
+                width: (item.width || 0) as number,
+                height: (item.height || 0) as number,
                 type: "",
               },
-            });
-          }
+            };
+          });
+
           onDone(result);
           setExplorerVisible(false);
           return Promise.resolve(result);

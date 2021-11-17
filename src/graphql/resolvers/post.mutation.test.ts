@@ -1,10 +1,10 @@
 import {
   CreatePostDocument,
   UpdatePostDocument,
-} from "./../../../__generated__/src/graphql/queries/mutations.graphql";
+} from "@/__generated__/src/graphql/queries/mutations.graphql";
 import { API } from "../../../tests/testClient";
 import { toSlug } from "./helpers";
-import { PostStatusOptions } from "../../../__generated__/__types__";
+import { PostStatusOptions } from "@/__generated__/__types__";
 
 const title = "New Post";
 describe("Test Post Query Graphql API", () => {
@@ -74,13 +74,11 @@ describe("Test Post Query Graphql API", () => {
       title: "Published Post",
       type,
       status: PostStatusOptions.Published,
-      md: "# This is a new post",
       html: oldHtml,
     });
 
     const { updatePost } = await runQuery(UpdatePostDocument, {
       id: post.createPost.id,
-      md: "# Change",
       html: newHtml,
     });
 
@@ -90,7 +88,6 @@ describe("Test Post Query Graphql API", () => {
     // add the status to force republish and go live
     const updatedPost = await runQuery(UpdatePostDocument, {
       id: post.createPost.id,
-      md: "# Change",
       html: newHtml,
       status: PostStatusOptions.Published,
     });

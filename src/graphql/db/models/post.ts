@@ -27,8 +27,7 @@ export interface PostAttributes {
   title: string;
   excerpt: string;
   html: string;
-  md: string;
-  md_draft: string;
+  html_draft: string;
   cover_image: string;
   cover_image_width: number;
   cover_image_height: number;
@@ -54,8 +53,7 @@ export class Post extends Model {
   public title!: string;
   public excerpt!: string;
   public html!: string;
-  public md!: string;
-  public md_draft!: string;
+  public html_draft!: string;
   public cover_image!: string;
   public cover_image_width!: number;
   public cover_image_height!: number;
@@ -102,10 +100,7 @@ export default function initPost(sequelize) {
       html: {
         type: DataTypes.TEXT,
       },
-      md: {
-        type: DataTypes.TEXT,
-      },
-      md_draft: {
+      html_draft: {
         type: DataTypes.TEXT,
         defaultValue: "",
       },
