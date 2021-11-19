@@ -1,4 +1,4 @@
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { Author } from "./../../graphql/db/models/author";
 import models from "@/graphql/db/models";
 import multer from "multer";

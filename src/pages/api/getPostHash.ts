@@ -1,7 +1,7 @@
 import { NextApiRequestWithFormData } from "@/graphql/types";
 import { encrypt } from "@/graphql/utils/crypto";
 import { NextApiResponse } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 
 const getHashFromPostId = async (
   req: NextApiRequestWithFormData,

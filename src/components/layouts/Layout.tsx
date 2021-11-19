@@ -15,7 +15,7 @@ import Logo from "../Logo";
 import { initializeApollo } from "@/graphql/apollo";
 import ThemeSwitcher from "./ThemeSwitcher";
 import siteConfig from "config/site.config";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 
 interface IProps {
   settings: Setting;
@@ -27,8 +27,8 @@ const CustomLayout = ({ children, settings }: IProps) => {
   const [stats, setStats] = useState<Stats | {}>({});
   const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [user] = useSession();
-
+  const { data: session } = useSession();
+  const user = session;
   useEffect(() => {
     getStats().then((res) => {
       if (res?.__typename === "Stats") {
@@ -61,7 +61,11 @@ const CustomLayout = ({ children, settings }: IProps) => {
         }}
         width={siteConfig.sidebar_width}
       >
-        <Logo src={settings.site_logo.src} />
+        {settings.site_logo.src ? (
+          <Logo src={settings.site_logo.src} />
+        ) : (
+          <h2>{settings.site_title}</h2>
+        )}
         <Navigation stats={stats} />
         <ThemeSwitcher />
       </Sider>

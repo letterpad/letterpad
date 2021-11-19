@@ -3,7 +3,7 @@ import CustomLayout from "@/components/layouts/Layout";
 import Head from "next/head";
 import { PageHeader, Form, Button, Upload, Alert } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import nextConfig from "next.config";
+import { basePath } from "@/constants";
 import { UploadOutlined } from "@ant-design/icons";
 import { getDateTime } from "./../shared/utils";
 import { IAuthComponentProps } from "./../shared/types";
@@ -46,7 +46,7 @@ const Migrate = ({ session }: IAuthComponentProps) => {
               <Button
                 type="link"
                 onClick={() => {
-                  fetch(nextConfig.basePath + "/api/export")
+                  fetch(basePath + "/api/export")
                     .then((res) => res.blob())
                     .then(download);
                 }}
@@ -59,7 +59,7 @@ const Migrate = ({ session }: IAuthComponentProps) => {
                 type="drag"
                 name="import"
                 accept=".json"
-                action={nextConfig.basePath + "/api/import"}
+                action={basePath + "/api/import"}
               >
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
@@ -69,7 +69,7 @@ const Migrate = ({ session }: IAuthComponentProps) => {
                 type="drag"
                 name="ghost"
                 accept=".json"
-                action={nextConfig.basePath + "/api/import"}
+                action={basePath + "/api/import"}
               >
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
