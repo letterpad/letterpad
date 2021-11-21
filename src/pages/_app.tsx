@@ -1,6 +1,6 @@
 import React from "react";
-import app, { AppProps } from "next/app";
-import { getSession, useSession } from "next-auth/react";
+import { AppProps } from "next/app";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import type { Page } from "../page";
 import { PropsWithChildren, useEffect } from "react";
@@ -63,24 +63,5 @@ function MyApp({ Component, pageProps }: Props) {
     />
   );
 }
-
-export async function getServerSideProps(ctx) {
-  console.log("fetching server props");
-  return {
-    props: {
-      session: await getSession(ctx),
-    },
-  };
-}
-
-MyApp.getInitialProps = async (ctx) => {
-  const appProps = await app.getInitialProps(ctx);
-  console.log("fetching initial props");
-  return {
-    props: {
-      session: await getSession(ctx),
-    },
-  };
-};
 
 export default withApolloProvider(withSessionProvider(MyApp));
