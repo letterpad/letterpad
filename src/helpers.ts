@@ -9,11 +9,11 @@ import {
   DeleteMediaMutationVariables,
   UpdateMediaMutation,
 } from "@/__generated__/queries/mutations.graphql";
-import { initializeApollo } from "./graphql/apollo";
+import { getApolloClient } from "./graphql/apollo";
 import { Media } from "@/__generated__/__types__";
 
 export const deleteImageAPI = async (img: Media) => {
-  const client = await initializeApollo();
+  const client = await getApolloClient();
 
   const response = await client.mutate<
     DeleteMediaMutation,
@@ -28,7 +28,7 @@ export const deleteImageAPI = async (img: Media) => {
 };
 
 export const updateImageAPI = async (img: Media) => {
-  const client = await initializeApollo();
+  const client = await getApolloClient();
   if (!img) return;
 
   const response = await client.mutate<

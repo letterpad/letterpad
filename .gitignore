@@ -39,3 +39,11 @@ __generated__/*
 data/*
 .env.production.local
 .bin/*
+# Sentry
+.sentryclirc
+
+# Sentry
+.sentryclirc
+
+# Sentry
+.sentryclirc

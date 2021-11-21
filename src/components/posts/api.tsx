@@ -1,4 +1,4 @@
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import {
   PostsDocument,
   PostsQuery,
@@ -28,7 +28,7 @@ export const fetchPosts = async (
 };
 
 async function fetchPostsFromAPI(filters: PostsFilters, type: PostTypes) {
-  const apolloClient = await initializeApollo();
+  const apolloClient = await getApolloClient();
 
   const post = await apolloClient.query<PostsQuery, PostsQueryVariables>({
     query: PostsDocument,

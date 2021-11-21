@@ -13,7 +13,7 @@ import { postsStyles } from "@/components/posts.css";
 import { postsColumns } from "@/components/posts";
 import { fetchPosts } from "@/components/posts/api";
 import { Header } from "@/components/posts/header";
-
+import Bugsnag from "@bugsnag/js";
 function Posts() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -26,6 +26,8 @@ function Posts() {
 
   useEffect(() => {
     getPosts();
+    Bugsnag.notify(new Error("Another Test error"));
+    Bugsnag.notify(new Error("Test error"));
   }, []);
 
   const getPosts = async () => {

@@ -1,7 +1,7 @@
 import { Collapse, Form, Input, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import ImageUpload from "@/components/ImageUpload";
 import {
   UpdateOptionsMutation,
@@ -30,7 +30,7 @@ function Settings(props: { settings: Setting }) {
   const [draft, setDraft] = useState<OptionInputType>({});
 
   const updateSettings = async () => {
-    const apolloClient = await initializeApollo();
+    const apolloClient = await getApolloClient();
 
     if (Object.keys(draft).length === 0) return;
 

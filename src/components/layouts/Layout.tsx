@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navigation from "./Menu";
 import Logo from "../Logo";
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import ThemeSwitcher from "./ThemeSwitcher";
 import siteConfig from "config/site.config";
 import { useSession } from "next-auth/react";
@@ -140,7 +140,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
 export default CustomLayout;
 
 async function getStats() {
-  const client = await initializeApollo();
+  const client = await getApolloClient();
   const stats = await client.query<StatsQuery, StatsQueryVariables>({
     query: StatsDocument,
     fetchPolicy: "network-only",

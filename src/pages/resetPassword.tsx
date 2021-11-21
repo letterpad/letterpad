@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { message } from "antd";
 import { useRouter } from "next/router";
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import {
   ResetPasswordMutation,
   ResetPasswordMutationVariables,
@@ -44,7 +44,7 @@ const ResetPassword = () => {
       return;
     }
 
-    const client = await initializeApollo();
+    const client = await getApolloClient();
 
     const result = await client.mutate<
       ResetPasswordMutation,

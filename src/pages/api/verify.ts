@@ -2,7 +2,7 @@ import models from "@/graphql/db/models";
 import { NextApiResponse } from "next";
 import { NextApiRequestWithFormData } from "./../../graphql/types";
 import Cryptr from "cryptr";
-import nextConfig from "next.config";
+import { basePath } from "@/constants";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 
@@ -19,7 +19,7 @@ const Verify = async (
     if (!update) {
       throw Error("Either you are already verified or verification failed.");
     }
-    res.redirect(nextConfig.basePath + "/messages/verified");
+    res.redirect(basePath + "/messages/verified");
   } catch (e) {
     res.send(e.message);
     console.log(e);

@@ -1,7 +1,7 @@
 import { Collapse, Form, Input, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import ImageUpload from "@/components/ImageUpload";
 import {
   MeDocument,
@@ -46,7 +46,7 @@ function Profile() {
   }, []);
 
   const updateAuthor = async (data?: InputAuthor) => {
-    const apolloClient = await initializeApollo();
+    const apolloClient = await getApolloClient();
 
     if (!me) return;
 
@@ -187,7 +187,7 @@ ProfileWithAuth.layout = CustomLayout;
 export default ProfileWithAuth;
 
 export async function fetchAuthor() {
-  const apolloClient = await initializeApollo();
+  const apolloClient = await getApolloClient();
   const me = await apolloClient.query<MeQuery, MeQueryVariables>({
     query: MeDocument,
   });

@@ -1,4 +1,4 @@
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import { IMediaUploadResult } from "@/graphql/types";
 import {
   SettingsDocument,
@@ -61,7 +61,7 @@ export function getBase64(file: File) {
 }
 
 export async function getSettings() {
-  const client = await initializeApollo();
+  const client = await getApolloClient();
   return client.query<SettingsQuery, SettingsQueryVariables>({
     query: SettingsDocument,
   });

@@ -1,7 +1,7 @@
 import { NextApiResponse } from "next";
 import { NextApiRequestWithFormData } from "./../../graphql/types";
 import { basePath } from "@/constants";
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import {
   CreatePostDocument,
   CreatePostMutation,
@@ -15,7 +15,7 @@ const Create = async (
 ) => {
   try {
     const type = req.query.type;
-    const apolloClient = await initializeApollo({}, { req });
+    const apolloClient = await getApolloClient({}, { req });
 
     const post = await apolloClient.mutate<
       CreatePostMutation,

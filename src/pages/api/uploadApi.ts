@@ -10,7 +10,7 @@ import {
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
 import { getSession } from "next-auth/react";
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import { SettingsDocument } from "@/graphql/queries/queries.graphql";
 import logger from "./../../shared/logger";
 import path from "path";
@@ -56,7 +56,7 @@ export default async (
   if (!Array.isArray(files)) {
     files = [files];
   }
-  const apollo = await initializeApollo({}, { req });
+  const apollo = await getApolloClient({}, { req });
   const settings = await apollo.query<SettingsQuery, SettingsQueryVariables>({
     query: SettingsDocument,
     fetchPolicy: "network-only",
