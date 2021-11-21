@@ -1,6 +1,5 @@
 const path = require("path");
 const { withSentryConfig } = require("@sentry/nextjs");
-
 const basePath = "/admin";
 
 const nextConfig = {
@@ -55,17 +54,22 @@ const sentryWebpackPluginOptions = {
   //   release, url, org, project, authToken, configFile, stripPrefix,
   //   urlPrefix, include, ignore
 
-  silent: true, // Suppresses all logs
+  silent: false, // Suppresses all logs
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
-const configWithSentry =
-  process.env.NODE_ENV === "production" &&
-  withSentryConfig &&
-  withSentryConfig(nextConfig, sentryWebpackPluginOptions);
 
-module.exports = !configWithSentry ? nextConfig : configWithSentry;
+const configWithSentry =
+  withSentryConfig && withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+
+let config = !configWithSentry ? nextConfig : configWithSentry;
+
+if (!!process.env.SENTRY_ACTIVE === false) {
+  config = nextConfig;
+}
+
+module.exports = config;
 module.exports.basePath = basePath;
