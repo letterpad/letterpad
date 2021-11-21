@@ -1,13 +1,8 @@
 import { Collapse, Form, Input, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
-import { getApolloClient } from "@/graphql/apollo";
 import ImageUpload from "@/components/ImageUpload";
-import {
-  UpdateOptionsMutation,
-  UpdateOptionsMutationVariables,
-  UpdateOptionsDocument,
-} from "@/__generated__/queries/mutations.graphql";
+import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
 import { Setting, OptionInputType } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
@@ -28,21 +23,10 @@ type ValueOf<T> = T[keyof T];
 function Settings(props: { settings: Setting }) {
   const [settings, setSettings] = useState(props.settings);
   const [draft, setDraft] = useState<OptionInputType>({});
-
+  const [settingsMutation] = useUpdateOptionsMutation();
   const updateSettings = async () => {
-    const apolloClient = await getApolloClient();
-
     if (Object.keys(draft).length === 0) return;
-
-    await apolloClient.mutate<
-      UpdateOptionsMutation,
-      UpdateOptionsMutationVariables
-    >({
-      mutation: UpdateOptionsDocument,
-      variables: {
-        options: draft,
-      },
-    });
+    settingsMutation({ variables: { options: draft } });
     setDraft({});
   };
 
@@ -195,10 +179,6 @@ function Settings(props: { settings: Setting }) {
                       placeholder="Add css to customise your website"
                       // highlight={code => highlight(code, languages.js)}
                       highlight={(code) => {
-                        console.log(
-                          'highlight.highlight(code, { language: "css" }).value :>> ',
-                          highlight.highlight(code, { language: "css" }).value,
-                        );
                         return highlight.highlight(code, { language: "css" })
                           .value;
                       }}

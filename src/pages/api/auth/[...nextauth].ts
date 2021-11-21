@@ -10,8 +10,6 @@ import { getApolloClient } from "@/graphql/apollo";
 import { NextApiRequest, NextApiResponse } from "next";
 import { basePath } from "@/constants";
 
-let userAccount: LoginMutation["login"] | null = null;
-
 const providers = [
   CredentialsProvider({
     name: "Credentials",
@@ -35,7 +33,6 @@ const providers = [
       });
 
       if (result.data?.login?.__typename === "Author") {
-        userAccount = result.data.login;
         return {
           ...result.data.login,
           accessToken: credentials && credentials["csrfToken"],

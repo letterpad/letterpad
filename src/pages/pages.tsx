@@ -1,47 +1,28 @@
 import withAuthCheck from "../hoc/withAuth";
-import { PostsQuery } from "@/__generated__/queries/queries.graphql";
+import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { PostTypes } from "@/__generated__/__types__";
 import { useRouter } from "next/router";
 import { Layout, Table } from "antd";
-const { Content } = Layout;
 import CustomLayout from "@/components/layouts/Layout";
-import { useEffect, useState } from "react";
 import ErrorMessage from "@/components/ErrorMessage";
 import Filters from "@/components/filters";
 import Head from "next/head";
 import { postsStyles } from "@/components/posts.css";
 import { columns } from "@/components/posts";
-import { fetchPosts } from "@/components/posts/api";
 import { Header } from "@/components/posts/header";
 
+const { Content } = Layout;
+
 function Pages() {
-  const [loading, setLoading] = useState(true);
-  const [postsNode, setPostsNode] = useState<PostsQuery["posts"]>({
-    count: 0,
-    rows: [],
+  const { loading, data, error } = usePostsQuery({
+    variables: { filters: { type: PostTypes.Page } },
   });
-
-  const [error, setError] = useState("");
   const router = useRouter();
-
-  useEffect(() => {
-    getPages();
-  }, []);
-
-  const getPages = async () => {
-    try {
-      const posts = await fetchPosts(PostTypes.Page);
-      setLoading(false);
-      if (posts) setPostsNode(posts);
-    } catch (e) {
-      setError((e as Error).message);
-    }
-  };
 
   if (error) {
     return <ErrorMessage description={error} title="Error" />;
   }
-  const source = postsNode.__typename === "PostsNode" ? postsNode.rows : [];
+  const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
   return (
     <>
       <Head>
