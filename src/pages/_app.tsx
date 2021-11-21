@@ -23,7 +23,6 @@ type Props = AppProps & {
 function NoLayout({ children }: PropsWithChildren<{ settings: Setting }>) {
   return <>{children}</>;
 }
-
 function App({ Component, pageProps }: Props) {
   const { data, loading: settingsLoading } = useSettingsQuery();
   const { data: sessionData, status: sessionStatus } = useSession();
@@ -56,7 +55,6 @@ function App({ Component, pageProps }: Props) {
   if (!sessionData || !data || data.settings.__typename !== "Setting") {
     return null;
   }
-
   return (
     <Main
       Component={Component}

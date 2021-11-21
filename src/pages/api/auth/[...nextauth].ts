@@ -9,7 +9,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { getApolloClient } from "@/graphql/apollo";
 import { NextApiRequest, NextApiResponse } from "next";
 import { basePath } from "@/constants";
-
+``;
 const providers = [
   CredentialsProvider({
     name: "Credentials",
@@ -61,11 +61,12 @@ const options = {
       }
       return process.env.ROOT_URL + "/posts";
     },
-    jwt: async ({ user, token }) => {
+    jwt: async ({ token, ...rest }) => {
       //  "user" parameter is the object received from "authorize"
       //  "token" is being send to "session" callback...
       //  ...so we set "user" param of "token" to object from "authorize"...
       //  ...and return it...
+      const { user } = rest;
       if (user && token && user.__typename === "Author") {
         token.role = user.role;
         token.avatar = user.avatar;
@@ -74,19 +75,11 @@ const options = {
         token.username = user.username;
         token.__typename = "SessionData";
       }
-      if (user && user.__typename === "LoginError") {
-        return null;
-      }
       return token;
     },
-    session: async ({ session, user, token }) => {
-      if (user && user.__typename === "LoginError") {
-        session.user = user;
-        return session;
-      }
-
-      session.user = { ...token };
-      return session;
+    session: async ({ session, token }) => {
+      session.user = token;
+      return { ...session };
     },
   },
   jwt: {
