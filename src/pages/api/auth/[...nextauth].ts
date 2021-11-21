@@ -87,6 +87,7 @@ const options = {
   jwt: {
     encryption: true,
     secret: process.env.SECRET_KEY,
+    signingKey: process.env.SECRET_KEY,
   },
   pages: {
     signIn: `${basePath}/login`,
