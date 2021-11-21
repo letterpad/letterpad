@@ -8,6 +8,7 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client";
+
 import models from "./db/models";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
