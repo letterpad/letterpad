@@ -67,9 +67,9 @@ const configWithSentry =
 
 let config = !configWithSentry ? nextConfig : configWithSentry;
 
-if (!!process.env.SENTRY_ACTIVE === false) {
-  config = nextConfig;
-}
+// if (!!process.env.SENTRY_ACTIVE === false) {
+//   config = nextConfig;
+// }
 
 module.exports = config;
 module.exports.basePath = basePath;
