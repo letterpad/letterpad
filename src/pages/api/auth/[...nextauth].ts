@@ -78,8 +78,10 @@ const options = {
       return token;
     },
     session: async ({ session, token }) => {
+      console.log("before checking session");
       session.user = token;
-      return { ...session };
+      console.log("Checking session...");
+      return session;
     },
   },
   jwt: {

@@ -1,6 +1,6 @@
 import React from "react";
-import { AppProps } from "next/app";
-import { useSession } from "next-auth/react";
+import app, { AppProps } from "next/app";
+import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import type { Page } from "../page";
 import { PropsWithChildren, useEffect } from "react";
@@ -9,7 +9,6 @@ import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import "lazysizes";
 import Main from "@/components/main";
 import { initPageProgress } from "./../shared/utils";
-import dynamic from "next/dynamic";
 
 import "../../styles/globals.css";
 import withApolloProvider from "@/hoc/withApolloProvider";
@@ -23,7 +22,7 @@ type Props = AppProps & {
 function NoLayout({ children }: PropsWithChildren<{ settings: Setting }>) {
   return <>{children}</>;
 }
-function App({ Component, pageProps }: Props) {
+function MyApp({ Component, pageProps }: Props) {
   const { data, loading: settingsLoading } = useSettingsQuery();
   const { data: sessionData, status: sessionStatus } = useSession();
 
@@ -65,6 +64,23 @@ function App({ Component, pageProps }: Props) {
   );
 }
 
-export default dynamic(() =>
-  Promise.resolve(withApolloProvider(withSessionProvider(App))),
-);
+export async function getServerSideProps(ctx) {
+  console.log("fetching server props");
+  return {
+    props: {
+      session: await getSession(ctx),
+    },
+  };
+}
+
+MyApp.getInitialProps = async (ctx) => {
+  const appProps = await app.getInitialProps(ctx);
+  console.log("fetching initial props");
+  return {
+    props: {
+      session: await getSession(ctx),
+    },
+  };
+};
+
+export default withApolloProvider(withSessionProvider(MyApp));

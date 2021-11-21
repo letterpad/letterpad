@@ -22,7 +22,6 @@ const Verify = async (
     res.redirect(basePath + "/messages/verified");
   } catch (e) {
     res.send(e.message);
-    console.log(e);
   }
 };
 
