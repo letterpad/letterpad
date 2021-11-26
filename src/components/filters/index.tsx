@@ -10,10 +10,11 @@ import { fetchTags } from "../tags/api";
 
 interface IProps {
   showTags?: boolean;
+  onChange: any;
 }
 const Option = Select.Option;
 
-const Filters = ({ showTags = true }: IProps) => {
+const Filters = ({ showTags = true, onChange }: IProps) => {
   const [allTags, setAllTags] = useState<{ slug: string; name: string }[]>([]);
   const [filters, setFilters] = useState<PostsFilters>({});
 
@@ -34,6 +35,7 @@ const Filters = ({ showTags = true }: IProps) => {
         );
       }
     });
+    onChange(filters);
   }, [JSON.stringify(filters)]);
 
   return (
@@ -41,9 +43,9 @@ const Filters = ({ showTags = true }: IProps) => {
       <>
         <Select
           style={{ width: 105 }}
-          onChange={(status: PostStatusOptions) =>
-            setFilters({ ...filters, status })
-          }
+          onChange={(status: PostStatusOptions) => {
+            setFilters({ ...filters, status });
+          }}
           placeholder="Status"
           allowClear
           size="middle"
@@ -63,6 +65,7 @@ const Filters = ({ showTags = true }: IProps) => {
           placeholder="Order by"
           allowClear
           size="middle"
+          value={SortBy["Desc"]}
         >
           {Object.keys(SortBy).map((key) => {
             return (
