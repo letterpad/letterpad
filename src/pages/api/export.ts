@@ -3,7 +3,7 @@ import { SessionData } from "./../../graphql/types";
 import fs from "fs";
 import models from "@/graphql/db/models";
 import { Author } from "@/graphql/db/models/author";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { Role } from "@/__generated__/__types__";
 
 const Export = async (req, res) => {

@@ -8,7 +8,7 @@ import {
 } from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
 
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import {
   Post,
   PostTypes,
@@ -27,7 +27,7 @@ function useNavigationData(): IReturn {
   const [loading, setLoading] = useState<boolean>(true);
 
   async function fetchData() {
-    const client = await initializeApollo();
+    const client = await getApolloClient();
     const tagsData = await client.query<TagsQuery, TagsQueryVariables>({
       query: TagsDocument,
     });

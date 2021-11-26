@@ -9,8 +9,8 @@ import {
   SettingsQuery,
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
-import { getSession } from "next-auth/client";
-import { initializeApollo } from "@/graphql/apollo";
+import { getSession } from "next-auth/react";
+import { getApolloClient } from "@/graphql/apollo";
 import { SettingsDocument } from "@/graphql/queries/queries.graphql";
 import logger from "./../../shared/logger";
 import path from "path";
@@ -20,7 +20,7 @@ import { uploadToInternal } from "./providers/internal";
 import models from "@/graphql/db/models";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
-import nextConfig from "next.config";
+import { basePath } from "@/constants";
 
 const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");
@@ -56,7 +56,7 @@ export default async (
   if (!Array.isArray(files)) {
     files = [files];
   }
-  const apollo = await initializeApollo({}, { req });
+  const apollo = await getApolloClient({}, { req });
   const settings = await apollo.query<SettingsQuery, SettingsQueryVariables>({
     query: SettingsDocument,
     fetchPolicy: "network-only",
@@ -101,7 +101,7 @@ export default async (
           result = await uploadToInternal(
             file,
             uploadPath,
-            nextConfig.basePath + "/uploads/" + filename,
+            basePath + "/uploads/" + filename,
           );
         }
         await upsertMedia(result, session.user.id);

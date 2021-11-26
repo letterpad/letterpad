@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import {
   MediaQuery,
   MediaQueryVariables,
@@ -28,7 +28,7 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
   }, []);
 
   const fetchInternalMedia = async (page = 1) => {
-    const client = await initializeApollo();
+    const client = await getApolloClient();
     const result = await client.query<MediaQuery, MediaQueryVariables>({
       query: MediaDocument,
       variables: {

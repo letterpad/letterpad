@@ -1,83 +1,66 @@
 import React from "react";
 import { AppProps } from "next/app";
-import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
-import { useApollo } from "@/graphql/apollo";
-import { Provider } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import nextConfig from "../../next.config";
 import type { Page } from "../page";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { Setting } from "@/__generated__/__types__";
 import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import "lazysizes";
 import Main from "@/components/main";
-import { getSettings, initPageProgress } from "./../shared/utils";
-import dynamic from "next/dynamic";
-
+import { initPageProgress } from "./../shared/utils";
 import "../../styles/globals.css";
+import withApolloProvider from "@/hoc/withApolloProvider";
+import { useSettingsQuery } from "@/__generated__/queries/queries.graphql";
+import withSessionProvider from "@/hoc/withSessionProvider";
 
 type Props = AppProps & {
   Component: Page;
 };
 
-function App({ Component, pageProps }: Props) {
-  const apolloClientPromise = useApollo(pageProps.initialApolloState);
-  const [settings, setSettings] = useState<null | Setting>(null);
-  const [apolloClient, setClient] =
-    useState<ApolloClient<NormalizedCacheObject>>();
-  const router = useRouter();
+function NoLayout({ children }: PropsWithChildren<{ settings: Setting }>) {
+  return <>{children}</>;
+}
+function MyApp({ Component, pageProps }: Props) {
+  const { data, loading: settingsLoading } = useSettingsQuery();
+  const { data: sessionData, status: sessionStatus } = useSession();
 
-  const ComponentRequiresAuth = Component.needsAuth;
+  const router = useRouter();
+  const sessionLoading = sessionStatus === "loading";
+  const protectedPage = Component.needsAuth;
 
   useEffect(() => {
-    if (ComponentRequiresAuth) {
-      ThemeSwitcher.switch(localStorage.theme);
-      initPageProgress();
-
-      async function init() {
-        const client = await apolloClientPromise;
-        setClient(client);
-
-        const { data } = await getSettings();
-        if (data.settings?.__typename === "Setting") {
-          return setSettings(data.settings);
-        }
-        router.push("/api/auth/signin");
-      }
-      init();
-    }
+    ThemeSwitcher.switch(localStorage.theme);
+    initPageProgress();
   }, []);
 
-  if (!ComponentRequiresAuth) {
-    return (
-      <Provider
-        session={pageProps.session}
-        options={{ basePath: nextConfig.basePath + "/api/auth" }}
-      >
-        <Component {...pageProps} />
-      </Provider>
-    );
+  useEffect(() => {
+    if (protectedPage && sessionStatus === "unauthenticated") {
+      router.push("/api/auth/signin");
+    }
+  }, [sessionStatus]);
+
+  if (!protectedPage) {
+    return <Component {...pageProps} />;
   }
 
   const Layout = Component.layout || NoLayout;
+  if (sessionLoading || settingsLoading) {
+    return null;
+  }
 
-  if (!apolloClient || !settings) return null;
+  if (!sessionData || !data || data.settings.__typename !== "Setting") {
+    return null;
+  }
 
   return (
     <Main
-      apolloClient={apolloClient}
       Component={Component}
       Layout={Layout}
       props={{ ...pageProps }}
-      settings={settings}
+      settings={data.settings}
     />
   );
 }
 
-function NoLayout({ children }: PropsWithChildren<{ settings: Setting }>) {
-  return <>{children}</>;
-}
-
-export default dynamic(() => Promise.resolve(App), {
-  ssr: false,
-});
+export default withApolloProvider(withSessionProvider(MyApp));

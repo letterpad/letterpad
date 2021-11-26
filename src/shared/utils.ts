@@ -1,11 +1,11 @@
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import { IMediaUploadResult } from "@/graphql/types";
 import {
   SettingsDocument,
   SettingsQuery,
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
-import nextConfig from "../../next.config";
+import { basePath } from "@/constants";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { IUploadFileProps } from "./types";
@@ -61,7 +61,7 @@ export function getBase64(file: File) {
 }
 
 export async function getSettings() {
-  const client = await initializeApollo();
+  const client = await getApolloClient();
   return client.query<SettingsQuery, SettingsQueryVariables>({
     query: SettingsDocument,
   });
@@ -80,7 +80,7 @@ export const uploadFile = async ({
     data.append(`file`, files[i]);
   }
 
-  return fetch(nextConfig.basePath + "/api/uploadApi", {
+  return fetch(basePath + "/api/uploadApi", {
     method: "post",
     body: data,
     headers: {

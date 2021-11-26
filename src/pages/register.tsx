@@ -19,7 +19,7 @@ import {
   Row,
 } from "../components/login.css";
 import { message } from "antd";
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 
 const key = "register";
 const fields = {
@@ -47,7 +47,7 @@ const RegisterForm = () => {
     const errorObj = validate(form);
 
     const newErrors = Object.keys(errorObj).filter(
-      field => errorObj[field] !== "",
+      (field) => errorObj[field] !== "",
     );
 
     if (newErrors.length > 0) {
@@ -89,7 +89,7 @@ const RegisterForm = () => {
               type="text"
               placeholder="Enter a title of your blog"
               value={form.site_title}
-              onChange={e => setForm({ ...form, site_title: e.target.value })}
+              onChange={(e) => setForm({ ...form, site_title: e.target.value })}
               autoComplete="off"
               data-testid="input-email"
             />
@@ -102,7 +102,7 @@ const RegisterForm = () => {
               type="text"
               placeholder="Enter your name as an author"
               value={form.name}
-              onChange={e => setForm({ ...form, name: e.target.value })}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
               autoComplete="off"
               data-testid="input-email"
             />
@@ -113,7 +113,7 @@ const RegisterForm = () => {
               type="text"
               placeholder="Enter a username"
               value={form.username}
-              onChange={e => setForm({ ...form, username: e.target.value })}
+              onChange={(e) => setForm({ ...form, username: e.target.value })}
               autoComplete="off"
               data-testid="input-email"
               style={{ width: 200 }}
@@ -130,7 +130,7 @@ const RegisterForm = () => {
               type="text"
               placeholder="Enter your email"
               value={form.email}
-              onChange={e => setForm({ ...form, email: e.target.value })}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               autoComplete="off"
               data-testid="input-email"
             />
@@ -140,7 +140,7 @@ const RegisterForm = () => {
             <input
               type="password"
               placeholder="Enter a new password"
-              onChange={e => setForm({ ...form, password: e.target.value })}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
               value={form.password}
               autoComplete="off"
               onKeyUp={(e: React.KeyboardEvent) => {
@@ -203,7 +203,7 @@ function validate(form: typeof fields) {
 async function createAuthor(
   data,
 ): Promise<{ status: boolean; message: string } | null> {
-  const client = await initializeApollo();
+  const client = await getApolloClient();
 
   const result = await client.mutate<
     CreateAuthorMutation,

@@ -27,10 +27,7 @@ function Post() {
       </Head>
       <Header />
       <Content style={{ margin: "24px 16px 0" }}>
-        <div
-          className="site-layout-background"
-          style={{ maxWidth: 760, margin: "auto" }}
-        >
+        <div style={{ maxWidth: 760, margin: "auto" }}>
           <Title
             title={post.title}
             onEnter={() => helpers?.getEditorRef().editor.focus()}

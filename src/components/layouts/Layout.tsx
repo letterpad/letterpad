@@ -12,10 +12,10 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navigation from "./Menu";
 import Logo from "../Logo";
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import ThemeSwitcher from "./ThemeSwitcher";
 import siteConfig from "config/site.config";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 
 interface IProps {
   settings: Setting;
@@ -27,8 +27,8 @@ const CustomLayout = ({ children, settings }: IProps) => {
   const [stats, setStats] = useState<Stats | {}>({});
   const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [user] = useSession();
-
+  const { data: session } = useSession();
+  const user = session;
   useEffect(() => {
     getStats().then((res) => {
       if (res?.__typename === "Stats") {
@@ -57,11 +57,15 @@ const CustomLayout = ({ children, settings }: IProps) => {
           height: "100vh",
           position: "fixed",
           left: 0,
-          zIndex: 9999,
+          zIndex: 999,
         }}
         width={siteConfig.sidebar_width}
       >
-        <Logo src={settings.site_logo.src} />
+        {settings.site_logo.src ? (
+          <Logo src={settings.site_logo.src} />
+        ) : (
+          <h2>{settings.site_title}</h2>
+        )}
         <Navigation stats={stats} />
         <ThemeSwitcher />
       </Sider>
@@ -89,8 +93,9 @@ const CustomLayout = ({ children, settings }: IProps) => {
 
         <div
           style={{
-            minHeight: siteConfig.header_height,
-            padding: 20,
+            paddingTop: 20,
+            paddingLeft: 20,
+            paddingRight: 20,
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -98,8 +103,6 @@ const CustomLayout = ({ children, settings }: IProps) => {
           <div>
             {collapsed && !visible && (
               <>
-                <img src={settings.site_logo.src} height={40} />
-                &nbsp;&nbsp;&nbsp;
                 <Button
                   className="menu"
                   type="ghost"
@@ -117,16 +120,13 @@ const CustomLayout = ({ children, settings }: IProps) => {
             &nbsp;&nbsp; •&nbsp;&nbsp;{user?.user?.name}
           </div>
         </div>
-        <div style={{ minHeight: "calc(100vh - 152px)" }}>{children}</div>
+        <div>{children}</div>
         <Footer
           style={{
             textAlign: "center",
           }}
         >
-          Letterpad <br />
-          <small>
-            {/* Client Token: <strong>{settings.client_token}</strong> */}
-          </small>
+          Letterpad, 2021 <br />
         </Footer>
       </Layout>
     </Layout>
@@ -136,7 +136,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
 export default CustomLayout;
 
 async function getStats() {
-  const client = await initializeApollo();
+  const client = await getApolloClient();
   const stats = await client.query<StatsQuery, StatsQueryVariables>({
     query: StatsDocument,
     fetchPolicy: "network-only",

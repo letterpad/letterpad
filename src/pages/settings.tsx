@@ -1,13 +1,8 @@
 import { Collapse, Form, Input, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
-import { initializeApollo } from "@/graphql/apollo";
 import ImageUpload from "@/components/ImageUpload";
-import {
-  UpdateOptionsMutation,
-  UpdateOptionsMutationVariables,
-  UpdateOptionsDocument,
-} from "@/__generated__/queries/mutations.graphql";
+import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
 import { Setting, OptionInputType } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
@@ -28,21 +23,10 @@ type ValueOf<T> = T[keyof T];
 function Settings(props: { settings: Setting }) {
   const [settings, setSettings] = useState(props.settings);
   const [draft, setDraft] = useState<OptionInputType>({});
-
+  const [settingsMutation] = useUpdateOptionsMutation();
   const updateSettings = async () => {
-    const apolloClient = await initializeApollo();
-
     if (Object.keys(draft).length === 0) return;
-
-    await apolloClient.mutate<
-      UpdateOptionsMutation,
-      UpdateOptionsMutationVariables
-    >({
-      mutation: UpdateOptionsDocument,
-      variables: {
-        options: draft,
-      },
-    });
+    settingsMutation({ variables: { options: draft } });
     setDraft({});
   };
 
@@ -64,16 +48,18 @@ function Settings(props: { settings: Setting }) {
       <Head>
         <title>Settings</title>
       </Head>
-      <PageHeader className="site-page-header" title="Settings"></PageHeader>
+      <PageHeader className="site-page-header" title="Settings">
+        Here you can customize your blog's settings.
+      </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 16 }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
             layout="horizontal"
             size={"small"}
           >
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="General Settings" key="1">
                 <Form.Item label="Site Title">
                   <Input
@@ -137,7 +123,7 @@ function Settings(props: { settings: Setting }) {
                 </Form.Item>
               </Panel>
             </Collapse>
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="Appearance" key="1">
                 <Form.Item label="Logo">
                   <ImageUpload
@@ -195,10 +181,6 @@ function Settings(props: { settings: Setting }) {
                       placeholder="Add css to customise your website"
                       // highlight={code => highlight(code, languages.js)}
                       highlight={(code) => {
-                        console.log(
-                          'highlight.highlight(code, { language: "css" }).value :>> ',
-                          highlight.highlight(code, { language: "css" }).value,
-                        );
                         return highlight.highlight(code, { language: "css" })
                           .value;
                       }}
@@ -225,7 +207,7 @@ function Settings(props: { settings: Setting }) {
                 </Form.Item>
               </Panel>
             </Collapse>
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="Navigation" key="1">
                 <Navigation
                   menuData={settings.menu}
@@ -233,7 +215,7 @@ function Settings(props: { settings: Setting }) {
                 />
               </Panel>
             </Collapse>
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="Social  Settings" key="1">
                 <Form.Item label="Twitter">
                   <Input
@@ -273,7 +255,7 @@ function Settings(props: { settings: Setting }) {
                 </Form.Item>
               </Panel>
             </Collapse>
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="Integrations" key="1">
                 <Form.Item label="Cloudinary Name">
                   <Input
@@ -306,7 +288,7 @@ function Settings(props: { settings: Setting }) {
               </Panel>
             </Collapse>
 
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="Keys" key="1">
                 <Form.Item label="Client Authorization Key">
                   <Input.TextArea

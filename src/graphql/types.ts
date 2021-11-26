@@ -31,6 +31,7 @@ export type Session = Pick<
 >;
 
 export interface SessionData extends Session {
+  expires: any;
   __typename: "SessionData";
 }
 

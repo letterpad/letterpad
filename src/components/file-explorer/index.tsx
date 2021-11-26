@@ -1,12 +1,12 @@
 import Modal from "antd/lib/modal/Modal";
 
-import Internal from "./providers/Internal";
-import Unsplash from "./providers/Unsplash";
+import Internal from "@/components/file-explorer/providers/Internal";
+import Unsplash from "@/components/file-explorer/providers/Unsplash";
 import { Media } from "@/__generated__/__types__";
 import { Button } from "antd";
 import MediaItem from "./MediaItem";
 import { useRef, useState } from "react";
-import { uploadFile } from "../../shared/utils";
+import { uploadFile } from "@/shared/utils";
 import { MediaProvider } from "src/shared/types";
 import { TypeMediaInsert } from "letterpad-editor";
 

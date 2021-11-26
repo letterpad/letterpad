@@ -1,73 +1,50 @@
 import { Collapse, Form, Input, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
-import { initializeApollo } from "@/graphql/apollo";
 import ImageUpload from "@/components/ImageUpload";
-import {
-  MeDocument,
-  MeQuery,
-  MeQueryVariables,
-} from "@/__generated__/queries/queries.graphql";
-import {
-  UpdateAuthorMutation,
-  UpdateAuthorMutationVariables,
-  UpdateAuthorDocument,
-} from "@/__generated__/queries/mutations.graphql";
+import { useMeQuery } from "@/__generated__/queries/queries.graphql";
+import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
-import { InputAuthor, Social, Author } from "@/__generated__/__types__";
+import { InputAuthor, Social } from "@/__generated__/__types__";
 import { removeTypenames } from "../shared/utils";
 import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
+import Loading from "@/components/loading";
 
 const { Panel } = Collapse;
 
 type ValueOf<T> = T[keyof T];
 
 function Profile() {
-  const [me, setMe] = useState<Author>();
+  const { data, loading, error } = useMeQuery({
+    variables: {},
+  });
+
+  const [mutateAuthor] = useUpdateAuthorMutation();
+  const [me, setMe] = useState<InputAuthor>();
   const [draft, setDraft] = useState<InputAuthor>();
-  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchAuthor().then((response) => {
-      if (!response) {
-        return;
-      }
-
-      if (response.status && response.author) {
-        setMe(response.author as Author);
-      }
-
-      if (!response.status) {
-        setError(response.message);
-      }
-    });
-  }, []);
-
-  const updateAuthor = async (data?: InputAuthor) => {
-    const apolloClient = await initializeApollo();
-
-    if (!me) return;
-
-    if (!data) {
-      data = { id: me.id };
+    if (data?.me?.__typename === "Author") {
+      setMe(data.me);
     }
-    await apolloClient.mutate<
-      UpdateAuthorMutation,
-      UpdateAuthorMutationVariables
-    >({
-      mutation: UpdateAuthorDocument,
-      variables: {
-        author: { ...draft, ...data, id: me.id },
-      },
-    });
+  }, [loading]);
+
+  const updateAuthor = async () => {
+    if (draft) {
+      mutateAuthor({
+        variables: {
+          author: draft,
+        },
+      });
+    }
   };
 
   const onChange = (key: keyof InputAuthor, value: ValueOf<InputAuthor>) => {
     if (me) {
       setMe({ ...me, [key]: value });
-      setDraft({ [key]: value, id: me.id });
+      setDraft({ id: me.id, [key]: value });
     }
   };
 
@@ -78,16 +55,27 @@ function Profile() {
     }
   };
 
-  if (!me) return null;
-  if (error) return <ErrorMessage title="Profile" description={error} />;
+  if (loading) return <Loading />;
+
+  if (data?.me?.__typename === "AuthorNotFoundError") {
+    return <ErrorMessage title="Profile" description={data.me.message} />;
+  }
+
+  if (error || !me) {
+    return <ErrorMessage title="Profile" description={error} />;
+  }
+
   return (
     <>
       <Head>
         <title>Profile</title>
       </Head>
-      <PageHeader className="site-page-header" title="Profile"></PageHeader>
+      <PageHeader className="site-page-header" title="Profile">
+        Set up your profile. This will be used by themes to add author
+        information for your blog posts.
+      </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 16 }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
@@ -125,7 +113,7 @@ function Profile() {
                     name="Avatar"
                     onDone={([res]) => {
                       onChange("avatar", res.src);
-                      updateAuthor({ avatar: res.src, id: me.id });
+                      updateAuthor();
                     }}
                   />
                 </Form.Item>
@@ -185,25 +173,3 @@ function Profile() {
 const ProfileWithAuth = withAuthCheck(Profile);
 ProfileWithAuth.layout = CustomLayout;
 export default ProfileWithAuth;
-
-export async function fetchAuthor() {
-  const apolloClient = await initializeApollo();
-  const me = await apolloClient.query<MeQuery, MeQueryVariables>({
-    query: MeDocument,
-  });
-
-  if (me.data.me?.__typename === "Author") {
-    return {
-      author: me.data.me,
-      message: "",
-      status: true,
-    };
-  }
-  if (me.data.me?.__typename === "AuthorNotFoundError") {
-    return {
-      author: null,
-      message: me.data.me.message,
-      status: false,
-    };
-  }
-}

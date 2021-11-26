@@ -12,7 +12,7 @@ import {
 } from "@ant-design/icons";
 
 import { useRouter } from "next/router";
-import { signOut } from "next-auth/client";
+import { signOut } from "next-auth/react";
 
 const menuItems = {
   "/posts": "1",

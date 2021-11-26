@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { getSession, signIn } from "next-auth/client";
-import nextConfig, { basePath } from "next.config";
+import { getSession, signIn } from "next-auth/react";
+import { basePath } from "@/constants";
 import {
   Block,
   Button,
@@ -12,7 +12,7 @@ import { message } from "antd";
 import { useRouter } from "next/router";
 import { SessionData } from "@/graphql/types";
 import Head from "next/head";
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import {
   ForgotPasswordDocument,
   ForgotPasswordMutation,
@@ -36,13 +36,13 @@ const LoginForm = () => {
       redirect: false,
       password: password,
       email: email,
-      callbackUrl: nextConfig.basePath + "/pages",
+      callbackUrl: basePath + "/pages",
     });
-    if (result && result.error) {
-      error(result.error);
+    if (result && result["error"]) {
+      error(result["error"]);
       return;
     }
-    const session = (await getSession()) as SessionResponse;
+    const session = (await getSession()) as SessionResponse | null;
     if (!session) {
       error("The request could not be processed at this time.");
       return;
@@ -53,8 +53,8 @@ const LoginForm = () => {
     }
     if (session.user.__typename === "SessionData") {
       message.success({ content: "Verified..", key, duration: 5 });
-      if (result && result.url) {
-        document.location.href = result.url;
+      if (result && result["url"]) {
+        document.location.href = result["url"];
       } else {
         document.location.href = basePath + "/posts";
       }
@@ -77,7 +77,7 @@ const LoginForm = () => {
     const sanitisedLoginEmail = email.trim();
     if (sanitisedLoginEmail.length > 0) {
       e.currentTarget.disabled = true;
-      const client = await initializeApollo();
+      const client = await getApolloClient();
       const res = await client.mutate<
         ForgotPasswordMutation,
         ForgotPasswordMutationVariables
@@ -91,7 +91,7 @@ const LoginForm = () => {
 
       if (data?.ok) {
         success("Check your email to reset your password!");
-        router.push(`${nextConfig.basePath}/login`);
+        router.push(`${basePath}/login`);
       } else {
         e.currentTarget.disabled = false;
         warn(data?.message || "Something wrong hapenned. Please try again.");

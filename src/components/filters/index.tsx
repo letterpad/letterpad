@@ -56,7 +56,7 @@ const Filters = ({ showTags = true }: IProps) => {
             );
           })}
         </Select>
-
+        &nbsp;
         <Select
           style={{ width: 100 }}
           onChange={(sortBy: SortBy) => setFilters({ ...filters, sortBy })}
@@ -72,7 +72,7 @@ const Filters = ({ showTags = true }: IProps) => {
             );
           })}
         </Select>
-
+        &nbsp;
         {allTags && showTags && (
           <Select
             style={{ width: 118 }}

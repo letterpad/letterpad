@@ -1,57 +1,38 @@
-import { PostsQuery } from "@/__generated__/queries/queries.graphql";
+import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { PostTypes } from "@/__generated__/__types__";
 import { Layout, Table } from "antd";
 import Filters from "@/components/filters";
-const { Content } = Layout;
 import CustomLayout from "@/components/layouts/Layout";
 import { useRouter } from "next/router";
 import withAuthCheck from "../hoc/withAuth";
-import { useEffect, useState } from "react";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
 import { postsStyles } from "@/components/posts.css";
 import { postsColumns } from "@/components/posts";
-import { fetchPosts } from "@/components/posts/api";
 import { Header } from "@/components/posts/header";
+import Loading from "@/components/loading";
+
+const { Content } = Layout;
 
 function Posts() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [postsNode, setPostsNode] = useState<PostsQuery["posts"]>({
-    count: 0,
-    rows: [],
-  });
+  const { loading, data, error } = usePostsQuery();
 
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    getPosts();
-  }, []);
-
-  const getPosts = async () => {
-    try {
-      const posts = await fetchPosts();
-      setLoading(false);
-      if (posts) setPostsNode(posts);
-    } catch (e) {
-      setError((e as Error).message);
-    }
-  };
+  if (loading) return <Loading />;
 
   if (error) return <ErrorMessage description={error} title="Error" />;
-  const source = postsNode.__typename === "PostsNode" ? postsNode.rows : [];
+  const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
 
   return (
     <>
       <Head>
         <title>Posts</title>
       </Head>
-      <Header type={PostTypes.Post} title="Posts" />
+      <Header type={PostTypes.Post} title="Posts">
+        Here you will find the list of posts for your blog.
+      </Header>
       <Content>
-        <div
-          className="site-layout-background"
-          style={{ padding: 16, minHeight: "77vh" }}
-        >
+        <div className="site-layout-background" style={{ padding: 16 }}>
           <Filters />
           <Table
             columns={postsColumns}

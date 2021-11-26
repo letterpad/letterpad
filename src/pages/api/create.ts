@@ -1,7 +1,7 @@
 import { NextApiResponse } from "next";
 import { NextApiRequestWithFormData } from "./../../graphql/types";
-import nextConfig from "next.config";
-import { initializeApollo } from "@/graphql/apollo";
+import { basePath } from "@/constants";
+import { getApolloClient } from "@/graphql/apollo";
 import {
   CreatePostDocument,
   CreatePostMutation,
@@ -15,7 +15,7 @@ const Create = async (
 ) => {
   try {
     const type = req.query.type;
-    const apolloClient = await initializeApollo({}, { req });
+    const apolloClient = await getApolloClient({}, { req });
 
     const post = await apolloClient.mutate<
       CreatePostMutation,
@@ -27,7 +27,7 @@ const Create = async (
       },
     });
     if (post.data?.createPost.__typename === "Post") {
-      res.redirect(nextConfig.basePath + "/post/" + post.data.createPost.id);
+      res.redirect(basePath + "/post/" + post.data.createPost.id);
       return;
     }
     res.send("Post creation failed");

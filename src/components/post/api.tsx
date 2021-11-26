@@ -1,4 +1,4 @@
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import {
   UpdatePostDocument,
   UpdatePostMutation,
@@ -21,7 +21,7 @@ const updatePostRequest = async (
   attrs: Omit<InputUpdatePost, "id">,
   postId: number,
 ) => {
-  const apolloClient = await initializeApollo();
+  const apolloClient = await getApolloClient();
   return apolloClient.mutate<UpdatePostMutation, UpdatePostMutationVariables>({
     mutation: UpdatePostDocument,
     variables: {
@@ -39,7 +39,7 @@ export const updatePostApi = async (
 };
 
 export async function getPost(postId: number) {
-  const apolloClient = await initializeApollo();
+  const apolloClient = await getApolloClient();
   const post = await apolloClient.query<PostQuery, PostQueryVariables>({
     query: PostDocument,
     variables: {

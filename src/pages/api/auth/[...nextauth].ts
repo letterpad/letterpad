@@ -5,28 +5,20 @@ import {
 } from "@/__generated__/queries/mutations.graphql";
 import { LoginResponse } from "@/__generated__/__types__";
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
-import { initializeApollo } from "@/graphql/apollo";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { getApolloClient } from "@/graphql/apollo";
 import { NextApiRequest, NextApiResponse } from "next";
-import nextConfig from "next.config";
+import { basePath } from "@/constants";
 
-interface ICredentials {
-  email: string;
-  password: string;
-  csrfToken: string;
-}
 const providers = [
-  Providers.Credentials({
+  CredentialsProvider({
     name: "Credentials",
     credentials: {
       email: { label: "Email" },
       password: { label: "Password", type: "password" },
     },
-    authorize: async (
-      credentials: ICredentials,
-      req,
-    ): Promise<LoginResponse> => {
-      const apolloClient = await initializeApollo({}, { req });
+    authorize: async (credentials, req): Promise<LoginResponse> => {
+      const apolloClient = await getApolloClient({}, { req: req.headers });
       const result = await apolloClient.mutate<
         LoginMutation,
         LoginMutationVariables
@@ -34,8 +26,8 @@ const providers = [
         mutation: LoginDocument,
         variables: {
           data: {
-            email: credentials.email,
-            password: credentials.password,
+            email: credentials?.email || "",
+            password: credentials?.password || "",
           },
         },
       });
@@ -43,7 +35,7 @@ const providers = [
       if (result.data?.login?.__typename === "Author") {
         return {
           ...result.data.login,
-          accessToken: credentials.csrfToken,
+          accessToken: credentials && credentials["csrfToken"],
         };
       }
 
@@ -63,17 +55,18 @@ const providers = [
 const options = {
   providers,
   callbacks: {
-    redirect: async (url: string, baseUrl: string) => {
+    redirect: async ({ url, baseUrl }) => {
       if (url.startsWith(baseUrl)) {
         return url;
       }
       return process.env.ROOT_URL + "/posts";
     },
-    jwt: async (token: any, user: Required<LoginResponse>) => {
+    jwt: async ({ token, ...rest }) => {
       //  "user" parameter is the object received from "authorize"
       //  "token" is being send to "session" callback...
       //  ...so we set "user" param of "token" to object from "authorize"...
       //  ...and return it...
+      const { user } = rest;
       if (user && token && user.__typename === "Author") {
         token.role = user.role;
         token.avatar = user.avatar;
@@ -82,27 +75,24 @@ const options = {
         token.username = user.username;
         token.__typename = "SessionData";
       }
-      if (user && user.__typename === "LoginError") {
-        return Promise.resolve({ ...user });
-      }
-      return Promise.resolve(token);
+      return token;
     },
-    session: async (session: any, user: LoginResponse) => {
-      if (user.__typename === "LoginError") {
-        session.user = user;
-        return Promise.resolve(session);
-      }
-      session.user = { ...user };
-      return Promise.resolve(session);
+    session: async ({ session, token }) => {
+      console.log("before checking session");
+      session.user = token;
+      console.log("Checking session...");
+      return session;
     },
   },
   jwt: {
     encryption: true,
     secret: process.env.SECRET_KEY,
+    signingKey: process.env.SECRET_KEY,
   },
   pages: {
-    signIn: `${nextConfig.basePath}/login`,
+    signIn: `${basePath}/login`,
   },
+  secret: process.env.SECRET_KEY,
 };
 
 export default (req: NextApiRequest, res: NextApiResponse) =>

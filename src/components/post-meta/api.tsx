@@ -1,7 +1,7 @@
-import nextConfig from "next.config";
+import { basePath } from "@/constants";
 
 export const getPostHash = (id: number) => {
-  return fetch(nextConfig.basePath + "/api/getPostHash?id=" + id).then((res) =>
+  return fetch(basePath + "/api/getPostHash?id=" + id).then((res) =>
     res.text(),
   );
 };

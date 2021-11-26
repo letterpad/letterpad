@@ -1,13 +1,14 @@
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { SessionData } from "./types";
 import { IncomingMessage, ServerResponse } from "http";
 import { useMemo } from "react";
-import nextConfig from "../../next.config";
+import { basePath } from "@/constants";
 import {
   ApolloClient,
   InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client";
+
 import models from "./db/models";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
@@ -27,8 +28,6 @@ function createIsomorphLink(context: ResolverContext = {}) {
     return new SchemaLink({ schema, context });
   } else {
     const { HttpLink } = require("@apollo/client");
-
-    const basePath = nextConfig.basePath;
     return new HttpLink({
       uri: basePath + "/api/graphql",
       credentials: "same-origin",
@@ -44,7 +43,7 @@ export function createApolloClient(context?: ResolverContext) {
   });
 }
 
-export async function initializeApollo(
+export async function getApolloClient(
   initialState: any = null,
   // Pages with Next.js data fetching methods, like `getStaticProps`, can send
   // a custom context which will be used by `SchemaLink` to server render pages
@@ -54,7 +53,7 @@ export async function initializeApollo(
   if (typeof window === "undefined") {
     if (!context) {
       console.error(
-        "`initializeApollo` has been called without setting a context",
+        "`getApolloClient` has been called without setting a context",
       );
     }
     const isBuildRunning = process.env.NEXT_PHASE === "phase-production-build";
@@ -77,5 +76,5 @@ export async function initializeApollo(
 }
 
 export function useApollo(initialState: any) {
-  return useMemo(() => initializeApollo(initialState), [initialState]);
+  return useMemo(() => getApolloClient(initialState), [initialState]);
 }

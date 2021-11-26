@@ -88,9 +88,13 @@ const EditableTable = () => {
       <Head>
         <title>Tags</title>
       </Head>
-      <PageHeader className="site-page-header" title="Tags"></PageHeader>
+      <PageHeader className="site-page-header" title="Tags">
+        Tags are essentially categories. They allow you to group posts together
+        using whatever tag you want and then use these tags to setup your
+        navigation menu.
+      </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 16 }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Button
             onClick={handleAdd}
             type="primary"

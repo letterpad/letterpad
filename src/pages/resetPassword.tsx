@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { message } from "antd";
 import { useRouter } from "next/router";
-import { initializeApollo } from "@/graphql/apollo";
+import { getApolloClient } from "@/graphql/apollo";
 import {
   ResetPasswordMutation,
   ResetPasswordMutationVariables,
@@ -16,7 +16,7 @@ import {
   Block,
 } from "@/components/login.css";
 import Head from "next/head";
-import nextConfig from "next.config";
+import { basePath } from "@/constants";
 
 const key = "change-password";
 
@@ -24,7 +24,7 @@ const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const resetPassword = async e => {
+  const resetPassword = async (e) => {
     e.preventDefault();
     if (password.length === 0) {
       message.error({
@@ -44,7 +44,7 @@ const ResetPassword = () => {
       return;
     }
 
-    const client = await initializeApollo();
+    const client = await getApolloClient();
 
     const result = await client.mutate<
       ResetPasswordMutation,
@@ -64,7 +64,7 @@ const ResetPassword = () => {
         duration: 1000,
         key,
       });
-      router.push(`${nextConfig.basePath}/login`);
+      router.push(`${basePath}/login`);
     } else if (!data?.ok) {
       message.error({
         content:
@@ -88,7 +88,7 @@ const ResetPassword = () => {
               type="password"
               className="form-control"
               placeholder="Enter your new password"
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               value={password}
               autoComplete="off"
             />

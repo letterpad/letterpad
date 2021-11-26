@@ -1,20 +1,17 @@
-import nextConfig from "next.config";
+import React from "react";
+import { basePath } from "@/constants";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
-  static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitialProps(ctx);
-    return { ...initialProps };
-  }
-
   render() {
     return (
       <Html>
         <Head>
+          <link rel="stylesheet" href={basePath + "/css/theme-variables.css"} />
           <link
             rel="stylesheet"
             id="theme"
-            href={nextConfig.basePath + "/css/antd.css"}
+            href={basePath + "/css/antd.variable.css"}
           />
         </Head>
         <body>

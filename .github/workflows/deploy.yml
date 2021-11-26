@@ -34,6 +34,7 @@ jobs:
         run: yarn run build
         env:
           SECRET_KEY: ${{ secrets.SECRET_LP_KEY }}
+          SENTRY_AUTH_TOKEN: ${{secrets.SENTRY_AUTH_TOKEN}}
 
       - name: Type check
         run: yarn type-check

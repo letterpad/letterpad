@@ -1,12 +1,12 @@
-import {Row, PageHeader, Space, message} from "antd";
-import {Content} from "antd/lib/layout/layout";
-
+import { Row, PageHeader, Space, message } from "antd";
+import { Content } from "antd/lib/layout/layout";
+import { Empty } from "antd";
 import CustomLayout from "@/components/layouts/Layout";
-import {useMediaQuery} from "@/__generated__/queries/queries.graphql";
-import {MediaNode, Media as IMedia} from "@/__generated__/__types__";
+import { useMediaQuery } from "@/__generated__/queries/queries.graphql";
+import { MediaNode, Media as IMedia } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
-import {deleteImageAPI, updateImageAPI} from "src/helpers";
-import {useState} from "react";
+import { deleteImageAPI, updateImageAPI } from "src/helpers";
+import { useState } from "react";
 import MediaUpdateModal from "@/components/modals/media-update-modal";
 import Head from "next/head";
 import MediaItem from "@/components/MediaItem";
@@ -14,7 +14,7 @@ import MediaItem from "@/components/MediaItem";
 const key = "updatable";
 
 const Media = () => {
-  const mediaQ = useMediaQuery({variables: {filters: {}}});
+  const mediaQ = useMediaQuery({ variables: { filters: {} } });
   const [preview, setPreview] = useState<IMedia | undefined>();
   const [data, setData] = useState<MediaNode>({
     count: mediaQ.data?.media.count || 0,
@@ -25,22 +25,22 @@ const Media = () => {
     const res = await deleteImageAPI(img);
     if (res.data?.deleteMedia?.__typename === "MediaDeleteResult") {
       const rows = data.rows.filter((item) => item.id !== img.id);
-      setData({rows, count: data.count - 1});
+      setData({ rows, count: data.count - 1 });
     }
   };
 
   const updateImage = async (img: IMedia) => {
-    message.loading({content: "Updating, Please wait...", key});
+    message.loading({ content: "Updating, Please wait...", key });
     const res = await updateImageAPI(img);
     if (res?.__typename === "MediaUpdateResult") {
-      message.success({content: "Updated", key, duration: 3});
+      message.success({ content: "Updated", key, duration: 3 });
       const updateSrc = data.rows.map((item) =>
-        item.id === img.id ? {...img} : item,
+        item.id === img.id ? { ...img } : item,
       );
-      setData({...data, rows: updateSrc});
+      setData({ ...data, rows: updateSrc });
     }
     if (res?.__typename === "MediaError") {
-      message.error({content: res.message, key, duration: 3});
+      message.error({ content: res.message, key, duration: 3 });
     }
     setPreview(undefined);
   };
@@ -50,22 +50,30 @@ const Media = () => {
       <Head>
         <title>Media</title>
       </Head>
-      <PageHeader className="site-page-header" title="Media"></PageHeader>
+      <PageHeader className="site-page-header" title="Media">
+        Here you will find the collection of images that you uploaded from your
+        computer.
+      </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{padding: 16}}>
-          <Space>
-            <Row gutter={[24, 24]} justify="start">
-              {data.rows.map((image) => (
-                <MediaItem
-                  image={image}
-                  deleteImage={deleteImage}
-                  key={image.id}
-                  setPreview={setPreview}
-                />
-              ))}
-            </Row>
-          </Space>
+        <div className="site-layout-background" style={{ padding: 24 }}>
+          {data.rows.length > 0 ? (
+            <Space>
+              <Row gutter={[24, 24]} justify="start">
+                {data.rows.map((image) => (
+                  <MediaItem
+                    image={image}
+                    deleteImage={deleteImage}
+                    key={image.id}
+                    setPreview={setPreview}
+                  />
+                ))}
+              </Row>
+            </Space>
+          ) : (
+            <Empty description="No media found" style={{ marginTop: 100 }} />
+          )}
         </div>
+
         <MediaUpdateModal
           img={preview}
           onChange={setPreview}
