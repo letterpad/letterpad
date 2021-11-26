@@ -57,7 +57,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
           height: "100vh",
           position: "fixed",
           left: 0,
-          zIndex: 9999,
+          zIndex: 999,
         }}
         width={siteConfig.sidebar_width}
       >
@@ -93,8 +93,9 @@ const CustomLayout = ({ children, settings }: IProps) => {
 
         <div
           style={{
-            minHeight: siteConfig.header_height,
-            padding: 20,
+            paddingTop: 20,
+            paddingLeft: 20,
+            paddingRight: 20,
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -102,8 +103,6 @@ const CustomLayout = ({ children, settings }: IProps) => {
           <div>
             {collapsed && !visible && (
               <>
-                <img src={settings.site_logo.src} height={40} />
-                &nbsp;&nbsp;&nbsp;
                 <Button
                   className="menu"
                   type="ghost"
@@ -121,16 +120,13 @@ const CustomLayout = ({ children, settings }: IProps) => {
             &nbsp;&nbsp; •&nbsp;&nbsp;{user?.user?.name}
           </div>
         </div>
-        <div style={{ minHeight: "calc(100vh - 152px)" }}>{children}</div>
+        <div>{children}</div>
         <Footer
           style={{
             textAlign: "center",
           }}
         >
-          Letterpad <br />
-          <small>
-            {/* Client Token: <strong>{settings.client_token}</strong> */}
-          </small>
+          Letterpad, 2021 <br />
         </Footer>
       </Layout>
     </Layout>

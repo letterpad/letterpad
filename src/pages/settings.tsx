@@ -48,16 +48,18 @@ function Settings(props: { settings: Setting }) {
       <Head>
         <title>Settings</title>
       </Head>
-      <PageHeader className="site-page-header" title="Settings"></PageHeader>
+      <PageHeader className="site-page-header" title="Settings">
+        Here you can customize your blog's settings.
+      </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 16 }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
             layout="horizontal"
             size={"small"}
           >
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="General Settings" key="1">
                 <Form.Item label="Site Title">
                   <Input
@@ -121,7 +123,7 @@ function Settings(props: { settings: Setting }) {
                 </Form.Item>
               </Panel>
             </Collapse>
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="Appearance" key="1">
                 <Form.Item label="Logo">
                   <ImageUpload
@@ -205,7 +207,7 @@ function Settings(props: { settings: Setting }) {
                 </Form.Item>
               </Panel>
             </Collapse>
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="Navigation" key="1">
                 <Navigation
                   menuData={settings.menu}
@@ -213,7 +215,7 @@ function Settings(props: { settings: Setting }) {
                 />
               </Panel>
             </Collapse>
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="Social  Settings" key="1">
                 <Form.Item label="Twitter">
                   <Input
@@ -253,7 +255,7 @@ function Settings(props: { settings: Setting }) {
                 </Form.Item>
               </Panel>
             </Collapse>
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="Integrations" key="1">
                 <Form.Item label="Cloudinary Name">
                   <Input
@@ -286,7 +288,7 @@ function Settings(props: { settings: Setting }) {
               </Panel>
             </Collapse>
 
-            <Collapse defaultActiveKey={["1"]}>
+            <Collapse>
               <Panel header="Keys" key="1">
                 <Form.Item label="Client Authorization Key">
                   <Input.TextArea

@@ -10,6 +10,7 @@ import { removeTypenames } from "../shared/utils";
 import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
+import Loading from "@/components/loading";
 
 const { Panel } = Collapse;
 
@@ -54,7 +55,7 @@ function Profile() {
     }
   };
 
-  if (loading) return <>Loading..</>;
+  if (loading) return <Loading />;
 
   if (data?.me?.__typename === "AuthorNotFoundError") {
     return <ErrorMessage title="Profile" description={data.me.message} />;
@@ -69,9 +70,12 @@ function Profile() {
       <Head>
         <title>Profile</title>
       </Head>
-      <PageHeader className="site-page-header" title="Profile"></PageHeader>
+      <PageHeader className="site-page-header" title="Profile">
+        Set up your profile. This will be used by themes to add author
+        information for your blog posts.
+      </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 16 }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}

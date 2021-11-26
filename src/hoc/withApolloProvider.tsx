@@ -12,7 +12,7 @@ const withApolloProvider = <T extends object>(
     }
     return (
       <ApolloProvider client={client}>
-        <WrappedComponent {...props} />;
+        <WrappedComponent {...props} />
       </ApolloProvider>
     );
   };

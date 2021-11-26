@@ -1,5 +1,6 @@
 import { Switch } from "antd";
-import { basePath } from "@/constants";
+import { basePath } from "next.config";
+
 import { useEffect, useState } from "react";
 
 const ThemeSwitcher = () => {

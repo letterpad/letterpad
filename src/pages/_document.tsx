@@ -7,7 +7,12 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <link rel="stylesheet" id="theme" href={basePath + "/css/antd.css"} />
+          <link rel="stylesheet" href={basePath + "/css/theme-variables.css"} />
+          <link
+            rel="stylesheet"
+            id="theme"
+            href={basePath + "/css/antd.variable.css"}
+          />
         </Head>
         <body>
           <Main />

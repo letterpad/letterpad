@@ -7,7 +7,7 @@ const withSessionProvider = <T extends object>(
   const ComponentWithSession = (props: T) => {
     return (
       <SessionProvider basePath={basePath + "/api/auth"}>
-        <WrappedComponent {...props} />;
+        <WrappedComponent {...props} />
       </SessionProvider>
     );
   };

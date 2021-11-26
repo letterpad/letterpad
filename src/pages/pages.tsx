@@ -28,9 +28,11 @@ function Pages() {
       <Head>
         <title>Pages</title>
       </Head>
-      <Header type={PostTypes.Page} title="Pages" />
+      <Header type={PostTypes.Page} title="Pages">
+        Here you will find the list of pages for your blog.
+      </Header>
       <Content>
-        <div className="site-layout-background" style={{ padding: 16 }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Filters showTags={false} />
           <Table
             columns={columns}

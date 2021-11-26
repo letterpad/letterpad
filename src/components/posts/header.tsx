@@ -7,7 +7,7 @@ interface IProps {
   title: string;
 }
 
-export const Header = ({ type, title }: IProps) => {
+export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const router = useRouter();
   return (
     <PageHeader
@@ -22,6 +22,8 @@ export const Header = ({ type, title }: IProps) => {
           New
         </Button>,
       ]}
-    ></PageHeader>
+    >
+      {children}
+    </PageHeader>
   );
 };

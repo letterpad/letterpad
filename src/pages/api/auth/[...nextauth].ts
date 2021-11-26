@@ -9,7 +9,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { getApolloClient } from "@/graphql/apollo";
 import { NextApiRequest, NextApiResponse } from "next";
 import { basePath } from "@/constants";
-``;
+
 const providers = [
   CredentialsProvider({
     name: "Credentials",

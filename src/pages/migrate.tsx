@@ -33,9 +33,12 @@ const Migrate = ({ session }: IAuthComponentProps) => {
       <Head>
         <title>Migrate</title>
       </Head>
-      <PageHeader className="site-page-header" title="Migrate"></PageHeader>
+      <PageHeader className="site-page-header" title="Migrate">
+        Here you will be able to download the data of your entire blog. You can
+        also import blog from another CMS like Ghost.
+      </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 16 }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}

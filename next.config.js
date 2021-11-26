@@ -2,7 +2,17 @@ const path = require("path");
 const { withSentryConfig } = require("@sentry/nextjs");
 const basePath = "/admin";
 
+const isServer = typeof window === "undefined";
+
 const nextConfig = {
+  swcMinify: true,
+  experimental: {
+    // ssr and displayName are configured by default
+    styledComponents: true,
+  },
+  compilerOptions: {
+    jsxImportSource: true,
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -67,9 +77,10 @@ const configWithSentry =
 
 let config = !configWithSentry ? nextConfig : configWithSentry;
 
-// if (!!process.env.SENTRY_ACTIVE === false) {
-//   config = nextConfig;
-// }
+if (isServer && !process.env.SENTRY_DSN) {
+  console.log("Sentry not running");
+  config = nextConfig;
+}
 
 module.exports = config;
 module.exports.basePath = basePath;

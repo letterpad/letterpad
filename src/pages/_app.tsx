@@ -9,7 +9,6 @@ import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
 import "lazysizes";
 import Main from "@/components/main";
 import { initPageProgress } from "./../shared/utils";
-
 import "../../styles/globals.css";
 import withApolloProvider from "@/hoc/withApolloProvider";
 import { useSettingsQuery } from "@/__generated__/queries/queries.graphql";
@@ -46,14 +45,14 @@ function MyApp({ Component, pageProps }: Props) {
   }
 
   const Layout = Component.layout || NoLayout;
-
   if (sessionLoading || settingsLoading) {
-    return <>Loading...</>;
+    return null;
   }
 
   if (!sessionData || !data || data.settings.__typename !== "Setting") {
     return null;
   }
+
   return (
     <Main
       Component={Component}
