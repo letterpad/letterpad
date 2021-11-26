@@ -26,6 +26,7 @@ export const columns = [
     dataIndex: "title",
     key: "title",
     width: "45%",
+    render: (title: string) => <span>{title || "(Draft)"}</span>,
   },
   // {
   //   title: "Description",
@@ -46,6 +47,18 @@ export const columns = [
     title: "Updated",
     dataIndex: "updatedAt",
     key: "updatedAt",
+    render: (date: string) => {
+      let d = new Date(date);
+      let ye = new Intl.DateTimeFormat("en", { year: "2-digit" }).format(d);
+      let mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
+      let da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
+
+      return (
+        <span>
+          {da} {mo}, {ye}
+        </span>
+      );
+    },
   },
 ];
 

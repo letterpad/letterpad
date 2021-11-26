@@ -9,7 +9,6 @@ body {
 }
 
 a {
-  color: inherit;
   text-decoration: none;
 }
 
@@ -121,4 +120,10 @@ table tr {
 
 :root {
   --primary-color: orange;
+}
+
+body .editor {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  padding-bottom: 30vh;
 }
