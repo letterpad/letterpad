@@ -10,6 +10,7 @@ html .dark {
   --sidebar-bg: #141418;
   --content-bg: #15161a;
   --section-bg: #1b1b22;
+  --color-border: #2a2e3e; /* this variable is not availabe in the light theme*/
 }
 
 html .ant-layout,
