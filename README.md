@@ -1,10 +1,13 @@
 Letterpad Admin is the dashboard for publishing blogs.
 
+<img src="./demo.png" >
+
 ## Features
 
-- High performance. In lighthouse, the score is 95+.
+- High performant API.
 - Uses Graphql, React Apollo and NextJS
 - Uses Letterpad Editor (on top of DraftJS), specially built for this CMS.
+- Theme customisation (css) from Dashboard
 - CDN Powered images (Uses cloudinary and Unsplash)
 - Connects to multiple databases. Default is sqlite3
 - Can be used as a multi-user service
