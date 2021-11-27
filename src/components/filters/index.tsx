@@ -11,7 +11,7 @@ import Loading from "../loading";
 
 interface IProps {
   showTags?: boolean;
-  onChange: any;
+  onChange: (filters: PostsFilters) => void;
 }
 const Option = Select.Option;
 
@@ -22,7 +22,7 @@ const Filters = ({ showTags = true, onChange }: IProps) => {
 
   useEffect(() => {
     if (!showTags) return;
-    if (loading || !tags) return null;
+    if (loading || !tags) return;
 
     const uniqueData = [
       ...tags.reduce((map, obj) => map.set(obj.slug, obj), new Map()).values(),
