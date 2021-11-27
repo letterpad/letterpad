@@ -3,7 +3,7 @@ import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
 import ImageUpload from "@/components/ImageUpload";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Setting, OptionInputType } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
 import Navigation from "@/components/navigation-builder";
@@ -24,6 +24,8 @@ function Settings(props: { settings: Setting }) {
   const [settings, setSettings] = useState(props.settings);
   const [draft, setDraft] = useState<OptionInputType>({});
   const [settingsMutation] = useUpdateOptionsMutation();
+  const editorRef = useRef<any>(null);
+
   const updateSettings = async () => {
     if (Object.keys(draft).length === 0) return;
     settingsMutation({ variables: { options: draft } });
@@ -177,9 +179,14 @@ function Settings(props: { settings: Setting }) {
                       onValueChange={(code) => {
                         onChange("css", code);
                       }}
+                      ref={editorRef}
+                      onChange={(e) => {
+                        editorRef.current._input.style.height =
+                          editorRef.current._input.parentElement.scrollHeight +
+                          "px";
+                      }}
                       className="hljs"
                       placeholder="Add css to customise your website"
-                      // highlight={code => highlight(code, languages.js)}
                       highlight={(code) => {
                         return highlight.highlight(code, { language: "css" })
                           .value;
@@ -189,6 +196,7 @@ function Settings(props: { settings: Setting }) {
                         fontFamily: '"Fira code", "Fira Mono", monospace',
                         fontSize: 13,
                         height: "100%",
+                        overflowY: "scroll",
                       }}
                     />
                   </div>
@@ -201,6 +209,11 @@ function Settings(props: { settings: Setting }) {
                       width: 600px;
                       @media (max-width: 967px) {
                         width: 70vw;
+                      }
+
+                      pre,
+                      .hljs {
+                        overflow-y: scroll;
                       }
                     }
                   `}</style>

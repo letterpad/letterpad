@@ -10,6 +10,7 @@ import Head from "next/head";
 import { postsStyles } from "@/components/posts.css";
 import { postsColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
+import { TagsProvider } from "@/components/tags/context";
 
 const { Content } = Layout;
 
@@ -30,7 +31,9 @@ function Posts() {
       </Header>
       <Content>
         <div className="site-layout-background" style={{ padding: 16 }}>
-          <Filters onChange={(filters) => refetch({ filters })} />
+          <TagsProvider>
+            <Filters onChange={(filters) => refetch({ filters })} />
+          </TagsProvider>
           <Table
             columns={postsColumns}
             dataSource={source}

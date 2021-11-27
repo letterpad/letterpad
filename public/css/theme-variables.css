@@ -33,9 +33,9 @@ html .ant-menu {
 .ant-table th {
   background: var(--section-bg) !important;
 }
-.ant-collapse * {
+/* .ant-collapse * {
   background: var(--section-bg) !important;
-}
+} */
 .ant-collapse:not(:last-child) > .ant-collapse-item {
   border-bottom: none !important;
 }

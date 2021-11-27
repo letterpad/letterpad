@@ -20,7 +20,9 @@ export const TagsContext = createContext<Partial<TagsContextType<any, any>>>({
 });
 
 export const TagsProvider: React.FC = ({ children }) => {
-  const { loading, data } = useTagsQuery();
+  const { loading, data } = useTagsQuery({
+    fetchPolicy: "network-only",
+  });
   const [updateTagsMutation] = useUpdateTagsMutation();
   const [deleteTagsMutation] = useDeleteTagsMutation();
   const [tags, setTags] = useState<TagRow[]>([]);
