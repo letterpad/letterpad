@@ -3,7 +3,6 @@ import { Input } from "antd";
 import { usePostContext } from "../context";
 
 interface Props {
-  title: string;
   onEnter(): void;
 }
 
@@ -12,19 +11,20 @@ const defaults = {
     padding: 0,
     fontSize: 38,
     lineHeight: 1,
-    marginBottom: 40,
+    marginBottom: 80,
+    textAlign: "center" as any,
   },
   rows: 2,
   autoSize: true,
   placeholder: "Enter a title",
   bordered: false,
 };
-const Title: React.FC<Props> = ({ title, onEnter }) => {
-  const { setPostAttribute } = usePostContext();
+const Title: React.FC<Props> = ({ onEnter }) => {
+  const { setPostAttribute, post } = usePostContext();
   return (
     <Input.TextArea
       {...defaults}
-      value={title}
+      value={post?.title}
       onChange={(e) => {
         setPostAttribute && setPostAttribute({ title: e.target.value });
       }}

@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { Layout, Row } from "antd";
 import withAuthCheck from "@/hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
@@ -27,11 +27,11 @@ function Post() {
       </Head>
       <Header />
       <Content style={{ margin: "24px 16px 0" }}>
-        <div style={{ maxWidth: 760, margin: "auto" }}>
-          <Title
-            title={post.title}
-            onEnter={() => helpers?.getEditorRef().editor.focus()}
-          />
+        <div style={{ maxWidth: 660, margin: "auto" }}>
+          <Row justify="center" style={{ paddingBottom: 20 }}>
+            {post.updatedAt}
+          </Row>
+          <Title onEnter={() => helpers?.getEditorRef().editor.focus()} />
           <Editor text={post.html_draft || post.html} />
           <FileExplorer
             multi={true}

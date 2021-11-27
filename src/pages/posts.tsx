@@ -10,15 +10,13 @@ import Head from "next/head";
 import { postsStyles } from "@/components/posts.css";
 import { postsColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
-import Loading from "@/components/loading";
+import { TagsProvider } from "@/components/tags/context";
 
 const { Content } = Layout;
 
 function Posts() {
   const router = useRouter();
-  const { loading, data, error } = usePostsQuery();
-
-  if (loading) return <Loading />;
+  const { loading, data, error, refetch } = usePostsQuery();
 
   if (error) return <ErrorMessage description={error} title="Error" />;
   const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
@@ -33,7 +31,9 @@ function Posts() {
       </Header>
       <Content>
         <div className="site-layout-background" style={{ padding: 16 }}>
-          <Filters />
+          <TagsProvider>
+            <Filters onChange={(filters) => refetch({ filters })} />
+          </TagsProvider>
           <Table
             columns={postsColumns}
             dataSource={source}

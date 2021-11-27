@@ -32,6 +32,9 @@ const LpEditor: React.FC<Props> = ({ text }) => {
         .block-toolbar span span {
           display: block;
         }
+        .dark {
+          color: var(--color-primary);
+        }
       `}</style>
     </>
   );

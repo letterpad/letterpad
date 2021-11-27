@@ -1,6 +1,10 @@
 import { GroupOption, Includeable, Order } from "sequelize";
 import { ResolverContext } from "../apollo";
-import { QueryResolvers, MutationResolvers } from "@/__generated__/__types__";
+import {
+  QueryResolvers,
+  MutationResolvers,
+  InputTags,
+} from "@/__generated__/__types__";
 import models from "../db/models";
 
 const Query: QueryResolvers<ResolverContext> = {
@@ -121,8 +125,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     let tag: unknown;
     args.data.slug = args.data.slug?.split("/").pop();
+
     if (args.data.id === 0) {
-      tag = await author.createTag(args.data);
+      const { id, ...rest } = args.data;
+      tag = await author.createTag(rest as InputTags);
     } else {
       tag = await models.Tags.update(args.data, {
         where: { id: args.data.id },

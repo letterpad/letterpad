@@ -85,7 +85,7 @@ h1.site-title {
 @media (min-width: 767px) {
   .post:nth-child(7n + 1) p {
     font-size: inherit !important;
-  }
+  }  
 }
 .site-nav {
   position: relative !important;
