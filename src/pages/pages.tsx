@@ -14,7 +14,7 @@ import { Header } from "@/components/posts/header";
 const { Content } = Layout;
 
 function Pages() {
-  const { loading, data, error } = usePostsQuery({
+  const { loading, data, error, refetch } = usePostsQuery({
     variables: { filters: { type: PostTypes.Page } },
   });
   const router = useRouter();
@@ -33,7 +33,12 @@ function Pages() {
       </Header>
       <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
-          <Filters showTags={false} />
+          <Filters
+            showTags={false}
+            onChange={(filters) => {
+              refetch({ filters: { ...filters, type: PostTypes.Page } });
+            }}
+          />
           <Table
             columns={columns}
             dataSource={source}

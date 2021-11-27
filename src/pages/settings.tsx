@@ -180,7 +180,7 @@ function Settings(props: { settings: Setting }) {
                         onChange("css", code);
                       }}
                       ref={editorRef}
-                      onChange={(e) => {
+                      onChange={() => {
                         editorRef.current._input.style.height =
                           editorRef.current._input.parentElement.scrollHeight +
                           "px";
