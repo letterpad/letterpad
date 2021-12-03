@@ -21,9 +21,9 @@ const LpEditor: React.FC<Props> = ({ text }) => {
         dark={localStorage.theme === "dark"}
         onImageClick={onMediaBrowse}
         html={text}
-        onChange={(html) =>
-          html !== text && setPostAttribute && setPostAttribute({ html })
-        }
+        onChange={(html) => {
+          html !== text && setPostAttribute && setPostAttribute({ html });
+        }}
         placeholder="Write a story.."
         setHelpers={setHelpers}
         editorRef={editorRef}
