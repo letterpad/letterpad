@@ -5,7 +5,5 @@ export const insertImageUrlInEditor = async (
   helpers?: EditorHelpers,
 ) => {
   if (!helpers) return;
-  images.forEach((image) => {
-    helpers.getPlugins().imagePlugin.insertImage(image);
-  });
+  await helpers.getPlugins().imagePlugin.insertImage(images);
 };

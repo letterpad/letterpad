@@ -14,7 +14,6 @@ import { decrypt } from "../utils/crypto";
 import models from "../db/models";
 import logger from "./../../shared/logger";
 import debug from "debug";
-import { addGalleryWrapper } from "../utils/addGalleryWrappr";
 import { mdToHtml } from "../../shared/converter";
 
 interface IPostCondition {
@@ -51,7 +50,7 @@ const Post = {
     }
   },
   html: async ({ html }) => {
-    return addGalleryWrapper(setResponsiveImages(html));
+    return setResponsiveImages(html);
   },
 };
 
