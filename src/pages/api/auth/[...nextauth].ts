@@ -78,9 +78,7 @@ const options = {
       return token;
     },
     session: async ({ session, token }) => {
-      console.log("before checking session");
       session.user = token;
-      console.log("Checking session...");
       return session;
     },
   },

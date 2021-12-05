@@ -69,6 +69,7 @@ function print(
   tagColor: string,
   rest: any[],
 ) {
+  if (process.env.DEBUG !== "true") return null;
   console.log("");
   console.log.apply(console, [
     tagColor + bright + `[${tagName}]${reset}`,
@@ -82,11 +83,8 @@ function getCaller() {
     throw new Error();
   } catch (e) {
     try {
-      // at /Users/abhi/www/letterpad/src/client/server/dispatcher.ts:29:10
       const getLineThree = e.stack.split("at ")[3];
-      // [/Users/abhi/www/letterpad/src/client/server/dispatcher.ts:29:10]
       const getLastTwoSlashItem = getLineThree.split("/").slice(1).splice(-2);
-      // [server, dispatcher.ts:29:10]
       const getFileName =
         getLastTwoSlashItem[0] +
         "/" +
