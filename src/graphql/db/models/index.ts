@@ -20,7 +20,7 @@ let env: envs = process.env.NODE_ENV
 
 if (env === envs.development) env = envs.development;
 if (env === envs.test) env = envs.test;
-console.log(env);
+
 const config = dbConfig[env];
 // establish  database connection
 export const conn = new Sequelize(
