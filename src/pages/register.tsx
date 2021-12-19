@@ -17,7 +17,7 @@ import {
   Container,
   InputBlock,
   Row,
-} from "../components/login.css";
+} from "@/components/login/login.css";
 import { message } from "antd";
 import { getApolloClient } from "@/graphql/apollo";
 
