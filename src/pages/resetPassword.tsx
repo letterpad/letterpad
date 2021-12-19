@@ -14,7 +14,7 @@ import {
   InputBlock,
   Row,
   Block,
-} from "@/components/login.css";
+} from "@/components/login/login.css";
 import Head from "next/head";
 import { basePath } from "@/constants";
 
