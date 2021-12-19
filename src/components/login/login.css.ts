@@ -48,7 +48,7 @@ interface IRowProps {
 }
 export const Row = styled.div<IRowProps>`
   display: flex;
-  justify-content: ${p => p.justify};
+  justify-content: ${(p) => p.justify};
   align-items: center;
 `;
 
@@ -67,7 +67,7 @@ export const Brand = styled.div`
 `;
 
 export const Block = styled.div<ILoginContainerProps>`
-  display: ${p => (p.isVisible ? "block" : "none")};
+  display: ${(p) => (p.isVisible ? "block" : "none")};
   color: #131313;
 `;
 export const RememberMeBlock = styled.div`
@@ -106,8 +106,8 @@ export const Button = styled.button<IButtonProps>`
 
   background: linear-gradient(#4ab6f0, #2fa5e4 60%, #2fa5e4 90%, #38a9e5);
   box-shadow: inset 0 1px 0 hsla(0, 0%, 100%, 0.1);
-  /* background: ${p => (p.secondary ? "#d6d6d6" : "#56af76")}; */
+  /* background: ${(p) => (p.secondary ? "#d6d6d6" : "#56af76")}; */
   width: 100%;
   color: #fff;
-  /* color: ${p => (p.secondary ? "#585454" : "#fff")}; */
+  /* color: ${(p) => (p.secondary ? "#585454" : "#fff")}; */
 `;
