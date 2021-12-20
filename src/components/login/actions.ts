@@ -1,8 +1,6 @@
 import { message } from "antd";
 import { basePath } from "@/constants";
-import { getSession, signIn } from "next-auth/react";
-import { SessionData } from "@/graphql/types";
-import { LoginError } from "@/__generated__/__types__";
+import { signIn } from "next-auth/react";
 import { getApolloClient } from "@/graphql/apollo";
 import {
   ForgotPasswordDocument,
@@ -10,8 +8,6 @@ import {
 } from "@/__generated__/queries/mutations.graphql";
 import { ForgotPasswordMutationVariables } from "@/graphql/queries/mutations.graphql";
 import { key } from "./constants";
-
-type SessionResponse = { user: LoginError | SessionData };
 
 type LoginResult = {
   success: boolean;
