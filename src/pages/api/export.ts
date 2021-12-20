@@ -23,7 +23,7 @@ const Export = async (req, res) => {
     data.authors[author.email] = await getContent(author);
   }
 
-  fs.writeFileSync("data.json", JSON.stringify(data, null, 2));
+  fs.writeFileSync("data.json", JSON.stringify(data, null, 2), "utf-8");
 
   const stat = fs.statSync("data.json");
 
@@ -41,7 +41,7 @@ export default Export;
 
 async function getContent(author: Author): Promise<IAuthorData> {
   // settings
-  const setting = await author.getSetting({ raw: true });
+  const setting = await author.getSetting();
   // posts. we still need to add the tags to this.
   const posts = await author.getPosts();
 

@@ -8101,10 +8101,10 @@ next-auth@*:
     preact-render-to-string "^5.1.14"
     querystring "^0.2.0"
 
-next-auth@0.0.0-pr.3217.87a21677:
-  version "0.0.0-pr.3217.87a21677"
-  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-0.0.0-pr.3217.87a21677.tgz#4c650047ea19efe81c7695655c48701d1043a619"
-  integrity sha512-1UaWM+vMbnGkilj4oOB7jYm+uNl4WOykdLkeKaD9m+3zVWPAYS09Bs5EUvycmTx9Ff1deSPU2Wni8ytQ2sa7fw==
+next-auth@4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-4.0.5.tgz#a41cdbe41f8a8dad42f4b3fb510ef1fb7035667e"
+  integrity sha512-POrV6c29Uu3+kVhOe8h3go2ytjeB2jPdW4GJwudUbK6OB++dkpT6yialmm8whM7hyoW4Xy3FbsoldGn8bVHhYg==
   dependencies:
     "@babel/runtime" "^7.15.4"
     "@panva/hkdf" "^1.0.0"

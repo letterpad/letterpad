@@ -19,7 +19,9 @@ const Login = () => {
       </Head>
       <div className="login">
         <h1>Letterpad</h1>
-        {!isDemo ? (
+        {isDemo ? (
+          <LoginFormDemo isVisible={loginView} />
+        ) : (
           <LoginForm
             email={email}
             isVisible={loginView}
@@ -28,8 +30,6 @@ const Login = () => {
             setPassword={setPassword}
             hideSelf={() => setLoginView(false)}
           />
-        ) : (
-          <LoginFormDemo isVisible={loginView} />
         )}
         <ForgotPassword
           email={email}

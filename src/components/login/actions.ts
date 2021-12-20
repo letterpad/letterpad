@@ -31,7 +31,7 @@ export const doLogin = async ({
     redirect: false,
     password: password,
     email: email,
-    callbackUrl: basePath + "/pages",
+    callbackUrl: basePath + "/posts",
   });
   if (result && result["error"]) {
     return {
@@ -39,20 +39,8 @@ export const doLogin = async ({
       message: result["error"],
     };
   }
-  const session = (await getSession()) as SessionResponse | null;
-  if (!session) {
-    return {
-      success: false,
-      message: "The request could not be processed at this time.",
-    };
-  }
-  if (session.user.__typename === "LoginError") {
-    return {
-      success: false,
-      message: session.user.message,
-    };
-  }
-  if (session.user.__typename === "SessionData") {
+
+  if (result && result["ok"]) {
     return {
       success: true,
       message: "Verified",
