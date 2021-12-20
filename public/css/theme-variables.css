@@ -2,7 +2,7 @@
 
 html .light {
   --sidebar-bg: #141418;
-  --content-bg: rgb(243, 243, 243);
+  --content-bg: #fff;
   --section-bg: #fff;
 }
 
