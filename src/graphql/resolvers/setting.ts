@@ -23,10 +23,12 @@ const cssPath = path.join(process.cwd(), "public/css/custom.css");
 
 const Setting = {
   menu: ({ menu }) => {
+    menu = parse(menu);
     return getMenuWithSanitizedSlug(menu);
   },
 
   banner: ({ banner }) => {
+    banner = parse(banner);
     if (banner.src && !banner.src.startsWith("http")) {
       banner.src = process.env.ROOT_URL + banner.src;
     }
@@ -34,6 +36,7 @@ const Setting = {
   },
 
   site_logo: ({ site_logo }) => {
+    site_logo = parse(site_logo);
     if (site_logo.src && !site_logo.src.startsWith("http")) {
       site_logo.src = process.env.ROOT_URL + site_logo.src;
     }
@@ -41,6 +44,7 @@ const Setting = {
   },
 
   site_favicon: ({ site_favicon }) => {
+    site_favicon = parse(site_favicon);
     if (site_favicon.src && !site_favicon.src.startsWith("http")) {
       site_favicon.src = process.env.ROOT_URL + site_favicon.src;
     }
@@ -145,3 +149,7 @@ function getMenuWithSanitizedSlug(menu: Navigation[]) {
     return item;
   });
 }
+
+const parse = (str: string | object) => {
+  return typeof str === "string" ? JSON.parse(str) : str;
+};

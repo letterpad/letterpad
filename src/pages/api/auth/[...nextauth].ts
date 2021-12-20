@@ -10,15 +10,15 @@ import { getApolloClient } from "@/graphql/apollo";
 import { NextApiRequest, NextApiResponse } from "next";
 import { basePath } from "@/constants";
 
-const providers = [
+const providers = (req: NextApiRequest) => [
   CredentialsProvider({
     name: "Credentials",
     credentials: {
       email: { label: "Email" },
       password: { label: "Password", type: "password" },
     },
-    authorize: async (credentials, req): Promise<LoginResponse> => {
-      const apolloClient = await getApolloClient({}, { req: req.headers });
+    authorize: async (credentials): Promise<LoginResponse> => {
+      const apolloClient = await getApolloClient({}, { req });
       const result = await apolloClient.mutate<
         LoginMutation,
         LoginMutationVariables
@@ -52,8 +52,8 @@ const providers = [
   }),
 ];
 
-const options = {
-  providers,
+const options = (req: NextApiRequest) => ({
+  providers: providers(req),
   callbacks: {
     redirect: async ({ url, baseUrl }) => {
       if (url.startsWith(baseUrl)) {
@@ -91,7 +91,7 @@ const options = {
     signIn: `${basePath}/login`,
   },
   secret: process.env.SECRET_KEY,
-};
+});
 
 export default (req: NextApiRequest, res: NextApiResponse) =>
-  NextAuth(req, res, options);
+  NextAuth(req, res, options(req));

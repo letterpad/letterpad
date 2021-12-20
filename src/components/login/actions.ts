@@ -1,8 +1,6 @@
 import { message } from "antd";
 import { basePath } from "@/constants";
-import { getSession, signIn } from "next-auth/react";
-import { SessionData } from "@/graphql/types";
-import { LoginError } from "@/__generated__/__types__";
+import { signIn } from "next-auth/react";
 import { getApolloClient } from "@/graphql/apollo";
 import {
   ForgotPasswordDocument,
@@ -10,8 +8,6 @@ import {
 } from "@/__generated__/queries/mutations.graphql";
 import { ForgotPasswordMutationVariables } from "@/graphql/queries/mutations.graphql";
 import { key } from "./constants";
-
-type SessionResponse = { user: LoginError | SessionData };
 
 type LoginResult = {
   success: boolean;
@@ -31,7 +27,7 @@ export const doLogin = async ({
     redirect: false,
     password: password,
     email: email,
-    callbackUrl: basePath + "/pages",
+    callbackUrl: basePath + "/posts",
   });
   if (result && result["error"]) {
     return {
@@ -39,20 +35,8 @@ export const doLogin = async ({
       message: result["error"],
     };
   }
-  const session = (await getSession()) as SessionResponse | null;
-  if (!session) {
-    return {
-      success: false,
-      message: "The request could not be processed at this time.",
-    };
-  }
-  if (session.user.__typename === "LoginError") {
-    return {
-      success: false,
-      message: session.user.message,
-    };
-  }
-  if (session.user.__typename === "SessionData") {
+
+  if (result && result["ok"]) {
     return {
       success: true,
       message: "Verified",

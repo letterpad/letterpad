@@ -44,7 +44,7 @@
     "multer": "^1.4.2",
     "mysql2": "^2.2.5",
     "next": "11.1.2",
-    "next-auth": "0.0.0-pr.3217.87a21677",
+    "next-auth": "4.0.5",
     "nprogress": "^0.2.0",
     "react-google-recaptcha-v3": "^1.9.4",
     "react-infinite-scroll-component": "^6.1.0",
