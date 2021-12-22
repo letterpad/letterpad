@@ -6,3 +6,11 @@ export type Page<P = {}> = NextPage<P> & {
   layout?: ComponentType<{ settings: Setting }>;
   needsAuth?: boolean;
 };
+
+declare global {
+  interface Window {
+    dataLayer: any;
+    gtag: any;
+    ga: any;
+  }
+}

@@ -13,6 +13,7 @@ import "../../styles/globals.css";
 import withApolloProvider from "@/hoc/withApolloProvider";
 import { useSettingsQuery } from "@/__generated__/queries/queries.graphql";
 import withSessionProvider from "@/hoc/withSessionProvider";
+import { useTracking } from "@/hooks/usetracking";
 
 type Props = AppProps & {
   Component: Page;
@@ -24,6 +25,7 @@ function NoLayout({ children }: PropsWithChildren<{ settings: Setting }>) {
 function MyApp({ Component, pageProps }: Props) {
   const { data, loading: settingsLoading } = useSettingsQuery();
   const { data: sessionData, status: sessionStatus } = useSession();
+  useTracking();
 
   const router = useRouter();
   const sessionLoading = sessionStatus === "loading";
