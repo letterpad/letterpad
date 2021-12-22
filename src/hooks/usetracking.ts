@@ -37,10 +37,11 @@ export const useTracking = () => {
   // track events automatically
   useEffect(() => {
     setTimeout(() => {
-      if (typeof window.gtag === "undefined") return;
+      if (typeof window.ga === "undefined") return;
       const page = router.basePath + router.pathname;
       window.ga("send", "pageview", page);
     }, 0);
   }, [router.pathname]);
+
   return null;
 };
