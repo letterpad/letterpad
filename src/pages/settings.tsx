@@ -1,20 +1,18 @@
 import { Collapse, Form, Input, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
-import ImageUpload from "@/components/ImageUpload";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Setting, OptionInputType } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
-import Navigation from "@/components/navigation-builder";
-import Head from "next/head";
-import Editor from "react-simple-code-editor";
 
-import highlight from "highlight.js";
-import hljs from "highlight.js/lib/core";
-import hljsCssLang from "highlight.js/lib/languages/css";
-hljs.registerLanguage("css", hljsCssLang);
-import "highlight.js/styles/night-owl.css";
+import Head from "next/head";
+
+import General from "@/components/settings/general";
+import Appearance from "@/components/settings/appearance";
+import Navigation from "@/components/settings/navigation";
+import Social from "@/components/settings/social";
+import Integrations from "@/components/settings/integrations";
 
 const { Panel } = Collapse;
 
@@ -24,7 +22,6 @@ function Settings(props: { settings: Setting }) {
   const [settings, setSettings] = useState(props.settings);
   const [draft, setDraft] = useState<OptionInputType>({});
   const [settingsMutation] = useUpdateOptionsMutation();
-  const editorRef = useRef<any>(null);
 
   const updateSettings = async () => {
     if (Object.keys(draft).length === 0) return;
@@ -61,246 +58,23 @@ function Settings(props: { settings: Setting }) {
             layout="horizontal"
             size={"small"}
           >
-            <Collapse>
-              <Panel header="General Settings" key="1">
-                <Form.Item label="Site Title">
-                  <Input
-                    size="middle"
-                    value={settings.site_title}
-                    onBlur={updateSettings}
-                    onChange={(e) => onChange("site_title", e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item label="Site Tagline">
-                  <Input
-                    size="middle"
-                    value={settings.site_tagline}
-                    onBlur={updateSettings}
-                    onChange={(e) => onChange("site_tagline", e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item label="Site Email">
-                  <Input
-                    size="middle"
-                    value={settings.site_email}
-                    onBlur={updateSettings}
-                    onChange={(e) => onChange("site_email", e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item label="Short Description">
-                  <Input
-                    size="middle"
-                    value={settings.site_description}
-                    onBlur={updateSettings}
-                    onChange={(e) =>
-                      onChange("site_description", e.target.value)
-                    }
-                  />
-                </Form.Item>
-                <Form.Item label="Site Url">
-                  <Input
-                    size="middle"
-                    value={settings.site_url}
-                    onBlur={updateSettings}
-                    onChange={(e) => onChange("site_url", e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item label="Footer Description">
-                  <Input
-                    size="middle"
-                    value={settings.site_footer}
-                    onBlur={updateSettings}
-                    onChange={(e) => onChange("site_footer", e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item label="Google Analytics">
-                  <Input
-                    size="middle"
-                    value={settings.google_analytics}
-                    onBlur={updateSettings}
-                    onChange={(e) =>
-                      onChange("google_analytics", e.target.value)
-                    }
-                  />
-                </Form.Item>
-              </Panel>
-            </Collapse>
-            <Collapse>
-              <Panel header="Appearance" key="1">
-                <Form.Item label="Logo">
-                  <ImageUpload
-                    name="Logo"
-                    url={settings.site_logo.src}
-                    onDone={([res]) =>
-                      onChange("site_logo", {
-                        src: res.src,
-                        width: res.size.width,
-                        height: res.size.height,
-                      })
-                    }
-                  />
-                </Form.Item>
-                <Form.Item label="Favicon">
-                  <ImageUpload
-                    name="Favicon"
-                    url={settings.site_favicon.src}
-                    onDone={([res]) =>
-                      onChange("site_favicon", {
-                        src: res.src,
-                        width: res.size.width,
-                        height: res.size.height,
-                      })
-                    }
-                  />
-                </Form.Item>
-                <Form.Item label="Banner">
-                  <ImageUpload
-                    name="Banner"
-                    url={settings.banner.src}
-                    onDone={([res]) =>
-                      onChange("banner", {
-                        src: res.src,
-                        width: res.size.width,
-                        height: res.size.height,
-                      })
-                    }
-                  />
-                </Form.Item>
-                <Form.Item label="CSS">
-                  {/* <TextArea
-                    value={settings.css}
-                    onChange={e => {}}
-                    placeholder="Add css to customise your website"
-                    autoSize={{ minRows: 5, maxRows: 50 }}
-                  /> */}
-                  <div id="css-editor">
-                    <Editor
-                      value={settings.css}
-                      onValueChange={(code) => {
-                        onChange("css", code);
-                      }}
-                      ref={editorRef}
-                      onChange={() => {
-                        editorRef.current._input.style.height =
-                          editorRef.current._input.parentElement.scrollHeight +
-                          "px";
-                      }}
-                      className="hljs"
-                      placeholder="Add css to customise your website"
-                      highlight={(code) => {
-                        return highlight.highlight(code, { language: "css" })
-                          .value;
-                      }}
-                      padding={10}
-                      style={{
-                        fontFamily: '"Fira code", "Fira Mono", monospace',
-                        fontSize: 13,
-                        height: "100%",
-                        overflowY: "scroll",
-                      }}
-                    />
-                  </div>
-                  <style jsx>{`
-                    #css-editor {
-                      flex: 1;
-                      overflow: auto;
-                      height: 600px;
-                      border: 1px solid #333;
-                      width: 600px;
-                      @media (max-width: 967px) {
-                        width: 70vw;
-                      }
-
-                      pre,
-                      .hljs {
-                        overflow-y: scroll;
-                      }
-                    }
-                  `}</style>
-                </Form.Item>
-              </Panel>
-            </Collapse>
-            <Collapse>
-              <Panel header="Navigation" key="1">
-                <Navigation
-                  menuData={settings.menu}
-                  updateOption={(option) => onChange("menu", option)}
-                />
-              </Panel>
-            </Collapse>
-            <Collapse>
-              <Panel header="Social  Settings" key="1">
-                <Form.Item label="Twitter">
-                  <Input
-                    size="middle"
-                    value={settings.social_twitter}
-                    onBlur={updateSettings}
-                    onChange={(e) => onChange("social_twitter", e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item label="Facebook">
-                  <Input
-                    size="middle"
-                    value={settings.social_facebook}
-                    onBlur={updateSettings}
-                    onChange={(e) =>
-                      onChange("social_facebook", e.target.value)
-                    }
-                  />
-                </Form.Item>
-                <Form.Item label="Instagram">
-                  <Input
-                    size="middle"
-                    value={settings.social_instagram}
-                    onBlur={updateSettings}
-                    onChange={(e) =>
-                      onChange("social_instagram", e.target.value)
-                    }
-                  />
-                </Form.Item>
-                <Form.Item label="Github">
-                  <Input
-                    size="middle"
-                    value={settings.social_github}
-                    onBlur={updateSettings}
-                    onChange={(e) => onChange("social_github", e.target.value)}
-                  />
-                </Form.Item>
-              </Panel>
-            </Collapse>
-            <Collapse>
-              <Panel header="Integrations" key="1">
-                <Form.Item label="Cloudinary Name">
-                  <Input
-                    size="middle"
-                    value={settings.cloudinary_name}
-                    onBlur={updateSettings}
-                    onChange={(e) =>
-                      onChange("cloudinary_name", e.target.value)
-                    }
-                  />
-                </Form.Item>
-                <Form.Item label="Cloudinary Key">
-                  <Input
-                    size="middle"
-                    value={settings.cloudinary_key}
-                    onBlur={updateSettings}
-                    onChange={(e) => onChange("cloudinary_key", e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item label="Cloudinary Secret">
-                  <Input
-                    size="middle"
-                    value={settings.cloudinary_secret}
-                    onBlur={updateSettings}
-                    onChange={(e) =>
-                      onChange("cloudinary_secret", e.target.value)
-                    }
-                  />
-                </Form.Item>
-              </Panel>
-            </Collapse>
-
+            <General
+              settings={settings}
+              onChange={onChange}
+              updateSettings={updateSettings}
+            />
+            <Appearance settings={settings} onChange={onChange} />
+            <Navigation settings={settings} onChange={onChange} />
+            <Social
+              settings={settings}
+              onChange={onChange}
+              updateSettings={updateSettings}
+            />
+            <Integrations
+              settings={settings}
+              onChange={onChange}
+              updateSettings={updateSettings}
+            />
             <Collapse>
               <Panel header="Keys" key="1">
                 <Form.Item label="Client Authorization Key">

@@ -8,6 +8,7 @@ export const useTracking = () => {
   const router = useRouter();
   // Initialize ga
   useEffect(() => {
+    if (process.env.NODE_ENV !== "production") return;
     if (trackingId) {
       (function (i, s, o, g, r, a, m) {
         i["GoogleAnalyticsObject"] = r;
@@ -36,6 +37,7 @@ export const useTracking = () => {
 
   // track events automatically
   useEffect(() => {
+    if (process.env.NODE_ENV !== "production") return;
     setTimeout(() => {
       if (typeof window.ga === "undefined") return;
       const page = router.basePath + router.pathname;
