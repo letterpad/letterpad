@@ -1,4 +1,4 @@
-import { getImageAttrs } from "@/graphql/utils/imageAttributs";
+// import { getImageAttrs } from "@/graphql/utils/imageAttributs";
 import { Image, PostStatusOptions, Tags } from "@/__generated__/__types__";
 import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 
@@ -8,13 +8,14 @@ export const columns = [
     dataIndex: "cover_image",
     key: "cover_image",
     responsive: ["md"] as Breakpoint[],
+    width: "10%",
     render: (cover_image: Image) => {
       if (!cover_image.src) return null;
-      const imageAttrs = getImageAttrs(cover_image.src);
+      const imageAttrs = { src: cover_image.src }; //getImageAttrs(cover_image.src);
       return (
         <img
           {...imageAttrs}
-          width={80}
+          width={60}
           height={50}
           style={{ objectFit: "cover" }}
         />

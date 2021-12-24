@@ -19,6 +19,7 @@ const nextConfig = {
   images: {
     domains: ["images.unsplash.com"],
   },
+  gaTrackingId: "UA-120251616-1",
   basePath,
   async redirects() {
     return [

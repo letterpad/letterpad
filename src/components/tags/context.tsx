@@ -63,7 +63,7 @@ export const TagsProvider: React.FC = ({ children }) => {
         data: { name, id, desc, slug },
       },
     });
-    if (tags) setTags(tags);
+    if (newData) setTags(newData);
   };
 
   const addTag = () => {

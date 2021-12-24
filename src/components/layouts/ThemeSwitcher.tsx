@@ -1,3 +1,4 @@
+import { EventAction, track } from "@/track";
 import { Switch } from "antd";
 import { basePath } from "next.config";
 
@@ -18,6 +19,11 @@ const ThemeSwitcher = () => {
   const switchTheme = (color: string) => {
     ThemeSwitcher.switch(color);
     setTheme(color);
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: "toggle",
+      eventLabel: `theme.switcher - ${color}`,
+    });
   };
 
   return (

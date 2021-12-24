@@ -23,13 +23,7 @@ export function getHeaders(dataSource, deleteTag) {
       editable: true,
       required: false,
       render: (_, _record: { key: React.Key }) => {
-        return (
-          _ || (
-            <Button type="dashed" size="small">
-              Edit
-            </Button>
-          )
-        );
+        return _ || <EditOutlined />;
       },
     },
     {

@@ -1,5 +1,5 @@
-import { MenuOutlined } from "@ant-design/icons";
-import { Button, Drawer } from "antd";
+import { GithubOutlined, MenuOutlined } from "@ant-design/icons";
+import { Button, Col, Drawer, Row } from "antd";
 import Layout, { Footer } from "antd/lib/layout/layout";
 import Sider from "antd/lib/layout/Sider";
 import { Setting, Stats } from "@/__generated__/__types__";
@@ -62,7 +62,9 @@ const CustomLayout = ({ children, settings }: IProps) => {
         width={siteConfig.sidebar_width}
       >
         {settings.site_logo.src ? (
-          <Logo src={settings.site_logo.src} />
+          <Row style={{ margin: "auto", marginLeft: 0 }}>
+            <Logo src={settings.site_logo.src} />
+          </Row>
         ) : (
           <h2>{settings.site_title}</h2>
         )}
@@ -121,13 +123,33 @@ const CustomLayout = ({ children, settings }: IProps) => {
           </div>
         </div>
         <div>{children}</div>
-        <Footer
-          style={{
-            textAlign: "center",
-          }}
-        >
-          Letterpad, 2021 <br />
+        <Footer className="site-footer">
+          <Row>
+            <Col span={12} offset={0}>
+              Letterpad, 2022. An open source project.
+            </Col>
+            <Col span={12} style={{ textAlign: "center" }}>
+              <a href="https://github.com/letterpad/letterpad" target="_blank">
+                <GithubOutlined />
+              </a>
+            </Col>
+          </Row>
         </Footer>
+        <style jsx global>{`
+          .site-footer {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #666;
+            padding: 24px;
+          }
+          .site-footer a {
+            color: #333;
+            font-size: 14px;
+          }
+          .dark .site-footer a {
+            color: #fff;
+          }
+        `}</style>
       </Layout>
     </Layout>
   );
