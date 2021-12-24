@@ -1,3 +1,4 @@
+
 .banner {
   display: none;
 }
@@ -7,30 +8,20 @@
   background: none !important;
   position: inherit !important;
 }
-
 h1.site-title {
   font-size: var(--text-md) !important;
   font-family: inherit !important;
 }
-
 .site-brand-text {
   position: relative !important;
   left: auto !important;
   transform: translate(-0%, -0%) !important;
   margin-bottom: 80px;
 }
-
 .site-brand-text .wrapper {
   background: none !important;
   color: var(--color-text) !important;
 }
-
-.site-description {
-  font-size: var(--text-sm) !important;
-  font-style: normal !important;
-  margin-top: var(--space-xs) !important;
-}
-
 .post {
   box-shadow: none !important;
 }
@@ -42,7 +33,6 @@ h1.site-title {
     grid-template-columns: none !important;
     grid-gap: var(--space-lg) !important;
   }
-
   .post-card {
     display: flex !important;
     flex-direction: row !important;
@@ -65,7 +55,6 @@ h1.site-title {
   font-family: system-ui !important;
   font-size: var(--text-lg) !important;
 }
-
 @media (min-width: 767px) {
   .post:nth-child(7n + 1) p {
     font-size: inherit !important;
@@ -77,20 +66,15 @@ h1.site-title {
   .post-card-image {
     width: var(--xxsmall) !important;
   }
-}
-/* .post:nth-child(7n + 1) .post-card-title {
-  font-size: var(--text-lg) !important;
-} */
-
+} /* .post:nth-child(7n + 1) .post-card-title { font-size: var(--text-lg) !important; } */
 @media (min-width: 767px) {
   .post:nth-child(7n + 1) p {
     font-size: inherit !important;
-  }  
+  }
 }
 .site-nav {
   position: relative !important;
 }
-
 :root {
   --color-bg: #fff !important;
   --color-post-bg: #fff !important;
