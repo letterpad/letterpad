@@ -1,0 +1,36 @@
+type Subscribers {
+  id: Int!
+  email: String!
+  author_id: Int!
+  verified: Boolean!
+  createdAt: Date!
+}
+
+type SubscribersNode {
+  count: Int!
+  rows: [Subscribers!]!
+}
+
+type SubscribersAddResult {
+  ok: Boolean!
+}
+
+type SubscribersUpdateResult {
+  ok: Boolean!
+  message: String
+}
+
+type Query {
+  subscribers(author_id: Int): SubscribersNode!
+}
+
+input InputUpdateSubscriber {
+  secret_id: String
+  email: String
+  verified: Boolean
+}
+
+type Mutation {
+  addSubscriber(email: String!): Boolean
+  updateSubscriber(data: InputUpdateSubscriber!): SubscribersUpdateResult!
+}

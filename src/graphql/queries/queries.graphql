@@ -71,6 +71,17 @@ query Media($filters: MediaFilters) {
   }
 }
 
+query Subscribers($author_id: Int) {
+  subscribers(author_id: $author_id) {
+    count
+    rows {
+      id
+      email
+      createdAt
+    }
+  }
+}
+
 query Me {
   me {
     ... on Author {

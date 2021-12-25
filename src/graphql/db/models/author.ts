@@ -93,6 +93,10 @@ export class Author
   public getSetting!: HasOneGetAssociationMixin<Setting>;
   public setSetting!: HasOneSetAssociationMixin<Setting, number>;
 
+  public getSubscribers!: HasOneGetAssociationMixin<Subscribers>;
+  public hasSubscriber!: HasManyHasAssociationMixin<Subscribers, number>;
+  public addSubscriber!: HasOneSetAssociationMixin<Subscribers, number>;
+  public createSubscriber!: HasManyCreateAssociationMixin<Subscribers>;
   // You can also pre-declare possible inclusions, these will only be populated if you
   // actively include a relation.
   public readonly posts?: Post[]; // Note this is optional since it's only populated when explicitly requested in code

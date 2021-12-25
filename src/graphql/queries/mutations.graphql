@@ -176,6 +176,13 @@ mutation UpdateMedia($data: InputUpdateMedia!) {
   }
 }
 
+mutation UpdateSubscriber($data: InputUpdateSubscriber!) {
+  updateSubscriber(data: $data) {
+    ok
+    message
+  }
+}
+
 mutation DeleteMedia($ids: [Int!]!) {
   deleteMedia(ids: $ids) {
     ... on MediaDeleteResult {
