@@ -23,6 +23,7 @@ import {
 } from "@/__generated__/__types__";
 import { Setting } from "./setting";
 import { Tags } from "./tags";
+import { Subscribers } from "./subscriber";
 
 // These are all the attributes in the User model
 export interface AuthorAttributes {
@@ -166,4 +167,5 @@ export function associateAuthor(): void {
 
   Author.hasMany(Media, { sourceKey: "id", foreignKey: "author_id" });
   Author.hasMany(Tags, { sourceKey: "id", foreignKey: "author_id" });
+  Author.hasMany(Subscribers, { sourceKey: "id", foreignKey: "author_id" });
 }
