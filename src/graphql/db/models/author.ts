@@ -93,7 +93,7 @@ export class Author
   public getSetting!: HasOneGetAssociationMixin<Setting>;
   public setSetting!: HasOneSetAssociationMixin<Setting, number>;
 
-  public getSubscribers!: HasOneGetAssociationMixin<Subscribers>;
+  public getSubscribers!: HasManyGetAssociationsMixin<Subscribers>;
   public hasSubscriber!: HasManyHasAssociationMixin<Subscribers, number>;
   public addSubscriber!: HasOneSetAssociationMixin<Subscribers, number>;
   public createSubscriber!: HasManyCreateAssociationMixin<Subscribers>;

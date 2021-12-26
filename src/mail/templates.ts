@@ -8,6 +8,15 @@ const templates = {
       `If you have received this by mistake, you can safely ignore this email.`,
     );
   },
+  verifySubscriberEmail: ({ name, verifyToken }) => {
+    return getTemplate(
+      name,
+      `Welcome to letterpad! 
+        <p>Please click the button below to verify your email.</p>`,
+      `<a href="${process.env.ROOT_URL}/api/verifySubscriber?token=${verifyToken}">Verify Email</a>`,
+      `If you have received this by mistake, you can safely ignore this email.`,
+    );
+  },
   forgotPasswordEmail: ({ name, token }) => {
     return getTemplate(
       name,

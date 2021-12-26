@@ -13,6 +13,7 @@ type SubscribersNode {
 
 type SubscribersAddResult {
   ok: Boolean!
+  message: String
 }
 
 type SubscribersUpdateResult {
@@ -31,6 +32,6 @@ input InputUpdateSubscriber {
 }
 
 type Mutation {
-  addSubscriber(email: String!): Boolean
+  addSubscriber(email: String!): SubscribersAddResult
   updateSubscriber(data: InputUpdateSubscriber!): SubscribersUpdateResult!
 }
