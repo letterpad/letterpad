@@ -1,6 +1,6 @@
 import { QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "../apollo";
-import models from "../db/models";
+import models from "@/graphql/db/models";
 
 const Query: QueryResolvers<ResolverContext> = {
   email: async (_root, args, { session }) => {

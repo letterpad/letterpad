@@ -2,34 +2,18 @@ import models from "@/graphql/db/models";
 import Twig from "twig";
 
 import logger from "src/shared/logger";
-import { EmailTemplates } from "@/graphql/types";
+import {
+  EmailForgotPasswordProps,
+  EmailTemplateResponse,
+  EmailTemplates,
+} from "@/graphql/types";
 import { getToken } from "@/shared/token";
 import SendMail from "./sendMail";
 import { addLineBreaks } from "./utils";
 
-interface ForgotPassword {
-  author_id: number;
-  change_password_link?: string;
-}
-
-interface ResponseSuccess {
-  ok: true;
-  content: {
-    subject: string;
-    html: string;
-    to: string | string[];
-  };
-}
-interface ResponseFailure {
-  ok: false;
-  message: string;
-}
-
-type Response = ResponseSuccess | ResponseFailure;
-
 export async function getForgotPasswordContent(
-  data: ForgotPassword,
-): Promise<Response> {
+  data: EmailForgotPasswordProps,
+): Promise<EmailTemplateResponse> {
   const template = await models.Email.findOne({
     where: { template_id: EmailTemplates.FORGOT_PASSWORD },
   });
@@ -77,7 +61,7 @@ export async function getForgotPasswordContent(
   };
 }
 
-export async function sendForgotPasswordEmail(data: ForgotPassword) {
+export async function sendForgotPasswordEmail(data: EmailForgotPasswordProps) {
   try {
     const template = await getForgotPasswordContent(data);
     if (template.ok) {

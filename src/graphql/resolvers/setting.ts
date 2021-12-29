@@ -8,8 +8,8 @@ import type {
 } from "@/__generated__/__types__";
 import fs from "fs";
 import path from "path";
-import models from "../db/models";
-import { settingsData } from "../db/models/setting";
+import models from "@/graphql/db/models";
+import { settingsData } from "@/graphql/db/models/setting";
 import logger from "@/shared/logger";
 
 type ValueOf<T> = T[keyof T];

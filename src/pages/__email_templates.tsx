@@ -1,11 +1,9 @@
-import { getNewPostContent } from "@/mail/emailNewPost";
-import { getForgotPasswordContent } from "@/mail/emailForgotPassword";
-import { getVerifySubscriberEmailContent } from "@/mail/emailVerifySubscriber";
-import { getVerifyUserEmailContent } from "@/mail/emailVerifyUser";
 import { useEffect, useRef } from "react";
 import { bodyDecorator } from "@/mail/decorator";
+import { getEmailTemplate } from "@/mail";
+import { EmailTemplates } from "@/graphql/types";
 
-const EmailTemplates = (props) => {
+const EmailTemplatesPreview = (props) => {
   const newPostRef = useRef<HTMLIFrameElement>(null);
   const forgotPasswordRef = useRef<HTMLIFrameElement>(null);
   const verifyMail = useRef<HTMLIFrameElement>(null);
@@ -76,15 +74,25 @@ const EmailTemplates = (props) => {
   );
 };
 
-export default EmailTemplates;
+export default EmailTemplatesPreview;
 
 export async function getServerSideProps() {
-  const verifyMail = await getVerifyUserEmailContent({ author_id: 2 });
-  const forgotPasswordMail = await getForgotPasswordContent({ author_id: 2 });
-  const newPostMail = await getNewPostContent({ post_id: 29 });
-  const newSubscriberMail = await getVerifySubscriberEmailContent({
+  const verifyMail = await getEmailTemplate({
+    author_id: 2,
+    template_id: EmailTemplates.VERIFY_NEW_USER,
+  });
+  const forgotPasswordMail = await getEmailTemplate({
+    author_id: 2,
+    template_id: EmailTemplates.FORGOT_PASSWORD,
+  });
+  const newPostMail = await getEmailTemplate({
+    post_id: 29,
+    template_id: EmailTemplates.NEW_POST,
+  });
+  const newSubscriberMail = await getEmailTemplate({
     author_id: 2,
     subscriber_email: "subscriber@yahoo.com",
+    template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
   });
 
   return {

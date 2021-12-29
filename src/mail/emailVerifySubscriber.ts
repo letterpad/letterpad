@@ -2,35 +2,20 @@ import models from "@/graphql/db/models";
 import Twig from "twig";
 
 import logger from "src/shared/logger";
-import { EmailTemplates } from "@/graphql/types";
+
 import { getToken } from "@/shared/token";
 import SendMail from "./sendMail";
 import { addLineBreaks } from "./utils";
 
-interface VerifyNewSubscriber {
-  author_id: number;
-  subscriber_email: string;
-  verify_link?: string;
-}
-
-interface ResponseSuccess {
-  ok: true;
-  content: {
-    subject: string;
-    html: string;
-    to: string | string[];
-  };
-}
-interface ResponseFailure {
-  ok: false;
-  message: string;
-}
-
-type Response = ResponseSuccess | ResponseFailure;
+import {
+  EmailTemplateResponse,
+  EmailTemplates,
+  EmailVerifyNewSubscriberProps,
+} from "@/graphql/types";
 
 export async function getVerifySubscriberEmailContent(
-  data: VerifyNewSubscriber,
-): Promise<Response> {
+  data: EmailVerifyNewSubscriberProps,
+): Promise<EmailTemplateResponse> {
   const template = await models.Email.findOne({
     where: { template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER },
   });
@@ -80,7 +65,9 @@ export async function getVerifySubscriberEmailContent(
   };
 }
 
-export async function sendVerifySubscriberEmail(data: VerifyNewSubscriber) {
+export async function sendVerifySubscriberEmail(
+  data: EmailVerifyNewSubscriberProps,
+) {
   try {
     const template = await getVerifySubscriberEmailContent(data);
     if (template.ok) {

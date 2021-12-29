@@ -4,7 +4,7 @@ import {
   LoginDocument,
 } from "./../../../__generated__/src/graphql/queries/mutations.graphql";
 import { API } from "tests/testClient";
-import models from "../db/models";
+import models from "@/graphql/db/models";
 
 describe("Test author", () => {
   it("can login", async () => {

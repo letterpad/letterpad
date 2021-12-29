@@ -51,15 +51,19 @@ export default function initEmailDelivery(sequelize) {
       },
       subscriber_id: {
         type: DataTypes.INTEGER,
+        allowNull: true,
       },
       post_id: {
         type: DataTypes.INTEGER,
+        allowNull: true,
       },
       author_id: {
         type: DataTypes.INTEGER,
+        allowNull: true,
       },
       delivered: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       updatedAt: {
         type: DataTypes.DATE,
@@ -69,6 +73,7 @@ export default function initEmailDelivery(sequelize) {
       },
       lastDeliveryAttempt: {
         type: DataTypes.DATE,
+        allowNull: true,
         get() {
           return getReadableDate(
             this.getDataValue("lastDeliveryAttempt") || new Date(),

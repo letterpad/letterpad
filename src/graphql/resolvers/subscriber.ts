@@ -1,8 +1,9 @@
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "../apollo";
-import models from "../db/models";
+import models from "@/graphql/db/models";
 import Cryptr from "cryptr";
-import { sendVerifySubscriberEmail } from "@/mail/emailVerifySubscriber";
+import { enqueueEmail } from "@/mail/sendMail";
+import { EmailTemplates } from "../types";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 
@@ -40,7 +41,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
     });
     if (subscribers && subscribers.length > 0) {
       if (!subscribers[0].verified) {
-        await sendVerifySubscriberEmail({
+        await enqueueEmail({
+          template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
           author_id,
           subscriber_email: args.email,
         });
@@ -61,9 +63,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
         email: args.email,
         verified: false,
       });
-      await sendVerifySubscriberEmail({
+      await enqueueEmail({
         author_id,
         subscriber_email: args.email,
+        template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
       });
     } catch (e) {
       console.log(e);

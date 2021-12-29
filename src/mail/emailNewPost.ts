@@ -2,34 +2,17 @@ import models from "@/graphql/db/models";
 import Twig from "twig";
 
 import logger from "src/shared/logger";
-import { EmailTemplates } from "@/graphql/types";
+import {
+  EmailNewPostProps,
+  EmailTemplateResponse,
+  EmailTemplates,
+} from "@/graphql/types";
 import SendMail from "./sendMail";
 import { addLineBreaks } from "./utils";
 
-interface NewPost {
-  post_id: number;
-  post_title?: string;
-  excerpt?: string;
-  cover_image?: string;
-  read_more_link?: string;
-}
-
-interface ResponseSuccess {
-  ok: true;
-  content: {
-    subject: string;
-    html: string;
-    to: string | string[];
-  };
-}
-interface ResponseFailure {
-  ok: false;
-  message: string;
-}
-
-type Response = ResponseSuccess | ResponseFailure;
-
-export async function getNewPostContent(data: NewPost): Promise<Response> {
+export async function getNewPostContent(
+  data: EmailNewPostProps,
+): Promise<EmailTemplateResponse> {
   const template = await models.Email.findOne({
     where: { template_id: EmailTemplates.NEW_POST },
   });
@@ -88,7 +71,7 @@ export async function getNewPostContent(data: NewPost): Promise<Response> {
   };
 }
 
-export async function sendNewPostEmail(data: NewPost) {
+export async function sendNewPostEmail(data: EmailNewPostProps) {
   try {
     const template = await getNewPostContent(data);
     if (template.ok) {

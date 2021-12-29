@@ -9,19 +9,18 @@ import {
   Author as AuthorType,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "../apollo";
-import models from "../db/models";
+import models from "@/graphql/db/models";
 import bcrypt from "bcryptjs";
-import { settingsData } from "../db/models/setting";
+import { settingsData } from "@/graphql/db/models/setting";
 import { validateCaptcha } from "./helpers";
-import generatePost from "../db/seed/contentGenerator";
+import generatePost from "@/graphql/db/seed/contentGenerator";
 import siteConfig from "config/site.config";
-import { seed } from "../db/seed/seed";
+import { seed } from "@/graphql/db/seed/seed";
 import { decodeToken, verifyToken } from "@/shared/token";
-import { ROLES } from "../types";
+import { EmailTemplates, ROLES } from "../types";
 import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
-import { sendForgotPasswordEmail } from "@/mail/emailForgotPassword";
-import { sendVerifyUserEmail } from "@/mail/emailVerifyUser";
+import { enqueueEmail } from "@/mail/sendMail";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -152,7 +151,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
       await newAuthor.createPost(page);
 
       const a = newAuthor.get() as unknown as AuthorType;
-      await sendVerifyUserEmail({ author_id: a.id });
+      await enqueueEmail({
+        author_id: a.id,
+        template_id: EmailTemplates.VERIFY_NEW_USER,
+      });
 
       return { ...a, __typename: "Author" };
     }
@@ -248,7 +250,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
       if (!author) {
         throw new Error("Email does not exist");
       }
-      return await sendForgotPasswordEmail({ author_id: author.id });
+      await enqueueEmail({
+        template_id: EmailTemplates.FORGOT_PASSWORD,
+        author_id: author.id,
+      });
+      return {
+        ok: true,
+      };
     } catch (e) {
       return {
         ok: false,

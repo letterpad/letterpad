@@ -81,15 +81,15 @@ module.exports = {
       subscriber_id: Sequelize.INTEGER,
       delivered: Sequelize.INTEGER,
       last_delivery_attempt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
       },
       created_at: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
       },
       updated_at: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
       },
     });

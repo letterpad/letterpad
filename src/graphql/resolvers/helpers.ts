@@ -1,7 +1,7 @@
 import https from "https";
 import cheerio from "cheerio";
 import sizeOf from "image-size";
-import { Post as ModelPost } from "../db/models/post";
+import { Post as ModelPost } from "@/graphql/db/models/post";
 import logger from "./../../shared/logger";
 
 export function toSlug(str: string): string {

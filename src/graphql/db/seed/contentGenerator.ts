@@ -1,4 +1,4 @@
-import { mdToHtml } from "../../../shared/converter";
+import { mdToHtml } from "@/shared/converter";
 
 export default function generatePost(type) {
   const post = {

@@ -2,34 +2,18 @@ import models from "@/graphql/db/models";
 import Twig from "twig";
 
 import logger from "src/shared/logger";
-import { EmailTemplates } from "@/graphql/types";
+import {
+  EmailTemplateResponse,
+  EmailTemplates,
+  EmailVerifyNewUserProps,
+} from "@/graphql/types";
 import { getToken } from "@/shared/token";
 import SendMail from "./sendMail";
 import { addLineBreaks } from "./utils";
 
-interface VerifyNewUser {
-  author_id: number;
-  verify_link?: string;
-}
-
-interface ResponseSuccess {
-  ok: true;
-  content: {
-    subject: string;
-    html: string;
-    to: string | string[];
-  };
-}
-interface ResponseFailure {
-  ok: false;
-  message: string;
-}
-
-type Response = ResponseSuccess | ResponseFailure;
-
 export async function getVerifyUserEmailContent(
-  data: VerifyNewUser,
-): Promise<Response> {
+  data: EmailVerifyNewUserProps,
+): Promise<EmailTemplateResponse> {
   const template = await models.Email.findOne({
     where: { template_id: EmailTemplates.VERIFY_NEW_USER },
   });
@@ -86,7 +70,7 @@ export async function getVerifyUserEmailContent(
   };
 }
 
-export async function sendVerifyUserEmail(data: VerifyNewUser) {
+export async function sendVerifyUserEmail(data: EmailVerifyNewUserProps) {
   try {
     const template = await getVerifyUserEmailContent(data);
     if (template.ok) {

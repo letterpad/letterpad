@@ -84,3 +84,45 @@ export enum EmailTemplates {
   FORGOT_PASSWORD = "FORGOT_PASSWORD",
   NEW_POST = "NEW_POST",
 }
+
+export interface EmailVerifyNewUserProps {
+  author_id: number;
+  template_id: EmailTemplates.VERIFY_NEW_USER;
+}
+
+export interface EmailVerifyNewSubscriberProps {
+  author_id: number;
+  subscriber_email: string;
+  template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER;
+}
+
+export interface EmailNewPostProps {
+  post_id: number;
+  template_id: EmailTemplates.NEW_POST;
+}
+
+export interface EmailForgotPasswordProps {
+  author_id: number;
+  template_id: EmailTemplates.FORGOT_PASSWORD;
+}
+
+export type EmailProps =
+  | EmailVerifyNewUserProps
+  | EmailVerifyNewSubscriberProps
+  | EmailNewPostProps
+  | EmailForgotPasswordProps;
+
+export interface EmailTemplateSuccess {
+  ok: true;
+  content: {
+    subject: string;
+    html: string;
+    to: string | string[];
+  };
+}
+interface EmailTemplateError {
+  ok: false;
+  message: string;
+}
+
+export type EmailTemplateResponse = EmailTemplateSuccess | EmailTemplateError;

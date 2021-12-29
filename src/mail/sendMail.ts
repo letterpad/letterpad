@@ -1,3 +1,6 @@
+import models from "@/graphql/db/models";
+import { EmailProps } from "@/graphql/types";
+import { getDateTime } from "@/shared/utils";
 import sgMail from "@sendgrid/mail";
 import { bodyDecorator } from "./decorator";
 
@@ -25,4 +28,14 @@ export default function SendMail(data: Mail, addUnsubscribe: boolean = false) {
 
     return body;
   });
+}
+
+export async function enqueueEmail(props: EmailProps) {
+  const found = await models.EmailDelivery.findOne({ where: props });
+  if (found) return "Record already exist";
+  models.EmailDelivery.create({
+    ...props,
+    createdAt: getDateTime(new Date()) as any,
+    delivered: false,
+  } as any);
 }
