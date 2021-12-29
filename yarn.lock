@@ -2739,11 +2739,6 @@
     "@types/react" "*"
     csstype "^3.0.2"
 
-"@types/twig@^1.12.8":
-  version "1.12.8"
-  resolved "https://registry.yarnpkg.com/@types/twig/-/twig-1.12.8.tgz#d1eb7cce4ddafa78005446519162b09693dc218b"
-  integrity sha512-CcK4gxgQKN/JkcPCTsu1sMzu8KDQVUK/F+QoNS99fuM2pg5NzJ8KXuDY8iqyJrHcCT8QGyjxIHaPerQnDs339A==
-
 "@types/websocket@1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@types/websocket/-/websocket-1.0.2.tgz#d2855c6a312b7da73ed16ba6781815bf30c6187a"

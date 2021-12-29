@@ -1,7 +1,3 @@
-import Twig from "twig";
-import fs from "fs";
-import path from "path";
-import { getToken } from "@/shared/token";
 import sgMail from "@sendgrid/mail";
 import { bodyDecorator } from "./decorator";
 

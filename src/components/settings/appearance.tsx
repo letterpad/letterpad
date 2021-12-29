@@ -1,5 +1,5 @@
 import { OptionInputType, Setting } from "@/__generated__/__types__";
-import { Collapse, Form, Input } from "antd";
+import { Collapse, Form } from "antd";
 import ImageUpload from "../ImageUpload";
 import Editor from "react-simple-code-editor";
 

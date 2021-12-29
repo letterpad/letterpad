@@ -1,4 +1,3 @@
-import Cryptr from "cryptr";
 import jwt from "jsonwebtoken";
 import {
   MutationResolvers,
@@ -23,8 +22,6 @@ import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
 import { sendForgotPasswordEmail } from "@/mail/emailForgotPassword";
 import { sendVerifyUserEmail } from "@/mail/emailVerifyUser";
-
-const cryptr = new Cryptr(process.env.SECRET_KEY);
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;

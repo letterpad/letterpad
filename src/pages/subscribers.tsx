@@ -1,7 +1,6 @@
 import { PostTypes } from "@/__generated__/__types__";
 import { Layout, Table } from "antd";
 import CustomLayout from "@/components/layouts/Layout";
-import { useRouter } from "next/router";
 import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
@@ -44,9 +43,7 @@ export const columns = [
 ];
 
 function Subscribers() {
-  const router = useRouter();
-
-  const { loading, data, error, refetch } = useSubscribersQuery();
+  const { loading, data, error } = useSubscribersQuery();
 
   if (error) return <ErrorMessage description={error} title="Error" />;
 
