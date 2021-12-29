@@ -2,8 +2,7 @@ import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "../apollo";
 import models from "../db/models";
 import Cryptr from "cryptr";
-import sendMail, { sendVerifySubscriberEmail, Subjects } from "@/mail";
-import templates from "@/mail/templates";
+import { sendVerifySubscriberEmail } from "@/mail/emailVerifySubscriber";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 

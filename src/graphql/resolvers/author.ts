@@ -1,7 +1,3 @@
-import {
-  sendForgotPasswordEmail,
-  sendVerifyUserEmail,
-} from "./../../mail/index";
 import Cryptr from "cryptr";
 import jwt from "jsonwebtoken";
 import {
@@ -19,12 +15,14 @@ import bcrypt from "bcryptjs";
 import { settingsData } from "../db/models/setting";
 import { validateCaptcha } from "./helpers";
 import generatePost from "../db/seed/contentGenerator";
-import templates from "../../mail/templates";
-import siteConfig from "../../../config/site.config";
+import siteConfig from "config/site.config";
 import { seed } from "../db/seed/seed";
-import { decodeToken, getDateTime, verifyToken } from "./../../shared/utils";
+import { decodeToken, verifyToken } from "@/shared/token";
 import { ROLES } from "../types";
-import logger from "../../shared/logger";
+import logger from "@/shared/logger";
+import { getDateTime } from "@/shared/utils";
+import { sendForgotPasswordEmail } from "@/mail/emailForgotPassword";
+import { sendVerifyUserEmail } from "@/mail/emailVerifyUser";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 

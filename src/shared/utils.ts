@@ -1,6 +1,6 @@
 import { getApolloClient } from "@/graphql/apollo";
 import { IMediaUploadResult } from "@/graphql/types";
-import jwt from "jsonwebtoken";
+
 import {
   SettingsDocument,
   SettingsQuery,
@@ -114,19 +114,4 @@ export function initPageProgress() {
   });
   Router.events.on("routeChangeComplete", () => NProgress.done());
   Router.events.on("routeChangeError", () => NProgress.done());
-}
-
-export function getToken(email: string, validityInMins: number = 10) {
-  const token = jwt.sign({ email: email }, process.env.SECRET_KEY, {
-    expiresIn: validityInMins * 60 * 1000,
-  });
-  return token;
-}
-
-export function verifyToken(token: string) {
-  return jwt.verify(token, process.env.SECRET_KEY);
-}
-
-export function decodeToken(token: string) {
-  return jwt.decode(token);
 }

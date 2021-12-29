@@ -1,15 +1,21 @@
 import Twig from "twig";
 import fs from "fs";
 import path from "path";
+import { getToken } from "@/shared/token";
+import sgMail from "@sendgrid/mail";
+
+if (process.env.SENDGRID_API_KEY) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+}
 
 interface Mail {
   to: string | string[];
   subject: string;
   html: string;
-  from?: string;
 }
 
 export default function SendMail(data: Mail) {
+  const to = typeof data.to === "string" ? [data.to] : data.to;
   const baseTemplate = path.join(
     __dirname,
     "../../../src/mail/templates/base.twig",
@@ -20,9 +26,21 @@ export default function SendMail(data: Mail) {
   const bodyTemplate = Twig.twig({
     data: template.toString(),
   });
-  const body = bodyTemplate.render({
-    content: data.html.replace(/(?:\r\n|\r|\n)/g, "<br>"),
-  });
+  return to.map((to) => {
+    const token = getToken(to, 0);
+    const unsubscribeUrl = `${process.env.ROOT_URL}/api/unsubscribe?token=${token}`;
+    const body = bodyTemplate.render({
+      content: data.html.replace(/(?:\r\n|\r|\n)/g, "<br>"),
+      unsubscribe_link: unsubscribeUrl,
+    });
 
-  return body;
+    // send mail
+    // sgMail.send({
+    //   ...data,
+    //   html: body,
+    //   from: "admin@letterpad.app",
+    // });
+
+    return body;
+  });
 }

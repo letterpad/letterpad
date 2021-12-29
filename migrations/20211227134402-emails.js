@@ -18,10 +18,10 @@ const newPost = fs.readFileSync(
 );
 
 const subjects = {
-  VERIFY_NEW_USER: "{{blogname}} - Verify Email",
-  VERIFY_NEW_SUBSCRIBER: "{{blogname}} - reset your password",
-  FORGOT_PASSWORD: "{{blogname}} - Verify your email",
-  NEW_POST: "{{blogname}} - New Post",
+  VERIFY_NEW_USER: "{{ blog_name }} - Verify Email",
+  VERIFY_NEW_SUBSCRIBER: "{{ blog_name }} - reset your password",
+  FORGOT_PASSWORD: "{{ blog_name }} - Verify your email",
+  NEW_POST: "{{ blog_name }} - New Post",
 };
 
 module.exports = {
