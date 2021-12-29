@@ -3,7 +3,6 @@ import Twig from "twig";
 
 import logger from "src/shared/logger";
 import { EmailTemplates } from "@/graphql/types";
-import { getToken } from "@/shared/token";
 import SendMail from "./sendMail";
 import { addLineBreaks } from "./utils";
 
