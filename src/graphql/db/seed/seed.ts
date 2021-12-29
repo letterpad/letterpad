@@ -7,8 +7,9 @@ import posts from "./posts";
 import { promisify } from "util";
 import rimraf from "rimraf";
 import { createAuthor } from "../../../graphql/resolvers/author";
-import { ROLES } from "../../../graphql/types";
+import { EmailTemplates, ROLES } from "../../../graphql/types";
 import { toSlug } from "@/graphql/resolvers/helpers";
+import fs from "fs";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -63,6 +64,10 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   await Promise.all([...posts.map((post) => insertPost(post, models, tags))]);
   await insertMedia();
   console.timeEnd("insert posts, settings, media");
+
+  console.time("insert emails");
+  await insertEmails();
+  console.timeEnd("insert emails");
 };
 
 export async function insertRolePermData(models: typeof dbModels) {
@@ -246,3 +251,45 @@ export const getDateTime = (d?: Date) => {
     ("0" + m.getUTCSeconds()).slice(-2)
   );
 };
+
+async function insertEmails() {
+  const subjects = {
+    VERIFY_NEW_USER: "Verify Email",
+    VERIFY_NEW_SUBSCRIBER: "Forgot Password ?",
+    FORGOT_PASSWORD: "Verify Email",
+    NEW_POST: "New Post",
+  };
+  const verifyNewUserEmail = fs.readFileSync(
+    "./email-templates/verifyNewUser.twig",
+  );
+  await models.Email.create({
+    template_id: EmailTemplates.VERIFY_NEW_USER,
+    subject: subjects.VERIFY_NEW_USER,
+    body: verifyNewUserEmail.toString(),
+  });
+
+  const verifyNewSubscriberEmail = fs.readFileSync(
+    "./email-templates/verifyNewSubscriber.twig",
+  );
+  await models.Email.create({
+    template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
+    subject: subjects.VERIFY_NEW_SUBSCRIBER,
+    body: verifyNewSubscriberEmail.toString(),
+  });
+
+  const forgotPasswordEmail = fs.readFileSync(
+    "./email-templates/forgotPassword.twig",
+  );
+  await models.Email.create({
+    template_id: EmailTemplates.FORGOT_PASSWORD,
+    subject: subjects.FORGOT_PASSWORD,
+    body: forgotPasswordEmail.toString(),
+  });
+
+  const newPostEmail = fs.readFileSync("./email-templates/newPost.twig");
+  await models.Email.create({
+    template_id: EmailTemplates.NEW_POST,
+    subject: subjects.NEW_POST,
+    body: newPostEmail.toString(),
+  });
+}

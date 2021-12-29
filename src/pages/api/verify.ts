@@ -12,10 +12,19 @@ const Verify = async (
 ) => {
   try {
     const token = cryptr.decrypt(req.query.token);
-    const update = await models.Author.update(
-      { verified: true },
-      { where: { email: token } },
-    );
+    const isSubscriber = req.query.subscriber;
+    let update;
+    if (isSubscriber) {
+      update = await models.Subscribers.update(
+        { verified: true },
+        { where: { email: token } },
+      );
+    } else {
+      update = await models.Author.update(
+        { verified: true },
+        { where: { email: token } },
+      );
+    }
     if (!update) {
       throw Error("Either you are already verified or verification failed.");
     }

@@ -1,4 +1,7 @@
-import { Subjects } from "./../../mail/index";
+import {
+  sendForgotPasswordEmail,
+  sendVerifyUserEmail,
+} from "./../../mail/index";
 import Cryptr from "cryptr";
 import jwt from "jsonwebtoken";
 import {
@@ -16,11 +19,10 @@ import bcrypt from "bcryptjs";
 import { settingsData } from "../db/models/setting";
 import { validateCaptcha } from "./helpers";
 import generatePost from "../db/seed/contentGenerator";
-import sendMail from "../../mail";
 import templates from "../../mail/templates";
 import siteConfig from "../../../config/site.config";
 import { seed } from "../db/seed/seed";
-import { getDateTime } from "./../../shared/utils";
+import { decodeToken, getDateTime, verifyToken } from "./../../shared/utils";
 import { ROLES } from "../types";
 import logger from "../../shared/logger";
 
@@ -154,15 +156,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
       await newPost.addTag(newTag);
       await newAuthor.createPost(page);
 
-      await sendMail({
-        to: newAuthor.email,
-        subject: Subjects.VERIFY_EMAIL,
-        html: templates.verifyEmail({
-          name: newAuthor.name,
-          verifyToken: cryptr.encrypt(newAuthor.email),
-        }),
-      });
       const a = newAuthor.get() as unknown as AuthorType;
+      await sendVerifyUserEmail({ author_id: a.id });
+
       return { ...a, __typename: "Author" };
     }
     return {
@@ -251,28 +247,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
   async forgotPassword(_root, args) {
     try {
       const email = args.email;
-      const token = jwt.sign({ email }, process.env.SECRET_KEY, {
-        expiresIn: 10 * 60 * 1000,
-      });
       const author = await models.Author.findOne({
         where: { email },
       });
       if (!author) {
         throw new Error("Email does not exist");
       }
-      await sendMail({
-        to: author.email,
-        subject: Subjects.FORGOT_PASSWORD,
-        html: templates.forgotPasswordEmail({
-          name: author.name,
-          token: token,
-        }),
-      });
-
-      return {
-        ok: true,
-        msg: "Check your email to recover your password",
-      };
+      return await sendForgotPasswordEmail({ author_id: author.id });
     } catch (e) {
       return {
         ok: false,
@@ -283,19 +264,19 @@ const Mutation: MutationResolvers<ResolverContext> = {
   async resetPassword(_root, args) {
     try {
       const token = args.token;
-      const isValidToken = jwt.verify(token, process.env.SECRET_KEY);
+      const isValidToken = verifyToken(token);
       if (!isValidToken) {
-        throw new Error("Token is not valid");
+        throw new Error("The link is not valid.");
       }
 
-      const authorEmail = jwt.decode(token);
+      const authorEmail = decodeToken(token);
 
       const author = await models.Author.findOne({
         where: { email: authorEmail },
       });
 
       if (!author) {
-        throw new Error("Invalid token for changing password");
+        throw new Error("Sorry, we could not validate this request.");
       }
       const newPassword = await bcrypt.hash(args.password, 12);
 

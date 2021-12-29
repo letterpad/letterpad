@@ -83,6 +83,27 @@ query Subscribers($author_id: Int) {
   }
 }
 
+query Email($template_id: String) {
+  email(template_id: $template_id) {
+    ... on Email {
+      template_id
+      body
+      subject
+    }
+    ... on EmailError {
+      message
+    }
+  }
+}
+
+query Emails {
+  emails {
+    template_id
+    body
+    subject
+  }
+}
+
 query Me {
   me {
     ... on Author {

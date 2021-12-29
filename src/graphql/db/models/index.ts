@@ -11,6 +11,7 @@ import Subscribers, { associateSubscribers } from "./subscriber";
 import SubscribersDelivery, {
   associateSubscribersDelivery,
 } from "./subscribersDelivery";
+import Email, { associateEmail } from "./email";
 
 enum envs {
   development = "development",
@@ -41,6 +42,7 @@ export const modelsMap = {
   Tags: Tags(conn),
   Setting: Setting(conn),
   Media: Media(conn),
+  Email: Email(conn),
   Post: Post(conn),
   Author: Author(conn),
   Role: Role(conn),
@@ -57,6 +59,7 @@ associatePermission();
 associateMedia();
 associateSubscribers();
 associateSubscribersDelivery();
+associateEmail();
 
 const models = { Sequelize: Sequelize, sequelize: conn, ...modelsMap };
 

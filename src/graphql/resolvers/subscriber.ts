@@ -2,7 +2,7 @@ import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "../apollo";
 import models from "../db/models";
 import Cryptr from "cryptr";
-import sendMail, { Subjects } from "@/mail";
+import sendMail, { sendVerifySubscriberEmail, Subjects } from "@/mail";
 import templates from "@/mail/templates";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
@@ -41,13 +41,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
     });
     if (subscribers && subscribers.length > 0) {
       if (!subscribers[0].verified) {
-        await sendMail({
-          to: args.email,
-          subject: Subjects.VERIFY_SUBSCRIBER,
-          html: templates.verifySubscriberEmail({
-            name: args.email,
-            verifyToken: cryptr.encrypt(subscribers[0]),
-          }),
+        await sendVerifySubscriberEmail({
+          author_id,
+          subscriber_email: args.email,
         });
         return {
           ok: false,
@@ -62,17 +58,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
 
     try {
-      const subscriber = await author?.createSubscriber({
+      await author?.createSubscriber({
         email: args.email,
         verified: false,
       });
-      await sendMail({
-        to: args.email,
-        subject: Subjects.VERIFY_SUBSCRIBER,
-        html: templates.verifySubscriberEmail({
-          name: args.email,
-          verifyToken: cryptr.encrypt(subscriber?.id),
-        }),
+      await sendVerifySubscriberEmail({
+        author_id,
+        subscriber_email: args.email,
       });
     } catch (e) {
       console.log(e);

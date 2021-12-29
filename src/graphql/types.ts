@@ -77,3 +77,10 @@ interface IProcessEnv {
 declare namespace NodeJS {
   export interface ProcessEnv extends IProcessEnv {}
 }
+
+export enum EmailTemplates {
+  VERIFY_NEW_USER = "VERIFY_NEW_USER",
+  VERIFY_NEW_SUBSCRIBER = "VERIFY_NEW_SUBSCRIBER",
+  FORGOT_PASSWORD = "FORGOT_PASSWORD",
+  NEW_POST = "NEW_POST",
+}

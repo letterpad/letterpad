@@ -1,5 +1,4 @@
 import { DataTypes, Model, Optional } from "sequelize";
-
 import { Author } from "./author";
 import { Image, Navigation, NavigationType } from "@/__generated__/__types__";
 
