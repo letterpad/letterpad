@@ -53,10 +53,10 @@ export async function getNewPostContent(data: NewPost): Promise<Response> {
     };
   }
   if (subscribers && subscribers.length === 0) {
-    // return {
-    //   ok: false,
-    //   message: `No subscribers for ${setting.site_title}`,
-    // };
+    return {
+      ok: false,
+      message: `No subscribers for ${setting.site_title}`,
+    };
   }
   const subjectTemplate = Twig.twig({
     data: template.subject,
@@ -69,12 +69,17 @@ export async function getNewPostContent(data: NewPost): Promise<Response> {
   const bodyTemplate = Twig.twig({
     data: template.body.toString(),
   });
+
   const body = bodyTemplate.render({
     blog_name: setting?.site_title,
     full_name: "Friend",
     post_title: post?.title,
     excerpt: post?.excerpt,
-    cover_image: post?.cover_image,
+    //@ts-ignore
+    cover_image_link: post?.cover_image.src
+      ? //@ts-ignore
+        `<img src="${post?.cover_image.src}" width="100%">`
+      : "",
     read_more_link: `<a target="_blank" href="${setting.site_url}${post?.slug}">Read More</a>`,
   });
 

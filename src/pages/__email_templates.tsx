@@ -3,6 +3,7 @@ import { getForgotPasswordContent } from "@/mail/emailForgotPassword";
 import { getVerifySubscriberEmailContent } from "@/mail/emailVerifySubscriber";
 import { getVerifyUserEmailContent } from "@/mail/emailVerifyUser";
 import { useEffect, useRef } from "react";
+import { bodyDecorator } from "@/mail/decorator";
 
 const EmailTemplates = (props) => {
   const newPostRef = useRef<HTMLIFrameElement>(null);
@@ -41,7 +42,7 @@ const EmailTemplates = (props) => {
       <iframe
         ref={newSubscriberRef}
         width={800}
-        height={400}
+        height={450}
         frameBorder={0}
       ></iframe>
       <h3 style={{ padding: 8 }}>
@@ -50,7 +51,7 @@ const EmailTemplates = (props) => {
       <iframe
         ref={verifyMail}
         width={800}
-        height={400}
+        height={450}
         frameBorder={0}
       ></iframe>
       <h3 style={{ padding: 8 }}>
@@ -59,7 +60,7 @@ const EmailTemplates = (props) => {
       <iframe
         ref={newPostRef}
         width={800}
-        height={400}
+        height={750}
         frameBorder={0}
       ></iframe>
       <h3 style={{ padding: 8 }}>
@@ -68,7 +69,7 @@ const EmailTemplates = (props) => {
       <iframe
         ref={forgotPasswordRef}
         width={800}
-        height={400}
+        height={450}
         frameBorder={0}
       ></iframe>
     </>
@@ -77,7 +78,7 @@ const EmailTemplates = (props) => {
 
 export default EmailTemplates;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   const verifyMail = await getVerifyUserEmailContent({ author_id: 2 });
   const forgotPasswordMail = await getForgotPasswordContent({ author_id: 2 });
   const newPostMail = await getNewPostContent({ post_id: 29 });
@@ -88,10 +89,46 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      verifyMail,
-      forgotPasswordMail,
-      newPostMail,
-      newSubscriberMail,
+      verifyMail: {
+        ...verifyMail,
+        content: {
+          //@ts-ignore
+          ...verifyMail.content,
+          //@ts-ignore
+          html: bodyDecorator(verifyMail.content.html, "demo@demo.com"),
+        },
+      },
+      forgotPasswordMail: {
+        ...forgotPasswordMail,
+        content: {
+          //@ts-ignore
+          ...forgotPasswordMail.content,
+          //@ts-ignore
+          html: bodyDecorator(forgotPasswordMail.content.html, "demo@demo.com"),
+        },
+      },
+      newPostMail: {
+        ...newPostMail,
+        content: {
+          //@ts-ignore
+          ...newPostMail.content,
+          html: bodyDecorator(
+            //@ts-ignore
+            newPostMail?.content?.html || newPostMail.message,
+            "demo@demo.com",
+            true,
+          ),
+        },
+      },
+      newSubscriberMail: {
+        ...newSubscriberMail,
+        content: {
+          //@ts-ignore
+          ...newSubscriberMail.content,
+          //@ts-ignore
+          html: bodyDecorator(newSubscriberMail.content.html, "demo@demo.com"),
+        },
+      },
     }, // will be passed to the page component as props
   };
 }
