@@ -1,5 +1,5 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Popconfirm } from "antd";
+import { Popconfirm } from "antd";
 
 export function getHeaders(dataSource, deleteTag) {
   return [
