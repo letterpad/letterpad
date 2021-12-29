@@ -1,6 +1,7 @@
 import Author, { associateAuthor } from "./author";
 import Media, { associateMedia } from "./media";
 import Permission, { associatePermission } from "./permission";
+import EmailDelivery from "./emailDelivery";
 import Post, { associatePost } from "./post";
 import Role, { associateRole } from "./role";
 import { Sequelize } from "sequelize";
@@ -49,6 +50,7 @@ export const modelsMap = {
   Permission: Permission(conn),
   Subscribers: Subscribers(conn),
   SubscribersDelivery: SubscribersDelivery(conn),
+  EmailDelivery: EmailDelivery(conn),
 };
 
 associateTags();

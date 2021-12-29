@@ -24,6 +24,7 @@ import {
 import { Setting } from "./setting";
 import { Tags } from "./tags";
 import { Subscribers } from "./subscriber";
+import { EmailDelivery } from "./emailDelivery";
 
 // These are all the attributes in the User model
 export interface AuthorAttributes {
@@ -172,4 +173,5 @@ export function associateAuthor(): void {
   Author.hasMany(Media, { sourceKey: "id", foreignKey: "author_id" });
   Author.hasMany(Tags, { sourceKey: "id", foreignKey: "author_id" });
   Author.hasMany(Subscribers, { sourceKey: "id", foreignKey: "author_id" });
+  Author.hasMany(EmailDelivery, { sourceKey: "id", foreignKey: "author_id" });
 }

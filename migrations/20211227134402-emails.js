@@ -19,12 +19,6 @@ const newPost = fs.readFileSync(
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
     await queryInterface.createTable("emails", {
       template_id: {
         type: Sequelize.STRING(100),
@@ -72,6 +66,33 @@ module.exports = {
         updated_at: new Date(),
       },
     ]);
+
+    await queryInterface.createTable("emailDelivery", {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      template_id: {
+        type: Sequelize.STRING(100),
+      },
+      author_id: Sequelize.INTEGER,
+      post_id: Sequelize.INTEGER,
+      subscriber_id: Sequelize.INTEGER,
+      delivered: Sequelize.INTEGER,
+      last_delivery_attempt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -82,6 +103,6 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     await queryInterface.dropTable("emails");
-    await queryInterface.dropTable("email");
+    await queryInterface.dropTable("emailDelivery");
   },
 };
