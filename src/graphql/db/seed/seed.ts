@@ -10,6 +10,7 @@ import { createAuthor } from "../../../graphql/resolvers/author";
 import { EmailTemplates, ROLES } from "../../../graphql/types";
 import { toSlug } from "@/graphql/resolvers/helpers";
 import fs from "fs";
+import { subjects } from "./constants";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -253,12 +254,6 @@ export const getDateTime = (d?: Date) => {
 };
 
 async function insertEmails() {
-  const subjects = {
-    VERIFY_NEW_USER: "Verify Email",
-    VERIFY_NEW_SUBSCRIBER: "Forgot Password ?",
-    FORGOT_PASSWORD: "Verify Email",
-    NEW_POST: "New Post",
-  };
   const verifyNewUserEmail = fs.readFileSync(
     "./email-templates/verifyNewUser.twig",
   );

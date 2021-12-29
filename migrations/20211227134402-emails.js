@@ -1,6 +1,6 @@
 "use strict";
 const fs = require("fs");
-
+const { subjects } = require("../src/graphql/db/seed/constants");
 const verifyNewUser = fs.readFileSync(
   "./src/graphql/db/seed/email-templates/verifyNewUser.twig",
 );
@@ -16,13 +16,6 @@ const forgotPassword = fs.readFileSync(
 const newPost = fs.readFileSync(
   "./src/graphql/db/seed/email-templates/newPost.twig",
 );
-
-const subjects = {
-  VERIFY_NEW_USER: "{{ blog_name }} - Verify Email",
-  VERIFY_NEW_SUBSCRIBER: "{{ blog_name }} - reset your password",
-  FORGOT_PASSWORD: "{{ blog_name }} - Verify your email",
-  NEW_POST: "{{ blog_name }} - New Post",
-};
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
