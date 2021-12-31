@@ -1,10 +1,8 @@
-import { PostTypes } from "@/__generated__/__types__";
-import { Layout, Table } from "antd";
+import { Layout, PageHeader, Table } from "antd";
 import CustomLayout from "@/components/layouts/Layout";
 import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
-import { Header } from "@/components/posts/header";
 import { useSubscribersQuery } from "@/graphql/queries/queries.graphql";
 
 const { Content } = Layout;
@@ -52,9 +50,9 @@ function Subscribers() {
       <Head>
         <title>Subscribers</title>
       </Head>
-      <Header type={PostTypes.Post} title="Subscribers">
+      <PageHeader className="site-page-header" title="Subscribers">
         Here you will find all the users subscribed to your blog.
-      </Header>
+      </PageHeader>
       <Content>
         <div className="site-layout-background" style={{ padding: 16 }}>
           <Table
