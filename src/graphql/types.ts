@@ -112,13 +112,15 @@ export type EmailProps =
   | EmailNewPostProps
   | EmailForgotPasswordProps;
 
+export interface Mail {
+  to: string | string[];
+  subject: string;
+  html: string;
+}
+
 export interface EmailTemplateSuccess {
   ok: true;
-  content: {
-    subject: string;
-    html: string;
-    to: string | string[];
-  };
+  content: Mail;
 }
 interface EmailTemplateError {
   ok: false;

@@ -11,13 +11,15 @@ export const bodyDecorator = (
   const token = getToken(recipient_email, 0);
   const unsubscribeUrl = `${process.env.ROOT_URL}/api/unsubscribe?token=${token}`;
 
-  const baseTemplate = path.join(
-    __dirname,
-    "../../../src/mail/templates/base.twig",
+  const baseTemplate = path.resolve(
+    process.cwd(),
+    "src/mail/templates/base.twig",
   );
 
   const template = fs.readFileSync(baseTemplate, "utf-8");
-
+  if (!template) {
+    throw new Error("Email base template not found in sr/mail");
+  }
   const bodyTemplate = Twig.twig({
     data: template.toString(),
   });
