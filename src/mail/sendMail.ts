@@ -1,5 +1,5 @@
 import models from "@/graphql/db/models";
-import { EmailProps, Mail } from "@/graphql/types";
+import { EmailProps, EmailTemplateMeta, Mail } from "@/graphql/types";
 import { getDateTime } from "@/shared/utils";
 import { bodyDecorator } from "./decorator";
 import mailJet from "node-mailjet";
@@ -7,19 +7,24 @@ import logger from "@/shared/logger";
 import * as Sentry from "@sentry/nextjs";
 import { getEmailTemplate } from ".";
 
-const client = mailJet.connect(
-  process.env.MJ_APIKEY_PUBLIC,
-  process.env.MJ_APIKEY_PRIVATE,
-);
+let client: mailJet.Email.Client;
+
+if (process.env.MJ_APIKEY_PUBLIC && process.env.MJ_APIKEY_PRIVATE) {
+  client = mailJet.connect(
+    process.env.MJ_APIKEY_PUBLIC,
+    process.env.MJ_APIKEY_PRIVATE,
+  );
+}
 
 export default function SendMail(
   data: Mail,
+  meta: EmailTemplateMeta,
   addUnsubscribe: boolean = false,
 ): any {
-  if (!process.env.MJ_APIKEY_PUBLIC || !process.env.MJ_APIKEY_PRIVATE) {
-    return logger.debug("No email sent. Keys not found");
+  if (!client) {
+    return logger.debug("No client found to send emails");
   }
-  const recipients = ["abhisheksaha11@gmail.com"]; //typeof data.to === "string" ? [data.to] : data.to;
+  const recipients = typeof data.to === "string" ? [data.to] : data.to;
   const mails = recipients.map((to) => {
     const body = bodyDecorator(data.html, to, addUnsubscribe);
     // send mail
@@ -29,7 +34,8 @@ export default function SendMail(
         Messages: [
           {
             From: {
-              Email: process.env.SENDER_EMAIL || "me@ajaxtown.com",
+              // the or clause is to overwrite this setting for demo purpose
+              Email: process.env.SENDER_EMAIL || meta.setting.site_email,
               Name: "Letterpad",
             },
             To: [
@@ -52,6 +58,11 @@ export default function SendMail(
 }
 
 export async function enqueueEmail(props: EmailProps) {
+  if (!client) {
+    return logger.debug(
+      "No client found to send emails. Terminating enqueuing Email",
+    );
+  }
   try {
     const found = await models.EmailDelivery.findOne({ where: props });
     if (found) {
@@ -64,12 +75,9 @@ export async function enqueueEmail(props: EmailProps) {
     } as any);
 
     // TODO - Since we are tracking the email, we should not run it on the main thread. Instead use a child thread or an external service. Lets worry when we are worried.
-    if (!process.env.MJ_APIKEY_PUBLIC || !process.env.MJ_APIKEY_PRIVATE) {
-      return logger.debug("No email sent. Keys not found");
-    }
     const data = await getEmailTemplate(props);
     if (data.ok) {
-      const response = await SendMail(data.content);
+      const response = await SendMail(data.content, data.meta);
 
       if (response && response.length > 0) {
         if (response[0].response.res.statusCode === 200) {

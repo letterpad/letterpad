@@ -1,5 +1,5 @@
 import { NextApiRequest } from "next";
-import { Author, Post } from "@/__generated__/__types__";
+import { Author, Post, Setting } from "@/__generated__/__types__";
 
 export enum ROLES {
   ADMIN = "ADMIN",
@@ -118,9 +118,15 @@ export interface Mail {
   html: string;
 }
 
+export interface EmailTemplateMeta {
+  setting: Setting;
+  author: Author;
+}
+
 export interface EmailTemplateSuccess {
   ok: true;
   content: Mail;
+  meta: EmailTemplateMeta;
 }
 interface EmailTemplateError {
   ok: false;

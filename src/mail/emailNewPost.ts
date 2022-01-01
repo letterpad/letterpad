@@ -68,6 +68,10 @@ export async function getNewPostContent(
   return {
     ok: true,
     content: { subject, html: addLineBreaks(body), to: author.email },
+    meta: {
+      setting,
+      author,
+    },
   };
 }
 
@@ -75,7 +79,7 @@ export async function sendNewPostEmail(data: EmailNewPostProps) {
   try {
     const template = await getNewPostContent(data);
     if (template.ok) {
-      await SendMail(template.content);
+      await SendMail(template.content, template.meta, true);
     }
     return {
       ok: true,

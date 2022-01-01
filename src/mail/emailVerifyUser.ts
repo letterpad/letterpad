@@ -67,6 +67,10 @@ export async function getVerifyUserEmailContent(
   return {
     ok: true,
     content: { subject, html: addLineBreaks(body), to: author.email },
+    meta: {
+      setting,
+      author,
+    },
   };
 }
 
@@ -74,7 +78,7 @@ export async function sendVerifyUserEmail(data: EmailVerifyNewUserProps) {
   try {
     const template = await getVerifyUserEmailContent(data);
     if (template.ok) {
-      await SendMail(template.content);
+      await SendMail(template.content, template.meta);
     }
     return {
       ok: true,

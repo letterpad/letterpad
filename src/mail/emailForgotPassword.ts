@@ -58,6 +58,10 @@ export async function getForgotPasswordContent(
   return {
     ok: true,
     content: { subject, html: addLineBreaks(body), to: author.email },
+    meta: {
+      setting,
+      author,
+    },
   };
 }
 
@@ -65,7 +69,7 @@ export async function sendForgotPasswordEmail(data: EmailForgotPasswordProps) {
   try {
     const template = await getForgotPasswordContent(data);
     if (template.ok) {
-      await SendMail(template.content);
+      await SendMail(template.content, template.meta);
     }
     return {
       ok: true,
