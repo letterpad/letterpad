@@ -36,7 +36,7 @@ export default function SendMail(
             From: {
               // the or clause is to overwrite this setting for demo purpose
               Email: process.env.SENDER_EMAIL || meta.setting.site_email,
-              Name: "Letterpad",
+              Name: meta.setting.site_title || "Letterpad",
             },
             To: [
               {
