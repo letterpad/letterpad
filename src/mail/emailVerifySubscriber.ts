@@ -53,7 +53,7 @@ export async function getVerifySubscriberEmailContent(
 
   const body = bodyTemplate.render({
     blog_name: setting?.site_title,
-    full_name: author?.name,
+    full_name: "There",
     verify_link: `<a target="_blank" href="${href}">
         Verify Email
       </a>`,
