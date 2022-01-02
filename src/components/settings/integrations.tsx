@@ -20,14 +20,6 @@ const Integrations: React.FC<Props> = ({
   return (
     <Collapse>
       <Panel header="Integrations" key="1">
-        <Form.Item label="GraphqComment ID">
-          <Input
-            size="middle"
-            value={settings.graphcommentId}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("graphcommentId", e.target.value)}
-          />
-        </Form.Item>
         <Form.Item label="Cloudinary Name">
           <Input
             size="middle"
