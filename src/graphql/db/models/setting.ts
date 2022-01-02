@@ -24,7 +24,6 @@ export interface SettingAttributes {
   css: string;
   google_analytics: string;
   theme: string;
-  disqus_id: string;
   banner: Image;
   site_logo: Image;
   site_favicon: Image;
@@ -59,7 +58,6 @@ export class Setting
   public css!: string;
   public google_analytics!: string;
   public theme!: string;
-  public disqus_id!: string;
   public banner!: Image;
   public site_logo!: Image;
   public site_favicon!: Image;
@@ -164,10 +162,6 @@ export default function initSetting(sequelize) {
         type: DataTypes.STRING,
         defaultValue: "",
       },
-      disqus_id: {
-        type: DataTypes.STRING,
-        defaultValue: "",
-      },
       banner: {
         type: DataTypes.JSON,
         defaultValue: {},
@@ -237,7 +231,6 @@ export const settingsData = {
   css: "",
   google_analytics: "UA-120251616-1",
   theme: "hugo",
-  disqus_id: "",
   menu: menu,
   graphcommentId: "",
   cloudinary_key: "",

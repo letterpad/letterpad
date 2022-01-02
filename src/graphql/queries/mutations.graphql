@@ -78,7 +78,6 @@ mutation UpdateOptions($options: [OptionInputType!]!) {
     css
     google_analytics
     theme
-    disqus_id
     banner {
       src
       width

@@ -200,7 +200,6 @@ query settings {
       css
       google_analytics
       theme
-      disqus_id
       banner {
         src
         width
