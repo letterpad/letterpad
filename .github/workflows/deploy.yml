@@ -39,22 +39,22 @@ jobs:
       - name: Type check
         run: yarn type-check
 
-      - name: Deploy to Google
-        uses: appleboy/scp-action@master
-        with:
-          host: 130.211.80.253
-          username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.PORT }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          source: "."
-          target: /var/www/html/letterpad-admin
+      # - name: Deploy to Google
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: 130.211.80.253
+      #     username: ${{ secrets.USERNAME }}
+      #     port: ${{ secrets.PORT }}
+      #     key: ${{ secrets.DEPLOY_KEY }}
+      #     source: "."
+      #     target: /var/www/html/letterpad-admin
 
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
-        with:
-          host: 130.211.80.253
-          username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.PORT }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: |
-            pm2 restart letterpad-admin
+      # - name: executing remote ssh commands using password
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: 130.211.80.253
+      #     username: ${{ secrets.USERNAME }}
+      #     port: ${{ secrets.PORT }}
+      #     key: ${{ secrets.DEPLOY_KEY }}
+      #     script: |
+      #       pm2 restart letterpad-admin
