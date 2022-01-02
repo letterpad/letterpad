@@ -24,6 +24,7 @@ type Setting {
   social_instagram: String!
   social_github: String!
   displayAuthorInfo: Boolean!
+  graphcommentId: String!
   cloudinary_key: String!
   cloudinary_name: String!
   cloudinary_secret: String!
@@ -64,6 +65,7 @@ input OptionInputType {
   social_instagram: String
   social_github: String
   displayAuthorInfo: Boolean
+  graphcommentId: String
   cloudinary_key: String
   cloudinary_name: String
   cloudinary_secret: String

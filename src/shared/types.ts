@@ -18,8 +18,7 @@ declare global {
       DB_PORT: number;
       DB_NAME: string;
       SENTRY_AUTH_TOKEN?: string;
-      SENTRY_ORG?: string;
-      SENTRY_PROJECT?: string;
+      SENTRY_DSN?: string;
     }
   }
 }

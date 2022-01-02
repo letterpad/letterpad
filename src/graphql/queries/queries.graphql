@@ -186,6 +186,7 @@ query settings {
       social_instagram
       social_github
       displayAuthorInfo
+      graphcommentId
       cloudinary_key
       cloudinary_name
       cloudinary_secret

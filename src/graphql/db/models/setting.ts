@@ -16,6 +16,7 @@ export interface SettingAttributes {
   social_instagram: string;
   social_github: string;
   displayAuthorInfo: boolean;
+  graphcommentId: string;
   cloudinary_key: string;
   cloudinary_name: string;
   cloudinary_secret: string;
@@ -50,6 +51,7 @@ export class Setting
   public social_instagram!: string;
   public social_github!: string;
   public displayAuthorInfo!: boolean;
+  public graphcommentId!: string;
   public cloudinary_key!: string;
   public cloudinary_name!: string;
   public cloudinary_secret!: string;
@@ -126,6 +128,10 @@ export default function initSetting(sequelize) {
       displayAuthorInfo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
+      },
+      graphcommentId: {
+        type: DataTypes.STRING,
+        defaultValue: "",
       },
       cloudinary_key: {
         type: DataTypes.STRING,
@@ -233,6 +239,7 @@ export const settingsData = {
   theme: "hugo",
   disqus_id: "",
   menu: menu,
+  graphcommentId: "",
   cloudinary_key: "",
   cloudinary_name: "",
   cloudinary_secret: "",
