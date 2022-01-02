@@ -1,17 +1,15 @@
 import models from "@/graphql/db/models";
 import { NextApiResponse } from "next";
 import { NextApiRequestWithFormData } from "./../../graphql/types";
-import Cryptr from "cryptr";
 import { basePath } from "@/constants";
-
-const cryptr = new Cryptr(process.env.SECRET_KEY);
+import { decodeToken } from "@/shared/token";
 
 const Verify = async (
   req: NextApiRequestWithFormData,
   res: NextApiResponse,
 ) => {
   try {
-    const token = cryptr.decrypt(req.query.token);
+    const token = decodeToken(req.query.token as string);
     const isSubscriber = req.query.subscriber;
     let update;
     if (isSubscriber) {
