@@ -134,7 +134,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
     return {
       ...setting.get(),
-      graphcomment_id: process.env.GRAPHCOMMENT_ID,
     } as unknown as SettingType;
   },
 };

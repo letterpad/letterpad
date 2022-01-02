@@ -24,7 +24,6 @@ type Setting {
   social_instagram: String
   social_github: String
   displayAuthorInfo: Boolean!
-  graphcomment_id: String
   cloudinary_key: String
   cloudinary_name: String
   cloudinary_secret: String
