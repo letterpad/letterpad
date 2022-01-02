@@ -14,5 +14,5 @@ export function verifyToken(token: string) {
 }
 
 export function decodeToken(token: string) {
-  return jwt.decode(token);
+  return jwt.decode(token) as any;
 }
