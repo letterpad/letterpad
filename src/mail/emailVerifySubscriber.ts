@@ -48,7 +48,7 @@ export async function getVerifySubscriberEmailContent(
     data: template.body.toString(),
   });
 
-  const token = getToken(author.email);
+  const token = getToken(data.subscriber_email);
   const href = `${process.env.ROOT_URL}/api/verify?token=${token}&subscriber=1`;
 
   const body = bodyTemplate.render({
@@ -61,7 +61,7 @@ export async function getVerifySubscriberEmailContent(
 
   return {
     ok: true,
-    content: { subject, html: addLineBreaks(body), to: author.email },
+    content: { subject, html: addLineBreaks(body), to: data.subscriber_email },
     meta: {
       setting,
       author,
