@@ -7,6 +7,7 @@ import {
   LogoutOutlined,
   SettingOutlined,
   TagsOutlined,
+  TeamOutlined,
   UploadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -90,7 +91,7 @@ const Navigation = ({ stats }) => {
       </Menu.Item>
       <Menu.Item
         key={menuItems["/subscribers"]}
-        icon={<UploadOutlined />}
+        icon={<TeamOutlined />}
         onClick={() => router.push("/subscribers")}
       >
         Subscribers

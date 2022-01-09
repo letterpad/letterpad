@@ -9,8 +9,8 @@ import type {
 import fs from "fs";
 import path from "path";
 import models from "@/graphql/db/models";
-import { settingsData } from "@/graphql/db/models/setting";
 import logger from "@/shared/logger";
+import { defaultSettings } from "../db/seed/constants";
 
 type ValueOf<T> = T[keyof T];
 const SECURE_SETTINGS = [
@@ -85,13 +85,13 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 const Mutation: MutationResolvers<ResolverContext> = {
   updateOptions: async (_root, args, { session }) => {
-    if (!session?.user.id) return settingsData;
+    if (!session?.user.id) return defaultSettings;
 
     const author = await models.Author.findOne({
       where: { id: session.user.id },
     });
 
-    if (!author) return settingsData;
+    if (!author) return defaultSettings;
     const _setting = await author.getSetting();
 
     let promises = args.options.map((setting) => {
@@ -130,7 +130,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       where: { id: session.user.id },
     });
     if (!setting) {
-      return settingsData;
+      return defaultSettings;
     }
     return {
       ...setting.get(),

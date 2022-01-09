@@ -8,7 +8,10 @@ export const bodyDecorator = (
   recipient_email: string,
   unsubscribe = false,
 ) => {
-  const token = getToken(recipient_email, 0);
+  const token = getToken({
+    data: { email: recipient_email },
+    validityInMins: 0,
+  });
   const unsubscribeUrl = `${process.env.ROOT_URL}/api/unsubscribe?token=${token}`;
 
   const baseTemplate = path.resolve(

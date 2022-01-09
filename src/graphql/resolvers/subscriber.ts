@@ -4,7 +4,6 @@ import models from "@/graphql/db/models";
 import Cryptr from "cryptr";
 import { enqueueEmail } from "@/mail/sendMail";
 import { EmailTemplates } from "../types";
-import { sendVerifyUserEmail } from "@/mail/emailVerifyUser";
 import { sendVerifySubscriberEmail } from "@/mail/emailVerifySubscriber";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
@@ -43,6 +42,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
     });
     if (subscribers && subscribers.length > 0) {
       if (!subscribers[0].verified) {
+        if (subscribers[0].verify_attempt_left === 0) {
+          return {
+            ok: false,
+            message: "No more attempts left.",
+          };
+        }
         await sendVerifySubscriberEmail({
           template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
           author_id,

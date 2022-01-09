@@ -1,11 +1,23 @@
 import jwt from "jsonwebtoken";
 
-export function getToken(email: string, validityInMins: number = 10) {
+interface GetToken {
+  data: Record<any, any>;
+  validityInMins?: number;
+  algorithm?: string;
+}
+export function getToken({
+  validityInMins = 10,
+  data,
+  algorithm = "",
+}: GetToken) {
   let option = { expiresIn: validityInMins * 60 * 1000 } as any;
   if (validityInMins === 0) {
     option = {};
   }
-  const token = jwt.sign({ email: email }, process.env.SECRET_KEY, option);
+  if (algorithm) {
+    option.algorithm = "HS256";
+  }
+  const token = jwt.sign(data, process.env.SECRET_KEY, option);
   return token;
 }
 

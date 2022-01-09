@@ -46,7 +46,9 @@ export async function getForgotPasswordContent(
     data: template.body.toString(),
   });
 
-  const token = getToken(author.email);
+  const token = getToken({
+    data: { email: author.email },
+  });
   const href = `${process.env.ROOT_URL}/resetPassword?token=${token}`;
 
   const body = bodyTemplate.render({

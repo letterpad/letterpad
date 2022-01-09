@@ -1,5 +1,4 @@
 import { Optional } from "./../../../../shared/types";
-import { settingsData } from "@/graphql/db/models/setting";
 import { SessionData } from "@/graphql/types";
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import {
@@ -9,6 +8,7 @@ import {
 } from "../../importExportTypes";
 import { IGhostDb, IGhostSettings, IImportExportGhostData } from "./types";
 import reading_time from "reading-time";
+import { defaultSettings } from "@/graphql/db/seed/constants";
 
 export function convertGhostToLetterpad(
   data: IImportExportGhostData,
@@ -140,8 +140,10 @@ function getSetting(setting: IGhostSettings[]): IAuthorData["setting"] {
       ghostSettingObj.site_title = item.value;
     }
   });
+
   return {
-    ...settingsData,
+    ...defaultSettings,
+    menu: [...defaultSettings.menu] as any,
     ...ghostSettingObj,
   };
 }

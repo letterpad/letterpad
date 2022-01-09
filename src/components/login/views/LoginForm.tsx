@@ -1,3 +1,4 @@
+import { EventAction, track } from "@/track";
 import { message } from "antd";
 import { useCallback } from "react";
 import { doLogin } from "../actions";
@@ -21,6 +22,11 @@ export const LoginForm = ({
 }) => {
   const loginAction = useCallback(async () => {
     const result = await doLogin({ email, password });
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: "login",
+      eventLabel: `User logged in`,
+    });
     if (result.success && result.redirectUrl) {
       message.success({ key, content: result.message, duration: 5 });
       document.location.href = result.redirectUrl;

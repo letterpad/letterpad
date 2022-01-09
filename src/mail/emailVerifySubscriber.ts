@@ -48,7 +48,9 @@ export async function getVerifySubscriberEmailContent(
     data: template.body.toString(),
   });
 
-  const token = getToken(data.subscriber_email);
+  const token = getToken({
+    data: { email: data.subscriber_email },
+  });
   const href = `${process.env.ROOT_URL}/api/verify?token=${token}&subscriber=1`;
 
   const body = bodyTemplate.render({

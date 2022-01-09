@@ -1,26 +1,26 @@
-import jwt from "jsonwebtoken";
 import {
   MutationResolvers,
   InputAuthor,
   PostStatusOptions,
   PostTypes,
   QueryResolvers,
-  Social,
   Author as AuthorType,
+  InputCreateAuthor,
+  SettingInputType,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "../apollo";
 import models from "@/graphql/db/models";
 import bcrypt from "bcryptjs";
-import { settingsData } from "@/graphql/db/models/setting";
 import { validateCaptcha } from "./helpers";
 import generatePost from "@/graphql/db/seed/contentGenerator";
 import siteConfig from "config/site.config";
-import { seed } from "@/graphql/db/seed/seed";
-import { decodeToken, verifyToken } from "@/shared/token";
+import { createAdmin, seed } from "@/graphql/db/seed/seed";
+import { decodeToken, getToken, verifyToken } from "@/shared/token";
 import { EmailTemplates, ROLES } from "../types";
 import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
 import { enqueueEmail } from "@/mail/sendMail";
+import { defaultSettings } from "../db/seed/constants";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -99,46 +99,34 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (!dbSeeded) {
       logger.debug("Database not seeded. Seeding now.");
       await seed(models, false);
-      await createAuthor({
-        email: "admin@xxx.com",
-        username: "admin",
-        rolename: ROLES.ADMIN,
-        site_title: "",
-        verified: true,
-        password: "admin",
-        name: "Admin",
-      });
+      await createAdmin();
     }
 
-    let author = await models.Author.findOne({
+    const authorExistData = await models.Author.findOne({
       where: { email: args.data?.email },
     });
 
-    if (author) {
+    if (authorExistData) {
       return {
         __typename: "CreateAuthorError",
         message: "Author already exist",
       };
     }
 
-    author = await models.Author.findOne({
+    const usernameExist = await models.Author.findOne({
       where: { username: args.data?.username },
     });
 
-    if (author) {
+    if (usernameExist) {
       return {
         __typename: "CreateAuthorError",
         message: "Username already exist",
       };
     }
 
-    const newAuthor = await createAuthor({
-      email: args.data.email,
-      username: args.data.username,
-      site_title: args.data.site_title || "",
-      password: args.data.password,
-      name: args.data.name,
-    });
+    const { setting = {}, ...authorData } = args.data;
+
+    const newAuthor = await createAuthorWithSettings(authorData, setting);
 
     if (newAuthor) {
       const { post, page } = getWelcomePostAndPage();
@@ -186,7 +174,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
           __typename: "LoginError",
           message: "Incorrect credentials",
         };
-
       try {
         return {
           __typename: "Author",
@@ -249,6 +236,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
       });
       if (!author) {
         throw new Error("Email does not exist");
+      }
+      if (author.verified_attempt_left === 0) {
+        throw new Error("No more attempts left.");
       }
       await enqueueEmail({
         template_id: EmailTemplates.FORGOT_PASSWORD,
@@ -361,64 +351,36 @@ async function isDatabaseSeeded(): Promise<boolean> {
   return false;
 }
 
-interface ICreateAuthor {
-  email: string;
-  name: string;
-  username: string;
-  rolename?: ROLES;
-  verified?: boolean;
-  password: string;
-  site_title: string;
-  bio?: string;
-  avatar?: string;
-  social?: Social;
-}
-
-export async function createAuthor({
-  email,
-  name,
-  username,
-  rolename = ROLES.AUTHOR,
-  verified = false,
-  password,
-  site_title,
-  bio = "",
-  avatar = "",
-  social = {
-    twitter: "",
-    facebook: "",
-    github: "",
-    instagram: "",
-  },
-}: ICreateAuthor) {
+export async function createAuthorWithSettings(
+  data: InputCreateAuthor,
+  setting: SettingInputType,
+  rolename: ROLES = ROLES.AUTHOR,
+) {
+  const { token, ...authorData } = data;
   const role = await models.Role.findOne({ where: { name: rolename } });
   const author = await models.Author.create({
-    name,
-    bio,
-    username,
-    verified,
-    email,
-    password: bcrypt.hashSync(password, 12),
-    avatar,
-    social: social,
+    ...authorData,
+    avatar: "",
+    verified: false,
+    bio: "",
+    social: {
+      twitter: "",
+      facebook: "",
+      github: "",
+      instagram: "",
+    },
+    password: bcrypt.hashSync(data.password, 12),
   });
   if (author && role) {
     author.setRole(role);
-    const setting = await models.Setting.create({
-      ...settingsData,
-      site_url: `https://${username}.letterpad.app`,
-      site_title,
-      client_token: jwt.sign(
-        {
-          id: author.id,
-        },
-        process.env.SECRET_KEY,
-        {
-          algorithm: "HS256",
-        },
-      ),
+    const newSettingRecord = await models.Setting.create({
+      ...defaultSettings,
+      menu: defaultSettings.menu as any,
+      site_url: `https://${data.username}.letterpad.app`,
+      ...setting,
+      client_token: getToken({ data: { id: author.id }, algorithm: "HS256" }),
     });
-    author.setSetting(setting);
+    await author.setSetting(newSettingRecord);
   }
   return author;
 }

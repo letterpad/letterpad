@@ -6,6 +6,7 @@ export interface SubscribersAttributes {
   email: string;
   author_id: number;
   verified: boolean;
+  verify_attempt_left: number;
 }
 
 export interface SubscribersCreationAttributes
@@ -19,6 +20,7 @@ export class Subscribers
   public email!: string;
   public author_id!: number;
   public verified!: boolean;
+  public verify_attempt_left!: number;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -44,6 +46,10 @@ export default function initSubscribers(sequelize) {
       },
       verified: {
         type: DataTypes.BOOLEAN,
+      },
+      verify_attempt_left: {
+        type: DataTypes.INTEGER,
+        defaultValue: 3,
       },
     },
     {

@@ -31,7 +31,6 @@ const providers = (req: NextApiRequest) => [
           },
         },
       });
-
       if (result.data?.login?.__typename === "Author") {
         return {
           ...result.data.login,
@@ -40,14 +39,12 @@ const providers = (req: NextApiRequest) => [
       }
 
       if (result.data?.login?.__typename === "LoginError") {
-        return result.data.login;
+        throw Error(result.data.login.message);
       }
 
-      return {
-        __typename: "LoginError",
-        message:
-          "We are facing issues logging you in. Please try after sometime",
-      };
+      throw Error(
+        "We are facing issues logging you in. Please try after sometime",
+      );
     },
   }),
 ];

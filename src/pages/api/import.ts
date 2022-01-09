@@ -11,9 +11,9 @@ import {
   ITagSanitized,
 } from "./importExportTypes";
 
-import jwt from "jsonwebtoken";
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
 import { Post } from "@/graphql/db/models/post";
+import { getToken } from "@/shared/token";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -103,15 +103,10 @@ async function startImport(
 
     await removeUserData(author);
 
-    authorsData.setting.client_token = jwt.sign(
-      {
-        id: author.id,
-      },
-      process.env.SECRET_KEY,
-      {
-        algorithm: "HS256",
-      },
-    );
+    authorsData.setting.client_token = getToken({
+      data: { id: author.id },
+      algorithm: "HS256",
+    });
     await author.createSetting(authorsData.setting);
 
     await Promise.all([

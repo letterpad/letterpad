@@ -6,11 +6,12 @@ import path from "path";
 import posts from "./posts";
 import { promisify } from "util";
 import rimraf from "rimraf";
-import { createAuthor } from "../../../graphql/resolvers/author";
 import { EmailTemplates, ROLES } from "../../../graphql/types";
 import { toSlug } from "@/graphql/resolvers/helpers";
 import fs from "fs";
-import { subjects } from "./constants";
+import { defaultSettings, subjects } from "./constants";
+import { createAuthorWithSettings } from "@/graphql/resolvers/author";
+import { getToken } from "@/shared/token";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -64,7 +65,7 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
 
   await Promise.all([...posts.map((post) => insertPost(post, models, tags))]);
   await insertMedia();
-  console.timeEnd("insert posts, settings, media");
+  console.timeEnd("insert posts, media");
 
   console.time("insert emails");
   await insertEmails();
@@ -126,35 +127,41 @@ export async function insertRolePermData(models: typeof dbModels) {
 }
 
 export async function insertAuthor() {
-  const adminAuthor = createAuthor({
-    name: "Admin",
-    email: "admin@admin.com",
-    username: "admin",
-    password: "admin",
-    site_title: "Admin Account",
-    verified: true,
-    rolename: ROLES.ADMIN,
-  });
+  const adminAuthor = await createAuthorWithSettings(
+    {
+      name: "Admin",
+      email: "admin@admin.com",
+      username: "admin",
+      password: "admin",
+      token: "",
+    },
+    { site_title: "Admin Account" },
+    ROLES.ADMIN,
+  );
+  await adminAuthor.update({ verified: true });
 
-  const demoAuthor = createAuthor({
-    name: "Demo Author",
-    email: "demo@demo.com",
-    username: "demo",
-    password: "demo",
-    site_title: "Demo Account",
+  const demoAuthor = await createAuthorWithSettings(
+    {
+      name: "Demo Author",
+      email: "demo@demo.com",
+      username: "demo",
+      password: "demo",
+      token: "",
+    },
+    { site_title: "Demo Account", site_tagline: "Hello, I am letterpad" },
+  );
+  await demoAuthor.update({
+    verified: true,
     social: {
       twitter: "https://twitter.com",
       facebook: "https://facebook.com",
       github: "https://github.com",
       instagram: "https://instagram.com",
     },
-    verified: true,
     bio: "You can some information about yourself for the world to know you a little better.",
     avatar:
       "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
-    rolename: ROLES.AUTHOR,
   });
-
   return Promise.all([adminAuthor, demoAuthor]);
 }
 
@@ -185,9 +192,8 @@ export async function insertPost(params, models: typeof dbModels, tags) {
   let author = await models.Author.findOne({
     where: { email: "demo@demo.com" },
   });
-  const title =
-    params.type === "post" ? "Welcome to Letterpad" : "Letterpad Typography";
-  const slug = toSlug(title);
+
+  const slug = toSlug(params.title);
   let post = await models.Post.create({
     title: params.title,
     html: html,
@@ -255,7 +261,7 @@ export const getDateTime = (d?: Date) => {
 
 async function insertEmails() {
   const verifyNewUserEmail = fs.readFileSync(
-    "./email-templates/verifyNewUser.twig",
+    path.join(__dirname, "email-templates/verifyNewUser.twig"),
   );
   await models.Email.create({
     template_id: EmailTemplates.VERIFY_NEW_USER,
@@ -264,7 +270,7 @@ async function insertEmails() {
   });
 
   const verifyNewSubscriberEmail = fs.readFileSync(
-    "./email-templates/verifyNewSubscriber.twig",
+    path.join(__dirname, "email-templates/verifyNewSubscriber.twig"),
   );
   await models.Email.create({
     template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
@@ -273,7 +279,7 @@ async function insertEmails() {
   });
 
   const forgotPasswordEmail = fs.readFileSync(
-    "./email-templates/forgotPassword.twig",
+    path.join(__dirname, "email-templates/forgotPassword.twig"),
   );
   await models.Email.create({
     template_id: EmailTemplates.FORGOT_PASSWORD,
@@ -281,10 +287,45 @@ async function insertEmails() {
     body: forgotPasswordEmail.toString(),
   });
 
-  const newPostEmail = fs.readFileSync("./email-templates/newPost.twig");
+  const newPostEmail = fs.readFileSync(
+    path.join(__dirname, "email-templates/newPost.twig"),
+  );
   await models.Email.create({
     template_id: EmailTemplates.NEW_POST,
     subject: subjects.NEW_POST,
     body: newPostEmail.toString(),
   });
+}
+
+export async function createAdmin() {
+  const author = await models.Author.create({
+    email: "admin@xxx.com",
+    username: "admin",
+    verified: true,
+    password: "admin",
+    name: "Admin",
+    bio: "",
+    avatar: "",
+    social: {
+      twitter: "",
+      facebook: "",
+      github: "",
+      instagram: "",
+    },
+  });
+  if (author) {
+    const role = await models.Role.findOne({
+      where: { name: ROLES.ADMIN },
+    });
+    if (role) {
+      await author.setRole(role.id);
+    }
+    const setting = await models.Setting.create({
+      ...defaultSettings,
+      site_url: `https://${author.username}.letterpad.app`,
+      site_title: "Admin Account",
+      client_token: getToken({ data: { id: author.id }, algorithm: "H256" }),
+    });
+    await author.setSetting(setting);
+  }
 }

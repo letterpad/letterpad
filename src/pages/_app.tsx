@@ -14,6 +14,7 @@ import withApolloProvider from "@/hoc/withApolloProvider";
 import { useSettingsQuery } from "@/__generated__/queries/queries.graphql";
 import withSessionProvider from "@/hoc/withSessionProvider";
 import { useTracking } from "@/hooks/usetracking";
+import { LetterpadProvider } from "@/context/LetterpadProvider";
 
 type Props = AppProps & {
   Component: Page;
@@ -56,12 +57,14 @@ function MyApp({ Component, pageProps }: Props) {
   }
 
   return (
-    <Main
-      Component={Component}
-      Layout={Layout}
-      props={{ ...pageProps }}
-      settings={data.settings}
-    />
+    <LetterpadProvider value={data.settings}>
+      <Main
+        Component={Component}
+        Layout={Layout}
+        props={{ ...pageProps }}
+        settings={data.settings}
+      />
+    </LetterpadProvider>
   );
 }
 
