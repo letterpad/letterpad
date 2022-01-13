@@ -36,7 +36,7 @@ export interface AuthorAttributes {
   avatar: string;
   social: Social;
   verified: boolean;
-  verified_attempt_left?: number;
+  verify_attempt_left?: number;
   username: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -63,7 +63,7 @@ export class Author
   public permissions!: GraqhqlPermissions[];
   public role_id!: number;
   public setting_id!: number;
-  public verified_attempt_left!: number;
+  public verify_attempt_left!: number;
   // timestamps!
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -152,7 +152,7 @@ export default function initAuthor(sequelize: Sequelize) {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
-      verified_attempt_left: {
+      verify_attempt_left: {
         type: DataTypes.INTEGER,
         defaultValue: 3,
       },
