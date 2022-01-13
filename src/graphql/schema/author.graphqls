@@ -43,7 +43,7 @@ input InputAuthor {
 
 input InputCreateAuthor {
   email: String!
-  site_title: String!
+  setting: SettingInputType
   name: String!
   username: String!
   password: String!

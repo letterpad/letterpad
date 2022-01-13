@@ -1,6 +1,6 @@
 import { UpdateOptionsDocument } from "./../../../__generated__/src/graphql/queries/mutations.graphql";
 import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
-import models from "../db/models";
+import models from "@/graphql/db/models";
 import { API } from "./../../../tests/testClient";
 
 describe("Test Settings Graphql API", () => {

@@ -1,30 +1,30 @@
 export default [
   {
-    title: "Welcome post",
+    title: "Another sunny day",
     type: "post",
     status: "published",
     cover_image:
-      "https://images.unsplash.com/photo-1485487656106-d6aa01db3271?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2812&q=80",
+      "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDEzfHxzcGFjZXxlbnwwfHx8fDE2NDAwMTU0OTU&ixlib=rb-1.2.1&q=80&w=1080",
     cover_image_width: 1500,
     cover_image_height: 900,
     html_draft: "",
   },
   {
-    title: "Welcome post 2",
+    title: "A walk through time",
     type: "post",
     status: "published",
     cover_image:
-      "https://images.unsplash.com/photo-1508341421810-36b8fc06075b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2867&q=80",
+      "https://images.unsplash.com/photo-1497294815431-9365093b7331?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDM1fHxzcGFjZXxlbnwwfHx8fDE2NDAwMTU4MjU&ixlib=rb-1.2.1&q=80&w=1080",
     cover_image_width: 1500,
     cover_image_height: 900,
     html_draft: "",
   },
   {
-    title: "Welcome post 3",
+    title: "Magical moments",
     type: "post",
     status: "published",
     cover_image:
-      "https://images.unsplash.com/photo-1541372988432-74d8177a3944?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2944&q=80",
+      "https://images.unsplash.com/photo-1538370965046-79c0d6907d47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDYyfHxzcGFjZXxlbnwwfHx8fDE2NDAwMTU4MzM&ixlib=rb-1.2.1&q=80&w=1080",
     cover_image_width: 1500,
     cover_image_height: 900,
     html_draft: "",

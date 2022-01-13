@@ -5,9 +5,8 @@ import {
 import React, { useState } from "react";
 import Head from "next/head";
 import {
-  CreateAuthorMutation,
-  CreateAuthorMutationVariables,
   CreateAuthorDocument,
+  useCreateAuthorMutation,
 } from "@/__generated__/queries/mutations.graphql";
 import { useRouter } from "next/router";
 
@@ -19,7 +18,7 @@ import {
   Row,
 } from "@/components/login/login.css";
 import { message } from "antd";
-import { getApolloClient } from "@/graphql/apollo";
+import { EventAction, track } from "@/track";
 
 const key = "register";
 const fields = {
@@ -32,7 +31,7 @@ const fields = {
 
 const RegisterForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
-
+  const [createAuthor] = useCreateAuthorMutation();
   const [form, setForm] = useState(fields);
 
   const [errors, setErrors] = useState(fields);
@@ -62,12 +61,27 @@ const RegisterForm = () => {
     });
     if (executeRecaptcha) {
       const token = await executeRecaptcha("register");
-      const formWithToken = { ...form, token };
+      const { site_title, ...authorData } = form;
+      const formWithToken = { ...authorData, token };
 
-      const result = await createAuthor(formWithToken);
-      if (!result?.status) {
-        message.error({ content: result?.message, key, duration: 5 });
+      const result = await createAuthor({
+        mutation: CreateAuthorDocument,
+        variables: {
+          data: {
+            ...formWithToken,
+            setting: { site_title },
+          },
+        },
+      });
+      // const result = await createAuthorWithSettings(formWithToken);
+      if (result.errors?.length) {
+        message.error({ content: result?.errors, key, duration: 5 });
       } else {
+        track({
+          eventAction: EventAction.Click,
+          eventCategory: "register",
+          eventLabel: `success`,
+        });
         message.success({ content: "Succcess", key, duration: 5 });
         router.push("/messages/registered");
       }
@@ -200,32 +214,32 @@ function validate(form: typeof fields) {
   return errors;
 }
 
-async function createAuthor(
-  data,
-): Promise<{ status: boolean; message: string } | null> {
-  const client = await getApolloClient();
+// async function createAuthorWithSettings(
+//   data,
+// ): Promise<{ status: boolean; message: string } | null> {
+//   const client = await getApolloClient();
 
-  const result = await client.mutate<
-    CreateAuthorMutation,
-    CreateAuthorMutationVariables
-  >({
-    mutation: CreateAuthorDocument,
-    variables: {
-      data,
-    },
-  });
+//   const result = await client.mutate<
+//     CreateAuthorMutation,
+//     CreateAuthorMutationVariables
+//   >({
+//     mutation: CreateAuthorDocument,
+//     variables: {
+//       data,
+//     },
+//   });
 
-  if (result.data?.createAuthor?.__typename === "CreateAuthorError") {
-    return {
-      status: false,
-      message: result.data.createAuthor.message,
-    };
-  }
-  if (result.data?.createAuthor?.__typename === "Author") {
-    return {
-      status: true,
-      message: "",
-    };
-  }
-  return null;
-}
+//   if (result.data?.createAuthor?.__typename === "CreateAuthorError") {
+//     return {
+//       status: false,
+//       message: result.data.createAuthor.message,
+//     };
+//   }
+//   if (result.data?.createAuthor?.__typename === "Author") {
+//     return {
+//       status: true,
+//       message: "",
+//     };
+//   }
+//   return null;
+// }

@@ -5,7 +5,7 @@ import {
   MutationResolvers,
   InputTags,
 } from "@/__generated__/__types__";
-import models from "../db/models";
+import models from "@/graphql/db/models";
 
 const Query: QueryResolvers<ResolverContext> = {
   async tag(_root, args, { session, author_id }) {

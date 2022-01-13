@@ -19,19 +19,18 @@ type Setting {
   site_footer: String!
   site_description: String!
   subscribe_embed: String!
-  social_twitter: String!
-  social_facebook: String!
-  social_instagram: String!
-  social_github: String!
+  social_twitter: String
+  social_facebook: String
+  social_instagram: String
+  social_github: String
   displayAuthorInfo: Boolean!
-  cloudinary_key: String!
-  cloudinary_name: String!
-  cloudinary_secret: String!
+  cloudinary_key: String
+  cloudinary_name: String
+  cloudinary_secret: String
   menu: [Navigation!]!
-  css: String!
-  google_analytics: String!
+  css: String
+  google_analytics: String
   theme: String!
-  disqus_id: String
   banner: Image!
   site_logo: Image!
   site_favicon: Image!
@@ -39,10 +38,10 @@ type Setting {
 }
 
 input InputNavigation {
-  type: NavigationType
-  slug: String
-  original_name: String
-  label: String
+  type: NavigationType!
+  slug: String!
+  original_name: String!
+  label: String!
 }
 
 input InputImage {
@@ -51,7 +50,7 @@ input InputImage {
   height: Int
 }
 
-input OptionInputType {
+input SettingInputType {
   site_title: String
   site_tagline: String
   site_email: String
@@ -71,7 +70,6 @@ input OptionInputType {
   css: String
   google_analytics: String
   theme: String
-  disqus_id: String
   banner: InputImage
   site_logo: InputImage
   site_favicon: InputImage
@@ -88,5 +86,5 @@ type Query {
 }
 
 type Mutation {
-  updateOptions(options: [OptionInputType!]!): Setting
+  updateOptions(options: [SettingInputType!]!): Setting
 }

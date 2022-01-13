@@ -1,0 +1,16 @@
+type Email {
+  template_id: String!
+  body: String!
+  subject: String!
+}
+
+type EmailError implements LetterpadError {
+  message: String!
+}
+
+union EmailResponse = Email | EmailError
+
+type Query {
+  email(template_id: String): EmailResponse!
+  emails: [Email]!
+}

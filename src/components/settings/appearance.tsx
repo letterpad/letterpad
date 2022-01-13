@@ -1,5 +1,5 @@
-import { OptionInputType, Setting } from "@/__generated__/__types__";
-import { Collapse, Form, Input } from "antd";
+import { SettingInputType, Setting } from "@/__generated__/__types__";
+import { Collapse, Form } from "antd";
 import ImageUpload from "../ImageUpload";
 import Editor from "react-simple-code-editor";
 
@@ -17,8 +17,8 @@ type ValueOf<T> = T[keyof T];
 interface Props {
   settings: Setting;
   onChange: (
-    key: keyof OptionInputType,
-    value: ValueOf<OptionInputType>,
+    key: keyof SettingInputType,
+    value: ValueOf<SettingInputType>,
   ) => void;
 }
 const Appearance: React.FC<Props> = ({ settings, onChange }) => {
@@ -74,7 +74,7 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
                   /> */}
           <div id="css-editor">
             <Editor
-              value={settings.css}
+              value={settings.css ?? ""}
               onValueChange={(code) => {
                 onChange("css", code);
               }}

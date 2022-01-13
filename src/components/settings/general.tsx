@@ -1,4 +1,4 @@
-import { OptionInputType, Setting } from "@/__generated__/__types__";
+import { SettingInputType, Setting } from "@/__generated__/__types__";
 import { Collapse, Form, Input } from "antd";
 const { Panel } = Collapse;
 
@@ -8,8 +8,8 @@ interface Props {
   settings: Setting;
   updateSettings: () => void;
   onChange: (
-    key: keyof OptionInputType,
-    value: ValueOf<OptionInputType>,
+    key: keyof SettingInputType,
+    value: ValueOf<SettingInputType>,
   ) => void;
 }
 const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {

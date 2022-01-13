@@ -1,28 +1,19 @@
-import sgMail from "@sendgrid/mail";
-import logger from "src/shared/logger";
-if (process.env.SENDGRID_API_KEY) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-}
+import { EmailProps, EmailTemplates } from "@/graphql/types";
 
-export enum Subjects {
-  VERIFY_EMAIL = "Verify Email",
-  FORGOT_PASSWORD = "Forgot Password ?",
-}
+import { getVerifyUserEmailContent } from "./emailVerifyUser";
+import { getForgotPasswordContent } from "./emailForgotPassword";
+import { getNewPostContent } from "./emailNewPost";
+import { getVerifySubscriberEmailContent } from "./emailVerifySubscriber";
 
-interface Mail {
-  to: string;
-  subject: Subjects;
-  html: string;
-  from?: string;
-}
-
-export default async function sendMail(data: Mail) {
-  try {
-    return await sgMail.send({
-      from: "letterpad@ajaxtown.com",
-      ...data,
-    });
-  } catch (e) {
-    logger.error("Could not send mail");
+export async function getEmailTemplate(props: EmailProps) {
+  switch (props.template_id) {
+    case EmailTemplates.FORGOT_PASSWORD:
+      return await getForgotPasswordContent(props);
+    case EmailTemplates.NEW_POST:
+      return await getNewPostContent(props);
+    case EmailTemplates.VERIFY_NEW_SUBSCRIBER:
+      return await getVerifySubscriberEmailContent(props);
+    case EmailTemplates.VERIFY_NEW_USER:
+      return await getVerifyUserEmailContent(props);
   }
 }

@@ -1,5 +1,6 @@
 import { getApolloClient } from "@/graphql/apollo";
 import { IMediaUploadResult } from "@/graphql/types";
+
 import {
   SettingsDocument,
   SettingsQuery,

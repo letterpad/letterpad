@@ -5,7 +5,7 @@ import {
 } from "@/__generated__/__types__";
 import { Op, Order } from "sequelize";
 import { ResolverContext } from "../apollo";
-import models from "../db/models";
+import models from "@/graphql/db/models";
 
 interface IMediaConditions {
   limit: number;

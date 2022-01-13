@@ -1,4 +1,5 @@
-import { mdToHtml } from "../../../shared/converter";
+import { mdToHtml } from "@/shared/converter";
+import { NavigationType } from "@/__generated__/__types__";
 
 export default function generatePost(type) {
   const post = {
@@ -127,3 +128,18 @@ You can wrap [certain text with link](http://google.com) or just have the url [h
 
 `;
 }
+
+export const menu = [
+  {
+    label: "home",
+    original_name: "home",
+    slug: "home",
+    type: NavigationType.Tag,
+  },
+  {
+    label: "Page",
+    original_name: "Page",
+    slug: "letterpad-typography",
+    type: NavigationType.Page,
+  },
+];

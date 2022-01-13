@@ -10,6 +10,15 @@ declare global {
       SECRET_KEY: string;
       RECAPTCHA_KEY: string;
       SENDGRID_API_KEY: string;
+      MJ_APIKEY_PUBLIC: string;
+      MJ_APIKEY_PRIVATE: string;
+      DB_HOST: string;
+      DB_USER: string;
+      DB_PASSWORD: string;
+      DB_PORT: number;
+      DB_NAME: string;
+      SENTRY_AUTH_TOKEN?: string;
+      SENTRY_DSN?: string;
     }
   }
 }

@@ -3,7 +3,7 @@ import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
-import { Setting, OptionInputType } from "@/__generated__/__types__";
+import { Setting, SettingInputType } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
 
 import Head from "next/head";
@@ -20,7 +20,7 @@ type ValueOf<T> = T[keyof T];
 
 function Settings(props: { settings: Setting }) {
   const [settings, setSettings] = useState(props.settings);
-  const [draft, setDraft] = useState<OptionInputType>({});
+  const [draft, setDraft] = useState<SettingInputType>({});
   const [settingsMutation] = useUpdateOptionsMutation();
 
   const updateSettings = async () => {
@@ -35,8 +35,8 @@ function Settings(props: { settings: Setting }) {
   }, [Object.keys(draft)]);
 
   const onChange = (
-    key: keyof OptionInputType,
-    value: ValueOf<OptionInputType>,
+    key: keyof SettingInputType,
+    value: ValueOf<SettingInputType>,
   ) => {
     setSettings({ ...settings, [key]: value });
     setDraft({ [key]: value });

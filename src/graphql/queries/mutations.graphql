@@ -41,7 +41,7 @@ mutation DeleteTags($id: Int!) {
   }
 }
 
-mutation CreateAuthor($data: InputCreateAuthor!) {
+mutation createAuthor($data: InputCreateAuthor!) {
   createAuthor(data: $data) {
     ... on Author {
       name
@@ -52,7 +52,7 @@ mutation CreateAuthor($data: InputCreateAuthor!) {
   }
 }
 
-mutation UpdateOptions($options: [OptionInputType!]!) {
+mutation UpdateOptions($options: [SettingInputType!]!) {
   updateOptions(options: $options) {
     site_title
     site_tagline
@@ -78,7 +78,6 @@ mutation UpdateOptions($options: [OptionInputType!]!) {
     css
     google_analytics
     theme
-    disqus_id
     banner {
       src
       width
@@ -173,6 +172,13 @@ mutation UpdateMedia($data: InputUpdateMedia!) {
     ... on MediaError {
       message
     }
+  }
+}
+
+mutation UpdateSubscriber($data: InputUpdateSubscriber!) {
+  updateSubscriber(data: $data) {
+    ok
+    message
   }
 }
 

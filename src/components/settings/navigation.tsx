@@ -1,4 +1,4 @@
-import { OptionInputType, Setting } from "@/__generated__/__types__";
+import { SettingInputType, Setting } from "@/__generated__/__types__";
 import { Collapse } from "antd";
 import NavigationBuilder from "../navigation-builder";
 const { Panel } = Collapse;
@@ -8,8 +8,8 @@ type ValueOf<T> = T[keyof T];
 interface Props {
   settings: Setting;
   onChange: (
-    key: keyof OptionInputType,
-    value: ValueOf<OptionInputType>,
+    key: keyof SettingInputType,
+    value: ValueOf<SettingInputType>,
   ) => void;
 }
 const Navigation: React.FC<Props> = ({ settings, onChange }) => {

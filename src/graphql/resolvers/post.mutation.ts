@@ -3,7 +3,7 @@ import {
   PostStatusOptions,
   PostTypes,
 } from "@/__generated__/__types__";
-import { PostAttributes } from "../db/models/post";
+import { PostAttributes } from "@/graphql/db/models/post";
 import { ResolverContext } from "../apollo";
 import reading_time from "reading-time";
 import {
@@ -12,9 +12,11 @@ import {
   setImageWidthAndHeightInHtml,
   toSlug,
 } from "./helpers";
-import logger from "./../../shared/logger";
-import models from "../db/models";
-import { getDateTime } from "./../../shared/utils";
+import logger from "@/shared/logger";
+import models from "@/graphql/db/models";
+import { getDateTime } from "@/shared/utils";
+import { enqueueEmail } from "@/mail/sendMail";
+import { EmailTemplates } from "@/graphql/types";
 
 export const slugOfUntitledPost = "untitled";
 
@@ -266,7 +268,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
       await models.Post.update(dataToUpdate, {
         where: { id: args.data.id },
       });
-
+      if (dataToUpdate.status === PostStatusOptions.Published) {
+        await enqueueEmail({
+          template_id: EmailTemplates.NEW_POST,
+          post_id: args.data.id,
+        });
+      }
       const post = await models.Post.findOne({
         where: { id: args.data.id },
       });

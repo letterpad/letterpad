@@ -1,5 +1,5 @@
 import { NextApiRequest } from "next";
-import { Author, Post } from "@/__generated__/__types__";
+import { Author, Post, Setting } from "@/__generated__/__types__";
 
 export enum ROLES {
   ADMIN = "ADMIN",
@@ -77,3 +77,60 @@ interface IProcessEnv {
 declare namespace NodeJS {
   export interface ProcessEnv extends IProcessEnv {}
 }
+
+export enum EmailTemplates {
+  VERIFY_NEW_USER = "VERIFY_NEW_USER",
+  VERIFY_NEW_SUBSCRIBER = "VERIFY_NEW_SUBSCRIBER",
+  FORGOT_PASSWORD = "FORGOT_PASSWORD",
+  NEW_POST = "NEW_POST",
+}
+
+export interface EmailVerifyNewUserProps {
+  author_id: number;
+  template_id: EmailTemplates.VERIFY_NEW_USER;
+}
+
+export interface EmailVerifyNewSubscriberProps {
+  author_id: number;
+  subscriber_email: string;
+  template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER;
+}
+
+export interface EmailNewPostProps {
+  post_id: number;
+  template_id: EmailTemplates.NEW_POST;
+}
+
+export interface EmailForgotPasswordProps {
+  author_id: number;
+  template_id: EmailTemplates.FORGOT_PASSWORD;
+}
+
+export type EmailProps =
+  | EmailVerifyNewUserProps
+  | EmailVerifyNewSubscriberProps
+  | EmailNewPostProps
+  | EmailForgotPasswordProps;
+
+export interface Mail {
+  to: string | string[];
+  subject: string;
+  html: string;
+}
+
+export interface EmailTemplateMeta {
+  setting: Setting;
+  author: Author;
+}
+
+export interface EmailTemplateSuccess {
+  ok: true;
+  content: Mail;
+  meta: EmailTemplateMeta;
+}
+interface EmailTemplateError {
+  ok: false;
+  message: string;
+}
+
+export type EmailTemplateResponse = EmailTemplateSuccess | EmailTemplateError;

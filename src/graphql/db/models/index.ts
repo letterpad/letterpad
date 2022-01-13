@@ -1,12 +1,18 @@
 import Author, { associateAuthor } from "./author";
 import Media, { associateMedia } from "./media";
 import Permission, { associatePermission } from "./permission";
+import EmailDelivery from "./emailDelivery";
 import Post, { associatePost } from "./post";
 import Role, { associateRole } from "./role";
 import { Sequelize } from "sequelize";
 import Setting from "./setting";
 import Tags, { associateTags } from "./tags";
 import dbConfig from "../../../../config/db.config";
+import Subscribers, { associateSubscribers } from "./subscriber";
+import SubscribersDelivery, {
+  associateSubscribersDelivery,
+} from "./subscribersDelivery";
+import Email, { associateEmail } from "./email";
 
 enum envs {
   development = "development",
@@ -37,10 +43,14 @@ export const modelsMap = {
   Tags: Tags(conn),
   Setting: Setting(conn),
   Media: Media(conn),
+  Email: Email(conn),
   Post: Post(conn),
   Author: Author(conn),
   Role: Role(conn),
   Permission: Permission(conn),
+  Subscribers: Subscribers(conn),
+  SubscribersDelivery: SubscribersDelivery(conn),
+  EmailDelivery: EmailDelivery(conn),
 };
 
 associateTags();
@@ -49,6 +59,9 @@ associateAuthor();
 associateRole();
 associatePermission();
 associateMedia();
+associateSubscribers();
+associateSubscribersDelivery();
+associateEmail();
 
 const models = { Sequelize: Sequelize, sequelize: conn, ...modelsMap };
 

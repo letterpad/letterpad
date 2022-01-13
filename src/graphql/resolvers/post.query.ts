@@ -1,5 +1,5 @@
 import { setResponsiveImages } from "./../utils/imageAttributs";
-import { PostAttributes } from "../db/models/post";
+import { PostAttributes } from "@/graphql/db/models/post";
 import { Op, Order } from "sequelize";
 import {
   Permissions,
@@ -11,10 +11,10 @@ import {
 } from "@/__generated__/__types__";
 import { ResolverContext } from "../apollo";
 import { decrypt } from "../utils/crypto";
-import models from "../db/models";
+import models from "@/graphql/db/models";
 import logger from "./../../shared/logger";
 import debug from "debug";
-import { mdToHtml } from "../../shared/converter";
+import { mdToHtml } from "@/shared/converter";
 
 interface IPostCondition {
   conditions: {

@@ -70,8 +70,6 @@ export default async (
   const { cloudinary_key, cloudinary_name, cloudinary_secret } =
     settings.data.settings;
 
-  const cdnEnabled = cloudinary_key && cloudinary_name && cloudinary_secret;
-
   logger.debug(`Received ${files.length} file/s to upload`);
 
   const output: IMediaUploadResult[] = [];
@@ -90,8 +88,7 @@ export default async (
       const uploadPath = uploadDir + filename;
       try {
         let result: IMediaUploadResult;
-        if (cdnEnabled) {
-          console.log("cdnEnabled :>> ", cdnEnabled);
+        if (cloudinary_key && cloudinary_name && cloudinary_secret) {
           result = await uploadToCloudinary(file, uploadPath, {
             api_key: cloudinary_key,
             cloud_name: cloudinary_name,

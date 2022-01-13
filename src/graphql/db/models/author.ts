@@ -23,6 +23,8 @@ import {
 } from "@/__generated__/__types__";
 import { Setting } from "./setting";
 import { Tags } from "./tags";
+import { Subscribers } from "./subscriber";
+import { EmailDelivery } from "./emailDelivery";
 
 // These are all the attributes in the User model
 export interface AuthorAttributes {
@@ -34,6 +36,7 @@ export interface AuthorAttributes {
   avatar: string;
   social: Social;
   verified: boolean;
+  verified_attempt_left?: number;
   username: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -60,7 +63,7 @@ export class Author
   public permissions!: GraqhqlPermissions[];
   public role_id!: number;
   public setting_id!: number;
-
+  public verified_attempt_left!: number;
   // timestamps!
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -92,6 +95,10 @@ export class Author
   public getSetting!: HasOneGetAssociationMixin<Setting>;
   public setSetting!: HasOneSetAssociationMixin<Setting, number>;
 
+  public getSubscribers!: HasManyGetAssociationsMixin<Subscribers>;
+  public hasSubscriber!: HasManyHasAssociationMixin<Subscribers, number>;
+  public addSubscriber!: HasOneSetAssociationMixin<Subscribers, number>;
+  public createSubscriber!: HasManyCreateAssociationMixin<Subscribers>;
   // You can also pre-declare possible inclusions, these will only be populated if you
   // actively include a relation.
   public readonly posts?: Post[]; // Note this is optional since it's only populated when explicitly requested in code
@@ -145,6 +152,10 @@ export default function initAuthor(sequelize: Sequelize) {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      verified_attempt_left: {
+        type: DataTypes.INTEGER,
+        defaultValue: 3,
+      },
     },
     {
       tableName: "authors",
@@ -166,4 +177,6 @@ export function associateAuthor(): void {
 
   Author.hasMany(Media, { sourceKey: "id", foreignKey: "author_id" });
   Author.hasMany(Tags, { sourceKey: "id", foreignKey: "author_id" });
+  Author.hasMany(Subscribers, { sourceKey: "id", foreignKey: "author_id" });
+  Author.hasMany(EmailDelivery, { sourceKey: "id", foreignKey: "author_id" });
 }

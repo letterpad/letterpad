@@ -1,10 +1,13 @@
-import jwt from "jsonwebtoken";
 import models from "@/graphql/db/models";
 import logger from "./logger";
 import { Context } from "@apollo/client";
-
+import { verifyToken } from "./token";
+import * as Sentry from "@sentry/nextjs";
 const authHeaderPrefix = "Basic ";
 
+const printOnce = {
+  env: 0,
+};
 export default async (context: Context) => {
   const authHeader = context.req?.headers.authorization || "";
   let author_id;
@@ -24,7 +27,10 @@ export default async (context: Context) => {
       }
     }
     if (process.env.NODE_ENV !== "production") {
-      logger.debug("development mode");
+      if (!printOnce.env) {
+        logger.debug("development mode");
+        printOnce.env = 1;
+      }
       const author = await models.Author.findOne({
         where: { email: "demo@demo.com" },
       });
@@ -33,15 +39,18 @@ export default async (context: Context) => {
       }
     }
   } catch (e) {
-    console.error("Error in getting author_id from request", e);
+    Sentry.captureException(e);
+    logger.error("Error in getting author_id from request", e);
   }
   return author_id;
 };
 
 async function getAuthorFromSubdomain(context) {
   const { identifier } = context.req.headers;
-  logger.debug("Host for checking subdomain - ", identifier);
-  if (identifier && identifier.includes("letterpad.app")) {
+  if (!identifier) {
+    logger.debug("No identifier found - Internal admin request - OK");
+  } else if (identifier.includes("letterpad.app")) {
+    logger.debug("Host for checking subdomain - ", identifier);
     const username = identifier.split(".")[0];
     const author = await models.Author.findOne({
       attributes: ["id"],
@@ -54,7 +63,7 @@ async function getAuthorFromSubdomain(context) {
 
 function getAuthorFromAuthHeader(authHeader: string) {
   const token = authHeader.split(/\s+/).pop() || "";
-  const tokenData = jwt.verify(token, process.env.SECRET_KEY);
+  const tokenData = verifyToken(token);
   logger.debug("Authorisation Header to tokenData  - ", tokenData);
   //@ts-ignore
   return tokenData?.id;
