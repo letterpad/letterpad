@@ -24,7 +24,9 @@ export async function getNewPostContent(
   }
 
   const post = await models.Post.findOne({ where: { id: data.post_id } });
-  const author = await models.Author.findOne({ where: { id: data.post_id } });
+  const author = await models.Author.findOne({
+    where: { id: post?.author_id },
+  });
   const setting = await author?.getSetting();
   const subscribers = await author?.getSubscribers({ where: { verified: 1 } });
 
@@ -34,12 +36,14 @@ export async function getNewPostContent(
       message: `No info found for the current blog.`,
     };
   }
-  if (subscribers && subscribers.length === 0) {
+
+  if (!subscribers || subscribers.length === 0) {
     return {
       ok: false,
       message: `No subscribers for ${setting.site_title}`,
     };
   }
+
   const subjectTemplate = Twig.twig({
     data: template.subject,
   });
@@ -67,7 +71,11 @@ export async function getNewPostContent(
 
   return {
     ok: true,
-    content: { subject, html: addLineBreaks(body), to: author.email },
+    content: {
+      subject,
+      html: addLineBreaks(body),
+      to: subscribers?.map((s) => s.email),
+    },
     meta: {
       setting,
       author,

@@ -41,7 +41,7 @@ export default function SendMail(
             To: [
               {
                 Email: to,
-                Name: data.to,
+                Name: to,
               },
             ],
             Subject: data.subject,
@@ -76,9 +76,10 @@ export async function enqueueEmail(props: EmailProps) {
 
     // TODO - Since we are tracking the email, we should not run it on the main thread. Instead use a child thread or an external service. Lets worry when we are worried.
     const data = await getEmailTemplate(props);
+    console.log("data", data);
     if (data.ok) {
       const response = await SendMail(data.content, data.meta);
-
+      console.log(response);
       if (response && response.length > 0) {
         if (response[0].response.res.statusCode === 200) {
           // update delivery
