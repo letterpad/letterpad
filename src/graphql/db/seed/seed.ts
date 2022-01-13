@@ -322,6 +322,7 @@ export async function createAdmin() {
     }
     const setting = await models.Setting.create({
       ...defaultSettings,
+      menu: defaultSettings.menu as any,
       site_url: `https://${author.username}.letterpad.app`,
       site_title: "Admin Account",
       client_token: getToken({ data: { id: author.id }, algorithm: "H256" }),

@@ -85,7 +85,11 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 const Mutation: MutationResolvers<ResolverContext> = {
   updateOptions: async (_root, args, { session }) => {
-    if (!session?.user.id) return defaultSettings;
+    if (!session?.user.id)
+      return {
+        ...defaultSettings,
+        menu: defaultSettings.menu as any,
+      };
 
     const author = await models.Author.findOne({
       where: { id: session.user.id },
