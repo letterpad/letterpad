@@ -237,7 +237,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       if (!author) {
         throw new Error("Email does not exist");
       }
-      if (author.verified_attempt_left === 0) {
+      if (author.verify_attempt_left === 0) {
         throw new Error("No more attempts left.");
       }
       await enqueueEmail({
