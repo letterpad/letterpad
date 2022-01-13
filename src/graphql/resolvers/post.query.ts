@@ -37,14 +37,18 @@ const Post = {
   author: async ({ id }: PostAttributes) => {
     const post = await models.Post.findOne({ where: { id: id } });
     if (post) {
-      const author = await post.getAuthor();
-      return author.get();
+      const author = await models.Author.findOne({
+        where: { id: post.author_id },
+      });
+
+      return author?.get();
     }
     return {};
   },
   tags: async ({ id }: PostAttributes) => {
     const post = await models.Post.findOne({ where: { id: id } });
     if (post) {
+      // TODO: check why post.getAuthor didnt work
       const tags = await post.getTags();
       return tags.map((tag) => tag.get());
     }

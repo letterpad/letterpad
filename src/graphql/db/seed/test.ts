@@ -11,15 +11,17 @@ try {
   //
 }
 const env = require("node-env-file");
-env(__dirname + "../../../../.env.development.local");
+console.log(__dirname + "../../../../.env.development.local");
+env(__dirname + "/../../../../.env.development.local");
 // const models = require("../models/index").default;
 import models from "../models";
 const { seed } = require("./seed");
 
 (async () => {
-  // await models.sequelize.sync({ force: true });
-  // const post = await models.Post.findOne({ where: { id: 1 } });
-  // if (!post) return;
+  const post = await models.Post.findOne({ where: { id: 29 } });
+  if (!post) return;
+  const a = await post.getAuthor();
+  console.log(a);
   // console.log(post.id);
   // await post.setTags([]);
   // await post.createTags({ slug: "hello", name: "hello" });
@@ -33,12 +35,12 @@ const { seed } = require("./seed");
   //   // console.log("author.social :>> ", author.social);
   // }
 
-  const s = await models.Setting.findOne({
-    raw: true,
-    where: { option: "menu" },
-  });
+  // const s = await models.Setting.findOne({
+  //   raw: true,
+  //   where: { option: "menu" },
+  // });
 
-  console.log("a :>> ", s.get());
+  // console.log("a :>> ", s.get());
 })();
 
 // seed(models).catch(e => {
