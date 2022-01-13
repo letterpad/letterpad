@@ -24,7 +24,7 @@ export async function getNewPostContent(
   }
 
   const post = await models.Post.findOne({ where: { id: data.post_id } });
-  const author = await post?.getAuthor();
+  const author = await models.Author.findOne({ where: { id: data.post_id } });
   const setting = await author?.getSetting();
   const subscribers = await author?.getSubscribers({ where: { verified: 1 } });
 
