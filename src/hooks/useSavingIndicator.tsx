@@ -1,8 +1,4 @@
 import { subscribe } from "@/shared/eventBus";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-
-const antIcon = <LoadingOutlined style={{ fontSize: 14 }} spin />;
 
 import { useState, useEffect } from "react";
 
@@ -21,9 +17,7 @@ export const useSavingIndicator = () => {
   }, []);
 
   const Component = (
-    <div style={{ height: 14 }}>
-      {saving ? <Spin indicator={antIcon} /> : null}
-    </div>
+    <div style={{ height: 14 }}>{saving ? "Saving ..." : null}</div>
   );
 
   return Component;
