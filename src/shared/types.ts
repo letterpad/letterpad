@@ -47,3 +47,5 @@ export enum MediaProvider {
   Unsplash = "unsplash",
   Letterpad = "letterpad",
 }
+
+export type PubSubEvent = "save" | "noop";
