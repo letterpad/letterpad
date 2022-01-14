@@ -8,7 +8,8 @@ declare global {
       ROOT_URL: string;
       PWD: string;
       SECRET_KEY: string;
-      RECAPTCHA_KEY: string;
+      RECAPTCHA_KEY_CLIENT: string;
+      RECAPTCHA_KEY_SERVER: string;
       SENDGRID_API_KEY: string;
       MJ_APIKEY_PUBLIC: string;
       MJ_APIKEY_PRIVATE: string;

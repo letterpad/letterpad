@@ -10,7 +10,7 @@ export function getToken({
   data,
   algorithm = "",
 }: GetToken) {
-  let option = { expiresIn: validityInMins * 60 * 1000 } as any;
+  let option = { expiresIn: validityInMins * 60 } as any;
   if (validityInMins === 0) {
     option = {};
   }

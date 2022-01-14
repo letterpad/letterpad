@@ -10,9 +10,8 @@ const Verify = async (
 ) => {
   try {
     const isValidToken = verifyToken(req.query.token as string);
-
     if (!isValidToken) {
-      return res.send("This link is not valid anymore.");
+      return res.redirect(basePath + "/messages/expired");
     }
     const token = decodeToken(req.query.token as string);
     const isSubscriber = req.query.subscriber;
@@ -29,7 +28,10 @@ const Verify = async (
       );
     }
     if (!update) {
-      throw Error("Either you are already verified or verification failed.");
+      return res.redirect(
+        basePath +
+          "/messages/verified?msg=Either you are already verified or verification failed.",
+      );
     }
     res.redirect(basePath + "/messages/verified");
   } catch (e) {
