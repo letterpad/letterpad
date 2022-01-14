@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Layout, Row } from "antd";
 import withAuthCheck from "@/hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
@@ -5,7 +6,6 @@ import Head from "next/head";
 import Header from "@/components/post/components/header";
 import { usePostContext } from "@/components/post/context";
 import FileExplorer from "@/components/file-explorer";
-
 import Title from "@/components/post/components/title";
 import Editor from "@/components/post/components/editor";
 import { insertImageUrlInEditor } from "@/components/post/helpers";
@@ -16,9 +16,21 @@ function Post() {
   const { post, error, onFileExplorerClose, fileExplorerOpen, helpers } =
     usePostContext() as PostContextType;
 
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (post && post.__typename === "Post") {
+      const content = post.html_draft || post.html;
+      const words = content.split(" ").length;
+      setCount(words);
+    }
+  }, [post]);
+
   if (!post || post.__typename !== "Post") {
     return <ErrorMessage title="Error" description={error} />;
   }
+
+  const content = post.html_draft || post.html;
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -32,7 +44,16 @@ function Post() {
             {post.updatedAt}
           </Row>
           <Title onEnter={() => helpers?.getEditorRef().editor.focus()} />
-          <Editor text={post.html_draft || post.html} />
+          <Editor text={content} />
+          <div
+            style={{
+              position: "fixed",
+              bottom: 10,
+              left: 10,
+            }}
+          >
+            {count} words
+          </div>
           <FileExplorer
             multi={true}
             isVisible={fileExplorerOpen}
