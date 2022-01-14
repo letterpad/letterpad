@@ -14,7 +14,7 @@ export const PostContext = createContext<Partial<PostContextType>>({});
 export const PostProvider: React.FC = ({ children }) => {
   const [updating, setUpdating] = useState(false);
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
-  const { post, error, setPost } = usePost();
+  const { loading, post, error, setPost } = usePost();
   const [helpers, setHelpers] = useState<EditorHelpers>();
 
   const setPostAttribute = async (attrs: Omit<InputUpdatePost, "id">) => {
@@ -33,6 +33,7 @@ export const PostProvider: React.FC = ({ children }) => {
 
   const context: PostContextType = {
     updating,
+    loading,
     setUpdating,
     fileExplorerOpen,
     post,
