@@ -69,6 +69,7 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
     cloudinary_key
     cloudinary_name
     cloudinary_secret
+    intro_dismissed
     menu {
       label
       original_name

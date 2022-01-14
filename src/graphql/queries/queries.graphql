@@ -190,6 +190,7 @@ query settings {
       cloudinary_name
       cloudinary_secret
       client_token
+      intro_dismissed
       menu {
         label
         original_name

@@ -17,7 +17,7 @@ export const useSavingIndicator = () => {
   }, []);
 
   const Component = (
-    <div style={{ height: 14 }}>{saving ? "Saving ..." : null}</div>
+    <div style={{ height: 14 }}>{saving ? "Saving" : null}</div>
   );
 
   return Component;

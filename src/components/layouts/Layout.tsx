@@ -99,9 +99,9 @@ const CustomLayout = ({ children, settings }: IProps) => {
 
         <div
           style={{
-            paddingTop: 20,
-            paddingLeft: 20,
-            paddingRight: 20,
+            padding: 20,
+            paddingTop: 10,
+            paddingBottom: 10,
             display: "flex",
             justifyContent: "space-between",
           }}

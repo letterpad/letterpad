@@ -1,19 +1,25 @@
 import CustomLayout from "@/components/layouts/Layout";
-import Logo from "@/components/Logo";
-import { LetterpadContext } from "@/context/LetterpadProvider";
 import withAuthCheck from "@/hoc/withAuth";
+import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import {
   ContainerOutlined,
   SettingOutlined,
   TagsOutlined,
 } from "@ant-design/icons";
+import { Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import Link from "next/link";
-import { useContext } from "react";
+import { useRouter } from "next/router";
 
 const Home = () => {
-  const settings = useContext(LetterpadContext);
+  const [settingsMutation] = useUpdateOptionsMutation();
+  const router = useRouter();
+  const onDismiss = () => {
+    settingsMutation({ variables: { options: { intro_dismissed: true } } });
+    router.push("/posts");
+  };
+
   return (
     <>
       <Head>
@@ -26,6 +32,7 @@ const Home = () => {
             fontSize: "1rem",
             paddingTop: "10px",
             minHeight: "calc(100vh - 100px)",
+            paddingBottom: 20,
             display: "flex",
             alignItems: "center",
             flexDirection: "column",
@@ -36,9 +43,9 @@ const Home = () => {
           <div style={{ width: 500, margin: "auto" }}>
             <p>Hi There 👋 ,</p>
             <p>
-              Since this is your first time login, this page will give you a
-              quick tour of the features that you will need while publishing
-              your first post.
+              Thank you for trying out Letterpad. This page will give you a
+              quick tour of the features that you will need for publishing your
+              first post.
             </p>
             <p>
               Letterpad has a simple concept of page and post. The difference is
@@ -69,9 +76,13 @@ const Home = () => {
             </p>
             <p>
               You can also look around to see the other features. We will
-              publish docs to help you with more helpful information.
+              publish helpful articles soon to help you with more helpful
+              information.
             </p>
           </div>
+          <Button type="link" onClick={onDismiss}>
+            Dismiss
+          </Button>
         </div>
         <style jsx>{``}</style>
       </Content>

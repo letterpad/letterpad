@@ -11,15 +11,25 @@ import { postsStyles } from "@/components/posts.css";
 import { postsColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
 import { TagsProvider } from "@/components/tags/context";
+import { useContext } from "react";
+import { LetterpadContext } from "@/context/LetterpadProvider";
 
 const { Content } = Layout;
 
 function Posts() {
   const router = useRouter();
   const { loading, data, error, refetch } = usePostsQuery();
-
+  const setting = useContext(LetterpadContext);
   if (error) return <ErrorMessage description={error} title="Error" />;
   const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
+
+  if (!setting?.intro_dismissed) {
+    if (!localStorage.intro_dismissed) {
+      localStorage.intro_dismissed = true;
+      router.push("/home");
+      return null;
+    }
+  }
 
   return (
     <>
