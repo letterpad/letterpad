@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction } from "react";
 
 export type PostContextType = {
   updating: boolean;
+  loading: boolean;
   setUpdating: Dispatch<SetStateAction<boolean>>;
   fileExplorerOpen: boolean;
   post: PostWithAuthorAndTagsFragment | undefined;

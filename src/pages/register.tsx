@@ -59,6 +59,7 @@ const RegisterForm = () => {
       key,
       duration: 5,
     });
+
     if (executeRecaptcha) {
       const token = await executeRecaptcha("register");
       const { site_title, ...authorData } = form;
@@ -73,6 +74,7 @@ const RegisterForm = () => {
           },
         },
       });
+      console.log(result);
       // const result = await createAuthorWithSettings(formWithToken);
       if (result.errors?.length) {
         message.error({ content: result?.errors, key, duration: 5 });
@@ -186,7 +188,7 @@ const RegisterForm = () => {
 
 const Provider = () => {
   return (
-    <GoogleReCaptchaProvider reCaptchaKey="6LdCsL0aAAAAAPbGhkyrhAcr4I_-DkVZYabIkaEa">
+    <GoogleReCaptchaProvider reCaptchaKey={process.env.RECAPTCHA_KEY_CLIENT}>
       <RegisterForm />
     </GoogleReCaptchaProvider>
   );

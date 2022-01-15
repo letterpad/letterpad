@@ -1,5 +1,10 @@
 import models from "@/graphql/db/models";
-import { EmailProps, EmailTemplateMeta, Mail } from "@/graphql/types";
+import {
+  EmailProps,
+  EmailTemplateMeta,
+  EmailTemplates,
+  Mail,
+} from "@/graphql/types";
 import { getDateTime } from "@/shared/utils";
 import { bodyDecorator } from "./decorator";
 import mailJet from "node-mailjet";
@@ -76,10 +81,10 @@ export async function enqueueEmail(props: EmailProps) {
 
     // TODO - Since we are tracking the email, we should not run it on the main thread. Instead use a child thread or an external service. Lets worry when we are worried.
     const data = await getEmailTemplate(props);
-    console.log("data", data);
+
     if (data.ok) {
-      const response = await SendMail(data.content, data.meta);
-      console.log(response);
+      const addUnsubscribe = props.template_id === EmailTemplates.NEW_POST;
+      const response = await SendMail(data.content, data.meta, addUnsubscribe);
       if (response && response.length > 0) {
         if (response[0].response.res.statusCode === 200) {
           // update delivery

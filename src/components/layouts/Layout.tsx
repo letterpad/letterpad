@@ -16,6 +16,7 @@ import { getApolloClient } from "@/graphql/apollo";
 import ThemeSwitcher from "./ThemeSwitcher";
 import siteConfig from "config/site.config";
 import { useSession } from "next-auth/react";
+import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 
 interface IProps {
   settings: Setting;
@@ -27,8 +28,11 @@ const CustomLayout = ({ children, settings }: IProps) => {
   const [stats, setStats] = useState<Stats | {}>({});
   const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);
+  const SavingIndicator = useSavingIndicator();
+
   const { data: session } = useSession();
   const user = session;
+
   useEffect(() => {
     getStats().then((res) => {
       if (res?.__typename === "Stats") {
@@ -95,9 +99,9 @@ const CustomLayout = ({ children, settings }: IProps) => {
 
         <div
           style={{
-            paddingTop: 20,
-            paddingLeft: 20,
-            paddingRight: 20,
+            padding: 20,
+            paddingTop: 10,
+            paddingBottom: 10,
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -115,6 +119,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
               </>
             )}
           </div>
+          {SavingIndicator}
           <div>
             <a href={settings.site_url} target="_blank">
               View Site

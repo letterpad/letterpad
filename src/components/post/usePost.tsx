@@ -8,6 +8,7 @@ const usePost = () => {
   const { postId } = router.query;
   const [post, setPost] = useState<PostWithAuthorAndTagsFragment>();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getPost(parseInt(postId as string)).then((data) => {
@@ -18,10 +19,11 @@ const usePost = () => {
       if (data.__typename === "PostError") {
         setError(data.message);
       }
+      setLoading(false);
     });
   }, []);
 
-  return { post, setPost, error };
+  return { post, setPost, error, loading };
 };
 
 export default usePost;

@@ -8,6 +8,7 @@ import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
 import { getPostHash } from "./api";
 import { PostContextType } from "../post/types";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
+import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 
 const { TextArea } = Input;
 
@@ -18,6 +19,7 @@ interface IProps {
 }
 const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
   if (post && post.__typename !== "Post") return null;
+  const SavingIndicator = useSavingIndicator();
 
   const [visible, setVisible] = useState(false);
   const [postHash, setPostHash] = useState("");
@@ -73,10 +75,11 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
       <Drawer
         title="Settings"
         placement="right"
-        closable={false}
+        closable={true}
         onClose={onClose}
         visible={visible}
         width={320}
+        extra={[SavingIndicator]}
       >
         <Space direction="vertical" size="middle">
           <Row justify="space-between">

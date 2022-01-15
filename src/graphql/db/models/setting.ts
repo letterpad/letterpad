@@ -27,6 +27,7 @@ export interface SettingAttributes {
   site_logo: Image;
   site_favicon: Image;
   client_token: string;
+  intro_dismissed: boolean;
 }
 
 export interface SettingCreationAttributes
@@ -60,6 +61,7 @@ export class Setting
   public site_logo!: Image;
   public site_favicon!: Image;
   public client_token!: string;
+  public intro_dismissed!: boolean;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -167,6 +169,10 @@ export default function initSetting(sequelize) {
       site_favicon: {
         type: DataTypes.JSON,
         defaultValue: {},
+      },
+      intro_dismissed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0,
       },
     },
     {

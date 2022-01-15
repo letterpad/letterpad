@@ -24,6 +24,7 @@ type Setting {
   social_instagram: String
   social_github: String
   displayAuthorInfo: Boolean!
+  intro_dismissed: Boolean!
   cloudinary_key: String
   cloudinary_name: String
   cloudinary_secret: String
@@ -73,6 +74,7 @@ input SettingInputType {
   banner: InputImage
   site_logo: InputImage
   site_favicon: InputImage
+  intro_dismissed: Boolean
 }
 
 type SettingError implements LetterpadError {

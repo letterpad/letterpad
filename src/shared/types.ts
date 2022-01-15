@@ -8,7 +8,8 @@ declare global {
       ROOT_URL: string;
       PWD: string;
       SECRET_KEY: string;
-      RECAPTCHA_KEY: string;
+      RECAPTCHA_KEY_CLIENT: string;
+      RECAPTCHA_KEY_SERVER: string;
       SENDGRID_API_KEY: string;
       MJ_APIKEY_PUBLIC: string;
       MJ_APIKEY_PRIVATE: string;
@@ -19,6 +20,10 @@ declare global {
       DB_NAME: string;
       SENTRY_AUTH_TOKEN?: string;
       SENTRY_DSN?: string;
+      CLOUDINARY_KEY?: string;
+      CLOUDINARY_SECRET?: string;
+      CLOUDINARY_NAME?: string;
+      UNSPLASH_CLIENT_ID?: string;
     }
   }
 }
@@ -46,3 +51,5 @@ export enum MediaProvider {
   Unsplash = "unsplash",
   Letterpad = "letterpad",
 }
+
+export type PubSubEvent = "save" | "noop";

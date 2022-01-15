@@ -2,7 +2,7 @@ const menu = [
   {
     label: "home",
     original_name: "home",
-    slug: "home",
+    slug: "first-post",
     type: "tag",
   },
   {
@@ -56,8 +56,9 @@ module.exports.defaultSettings = {
   cloudinary_secret: "",
   client_token: "",
   banner: {
-    src: "https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2850&q=80",
+    src: "https://images.unsplash.com/photo-1527176930608-09cb256ab504?w=2000&auto=format&lossless=true",
     width: 1502,
     height: 900,
   },
+  intro_dismissed: false,
 };

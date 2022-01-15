@@ -22,6 +22,7 @@ const Social: React.FC<Props> = ({ settings, onChange, updateSettings }) => {
             value={settings.social_twitter}
             onBlur={updateSettings}
             onChange={(e) => onChange("social_twitter", e.target.value)}
+            placeholder="eg. https://twitter.com/username"
           />
         </Form.Item>
         <Form.Item label="Facebook">
@@ -30,6 +31,7 @@ const Social: React.FC<Props> = ({ settings, onChange, updateSettings }) => {
             value={settings.social_facebook}
             onBlur={updateSettings}
             onChange={(e) => onChange("social_facebook", e.target.value)}
+            placeholder="eg. https://www.facebook.com/username"
           />
         </Form.Item>
         <Form.Item label="Instagram">
@@ -38,6 +40,7 @@ const Social: React.FC<Props> = ({ settings, onChange, updateSettings }) => {
             value={settings.social_instagram}
             onBlur={updateSettings}
             onChange={(e) => onChange("social_instagram", e.target.value)}
+            placeholder="eg. https://instagram.com/username"
           />
         </Form.Item>
         <Form.Item label="Github">
@@ -46,6 +49,7 @@ const Social: React.FC<Props> = ({ settings, onChange, updateSettings }) => {
             value={settings.social_github}
             onBlur={updateSettings}
             onChange={(e) => onChange("social_github", e.target.value)}
+            placeholder="eg. https://github.com/abhisaha1"
           />
         </Form.Item>
       </Panel>

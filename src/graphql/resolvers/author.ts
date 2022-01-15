@@ -83,16 +83,15 @@ const Mutation: MutationResolvers<ResolverContext> = {
   async createAuthor(_, args) {
     if (args.data.token) {
       const response = await validateCaptcha(
-        process.env.RECAPTCHA_KEY,
+        process.env.RECAPTCHA_KEY_SERVER,
         args.data.token,
       );
-      console.log(response);
-      // if (!response) {
-      //   return {
-      //     __typename: "CreateAuthorError",
-      //     message: "We cannot allow you at the moment.",
-      //   };
-      // }
+      if (!response) {
+        return {
+          __typename: "CreateAuthorError",
+          message: "We cannot allow you at the moment.",
+        };
+      }
     }
 
     const dbSeeded = await isDatabaseSeeded();

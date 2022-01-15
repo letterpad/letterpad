@@ -7,8 +7,10 @@ import {
   ApolloClient,
   InMemoryCache,
   NormalizedCacheObject,
+  ApolloLink,
+  concat,
 } from "@apollo/client";
-
+import { publish } from "@/shared/eventBus";
 import models from "./db/models";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
@@ -35,10 +37,21 @@ function createIsomorphLink(context: ResolverContext = {}) {
   }
 }
 
+const saveMiddleware = new ApolloLink((operation, forward) => {
+  if (operation.query.definitions.length > 0) {
+    const isMutation = operation.query.definitions[0];
+    if (isMutation["operation"] === "mutation") {
+      publish("save", null);
+    }
+  }
+
+  return forward(operation);
+});
+
 export function createApolloClient(context?: ResolverContext) {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: createIsomorphLink(context),
+    link: concat(saveMiddleware, createIsomorphLink(context)),
     cache: new InMemoryCache(),
   });
 }

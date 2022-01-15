@@ -3,10 +3,13 @@ import { useRouter } from "next/router";
 
 const Verified = () => {
   const router = useRouter();
-
+  const queryParams = new URLSearchParams(document.location.search);
   const doLogin = () => {
     router.push("/api/auth/signin");
   };
+  if (queryParams.get("msg")) {
+    return <Result status="error" title={queryParams.get("msg")} />;
+  }
   return (
     <Result
       status="success"

@@ -5,6 +5,9 @@ const basePath = "/admin";
 const isServer = typeof window === "undefined";
 
 const nextConfig = {
+  env: {
+    RECAPTCHA_KEY_CLIENT: process.env.RECAPTCHA_KEY_CLIENT,
+  },
   swcMinify: true,
   experimental: {
     // ssr and displayName are configured by default
