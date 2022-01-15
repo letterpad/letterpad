@@ -101,7 +101,7 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
             #css-editor {
               flex: 1;
               overflow: auto;
-              height: 600px;
+              height: 300px;
               border: 1px solid #333;
               width: 600px;
               @media (max-width: 967px) {

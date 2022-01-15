@@ -1,5 +1,10 @@
 import models from "@/graphql/db/models";
-import { EmailProps, EmailTemplateMeta, Mail } from "@/graphql/types";
+import {
+  EmailProps,
+  EmailTemplateMeta,
+  EmailTemplates,
+  Mail,
+} from "@/graphql/types";
 import { getDateTime } from "@/shared/utils";
 import { bodyDecorator } from "./decorator";
 import mailJet from "node-mailjet";
@@ -78,7 +83,8 @@ export async function enqueueEmail(props: EmailProps) {
     const data = await getEmailTemplate(props);
 
     if (data.ok) {
-      const response = await SendMail(data.content, data.meta);
+      const addUnsubscribe = props.template_id === EmailTemplates.NEW_POST;
+      const response = await SendMail(data.content, data.meta, addUnsubscribe);
       if (response && response.length > 0) {
         if (response[0].response.res.statusCode === 200) {
           // update delivery

@@ -20,6 +20,10 @@ declare global {
       DB_NAME: string;
       SENTRY_AUTH_TOKEN?: string;
       SENTRY_DSN?: string;
+      CLOUDINARY_KEY?: string;
+      CLOUDINARY_SECRET?: string;
+      CLOUDINARY_NAME?: string;
+      UNSPLASH_CLIENT_ID?: string;
     }
   }
 }

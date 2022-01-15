@@ -1,10 +1,11 @@
 import { ResolverContext } from "../apollo";
-import type {
+import {
   QueryResolvers,
   MutationResolvers,
   Setting as SettingType,
   InputImage,
   Navigation,
+  Role,
 } from "@/__generated__/__types__";
 import fs from "fs";
 import path from "path";
@@ -109,6 +110,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
         fs.writeFileSync(cssPath, setting.css);
       }
 
+      if (setting.google_analytics && session.user.role === Role.Admin) {
+      }
       if (setting.banner || setting.site_logo || setting.site_favicon) {
         value = value as InputImage;
         if (value && value.src?.startsWith(process.env.ROOT_URL)) {

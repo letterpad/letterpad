@@ -56,19 +56,9 @@ export default async (
   if (!Array.isArray(files)) {
     files = [files];
   }
-  const apollo = await getApolloClient({}, { req });
-  const settings = await apollo.query<SettingsQuery, SettingsQueryVariables>({
-    query: SettingsDocument,
-    fetchPolicy: "network-only",
-  });
-  if (settings.data.settings.__typename === "SettingError") {
-    return res.status(501).end(settings.data.settings.message);
-  }
-
-  if (!settings || settings.data.settings.__typename !== "Setting") return null;
 
   const { cloudinary_key, cloudinary_name, cloudinary_secret } =
-    settings.data.settings;
+    await getCloudinaryCreds(req, res);
 
   logger.debug(`Received ${files.length} file/s to upload`);
 
@@ -137,4 +127,34 @@ export async function upsertMedia(result: IMediaUploadResult, id: number) {
   if (media) {
     await author.addMedia(media);
   }
+}
+
+async function getCloudinaryCreds(req, res) {
+  if (
+    process.env.CLOUDINARY_KEY &&
+    process.env.CLOUDINARY_NAME &&
+    process.env.CLOUDINARY_SECRET
+  ) {
+    return {
+      cloudinary_key: process.env.CLOUDINARY_KEY,
+      cloudinary_name: process.env.CLOUDINARY_NAME,
+      cloudinary_secret: process.env.CLOUDINARY_SECRET,
+    };
+  }
+
+  const apollo = await getApolloClient({}, { req });
+  const settings = await apollo.query<SettingsQuery, SettingsQueryVariables>({
+    query: SettingsDocument,
+    fetchPolicy: "network-only",
+  });
+  if (settings.data.settings.__typename === "SettingError") {
+    return res.status(501).end(settings.data.settings.message);
+  }
+
+  if (!settings || settings.data.settings.__typename !== "Setting") return null;
+
+  const { cloudinary_key, cloudinary_name, cloudinary_secret } =
+    settings.data.settings;
+
+  return { cloudinary_key, cloudinary_name, cloudinary_secret };
 }
