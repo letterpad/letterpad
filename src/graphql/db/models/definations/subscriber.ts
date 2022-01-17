@@ -26,13 +26,13 @@ export class Subscribers extends BaseModel {
   @Column({ type: DataType.INTEGER, allowNull: false })
   public author_id!: number;
 
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
+  @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })
   public verified!: boolean;
 
   @Column({ type: DataType.INTEGER, allowNull: false, defaultValue: 3 })
   public verify_attempt_left!: number;
 
-  @Column
+  @Column({ type: DataType.DATE, allowNull: false })
   public createdAt!: string;
   /* Associantions */
   @BelongsTo(() => Author, "author_id")

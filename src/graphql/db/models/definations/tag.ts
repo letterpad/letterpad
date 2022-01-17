@@ -1,5 +1,4 @@
 import { Table, Column, DataType, BelongsToMany } from "sequelize-typescript";
-import { Author } from "./author";
 
 import { BaseModel } from "./base";
 import { Post } from "./post";
@@ -25,7 +24,7 @@ export class Tag extends BaseModel {
   @BelongsToMany(() => Post, {
     through: () => PostTag,
   })
-  public author!: Author;
+  public posts!: Post;
   /* End Associantions */
   // @BelongsTo(() => Author, "author_id")
   // public getAuthor!: Author;

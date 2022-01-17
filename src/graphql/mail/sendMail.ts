@@ -2,13 +2,12 @@
 import * as Sentry from "@sentry/nextjs";
 import { EmailTemplateMeta, Mail } from "@/graphql/types";
 import { bodyDecorator } from "./decorator";
-
 import logger from "@/shared/logger";
 import { getMailClient } from "./client";
 
 const mailClient = getMailClient();
 
-export default function SendMail(
+export function sendMail(
   data: Mail,
   meta: EmailTemplateMeta,
   addUnsubscribe: boolean = false,

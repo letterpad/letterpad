@@ -18,7 +18,7 @@ export class Setting extends BaseModel {
   @Column({ type: DataType.STRING, allowNull: true })
   public site_description!: string;
 
-  @Column({ type: DataType.STRING, allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: false })
   public site_email!: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
@@ -42,7 +42,7 @@ export class Setting extends BaseModel {
   @Column({ type: DataType.STRING, allowNull: true })
   public social_github!: string;
 
-  @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: true })
+  @Column({ type: DataType.BOOLEAN, allowNull: true, defaultValue: true })
   public displayAuthorInfo!: boolean;
 
   @Column({ type: DataType.STRING, allowNull: true })

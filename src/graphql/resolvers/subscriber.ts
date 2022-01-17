@@ -1,9 +1,7 @@
 //@ts-nocheck
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import Cryptr from "cryptr";
-import { enqueueEmail } from "@/mail/mailqueue";
 import { EmailTemplates } from "../types";
-// import { sendVerifySubscriberEmail } from "@/mail/emailVerifySubscriber";
 import { ResolverContext } from "../resolverContext";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
@@ -28,7 +26,7 @@ const Query: QueryResolvers<any> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  addSubscriber: async (_, args, { author_id, models }) => {
+  addSubscriber: async (_, args, { author_id, models, enqueueEmail }) => {
     if (!author_id || !models) {
       return {
         ok: false,
@@ -48,7 +46,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
             message: "No more attempts left.",
           };
         }
-        await sendVerifySubscriberEmail({
+        await enqueueEmail({
           template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
           author_id,
           subscriber_email: args.email,

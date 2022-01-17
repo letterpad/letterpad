@@ -6,11 +6,11 @@ type Post {
   # Html content of the post
   html: String!
   # Draft for republishing content
-  html_draft: String!
+  html_draft: String
   # Author information of the post
   author: Author!
   # A breif summary of the post
-  excerpt: String!
+  excerpt: String
   # Convert image of the post
   cover_image: Image!
   # Type of the post. Can be "page" or "post"
@@ -20,17 +20,17 @@ type Post {
   # Featured post
   featured: Boolean!
   # The uri of the post
-  slug: String!
+  slug: String
   # The creation date of the post
   createdAt: Date!
   # The published date of the post
-  publishedAt: Date!
+  publishedAt: Date
   # The date scheduled to published the post
-  scheduledAt: Date!
+  scheduledAt: Date
   # Last updated date of the post
   updatedAt: Date!
   # Reading time of the post in minutes
-  reading_time: String!
+  reading_time: String
   # Tags of the post
   tags: [Tags!]!
 }

@@ -13,12 +13,12 @@ type Navigation {
 
 type Setting {
   site_title: String!
-  site_tagline: String!
+  site_tagline: String
   site_email: String!
-  site_url: String!
-  site_footer: String!
-  site_description: String!
-  subscribe_embed: String!
+  site_url: String
+  site_footer: String
+  site_description: String
+  subscribe_embed: String
   social_twitter: String
   social_facebook: String
   social_instagram: String
@@ -31,10 +31,10 @@ type Setting {
   menu: [Navigation!]!
   css: String
   google_analytics: String
-  theme: String!
-  banner: Image!
-  site_logo: Image!
-  site_favicon: Image!
+  theme: String
+  banner: Image
+  site_logo: Image
+  site_favicon: Image
   client_token: String!
 }
 

@@ -1,33 +1,35 @@
-import { EmailDelivery } from "@/graphql/db/models/models";
+//@ts-nocheck
 import { EmailProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
-import { getMailClient } from "./client";
 import { getEmailTemplate } from "./templates/getTemplate";
 import * as Sentry from "@sentry/nextjs";
-import SendMail from "./sendMail";
+// import SendMail from "./sendMail";
 
+import { getMailClient } from "./client";
 const mailClient = getMailClient();
 
-export async function enqueueEmail(props: EmailProps) {
+export async function enqueueEmail(props: EmailProps, models) {
   if (!mailClient) {
     return logger.debug(
       "No client found to send emails. Terminating enqueuing Email",
     );
   }
   try {
-    const found = await EmailDelivery.findOne({ where: props });
+    const found = await models.EmailDelivery.findOne({
+      where: { ...props },
+    });
     if (found) {
       return logger.debug("Email record exist. Skipping");
     }
-    await EmailDelivery.create({
+    await models.EmailDelivery.create({
       ...props,
       createdAt: getDateTime(new Date()) as any,
       delivered: false,
     } as any);
 
     // TODO - Since we are tracking the email, we should not run it on the main thread. Instead use a child thread or an external service. Lets worry when we are worried.
-    const data = await getEmailTemplate(props);
+    const data = await getEmailTemplate(props, models);
 
     if (data.ok) {
       const addUnsubscribe = props.template_id === EmailTemplates.NEW_POST;
@@ -35,7 +37,10 @@ export async function enqueueEmail(props: EmailProps) {
       if (response && response.length > 0) {
         if (response[0].response.res.statusCode === 200) {
           // update delivery
-          await EmailDelivery.update({ delivered: true }, { where: props });
+          await models.EmailDelivery.update(
+            { delivered: true },
+            { where: { ...props } },
+          );
         }
       }
     } else {

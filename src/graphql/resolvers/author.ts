@@ -8,44 +8,43 @@ import {
   InputCreateAuthor,
   SettingInputType,
 } from "@/__generated__/__types__";
-import { ResolverContext } from "../apollo";
-import models from "@/graphql/db/models";
 import { models as newModels } from "@/graphql/db/models/index2";
 import bcrypt from "bcryptjs";
 import { validateCaptcha } from "./helpers";
 import generatePost from "@/graphql/db/seed/contentGenerator";
-import siteConfig from "config/site.config";
+import siteConfig from "../../../config/site.config";
 import { createAdmin, seed } from "@/graphql/db/seed/seed";
 import { decodeToken, getToken, verifyToken } from "@/shared/token";
 import { EmailTemplates, ROLES } from "../types";
 import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
-import { enqueueEmail } from "@/mail/sendMail";
 import { defaultSettings } from "../db/seed/constants";
+import { ResolverContext } from "../resolverContext";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
 }
 
 const Author = {
-  role: async ({ id }) => {
+  role: async ({ id }, _args, { models }) => {
     const author = await models.Author.findOne({ where: { id } });
     if (!author) return;
     try {
-      const role = await author.getRole();
-      return role.name;
+      const role = await author.$get("role");
+      const name = role.get("name");
+      return name;
     } catch (e) {
       throw new Error(e);
     }
   },
-  permissions: async ({ id }) => {
+  permissions: async ({ id }, _args, { models }) => {
     const author = await models.Author.findOne({ where: { id } });
     if (!author) return;
 
     try {
-      const role = await author.getRole();
-      const permissions = await role.getPermissions();
-      return permissions.map((p) => p.name);
+      const role = await author.$get("role");
+      const permissions = await role.$get("permissions");
+      return permissions.map((p) => p.get("name"));
     } catch (e) {
       throw new Error(e);
     }
@@ -53,7 +52,7 @@ const Author = {
 };
 
 const Query: QueryResolvers<ResolverContext> = {
-  async me(_parent, _args, { session }, _info) {
+  async me(_parent, _args, { session, models }, _info) {
     if (!session?.user.id) {
       return { __typename: "AuthorNotFoundError", message: "Invalid Session" };
     }
@@ -81,7 +80,7 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  async createAuthor(_, args) {
+  async createAuthor(_, args, { models, connection, mailUtils }) {
     if (args.data.token) {
       const response = await validateCaptcha(
         process.env.RECAPTCHA_KEY_SERVER,
@@ -95,10 +94,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
     }
 
-    const dbSeeded = await isDatabaseSeeded();
+    const dbSeeded = await isDatabaseSeeded(connection);
     if (!dbSeeded) {
       logger.debug("Database not seeded. Seeding now.");
-      await seed(models, false);
+      await seed(false);
       await createAdmin();
     }
 
@@ -130,16 +129,16 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     if (newAuthor) {
       const { post, page } = getWelcomePostAndPage();
-      const newPost = await newAuthor.createPost(post);
-      const newTag = await newAuthor.createTag({
+      const newPost = await newAuthor.$create("post", post);
+      const newTag = await newAuthor.$create("tag", {
         name: siteConfig.first_post_tag,
         slug: siteConfig.first_post_tag,
       });
-      await newPost.addTag(newTag);
-      await newAuthor.createPost(page);
+      await newPost.$add("tag", newTag);
+      await newAuthor.$create("post", page);
 
       const a = newAuthor.get() as unknown as AuthorType;
-      await enqueueEmail({
+      await mailUtils.enqueueEmail({
         author_id: a.id,
         template_id: EmailTemplates.VERIFY_NEW_USER,
       });
@@ -151,12 +150,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
       message: "Something went wrong and we dont know what.",
     };
   },
-  async login(_parent, args, _context, _info) {
+  async login(_parent, args, { models }, _info) {
     const author = await models.Author.findOne({
       where: { email: args.data?.email },
       raw: true,
     });
-
     if (author) {
       if (!author?.verified) {
         return {
@@ -188,7 +186,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       message: "Incorrect email id",
     };
   },
-  async updateAuthor(_root, args, { session }) {
+  async updateAuthor(_root, args, { session, models }) {
     if (session?.user.id !== args.author.id) {
       return {
         ok: true,
@@ -228,7 +226,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
   },
-  async forgotPassword(_root, args) {
+  async forgotPassword(_root, args, { models, mailUtils }) {
     try {
       const email = args.email;
       const author = await models.Author.findOne({
@@ -240,7 +238,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       if (author.verify_attempt_left === 0) {
         throw new Error("No more attempts left.");
       }
-      await enqueueEmail({
+      await mailUtils.enqueueEmail({
         template_id: EmailTemplates.FORGOT_PASSWORD,
         author_id: author.id,
       });
@@ -254,7 +252,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
   },
-  async resetPassword(_root, args) {
+  async resetPassword(_root, args, { models }) {
     try {
       const token = args.token;
       const isValidToken = verifyToken(token);
@@ -339,9 +337,9 @@ function getWelcomePostAndPage() {
   return { page, post };
 }
 
-async function isDatabaseSeeded(): Promise<boolean> {
+async function isDatabaseSeeded(connection): Promise<boolean> {
   try {
-    await models.sequelize.query("SELECT * FROM authors");
+    await connection.query("SELECT * FROM authors");
     return true;
   } catch (e) {
     if (e.name === "SequelizeDatabaseError") {

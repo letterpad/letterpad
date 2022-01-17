@@ -1,4 +1,3 @@
-import { models } from "@/graphql/db/models";
 import Twig from "twig";
 import {
   EmailForgotPasswordProps,
@@ -10,6 +9,7 @@ import { addLineBreaks } from "../utils";
 
 export async function getForgotPasswordContent(
   data: EmailForgotPasswordProps,
+  models,
 ): Promise<EmailTemplateResponse> {
   const template = await models.Email.findOne({
     where: { template_id: EmailTemplates.FORGOT_PASSWORD },

@@ -1,4 +1,3 @@
-import { ResolverContext } from "../apollo";
 import {
   QueryResolvers,
   MutationResolvers,
@@ -9,9 +8,10 @@ import {
 } from "@/__generated__/__types__";
 import fs from "fs";
 import path from "path";
-import models from "@/graphql/db/models";
+// import models from "@/graphql/db/models";
 import logger from "@/shared/logger";
 import { defaultSettings } from "../db/seed/constants";
+import { ResolverContext } from "../resolverContext";
 
 type ValueOf<T> = T[keyof T];
 const SECURE_SETTINGS = [
@@ -54,7 +54,7 @@ const Setting = {
 };
 
 const Query: QueryResolvers<ResolverContext> = {
-  settings: async (_root, _args = {}, { session, author_id }) => {
+  settings: async (_root, _args = {}, { session, author_id, models }) => {
     const authorId = session?.user.id || author_id;
     if (!authorId) {
       return {
@@ -66,8 +66,7 @@ const Query: QueryResolvers<ResolverContext> = {
       where: { id: authorId },
     });
 
-    const setting = await author?.getSetting();
-
+    const setting = await author?.$get("setting");
     if (!setting)
       return {
         __typename: "SettingError",
@@ -80,12 +79,11 @@ const Query: QueryResolvers<ResolverContext> = {
         setting.setDataValue(securedKey, "");
       }
     });
-    (setting as any).__typename = "Setting";
-    return setting;
+    return { ...setting.get(), __typename: "Setting" };
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {
-  updateOptions: async (_root, args, { session }) => {
+  updateOptions: async (_root, args, { session, models }) => {
     if (!session?.user.id)
       return {
         ...defaultSettings,

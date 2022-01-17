@@ -1,9 +1,6 @@
-//@ts-nocheck
-import { models } from "@/graphql/db/models";
 import Twig from "twig";
 import { getToken } from "@/shared/token";
 import { addLineBreaks } from "../utils";
-
 import {
   EmailTemplateResponse,
   EmailTemplates,
@@ -12,6 +9,7 @@ import {
 
 export async function getVerifySubscriberEmailContent(
   data: EmailVerifyNewSubscriberProps,
+  models,
 ): Promise<EmailTemplateResponse> {
   const template = await models.Email.findOne({
     where: { template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER },
@@ -25,7 +23,7 @@ export async function getVerifySubscriberEmailContent(
   const author = await models.Author.findOne({
     where: { id: data.author_id },
   });
-  const setting = await author?.getSetting();
+  const setting = await author?.$get("setting");
 
   if (!author || !setting) {
     return {

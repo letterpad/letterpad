@@ -20,8 +20,7 @@ import { Post } from "./post";
 import { Role } from "./role";
 import { Setting } from "./setting";
 import { Subscribers } from "./subscriber";
-import { Tag } from "./tags";
-import { Permission } from "./permission";
+import { Tag } from "./tag";
 // import { Tag } from "./tags";
 
 @Table({

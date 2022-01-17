@@ -1,7 +1,7 @@
 import { ForeignKey, Table } from "sequelize-typescript";
 import { BaseModel } from "./base";
 import { Post } from "./post";
-import { Tag } from "./tags";
+import { Tag } from "./tag";
 
 @Table({
   timestamps: true,

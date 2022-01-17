@@ -9,7 +9,7 @@ import { Author } from "./author";
 
 import { BaseModel } from "./base";
 import { PostTag } from "./postTag";
-import { Tag } from "./tags";
+import { Tag } from "./tag";
 
 @Table({
   timestamps: true,
@@ -18,6 +18,9 @@ import { Tag } from "./tags";
 export class Post extends BaseModel {
   @Column({ type: DataType.STRING, allowNull: true })
   public title!: string;
+
+  @Column({ type: DataType.STRING, allowNull: true })
+  public slug!: string;
 
   @Column({ type: DataType.TEXT, allowNull: true })
   public html!: string;
@@ -28,7 +31,21 @@ export class Post extends BaseModel {
   @Column({ type: DataType.STRING(400), allowNull: true })
   public excerpt!: string;
 
-  @Column({ type: DataType.STRING(400), allowNull: true })
+  @Column({
+    type: DataType.STRING(400),
+    allowNull: true,
+    get() {
+      const cImage = this.getDataValue("cover_image");
+      if (cImage && cImage.startsWith("/")) {
+        this.setDataValue("cover_image", process.env.ROOT_URL + cImage);
+      }
+      return {
+        src: cImage,
+        width: this.getDataValue("cover_image_width"),
+        height: this.getDataValue("cover_image_height"),
+      };
+    },
+  })
   public cover_image!: string; //TODO
 
   @Column({ type: DataType.INTEGER, allowNull: true })

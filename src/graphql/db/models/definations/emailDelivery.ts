@@ -1,4 +1,3 @@
-import { getReadableDate } from "../../../resolvers/helpers";
 import {
   Table,
   Column,
@@ -41,3 +40,11 @@ export class EmailDelivery extends BaseModel {
   @Column({ type: DataType.BOOLEAN, allowNull: true })
   public delivered!: boolean;
 }
+
+const getReadableDate = (timestamp: Date) => {
+  return new Date(timestamp).toLocaleString("en-us", {
+    month: "long",
+    year: "numeric",
+    day: "numeric",
+  });
+};
