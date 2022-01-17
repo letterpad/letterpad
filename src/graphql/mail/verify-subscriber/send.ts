@@ -20,6 +20,6 @@ export async function sendVerifySubscriberEmail(
     logger.error(
       "Could not send mail - " + EmailTemplates.VERIFY_NEW_SUBSCRIBER,
     );
-    throw new Error(e);
+    throw e;
   }
 }

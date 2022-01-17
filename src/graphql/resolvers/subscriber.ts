@@ -1,12 +1,11 @@
-//@ts-nocheck
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import Cryptr from "cryptr";
+import { ResolverContext } from "../context";
 import { EmailTemplates } from "../types";
-import { ResolverContext } from "../resolverContext";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 
-const Query: QueryResolvers<any> = {
+const Query: QueryResolvers<ResolverContext> = {
   subscribers: async (_root, _args, { session, models }) => {
     if (!session?.user.id || !models) {
       return {
@@ -26,7 +25,7 @@ const Query: QueryResolvers<any> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  addSubscriber: async (_, args, { author_id, models, enqueueEmail }) => {
+  addSubscriber: async (_, args, { author_id, models, mailUtils }) => {
     if (!author_id || !models) {
       return {
         ok: false,
@@ -46,7 +45,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
             message: "No more attempts left.",
           };
         }
-        await enqueueEmail({
+        await mailUtils.enqueueEmail({
           template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
           author_id,
           subscriber_email: args.email,
@@ -69,7 +68,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         email: args.email,
         verified: false,
       });
-      await enqueueEmail({
+      await mailUtils.enqueueEmail({
         author_id,
         subscriber_email: args.email,
         template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,

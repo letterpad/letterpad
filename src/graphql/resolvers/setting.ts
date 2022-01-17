@@ -11,7 +11,7 @@ import path from "path";
 // import models from "@/graphql/db/models";
 import logger from "@/shared/logger";
 import { defaultSettings } from "../db/seed/constants";
-import { ResolverContext } from "../resolverContext";
+import { ResolverContext } from "../context";
 
 type ValueOf<T> = T[keyof T];
 const SECURE_SETTINGS = [
@@ -79,7 +79,7 @@ const Query: QueryResolvers<ResolverContext> = {
         setting.setDataValue(securedKey, "");
       }
     });
-    return { ...setting.get(), __typename: "Setting" };
+    return { ...setting, __typename: "Setting" };
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {
@@ -95,7 +95,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     });
 
     if (!author) return defaultSettings;
-    const _setting = await author.getSetting();
+    const _setting = await author.$get("setting");
 
     let promises = args.options.map((setting) => {
       const option = Object.keys(setting)[0] as keyof Omit<
@@ -117,11 +117,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
         }
       }
       logger.info(
-        `Updating settings with id ${_setting.id}- ` + option + " : " + value,
+        `Updating settings with id ${_setting?.id}- ` + option + " : " + value,
       );
       return models.Setting.update(
         { [option]: value },
-        { where: { id: _setting.id } },
+        { where: { id: _setting?.id } },
       );
     });
 

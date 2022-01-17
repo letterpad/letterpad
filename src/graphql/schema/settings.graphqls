@@ -12,6 +12,7 @@ type Navigation {
 }
 
 type Setting {
+  id: Int!
   site_title: String!
   site_tagline: String
   site_email: String!

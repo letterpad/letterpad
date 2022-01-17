@@ -13,7 +13,8 @@ import { decrypt } from "../utils/crypto";
 import logger from "./../../shared/logger";
 import debug from "debug";
 import { mdToHtml } from "@/shared/converter";
-import { ResolverContext } from "../resolverContext";
+import { ResolverContext } from "../context";
+
 type PostAttributes = any;
 
 interface IPostCondition {
@@ -149,14 +150,14 @@ const Query: QueryResolvers<ResolverContext> = {
           const author = await models.Author.findOne({
             where: { id: authorId },
           });
-          const setting = await author?.getSetting();
+          const setting = await author?.$get("setting");
 
           if (setting) {
             tagSlug = setting.menu[0].slug;
           }
         }
 
-        const taxTag = await models.Tags.findOne({
+        const taxTag = await models.Tag.findOne({
           where: {
             slug: tagSlug.split("/").pop() as string,
             author_id: authorId,
@@ -167,7 +168,7 @@ const Query: QueryResolvers<ResolverContext> = {
           const posts = await taxTag.$get("posts", query.conditions);
           return {
             __typename: "PostsNode",
-            rows: posts.map((p) => p.get()),
+            rows: posts?.map((p) => p.get()),
             count: await taxTag.$count("posts", query.conditions),
           };
         }
@@ -180,7 +181,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
       // resolve tag filter
       if (args?.filters?.tag) {
-        const tag = await models.Tags.findOne({
+        const tag = await models.Tag.findOne({
           where: { name: args.filters.tag, author_id },
         });
         if (tag) {

@@ -24,7 +24,7 @@ export class Tag extends BaseModel {
   @BelongsToMany(() => Post, {
     through: () => PostTag,
   })
-  public posts!: Post;
+  public posts!: Post[];
   /* End Associantions */
   // @BelongsTo(() => Author, "author_id")
   // public getAuthor!: Author;

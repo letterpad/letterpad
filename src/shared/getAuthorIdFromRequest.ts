@@ -9,7 +9,7 @@ const printOnce = {
   env: 0,
 };
 export default async (context: Context) => {
-  const authHeader = context.req?.headers.authorization || "";
+  const authHeader = context.req?.headers?.authorization || "";
   let author_id;
   try {
     author_id = await getAuthorFromSubdomain(context);

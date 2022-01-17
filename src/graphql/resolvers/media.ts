@@ -4,8 +4,7 @@ import {
   SortBy,
 } from "@/__generated__/__types__";
 import { Op, Order } from "sequelize";
-import { ResolverContext } from "../apollo";
-import models from "@/graphql/db/models";
+import { ResolverContext } from "../context";
 
 interface IMediaConditions {
   limit: number;
@@ -18,7 +17,7 @@ interface IMediaConditions {
 }
 
 const Query: QueryResolvers<ResolverContext> = {
-  media: async (_root, args, { session }) => {
+  media: async (_root, args, { session, models }) => {
     if (!session?.user.id) {
       return {
         count: 0,
@@ -49,7 +48,7 @@ const Query: QueryResolvers<ResolverContext> = {
         conditions.offset = (page - 1) * conditions.limit;
       }
     }
-    const result = await models.Media.findAndCountAll(conditions);
+    const result = await models.Upload.findAndCountAll(conditions);
 
     if (result) {
       const rows = result.rows.map((item) => item.get());
@@ -67,7 +66,7 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  deleteMedia: async (_, args, { session }) => {
+  deleteMedia: async (_, args, { session, models }) => {
     if (!session?.user) {
       return {
         __typename: "MediaError",
@@ -85,7 +84,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
     await Promise.all([
       ...args.ids.map((id) =>
-        models.Media.destroy({ where: { id: id, author_id: session.user.id } }),
+        models.Upload.destroy({
+          where: { id: id, author_id: session.user.id },
+        }),
       ),
     ]);
 
@@ -95,7 +96,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     };
   },
 
-  updateMedia: async (_, args, { session }) => {
+  updateMedia: async (_, args, { session, models }) => {
     if (!session?.user) {
       return {
         __typename: "MediaError",
@@ -103,7 +104,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
 
-    const [updates] = await models.Media.update(args.data, {
+    const [updates] = await models.Upload.update(args.data, {
       where: { id: args.data.id, author_id: session.user.id },
     });
 

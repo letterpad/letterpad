@@ -15,6 +15,6 @@ export async function sendNewPostEmail(data: EmailNewPostProps) {
     };
   } catch (e: any) {
     logger.error("Could not send mail - " + EmailTemplates.NEW_POST);
-    throw new Error(e);
+    throw e;
   }
 }

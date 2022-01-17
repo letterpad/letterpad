@@ -1,3 +1,4 @@
+import { PostTypes } from "@/__generated__/__types__";
 import {
   Table,
   Column,
@@ -55,7 +56,7 @@ export class Post extends BaseModel {
   public cover_image_height!: number;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  public type!: string;
+  public type!: PostTypes;
 
   @Column({ type: DataType.INTEGER, allowNull: true, defaultValue: false })
   public featured!: boolean;

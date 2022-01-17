@@ -1,6 +1,11 @@
 import { Image, Navigation } from "@/__generated__/__types__";
-import { Table, Column, DataType } from "sequelize-typescript";
-// import { Author } from "./author";
+import {
+  Table,
+  Column,
+  DataType,
+  PrimaryKey,
+  AutoIncrement,
+} from "sequelize-typescript";
 
 import { BaseModel } from "./base";
 
@@ -9,6 +14,11 @@ import { BaseModel } from "./base";
   tableName: "settings",
 })
 export class Setting extends BaseModel {
+  @PrimaryKey
+  @AutoIncrement
+  @Column({ type: DataType.INTEGER })
+  public id!: number;
+
   @Column({ type: DataType.STRING, allowNull: false })
   public site_title!: string;
 

@@ -1,9 +1,8 @@
 import { QueryResolvers } from "@/__generated__/__types__";
-import { ResolverContext } from "../apollo";
-import models from "@/graphql/db/models";
+import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
-  email: async (_root, args, { session }) => {
+  email: async (_root, args, { session, models }) => {
     if (!session?.user.id) {
       return {
         message: "You need to be authenticated to see this",
@@ -17,7 +16,7 @@ const Query: QueryResolvers<ResolverContext> = {
       message: "Template not found",
     };
   },
-  emails: async (_root, _args, { session }) => {
+  emails: async (_root, _args, { session, models }) => {
     if (!session?.user.id) {
       return [];
     }

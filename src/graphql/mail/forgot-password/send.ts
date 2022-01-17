@@ -15,6 +15,6 @@ export async function sendForgotPasswordEmail(data: EmailForgotPasswordProps) {
     };
   } catch (e: any) {
     logger.error("Could not send mail - " + EmailTemplates.FORGOT_PASSWORD);
-    throw new Error(e);
+    throw e;
   }
 }

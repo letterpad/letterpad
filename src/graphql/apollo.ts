@@ -10,7 +10,8 @@ import {
 import { publish } from "@/shared/eventBus";
 
 import { Optional } from "@/shared/types";
-import { ResolverContext } from "./resolverContext";
+import { NextApiRequest, NextApiResponse } from "next";
+import { getResolverContext, ResolverContext } from "./context";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -51,24 +52,25 @@ export async function getApolloClient(
   initialState: any = null,
   // Pages with Next.js data fetching methods, like `getStaticProps`, can send
   // a custom context which will be used by `SchemaLink` to server render pages
-  context?: ResolverContext,
+  context: { req?: NextApiRequest; res?: NextApiResponse } = {},
 ) {
-  let session;
+  let defaultContext = { ...context };
   if (typeof window === "undefined") {
     if (!context) {
       console.error(
         "`getApolloClient` has been called without setting a context",
       );
     }
-    if (process.env.NODE_ENV !== "test") {
-      const { getSession } = require("next-auth/react");
-      const isBuildRunning =
-        process.env.NEXT_PHASE === "phase-production-build";
-      if (!isBuildRunning) session = await getSession(context);
+
+    const isTest = process.env.NODE_ENV === "test";
+    const isBuildRunning = process.env.NEXT_PHASE === "phase-production-build";
+    if (!isBuildRunning && context.req && isTest) {
+      const resolverContext = await getResolverContext(context.req);
+      defaultContext = { ...defaultContext, ...resolverContext };
     }
   }
-  const _apolloClient =
-    apolloClient ?? createApolloClient({ ...context, session });
+
+  const _apolloClient = apolloClient ?? createApolloClient(defaultContext);
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // get hydrated here

@@ -19,7 +19,7 @@ import { EmailTemplates, ROLES } from "../types";
 import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
 import { defaultSettings } from "../db/seed/constants";
-import { ResolverContext } from "../resolverContext";
+import { ResolverContext } from "../context";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -34,7 +34,7 @@ const Author = {
       const name = role.get("name");
       return name;
     } catch (e) {
-      throw new Error(e);
+      throw e;
     }
   },
   permissions: async ({ id }, _args, { models }) => {
@@ -46,7 +46,7 @@ const Author = {
       const permissions = await role.$get("permissions");
       return permissions.map((p) => p.get("name"));
     } catch (e) {
-      throw new Error(e);
+      throw e;
     }
   },
 };
@@ -56,7 +56,6 @@ const Query: QueryResolvers<ResolverContext> = {
     if (!session?.user.id) {
       return { __typename: "AuthorNotFoundError", message: "Invalid Session" };
     }
-    console.log(session.user.id);
     const author = await models.Author.findOne({
       where: {
         id: session.user.id,
