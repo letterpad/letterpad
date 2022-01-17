@@ -1,6 +1,3 @@
-import { getSession } from "next-auth/react";
-import { SessionData } from "./types";
-import { IncomingMessage, ServerResponse } from "http";
 import { useMemo } from "react";
 import { basePath } from "@/constants";
 import {
@@ -11,19 +8,13 @@ import {
   concat,
 } from "@apollo/client";
 import { publish } from "@/shared/eventBus";
-import models from "./db/models";
+
+import { Optional } from "@/shared/types";
+import { ResolverContext } from "./resolverContext";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-export type ResolverContext = {
-  req?: IncomingMessage;
-  res?: ServerResponse;
-  models?: typeof models;
-  session?: { user: SessionData };
-  author_id?: number;
-};
-
-function createIsomorphLink(context: ResolverContext = {}) {
+function createIsomorphLink(context: Optional<ResolverContext>) {
   if (typeof window === "undefined") {
     const { SchemaLink } = require("@apollo/client/link/schema");
     const { schema } = require("./schema");
@@ -48,7 +39,7 @@ const saveMiddleware = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-export function createApolloClient(context?: ResolverContext) {
+export function createApolloClient(context: Optional<ResolverContext>) {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: concat(saveMiddleware, createIsomorphLink(context)),
@@ -69,8 +60,12 @@ export async function getApolloClient(
         "`getApolloClient` has been called without setting a context",
       );
     }
-    const isBuildRunning = process.env.NEXT_PHASE === "phase-production-build";
-    if (!isBuildRunning) session = await getSession(context);
+    if (process.env.NODE_ENV !== "test") {
+      const { getSession } = require("next-auth/react");
+      const isBuildRunning =
+        process.env.NEXT_PHASE === "phase-production-build";
+      if (!isBuildRunning) session = await getSession(context);
+    }
   }
   const _apolloClient =
     apolloClient ?? createApolloClient({ ...context, session });

@@ -1,4 +1,3 @@
-import models from "@/graphql/db/models";
 import {
   EmailProps,
   EmailTemplateMeta,
@@ -11,6 +10,7 @@ import mailJet from "node-mailjet";
 import logger from "@/shared/logger";
 import * as Sentry from "@sentry/nextjs";
 import { getEmailTemplate } from ".";
+import { models } from "@/graphql/db/models";
 
 let client: mailJet.Email.Client;
 
@@ -69,7 +69,7 @@ export async function enqueueEmail(props: EmailProps) {
     );
   }
   try {
-    const found = await models.EmailDelivery.findOne({ where: props });
+    const found = await models.EmailDelivery.findOne({ where: props as any });
     if (found) {
       return logger.debug("Email record exist. Skipping");
     }
@@ -90,7 +90,7 @@ export async function enqueueEmail(props: EmailProps) {
           // update delivery
           await models.EmailDelivery.update(
             { delivered: true },
-            { where: props },
+            { where: { ...props } },
           );
         }
       }

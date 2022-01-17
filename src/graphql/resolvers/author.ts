@@ -10,6 +10,7 @@ import {
 } from "@/__generated__/__types__";
 import { ResolverContext } from "../apollo";
 import models from "@/graphql/db/models";
+import { models as newModels } from "@/graphql/db/models/index2";
 import bcrypt from "bcryptjs";
 import { validateCaptcha } from "./helpers";
 import generatePost from "@/graphql/db/seed/contentGenerator";
@@ -356,8 +357,8 @@ export async function createAuthorWithSettings(
   rolename: ROLES = ROLES.AUTHOR,
 ) {
   const { token, ...authorData } = data;
-  const role = await models.Role.findOne({ where: { name: rolename } });
-  const author = await models.Author.create({
+  const role = await newModels.Role.findOne({ where: { name: rolename } });
+  const author = await newModels.Author.create({
     ...authorData,
     avatar: "",
     verified: false,
@@ -371,15 +372,15 @@ export async function createAuthorWithSettings(
     password: bcrypt.hashSync(data.password, 12),
   });
   if (author && role) {
-    author.setRole(role);
-    const newSettingRecord = await models.Setting.create({
+    author.$set("role", role);
+    const newSettingRecord = await newModels.Setting.create({
       ...defaultSettings,
       menu: defaultSettings.menu as any,
       site_url: `https://${data.username}.letterpad.app`,
       ...setting,
       client_token: getToken({ data: { id: author.id }, algorithm: "HS256" }),
     });
-    await author.setSetting(newSettingRecord);
+    await author.$set("setting", newSettingRecord);
   }
   return author;
 }

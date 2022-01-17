@@ -1,10 +1,12 @@
-import models from "@/graphql/db/models";
+//@ts-nocheck
+// import { models } from "@/graphql/db/models";
+
 import Twig from "twig";
 
 import logger from "src/shared/logger";
 
 import { getToken } from "@/shared/token";
-import SendMail from "./sendMail";
+// import SendMail from "./sendMail";
 import { addLineBreaks } from "./utils";
 
 import {
@@ -12,11 +14,12 @@ import {
   EmailTemplates,
   EmailVerifyNewSubscriberProps,
 } from "@/graphql/types";
+// import { connection } from "@/graphql/db/models/connection";
 
 export async function getVerifySubscriberEmailContent(
   data: EmailVerifyNewSubscriberProps,
 ): Promise<EmailTemplateResponse> {
-  const template = await models.Email.findOne({
+  const template = await connection.models.Email.findOne({
     where: { template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER },
   });
   if (!template) {
@@ -28,7 +31,7 @@ export async function getVerifySubscriberEmailContent(
   const author = await models.Author.findOne({
     where: { id: data.author_id },
   });
-  const setting = await author?.getSetting();
+  const setting = await author?.$get("setting");
 
   if (!author || !setting) {
     return {

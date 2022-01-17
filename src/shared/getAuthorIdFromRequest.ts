@@ -1,8 +1,8 @@
-import models from "@/graphql/db/models";
 import logger from "./logger";
 import { Context } from "@apollo/client";
 import { verifyToken } from "./token";
 import * as Sentry from "@sentry/nextjs";
+import { Author } from "@/graphql/db/models/definations/author";
 const authHeaderPrefix = "Basic ";
 
 const printOnce = {
@@ -31,7 +31,7 @@ export default async (context: Context) => {
         logger.debug("development mode");
         printOnce.env = 1;
       }
-      const author = await models.Author.findOne({
+      const author = await Author.findOne({
         where: { email: "demo@demo.com" },
       });
       if (author) {
@@ -52,7 +52,7 @@ async function getAuthorFromSubdomain(context) {
   } else if (identifier.includes("letterpad.app")) {
     logger.debug("Host for checking subdomain - ", identifier);
     const username = identifier.split(".")[0];
-    const author = await models.Author.findOne({
+    const author = await Author.findOne({
       attributes: ["id"],
       where: { username },
     });

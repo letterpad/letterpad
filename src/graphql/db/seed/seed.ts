@@ -1,4 +1,5 @@
-import dbModels from "./../models/index";
+import connection, { models } from "../models/index2";
+
 import copydir from "copy-dir";
 import generatePost from "./contentGenerator";
 import mkdirp from "mkdirp";
@@ -25,11 +26,9 @@ const uploadsSourceDir = "./uploads";
 function absPath(p) {
   return path.join(__dirname, p);
 }
+type ModelsType = any;
 
-let models: typeof dbModels;
-export const seed = async (_models: typeof dbModels, folderCheck = true) => {
-  models = _models;
-
+export const seed = async (folderCheck = true) => {
   if (folderCheck) {
     console.time("ensure data directories");
     await Promise.all([
@@ -40,7 +39,7 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   }
 
   console.time("sync sequelize models");
-  await models.sequelize.sync({ force: true });
+  await connection.sync({ force: true });
   console.timeEnd("sync sequelize models");
   if (folderCheck) {
     // do some clean first. delete the uploads folder
@@ -55,16 +54,19 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   await insertRolePermData(models);
   console.timeEnd("insert roles and permissions");
 
-  console.time("insert authors and Tags");
+  console.time("insert authors");
   await insertAuthor();
+  console.timeEnd("insert authors");
+
+  console.time("insert Tags");
   await insertTags();
-  console.timeEnd("insert authors and Tags");
+  console.timeEnd("insert Tags");
 
   console.time("insert posts, media");
-  const [tags] = await Promise.all([models.Tags.findAll()]);
+  const [tags] = await Promise.all([models.Tag.findAll()]);
 
   await Promise.all([...posts.map((post) => insertPost(post, models, tags))]);
-  await insertMedia();
+  // await insertMedia();
   console.timeEnd("insert posts, media");
 
   console.time("insert emails");
@@ -72,7 +74,7 @@ export const seed = async (_models: typeof dbModels, folderCheck = true) => {
   console.timeEnd("insert emails");
 };
 
-export async function insertRolePermData(models: typeof dbModels) {
+export async function insertRolePermData(models: ModelsType) {
   const [
     MANAGE_OWN_POSTS,
     READ_ONLY_POSTS,
@@ -100,27 +102,27 @@ export async function insertRolePermData(models: typeof dbModels) {
   async function admin() {
     const role = await models.Role.create({ name: "ADMIN" });
     return Promise.all([
-      role.addPermission(READ_ONLY_POSTS),
-      role.addPermission(MANAGE_ALL_POSTS),
-      role.addPermission(MANAGE_USERS),
-      role.addPermission(MANAGE_SETTINGS),
-      role.addPermission(MANAGE_OWN_POSTS),
+      role.$add("permission", READ_ONLY_POSTS),
+      role.$add("permission", MANAGE_ALL_POSTS),
+      role.$add("permission", MANAGE_USERS),
+      role.$add("permission", MANAGE_SETTINGS),
+      role.$add("permission", MANAGE_OWN_POSTS),
     ]);
   }
 
   async function reviewer() {
     const role = await models.Role.create({ name: "REVIEWER" });
-    return role.addPermission(MANAGE_ALL_POSTS);
+    return role.$add("permission", MANAGE_ALL_POSTS);
   }
 
   async function reader() {
     const role = await models.Role.create({ name: "READER" });
-    return role.addPermission(READ_ONLY_POSTS);
+    return role.$add("permission", READ_ONLY_POSTS);
   }
 
   async function author() {
     const role = await models.Role.create({ name: "AUTHOR" });
-    return role.addPermission(MANAGE_OWN_POSTS);
+    return role.$add("permission", MANAGE_OWN_POSTS);
   }
 
   return Promise.all([admin(), reviewer(), reader(), author()]);
@@ -171,21 +173,21 @@ export async function insertTags() {
     {
       name: "Home",
       slug: "home",
-      desc: "",
+      desc: "tag desc",
     },
     {
       name: "first-post",
       slug: "first-post",
-      desc: "",
+      desc: "tag desc",
     },
   ];
 
   if (author) {
-    return Promise.all([...tags.map((tag) => author.createTag(tag))]);
+    return Promise.all([...tags.map((tag) => author.$create("tag", tag))]);
   }
 }
 
-export async function insertPost(params, models: typeof dbModels, tags) {
+export async function insertPost(params, models: ModelsType, tags) {
   // get author  // 1 or 2
   const { html } = generatePost(params.type);
   let promises: any[] = [];
@@ -209,37 +211,41 @@ export async function insertPost(params, models: typeof dbModels, tags) {
     reading_time: "5 mins",
   });
   if (author && post) {
-    promises = [author.addPost(post)];
+    promises = [author.$add("post", post)];
     if (params.type === "post") {
-      promises = [...promises, ...tags.map((tag) => post.addTag(tag))];
+      promises = [...promises, ...tags.map((tag) => post.$add("tag", tag))];
     }
 
     return Promise.all(promises);
   }
 }
 
-export async function insertMedia() {
-  const author = await models.Author.findOne({ where: { id: 1 } });
-  if (author) {
-    await author.createMedia({
-      url: "https://images.unsplash.com/photo-1473181488821-2d23949a045a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
-      name: "Blueberries",
-      width: 1350,
-      height: 900,
-      description:
-        "Write a description about this image. You never know how this image can break the internet",
-    });
+// export async function insertMedia() {
+//   const author = await models.Author.findOne({ where: { id: 2 } });
+//   if (author) {
+//     try {
+//       await author?.$create("upload", {
+//         url: "https://images.unsplash.com/photo-1473181488821-2d23949a045a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+//         name: "Blueberries",
+//         width: 1350,
+//         height: 900,
+//         description:
+//           "Write a description about this image. You never know how this image can break the internet",
+//       });
 
-    await author.createMedia({
-      url: "https://images.unsplash.com/photo-1524654458049-e36be0721fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-      width: 1350,
-      height: 900,
-      name: "I love the beach and its smell",
-      description:
-        "Write a description about this image. You never know how this image can break the internet",
-    });
-  }
-}
+//       await author?.$create("upload", {
+//         url: "https://images.unsplash.com/photo-1524654458049-e36be0721fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+//         width: 1350,
+//         height: 900,
+//         name: "I love the beach and its smell",
+//         description:
+//           "Write a description about this image. You never know how this image can break the internet",
+//       });
+//     } catch (e) {
+//       console.log(e);
+//     }
+//   }
+// }
 
 export const getDateTime = (d?: Date) => {
   const m = d ? new Date(d) : new Date();
@@ -318,7 +324,7 @@ export async function createAdmin() {
       where: { name: ROLES.ADMIN },
     });
     if (role) {
-      await author.setRole(role.id);
+      await author.$set("role", role.id);
     }
     const setting = await models.Setting.create({
       ...defaultSettings,
@@ -327,6 +333,6 @@ export async function createAdmin() {
       site_title: "Admin Account",
       client_token: getToken({ data: { id: author.id }, algorithm: "H256" }),
     });
-    await author.setSetting(setting);
+    await author.$set("setting", setting);
   }
 }

@@ -11,6 +11,7 @@ import {
 } from "sequelize";
 
 import { PostsResponse } from "@/__generated__/__types__";
+import { Author } from "./author";
 
 export interface TagsAttributes {
   id: number;

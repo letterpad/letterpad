@@ -1,4 +1,5 @@
-import getAuthorIdFromRequest from "../src/shared/getAuthorIdFromRequest";
+//@ts-nocheck
+// import getAuthorIdFromRequest from "../src/shared/getAuthorIdFromRequest";
 const env = require("node-env-file");
 // if (process.env.NODE_ENV === "production") {
 //   env(__dirname + "/../.env.production.local");
@@ -7,7 +8,7 @@ const env = require("node-env-file");
 env(__dirname + "/../.env.development.local");
 
 import { ApolloServer } from "apollo-server";
-import models from "../src/graphql/db/models";
+
 import { schema } from "../src/graphql/schema";
 import { seed } from "../src/graphql/db/seed/seed";
 
@@ -37,19 +38,19 @@ export const createApolloTestServer = async () => {
         };
       }
 
-      return { req, res, models, author_id, session };
+      return { req, res, models: connection.models, author_id, session };
     },
   });
 };
 
 let server;
 beforeAll(async () => {
-  await seed(models);
+  // await seed();
   server = await createApolloTestServer();
-  const { url } = await server.listen({ port: 3000 });
-  console.log("server listening at " + url);
+  // const { url } = await server.listen({ port: 3000 });
+  // console.log("server listening at " + url);
 });
 
 afterAll(async () => {
-  server.stop();
+  // server.stop();
 });
