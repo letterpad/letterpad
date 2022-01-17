@@ -1,9 +1,8 @@
 import { EmailProps, EmailTemplates } from "@/graphql/types";
-
-import { getVerifyUserEmailContent } from "./emailVerifyUser";
-import { getForgotPasswordContent } from "./emailForgotPassword";
-import { getNewPostContent } from "./emailNewPost";
-import { getVerifySubscriberEmailContent } from "./emailVerifySubscriber";
+import { getNewPostContent } from "../new-post/content";
+import { getForgotPasswordContent } from "../forgot-password/content";
+import { getVerifyUserEmailContent } from "../verify-user/content";
+import { getVerifySubscriberEmailContent } from "../verify-subscriber/content";
 
 export async function getEmailTemplate(props: EmailProps) {
   switch (props.template_id) {

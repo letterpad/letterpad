@@ -1,15 +1,12 @@
-import models from "@/graphql/db/models";
+import { models } from "@/graphql/db/models";
 import Twig from "twig";
-
-import logger from "src/shared/logger";
 import {
   EmailForgotPasswordProps,
   EmailTemplateResponse,
   EmailTemplates,
 } from "@/graphql/types";
 import { getToken } from "@/shared/token";
-import SendMail from "./sendMail";
-import { addLineBreaks } from "./utils";
+import { addLineBreaks } from "../utils";
 
 export async function getForgotPasswordContent(
   data: EmailForgotPasswordProps,
@@ -65,20 +62,4 @@ export async function getForgotPasswordContent(
       author,
     },
   };
-}
-
-export async function sendForgotPasswordEmail(data: EmailForgotPasswordProps) {
-  try {
-    const template = await getForgotPasswordContent(data);
-    if (template.ok) {
-      await SendMail(template.content, template.meta);
-    }
-    return {
-      ok: true,
-      message: "We have sent you an email to recover your password",
-    };
-  } catch (e) {
-    logger.error("Could not send mail - " + EmailTemplates.FORGOT_PASSWORD);
-    throw new Error(e);
-  }
 }

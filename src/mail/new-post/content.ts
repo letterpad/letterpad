@@ -1,14 +1,12 @@
-import models from "@/graphql/db/models";
+import { models } from "@/graphql/db/models";
 import Twig from "twig";
 
-import logger from "src/shared/logger";
 import {
   EmailNewPostProps,
   EmailTemplateResponse,
   EmailTemplates,
 } from "@/graphql/types";
-import SendMail from "./sendMail";
-import { addLineBreaks } from "./utils";
+import { addLineBreaks } from "../utils";
 
 export async function getNewPostContent(
   data: EmailNewPostProps,
@@ -81,20 +79,4 @@ export async function getNewPostContent(
       author,
     },
   };
-}
-
-export async function sendNewPostEmail(data: EmailNewPostProps) {
-  try {
-    const template = await getNewPostContent(data);
-    if (template.ok) {
-      await SendMail(template.content, template.meta, true);
-    }
-    return {
-      ok: true,
-      message: "We have sent you an email with a new post update",
-    };
-  } catch (e) {
-    logger.error("Could not send mail - " + EmailTemplates.NEW_POST);
-    throw new Error(e);
-  }
 }

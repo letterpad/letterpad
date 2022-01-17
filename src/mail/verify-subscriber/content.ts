@@ -1,25 +1,19 @@
 //@ts-nocheck
-// import { models } from "@/graphql/db/models";
-
+import { models } from "@/graphql/db/models";
 import Twig from "twig";
-
-import logger from "src/shared/logger";
-
 import { getToken } from "@/shared/token";
-// import SendMail from "./sendMail";
-import { addLineBreaks } from "./utils";
+import { addLineBreaks } from "../utils";
 
 import {
   EmailTemplateResponse,
   EmailTemplates,
   EmailVerifyNewSubscriberProps,
 } from "@/graphql/types";
-// import { connection } from "@/graphql/db/models/connection";
 
 export async function getVerifySubscriberEmailContent(
   data: EmailVerifyNewSubscriberProps,
 ): Promise<EmailTemplateResponse> {
-  const template = await connection.models.Email.findOne({
+  const template = await models.Email.findOne({
     where: { template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER },
   });
   if (!template) {
@@ -31,7 +25,7 @@ export async function getVerifySubscriberEmailContent(
   const author = await models.Author.findOne({
     where: { id: data.author_id },
   });
-  const setting = await author?.$get("setting");
+  const setting = await author?.getSetting();
 
   if (!author || !setting) {
     return {
@@ -72,24 +66,4 @@ export async function getVerifySubscriberEmailContent(
       author,
     },
   };
-}
-
-export async function sendVerifySubscriberEmail(
-  data: EmailVerifyNewSubscriberProps,
-) {
-  try {
-    const template = await getVerifySubscriberEmailContent(data);
-    if (template.ok) {
-      await SendMail(template.content, template.meta);
-    }
-    return {
-      ok: true,
-      message: "We have sent you an email to verify your email",
-    };
-  } catch (e) {
-    logger.error(
-      "Could not send mail - " + EmailTemplates.VERIFY_NEW_SUBSCRIBER,
-    );
-    throw new Error(e);
-  }
 }

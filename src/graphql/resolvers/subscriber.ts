@@ -1,9 +1,9 @@
 //@ts-nocheck
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import Cryptr from "cryptr";
-// import { enqueueEmail } from "@/mail/sendMail";
+import { enqueueEmail } from "@/mail/mailqueue";
 import { EmailTemplates } from "../types";
-import { sendVerifySubscriberEmail } from "@/mail/emailVerifySubscriber";
+// import { sendVerifySubscriberEmail } from "@/mail/emailVerifySubscriber";
 import { ResolverContext } from "../resolverContext";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
