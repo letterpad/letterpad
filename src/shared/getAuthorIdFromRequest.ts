@@ -46,10 +46,10 @@ export default async (context: Context) => {
 };
 
 async function getAuthorFromSubdomain(context) {
-  const { identifier } = context.req.headers;
-  if (!identifier) {
+  if (!context.req.headers) {
     logger.debug("No identifier found - Internal admin request - OK");
-  } else if (identifier.includes("letterpad.app")) {
+  } else if (context.req.headers?.identifier?.includes("letterpad.app")) {
+    const { identifier } = context.req.headers;
     logger.debug("Host for checking subdomain - ", identifier);
     const username = identifier.split(".")[0];
     const author = await Author.findOne({

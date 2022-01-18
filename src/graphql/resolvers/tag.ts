@@ -5,7 +5,7 @@ import {
   MutationResolvers,
   InputTags,
 } from "@/__generated__/__types__";
-import { ResolverContext } from "../resolverContext";
+import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
   async tag(_root, args, { session, author_id, models }) {

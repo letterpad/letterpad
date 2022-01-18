@@ -79,7 +79,8 @@ const Query: QueryResolvers<ResolverContext> = {
         setting.setDataValue(securedKey, "");
       }
     });
-    return { ...setting, __typename: "Setting" };
+
+    return { ...setting.get(), __typename: "Setting" };
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {

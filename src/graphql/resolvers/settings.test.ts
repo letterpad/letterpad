@@ -1,6 +1,6 @@
 import { UpdateOptionsDocument } from "./../../../__generated__/src/graphql/queries/mutations.graphql";
 import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
-import models from "@/graphql/db/models";
+import { models } from "@/graphql/db/models";
 import { API } from "./../../../tests/testClient";
 
 describe("Test Settings Graphql API", () => {
@@ -35,7 +35,12 @@ describe("Test Settings Graphql API", () => {
   it("should have the right menu format", async () => {
     const result = await API({ query: SettingsDocument, variables: {} });
     expect(result.settings.menu).toEqual([
-      { label: "home", original_name: "home", slug: "/tag/home", type: "tag" },
+      {
+        label: "home",
+        original_name: "home",
+        slug: "/tag/first-post",
+        type: "tag",
+      },
       {
         label: "Page",
         original_name: "Page",

@@ -70,7 +70,8 @@ export async function getApolloClient(
     }
   }
 
-  const _apolloClient = apolloClient ?? createApolloClient(defaultContext);
+  const _apolloClient =
+    apolloClient ?? createApolloClient(defaultContext as ResolverContext);
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // get hydrated here

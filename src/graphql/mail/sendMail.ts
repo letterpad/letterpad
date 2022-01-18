@@ -1,4 +1,3 @@
-//@ts-nocheck
 import * as Sentry from "@sentry/nextjs";
 import { EmailTemplateMeta, Mail } from "@/graphql/types";
 import { bodyDecorator } from "./decorator";

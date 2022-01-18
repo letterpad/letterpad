@@ -1,4 +1,4 @@
-import { PostTypes } from "@/__generated__/__types__";
+import { Image, PostTypes } from "@/__generated__/__types__";
 import {
   Table,
   Column,
@@ -47,7 +47,7 @@ export class Post extends BaseModel {
       };
     },
   })
-  public cover_image!: string; //TODO
+  public cover_image!: Image;
 
   @Column({ type: DataType.INTEGER, allowNull: true })
   public cover_image_width!: number;

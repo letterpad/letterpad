@@ -202,6 +202,8 @@ export async function insertPost(params, models: ModelsType, tags) {
     excerpt:
       "You can use this space to write a small description about the topic. This will be helpful in SEO.",
     cover_image: params.cover_image,
+    cover_image_width: 100,
+    cover_image_height: 100,
     authorId: author?.id,
     type: params.type,
     status: params.status,

@@ -1,6 +1,5 @@
 import {
   Role as GraphqlRole,
-  Setting as GraphqlSetting,
   Permissions as GraphqlPermissions,
   Social,
 } from "@/__generated__/__types__";
@@ -82,7 +81,7 @@ export class Author extends BaseModel {
 
   //setting
   @BelongsTo(() => Setting, "setting_id")
-  public setting!: GraphqlSetting;
+  public setting!: Setting;
   //end setting
 
   //role

@@ -60,6 +60,7 @@
     "twig": "^1.15.4"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.16.7",
     "@babel/preset-env": "^7.13.15",
     "@babel/preset-typescript": "^7.13.0",
     "@graphql-codegen/cli": "^1.17.8",
