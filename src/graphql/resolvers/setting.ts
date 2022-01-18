@@ -75,7 +75,6 @@ const Query: QueryResolvers<ResolverContext> = {
 
     SECURE_SETTINGS.forEach((securedKey) => {
       if (!session?.user.id) {
-        //@ts-ignore
         setting.setDataValue(securedKey, "");
       }
     });
