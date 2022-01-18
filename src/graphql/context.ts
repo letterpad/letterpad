@@ -1,7 +1,7 @@
 import MailService from "@/graphql/mail/service";
 import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
 import { getSession } from "next-auth/react";
-import connection, { models, ModelsType } from "./db/models/index2";
+import connection, { models, ModelsType } from "./db/models/models";
 import { SessionData } from "./types";
 
 const mailUtils = MailService<ModelsType>(models);

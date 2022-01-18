@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/react";
-import { Author } from "./../../graphql/db/models/author";
+import { Author } from "./../../graphql/db/models/definations/author";
 import { models } from "@/graphql/db/models";
 import multer from "multer";
 import initMiddleware from "./middleware";
@@ -12,7 +12,7 @@ import {
 } from "./importExportTypes";
 
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
-import { Post } from "@/graphql/db/models/post";
+import { Post } from "@/graphql/db/models/definations/post";
 import { getToken } from "@/shared/token";
 import { Model } from "sequelize-typescript";
 
@@ -149,7 +149,7 @@ async function addTagsToPost(
   }
 }
 
-async function removeUserData(author: Author) {
+async function removeUserData(author: Model<Author>) {
   if (author.setting_id) {
     // remove setting
     await models.Setting.destroy({ where: { id: author.setting_id } });

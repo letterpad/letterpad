@@ -1,4 +1,4 @@
-import { Image, PostTypes } from "@/__generated__/__types__";
+import { Image, PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import {
   Table,
   Column,
@@ -68,16 +68,16 @@ export class Post extends BaseModel {
   public featured!: boolean;
 
   @Column({ type: DataType.STRING, allowNull: false, defaultValue: "draft" })
-  public status!: string;
+  public status!: PostStatusOptions;
 
   @Column({ type: DataType.STRING, allowNull: true })
   public reading_time!: string;
 
   @Column({ type: DataType.DATE, allowNull: true })
-  public publishedAt!: string;
+  public publishedAt!: Date;
 
   @Column({ type: DataType.DATE, allowNull: true })
-  public scheduledAt!: string;
+  public scheduledAt!: Date;
 
   /* Associantions */
   // Author

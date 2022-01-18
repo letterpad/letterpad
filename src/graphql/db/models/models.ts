@@ -10,7 +10,7 @@ import { Role } from "./definations/role";
 import { RolePermission } from "./definations/rolePermission";
 import { Setting } from "./definations/setting";
 import { Subscribers } from "./definations/subscriber";
-import { Tag } from "./definations/tags";
+import { Tag } from "./definations/tag";
 
 connection.addModels([
   Post,
@@ -47,5 +47,6 @@ export default connection;
 
 async function test() {
   // await connection.sync({ force: true });
+  // const tag = await Tag.create({ name: "dca", slug: "casd" });
 }
 test();

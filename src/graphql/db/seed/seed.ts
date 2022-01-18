@@ -1,4 +1,4 @@
-import connection, { models } from "../models/index2";
+import connection, { models } from "../models/models";
 
 import copydir from "copy-dir";
 import generatePost from "./contentGenerator";

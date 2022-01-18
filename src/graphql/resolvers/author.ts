@@ -8,7 +8,7 @@ import {
   InputCreateAuthor,
   SettingInputType,
 } from "@/__generated__/__types__";
-import { models as newModels } from "@/graphql/db/models/index2";
+import { models as newModels } from "@/graphql/db/models/models";
 import bcrypt from "bcryptjs";
 import { validateCaptcha } from "./helpers";
 import generatePost from "@/graphql/db/seed/contentGenerator";

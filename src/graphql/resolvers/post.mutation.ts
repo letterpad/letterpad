@@ -3,7 +3,7 @@ import {
   PostStatusOptions,
   PostTypes,
 } from "@/__generated__/__types__";
-import { PostAttributes } from "@/graphql/db/models/post";
+import { Post } from "@/graphql/db/models/definations/post";
 import reading_time from "reading-time";
 import {
   slugify,
@@ -15,7 +15,7 @@ import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
 import { EmailTemplates } from "@/graphql/types";
 import { ResolverContext } from "../context";
-import { ModelsType } from "../db/models/index2";
+import { ModelsType } from "../db/models/models";
 
 export const slugOfUntitledPost = "untitled";
 
@@ -99,7 +99,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           .replace("/page/", "");
       }
 
-      const previousPost = previousPostRaw.get() as PostAttributes;
+      const previousPost = previousPostRaw.get() as Post;
 
       // slug and title
       if (dataToUpdate.slug) {
