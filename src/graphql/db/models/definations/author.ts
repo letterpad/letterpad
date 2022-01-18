@@ -20,12 +20,13 @@ import { Role } from "./role";
 import { Setting } from "./setting";
 import { Subscribers } from "./subscriber";
 import { Tag } from "./tag";
-// import { Tag } from "./tags";
+import Fix from "../decorators/Fix";
 
 @Table({
   timestamps: true,
   tableName: "authors",
 })
+@Fix
 export class Author extends BaseModel {
   @PrimaryKey
   @AutoIncrement
@@ -90,7 +91,6 @@ export class Author extends BaseModel {
   //end role
 
   public permissions!: GraphqlPermissions[];
-  public setting_id!: number;
 
   /* End Associantions */
 }

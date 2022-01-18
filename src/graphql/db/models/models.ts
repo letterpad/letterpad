@@ -44,9 +44,3 @@ export const models = {
 export type ModelsType = typeof models;
 
 export default connection;
-
-async function test() {
-  // await connection.sync({ force: true });
-  // const tag = await Tag.create({ name: "dca", slug: "casd" });
-}
-test();

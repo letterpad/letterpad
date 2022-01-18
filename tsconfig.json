@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-
+    "useDefineForClassFields": false,
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],

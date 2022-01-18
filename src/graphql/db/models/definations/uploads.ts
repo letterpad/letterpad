@@ -1,4 +1,5 @@
 import { Table, Column, DataType, BelongsTo } from "sequelize-typescript";
+import Fix from "../decorators/Fix";
 import { Author } from "./author";
 
 import { BaseModel } from "./base";
@@ -7,6 +8,7 @@ import { BaseModel } from "./base";
   timestamps: true,
   tableName: "uploads",
 })
+@Fix
 export class Upload extends BaseModel {
   @Column({ type: DataType.STRING, allowNull: false })
   public url!: string;

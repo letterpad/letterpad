@@ -12,11 +12,12 @@ export const getResolverContext = async ({ req }) => {
     ? null
     : ((await getSession({ req })) as unknown as { user: SessionData });
 
-  const author_id: number | undefined = isTest
-    ? null
-    : await getAuthorIdFromRequest({
-        req,
-      });
+  let author_id = session?.user?.id;
+  if (!isTest && !author_id) {
+    author_id = await getAuthorIdFromRequest({
+      req,
+    });
+  }
 
   return {
     connection,

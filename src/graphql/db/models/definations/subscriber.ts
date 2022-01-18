@@ -1,11 +1,5 @@
-import {
-  Table,
-  Column,
-  DataType,
-  BelongsTo,
-  PrimaryKey,
-  AutoIncrement,
-} from "sequelize-typescript";
+import { Table, Column, DataType, BelongsTo } from "sequelize-typescript";
+import Fix from "../decorators/Fix";
 import { Author } from "./author";
 
 import { BaseModel } from "./base";
@@ -14,12 +8,8 @@ import { BaseModel } from "./base";
   timestamps: true,
   tableName: "subscribers",
 })
+@Fix
 export class Subscribers extends BaseModel {
-  @PrimaryKey
-  @AutoIncrement
-  @Column({ type: DataType.INTEGER })
-  public id!: number;
-
   @Column({ type: DataType.STRING, allowNull: false })
   public email!: string;
 
@@ -32,8 +22,6 @@ export class Subscribers extends BaseModel {
   @Column({ type: DataType.INTEGER, allowNull: false, defaultValue: 3 })
   public verify_attempt_left!: number;
 
-  @Column({ type: DataType.DATE, allowNull: false })
-  public createdAt!: string;
   /* Associantions */
   @BelongsTo(() => Author, "author_id")
   public author!: Author;

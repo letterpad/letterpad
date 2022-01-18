@@ -1,20 +1,12 @@
 import withAuthCheck from "@/hoc/withAuth";
 
 import { PostProvider } from "@/components/post/context";
-
-import dynamic from "next/dynamic";
-
-const PostWithNoSSR = dynamic(
-  () => import("@/components/post/components/post"),
-  {
-    ssr: false,
-  },
-);
+import Post from "@/components/post/components/post";
 
 function Main() {
   return (
     <PostProvider>
-      <PostWithNoSSR />
+      <Post />
     </PostProvider>
   );
 }

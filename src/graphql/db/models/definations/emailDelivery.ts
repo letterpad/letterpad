@@ -1,23 +1,14 @@
-import {
-  Table,
-  Column,
-  DataType,
-  PrimaryKey,
-  AutoIncrement,
-} from "sequelize-typescript";
+import { Table, Column, DataType } from "sequelize-typescript";
 import { BaseModel } from "./base";
 import { EmailTemplates } from "@/graphql/types";
+import Fix from "../decorators/Fix";
 
 @Table({
   timestamps: true,
   tableName: "emailDelivery",
 })
+@Fix
 export class EmailDelivery extends BaseModel {
-  @PrimaryKey
-  @AutoIncrement
-  @Column({ type: DataType.INTEGER })
-  public id!: number;
-
   @Column({ type: DataType.STRING, allowNull: false })
   public template_id!: EmailTemplates;
 

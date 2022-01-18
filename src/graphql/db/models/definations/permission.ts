@@ -1,4 +1,5 @@
 import { Table, Column, DataType, BelongsToMany } from "sequelize-typescript";
+import Fix from "../decorators/Fix";
 import { BaseModel } from "./base";
 import { Role } from "./role";
 import { RolePermission } from "./rolePermission";
@@ -7,6 +8,7 @@ import { RolePermission } from "./rolePermission";
   timestamps: true,
   tableName: "permissions",
 })
+@Fix
 export class Permission extends BaseModel {
   @Column({ type: DataType.STRING, allowNull: false })
   public name!: string;

@@ -6,6 +6,7 @@ import {
   BelongsTo,
   BelongsToMany,
 } from "sequelize-typescript";
+import Fix from "../decorators/Fix";
 import { Author } from "./author";
 
 import { BaseModel } from "./base";
@@ -16,6 +17,7 @@ import { Tag } from "./tag";
   timestamps: true,
   tableName: "posts",
 })
+@Fix
 export class Post extends BaseModel {
   @Column({ type: DataType.STRING, allowNull: true })
   public title!: string;
