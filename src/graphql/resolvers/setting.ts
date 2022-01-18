@@ -9,7 +9,6 @@ import {
 } from "@/__generated__/__types__";
 import fs from "fs";
 import path from "path";
-// import models from "@/graphql/db/models";
 import logger from "@/shared/logger";
 import { defaultSettings } from "../db/seed/constants";
 import { ResolverContext } from "../context";

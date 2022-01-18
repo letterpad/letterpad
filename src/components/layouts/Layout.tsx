@@ -65,7 +65,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
         }}
         width={siteConfig.sidebar_width}
       >
-        {settings.site_logo.src ? (
+        {settings.site_logo?.src ? (
           <Row style={{ margin: "auto", marginLeft: 0 }}>
             <Logo src={settings.site_logo.src} />
           </Row>
@@ -90,7 +90,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
             visible={visible}
           >
             <div className="ant-dropdown-menu-dark" style={{ height: "100%" }}>
-              <Logo src={settings.site_logo.src} />
+              <Logo src={settings.site_logo?.src} />
               <Navigation stats={stats} />
               <ThemeSwitcher />
             </div>

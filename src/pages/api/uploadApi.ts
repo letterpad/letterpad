@@ -17,7 +17,7 @@ import path from "path";
 import multer from "multer";
 import { uploadToCloudinary } from "./providers/cloudinary";
 import { uploadToInternal } from "./providers/internal";
-import models from "@/graphql/db/models";
+import { models } from "@/graphql/db/models";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
 import { basePath } from "@/constants";
@@ -104,7 +104,7 @@ export default async (
 };
 
 export async function upsertMedia(result: IMediaUploadResult, id: number) {
-  let media = await models.Media.findOne({
+  let media = await models.Upload.findOne({
     where: {
       url: result.src,
     },
@@ -115,7 +115,7 @@ export async function upsertMedia(result: IMediaUploadResult, id: number) {
   }
   if (!media) {
     /*@TODO - Convert this to a graphql query */
-    media = await models.Media.create({
+    media = await models.Upload.create({
       url: result.src,
       name: result.name,
       description: "",
@@ -125,7 +125,7 @@ export async function upsertMedia(result: IMediaUploadResult, id: number) {
     });
   }
   if (media) {
-    await author.addMedia(media);
+    await author.$add("media", media);
   }
 }
 

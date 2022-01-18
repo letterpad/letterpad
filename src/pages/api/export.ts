@@ -1,7 +1,7 @@
 import { IAuthorData, IImportExportData } from "./importExportTypes";
 import { SessionData } from "./../../graphql/types";
 import fs from "fs";
-import models from "@/graphql/db/models";
+import { models } from "@/graphql/db/models";
 import { Author } from "@/graphql/db/models/author";
 import { getSession } from "next-auth/react";
 import { Role } from "@/__generated__/__types__";
@@ -20,7 +20,7 @@ const Export = async (req, res) => {
   }
 
   for (const author of authors) {
-    data.authors[author.email] = await getContent(author);
+    data.authors[author.email] = await getContent(author as any);
   }
 
   fs.writeFileSync("data.json", JSON.stringify(data, null, 2), "utf-8");

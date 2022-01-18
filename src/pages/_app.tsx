@@ -57,12 +57,12 @@ function MyApp({ Component, pageProps }: Props) {
   }
 
   return (
-    <LetterpadProvider value={data.settings}>
+    <LetterpadProvider value={data.settings as Setting}>
       <Main
         Component={Component}
         Layout={Layout}
         props={{ ...pageProps }}
-        settings={data.settings}
+        settings={data.settings as Setting}
       />
     </LetterpadProvider>
   );

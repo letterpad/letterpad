@@ -1,13 +1,13 @@
 import { EmailNewPostProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
-import SendMail from "../sendMail";
+import { sendMail } from "../sendMail";
 import { getNewPostContent } from "./content";
 
-export async function sendNewPostEmail(data: EmailNewPostProps) {
+export async function sendNewPostEmail(data: EmailNewPostProps, models) {
   try {
-    const template = await getNewPostContent(data);
+    const template = await getNewPostContent(data, models);
     if (template.ok) {
-      await SendMail(template.content, template.meta, true);
+      await sendMail(template.content, template.meta, true);
     }
     return {
       ok: true,

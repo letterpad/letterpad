@@ -1,13 +1,16 @@
 import { EmailTemplates, EmailVerifyNewUserProps } from "@/graphql/types";
 import logger from "@/shared/logger";
-import SendMail from "../sendMail";
+import { sendMail } from "../sendMail";
 import { getVerifyUserEmailContent } from "./content";
 
-export async function sendVerifyUserEmail(data: EmailVerifyNewUserProps) {
+export async function sendVerifyUserEmail(
+  data: EmailVerifyNewUserProps,
+  models,
+) {
   try {
-    const template = await getVerifyUserEmailContent(data);
+    const template = await getVerifyUserEmailContent(data, models);
     if (template.ok) {
-      await SendMail(template.content, template.meta);
+      await sendMail(template.content, template.meta);
     }
     return {
       ok: true,

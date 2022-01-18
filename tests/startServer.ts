@@ -1,7 +1,7 @@
 import getAuthorIdFromRequest from "../src/shared/getAuthorIdFromRequest";
 
 import { ApolloServer } from "apollo-server";
-import models from "../src/graphql/db/models";
+import { models } from "../src/graphql/db/models";
 import { schema } from "../src/graphql/schema";
 import { seed } from "../src/graphql/db/seed/seed";
 
@@ -38,7 +38,7 @@ export const createApolloTestServer = async () => {
 
 let server;
 beforeAll(async () => {
-  await seed(models);
+  await seed();
   server = await createApolloTestServer();
   const { url } = await server.listen({ port: 3000 });
   console.log("server listening at " + url);

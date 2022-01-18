@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react";
 import { Author } from "./../../graphql/db/models/author";
-import models from "@/graphql/db/models";
+import { models } from "@/graphql/db/models";
 import multer from "multer";
 import initMiddleware from "./middleware";
 import { ROLES, SessionData } from "@/graphql/types";
@@ -14,6 +14,7 @@ import {
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
 import { Post } from "@/graphql/db/models/post";
 import { getToken } from "@/shared/token";
+import { Model } from "sequelize-typescript";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -82,7 +83,9 @@ async function startImport(
 
   for (const email in data) {
     const authorsData = data[email];
-    let author = await models.Author.findOne({ where: { email } });
+    let author = await models.Author.findOne({
+      where: { email },
+    });
     if (!author && isLoggedInUserAdmin) {
       //@ts-ignore author
       const { id, role_id, setting_id, ...sanitizedAuthor } =
@@ -98,25 +101,25 @@ async function startImport(
     }
 
     if (role) {
-      author.setRole(role);
+      await author.$set("role", role);
     }
 
-    await removeUserData(author);
+    await removeUserData(author as any);
 
     authorsData.setting.client_token = getToken({
       data: { id: author.id },
       algorithm: "HS256",
     });
-    await author.createSetting(authorsData.setting);
+    await author.$create("setting", authorsData.setting);
 
     await Promise.all([
-      ...authorsData.media.map((item) => author?.createMedia(item)),
+      ...authorsData.media.map((item) => author?.$create("upload", item)),
     ]);
 
     for (const data of authorsData.posts) {
       //@ts-ignore
       const { tags, ...post } = data;
-      const newPost = await author.createPost({
+      const newPost = await author.$create("post", {
         ...data,
         cover_image: data.cover_image,
       });
@@ -130,19 +133,18 @@ async function startImport(
 }
 
 async function addTagsToPost(
-  post: Post,
+  post: Model<Post>,
   tags: ITagSanitized[],
-  author: Author,
+  author: Model<Author>,
 ) {
   for (const tag of tags) {
-    const existingTag = await models.Tags.findOne({
+    const existingTag = await models.Tag.findOne({
       where: { name: tag.name, author_id: author.id },
     });
     if (existingTag) {
-      post.addTag(existingTag);
+      post.$add("tag", existingTag);
     } else {
-      const created = await author.createTag({ ...tag });
-      if (created) post.addTag(created);
+      post.$create("tag", tag);
     }
   }
 }
@@ -155,13 +157,13 @@ async function removeUserData(author: Author) {
 
   if (author.id) {
     // remove tags
-    await models.Tags.destroy({ where: { author_id: author.id } });
+    await models.Tag.destroy({ where: { author_id: author.id } });
 
     // remove posts. also removes relationship with tags
     await models.Post.destroy({ where: { author_id: author.id } });
 
     // remove media
-    await models.Media.destroy({ where: { author_id: author.id } });
+    await models.Upload.destroy({ where: { author_id: author.id } });
   }
 }
 
@@ -210,7 +212,7 @@ async function validateSingleAuthorImport(
   res,
   data: IImportExportData,
   sessionUser: SessionData,
-): Promise<Author | null> {
+) {
   if (Object.keys(data.authors).length > 1) {
     res.status(401).send({
       success: false,

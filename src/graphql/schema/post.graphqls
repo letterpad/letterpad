@@ -4,7 +4,7 @@ type Post {
   # Title of the post
   title: String!
   # Html content of the post
-  html: String!
+  html: String
   # Draft for republishing content
   html_draft: String
   # Author information of the post

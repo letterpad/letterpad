@@ -29,7 +29,7 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
         <Form.Item label="Logo">
           <ImageUpload
             name="Logo"
-            url={settings.site_logo.src}
+            url={settings?.site_logo?.src}
             onDone={([res]) =>
               onChange("site_logo", {
                 src: res.src,
@@ -42,7 +42,7 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
         <Form.Item label="Favicon">
           <ImageUpload
             name="Favicon"
-            url={settings.site_favicon.src}
+            url={settings?.site_favicon?.src}
             onDone={([res]) =>
               onChange("site_favicon", {
                 src: res.src,
@@ -55,7 +55,7 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
         <Form.Item label="Banner">
           <ImageUpload
             name="Banner"
-            url={settings.banner.src}
+            url={settings?.banner?.src}
             onDone={([res]) =>
               onChange("banner", {
                 src: res.src,

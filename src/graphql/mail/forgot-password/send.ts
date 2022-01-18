@@ -1,13 +1,17 @@
 import { EmailForgotPasswordProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
-import SendMail from "../sendMail";
+import { sendMail } from "../sendMail";
+
 import { getForgotPasswordContent } from "./content";
 
-export async function sendForgotPasswordEmail(data: EmailForgotPasswordProps) {
+export async function sendForgotPasswordEmail(
+  data: EmailForgotPasswordProps,
+  models,
+) {
   try {
-    const template = await getForgotPasswordContent(data);
+    const template = await getForgotPasswordContent(data, models);
     if (template.ok) {
-      await SendMail(template.content, template.meta);
+      await sendMail(template.content, template.meta);
     }
     return {
       ok: true,
