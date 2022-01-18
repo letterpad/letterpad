@@ -149,7 +149,7 @@ async function addTagsToPost(
   }
 }
 
-async function removeUserData(author: Model<Author>) {
+async function removeUserData(author: Author) {
   if (author.setting_id) {
     // remove setting
     await models.Setting.destroy({ where: { id: author.setting_id } });

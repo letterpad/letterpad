@@ -90,6 +90,7 @@ export class Author extends BaseModel {
   //end role
 
   public permissions!: GraphqlPermissions[];
+  public setting_id!: number;
 
   /* End Associantions */
 }

@@ -1,7 +1,4 @@
-import getAuthorIdFromRequest from "../src/shared/getAuthorIdFromRequest";
-
 import { ApolloServer } from "apollo-server";
-import { models } from "../src/graphql/db/models";
 import { schema } from "../src/graphql/schema";
 import { seed } from "../src/graphql/db/seed/seed";
 import { getResolverContext } from "@/graphql/context";
