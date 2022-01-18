@@ -4,6 +4,7 @@ import { ApolloServer } from "apollo-server";
 import { models } from "../src/graphql/db/models";
 import { schema } from "../src/graphql/schema";
 import { seed } from "../src/graphql/db/seed/seed";
+import { getResolverContext } from "@/graphql/context";
 
 const session = {
   user: {
@@ -23,7 +24,7 @@ export const createApolloTestServer = async () => {
     introspection: true,
     playground: true,
     context: async ({ req, res }) => {
-      const author_id = await getAuthorIdFromRequest({ req });
+      const resolverContext = getResolverContext({ req });
       if (req.headers.sessionid != "undefined") {
         session.user = {
           ...session.user,
@@ -31,7 +32,7 @@ export const createApolloTestServer = async () => {
         };
       }
 
-      return { req, res, models, author_id, session };
+      return { req, res, ...resolverContext };
     },
   });
 };
