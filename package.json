@@ -8,8 +8,7 @@
     "client": "concurrently -k 'yarn dev'",
     "dev": "yarn codegen && next",
     "build": "yarn codegen && next build",
-    "test": "echo \"Error: no test specified\" && exit 0",
-    "_test": "yarn codegen && jest --runInBand",
+    "test": "yarn codegen && jest --runInBand",
     "start": "next start",
     "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed",
     "type-check": "yarn tsc"

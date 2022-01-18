@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   QueryResolvers,
   MutationResolvers,
@@ -138,6 +139,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (!setting) {
       return defaultSettings;
     }
+
     return {
       ...setting.get(),
     } as unknown as SettingType;

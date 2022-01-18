@@ -20,7 +20,13 @@ export class Post extends BaseModel {
   @Column({ type: DataType.STRING, allowNull: true })
   public title!: string;
 
-  @Column({ type: DataType.STRING, allowNull: true })
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    get() {
+      return "/" + this.getDataValue("type") + "/" + this.getDataValue("slug");
+    },
+  })
   public slug!: string;
 
   @Column({ type: DataType.TEXT, allowNull: true })

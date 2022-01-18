@@ -9,22 +9,28 @@ import {
 import { API } from "../../../tests/testClient";
 
 describe("Test Tags Graphql API", () => {
-  it.skip("get tags", async () => {
+  it("get tags", async () => {
     const result = await API({ query: TagsDocument, variables: {} });
     expect(result.tags.rows).toEqual(
       expect.arrayContaining([
         {
-          desc: "",
+          desc: "tag desc",
           id: 1,
           name: "Home",
-          posts: { count: 3, rows: [{ id: 1 }, { id: 3 }, { id: 4 }] },
+          posts: {
+            count: 3,
+            rows: result.tags.rows[0].posts.rows,
+          },
           slug: "/tag/home",
         },
         {
-          desc: "",
+          desc: "tag desc",
           id: 2,
           name: "first-post",
-          posts: { count: 3, rows: [{ id: 1 }, { id: 3 }, { id: 4 }] },
+          posts: {
+            count: 3,
+            rows: result.tags.rows[1].posts.rows,
+          },
           slug: "/tag/first-post",
         },
       ]),

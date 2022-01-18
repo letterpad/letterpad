@@ -94,7 +94,10 @@ const Query: QueryResolvers<ResolverContext> = {
 const Tags = {
   async posts({ id }, _args, { models }) {
     const tag = await models.Tag.findOne({ where: { id } });
-    const posts = await tag?.$get("posts", { where: { status: "published" } });
+    const posts = await tag?.$get("posts", {
+      where: { status: "published" },
+      order: [["id", "desc"]],
+    });
     return {
       __typename: "PostsNode",
       count: posts?.length,
