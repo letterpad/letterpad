@@ -8,14 +8,11 @@ import {
   concat,
 } from "@apollo/client";
 import { publish } from "@/shared/eventBus";
-
-import { Optional } from "@/shared/types";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getResolverContext, ResolverContext } from "./context";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-function createIsomorphLink(context: Optional<ResolverContext>) {
+function createIsomorphLink(context) {
   if (typeof window === "undefined") {
     const { SchemaLink } = require("@apollo/client/link/schema");
     const { schema } = require("./schema");
@@ -40,7 +37,7 @@ const saveMiddleware = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-export function createApolloClient(context: Optional<ResolverContext>) {
+export function createApolloClient(context) {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: concat(saveMiddleware, createIsomorphLink(context)),
@@ -56,6 +53,7 @@ export async function getApolloClient(
 ) {
   let defaultContext = { ...context };
   if (typeof window === "undefined") {
+    const { getResolverContext } = require("./context");
     if (!context) {
       console.error(
         "`getApolloClient` has been called without setting a context",
@@ -64,14 +62,13 @@ export async function getApolloClient(
 
     const isTest = process.env.NODE_ENV === "test";
     const isBuildRunning = process.env.NEXT_PHASE === "phase-production-build";
-    if (!isBuildRunning && context.req && isTest) {
+    if (!isBuildRunning && context.req && !isTest) {
       const resolverContext = await getResolverContext(context.req);
       defaultContext = { ...defaultContext, ...resolverContext };
     }
   }
 
-  const _apolloClient =
-    apolloClient ?? createApolloClient(defaultContext as ResolverContext);
+  const _apolloClient = apolloClient ?? createApolloClient(defaultContext);
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // get hydrated here

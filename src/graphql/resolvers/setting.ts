@@ -117,12 +117,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
           value.src = value.src?.replace(process.env.ROOT_URL, "");
         }
       }
+      const setting_id = _setting?.get().id;
       logger.info(
-        `Updating settings with id ${_setting?.id}- ` + option + " : " + value,
+        `Updating settings with id ${setting_id}- ` + option + " : " + value,
       );
       return models.Setting.update(
         { [option]: value },
-        { where: { id: _setting?.id } },
+        { where: { id: setting_id } },
       );
     });
 

@@ -57,6 +57,13 @@ const nextConfig = {
       use: "yaml-loader",
     });
 
+    if (!options.isServer) {
+      config.resolve.fallback.fs = false;
+      config.resolve.fallback.tls = false;
+      config.resolve.fallback.net = false;
+      config.resolve.fallback.dns = false;
+    }
+
     return config;
   },
 };

@@ -7,16 +7,17 @@ import { SessionData } from "./types";
 const mailUtils = MailService<ModelsType>(models);
 const isTest = process.env.NODE_ENV === "test";
 
-export const getResolverContext = async (req) => {
+export const getResolverContext = async ({ req }) => {
   const session = isTest
     ? null
     : ((await getSession({ req })) as unknown as { user: SessionData });
 
   const author_id: number | undefined = isTest
-    ? await getAuthorIdFromRequest({
+    ? null
+    : await getAuthorIdFromRequest({
         req,
-      })
-    : null;
+      });
+
   return {
     connection,
     models,

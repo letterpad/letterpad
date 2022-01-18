@@ -1,6 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
 import { EmailTemplateMeta, Mail } from "@/graphql/types";
-import { bodyDecorator } from "./decorator";
 import logger from "@/shared/logger";
 import { getMailClient } from "./client";
 
@@ -14,6 +13,7 @@ export function sendMail(
   if (!mailClient) {
     return logger.debug("No client found to send emails");
   }
+  const { bodyDecorator } = require("./decorator");
   const recipients = typeof data.to === "string" ? [data.to] : data.to;
   const mails = recipients.map((to) => {
     const body = bodyDecorator(data.html, to, addUnsubscribe);

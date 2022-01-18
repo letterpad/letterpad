@@ -252,13 +252,14 @@ const Query: QueryResolvers<ResolverContext> = {
       conditions.where.id = Number(decrypt(previewHash));
       delete conditions.where.status;
     }
-    const post = await models.Post.findOne(conditions);
+    const postRow = await models.Post.findOne(conditions);
+    const post = postRow?.get();
     if (post) {
       const html = previewHash
         ? mdToHtml(post.html_draft || post.html)
         : post.html;
 
-      return { ...post.get(), html, __typename: "Post" };
+      return { ...post, html, __typename: "Post" };
     }
     return { ...error, message: "Post not found" };
   },

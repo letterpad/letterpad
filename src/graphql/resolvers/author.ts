@@ -202,7 +202,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
       logger.info("Updating Author => ", dataToUpdate);
       await models.Author.update(dataToUpdate as any, {
         where: { id: args.author.id },
-        logging: true,
       });
       const author = await models.Author.findOne({
         where: { id: args.author.id },
@@ -216,7 +215,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
       return {
         ok: true,
-        data: author || undefined,
+        data: author?.get() || undefined,
       };
     } catch (e: any) {
       return {

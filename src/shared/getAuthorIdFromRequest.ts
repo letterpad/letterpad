@@ -8,7 +8,7 @@ const authHeaderPrefix = "Basic ";
 const printOnce = {
   env: 0,
 };
-export default async (context: Context) => {
+const getAuthorIdFromRequest = async (context: Context) => {
   const authHeader = context.req?.headers?.authorization || "";
   let author_id;
   try {
@@ -44,6 +44,7 @@ export default async (context: Context) => {
   }
   return author_id;
 };
+export default getAuthorIdFromRequest;
 
 async function getAuthorFromSubdomain(context) {
   if (!context.req.headers) {
