@@ -1,12 +1,11 @@
-//@ts-nocheck
 import { EmailProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
 import { getEmailTemplate } from "./templates/getTemplate";
 import * as Sentry from "@sentry/nextjs";
-// import SendMail from "./sendMail";
-
 import { getMailClient } from "./client";
+import { sendMail } from "./sendMail";
+
 const mailClient = getMailClient();
 
 export async function enqueueEmail(props: EmailProps, models) {
@@ -33,7 +32,7 @@ export async function enqueueEmail(props: EmailProps, models) {
 
     if (data.ok) {
       const addUnsubscribe = props.template_id === EmailTemplates.NEW_POST;
-      const response = await SendMail(data.content, data.meta, addUnsubscribe);
+      const response = await sendMail(data.content, data.meta, addUnsubscribe);
       if (response && response.length > 0) {
         if (response[0].response.res.statusCode === 200) {
           // update delivery

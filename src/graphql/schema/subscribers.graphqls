@@ -27,7 +27,6 @@ type Query {
 
 input InputUpdateSubscriber {
   secret_id: String
-  email: String
   verified: Boolean
 }
 

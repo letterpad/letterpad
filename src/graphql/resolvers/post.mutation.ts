@@ -37,11 +37,25 @@ const Mutation: MutationResolvers<ResolverContext> = {
         message: "Author not found",
       };
     }
+
     if (!args.data.slug) {
       const slug = args.data.title
         ? toSlug(args.data.title)
         : slugOfUntitledPost;
       args.data.slug = await slugify(models.Post, slug);
+    }
+
+    if (args.data.cover_image) {
+      //@ts-ignore
+      args.data.cover_image = args.data.cover_image.src;
+      if (args.data.cover_image?.width) {
+        //@ts-ignore
+        args.data.cover_image_width = args.data.cover_image.width;
+      }
+      if (args.data.cover_image?.height) {
+        //@ts-ignore
+        args.data.cover_image_height = args.data.cover_image.height;
+      }
     }
 
     if (!args.data.html) {

@@ -1,4 +1,3 @@
-//@ts-nocheck
 import {
   QueryResolvers,
   MutationResolvers,
@@ -72,10 +71,8 @@ const Query: QueryResolvers<ResolverContext> = {
         __typename: "SettingError",
         message: "Setting related to author:null not found",
       };
-    console.log("=======>", setting.get());
     SECURE_SETTINGS.forEach((securedKey) => {
       if (!session?.user.id) {
-        //@ts-ignore
         setting.setDataValue(securedKey, "");
       }
     });
@@ -142,6 +139,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     return {
       ...setting.get(),
+      id: 1,
     } as unknown as SettingType;
   },
 };
