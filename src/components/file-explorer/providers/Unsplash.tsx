@@ -16,6 +16,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const [totalCount, setTotalCount] = useState(0);
 
   const fetchUnsplashMedia = async () => {
+    if (!query) return;
     // unsplash.com/page/1/query/forest
     const endpoint = url + "?page=" + page + "&query=" + query;
 

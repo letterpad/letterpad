@@ -3,8 +3,8 @@ import {
   CreateAuthorDocument,
   LoginDocument,
 } from "./../../../__generated__/src/graphql/queries/mutations.graphql";
-import { API } from "tests/testClient";
-import models from "@/graphql/db/models";
+import { API } from "../../../tests/testClient";
+import { models } from "../db/models";
 
 describe("Test author", () => {
   it("can login", async () => {
@@ -24,8 +24,10 @@ describe("Test author", () => {
           name: "foo",
           email: "foo@foo.fail",
           password: "foofoofoo",
-          site_title: "hello",
           username: "foo",
+          setting: {
+            site_title: "hello",
+          },
           token: "this token wont be validated in test environment",
         },
       },
@@ -42,7 +44,7 @@ describe("Test author", () => {
       sessionId: author?.id as number,
     });
 
-    expect(posts.count).toBe(1);
+    expect(posts.count).toBe(3);
   });
 });
 

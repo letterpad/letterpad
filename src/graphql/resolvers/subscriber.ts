@@ -1,16 +1,13 @@
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
-import { ResolverContext } from "../apollo";
-import models from "@/graphql/db/models";
 import Cryptr from "cryptr";
-import { enqueueEmail } from "@/mail/sendMail";
+import { ResolverContext } from "../context";
 import { EmailTemplates } from "../types";
-import { sendVerifySubscriberEmail } from "@/mail/emailVerifySubscriber";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 
 const Query: QueryResolvers<ResolverContext> = {
-  subscribers: async (_root, _args, { session }) => {
-    if (!session?.user.id) {
+  subscribers: async (_root, _args, { session, models }) => {
+    if (!session?.user.id || !models) {
       return {
         count: 0,
         rows: [],
@@ -28,8 +25,8 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  addSubscriber: async (_, args, { author_id }) => {
-    if (!author_id) {
+  addSubscriber: async (_, args, { author_id, models, mailUtils }) => {
+    if (!author_id || !models) {
       return {
         ok: false,
         message: "A valid owner of the blog you subscribed was not found",
@@ -37,7 +34,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
     const author = await models.Author.findOne({ where: { id: author_id } });
 
-    const subscribers = await author?.getSubscribers({
+    const subscribers = await author?.$get("subscribers", {
       where: { email: args.email, author_id },
     });
     if (subscribers && subscribers.length > 0) {
@@ -48,7 +45,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
             message: "No more attempts left.",
           };
         }
-        await sendVerifySubscriberEmail({
+        await mailUtils.enqueueEmail({
           template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
           author_id,
           subscriber_email: args.email,
@@ -67,11 +64,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
 
     try {
-      await author?.createSubscriber({
+      await author?.$create("subscriber", {
         email: args.email,
         verified: false,
       });
-      await enqueueEmail({
+      await mailUtils.enqueueEmail({
         author_id,
         subscriber_email: args.email,
         template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
@@ -86,8 +83,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
         "You have been subscribed to this blog. An email has been sent to your email address for verification.",
     };
   },
-  updateSubscriber: async (_, args) => {
-    const subscriber = await models.Subscribers.findOne({
+  updateSubscriber: async (_, args, { models }) => {
+    const subscriber = await models?.Subscribers.findOne({
       where: { id: cryptr.decrypt(args.data.secret_id) },
     });
     if (!subscriber) {

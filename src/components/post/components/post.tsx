@@ -26,7 +26,7 @@ function Post() {
 
   useEffect(() => {
     if (post && post.__typename === "Post") {
-      const content = post.html_draft || post.html;
+      const content = post.html_draft || post.html || "";
       const words = content.split(" ").length;
       setCount(words);
     }

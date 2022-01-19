@@ -1,6 +1,6 @@
 import Twig from "twig";
 import path from "path";
-import fs from "fs";
+
 import { getToken } from "@/shared/token";
 
 export const bodyDecorator = (
@@ -19,7 +19,7 @@ export const bodyDecorator = (
     "src/mail/templates/base.twig",
   );
 
-  const template = fs.readFileSync(baseTemplate, "utf-8");
+  const template = require("fs").readFileSync(baseTemplate, "utf-8");
   if (!template) {
     throw new Error("Email base template not found in sr/mail");
   }

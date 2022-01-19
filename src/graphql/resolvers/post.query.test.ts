@@ -11,14 +11,19 @@ describe("Test Post Query Graphql API", () => {
 
     expect(firstRecord.cover_image).toEqual({
       src: expect.stringContaining("unsplash"),
-      width: 0,
-      height: 0,
+      width: 100,
+      height: 100,
     });
 
     expect(firstRecord.tags).toEqual(
       expect.arrayContaining([
-        { desc: "", id: 1, name: "Home", slug: "/tag/home" },
-        { desc: "", id: 2, name: "first-post", slug: "/tag/first-post" },
+        { desc: "tag desc", id: 1, name: "Home", slug: "/tag/home" },
+        {
+          desc: "tag desc",
+          id: 2,
+          name: "first-post",
+          slug: "/tag/first-post",
+        },
       ]),
     );
 

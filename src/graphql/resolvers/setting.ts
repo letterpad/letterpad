@@ -1,4 +1,4 @@
-import { ResolverContext } from "../apollo";
+//@ts-nocheck
 import {
   QueryResolvers,
   MutationResolvers,
@@ -9,9 +9,9 @@ import {
 } from "@/__generated__/__types__";
 import fs from "fs";
 import path from "path";
-import models from "@/graphql/db/models";
 import logger from "@/shared/logger";
 import { defaultSettings } from "../db/seed/constants";
+import { ResolverContext } from "../context";
 
 type ValueOf<T> = T[keyof T];
 const SECURE_SETTINGS = [
@@ -54,7 +54,7 @@ const Setting = {
 };
 
 const Query: QueryResolvers<ResolverContext> = {
-  settings: async (_root, _args = {}, { session, author_id }) => {
+  settings: async (_root, _args = {}, { session, author_id, models }) => {
     const authorId = session?.user.id || author_id;
     if (!authorId) {
       return {
@@ -66,26 +66,25 @@ const Query: QueryResolvers<ResolverContext> = {
       where: { id: authorId },
     });
 
-    const setting = await author?.getSetting();
-
+    const setting = await author?.$get("setting");
     if (!setting)
       return {
         __typename: "SettingError",
         message: "Setting related to author:null not found",
       };
-
+    console.log("=======>", setting.get());
     SECURE_SETTINGS.forEach((securedKey) => {
       if (!session?.user.id) {
         //@ts-ignore
         setting.setDataValue(securedKey, "");
       }
     });
-    (setting as any).__typename = "Setting";
-    return setting;
+
+    return { ...setting.get(), __typename: "Setting" };
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {
-  updateOptions: async (_root, args, { session }) => {
+  updateOptions: async (_root, args, { session, models }) => {
     if (!session?.user.id)
       return {
         ...defaultSettings,
@@ -97,7 +96,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     });
 
     if (!author) return defaultSettings;
-    const _setting = await author.getSetting();
+    const _setting = await author.$get("setting");
 
     let promises = args.options.map((setting) => {
       const option = Object.keys(setting)[0] as keyof Omit<
@@ -118,12 +117,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
           value.src = value.src?.replace(process.env.ROOT_URL, "");
         }
       }
+      const setting_id = _setting?.get().id;
       logger.info(
-        `Updating settings with id ${_setting.id}- ` + option + " : " + value,
+        `Updating settings with id ${setting_id}- ` + option + " : " + value,
       );
       return models.Setting.update(
         { [option]: value },
-        { where: { id: _setting.id } },
+        { where: { id: setting_id } },
       );
     });
 
@@ -139,6 +139,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (!setting) {
       return defaultSettings;
     }
+
     return {
       ...setting.get(),
     } as unknown as SettingType;

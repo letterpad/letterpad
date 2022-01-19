@@ -1,5 +1,5 @@
 import { setResponsiveImages } from "./../utils/imageAttributs";
-import { PostAttributes } from "@/graphql/db/models/post";
+// import { PostAttributes } from "@/graphql/db/models/post";
 import { Op, Order } from "sequelize";
 import {
   Permissions,
@@ -9,12 +9,13 @@ import {
   PostTypes,
   QueryResolvers,
 } from "@/__generated__/__types__";
-import { ResolverContext } from "../apollo";
 import { decrypt } from "../utils/crypto";
-import models from "@/graphql/db/models";
 import logger from "./../../shared/logger";
 import debug from "debug";
 import { mdToHtml } from "@/shared/converter";
+import { ResolverContext } from "../context";
+
+type PostAttributes = any;
 
 interface IPostCondition {
   conditions: {
@@ -34,7 +35,7 @@ interface IPostCondition {
 }
 
 const Post = {
-  author: async ({ id }: PostAttributes) => {
+  author: async ({ id }: PostAttributes, _args, { models }) => {
     const post = await models.Post.findOne({ where: { id: id } });
     if (post) {
       const author = await models.Author.findOne({
@@ -45,7 +46,7 @@ const Post = {
     }
     return {};
   },
-  tags: async ({ id }: PostAttributes) => {
+  tags: async ({ id }: PostAttributes, _args, { models }) => {
     const post = await models.Post.findOne({ where: { id: id } });
     if (post) {
       // TODO: check why post.getAuthor didnt work
@@ -63,7 +64,7 @@ const Query: QueryResolvers<ResolverContext> = {
    * Query to take care of multiple post in one page.
    * Used for Search and Admin posts and pages list.
    */
-  async posts(_parent, args, { session, author_id }, _info) {
+  async posts(_parent, args, { session, author_id, models }, _info) {
     debug("letterpad:post:update")("Reached posts query");
     let authorId = session?.user.id || author_id;
     if (!authorId) {
@@ -149,14 +150,14 @@ const Query: QueryResolvers<ResolverContext> = {
           const author = await models.Author.findOne({
             where: { id: authorId },
           });
-          const setting = await author?.getSetting();
+          const setting = await author?.$get("setting");
 
           if (setting) {
             tagSlug = setting.menu[0].slug;
           }
         }
 
-        const taxTag = await models.Tags.findOne({
+        const taxTag = await models.Tag.findOne({
           where: {
             slug: tagSlug.split("/").pop() as string,
             author_id: authorId,
@@ -164,11 +165,11 @@ const Query: QueryResolvers<ResolverContext> = {
         });
 
         if (taxTag) {
-          const posts = await taxTag.getPosts(query.conditions);
+          const posts = await taxTag.$get("posts", query.conditions);
           return {
             __typename: "PostsNode",
-            rows: posts.map((p) => p.get()),
-            count: await taxTag.countPosts(query.conditions),
+            rows: posts?.map((p) => p.get()),
+            count: await taxTag.$count("posts", query.conditions),
           };
         }
         return {
@@ -180,14 +181,14 @@ const Query: QueryResolvers<ResolverContext> = {
 
       // resolve tag filter
       if (args?.filters?.tag) {
-        const tag = await models.Tags.findOne({
+        const tag = await models.Tag.findOne({
           where: { name: args.filters.tag, author_id },
         });
         if (tag) {
-          const posts = await tag.getPosts(query.conditions);
+          const posts = await tag.$get("posts", query.conditions);
           return {
             rows: posts.map((p) => p.get()),
-            count: await tag.countPosts(query.conditions),
+            count: await tag.$count("posts", query.conditions),
           };
         } else {
           return {
@@ -213,7 +214,7 @@ const Query: QueryResolvers<ResolverContext> = {
     }
   },
 
-  async post(_parent, args, { session, author_id }, _info) {
+  async post(_parent, args, { session, author_id, models }, _info) {
     const error = { __typename: "PostError", message: "" };
     if (!args.filters) return { ...error, message: "Missing arguments" };
 
@@ -251,18 +252,19 @@ const Query: QueryResolvers<ResolverContext> = {
       conditions.where.id = Number(decrypt(previewHash));
       delete conditions.where.status;
     }
-    const post = await models.Post.findOne(conditions);
+    const postRow = await models.Post.findOne(conditions);
+    const post = postRow?.get();
     if (post) {
       const html = previewHash
         ? mdToHtml(post.html_draft || post.html)
         : post.html;
 
-      return { ...post.get(), html, __typename: "Post" };
+      return { ...post, html, __typename: "Post" };
     }
     return { ...error, message: "Post not found" };
   },
 
-  async stats(_, _args, { session }) {
+  async stats(_, _args, { session, models }) {
     logger.debug("Reached resolver: stats");
     const result = {
       posts: { published: 0, drafts: 0 },
@@ -288,37 +290,37 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
 
-    result.posts.published = await author.countPosts({
+    result.posts.published = await author.$count("posts", {
       where: {
         status: PostStatusOptions.Published,
         type: PostTypes.Post,
       },
     });
 
-    result.posts.drafts = await author.countPosts({
+    result.posts.drafts = await author.$count("posts", {
       where: {
         status: PostStatusOptions.Draft,
         type: PostTypes.Post,
       },
     });
 
-    result.pages.published = await author.countPosts({
+    result.pages.published = await author.$count("posts", {
       where: {
         status: PostStatusOptions.Published,
         type: PostTypes.Page,
       },
     });
 
-    result.pages.drafts = await author.countPosts({
+    result.pages.drafts = await author.$count("posts", {
       where: {
         status: PostStatusOptions.Draft,
         type: PostTypes.Page,
       },
     });
 
-    result.tags = await author.countTags();
+    result.tags = await author.$count("tags");
 
-    result.media = await author.countMedia();
+    result.media = await author.$count("uploads");
 
     return {
       __typename: "Stats",

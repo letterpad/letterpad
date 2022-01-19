@@ -1,18 +1,15 @@
-import models from "@/graphql/db/models";
 import Twig from "twig";
-
-import logger from "src/shared/logger";
 import {
   EmailTemplateResponse,
   EmailTemplates,
   EmailVerifyNewUserProps,
 } from "@/graphql/types";
 import { getToken } from "@/shared/token";
-import SendMail from "./sendMail";
-import { addLineBreaks } from "./utils";
+import { addLineBreaks } from "../utils";
 
 export async function getVerifyUserEmailContent(
   data: EmailVerifyNewUserProps,
+  models,
 ): Promise<EmailTemplateResponse> {
   const template = await models.Email.findOne({
     where: { template_id: EmailTemplates.VERIFY_NEW_USER },
@@ -74,20 +71,4 @@ export async function getVerifyUserEmailContent(
       author,
     },
   };
-}
-
-export async function sendVerifyUserEmail(data: EmailVerifyNewUserProps) {
-  try {
-    const template = await getVerifyUserEmailContent(data);
-    if (template.ok) {
-      await SendMail(template.content, template.meta);
-    }
-    return {
-      ok: true,
-      message: "We have sent you an email to verify your email",
-    };
-  } catch (e) {
-    logger.error("Could not send mail - " + EmailTemplates.VERIFY_NEW_USER);
-    throw new Error(e);
-  }
 }

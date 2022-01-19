@@ -65,10 +65,9 @@ describe("Test Post Query Graphql API", () => {
 
   it("Check republish works", async () => {
     const type = "post";
-    const oldHtml =
-      "<html><head></head><body><h1>This is a new post</h1></body></html>";
+    const oldHtml = "<html><body><h1>This is a new post</h1></body></html>";
 
-    const newHtml = "<html><head></head><body><h1>Change</h1></body></html>";
+    const newHtml = "<html><body><h1>Change</h1></body></html>";
 
     const post = await runQuery(CreatePostDocument, {
       title: "Published Post",

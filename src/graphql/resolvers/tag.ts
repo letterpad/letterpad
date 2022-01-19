@@ -1,14 +1,14 @@
 import { GroupOption, Includeable, Order } from "sequelize";
-import { ResolverContext } from "../apollo";
+
 import {
   QueryResolvers,
   MutationResolvers,
   InputTags,
 } from "@/__generated__/__types__";
-import models from "@/graphql/db/models";
+import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
-  async tag(_root, args, { session, author_id }) {
+  async tag(_root, args, { session, author_id, models }) {
     const authorId = session?.user.id || author_id;
 
     if (!authorId) {
@@ -18,7 +18,7 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
 
-    const tag = await models.Tags.findOne({ where: { slug: args.slug } });
+    const tag = await models.Tag.findOne({ where: { slug: args.slug } });
 
     if (tag) {
       return {
@@ -31,7 +31,7 @@ const Query: QueryResolvers<ResolverContext> = {
       message: "Tag not found",
     };
   },
-  async tags(_root, args, { session, author_id }) {
+  async tags(_root, args, { session, author_id, models }) {
     const authorId = session?.user.id || author_id;
 
     if (!authorId) {
@@ -77,7 +77,7 @@ const Query: QueryResolvers<ResolverContext> = {
       where: { id: authorId },
     });
     if (author) {
-      const tags = await author.getTags(conditions);
+      const tags = await author.$get("tags", conditions);
       return {
         __typename: "TagsNode",
         rows: tags.map((tag) => tag.get()),
@@ -92,9 +92,12 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Tags = {
-  async posts({ id }) {
-    const tag = await models.Tags.findOne({ where: { id } });
-    const posts = await tag?.getPosts({ where: { status: "published" } });
+  async posts({ id }, _args, { models }) {
+    const tag = await models.Tag.findOne({ where: { id } });
+    const posts = await tag?.$get("posts", {
+      where: { status: "published" },
+      order: [["id", "desc"]],
+    });
     return {
       __typename: "PostsNode",
       count: posts?.length,
@@ -104,7 +107,7 @@ const Tags = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  async updateTags(_root, args, { session }) {
+  async updateTags(_root, args, { session, models }) {
     if (!session?.user) {
       return {
         __typename: "TagsError",
@@ -128,9 +131,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     if (args.data.id === 0) {
       const { id, ...rest } = args.data;
-      tag = await author.createTag(rest as InputTags);
+      tag = await author.$create("tag", rest as InputTags);
     } else {
-      tag = await models.Tags.update(args.data, {
+      tag = await models.Tag.update(args.data, {
         where: { id: args.data.id },
       });
     }
@@ -147,14 +150,14 @@ const Mutation: MutationResolvers<ResolverContext> = {
     };
   },
 
-  async deleteTags(_root, args, _context) {
+  async deleteTags(_root, args, { models }) {
     if (!args.id) {
       return {
         __typename: "TagsError",
         message: "Incorrect arguments",
       };
     }
-    const deleteRowCount = await models.Tags.destroy({
+    const deleteRowCount = await models.Tag.destroy({
       where: { id: args.id },
     });
 

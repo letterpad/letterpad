@@ -1,15 +1,15 @@
-import models from "@/graphql/db/models";
 import logger from "./logger";
 import { Context } from "@apollo/client";
 import { verifyToken } from "./token";
 import * as Sentry from "@sentry/nextjs";
+import { Author } from "@/graphql/db/models/definations/author";
 const authHeaderPrefix = "Basic ";
 
 const printOnce = {
   env: 0,
 };
-export default async (context: Context) => {
-  const authHeader = context.req?.headers.authorization || "";
+const getAuthorIdFromRequest = async (context: Context) => {
+  const authHeader = context.req?.headers?.authorization || "";
   let author_id;
   try {
     author_id = await getAuthorFromSubdomain(context);
@@ -31,7 +31,7 @@ export default async (context: Context) => {
         logger.debug("development mode");
         printOnce.env = 1;
       }
-      const author = await models.Author.findOne({
+      const author = await Author.findOne({
         where: { email: "demo@demo.com" },
       });
       if (author) {
@@ -44,15 +44,16 @@ export default async (context: Context) => {
   }
   return author_id;
 };
+export default getAuthorIdFromRequest;
 
 async function getAuthorFromSubdomain(context) {
-  const { identifier } = context.req.headers;
-  if (!identifier) {
+  if (!context.req.headers) {
     logger.debug("No identifier found - Internal admin request - OK");
-  } else if (identifier.includes("letterpad.app")) {
+  } else if (context.req.headers?.identifier?.includes("letterpad.app")) {
+    const { identifier } = context.req.headers;
     logger.debug("Host for checking subdomain - ", identifier);
     const username = identifier.split(".")[0];
-    const author = await models.Author.findOne({
+    const author = await Author.findOne({
       attributes: ["id"],
       where: { username },
     });

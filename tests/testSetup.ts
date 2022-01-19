@@ -1,15 +1,11 @@
-import getAuthorIdFromRequest from "../src/shared/getAuthorIdFromRequest";
 const env = require("node-env-file");
-// if (process.env.NODE_ENV === "production") {
-//   env(__dirname + "/../.env.production.local");
-// } else {
-// }
 env(__dirname + "/../.env.development.local");
 
 import { ApolloServer } from "apollo-server";
-import models from "../src/graphql/db/models";
+
 import { schema } from "../src/graphql/schema";
 import { seed } from "../src/graphql/db/seed/seed";
+import { getResolverContext } from "@/graphql/context";
 
 const session = {
   user: {
@@ -28,23 +24,21 @@ export const createApolloTestServer = async () => {
     debug: true,
     introspection: true,
     playground: true,
-    context: async ({ req, res }) => {
-      const author_id = await getAuthorIdFromRequest({ req });
-      if (req.headers.sessionid != "undefined") {
-        session.user = {
-          ...session.user,
-          id: req.headers.sessionid as unknown as number,
-        };
-      }
-
-      return { req, res, models, author_id, session };
+    context: async (context) => {
+      const resolverContext = await getResolverContext(context);
+      return {
+        ...context,
+        ...resolverContext,
+        session,
+      };
     },
   });
 };
 
 let server;
 beforeAll(async () => {
-  await seed(models);
+  global.console = require("console");
+  await seed();
   server = await createApolloTestServer();
   const { url } = await server.listen({ port: 3000 });
   console.log("server listening at " + url);

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Optional } from "./../../../../shared/types";
 import { SessionData } from "@/graphql/types";
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";

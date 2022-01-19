@@ -4,7 +4,7 @@ if (process.env.NODE_ENV === "production") {
 } else {
   env(__dirname + "../../../../../.env.development.local");
 }
-const models = require("../models/index").default;
+// const connection = require("../models/index2").default;
 const { seed } = require("./seed");
 const { Op } = require("sequelize");
 
@@ -14,8 +14,8 @@ const { Op } = require("sequelize");
 //   const tags = await post.getTags({ raw: true });
 //   console.log(tags.map(({ name, desc, slug }) => ({ name, desc, slug })));
 // })();
-seed(models)
-  .catch(e => {
+seed()
+  .catch((e) => {
     console.error(e);
     process.exit(1);
   })
