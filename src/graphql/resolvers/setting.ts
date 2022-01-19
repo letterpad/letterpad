@@ -81,9 +81,11 @@ const Query: QueryResolvers<ResolverContext> = {
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {
+  //@ts-ignore
   updateOptions: async (_root, args, { session, models }) => {
     if (!session?.user.id)
       return {
+        id: 0,
         ...defaultSettings,
         menu: defaultSettings.menu as any,
       };
@@ -92,7 +94,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       where: { id: session.user.id },
     });
 
-    if (!author) return defaultSettings;
+    if (!author) return { id: 0, ...defaultSettings };
     const _setting = await author.$get("setting");
 
     let promises = args.options.map((setting) => {
@@ -139,7 +141,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     return {
       ...setting.get(),
-      id: 1,
     } as unknown as SettingType;
   },
 };
