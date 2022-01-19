@@ -3,11 +3,13 @@ import { enqueueEmailAndSend } from "./enqueueEmailAndSend";
 import { sendMail } from "./sendMail";
 import { getEmailTemplate } from "./templates/getTemplate";
 
+const isTest = process.env.NODE_ENV === "test";
+
 export default function MailService<T>(models: T, author_id?: number) {
   if (author_id) {
     //@ts-ignore
     const author = await models?.Author.findOne({ where: { id: author_id } });
-    if (author.email === "demo@demo.com") {
+    if (author.email === "demo@demo.com" && !isTest) {
       return {};
     }
   }
