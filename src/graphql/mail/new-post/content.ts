@@ -21,7 +21,8 @@ export async function getNewPostContent(
     };
   }
 
-  const post = await models.Post.findOne({ where: { id: data.post_id } });
+  const postRaw = await models.Post.findOne({ where: { id: data.post_id } });
+  const post = postRaw.get();
   const author = await models.Author.findOne({
     where: { id: post?.author_id },
   });
@@ -59,10 +60,8 @@ export async function getNewPostContent(
     full_name: "Friend",
     post_title: post?.title,
     excerpt: post?.excerpt,
-    //@ts-ignore
-    cover_image_link: post?.cover_image.src
-      ? //@ts-ignore
-        `<img src="${post?.cover_image.src}" width="100%">`
+    cover_image_link: post?.cover_image?.src
+      ? `<img src="${post?.cover_image.src}" width="100%">`
       : "",
     read_more_link: `<a target="_blank" href="${setting.site_url}${post?.slug}">Read More</a>`,
   });

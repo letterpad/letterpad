@@ -30,6 +30,13 @@ mutation UpdateTags($data: InputTags) {
   }
 }
 
+mutation addSubscriber($email: String!) {
+  addSubscriber(email: $email) {
+    ok
+    message
+  }
+}
+
 mutation DeleteTags($id: Int!) {
   deleteTags(id: $id) {
     ... on DeleteTagsResult {
@@ -45,6 +52,7 @@ mutation createAuthor($data: InputCreateAuthor!) {
   createAuthor(data: $data) {
     ... on Author {
       name
+      id
     }
     ... on CreateAuthorError {
       message

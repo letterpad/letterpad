@@ -1,9 +1,7 @@
+import { decodeToken } from "@/shared/token";
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
-import Cryptr from "cryptr";
 import { ResolverContext } from "../context";
 import { EmailTemplates } from "../types";
-
-const cryptr = new Cryptr(process.env.SECRET_KEY);
 
 const Query: QueryResolvers<ResolverContext> = {
   subscribers: async (_root, _args, { session, models }) => {
@@ -84,8 +82,15 @@ const Mutation: MutationResolvers<ResolverContext> = {
     };
   },
   updateSubscriber: async (_, args, { models }) => {
+    const decodedToken = decodeToken(args.data?.secret_id || "");
+    if (!decodedToken) {
+      return {
+        ok: false,
+        message: "Invalid token",
+      };
+    }
     const subscriber = await models?.Subscribers.findOne({
-      where: { id: cryptr.decrypt(args.data.secret_id) },
+      where: { email: decodedToken.email },
     });
     if (!subscriber) {
       return {
@@ -95,7 +100,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
     await subscriber.update({
       verified: true,
-      email: args.data.email || subscriber.email,
     });
 
     return {
