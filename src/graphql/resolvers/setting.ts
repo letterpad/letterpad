@@ -81,6 +81,7 @@ const Query: QueryResolvers<ResolverContext> = {
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {
+  //@ts-ignore
   updateOptions: async (_root, args, { session, models }) => {
     if (!session?.user.id)
       return {

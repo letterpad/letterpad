@@ -17,7 +17,7 @@ export const getResolverContext = async ({ req }) => {
       req,
     });
   }
-  const mailUtils = MailService<ModelsType>(models, author_id);
+  const mailUtils = await MailService<ModelsType>(models, author_id);
   return {
     connection,
     models,
