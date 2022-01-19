@@ -25,6 +25,7 @@ module.exports.subjects = {
 };
 
 module.exports.defaultSettings = {
+  id: 0,
   site_title: "Letterpad",
   site_tagline: "Compose a story",
   site_email: "admin@letterpad.app",
