@@ -283,10 +283,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
         where: { id: args.data.id },
       });
       if (dataToUpdate.status === PostStatusOptions.Published) {
-        await mailUtils.enqueueEmail({
-          template_id: EmailTemplates.NEW_POST,
-          post_id: args.data.id,
-        });
+        if (mailUtils.enqueueEmailAndSend) {
+          await mailUtils.enqueueEmailAndSend({
+            template_id: EmailTemplates.NEW_POST,
+            post_id: args.data.id,
+          });
+        }
       }
       const post = await models.Post.findOne({
         where: { id: args.data.id },

@@ -8,7 +8,12 @@ import { sendMail } from "./sendMail";
 
 const mailClient = getMailClient();
 
-export async function enqueueEmail(props: EmailProps, models) {
+export async function enqueueEmailAndSend(
+  props: EmailProps,
+  models,
+  restrict = false,
+) {
+  if (restrict) return "";
   if (!mailClient) {
     return logger.debug(
       "No client found to send emails. Terminating enqueuing Email",
@@ -43,7 +48,6 @@ export async function enqueueEmail(props: EmailProps, models) {
         }
       }
     } else {
-      console.log(data);
       Sentry.captureException(new Error(data.message));
     }
   } catch (e: any) {
