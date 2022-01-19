@@ -4,7 +4,6 @@ import { getSession } from "next-auth/react";
 import connection, { models, ModelsType } from "./db/models/models";
 import { SessionData } from "./types";
 
-const mailUtils = MailService<ModelsType>(models);
 const isTest = process.env.NODE_ENV === "test";
 
 export const getResolverContext = async ({ req }) => {
@@ -18,7 +17,7 @@ export const getResolverContext = async ({ req }) => {
       req,
     });
   }
-
+  const mailUtils = await MailService<ModelsType>(models, author_id);
   return {
     connection,
     models,

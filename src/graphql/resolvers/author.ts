@@ -137,10 +137,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
       await newAuthor.$create("post", page);
 
       const a = newAuthor.get() as unknown as AuthorType;
-      await mailUtils.enqueueEmail({
-        author_id: a.id,
-        template_id: EmailTemplates.VERIFY_NEW_USER,
-      });
+      if (mailUtils.enqueueEmailAndSend) {
+        await mailUtils.enqueueEmailAndSend({
+          author_id: a.id,
+          template_id: EmailTemplates.VERIFY_NEW_USER,
+        });
+      }
 
       return { ...a, __typename: "Author" };
     }
@@ -236,10 +238,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
       if (author.verify_attempt_left === 0) {
         throw new Error("No more attempts left.");
       }
-      await mailUtils.enqueueEmail({
-        template_id: EmailTemplates.FORGOT_PASSWORD,
-        author_id: author.id,
-      });
+      if (mailUtils.enqueueEmailAndSend) {
+        await mailUtils.enqueueEmailAndSend({
+          template_id: EmailTemplates.FORGOT_PASSWORD,
+          author_id: author.id,
+        });
+      }
       return {
         ok: true,
       };

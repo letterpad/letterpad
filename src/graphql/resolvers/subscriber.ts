@@ -43,11 +43,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
             message: "No more attempts left.",
           };
         }
-        await mailUtils.enqueueEmail({
-          template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
-          author_id,
-          subscriber_email: args.email,
-        });
+        if (mailUtils.enqueueEmailAndSend) {
+          await mailUtils.enqueueEmailAndSend({
+            template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
+            author_id,
+            subscriber_email: args.email,
+          });
+        }
 
         return {
           ok: false,
@@ -66,11 +68,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
         email: args.email,
         verified: false,
       });
-      await mailUtils.enqueueEmail({
-        author_id,
-        subscriber_email: args.email,
-        template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
-      });
+      if (mailUtils.enqueueEmailAndSend) {
+        await mailUtils.enqueueEmailAndSend({
+          author_id,
+          subscriber_email: args.email,
+          template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
+        });
+      }
     } catch (e) {
       console.log(e);
     }
