@@ -23,10 +23,13 @@ describe("Test Post Query Graphql API", () => {
     const type = "post";
     const post1 = await runQuery(CreatePostDocument, { title: "Foo", type });
     const post2 = await runQuery(CreatePostDocument, { title: "Foo", type });
+    const post3 = await runQuery(CreatePostDocument, { title: "Foo", type });
 
     const slugOfPost2 = post1.createPost.slug + "-1";
+    const slugOfPost3 = post1.createPost.slug + "-2";
     expect(post1.createPost.slug).toBe(`/${type}/foo`);
     expect(slugOfPost2).toBe(post2.createPost.slug);
+    expect(slugOfPost3).toBe(post3.createPost.slug);
   });
 
   it("Should update cover_image dimentions", async () => {

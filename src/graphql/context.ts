@@ -6,16 +6,13 @@ import { SessionData } from "./types";
 
 const isTest = process.env.NODE_ENV === "test";
 
-export const getResolverContext = async ({ req }) => {
+export const getResolverContext = async (context) => {
   const session = isTest
     ? null
-    : ((await getSession({ req })) as unknown as { user: SessionData });
-
+    : ((await getSession(context)) as unknown as { user: SessionData });
   let author_id = session?.user?.id;
   if (!author_id && !isTest) {
-    author_id = await getAuthorIdFromRequest({
-      req,
-    });
+    author_id = await getAuthorIdFromRequest(context);
   }
   const mailUtils = await MailService<ModelsType>(models, author_id);
   return {

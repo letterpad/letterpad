@@ -39,9 +39,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
 
     if (!args.data.slug) {
-      const slug = args.data.title
-        ? toSlug(args.data.title)
-        : slugOfUntitledPost;
+      const slug = toSlug(args.data.title || slugOfUntitledPost);
       args.data.slug = await slugify(models.Post, slug);
     }
 
@@ -68,6 +66,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (newPost) {
       return {
         __typename: "Post",
+        title: "Untitled",
         ...newPost.get(),
       };
     }

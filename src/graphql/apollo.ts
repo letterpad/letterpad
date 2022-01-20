@@ -63,7 +63,7 @@ export async function getApolloClient(
     const isTest = process.env.NODE_ENV === "test";
     const isBuildRunning = process.env.NEXT_PHASE === "phase-production-build";
     if (!isBuildRunning && context.req && !isTest) {
-      const resolverContext = await getResolverContext(context.req);
+      const resolverContext = await getResolverContext(context);
       defaultContext = { ...defaultContext, ...resolverContext };
     }
   }

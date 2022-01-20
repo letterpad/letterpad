@@ -14,7 +14,7 @@ const Create = async (
   res: NextApiResponse,
 ) => {
   try {
-    const type = req.query.type;
+    const type = req.query.type as PostTypes;
     const apolloClient = await getApolloClient({}, { req });
 
     const post = await apolloClient.mutate<
