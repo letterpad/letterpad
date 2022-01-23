@@ -75,10 +75,10 @@ export default function initUpload(sequelize) {
       },
     },
     {
-      tableName: "upload",
+      tableName: "uploads",
       name: {
-        singular: "Upload",
-        plural: "Upload",
+        singular: "upload",
+        plural: "uploads",
       },
       sequelize, // passing the `sequelize` instance is required
     },

@@ -13,7 +13,6 @@ import fs from "fs";
 import { defaultSettings, subjects } from "./constants";
 import { createAuthorWithSettings } from "@/graphql/resolvers/author";
 import { getToken } from "@/shared/token";
-import { Author } from "../models/definations_old/author";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);

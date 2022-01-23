@@ -319,7 +319,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
     result.tags = await author.countTags();
 
-    result.media = await author.countUpload();
+    result.media = await author.countUploads();
 
     return {
       __typename: "Stats",

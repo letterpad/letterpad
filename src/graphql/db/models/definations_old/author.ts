@@ -82,7 +82,7 @@ export class Author
   hasPost: HasManyHasAssociationMixin<Post, number> = this["hasPost"];
 
   addUpload: HasManyAddAssociationMixin<Upload, number> = this["addUpload"];
-  countUpload: HasManyCountAssociationsMixin = this["countUpload"];
+  countUploads: HasManyCountAssociationsMixin = this["countUploads"];
   createUpload: HasManyCreateAssociationMixin<Upload> = this["createUpload"];
   setUpload: HasOneSetAssociationMixin<Upload, number> = this["setUpload"];
   getUploads: HasManyGetAssociationsMixin<Upload> = this["getUpload"];
