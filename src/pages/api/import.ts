@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/react";
-import { Author } from "./../../graphql/db/models/definations/author";
+import { Author } from "./../../graphql/db/models/definations_old/author";
 import { models } from "@/graphql/db/models";
 import multer from "multer";
 import initMiddleware from "./middleware";
@@ -12,9 +12,8 @@ import {
 } from "./importExportTypes";
 
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
-import { Post } from "@/graphql/db/models/definations/post";
+import { Post } from "@/graphql/db/models/definations_old/post";
 import { getToken } from "@/shared/token";
-import { Model } from "sequelize-typescript";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -101,7 +100,7 @@ async function startImport(
     }
 
     if (role) {
-      await author.$set("role", role);
+      await author.setRole(role);
     }
 
     await removeUserData(author as any);
@@ -110,16 +109,16 @@ async function startImport(
       data: { id: author.id },
       algorithm: "HS256",
     });
-    await author.$create("setting", authorsData.setting);
+    await author.createSetting(authorsData.setting);
 
     await Promise.all([
-      ...authorsData.media.map((item) => author?.$create("upload", item)),
+      ...authorsData.media.map((item) => author?.createUpload(item)),
     ]);
 
     for (const data of authorsData.posts) {
       //@ts-ignore
       const { tags, ...post } = data;
-      const newPost = await author.$create("post", {
+      const newPost = await author.createPost({
         ...data,
         cover_image: data.cover_image,
       });
@@ -133,24 +132,24 @@ async function startImport(
 }
 
 async function addTagsToPost(
-  post: Model<Post>,
+  post: Post,
   tags: ITagSanitized[],
-  author: Model<Author>,
+  author: Author,
 ) {
   for (const tag of tags) {
-    const existingTag = await models.Tag.findOne({
+    const existingTag = await models.Tags.findOne({
       where: { name: tag.name, author_id: author.id },
     });
     if (existingTag) {
-      post.$add("tag", existingTag);
+      post.addTag(existingTag);
     } else {
-      post.$create("tag", tag);
+      post.createTag({ ...tag, desc: tag.desc ?? "" });
     }
   }
 }
 
 async function removeUserData(author: Author) {
-  const setting = await author.$get("setting");
+  const setting = await author?.getSetting();
 
   if (setting?.id) {
     // remove setting
@@ -159,7 +158,7 @@ async function removeUserData(author: Author) {
 
   if (author.id) {
     // remove tags
-    await models.Tag.destroy({ where: { author_id: author.id } });
+    await models.Tags.destroy({ where: { author_id: author.id } });
 
     // remove posts. also removes relationship with tags
     await models.Post.destroy({ where: { author_id: author.id } });

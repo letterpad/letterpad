@@ -1,10 +1,6 @@
 import { GroupOption, Includeable, Order } from "sequelize";
 
-import {
-  QueryResolvers,
-  MutationResolvers,
-  InputTags,
-} from "@/__generated__/__types__";
+import { QueryResolvers, MutationResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
@@ -18,7 +14,7 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
 
-    const tag = await models.Tag.findOne({ where: { slug: args.slug } });
+    const tag = await models.Tags.findOne({ where: { slug: args.slug } });
 
     if (tag) {
       return {
@@ -77,7 +73,7 @@ const Query: QueryResolvers<ResolverContext> = {
       where: { id: authorId },
     });
     if (author) {
-      const tags = await author.$get("tags", conditions);
+      const tags = await author.getTags(conditions);
       return {
         __typename: "TagsNode",
         rows: tags.map((tag) => tag.get()),
@@ -92,9 +88,9 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Tags = {
-  async posts({ id }, _args, { models }) {
-    const tag = await models.Tag.findOne({ where: { id } });
-    const posts = await tag?.$get("posts", {
+  async posts({ id }, _args, { models }: ResolverContext) {
+    const tag = await models.Tags.findOne({ where: { id } });
+    const posts = await tag?.getPosts({
       where: { status: "published" },
       order: [["id", "desc"]],
     });
@@ -131,9 +127,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     if (args.data.id === 0) {
       const { id, ...rest } = args.data;
-      tag = await author.$create("tag", rest as InputTags);
+      //@ts-ignore
+      tag = await author.createTag(rest);
     } else {
-      tag = await models.Tag.update(args.data, {
+      tag = await models.Tags.update(args.data, {
         where: { id: args.data.id },
       });
     }
@@ -157,7 +154,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         message: "Incorrect arguments",
       };
     }
-    const deleteRowCount = await models.Tag.destroy({
+    const deleteRowCount = await models.Tags.destroy({
       where: { id: args.id },
     });
 

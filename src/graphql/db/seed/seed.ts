@@ -1,4 +1,4 @@
-import connection, { models } from "../models/models";
+import connection, { models, ModelsType } from "../models/models";
 
 import copydir from "copy-dir";
 import generatePost from "./contentGenerator";
@@ -13,6 +13,7 @@ import fs from "fs";
 import { defaultSettings, subjects } from "./constants";
 import { createAuthorWithSettings } from "@/graphql/resolvers/author";
 import { getToken } from "@/shared/token";
+import { Author } from "../models/definations_old/author";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -26,7 +27,7 @@ const uploadsSourceDir = "./uploads";
 function absPath(p) {
   return path.join(__dirname, p);
 }
-type ModelsType = any;
+// type ModelsType = any;
 
 export const seed = async (folderCheck = true) => {
   if (folderCheck) {
@@ -37,7 +38,6 @@ export const seed = async (folderCheck = true) => {
     ]);
     console.timeEnd("ensure data directories");
   }
-
   console.time("sync sequelize models");
   await connection.sync({ force: true });
   console.timeEnd("sync sequelize models");
@@ -63,7 +63,7 @@ export const seed = async (folderCheck = true) => {
   console.timeEnd("insert Tags");
 
   console.time("insert posts, media");
-  const [tags] = await Promise.all([models.Tag.findAll()]);
+  const [tags] = await Promise.all([models.Tags.findAll()]);
 
   await Promise.all([...posts.map((post) => insertPost(post, models, tags))]);
   // await insertMedia();
@@ -102,27 +102,27 @@ export async function insertRolePermData(models: ModelsType) {
   async function admin() {
     const role = await models.Role.create({ name: "ADMIN" });
     return Promise.all([
-      role.$add("permission", READ_ONLY_POSTS),
-      role.$add("permission", MANAGE_ALL_POSTS),
-      role.$add("permission", MANAGE_USERS),
-      role.$add("permission", MANAGE_SETTINGS),
-      role.$add("permission", MANAGE_OWN_POSTS),
+      role.addPermission(READ_ONLY_POSTS),
+      role.addPermission(MANAGE_ALL_POSTS),
+      role.addPermission(MANAGE_USERS),
+      role.addPermission(MANAGE_SETTINGS),
+      role.addPermission(MANAGE_OWN_POSTS),
     ]);
   }
 
   async function reviewer() {
     const role = await models.Role.create({ name: "REVIEWER" });
-    return role.$add("permission", MANAGE_ALL_POSTS);
+    return role.addPermission(MANAGE_ALL_POSTS);
   }
 
   async function reader() {
     const role = await models.Role.create({ name: "READER" });
-    return role.$add("permission", READ_ONLY_POSTS);
+    return role.addPermission(READ_ONLY_POSTS);
   }
 
   async function author() {
     const role = await models.Role.create({ name: "AUTHOR" });
-    return role.$add("permission", MANAGE_OWN_POSTS);
+    return role.addPermission(MANAGE_OWN_POSTS);
   }
 
   return Promise.all([admin(), reviewer(), reader(), author()]);
@@ -183,7 +183,7 @@ export async function insertTags() {
   ];
 
   if (author) {
-    return Promise.all([...tags.map((tag) => author.$create("tag", tag))]);
+    return Promise.all([...tags.map((tag) => author.createTag(tag))]);
   }
 }
 
@@ -213,9 +213,9 @@ export async function insertPost(params, models: ModelsType, tags) {
     reading_time: "5 mins",
   });
   if (author && post) {
-    promises = [author.$add("post", post)];
+    promises = [author.addPost(post)];
     if (params.type === "post") {
-      promises = [...promises, ...tags.map((tag) => post.$add("tag", tag))];
+      promises = [...promises, ...tags.map((tag) => post.addTag(tag))];
     }
 
     return Promise.all(promises);
@@ -326,7 +326,7 @@ export async function createAdmin() {
       where: { name: ROLES.ADMIN },
     });
     if (role) {
-      await author.$set("role", role.id);
+      await author.setRole(role.id);
     }
     const setting = await models.Setting.create({
       ...defaultSettings,
@@ -335,6 +335,6 @@ export async function createAdmin() {
       site_title: "Admin Account",
       client_token: getToken({ data: { id: author.id }, algorithm: "H256" }),
     });
-    await author.$set("setting", setting);
+    await author.setSetting(setting);
   }
 }

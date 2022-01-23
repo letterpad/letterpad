@@ -1,7 +1,6 @@
-// import { Dialect, Options } from "sequelize/types";
+import { Dialect, Options } from "sequelize/types";
 
 import path from "path";
-import { SequelizeOptions } from "sequelize-typescript";
 
 export const getFile = (name: string) => {
   const dbFile = name + ".sqlite";
@@ -9,9 +8,9 @@ export const getFile = (name: string) => {
 };
 
 type IDbConfig = {
-  development: SequelizeOptions;
-  test: SequelizeOptions;
-  production: SequelizeOptions;
+  development: Options;
+  test: Options;
+  production: Options;
 };
 export const dbConfig: IDbConfig = {
   development: {
@@ -19,7 +18,7 @@ export const dbConfig: IDbConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    dialect: process.env.DB_TYPE as SequelizeOptions["dialect"],
+    dialect: process.env.DB_TYPE as Dialect,
     storage: getFile("letterpad"),
     logging: false,
     define: {
@@ -31,7 +30,7 @@ export const dbConfig: IDbConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    dialect: process.env.DB_TYPE as SequelizeOptions["dialect"],
+    dialect: process.env.DB_TYPE as Dialect,
     storage: getFile("test"),
     logging: false,
     define: {
@@ -43,7 +42,7 @@ export const dbConfig: IDbConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    dialect: process.env.DB_TYPE as SequelizeOptions["dialect"],
+    dialect: process.env.DB_TYPE as Dialect,
     storage: getFile("letterpad"),
     logging: false,
     define: {

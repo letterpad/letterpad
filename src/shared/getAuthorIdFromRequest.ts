@@ -2,7 +2,7 @@ import logger from "./logger";
 import { Context } from "@apollo/client";
 import { verifyToken } from "./token";
 import * as Sentry from "@sentry/nextjs";
-import { Author } from "@/graphql/db/models/definations/author";
+import { Author } from "@/graphql/db/models/definations_old/author";
 const authHeaderPrefix = "Basic ";
 
 const printOnce = {

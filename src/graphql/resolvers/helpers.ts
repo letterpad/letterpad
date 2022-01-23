@@ -1,8 +1,9 @@
 import https from "https";
 import cheerio from "cheerio";
 import sizeOf from "image-size";
-import { Post as ModelPost } from "@/graphql/db/models/definations/post";
+
 import logger from "./../../shared/logger";
+import { ModelsType } from "../db/models/models";
 
 export function toSlug(str: string): string {
   return str
@@ -16,7 +17,7 @@ export function toSlug(str: string): string {
 }
 
 export async function slugify(
-  PostModel: typeof ModelPost,
+  PostModel: ModelsType["Post"],
   slug: string,
 ): Promise<string> {
   slug = toSlug(slug);

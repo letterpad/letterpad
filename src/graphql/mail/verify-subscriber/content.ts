@@ -23,7 +23,7 @@ export async function getVerifySubscriberEmailContent(
   const author = await models.Author.findOne({
     where: { id: data.author_id },
   });
-  const setting = await author?.$get("setting");
+  const setting = await author.getSetting();
 
   if (!author || !setting) {
     return {

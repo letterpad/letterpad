@@ -35,7 +35,6 @@ export const doLogin = async ({
       message: result["error"],
     };
   }
-  console.log(result);
   if (result && result["ok"]) {
     return {
       success: true,

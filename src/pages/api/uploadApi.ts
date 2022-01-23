@@ -125,7 +125,7 @@ export async function upsertMedia(result: IMediaUploadResult, id: number) {
     });
   }
   if (media) {
-    await author.$add("media", media);
+    await author.addUpload(media);
   }
 }
 

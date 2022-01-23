@@ -1,46 +1,69 @@
-import { connection } from "./connection";
-import { Author } from "./definations/author";
-import { Email } from "./definations/email";
-import { EmailDelivery } from "./definations/emailDelivery";
-import { Upload } from "./definations/uploads";
-import { Permission } from "./definations/permission";
-import { Post } from "./definations/post";
-import { PostTag } from "./definations/postTag";
-import { Role } from "./definations/role";
-import { RolePermission } from "./definations/rolePermission";
-import { Setting } from "./definations/setting";
-import { Subscribers } from "./definations/subscriber";
-import { Tag } from "./definations/tag";
+import dbConfig from "../../../../config/db.config";
+import Author, { associateAuthor } from "./definations_old/author";
+import Upload, { associateUpload } from "./definations_old/uploads";
+import Permission, { associatePermission } from "./definations_old/permission";
+import EmailDelivery from "./definations_old/emailDelivery";
+import Post, { associatePost } from "./definations_old/post";
+import Role, { associateRole } from "./definations_old/role";
+import { Options, Sequelize } from "sequelize";
+import Setting from "./definations_old/setting";
+import Tag, { associateTags } from "./definations_old/tag";
+import Subscribers, {
+  associateSubscribers,
+} from "./definations_old/subscriber";
+import SubscribersDelivery, {
+  associateSubscribersDelivery,
+} from "./definations_old/subscribersDelivery";
+import Email, { associateEmail } from "./definations_old/email";
 
-connection.addModels([
-  Post,
-  Author,
-  Subscribers,
-  PostTag,
-  Tag,
-  Role,
-  Permission,
-  RolePermission,
-  Email,
-  Upload,
-  EmailDelivery,
-  Setting,
-]);
+enum envs {
+  development = "development",
+  test = "test",
+  production = "production",
+}
+
+let env: envs = process.env.NODE_ENV
+  ? envs[process.env.NODE_ENV as envs]
+  : envs.development;
+
+if (env === envs.development) env = envs.development;
+if (env === envs.test) env = envs.test;
+
+const config = dbConfig[env] as Options;
+// establish  database connection
+export const conn = new Sequelize(config);
 
 export const models = {
-  Post,
-  Author,
-  Subscribers,
-  PostTag,
-  Tag,
-  Role,
-  Permission,
-  RolePermission,
-  Email,
-  Upload,
-  EmailDelivery,
-  Setting,
+  Tags: Tag(conn),
+  Setting: Setting(conn),
+  Upload: Upload(conn),
+  Email: Email(conn),
+  Post: Post(conn),
+  Author: Author(conn),
+  Role: Role(conn),
+  Permission: Permission(conn),
+  Subscribers: Subscribers(conn),
+  SubscribersDelivery: SubscribersDelivery(conn),
+  EmailDelivery: EmailDelivery(conn),
 };
-export type ModelsType = typeof models;
 
-export default connection;
+associateTags();
+associatePost();
+associateAuthor();
+associateRole();
+associatePermission();
+associateUpload();
+associateSubscribers();
+associateSubscribersDelivery();
+associateEmail();
+
+// const models = { Sequelize: Sequelize, sequelize: conn, ...modelsMap };
+export type ModelsType = typeof models;
+export default conn;
+
+async function test() {
+  const a = await models.Author.findOne({ where: { id: 2 } });
+  console.log(a);
+}
+
+test();

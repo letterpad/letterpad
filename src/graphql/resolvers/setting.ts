@@ -53,6 +53,7 @@ const Setting = {
 };
 
 const Query: QueryResolvers<ResolverContext> = {
+  //@ts-ignore
   settings: async (_root, _args = {}, { session, author_id, models }) => {
     const authorId = session?.user.id || author_id;
     if (!authorId) {
@@ -65,13 +66,13 @@ const Query: QueryResolvers<ResolverContext> = {
       where: { id: authorId },
     });
 
-    const setting = await author?.$get("setting");
+    const setting = await author?.getSetting();
     if (!setting)
       return {
         __typename: "SettingError",
         message: "Setting related to author:null not found",
       };
-    SECURE_SETTINGS.forEach((securedKey) => {
+    SECURE_SETTINGS.forEach((securedKey: any) => {
       if (!session?.user.id) {
         setting.setDataValue(securedKey, "");
       }
@@ -95,7 +96,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     });
 
     if (!author) return { id: 0, ...defaultSettings };
-    const _setting = await author.$get("setting");
+    const _setting = await author.getSetting();
 
     let promises = args.options.map((setting) => {
       const option = Object.keys(setting)[0] as keyof Omit<

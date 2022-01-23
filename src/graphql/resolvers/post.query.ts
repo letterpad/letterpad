@@ -1,5 +1,4 @@
 import { setResponsiveImages } from "./../utils/imageAttributs";
-// import { PostAttributes } from "@/graphql/db/models/post";
 import { Op, Order } from "sequelize";
 import {
   Permissions,
@@ -35,11 +34,11 @@ interface IPostCondition {
 }
 
 const Post = {
-  author: async ({ id }: PostAttributes, _args, { models }) => {
-    const post = await models.Post.findOne({ where: { id: id } });
+  author: async (a: PostAttributes, _args, { models }) => {
+    const post = await models.Post.findOne({ where: { id: a.id } });
     if (post) {
       const author = await models.Author.findOne({
-        where: { id: post.author_id },
+        where: { id: post.get().author_id },
       });
 
       return author?.get();
@@ -150,14 +149,14 @@ const Query: QueryResolvers<ResolverContext> = {
           const author = await models.Author.findOne({
             where: { id: authorId },
           });
-          const setting = await author?.$get("setting");
+          const setting = await author?.getSetting();
 
           if (setting) {
             tagSlug = setting.menu[0].slug;
           }
         }
 
-        const taxTag = await models.Tag.findOne({
+        const taxTag = await models.Tags.findOne({
           where: {
             slug: tagSlug.split("/").pop() as string,
             author_id: authorId,
@@ -165,11 +164,11 @@ const Query: QueryResolvers<ResolverContext> = {
         });
 
         if (taxTag) {
-          const posts = await taxTag.$get("posts", query.conditions);
+          const posts = await taxTag.getPosts(query.conditions);
           return {
             __typename: "PostsNode",
             rows: posts?.map((p) => p.get()),
-            count: await taxTag.$count("posts", query.conditions),
+            count: await taxTag.countPosts(query.conditions),
           };
         }
         return {
@@ -181,14 +180,14 @@ const Query: QueryResolvers<ResolverContext> = {
 
       // resolve tag filter
       if (args?.filters?.tag) {
-        const tag = await models.Tag.findOne({
+        const tag = await models.Tags.findOne({
           where: { name: args.filters.tag, author_id },
         });
         if (tag) {
-          const posts = await tag.$get("posts", query.conditions);
+          const posts = await tag.getPosts(query.conditions);
           return {
             rows: posts.map((p) => p.get()),
-            count: await tag.$count("posts", query.conditions),
+            count: await tag.countPosts(query.conditions),
           };
         } else {
           return {
@@ -290,37 +289,37 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
 
-    result.posts.published = await author.$count("posts", {
+    result.posts.published = await author.countPosts({
       where: {
         status: PostStatusOptions.Published,
         type: PostTypes.Post,
       },
     });
 
-    result.posts.drafts = await author.$count("posts", {
+    result.posts.drafts = await author.countPosts({
       where: {
         status: PostStatusOptions.Draft,
         type: PostTypes.Post,
       },
     });
 
-    result.pages.published = await author.$count("posts", {
+    result.pages.published = await author.countPosts({
       where: {
         status: PostStatusOptions.Published,
         type: PostTypes.Page,
       },
     });
 
-    result.pages.drafts = await author.$count("posts", {
+    result.pages.drafts = await author.countPosts({
       where: {
         status: PostStatusOptions.Draft,
         type: PostTypes.Page,
       },
     });
 
-    result.tags = await author.$count("tags");
+    result.tags = await author.countTags();
 
-    result.media = await author.$count("uploads");
+    result.media = await author.countUpload();
 
     return {
       __typename: "Stats",

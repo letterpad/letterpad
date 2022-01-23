@@ -26,24 +26,24 @@ interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
 }
 
 const Author = {
-  role: async ({ id }, _args, { models }) => {
+  role: async ({ id }, _args, { models }: ResolverContext) => {
     const author = await models.Author.findOne({ where: { id } });
     if (!author) return;
     try {
-      const role = await author.$get("role");
+      const role = await author.getRole();
       const name = role.get("name");
       return name;
     } catch (e) {
       throw e;
     }
   },
-  permissions: async ({ id }, _args, { models }) => {
+  permissions: async ({ id }, _args, { models }: ResolverContext) => {
     const author = await models.Author.findOne({ where: { id } });
     if (!author) return;
 
     try {
-      const role = await author.$get("role");
-      const permissions = await role.$get("permissions");
+      const role = await author.getRole();
+      const permissions = await role.getPermissions();
       return permissions.map((p) => p.get("name"));
     } catch (e) {
       throw e;
@@ -128,13 +128,14 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
     if (newAuthor) {
       const { post, page } = getWelcomePostAndPage();
-      const newPost = await newAuthor.$create("post", post);
-      const newTag = await newAuthor.$create("tag", {
+      const newPost = await newAuthor.createPost(post);
+      const newTag = await newAuthor.createTag({
         name: siteConfig.first_post_tag,
         slug: siteConfig.first_post_tag,
+        desc: "",
       });
-      await newPost.$add("tag", newTag);
-      await newAuthor.$create("post", page);
+      await newPost.addTag(newTag);
+      await newAuthor.createPost(page);
 
       const a = newAuthor.get() as unknown as AuthorType;
       if (mailUtils.enqueueEmailAndSend) {
@@ -187,6 +188,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       message: "Incorrect email id",
     };
   },
+  //@ts-ignore
   async updateAuthor(_root, args, { session, models }) {
     if (session?.user.id !== args.author.id) {
       return {
@@ -372,7 +374,7 @@ export async function createAuthorWithSettings(
     password: bcrypt.hashSync(data.password, 12),
   });
   if (author && role) {
-    author.$set("role", role);
+    author.setRole(role);
     const newSettingRecord = await newModels.Setting.create({
       ...defaultSettings,
       menu: defaultSettings.menu as any,
@@ -380,7 +382,7 @@ export async function createAuthorWithSettings(
       ...setting,
       client_token: getToken({ data: { id: author.id }, algorithm: "HS256" }),
     });
-    await author.$set("setting", newSettingRecord);
+    await author.setSetting(newSettingRecord);
   }
   return author;
 }

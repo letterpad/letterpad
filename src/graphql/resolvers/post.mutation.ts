@@ -3,7 +3,7 @@ import {
   PostStatusOptions,
   PostTypes,
 } from "@/__generated__/__types__";
-import { Post } from "@/graphql/db/models/definations/post";
+import { Post } from "@/graphql/db/models/definations_old/post";
 import reading_time from "reading-time";
 import {
   slugify,
@@ -61,7 +61,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       args.data.html = "";
     }
 
-    const newPost = await author?.$create("post", args.data as any);
+    const newPost = await author.createPost(args.data as any);
 
     if (newPost) {
       return {
@@ -241,36 +241,37 @@ const Mutation: MutationResolvers<ResolverContext> = {
         if (tags && tags.length > 0) {
           logger.debug("Removing all Tags");
           // remove the tags relation
-          await previousPostRaw.$set("tags", []);
+          await previousPostRaw.setTags([]);
 
           for (const tag of tags) {
             logger.info("processing tag", tag);
             // add relation with existing Tags
             if (tag.id > 0) {
-              const tagFound = await models.Tag.findOne({
+              const tagFound = await models.Tags.findOne({
                 where: { id: tag.id },
               });
               if (tagFound) {
-                await previousPostRaw.$add("tag", tagFound);
+                await previousPostRaw.addTag(tagFound);
               }
               logger.debug(`Added existing tags (${tag.name}) with id`, tag.id);
             } else {
-              const author = await previousPostRaw.$get("author");
-              const tagsFound = await author?.$get("tags", {
+              const author = await previousPostRaw.getAuthor();
+              const tagsFound = await author?.getTags({
                 where: { name: tag.name },
               });
               if (tagsFound?.length === 0) {
-                const newTag = await author?.$create("tag", {
+                const newTag = await author?.createTag({
                   name: tag.name,
                   slug: tag.name.toLowerCase(),
+                  desc: "",
                 });
                 if (newTag) {
                   logger.debug(`Created new tag (${tag.name})`);
-                  await previousPostRaw.$add("tag", newTag);
+                  await previousPostRaw.addTag(newTag);
                   logger.debug("Linked tags to post", tag.name);
                 }
               } else if (tagsFound) {
-                await previousPostRaw.$add("tag", tagsFound[0]);
+                await previousPostRaw.addTag(tagsFound[0]);
                 logger.debug("Linked tags to post", tag.name);
               }
             }
@@ -355,7 +356,7 @@ async function updateMenuOnTitleChange(
   if (!title && !slug) return false;
   const author = await Author.findOne({ where: { id: authorId } });
   if (!author) return false;
-  const setting = await author.$get("setting");
+  const setting = await author?.getSetting();
 
   const isPage = postType === PostTypes.Page;
 
@@ -375,7 +376,7 @@ async function updateMenuOnTitleChange(
   //@ts-ignore
   setting?.setDataValue("menu", updatedMenu);
   //@ts-ignore
-  await author.$set("setting", setting);
+  await author.setSetting(setting);
 }
 
 export default { Mutation };

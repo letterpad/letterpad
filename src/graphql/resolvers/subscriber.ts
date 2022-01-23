@@ -32,7 +32,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
     const author = await models.Author.findOne({ where: { id: author_id } });
 
-    const subscribers = await author?.$get("subscribers", {
+    const subscribers = await author?.getSubscribers({
       where: { email: args.email, author_id },
     });
     if (subscribers && subscribers.length > 0) {
@@ -64,7 +64,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
 
     try {
-      await author?.$create("subscriber", {
+      //@ts-ignore
+      await author?.createSubscriber({
         email: args.email,
         verified: false,
       });
