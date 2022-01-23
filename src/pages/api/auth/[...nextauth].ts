@@ -18,29 +18,28 @@ const providers = (_req: NextApiRequest) => [
         const author = await models.Author.findOne({
           where: { email: credentials?.email },
         });
-        if (author) {
-          // if (!author?.verified) {
-          //   throw new Error("Your email id is not verified yet.");
-          // }
+        const rawAuthor = author?.get();
+        if (rawAuthor) {
+          if (!author?.verified) {
+            throw new Error("Your email id is not verified yet.");
+          }
           const authenticated = await bcrypt.compare(
             credentials?.password || "",
-            author.get().password,
+            author.password,
           );
           if (authenticated) {
             const role = await author.getRole();
-            const permissions = []; //author.getPermissions();
-            const data = {
-              user: {
-                id: author.id,
-                avatar: author.avatar,
-                username: author.username,
-                email: author.email,
-                role,
-                permissions,
-              },
-              accessToken: credentials && credentials["csrfToken"],
+            // const permissions = await role.getPermissions();
+            const user = {
+              id: rawAuthor.id,
+              avatar: rawAuthor.avatar,
+              username: rawAuthor.username,
+              name: rawAuthor.name,
+              email: rawAuthor.email,
+              role: role.get(),
+              // permissions: permissions.get(),
             };
-            return data;
+            return user;
           }
         }
       } catch (e) {
@@ -60,24 +59,24 @@ const options = (req: NextApiRequest) => ({
       }
       return process.env.ROOT_URL + "/posts";
     },
-    jwt: async (d) => {
+    jwt: async ({ token, user }) => {
       //  "user" parameter is the object received from "authorize"
       //  "token" is being send to "session" callback...
       //  ...so we set "user" param of "token" to object from "authorize"...
       //  ...and return it...
-      const { token, ...user } = d;
-      if (user && token) {
-        token.role = 1;
-        token.avatar = user.avatar;
-        token.permissions = user.permissions;
-        token.id = 2;
-        token.username = user.username;
-        token.__typename = "SessionData";
-      }
+      token.user = user;
       return token;
     },
     session: async ({ session, token }) => {
-      session.user = token;
+      try {
+        const author = await models.Author.findByPk(token.sub);
+        if (author) {
+          const { id, email, username, avatar, name } = author?.get();
+          session.user = { id, email, username, name, avatar };
+        }
+      } catch (e) {
+        console.log(e);
+      }
       return session;
     },
   },
@@ -93,4 +92,5 @@ const options = (req: NextApiRequest) => ({
 });
 
 export default (req: NextApiRequest, res: NextApiResponse) =>
+  //@ts-ignore
   NextAuth(req, res, options(req));
