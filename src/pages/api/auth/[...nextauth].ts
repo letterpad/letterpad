@@ -1,4 +1,3 @@
-import { Author, LoginResponse } from "@/__generated__/__types__";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextApiRequest, NextApiResponse } from "next";

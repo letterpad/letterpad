@@ -1,4 +1,4 @@
-import { getApolloClient } from "@/graphql/apollo";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import {
   DeleteTagsDocument,
   DeleteTagsMutation,
@@ -15,9 +15,7 @@ import {
 import { TagRow } from "./types";
 
 export async function fetchTags() {
-  const apolloClient = await getApolloClient();
-
-  const tags = await apolloClient.query<TagsQuery, TagsQueryVariables>({
+  const tags = await apolloBrowserClient.query<TagsQuery, TagsQueryVariables>({
     query: TagsDocument,
   });
   if (tags.data.tags?.__typename === "TagsNode") {
@@ -46,9 +44,7 @@ export async function fetchTags() {
 }
 
 export async function deleteTagApi(id) {
-  const apolloClient = await getApolloClient();
-
-  const tags = await apolloClient.mutate<
+  const tags = await apolloBrowserClient.mutate<
     DeleteTagsMutation,
     DeleteTagsMutationVariables
   >({
@@ -71,8 +67,11 @@ export const saveTags = async (row: TagRow, oldData: TagRow[]) => {
   });
 
   const { name, id, desc, slug } = row;
-  const client = await getApolloClient();
-  await client.mutate<UpdateTagsMutation, UpdateTagsMutationVariables>({
+
+  await apolloBrowserClient.mutate<
+    UpdateTagsMutation,
+    UpdateTagsMutationVariables
+  >({
     mutation: UpdateTagsDocument,
     variables: {
       data: { name, id, desc, slug },

@@ -8,13 +8,13 @@ import {
 } from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
 
-import { getApolloClient } from "@/graphql/apollo";
 import {
   Post,
   PostTypes,
   Tags,
   NavigationType,
 } from "@/__generated__/__types__";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 interface IReturn {
   loading: boolean;
@@ -27,12 +27,17 @@ function useNavigationData(): IReturn {
   const [loading, setLoading] = useState<boolean>(true);
 
   async function fetchData() {
-    const client = await getApolloClient();
-    const tagsData = await client.query<TagsQuery, TagsQueryVariables>({
+    const tagsData = await apolloBrowserClient.query<
+      TagsQuery,
+      TagsQueryVariables
+    >({
       query: TagsDocument,
     });
 
-    const pagesData = await client.query<PostsQuery, PostsQueryVariables>({
+    const pagesData = await apolloBrowserClient.query<
+      PostsQuery,
+      PostsQueryVariables
+    >({
       query: PostsDocument,
       variables: {
         filters: {

@@ -214,33 +214,3 @@ function validate(form: typeof fields) {
 
   return errors;
 }
-
-// async function createAuthorWithSettings(
-//   data,
-// ): Promise<{ status: boolean; message: string } | null> {
-//   const client = await getApolloClient();
-
-//   const result = await client.mutate<
-//     CreateAuthorMutation,
-//     CreateAuthorMutationVariables
-//   >({
-//     mutation: CreateAuthorDocument,
-//     variables: {
-//       data,
-//     },
-//   });
-
-//   if (result.data?.createAuthor?.__typename === "CreateAuthorError") {
-//     return {
-//       status: false,
-//       message: result.data.createAuthor.message,
-//     };
-//   }
-//   if (result.data?.createAuthor?.__typename === "Author") {
-//     return {
-//       status: true,
-//       message: "",
-//     };
-//   }
-//   return null;
-// }

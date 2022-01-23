@@ -1,4 +1,3 @@
-import { getApolloClient } from "@/graphql/apollo";
 import { IMediaUploadResult } from "@/graphql/types";
 
 import {
@@ -10,6 +9,7 @@ import { basePath } from "@/constants";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { IUploadFileProps } from "./types";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 export const getReadableDate = (timestamp: Date) => {
   return new Date(timestamp).toLocaleString("en-us", {
@@ -62,8 +62,7 @@ export function getBase64(file: File) {
 }
 
 export async function getSettings() {
-  const client = await getApolloClient();
-  return client.query<SettingsQuery, SettingsQueryVariables>({
+  return apolloBrowserClient.query<SettingsQuery, SettingsQueryVariables>({
     query: SettingsDocument,
   });
 }

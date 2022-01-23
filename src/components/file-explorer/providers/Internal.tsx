@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { getApolloClient } from "@/graphql/apollo";
 import {
   MediaQuery,
   MediaQueryVariables,
@@ -7,6 +6,7 @@ import {
 import { MediaDocument } from "@/__generated__/queries/queries.graphql";
 import { Media } from "@/__generated__/__types__";
 import InfiniteScrollList from "../InfiniteScrollList";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];
@@ -28,13 +28,14 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
   }, []);
 
   const fetchInternalMedia = async (page = 1) => {
-    const client = await getApolloClient();
-    const result = await client.query<MediaQuery, MediaQueryVariables>({
+    const result = await apolloBrowserClient.query<
+      MediaQuery,
+      MediaQueryVariables
+    >({
       query: MediaDocument,
       variables: {
         filters: {
           page,
-          // authorId: 1,
         },
       },
     });

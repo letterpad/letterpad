@@ -10,7 +10,6 @@ import {
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
 import { getSession } from "next-auth/react";
-import { getApolloClient } from "@/graphql/apollo";
 import { SettingsDocument } from "@/graphql/queries/queries.graphql";
 import logger from "./../../shared/logger";
 import path from "path";
@@ -21,6 +20,7 @@ import { models } from "@/graphql/db/models";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
 import { basePath } from "@/constants";
+import { createApolloServerClient } from "@/graphql/apolloServerClient";
 
 const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");
@@ -142,8 +142,11 @@ async function getCloudinaryCreds(req, res) {
     };
   }
 
-  const apollo = await getApolloClient({}, { req });
-  const settings = await apollo.query<SettingsQuery, SettingsQueryVariables>({
+  const apolloClient = await createApolloServerClient({ req });
+  const settings = await apolloClient.query<
+    SettingsQuery,
+    SettingsQueryVariables
+  >({
     query: SettingsDocument,
     fetchPolicy: "network-only",
   });

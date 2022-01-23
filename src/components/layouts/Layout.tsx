@@ -12,11 +12,11 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navigation from "./Menu";
 import Logo from "../Logo";
-import { getApolloClient } from "@/graphql/apollo";
 import ThemeSwitcher from "./ThemeSwitcher";
 import siteConfig from "config/site.config";
 import { useSession } from "next-auth/react";
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 interface IProps {
   settings: Setting;
@@ -163,8 +163,10 @@ const CustomLayout = ({ children, settings }: IProps) => {
 export default CustomLayout;
 
 async function getStats() {
-  const client = await getApolloClient();
-  const stats = await client.query<StatsQuery, StatsQueryVariables>({
+  const stats = await apolloBrowserClient.query<
+    StatsQuery,
+    StatsQueryVariables
+  >({
     query: StatsDocument,
     fetchPolicy: "network-only",
   });
