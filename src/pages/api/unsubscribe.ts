@@ -18,7 +18,6 @@ const Verify = async (
     const destroyed = await models.Subscribers.destroy({
       where: { email: token.email },
     });
-    console.log(destroyed);
     if (destroyed) {
       return res.redirect(basePath + "/messages/unsubscribed");
     } else {

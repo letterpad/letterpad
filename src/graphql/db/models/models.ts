@@ -60,10 +60,3 @@ associateEmail();
 // const models = { Sequelize: Sequelize, sequelize: conn, ...modelsMap };
 export type ModelsType = typeof models;
 export default conn;
-
-async function test() {
-  const a = await models.Author.findOne({ where: { id: 2 } });
-  console.log(a);
-}
-
-test();
