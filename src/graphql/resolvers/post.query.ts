@@ -34,6 +34,23 @@ interface IPostCondition {
 }
 
 const Post = {
+  slug: async ({ type, slug }: PostAttributes) => {
+    return `/${type}/${slug}`;
+  },
+  cover_image: async ({
+    cover_image,
+    cover_image_width,
+    cover_image_height,
+  }: PostAttributes) => {
+    if (cover_image && cover_image.startsWith("/")) {
+      return process.env.ROOT_URL + cover_image;
+    }
+    return {
+      src: cover_image,
+      width: cover_image_width,
+      height: cover_image_height,
+    };
+  },
   author: async (a: PostAttributes, _args, { models }) => {
     const post = await models.Post.findOne({ where: { id: a.id } });
     if (post) {

@@ -10,8 +10,9 @@ export const getResolverContext = async (context) => {
   const session = isTest
     ? null
     : ((await getSession(context)) as unknown as { user: SessionData });
+  console.log("session", session);
   let author_id = session?.user?.id;
-  if (!author_id && !isTest) {
+  if (!author_id) {
     author_id = await getAuthorIdFromRequest(context);
   }
   const mailUtils = await MailService<ModelsType>(models, author_id);

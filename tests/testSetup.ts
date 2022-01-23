@@ -25,6 +25,7 @@ export const createApolloTestServer = async () => {
     introspection: true,
     playground: true,
     context: async (context) => {
+      console.log("reached apollo server context..preparing");
       const resolverContext = await getResolverContext(context);
       return {
         ...context,

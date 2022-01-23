@@ -17,6 +17,7 @@ import {
   TagsNode,
   PostStatusOptions,
   PostTypes,
+  Image,
 } from "@/__generated__/__types__";
 import { getReadableDate } from "@/graphql/resolvers/helpers";
 
@@ -27,7 +28,7 @@ export interface PostAttributes {
   excerpt: string;
   html: string;
   html_draft: string;
-  cover_image: string;
+  cover_image: Image;
   cover_image_width: number;
   cover_image_height: number;
   type: PostTypes;
@@ -53,7 +54,7 @@ export class Post extends Model {
   excerpt: string = this["excerpt"];
   html: string = this["html"];
   html_draft: string = this["html_draft"];
-  cover_image: string = this["cover_image"];
+  cover_image: Image = this["cover_image"];
   cover_image_width: number = this["cover_image_width"];
   cover_image_height: number = this["cover_image_height"];
   type: PostTypes = this["type"];
@@ -111,17 +112,6 @@ export default function initPost(sequelize) {
       cover_image: {
         type: DataTypes.STRING,
         defaultValue: "",
-        get() {
-          const cImage = this.getDataValue("cover_image");
-          if (cImage && cImage.startsWith("/")) {
-            this.cover_image = process.env.ROOT_URL + cImage;
-          }
-          return {
-            src: cImage,
-            width: this.cover_image_width,
-            height: this.cover_image_height,
-          };
-        },
       },
       cover_image_width: {
         type: DataTypes.INTEGER,
@@ -146,9 +136,7 @@ export default function initPost(sequelize) {
       slug: {
         type: DataTypes.STRING,
         defaultValue: "",
-        get() {
-          return "/" + this.type + "/" + this.getDataValue("slug");
-        },
+        allowNull: false,
       },
       reading_time: {
         type: DataTypes.STRING,

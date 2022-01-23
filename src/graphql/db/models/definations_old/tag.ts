@@ -67,9 +67,6 @@ export default function initTags(sequelize) {
       },
       slug: {
         type: DataTypes.STRING,
-        get() {
-          return "/tag/" + this.getDataValue("slug");
-        },
       },
     },
     {

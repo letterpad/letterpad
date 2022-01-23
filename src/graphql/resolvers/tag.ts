@@ -88,6 +88,9 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Tags = {
+  async slug({ slug }) {
+    return "/tag/" + slug.replace("/tag/", "");
+  },
   async posts({ id }, _args, { models }: ResolverContext) {
     const tag = await models.Tags.findOne({ where: { id } });
     const posts = await tag?.getPosts({

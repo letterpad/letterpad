@@ -60,10 +60,10 @@ export async function getNewPostContent(
     full_name: "Friend",
     post_title: post?.title,
     excerpt: post?.excerpt,
-    cover_image_link: post?.cover_image?.src
-      ? `<img src="${post?.cover_image.src}" width="100%">`
+    cover_image_link: post?.cover_image
+      ? `<img src="${post?.cover_image}" width="100%">`
       : "",
-    read_more_link: `<a target="_blank" href="${setting.site_url}${post?.slug}">Read More</a>`,
+    read_more_link: `<a target="_blank" href="${setting.site_url}/${post?.type}/${post?.slug}">Read More</a>`,
   });
 
   return {
