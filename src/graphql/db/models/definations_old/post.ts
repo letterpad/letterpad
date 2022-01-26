@@ -48,33 +48,32 @@ export interface PostCreationAttributes extends Optional<PostAttributes, "id"> {
 }
 
 export class Post extends Model {
-  id: number = this["id"];
-  author_id: number = this["author_id"];
-  title: string = this["title"];
-  excerpt: string = this["excerpt"];
-  html: string = this["html"];
-  html_draft: string = this["html_draft"];
-  cover_image: Image = this["cover_image"];
-  cover_image_width: number = this["cover_image_width"];
-  cover_image_height: number = this["cover_image_height"];
-  type: PostTypes = this["type"];
-  featured: boolean = this["featured"];
-  status: PostStatusOptions = this["status"];
-  slug: string = this["slug"];
-  reading_time: string = this["reading_time"];
-  publishedAt: Date = this["publishedAt"];
-  scheduledAt: Date = this["scheduledAt"];
+  public id!: number;
+  public title!: string;
+  public excerpt!: string;
+  public html!: string;
+  public html_draft!: string;
+  public cover_image!: Image;
+  public cover_image_width!: number;
+  public cover_image_height!: number;
+  public type!: PostTypes;
+  public featured!: boolean;
+  public status!: PostStatusOptions;
+  public slug!: string;
+  public reading_time!: string;
+  public publishedAt!: Date;
+  public scheduledAt!: Date;
 
-  readonly createdAt: Date = this["createdAt"];
-  readonly updatedAt: Date = this["updatedAt"];
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 
-  getTags: HasManyGetAssociationsMixin<Tag> = this["getTags"];
-  getAuthor: BelongsToGetAssociationMixin<Author> = this["getAuthor"];
-  setTags: BelongsToManySetAssociationsMixin<Tag, Tag["id"]> = this["setTags"];
-  addTag: HasManyAddAssociationMixin<Tag, Tag["id"]> = this["addTag"];
-  hasTagById: HasManyHasAssociationMixin<Tag, Tag["id"]> = this["hasTagById"];
-  countTags: HasManyCountAssociationsMixin = this["countTags"];
-  createTag: HasManyCreateAssociationMixin<Tag> = this["createTag"];
+  public getTags!: HasManyGetAssociationsMixin<Tag>;
+  public getAuthor!: BelongsToGetAssociationMixin<Author>;
+  public setTags!: BelongsToManySetAssociationsMixin<Tag, Tag["id"]>;
+  public addTag!: HasManyAddAssociationMixin<Tag, Tag["id"]>;
+  public hasTagById!: HasManyHasAssociationMixin<Tag, Tag["id"]>;
+  public countTags!: HasManyCountAssociationsMixin;
+  public createTag!: HasManyCreateAssociationMixin<Tag>;
 
   static associations: {
     tags: Association<Post, Tag>;

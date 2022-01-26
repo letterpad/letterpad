@@ -31,6 +31,7 @@ export async function enqueueEmailAndSend(
       createdAt: getDateTime(new Date()) as any,
       delivered: false,
     } as any);
+    logger.debug("Creating a new email record. yet to be delivered.");
 
     // TODO - Since we are tracking the email, we should not run it on the main thread. Instead use a child thread or an external service. Lets worry when we are worried.
     const data = await getEmailTemplate(props, models);

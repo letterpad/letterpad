@@ -20,6 +20,8 @@ import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
 import { defaultSettings } from "../db/seed/constants";
 import { ResolverContext } from "../context";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -86,10 +88,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
         args.data.token,
       );
       if (!response) {
-        return {
-          __typename: "CreateAuthorError",
-          message: "We cannot allow you at the moment.",
-        };
+        // return {
+        //   __typename: "CreateAuthorError",
+        //   message: "We cannot allow you at the moment.",
+        // };
       }
     }
 
@@ -125,17 +127,20 @@ const Mutation: MutationResolvers<ResolverContext> = {
     const { setting = {}, ...authorData } = args.data;
 
     const newAuthor = await createAuthorWithSettings(authorData, setting);
-
+    console.log("New Author=====>", newAuthor);
     if (newAuthor) {
-      const { post, page } = getWelcomePostAndPage();
-      const newPost = await newAuthor.createPost(post);
+      const welcomeContent = getWelcomePostAndPage();
+      const newPost = await newAuthor.createPost(welcomeContent.post);
+      console.log("New Post======>", newPost);
       const newTag = await newAuthor.createTag({
         name: siteConfig.first_post_tag,
         slug: siteConfig.first_post_tag,
         desc: "",
       });
+      console.log("New Post======>", newTag);
       await newPost.addTag(newTag);
-      await newAuthor.createPost(page);
+
+      await newAuthor.createPost(welcomeContent.page);
 
       const a = newAuthor.get() as unknown as AuthorType;
       if (mailUtils.enqueueEmailAndSend) {
@@ -143,6 +148,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           author_id: a.id,
           template_id: EmailTemplates.VERIFY_NEW_USER,
         });
+        console.log("===> After enqueueEmail");
       }
 
       return { ...a, __typename: "Author" };
@@ -359,30 +365,45 @@ export async function createAuthorWithSettings(
   rolename: ROLES = ROLES.AUTHOR,
 ) {
   const { token, ...authorData } = data;
-  const role = await newModels.Role.findOne({ where: { name: rolename } });
-  const author = await newModels.Author.create({
-    ...authorData,
-    avatar: "",
-    verified: false,
-    bio: "",
-    social: {
-      twitter: "",
-      facebook: "",
-      github: "",
-      instagram: "",
-    },
-    password: bcrypt.hashSync(data.password, 12),
-  });
-  if (author && role) {
-    author.setRole(role);
-    const newSettingRecord = await newModels.Setting.create({
-      ...defaultSettings,
-      menu: defaultSettings.menu as any,
-      site_url: `https://${data.username}.letterpad.app`,
-      ...setting,
-      client_token: getToken({ data: { id: author.id }, algorithm: "HS256" }),
+  const role = await prisma.role.findFirst({ where: { name: rolename } });
+  if (role) {
+    const newAuthor = await prisma.author.create({
+      data: {
+        ...authorData,
+        avatar: "",
+        verified: false,
+        bio: "",
+        social: JSON.stringify({
+          twitter: "",
+          facebook: "",
+          github: "",
+          instagram: "",
+        }),
+        password: bcrypt.hashSync(data.password, 12),
+        role_id: role.id,
+        setting: {
+          create: {
+            ...defaultSettings,
+            menu: defaultSettings.menu as any,
+            site_url: `https://${data.username}.letterpad.app`,
+            ...setting,
+          },
+        },
+      },
     });
-    await author.setSetting(newSettingRecord);
+    const updatedNewAuthor = prisma.author.update({
+      where: { id: newAuthor.id },
+      data: {
+        setting: {
+          update: {
+            client_token: getToken({
+              data: { id: newAuthor.id },
+              algorithm: "HS256",
+            }),
+          },
+        },
+      },
+    });
+    return updatedNewAuthor;
   }
-  return author;
 }

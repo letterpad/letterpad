@@ -10,12 +10,12 @@ export class Email
   extends Model<EmailAttributes, EmailAttributes>
   implements EmailAttributes
 {
-  template_id: string = this["template_id"];
-  body: string = this["body"];
-  subject: string = this["subject"];
+  public template_id!: string;
+  public body!: string;
+  public subject!: string;
 
-  readonly createdAt: Date = this["createdAt"];
-  readonly updatedAt: Date = this["updatedAt"];
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 
   constructor(...args) {
     super(...args);

@@ -12,11 +12,11 @@ export class Permission
   extends Model<PermissionAttributes, PermissionCreationAttributes>
   implements PermissionAttributes
 {
-  id: number = this["id"];
-  name: string = this["name"];
+  public id!: number;
+  public name!: string;
 
-  readonly createdAt: Date = this["createdAt"];
-  readonly updatedAt: Date = this["updatedAt"];
+  readonly createdAt!: Date;
+  readonly updatedAt!: Date;
 
   constructor(...args) {
     super(...args);

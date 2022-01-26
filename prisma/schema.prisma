@@ -1,0 +1,196 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../data/letterpad.sqlite"
+}
+
+model SequelizeMeta {
+  name String @id
+}
+
+model Author {
+  id                  Int       @id @default(autoincrement())
+  name                String
+  username            String
+  email               String    @unique
+  password            String
+  bio                 String?
+  avatar              String?
+  social              String?   @default(dbgenerated("'{}'"))
+  verified            Boolean?  @default(false)
+  created_at          DateTime? @default(now())
+  updated_at          DateTime? @updatedAt
+  setting_id          Int?      @unique
+  verify_attempt_left Int?
+  posts               Post[]
+  tags                Tag[]
+  uploads             Upload[]
+  setting             Setting?  @relation(fields: [setting_id], references: [id])
+  role_id             Int
+}
+
+model EmailDelivery {
+  id                    Int       @id @default(autoincrement())
+  template_id           String?
+  author_id             Int?
+  post_id               Int?
+  subscriber_id         Int?
+  delivered             Int?
+  last_delivery_attempt DateTime?
+  created_at            DateTime? @default(now())
+  updated_at            DateTime? @updatedAt
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model Emails {
+  template_id String?   @id
+  subject     String?
+  body        String?
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @updatedAt
+
+  @@ignore
+}
+
+model Permission {
+  id         Int               @id @default(autoincrement())
+  name       String?           @unique
+  created_at DateTime?         @default(now())
+  updated_at DateTime?         @updatedAt
+  roles      RolePermissions[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model PostTags {
+  id         Int       @id @default(autoincrement())
+  post       Post      @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  tag        Tag       @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  tag_id     Int
+  post_id    Int
+}
+
+model Post {
+  id                 Int        @id @default(autoincrement())
+  title              String?    @default("")
+  html               String?
+  html_draft         String?    @default("")
+  excerpt            String?    @default("")
+  cover_image        String?    @default("")
+  cover_image_width  Int?       @default(0)
+  cover_image_height Int?       @default(0)
+  type               String?    @default("")
+  featured           Int?       @default(0)
+  status             String?    @default("draft")
+  slug               String?    @default("")
+  reading_time       String?    @default("")
+  published_at       DateTime?
+  scheduled_at       DateTime?
+  updated_at         DateTime?  @updatedAt
+  created_at         DateTime?  @default(now())
+  author_id          Int?
+  author             Author?    @relation(fields: [author_id], references: [id])
+  postTags               PostTags[] 
+}
+
+model RolePermissions {
+  id            Int        @id @default(autoincrement())
+  created_at    DateTime?  @default(now())
+  updated_at    DateTime?  @updatedAt
+  role_id       Int
+  permission_id Int
+  permission    Permission @relation(fields: [permission_id], references: [id], onDelete: Cascade)
+  role          Role       @relation(fields: [role_id], references: [id], onDelete: Cascade)
+}
+
+model Role {
+  id          Int               @id @default(autoincrement())
+  name        String?
+  created_at  DateTime?         @default(now())
+  updated_at  DateTime?         @updatedAt
+  permissions RolePermissions[]
+}
+
+model Setting {
+  id                  Int       @id @default(autoincrement())
+  site_title          String?   @default("")
+  site_tagline        String?   @default("")
+  site_email          String?   @default("")
+  site_url            String?   @default("")
+  site_footer         String?   @default("")
+  site_description    String?   @default("")
+  subscribe_embed     String?   @default("")
+  social_twitter      String?   @default("")
+  social_facebook     String?   @default("")
+  social_instagram    String?   @default("")
+  social_github       String?   @default("")
+  display_author_info Boolean?  @default(false)
+  cloudinary_key      String?   @default("")
+  cloudinary_name     String?   @default("")
+  cloudinary_secret   String?   @default("")
+  menu                String?   @default(dbgenerated("'{}'"))
+  css                 String?   @default("")
+  google_analytics    String?   @default("")
+  theme               String?   @default("")
+  client_token        String?   @default("")
+  disqus_id           String?   @default("")
+  banner              String?   @default(dbgenerated("'{}'"))
+  site_logo           String?   @default(dbgenerated("'{}'"))
+  site_favicon        String?   @default(dbgenerated("'{}'"))
+  created_at          DateTime? @default(now())
+  updated_at          DateTime? @updatedAt
+  graphqlcommentId    String?
+  graphcomment_id     String?
+  intro_dismissed     Boolean?
+  // author              Author    @relation(fields: [author_id], references: [id])
+  // author_id           Int       @unique
+  author              Author?
+}
+
+model Subscriber {
+  id                  Int       @id @default(autoincrement())
+  email               String?
+  author_id           Int?
+  verified            Boolean?
+  created_at          DateTime? @default(now())
+  updated_at          DateTime? @updatedAt
+  verify_attempt_left Int?      @default(3)
+}
+
+model Tag {
+  id         Int        @id @default(autoincrement())
+  name       String
+  desc       String?    @default("")
+  slug       String?
+  created_at DateTime?  @default(now())
+  updated_at DateTime?  @updatedAt
+  author_id  Int?
+  author     Author?    @relation(fields: [author_id], references: [id])
+  posts      PostTags[]
+}
+
+model Upload {
+  id          Int       @id @default(autoincrement())
+  name        String?
+  url         String?
+  width       Int?
+  height      Int?
+  description String?
+  updated_at  DateTime? @updatedAt
+  created_at  DateTime? @default(now())
+  author_id   Int
+  author      Author    @relation(fields: [author_id], references: [id])
+}
+
+model SubscribersDelivery {
+  id            Int       @id @default(autoincrement())
+  subscriber_id String?
+  post_id       Int
+  delivered     Boolean
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt
+}

@@ -44,6 +44,10 @@ describe("Test author", () => {
       sessionId: author?.id as number,
     });
 
+    const a = await author?.getTags();
+
+    console.log(a);
+
     expect(posts.count).toBe(3);
   });
 });

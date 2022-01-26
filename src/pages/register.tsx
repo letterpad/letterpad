@@ -74,7 +74,6 @@ const RegisterForm = () => {
           },
         },
       });
-      // const result = await createAuthorWithSettings(formWithToken);
       if (result.errors?.length) {
         message.error({ content: result?.errors, key, duration: 5 });
       } else {

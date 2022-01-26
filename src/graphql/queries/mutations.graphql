@@ -73,7 +73,7 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
     social_facebook
     social_instagram
     social_github
-    displayAuthorInfo
+    display_author_info
     cloudinary_key
     cloudinary_name
     cloudinary_secret

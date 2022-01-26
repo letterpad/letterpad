@@ -15,7 +15,7 @@ export interface SettingAttributes {
   social_facebook: string;
   social_instagram: string;
   social_github: string;
-  displayAuthorInfo: boolean;
+  display_author_info: boolean;
   cloudinary_key: string;
   cloudinary_name: string;
   cloudinary_secret: string;
@@ -37,34 +37,34 @@ export class Setting
   extends Model<SettingAttributes, SettingCreationAttributes>
   implements SettingAttributes
 {
-  id: number = this["id"];
-  site_title: string = this["site_title"];
-  site_tagline: string = this["site_tagline"];
-  site_email: string = this["site_email"];
-  site_url: string = this["site_url"];
-  site_footer: string = this["site_footer"];
-  site_description: string = this["site_description"];
-  subscribe_embed: string = this["subscribe_embed"];
-  social_twitter: string = this["social_twitter"];
-  social_facebook: string = this["social_facebook"];
-  social_instagram: string = this["social_instagram"];
-  social_github: string = this["social_github"];
-  displayAuthorInfo: boolean = this["displayAuthorInfo"];
-  cloudinary_key: string = this["cloudinary_key"];
-  cloudinary_name: string = this["cloudinary_name"];
-  cloudinary_secret: string = this["cloudinary_secret"];
-  menu: Navigation[] = this["menu"];
-  css: string = this["css"];
-  google_analytics: string = this["google_analytics"];
-  theme: string = this["theme"];
-  banner: Image = this["banner"];
-  site_logo: Image = this["site_logo"];
-  site_favicon: Image = this["site_favicon"];
-  client_token: string = this["client_token"];
-  intro_dismissed: boolean = this["intro_dismissed"];
+  public id!: number;
+  public site_title!: string;
+  public site_tagline!: string;
+  public site_email!: string;
+  public site_url!: string;
+  public site_footer!: string;
+  public site_description!: string;
+  public subscribe_embed!: string;
+  public social_twitter!: string;
+  public social_facebook!: string;
+  public social_instagram!: string;
+  public social_github!: string;
+  public display_author_info!: boolean;
+  public cloudinary_key!: string;
+  public cloudinary_name!: string;
+  public cloudinary_secret!: string;
+  public menu!: Navigation[];
+  public css!: string;
+  public google_analytics!: string;
+  public theme!: string;
+  public banner!: Image;
+  public site_logo!: Image;
+  public site_favicon!: Image;
+  public client_token!: string;
+  public intro_dismissed!: boolean;
 
-  readonly createdAt: Date = this["createdAt"];
-  readonly updatedAt: Date = this["updatedAt"];
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 
   constructor(...args) {
     super(...args);
@@ -130,7 +130,7 @@ export default function initSetting(sequelize) {
         defaultValue: "",
         allowNull: true,
       },
-      displayAuthorInfo: {
+      display_author_info: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
         allowNull: true,

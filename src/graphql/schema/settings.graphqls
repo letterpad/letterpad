@@ -24,7 +24,7 @@ type Setting {
   social_facebook: String
   social_instagram: String
   social_github: String
-  displayAuthorInfo: Boolean!
+  display_author_info: Boolean!
   intro_dismissed: Boolean!
   cloudinary_key: String
   cloudinary_name: String
@@ -64,7 +64,7 @@ input SettingInputType {
   social_facebook: String
   social_instagram: String
   social_github: String
-  displayAuthorInfo: Boolean
+  display_author_info: Boolean
   cloudinary_key: String
   cloudinary_name: String
   cloudinary_secret: String
@@ -72,9 +72,9 @@ input SettingInputType {
   css: String
   google_analytics: String
   theme: String
-  banner: InputImage
-  site_logo: InputImage
-  site_favicon: InputImage
+  banner: String
+  site_logo: String
+  site_favicon: String
   intro_dismissed: Boolean
 }
 

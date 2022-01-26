@@ -13,7 +13,7 @@ import {
 import { PostsResponse } from "@/__generated__/__types__";
 
 export interface TagsAttributes {
-  readonly id: number;
+  id: number;
   name: string;
   desc: string;
   slug: string;
@@ -28,22 +28,21 @@ export class Tag
   extends Model<TagsAttributes, TagsCreationAttributes>
   implements TagsAttributes
 {
-  id: number = this["id"];
-  name: string = this["name"];
-  desc: string = this["desc"];
-  slug: string = this["slug"];
-  author_id: number = this["author_id"];
+  public id!: number;
+  public name!: string;
+  public desc!: string;
+  public slug!: string;
+  public author_id!: number;
 
-  readonly createdAt: Date = this["createdAt"];
-  readonly updatedAt: Date = this["updatedAt"];
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
   public readonly posts!: PostsResponse;
 
-  getPosts: HasManyGetAssociationsMixin<Post> = this["getPosts"]; // Note the null assertions!
-  createPost: HasManyCreateAssociationMixin<Post> = this["createPost"]; // Note the null assertions!
-  hasPost: HasManyHasAssociationMixin<Post, Post["id"]> = this["hasPost"];
-  countPosts: HasManyCountAssociationsMixin = this["countPosts"];
-  setPosts: BelongsToManySetAssociationsMixin<Post, Post["id"]> =
-    this["setPosts"];
+  public getPosts!: HasManyGetAssociationsMixin<Post>; // Note the null assertions!
+  public createPost!: HasManyCreateAssociationMixin<Post>; // Note the null assertions!
+  public hasPostById!: HasManyHasAssociationMixin<Post, Post["id"]>;
+  public countPosts!: HasManyCountAssociationsMixin;
+  public setPosts!: BelongsToManySetAssociationsMixin<Post, Post["id"]>;
 
   constructor(...args) {
     super(...args);
@@ -67,6 +66,9 @@ export default function initTags(sequelize) {
       },
       slug: {
         type: DataTypes.STRING,
+        get() {
+          return "/tag/" + this.getDataValue("slug");
+        },
       },
     },
     {

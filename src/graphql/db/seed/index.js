@@ -8,12 +8,6 @@ if (process.env.NODE_ENV === "production") {
 const { seed } = require("./seed");
 const { Op } = require("sequelize");
 
-// (async () => {
-//   const post = await models.Post.findOne({ id: 2 });
-//   // console.log("post :>> ", post);
-//   const tags = await post.getTags({ raw: true });
-//   console.log(tags.map(({ name, desc, slug }) => ({ name, desc, slug })));
-// })();
 seed()
   .catch((e) => {
     console.error(e);

@@ -1,11 +1,11 @@
 import connection, { models, ModelsType } from "../models/models";
 
-import copydir from "copy-dir";
 import generatePost from "./contentGenerator";
-import mkdirp from "mkdirp";
 import path from "path";
 import posts from "./posts";
 import { promisify } from "util";
+import copydir from "copy-dir";
+import mkdirp from "mkdirp";
 import rimraf from "rimraf";
 import { EmailTemplates, ROLES } from "../../../graphql/types";
 import { toSlug } from "@/graphql/resolvers/helpers";

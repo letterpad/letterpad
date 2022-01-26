@@ -50,63 +50,58 @@ export class Author
   extends Model<AuthorAttributes, AuthorCreationAttributes>
   implements AuthorAttributes
 {
-  constructor(...args) {
-    super(...args);
-  }
-
-  id: number = this["id"];
-  name: string = this["name"];
-  email: string = this["email"];
-  bio: string = this["bio"];
-  password: string = this["password"];
-  avatar: string = this["avatar"];
-  username: string = this["username"];
-  verified: boolean = this["verified"];
-  social: Social = this["social"];
-  role: QraphqlRole = this["role"];
-  permissions: GraqhqlPermissions[] = this["permissions"];
-  role_id: number = this["role_id"];
-  setting_id: number = this["setting_id"];
-  verify_attempt_left: number = this["verify_attempt_left"];
+  public id!: number;
+  public name!: string;
+  public email!: string;
+  public bio!: string;
+  public password!: string;
+  public avatar!: string;
+  public username!: string;
+  public verified!: boolean;
+  public social!: Social;
+  public role!: QraphqlRole;
+  public permissions!: GraqhqlPermissions[];
+  public role_id!: number;
+  public setting_id!: number;
+  public verify_attempt_left!: number;
   // timestamps!
-  createdAt: Date = this["createdAt"];
-  updatedAt: Date = this["updatedAt"];
+  public createdAt!: Date;
+  public updatedAt!: Date;
 
   // Since TS cannot determine model association at compile time
   // we have to declare them here purely virtually
   // these will not exist until `Model.init` was called.
-  addPost: HasManyAddAssociationMixin<Post, number> = this["addPost"];
-  createPost: HasManyCreateAssociationMixin<Post> = this["createPost"];
-  countPosts: HasManyCountAssociationsMixin = this["countPosts"];
-  getPosts: HasManyGetAssociationsMixin<Post> = this["getPosts"];
-  hasPost: HasManyHasAssociationMixin<Post, number> = this["hasPost"];
+  public addPost!: HasManyAddAssociationMixin<Post, number>;
+  public createPost!: HasManyCreateAssociationMixin<Post>;
+  public countPosts!: HasManyCountAssociationsMixin;
+  public getPosts!: HasManyGetAssociationsMixin<Post>;
+  public hasPost!: HasManyHasAssociationMixin<Post, number>;
 
-  addUpload: HasManyAddAssociationMixin<Upload, number> = this["addUpload"];
-  countUploads: HasManyCountAssociationsMixin = this["countUploads"];
-  createUpload: HasManyCreateAssociationMixin<Upload> = this["createUpload"];
-  setUpload: HasOneSetAssociationMixin<Upload, number> = this["setUpload"];
-  getUploads: HasManyGetAssociationsMixin<Upload> = this["getUpload"];
+  public addUpload!: HasManyAddAssociationMixin<Upload, number>;
+  public countUploads!: HasManyCountAssociationsMixin;
+  public createUpload!: HasManyCreateAssociationMixin<Upload>;
+  public setUpload!: HasOneSetAssociationMixin<Upload, number>;
+  public getUploads!: HasManyGetAssociationsMixin<Upload>;
 
-  countTags: HasManyCountAssociationsMixin = this["countTags"];
-  createTag: HasManyCreateAssociationMixin<Tag> = this["createTag"];
-  getTags: HasManyGetAssociationsMixin<Tag> = this["getTags"];
-  hasTag: HasManyHasAssociationMixin<Tag, number> = this["hasTag"];
+  public countTags!: HasManyCountAssociationsMixin;
+  public createTag!: HasManyCreateAssociationMixin<Tag>;
+  public getTags!: HasManyGetAssociationsMixin<Tag>;
+  public hasTag!: HasManyHasAssociationMixin<Tag, number>;
 
-  setRole: HasOneSetAssociationMixin<Role, number> = this["setRole"];
-  getRole: HasOneGetAssociationMixin<Role> = this["getRole"];
+  public setRole!: HasOneSetAssociationMixin<Role, number>;
+  public getRole!: HasOneGetAssociationMixin<Role>;
 
-  createSetting: HasManyCreateAssociationMixin<Setting> = this["createSetting"];
-  getSetting: HasOneGetAssociationMixin<Setting> = this["getSetting"];
-  setSetting: HasOneSetAssociationMixin<Setting, number> = this["setSetting"];
+  public createSetting!: HasManyCreateAssociationMixin<Setting>;
+  public getSetting!: HasOneGetAssociationMixin<Setting>;
+  public setSetting!: HasOneSetAssociationMixin<Setting, number>;
 
-  getSubscribers: HasManyGetAssociationsMixin<Subscribers> =
-    this["getSubscribers"];
-  hasSubscriber: HasManyHasAssociationMixin<Subscribers, number> =
-    this["hasSubscriber"];
-  addSubscriber: HasOneSetAssociationMixin<Subscribers, number> =
-    this["addSubscriber"];
-  createSubscriber: HasManyCreateAssociationMixin<Subscribers> =
-    this["createSubscriber"];
+  public getSubscribers!: HasManyGetAssociationsMixin<Subscribers>;
+
+  public hasSubscriber!: HasManyHasAssociationMixin<Subscribers, number>;
+
+  public addSubscriber!: HasOneSetAssociationMixin<Subscribers, number>;
+
+  public createSubscriber!: HasManyCreateAssociationMixin<Subscribers>;
   // You can also pre-declare possible inclusions, these will only be populated if you
   // actively include a relation.
   public readonly posts?: Post[]; // Note this is optional since it's only populated when explicitly requested in code
@@ -114,6 +109,10 @@ export class Author
   public static associations: {
     posts: Association<Author, Post>;
   };
+
+  constructor(...args) {
+    super(...args);
+  }
 }
 export default function initAuthor(sequelize: Sequelize) {
   Author.init(

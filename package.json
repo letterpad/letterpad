@@ -10,7 +10,9 @@
     "build": "yarn codegen && next build",
     "test": "yarn codegen && jest --runInBand",
     "start": "next start",
-    "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed",
+    "_seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed",
+    "seed": "npx prisma db push --force-reset && ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/prisma.ts",
+    "migrate": "prisma migrate dev --name init",
     "type-check": "yarn tsc"
   },
   "dependencies": {
@@ -19,6 +21,7 @@
     "@graphql-tools/load-files": "6.0.18",
     "@graphql-tools/merge": "6.0.18",
     "@graphql-tools/schema": "6.0.18",
+    "@prisma/client": "^3.8.1",
     "@sentry/nextjs": "^6.15.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/styled-components": "^5.1.9",
@@ -46,6 +49,7 @@
     "node-mailjet": "^3.3.4",
     "nprogress": "^0.2.0",
     "pg-hstore": "^2.3.4",
+    "prisma": "^3.8.1",
     "react-google-recaptcha-v3": "^1.9.4",
     "react-infinite-scroll-component": "^6.1.0",
     "react-simple-code-editor": "^0.11.0",
