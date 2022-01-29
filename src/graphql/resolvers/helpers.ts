@@ -4,6 +4,7 @@ import sizeOf from "image-size";
 
 import logger from "./../../shared/logger";
 import { ModelsType } from "../db/models/models";
+import { Prisma } from "@prisma/client";
 
 export function toSlug(str: string): string {
   return str
@@ -17,11 +18,11 @@ export function toSlug(str: string): string {
 }
 
 export async function slugify(
-  PostModel: ModelsType["Post"],
+  PostModel: Prisma.PostDelegate<false>,
   slug: string,
 ): Promise<string> {
   slug = toSlug(slug);
-  const result = await PostModel.findOne({ where: { slug: slug } });
+  const result = await PostModel.findFirst({ where: { slug: slug } });
 
   if (result === null) {
     return slug;
@@ -30,7 +31,7 @@ export async function slugify(
   slug += "-";
 
   async function recursiveFindUniqueSlug() {
-    const result = await PostModel.findOne({ where: { slug: slug + count } });
+    const result = await PostModel.findFirst({ where: { slug: slug + count } });
 
     if (result === null) {
       return slug + count;
@@ -76,24 +77,29 @@ export async function getImageDimensions(
 }
 
 export const setImageWidthAndHeightInHtml = async (html: string) => {
-  const $ = cheerio.load(html, { xmlMode: true });
-  logger.debug("Setting image width and height inside html");
-  const $bodyImages = $("img");
+  try {
+    const $ = cheerio.load(html, { xmlMode: true });
+    logger.debug("Setting image width and height inside html");
+    const $bodyImages = $("img");
 
-  for (let i = 0; i < $bodyImages.length; i++) {
-    const el = $bodyImages[i];
-    const $el = $(el);
-    $el.attr("loading", "lazy");
-    let src = $el.attr("src");
-    if (!src) return;
-    if (!src.startsWith("http")) return;
-    logger.debug("Getting dimensions of ", src);
-    const size = await getImageDimensions(src);
-    $el.attr("height", size.height.toString());
-    $el.attr("width", size.width.toString());
-    logger.info("Image width x height", { ...size });
+    for (let i = 0; i < $bodyImages.length; i++) {
+      const el = $bodyImages[i];
+      const $el = $(el);
+      $el.attr("loading", "lazy");
+      let src = $el.attr("src");
+      if (!src) return;
+      if (!src.startsWith("http")) return;
+      logger.debug("Getting dimensions of ", src);
+      const size = await getImageDimensions(src);
+      $el.attr("height", size.height.toString());
+      $el.attr("width", size.width.toString());
+      logger.info("Image width x height", { ...size });
+    }
+    return $.html();
+  } catch (e) {
+    // ignore
   }
-  return $.html();
+  return html;
 };
 
 interface ICaptchaResult {

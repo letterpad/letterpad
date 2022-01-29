@@ -71,7 +71,7 @@ model Post {
   cover_image        String?   @default("")
   cover_image_width  Int?      @default(0)
   cover_image_height Int?      @default(0)
-  type               String?   @default("")
+  type               String    @default("post")
   featured           Boolean?  @default(false)
   status             String?   @default("draft")
   slug               String?   @default("")

@@ -19,7 +19,7 @@ export const getResolverContext = async (context) => {
   return {
     connection,
     models,
-    mailUtils: {},
+    mailUtils,
     session,
     author_id,
     prisma,

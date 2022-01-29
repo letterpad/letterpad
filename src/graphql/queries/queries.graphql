@@ -41,7 +41,6 @@ query Posts($filters: PostsFilters) {
           bio
         }
         tags {
-          id
           name
           desc
           slug
@@ -131,7 +130,6 @@ query Tags {
     ... on TagsNode {
       rows {
         name
-        id
         desc
         slug
         posts {

@@ -37,8 +37,8 @@ mutation addSubscriber($email: String!) {
   }
 }
 
-mutation DeleteTags($id: Int!) {
-  deleteTags(id: $id) {
+mutation DeleteTags($name: String!) {
+  deleteTags(name: $name) {
     ... on DeleteTagsResult {
       ok
     }
@@ -139,7 +139,6 @@ mutation createPost($data: InputCreatePost) {
         name
       }
       tags {
-        id
         name
         slug
       }
@@ -166,7 +165,6 @@ mutation updatePost($data: InputUpdatePost) {
         bio
       }
       tags {
-        id
         name
         slug
       }
