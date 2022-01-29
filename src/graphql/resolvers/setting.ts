@@ -54,95 +54,96 @@ const Setting = {
 
 const Query: QueryResolvers<ResolverContext> = {
   //@ts-ignore
-  settings: async (_root, _args = {}, { session, author_id, models }) => {
+  settings: async (_root, _args = {}, { session, author_id, prisma }) => {
     const authorId = session?.user.id || author_id;
-    if (!authorId) {
-      return {
-        __typename: "SettingError",
-        message: "Setting related to author:null not found",
-      };
-    }
-    const author = await models.Author.findOne({
-      where: { id: authorId },
-    });
 
-    const setting = await author?.getSetting();
-    if (!setting)
-      return {
-        __typename: "SettingError",
-        message: "Setting related to author:null not found",
-      };
-    SECURE_SETTINGS.forEach((securedKey: any) => {
-      if (!session?.user.id) {
-        setting.setDataValue(securedKey, "");
+    if (authorId) {
+      const author = await prisma.author.findFirst({
+        where: { id: authorId },
+        include: {
+          setting: true,
+        },
+      });
+
+      if (author) {
+        SECURE_SETTINGS.forEach((securedKey: any) => {
+          if (!session?.user.id) {
+            author.setting[securedKey] = "";
+          }
+        });
+        return { ...author.setting, __typename: "Setting" };
       }
-    });
+    }
 
-    return { ...setting.get(), __typename: "Setting" };
+    return {
+      __typename: "SettingError",
+      message: `Setting related to author:${authorId} not found`,
+    };
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {
   //@ts-ignore
-  updateOptions: async (_root, args, { session, models }) => {
-    if (!session?.user.id)
-      return {
-        id: 0,
-        ...defaultSettings,
-        menu: defaultSettings.menu as any,
-      };
+  updateOptions: async (_root, args, { session, prisma, author_id }) => {
+    author_id = session?.user.id || author_id;
+    if (author_id) {
+      const author = await prisma.author.findFirst({
+        where: { id: author_id },
+        include: {
+          setting: true,
+        },
+      });
 
-    const author = await models.Author.findOne({
-      where: { id: session.user.id },
-    });
+      let promises = args.options.map((setting) => {
+        const option = Object.keys(setting)[0] as keyof Omit<
+          SettingType,
+          "__typename"
+        >;
+        let value = Object.values(setting)[0] as ValueOf<SettingType>;
 
-    if (!author) return { id: 0, ...defaultSettings };
-    const _setting = await author.getSetting();
-
-    let promises = args.options.map((setting) => {
-      const option = Object.keys(setting)[0] as keyof Omit<
-        SettingType,
-        "__typename"
-      >;
-      let value = Object.values(setting)[0] as ValueOf<SettingType>;
-
-      if (setting.css) {
-        fs.writeFileSync(cssPath, setting.css);
-      }
-
-      if (setting.google_analytics && session.user.role === Role.Admin) {
-      }
-      if (setting.banner || setting.site_logo || setting.site_favicon) {
-        value = value as InputImage;
-        if (value && value.src?.startsWith(process.env.ROOT_URL)) {
-          value.src = value.src?.replace(process.env.ROOT_URL, "");
+        if (option === "css") {
+          fs.writeFileSync(cssPath, value as string);
         }
-      }
-      const setting_id = _setting?.get().id;
-      logger.info(
-        `Updating settings with id ${setting_id}- ` + option + " : " + value,
-      );
-      return models.Setting.update(
-        { [option]: value },
-        { where: { id: setting_id } },
-      );
-    });
+        const isImageOption =
+          setting.banner || setting.site_logo || setting.site_favicon;
 
-    try {
+        const internalImage = isImageOption?.src.startsWith(
+          process.env.ROOT_URL,
+        );
+        if (isImageOption && internalImage) {
+          isImageOption.src = isImageOption.src?.replace(
+            process.env.ROOT_URL,
+            "",
+          );
+
+          value = JSON.stringify(isImageOption);
+        }
+        logger.info(
+          `Updating settings with id ${author?.setting.id}- ` +
+            option +
+            " : " +
+            value,
+        );
+
+        return prisma.setting.update({
+          data: {
+            [option]: value,
+          },
+          where: { id: author?.setting.id },
+        });
+      });
+
       await Promise.all(promises);
-    } catch (e) {
-      console.log("e :>> ", e);
-    }
 
-    const setting = await models.Setting.findOne({
-      where: { id: session.user.id },
-    });
-    if (!setting) {
-      return defaultSettings;
+      const setting = await prisma.setting.findUnique({
+        where: { id: author?.setting.id },
+      });
+      if (setting) return { ...setting, __typename: "Setting" };
+      throw Error("Couldnt find setting");
     }
-
     return {
-      ...setting.get(),
-    } as unknown as SettingType;
+      message: "You are not authorized",
+      __typename: "SettingError",
+    };
   },
 };
 

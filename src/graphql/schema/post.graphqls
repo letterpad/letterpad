@@ -56,8 +56,8 @@ enum PostTypes {
 }
 
 enum SortBy {
-  ASC
-  DESC
+  asc
+  desc
 }
 
 input PostsFilters {

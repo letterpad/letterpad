@@ -7,12 +7,14 @@ import {
   SortBy,
   PostTypes,
   QueryResolvers,
+  NavigationType,
 } from "@/__generated__/__types__";
 import { decrypt } from "../utils/crypto";
 import logger from "./../../shared/logger";
 import debug from "debug";
 import { mdToHtml } from "@/shared/converter";
 import { ResolverContext } from "../context";
+import { Prisma } from "@prisma/client";
 
 type PostAttributes = any;
 
@@ -51,24 +53,20 @@ const Post = {
       height: cover_image_height,
     };
   },
-  author: async (a: PostAttributes, _args, { models }) => {
-    const post = await models.Post.findOne({ where: { id: a.id } });
+  author: async (attrs: PostAttributes, _args, { prisma }: ResolverContext) => {
+    const post = await prisma.post.findFirst({
+      where: { id: attrs.id },
+      include: { author: true },
+    });
     if (post) {
-      const author = await models.Author.findOne({
-        where: { id: post.get().author_id },
-      });
-
-      return author?.get();
+      return post.author;
     }
-    return {};
   },
-  tags: async ({ id }: PostAttributes, _args, { models }) => {
-    const post = await models.Post.findOne({ where: { id: id } });
-    if (post) {
-      // TODO: check why post.getAuthor didnt work
-      const tags = await post.getTags();
-      return tags.map((tag) => tag.get());
-    }
+  tags: async ({ id }: PostAttributes, _args, { prisma }: ResolverContext) => {
+    const tags = await prisma.tag.findMany({
+      where: { posts: { some: { id } } },
+    });
+    return tags;
   },
   html: async ({ html }) => {
     return setResponsiveImages(html);
@@ -80,152 +78,65 @@ const Query: QueryResolvers<ResolverContext> = {
    * Query to take care of multiple post in one page.
    * Used for Search and Admin posts and pages list.
    */
-  async posts(_parent, args, { session, author_id, models }, _info) {
-    debug("letterpad:post:update")("Reached posts query");
+  async posts(_parent, args, { session, author_id, prisma }, _info) {
     let authorId = session?.user.id || author_id;
     if (!authorId) {
       return { __typename: "PostError", message: "Author Id not found" };
     }
-    const query: IPostCondition = {
-      conditions: {
-        order: [["publishedAt", SortBy.Desc]],
-        include: [],
-        sortBy: "DESC",
-        where: {
-          id: 0,
-          featured: false,
-          status: { [Op.ne]: PostStatusOptions.Trashed },
-          type: PostTypes.Post,
-          author_id: authorId,
-        },
-        limit: 20,
-        offset: 0,
-      },
-    };
+
+    // First verify if posts are requested from client and not admin dashboard.
+    // If posts are requested by client, then verify if this a collection of posts for
+    // displaying in homepage.
+
+    // find the real slug of the tag
     try {
-      // id
-      if (args?.filters?.id) {
-        query.conditions.where.id = args.filters.id;
-      } else {
-        delete query.conditions.where.id;
-      }
-
-      // pagination
-      if (args?.filters?.cursor) {
-        query.conditions.where.id = { [Op.gt]: args.filters.cursor };
-      }
-
-      if (args?.filters?.page) {
-        query.conditions.offset =
-          (args.filters.page - 1) * query.conditions.limit;
-      } else {
-        delete query.conditions.offset;
-      }
-
-      if (args?.filters?.limit) {
-        query.conditions.limit = args.filters.limit;
-      }
-
-      // resolve status type and filter
-      if (args?.filters?.featured) {
-        query.conditions.where.featured = args.filters.featured;
-      } else {
-        delete query.conditions.where.featured;
-      }
-
-      // resolve type
-      if (args?.filters?.type) {
-        query.conditions.where.type = args.filters.type;
-      }
-
-      // resolve status
-      if (args?.filters?.status) {
-        query.conditions.where.status = { [Op.eq]: args.filters.status } as any;
-      }
-
-      if (!session?.user.id) {
-        query.conditions.where.status = {
-          [Op.eq]: PostStatusOptions.Published,
-        } as any;
-      }
-
-      // sort
-      if (args?.filters?.sortBy) {
-        query.conditions.order = [["publishedAt", args.filters.sortBy]];
-      }
-
-      if (session?.user.id && args?.filters?.sortBy) {
-        query.conditions.order = [["updatedAt", args.filters.sortBy]];
-      }
-
-      // resolve menu filter
-      if (args?.filters?.tagSlug) {
-        let { tagSlug } = args.filters;
-        if (tagSlug === "/") {
-          // get the first menu item.
-          const author = await models.Author.findOne({
-            where: { id: authorId },
-          });
-          const setting = await author?.getSetting();
-
-          if (setting) {
-            tagSlug = setting.menu[0].slug;
+      if (args.filters?.tagSlug === "/") {
+        // find the first menu item. If its a tag, then display its collection of posts.
+        const authorWithSetting = await prisma.author.findFirst({
+          where: { id: author_id },
+          include: { setting: true },
+        });
+        if (authorWithSetting?.setting.menu) {
+          const menu = JSON.parse(authorWithSetting?.setting.menu);
+          if (menu[0].type === NavigationType.Tag) {
+            args.filters.tagSlug = menu[0].slug;
           }
         }
+      }
 
-        const taxTag = await models.Tags.findOne({
-          where: {
-            slug: tagSlug.split("/").pop() as string,
-            author_id: authorId,
+      const skip =
+        args.filters?.page && args.filters?.limit
+          ? args.filters?.page * args.filters?.limit
+          : 0;
+
+      const condition: Prisma.PostFindManyArgs = {
+        where: {
+          author_id,
+          id: args.filters?.id,
+          featured: args.filters?.featured,
+          status: args.filters?.status,
+          slug: args.filters?.slug,
+          type: args.filters?.type || PostTypes.Post,
+          tags: {
+            some: {
+              slug: args.filters?.tagSlug,
+            },
           },
-        });
-
-        if (taxTag) {
-          const posts = await taxTag.getPosts(query.conditions);
-          return {
-            __typename: "PostsNode",
-            rows: posts?.map((p) => p.get()),
-            count: await taxTag.countPosts(query.conditions),
-          };
-        }
-        return {
-          __typename: "PostsNode",
-          rows: [],
-          count: 0,
-        };
-      }
-
-      // resolve tag filter
-      if (args?.filters?.tag) {
-        const tag = await models.Tags.findOne({
-          where: { name: args.filters.tag, author_id },
-        });
-        if (tag) {
-          const posts = await tag.getPosts(query.conditions);
-          return {
-            rows: posts.map((p) => p.get()),
-            count: await tag.countPosts(query.conditions),
-          };
-        } else {
-          return {
-            __typename: "PostsNode",
-            rows: [],
-            count: 0,
-          };
-        }
-      }
-
-      const posts = await models.Post.findAll(query.conditions);
-      const count = await models.Post.count(query.conditions);
-      debug("letterpad:post:update")(query.conditions);
+        },
+        take: args.filters?.limit || 10,
+        skip,
+        orderBy: {
+          updatedAt: args?.filters?.sortBy || "desc",
+        },
+      };
+      const posts = await prisma.post.findMany(condition);
 
       return {
         __typename: "PostsNode",
-        rows: posts.map((post) => post.get()),
-        count,
+        rows: posts,
+        count: await prisma.post.count({ where: condition.where }),
       };
     } catch (e) {
-      debug("letterpad:post:update")(e);
       return { __typename: "PostError", message: e.message };
     }
   },

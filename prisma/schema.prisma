@@ -7,29 +7,27 @@ datasource db {
   url      = "file:../data/letterpad.sqlite"
 }
 
-model SequelizeMeta {
-  name String @id
-}
 
 model Author {
-  id                  Int       @id @default(autoincrement())
+  id                  Int          @id @default(autoincrement())
   name                String
   username            String
-  email               String    @unique
+  email               String       @unique
   password            String
-  bio                 String?
+  bio                 String       @default("")
   avatar              String?
-  social              String?   @default(dbgenerated("'{}'"))
-  verified            Boolean?  @default(false)
-  created_at          DateTime? @default(now())
-  updated_at          DateTime? @updatedAt
-  setting_id          Int?      @unique
-  verify_attempt_left Int?
+  social              String?      @default(dbgenerated("'{}'"))
+  verified            Boolean      @default(false)
+  createdAt          DateTime?     @default(now())
+  updatedAt          DateTime?     @updatedAt
+  setting_id          Int          @unique
+  verify_attempt_left Int?         @default(3)
   posts               Post[]
-  tags                Tag[]
   uploads             Upload[]
-  setting             Setting?  @relation(fields: [setting_id], references: [id])
+  setting             Setting      @relation(fields: [setting_id], references: [id])
   role_id             Int
+  role                Role         @relation(fields: [role_id], references: [id])
+  permissions         Permission[]
 }
 
 model EmailDelivery {
@@ -40,17 +38,16 @@ model EmailDelivery {
   subscriber_id         Int?
   delivered             Int?
   last_delivery_attempt DateTime?
-  created_at            DateTime? @default(now())
-  updated_at            DateTime? @updatedAt
+  createdAt            DateTime? @default(now())
+  updatedAt            DateTime? @updatedAt
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model Emails {
-  template_id String?   @id
+  template_id String?   @id @unique
   subject     String?
   body        String?
-  created_at  DateTime? @default(now())
-  updated_at  DateTime? @updatedAt
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
 
   @@ignore
 }
@@ -58,49 +55,40 @@ model Emails {
 model Permission {
   id         Int               @id @default(autoincrement())
   name       String?           @unique
-  created_at DateTime?         @default(now())
-  updated_at DateTime?         @updatedAt
+  createdAt DateTime?         @default(now())
+  updatedAt DateTime?         @updatedAt
   roles      RolePermissions[]
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model PostTags {
-  id         Int       @id @default(autoincrement())
-  post       Post      @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  tag        Tag       @relation(fields: [tag_id], references: [id], onDelete: Cascade)
-  created_at DateTime? @default(now())
-  updated_at DateTime? @updatedAt
-  tag_id     Int
-  post_id    Int
+  Author     Author?           @relation(fields: [authorId], references: [id])
+  authorId   Int?
 }
 
 model Post {
-  id                 Int        @id @default(autoincrement())
-  title              String?    @default("")
+  id                 Int       @id @default(autoincrement())
+  title              String?   @default("")
   html               String?
-  html_draft         String?    @default("")
-  excerpt            String?    @default("")
-  cover_image        String?    @default("")
-  cover_image_width  Int?       @default(0)
-  cover_image_height Int?       @default(0)
-  type               String?    @default("")
-  featured           Int?       @default(0)
-  status             String?    @default("draft")
-  slug               String?    @default("")
-  reading_time       String?    @default("")
-  published_at       DateTime?
-  scheduled_at       DateTime?
-  updated_at         DateTime?  @updatedAt
-  created_at         DateTime?  @default(now())
-  author_id          Int?
-  author             Author?    @relation(fields: [author_id], references: [id])
-  postTags               PostTags[] 
+  html_draft         String?   @default("")
+  excerpt            String?   @default("")
+  cover_image        String?   @default("")
+  cover_image_width  Int?      @default(0)
+  cover_image_height Int?      @default(0)
+  type               String?   @default("")
+  featured           Boolean?  @default(false)
+  status             String?   @default("draft")
+  slug               String?   @default("")
+  reading_time       String?   @default("")
+  publishedAt       DateTime?
+  scheduledAt       DateTime?
+  updatedAt         DateTime? @updatedAt
+  createdAt         DateTime? @default(now())
+  author_id          Int
+  author             Author    @relation(fields: [author_id], references: [id])
+  tags               Tag[]
 }
 
 model RolePermissions {
   id            Int        @id @default(autoincrement())
-  created_at    DateTime?  @default(now())
-  updated_at    DateTime?  @updatedAt
+  createdAt    DateTime?  @default(now())
+  updatedAt    DateTime?  @updatedAt
   role_id       Int
   permission_id Int
   permission    Permission @relation(fields: [permission_id], references: [id], onDelete: Cascade)
@@ -109,10 +97,11 @@ model RolePermissions {
 
 model Role {
   id          Int               @id @default(autoincrement())
-  name        String?
-  created_at  DateTime?         @default(now())
-  updated_at  DateTime?         @updatedAt
+  name        String?           @unique
+  createdAt  DateTime?         @default(now())
+  updatedAt  DateTime?         @updatedAt
   permissions RolePermissions[]
+  Author      Author[]
 }
 
 model Setting {
@@ -141,9 +130,8 @@ model Setting {
   banner              String?   @default(dbgenerated("'{}'"))
   site_logo           String?   @default(dbgenerated("'{}'"))
   site_favicon        String?   @default(dbgenerated("'{}'"))
-  created_at          DateTime? @default(now())
-  updated_at          DateTime? @updatedAt
-  graphqlcommentId    String?
+  createdAt          DateTime? @default(now())
+  updatedAt          DateTime? @updatedAt
   graphcomment_id     String?
   intro_dismissed     Boolean?
   // author              Author    @relation(fields: [author_id], references: [id])
@@ -156,21 +144,18 @@ model Subscriber {
   email               String?
   author_id           Int?
   verified            Boolean?
-  created_at          DateTime? @default(now())
-  updated_at          DateTime? @updatedAt
+  createdAt          DateTime? @default(now())
+  updatedAt          DateTime? @updatedAt
   verify_attempt_left Int?      @default(3)
 }
 
 model Tag {
-  id         Int        @id @default(autoincrement())
-  name       String
-  desc       String?    @default("")
+  name       String    @id @unique
+  desc       String?   @default("")
   slug       String?
-  created_at DateTime?  @default(now())
-  updated_at DateTime?  @updatedAt
-  author_id  Int?
-  author     Author?    @relation(fields: [author_id], references: [id])
-  posts      PostTags[]
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  posts      Post[]
 }
 
 model Upload {
@@ -180,8 +165,8 @@ model Upload {
   width       Int?
   height      Int?
   description String?
-  updated_at  DateTime? @updatedAt
-  created_at  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+  createdAt  DateTime? @default(now())
   author_id   Int
   author      Author    @relation(fields: [author_id], references: [id])
 }
@@ -191,6 +176,6 @@ model SubscribersDelivery {
   subscriber_id String?
   post_id       Int
   delivered     Boolean
-  created_at    DateTime? @default(now())
-  updated_at    DateTime? @updatedAt
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
 }

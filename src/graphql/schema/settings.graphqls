@@ -72,9 +72,9 @@ input SettingInputType {
   css: String
   google_analytics: String
   theme: String
-  banner: String
-  site_logo: String
-  site_favicon: String
+  banner: InputImage
+  site_logo: InputImage
+  site_favicon: InputImage
   intro_dismissed: Boolean
 }
 
@@ -89,5 +89,5 @@ type Query {
 }
 
 type Mutation {
-  updateOptions(options: [SettingInputType!]!): Setting
+  updateOptions(options: [SettingInputType!]!): SettingResponse
 }

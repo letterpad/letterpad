@@ -32,7 +32,18 @@ const uploadsSourceDir = "./uploads";
 function absPath(p) {
   return path.join(__dirname, p);
 }
-
+const tags = [
+  {
+    name: "Home",
+    slug: "home",
+    desc: "tag desc",
+  },
+  {
+    name: "first-post",
+    slug: "first-post",
+    desc: "tag desc",
+  },
+];
 async function main(folderCheck = true) {
   if (folderCheck) {
     console.time("ensure data directories");
@@ -42,6 +53,7 @@ async function main(folderCheck = true) {
     ]);
     console.timeEnd("ensure data directories");
   }
+
   if (folderCheck) {
     // do some clean first. delete the uploads folder
     console.time("sync uploads");
@@ -59,14 +71,15 @@ async function main(folderCheck = true) {
   await insertAuthors();
   console.timeEnd("Insert authors and settings and assign role");
 
-  console.time("insert tags with author");
-  await insertTags();
-  console.timeEnd("insert tags with author");
-
-  console.time("Insert post and page");
-  const [tags] = await Promise.all([prisma.tag.findMany()]);
-  await Promise.all([...posts.map((post) => insertPost(post, tags))]);
-  console.timeEnd("Insert post and page");
+  console.time("Insert post and page and tags");
+  const author = await prisma.author.findFirst({
+    where: { email: "demo@demo.com" },
+  });
+  await insertPost(posts[0], author?.id);
+  await insertPost(posts[1], author?.id);
+  await insertPost(posts[2], author?.id);
+  await insertPost(posts[3], author?.id);
+  console.timeEnd("Insert post and page and tags");
 }
 
 main()
@@ -232,41 +245,12 @@ async function insertAuthors() {
     },
   });
 }
-
-export async function insertTags() {
-  const author = await prisma.author.findFirst({ where: { username: "demo" } });
-  const tags = [
-    {
-      name: "Home",
-      slug: "home",
-      desc: "tag desc",
-    },
-    {
-      name: "first-post",
-      slug: "first-post",
-      desc: "tag desc",
-    },
-  ];
-
-  if (author) {
-    return await prisma.author.update({
-      where: { id: author.id },
-      data: {
-        tags: {
-          create: tags,
-        },
-      },
-    });
-  }
-}
-
-export async function insertPost(postData, tags) {
-  // get author  // 1 or 2
+export async function insertPost(postData, author_id) {
   const { html } = generatePost(postData.type);
 
   const slug = toSlug(postData.title);
 
-  return await prisma.post.create({
+  return prisma.post.create({
     data: {
       title: postData.title,
       html: html,
@@ -275,56 +259,34 @@ export async function insertPost(postData, tags) {
       cover_image: postData.cover_image,
       cover_image_width: 100,
       cover_image_height: 100,
-      // author: {
-      //   connect: { id: 2 },
-      // },
-      author_id: 2,
       type: postData.type,
       status: postData.status,
       slug: slug,
-      published_at: new Date(getDateTime()),
+      publishedAt: new Date(getDateTime()).toISOString(),
       reading_time: "5 mins",
-      postTags: {
-        create: [{ tag_id: tags[0].id }],
+      createdAt: new Date().toISOString(),
+      tags:
+        postData.type === "post"
+          ? {
+              connectOrCreate: [
+                {
+                  create: tags[0],
+                  where: { name: tags[0].name },
+                },
+                {
+                  create: tags[1],
+                  where: { name: tags[1].name },
+                },
+              ],
+            }
+          : undefined,
+      author: {
+        connect: {
+          id: author_id,
+        },
       },
     },
   });
-  // try {
-  //   await prisma.author.update({
-  //     where: { email: "demo@demo.com" },
-  //     data: {
-  //       posts: {
-  //         create: {
-  //           title: "",
-  //           html: html,
-  //           excerpt:
-  //             "You can use this space to write a small description about the topic. This will be helpful in SEO.",
-  //           cover_image: postData.cover_image,
-  //           cover_image_width: 100,
-  //           cover_image_height: 100,
-  //           // author_id: author?.id,
-  //           type: postData.type,
-  //           status: postData.status,
-  //           slug: slug,
-  //           published_at: new Date(getDateTime()),
-  //           reading_time: "5 mins",
-  //           // tags: {
-  //           //   connectOrCreate: tags.map(
-  //           //     ({ author_id, created_at, ...rest }) => ({
-  //           //       where: { id: rest.id },
-  //           //       create: {
-  //           //         tag: rest,
-  //           //       },
-  //           //     }),
-  //           //   ),
-  //           // },
-  //         },
-  //       },
-  //     },
-  //   });
-  // } catch (e) {
-  //   console.log(e);
-  // }
 }
 
 export {};
