@@ -1,4 +1,3 @@
-import { models } from "@/graphql/db/models";
 import { NextApiResponse } from "next";
 import { NextApiRequestWithFormData } from "../../graphql/types";
 import { basePath } from "@/constants";

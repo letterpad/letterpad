@@ -3,7 +3,6 @@ import cheerio from "cheerio";
 import sizeOf from "image-size";
 
 import logger from "./../../shared/logger";
-import { ModelsType } from "../db/models/models";
 import { Prisma } from "@prisma/client";
 
 export function toSlug(str: string): string {

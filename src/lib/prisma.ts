@@ -17,25 +17,49 @@ export const prisma = new PrismaClient({
 // });
 export type PrismaType = typeof prisma;
 
-// async function main() {
-//   const a = await prisma.author.create({ data: { email: "foo" } });
+async function main() {
+  const oldName = "first-post";
+  const newName = "second-post";
 
-//   await prisma.post.create({
-//     data: {
-//       title: "Types of relations",
-//       tags: {
-//         create: [
-//           { name: "dev", author: { connect: { id: a.id } } },
-//           { name: "prisma", author: { connect: { id: a.id } } },
-//         ],
-//       },
-//       author: {
-//         connect: {
-//           id: a.id,
-//         },
-//       },
-//     },
-//   });
-// }
+  const linkedPosts = await prisma.post.findMany({
+    select: {
+      id: true,
+    },
+    where: {
+      tags: {
+        some: {
+          name: oldName,
+        },
+      },
+    },
+  });
+
+  for (let i = 0; i < linkedPosts.length; i++) {
+    const { id } = linkedPosts[i];
+    await prisma.post.update({
+      data: {
+        tags: {
+          disconnect: {
+            name: oldName,
+          },
+          connectOrCreate: {
+            create: {
+              name: newName,
+              slug: newName,
+            },
+            where: {
+              name: newName,
+            },
+          },
+        },
+      },
+      where: {
+        id,
+      },
+    });
+  }
+
+  return true;
+}
 
 // main();

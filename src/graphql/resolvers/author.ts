@@ -4,7 +4,6 @@ import {
   PostStatusOptions,
   PostTypes,
   QueryResolvers,
-  Author as AuthorType,
   InputCreateAuthor,
   SettingInputType,
   Social,
@@ -13,14 +12,13 @@ import bcrypt from "bcryptjs";
 import { validateCaptcha } from "./helpers";
 import generatePost from "@/graphql/db/seed/contentGenerator";
 import siteConfig from "../../../config/site.config";
-import { createAdmin, seed } from "@/graphql/db/seed/seed";
 import { decodeToken, getToken, verifyToken } from "@/shared/token";
 import { EmailTemplates, ROLES } from "../types";
 import logger from "@/shared/logger";
-import { getDateTime } from "@/shared/utils";
 import { defaultSettings } from "../db/seed/constants";
 import { ResolverContext } from "../context";
 import { PrismaClient } from "@prisma/client";
+import { seed } from "../db/seed/seed";
 const prisma = new PrismaClient();
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
@@ -387,7 +385,6 @@ export async function createAuthorWithSettings(
   const { token, ...authorData } = data;
   const role = await prisma.role.findFirst({ where: { name: rolename } });
   if (role) {
-    console.log("creating");
     const newAuthor = await prisma.author.create({
       data: {
         ...authorData,
@@ -432,4 +429,22 @@ export async function createAuthorWithSettings(
     });
     return updatedNewAuthor;
   }
+}
+
+async function createAdmin() {
+  const adminAuthor = await createAuthorWithSettings(
+    {
+      name: "Admin",
+      email: "admin@admin.com",
+      username: "admin",
+      password: "admin",
+      token: "",
+    },
+    { site_title: "Admin Account" },
+    ROLES.ADMIN,
+  );
+  await prisma.author.update({
+    where: { id: adminAuthor?.id },
+    data: { verified: true },
+  });
 }

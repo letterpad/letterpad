@@ -1,6 +1,4 @@
 import { getSession } from "next-auth/react";
-import { Author } from "./../../graphql/db/models/definations_old/author";
-import { models } from "@/graphql/db/models";
 import multer from "multer";
 import initMiddleware from "./middleware";
 import { ROLES, SessionData } from "@/graphql/types";
@@ -12,7 +10,6 @@ import {
 } from "./importExportTypes";
 
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
-import { Post } from "@/graphql/db/models/definations_old/post";
 import { getToken } from "@/shared/token";
 
 const upload = multer();

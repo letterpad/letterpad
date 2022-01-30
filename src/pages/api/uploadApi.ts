@@ -16,7 +16,6 @@ import path from "path";
 import multer from "multer";
 import { uploadToCloudinary } from "./providers/cloudinary";
 import { uploadToInternal } from "./providers/internal";
-import { models } from "@/graphql/db/models";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
 import { basePath } from "@/constants";

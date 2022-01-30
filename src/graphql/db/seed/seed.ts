@@ -1,18 +1,25 @@
-import connection, { models, ModelsType } from "../models/models";
+const env = require("node-env-file");
+if (process.env.NODE_ENV === "production") {
+  env(__dirname + "../../../../../.env.production.local");
+} else {
+  env(__dirname + "../../../../../.env");
+}
+console.log(process.env.DATABASE_URL);
 
-import generatePost from "./contentGenerator";
-import path from "path";
-import posts from "./posts";
+import { PrismaClient } from "@prisma/client";
 import { promisify } from "util";
 import copydir from "copy-dir";
 import mkdirp from "mkdirp";
 import rimraf from "rimraf";
-import { EmailTemplates, ROLES } from "../../../graphql/types";
-import { toSlug } from "@/graphql/resolvers/helpers";
-import fs from "fs";
-import { defaultSettings, subjects } from "./constants";
+import path from "path";
 import { createAuthorWithSettings } from "@/graphql/resolvers/author";
-import { getToken } from "@/shared/token";
+import { ROLES } from "@/graphql/types";
+import posts from "./posts";
+import generatePost from "./contentGenerator";
+import { toSlug } from "@/graphql/resolvers/helpers";
+import { getDateTime } from "@/shared/utils";
+
+const prisma = new PrismaClient();
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -26,9 +33,19 @@ const uploadsSourceDir = "./uploads";
 function absPath(p) {
   return path.join(__dirname, p);
 }
-// type ModelsType = any;
-
-export const seed = async (folderCheck = true) => {
+const tags = [
+  {
+    name: "Home",
+    slug: "home",
+    desc: "tag desc",
+  },
+  {
+    name: "first-post",
+    slug: "first-post",
+    desc: "tag desc",
+  },
+];
+export async function seed(folderCheck = true) {
   if (folderCheck) {
     console.time("ensure data directories");
     await Promise.all([
@@ -37,9 +54,6 @@ export const seed = async (folderCheck = true) => {
     ]);
     console.timeEnd("ensure data directories");
   }
-  console.time("sync sequelize models");
-  await connection.sync({ force: true });
-  console.timeEnd("sync sequelize models");
   if (folderCheck) {
     // do some clean first. delete the uploads folder
     console.time("sync uploads");
@@ -50,30 +64,33 @@ export const seed = async (folderCheck = true) => {
   }
 
   console.time("insert roles and permissions");
-  await insertRolePermData(models);
+  await insertRolePermData();
   console.timeEnd("insert roles and permissions");
 
-  console.time("insert authors");
-  await insertAuthor();
-  console.timeEnd("insert authors");
+  console.time("Insert authors and settings and assign role");
+  await insertAuthors();
+  console.timeEnd("Insert authors and settings and assign role");
 
-  console.time("insert Tags");
-  await insertTags();
-  console.timeEnd("insert Tags");
+  console.time("Insert post and page and tags");
+  const author = await prisma.author.findFirst({
+    where: { email: "demo@demo.com" },
+  });
+  await insertPost(posts[0], author?.id);
+  await insertPost(posts[1], author?.id);
+  await insertPost(posts[2], author?.id);
+  await insertPost(posts[3], author?.id);
+  console.timeEnd("Insert post and page and tags");
+}
 
-  console.time("insert posts, media");
-  const [tags] = await Promise.all([models.Tags.findAll()]);
+seed()
+  .catch((e) => {
+    throw e;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
 
-  await Promise.all([...posts.map((post) => insertPost(post, models, tags))]);
-  // await insertMedia();
-  console.timeEnd("insert posts, media");
-
-  console.time("insert emails");
-  await insertEmails();
-  console.timeEnd("insert emails");
-};
-
-export async function insertRolePermData(models: ModelsType) {
+export async function insertRolePermData() {
   const [
     MANAGE_OWN_POSTS,
     READ_ONLY_POSTS,
@@ -81,53 +98,110 @@ export async function insertRolePermData(models: ModelsType) {
     MANAGE_USERS,
     MANAGE_SETTINGS,
   ] = await Promise.all([
-    models.Permission.create({
-      name: "MANAGE_OWN_POSTS",
+    prisma.permission.create({
+      data: {
+        name: "MANAGE_OWN_POSTS",
+      },
     }),
-    models.Permission.create({
-      name: "READ_ONLY_POSTS",
+    prisma.permission.create({
+      data: { name: "READ_ONLY_POSTS" },
     }),
-    models.Permission.create({
-      name: "MANAGE_ALL_POSTS",
+    prisma.permission.create({
+      data: { name: "MANAGE_ALL_POSTS" },
     }),
-    models.Permission.create({
-      name: "MANAGE_USERS",
+    prisma.permission.create({
+      data: { name: "MANAGE_USERS" },
     }),
-    models.Permission.create({
-      name: "MANAGE_SETTINGS",
+    prisma.permission.create({
+      data: { name: "MANAGE_SETTINGS" },
+    }),
+  ]);
+
+  const [ADMIN, AUTHOR, REVIEWER, READER] = await Promise.all([
+    await prisma.role.create({
+      data: {
+        name: "ADMIN",
+      },
+    }),
+    await prisma.role.create({
+      data: {
+        name: "AUTHOR",
+      },
+    }),
+    await prisma.role.create({
+      data: {
+        name: "REVIEWER",
+      },
+    }),
+    await prisma.role.create({
+      data: {
+        name: "READER",
+      },
     }),
   ]);
 
   async function admin() {
-    const role = await models.Role.create({ name: "ADMIN" });
     return Promise.all([
-      role.addPermission(READ_ONLY_POSTS),
-      role.addPermission(MANAGE_ALL_POSTS),
-      role.addPermission(MANAGE_USERS),
-      role.addPermission(MANAGE_SETTINGS),
-      role.addPermission(MANAGE_OWN_POSTS),
+      ...[
+        MANAGE_OWN_POSTS,
+        READ_ONLY_POSTS,
+        MANAGE_ALL_POSTS,
+        MANAGE_USERS,
+        MANAGE_SETTINGS,
+      ].map((permission) =>
+        prisma.rolePermissions.create({
+          data: {
+            permission_id: permission.id,
+            role_id: ADMIN.id,
+          },
+        }),
+      ),
     ]);
   }
 
   async function reviewer() {
-    const role = await models.Role.create({ name: "REVIEWER" });
-    return role.addPermission(MANAGE_ALL_POSTS);
+    return Promise.all([
+      ...[MANAGE_ALL_POSTS].map((permission) =>
+        prisma.rolePermissions.create({
+          data: {
+            permission_id: permission.id,
+            role_id: REVIEWER.id,
+          },
+        }),
+      ),
+    ]);
   }
 
   async function reader() {
-    const role = await models.Role.create({ name: "READER" });
-    return role.addPermission(READ_ONLY_POSTS);
+    return Promise.all([
+      ...[READ_ONLY_POSTS].map((permission) =>
+        prisma.rolePermissions.create({
+          data: {
+            permission_id: permission.id,
+            role_id: READER.id,
+          },
+        }),
+      ),
+    ]);
   }
 
   async function author() {
-    const role = await models.Role.create({ name: "AUTHOR" });
-    return role.addPermission(MANAGE_OWN_POSTS);
+    return Promise.all([
+      ...[MANAGE_OWN_POSTS].map((permission) =>
+        prisma.rolePermissions.create({
+          data: {
+            permission_id: permission.id,
+            role_id: AUTHOR.id,
+          },
+        }),
+      ),
+    ]);
   }
 
   return Promise.all([admin(), reviewer(), reader(), author()]);
 }
 
-export async function insertAuthor() {
+async function insertAuthors() {
   const adminAuthor = await createAuthorWithSettings(
     {
       name: "Admin",
@@ -139,7 +213,10 @@ export async function insertAuthor() {
     { site_title: "Admin Account" },
     ROLES.ADMIN,
   );
-  await adminAuthor.update({ verified: true });
+  await prisma.author.update({
+    where: { id: adminAuthor?.id },
+    data: { verified: true },
+  });
 
   const demoAuthor = await createAuthorWithSettings(
     {
@@ -151,189 +228,65 @@ export async function insertAuthor() {
     },
     { site_title: "Demo Account", site_tagline: "Hello, I am letterpad" },
   );
-  await demoAuthor.update({
-    verified: true,
-    social: {
-      twitter: "https://twitter.com",
-      facebook: "https://facebook.com",
-      github: "https://github.com",
-      instagram: "https://instagram.com",
-    },
-    bio: "You can some information about yourself for the world to know you a little better.",
-    avatar:
-      "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
-  });
-  return Promise.all([adminAuthor, demoAuthor]);
-}
 
-export async function insertTags() {
-  const author = await models.Author.findOne({ where: { username: "demo" } });
-  const tags = [
-    {
-      name: "Home",
-      slug: "home",
-      desc: "tag desc",
-    },
-    {
-      name: "first-post",
-      slug: "first-post",
-      desc: "tag desc",
-    },
-  ];
-
-  if (author) {
-    return Promise.all([...tags.map((tag) => author.createTag(tag))]);
-  }
-}
-
-export async function insertPost(params, models: ModelsType, tags) {
-  // get author  // 1 or 2
-  const { html } = generatePost(params.type);
-  let promises: any[] = [];
-  let author = await models.Author.findOne({
-    where: { email: "demo@demo.com" },
-  });
-
-  const slug = toSlug(params.title);
-  let post = await models.Post.create({
-    title: params.title,
-    html: html,
-    excerpt:
-      "You can use this space to write a small description about the topic. This will be helpful in SEO.",
-    cover_image: params.cover_image,
-    cover_image_width: 100,
-    cover_image_height: 100,
-    authorId: author?.id,
-    type: params.type,
-    status: params.status,
-    slug: slug,
-    createdAt: getDateTime(),
-    publishedAt: getDateTime(),
-    reading_time: "5 mins",
-  });
-  if (author && post) {
-    promises = [author.addPost(post)];
-    if (params.type === "post") {
-      promises = [...promises, ...tags.map((tag) => post.addTag(tag))];
-    }
-
-    return Promise.all(promises);
-  }
-}
-
-// export async function insertMedia() {
-//   const author = await models.Author.findOne({ where: { id: 2 } });
-//   if (author) {
-//     try {
-//       await author?.$create("upload", {
-//         url: "https://images.unsplash.com/photo-1473181488821-2d23949a045a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
-//         name: "Blueberries",
-//         width: 1350,
-//         height: 900,
-//         description:
-//           "Write a description about this image. You never know how this image can break the internet",
-//       });
-
-//       await author?.$create("upload", {
-//         url: "https://images.unsplash.com/photo-1524654458049-e36be0721fa2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-//         width: 1350,
-//         height: 900,
-//         name: "I love the beach and its smell",
-//         description:
-//           "Write a description about this image. You never know how this image can break the internet",
-//       });
-//     } catch (e) {
-//       console.log(e);
-//     }
-//   }
-// }
-
-export const getDateTime = (d?: Date) => {
-  const m = d ? new Date(d) : new Date();
-
-  return (
-    m.getUTCFullYear() +
-    "-" +
-    ("0" + (m.getUTCMonth() + 1)).slice(-2) +
-    "-" +
-    ("0" + m.getUTCDate()).slice(-2) +
-    " " +
-    ("0" + m.getUTCHours()).slice(-2) +
-    ":" +
-    ("0" + m.getUTCMinutes()).slice(-2) +
-    ":" +
-    ("0" + m.getUTCSeconds()).slice(-2)
-  );
-};
-
-async function insertEmails() {
-  const verifyNewUserEmail = fs.readFileSync(
-    path.join(__dirname, "email-templates/verifyNewUser.twig"),
-  );
-  await models.Email.create({
-    template_id: EmailTemplates.VERIFY_NEW_USER,
-    subject: subjects.VERIFY_NEW_USER,
-    body: verifyNewUserEmail.toString(),
-  });
-
-  const verifyNewSubscriberEmail = fs.readFileSync(
-    path.join(__dirname, "email-templates/verifyNewSubscriber.twig"),
-  );
-  await models.Email.create({
-    template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
-    subject: subjects.VERIFY_NEW_SUBSCRIBER,
-    body: verifyNewSubscriberEmail.toString(),
-  });
-
-  const forgotPasswordEmail = fs.readFileSync(
-    path.join(__dirname, "email-templates/forgotPassword.twig"),
-  );
-  await models.Email.create({
-    template_id: EmailTemplates.FORGOT_PASSWORD,
-    subject: subjects.FORGOT_PASSWORD,
-    body: forgotPasswordEmail.toString(),
-  });
-
-  const newPostEmail = fs.readFileSync(
-    path.join(__dirname, "email-templates/newPost.twig"),
-  );
-  await models.Email.create({
-    template_id: EmailTemplates.NEW_POST,
-    subject: subjects.NEW_POST,
-    body: newPostEmail.toString(),
-  });
-}
-
-export async function createAdmin() {
-  const author = await models.Author.create({
-    email: "admin@xxx.com",
-    username: "admin",
-    verified: true,
-    password: "admin",
-    name: "Admin",
-    bio: "",
-    avatar: "",
-    social: {
-      twitter: "",
-      facebook: "",
-      github: "",
-      instagram: "",
+  return await prisma.author.update({
+    where: { id: demoAuthor?.id },
+    data: {
+      verified: true,
+      social: JSON.stringify({
+        twitter: "https://twitter.com",
+        facebook: "https://facebook.com",
+        github: "https://github.com",
+        instagram: "https://instagram.com",
+      }),
+      bio: "You can some information about yourself for the world to know you a little better.",
+      avatar:
+        "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
     },
   });
-  if (author) {
-    const role = await models.Role.findOne({
-      where: { name: ROLES.ADMIN },
-    });
-    if (role) {
-      await author.setRole(role.id);
-    }
-    const setting = await models.Setting.create({
-      ...defaultSettings,
-      menu: defaultSettings.menu as any,
-      site_url: `https://${author.username}.letterpad.app`,
-      site_title: "Admin Account",
-      client_token: getToken({ data: { id: author.id }, algorithm: "H256" }),
-    });
-    await author.setSetting(setting);
-  }
 }
+export async function insertPost(postData, author_id) {
+  const { html } = generatePost(postData.type);
+
+  const slug = toSlug(postData.title);
+
+  return prisma.post.create({
+    data: {
+      title: postData.title,
+      html: html,
+      excerpt:
+        "You can use this space to write a small description about the topic. This will be helpful in SEO.",
+      cover_image: postData.cover_image,
+      cover_image_width: 100,
+      cover_image_height: 100,
+      type: postData.type,
+      status: postData.status,
+      slug: slug,
+      publishedAt: new Date(getDateTime()).toISOString(),
+      reading_time: "5 mins",
+      createdAt: new Date().toISOString(),
+      tags:
+        postData.type === "post"
+          ? {
+              connectOrCreate: [
+                {
+                  create: tags[0],
+                  where: { name: tags[0].name },
+                },
+                {
+                  create: tags[1],
+                  where: { name: tags[1].name },
+                },
+              ],
+            }
+          : undefined,
+      author: {
+        connect: {
+          id: author_id,
+        },
+      },
+    },
+  });
+}
+
+export {};

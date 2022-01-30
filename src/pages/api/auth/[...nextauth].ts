@@ -2,8 +2,8 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextApiRequest, NextApiResponse } from "next";
 import { basePath } from "@/constants";
-import { models } from "@/graphql/db/models";
 import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
 
 const providers = (_req: NextApiRequest) => [
   CredentialsProvider({
@@ -14,12 +14,15 @@ const providers = (_req: NextApiRequest) => [
     },
     authorize: async (credentials): Promise<any> => {
       try {
-        const author = await models.Author.findOne({
+        const author = await prisma.author.findFirst({
           where: { email: credentials?.email },
+          include: {
+            role: true,
+            permissions: true,
+          },
         });
-        const rawAuthor = author?.get();
-        if (rawAuthor) {
-          if (!author?.verified) {
+        if (author) {
+          if (!author.verified) {
             throw new Error("Your email id is not verified yet.");
           }
           const authenticated = await bcrypt.compare(
@@ -27,16 +30,14 @@ const providers = (_req: NextApiRequest) => [
             author.password,
           );
           if (authenticated) {
-            const role = await author.getRole();
-            // const permissions = await role.getPermissions();
             const user = {
-              id: rawAuthor.id,
-              avatar: rawAuthor.avatar,
-              username: rawAuthor.username,
-              name: rawAuthor.name,
-              email: rawAuthor.email,
-              role: role.get(),
-              // permissions: permissions.get(),
+              id: author.id,
+              avatar: author.avatar,
+              username: author.username,
+              name: author.name,
+              email: author.email,
+              role: author.role.name,
+              permissions: author.permissions.map(({ name }) => name),
             };
             return user;
           }
@@ -68,9 +69,11 @@ const options = (req: NextApiRequest) => ({
     },
     session: async ({ session, token }) => {
       try {
-        const author = await models.Author.findByPk(token.sub);
+        const author = await prisma.author.findFirst({
+          where: { id: token.sub },
+        });
         if (author) {
-          const { id, email, username, avatar, name } = author?.get();
+          const { id, email, username, avatar, name } = author;
           session.user = { id, email, username, name, avatar };
         }
       } catch (e) {

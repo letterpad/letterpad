@@ -1,5 +1,6 @@
 const env = require("node-env-file");
-env(__dirname + "/../.env.development.local");
+env(__dirname + "/../.env");
+env(__dirname + "/../.env.test");
 
 import { ApolloServer } from "apollo-server";
 
@@ -25,7 +26,6 @@ export const createApolloTestServer = async () => {
     introspection: true,
     playground: true,
     context: async (context) => {
-      console.log("reached apollo server context..preparing");
       const resolverContext = await getResolverContext(context);
       return {
         ...context,
