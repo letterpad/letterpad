@@ -1,10 +1,13 @@
-import { GroupOption, Includeable, Order } from "sequelize";
-
-import { QueryResolvers, MutationResolvers } from "@/__generated__/__types__";
+import {
+  QueryResolvers,
+  MutationResolvers,
+  PostStatusOptions,
+  Tags as TagsType,
+} from "@/__generated__/__types__";
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
-  async tag(_root, args, { session, author_id, models }) {
+  async tag(_root, args, { session, author_id, prisma }) {
     const authorId = session?.user.id || author_id;
 
     if (!authorId) {
@@ -14,12 +17,14 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
 
-    const tag = await models.Tags.findOne({ where: { slug: args.slug } });
+    const tag = await prisma.tag.findFirst({
+      where: { slug: args.slug },
+    });
 
     if (tag) {
       return {
         __typename: "Tags",
-        ...tag.get(),
+        ...(tag as TagsType),
       };
     }
     return {
@@ -27,7 +32,7 @@ const Query: QueryResolvers<ResolverContext> = {
       message: "Tag not found",
     };
   },
-  async tags(_root, args, { session, author_id, models }) {
+  async tags(_root, args, { session, author_id, prisma }) {
     const authorId = session?.user.id || author_id;
 
     if (!authorId) {
@@ -36,50 +41,28 @@ const Query: QueryResolvers<ResolverContext> = {
         message: "Missing or invalid token or session",
       };
     }
-    let conditions: {
-      where: {
-        name?: string;
-      };
-      group?: GroupOption;
-      include?: Includeable | Includeable[];
-      order: Order;
-    } = {
-      where: {},
-      order: [["name", "ASC"]],
-    };
-    if (args.filters) {
-      let { active, name } = args.filters;
-      if (typeof active === "undefined") {
-        active = true;
-      }
-
-      if (name) {
-        conditions.where.name = name;
-      }
-      if (active === true) {
-        // return only active taxonomies
-        conditions.include = [
-          {
-            model: models.Post,
-            where: { status: "published" },
-            required: true,
+    try {
+      const tags = await prisma.tag.findMany({
+        where: {
+          name: args.filters?.name,
+          posts: {
+            some: {
+              status: args.filters?.active
+                ? PostStatusOptions.Published
+                : undefined,
+            },
           },
-        ];
-        conditions.group = ["tag_id", "post_id"];
-      }
-    }
+        },
+        orderBy: {
+          name: "asc",
+        },
+      });
 
-    const author = await models.Author.findOne({
-      where: { id: authorId },
-    });
-    if (author) {
-      const tags = await author.getTags(conditions);
       return {
         __typename: "TagsNode",
-        rows: tags.map((tag) => tag.get()),
+        rows: tags as TagsType[],
       };
-    }
-
+    } catch (e) {}
     return {
       __typename: "TagsError",
       message: "Missing or invalid token or session",
@@ -106,7 +89,7 @@ const Tags = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  async updateTags(_root, args, { session, models }) {
+  async updateTags(_root, args, { session, prisma }) {
     if (!session?.user) {
       return {
         __typename: "TagsError",
@@ -114,7 +97,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
 
-    const author = await models.Author.findOne({
+    const author = await prisma.author.findFirst({
       where: { id: session.user.id },
     });
 
@@ -125,51 +108,99 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
 
-    let tag: unknown;
-    args.data.slug = args.data.slug?.split("/").pop();
+    const oldName = args.data.oldName;
+    const newName = args.data.name.toLowerCase();
+    const newSlug = newName.replace(/ /g, "-").toLowerCase();
 
-    if (args.data.id === 0) {
-      const { id, ...rest } = args.data;
-      //@ts-ignore
-      tag = await author.createTag(rest);
-    } else {
-      tag = await models.Tags.update(args.data, {
-        where: { id: args.data.id },
+    const linkedPosts = await prisma.post.findMany({
+      select: {
+        id: true,
+      },
+      where: {
+        author: {
+          id: author.id,
+        },
+        tags: {
+          some: {
+            name: oldName,
+          },
+        },
+      },
+    });
+
+    for (let i = 0; i < linkedPosts.length; i++) {
+      const { id } = linkedPosts[i];
+      await prisma.post.update({
+        data: {
+          tags: {
+            disconnect: {
+              name: oldName,
+            },
+            connectOrCreate: {
+              create: {
+                name: newName,
+                slug: newSlug,
+              },
+              where: {
+                name: newName,
+              },
+            },
+          },
+        },
+        where: {
+          id,
+        },
       });
     }
 
-    if (!tag) {
-      return {
-        __typename: "TagsError",
-        message: "Failed to update tags",
-      };
-    }
     return {
       __typename: "EditTaxResponse",
       ok: true,
     };
   },
 
-  async deleteTags(_root, args, { models }) {
-    if (!args.id) {
+  async deleteTags(_root, args, { prisma, session }) {
+    if (!args.name) {
       return {
         __typename: "TagsError",
         message: "Incorrect arguments",
       };
     }
-    const deleteRowCount = await models.Tags.destroy({
-      where: { id: args.id },
+    const linkedPosts = await prisma.post.findMany({
+      select: {
+        id: true,
+      },
+      where: {
+        author: {
+          id: session?.user.id,
+        },
+        tags: {
+          some: {
+            name: args.name,
+          },
+        },
+      },
     });
 
-    if (deleteRowCount === 1) {
-      return {
-        __typename: "DeleteTagsResult",
-        ok: true,
-      };
+    for (let i = 0; i < linkedPosts.length; i++) {
+      const { id } = linkedPosts[i];
+      await prisma.post.update({
+        data: {
+          tags: {
+            disconnect: {
+              name: args.name,
+            },
+          },
+        },
+        where: {
+          id,
+        },
+      });
     }
+
     return {
-      __typename: "TagsError",
-      message: "Unable to delete tag.",
+      __typename: "DeleteTagsResult",
+      ok: true,
     };
   },
 };

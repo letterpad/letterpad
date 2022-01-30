@@ -2,14 +2,11 @@ import {
   QueryResolvers,
   MutationResolvers,
   Setting as SettingType,
-  InputImage,
   Navigation,
-  Role,
 } from "@/__generated__/__types__";
 import fs from "fs";
 import path from "path";
 import logger from "@/shared/logger";
-import { defaultSettings } from "../db/seed/constants";
 import { ResolverContext } from "../context";
 
 type ValueOf<T> = T[keyof T];
