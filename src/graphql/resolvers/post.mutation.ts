@@ -1,5 +1,4 @@
 import {
-  Image,
   MutationResolvers,
   PostStatusOptions,
   PostTypes,
@@ -16,6 +15,7 @@ import { getDateTime } from "@/shared/utils";
 import { EmailTemplates } from "@/graphql/types";
 import { ResolverContext } from "../context";
 import { Prisma } from "@prisma/client";
+import { mapPostToGraphql } from "./mapper";
 
 export const slugOfUntitledPost = "untitled";
 
@@ -44,27 +44,28 @@ const Mutation: MutationResolvers<ResolverContext> = {
       const titleWithoutSpaces = toSlug(args.data.title || slugOfUntitledPost);
       slug = await slugify(prisma.post, titleWithoutSpaces);
     }
-    const newPost = await prisma.post.create({
-      data: {
-        cover_image: args.data.cover_image?.src,
-        cover_image_width: args.data.cover_image?.width,
-        cover_image_height: args.data.cover_image?.height,
-        html: args.data.html,
-        author: {
-          connect: { id: author.id },
+    try {
+      const newPost = await prisma.post.create({
+        data: {
+          cover_image: args.data.cover_image?.src,
+          cover_image_width: args.data.cover_image?.width,
+          cover_image_height: args.data.cover_image?.height,
+          html: args.data.html,
+          author: {
+            connect: { id: author.id },
+          },
+          slug,
+          type: args.data.type || PostTypes.Post,
         },
-        slug,
-        type: args.data.type || PostTypes.Post,
-      },
-    });
+      });
 
-    if (newPost) {
-      return {
-        __typename: "Post",
-        ...newPost,
-        title: args.data.title || "Untitled",
-      };
-    }
+      if (newPost) {
+        return {
+          ...mapPostToGraphql(newPost),
+          title: args.data.title || "Untitled",
+        };
+      }
+    } catch (e) {}
     return {
       __typename: "PostError",
       message: "Unable to create post",
@@ -134,7 +135,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
         };
       }
       const updatedPost = await prisma.post.update(newPostArgs);
-
       // update content
 
       if (updatedPost) {
@@ -163,11 +163,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
         };
       }
       return {
-        __typename: "Post",
-        ...updatedPost,
+        ...mapPostToGraphql(updatedPost),
       };
     } catch (e) {
-      console.log(e);
       return {
         __typename: "PostError",
         message: e.message,
@@ -200,7 +198,7 @@ function savingDraft(prevStatus: string, statusArg?: string) {
 async function updateMenuOnTitleChange(
   Author: Prisma.AuthorDelegate<false>,
   authorId: number,
-  postType?: PostTypes,
+  postType?: string,
   title?: string,
   slug?: string,
 ) {

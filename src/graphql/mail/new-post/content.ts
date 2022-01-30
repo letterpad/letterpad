@@ -34,7 +34,7 @@ export async function getNewPostContent(
     },
   });
 
-  if (!post) {
+  if (!post || !post.author) {
     return {
       ok: false,
       message: `No info found for the current blog.`,
@@ -79,7 +79,7 @@ export async function getNewPostContent(
       to: post.author.subscribers.map((s) => s.email),
     },
     meta: {
-      author,
+      author: post.author,
     },
   };
 }

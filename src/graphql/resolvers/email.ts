@@ -2,13 +2,13 @@ import { QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
-  email: async (_root, args, { session, models }) => {
+  email: async (_root, args, { session, prisma }) => {
     if (!session?.user.id) {
       return {
         message: "You need to be authenticated to see this",
       };
     }
-    const template = await models.Email.findOne({
+    const template = await prisma.email.findFirst({
       where: { template_id: args.template_id },
     });
     if (template) return template;
@@ -16,11 +16,11 @@ const Query: QueryResolvers<ResolverContext> = {
       message: "Template not found",
     };
   },
-  emails: async (_root, _args, { session, models }) => {
+  emails: async (_root, _args, { session, prisma }) => {
     if (!session?.user.id) {
       return [];
     }
-    return models.Email.findAll();
+    return prisma.email.findMany();
   },
 };
 export default { Query };

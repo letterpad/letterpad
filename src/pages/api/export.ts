@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { IAuthorData, IImportExportData } from "./importExportTypes";
 import { SessionData } from "./../../graphql/types";
 import fs from "fs";

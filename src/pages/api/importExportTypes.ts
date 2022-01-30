@@ -15,7 +15,7 @@ interface IPostSanitized extends Omit<Post, "id" | "author_id" | "tags"> {
 export interface IAuthorData {
   posts: IPostSanitized[];
   setting: Omit<Setting, "id">;
-  tags: Omit<Tag, "id" | "author_id">[];
+  tags: Tag[];
   media: Omit<Upload, "id">[];
   author: Omit<Author, "id" | "role_id" | "setting_id">;
 }

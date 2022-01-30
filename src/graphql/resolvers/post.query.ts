@@ -11,6 +11,7 @@ import logger from "./../../shared/logger";
 import { mdToHtml } from "@/shared/converter";
 import { ResolverContext } from "../context";
 import { Prisma } from "@prisma/client";
+import { mapPostToGraphql } from "./mapper";
 
 type PostAttributes = any;
 
@@ -115,7 +116,7 @@ const Query: QueryResolvers<ResolverContext> = {
       const posts = await prisma.post.findMany(condition);
       return {
         __typename: "PostsNode",
-        rows: posts,
+        rows: posts.map(mapPostToGraphql),
         count: await prisma.post.count({ where: condition.where }),
       };
     } catch (e) {
@@ -157,7 +158,7 @@ const Query: QueryResolvers<ResolverContext> = {
         ? mdToHtml(post.html_draft || post.html || "")
         : post.html;
 
-      return { ...post, html, __typename: "Post" };
+      return { ...mapPostToGraphql(post), html, __typename: "Post" };
     }
     return { __typename: "PostError", message: "Post not found" };
   },

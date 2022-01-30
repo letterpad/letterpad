@@ -1,15 +1,16 @@
 import { EmailForgotPasswordProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
+import { PrismaClient } from "@prisma/client";
 import { sendMail } from "../sendMail";
 
 import { getForgotPasswordContent } from "./content";
 
 export async function sendForgotPasswordEmail(
   data: EmailForgotPasswordProps,
-  models,
+  prisma: PrismaClient,
 ) {
   try {
-    const template = await getForgotPasswordContent(data, models);
+    const template = await getForgotPasswordContent(data, prisma);
     if (template.ok) {
       await sendMail(template.content, template.meta);
     }

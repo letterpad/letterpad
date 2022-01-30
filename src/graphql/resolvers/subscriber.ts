@@ -11,15 +11,15 @@ const Query: QueryResolvers<ResolverContext> = {
         rows: [],
       };
     }
-    const subscribers = await prisma.subscriber.findMany({
-      where: { author_id: session.user.id },
-    });
-    if (subscribers) {
+    try {
+      const subscribers = await prisma.subscriber.findMany({
+        where: { author_id: session.user.id },
+      });
       return {
         count: subscribers.length,
-        subscribers,
+        rows: subscribers,
       };
-    }
+    } catch (e) {}
     return {
       count: 0,
       rows: [],

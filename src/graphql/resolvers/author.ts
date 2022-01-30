@@ -19,6 +19,7 @@ import { defaultSettings } from "../db/seed/constants";
 import { ResolverContext } from "../context";
 import { PrismaClient } from "@prisma/client";
 import { seed } from "../db/seed/seed";
+import { mapAuthorToGraphql, mapSettingToDb } from "./mapper";
 const prisma = new PrismaClient();
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
@@ -84,17 +85,17 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  async createAuthor(_, args, { prisma, connection, mailUtils }) {
+  async createAuthor(_, args, { prisma, mailUtils }) {
     if (args.data.token) {
       const response = await validateCaptcha(
         process.env.RECAPTCHA_KEY_SERVER,
         args.data.token,
       );
       if (!response) {
-        // return {
-        //   __typename: "CreateAuthorError",
-        //   message: "We cannot allow you at the moment.",
-        // };
+        return {
+          __typename: "CreateAuthorError",
+          message: "We cannot allow you at the moment.",
+        };
       }
     }
 
@@ -164,15 +165,20 @@ const Mutation: MutationResolvers<ResolverContext> = {
         },
       });
 
-      // if (mailUtils.enqueueEmailAndSend) {
-      //   await mailUtils.enqueueEmailAndSend({
-      //     author_id: a.id,
-      //     template_id: EmailTemplates.VERIFY_NEW_USER,
-      //   });
-      //   console.log("===> After enqueueEmail");
-      // }
-
-      return { ...newAuthor, __typename: "Author" };
+      if (mailUtils.enqueueEmailAndSend) {
+        await mailUtils.enqueueEmailAndSend({
+          author_id: newAuthor.id,
+          template_id: EmailTemplates.VERIFY_NEW_USER,
+        });
+      }
+      const { id, email, username, name } = newAuthor;
+      return {
+        __typename: "Author",
+        id,
+        email,
+        username,
+        name,
+      };
     }
     return {
       __typename: "CreateAuthorError",
@@ -195,26 +201,22 @@ const Mutation: MutationResolvers<ResolverContext> = {
         author.password,
       );
 
-      if (!authenticated)
+      if (!authenticated) {
         return {
           __typename: "LoginError",
           message: "Incorrect credentials",
         };
-      try {
-        return {
-          __typename: "Author",
-          ...author,
-        };
-      } catch (e) {
-        console.log(e);
       }
+
+      return {
+        ...mapAuthorToGraphql(author),
+      };
     }
     return {
       __typename: "LoginError",
       message: "Incorrect email id",
     };
   },
-  //@ts-ignore
   async updateAuthor(_root, args, { session, prisma }) {
     if (session?.user.id !== args.author.id) {
       return {
@@ -230,23 +232,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
 
       logger.info("Updating Author => ", dataToUpdate);
-      await prisma.author.update({
+      const author = await prisma.author.update({
         data: dataToUpdate,
         where: { id: args.author.id },
       });
-      const author = await prisma.author.findFirst({
-        where: { id: args.author.id },
-      });
-      if (author) {
-        try {
-          author.social = JSON.parse(author.social as string);
-        } catch (e) {
-          //
-        }
-      }
       return {
         ok: true,
-        data: author?.get() || undefined,
+        data: mapAuthorToGraphql(author),
       };
     } catch (e: any) {
       return {
@@ -302,10 +294,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
       const newPassword = await bcrypt.hash(args.password, 12);
 
-      await prisma.author.update(
-        { password: newPassword },
-        { where: { id: author.id } },
-      );
+      await prisma.author.update({
+        data: {
+          password: newPassword,
+        },
+        where: { id: author.id },
+      });
 
       return {
         ok: true,
@@ -405,12 +399,7 @@ export async function createAuthorWithSettings(
         setting: {
           create: {
             ...defaultSettings,
-            menu: defaultSettings.menu as any,
-            site_url: `https://${data.username}.letterpad.app`,
-            ...setting,
-            banner: JSON.stringify(setting.banner),
-            site_favicon: JSON.stringify(setting.site_favicon),
-            site_logo: JSON.stringify(setting.site_logo),
+            ...mapSettingToDb(setting),
           },
         },
       },

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { getSession } from "next-auth/react";
 import multer from "multer";
 import initMiddleware from "./middleware";
@@ -10,7 +11,6 @@ import {
 } from "./importExportTypes";
 
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
-import { getToken } from "@/shared/token";
 import { prisma } from "@/lib/prisma";
 
 const upload = multer();
@@ -85,18 +85,20 @@ async function startImport(
     });
     if (!author && isLoggedInUserAdmin) {
       await removeUserData(author as any);
-      const { id, role_id, setting_id, ...sanitizedAuthor } =
-        authorsData["author"];
+      // const { id, role_id, setting_id, ...sanitizedAuthor } =
+      // authorsData["author"];
       author = await prisma.author.create({
         data: {
-          ...sanitizedAuthor,
+          ...authorsData,
           role: {
             connect: {
               id: role?.id,
             },
           },
           setting: {
-            ...authorsData.setting,
+            create: {
+              ...authorsData.setting,
+            },
             // client_token: getToken({
             //   data: { id: author.id },
             //   algorithm: "HS256",
@@ -164,18 +166,19 @@ async function removeUserData(author: Author) {
 
   if (setting?.id) {
     // remove setting
-    await prisma.Setting.destroy({ where: { id: setting.id } });
+    await prisma.setting.delete({ where: { id: setting.id } });
   }
 
   if (author.id) {
+    await prisma.author.delete;
     // remove tags
-    await prisma.Tags.destroy({ where: { author_id: author.id } });
+    await prisma.tag.delete({ where: { author_id: author.id } });
 
     // remove posts. also removes relationship with tags
-    await prisma.Post.destroy({ where: { author_id: author.id } });
+    await prisma.post.delete({ where: { author_id: author.id } });
 
     // remove media
-    await prisma.Upload.destroy({ where: { author_id: author.id } });
+    await prisma.upload.delete({ where: { author_id: author.id } });
   }
 }
 
@@ -196,23 +199,16 @@ function sanitizeForeignData(authors: IImportExportData["authors"]) {
 
     // tags
     const tags = authorData.tags.map((tag) => {
-      // @ts-ignore
-      const { id, author_id, ...rest } = tag;
-      return rest;
+      return tag;
     });
 
     sanitizedData[email].tags = tags;
 
-    // settings
-    // @ts-ignore
-    const { id, ...setting } = authorData.setting;
+    const { ...setting } = authorData.setting;
     sanitizedData[email].setting = setting;
 
-    // media
     const media = authorData.media.map((item) => {
-      // @ts-ignore
-      const { id, author_id, ...rest } = item;
-      return rest;
+      return item;
     });
 
     sanitizedData[email].media = media;
@@ -232,7 +228,7 @@ async function validateSingleAuthorImport(
     });
     return null;
   }
-  return prisma.Author.findFirst({
+  return prisma.author.findFirst({
     where: { id: sessionUser.id },
   });
 }

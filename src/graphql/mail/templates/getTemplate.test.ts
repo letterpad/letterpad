@@ -1,5 +1,5 @@
-import { models } from "@/graphql/db/models";
 import { EmailTemplates } from "@/graphql/types";
+import { prisma } from "@/lib/prisma";
 import { getToken } from "@/shared/token";
 import {
   AddSubscriberDocument,
@@ -46,7 +46,7 @@ describe("Email templates", () => {
         template_id: EmailTemplates.NEW_POST,
         post_id: post.createPost.id,
       },
-      models,
+      prisma,
     );
     if (data.ok) {
       expect(data.content).toMatchInlineSnapshot(`
@@ -73,7 +73,7 @@ Object {
         subscriber_email: subscriberEmail,
         author_id: 2,
       },
-      models,
+      prisma,
     );
     if (data.ok) {
       data.content.html = removeToken(data.content.html);
@@ -111,7 +111,7 @@ Object {
         template_id: EmailTemplates.VERIFY_NEW_USER,
         author_id: resonse.createAuthor.id,
       },
-      models,
+      prisma,
     );
     if (data.ok) {
       data.content.html = removeToken(data.content.html);
@@ -138,7 +138,7 @@ Object {
         template_id: EmailTemplates.FORGOT_PASSWORD,
         author_id: 2,
       },
-      models,
+      prisma,
     );
     if (data.ok) {
       data.content.html = removeToken(data.content.html);

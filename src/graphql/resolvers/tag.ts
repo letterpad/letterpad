@@ -4,7 +4,6 @@ import {
   PostStatusOptions,
   Tags as TagsType,
 } from "@/__generated__/__types__";
-import { Prisma } from "@prisma/client";
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {

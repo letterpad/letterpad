@@ -12,7 +12,7 @@ export async function getVerifyUserEmailContent(
   data: EmailVerifyNewUserProps,
   prisma: PrismaClient,
 ): Promise<EmailTemplateResponse> {
-  const template = await prisma.email.findOne({
+  const template = await prisma.email.findFirst({
     where: { template_id: EmailTemplates.VERIFY_NEW_USER },
   });
   if (!template) {
@@ -69,7 +69,10 @@ export async function getVerifyUserEmailContent(
     ok: true,
     content: { subject, html: addLineBreaks(body), to: author.email },
     meta: {
-      author,
+      author: {
+        ...author,
+        social: JSON.parse(author.social),
+      },
     },
   };
 }

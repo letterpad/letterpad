@@ -13,9 +13,9 @@ model Author {
   username            String
   email               String       @unique
   password            String
-  bio                 String       @default("")
-  avatar              String?
-  social              String?      @default(dbgenerated("'{}'"))
+  bio                 String       
+  avatar              String       
+  social              String       @default("{}")
   verified            Boolean      @default(false)
   createdAt           DateTime?    @default(now())
   updatedAt           DateTime?    @updatedAt
@@ -62,24 +62,24 @@ model Permission {
 
 model Post {
   id                 Int       @id @default(autoincrement())
-  title              String?   @default("")
-  html               String?
-  html_draft         String?   @default("")
-  excerpt            String?   @default("")
-  cover_image        String?   @default("")
-  cover_image_width  Int?      @default(0)
-  cover_image_height Int?      @default(0)
+  title              String    @default("")
+  html               String    @default("")
+  html_draft         String    @default("")
+  excerpt            String    @default("")
+  cover_image        String    @default("")
+  cover_image_width  Int       @default(0)
+  cover_image_height Int       @default(0)
   type               String    @default("post")
-  featured           Boolean?  @default(false)
-  status             String?   @default("draft")
-  slug               String?   @default("")
-  reading_time       String?   @default("")
+  featured           Boolean  @default(false)
+  status             String    @default("draft")
+  slug               String    @default("")
+  reading_time       String   @default("")
   publishedAt        DateTime?
   scheduledAt        DateTime?
   updatedAt          DateTime? @updatedAt
   createdAt          DateTime? @default(now())
   author_id          Int
-  author             Author    @relation(fields: [author_id], references: [id])
+  author             Author?    @relation(fields: [author_id], references: [id])
   tags               Tag[]
 }
 
@@ -104,34 +104,34 @@ model Role {
 
 model Setting {
   id                  Int       @id @default(autoincrement())
-  site_title          String?   @default("")
-  site_tagline        String?   @default("")
-  site_email          String?   @default("")
-  site_url            String?   @default("")
-  site_footer         String?   @default("")
-  site_description    String?   @default("")
-  subscribe_embed     String?   @default("")
-  social_twitter      String?   @default("")
-  social_facebook     String?   @default("")
-  social_instagram    String?   @default("")
-  social_github       String?   @default("")
-  display_author_info Boolean?  @default(false)
-  cloudinary_key      String?   @default("")
-  cloudinary_name     String?   @default("")
-  cloudinary_secret   String?   @default("")
-  menu                String?   @default(dbgenerated("'{}'"))
-  css                 String?   @default("")
-  google_analytics    String?   @default("")
-  theme               String?   @default("")
-  client_token        String?   @default("")
-  disqus_id           String?   @default("")
-  banner              String?   @default(dbgenerated("'{}'"))
-  site_logo           String?   @default(dbgenerated("'{}'"))
-  site_favicon        String?   @default(dbgenerated("'{}'"))
-  createdAt           DateTime? @default(now())
-  updatedAt           DateTime? @updatedAt
-  graphcomment_id     String?
-  intro_dismissed     Boolean?
+  site_title          String   
+  site_tagline        String   
+  site_email          String   
+  site_url            String   
+  site_footer         String   
+  site_description    String   
+  subscribe_embed     String   
+  social_twitter      String   
+  social_facebook     String   
+  social_instagram    String   
+  social_github       String   
+  display_author_info Boolean  @default(false)
+  cloudinary_key      String   
+  cloudinary_name     String   
+  cloudinary_secret   String   
+  menu                String   @default("{}")
+  css                 String   
+  google_analytics    String   
+  theme               String   
+  client_token        String   
+  disqus_id           String   
+  banner              String   @default("{}")
+  site_logo           String   @default("{}")
+  site_favicon        String   @default("{}")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  graphcomment_id     String
+  intro_dismissed     Boolean
   // author              Author    @relation(fields: [author_id], references: [id])
   // author_id           Int       @unique
   author              Author?
@@ -141,7 +141,7 @@ model Subscriber {
   id                  Int       @id @default(autoincrement())
   email               String
   author_id           Int
-  verified            Boolean?
+  verified            Boolean   @default(false)
   createdAt           DateTime? @default(now())
   updatedAt           DateTime? @updatedAt
   verify_attempt_left Int?      @default(3)
@@ -163,14 +163,14 @@ model Tag {
 model Upload {
   id          Int       @id @default(autoincrement())
   name        String
-  url         String
+  url         String    
   width       Int
   height      Int
-  description String?
+  description String    @default("")
   updatedAt   DateTime? @updatedAt
   createdAt   DateTime? @default(now())
   author_id   Int
-  author      Author    @relation(fields: [author_id], references: [id])
+  author      Author?   @relation(fields: [author_id], references: [id])
 }
 
 model SubscribersDelivery {

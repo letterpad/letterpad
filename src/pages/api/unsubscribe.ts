@@ -4,7 +4,7 @@ import { basePath } from "@/constants";
 import { decodeToken, verifyToken } from "@/shared/token";
 import { prisma } from "@/lib/prisma";
 
-const Verify = async (
+const Unsubscribe = async (
   req: NextApiRequestWithFormData,
   res: NextApiResponse,
 ) => {
@@ -16,7 +16,9 @@ const Verify = async (
     const token = decodeToken(req.query.token as string);
 
     const destroyed = await prisma.subscriber.delete({
-      where: { email: token.email, author_id: token.author_id },
+      where: {
+        email_author_id: { email: token.email, author_id: token.author_id },
+      },
     });
     if (destroyed) {
       return res.redirect(basePath + "/messages/unsubscribed");
@@ -30,4 +32,4 @@ const Verify = async (
   }
 };
 
-export default Verify;
+export default Unsubscribe;
