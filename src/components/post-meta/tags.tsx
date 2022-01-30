@@ -20,14 +20,11 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
     setInputVisible(false);
     if (inputValue && post.tags) {
       const tags = post.tags.map((tag) => {
-        const { id, slug, name, desc } = tag;
-        return { id, slug, name, desc: desc || "" };
+        const { slug, name, desc } = tag;
+        return { slug, name, desc: desc || "" };
       });
       setPostAttribute({
-        tags: [
-          ...tags,
-          { id: 0, name: inputValue, slug: inputValue, desc: "" },
-        ],
+        tags: [...tags, { name: inputValue, slug: inputValue, desc: "" }],
       });
       setInputValue("");
     }
@@ -52,8 +49,8 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
             const tags = post.tags
               .filter((ele) => ele.name !== tag.name)
               .map((tag) => {
-                const { id, slug, name, desc } = tag;
-                return { id, slug, name, desc: desc || "" };
+                const { slug, name, desc } = tag;
+                return { slug, name, desc: desc || "" };
               });
             setPostAttribute({ tags });
           }}

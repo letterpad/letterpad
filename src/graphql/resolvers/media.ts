@@ -46,29 +46,24 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  deleteMedia: async (_, args, { session, models }) => {
+  deleteMedia: async (_, args, { session, prisma }) => {
     if (!session?.user) {
       return {
         __typename: "MediaError",
         message: "No Auhentication",
       };
     }
-    const author = await models.Author.findOne({
-      where: { id: session.user.id },
+
+    await prisma.upload.deleteMany({
+      where: {
+        id: {
+          in: args.ids,
+        },
+        author: {
+          id: session.user.id,
+        },
+      },
     });
-    if (!author) {
-      return {
-        __typename: "MediaError",
-        message: "Author not found",
-      };
-    }
-    await Promise.all([
-      ...args.ids.map((id) =>
-        models.Upload.destroy({
-          where: { id: id, author_id: session.user.id },
-        }),
-      ),
-    ]);
 
     return {
       __typename: "MediaDeleteResult",
@@ -76,24 +71,29 @@ const Mutation: MutationResolvers<ResolverContext> = {
     };
   },
 
-  updateMedia: async (_, args, { session, models }) => {
-    if (!session?.user) {
+  updateMedia: async (_, args, { session, prisma }) => {
+    if (!session?.user.id) {
       return {
         __typename: "MediaError",
         message: "No Auhentication",
       };
     }
 
-    const [updates] = await models.Upload.update(args.data, {
-      where: { id: args.data.id, author_id: session.user.id },
+    await prisma.author.update({
+      data: {
+        uploads: {
+          update: {
+            data: args.data,
+            where: {
+              id: args.data.id,
+            },
+          },
+        },
+      },
+      where: {
+        id: session.user.id,
+      },
     });
-
-    if (updates === 0) {
-      return {
-        __typename: "MediaError",
-        message: "Media not found",
-      };
-    }
     return {
       __typename: "MediaUpdateResult",
       ok: true,

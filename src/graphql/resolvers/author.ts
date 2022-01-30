@@ -230,7 +230,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
 
       logger.info("Updating Author => ", dataToUpdate);
-      await prisma.author.update(dataToUpdate as any, {
+      await prisma.author.update({
+        data: dataToUpdate,
         where: { id: args.author.id },
       });
       const author = await prisma.author.findFirst({

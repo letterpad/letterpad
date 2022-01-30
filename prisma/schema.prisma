@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Author {
   id                  Int          @id @default(autoincrement())
   name                String
@@ -18,8 +17,8 @@ model Author {
   avatar              String?
   social              String?      @default(dbgenerated("'{}'"))
   verified            Boolean      @default(false)
-  createdAt          DateTime?     @default(now())
-  updatedAt          DateTime?     @updatedAt
+  createdAt           DateTime?    @default(now())
+  updatedAt           DateTime?    @updatedAt
   setting_id          Int          @unique
   verify_attempt_left Int?         @default(3)
   posts               Post[]
@@ -28,6 +27,7 @@ model Author {
   role_id             Int
   role                Role         @relation(fields: [role_id], references: [id])
   permissions         Permission[]
+  subscribers         Subscriber[]
 }
 
 model EmailDelivery {
@@ -38,28 +38,26 @@ model EmailDelivery {
   subscriber_id         Int?
   delivered             Int?
   last_delivery_attempt DateTime?
-  createdAt            DateTime? @default(now())
-  updatedAt            DateTime? @updatedAt
+  createdAt             DateTime? @default(now())
+  updatedAt             DateTime? @updatedAt
 }
 
-model Emails {
-  template_id String?   @id @unique
-  subject     String?
-  body        String?
-  createdAt  DateTime? @default(now())
-  updatedAt  DateTime? @updatedAt
-
-  @@ignore
+model Email {
+  template_id String    @id @unique
+  subject     String
+  body        String
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
 }
 
 model Permission {
-  id         Int               @id @default(autoincrement())
-  name       String?           @unique
+  id        Int               @id @default(autoincrement())
+  name      String?           @unique
   createdAt DateTime?         @default(now())
   updatedAt DateTime?         @updatedAt
-  roles      RolePermissions[]
-  Author     Author?           @relation(fields: [authorId], references: [id])
-  authorId   Int?
+  roles     RolePermissions[]
+  Author    Author?           @relation(fields: [authorId], references: [id])
+  authorId  Int?
 }
 
 model Post {
@@ -76,10 +74,10 @@ model Post {
   status             String?   @default("draft")
   slug               String?   @default("")
   reading_time       String?   @default("")
-  publishedAt       DateTime?
-  scheduledAt       DateTime?
-  updatedAt         DateTime? @updatedAt
-  createdAt         DateTime? @default(now())
+  publishedAt        DateTime?
+  scheduledAt        DateTime?
+  updatedAt          DateTime? @updatedAt
+  createdAt          DateTime? @default(now())
   author_id          Int
   author             Author    @relation(fields: [author_id], references: [id])
   tags               Tag[]
@@ -87,8 +85,8 @@ model Post {
 
 model RolePermissions {
   id            Int        @id @default(autoincrement())
-  createdAt    DateTime?  @default(now())
-  updatedAt    DateTime?  @updatedAt
+  createdAt     DateTime?  @default(now())
+  updatedAt     DateTime?  @updatedAt
   role_id       Int
   permission_id Int
   permission    Permission @relation(fields: [permission_id], references: [id], onDelete: Cascade)
@@ -98,8 +96,8 @@ model RolePermissions {
 model Role {
   id          Int               @id @default(autoincrement())
   name        String?           @unique
-  createdAt  DateTime?         @default(now())
-  updatedAt  DateTime?         @updatedAt
+  createdAt   DateTime?         @default(now())
+  updatedAt   DateTime?         @updatedAt
   permissions RolePermissions[]
   Author      Author[]
 }
@@ -130,8 +128,8 @@ model Setting {
   banner              String?   @default(dbgenerated("'{}'"))
   site_logo           String?   @default(dbgenerated("'{}'"))
   site_favicon        String?   @default(dbgenerated("'{}'"))
-  createdAt          DateTime? @default(now())
-  updatedAt          DateTime? @updatedAt
+  createdAt           DateTime? @default(now())
+  updatedAt           DateTime? @updatedAt
   graphcomment_id     String?
   intro_dismissed     Boolean?
   // author              Author    @relation(fields: [author_id], references: [id])
@@ -141,32 +139,36 @@ model Setting {
 
 model Subscriber {
   id                  Int       @id @default(autoincrement())
-  email               String    
+  email               String
   author_id           Int
   verified            Boolean?
-  createdAt          DateTime? @default(now())
-  updatedAt          DateTime? @updatedAt
+  createdAt           DateTime? @default(now())
+  updatedAt           DateTime? @updatedAt
   verify_attempt_left Int?      @default(3)
+
+  Author   Author? @relation(fields: [author_id], references: [id])
+  @@unique([email, author_id])
+
 }
 
 model Tag {
-  name       String    @id @unique
-  desc       String?   @default("")
-  slug       String?
+  name      String    @id @unique
+  desc      String?   @default("")
+  slug      String?
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
-  posts      Post[]
+  posts     Post[]
 }
 
 model Upload {
   id          Int       @id @default(autoincrement())
-  name        String?
+  name        String
   url         String
-  width       Int?
-  height      Int?
+  width       Int
+  height      Int
   description String?
-  updatedAt  DateTime? @updatedAt
-  createdAt  DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  createdAt   DateTime? @default(now())
   author_id   Int
   author      Author    @relation(fields: [author_id], references: [id])
 }
@@ -176,6 +178,6 @@ model SubscribersDelivery {
   subscriber_id String?
   post_id       Int
   delivered     Boolean
-  createdAt    DateTime? @default(now())
-  updatedAt    DateTime? @updatedAt
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime? @updatedAt
 }

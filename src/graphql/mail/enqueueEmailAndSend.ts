@@ -1,6 +1,5 @@
 import { EmailProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
-import { getDateTime } from "@/shared/utils";
 import { getEmailTemplate } from "./templates/getTemplate";
 import * as Sentry from "@sentry/nextjs";
 import { getMailClient } from "./client";

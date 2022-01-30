@@ -10,7 +10,6 @@
     ]
   ],
   "plugins": [
-    "./babel-plugin.models.js",
     [
       "styled-components",
       {

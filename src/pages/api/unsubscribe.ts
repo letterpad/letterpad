@@ -2,6 +2,7 @@ import { NextApiResponse } from "next";
 import { NextApiRequestWithFormData } from "../../graphql/types";
 import { basePath } from "@/constants";
 import { decodeToken, verifyToken } from "@/shared/token";
+import { prisma } from "@/lib/prisma";
 
 const Verify = async (
   req: NextApiRequestWithFormData,
@@ -14,8 +15,8 @@ const Verify = async (
     }
     const token = decodeToken(req.query.token as string);
 
-    const destroyed = await models.Subscribers.destroy({
-      where: { email: token.email },
+    const destroyed = await prisma.subscriber.delete({
+      where: { email: token.email, author_id: token.author_id },
     });
     if (destroyed) {
       return res.redirect(basePath + "/messages/unsubscribed");

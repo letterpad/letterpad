@@ -6,7 +6,7 @@ type Media {
   name: String!
   width: Int!
   height: Int!
-  description: String!
+  description: String
 }
 
 type MediaNode {

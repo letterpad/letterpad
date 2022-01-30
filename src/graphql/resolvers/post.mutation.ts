@@ -15,7 +15,6 @@ import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
 import { EmailTemplates } from "@/graphql/types";
 import { ResolverContext } from "../context";
-import { ModelsType } from "../db/models/models";
 import { Prisma } from "@prisma/client";
 
 export const slugOfUntitledPost = "untitled";

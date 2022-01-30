@@ -119,8 +119,7 @@ export interface Mail {
 }
 
 export interface EmailTemplateMeta {
-  setting: Setting;
-  author: Author;
+  author: Author & { setting: Setting };
 }
 
 export interface EmailTemplateSuccess {

@@ -32,7 +32,7 @@ export const TagsProvider: React.FC = ({ children }) => {
       setTags(
         data.tags.rows.map((item) => ({
           ...item,
-          key: item.id,
+          key: item.name,
           posts: item.posts?.__typename === "PostsNode" ? item.posts.count : 0,
           desc: item.desc || "",
         })),
@@ -42,8 +42,8 @@ export const TagsProvider: React.FC = ({ children }) => {
 
   const deleteTag = async (key: React.Key) => {
     const tagToDelete = [...tags].filter((item) => item.key === key);
-    if (tagToDelete.length > 0 && tagToDelete[0].id > 0) {
-      await deleteTagsMutation({ variables: { id: tagToDelete[0].id } });
+    if (tagToDelete.length > 0) {
+      await deleteTagsMutation({ variables: { name: tagToDelete[0].name } });
     }
     setTags([...tags].filter((item) => item.key !== key));
   };
@@ -57,10 +57,10 @@ export const TagsProvider: React.FC = ({ children }) => {
       ...row,
     });
 
-    const { name, id, desc, slug } = row;
+    const { name, desc, slug } = row;
     await updateTagsMutation({
       variables: {
-        data: { name, id, desc, slug },
+        data: { name, desc, slug },
       },
     });
     if (newData) setTags(newData);
@@ -70,7 +70,6 @@ export const TagsProvider: React.FC = ({ children }) => {
     const newData: TagRow = {
       key: tags.length + 2,
       name: `new-tag-${tags.length}`,
-      id: 0,
       desc: "",
       posts: 0,
       slug: `new-tag-${tags.length}`,

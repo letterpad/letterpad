@@ -11,6 +11,7 @@ import {
 
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
 import { getToken } from "@/shared/token";
+import { prisma } from "@/lib/prisma";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -73,20 +74,49 @@ async function startImport(
   data: { [email: string]: IAuthorData },
   isLoggedInUserAdmin: boolean,
 ) {
-  const role = await models.Role.findOne({
+  const role = await prisma.role.findFirst({
     where: { name: ROLES.AUTHOR },
   });
 
   for (const email in data) {
     const authorsData = data[email];
-    let author = await models.Author.findOne({
+    let author = await prisma.author.findFirst({
       where: { email },
     });
     if (!author && isLoggedInUserAdmin) {
-      //@ts-ignore author
+      await removeUserData(author as any);
       const { id, role_id, setting_id, ...sanitizedAuthor } =
         authorsData["author"];
-      author = await models.Author.create(sanitizedAuthor);
+      author = await prisma.author.create({
+        data: {
+          ...sanitizedAuthor,
+          role: {
+            connect: {
+              id: role?.id,
+            },
+          },
+          setting: {
+            ...authorsData.setting,
+            // client_token: getToken({
+            //   data: { id: author.id },
+            //   algorithm: "HS256",
+            // }),
+          },
+          uploads: {
+            create: [...authorsData.media],
+          },
+          posts: {
+            create: [
+              ...authorsData.posts.map((post) => {
+                const { tags, ...rest } = post;
+                return {
+                  ...rest,
+                };
+              }),
+            ],
+          },
+        },
+      });
     }
 
     if (!author) {
@@ -95,22 +125,6 @@ async function startImport(
         message: `The author ${email} does not exist`,
       };
     }
-
-    if (role) {
-      await author.setRole(role);
-    }
-
-    await removeUserData(author as any);
-
-    authorsData.setting.client_token = getToken({
-      data: { id: author.id },
-      algorithm: "HS256",
-    });
-    await author.createSetting(authorsData.setting);
-
-    await Promise.all([
-      ...authorsData.media.map((item) => author?.createUpload(item)),
-    ]);
 
     for (const data of authorsData.posts) {
       //@ts-ignore
@@ -134,7 +148,7 @@ async function addTagsToPost(
   author: Author,
 ) {
   for (const tag of tags) {
-    const existingTag = await models.Tags.findOne({
+    const existingTag = await prisma.Tags.findFirst({
       where: { name: tag.name, author_id: author.id },
     });
     if (existingTag) {
@@ -150,18 +164,18 @@ async function removeUserData(author: Author) {
 
   if (setting?.id) {
     // remove setting
-    await models.Setting.destroy({ where: { id: setting.id } });
+    await prisma.Setting.destroy({ where: { id: setting.id } });
   }
 
   if (author.id) {
     // remove tags
-    await models.Tags.destroy({ where: { author_id: author.id } });
+    await prisma.Tags.destroy({ where: { author_id: author.id } });
 
     // remove posts. also removes relationship with tags
-    await models.Post.destroy({ where: { author_id: author.id } });
+    await prisma.Post.destroy({ where: { author_id: author.id } });
 
     // remove media
-    await models.Upload.destroy({ where: { author_id: author.id } });
+    await prisma.Upload.destroy({ where: { author_id: author.id } });
   }
 }
 
@@ -218,7 +232,7 @@ async function validateSingleAuthorImport(
     });
     return null;
   }
-  return models.Author.findOne({
+  return prisma.Author.findFirst({
     where: { id: sessionUser.id },
   });
 }

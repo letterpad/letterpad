@@ -4,6 +4,7 @@ import {
   PostStatusOptions,
   Tags as TagsType,
 } from "@/__generated__/__types__";
+import { Prisma } from "@prisma/client";
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
@@ -74,16 +75,24 @@ const Tags = {
   async slug({ slug }) {
     return "/tag/" + slug.replace("/tag/", "");
   },
-  async posts({ id }, _args, { models }: ResolverContext) {
-    const tag = await models.Tags.findOne({ where: { id } });
-    const posts = await tag?.getPosts({
-      where: { status: "published" },
-      order: [["id", "desc"]],
+  async posts({ name }, _args, { prisma }: ResolverContext) {
+    const posts = await prisma.post.findMany({
+      where: {
+        tags: {
+          some: {
+            name,
+          },
+        },
+      },
+      orderBy: {
+        id: "desc",
+      },
     });
+
     return {
       __typename: "PostsNode",
       count: posts?.length,
-      rows: posts?.map((post) => post?.get()),
+      rows: posts,
     };
   },
 };
