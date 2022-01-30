@@ -140,14 +140,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         slug: siteConfig.first_post_tag,
         desc: "",
       };
-      const newTagWithId = await prisma.tag.create({
-        data: {
-          ...newTag,
-          author: {
-            connect: { id: newAuthor.id },
-          },
-        },
-      });
+
       const welcomeContent = getWelcomePostAndPage();
       await prisma.post.create({
         data: {
@@ -155,9 +148,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
           author: {
             connect: { id: newAuthor.id },
           },
-          postTags: {
-            connect: {
-              id: newTagWithId.id,
+          tags: {
+            connectOrCreate: {
+              create: { name: newTag.name },
+              where: { name: newTag.name },
             },
           },
         },
@@ -190,7 +184,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
   async login(_parent, args, { prisma }, _info) {
     const author = await prisma.author.findFirst({
       where: { email: args.data?.email },
-      raw: true,
     });
     if (author) {
       if (!author?.verified) {
@@ -381,9 +374,7 @@ async function isDatabaseSeeded(): Promise<boolean> {
     await prisma.author.findFirst();
     return true;
   } catch (e) {
-    if (e.name === "SequelizeDatabaseError") {
-      return false;
-    }
+    return false;
   }
   return false;
 }

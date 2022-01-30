@@ -141,8 +141,8 @@ model Setting {
 
 model Subscriber {
   id                  Int       @id @default(autoincrement())
-  email               String?
-  author_id           Int?
+  email               String    
+  author_id           Int
   verified            Boolean?
   createdAt          DateTime? @default(now())
   updatedAt          DateTime? @updatedAt
@@ -161,7 +161,7 @@ model Tag {
 model Upload {
   id          Int       @id @default(autoincrement())
   name        String?
-  url         String?
+  url         String
   width       Int?
   height      Int?
   description String?

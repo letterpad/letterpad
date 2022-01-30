@@ -1,39 +1,18 @@
 import { setResponsiveImages } from "./../utils/imageAttributs";
-import { Op, Order } from "sequelize";
 import {
   Permissions,
-  PostFilters,
   PostStatusOptions,
-  SortBy,
   PostTypes,
   QueryResolvers,
   NavigationType,
 } from "@/__generated__/__types__";
 import { decrypt } from "../utils/crypto";
 import logger from "./../../shared/logger";
-import debug from "debug";
 import { mdToHtml } from "@/shared/converter";
 import { ResolverContext } from "../context";
-import { prisma, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 type PostAttributes = any;
-
-interface IPostCondition {
-  conditions: {
-    order: Order;
-    include: any;
-    where: {
-      id?: number | {};
-      featured?: boolean;
-      status: { [Op.ne]: PostStatusOptions.Trashed };
-      type?: PostTypes;
-      author_id?: number;
-    };
-    limit: number;
-    offset?: number;
-    sortBy: "ASC" | "DESC";
-  };
-}
 
 const Post = {
   slug: async ({ type, slug }: PostAttributes) => {

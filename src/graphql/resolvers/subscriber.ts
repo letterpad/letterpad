@@ -4,35 +4,39 @@ import { ResolverContext } from "../context";
 import { EmailTemplates } from "../types";
 
 const Query: QueryResolvers<ResolverContext> = {
-  subscribers: async (_root, _args, { session, models }) => {
-    if (!session?.user.id || !models) {
+  subscribers: async (_root, _args, { session, prisma }) => {
+    if (!session?.user.id) {
       return {
         count: 0,
         rows: [],
       };
     }
-    const rows = await models.Subscribers.findAll({
-      where: { author_id: session?.user.id },
-      raw: true,
+    const subscribers = await prisma.subscriber.findMany({
+      where: { author_id: session.user.id },
     });
+    if (subscribers) {
+      return {
+        count: subscribers.length,
+        subscribers,
+      };
+    }
     return {
-      count: rows.length,
-      rows,
+      count: 0,
+      rows: [],
     };
   },
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  addSubscriber: async (_, args, { author_id, models, mailUtils }) => {
-    if (!author_id || !models) {
+  addSubscriber: async (_, args, { author_id, prisma, mailUtils }) => {
+    if (!author_id) {
       return {
         ok: false,
         message: "A valid owner of the blog you subscribed was not found",
       };
     }
-    const author = await models.Author.findOne({ where: { id: author_id } });
 
-    const subscribers = await author?.getSubscribers({
+    const subscribers = await prisma.subscriber.findMany({
       where: { email: args.email, author_id },
     });
     if (subscribers && subscribers.length > 0) {
@@ -64,10 +68,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
 
     try {
-      //@ts-ignore
-      await author?.createSubscriber({
-        email: args.email,
-        verified: false,
+      await prisma.subscriber.create({
+        data: {
+          email: args.email,
+          verified: false,
+          author_id,
+        },
       });
       if (mailUtils.enqueueEmailAndSend) {
         await mailUtils.enqueueEmailAndSend({
@@ -86,7 +92,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         "You have been subscribed to this blog. An email has been sent to your email address for verification.",
     };
   },
-  updateSubscriber: async (_, args, { models }) => {
+  updateSubscriber: async (_, args, { prisma }) => {
     const decodedToken = decodeToken(args.data?.secret_id || "");
     if (!decodedToken) {
       return {
@@ -94,7 +100,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
         message: "Invalid token",
       };
     }
-    const subscriber = await models?.Subscribers.findOne({
+
+    const subscriber = await prisma?.subscriber.findFirst({
       where: { email: decodedToken.email },
     });
     if (!subscriber) {
@@ -103,8 +110,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
         message: "Subscriber does not exist",
       };
     }
-    await subscriber.update({
-      verified: true,
+    await prisma.subscriber.update({
+      data: { verified: true },
+      where: {
+        id: subscriber.id,
+      },
     });
 
     return {
