@@ -62,9 +62,9 @@ const Query: QueryResolvers<ResolverContext> = {
         },
       });
 
-      if (author) {
+      if (author && author.setting) {
         SECURE_SETTINGS.forEach((securedKey: any) => {
-          if (!session?.user.id) {
+          if (!session?.user.id && author.setting) {
             author.setting[securedKey] = "";
           }
         });
@@ -79,7 +79,6 @@ const Query: QueryResolvers<ResolverContext> = {
   },
 };
 const Mutation: MutationResolvers<ResolverContext> = {
-  //@ts-ignore
   updateOptions: async (_root, args, { session, prisma, author_id }) => {
     author_id = session?.user.id || author_id;
     if (author_id) {
@@ -89,6 +88,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
           setting: true,
         },
       });
+      const setting_id = author?.setting?.id;
+      if (!setting_id)
+        return { __typename: "SettingError", message: "Setting now found" };
 
       let promises = args.options.map((setting) => {
         const option = Object.keys(setting)[0] as keyof Omit<
@@ -115,26 +117,24 @@ const Mutation: MutationResolvers<ResolverContext> = {
           value = JSON.stringify(isImageOption);
         }
         logger.info(
-          `Updating settings with id ${author?.setting.id}- ` +
-            option +
-            " : " +
-            value,
+          `Updating settings with id ${setting_id}- ` + option + " : " + value,
         );
 
         return prisma.setting.update({
           data: {
             [option]: value,
           },
-          where: { id: author?.setting.id },
+          where: { id: setting_id },
         });
       });
 
       await Promise.all(promises);
 
       const setting = await prisma.setting.findUnique({
-        where: { id: author?.setting.id },
+        where: { id: setting_id },
       });
-      if (setting) return { ...setting, __typename: "Setting" };
+      if (setting)
+        return { ...mapSettingToGraphql(setting), __typename: "Setting" };
       throw Error("Couldnt find setting");
     }
     return {

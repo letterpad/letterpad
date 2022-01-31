@@ -10,7 +10,7 @@ export interface ITagSanitized {
 }
 
 export interface IAuthorData extends Author {
-  setting: Setting;
+  setting: Setting | null;
   subscribers: Subscriber[];
   uploads: Upload[];
   posts: (Post & {

@@ -79,7 +79,7 @@ const Query: QueryResolvers<ResolverContext> = {
           where: { id: author_id },
           include: { setting: true },
         });
-        if (authorWithSetting?.setting.menu) {
+        if (authorWithSetting?.setting?.menu) {
           const menu = JSON.parse(authorWithSetting?.setting.menu);
           if (menu[0].type === NavigationType.Tag) {
             args.filters.tagSlug = menu[0].slug;

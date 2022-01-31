@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextApiRequest, NextApiResponse } from "next";
 import { basePath } from "@/constants";
@@ -50,7 +50,7 @@ const providers = (_req: NextApiRequest) => [
   }),
 ];
 
-const options = (req: NextApiRequest) => ({
+const options = (req: NextApiRequest): NextAuthOptions => ({
   providers: providers(req),
   callbacks: {
     redirect: async ({ url, baseUrl }) => {
@@ -70,11 +70,12 @@ const options = (req: NextApiRequest) => ({
     session: async ({ session, token }) => {
       try {
         const author = await prisma.author.findFirst({
+          //@ts-ignore
           where: { id: parseInt(token.sub) },
         });
         if (author) {
           const { id, email, username, avatar, name } = author;
-          session.user = { id, email, username, name, avatar };
+          session.user = { id, email, username, name, avatar } as any;
         }
       } catch (e) {
         console.log(e);
@@ -83,9 +84,7 @@ const options = (req: NextApiRequest) => ({
     },
   },
   jwt: {
-    encryption: true,
     secret: process.env.SECRET_KEY,
-    signingKey: process.env.SECRET_KEY,
   },
   pages: {
     signIn: `${basePath}/login`,
@@ -94,5 +93,4 @@ const options = (req: NextApiRequest) => ({
 });
 
 export default (req: NextApiRequest, res: NextApiResponse) =>
-  //@ts-ignore
   NextAuth(req, res, options(req));

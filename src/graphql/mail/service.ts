@@ -5,6 +5,7 @@ import { sendMail } from "./sendMail";
 import { getEmailTemplate } from "./templates/getTemplate";
 
 const isTest = process.env.NODE_ENV === "test";
+const noop = () => {};
 
 export default async function MailService(
   prisma: PrismaClient,
@@ -13,7 +14,11 @@ export default async function MailService(
   if (author_id) {
     const author = await prisma?.author.findFirst({ where: { id: author_id } });
     if (author?.email === "demo@demo.com" && !isTest) {
-      return {};
+      return {
+        enqueueEmailAndSend: noop,
+        sendMail: noop,
+        getEmailTemplate: noop,
+      };
     }
   }
   return {

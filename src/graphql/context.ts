@@ -28,10 +28,11 @@ export const getResolverContext = async (context) => {
       prisma,
     };
   }
-
+  const mailUtils = await MailService(prisma);
   return {
     session,
     prisma,
+    mailUtils,
   };
 };
 

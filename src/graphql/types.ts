@@ -120,7 +120,7 @@ export interface Mail {
 }
 
 export interface EmailTemplateMeta {
-  author: Author & { setting: Setting };
+  author: Author & { setting: Setting | null };
 }
 
 export interface EmailTemplateSuccess {

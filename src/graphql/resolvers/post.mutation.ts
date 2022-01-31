@@ -210,7 +210,7 @@ async function updateMenuOnTitleChange(
   if (!author) return false;
 
   const isPage = postType === PostTypes.Page;
-  const jsonMenu = JSON.parse(author.setting.menu || "[]");
+  const jsonMenu = JSON.parse(author.setting?.menu || "[]");
   const updatedMenu = jsonMenu.map((item) => {
     if (title) {
       if (isPage && item.type === "page") {

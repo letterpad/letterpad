@@ -44,7 +44,7 @@ export async function getNewPostContent(
   if (post.author.subscribers.length === 0) {
     return {
       ok: false,
-      message: `No subscribers for ${post.author.setting.site_title}`,
+      message: `No subscribers for ${post.author.setting?.site_title}`,
     };
   }
 
@@ -53,7 +53,7 @@ export async function getNewPostContent(
   });
 
   const subject = subjectTemplate.render({
-    blog_name: post.author.setting.site_title,
+    blog_name: post.author.setting?.site_title,
   });
 
   const bodyTemplate = Twig.twig({
@@ -61,14 +61,14 @@ export async function getNewPostContent(
   });
 
   const body = bodyTemplate.render({
-    blog_name: post.author.setting.site_title,
+    blog_name: post.author.setting?.site_title,
     full_name: "Friend",
     post_title: post?.title,
     excerpt: post?.excerpt,
     cover_image_link: post?.cover_image
       ? `<img src="${post?.cover_image}" width="100%">`
       : "",
-    read_more_link: `<a target="_blank" href="${post.author.setting.site_url}/${post?.type}/${post?.slug}">Read More</a>`,
+    read_more_link: `<a target="_blank" href="${post.author.setting?.site_url}/${post?.type}/${post?.slug}">Read More</a>`,
   });
 
   return {

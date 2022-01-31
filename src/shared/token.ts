@@ -25,8 +25,8 @@ export function verifyToken(token: string) {
   return jwt.verify(token, process.env.SECRET_KEY);
 }
 
-export function decodeToken<T>(token: string) {
-  return jwt.decode(token) as T;
+export function decodeToken(token: string) {
+  return jwt.decode(token) as any;
 }
 
 export function getClientToken(email: string) {
