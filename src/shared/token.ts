@@ -25,6 +25,42 @@ export function verifyToken(token: string) {
   return jwt.verify(token, process.env.SECRET_KEY);
 }
 
-export function decodeToken(token: string) {
-  return jwt.decode(token) as any;
+export function decodeToken<T>(token: string) {
+  return jwt.decode(token) as T;
+}
+
+export function getClientToken(email: string) {
+  return getToken({
+    data: { email },
+    algorithm: "HS256",
+  });
+}
+
+export function getVerifyUserToken({ email, author_id }) {
+  return getToken({
+    data: { email, author_id },
+    algorithm: "HS256",
+  });
+}
+
+export function getVerifySubscriberToken({ email, author_id }) {
+  return getToken({
+    data: { email, author_id },
+    algorithm: "HS256",
+  });
+}
+
+export function getForgotPasswordToken({ email }) {
+  return getToken({
+    data: { email },
+    algorithm: "HS256",
+  });
+}
+
+export function getUnsubscribeToken({ email }) {
+  return getToken({
+    data: { email },
+    algorithm: "HS256",
+    validityInMins: 0,
+  });
 }

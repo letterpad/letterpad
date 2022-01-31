@@ -24,7 +24,7 @@ model Author {
   posts               Post[]
   uploads             Upload[]    
   // setting_id          Int          @unique
-  setting             Setting?      
+  setting             Setting?
   role_id             Int
   role                Role         @relation(fields: [role_id], references: [id])
   permissions         Permission[]

@@ -12,7 +12,7 @@ import bcrypt from "bcryptjs";
 import { validateCaptcha } from "./helpers";
 import generatePost from "@/graphql/db/seed/contentGenerator";
 import siteConfig from "../../../config/site.config";
-import { decodeToken, getToken, verifyToken } from "@/shared/token";
+import { decodeToken, getClientToken, verifyToken } from "@/shared/token";
 import { EmailTemplates, ROLES } from "../types";
 import logger from "@/shared/logger";
 import { defaultSettings } from "../db/seed/constants";
@@ -409,10 +409,7 @@ export async function createAuthorWithSettings(
       data: {
         setting: {
           update: {
-            client_token: getToken({
-              data: { id: newAuthor.id },
-              algorithm: "HS256",
-            }),
+            client_token: getClientToken(newAuthor.email),
           },
         },
       },

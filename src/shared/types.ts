@@ -53,3 +53,7 @@ export enum MediaProvider {
 }
 
 export type PubSubEvent = "save" | "noop";
+
+export interface ClientTokenData {
+  id: number;
+}

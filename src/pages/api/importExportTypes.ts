@@ -8,9 +8,6 @@ export interface ITagSanitized {
   desc?: string;
   slug: string;
 }
-// interface IPostSanitized extends Omit<Post, "id" | "author_id" | "tags"> {
-//   tags: ITagSanitized[];
-// }
 
 export interface IAuthorData extends Author {
   setting: Setting;

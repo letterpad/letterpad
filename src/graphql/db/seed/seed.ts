@@ -57,7 +57,6 @@ export async function seed(folderCheck = true) {
     console.timeEnd("ensure data directories");
   }
   if (folderCheck) {
-    // do some clean first. delete the uploads folder
     console.time("sync uploads");
     //@ts-ignore
     await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));

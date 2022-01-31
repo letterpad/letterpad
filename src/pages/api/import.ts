@@ -7,6 +7,7 @@ import { IAuthorData, IImportExportData } from "./importExportTypes";
 
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
 import { prisma } from "@/lib/prisma";
+import { getClientToken } from "@/shared/token";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -100,10 +101,7 @@ async function startImport(data: { [email: string]: IAuthorData }) {
               create: {
                 ...filteredSetting,
                 id: undefined,
-                // client_token: getToken({
-                //   data: { id: author.id },
-                //   algorithm: "HS256",
-                // }),
+                client_token: getClientToken(authorsData.email),
               },
             },
             uploads: {

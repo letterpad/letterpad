@@ -1,16 +1,15 @@
 import Twig from "twig";
 import path from "path";
 
-import { getToken } from "@/shared/token";
+import { getUnsubscribeToken } from "@/shared/token";
 
 export const bodyDecorator = (
   html: string,
   recipient_email: string,
   unsubscribe = false,
 ) => {
-  const token = getToken({
-    data: { email: recipient_email },
-    validityInMins: 0,
+  const token = getUnsubscribeToken({
+    email: recipient_email,
   });
   const unsubscribeUrl = `${process.env.ROOT_URL}/api/unsubscribe?token=${token}`;
 

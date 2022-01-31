@@ -4,7 +4,7 @@ import {
   EmailTemplates,
   EmailVerifyNewUserProps,
 } from "@/graphql/types";
-import { getToken } from "@/shared/token";
+import { getVerifyUserToken } from "@/shared/token";
 import { addLineBreaks } from "../utils";
 import { PrismaClient } from "@prisma/client";
 
@@ -52,8 +52,9 @@ export async function getVerifyUserEmailContent(
     data: template.body.toString(),
   });
 
-  const token = getToken({
-    data: { email: author.email, id: author.id },
+  const token = getVerifyUserToken({
+    author_id: author.id,
+    email: author.email,
   });
   const href = `${process.env.ROOT_URL}/api/verify?token=${token}`;
 
