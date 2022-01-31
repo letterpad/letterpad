@@ -10,15 +10,27 @@ export const getResolverContext = async (context) => {
   const session = isTest
     ? null
     : ((await getSession(context)) as unknown as { user: SessionData });
-  let author_id = session?.user?.id;
-  if (!author_id) {
-    author_id = await getAuthorIdFromRequest(context);
+
+  let author_id: number | null = null;
+
+  if (!session?.user.id) {
+    const authorIdFound = await getAuthorIdFromRequest(context);
+    if (authorIdFound) {
+      author_id = authorIdFound;
+    }
   }
-  const mailUtils = await MailService(prisma, author_id);
+  if (author_id) {
+    const mailUtils = await MailService(prisma, author_id);
+    return {
+      mailUtils,
+      session,
+      author_id: parseInt(author_id.toString()),
+      prisma,
+    };
+  }
+
   return {
-    mailUtils,
     session,
-    author_id,
     prisma,
   };
 };

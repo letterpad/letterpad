@@ -10,7 +10,7 @@ const printOnce = {
 };
 const getAuthorIdFromRequest = async (context: Context) => {
   const authHeader = context.req?.headers?.authorization || "";
-  let author_id;
+  let author_id: number | null = null;
 
   try {
     author_id = await getAuthorFromSubdomain(context);

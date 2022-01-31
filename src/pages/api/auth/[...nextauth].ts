@@ -70,7 +70,7 @@ const options = (req: NextApiRequest) => ({
     session: async ({ session, token }) => {
       try {
         const author = await prisma.author.findFirst({
-          where: { id: token.sub },
+          where: { id: parseInt(token.sub) },
         });
         if (author) {
           const { id, email, username, avatar, name } = author;

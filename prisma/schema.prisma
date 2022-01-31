@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+
 }
 
 datasource db {
@@ -19,11 +20,11 @@ model Author {
   verified            Boolean      @default(false)
   createdAt           DateTime?    @default(now())
   updatedAt           DateTime?    @updatedAt
-  setting_id          Int          @unique
   verify_attempt_left Int?         @default(3)
   posts               Post[]
-  uploads             Upload[]
-  setting             Setting      @relation(fields: [setting_id], references: [id])
+  uploads             Upload[]    
+  // setting_id          Int          @unique
+  setting             Setting?      
   role_id             Int
   role                Role         @relation(fields: [role_id], references: [id])
   permissions         Permission[]
@@ -79,7 +80,7 @@ model Post {
   updatedAt          DateTime? @updatedAt
   createdAt          DateTime? @default(now())
   author_id          Int
-  author             Author?    @relation(fields: [author_id], references: [id])
+  author             Author?    @relation(fields: [author_id], references: [id], onDelete: Cascade)
   tags               Tag[]
 }
 
@@ -119,22 +120,21 @@ model Setting {
   cloudinary_key      String   
   cloudinary_name     String   
   cloudinary_secret   String   
-  menu                String   @default("{}")
+  menu                String   @default("[]")
   css                 String   
   google_analytics    String   
   theme               String   
   client_token        String   
-  disqus_id           String   
   banner              String   @default("{}")
   site_logo           String   @default("{}")
   site_favicon        String   @default("{}")
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
-  graphcomment_id     String
+  graphcomment_id     String   @default("")
   intro_dismissed     Boolean
   // author              Author    @relation(fields: [author_id], references: [id])
-  // author_id           Int       @unique
-  author              Author?
+  author_id           Int       @unique
+  author              Author   @relation(fields: [author_id], references: [id], onDelete:Cascade)
 }
 
 model Subscriber {
@@ -170,7 +170,7 @@ model Upload {
   updatedAt   DateTime? @updatedAt
   createdAt   DateTime? @default(now())
   author_id   Int
-  author      Author?   @relation(fields: [author_id], references: [id])
+  author      Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
 }
 
 model SubscribersDelivery {

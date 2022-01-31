@@ -8,6 +8,7 @@ import fs from "fs";
 import path from "path";
 import logger from "@/shared/logger";
 import { ResolverContext } from "../context";
+import { mapSettingToGraphql } from "./mapper";
 
 type ValueOf<T> = T[keyof T];
 const SECURE_SETTINGS = [
@@ -50,7 +51,6 @@ const Setting = {
 };
 
 const Query: QueryResolvers<ResolverContext> = {
-  //@ts-ignore
   settings: async (_root, _args = {}, { session, author_id, prisma }) => {
     const authorId = session?.user.id || author_id;
 
@@ -68,7 +68,7 @@ const Query: QueryResolvers<ResolverContext> = {
             author.setting[securedKey] = "";
           }
         });
-        return { ...author.setting, __typename: "Setting" };
+        return { ...mapSettingToGraphql(author.setting) };
       }
     }
 
@@ -147,6 +147,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
 export default { Query, Mutation, Setting };
 
 function getMenuWithSanitizedSlug(menu: Navigation[]) {
+  console.log(menu);
   return menu.map((item) => {
     switch (item.type) {
       case "tag":

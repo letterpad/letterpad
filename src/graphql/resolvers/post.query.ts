@@ -24,7 +24,7 @@ const Post = {
     cover_image_width,
     cover_image_height,
   }: PostAttributes) => {
-    if (cover_image && cover_image.startsWith("/")) {
+    if (cover_image.startsWith("/")) {
       return process.env.ROOT_URL + cover_image;
     }
     return {
@@ -63,6 +63,9 @@ const Query: QueryResolvers<ResolverContext> = {
     if (!authorId) {
       return { __typename: "PostError", message: "Author Id not found" };
     }
+    if (!args.filters) {
+      args.filters = {};
+    }
 
     // First verify if posts are requested from client and not admin dashboard.
     // If posts are requested by client, then verify if this a collection of posts for
@@ -83,25 +86,24 @@ const Query: QueryResolvers<ResolverContext> = {
           }
         }
       }
-
-      const skip =
-        args.filters?.page && args.filters?.limit
-          ? args.filters?.page * args.filters?.limit
-          : 0;
-
+      const { page, limit } = args.filters;
+      const skip = page && limit ? page * limit : 0;
+      const isPage = args.filters.type === PostTypes.Page;
       const condition: Prisma.PostFindManyArgs = {
         where: {
-          author_id,
+          author_id: authorId,
           id: args.filters?.id,
           featured: args.filters?.featured,
           status: args.filters?.status,
           slug: args.filters?.slug,
           type: args.filters?.type || PostTypes.Post,
-          tags: {
-            some: {
-              slug: args.filters?.tagSlug,
-            },
-          },
+          tags: isPage
+            ? { every: {} }
+            : {
+                some: {
+                  slug: args.filters?.tagSlug,
+                },
+              },
         },
         take: args.filters?.limit || 10,
         skip,
@@ -110,9 +112,10 @@ const Query: QueryResolvers<ResolverContext> = {
         },
         include: {
           author: true,
-          tags: true,
+          tags: !isPage,
         },
       };
+      console.log(condition);
       const posts = await prisma.post.findMany(condition);
       return {
         __typename: "PostsNode",
