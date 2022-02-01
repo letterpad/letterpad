@@ -1,6 +1,5 @@
 type Tags {
   name: String!
-  desc: String
   slug: String!
   posts: PostsResponse
 }
@@ -32,7 +31,6 @@ union DeleteTagsResponse = DeleteTagsResult | TagsError
 input InputTags {
   name: String!
   old_name: String
-  desc: String
   slug: String
 }
 

@@ -143,7 +143,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
       const newTag = {
         name: siteConfig.first_post_tag,
         slug: siteConfig.first_post_tag,
-        desc: "",
       };
 
       const welcomeContent = getWelcomePostAndPage();

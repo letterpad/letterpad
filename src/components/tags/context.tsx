@@ -57,10 +57,10 @@ export const TagsProvider: React.FC = ({ children }) => {
       ...row,
     });
 
-    const { name, desc, slug } = row;
+    const { name, slug } = row;
     await updateTagsMutation({
       variables: {
-        data: { name, desc, slug, old_name: item.name },
+        data: { name, slug, old_name: item.name },
       },
     });
     if (newData) setTags(newData);
@@ -70,7 +70,6 @@ export const TagsProvider: React.FC = ({ children }) => {
     const newData: TagRow = {
       key: tags.length + 2,
       name: `new-tag-${tags.length}`,
-      desc: "",
       posts: 0,
       slug: `new-tag-${tags.length}`,
     };

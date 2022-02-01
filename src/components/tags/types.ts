@@ -1,7 +1,6 @@
 export interface TagRow {
   key: React.Key;
   name: string;
-  desc: string;
   slug: string;
   posts: number;
 }

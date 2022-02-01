@@ -5,7 +5,6 @@ import { Author, Post, Setting, Subscriber, Tag, Upload } from "@prisma/client";
 
 export interface ITagSanitized {
   name: string;
-  desc?: string;
   slug: string;
 }
 

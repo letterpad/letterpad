@@ -14,7 +14,6 @@ describe("Test Tags Graphql API", () => {
     expect(result.tags.rows).toEqual(
       expect.arrayContaining([
         {
-          desc: "tag desc",
           name: "Home",
           posts: {
             count: 3,
@@ -23,7 +22,6 @@ describe("Test Tags Graphql API", () => {
           slug: "/tag/home",
         },
         {
-          desc: "tag desc",
           name: "first-post",
           posts: {
             count: 3,
@@ -35,14 +33,14 @@ describe("Test Tags Graphql API", () => {
     );
   });
 
-  it.skip("can create and update tags", async () => {
+  it("can create and update tags", async () => {
     const result = await API({
       query: UpdateTagsDocument,
       variables: {
         data: {
           name: "new tag",
           slug: "new-tag",
-          desc: "tag desc",
+          old_name: "first-post",
         },
       },
     });
@@ -58,7 +56,6 @@ describe("Test Tags Graphql API", () => {
     expect(response.tag).toEqual({
       name: "new tag",
       slug: "/tag/new-tag",
-      desc: "tag desc",
     });
   });
 

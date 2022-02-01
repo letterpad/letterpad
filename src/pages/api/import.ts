@@ -51,7 +51,6 @@ const Import = async (req, res) => {
         data.authors[session.user.email].password = author.password;
       }
     }
-    console.log(data.authors);
     const response = await startImport(data.authors, isLoggedInUserAdmin);
 
     return res.send(response);

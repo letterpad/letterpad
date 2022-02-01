@@ -5,7 +5,6 @@ query Tag($slug: String!) {
     ... on Tags {
       name
       slug
-      desc
     }
     ... on TagResultError {
       message
@@ -42,7 +41,6 @@ query Posts($filters: PostsFilters) {
         }
         tags {
           name
-          desc
           slug
         }
       }
@@ -130,7 +128,6 @@ query Tags {
     ... on TagsNode {
       rows {
         name
-        desc
         slug
         posts {
           ... on PostsNode {

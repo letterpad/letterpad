@@ -4,7 +4,6 @@ import { API } from "../../../tests/testClient";
 describe("Test Post Query Graphql API", () => {
   it("get all posts", async () => {
     const result = await API({ query: PostsDocument, variables: {} });
-    console.log(result.posts.rows);
     const firstRecord = result.posts.rows[0];
 
     // expect(firstRecord.id).toBe(1);
@@ -18,9 +17,8 @@ describe("Test Post Query Graphql API", () => {
 
     expect(firstRecord.tags).toEqual(
       expect.arrayContaining([
-        { desc: "tag desc", name: "Home", slug: "/tag/home" },
+        { name: "Home", slug: "/tag/home" },
         {
-          desc: "tag desc",
           name: "first-post",
           slug: "/tag/first-post",
         },

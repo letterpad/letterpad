@@ -38,12 +38,10 @@ const tags = [
   {
     name: "Home",
     slug: "home",
-    desc: "tag desc",
   },
   {
     name: "first-post",
     slug: "first-post",
-    desc: "tag desc",
   },
 ];
 

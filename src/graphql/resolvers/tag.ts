@@ -84,7 +84,7 @@ const Tags = {
         },
       },
       orderBy: {
-        id: "desc",
+        createdAt: "desc",
       },
     });
 

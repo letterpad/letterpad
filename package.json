@@ -13,7 +13,7 @@
     "preseed": "npx prisma db push --force-reset",
     "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/index.js",
     "migrate": "prisma migrate dev --name init",
-    "type-check": "yarn tsc"
+    "typecheck": "yarn tsc"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
