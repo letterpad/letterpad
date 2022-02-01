@@ -55,6 +55,12 @@ const Author = {
     });
     return permissions.map((p) => p.permission.name);
   },
+  social: ({ social }) => {
+    if (typeof social === "string") {
+      return JSON.parse(social);
+    }
+    return social;
+  },
 };
 
 const Query: QueryResolvers<ResolverContext> = {
@@ -367,6 +373,7 @@ async function isDatabaseSeeded(): Promise<boolean> {
     await prisma.author.findFirst();
     return true;
   } catch (e) {
+    console.log(e);
     return false;
   }
   return false;

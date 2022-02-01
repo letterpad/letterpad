@@ -4,7 +4,6 @@ if (process.env.NODE_ENV === "production") {
 } else {
   env(__dirname + "../../../../../.env");
 }
-// const connection = require("../models/index2").default;
 const { seed } = require("./seed");
 
 seed()

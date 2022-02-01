@@ -56,6 +56,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           },
           slug,
           type: args.data.type || PostTypes.Post,
+          status: args.data.status,
         },
       });
 
@@ -109,7 +110,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
           title: args.data.title,
           excerpt: args.data.excerpt,
           featured: args.data.featured,
-          status: args.data.status,
           ...(await getCoverImageAttrs(args.data.cover_image)),
           ...(await getPublishingDates(existingPost, args.data.status)),
           ...(await getContentAttrs(
@@ -117,12 +117,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
             args.data.html,
             args.data.status,
           )),
+          status: args.data.status,
         },
         where: {
           id: args.data.id,
         },
       };
-
       if (args.data.tags) {
         newPostArgs.data.tags = {
           set: [],
@@ -162,6 +162,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           message: "Updated post not found",
         };
       }
+
       return {
         ...mapPostToGraphql(updatedPost),
       };
@@ -228,7 +229,7 @@ async function updateMenuOnTitleChange(
     data: {
       setting: {
         update: {
-          menu: updatedMenu,
+          menu: JSON.stringify(updatedMenu),
         },
       },
     },

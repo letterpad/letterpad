@@ -52,7 +52,7 @@ describe("Test Settings Graphql API", () => {
 
   it("mutates sitename and title", async () => {
     const change = [
-      { site_title: "hello111" },
+      { site_title: "Changed Title" },
       { site_description: "Tagline" },
     ];
 

@@ -147,7 +147,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
 export default { Query, Mutation, Setting };
 
 function getMenuWithSanitizedSlug(menu: Navigation[]) {
-  console.log(menu);
   return menu.map((item) => {
     switch (item.type) {
       case "tag":

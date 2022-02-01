@@ -116,7 +116,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
 
-    const oldName = args.data.oldName;
+    const oldName = args.data.old_name;
     const newName = args.data.name.toLowerCase();
     const newSlug = newName.replace(/ /g, "-").toLowerCase();
 

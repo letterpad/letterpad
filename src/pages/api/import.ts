@@ -51,7 +51,8 @@ const Import = async (req, res) => {
         data.authors[session.user.email].password = author.password;
       }
     }
-    const response = await startImport(data.authors);
+    console.log(data.authors);
+    const response = await startImport(data.authors, isLoggedInUserAdmin);
 
     return res.send(response);
   } catch (e) {
@@ -64,7 +65,7 @@ const Import = async (req, res) => {
 
 export default Import;
 
-async function startImport(data: { [email: string]: IAuthorData }) {
+async function startImport(data: { [email: string]: IAuthorData }, isAdmin) {
   const role = await prisma.role.findFirst({
     where: { name: ROLES.AUTHOR },
   });
@@ -73,16 +74,27 @@ async function startImport(data: { [email: string]: IAuthorData }) {
     let author = await prisma.author.findFirst({
       where: { email },
     });
-    if (author) {
-      const { id, role_id, setting, ...authorsData } = data[email];
 
+    if (isAdmin || author) {
+      const { id, role_id, setting, ...authorsData } = data[email];
+      //@ts-ignore
       const { author_id, ...filteredSetting } = setting;
 
       try {
-        await prisma.author.delete({ where: { email } });
+        if (author) {
+          await prisma.author.delete({ where: { email } });
+        }
         author = await prisma.author.create({
           data: {
-            ...authorsData,
+            name: authorsData.name,
+            email: authorsData.email,
+            bio: authorsData.bio,
+            verified: true,
+            username: authorsData.username,
+            avatar: authorsData.avatar,
+            password: authorsData.password,
+            verify_attempt_left: 3,
+            social: JSON.stringify(authorsData.social),
             role: {
               connect: {
                 id: role?.id,
@@ -117,6 +129,15 @@ async function startImport(data: { [email: string]: IAuthorData }) {
                   const { id, tags, author_id, ...rest } = post;
                   return {
                     ...rest,
+                    createdAt: rest.createdAt
+                      ? new Date(rest.createdAt)
+                      : new Date(),
+                    updatedAt: rest.updatedAt
+                      ? new Date(rest.updatedAt)
+                      : new Date(),
+                    scheduledAt: rest.scheduledAt
+                      ? new Date(rest.scheduledAt)
+                      : new Date(),
                     tags: {
                       connectOrCreate: tags.map(({ name, slug }) => {
                         return {

@@ -57,8 +57,8 @@ model Permission {
   createdAt DateTime?         @default(now())
   updatedAt DateTime?         @updatedAt
   roles     RolePermissions[]
-  Author    Author?           @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  Author    Author?           @relation(fields: [author_id], references: [id])
+  author_id  Int?
 }
 
 model Post {
@@ -100,7 +100,7 @@ model Role {
   createdAt   DateTime?         @default(now())
   updatedAt   DateTime?         @updatedAt
   permissions RolePermissions[]
-  Author      Author[]
+  author      Author[]
 }
 
 model Setting {
@@ -128,8 +128,8 @@ model Setting {
   banner              String   @default("{}")
   site_logo           String   @default("{}")
   site_favicon        String   @default("{}")
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  createdAt           DateTime? @default(now())
+  updatedAt           DateTime? @updatedAt
   graphcomment_id     String   @default("")
   intro_dismissed     Boolean
   // author              Author    @relation(fields: [author_id], references: [id])
@@ -146,7 +146,7 @@ model Subscriber {
   updatedAt           DateTime? @updatedAt
   verify_attempt_left Int?      @default(3)
 
-  Author   Author? @relation(fields: [author_id], references: [id])
+  author   Author? @relation(fields: [author_id], references: [id])
   @@unique([email, author_id])
 
 }

@@ -26,7 +26,7 @@ describe("Test author", () => {
           password: "foofoofoo",
           username: "foo",
           setting: {
-            site_title: "hello",
+            site_title: "register site title",
           },
           token: "this token wont be validated in test environment",
         },

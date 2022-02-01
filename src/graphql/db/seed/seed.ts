@@ -4,9 +4,8 @@ if (process.env.NODE_ENV === "production") {
 } else {
   env(__dirname + "../../../../../.env");
 }
-console.log(process.env.DATABASE_URL);
 
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { promisify } from "util";
 import copydir from "copy-dir";
 import mkdirp from "mkdirp";
@@ -47,52 +46,56 @@ const tags = [
     desc: "tag desc",
   },
 ];
+
 export async function seed(folderCheck = true) {
-  if (folderCheck) {
-    console.time("ensure data directories");
-    await Promise.all([
-      mkdirpAsync(absPath(dataDir)),
-      mkdirpAsync(absPath(publicUploadsDir)),
-    ]);
-    console.timeEnd("ensure data directories");
-  }
-  if (folderCheck) {
-    console.time("sync uploads");
-    //@ts-ignore
-    await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
-    await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
-    console.timeEnd("sync uploads");
-  }
+  try {
+    if (folderCheck) {
+      console.time("delete all recoreds from all tables");
+      try {
+        await cleanupDatabase();
+      } catch (e) {}
+      console.timeEnd("delete all recoreds from all tables");
+      console.time("ensure data directories");
+      await Promise.all([
+        mkdirpAsync(absPath(dataDir)),
+        mkdirpAsync(absPath(publicUploadsDir)),
+      ]);
+      console.timeEnd("ensure data directories");
+    }
+    if (folderCheck) {
+      console.time("sync uploads");
+      //@ts-ignore
+      await rimrafAsync(path.join(absPath(publicUploadsDir, "*")));
+      await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
+      console.timeEnd("sync uploads");
+    }
 
-  console.time("insert roles and permissions");
-  await insertRolePermData();
-  console.timeEnd("insert roles and permissions");
+    console.time("insert roles and permissions");
+    await insertRolePermData();
+    console.timeEnd("insert roles and permissions");
 
-  console.time("Insert authors and settings and assign role");
-  await insertAuthors();
-  console.timeEnd("Insert authors and settings and assign role");
+    console.time("Insert authors and settings and assign role");
+    await insertAuthors();
+    console.timeEnd("Insert authors and settings and assign role");
 
-  console.time("Insert post and page and tags");
-  const author = await prisma.author.findFirst({
-    where: { email: "demo@demo.com" },
-  });
-  await insertPost(posts[0], author?.id);
-  await insertPost(posts[1], author?.id);
-  await insertPost(posts[2], author?.id);
-  await insertPost(posts[3], author?.id);
-  console.timeEnd("Insert post and page and tags");
-  console.time("insert email templates");
-  await insertEmails();
-  console.timeEnd("insert email templates");
-}
-
-seed()
-  .catch((e) => {
-    throw e;
-  })
-  .finally(async () => {
+    console.time("Insert post and page and tags");
+    const author = await prisma.author.findFirst({
+      where: { email: "demo@demo.com" },
+    });
+    await insertPost(posts[0], author?.id);
+    await insertPost(posts[1], author?.id);
+    await insertPost(posts[2], author?.id);
+    await insertPost(posts[3], author?.id);
+    console.timeEnd("Insert post and page and tags");
+    console.time("insert email templates");
+    await insertEmails();
+    console.timeEnd("insert email templates");
+  } catch (e) {
+    console.log("seeding failed", e);
+  } finally {
     await prisma.$disconnect();
-  });
+  }
+}
 
 export async function insertRolePermData() {
   const [
@@ -339,4 +342,18 @@ async function insertEmails() {
   });
 }
 
-export {};
+export const cleanupDatabase = () => {
+  const prisma = new PrismaClient();
+  const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
+
+  return Promise.all(
+    modelNames.map((modelName) => {
+      const model = prisma[deCapitalizeFirstLetter(modelName)];
+      return model ? model.deleteMany() : null;
+    }),
+  );
+};
+
+function deCapitalizeFirstLetter(string) {
+  return string.charAt(0).toLowerCase() + string.slice(1);
+}

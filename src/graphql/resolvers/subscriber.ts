@@ -72,7 +72,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
         data: {
           email: args.email,
           verified: false,
-          author_id,
+          author: {
+            connect: {
+              id: author_id,
+            },
+          },
         },
       });
       if (mailUtils.enqueueEmailAndSend) {

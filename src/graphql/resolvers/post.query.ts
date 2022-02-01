@@ -111,11 +111,10 @@ const Query: QueryResolvers<ResolverContext> = {
           updatedAt: args?.filters?.sortBy || "desc",
         },
         include: {
-          author: true,
+          // author: true,
           tags: !isPage,
         },
       };
-      console.log(condition);
       const posts = await prisma.post.findMany(condition);
       return {
         __typename: "PostsNode",

@@ -31,6 +31,7 @@ union DeleteTagsResponse = DeleteTagsResult | TagsError
 
 input InputTags {
   name: String!
+  old_name: String
   desc: String
   slug: String
 }

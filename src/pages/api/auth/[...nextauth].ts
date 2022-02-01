@@ -43,9 +43,8 @@ const providers = (_req: NextApiRequest) => [
           }
         }
       } catch (e) {
-        console.error(e);
+        throw Error(e);
       }
-      throw Error("next-auth - internal error");
     },
   }),
 ];
@@ -72,10 +71,20 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
         const author = await prisma.author.findFirst({
           //@ts-ignore
           where: { id: parseInt(token.sub) },
+          include: {
+            role: true,
+          },
         });
         if (author) {
           const { id, email, username, avatar, name } = author;
-          session.user = { id, email, username, name, avatar } as any;
+          session.user = {
+            id,
+            email,
+            username,
+            name,
+            avatar,
+            role: author.role.name,
+          } as any;
         }
       } catch (e) {
         console.log(e);
