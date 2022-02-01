@@ -34,7 +34,6 @@ export const TagsProvider: React.FC = ({ children }) => {
           ...item,
           key: item.name,
           posts: item.posts?.__typename === "PostsNode" ? item.posts.count : 0,
-          desc: item.desc || "",
         })),
       );
     }

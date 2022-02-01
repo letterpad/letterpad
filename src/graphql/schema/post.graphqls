@@ -106,7 +106,6 @@ input InputImage {
 input TagsInputType {
   name: String!
   slug: String!
-  desc: String
 }
 
 input InputCreatePost {
