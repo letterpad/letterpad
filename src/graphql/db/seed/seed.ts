@@ -1,10 +1,3 @@
-const env = require("node-env-file");
-if (process.env.NODE_ENV === "production") {
-  env(__dirname + "../../../../../.env.production.local");
-} else {
-  env(__dirname + "../../../../../.env.development.local");
-}
-
 import { Prisma, PrismaClient } from "@prisma/client";
 import { promisify } from "util";
 import copydir from "copy-dir";
