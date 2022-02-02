@@ -116,6 +116,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
           value = JSON.stringify(isImageOption);
         }
+        if (option === "menu") {
+          value = JSON.stringify(value);
+        }
         logger.info(
           `Updating settings with id ${setting_id}- ` + option + " : " + value,
         );
