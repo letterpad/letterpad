@@ -82,7 +82,7 @@ const Query: QueryResolvers<ResolverContext> = {
         if (authorWithSetting?.setting?.menu) {
           const menu = JSON.parse(authorWithSetting?.setting.menu);
           if (menu[0].type === NavigationType.Tag) {
-            args.filters.tagSlug = menu[0].slug;
+            args.filters.tagSlug = menu[0].slug.replace("/tag/", "");
           }
         }
       }
@@ -111,7 +111,6 @@ const Query: QueryResolvers<ResolverContext> = {
           updatedAt: args?.filters?.sortBy || "desc",
         },
         include: {
-          // author: true,
           tags: !isPage,
         },
       };
