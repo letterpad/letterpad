@@ -85,6 +85,8 @@ const Query: QueryResolvers<ResolverContext> = {
             args.filters.tagSlug = menu[0].slug.replace("/tag/", "");
           }
         }
+      } else if (args.filters.tagSlug) {
+        args.filters.tagSlug = args.filters.tagSlug.replace("/tag/", "");
       }
       const { page, limit } = args.filters;
       const skip = page && limit ? page * limit : 0;
