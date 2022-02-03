@@ -67,6 +67,11 @@ const Query: QueryResolvers<ResolverContext> = {
       args.filters = {};
     }
 
+    // if there is no session, do not show draft or deleted items.
+    if (!session?.user.id) {
+      args.filters.status = PostStatusOptions.Published;
+    }
+
     // First verify if posts are requested from client and not admin dashboard.
     // If posts are requested by client, then verify if this a collection of posts for
     // displaying in homepage.
@@ -97,12 +102,13 @@ const Query: QueryResolvers<ResolverContext> = {
           id: args.filters?.id,
           featured: args.filters?.featured,
           status: args.filters?.status,
+          //@todo - remove slug
           slug: args.filters?.slug,
           type: args.filters?.type || PostTypes.Post,
           tags: isPage
             ? { every: {} }
             : {
-                some: {
+                every: {
                   slug: args.filters?.tagSlug,
                 },
               },
@@ -111,9 +117,6 @@ const Query: QueryResolvers<ResolverContext> = {
         skip,
         orderBy: {
           updatedAt: args?.filters?.sortBy || "desc",
-        },
-        include: {
-          tags: !isPage,
         },
       };
       const posts = await prisma.post.findMany(condition);
