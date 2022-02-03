@@ -116,7 +116,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
           value = JSON.stringify(isImageOption);
         }
-        if (option === "menu") {
+        if (["menu", "banner", "site_logo", "site_favicon"].includes(option)) {
           value = JSON.stringify(value);
         }
         logger.info(
