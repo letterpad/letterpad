@@ -1,7 +1,9 @@
 import {
+  MutationCreatePostArgs,
   MutationResolvers,
   PostStatusOptions,
   PostTypes,
+  RequireFields,
 } from "@/__generated__/__types__";
 import reading_time from "reading-time";
 import {
@@ -19,58 +21,65 @@ import { mapPostToGraphql } from "./mapper";
 
 export const slugOfUntitledPost = "untitled";
 
-const Mutation: MutationResolvers<ResolverContext> = {
-  async createPost(_parent, args, { session, prisma }) {
-    if (!args.data || !session?.user.id) {
-      return {
-        __typename: "PostError",
-        message: "Session not found",
-      };
-    }
-
-    const author = await prisma.author.findFirst({
-      where: { id: session.user.id },
-    });
-
-    if (!author) {
-      return {
-        __typename: "PostError",
-        message: "Author not found",
-      };
-    }
-
-    let slug = args.data.slug;
-    if (!slug) {
-      const titleWithoutSpaces = toSlug(args.data.title || slugOfUntitledPost);
-      slug = await slugify(prisma.post, titleWithoutSpaces);
-    }
-    try {
-      const newPost = await prisma.post.create({
-        data: {
-          cover_image: args.data.cover_image?.src,
-          cover_image_width: args.data.cover_image?.width,
-          cover_image_height: args.data.cover_image?.height,
-          html: args.data.html,
-          author: {
-            connect: { id: author.id },
-          },
-          slug,
-          type: args.data.type || PostTypes.Post,
-          status: args.data.status,
-        },
-      });
-
-      if (newPost) {
-        return {
-          ...mapPostToGraphql(newPost),
-          title: args.data.title || "Untitled",
-        };
-      }
-    } catch (e) {}
+export const createPost = async (
+  args: RequireFields<MutationCreatePostArgs, never>,
+  { session, prisma }: ResolverContext,
+) => {
+  if (!args.data || !session?.user.id) {
     return {
       __typename: "PostError",
-      message: "Unable to create post",
+      message: "Session not found",
     };
+  }
+
+  const author = await prisma.author.findFirst({
+    where: { id: session.user.id },
+  });
+
+  if (!author) {
+    return {
+      __typename: "PostError",
+      message: "Author not found",
+    };
+  }
+
+  let slug = args.data.slug;
+  if (!slug) {
+    const titleWithoutSpaces = toSlug(args.data.title || slugOfUntitledPost);
+    slug = await slugify(prisma.post, titleWithoutSpaces);
+  }
+  try {
+    const newPost = await prisma.post.create({
+      data: {
+        cover_image: args.data.cover_image?.src,
+        cover_image_width: args.data.cover_image?.width,
+        cover_image_height: args.data.cover_image?.height,
+        html: args.data.html,
+        author: {
+          connect: { id: author.id },
+        },
+        slug,
+        type: args.data.type || PostTypes.Post,
+        status: args.data.status,
+      },
+    });
+
+    if (newPost) {
+      return {
+        ...mapPostToGraphql(newPost),
+        title: args.data.title || "Untitled",
+      };
+    }
+  } catch (e) {}
+  return {
+    __typename: "PostError",
+    message: "Unable to create post",
+  };
+};
+const Mutation: MutationResolvers<ResolverContext> = {
+  //@ts-ignore
+  async createPost(_parent, args, context) {
+    return await createPost(args.data, context);
   },
 
   async updatePost(_parent, args, { session, prisma, mailUtils }, _info) {

@@ -10,7 +10,6 @@ export const getResolverContext = async (context) => {
   const session = isTest
     ? null
     : ((await getSession(context)) as unknown as { user: SessionData });
-
   let author_id: number | null = null;
 
   if (!session?.user.id) {
@@ -18,7 +17,10 @@ export const getResolverContext = async (context) => {
     if (authorIdFound) {
       author_id = authorIdFound;
     }
+  } else {
+    author_id = session.user.id;
   }
+
   if (author_id) {
     const mailUtils = await MailService(prisma, author_id);
     return {
