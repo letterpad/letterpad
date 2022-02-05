@@ -79,6 +79,7 @@ export const createPost = async (
 const Mutation: MutationResolvers<ResolverContext> = {
   //@ts-ignore
   async createPost(_parent, args, context) {
+    //@ts-ignore
     return await createPost(args.data, context);
   },
 
@@ -109,7 +110,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
       const newPostArgs: Prisma.PostUpdateArgs = {
         data: {
-          updatedAt: new Date(),
           slug: await getOrCreateSlug(
             prisma.post,
             args.data.id,
@@ -176,6 +176,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         ...mapPostToGraphql(updatedPost),
       };
     } catch (e) {
+      console.log(e);
       return {
         __typename: "PostError",
         message: e.message,
@@ -300,13 +301,13 @@ async function getPublishingDates(
   newStatus?: PostStatusOptions,
 ) {
   const { status, publishedAt } = prevPost;
-  const currentTime = getDateTime(new Date());
+  const currentTime = new Date();
   if (status && isPublishingLive(status, newStatus)) {
     if (!publishedAt) {
       return { publishedAt: currentTime, scheduledAt: null };
     }
   }
-  return {};
+  return { updatedAt: currentTime };
 }
 
 async function getContentAttrs(
