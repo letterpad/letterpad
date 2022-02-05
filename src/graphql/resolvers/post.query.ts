@@ -108,7 +108,7 @@ const Query: QueryResolvers<ResolverContext> = {
           tags: isPage
             ? { every: {} }
             : {
-                every: {
+                some: {
                   slug: args.filters?.tagSlug,
                 },
               },
@@ -119,6 +119,7 @@ const Query: QueryResolvers<ResolverContext> = {
           updatedAt: args?.filters?.sortBy || "desc",
         },
       };
+
       const posts = await prisma.post.findMany(condition);
       return {
         __typename: "PostsNode",
