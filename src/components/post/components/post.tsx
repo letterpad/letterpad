@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Layout, Row } from "antd";
+import { Layout } from "antd";
 import withAuthCheck from "@/hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
@@ -49,9 +49,9 @@ function Post() {
             ""
           ) : (
             <div>
-              <Row justify="center" style={{ paddingBottom: 20 }}>
+              {/* <Row justify="center" style={{ paddingBottom: 20 }}>
                 {post?.updatedAt}
-              </Row>
+              </Row> */}
               <Title onEnter={() => helpers?.getEditorRef().editor.focus()} />
               <Editor text={content ?? ""} />
               <div
