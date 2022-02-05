@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Layout } from "antd";
+import { Layout, Row } from "antd";
 import withAuthCheck from "@/hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
@@ -11,6 +11,7 @@ import Editor from "@/components/post/components/editor";
 import { insertImageUrlInEditor } from "@/components/post/helpers";
 import { PostContextType } from "../types";
 import { Content } from "antd/lib/layout/layout";
+import { getReadableDate } from "@/shared/utils";
 
 function Post() {
   const {
@@ -49,9 +50,9 @@ function Post() {
             ""
           ) : (
             <div>
-              {/* <Row justify="center" style={{ paddingBottom: 20 }}>
-                {post?.updatedAt}
-              </Row> */}
+              <Row justify="center" style={{ paddingBottom: 20 }}>
+                {getReadableDate(post?.updatedAt)}
+              </Row>
               <Title onEnter={() => helpers?.getEditorRef().editor.focus()} />
               <Editor text={content ?? ""} />
               <div

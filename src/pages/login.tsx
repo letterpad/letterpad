@@ -10,7 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loginView, setLoginView] = useState(true);
 
-  const isDemo = document.location.search === "?demo";
+  const isDemo = false;
+  // typeof document !== "undefined" && document.location.search === "?demo";
 
   return (
     <Container>

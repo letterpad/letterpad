@@ -18,15 +18,6 @@ export function getHeaders(dataSource, deleteTag) {
       },
     },
     {
-      title: "desc",
-      dataIndex: "desc",
-      editable: true,
-      required: false,
-      render: (_, _record: { key: React.Key }) => {
-        return _ || <EditOutlined />;
-      },
-    },
-    {
       title: "posts",
       dataIndex: "posts",
     },
