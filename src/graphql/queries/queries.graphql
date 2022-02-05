@@ -5,7 +5,6 @@ query Tag($slug: String!) {
     ... on Tags {
       name
       slug
-      desc
     }
     ... on TagResultError {
       message
@@ -41,9 +40,7 @@ query Posts($filters: PostsFilters) {
           bio
         }
         tags {
-          id
           name
-          desc
           slug
         }
       }
@@ -131,8 +128,6 @@ query Tags {
     ... on TagsNode {
       rows {
         name
-        id
-        desc
         slug
         posts {
           ... on PostsNode {
@@ -185,7 +180,7 @@ query settings {
       social_facebook
       social_instagram
       social_github
-      displayAuthorInfo
+      display_author_info
       cloudinary_key
       cloudinary_name
       cloudinary_secret

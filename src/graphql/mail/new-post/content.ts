@@ -6,12 +6,13 @@ import {
   EmailTemplates,
 } from "@/graphql/types";
 import { addLineBreaks } from "../utils";
+import { PrismaClient } from "@prisma/client";
 
 export async function getNewPostContent(
   data: EmailNewPostProps,
-  models,
+  prisma: PrismaClient,
 ): Promise<EmailTemplateResponse> {
-  const template = await models.Email.findOne({
+  const template = await prisma.email.findFirst({
     where: { template_id: EmailTemplates.NEW_POST },
   });
   if (!template) {
@@ -21,25 +22,29 @@ export async function getNewPostContent(
     };
   }
 
-  const postRaw = await models.Post.findOne({ where: { id: data.post_id } });
-  const post = postRaw.get();
-  const author = await models.Author.findOne({
-    where: { id: post?.author_id },
+  const post = await prisma.post.findFirst({
+    where: { id: data.post_id },
+    include: {
+      author: {
+        include: {
+          setting: true,
+          subscribers: true,
+        },
+      },
+    },
   });
-  const setting = await author?.getSetting();
-  const subscribers = await author?.getSubscribers({ where: { verified: 1 } });
 
-  if (!author || !setting) {
+  if (!post || !post.author) {
     return {
       ok: false,
       message: `No info found for the current blog.`,
     };
   }
 
-  if (!subscribers || subscribers.length === 0) {
+  if (post.author.subscribers.length === 0) {
     return {
       ok: false,
-      message: `No subscribers for ${setting.site_title}`,
+      message: `No subscribers for ${post.author.setting?.site_title}`,
     };
   }
 
@@ -48,7 +53,7 @@ export async function getNewPostContent(
   });
 
   const subject = subjectTemplate.render({
-    blog_name: setting?.site_title,
+    blog_name: post.author.setting?.site_title,
   });
 
   const bodyTemplate = Twig.twig({
@@ -56,14 +61,14 @@ export async function getNewPostContent(
   });
 
   const body = bodyTemplate.render({
-    blog_name: setting?.site_title,
+    blog_name: post.author.setting?.site_title,
     full_name: "Friend",
     post_title: post?.title,
     excerpt: post?.excerpt,
-    cover_image_link: post?.cover_image?.src
-      ? `<img src="${post?.cover_image.src}" width="100%">`
+    cover_image_link: post?.cover_image
+      ? `<img src="${post?.cover_image}" width="100%">`
       : "",
-    read_more_link: `<a target="_blank" href="${setting.site_url}${post?.slug}">Read More</a>`,
+    read_more_link: `<a target="_blank" href="${post.author.setting?.site_url}/${post?.type}/${post?.slug}">Read More</a>`,
   });
 
   return {
@@ -71,11 +76,10 @@ export async function getNewPostContent(
     content: {
       subject,
       html: addLineBreaks(body),
-      to: subscribers?.map((s) => s.email),
+      to: post.author.subscribers.map((s) => s.email),
     },
     meta: {
-      setting,
-      author,
+      author: post.author,
     },
   };
 }

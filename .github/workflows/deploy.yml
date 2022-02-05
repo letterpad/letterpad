@@ -25,6 +25,12 @@ jobs:
 
       - run: yarn install
 
+      - name: Graphql Codegen
+        run: yarn codegen
+
+      - name: Type check
+        run: yarn typecheck
+
       - name: Test GraphQL API
         run: yarn run test
         env:
@@ -35,9 +41,6 @@ jobs:
         env:
           SECRET_KEY: ${{ secrets.SECRET_LP_KEY }}
           SENTRY_AUTH_TOKEN: ${{secrets.SENTRY_AUTH_TOKEN}}
-
-      - name: Type check
-        run: yarn type-check
 
       # - name: Deploy to Google
       #   uses: appleboy/scp-action@master

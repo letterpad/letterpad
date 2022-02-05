@@ -89,8 +89,9 @@ const configWithSentry =
 let config = !configWithSentry ? nextConfig : configWithSentry;
 
 if (isServer && !process.env.SENTRY_DSN) {
-  console.log("Sentry not running");
   config = nextConfig;
+} else {
+  console.log("Sentryrunning");
 }
 
 module.exports = config;

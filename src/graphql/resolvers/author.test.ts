@@ -4,7 +4,7 @@ import {
   LoginDocument,
 } from "./../../../__generated__/src/graphql/queries/mutations.graphql";
 import { API } from "../../../tests/testClient";
-import { models } from "../db/models";
+import { prisma } from "@/lib/prisma";
 
 describe("Test author", () => {
   it("can login", async () => {
@@ -26,7 +26,7 @@ describe("Test author", () => {
           password: "foofoofoo",
           username: "foo",
           setting: {
-            site_title: "hello",
+            site_title: "register site title",
           },
           token: "this token wont be validated in test environment",
         },
@@ -35,7 +35,7 @@ describe("Test author", () => {
 
     expect(resonse.createAuthor.name).toBe("foo");
 
-    const author = await models.Author.findOne({
+    const author = await prisma.author.findFirst({
       where: { name: "foo" },
     });
 

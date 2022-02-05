@@ -5,7 +5,6 @@ const clientId = process.env.UNSPLASH_CLIENT_ID;
 const unsplash = async (req, res) => {
   const { page, query } = req.query;
   const endpoint = `${unsplashUrl}?client_id=${clientId}&query=${query}&page=${page}&per_page=21`;
-  console.log(endpoint);
   try {
     const response = await fetch(endpoint).then((data) => data.json());
     res.json({

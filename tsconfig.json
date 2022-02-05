@@ -29,9 +29,9 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es6"
+    "target": "ES2020"
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules/**/*"],
   "include": [
     "src/**/*",
     "__generated__/**/*",

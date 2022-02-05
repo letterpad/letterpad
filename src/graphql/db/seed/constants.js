@@ -36,29 +36,29 @@ module.exports.defaultSettings = {
   social_facebook: "",
   social_instagram: "",
   social_github: "",
-  displayAuthorInfo: true,
-  site_logo: {
+  display_author_info: true,
+  site_logo: JSON.stringify({
     src: "/uploads/logo.png",
     width: 200,
     height: 200,
-  },
-  site_favicon: {
+  }),
+  site_favicon: JSON.stringify({
     src: "/uploads/logo.png",
     width: 200,
     height: 200,
-  },
+  }),
   css: "",
   google_analytics: "UA-120251616-1",
   theme: "hugo",
-  menu: menu,
+  menu: JSON.stringify(menu),
   cloudinary_key: "",
   cloudinary_name: "",
   cloudinary_secret: "",
   client_token: "",
-  banner: {
+  banner: JSON.stringify({
     src: "https://images.unsplash.com/photo-1527176930608-09cb256ab504?w=2000&auto=format&lossless=true",
     width: 1502,
     height: 900,
-  },
+  }),
   intro_dismissed: false,
 };

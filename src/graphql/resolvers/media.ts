@@ -1,60 +1,40 @@
-import {
-  MutationResolvers,
-  QueryResolvers,
-  SortBy,
-} from "@/__generated__/__types__";
-import { Op, Order } from "sequelize";
+import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
+import { Prisma } from "@prisma/client";
 import { ResolverContext } from "../context";
 
-interface IMediaConditions {
-  limit: number;
-  order: Order;
-  offset?: number;
-  where: {
-    author_id?: number;
-    id?: number | object;
-  };
-}
-
 const Query: QueryResolvers<ResolverContext> = {
-  media: async (_root, args, { session, models }) => {
+  media: async (_root, args, { session, prisma }) => {
     if (!session?.user.id) {
       return {
         count: 0,
         rows: [],
       };
     }
-    const conditions: IMediaConditions = {
-      where: { author_id: session.user.id },
-      limit: 20,
-      order: [["id", SortBy.Desc]],
-    };
 
     if (args.filters) {
-      const { id, authorId, cursor, limit, page } = args.filters;
+      const { id, authorId, cursor, limit = 20, page = 0 } = args.filters;
 
-      if (id) {
-        conditions.where = { ...conditions.where, id };
-      }
-      if (authorId) {
-        conditions.where = { ...conditions.where, author_id: authorId };
-      }
-      if (limit) {
-        conditions.limit = limit;
-      }
-      if (cursor) {
-        conditions.where.id = { [Op.gt]: cursor };
-      } else if (page) {
-        conditions.offset = (page - 1) * conditions.limit;
-      }
-    }
-    const result = await models.Upload.findAndCountAll(conditions);
+      const condition: Prisma.UploadFindManyArgs = {
+        where: {
+          id,
+          author: {
+            id: authorId,
+          },
+        },
+        take: limit,
 
-    if (result) {
-      const rows = result.rows.map((item) => item.get());
+        cursor: {
+          id: cursor,
+        },
+        skip: page * limit,
+      };
+      const result = await prisma.upload.findMany(condition);
+
       return {
-        count: result.count,
-        rows: rows,
+        rows: result,
+        count: await prisma.upload.count({
+          where: { id, author: { id: authorId } },
+        }),
       };
     }
 
@@ -66,29 +46,24 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  deleteMedia: async (_, args, { session, models }) => {
+  deleteMedia: async (_, args, { session, prisma }) => {
     if (!session?.user) {
       return {
         __typename: "MediaError",
         message: "No Auhentication",
       };
     }
-    const author = await models.Author.findOne({
-      where: { id: session.user.id },
+
+    await prisma.upload.deleteMany({
+      where: {
+        id: {
+          in: args.ids,
+        },
+        author: {
+          id: session.user.id,
+        },
+      },
     });
-    if (!author) {
-      return {
-        __typename: "MediaError",
-        message: "Author not found",
-      };
-    }
-    await Promise.all([
-      ...args.ids.map((id) =>
-        models.Upload.destroy({
-          where: { id: id, author_id: session.user.id },
-        }),
-      ),
-    ]);
 
     return {
       __typename: "MediaDeleteResult",
@@ -96,24 +71,29 @@ const Mutation: MutationResolvers<ResolverContext> = {
     };
   },
 
-  updateMedia: async (_, args, { session, models }) => {
-    if (!session?.user) {
+  updateMedia: async (_, args, { session, prisma }) => {
+    if (!session?.user.id) {
       return {
         __typename: "MediaError",
         message: "No Auhentication",
       };
     }
 
-    const [updates] = await models.Upload.update(args.data, {
-      where: { id: args.data.id, author_id: session.user.id },
+    await prisma.author.update({
+      data: {
+        uploads: {
+          update: {
+            data: args.data,
+            where: {
+              id: args.data.id,
+            },
+          },
+        },
+      },
+      where: {
+        id: session.user.id,
+      },
     });
-
-    if (updates === 0) {
-      return {
-        __typename: "MediaError",
-        message: "Media not found",
-      };
-    }
     return {
       __typename: "MediaUpdateResult",
       ok: true,

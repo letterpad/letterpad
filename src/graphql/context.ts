@@ -1,7 +1,7 @@
 import MailService from "@/graphql/mail/service";
+import { prisma } from "@/lib/prisma";
 import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
 import { getSession } from "next-auth/react";
-import connection, { models, ModelsType } from "./db/models/models";
 import { SessionData } from "./types";
 
 const isTest = process.env.NODE_ENV === "test";
@@ -10,17 +10,31 @@ export const getResolverContext = async (context) => {
   const session = isTest
     ? null
     : ((await getSession(context)) as unknown as { user: SessionData });
-  let author_id = session?.user?.id;
-  if (!author_id && !isTest) {
-    author_id = await getAuthorIdFromRequest(context);
+  let author_id: number | null = null;
+
+  if (!session?.user.id) {
+    const authorIdFound = await getAuthorIdFromRequest(context);
+    if (authorIdFound) {
+      author_id = authorIdFound;
+    }
+  } else {
+    author_id = session.user.id;
   }
-  const mailUtils = await MailService<ModelsType>(models, author_id);
+
+  if (author_id) {
+    const mailUtils = await MailService(prisma, author_id);
+    return {
+      mailUtils,
+      session,
+      author_id: parseInt(author_id.toString()),
+      prisma,
+    };
+  }
+  const mailUtils = await MailService(prisma);
   return {
-    connection,
-    models,
-    mailUtils,
     session,
-    author_id,
+    prisma,
+    mailUtils,
   };
 };
 

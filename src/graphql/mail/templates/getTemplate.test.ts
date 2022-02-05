@@ -1,5 +1,5 @@
-import { models } from "@/graphql/db/models";
 import { EmailTemplates } from "@/graphql/types";
+import { prisma } from "@/lib/prisma";
 import { getToken } from "@/shared/token";
 import {
   AddSubscriberDocument,
@@ -46,12 +46,12 @@ describe("Email templates", () => {
         template_id: EmailTemplates.NEW_POST,
         post_id: post.createPost.id,
       },
-      models,
+      prisma,
     );
     if (data.ok) {
       expect(data.content).toMatchInlineSnapshot(`
 Object {
-  "html": "Hello Friend, <br><br>A new post has been published in <strong>Demo Account</strong>.<br><br><img src=\\"https://a.com/image.jpg\\" width=\\"100%\\"><br><strong>new-post-test</strong><br><br><br><a target=\\"_blank\\" href=\\"https://demo.letterpad.app/post/new-post-test\\">Read More</a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
+  "html": "Hello Friend, <br><br>A new post has been published in <strong>Demo Account</strong>.<br><br><img src=\\"https://a.com/image.jpg\\" width=\\"100%\\"><br><strong></strong><br><br><br><a target=\\"_blank\\" href=\\"https://demo.letterpad.app/post/new-post-test\\">Read More</a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
   "subject": "Demo Account - New Post",
   "to": Array [
     "subscriber@test.com",
@@ -73,7 +73,7 @@ Object {
         subscriber_email: subscriberEmail,
         author_id: 2,
       },
-      models,
+      prisma,
     );
     if (data.ok) {
       data.content.html = removeToken(data.content.html);
@@ -99,7 +99,7 @@ Object {
           password: "foofoofoo",
           username: "foo",
           setting: {
-            site_title: "hello",
+            site_title: "Test site title",
           },
           token: "this token wont be validated in test environment",
         },
@@ -111,14 +111,14 @@ Object {
         template_id: EmailTemplates.VERIFY_NEW_USER,
         author_id: resonse.createAuthor.id,
       },
-      models,
+      prisma,
     );
     if (data.ok) {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
 Object {
-  "html": "Hello there, <br><br>You have used this email address while registering in <strong>hello</strong>. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=",
-  "subject": "hello - Verify Email",
+  "html": "Hello there, <br><br>You have used this email address while registering in <strong>Test site title</strong>. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=",
+  "subject": "Test site title - Verify Email",
   "to": "newuser@test.com",
 }
 `);
@@ -138,7 +138,7 @@ Object {
         template_id: EmailTemplates.FORGOT_PASSWORD,
         author_id: 2,
       },
-      models,
+      prisma,
     );
     if (data.ok) {
       data.content.html = removeToken(data.content.html);

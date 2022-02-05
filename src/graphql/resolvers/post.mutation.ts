@@ -1,9 +1,10 @@
 import {
+  MutationCreatePostArgs,
   MutationResolvers,
   PostStatusOptions,
   PostTypes,
+  RequireFields,
 } from "@/__generated__/__types__";
-import { Post } from "@/graphql/db/models/definations/post";
 import reading_time from "reading-time";
 import {
   slugify,
@@ -15,68 +16,73 @@ import logger from "@/shared/logger";
 import { getDateTime } from "@/shared/utils";
 import { EmailTemplates } from "@/graphql/types";
 import { ResolverContext } from "../context";
-import { ModelsType } from "../db/models/models";
+import { Prisma } from "@prisma/client";
+import { mapPostToGraphql } from "./mapper";
 
 export const slugOfUntitledPost = "untitled";
 
-const Mutation: MutationResolvers<ResolverContext> = {
-  async createPost(_parent, args, { session, models }) {
-    if (!args.data || !session?.user.id) {
-      return {
-        __typename: "PostError",
-        message: "Session not found",
-      };
-    }
-    const author = await models.Author.findOne({
-      where: { id: session.user.id },
+export const createPost = async (
+  args: RequireFields<MutationCreatePostArgs, never>,
+  { session, prisma }: ResolverContext,
+) => {
+  if (!args.data || !session?.user.id) {
+    return {
+      __typename: "PostError",
+      message: "Session not found",
+    };
+  }
+
+  const author = await prisma.author.findFirst({
+    where: { id: session.user.id },
+  });
+
+  if (!author) {
+    return {
+      __typename: "PostError",
+      message: "Author not found",
+    };
+  }
+
+  let slug = args.data.slug;
+  if (!slug) {
+    const titleWithoutSpaces = toSlug(args.data.title || slugOfUntitledPost);
+    slug = await slugify(prisma.post, titleWithoutSpaces);
+  }
+  try {
+    const newPost = await prisma.post.create({
+      data: {
+        cover_image: args.data.cover_image?.src,
+        cover_image_width: args.data.cover_image?.width,
+        cover_image_height: args.data.cover_image?.height,
+        html: args.data.html,
+        author: {
+          connect: { id: author.id },
+        },
+        slug,
+        type: args.data.type || PostTypes.Post,
+        status: args.data.status,
+      },
     });
-
-    if (!author) {
-      return {
-        __typename: "PostError",
-        message: "Author not found",
-      };
-    }
-
-    if (!args.data.slug) {
-      const slug = toSlug(args.data.title || slugOfUntitledPost);
-      args.data.slug = await slugify(models.Post, slug);
-    }
-
-    if (args.data.cover_image) {
-      //@ts-ignore
-      args.data.cover_image = args.data.cover_image.src;
-      if (args.data.cover_image?.width) {
-        //@ts-ignore
-        args.data.cover_image_width = args.data.cover_image.width;
-      }
-      if (args.data.cover_image?.height) {
-        //@ts-ignore
-        args.data.cover_image_height = args.data.cover_image.height;
-      }
-    }
-
-    if (!args.data.html) {
-      args.data.html = "";
-      args.data.html = "";
-    }
-
-    const newPost = await author?.$create("post", args.data as any);
 
     if (newPost) {
       return {
-        __typename: "Post",
-        title: "Untitled",
-        ...newPost.get(),
+        ...mapPostToGraphql(newPost),
+        title: args.data.title || "Untitled",
       };
     }
-    return {
-      __typename: "PostError",
-      message: "Unable to create post",
-    };
+  } catch (e) {}
+  return {
+    __typename: "PostError",
+    message: "Unable to create post",
+  };
+};
+const Mutation: MutationResolvers<ResolverContext> = {
+  //@ts-ignore
+  async createPost(_parent, args, context) {
+    return await createPost(args.data, context);
   },
 
-  async updatePost(_parent, args, { session, models, mailUtils }, _info) {
+  async updatePost(_parent, args, { session, prisma, mailUtils }, _info) {
     if (!session?.user.id) {
       return {
         __typename: "PostError",
@@ -90,198 +96,67 @@ const Mutation: MutationResolvers<ResolverContext> = {
           message: "No arguments to create a post",
         };
       }
-      const previousPostRaw = await models.Post.findOne({
+      const existingPost = await prisma.post.findFirst({
         where: { id: args.data.id },
       });
 
-      if (!previousPostRaw) {
+      if (!existingPost) {
         return {
           __typename: "PostError",
           message: "Current post not found to update",
         };
       }
 
-      const currentTime = getDateTime(new Date());
-
-      const dataToUpdate: any = {
-        updatedAt: currentTime,
-      };
-      if (args.data.slug) {
-        dataToUpdate.slug = args.data.slug
-          .replace("/post/", "")
-          .replace("/page/", "");
-      }
-
-      const previousPost = previousPostRaw.get() as Post;
-
-      // slug and title
-      if (dataToUpdate.slug) {
-        dataToUpdate.slug = await slugify(models.Post, dataToUpdate.slug);
-        logger.debug("Slug changed to :", args.data.slug);
-      } else if (
-        args.data.title &&
-        isFirstTitleCreation(previousPost.title, args.data.title)
-      ) {
-        dataToUpdate.slug = await slugify(models.Post, args.data.title);
-        dataToUpdate.title = args.data.title || previousPost.title;
-        logger.debug("Slug created:", dataToUpdate.slug);
-      }
-      if (args.data.title) {
-        dataToUpdate.title = args.data.title;
-      }
-
-      // date and status
-      if (isPublishingLive(previousPost.status, args.data.status)) {
-        if (!previousPostRaw.publishedAt) {
-          dataToUpdate.publishedAt = currentTime;
-        }
-        logger.debug(
-          "Post status changed from draft to published - ",
-          currentTime,
-        );
-        dataToUpdate.scheduledAt = null;
-      }
-
-      // cover image
-      if (args.data.cover_image) {
-        const { width, height } = args.data.cover_image;
-        let src = args.data.cover_image.src.replace(
-          process.env.ROOT_URL || "",
-          "",
-        );
-        dataToUpdate.cover_image = src;
-        if (!width && !height) {
-          try {
-            const imageSize = await getImageDimensions(src);
-            dataToUpdate.cover_image_width = imageSize.width;
-            dataToUpdate.cover_image_height = imageSize.height;
-          } catch (e) {
-            logger.error(
-              `No width/height specified for cover image.
-            \n Trying to get dimentions of image src`,
-              src,
-            );
-          }
-        } else {
-          dataToUpdate.cover_image_width = width as number;
-          dataToUpdate.cover_image_height = height as number;
-        }
-        logger.debug(
-          "Updating cover image",
-          dataToUpdate.cover_image,
-          dataToUpdate.cover_image_width,
-          dataToUpdate.cover_image_height,
-        );
-      }
-
-      // reading time
-      if (args.data.html && args.data.html !== previousPost.html) {
-        // update reading time
-        dataToUpdate.reading_time = reading_time(args.data.html).text;
-        logger.debug("Reading time: ", dataToUpdate.reading_time);
-      }
-
-      if (args.data.status) {
-        dataToUpdate.status = args.data.status;
-      }
-      // update content
-      if (savingDraft(previousPost.status, args.data.status)) {
-        dataToUpdate.html_draft = args.data.html;
-        logger.debug("This is draft content...");
-      } else if (args.data.html) {
-        dataToUpdate.html = args.data.html;
-        try {
-          dataToUpdate.html = await setImageWidthAndHeightInHtml(
+      const newPostArgs: Prisma.PostUpdateArgs = {
+        data: {
+          updatedAt: new Date(),
+          slug: await getOrCreateSlug(
+            prisma.post,
+            args.data.id,
+            args.data.slug,
+            args.data.title,
+          ),
+          title: args.data.title,
+          excerpt: args.data.excerpt,
+          featured: args.data.featured,
+          ...(await getCoverImageAttrs(args.data.cover_image)),
+          ...(await getPublishingDates(existingPost, args.data.status)),
+          ...(await getContentAttrs(
+            existingPost,
             args.data.html,
-          );
-        } catch (error) {
-          logger.error(error);
-        }
-        logger.debug("This is live content");
-        // just republished
-        if (rePublished(previousPost.status, args.data.status)) {
-          logger.debug("Republishing. Cleaning draft...");
-          dataToUpdate.html_draft = "";
-        }
-      } else if (rePublished(previousPost.status, args.data.status)) {
-        if (previousPost.html_draft) {
-          dataToUpdate.html = previousPost.html_draft;
-          try {
-            dataToUpdate.html = await setImageWidthAndHeightInHtml(
-              previousPost.html_draft,
-            );
-          } catch (error) {
-            logger.error(error);
-          }
-        }
-        dataToUpdate.html_draft = "";
+            args.data.status,
+          )),
+          status: args.data.status,
+        },
+        where: {
+          id: args.data.id,
+        },
+      };
+      if (args.data.tags) {
+        newPostArgs.data.tags = {
+          set: [],
+          connectOrCreate: args.data.tags.map(({ name, slug }) => {
+            return {
+              create: { name, slug },
+              where: { name },
+            };
+          }),
+        };
+      }
+      const updatedPost = await prisma.post.update(newPostArgs);
+      // update content
+
+      if (updatedPost) {
+        await updateMenuOnTitleChange(
+          prisma.author,
+          session.user.id,
+          existingPost.type,
+          updatedPost.title,
+          updatedPost.slug,
+        );
       }
 
-      if (args.data.excerpt) {
-        dataToUpdate.excerpt = args.data.excerpt;
-      }
-
-      if (args.data.featured) {
-        dataToUpdate.featured = args.data.featured;
-      }
-
-      await updateMenuOnTitleChange(
-        models.Author,
-        session.user.id,
-        previousPostRaw.type,
-        dataToUpdate.title,
-        dataToUpdate.slug,
-      );
-
-      if (args.data.tags && previousPostRaw) {
-        logger.debug("Updating Tags", args.data.tags);
-
-        const tags = [...args.data.tags];
-
-        if (tags && tags.length > 0) {
-          logger.debug("Removing all Tags");
-          // remove the tags relation
-          await previousPostRaw.$set("tags", []);
-
-          for (const tag of tags) {
-            logger.info("processing tag", tag);
-            // add relation with existing Tags
-            if (tag.id > 0) {
-              const tagFound = await models.Tag.findOne({
-                where: { id: tag.id },
-              });
-              if (tagFound) {
-                await previousPostRaw.$add("tag", tagFound);
-              }
-              logger.debug(`Added existing tags (${tag.name}) with id`, tag.id);
-            } else {
-              const author = await previousPostRaw.$get("author");
-              const tagsFound = await author?.$get("tags", {
-                where: { name: tag.name },
-              });
-              if (tagsFound?.length === 0) {
-                const newTag = await author?.$create("tag", {
-                  name: tag.name,
-                  slug: tag.name.toLowerCase(),
-                });
-                if (newTag) {
-                  logger.debug(`Created new tag (${tag.name})`);
-                  await previousPostRaw.$add("tag", newTag);
-                  logger.debug("Linked tags to post", tag.name);
-                }
-              } else if (tagsFound) {
-                await previousPostRaw.$add("tag", tagsFound[0]);
-                logger.debug("Linked tags to post", tag.name);
-              }
-            }
-          }
-        }
-      }
-
-      await models.Post.update(dataToUpdate, {
-        where: { id: args.data.id },
-      });
-      if (dataToUpdate.status === PostStatusOptions.Published) {
+      if (isPublishingLive(existingPost.status, updatedPost.status)) {
         if (mailUtils.enqueueEmailAndSend) {
           await mailUtils.enqueueEmailAndSend({
             template_id: EmailTemplates.NEW_POST,
@@ -289,55 +164,40 @@ const Mutation: MutationResolvers<ResolverContext> = {
           });
         }
       }
-      const post = await models.Post.findOne({
-        where: { id: args.data.id },
-      });
 
-      if (!post) {
+      if (!updatedPost) {
         return {
           __typename: "PostError",
           message: "Updated post not found",
         };
       }
+
       return {
-        __typename: "Post",
-        ...post.get(),
+        ...mapPostToGraphql(updatedPost),
       };
     } catch (e) {
-      console.log(e);
+      return {
+        __typename: "PostError",
+        message: e.message,
+      };
     }
   },
 };
 
-function isFirstTitleCreation(prevTitle: string, newTitle: string) {
-  if (prevTitle === "" && newTitle !== "") {
-    return true;
-  }
-}
-
-function isPublishingLive(
-  oldStatus: PostStatusOptions | string,
-  newStatus?: PostStatusOptions | null,
-) {
+function isPublishingLive(oldStatus: string | null, newStatus?: string | null) {
   return (
     newStatus === PostStatusOptions.Published &&
     oldStatus === PostStatusOptions.Draft
   );
 }
 
-function rePublished(
-  prevStatus: PostStatusOptions,
-  currentStatus?: PostStatusOptions | null,
-) {
+function rePublished(prevStatus: string, currentStatus?: string | null) {
   return (
     prevStatus === PostStatusOptions.Published &&
     currentStatus === PostStatusOptions.Published
   );
 }
-function savingDraft(
-  prevStatus: PostStatusOptions,
-  statusArg?: PostStatusOptions,
-) {
+function savingDraft(prevStatus: string, statusArg?: string) {
   if (statusArg === PostStatusOptions.Draft) return true;
   if (prevStatus === PostStatusOptions.Draft && !statusArg) return true;
   if (prevStatus === PostStatusOptions.Published && !statusArg) return true;
@@ -346,20 +206,22 @@ function savingDraft(
 }
 
 async function updateMenuOnTitleChange(
-  Author: ModelsType["Author"],
+  Author: Prisma.AuthorDelegate<false>,
   authorId: number,
-  postType?: PostTypes,
+  postType?: string,
   title?: string,
   slug?: string,
 ) {
   if (!title && !slug) return false;
-  const author = await Author.findOne({ where: { id: authorId } });
+  const author = await Author.findFirst({
+    where: { id: authorId },
+    include: { setting: true },
+  });
   if (!author) return false;
-  const setting = await author.$get("setting");
 
   const isPage = postType === PostTypes.Page;
-
-  const updatedMenu = setting?.menu.map((item) => {
+  const jsonMenu = JSON.parse(author.setting?.menu || "[]");
+  const updatedMenu = jsonMenu.map((item) => {
     if (title) {
       if (isPage && item.type === "page") {
         item.original_name = title;
@@ -372,10 +234,111 @@ async function updateMenuOnTitleChange(
     }
     return item;
   });
-  //@ts-ignore
-  setting?.setDataValue("menu", updatedMenu);
-  //@ts-ignore
-  await author.$set("setting", setting);
+  await Author.update({
+    data: {
+      setting: {
+        update: {
+          menu: JSON.stringify(updatedMenu),
+        },
+      },
+    },
+    where: { id: authorId },
+  });
+}
+
+async function getOrCreateSlug(
+  postModel: Prisma.PostDelegate<false>,
+  id: number,
+  slug?: string,
+  title?: string,
+) {
+  const existingPost = await postModel.findFirst({ where: { id } });
+
+  if (existingPost?.slug && slug) {
+    slug = slug?.replace("/post/", "").replace("/page/", "");
+    slug = await slugify(postModel, slug);
+    return slug;
+  }
+
+  if (title && !existingPost?.slug) {
+    slug = title.replace(/ /g, "-");
+    slug = await slugify(postModel, slug);
+    return slug;
+  }
+
+  if (!slug) return existingPost?.slug;
+  return slug;
+}
+
+async function getCoverImageAttrs(cover_image) {
+  if (!cover_image) return {};
+  const { width, height } = cover_image;
+  let src = cover_image.src?.replace(process.env.ROOT_URL || "", "");
+
+  const data = {
+    cover_image: src,
+    cover_image_width: width,
+    cover_image_height: height,
+  };
+  if (width && height && src) {
+    return data;
+  }
+  if (!src) return data;
+
+  try {
+    const imageSize = await getImageDimensions(src);
+    data.cover_image_width = imageSize.width;
+    data.cover_image_height = imageSize.height;
+  } catch (e) {
+    logger.error(`Failed to retrieve width and height of image - ${src}`);
+  }
+
+  return data;
+}
+async function getPublishingDates(
+  prevPost: Prisma.PostMinAggregateOutputType,
+  newStatus?: PostStatusOptions,
+) {
+  const { status, publishedAt } = prevPost;
+  const currentTime = getDateTime(new Date());
+  if (status && isPublishingLive(status, newStatus)) {
+    if (!publishedAt) {
+      return { publishedAt: currentTime, scheduledAt: null };
+    }
+  }
+  return {};
+}
+
+async function getContentAttrs(
+  prevPost: Prisma.PostMinAggregateOutputType,
+  html?: string,
+  newStatus?: PostStatusOptions,
+) {
+  const data = {
+    html: prevPost.html,
+    html_draft: prevPost.html_draft,
+    reading_time: prevPost.reading_time,
+  };
+  if (!html) return {};
+  if (prevPost.status && savingDraft(prevPost.status, newStatus)) {
+    data.html_draft = html;
+  } else if (html) {
+    data.html = (await setImageWidthAndHeightInHtml(html)) || html;
+    if (prevPost.status && rePublished(prevPost.status, newStatus)) {
+      data.reading_time = reading_time(data.html).text;
+      data.html_draft = "";
+    }
+  } else if (prevPost.status && rePublished(prevPost.status, newStatus)) {
+    if (prevPost.html_draft) {
+      data.html = prevPost.html_draft;
+      data.html =
+        (await setImageWidthAndHeightInHtml(prevPost.html_draft)) ||
+        prevPost.html_draft;
+      data.reading_time = reading_time(data.html).text;
+    }
+    data.html_draft = "";
+  }
+  return data;
 }
 
 export default { Mutation };

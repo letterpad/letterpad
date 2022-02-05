@@ -1,16 +1,16 @@
 import { EmailProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
-import { getDateTime } from "@/shared/utils";
 import { getEmailTemplate } from "./templates/getTemplate";
 import * as Sentry from "@sentry/nextjs";
 import { getMailClient } from "./client";
 import { sendMail } from "./sendMail";
+import { PrismaType } from "@/lib/prisma";
 
 const mailClient = getMailClient();
 
 export async function enqueueEmailAndSend(
   props: EmailProps,
-  models,
+  prisma: PrismaType,
   restrict = false,
 ) {
   if (restrict) return "";
@@ -20,31 +20,35 @@ export async function enqueueEmailAndSend(
     );
   }
   try {
-    const found = await models.EmailDelivery.findOne({
+    const found = await prisma.emailDelivery.findFirst({
       where: { ...props },
     });
     if (found) {
       return logger.debug("Email record exist. Skipping");
     }
-    await models.EmailDelivery.create({
-      ...props,
-      createdAt: getDateTime(new Date()) as any,
-      delivered: false,
+    const newDelivery = await prisma.emailDelivery.create({
+      data: {
+        ...props,
+        // createdAt: getDateTime(new Date()) as any,
+        delivered: false,
+      },
     } as any);
+    logger.debug("Creating a new email record. yet to be delivered.");
 
     // TODO - Since we are tracking the email, we should not run it on the main thread. Instead use a child thread or an external service. Lets worry when we are worried.
-    const data = await getEmailTemplate(props, models);
+    const data = await getEmailTemplate(props, prisma);
 
     if (data.ok) {
       const addUnsubscribe = props.template_id === EmailTemplates.NEW_POST;
       const response = await sendMail(data.content, data.meta, addUnsubscribe);
       if (response && response.length > 0) {
         if (response[0].response.res.statusCode === 200) {
-          // update delivery
-          await models.EmailDelivery.update(
-            { delivered: true },
-            { where: { ...props } },
-          );
+          await prisma.emailDelivery.update({
+            data: {
+              delivered: 1,
+            },
+            where: { id: newDelivery.id },
+          });
         }
       }
     } else {

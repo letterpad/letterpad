@@ -1,5 +1,6 @@
+import { Author, Post, Setting } from "@prisma/client";
 import { NextApiRequest } from "next";
-import { Author, Post, Setting } from "@/__generated__/__types__";
+import { Author as GraphqlAuthor } from "@/__generated__/__types__";
 
 export enum ROLES {
   ADMIN = "ADMIN",
@@ -26,7 +27,7 @@ export type updatePostOptionalArgs = {
 } & Omit<Post, "cover_image" | "cover_image_width" | "cover_image_height">;
 
 export type Session = Pick<
-  Author,
+  GraphqlAuthor,
   "id" | "email" | "role" | "permissions" | "avatar" | "username"
 >;
 
@@ -119,8 +120,7 @@ export interface Mail {
 }
 
 export interface EmailTemplateMeta {
-  setting: Setting;
-  author: Author;
+  author: Author & { setting: Setting | null };
 }
 
 export interface EmailTemplateSuccess {

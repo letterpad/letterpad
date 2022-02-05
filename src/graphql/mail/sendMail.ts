@@ -25,8 +25,9 @@ export function sendMail(
           {
             From: {
               // the or clause is to overwrite this setting for demo purpose
-              Email: process.env.SENDER_EMAIL || meta.setting.site_email,
-              Name: meta.setting.site_title || "Letterpad",
+              Email:
+                process.env.SENDER_EMAIL || meta.author.setting?.site_email,
+              Name: meta.author.setting?.site_title || "Letterpad",
             },
             To: [
               {

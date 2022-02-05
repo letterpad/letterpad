@@ -1,8 +1,8 @@
-import { models } from "@/graphql/db/models";
 import { NextApiResponse } from "next";
 import { NextApiRequestWithFormData } from "./../../graphql/types";
 import { basePath } from "@/constants";
 import { decodeToken, verifyToken } from "@/shared/token";
+import { prisma } from "@/lib/prisma";
 
 const Verify = async (
   req: NextApiRequestWithFormData,
@@ -17,15 +17,15 @@ const Verify = async (
     const isSubscriber = req.query.subscriber;
     let update;
     if (isSubscriber) {
-      update = await models.Subscribers.update(
-        { verified: true },
-        { where: { email: token.email } },
-      );
+      update = await prisma.subscriber.update({
+        data: { verified: true },
+        where: { id: token.id },
+      });
     } else {
-      update = await models.Author.update(
-        { verified: true },
-        { where: { email: token.email } },
-      );
+      update = await prisma.author.update({
+        data: { verified: true },
+        where: { email: token.email },
+      });
     }
     if (!update) {
       return res.redirect(

@@ -1,55 +1,55 @@
-import {
-  LoginDocument,
-  LoginMutation,
-  LoginMutationVariables,
-} from "@/__generated__/queries/mutations.graphql";
-import { LoginResponse } from "@/__generated__/__types__";
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getApolloClient } from "@/graphql/apollo";
 import { NextApiRequest, NextApiResponse } from "next";
 import { basePath } from "@/constants";
+import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
 
-const providers = (req: NextApiRequest) => [
+const providers = (_req: NextApiRequest) => [
   CredentialsProvider({
     name: "Credentials",
     credentials: {
       email: { label: "Email" },
       password: { label: "Password", type: "password" },
     },
-    authorize: async (credentials): Promise<LoginResponse> => {
-      const apolloClient = await getApolloClient({}, { req });
-      const result = await apolloClient.mutate<
-        LoginMutation,
-        LoginMutationVariables
-      >({
-        mutation: LoginDocument,
-        variables: {
-          data: {
-            email: credentials?.email || "",
-            password: credentials?.password || "",
+    authorize: async (credentials): Promise<any> => {
+      try {
+        const author = await prisma.author.findFirst({
+          where: { email: credentials?.email },
+          include: {
+            role: true,
+            permissions: true,
           },
-        },
-      });
-      if (result.data?.login?.__typename === "Author") {
-        return {
-          ...result.data.login,
-          accessToken: credentials && credentials["csrfToken"],
-        };
+        });
+        if (author) {
+          if (!author.verified) {
+            throw new Error("Your email id is not verified yet.");
+          }
+          const authenticated = await bcrypt.compare(
+            credentials?.password || "",
+            author.password,
+          );
+          if (authenticated) {
+            const user = {
+              id: author.id,
+              avatar: author.avatar,
+              username: author.username,
+              name: author.name,
+              email: author.email,
+              role: author.role.name,
+              permissions: author.permissions.map(({ name }) => name),
+            };
+            return user;
+          }
+        }
+      } catch (e) {
+        throw Error(e);
       }
-
-      if (result.data?.login?.__typename === "LoginError") {
-        throw Error(result.data.login.message);
-      }
-
-      throw Error(
-        "We are facing issues logging you in. Please try after sometime",
-      );
     },
   }),
 ];
 
-const options = (req: NextApiRequest) => ({
+const options = (req: NextApiRequest): NextAuthOptions => ({
   providers: providers(req),
   callbacks: {
     redirect: async ({ url, baseUrl }) => {
@@ -58,31 +58,42 @@ const options = (req: NextApiRequest) => ({
       }
       return process.env.ROOT_URL + "/posts";
     },
-    jwt: async ({ token, ...rest }) => {
+    jwt: async ({ token, user }) => {
       //  "user" parameter is the object received from "authorize"
       //  "token" is being send to "session" callback...
       //  ...so we set "user" param of "token" to object from "authorize"...
       //  ...and return it...
-      const { user } = rest;
-      if (user && token && user.__typename === "Author") {
-        token.role = user.role;
-        token.avatar = user.avatar;
-        token.permissions = user.permissions;
-        token.id = user.id;
-        token.username = user.username;
-        token.__typename = "SessionData";
-      }
+      token.user = user;
       return token;
     },
     session: async ({ session, token }) => {
-      session.user = token;
+      try {
+        const author = await prisma.author.findFirst({
+          //@ts-ignore
+          where: { id: parseInt(token.sub) },
+          include: {
+            role: true,
+          },
+        });
+        if (author) {
+          const { id, email, username, avatar, name } = author;
+          session.user = {
+            id,
+            email,
+            username,
+            name,
+            avatar,
+            role: author.role.name,
+          } as any;
+        }
+      } catch (e) {
+        console.log(e);
+      }
       return session;
     },
   },
   jwt: {
-    encryption: true,
     secret: process.env.SECRET_KEY,
-    signingKey: process.env.SECRET_KEY,
   },
   pages: {
     signIn: `${basePath}/login`,

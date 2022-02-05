@@ -10,17 +10,17 @@ import {
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
 import { getSession } from "next-auth/react";
-import { getApolloClient } from "@/graphql/apollo";
 import { SettingsDocument } from "@/graphql/queries/queries.graphql";
 import logger from "./../../shared/logger";
 import path from "path";
 import multer from "multer";
 import { uploadToCloudinary } from "./providers/cloudinary";
 import { uploadToInternal } from "./providers/internal";
-import { models } from "@/graphql/db/models";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
 import { basePath } from "@/constants";
+import { createApolloServerClient } from "@/graphql/apolloServerClient";
+import { prisma } from "@/lib/prisma";
 
 const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");
@@ -104,28 +104,32 @@ export default async (
 };
 
 export async function upsertMedia(result: IMediaUploadResult, id: number) {
-  let media = await models.Upload.findOne({
+  let media = await prisma.upload.findFirst({
     where: {
       url: result.src,
     },
   });
-  const author = await models.Author.findOne({ where: { id } });
+  const author = await prisma.author.findFirst({ where: { id } });
   if (!author) {
     return;
   }
   if (!media) {
     /*@TODO - Convert this to a graphql query */
-    media = await models.Upload.create({
-      url: result.src,
-      name: result.name,
-      description: "",
-      height: result.size.height,
-      width: result.size.width,
-      createdAt: new Date(),
+    media = await prisma.upload.create({
+      data: {
+        url: result.src,
+        name: result.name,
+        description: "",
+        height: result.size.height,
+        width: result.size.width,
+        createdAt: new Date(),
+        author: {
+          connect: {
+            id: author.id,
+          },
+        },
+      },
     });
-  }
-  if (media) {
-    await author.$add("media", media);
   }
 }
 
@@ -142,8 +146,11 @@ async function getCloudinaryCreds(req, res) {
     };
   }
 
-  const apollo = await getApolloClient({}, { req });
-  const settings = await apollo.query<SettingsQuery, SettingsQueryVariables>({
+  const apolloClient = await createApolloServerClient({ req });
+  const settings = await apolloClient.query<
+    SettingsQuery,
+    SettingsQueryVariables
+  >({
     query: SettingsDocument,
     fetchPolicy: "network-only",
   });

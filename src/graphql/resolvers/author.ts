@@ -4,82 +4,94 @@ import {
   PostStatusOptions,
   PostTypes,
   QueryResolvers,
-  Author as AuthorType,
   InputCreateAuthor,
   SettingInputType,
+  Social,
 } from "@/__generated__/__types__";
-import { models as newModels } from "@/graphql/db/models/models";
 import bcrypt from "bcryptjs";
 import { validateCaptcha } from "./helpers";
 import generatePost from "@/graphql/db/seed/contentGenerator";
 import siteConfig from "../../../config/site.config";
-import { createAdmin, seed } from "@/graphql/db/seed/seed";
-import { decodeToken, getToken, verifyToken } from "@/shared/token";
+import { decodeToken, getClientToken, verifyToken } from "@/shared/token";
 import { EmailTemplates, ROLES } from "../types";
 import logger from "@/shared/logger";
-import { getDateTime } from "@/shared/utils";
 import { defaultSettings } from "../db/seed/constants";
 import { ResolverContext } from "../context";
+import { PrismaClient } from "@prisma/client";
+import { seed } from "../db/seed/seed";
+import { mapAuthorToGraphql, mapSettingToDb } from "./mapper";
+const prisma = new PrismaClient();
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
 }
 
 const Author = {
-  role: async ({ id }, _args, { models }) => {
-    const author = await models.Author.findOne({ where: { id } });
-    if (!author) return;
+  role: async ({ id }, _args, { prisma }: ResolverContext) => {
+    const author = await prisma.author.findFirst({
+      where: { id },
+    });
+    if (!author || !author.role_id) return;
     try {
-      const role = await author.$get("role");
-      const name = role.get("name");
-      return name;
+      const role = await prisma.role.findFirst({
+        where: { id: author.role_id },
+      });
+
+      return role?.name;
     } catch (e) {
       throw e;
     }
   },
-  permissions: async ({ id }, _args, { models }) => {
-    const author = await models.Author.findOne({ where: { id } });
-    if (!author) return;
-
-    try {
-      const role = await author.$get("role");
-      const permissions = await role.$get("permissions");
-      return permissions.map((p) => p.get("name"));
-    } catch (e) {
-      throw e;
+  permissions: async ({ id }, _args, { prisma }: ResolverContext) => {
+    const author = await prisma.author.findFirst({
+      where: { id },
+    });
+    if (!author || !author.role_id) return [];
+    const permissions = await prisma.rolePermissions.findMany({
+      where: { role_id: author.role_id },
+      include: {
+        permission: true,
+      },
+    });
+    return permissions.map((p) => p.permission.name);
+  },
+  social: ({ social }) => {
+    if (typeof social === "string") {
+      return JSON.parse(social);
     }
+    return social;
   },
 };
 
 const Query: QueryResolvers<ResolverContext> = {
-  async me(_parent, _args, { session, models }, _info) {
-    if (!session?.user.id) {
-      return { __typename: "AuthorNotFoundError", message: "Invalid Session" };
-    }
-    const author = await models.Author.findOne({
+  async me(_parent, _args, { session, prisma, author_id }, _info) {
+    author_id = session?.user.id || author_id;
+
+    const author = await prisma.author.findFirst({
       where: {
-        id: session.user.id,
+        id: author_id,
       },
     });
+    if (author) {
+      let avatar = author.avatar as string;
+      if (avatar && avatar.startsWith("/")) {
+        avatar = new URL(avatar, process.env.ROOT_URL).href;
+      }
 
-    if (!author) {
-      return { __typename: "AuthorNotFoundError", message: "" };
+      return {
+        ...author,
+        social: JSON.parse(author.social as string) as Social,
+        avatar,
+        __typename: "Author",
+      };
     }
-    try {
-      author.social = JSON.parse(author.social as string);
-    } catch (e) {
-      //
-    }
-    if (author.avatar && author.avatar.startsWith("/")) {
-      author.avatar = new URL(author.avatar, process.env.ROOT_URL).href;
-    }
-    const resolvedAuthor = author.get() as unknown as AuthorType;
-    return { ...resolvedAuthor, __typename: "Author" };
+
+    return { __typename: "AuthorNotFoundError", message: "Invalid Session" };
   },
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  async createAuthor(_, args, { models, connection, mailUtils }) {
+  async createAuthor(_, args, { prisma, mailUtils }) {
     if (args.data.token) {
       const response = await validateCaptcha(
         process.env.RECAPTCHA_KEY_SERVER,
@@ -93,14 +105,14 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
     }
 
-    const dbSeeded = await isDatabaseSeeded(connection);
+    const dbSeeded = await isDatabaseSeeded();
     if (!dbSeeded) {
       logger.debug("Database not seeded. Seeding now.");
       await seed(false);
       await createAdmin();
     }
 
-    const authorExistData = await models.Author.findOne({
+    const authorExistData = await prisma.author.findFirst({
       where: { email: args.data?.email },
     });
 
@@ -111,7 +123,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
 
-    const usernameExist = await models.Author.findOne({
+    const usernameExist = await prisma.author.findFirst({
       where: { username: args.data?.username },
     });
 
@@ -127,34 +139,60 @@ const Mutation: MutationResolvers<ResolverContext> = {
     const newAuthor = await createAuthorWithSettings(authorData, setting);
 
     if (newAuthor) {
-      const { post, page } = getWelcomePostAndPage();
-      const newPost = await newAuthor.$create("post", post);
-      const newTag = await newAuthor.$create("tag", {
+      // create new tag for author
+      const newTag = {
         name: siteConfig.first_post_tag,
         slug: siteConfig.first_post_tag,
-      });
-      await newPost.$add("tag", newTag);
-      await newAuthor.$create("post", page);
+      };
 
-      const a = newAuthor.get() as unknown as AuthorType;
+      const welcomeContent = getWelcomePostAndPage();
+      await prisma.post.create({
+        data: {
+          ...welcomeContent.post,
+          author: {
+            connect: { id: newAuthor.id },
+          },
+          tags: {
+            connectOrCreate: {
+              create: { name: newTag.name },
+              where: { name: newTag.name },
+            },
+          },
+        },
+      });
+
+      await prisma.post.create({
+        data: {
+          ...welcomeContent.page,
+          author: {
+            connect: { id: newAuthor.id },
+          },
+        },
+      });
+
       if (mailUtils.enqueueEmailAndSend) {
         await mailUtils.enqueueEmailAndSend({
-          author_id: a.id,
+          author_id: newAuthor.id,
           template_id: EmailTemplates.VERIFY_NEW_USER,
         });
       }
-
-      return { ...a, __typename: "Author" };
+      const { id, email, username, name } = newAuthor;
+      return {
+        __typename: "Author",
+        id,
+        email,
+        username,
+        name,
+      };
     }
     return {
       __typename: "CreateAuthorError",
       message: "Something went wrong and we dont know what.",
     };
   },
-  async login(_parent, args, { models }, _info) {
-    const author = await models.Author.findOne({
+  async login(_parent, args, { prisma }, _info) {
+    const author = await prisma.author.findFirst({
       where: { email: args.data?.email },
-      raw: true,
     });
     if (author) {
       if (!author?.verified) {
@@ -168,26 +206,23 @@ const Mutation: MutationResolvers<ResolverContext> = {
         author.password,
       );
 
-      if (!authenticated)
+      if (!authenticated) {
         return {
           __typename: "LoginError",
           message: "Incorrect credentials",
         };
-      try {
-        return {
-          __typename: "Author",
-          ...author,
-        };
-      } catch (e) {
-        console.log(e);
       }
+
+      return {
+        ...mapAuthorToGraphql(author),
+      };
     }
     return {
       __typename: "LoginError",
       message: "Incorrect email id",
     };
   },
-  async updateAuthor(_root, args, { session, models }) {
+  async updateAuthor(_root, args, { session, prisma }) {
     if (session?.user.id !== args.author.id) {
       return {
         ok: true,
@@ -202,22 +237,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
 
       logger.info("Updating Author => ", dataToUpdate);
-      await models.Author.update(dataToUpdate as any, {
+      const author = await prisma.author.update({
+        data: dataToUpdate,
         where: { id: args.author.id },
       });
-      const author = await models.Author.findOne({
-        where: { id: args.author.id },
-      });
-      if (author) {
-        try {
-          author.social = JSON.parse(author.social as string);
-        } catch (e) {
-          //
-        }
-      }
       return {
         ok: true,
-        data: author?.get() || undefined,
+        data: mapAuthorToGraphql(author),
       };
     } catch (e: any) {
       return {
@@ -226,10 +252,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
   },
-  async forgotPassword(_root, args, { models, mailUtils }) {
+  async forgotPassword(_root, args, { prisma, mailUtils }) {
     try {
       const email = args.email;
-      const author = await models.Author.findOne({
+      const author = await prisma.author.findFirst({
         where: { email },
       });
       if (!author) {
@@ -254,7 +280,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
   },
-  async resetPassword(_root, args, { models }) {
+  async resetPassword(_root, args, { prisma }) {
     try {
       const token = args.token;
       const isValidToken = verifyToken(token);
@@ -264,7 +290,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
       const authorEmail = decodeToken(token);
 
-      const author = await models.Author.findOne({
+      const author = await prisma.author.findFirst({
         where: { email: authorEmail },
       });
 
@@ -273,10 +299,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
       const newPassword = await bcrypt.hash(args.password, 12);
 
-      await models.Author.update(
-        { password: newPassword },
-        { where: { id: author.id } },
-      );
+      await prisma.author.update({
+        data: {
+          password: newPassword,
+        },
+        where: { id: author.id },
+      });
 
       return {
         ok: true,
@@ -311,8 +339,8 @@ function getWelcomePostAndPage() {
     type: PostTypes.Post,
     status: PostStatusOptions.Published,
     slug: title.toLocaleLowerCase().replace(/ /g, "-"),
-    createdAt: getDateTime(),
-    publishedAt: getDateTime(),
+    createdAt: new Date(),
+    publishedAt: new Date(),
     reading_time: "5 mins",
   };
 
@@ -331,22 +359,21 @@ function getWelcomePostAndPage() {
       "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
     cover_image_width: 1482,
     cover_image_height: 900,
-    createdAt: getDateTime(),
-    publishedAt: getDateTime(),
+    createdAt: new Date(),
+    publishedAt: new Date(),
     html_draft: "",
   };
 
   return { page, post };
 }
 
-async function isDatabaseSeeded(connection): Promise<boolean> {
+async function isDatabaseSeeded(): Promise<boolean> {
   try {
-    await connection.query("SELECT * FROM authors");
+    await prisma.author.findFirst();
     return true;
   } catch (e) {
-    if (e.name === "SequelizeDatabaseError") {
-      return false;
-    }
+    console.log(e);
+    return false;
   }
   return false;
 }
@@ -357,30 +384,60 @@ export async function createAuthorWithSettings(
   rolename: ROLES = ROLES.AUTHOR,
 ) {
   const { token, ...authorData } = data;
-  const role = await newModels.Role.findOne({ where: { name: rolename } });
-  const author = await newModels.Author.create({
-    ...authorData,
-    avatar: "",
-    verified: false,
-    bio: "",
-    social: {
-      twitter: "",
-      facebook: "",
-      github: "",
-      instagram: "",
-    },
-    password: bcrypt.hashSync(data.password, 12),
-  });
-  if (author && role) {
-    author.$set("role", role);
-    const newSettingRecord = await newModels.Setting.create({
-      ...defaultSettings,
-      menu: defaultSettings.menu as any,
-      site_url: `https://${data.username}.letterpad.app`,
-      ...setting,
-      client_token: getToken({ data: { id: author.id }, algorithm: "HS256" }),
+  const role = await prisma.role.findFirst({ where: { name: rolename } });
+  if (role) {
+    const newAuthor = await prisma.author.create({
+      data: {
+        ...authorData,
+        avatar: "",
+        verified: false,
+        bio: "",
+        social: JSON.stringify({
+          twitter: "",
+          facebook: "",
+          github: "",
+          instagram: "",
+        }),
+        password: bcrypt.hashSync(data.password, 12),
+        role: {
+          connect: { id: role.id },
+        },
+        setting: {
+          create: {
+            ...defaultSettings,
+            ...mapSettingToDb(setting),
+          },
+        },
+      },
     });
-    await author.$set("setting", newSettingRecord);
+    const updatedNewAuthor = prisma.author.update({
+      where: { id: newAuthor.id },
+      data: {
+        setting: {
+          update: {
+            client_token: getClientToken(newAuthor.email),
+          },
+        },
+      },
+    });
+    return updatedNewAuthor;
   }
-  return author;
+}
+
+async function createAdmin() {
+  const adminAuthor = await createAuthorWithSettings(
+    {
+      name: "Admin",
+      email: "admin@admin.com",
+      username: "admin",
+      password: "admin",
+      token: "",
+    },
+    { site_title: "Admin Account" },
+    ROLES.ADMIN,
+  );
+  await prisma.author.update({
+    where: { id: adminAuthor?.id },
+    data: { verified: true },
+  });
 }

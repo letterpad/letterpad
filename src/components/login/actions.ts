@@ -1,13 +1,13 @@
 import { message } from "antd";
 import { basePath } from "@/constants";
 import { signIn } from "next-auth/react";
-import { getApolloClient } from "@/graphql/apollo";
 import {
   ForgotPasswordDocument,
   ForgotPasswordMutation,
 } from "@/__generated__/queries/mutations.graphql";
 import { ForgotPasswordMutationVariables } from "@/graphql/queries/mutations.graphql";
 import { key } from "./constants";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 type LoginResult = {
   success: boolean;
@@ -35,7 +35,6 @@ export const doLogin = async ({
       message: result["error"],
     };
   }
-  console.log(result);
   if (result && result["ok"]) {
     return {
       success: true,
@@ -58,8 +57,8 @@ export const forgotPasswordAction = async (
   const sanitisedLoginEmail = email.trim();
   if (sanitisedLoginEmail.length > 0) {
     e.currentTarget.disabled = true;
-    const client = await getApolloClient();
-    const res = await client.mutate<
+
+    const res = await apolloBrowserClient.mutate<
       ForgotPasswordMutation,
       ForgotPasswordMutationVariables
     >({

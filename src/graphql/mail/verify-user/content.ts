@@ -4,14 +4,15 @@ import {
   EmailTemplates,
   EmailVerifyNewUserProps,
 } from "@/graphql/types";
-import { getToken } from "@/shared/token";
+import { getVerifyUserToken } from "@/shared/token";
 import { addLineBreaks } from "../utils";
+import { PrismaClient } from "@prisma/client";
 
 export async function getVerifyUserEmailContent(
   data: EmailVerifyNewUserProps,
-  models,
+  prisma: PrismaClient,
 ): Promise<EmailTemplateResponse> {
-  const template = await models.Email.findOne({
+  const template = await prisma.email.findFirst({
     where: { template_id: EmailTemplates.VERIFY_NEW_USER },
   });
   if (!template) {
@@ -20,8 +21,11 @@ export async function getVerifyUserEmailContent(
       message: `No template found for ${EmailTemplates.VERIFY_NEW_USER}`,
     };
   }
-  const author = await models.Author.findOne({
+  const author = await prisma.author.findFirst({
     where: { id: data.author_id },
+    include: {
+      setting: true,
+    },
   });
 
   if (!author) {
@@ -31,9 +35,7 @@ export async function getVerifyUserEmailContent(
     };
   }
 
-  const setting = await author.getSetting();
-
-  if (!setting) {
+  if (!author.setting) {
     return {
       ok: false,
       message: `No info found for the current blog.`,
@@ -44,19 +46,20 @@ export async function getVerifyUserEmailContent(
   });
 
   const subject = subjectTemplate.render({
-    blog_name: setting?.site_title,
+    blog_name: author.setting.site_title,
   });
   const bodyTemplate = Twig.twig({
     data: template.body.toString(),
   });
 
-  const token = getToken({
-    data: { email: author.email },
+  const token = getVerifyUserToken({
+    author_id: author.id,
+    email: author.email,
   });
   const href = `${process.env.ROOT_URL}/api/verify?token=${token}`;
 
   const body = bodyTemplate.render({
-    blog_name: setting?.site_title,
+    blog_name: author.setting.site_title,
     full_name: "there",
     verify_link: `<a target="_blank" href="${href}">
         Verify Email
@@ -67,8 +70,10 @@ export async function getVerifyUserEmailContent(
     ok: true,
     content: { subject, html: addLineBreaks(body), to: author.email },
     meta: {
-      setting,
-      author,
+      author: {
+        ...author,
+        social: JSON.parse(author.social),
+      },
     },
   };
 }

@@ -1,58 +1,52 @@
 import { setResponsiveImages } from "./../utils/imageAttributs";
-// import { PostAttributes } from "@/graphql/db/models/post";
-import { Op, Order } from "sequelize";
 import {
   Permissions,
-  PostFilters,
   PostStatusOptions,
-  SortBy,
   PostTypes,
   QueryResolvers,
+  NavigationType,
 } from "@/__generated__/__types__";
 import { decrypt } from "../utils/crypto";
 import logger from "./../../shared/logger";
-import debug from "debug";
 import { mdToHtml } from "@/shared/converter";
 import { ResolverContext } from "../context";
+import { Prisma } from "@prisma/client";
+import { mapPostToGraphql } from "./mapper";
 
 type PostAttributes = any;
 
-interface IPostCondition {
-  conditions: {
-    order: Order;
-    include: any;
-    where: {
-      id?: number | {};
-      featured?: boolean;
-      status: { [Op.ne]: PostStatusOptions.Trashed };
-      type?: PostTypes;
-      author_id?: number;
-    };
-    limit: number;
-    offset?: number;
-    sortBy: "ASC" | "DESC";
-  };
-}
-
 const Post = {
-  author: async ({ id }: PostAttributes, _args, { models }) => {
-    const post = await models.Post.findOne({ where: { id: id } });
-    if (post) {
-      const author = await models.Author.findOne({
-        where: { id: post.author_id },
-      });
-
-      return author?.get();
-    }
-    return {};
+  slug: async ({ type, slug }: PostAttributes) => {
+    return `/${type}/${slug}`;
   },
-  tags: async ({ id }: PostAttributes, _args, { models }) => {
-    const post = await models.Post.findOne({ where: { id: id } });
-    if (post) {
-      // TODO: check why post.getAuthor didnt work
-      const tags = await post.getTags();
-      return tags.map((tag) => tag.get());
+  cover_image: async ({
+    cover_image,
+    cover_image_width,
+    cover_image_height,
+  }: PostAttributes) => {
+    if (cover_image.startsWith("/")) {
+      return process.env.ROOT_URL + cover_image;
     }
+    return {
+      src: cover_image,
+      width: cover_image_width,
+      height: cover_image_height,
+    };
+  },
+  author: async (attrs: PostAttributes, _args, { prisma }: ResolverContext) => {
+    const post = await prisma.post.findFirst({
+      where: { id: attrs.id },
+      include: { author: true },
+    });
+    if (post) {
+      return post.author;
+    }
+  },
+  tags: async ({ id }: PostAttributes, _args, { prisma }: ResolverContext) => {
+    const tags = await prisma.tag.findMany({
+      where: { posts: { some: { id } } },
+    });
+    return tags;
   },
   html: async ({ html }) => {
     return setResponsiveImages(html);
@@ -64,207 +58,118 @@ const Query: QueryResolvers<ResolverContext> = {
    * Query to take care of multiple post in one page.
    * Used for Search and Admin posts and pages list.
    */
-  async posts(_parent, args, { session, author_id, models }, _info) {
-    debug("letterpad:post:update")("Reached posts query");
+  async posts(_parent, args, { session, author_id, prisma }, _info) {
     let authorId = session?.user.id || author_id;
     if (!authorId) {
       return { __typename: "PostError", message: "Author Id not found" };
     }
-    const query: IPostCondition = {
-      conditions: {
-        order: [["publishedAt", SortBy.Desc]],
-        include: [],
-        sortBy: "DESC",
-        where: {
-          id: 0,
-          featured: false,
-          status: { [Op.ne]: PostStatusOptions.Trashed },
-          type: PostTypes.Post,
-          author_id: authorId,
-        },
-        limit: 20,
-        offset: 0,
-      },
-    };
+    if (!args.filters) {
+      args.filters = {};
+    }
+
+    // if there is no session, do not show draft or deleted items.
+    if (!session?.user.id) {
+      args.filters.status = PostStatusOptions.Published;
+    }
+
+    // First verify if posts are requested from client and not admin dashboard.
+    // If posts are requested by client, then verify if this a collection of posts for
+    // displaying in homepage.
+
+    // find the real slug of the tag
     try {
-      // id
-      if (args?.filters?.id) {
-        query.conditions.where.id = args.filters.id;
-      } else {
-        delete query.conditions.where.id;
-      }
-
-      // pagination
-      if (args?.filters?.cursor) {
-        query.conditions.where.id = { [Op.gt]: args.filters.cursor };
-      }
-
-      if (args?.filters?.page) {
-        query.conditions.offset =
-          (args.filters.page - 1) * query.conditions.limit;
-      } else {
-        delete query.conditions.offset;
-      }
-
-      if (args?.filters?.limit) {
-        query.conditions.limit = args.filters.limit;
-      }
-
-      // resolve status type and filter
-      if (args?.filters?.featured) {
-        query.conditions.where.featured = args.filters.featured;
-      } else {
-        delete query.conditions.where.featured;
-      }
-
-      // resolve type
-      if (args?.filters?.type) {
-        query.conditions.where.type = args.filters.type;
-      }
-
-      // resolve status
-      if (args?.filters?.status) {
-        query.conditions.where.status = { [Op.eq]: args.filters.status } as any;
-      }
-
-      if (!session?.user.id) {
-        query.conditions.where.status = {
-          [Op.eq]: PostStatusOptions.Published,
-        } as any;
-      }
-
-      // sort
-      if (args?.filters?.sortBy) {
-        query.conditions.order = [["publishedAt", args.filters.sortBy]];
-      }
-
-      if (session?.user.id && args?.filters?.sortBy) {
-        query.conditions.order = [["updatedAt", args.filters.sortBy]];
-      }
-
-      // resolve menu filter
-      if (args?.filters?.tagSlug) {
-        let { tagSlug } = args.filters;
-        if (tagSlug === "/") {
-          // get the first menu item.
-          const author = await models.Author.findOne({
-            where: { id: authorId },
-          });
-          const setting = await author?.$get("setting");
-
-          if (setting) {
-            tagSlug = setting.menu[0].slug;
+      if (args.filters?.tagSlug === "/") {
+        // find the first menu item. If its a tag, then display its collection of posts.
+        const authorWithSetting = await prisma.author.findFirst({
+          where: { id: author_id },
+          include: { setting: true },
+        });
+        if (authorWithSetting?.setting?.menu) {
+          const menu = JSON.parse(authorWithSetting?.setting.menu);
+          if (menu[0].type === NavigationType.Tag) {
+            args.filters.tagSlug = menu[0].slug.replace("/tag/", "");
           }
         }
-
-        const taxTag = await models.Tag.findOne({
-          where: {
-            slug: tagSlug.split("/").pop() as string,
-            author_id: authorId,
-          },
-        });
-
-        if (taxTag) {
-          const posts = await taxTag.$get("posts", query.conditions);
-          return {
-            __typename: "PostsNode",
-            rows: posts?.map((p) => p.get()),
-            count: await taxTag.$count("posts", query.conditions),
-          };
-        }
-        return {
-          __typename: "PostsNode",
-          rows: [],
-          count: 0,
-        };
+      } else if (args.filters.tagSlug) {
+        args.filters.tagSlug = args.filters.tagSlug.replace("/tag/", "");
       }
-
-      // resolve tag filter
-      if (args?.filters?.tag) {
-        const tag = await models.Tag.findOne({
-          where: { name: args.filters.tag, author_id },
-        });
-        if (tag) {
-          const posts = await tag.$get("posts", query.conditions);
-          return {
-            rows: posts.map((p) => p.get()),
-            count: await tag.$count("posts", query.conditions),
-          };
-        } else {
-          return {
-            __typename: "PostsNode",
-            rows: [],
-            count: 0,
-          };
-        }
-      }
-
-      const posts = await models.Post.findAll(query.conditions);
-      const count = await models.Post.count(query.conditions);
-      debug("letterpad:post:update")(query.conditions);
-
+      const { page, limit } = args.filters;
+      const skip = page && limit ? page * limit : 0;
+      const isPage = args.filters.type === PostTypes.Page;
+      const condition: Prisma.PostFindManyArgs = {
+        where: {
+          author_id: authorId,
+          id: args.filters?.id,
+          featured: args.filters?.featured,
+          status: args.filters?.status,
+          //@todo - remove slug
+          slug: args.filters?.slug,
+          type: args.filters?.type || PostTypes.Post,
+          tags: isPage
+            ? { every: {} }
+            : {
+                every: {
+                  slug: args.filters?.tagSlug,
+                },
+              },
+        },
+        take: args.filters?.limit || 10,
+        skip,
+        orderBy: {
+          updatedAt: args?.filters?.sortBy || "desc",
+        },
+      };
+      const posts = await prisma.post.findMany(condition);
       return {
         __typename: "PostsNode",
-        rows: posts.map((post) => post.get()),
-        count,
+        rows: posts.map(mapPostToGraphql),
+        count: await prisma.post.count({ where: condition.where }),
       };
     } catch (e) {
-      debug("letterpad:post:update")(e);
       return { __typename: "PostError", message: e.message };
     }
   },
 
-  async post(_parent, args, { session, author_id, models }, _info) {
-    const error = { __typename: "PostError", message: "" };
-    if (!args.filters) return { ...error, message: "Missing arguments" };
+  async post(_parent, args, { session, author_id, prisma }, _info) {
+    if (!args.filters) {
+      return { __typename: "PostError", message: "Missing arguments" };
+    }
 
     const authorId = session?.user.id || author_id;
 
     if (!authorId) {
-      return { ...error, message: "No author found for this post." };
+      return {
+        __typename: "PostError",
+        message: "No author found for this post.",
+      };
     }
-    const { previewHash, ...filters } = args.filters;
-    const conditions = {
-      where: { ...filters, author_id: authorId } as PostFilters & {
-        author_id?: number;
+    const { previewHash, id, slug } = args.filters;
+
+    let postId = previewHash ? Number(decrypt(previewHash)) : id;
+    const manageOwnPost = session?.user.permissions?.includes(
+      Permissions.ManageOwnPosts,
+    );
+
+    const post = await prisma.post.findFirst({
+      where: {
+        id: postId,
+        author_id: manageOwnPost ? author_id : undefined,
+        status: !session?.user.id ? PostStatusOptions.Published : undefined,
+        slug: slug?.split("/").pop(),
       },
-    };
-    if (session?.user.permissions) {
-      //  Author should not see others posts from admin panel
-      if (session.user.permissions.includes(Permissions.ManageOwnPosts)) {
-        conditions.where.author_id = session.user.id;
-      }
-    }
+    });
 
-    if (!session?.user.id) {
-      conditions.where.status = PostStatusOptions.Published;
-    }
-
-    if (args.filters.id) {
-      conditions.where.id = args.filters.id;
-    }
-
-    if (args.filters.slug) {
-      conditions.where.slug = args.filters.slug.split("/").pop();
-    }
-
-    if (previewHash) {
-      conditions.where.id = Number(decrypt(previewHash));
-      delete conditions.where.status;
-    }
-    const postRow = await models.Post.findOne(conditions);
-    const post = postRow?.get();
     if (post) {
       const html = previewHash
-        ? mdToHtml(post.html_draft || post.html)
+        ? mdToHtml(post.html_draft || post.html || "")
         : post.html;
 
-      return { ...post, html, __typename: "Post" };
+      return { ...mapPostToGraphql(post), html, __typename: "Post" };
     }
-    return { ...error, message: "Post not found" };
+    return { __typename: "PostError", message: "Post not found" };
   },
 
-  async stats(_, _args, { session, models }) {
+  async stats(_, _args, { session, prisma, author_id }) {
     logger.debug("Reached resolver: stats");
     const result = {
       posts: { published: 0, drafts: 0 },
@@ -272,7 +177,7 @@ const Query: QueryResolvers<ResolverContext> = {
       tags: 0,
       media: 0,
     };
-    const author_id = session?.user.id;
+    author_id = session?.user.id || author_id;
 
     if (!author_id) {
       return {
@@ -281,7 +186,7 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
 
-    const author = await models.Author.findOne({ where: { id: author_id } });
+    const author = await prisma.author.findFirst({ where: { id: author_id } });
 
     if (!author) {
       return {
@@ -290,37 +195,61 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
 
-    result.posts.published = await author.$count("posts", {
+    result.posts.published = await prisma.post.count({
       where: {
         status: PostStatusOptions.Published,
         type: PostTypes.Post,
+        author: {
+          id: author_id,
+        },
       },
     });
 
-    result.posts.drafts = await author.$count("posts", {
+    result.posts.drafts = await prisma.post.count({
       where: {
         status: PostStatusOptions.Draft,
         type: PostTypes.Post,
+        author: {
+          id: author_id,
+        },
       },
     });
 
-    result.pages.published = await author.$count("posts", {
+    result.pages.published = await prisma.post.count({
       where: {
         status: PostStatusOptions.Published,
         type: PostTypes.Page,
+        author: {
+          id: author_id,
+        },
       },
     });
 
-    result.pages.drafts = await author.$count("posts", {
+    result.pages.drafts = await prisma.post.count({
       where: {
         status: PostStatusOptions.Draft,
         type: PostTypes.Page,
+        author: {
+          id: author_id,
+        },
       },
     });
 
-    result.tags = await author.$count("tags");
+    result.tags = await prisma.tag.count({
+      where: {
+        posts: {
+          some: {
+            author: {
+              id: author_id,
+            },
+          },
+        },
+      },
+    });
 
-    result.media = await author.$count("uploads");
+    result.media = await prisma.upload.count({
+      where: { author: { id: author_id } },
+    });
 
     return {
       __typename: "Stats",

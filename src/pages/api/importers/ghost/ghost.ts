@@ -67,7 +67,6 @@ function getPostTagsMapper(data: IGhostDb["data"]) {
         {
           slug: "home",
           name: "Home",
-          desc: "",
         },
       ] as ITagSanitized[];
     }
@@ -78,7 +77,6 @@ function getPostTagsMapper(data: IGhostDb["data"]) {
         return {
           slug: _tag.slug,
           name: _tag.name,
-          desc: _tag.description,
         };
       })
       .pop();

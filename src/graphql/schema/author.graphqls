@@ -11,10 +11,10 @@ type Author {
   username: String!
   name: String!
   social: Social
-  bio: String!
-  role: Role!
-  permissions: [Permissions!]!
-  avatar: String!
+  bio: String
+  role: Role
+  permissions: [Permissions!]
+  avatar: String
   verified: Boolean
   accessToken: String
 }

@@ -2,15 +2,16 @@ import logger from "./logger";
 import { Context } from "@apollo/client";
 import { verifyToken } from "./token";
 import * as Sentry from "@sentry/nextjs";
-import { Author } from "@/graphql/db/models/definations/author";
+import { PrismaClient } from "@prisma/client";
 const authHeaderPrefix = "Basic ";
-
+const prisma = new PrismaClient();
 const printOnce = {
   env: 0,
 };
 const getAuthorIdFromRequest = async (context: Context) => {
   const authHeader = context.req?.headers?.authorization || "";
-  let author_id;
+  let author_id: number | null = null;
+
   try {
     author_id = await getAuthorFromSubdomain(context);
     if (author_id) {
@@ -31,7 +32,7 @@ const getAuthorIdFromRequest = async (context: Context) => {
         logger.debug("development mode");
         printOnce.env = 1;
       }
-      const author = await Author.findOne({
+      const author = await prisma.author.findFirst({
         where: { email: "demo@demo.com" },
       });
       if (author) {
@@ -53,9 +54,9 @@ async function getAuthorFromSubdomain(context) {
     const { identifier } = context.req.headers;
     logger.debug("Host for checking subdomain - ", identifier);
     const username = identifier.split(".")[0];
-    const author = await Author.findOne({
-      attributes: ["id"],
+    const author = await prisma.author.findFirst({
       where: { username },
+      distinct: ["id"],
     });
     return author ? author.id : null;
   }

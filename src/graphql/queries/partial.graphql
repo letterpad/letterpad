@@ -34,9 +34,7 @@ fragment PostWithAuthorAndTags on Post {
     bio
   }
   tags {
-    id
     name
-    desc
     slug
   }
 }

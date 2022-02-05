@@ -24,7 +24,7 @@ type Setting {
   social_facebook: String
   social_instagram: String
   social_github: String
-  displayAuthorInfo: Boolean!
+  display_author_info: Boolean!
   intro_dismissed: Boolean!
   cloudinary_key: String
   cloudinary_name: String
@@ -64,7 +64,7 @@ input SettingInputType {
   social_facebook: String
   social_instagram: String
   social_github: String
-  displayAuthorInfo: Boolean
+  display_author_info: Boolean
   cloudinary_key: String
   cloudinary_name: String
   cloudinary_secret: String
@@ -89,5 +89,5 @@ type Query {
 }
 
 type Mutation {
-  updateOptions(options: [SettingInputType!]!): Setting
+  updateOptions(options: [SettingInputType!]!): SettingResponse
 }

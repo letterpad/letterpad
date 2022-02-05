@@ -1,20 +1,13 @@
 import { getSession } from "next-auth/react";
-import { Author } from "./../../graphql/db/models/definations/author";
-import { models } from "@/graphql/db/models";
 import multer from "multer";
 import initMiddleware from "./middleware";
 import { ROLES, SessionData } from "@/graphql/types";
 import { Role } from "@/__generated__/__types__";
-import {
-  IAuthorData,
-  IImportExportData,
-  ITagSanitized,
-} from "./importExportTypes";
+import { IAuthorData, IImportExportData } from "./importExportTypes";
 
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
-import { Post } from "@/graphql/db/models/definations/post";
-import { getToken } from "@/shared/token";
-import { Model } from "sequelize-typescript";
+import { prisma } from "@/lib/prisma";
+import { getClientToken } from "@/shared/token";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -54,13 +47,11 @@ const Import = async (req, res) => {
         });
       }
       // when importing from other cms, set the current password of the author
-      if (data.authors[session.user.email].author.password === "") {
-        data.authors[session.user.email].author.password = author.password;
+      if (data.authors[session.user.email].password === "") {
+        data.authors[session.user.email].password = author.password;
       }
     }
-
-    const sanitizedData = sanitizeForeignData(data.authors);
-    const response = await startImport(sanitizedData, isLoggedInUserAdmin);
+    const response = await startImport(data.authors, isLoggedInUserAdmin);
 
     return res.send(response);
   } catch (e) {
@@ -73,24 +64,96 @@ const Import = async (req, res) => {
 
 export default Import;
 
-async function startImport(
-  data: { [email: string]: IAuthorData },
-  isLoggedInUserAdmin: boolean,
-) {
-  const role = await models.Role.findOne({
+async function startImport(data: { [email: string]: IAuthorData }, isAdmin) {
+  const role = await prisma.role.findFirst({
     where: { name: ROLES.AUTHOR },
   });
 
   for (const email in data) {
-    const authorsData = data[email];
-    let author = await models.Author.findOne({
+    let author = await prisma.author.findFirst({
       where: { email },
     });
-    if (!author && isLoggedInUserAdmin) {
-      //@ts-ignore author
-      const { id, role_id, setting_id, ...sanitizedAuthor } =
-        authorsData["author"];
-      author = await models.Author.create(sanitizedAuthor);
+
+    if (isAdmin || author) {
+      const { id, role_id, setting, ...authorsData } = data[email];
+      //@ts-ignore
+      const { author_id, ...filteredSetting } = setting;
+
+      try {
+        if (author) {
+          await prisma.author.delete({ where: { email } });
+        }
+        author = await prisma.author.create({
+          data: {
+            name: authorsData.name,
+            email: authorsData.email,
+            bio: authorsData.bio,
+            verified: true,
+            username: authorsData.username,
+            avatar: authorsData.avatar,
+            password: authorsData.password,
+            verify_attempt_left: 3,
+            social: JSON.stringify(authorsData.social),
+            role: {
+              connect: {
+                id: role?.id,
+              },
+            },
+            subscribers: {
+              create: [
+                ...authorsData.subscribers.map(
+                  ({ email, verified, verify_attempt_left }) => {
+                    return { email, verified, verify_attempt_left };
+                  },
+                ),
+              ],
+            },
+            setting: {
+              create: {
+                ...filteredSetting,
+                id: undefined,
+                client_token: getClientToken(authorsData.email),
+              },
+            },
+            uploads: {
+              create: [
+                ...authorsData.uploads.map(({ name, url, width, height }) => {
+                  return { name, url, width, height };
+                }),
+              ],
+            },
+            posts: {
+              create: [
+                ...authorsData.posts.map((post) => {
+                  const { id, tags, author_id, ...rest } = post;
+                  return {
+                    ...rest,
+                    createdAt: rest.createdAt
+                      ? new Date(rest.createdAt)
+                      : new Date(),
+                    updatedAt: rest.updatedAt
+                      ? new Date(rest.updatedAt)
+                      : new Date(),
+                    scheduledAt: rest.scheduledAt
+                      ? new Date(rest.scheduledAt)
+                      : new Date(),
+                    tags: {
+                      connectOrCreate: tags.map(({ name, slug }) => {
+                        return {
+                          create: { name, slug },
+                          where: { name },
+                        };
+                      }),
+                    },
+                  };
+                }),
+              ],
+            },
+          },
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     if (!author) {
@@ -100,114 +163,11 @@ async function startImport(
       };
     }
 
-    if (role) {
-      await author.$set("role", role);
-    }
-
-    await removeUserData(author as any);
-
-    authorsData.setting.client_token = getToken({
-      data: { id: author.id },
-      algorithm: "HS256",
-    });
-    await author.$create("setting", authorsData.setting);
-
-    await Promise.all([
-      ...authorsData.media.map((item) => author?.$create("upload", item)),
-    ]);
-
-    for (const data of authorsData.posts) {
-      //@ts-ignore
-      const { tags, ...post } = data;
-      const newPost = await author.$create("post", {
-        ...data,
-        cover_image: data.cover_image,
-      });
-      addTagsToPost(newPost, tags, author);
-    }
+    return {
+      success: true,
+      message: "Import complete",
+    };
   }
-  return {
-    success: true,
-    message: "Import complete",
-  };
-}
-
-async function addTagsToPost(
-  post: Model<Post>,
-  tags: ITagSanitized[],
-  author: Model<Author>,
-) {
-  for (const tag of tags) {
-    const existingTag = await models.Tag.findOne({
-      where: { name: tag.name, author_id: author.id },
-    });
-    if (existingTag) {
-      post.$add("tag", existingTag);
-    } else {
-      post.$create("tag", tag);
-    }
-  }
-}
-
-async function removeUserData(author: Author) {
-  const setting = await author.$get("setting");
-
-  if (setting?.id) {
-    // remove setting
-    await models.Setting.destroy({ where: { id: setting.id } });
-  }
-
-  if (author.id) {
-    // remove tags
-    await models.Tag.destroy({ where: { author_id: author.id } });
-
-    // remove posts. also removes relationship with tags
-    await models.Post.destroy({ where: { author_id: author.id } });
-
-    // remove media
-    await models.Upload.destroy({ where: { author_id: author.id } });
-  }
-}
-
-function sanitizeForeignData(authors: IImportExportData["authors"]) {
-  const sanitizedData: IImportExportData["authors"] = {};
-  for (const email in authors) {
-    const authorData: IAuthorData = authors[email];
-    sanitizedData[email] = authorData;
-
-    //posts
-    const posts = authorData.posts.map((post) => {
-      // @ts-ignore
-      const { id, author_id, ...rest } = post;
-      return rest;
-    });
-
-    sanitizedData[email].posts = posts;
-
-    // tags
-    const tags = authorData.tags.map((tag) => {
-      // @ts-ignore
-      const { id, author_id, ...rest } = tag;
-      return rest;
-    });
-
-    sanitizedData[email].tags = tags;
-
-    // settings
-    // @ts-ignore
-    const { id, ...setting } = authorData.setting;
-    sanitizedData[email].setting = setting;
-
-    // media
-    const media = authorData.media.map((item) => {
-      // @ts-ignore
-      const { id, author_id, ...rest } = item;
-      return rest;
-    });
-
-    sanitizedData[email].media = media;
-  }
-  return sanitizedData;
 }
 
 async function validateSingleAuthorImport(
@@ -222,7 +182,7 @@ async function validateSingleAuthorImport(
     });
     return null;
   }
-  return models.Author.findOne({
+  return prisma.author.findFirst({
     where: { id: sessionUser.id },
   });
 }

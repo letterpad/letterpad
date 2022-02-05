@@ -1,13 +1,13 @@
 import { UpdateOptionsDocument } from "./../../../__generated__/src/graphql/queries/mutations.graphql";
 import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
-import { models } from "@/graphql/db/models";
 import { API } from "./../../../tests/testClient";
+import { prisma } from "@/lib/prisma";
 
 describe("Test Settings Graphql API", () => {
   it("get sitename and title", async () => {
     const result = await API({ query: SettingsDocument, variables: {} });
 
-    const settings = await models.Setting.findOne({ where: { id: 2 } });
+    const settings = await prisma.setting.findFirst({ where: { id: 2 } });
     expect(result.settings).toEqual(
       expect.objectContaining({
         site_title: settings?.site_title,
@@ -52,7 +52,7 @@ describe("Test Settings Graphql API", () => {
 
   it("mutates sitename and title", async () => {
     const change = [
-      { site_title: "hello111" },
+      { site_title: "Changed Title" },
       { site_description: "Tagline" },
     ];
 
@@ -62,7 +62,7 @@ describe("Test Settings Graphql API", () => {
         variables: { options: change },
       });
 
-      const settings = await models.Setting.findOne({ where: { id: 2 } });
+      const settings = await prisma.setting.findFirst({ where: { id: 2 } });
       expect(result.updateOptions).toEqual(
         expect.objectContaining({
           site_title: settings?.site_title,

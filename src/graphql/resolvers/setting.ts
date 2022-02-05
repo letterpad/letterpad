@@ -2,15 +2,13 @@ import {
   QueryResolvers,
   MutationResolvers,
   Setting as SettingType,
-  InputImage,
   Navigation,
-  Role,
 } from "@/__generated__/__types__";
 import fs from "fs";
 import path from "path";
 import logger from "@/shared/logger";
-import { defaultSettings } from "../db/seed/constants";
 import { ResolverContext } from "../context";
+import { mapSettingToGraphql } from "./mapper";
 
 type ValueOf<T> = T[keyof T];
 const SECURE_SETTINGS = [
@@ -53,95 +51,99 @@ const Setting = {
 };
 
 const Query: QueryResolvers<ResolverContext> = {
-  settings: async (_root, _args = {}, { session, author_id, models }) => {
+  settings: async (_root, _args = {}, { session, author_id, prisma }) => {
     const authorId = session?.user.id || author_id;
-    if (!authorId) {
-      return {
-        __typename: "SettingError",
-        message: "Setting related to author:null not found",
-      };
-    }
-    const author = await models.Author.findOne({
-      where: { id: authorId },
-    });
 
-    const setting = await author?.$get("setting");
-    if (!setting)
-      return {
-        __typename: "SettingError",
-        message: "Setting related to author:null not found",
-      };
-    SECURE_SETTINGS.forEach((securedKey) => {
-      if (!session?.user.id) {
-        setting.setDataValue(securedKey, "");
+    if (authorId) {
+      const author = await prisma.author.findFirst({
+        where: { id: authorId },
+        include: {
+          setting: true,
+        },
+      });
+
+      if (author && author.setting) {
+        SECURE_SETTINGS.forEach((securedKey: any) => {
+          if (!session?.user.id && author.setting) {
+            author.setting[securedKey] = "";
+          }
+        });
+        return { ...mapSettingToGraphql(author.setting) };
       }
-    });
-
-    return { ...setting.get(), __typename: "Setting" };
-  },
-};
-const Mutation: MutationResolvers<ResolverContext> = {
-  //@ts-ignore
-  updateOptions: async (_root, args, { session, models }) => {
-    if (!session?.user.id)
-      return {
-        id: 0,
-        ...defaultSettings,
-        menu: defaultSettings.menu as any,
-      };
-
-    const author = await models.Author.findOne({
-      where: { id: session.user.id },
-    });
-
-    if (!author) return { id: 0, ...defaultSettings };
-    const _setting = await author.$get("setting");
-
-    let promises = args.options.map((setting) => {
-      const option = Object.keys(setting)[0] as keyof Omit<
-        SettingType,
-        "__typename"
-      >;
-      let value = Object.values(setting)[0] as ValueOf<SettingType>;
-
-      if (setting.css) {
-        fs.writeFileSync(cssPath, setting.css);
-      }
-
-      if (setting.google_analytics && session.user.role === Role.Admin) {
-      }
-      if (setting.banner || setting.site_logo || setting.site_favicon) {
-        value = value as InputImage;
-        if (value && value.src?.startsWith(process.env.ROOT_URL)) {
-          value.src = value.src?.replace(process.env.ROOT_URL, "");
-        }
-      }
-      const setting_id = _setting?.get().id;
-      logger.info(
-        `Updating settings with id ${setting_id}- ` + option + " : " + value,
-      );
-      return models.Setting.update(
-        { [option]: value },
-        { where: { id: setting_id } },
-      );
-    });
-
-    try {
-      await Promise.all(promises);
-    } catch (e) {
-      console.log("e :>> ", e);
-    }
-
-    const setting = await models.Setting.findOne({
-      where: { id: session.user.id },
-    });
-    if (!setting) {
-      return defaultSettings;
     }
 
     return {
-      ...setting.get(),
-    } as unknown as SettingType;
+      __typename: "SettingError",
+      message: `Setting related to author:${authorId} not found`,
+    };
+  },
+};
+const Mutation: MutationResolvers<ResolverContext> = {
+  updateOptions: async (_root, args, { session, prisma, author_id }) => {
+    author_id = session?.user.id || author_id;
+    if (author_id) {
+      const author = await prisma.author.findFirst({
+        where: { id: author_id },
+        include: {
+          setting: true,
+        },
+      });
+      const setting_id = author?.setting?.id;
+      if (!setting_id)
+        return { __typename: "SettingError", message: "Setting now found" };
+
+      let promises = args.options.map((setting) => {
+        const option = Object.keys(setting)[0] as keyof Omit<
+          SettingType,
+          "__typename"
+        >;
+        let value = Object.values(setting)[0] as ValueOf<SettingType>;
+
+        if (option === "css") {
+          fs.writeFileSync(cssPath, value as string);
+        }
+        const isImageOption =
+          setting.banner || setting.site_logo || setting.site_favicon;
+
+        const internalImage = isImageOption?.src.startsWith(
+          process.env.ROOT_URL,
+        );
+        if (isImageOption && internalImage) {
+          isImageOption.src = isImageOption.src?.replace(
+            process.env.ROOT_URL,
+            "",
+          );
+
+          value = JSON.stringify(isImageOption);
+        }
+        if (["menu", "banner", "site_logo", "site_favicon"].includes(option)) {
+          value = JSON.stringify(value);
+        }
+        logger.info(
+          `Updating settings with id ${setting_id}- ` + option + " : " + value,
+        );
+
+        return prisma.setting.update({
+          data: {
+            [option]: value,
+          },
+          where: { id: setting_id },
+        });
+      });
+
+      await Promise.all(promises);
+
+      const setting = await prisma.setting.findUnique({
+        where: { id: setting_id },
+      });
+      if (setting)
+        return { ...mapSettingToGraphql(setting), __typename: "Setting" };
+      throw Error("Couldnt find setting");
+    }
+    return {
+      message: "You are not authorized",
+      __typename: "SettingError",
+    };
   },
 };
 

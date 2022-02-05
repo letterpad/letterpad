@@ -43,9 +43,11 @@ describe("Test Post Query Graphql API", () => {
       id: post.createPost.id,
       cover_image: {
         src: "https://dummyimage.com/600x400/000/fff",
+        height: 400,
+        width: 600,
       },
     });
-
+    console.log("Test", updatedPost.updatePost.cover_image);
     expect(updatedPost.updatePost.cover_image.height).toBe(400);
     expect(updatedPost.updatePost.cover_image.width).toBe(600);
   });

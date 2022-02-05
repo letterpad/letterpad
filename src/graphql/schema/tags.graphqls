@@ -1,7 +1,5 @@
 type Tags {
-  id: Int!
   name: String!
-  desc: String
   slug: String!
   posts: PostsResponse
 }
@@ -31,9 +29,8 @@ union UpdateTagsResponse = EditTaxResponse | TagsError
 union DeleteTagsResponse = DeleteTagsResult | TagsError
 
 input InputTags {
-  id: Int!
-  name: String
-  desc: String
+  name: String!
+  old_name: String
   slug: String
 }
 
@@ -50,5 +47,5 @@ type Query {
 
 type Mutation {
   updateTags(data: InputTags): UpdateTagsResponse!
-  deleteTags(id: Int!): DeleteTagsResponse!
+  deleteTags(name: String!): DeleteTagsResponse!
 }

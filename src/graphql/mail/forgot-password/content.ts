@@ -4,14 +4,15 @@ import {
   EmailTemplateResponse,
   EmailTemplates,
 } from "@/graphql/types";
-import { getToken } from "@/shared/token";
+import { getForgotPasswordToken } from "@/shared/token";
 import { addLineBreaks } from "../utils";
+import { PrismaClient } from "@prisma/client";
 
 export async function getForgotPasswordContent(
   data: EmailForgotPasswordProps,
-  models,
+  prisma: PrismaClient,
 ): Promise<EmailTemplateResponse> {
-  const template = await models.Email.findOne({
+  const template = await prisma.email.findFirst({
     where: { template_id: EmailTemplates.FORGOT_PASSWORD },
   });
   if (!template) {
@@ -20,12 +21,14 @@ export async function getForgotPasswordContent(
       message: `No template found for ${EmailTemplates.FORGOT_PASSWORD}`,
     };
   }
-  const author = await models.Author.findOne({
+  const author = await prisma.author.findFirst({
     where: { id: data.author_id },
+    include: {
+      setting: true,
+    },
   });
-  const setting = await author?.getSetting();
 
-  if (!author || !setting) {
+  if (!author) {
     return {
       ok: false,
       message: `No info found for the current blog.`,
@@ -36,20 +39,20 @@ export async function getForgotPasswordContent(
   });
 
   const subject = subjectTemplate.render({
-    blog_name: setting?.site_title,
+    blog_name: author.setting?.site_title,
   });
 
   const bodyTemplate = Twig.twig({
     data: template.body.toString(),
   });
 
-  const token = getToken({
-    data: { email: author.email },
+  const token = getForgotPasswordToken({
+    email: author.email,
   });
   const href = `${process.env.ROOT_URL}/resetPassword?token=${token}`;
 
   const body = bodyTemplate.render({
-    blog_name: setting?.site_title,
+    blog_name: author.setting?.site_title,
     full_name: author?.name,
     change_password_link: `<a target="_blank"  href="${href}">Change Password</a>`,
   });
@@ -58,7 +61,6 @@ export async function getForgotPasswordContent(
     ok: true,
     content: { subject, html: addLineBreaks(body), to: author.email },
     meta: {
-      setting,
       author,
     },
   };
