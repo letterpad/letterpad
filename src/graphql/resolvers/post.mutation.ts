@@ -13,7 +13,6 @@ import {
   toSlug,
 } from "./helpers";
 import logger from "@/shared/logger";
-import { getDateTime } from "@/shared/utils";
 import { EmailTemplates } from "@/graphql/types";
 import { ResolverContext } from "../context";
 import { Prisma } from "@prisma/client";

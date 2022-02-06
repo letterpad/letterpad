@@ -7,7 +7,6 @@ import usePost from "@/components/post/usePost";
 import { InputUpdatePost } from "@/__generated__/__types__";
 import { useContext } from "react";
 import { PostContextType } from "@/components/post/types";
-import { EditorHelpers } from "letterpad-editor";
 import { Editor } from "tinymce/tinymce";
 
 export const PostContext = createContext<Partial<PostContextType>>({});

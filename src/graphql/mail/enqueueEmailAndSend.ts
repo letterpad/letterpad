@@ -4,13 +4,12 @@ import { getEmailTemplate } from "./templates/getTemplate";
 import * as Sentry from "@sentry/nextjs";
 import { getMailClient } from "./client";
 import { sendMail } from "./sendMail";
-import { PrismaType } from "@/lib/prisma";
 
 const mailClient = getMailClient();
 
 export async function enqueueEmailAndSend(
   props: EmailProps,
-  prisma: PrismaType,
+  prisma: any,
   restrict = false,
 ) {
   if (restrict) return "";

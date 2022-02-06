@@ -16,7 +16,7 @@ const LpEditor: React.FC<Props> = ({ text }) => {
   return (
     <>
       <Editor
-        onInit={(evt, editor) => {
+        onInit={(_evt, editor) => {
           if (editor) {
             //@ts-ignore
             editorRef.current = editor;

@@ -2,7 +2,7 @@ import {
   GoogleReCaptchaProvider,
   useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import {
   CreateAuthorDocument,
@@ -29,26 +29,12 @@ const RegisterForm = () => {
   const [createAuthor] = useCreateAuthorMutation();
   const [form, setForm] = useState(fields);
 
-  const [errors, setErrors] = useState(fields);
-
   const [processing, setProcessing] = useState(false);
 
   const router = useRouter();
 
   const registerAction = async () => {
     setProcessing(true);
-    setErrors(fields);
-    const errorObj = validate(form);
-
-    const newErrors = Object.keys(errorObj).filter(
-      (field) => errorObj[field] !== "",
-    );
-
-    if (newErrors.length > 0) {
-      setErrors({ ...fields, ...errorObj });
-      setProcessing(false);
-      return;
-    }
     message.loading({
       content: "Please wait",
       key,
@@ -152,6 +138,10 @@ const RegisterForm = () => {
                   required: true,
                   message: "Please input your username!",
                 },
+                {
+                  pattern: /[0-9A-Za-z_.]*/,
+                  message: "Can only contain alphabets and numbers",
+                },
               ]}
             >
               <Input />
@@ -177,6 +167,7 @@ const RegisterForm = () => {
               data-testid="input-password"
               rules={[
                 { required: true, message: "Please input your password!" },
+                { min: 6, message: "Password must be minimum 6 characters." },
               ]}
             >
               <Input.Password />
@@ -224,24 +215,3 @@ const Provider = () => {
   );
 };
 export default Provider;
-
-function validate(form: typeof fields) {
-  const sanitisedForm = { ...form };
-  const errors: typeof fields = { ...fields };
-  for (const field in form) {
-    sanitisedForm[field] = form[field].trim();
-    if (sanitisedForm[field].length === 0) {
-      errors[field] = `${field.replace("_", " ")} cannot be empty`;
-    }
-  }
-
-  if (!/^[a-z0-9]+$/i.test(sanitisedForm.username)) {
-    errors.username = "Username cannot contain spaces or special characters";
-  }
-
-  if (sanitisedForm.password.length < 6) {
-    errors.password = "Password should have minimum 6 characters";
-  }
-
-  return errors;
-}
