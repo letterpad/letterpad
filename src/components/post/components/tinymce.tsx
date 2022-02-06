@@ -41,13 +41,14 @@ const LpEditor: React.FC<Props> = ({ text }) => {
         init={{
           menubar: false,
           toolbar: false,
-          plugins: "lists link ",
+          plugins:
+            "lists link paste emoticons quickbars hr image autoresize  code codesample textpattern",
           skin: window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "oxide-dark"
             : "",
           content_css: basePath + "/css/editor.css",
           icons: "thin",
-          height: "200",
+          height: "100%",
           quickbars_selection_toolbar: "h1 h2 bold italic underline quicklink",
           quickbars_insert_toolbar:
             "bullist numlist blockquote hr codesample customImage",
