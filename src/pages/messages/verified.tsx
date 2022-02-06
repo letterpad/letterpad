@@ -2,6 +2,9 @@ import { Button, Result } from "antd";
 import { useRouter } from "next/router";
 
 const Verified = () => {
+  if (typeof document === "undefined") {
+    return null;
+  }
   const router = useRouter();
   const queryParams = new URLSearchParams(document.location.search);
   const doLogin = () => {
