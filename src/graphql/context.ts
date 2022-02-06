@@ -20,7 +20,6 @@ export const getResolverContext = async (context) => {
   } else {
     author_id = session.user.id;
   }
-
   if (author_id) {
     const mailUtils = await MailService(prisma, author_id);
     return {

@@ -47,6 +47,9 @@ const Query: QueryResolvers<ResolverContext> = {
           name: args.filters?.name,
           posts: {
             some: {
+              author: {
+                id: authorId,
+              },
               status: args.filters?.active
                 ? PostStatusOptions.Published
                 : undefined,

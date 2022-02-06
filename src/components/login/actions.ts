@@ -52,8 +52,6 @@ export const doLogin = async ({
 export const forgotPasswordAction = async (email: string) => {
   const sanitisedLoginEmail = email.trim();
   if (sanitisedLoginEmail.length > 0) {
-    e.currentTarget.disabled = true;
-
     const res = await apolloBrowserClient.mutate<
       ForgotPasswordMutation,
       ForgotPasswordMutationVariables
@@ -69,7 +67,6 @@ export const forgotPasswordAction = async (email: string) => {
       message.success("Check your email to reset your password!");
       return true;
     } else {
-      e.currentTarget.disabled = false;
       message.warn(
         data?.message || "Something wrong hapenned. Please try again.",
       );
