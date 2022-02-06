@@ -12,28 +12,28 @@ const Query: QueryResolvers<ResolverContext> = {
     }
 
     if (args.filters) {
-      const { id, authorId, cursor, limit = 20, page = 0 } = args.filters;
+      const { id, cursor, limit = 20, page = 0 } = args.filters;
 
       const condition: Prisma.UploadFindManyArgs = {
         where: {
-          id,
-          author: {
-            id: authorId,
-          },
+          author_id: session.user.id,
         },
         take: limit,
 
-        cursor: {
-          id: cursor,
-        },
+        cursor: cursor
+          ? {
+              id: cursor,
+            }
+          : undefined,
         skip: page * limit,
       };
+      console.log(condition);
       const result = await prisma.upload.findMany(condition);
 
       return {
         rows: result,
         count: await prisma.upload.count({
-          where: { id, author: { id: authorId } },
+          where: { id, author: { id: session.user.id } },
         }),
       };
     }

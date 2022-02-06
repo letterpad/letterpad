@@ -8,6 +8,7 @@ import { InputUpdatePost } from "@/__generated__/__types__";
 import { useContext } from "react";
 import { PostContextType } from "@/components/post/types";
 import { EditorHelpers } from "letterpad-editor";
+import { Editor } from "tinymce/tinymce";
 
 export const PostContext = createContext<Partial<PostContextType>>({});
 
@@ -15,7 +16,7 @@ export const PostProvider: React.FC = ({ children }) => {
   const [updating, setUpdating] = useState(false);
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const { loading, post, error, setPost } = usePost();
-  const [helpers, setHelpers] = useState<EditorHelpers>();
+  const [helpers, setHelpers] = useState<Editor>();
 
   const setPostAttribute = async (attrs: Omit<InputUpdatePost, "id">) => {
     if (post) {

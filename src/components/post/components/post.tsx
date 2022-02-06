@@ -8,10 +8,10 @@ import { usePostContext } from "@/components/post/context";
 import FileExplorer from "@/components/file-explorer";
 import Title from "@/components/post/components/title";
 import Editor from "@/components/post/components/editor";
-import { insertImageUrlInEditor } from "@/components/post/helpers";
 import { PostContextType } from "../types";
 import { Content } from "antd/lib/layout/layout";
 import { getReadableDate } from "@/shared/utils";
+import { insertImageInEditor } from "./commands";
 
 function Post() {
   const {
@@ -53,7 +53,7 @@ function Post() {
               <Row justify="center" style={{ paddingBottom: 20 }}>
                 {getReadableDate(post?.updatedAt)}
               </Row>
-              <Title onEnter={() => helpers?.getEditorRef().editor.focus()} />
+              <Title onEnter={() => helpers?.focus()} />
               <Editor text={content ?? ""} />
               <div
                 style={{
@@ -68,7 +68,9 @@ function Post() {
                 multi={true}
                 isVisible={fileExplorerOpen}
                 handleCancel={onFileExplorerClose}
-                onInsert={(images) => insertImageUrlInEditor(images, helpers)}
+                onInsert={(images) =>
+                  helpers && insertImageInEditor(helpers, images)
+                }
               />
             </div>
           )}
