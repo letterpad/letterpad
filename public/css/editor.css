@@ -1,5 +1,6 @@
 @import url("./theme-variables.css");
 @import url("https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap");
+@import "https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-duotone-sea.min.css";
 
 body {
   font-family: system-ui, sans-serif;

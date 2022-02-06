@@ -117,6 +117,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           ),
           title: args.data.title,
           excerpt: args.data.excerpt,
+          status: args.data.status,
           featured: args.data.featured,
           ...(await getCoverImageAttrs(args.data.cover_image)),
           ...(await getPublishingDates(existingPost, args.data.status)),
@@ -125,7 +126,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
             args.data.html,
             args.data.status,
           )),
-          status: args.data.status,
         },
         where: {
           id: args.data.id,
@@ -142,6 +142,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           }),
         };
       }
+      console.log("to save ====>", newPostArgs);
       const updatedPost = await prisma.post.update(newPostArgs);
       // update content
 
@@ -309,34 +310,33 @@ async function getPublishingDates(
   return { updatedAt: currentTime };
 }
 
+const empty = "";
+
 async function getContentAttrs(
   prevPost: Prisma.PostMinAggregateOutputType,
   html?: string,
   newStatus?: PostStatusOptions,
 ) {
   const data = {
-    html: prevPost.html,
-    html_draft: prevPost.html_draft,
-    reading_time: prevPost.reading_time,
+    html: prevPost.html || empty,
+    html_draft: prevPost.html_draft || empty,
+    reading_time: prevPost.reading_time || empty,
   };
-  if (!html) return {};
-  if (prevPost.status && savingDraft(prevPost.status, newStatus)) {
-    data.html_draft = html;
-  } else if (html) {
-    data.html = (await setImageWidthAndHeightInHtml(html)) || html;
-    if (prevPost.status && rePublished(prevPost.status, newStatus)) {
-      data.reading_time = reading_time(data.html).text;
-      data.html_draft = "";
+
+  if (!prevPost.status) {
+    return data;
+  }
+  if (savingDraft(prevPost.status, newStatus)) {
+    data.html_draft = html || data.html_draft;
+    return data;
+  }
+  if (rePublished(prevPost.status, newStatus)) {
+    if (!html) {
+      data.html = data.html_draft;
     }
-  } else if (prevPost.status && rePublished(prevPost.status, newStatus)) {
-    if (prevPost.html_draft) {
-      data.html = prevPost.html_draft;
-      data.html =
-        (await setImageWidthAndHeightInHtml(prevPost.html_draft)) ||
-        prevPost.html_draft;
-      data.reading_time = reading_time(data.html).text;
-    }
-    data.html_draft = "";
+    data.html = (await setImageWidthAndHeightInHtml(data.html)) || empty;
+    data.html_draft = empty;
+    data.reading_time = reading_time(data.html).text;
   }
   return data;
 }

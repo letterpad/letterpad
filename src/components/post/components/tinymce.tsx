@@ -1,5 +1,5 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { memo, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { usePostContext } from "../context";
 import { basePath } from "@/constants";
 import { textPatterns } from "./textPatterns";
@@ -12,6 +12,12 @@ const LpEditor: React.FC<Props> = ({ text }) => {
   const { setHelpers, onMediaBrowse, setPostAttribute } = usePostContext();
   const editorRef = useRef<Editor["editor"]>(null);
   const isDark = document.body.classList.contains("dark");
+  const [html, setHtml] = useState(text);
+  useEffect(() => {
+    if (typeof html == "undefined") {
+      setHtml(text);
+    }
+  }, [text]);
 
   return (
     <>
@@ -27,7 +33,7 @@ const LpEditor: React.FC<Props> = ({ text }) => {
             setHelpers && setHelpers(editor);
           }
         }}
-        initialValue={text}
+        initialValue={html}
         onEditorChange={(html) => {
           setPostAttribute && setPostAttribute({ html });
         }}
@@ -35,17 +41,16 @@ const LpEditor: React.FC<Props> = ({ text }) => {
         init={{
           menubar: false,
           toolbar: false,
-          plugins:
-            "lists link paste emoticons quickbars hr image autoresize  code codesample textpattern toc",
+          plugins: "lists link ",
           skin: window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "oxide-dark"
             : "",
           content_css: basePath + "/css/editor.css",
           icons: "thin",
-          height: "100%",
+          height: "200",
           quickbars_selection_toolbar: "h1 h2 bold italic underline quicklink",
           quickbars_insert_toolbar:
-            "bullist numlist blockquote hr codesample customImage toc",
+            "bullist numlist blockquote hr codesample customImage",
           statusbar: false,
           textpattern_patterns: textPatterns,
           setup: function (editor) {
