@@ -28,7 +28,7 @@ const Main = ({ Component, props }: IProps) => {
   const protectedPage = Component.needsAuth;
 
   useEffect(() => {
-    ThemeSwitcher.switch(localStorage.theme);
+    if (protectedPage) ThemeSwitcher.switch(localStorage.theme);
     initPageProgress();
   }, []);
 

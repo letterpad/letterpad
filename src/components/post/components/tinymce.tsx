@@ -24,7 +24,6 @@ const LpEditor: React.FC<Props> = ({ text }) => {
             const body = editor.getDoc().body;
             body.classList.remove("dark", "light");
             body.classList.add(className);
-            //@ts-ignore
             setHelpers && setHelpers(editor);
           }
         }}
@@ -37,7 +36,7 @@ const LpEditor: React.FC<Props> = ({ text }) => {
           menubar: false,
           toolbar: false,
           plugins:
-            "lists link paste emoticons quickbars hr image autoresize  code codesample customImage textpattern",
+            "lists link paste emoticons quickbars hr image autoresize  code codesample customImage textpattern toc",
           skin: window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "oxide-dark"
             : "",
@@ -47,7 +46,7 @@ const LpEditor: React.FC<Props> = ({ text }) => {
           toolbar_mode: "floating",
           quickbars_selection_toolbar: "h1 h2 bold italic underline quicklink",
           quickbars_insert_toolbar:
-            "bullist numlist blockquote hr codesample customImage",
+            "bullist numlist blockquote hr codesample customImage toc",
           statusbar: false,
           textpattern_patterns: textPatterns,
           setup: function (editor) {
@@ -57,6 +56,7 @@ const LpEditor: React.FC<Props> = ({ text }) => {
                 onMediaBrowse && onMediaBrowse();
               },
             });
+            editor.ui.registry.getAll();
           },
         }}
       />

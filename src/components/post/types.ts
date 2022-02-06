@@ -11,8 +11,8 @@ export type PostContextType = {
   fileExplorerOpen: boolean;
   post: PostWithAuthorAndTagsFragment | undefined;
   setPost: ReturnType<typeof usePost>["setPost"];
-  helpers: Editor | undefined;
-  setHelpers: (helpers: Editor) => void;
+  helpers: Editor["editor"] | undefined;
+  setHelpers: (helpers: Editor["editor"]) => void;
   error: string;
   setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => Promise<void>;
   onFileExplorerClose: () => void;
