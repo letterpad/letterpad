@@ -2,7 +2,7 @@ import {
   GoogleReCaptchaProvider,
   useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import {
   CreateAuthorDocument,
@@ -10,15 +10,10 @@ import {
 } from "@/__generated__/queries/mutations.graphql";
 import { useRouter } from "next/router";
 
-import {
-  Block,
-  Button,
-  Container,
-  InputBlock,
-  Row,
-} from "@/components/login/login.css";
-import { message } from "antd";
+import { Button, Form, Input, message, Row } from "antd";
 import { EventAction, track } from "@/track";
+import { Header } from "antd/lib/layout/layout";
+import Link from "next/link";
 
 const key = "register";
 const fields = {
@@ -90,97 +85,134 @@ const RegisterForm = () => {
     setProcessing(false);
   };
 
+  const onFinish = (values: any) => {
+    const { name, username, password, email, site_title } = values;
+    setForm({ ...form, name, username, password, email, site_title });
+    registerAction();
+  };
+
   return (
-    <Container>
+    <>
       <Head>
         <title>Register</title>
       </Head>
-      <div className="login">
-        <h1>Letterpad</h1>
-        <Block isVisible={true}>
-          <InputBlock>
-            <input
-              type="text"
-              placeholder="Enter a title of your blog"
-              value={form.site_title}
-              onChange={(e) => setForm({ ...form, site_title: e.target.value })}
-              autoComplete="off"
-              data-testid="input-email"
-            />
-            {errors.site_title && (
-              <span className="error">{errors.site_title}</span>
-            )}
-          </InputBlock>
-          <InputBlock>
-            <input
-              type="text"
-              placeholder="Enter your name as an author"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              autoComplete="off"
-              data-testid="input-email"
-            />
-            {errors.name && <span className="error">{errors.name}</span>}
-          </InputBlock>
-          <InputBlock>
-            <input
-              type="text"
-              placeholder="Enter a username"
-              value={form.username}
-              onChange={(e) => setForm({ ...form, username: e.target.value })}
-              autoComplete="off"
-              data-testid="input-email"
-              style={{ width: 200 }}
-            />
-            <span style={{ fontSize: 15, letterSpacing: 2 }}>
-              &nbsp;&nbsp;.letterpad.app
-            </span>
-            {errors.username && (
-              <span className="error">{errors.username}</span>
-            )}
-          </InputBlock>
-          <InputBlock>
-            <input
-              type="text"
-              placeholder="Enter your email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              autoComplete="off"
-              data-testid="input-email"
-            />
-            {errors.email && <span className="error">{errors.email}</span>}
-          </InputBlock>
-          <InputBlock>
-            <input
-              type="password"
-              placeholder="Enter a new password"
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              value={form.password}
-              autoComplete="off"
-              onKeyUp={(e: React.KeyboardEvent) => {
-                if (e.keyCode === 13) {
-                  registerAction();
-                }
-              }}
-              data-testid="input-password"
-            />
-            {errors.password && (
-              <span className="error">{errors.password}</span>
-            )}
-          </InputBlock>
-          <br />
-          <Row justify="center">
-            <Button
-              onClick={registerAction}
-              data-testid="btn-login"
-              disabled={processing}
+      <div className="login" style={{ height: "100vh" }}>
+        <Header className="header">
+          <div className="logo">
+            <img src="uploads/logo.png" height={30} />
+          </div>
+        </Header>
+        <Row
+          justify="center"
+          align="middle"
+          style={{ paddingLeft: 10, height: "calc(100% - 80px)" }}
+        >
+          <Form
+            name="basic"
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 14 }}
+            initialValues={{ remember: true }}
+            autoComplete="off"
+            onFinish={onFinish}
+            className="register-form"
+            style={{ paddingTop: 40 }}
+          >
+            <h1>Register</h1>
+            <Form.Item
+              label="Name"
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your name!",
+                  max: 100,
+                },
+              ]}
             >
-              Register
-            </Button>
-          </Row>
-        </Block>
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Site Title"
+              name="site_title"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input a title of your site!",
+                  max: 25,
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Username"
+              name="username"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your username!",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Email"
+              name="email"
+              data-testid="input-email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your email!",
+                  type: "email",
+                },
+              ]}
+            >
+              <Input autoComplete="off" />
+            </Form.Item>
+
+            <Form.Item
+              label="Password"
+              name="password"
+              data-testid="input-password"
+              rules={[
+                { required: true, message: "Please input your password!" },
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+            <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
+              <Button type="primary" htmlType="submit" disabled={processing}>
+                Register
+              </Button>
+              <Link href="/login">
+                <Button type="link">⏎ Login</Button>
+              </Link>
+            </Form.Item>
+          </Form>
+        </Row>
+        <style jsx global>{`
+          .register-form {
+            width: 500px;
+            padding: 30px;
+            background: #fbfbfb;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+          }
+          input {
+            background-color: rgba(var(--color), 0.1) !important;
+            padding: 8px !important;
+            color: rgba(var(--color), 0.8) !important;
+          }
+
+          @media (max-width: 800px) {
+            .register-form {
+              width: initial;
+            }
+          }
+        `}</style>
       </div>
-    </Container>
+    </>
   );
 };
 

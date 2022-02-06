@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { doLogin } from "../actions";
 import { key } from "../constants";
 import { Form, Input, Button, Checkbox } from "antd";
+import Link from "next/link";
 
 export const LoginForm = ({
   email,
@@ -48,17 +49,19 @@ export const LoginForm = ({
     <Row
       justify="center"
       align="middle"
-      style={{ paddingLeft: 10, height: "100%" }}
+      style={{ paddingLeft: 10, height: "calc(100% - 60px)" }}
     >
       <Form
         name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 8 }}
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         autoComplete="off"
         onFinish={onFinish}
         className="login-form"
       >
+        <h1>Login</h1>
+
         <Form.Item
           label="Email"
           name="email"
@@ -86,7 +89,7 @@ export const LoginForm = ({
         <Form.Item
           name="remember"
           valuePropName="checked"
-          wrapperCol={{ offset: 0, span: 16, md: { offset: 8 } }}
+          wrapperCol={{ offset: 0, span: 16, md: { offset: 6 } }}
         >
           <Checkbox>Remember me</Checkbox>
           <Button type="link" onClick={hideSelf}>
@@ -94,15 +97,25 @@ export const LoginForm = ({
           </Button>
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Form.Item wrapperCol={{ offset: 0, md: { offset: 6 }, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            Login
           </Button>
+          <Link href="/register">
+            <Button type="link">Register</Button>
+          </Link>
         </Form.Item>
       </Form>
       <style jsx global>{`
         .login-form {
-          width: 800px;
+          width: 500px;
+          padding: 30px;
+          background: #fbfbfb;
+          border: 1px solid #d9d9d9;
+          border-radius: 2px;
+        }
+        input:-internal-autofill-selected {
+          background-color: transparent !important;
         }
         @media (max-width: 800px) {
           .login-form {

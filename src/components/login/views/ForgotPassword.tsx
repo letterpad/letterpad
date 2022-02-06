@@ -35,13 +35,14 @@ export const ForgotPassword = ({
     >
       <Form
         name="basic"
-        labelCol={{ span: 8 }}
+        labelCol={{ span: 4 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         autoComplete="off"
         onFinish={onFinish}
         className="forgot-password-form"
       >
+        <h2>Forgot Password</h2>
         <Form.Item
           label="Email"
           name="email"
@@ -56,22 +57,26 @@ export const ForgotPassword = ({
         >
           <Input />
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Form.Item wrapperCol={{ offset: 0, md: { offset: 4 }, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Reset Password
           </Button>
           &nbsp;
-          <Button type="default" htmlType="submit" onClick={hideSelf}>
+          <Button type="link" htmlType="submit" onClick={hideSelf}>
             Cancel
           </Button>
         </Form.Item>
         <style jsx global>{`
           .forgot-password-form {
-            width: 600px;
+            width: 500px;
+            padding: 30px;
+            background: #fbfbfb;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
           }
           @media (max-width: 800px) {
             .forgot-password-form {
-              width: initial;
+              width: 300px;
             }
           }
         `}</style>
