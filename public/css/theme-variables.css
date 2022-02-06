@@ -1,40 +1,44 @@
 /* Few variables are not taken care by antd. Lets take care of them here. */
 
 html .light {
-  --sidebar-bg: #141418;
-  --content-bg: #fff;
-  --section-bg: #fff;
+  --sidebar-bg: 20, 20, 24;
+  --content-bg: 255, 255, 255;
+  --section-bg: 255, 255, 255
+  --accent: 14, 114, 207;
+  --color: 29, 29, 32;
 }
 
 html .dark {
-  --sidebar-bg: #141418;
-  --content-bg: #15161a;
-  --section-bg: #1b1b22;
-  --color-border: #2a2e3e; /* this variable is not availabe in the light theme*/
+  --sidebar-bg: 20, 20, 24;
+  --content-bg: 21, 22, 26;
+  --section-bg: 27, 27, 34;
+  --color-border: 42, 46, 62; /* this variable is not availabe in the light theme*/
+  --accent: 14, 114, 207;
+  --color: 236, 236, 236;
 }
 
 html .ant-layout,
 body {
-  background: var(--content-bg) !important;
+  background: rgb(var(--content-bg)) !important;
 }
 html .ant-layout-sider,
 html .ant-menu {
-  background: var(--sidebar-bg) !important;
+  background: rgb(var(--sidebar-bg)) !important;
 }
 .site-layout-background {
-  background: var(--section-bg);
+  background: rgb(var(--section-bg));
   min-height: calc(100vh - 216px);
 }
 .dark .ant-layout-footer {
-  background: var(--content-bg);
+  background: rgb(var(--content-bg));
 }
 .ant-table td,
 .ant-table tr,
 .ant-table th {
-  background: var(--section-bg) !important;
+  background: rgb(var(--section-bg)) !important;
 }
 /* .ant-collapse * {
-  background: var(--section-bg) !important;
+  background: rgb(var(--section-bg)) !important;
 } */
 .ant-collapse:not(:last-child) > .ant-collapse-item {
   border-bottom: none !important;

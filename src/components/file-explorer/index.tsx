@@ -96,6 +96,7 @@ const FileExplorer = ({
         title="Media"
         visible={isVisible}
         onCancel={closeWindow}
+        zIndex={1301} // 1300 is tinymce insert toolbar
         footer={[
           <Button key="back" onClick={closeWindow}>
             Cancel

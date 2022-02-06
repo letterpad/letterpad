@@ -7,6 +7,16 @@ function Main() {
   return (
     <PostProvider>
       <Post />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </PostProvider>
   );
 }

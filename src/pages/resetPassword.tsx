@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 
-import { message } from "antd";
+import { message, Row, Form, Input, Button } from "antd";
 import { useRouter } from "next/router";
 import {
   ResetPasswordMutation,
   ResetPasswordMutationVariables,
   ResetPasswordDocument,
 } from "@/__generated__/queries/mutations.graphql";
-import {
-  Button,
-  Container,
-  InputBlock,
-  Row,
-  Block,
-} from "@/components/login/login.css";
 import Head from "next/head";
 import { basePath } from "@/constants";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
+import { Header } from "antd/lib/layout/layout";
 
 const key = "change-password";
 
@@ -24,8 +18,7 @@ const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const resetPassword = async (e) => {
-    e.preventDefault();
+  const resetPassword = async () => {
     if (password.length === 0) {
       message.error({
         content: "Password cannot be empty",
@@ -74,112 +67,66 @@ const ResetPassword = () => {
     }
   };
 
+  const onFinish = (values: any) => {
+    setPassword(values.password);
+    resetPassword();
+  };
+
   return (
-    <Container>
+    <>
       <Head>
         <title>Reset password</title>
       </Head>
-      <Block isVisible={true}>
-        <div className="login">
-          <InputBlock>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter your new password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              autoComplete="off"
-            />
-          </InputBlock>
-          <br />
-          <Row justify="space-between">
-            <Button onClick={resetPassword}>Reset Password</Button>
-          </Row>
-        </div>
-      </Block>
-    </Container>
+      <div style={{ height: "100vh" }}>
+        <Header className="header">
+          <div className="logo">
+            <img src="uploads/logo.png" height={30} />
+          </div>
+        </Header>
+        <Row
+          justify="center"
+          align="middle"
+          style={{ paddingLeft: 10, height: "100%" }}
+        >
+          <Form
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            initialValues={{ remember: true }}
+            autoComplete="off"
+            onFinish={onFinish}
+            className="forgot-password-form"
+          >
+            <Form.Item
+              label="Password"
+              name="password"
+              data-testid="input-password"
+              rules={[
+                { required: true, message: "Please input your new password!" },
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+              <Button type="primary" htmlType="submit">
+                Reset Password
+              </Button>
+            </Form.Item>
+            <style jsx global>{`
+              .forgot-password-form {
+                width: 600px;
+              }
+              @media (max-width: 800px) {
+                .forgot-password-form {
+                  width: initial;
+                }
+              }
+            `}</style>
+          </Form>
+        </Row>
+      </div>
+    </>
   );
 };
 
 export default ResetPassword;
-
-// const Container = styled.div`
-//   /* .login-view { */
-//   color: #dcdcdc;
-//   background-repeat: no-repeat;
-//   background-size: cover;
-//   /* .login-wrapper { */
-//   display: flex;
-//   justify-content: space-around;
-//   align-items: center;
-//   height: 100vh;
-
-//   .brand {
-//     text-align: center;
-//     text-shadow: none;
-//     color: #151a21;
-//     font-weight: 400;
-//     font-size: 1.8rem;
-//     margin-bottom: 14px;
-//     font-family: "Source Sans Pro", sans-serif;
-//   }
-//   .login {
-//     width: 100%;
-//     max-width: 400px;
-//     padding: 40px 20px;
-//     form {
-//       input {
-//         text-transform: none;
-//         border: 1px solid #eee;
-//         color: #5a5b5c;
-//         font-size: 13px;
-//         width: 100%;
-//       }
-//       input:-webkit-autofill {
-//         -webkit-box-shadow: 0 0 0px 1000px #f5f5f5 inset;
-//       }
-//       label {
-//         display: block;
-//         max-width: 100%;
-//         margin-bottom: 5px;
-//         font-weight: bold;
-//         letter-spacing: 4px;
-//         font-weight: 100;
-//         text-transform: uppercase;
-//         font-size: 11px;
-//         margin-top: 19px;
-//       }
-//       .form-signin-heading {
-//         margin-bottom: 18px;
-//         font-size: 30px;
-//         color: #5a5b5c;
-//       }
-//       .form-control {
-//         position: relative;
-//         height: auto;
-//         padding: 9px 8px;
-//         box-sizing: border-box;
-//         border: 1px solid #fff;
-//         background: #fff;
-//         &:focus {
-//           z-index: 2;
-//         }
-//       }
-//       .remember-me {
-//         display: flex;
-//         align-items: center;
-//         input {
-//           width: 24px;
-//         }
-//       }
-//     }
-//     a.forgot-pwd {
-//       color: #d7c8c8;
-//     }
-//     button {
-//       border: 1px solid #eee;
-//     }
-//   }
-//   /* } */
-//   /* } */
-// `;

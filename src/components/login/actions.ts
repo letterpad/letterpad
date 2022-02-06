@@ -49,11 +49,7 @@ export const doLogin = async ({
   };
 };
 
-export const forgotPasswordAction = async (
-  e: React.MouseEvent<HTMLButtonElement>,
-  email: string,
-) => {
-  e.preventDefault();
+export const forgotPasswordAction = async (email: string) => {
   const sanitisedLoginEmail = email.trim();
   if (sanitisedLoginEmail.length > 0) {
     e.currentTarget.disabled = true;

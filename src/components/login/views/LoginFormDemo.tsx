@@ -1,8 +1,7 @@
-import { message } from "antd";
+import { Button, message, Row } from "antd";
 import { useCallback } from "react";
 import { doLogin } from "../actions";
 import { key } from "../constants";
-import { Block, Button, Row } from "../login.css";
 
 export const LoginFormDemo = ({ isVisible }: { isVisible: boolean }) => {
   const loginAction = useCallback(async () => {
@@ -15,18 +14,17 @@ export const LoginFormDemo = ({ isVisible }: { isVisible: boolean }) => {
     message.error({ key, content: result.message, duration: 5 });
   }, []);
 
+  if (!isVisible) return null;
   return (
-    <Block isVisible={isVisible}>
-      <Row justify="space-between" style={{ paddingLeft: 10 }}>
+    <>
+      <Row justify="space-between" align="middle" style={{ paddingLeft: 10 }}>
         You are logging into a demo account. Few features will be disabled.
         <br />
         <br />
-      </Row>
-      <Row justify="center">
         <Button onClick={loginAction} data-testid="btn-login">
           Enter Now
         </Button>
       </Row>
-    </Block>
+    </>
   );
 };

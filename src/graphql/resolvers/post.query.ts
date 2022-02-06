@@ -107,11 +107,13 @@ const Query: QueryResolvers<ResolverContext> = {
           type: args.filters?.type || PostTypes.Post,
           tags: isPage
             ? { every: {} }
-            : {
+            : !session?.user.id || args.filters?.tagSlug
+            ? {
                 some: {
                   slug: args.filters?.tagSlug,
                 },
-              },
+              }
+            : undefined,
         },
         take: args.filters?.limit || 10,
         skip,

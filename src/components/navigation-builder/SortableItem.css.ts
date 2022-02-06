@@ -15,7 +15,7 @@ export const Item = styled(Grid)`
   /* input {
     padding: 8px 6px;
     border-radius: 4px;
-    border: 1px solid var(--color-border);
+    border: 1px solid rgb(var(--color-border));
     width: 100%;
     background: var(--bg-base);
     color: var(--color-base);
@@ -33,7 +33,7 @@ interface IInputProps {
 }
 export const InputBox = styled.div<IInputProps>`
   input {
-    ${p => (p.hasError ? `border: 1px solid orange` : "")}
+    ${(p) => (p.hasError ? `border: 1px solid orange` : "")}
   }
   display: flex;
   flex: 1;

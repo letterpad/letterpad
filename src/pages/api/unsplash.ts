@@ -4,7 +4,11 @@ const clientId = process.env.UNSPLASH_CLIENT_ID;
 
 const unsplash = async (req, res) => {
   const { page, query } = req.query;
+  if (!clientId) {
+    throw new Error("No client id provided");
+  }
   const endpoint = `${unsplashUrl}?client_id=${clientId}&query=${query}&page=${page}&per_page=21`;
+  console.log(endpoint);
   try {
     const response = await fetch(endpoint).then((data) => data.json());
     res.json({

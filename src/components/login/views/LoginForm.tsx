@@ -1,9 +1,9 @@
 import { EventAction, track } from "@/track";
-import { message } from "antd";
+import { message, Row } from "antd";
 import { useCallback } from "react";
 import { doLogin } from "../actions";
 import { key } from "../constants";
-import { Block, Button, InputBlock, Row } from "../login.css";
+import { Form, Input, Button, Checkbox } from "antd";
 
 export const LoginForm = ({
   email,
@@ -35,46 +35,81 @@ export const LoginForm = ({
     message.error({ key, content: result.message, duration: 5 });
   }, [email, password]);
 
+  const onFinish = (values: any) => {
+    setEmail(values.email);
+    setPassword(values.password);
+    loginAction();
+  };
+
+  if (!isVisible) {
+    return null;
+  }
   return (
-    <Block isVisible={isVisible}>
-      <InputBlock>
-        <input
-          type="text"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          autoComplete="off"
+    <Row
+      justify="center"
+      align="middle"
+      style={{ paddingLeft: 10, height: "100%" }}
+    >
+      <Form
+        name="basic"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 8 }}
+        initialValues={{ remember: true }}
+        autoComplete="off"
+        onFinish={onFinish}
+        className="login-form"
+      >
+        <Form.Item
+          label="Email"
+          name="email"
           data-testid="input-email"
-        />
-      </InputBlock>
-      <InputBlock>
-        <input
-          type="password"
-          placeholder="Enter your password"
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          autoComplete="off"
-          onKeyUp={(e: React.KeyboardEvent) => {
-            if (e.keyCode === 13) {
-              loginAction();
-            }
-          }}
+          rules={[
+            {
+              required: true,
+              message: "Please input your email!",
+              type: "email",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="Password"
+          name="password"
           data-testid="input-password"
-        />
-      </InputBlock>
-      <Row justify="space-between">
-        <InputBlock>
-          <a onClick={hideSelf} className="forgot-pwd" href="#">
-            Forgot password ?
-          </a>
-        </InputBlock>
-      </Row>
-      <br />
-      <Row justify="center">
-        <Button onClick={loginAction} data-testid="btn-login">
-          Enter Now
-        </Button>
-      </Row>
-    </Block>
+          rules={[{ required: true, message: "Please input your password!" }]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item
+          name="remember"
+          valuePropName="checked"
+          wrapperCol={{ offset: 0, span: 16, md: { offset: 8 } }}
+        >
+          <Checkbox>Remember me</Checkbox>
+          <Button type="link" onClick={hideSelf}>
+            Forgot Password
+          </Button>
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+      <style jsx global>{`
+        .login-form {
+          width: 800px;
+        }
+        @media (max-width: 800px) {
+          .login-form {
+            width: initial;
+          }
+        }
+      `}</style>
+    </Row>
   );
 };

@@ -1,0 +1,58 @@
+@import url("./theme-variables.css");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap");
+
+body {
+  font-family: system-ui, sans-serif;
+  background: transparent;
+  line-height: 1.8;
+  font-size: 1.2em;
+  overflow-x: hidden;
+  color: rgba(var(--color), 0.7);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: rgba(var(--color), 0.8);
+}
+pre {
+  font-size: 0.7em;
+  font-family: "Roboto Mono", monospace !important;
+  background: rgba(var(--section-bg), 1) !important;
+  padding: 0.8rem !important;
+  opacity: 0.9;
+}
+pre code {
+  background-color: initial;
+}
+figure {
+  margin: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+figure img {
+  max-width: 100%;
+  height: auto;
+}
+figure figcaption {
+  font-size: 0.8rem;
+  text-align: center;
+}
+a {
+  color: rgb(var(--accent));
+  text-decoration: none;
+}
+
+[data-mce-selected="inline-boundary"] {
+  color: initial;
+}
+blockquote {
+  margin: 20px 0px;
+  padding: 0.4rem 1rem;
+  border-left: 3px solid rgb(var(--accent));
+  line-height: 1.6;
+  position: relative;
+  font-size: 0.85em;
+}
