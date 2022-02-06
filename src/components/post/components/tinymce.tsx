@@ -27,23 +27,22 @@ const LpEditor: React.FC<Props> = ({ text }) => {
             setHelpers && setHelpers(editor);
           }
         }}
-        value={text}
+        initialValue={text}
         onEditorChange={(html) => {
           setPostAttribute && setPostAttribute({ html });
         }}
-        apiKey="qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc"
+        apiKey="6xxqtl14jlwud6hysqri2xt2pp3lj38je5qys05c17ij7oai"
         init={{
           menubar: false,
           toolbar: false,
           plugins:
-            "lists link paste emoticons quickbars hr image autoresize  code codesample customImage textpattern toc",
+            "lists link paste emoticons quickbars hr image autoresize  code codesample textpattern toc",
           skin: window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "oxide-dark"
             : "",
           content_css: basePath + "/css/editor.css",
           icons: "thin",
           height: "100%",
-          toolbar_mode: "floating",
           quickbars_selection_toolbar: "h1 h2 bold italic underline quicklink",
           quickbars_insert_toolbar:
             "bullist numlist blockquote hr codesample customImage toc",
