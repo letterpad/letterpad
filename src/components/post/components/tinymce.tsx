@@ -41,6 +41,8 @@ const LpEditor: React.FC<Props> = ({ text }) => {
         init={{
           menubar: false,
           toolbar: false,
+          browser_spellcheck: true,
+          contextmenu: false,
           plugins:
             "lists link paste emoticons quickbars hr image autoresize  code codesample textpattern",
           skin: window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -63,6 +65,7 @@ const LpEditor: React.FC<Props> = ({ text }) => {
             });
             editor.ui.registry.getAll();
           },
+          entity_encoding: "raw",
         }}
       />
 

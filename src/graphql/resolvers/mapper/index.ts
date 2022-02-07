@@ -15,11 +15,6 @@ import {
 export const mapPostToGraphql = (post: DbPost) => {
   return {
     ...post,
-    // cover_image: {
-    //   src: post.cover_image,
-    //   width: post.cover_image_width,
-    //   height: post.cover_image_height,
-    // },
     type: post.type as PostTypes,
     status: post.status as PostStatusOptions,
     __typename: "Post",
