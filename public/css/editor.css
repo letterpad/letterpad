@@ -57,3 +57,43 @@ blockquote {
   position: relative;
   font-size: 0.85em;
 }
+.highlight {
+  color: rgb(221, 79, 79);
+}
+
+mark {
+  background: yellow;
+  cursor: pointer;
+}
+mark.typographical {
+  background: rgb(241, 107, 230);
+  color: #fff;
+}
+mark.misspelling {
+  background: rgb(202, 248, 94);
+  color: #111;
+}
+mark.duplication {
+  background: rgb(186, 168, 214);
+  color: #111;
+}
+mark.grammar {
+  background: rgb(120, 214, 226);
+  color: rgb(56, 56, 56);
+}
+mark.style {
+  background: slateblue;
+  color: #ddd;
+}
+mark.style {
+  background: slateblue;
+  color: #fff;
+}
+mark {
+  /* text-decoration: underline; */
+  padding: 0 6px;
+  font-size: 90%;
+  border-radius: 4px;
+  border: 1px solid #eee;
+  border-bottom: 1px solid #111;
+}

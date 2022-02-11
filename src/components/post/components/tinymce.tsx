@@ -3,6 +3,9 @@ import { memo, useEffect, useRef, useState } from "react";
 import { usePostContext } from "../context";
 import { basePath } from "@/constants";
 import { textPatterns } from "./textPatterns";
+// import tippy from "tippy.js";
+// import { data } from "./data";
+import MarkMistakes from "./mistakes";
 
 interface Props {
   text: string;
@@ -25,12 +28,27 @@ const LpEditor: React.FC<Props> = ({ text }) => {
         onInit={(_evt, editor) => {
           if (editor) {
             //@ts-ignore
+            // languagePlugin(window.tinymce);
+            //@ts-ignore
             editorRef.current = editor;
             const className = isDark ? "dark" : "light";
             const body = editor.getDoc().body;
             body.classList.remove("dark", "light");
             body.classList.add(className);
             setHelpers && setHelpers(editor);
+
+            const domBody = editor.getDoc();
+            var script = domBody.createElement("script");
+            script.type = "text/javascript";
+            script.src = "https://unpkg.com/@popperjs/core@2";
+
+            domBody.head.appendChild(script);
+
+            var script = domBody.createElement("script");
+            script.type = "text/javascript";
+            script.src = "https://unpkg.com/tippy.js@6";
+
+            domBody.head.appendChild(script);
           }
         }}
         initialValue={html}
@@ -51,7 +69,8 @@ const LpEditor: React.FC<Props> = ({ text }) => {
           content_css: basePath + "/css/editor.css",
           icons: "thin",
           height: "100%",
-          quickbars_selection_toolbar: "h1 h2 bold italic underline quicklink",
+          quickbars_selection_toolbar:
+            "h1 h2 bold italic underline quicklink nlpcheck nlpremove",
           quickbars_insert_toolbar:
             "bullist numlist blockquote hr codesample customImage",
           statusbar: false,
@@ -63,7 +82,39 @@ const LpEditor: React.FC<Props> = ({ text }) => {
                 onMediaBrowse && onMediaBrowse();
               },
             });
-            editor.ui.registry.getAll();
+            editor.ui.registry.addButton("nlpremove", {
+              text: "Remove Spell",
+              onAction: function (_) {
+                const domBody = editor.getDoc().body;
+
+                domBody.querySelectorAll("mark").forEach((spanElmt) => {
+                  spanElmt.outerHTML = spanElmt.innerHTML;
+                });
+                editor.setContent(domBody.innerHTML);
+              },
+            });
+            editor.ui.registry.addButton("nlpcheck", {
+              text: "Spell Check",
+              onAction: async function (_) {
+                const markMistakes = new MarkMistakes(editor);
+                markMistakes.run();
+                editor
+                  .getWin()
+                  //@ts-ignore
+                  .tippy("[data-tippy-content]", { allowHTML: true });
+              },
+            });
+            setTimeout(() => {
+              //@ts-ignore
+              editor.getWin().tippy &&
+                editor
+                  .getWin()
+                  //@ts-ignore
+                  .tippy("[data-tippy-content]", {
+                    allowHTML: true,
+                    theme: "light",
+                  });
+            }, 2000);
           },
           entity_encoding: "raw",
         }}
