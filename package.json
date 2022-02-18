@@ -12,7 +12,8 @@
     "start": "next start",
     "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/index.js",
     "migrate": "prisma migrate dev --name init",
-    "typecheck": "yarn tsc"
+    "typecheck": "yarn tsc",
+    "resetDemo": "ts-node -r tsconfig-paths/register --transpile-only ./src/resetDemo.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
