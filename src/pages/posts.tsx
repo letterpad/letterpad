@@ -46,7 +46,7 @@ function Posts() {
           </TagsProvider>
           <Table
             columns={postsColumns}
-            dataSource={source}
+            dataSource={source.map((item) => ({ ...item, key: item.id }))}
             loading={loading}
             onRow={(row) => ({
               onClick: () => router.push("/post/" + row.id),

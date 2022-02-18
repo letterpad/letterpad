@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Tooltip, Input, Drawer, Button, Space, Switch } from "antd";
-import { EyeOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  EyeOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import ImageUpload from "../ImageUpload";
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import Tags from "./tags";
@@ -9,6 +13,7 @@ import { getPostHash } from "./api";
 import { PostContextType } from "../post/types";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
+import { socket } from "../post/components/tinymce/socket";
 
 const { TextArea } = Input;
 
@@ -19,6 +24,7 @@ interface IProps {
 }
 const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
   if (post && post.__typename !== "Post") return null;
+
   const SavingIndicator = useSavingIndicator();
 
   const [visible, setVisible] = useState(false);
@@ -54,6 +60,17 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
                 settings.data.settings.site_url + "/preview/" + postHash,
               );
             }
+          }}
+        />
+      </Tooltip>
+      <Tooltip title="Grammar">
+        <Button
+          type="ghost"
+          shape="circle"
+          size="small"
+          icon={<CheckCircleOutlined />}
+          onClick={() => {
+            socket.checkGrammar();
           }}
         />
       </Tooltip>

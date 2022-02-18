@@ -1,11 +1,9 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { memo, useEffect, useRef, useState } from "react";
-import { usePostContext } from "../context";
+import { usePostContext } from "../../context";
 import { basePath } from "@/constants";
-import { textPatterns } from "./textPatterns";
-// import tippy from "tippy.js";
-// import { data } from "./data";
-import MarkMistakes from "./mistakes";
+import { textPatterns } from "../textPatterns";
+import { socket } from "./socket";
 
 interface Props {
   text: string;
@@ -16,6 +14,25 @@ const LpEditor: React.FC<Props> = ({ text }) => {
   const editorRef = useRef<Editor["editor"]>(null);
   const isDark = document.body.classList.contains("dark");
   const [html, setHtml] = useState(text);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      socket.setEditor(editorRef.current);
+      socket.connectSocketAndAddListeners();
+      socket.setChangeHandler(() => {
+        const html = editorRef.current?.getBody().innerHTML;
+        if (html) {
+          editorRef.current?.setContent(html);
+          socket.applyTooltip();
+          setPostAttribute && setPostAttribute({ html });
+        }
+      });
+    }
+    return () => {
+      socket.disconnect();
+    };
+  }, [editorRef.current]);
+
   useEffect(() => {
     if (typeof html == "undefined") {
       setHtml(text);
@@ -25,10 +42,8 @@ const LpEditor: React.FC<Props> = ({ text }) => {
   return (
     <>
       <Editor
-        onInit={(_evt, editor) => {
+        onInit={async (_evt, editor) => {
           if (editor) {
-            //@ts-ignore
-            // languagePlugin(window.tinymce);
             //@ts-ignore
             editorRef.current = editor;
             const className = isDark ? "dark" : "light";
@@ -38,36 +53,29 @@ const LpEditor: React.FC<Props> = ({ text }) => {
             setHelpers && setHelpers(editor);
 
             const domBody = editor.getDoc();
-            var script = domBody.createElement("script");
-            script.type = "text/javascript";
-            script.src = "https://unpkg.com/@popperjs/core@2";
-
-            domBody.head.appendChild(script);
-
-            var script = domBody.createElement("script");
-            script.type = "text/javascript";
-            script.src = "https://unpkg.com/tippy.js@6";
-
-            domBody.head.appendChild(script);
+            await insertScript("/admin/tippy/popper.min.js", domBody.head);
+            await insertScript("/admin/tippy/tippy.min.js", domBody.head);
+            socket.applyTooltip();
           }
         }}
         initialValue={html}
         onEditorChange={(html) => {
           setPostAttribute && setPostAttribute({ html });
         }}
-        apiKey="6xxqtl14jlwud6hysqri2xt2pp3lj38je5qys05c17ij7oai"
+        // apiKey="6xxqtl14jlwud6hysqri2xt2pp3lj38je5qys05c17ij7oai"
+        tinymceScriptSrc="/admin/tinymce/tinymce.min.js"
         init={{
           menubar: false,
           toolbar: false,
           browser_spellcheck: true,
           contextmenu: false,
+          socket,
           plugins:
             "lists link paste emoticons quickbars hr image autoresize  code codesample textpattern",
           skin: window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "oxide-dark"
             : "",
           content_css: basePath + "/css/editor.css",
-          icons: "thin",
           height: "100%",
           quickbars_selection_toolbar:
             "h1 h2 bold italic underline quicklink nlpcheck nlpremove",
@@ -82,39 +90,6 @@ const LpEditor: React.FC<Props> = ({ text }) => {
                 onMediaBrowse && onMediaBrowse();
               },
             });
-            editor.ui.registry.addButton("nlpremove", {
-              text: "Remove Spell",
-              onAction: function (_) {
-                const domBody = editor.getDoc().body;
-
-                domBody.querySelectorAll("mark").forEach((spanElmt) => {
-                  spanElmt.outerHTML = spanElmt.innerHTML;
-                });
-                editor.setContent(domBody.innerHTML);
-              },
-            });
-            editor.ui.registry.addButton("nlpcheck", {
-              text: "Spell Check",
-              onAction: async function (_) {
-                const markMistakes = new MarkMistakes(editor);
-                markMistakes.run();
-                editor
-                  .getWin()
-                  //@ts-ignore
-                  .tippy("[data-tippy-content]", { allowHTML: true });
-              },
-            });
-            setTimeout(() => {
-              //@ts-ignore
-              editor.getWin().tippy &&
-                editor
-                  .getWin()
-                  //@ts-ignore
-                  .tippy("[data-tippy-content]", {
-                    allowHTML: true,
-                    theme: "light",
-                  });
-            }, 2000);
           },
           entity_encoding: "raw",
         }}
@@ -138,3 +113,15 @@ const LpEditor: React.FC<Props> = ({ text }) => {
 };
 
 export default memo(LpEditor);
+
+const insertScript = (src, head) => {
+  return new Promise((resolve, reject) => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = src;
+    script.onload = resolve;
+    script.onerror = reject;
+    script.onabort = resolve;
+    head.appendChild(script);
+  });
+};

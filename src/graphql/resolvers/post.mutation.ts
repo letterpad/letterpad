@@ -142,7 +142,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
           }),
         };
       }
-      console.log("to save ====>", newPostArgs);
       const updatedPost = await prisma.post.update(newPostArgs);
       // update content
 
