@@ -64,7 +64,10 @@ const Import = async (req, res) => {
 
 export default Import;
 
-async function startImport(data: { [email: string]: IAuthorData }, isAdmin) {
+export async function startImport(
+  data: { [email: string]: IAuthorData },
+  isAdmin,
+) {
   const role = await prisma.role.findFirst({
     where: { name: ROLES.AUTHOR },
   });

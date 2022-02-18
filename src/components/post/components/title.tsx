@@ -5,13 +5,16 @@ import { usePostContext } from "../context";
 interface Props {
   onEnter(): void;
 }
-
+enum TextAlign {
+  center = "center",
+}
 const defaults = {
   style: {
     padding: 0,
     fontSize: 38,
     lineHeight: 1,
     minHeight: 50,
+    textAlign: TextAlign.center,
   },
   rows: 3,
   autoSize: true,
