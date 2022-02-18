@@ -65,6 +65,7 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
       </Tooltip>
       <Tooltip title="Grammar">
         <Button
+          style={{ display: "none" }}
           type="ghost"
           shape="circle"
           size="small"
