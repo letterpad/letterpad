@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 
 const socketMap = {};
 
-const ioHandler = (req, res) => {
+const ioHandler = (_req, res) => {
   if (!res.socket.server.io) {
     console.log("*First use, starting socket.io");
 

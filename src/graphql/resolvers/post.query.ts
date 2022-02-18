@@ -8,7 +8,6 @@ import {
 } from "@/__generated__/__types__";
 import { decrypt } from "../utils/crypto";
 import logger from "./../../shared/logger";
-import { mdToHtml } from "@/shared/converter";
 import { ResolverContext } from "../context";
 import { Prisma } from "@prisma/client";
 import { mapPostToGraphql } from "./mapper";
