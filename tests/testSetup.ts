@@ -1,5 +1,4 @@
 const env = require("node-env-file");
-env(__dirname + "/../.env");
 env(__dirname + "/../.env.development.local");
 process.env.DATABASE_URL = "file:../data/test.sqlite";
 import { ApolloServer } from "apollo-server";
