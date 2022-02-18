@@ -1,6 +1,7 @@
 @import url("./theme-variables.css");
 @import url("https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Mono&display=swap");
 @import "https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-duotone-sea.min.css";
+@import "https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.6/tippy.min.css";
 
 body {
   font-family: system-ui, sans-serif;
@@ -9,6 +10,7 @@ body {
   font-size: 1.2em;
   overflow-x: hidden;
   color: rgba(var(--color), 0.7);
+  margin: 0;
 }
 h1,
 h2,
@@ -56,4 +58,102 @@ blockquote {
   line-height: 1.6;
   position: relative;
   font-size: 0.85em;
+}
+.highlight {
+  color: rgb(221, 79, 79);
+}
+
+mark {
+  background: yellow;
+  cursor: pointer;
+}
+mark.typographical {
+  background: rgb(241, 107, 230);
+  color: #fff;
+}
+mark.misspelling {
+  background: rgb(202, 248, 94);
+  color: #111;
+}
+mark.duplication {
+  background: rgb(186, 168, 214);
+  color: #111;
+}
+mark.grammar {
+  background: rgb(120, 214, 226);
+  color: rgb(56, 56, 56);
+}
+mark.style {
+  background: slateblue;
+  color: #ddd;
+}
+mark.style {
+  background: slateblue;
+  color: #fff;
+}
+mark {
+  /* text-decoration: underline; */
+  padding: 0 6px;
+  font-size: 90%;
+  border-radius: 4px;
+  border: 1px solid #eee;
+  border-bottom: 1px solid #111;
+}
+body {
+  padding-top: 50px;
+}
+.tippy-content {
+  color: rgb(var(--color));
+  background: rgb(var(--content-bg));
+  border: 1px solid rgba(var(--color-border), 0.2);
+  padding: 0px;
+  border-radius: 4px;
+}
+.tippy-content * {
+  margin: 0px;
+  padding: 0px;
+}
+.tippy-content .heading {
+  text-transform: capitalize;
+}
+.tippy-content ul {
+  list-style-type: none;
+  padding-left: 0px;
+  margin: 12px 0px;
+  cursor: pointer;
+}
+.tippy-content .issue-type {
+  margin: 0px;
+  background: #eee;
+  padding: 6px 8px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+.tippy-content .message {
+  margin-bottom: 6px;
+  opacity: 0.8;
+  font-weight: 400;
+  font-size: small;
+}
+.tippy-content .description {
+  opacity: 0.8;
+  font-weight: 400;
+  font-size: small;
+}
+.tippy-content .content-area {
+  padding: 6px 8px;
+}
+
+.tippy-content .footer {
+  padding: 6px;
+  font-size: small;
+  color: #c20f0f;
+  background: #f2f2f2;
+  border-top: 1px solid #eee;
+}
+.tippy-content .footer span {
+  cursor: pointer;
+}
+.tippy-content .suggestion-list li {
+  color: rgb(69, 163, 218);
 }

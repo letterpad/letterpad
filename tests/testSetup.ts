@@ -1,5 +1,4 @@
 const env = require("node-env-file");
-env(__dirname + "/../.env");
 env(__dirname + "/../.env.development.local");
 process.env.DATABASE_URL = "file:../data/test.sqlite";
 import { ApolloServer } from "apollo-server";
@@ -39,11 +38,12 @@ export const createApolloTestServer = async () => {
 let server;
 beforeAll(async () => {
   try {
-    // global.console = require("console");
+    global.console = require("console");
     await execShellCommand(
       "DATABASE_URL='file:../data/test.sqlite' npx prisma db push --force-reset",
     );
   } catch (err) {
+    console.log(err);
     process.exit();
   }
   await seed();

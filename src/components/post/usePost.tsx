@@ -21,7 +21,7 @@ const usePost = () => {
       }
       setLoading(false);
     });
-  }, []);
+  }, [postId]);
 
   return { post, setPost, error, loading };
 };

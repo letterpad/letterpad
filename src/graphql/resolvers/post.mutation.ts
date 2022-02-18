@@ -78,8 +78,7 @@ export const createPost = async (
 const Mutation: MutationResolvers<ResolverContext> = {
   //@ts-ignore
   async createPost(_parent, args, context) {
-    //@ts-ignore
-    return await createPost(args.data, context);
+    return await createPost(args, context);
   },
 
   async updatePost(_parent, args, { session, prisma, mailUtils }, _info) {
@@ -142,7 +141,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
           }),
         };
       }
-      console.log("to save ====>", newPostArgs);
       const updatedPost = await prisma.post.update(newPostArgs);
       // update content
 
@@ -318,7 +316,7 @@ async function getContentAttrs(
   newStatus?: PostStatusOptions,
 ) {
   const data = {
-    html: prevPost.html || empty,
+    html: html || prevPost.html || empty,
     html_draft: prevPost.html_draft || empty,
     reading_time: prevPost.reading_time || empty,
   };
@@ -327,6 +325,7 @@ async function getContentAttrs(
     return data;
   }
   if (savingDraft(prevPost.status, newStatus)) {
+    data.html = prevPost.html || empty;
     data.html_draft = html || data.html_draft;
     return data;
   }

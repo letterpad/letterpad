@@ -8,7 +8,6 @@ import {
 } from "@/__generated__/__types__";
 import { decrypt } from "../utils/crypto";
 import logger from "./../../shared/logger";
-import { mdToHtml } from "@/shared/converter";
 import { ResolverContext } from "../context";
 import { Prisma } from "@prisma/client";
 import { mapPostToGraphql } from "./mapper";
@@ -149,25 +148,33 @@ const Query: QueryResolvers<ResolverContext> = {
     const { previewHash, id, slug } = args.filters;
 
     let postId = previewHash ? Number(decrypt(previewHash)) : id;
-    const manageOwnPost = session?.user.permissions?.includes(
-      Permissions.ManageOwnPosts,
-    );
 
-    const post = await prisma.post.findFirst({
-      where: {
-        id: postId,
-        author_id: manageOwnPost ? author_id : undefined,
-        status: !session?.user.id ? PostStatusOptions.Published : undefined,
-        slug: slug?.split("/").pop(),
-      },
-    });
+    try {
+      const manageOwnPost = session?.user.permissions?.includes(
+        Permissions.ManageOwnPosts,
+      );
 
-    if (post) {
-      const html = previewHash
-        ? mdToHtml(post.html_draft || post.html || "")
-        : post.html;
+      const post = await prisma.post.findFirst({
+        where: {
+          id: postId,
+          author_id: manageOwnPost ? author_id : undefined,
+          status:
+            !session?.user.id && !postId
+              ? PostStatusOptions.Published
+              : undefined,
+          slug: slug?.split("/").pop(),
+        },
+      });
 
-      return { ...mapPostToGraphql(post), html, __typename: "Post" };
+      if (post) {
+        const html = previewHash
+          ? post.html_draft || post.html || ""
+          : post.html;
+
+        return { ...mapPostToGraphql(post), html, __typename: "Post" };
+      }
+    } catch (e) {
+      console.log(e);
     }
     return { __typename: "PostError", message: "Post not found" };
   },
