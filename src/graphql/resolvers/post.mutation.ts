@@ -17,6 +17,7 @@ import { EmailTemplates } from "@/graphql/types";
 import { ResolverContext } from "../context";
 import { Prisma } from "@prisma/client";
 import { mapPostToGraphql } from "./mapper";
+import Cheerio from "cheerio";
 
 export const slugOfUntitledPost = "untitled";
 
@@ -315,6 +316,11 @@ async function getContentAttrs(
   html?: string,
   newStatus?: PostStatusOptions,
 ) {
+  if (html) {
+    const $ = Cheerio.load(html);
+    $("[data-tippy-root]").remove();
+    html = $.html();
+  }
   const data = {
     html: html || prevPost.html || empty,
     html_draft: prevPost.html_draft || empty,
@@ -337,6 +343,7 @@ async function getContentAttrs(
     data.html_draft = empty;
     data.reading_time = reading_time(data.html).text;
   }
+
   return data;
 }
 
