@@ -3,18 +3,14 @@ import { useRouter } from "next/router";
 import { forgotPasswordAction } from "../actions";
 import { Form, Input, Button, Row } from "antd";
 export const ForgotPassword = ({
-  email,
   isVisible,
-  setEmail,
   hideSelf,
 }: {
-  email: string;
   isVisible: boolean;
-  setEmail: (email: string) => void;
   hideSelf: () => void;
 }) => {
   const router = useRouter();
-  const forgotPassword = async () => {
+  const forgotPassword = async (email) => {
     const result = await forgotPasswordAction(email);
     if (result) {
       router.push(`${basePath}/login`);
@@ -22,8 +18,7 @@ export const ForgotPassword = ({
   };
 
   const onFinish = (values: any) => {
-    setEmail(values.email);
-    forgotPassword();
+    forgotPassword(values.email);
   };
 
   if (!isVisible) return null;

@@ -6,8 +6,6 @@ import { LoginFormDemo } from "@/components/login/views/LoginFormDemo";
 import { Header } from "antd/lib/layout/layout";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loginView, setLoginView] = useState(true);
 
   const isDemo =
@@ -28,17 +26,11 @@ const Login = () => {
           <LoginFormDemo isVisible={loginView} />
         ) : (
           <LoginForm
-            email={email}
             isVisible={loginView}
-            password={password}
-            setEmail={setEmail}
-            setPassword={setPassword}
             hideSelf={() => setLoginView(false)}
           />
         )}
         <ForgotPassword
-          email={email}
-          setEmail={setEmail}
           hideSelf={() => setLoginView(true)}
           isVisible={!loginView}
         />

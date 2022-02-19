@@ -1,27 +1,18 @@
 import { EventAction, track } from "@/track";
 import { message, Row } from "antd";
-import { useCallback } from "react";
 import { doLogin } from "../actions";
 import { key } from "../constants";
 import { Form, Input, Button, Checkbox } from "antd";
 import Link from "next/link";
 
 export const LoginForm = ({
-  email,
-  password,
   isVisible,
-  setEmail,
-  setPassword,
   hideSelf,
 }: {
-  email: string;
-  password: string;
   isVisible: boolean;
-  setEmail: (email: string) => void;
-  setPassword: (password: string) => void;
   hideSelf: () => void;
 }) => {
-  const loginAction = useCallback(async () => {
+  const loginAction = async (email, password) => {
     const result = await doLogin({ email, password });
     track({
       eventAction: EventAction.Click,
@@ -34,12 +25,10 @@ export const LoginForm = ({
       return;
     }
     message.error({ key, content: result.message, duration: 5 });
-  }, [email, password]);
+  };
 
   const onFinish = (values: any) => {
-    setEmail(values.email);
-    setPassword(values.password);
-    loginAction();
+    loginAction(values.email, values.password);
   };
 
   if (!isVisible) {
@@ -74,7 +63,7 @@ export const LoginForm = ({
             },
           ]}
         >
-          <Input />
+          <Input autoComplete="dontshow" />
         </Form.Item>
 
         <Form.Item
@@ -83,7 +72,7 @@ export const LoginForm = ({
           data-testid="input-password"
           rules={[{ required: true, message: "Please input your password!" }]}
         >
-          <Input.Password />
+          <Input.Password autoComplete="dontshow" />
         </Form.Item>
 
         <Form.Item
