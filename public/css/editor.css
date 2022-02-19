@@ -63,48 +63,43 @@ blockquote {
   color: rgb(221, 79, 79);
 }
 
-mark {
+.mark {
   background: yellow;
   cursor: pointer;
 }
-mark.typographical {
+.mark.typographical {
   background: rgb(241, 107, 230);
   color: #fff;
 }
-mark.misspelling {
+.mark.misspelling {
   background: rgb(202, 248, 94);
   color: #111;
 }
-mark.duplication {
+.mark.duplication {
   background: rgb(186, 168, 214);
   color: #111;
 }
-mark.grammar {
+.mark.grammar {
   background: rgb(120, 214, 226);
   color: rgb(56, 56, 56);
 }
-mark.style {
+.mark.style {
   background: slateblue;
   color: #ddd;
 }
-mark.style {
-  background: slateblue;
-  color: #fff;
-}
-mark {
+.mark {
   /* text-decoration: underline; */
   padding: 0 6px;
   font-size: 90%;
   border-radius: 4px;
-  border: 1px solid #eee;
   border-bottom: 1px solid #111;
 }
 body {
   padding-top: 50px;
 }
 .tippy-content {
-  color: rgb(var(--color));
-  background: rgb(var(--content-bg));
+  color: #333;
+  background: rgb(250, 250, 250);
   border: 1px solid rgba(var(--color-border), 0.2);
   padding: 0px;
   border-radius: 4px;
@@ -124,7 +119,7 @@ body {
 }
 .tippy-content .issue-type {
   margin: 0px;
-  background: #eee;
+  /* background: #eee; */
   padding: 6px 8px;
   text-transform: capitalize;
   font-weight: 500;
@@ -148,7 +143,6 @@ body {
   padding: 6px;
   font-size: small;
   color: #c20f0f;
-  background: #f2f2f2;
   border-top: 1px solid #eee;
 }
 .tippy-content .footer span {

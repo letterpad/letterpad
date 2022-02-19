@@ -76,11 +76,11 @@ export default class Grammar {
             },
             { offset },
           );
-          this.output += `<mark class="${issueType}" data-tippy-content="${tooltip}" data-offset-start="${offset}">`;
+          this.output += `<span class="mark ${issueType}" data-tippy-content="${tooltip}" data-offset-start="${offset}">`;
           wordEndOffset = suggestion.length + i;
         }
         if (wordEndOffset === i) {
-          this.output += "</mark>";
+          this.output += "</span>";
         }
         offset++;
         this.output += letter;

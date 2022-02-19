@@ -19,7 +19,6 @@ const ioHandler = (_req, res) => {
       });
 
       socket.on("REVIEW", async ({ m, index }) => {
-        console.log("server received review");
         try {
           const correction = await api(m);
           socket.emit("REVIEW", { correction, index });
