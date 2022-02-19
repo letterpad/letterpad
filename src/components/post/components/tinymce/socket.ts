@@ -2,6 +2,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import io from "socket.io-client";
 import Grammar from "../language-tool/grammar";
 
+const path = "/admin/api/socket.io";
 class Socket {
   editor: Editor["editor"] = undefined;
   socket: ReturnType<typeof io> | null = null;
@@ -96,12 +97,7 @@ class Socket {
       interactive: true,
       appendTo: win.document.body,
       zIndex: 99999999,
-      popperOptions: {
-        positionFixed: true,
-        allowHTML: true,
-        zIndex: 99999999,
-        interactive: true,
-      },
+      placement: "bottom",
     });
   }
 
@@ -119,11 +115,11 @@ class Socket {
   private async _initSocket(): Promise<ReturnType<typeof io>> {
     return new Promise(async (resolve, reject) => {
       try {
-        await fetch("/admin/api/socket.io");
+        await fetch(path);
       } catch (err) {
         reject();
       } finally {
-        const socket = io();
+        const socket = io(window.location.origin, { path });
         socket.on("connect", () => {
           console.log("Socket connected");
           resolve(socket);
