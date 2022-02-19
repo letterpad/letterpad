@@ -4,9 +4,9 @@ const LetterpadEditor = dynamic(() => import("./letterpad-editor"));
 const TinyMceEditor = dynamic(() => import("./tinymce/tinymce"));
 
 const Editor = ({ text }) => {
-  if (localStorage.tinymce) {
-    return <TinyMceEditor text={text} />;
+  if (localStorage.letterpad) {
+    return <LetterpadEditor text={text} />;
   }
-  return <LetterpadEditor text={text} />;
+  return <TinyMceEditor text={text} />;
 };
 export default Editor;
