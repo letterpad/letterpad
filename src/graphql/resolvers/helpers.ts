@@ -1,7 +1,7 @@
 import https from "https";
 import cheerio from "cheerio";
 import sizeOf from "image-size";
-
+import reading_time from "reading-time";
 import logger from "./../../shared/logger";
 import { Prisma } from "@prisma/client";
 
@@ -99,6 +99,12 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
     // ignore
   }
   return html;
+};
+
+export const getReadingTimeFromHtml = (html: string) => {
+  const $ = cheerio.load(html);
+  const text = $.text();
+  return reading_time(text).text;
 };
 
 interface ICaptchaResult {

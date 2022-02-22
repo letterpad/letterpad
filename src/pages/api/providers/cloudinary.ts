@@ -27,7 +27,7 @@ export async function uploadToCloudinary(
         }
         return result
           ? resolve({
-              src: result.url,
+              src: result.url.replace("http://", "https://"),
               error: "",
               name: result.public_id,
               size: {

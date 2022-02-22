@@ -55,6 +55,10 @@ const LpEditor: React.FC<Props> = ({ text }) => {
             const domBody = editor.getDoc();
             await insertScript("/admin/tippy/popper.min.js", domBody.head);
             await insertScript("/admin/tippy/tippy.min.js", domBody.head);
+            await insertScript(
+              "https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js",
+              domBody.head,
+            );
             socket.applyTooltip();
           }
         }}
