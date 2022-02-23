@@ -5,12 +5,12 @@ import {
   PostTypes,
   RequireFields,
 } from "@/__generated__/__types__";
-import reading_time from "reading-time";
 import {
   slugify,
   getImageDimensions,
   setImageWidthAndHeightInHtml,
   toSlug,
+  getReadingTimeFromHtml,
 } from "./helpers";
 import logger from "@/shared/logger";
 import { EmailTemplates } from "@/graphql/types";
@@ -341,13 +341,16 @@ async function getContentAttrs(
     data.html_draft = html || data.html_draft;
     return data;
   }
+  if (newStatus && isPublishingLive(newStatus, prevPost.status)) {
+    return { ...data, reading_time: getReadingTimeFromHtml(data.html) };
+  }
   if (rePublished(prevPost.status, newStatus)) {
     if (!html) {
       data.html = data.html_draft;
     }
     data.html = (await setImageWidthAndHeightInHtml(data.html)) || empty;
     data.html_draft = empty;
-    data.reading_time = reading_time(data.html).text;
+    data.reading_time = getReadingTimeFromHtml(data.html);
   }
 
   return data;
