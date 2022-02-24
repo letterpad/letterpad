@@ -27,6 +27,7 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
       const result = data.tags.rows.filter((s) => {
         return !tags.find((t) => s.name === t.name);
       });
+
       setSuggestions(addTagsWithId(result));
     }
   }, [loading]);
@@ -43,9 +44,12 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
   }, [tags]);
 
   const onDelete = (i) => {
-    addToSuggestion(tags[i]);
+    if (i === -1) return false;
     const _tags = tags.slice(0);
     _tags.splice(i, 1);
+    const removedTag = tags[i];
+
+    addToSuggestion(removedTag);
     setTags(_tags);
   };
 
@@ -55,11 +59,11 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
   };
 
   const removeFromSuggestion = ({ name }: Tag) => {
-    setSuggestions(suggestions.filter((s) => s.name === name));
+    setSuggestions(suggestions.filter((s) => s.name !== name));
   };
 
   const addToSuggestion = (tag: Tag) => {
-    setSuggestions([...suggestions, tag]);
+    setSuggestions([...suggestions, { ...tag }]);
   };
 
   return (
@@ -207,7 +211,8 @@ export default Tags;
 
 function addTagsWithId(tags: { name: string; slug: string }[]) {
   return tags?.map((tag) => ({
-    ...tag,
+    name: tag.name,
+    slug: tag.name,
     id: tag.name,
   }));
 }
