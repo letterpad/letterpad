@@ -15,6 +15,8 @@ const defaults = {
     lineHeight: 1,
     minHeight: 50,
     textAlign: TextAlign.center,
+    overflow: "hidden",
+    fontWeight: "bold",
   },
   rows: 3,
   autoSize: true,
@@ -37,9 +39,10 @@ const Title: React.FC<Props> = ({ onEnter }) => {
             onEnter();
           }
         }}
+        className="title"
       />
       <style jsx global>{`
-        textarea {
+        textarea.title {
           overflow: hidden;
         }
       `}</style>

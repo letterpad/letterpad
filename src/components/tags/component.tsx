@@ -1,4 +1,4 @@
-import { Table, Button } from "antd";
+import { Table } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { useEffect, useState } from "react";
 import { EditableCell, EditableRow } from "@/components/ediitable-table";
@@ -18,7 +18,7 @@ const components = {
 
 const EditableTable = () => {
   const [dataSource, setDataSource] = useState<TagRow[]>([]);
-  const { loading, tags, addTag, saveTag, headers } = useTagsContext();
+  const { loading, tags, saveTag, headers } = useTagsContext();
 
   useEffect(() => {
     if (tags) {
@@ -46,9 +46,9 @@ const EditableTable = () => {
   return (
     <Content>
       <div className="site-layout-background" style={{ padding: 24 }}>
-        <Button onClick={addTag} type="primary" style={{ marginBottom: 16 }}>
+        {/* <Button onClick={addTag} type="primary" style={{ marginBottom: 16 }}>
           Add a row
-        </Button>
+        </Button> */}
         <Table
           components={components}
           rowClassName={() => "editable-row"}
