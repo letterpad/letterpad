@@ -3,10 +3,10 @@
 html .light {
   --sidebar-bg: 20, 20, 24;
   --content-bg: 255, 255, 255;
-  --section-bg: 255, 255, 255
+  --section-bg: 255, 255, 255;
   --accent: 14, 114, 207;
   --color: 29, 29, 32;
-  --color-border: 42, 46, 62;
+  --color-border: 217, 217, 217;
 }
 
 html .dark {

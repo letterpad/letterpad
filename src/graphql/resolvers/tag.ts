@@ -35,6 +35,18 @@ const Query: QueryResolvers<ResolverContext> = {
   async tags(_root, args, { session, author_id, prisma }) {
     const authorId = session?.user.id || author_id;
 
+    if (args.filters?.suggest) {
+      const tags = await prisma.tag.findMany({
+        orderBy: {
+          name: "asc",
+        },
+      });
+      return {
+        __typename: "TagsNode",
+        rows: tags as TagsType[],
+      };
+    }
+
     if (!authorId) {
       return {
         __typename: "TagsError",

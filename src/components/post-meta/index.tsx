@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Tooltip, Input, Drawer, Button, Space, Switch } from "antd";
+import { Row, Col, Tooltip, Input, Drawer, Button, Switch } from "antd";
 import {
   CheckCircleOutlined,
   EyeOutlined,
@@ -23,13 +23,11 @@ interface IProps {
   deletePost: () => void;
 }
 const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
-  if (post && post.__typename !== "Post") return null;
-
   const SavingIndicator = useSavingIndicator();
-
   const [visible, setVisible] = useState(false);
   const [postHash, setPostHash] = useState("");
   const settings = useSettingsQuery();
+  const [slug, setSlug] = useState(post.slug);
 
   useEffect(() => {
     getPostHash(post.id).then(setPostHash);
@@ -37,6 +35,15 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
 
   const showDrawer = () => setVisible(true);
   const onClose = () => setVisible(false);
+
+  const formatSlug = (slug: string) => {
+    let formattedSlug = slug.replace(/ /g, "-").toLocaleLowerCase();
+    if (!formattedSlug.startsWith(`/${post.type}/`)) {
+      formattedSlug = `/${post.type}/${formattedSlug}`;
+    }
+    setSlug(formattedSlug);
+    setPostAttribute({ slug: formattedSlug });
+  };
 
   if (post.__typename !== "Post") return null;
 
@@ -99,75 +106,83 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
         width={320}
         extra={[SavingIndicator]}
       >
-        <Space direction="vertical" size="middle">
-          <Row justify="space-between">
-            <Col span={20}>Published</Col>
-            <Col span={4}>
-              <Switch
-                size="small"
-                checked={isPublished}
-                onChange={(change) => {
-                  setPostAttribute({
-                    status: change
-                      ? PostStatusOptions.Published
-                      : PostStatusOptions.Draft,
-                  });
-                }}
-              />
-            </Col>
-          </Row>
-          <Row justify="space-between" hidden={!isPost}>
-            <Col span={20}>Featured</Col>
-            <Col span={4}>
-              <Switch
-                size="small"
-                checked={post.featured}
-                onChange={(change) => {
-                  setPostAttribute({
-                    featured: change,
-                  });
-                }}
-              />
-            </Col>
-          </Row>
-          <div>
-            <label>{postVerb} Description</label>
-            <TextArea
-              showCount
-              rows={3}
-              maxLength={160}
-              onChange={(e) => setPostAttribute({ excerpt: e.target.value })}
-              value={post.excerpt}
-            />
-          </div>
-          <div>
-            <label>Path</label>
-            <Input
-              onChange={(e) => setPostAttribute({ slug: e.target.value })}
-              value={post.slug}
-            />
-          </div>
-          {isPost && <Tags post={post} setPostAttribute={setPostAttribute} />}
-          <div>
-            <label>Cover Image</label>
-            <ImageUpload
-              name="Cover Image"
-              url={post.cover_image.src}
-              onDone={([res]) => {
+        {/* <Space direction="vertical" size="middle"> */}
+        <Row justify="space-between" gutter={16}>
+          <Col span={20}>Published</Col>
+          <Col span={4}>
+            <Switch
+              size="small"
+              checked={isPublished}
+              onChange={(change) => {
                 setPostAttribute({
-                  cover_image: {
-                    src: res.src,
-                    width: res.size.width,
-                    height: res.size.height,
-                  },
+                  status: change
+                    ? PostStatusOptions.Published
+                    : PostStatusOptions.Draft,
                 });
               }}
             />
-          </div>
-          <Button type="primary" danger onClick={deletePost}>
-            Delete {postVerb}
-          </Button>
-        </Space>
+          </Col>
+        </Row>
+        <br />
+        <Row justify="space-between" hidden={!isPost} gutter={16}>
+          <Col span={20}>Featured</Col>
+          <Col span={4}>
+            <Switch
+              size="small"
+              checked={post.featured}
+              onChange={(change) => {
+                setPostAttribute({
+                  featured: change,
+                });
+              }}
+            />
+          </Col>
+        </Row>
+        {isPost && <br />}
+        <div>
+          <label>{postVerb} Description</label>
+          <TextArea
+            showCount
+            rows={6}
+            maxLength={160}
+            onChange={(e) => setPostAttribute({ excerpt: e.target.value })}
+            value={post.excerpt}
+          />
+        </div>
+        <br />
+        <div>
+          <label>Path</label>
+          <Input.Search
+            onChange={(e) => setSlug(e.target.value)}
+            // onChange={(e) => setPostAttribute({ slug: e.target.value })}
+            value={slug}
+            enterButton="Format"
+            onSearch={formatSlug}
+          />
+        </div>
+        <br />
+        {isPost && <Tags post={post} setPostAttribute={setPostAttribute} />}
+        {isPost && <br />}
+        <div>
+          <label>Cover Image</label>
+          <ImageUpload
+            name="Cover Image"
+            url={post.cover_image.src}
+            onDone={([res]) => {
+              setPostAttribute({
+                cover_image: {
+                  src: res.src,
+                  width: res.size.width,
+                  height: res.size.height,
+                },
+              });
+            }}
+          />
+        </div>
+        <Button type="primary" danger onClick={deletePost}>
+          Delete {postVerb}
+        </Button>
+        {/* </Space> */}
       </Drawer>
     </>
   );

@@ -123,8 +123,8 @@ query Me {
   }
 }
 
-query Tags {
-  tags {
+query Tags($filters: TagsFilters) {
+  tags(filters: $filters) {
     ... on TagsNode {
       rows {
         name
