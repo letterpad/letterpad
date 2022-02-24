@@ -91,9 +91,6 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
           /* clicking anywhere will focus the input */
           cursor: text;
         }
-        .react-tags.is-focused {
-          border-color: #b1b1b1;
-        }
 
         .react-tags__selected {
           display: inline;
@@ -151,6 +148,7 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
           top: 100%;
           left: 0;
           width: 100%;
+          z-index: 99999;
         }
 
         @media screen and (min-width: 30em) {
@@ -163,21 +161,20 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
           margin: 4px -1px;
           padding: 0;
           list-style: none;
-          background: white;
+          background: rgb(var(--sidebar-bg));
           border: 1px solid rgb(var(--color-border));
           border-radius: 2px;
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
 
         .react-tags__suggestions li {
-          border-bottom: 1px solid #ddd;
-          padding: 6px 8px;
+          border-bottom: 1px solid rgb(var(--color-border));
+          padding: 10px 8px;
         }
 
         .react-tags__suggestions li mark {
-          text-decoration: underline;
           background: none;
-          font-weight: 600;
+          color: rgb(var(--color));
         }
 
         .react-tags__suggestions li:hover {
@@ -186,7 +183,7 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
         }
 
         .react-tags__suggestions li.is-active {
-          background: #b7cfe0;
+          background: rgb(var(--section-bg));
         }
 
         .react-tags__suggestions li.is-disabled {
