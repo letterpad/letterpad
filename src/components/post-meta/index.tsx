@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Tooltip, Input, Drawer, Button, Switch } from "antd";
-import {
-  CheckCircleOutlined,
-  EyeOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { Row, Col, Input, Drawer, Button, Switch } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 import ImageUpload from "../ImageUpload";
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import Tags from "./tags";
@@ -14,6 +10,7 @@ import { PostContextType } from "../post/types";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 import { socket } from "../post/components/tinymce/socket";
+import { Menu, Dropdown } from "antd";
 
 const { TextArea } = Input;
 
@@ -22,6 +19,7 @@ interface IProps {
   setPostAttribute: PostContextType["setPostAttribute"];
   deletePost: () => void;
 }
+
 const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
   const SavingIndicator = useSavingIndicator();
   const [visible, setVisible] = useState(false);
@@ -53,38 +51,14 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
   const rePublishBtnDisabled =
     post.html_draft === "" || post.html_draft == post.html;
 
-  return (
-    <>
-      <Tooltip title="Preview">
-        <Button
-          type="ghost"
-          shape="circle"
-          size="small"
-          icon={<EyeOutlined />}
-          onClick={() => {
-            if (settings.data?.settings.__typename === "Setting") {
-              window.open(
-                settings.data.settings.site_url + "/preview/" + postHash,
-              );
-            }
-          }}
-        />
-      </Tooltip>
-      <Tooltip title="Grammar">
-        <Button
-          // style={{ display: "none" }}
-          type="ghost"
-          shape="circle"
-          size="small"
-          icon={<CheckCircleOutlined />}
-          onClick={() => {
-            socket.checkGrammar();
-          }}
-        />
-      </Tooltip>
-      <Button
-        size="small"
-        type="primary"
+  const menu = (
+    <Menu>
+      <Menu.Item key="0" onClick={showDrawer}>
+        Settings
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item
+        key="1"
         disabled={rePublishBtnDisabled}
         onClick={() => {
           setPostAttribute({
@@ -93,10 +67,42 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
         }}
       >
         Republish
-      </Button>
-      <Button type="primary" onClick={showDrawer} size="small">
-        <SettingOutlined />
-      </Button>
+      </Menu.Item>
+      <Menu.Divider />
+      {settings.data?.settings.__typename === "Setting" && (
+        <Menu.Item
+          key="2"
+          onClick={() => {
+            if (settings.data?.settings.__typename === "Setting") {
+              window.open(
+                settings.data.settings.site_url + "/preview/" + postHash,
+              );
+            }
+          }}
+        >
+          Preview
+        </Menu.Item>
+      )}
+      <Menu.Divider />
+      <Menu.Item
+        key="3"
+        onClick={() => {
+          socket.checkGrammar();
+        }}
+      >
+        Check Grammar
+      </Menu.Item>
+    </Menu>
+  );
+
+  return (
+    <>
+      <Dropdown overlay={menu} trigger={["hover"]}>
+        <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+          <MoreOutlined style={{ fontSize: 30 }} />
+        </a>
+      </Dropdown>
+
       <Drawer
         title="Settings"
         placement="right"

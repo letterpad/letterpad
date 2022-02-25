@@ -55,6 +55,15 @@ ThemeSwitcher.switch = (color) => {
     $style.setAttribute("href", basePath + stylePath);
   }
 
+  // remove scrollbars
+  document.documentElement.style.overflow = "hidden";
+  // trigger reflow so that overflow style is applied
+  document.body.clientWidth;
+  // change scheme
+  document.documentElement.setAttribute("data-color-scheme", color);
+  // remove overflow style, which will bring back the scrollbar with the correct scheme
+  document.documentElement.style.overflow = "";
+
   localStorage.theme = color;
 };
 export default ThemeSwitcher;

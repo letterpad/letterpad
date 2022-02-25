@@ -1,4 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+[data-color-scheme="dark"] {
+  color-scheme: dark;
+}
+
+[data-color-scheme="light"] {
+  color-scheme: light;
+}
 html,
 body {
   padding: 0;
