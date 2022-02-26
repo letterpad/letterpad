@@ -94,6 +94,24 @@ const LpEditor: React.FC<Props> = ({ text }) => {
                 onMediaBrowse && onMediaBrowse();
               },
             });
+            editor.on("keydown", function (e) {
+              // move cursor to next element when hitting enter on figcaption
+              if (e.key == "Enter") {
+                const tag = editorRef.current?.selection.getNode().tagName;
+                if (tag === "FIGCAPTION") {
+                  const range = new Range();
+                  const nextEle =
+                    editorRef.current?.selection.getNode().parentElement
+                      ?.parentElement?.nextElementSibling;
+                  if (nextEle) {
+                    range.setStart(nextEle, 0);
+                    range.setEnd(nextEle, 0);
+                    editorRef.current?.selection.setRng(range, true);
+                  }
+                }
+                e.preventDefault();
+              }
+            });
           },
           entity_encoding: "raw",
         }}

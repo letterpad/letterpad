@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 import { uploadFile } from "@/shared/utils";
 import { MediaProvider } from "src/shared/types";
 import { TypeMediaInsert } from "letterpad-editor";
+import NoSsr from "../NoSsr";
 
 interface IProps {
   isVisible: boolean;
@@ -89,7 +90,7 @@ const FileExplorer = ({
   const hasSelectedImages = Object.keys(selectedUrls).length > 0;
   if (!isVisible) return null;
   return (
-    <>
+    <NoSsr>
       <Modal
         centered
         className="file-explorer"
@@ -153,7 +154,7 @@ const FileExplorer = ({
           }
         }
       `}</style>
-    </>
+    </NoSsr>
   );
 };
 
