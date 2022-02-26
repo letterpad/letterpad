@@ -1,4 +1,4 @@
-import { Button, message, Row } from "antd";
+import { Button, message } from "antd";
 import { useCallback } from "react";
 import { doLogin } from "../actions";
 import { key } from "../constants";
@@ -17,14 +17,27 @@ export const LoginFormDemo = ({ isVisible }: { isVisible: boolean }) => {
   if (!isVisible) return null;
   return (
     <>
-      <Row justify="space-between" align="middle" style={{ paddingLeft: 10 }}>
-        You are logging into a demo account. Few features will be disabled.
+      <div
+        className="container"
+        style={{ paddingLeft: 10, height: "calc(100% - 70px)" }}
+      >
+        <span>
+          You are logging into a demo account. Few features will be disabled.
+        </span>
         <br />
         <br />
-        <Button onClick={loginAction} data-testid="btn-login">
+        <Button onClick={loginAction} type="primary" data-testid="btn-login">
           Enter Now
         </Button>
-      </Row>
+      </div>
+      <style jsx global>{`
+        .container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+      `}</style>
     </>
   );
 };

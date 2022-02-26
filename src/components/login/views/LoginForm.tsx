@@ -38,7 +38,7 @@ export const LoginForm = ({
     <Row
       justify="center"
       align="middle"
-      style={{ paddingLeft: 10, height: "calc(100% - 60px)" }}
+      style={{ paddingLeft: 10, height: "calc(100% - 70px)" }}
     >
       <Form
         name="basic"

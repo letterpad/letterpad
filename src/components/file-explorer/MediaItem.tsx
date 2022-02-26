@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 
 import { Media } from "@/__generated__/__types__";
 
@@ -18,41 +17,31 @@ const MediaItem: React.FC<IProps> = ({
     onMediaSelected(media);
   };
 
-  const classes = isSelected ? " selected" : "";
+  const classes = isSelected ? "item selected" : "item";
   return (
-    <Container data-testid="media-item" className={classes} onClick={onSelect}>
-      <div className="post-thumbnail">
-        <img src={media.url} />
-      </div>
-      <div className="post-body with-border">
-        <div className="post-header hide">
-          <div className="post-meta">
-            {/* Placeholder for something cool. maybe*/}
-          </div>
-        </div>
-        <div className="post-content">
-          <div className="post-name">{media.name}</div>
-        </div>
-      </div>
-    </Container>
+    <div data-testid="media-item" className={classes} onClick={onSelect}>
+      <img src={media.url} />
+
+      <style jsx>{`
+        img {
+          display: flex;
+          width: 100%;
+          object-fit: cover;
+        }
+        .item {
+          align-items: center;
+          display: flex;
+          background: rgba(var(--color-border), 0.5);
+          padding: 10px;
+        }
+        .item.selected {
+          background: rgba(var(--accent), 0.5);
+        }
+        /* .item:nth-child(5n) {
+          grid-column-end: span 2;
+        } */
+      `}</style>
+    </div>
   );
 };
 export default MediaItem;
-
-const Container = styled.article`
-  .post-thumbnail {
-    height: 150px;
-    img {
-      object-fit: cover;
-      width: 100%;
-      height: 100%;
-    }
-  }
-  border: 2px solid transparent;
-  &.selected {
-    border: 2px solid var(--color-base);
-  }
-  .post-name {
-    font-size: x-small;
-  }
-`;

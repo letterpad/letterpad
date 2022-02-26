@@ -12,11 +12,13 @@ const Query: QueryResolvers<ResolverContext> = {
     }
 
     if (args.filters) {
-      const { id, cursor, limit = 20, page = 0 } = args.filters;
+      const { id, cursor, limit = 20, page = 1 } = args.filters;
 
       const condition: Prisma.UploadFindManyArgs = {
         where: {
-          author_id: session.user.id,
+          author: {
+            id: session.user.id,
+          },
         },
         take: limit,
 
@@ -25,9 +27,9 @@ const Query: QueryResolvers<ResolverContext> = {
               id: cursor,
             }
           : undefined,
-        skip: page * limit,
+        skip: (page - 1) * limit,
       };
-      console.log(condition);
+
       const result = await prisma.upload.findMany(condition);
 
       return {

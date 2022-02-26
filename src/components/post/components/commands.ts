@@ -9,7 +9,7 @@ export const insertImageInEditor = (editor: Editor["editor"], images: any) => {
       newNode.innerHTML = `
         <figure>
             <img src="${image.src}" alt="${image.caption}">
-            <figcaption>${image.caption}</figcaption>
+            <figcaption contenteditable>${image.caption}</figcaption>
         </figure>
       `;
       range.insertNode(newNode);

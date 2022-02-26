@@ -5,12 +5,7 @@ import {
   NextApiRequestWithFormData,
   SessionData,
 } from "@/graphql/types";
-import {
-  SettingsQuery,
-  SettingsQueryVariables,
-} from "@/__generated__/queries/queries.graphql";
 import { getSession } from "next-auth/react";
-import { SettingsDocument } from "@/graphql/queries/queries.graphql";
 import logger from "./../../shared/logger";
 import path from "path";
 import multer from "multer";
@@ -19,7 +14,6 @@ import { uploadToInternal } from "./providers/internal";
 import initMiddleware from "./middleware";
 import crypto from "crypto";
 import { basePath } from "@/constants";
-import { createApolloServerClient } from "@/graphql/apolloServerClient";
 import { prisma } from "@/lib/prisma";
 
 const upload = multer();
@@ -58,7 +52,7 @@ export default async (
   }
 
   const { cloudinary_key, cloudinary_name, cloudinary_secret } =
-    await getCloudinaryCreds(req, res);
+    await getCloudinaryCreds(session.user.id);
 
   logger.debug(`Received ${files.length} file/s to upload`);
 
@@ -133,7 +127,8 @@ export async function upsertMedia(result: IMediaUploadResult, id: number) {
   }
 }
 
-async function getCloudinaryCreds(req, res) {
+async function getCloudinaryCreds(author_id: number) {
+  // if the creds has been set globally with env variables, then return that.
   if (
     process.env.CLOUDINARY_KEY &&
     process.env.CLOUDINARY_NAME &&
@@ -146,22 +141,17 @@ async function getCloudinaryCreds(req, res) {
     };
   }
 
-  const apolloClient = await createApolloServerClient({ req });
-  const settings = await apolloClient.query<
-    SettingsQuery,
-    SettingsQueryVariables
-  >({
-    query: SettingsDocument,
-    fetchPolicy: "network-only",
+  const setting = await prisma.setting.findFirst({
+    where: {
+      author: {
+        id: author_id,
+      },
+    },
   });
-  if (settings.data.settings.__typename === "SettingError") {
-    return res.status(501).end(settings.data.settings.message);
+
+  if (setting) {
+    const { cloudinary_key, cloudinary_name, cloudinary_secret } = setting;
+    return { cloudinary_key, cloudinary_name, cloudinary_secret };
   }
-
-  if (!settings || settings.data.settings.__typename !== "Setting") return null;
-
-  const { cloudinary_key, cloudinary_name, cloudinary_secret } =
-    settings.data.settings;
-
-  return { cloudinary_key, cloudinary_name, cloudinary_secret };
+  return {};
 }

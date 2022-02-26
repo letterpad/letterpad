@@ -1,4 +1,4 @@
-import { Row, PageHeader, Space, message } from "antd";
+import { PageHeader, message, Popconfirm, Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { Empty } from "antd";
 import CustomLayout from "@/components/layouts/Layout";
@@ -6,26 +6,31 @@ import { useMediaQuery } from "@/__generated__/queries/queries.graphql";
 import { MediaNode, Media as IMedia } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MediaUpdateModal from "@/components/modals/media-update-modal";
 import Head from "next/head";
-import MediaItem from "@/components/MediaItem";
+import { Grid } from "@/components/grid";
 
 const key = "updatable";
 
 const Media = () => {
-  const mediaQ = useMediaQuery({ variables: { filters: {} } });
+  const { loading, data } = useMediaQuery({ variables: { filters: {} } });
   const [preview, setPreview] = useState<IMedia | undefined>();
-  const [data, setData] = useState<MediaNode>({
-    count: mediaQ.data?.media.count || 0,
-    rows: mediaQ.data?.media.rows || [],
+  const [images, setImages] = useState<MediaNode>({
+    count: 0,
+    rows: [],
   });
 
+  useEffect(() => {
+    if (data?.media.__typename === "MediaNode") {
+      setImages(data.media);
+    }
+  }, [loading]);
   const deleteImage = async (img: IMedia) => {
     const res = await deleteImageAPI(img);
     if (res.data?.deleteMedia?.__typename === "MediaDeleteResult") {
-      const rows = data.rows.filter((item) => item.id !== img.id);
-      setData({ rows, count: data.count - 1 });
+      const rows = images.rows.filter((item) => item.id !== img.id);
+      setImages({ rows, count: images.count - 1 });
     }
   };
 
@@ -34,10 +39,10 @@ const Media = () => {
     const res = await updateImageAPI(img);
     if (res?.__typename === "MediaUpdateResult") {
       message.success({ content: "Updated", key, duration: 3 });
-      const updateSrc = data.rows.map((item) =>
+      const updateSrc = images.rows.map((item) =>
         item.id === img.id ? { ...img } : item,
       );
-      setData({ ...data, rows: updateSrc });
+      setImages({ ...images, rows: updateSrc });
     }
     if (res?.__typename === "MediaError") {
       message.error({ content: res.message, key, duration: 3 });
@@ -56,20 +61,25 @@ const Media = () => {
       </PageHeader>
       <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
-          {data.rows.length > 0 ? (
-            <Space>
-              <Row gutter={[24, 24]} justify="start">
-                {data.rows.map((image) => (
-                  <MediaItem
-                    image={image}
-                    deleteImage={deleteImage}
-                    key={image.id}
-                    setPreview={setPreview}
-                  />
-                ))}
-              </Row>
-            </Space>
-          ) : (
+          <Grid
+            images={images.rows}
+            onClick={(index) => setPreview(images.rows[index])}
+            actions={(index) => {
+              return (
+                <Popconfirm
+                  title="Are you sure to delete this image?"
+                  onConfirm={() => deleteImage(images.rows[index])}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button size="small" type="link" danger>
+                    Delete
+                  </Button>
+                </Popconfirm>
+              );
+            }}
+          />
+          {images.rows.length === 0 && (
             <Empty description="No media found" style={{ marginTop: 100 }} />
           )}
         </div>

@@ -4,6 +4,7 @@ import { ForgotPassword } from "@/components/login/views/ForgotPassword";
 import { LoginForm } from "@/components/login/views/LoginForm";
 import { LoginFormDemo } from "@/components/login/views/LoginFormDemo";
 import { Header } from "antd/lib/layout/layout";
+import NoSsr from "@/components/NoSsr";
 
 const Login = () => {
   const [loginView, setLoginView] = useState(true);
@@ -12,7 +13,7 @@ const Login = () => {
     typeof document !== "undefined" && document.location.search === "?demo";
 
   return (
-    <>
+    <NoSsr>
       <Head>
         <title>Login</title>
       </Head>
@@ -35,7 +36,7 @@ const Login = () => {
           isVisible={!loginView}
         />
       </div>
-    </>
+    </NoSsr>
   );
 };
 
