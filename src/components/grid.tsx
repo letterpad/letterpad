@@ -1,10 +1,6 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-interface Props {
-  //   images: Image[];
-}
-
 export const Grid = ({ images, actions, onClick }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(200);
@@ -25,6 +21,7 @@ export const Grid = ({ images, actions, onClick }) => {
     if (ref.current) {
       const node = ref.current.firstChild;
       if (node) {
+        //@ts-ignore
         setWidth(node.clientWidth);
       }
     }
