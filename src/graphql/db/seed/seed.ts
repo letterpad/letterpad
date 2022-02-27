@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import Prisma, { prisma } from "@/lib/prisma";
 import { promisify } from "util";
 import copydir from "copy-dir";
 import mkdirp from "mkdirp";
@@ -12,8 +12,6 @@ import { toSlug } from "@/graphql/resolvers/helpers";
 import { getDateTime } from "@/shared/utils";
 import { subjects } from "./constants";
 import fs from "fs";
-
-const prisma = new PrismaClient();
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -334,7 +332,6 @@ async function insertEmails() {
 }
 
 export const cleanupDatabase = () => {
-  const prisma = new PrismaClient();
   const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
 
   return Promise.all(

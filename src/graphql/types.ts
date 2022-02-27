@@ -1,6 +1,6 @@
-import { Author, Post, Setting } from "@prisma/client";
 import { NextApiRequest } from "next";
 import { Author as GraphqlAuthor } from "@/__generated__/__types__";
+import { Post, Author, Setting } from "@prisma/client";
 
 export enum ROLES {
   ADMIN = "ADMIN",

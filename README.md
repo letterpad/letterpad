@@ -71,6 +71,10 @@ yarn install
 yarn seed
 ```
 
+`yarn seed` will reset the database. So use this only in dev environment. When you execute this command, it is going to create the prisma client from the env variable `DATABASE_URL`, with which it is going to seed the database.
+
+> If you want to swith the db to something different like `mysql`, you should change the `DATABASE_URL` and generate the client with the command `prisma:generate`.
+
 Then, run the development server:
 
 ```bash

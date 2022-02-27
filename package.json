@@ -10,9 +10,10 @@
     "build": "yarn codegen && next build",
     "test": "yarn codegen && jest --runInBand",
     "start": "next start",
-    "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/index.js",
+    "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/index.ts",
     "migrate": "prisma migrate dev --name init",
     "typecheck": "yarn tsc",
+    "prisma:generate": "scripts/generatePrisma.sh",
     "resetDemo": "ts-node -r tsconfig-paths/register --transpile-only ./src/resetDemo.ts"
   },
   "dependencies": {

@@ -13,17 +13,13 @@ declare global {
       SENDGRID_API_KEY: string;
       MJ_APIKEY_PUBLIC: string;
       MJ_APIKEY_PRIVATE: string;
-      DB_HOST: string;
-      DB_USER: string;
-      DB_PASSWORD: string;
-      DB_PORT: number;
-      DB_NAME: string;
       SENTRY_AUTH_TOKEN?: string;
       SENTRY_DSN?: string;
       CLOUDINARY_KEY?: string;
       CLOUDINARY_SECRET?: string;
       CLOUDINARY_NAME?: string;
       UNSPLASH_CLIENT_ID?: string;
+      DATABASE_URL: string;
     }
   }
 }
