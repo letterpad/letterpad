@@ -8,7 +8,7 @@ export const apolloServer = new ApolloServer({
     const resolverContext = await getResolverContext(context);
     return resolverContext;
   },
-  playground: true,
+  // playground: true,
   introspection: true,
 });
 

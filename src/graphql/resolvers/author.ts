@@ -104,7 +104,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
     }
 
-    const dbSeeded = await isDatabaseSeeded(prisma);
+    const dbSeeded = await isDatabaseSeeded();
     if (!dbSeeded) {
       logger.debug("Database not seeded. Seeding now.");
       await seed(false);
