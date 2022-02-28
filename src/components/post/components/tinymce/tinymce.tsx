@@ -136,7 +136,7 @@ const LpEditor: React.FC<Props> = ({ text }) => {
 
 export default memo(LpEditor);
 
-const insertScript = (src, head) => {
+const insertScript = (src: string, head: HTMLHeadElement) => {
   return new Promise((resolve, reject) => {
     var script = document.createElement("script");
     script.type = "text/javascript";

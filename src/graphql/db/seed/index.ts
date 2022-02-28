@@ -1,11 +1,5 @@
 const { exec } = require("child_process");
-const env = require("node-env-file");
-if (process.env.NODE_ENV === "production") {
-  env(__dirname + "../../../../../.env.production.local");
-} else {
-  env(__dirname + "../../../../../.env.development.local");
-}
-const { seed } = require("./seed");
+require("@/config/env");
 
 const execShellCommand = (command) => {
   return new Promise((resolve, reject) => {
@@ -21,9 +15,14 @@ const execShellCommand = (command) => {
   });
 };
 
+let schema = "schema.prisma";
+if (process.env.DATABASE_URL.startsWith("mysql")) {
+  schema = "schema_mysql.prisma";
+}
 execShellCommand(
-  `DATABASE_URL='${process.env.DATABASE_URL}' npx prisma db push --force-reset`,
+  `DATABASE_URL='${process.env.DATABASE_URL}' npx prisma db push --force-reset --schema prisma/${schema}`,
 ).then(() => {
+  const { seed } = require("./seed");
   seed()
     .catch((e) => {
       console.error(e);
@@ -33,3 +32,5 @@ execShellCommand(
       process.exit(0);
     });
 });
+
+export {};

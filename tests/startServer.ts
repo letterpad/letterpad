@@ -19,7 +19,7 @@ export const createApolloTestServer = async () => {
     schema,
     debug: true,
     introspection: true,
-    playground: true,
+    // playground: true,
     context: async ({ req, res }) => {
       const resolverContext = getResolverContext({ req });
       if (req.headers.sessionid != "undefined") {

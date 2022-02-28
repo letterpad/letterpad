@@ -7,6 +7,7 @@
       "@/pages/*": ["src/pages/*"],
       "@/__generated__/*": ["__generated__/src/graphql/*", "__generated__/*"],
       "@/*": ["src/*"],
+      "@/config/*": ["config/*"],
       "@/graphql/db/models": ["src/graphql/db/models"],
       "@/graphql/schema": ["src/graphql/schema"],
       "@/graphql/*": ["src/graphql/*"]
@@ -31,12 +32,13 @@
     "strict": true,
     "target": "ES2020"
   },
-  "exclude": ["node_modules/**/*"],
+  "exclude": ["node_modules/**/*", "generated/**/*"],
   "include": [
     "src/**/*",
     "__generated__/**/*",
     "postcss.config.js",
     "tests/**/*",
-    "migrations/**/*"
+    "migrations/**/*",
+    "config/*"
   ]
 }

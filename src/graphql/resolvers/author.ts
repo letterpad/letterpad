@@ -17,10 +17,9 @@ import { EmailTemplates, ROLES } from "../types";
 import logger from "@/shared/logger";
 import { defaultSettings } from "../db/seed/constants";
 import { ResolverContext } from "../context";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { seed } from "../db/seed/seed";
 import { mapAuthorToGraphql, mapSettingToDb } from "./mapper";
-const prisma = new PrismaClient();
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
