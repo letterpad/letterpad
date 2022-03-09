@@ -371,9 +371,7 @@ export const schema: JSONSchemaType<IImportExportData> = {
 const validate = ajv.compile(schema);
 
 export const validateWithAjv = (data) => {
-  console.log(data);
   const valid = validate(data);
-  console.log(valid);
   if (!valid) {
     throw new Error(ajv.errorsText(validate.errors));
   }
