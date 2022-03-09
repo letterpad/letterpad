@@ -6,7 +6,7 @@ import {
   IImportExportData,
   IAuthorData,
   ITagSanitized,
-} from "../../importExportTypes";
+} from "../../../../components/import-export/importExportTypes";
 import { IGhostDb, IGhostSettings, IImportExportGhostData } from "./types";
 import reading_time from "reading-time";
 import { defaultSettings } from "@/graphql/db/seed/constants";

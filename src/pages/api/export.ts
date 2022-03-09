@@ -1,10 +1,11 @@
-import { IImportExportData } from "./importExportTypes";
+import { IImportExportData } from "../../components/import-export/importExportTypes";
 import { SessionData } from "./../../graphql/types";
 import fs from "fs";
 import { getSession } from "next-auth/react";
 import { Role } from "@/__generated__/__types__";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
+import { validateWithAjv } from "@/components/import-export/schema";
 
 const Export = async (req: NextApiRequest, res: NextApiResponse) => {
   const _session = await getSession({ req });
@@ -31,9 +32,13 @@ const Export = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let data: IImportExportData = { authors: {} };
   authors.forEach((author) => {
+    //@ts-ignore
     data.authors[author.email] = author;
   });
 
+  if (!isAdmin) {
+    data = validateWithAjv(data);
+  }
   fs.writeFileSync("data.json", JSON.stringify(data, null, 2), "utf-8");
 
   const stat = fs.statSync("data.json");
