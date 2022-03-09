@@ -77,7 +77,7 @@ const Migrate = ({ session }: IAuthComponentProps) => {
                         info.file.response.message,
                       );
                       setTimeout(() => {
-                        location.href = basePath + "/logout";
+                        location.href = basePath + "/api/auth/signout";
                       }, 3000);
                     }
                   }

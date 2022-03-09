@@ -2,7 +2,6 @@ import { IImportExportData } from "@/components/import-export/importExportTypes"
 import { PostStatusOptions, PostTypes } from "../../../__generated__/__types__";
 import AjvFormats from "ajv-formats";
 import Ajv, { JSONSchemaType } from "ajv";
-import { data } from "./data";
 
 const ajv = new Ajv({ removeAdditional: true, strictTypes: false });
 
@@ -48,9 +47,6 @@ export const schema: JSONSchemaType<IImportExportData> = {
           type: "object",
           additionalProperties: false,
           properties: {
-            // id: {
-            //   type: "integer",
-            // },
             name: {
               type: "string",
             },
@@ -60,9 +56,6 @@ export const schema: JSONSchemaType<IImportExportData> = {
             email: {
               type: "string",
             },
-            // password: {
-            //   type: "string",
-            // },
             bio: {
               type: "string",
             },
@@ -83,16 +76,8 @@ export const schema: JSONSchemaType<IImportExportData> = {
               type: ["string", "object"],
               format: "custom-date-time",
             },
-            // verify_attempt_left: {
-            //   type: "integer",
-            // },
-            // role_id: {
-            //   type: "integer",
-            // },
-
             posts: {
               required: [
-                // "id",
                 "title",
                 "html",
                 "html_draft",
@@ -109,16 +94,12 @@ export const schema: JSONSchemaType<IImportExportData> = {
                 "scheduledAt",
                 "updatedAt",
                 "createdAt",
-                // "author_id",
                 "tags",
               ],
               type: "array",
               items: {
                 additionalProperties: false,
                 properties: {
-                  // id: {
-                  //   type: "integer",
-                  // },
                   title: {
                     type: "string",
                   },
@@ -171,9 +152,6 @@ export const schema: JSONSchemaType<IImportExportData> = {
                     type: ["string", "object"],
                     format: "below-current-date-time",
                   },
-                  // author_id: {
-                  //   type: "integer",
-                  // },
                   tags: {
                     type: "array",
                     items: {
@@ -214,9 +192,6 @@ export const schema: JSONSchemaType<IImportExportData> = {
               type: "object",
               additionalProperties: false,
               properties: {
-                // id: {
-                //   type: "integer",
-                // },
                 site_title: {
                   type: "string",
                 },
@@ -285,11 +260,11 @@ export const schema: JSONSchemaType<IImportExportData> = {
                 },
                 createdAt: {
                   type: ["string", "object"],
-                  format: "custom-date-time",
+                  format: "below-current-date-time",
                 },
                 updatedAt: {
                   type: ["string", "object"],
-                  format: "custom-date-time",
+                  format: "below-current-date-time",
                 },
                 graphcomment_id: {
                   type: "string",
@@ -297,12 +272,8 @@ export const schema: JSONSchemaType<IImportExportData> = {
                 intro_dismissed: {
                   type: "boolean",
                 },
-                // author_id: {
-                //   type: "integer",
-                // },
               },
               required: [
-                // "id",
                 "site_title",
                 "site_tagline",
                 "site_email",
@@ -330,32 +301,85 @@ export const schema: JSONSchemaType<IImportExportData> = {
                 "updatedAt",
                 "graphcomment_id",
                 "intro_dismissed",
-                // "author_id",
               ],
             },
             subscribers: {
               type: "array",
-              items: {},
+              items: {
+                type: "object",
+                additionalProperties: false,
+                properties: {
+                  email: {
+                    type: "string",
+                    format: "email",
+                  },
+                  verified: {
+                    type: "boolean",
+                  },
+                  createdAt: {
+                    type: ["string", "object"],
+                    format: "below-current-date-time",
+                  },
+                  updatedAt: {
+                    type: ["string", "object"],
+                    format: "below-current-date-time",
+                  },
+                },
+                required: ["email", "createdAt", "updatedAt", "verified"],
+              },
             },
             uploads: {
               type: "array",
-              items: {},
+              items: {
+                type: "object",
+                additionalProperties: false,
+                properties: {
+                  name: {
+                    type: "string",
+                  },
+                  height: {
+                    type: "integer",
+                  },
+                  width: {
+                    type: "integer",
+                  },
+                  url: {
+                    type: "string",
+                  },
+                  description: {
+                    type: "string",
+                  },
+                  createdAt: {
+                    type: ["string", "object"],
+                    format: "below-current-date-time",
+                  },
+                  updatedAt: {
+                    type: ["string", "object"],
+                    format: "below-current-date-time",
+                  },
+                },
+                required: [
+                  "name",
+                  "url",
+                  "width",
+                  "height",
+                  "description",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
             },
           },
           required: [
-            // "id",
             "name",
             "username",
             "email",
-            // "password",
             "bio",
             "avatar",
             "social",
             "verified",
             "createdAt",
             "updatedAt",
-            // "verify_attempt_left",
-            // "role_id",
             "posts",
             "setting",
             "subscribers",
