@@ -14,6 +14,7 @@
     "migrate": "prisma migrate dev --name init",
     "typecheck": "yarn tsc",
     "prisma:generate": "scripts/generatePrisma.sh",
+    "prisma:studio": "scripts/studio.sh",
     "resetDemo": "ts-node -r tsconfig-paths/register --transpile-only ./src/resetDemo.ts"
   },
   "dependencies": {
@@ -26,9 +27,12 @@
     "@sentry/nextjs": "^6.15.0",
     "@tinymce/tinymce-react": "^3.13.0",
     "@types/bcryptjs": "^2.4.2",
+    "ajv": "^8.10.0",
+    "ajv-formats": "^2.1.1",
     "antd": "^4.18.8",
     "apollo-server": "^3.6.3",
     "apollo-server-micro": "2.25.0",
+    "axios": "^0.26.0",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.10",
     "cloudinary": "^1.28.1",

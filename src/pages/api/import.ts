@@ -3,11 +3,16 @@ import multer from "multer";
 import initMiddleware from "./middleware";
 import { ROLES, SessionData } from "@/graphql/types";
 import { Role } from "@/__generated__/__types__";
-import { IAuthorData, IImportExportData } from "./importExportTypes";
+import {
+  IAuthorData,
+  IImportExportData,
+} from "../../components/import-export/importExportTypes";
 
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
 import { prisma } from "@/lib/prisma";
 import { getClientToken } from "@/shared/token";
+import { validateWithAjv } from "@/components/import-export/schema";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -18,7 +23,11 @@ export const config = {
   },
 };
 
-const Import = async (req, res) => {
+interface MulterRequest extends NextApiRequest {
+  files: any;
+}
+
+const Import = async (req: MulterRequest, res: NextApiResponse) => {
   try {
     await multerAny(req, res);
     const _session = await getSession({ req });
@@ -36,26 +45,28 @@ const Import = async (req, res) => {
       const ghostData = JSON.parse(req.files[0].buffer.toString());
       data = convertGhostToLetterpad(ghostData, session.user);
     }
-    const isLoggedInUserAdmin = session.user.role === Role.Admin;
 
+    const isLoggedInUserAdmin = session.user.role === Role.Admin;
     if (!isLoggedInUserAdmin) {
+      data = validateWithAjv(data);
       const author = await validateSingleAuthorImport(res, data, session.user);
       if (!author) {
-        return res.send({
-          success: false,
-          message: "This author does not exist",
-        });
+        throw new Error(
+          "This author does not exist. You can only import your own.",
+        );
       }
       // when importing from other cms, set the current password of the author
-      if (data.authors[session.user.email].password === "") {
-        data.authors[session.user.email].password = author.password;
-      }
+      // data.authors[session.user.email]["password"] = author.password;
     }
-    const response = await startImport(data.authors, isLoggedInUserAdmin);
+    const response = await startImport(
+      data.authors,
+      isLoggedInUserAdmin,
+      session.user,
+    );
 
     return res.send(response);
   } catch (e) {
-    res.status(501).send({
+    res.status(200).send({
       success: false,
       message: e.message,
     });
@@ -66,97 +77,97 @@ export default Import;
 
 export async function startImport(
   data: { [email: string]: IAuthorData },
-  isAdmin,
+  isAdmin: boolean,
+  session: SessionData,
 ) {
   const role = await prisma.role.findFirst({
     where: { name: ROLES.AUTHOR },
   });
 
   for (const email in data) {
+    if (!isAdmin && session.email !== email) {
+      throw new Error("You can only import your own data");
+    }
     let author = await prisma.author.findFirst({
       where: { email },
     });
 
-    if (isAdmin || author) {
-      const { id, role_id, setting, ...authorsData } = data[email];
-      //@ts-ignore
-      const { author_id, ...filteredSetting } = setting;
+    const { setting, ...authorsData } = data[email];
 
-      try {
-        if (author) {
-          await prisma.author.delete({ where: { email } });
-        }
-        author = await prisma.author.create({
-          data: {
-            name: authorsData.name,
-            email: authorsData.email,
-            bio: authorsData.bio,
-            verified: true,
-            username: authorsData.username,
-            avatar: authorsData.avatar,
-            password: authorsData.password,
-            verify_attempt_left: 3,
-            social: JSON.stringify(authorsData.social),
-            role: {
-              connect: {
-                id: role?.id,
-              },
-            },
-            subscribers: {
-              create: [
-                ...authorsData.subscribers.map(
-                  ({ email, verified, verify_attempt_left }) => {
-                    return { email, verified, verify_attempt_left };
-                  },
-                ),
-              ],
-            },
-            setting: {
-              create: {
-                ...filteredSetting,
-                id: undefined,
-                client_token: getClientToken(authorsData.email),
-              },
-            },
-            uploads: {
-              create: [
-                ...authorsData.uploads.map(({ name, url, width, height }) => {
-                  return { name, url, width, height };
-                }),
-              ],
-            },
-            posts: {
-              create: [
-                ...authorsData.posts.map((post) => {
-                  const { id, tags, author_id, ...rest } = post;
-                  return {
-                    ...rest,
-                    createdAt: rest.createdAt
-                      ? new Date(rest.createdAt)
-                      : new Date(),
-                    updatedAt: rest.updatedAt
-                      ? new Date(rest.updatedAt)
-                      : new Date(),
-                    scheduledAt: rest.scheduledAt
-                      ? new Date(rest.scheduledAt)
-                      : new Date(),
-                    tags: {
-                      connectOrCreate: tags.map(({ name, slug }) => {
-                        return {
-                          create: { name, slug },
-                          where: { name },
-                        };
-                      }),
-                    },
-                  };
-                }),
-              ],
+    try {
+      if (author) {
+        await prisma.author.delete({ where: { email } });
+      }
+      author = await prisma.author.create({
+        data: {
+          name: authorsData.name,
+          email: authorsData.email,
+          bio: authorsData.bio,
+          verified: true,
+          username: authorsData.username,
+          avatar: authorsData.avatar,
+          password: isAdmin ? authorsData["password"] : author?.password,
+          verify_attempt_left: 3,
+          social: authorsData.social,
+          role: {
+            connect: {
+              id: role?.id,
             },
           },
-        });
-      } catch (e) {
-        console.log(e);
-      }
+          subscribers: {
+            create: [
+              ...authorsData.subscribers.map(({ email, verified }) => {
+                return { email, verified, verify_attempt_left: 3 };
+              }),
+            ],
+          },
+          setting: {
+            create: {
+              ...setting,
+              client_token: getClientToken(authorsData.email),
+            },
+          },
+          uploads: {
+            create: [
+              ...authorsData.uploads.map(({ name, url, width, height }) => {
+                return { name, url, width, height };
+              }),
+            ],
+          },
+          posts: {
+            create: [
+              ...authorsData.posts.map((post) => {
+                const { tags, ...rest } = post;
+                return {
+                  ...rest,
+                  createdAt: rest.createdAt
+                    ? new Date(rest.createdAt)
+                    : new Date(),
+                  updatedAt: rest.updatedAt
+                    ? new Date(rest.updatedAt)
+                    : new Date(),
+                  scheduledAt: rest.scheduledAt
+                    ? new Date(rest.scheduledAt)
+                    : null,
+                  tags: {
+                    connectOrCreate: tags.map(({ name, slug }) => {
+                      return {
+                        create: { name, slug },
+                        where: { name },
+                      };
+                    }),
+                  },
+                };
+              }),
+            ],
+          },
+        },
+      });
+    } catch (e) {
+      return {
+        success: false,
+        message: e.message,
+      };
     }
 
     if (!author) {
@@ -168,7 +179,8 @@ export async function startImport(
 
     return {
       success: true,
-      message: "Import complete",
+      message:
+        "Your data has been imported successfully. You will be redirected to login again.",
     };
   }
 }

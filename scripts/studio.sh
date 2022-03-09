@@ -8,4 +8,4 @@ if [[ "$DATABASE_URL" =~ ^mysql.* ]]; then
     export PRISMA_FILE="schema_mysql.prisma"
 fi
 
-npx prisma generate --schema prisma/$PRISMA_FILE
+npx prisma studio --schema prisma/$PRISMA_FILE

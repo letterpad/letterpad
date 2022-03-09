@@ -1,13 +1,14 @@
 import withAuthCheck from "../hoc/withAuth";
 import CustomLayout from "@/components/layouts/Layout";
 import Head from "next/head";
-import { PageHeader, Form, Button, Upload, Alert } from "antd";
+import { PageHeader, Form, Button, Upload, Alert, notification } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { basePath } from "@/constants";
 import { UploadOutlined } from "@ant-design/icons";
 import { getDateTime } from "./../shared/utils";
 import { IAuthComponentProps } from "./../shared/types";
 import { Role } from "@/__generated__/__types__";
+import { UploadChangeParam } from "antd/lib/upload";
 
 // If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to /admin/register first. This will allow you to seed letterpad with mysql. Then login and import the data to populate the exisiting data in mysql.
 
@@ -63,6 +64,24 @@ const Migrate = ({ session }: IAuthComponentProps) => {
                 name="import"
                 accept=".json"
                 action={basePath + "/api/import"}
+                onChange={(info: UploadChangeParam) => {
+                  if (info.file.status === "done") {
+                    if (!info.file.response.success) {
+                      openNotificationWithIcon(
+                        "error",
+                        info.file.response.message,
+                      );
+                    } else {
+                      openNotificationWithIcon(
+                        "success",
+                        info.file.response.message,
+                      );
+                      setTimeout(() => {
+                        location.href = basePath + "/api/auth/signout";
+                      }, 3000);
+                    }
+                  }
+                }}
               >
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
@@ -109,3 +128,10 @@ function download(blob: Blob) {
     document.body.removeChild(a);
   }, 0);
 }
+
+const openNotificationWithIcon = (type, description) => {
+  notification[type]({
+    message: "Data Import",
+    description,
+  });
+};

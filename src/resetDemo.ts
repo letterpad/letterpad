@@ -202,7 +202,13 @@ const data = {
 
 async function resetDemo() {
   try {
-    await startImport(data["authors"], false);
+    await startImport(data["authors"], false, {
+      email: "demo@demo.com",
+      id: 2,
+      username: "demo",
+      expires: new Date(),
+      __typename: "SessionData",
+    });
   } catch (e) {
     console.log(e);
   }
