@@ -58,6 +58,7 @@ const Import = async (req: MulterRequest, res: NextApiResponse) => {
     data = validateWithAjv(data);
 
     if (!isLoggedInUserAdmin) {
+      data = validateWithAjv(data);
       const author = await validateSingleAuthorImport(res, data, session.user);
       if (!author) {
         throw new Error(
@@ -97,7 +98,6 @@ export async function startImport(
     if (!isAdmin && session.email !== email) {
       throw new Error("You can only import your own data");
     }
-
     let author = await prisma.author.findFirst({
       where: { email },
     });
@@ -108,7 +108,6 @@ export async function startImport(
       if (author) {
         await prisma.author.delete({ where: { email } });
       }
-
       author = await prisma.author.create({
         data: {
           name: authorsData.name,

@@ -397,7 +397,6 @@ const validate = ajv.compile(schema);
 export const validateWithAjv = (data) => {
   const valid = validate(data);
   if (!valid) {
-    console.log(validate.errors);
     throw new Error(ajv.errorsText(validate.errors));
   }
   return data;
