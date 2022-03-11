@@ -88,7 +88,7 @@ export async function startImport(
   data: { [email: string]: IAuthorData },
   isAdmin: boolean,
   session: SessionData,
-  passwords?: Record<string, Record<string, string>>,
+  passwords: Record<string, Record<string, string>>,
 ) {
   const role = await prisma.role.findFirst({
     where: { name: ROLES.AUTHOR },
@@ -136,7 +136,7 @@ export async function startImport(
           setting: {
             create: {
               ...setting,
-              client_token: getClientToken(authorsData.email),
+              client_token: getClientToken({ email: authorsData.email }),
             },
           },
           uploads: {

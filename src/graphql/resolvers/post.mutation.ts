@@ -54,7 +54,7 @@ export const createPost = async (
         cover_image: args.data.cover_image?.src,
         cover_image_width: args.data.cover_image?.width,
         cover_image_height: args.data.cover_image?.height,
-        html: args.data.html,
+        html: args.data.html || "",
         author: {
           connect: { id: author.id },
         },

@@ -293,7 +293,6 @@ export const schema: JSONSchemaType<IImportExportData> = {
                 "css",
                 "google_analytics",
                 "theme",
-                "client_token",
                 "banner",
                 "site_logo",
                 "site_favicon",

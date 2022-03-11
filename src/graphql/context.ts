@@ -26,7 +26,7 @@ export const getResolverContext = async (context) => {
     return {
       mailUtils,
       session,
-      author_id: parseInt(author_id.toString()),
+      author_id,
       prisma,
     };
   }

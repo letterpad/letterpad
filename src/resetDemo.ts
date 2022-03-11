@@ -1,6 +1,7 @@
 const env = require("node-env-file");
 env(__dirname + "/../.env.development.local");
 
+import { validateWithAjv } from "./components/import-export/schema";
 import { startImport } from "./pages/api/import";
 
 const data = {
@@ -202,13 +203,24 @@ const data = {
 
 async function resetDemo() {
   try {
-    await startImport(data["authors"], false, {
-      email: "demo@demo.com",
-      id: 2,
-      username: "demo",
-      expires: new Date(),
-      __typename: "SessionData",
-    });
+    const validatedData = validateWithAjv(data);
+    await startImport(
+      validatedData.authors,
+      false,
+      {
+        email: "demo@demo.com",
+        id: 2,
+        username: "demo",
+        expires: new Date(),
+        __typename: "SessionData",
+      },
+      {
+        "demo@demo.com": {
+          password: data.authors["demo@demo.com"].password,
+          role_id: data.authors["demo@demo.com"].role_id.toString(),
+        },
+      },
+    );
   } catch (e) {
     console.log(e);
   }

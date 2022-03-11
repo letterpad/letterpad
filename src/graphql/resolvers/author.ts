@@ -395,7 +395,9 @@ export async function createAuthorWithSettings(
       data: {
         setting: {
           update: {
-            client_token: getClientToken(newAuthor.email),
+            client_token: getClientToken({
+              email: newAuthor.email,
+            }),
           },
         },
       },

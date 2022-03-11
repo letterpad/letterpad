@@ -29,8 +29,9 @@ export function decodeToken(token: string) {
   return jwt.decode(token) as any;
 }
 
-export function getClientToken(email: string) {
+export function getClientToken({ email }: { email: string }) {
   return getToken({
+    validityInMins: 0,
     data: { email },
     algorithm: "HS256",
   });

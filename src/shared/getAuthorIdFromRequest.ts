@@ -6,9 +6,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 
 const authHeaderPrefix = "Basic ";
 const prisma = new PrismaClient();
-const printOnce = {
-  env: 0,
-};
+
 const getAuthorIdFromRequest = async (context: Context) => {
   const authHeader = context.req?.headers?.authorization || "";
   let author_id: number | null = null;
@@ -20,24 +18,18 @@ const getAuthorIdFromRequest = async (context: Context) => {
     }
 
     if (!author_id && authHeader.length > authHeaderPrefix.length) {
-      author_id = getAuthorFromAuthHeader(authHeader);
+      const email = getAuthorFromAuthHeader(authHeader);
+      const author = await prisma.author.findFirst({
+        where: { email },
+        select: { id: true },
+      });
+      if (author) author_id = author.id;
+
       if (author_id) {
         logger.debug(
           "Author from Authorization header after decrypting - ",
           author_id,
         );
-      }
-    }
-    if (process.env.NODE_ENV !== "production") {
-      if (!printOnce.env) {
-        logger.debug("development mode");
-        printOnce.env = 1;
-      }
-      const author = await prisma.author.findFirst({
-        where: { email: "demo@demo.com" },
-      });
-      if (author) {
-        author_id = author.id;
       }
     }
   } catch (e) {
@@ -77,5 +69,5 @@ function getAuthorFromAuthHeader(authHeader: string) {
   const tokenData = verifyToken(token);
   logger.debug("Authorisation Header to tokenData  - ", tokenData);
   //@ts-ignore
-  return tokenData?.id;
+  return tokenData?.email;
 }
