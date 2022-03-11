@@ -10,9 +10,9 @@ import {
 
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
 import { prisma } from "@/lib/prisma";
-import { getClientToken } from "@/shared/token";
 import { validateWithAjv } from "@/components/import-export/schema";
 import { NextApiRequest, NextApiResponse } from "next";
+import { encryptEmail } from "@/shared/clientToken";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -103,7 +103,6 @@ export async function startImport(
     });
 
     const { setting, ...authorsData } = data[email];
-
     try {
       if (author) {
         await prisma.author.delete({ where: { email } });
@@ -136,7 +135,7 @@ export async function startImport(
           setting: {
             create: {
               ...setting,
-              client_token: getClientToken({ email: authorsData.email }),
+              client_token: encryptEmail(email),
             },
           },
           uploads: {

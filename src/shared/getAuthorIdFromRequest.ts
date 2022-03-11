@@ -1,8 +1,8 @@
 import logger from "./logger";
 import { Context } from "@apollo/client";
-import { verifyToken } from "./token";
 import * as Sentry from "@sentry/nextjs";
 import { Prisma, PrismaClient } from "@prisma/client";
+import { decryptEmail } from "./clientToken";
 
 const authHeaderPrefix = "Basic ";
 const prisma = new PrismaClient();
@@ -66,8 +66,8 @@ async function getAuthorFromSubdomain(context) {
 
 function getAuthorFromAuthHeader(authHeader: string) {
   const token = authHeader.split(/\s+/).pop() || "";
-  const tokenData = verifyToken(token);
+  const tokenData = decryptEmail(token);
   logger.debug("Authorisation Header to tokenData  - ", tokenData);
   //@ts-ignore
-  return tokenData?.email;
+  return tokenData;
 }

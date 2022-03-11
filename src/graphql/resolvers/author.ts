@@ -12,13 +12,14 @@ import bcrypt from "bcryptjs";
 import { validateCaptcha } from "./helpers";
 import generatePost from "@/graphql/db/seed/contentGenerator";
 import siteConfig from "../../../config/site.config";
-import { decodeToken, getClientToken, verifyToken } from "@/shared/token";
+import { decodeToken, verifyToken } from "@/shared/token";
 import { EmailTemplates, ROLES } from "../types";
 import logger from "@/shared/logger";
 import { defaultSettings } from "../db/seed/constants";
 import { ResolverContext } from "../context";
 import { prisma } from "@/lib/prisma";
 import { mapAuthorToGraphql, mapSettingToDb } from "./mapper";
+import { encryptEmail } from "@/shared/clientToken";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -390,14 +391,13 @@ export async function createAuthorWithSettings(
         },
       },
     });
+    console.log(encryptEmail(authorData.email));
     const updatedNewAuthor = prisma.author.update({
       where: { id: newAuthor.id },
       data: {
         setting: {
           update: {
-            client_token: getClientToken({
-              email: newAuthor.email,
-            }),
+            client_token: encryptEmail(authorData.email),
           },
         },
       },
