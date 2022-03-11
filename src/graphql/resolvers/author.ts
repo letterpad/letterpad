@@ -358,17 +358,6 @@ function getWelcomePostAndPage() {
   return { page, post };
 }
 
-async function isDatabaseSeeded(): Promise<boolean> {
-  try {
-    await prisma.author.findFirst();
-    return true;
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
-  return false;
-}
-
 export async function createAuthorWithSettings(
   data: InputCreateAuthor,
   setting: SettingInputType,
