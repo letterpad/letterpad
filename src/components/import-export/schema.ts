@@ -137,7 +137,7 @@ export const schema: JSONSchemaType<IImportExportData> = {
                     type: "string",
                   },
                   publishedAt: {
-                    type: ["string", "object"],
+                    type: ["string", "object", "null"],
                     format: "below-current-date-time",
                   },
                   scheduledAt: {
@@ -259,11 +259,11 @@ export const schema: JSONSchemaType<IImportExportData> = {
                   type: "string",
                 },
                 createdAt: {
-                  type: ["string", "object"],
+                  type: ["string", "object", "null"],
                   format: "below-current-date-time",
                 },
                 updatedAt: {
-                  type: ["string", "object"],
+                  type: ["string", "object", "null"],
                   format: "below-current-date-time",
                 },
                 graphcomment_id: {
@@ -397,6 +397,7 @@ const validate = ajv.compile(schema);
 export const validateWithAjv = (data) => {
   const valid = validate(data);
   if (!valid) {
+    console.log(validate.errors);
     throw new Error(ajv.errorsText(validate.errors));
   }
   return data;

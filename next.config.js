@@ -7,6 +7,7 @@ const isServer = typeof window === "undefined";
 const nextConfig = {
   env: {
     RECAPTCHA_KEY_CLIENT: process.env.RECAPTCHA_KEY_CLIENT,
+    ROOT: __dirname,
   },
   swcMinify: true,
   experimental: {

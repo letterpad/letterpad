@@ -2,7 +2,8 @@ import logger from "./logger";
 import { Context } from "@apollo/client";
 import { verifyToken } from "./token";
 import * as Sentry from "@sentry/nextjs";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
+
 const authHeaderPrefix = "Basic ";
 const prisma = new PrismaClient();
 const printOnce = {
@@ -40,8 +41,16 @@ const getAuthorIdFromRequest = async (context: Context) => {
       }
     }
   } catch (e) {
-    Sentry.captureException(e);
-    logger.error("Error in getting author_id from request", e);
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === "P2021") {
+        throw new Error(
+          "Database is not ready. Run `yarn seed` from terminal.",
+        );
+      }
+    } else {
+      Sentry.captureException(e);
+      logger.error("Error in getting author_id from request", e);
+    }
   }
   return author_id;
 };

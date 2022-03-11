@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { NextApiRequest, NextApiResponse } from "next";
 import { basePath } from "@/constants";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/prisma";
+import Prisma, { prisma } from "@/lib/prisma";
 
 const providers = (_req: NextApiRequest) => [
   CredentialsProvider({
@@ -18,7 +18,14 @@ const providers = (_req: NextApiRequest) => [
           where: { email: credentials?.email },
           include: {
             role: true,
-            permissions: true,
+          },
+        });
+        const permissions = await prisma.rolePermissions.findMany({
+          where: {
+            role_id: author?.role_id,
+          },
+          include: {
+            permission: true,
           },
         });
         if (author) {
@@ -37,13 +44,19 @@ const providers = (_req: NextApiRequest) => [
               name: author.name,
               email: author.email,
               role: author.role.name,
-              permissions: author.permissions.map(({ name }) => name),
+              permissions: permissions.map(({ permission }) => permission),
             };
             return user;
           }
         }
       } catch (e) {
-        throw Error(e);
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+          if (e.code === "P2021") {
+            throw new Error(
+              "Database is not ready. Run `yarn seed` from terminal.",
+            );
+          }
+        }
       }
     },
   }),

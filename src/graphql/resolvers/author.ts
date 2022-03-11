@@ -18,7 +18,6 @@ import logger from "@/shared/logger";
 import { defaultSettings } from "../db/seed/constants";
 import { ResolverContext } from "../context";
 import { prisma } from "@/lib/prisma";
-import { seed } from "../db/seed/seed";
 import { mapAuthorToGraphql, mapSettingToDb } from "./mapper";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
@@ -102,13 +101,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
           message: "We cannot allow you at the moment.",
         };
       }
-    }
-
-    const dbSeeded = await isDatabaseSeeded();
-    if (!dbSeeded) {
-      logger.debug("Database not seeded. Seeding now.");
-      await seed(false);
-      await createAdmin();
     }
 
     const authorExistData = await prisma.author.findFirst({
@@ -421,22 +413,4 @@ export async function createAuthorWithSettings(
     });
     return updatedNewAuthor;
   }
-}
-
-async function createAdmin() {
-  const adminAuthor = await createAuthorWithSettings(
-    {
-      name: "Admin",
-      email: "admin@admin.com",
-      username: "admin",
-      password: "admin",
-      token: "",
-    },
-    { site_title: "Admin Account" },
-    ROLES.ADMIN,
-  );
-  await prisma.author.update({
-    where: { id: adminAuthor?.id },
-    data: { verified: true },
-  });
 }
