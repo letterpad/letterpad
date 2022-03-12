@@ -15,7 +15,7 @@ export const bodyDecorator = (
 
   const baseTemplate = path.resolve(
     process.cwd(),
-    "src/mail/templates/base.twig",
+    "src/graphql/mail/templates/base.twig",
   );
 
   const template = require("fs").readFileSync(baseTemplate, "utf-8");

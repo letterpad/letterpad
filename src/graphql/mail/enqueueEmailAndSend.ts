@@ -29,7 +29,7 @@ export async function enqueueEmailAndSend(
       data: {
         ...props,
         // createdAt: getDateTime(new Date()) as any,
-        delivered: false,
+        delivered: 0,
       },
     } as any);
     logger.debug("Creating a new email record. yet to be delivered.");

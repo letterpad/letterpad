@@ -16,24 +16,16 @@ import { Header } from "antd/lib/layout/layout";
 import Link from "next/link";
 
 const key = "register";
-const fields = {
-  site_title: "",
-  username: "",
-  email: "",
-  password: "",
-  name: "",
-};
 
 const RegisterForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [createAuthor] = useCreateAuthorMutation();
-  const [form, setForm] = useState(fields);
 
   const [processing, setProcessing] = useState(false);
 
   const router = useRouter();
 
-  const registerAction = async () => {
+  const registerAction = async (formData) => {
     setProcessing(true);
     message.loading({
       content: "Please wait",
@@ -43,7 +35,7 @@ const RegisterForm = () => {
 
     if (executeRecaptcha) {
       const token = await executeRecaptcha("register");
-      const { site_title, ...authorData } = form;
+      const { site_title, ...authorData } = formData;
       const formWithToken = { ...authorData, token };
 
       const result = await createAuthor({
@@ -73,8 +65,8 @@ const RegisterForm = () => {
 
   const onFinish = (values: any) => {
     const { name, username, password, email, site_title } = values;
-    setForm({ ...form, name, username, password, email, site_title });
-    registerAction();
+    const formData = { name, username, password, email, site_title };
+    registerAction(formData);
   };
 
   return (
