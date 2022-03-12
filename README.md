@@ -5,23 +5,24 @@ Letterpad Admin is the dashboard for publishing blogs.
 ## Features
 
 - High performant API.
-- Uses Graphql, React Apollo and NextJS
-- Uses Letterpad Editor (on top of DraftJS), specially built for this CMS.
-- Theme customisation (css) from Dashboard
+- Uses Graphql, React Apollo, NextJS and Prisma
+- Uses TinyMCE editor, specially composed for Letterpad
+- Theme customisation (css) from Dashboard.
+- Use Language Tool AI Model to check grammar.
 - CDN Powered images (Uses cloudinary and Unsplash)
 - Connects to multiple databases. Default is sqlite3
 - Can be used as a multi-user service
-- Light and Dark Theme
 - Minimalistic Dashboard
 
 ## Demo:
 
-https://letterpad.app/admin/login
+https://letterpad.app/admin/login?demo
 
-User Id: demo@demo.com
-Password: demo
+## Without self hosting
 
-## Running Letterpad Admin on Production Mode
+You can register in https://letterpad.app/admin/register and start writing posts, free of cost.
+
+## With self hosting
 
 There are few things that you should know before running letterpad in a production environment.
 
@@ -52,7 +53,7 @@ Password - demo
 
 ## Enabling Emails
 
-Letterpad integrates with [Sendgrid](https://sendgrid.com/). You can add the `SENDGRID_API_KEY` in `.env.production.local` file to activate emails.
+Letterpad integrates with [MailChimp](https://mailchimp.com/). You should set `MJ_APIKEY_PUBLIC` and `MJ_APIKEY_PRIVATE` in `.env.production.local` file to activate emails.
 
 ---
 
@@ -100,6 +101,8 @@ To learn more about Next.js, take a look at the following resources:
 
 We also have a letterpad client which you can find in [this repository](https://github.com/letterpad/letterpad-client). The letterpad client is a simple react application which uses the graphql API of letterpad to render a public facing blog.
 Demo: https://demo.letterpad.app
+
+Letterpad Admin provides a client key which can be found in settings. If you want to host the client in a different domain, then you should set this client_key in `next.config.js`.
 
 ## Contribute
 
