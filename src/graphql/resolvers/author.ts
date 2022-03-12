@@ -12,14 +12,14 @@ import bcrypt from "bcryptjs";
 import { validateCaptcha } from "./helpers";
 import generatePost from "@/graphql/db/seed/contentGenerator";
 import siteConfig from "../../../config/site.config";
-import { decodeToken, getClientToken, verifyToken } from "@/shared/token";
+import { decodeToken, verifyToken } from "@/shared/token";
 import { EmailTemplates, ROLES } from "../types";
 import logger from "@/shared/logger";
 import { defaultSettings } from "../db/seed/constants";
 import { ResolverContext } from "../context";
 import { prisma } from "@/lib/prisma";
-import { seed } from "../db/seed/seed";
 import { mapAuthorToGraphql, mapSettingToDb } from "./mapper";
+import { encryptEmail } from "@/shared/clientToken";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -102,13 +102,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
           message: "We cannot allow you at the moment.",
         };
       }
-    }
-
-    const dbSeeded = await isDatabaseSeeded();
-    if (!dbSeeded) {
-      logger.debug("Database not seeded. Seeding now.");
-      await seed(false);
-      await createAdmin();
     }
 
     const authorExistData = await prisma.author.findFirst({
@@ -366,17 +359,6 @@ function getWelcomePostAndPage() {
   return { page, post };
 }
 
-async function isDatabaseSeeded(): Promise<boolean> {
-  try {
-    await prisma.author.findFirst();
-    return true;
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
-  return false;
-}
-
 export async function createAuthorWithSettings(
   data: InputCreateAuthor,
   setting: SettingInputType,
@@ -409,34 +391,17 @@ export async function createAuthorWithSettings(
         },
       },
     });
+    console.log(encryptEmail(authorData.email));
     const updatedNewAuthor = prisma.author.update({
       where: { id: newAuthor.id },
       data: {
         setting: {
           update: {
-            client_token: getClientToken(newAuthor.email),
+            client_token: encryptEmail(authorData.email),
           },
         },
       },
     });
     return updatedNewAuthor;
   }
-}
-
-async function createAdmin() {
-  const adminAuthor = await createAuthorWithSettings(
-    {
-      name: "Admin",
-      email: "admin@admin.com",
-      username: "admin",
-      password: "admin",
-      token: "",
-    },
-    { site_title: "Admin Account" },
-    ROLES.ADMIN,
-  );
-  await prisma.author.update({
-    where: { id: adminAuthor?.id },
-    data: { verified: true },
-  });
 }

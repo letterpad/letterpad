@@ -17,13 +17,19 @@ const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
 const copydirAsync = promisify(copydir);
 
+const ROOT_DIR = process.env.ROOT || path.join(__dirname, "../../../../");
+
 // All paths are relative to this file
-const dataDir = "../../../../data";
-const publicUploadsDir = "../../../../public/uploads";
-const uploadsSourceDir = "./uploads";
+const dataDir = path.join(ROOT_DIR, "/data");
+const publicUploadsDir = path.join(ROOT_DIR, "/public/uploads");
+const uploadsSourceDir = path.join(ROOT_DIR, "/src/graphql/db/seed/uploads");
+const emailTemplatesDir = path.join(
+  ROOT_DIR,
+  "/src/graphql/db/seed/email-templates",
+);
 
 function absPath(p) {
-  return path.join(__dirname, p);
+  return p;
 }
 const tags = [
   {
@@ -287,7 +293,7 @@ export async function insertPost(postData, author_id) {
 
 async function insertEmails() {
   const verifyNewUserEmail = fs.readFileSync(
-    path.join(__dirname, "email-templates/verifyNewUser.twig"),
+    path.join(emailTemplatesDir, "verifyNewUser.twig"),
   );
   await prisma.email.create({
     data: {
@@ -298,7 +304,7 @@ async function insertEmails() {
   });
 
   const verifyNewSubscriberEmail = fs.readFileSync(
-    path.join(__dirname, "email-templates/verifyNewSubscriber.twig"),
+    path.join(emailTemplatesDir, "verifyNewSubscriber.twig"),
   );
   await prisma.email.create({
     data: {
@@ -309,7 +315,7 @@ async function insertEmails() {
   });
 
   const forgotPasswordEmail = fs.readFileSync(
-    path.join(__dirname, "email-templates/forgotPassword.twig"),
+    path.join(emailTemplatesDir, "forgotPassword.twig"),
   );
   await prisma.email.create({
     data: {
@@ -320,7 +326,7 @@ async function insertEmails() {
   });
 
   const newPostEmail = fs.readFileSync(
-    path.join(__dirname, "email-templates/newPost.twig"),
+    path.join(emailTemplatesDir, "newPost.twig"),
   );
   await prisma.email.create({
     data: {

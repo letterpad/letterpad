@@ -26,7 +26,6 @@ model Author {
   setting             Setting?
   role_id             Int
   role                Role         @relation(fields: [role_id], references: [id])
-  permissions         Permission[]
   subscribers         Subscriber[]
 }
 
@@ -56,8 +55,6 @@ model Permission {
   createdAt DateTime?         @default(now())
   updatedAt DateTime?         @updatedAt
   roles     RolePermissions[]
-  Author    Author?           @relation(fields: [author_id], references: [id])
-  author_id  Int?
 }
 
 model Post {
@@ -145,7 +142,7 @@ model Subscriber {
   updatedAt           DateTime? @updatedAt
   verify_attempt_left Int?      @default(3)
 
-  author   Author? @relation(fields: [author_id], references: [id])
+  author   Author? @relation(fields: [author_id], references: [id],onDelete: Cascade)
   @@unique([email, author_id])
 
 }

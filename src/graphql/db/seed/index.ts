@@ -19,18 +19,22 @@ let schema = "schema.prisma";
 if (process.env.DATABASE_URL.startsWith("mysql")) {
   schema = "schema_mysql.prisma";
 }
-execShellCommand(
-  `DATABASE_URL='${process.env.DATABASE_URL}' npx prisma db push --force-reset --schema prisma/${schema}`,
-).then(() => {
-  const { seed } = require("./seed");
-  seed()
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    })
-    .then(() => {
-      process.exit(0);
-    });
-});
 
+function init() {
+  execShellCommand(
+    `DATABASE_URL='${process.env.DATABASE_URL}' npx prisma db push --force-reset --schema prisma/${schema}`,
+  ).then(() => {
+    const { seed } = require("./seed");
+    seed()
+      .catch((e) => {
+        console.error(e);
+        process.exit(1);
+      })
+      .then(() => {
+        process.exit(0);
+      });
+  });
+}
+
+init();
 export {};

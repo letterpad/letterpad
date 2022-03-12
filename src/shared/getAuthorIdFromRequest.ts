@@ -1,13 +1,12 @@
 import logger from "./logger";
 import { Context } from "@apollo/client";
-import { verifyToken } from "./token";
 import * as Sentry from "@sentry/nextjs";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
+import { decryptEmail } from "./clientToken";
+
 const authHeaderPrefix = "Basic ";
 const prisma = new PrismaClient();
-const printOnce = {
-  env: 0,
-};
+
 const getAuthorIdFromRequest = async (context: Context) => {
   const authHeader = context.req?.headers?.authorization || "";
   let author_id: number | null = null;
@@ -19,7 +18,13 @@ const getAuthorIdFromRequest = async (context: Context) => {
     }
 
     if (!author_id && authHeader.length > authHeaderPrefix.length) {
-      author_id = getAuthorFromAuthHeader(authHeader);
+      const email = getAuthorFromAuthHeader(authHeader);
+      const author = await prisma.author.findFirst({
+        where: { email },
+        select: { id: true },
+      });
+      if (author) author_id = author.id;
+
       if (author_id) {
         logger.debug(
           "Author from Authorization header after decrypting - ",
@@ -27,21 +32,17 @@ const getAuthorIdFromRequest = async (context: Context) => {
         );
       }
     }
-    if (process.env.NODE_ENV !== "production") {
-      if (!printOnce.env) {
-        logger.debug("development mode");
-        printOnce.env = 1;
-      }
-      const author = await prisma.author.findFirst({
-        where: { email: "demo@demo.com" },
-      });
-      if (author) {
-        author_id = author.id;
-      }
-    }
   } catch (e) {
-    Sentry.captureException(e);
-    logger.error("Error in getting author_id from request", e);
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === "P2021") {
+        throw new Error(
+          "Database is not ready. Run `yarn seed` from terminal.",
+        );
+      }
+    } else {
+      Sentry.captureException(e);
+      logger.error("Error in getting author_id from request", e);
+    }
   }
   return author_id;
 };
@@ -65,8 +66,8 @@ async function getAuthorFromSubdomain(context) {
 
 function getAuthorFromAuthHeader(authHeader: string) {
   const token = authHeader.split(/\s+/).pop() || "";
-  const tokenData = verifyToken(token);
+  const tokenData = decryptEmail(token);
   logger.debug("Authorisation Header to tokenData  - ", tokenData);
   //@ts-ignore
-  return tokenData?.id;
+  return tokenData;
 }

@@ -137,7 +137,7 @@ export const schema: JSONSchemaType<IImportExportData> = {
                     type: "string",
                   },
                   publishedAt: {
-                    type: ["string", "object"],
+                    type: ["string", "object", "null"],
                     format: "below-current-date-time",
                   },
                   scheduledAt: {
@@ -259,11 +259,11 @@ export const schema: JSONSchemaType<IImportExportData> = {
                   type: "string",
                 },
                 createdAt: {
-                  type: ["string", "object"],
+                  type: ["string", "object", "null"],
                   format: "below-current-date-time",
                 },
                 updatedAt: {
-                  type: ["string", "object"],
+                  type: ["string", "object", "null"],
                   format: "below-current-date-time",
                 },
                 graphcomment_id: {
@@ -293,7 +293,6 @@ export const schema: JSONSchemaType<IImportExportData> = {
                 "css",
                 "google_analytics",
                 "theme",
-                "client_token",
                 "banner",
                 "site_logo",
                 "site_favicon",

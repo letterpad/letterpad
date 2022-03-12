@@ -10,9 +10,9 @@ import {
 
 import { convertGhostToLetterpad } from "./importers/ghost/ghost";
 import { prisma } from "@/lib/prisma";
-import { getClientToken } from "@/shared/token";
 import { validateWithAjv } from "@/components/import-export/schema";
 import { NextApiRequest, NextApiResponse } from "next";
+import { encryptEmail } from "@/shared/clientToken";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -37,16 +37,26 @@ const Import = async (req: MulterRequest, res: NextApiResponse) => {
         success: false,
         message: "No session found",
       });
+    const isLoggedInUserAdmin = session.user.role === Role.Admin;
 
-    let data: IImportExportData = JSON.parse(req.files[0].buffer.toString());
+    let foreignData = JSON.parse(req.files[0].buffer.toString());
 
+    let passwords: Record<string, Record<string, string>> = {};
     const importName = req.files[0].fieldname;
+
     if (importName === "ghost") {
       const ghostData = JSON.parse(req.files[0].buffer.toString());
-      data = convertGhostToLetterpad(ghostData, session.user);
+      foreignData = convertGhostToLetterpad(ghostData, session.user);
+    } else {
+      if (isLoggedInUserAdmin) {
+        passwords = collectSensitiveFromData(foreignData.authors);
+      }
     }
 
-    const isLoggedInUserAdmin = session.user.role === Role.Admin;
+    let data: IImportExportData = foreignData;
+
+    data = validateWithAjv(data);
+
     if (!isLoggedInUserAdmin) {
       data = validateWithAjv(data);
       const author = await validateSingleAuthorImport(res, data, session.user);
@@ -55,13 +65,12 @@ const Import = async (req: MulterRequest, res: NextApiResponse) => {
           "This author does not exist. You can only import your own.",
         );
       }
-      // when importing from other cms, set the current password of the author
-      // data.authors[session.user.email]["password"] = author.password;
     }
     const response = await startImport(
       data.authors,
       isLoggedInUserAdmin,
       session.user,
+      passwords,
     );
 
     return res.send(response);
@@ -79,6 +88,7 @@ export async function startImport(
   data: { [email: string]: IAuthorData },
   isAdmin: boolean,
   session: SessionData,
+  passwords: Record<string, Record<string, string>>,
 ) {
   const role = await prisma.role.findFirst({
     where: { name: ROLES.AUTHOR },
@@ -93,7 +103,6 @@ export async function startImport(
     });
 
     const { setting, ...authorsData } = data[email];
-
     try {
       if (author) {
         await prisma.author.delete({ where: { email } });
@@ -106,12 +115,14 @@ export async function startImport(
           verified: true,
           username: authorsData.username,
           avatar: authorsData.avatar,
-          password: isAdmin ? authorsData["password"] : author?.password,
+          password: isAdmin
+            ? passwords[authorsData.email].password
+            : author?.password ?? "",
           verify_attempt_left: 3,
           social: authorsData.social,
           role: {
             connect: {
-              id: role?.id,
+              id: parseInt(passwords[authorsData.email].role_id ?? role?.id),
             },
           },
           subscribers: {
@@ -124,7 +135,7 @@ export async function startImport(
           setting: {
             create: {
               ...setting,
-              client_token: getClientToken(authorsData.email),
+              client_token: encryptEmail(email),
             },
           },
           uploads: {
@@ -169,20 +180,13 @@ export async function startImport(
         message: e.message,
       };
     }
-
-    if (!author) {
-      return {
-        success: false,
-        message: `The author ${email} does not exist`,
-      };
-    }
-
-    return {
-      success: true,
-      message:
-        "Your data has been imported successfully. You will be redirected to login again.",
-    };
   }
+
+  return {
+    success: true,
+    message:
+      "Your data has been imported successfully. You will be redirected to login again.",
+  };
 }
 
 async function validateSingleAuthorImport(
@@ -191,7 +195,7 @@ async function validateSingleAuthorImport(
   sessionUser: SessionData,
 ) {
   if (Object.keys(data.authors).length > 1) {
-    res.status(401).send({
+    res.status(200).send({
       success: false,
       message: "You are not allowed to import multiple authors",
     });
@@ -200,4 +204,17 @@ async function validateSingleAuthorImport(
   return prisma.author.findFirst({
     where: { id: sessionUser.id },
   });
+}
+
+function collectSensitiveFromData(data: {
+  [email: string]: IAuthorData & { password: string; role_id: number };
+}) {
+  let passwords = {};
+  Object.keys(data).forEach((email) => {
+    passwords[email] = {
+      password: data[email].password,
+      role_id: data[email].role_id,
+    };
+  });
+  return passwords;
 }
