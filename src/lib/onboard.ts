@@ -1,4 +1,4 @@
-import siteConfig from "@/config/site.config";
+import siteConfig from "../../config/site.config";
 import bcrypt from "bcryptjs";
 import generatePost from "@/graphql/db/seed/contentGenerator";
 import { encryptEmail } from "@/shared/clientToken";
