@@ -10,7 +10,7 @@ import {
 } from "@/__generated__/queries/mutations.graphql";
 import { useRouter } from "next/router";
 
-import { Button, Form, Input, message, Row } from "antd";
+import { Button, Divider, Form, Input, message, Row } from "antd";
 import { EventAction, track } from "@/track";
 import { Header } from "antd/lib/layout/layout";
 import Link from "next/link";
@@ -95,7 +95,8 @@ const RegisterForm = () => {
             className="register-form"
             style={{ paddingTop: 40 }}
           >
-            <h1>Register</h1>
+            <h2>Register</h2>
+            <Divider />
             <Form.Item
               label="Name"
               name="name"
@@ -184,13 +185,13 @@ const RegisterForm = () => {
           }
           input {
             background-color: rgba(var(--color), 0.1) !important;
-            padding: 8px !important;
             color: rgba(var(--color), 0.8) !important;
           }
 
           @media (max-width: 800px) {
             .register-form {
-              width: initial;
+              width: 100%;
+              margin: 20px;
             }
           }
         `}</style>

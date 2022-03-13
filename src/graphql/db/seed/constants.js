@@ -55,10 +55,6 @@ module.exports.defaultSettings = {
   cloudinary_name: "",
   cloudinary_secret: "",
   client_token: "",
-  banner: JSON.stringify({
-    src: "https://images.unsplash.com/photo-1527176930608-09cb256ab504?w=2000&auto=format&lossless=true",
-    width: 1502,
-    height: 900,
-  }),
+  banner: JSON.stringify({}),
   intro_dismissed: false,
 };

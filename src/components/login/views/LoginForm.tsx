@@ -1,9 +1,11 @@
 import { EventAction, track } from "@/track";
-import { message, Row } from "antd";
+import { Divider, message, Row } from "antd";
 import { doLogin } from "../actions";
 import { key } from "../constants";
 import { Form, Input, Button, Checkbox } from "antd";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { GithubFilled, GoogleSquareFilled } from "@ant-design/icons";
 
 export const LoginForm = ({
   isVisible,
@@ -35,83 +37,127 @@ export const LoginForm = ({
     return null;
   }
   return (
-    <Row
-      justify="center"
-      align="middle"
-      style={{ paddingLeft: 10, height: "calc(100% - 70px)" }}
-    >
-      <Form
-        name="basic"
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
-        autoComplete="off"
-        onFinish={onFinish}
-        className="login-form"
+    <>
+      <Row
+        justify="center"
+        align="middle"
+        style={{ marginTop: 20, marginBottom: 20 }}
       >
-        <h1>Login</h1>
-
-        <Form.Item
-          label="Email"
-          name="email"
-          data-testid="input-email"
-          rules={[
-            {
-              required: true,
-              message: "Please input your email!",
-              type: "email",
-            },
-          ]}
+        <Form
+          name="basic"
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ remember: true }}
+          autoComplete="off"
+          onFinish={onFinish}
+          className="login-form"
         >
-          <Input autoComplete="dontshow" />
-        </Form.Item>
+          <h2>Login</h2>
+          <Divider />
+          <Form.Item
+            label="Email"
+            name="email"
+            data-testid="input-email"
+            rules={[
+              {
+                required: true,
+                message: "Please input your email!",
+                type: "email",
+              },
+            ]}
+          >
+            <Input autoComplete="dontshow" />
+          </Form.Item>
 
-        <Form.Item
-          label="Password"
-          name="password"
-          data-testid="input-password"
-          rules={[{ required: true, message: "Please input your password!" }]}
-        >
-          <Input.Password autoComplete="dontshow" />
-        </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            data-testid="input-password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password autoComplete="dontshow" />
+          </Form.Item>
 
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{ offset: 0, span: 16, md: { offset: 6 } }}
-        >
-          <Checkbox>Remember me</Checkbox>
-          <Button type="link" onClick={hideSelf}>
-            Forgot Password
-          </Button>
-        </Form.Item>
+          <Form.Item
+            name="remember"
+            valuePropName="checked"
+            wrapperCol={{
+              offset: 0,
+              span: 16,
+              sm: { offset: 6 },
+              md: { offset: 6 },
+            }}
+          >
+            <Checkbox>Remember me</Checkbox>
+            <Button type="link" onClick={hideSelf}>
+              Forgot Password
+            </Button>
+          </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 0, md: { offset: 6 }, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Login
-          </Button>
-          <Link href="/register">
-            <Button type="link">Register</Button>
-          </Link>
-        </Form.Item>
-      </Form>
-      <style jsx global>{`
-        .login-form {
-          width: 500px;
-          padding: 30px;
-          background: #fbfbfb;
-          border: 1px solid #d9d9d9;
-          border-radius: 2px;
-        }
-        input:-internal-autofill-selected {
-          background-color: transparent !important;
-        }
-        @media (max-width: 800px) {
+          <Form.Item
+            wrapperCol={{
+              offset: 0,
+              sm: { offset: 6 },
+              md: { offset: 6 },
+              span: 16,
+            }}
+          >
+            <Button type="primary" htmlType="submit">
+              Login
+            </Button>
+            <Link href="/register">
+              <Button type="link">Register</Button>
+            </Link>
+          </Form.Item>
+          <Divider />
+          <Form.Item
+            wrapperCol={{
+              offset: 0,
+              sm: { offset: 6 },
+              md: { offset: 5 },
+              span: 20,
+            }}
+          >
+            <Button
+              icon={<GoogleSquareFilled />}
+              onClick={async (e) => {
+                e.preventDefault();
+                await signIn("google");
+              }}
+            >
+              Login with Google
+            </Button>
+            &nbsp;&nbsp;
+            <Button
+              icon={<GithubFilled />}
+              onClick={async (e) => {
+                e.preventDefault();
+                await signIn("github");
+              }}
+            >
+              Login with Github
+            </Button>
+          </Form.Item>
+        </Form>
+        <style jsx global>{`
           .login-form {
-            width: initial;
+            width: 500px;
+            padding: 30px;
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
           }
-        }
-      `}</style>
-    </Row>
+          input:-internal-autofill-selected {
+            background-color: transparent !important;
+          }
+          @media (max-width: 800px) {
+            .login-form {
+              width: 100%;
+              margin: 20px;
+            }
+          }
+        `}</style>
+      </Row>
+    </>
   );
 };

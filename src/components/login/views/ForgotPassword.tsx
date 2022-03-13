@@ -1,7 +1,7 @@
 import { basePath } from "next.config";
 import { useRouter } from "next/router";
 import { forgotPasswordAction } from "../actions";
-import { Form, Input, Button, Row } from "antd";
+import { Form, Input, Button, Row, Divider } from "antd";
 export const ForgotPassword = ({
   isVisible,
   hideSelf,
@@ -26,7 +26,7 @@ export const ForgotPassword = ({
     <Row
       justify="center"
       align="middle"
-      style={{ paddingLeft: 10, height: "100%" }}
+      style={{ marginTop: 20, marginBottom: 20 }}
     >
       <Form
         name="basic"
@@ -38,6 +38,7 @@ export const ForgotPassword = ({
         className="forgot-password-form"
       >
         <h2>Forgot Password</h2>
+        <Divider />
         <Form.Item
           label="Email"
           name="email"
@@ -52,7 +53,14 @@ export const ForgotPassword = ({
         >
           <Input />
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 0, md: { offset: 4 }, span: 16 }}>
+        <Form.Item
+          wrapperCol={{
+            offset: 4,
+            md: { offset: 4 },
+            xs: { offset: 0 },
+            span: 16,
+          }}
+        >
           <Button type="primary" htmlType="submit">
             Reset Password
           </Button>
@@ -71,7 +79,8 @@ export const ForgotPassword = ({
           }
           @media (max-width: 800px) {
             .forgot-password-form {
-              width: 300px;
+              width: 100%;
+              margin: 20px;
             }
           }
         `}</style>
