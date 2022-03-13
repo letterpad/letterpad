@@ -4,7 +4,6 @@ import copydir from "copy-dir";
 import mkdirp from "mkdirp";
 import rimraf from "rimraf";
 import path from "path";
-import { createAuthorWithSettings } from "@/graphql/resolvers/author";
 import { EmailTemplates, ROLES } from "@/graphql/types";
 import posts from "./posts";
 import generatePost from "./contentGenerator";
@@ -12,6 +11,7 @@ import { toSlug } from "@/graphql/resolvers/helpers";
 import { getDateTime } from "@/shared/utils";
 import { subjects } from "./constants";
 import fs from "fs";
+import { createAuthorWithSettings } from "@/lib/onboard";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);

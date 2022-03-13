@@ -1,11 +1,23 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextApiRequest, NextApiResponse } from "next";
 import { basePath } from "@/constants";
 import bcrypt from "bcryptjs";
 import Prisma, { prisma } from "@/lib/prisma";
+import { onBoardUser } from "@/lib/onboard";
+import { Role } from "@/__generated__/__types__";
 
 const providers = (_req: NextApiRequest) => [
+  GoogleProvider({
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  }),
+  GithubProvider({
+    clientId: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+  }),
   CredentialsProvider({
     name: "Credentials",
     credentials: {
@@ -81,9 +93,11 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
     },
     session: async ({ session, token }) => {
       try {
+        if (!token.email) {
+          throw new Error("Invalid session");
+        }
         const author = await prisma.author.findFirst({
-          //@ts-ignore
-          where: { id: parseInt(token.sub) },
+          where: { email: token.email },
           include: {
             role: true,
           },
@@ -98,9 +112,33 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
             avatar,
             role: author.role.name,
           } as any;
+        } else {
+          throw new Error("Author not found");
         }
       } catch (e) {
-        console.log(e);
+        if (token.email && token.name && token.sub) {
+          const author = await onBoardUser(
+            {
+              email: token.email,
+              name: token.name,
+              username: token.sub,
+              password: "",
+              token: "",
+            },
+            {
+              site_title: token.name,
+              site_email: token.email,
+            },
+          );
+          session.user = {
+            id: author?.id,
+            email: token.email,
+            username: token.sub,
+            name: token.name,
+            avatar: token.picture,
+            role: Role.Author,
+          } as any;
+        }
       }
       return session;
     },

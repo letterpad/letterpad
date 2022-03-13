@@ -1,3 +1,4 @@
+import { encryptEmail } from "@/shared/clientToken";
 import { GraphQLClient } from "graphql-request";
 
 interface IArgs {
@@ -8,8 +9,7 @@ interface IArgs {
   sessionId?: number;
 }
 
-const demoToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjI0NTY1MjU5fQ.j8NDbHznGVNs_iBrgzmiXnTxfgb9ddTLlA9RF-WGTbk";
+const demoToken = encryptEmail("demo@demo.com");
 
 const client = (token = demoToken, sessionId) =>
   new GraphQLClient("http://localhost:3000/graphql", {
