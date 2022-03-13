@@ -127,6 +127,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
         template_id: EmailTemplates.VERIFY_NEW_USER,
       });
     }
+    if (newAuthor)
+      return {
+        ...newAuthor,
+        __typename: "Author",
+      };
     return {
       __typename: "CreateAuthorError",
       message: "Something went wrong and we dont know what.",
