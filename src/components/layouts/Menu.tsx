@@ -40,6 +40,7 @@ const Navigation = ({ stats }) => {
       theme="dark"
       mode="inline"
       defaultSelectedKeys={[menuItems[pathname]]}
+      style={{ paddingBottom: 60, background: "none" }}
     >
       <Menu.Item
         key={menuItems["/posts"]}

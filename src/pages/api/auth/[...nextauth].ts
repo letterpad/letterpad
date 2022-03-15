@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 import Prisma, { prisma } from "@/lib/prisma";
 import { onBoardUser } from "@/lib/onboard";
 import { Role } from "@/__generated__/__types__";
+import { SessionData } from "@/graphql/types";
 
 const providers = (_req: NextApiRequest) => [
   GoogleProvider({
@@ -110,6 +111,7 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
             username,
             name,
             avatar,
+            image: avatar,
             role: author.role.name,
           } as any;
         } else {
@@ -136,11 +138,12 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
             username: token.sub,
             name: token.name,
             avatar: token.picture,
+            image: token.picture,
             role: Role.Author,
           } as any;
         }
       }
-      return session;
+      return session as { user: SessionData; expires: any };
     },
   },
   jwt: {

@@ -10,10 +10,6 @@ const nextConfig = {
     ROOT: __dirname,
   },
   swcMinify: true,
-  experimental: {
-    // ssr and displayName are configured by default
-    styledComponents: true,
-  },
   compilerOptions: {
     jsxImportSource: true,
   },

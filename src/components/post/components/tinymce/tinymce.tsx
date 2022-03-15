@@ -108,8 +108,8 @@ const LpEditor: React.FC<Props> = ({ text }) => {
                     range.setEnd(nextEle, 0);
                     editorRef.current?.selection.setRng(range, true);
                   }
+                  e.preventDefault();
                 }
-                e.preventDefault();
               }
             });
           },

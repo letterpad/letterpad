@@ -1,7 +1,6 @@
 import { GithubOutlined, MenuOutlined } from "@ant-design/icons";
 import { Button, Col, Drawer, Row } from "antd";
 import Layout, { Footer } from "antd/lib/layout/layout";
-import Sider from "antd/lib/layout/Sider";
 import { Setting, Stats } from "@/__generated__/__types__";
 import {
   StatsQuery,
@@ -9,7 +8,6 @@ import {
   StatsDocument,
 } from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import Navigation from "./Menu";
 import Logo from "../Logo";
 import ThemeSwitcher from "./ThemeSwitcher";
@@ -17,6 +15,7 @@ import siteConfig from "config/site.config";
 import { useSession } from "next-auth/react";
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
+import ProfileInfo from "./ProfileInfo";
 
 interface IProps {
   settings: Setting;
@@ -24,7 +23,6 @@ interface IProps {
 }
 
 const CustomLayout = ({ children, settings }: IProps) => {
-  // if (typeof window === "undefined") return null;
   const [stats, setStats] = useState<Stats | {}>({});
   const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -39,73 +37,96 @@ const CustomLayout = ({ children, settings }: IProps) => {
         setStats(res);
       }
     });
+    window.addEventListener("resize", handleCollapse);
+    handleCollapse();
+
+    return () => {
+      window.removeEventListener("resize", handleCollapse);
+    };
   }, []);
+
+  const handleCollapse = () => {
+    setCollapsed(window.innerWidth < 991);
+    setVisible(window.innerWidth < 991);
+  };
 
   if (!settings) return null;
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(isCollapsed) => {
-          setCollapsed(isCollapsed);
-          if (!isCollapsed) {
-            setVisible(false);
-          }
-        }}
-        style={{
-          overflow: "auto",
-          height: "100vh",
-          position: "fixed",
-          left: 0,
-          zIndex: 999,
+      <Drawer
+        mask={false}
+        closeIcon={false}
+        onClose={() => setVisible(false)}
+        drawerStyle={{ background: "rgb(var(--sidebar-bg))" }}
+        placement="left"
+        bodyStyle={{ background: "rgb(var(--sidebar-bg))" }}
+        contentWrapperStyle={{ boxShadow: "none" }}
+        headerStyle={{
+          padding: "0 24px",
+          background: "none",
+          borderColor: "#333",
         }}
         width={siteConfig.sidebar_width}
+        visible={!collapsed}
+        title={
+          settings.site_logo?.src ? (
+            <Logo src={settings.site_logo.src} padding="16px 0px" />
+          ) : (
+            <h2>{settings.site_title}</h2>
+          )
+        }
+        footer={
+          <ProfileInfo
+            name={user?.user?.name}
+            avatar={user?.user?.image}
+            site_url={settings.site_url}
+          />
+        }
+        footerStyle={{ borderColor: "#333" }}
       >
-        {settings.site_logo?.src ? (
-          <Row style={{ margin: "auto", marginLeft: 0 }}>
-            <Logo src={settings.site_logo.src} />
-          </Row>
-        ) : (
-          <h2>{settings.site_title}</h2>
-        )}
         <Navigation stats={stats} />
-        <ThemeSwitcher />
-      </Sider>
+      </Drawer>
       <Layout
         className="site-layout"
         style={{
           marginLeft: collapsed ? 0 : siteConfig.sidebar_width,
         }}
       >
-        <nav className="navbar ">
-          <StyledDrawer
-            placement="left"
-            width={200}
-            theme="dark"
+        <nav className="navbar">
+          <Drawer
             onClose={() => setVisible(false)}
+            placement="left"
+            drawerStyle={{ background: "rgb(var(--sidebar-bg))" }}
+            bodyStyle={{ background: "rgb(var(--sidebar-bg))" }}
+            contentWrapperStyle={{ boxShadow: "none" }}
+            headerStyle={{
+              padding: "0 24px",
+              background: "none",
+              borderColor: "#333",
+            }}
+            width={siteConfig.sidebar_width}
             visible={visible}
+            title={
+              settings.site_logo?.src ? (
+                <Logo src={settings.site_logo.src} padding="16px 0px" />
+              ) : (
+                <h2>{settings.site_title}</h2>
+              )
+            }
+            footer={
+              <ProfileInfo
+                name={user?.user?.name}
+                avatar={user?.user?.image}
+                site_url={settings.site_url}
+              />
+            }
+            footerStyle={{ borderColor: "#333" }}
           >
-            <div className="ant-dropdown-menu-dark" style={{ height: "100%" }}>
-              <Logo src={settings.site_logo?.src} />
-              <Navigation stats={stats} />
-              <ThemeSwitcher />
-            </div>
-          </StyledDrawer>
+            <Navigation stats={stats} />
+          </Drawer>
         </nav>
 
-        <div
-          style={{
-            padding: 20,
-            paddingTop: 10,
-            paddingBottom: 10,
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
+        <div className="top-bar">
           <div>
             {collapsed && !visible && (
               <>
@@ -120,12 +141,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
             )}
           </div>
           {SavingIndicator}
-          <div>
-            <a href={settings.site_url} target="_blank">
-              View Site
-            </a>
-            &nbsp;&nbsp; •&nbsp;&nbsp;{user?.user?.name}
-          </div>
+          <ThemeSwitcher />
         </div>
         <div>{children}</div>
         <Footer className="site-footer">
@@ -141,11 +157,22 @@ const CustomLayout = ({ children, settings }: IProps) => {
           </Row>
         </Footer>
         <style jsx global>{`
+          .top-bar {
+            padding: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(var(--color-border), 0.3);
+          }
+          .ant-drawer-body {
+            padding: 0px;
+          }
           .site-footer {
             font-size: 11px;
             letter-spacing: 2px;
             color: #666;
-            padding: 24px;
+            padding: 20px;
           }
           .site-footer a {
             color: #333;
@@ -173,9 +200,3 @@ async function getStats() {
 
   return stats.data.stats;
 }
-
-const StyledDrawer = styled(Drawer)`
-  .ant-drawer-body {
-    padding: 0px;
-  }
-`;
