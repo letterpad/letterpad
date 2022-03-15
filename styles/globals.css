@@ -15,6 +15,10 @@ body {
   font-size: 90%;
 }
 
+html.no-transitions * {
+  animation-duration: 0s !important;
+}
+
 a {
   text-decoration: none;
 }

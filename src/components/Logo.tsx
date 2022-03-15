@@ -6,7 +6,7 @@ const Logo = ({
   height = siteConfig.header_height,
 }: {
   src?: string;
-  padding?: number;
+  padding?: number | string;
   height?: string | number;
 }) => {
   if (!src) return null;

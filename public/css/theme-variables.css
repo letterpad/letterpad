@@ -22,13 +22,10 @@ html .ant-layout,
 body {
   background: rgb(var(--content-bg)) !important;
 }
-html .ant-layout-sider,
-html .ant-menu {
-  background: rgb(var(--sidebar-bg)) !important;
-}
+
 .site-layout-background {
   background: rgb(var(--section-bg));
-  min-height: calc(100vh - 216px);
+  min-height: calc(100vh - 214px);
 }
 .dark .ant-layout-footer {
   background: rgb(var(--content-bg));
@@ -38,9 +35,7 @@ html .ant-menu {
 .ant-table th {
   background: rgb(var(--section-bg)) !important;
 }
-/* .ant-collapse * {
-  background: rgb(var(--section-bg)) !important;
-} */
+
 .ant-collapse:not(:last-child) > .ant-collapse-item {
   border-bottom: none !important;
 }
