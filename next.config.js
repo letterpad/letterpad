@@ -53,7 +53,9 @@ const nextConfig = {
       type: "json",
       use: "yaml-loader",
     });
-
+    return config;
+  },
+  webpackDevMiddleware: (config) => {
     return config;
   },
 };
