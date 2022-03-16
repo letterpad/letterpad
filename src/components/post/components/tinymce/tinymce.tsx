@@ -1,3 +1,4 @@
+import "./core";
 import { Editor } from "@tinymce/tinymce-react";
 import { memo, useEffect, useRef, useState } from "react";
 import { usePostContext } from "../../context";
@@ -66,16 +67,14 @@ const LpEditor: React.FC<Props> = ({ text }) => {
         onEditorChange={(html) => {
           setPostAttribute && setPostAttribute({ html });
         }}
-        // apiKey="6xxqtl14jlwud6hysqri2xt2pp3lj38je5qys05c17ij7oai"
-        tinymceScriptSrc="/admin/tinymce/tinymce.min.js"
         init={{
           menubar: false,
           toolbar: false,
           browser_spellcheck: true,
           contextmenu: false,
           socket,
-          plugins:
-            "lists link paste emoticons quickbars hr image autoresize  code codesample textpattern",
+          branding: false,
+          plugins: "lists link quickbars autoresize  code codesample",
           skin: window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "oxide-dark"
             : "",
@@ -86,7 +85,7 @@ const LpEditor: React.FC<Props> = ({ text }) => {
           quickbars_insert_toolbar:
             "bullist numlist blockquote hr codesample customImage",
           statusbar: false,
-          textpattern_patterns: textPatterns,
+          text_patterns: textPatterns,
           setup: function (editor) {
             editor.ui.registry.addButton("customImage", {
               icon: "image",
@@ -128,6 +127,9 @@ const LpEditor: React.FC<Props> = ({ text }) => {
         }
         .tox {
           border: none !important;
+        }
+        .tox-editor-header {
+          display: none !important;
         }
       `}</style>
     </>
