@@ -48,7 +48,7 @@ jobs:
           host: 138.68.127.224
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_SECRET_KEY }}
           source: "."
           target: /var/www/html/letterpad-admin
 
@@ -58,6 +58,6 @@ jobs:
           host: 138.68.127.224
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_SECRET_KEY }}
           script: |
             pm2 restart letterpad-admin
