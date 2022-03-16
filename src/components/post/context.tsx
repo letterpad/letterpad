@@ -7,7 +7,7 @@ import usePost from "@/components/post/usePost";
 import { InputUpdatePost } from "@/__generated__/__types__";
 import { useContext } from "react";
 import { PostContextType } from "@/components/post/types";
-import { Editor } from "tinymce/tinymce";
+import { Editor } from "@tinymce/tinymce-react";
 
 export const PostContext = createContext<Partial<PostContextType>>({});
 
@@ -15,7 +15,7 @@ export const PostProvider: React.FC = ({ children }) => {
   const [updating, setUpdating] = useState(false);
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const { loading, post, error, setPost } = usePost();
-  const [helpers, setHelpers] = useState<Editor>();
+  const [helpers, setHelpers] = useState<Editor["editor"]>();
 
   const setPostAttribute = async (attrs: Omit<InputUpdatePost, "id">) => {
     if (post) {
