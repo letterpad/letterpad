@@ -2,7 +2,7 @@ const ProfileInfo = ({ name, avatar, site_url }) => {
   return (
     <>
       <div className="container">
-        <img src={avatar} alt={name} style={{ borderRadius: 50 }} />
+        {avatar && <img src={avatar} style={{ borderRadius: 50 }} />}
         <div className="flex">
           <span>{name}</span>
           <span>

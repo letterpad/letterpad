@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { Collapse, Form, Input, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
@@ -6,7 +7,7 @@ import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
 import { InputAuthor, Social } from "@/__generated__/__types__";
-import { removeTypenames } from "@/shared/utils";
+import { debounce, removeTypenames } from "@/shared/utils";
 import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
@@ -32,7 +33,7 @@ function Profile() {
   }, [loading]);
 
   const updateAuthor = async () => {
-    if (draft) {
+    if (draft && Object.keys(draft).length > 1) {
       mutateAuthor({
         variables: {
           author: draft,
@@ -40,6 +41,14 @@ function Profile() {
       });
     }
   };
+
+  useEffect(() => {
+    debounceUpdateAuthor();
+  }, [draft]);
+
+  const debounceUpdateAuthor = useCallback(debounce(updateAuthor, 1000), [
+    draft,
+  ]);
 
   const onChange = (key: keyof InputAuthor, value: ValueOf<InputAuthor>) => {
     if (me) {
@@ -88,14 +97,12 @@ function Profile() {
                   <Input
                     size="middle"
                     value={me.name}
-                    onBlur={() => updateAuthor()}
                     onChange={(e) => onChange("name", e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item label="Short Bio">
                   <Input.TextArea
                     value={me.bio}
-                    onBlur={() => updateAuthor()}
                     onChange={(e) => onChange("bio", e.target.value)}
                   />
                 </Form.Item>
@@ -103,7 +110,6 @@ function Profile() {
                   <Input
                     size="middle"
                     value={me.email}
-                    onBlur={() => updateAuthor()}
                     onChange={(e) => onChange("email", e.target.value)}
                   />
                 </Form.Item>
@@ -113,7 +119,6 @@ function Profile() {
                     name="Avatar"
                     onDone={([res]) => {
                       onChange("avatar", res.src);
-                      updateAuthor();
                     }}
                   />
                 </Form.Item>
@@ -123,7 +128,6 @@ function Profile() {
                   <Input
                     size="middle"
                     value={me.social?.twitter}
-                    onBlur={() => updateAuthor()}
                     onChange={(e) => onSocialChange("twitter", e.target.value)}
                   />
                 </Form.Item>
@@ -131,7 +135,6 @@ function Profile() {
                   <Input
                     size="middle"
                     value={me.social?.facebook}
-                    onBlur={() => updateAuthor()}
                     onChange={(e) => onSocialChange("facebook", e.target.value)}
                   />
                 </Form.Item>
@@ -139,7 +142,6 @@ function Profile() {
                   <Input
                     size="middle"
                     value={me.social?.instagram}
-                    onBlur={() => updateAuthor()}
                     onChange={(e) =>
                       onSocialChange("instagram", e.target.value)
                     }
@@ -149,7 +151,6 @@ function Profile() {
                   <Input
                     size="middle"
                     value={me.social?.github}
-                    onBlur={() => updateAuthor()}
                     onChange={(e) => onSocialChange("github", e.target.value)}
                   />
                 </Form.Item>
