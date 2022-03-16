@@ -60,4 +60,5 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_SECRET_KEY }}
           script: |
+            yarn prisma:generate
             pm2 restart letterpad-admin
