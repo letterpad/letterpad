@@ -48,7 +48,7 @@ jobs:
           host: 138.68.127.224
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_SECRET_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           source: "."
           target: /var/www/html/letterpad-admin
 
@@ -58,7 +58,8 @@ jobs:
           host: 138.68.127.224
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_SECRET_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           script: |
+            cd /var/www/html/letterpad-admin
             yarn prisma:generate
             pm2 reload letterpad-admin
