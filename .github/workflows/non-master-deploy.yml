@@ -1,12 +1,12 @@
 name: Deployment Workflow
 on:
   push:
-    branches:
+    branches-ignore:
       - "master"
 
 jobs:
   job_one:
-    name: Deploy
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -41,25 +41,3 @@ jobs:
         env:
           SECRET_KEY: ${{ secrets.SECRET_LP_KEY }}
           SENTRY_AUTH_TOKEN: ${{secrets.SENTRY_AUTH_TOKEN}}
-
-      - name: Deploy to Digital Ocean
-        uses: appleboy/scp-action@master
-        with:
-          host: 138.68.127.224
-          username: ${{ secrets.SSH_USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          source: "."
-          target: /var/www/html/letterpad-admin
-
-      - name: executing remote ssh commands
-        uses: appleboy/ssh-action@master
-        with:
-          host: 138.68.127.224
-          username: ${{ secrets.SSH_USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          script: |
-            cd /var/www/html/letterpad-admin
-            yarn prisma:generate
-            pm2 reload letterpad-admin
