@@ -52,7 +52,7 @@ jobs:
           source: "."
           target: /var/www/html/letterpad-admin
 
-      - name: executing remote ssh commands using password
+      - name: executing remote ssh commands
         uses: appleboy/ssh-action@master
         with:
           host: 138.68.127.224
@@ -61,4 +61,4 @@ jobs:
           key: ${{ secrets.SSH_SECRET_KEY }}
           script: |
             yarn prisma:generate
-            pm2 restart letterpad-admin
+            pm2 reload letterpad-admin
