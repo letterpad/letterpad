@@ -2,7 +2,7 @@ import React from "react";
 import { AppProps } from "next/app";
 import type { Page } from "../page";
 import "lazysizes";
-import "../../styles/globals.css";
+import "../../public/css/globals.css";
 import withSessionProvider from "@/hoc/withSessionProvider";
 import { ApolloProvider } from "@apollo/client";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
