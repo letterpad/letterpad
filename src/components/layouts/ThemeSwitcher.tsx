@@ -38,6 +38,7 @@ const ThemeSwitcher = () => {
       <style jsx>{`
         .container {
           display: flex;
+          align-items: center;
         }
         .button {
           width: 20px;
