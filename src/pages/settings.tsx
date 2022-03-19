@@ -1,8 +1,8 @@
-import { Collapse, Form, Input, PageHeader } from "antd";
+import { Col, Collapse, Form, Input, PageHeader, Row } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Setting, SettingInputType } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
 
@@ -13,12 +13,17 @@ import Appearance from "@/components/settings/appearance";
 import Navigation from "@/components/settings/navigation";
 import Social from "@/components/settings/social";
 import Integrations from "@/components/settings/integrations";
+import { CopyToClipboard } from "@/components/clipboard";
 
 const { Panel } = Collapse;
 
 type ValueOf<T> = T[keyof T];
 
-function Settings(props: { settings: Setting }) {
+function Settings(props: {
+  settings: Setting;
+  cloudinaryEnabledByAdmin: boolean;
+}) {
+  const clientTokenRef = useRef<HTMLTextAreaElement>(null);
   const [settings, setSettings] = useState(props.settings);
   const [draft, setDraft] = useState<SettingInputType>({});
   const [settingsMutation] = useUpdateOptionsMutation();
@@ -74,15 +79,23 @@ function Settings(props: { settings: Setting }) {
               settings={settings}
               onChange={onChange}
               updateSettings={updateSettings}
+              cloudinaryEnabledByAdmin={props.cloudinaryEnabledByAdmin}
             />
             <Collapse>
               <Panel header="Keys" key="1">
                 <Form.Item label="Client Authorization Key">
-                  <Input.TextArea
-                    rows={4}
-                    value={settings.client_token}
-                    disabled={true}
-                  />
+                  <Row>
+                    <Col span={18}>
+                      <Input.TextArea
+                        rows={4}
+                        value={settings.client_token}
+                        id="client_token"
+                      />
+                    </Col>
+                    <Col span={6}>
+                      <CopyToClipboard elementId="client_token" />
+                    </Col>
+                  </Row>
                 </Form.Item>
               </Panel>
             </Collapse>
@@ -95,3 +108,15 @@ function Settings(props: { settings: Setting }) {
 const SettingsWithAuth = withAuthCheck(Settings);
 SettingsWithAuth.layout = CustomLayout;
 export default SettingsWithAuth;
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      cloudinaryEnabledByAdmin: !!(
+        process.env.CLOUDINARY_KEY &&
+        process.env.CLOUDINARY_NAME &&
+        process.env.CLOUDINARY_SECRET
+      ),
+    },
+  };
+}

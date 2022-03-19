@@ -25,7 +25,7 @@ interface IProps {
 const CustomLayout = ({ children, settings }: IProps) => {
   const [stats, setStats] = useState<Stats | {}>({});
   const [collapsed, setCollapsed] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
   const SavingIndicator = useSavingIndicator();
 
   const { data: session } = useSession();
@@ -47,7 +47,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
 
   const handleCollapse = () => {
     setCollapsed(window.innerWidth < 991);
-    setVisible(window.innerWidth < 991);
+    setMobileMenuVisible(false);
   };
 
   if (!settings) return null;
@@ -56,7 +56,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
       <Drawer
         mask={false}
         closeIcon={false}
-        onClose={() => setVisible(false)}
+        onClose={() => setMobileMenuVisible(false)}
         drawerStyle={{ background: "rgb(var(--sidebar-bg))" }}
         placement="left"
         bodyStyle={{ background: "rgb(var(--sidebar-bg))" }}
@@ -94,7 +94,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
       >
         <nav className="navbar">
           <Drawer
-            onClose={() => setVisible(false)}
+            onClose={() => setMobileMenuVisible(false)}
             placement="left"
             drawerStyle={{ background: "rgb(var(--sidebar-bg))" }}
             bodyStyle={{ background: "rgb(var(--sidebar-bg))" }}
@@ -105,7 +105,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
               borderColor: "#333",
             }}
             width={siteConfig.sidebar_width}
-            visible={visible}
+            visible={mobileMenuVisible}
             title={
               settings.site_logo?.src ? (
                 <Logo src={settings.site_logo.src} padding="16px 0px" />
@@ -128,14 +128,13 @@ const CustomLayout = ({ children, settings }: IProps) => {
 
         <div className="top-bar">
           <div>
-            {collapsed && !visible && (
+            {collapsed && !mobileMenuVisible && (
               <>
                 <Button
                   className="menu"
-                  type="ghost"
+                  type="text"
                   icon={<MenuOutlined />}
-                  onClick={() => setVisible(true)}
-                  size="middle"
+                  onClick={() => setMobileMenuVisible(true)}
                 />
               </>
             )}
