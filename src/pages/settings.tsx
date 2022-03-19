@@ -2,7 +2,7 @@ import { Col, Collapse, Form, Input, PageHeader, Row } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Setting, SettingInputType } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
 
@@ -23,7 +23,6 @@ function Settings(props: {
   settings: Setting;
   cloudinaryEnabledByAdmin: boolean;
 }) {
-  const clientTokenRef = useRef<HTMLTextAreaElement>(null);
   const [settings, setSettings] = useState(props.settings);
   const [draft, setDraft] = useState<SettingInputType>({});
   const [settingsMutation] = useUpdateOptionsMutation();
