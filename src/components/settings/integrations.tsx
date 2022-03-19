@@ -24,7 +24,7 @@ const Integrations: React.FC<Props> = ({
       <Panel header="Integrations" key="1">
         <p>
           {cloudinaryEnabledByAdmin &&
-            "Cloudinary optimising all the images for various devices. This is already been enabled by Admin."}
+            "Cloudinary helps in optimising all your images and are served by a CDN. This has already been enabled by Admin."}
         </p>
         <br />
         <Form.Item label="Cloudinary Name">
