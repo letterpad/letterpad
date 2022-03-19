@@ -4,7 +4,7 @@ Letterpad Admin is the dashboard for publishing blogs.
 
 ## Features
 
-- High performant API.
+- High performant GraphQL API.
 - Uses Graphql, React Apollo, NextJS and Prisma
 - Uses TinyMCE editor, specially composed for Letterpad
 - Theme customisation (css) from Dashboard.
@@ -100,6 +100,7 @@ To learn more about Next.js, take a look at the following resources:
 ## Letterpad Client
 
 We also have a letterpad client which you can find in [this repository](https://github.com/letterpad/letterpad-client). The letterpad client is a simple react application which uses the graphql API of letterpad to render a public facing blog.
+
 Demo: https://demo.letterpad.app
 
 Letterpad Admin provides a client key which can be found in settings. If you want to host the client in a different domain, then you should set this client_key in `next.config.js`.
