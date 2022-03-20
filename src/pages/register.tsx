@@ -14,6 +14,7 @@ import { Button, Divider, Form, Input, message, Row } from "antd";
 import { EventAction, track } from "@/track";
 import { Header } from "antd/lib/layout/layout";
 import Link from "next/link";
+import { SocialLogin } from "@/components/login/views/SocialLogin";
 
 const key = "register";
 
@@ -173,6 +174,8 @@ const RegisterForm = () => {
                 <Button type="link">⏎ Login</Button>
               </Link>
             </Form.Item>
+            <Divider />
+            <SocialLogin />
           </Form>
         </Row>
         <style jsx global>{`
@@ -200,11 +203,22 @@ const RegisterForm = () => {
   );
 };
 
-const Provider = () => {
+interface Props {
+  recaptchaKey: string;
+}
+const Provider: React.VFC<Props> = ({ recaptchaKey }) => {
   return (
-    <GoogleReCaptchaProvider reCaptchaKey={process.env.RECAPTCHA_KEY_CLIENT}>
+    <GoogleReCaptchaProvider reCaptchaKey={recaptchaKey}>
       <RegisterForm />
     </GoogleReCaptchaProvider>
   );
 };
 export default Provider;
+
+export const getServerSideProps = () => {
+  return {
+    props: {
+      recaptchaKey: process.env.RECAPTCHA_KEY_CLIENT,
+    },
+  };
+};
