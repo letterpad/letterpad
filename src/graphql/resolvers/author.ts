@@ -178,7 +178,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
     try {
       const dataToUpdate = { ...args.author } as InputAuthorForDb;
-
       if (args.author.password) {
         dataToUpdate.password = await bcrypt.hash(args.author.password, 12);
       }
@@ -199,6 +198,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         };
       }
 
+      logger.info("Updating Author => ", dataToUpdate);
       const author = await prisma.author.update({
         data: dataToUpdate,
         where: { id: args.author.id },
