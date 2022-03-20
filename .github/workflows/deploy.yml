@@ -41,9 +41,10 @@ jobs:
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           SENTRY_AUTH_TOKEN: ${{secrets.SENTRY_AUTH_TOKEN}}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Generate Prisma Client
-        run: yarn prisma:generate
+        run: npx prisma generate --schema prisma/schema_mysql.prisma
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
