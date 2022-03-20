@@ -60,6 +60,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
+            fish
             cd /var/www/html/letterpad-admin
             yarn prisma:generate
             pm2 reload letterpad-admin
