@@ -17,7 +17,9 @@ const Option = Select.Option;
 
 const Filters = ({ showTags = true, onChange }: IProps) => {
   const [allTags, setAllTags] = useState<{ slug: string; name: string }[]>([]);
-  const [filters, setFilters] = useState<PostsFilters>({});
+  const [filters, setFilters] = useState<PostsFilters>({
+    sortBy: SortBy["Desc"],
+  });
   const { tags, loading } = useTagsContext();
 
   useEffect(() => {
@@ -64,7 +66,7 @@ const Filters = ({ showTags = true, onChange }: IProps) => {
         placeholder="Order by"
         allowClear
         size="middle"
-        value={SortBy["Desc"]}
+        value={filters.sortBy}
       >
         {Object.keys(SortBy).map((key) => {
           return (

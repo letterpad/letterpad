@@ -92,7 +92,7 @@ const Query: QueryResolvers<ResolverContext> = {
       } else if (args.filters.tagSlug) {
         args.filters.tagSlug = args.filters.tagSlug.replace("/tag/", "");
       }
-      const { page, limit } = args.filters;
+      const { page, limit = 10 } = args.filters;
       const skip = page && limit ? page * limit : 0;
       const isPage = args.filters.type === PostTypes.Page;
       const condition: Prisma.PostFindManyArgs = {

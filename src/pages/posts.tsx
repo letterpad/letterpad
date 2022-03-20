@@ -22,6 +22,8 @@ function Posts() {
   const setting = useContext(LetterpadContext);
   if (error) return <ErrorMessage description={error} title="Error" />;
   const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
+  const totalCount =
+    data?.posts.__typename === "PostsNode" ? data.posts.count : 0;
 
   if (!setting?.intro_dismissed) {
     if (!localStorage.intro_dismissed) {
@@ -31,6 +33,13 @@ function Posts() {
     }
   }
 
+  const handleChange = (p) => {
+    refetch({
+      filters: {
+        page: p.current,
+      },
+    });
+  };
   return (
     <>
       <Head>
@@ -51,6 +60,11 @@ function Posts() {
             onRow={(row) => ({
               onClick: () => router.push("/post/" + row.id),
             })}
+            onChange={handleChange}
+            pagination={{
+              hideOnSinglePage: true,
+              total: totalCount - 10, // total count returned from backend
+            }}
           />
         </div>
         <style jsx>{postsStyles}</style>

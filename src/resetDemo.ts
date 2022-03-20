@@ -203,6 +203,7 @@ const data = {
 
 async function resetDemo() {
   try {
+    const cloneData = JSON.parse(JSON.stringify(data));
     const validatedData = validateWithAjv(data);
     await startImport(
       validatedData.authors,
@@ -216,8 +217,8 @@ async function resetDemo() {
       },
       {
         "demo@demo.com": {
-          password: data.authors["demo@demo.com"].password,
-          role_id: data.authors["demo@demo.com"].role_id.toString(),
+          password: cloneData.authors["demo@demo.com"].password,
+          role_id: cloneData.authors["demo@demo.com"].role_id.toString(),
         },
       },
     );
@@ -225,5 +226,7 @@ async function resetDemo() {
     console.log(e);
   }
 }
-
-setInterval(resetDemo, 1000 * 60 * 60 * 12);
+resetDemo().then(() => {
+  console.log("done");
+});
+// setInterval(resetDemo, 1000 * 60 * 60 * 12);

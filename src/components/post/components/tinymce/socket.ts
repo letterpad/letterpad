@@ -38,7 +38,6 @@ class Socket {
   }
 
   onReviewRecieve({ correction, index }) {
-    console.log(correction, index);
     if (!this.editor) {
       return false;
     }
@@ -67,7 +66,7 @@ class Socket {
   removeGrammar() {
     const domBody = this.editor?.getDoc().body;
     if (!domBody) return false;
-    domBody.querySelectorAll("mark").forEach((spanElmt) => {
+    domBody.querySelectorAll("span.mark").forEach((spanElmt) => {
       spanElmt.outerHTML = spanElmt.innerHTML;
     });
     this.editor?.setContent(domBody.innerHTML);
