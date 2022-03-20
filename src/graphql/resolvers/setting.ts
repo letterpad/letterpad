@@ -92,28 +92,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
       if (!setting_id)
         return { __typename: "SettingError", message: "Setting now found" };
 
-      const hasSiteEmail = args.options
-        .filter((item) => "site_email" in item)
-        .pop();
-      if (hasSiteEmail?.site_email) {
-        const duplicateEmail = await prisma.setting.findFirst({
-          where: {
-            site_email: hasSiteEmail?.site_email,
-            author: {
-              id: {
-                not: author_id,
-              },
-            },
-          },
-        });
-        if (duplicateEmail) {
-          return {
-            __typename: "SettingError",
-            message: "Email already exist",
-          };
-        }
-      }
-
       let promises = args.options.map((setting) => {
         const option = Object.keys(setting)[0] as keyof Omit<
           SettingType,
