@@ -50,7 +50,7 @@ const ThemeSwitcher = () => {
   );
 };
 
-ThemeSwitcher.switch = (color) => {
+ThemeSwitcher.switch = (color = "dark") => {
   const $body = document.body;
   let stylePath = "/css/antd.css";
   document.getElementsByTagName("html")[0].classList.add("no-transitions");
