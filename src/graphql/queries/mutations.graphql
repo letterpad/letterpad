@@ -127,6 +127,7 @@ mutation UpdateAuthor($author: InputAuthor!) {
       }
       bio
       avatar
+      username
     }
   }
 }

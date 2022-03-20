@@ -1,0 +1,11 @@
+#!/bin/bash
+
+. $(dirname "$0")/env.sh
+
+PRISMA_FILE="schema.prisma"
+
+if [[ "$DATABASE_URL" =~ ^mysql.* ]]; then
+    export PRISMA_FILE="schema_mysql.prisma"
+fi
+
+npx prisma migrate dev --schema prisma/$PRISMA_FILE

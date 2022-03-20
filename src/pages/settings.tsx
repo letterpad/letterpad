@@ -1,4 +1,4 @@
-import { Col, Collapse, Form, Input, PageHeader, Row } from "antd";
+import { Col, Collapse, Form, Input, message, PageHeader, Row } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
@@ -18,6 +18,7 @@ import { CopyToClipboard } from "@/components/clipboard";
 const { Panel } = Collapse;
 
 type ValueOf<T> = T[keyof T];
+const key = "setting";
 
 function Settings(props: {
   settings: Setting;
@@ -29,13 +30,22 @@ function Settings(props: {
 
   const updateSettings = async () => {
     if (Object.keys(draft).length === 0) return;
-    settingsMutation({ variables: { options: draft } });
+    const result = await settingsMutation({ variables: { options: draft } });
+    if (result.data?.updateOptions?.__typename === "SettingError") {
+      message.error({
+        key,
+        content: result.data.updateOptions.message,
+        duration: 5,
+      });
+    }
     setDraft({});
   };
 
   useEffect(() => {
-    if (Object.keys(draft).length === 0) return;
-    updateSettings();
+    if (Object.keys(draft).length === 1) return;
+    if (draft.site_logo || (draft.banner && draft.site_favicon)) {
+      updateSettings();
+    }
   }, [Object.keys(draft)]);
 
   const onChange = (

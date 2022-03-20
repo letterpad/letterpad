@@ -39,6 +39,7 @@ input InputAuthor {
   password: String
   roleId: Int
   avatar: String
+  username: String
 }
 
 input InputCreateAuthor {

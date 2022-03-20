@@ -14,6 +14,8 @@
     "migrate": "prisma migrate dev --name init",
     "typecheck": "yarn tsc",
     "prisma:generate": "scripts/generatePrisma.sh",
+    "prisma:migrate:create": "scripts/createMigration.sh",
+    "prisma:migrate:run": "scripts/runMigration.sh",
     "prisma:studio": "scripts/studio.sh",
     "resetDemo": "ts-node -r tsconfig-paths/register --transpile-only ./src/resetDemo.ts"
   },
