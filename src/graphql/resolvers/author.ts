@@ -183,7 +183,22 @@ const Mutation: MutationResolvers<ResolverContext> = {
         dataToUpdate.password = await bcrypt.hash(args.author.password, 12);
       }
 
-      logger.info("Updating Author => ", dataToUpdate);
+      const usernameExist = await prisma.author.findFirst({
+        where: { username: args.author.username },
+      });
+
+      if (usernameExist) {
+        return {
+          ok: false,
+          errors: [
+            {
+              message: "Username already exist",
+              path: "updateAuthor resolver",
+            },
+          ],
+        };
+      }
+
       const author = await prisma.author.update({
         data: dataToUpdate,
         where: { id: args.author.id },

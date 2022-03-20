@@ -11,7 +11,7 @@ datasource db {
 model Author {
   id                  Int          @id @default(autoincrement())
   name                String
-  username            String
+  username            String       @unique
   email               String       @unique
   password            String
   bio                 String       

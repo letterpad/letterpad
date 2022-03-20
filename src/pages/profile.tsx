@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Collapse, Form, Input, PageHeader } from "antd";
+import { Button, Collapse, Form, Input, message, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
 import ImageUpload from "@/components/ImageUpload";
@@ -25,24 +25,37 @@ function Profile() {
   const [mutateAuthor] = useUpdateAuthorMutation();
   const [me, setMe] = useState<InputAuthor>();
   const [draft, setDraft] = useState<InputAuthor>();
+  const [username, setUsername] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (data?.me?.__typename === "Author") {
       setMe(data.me);
+      setUsername(data.me.username);
     }
   }, [loading]);
 
   const updateAuthor = async () => {
-    if (draft && Object.keys(draft).length > 1) {
-      mutateAuthor({
-        variables: {
-          author: draft,
-        },
-      });
-    }
+    try {
+      if (draft && Object.keys(draft).length > 1) {
+        const result = await mutateAuthor({
+          variables: {
+            author: draft,
+          },
+        });
+        if (!result.data?.updateAuthor?.ok) {
+          const error = result.data?.updateAuthor?.errors?.pop()?.message;
+          if (error) {
+            message.error({ key: "author", content: error, duration: 10 });
+          }
+        }
+      }
+    } catch (e) {}
+    setSaving(false);
   };
 
   useEffect(() => {
+    setSaving(true);
     debounceUpdateAuthor();
   }, [draft]);
 
@@ -112,6 +125,26 @@ function Profile() {
                     value={me.email}
                     onChange={(e) => onChange("email", e.target.value)}
                   />
+                </Form.Item>
+                <Form.Item label="Username">
+                  <Input.Group compact>
+                    <Input
+                      size="middle"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      style={{ width: "calc(100% - 150px)" }}
+                    />
+                    <Button
+                      type="primary"
+                      size="middle"
+                      onClick={() => {
+                        onChange("username", username);
+                      }}
+                      loading={saving}
+                    >
+                      Validate
+                    </Button>
+                  </Input.Group>
                 </Form.Item>
                 <Form.Item label="Avatar">
                   <ImageUpload
