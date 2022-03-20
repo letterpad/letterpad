@@ -39,8 +39,13 @@ jobs:
       - name: Run Build
         run: yarn run build
         env:
-          SECRET_KEY: ${{ secrets.SECRET_LP_KEY }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           SENTRY_AUTH_TOKEN: ${{secrets.SENTRY_AUTH_TOKEN}}
+
+      - name: Generate Prisma Client
+        run: yarn prisma:generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Deploy to Digital Ocean
         uses: appleboy/scp-action@master
@@ -60,7 +65,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            fish
-            cd /var/www/html/letterpad-admin
-            yarn prisma:generate
             pm2 reload letterpad-admin
