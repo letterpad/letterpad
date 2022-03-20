@@ -4,7 +4,7 @@ import { basePath } from "next.config";
 import { useEffect, useState } from "react";
 
 const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState(localStorage.theme || "light");
+  const [theme, setTheme] = useState(localStorage.theme || "dark");
 
   useEffect(() => {
     if (localStorage.theme) {
