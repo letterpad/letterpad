@@ -58,7 +58,7 @@ function Posts({ readOnly }: { readOnly: boolean }) {
           />
         )}
         <div className="site-layout-background" style={{ padding: 16 }}>
-          <TagsProvider>
+          <TagsProvider readOnly={readOnly}>
             <Filters onChange={(filters) => refetch({ filters })} />
           </TagsProvider>
           <Table
