@@ -116,14 +116,14 @@ model Setting {
   cloudinary_key      String   
   cloudinary_name     String   
   cloudinary_secret   String   
-  menu                String   @default("[]")
-  css                 String   
+  menu                String   @db.VarChar(500) @default("[]")
+  css                 String   @db.VarChar(500)
   google_analytics    String   
   theme               String   
   client_token        String   
-  banner              String   @default("{}")
-  site_logo           String   @default("{}")
-  site_favicon        String   @default("{}")
+  banner              String    @db.VarChar(300) @default("{}")
+  site_logo           String    @db.VarChar(300) @default("{}")
+  site_favicon        String    @db.VarChar(300) @default("{}")
   createdAt           DateTime? @default(now())
   updatedAt           DateTime? @updatedAt
   graphcomment_id     String   @default("")
