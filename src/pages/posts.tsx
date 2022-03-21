@@ -74,7 +74,7 @@ function Posts({ readOnly }: { readOnly: boolean }) {
             onChange={handleChange}
             pagination={{
               hideOnSinglePage: true,
-              total: totalCount - 10, // total count returned from backend
+              total: totalCount, // total count returned from backend
             }}
           />
         </div>

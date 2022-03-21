@@ -4,6 +4,7 @@ const basePath = "/admin";
 const isServer = typeof window === "undefined";
 
 const nextConfig = {
+  productionBrowserSourceMaps: true,
   env: {
     ROOT: __dirname,
     RAYGUN_API_KEY: process.env.RAYGUN_API_KEY,

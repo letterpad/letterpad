@@ -36,7 +36,9 @@ export const createApolloTestServer = async () => {
 };
 
 let server;
+
 beforeAll(async () => {
+  jest.setTimeout(10000);
   try {
     global.console = require("console");
     await execShellCommand(
@@ -53,7 +55,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  server.stop();
+  server?.stop();
 });
 
 const execShellCommand = (command) => {

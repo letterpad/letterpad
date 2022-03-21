@@ -28,14 +28,6 @@ jobs:
       - name: Graphql Codegen
         run: yarn codegen
 
-      - name: Type check
-        run: yarn typecheck
-
-      # - name: Test GraphQL API
-      #   run: yarn run test
-      #   env:
-      #     NODE_ENV: test
-
       - name: Run Build
         run: yarn run build
         env:
