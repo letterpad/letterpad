@@ -33,13 +33,13 @@ function Pages({ readOnly }: { readOnly: boolean }) {
         Here you will find the list of pages for your blog.
       </Header>
       <Content>
+        {readOnly && (
+          <Alert
+            message="This section is read only. You will be able to make changes, but they wont be saved."
+            type="warning"
+          />
+        )}
         <div className="site-layout-background" style={{ padding: 24 }}>
-          {readOnly && (
-            <Alert
-              message="This section is read only. You will be able to make changes, but they wont be saved."
-              type="warning"
-            />
-          )}
           <Filters
             showTags={false}
             onChange={(filters) => {
