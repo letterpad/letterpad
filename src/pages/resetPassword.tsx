@@ -50,7 +50,7 @@ const ResetPassword = () => {
     if (data && data.ok) {
       message.success({
         content: data.message,
-        duration: 1000,
+        duration: 10,
         key,
       });
       router.push("/login");

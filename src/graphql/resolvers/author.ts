@@ -232,6 +232,14 @@ const Mutation: MutationResolvers<ResolverContext> = {
           author_id: author.id,
         });
       }
+      await prisma.author.update({
+        data: {
+          verify_attempt_left: (author.verify_attempt_left || 3) - 1,
+        },
+        where: {
+          email: author.email,
+        },
+      });
       return {
         ok: true,
       };
@@ -264,18 +272,19 @@ const Mutation: MutationResolvers<ResolverContext> = {
       await prisma.author.update({
         data: {
           password: newPassword,
+          verify_attempt_left: 3,
         },
         where: { id: author.id },
       });
 
       return {
         ok: true,
-        msg: "Password changed successfully",
+        message: "Password changed successfully",
       };
     } catch (e: any) {
       return {
         ok: false,
-        msg: e.message,
+        message: e.message,
       };
     }
   },
