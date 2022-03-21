@@ -1,5 +1,5 @@
 import { EmailTemplates } from "@/graphql/types";
-// import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { getToken } from "@/shared/token";
 import {
   AddSubscriberDocument,
@@ -8,9 +8,7 @@ import {
   ForgotPasswordDocument,
   UpdateSubscriberDocument,
 } from "@/__generated__/queries/mutations.graphql";
-import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
 import { API } from "../../../../tests/testClient";
 import { getEmailTemplate } from "./getTemplate";
 
