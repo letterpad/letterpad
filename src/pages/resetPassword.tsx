@@ -20,7 +20,7 @@ const ResetPassword = () => {
     if (newPassword.length === 0) {
       message.error({
         content: "Password cannot be empty",
-        duration: 5000,
+        duration: 5,
         key,
       });
       return;
@@ -29,7 +29,7 @@ const ResetPassword = () => {
     if (!router.query.token) {
       message.error({
         content: "Token is missing",
-        duration: 5000,
+        duration: 5,
         key,
       });
       return;
@@ -50,7 +50,7 @@ const ResetPassword = () => {
     if (data && data.ok) {
       message.success({
         content: data.message,
-        duration: 1000,
+        duration: 10,
         key,
       });
       router.push("/login");
@@ -59,7 +59,7 @@ const ResetPassword = () => {
         content:
           data?.message ||
           "There was a problem making this request. Contact the admin.",
-        duration: 5000,
+        duration: 5,
         key,
       });
     }

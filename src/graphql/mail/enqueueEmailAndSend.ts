@@ -19,12 +19,12 @@ export async function enqueueEmailAndSend(
     );
   }
   try {
-    const found = await prisma.emailDelivery.findFirst({
-      where: { ...props },
-    });
-    if (found) {
-      return logger.debug("Email record exist. Skipping");
-    }
+    // const found = await prisma.emailDelivery.findFirst({
+    //   where: { ...props },
+    // });
+    // if (found) {
+    //   return logger.debug("Email record exist. Skipping");
+    // }
     const newDelivery = await prisma.emailDelivery.create({
       data: {
         ...props,
