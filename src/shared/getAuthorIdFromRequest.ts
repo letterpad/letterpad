@@ -1,6 +1,5 @@
 import logger from "./logger";
 import { Context } from "@apollo/client";
-import * as Sentry from "@sentry/nextjs";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { decryptEmail } from "./clientToken";
 
@@ -40,8 +39,7 @@ const getAuthorIdFromRequest = async (context: Context) => {
         );
       }
     } else {
-      Sentry.captureException(e);
-      logger.error("Error in getting author_id from request", e);
+      throw new Error(e);
     }
   }
   return author_id;

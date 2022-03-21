@@ -1,7 +1,6 @@
 import { EmailProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
 import { getEmailTemplate } from "./templates/getTemplate";
-import * as Sentry from "@sentry/nextjs";
 import { getMailClient } from "./client";
 import { sendMail } from "./sendMail";
 
@@ -51,9 +50,9 @@ export async function enqueueEmailAndSend(
         }
       }
     } else {
-      Sentry.captureException(new Error(data.message));
+      throw new Error(data.message);
     }
   } catch (e: any) {
-    Sentry.captureException(e);
+    throw new Error(e);
   }
 }
