@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/nextjs";
 const unsplashUrl = "https://api.unsplash.com/search/photos";
 const clientId = process.env.UNSPLASH_CLIENT_ID;
 
@@ -8,7 +7,7 @@ const unsplash = async (req, res) => {
     throw new Error("No client id provided");
   }
   const endpoint = `${unsplashUrl}?client_id=${clientId}&query=${query}&page=${page}&per_page=21`;
-  console.log(endpoint);
+
   try {
     const response = await fetch(endpoint).then((data) => data.json());
     res.json({
@@ -17,7 +16,6 @@ const unsplash = async (req, res) => {
       pages: response.total_pages,
     });
   } catch (e) {
-    Sentry.captureException(e);
     res.json({
       rows: [],
       count: 0,

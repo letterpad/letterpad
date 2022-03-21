@@ -38,7 +38,9 @@ function Profile({ readOnly }: { readOnly: boolean }) {
   }, [loading]);
 
   const updateAuthor = async () => {
-    if (readOnly) return;
+    if (readOnly) {
+      return setSaving(false);
+    }
     try {
       if (draft && Object.keys(draft).length > 1) {
         const result = await mutateAuthor({

@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/nextjs";
 import { EmailTemplateMeta, Mail } from "@/graphql/types";
 import logger from "@/shared/logger";
 import { getMailClient } from "./client";
@@ -41,8 +40,7 @@ export function sendMail(
         ],
       })
       .catch((e) => {
-        Sentry.captureException(e);
-        return e;
+        throw new Error(e);
       });
   });
   return Promise.all(mails);

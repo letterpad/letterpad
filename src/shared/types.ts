@@ -13,8 +13,6 @@ declare global {
       SENDGRID_API_KEY: string;
       MJ_APIKEY_PUBLIC: string;
       MJ_APIKEY_PRIVATE: string;
-      SENTRY_AUTH_TOKEN?: string;
-      SENTRY_DSN?: string;
       CLOUDINARY_KEY?: string;
       CLOUDINARY_SECRET?: string;
       CLOUDINARY_NAME?: string;
