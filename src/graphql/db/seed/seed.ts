@@ -64,7 +64,7 @@ export async function seed(folderCheck = true) {
       await copydirAsync(absPath(uploadsSourceDir), absPath(publicUploadsDir));
       console.timeEnd("sync uploads");
     }
-
+    console.log("test setup db url in seed", process.env.DATABASE_URL);
     console.time("insert roles and permissions");
     await insertRolePermData();
     console.timeEnd("insert roles and permissions");
