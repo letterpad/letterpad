@@ -4,8 +4,9 @@ import withAuthCheck from "../hoc/withAuth";
 import Head from "next/head";
 import { TagsProvider } from "@/components/tags/context";
 import Component from "@/components/tags/component";
+import { getSession } from "next-auth/react";
 
-const EditableTable = () => {
+const EditableTable = ({ readOnly }: { readOnly: boolean }) => {
   return (
     <>
       <Head>
@@ -16,7 +17,7 @@ const EditableTable = () => {
         using whatever tag you want and then use these tags to setup your
         navigation menu.
       </PageHeader>
-      <TagsProvider>
+      <TagsProvider readOnly={readOnly}>
         <Component />
       </TagsProvider>
     </>
@@ -26,3 +27,15 @@ const EditableTable = () => {
 const EditableTableWithAuth = withAuthCheck(EditableTable);
 EditableTableWithAuth.layout = CustomLayout;
 export default EditableTableWithAuth;
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  return {
+    props: {
+      readOnly:
+        process.env.READ_ONLY === "true" &&
+        session?.user?.email === "demo@demo.com",
+    },
+  };
+}

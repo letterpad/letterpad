@@ -9,6 +9,7 @@ import { getDateTime } from "./../shared/utils";
 import { IAuthComponentProps } from "./../shared/types";
 import { Role } from "@/__generated__/__types__";
 import { UploadChangeParam } from "antd/lib/upload";
+import { getSession } from "next-auth/react";
 
 // If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to /admin/register first. This will allow you to seed letterpad with mysql. Then login and import the data to populate the exisiting data in mysql.
 
@@ -42,10 +43,10 @@ const Migrate = ({
         also import blog from another CMS like Ghost.
       </PageHeader>
       <Content>
+        {readOnly && (
+          <Alert message="This section is read only." type="warning" />
+        )}
         <div className="site-layout-background" style={{ padding: 24 }}>
-          {readOnly && (
-            <Alert message="This section is read only." type="warning" />
-          )}
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
@@ -142,10 +143,14 @@ const openNotificationWithIcon = (type, description) => {
   });
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
   return {
     props: {
-      readOnly: process.env.READ_ONLY === "true",
+      readOnly:
+        process.env.READ_ONLY === "true" &&
+        session?.user?.email === "demo@demo.com",
     },
   };
 }

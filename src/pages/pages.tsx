@@ -11,6 +11,7 @@ import { postsStyles } from "@/components/posts.css";
 import { columns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
 import { Alert } from "antd";
+import { getSession } from "next-auth/react";
 
 const { Content } = Layout;
 
@@ -65,10 +66,14 @@ const PagesWithAuth = withAuthCheck(Pages);
 PagesWithAuth.layout = CustomLayout;
 export default PagesWithAuth;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
   return {
     props: {
-      readOnly: process.env.READ_ONLY === "true",
+      readOnly:
+        process.env.READ_ONLY === "true" &&
+        session?.user?.email === "demo@demo.com",
     },
   };
 }
