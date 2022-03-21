@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { message, Row, Form, Input, Button } from "antd";
+import { message, Row, Form, Input, Button, Divider } from "antd";
 import { useRouter } from "next/router";
 import {
   ResetPasswordMutation,
@@ -8,18 +8,16 @@ import {
   ResetPasswordDocument,
 } from "@/__generated__/queries/mutations.graphql";
 import Head from "next/head";
-import { basePath } from "@/constants";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { Header } from "antd/lib/layout/layout";
 
 const key = "change-password";
 
 const ResetPassword = () => {
-  const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const resetPassword = async () => {
-    if (password.length === 0) {
+  const resetPassword = async (newPassword: string) => {
+    if (newPassword.length === 0) {
       message.error({
         content: "Password cannot be empty",
         duration: 5000,
@@ -44,7 +42,7 @@ const ResetPassword = () => {
       mutation: ResetPasswordDocument,
       variables: {
         token: router.query.token as string,
-        password,
+        password: newPassword,
       },
     });
 
@@ -55,7 +53,7 @@ const ResetPassword = () => {
         duration: 1000,
         key,
       });
-      router.push(`${basePath}/login`);
+      router.push("/login");
     } else if (!data?.ok) {
       message.error({
         content:
@@ -68,8 +66,7 @@ const ResetPassword = () => {
   };
 
   const onFinish = (values: any) => {
-    setPassword(values.password);
-    resetPassword();
+    resetPassword(values.password);
   };
 
   return (
@@ -86,7 +83,7 @@ const ResetPassword = () => {
         <Row
           justify="center"
           align="middle"
-          style={{ paddingLeft: 10, height: "100%" }}
+          style={{ marginTop: 20, marginBottom: 20 }}
         >
           <Form
             name="basic"
@@ -95,8 +92,10 @@ const ResetPassword = () => {
             initialValues={{ remember: true }}
             autoComplete="off"
             onFinish={onFinish}
-            className="forgot-password-form"
+            className="reset-password-form"
           >
+            <h2>Reset Password</h2>
+            <Divider />
             <Form.Item
               label="Password"
               name="password"
@@ -113,12 +112,17 @@ const ResetPassword = () => {
               </Button>
             </Form.Item>
             <style jsx global>{`
-              .forgot-password-form {
-                width: 600px;
+              .reset-password-form {
+                width: 500px;
+                padding: 30px;
+                background: #fbfbfb;
+                border: 1px solid #d9d9d9;
+                border-radius: 2px;
               }
               @media (max-width: 800px) {
-                .forgot-password-form {
-                  width: initial;
+                .reset-password-form {
+                  width: 100%;
+                  margin: 20px;
                 }
               }
             `}</style>

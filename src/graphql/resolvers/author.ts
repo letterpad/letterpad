@@ -253,7 +253,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       const authorEmail = decodeToken(token);
 
       const author = await prisma.author.findFirst({
-        where: { email: authorEmail },
+        where: { email: authorEmail.email },
       });
 
       if (!author) {
