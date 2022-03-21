@@ -7,10 +7,12 @@ import {
   HttpLink,
 } from "@apollo/client";
 import { publish } from "@/shared/eventBus";
+import fetch from "cross-fetch";
 
 const httpLink = new HttpLink({
   uri: basePath + "/api/graphql",
   credentials: "same-origin",
+  fetch,
 });
 
 const saveMiddleware = new ApolloLink((operation, forward) => {
