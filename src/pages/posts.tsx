@@ -68,7 +68,6 @@ function Posts({ readOnly }: { readOnly: boolean }) {
             loading={loading}
             onRow={(row) => ({
               onClick: () => {
-                throw new Error("post click");
                 router.push("/post/" + row.id);
               },
             })}
