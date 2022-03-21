@@ -19,8 +19,6 @@ import { Prisma } from "@prisma/client";
 import { mapPostToGraphql } from "./mapper";
 import Cheerio from "cheerio";
 
-export const slugOfUntitledPost = "untitled";
-
 export const createPost = async (
   args: RequireFields<MutationCreatePostArgs, never>,
   { session, prisma }: ResolverContext,
@@ -44,10 +42,7 @@ export const createPost = async (
   }
 
   let slug = args.data.slug;
-  if (!slug) {
-    const titleWithoutSpaces = toSlug(args.data.title || slugOfUntitledPost);
-    slug = await slugify(prisma.post, titleWithoutSpaces);
-  }
+
   try {
     const newPost = await prisma.post.create({
       data: {
@@ -58,12 +53,20 @@ export const createPost = async (
         author: {
           connect: { id: author.id },
         },
-        slug,
         type: args.data.type || PostTypes.Post,
         status: args.data.status,
       },
     });
-
+    const newSlug = await getOrCreateSlug(
+      prisma.post,
+      newPost.id,
+      slug,
+      args.data.title,
+    );
+    await prisma.post.update({
+      data: { slug: newSlug },
+      where: { id: newPost.id },
+    });
     if (newPost) {
       return {
         ...mapPostToGraphql(newPost),
@@ -143,6 +146,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         };
       }
       const updatedPost = await prisma.post.update(newPostArgs);
+
       // update content
 
       if (updatedPost) {
@@ -253,21 +257,29 @@ async function getOrCreateSlug(
   title?: string,
 ) {
   const existingPost = await postModel.findFirst({ where: { id } });
-
+  // const titleWithoutSpaces = toSlug(args.data.title || slugOfUntitledPost);
+  if (!existingPost) return "";
+  // slug already exist for this post. Needs update with new slug.
   if (existingPost?.slug && slug) {
     slug = slug?.replace("/post/", "").replace("/page/", "");
-    slug = await slugify(postModel, slug);
+    slug = await slugify(postModel, toSlug(slug), existingPost.author_id);
     return slug;
   }
 
+  // slug does not exist for existing post and needs to be created from title
   if (title && !existingPost?.slug) {
     slug = title.replace(/ /g, "-");
-    slug = await slugify(postModel, slug);
+    slug = await slugify(postModel, toSlug(slug), existingPost.author_id);
+    return slug;
+  }
+
+  if (!title && !slug) {
+    slug = await slugify(postModel, "untitled", existingPost.author_id);
     return slug;
   }
 
   if (!slug) return existingPost?.slug;
-  return slug;
+  return toSlug(slug);
 }
 
 async function getCoverImageAttrs(cover_image) {

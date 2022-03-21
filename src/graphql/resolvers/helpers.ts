@@ -16,13 +16,17 @@ export function toSlug(str: string): string {
     .join("-");
 }
 
+const slugOfUntitledPost = "untitled";
+
 export async function slugify(
   PostModel: Prisma.PostDelegate<false>,
-  slug: string,
+  slug: string = slugOfUntitledPost,
+  author_id: number,
 ): Promise<string> {
   slug = toSlug(slug);
-  const result = await PostModel.findFirst({ where: { slug: slug } });
-
+  const result = await PostModel.findFirst({
+    where: { slug: slug, author: { id: author_id } },
+  });
   if (result === null) {
     return slug;
   }
@@ -30,7 +34,9 @@ export async function slugify(
   slug += "-";
 
   async function recursiveFindUniqueSlug() {
-    const result = await PostModel.findFirst({ where: { slug: slug + count } });
+    const result = await PostModel.findFirst({
+      where: { slug: slug + count, author: { id: author_id } },
+    });
 
     if (result === null) {
       return slug + count;
