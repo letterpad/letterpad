@@ -7,6 +7,7 @@ import withSessionProvider from "@/hoc/withSessionProvider";
 import { ApolloProvider } from "@apollo/client";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import Main from "@/components/main";
+
 type Props = AppProps & {
   Component: Page;
 };

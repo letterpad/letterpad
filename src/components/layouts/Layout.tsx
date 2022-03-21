@@ -45,6 +45,22 @@ const CustomLayout = ({ children, settings }: IProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (
+      user?.user?.email &&
+      user?.user?.name &&
+      typeof window.rg4js !== "undefined"
+    ) {
+      window.rg4js("setUser", {
+        //@ts-ignore
+        identifier: user?.user?.id,
+        isAnonymous: false,
+        email: user?.user?.email,
+        fullName: user?.user?.name,
+      });
+    }
+  }, [user]);
+
   const handleCollapse = () => {
     setCollapsed(window.innerWidth < 991);
     setMobileMenuVisible(false);

@@ -1,3 +1,4 @@
+import React from "react";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { PostTypes } from "@/__generated__/__types__";
 import { Layout, Table } from "antd";
@@ -66,7 +67,10 @@ function Posts({ readOnly }: { readOnly: boolean }) {
             dataSource={source.map((item) => ({ ...item, key: item.id }))}
             loading={loading}
             onRow={(row) => ({
-              onClick: () => router.push("/post/" + row.id),
+              onClick: () => {
+                throw new Error("post click");
+                router.push("/post/" + row.id);
+              },
             })}
             onChange={handleChange}
             pagination={{
