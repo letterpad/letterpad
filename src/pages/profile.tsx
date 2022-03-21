@@ -13,6 +13,7 @@ import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
 import Loading from "@/components/loading";
 import { Alert } from "antd";
+import { getSession } from "next-auth/react";
 
 const { Panel } = Collapse;
 
@@ -99,13 +100,13 @@ function Profile({ readOnly }: { readOnly: boolean }) {
         information for your blog posts.
       </PageHeader>
       <Content>
+        {readOnly && (
+          <Alert
+            message="This section is read only. You will be able to make changes, but they wont be saved."
+            type="warning"
+          />
+        )}
         <div className="site-layout-background" style={{ padding: 24 }}>
-          {readOnly && (
-            <Alert
-              message="This section is read only. You will be able to make changes, but they wont be saved."
-              type="warning"
-            />
-          )}
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
@@ -216,10 +217,14 @@ const ProfileWithAuth = withAuthCheck(Profile);
 ProfileWithAuth.layout = CustomLayout;
 export default ProfileWithAuth;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
   return {
     props: {
-      readOnly: process.env.READ_ONLY === "true",
+      readOnly:
+        process.env.READ_ONLY === "true" &&
+        session?.user?.email === "demo@demo.com",
     },
   };
 }

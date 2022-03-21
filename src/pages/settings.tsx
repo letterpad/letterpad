@@ -15,6 +15,7 @@ import Navigation from "@/components/settings/navigation";
 import Social from "@/components/settings/social";
 import Integrations from "@/components/settings/integrations";
 import { CopyToClipboard } from "@/components/clipboard";
+import { getSession } from "next-auth/react";
 
 const { Panel } = Collapse;
 
@@ -68,13 +69,13 @@ function Settings(props: {
         Here you can customize your blog's settings.
       </PageHeader>
       <Content>
+        {props.readOnly && (
+          <Alert
+            message="This section is read only. You will be able to make changes, but they wont be saved."
+            type="warning"
+          />
+        )}
         <div className="site-layout-background" style={{ padding: 24 }}>
-          {props.readOnly && (
-            <Alert
-              message="This section is read only. You will be able to make changes, but they wont be saved."
-              type="warning"
-            />
-          )}
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
@@ -127,7 +128,8 @@ const SettingsWithAuth = withAuthCheck(Settings);
 SettingsWithAuth.layout = CustomLayout;
 export default SettingsWithAuth;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
   return {
     props: {
       cloudinaryEnabledByAdmin: !!(
@@ -135,7 +137,9 @@ export async function getServerSideProps() {
         process.env.CLOUDINARY_NAME &&
         process.env.CLOUDINARY_SECRET
       ),
-      readOnly: process.env.READ_ONLY === "true",
+      readOnly:
+        process.env.READ_ONLY === "true" &&
+        session?.user?.email === "demo@demo.com",
     },
   };
 }

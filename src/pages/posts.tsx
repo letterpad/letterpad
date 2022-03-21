@@ -14,6 +14,7 @@ import { TagsProvider } from "@/components/tags/context";
 import { useContext } from "react";
 import { LetterpadContext } from "@/context/LetterpadProvider";
 import { Alert } from "antd";
+import { getSession } from "next-auth/react";
 
 const { Content } = Layout;
 
@@ -84,10 +85,14 @@ const PostsWithAuth = withAuthCheck(Posts);
 PostsWithAuth.layout = CustomLayout;
 export default PostsWithAuth;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
   return {
     props: {
-      readOnly: process.env.READ_ONLY === "true",
+      readOnly:
+        process.env.READ_ONLY === "true" &&
+        session?.user?.email === "demo@demo.com",
     },
   };
 }
