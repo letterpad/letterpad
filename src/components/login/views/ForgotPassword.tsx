@@ -1,7 +1,7 @@
-import { basePath } from "next.config";
 import { useRouter } from "next/router";
 import { forgotPasswordAction } from "../actions";
 import { Form, Input, Button, Row, Divider } from "antd";
+
 export const ForgotPassword = ({
   isVisible,
   hideSelf,
@@ -13,7 +13,7 @@ export const ForgotPassword = ({
   const forgotPassword = async (email) => {
     const result = await forgotPasswordAction(email);
     if (result) {
-      router.push(`${basePath}/login`);
+      router.push("/login");
     }
   };
 
@@ -22,6 +22,7 @@ export const ForgotPassword = ({
   };
 
   if (!isVisible) return null;
+
   return (
     <Row
       justify="center"
