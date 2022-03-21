@@ -5,6 +5,7 @@ import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.grap
 import { useEffect, useState } from "react";
 import { Setting, SettingInputType } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
+import { Alert } from "antd";
 
 import Head from "next/head";
 
@@ -23,12 +24,14 @@ const key = "setting";
 function Settings(props: {
   settings: Setting;
   cloudinaryEnabledByAdmin: boolean;
+  readOnly: boolean;
 }) {
   const [settings, setSettings] = useState(props.settings);
   const [draft, setDraft] = useState<SettingInputType>({});
   const [settingsMutation] = useUpdateOptionsMutation();
 
   const updateSettings = async () => {
+    if (props.readOnly) return;
     if (Object.keys(draft).length === 0) return;
     const result = await settingsMutation({ variables: { options: draft } });
     if (result.data?.updateOptions?.__typename === "SettingError") {
@@ -66,6 +69,12 @@ function Settings(props: {
       </PageHeader>
       <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
+          {props.readOnly && (
+            <Alert
+              message="This section is read only. You will be able to make changes, but they wont be saved."
+              type="warning"
+            />
+          )}
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
@@ -126,6 +135,7 @@ export async function getServerSideProps() {
         process.env.CLOUDINARY_NAME &&
         process.env.CLOUDINARY_SECRET
       ),
+      readOnly: process.env.READ_ONLY === "true",
     },
   };
 }

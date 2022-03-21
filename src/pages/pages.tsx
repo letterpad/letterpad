@@ -10,10 +10,11 @@ import Head from "next/head";
 import { postsStyles } from "@/components/posts.css";
 import { columns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
+import { Alert } from "antd";
 
 const { Content } = Layout;
 
-function Pages() {
+function Pages({ readOnly }: { readOnly: boolean }) {
   const { loading, data, error, refetch } = usePostsQuery({
     variables: { filters: { type: PostTypes.Page } },
   });
@@ -33,6 +34,12 @@ function Pages() {
       </Header>
       <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
+          {readOnly && (
+            <Alert
+              message="This section is read only. You will be able to make changes, but they wont be saved."
+              type="warning"
+            />
+          )}
           <Filters
             showTags={false}
             onChange={(filters) => {
@@ -57,3 +64,11 @@ function Pages() {
 const PagesWithAuth = withAuthCheck(Pages);
 PagesWithAuth.layout = CustomLayout;
 export default PagesWithAuth;
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      readOnly: process.env.READ_ONLY === "true",
+    },
+  };
+}

@@ -12,12 +12,13 @@ import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
 import Loading from "@/components/loading";
+import { Alert } from "antd";
 
 const { Panel } = Collapse;
 
 type ValueOf<T> = T[keyof T];
 
-function Profile() {
+function Profile({ readOnly }: { readOnly: boolean }) {
   const { data, loading, error } = useMeQuery({
     variables: {},
   });
@@ -36,6 +37,7 @@ function Profile() {
   }, [loading]);
 
   const updateAuthor = async () => {
+    if (readOnly) return;
     try {
       if (draft && Object.keys(draft).length > 1) {
         const result = await mutateAuthor({
@@ -98,6 +100,12 @@ function Profile() {
       </PageHeader>
       <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
+          {readOnly && (
+            <Alert
+              message="This section is read only. You will be able to make changes, but they wont be saved."
+              type="warning"
+            />
+          )}
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
@@ -207,3 +215,11 @@ function Profile() {
 const ProfileWithAuth = withAuthCheck(Profile);
 ProfileWithAuth.layout = CustomLayout;
 export default ProfileWithAuth;
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      readOnly: process.env.READ_ONLY === "true",
+    },
+  };
+}

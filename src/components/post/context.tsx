@@ -11,14 +11,17 @@ import { Editor } from "@tinymce/tinymce-react";
 
 export const PostContext = createContext<Partial<PostContextType>>({});
 
-export const PostProvider: React.FC = ({ children }) => {
+export const PostProvider: React.FC<{ readOnly: boolean }> = ({
+  children,
+  readOnly,
+}) => {
   const [updating, setUpdating] = useState(false);
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const { loading, post, error, setPost } = usePost();
   const [helpers, setHelpers] = useState<Editor["editor"]>();
 
   const setPostAttribute = async (attrs: Omit<InputUpdatePost, "id">) => {
-    if (post) {
+    if (post && !readOnly) {
       const newAttrs = updatePostDraftAttributes(attrs, post);
       setPost({ ...newAttrs });
       setUpdating(true);
