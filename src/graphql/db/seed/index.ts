@@ -16,16 +16,11 @@ const execShellCommand = (command) => {
 };
 
 let schema = "schema.prisma";
-if (
-  process.env.DATABASE_URL.startsWith("mysql") &&
-  process.env.NODE_ENV !== "test"
-) {
+if (process.env.DATABASE_URL.startsWith("mysql")) {
   schema = "schema_mysql.prisma";
 }
 
 function init() {
-  console.log("============== schema", schema);
-  console.log("============== env", process.env.NODE_ENV);
   execShellCommand(
     `DATABASE_URL='${process.env.DATABASE_URL}' npx prisma db push --force-reset --schema prisma/${schema}`,
   ).then(() => {
