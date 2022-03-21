@@ -24,12 +24,12 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: `${basePath}/posts`,
+        destination: `/posts`,
         permanent: true,
       },
       {
         source: "/admin",
-        destination: `${basePath}/posts`,
+        destination: `/posts`,
         permanent: true,
       },
     ];
