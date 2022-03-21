@@ -122,7 +122,7 @@ export async function startImport(
           social: authorsData.social,
           role: {
             connect: {
-              id: parseInt(passwords[authorsData.email].role_id ?? role?.id),
+              id: parseInt(passwords[authorsData.email]?.role_id ?? role?.id),
             },
           },
           subscribers: {

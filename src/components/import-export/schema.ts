@@ -107,7 +107,7 @@ export const schema: JSONSchemaType<IImportExportData> = {
                     type: "string",
                   },
                   html_draft: {
-                    type: "string",
+                    type: ["string", "null"],
                   },
                   excerpt: {
                     type: "string",
