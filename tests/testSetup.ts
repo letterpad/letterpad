@@ -2,6 +2,7 @@ const env = require("node-env-file");
 env(__dirname + "/../.env.development.local");
 process.env.DATABASE_URL = "file:../data/test.sqlite";
 import { ApolloServer } from "apollo-server";
+const { exec } = require("child_process");
 import { schema } from "../src/graphql/schema";
 import { seed } from "../src/graphql/db/seed/seed";
 import { getResolverContext } from "@/graphql/context";
@@ -37,6 +38,16 @@ export const createApolloTestServer = async () => {
 let server;
 
 beforeAll(async () => {
+  jest.setTimeout(10000);
+  try {
+    global.console = require("console");
+    await execShellCommand(
+      "DATABASE_URL='file:../data/test.sqlite' npx prisma db push --force-reset",
+    );
+  } catch (err) {
+    console.log(err);
+    process.exit();
+  }
   await seed();
   server = await createApolloTestServer();
   const { url } = await server.listen({ port: 3000 });
@@ -46,3 +57,17 @@ beforeAll(async () => {
 afterAll(async () => {
   server?.stop();
 });
+
+const execShellCommand = (command) => {
+  return new Promise((resolve, reject) => {
+    exec(command, (err, stdout, stderr) => {
+      if (err) {
+        console.log(err);
+        reject(err);
+      } else {
+        console.log(stdout || stderr);
+        resolve(null);
+      }
+    });
+  });
+};
