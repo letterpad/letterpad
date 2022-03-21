@@ -46,6 +46,7 @@ beforeAll(async () => {
     console.log(err);
     process.exit();
   }
+  env(__dirname + "/../.env.development.local");
   await seed();
   server = await createApolloTestServer();
   const { url } = await server.listen({ port: 3000 });
