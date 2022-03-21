@@ -24,6 +24,8 @@ if (
 }
 
 function init() {
+  console.log("============== schema", schema);
+  console.log("============== env", process.env.NODE_ENV);
   execShellCommand(
     `DATABASE_URL='${process.env.DATABASE_URL}' npx prisma db push --force-reset --schema prisma/${schema}`,
   ).then(() => {
