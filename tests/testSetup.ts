@@ -50,6 +50,7 @@ beforeAll(async () => {
   }
   console.log("test setup env", process.env.NODE_ENV);
   console.log("test setup db url", process.env.DATABASE_URL);
+  console.log("dirname", __dirname);
   await seed();
   server = await createApolloTestServer();
   const { url } = await server.listen({ port: 3000 });
