@@ -43,7 +43,7 @@ function Settings(props: {
 
   useEffect(() => {
     if (Object.keys(draft).length === 0) return;
-    if (draft.site_logo || draft.banner || draft.site_favicon) {
+    if (draft.site_logo || draft.banner || draft.site_favicon || draft.menu) {
       updateSettings();
     }
   }, [Object.keys(draft)]);
