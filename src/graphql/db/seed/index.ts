@@ -16,7 +16,10 @@ const execShellCommand = (command) => {
 };
 
 let schema = "schema.prisma";
-if (process.env.DATABASE_URL.startsWith("mysql")) {
+if (
+  process.env.DATABASE_URL.startsWith("mysql") &&
+  process.env.NODE_ENV !== "test"
+) {
   schema = "schema_mysql.prisma";
 }
 
