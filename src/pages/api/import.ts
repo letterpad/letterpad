@@ -29,6 +29,12 @@ interface MulterRequest extends NextApiRequest {
 
 const Import = async (req: MulterRequest, res: NextApiResponse) => {
   try {
+    if (process.env.READ_ONLY) {
+      res.status(200).send({
+        success: false,
+        message: "This is read only",
+      });
+    }
     await multerAny(req, res);
     const _session = await getSession({ req });
     const session = _session as unknown as { user: SessionData };

@@ -13,10 +13,11 @@ import { Header } from "@/components/posts/header";
 import { TagsProvider } from "@/components/tags/context";
 import { useContext } from "react";
 import { LetterpadContext } from "@/context/LetterpadProvider";
+import { Alert } from "antd";
 
 const { Content } = Layout;
 
-function Posts() {
+function Posts({ readOnly }: { readOnly: boolean }) {
   const router = useRouter();
   const { loading, data, error, refetch } = usePostsQuery();
   const setting = useContext(LetterpadContext);
@@ -49,6 +50,12 @@ function Posts() {
         Here you will find the list of posts for your blog.
       </Header>
       <Content>
+        {readOnly && (
+          <Alert
+            message="This section is read only. You will be able to make changes, but they wont be saved."
+            type="warning"
+          />
+        )}
         <div className="site-layout-background" style={{ padding: 16 }}>
           <TagsProvider>
             <Filters onChange={(filters) => refetch({ filters })} />
@@ -76,3 +83,11 @@ function Posts() {
 const PostsWithAuth = withAuthCheck(Posts);
 PostsWithAuth.layout = CustomLayout;
 export default PostsWithAuth;
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      readOnly: process.env.READ_ONLY === "true",
+    },
+  };
+}

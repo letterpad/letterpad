@@ -28,7 +28,10 @@ const Info = () => {
     </ol>
   );
 };
-const Migrate = ({ session }: IAuthComponentProps) => {
+const Migrate = ({
+  session,
+  readOnly,
+}: IAuthComponentProps & { readOnly: boolean }) => {
   return (
     <>
       <Head>
@@ -40,6 +43,9 @@ const Migrate = ({ session }: IAuthComponentProps) => {
       </PageHeader>
       <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
+          {readOnly && (
+            <Alert message="This section is read only." type="warning" />
+          )}
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 8 }}
@@ -86,7 +92,7 @@ const Migrate = ({ session }: IAuthComponentProps) => {
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
             </Form.Item>
-            <Form.Item label="Import Ghost Data">
+            {/* <Form.Item label="Import Ghost Data">
               <Upload
                 type="drag"
                 name="ghost"
@@ -95,7 +101,7 @@ const Migrate = ({ session }: IAuthComponentProps) => {
               >
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
-            </Form.Item>
+            </Form.Item> */}
           </Form>
           {session.role === Role.Admin && (
             <Alert
@@ -135,3 +141,11 @@ const openNotificationWithIcon = (type, description) => {
     description,
   });
 };
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      readOnly: process.env.READ_ONLY === "true",
+    },
+  };
+}
