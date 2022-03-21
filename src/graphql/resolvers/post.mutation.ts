@@ -46,6 +46,7 @@ export const createPost = async (
   try {
     const newPost = await prisma.post.create({
       data: {
+        title: args.data.title,
         cover_image: args.data.cover_image?.src,
         cover_image_width: args.data.cover_image?.width,
         cover_image_height: args.data.cover_image?.height,
@@ -67,6 +68,7 @@ export const createPost = async (
       data: { slug: newSlug },
       where: { id: newPost.id },
     });
+    newPost.slug = newSlug;
     if (newPost) {
       return {
         ...mapPostToGraphql(newPost),
@@ -257,7 +259,7 @@ async function getOrCreateSlug(
   title?: string,
 ) {
   const existingPost = await postModel.findFirst({ where: { id } });
-  // const titleWithoutSpaces = toSlug(args.data.title || slugOfUntitledPost);
+
   if (!existingPost) return "";
   // slug already exist for this post. Needs update with new slug.
   if (existingPost?.slug && slug) {
