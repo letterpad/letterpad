@@ -158,6 +158,13 @@ const CustomLayout = ({ children, settings }: IProps) => {
           </div>
           {SavingIndicator}
           <Row>
+            <Button
+              type="link"
+              href="https://docs.letterpad.app/"
+              target="_blank"
+            >
+              Help
+            </Button>
             <FeedbackForm />
             <ThemeSwitcher />
           </Row>
