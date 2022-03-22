@@ -2330,11 +2330,6 @@
   dependencies:
     next-auth "*"
 
-"@types/node-mailjet@^3.3.7":
-  version "3.3.8"
-  resolved "https://registry.yarnpkg.com/@types/node-mailjet/-/node-mailjet-3.3.8.tgz#641e32634ce02d62051d476aad0aeda20a227e78"
-  integrity sha512-bjrj7FOG5bVGpV1RovUF1JydGngW/TIrbGDTiId41v9ak3rwzGm4OVmPzjjKbqjECCD8toRXOdyTz28rkH5OlA==
-
 "@types/node@*":
   version "17.0.21"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.21.tgz#864b987c0c68d07b4345845c3e63b75edd143644"
