@@ -151,7 +151,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
     if (previewHash) {
       const postId = Number(decrypt(previewHash));
-      const post = await prisma.post.findFirst({
+      const post = await prisma.post.findUnique({
         where: {
           id: postId,
         },

@@ -53,10 +53,10 @@ async function getAuthorFromSubdomain(context) {
     const { identifier } = context.req.headers;
     logger.debug("Host for checking subdomain - ", identifier);
     const username = identifier.split(".")[0];
-    const author = await prisma.author.findFirst({
+    const author = await prisma.author.findUnique({
       where: { username },
-      distinct: ["id"],
     });
+    console.log("Author -> Username", author, username);
     return author ? author.id : null;
   }
   return null;
