@@ -53,7 +53,7 @@ Password - demo
 
 ## Enabling Emails
 
-Letterpad integrates with [MailChimp](https://mailchimp.com/). You should set `MJ_APIKEY_PUBLIC` and `MJ_APIKEY_PRIVATE` in `.env.production.local` file to activate emails.
+Letterpad integrates with [Gmail](https://gmail.com/). You should set `GMAIL_USER` and `GMAIL_PASSWORD` in `.env.production.local` file to activate emails.
 
 ---
 

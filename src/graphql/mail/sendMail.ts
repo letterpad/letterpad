@@ -1,47 +1,30 @@
 import { EmailTemplateMeta, Mail } from "@/graphql/types";
+import { hasCredentials, mail } from "@/lib/mail";
 import logger from "@/shared/logger";
-import { getMailClient } from "./client";
-
-const mailClient = getMailClient();
 
 export function sendMail(
   data: Mail,
   meta: EmailTemplateMeta,
   addUnsubscribe: boolean = false,
 ): any {
-  if (!mailClient) {
+  if (!hasCredentials()) {
     return logger.debug("No client found to send emails");
   }
   const { bodyDecorator } = require("./decorator");
   const recipients = typeof data.to === "string" ? [data.to] : data.to;
-  const mails = recipients.map((to) => {
+  const mails = recipients.map(async (to) => {
     const body = bodyDecorator(data.html, to, addUnsubscribe);
     // send mail
-    return mailClient
-      .post("send", { version: "v3.1" })
-      .request({
-        Messages: [
-          {
-            From: {
-              // the or clause is to overwrite this setting for demo purpose
-              Email:
-                process.env.SENDER_EMAIL || meta.author.setting?.site_email,
-              Name: meta.author.setting?.site_title || "Letterpad",
-            },
-            To: [
-              {
-                Email: to,
-                Name: to,
-              },
-            ],
-            Subject: data.subject,
-            HTMLPart: body,
-          },
-        ],
-      })
-      .catch((e) => {
-        throw new Error(e);
-      });
+    const fromEmail = process.env.SENDER_EMAIL;
+
+    const response = await mail({
+      from: `"Letterpad" <${fromEmail}>`,
+      replyTo: `"${meta.author.name}" <${to}>`,
+      to: `"${meta.author.name}" <${to}>`,
+      subject: data.subject,
+      html: body,
+    });
+    return response;
   });
   return Promise.all(mails);
 }
