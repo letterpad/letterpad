@@ -16,6 +16,7 @@ import { useSession } from "next-auth/react";
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import ProfileInfo from "./ProfileInfo";
+import FeedbackForm from "./FeedbackForm";
 
 interface IProps {
   settings: Setting;
@@ -156,7 +157,10 @@ const CustomLayout = ({ children, settings }: IProps) => {
             )}
           </div>
           {SavingIndicator}
-          <ThemeSwitcher />
+          <Row>
+            <FeedbackForm />
+            <ThemeSwitcher />
+          </Row>
         </div>
         <div>{children}</div>
         <Footer className="site-footer">

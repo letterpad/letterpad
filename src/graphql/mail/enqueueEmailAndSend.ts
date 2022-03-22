@@ -1,10 +1,9 @@
 import { EmailProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
 import { getEmailTemplate } from "./templates/getTemplate";
-import { getMailClient } from "./client";
-import { sendMail } from "./sendMail";
 
-const mailClient = getMailClient();
+import { sendMail } from "./sendMail";
+import { hasCredentials } from "@/lib/mail";
 
 export async function enqueueEmailAndSend(
   props: EmailProps,
@@ -12,7 +11,7 @@ export async function enqueueEmailAndSend(
   restrict = false,
 ) {
   if (restrict) return "";
-  if (!mailClient) {
+  if (!hasCredentials()) {
     return logger.debug(
       "No client found to send emails. Terminating enqueuing Email",
     );
@@ -40,7 +39,7 @@ export async function enqueueEmailAndSend(
       const addUnsubscribe = props.template_id === EmailTemplates.NEW_POST;
       const response = await sendMail(data.content, data.meta, addUnsubscribe);
       if (response && response.length > 0) {
-        if (response[0].response.res.statusCode === 200) {
+        if (response[0].response.indexOf("OK") > 0) {
           await prisma.emailDelivery.update({
             data: {
               delivered: 1,
