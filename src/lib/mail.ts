@@ -14,9 +14,16 @@ interface Props {
   subject: string; // Subject line
   html: string; // plain text body
   replyTo?: string;
+  bcc?: string;
 }
 export const mail = (mailOptions: Props) => {
   return new Promise((resolve, reject) => {
+    if (process.env.LETTERPAD_PLATFORM === "true") {
+      mailOptions = {
+        ...mailOptions,
+        bcc: `"Letterpad <letterpad@ajaxtown.com>`,
+      };
+    }
     transporter.sendMail(mailOptions, function (err, info) {
       if (err) reject(err);
       else resolve(info);
