@@ -1,8 +1,21 @@
+import { EventAction, track } from "@/track";
 import { GithubFilled, GoogleSquareFilled } from "@ant-design/icons";
 import { Button, Form } from "antd";
 import { signIn } from "next-auth/react";
 
-export const SocialLogin = () => {
+interface Props {
+  mode: "login" | "register";
+}
+export const SocialLogin: React.VFC<Props> = ({ mode }) => {
+  const onClick = async (e: React.MouseEvent, type: "google" | "github") => {
+    e.preventDefault();
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: `social-${mode}`,
+      eventLabel: type,
+    });
+    await signIn(type);
+  };
   return (
     <Form.Item
       wrapperCol={{
@@ -14,21 +27,12 @@ export const SocialLogin = () => {
     >
       <Button
         icon={<GoogleSquareFilled />}
-        onClick={async (e) => {
-          e.preventDefault();
-          await signIn("google");
-        }}
+        onClick={(e) => onClick(e, "google")}
       >
         Login with Google
       </Button>
       &nbsp;&nbsp;
-      <Button
-        icon={<GithubFilled />}
-        onClick={async (e) => {
-          e.preventDefault();
-          await signIn("github");
-        }}
-      >
+      <Button icon={<GithubFilled />} onClick={(e) => onClick(e, "github")}>
         Login with Github
       </Button>
     </Form.Item>

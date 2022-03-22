@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { forgotPasswordAction } from "../actions";
 import { Form, Input, Button, Row, Divider } from "antd";
-
+import { EventAction, track } from "@/track";
 export const ForgotPassword = ({
   isVisible,
   hideSelf,
@@ -11,6 +11,11 @@ export const ForgotPassword = ({
 }) => {
   const router = useRouter();
   const forgotPassword = async (email) => {
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: "forgot-password",
+      eventLabel: `before-request`,
+    });
     const result = await forgotPasswordAction(email);
     if (result) {
       router.push("/login");

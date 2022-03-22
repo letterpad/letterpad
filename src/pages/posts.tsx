@@ -16,6 +16,7 @@ import { useContext } from "react";
 import { LetterpadContext } from "@/context/LetterpadProvider";
 import { Alert } from "antd";
 import { getSession } from "next-auth/react";
+import { EventAction, track } from "@/track";
 
 const { Content } = Layout;
 
@@ -37,6 +38,11 @@ function Posts({ readOnly }: { readOnly: boolean }) {
   }
 
   const handleChange = (p) => {
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: "posts",
+      eventLabel: "pagination",
+    });
     refetch({
       filters: {
         page: p.current,

@@ -14,6 +14,7 @@ import Head from "next/head";
 import Loading from "@/components/loading";
 import { Alert } from "antd";
 import { getSession } from "next-auth/react";
+import { EventAction, track } from "@/track";
 
 const { Panel } = Collapse;
 
@@ -44,11 +45,16 @@ function Profile({ readOnly }: { readOnly: boolean }) {
     }
     if (!me?.id || !username) return;
     setSaving(true);
+    track({
+      eventAction: EventAction.Change,
+      eventCategory: "profile",
+      eventLabel: "id-username",
+    });
     const result = await mutateAuthor({
       variables: {
         author: {
           username,
-          id: me?.id,
+          id: me.id,
         },
       },
     });
@@ -71,6 +77,11 @@ function Profile({ readOnly }: { readOnly: boolean }) {
     try {
       message.destroy("author");
       if (draft && Object.keys(draft).length > 1) {
+        track({
+          eventAction: EventAction.Change,
+          eventCategory: "profile",
+          eventLabel: Object.keys(draft).join("-"),
+        });
         const result = await mutateAuthor({
           variables: {
             author: draft,

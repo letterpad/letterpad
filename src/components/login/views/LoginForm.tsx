@@ -109,7 +109,7 @@ export const LoginForm = ({
             </Link>
           </Form.Item>
           <Divider />
-          <SocialLogin />
+          <SocialLogin mode="login" />
         </Form>
         <style jsx global>{`
           .login-form {

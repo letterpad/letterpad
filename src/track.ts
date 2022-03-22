@@ -2,6 +2,7 @@ export enum EventAction {
   Load = "load",
   View = "view",
   Click = "click",
+  Change = "change",
 }
 
 export interface EventInfo {
