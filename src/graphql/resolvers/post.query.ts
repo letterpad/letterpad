@@ -148,10 +148,21 @@ const Query: QueryResolvers<ResolverContext> = {
     const { previewHash, id, slug } = args.filters;
 
     let postId = previewHash ? Number(decrypt(previewHash)) : id;
+
     if (previewHash) {
-      console.log("Preview Hash ", previewHash);
-      console.log("Preview Hash decrypt", Number(decrypt(previewHash)));
+      const postId = Number(decrypt(previewHash));
+      const post = await prisma.post.findFirst({
+        where: {
+          id: postId,
+        },
+      });
+      if (post) {
+        const html = post.html_draft || post.html || "";
+        return { ...mapPostToGraphql(post), html, __typename: "Post" };
+      }
+      return { __typename: "PostError", message: "Post not found" };
     }
+
     try {
       const manageOwnPost = session?.user.permissions?.includes(
         Permissions.ManageOwnPosts,
@@ -170,11 +181,7 @@ const Query: QueryResolvers<ResolverContext> = {
       });
 
       if (post) {
-        const html = previewHash
-          ? post.html_draft || post.html || ""
-          : post.html;
-
-        return { ...mapPostToGraphql(post), html, __typename: "Post" };
+        return { ...mapPostToGraphql(post), __typename: "Post" };
       }
     } catch (e) {
       console.log(e);
