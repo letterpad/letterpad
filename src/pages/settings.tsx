@@ -3,7 +3,7 @@ import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
-import { Setting, SettingInputType } from "@/__generated__/__types__";
+import { Role, Setting, SettingInputType } from "@/__generated__/__types__";
 import withAuthCheck from "../hoc/withAuth";
 import { Alert } from "antd";
 
@@ -26,6 +26,7 @@ function Settings(props: {
   settings: Setting;
   cloudinaryEnabledByAdmin: boolean;
   readOnly: boolean;
+  showSocial: boolean;
 }) {
   const [settings, setSettings] = useState(props.settings);
   const [draft, setDraft] = useState<SettingInputType>({});
@@ -89,11 +90,13 @@ function Settings(props: {
             />
             <Appearance settings={settings} onChange={onChange} />
             <Navigation settings={settings} onChange={onChange} />
-            <Social
-              settings={settings}
-              onChange={onChange}
-              updateSettings={updateSettings}
-            />
+            {props.showSocial && (
+              <Social
+                settings={settings}
+                onChange={onChange}
+                updateSettings={updateSettings}
+              />
+            )}
             <Integrations
               settings={settings}
               onChange={onChange}
@@ -137,6 +140,8 @@ export async function getServerSideProps(context) {
         process.env.CLOUDINARY_NAME &&
         process.env.CLOUDINARY_SECRET
       ),
+      //@ts-ignore
+      showSocial: session?.user.role === Role.Admin,
       readOnly:
         process.env.READ_ONLY === "true" &&
         session?.user?.email === "demo@demo.com",

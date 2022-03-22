@@ -148,7 +148,10 @@ const Query: QueryResolvers<ResolverContext> = {
     const { previewHash, id, slug } = args.filters;
 
     let postId = previewHash ? Number(decrypt(previewHash)) : id;
-
+    if (previewHash) {
+      console.log("Preview Hash ", previewHash);
+      console.log("Preview Hash decrypt", Number(decrypt(previewHash)));
+    }
     try {
       const manageOwnPost = session?.user.permissions?.includes(
         Permissions.ManageOwnPosts,
