@@ -37,11 +37,39 @@ function Profile({ readOnly }: { readOnly: boolean }) {
     }
   }, [loading]);
 
-  const updateAuthor = async () => {
+  const saveUserName = async () => {
+    message.destroy("author");
     if (readOnly) {
       return setSaving(false);
     }
+    if (!me?.id || !username) return;
+    setSaving(true);
+    const result = await mutateAuthor({
+      variables: {
+        author: {
+          username,
+          id: me?.id,
+        },
+      },
+    });
+    if (!result.data?.updateAuthor?.ok) {
+      const error = result.data?.updateAuthor?.errors?.pop()?.message;
+      if (error) {
+        message.error({ key: "author", content: error, duration: 10 });
+      }
+    } else {
+      message.success({
+        key: "author",
+        content: "Username saved",
+        duration: 10,
+      });
+    }
+    setSaving(false);
+  };
+
+  const updateAuthor = async () => {
     try {
+      message.destroy("author");
       if (draft && Object.keys(draft).length > 1) {
         const result = await mutateAuthor({
           variables: {
@@ -56,11 +84,9 @@ function Profile({ readOnly }: { readOnly: boolean }) {
         }
       }
     } catch (e) {}
-    setSaving(false);
   };
 
   useEffect(() => {
-    setSaving(true);
     debounceUpdateAuthor();
   }, [draft]);
 
@@ -148,9 +174,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                     <Button
                       type="primary"
                       size="middle"
-                      onClick={() => {
-                        onChange("username", username);
-                      }}
+                      onClick={saveUserName}
                       loading={saving}
                     >
                       Validate
