@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { useTagsContext } from "../tags/context";
 import Loading from "../loading";
+import { EventAction, track } from "@/track";
 
 interface IProps {
   showTags?: boolean;
@@ -45,6 +46,11 @@ const Filters = ({ showTags = true, onChange }: IProps) => {
       <Select
         style={{ width: 105 }}
         onChange={(status: PostStatusOptions) => {
+          track({
+            eventAction: EventAction.Click,
+            eventCategory: "filters",
+            eventLabel: "status",
+          });
           setFilters({ ...filters, status });
         }}
         placeholder="Status"
@@ -62,7 +68,14 @@ const Filters = ({ showTags = true, onChange }: IProps) => {
       &nbsp;
       <Select
         style={{ width: 100 }}
-        onChange={(sortBy: SortBy) => setFilters({ ...filters, sortBy })}
+        onChange={(sortBy: SortBy) => {
+          track({
+            eventAction: EventAction.Click,
+            eventCategory: "filters",
+            eventLabel: "sortBy",
+          });
+          setFilters({ ...filters, sortBy });
+        }}
         placeholder="Order by"
         allowClear
         size="middle"
@@ -80,7 +93,14 @@ const Filters = ({ showTags = true, onChange }: IProps) => {
       {allTags && showTags && (
         <Select
           style={{ width: 118 }}
-          onChange={(tagSlug: string) => setFilters({ ...filters, tagSlug })}
+          onChange={(tagSlug: string) => {
+            track({
+              eventAction: EventAction.Click,
+              eventCategory: "filters",
+              eventLabel: "tagSlug",
+            });
+            setFilters({ ...filters, tagSlug });
+          }}
           placeholder="By Tag"
           allowClear
           size="middle"

@@ -11,6 +11,7 @@ import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.g
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 import { socket } from "../post/components/tinymce/socket";
 import { Menu, Dropdown } from "antd";
+import { EventAction, track } from "@/track";
 
 const { TextArea } = Input;
 
@@ -74,6 +75,11 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
           key="2"
           onClick={() => {
             if (settings.data?.settings.__typename === "Setting") {
+              track({
+                eventAction: EventAction.Change,
+                eventCategory: "setting",
+                eventLabel: "preview",
+              });
               window.open(
                 settings.data.settings.site_url + "/preview/" + postHash,
               );
@@ -87,6 +93,11 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
       <Menu.Item
         key="3"
         onClick={() => {
+          track({
+            eventAction: EventAction.Click,
+            eventCategory: "post",
+            eventLabel: "grammar",
+          });
           socket.checkGrammar();
         }}
       >

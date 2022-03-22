@@ -176,7 +176,7 @@ const RegisterForm = () => {
               </Link>
             </Form.Item>
             <Divider />
-            <SocialLogin />
+            <SocialLogin mode="register" />
           </Form>
         </Row>
         <style jsx global>{`

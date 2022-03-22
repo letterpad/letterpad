@@ -16,6 +16,7 @@ import Social from "@/components/settings/social";
 import Integrations from "@/components/settings/integrations";
 import { CopyToClipboard } from "@/components/clipboard";
 import { getSession } from "next-auth/react";
+import { EventAction, track } from "@/track";
 
 const { Panel } = Collapse;
 
@@ -35,6 +36,12 @@ function Settings(props: {
   const updateSettings = async () => {
     if (props.readOnly) return;
     if (Object.keys(draft).length === 0) return;
+    track({
+      eventAction: EventAction.Change,
+      eventCategory: "setting",
+      eventLabel: Object.keys(draft).join("-"),
+    });
+
     const result = await settingsMutation({ variables: { options: draft } });
     if (result.data?.updateOptions?.__typename === "SettingError") {
       message.error({

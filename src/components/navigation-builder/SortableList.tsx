@@ -1,3 +1,4 @@
+import { EventAction, track } from "@/track";
 import { SortableContainer } from "react-sortable-hoc";
 import SortableItem from "./SortableItem";
 
@@ -11,8 +12,20 @@ const SortableList = ({ items, source, onChange, onRemove }) => {
             index={index}
             value={value}
             source={source}
-            onChange={change => onChange(index, change)}
-            onRemove={_e => {
+            onChange={(change) => {
+              track({
+                eventAction: EventAction.Change,
+                eventCategory: "navigation",
+                eventLabel: "sort",
+              });
+              onChange(index, change);
+            }}
+            onRemove={(_e) => {
+              track({
+                eventAction: EventAction.Click,
+                eventCategory: "navigation",
+                eventLabel: "remove-item",
+              });
               onRemove(index);
             }}
           />

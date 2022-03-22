@@ -10,6 +10,7 @@ import {
 import Head from "next/head";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { Header } from "antd/lib/layout/layout";
+import { EventAction, track } from "@/track";
 
 const key = "change-password";
 
@@ -34,6 +35,12 @@ const ResetPassword = () => {
       });
       return;
     }
+
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: "reset-password",
+      eventLabel: "with-token",
+    });
 
     const result = await apolloBrowserClient.mutate<
       ResetPasswordMutation,

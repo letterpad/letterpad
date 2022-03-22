@@ -1,4 +1,5 @@
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
+import { EventAction, track } from "@/track";
 import {
   UpdatePostDocument,
   UpdatePostMutation,
@@ -21,6 +22,11 @@ const updatePostRequest = async (
   attrs: Omit<InputUpdatePost, "id">,
   postId: number,
 ) => {
+  track({
+    eventAction: EventAction.Change,
+    eventCategory: "post",
+    eventLabel: Object.keys(attrs).join("-"),
+  });
   return apolloBrowserClient.mutate<
     UpdatePostMutation,
     UpdatePostMutationVariables
