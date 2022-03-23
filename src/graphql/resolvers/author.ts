@@ -216,6 +216,17 @@ const Mutation: MutationResolvers<ResolverContext> = {
         data: dataToUpdate,
         where: { id: args.author.id },
       });
+
+      if (args.author.username) {
+        await prisma.setting.update({
+          data: {
+            site_url: `https://${args.author.username}.letterpad.app`,
+          },
+          where: {
+            author_id: author.id,
+          },
+        });
+      }
       return {
         ok: true,
         data: mapAuthorToGraphql(author),
@@ -286,6 +297,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         data: {
           password: newPassword,
           verify_attempt_left: 3,
+          verified: true,
         },
         where: { id: author.id },
       });

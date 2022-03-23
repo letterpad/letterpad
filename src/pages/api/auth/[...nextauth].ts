@@ -41,6 +41,7 @@ const providers = (_req: NextApiRequest) => [
             permission: true,
           },
         });
+
         if (author) {
           if (!author.verified) {
             throw new Error("Your email id is not verified yet.");

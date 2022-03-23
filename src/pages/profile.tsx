@@ -3,7 +3,10 @@ import { Button, Collapse, Form, Input, message, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
 import ImageUpload from "@/components/ImageUpload";
-import { useMeQuery } from "@/__generated__/queries/queries.graphql";
+import {
+  useMeQuery,
+  useSettingsQuery,
+} from "@/__generated__/queries/queries.graphql";
 import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
 import { InputAuthor, Social } from "@/__generated__/__types__";
@@ -30,6 +33,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
   const [draft, setDraft] = useState<InputAuthor>();
   const [username, setUsername] = useState("");
   const [saving, setSaving] = useState(false);
+  const { refetch } = useSettingsQuery();
 
   useEffect(() => {
     if (data?.me?.__typename === "Author") {
@@ -58,6 +62,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
         },
       },
     });
+    refetch();
     if (!result.data?.updateAuthor?.ok) {
       const error = result.data?.updateAuthor?.errors?.pop()?.message;
       if (error) {
