@@ -46,7 +46,7 @@ export async function getVerifyUserEmailContent(
   });
 
   const subject = subjectTemplate.render({
-    blog_name: author.setting.site_title,
+    company_name: `Letterpad`,
   });
   const bodyTemplate = Twig.twig({
     data: template.body.toString(),
@@ -59,7 +59,7 @@ export async function getVerifyUserEmailContent(
   const href = `${process.env.ROOT_URL}/api/verify?token=${token}`;
 
   const body = bodyTemplate.render({
-    blog_name: author.setting.site_title,
+    company_name: `<a href="https://letterpad.app">Letterpad</a>`,
     full_name: "there",
     verify_link: `<a target="_blank" href="${href}">
         Verify Email

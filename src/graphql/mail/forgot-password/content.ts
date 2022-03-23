@@ -39,7 +39,7 @@ export async function getForgotPasswordContent(
   });
 
   const subject = subjectTemplate.render({
-    blog_name: author.setting?.site_title,
+    company_name: "Letterpad",
   });
 
   const bodyTemplate = Twig.twig({
@@ -53,6 +53,7 @@ export async function getForgotPasswordContent(
 
   const body = bodyTemplate.render({
     blog_name: author.setting?.site_title,
+    company_name: `<a href="https://letterpad.app">Letterpad</a>`,
     full_name: author?.name,
     change_password_link: `<a target="_blank"  href="${href}">Change Password</a>`,
   });
