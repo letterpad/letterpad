@@ -48,7 +48,7 @@ const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {
             onChange={(e) => onChange("site_description", e.target.value)}
           />
         </Form.Item>
-        <Form.Item label="Site Url">
+        <Form.Item label="Site Url" hidden={true}>
           <Input
             size="middle"
             value={settings.site_url}
