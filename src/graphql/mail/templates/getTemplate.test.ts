@@ -117,8 +117,8 @@ Object {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
 Object {
-  "html": "Hello there, <br><br>You have used this email address while registering in <strong>Test site title</strong>. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=",
-  "subject": "Test site title - Verify Email",
+  "html": "Hello there, <br><br>You have used this email address while registering in <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong>. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=",
+  "subject": "Letterpad - Verify Email",
   "to": "newuser@test.com",
 }
 `);
@@ -144,8 +144,8 @@ Object {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
 Object {
-  "html": "Hello Demo Author,<br><br>We have received a request to change the password for your <strong>Demo Account</strong> account. Please click the below button to change your password.<br><br><a target=\\"_blank\\"  href=\\"http://localhost:3000/admin/resetPassword?token=",
-  "subject": "Demo Account - Reset your password",
+  "html": "Hello Demo Author,<br><br>We have received a request to change the password for your <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong> account. Please click the below button to change your password.<br><br><a target=\\"_blank\\"  href=\\"http://localhost:3000/admin/resetPassword?token=",
+  "subject": "Letterpad - Reset your password",
   "to": "demo@demo.com",
 }
 `);
