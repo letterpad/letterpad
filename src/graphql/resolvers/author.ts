@@ -297,6 +297,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         data: {
           password: newPassword,
           verify_attempt_left: 3,
+          verified: true,
         },
         where: { id: author.id },
       });
