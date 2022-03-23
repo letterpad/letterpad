@@ -89,9 +89,17 @@ const Tags = {
   async slug({ slug }) {
     return "/tag/" + slug.replace("/tag/", "");
   },
-  async posts({ name }, _args, { prisma }: ResolverContext) {
+  async posts(
+    { name },
+    _args,
+    { prisma, session, author_id }: ResolverContext,
+  ) {
+    const authorId = session?.user.id || author_id;
     const posts = await prisma.post.findMany({
       where: {
+        author: {
+          id: authorId,
+        },
         tags: {
           some: {
             name,

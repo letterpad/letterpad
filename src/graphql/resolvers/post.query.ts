@@ -92,8 +92,8 @@ const Query: QueryResolvers<ResolverContext> = {
       } else if (args.filters.tagSlug) {
         args.filters.tagSlug = args.filters.tagSlug.replace("/tag/", "");
       }
-      const { page, limit = 10 } = args.filters;
-      const skip = page && limit ? page * limit : 0;
+      const { page = 1, limit = 10 } = args.filters;
+      const skip = page && limit ? (page - 1) * limit : 0;
       const isPage = args.filters.type === PostTypes.Page;
       const condition: Prisma.PostFindManyArgs = {
         where: {
@@ -120,7 +120,6 @@ const Query: QueryResolvers<ResolverContext> = {
           updatedAt: args?.filters?.sortBy || "desc",
         },
       };
-
       const posts = await prisma.post.findMany(condition);
       return {
         __typename: "PostsNode",
