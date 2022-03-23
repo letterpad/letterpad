@@ -40,51 +40,53 @@ const Home = () => {
             lineHeight: 1.6,
           }}
         >
-          <div style={{ width: 500, margin: "auto" }}>
+          <div style={{ maxWidth: 500, margin: "auto", padding: 20 }}>
             <p>Hi There 👋 ,</p>
             <p>
-              Thank you for trying out Letterpad. This page will give you a
-              quick tour of the features that you will need for publishing your
-              first post.
+              Thank you for trying out Letterpad. Letterpad is fairly new and it
+              needs your support in making blogging a wonderful experience.
+            </p>
+
+            <p>
+              To begin with, we recommend you to go through this{" "}
+              <a
+                href="https://docs.letterpad.app/setup/setting-up-your-blog"
+                target="_blank"
+              >
+                article
+              </a>{" "}
+              on getting started.
             </p>
             <p>
-              Letterpad has a simple concept of page and post. The difference is
-              that posts can be grouped together with the help of tags while
-              pages are independent. And then you can setup your{" "}
-              <Link href="/settings">navigation menu</Link> with just tags and
-              pages and this will be visible to your audience.
+              Letterpad has a small footprint in terms of features and thats why
+              it is extremely performant. As an independent blogger, it was
+              important for us to provide a good expereince to readers and
+              writers without any paywall.
             </p>
             <p>
-              If you have a tag by the name <strong>travel</strong> and you want
-              all the posts linked with this tag to be visible in your homepage,
-              then you should place this tag as the first item in the navigation
-              menu.
+              Letterpad is an open source project, meaning all its code is
+              freely available{" "}
+              <a href="https://github.com/letterpad/letterpad" target="_blank">
+                here
+              </a>
+              . We believe that a community has more power in driving the
+              roadmap of this product instead of us making decisions. If you
+              have any feedback, feel free to share it with us by clicking the
+              feedback button on the top right corner.
             </p>
             <p>
-              To create a post <ContainerOutlined />, click on the New button in{" "}
-              <Link href="/posts">Posts page</Link>.
+              If you would like to contribute, refer to this{" "}
+              <a href="https://docs.letterpad.app/contribute" target="_blank">
+                article
+              </a>
+              .
             </p>
-            <p>
-              To create a tag <TagsOutlined />, click on the New button in{" "}
-              <Link href="/tags">Tags page</Link>.
-            </p>
-            <p>
-              To create a tag and also link it with the post, you can
-              create/edit a post and then inside settings <SettingOutlined />,
-              you can enter the tags. New tags will automatically be created and
-              linked.
-            </p>
-            <p>
-              You can also look around to see the other features. We will
-              publish helpful articles soon to help you with more helpful
-              information.
-            </p>
+            <p>Happy Blogging!</p>
           </div>
           <Button type="link" onClick={onDismiss}>
             Dismiss
           </Button>
         </div>
-        <style jsx>{``}</style>
       </Content>
     </>
   );
