@@ -136,8 +136,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
       const setting = await prisma.setting.findUnique({
         where: { id: setting_id },
       });
-      if (setting)
+      if (setting) {
+        setting.site_url = `https://${author.username}.letterpad.app`;
         return { ...mapSettingToGraphql(setting), __typename: "Setting" };
+      }
       throw Error("Couldnt find setting");
     }
     return {
