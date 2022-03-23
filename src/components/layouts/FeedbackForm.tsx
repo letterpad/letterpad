@@ -48,6 +48,7 @@ const FeedbackForm = () => {
       <Modal
         title="Basic Modal"
         visible={isModalVisible}
+        onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleCancel}>
             Cancel
