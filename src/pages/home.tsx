@@ -1,15 +1,9 @@
 import CustomLayout from "@/components/layouts/Layout";
 import withAuthCheck from "@/hoc/withAuth";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
-import {
-  ContainerOutlined,
-  SettingOutlined,
-  TagsOutlined,
-} from "@ant-design/icons";
 import { Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Home = () => {

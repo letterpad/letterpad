@@ -137,8 +137,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
         where: { id: setting_id },
       });
       if (setting) {
-        setting.site_url = `https://${author.username}.letterpad.app`;
-        return { ...mapSettingToGraphql(setting), __typename: "Setting" };
+        return {
+          ...mapSettingToGraphql(setting),
+          site_url: `https://${author?.username}.letterpad.app`,
+          __typename: "Setting",
+        };
       }
       throw Error("Couldnt find setting");
     }

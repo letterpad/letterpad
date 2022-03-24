@@ -4,7 +4,7 @@ import { Popconfirm } from "antd";
 export function getHeaders(dataSource, deleteTag) {
   return [
     {
-      title: "name",
+      title: "Name",
       dataIndex: "name",
       width: "30%",
       editable: true,
@@ -18,19 +18,19 @@ export function getHeaders(dataSource, deleteTag) {
       },
     },
     {
-      title: "posts",
+      title: "Total Posts",
       dataIndex: "posts",
     },
     {
-      title: "operation",
+      title: "Action",
       dataIndex: "operation",
       render: (_, record: { key: React.Key }) =>
         dataSource.length >= 1 ? (
           <Popconfirm
-            title="Sure to delete?"
+            title="This action will remove this tag from all the posts. Are you sure ?"
             onConfirm={() => deleteTag(record.key)}
           >
-            <a>Delete</a>
+            <a>Unlink</a>
           </Popconfirm>
         ) : null,
     },
