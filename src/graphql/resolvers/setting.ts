@@ -139,7 +139,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       if (setting) {
         return {
           ...mapSettingToGraphql(setting),
-          site_url: `https://${author.username}.letterpad.app`,
+          site_url: `https://${author?.username}.letterpad.app`,
           __typename: "Setting",
         };
       }
