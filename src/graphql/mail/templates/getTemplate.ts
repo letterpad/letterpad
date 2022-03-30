@@ -3,6 +3,7 @@ import { getNewPostContent } from "../new-post/content";
 import { getForgotPasswordContent } from "../forgot-password/content";
 import { getVerifyUserEmailContent } from "../verify-user/content";
 import { getVerifySubscriberEmailContent } from "../verify-subscriber/content";
+import { getVerifyUserEmailChangeContent } from "../verify-email-change/content";
 
 export async function getEmailTemplate(props: EmailProps, prismaInstance) {
   switch (props.template_id) {
@@ -14,5 +15,7 @@ export async function getEmailTemplate(props: EmailProps, prismaInstance) {
       return await getVerifySubscriberEmailContent(props, prismaInstance);
     case EmailTemplates.VERIFY_NEW_USER:
       return await getVerifyUserEmailContent(props, prismaInstance);
+    case EmailTemplates.VERIFY_CHANGED_EMAIL:
+      return await getVerifyUserEmailChangeContent(props, prismaInstance);
   }
 }

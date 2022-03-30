@@ -1,5 +1,14 @@
 import { useCallback } from "react";
-import { Button, Collapse, Form, Input, message, PageHeader } from "antd";
+import { signOut } from "next-auth/react";
+import {
+  Button,
+  Collapse,
+  Form,
+  Input,
+  message,
+  Modal,
+  PageHeader,
+} from "antd";
 import { Content } from "antd/lib/layout/layout";
 import CustomLayout from "@/components/layouts/Layout";
 import ImageUpload from "@/components/ImageUpload";
@@ -32,6 +41,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
   const [me, setMe] = useState<InputAuthor>();
   const [draft, setDraft] = useState<InputAuthor>();
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [saving, setSaving] = useState(false);
   const { refetch } = useSettingsQuery();
 
@@ -39,6 +49,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
     if (data?.me?.__typename === "Author") {
       setMe(data.me);
       setUsername(data.me.username);
+      setEmail(data.me.email);
     }
   }, [loading]);
 
@@ -78,6 +89,53 @@ function Profile({ readOnly }: { readOnly: boolean }) {
     setSaving(false);
   };
 
+  const saveEmail = async () => {
+    message.destroy("author");
+    if (readOnly) {
+      return setSaving(false);
+    }
+    if (!me?.id || !email) return;
+    setSaving(true);
+    track({
+      eventAction: EventAction.Change,
+      eventCategory: "profile",
+      eventLabel: "id-email",
+    });
+    const result = await mutateAuthor({
+      variables: {
+        author: {
+          email,
+          id: me.id,
+        },
+      },
+    });
+    if (!result.data?.updateAuthor?.ok) {
+      const error = result.data?.updateAuthor?.errors?.pop()?.message;
+      if (error) {
+        message.error({ key: "author", content: error, duration: 10 });
+      }
+    } else {
+      Modal.success({
+        title: "Email saved",
+        okText: "Logout",
+        closable: false,
+        content: (
+          <div>
+            You have changed your email from <strong>{me.email}</strong> to{" "}
+            <strong>{email}</strong>. We have sent you an email to your new
+            email address. Please verify your email and login.
+          </div>
+        ),
+        onOk() {
+          signOut({
+            redirect: true,
+          });
+        },
+      });
+    }
+    setSaving(false);
+  };
+
   const updateAuthor = async () => {
     try {
       message.destroy("author");
@@ -106,9 +164,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
     debounceUpdateAuthor();
   }, [draft]);
 
-  const debounceUpdateAuthor = useCallback(debounce(updateAuthor, 1000), [
-    draft,
-  ]);
+  const debounceUpdateAuthor = useCallback(debounce(updateAuthor, 1000), []);
 
   const onChange = (key: keyof InputAuthor, value: ValueOf<InputAuthor>) => {
     if (me) {
@@ -190,11 +246,22 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                   />
                 </Form.Item>
                 <Form.Item label="Email (private)">
-                  <Input
-                    size="middle"
-                    value={me.email}
-                    onChange={(e) => onChange("email", e.target.value)}
-                  />
+                  <Input.Group compact>
+                    <Input
+                      size="middle"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      style={{ width: "calc(100% - 150px)" }}
+                    />
+                    <Button
+                      type="primary"
+                      size="middle"
+                      onClick={saveEmail}
+                      loading={saving}
+                    >
+                      Validate
+                    </Button>
+                  </Input.Group>
                 </Form.Item>
                 <Form.Item label="Username">
                   <Input.Group compact>
