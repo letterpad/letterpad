@@ -49,7 +49,7 @@ module.exports.defaultSettings = {
   }),
   css: "",
   google_analytics: "UA-120251616-1",
-  theme: "hugo",
+  theme: "minimal",
   menu: JSON.stringify(menu),
   cloudinary_key: "",
   cloudinary_name: "",

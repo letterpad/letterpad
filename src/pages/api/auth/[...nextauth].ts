@@ -50,6 +50,7 @@ const providers = (_req: NextApiRequest) => [
             credentials?.password || "",
             author.password,
           );
+
           if (authenticated) {
             const user = {
               id: author.id,
