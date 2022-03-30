@@ -36,8 +36,12 @@ query Posts($filters: PostsFilters) {
             github
             twitter
             instagram
+            facebook
+            linkedin
           }
           bio
+          occupation
+          company_name
         }
         tags {
           name
@@ -112,9 +116,12 @@ query Me {
         twitter
         instagram
         facebook
+        linkedin
       }
       email
       bio
+      occupation
+      company_name
       avatar
     }
     ... on AuthorNotFoundError {
@@ -191,6 +198,12 @@ query settings {
         original_name
         slug
         type
+      }
+      analytics {
+        google_analytics
+        umami_id
+        simple_analytics
+        plausible_data_domain
       }
       css
       google_analytics
