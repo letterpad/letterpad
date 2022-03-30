@@ -24,6 +24,9 @@ const Setting = {
     menu = parse(menu);
     return getMenuWithSanitizedSlug(menu);
   },
+  analytics: ({ analytics }) => {
+    return parse(analytics);
+  },
 
   banner: ({ banner }) => {
     banner = parse(banner);
@@ -116,7 +119,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
           value = JSON.stringify(isImageOption);
         }
-        if (["menu", "banner", "site_logo", "site_favicon"].includes(option)) {
+        if (
+          ["menu", "banner", "site_logo", "site_favicon", "analytics"].includes(
+            option,
+          )
+        ) {
           value = JSON.stringify(value);
         }
         logger.info(
