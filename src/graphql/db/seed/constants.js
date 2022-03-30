@@ -57,4 +57,6 @@ module.exports.defaultSettings = {
   client_token: "",
   banner: JSON.stringify({}),
   intro_dismissed: false,
+  show_about_page: true,
+  show_tags_page: true,
 };
