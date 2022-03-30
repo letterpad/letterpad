@@ -30,8 +30,12 @@ fragment PostWithAuthorAndTags on Post {
       github
       twitter
       instagram
+      linkedin
+      facebook
     }
     bio
+    occupation
+    company_name
   }
   tags {
     name

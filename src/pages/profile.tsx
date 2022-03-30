@@ -166,13 +166,30 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                     onChange={(e) => onChange("name", e.target.value)}
                   />
                 </Form.Item>
-                <Form.Item label="Short Bio">
+                <Form.Item label="About You (html)">
                   <Input.TextArea
                     value={me.bio}
                     onChange={(e) => onChange("bio", e.target.value)}
+                    autoSize={{ minRows: 10, maxRows: 80 }}
+                    rows={8}
+                    maxLength={4000}
                   />
                 </Form.Item>
-                <Form.Item label="Email">
+                <Form.Item label="Occupation">
+                  <Input
+                    value={me.occupation}
+                    onChange={(e) => onChange("occupation", e.target.value)}
+                    size="middle"
+                  />
+                </Form.Item>
+                <Form.Item label="Company Name">
+                  <Input
+                    size="middle"
+                    value={me.company_name}
+                    onChange={(e) => onChange("company_name", e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item label="Email (private)">
                   <Input
                     size="middle"
                     value={me.email}
@@ -236,6 +253,13 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                     size="middle"
                     value={me.social?.github}
                     onChange={(e) => onSocialChange("github", e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item label="LinkedIn">
+                  <Input
+                    size="middle"
+                    value={me.social?.linkedin}
+                    onChange={(e) => onSocialChange("linkedin", e.target.value)}
                   />
                 </Form.Item>
               </Panel>

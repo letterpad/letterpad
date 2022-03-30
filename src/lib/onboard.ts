@@ -122,6 +122,8 @@ export async function createAuthorWithSettings(
         avatar: "",
         verified: false,
         bio: "",
+        occupation: "",
+        company_name: "",
         social: JSON.stringify({
           twitter: "",
           facebook: "",

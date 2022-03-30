@@ -15,6 +15,8 @@ model Author {
   email               String       @unique
   password            String
   bio                 String       
+  occupation          String       
+  company_name        String       
   avatar              String       
   social              String       @default("{}")
   verified            Boolean      @default(false)
@@ -112,21 +114,22 @@ model Setting {
   social_facebook     String   
   social_instagram    String   
   social_github       String   
-  display_author_info Boolean  @default(false)
+  display_author_info Boolean   @default(false)
   cloudinary_key      String   
   cloudinary_name     String   
   cloudinary_secret   String   
-  menu                String   @default("[]")
+  menu                String    @default("[]")
   css                 String   
   google_analytics    String   
-  theme               String   
+  analytics           String    @default("{}")
+  theme               String    
   client_token        String   
-  banner              String   @default("{}")
-  site_logo           String   @default("{}")
-  site_favicon        String   @default("{}")
+  banner              String    @default("{}")
+  site_logo           String    @default("{}")
+  site_favicon        String    @default("{}")
   createdAt           DateTime? @default(now())
   updatedAt           DateTime? @updatedAt
-  graphcomment_id     String   @default("")
+  graphcomment_id     String    @default("")
   intro_dismissed     Boolean
   // author              Author    @relation(fields: [author_id], references: [id])
   author_id           Int       @unique

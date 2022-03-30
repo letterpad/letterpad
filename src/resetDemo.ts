@@ -11,12 +11,14 @@ const data = {
       name: "Demo Author",
       username: "demo",
       email: "demo@demo.com",
+      occupation: "Software Developer",
+      company_name: "Letterpad",
       password: "$2a$12$0lhlrREBbBqdsYA5TdKkBeFfJLOboyhBS02HBcSSgFrF7VANiE1mO",
       bio: "You can some information about yourself for the world to know you a little better.",
       avatar:
         "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
       social:
-        '{"twitter":"https://twitter.com","facebook":"https://facebook.com","github":"https://github.com","instagram":"https://instagram.com"}',
+        '{"twitter":"https://twitter.com","facebook":"https://facebook.com","github":"https://github.com","instagram":"https://instagram.com", "linkedin":"https://linkedin.com"}',
       verified: true,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -182,7 +184,13 @@ const data = {
         menu: '[{"label":"home","original_name":"home","slug":"first-post","type":"tag"},{"label":"Page","original_name":"Page","slug":"letterpad-typography","type":"page"}]',
         css: "",
         google_analytics: "UA-120251616-1",
-        theme: "hugo",
+        analytics: JSON.stringify({
+          google_analytics: "",
+          umami_id: "",
+          simple_analytics: "",
+          plausible_data_domain: "",
+        }),
+        theme: "minimal",
         client_token:
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE2NDUxODE0NjQsImV4cCI6MTY0NTE4MjA2NH0.RvsRMFfJGfHb4DK2J2mWlzKsv7G_mBGbwd-i6MCELk0",
         banner:

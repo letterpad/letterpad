@@ -87,6 +87,12 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
       }
       css
       google_analytics
+      analytics {
+        google_analytics
+        umami_id
+        simple_analytics
+        plausible_data_domain
+      }
       theme
       banner {
         src
@@ -124,8 +130,11 @@ mutation UpdateAuthor($author: InputAuthor!) {
         twitter
         instagram
         facebook
+        linkedin
       }
       bio
+      occupation
+      company_name
       avatar
       username
     }
@@ -162,8 +171,12 @@ mutation updatePost($data: InputUpdatePost) {
           github
           twitter
           instagram
+          facebook
+          linkedin
         }
         bio
+        occupation
+        company_name
       }
       tags {
         name

@@ -13,7 +13,9 @@ model Author {
   username            String       @unique
   email               String       @unique
   password            String
-  bio                 String       
+  bio                 String       @db.Text
+  occupation          String       @db.VarChar(100)
+  company_name          String     @db.VarChar(100)
   avatar              String       
   social              String       @default("{}")
   verified            Boolean      @default(false)
@@ -119,6 +121,7 @@ model Setting {
   menu                String   @db.VarChar(500) @default("[]")
   css                 String   @db.VarChar(500)
   google_analytics    String   
+  analytics           String   @db.VarChar(300) @default("{}")
   theme               String   
   client_token        String   
   banner              String    @db.VarChar(300) @default("{}")
@@ -126,11 +129,11 @@ model Setting {
   site_favicon        String    @db.VarChar(300) @default("{}")
   createdAt           DateTime? @default(now())
   updatedAt           DateTime? @updatedAt
-  graphcomment_id     String   @default("")
+  graphcomment_id     String    @default("")
   intro_dismissed     Boolean
   // author              Author    @relation(fields: [author_id], references: [id])
   author_id           Int       @unique
-  author              Author   @relation(fields: [author_id], references: [id], onDelete:Cascade)
+  author              Author    @relation(fields: [author_id], references: [id], onDelete:Cascade)
 }
 
 model Subscriber {

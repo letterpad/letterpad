@@ -32,7 +32,7 @@ const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {
             onChange={(e) => onChange("site_tagline", e.target.value)}
           />
         </Form.Item>
-        <Form.Item label="Site Email">
+        <Form.Item label="Site Email (public)">
           <Input
             size="middle"
             value={settings.site_email}
@@ -41,11 +41,13 @@ const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {
           />
         </Form.Item>
         <Form.Item label="Short Description">
-          <Input
+          <Input.TextArea
             size="middle"
             value={settings.site_description}
             onBlur={updateSettings}
             onChange={(e) => onChange("site_description", e.target.value)}
+            placeholder="Write something about your site. Will be used in SEO and other pages"
+            autoSize={{ minRows: 2, maxRows: 3 }}
           />
         </Form.Item>
         <Form.Item label="Site Url" hidden={true}>
@@ -57,11 +59,14 @@ const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {
           />
         </Form.Item>
         <Form.Item label="Footer Description">
-          <Input
+          <Input.TextArea
             size="middle"
+            placeholder="Anything that you want display in footer. html is allowed."
             value={settings.site_footer}
             onBlur={updateSettings}
             onChange={(e) => onChange("site_footer", e.target.value)}
+            autoSize={{ minRows: 2, maxRows: 3 }}
+            maxLength={200}
           />
         </Form.Item>
         <Form.Item label="Google Analytics">

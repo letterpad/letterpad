@@ -1,5 +1,5 @@
 import { SettingInputType, Setting } from "@/__generated__/__types__";
-import { Collapse, Form } from "antd";
+import { Collapse, Form, Radio, Space } from "antd";
 import ImageUpload from "../ImageUpload";
 import Editor from "react-simple-code-editor";
 
@@ -23,6 +23,7 @@ interface Props {
 }
 const Appearance: React.FC<Props> = ({ settings, onChange }) => {
   const editorRef = useRef<any>(null);
+  console.log(settings.theme);
   return (
     <Collapse>
       <Panel header="Appearance" key="1">
@@ -64,6 +65,19 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
               })
             }
           />
+        </Form.Item>
+        <Form.Item label="Layout">
+          <Radio.Group
+            onChange={(e) => onChange("theme", e.target.value)}
+            defaultValue="a"
+            size="middle"
+            value={settings.theme}
+          >
+            <Space direction="vertical">
+              <Radio value="minimal">Minimal</Radio>
+              <Radio value="magazine">Magazine</Radio>
+            </Space>
+          </Radio.Group>
         </Form.Item>
         <Form.Item label="CSS">
           {/* <TextArea

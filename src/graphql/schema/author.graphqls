@@ -3,6 +3,7 @@ type Social {
   facebook: String
   github: String
   instagram: String
+  linkedin: String
 }
 
 type Author {
@@ -12,6 +13,8 @@ type Author {
   name: String!
   social: Social
   bio: String
+  occupation: String
+  company_name: String
   role: Role
   permissions: [Permissions!]
   avatar: String
@@ -29,12 +32,15 @@ input InputSocial {
   facebook: String
   github: String
   instagram: String
+  linkedin: String
 }
 input InputAuthor {
   id: Int!
   email: String
   name: String
   bio: String
+  occupation: String
+  company_name: String
   social: InputSocial
   password: String
   roleId: Int

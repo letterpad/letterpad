@@ -121,6 +121,8 @@ export async function startImport(
           verified: true,
           username: authorsData.username,
           avatar: authorsData.avatar,
+          occupation: authorsData.occupation,
+          company_name: authorsData.company_name,
           password: isAdmin
             ? passwords[authorsData.email].password
             : author?.password ?? "",
