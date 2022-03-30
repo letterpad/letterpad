@@ -81,6 +81,7 @@ declare namespace NodeJS {
 
 export enum EmailTemplates {
   VERIFY_NEW_USER = "VERIFY_NEW_USER",
+  VERIFY_CHANGED_EMAIL = "VERIFY_CHANGED_EMAIL",
   VERIFY_NEW_SUBSCRIBER = "VERIFY_NEW_SUBSCRIBER",
   FORGOT_PASSWORD = "FORGOT_PASSWORD",
   NEW_POST = "NEW_POST",
@@ -89,6 +90,11 @@ export enum EmailTemplates {
 export interface EmailVerifyNewUserProps {
   author_id: number;
   template_id: EmailTemplates.VERIFY_NEW_USER;
+}
+
+export interface EmailVerifyNewEmailProps {
+  author_id: number;
+  template_id: EmailTemplates.VERIFY_CHANGED_EMAIL;
 }
 
 export interface EmailVerifyNewSubscriberProps {
@@ -109,6 +115,7 @@ export interface EmailForgotPasswordProps {
 
 export type EmailProps =
   | EmailVerifyNewUserProps
+  | EmailVerifyNewEmailProps
   | EmailVerifyNewSubscriberProps
   | EmailNewPostProps
   | EmailForgotPasswordProps;

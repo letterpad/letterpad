@@ -138,21 +138,13 @@ export async function createAuthorWithSettings(
           create: {
             ...defaultSettings,
             ...mapSettingToDb(setting),
-            site_email: authorData.email,
-          },
-        },
-      },
-    });
-    const updatedNewAuthor = prisma.author.update({
-      where: { id: newAuthor.id },
-      data: {
-        setting: {
-          update: {
+            site_url: `https://${authorData.username}.letterpad.app`,
             client_token: encryptEmail(authorData.email),
           },
         },
       },
     });
-    return updatedNewAuthor;
+
+    return newAuthor;
   }
 }

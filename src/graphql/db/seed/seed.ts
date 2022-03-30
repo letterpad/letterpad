@@ -305,6 +305,17 @@ async function insertEmails() {
     },
   });
 
+  const verifyEmailChange = fs.readFileSync(
+    path.join(emailTemplatesDir, "verifyEmailChange.twig"),
+  );
+  await prisma.email.create({
+    data: {
+      template_id: EmailTemplates.VERIFY_CHANGED_EMAIL,
+      subject: subjects.VERIFY_EMAIL_CHANGE,
+      body: verifyEmailChange.toString(),
+    },
+  });
+
   const verifyNewSubscriberEmail = fs.readFileSync(
     path.join(emailTemplatesDir, "verifyNewSubscriber.twig"),
   );

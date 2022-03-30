@@ -12,6 +12,7 @@ import logger from "@/shared/logger";
 import { ResolverContext } from "../context";
 import { mapAuthorToGraphql } from "./mapper";
 import { onBoardUser } from "@/lib/onboard";
+import { encryptEmail } from "@/shared/clientToken";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -103,7 +104,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (authorExistData) {
       return {
         __typename: "CreateAuthorError",
-        message: "Author already exist",
+        message: "Email already exist. Did you forget your password ?",
       };
     }
 
@@ -169,7 +170,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       message: "Incorrect email id",
     };
   },
-  async updateAuthor(_root, args, { session, prisma }) {
+  async updateAuthor(_root, args, { session, prisma, mailUtils }) {
     if (session?.user.id !== args.author.id) {
       return {
         ok: true,
@@ -177,7 +178,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
     try {
-      const dataToUpdate = { ...args.author } as InputAuthorForDb;
+      const dataToUpdate = { ...args.author } as InputAuthorForDb & {
+        verified?: boolean;
+      };
+      const newEmail =
+        args.author.email && session.user.email !== args.author.email;
+
       if (args.author.password) {
         dataToUpdate.password = await bcrypt.hash(args.author.password, 12);
       }
@@ -210,13 +216,54 @@ const Mutation: MutationResolvers<ResolverContext> = {
         }
       }
 
+      if (newEmail) {
+        const emailExist = await prisma.author.findFirst({
+          where: {
+            email: args.author.email,
+            id: {
+              not: {
+                equals: args.author.id,
+              },
+            },
+          },
+        });
+
+        if (emailExist) {
+          return {
+            ok: false,
+            errors: [
+              {
+                message: "Email already exist",
+                path: "updateAuthor resolver",
+              },
+            ],
+          };
+        }
+        dataToUpdate.verified = false;
+      }
+
       logger.info("Updating Author => ", dataToUpdate);
 
       const author = await prisma.author.update({
         data: dataToUpdate,
         where: { id: args.author.id },
       });
-
+      if (newEmail) {
+        if (mailUtils.enqueueEmailAndSend) {
+          await mailUtils.enqueueEmailAndSend({
+            template_id: EmailTemplates.VERIFY_CHANGED_EMAIL,
+            author_id: author.id,
+          });
+        }
+        await prisma.setting.update({
+          data: {
+            client_token: encryptEmail(args.author.email as string),
+          },
+          where: {
+            author_id: args.author.id,
+          },
+        });
+      }
       if (args.author.username) {
         await prisma.setting.update({
           data: {

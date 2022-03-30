@@ -49,8 +49,12 @@ const RegisterForm = () => {
           },
         },
       });
-      if (result.errors?.length) {
-        message.error({ content: result?.errors, key, duration: 5 });
+      if (result.data?.createAuthor?.__typename === "CreateAuthorError") {
+        message.error({
+          content: result.data?.createAuthor.message,
+          key,
+          duration: 5,
+        });
       } else {
         track({
           eventAction: EventAction.Click,
