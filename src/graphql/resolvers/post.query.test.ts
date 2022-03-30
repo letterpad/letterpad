@@ -27,10 +27,14 @@ describe("Test Post Query Graphql API", () => {
 
     expect(firstRecord.author).toEqual({
       bio: "You can some information about yourself for the world to know you a little better.",
+      company_name: "Letterpad",
       name: "Demo Author",
+      occupation: "Principal Engineer @ Ajaxtown",
       social: {
+        facebook: "https://facebook.com",
         github: "https://github.com",
         instagram: "https://instagram.com",
+        linkedin: "https://linkedin.com",
         twitter: "https://twitter.com",
       },
     });
