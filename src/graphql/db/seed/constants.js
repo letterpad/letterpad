@@ -26,7 +26,7 @@ module.exports.subjects = {
 
 module.exports.defaultSettings = {
   site_title: "Letterpad",
-  site_tagline: "Compose a story",
+  site_tagline: "My space",
   site_email: "admin@letterpad.app",
   site_url: "https://demo.letterpad.app",
   site_footer: "",

@@ -94,6 +94,8 @@ input SettingInputType {
   site_logo: InputImage
   site_favicon: InputImage
   intro_dismissed: Boolean
+  show_about_page: Boolean
+  show_tags_page: Boolean
 }
 
 type SettingError implements LetterpadError {

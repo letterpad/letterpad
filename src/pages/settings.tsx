@@ -17,6 +17,7 @@ import Integrations from "@/components/settings/integrations";
 import { CopyToClipboard } from "@/components/clipboard";
 import { getSession } from "next-auth/react";
 import { EventAction, track } from "@/track";
+import Pages from "@/components/settings/pages";
 
 const { Panel } = Collapse;
 
@@ -60,7 +61,9 @@ function Settings(props: {
       draft.banner ||
       draft.site_favicon ||
       draft.menu ||
-      draft.theme
+      draft.theme ||
+      "show_about_page" in draft ||
+      "show_tags_page" in draft
     ) {
       updateSettings();
     }
@@ -102,6 +105,11 @@ function Settings(props: {
               updateSettings={updateSettings}
             />
             <Appearance settings={settings} onChange={onChange} />
+            <Pages
+              settings={settings}
+              onChange={onChange}
+              updateSettings={updateSettings}
+            />
             <Navigation settings={settings} onChange={onChange} />
             {props.showSocial && (
               <Social

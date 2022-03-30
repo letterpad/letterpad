@@ -29,10 +29,11 @@ export const doLogin = async ({
     email: email,
     callbackUrl: basePath + "/posts",
   });
+
   if (result && result["error"]) {
     return {
       success: false,
-      message: result["error"],
+      message: "Invalid credentials. Please check your email and password.",
     };
   }
   if (result && result["ok"]) {

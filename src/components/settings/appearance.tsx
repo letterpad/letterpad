@@ -65,6 +65,9 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
               })
             }
           />
+          <small>
+            (Banner may or may not be displayed, depending on the theme)
+          </small>
         </Form.Item>
         <Form.Item label="Layout">
           <Radio.Group

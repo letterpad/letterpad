@@ -24,11 +24,12 @@ const Integrations: React.FC<Props> = ({
       <Collapse>
         <Panel header="Integrations" key="1">
           <p>
-            {cloudinaryEnabledByAdmin &&
-              "Cloudinary helps in optimising all your images and are served by a CDN. This has already been enabled by Admin."}
-          </p>
-          <p>
-            Cloudinary allows you to optimise and save your images in a CDN.
+            {cloudinaryEnabledByAdmin && (
+              <span>
+                Cloudinary helps in optimising all your images and are served by
+                a CDN. <u>This has already been enabled by Admin.</u>
+              </span>
+            )}
           </p>
           <br />
           <Form.Item label="Cloudinary Name">
