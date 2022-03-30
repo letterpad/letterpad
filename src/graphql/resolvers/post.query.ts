@@ -1,6 +1,5 @@
 import { setResponsiveImages } from "./../utils/imageAttributs";
 import {
-  Permissions,
   PostStatusOptions,
   PostTypes,
   QueryResolvers,
@@ -37,6 +36,7 @@ const Post = {
       where: { id: attrs.id },
       include: { author: true },
     });
+
     if (post) {
       return post.author;
     }
@@ -144,6 +144,7 @@ const Query: QueryResolvers<ResolverContext> = {
         message: "No author found for this post.",
       };
     }
+
     const { previewHash, id, slug } = args.filters;
 
     let postId = previewHash ? Number(decrypt(previewHash)) : id;
@@ -163,14 +164,10 @@ const Query: QueryResolvers<ResolverContext> = {
     }
 
     try {
-      const manageOwnPost = session?.user.permissions?.includes(
-        Permissions.ManageOwnPosts,
-      );
-
       const post = await prisma.post.findFirst({
         where: {
           id: postId,
-          author_id: manageOwnPost ? author_id : undefined,
+          author_id,
           status:
             !session?.user.id && !postId
               ? PostStatusOptions.Published

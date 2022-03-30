@@ -19,6 +19,7 @@ const menu = [
 
 module.exports.subjects = {
   VERIFY_NEW_USER: "{{ company_name }} - Verify Email",
+  VERIFY_EMAIL_CHANGE: "{{ company_name }} - Email Change Verification",
   FORGOT_PASSWORD: "{{ company_name }} - Reset your password",
   VERIFY_NEW_SUBSCRIBER: "{{ blog_name }} - Verify your email",
   NEW_POST: "{{ blog_name }} - New Post",
