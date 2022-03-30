@@ -17,28 +17,23 @@ const Pages: React.FC<Props> = ({ settings, onChange }) => {
   return (
     <Collapse>
       <Panel header="Pages" key="1">
-        <p>
-          Select the below option to add a new menu item "About" which will
-          display information about you.
-        </p>
         <Checkbox
           checked={!!settings.show_about_page}
           onChange={(e) => onChange("show_about_page", e.target.checked)}
         >
-          Display About Page
+          Select this to add a new menu item "About" which will display
+          information about you.
         </Checkbox>
         <Divider />
-        <p>
-          Select the below option to add a new menu item "Tags" which will
-          display all the tags with the post count. <br />
-          This will allow users to explore all the collection of posts. <br />
-          It is a good idea to enable this after you have written 10+ posts
-        </p>
+
         <Checkbox
           checked={!!settings.show_tags_page}
           onChange={(e) => onChange("show_tags_page", e.target.checked)}
         >
-          Display Tags Page
+          Select this to add a new menu item "Tags" which will display all the
+          tags with the post count. <br />
+          This will allow users to explore all the collection of posts. <br />
+          It is a good idea to enable this after you have written 10+ posts
         </Checkbox>
       </Panel>
     </Collapse>
