@@ -3,7 +3,7 @@ env(__dirname + "/../.env.development.local");
 process.env.DATABASE_URL = "file:../data/test.sqlite";
 console.log(process.env.CI);
 if (process.env.CI === "GITHUB_ACTIONS") {
-  process.env.DATABASE_URL = "mysql://root:@localhost:3306/letterpad";
+  process.env.DATABASE_URL = "mysql://root:@127.0.0.1:3306/letterpad";
 }
 
 import { ApolloServer } from "apollo-server";
@@ -45,7 +45,7 @@ let server;
 beforeAll(async () => {
   // jest.setTimeout(0);
   try {
-    global.console = require("console");
+    // global.console = require("console");
     // configured in github workflow yml file.
     if (process.env.CI === "GITHUB_ACTIONS") {
       await execShellCommand(
