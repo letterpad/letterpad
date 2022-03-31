@@ -145,19 +145,20 @@ const Actions = ({
                 const navLinkedWithPages = navigationPages?.find(
                   (page) => page === post.slug?.replace("/page/", ""),
                 );
+                if (active) {
+                  if (post.type === PostTypes.Post) {
+                    if (post.tags?.length === 0) return warnNoTags();
+                    if (!navLinkedWithTags) return tagNotLinkedWithNavigation();
+                  } else {
+                    if (!navLinkedWithPages)
+                      return pageNotLinkedWithNavigation();
+                  }
+                }
                 setPostAttribute({
                   status: active
                     ? PostStatusOptions.Published
                     : PostStatusOptions.Draft,
                 });
-
-                if (!active) return;
-                if (post.type === PostTypes.Post) {
-                  if (post.tags?.length === 0) return warnNoTags();
-                  if (!navLinkedWithTags) return tagNotLinkedWithNavigation();
-                } else {
-                  if (!navLinkedWithPages) return pageNotLinkedWithNavigation();
-                }
               }}
             />
           </Col>
@@ -231,12 +232,11 @@ export default Actions;
 
 function warnNoTags() {
   Modal.warning({
-    title: "Post not visible",
+    title: "Post not published",
     content: (
       <div>
-        This post has been published, however it wont be visible in your blog.
-        You have not added tags to your post. Add a tag and ensure its set up in
-        Navigation.
+        You have not added tags to your post. Add a tag/tags and ensure its set
+        up in Settings → Navigation.
         <p>
           <a
             target="_blank"
@@ -253,13 +253,12 @@ function warnNoTags() {
 
 function tagNotLinkedWithNavigation() {
   Modal.warning({
-    title: "Link one of the tag with navigation",
+    title: "Post not published",
     content: (
       <div>
-        This page has been published, however it wont be visible in your blog
-        untill you link one of the tag in Navigation. <br />
-        You can do so by going to Settings → Navigation and adding a new menu
-        item.
+        You have not linked any tags of this post in Navigation. <br />
+        You can do so by going to Settings → Navigation → New. Then give a name
+        and select a tag from the dropdown.
         <p>
           <a target="_blank" href="https://docs.letterpad.app/navigation-menu">
             Click here
@@ -273,13 +272,14 @@ function tagNotLinkedWithNavigation() {
 
 function pageNotLinkedWithNavigation() {
   Modal.warning({
-    title: "Page not linked with Navigation",
+    title: "Post not published",
     content: (
       <div>
-        This page has been published, however it wont be visible in your blog
-        untill you link it in Navigation. <br />
-        You can do so by going to Settings → Navigation and adding a new menu
-        item.
+        This page has has not been linked in Navigation. Without linking, the
+        page wont be displayed in your blog.
+        <br />
+        You can link this page by going to Settings → Navigation → New. Then
+        give a name and select this page from the dropdown.
         <p>
           <a target="_blank" href="https://docs.letterpad.app/navigation-menu">
             Click here
