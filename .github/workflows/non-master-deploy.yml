@@ -4,12 +4,20 @@ on:
     branches-ignore:
       - "master"
 
+env:
+  CI: "GITHUB_ACTIONS"
+
 jobs:
   job_one:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: shogo82148/actions-setup-mysql@v1
+        with:
+          mysql-version: "8.0"
+
+      - run: mysql -uroot -h127.0.0.1 -e 'CREATE DATABASE letterpad'
 
       - uses: actions/setup-node@v2
         with:
@@ -32,9 +40,9 @@ jobs:
         run: yarn typecheck
 
       - name: Generate Prisma Client
-        run: npx prisma generate --schema prisma/schema.prisma
+        run: npx prisma generate --schema prisma/schema_mysql.prisma
         env:
-          DATABASE_URL: "file:../data/test.sqlite"
+          DATABASE_URL: "mysql://root:@localhost:3306/letterpad"
 
       - name: Test GraphQL API
         run: yarn run test

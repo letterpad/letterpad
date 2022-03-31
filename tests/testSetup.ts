@@ -1,6 +1,11 @@
 const env = require("node-env-file");
 env(__dirname + "/../.env.development.local");
 process.env.DATABASE_URL = "file:../data/test.sqlite";
+
+if (process.env.CI === "GITHUB_ACTIONS") {
+  process.env.DATABASE_URL = "mysql://root:@localhost:3306/letterpad";
+}
+
 import { ApolloServer } from "apollo-server";
 const { exec } = require("child_process");
 import { schema } from "../src/graphql/schema";
@@ -41,9 +46,16 @@ beforeAll(async () => {
   // jest.setTimeout(0);
   try {
     global.console = require("console");
-    await execShellCommand(
-      "DATABASE_URL='file:../data/test.sqlite' npx prisma db push --force-reset",
-    );
+    // configured in github workflow yml file.
+    if (process.env.CI === "GITHUB_ACTIONS") {
+      await execShellCommand(
+        "DATABASE_URL='mysql://root:@localhost:3306/letterpad' npx prisma db push --force-reset",
+      );
+    } else {
+      await execShellCommand(
+        "DATABASE_URL='file:../data/test.sqlite' npx prisma db push --force-reset",
+      );
+    }
   } catch (err) {
     console.log(err);
     process.exit();
