@@ -65,8 +65,8 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
     <Container>
       <Grid>
         <span />
-        <strong>Label</strong>
-        <strong>Path</strong>
+        <strong>Menu Item Name</strong>
+        <strong>Display</strong>
         <span />
       </Grid>
       <br />
