@@ -1,3 +1,4 @@
+import { createPathWithPrefix } from "@/utils/slug";
 import {
   QueryResolvers,
   MutationResolvers,
@@ -87,7 +88,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
 const Tags = {
   async slug({ slug }) {
-    return "/tag/" + slug.replace("/tag/", "");
+    return createPathWithPrefix(slug, "tag");
   },
   async posts(
     { name },

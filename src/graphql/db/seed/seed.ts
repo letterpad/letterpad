@@ -7,11 +7,11 @@ import path from "path";
 import { EmailTemplates, ROLES } from "@/graphql/types";
 import posts from "./posts";
 import generatePost from "./contentGenerator";
-import { toSlug } from "@/graphql/resolvers/helpers";
 import { getDateTime } from "@/shared/utils";
 import { subjects } from "./constants";
 import fs from "fs";
 import { createAuthorWithSettings } from "@/lib/onboard";
+import { textToSlug } from "@/utils/slug";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -252,7 +252,7 @@ async function insertAuthors() {
 export async function insertPost(postData, author_id) {
   const { html } = generatePost(postData.type);
 
-  const slug = toSlug(postData.title);
+  const slug = textToSlug(postData.title);
 
   return prisma.post.create({
     data: {
