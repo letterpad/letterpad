@@ -201,6 +201,8 @@ const data = {
         updatedAt: new Date(),
         graphcomment_id: "",
         intro_dismissed: false,
+        show_about_page: true,
+        show_tags_page: true,
         author_id: 2,
       },
       subscribers: [],

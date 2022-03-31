@@ -56,7 +56,6 @@ async function getAuthorFromSubdomain(context) {
     const author = await prisma.author.findUnique({
       where: { username },
     });
-    console.log("Author -> Username", author, username);
     return author ? author.id : null;
   }
   return null;

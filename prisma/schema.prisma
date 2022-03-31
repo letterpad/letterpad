@@ -131,7 +131,8 @@ model Setting {
   updatedAt           DateTime? @updatedAt
   graphcomment_id     String    @default("")
   intro_dismissed     Boolean
-  // author              Author    @relation(fields: [author_id], references: [id])
+  show_about_page     Boolean   @default(true)
+  show_tags_page      Boolean   @default(false)
   author_id           Int       @unique
   author              Author   @relation(fields: [author_id], references: [id], onDelete:Cascade)
 }

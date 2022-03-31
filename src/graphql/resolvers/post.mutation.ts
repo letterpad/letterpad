@@ -1,6 +1,8 @@
 import {
   MutationCreatePostArgs,
   MutationResolvers,
+  Navigation,
+  NavigationType,
   PostStatusOptions,
   PostTypes,
   RequireFields,
@@ -13,7 +15,7 @@ import {
   getReadingTimeFromHtml,
 } from "./helpers";
 import logger from "@/shared/logger";
-import { EmailTemplates } from "@/graphql/types";
+// import { EmailTemplates } from "@/graphql/types";
 import { ResolverContext } from "../context";
 import { Prisma } from "@prisma/client";
 import { mapPostToGraphql } from "./mapper";
@@ -87,7 +89,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     return await createPost(args, context);
   },
 
-  async updatePost(_parent, args, { session, prisma, mailUtils }, _info) {
+  async updatePost(_parent, args, { session, prisma }, _info) {
     if (!session?.user.id) {
       return {
         __typename: "PostError",
@@ -152,23 +154,24 @@ const Mutation: MutationResolvers<ResolverContext> = {
       // update content
 
       if (updatedPost) {
-        await updateMenuOnTitleChange(
-          prisma.author,
-          session.user.id,
-          existingPost.type,
-          updatedPost.title,
-          updatedPost.slug,
-        );
+        await updateMenuOnTitleChange({
+          Author: prisma.author,
+          authorId: session.user.id,
+          isPage: updatedPost.type === PostTypes.Page,
+          prevOriginalName: existingPost.title,
+          originalName: updatedPost.title,
+          slug: updatedPost.slug,
+        });
       }
 
-      if (isPublishingLive(existingPost.status, updatedPost.status)) {
-        if (mailUtils.enqueueEmailAndSend) {
-          await mailUtils.enqueueEmailAndSend({
-            template_id: EmailTemplates.NEW_POST,
-            post_id: args.data.id,
-          });
-        }
-      }
+      // if (isPublishingLive(existingPost.status, updatedPost.status)) {
+      //   if (mailUtils.enqueueEmailAndSend) {
+      //     await mailUtils.enqueueEmailAndSend({
+      //       template_id: EmailTemplates.NEW_POST,
+      //       post_id: args.data.id,
+      //     });
+      //   }
+      // }
 
       if (!updatedPost) {
         return {
@@ -211,45 +214,48 @@ function savingDraft(prevStatus: string, statusArg?: string) {
   return false;
 }
 
-async function updateMenuOnTitleChange(
-  Author: Prisma.AuthorDelegate<false>,
-  authorId: number,
-  postType?: string,
-  title?: string,
-  slug?: string,
-) {
-  if (!title && !slug) return false;
-  const author = await Author.findFirst({
-    where: { id: authorId },
-    include: { setting: true },
-  });
-  if (!author) return false;
+interface UpdateMenuProps {
+  Author: Prisma.AuthorDelegate<false>;
+  authorId: number;
+  isPage: boolean;
+  slug: string;
+  originalName?: string;
+  prevOriginalName: string;
+}
+async function updateMenuOnTitleChange(props: UpdateMenuProps) {
+  const { Author, isPage, prevOriginalName, originalName, authorId, slug } =
+    props;
 
-  const isPage = postType === PostTypes.Page;
-  const jsonMenu = JSON.parse(author.setting?.menu || "[]");
-  const updatedMenu = jsonMenu.map((item) => {
-    if (title) {
-      if (isPage && item.type === "page") {
-        item.original_name = title;
-      }
-    }
-    if (slug) {
-      if (isPage && item.type === "page") {
+  if (isPage) {
+    const author = await Author.findFirst({
+      where: { id: authorId },
+      include: { setting: true },
+    });
+    if (!author) return false;
+    const jsonMenu = JSON.parse(author.setting?.menu || "[]") as Navigation[];
+
+    const updatedMenu = jsonMenu.map((item) => {
+      if (
+        item.type === NavigationType.Page &&
+        item.original_name === prevOriginalName
+      ) {
+        if (originalName) item.original_name = originalName;
         item.slug = slug;
       }
-    }
-    return item;
-  });
-  await Author.update({
-    data: {
-      setting: {
-        update: {
-          menu: JSON.stringify(updatedMenu),
+      return item;
+    });
+
+    await Author.update({
+      data: {
+        setting: {
+          update: {
+            menu: JSON.stringify(updatedMenu),
+          },
         },
       },
-    },
-    where: { id: authorId },
-  });
+      where: { id: authorId },
+    });
+  }
 }
 
 async function getOrCreateSlug(

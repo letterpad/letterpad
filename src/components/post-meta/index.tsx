@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Input, Drawer, Button, Switch } from "antd";
+import { Row, Col, Input, Drawer, Button, Switch, Modal } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import ImageUpload from "../ImageUpload";
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
@@ -19,9 +19,17 @@ interface IProps {
   post: PostWithAuthorAndTagsFragment;
   setPostAttribute: PostContextType["setPostAttribute"];
   deletePost: () => void;
+  navigationTags: string[] | undefined;
+  navigationPages: string[] | undefined;
 }
 
-const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
+const Actions = ({
+  post,
+  setPostAttribute,
+  deletePost,
+  navigationTags,
+  navigationPages,
+}: IProps) => {
   const SavingIndicator = useSavingIndicator();
   const [visible, setVisible] = useState(false);
   const [postHash, setPostHash] = useState("");
@@ -130,12 +138,26 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
             <Switch
               size="small"
               checked={isPublished}
-              onChange={(change) => {
+              onChange={(active) => {
+                const navLinkedWithTags = post.tags?.find((tag) =>
+                  navigationTags?.includes(tag.name),
+                );
+                const navLinkedWithPages = navigationPages?.find(
+                  (page) => page === post.slug?.replace("/page/", ""),
+                );
                 setPostAttribute({
-                  status: change
+                  status: active
                     ? PostStatusOptions.Published
                     : PostStatusOptions.Draft,
                 });
+
+                if (!active) return;
+                if (post.type === PostTypes.Post) {
+                  if (post.tags?.length === 0) return warnNoTags();
+                  if (!navLinkedWithTags) return tagNotLinkedWithNavigation();
+                } else {
+                  if (!navLinkedWithPages) return pageNotLinkedWithNavigation();
+                }
               }}
             />
           </Col>
@@ -206,3 +228,65 @@ const Actions = ({ post, setPostAttribute, deletePost }: IProps) => {
 };
 
 export default Actions;
+
+function warnNoTags() {
+  Modal.warning({
+    title: "Post not visible",
+    content: (
+      <div>
+        This post has been published, however it wont be visible in your blog.
+        You have not added tags to your post. Add a tag and ensure its set up in
+        navigation.
+        <p>
+          <a
+            target="_blank"
+            href="https://docs.letterpad.app/publishing/grouping-posts#setup-navigation-menu-to-display-the-tag"
+          >
+            Click here
+          </a>{" "}
+          to know more.
+        </p>
+      </div>
+    ),
+  });
+}
+
+function tagNotLinkedWithNavigation() {
+  Modal.warning({
+    title: "Link one of the tag with navigation",
+    content: (
+      <div>
+        This page has been published, however it wont be visible in your blog
+        untill you link one of the tag in navigation. <br />
+        You can link one of tag with navigation by going to Settings →
+        Navigation and adding a new menu item.
+        <p>
+          <a target="_blank" href="https://docs.letterpad.app/navigation-menu">
+            Click here
+          </a>{" "}
+          to know more.
+        </p>
+      </div>
+    ),
+  });
+}
+
+function pageNotLinkedWithNavigation() {
+  Modal.warning({
+    title: "Page not linked with Navigation",
+    content: (
+      <div>
+        This page has been published, however it wont be visible in your blog
+        untill you link it with navigation. <br />
+        You can link this page with navigation by going to Settings → Navigation
+        and adding a new menu item.
+        <p>
+          <a target="_blank" href="https://docs.letterpad.app/navigation-menu">
+            Click here
+          </a>{" "}
+          to know more.
+        </p>
+      </div>
+    ),
+  });
+}

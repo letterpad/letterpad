@@ -38,7 +38,7 @@ export const createApolloTestServer = async () => {
 let server;
 
 beforeAll(async () => {
-  jest.setTimeout(10000);
+  // jest.setTimeout(0);
   try {
     global.console = require("console");
     await execShellCommand(
@@ -52,7 +52,7 @@ beforeAll(async () => {
   server = await createApolloTestServer();
   const { url } = await server.listen({ port: 3000 });
   console.log("server listening at " + url);
-});
+}, 60000);
 
 afterAll(async () => {
   server?.stop();

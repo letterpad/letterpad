@@ -22,6 +22,7 @@ const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {
             value={settings.site_title}
             onBlur={updateSettings}
             onChange={(e) => onChange("site_title", e.target.value)}
+            placeholder="Name of your blog"
           />
         </Form.Item>
         <Form.Item label="Site Tagline">
@@ -30,6 +31,7 @@ const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {
             value={settings.site_tagline}
             onBlur={updateSettings}
             onChange={(e) => onChange("site_tagline", e.target.value)}
+            placeholder="A short phrase for your blog"
           />
         </Form.Item>
         <Form.Item label="Site Email (public)">
@@ -38,6 +40,7 @@ const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {
             value={settings.site_email}
             onBlur={updateSettings}
             onChange={(e) => onChange("site_email", e.target.value)}
+            placeholder="e.g. foo@letterpad.app"
           />
         </Form.Item>
         <Form.Item label="Short Description">
@@ -47,7 +50,7 @@ const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {
             onBlur={updateSettings}
             onChange={(e) => onChange("site_description", e.target.value)}
             placeholder="Write something about your site. Will be used in SEO and other pages"
-            autoSize={{ minRows: 2, maxRows: 3 }}
+            autoSize={{ minRows: 3, maxRows: 3 }}
           />
         </Form.Item>
         <Form.Item label="Site Url" hidden={true}>
@@ -65,7 +68,7 @@ const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {
             value={settings.site_footer}
             onBlur={updateSettings}
             onChange={(e) => onChange("site_footer", e.target.value)}
-            autoSize={{ minRows: 2, maxRows: 3 }}
+            autoSize={{ minRows: 3, maxRows: 3 }}
             maxLength={200}
           />
         </Form.Item>

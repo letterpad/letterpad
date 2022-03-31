@@ -19,7 +19,7 @@ interface IProps {
   props: any;
 }
 const Main = ({ Component, props }: IProps) => {
-  const { data, loading: settingsLoading } = useSettingsQuery();
+  const { data, loading: settingsLoading, refetch } = useSettingsQuery();
   const { data: sessionData, status: sessionStatus } = useSession();
   useTracking();
 
@@ -31,6 +31,10 @@ const Main = ({ Component, props }: IProps) => {
     if (protectedPage) ThemeSwitcher.switch(localStorage.theme);
     initPageProgress();
   }, []);
+
+  useEffect(() => {
+    refetch();
+  }, [Component]);
 
   useEffect(() => {
     if (protectedPage && sessionStatus === "unauthenticated") {

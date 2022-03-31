@@ -33,6 +33,8 @@ type Setting {
   social_github: String @deprecated
   display_author_info: Boolean!
   intro_dismissed: Boolean!
+  show_about_page: Boolean
+  show_tags_page: Boolean
   cloudinary_key: String
   cloudinary_name: String
   cloudinary_secret: String
@@ -92,6 +94,8 @@ input SettingInputType {
   site_logo: InputImage
   site_favicon: InputImage
   intro_dismissed: Boolean
+  show_about_page: Boolean
+  show_tags_page: Boolean
 }
 
 type SettingError implements LetterpadError {

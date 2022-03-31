@@ -60,7 +60,7 @@ export async function getVerifyUserEmailContent(
 
   const body = bodyTemplate.render({
     company_name: `<a href="https://letterpad.app">Letterpad</a>`,
-    full_name: "there",
+    full_name: author.name,
     verify_link: `<a target="_blank" href="${href}">
         Verify Email
       </a>`,

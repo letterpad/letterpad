@@ -1,5 +1,9 @@
 import { usePostContext } from "@/components/post/context";
-import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
+import {
+  NavigationType,
+  PostStatusOptions,
+  PostTypes,
+} from "@/__generated__/__types__";
 import { LoadingOutlined } from "@ant-design/icons";
 import { PageHeader, Tag } from "antd";
 import { useRouter } from "next/router";
@@ -8,10 +12,22 @@ import { PostContextType } from "../types";
 
 const Header: React.FC = () => {
   const router = useRouter();
-  const { post, setPostAttribute, updating } =
+  const { post, setPostAttribute, updating, settings } =
     usePostContext() as PostContextType;
 
   if (!post) return null;
+
+  const navigationTags = settings?.menu
+    .filter(
+      (a) => a.type === NavigationType.Tag && post?.type === PostTypes.Post,
+    )
+    .map((a) => a.slug.replace("/tag/", "").toLowerCase());
+
+  const navigationPages = settings?.menu
+    .filter(
+      (a) => a.type === NavigationType.Page && post?.type === PostTypes.Page,
+    )
+    .map((a) => a.slug.replace("/page/", "").toLowerCase());
 
   if (post.__typename === "Post") {
     const tagColor =
@@ -35,6 +51,8 @@ const Header: React.FC = () => {
               setPostAttribute({ status: PostStatusOptions.Trashed });
               router.push(isPost ? "/posts" : "/pages");
             }}
+            navigationTags={navigationTags}
+            navigationPages={navigationPages}
           />,
         ]}
         tags={<Tag color={tagColor}>{post.status}</Tag>}

@@ -193,6 +193,8 @@ query settings {
       cloudinary_secret
       client_token
       intro_dismissed
+      show_about_page
+      show_tags_page
       menu {
         label
         original_name
