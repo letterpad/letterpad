@@ -145,7 +145,7 @@ Object {
       },
     });
 
-    const a = await API({
+    await API({
       query: UpdateAuthorDocument,
       variables: {
         author: {
