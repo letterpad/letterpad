@@ -275,7 +275,10 @@ async function getOrCreateSlug(
   }
 
   // slug does not exist for existing post and needs to be created from title
-  if (title && existingPost?.slug.startsWith("untitled")) {
+  if (
+    title &&
+    (existingPost?.slug.startsWith("untitled") || !existingPost?.slug)
+  ) {
     slug = await slugify(postModel, textToSlug(title), existingPost.author_id);
     return slug;
   }

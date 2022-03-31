@@ -78,6 +78,7 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
         onAddition={onAddition}
         allowNew
         suggestions={suggestions}
+        delimiters={["Enter", "Tab", ","]}
       />
       <style jsx global>{`
         .react-tags {
@@ -111,7 +112,10 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
           font-size: inherit;
           line-height: inherit;
         }
-
+        .react-tags__selected-tag:after {
+          content: "x";
+          margin-left: 8px;
+        }
         .react-tags__search {
           display: block;
 
