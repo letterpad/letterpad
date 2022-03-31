@@ -173,7 +173,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
   async updateAuthor(_root, args, { session, prisma, mailUtils }) {
     if (session?.user.id !== args.author.id) {
       return {
-        ok: true,
+        ok: false,
         errors: [{ message: "No session", path: "updateAuthor resolver" }],
       };
     }
