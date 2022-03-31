@@ -30,8 +30,9 @@ module.exports.defaultSettings = {
   site_tagline: "My space",
   site_email: "admin@letterpad.app",
   site_url: "https://demo.letterpad.app",
-  site_footer: "",
-  site_description: "",
+  site_footer: "Wonderful digital things with a pinch of rock and roll!",
+  site_description:
+    "Digital nomad creating content about building IT businesses and production-ready apps.",
   subscribe_embed: "",
   social_twitter: "",
   social_facebook: "",

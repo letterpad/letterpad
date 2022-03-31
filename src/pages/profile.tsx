@@ -43,6 +43,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [saving, setSaving] = useState(false);
+  const [savingUsername, setSavingUsername] = useState(false);
   const { refetch } = useSettingsQuery();
 
   useEffect(() => {
@@ -56,10 +57,10 @@ function Profile({ readOnly }: { readOnly: boolean }) {
   const saveUserName = async () => {
     message.destroy("author");
     if (readOnly) {
-      return setSaving(false);
+      return setSavingUsername(false);
     }
     if (!me?.id || !username) return;
-    setSaving(true);
+    setSavingUsername(true);
     track({
       eventAction: EventAction.Change,
       eventCategory: "profile",
@@ -86,7 +87,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
         duration: 10,
       });
     }
-    setSaving(false);
+    setSavingUsername(false);
   };
 
   const saveEmail = async () => {
@@ -217,6 +218,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
               <Panel header="Basic Information" key="1">
                 <Form.Item label="Full Name">
                   <Input
+                    placeholder="Write you full name"
                     size="middle"
                     value={me.name}
                     onChange={(e) => onChange("name", e.target.value)}
@@ -224,6 +226,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                 </Form.Item>
                 <Form.Item label="About You (html)">
                   <Input.TextArea
+                    placeholder="Write about you. This will be displayed in the about me page. (4000 characters)"
                     value={me.bio}
                     onChange={(e) => onChange("bio", e.target.value)}
                     autoSize={{ minRows: 10, maxRows: 80 }}
@@ -233,6 +236,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                 </Form.Item>
                 <Form.Item label="Occupation">
                   <Input
+                    placeholder="What do you do ?"
                     value={me.occupation}
                     onChange={(e) => onChange("occupation", e.target.value)}
                     size="middle"
@@ -240,6 +244,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                 </Form.Item>
                 <Form.Item label="Company Name">
                   <Input
+                    placeholder="Which company do you work for ?"
                     size="middle"
                     value={me.company_name}
                     onChange={(e) => onChange("company_name", e.target.value)}
@@ -275,7 +280,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                       type="primary"
                       size="middle"
                       onClick={saveUserName}
-                      loading={saving}
+                      loading={savingUsername}
                     >
                       Validate
                     </Button>
@@ -294,6 +299,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
               <Panel header="Social Information" key="2">
                 <Form.Item label="Twitter">
                   <Input
+                    placeholder="https://twitter.com/username"
                     size="middle"
                     value={me.social?.twitter}
                     onChange={(e) => onSocialChange("twitter", e.target.value)}
@@ -301,6 +307,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                 </Form.Item>
                 <Form.Item label="Facebook">
                   <Input
+                    placeholder="https://facebook.com/username"
                     size="middle"
                     value={me.social?.facebook}
                     onChange={(e) => onSocialChange("facebook", e.target.value)}
@@ -308,6 +315,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                 </Form.Item>
                 <Form.Item label="Instagram">
                   <Input
+                    placeholder="https://instagram.com/username"
                     size="middle"
                     value={me.social?.instagram}
                     onChange={(e) =>
@@ -317,6 +325,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                 </Form.Item>
                 <Form.Item label="Github">
                   <Input
+                    placeholder="https://github.com/username"
                     size="middle"
                     value={me.social?.github}
                     onChange={(e) => onSocialChange("github", e.target.value)}
@@ -324,6 +333,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
                 </Form.Item>
                 <Form.Item label="LinkedIn">
                   <Input
+                    placeholder="https://linkedin.com/in/username/"
                     size="middle"
                     value={me.social?.linkedin}
                     onChange={(e) => onSocialChange("linkedin", e.target.value)}

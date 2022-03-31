@@ -4,17 +4,17 @@ import {
   updatePostDraftAttributes,
 } from "@/components/post/api";
 import usePost from "@/components/post/usePost";
-import { InputUpdatePost } from "@/__generated__/__types__";
+import { InputUpdatePost, Setting } from "@/__generated__/__types__";
 import { useContext } from "react";
 import { PostContextType } from "@/components/post/types";
 import { Editor } from "@tinymce/tinymce-react";
 
 export const PostContext = createContext<Partial<PostContextType>>({});
 
-export const PostProvider: React.FC<{ readOnly: boolean }> = ({
-  children,
-  readOnly,
-}) => {
+export const PostProvider: React.FC<{
+  readOnly: boolean;
+  settings: Setting;
+}> = ({ children, readOnly, settings }) => {
   const [updating, setUpdating] = useState(false);
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const { loading, post, error, setPost } = usePost();
@@ -41,6 +41,7 @@ export const PostProvider: React.FC<{ readOnly: boolean }> = ({
     fileExplorerOpen,
     post,
     error,
+    settings,
     setPost,
     helpers,
     setHelpers,

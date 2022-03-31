@@ -1,6 +1,6 @@
 import usePost from "@/components/post/usePost";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
-import { InputUpdatePost } from "@/__generated__/__types__";
+import { InputUpdatePost, Setting } from "@/__generated__/__types__";
 import { Editor } from "@tinymce/tinymce-react";
 import { Dispatch, SetStateAction } from "react";
 
@@ -17,4 +17,5 @@ export type PostContextType = {
   setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => Promise<void>;
   onFileExplorerClose: () => void;
   onMediaBrowse: () => void;
+  settings?: Setting;
 };

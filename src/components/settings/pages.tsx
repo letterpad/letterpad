@@ -1,5 +1,5 @@
 import { SettingInputType, Setting } from "@/__generated__/__types__";
-import { Checkbox, Collapse, Divider, Form, Input } from "antd";
+import { Checkbox, Collapse, Divider } from "antd";
 const { Panel } = Collapse;
 
 type ValueOf<T> = T[keyof T];

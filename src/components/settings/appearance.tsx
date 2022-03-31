@@ -83,12 +83,6 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
           </Radio.Group>
         </Form.Item>
         <Form.Item label="CSS">
-          {/* <TextArea
-                    value={settings.css}
-                    onChange={e => {}}
-                    placeholder="Add css to customise your website"
-                    autoSize={{ minRows: 5, maxRows: 50 }}
-                  /> */}
           <div id="css-editor">
             <Editor
               value={settings.css ?? ""}
