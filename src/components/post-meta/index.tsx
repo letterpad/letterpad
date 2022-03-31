@@ -236,7 +236,7 @@ function warnNoTags() {
       <div>
         This post has been published, however it wont be visible in your blog.
         You have not added tags to your post. Add a tag and ensure its set up in
-        navigation.
+        Navigation.
         <p>
           <a
             target="_blank"
@@ -257,9 +257,9 @@ function tagNotLinkedWithNavigation() {
     content: (
       <div>
         This page has been published, however it wont be visible in your blog
-        untill you link one of the tag in navigation. <br />
-        You can link one of tag with navigation by going to Settings →
-        Navigation and adding a new menu item.
+        untill you link one of the tag in Navigation. <br />
+        You can do so by going to Settings → Navigation and adding a new menu
+        item.
         <p>
           <a target="_blank" href="https://docs.letterpad.app/navigation-menu">
             Click here
@@ -277,9 +277,9 @@ function pageNotLinkedWithNavigation() {
     content: (
       <div>
         This page has been published, however it wont be visible in your blog
-        untill you link it with navigation. <br />
-        You can link this page with navigation by going to Settings → Navigation
-        and adding a new menu item.
+        untill you link it in Navigation. <br />
+        You can do so by going to Settings → Navigation and adding a new menu
+        item.
         <p>
           <a target="_blank" href="https://docs.letterpad.app/navigation-menu">
             Click here
