@@ -3,7 +3,7 @@ env(__dirname + "/../.env.development.local");
 process.env.DATABASE_URL = "file:../data/test.sqlite";
 console.log(process.env.CI);
 if (process.env.CI === "GITHUB_ACTIONS") {
-  process.env.DATABASE_URL = "mysql://root:@127.0.0.1:3306/letterpad";
+  process.env.DATABASE_URL = "mysql://root:foobar@127.0.0.1:3306/letterpad";
 }
 
 import { ApolloServer } from "apollo-server";
@@ -49,7 +49,7 @@ beforeAll(async () => {
     // configured in github workflow yml file.
     if (process.env.CI === "GITHUB_ACTIONS") {
       await execShellCommand(
-        "DATABASE_URL='mysql://root:@127.0.0.1:3306/letterpad' npx prisma db push --force-reset",
+        "DATABASE_URL='mysql://root:foobar@127.0.0.1:3306/letterpad' npx prisma db push --force-reset",
       );
     } else {
       await execShellCommand(

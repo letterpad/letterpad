@@ -13,11 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: shogo82148/actions-setup-mysql@v1
+      - uses: mirromutth/mysql-action@v1.1
         with:
-          mysql-version: "8.0"
-
-      - run: mysql -uroot -h127.0.0.1 -e 'CREATE DATABASE letterpad'
+          container port: 3307 # Optional, default value is 3306. The port of container
+          character set server: "utf8" # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
+          collation server: "utf8_general_ci" # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
+          mysql version: "8.0" # Optional, default value is "latest". The version of the MySQL
+          mysql database: "letterpad" # Optional, default value is "test". The specified database which will be create
+          mysql root password: "foobar" # Required if "mysql user" is empty, default is empty. The root superuser password
+          mysql user: "developer" # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+          mysql password: "foobar"
 
       - uses: actions/setup-node@v2
         with:
@@ -42,7 +47,7 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate --schema prisma/schema_mysql.prisma
         env:
-          DATABASE_URL: "mysql://root:@localhost:3306/letterpad"
+          DATABASE_URL: "mysql://root:foobar@localhost:3306/letterpad"
 
       - name: Test GraphQL API
         run: yarn run test
