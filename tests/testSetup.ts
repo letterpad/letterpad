@@ -1,7 +1,7 @@
 const env = require("node-env-file");
 env(__dirname + "/../.env.development.local");
 process.env.DATABASE_URL = "file:../data/test.sqlite";
-
+console.log(process.env.CI);
 if (process.env.CI === "GITHUB_ACTIONS") {
   process.env.DATABASE_URL = "mysql://root:@localhost:3306/letterpad";
 }
@@ -49,7 +49,7 @@ beforeAll(async () => {
     // configured in github workflow yml file.
     if (process.env.CI === "GITHUB_ACTIONS") {
       await execShellCommand(
-        "DATABASE_URL='mysql://root:@localhost:3306/letterpad' npx prisma db push --force-reset",
+        "DATABASE_URL='mysql://root:@127.0.0.1:3306/letterpad' npx prisma db push --force-reset",
       );
     } else {
       await execShellCommand(
@@ -58,7 +58,7 @@ beforeAll(async () => {
     }
   } catch (err) {
     console.log(err);
-    process.exit();
+    process.exit(1);
   }
   await seed();
   server = await createApolloTestServer();
