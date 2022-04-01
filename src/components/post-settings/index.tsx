@@ -7,7 +7,6 @@ import Tags from "./tags";
 import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
 import { getPostHash } from "./api";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
-import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 import PublishButton from "./publishButton";
 import QuickMenu from "./quickmenu";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
