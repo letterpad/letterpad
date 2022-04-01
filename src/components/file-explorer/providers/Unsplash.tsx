@@ -19,9 +19,10 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
 
   useEffect(() => {
     searchUnsplash();
-  }, [query, page]);
+  }, [page]);
 
   function handleUnsplashResponse({ rows, count }: any) {
+    setLoading(false);
     if (rows.length === 0) {
       return setError("No images found.");
     }
@@ -29,11 +30,11 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     setTotalCount(count);
   }
 
-  const searchUnsplash = async () => {
-    setError("");
+  const searchUnsplash = async (term = query) => {
+    resetAll();
     if (query.length === 0) return;
     setLoading(true);
-    fetchUnsplashMedia(url, page, query)
+    fetchUnsplashMedia(url, page, term)
       .then(handleUnsplashResponse)
       .catch((_e) => {
         setError(_e.message);
@@ -41,13 +42,16 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
       });
   };
 
-  const onKeyUp = async (e) => {
+  const resetAll = () => {
+    setError("");
+    setLoading(false);
+    setData([]);
+  };
+
+  const onChange = async (e) => {
     const search = e.target.value.trim();
     if (search.length > 0) {
-      if (e.keyCode === 13) {
-        setQuery(search);
-        setData([]);
-      }
+      setQuery(search);
     }
   };
 
@@ -61,13 +65,19 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     <div>
       <Input.Group compact>
         <Input
+          value={query}
           data-testid="input-unsplash"
-          onKeyUp={onKeyUp}
+          onPressEnter={(_) => searchUnsplash()}
+          onChange={onChange}
           placeholder="Search high resolution photos from Unsplash"
           autoFocus
           style={{ width: "calc(100% - 110px)" }}
         />
-        <Button type="primary" loading={loading} onClick={searchUnsplash}>
+        <Button
+          type="primary"
+          loading={loading}
+          onClick={(_e) => searchUnsplash(query)}
+        >
           Search
         </Button>
       </Input.Group>
