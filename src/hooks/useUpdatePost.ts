@@ -53,6 +53,7 @@ export const useUpdatePost = () => {
       ...postData.post,
       ...data,
     };
+
     apolloBrowserClient.writeQuery({
       query: PostDocument,
       variables: { filters: { id: data.id } },

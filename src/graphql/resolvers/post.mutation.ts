@@ -193,7 +193,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
   },
 };
 
-function isPublishingLive(oldStatus: string | null, newStatus?: string | null) {
+function isPublishingLive(newStatus: string | null, oldStatus?: string | null) {
   return (
     newStatus === PostStatusOptions.Published &&
     oldStatus === PostStatusOptions.Draft
@@ -261,35 +261,45 @@ async function updateMenuOnTitleChange(props: UpdateMenuProps) {
 async function getOrCreateSlug(
   postModel: Prisma.PostDelegate<false>,
   id: number,
-  slug?: string,
-  title?: string,
+  newSlug?: string,
+  newTitle?: string,
 ) {
   const existingPost = await postModel.findFirst({ where: { id } });
 
   if (!existingPost) return "";
-  // slug already exist for this post. Needs update with new slug.
-  if (existingPost?.slug && slug) {
-    slug = getLastPartFromPath(slug);
-    slug = await slugify(postModel, textToSlug(slug), existingPost.author_id);
-    return slug;
+  // slug already exist for this post, but user updated the slug
+  if (existingPost?.slug && newSlug) {
+    newSlug = getLastPartFromPath(newSlug);
+    newSlug = await slugify(
+      postModel,
+      textToSlug(newSlug),
+      existingPost.author_id,
+    );
+    return newSlug;
   }
 
-  // slug does not exist for existing post and needs to be created from title
+  // slug does not exist for existing post or contains default untitled slug.
+  // If new title was entered, create a new slug
   if (
-    title &&
+    newTitle &&
     (existingPost?.slug.startsWith("untitled") || !existingPost?.slug)
   ) {
-    slug = await slugify(postModel, textToSlug(title), existingPost.author_id);
-    return slug;
+    newSlug = await slugify(
+      postModel,
+      textToSlug(newTitle),
+      existingPost.author_id,
+    );
+    return newSlug;
   }
 
-  if (!title && !slug) {
-    slug = await slugify(postModel, "untitled", existingPost.author_id);
-    return slug;
+  if (!existingPost.title && !newTitle && !newSlug) {
+    newSlug = await slugify(postModel, "untitled", existingPost.author_id);
+    return newSlug;
   }
 
-  if (!slug) return existingPost?.slug;
-  return textToSlug(slug);
+  if (!newSlug) return existingPost?.slug;
+
+  return textToSlug(newSlug);
 }
 
 async function getCoverImageAttrs(cover_image) {
@@ -349,33 +359,36 @@ async function getContentAttrs(
     });
     html = $.html();
   }
-  const data = {
-    html: html || prevPost.html || empty,
-    html_draft: prevPost.html_draft || empty,
-    reading_time: prevPost.reading_time || empty,
-  };
 
   if (!prevPost.status) {
-    return data;
+    return {
+      html_draft: html,
+    };
   }
   if (savingDraft(prevPost.status, newStatus)) {
-    data.html = prevPost.html || empty;
-    data.html_draft = html || data.html_draft;
-    return data;
+    const _html = html || prevPost.html_draft || empty;
+    return {
+      html_draft: _html,
+      reading_time: getReadingTimeFromHtml(_html),
+    };
   }
   if (newStatus && isPublishingLive(newStatus, prevPost.status)) {
-    return { ...data, reading_time: getReadingTimeFromHtml(data.html) };
+    const _html = html || prevPost.html || prevPost.html_draft || empty;
+    return {
+      reading_time: getReadingTimeFromHtml(_html),
+      html_draft: empty,
+      html: _html,
+    };
   }
   if (rePublished(prevPost.status, newStatus)) {
-    if (!html) {
-      data.html = data.html_draft;
-    }
-    data.html = (await setImageWidthAndHeightInHtml(data.html)) || empty;
-    data.html_draft = empty;
-    data.reading_time = getReadingTimeFromHtml(data.html);
+    const _html = html || prevPost.html_draft || prevPost.html || empty;
+    return {
+      html_draft: "",
+      html: await setImageWidthAndHeightInHtml(_html),
+      reading_time: getReadingTimeFromHtml(_html),
+    };
   }
-
-  return data;
+  return {};
 }
 
 export default { Mutation };

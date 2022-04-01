@@ -13,7 +13,12 @@ import QuickMenu from "./quickmenu";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { DeletePost } from "./deletePost";
 import { Dropdown } from "antd";
-import { createPathWithPrefix, textToSlug } from "@/utils/slug";
+import {
+  createPathWithPrefix,
+  getLastPartFromPath,
+  textToSlug,
+} from "@/utils/slug";
+import { subscribe } from "@/shared/eventBus";
 
 const { TextArea } = Input;
 
@@ -22,22 +27,38 @@ interface IProps {
 }
 
 const Actions = ({ post }: IProps) => {
-  const SavingIndicator = useSavingIndicator();
   const [visible, setVisible] = useState(false);
   const [postHash, setPostHash] = useState("");
   const settingsResponse = useSettingsQuery();
   const [slug, setSlug] = useState(post.slug);
   const { updatePost, debounceUpdatePost } = useUpdatePost();
+  const [saving, setSaving] = useState("");
 
   useEffect(() => {
     getPostHash(post.id).then(setPostHash);
   }, [post.id]);
 
+  useEffect(() => {
+    setSlug(post.slug);
+  }, [post.slug]);
+
+  useEffect(() => {
+    subscribe("save", (msg) => {
+      setSaving(msg);
+      setTimeout(() => {
+        setSaving("");
+      }, 2000);
+    });
+  }, []);
+
   const showDrawer = () => setVisible(true);
   const onClose = () => setVisible(false);
 
   const formatSlug = (slug: string) => {
-    let formattedSlug = createPathWithPrefix(textToSlug(slug), post.type);
+    let formattedSlug = createPathWithPrefix(
+      textToSlug(getLastPartFromPath(slug)),
+      post.type,
+    );
     setSlug(formattedSlug);
     updatePost({ id: post.id, slug: formattedSlug });
   };
@@ -72,7 +93,6 @@ const Actions = ({ post }: IProps) => {
           <MoreOutlined style={{ fontSize: 30 }} />
         </a>
       </Dropdown>
-
       <Drawer
         title="Settings"
         placement="right"
@@ -80,8 +100,8 @@ const Actions = ({ post }: IProps) => {
         onClose={onClose}
         visible={visible}
         width={320}
-        extra={[SavingIndicator]}
         zIndex={10000}
+        extra={[saving || <span>────</span>]}
       >
         {/* <Space direction="vertical" size="middle"> */}
         <PublishButton

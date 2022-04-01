@@ -68,7 +68,9 @@ const LpEditor: React.FC<Props> = ({ text, postId }) => {
         }}
         initialValue={html}
         onEditorChange={(html) => {
-          if (postId) debounceUpdatePost({ id: postId, html });
+          const htmlWithBody = `<html><body>${html}</body></html>`;
+          if (htmlWithBody === text) return;
+          if (postId) debounceUpdatePost({ id: postId, html: htmlWithBody });
         }}
         init={{
           menubar: false,

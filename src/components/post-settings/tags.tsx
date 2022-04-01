@@ -15,7 +15,7 @@ interface Tag {
 }
 
 const Tags = ({ post }: IProps) => {
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [tags, setTags] = useState<Tag[]>(addTagsWithId(post.tags || []));
   const [suggestions, setSuggestions] = useState<Tag[]>([]);
   const { updatePost } = useUpdatePost();
   const { loading, data } = useTagsQuery({
@@ -33,17 +33,12 @@ const Tags = ({ post }: IProps) => {
     }
   }, [loading]);
 
-  useEffect(() => {
-    if (post.__typename !== "Post") return;
-    setTags(addTagsWithId(post.tags ?? []));
-  }, [post.__typename]);
-
-  useEffect(() => {
+  const saveTags = (tags: Tag[]) => {
     updatePost({
       id: post.id,
       tags: tags.map((t) => ({ name: t.name, slug: t.name })),
     });
-  }, [tags]);
+  };
 
   const onDelete = (i) => {
     if (i === -1) return false;
@@ -53,11 +48,14 @@ const Tags = ({ post }: IProps) => {
 
     addToSuggestion(removedTag);
     setTags(_tags);
+    saveTags(_tags);
   };
 
   const onAddition = (tag) => {
     tag = { ...tag, name: textToSlug(tag.name) };
-    setTags([...tags, { ...tag, id: tag.name }]);
+    const _tags = [...tags, { ...tag, id: tag.name }];
+    setTags(_tags);
+    saveTags(_tags);
     removeFromSuggestion(tag);
   };
 

@@ -14,5 +14,5 @@ export const getLastPartFromPath = (path: string) => {
 };
 
 export const createPathWithPrefix = (text: string, prefix: string) => {
-  return `/${prefix}/` + text.replace(`/${prefix}/`, "");
+  return `/${prefix}/` + text.replace(`/${prefix}/g`, "");
 };
