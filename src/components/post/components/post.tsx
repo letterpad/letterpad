@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Layout, Row } from "antd";
+import { Layout } from "antd";
 import withAuthCheck from "@/hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
@@ -10,32 +9,27 @@ import Title from "@/components/post/components/title";
 import Editor from "@/components/post/components/editor";
 import { PostContextType } from "../types";
 import { Content } from "antd/lib/layout/layout";
-import { getReadableDate } from "@/shared/utils";
 import { insertImageInEditor } from "./commands";
+import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+import { useRouter } from "next/router";
+import PostDate from "./postDate";
+import WordCount from "./wordCount";
 
 function Post() {
-  const {
-    post,
-    loading,
-    error,
-    onFileExplorerClose,
-    fileExplorerOpen,
-    helpers,
-  } = usePostContext() as PostContextType;
+  const router = useRouter();
+  const { postId } = router.query;
+  const { data, loading, error } = usePostQuery({
+    variables: { filters: { id: Number(postId) } },
+  });
 
-  const [count, setCount] = useState(0);
+  const { onFileExplorerClose, fileExplorerOpen, helpers } =
+    usePostContext() as PostContextType;
 
-  useEffect(() => {
-    if (post && post.__typename === "Post") {
-      const content = post.html_draft || post.html || "";
-      const words = content.split(" ").length;
-      setCount(words);
-    }
-  }, [post]);
-
-  if (!loading && post && post.__typename !== "Post") {
+  if (!loading && data && data.post.__typename !== "Post") {
     return <ErrorMessage title="Error" description={error} />;
   }
+
+  const post = data?.post.__typename === "Post" ? data.post : undefined;
   const content = post?.html_draft || post?.html;
 
   return (
@@ -43,27 +37,19 @@ function Post() {
       <Head>
         <title>Editing - {post?.title}</title>
       </Head>
-      <Header />
+      {post && <Header post={post} />}
       <Content style={{ margin: "24px 16px 0" }}>
         <div style={{ maxWidth: 660, margin: "auto" }}>
-          {loading ? (
-            ""
-          ) : (
+          {!loading && (
             <div>
-              <Row justify="center" style={{ paddingBottom: 20 }}>
-                {getReadableDate(post?.updatedAt)}
-              </Row>
-              <Title onEnter={() => helpers?.focus()} />
-              <Editor text={content ?? ""} />
-              <div
-                style={{
-                  position: "fixed",
-                  bottom: 10,
-                  left: 10,
-                }}
-              >
-                {count} words
-              </div>
+              <PostDate date={post?.updatedAt} />
+              <Title
+                onEnter={() => helpers?.focus()}
+                title={post?.title || ""}
+                postId={post?.id}
+              />
+              <Editor text={content ?? ""} postId={post?.id} />
+              <WordCount text={post?.html_draft || post?.html || ""} />
               <FileExplorer
                 multi={true}
                 isVisible={fileExplorerOpen}

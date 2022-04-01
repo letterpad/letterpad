@@ -1,9 +1,11 @@
 import { memo } from "react";
 import { Input } from "antd";
-import { usePostContext } from "../context";
+import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 interface Props {
   onEnter(): void;
+  postId?: number;
+  title: string;
 }
 enum TextAlign {
   center = "center",
@@ -23,15 +25,16 @@ const defaults = {
   placeholder: "Enter a title",
   bordered: false,
 };
-const Title: React.FC<Props> = ({ onEnter }) => {
-  const { setPostAttribute, post } = usePostContext();
+const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
+  const { updatePost, updateLocalState } = useUpdatePost();
+
   return (
     <>
       <Input.TextArea
         {...defaults}
-        value={post?.title}
+        value={title}
         onChange={(e) => {
-          setPostAttribute && setPostAttribute({ title: e.target.value });
+          if (postId) updateLocalState({ title: e.target.value, id: postId });
         }}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
@@ -39,6 +42,9 @@ const Title: React.FC<Props> = ({ onEnter }) => {
             onEnter();
           }
         }}
+        onBlur={(e) =>
+          postId && updatePost({ title: e.target.value, id: postId })
+        }
         className="title"
       />
       <style jsx global>{`

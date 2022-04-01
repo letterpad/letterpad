@@ -5,13 +5,16 @@ import { usePostContext } from "../../context";
 import { basePath } from "@/constants";
 import { textPatterns } from "../textPatterns";
 import { socket } from "./socket";
+import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 interface Props {
   text: string;
+  postId?: number;
 }
 
-const LpEditor: React.FC<Props> = ({ text }) => {
-  const { setHelpers, onMediaBrowse, setPostAttribute } = usePostContext();
+const LpEditor: React.FC<Props> = ({ text, postId }) => {
+  const { setHelpers, onMediaBrowse } = usePostContext();
+  const { debounceUpdatePost } = useUpdatePost();
   const editorRef = useRef<Editor["editor"]>(null);
   const isDark = document.body.classList.contains("dark");
   const [html, setHtml] = useState(text);
@@ -25,7 +28,7 @@ const LpEditor: React.FC<Props> = ({ text }) => {
         if (html) {
           editorRef.current?.setContent(html);
           socket.applyTooltip();
-          setPostAttribute && setPostAttribute({ html });
+          if (postId) debounceUpdatePost({ id: postId, html });
         }
       });
     }
@@ -65,7 +68,9 @@ const LpEditor: React.FC<Props> = ({ text }) => {
         }}
         initialValue={html}
         onEditorChange={(html) => {
-          setPostAttribute && setPostAttribute({ html });
+          const htmlWithBody = `<html><body>${html}</body></html>`;
+          if (htmlWithBody === text) return;
+          if (postId) debounceUpdatePost({ id: postId, html: htmlWithBody });
         }}
         init={{
           menubar: false,

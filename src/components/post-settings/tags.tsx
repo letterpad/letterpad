@@ -1,13 +1,12 @@
 import ReactTags from "react-tag-autocomplete";
 import { useEffect, useState } from "react";
-import { InputUpdatePost } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 import { useTagsQuery } from "@/graphql/queries/queries.graphql";
+import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { textToSlug } from "@/utils/slug";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
-  setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => void;
 }
 
 interface Tag {
@@ -15,9 +14,10 @@ interface Tag {
   name: string;
 }
 
-const Tags = ({ post, setPostAttribute }: IProps) => {
-  const [tags, setTags] = useState<Tag[]>([]);
+const Tags = ({ post }: IProps) => {
+  const [tags, setTags] = useState<Tag[]>(addTagsWithId(post.tags || []));
   const [suggestions, setSuggestions] = useState<Tag[]>([]);
+  const { updatePost } = useUpdatePost();
   const { loading, data } = useTagsQuery({
     variables: { filters: { suggest: true } },
   });
@@ -33,16 +33,12 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
     }
   }, [loading]);
 
-  useEffect(() => {
-    if (post.__typename !== "Post") return;
-    setTags(addTagsWithId(post.tags ?? []));
-  }, [post.__typename]);
-
-  useEffect(() => {
-    setPostAttribute({
+  const saveTags = (tags: Tag[]) => {
+    updatePost({
+      id: post.id,
       tags: tags.map((t) => ({ name: t.name, slug: t.name })),
     });
-  }, [tags]);
+  };
 
   const onDelete = (i) => {
     if (i === -1) return false;
@@ -52,11 +48,14 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
 
     addToSuggestion(removedTag);
     setTags(_tags);
+    saveTags(_tags);
   };
 
   const onAddition = (tag) => {
     tag = { ...tag, name: textToSlug(tag.name) };
-    setTags([...tags, { ...tag, id: tag.name }]);
+    const _tags = [...tags, { ...tag, id: tag.name }];
+    setTags(_tags);
+    saveTags(_tags);
     removeFromSuggestion(tag);
   };
 
