@@ -1,24 +1,50 @@
+// import { Spinner } from "@/components/spinner";
 import { subscribe } from "@/shared/eventBus";
+import { message } from "antd";
 
 import { useState, useEffect } from "react";
 
+const key = "msg";
 export const useSavingIndicator = () => {
-  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
-    subscribe("save", () => {
+    subscribe("save", (msg) => {
+      message.destroy(key);
       clearTimeout(timeout);
-      setSaving(true);
+      setMsg(msg);
       timeout = setTimeout(() => {
-        setSaving(false);
+        setMsg("");
       }, 1000);
+    });
+    subscribe("networkError", (msg) => {
+      setMsg("");
+      message.error({ content: msg, key, duration: 50 });
     });
   }, []);
 
-  const Component = (
-    <div style={{ height: 14 }}>{saving ? "Saving" : null}</div>
+  return (
+    <div
+      style={{
+        position: "fixed",
+        textAlign: "center",
+        width: "100%",
+        left: 0,
+        zIndex: 999,
+        top: 0,
+      }}
+    >
+      {msg ? <div className="a">{msg}</div> : <span />}
+      <style jsx>{`
+        .a {
+          padding: 4px 25px;
+          background: #036c53;
+          border-bottom-left-radius: 4px;
+          display: inline-flex;
+          border-bottom-right-radius: 4px;
+        }
+      `}</style>
+    </div>
   );
-
-  return Component;
 };

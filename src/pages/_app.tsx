@@ -7,14 +7,17 @@ import withSessionProvider from "@/hoc/withSessionProvider";
 import { ApolloProvider } from "@apollo/client";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import Main from "@/components/main";
+import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 
 type Props = AppProps & {
   Component: Page;
 };
 
 function MyApp({ Component, pageProps }: Props) {
+  const Indicator = useSavingIndicator();
   return (
     <ApolloProvider client={apolloBrowserClient}>
+      {Indicator}
       <Main Component={Component} props={{ ...pageProps }} />
     </ApolloProvider>
   );

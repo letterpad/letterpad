@@ -1,33 +1,17 @@
-import { usePostContext } from "@/components/post/context";
-import {
-  NavigationType,
-  PostStatusOptions,
-  PostTypes,
-} from "@/__generated__/__types__";
+import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { LoadingOutlined } from "@ant-design/icons";
 import { PageHeader, Tag } from "antd";
 import { useRouter } from "next/router";
 import Actions from "@/components/post-meta";
-import { PostContextType } from "../types";
+import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
+import { useUpdatePost } from "@/hooks/useUpdatePost";
 
-const Header: React.FC = () => {
+interface Props {
+  post: PostWithAuthorAndTagsFragment;
+}
+const Header: React.VFC<Props> = ({ post }) => {
   const router = useRouter();
-  const { post, setPostAttribute, updating, settings } =
-    usePostContext() as PostContextType;
-
   if (!post) return null;
-
-  const navigationTags = settings?.menu
-    .filter(
-      (a) => a.type === NavigationType.Tag && post?.type === PostTypes.Post,
-    )
-    .map((a) => a.slug.replace("/tag/", "").toLowerCase());
-
-  const navigationPages = settings?.menu
-    .filter(
-      (a) => a.type === NavigationType.Page && post?.type === PostTypes.Page,
-    )
-    .map((a) => a.slug.replace("/page/", "").toLowerCase());
 
   if (post.__typename === "Post") {
     const tagColor =
@@ -41,20 +25,7 @@ const Header: React.FC = () => {
         title="&nbsp;"
         style={{ padding: 10 }}
         onBack={() => router.push(isPost ? "/posts" : "/pages")}
-        extra={[
-          <LoadingOutlined spin hidden={!updating} key="updating" />,
-          <Actions
-            key="actions"
-            post={post}
-            setPostAttribute={setPostAttribute}
-            deletePost={() => {
-              setPostAttribute({ status: PostStatusOptions.Trashed });
-              router.push(isPost ? "/posts" : "/pages");
-            }}
-            navigationTags={navigationTags}
-            navigationPages={navigationPages}
-          />,
-        ]}
+        extra={[<Actions key="actions" post={post} />]}
         tags={<Tag color={tagColor}>{post.status}</Tag>}
       ></PageHeader>
     );

@@ -28,7 +28,7 @@ const saveMiddleware = new ApolloLink((operation, forward) => {
   if (operation.query.definitions.length > 0) {
     const isMutation = operation.query.definitions[0];
     if (isMutation["operation"] === "mutation") {
-      publish("save", null);
+      publish("save", "Saving..");
     }
   }
 

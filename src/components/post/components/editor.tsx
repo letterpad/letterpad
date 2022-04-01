@@ -1,12 +1,12 @@
 import dynamic from "next/dynamic";
 
-const LetterpadEditor = dynamic(() => import("./letterpad-editor"));
 const TinyMceEditor = dynamic(() => import("./tinymce/tinymce"));
 
-const Editor = ({ text }) => {
-  if (localStorage.letterpad) {
-    return <LetterpadEditor text={text} />;
-  }
-  return <TinyMceEditor text={text} />;
+interface Props {
+  text: string;
+  postId?: number;
+}
+const Editor: React.VFC<Props> = ({ text, postId }) => {
+  return <TinyMceEditor text={text} postId={postId} />;
 };
 export default Editor;

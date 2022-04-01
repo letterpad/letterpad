@@ -50,7 +50,7 @@ export enum MediaProvider {
   Letterpad = "letterpad",
 }
 
-export type PubSubEvent = "save" | "noop";
+export type PubSubEvent = "save" | "noop" | "networkError";
 
 export interface ClientTokenData {
   id: number;

@@ -1,12 +1,11 @@
 import ReactTags from "react-tag-autocomplete";
 import { useEffect, useState } from "react";
-import { InputUpdatePost } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 import { useTagsQuery } from "@/graphql/queries/queries.graphql";
+import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
-  setPostAttribute: (attrs: Omit<InputUpdatePost, "id">) => void;
 }
 
 interface Tag {
@@ -14,9 +13,10 @@ interface Tag {
   name: string;
 }
 
-const Tags = ({ post, setPostAttribute }: IProps) => {
+const Tags = ({ post }: IProps) => {
   const [tags, setTags] = useState<Tag[]>([]);
   const [suggestions, setSuggestions] = useState<Tag[]>([]);
+  const { updatePost } = useUpdatePost();
   const { loading, data } = useTagsQuery({
     variables: { filters: { suggest: true } },
   });
@@ -38,7 +38,8 @@ const Tags = ({ post, setPostAttribute }: IProps) => {
   }, [post.__typename]);
 
   useEffect(() => {
-    setPostAttribute({
+    updatePost({
+      id: post.id,
       tags: tags.map((t) => ({ name: t.name, slug: t.name })),
     });
   }, [tags]);
