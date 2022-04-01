@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 import { useTagsQuery } from "@/graphql/queries/queries.graphql";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
+import { textToSlug } from "@/utils/slug";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
@@ -55,11 +56,7 @@ const Tags = ({ post }: IProps) => {
   };
 
   const onAddition = (tag) => {
-    tag.name = tag.name
-      .toLowerCase()
-      .trim()
-      .replace(/ /g, "-")
-      .replace(/#/g, "");
+    tag = { ...tag, name: textToSlug(tag.name) };
     setTags([...tags, { ...tag, id: tag.name }]);
     removeFromSuggestion(tag);
   };

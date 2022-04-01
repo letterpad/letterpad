@@ -10,12 +10,13 @@ import logger from "./../../shared/logger";
 import { ResolverContext } from "../context";
 import { Prisma } from "@prisma/client";
 import { mapPostToGraphql } from "./mapper";
+import { createPathWithPrefix, getLastPartFromPath } from "@/utils/slug";
 
 type PostAttributes = any;
 
 const Post = {
   slug: async ({ type, slug }: PostAttributes) => {
-    return `/${type}/${slug}`;
+    return createPathWithPrefix(slug, type);
   },
   cover_image: async ({
     cover_image,
@@ -86,11 +87,11 @@ const Query: QueryResolvers<ResolverContext> = {
         if (authorWithSetting?.setting?.menu) {
           const menu = JSON.parse(authorWithSetting?.setting.menu);
           if (menu[0].type === NavigationType.Tag) {
-            args.filters.tagSlug = menu[0].slug.replace("/tag/", "");
+            args.filters.tagSlug = getLastPartFromPath(menu[0].slug);
           }
         }
       } else if (args.filters.tagSlug) {
-        args.filters.tagSlug = args.filters.tagSlug.replace("/tag/", "");
+        args.filters.tagSlug = getLastPartFromPath(args.filters.tagSlug);
       }
       const { page = 1, limit = 10 } = args.filters;
       const skip = page && limit ? (page - 1) * limit : 0;

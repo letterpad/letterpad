@@ -12,6 +12,7 @@ import {
 import { prisma } from "./prisma";
 import { mapSettingToDb } from "@/graphql/resolvers/mapper";
 import { defaultSettings } from "@/graphql/db/seed/constants";
+import { textToSlug } from "@/utils/slug";
 
 export const onBoardUser = async (
   authorData: InputCreateAuthor,
@@ -79,7 +80,7 @@ function getWelcomePostAndPage() {
     cover_image_height: 900,
     type: PostTypes.Post,
     status: PostStatusOptions.Published,
-    slug: title.toLocaleLowerCase().replace(/ /g, "-"),
+    slug: textToSlug(title),
     createdAt: new Date(),
     publishedAt: new Date(),
     reading_time: "5 mins",
@@ -95,7 +96,7 @@ function getWelcomePostAndPage() {
     status: PostStatusOptions.Published,
     excerpt:
       "You can use this space to write a small description about this page. This will be helpful in SEO.",
-    slug: title.toLocaleLowerCase().replace(/ /g, "-"),
+    slug: textToSlug(title),
     cover_image:
       "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
     cover_image_width: 1482,

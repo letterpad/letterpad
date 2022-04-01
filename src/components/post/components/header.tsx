@@ -1,10 +1,8 @@
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
-import { LoadingOutlined } from "@ant-design/icons";
 import { PageHeader, Tag } from "antd";
 import { useRouter } from "next/router";
 import Actions from "@/components/post-meta";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
-import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 interface Props {
   post: PostWithAuthorAndTagsFragment;

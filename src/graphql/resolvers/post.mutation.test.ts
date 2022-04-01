@@ -3,8 +3,8 @@ import {
   UpdatePostDocument,
 } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import { API } from "../../../tests/testClient";
-import { toSlug } from "./helpers";
 import { PostStatusOptions } from "@/__generated__/__types__";
+import { createPathWithPrefix, textToSlug } from "@/utils/slug";
 
 const title = "New Post";
 describe("Test Post Query Graphql API", () => {
@@ -12,7 +12,7 @@ describe("Test Post Query Graphql API", () => {
     const post = await runQuery(CreatePostDocument, { title, type: "post" });
     expect(post.createPost).toEqual(
       expect.objectContaining({
-        slug: "/post/" + toSlug(title),
+        slug: createPathWithPrefix(textToSlug(title), "post"),
         title: "New Post",
         status: PostStatusOptions.Draft,
       }),
