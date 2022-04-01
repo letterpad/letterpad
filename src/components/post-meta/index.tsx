@@ -12,6 +12,11 @@ import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 import { socket } from "../post/components/tinymce/socket";
 import { Menu, Dropdown } from "antd";
 import { EventAction, track } from "@/track";
+import {
+  createPathWithPrefix,
+  getLastPartFromPath,
+  textToSlug,
+} from "@/utils/slug";
 
 const { TextArea } = Input;
 
@@ -44,10 +49,7 @@ const Actions = ({
   const onClose = () => setVisible(false);
 
   const formatSlug = (slug: string) => {
-    let formattedSlug = slug.replace(/ /g, "-").toLocaleLowerCase();
-    if (!formattedSlug.startsWith(`/${post.type}/`)) {
-      formattedSlug = `/${post.type}/${formattedSlug}`;
-    }
+    let formattedSlug = createPathWithPrefix(textToSlug(slug), post.type);
     setSlug(formattedSlug);
     setPostAttribute({ slug: formattedSlug });
   };
@@ -143,7 +145,7 @@ const Actions = ({
                   navigationTags?.includes(tag.name),
                 );
                 const navLinkedWithPages = navigationPages?.find(
-                  (page) => page === post.slug?.replace("/page/", ""),
+                  (page) => page === getLastPartFromPath(post.slug || ""),
                 );
                 if (active) {
                   if (post.type === PostTypes.Post) {

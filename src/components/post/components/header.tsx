@@ -9,6 +9,7 @@ import { PageHeader, Tag } from "antd";
 import { useRouter } from "next/router";
 import Actions from "@/components/post-meta";
 import { PostContextType } from "../types";
+import { getLastPartFromPath } from "@/utils/slug";
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -21,13 +22,13 @@ const Header: React.FC = () => {
     .filter(
       (a) => a.type === NavigationType.Tag && post?.type === PostTypes.Post,
     )
-    .map((a) => a.slug.replace("/tag/", "").toLowerCase());
+    .map((a) => getLastPartFromPath(a.slug));
 
   const navigationPages = settings?.menu
     .filter(
       (a) => a.type === NavigationType.Page && post?.type === PostTypes.Page,
     )
-    .map((a) => a.slug.replace("/page/", "").toLowerCase());
+    .map((a) => getLastPartFromPath(a.slug));
 
   if (post.__typename === "Post") {
     const tagColor =

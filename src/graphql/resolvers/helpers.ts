@@ -4,17 +4,7 @@ import sizeOf from "image-size";
 import reading_time from "reading-time";
 import logger from "./../../shared/logger";
 import { Prisma } from "@prisma/client";
-
-export function toSlug(str: string): string {
-  return str
-    .toLowerCase()
-    .replace(/[^\w\s\-]/g, " ")
-    .split(" ")
-    .filter(function (substr) {
-      return substr.length > 0;
-    })
-    .join("-");
-}
+import { textToSlug } from "@/utils/slug";
 
 const slugOfUntitledPost = "untitled";
 
@@ -23,7 +13,7 @@ export async function slugify(
   slug: string = slugOfUntitledPost,
   author_id: number,
 ): Promise<string> {
-  slug = toSlug(slug);
+  slug = textToSlug(slug);
   const result = await PostModel.findFirst({
     where: { slug: slug, author: { id: author_id } },
   });

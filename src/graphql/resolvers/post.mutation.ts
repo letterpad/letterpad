@@ -11,7 +11,6 @@ import {
   slugify,
   getImageDimensions,
   setImageWidthAndHeightInHtml,
-  toSlug,
   getReadingTimeFromHtml,
 } from "./helpers";
 import logger from "@/shared/logger";
@@ -20,6 +19,7 @@ import { ResolverContext } from "../context";
 import { Prisma } from "@prisma/client";
 import { mapPostToGraphql } from "./mapper";
 import Cheerio from "cheerio";
+import { getLastPartFromPath, textToSlug } from "@/utils/slug";
 
 export const createPost = async (
   args: RequireFields<MutationCreatePostArgs, never>,
@@ -269,8 +269,8 @@ async function getOrCreateSlug(
   if (!existingPost) return "";
   // slug already exist for this post. Needs update with new slug.
   if (existingPost?.slug && slug) {
-    slug = slug?.replace("/post/", "").replace("/page/", "");
-    slug = await slugify(postModel, toSlug(slug), existingPost.author_id);
+    slug = getLastPartFromPath(slug);
+    slug = await slugify(postModel, textToSlug(slug), existingPost.author_id);
     return slug;
   }
 
@@ -279,8 +279,7 @@ async function getOrCreateSlug(
     title &&
     (existingPost?.slug.startsWith("untitled") || !existingPost?.slug)
   ) {
-    slug = title.replace(/ /g, "-");
-    slug = await slugify(postModel, toSlug(slug), existingPost.author_id);
+    slug = await slugify(postModel, textToSlug(title), existingPost.author_id);
     return slug;
   }
 
@@ -290,7 +289,7 @@ async function getOrCreateSlug(
   }
 
   if (!slug) return existingPost?.slug;
-  return toSlug(slug);
+  return textToSlug(slug);
 }
 
 async function getCoverImageAttrs(cover_image) {
