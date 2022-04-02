@@ -38,8 +38,8 @@ jobs:
           yarn install --frozen-lockfile
         if: steps.yarn-dep-cache.outputs.cache-hit != 'true'
 
-      # - run: |
-      #     node_modules/cypress/bin/cypress install
+      - run: |
+          node_modules/cypress/bin/cypress install
 
       - name: Graphql Codegen
         run: yarn codegen
