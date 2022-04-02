@@ -46,3 +46,7 @@ jobs:
 
       - name: Run Cypress
         run: yarn e2e:ci
+        env:
+          DATABASE_URL: "file:../data/test.sqlite"
+          ROOT_URL: "http://localhost:3000/admin"
+          NEXTAUTH_URL: "http://localhost:3000/admin/api/auth"
