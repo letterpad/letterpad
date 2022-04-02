@@ -75,7 +75,7 @@ const Home = () => {
             </p>
             <p>Happy Blogging!</p>
           </div>
-          <Button type="link" onClick={onDismiss}>
+          <Button type="link" onClick={onDismiss} data-testid="dismissIntro">
             Dismiss
           </Button>
         </div>

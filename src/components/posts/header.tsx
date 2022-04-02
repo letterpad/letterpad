@@ -15,11 +15,12 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
       title={title}
       extra={[
         <Button
+          data-testid="createPostBtn"
           key="1"
           type="primary"
           onClick={() => router.push(`/api/create?type=${type}`)}
         >
-          New
+          New Post
         </Button>,
       ]}
     >

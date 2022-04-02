@@ -74,6 +74,9 @@ const Actions = ({ post }: IProps) => {
       ? settingsResponse.data?.settings
       : undefined;
 
+  //bad
+  const drawerWidth = window.innerWidth > 500 ? 500 : window.innerWidth;
+
   return (
     <>
       <Dropdown
@@ -88,7 +91,11 @@ const Actions = ({ post }: IProps) => {
         }
         trigger={["click"]}
       >
-        <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+        <a
+          data-testid="postMenuBtn"
+          className="ant-dropdown-link"
+          onClick={(e) => e.preventDefault()}
+        >
           <MoreOutlined style={{ fontSize: 30 }} />
         </a>
       </Dropdown>
@@ -98,7 +105,7 @@ const Actions = ({ post }: IProps) => {
         closable={true}
         onClose={onClose}
         visible={visible}
-        width={320}
+        width={drawerWidth}
         zIndex={10000}
         extra={[saving || <span>────</span>]}
       >
@@ -129,12 +136,13 @@ const Actions = ({ post }: IProps) => {
           <label>{postVerb} Description</label>
           <TextArea
             showCount
-            rows={6}
+            rows={4}
             maxLength={160}
             onChange={(e) =>
               debounceUpdatePost({ excerpt: e.target.value, id: post.id })
             }
             value={post.excerpt}
+            size="large"
           />
         </div>
         <br />
@@ -145,6 +153,7 @@ const Actions = ({ post }: IProps) => {
             value={slug}
             enterButton="Format"
             onSearch={formatSlug}
+            data-testid="slugInp"
           />
         </div>
         <br />
@@ -167,6 +176,7 @@ const Actions = ({ post }: IProps) => {
             }}
           />
         </div>
+        <br />
         <DeletePost postId={post.id} />
       </Drawer>
     </>

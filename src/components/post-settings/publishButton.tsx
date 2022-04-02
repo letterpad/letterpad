@@ -65,6 +65,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
           size="small"
           checked={post.status === PostStatusOptions.Published}
           onChange={publish}
+          data-testid="publishCb"
         />
       </Col>
     </Row>
