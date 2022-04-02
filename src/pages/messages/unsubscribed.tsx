@@ -9,4 +9,5 @@ const Unsubscribed = () => {
   return <Result status="success" title="Unsubscribed" subTitle={msg} />;
 };
 
+Unsubscribed.noSession = true;
 export default Unsubscribed;

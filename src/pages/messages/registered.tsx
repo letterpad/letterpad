@@ -1,7 +1,7 @@
 import { Button, Result } from "antd";
 import { useRouter } from "next/router";
 
-const Verified = () => {
+const Registered = () => {
   const router = useRouter();
 
   const doLogin = () => {
@@ -20,5 +20,5 @@ const Verified = () => {
     />
   );
 };
-
-export default Verified;
+Registered.noSession = true;
+export default Registered;

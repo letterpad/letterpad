@@ -1,10 +1,8 @@
 import { Col, Collapse, Form, Input, message, PageHeader, Row } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import CustomLayout from "@/components/layouts/Layout";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import { useEffect, useState } from "react";
 import { Role, Setting, SettingInputType } from "@/__generated__/__types__";
-import withAuthCheck from "../hoc/withAuth";
 import { Alert } from "antd";
 
 import Head from "next/head";
@@ -30,6 +28,7 @@ function Settings(props: {
   readOnly: boolean;
   showSocial: boolean;
 }) {
+  debugger;
   const [settings, setSettings] = useState(props.settings);
   const [draft, setDraft] = useState<SettingInputType>({});
   const [settingsMutation] = useUpdateOptionsMutation();
@@ -148,9 +147,8 @@ function Settings(props: {
     </>
   );
 }
-const SettingsWithAuth = withAuthCheck(Settings);
-SettingsWithAuth.layout = CustomLayout;
-export default SettingsWithAuth;
+
+export default Settings;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);

@@ -28,11 +28,16 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
       <Button
         icon={<GoogleSquareFilled />}
         onClick={(e) => onClick(e, "google")}
+        type="primary"
       >
         Login with Google
       </Button>
       &nbsp;&nbsp;
-      <Button icon={<GithubFilled />} onClick={(e) => onClick(e, "github")}>
+      <Button
+        icon={<GithubFilled />}
+        onClick={(e) => onClick(e, "github")}
+        type="primary"
+      >
         Login with Github
       </Button>
     </Form.Item>

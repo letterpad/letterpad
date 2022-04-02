@@ -5,7 +5,6 @@ import { LoginForm } from "@/components/login/views/LoginForm";
 import { LoginFormDemo } from "@/components/login/views/LoginFormDemo";
 import { Header } from "antd/lib/layout/layout";
 import NoSsr from "@/components/NoSsr";
-import { getSession } from "next-auth/react";
 
 const Login = () => {
   const [loginView, setLoginView] = useState(true);
@@ -40,21 +39,5 @@ const Login = () => {
     </NoSsr>
   );
 };
-
+Login.noSession = true;
 export default Login;
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  if (session) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/posts",
-      },
-      props: {},
-    };
-  }
-  return {
-    props: {}, // will be passed to the page component as props
-  };
-}

@@ -1,70 +1,41 @@
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import ThemeSwitcher from "@/components/layouts/ThemeSwitcher";
+import ThemeSwitcher from "@/components/theme-switcher";
 import { initPageProgress } from "./../shared/utils";
-import { useSettingsQuery } from "@/__generated__/queries/queries.graphql";
 import { useTracking } from "@/hooks/usetracking";
-import { Setting } from "@/__generated__/__types__";
-import { PropsWithChildren, useEffect } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
 import { basePath } from "@/constants";
-import { LetterpadProvider } from "@/context/LetterpadProvider";
 import { Page } from "@/page";
+import AuthenticatedLayout from "./layouts/Layout";
 
-function NoLayout({ children }: PropsWithChildren<{ settings: Setting }>) {
-  return <>{children}</>;
-}
 interface IProps {
   Component: Page;
   props: any;
 }
 const Main = ({ Component, props }: IProps) => {
-  const { data, loading: settingsLoading, refetch } = useSettingsQuery();
-  const { data: sessionData, status: sessionStatus } = useSession();
   useTracking();
-
-  const router = useRouter();
-  const sessionLoading = sessionStatus === "loading";
-  const protectedPage = Component.needsAuth;
+  const protectedPage = Component.noSession;
 
   useEffect(() => {
     if (protectedPage) ThemeSwitcher.switch(localStorage.theme);
     initPageProgress();
   }, []);
 
-  useEffect(() => {
-    refetch();
-  }, [Component]);
-
-  useEffect(() => {
-    if (protectedPage && sessionStatus === "unauthenticated") {
-      router.push("/api/auth/signin");
-    }
-  }, [sessionStatus]);
-
-  if (!protectedPage) {
-    return <Component {...props} />;
-  }
-
-  const Layout = Component.layout || NoLayout;
-  if (sessionLoading || settingsLoading) {
-    return null;
-  }
-
-  if (!sessionData || !data || data.settings.__typename !== "Setting") {
-    return null;
-  }
   return (
     <>
-      <LetterpadProvider value={data.settings as Setting}>
-        <Head>
-          <link rel="icon" href={basePath + "/uploads/logo.png"} />
-        </Head>
-
-        <Layout settings={data.settings as Setting}>
-          <Component {...props} settings={data.settings} />
-        </Layout>
-      </LetterpadProvider>
+      <Head>
+        <link rel="icon" href={basePath + "/uploads/logo.png"} />
+      </Head>
+      {Component.noSession ? (
+        <Component {...props} />
+      ) : (
+        <AuthenticatedLayout
+          render={({ settings, session }) => {
+            return (
+              <Component {...props} settings={settings} session={session} />
+            );
+          }}
+        />
+      )}
     </>
   );
 };

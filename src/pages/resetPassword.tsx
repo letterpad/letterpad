@@ -139,5 +139,5 @@ const ResetPassword = () => {
     </>
   );
 };
-
+ResetPassword.noSession = true;
 export default ResetPassword;

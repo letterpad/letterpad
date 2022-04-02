@@ -26,5 +26,5 @@ const Verified = () => {
     />
   );
 };
-
+Verified.noSession = true;
 export default Verified;

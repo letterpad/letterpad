@@ -23,7 +23,7 @@ type Setting {
   site_title: String!
   site_tagline: String
   site_email: String!
-  site_url: String
+  site_url: String!
   site_footer: String
   site_description: String
   subscribe_embed: String

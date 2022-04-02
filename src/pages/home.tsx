@@ -1,5 +1,3 @@
-import CustomLayout from "@/components/layouts/Layout";
-import withAuthCheck from "@/hoc/withAuth";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import { Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
@@ -85,7 +83,4 @@ const Home = () => {
     </>
   );
 };
-
-const HomeWithAuth = withAuthCheck(Home);
-HomeWithAuth.layout = CustomLayout;
-export default HomeWithAuth;
+export default Home;

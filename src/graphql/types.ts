@@ -28,7 +28,7 @@ export type updatePostOptionalArgs = {
 
 export type Session = Pick<
   GraphqlAuthor,
-  "id" | "email" | "role" | "permissions" | "avatar" | "username"
+  "id" | "email" | "role" | "permissions" | "avatar" | "username" | "name"
 >;
 
 export interface SessionData extends Session {

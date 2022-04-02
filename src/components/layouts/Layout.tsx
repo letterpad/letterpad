@@ -1,36 +1,42 @@
-import { GithubOutlined, MenuOutlined } from "@ant-design/icons";
-import { Button, Col, Drawer, Row } from "antd";
-import Layout, { Footer } from "antd/lib/layout/layout";
-import { Setting, Stats } from "@/__generated__/__types__";
+import React from "react";
+import Layout from "antd/lib/layout/layout";
+import { Stats } from "@/__generated__/__types__";
 import {
   StatsQuery,
   StatsQueryVariables,
   StatsDocument,
+  SettingsFragmentFragment,
 } from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
-import Navigation from "./Menu";
-import Logo from "../Logo";
-import ThemeSwitcher from "./ThemeSwitcher";
 import siteConfig from "config/site.config";
-import { useSession } from "next-auth/react";
-import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import ProfileInfo from "./ProfileInfo";
-import FeedbackForm from "./FeedbackForm";
+import { useErrorReporting } from "@/hooks/useErrorReporting";
+import { DesktopMenu } from "./desktop-menu";
+import { MobileMenu } from "./mobile-menu";
+import { SiteFooter } from "./site-footer";
+import { TopBar } from "./top-bar";
+import { useLetterpadSession } from "@/hooks/useLetterpadSession";
+import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
+import { SessionData } from "@/graphql/types";
 
 interface IProps {
-  settings: Setting;
-  children: any;
+  render: ({
+    settings,
+    session,
+  }: {
+    settings: SettingsFragmentFragment;
+    session: SessionData;
+  }) => React.ReactChild;
 }
 
-const CustomLayout = ({ children, settings }: IProps) => {
+const AuthenticatedLayout = ({ render }: IProps) => {
+  const { data, loading } = useSettingsQuery();
   const [stats, setStats] = useState<Stats | {}>({});
   const [collapsed, setCollapsed] = useState(false);
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
-  const SavingIndicator = useSavingIndicator();
+  const session = useLetterpadSession();
 
-  const { data: session } = useSession();
-  const user = session;
+  useErrorReporting(session?.user);
 
   useEffect(() => {
     getStats().then((res) => {
@@ -46,63 +52,28 @@ const CustomLayout = ({ children, settings }: IProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (
-      user?.user?.email &&
-      user?.user?.name &&
-      typeof window.rg4js !== "undefined"
-    ) {
-      window.rg4js("setUser", {
-        //@ts-ignore
-        identifier: user?.user?.id,
-        isAnonymous: false,
-        email: user?.user?.email,
-        fullName: user?.user?.name,
-      });
-    }
-  }, [user]);
-
   const handleCollapse = () => {
     setCollapsed(window.innerWidth < 991);
     setMobileMenuVisible(false);
   };
+  if (!session) return null;
+  if (loading) return null;
+  if (data?.settings.__typename !== "Setting") return null;
 
-  if (!settings) return null;
+  const { settings } = data;
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Drawer
-        mask={false}
-        closeIcon={false}
-        onClose={() => setMobileMenuVisible(false)}
-        drawerStyle={{ background: "rgb(var(--sidebar-bg))" }}
-        placement="left"
-        bodyStyle={{ background: "rgb(var(--sidebar-bg))" }}
-        contentWrapperStyle={{ boxShadow: "none" }}
-        headerStyle={{
-          padding: "0 24px",
-          background: "none",
-          borderColor: "#333",
-        }}
-        width={siteConfig.sidebar_width}
-        visible={!collapsed}
-        title={
-          settings.site_logo?.src ? (
-            <Logo src={settings.site_logo.src} padding="16px 0px" />
-          ) : (
-            <h2>{settings.site_title}</h2>
-          )
-        }
-        footer={
-          <ProfileInfo
-            name={user?.user?.name}
-            avatar={user?.user?.image}
-            site_url={settings.site_url}
-          />
-        }
-        footerStyle={{ borderColor: "#333" }}
-      >
-        <Navigation stats={stats} />
-      </Drawer>
+      <DesktopMenu
+        avatar={session.user.avatar}
+        name={session.user.name}
+        site_logo={settings.site_logo?.src}
+        site_title={settings.site_title}
+        site_url={settings.site_url}
+        isVisible={!collapsed}
+        setIsVisible={setMobileMenuVisible}
+        stats={stats}
+      />
       <Layout
         className="site-layout"
         style={{
@@ -110,78 +81,26 @@ const CustomLayout = ({ children, settings }: IProps) => {
         }}
       >
         <nav className="navbar">
-          <Drawer
-            onClose={() => setMobileMenuVisible(false)}
-            placement="left"
-            drawerStyle={{ background: "rgb(var(--sidebar-bg))" }}
-            bodyStyle={{ background: "rgb(var(--sidebar-bg))" }}
-            contentWrapperStyle={{ boxShadow: "none" }}
-            headerStyle={{
-              padding: "0 24px",
-              background: "none",
-              borderColor: "#333",
-            }}
-            width={siteConfig.sidebar_width}
-            visible={mobileMenuVisible}
-            title={
-              settings.site_logo?.src ? (
-                <Logo src={settings.site_logo.src} padding="16px 0px" />
-              ) : (
-                <h2>{settings.site_title}</h2>
-              )
-            }
-            footer={
-              <ProfileInfo
-                name={user?.user?.name}
-                avatar={user?.user?.image}
-                site_url={settings.site_url}
-              />
-            }
-            footerStyle={{ borderColor: "#333" }}
-          >
-            <Navigation stats={stats} />
-          </Drawer>
+          <MobileMenu
+            avatar={session.user.avatar}
+            name={session.user.name}
+            site_logo={settings.site_logo?.src}
+            site_title={settings.site_title}
+            site_url={settings.site_url}
+            isVisible={collapsed}
+            setIsVisible={setMobileMenuVisible}
+            stats={stats}
+          />
         </nav>
 
         <div className="top-bar">
-          <div>
-            {collapsed && !mobileMenuVisible && (
-              <>
-                <Button
-                  className="menu"
-                  type="text"
-                  icon={<MenuOutlined />}
-                  onClick={() => setMobileMenuVisible(true)}
-                />
-              </>
-            )}
-          </div>
-          {SavingIndicator}
-          <Row>
-            <Button
-              type="link"
-              href="https://docs.letterpad.app/"
-              target="_blank"
-            >
-              Help
-            </Button>
-            <FeedbackForm />
-            <ThemeSwitcher />
-          </Row>
+          <TopBar
+            showNavBtn={collapsed && !mobileMenuVisible}
+            onMobileNavBtnClick={setMobileMenuVisible}
+          />
         </div>
-        <div>{children}</div>
-        <Footer className="site-footer">
-          <Row>
-            <Col span={12} offset={0}>
-              Letterpad, 2022. An open source project.
-            </Col>
-            <Col span={12} style={{ textAlign: "center" }}>
-              <a href="https://github.com/letterpad/letterpad" target="_blank">
-                <GithubOutlined />
-              </a>
-            </Col>
-          </Row>
-        </Footer>
+        <div>{render({ settings, session: session.user })}</div>
+        <SiteFooter />
         <style jsx global>{`
           .top-bar {
             padding: 20px;
@@ -213,7 +132,7 @@ const CustomLayout = ({ children, settings }: IProps) => {
   );
 };
 
-export default CustomLayout;
+export default AuthenticatedLayout;
 
 async function getStats() {
   const stats = await apolloBrowserClient.query<

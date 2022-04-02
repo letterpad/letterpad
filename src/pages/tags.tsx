@@ -1,6 +1,4 @@
 import { PageHeader } from "antd";
-import CustomLayout from "@/components/layouts/Layout";
-import withAuthCheck from "../hoc/withAuth";
 import Head from "next/head";
 import { TagsProvider } from "@/components/tags/context";
 import Component from "@/components/tags/component";
@@ -24,9 +22,7 @@ const EditableTable = ({ readOnly }: { readOnly: boolean }) => {
   );
 };
 
-const EditableTableWithAuth = withAuthCheck(EditableTable);
-EditableTableWithAuth.layout = CustomLayout;
-export default EditableTableWithAuth;
+export default EditableTable;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);

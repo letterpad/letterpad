@@ -8,6 +8,7 @@ const nextConfig = {
   env: {
     ROOT: __dirname,
     RAYGUN_API_KEY: process.env.RAYGUN_API_KEY,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
   swcMinify: true,
   compilerOptions: {
