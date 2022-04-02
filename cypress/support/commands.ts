@@ -46,8 +46,8 @@ Cypress.Commands.add("visitSettings", () => cy.visit("/settings"));
 
 beforeEach(function () {
   cy.visitLogin();
-  cy.login({ email: "demo@demo.com", password: "demo" });
   window.localStorage.setItem("intro_dismissed", "true");
+  cy.login({ email: "demo@demo.com", password: "demo" });
 });
 
 afterEach(function () {
