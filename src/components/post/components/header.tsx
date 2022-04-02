@@ -24,7 +24,11 @@ const Header: React.VFC<Props> = ({ post }) => {
         style={{ padding: 10 }}
         onBack={() => router.push(isPost ? "/posts" : "/pages")}
         extra={[<Actions key="actions" post={post} />]}
-        tags={<Tag color={tagColor}>{post.status}</Tag>}
+        tags={
+          <Tag color={tagColor} data-testid="postStatus">
+            {post.status}
+          </Tag>
+        }
       ></PageHeader>
     );
   }

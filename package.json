@@ -19,7 +19,9 @@
     "prisma:studio": "scripts/studio.sh",
     "resetDemo": "ts-node -r tsconfig-paths/register --transpile-only ./src/resetDemo.ts",
     "cy:open": "cypress open",
-    "precy:open": "start-server-and-test start http://localhost:3000/admin/login cy:open"
+    "cy:run": "cypress run",
+    "e2e:ci": "yarn seed && start-server-and-test 'yarn start' http://localhost:3000/admin/login cy:run",
+    "e2e": "yarn seed && start-server-and-test 'yarn dev' http://localhost:3000/admin/login cy:open"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
@@ -78,7 +80,6 @@
   },
   "devDependencies": {
     "@cypress/react": "^5.12.4",
-    "@cypress/webpack-dev-server": "^1.8.4",
     "@graphql-codegen/cli": "^1.17.8",
     "@graphql-codegen/import-types-preset": "^1.18.2",
     "@graphql-codegen/plugin-helpers": "^1.17.8",
@@ -110,8 +111,6 @@
     "ts-jest": "^27.0.3",
     "tsconfig-paths": "^3.9.0",
     "typescript": "4.3.2",
-    "webpack": "5",
-    "webpack-dev-server": "3",
     "yaml-loader": "0.6.0"
   }
 }

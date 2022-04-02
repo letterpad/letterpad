@@ -14,7 +14,7 @@ const QuickMenu = ({
   const { updatePost } = useUpdatePost();
   return (
     <Menu>
-      <Menu.Item key="0" onClick={showDrawer}>
+      <Menu.Item key="0" onClick={showDrawer} data-testid="postSettingsLink">
         Settings
       </Menu.Item>
       <Menu.Divider />

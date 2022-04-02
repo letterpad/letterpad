@@ -65,7 +65,7 @@ export const LoginForm = ({
               },
             ]}
           >
-            <Input autoComplete="dontshow" />
+            <Input autoComplete="dontshow" data-testid="email" />
           </Form.Item>
 
           <Form.Item
@@ -74,7 +74,7 @@ export const LoginForm = ({
             data-testid="input-password"
             rules={[{ required: true, message: "Please input your password!" }]}
           >
-            <Input.Password autoComplete="dontshow" />
+            <Input.Password autoComplete="dontshow" data-testid="password" />
           </Form.Item>
 
           <Form.Item
@@ -101,7 +101,7 @@ export const LoginForm = ({
               span: 16,
             }}
           >
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" data-testid="loginBtn">
               Login
             </Button>
             <Link href="/register">
