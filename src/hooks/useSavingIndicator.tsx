@@ -31,7 +31,7 @@ export const useSavingIndicator = () => {
         textAlign: "center",
         width: "100%",
         left: 0,
-        zIndex: 999,
+        zIndex: 99999999999,
         top: 0,
       }}
     >

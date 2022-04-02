@@ -2,6 +2,7 @@ import { Modal } from "antd";
 
 export function warnNoTags() {
   Modal.warning({
+    zIndex: 999999999,
     title: "Post not published",
     content: (
       <div>
@@ -23,6 +24,7 @@ export function warnNoTags() {
 
 export function tagNotLinkedWithNavigation() {
   Modal.warning({
+    zIndex: 999999999,
     title: "Post not published",
     content: (
       <div>
@@ -42,6 +44,7 @@ export function tagNotLinkedWithNavigation() {
 
 export function pageNotLinkedWithNavigation() {
   Modal.warning({
+    zIndex: 999999999,
     title: "Post not published",
     content: (
       <div>

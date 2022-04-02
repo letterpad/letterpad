@@ -46,6 +46,7 @@ const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
           postId && updatePost({ title: e.target.value, id: postId })
         }
         className="title"
+        data-testid="postTitleInput"
       />
       <style jsx global>{`
         textarea.title {
