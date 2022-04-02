@@ -15,8 +15,9 @@ type Props = AppProps & {
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: Props) {
   const Indicator = useSavingIndicator();
+  console.log(process.env.NEXTAUTH_URL);
   return (
-    <SessionProvider session={session} baseUrl={process.env.NEXTAUTH_URL}>
+    <SessionProvider session={session} basePath={"/admin/api/auth"}>
       <ApolloProvider client={apolloBrowserClient}>
         {Indicator}
         <Main Component={Component} props={{ ...pageProps }} />
