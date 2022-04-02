@@ -19,9 +19,10 @@ Cypress.Commands.add("setContent", ({ title, content }) => {
   cy.getTestId("postTitleInput").type(`${title}{enter}`);
   // wait for the new slug to generate
   cy.wait(2000);
-  cy.window().then((win) => {
+  cy.window().then((_win) => {
     //@ts-ignore
-    win.tinymce.activeEditor.setContent(content);
+    // win.tinymce.activeEditor.setContent(content);
+    console.log(content);
   });
 });
 
