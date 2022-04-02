@@ -50,3 +50,4 @@ jobs:
           DATABASE_URL: "file:../data/test.sqlite"
           ROOT_URL: "http://localhost:3000/admin"
           NEXTAUTH_URL: "http://localhost:3000/admin/api/auth"
+          SECRET_KEY: "some-secret"
