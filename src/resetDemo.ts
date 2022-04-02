@@ -223,6 +223,7 @@ async function resetDemo() {
         id: 2,
         username: "demo",
         expires: new Date(),
+        name: "Demo",
         __typename: "SessionData",
       },
       {

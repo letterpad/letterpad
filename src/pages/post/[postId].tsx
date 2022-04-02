@@ -1,4 +1,3 @@
-import withAuthCheck from "@/hoc/withAuth";
 import { Setting } from "@/__generated__/__types__";
 import { PostProvider } from "@/components/post/context";
 import Post from "@/components/post/components/post";
@@ -21,4 +20,5 @@ function EditPost({ settings }: { readOnly: boolean; settings: Setting }) {
   );
 }
 
-export default withAuthCheck(EditPost);
+EditPost.noLayout = true;
+export default EditPost;

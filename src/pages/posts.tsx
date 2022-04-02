@@ -15,7 +15,6 @@ import { LetterpadContext } from "@/context/LetterpadProvider";
 import { Alert } from "antd";
 import { getSession } from "next-auth/react";
 import { EventAction, track } from "@/track";
-import AuthenticatedLayout from "@/components/layouts/Layout";
 
 const { Content } = Layout;
 
