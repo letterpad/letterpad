@@ -48,6 +48,7 @@ beforeEach(function () {
   cy.visitLogin();
   window.localStorage.setItem("intro_dismissed", "true");
   cy.login({ email: "demo@demo.com", password: "demo" });
+  cy.url().should("contain", "/posts");
 });
 
 afterEach(function () {
