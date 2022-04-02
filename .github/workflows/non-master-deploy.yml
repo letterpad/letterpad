@@ -19,6 +19,7 @@ jobs:
 
       - name: Cache node_modules
         uses: actions/cache@v2
+        id: yarn-dep-cache
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
@@ -32,9 +33,12 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
 
-      - run: yarn install
+      - name: Yarn install deps
+        run: |
+          yarn install --frozen-lockfile
+        if: steps.yarn-dep-cache.outputs.cache-hit != 'true'
 
-      - run: ../node_modules/cypress/bin/cypress install
+      - run: node_modules/cypress/bin/cypress install
 
       - name: Graphql Codegen
         run: yarn codegen
