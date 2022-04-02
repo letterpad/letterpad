@@ -3,6 +3,8 @@ on:
   push:
     branches-ignore:
       - "master"
+env:
+  CYPRESS_CACHE_FOLDER: cypress/cache
 
 jobs:
   job_one:
@@ -15,10 +17,17 @@ jobs:
         with:
           node-version: "14"
 
-      - uses: actions/cache@v2
+      - name: Cache node_modules
+        uses: actions/cache@v2
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Cache Cypress Binary
+        uses: actions/cache@v2
+        with:
+          path: "**/cypress/cache"
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Yarn
         run: npm install -g yarn
