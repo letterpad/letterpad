@@ -27,7 +27,7 @@ describe("Publishing", () => {
     cy.getTestId("slugInp").should("have.value", slug + "-1");
   });
 
-  it.only("fails to publish post with no tags", () => {
+  it("fails to publish post with no tags", () => {
     cy.getTestId("createPostBtn").click();
     cy.setContent({
       title: "Another new post",
