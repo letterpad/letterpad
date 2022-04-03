@@ -141,3 +141,5 @@ interface EmailTemplateError {
 }
 
 export type EmailTemplateResponse = EmailTemplateSuccess | EmailTemplateError;
+
+export type ValueOf<T> = T[keyof T];

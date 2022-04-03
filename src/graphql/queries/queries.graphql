@@ -108,21 +108,7 @@ query Emails {
 query Me {
   me {
     ... on Author {
-      id
-      name
-      username
-      social {
-        github
-        twitter
-        instagram
-        facebook
-        linkedin
-      }
-      email
-      bio
-      occupation
-      company_name
-      avatar
+      ...MeFragment
     }
     ... on AuthorNotFoundError {
       message

@@ -5,6 +5,8 @@ import { key } from "../constants";
 import { Form, Input, Button, Checkbox } from "antd";
 import Link from "next/link";
 import { SocialLogin } from "./SocialLogin";
+import { useRouter } from "next/router";
+import { basePath } from "@/constants";
 
 export const LoginForm = ({
   isVisible,
@@ -13,6 +15,7 @@ export const LoginForm = ({
   isVisible: boolean;
   hideSelf: () => void;
 }) => {
+  const router = useRouter();
   const loginAction = async (email, password) => {
     const result = await doLogin({ email, password });
     track({
@@ -20,9 +23,15 @@ export const LoginForm = ({
       eventCategory: "login",
       eventLabel: `User logged in`,
     });
+
     if (result.success && result.redirectUrl) {
-      message.success({ key, content: result.message, duration: 5 });
-      document.location.href = result.redirectUrl;
+      message.success({ key, content: result.message, duration: 3 });
+      const { callbackUrl } = router.query;
+      let redirectPath = result.redirectUrl.replace(window.location.origin, "");
+      if (callbackUrl && typeof callbackUrl === "string") {
+        redirectPath = callbackUrl.replace(window.location.origin, "");
+      }
+      router.push(redirectPath.replace(basePath, ""));
       return;
     }
     message.error({ key, content: result.message, duration: 5 });
