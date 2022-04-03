@@ -145,7 +145,7 @@ const Actions = ({ post }: IProps) => {
           <label>Path</label>
           <p className="help-text">
             The URL of your post. Should contain only letters, numbers, - and
-            should start with /post/.
+            should start with /{post.type}/.
           </p>
           <Input.Search
             onChange={(e) => setSlug(e.target.value)}

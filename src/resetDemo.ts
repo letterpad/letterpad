@@ -14,7 +14,7 @@ const data = {
       occupation: "Software Developer",
       company_name: "Letterpad",
       password: "$2a$12$0lhlrREBbBqdsYA5TdKkBeFfJLOboyhBS02HBcSSgFrF7VANiE1mO",
-      bio: "You can some information about yourself for the world to know you a little better.",
+      bio: "You can write some information about yourself for the world to know you a little better.",
       avatar:
         "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
       social:

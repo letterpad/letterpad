@@ -135,7 +135,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
     setSaving(false);
   };
 
-  const updateAuthor = async () => {
+  const updateAuthor = async (draft: InputAuthor) => {
     try {
       message.destroy("author");
       if (draft && Object.keys(draft).length > 1) {
@@ -160,7 +160,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
   };
 
   useEffect(() => {
-    debounceUpdateAuthor();
+    debounceUpdateAuthor(draft);
   }, [draft]);
 
   const debounceUpdateAuthor = useCallback(debounce(updateAuthor, 1000), []);
