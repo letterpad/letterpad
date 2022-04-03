@@ -15,7 +15,7 @@ interface Props {
 const Navigation: React.FC<Props> = ({ settings, onChange }) => {
   return (
     <Collapse>
-      <Panel header="Navigation" key="1">
+      <Panel header="Navigation" key="1" className="navigation">
         <NavigationBuilder
           menuData={settings.menu}
           updateOption={(option) => onChange("menu", option)}

@@ -8,8 +8,8 @@ export const useLetterpadSession = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const _session = session as unknown as { user: SessionData };
-    if (!status && !_session?.user?.id) {
+    if (status === "loading") return;
+    if (status === "unauthenticated") {
       router.push("/api/auth/signin");
     }
   }, [status]);

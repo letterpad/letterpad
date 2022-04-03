@@ -28,7 +28,6 @@ function Settings(props: {
   readOnly: boolean;
   showSocial: boolean;
 }) {
-  debugger;
   const [settings, setSettings] = useState(props.settings);
   const [draft, setDraft] = useState<SettingInputType>({});
   const [settingsMutation] = useUpdateOptionsMutation();
@@ -59,10 +58,16 @@ function Settings(props: {
       draft.site_logo ||
       draft.banner ||
       draft.site_favicon ||
-      draft.menu ||
       draft.theme ||
       "show_about_page" in draft ||
       "show_tags_page" in draft
+    ) {
+      updateSettings();
+    }
+
+    if (
+      draft.menu &&
+      draft.menu.filter((m) => m.slug === "" || m.label === "").length === 0
     ) {
       updateSettings();
     }

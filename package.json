@@ -99,6 +99,7 @@
     "babel-plugin-styless": "^1.4.25",
     "concurrently": "^6.2.0",
     "cypress": "^9.5.3",
+    "cypress-plugin-tab": "^1.0.5",
     "graphql-let": "0.x",
     "graphql-tag": "2.11.0",
     "html-webpack-plugin": "5",

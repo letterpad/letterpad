@@ -151,7 +151,7 @@ const Actions = ({ post }: IProps) => {
           <Input.Search
             onChange={(e) => setSlug(e.target.value)}
             value={slug}
-            enterButton="Format"
+            enterButton="Set Path"
             onSearch={formatSlug}
             data-testid="slugInp"
           />
