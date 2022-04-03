@@ -6,7 +6,7 @@ import {
   PostStatusOptions,
   PostTypes,
 } from "@/__generated__/__types__";
-import { Col, Row, Switch } from "antd";
+import { Button, Space } from "antd";
 import {
   pageNotLinkedWithNavigation,
   tagNotLinkedWithNavigation,
@@ -16,7 +16,6 @@ import {
 interface Props {
   postId: number;
   menu: Navigation[];
-  tags: any;
 }
 
 const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
@@ -57,18 +56,77 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
     updatePost({ id: postId, status });
   };
 
+  const published = post.status === PostStatusOptions.Published;
+  const canRePublish = !!post.html_draft?.length && published;
+
+  const rePublish = () => {
+    updatePost({
+      id: postId,
+      status: PostStatusOptions.Published,
+    });
+  };
+
   return (
-    <Row justify="space-between" gutter={16}>
-      <Col span={20}>Published</Col>
-      <Col span={4}>
-        <Switch
-          size="small"
-          checked={post.status === PostStatusOptions.Published}
-          onChange={publish}
-          data-testid="publishCb"
-        />
-      </Col>
-    </Row>
+    <>
+      <Space direction="vertical" style={{ display: "flex" }}>
+        {!published && (
+          <>
+            <p>
+              <label>Ready to publish your {post.type} ?</label>
+            </p>
+            <Button
+              type="primary"
+              block
+              size="large"
+              style={{ fontSize: 14 }}
+              onClick={() => publish(true)}
+              data-testid="publishBtn"
+            >
+              Publish
+            </Button>
+          </>
+        )}
+        {canRePublish && (
+          <>
+            <p>
+              <label>Update your published content ?</label>
+              <p className="help-text">
+                Your {post.type} is live. This will update the content of your{" "}
+                {post.type}.
+              </p>
+            </p>
+            <Button
+              type="primary"
+              block
+              size="large"
+              style={{ fontSize: 14 }}
+              onClick={rePublish}
+              data-testid="rePublishBtn"
+            >
+              Update Content
+            </Button>
+            <br />
+          </>
+        )}
+        {published && (
+          <>
+            <label>
+              Unpublish this {post.type} ? &nbsp;
+              <p className="help-text">
+                Your {post.type} will no longer be visible to users.
+              </p>
+              <Button
+                type="primary"
+                onClick={() => publish(false)}
+                data-testid="unPublishBtn"
+              >
+                Un-Publish
+              </Button>
+            </label>
+          </>
+        )}
+      </Space>
+    </>
   );
 };
 

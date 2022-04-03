@@ -1,34 +1,12 @@
 import { EventAction, track } from "@/track";
-import { PostStatusOptions } from "@/__generated__/__types__";
 import { Menu } from "antd";
 import { socket } from "@/components/post/components/tinymce/socket";
-import { useUpdatePost } from "@/hooks/useUpdatePost";
 
-const QuickMenu = ({
-  siteUrl,
-  postHash,
-  showDrawer,
-  rePublishBtnDisabled,
-  postId,
-}) => {
-  const { updatePost } = useUpdatePost();
+const QuickMenu = ({ siteUrl, postHash, showDrawer }) => {
   return (
     <Menu>
       <Menu.Item key="0" onClick={showDrawer} data-testid="postSettingsLink">
         Settings
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item
-        key="1"
-        disabled={rePublishBtnDisabled}
-        onClick={() => {
-          updatePost({
-            id: postId,
-            status: PostStatusOptions.Published,
-          });
-        }}
-      >
-        Republish
       </Menu.Item>
       <Menu.Divider />
       {siteUrl && (

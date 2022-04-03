@@ -70,7 +70,12 @@ const Tags = ({ post }: IProps) => {
   return (
     <div>
       <label>Tags</label>
-      <br />
+      <p className="help-text">
+        Tags are used to group your posts together. Without tags, your post wont
+        be visible in your blog. Add a tag and ensure its linked with
+        navigation.{" "}
+        <a href="https://docs.letterpad.app/navigation-menu">Learn more</a>
+      </p>
       <ReactTags
         tags={tags}
         onDelete={onDelete}

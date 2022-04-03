@@ -359,7 +359,6 @@ async function getContentAttrs(
     });
     html = $.html();
   }
-
   if (!prevPost.status) {
     return {
       html_draft: html,

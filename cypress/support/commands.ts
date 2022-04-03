@@ -16,13 +16,18 @@ Cypress.Commands.add("login", ({ email, password }) => {
 });
 
 Cypress.Commands.add("setContent", ({ title, content }) => {
+  if (!title && !content) return;
   cy.window().should("have.property", "tinymce");
-  cy.getTestId("postTitleInput").type(`${title}{enter}`).tab();
-  cy.wait("@updatePostMutation");
-  cy.window().then((win) => {
-    //@ts-ignore
-    win.tinymce.activeEditor.setContent(content);
-  });
+  if (title) {
+    cy.getTestId("postTitleInput").type(`${title}{enter}`).tab();
+    cy.wait("@updatePostMutation");
+  }
+  if (content) {
+    cy.window().then((win) => {
+      //@ts-ignore
+      win.tinymce.activeEditor.setContent(content);
+    });
+  }
 });
 
 Cypress.Commands.add("openSettings", () => {

@@ -11,9 +11,11 @@ const EditableTable = ({ readOnly }: { readOnly: boolean }) => {
         <title>Tags</title>
       </Head>
       <PageHeader className="site-page-header" title="Tags">
-        Tags are essentially categories. They allow you to group posts together
-        using whatever tag you want and then use these tags to setup your
-        navigation menu.
+        <span className="help-text">
+          Tags are essentially categories. They allow you to group posts
+          together using whatever tag you want and then use these tags to setup
+          your navigation menu.
+        </span>
       </PageHeader>
       <TagsProvider readOnly={readOnly}>
         <Component />

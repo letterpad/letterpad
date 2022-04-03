@@ -4336,7 +4336,7 @@ html {
 .ant-menu-item-group-list .ant-menu-submenu-title {
   padding: 0 16px 0 28px;
 }
-.ant-menu-root.ant-menu-vertical,
+/* .ant-menu-root.ant-menu-vertical, */
 .ant-menu-root.ant-menu-vertical-left,
 .ant-menu-root.ant-menu-vertical-right,
 .ant-menu-root.ant-menu-inline {

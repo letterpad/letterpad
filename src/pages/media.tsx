@@ -54,8 +54,10 @@ const Media = () => {
         <title>Media</title>
       </Head>
       <PageHeader className="site-page-header" title="Media">
-        Here you will find the collection of images that you uploaded from your
-        computer.
+        <span className="help-text">
+          Here you will find the collection of images that you uploaded from
+          your computer.
+        </span>
       </PageHeader>
       <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>

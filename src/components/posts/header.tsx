@@ -20,7 +20,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
           type="primary"
           onClick={() => router.push(`/api/create?type=${type}`)}
         >
-          New Post
+          New {type}
         </Button>,
       ]}
     >

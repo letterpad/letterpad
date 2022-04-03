@@ -54,7 +54,9 @@ function Posts({ readOnly }: { readOnly: boolean }) {
         <title>Posts</title>
       </Head>
       <Header type={PostTypes.Post} title="Posts">
-        Here you will find the list of posts for your blog.
+        <span className="help-text">
+          Here you will find the list of posts for your blog.
+        </span>
       </Header>
       <Content>
         {readOnly && (

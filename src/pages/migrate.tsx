@@ -37,8 +37,10 @@ const Migrate = ({
         <title>Migrate</title>
       </Head>
       <PageHeader className="site-page-header" title="Migrate">
-        Here you will be able to download the data of your entire blog. You can
-        also import blog from another CMS like Ghost.
+        <span className="help-text">
+          Here you will be able to download the data of your entire blog. You
+          can also import blog from another CMS like Ghost.
+        </span>
       </PageHeader>
       <Content>
         {readOnly && (

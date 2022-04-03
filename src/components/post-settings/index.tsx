@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Input, Drawer, Switch } from "antd";
+import { Row, Col, Input, Drawer, Switch, Divider } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import ImageUpload from "../ImageUpload";
 import { PostTypes } from "@/__generated__/__types__";
@@ -66,8 +66,6 @@ const Actions = ({ post }: IProps) => {
 
   const isPost = post.type === PostTypes.Post;
   const postVerb = isPost ? "Post" : "Page";
-  const rePublishBtnDisabled =
-    post.html_draft === "" || post.html_draft == post.html;
 
   const settings =
     settingsResponse.data?.settings.__typename === "Setting"
@@ -80,13 +78,12 @@ const Actions = ({ post }: IProps) => {
   return (
     <>
       <Dropdown
+        placement="topLeft"
         overlay={
           <QuickMenu
-            postId={post.id}
             siteUrl={settings?.site_url ?? ""}
             postHash={postHash}
             showDrawer={showDrawer}
-            rePublishBtnDisabled={rePublishBtnDisabled}
           />
         }
         trigger={["click"]}
@@ -110,13 +107,9 @@ const Actions = ({ post }: IProps) => {
         extra={[saving || <span>────</span>]}
       >
         {/* <Space direction="vertical" size="middle"> */}
-        <PublishButton
-          postId={post.id}
-          tags={post.tags}
-          menu={settings?.menu ?? []}
-        />
-        <br />
-        <Row justify="space-between" hidden={!isPost} gutter={16}>
+        <PublishButton postId={post.id} menu={settings?.menu ?? []} />
+        <Divider />
+        <Row justify="space-between" hidden={true || !isPost} gutter={16}>
           <Col span={20}>Featured</Col>
           <Col span={4}>
             <Switch
@@ -131,9 +124,12 @@ const Actions = ({ post }: IProps) => {
             />
           </Col>
         </Row>
-        {isPost && <br />}
         <div>
           <label>{postVerb} Description</label>
+          <p className="help-text">
+            This will be used in displaying your post in your feed, in SEO and
+            when sharing in social media.
+          </p>
           <TextArea
             showCount
             rows={4}
@@ -142,12 +138,15 @@ const Actions = ({ post }: IProps) => {
               debounceUpdatePost({ excerpt: e.target.value, id: post.id })
             }
             value={post.excerpt}
-            size="large"
           />
         </div>
-        <br />
+        <Divider />
         <div>
           <label>Path</label>
+          <p className="help-text">
+            The URL of your post. Should contain only letters, numbers, - and
+            should start with /post/.
+          </p>
           <Input.Search
             onChange={(e) => setSlug(e.target.value)}
             value={slug}
@@ -156,11 +155,15 @@ const Actions = ({ post }: IProps) => {
             data-testid="slugInp"
           />
         </div>
-        <br />
+        <Divider />
         {isPost && <Tags post={post} />}
-        {isPost && <br />}
+        {isPost && <Divider />}
         <div>
           <label>Cover Image</label>
+          <p className="help-text">
+            Add a cover image to your blog. This image might be used in your
+            feed, newsletters, recent posts, sharing in social platform, etc.
+          </p>
           <ImageUpload
             name="Cover Image"
             url={post.cover_image.src}
@@ -176,9 +179,14 @@ const Actions = ({ post }: IProps) => {
             }}
           />
         </div>
-        <br />
+        <Divider />
         <DeletePost postId={post.id} />
       </Drawer>
+      <style jsx global>{`
+        .ant-drawer-header {
+          border-bottom: 1px solid rgb(var(--color-border));
+        }
+      `}</style>
     </>
   );
 };
