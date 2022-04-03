@@ -8,6 +8,7 @@ import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import Main from "@/components/main";
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 import { SessionProvider } from "next-auth/react";
+import { basePath } from "@/constants";
 
 type Props = AppProps & {
   Component: Page;
@@ -15,9 +16,8 @@ type Props = AppProps & {
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: Props) {
   const Indicator = useSavingIndicator();
-  console.log(process.env.NEXTAUTH_URL);
   return (
-    <SessionProvider session={session} basePath={"/admin/api/auth"}>
+    <SessionProvider session={session} basePath={basePath + "/api/auth"}>
       <ApolloProvider client={apolloBrowserClient}>
         {Indicator}
         <Main Component={Component} props={{ ...pageProps }} />

@@ -21,8 +21,7 @@ Cypress.Commands.add("setContent", ({ title, content }) => {
   cy.wait(2000);
   cy.window().then((_win) => {
     //@ts-ignore
-    // win.tinymce.activeEditor.setContent(content);
-    console.log(content);
+    win.tinymce.activeEditor.setContent(content);
   });
 });
 

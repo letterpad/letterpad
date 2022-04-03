@@ -15,6 +15,7 @@ describe("Posts", () => {
     cy.get(".ant-drawer-close").click();
     cy.get(".ant-page-header-back-button").click();
   });
+
   it("New Post with same title and and verify slug", () => {
     cy.getTestId("createPostBtn").click();
     cy.setContent({
