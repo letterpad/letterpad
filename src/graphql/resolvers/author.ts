@@ -242,8 +242,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
         dataToUpdate.verified = false;
       }
 
-      logger.info("Updating Author => ", dataToUpdate);
-
       const author = await prisma.author.update({
         data: dataToUpdate,
         where: { id: args.author.id },

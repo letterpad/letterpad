@@ -160,7 +160,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
   };
 
   useEffect(() => {
-    debounceUpdateAuthor(draft);
+    if (draft) debounceUpdateAuthor(draft);
   }, [draft]);
 
   const debounceUpdateAuthor = useCallback(debounce(updateAuthor, 1000), []);
