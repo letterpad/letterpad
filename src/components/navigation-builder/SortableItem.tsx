@@ -143,7 +143,11 @@ function getOptions(source: Navigation[], type: NavigationType) {
   return source
     .filter((navItem) => navItem.type === type)
     .map((navItem) => (
-      <Option key={navItem.slug} value={navItem.slug}>
+      <Option
+        key={navItem.slug}
+        value={navItem.slug}
+        data-testid={navItem.slug}
+      >
         {getSuggestionLabel(navItem)}
       </Option>
     ));

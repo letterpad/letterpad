@@ -1,10 +1,8 @@
 import { PageHeader, message, Popconfirm, Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { Empty } from "antd";
-import CustomLayout from "@/components/layouts/Layout";
 import { useMediaQuery } from "@/__generated__/queries/queries.graphql";
 import { MediaNode, Media as IMedia } from "@/__generated__/__types__";
-import withAuthCheck from "../hoc/withAuth";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
 import { useEffect, useState } from "react";
 import MediaUpdateModal from "@/components/modals/media-update-modal";
@@ -94,6 +92,4 @@ const Media = () => {
   );
 };
 
-const MediaWithAuth = withAuthCheck(Media);
-MediaWithAuth.layout = CustomLayout;
-export default MediaWithAuth;
+export default Media;

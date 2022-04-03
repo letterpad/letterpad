@@ -115,8 +115,8 @@ export const LoginForm = ({
           .login-form {
             width: 500px;
             padding: 30px;
-            background: #fff;
-            border: 1px solid #d9d9d9;
+            background: rgb(var(----section-bg));
+            border: 1px solid rgb(var(--color-border));
             border-radius: 2px;
           }
           input:-internal-autofill-selected {

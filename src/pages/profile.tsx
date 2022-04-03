@@ -10,7 +10,6 @@ import {
   PageHeader,
 } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import CustomLayout from "@/components/layouts/Layout";
 import ImageUpload from "@/components/ImageUpload";
 import {
   useMeQuery,
@@ -20,7 +19,6 @@ import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graph
 import { useEffect, useState } from "react";
 import { InputAuthor, Social } from "@/__generated__/__types__";
 import { debounce, removeTypenames } from "@/shared/utils";
-import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
 import Loading from "@/components/loading";
@@ -356,9 +354,7 @@ function Profile({ readOnly }: { readOnly: boolean }) {
   );
 }
 
-const ProfileWithAuth = withAuthCheck(Profile);
-ProfileWithAuth.layout = CustomLayout;
-export default ProfileWithAuth;
+export default Profile;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);

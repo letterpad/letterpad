@@ -1,5 +1,4 @@
 import { Layout } from "antd";
-import withAuthCheck from "@/hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
 import Header from "@/components/post/components/header";
@@ -66,4 +65,4 @@ function Post() {
   );
 }
 
-export default withAuthCheck(Post);
+export default Post;

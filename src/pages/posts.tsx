@@ -3,9 +3,7 @@ import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { PostTypes } from "@/__generated__/__types__";
 import { Layout, Table } from "antd";
 import Filters from "@/components/filters";
-import CustomLayout from "@/components/layouts/Layout";
 import { useRouter } from "next/router";
-import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
 import { postsStyles } from "@/components/posts.css";
@@ -29,13 +27,14 @@ function Posts({ readOnly }: { readOnly: boolean }) {
   const totalCount =
     data?.posts.__typename === "PostsNode" ? data.posts.count : 0;
 
-  if (!setting?.intro_dismissed) {
-    if (!localStorage.intro_dismissed) {
-      localStorage.intro_dismissed = true;
-      router.push("/home");
-      return null;
+  React.useEffect(() => {
+    if (!setting?.intro_dismissed) {
+      if (!localStorage.intro_dismissed) {
+        localStorage.intro_dismissed = true;
+        router.push("/home");
+      }
     }
-  }
+  }, []);
 
   const handleChange = (p) => {
     track({
@@ -90,9 +89,7 @@ function Posts({ readOnly }: { readOnly: boolean }) {
   );
 }
 
-const PostsWithAuth = withAuthCheck(Posts);
-PostsWithAuth.layout = CustomLayout;
-export default PostsWithAuth;
+export default Posts;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);

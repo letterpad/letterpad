@@ -1,5 +1,3 @@
-import withAuthCheck from "../hoc/withAuth";
-import CustomLayout from "@/components/layouts/Layout";
 import Head from "next/head";
 import { PageHeader, Form, Button, Upload, Alert, notification } from "antd";
 import { Content } from "antd/lib/layout/layout";
@@ -119,9 +117,7 @@ const Migrate = ({
   );
 };
 
-const MediaWithAuth = withAuthCheck(Migrate);
-MediaWithAuth.layout = CustomLayout;
-export default MediaWithAuth;
+export default Migrate;
 
 function download(blob: Blob) {
   const a = document.createElement("a");

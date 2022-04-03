@@ -2,8 +2,12 @@ import { Modal } from "antd";
 
 export function warnNoTags() {
   Modal.warning({
+    className: "no-tags-modal", //used by cypress
     zIndex: 999999999,
     title: "Post not published",
+    okButtonProps: {
+      className: "okModalBtn",
+    },
     content: (
       <div>
         You have not added tags to your post. Add a tag/tags and ensure its set
@@ -24,8 +28,12 @@ export function warnNoTags() {
 
 export function tagNotLinkedWithNavigation() {
   Modal.warning({
+    className: "tags-notlinked-modal", //used by cypress
     zIndex: 999999999,
     title: "Post not published",
+    okButtonProps: {
+      className: "okModalBtn",
+    },
     content: (
       <div>
         You have not linked any tags of this post in Navigation. <br />
@@ -44,6 +52,7 @@ export function tagNotLinkedWithNavigation() {
 
 export function pageNotLinkedWithNavigation() {
   Modal.warning({
+    className: "page-link-modal", //used by cypress
     zIndex: 999999999,
     title: "Post not published",
     content: (

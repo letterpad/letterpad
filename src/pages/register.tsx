@@ -15,7 +15,6 @@ import { EventAction, track } from "@/track";
 import { Header } from "antd/lib/layout/layout";
 import Link from "next/link";
 import { SocialLogin } from "@/components/login/views/SocialLogin";
-import { getSession } from "next-auth/react";
 
 const key = "register";
 
@@ -218,19 +217,11 @@ const Provider: React.VFC<Props> = ({ recaptchaKey }) => {
     </GoogleReCaptchaProvider>
   );
 };
+//@ts-ignore
+Provider.noSession = true;
 export default Provider;
 
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (session) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/posts",
-      },
-      props: {},
-    };
-  }
+export const getServerSideProps = async () => {
   return {
     props: {
       recaptchaKey: process.env.RECAPTCHA_KEY_CLIENT,

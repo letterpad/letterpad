@@ -9,5 +9,5 @@ const Expired = () => {
     />
   );
 };
-
+Expired.noSession = true;
 export default Expired;

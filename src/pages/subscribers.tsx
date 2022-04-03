@@ -1,6 +1,4 @@
 import { Layout, PageHeader, Table } from "antd";
-import CustomLayout from "@/components/layouts/Layout";
-import withAuthCheck from "../hoc/withAuth";
 import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
 import { useSubscribersQuery } from "@/graphql/queries/queries.graphql";
@@ -67,6 +65,4 @@ function Subscribers() {
   );
 }
 
-const SubscribersWithAuth = withAuthCheck(Subscribers);
-SubscribersWithAuth.layout = CustomLayout;
-export default SubscribersWithAuth;
+export default Subscribers;

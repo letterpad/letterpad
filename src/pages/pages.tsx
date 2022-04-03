@@ -1,9 +1,7 @@
-import withAuthCheck from "../hoc/withAuth";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { PostTypes } from "@/__generated__/__types__";
 import { useRouter } from "next/router";
 import { Layout, Table } from "antd";
-import CustomLayout from "@/components/layouts/Layout";
 import ErrorMessage from "@/components/ErrorMessage";
 import Filters from "@/components/filters";
 import Head from "next/head";
@@ -62,9 +60,7 @@ function Pages({ readOnly }: { readOnly: boolean }) {
   );
 }
 
-const PagesWithAuth = withAuthCheck(Pages);
-PagesWithAuth.layout = CustomLayout;
-export default PagesWithAuth;
+export default Pages;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);

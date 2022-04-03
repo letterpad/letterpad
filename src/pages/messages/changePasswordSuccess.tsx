@@ -1,7 +1,7 @@
 import { Button, Result } from "antd";
 import { useRouter } from "next/router";
 
-const Verified = () => {
+const ChangePasswordSuccess = () => {
   const router = useRouter();
 
   const doLogin = () => {
@@ -20,5 +20,5 @@ const Verified = () => {
     />
   );
 };
-
-export default Verified;
+ChangePasswordSuccess.noSession = true;
+export default ChangePasswordSuccess;

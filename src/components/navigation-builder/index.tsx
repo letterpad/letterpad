@@ -87,8 +87,8 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
           // }}
         />
       </div>
-      <Button size="small" type="primary" onClick={addNewRow}>
-        New
+      <Button type="primary" onClick={addNewRow} data-testid="newMenuBtn">
+        New Item
       </Button>
     </Container>
   );

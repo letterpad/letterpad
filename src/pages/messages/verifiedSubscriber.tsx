@@ -9,5 +9,5 @@ const VerifiedSubscriber = () => {
     />
   );
 };
-
+VerifiedSubscriber.noSession = true;
 export default VerifiedSubscriber;

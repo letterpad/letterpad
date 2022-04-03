@@ -1,3 +1,5 @@
+import { aliasMutation } from "cypress/utils/graphql-test-utils";
+
 Cypress.Commands.add("getTestId", (value) => {
   return cy.get(`[data-testid='${value}']`);
 });
@@ -14,15 +16,12 @@ Cypress.Commands.add("login", ({ email, password }) => {
 });
 
 Cypress.Commands.add("setContent", ({ title, content }) => {
-  // wait for tinymce editor to load
-  cy.wait(3000);
-  cy.getTestId("postTitleInput").type(`${title}{enter}`);
-  // wait for the new slug to generate
-  cy.wait(2000);
-  cy.window().then((_win) => {
+  cy.window().should("have.property", "tinymce");
+  cy.getTestId("postTitleInput").type(`${title}{enter}`).tab();
+  cy.wait("@updatePostMutation");
+  cy.window().then((win) => {
     //@ts-ignore
-    // win.tinymce.activeEditor.setContent(content);
-    console.log(content);
+    win.tinymce.activeEditor.setContent(content);
   });
 });
 
@@ -44,10 +43,29 @@ Cypress.Commands.add("visitPages", () => cy.visit("/pages"));
 Cypress.Commands.add("visitProfile", () => cy.visit("/profile"));
 Cypress.Commands.add("visitSettings", () => cy.visit("/settings"));
 
+Cypress.Commands.add("addNavItem", (label, text) => {
+  cy.getTestId("empty-label-item").type(label);
+  cy.get(`.ant-select-selector .ant-select-selection-search input`)
+    .last()
+    .invoke("attr", "id")
+    .then(() => {
+      cy.get(`.ant-select-selector .ant-select-selection-search input`)
+        .last()
+        .type(`${text}`, { force: true });
+      cy.getTestId(text).click();
+      cy.wait("@UpdateOptionsMutation");
+    });
+});
+
 beforeEach(function () {
   cy.visitLogin();
-  cy.login({ email: "demo@demo.com", password: "demo" });
+  cy.intercept("POST", "http://localhost:3000/admin/api/graphql", (req) => {
+    aliasMutation(req, "updatePost");
+    aliasMutation(req, "UpdateOptions");
+  });
   window.localStorage.setItem("intro_dismissed", "true");
+  cy.login({ email: "demo@demo.com", password: "demo" });
+  cy.url().should("contain", "/posts");
 });
 
 afterEach(function () {

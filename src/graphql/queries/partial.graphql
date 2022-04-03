@@ -42,3 +42,55 @@ fragment PostWithAuthorAndTags on Post {
     slug
   }
 }
+
+fragment SettingsFragment on Setting {
+  site_title
+  site_tagline
+  site_email
+  site_url
+  site_footer
+  site_description
+  subscribe_embed
+  social_twitter
+  social_facebook
+  social_instagram
+  social_github
+  display_author_info
+  cloudinary_key
+  cloudinary_name
+  cloudinary_secret
+  client_token
+  intro_dismissed
+  show_about_page
+  show_tags_page
+  menu {
+    label
+    original_name
+    slug
+    type
+  }
+  analytics {
+    google_analytics
+    umami_id
+    simple_analytics
+    plausible_data_domain
+  }
+  css
+  google_analytics
+  theme
+  banner {
+    src
+    width
+    height
+  }
+  site_logo {
+    src
+    width
+    height
+  }
+  site_favicon {
+    src
+    width
+    height
+  }
+}
