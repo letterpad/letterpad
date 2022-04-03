@@ -49,7 +49,9 @@ function Subscribers() {
         <title>Subscribers</title>
       </Head>
       <PageHeader className="site-page-header" title="Subscribers">
-        Here you will find all the users subscribed to your blog.
+        <span className="help-text">
+          Here you will find all the users subscribed to your blog.
+        </span>
       </PageHeader>
       <Content>
         <div className="site-layout-background" style={{ padding: 16 }}>

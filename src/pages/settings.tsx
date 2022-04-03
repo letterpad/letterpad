@@ -87,7 +87,9 @@ function Settings(props: {
         <title>Settings</title>
       </Head>
       <PageHeader className="site-page-header" title="Settings">
-        Here you can customize your blog's settings.
+        <span className="help-text">
+          Here you can customize your blog's settings.
+        </span>
       </PageHeader>
       <Content>
         {props.readOnly && (

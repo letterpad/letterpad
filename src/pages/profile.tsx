@@ -195,8 +195,10 @@ function Profile({ readOnly }: { readOnly: boolean }) {
         <title>Profile</title>
       </Head>
       <PageHeader className="site-page-header" title="Profile">
-        Set up your profile. This will be used by themes to add author
-        information for your blog posts.
+        <span className="help-text">
+          Set up your profile. This will be used by themes to add author
+          information for your blog posts.
+        </span>
       </PageHeader>
       <Content>
         {readOnly && (

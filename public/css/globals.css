@@ -13,6 +13,7 @@ body {
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 90%;
+  color: rgba(var(--color), 0.8);
 }
 
 html.no-transitions * {
@@ -140,4 +141,8 @@ body .editor {
 }
 .ant-form-item {
   align-items: center;
+}
+
+.help-text {
+  color: rgba(var(--color), 0.5);
 }

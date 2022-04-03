@@ -11,7 +11,7 @@ describe("Publishing", () => {
     cy.openSettings();
     cy.enterTags(["first-post"]);
     cy.getTestId("slugInp").should("have.value", slug);
-    cy.getTestId("publishCb").click();
+    cy.getTestId("publishBtn").click();
     cy.getTestId("postStatus").should("have.text", "published");
     cy.get(".ant-drawer-close").click();
     cy.get(".ant-page-header-back-button").click();
@@ -35,18 +35,45 @@ describe("Publishing", () => {
     });
     cy.openSettings();
 
-    cy.getTestId("publishCb").click();
+    cy.getTestId("publishBtn").click();
     cy.get(".no-tags-modal").should("exist");
     cy.get(".okModalBtn").click();
 
     cy.enterTags(["new-tag"]);
-    cy.getTestId("publishCb").click();
+    cy.getTestId("publishBtn").click();
     cy.get(".tags-notlinked-modal").should("exist");
     cy.get(".okModalBtn").click();
 
     cy.enterTags(["first-post"]);
-    cy.getTestId("publishCb").click();
+    cy.getTestId("publishBtn").click();
     cy.wait("@updatePostMutation");
+  });
+
+  it("can publish, republish and unpublish", () => {
+    cy.getTestId("createPostBtn").click();
+    cy.setContent({
+      title: "Another new post",
+      content: "content",
+    });
+    cy.openSettings();
+    cy.enterTags(["first-post"]);
+    cy.getTestId("publishBtn").click();
+    cy.getTestId("postStatus").should("have.text", "published");
+
+    cy.get(".ant-drawer-close").click();
+
+    cy.setContent({
+      content: "updated content",
+    });
+
+    cy.openSettings();
+
+    cy.getTestId("rePublishBtn").click();
+    cy.wait("@updatePostMutation");
+
+    cy.getTestId("unPublishBtn").click();
+    cy.wait("@updatePostMutation");
+    cy.getTestId("postStatus").should("have.text", "draft");
   });
 });
 

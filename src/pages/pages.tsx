@@ -29,7 +29,9 @@ function Pages({ readOnly }: { readOnly: boolean }) {
         <title>Pages</title>
       </Head>
       <Header type={PostTypes.Page} title="Pages">
-        Here you will find the list of pages for your blog.
+        <span className="help-text">
+          Here you will find the list of pages for your blog.
+        </span>
       </Header>
       <Content>
         {readOnly && (

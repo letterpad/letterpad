@@ -73,7 +73,7 @@ export async function getImageDimensions(
 
 export const setImageWidthAndHeightInHtml = async (html: string) => {
   try {
-    const $ = cheerio.load(html, { xmlMode: true });
+    const $ = cheerio.load(html, { xmlMode: true, decodeEntities: false });
     logger.debug("Setting image width and height inside html");
     const $bodyImages = $("img");
 
