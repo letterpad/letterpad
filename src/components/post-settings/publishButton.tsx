@@ -6,7 +6,7 @@ import {
   PostStatusOptions,
   PostTypes,
 } from "@/__generated__/__types__";
-import { Button, Col, Divider, Row, Space } from "antd";
+import { Button, Space } from "antd";
 import {
   pageNotLinkedWithNavigation,
   tagNotLinkedWithNavigation,
