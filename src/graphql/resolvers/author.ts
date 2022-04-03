@@ -8,7 +8,6 @@ import bcrypt from "bcryptjs";
 import { validateCaptcha } from "./helpers";
 import { decodeToken, verifyToken } from "@/shared/token";
 import { EmailTemplates } from "../types";
-import logger from "@/shared/logger";
 import { ResolverContext } from "../context";
 import { mapAuthorToGraphql } from "./mapper";
 import { onBoardUser } from "@/lib/onboard";
