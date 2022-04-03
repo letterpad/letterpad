@@ -1,4 +1,3 @@
-import { signOut } from "next-auth/react";
 import { PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
@@ -10,7 +9,7 @@ import { getSession } from "next-auth/react";
 import { Content as ProfileContent } from "@/components/profile/content";
 
 function Profile({ readOnly }: { readOnly: boolean }) {
-  const { data, loading, error } = useMeQuery({
+  const { data, loading } = useMeQuery({
     variables: {},
   });
 
