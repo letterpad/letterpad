@@ -1,4 +1,3 @@
-import { SettingInputType, Setting } from "@/__generated__/__types__";
 import { Collapse, Form, Radio, Space } from "antd";
 import ImageUpload from "../ImageUpload";
 import Editor from "react-simple-code-editor";
@@ -9,21 +8,17 @@ import hljsCssLang from "highlight.js/lib/languages/css";
 hljs.registerLanguage("css", hljsCssLang);
 import "highlight.js/styles/night-owl.css";
 import { useRef } from "react";
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
+import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 const { Panel } = Collapse;
 
-type ValueOf<T> = T[keyof T];
-
 interface Props {
-  settings: Setting;
-  onChange: (
-    key: keyof SettingInputType,
-    value: ValueOf<SettingInputType>,
-  ) => void;
+  settings: SettingsFragmentFragment;
 }
-const Appearance: React.FC<Props> = ({ settings, onChange }) => {
+const Appearance: React.FC<Props> = ({ settings }) => {
   const editorRef = useRef<any>(null);
-  console.log(settings.theme);
+  const { updateSettings, debounceUpdateSettings } = useUpdateSettings();
   return (
     <Collapse>
       <Panel header="Appearance" key="1">
@@ -32,10 +27,12 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
             name="Logo"
             url={settings?.site_logo?.src}
             onDone={([res]) =>
-              onChange("site_logo", {
-                src: res.src,
-                width: res.size.width,
-                height: res.size.height,
+              updateSettings({
+                site_logo: {
+                  src: res.src,
+                  width: res.size.width,
+                  height: res.size.height,
+                },
               })
             }
           />
@@ -45,10 +42,12 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
             name="Favicon"
             url={settings?.site_favicon?.src}
             onDone={([res]) =>
-              onChange("site_favicon", {
-                src: res.src,
-                width: res.size.width,
-                height: res.size.height,
+              updateSettings({
+                site_favicon: {
+                  src: res.src,
+                  width: res.size.width,
+                  height: res.size.height,
+                },
               })
             }
           />
@@ -58,10 +57,12 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
             name="Banner"
             url={settings?.banner?.src}
             onDone={([res]) =>
-              onChange("banner", {
-                src: res.src,
-                width: res.size.width,
-                height: res.size.height,
+              updateSettings({
+                banner: {
+                  src: res.src,
+                  width: res.size.width,
+                  height: res.size.height,
+                },
               })
             }
           />
@@ -71,7 +72,7 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
         </Form.Item>
         <Form.Item label="Layout">
           <Radio.Group
-            onChange={(e) => onChange("theme", e.target.value)}
+            onChange={(e) => updateSettings({ theme: e.target.value })}
             defaultValue="a"
             size="middle"
             value={settings.theme}
@@ -87,7 +88,7 @@ const Appearance: React.FC<Props> = ({ settings, onChange }) => {
             <Editor
               value={settings.css ?? ""}
               onValueChange={(code) => {
-                onChange("css", code);
+                debounceUpdateSettings({ css: code });
               }}
               ref={editorRef}
               onChange={() => {

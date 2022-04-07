@@ -29,19 +29,12 @@ export const useUpdateAuthor = (id: number) => {
       variables: {
         author: { ...data, id },
       },
-      update: (cache, response) => {
-        cache.writeQuery({
-          query: MeDocument,
-          data: {
-            me: response.data?.updateAuthor?.data,
-          },
-        });
-      },
       optimisticResponse: (cache) => {
         return {
           updateAuthor: {
             data: { ...meData.me, ...cache.author },
             ok: true,
+            errors: [],
           },
         };
       },

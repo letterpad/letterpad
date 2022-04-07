@@ -20,6 +20,7 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
   if (loading) return null;
 
   const onSortEnd = async ({ oldIndex, newIndex }) => {
+    if (oldIndex === newIndex) return;
     const newOrder = arrayMove(menu, oldIndex, newIndex);
     setMenu(newOrder);
     updateOption(prepareForBackend(newOrder));

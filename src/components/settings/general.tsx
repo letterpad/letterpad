@@ -1,64 +1,68 @@
-import { SettingInputType, Setting } from "@/__generated__/__types__";
+import { useUpdateSettings } from "@/hooks/useUpdateSettings";
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { Collapse, Form, Input } from "antd";
 const { Panel } = Collapse;
 
-type ValueOf<T> = T[keyof T];
-
 interface Props {
-  settings: Setting;
-  updateSettings: () => void;
-  onChange: (
-    key: keyof SettingInputType,
-    value: ValueOf<SettingInputType>,
-  ) => void;
+  settings: SettingsFragmentFragment;
 }
-const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {
+const General: React.FC<Props> = ({ settings }) => {
+  const { updateLocalState, debounceUpdateSettings, updateSettings } =
+    useUpdateSettings();
   return (
     <Collapse>
-      <Panel header="General Settings" key="1">
+      <Panel header="General Settings" key="1" className="general-settings">
         <Form.Item label="Site Title">
           <Input
             size="middle"
             value={settings.site_title}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("site_title", e.target.value)}
+            onChange={(e) =>
+              debounceUpdateSettings({ site_title: e.target.value })
+            }
             placeholder="Name of your blog"
+            data-testid="siteTitle"
           />
         </Form.Item>
         <Form.Item label="Site Tagline">
           <Input
             size="middle"
             value={settings.site_tagline}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("site_tagline", e.target.value)}
+            onChange={(e) =>
+              debounceUpdateSettings({ site_tagline: e.target.value })
+            }
             placeholder="A short phrase for your blog"
+            data-testid="siteTagline"
           />
         </Form.Item>
         <Form.Item label="Site Email (public)">
           <Input
             size="middle"
             value={settings.site_email}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("site_email", e.target.value)}
+            onChange={(e) =>
+              debounceUpdateSettings({ site_email: e.target.value })
+            }
             placeholder="e.g. foo@letterpad.app"
+            data-testid="siteEmail"
           />
         </Form.Item>
         <Form.Item label="Short Description">
           <Input.TextArea
             size="middle"
             value={settings.site_description}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("site_description", e.target.value)}
+            onBlur={(e) => updateSettings({ site_description: e.target.value })}
+            onChange={(e) =>
+              updateLocalState({ site_description: e.target.value })
+            }
             placeholder="Write something about your site. Will be used in SEO and other pages"
             autoSize={{ minRows: 3, maxRows: 3 }}
+            data-testid="shortDescription"
           />
         </Form.Item>
         <Form.Item label="Site Url" hidden={true}>
           <Input
             size="middle"
             value={settings.site_url}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("site_url", e.target.value)}
+            onChange={(e) => updateLocalState({ site_url: e.target.value })}
           />
         </Form.Item>
         <Form.Item label="Footer Description">
@@ -66,18 +70,20 @@ const General: React.FC<Props> = ({ settings, updateSettings, onChange }) => {
             size="middle"
             placeholder="Anything that you want display in footer. html is allowed."
             value={settings.site_footer}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("site_footer", e.target.value)}
+            onBlur={(e) => updateSettings({ site_footer: e.target.value })}
+            onChange={(e) => updateLocalState({ site_footer: e.target.value })}
             autoSize={{ minRows: 3, maxRows: 3 }}
             maxLength={200}
+            data-testid="footerDescription"
           />
         </Form.Item>
         <Form.Item label="Google Analytics">
           <Input
             size="middle"
             value={settings.google_analytics}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("google_analytics", e.target.value)}
+            onChange={(e) =>
+              debounceUpdateSettings({ google_analytics: e.target.value })
+            }
           />
         </Form.Item>
       </Panel>

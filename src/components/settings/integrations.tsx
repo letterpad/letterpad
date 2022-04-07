@@ -1,28 +1,23 @@
-import { SettingInputType, Setting } from "@/__generated__/__types__";
+import { useUpdateSettings } from "@/hooks/useUpdateSettings";
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { Collapse, Divider, Form, Input } from "antd";
 const { Panel } = Collapse;
 
-type ValueOf<T> = T[keyof T];
-
 interface Props {
-  settings: Setting;
-  updateSettings: () => void;
+  settings: SettingsFragmentFragment;
   cloudinaryEnabledByAdmin: boolean;
-  onChange: (
-    key: keyof SettingInputType,
-    value: ValueOf<SettingInputType>,
-  ) => void;
 }
 const Integrations: React.FC<Props> = ({
   settings,
-  updateSettings,
-  onChange,
   cloudinaryEnabledByAdmin,
 }) => {
+  const { debounceUpdateSettings } = useUpdateSettings();
+  const { ...analytics } = settings.analytics;
+  delete analytics.__typename;
   return (
     <>
       <Collapse>
-        <Panel header="Integrations" key="1">
+        <Panel header="Integrations" key="1" className="integrations">
           <p>
             {cloudinaryEnabledByAdmin && (
               <span>
@@ -35,28 +30,34 @@ const Integrations: React.FC<Props> = ({
           <Form.Item label="Cloudinary Name">
             <Input
               size="middle"
+              data-testid="cName"
               disabled={cloudinaryEnabledByAdmin}
               value={settings.cloudinary_name}
-              onBlur={updateSettings}
-              onChange={(e) => onChange("cloudinary_name", e.target.value)}
+              onChange={(e) =>
+                debounceUpdateSettings({ cloudinary_name: e.target.value })
+              }
             />
           </Form.Item>
           <Form.Item label="Cloudinary Key">
             <Input
               disabled={cloudinaryEnabledByAdmin}
+              data-testid="cKey"
               size="middle"
               value={settings.cloudinary_key}
-              onBlur={updateSettings}
-              onChange={(e) => onChange("cloudinary_key", e.target.value)}
+              onChange={(e) =>
+                debounceUpdateSettings({ cloudinary_key: e.target.value })
+              }
             />
           </Form.Item>
           <Form.Item label="Cloudinary Secret">
             <Input
               disabled={cloudinaryEnabledByAdmin}
               size="middle"
+              data-testid="cSecret"
               value={settings.cloudinary_secret}
-              onBlur={updateSettings}
-              onChange={(e) => onChange("cloudinary_secret", e.target.value)}
+              onChange={(e) =>
+                debounceUpdateSettings({ cloudinary_secret: e.target.value })
+              }
             />
           </Form.Item>
           <Divider />
@@ -72,12 +73,14 @@ const Integrations: React.FC<Props> = ({
             <Input
               placeholder="e.g. UA-000000-2 or G-XXXXXXX"
               size="middle"
+              data-testid="gA"
               value={settings.analytics?.google_analytics}
-              onBlur={updateSettings}
               onChange={(e) =>
-                onChange("analytics", {
-                  ...settings.analytics,
-                  google_analytics: e.target.value,
+                debounceUpdateSettings({
+                  analytics: {
+                    ...analytics,
+                    google_analytics: e.target.value,
+                  },
                 })
               }
             />
@@ -90,7 +93,7 @@ const Integrations: React.FC<Props> = ({
               onBlur={updateSettings}
               onChange={(e) =>
                 onChange("analytics", {
-                  ...settings.analytics,
+                  ...analytics,
                   simple_analytics: e.target.value,
                 })
               }
@@ -100,12 +103,14 @@ const Integrations: React.FC<Props> = ({
             <Input
               placeholder="e.g. demo.letterpad.app"
               size="middle"
+              data-testid="plausible"
               value={settings.analytics?.plausible_data_domain}
-              onBlur={updateSettings}
               onChange={(e) =>
-                onChange("analytics", {
-                  ...settings.analytics,
-                  plausible_data_domain: e.target.value,
+                debounceUpdateSettings({
+                  analytics: {
+                    ...analytics,
+                    plausible_data_domain: e.target.value,
+                  },
                 })
               }
             />
@@ -115,11 +120,13 @@ const Integrations: React.FC<Props> = ({
               placeholder="e.g. 123e4567-e89b-12d3-a456-426614174000"
               size="middle"
               value={settings.analytics?.umami_id}
-              onBlur={updateSettings}
+              data-testid="umai"
               onChange={(e) =>
-                onChange("analytics", {
-                  ...settings.analytics,
-                  umami_id: e.target.value,
+                debounceUpdateSettings({
+                  analytics: {
+                    ...analytics,
+                    umami_id: e.target.value,
+                  },
                 })
               }
             />

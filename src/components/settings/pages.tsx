@@ -1,25 +1,23 @@
-import { SettingInputType, Setting } from "@/__generated__/__types__";
+import { useUpdateSettings } from "@/hooks/useUpdateSettings";
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { Checkbox, Collapse, Divider } from "antd";
 const { Panel } = Collapse;
 
-type ValueOf<T> = T[keyof T];
-
 interface Props {
-  settings: Setting;
-  updateSettings: () => void;
-  onChange: (
-    key: keyof SettingInputType,
-    value: ValueOf<SettingInputType>,
-  ) => void;
+  settings: SettingsFragmentFragment;
 }
 
-const Pages: React.FC<Props> = ({ settings, onChange }) => {
+const Pages: React.FC<Props> = ({ settings }) => {
+  const { debounceUpdateSettings } = useUpdateSettings();
   return (
     <Collapse>
-      <Panel header="Pages" key="1">
+      <Panel header="Pages" key="1" className="pages">
         <Checkbox
+          data-testid="aboutPageCb"
           checked={!!settings.show_about_page}
-          onChange={(e) => onChange("show_about_page", e.target.checked)}
+          onChange={(e) =>
+            debounceUpdateSettings({ show_about_page: e.target.checked })
+          }
         >
           Select this to add a new menu item "About" which will display
           information about you.
@@ -28,7 +26,10 @@ const Pages: React.FC<Props> = ({ settings, onChange }) => {
 
         <Checkbox
           checked={!!settings.show_tags_page}
-          onChange={(e) => onChange("show_tags_page", e.target.checked)}
+          data-testId="tagsPageCb"
+          onChange={(e) =>
+            debounceUpdateSettings({ show_tags_page: e.target.checked })
+          }
         >
           Select this to add a new menu item "Tags" which will display all the
           tags with the post count. <br />
