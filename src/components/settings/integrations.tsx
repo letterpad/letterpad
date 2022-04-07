@@ -17,7 +17,7 @@ const Integrations: React.FC<Props> = ({
   return (
     <>
       <Collapse>
-        <Panel header="Integrations" key="1">
+        <Panel header="Integrations" key="1" className="integrations">
           <p>
             {cloudinaryEnabledByAdmin && (
               <span>
@@ -30,6 +30,7 @@ const Integrations: React.FC<Props> = ({
           <Form.Item label="Cloudinary Name">
             <Input
               size="middle"
+              data-testid="cName"
               disabled={cloudinaryEnabledByAdmin}
               value={settings.cloudinary_name}
               onChange={(e) =>
@@ -40,6 +41,7 @@ const Integrations: React.FC<Props> = ({
           <Form.Item label="Cloudinary Key">
             <Input
               disabled={cloudinaryEnabledByAdmin}
+              data-testid="cKey"
               size="middle"
               value={settings.cloudinary_key}
               onChange={(e) =>
@@ -51,6 +53,7 @@ const Integrations: React.FC<Props> = ({
             <Input
               disabled={cloudinaryEnabledByAdmin}
               size="middle"
+              data-testid="cSecret"
               value={settings.cloudinary_secret}
               onChange={(e) =>
                 debounceUpdateSettings({ cloudinary_secret: e.target.value })
@@ -70,6 +73,7 @@ const Integrations: React.FC<Props> = ({
             <Input
               placeholder="e.g. UA-000000-2 or G-XXXXXXX"
               size="middle"
+              data-testid="gA"
               value={settings.analytics?.google_analytics}
               onChange={(e) =>
                 debounceUpdateSettings({
@@ -99,6 +103,7 @@ const Integrations: React.FC<Props> = ({
             <Input
               placeholder="e.g. demo.letterpad.app"
               size="middle"
+              data-testid="plausible"
               value={settings.analytics?.plausible_data_domain}
               onChange={(e) =>
                 debounceUpdateSettings({
@@ -115,6 +120,7 @@ const Integrations: React.FC<Props> = ({
               placeholder="e.g. 123e4567-e89b-12d3-a456-426614174000"
               size="middle"
               value={settings.analytics?.umami_id}
+              data-testid="umai"
               onChange={(e) =>
                 debounceUpdateSettings({
                   analytics: {

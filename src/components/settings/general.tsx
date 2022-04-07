@@ -11,7 +11,7 @@ const General: React.FC<Props> = ({ settings }) => {
     useUpdateSettings();
   return (
     <Collapse>
-      <Panel header="General Settings" key="1">
+      <Panel header="General Settings" key="1" className="general-settings">
         <Form.Item label="Site Title">
           <Input
             size="middle"
@@ -20,6 +20,7 @@ const General: React.FC<Props> = ({ settings }) => {
               debounceUpdateSettings({ site_title: e.target.value })
             }
             placeholder="Name of your blog"
+            data-testid="siteTitle"
           />
         </Form.Item>
         <Form.Item label="Site Tagline">
@@ -30,6 +31,7 @@ const General: React.FC<Props> = ({ settings }) => {
               debounceUpdateSettings({ site_tagline: e.target.value })
             }
             placeholder="A short phrase for your blog"
+            data-testid="siteTagline"
           />
         </Form.Item>
         <Form.Item label="Site Email (public)">
@@ -40,6 +42,7 @@ const General: React.FC<Props> = ({ settings }) => {
               debounceUpdateSettings({ site_email: e.target.value })
             }
             placeholder="e.g. foo@letterpad.app"
+            data-testid="siteEmail"
           />
         </Form.Item>
         <Form.Item label="Short Description">
@@ -52,6 +55,7 @@ const General: React.FC<Props> = ({ settings }) => {
             }
             placeholder="Write something about your site. Will be used in SEO and other pages"
             autoSize={{ minRows: 3, maxRows: 3 }}
+            data-testid="shortDescription"
           />
         </Form.Item>
         <Form.Item label="Site Url" hidden={true}>
@@ -70,6 +74,7 @@ const General: React.FC<Props> = ({ settings }) => {
             onChange={(e) => updateLocalState({ site_footer: e.target.value })}
             autoSize={{ minRows: 3, maxRows: 3 }}
             maxLength={200}
+            data-testid="footerDescription"
           />
         </Form.Item>
         <Form.Item label="Google Analytics">

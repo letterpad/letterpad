@@ -11,8 +11,9 @@ const Pages: React.FC<Props> = ({ settings }) => {
   const { debounceUpdateSettings } = useUpdateSettings();
   return (
     <Collapse>
-      <Panel header="Pages" key="1">
+      <Panel header="Pages" key="1" className="pages">
         <Checkbox
+          data-testid="aboutPageCb"
           checked={!!settings.show_about_page}
           onChange={(e) =>
             debounceUpdateSettings({ show_about_page: e.target.checked })
@@ -25,6 +26,7 @@ const Pages: React.FC<Props> = ({ settings }) => {
 
         <Checkbox
           checked={!!settings.show_tags_page}
+          data-testId="tagsPageCb"
           onChange={(e) =>
             debounceUpdateSettings({ show_tags_page: e.target.checked })
           }
