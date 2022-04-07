@@ -1,27 +1,34 @@
-import { SettingInputType, Setting } from "@/__generated__/__types__";
+import { useUpdateSettings } from "@/hooks/useUpdateSettings";
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
+import { Navigation } from "@/__generated__/__types__";
 import { Collapse } from "antd";
 import NavigationBuilder from "../navigation-builder";
 const { Panel } = Collapse;
 
-type ValueOf<T> = T[keyof T];
-
 interface Props {
-  settings: Setting;
-  onChange: (
-    key: keyof SettingInputType,
-    value: ValueOf<SettingInputType>,
-  ) => void;
+  settings: SettingsFragmentFragment;
 }
-const Navigation: React.FC<Props> = ({ settings, onChange }) => {
+const NavigationPanel: React.FC<Props> = ({ settings }) => {
+  const { debounceUpdateSettings } = useUpdateSettings();
+
+  const updateMenu = (menu: Navigation[]) => {
+    if (
+      menu &&
+      menu.filter((m) => m.slug === "" || m.label === "").length === 0
+    ) {
+      debounceUpdateSettings({ menu });
+    }
+  };
+
   return (
     <Collapse>
       <Panel header="Navigation" key="1" className="navigation">
         <NavigationBuilder
           menuData={settings.menu}
-          updateOption={(option) => onChange("menu", option)}
+          updateOption={(menu) => updateMenu(menu)}
         />
       </Panel>
     </Collapse>
   );
 };
-export default Navigation;
+export default NavigationPanel;

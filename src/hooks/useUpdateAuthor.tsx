@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { debounce } from "@/shared/utils";
+import { debounce, removeTypenames } from "@/shared/utils";
 import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { MeDocument } from "@/__generated__/queries/queries.graphql";
 import { InputAuthor } from "@/__generated__/__types__";
@@ -29,19 +29,12 @@ export const useUpdateAuthor = (id: number) => {
       variables: {
         author: { ...data, id },
       },
-      update: (cache, response) => {
-        cache.writeQuery({
-          query: MeDocument,
-          data: {
-            me: response.data?.updateAuthor?.data,
-          },
-        });
-      },
       optimisticResponse: (cache) => {
         return {
           updateAuthor: {
             data: { ...meData.me, ...cache.author },
             ok: true,
+            errors: [],
           },
         };
       },

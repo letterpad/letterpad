@@ -1,18 +1,13 @@
-import { SettingInputType, Setting } from "@/__generated__/__types__";
+import { useUpdateSettings } from "@/hooks/useUpdateSettings";
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { Collapse, Form, Input } from "antd";
 const { Panel } = Collapse;
 
-type ValueOf<T> = T[keyof T];
-
 interface Props {
-  settings: Setting;
-  updateSettings: () => void;
-  onChange: (
-    key: keyof SettingInputType,
-    value: ValueOf<SettingInputType>,
-  ) => void;
+  settings: SettingsFragmentFragment;
 }
-const Social: React.FC<Props> = ({ settings, onChange, updateSettings }) => {
+const Social: React.FC<Props> = ({ settings }) => {
+  const { debounceUpdateSettings } = useUpdateSettings();
   return (
     <Collapse>
       <Panel header="Social  Settings" key="1">
@@ -20,8 +15,9 @@ const Social: React.FC<Props> = ({ settings, onChange, updateSettings }) => {
           <Input
             size="middle"
             value={settings.social_twitter}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("social_twitter", e.target.value)}
+            onChange={(e) =>
+              debounceUpdateSettings({ social_twitter: e.target.value })
+            }
             placeholder="eg. https://twitter.com/username"
           />
         </Form.Item>
@@ -29,8 +25,9 @@ const Social: React.FC<Props> = ({ settings, onChange, updateSettings }) => {
           <Input
             size="middle"
             value={settings.social_facebook}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("social_facebook", e.target.value)}
+            onChange={(e) =>
+              debounceUpdateSettings({ social_facebook: e.target.value })
+            }
             placeholder="eg. https://www.facebook.com/username"
           />
         </Form.Item>
@@ -38,8 +35,9 @@ const Social: React.FC<Props> = ({ settings, onChange, updateSettings }) => {
           <Input
             size="middle"
             value={settings.social_instagram}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("social_instagram", e.target.value)}
+            onChange={(e) =>
+              debounceUpdateSettings({ social_instagram: e.target.value })
+            }
             placeholder="eg. https://instagram.com/username"
           />
         </Form.Item>
@@ -47,8 +45,9 @@ const Social: React.FC<Props> = ({ settings, onChange, updateSettings }) => {
           <Input
             size="middle"
             value={settings.social_github}
-            onBlur={updateSettings}
-            onChange={(e) => onChange("social_github", e.target.value)}
+            onChange={(e) =>
+              debounceUpdateSettings({ social_github: e.target.value })
+            }
             placeholder="eg. https://github.com/abhisaha1"
           />
         </Form.Item>

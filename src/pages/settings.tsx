@@ -1,8 +1,6 @@
-import { Col, Collapse, Form, Input, message, PageHeader, Row } from "antd";
+import { Col, Collapse, Form, Input, PageHeader, Row } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
-import { useEffect, useState } from "react";
-import { Role, Setting, SettingInputType } from "@/__generated__/__types__";
+import { Role } from "@/__generated__/__types__";
 import { Alert } from "antd";
 
 import Head from "next/head";
@@ -14,73 +12,23 @@ import Social from "@/components/settings/social";
 import Integrations from "@/components/settings/integrations";
 import { CopyToClipboard } from "@/components/clipboard";
 import { getSession } from "next-auth/react";
-import { EventAction, track } from "@/track";
 import Pages from "@/components/settings/pages";
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 
 const { Panel } = Collapse;
 
-type ValueOf<T> = T[keyof T];
-const key = "setting";
-
-function Settings(props: {
-  settings: Setting;
+interface Props {
+  settings: SettingsFragmentFragment;
   cloudinaryEnabledByAdmin: boolean;
   readOnly: boolean;
   showSocial: boolean;
-}) {
-  const [settings, setSettings] = useState(props.settings);
-  const [draft, setDraft] = useState<SettingInputType>({});
-  const [settingsMutation] = useUpdateOptionsMutation();
-
-  const updateSettings = async () => {
-    if (props.readOnly) return;
-    if (Object.keys(draft).length === 0) return;
-    track({
-      eventAction: EventAction.Change,
-      eventCategory: "setting",
-      eventLabel: Object.keys(draft).join("-"),
-    });
-
-    const result = await settingsMutation({ variables: { options: draft } });
-    if (result.data?.updateOptions?.__typename === "SettingError") {
-      message.error({
-        key,
-        content: result.data.updateOptions.message,
-        duration: 5,
-      });
-    }
-    setDraft({});
-  };
-
-  useEffect(() => {
-    if (Object.keys(draft).length === 0) return;
-    if (
-      draft.site_logo ||
-      draft.banner ||
-      draft.site_favicon ||
-      draft.theme ||
-      "show_about_page" in draft ||
-      "show_tags_page" in draft
-    ) {
-      updateSettings();
-    }
-
-    if (
-      draft.menu &&
-      draft.menu.filter((m) => m.slug === "" || m.label === "").length === 0
-    ) {
-      updateSettings();
-    }
-  }, [Object.keys(draft)]);
-
-  const onChange = (
-    key: keyof SettingInputType,
-    value: ValueOf<SettingInputType>,
-  ) => {
-    setSettings({ ...settings, [key]: value });
-    setDraft({ [key]: value });
-  };
-
+}
+function Settings({
+  settings,
+  cloudinaryEnabledByAdmin,
+  readOnly,
+  showSocial,
+}: Props) {
   return (
     <>
       <Head>
@@ -92,7 +40,7 @@ function Settings(props: {
         </span>
       </PageHeader>
       <Content>
-        {props.readOnly && (
+        {readOnly && (
           <Alert
             message="This section is read only. You will be able to make changes, but they wont be saved."
             type="warning"
@@ -105,30 +53,14 @@ function Settings(props: {
             layout="horizontal"
             size={"small"}
           >
-            <General
-              settings={settings}
-              onChange={onChange}
-              updateSettings={updateSettings}
-            />
-            <Appearance settings={settings} onChange={onChange} />
-            <Pages
-              settings={settings}
-              onChange={onChange}
-              updateSettings={updateSettings}
-            />
-            <Navigation settings={settings} onChange={onChange} />
-            {props.showSocial && (
-              <Social
-                settings={settings}
-                onChange={onChange}
-                updateSettings={updateSettings}
-              />
-            )}
+            <General settings={settings} />
+            <Appearance settings={settings} />
+            <Pages settings={settings} />
+            <Navigation settings={settings} />
+            {showSocial && <Social settings={settings} />}
             <Integrations
               settings={settings}
-              onChange={onChange}
-              updateSettings={updateSettings}
-              cloudinaryEnabledByAdmin={props.cloudinaryEnabledByAdmin}
+              cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
             />
             <Collapse>
               <Panel header="Keys" key="1">

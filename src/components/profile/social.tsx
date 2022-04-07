@@ -1,5 +1,6 @@
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
+import { InputSocial } from "@/__generated__/__types__";
 import { Form, Input } from "antd";
 
 interface Props {
@@ -9,6 +10,11 @@ interface Props {
 export const Social: React.VFC<Props> = ({ social, id }) => {
   const { debounceUpdateAuthor } = useUpdateAuthor(id);
 
+  const updateSocial = (inp: InputSocial) => {
+    debounceUpdateAuthor({
+      social: { ...social, ...inp },
+    });
+  };
   return (
     <>
       <Form.Item label="Twitter">
@@ -16,11 +22,9 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           placeholder="https://twitter.com/username"
           size="middle"
           value={social?.twitter}
-          onChange={(e) =>
-            debounceUpdateAuthor({
-              social: { ...social, twitter: e.target.value },
-            })
-          }
+          onChange={(e) => {
+            updateSocial({ twitter: e.target.value });
+          }}
         />
       </Form.Item>
       <Form.Item label="Facebook">
@@ -28,11 +32,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           placeholder="https://facebook.com/username"
           size="middle"
           value={social?.facebook}
-          onChange={(e) =>
-            debounceUpdateAuthor({
-              social: { ...social, facebook: e.target.value },
-            })
-          }
+          onChange={(e) => updateSocial({ facebook: e.target.value })}
         />
       </Form.Item>
       <Form.Item label="Instagram">
@@ -40,11 +40,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           placeholder="https://instagram.com/username"
           size="middle"
           value={social?.instagram}
-          onChange={(e) =>
-            debounceUpdateAuthor({
-              social: { ...social, instagram: e.target.value },
-            })
-          }
+          onChange={(e) => updateSocial({ instagram: e.target.value })}
         />
       </Form.Item>
       <Form.Item label="Github">
@@ -52,11 +48,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           placeholder="https://github.com/username"
           size="middle"
           value={social?.github}
-          onChange={(e) =>
-            debounceUpdateAuthor({
-              social: { ...social, github: e.target.value },
-            })
-          }
+          onChange={(e) => updateSocial({ github: e.target.value })}
         />
       </Form.Item>
       <Form.Item label="LinkedIn">
@@ -64,11 +56,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           placeholder="https://linkedin.com/in/username/"
           size="middle"
           value={social?.linkedin}
-          onChange={(e) =>
-            debounceUpdateAuthor({
-              social: { ...social, linkedin: e.target.value },
-            })
-          }
+          onChange={(e) => updateSocial({ linkedin: e.target.value })}
         />
       </Form.Item>
     </>
