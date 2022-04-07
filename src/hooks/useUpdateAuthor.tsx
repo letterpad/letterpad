@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { debounce, removeTypenames } from "@/shared/utils";
+import { debounce } from "@/shared/utils";
 import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { MeDocument } from "@/__generated__/queries/queries.graphql";
 import { InputAuthor } from "@/__generated__/__types__";

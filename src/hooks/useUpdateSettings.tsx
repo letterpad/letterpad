@@ -2,10 +2,7 @@ import { useCallback } from "react";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { debounce } from "@/shared/utils";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
-import {
-  MeDocument,
-  SettingsDocument,
-} from "@/__generated__/queries/queries.graphql";
+import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
 import { SettingInputType } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
 import { message } from "antd";
@@ -82,17 +79,10 @@ export const useUpdateSettings = () => {
     });
   };
 
-  const t = () => {
-    const settingsData = apolloBrowserClient.readQuery({
-      query: SettingsDocument,
-    });
-  };
-
   return {
     updateSettings,
     progress,
     debounceUpdateSettings,
     updateLocalState,
-    t,
   };
 };
