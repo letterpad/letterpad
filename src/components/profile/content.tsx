@@ -17,13 +17,25 @@ export const Content: React.VFC<Props> = ({ data }) => {
       size={"small"}
     >
       <Collapse defaultActiveKey={["1"]}>
-        <Collapse.Panel header="Basic Information" key="1">
+        <Collapse.Panel
+          header="Basic Information"
+          key="1"
+          className="basicProfile"
+        >
           <Basic data={data} />
         </Collapse.Panel>
-        <CollapsePanel header="Social Information" key="2">
+        <CollapsePanel
+          header="Social Information"
+          key="2"
+          className="socialProfile"
+        >
           <Social social={data.social} id={data.id} />
         </CollapsePanel>
-        <CollapsePanel header="Change Password" key="3">
+        <CollapsePanel
+          header="Change Password"
+          key="3"
+          className="changePassword"
+        >
           <ChangePassword id={data.id} />
         </CollapsePanel>
       </Collapse>

@@ -30,9 +30,10 @@ export const useUpdateAuthor = (id: number) => {
         author: { ...data, id },
       },
       optimisticResponse: (cache) => {
+        const data = { ...meData.me, ...cache.author };
         return {
           updateAuthor: {
-            data: { ...meData.me, ...cache.author },
+            data: { ...data, social: { ...data.social, __typename: "Social" } },
             ok: true,
             errors: [],
           },

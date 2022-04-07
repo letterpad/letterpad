@@ -1,4 +1,5 @@
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
+import { removeTypenames } from "@/shared/utils";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { InputSocial } from "@/__generated__/__types__";
 import { Form, Input } from "antd";
@@ -12,7 +13,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
 
   const updateSocial = (inp: InputSocial) => {
     debounceUpdateAuthor({
-      social: { ...social, ...inp },
+      social: { ...removeTypenames(social), ...inp },
     });
   };
   return (

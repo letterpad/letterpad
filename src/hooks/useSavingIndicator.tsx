@@ -33,6 +33,7 @@ export const useSavingIndicator = () => {
         left: 0,
         zIndex: 99999999999,
         top: 0,
+        color: "#fff",
       }}
     >
       {msg ? <div className="a">{msg}</div> : <span />}
