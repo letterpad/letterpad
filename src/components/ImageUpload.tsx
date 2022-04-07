@@ -10,10 +10,12 @@ import { basePath } from "@/constants";
 
 interface IProps {
   url?: string;
+  dataTestid?: string;
   name: string;
+  onRemove?: () => {};
   onDone: (response: IMediaUploadResult[]) => void;
 }
-const ImageUpload = ({ url, onDone, name }: IProps) => {
+const ImageUpload = ({ url, onDone, name, dataTestid }: IProps) => {
   const [previewUrl, setPreviewUrl] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [loading, setLoading] = useState(false);
@@ -76,6 +78,7 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
           if (fileList.length > 0) return;
           setExplorerVisible(true);
         }}
+        data-testid={dataTestid}
       >
         <Upload
           openFileDialogOnClick={false}
@@ -89,6 +92,7 @@ const ImageUpload = ({ url, onDone, name }: IProps) => {
           fileList={fileList}
           onPreview={handlePreview}
           ref={ref}
+          data-testid="image"
         >
           {fileList.length === 0 && uploadButton}
         </Upload>

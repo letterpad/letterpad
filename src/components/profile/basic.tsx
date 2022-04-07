@@ -21,6 +21,7 @@ export const Basic: React.VFC<Props> = ({ data }) => {
           size="middle"
           value={data.name}
           onChange={(e) => debounceUpdateAuthor({ name: e.target.value })}
+          data-testid="name"
         />
       </Form.Item>
       <Form.Item label="About You (html)">
@@ -31,6 +32,7 @@ export const Basic: React.VFC<Props> = ({ data }) => {
           autoSize={{ minRows: 10, maxRows: 80 }}
           rows={8}
           maxLength={4000}
+          data-testid="about"
         />
       </Form.Item>
       <Form.Item label="Occupation">
@@ -39,6 +41,7 @@ export const Basic: React.VFC<Props> = ({ data }) => {
           value={data.occupation}
           onChange={(e) => debounceUpdateAuthor({ occupation: e.target.value })}
           size="middle"
+          data-testid="occupation"
         />
       </Form.Item>
       <Form.Item label="Company Name">
@@ -46,6 +49,7 @@ export const Basic: React.VFC<Props> = ({ data }) => {
           placeholder="Which company do you work for ?"
           size="middle"
           value={data.company_name}
+          data-testid="company"
           onChange={(e) =>
             debounceUpdateAuthor({ company_name: e.target.value })
           }
@@ -92,8 +96,12 @@ export const Basic: React.VFC<Props> = ({ data }) => {
           url={data.avatar || ""}
           name="Avatar"
           onDone={([res]) => {
-            updateAuthor({ avatar: res.src });
+            debounceUpdateAuthor({ avatar: res.src });
           }}
+          dataTestid="avatar"
+          // onRemove={() => {
+          //   updateLocalState({ avatar: "" });
+          // }}
         />
       </Form.Item>
     </>

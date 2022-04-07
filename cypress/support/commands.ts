@@ -8,6 +8,7 @@ Cypress.Commands.add("login", ({ email, password }) => {
   cy.getTestId("email").type(email);
   cy.getTestId("password").type(password);
   cy.getTestId("loginBtn").click();
+  cy.wait("@getSession");
   cy.url().then(($url) => {
     if ($url.includes("home")) {
       cy.getTestId("dismissIntro").click();
@@ -62,15 +63,25 @@ Cypress.Commands.add("addNavItem", (label, text) => {
     });
 });
 
+// Cypress.Commands.add("addUnplsashImage", (imageInputTestId) => {
+//   cy.getTestId(imageInputTestId).then((ele) => {
+//     if (ele.has('[title="Remove file"]')) {
+//       ele.find('[title="Remove file"]').trigger("click");
+//     }
+//     ele.find(".ant-upload").trigger("click");
+//   });
+// });
+
 beforeEach(function () {
   cy.visitLogin();
   cy.intercept("POST", "http://localhost:3000/admin/api/graphql", (req) => {
     aliasMutation(req, "updatePost");
     aliasMutation(req, "UpdateOptions");
+    aliasMutation(req, "UpdateAuthor");
   });
+  cy.intercept("/admin/api/auth/session").as("getSession");
   window.localStorage.setItem("intro_dismissed", "true");
   cy.login({ email: "demo@demo.com", password: "demo" });
-  cy.url().should("contain", "/posts");
 });
 
 afterEach(function () {
