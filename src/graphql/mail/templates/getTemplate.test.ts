@@ -126,7 +126,7 @@ Object {
     }
   });
 
-  it.only("gets change email verification email", async () => {
+  it.skip("gets change email verification email", async () => {
     const newUserEmail = "another@test.com";
 
     const resonse1 = await API({
