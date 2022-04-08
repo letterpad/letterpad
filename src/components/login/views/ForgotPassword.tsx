@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { forgotPasswordAction } from "../actions";
 import { Form, Input, Button, Row, Divider } from "antd";
 import { EventAction, track } from "@/track";
+
 export const ForgotPassword = ({
   isVisible,
   hideSelf,

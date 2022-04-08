@@ -7,6 +7,7 @@ import { basePath } from "@/constants";
 import { Page } from "@/page";
 import AuthenticatedLayout from "./layouts/Layout";
 import AuthenticatedNoLayout from "./layouts/NoLayout";
+import StaticLayout from "./layouts/StaticLayout";
 
 interface IProps {
   Component: Page;
@@ -23,7 +24,11 @@ const Main = ({ Component, props }: IProps) => {
 
   let node: JSX.Element;
   if (Component.noSession) {
-    node = <Component {...props} />;
+    node = (
+      <StaticLayout>
+        <Component {...props} />
+      </StaticLayout>
+    );
   } else if (Component.noLayout) {
     node = (
       <AuthenticatedNoLayout
