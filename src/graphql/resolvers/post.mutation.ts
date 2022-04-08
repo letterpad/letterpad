@@ -193,7 +193,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
   },
 };
 
-function isPublishingLive(newStatus: string | null, oldStatus?: string | null) {
+function isPublishingLive(oldStatus: string | null, newStatus?: string | null) {
   return (
     newStatus === PostStatusOptions.Published &&
     oldStatus === PostStatusOptions.Draft
@@ -371,7 +371,7 @@ async function getContentAttrs(
       reading_time: getReadingTimeFromHtml(_html),
     };
   }
-  if (newStatus && isPublishingLive(newStatus, prevPost.status)) {
+  if (newStatus && isPublishingLive(prevPost.status, newStatus)) {
     const _html = html || prevPost.html || prevPost.html_draft || empty;
     return {
       reading_time: getReadingTimeFromHtml(_html),
