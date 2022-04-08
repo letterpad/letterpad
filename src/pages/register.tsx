@@ -12,7 +12,6 @@ import { useRouter } from "next/router";
 
 import { Button, Divider, Form, Input, message, Row } from "antd";
 import { EventAction, track } from "@/track";
-import { Header } from "antd/lib/layout/layout";
 import Link from "next/link";
 import { SocialLogin } from "@/components/login/views/SocialLogin";
 
@@ -79,17 +78,8 @@ const RegisterForm = () => {
       <Head>
         <title>Register</title>
       </Head>
-      <div className="login" style={{ height: "100vh" }}>
-        <Header className="header">
-          <div className="logo">
-            <img src="uploads/logo.png" height={30} />
-          </div>
-        </Header>
-        <Row
-          justify="center"
-          align="middle"
-          style={{ paddingLeft: 10, height: "calc(100% - 80px)" }}
-        >
+      <div className="login">
+        <Row justify="center" align="middle" style={{ paddingLeft: 10 }}>
           <Form
             name="basic"
             labelCol={{ span: 6 }}

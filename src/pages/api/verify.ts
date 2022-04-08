@@ -10,8 +10,9 @@ const Verify = async (
   res: NextApiResponse,
 ) => {
   try {
-    const isValidToken = verifyToken(req.query.token as string);
-    if (!isValidToken) {
+    try {
+      verifyToken(req.query.token as string);
+    } catch (e) {
       return res.redirect(basePath + "/messages/expired");
     }
     const token = decodeToken(req.query.token as string);

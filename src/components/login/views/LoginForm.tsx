@@ -31,6 +31,9 @@ export const LoginForm = ({
       if (callbackUrl && typeof callbackUrl === "string") {
         redirectPath = callbackUrl.replace(window.location.origin, "");
       }
+      if (redirectPath.includes("/login")) {
+        redirectPath = redirectPath.replace("/login", "/posts");
+      }
       router.push(redirectPath.replace(basePath, ""));
       return;
     }

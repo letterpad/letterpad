@@ -122,6 +122,13 @@ const Query: QueryResolvers<ResolverContext> = {
         },
       };
       const posts = await prisma.post.findMany(condition);
+
+      if (session?.user.id) {
+        await prisma.author.update({
+          data: { last_seen: new Date() },
+          where: { id: session.user.id },
+        });
+      }
       return {
         __typename: "PostsNode",
         rows: posts.map(mapPostToGraphql),

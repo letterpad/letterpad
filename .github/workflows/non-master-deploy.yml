@@ -44,13 +44,13 @@ jobs:
       - name: Graphql Codegen
         run: yarn codegen
 
-      - name: Type check
-        run: yarn typecheck
-
       - name: Generate Prisma Client
         run: npx prisma generate --schema prisma/schema.prisma
         env:
           DATABASE_URL: "file:../data/test.sqlite"
+
+      - name: Type check
+        run: yarn typecheck
 
       - name: Test GraphQL API
         run: yarn run test
