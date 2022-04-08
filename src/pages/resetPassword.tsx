@@ -81,12 +81,7 @@ const ResetPassword = () => {
       <Head>
         <title>Reset password</title>
       </Head>
-      <div style={{ height: "100vh" }}>
-        <Header className="header">
-          <div className="logo">
-            <img src="uploads/logo.png" height={30} />
-          </div>
-        </Header>
+      <div>
         <Row
           justify="center"
           align="middle"

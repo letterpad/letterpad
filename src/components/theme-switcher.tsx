@@ -4,7 +4,7 @@ import { basePath } from "next.config";
 import { useEffect, useState } from "react";
 
 const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState(localStorage.theme || "dark");
+  const [theme, setTheme] = useState(localStorage.theme || "light");
 
   useEffect(() => {
     if (localStorage.theme) {
@@ -50,7 +50,7 @@ const ThemeSwitcher = () => {
   );
 };
 
-ThemeSwitcher.switch = (color = "dark") => {
+ThemeSwitcher.switch = (color = "light") => {
   const $body = document.body;
   let stylePath = "/css/antd.css";
   document.getElementsByTagName("html")[0].classList.add("no-transitions");

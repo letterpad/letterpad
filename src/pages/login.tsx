@@ -17,12 +17,7 @@ const Login = () => {
       <Head>
         <title>Login</title>
       </Head>
-      <div className="login" style={{ height: "100vh" }}>
-        <Header className="header">
-          <div className="logo">
-            <img src="uploads/logo.png" height={30} />
-          </div>
-        </Header>
+      <div className="login" style={{ height: "100%" }}>
         {isDemo ? (
           <LoginFormDemo isVisible={loginView} />
         ) : (
