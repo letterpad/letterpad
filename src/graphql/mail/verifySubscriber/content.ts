@@ -3,24 +3,16 @@ import { getVerifySubscriberToken } from "@/shared/token";
 import { addLineBreaks } from "../utils";
 import {
   EmailTemplateResponse,
-  EmailTemplates,
-  EmailVerifyNewSubscriberProps,
+  EmailVerifySubscriberProps,
 } from "@/graphql/types";
 import { PrismaClient } from "@prisma/client";
+import { getTemplate } from "../template";
 
 export async function getVerifySubscriberEmailContent(
-  data: EmailVerifyNewSubscriberProps,
+  data: EmailVerifySubscriberProps,
   prisma: PrismaClient,
 ): Promise<EmailTemplateResponse> {
-  const template = await prisma.email.findFirst({
-    where: { template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER },
-  });
-  if (!template) {
-    return {
-      ok: false,
-      message: `No template found for ${EmailTemplates.VERIFY_NEW_SUBSCRIBER}`,
-    };
-  }
+  const template = getTemplate(data.template_id);
   const author = await prisma.author.findFirst({
     where: { id: data.author_id },
     include: {

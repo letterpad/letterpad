@@ -12,6 +12,7 @@ import { ResolverContext } from "../context";
 import { mapAuthorToGraphql } from "./mapper";
 import { onBoardUser } from "@/lib/onboard";
 import { encryptEmail } from "@/shared/clientToken";
+import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -82,7 +83,7 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  async createAuthor(_, args, { prisma, mailUtils }) {
+  async createAuthor(_, args, { prisma }) {
     if (args.data.token) {
       const response = await validateCaptcha(
         process.env.RECAPTCHA_KEY_SERVER,
@@ -121,17 +122,23 @@ const Mutation: MutationResolvers<ResolverContext> = {
     const { setting = {}, ...authorData } = args.data;
     const newAuthor = await onBoardUser(authorData, setting);
 
-    if (mailUtils.enqueueEmailAndSend && newAuthor) {
-      await mailUtils.enqueueEmailAndSend({
+    // if (mailUtils.enqueueEmailAndSend && newAuthor) {
+    //   await mailUtils.enqueueEmailAndSend({
+    //     author_id: newAuthor.id,
+    //     template_id: EmailTemplates.VerifyNewUser,
+    //   });
+    // }
+
+    if (newAuthor) {
+      enqueueEmailAndSend({
         author_id: newAuthor.id,
-        template_id: EmailTemplates.VERIFY_NEW_USER,
+        template_id: EmailTemplates.VerifyNewUser,
       });
-    }
-    if (newAuthor)
       return {
         ...newAuthor,
         __typename: "Author",
       };
+    }
     return {
       __typename: "CreateAuthorError",
       message: "Something went wrong and we dont know what.",
@@ -169,7 +176,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       message: "Incorrect email id",
     };
   },
-  async updateAuthor(_root, args, { session, prisma, mailUtils }) {
+  async updateAuthor(_root, args, { session, prisma }) {
     if (session?.user.id !== args.author.id) {
       return {
         ok: false,
@@ -246,12 +253,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
         where: { id: args.author.id },
       });
       if (newEmail) {
-        if (mailUtils.enqueueEmailAndSend) {
-          await mailUtils.enqueueEmailAndSend({
-            template_id: EmailTemplates.VERIFY_CHANGED_EMAIL,
-            author_id: author.id,
-          });
-        }
+        await enqueueEmailAndSend({
+          template_id: EmailTemplates.VerifyChangedEmail,
+          author_id: author.id,
+        });
+
         await prisma.setting.update({
           data: {
             client_token: encryptEmail(args.author.email as string),
@@ -282,7 +288,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
   },
-  async forgotPassword(_root, args, { prisma, mailUtils }) {
+  async forgotPassword(_root, args, { prisma }) {
     try {
       const email = args.email;
       const author = await prisma.author.findFirst({
@@ -294,12 +300,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
       if (author.verify_attempt_left === 0) {
         throw new Error("No more attempts left.");
       }
-      if (mailUtils.enqueueEmailAndSend) {
-        await mailUtils.enqueueEmailAndSend({
-          template_id: EmailTemplates.FORGOT_PASSWORD,
-          author_id: author.id,
-        });
-      }
+
+      await enqueueEmailAndSend({
+        template_id: EmailTemplates.ForgotPassword,
+        author_id: author.id,
+      });
+
       await prisma.author.update({
         data: {
           verify_attempt_left: (author.verify_attempt_left || 3) - 1,

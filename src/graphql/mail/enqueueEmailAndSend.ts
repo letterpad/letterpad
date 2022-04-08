@@ -4,12 +4,9 @@ import { getEmailTemplate } from "./templates/getTemplate";
 
 import { sendMail } from "./sendMail";
 import { hasCredentials } from "@/lib/mail";
+import { prisma } from "@/lib/prisma";
 
-export async function enqueueEmailAndSend(
-  props: EmailProps,
-  prisma: any,
-  restrict = false,
-) {
+export async function enqueueEmailAndSend(props: EmailProps, restrict = false) {
   if (restrict) return "";
   if (!hasCredentials()) {
     return logger.debug(
@@ -36,7 +33,7 @@ export async function enqueueEmailAndSend(
     const data = await getEmailTemplate(props, prisma);
 
     if (data.ok) {
-      const addUnsubscribe = props.template_id === EmailTemplates.NEW_POST;
+      const addUnsubscribe = props.template_id === EmailTemplates.NewPost;
       const response = await sendMail(data.content, data.meta, addUnsubscribe);
       if (response && response.length > 0) {
         if (response[0].response.indexOf("OK") > 0) {

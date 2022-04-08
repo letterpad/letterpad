@@ -167,7 +167,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       // if (isPublishingLive(existingPost.status, updatedPost.status)) {
       //   if (mailUtils.enqueueEmailAndSend) {
       //     await mailUtils.enqueueEmailAndSend({
-      //       template_id: EmailTemplates.NEW_POST,
+      //       template_id: EmailTemplates.NewPost,
       //       post_id: args.data.id,
       //     });
       //   }

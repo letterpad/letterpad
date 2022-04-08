@@ -1,27 +1,15 @@
 import Twig from "twig";
 
-import {
-  EmailNewPostProps,
-  EmailTemplateResponse,
-  EmailTemplates,
-} from "@/graphql/types";
+import { EmailNewPostProps, EmailTemplateResponse } from "@/graphql/types";
 import { addLineBreaks } from "../utils";
 import { PrismaClient } from "@prisma/client";
+import { getTemplate } from "../template";
 
 export async function getNewPostContent(
   data: EmailNewPostProps,
   prisma: PrismaClient,
 ): Promise<EmailTemplateResponse> {
-  const template = await prisma.email.findFirst({
-    where: { template_id: EmailTemplates.NEW_POST },
-  });
-  if (!template) {
-    return {
-      ok: false,
-      message: `No template found for ${EmailTemplates.NEW_POST}`,
-    };
-  }
-
+  const template = getTemplate(data.template_id);
   const post = await prisma.post.findFirst({
     where: { id: data.post_id },
     include: {
