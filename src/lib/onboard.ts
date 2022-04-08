@@ -112,17 +112,21 @@ function getWelcomePostAndPage() {
 }
 
 export async function createAuthorWithSettings(
-  data: InputCreateAuthor & { verified?: boolean },
+  data: InputCreateAuthor & {
+    verified?: boolean;
+    login_type?: string;
+    avatar?: string;
+  },
   setting: SettingInputType,
   rolename: ROLES = ROLES.AUTHOR,
 ) {
-  const { token, verified = false, ...authorData } = data;
+  const { token, verified = false, avatar = "", ...authorData } = data;
   const role = await prisma.role.findFirst({ where: { name: rolename } });
   if (role) {
     const newAuthor = await prisma.author.create({
       data: {
         ...authorData,
-        avatar: "",
+        avatar,
         verified,
         bio: "",
         occupation: "",

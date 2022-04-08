@@ -86,11 +86,18 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
       }
       return process.env.ROOT_URL + "/posts";
     },
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token, user, account }) => {
+      if (account) {
+        token.accessToken = account.access_token;
+        token.provider = account.provider;
+        token.user = user;
+        return token;
+      }
       //  "user" parameter is the object received from "authorize"
       //  "token" is being send to "session" callback...
       //  ...so we set "user" param of "token" to object from "authorize"...
       //  ...and return it...
+      //@ts-ignore
       token.user = user;
       return token;
     },
@@ -125,10 +132,12 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
             {
               email: token.email,
               name: token.name,
+              avatar: token.picture || "",
               username: token.sub,
               password: "",
               token: "",
               verified: true,
+              login_type: token.provider as string,
             },
             {
               site_title: token.name,

@@ -29,6 +29,8 @@ model Author {
   role_id             Int
   role                Role         @relation(fields: [role_id], references: [id])
   subscribers         Subscriber[]
+  login_type          String       @default("credentials")
+  last_seen          DateTime?
 }
 
 model EmailDelivery {

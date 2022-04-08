@@ -90,7 +90,7 @@ const ResetPassword = () => {
         <Row
           justify="center"
           align="middle"
-          style={{ marginTop: 20, marginBottom: 20 }}
+          style={{ paddingLeft: 10, height: "calc(100% - 80px)" }}
         >
           <Form
             name="basic"
@@ -122,8 +122,8 @@ const ResetPassword = () => {
               .reset-password-form {
                 width: 500px;
                 padding: 30px;
-                background: #fbfbfb;
-                border: 1px solid #d9d9d9;
+                background: rgb(var(----section-bg));
+                border: 1px solid rgb(var(--color-border));
                 border-radius: 2px;
               }
               @media (max-width: 800px) {
