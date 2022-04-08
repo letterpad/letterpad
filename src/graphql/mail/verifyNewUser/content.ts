@@ -1,26 +1,18 @@
 import Twig from "twig";
 import {
   EmailTemplateResponse,
-  EmailTemplates,
   EmailVerifyNewUserProps,
 } from "@/graphql/types";
 import { getVerifyUserToken } from "@/shared/token";
 import { addLineBreaks } from "../utils";
 import { PrismaClient } from "@prisma/client";
+import { getTemplate } from "../template";
 
 export async function getVerifyUserEmailContent(
   data: EmailVerifyNewUserProps,
   prisma: PrismaClient,
 ): Promise<EmailTemplateResponse> {
-  const template = await prisma.email.findFirst({
-    where: { template_id: EmailTemplates.VERIFY_NEW_USER },
-  });
-  if (!template) {
-    return {
-      ok: false,
-      message: `No template found for ${EmailTemplates.VERIFY_NEW_USER}`,
-    };
-  }
+  const template = getTemplate(data.template_id);
   const author = await prisma.author.findFirst({
     where: { id: data.author_id },
     include: {

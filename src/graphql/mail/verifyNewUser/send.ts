@@ -17,7 +17,7 @@ export async function sendVerifyUserEmail(
       message: "We have sent you an email to verify your email",
     };
   } catch (e: any) {
-    logger.error("Could not send mail - " + EmailTemplates.VERIFY_NEW_USER);
+    logger.error("Could not send mail - " + EmailTemplates.VerifyNewUser);
     throw e;
   }
 }

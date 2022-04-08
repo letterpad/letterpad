@@ -80,43 +80,47 @@ declare namespace NodeJS {
 }
 
 export enum EmailTemplates {
-  VERIFY_NEW_USER = "VERIFY_NEW_USER",
-  VERIFY_CHANGED_EMAIL = "VERIFY_CHANGED_EMAIL",
-  VERIFY_NEW_SUBSCRIBER = "VERIFY_NEW_SUBSCRIBER",
-  FORGOT_PASSWORD = "FORGOT_PASSWORD",
-  NEW_POST = "NEW_POST",
+  VerifyNewUser = "verifyNewUser",
+  VerifyChangedEmail = "verifyChangedEmail",
+  VerifySubscriber = "verifySubscriber",
+  ForgotPassword = "forgotPassword",
+  NewPost = "newPost",
+}
+export interface Template {
+  body: string;
+  subject: string;
 }
 
 export interface EmailVerifyNewUserProps {
   author_id: number;
-  template_id: EmailTemplates.VERIFY_NEW_USER;
+  template_id: EmailTemplates.VerifyNewUser;
 }
 
 export interface EmailVerifyNewEmailProps {
   author_id: number;
-  template_id: EmailTemplates.VERIFY_CHANGED_EMAIL;
+  template_id: EmailTemplates.VerifyChangedEmail;
 }
 
-export interface EmailVerifyNewSubscriberProps {
+export interface EmailVerifySubscriberProps {
   author_id: number;
   subscriber_email: string;
-  template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER;
+  template_id: EmailTemplates.VerifySubscriber;
 }
 
 export interface EmailNewPostProps {
   post_id: number;
-  template_id: EmailTemplates.NEW_POST;
+  template_id: EmailTemplates.NewPost;
 }
 
 export interface EmailForgotPasswordProps {
   author_id: number;
-  template_id: EmailTemplates.FORGOT_PASSWORD;
+  template_id: EmailTemplates.ForgotPassword;
 }
 
 export type EmailProps =
   | EmailVerifyNewUserProps
   | EmailVerifyNewEmailProps
-  | EmailVerifyNewSubscriberProps
+  | EmailVerifySubscriberProps
   | EmailNewPostProps
   | EmailForgotPasswordProps;
 

@@ -4,12 +4,10 @@ import copydir from "copy-dir";
 import mkdirp from "mkdirp";
 import rimraf from "rimraf";
 import path from "path";
-import { EmailTemplates, ROLES } from "@/graphql/types";
+import { ROLES } from "@/graphql/types";
 import posts from "./posts";
 import generatePost from "./contentGenerator";
 import { getDateTime } from "@/shared/utils";
-import { subjects } from "./constants";
-import fs from "fs";
 import { createAuthorWithSettings } from "@/lib/onboard";
 import { textToSlug } from "@/utils/slug";
 
@@ -23,10 +21,6 @@ const ROOT_DIR = process.env.ROOT || path.join(__dirname, "../../../../");
 const dataDir = path.join(ROOT_DIR, "/data");
 const publicUploadsDir = path.join(ROOT_DIR, "/public/uploads");
 const uploadsSourceDir = path.join(ROOT_DIR, "/src/graphql/db/seed/uploads");
-const emailTemplatesDir = path.join(
-  ROOT_DIR,
-  "/src/graphql/db/seed/email-templates",
-);
 
 function absPath(p) {
   return p;
@@ -81,9 +75,6 @@ export async function seed(folderCheck = true) {
     await insertPost(posts[2], author?.id);
     await insertPost(posts[3], author?.id);
     console.timeEnd("Insert post and page and tags");
-    console.time("insert email templates");
-    await insertEmails();
-    console.timeEnd("insert email templates");
   } catch (e) {
     console.log("seeding failed", e);
   } finally {
@@ -289,63 +280,6 @@ export async function insertPost(postData, author_id) {
           id: author_id,
         },
       },
-    },
-  });
-}
-
-async function insertEmails() {
-  const verifyNewUserEmail = fs.readFileSync(
-    path.join(emailTemplatesDir, "verifyNewUser.twig"),
-  );
-  await prisma.email.create({
-    data: {
-      template_id: EmailTemplates.VERIFY_NEW_USER,
-      subject: subjects.VERIFY_NEW_USER,
-      body: verifyNewUserEmail.toString(),
-    },
-  });
-
-  const verifyEmailChange = fs.readFileSync(
-    path.join(emailTemplatesDir, "verifyEmailChange.twig"),
-  );
-  await prisma.email.create({
-    data: {
-      template_id: EmailTemplates.VERIFY_CHANGED_EMAIL,
-      subject: subjects.VERIFY_EMAIL_CHANGE,
-      body: verifyEmailChange.toString(),
-    },
-  });
-
-  const verifyNewSubscriberEmail = fs.readFileSync(
-    path.join(emailTemplatesDir, "verifyNewSubscriber.twig"),
-  );
-  await prisma.email.create({
-    data: {
-      template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
-      subject: subjects.VERIFY_NEW_SUBSCRIBER,
-      body: verifyNewSubscriberEmail.toString(),
-    },
-  });
-
-  const forgotPasswordEmail = fs.readFileSync(
-    path.join(emailTemplatesDir, "forgotPassword.twig"),
-  );
-  await prisma.email.create({
-    data: {
-      template_id: EmailTemplates.FORGOT_PASSWORD,
-      subject: subjects.FORGOT_PASSWORD,
-      body: forgotPasswordEmail.toString(),
-    },
-  });
-
-  const newPostEmail = fs.readFileSync(
-    path.join(emailTemplatesDir, "newPost.twig"),
-  );
-  await prisma.email.create({
-    data: {
-      template_id: EmailTemplates.NEW_POST,
-      subject: subjects.NEW_POST,
-      body: newPostEmail.toString(),
     },
   });
 }

@@ -14,7 +14,7 @@ export async function sendNewPostEmail(data: EmailNewPostProps, models) {
       message: "We have sent you an email with a new post update",
     };
   } catch (e: any) {
-    logger.error("Could not send mail - " + EmailTemplates.NEW_POST);
+    logger.error("Could not send mail - " + EmailTemplates.NewPost);
     throw e;
   }
 }

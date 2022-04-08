@@ -1,21 +1,21 @@
 import { EmailProps, EmailTemplates } from "@/graphql/types";
-import { getNewPostContent } from "../new-post/content";
-import { getForgotPasswordContent } from "../forgot-password/content";
-import { getVerifyUserEmailContent } from "../verify-user/content";
-import { getVerifySubscriberEmailContent } from "../verify-subscriber/content";
-import { getVerifyUserEmailChangeContent } from "../verify-email-change/content";
+import { getNewPostContent } from "../newPost/content";
+import { getForgotPasswordContent } from "../forgotPassword/content";
+import { getVerifyUserEmailContent } from "../verifyNewUser/content";
+import { getVerifySubscriberEmailContent } from "../verifySubscriber/content";
+import { getVerifyUserEmailChangeContent } from "../verifyChangedEmail/content";
 
 export async function getEmailTemplate(props: EmailProps, prismaInstance) {
   switch (props.template_id) {
-    case EmailTemplates.FORGOT_PASSWORD:
+    case EmailTemplates.ForgotPassword:
       return await getForgotPasswordContent(props, prismaInstance);
-    case EmailTemplates.NEW_POST:
+    case EmailTemplates.NewPost:
       return await getNewPostContent(props, prismaInstance);
-    case EmailTemplates.VERIFY_NEW_SUBSCRIBER:
+    case EmailTemplates.VerifySubscriber:
       return await getVerifySubscriberEmailContent(props, prismaInstance);
-    case EmailTemplates.VERIFY_NEW_USER:
+    case EmailTemplates.VerifyNewUser:
       return await getVerifyUserEmailContent(props, prismaInstance);
-    case EmailTemplates.VERIFY_CHANGED_EMAIL:
+    case EmailTemplates.VerifyChangedEmail:
       return await getVerifyUserEmailChangeContent(props, prismaInstance);
   }
 }

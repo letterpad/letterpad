@@ -1,6 +1,7 @@
 import { decodeToken } from "@/shared/token";
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "../context";
+import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 import { EmailTemplates } from "../types";
 
 const Query: QueryResolvers<ResolverContext> = {
@@ -28,7 +29,7 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  addSubscriber: async (_, args, { author_id, prisma, mailUtils }) => {
+  addSubscriber: async (_, args, { author_id, prisma }) => {
     if (!author_id) {
       return {
         ok: false,
@@ -47,13 +48,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
             message: "No more attempts left.",
           };
         }
-        if (mailUtils.enqueueEmailAndSend) {
-          await mailUtils.enqueueEmailAndSend({
-            template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
-            author_id,
-            subscriber_email: args.email,
-          });
-        }
+
+        await enqueueEmailAndSend({
+          template_id: EmailTemplates.VerifySubscriber,
+          author_id,
+          subscriber_email: args.email,
+        });
 
         return {
           ok: false,
@@ -79,13 +79,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
           },
         },
       });
-      if (mailUtils.enqueueEmailAndSend) {
-        await mailUtils.enqueueEmailAndSend({
-          author_id,
-          subscriber_email: args.email,
-          template_id: EmailTemplates.VERIFY_NEW_SUBSCRIBER,
-        });
-      }
+
+      await enqueueEmailAndSend({
+        author_id,
+        subscriber_email: args.email,
+        template_id: EmailTemplates.VerifySubscriber,
+      });
     } catch (e) {
       console.log(e);
     }
