@@ -17,7 +17,7 @@ model Author {
   occupation          String       @db.VarChar(100)
   company_name          String     @db.VarChar(100)
   avatar              String       @db.VarChar(300)
-  social              String       @default("{}")
+  social              String       @db.VarChar(500) @default("{}")
   verified            Boolean      @default(false)
   createdAt           DateTime?    @default(now())
   updatedAt           DateTime?    @updatedAt
