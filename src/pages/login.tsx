@@ -3,7 +3,6 @@ import Head from "next/head";
 import { ForgotPassword } from "@/components/login/views/ForgotPassword";
 import { LoginForm } from "@/components/login/views/LoginForm";
 import { LoginFormDemo } from "@/components/login/views/LoginFormDemo";
-import { Header } from "antd/lib/layout/layout";
 import NoSsr from "@/components/NoSsr";
 
 const Login = () => {

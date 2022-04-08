@@ -9,7 +9,6 @@ import {
 } from "@/__generated__/queries/mutations.graphql";
 import Head from "next/head";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { Header } from "antd/lib/layout/layout";
 import { EventAction, track } from "@/track";
 
 const key = "change-password";

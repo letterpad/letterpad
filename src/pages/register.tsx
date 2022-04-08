@@ -12,7 +12,6 @@ import { useRouter } from "next/router";
 
 import { Button, Divider, Form, Input, message, Row } from "antd";
 import { EventAction, track } from "@/track";
-import { Header } from "antd/lib/layout/layout";
 import Link from "next/link";
 import { SocialLogin } from "@/components/login/views/SocialLogin";
 
