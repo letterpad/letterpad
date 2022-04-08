@@ -1,6 +1,5 @@
 import Twig from "twig";
 import { EmailWelcomeUserProps, EmailTemplateResponse } from "@/graphql/types";
-import { getForgotPasswordToken } from "@/shared/token";
 import { addLineBreaks } from "../utils";
 import { PrismaClient } from "@prisma/client";
 import { getTemplate } from "../template";
