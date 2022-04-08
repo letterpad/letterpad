@@ -3,6 +3,7 @@ import { NextApiRequestWithFormData } from "./../../graphql/types";
 import { basePath } from "@/constants";
 import { decodeToken, verifyToken } from "@/shared/token";
 import { prisma } from "@/lib/prisma";
+import { onBoardUser } from "@/lib/onboard";
 
 const Verify = async (
   req: NextApiRequestWithFormData,
@@ -22,10 +23,14 @@ const Verify = async (
         where: { id: token.id },
       });
     } else {
-      update = await prisma.author.update({
+      const result = await prisma.author.update({
         data: { verified: true },
-        where: { email: token.email },
+        where: { id: token.author_id },
       });
+      if (result) {
+        onBoardUser(result.id);
+      }
+      update = result;
     }
     if (!update) {
       return res.redirect(

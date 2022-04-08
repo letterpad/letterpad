@@ -10,7 +10,7 @@ import { decodeToken, verifyToken } from "@/shared/token";
 import { EmailTemplates } from "../types";
 import { ResolverContext } from "../context";
 import { mapAuthorToGraphql } from "./mapper";
-import { onBoardUser } from "@/lib/onboard";
+import { createAuthorWithSettings } from "@/lib/onboard";
 import { encryptEmail } from "@/shared/clientToken";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 
@@ -120,24 +120,26 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
 
     const { setting = {}, ...authorData } = args.data;
-    const newAuthor = await onBoardUser(authorData, setting);
+    const created = await createAuthorWithSettings(authorData, setting);
 
-    // if (mailUtils.enqueueEmailAndSend && newAuthor) {
-    //   await mailUtils.enqueueEmailAndSend({
-    //     author_id: newAuthor.id,
-    //     template_id: EmailTemplates.VerifyNewUser,
-    //   });
-    // }
-
-    if (newAuthor) {
-      enqueueEmailAndSend({
-        author_id: newAuthor.id,
-        template_id: EmailTemplates.VerifyNewUser,
+    if (created) {
+      const newAuthor = await prisma.author.findUnique({
+        where: { id: created.id },
       });
-      return {
-        ...newAuthor,
-        __typename: "Author",
-      };
+      if (newAuthor) {
+        await enqueueEmailAndSend({
+          author_id: newAuthor.id,
+          template_id: EmailTemplates.VerifyNewUser,
+        });
+        const { id, email, username, name } = newAuthor;
+        return {
+          id,
+          email,
+          username,
+          name,
+          __typename: "Author",
+        };
+      }
     }
     return {
       __typename: "CreateAuthorError",

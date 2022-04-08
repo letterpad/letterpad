@@ -186,8 +186,8 @@ const RegisterForm = () => {
           .register-form {
             width: 500px;
             padding: 30px;
-            background: #fbfbfb;
-            border: 1px solid #d9d9d9;
+            background: rgb(var(----section-bg));
+            border: 1px solid rgb(var(--color-border));
             border-radius: 2px;
           }
           input {

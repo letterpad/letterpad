@@ -139,9 +139,6 @@ body .editor {
   line-height: 1.8;
   padding-bottom: 30vh;
 }
-.ant-form-item {
-  align-items: center;
-}
 
 .help-text {
   color: rgba(var(--color), 0.5);

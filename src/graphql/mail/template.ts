@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import { EmailTemplates } from "../types";
 
-const emailTemplatesDir = path.join(__dirname);
+const emailTemplatesDir = path.resolve(process.cwd(), "src/graphql/mail");
 const cache: Record<EmailTemplates, { body: ""; subject: "" }> | {} = {};
 
 export function getTemplate(template: EmailTemplates): {

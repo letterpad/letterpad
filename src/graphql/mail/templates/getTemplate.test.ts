@@ -49,7 +49,7 @@ describe("Email templates", () => {
       },
       prisma,
     );
-    if (data.ok) {
+    if (data?.ok) {
       expect(data.content).toMatchInlineSnapshot(`
 Object {
   "html": "Hello Friend, <br><br>A new post has been published in <strong>Demo Account</strong>.<br><br><img src=\\"https://a.com/image.jpg\\" width=\\"100%\\"><br><strong>new-post-test</strong><br><br><br><a target=\\"_blank\\" href=\\"https://demo.letterpad.app/post/new-post-test\\">Read More</a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
@@ -76,7 +76,7 @@ Object {
       },
       prisma,
     );
-    if (data.ok) {
+    if (data?.ok) {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
 Object {
@@ -114,7 +114,7 @@ Object {
       },
       prisma,
     );
-    if (data.ok) {
+    if (data?.ok) {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
 Object {
@@ -163,7 +163,7 @@ Object {
       },
       prisma,
     );
-    if (data.ok) {
+    if (data?.ok) {
       data.content.html = removeToken(data.content.html);
       // The to email is wrong below, because when the email changed, the session was changed, so the update query failed. Leaving it as a bug.
       expect(data.content).toMatchInlineSnapshot(`
@@ -191,7 +191,7 @@ Object {
       },
       prisma,
     );
-    if (data.ok) {
+    if (data?.ok) {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
 Object {
