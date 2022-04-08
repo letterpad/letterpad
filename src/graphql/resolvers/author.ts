@@ -125,14 +125,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
     if (created) {
       const newAuthor = await prisma.author.findUnique({
         where: { id: created.id },
-        
       });
       if (newAuthor) {
         await enqueueEmailAndSend({
           author_id: newAuthor.id,
           template_id: EmailTemplates.VerifyNewUser,
         });
-         const { id, email, username, name } = newAuthor;
+        const { id, email, username, name } = newAuthor;
         return {
           id,
           email,

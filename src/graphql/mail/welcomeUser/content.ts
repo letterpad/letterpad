@@ -29,22 +29,18 @@ export async function getWelcomeUserContent(
 
   const subject = subjectTemplate.render({
     company_name: "Letterpad",
+    full_name: author?.name,
   });
 
   const bodyTemplate = Twig.twig({
     data: template.body.toString(),
   });
 
-  const token = getForgotPasswordToken({
-    email: author.email,
-  });
-  const href = `${process.env.ROOT_URL}/resetPassword?token=${token}`;
-
   const body = bodyTemplate.render({
     blog_name: author.setting?.site_title,
     company_name: `<a href="https://letterpad.app">Letterpad</a>`,
     full_name: author?.name,
-    change_password_link: `<a target="_blank"  href="${href}">Change Password</a>`,
+    blog_url: author.setting?.site_url,
   });
 
   return {

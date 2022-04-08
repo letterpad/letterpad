@@ -4,6 +4,7 @@ import { getForgotPasswordContent } from "../forgotPassword/content";
 import { getVerifyUserEmailContent } from "../verifyNewUser/content";
 import { getVerifySubscriberEmailContent } from "../verifySubscriber/content";
 import { getVerifyUserEmailChangeContent } from "../verifyChangedEmail/content";
+import { getWelcomeUserContent } from "../welcomeUser/content";
 
 export async function getEmailTemplate(props: EmailProps, prismaInstance) {
   switch (props.template_id) {
@@ -17,5 +18,7 @@ export async function getEmailTemplate(props: EmailProps, prismaInstance) {
       return await getVerifyUserEmailContent(props, prismaInstance);
     case EmailTemplates.VerifyChangedEmail:
       return await getVerifyUserEmailChangeContent(props, prismaInstance);
+    case EmailTemplates.WelcomeUser:
+      return await getWelcomeUserContent(props, prismaInstance);
   }
 }

@@ -2,7 +2,7 @@ import siteConfig from "../../config/site.config";
 import bcrypt from "bcryptjs";
 import generatePost from "@/graphql/db/seed/contentGenerator";
 import { encryptEmail } from "@/shared/clientToken";
-import { ROLES } from "@/graphql/types";
+import { EmailTemplates, ROLES } from "@/graphql/types";
 import {
   InputCreateAuthor,
   PostStatusOptions,
@@ -13,10 +13,10 @@ import { prisma } from "./prisma";
 import { mapSettingToDb } from "@/graphql/resolvers/mapper";
 import { defaultSettings } from "@/graphql/db/seed/constants";
 import { textToSlug } from "@/utils/slug";
+import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 
 export const onBoardUser = async (id: number) => {
   const newAuthor = await prisma.author.findUnique({ where: { id } });
-
   if (newAuthor && newAuthor.verified) {
     // create new tag for author
     const newTag = {
@@ -47,6 +47,11 @@ export const onBoardUser = async (id: number) => {
           connect: { id: newAuthor.id },
         },
       },
+    });
+
+    await enqueueEmailAndSend({
+      author_id: newAuthor.id,
+      template_id: EmailTemplates.WelcomeUser,
     });
 
     const { id, email, username, name } = newAuthor;

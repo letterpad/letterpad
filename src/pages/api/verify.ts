@@ -25,9 +25,9 @@ const Verify = async (
     } else {
       const result = await prisma.author.update({
         data: { verified: true },
-        where: { email: token.email },
+        where: { id: token.author_id },
       });
-      if (update) {
+      if (result) {
         onBoardUser(result.id);
       }
       update = result;

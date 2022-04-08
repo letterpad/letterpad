@@ -31,8 +31,7 @@ export async function enqueueEmailAndSend(props: EmailProps, restrict = false) {
 
     // TODO - Since we are tracking the email, we should not run it on the main thread. Instead use a child thread or an external service. Lets worry when we are worried.
     const data = await getEmailTemplate(props, prisma);
-
-    if (data?.ok) {
+    if (data.ok) {
       const addUnsubscribe = props.template_id === EmailTemplates.NewPost;
       const response = await sendMail(data.content, data.meta, addUnsubscribe);
       if (response && response.length > 0) {
