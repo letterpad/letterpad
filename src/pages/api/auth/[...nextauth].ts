@@ -6,7 +6,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { basePath } from "@/constants";
 import bcrypt from "bcryptjs";
 import Prisma, { prisma } from "@/lib/prisma";
-import { onBoardUser } from "@/lib/onboard";
+import { createAuthorWithSettings, onBoardUser } from "@/lib/onboard";
 import { Role } from "@/__generated__/__types__";
 import { SessionData } from "@/graphql/types";
 
@@ -121,28 +121,32 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
         }
       } catch (e) {
         if (token.email && token.name && token.sub) {
-          const author = await onBoardUser(
+          const newAuthor = await createAuthorWithSettings(
             {
               email: token.email,
               name: token.name,
               username: token.sub,
               password: "",
               token: "",
+              verified: true,
             },
             {
               site_title: token.name,
               site_email: token.email,
             },
           );
-          session.user = {
-            id: author?.id,
-            email: token.email,
-            username: token.sub,
-            name: token.name,
-            avatar: token.picture,
-            image: token.picture,
-            role: Role.Author,
-          } as any;
+          if (newAuthor) {
+            await onBoardUser(newAuthor.id);
+            session.user = {
+              id: newAuthor.id,
+              email: token.email,
+              username: token.sub,
+              name: token.name,
+              avatar: token.picture,
+              image: token.picture,
+              role: Role.Author,
+            } as any;
+          }
         }
       }
       return session as { user: SessionData; expires: any };

@@ -85,6 +85,7 @@ export enum EmailTemplates {
   VerifySubscriber = "verifySubscriber",
   ForgotPassword = "forgotPassword",
   NewPost = "newPost",
+  WelcomeUser = "welcomeUser",
 }
 export interface Template {
   body: string;
@@ -117,11 +118,17 @@ export interface EmailForgotPasswordProps {
   template_id: EmailTemplates.ForgotPassword;
 }
 
+export interface EmailWelcomeUserProps {
+  author_id: number;
+  template_id: EmailTemplates.WelcomeUser;
+}
+
 export type EmailProps =
   | EmailVerifyNewUserProps
   | EmailVerifyNewEmailProps
   | EmailVerifySubscriberProps
   | EmailNewPostProps
+  | EmailWelcomeUserProps
   | EmailForgotPasswordProps;
 
 export interface Mail {

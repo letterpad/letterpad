@@ -14,13 +14,10 @@ import { mapSettingToDb } from "@/graphql/resolvers/mapper";
 import { defaultSettings } from "@/graphql/db/seed/constants";
 import { textToSlug } from "@/utils/slug";
 
-export const onBoardUser = async (
-  authorData: InputCreateAuthor,
-  setting: SettingInputType,
-) => {
-  const newAuthor = await createAuthorWithSettings(authorData, setting);
+export const onBoardUser = async (id: number) => {
+  const newAuthor = await prisma.author.findUnique({ where: { id } });
 
-  if (newAuthor) {
+  if (newAuthor && newAuthor.verified) {
     // create new tag for author
     const newTag = {
       name: siteConfig.first_post_tag,
@@ -110,18 +107,18 @@ function getWelcomePostAndPage() {
 }
 
 export async function createAuthorWithSettings(
-  data: InputCreateAuthor,
+  data: InputCreateAuthor & { verified?: boolean },
   setting: SettingInputType,
   rolename: ROLES = ROLES.AUTHOR,
 ) {
-  const { token, ...authorData } = data;
+  const { token, verified = false, ...authorData } = data;
   const role = await prisma.role.findFirst({ where: { name: rolename } });
   if (role) {
     const newAuthor = await prisma.author.create({
       data: {
         ...authorData,
         avatar: "",
-        verified: false,
+        verified,
         bio: "",
         occupation: "",
         company_name: "",
