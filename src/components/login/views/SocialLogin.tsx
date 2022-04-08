@@ -2,11 +2,13 @@ import { EventAction, track } from "@/track";
 import { GithubFilled, GoogleSquareFilled } from "@ant-design/icons";
 import { Button, Form } from "antd";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 interface Props {
   mode: "login" | "register";
 }
 export const SocialLogin: React.VFC<Props> = ({ mode }) => {
+  const router = useRouter();
   const onClick = async (e: React.MouseEvent, type: "google" | "github") => {
     e.preventDefault();
     track({
@@ -14,7 +16,11 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
       eventCategory: `social-${mode}`,
       eventLabel: type,
     });
-    await signIn(type);
+    const callback =
+      typeof router.query.callbackUrl === "string"
+        ? router.query.callbackUrl
+        : "/admin/posts";
+    await signIn(type, { callbackUrl: callback });
   };
   return (
     <Form.Item
