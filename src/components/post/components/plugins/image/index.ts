@@ -11,15 +11,12 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
   editor.ui.registry.addButton("img-left", {
     icon: "align-left",
     onAction: function (_) {
-      const figure = editor.selection.getNode().parentNode;
+      const figure = editor.selection.getNode().parentElement;
       if (figure) {
         const style = styleObject(figure.getAttribute("style"));
         style.float = "left";
-        editor.dom.setAttrib(
-          editor.selection.getNode().parentNode,
-          "style",
-          styleString(style),
-        );
+        editor.dom.setStyles(figure, style);
+        editor.save();
       }
     },
   });
@@ -27,20 +24,12 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
   editor.ui.registry.addButton("img-right", {
     icon: "align-right",
     onAction: function (_) {
-      const figure = editor.selection.getNode().parentNode;
+      const figure = editor.selection.getNode().parentElement;
       if (figure) {
         const style = styleObject(figure.getAttribute("style"));
         style.float = "right";
-        editor.dom.setAttrib(
-          editor.selection.getNode().parentNode,
-          "style",
-          styleString(style),
-        );
-        // editor.dom.setAttrib(
-        //   figure,
-        //   "style",
-        //   `${styleString(style)}`,
-        // );
+        editor.dom.setStyles(figure, style);
+        editor.save();
       }
     },
   });
@@ -48,54 +37,64 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
   editor.ui.registry.addButton("img-center", {
     icon: "align-center",
     onAction: function (_) {
-      const figure = editor.selection.getNode().parentNode;
+      const figure = editor.selection.getNode().parentElement;
       if (figure) {
         const style = styleObject(figure.getAttribute("style"));
         delete style.float;
         style.margin = "auto";
-        editor.dom.setAttrib(
-          editor.selection.getNode().parentNode,
-          "style",
-          styleString(style),
-        );
+        editor.dom.setStyles(figure, style);
+        editor.save();
       }
     },
   });
-  editor.ui.registry.addButton("width", {
-    icon: "resize",
+
+  editor.ui.registry.addButton("edit-image", {
+    icon: "edit-image",
     onAction: function (_) {
+      const image = editor.selection.getNode();
+      let imgWidth = image.getBoundingClientRect().width + "";
+      const figStyles = image.parentElement?.getAttribute("style");
+      if (figStyles) {
+        imgWidth = styleObject(figStyles).width;
+      }
+      const caption =
+        image.parentElement?.querySelector("figcaption")?.innerHTML;
+
       editor.windowManager.open({
-        title: "Example plugin",
+        title: "Image Properties",
+        initialData: {
+          width: imgWidth,
+          caption,
+        },
         body: {
           type: "panel",
           items: [
             {
               type: "input",
-              name: "catdata",
-              label: "enter the name of a cat",
+              name: "width",
+              label: "Enter width of image in px or %",
+              placeholder: "e.g. 100px, 70%",
             },
             {
-              type: "checkbox",
-              name: "isdog",
-              label: "tick if cat is actually a dog",
+              type: "input",
+              name: "caption",
+              label: "Enter caption of this image",
+              placeholder: "Description of this image",
             },
           ],
         },
         onSubmit: (params) => {
-          const d = params.getData();
-
-          editor.dom.setAttrib(
-            editor.selection.getNode().parentNode,
-            "style",
-            `width:${d.catdata}`,
-          );
-
-          editor.dom.setHTML(
-            editor.selection.getNode().parentNode?.querySelector("figcaption"),
-            d.catdata,
-          );
-
+          const d = params.getData() as Record<any, any>;
+          const figure = editor.selection.getNode().parentElement;
+          if (figure) {
+            editor.dom.setStyle(figure, "width", d.width);
+            const caption = figure.querySelector("figcaption");
+            if (caption) {
+              editor.dom.setHTML(caption, d.caption);
+            }
+          }
           params.close();
+          editor.save();
         },
 
         buttons: [
@@ -107,7 +106,7 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
           {
             type: "submit",
             name: "submitButton",
-            text: "Do Cat Thing",
+            text: "Update",
             primary: true,
           },
         ],
@@ -126,7 +125,7 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
 
   editor.ui.registry.addContextToolbar("hello", {
     predicate: isImage,
-    items: "width img-left img-center img-right",
+    items: "edit-image img-left img-center img-right",
     position: "selection",
     scope: "node",
   });
@@ -138,8 +137,7 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
       if (tag === "FIGCAPTION") {
         const range = new Range();
         const nextEle =
-          editor.selection.getNode().parentElement?.parentElement
-            ?.nextElementSibling;
+          editor.selection.getNode().parentElement?.nextElementSibling;
         if (nextEle) {
           range.setStart(nextEle, 0);
           range.setEnd(nextEle, 0);
@@ -151,7 +149,7 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
   });
 };
 
-function styleObject(css: null | string) {
+function styleObject(css: null | string): Record<string, string> {
   if (!css) return {};
   const styles = css.split(";");
   const result = {};
@@ -163,8 +161,3 @@ function styleObject(css: null | string) {
   });
   return result;
 }
-
-const styleString = (style) =>
-  Object.entries(style)
-    .map(([k, v]) => `${k}:${v}`)
-    .join(";");

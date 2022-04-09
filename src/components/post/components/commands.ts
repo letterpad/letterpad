@@ -7,10 +7,8 @@ export const insertImageInEditor = (editor: Editor["editor"], images: any) => {
     const newNode = doc?.createElement("figure");
     if (newNode && range) {
       newNode.innerHTML = `
-
             <img src="${image.src}" alt="${image.caption}" style="display: block; margin-left: auto; margin-right: auto;">
             <figcaption contenteditable="true">${image.caption}</figcaption>
-
       `;
       range.insertNode(newNode);
       const lineBreak = doc?.createElement("br");
