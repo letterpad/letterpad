@@ -110,11 +110,6 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
             primary: true,
           },
         ],
-        //  body: [{ type: "textbox", name: "title", label: "Title" }],
-        //  onsubmit: function (e) {
-        //    // Insert content when the window form is submitted
-        //    editor.insertContent("Title: " + e.data.title);
-        //  },
       });
     },
   });
