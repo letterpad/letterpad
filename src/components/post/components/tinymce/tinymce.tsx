@@ -6,6 +6,7 @@ import { basePath } from "@/constants";
 import { textPatterns } from "../textPatterns";
 import { socket } from "./socket";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
+import { initImagePlugin } from "../plugins/image";
 
 interface Props {
   text: string;
@@ -85,6 +86,7 @@ const LpEditor: React.FC<Props> = ({ text, postId }) => {
             : "",
           content_css: basePath + "/css/editor.css",
           height: "100%",
+          quickbars_image_toolbar: false,
           quickbars_selection_toolbar:
             "h1 h2 bold italic underline quicklink nlpcheck nlpremove",
           quickbars_insert_toolbar:
@@ -92,30 +94,7 @@ const LpEditor: React.FC<Props> = ({ text, postId }) => {
           statusbar: false,
           text_patterns: textPatterns,
           setup: function (editor) {
-            editor.ui.registry.addButton("customImage", {
-              icon: "image",
-              onAction: function (_) {
-                onMediaBrowse && onMediaBrowse();
-              },
-            });
-            editor.on("keydown", function (e) {
-              // move cursor to next element when hitting enter on figcaption
-              if (e.key == "Enter") {
-                const tag = editorRef.current?.selection.getNode().tagName;
-                if (tag === "FIGCAPTION") {
-                  const range = new Range();
-                  const nextEle =
-                    editorRef.current?.selection.getNode().parentElement
-                      ?.parentElement?.nextElementSibling;
-                  if (nextEle) {
-                    range.setStart(nextEle, 0);
-                    range.setEnd(nextEle, 0);
-                    editorRef.current?.selection.setRng(range, true);
-                  }
-                  e.preventDefault();
-                }
-              }
-            });
+            initImagePlugin(editor, { onMediaBrowse });
           },
           entity_encoding: "raw",
         }}
