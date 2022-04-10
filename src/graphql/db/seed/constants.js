@@ -29,10 +29,9 @@ module.exports.defaultSettings = {
   site_title: "Letterpad",
   site_tagline: "My space",
   site_email: "admin@letterpad.app",
-  site_url: "https://demo.letterpad.app",
-  site_footer: "Wonderful digital things with a pinch of rock and roll!",
-  site_description:
-    "Digital nomad creating content about building IT businesses and production-ready apps.",
+  site_url: "",
+  site_footer: "Letterpad is an open source project licensed under MIT.",
+  site_description: "Use this space to describe your blog.",
   subscribe_embed: "",
   social_twitter: "",
   social_facebook: "",
