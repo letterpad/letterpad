@@ -169,3 +169,13 @@ query settings {
     }
   }
 }
+
+query domain {
+  domain {
+    ... on Domain {
+      name
+      mapped
+      ssl
+    }
+  }
+}
