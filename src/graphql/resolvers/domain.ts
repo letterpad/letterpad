@@ -10,13 +10,21 @@ const Query: QueryResolvers<ResolverContext> = {
       };
     }
     try {
-      const domain = await prisma.domain.findUnique({
+      const domain = await prisma.domain.findFirst({
         where: { author_id: session.user.id },
       });
       if (domain) {
-        return domain;
+        return {
+          __typename: "Domain",
+          ...domain,
+        };
       }
-    } catch (e) {}
+    } catch (e) {
+      return {
+        __typename: "DomainNotFound",
+        message: e.message,
+      };
+    }
     return {
       __typename: "DomainNotFound",
       message: "Domain not linked",
@@ -25,45 +33,63 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  createDomain: async (_, args, { session, prisma }) => {
+  createOrUpdateDomain: async (_, args, { session, prisma }) => {
     if (!session?.user.id) {
       return {
+        ok: false,
         message: "No session found",
       };
     }
-    const created = await prisma.domain.create({
-      data: {
-        name: args.name,
-        ssl: false,
-        author: {
-          connect: {
+
+    try {
+      const domainExist = await prisma.domain.findFirst({
+        where: {
+          author: {
             id: session.user.id,
           },
         },
-      },
-    });
+      });
 
-    return created;
-  },
+      if (domainExist) {
+        await prisma.domain.update({
+          data: {
+            ...args.data,
+          },
+          where: {
+            author_id: session.user.id,
+          },
+        });
 
-  updateDomain: async (_, args, { session, prisma }) => {
-    if (!session?.user.id) {
+        return {
+          ok: true,
+        };
+      } else if (args.data.name) {
+        await prisma.domain.create({
+          data: {
+            name: args.data.name,
+            ssl: false,
+            author: {
+              connect: {
+                id: session.user.id,
+              },
+            },
+          },
+        });
+        return {
+          ok: true,
+        };
+      }
+
       return {
-        __typename: "DomainError",
-        message: "No session found",
+        ok: false,
+        message: "Incorrect arguments",
+      };
+    } catch (e) {
+      return {
+        ok: false,
+        message: e.message,
       };
     }
-
-    const updated = await prisma.domain.update({
-      data: {
-        ...args.data,
-      },
-      where: {
-        author_id: session.user.id,
-      },
-    });
-
-    return updated;
   },
 };
 

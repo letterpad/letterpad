@@ -177,5 +177,8 @@ query domain {
       mapped
       ssl
     }
+    ... on DomainNotFound {
+      message
+    }
   }
 }

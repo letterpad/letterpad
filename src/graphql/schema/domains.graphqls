@@ -14,13 +14,16 @@ type DomainError implements LetterpadError {
 }
 
 input InputDomain {
-  id: Int!
   name: String
   mapped: Boolean
   ssl: Boolean
 }
 
-union UpdateDomainResponse = Domain | DomainError
+type UpdateDomainResponse {
+  ok: Boolean!
+  message: String
+}
+
 union CreateDomainResponse = Domain | DomainError
 union DomainResponse = Domain | DomainNotFound
 
@@ -29,6 +32,5 @@ type Query {
 }
 
 type Mutation {
-  updateDomain(data: InputDomain!): UpdateDomainResponse!
-  createDomain(name: String!): CreateDomainResponse!
+  createOrUpdateDomain(data: InputDomain!): UpdateDomainResponse!
 }

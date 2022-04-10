@@ -38,8 +38,6 @@ const saveMiddleware = new ApolloLink((operation, forward) => {
   }
 
   return forward(operation).map((result) => {
-    console.info(operation.getContext().response);
-    console.log(result.data);
     return result;
   });
 });
