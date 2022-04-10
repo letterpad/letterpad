@@ -87,7 +87,7 @@ const AuthenticatedLayout = ({ render }: IProps) => {
             site_logo={settings.site_logo?.src}
             site_title={settings.site_title}
             site_url={settings.site_url}
-            isVisible={collapsed}
+            isVisible={mobileMenuVisible}
             setIsVisible={setMobileMenuVisible}
             stats={stats}
           />
