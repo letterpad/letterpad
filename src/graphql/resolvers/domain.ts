@@ -28,14 +28,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
   createDomain: async (_, args, { session, prisma }) => {
     if (!session?.user.id) {
       return {
-        __typename: "DomainError",
         message: "No session found",
-      };
-    }
-    if (!args.name) {
-      return {
-        __typename: "DomainError",
-        message: "Domain name is missing",
       };
     }
     const created = await prisma.domain.create({

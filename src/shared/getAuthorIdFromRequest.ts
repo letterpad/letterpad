@@ -11,9 +11,14 @@ const getAuthorIdFromRequest = async (context: Context) => {
   let author_id: number | null = null;
 
   try {
-    author_id = await getAuthorFromSubdomain(context);
+    author_id = await getAuthorFromLetterpadSubdomain(context);
     if (author_id) {
       logger.debug("Author from subdomain - ", author_id);
+    }
+
+    if (!author_id) {
+      author_id = await getAuthorFromCustomDomain(context);
+      logger.debug("Author from custom domain - ", author_id);
     }
 
     if (!author_id && authHeader.length > authHeaderPrefix.length) {
@@ -46,7 +51,7 @@ const getAuthorIdFromRequest = async (context: Context) => {
 };
 export default getAuthorIdFromRequest;
 
-async function getAuthorFromSubdomain(context) {
+async function getAuthorFromLetterpadSubdomain(context) {
   if (!context.req.headers) {
     logger.debug("No identifier found - Internal admin request - OK");
   } else if (context.req.headers?.identifier?.includes("letterpad.app")) {
@@ -59,6 +64,19 @@ async function getAuthorFromSubdomain(context) {
     return author ? author.id : null;
   }
   return null;
+}
+
+async function getAuthorFromCustomDomain(context) {
+  if (!context.req.headers?.origin) return null;
+
+  const domain = new URL(context.req.headers.origin);
+  const author = await prisma.domain.findFirst({
+    where: {
+      name: domain.hostname,
+      mapped: true,
+    },
+  });
+  return author ? author.id : null;
 }
 
 function getAuthorFromAuthHeader(authHeader: string) {
