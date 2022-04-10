@@ -39,12 +39,12 @@ module.exports.defaultSettings = {
   social_github: "",
   display_author_info: true,
   site_logo: JSON.stringify({
-    src: "/uploads/logo.png",
+    src: "https://letterpad.app/admin/uploads/logo.png",
     width: 200,
     height: 200,
   }),
   site_favicon: JSON.stringify({
-    src: "/uploads/logo.png",
+    src: "https://letterpad.app/admin/uploads/logo.png",
     width: 200,
     height: 200,
   }),
