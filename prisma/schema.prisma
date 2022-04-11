@@ -14,23 +14,24 @@ model Author {
   username            String       @unique
   email               String       @unique
   password            String
-  bio                 String       
-  occupation          String       
-  company_name        String       
-  avatar              String       
+  bio                 String
+  occupation          String
+  company_name        String
+  avatar              String
   social              String       @default("{}")
   verified            Boolean      @default(false)
   createdAt           DateTime?    @default(now())
   updatedAt           DateTime?    @updatedAt
   verify_attempt_left Int?         @default(3)
   posts               Post[]
-  uploads             Upload[]    
+  uploads             Upload[]
   setting             Setting?
   role_id             Int
   role                Role         @relation(fields: [role_id], references: [id])
   subscribers         Subscriber[]
   login_type          String       @default("credentials")
-  last_seen          DateTime?
+  domain              Domain?
+  last_seen           DateTime?
 }
 
 model EmailDelivery {
@@ -71,16 +72,16 @@ model Post {
   cover_image_width  Int       @default(0)
   cover_image_height Int       @default(0)
   type               String    @default("post")
-  featured           Boolean  @default(false)
+  featured           Boolean   @default(false)
   status             String    @default("draft")
   slug               String    @default("")
-  reading_time       String   @default("")
+  reading_time       String    @default("")
   publishedAt        DateTime?
   scheduledAt        DateTime?
   updatedAt          DateTime? @updatedAt
   createdAt          DateTime? @default(now())
   author_id          Int
-  author             Author?    @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author             Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
   tags               Tag[]
 }
 
@@ -105,27 +106,27 @@ model Role {
 
 model Setting {
   id                  Int       @id @default(autoincrement())
-  site_title          String   
-  site_tagline        String   
-  site_email          String   
-  site_url            String   
-  site_footer         String   
-  site_description    String   
-  subscribe_embed     String   
-  social_twitter      String   
-  social_facebook     String   
-  social_instagram    String   
-  social_github       String   
+  site_title          String
+  site_tagline        String
+  site_email          String
+  site_url            String
+  site_footer         String
+  site_description    String
+  subscribe_embed     String
+  social_twitter      String
+  social_facebook     String
+  social_instagram    String
+  social_github       String
   display_author_info Boolean   @default(false)
-  cloudinary_key      String   
-  cloudinary_name     String   
-  cloudinary_secret   String   
+  cloudinary_key      String
+  cloudinary_name     String
+  cloudinary_secret   String
   menu                String    @default("[]")
-  css                 String   
-  google_analytics    String   
+  css                 String
+  google_analytics    String
   analytics           String    @default("{}")
-  theme               String    
-  client_token        String   
+  theme               String
+  client_token        String
   banner              String    @default("{}")
   site_logo           String    @default("{}")
   site_favicon        String    @default("{}")
@@ -136,7 +137,7 @@ model Setting {
   show_about_page     Boolean   @default(true)
   show_tags_page      Boolean   @default(false)
   author_id           Int       @unique
-  author              Author   @relation(fields: [author_id], references: [id], onDelete:Cascade)
+  author              Author    @relation(fields: [author_id], references: [id], onDelete: Cascade)
 }
 
 model Subscriber {
@@ -148,7 +149,7 @@ model Subscriber {
   updatedAt           DateTime? @updatedAt
   verify_attempt_left Int?      @default(3)
 
-  author   Author? @relation(fields: [author_id], references: [id],onDelete: Cascade)
+  author Author? @relation(fields: [author_id], references: [id], onDelete: Cascade)
   @@unique([email, author_id])
 }
 
@@ -164,7 +165,7 @@ model Tag {
 model Upload {
   id          Int       @id @default(autoincrement())
   name        String
-  url         String    
+  url         String
   width       Int
   height      Int
   description String    @default("")
@@ -172,6 +173,17 @@ model Upload {
   createdAt   DateTime? @default(now())
   author_id   Int
   author      Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+}
+
+model Domain {
+  id        Int       @id @default(autoincrement())
+  name      String
+  mapped    Boolean   @default(false)
+  ssl       Boolean
+  updatedAt DateTime? @updatedAt
+  createdAt DateTime? @default(now())
+  author_id Int       @unique
+  author    Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
 }
 
 model SubscribersDelivery {

@@ -234,3 +234,10 @@ mutation ResetPassword($password: String!, $token: String!) {
     message
   }
 }
+
+mutation CreateOrUpdateDomain($data: InputDomain!) {
+  createOrUpdateDomain(data: $data) {
+    ok
+    message
+  }
+}

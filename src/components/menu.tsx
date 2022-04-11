@@ -4,6 +4,7 @@ import {
   ContainerOutlined,
   FileImageOutlined,
   FileTextOutlined,
+  GlobalOutlined,
   LogoutOutlined,
   SettingOutlined,
   TagsOutlined,
@@ -21,10 +22,11 @@ const menuItems = {
   "/media": "3",
   "/tags": "4",
   "/profile": "5",
-  "/settings": "6",
-  "/migrate": "7",
-  "/logout": "8",
-  "/subscribers": "9",
+  "/domain-mapping": "6",
+  "/settings": "7",
+  "/migrate": "8",
+  "/logout": "9",
+  "/subscribers": "10",
 };
 
 const countStyle = {
@@ -96,6 +98,14 @@ const Navigation = ({ stats }) => {
         onClick={() => router.push("/subscribers")}
       >
         Subscribers
+      </Menu.Item>
+      <Menu.Item
+        key={menuItems["/domain-mapping"]}
+        icon={<GlobalOutlined />}
+        onClick={() => router.push("/domain-mapping")}
+        hidden={true}
+      >
+        Domain Mapping
       </Menu.Item>
       <Menu.Item
         key={menuItems["/settings"]}

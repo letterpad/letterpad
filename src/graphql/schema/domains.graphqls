@@ -1,0 +1,36 @@
+type Domain {
+  id: Int!
+  name: String!
+  mapped: Boolean
+  ssl: Boolean
+}
+
+type DomainNotFound implements LetterpadError {
+  message: String!
+}
+
+type DomainError implements LetterpadError {
+  message: String!
+}
+
+input InputDomain {
+  name: String
+  mapped: Boolean
+  ssl: Boolean
+}
+
+type UpdateDomainResponse {
+  ok: Boolean!
+  message: String
+}
+
+union CreateDomainResponse = Domain | DomainError
+union DomainResponse = Domain | DomainNotFound
+
+type Query {
+  domain: DomainResponse!
+}
+
+type Mutation {
+  createOrUpdateDomain(data: InputDomain!): UpdateDomainResponse!
+}

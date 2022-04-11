@@ -5,5 +5,15 @@ import Tag from "./tag";
 import Post from "./post.query";
 import PostMutation from "./post.mutation";
 import Subscriber from "./subscriber";
+import Domain from "./domain";
 
-export default [Author, Post, PostMutation, Setting, Media, Tag, Subscriber];
+export default [
+  Author,
+  Post,
+  PostMutation,
+  Setting,
+  Media,
+  Tag,
+  Subscriber,
+  Domain,
+];
