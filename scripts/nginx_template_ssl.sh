@@ -6,20 +6,16 @@
 domain=$1
 
 # Variables
-# NGINX_AVAILABLE_VHOSTS='./.bin'
 NGINX_AVAILABLE_VHOSTS='/etc/nginx/sites-enabled'
 WEB_DIR='/var/www/html/letterpad-map-test'
 WEB_USER=$username
-
-# Sanity check
-[ $(id -g) != "0" ] && echo "Script must be run as root." && exit 1;
 
 # Create nginx config file
 cat > $NGINX_AVAILABLE_VHOSTS/$domain.enabled <<EOF
 ### www to non-www
 server {
    listen	 80;
-   server_name $domain  www.$domain;
+   server_name $domain;
    add_header X-App-Name Letterpad;
    return	 301 https://$domain\$request_uri;
 }
@@ -38,15 +34,17 @@ server {
     gzip on;
     gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
-    root /var/www/html/letterpad-map-test;
+    root $WEB_DIR;
     add_header X-App-Name Letterpad;
-    # location / {
-    #     proxy_pass http://127.0.0.1:3030;
-    #     proxy_http_version 1.1;
-    #     proxy_set_header Upgrade \$http_upgrade;
-    #     proxy_set_header Connection 'upgrade';
-    #     proxy_set_header Host \$host;
-    #     proxy_cache_bypass \$http_upgrade;
-    # }
+    location / {
+        proxy_pass http://127.0.0.1:3030;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
 }
 EOF
+echo "done"
+# sudo nginx -s reload

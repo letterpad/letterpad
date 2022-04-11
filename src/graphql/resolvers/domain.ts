@@ -1,3 +1,4 @@
+import { execShellCommand } from "@/shared/execShellCommand";
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "../context";
 
@@ -75,9 +76,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
             },
           },
         });
-        return {
-          ok: true,
-        };
+        return await genCertificates(args.data.name);
       }
 
       return {
@@ -94,3 +93,22 @@ const Mutation: MutationResolvers<ResolverContext> = {
 };
 
 export default { Query, Mutation };
+
+async function genCertificates(domainName: string) {
+  try {
+    const no_ssl = await execShellCommand(
+      `./scripts/nginx_template_nossl.sh ${domainName}`,
+    );
+    if (no_ssl.includes("Congratulations!")) {
+      await execShellCommand(`./scripts/nginx_template_ssl.sh ${domainName}`);
+    }
+  } catch (e) {
+    return {
+      ok: false,
+      message: e.message,
+    };
+  }
+  return {
+    ok: true,
+  };
+}

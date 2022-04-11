@@ -1,13 +1,13 @@
 const { exec } = require("child_process");
 
-export const execShellCommand = (command) => {
+// change this to use spawn.
+
+export const execShellCommand = (command: string): Promise<string> => {
   return new Promise((resolve, reject) => {
-    exec(command, (err, stdout, stderr) => {
+    exec(command, (err: string, stdout: string, _stderr: string) => {
       if (err) {
-        console.log(err);
         reject(err);
       } else {
-        console.log(stdout || stderr);
         resolve(stdout);
       }
     });
