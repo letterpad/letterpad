@@ -69,7 +69,7 @@ async function getAuthorFromLetterpadSubdomain(context) {
 async function getAuthorFromCustomDomain(context) {
   if (process.env.CUSTOM_DOMAIN) {
     console.log(context.req.headers);
-    console.log(context.req.header.identifier);
+    console.log(context.req.headers.identifier);
   }
   if (!context.req.headers?.identifier) return null;
 
