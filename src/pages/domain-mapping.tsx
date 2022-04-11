@@ -1,29 +1,15 @@
-import { useState } from "react";
-import {
-  SettingsFragmentFragment,
-  useDomainQuery,
-} from "@/__generated__/queries/queries.graphql";
-import {
-  Alert,
-  Button,
-  Divider,
-  Form,
-  Input,
-  message,
-  PageHeader,
-  Steps,
-} from "antd";
+import { useDomainQuery } from "@/__generated__/queries/queries.graphql";
+import { Alert, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import Loading from "@/components/loading";
 import { NewDomain } from "@/components/domain/new-domain";
 
 interface Props {
-  settings: SettingsFragmentFragment;
   readOnly: boolean;
 }
 
-const DomainMapping: React.FC<Props> = ({ settings, readOnly }) => {
+const DomainMapping: React.FC<Props> = ({ readOnly }) => {
   const { data, loading } = useDomainQuery();
   console.log(data);
   return (
