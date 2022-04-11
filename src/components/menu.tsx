@@ -103,6 +103,7 @@ const Navigation = ({ stats }) => {
         key={menuItems["/domain-mapping"]}
         icon={<GlobalOutlined />}
         onClick={() => router.push("/domain-mapping")}
+        hidden={true}
       >
         Domain Mapping
       </Menu.Item>
