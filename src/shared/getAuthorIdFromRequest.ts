@@ -67,16 +67,24 @@ async function getAuthorFromLetterpadSubdomain(context) {
 }
 
 async function getAuthorFromCustomDomain(context) {
+  if (process.env.CUSTOM_DOMAIN) {
+    console.log(context.req.headers);
+    console.log(context.req.header.origin);
+    console.log(new URL(context.req.headers.origin));
+  }
   if (!context.req.headers?.origin) return null;
 
   const domain = new URL(context.req.headers.origin);
-  const author = await prisma.domain.findFirst({
+  const record = await prisma.domain.findFirst({
     where: {
       name: domain.hostname,
       mapped: true,
     },
   });
-  return author ? author.id : null;
+  if (process.env.CUSTOM_DOMAIN) {
+    console.log(record);
+  }
+  return record ? record.author_id : null;
 }
 
 function getAuthorFromAuthHeader(authHeader: string) {
