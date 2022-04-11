@@ -37,7 +37,7 @@ server {
     root $WEB_DIR;
     add_header X-App-Name Letterpad;
     location / {
-        proxy_pass http://127.0.0.1:3030;
+        proxy_pass http://127.0.0.1:3001;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection 'upgrade';
