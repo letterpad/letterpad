@@ -46,5 +46,4 @@ server {
     }
 }
 EOF
-echo "done"
-# sudo nginx -s reload
+sudo nginx -s reload
