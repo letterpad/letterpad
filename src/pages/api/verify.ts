@@ -24,14 +24,19 @@ const Verify = async (
         where: { id: token.id },
       });
     } else {
-      const result = await prisma.author.update({
-        data: { verified: true },
+      const author = await prisma.author.findFirst({
         where: { id: token.author_id },
       });
-      if (result) {
-        onBoardUser(result.id);
+      if (!author?.verified) {
+        const result = await prisma.author.update({
+          data: { verified: true },
+          where: { id: token.author_id },
+        });
+        if (result) {
+          onBoardUser(result.id);
+        }
       }
-      update = result;
+      update = author;
     }
     if (!update) {
       return res.redirect(

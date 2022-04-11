@@ -20,8 +20,12 @@ describe("Test Settings Graphql API", () => {
     const result = await API({ query: SettingsDocument, variables: {} });
 
     // expect(result.settings.banner.src).toContain("unsplash");
-    expect(result.settings.site_favicon.src).toContain("localhost");
-    expect(result.settings.site_logo.src).toContain("localhost");
+    expect(result.settings.site_favicon.src).toContain(
+      "https://letterpad.app/admin/uploads/logo.png",
+    );
+    expect(result.settings.site_logo.src).toContain(
+      "https://letterpad.app/admin/uploads/logo.png",
+    );
   });
 
   it("should not contain cloudinary keys", async () => {
