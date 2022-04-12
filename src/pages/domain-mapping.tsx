@@ -11,7 +11,6 @@ interface Props {
 
 const DomainMapping: React.FC<Props> = ({ readOnly }) => {
   const { data, loading } = useDomainQuery();
-  console.log(data);
   return (
     <>
       <Head>

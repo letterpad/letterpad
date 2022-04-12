@@ -12,9 +12,6 @@ export const NewDomain: React.FC<{ name?: string }> = ({ name }) => {
 
   return (
     <>
-      {/* <Alert type="info" showIcon={true} message="asdcas">
-        To link your domain with Letterpad, 
-      </Alert> */}
       <br />
       <Form
         labelCol={{ span: 4 }}
