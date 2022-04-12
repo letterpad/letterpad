@@ -100,8 +100,9 @@ export default { Query, Mutation };
 async function validateIpMapping(domainName: string) {
   try {
     const result = await execShellCommand(
-      `./scripts/nginx_template_p80.sh ${domainName}`,
+      `./scripts/nginx_template_nossl.sh ${domainName}`,
     );
+    console.log("IP Mapping", result);
     if (result === "Success") {
       return { ok: true };
     }
@@ -122,6 +123,7 @@ async function genCertificates(domainName: string) {
     const result2 = await execShellCommand(
       `./scripts/nginx_template_ssl.sh ${domainName}`,
     );
+    console.log("Certificates", domainName);
     if (result2.includes("Congratulations!")) {
       if (result2.includes("Letterpad")) {
         if (result2.includes("200")) {
