@@ -27,9 +27,9 @@ export const LoginForm = ({
     if (result.success && result.redirectUrl) {
       message.success({ key, content: result.message, duration: 3 });
       const { callbackUrl } = router.query;
-      let redirectPath = result.redirectUrl.replace(window.location.origin, "");
+      let redirectPath = "/posts";
       if (callbackUrl && typeof callbackUrl === "string") {
-        redirectPath = callbackUrl.replace(window.location.origin, "");
+        redirectPath = new URL(callbackUrl).pathname;
       }
       if (redirectPath.includes("login")) {
         redirectPath = redirectPath.replace("login", "posts");
