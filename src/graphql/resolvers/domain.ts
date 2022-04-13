@@ -137,18 +137,16 @@ async function genCertificates(domainName: string) {
     );
     console.log("Certificates", result2);
 
-    if (result2.includes("Letterpad")) {
-      if (result2.includes("200")) {
-        return {
-          ok: true,
-        };
-      } else if (result2.includes("301")) {
-        return {
-          ok: true,
-          message:
-            "Domain mapped successfully. However, it looks like your domain is causing a redirect.",
-        };
-      }
+    if (result2.includes("200")) {
+      return {
+        ok: true,
+      };
+    } else if (result2.includes("301")) {
+      return {
+        ok: true,
+        message:
+          "Domain mapped successfully. However, it looks like your domain is causing a redirect.",
+      };
     }
   } catch (e) {
     console.log(e);
