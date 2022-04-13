@@ -36,7 +36,7 @@ const DomainMapping: React.FC<Props> = ({ readOnly }) => {
           )} */}
           {data?.domain.__typename === "DomainNotFound" && <NewDomain />}
           {data?.domain.__typename === "Domain" && !data.domain.mapped && (
-            <NewDomain name={data.domain.name} />
+            <NewDomain {...data.domain} />
           )}
         </div>
       </Content>

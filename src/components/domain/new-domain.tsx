@@ -2,7 +2,11 @@ import { Button, Divider, Form, Input } from "antd";
 import { CopyToClipboard } from "../clipboard";
 import { useCreateOrUpdateDomainMutation } from "@/__generated__/queries/mutations.graphql";
 
-export const NewDomain: React.FC<{ name?: string }> = ({ name }) => {
+export const NewDomain: React.FC<{
+  name?: string;
+  mapped?: boolean;
+  ssl?: boolean;
+}> = ({ name, mapped, ssl }) => {
   const [createOrUpdateDomain] = useCreateOrUpdateDomainMutation();
   const next = async (values) => {
     await createOrUpdateDomain({
@@ -67,9 +71,11 @@ export const NewDomain: React.FC<{ name?: string }> = ({ name }) => {
         </Form.Item>
         <br />
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Map my domain
-          </Button>
+          {!mapped && (
+            <Button type="primary" htmlType="submit">
+              Map my domain
+            </Button>
+          )}
         </Form.Item>
       </Form>
     </>

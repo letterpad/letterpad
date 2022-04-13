@@ -102,8 +102,7 @@ async function validateIpMapping(domainName: string) {
     const result = await execShellCommand(
       `./scripts/nginx_template_nossl.sh ${domainName}`,
     );
-    console.log("IP Mapping", result);
-    if (result === "Success") {
+    if (result.includes("Success")) {
       return { ok: true };
     }
   } catch (e) {
