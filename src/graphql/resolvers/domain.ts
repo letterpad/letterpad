@@ -152,6 +152,7 @@ async function genCertificates(domainName: string) {
       }
     }
   } catch (e) {
+    console.log(e);
     return {
       ok: false,
       message: e.message,
