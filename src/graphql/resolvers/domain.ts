@@ -42,7 +42,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       };
     }
 
-    await prisma.domain.delete({ where: { id: session.user.id } });
+    await prisma.domain.delete({ where: { author_id: session.user.id } });
 
     return { ok: true };
   },
@@ -114,6 +114,7 @@ async function validateIpMapping(domainName: string) {
     const result = await execShellCommand(
       `./scripts/nginx_template_nossl.sh ${domainName}`,
     );
+    console.log(result);
     if (result.includes("Success")) {
       return { ok: true };
     }

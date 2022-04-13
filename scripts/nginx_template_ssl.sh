@@ -47,12 +47,19 @@ server {
 }
 EOF
 
+CHAIN=/etc/letsencrypt/live/$DOMAIN/chain.pem
+CERT=/etc/letsencrypt/live/$DOMAIN/cert.pem
+IS_OK=$(openssl verify -untrusted $CHAIN $CERT)
+
+if [[ "$IS_OK" != *"OK"* ]];then
 certbot certonly \
    --webroot \
    --agree-tos \
    --email letterpad@ajaxtown.com \
    -d $DOMAIN \
    -w $WEB_DIR
+fi
+
 
 if [ -f /bin/false ]; then
     SUDO_ASKPASS=/bin/false sudo -A nginx -s reload  2>&1
