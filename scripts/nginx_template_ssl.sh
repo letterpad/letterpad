@@ -67,7 +67,4 @@ elif [ -f /usr/bin/false ]; then
     SUDO_ASKPASS=/usr/bin/false sudo -A nginx -s reload  2>&1
 fi
 
-LP_HEADER_FOUND=$(curl -is --head https://$DOMAIN)
-echo "$LP_HEADER_FOUND" | grep -i "Letterpad";
-echo "$LP_HEADER_FOUND" | grep -i "200";
-echo "$LP_HEADER_FOUND" | grep -i "301";
+curl -s -o /dev/null -D - https://$DOMAIN
