@@ -34,6 +34,18 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
+  removeDomain: async (_, args, { session, prisma }) => {
+    if (!session?.user.id) {
+      return {
+        ok: false,
+        message: "No session found",
+      };
+    }
+
+    await prisma.domain.delete({ where: { id: session.user.id } });
+
+    return { ok: true };
+  },
   createOrUpdateDomain: async (_, args, { session, prisma }) => {
     if (!session?.user.id) {
       return {
@@ -122,7 +134,7 @@ async function genCertificates(domainName: string) {
     const result2 = await execShellCommand(
       `./scripts/nginx_template_ssl.sh ${domainName}`,
     );
-    console.log("Certificates", domainName);
+    console.log("Certificates", result2);
     if (result2.includes("Congratulations!")) {
       if (result2.includes("Letterpad")) {
         if (result2.includes("200")) {

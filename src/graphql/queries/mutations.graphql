@@ -241,3 +241,10 @@ mutation CreateOrUpdateDomain($data: InputDomain!) {
     message
   }
 }
+
+mutation RemoveDomain {
+  removeDomain {
+    ok
+    message
+  }
+}
