@@ -47,7 +47,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     return { ok: true };
   },
   createOrUpdateDomain: async (_, args, { session, prisma }) => {
-    if (!session?.user.id) {
+    if (!session?.user.id || !args.data.name) {
       return {
         ok: false,
         message: "No session found",
@@ -61,13 +61,13 @@ const Mutation: MutationResolvers<ResolverContext> = {
           },
         },
       });
-
+      const domainName = args.data.name?.trim();
       if (args.data.name && !domainExist) {
-        const mapped = await validateIpMapping(args.data.name);
+        const mapped = await validateIpMapping(domainName);
         if (mapped.ok) {
           await prisma.domain.create({
             data: {
-              name: args.data.name,
+              name: domainName,
               ssl: false,
               mapped: true,
               author: {
@@ -77,7 +77,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
               },
             },
           });
-          const ssl = await genCertificates(args.data.name);
+          const ssl = await genCertificates(domainName);
           if (ssl.ok) {
             await prisma.domain.update({
               data: {
