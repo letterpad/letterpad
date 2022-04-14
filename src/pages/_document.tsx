@@ -13,8 +13,8 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          {/* <link rel="stylesheet" href={basePath + "/css/antd.variable.css"} /> */}
           <link rel="stylesheet" href={basePath + "/css/theme-variables.css"} />
-          <link rel="stylesheet" href={basePath + "/css/antd.variable.css"} />
           <link
             rel="stylesheet"
             id="theme"
