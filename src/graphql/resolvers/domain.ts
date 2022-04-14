@@ -63,35 +63,48 @@ const Mutation: MutationResolvers<ResolverContext> = {
       });
       const domainName = args.data.name?.trim();
       if (args.data.name && !domainExist) {
-        const mapped = await validateIpMapping(domainName);
-        if (mapped.ok) {
-          await prisma.domain.create({
-            data: {
-              name: domainName,
-              ssl: false,
-              mapped: true,
-              author: {
-                connect: {
-                  id: session.user.id,
-                },
+        const nginxConfig_p80 = await execShell(
+          "nginxSetConfig_80",
+          domainName,
+        );
+        if (nginxConfig_p80.ok) {
+          const response = await execShell("reloadServer");
+          if (!response.ok) return response;
+        }
+        // to be safe, remove prev domain mapping
+        await execShell("removeDomainMapping", domainName);
+
+        const certificates = await execShell("createCertificate", domainName);
+        if (!certificates.ok) return certificates;
+
+        await execShell("nginxSetConfig_443", domainName);
+
+        await execShell("reloadServer");
+
+        const verify = await execShellCommand(
+          `./scripts/restartNginx.sh verifySSL ${domainName}`,
+        );
+
+        await prisma.domain.create({
+          data: {
+            name: domainName,
+            ssl: true,
+            mapped: true,
+            author: {
+              connect: {
+                id: session.user.id,
               },
             },
-          });
-          const ssl = await genCertificates(domainName);
-          if (ssl.ok) {
-            await prisma.domain.update({
-              data: {
-                ssl: true,
-                mapped: true,
-              },
-              where: {
-                author_id: session.user.id,
-              },
-            });
-          }
-          return ssl;
+          },
+        });
+        if (verify.includes("301")) {
+          return {
+            ok: true,
+            message:
+              "SSL has been configured. However, your domain is in a redirect loop. This is usually because your domain is reconfiguring the SSL. Contact your domain provider regarding this.",
+          };
         }
-        return mapped;
+        return { ok: true };
       }
 
       return {
@@ -109,43 +122,19 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
 export default { Query, Mutation };
 
-async function validateIpMapping(domainName: string) {
+async function execShell(fn, domain?: string) {
   try {
     const result = await execShellCommand(
-      `./scripts/nginx_template_nossl.sh ${domainName}`,
+      `./scripts/domainMapping.sh ${fn} ${domain}`,
     );
-    console.log(result);
-    if (result.includes("Success")) {
-      return { ok: true };
-    }
-  } catch (e) {
-    return {
-      ok: false,
-      message: e.message,
-    };
-  }
-  return {
-    ok: false,
-    message: "Uncaught Error. Please try again later.",
-  };
-}
-
-async function genCertificates(domainName: string) {
-  try {
-    const result2 = await execShellCommand(
-      `./scripts/nginx_template_ssl.sh ${domainName}`,
-    );
-    console.log("Certificates", result2);
-
-    if (result2.includes("200")) {
+    if (result.includes("success")) {
       return {
         ok: true,
       };
-    } else if (result2.includes("301")) {
+    } else {
       return {
-        ok: true,
-        message:
-          "Domain mapped successfully. However, it looks like your domain is causing a redirect.",
+        ok: false,
+        message: result,
       };
     }
   } catch (e) {
@@ -155,8 +144,4 @@ async function genCertificates(domainName: string) {
       message: e.message,
     };
   }
-  return {
-    ok: false,
-    message: "Uncaught Error. Please try again later.",
-  };
 }

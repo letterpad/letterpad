@@ -1,26 +1,23 @@
 import { Button, Divider, Form, Input } from "antd";
 import { CopyToClipboard } from "../clipboard";
-import {
-  useCreateOrUpdateDomainMutation,
-  useRemoveDomainMutation,
-} from "@/__generated__/queries/mutations.graphql";
+import { useRemoveDomainMutation } from "@/__generated__/queries/mutations.graphql";
+import { useDomainMutation } from "@/hooks/useCreateOrUpdateDomain";
 
 export const NewDomain: React.FC<{
   name?: string;
   mapped?: boolean;
   ssl?: boolean;
 }> = ({ name, mapped = false, ssl }) => {
-  const [createOrUpdateDomain] = useCreateOrUpdateDomainMutation();
   const [removeDomain] = useRemoveDomainMutation();
+  const { updateLocalState, createUpdateDomain } = useDomainMutation();
 
   const next = async (values) => {
-    await createOrUpdateDomain({
-      variables: { data: { name: values.domain } },
-    });
+    await createUpdateDomain({ name: values.domain });
   };
 
   const removeMapping = async () => {
     await removeDomain();
+    updateLocalState({ mapped: false, ssl: false });
   };
 
   return (
@@ -78,7 +75,7 @@ export const NewDomain: React.FC<{
         >
           <Input
             placeholder="e.g. example.com, blog.example.com"
-            disabled={mapped}
+            readOnly={mapped}
           />
         </Form.Item>
         <br />
@@ -90,7 +87,7 @@ export const NewDomain: React.FC<{
           )}
 
           {mapped && (
-            <Button type="primary" onClick={removeMapping}>
+            <Button type="primary" onClick={removeMapping} danger>
               Remove Mapping
             </Button>
           )}
