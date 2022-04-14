@@ -140,7 +140,7 @@ EOF
 
 function verifySSL {
     DOMAIN=$1
-    if curl -Is http://$DOMAIN | head -1 | grep -o '[0-9][0-9][0-9]'; then
+    if curl -Is https://$DOMAIN | head -1 | grep -o '[0-9][0-9][0-9]'; then
         echo "success"
     fi
 }
