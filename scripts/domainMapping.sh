@@ -77,29 +77,21 @@ function removeDomainMapping {
     else
         die "Certificates not found" >&2
     fi
-
-    
 }
 
 function nginxSetConfig_80 {
     DOMAIN=$1
-
-    if touch $NGINX_AVAILABLE_VHOSTS/$DOMAIN.enabled >/dev/null 2>&1; then
-        rm $NGINX_AVAILABLE_VHOSTS/$DOMAIN.enabled
-    else
-        die "No write permissions to create nginx config"
-    fi
     # Create nginx config file
-    cat > $NGINX_AVAILABLE_VHOSTS/$DOMAIN.enabled  <<EOF 
+ cat > $NGINX_AVAILABLE_VHOSTS/$DOMAIN.enabled <<EOF
 server {
-    listen	 80;
-    server_name $DOMAIN;
-    add_header X-App-Name Letterpad;
-    root $WEB_DIR;
+   listen	 80;
+   server_name $DOMAIN;
+   add_header X-App-Name Letterpad;
+   root $WEB_DIR;
 }
-EOF 
+EOF
 
-    echo "success" >&2
+    echo "success" >&2;
 }
 
 function nginxSetConfig_443 {
@@ -141,6 +133,8 @@ server {
 EOF
     echo "success"
 }
+
+
 
 function verifySSL {
     DOMAIN=$1
