@@ -7,7 +7,7 @@ export const NewDomain: React.FC<{
   name?: string;
   mapped?: boolean;
   ssl?: boolean;
-}> = ({ name, mapped = false, ssl }) => {
+}> = ({ name, mapped = false }) => {
   const [removeDomain] = useRemoveDomainMutation();
   const { updateLocalState, createUpdateDomain } = useDomainMutation();
 

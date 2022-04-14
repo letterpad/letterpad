@@ -34,7 +34,7 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  removeDomain: async (_, args, { session, prisma }) => {
+  removeDomain: async (_, _args, { session, prisma }) => {
     if (!session?.user.id) {
       return {
         ok: false,
