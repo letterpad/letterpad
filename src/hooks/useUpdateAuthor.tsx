@@ -2,7 +2,10 @@ import { useCallback } from "react";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { debounce } from "@/shared/utils";
 import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
-import { MeDocument } from "@/__generated__/queries/queries.graphql";
+import {
+  MeDocument,
+  SettingsDocument,
+} from "@/__generated__/queries/queries.graphql";
 import { InputAuthor } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
 import { message, Modal } from "antd";
@@ -47,6 +50,27 @@ export const useUpdateAuthor = (id: number) => {
         message.error({ key, content: error, duration: 10 });
       }
     } else {
+      if (data.username) {
+        const settingsData = apolloBrowserClient.readQuery({
+          query: SettingsDocument,
+        });
+
+        let site_url = settingsData.site_url;
+
+        if (site_url.includes(".letterpad.app")) {
+          site_url = `https://${data.username}.letterpad.app`;
+        }
+
+        apolloBrowserClient.writeQuery({
+          query: SettingsDocument,
+          data: {
+            settings: {
+              ...settingsData.settings,
+              site_url,
+            },
+          },
+        });
+      }
       if (!data.email) return;
       Modal.success({
         title: "Email saved",

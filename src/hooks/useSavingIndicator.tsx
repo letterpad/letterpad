@@ -40,7 +40,7 @@ export const useSavingIndicator = () => {
       <style jsx>{`
         .a {
           padding: 4px 25px;
-          background: #036c53;
+          background: #149e7e;
           border-bottom-left-radius: 4px;
           display: inline-flex;
           border-bottom-right-radius: 4px;

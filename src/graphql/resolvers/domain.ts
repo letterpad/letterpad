@@ -34,8 +34,20 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  createOrUpdateDomain: async (_, args, { session, prisma }) => {
+  removeDomain: async (_, _args, { session, prisma }) => {
     if (!session?.user.id) {
+      return {
+        ok: false,
+        message: "No session found",
+      };
+    }
+
+    await prisma.domain.delete({ where: { author_id: session.user.id } });
+
+    return { ok: true };
+  },
+  createOrUpdateDomain: async (_, args, { session, prisma }) => {
+    if (!session?.user.id || !args.data.name) {
       return {
         ok: false,
         message: "No session found",
@@ -49,37 +61,56 @@ const Mutation: MutationResolvers<ResolverContext> = {
           },
         },
       });
-
+      const domainName = args.data.name?.trim();
       if (args.data.name && !domainExist) {
-        const mapped = await validateIpMapping(args.data.name);
-        if (mapped.ok) {
-          await prisma.domain.create({
-            data: {
-              name: args.data.name,
-              ssl: false,
-              mapped: true,
-              author: {
-                connect: {
-                  id: session.user.id,
-                },
+        const nginxConfig_p80 = await execShell(
+          "nginxSetConfig_80",
+          domainName,
+        );
+        if (nginxConfig_p80.ok) {
+          const response = await execShell("reloadServer");
+          if (!response.ok) return response;
+        } else {
+          return nginxConfig_p80;
+        }
+        // to be safe, remove prev domain mapping
+        await execShell("removeDomainMapping", domainName);
+
+        const certificates = await execShell("createCertificate", domainName);
+        if (!certificates.ok) return certificates;
+
+        await execShell("nginxSetConfig_443", domainName);
+
+        await execShell("reloadServer");
+
+        const verify = await execShellCommand(
+          `./scripts/domainMapping.sh verifySSL ${domainName}`,
+        );
+
+        await prisma.domain.create({
+          data: {
+            name: domainName,
+            ssl: true,
+            mapped: true,
+            author: {
+              connect: {
+                id: session.user.id,
               },
             },
-          });
-          const ssl = await genCertificates(args.data.name);
-          if (ssl.ok) {
-            await prisma.domain.update({
-              data: {
-                ssl: true,
-                mapped: true,
-              },
-              where: {
-                author_id: session.user.id,
-              },
-            });
-          }
-          return ssl;
+          },
+        });
+        if (verify.includes("301")) {
+          return {
+            ok: true,
+            message:
+              "SSL has been configured. However, your domain is in a redirect loop. This is usually because your domain is reconfiguring the SSL. Contact your domain provider regarding this.",
+          };
         }
-        return mapped;
+        return {
+          ok: true,
+          message:
+            "Congratulations! Your domain has been mapped with Letterpad",
+        };
       }
 
       return {
@@ -97,56 +128,27 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
 export default { Query, Mutation };
 
-async function validateIpMapping(domainName: string) {
+async function execShell(fn, domain = "") {
   try {
     const result = await execShellCommand(
-      `./scripts/nginx_template_nossl.sh ${domainName}`,
+      `./scripts/domainMapping.sh ${fn} ${domain}`.trim(),
     );
-    console.log("IP Mapping", result);
-    if (result === "Success") {
-      return { ok: true };
+    console.log(fn, result);
+    if (result.includes("success")) {
+      return {
+        ok: true,
+      };
+    } else {
+      return {
+        ok: false,
+        message: result,
+      };
     }
   } catch (e) {
+    console.log(e);
     return {
       ok: false,
       message: e.message,
     };
   }
-  return {
-    ok: false,
-    message: "Uncaught Error. Please try again later.",
-  };
-}
-
-async function genCertificates(domainName: string) {
-  try {
-    const result2 = await execShellCommand(
-      `./scripts/nginx_template_ssl.sh ${domainName}`,
-    );
-    console.log("Certificates", domainName);
-    if (result2.includes("Congratulations!")) {
-      if (result2.includes("Letterpad")) {
-        if (result2.includes("200")) {
-          return {
-            ok: true,
-          };
-        } else if (result2.includes("301")) {
-          return {
-            ok: true,
-            message:
-              "Domain mapped successfully. However, it looks like your domain is causing a redirect.",
-          };
-        }
-      }
-    }
-  } catch (e) {
-    return {
-      ok: false,
-      message: e.message,
-    };
-  }
-  return {
-    ok: false,
-    message: "Uncaught Error. Please try again later.",
-  };
 }

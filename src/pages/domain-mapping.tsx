@@ -31,12 +31,9 @@ const DomainMapping: React.FC<Props> = ({ readOnly }) => {
         )}
         <div className="site-layout-background" style={{ padding: 24 }}>
           {loading && <Loading />}
-          {/* {data?.domain.__typename === "Domain" && data.domain.mapped && (
-            <Mapped />
-          )} */}
           {data?.domain.__typename === "DomainNotFound" && <NewDomain />}
-          {data?.domain.__typename === "Domain" && !data.domain.mapped && (
-            <NewDomain name={data.domain.name} />
+          {data?.domain.__typename === "Domain" && (
+            <NewDomain {...data.domain} />
           )}
         </div>
       </Content>

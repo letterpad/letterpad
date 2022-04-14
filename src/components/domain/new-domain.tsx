@@ -1,13 +1,26 @@
-import { Button, Divider, Form, Input } from "antd";
+import { Button, Divider, Form, Input, Modal } from "antd";
 import { CopyToClipboard } from "../clipboard";
-import { useCreateOrUpdateDomainMutation } from "@/__generated__/queries/mutations.graphql";
+import { useRemoveDomainMutation } from "@/__generated__/queries/mutations.graphql";
+import { useDomainMutation } from "@/hooks/useCreateOrUpdateDomain";
 
-export const NewDomain: React.FC<{ name?: string }> = ({ name }) => {
-  const [createOrUpdateDomain] = useCreateOrUpdateDomainMutation();
+export const NewDomain: React.FC<{
+  name?: string;
+  mapped?: boolean;
+  ssl?: boolean;
+}> = ({ name, mapped = false }) => {
+  const [removeDomain] = useRemoveDomainMutation();
+  const { updateLocalState, createUpdateDomain } = useDomainMutation();
+
   const next = async (values) => {
-    await createOrUpdateDomain({
-      variables: { data: { name: values.domain } },
-    });
+    const result = await createUpdateDomain({ name: values.domain });
+    if (result.data?.createOrUpdateDomain.ok) {
+      Modal.success({ content: result.data?.createOrUpdateDomain.message });
+    }
+  };
+
+  const removeMapping = async () => {
+    await removeDomain();
+    updateLocalState({ mapped: false, ssl: false });
   };
 
   return (
@@ -63,13 +76,24 @@ export const NewDomain: React.FC<{ name?: string }> = ({ name }) => {
             },
           ]}
         >
-          <Input placeholder="e.g. example.com, blog.example.com" />
+          <Input
+            placeholder="e.g. example.com, blog.example.com"
+            readOnly={mapped}
+          />
         </Form.Item>
         <br />
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Map my domain
-          </Button>
+          {!mapped && (
+            <Button type="primary" htmlType="submit">
+              Map my domain
+            </Button>
+          )}
+
+          {mapped && (
+            <Button type="primary" onClick={removeMapping} danger>
+              Remove Mapping
+            </Button>
+          )}
         </Form.Item>
       </Form>
     </>

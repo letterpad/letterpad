@@ -24,6 +24,11 @@ type UpdateDomainResponse {
   message: String
 }
 
+type RemoveDomainResponse {
+  ok: Boolean!
+  message: String
+}
+
 union CreateDomainResponse = Domain | DomainError
 union DomainResponse = Domain | DomainNotFound
 
@@ -33,4 +38,5 @@ type Query {
 
 type Mutation {
   createOrUpdateDomain(data: InputDomain!): UpdateDomainResponse!
+  removeDomain: RemoveDomainResponse!
 }
