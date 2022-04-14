@@ -33,6 +33,7 @@ export const useDomainMutation = () => {
     } else {
       updateLocalState({ mapped: true, ssl: true, name: data.name });
     }
+    return res;
   }
 
   const d = useCallback(debounce(createUpdateDomain, 500), []);

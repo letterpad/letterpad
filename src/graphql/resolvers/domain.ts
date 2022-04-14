@@ -106,7 +106,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
               "SSL has been configured. However, your domain is in a redirect loop. This is usually because your domain is reconfiguring the SSL. Contact your domain provider regarding this.",
           };
         }
-        return { ok: true };
+        return {
+          ok: true,
+          message:
+            "Congratulations! Your domain has been mapped with Letterpad",
+        };
       }
 
       return {

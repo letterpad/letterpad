@@ -1,4 +1,4 @@
-import { Button, Divider, Form, Input } from "antd";
+import { Button, Divider, Form, Input, Modal } from "antd";
 import { CopyToClipboard } from "../clipboard";
 import { useRemoveDomainMutation } from "@/__generated__/queries/mutations.graphql";
 import { useDomainMutation } from "@/hooks/useCreateOrUpdateDomain";
@@ -12,7 +12,10 @@ export const NewDomain: React.FC<{
   const { updateLocalState, createUpdateDomain } = useDomainMutation();
 
   const next = async (values) => {
-    await createUpdateDomain({ name: values.domain });
+    const result = await createUpdateDomain({ name: values.domain });
+    if (result.data?.createOrUpdateDomain.ok) {
+      Modal.success({ content: result.data?.createOrUpdateDomain.message });
+    }
   };
 
   const removeMapping = async () => {
