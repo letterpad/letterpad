@@ -70,6 +70,8 @@ const Mutation: MutationResolvers<ResolverContext> = {
         if (nginxConfig_p80.ok) {
           const response = await execShell("reloadServer");
           if (!response.ok) return response;
+        } else {
+          return nginxConfig_p80;
         }
         // to be safe, remove prev domain mapping
         await execShell("removeDomainMapping", domainName);
@@ -122,11 +124,12 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
 export default { Query, Mutation };
 
-async function execShell(fn, domain?: string) {
+async function execShell(fn, domain = "") {
   try {
     const result = await execShellCommand(
-      `./scripts/domainMapping.sh ${fn} ${domain}`,
+      `./scripts/domainMapping.sh ${fn} ${domain}`.trim(),
     );
+    console.log(fn, result);
     if (result.includes("success")) {
       return {
         ok: true,

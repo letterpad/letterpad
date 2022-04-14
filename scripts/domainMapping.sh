@@ -20,18 +20,23 @@ shopt -s expand_aliases
 alias die='error_exit "Error (@`echo $(( $LINENO - 1 ))`):"'
 
 
-
+# NGINX_AVAILABLE_VHOSTS='./'
+NGINX_AVAILABLE_VHOSTS='/etc/nginx/sites-enabled'
 WEB_DIR='/var/www/html/letterpad-map-test'
 
-
 function reloadServer {
-    if sudo -A nginx -s reload >/dev/null 2>&1
+    if ! command -v nginx &> /dev/null
     then
-        echo "success" >&2
+        die "nginx could not be found"
+    fi
+    sudo -A nginx -s reload >/dev/null 2>&1
+    l=$?
+
+    if [ $l -eq 0 ]; then
+        echo "success"
     else
         die "Unable to reload nginx server"
     fi
-
 }
 
 function createCertificate {
@@ -44,11 +49,11 @@ function createCertificate {
 
     l=$?
     if [ $l -eq 0 ]; then
-        echo "success" >&2
+        echo "success"
     elif [$l -eq 127]; then
         die "Install certbot to generate certificates"
     else
-        die "Certificate generation failed" >&2
+        die "Certificate generation failed"
     fi
 }
 
@@ -61,9 +66,9 @@ function validateCertificate {
 
     l=$?
     if [ $l -eq 0 ]; then
-        echo "success" >&2
+        echo "success"
     else
-        die "Verification failed" >&2
+        die "Verification failed"
     fi
 }
 
@@ -73,9 +78,9 @@ function removeDomainMapping {
     l=$?
     if [ $l -eq 0 ]; then
         rm /etc/nginx/sites-enabled/$DOMAIN >/dev/null 2>&1
-        echo "success" >&2
+        echo "success"
     else
-        die "Certificates not found" >&2
+        die "Certificates not found"
     fi
 }
 
@@ -91,7 +96,7 @@ server {
 }
 EOF
 
-    echo "success" >&2;
+    echo "success";
 }
 
 function nginxSetConfig_443 {
