@@ -25,10 +25,6 @@ NGINX_AVAILABLE_VHOSTS='/etc/nginx/sites-enabled'
 WEB_DIR='/var/www/html/letterpad-map-test'
 
 function reloadServer {
-    if ! command -v nginx &> /dev/null
-    then
-        die "nginx could not be found"
-    fi
     sudo -A nginx -s reload >/dev/null 2>&1
     l=$?
 
@@ -40,6 +36,7 @@ function reloadServer {
 }
 
 function createCertificate {
+    DOMAIN=$1
     certbot certonly \
         --webroot \
         --agree-tos \
@@ -50,7 +47,7 @@ function createCertificate {
     l=$?
     if [ $l -eq 0 ]; then
         echo "success"
-    elif [$l -eq 127]; then
+    elif [ $l -eq 127 ]; then
         die "Install certbot to generate certificates"
     else
         die "Certificate generation failed"

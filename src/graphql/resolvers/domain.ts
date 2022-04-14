@@ -84,7 +84,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         await execShell("reloadServer");
 
         const verify = await execShellCommand(
-          `./scripts/restartNginx.sh verifySSL ${domainName}`,
+          `./scripts/domainMapping.sh verifySSL ${domainName}`,
         );
 
         await prisma.domain.create({
