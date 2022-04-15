@@ -40,7 +40,7 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
       const figure = editor.selection.getNode().parentElement;
       if (figure) {
         const style = styleObject(figure.getAttribute("style"));
-        delete style.float;
+        style.float = "none";
         style.margin = "auto";
         editor.dom.setStyles(figure, style);
         editor.save();
@@ -52,7 +52,7 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
     icon: "edit-image",
     onAction: function (_) {
       const image = editor.selection.getNode();
-      let imgWidth = image.getBoundingClientRect().width + "";
+      let imgWidth = image.getBoundingClientRect().width + "px";
       const figStyles = image.parentElement?.getAttribute("style");
       if (figStyles) {
         imgWidth = styleObject(figStyles).width;
@@ -123,6 +123,15 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
     items: "edit-image img-left img-center img-right",
     position: "selection",
     scope: "node",
+  });
+
+  editor.on("keyup", function (e) {
+    if (e.key == "Delete" || e.key == "Backspace") {
+      const node = editor.selection.getNode();
+      if (node.tagName === "FIGURE") {
+        node.remove();
+      }
+    }
   });
 
   editor.on("keydown", function (e) {

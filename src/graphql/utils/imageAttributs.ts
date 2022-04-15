@@ -6,6 +6,7 @@ export const getImageAttrs = (
   srcSizes?: string,
 ): IImageAttrsResult => {
   if (!src) return {};
+  if (src.startsWith("data")) return { src };
   if (!sizes) sizes = [480, 720, 960, 1200, 1440, 1600, 2000];
   if (!srcSizes) srcSizes = `(max-width: 720px) 100vw, 720px`;
   let base64Url = makeCloudinaryUrl(src, 30);
