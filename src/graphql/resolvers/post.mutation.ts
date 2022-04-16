@@ -348,8 +348,13 @@ async function getContentAttrs(
   html?: string,
   newStatus?: PostStatusOptions,
 ) {
+  console.log("--", html);
   if (html) {
-    const $ = Cheerio.load(html);
+    const $ = Cheerio.load(html, {
+      xmlMode: true,
+      decodeEntities: false,
+      normalizeWhitespace: false,
+    });
     // remove all tooltips which are used for grammar checking
     $("[data-tippy-root]").remove();
     $("head").remove();
@@ -366,6 +371,7 @@ async function getContentAttrs(
   }
   if (savingDraft(prevPost.status, newStatus)) {
     const _html = html || prevPost.html_draft || empty;
+    console.log(_html);
     return {
       html_draft: _html,
       reading_time: getReadingTimeFromHtml(_html),
