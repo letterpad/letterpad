@@ -11,7 +11,8 @@ export function warnNoTags() {
     content: (
       <div>
         You have not added tags to your post. Add a tag/tags and ensure its set
-        up in Settings → Navigation.
+        up in Settings → Navigation. This is necessary for your post to be
+        visible in your homepage.
         <p>
           <a
             target="_blank"
@@ -26,7 +27,7 @@ export function warnNoTags() {
   });
 }
 
-export function tagNotLinkedWithNavigation() {
+export function tagNotLinkedWithNavigation(tags: string[]) {
   Modal.warning({
     className: "tags-notlinked-modal", //used by cypress
     zIndex: 999999999,
@@ -36,7 +37,9 @@ export function tagNotLinkedWithNavigation() {
     },
     content: (
       <div>
-        You have not linked any tags of this post in Navigation. <br />
+        Atleast one tag of this post should be linked in Navigation. <br />
+        {tags.length > 0 &&
+          `Currently the navigation menu has these tags - ${tags.join(", ")}`}
         You can do so by going to Settings → Navigation → New. Then give a name
         and select a tag from the dropdown.
         <p>
