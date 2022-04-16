@@ -14,7 +14,6 @@ import {
   getReadingTimeFromHtml,
 } from "./helpers";
 import logger from "@/shared/logger";
-// import { EmailTemplates } from "@/graphql/types";
 import { ResolverContext } from "../context";
 import { Prisma } from "@prisma/client";
 import { mapPostToGraphql } from "./mapper";
@@ -348,7 +347,6 @@ async function getContentAttrs(
   html?: string,
   newStatus?: PostStatusOptions,
 ) {
-  console.log("--", html);
   if (html) {
     const $ = Cheerio.load(html, {
       xmlMode: true,
