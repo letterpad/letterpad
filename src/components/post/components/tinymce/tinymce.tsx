@@ -60,10 +60,10 @@ const LpEditor: React.FC<Props> = ({ text, postId }) => {
             const domBody = editor.getDoc();
             await insertScript("/admin/tippy/popper.min.js", domBody.head);
             await insertScript("/admin/tippy/tippy.min.js", domBody.head);
-            await insertScript(
-              "https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js",
-              domBody.head,
-            );
+            // await insertScript(
+            //   "https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js",
+            //   domBody.head,
+            // );
             socket.applyTooltip();
           }
         }}
@@ -93,8 +93,20 @@ const LpEditor: React.FC<Props> = ({ text, postId }) => {
             "bullist numlist blockquote hr codesample customImage",
           statusbar: false,
           text_patterns: textPatterns,
+          onpageload: () => {
+            editorRef.current?.dom.doc
+              .querySelectorAll("img")
+              .forEach((e) => e.removeAttribute("srcset"));
+          },
           setup: function (editor) {
             initImagePlugin(editor, { onMediaBrowse });
+            editor.on("init", function () {
+              setTimeout(() => {
+                editor.dom.doc
+                  .querySelectorAll("img")
+                  .forEach((e) => e.removeAttribute("srcset"));
+              }, 1000);
+            });
           },
           entity_encoding: "raw",
         }}
