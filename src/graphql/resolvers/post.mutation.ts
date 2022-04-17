@@ -211,26 +211,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
   },
 };
 
-function isPublishingLive(oldStatus: string | null, newStatus?: string | null) {
-  return (
-    newStatus === PostStatusOptions.Published &&
-    oldStatus === PostStatusOptions.Draft
-  );
-}
-
-function rePublished(prevStatus: string, currentStatus?: string | null) {
-  return (
-    prevStatus === PostStatusOptions.Published &&
-    currentStatus === PostStatusOptions.Published
-  );
-}
-function savingDraft(prevStatus: string, statusArg?: string) {
-  if (statusArg === PostStatusOptions.Draft) return true;
-  if (prevStatus === PostStatusOptions.Draft && !statusArg) return true;
-  if (prevStatus === PostStatusOptions.Published && !statusArg) return true;
-
-  return false;
-}
 
 interface UpdateMenuProps {
   Author: Prisma.AuthorDelegate<false>;
