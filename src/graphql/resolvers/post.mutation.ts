@@ -132,9 +132,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
         newPostArgs.data.featured = args.data.featured;
       }
       if (args.data.cover_image) {
-        newPostArgs.data.cover_image = await getCoverImageAttrs(
-          args.data.cover_image,
-        );
+        const img = await getCoverImageAttrs(args.data.cover_image);
+        newPostArgs.data.cover_image = img.cover_image;
+        newPostArgs.data.cover_image_width = img.cover_image_width;
+        newPostArgs.data.cover_image_height = img.cover_image_height;
       }
       if (args.data.slug) {
         newPostArgs.data.slug = await slugify(
@@ -163,6 +164,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
       if (args.data.status === PostStatusOptions.Published) {
         newPostArgs.data.html = existingPost.html_draft || "";
+      }
+      if (args.data.status === PostStatusOptions.Draft) {
+        newPostArgs.data.html_draft = existingPost.html || "";
       }
       newPostArgs.data.updatedAt = new Date();
       if (args.data.tags) {
@@ -210,7 +214,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
   },
 };
-
 
 interface UpdateMenuProps {
   Author: Prisma.AuthorDelegate<false>;
@@ -300,8 +303,13 @@ async function getOrCreateSlug(
   return textToSlug(newSlug);
 }
 
-async function getCoverImageAttrs(cover_image) {
-  if (!cover_image) return {};
+async function getCoverImageAttrs(cover_image): Promise<{
+  cover_image: string;
+  cover_image_width: number;
+  cover_image_height: number;
+}> {
+  if (!cover_image)
+    return { cover_image: "", cover_image_width: 0, cover_image_height: 0 };
   const { width, height } = cover_image;
   let src = cover_image.src?.replace(process.env.ROOT_URL || "", "");
 
