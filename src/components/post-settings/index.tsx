@@ -103,7 +103,7 @@ const Actions = ({ post }: IProps) => {
         onClose={onClose}
         visible={visible}
         width={drawerWidth}
-        zIndex={10000}
+        zIndex={1000}
         extra={[saving || <span>────</span>]}
       >
         {/* <Space direction="vertical" size="middle"> */}

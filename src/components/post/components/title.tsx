@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Input } from "antd";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
@@ -32,7 +31,7 @@ const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
     <>
       <Input.TextArea
         {...defaults}
-        value={title}
+        defaultValue={title}
         onChange={(e) => {
           if (postId) updateLocalState({ title: e.target.value, id: postId });
         }}
@@ -57,4 +56,4 @@ const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
   );
 };
 
-export default memo(Title);
+export default Title;
