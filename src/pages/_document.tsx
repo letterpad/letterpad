@@ -34,6 +34,7 @@ class MyDocument extends Document {
       rg4js('enableCrashReporting', true);`,
             }}
           />
+          <script src={basePath + `/prism/prism.js`} async />
         </Head>
         <body>
           <Main />
