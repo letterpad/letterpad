@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 
 import InfiniteScrollList from "../InfiniteScrollList";
 import { Media } from "@/__generated__/__types__";
@@ -16,10 +16,11 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const [totalCount, setTotalCount] = useState(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const inputRef = useRef<Input>(null);
 
   useEffect(() => {
     searchUnsplash();
-  }, [page]);
+  }, [page, query]);
 
   function handleUnsplashResponse({ rows, count }: any) {
     setLoading(false);
@@ -30,9 +31,9 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     setTotalCount(count);
   }
 
-  const searchUnsplash = async (term = query) => {
-    resetAll();
-    if (query.length === 0) return;
+  const searchUnsplash = async () => {
+    const term = inputRef.current?.input.value;
+    if (!term || term.length === 0) return;
     setLoading(true);
     fetchUnsplashMedia(url, page, term)
       .then(handleUnsplashResponse)
@@ -48,10 +49,11 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     setData([]);
   };
 
-  const onChange = async (e) => {
-    const search = e.target.value.trim();
-    if (search.length > 0) {
-      setQuery(search);
+  const onSearchEnter = async () => {
+    const term = inputRef.current?.input.value;
+    if (term && term.length > 0) {
+      resetAll();
+      setQuery(term);
     }
   };
 
@@ -60,24 +62,19 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     setPage(nextPage);
   };
 
-  const jsxElements = renderer(data);
+  const jsxElements = useMemo(() => renderer(data), [data]);
   return (
     <div>
       <Input.Group compact>
         <Input
-          value={query}
+          ref={inputRef}
           data-testid="input-unsplash"
-          onPressEnter={(_) => searchUnsplash()}
-          onChange={onChange}
+          onPressEnter={onSearchEnter}
           placeholder="Search high resolution photos from Unsplash"
           autoFocus
           style={{ width: "calc(100% - 110px)" }}
         />
-        <Button
-          type="primary"
-          loading={loading}
-          onClick={(_e) => searchUnsplash(query)}
-        >
+        <Button type="primary" loading={loading} onClick={onSearchEnter}>
           Search
         </Button>
       </Input.Group>
