@@ -177,23 +177,42 @@ const Tags = ({ post }: IProps) => {
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
 
+        .react-tags__suggestions li:not(:last-child) {
+          border-bottom: 1px solid rgba(var(--color-border), 0.9);
+        }
         .react-tags__suggestions li {
-          border-bottom: 1px solid rgb(var(--color-border));
           padding: 10px 8px;
         }
 
         .react-tags__suggestions li mark {
           background: none;
           color: rgb(var(--color));
+          margin: 0;
+          padding: 0;
+          font-weight: bold;
+        }
+
+        .react-tags__suggestions li {
+          background: rgb(var(--content-bg));
+        }
+
+        .react-tags__suggestions li:hover mark {
+          color: rgb(var(--content-bg));
+        }
+
+        .react-tags__suggestions li.is-active mark {
+          color: rgb(var(--content-bg));
         }
 
         .react-tags__suggestions li:hover {
           cursor: pointer;
-          background: rgb(var(--color-border));
+          background: rgba(var(--accent), 0.9);
+          color: rgb(var(--content-bg));
         }
 
         .react-tags__suggestions li.is-active {
-          background: rgb(var(--section-bg));
+          background: rgba(var(--accent), 0.9);
+          color: rgb(var(--content-bg));
         }
 
         .react-tags__suggestions li.is-disabled {
