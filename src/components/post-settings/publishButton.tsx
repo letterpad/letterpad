@@ -58,14 +58,6 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
   };
 
   const published = post.status === PostStatusOptions.Published;
-  const canRePublish = !!post.html_draft?.length && published;
-
-  const rePublish = () => {
-    updatePost({
-      id: postId,
-      status: PostStatusOptions.Published,
-    });
-  };
 
   return (
     <>
@@ -87,28 +79,6 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
             </Button>
           </>
         )}
-        {canRePublish && (
-          <>
-            <p>
-              <label>Update your published content ?</label>
-              <p className="help-text">
-                Your {post.type} is live. This will update the content of your{" "}
-                {post.type}.
-              </p>
-            </p>
-            <Button
-              type="primary"
-              block
-              size="large"
-              style={{ fontSize: 14 }}
-              onClick={rePublish}
-              data-testid="rePublishBtn"
-            >
-              Update Content
-            </Button>
-            <br />
-          </>
-        )}
         {published && (
           <>
             <label>
@@ -119,7 +89,11 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
               <Button
                 type="primary"
                 onClick={() => publish(false)}
+                block
+                size="large"
+                style={{ fontSize: 14 }}
                 data-testid="unPublishBtn"
+                danger
               >
                 Un-Publish
               </Button>

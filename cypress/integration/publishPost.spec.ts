@@ -49,7 +49,7 @@ describe("Publishing", () => {
     cy.wait("@updatePostMutation");
   });
 
-  it("can publish, republish and unpublish", () => {
+  it("can publish and unpublish", () => {
     cy.getTestId("createPostBtn").click();
     cy.setContent({
       title: "Another new post",
@@ -65,11 +65,9 @@ describe("Publishing", () => {
     cy.setContent({
       content: "updated content",
     });
+    cy.wait("@updatePostMutation");
 
     cy.openSettings();
-
-    cy.getTestId("rePublishBtn").click();
-    cy.wait("@updatePostMutation");
 
     cy.getTestId("unPublishBtn").click();
     cy.wait("@updatePostMutation");

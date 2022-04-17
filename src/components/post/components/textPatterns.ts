@@ -41,4 +41,5 @@ export const textPatterns = [
   { start: "---", replacement: "<hr/>" },
   { start: "*", end: "*", format: "italic" },
   { start: "**", end: "**", format: "bold" },
+  { start: "`", end: "`", format: "code" },
 ];

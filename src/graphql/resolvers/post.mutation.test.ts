@@ -67,37 +67,6 @@ describe("Test Post Query Graphql API", () => {
 
     expect(updatePost.slug).toBe("/post/new-slug");
   });
-
-  it("Check republish works", async () => {
-    const type = "post";
-    const oldHtml = "<html><body><h1>This is a new post</h1></body></html>";
-
-    const newHtml = "<html><body><h1>Change</h1></body></html>";
-
-    const post = await runQuery(CreatePostDocument, {
-      title: "Published Post",
-      type,
-      status: PostStatusOptions.Published,
-      html: oldHtml,
-    });
-
-    const { updatePost } = await runQuery(UpdatePostDocument, {
-      id: post.createPost.id,
-      html: newHtml,
-    });
-
-    // updated post will not be live.
-    expect(updatePost.html).toBe(oldHtml);
-
-    // add the status to force republish and go live
-    const updatedPost = await runQuery(UpdatePostDocument, {
-      id: post.createPost.id,
-      html: newHtml,
-      status: PostStatusOptions.Published,
-    });
-
-    expect(updatedPost.updatePost.html).toBe(newHtml);
-  });
 });
 export {};
 

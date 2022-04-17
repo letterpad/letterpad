@@ -151,3 +151,13 @@ blockquote p {
 .tippy-content .suggestion-list li {
   color: rgb(69, 163, 218);
 }
+code {
+  font-size: inherit;
+  font-family: inherit;
+  font-size: 95%;
+  font-family: inherit;
+  background: #8eefa8;
+  padding: 3px 6px;
+  border-radius: 6px;
+  color: #315344;
+}
