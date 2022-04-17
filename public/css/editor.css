@@ -161,3 +161,6 @@ code {
   border-radius: 6px;
   color: #315344;
 }
+.mce-offscreen-selection {
+  display: none;
+}
