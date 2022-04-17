@@ -87,7 +87,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
             </Button>
           </>
         )}
-        {canRePublish && (
+        {/* {canRePublish && (
           <>
             <p>
               <label>Update your published content ?</label>
@@ -108,7 +108,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
             </Button>
             <br />
           </>
-        )}
+        )} */}
         {published && (
           <>
             <label>
@@ -119,7 +119,11 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
               <Button
                 type="primary"
                 onClick={() => publish(false)}
+                block
+                size="large"
+                style={{ fontSize: 14 }}
                 data-testid="unPublishBtn"
+                danger
               >
                 Un-Publish
               </Button>

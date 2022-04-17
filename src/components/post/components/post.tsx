@@ -13,9 +13,12 @@ import { usePostQuery } from "@/__generated__/queries/queries.graphql";
 import { useRouter } from "next/router";
 import PostDate from "./postDate";
 import WordCount from "./wordCount";
+import { PostStatusOptions } from "@/__generated__/__types__";
+import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 function Post() {
   const router = useRouter();
+  const { debounceUpdatePost } = useUpdatePost();
   const { postId } = router.query;
   const { data, loading, error } = usePostQuery({
     variables: { filters: { id: Number(postId) } },
@@ -29,7 +32,13 @@ function Post() {
   }
 
   const post = data?.post.__typename === "Post" ? data.post : undefined;
-  const content = post?.html_draft || post?.html;
+  let content = post?.html;
+  if (
+    post?.status === PostStatusOptions.Draft ||
+    post?.status === PostStatusOptions.Trashed
+  ) {
+    content = post.html_draft;
+  }
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -47,7 +56,16 @@ function Post() {
                 title={post?.title || ""}
                 postId={post?.id}
               />
-              <Editor text={content ?? ""} postId={post?.id} />
+              <Editor
+                text={content ?? ""}
+                onChange={(html) => {
+                  if (post?.status === PostStatusOptions.Draft) {
+                    debounceUpdatePost({ id: post.id, html_draft: html });
+                  } else if (post?.status === PostStatusOptions.Published) {
+                    debounceUpdatePost({ id: post.id, html });
+                  }
+                }}
+              />
               <WordCount text={post?.html_draft || post?.html || ""} />
               <FileExplorer
                 multi={true}

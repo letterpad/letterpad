@@ -114,29 +114,57 @@ const Mutation: MutationResolvers<ResolverContext> = {
       }
 
       const newPostArgs: Prisma.PostUpdateArgs = {
-        data: {
-          slug: await getOrCreateSlug(
-            prisma.post,
-            args.data.id,
-            args.data.slug,
-            args.data.title,
-          ),
-          title: args.data.title,
-          excerpt: args.data.excerpt,
-          status: args.data.status,
-          featured: args.data.featured,
-          ...(await getCoverImageAttrs(args.data.cover_image)),
-          ...(await getPublishingDates(existingPost, args.data.status)),
-          ...(await getContentAttrs(
-            existingPost,
-            args.data.html,
-            args.data.status,
-          )),
-        },
+        data: {},
         where: {
           id: args.data.id,
         },
       };
+      if (args.data.title) {
+        newPostArgs.data.title = args.data.title;
+      }
+      if (args.data.excerpt) {
+        newPostArgs.data.excerpt = args.data.excerpt;
+      }
+      if (args.data.status) {
+        newPostArgs.data.status = args.data.status;
+      }
+      if (args.data.featured) {
+        newPostArgs.data.featured = args.data.featured;
+      }
+      if (args.data.cover_image) {
+        newPostArgs.data.cover_image = await getCoverImageAttrs(
+          args.data.cover_image,
+        );
+      }
+      if (args.data.slug) {
+        newPostArgs.data.slug = await slugify(
+          prisma.post,
+          textToSlug(args.data.slug),
+          existingPost.author_id,
+        );
+      }
+      if (args.data.title && existingPost.slug.includes("untitled")) {
+        newPostArgs.data.slug = await slugify(
+          prisma.post,
+          textToSlug(args.data.title),
+          existingPost.author_id,
+        );
+      }
+
+      if (args.data.html) {
+        newPostArgs.data.html = await formatHtml(args.data.html);
+        newPostArgs.data.reading_time = getReadingTimeFromHtml(
+          newPostArgs.data.html,
+        );
+      }
+      if (args.data.html_draft) {
+        newPostArgs.data.html_draft = await formatHtml(args.data.html_draft);
+      }
+
+      if (args.data.status === PostStatusOptions.Published) {
+        newPostArgs.data.html = existingPost.html_draft || "";
+      }
+      newPostArgs.data.updatedAt = new Date();
       if (args.data.tags) {
         newPostArgs.data.tags = {
           set: [],
@@ -162,15 +190,6 @@ const Mutation: MutationResolvers<ResolverContext> = {
           slug: updatedPost.slug,
         });
       }
-
-      // if (isPublishingLive(existingPost.status, updatedPost.status)) {
-      //   if (mailUtils.enqueueEmailAndSend) {
-      //     await mailUtils.enqueueEmailAndSend({
-      //       template_id: EmailTemplates.NewPost,
-      //       post_id: args.data.id,
-      //     });
-      //   }
-      // }
 
       if (!updatedPost) {
         return {
@@ -326,72 +345,28 @@ async function getCoverImageAttrs(cover_image) {
 
   return data;
 }
-async function getPublishingDates(
-  prevPost: Prisma.PostMinAggregateOutputType,
-  newStatus?: PostStatusOptions,
-) {
-  const { status, publishedAt } = prevPost;
-  const currentTime = new Date();
-  if (status && isPublishingLive(status, newStatus)) {
-    if (!publishedAt) {
-      return { publishedAt: currentTime, scheduledAt: null };
-    }
-  }
-  return { updatedAt: currentTime };
-}
 
-const empty = "";
+async function formatHtml(html: string) {
+  const $ = Cheerio.load(html, {
+    xmlMode: true,
+    decodeEntities: false,
+    normalizeWhitespace: false,
+  });
+  // remove all tooltips which are used for grammar checking
+  $("[data-tippy-root]").remove();
+  $("head").remove();
+  $(".mark").each(function () {
+    // remove all decorations caused by grammar
+    $(this).replaceWith($(this).text());
+  });
+  html = $.html();
 
-async function getContentAttrs(
-  prevPost: Prisma.PostMinAggregateOutputType,
-  html?: string,
-  newStatus?: PostStatusOptions,
-) {
-  if (html) {
-    const $ = Cheerio.load(html, {
-      xmlMode: true,
-      decodeEntities: false,
-      normalizeWhitespace: false,
-    });
-    // remove all tooltips which are used for grammar checking
-    $("[data-tippy-root]").remove();
-    $("head").remove();
-    $(".mark").each(function () {
-      // remove all decorations caused by grammar
-      $(this).replaceWith($(this).text());
-    });
-    html = $.html();
+  const _html = await setImageWidthAndHeightInHtml(html);
+  if (_html) {
+    html = _html;
   }
-  if (!prevPost.status) {
-    return {
-      html_draft: html,
-    };
-  }
-  if (savingDraft(prevPost.status, newStatus)) {
-    const _html = html || prevPost.html_draft || empty;
-    console.log(_html);
-    return {
-      html_draft: _html,
-      reading_time: getReadingTimeFromHtml(_html),
-    };
-  }
-  if (newStatus && isPublishingLive(prevPost.status, newStatus)) {
-    const _html = html || prevPost.html || prevPost.html_draft || empty;
-    return {
-      reading_time: getReadingTimeFromHtml(_html),
-      html_draft: empty,
-      html: _html,
-    };
-  }
-  if (rePublished(prevPost.status, newStatus)) {
-    const _html = html || prevPost.html_draft || prevPost.html || empty;
-    return {
-      html_draft: "",
-      html: await setImageWidthAndHeightInHtml(_html),
-      reading_time: getReadingTimeFromHtml(_html),
-    };
-  }
-  return {};
+
+  return html;
 }
 
 export default { Mutation };

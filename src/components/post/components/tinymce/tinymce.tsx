@@ -5,17 +5,15 @@ import { usePostContext } from "../../context";
 import { basePath } from "@/constants";
 import { textPatterns } from "../textPatterns";
 import { socket } from "./socket";
-import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { initImagePlugin } from "../plugins/image";
 
 interface Props {
   text: string;
-  postId?: number;
+  onChange: (_html: string) => void;
 }
 
-const LpEditor: React.FC<Props> = ({ text, postId }) => {
+const LpEditor: React.FC<Props> = ({ text, onChange }) => {
   const { setHelpers, onMediaBrowse } = usePostContext();
-  const { debounceUpdatePost } = useUpdatePost();
   const editorRef = useRef<Editor["editor"]>(null);
   const isDark = document.body.classList.contains("dark");
   const [html, setHtml] = useState(text);
@@ -29,7 +27,7 @@ const LpEditor: React.FC<Props> = ({ text, postId }) => {
         if (html) {
           editorRef.current?.setContent(html);
           socket.applyTooltip();
-          if (postId) debounceUpdatePost({ id: postId, html });
+          onChange(html);
         }
       });
     }
@@ -68,7 +66,7 @@ const LpEditor: React.FC<Props> = ({ text, postId }) => {
         onEditorChange={(html) => {
           const htmlWithBody = `<html><body>${html}</body></html>`;
           if (htmlWithBody === text) return;
-          if (postId) debounceUpdatePost({ id: postId, html: htmlWithBody });
+          onChange(htmlWithBody);
         }}
         init={{
           menubar: false,

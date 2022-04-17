@@ -4,9 +4,9 @@ const TinyMceEditor = dynamic(() => import("./tinymce/tinymce"));
 
 interface Props {
   text: string;
-  postId?: number;
+  onChange: (_html: string) => void;
 }
-const Editor: React.VFC<Props> = ({ text, postId }) => {
-  return <TinyMceEditor text={text} postId={postId} />;
+const Editor: React.VFC<Props> = ({ text, onChange }) => {
+  return <TinyMceEditor text={text} onChange={onChange} />;
 };
 export default Editor;
