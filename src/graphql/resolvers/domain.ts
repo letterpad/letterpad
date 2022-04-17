@@ -67,10 +67,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           "nginxSetConfig_80",
           domainName,
         );
-        if (nginxConfig_p80.ok) {
-          const response = await execShell("reloadServer");
-          if (!response.ok) return response;
-        } else {
+        if (!nginxConfig_p80.ok) {
           return nginxConfig_p80;
         }
         // to be safe, remove prev domain mapping
@@ -80,9 +77,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         if (!certificates.ok) return certificates;
 
         await execShell("nginxSetConfig_443", domainName);
-
-        await execShell("reloadServer");
-
+        await wait(200);
         const verify = await execShellCommand(
           `./scripts/domainMapping.sh verifySSL ${domainName}`,
         );
@@ -151,4 +146,8 @@ async function execShell(fn, domain = "") {
       message: e.message,
     };
   }
+}
+
+function wait(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
