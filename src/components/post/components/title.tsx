@@ -46,6 +46,7 @@ const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
         }
         className="title"
         data-testid="postTitleInput"
+        autoSize={true}
       />
       <style jsx global>{`
         textarea.title {
