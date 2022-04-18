@@ -164,6 +164,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
       if (args.data.status === PostStatusOptions.Published) {
         newPostArgs.data.html = existingPost.html_draft || "";
+        newPostArgs.data.publishedAt = new Date();
       }
       if (args.data.status === PostStatusOptions.Draft) {
         newPostArgs.data.html_draft = existingPost.html || "";
