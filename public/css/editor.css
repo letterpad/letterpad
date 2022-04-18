@@ -1,6 +1,6 @@
 @import url("./theme-variables.css");
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;1,400&family=Roboto+Mono&display=swap");
-@import "https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.5.0/prism-duotone-sea.min.css";
+@import "./prism.css";
 @import "https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.6/tippy.min.css";
 
 body {
@@ -23,7 +23,7 @@ h6 {
 pre {
   font-size: 0.7em;
   font-family: "Roboto Mono", monospace !important;
-  background: rgba(var(--section-bg), 1) !important;
+  /* background: rgba(var(--section-bg), 1) !important; */
   padding: 0.8rem !important;
   opacity: 0.9;
 }
@@ -154,12 +154,12 @@ blockquote p {
 code {
   font-size: inherit;
   font-family: inherit;
-  font-size: 95%;
+  font-size: 90%;
   font-family: inherit;
-  background: #8eefa8;
+  background: rgba(var(--color-border), 0.2);
   padding: 3px 6px;
   border-radius: 6px;
-  color: #315344;
+  color: #ad29c8;
 }
 .mce-offscreen-selection {
   display: none;
