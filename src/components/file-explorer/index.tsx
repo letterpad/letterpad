@@ -7,8 +7,7 @@ import { Button } from "antd";
 import MediaItem from "./MediaItem";
 import { useRef, useState } from "react";
 import { uploadFile } from "@/shared/utils";
-import { MediaProvider } from "src/shared/types";
-import { TypeMediaInsert } from "letterpad-editor";
+import { MediaProvider, TypeMediaInsert } from "src/shared/types";
 import NoSsr from "../NoSsr";
 
 interface IProps {
