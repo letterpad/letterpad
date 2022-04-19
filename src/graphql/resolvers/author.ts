@@ -75,6 +75,8 @@ const Query: QueryResolvers<ResolverContext> = {
         ...author,
         social: JSON.parse(author.social as string) as Social,
         avatar,
+        analytics_id: author.analytics_id || undefined,
+        analytics_uuid: author.analytics_uuid || undefined,
         __typename: "Author",
       };
     }
