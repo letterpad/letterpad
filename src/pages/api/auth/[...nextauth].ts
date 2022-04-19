@@ -9,6 +9,9 @@ import Prisma, { prisma } from "@/lib/prisma";
 import { createAuthorWithSettings, onBoardUser } from "@/lib/onboard";
 import { Role } from "@/__generated__/__types__";
 import { SessionData } from "@/graphql/types";
+import { umamiApi, analyticsConnected } from "@/lib/umami";
+
+
 
 const providers = (_req: NextApiRequest) => [
   GoogleProvider({
@@ -52,6 +55,26 @@ const providers = (_req: NextApiRequest) => [
           );
 
           if (authenticated) {
+            if (!author.analytics_id && analyticsConnected) {
+              try {
+                const api = await umamiApi();
+                const website = (await api.addWebsite(
+                  author.username,
+                  `${author.username}.letterpad.app`,
+                )) as Record<string, any>;
+                await prisma.author.update({
+                  data: {
+                    analytics_id: website.website_id,
+                    analytics_uuid: website.website_uuid,
+                  },
+                  where: {
+                    id: author.id,
+                  },
+                });
+              } catch (e) {
+                console.log(e);
+              }
+            }
             const user = {
               id: author.id,
               avatar: author.avatar,

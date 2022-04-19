@@ -99,6 +99,8 @@ fragment MeFragment on Author {
   id
   name
   username
+  analytics_id
+  analytics_uuid
   social {
     github
     twitter

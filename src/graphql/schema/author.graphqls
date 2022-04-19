@@ -20,6 +20,8 @@ type Author {
   avatar: String
   verified: Boolean
   accessToken: String
+  analytics_id: Int
+  analytics_uuid: String
 }
 
 input LoginData {

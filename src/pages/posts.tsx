@@ -48,6 +48,7 @@ function Posts({ readOnly }: { readOnly: boolean }) {
       },
     });
   };
+  if (typeof window === "undefined") return null;
   return (
     <>
       <Head>
