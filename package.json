@@ -56,7 +56,6 @@
     "mysql2": "^2.2.5",
     "next": "^12.1.0",
     "next-auth": "4.0.5",
-    "node-fetch": "^3.2.3",
     "nodemailer": "^6.7.3",
     "nprogress": "^0.2.0",
     "prisma": "^3.8.1",

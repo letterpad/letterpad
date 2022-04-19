@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 function parseCookies(response) {
   const raw = response.headers.raw()["set-cookie"] || [];
   return raw
