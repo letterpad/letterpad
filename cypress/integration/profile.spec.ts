@@ -1,5 +1,5 @@
-describe("Settings", () => {
-  it("add new item in navigation", () => {
+describe("Profile", () => {
+  it("Can update basic profile details", () => {
     cy.visitProfile();
 
     cy.getTestId("name").type("name");
