@@ -48,18 +48,11 @@ Cypress.Commands.add("visitPages", () => cy.visit("/pages"));
 Cypress.Commands.add("visitProfile", () => cy.visit("/profile"));
 Cypress.Commands.add("visitSettings", () => cy.visit("/settings"));
 
-Cypress.Commands.add("addNavItem", (label, text) => {
+Cypress.Commands.add("addNavItem", (label, slug) => {
   cy.getTestId("empty-label-item").type(label);
-  cy.get(`.ant-select-selector .ant-select-selection-search input`)
-    .last()
-    .invoke("attr", "id")
-    .then(() => {
-      cy.get(`.ant-select-selector .ant-select-selection-search input`)
-        .last()
-        .type(`${text}`, { force: true });
-      cy.getTestId(text).click();
-      cy.wait("@UpdateOptionsMutation");
-    });
+  cy.getTestId("content-modal-btn").last().trigger("click");
+  cy.getTestId(slug).click();
+  cy.wait("@UpdateOptionsMutation");
 });
 
 // Cypress.Commands.add("addUnplsashImage", (imageInputTestId) => {
