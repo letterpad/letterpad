@@ -77,25 +77,11 @@ const Actions = ({ post }: IProps) => {
 
   return (
     <>
-      <Dropdown
-        placement="topLeft"
-        overlay={
-          <QuickMenu
-            siteUrl={settings?.site_url ?? ""}
-            postHash={postHash}
-            showDrawer={showDrawer}
-          />
-        }
-        trigger={["click"]}
-      >
-        <a
-          data-testid="postMenuBtn"
-          className="ant-dropdown-link"
-          onClick={(e) => e.preventDefault()}
-        >
-          <MoreOutlined style={{ fontSize: 30 }} />
-        </a>
-      </Dropdown>
+      <QuickMenu
+        siteUrl={settings?.site_url ?? ""}
+        postHash={postHash}
+        showDrawer={showDrawer}
+      />
       <Drawer
         title="Settings"
         placement="right"

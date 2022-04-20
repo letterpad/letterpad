@@ -32,7 +32,6 @@ Cypress.Commands.add("setContent", ({ title, content }) => {
 });
 
 Cypress.Commands.add("openSettings", () => {
-  cy.getTestId("postMenuBtn").trigger("click");
   cy.getTestId("postSettingsLink").trigger("click");
 });
 

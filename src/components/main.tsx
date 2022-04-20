@@ -1,7 +1,7 @@
 import ThemeSwitcher from "@/components/theme-switcher";
 import { initPageProgress } from "./../shared/utils";
 import { useTracking } from "@/hooks/usetracking";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import { basePath } from "@/constants";
 import { Page } from "@/page";

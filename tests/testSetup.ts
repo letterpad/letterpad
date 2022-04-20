@@ -6,6 +6,8 @@ const { exec } = require("child_process");
 import { schema } from "../src/graphql/schema";
 import { seed } from "../src/graphql/db/seed/seed";
 import { getResolverContext } from "@/graphql/context";
+import React from "react" 
+React.useLayoutEffect = React.useEffect 
 
 const session = {
   user: {

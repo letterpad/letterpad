@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
-import { Input, Form } from "antd";
+import { Input, Form, InputRef } from "antd";
 import { FormInstance } from "antd/lib/form";
 
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
@@ -49,7 +49,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false);
-  const inputRef = useRef<Input>(null);
+  const inputRef = useRef<InputRef>(null);
   const form = useContext(EditableContext)!;
 
   useEffect(() => {
