@@ -20,7 +20,7 @@
     "resetDemo": "ts-node -r tsconfig-paths/register --transpile-only ./src/resetDemo.ts",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "e2e:ci": "yarn seed && start-server-and-test 'yarn start' http://localhost:3000/admin/login cy:open",
+    "e2e:ci": "yarn seed && start-server-and-test 'yarn start' http://localhost:3000/admin/login cy:run",
     "e2e": "yarn seed && start-server-and-test 'yarn dev' http://localhost:3000/admin/login cy:open"
   },
   "dependencies": {
