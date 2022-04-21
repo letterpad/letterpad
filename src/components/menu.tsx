@@ -1,6 +1,7 @@
 import { Menu } from "antd/";
 
 import {
+  BarChartOutlined,
   ContainerOutlined,
   FileImageOutlined,
   FileTextOutlined,
@@ -27,6 +28,7 @@ const menuItems = {
   "/migrate": "8",
   "/logout": "9",
   "/subscribers": "10",
+  "/dashboard": "11",
 };
 
 const countStyle = {
@@ -44,6 +46,14 @@ const Navigation = ({ stats }) => {
       defaultSelectedKeys={[menuItems[pathname]]}
       style={{ paddingBottom: 60, background: "none" }}
     >
+      <Menu.Item
+        key={menuItems["/dashboard"]}
+        icon={<BarChartOutlined />}
+        onClick={() => router.push("/dashboard")}
+        hidden={true}
+      >
+        Dashboard
+      </Menu.Item>
       <Menu.Item
         key={menuItems["/posts"]}
         icon={<ContainerOutlined />}
@@ -103,7 +113,6 @@ const Navigation = ({ stats }) => {
         key={menuItems["/domain-mapping"]}
         icon={<GlobalOutlined />}
         onClick={() => router.push("/domain-mapping")}
-        hidden={true}
       >
         Domain Mapping
       </Menu.Item>
