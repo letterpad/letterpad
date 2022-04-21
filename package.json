@@ -96,7 +96,7 @@
     "@types/react-tooltip": "^4.2.4",
     "autoprefixer": "^10.2.6",
     "concurrently": "^6.2.0",
-    "cypress": "9.5.3",
+    "cypress": "9.5.4",
     "cypress-plugin-tab": "^1.0.5",
     "graphql-let": "0.x",
     "graphql-tag": "2.11.0",
