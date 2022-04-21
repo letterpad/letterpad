@@ -118,6 +118,7 @@ const Navigation = ({ stats }) => {
         key={menuItems["/migrate"]}
         icon={<UploadOutlined />}
         onClick={() => router.push("/migrate")}
+        hidden={true}
       >
         Migrate
       </Menu.Item>
