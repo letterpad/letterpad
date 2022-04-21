@@ -8,6 +8,7 @@ Cypress.Commands.add("login", ({ email, password }) => {
   cy.getTestId("email").type(email);
   cy.getTestId("password").type(password);
   cy.getTestId("loginBtn").click();
+  cy.wait("@getCredentials");
   cy.wait("@getSession");
   cy.url().then(($url) => {
     if ($url.includes("home")) {
@@ -72,6 +73,7 @@ beforeEach(function () {
     aliasMutation(req, "UpdateAuthor");
   });
   cy.intercept("/admin/api/auth/session").as("getSession");
+  cy.intercept("/admin/api/auth/callback/credentials?").as("getCredentials");
   window.localStorage.setItem("intro_dismissed", "true");
   cy.login({ email: "demo@demo.com", password: "demo" });
 });
