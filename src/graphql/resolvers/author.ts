@@ -13,6 +13,7 @@ import { mapAuthorToGraphql } from "./mapper";
 import { createAuthorWithSettings } from "@/lib/onboard";
 import { encryptEmail } from "@/shared/clientToken";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
+import { umamiApi, analyticsConnected } from "@/lib/umami";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -74,6 +75,8 @@ const Query: QueryResolvers<ResolverContext> = {
         ...author,
         social: JSON.parse(author.social as string) as Social,
         avatar,
+        analytics_id: author.analytics_id || undefined,
+        analytics_uuid: author.analytics_uuid || undefined,
         __typename: "Author",
       };
     }
@@ -278,6 +281,17 @@ const Mutation: MutationResolvers<ResolverContext> = {
             author_id: author.id,
           },
         });
+        try {
+          if (author.analytics_id && analyticsConnected) {
+            const api = await umamiApi();
+            await api.changeWebsite(
+              `${args.author.username}.letterpad.app`,
+              author.analytics_id,
+            );
+          }
+        } catch (e) {
+          //
+        }
       }
       return {
         ok: true,

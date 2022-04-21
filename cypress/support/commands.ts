@@ -8,6 +8,7 @@ Cypress.Commands.add("login", ({ email, password }) => {
   cy.getTestId("email").type(email);
   cy.getTestId("password").type(password);
   cy.getTestId("loginBtn").click();
+  cy.wait("@getCredentials");
   cy.wait("@getSession");
   cy.url().then(($url) => {
     if ($url.includes("home")) {
@@ -32,7 +33,6 @@ Cypress.Commands.add("setContent", ({ title, content }) => {
 });
 
 Cypress.Commands.add("openSettings", () => {
-  cy.getTestId("postMenuBtn").trigger("click");
   cy.getTestId("postSettingsLink").trigger("click");
 });
 
@@ -49,18 +49,11 @@ Cypress.Commands.add("visitPages", () => cy.visit("/pages"));
 Cypress.Commands.add("visitProfile", () => cy.visit("/profile"));
 Cypress.Commands.add("visitSettings", () => cy.visit("/settings"));
 
-Cypress.Commands.add("addNavItem", (label, text) => {
+Cypress.Commands.add("addNavItem", (label, slug) => {
   cy.getTestId("empty-label-item").type(label);
-  cy.get(`.ant-select-selector .ant-select-selection-search input`)
-    .last()
-    .invoke("attr", "id")
-    .then(() => {
-      cy.get(`.ant-select-selector .ant-select-selection-search input`)
-        .last()
-        .type(`${text}`, { force: true });
-      cy.getTestId(text).click();
-      cy.wait("@UpdateOptionsMutation");
-    });
+  cy.getTestId("content-modal-btn").last().trigger("click");
+  cy.getTestId(slug).click();
+  cy.wait("@UpdateOptionsMutation");
 });
 
 // Cypress.Commands.add("addUnplsashImage", (imageInputTestId) => {
@@ -80,6 +73,7 @@ beforeEach(function () {
     aliasMutation(req, "UpdateAuthor");
   });
   cy.intercept("/admin/api/auth/session").as("getSession");
+  cy.intercept("/admin/api/auth/callback/credentials?").as("getCredentials");
   window.localStorage.setItem("intro_dismissed", "true");
   cy.login({ email: "demo@demo.com", password: "demo" });
 });

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Input, Drawer, Switch, Divider } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
 import ImageUpload from "../ImageUpload";
 import { PostTypes } from "@/__generated__/__types__";
 import Tags from "./tags";
@@ -11,7 +10,6 @@ import PublishButton from "./publishButton";
 import QuickMenu from "./quickmenu";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { DeletePost } from "./deletePost";
-import { Dropdown } from "antd";
 import {
   createPathWithPrefix,
   getLastPartFromPath,
@@ -77,25 +75,11 @@ const Actions = ({ post }: IProps) => {
 
   return (
     <>
-      <Dropdown
-        placement="topLeft"
-        overlay={
-          <QuickMenu
-            siteUrl={settings?.site_url ?? ""}
-            postHash={postHash}
-            showDrawer={showDrawer}
-          />
-        }
-        trigger={["click"]}
-      >
-        <a
-          data-testid="postMenuBtn"
-          className="ant-dropdown-link"
-          onClick={(e) => e.preventDefault()}
-        >
-          <MoreOutlined style={{ fontSize: 30 }} />
-        </a>
-      </Dropdown>
+      <QuickMenu
+        siteUrl={settings?.site_url ?? ""}
+        postHash={postHash}
+        showDrawer={showDrawer}
+      />
       <Drawer
         title="Settings"
         placement="right"

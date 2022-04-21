@@ -66,7 +66,7 @@ function Post() {
                   }
                 }}
               />
-              <WordCount text={post?.html_draft || post?.html || ""} />
+              <WordCount text={content || ""} />
               <FileExplorer
                 multi={true}
                 isVisible={fileExplorerOpen}

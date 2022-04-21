@@ -1,17 +1,10 @@
 import { InputBox, Item } from "./SortableItem.css";
 import React, { useState } from "react";
 
-import ReactTooltip from "react-tooltip";
 import { SortableElement } from "react-sortable-hoc";
-import { Tooltip, Select, Input } from "antd";
+import { Input, Button, Modal, Divider } from "antd";
 import { Navigation, NavigationType } from "@/__generated__/__types__";
-import {
-  DeleteOutlined,
-  InfoCircleOutlined,
-  MenuOutlined,
-} from "@ant-design/icons";
-
-const { Option, OptGroup } = Select;
+import { DeleteOutlined, MenuOutlined } from "@ant-design/icons";
 
 interface IProps {
   source: Navigation[];
@@ -27,9 +20,8 @@ interface INavigationUI extends Omit<Navigation, "type"> {
 
 const SortableItem = SortableElement((props: IProps) => {
   const { value, source, onChange, onRemove } = props;
-
+  const [showModal, setShowModal] = useState(false);
   const [item, setItem] = useState<INavigationUI>(value);
-  // const [, setError] = useState<string>("");
   const [nameError, setNameError] = useState<string>("");
 
   const onInputChange = (change: INavigationUI) => {
@@ -66,9 +58,12 @@ const SortableItem = SortableElement((props: IProps) => {
     }
 
     setNameError(tmpError.nameError);
-    setTimeout(ReactTooltip.rebuild, 0);
   };
 
+  const onClick = (slug) => {
+    onInputChange({ ...item, slug });
+    setShowModal(false);
+  };
   return (
     <Item data-testid="item-sortable">
       <div className="icon-box">
@@ -85,29 +80,54 @@ const SortableItem = SortableElement((props: IProps) => {
         <span className="error">{nameError}</span>
       </InputBox>
       <div>
-        <Select
-          defaultValue={item.slug}
-          style={{ width: "100%" }}
-          size="middle"
-          onSelect={(slug) => {
-            onInputChange({ ...item, slug });
-          }}
-        >
-          <OptGroup label="Tags - collection of post">
-            {getOptions(source, NavigationType.Tag)}
-          </OptGroup>
-          <OptGroup label="Pages">
-            {getOptions(source, NavigationType.Page)}
-          </OptGroup>
-        </Select>
+        <Input.Group>
+          <Input
+            style={{ width: "calc(100% - 150px)", cursor: "not-allowed" }}
+            size="middle"
+            value={item.type + ": " + item.original_name}
+            readOnly
+          />
+          <Button
+            type="primary"
+            size="middle"
+            onClick={() => setShowModal(true)}
+            data-testid="content-modal-btn"
+          >
+            Select Content
+          </Button>
+        </Input.Group>
       </div>
-      <Tooltip title={getToolTip(item)}>
-        <InfoCircleOutlined />
-      </Tooltip>
 
       <DeleteOutlined onClick={onRemove} data-testid="button-nav-delete" />
 
-      <ReactTooltip />
+      <Modal
+        title="Assign Content to Navigation Menu"
+        visible={showModal}
+        okText={false}
+        onCancel={() => setShowModal(false)}
+        footer={[
+          <Button
+            key="cancel"
+            type="primary"
+            onClick={() => setShowModal(false)}
+            size="middle"
+          >
+            Cancel
+          </Button>,
+        ]}
+      >
+        Assign a tag to display all posts linked with that tag
+        <p />
+        {getOptions(source, NavigationType.Tag, onClick)}
+        <p />
+        <p />
+        <p />
+        <Divider />
+        Assign a page <p />
+        {getOptions(source, NavigationType.Page, onClick).map((item) => (
+          <div>{item}</div>
+        ))}
+      </Modal>
     </Item>
   );
 });
@@ -122,18 +142,6 @@ function getItemBySlug(data: Navigation[], slug: string) {
   return null;
 }
 
-function getToolTip(item: INavigationUI) {
-  if (item.type === NavigationType.Tag) {
-    return "Displays all posts having the tag - " + item.slug;
-  }
-  if (item.type === NavigationType.Page) {
-    return "Displays page - " + item.original_name;
-  }
-  if (item.type === NavigationType.Custom) {
-    return "This will be opened in a new tab.";
-  }
-}
-
 function getSuggestionLabel(item) {
   if (item.type === "tag") {
     return `${item.label}  (${item.postCount} post/s)`;
@@ -141,16 +149,18 @@ function getSuggestionLabel(item) {
   return `${item.label}`;
 }
 
-function getOptions(source: Navigation[], type: NavigationType) {
+function getOptions(source: Navigation[], type: NavigationType, onClick) {
   return source
     .filter((navItem) => navItem.type === type)
     .map((navItem) => (
-      <Option
+      <Button
         key={navItem.slug}
         value={navItem.slug}
         data-testid={navItem.slug}
+        type="link"
+        onClick={() => onClick(navItem.slug)}
       >
         {getSuggestionLabel(navItem)}
-      </Option>
+      </Button>
     ));
 }

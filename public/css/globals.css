@@ -21,6 +21,10 @@ body {
   min-height: 100vh;
 }
 
+.dark .ant-modal-content,
+.dark .ant-modal-header {
+  background: rgba(var(--content-bg), 1);
+}
 html.no-transitions * {
   animation-duration: 0s !important;
 }

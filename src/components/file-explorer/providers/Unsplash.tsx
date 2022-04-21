@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from "react";
 
 import InfiniteScrollList from "../InfiniteScrollList";
 import { Media } from "@/__generated__/__types__";
-import { Button, Input } from "antd";
+import { Button, Input, InputRef } from "antd";
 import { basePath } from "@/constants";
 
 interface IProps {
@@ -16,7 +16,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const [totalCount, setTotalCount] = useState(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const inputRef = useRef<Input>(null);
+  const inputRef = useRef<InputRef>(null);
 
   useEffect(() => {
     searchUnsplash();
@@ -32,7 +32,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   }
 
   const searchUnsplash = async () => {
-    const term = inputRef.current?.input.value;
+    const term = inputRef.current?.input?.value;
     if (!term || term.length === 0) return;
     setLoading(true);
     fetchUnsplashMedia(url, page, term)
@@ -50,7 +50,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   };
 
   const onSearchEnter = async () => {
-    const term = inputRef.current?.input.value;
+    const term = inputRef.current?.input?.value;
     if (term && term.length > 0) {
       resetAll();
       setQuery(term);

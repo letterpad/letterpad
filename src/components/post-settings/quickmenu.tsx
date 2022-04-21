@@ -1,8 +1,45 @@
 import { EventAction, track } from "@/track";
-import { Menu } from "antd";
+import { Button, Menu } from "antd";
 import { socket } from "@/components/post/components/tinymce/socket";
+import { SettingOutlined, EyeOutlined } from "@ant-design/icons";
 
 const QuickMenu = ({ siteUrl, postHash, showDrawer }) => {
+  return (
+    <>
+      <Button
+        type="text"
+        onClick={() => {
+          track({
+            eventAction: EventAction.Click,
+            eventCategory: "post",
+            eventLabel: "grammar",
+          });
+          socket.checkGrammar();
+        }}
+      >
+        Grammar
+      </Button>
+      <Button
+        type="text"
+        onClick={() => {
+          track({
+            eventAction: EventAction.Change,
+            eventCategory: "setting",
+            eventLabel: "preview",
+          });
+          window.open(siteUrl + "/preview/" + postHash);
+        }}
+        icon={<EyeOutlined />}
+      ></Button>
+
+      <Button
+        type="text"
+        onClick={showDrawer}
+        data-testid="postSettingsLink"
+        icon={<SettingOutlined />}
+      ></Button>
+    </>
+  );
   return (
     <Menu>
       <Menu.Item key="0" onClick={showDrawer} data-testid="postSettingsLink">

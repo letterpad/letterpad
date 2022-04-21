@@ -50,6 +50,13 @@ export enum MediaProvider {
   Letterpad = "letterpad",
 }
 
+export interface TypeMediaInsert {
+  src: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+}
+
 export type PubSubEvent = "save" | "noop" | "networkError";
 
 export interface ClientTokenData {
