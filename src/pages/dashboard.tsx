@@ -51,13 +51,17 @@ const Metrics = () => {
   const fetchData = async (d = days) => {
     if (meResult.data?.me?.__typename !== "Author") return;
     setLoading(true);
-    const res = await fetch(
-      basePath +
-        `/api/analytics?websiteId=${meResult.data?.me.analytics_id}&days=` +
-        d,
-    );
-    const json = await res.json();
-    setData(json);
+    try {
+      const res = await fetch(
+        basePath +
+          `/api/analytics?websiteId=${meResult.data?.me.analytics_id}&days=` +
+          d,
+      );
+      const json = await res.json();
+      setData(json);
+    } catch (e) {
+      //
+    }
     setLoading(false);
   };
 
