@@ -1,5 +1,3 @@
-import { Select } from "antd";
-
 import {
   PostsFilters,
   PostStatusOptions,
@@ -14,7 +12,6 @@ interface IProps {
   showTags?: boolean;
   onChange: (filters: PostsFilters) => void;
 }
-const Option = Select.Option;
 
 const Filters = ({ showTags = true, onChange }: IProps) => {
   const [allTags, setAllTags] = useState<{ slug: string; name: string }[]>([]);

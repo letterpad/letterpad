@@ -1,13 +1,11 @@
 import { basePath } from "@/constants";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
 import { PageHeader, Table } from "antd";
-import { Divider, Select, Tag, Card } from "antd";
+import { Divider, Tag, Card } from "antd";
 import Head from "next/head";
 import { Content } from "antd/lib/layout/layout";
 import { Statistic, Row, Col } from "antd";
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
-
-const { Option } = Select;
 
 const cols = [
   {
