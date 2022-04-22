@@ -1,6 +1,6 @@
 import { EventAction, track } from "@/track";
 import { GithubFilled, GoogleSquareFilled } from "@ant-design/icons";
-import { Button, Form } from "antd";
+import { Button } from "antd";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
