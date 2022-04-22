@@ -1,5 +1,5 @@
 import { basePath } from "@/constants";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { PageHeader, Table } from "antd";
 import { Divider, Select, Tag, Card } from "antd";
 import Head from "next/head";
@@ -75,19 +75,19 @@ const Metrics = () => {
       </PageHeader>
       <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
-          <Select
-            defaultValue={days}
-            style={{ width: 120 }}
-            onChange={setDays}
-            loading={loading}
+          <select
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              setDays(Number(e.target.value))
+            }
+            value={days}
           >
-            <Option value={0}>Today</Option>
-            <Option value={1}>Yesterday</Option>
-            <Option value={7}>Last Week</Option>
-            <Option value={14}>Last 2 weeks</Option>
-            <Option value={30}>Last 1 Month</Option>
-            <Option value={90}>Last 3 Months</Option>
-          </Select>
+            <option value={0}>Today</option>
+            <option value={1}>Yesterday</option>
+            <option value={7}>Last Week</option>
+            <option value={14}>Last 2 weeks</option>
+            <option value={30}>Last 1 Month</option>
+            <option value={90}>Last 3 Months</option>
+          </select>
           <Divider />
           <Row gutter={16}>
             <Box title="Views" item={pageViews} />
