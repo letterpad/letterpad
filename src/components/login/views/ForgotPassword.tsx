@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { forgotPasswordAction } from "../actions";
-import { Form, Input, Button, Row, Divider } from "antd";
+import { Form, Input, Button, Divider } from "antd";
 import { EventAction, track } from "@/track";
 
 export const ForgotPassword = ({
@@ -30,19 +30,15 @@ export const ForgotPassword = ({
   if (!isVisible) return null;
 
   return (
-    <Row
-      justify="center"
-      align="middle"
-      style={{ paddingLeft: 10, height: "calc(100% - 200px)" }}
-    >
+    <div>
       <Form
         name="basic"
-        labelCol={{ span: 4 }}
+        labelCol={{ span: 6 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         autoComplete="off"
         onFinish={onFinish}
-        className="forgot-password-form"
+        className="forms"
       >
         <h2>Forgot Password</h2>
         <Divider />
@@ -77,21 +73,26 @@ export const ForgotPassword = ({
           </Button>
         </Form.Item>
         <style jsx global>{`
-          .forgot-password-form {
+          .forms {
             width: 500px;
             padding: 30px;
             background: rgb(var(----section-bg));
             border: 1px solid rgb(var(--color-border));
             border-radius: 2px;
+            overflow: hidden;
           }
-          @media (max-width: 800px) {
-            .forgot-password-form {
+          input:-internal-autofill-selected {
+            background-color: transparent !important;
+          }
+          @media (max-width: 375px) {
+            .forms {
               width: 100%;
-              margin: 20px;
+              padding: 16px;
+              border: none;
             }
           }
         `}</style>
       </Form>
-    </Row>
+    </div>
   );
 };

@@ -1,5 +1,3 @@
-import { Select } from "antd";
-
 import {
   PostsFilters,
   PostStatusOptions,
@@ -14,7 +12,6 @@ interface IProps {
   showTags?: boolean;
   onChange: (filters: PostsFilters) => void;
 }
-const Option = Select.Option;
 
 const Filters = ({ showTags = true, onChange }: IProps) => {
   const [allTags, setAllTags] = useState<{ slug: string; name: string }[]>([]);
@@ -43,76 +40,80 @@ const Filters = ({ showTags = true, onChange }: IProps) => {
   if (loading && showTags) return <Loading />;
   return (
     <>
-      <Select
-        style={{ width: 105 }}
-        onChange={(status: PostStatusOptions) => {
+      <select
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+          if (e.target.value === "all") {
+            const { status, ...rest } = filters;
+            return setFilters({
+              ...rest,
+            });
+          }
           track({
             eventAction: EventAction.Click,
             eventCategory: "filters",
             eventLabel: "status",
           });
-          setFilters({ ...filters, status });
+          setFilters({
+            ...filters,
+            status: e.target.value as PostStatusOptions,
+          });
         }}
-        placeholder="Status"
-        allowClear
-        size="middle"
       >
+        <option value="all">All</option>
         {Object.keys(PostStatusOptions).map((key) => {
           return (
-            <Option key={key} value={PostStatusOptions[key]}>
+            <option key={key} value={PostStatusOptions[key]}>
               {key}
-            </Option>
+            </option>
           );
         })}
-      </Select>
+      </select>
       &nbsp;
-      <Select
-        style={{ width: 100 }}
-        onChange={(sortBy: SortBy) => {
+      <select
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
           track({
             eventAction: EventAction.Click,
             eventCategory: "filters",
             eventLabel: "sortBy",
           });
-          setFilters({ ...filters, sortBy });
+          setFilters({ ...filters, sortBy: e.target.value as SortBy });
         }}
-        placeholder="Order by"
-        allowClear
-        size="middle"
-        value={filters.sortBy}
       >
         {Object.keys(SortBy).map((key) => {
           return (
-            <Option key={key} value={SortBy[key]}>
+            <option key={key} value={SortBy[key]}>
               {key}
-            </Option>
+            </option>
           );
         })}
-      </Select>
+      </select>
       &nbsp;
       {allTags && showTags && (
-        <Select
-          style={{ width: 118 }}
-          onChange={(tagSlug: string) => {
+        <select
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            if (e.target.value === "all") {
+              const { tagSlug, ...rest } = filters;
+              return setFilters({
+                ...rest,
+              });
+            }
             track({
               eventAction: EventAction.Click,
               eventCategory: "filters",
               eventLabel: "tagSlug",
             });
-            setFilters({ ...filters, tagSlug });
+            setFilters({ ...filters, tagSlug: e.target.value });
           }}
-          placeholder="By Tag"
-          allowClear
-          size="middle"
         >
+          <option value="all">All</option>
           {allTags.map((tag) => {
             return (
-              <Option key={tag.name} value={tag.slug}>
+              <option key={tag.name} value={tag.slug}>
                 {tag.name}
-              </Option>
+              </option>
             );
           })}
-        </Select>
+        </select>
       )}
       <br />
       <br />
