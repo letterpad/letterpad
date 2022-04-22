@@ -40,7 +40,7 @@ const Metrics = () => {
     },
   });
   const [days, setDays] = useState(7);
-  const [loading, setLoading] = useState(false);
+  const [_loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchData();
