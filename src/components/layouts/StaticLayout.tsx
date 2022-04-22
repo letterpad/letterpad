@@ -17,7 +17,7 @@ const StaticLayout = ({ children }) => {
             </Menu.Item>
           </Menu>
         </Header>
-        <Content style={{ padding: "50px" }}>
+        <Content className="content">
           <div className="site-layout-content">{children}</div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
@@ -25,20 +25,34 @@ const StaticLayout = ({ children }) => {
         </Footer>
       </Layout>
       <style jsx global>{`
+        .content {
+          margin: auto;
+        }
         .site-page-header {
           border-bottom: 1px solid rgba(var(--color-border), 0.5);
         }
         .site-layout-content {
           min-height: 280px;
-          padding: 24px;
-          background: rgba(var(--section-bg), 0.8);
+          padding: 50px;
+        }
+        @media (max-width: 774px) {
+          .site-layout-content {
+            min-height: 280px;
+            padding: 16px;
+          }
+          .ant-layout-header {
+            padding: 0 16px;
+          }
+          .content {
+            margin: 0px;
+          }
         }
         .logo {
           display: flex;
           align-items: center;
           float: left;
           height: 31px;
-          margin: 16px 24px 16px 0;
+          margin: 16px 16px 16px 0;
         }
       `}</style>
     </>

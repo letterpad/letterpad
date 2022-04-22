@@ -23,18 +23,12 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
     await signIn(type, { callbackUrl: callback });
   };
   return (
-    <Form.Item
-      wrapperCol={{
-        offset: 0,
-        sm: { offset: 6 },
-        md: { offset: 5 },
-        span: 20,
-      }}
-    >
+    <div>
       <Button
         icon={<GoogleSquareFilled />}
         onClick={(e) => onClick(e, "google")}
         type="primary"
+        style={{ width: "100%" }}
       >
         Login with Google
       </Button>
@@ -43,9 +37,10 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
         icon={<GithubFilled />}
         onClick={(e) => onClick(e, "github")}
         type="primary"
+        style={{ width: "100%" }}
       >
         Login with Github
       </Button>
-    </Form.Item>
+    </div>
   );
 };
