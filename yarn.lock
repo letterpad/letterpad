@@ -1210,13 +1210,13 @@
     "@graphql-tools/utils" "^7.0.0"
     tslib "~2.1.0"
 
-"@graphql-tools/import@6.4.0":
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/import/-/import-6.4.0.tgz#eb2178d6df8d964e7b9d6b1ed75f80d12f9060a7"
-  integrity sha512-jfE01oPcmc4vzAcYLs6xT7XC4jJWrM1HNtIwc7HyyHTxrC3nf36XrF3txEZ2l20GT53+OWnMgYx1HhauLGdJmA==
+"@graphql-tools/import@6.3.1":
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/import/-/import-6.3.1.tgz#731c47ab6c6ac9f7994d75c76b6c2fa127d2d483"
+  integrity sha512-1szR19JI6WPibjYurMLdadHKZoG9C//8I/FZ0Dt4vJSbrMdVNp8WFxg4QnZrDeMG4MzZc90etsyF5ofKjcC+jw==
   dependencies:
     resolve-from "5.0.0"
-    tslib "~2.3.0"
+    tslib "~2.2.0"
 
 "@graphql-tools/import@^6.2.6":
   version "6.6.5"
@@ -5682,16 +5682,16 @@ graphql-extensions@^0.15.0:
     apollo-server-env "^3.1.0"
     apollo-server-types "^0.9.0"
 
-graphql-let@0.x:
-  version "0.18.6"
-  resolved "https://registry.yarnpkg.com/graphql-let/-/graphql-let-0.18.6.tgz#52424d3be32d6e42eaca9f2b6c12a76b858660cb"
-  integrity sha512-BMKDBpGEJm5Ybgaz9Mb4clEXtysDu7YUv1zSlgHY5DuqMoW3FVFjb2+kq6BikvzRQAiauNV+Yme4mWM0uvfpNw==
+graphql-let@0.18.5:
+  version "0.18.5"
+  resolved "https://registry.yarnpkg.com/graphql-let/-/graphql-let-0.18.5.tgz#3b01f0b7ed8388dd3195ad1ae4f306296829c16c"
+  integrity sha512-/3tU9JFbO90o5zjQOo3ScqeCy2gHn28hhrLOK628jwO+YvYjveS27H0WQie/0MSPYpgD2ZRrexNnfEvYtLZpFA==
   dependencies:
     "@babel/core" "7.15.5"
     "@babel/helper-plugin-utils" "7.14.5"
     "@babel/parser" "7.15.5"
     "@babel/traverse" "7.15.4"
-    "@graphql-tools/import" "6.4.0"
+    "@graphql-tools/import" "6.3.1"
     caller "1.0.1"
     gensync "1.0.0-beta.2"
     globby "11.0.4"
