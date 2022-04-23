@@ -1,4 +1,3 @@
-import { InputBox, Item } from "./SortableItem.css";
 import React, { useState } from "react";
 
 import { SortableElement } from "react-sortable-hoc";
@@ -65,22 +64,23 @@ const SortableItem = SortableElement((props: IProps) => {
     setShowModal(false);
   };
   return (
-    <Item data-testid="item-sortable">
-      <div className="icon-box">
-        <MenuOutlined className="dragger" />
-      </div>
-      <InputBox hasError={nameError !== ""}>
+    <div data-testid="item-sortable" className="grid">
+      <div className="block">
+        <div className="icon-box">
+          <MenuOutlined className="dragger" />
+        </div>
         <Input
           value={item.label}
           onChange={(e) => onInputChange({ ...item, label: e.target.value })}
           data-testid={item.label === "" ? "empty-label-item" : ""}
           placeholder="Enter the name of this item"
           size="middle"
+          className={nameError ? "hasError" : ""}
         />
-        <span className="error">{nameError}</span>
-      </InputBox>
-      <div>
-        <Input.Group>
+      </div>
+
+      <div className="menu-content block">
+        <Input.Group className="menu-content-group">
           <Input
             style={{ width: "calc(100% - 150px)", cursor: "not-allowed" }}
             size="middle"
@@ -88,7 +88,7 @@ const SortableItem = SortableElement((props: IProps) => {
             readOnly
           />
           <Button
-            type="primary"
+            type="default"
             size="middle"
             onClick={() => setShowModal(true)}
             data-testid="content-modal-btn"
@@ -96,10 +96,19 @@ const SortableItem = SortableElement((props: IProps) => {
             Select Content
           </Button>
         </Input.Group>
+        <Button
+          type="primary"
+          danger
+          size="middle"
+          onClick={() => setShowModal(true)}
+        >
+          <DeleteOutlined
+            onClick={onRemove}
+            data-testid="button-nav-delete"
+            className="menu-delete"
+          />
+        </Button>
       </div>
-
-      <DeleteOutlined onClick={onRemove} data-testid="button-nav-delete" />
-
       <Modal
         title="Assign Content to Navigation Menu"
         visible={showModal}
@@ -128,7 +137,59 @@ const SortableItem = SortableElement((props: IProps) => {
           <div>{item}</div>
         ))}
       </Modal>
-    </Item>
+      <style jsx global>{`
+        .icon-box {
+          cursor: pointer;
+        }
+        .menu-delete {
+          grid-area: menu-delete;
+        }
+        .menu-name {
+          grid-area: menu-name;
+        }
+
+        .grid {
+          display: flex;
+          align-items: center;
+          column-count: 5;
+          gap: 10px;
+          margin-bottom: 20px;
+        }
+        .block {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .menu-content {
+          flex-grow: 1;
+        }
+        .hasError {
+          border: 1px solid orange !important;
+        }
+        @media (max-width: 700px) {
+          .grid {
+            flex-direction: column;
+            align-items: stretch;
+            border-bottom: 1px solid rgb(var(--color-border));
+            margin-bottom: 20px;
+          }
+          .grid {
+            padding-bottom: 20px;
+          }
+          .block {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+          }
+          .menu-content {
+            flex-direction: column;
+            margin-left: 20px;
+            align-items: start;
+          }
+        }
+      `}</style>
+    </div>
   );
 });
 

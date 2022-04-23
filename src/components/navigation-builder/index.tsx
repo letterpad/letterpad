@@ -1,4 +1,3 @@
-import { Container, Grid } from "./Navigation.css";
 import React, { useState } from "react";
 import { arrayMove } from "react-sortable-hoc";
 import { useNavigationData } from "./data.hook";
@@ -63,35 +62,46 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
   };
 
   return (
-    <Container>
-      <Grid>
-        <span />
-        <strong>Menu Item Name</strong>
-        <strong>Display</strong>
-        <span />
-      </Grid>
-      <br />
-      <div>
-        <SortableList
-          items={menu}
-          onSortEnd={onSortEnd}
-          source={collection}
-          onChange={onChange}
-          onRemove={onRemove}
-          hideSortableGhost={false}
-          lockAxis="y"
-          lockToContainerEdges={true}
-          pressThreshold={100}
-          // shouldCancelStart={e => {
-          //   //@ts-ignore
-          //   return !e.target.classList.contains("dragger");
-          // }}
-        />
+    <>
+      <div className="container">
+        <div>
+          <SortableList
+            items={menu}
+            onSortEnd={onSortEnd}
+            source={collection}
+            onChange={onChange}
+            onRemove={onRemove}
+            hideSortableGhost={false}
+            lockAxis="y"
+            lockToContainerEdges={true}
+            pressThreshold={100}
+            // shouldCancelStart={e => {
+            //   //@ts-ignore
+            //   return !e.target.classList.contains("dragger");
+            // }}
+          />
+        </div>
+        <Button
+          type="primary"
+          size="middle"
+          onClick={addNewRow}
+          data-testid="newMenuBtn"
+        >
+          Add New
+        </Button>
       </div>
-      <Button type="primary" onClick={addNewRow} data-testid="newMenuBtn">
-        New Item
-      </Button>
-    </Container>
+      <style jsx>{`
+        .container {
+          padding: 40px 0px;
+          padding-top: 0px;
+        }
+        .grid {
+          display: grid;
+          grid-template-columns: 20px 170px 1fr;
+          align-items: baseline;
+        }
+      `}</style>
+    </>
   );
 };
 
