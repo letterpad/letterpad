@@ -5,7 +5,7 @@ import { Divider, Tag, Card } from "antd";
 import Head from "next/head";
 import { Content } from "antd/lib/layout/layout";
 import { Statistic, Row, Col } from "antd";
-import { useMeQuery } from "@/__generated__/queries/queries.graphql";
+import { useMeQuery } from "@/graphql/queries/queries.graphql";
 
 const cols = [
   {

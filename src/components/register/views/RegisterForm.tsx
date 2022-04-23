@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   CreateAuthorDocument,
   useCreateAuthorMutation,
-} from "@/__generated__/queries/mutations.graphql";
+} from "@/graphql/queries/mutations.graphql";
 import { useRouter } from "next/router";
 
 import { Button, Divider, Form, Input, message } from "antd";

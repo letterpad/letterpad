@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { debounce } from "@/shared/utils";
-import { useCreateOrUpdateDomainMutation } from "@/__generated__/queries/mutations.graphql";
-import { InputDomain } from "@/__generated__/__types__";
+import { useCreateOrUpdateDomainMutation } from "@/graphql/queries/mutations.graphql";
+import { InputDomain } from "@/graphql-types";
 import { EventAction, track } from "@/track";
 import { message } from "antd";
 import { DomainDocument } from "@/graphql/queries/queries.graphql";

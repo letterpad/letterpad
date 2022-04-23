@@ -1,5 +1,5 @@
 import { mdToHtml } from "@/shared/converter";
-import { NavigationType } from "@/__generated__/__types__";
+import { NavigationType } from "@/graphql-types";
 
 export default function generatePost(type) {
   const post = {

@@ -1,8 +1,8 @@
-import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
+import { PostStatusOptions, PostTypes } from "@/graphql-types";
 import { PageHeader, Tag } from "antd";
 import { useRouter } from "next/router";
 import Actions from "@/components/post-settings";
-import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
+import { PostWithAuthorAndTagsFragment } from "@/graphql/queries/queries.graphql";
 
 interface Props {
   post: PostWithAuthorAndTagsFragment;

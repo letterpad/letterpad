@@ -5,7 +5,9 @@
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],
-      "@/__generated__/*": ["__generated__/src/graphql/*", "__generated__/*"],
+      "@/graphql-types": [
+        "node_modules/@types/graphql-let/__generated__/__types__"
+      ],
       "@/*": ["src/*"],
       "@/config/*": ["config/*"],
       "@/graphql/db/models": ["src/graphql/db/models"],
@@ -32,10 +34,9 @@
     "strict": true,
     "target": "ES2020"
   },
-  "exclude": ["node_modules/**/*", "generated/**/*"],
+  "exclude": ["node_modules/**/*", ".cache"],
   "include": [
     "src/**/*",
-    "__generated__/**/*",
     "postcss.config.js",
     "tests/**/*",
     "migrations/**/*",

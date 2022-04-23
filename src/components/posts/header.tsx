@@ -1,4 +1,4 @@
-import { PostTypes } from "@/__generated__/__types__";
+import { PostTypes } from "@/graphql-types";
 import { Button, PageHeader } from "antd";
 import { useRouter } from "next/router";
 

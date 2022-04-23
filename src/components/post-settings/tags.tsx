@@ -1,6 +1,6 @@
 import ReactTags from "react-tag-autocomplete";
 import { useEffect, useState } from "react";
-import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
+import { PostWithAuthorAndTagsFragment } from "@/graphql/queries/queries.graphql";
 import { useTagsQuery } from "@/graphql/queries/queries.graphql";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { textToSlug } from "@/utils/slug";

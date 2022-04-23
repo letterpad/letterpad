@@ -1,9 +1,10 @@
 import React from "react";
-
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { useErrorReporting } from "@/hooks/useErrorReporting";
 import { useLetterpadSession } from "@/hooks/useLetterpadSession";
-import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
+import {
+  SettingsFragmentFragment,
+  useSettingsQuery,
+} from "@/graphql/queries/queries.graphql";
 import { SessionData } from "@/graphql/types";
 import ThemeSwitcher from "../theme-switcher";
 

@@ -2,7 +2,7 @@ import { getSession } from "next-auth/react";
 import multer from "multer";
 import initMiddleware from "./middleware";
 import { ROLES, SessionData } from "@/graphql/types";
-import { Role } from "@/__generated__/__types__";
+import { Role } from "@/graphql-types";
 import {
   IAuthorData,
   IImportExportData,

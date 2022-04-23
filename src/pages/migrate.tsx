@@ -5,7 +5,7 @@ import { basePath } from "@/constants";
 import { UploadOutlined } from "@ant-design/icons";
 import { getDateTime } from "./../shared/utils";
 import { IAuthComponentProps } from "./../shared/types";
-import { Role } from "@/__generated__/__types__";
+import { Role } from "@/graphql-types";
 import { UploadChangeParam } from "antd/lib/upload";
 import { getSession } from "next-auth/react";
 

@@ -1,4 +1,4 @@
-import { MeFragmentFragment } from "@/__generated__/queries/partial.graphql";
+import { MeFragmentFragment } from "@/graphql/queries/partial.graphql";
 import { Collapse, Form } from "antd";
 import CollapsePanel from "antd/lib/collapse/CollapsePanel";
 import { Basic } from "./basic";

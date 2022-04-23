@@ -1,6 +1,6 @@
 import { PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import { useMeQuery } from "@/__generated__/queries/queries.graphql";
+import { useMeQuery } from "@/graphql/queries/queries.graphql";
 import Head from "next/head";
 import Loading from "@/components/loading";
 import { Alert } from "antd";

@@ -1,6 +1,6 @@
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
-import { Navigation } from "@/__generated__/__types__";
+import { SettingsFragmentFragment } from "@/graphql/queries/queries.graphql";
+import { Navigation } from "@/graphql-types";
 import { Collapse } from "antd";
 import NavigationBuilder from "../navigation-builder";
 const { Panel } = Collapse;

@@ -3,6 +3,6 @@ documents: "**/*.graphql"
 plugins:
   - typescript-operations
   - typescript-react-apollo
-cacheDir: __generated__
+cacheDir: .cache
 config:
   maybeValue: T

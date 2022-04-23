@@ -3,7 +3,7 @@ import { Drawer } from "antd";
 import ProfileInfo from "../profile-info";
 import Menu from "../menu";
 import Logo from "../Logo";
-import { Stats } from "@/__generated__/__types__";
+import { Stats } from "@/graphql-types";
 
 interface Props {
   site_logo?: string;

@@ -6,7 +6,7 @@ import {
   PostStatusOptions,
   PostTypes,
   RequireFields,
-} from "@/__generated__/__types__";
+} from "@/graphql-types";
 import {
   slugify,
   getImageDimensions,

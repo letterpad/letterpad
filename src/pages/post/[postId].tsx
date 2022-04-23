@@ -1,4 +1,4 @@
-import { Setting } from "@/__generated__/__types__";
+import { Setting } from "@/graphql-types";
 import { PostProvider } from "@/components/post/context";
 import Post from "@/components/post/components/post";
 

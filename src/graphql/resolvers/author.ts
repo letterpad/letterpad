@@ -3,7 +3,7 @@ import {
   InputAuthor,
   QueryResolvers,
   Social,
-} from "@/__generated__/__types__";
+} from "@/graphql-types";
 import bcrypt from "bcryptjs";
 import { validateCaptcha } from "./helpers";
 import { decodeToken, verifyToken } from "@/shared/token";

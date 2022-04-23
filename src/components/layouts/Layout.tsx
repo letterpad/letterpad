@@ -1,12 +1,7 @@
 import React from "react";
 import Layout from "antd/lib/layout/layout";
-import { Stats } from "@/__generated__/__types__";
-import {
-  StatsQuery,
-  StatsQueryVariables,
-  StatsDocument,
-  SettingsFragmentFragment,
-} from "@/__generated__/queries/queries.graphql";
+import { Stats } from "@/graphql-types";
+
 import { useEffect, useState } from "react";
 import siteConfig from "config/site.config";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
@@ -16,8 +11,14 @@ import { MobileMenu } from "./mobile-menu";
 import { SiteFooter } from "./site-footer";
 import { TopBar } from "./top-bar";
 import { useLetterpadSession } from "@/hooks/useLetterpadSession";
-import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
+import {
+  StatsDocument,
+  StatsQuery,
+  StatsQueryVariables,
+  useSettingsQuery,
+} from "@/graphql/queries/queries.graphql";
 import { SessionData } from "@/graphql/types";
+import { SettingsFragmentFragment } from "@/graphql/queries/partial.graphql";
 
 interface IProps {
   render: ({

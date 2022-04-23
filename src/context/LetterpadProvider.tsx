@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { Setting } from "@/__generated__/__types__";
+import { Setting } from "@/graphql-types";
 
 export const LetterpadContext = createContext<Setting | null>(null);
 

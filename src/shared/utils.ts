@@ -4,7 +4,7 @@ import {
   SettingsDocument,
   SettingsQuery,
   SettingsQueryVariables,
-} from "@/__generated__/queries/queries.graphql";
+} from "@/graphql/queries/queries.graphql";
 import { basePath } from "@/constants";
 import Router from "next/router";
 import NProgress from "nprogress";

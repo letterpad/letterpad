@@ -1,5 +1,5 @@
-import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
-import { PostTypes } from "@/__generated__/__types__";
+import { usePostsQuery } from "@/graphql/queries/queries.graphql";
+import { PostTypes } from "@/graphql-types";
 import { useRouter } from "next/router";
 import { Layout, Table } from "antd";
 import ErrorMessage from "@/components/ErrorMessage";

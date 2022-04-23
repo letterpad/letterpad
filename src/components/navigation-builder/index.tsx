@@ -4,7 +4,7 @@ import { useNavigationData } from "./data.hook";
 import {
   Navigation as NavigationItemType,
   NavigationType,
-} from "@/__generated__/__types__";
+} from "@/graphql-types";
 import { Button } from "antd";
 import SortableList from "./SortableList";
 import { IMenuWithError, INavigationBuilderProps } from "@/shared/types";

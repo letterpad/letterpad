@@ -6,7 +6,7 @@ import {
   ResetPasswordMutation,
   ResetPasswordMutationVariables,
   ResetPasswordDocument,
-} from "@/__generated__/queries/mutations.graphql";
+} from "@/graphql/queries/mutations.graphql";
 import Head from "next/head";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { EventAction, track } from "@/track";

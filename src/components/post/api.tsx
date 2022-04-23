@@ -1,22 +1,18 @@
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { EventAction, track } from "@/track";
 import {
-  UpdatePostDocument,
-  UpdatePostMutation,
-  UpdatePostMutationVariables,
-} from "@/__generated__/queries/mutations.graphql";
-import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
-import {
   PostDocument,
   PostQuery,
   PostQueryVariables,
-} from "@/__generated__/queries/queries.graphql";
-import {
-  InputUpdatePost,
-  Post,
-  PostStatusOptions,
-} from "@/__generated__/__types__";
+  PostWithAuthorAndTagsFragment,
+} from "@/graphql/queries/queries.graphql";
+import { InputUpdatePost, Post, PostStatusOptions } from "@/graphql-types";
 import { debounce, removeTypenames } from "src/shared/utils";
+import {
+  UpdatePostDocument,
+  UpdatePostMutation,
+  UpdatePostMutationVariables,
+} from "@/graphql/queries/mutations.graphql";
 
 const updatePostRequest = async (
   attrs: Omit<InputUpdatePost, "id">,

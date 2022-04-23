@@ -3,8 +3,8 @@ import {
   PostsDocument,
   PostsQuery,
   PostsQueryVariables,
-} from "@/__generated__/queries/queries.graphql";
-import { PostsFilters, PostTypes } from "@/__generated__/__types__";
+} from "@/graphql/queries/queries.graphql";
+import { PostsFilters, PostTypes } from "@/graphql-types";
 
 export const fetchPosts = async (
   type: PostTypes = PostTypes.Post,

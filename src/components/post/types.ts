@@ -1,4 +1,4 @@
-import { Setting } from "@/__generated__/__types__";
+import { Setting } from "@/graphql-types";
 import { Editor } from "@tinymce/tinymce-react";
 
 export type PostContextType = {

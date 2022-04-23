@@ -1,5 +1,5 @@
-import { UpdateOptionsDocument } from "./../../../__generated__/src/graphql/queries/mutations.graphql";
-import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
+import { UpdateOptionsDocument } from "@/graphql/queries/mutations.graphql";
+import { SettingsDocument } from "@/graphql/queries/queries.graphql";
 import { API } from "./../../../tests/testClient";
 import { prisma } from "@/lib/prisma";
 

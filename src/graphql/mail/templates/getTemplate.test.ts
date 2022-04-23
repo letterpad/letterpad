@@ -8,7 +8,7 @@ import {
   ForgotPasswordDocument,
   UpdateAuthorDocument,
   UpdateSubscriberDocument,
-} from "@/__generated__/queries/mutations.graphql";
+} from "@/graphql/queries/mutations.graphql";
 
 import { API } from "../../../../tests/testClient";
 import { getEmailTemplate } from "./getTemplate";

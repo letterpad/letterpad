@@ -1,4 +1,4 @@
-import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
+import { useUpdateOptionsMutation } from "@/graphql/queries/mutations.graphql";
 import { Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";

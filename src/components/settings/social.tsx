@@ -1,5 +1,5 @@
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
+import { SettingsFragmentFragment } from "@/graphql/queries/queries.graphql";
 import { Collapse, Form, Input } from "antd";
 const { Panel } = Collapse;
 

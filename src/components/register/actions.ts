@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import {
   ForgotPasswordDocument,
   ForgotPasswordMutation,
-} from "@/__generated__/queries/mutations.graphql";
+} from "@/graphql/queries/mutations.graphql";
 import { ForgotPasswordMutationVariables } from "@/graphql/queries/mutations.graphql";
 import { key } from "./constants";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";

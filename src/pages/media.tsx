@@ -1,8 +1,8 @@
 import { PageHeader, message, Popconfirm, Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { Empty } from "antd";
-import { useMediaQuery } from "@/__generated__/queries/queries.graphql";
-import { MediaNode, Media as IMedia } from "@/__generated__/__types__";
+import { useMediaQuery } from "@/graphql/queries/queries.graphql";
+import { MediaNode, Media as IMedia } from "@/graphql-types";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
 import { useEffect, useState } from "react";
 import MediaUpdateModal from "@/components/modals/media-update-modal";
@@ -10,7 +10,6 @@ import Head from "next/head";
 import { Grid } from "@/components/grid";
 
 const key = "updatable";
-
 const Media = () => {
   const { loading, data } = useMediaQuery({ variables: { filters: {} } });
   const [preview, setPreview] = useState<IMedia | undefined>();

@@ -80,7 +80,7 @@
   "devDependencies": {
     "@cypress/react": "^5.12.4",
     "@graphql-codegen/cli": "^1.17.8",
-    "@graphql-codegen/import-types-preset": "^1.18.2",
+    "@graphql-codegen/import-types-preset": "^2.1.15",
     "@graphql-codegen/plugin-helpers": "^1.17.8",
     "@graphql-codegen/typescript": "^1.17.8",
     "@graphql-codegen/typescript-operations": "^1.17.8",

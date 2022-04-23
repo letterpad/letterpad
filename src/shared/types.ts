@@ -1,5 +1,5 @@
 import { SessionData } from "@/graphql/types";
-import { Navigation, Setting } from "@/__generated__/__types__";
+import { Navigation, Setting } from "@/graphql-types";
 
 export type Optional<T> = { [P in keyof T]?: T[P] };
 declare global {

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Input, Drawer, Switch, Divider } from "antd";
 import ImageUpload from "../ImageUpload";
-import { PostTypes } from "@/__generated__/__types__";
+import { PostTypes } from "@/graphql-types";
 import Tags from "./tags";
 import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
 import { getPostHash } from "./api";
-import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
+import { PostWithAuthorAndTagsFragment } from "@/graphql/queries/partial.graphql";
 import PublishButton from "./publishButton";
 import QuickMenu from "./quickmenu";
 import { useUpdatePost } from "@/hooks/useUpdatePost";

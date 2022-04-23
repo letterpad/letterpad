@@ -9,11 +9,11 @@ import Editor from "@/components/post/components/editor";
 import { PostContextType } from "../types";
 import { Content } from "antd/lib/layout/layout";
 import { insertImageInEditor } from "./commands";
-import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+import { usePostQuery } from "@/graphql/queries/queries.graphql";
 import { useRouter } from "next/router";
 import PostDate from "./postDate";
 import WordCount from "./wordCount";
-import { PostStatusOptions } from "@/__generated__/__types__";
+import { PostStatusOptions } from "@/graphql-types";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 function Post() {

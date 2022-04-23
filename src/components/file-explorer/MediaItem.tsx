@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Media } from "@/__generated__/__types__";
+import { Media } from "@/graphql-types";
 
 interface IProps {
   media: Media;

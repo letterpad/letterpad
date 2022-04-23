@@ -8,7 +8,7 @@ import hljsCssLang from "highlight.js/lib/languages/css";
 hljs.registerLanguage("css", hljsCssLang);
 import "highlight.js/styles/night-owl.css";
 import { useRef } from "react";
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
+import { SettingsFragmentFragment } from "@/graphql/queries/queries.graphql";
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 const { Panel } = Collapse;

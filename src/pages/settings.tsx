@@ -1,6 +1,6 @@
 import { Col, Collapse, Form, Input, PageHeader, Row } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import { Role } from "@/__generated__/__types__";
+import { Role } from "@/graphql-types";
 import { Alert } from "antd";
 
 import Head from "next/head";
@@ -13,7 +13,7 @@ import Integrations from "@/components/settings/integrations";
 import { CopyToClipboard } from "@/components/clipboard";
 import { getSession } from "next-auth/react";
 import Pages from "@/components/settings/pages";
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
+import { SettingsFragmentFragment } from "@/graphql/queries/queries.graphql";
 
 const { Panel } = Collapse;
 

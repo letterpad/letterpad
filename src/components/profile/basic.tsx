@@ -1,6 +1,6 @@
 import React from "react";
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
-import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
+import { MeFragmentFragment } from "@/graphql/queries/queries.graphql";
 import { Button, Form, Input } from "antd";
 import ImageUpload from "../ImageUpload";
 

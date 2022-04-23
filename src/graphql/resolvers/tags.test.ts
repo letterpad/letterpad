@@ -1,11 +1,8 @@
 import {
   DeleteTagsDocument,
   UpdateTagsDocument,
-} from "./../../../__generated__/src/graphql/queries/mutations.graphql";
-import {
-  TagDocument,
-  TagsDocument,
-} from "./../../../__generated__/src/graphql/queries/queries.graphql";
+} from "@/graphql/queries/mutations.graphql";
+import { TagDocument, TagsDocument } from "@/graphql/queries/queries.graphql";
 import { API } from "../../../tests/testClient";
 
 describe("Test Tags Graphql API", () => {

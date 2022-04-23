@@ -1,12 +1,12 @@
 import { useCallback } from "react";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { debounce } from "@/shared/utils";
-import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
+import { useUpdateAuthorMutation } from "@/graphql/queries/mutations.graphql";
 import {
   MeDocument,
   SettingsDocument,
-} from "@/__generated__/queries/queries.graphql";
-import { InputAuthor } from "@/__generated__/__types__";
+} from "@/graphql/queries/queries.graphql";
+import { InputAuthor } from "@/graphql-types";
 import { EventAction, track } from "@/track";
 import { message, Modal } from "antd";
 import { signOut } from "next-auth/react";

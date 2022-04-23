@@ -1,4 +1,4 @@
-import { PostsDocument } from "../../../__generated__/src/graphql/queries/queries.graphql";
+import { PostsDocument } from "@/graphql/queries/queries.graphql";
 import { API } from "../../../tests/testClient";
 
 describe("Test Post Query Graphql API", () => {

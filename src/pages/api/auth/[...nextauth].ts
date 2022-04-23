@@ -7,11 +7,9 @@ import { basePath } from "@/constants";
 import bcrypt from "bcryptjs";
 import Prisma, { prisma } from "@/lib/prisma";
 import { createAuthorWithSettings, onBoardUser } from "@/lib/onboard";
-import { Role } from "@/__generated__/__types__";
+import { Role } from "@/graphql-types";
 import { SessionData } from "@/graphql/types";
 import { umamiApi, analyticsConnected } from "@/lib/umami";
-
-
 
 const providers = (_req: NextApiRequest) => [
   GoogleProvider({

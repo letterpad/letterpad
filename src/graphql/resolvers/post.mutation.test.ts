@@ -1,9 +1,9 @@
 import {
   CreatePostDocument,
   UpdatePostDocument,
-} from "@/__generated__/src/graphql/queries/mutations.graphql";
+} from "@/graphql/queries/mutations.graphql";
 import { API } from "../../../tests/testClient";
-import { PostStatusOptions } from "@/__generated__/__types__";
+import { PostStatusOptions } from "@/graphql-types";
 import { createPathWithPrefix, textToSlug } from "@/utils/slug";
 
 const title = "New Post";

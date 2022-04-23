@@ -35,7 +35,7 @@ yarn-error.log*
 *.d.ts
 !src/page.d.ts
 
-__generated__/*
+graphql-types/*
 data/*
 .env.production.local
 .bin/*
@@ -48,4 +48,4 @@ data/*
 # Sentry
 .sentryclirc
 /.vscode/
-generated
+.cache

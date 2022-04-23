@@ -1,4 +1,4 @@
-import { QueryResolvers } from "@/__generated__/__types__";
+import { QueryResolvers } from "@/graphql-types";
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
