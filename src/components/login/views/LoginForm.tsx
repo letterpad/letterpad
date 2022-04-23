@@ -119,11 +119,12 @@ export const LoginForm = ({
           border: 1px solid rgb(var(--color-border));
           border-radius: 2px;
           overflow: hidden;
+          margin: auto;
         }
         input:-internal-autofill-selected {
           background-color: transparent !important;
         }
-        @media (max-width: 375px) {
+        @media (max-width: 500px) {
           .forms {
             width: 100%;
             padding: 16px;
