@@ -52,8 +52,8 @@ Cypress.Commands.add("visitSettings", () => cy.visit("/settings"));
 Cypress.Commands.add("addNavItem", (label, slug) => {
   cy.getTestId("empty-label-item").type(label);
   cy.getTestId("content-modal-btn").last().click();
-  cy.getTestId(slug).click();
-  cy.wait("@UpdateOptionsMutation");
+  // cy.getTestId(slug).click();
+  // cy.wait("@UpdateOptionsMutation");
 });
 
 // Cypress.Commands.add("addUnplsashImage", (imageInputTestId) => {

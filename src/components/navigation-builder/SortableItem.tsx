@@ -101,7 +101,6 @@ const SortableItem = SortableElement((props: IProps) => {
           danger
           size="middle"
           onClick={() => setShowModal(true)}
-          data-testid="content-modal-btn"
         >
           <DeleteOutlined
             onClick={onRemove}
