@@ -29,6 +29,8 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
         onClick={(e) => onClick(e, "google")}
         type="primary"
         style={{ width: "100%" }}
+        className="google-btn"
+        size="large"
       >
         Login with Google
       </Button>
@@ -38,9 +40,29 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
         onClick={(e) => onClick(e, "github")}
         type="primary"
         style={{ width: "100%" }}
+        className="github-btn"
+        size="large"
       >
         Login with Github
       </Button>
+      <style global jsx>{`
+        .google-btn {
+          background: #c93a23;
+          border: 1px solid #8c3b3b;
+        }
+        .google-btn:hover {
+          background: #b0321f;
+          border: 1px solid #9f2d2d;
+        }
+        .github-btn {
+          background: #141212;
+          border: 1px solid #2b2626;
+        }
+        .github-btn:hover {
+          background: #030303;
+          border: 1px solid #3b3838;
+        }
+      `}</style>
     </div>
   );
 };

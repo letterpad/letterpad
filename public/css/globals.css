@@ -149,6 +149,12 @@ body .editor {
   padding-bottom: 30vh;
 }
 
+select {
+  padding: 4px;
+  background: rgb(var(--content-bg));
+  border: 1px solid rgb(var(--color-border));
+  cursor: pointer;
+}
 .help-text {
   color: rgba(var(--color), 0.5);
 }
