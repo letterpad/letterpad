@@ -1,6 +1,6 @@
 import { useMemo, useState, createContext } from "react";
 
-import { Setting } from "@/graphql-types";
+import { Setting } from "@graphql-types@";
 import { useContext } from "react";
 import { PostContextType } from "@/components/post/types";
 import { Editor } from "@tinymce/tinymce-react";

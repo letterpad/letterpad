@@ -1,4 +1,4 @@
-import { Setting } from "@/graphql-types";
+import { Setting } from "@graphql-types@";
 import { NextPage } from "next";
 import { ComponentType, ReactElement, ReactNode } from "react";
 

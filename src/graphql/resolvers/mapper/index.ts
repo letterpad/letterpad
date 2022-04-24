@@ -5,7 +5,7 @@ import {
   Author,
   SettingInputType,
   Setting,
-} from "@/graphql-types";
+} from "@graphql-types@";
 import {
   Post as DbPost,
   Author as DbAuthor,

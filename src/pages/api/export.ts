@@ -2,7 +2,7 @@ import { IImportExportData } from "../../components/import-export/importExportTy
 import { SessionData } from "./../../graphql/types";
 import fs from "fs";
 import { getSession } from "next-auth/react";
-import { Role } from "@/graphql-types";
+import { Role } from "@graphql-types@";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 import { validateWithAjv } from "@/components/import-export/schema";

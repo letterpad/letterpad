@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 
 import InfiniteScrollList from "../InfiniteScrollList";
-import { Media } from "@/graphql-types";
+import { Media } from "@graphql-types@";
 import { Button, Input, InputRef } from "antd";
 import { basePath } from "@/constants";
 

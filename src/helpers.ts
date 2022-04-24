@@ -7,7 +7,7 @@ import {
   UpdateMediaMutationVariables,
   UpdateMediaDocument,
 } from "@/graphql/queries/mutations.graphql";
-import { Media } from "@/graphql-types";
+import { Media } from "@graphql-types@";
 
 export const deleteImageAPI = async (img: Media) => {
   const response = await apolloBrowserClient.mutate<

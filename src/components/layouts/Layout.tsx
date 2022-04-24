@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "antd/lib/layout/layout";
-import { Stats } from "@/graphql-types";
+import { Stats } from "@graphql-types@";
 
 import { useEffect, useState } from "react";
 import siteConfig from "config/site.config";

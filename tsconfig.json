@@ -5,7 +5,7 @@
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],
-      "@/graphql-types": [
+      "@graphql-types@": [
         "node_modules/@types/graphql-let/__generated__/__types__"
       ],
       "@/*": ["src/*"],

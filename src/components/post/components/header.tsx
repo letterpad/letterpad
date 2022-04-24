@@ -1,4 +1,4 @@
-import { PostStatusOptions, PostTypes } from "@/graphql-types";
+import { PostStatusOptions, PostTypes } from "@graphql-types@";
 import { PageHeader, Tag } from "antd";
 import { useRouter } from "next/router";
 import Actions from "@/components/post-settings";

@@ -1,6 +1,6 @@
 import React from "react";
 import { usePostsQuery } from "@/graphql/queries/queries.graphql";
-import { PostTypes } from "@/graphql-types";
+import { PostTypes } from "@graphql-types@";
 import { Layout, Table } from "antd";
 import Filters from "@/components/filters";
 import { useRouter } from "next/router";

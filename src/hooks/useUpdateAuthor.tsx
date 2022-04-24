@@ -6,7 +6,7 @@ import {
   MeDocument,
   SettingsDocument,
 } from "@/graphql/queries/queries.graphql";
-import { InputAuthor } from "@/graphql-types";
+import { InputAuthor } from "@graphql-types@";
 import { EventAction, track } from "@/track";
 import { message, Modal } from "antd";
 import { signOut } from "next-auth/react";

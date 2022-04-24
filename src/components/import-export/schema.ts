@@ -1,5 +1,5 @@
 import { IImportExportData } from "@/components/import-export/importExportTypes";
-import { PostStatusOptions, PostTypes } from "@/graphql-types";
+import { PostStatusOptions, PostTypes } from "@graphql-types@";
 import AjvFormats from "ajv-formats";
 import Ajv, { JSONSchemaType } from "ajv";
 

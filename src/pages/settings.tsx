@@ -1,6 +1,6 @@
 import { Col, Collapse, Form, Input, PageHeader, Row } from "antd";
 import { Content } from "antd/lib/layout/layout";
-import { Role } from "@/graphql-types";
+import { Role } from "@graphql-types@";
 import { Alert } from "antd";
 
 import Head from "next/head";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Input, Drawer, Switch, Divider } from "antd";
 import ImageUpload from "../ImageUpload";
-import { PostTypes } from "@/graphql-types";
+import { PostTypes } from "@graphql-types@";
 import Tags from "./tags";
 import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
 import { getPostHash } from "./api";

@@ -3,7 +3,7 @@ import {
   MutationResolvers,
   Setting as SettingType,
   Navigation,
-} from "@/graphql-types";
+} from "@graphql-types@";
 import fs from "fs";
 import path from "path";
 import logger from "@/shared/logger";

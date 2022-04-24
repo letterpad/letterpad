@@ -4,7 +4,7 @@ import {
   MediaQuery,
   MediaQueryVariables,
 } from "@/graphql/queries/queries.graphql";
-import { Media } from "@/graphql-types";
+import { Media } from "@graphql-types@";
 import InfiniteScrollList from "../InfiniteScrollList";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 

@@ -8,7 +8,7 @@ import {
   PostStatusOptions,
   PostTypes,
   SettingInputType,
-} from "@/graphql-types";
+} from "@graphql-types@";
 import { prisma } from "./prisma";
 import { mapSettingToDb } from "@/graphql/resolvers/mapper";
 import { defaultSettings } from "@/graphql/db/seed/constants";

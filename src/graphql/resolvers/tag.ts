@@ -4,7 +4,7 @@ import {
   MutationResolvers,
   PostStatusOptions,
   Tags as TagsType,
-} from "@/graphql-types";
+} from "@graphql-types@";
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
