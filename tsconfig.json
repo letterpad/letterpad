@@ -5,9 +5,7 @@
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],
-      "@/generated": [
-        "node_modules/@types/graphql-let/__generated__/__types__"
-      ],
+      "@/generated": [".cache/__types__"],
       "@/*": ["src/*"],
       "@/config/*": ["config/*"],
       "@/graphql/db/models": ["src/graphql/db/models"],
@@ -40,6 +38,7 @@
     "postcss.config.js",
     "tests/**/*",
     "migrations/**/*",
-    "config/*"
+    "config/*",
+    ".cache/__types__.tsx"
   ]
 }

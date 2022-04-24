@@ -48,4 +48,6 @@ data/*
 # Sentry
 .sentryclirc
 /.vscode/
-.cache
+.graphql.d.ts
+*.graphqls.d.ts
+/.cache
