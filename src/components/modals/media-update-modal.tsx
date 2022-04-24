@@ -1,4 +1,4 @@
-import { Media } from "@graphql-types@";
+import { Media } from "@/generated";
 import { Input } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import Image from "next/image";

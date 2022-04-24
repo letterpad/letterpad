@@ -1,6 +1,6 @@
 import { usePostFromCache } from "@/hooks/usePostFromCache";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
-import { PostStatusOptions, PostTypes } from "@graphql-types@";
+import { PostStatusOptions, PostTypes } from "@/generated";
 import { Button } from "antd";
 import { useRouter } from "next/router";
 

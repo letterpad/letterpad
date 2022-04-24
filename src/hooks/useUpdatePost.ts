@@ -3,7 +3,7 @@ import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { debounce } from "@/shared/utils";
 import { useUpdatePostMutation } from "@/graphql/queries/mutations.graphql";
 import { PostDocument } from "@/graphql/queries/queries.graphql";
-import { InputUpdatePost } from "@graphql-types@";
+import { InputUpdatePost } from "@/generated";
 
 export const useUpdatePost = () => {
   const [updatePostMutation, progress] = useUpdatePostMutation();

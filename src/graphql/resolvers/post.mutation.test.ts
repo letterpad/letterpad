@@ -3,7 +3,7 @@ import {
   UpdatePostDocument,
 } from "@/graphql/queries/mutations.graphql";
 import { API } from "../../../tests/testClient";
-import { PostStatusOptions } from "@graphql-types@";
+import { PostStatusOptions } from "@/generated";
 import { createPathWithPrefix, textToSlug } from "@/utils/slug";
 
 const title = "New Post";

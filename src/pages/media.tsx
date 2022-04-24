@@ -2,7 +2,7 @@ import { PageHeader, message, Popconfirm, Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { Empty } from "antd";
 import { useMediaQuery } from "@/graphql/queries/queries.graphql";
-import { MediaNode, Media as IMedia } from "@graphql-types@";
+import { MediaNode, Media as IMedia } from "@/generated";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
 import { useEffect, useState } from "react";
 import MediaUpdateModal from "@/components/modals/media-update-modal";

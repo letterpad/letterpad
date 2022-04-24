@@ -1,4 +1,4 @@
-import { PostsFilters, PostStatusOptions, SortBy } from "@graphql-types@";
+import { PostsFilters, PostStatusOptions, SortBy } from "@/generated";
 import { useEffect, useState } from "react";
 import { useTagsContext } from "../tags/context";
 import Loading from "../loading";

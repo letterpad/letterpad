@@ -7,7 +7,7 @@ import { basePath } from "@/constants";
 import bcrypt from "bcryptjs";
 import Prisma, { prisma } from "@/lib/prisma";
 import { createAuthorWithSettings, onBoardUser } from "@/lib/onboard";
-import { Role } from "@graphql-types@";
+import { Role } from "@/generated";
 import { SessionData } from "@/graphql/types";
 import { umamiApi, analyticsConnected } from "@/lib/umami";
 

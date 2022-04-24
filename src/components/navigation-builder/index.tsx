@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { arrayMove } from "react-sortable-hoc";
 import { useNavigationData } from "./data.hook";
-import {
-  Navigation as NavigationItemType,
-  NavigationType,
-} from "@graphql-types@";
+import { Navigation as NavigationItemType, NavigationType } from "@/generated";
 import { Button } from "antd";
 import SortableList from "./SortableList";
 import { IMenuWithError, INavigationBuilderProps } from "@/shared/types";

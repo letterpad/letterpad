@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { SortableElement } from "react-sortable-hoc";
 import { Input, Button, Modal, Divider } from "antd";
-import { Navigation, NavigationType } from "@graphql-types@";
+import { Navigation, NavigationType } from "@/generated";
 import { DeleteOutlined, MenuOutlined } from "@ant-design/icons";
 
 interface IProps {

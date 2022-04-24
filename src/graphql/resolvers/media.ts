@@ -1,4 +1,4 @@
-import { MutationResolvers, QueryResolvers } from "@graphql-types@";
+import { MutationResolvers, QueryResolvers } from "@/generated";
 import { Prisma } from "@prisma/client";
 import { ResolverContext } from "../context";
 

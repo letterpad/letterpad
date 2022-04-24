@@ -6,7 +6,7 @@ import {
   PostQueryVariables,
   PostWithAuthorAndTagsFragment,
 } from "@/graphql/queries/queries.graphql";
-import { InputUpdatePost, Post, PostStatusOptions } from "@graphql-types@";
+import { InputUpdatePost, Post, PostStatusOptions } from "@/generated";
 import { debounce, removeTypenames } from "src/shared/utils";
 import {
   UpdatePostDocument,

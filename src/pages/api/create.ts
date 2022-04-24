@@ -1,7 +1,7 @@
 import { NextApiResponse } from "next";
 import { NextApiRequestWithFormData } from "./../../graphql/types";
 import { basePath } from "@/constants";
-import { PostTypes } from "@graphql-types@";
+import { PostTypes } from "@/generated";
 import { getResolverContext } from "@/graphql/context";
 import { createPost } from "@/graphql/resolvers/post.mutation";
 

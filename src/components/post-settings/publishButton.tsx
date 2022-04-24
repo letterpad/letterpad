@@ -5,7 +5,7 @@ import {
   NavigationType,
   PostStatusOptions,
   PostTypes,
-} from "@graphql-types@";
+} from "@/generated";
 import { Button, Space } from "antd";
 import {
   pageNotLinkedWithNavigation,

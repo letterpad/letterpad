@@ -13,7 +13,7 @@ import { usePostQuery } from "@/graphql/queries/queries.graphql";
 import { useRouter } from "next/router";
 import PostDate from "./postDate";
 import WordCount from "./wordCount";
-import { PostStatusOptions } from "@graphql-types@";
+import { PostStatusOptions } from "@/generated";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 function Post() {

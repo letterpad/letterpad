@@ -3,7 +3,7 @@ import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { debounce } from "@/shared/utils";
 import { useUpdateOptionsMutation } from "@/graphql/queries/mutations.graphql";
 import { SettingsDocument } from "@/graphql/queries/queries.graphql";
-import { SettingInputType } from "@graphql-types@";
+import { SettingInputType } from "@/generated";
 import { EventAction, track } from "@/track";
 import { message } from "antd";
 

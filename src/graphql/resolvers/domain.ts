@@ -1,5 +1,5 @@
 import { execShellCommand } from "@/shared/execShellCommand";
-import { MutationResolvers, QueryResolvers } from "@graphql-types@";
+import { MutationResolvers, QueryResolvers } from "@/generated";
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {

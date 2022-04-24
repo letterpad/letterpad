@@ -1,5 +1,5 @@
 // import { getImageAttrs } from "@/graphql/utils/imageAttributs";
-import { Image, PostStatusOptions, Tags } from "@graphql-types@";
+import { Image, PostStatusOptions, Tags } from "@/generated";
 import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 
 export const columns = [

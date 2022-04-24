@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { Optional } from "./../../../../shared/types";
 import { SessionData } from "@/graphql/types";
-import { PostStatusOptions, PostTypes } from "@graphql-types@";
+import { PostStatusOptions, PostTypes } from "@/generated";
 import {
   IImportExportData,
   IAuthorData,

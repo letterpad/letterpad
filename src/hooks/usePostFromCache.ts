@@ -1,6 +1,6 @@
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { PostDocument } from "@/graphql/queries/queries.graphql";
-import { Post } from "@graphql-types@";
+import { Post } from "@/generated";
 
 export const usePostFromCache = (postId: number) => {
   const postData = apolloBrowserClient.readQuery({

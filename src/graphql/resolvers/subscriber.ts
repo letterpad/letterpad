@@ -1,5 +1,5 @@
 import { decodeToken } from "@/shared/token";
-import { MutationResolvers, QueryResolvers } from "@graphql-types@";
+import { MutationResolvers, QueryResolvers } from "@/generated";
 import { ResolverContext } from "../context";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 import { EmailTemplates } from "../types";

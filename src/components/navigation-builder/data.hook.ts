@@ -8,7 +8,7 @@ import {
 } from "@/graphql/queries/queries.graphql";
 import { useEffect, useState } from "react";
 
-import { Post, PostTypes, Tags, NavigationType } from "@graphql-types@";
+import { Post, PostTypes, Tags, NavigationType } from "@/generated";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 interface IReturn {

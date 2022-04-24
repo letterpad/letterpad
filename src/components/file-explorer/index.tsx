@@ -2,7 +2,7 @@ import Modal from "antd/lib/modal/Modal";
 
 import Internal from "@/components/file-explorer/providers/Internal";
 import Unsplash from "@/components/file-explorer/providers/Unsplash";
-import { Media } from "@graphql-types@";
+import { Media } from "@/generated";
 import { Button } from "antd";
 import MediaItem from "./MediaItem";
 import { useRef, useState } from "react";

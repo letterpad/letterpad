@@ -4,7 +4,7 @@ import {
   PostTypes,
   QueryResolvers,
   NavigationType,
-} from "@graphql-types@";
+} from "@/generated";
 import { decrypt } from "../utils/crypto";
 import logger from "./../../shared/logger";
 import { ResolverContext } from "../context";
