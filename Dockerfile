@@ -4,9 +4,7 @@ ENV HOME /app
 WORKDIR $HOME
 
 RUN apk --no-cache add curl
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+
 COPY ["package.json", "yarn.lock", "$HOME/"]
 
 RUN yarn --frozen-lockfile

@@ -28,6 +28,7 @@ yarn-error.log*
 .env.local
 .env.test.local
 .env.production.local
+.env
 
 # vercel
 .vercel
@@ -49,3 +50,5 @@ data/*
 .sentryclirc
 /.vscode/
 generated
+
+db

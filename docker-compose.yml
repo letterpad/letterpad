@@ -3,10 +3,14 @@ services:
   db:
     image: mysql:8
     container_name: mysqldb
+    cap_add:
+      - SYS_NICE # CAP_SYS_NICE
     command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
     volumes:
       - ./db:/var/lib/mysql
-      - ./umami.sql:/docker-entrypoint-initdb.d/umami.sql
+      - ./src/graphql/db/seed/sql/:/docker-entrypoint-initdb.d/
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
