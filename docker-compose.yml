@@ -1,0 +1,56 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:8
+    container_name: mysqldb
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./db:/var/lib/mysql
+      - ./umami.sql:/docker-entrypoint-initdb.d/umami.sql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: letterpad
+  letterpad:
+    build: .
+    container_name: letterpad
+    env_file:
+      - ./.env.development.local
+    environment:
+      DATABASE_URL: mysql://root:root@db/letterpad
+      DB_DATABASE: letterpad
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_HOST: db
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/app/src
+      - ./prisma:/app/prisma
+      - ./scripts:/app/scripts
+    entrypoint: ["/bin/sh", "./scripts/prepare.sh"]
+  umami:
+    image: ghcr.io/mikecao/umami:mysql-latest
+    ports:
+      - "3002:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: mysql://root:root@db:3306/umami
+      DATABASE_TYPE: mysql
+      HASH_SALT: test
+    restart: always
+  languagetool:
+    image: erikvl87/languagetool
+    container_name: languagetool
+    ports:
+      - 8010:8010 # Using default port from the image
+    environment:
+      - langtool_languageModel=/ngrams # OPTIONAL: Using ngrams data
+      - Java_Xms=512m # OPTIONAL: Setting a minimal Java heap size of 512 mib
+      - Java_Xmx=1g # OPTIONAL: Setting a maximum Java heap size of 1 Gib
+    # volumes:
+    # - ./ngrams:/app/ngrams
+volumes:
+  mysql:
+    driver: local
