@@ -7,7 +7,7 @@ services:
       - SYS_NICE # CAP_SYS_NICE
     command: --default-authentication-plugin=mysql_native_password
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     volumes:
       - ./db:/var/lib/mysql
       - ./src/graphql/db/seed/sql/:/docker-entrypoint-initdb.d/
@@ -30,19 +30,16 @@ services:
     env_file:
       - ./.env
     environment:
-      DATABASE_URL: mysql://root:root@db/letterpad
       DB_DATABASE: letterpad
-      DB_USER: root
-      DB_PASSWORD: root
-      DB_HOST: db
       UMAMI_HOST: http://umami:3000
+      LANUAGE_TOOL_HOST: http://languagetool:8010
     ports:
       - "3000:3000"
     volumes:
       - ./src:/app/src
       - /app/prisma
-      - /app/scripts
       - /app/node_modules
+      - ./.env:/app/.env
   theme:
     image: ghcr.io/letterpad/lp-theme:latest
     depends_on:
@@ -71,11 +68,11 @@ services:
     ports:
       - 8010:8010 # Using default port from the image
     environment:
-      - langtool_languageModel=/ngrams # OPTIONAL: Using ngrams data
+      # - langtool_languageModel=/ngrams # OPTIONAL: Using ngrams data
       - Java_Xms=512m # OPTIONAL: Setting a minimal Java heap size of 512 mib
       - Java_Xmx=1g # OPTIONAL: Setting a maximum Java heap size of 1 Gib
     # volumes:
-    # - ./ngrams:/app/ngrams
+    #   - /app/ngrams
 volumes:
   mysql:
     driver: local

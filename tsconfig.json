@@ -7,7 +7,7 @@
       "@/pages/*": ["src/pages/*"],
       "@/__generated__/*": ["__generated__/src/graphql/*", "__generated__/*"],
       "@/*": ["src/*"],
-      "@/config/*": ["config/*"],
+      "@/config/*": ["src/config/*"],
       "@/graphql/db/models": ["src/graphql/db/models"],
       "@/graphql/schema": ["src/graphql/schema"],
       "@/graphql/*": ["src/graphql/*"]
@@ -37,7 +37,6 @@
     "src/**/*",
     "__generated__/**/*",
     "postcss.config.js",
-    "migrations/**/*",
-    "config/*"
+    "migrations/**/*"
   ]
 }

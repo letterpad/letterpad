@@ -6,7 +6,7 @@ const analyse = async (
   res: NextApiResponse,
 ) => {
   const body = JSON.parse(req.body);
-  const text = await fetch("http://localhost:8010/v2/check", {
+  const text = await fetch(`${process.env.LANUAGE_TOOL_HOST}/v2/check`, {
     headers: { "Content-Type": "application/json" },
     method: "POST",
     body: `language=en-US&text=${body.text}`,

@@ -3,7 +3,7 @@
 command=$1
 
 
-source $(dirname "$0")/../.env
+source $(dirname "$0")/../../.env
 
 PRISMA_FILE="schema.prisma"
 if [[ "$DATABASE_URL" =~ ^mysql.* ]]; then

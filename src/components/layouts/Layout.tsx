@@ -8,7 +8,7 @@ import {
   SettingsFragmentFragment,
 } from "@/__generated__/queries/queries.graphql";
 import { useEffect, useState } from "react";
-import siteConfig from "config/site.config";
+import siteConfig from "@/config/site.config";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { useErrorReporting } from "@/hooks/useErrorReporting";
 import { DesktopMenu } from "./desktop-menu";

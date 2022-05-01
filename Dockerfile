@@ -30,7 +30,6 @@ WORKDIR /app
 COPY --from=build /build/prod_node_modules ./node_modules
 
 COPY --from=build /build/.env ./.env
-COPY --from=build /build/config ./config
 
 # Copy generated Prisma client
 COPY --from=build /build/node_modules/.prisma/ ./node_modules/.prisma/

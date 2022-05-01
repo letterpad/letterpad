@@ -42,7 +42,7 @@ export const config = {
 };
 
 async function api(text: string) {
-  const response = await fetch("http://localhost:8010/v2/check", {
+  const response = await fetch(`${process.env.LANUAGE_TOOL_HOST}/v2/check`, {
     headers: { "Content-Type": "application/json" },
     method: "POST",
     body: `language=en-US&text=${text}`,
