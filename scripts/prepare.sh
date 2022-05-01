@@ -1,10 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
-yarn codegen
+# ls
+yarn seed
+source $(dirname "$0")/prisma.sh
 
-source ./scripts/generatePrisma.sh
-source ./scripts/runMigration.sh
-
-yarn dev
+migrate
 
 # exec "$@"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 command=$1
 
@@ -29,6 +29,10 @@ generateClient() {
 
 reset() {
     npx prisma db push --force-reset --schema prisma/$PRISMA_FILE
+}
+
+intro() {
+    npx prisma db pull --schema prisma/$PRISMA_FILE
 }
 
 eval "$command"

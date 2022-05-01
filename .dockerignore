@@ -4,3 +4,4 @@ Dockerfile
 .gitignore
 .env.development
 .env.production
+.env

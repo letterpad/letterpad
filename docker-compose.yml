@@ -2,7 +2,7 @@ version: "3.8"
 services:
   db:
     image: mysql:8
-    container_name: mysqldb
+    container_name: mysql-container
     cap_add:
       - SYS_NICE # CAP_SYS_NICE
     command: --default-authentication-plugin=mysql_native_password
@@ -12,29 +12,50 @@ services:
       - ./db:/var/lib/mysql
       - ./src/graphql/db/seed/sql/:/docker-entrypoint-initdb.d/
     restart: always
+    healthcheck:
+      test: "mysql $$MYSQL_DATABASE -u root -proot -e 'SELECT 1;'"
+      interval: 20s
+      timeout: 10s
+      retries: 5
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: letterpad
   letterpad:
     build: .
-    container_name: letterpad
+    depends_on:
+      db:
+        condition: service_healthy
+    tty: true
+    container_name: letterpad-container
     env_file:
-      - ./.env.development.local
+      - ./.env
     environment:
       DATABASE_URL: mysql://root:root@db/letterpad
       DB_DATABASE: letterpad
       DB_USER: root
       DB_PASSWORD: root
       DB_HOST: db
+      UMAMI_HOST: http://umami:3000
     ports:
       - "3000:3000"
     volumes:
       - ./src:/app/src
-      - ./prisma:/app/prisma
-      - ./scripts:/app/scripts
-    entrypoint: ["/bin/sh", "./scripts/prepare.sh"]
+      - /app/prisma
+      - /app/scripts
+      - /app/node_modules
+  theme:
+    image: ghcr.io/letterpad/lp-theme:latest
+    depends_on:
+      - letterpad
+    container_name: theme
+    ports:
+      - "3001:3001"
+    environment:
+      API_URL: https://letterpad.app/admin/api/graphql
+      CLIENT_ID: YWJoaXNoZWtzYWhhMTFAZ21haWwuY29tNmdFeFhIYkgzTU1UYUZueWRkNGt2c2NEN1pDNlRDN1c=
   umami:
     image: ghcr.io/mikecao/umami:mysql-latest
+    container_name: umami-container
     ports:
       - "3002:3000"
     depends_on:
@@ -46,7 +67,7 @@ services:
     restart: always
   languagetool:
     image: erikvl87/languagetool
-    container_name: languagetool
+    container_name: languagetool-container
     ports:
       - 8010:8010 # Using default port from the image
     environment:
