@@ -18,7 +18,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.CR_PAT }}
 
-      - name: Build the theme Docker Image
+      - name: Build admin Docker Image
         run: |
           docker build . --tag ghcr.io/letterpad/letterpad-admin:latest
           docker push ghcr.io/letterpad/letterpad-admin:latest
