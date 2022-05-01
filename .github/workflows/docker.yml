@@ -21,5 +21,4 @@ jobs:
       - name: Build the theme Docker Image
         run: |
           docker build . --tag ghcr.io/letterpad/letterpad-admin:latest
-          docker run ghcr.io/letterpad/letterpad-admin:latest
           docker push ghcr.io/letterpad/letterpad-admin:latest
