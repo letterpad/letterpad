@@ -1,6 +1,6 @@
 import { ApolloServer } from "apollo-server";
-import { schema } from "../src/graphql/schema";
-import { seed } from "../src/graphql/db/seed/seed";
+import { schema } from "@/graphql/schema";
+import { seed } from "@/graphql/db/seed/seed";
 import { getResolverContext } from "@/graphql/context";
 
 const session = {

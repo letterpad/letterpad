@@ -11,6 +11,6 @@ module.exports = {
   moduleNameMapper,
   moduleDirectories: ["src", "node_modules", "tests"],
   moduleFileExtensions: ["js", "json", "jsx", "node", "ts", "tsx"],
-  setupFilesAfterEnv: [`<rootDir>/tests/testSetup.ts`],
+  setupFilesAfterEnv: [`<rootDir>/src/jest/testSetup.ts`],
   testMatch: ["**/**/*.test.ts"],
 };

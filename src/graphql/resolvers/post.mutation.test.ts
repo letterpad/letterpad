@@ -2,7 +2,7 @@ import {
   CreatePostDocument,
   UpdatePostDocument,
 } from "@/__generated__/src/graphql/queries/mutations.graphql";
-import { API } from "../../../tests/testClient";
+import { API } from "@/jest/testClient";
 import { PostStatusOptions } from "@/__generated__/__types__";
 import { createPathWithPrefix, textToSlug } from "@/utils/slug";
 

@@ -1,9 +1,9 @@
-require("dotenv").config({ path: __dirname + "/../.env" });
+require("dotenv").config({ path: __dirname + "/../../.env" });
 process.env.DATABASE_URL = "file:../data/test.sqlite";
 import { ApolloServer } from "apollo-server";
 const { exec } = require("child_process");
-import { schema } from "../src/graphql/schema";
-import { seed } from "../src/graphql/db/seed/seed";
+import { schema } from "@/graphql/schema";
+import { seed } from "@/graphql/db/seed/seed";
 import { getResolverContext } from "@/graphql/context";
 import React from "react";
 React.useLayoutEffect = React.useEffect;

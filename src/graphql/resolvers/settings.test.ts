@@ -1,6 +1,6 @@
-import { UpdateOptionsDocument } from "./../../../__generated__/src/graphql/queries/mutations.graphql";
+import { UpdateOptionsDocument } from "@/__generated__/src/graphql/queries/mutations.graphql";
 import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
-import { API } from "./../../../tests/testClient";
+import { API } from "@/jest/testClient";
 import { prisma } from "@/lib/prisma";
 
 describe("Test Settings Graphql API", () => {

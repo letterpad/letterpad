@@ -1,4 +1,5 @@
 import { EmailTemplates } from "@/graphql/types";
+import { API } from "@/jest/testClient";
 import { prisma } from "@/lib/prisma";
 import { getToken } from "@/shared/token";
 import {
@@ -9,8 +10,6 @@ import {
   UpdateAuthorDocument,
   UpdateSubscriberDocument,
 } from "@/__generated__/queries/mutations.graphql";
-
-import { API } from "../../../../tests/testClient";
 import { getEmailTemplate } from "./getTemplate";
 
 describe("Email templates", () => {

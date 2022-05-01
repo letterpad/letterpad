@@ -38,6 +38,10 @@ jobs:
           yarn install --frozen-lockfile
         if: steps.yarn-dep-cache.outputs.cache-hit != 'true'
 
+      - name: "Create .env file"
+        run: |
+          cp sample.env .env
+
       - run: |
           node_modules/cypress/bin/cypress install
       - name: Graphql Codegen

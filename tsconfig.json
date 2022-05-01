@@ -37,7 +37,6 @@
     "src/**/*",
     "__generated__/**/*",
     "postcss.config.js",
-    "tests/**/*",
     "migrations/**/*",
     "config/*"
   ]
