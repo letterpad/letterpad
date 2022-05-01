@@ -40,7 +40,7 @@ jobs:
 
       - name: "Create .env file"
         run: |
-          cp sample.env .env
+          cp .env.sample .env
 
       - run: |
           node_modules/cypress/bin/cypress install

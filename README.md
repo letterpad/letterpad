@@ -26,7 +26,7 @@ You can register in https://letterpad.app/admin/register and start writing posts
 
 There are few things that you should know before running letterpad in a production environment.
 
-- In the root folder, you will find a file `env.sample`. Clone is file and rename it to `.env`. The most important key is `SECRET_KEY`, set the value of this key to something different. This key is used to encrypt passwords, sessions and preview links.
+- In the root folder, you will find a file `.env.sample`. Clone is file and rename it to `.env`. The most important key is `SECRET_KEY`, set the value of this key to something different. This key is used to encrypt passwords, sessions and preview links.
 
 - Letterpad Admin runs on the url `/admin`. If you would like to run the admin dashboard in the root url,
   edit `next.config.js` and remove the basePath. Also open `.env` and remove the `/admin` from all the urls.
