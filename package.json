@@ -16,7 +16,7 @@
     "migrate-create": "./src/scripts/prisma.sh createMigration",
     "migrate-run": "./src/scripts/prisma.sh migrate",
     "studio": "./src/scripts/prisma.sh studio",
-    "seed": "dotenv prisma db seed",
+    "seed": "./src/scripts/prisma.sh seed",
     "preseed": "./src/scripts/prisma.sh reset",
     "resetDemo": "ts-node -r tsconfig-paths/register --transpile-only ./src/resetDemo.ts",
     "cy:open": "cypress open",
@@ -81,6 +81,7 @@
     "sqlite3": "^5.0.2",
     "tinymce": "^6.0.0",
     "tippy.js": "^6.3.7",
+    "ts-node": "^10.7.0",
     "twig": "^1.15.4"
   },
   "devDependencies": {

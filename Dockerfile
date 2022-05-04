@@ -3,7 +3,7 @@ FROM node:14-alpine AS build
 
 WORKDIR /build
 
-RUN apk add curl bash mysql-client
+RUN apk add curl bash mysql-client sqlite
 
 RUN yarn config set --home enableTelemetry 0
 COPY package.json yarn.lock /build/
@@ -37,8 +37,10 @@ COPY --from=build /build/node_modules/.prisma/ ./node_modules/.prisma/
 COPY --from=build /build/yarn.lock /build/package.json ./
 COPY --from=build /build/.next ./.next
 COPY --from=build /build/public ./public
+COPY --from=build /build/prisma ./prisma
 COPY --from=build /build/next.config.js ./next.config.js
 
+RUN apk add curl bash mysql-client sqlite
 # USER node
 
 EXPOSE 3000
