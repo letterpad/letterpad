@@ -1,3 +1,8 @@
+######################################################################################
+# This docker file is meant to build a production image for Letterpad Admin Dashboard
+######################################################################################
+
+
 # Build image
 FROM node:14-alpine AS build
 
@@ -40,7 +45,10 @@ COPY --from=build /build/public ./public
 COPY --from=build /build/prisma ./prisma
 COPY --from=build /build/next.config.js ./next.config.js
 
-RUN apk add curl bash mysql-client sqlite
+RUN apk add curl bash mysql-client sqlite python3 py3-pip certbot
+RUN pip3 install certbot-nginx
+RUN mkdir /etc/letsencrypt
+RUN mkdir -p /var/www/html/letterpad-map-test
 # USER node
 
 EXPOSE 3000

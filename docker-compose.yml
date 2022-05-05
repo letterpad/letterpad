@@ -1,5 +1,22 @@
+#################################################################################################
+# This file is meant to spin up the entire (production) Letterpad System, Theme and Services.
+#################################################################################################
 version: "3.8"
 services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - 80:80
+      # - 443:443
+    links:
+      - letterpad:letterpad
+      - umami:umami
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    # command: ["nginx", "-c", "/etc/nginx/conf.d/nginx.conf"]
   db:
     image: mysql:8
     container_name: mysql-container
@@ -24,9 +41,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
   letterpad:
     build: .
-    depends_on:
-      db:
-        condition: service_healthy
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
     tty: true
     container_name: letterpad-container
     env_file:
