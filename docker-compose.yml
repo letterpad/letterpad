@@ -4,11 +4,14 @@
 version: "3.8"
 services:
   nginx:
+    build: ./nginx
     image: nginx
     container_name: nginx
     ports:
       - 80:80
-      # - 443:443
+      - 443:443
+    depends_on:
+      - letterpad
     links:
       - letterpad:letterpad
       - umami:umami
@@ -16,7 +19,8 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/sites-enabled:/etc/nginx/sites-enabled
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-    # command: ["nginx", "-c", "/etc/nginx/conf.d/nginx.conf"]
+      - ./nginx/letsencrypt:/etc/letsencrypt
+    # - ./nginx/nginxWatcher.sh:/docker-entrypoint.d/nginxWatcher.sh
   db:
     image: mysql:8
     container_name: mysql-container
@@ -41,9 +45,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
   letterpad:
     build: .
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
+    depends_on:
+      db:
+        condition: service_healthy
     tty: true
     container_name: letterpad-container
     env_file:
@@ -52,9 +56,12 @@ services:
       DB_DATABASE: letterpad
       UMAMI_HOST: http://umami:3000
       LANUAGE_TOOL_HOST: http://languagetool:8010
+      CYPRESS_INSTALL_BINARY: 0
     ports:
       - "3000:3000"
     volumes:
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+      - ./nginx/letsencrypt:/etc/letsencrypt
       - ./src:/app/src
       - ./data:/app/data
       - /app/prisma

@@ -24,17 +24,6 @@ alias die='error_exit "Error (@`echo $(( $LINENO - 1 ))`):"'
 NGINX_AVAILABLE_VHOSTS='/etc/nginx/sites-enabled'
 WEB_DIR='/var/www/html/letterpad-map-test'
 
-function reloadServer {
-    sudo -A nginx -s reload >/dev/null 2>&1
-    l=$?
-
-    if [ $l -eq 0 ]; then
-        echo "success"
-    else
-        die "Unable to reload nginx server"
-    fi
-}
-
 function createCertificate {
     DOMAIN=$1
     certbot certonly \

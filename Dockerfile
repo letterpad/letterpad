@@ -4,12 +4,12 @@
 
 
 # Build image
-FROM node:14-alpine AS build
+FROM mhart/alpine-node:14 AS build
 
 WORKDIR /build
 
 RUN apk add curl bash mysql-client sqlite
-
+ENV CYPRESS_INSTALL_BINARY 0
 RUN yarn config set --home enableTelemetry 0
 COPY package.json yarn.lock /build/
 COPY ./.env.sample /build/.env
@@ -28,7 +28,7 @@ RUN yarn build
 
 ############## Production image ###################
 
-FROM node:14-alpine AS production
+FROM mhart/alpine-node:14 AS production
 WORKDIR /app
 
 # Copy cached dependencies
