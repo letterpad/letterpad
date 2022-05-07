@@ -63,10 +63,23 @@ const Metrics = () => {
     setLoading(false);
   };
 
+  const num = Math.min(
+    data.stats?.uniques.value,
+    data && data.stats?.bounces.value,
+  );
+
   const pageViews = data.stats?.pageviews;
   const visitors = data.stats?.uniques;
   const bounces = data.stats?.bounces;
   const totalTime = data.stats?.totaltime;
+
+  const diffs = data && {
+    pageViews: pageViews.value - pageViews.change,
+    uniques: visitors.value - visitors.change,
+    bounces: bounces.value - bounces.change,
+    totalTime: totalTime.value - totalTime.change,
+  };
+
   return (
     <div>
       <Head>
@@ -94,8 +107,35 @@ const Metrics = () => {
           <Row gutter={16}>
             <Box title="Views" item={pageViews} />
             <Box title="Visitors" item={visitors} />
-            <Box title="Bounces" item={bounces} />
-            <Box title="Total time" item={totalTime} unit="s" />
+            <Box
+              title="Bounces"
+              item={{
+                value: visitors.value ? (num / visitors.value) * 100 : 0,
+                change:
+                  visitors.value && visitors.change
+                    ? (num / visitors.value) * 100 -
+                        (Math.min(diffs.uniques, diffs.bounces) /
+                          diffs.uniques) *
+                          100 || 0
+                    : 0,
+              }}
+            />
+            <Box
+              title="Average time"
+              item={{
+                value:
+                  totalTime.value && pageViews.value
+                    ? totalTime.value / (pageViews.value - bounces.value)
+                    : 0,
+                change:
+                  totalTime.value && pageViews.value
+                    ? (diffs.totalTime / (diffs.pageViews - diffs.bounces) -
+                        totalTime.value / (pageViews.value - bounces.value)) *
+                        -1 || 0
+                    : 0,
+              }}
+              unit="s"
+            />
           </Row>
           <Divider />
           <Table dataSource={data.urlView} columns={cols} pagination={false} />

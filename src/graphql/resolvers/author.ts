@@ -13,7 +13,7 @@ import { mapAuthorToGraphql } from "./mapper";
 import { createAuthorWithSettings } from "@/lib/onboard";
 import { encryptEmail } from "@/shared/clientToken";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
-import { umamiApi, analyticsConnected } from "@/lib/umami";
+import { umamiApi, analytics_on } from "@/lib/umami";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -282,7 +282,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
           },
         });
         try {
-          if (author.analytics_id && analyticsConnected) {
+          if (author.analytics_id && analytics_on) {
             const api = await umamiApi();
             await api.changeWebsite(
               `${args.author.username}.letterpad.app`,

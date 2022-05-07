@@ -262,7 +262,7 @@ export const umamiApi = (websiteId?: number) =>
     website: websiteId,
   });
 
-export const analyticsConnected =
+export const analytics_on =
   process.env.UMAMI_USERNAME &&
   process.env.UMAMI_PASSWORD &&
   process.env.UMAMI_HOST;
