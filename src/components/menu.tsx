@@ -1,4 +1,4 @@
-import { Menu } from "antd/";
+import { Menu } from "antd";
 
 import {
   BarChartOutlined,
@@ -50,7 +50,6 @@ const Navigation = ({ stats }) => {
         key={menuItems["/dashboard"]}
         icon={<BarChartOutlined />}
         onClick={() => router.push("/dashboard")}
-        hidden={true}
       >
         Dashboard
       </Menu.Item>

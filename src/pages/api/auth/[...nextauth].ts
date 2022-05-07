@@ -9,9 +9,7 @@ import Prisma, { prisma } from "@/lib/prisma";
 import { createAuthorWithSettings, onBoardUser } from "@/lib/onboard";
 import { Role } from "@/__generated__/__types__";
 import { SessionData } from "@/graphql/types";
-import { umamiApi, analyticsConnected } from "@/lib/umami";
-
-
+import { umamiApi, analytics_on } from "@/lib/umami";
 
 const providers = (_req: NextApiRequest) => [
   GoogleProvider({
@@ -55,26 +53,6 @@ const providers = (_req: NextApiRequest) => [
           );
 
           if (authenticated) {
-            if (!author.analytics_id && analyticsConnected) {
-              try {
-                const api = await umamiApi();
-                const website = (await api.addWebsite(
-                  author.username,
-                  `${author.username}.letterpad.app`,
-                )) as Record<string, any>;
-                await prisma.author.update({
-                  data: {
-                    analytics_id: website.website_id,
-                    analytics_uuid: website.website_uuid,
-                  },
-                  where: {
-                    id: author.id,
-                  },
-                });
-              } catch (e) {
-                console.log(e);
-              }
-            }
             const user = {
               id: author.id,
               avatar: author.avatar,
@@ -135,7 +113,28 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
             role: true,
           },
         });
+
         if (author) {
+          if (!author.analytics_id && analytics_on) {
+            try {
+              const api = await umamiApi();
+              const website = (await api.addWebsite(
+                author.username,
+                `${author.username}.letterpad.app`,
+              )) as Record<string, any>;
+              await prisma.author.update({
+                data: {
+                  analytics_id: website.website_id,
+                  analytics_uuid: website.website_uuid,
+                },
+                where: {
+                  id: author.id,
+                },
+              });
+            } catch (e) {
+              console.log(e);
+            }
+          }
           const { id, email, username, avatar, name } = author;
           session.user = {
             id,
