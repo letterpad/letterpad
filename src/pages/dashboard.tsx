@@ -6,6 +6,11 @@ import Head from "next/head";
 import { Content } from "antd/lib/layout/layout";
 import { Statistic, Row, Col } from "antd";
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
+import {
+  formatLongNumber,
+  formatNumber,
+  formatShortTime,
+} from "@/utils/format";
 
 const cols = [
   {
@@ -80,6 +85,9 @@ const Metrics = () => {
     totalTime: totalTime.value - totalTime.change,
   };
 
+  const formatFunc = (n) =>
+    n >= 0 ? formatLongNumber(n) : `-${formatLongNumber(Math.abs(n))}`;
+
   return (
     <div>
       <Head>
@@ -105,20 +113,29 @@ const Metrics = () => {
           </select>
           <Divider />
           <Row gutter={16}>
-            <Box title="Views" item={pageViews} />
-            <Box title="Visitors" item={visitors} />
+            <Box
+              title="Views"
+              item={{
+                value: pageViews.value,
+                change: diffs.pageViews,
+              }}
+              format={formatFunc}
+            />
+            <Box title="Visitors" item={visitors} format={formatFunc} />
             <Box
               title="Bounces"
               item={{
                 value: visitors.value ? (num / visitors.value) * 100 : 0,
-                change:
+                change: Number(
                   visitors.value && visitors.change
                     ? (num / visitors.value) * 100 -
                         (Math.min(diffs.uniques, diffs.bounces) /
                           diffs.uniques) *
                           100 || 0
                     : 0,
+                ).toFixed(0),
               }}
+              format={(n) => Number(n).toFixed(0) + "%"}
             />
             <Box
               title="Average time"
@@ -127,14 +144,22 @@ const Metrics = () => {
                   totalTime.value && pageViews.value
                     ? totalTime.value / (pageViews.value - bounces.value)
                     : 0,
-                change:
+                change: Number(
                   totalTime.value && pageViews.value
                     ? (diffs.totalTime / (diffs.pageViews - diffs.bounces) -
                         totalTime.value / (pageViews.value - bounces.value)) *
                         -1 || 0
                     : 0,
+                ).toFixed(0),
               }}
               unit="s"
+              format={(n) =>
+                `${n < 0 ? "-" : ""}${formatShortTime(
+                  Math.abs(~~n),
+                  ["m", "s"],
+                  " ",
+                )}`
+              }
             />
           </Row>
           <Divider />
@@ -146,7 +171,7 @@ const Metrics = () => {
 };
 export default Metrics;
 
-const Box = ({ title, item, unit = "" }) => {
+const Box = ({ title, item, unit = "", format = formatNumber }) => {
   return (
     <Col span={12} md={{ span: 6 }}>
       <Card style={{ textAlign: "center" }}>
@@ -156,8 +181,7 @@ const Box = ({ title, item, unit = "" }) => {
           valueStyle={{ fontSize: "3em" }}
         />
         <Tag color={item.change >= 0 ? "lime" : "magenta"}>
-          {item.change >= 0 ? "+" : "-"}
-          {item.change + unit}
+          {format(item.change)}
         </Tag>
       </Card>
     </Col>
