@@ -37,6 +37,8 @@ yarn-error.log*
 
 __generated__/*
 data/*
+prisma/sqlite/data
+.env
 .env.production.local
 .bin/*
 # Sentry
