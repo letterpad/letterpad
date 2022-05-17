@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import "dotenv/config";
 import Prisma, { prisma } from "@/lib/prisma";
 import { promisify } from "util";
 import copydir from "copy-dir";
@@ -300,11 +300,11 @@ function deCapitalizeFirstLetter(string) {
   return string.charAt(0).toLowerCase() + string.slice(1);
 }
 
-seed()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .then(() => {
-    process.exit(0);
-  });
+seed();
+// .catch((e) => {
+//   console.error(e);
+//   process.exit(1);
+// })
+// .then(() => {
+//   process.exit(0);
+// });
