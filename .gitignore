@@ -35,7 +35,7 @@ yarn-error.log*
 *.d.ts
 !src/page.d.ts
 
-__generated__/*
+__generated__
 data/*
 prisma/sqlite/data
 .env
@@ -51,3 +51,4 @@ prisma/sqlite/data
 .sentryclirc
 /.vscode/
 generated
+.cache

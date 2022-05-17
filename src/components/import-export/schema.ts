@@ -243,9 +243,6 @@ export const schema: JSONSchemaType<IImportExportData> = {
                 css: {
                   type: "string",
                 },
-                google_analytics: {
-                  type: "string",
-                },
                 theme: {
                   type: "string",
                 },
@@ -291,7 +288,6 @@ export const schema: JSONSchemaType<IImportExportData> = {
                 "cloudinary_secret",
                 "menu",
                 "css",
-                "google_analytics",
                 "theme",
                 "banner",
                 "site_logo",

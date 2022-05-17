@@ -124,8 +124,6 @@ model Setting {
   cloudinary_secret   String
   menu                String    @default("[]") @db.VarChar(500)
   css                 String    @db.VarChar(500)
-  google_analytics    String
-  analytics           String    @default("{}") @db.VarChar(300)
   theme               String
   client_token        String
   banner              String    @default("{}") @db.VarChar(300)

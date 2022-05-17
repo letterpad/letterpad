@@ -1,5 +1,5 @@
 import "dotenv/config";
-process.env.DATABASE_URL = "file:../data/test.sqlite";
+process.env.DATABASE_URL = "file:../prisma/sqlite/data/test.sqlite";
 import { ApolloServer } from "apollo-server";
 const { exec } = require("child_process");
 import { schema } from "../src/graphql/schema";

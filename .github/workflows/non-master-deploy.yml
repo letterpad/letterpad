@@ -40,6 +40,10 @@ jobs:
 
       - run: |
           node_modules/cypress/bin/cypress install
+
+      - name: Create Environment
+        run: mv .env.sample .env
+
       - name: Graphql Codegen
         run: yarn codegen
 

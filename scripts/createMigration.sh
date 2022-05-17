@@ -1,9 +1,9 @@
 #!/bin/bash
 
-PRISMA_FILE="schema.prisma"
+PRISMA_FILE="sqlite/schema.prisma"
 
 if [[ "$DATABASE_URL" =~ ^mysql.* ]]; then
-    export PRISMA_FILE="schema_mysql.prisma"
+    export PRISMA_FILE="mysql/schema_mysql.prisma"
 fi
 
 if [ -z "$1" ]; then

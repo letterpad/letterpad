@@ -125,8 +125,6 @@ model Setting {
   cloudinary_secret   String
   menu                String    @default("[]")
   css                 String
-  google_analytics    String
-  analytics           String    @default("{}")
   theme               String
   client_token        String
   banner              String    @default("{}")

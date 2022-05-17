@@ -11,13 +11,6 @@ type Navigation {
   label: String!
 }
 
-type Analytics {
-  google_analytics: String
-  umami_id: String
-  simple_analytics: String
-  plausible_data_domain: String
-}
-
 type Setting {
   id: Int!
   site_title: String!
@@ -40,20 +33,11 @@ type Setting {
   cloudinary_secret: String
   menu: [Navigation!]!
   css: String
-  google_analytics: String
-  analytics: Analytics
   theme: String
   banner: Image
   site_logo: Image
   site_favicon: Image
   client_token: String!
-}
-
-input InputAnalytics {
-  google_analytics: String
-  umami_id: String
-  simple_analytics: String
-  plausible_data_domain: String
 }
 
 input InputNavigation {
@@ -86,9 +70,7 @@ input SettingInputType {
   cloudinary_name: String
   cloudinary_secret: String
   menu: [InputNavigation!]
-  analytics: InputAnalytics
   css: String
-  google_analytics: String
   theme: String
   banner: InputImage
   site_logo: InputImage
