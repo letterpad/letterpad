@@ -1,5 +1,4 @@
 const { exec } = require("child_process");
-require("@/config/env");
 
 const execShellCommand = (command) => {
   return new Promise((resolve, reject) => {

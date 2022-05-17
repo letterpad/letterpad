@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import Prisma, { prisma } from "@/lib/prisma";
 import { promisify } from "util";
 import copydir from "copy-dir";
@@ -18,7 +19,7 @@ const copydirAsync = promisify(copydir);
 const ROOT_DIR = process.env.ROOT || path.join(__dirname, "../../../../");
 
 // All paths are relative to this file
-const dataDir = path.join(ROOT_DIR, "/data");
+const dataDir = path.join(ROOT_DIR, "prisma/sqlite/data");
 const publicUploadsDir = path.join(ROOT_DIR, "/public/uploads");
 const uploadsSourceDir = path.join(ROOT_DIR, "/src/graphql/db/seed/uploads");
 
@@ -298,3 +299,12 @@ export const cleanupDatabase = () => {
 function deCapitalizeFirstLetter(string) {
   return string.charAt(0).toLowerCase() + string.slice(1);
 }
+
+seed()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .then(() => {
+    process.exit(0);
+  });
