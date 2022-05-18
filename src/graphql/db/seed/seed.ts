@@ -43,7 +43,9 @@ export async function seed(folderCheck = true) {
       console.time("delete all recoreds from all tables");
       try {
         await cleanupDatabase();
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
       console.timeEnd("delete all recoreds from all tables");
       console.time("ensure data directories");
       await Promise.all([
@@ -285,9 +287,10 @@ export async function insertPost(postData, author_id) {
   });
 }
 
-export const cleanupDatabase = () => {
+export const cleanupDatabase = async () => {
   const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
-
+  await prisma.rolePermissions.deleteMany();
+  await prisma.permission.deleteMany();
   return Promise.all(
     modelNames.map((modelName) => {
       const model = prisma[deCapitalizeFirstLetter(modelName)];
@@ -301,10 +304,3 @@ function deCapitalizeFirstLetter(string) {
 }
 
 seed();
-// .catch((e) => {
-//   console.error(e);
-//   process.exit(1);
-// })
-// .then(() => {
-//   process.exit(0);
-// });
