@@ -325,8 +325,6 @@ export async function insertPost(postData, author_id) {
 
 export const cleanupDatabase = async () => {
   const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
-  await prisma.rolePermissions.deleteMany();
-  await prisma.permission.deleteMany();
   return Promise.all(
     modelNames.map((modelName) => {
       const model = prisma[deCapitalizeFirstLetter(modelName)];
