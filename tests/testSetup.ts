@@ -1,6 +1,6 @@
 //@ts-nocheck
 import "dotenv/config";
-process.env.DATABASE_URL = "file:data/test.sqlite";
+process.env.DATABASE_URL = "file:./data/test.sqlite";
 import { ApolloServer } from "apollo-server";
 const { exec } = require("child_process");
 import { schema } from "../src/graphql/schema";
@@ -49,6 +49,7 @@ beforeAll(async () => {
     console.log(err);
     process.exit();
   }
+  console.log(process.env.DATABASE_URL);
   await seed();
   server = await createApolloTestServer();
   const { url } = await server.listen({ port: 3000 });
