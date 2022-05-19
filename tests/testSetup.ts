@@ -43,7 +43,7 @@ beforeAll(async () => {
   // jest.setTimeout(0);
   try {
     await execShellCommand(
-      "DATABASE_URL='file:data/test.sqlite' npx prisma db push --force-reset --schema=prisma/sqlite/schema.prisma",
+      "DATABASE_URL='file:./data/test.sqlite' npx prisma db push --force-reset --schema=prisma/sqlite/schema.prisma",
     );
   } catch (err) {
     console.log(err);
