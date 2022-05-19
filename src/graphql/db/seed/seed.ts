@@ -41,8 +41,6 @@ export async function seed(folderCheck = true) {
     if (folderCheck) {
       console.time("delete all recoreds from all tables");
       try {
-        console.log(process.env.DATABASE_URL);
-        console.log(Prisma.dmmf.datamodel.models);
         await cleanupDatabase();
       } catch (e) {
         console.log(e);
