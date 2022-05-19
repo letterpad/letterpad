@@ -41,16 +41,16 @@ jobs:
       - run: |
           node_modules/cypress/bin/cypress install
 
+      - name: Generate Prisma Client
+        run: npx prisma generate --schema prisma/sqlite/schema.prisma
+        env:
+          DATABASE_URL: "file:./data/test.sqlite"
+
       - name: Create Environment
         run: mv .env.sample .env
 
       - name: Graphql Codegen
         run: yarn codegen
-
-      - name: Generate Prisma Client
-        run: npx prisma generate --schema prisma/sqlite/schema.prisma
-        env:
-          DATABASE_URL: "file:./data/test.sqlite"
 
       - name: Type check
         run: yarn typecheck
@@ -66,7 +66,7 @@ jobs:
       - name: Run Cypress
         run: yarn e2e:ci
         env:
-          DATABASE_URL: "file:../data/test.sqlite"
+          DATABASE_URL: "file:./data/test.sqlite"
           ROOT_URL: "http://localhost:3000/admin"
           NEXTAUTH_URL: "http://localhost:3000/admin/api/auth"
           SECRET_KEY: "some-secret"
