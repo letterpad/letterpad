@@ -10,6 +10,7 @@ import generatePost from "./contentGenerator";
 import { getDateTime } from "@/shared/utils";
 import { createAuthorWithSettings } from "@/lib/onboard";
 import { textToSlug } from "@/utils/slug";
+import { execShell } from "tests/execShell";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -41,7 +42,7 @@ export async function seed(folderCheck = true) {
     if (folderCheck) {
       console.time("delete all recoreds from all tables");
       try {
-        await cleanupDatabase();
+        await execShell("yarn test:resetDb");
       } catch (e) {
         console.log(e);
       }
@@ -322,18 +323,18 @@ export async function insertPost(postData, author_id) {
   });
 }
 
-export const cleanupDatabase = async () => {
-  const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
-  return Promise.all(
-    modelNames.map((modelName) => {
-      const model = prisma[deCapitalizeFirstLetter(modelName)];
-      return model ? model.deleteMany() : null;
-    }),
-  );
-};
+// export const cleanupDatabase = async () => {
+//   const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
+//   return Promise.all(
+//     modelNames.map((modelName) => {
+//       const model = prisma[deCapitalizeFirstLetter(modelName)];
+//       return model ? model.deleteMany() : null;
+//     }),
+//   );
+// };
 
-function deCapitalizeFirstLetter(string) {
-  return string.charAt(0).toLowerCase() + string.slice(1);
-}
+// function deCapitalizeFirstLetter(string) {
+//   return string.charAt(0).toLowerCase() + string.slice(1);
+// }
 
 seed();
