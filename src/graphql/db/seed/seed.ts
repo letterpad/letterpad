@@ -10,7 +10,7 @@ import generatePost from "./contentGenerator";
 import { getDateTime } from "@/shared/utils";
 import { createAuthorWithSettings } from "@/lib/onboard";
 import { textToSlug } from "@/utils/slug";
-import { execShell } from "tests/execShell";
+import { execShell } from "../../../../tests/execShell";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
