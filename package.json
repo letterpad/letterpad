@@ -8,6 +8,7 @@
     "dev": "next",
     "build": "yarn codegen && next build",
     "test": "yarn codegen && jest --runInBand",
+    "test:resetDb": "DATABASE_URL='file:./data/test.sqlite' npx prisma db push --force-reset --schema=prisma/sqlite/schema.prisma",
     "prestart": "yarn codegen",
     "start": "next start",
     "seed": "yarn prisma:migrate:run && ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/seed.ts",
