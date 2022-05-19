@@ -1,4 +1,4 @@
-import Prisma, { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { promisify } from "util";
 import copydir from "copy-dir";
 import mkdirp from "mkdirp";
