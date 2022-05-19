@@ -93,43 +93,79 @@ export async function insertRolePermData() {
     MANAGE_USERS,
     MANAGE_SETTINGS,
   ] = await Promise.all([
-    prisma.permission.create({
-      data: {
+    prisma.permission.upsert({
+      where: {
+        name: "MANAGE_OWN_POSTS",
+      },
+      update: {},
+      create: {
         name: "MANAGE_OWN_POSTS",
       },
     }),
-    prisma.permission.create({
-      data: { name: "READ_ONLY_POSTS" },
+    prisma.permission.upsert({
+      where: {
+        name: "READ_ONLY_POSTS",
+      },
+      update: {},
+      create: { name: "READ_ONLY_POSTS" },
     }),
-    prisma.permission.create({
-      data: { name: "MANAGE_ALL_POSTS" },
+    prisma.permission.upsert({
+      where: {
+        name: "MANAGE_ALL_POSTS",
+      },
+      update: {},
+      create: { name: "MANAGE_ALL_POSTS" },
     }),
-    prisma.permission.create({
-      data: { name: "MANAGE_USERS" },
+    prisma.permission.upsert({
+      where: {
+        name: "MANAGE_USERS",
+      },
+      update: {},
+      create: { name: "MANAGE_USERS" },
     }),
-    prisma.permission.create({
-      data: { name: "MANAGE_SETTINGS" },
+    prisma.permission.upsert({
+      where: {
+        name: "MANAGE_SETTINGS",
+      },
+      update: {},
+      create: { name: "MANAGE_SETTINGS" },
     }),
   ]);
 
   const [ADMIN, AUTHOR, REVIEWER, READER] = await Promise.all([
-    await prisma.role.create({
-      data: {
+    await prisma.role.upsert({
+      where: {
+        name: "ADMIN",
+      },
+      update: {},
+      create: {
         name: "ADMIN",
       },
     }),
-    await prisma.role.create({
-      data: {
+    await prisma.role.upsert({
+      where: {
+        name: "AUTHOR",
+      },
+      update: {},
+      create: {
         name: "AUTHOR",
       },
     }),
-    await prisma.role.create({
-      data: {
+    await prisma.role.upsert({
+      where: {
+        name: "REVIEWER",
+      },
+      update: {},
+      create: {
         name: "REVIEWER",
       },
     }),
-    await prisma.role.create({
-      data: {
+    await prisma.role.upsert({
+      where: {
+        name: "READER",
+      },
+      update: {},
+      create: {
         name: "READER",
       },
     }),
