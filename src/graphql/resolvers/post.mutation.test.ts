@@ -7,7 +7,7 @@ import { PostStatusOptions } from "@/__generated__/__types__";
 import { createPathWithPrefix, textToSlug } from "@/utils/slug";
 
 const title = "New Post";
-describe("Test Post Query Graphql API", () => {
+describe.skip("Test Post Query Graphql API", () => {
   it("Create a post", async () => {
     const post = await runQuery(CreatePostDocument, { title, type: "post" });
     expect(post.createPost).toEqual(

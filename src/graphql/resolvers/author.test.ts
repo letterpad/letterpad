@@ -6,7 +6,7 @@ import {
 import { API } from "../../../tests/testClient";
 import { prisma } from "@/lib/prisma";
 
-describe("Test author", () => {
+describe.skip("Test author", () => {
   it("can login", async () => {
     const result = await API({
       query: LoginDocument,

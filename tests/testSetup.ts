@@ -40,15 +40,7 @@ export const createApolloTestServer = async () => {
 let server;
 
 beforeAll(async () => {
-  // jest.setTimeout(0);
-  try {
-    await execShell("yarn test:resetDb");
-  } catch (err) {
-    console.log(err);
-    process.exit();
-  }
-  console.log(process.env.DATABASE_URL);
-  await seed();
+  // await seed();
   server = await createApolloTestServer();
   const { url } = await server.listen({ port: 3000 });
   console.log("server listening at " + url);

@@ -106,7 +106,7 @@ Object {
         },
       },
     });
-
+    console.log(resonse.createAuthor);
     const data = await getEmailTemplate(
       {
         template_id: EmailTemplates.VerifyNewUser,

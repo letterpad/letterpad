@@ -1,4 +1,5 @@
-import { prisma } from "@/lib/prisma";
+import "dotenv/config";
+import Prisma, { prisma } from "@/lib/prisma";
 import { promisify } from "util";
 import copydir from "copy-dir";
 import mkdirp from "mkdirp";
@@ -10,7 +11,6 @@ import generatePost from "./contentGenerator";
 import { getDateTime } from "@/shared/utils";
 import { createAuthorWithSettings } from "@/lib/onboard";
 import { textToSlug } from "@/utils/slug";
-import { execShell } from "../../../../tests/execShell";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -42,7 +42,7 @@ export async function seed(folderCheck = true) {
     if (folderCheck) {
       console.time("delete all recoreds from all tables");
       try {
-        await execShell("yarn test:resetDb");
+        await cleanupDatabase();
       } catch (e) {
         console.log(e);
       }
@@ -93,79 +93,43 @@ export async function insertRolePermData() {
     MANAGE_USERS,
     MANAGE_SETTINGS,
   ] = await Promise.all([
-    prisma.permission.upsert({
-      where: {
-        name: "MANAGE_OWN_POSTS",
-      },
-      update: {},
-      create: {
+    prisma.permission.create({
+      data: {
         name: "MANAGE_OWN_POSTS",
       },
     }),
-    prisma.permission.upsert({
-      where: {
-        name: "READ_ONLY_POSTS",
-      },
-      update: {},
-      create: { name: "READ_ONLY_POSTS" },
+    prisma.permission.create({
+      data: { name: "READ_ONLY_POSTS" },
     }),
-    prisma.permission.upsert({
-      where: {
-        name: "MANAGE_ALL_POSTS",
-      },
-      update: {},
-      create: { name: "MANAGE_ALL_POSTS" },
+    prisma.permission.create({
+      data: { name: "MANAGE_ALL_POSTS" },
     }),
-    prisma.permission.upsert({
-      where: {
-        name: "MANAGE_USERS",
-      },
-      update: {},
-      create: { name: "MANAGE_USERS" },
+    prisma.permission.create({
+      data: { name: "MANAGE_USERS" },
     }),
-    prisma.permission.upsert({
-      where: {
-        name: "MANAGE_SETTINGS",
-      },
-      update: {},
-      create: { name: "MANAGE_SETTINGS" },
+    prisma.permission.create({
+      data: { name: "MANAGE_SETTINGS" },
     }),
   ]);
 
   const [ADMIN, AUTHOR, REVIEWER, READER] = await Promise.all([
-    await prisma.role.upsert({
-      where: {
-        name: "ADMIN",
-      },
-      update: {},
-      create: {
+    await prisma.role.create({
+      data: {
         name: "ADMIN",
       },
     }),
-    await prisma.role.upsert({
-      where: {
-        name: "AUTHOR",
-      },
-      update: {},
-      create: {
+    await prisma.role.create({
+      data: {
         name: "AUTHOR",
       },
     }),
-    await prisma.role.upsert({
-      where: {
-        name: "REVIEWER",
-      },
-      update: {},
-      create: {
+    await prisma.role.create({
+      data: {
         name: "REVIEWER",
       },
     }),
-    await prisma.role.upsert({
-      where: {
-        name: "READER",
-      },
-      update: {},
-      create: {
+    await prisma.role.create({
+      data: {
         name: "READER",
       },
     }),
@@ -323,18 +287,26 @@ export async function insertPost(postData, author_id) {
   });
 }
 
-// export const cleanupDatabase = async () => {
-//   const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
-//   return Promise.all(
-//     modelNames.map((modelName) => {
-//       const model = prisma[deCapitalizeFirstLetter(modelName)];
-//       return model ? model.deleteMany() : null;
-//     }),
-//   );
-// };
+export const cleanupDatabase = () => {
+  console.log(process.env.DATABASE_URL);
+  const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
+  return Promise.all(
+    modelNames.map((modelName) => {
+      const model = prisma[deCapitalizeFirstLetter(modelName)];
+      return model ? model.deleteMany() : null;
+    }),
+  );
+};
 
-// function deCapitalizeFirstLetter(string) {
-//   return string.charAt(0).toLowerCase() + string.slice(1);
-// }
+function deCapitalizeFirstLetter(string) {
+  return string.charAt(0).toLowerCase() + string.slice(1);
+}
 
 seed();
+// .catch((e) => {
+//   console.error(e);
+//   process.exit(1);
+// })
+// .then(() => {
+//   process.exit(0);
+// });

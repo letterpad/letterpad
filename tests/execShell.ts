@@ -1,15 +1,6 @@
-const { exec } = require("child_process");
+import { exec } from "child_process";
+import * as util from "util";
 
-export const execShell = (command) => {
-  return new Promise((resolve, reject) => {
-    exec(command, (err, stdout, stderr) => {
-      if (err) {
-        console.log(err);
-        reject(err);
-      } else {
-        console.log(stdout || stderr);
-        resolve(null);
-      }
-    });
-  });
-};
+const execPromisify = util.promisify(exec);
+
+export const execShell = async (command: string) => execPromisify(command);
