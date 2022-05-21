@@ -1,5 +1,5 @@
 import "dotenv/config";
-process.env.DATABASE_URL = "file:../data/test.sqlite";
+process.env.DATABASE_URL = "file:data/test.sqlite";
 import { ApolloServer } from "apollo-server";
 const { exec } = require("child_process");
 import { schema } from "../src/graphql/schema";
@@ -43,7 +43,7 @@ beforeAll(async () => {
   try {
     global.console = require("console");
     await execShellCommand(
-      "DATABASE_URL='file:../data/test.sqlite' npx prisma db push --force-reset",
+      "DATABASE_URL='file:data/test.sqlite' npx prisma db push --force-reset --schema prisma/sqlite/schema.prisma",
     );
   } catch (err) {
     console.log(err);

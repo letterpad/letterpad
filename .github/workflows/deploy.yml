@@ -34,7 +34,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Generate Prisma Client
-        run: npx prisma generate --schema prisma/schema_mysql.prisma
+        run: npx prisma generate --schema prisma/mysql/schema_mysql.prisma
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 

@@ -22,7 +22,7 @@ if (process.env.DATABASE_URL.startsWith("mysql")) {
 
 function init() {
   execShellCommand(
-    `DATABASE_URL='${process.env.DATABASE_URL}' npx prisma db push --force-reset --schema prisma/${schema}`,
+    `DATABASE_URL='${process.env.DATABASE_URL}' npx prisma db push --force-reset --schema prisma/sqlite/${schema}`,
   ).then(() => {
     const { seed } = require("./seed");
     seed()
