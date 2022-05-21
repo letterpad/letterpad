@@ -88,13 +88,6 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
         type
       }
       css
-      google_analytics
-      analytics {
-        google_analytics
-        umami_id
-        simple_analytics
-        plausible_data_domain
-      }
       theme
       banner {
         src

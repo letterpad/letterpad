@@ -77,15 +77,6 @@ const General: React.FC<Props> = ({ settings }) => {
             data-testid="footerDescription"
           />
         </Form.Item>
-        <Form.Item label="Google Analytics">
-          <Input
-            size="middle"
-            value={settings.google_analytics}
-            onChange={(e) =>
-              debounceUpdateSettings({ google_analytics: e.target.value })
-            }
-          />
-        </Form.Item>
       </Panel>
     </Collapse>
   );

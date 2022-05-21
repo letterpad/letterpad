@@ -69,14 +69,7 @@ fragment SettingsFragment on Setting {
     slug
     type
   }
-  analytics {
-    google_analytics
-    umami_id
-    simple_analytics
-    plausible_data_domain
-  }
   css
-  google_analytics
   theme
   banner {
     src

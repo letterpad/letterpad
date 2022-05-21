@@ -182,13 +182,6 @@ const data = {
         cloudinary_secret: "",
         menu: '[{"label":"home","original_name":"home","slug":"first-post","type":"tag"},{"label":"Page","original_name":"Page","slug":"letterpad-typography","type":"page"}]',
         css: "",
-        google_analytics: "UA-120251616-1",
-        analytics: JSON.stringify({
-          google_analytics: "",
-          umami_id: "",
-          simple_analytics: "",
-          plausible_data_domain: "",
-        }),
         theme: "minimal",
         client_token:
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE2NDUxODE0NjQsImV4cCI6MTY0NTE4MjA2NH0.RvsRMFfJGfHb4DK2J2mWlzKsv7G_mBGbwd-i6MCELk0",

@@ -49,15 +49,6 @@ describe("Settings", () => {
 
     cy.getTestId("cSecret").type("123");
     cy.wait("@UpdateOptionsMutation");
-
-    cy.getTestId("gA").type("123");
-    cy.wait("@UpdateOptionsMutation");
-
-    cy.getTestId("plausible").type("123");
-    cy.wait("@UpdateOptionsMutation");
-
-    cy.getTestId("umai").type("123");
-    cy.wait("@UpdateOptionsMutation");
   });
 });
 
