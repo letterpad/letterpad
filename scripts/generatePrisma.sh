@@ -1,7 +1,4 @@
 #!/bin/bash
-
-. $(dirname "$0")/env.sh
-
 PRISMA_FILE="schema.prisma"
 
 if [[ "$DATABASE_URL" =~ ^mysql.* ]]; then

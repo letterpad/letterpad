@@ -1,5 +1,4 @@
-const env = require("node-env-file");
-env(__dirname + "/../.env.development.local");
+import "dotenv/config";
 
 import { validateWithAjv } from "./components/import-export/schema";
 import { startImport } from "./pages/api/import";
