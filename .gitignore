@@ -51,3 +51,4 @@ data/*
 generated
 .env
 .cache
+prisma/sqlite/data
