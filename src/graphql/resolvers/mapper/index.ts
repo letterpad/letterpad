@@ -42,7 +42,6 @@ export const mapSettingToDb = (setting: SettingInputType) => {
   return removeUndefined({
     ...setting,
     menu: JSON.stringify(setting.menu),
-    analytics: JSON.stringify(setting.analytics),
     banner: JSON.stringify(setting.banner),
     site_favicon: JSON.stringify(setting.site_favicon),
     site_logo: JSON.stringify(setting.site_logo),
@@ -53,7 +52,6 @@ export const mapSettingToGraphql = (setting: DbSetting) => {
   return {
     ...setting,
     menu: JSON.parse(setting.menu),
-    analytics: JSON.parse(setting.analytics),
     banner: JSON.parse(setting.banner),
     logo: JSON.parse(setting.site_logo),
     cover_image: JSON.parse(setting.site_favicon),

@@ -49,7 +49,6 @@ module.exports.defaultSettings = {
     height: 200,
   }),
   css: "",
-  google_analytics: "UA-120251616-1",
   theme: "minimal",
   menu: JSON.stringify(menu),
   cloudinary_key: "",
