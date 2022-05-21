@@ -125,7 +125,9 @@ const Metrics = () => {
             <Box
               title="Bounces"
               item={{
-                value: visitors.value ? (num / visitors.value) * 100 : 0,
+                value: formatNumber(
+                  visitors.value ? (num / visitors.value) * 100 : 0,
+                ),
                 change: formatNumber(
                   visitors.value && visitors.change
                     ? (num / visitors.value) * 100 -
