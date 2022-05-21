@@ -126,31 +126,32 @@ const Metrics = () => {
               title="Bounces"
               item={{
                 value: visitors.value ? (num / visitors.value) * 100 : 0,
-                change: Number(
+                change: formatNumber(
                   visitors.value && visitors.change
                     ? (num / visitors.value) * 100 -
                         (Math.min(diffs.uniques, diffs.bounces) /
                           diffs.uniques) *
                           100 || 0
                     : 0,
-                ).toFixed(0),
+                ),
               }}
               format={(n) => Number(n).toFixed(0) + "%"}
             />
             <Box
               title="Average time"
               item={{
-                value:
+                value: formatNumber(
                   totalTime.value && pageViews.value
                     ? totalTime.value / (pageViews.value - bounces.value)
                     : 0,
-                change: Number(
+                ),
+                change: formatNumber(
                   totalTime.value && pageViews.value
                     ? (diffs.totalTime / (diffs.pageViews - diffs.bounces) -
                         totalTime.value / (pageViews.value - bounces.value)) *
                         -1 || 0
                     : 0,
-                ).toFixed(0),
+                ),
               }}
               unit="s"
               format={(n) =>
