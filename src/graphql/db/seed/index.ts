@@ -1,5 +1,5 @@
 const { exec } = require("child_process");
-require("@/config/env");
+require("dotenv/config");
 
 const execShellCommand = (command) => {
   return new Promise((resolve, reject) => {
