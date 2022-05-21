@@ -26,10 +26,10 @@ You can register in https://letterpad.app/admin/register and start writing posts
 
 There are few things that you should know before running letterpad in a production environment.
 
-- In the root folder, you will find a file `env.development.local`. Clone is file and rename it to `env.production.local`. The most important key is `SECRET_KEY`, set the value of this key to something different. This key is used to encrypt passwords, sessions and preview links.
+- In the root folder, you will find a file `.env.sampple`. Clone is file and rename it to `.env`. The most important key is `SECRET_KEY`, set the value of this key to something different. This key is used to encrypt passwords, sessions and preview links.
 
 - Letterpad Admin runs on the url `/admin`. If you would like to run the admin dashboard in the root url,
-  edit `next.config.js` and remove the basePath. Also open `env.production.local` and remove the `/admin` from all the urls.
+  edit `next.config.js` and remove the basePath. Also open `.env` and remove the `/admin` from all the urls.
 
 - Run the below commands.
 
@@ -53,13 +53,13 @@ Password - demo
 
 ## Enabling Emails
 
-Letterpad integrates with [Gmail](https://gmail.com/). You should set `GMAIL_USER` and `GMAIL_PASSWORD` in `.env.production.local` file to activate emails.
+Letterpad integrates with [Gmail](https://gmail.com/). You should set `GMAIL_USER` and `GMAIL_PASSWORD` in `..env` file to activate emails.
 
 ---
 
 ## Captcha for registrations
 
-This section is required only if you want to use Letterpad as a multi-user account. Letterpad uses [ReCaptcha](https://www.google.com/recaptcha/about/). You can register and set the `RECAPTCHA_KEY` in `env.production.local`.
+This section is required only if you want to use Letterpad as a multi-user account. Letterpad uses [ReCaptcha](https://www.google.com/recaptcha/about/). You can register and set the `RECAPTCHA_KEY` in `.env`.
 
 ---
 

@@ -49,3 +49,5 @@ data/*
 .sentryclirc
 /.vscode/
 generated
+.env
+.cache
