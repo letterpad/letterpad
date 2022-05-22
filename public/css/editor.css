@@ -66,15 +66,15 @@ blockquote p {
 }
 
 .mark {
-  background: #999d75;
+  background: #ebeca8;
   cursor: pointer;
 }
 .mark.typographical {
-  background: #ba8dbb;
+  background: #e0a7e1;
   color: #111;
 }
 .mark.misspelling {
-  background: #999d75;
+  background: #ebeca8;
   color: #111;
 }
 .mark.duplication {
@@ -86,7 +86,11 @@ blockquote p {
   color: #111;
 }
 .mark.style {
+<<<<<<< HEAD
   background: rgb(144, 163, 202);
+=======
+  background: #9dc9f2;
+>>>>>>> change-grammar-colors
   color: #111;
 }
 .mark {
