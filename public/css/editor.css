@@ -108,7 +108,12 @@ blockquote p {
   border: 1px solid rgba(var(--color-border), 0.2);
   padding: 0px;
   border-radius: 4px;
+  box-shadow: rgb(0 0 0 / 10%) 0 2px 10px;
 }
+.tippy-box.tippy-arrow:before {
+    color: #fff;
+}
+
 .tippy-content * {
   margin: 0px;
   padding: 0px;
