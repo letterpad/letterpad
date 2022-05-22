@@ -66,28 +66,28 @@ blockquote p {
 }
 
 .mark {
-  background: yellow;
+  background: #999d75;
   cursor: pointer;
 }
 .mark.typographical {
-  background: rgb(241, 107, 230);
-  color: #fff;
+  background: #ba8dbb;
+  color: #111;
 }
 .mark.misspelling {
-  background: rgb(202, 248, 94);
+  background: #999d75;
   color: #111;
 }
 .mark.duplication {
-  background: rgb(186, 168, 214);
+  background: rgb(161, 170, 209);
   color: #111;
 }
 .mark.grammar {
-  background: rgb(120, 214, 226);
-  color: rgb(56, 56, 56);
+  background: #a7d391;
+  color: #111;
 }
 .mark.style {
-  background: slateblue;
-  color: #ddd;
+  background: rgb(144, 163, 202);
+  color: #111;
 }
 .mark {
   /* text-decoration: underline; */
