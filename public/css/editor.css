@@ -87,11 +87,7 @@ blockquote p {
   color: #111;
 }
 .mark.style {
-<<<<<<< HEAD
-  background: rgb(144, 163, 202);
-=======
   background: #9dc9f2;
->>>>>>> change-grammar-colors
   color: #111;
 }
 .mark {
@@ -111,7 +107,7 @@ blockquote p {
   box-shadow: rgb(0 0 0 / 10%) 0 2px 10px;
 }
 .tippy-box.tippy-arrow:before {
-    color: #fff;
+  color: #fff;
 }
 
 .tippy-content * {
