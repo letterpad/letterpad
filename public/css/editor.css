@@ -67,6 +67,7 @@ blockquote p {
 
 .mark {
   background: #ebeca8;
+  color: #111;
   cursor: pointer;
 }
 .mark.typographical {
