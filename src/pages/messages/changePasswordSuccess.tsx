@@ -26,5 +26,5 @@ const ChangePasswordSuccess = () => {
     </>
   );
 };
-ChangePasswordSuccess.noSession = true;
+ChangePasswordSuccess.isStatic = true;
 export default ChangePasswordSuccess;

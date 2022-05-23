@@ -133,5 +133,5 @@ const ResetPassword = () => {
     </>
   );
 };
-ResetPassword.noSession = true;
+ResetPassword.isStatic = true;
 export default ResetPassword;

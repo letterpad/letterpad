@@ -30,7 +30,7 @@ export const LoginFormDemo = ({ isVisible }: { isVisible: boolean }) => {
           Enter Now
         </Button>
       </div>
-      <style jsx global>{`
+      <style jsx>{`
         .container {
           display: flex;
           flex-direction: column;

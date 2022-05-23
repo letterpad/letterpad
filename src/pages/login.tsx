@@ -16,7 +16,7 @@ const Login = () => {
       <Head>
         <title>Login</title>
       </Head>
-      <div className="login" style={{ height: "100%" }}>
+      <div className="login" style={{ height: "100%", flex: 1 }}>
         {isDemo ? (
           <LoginFormDemo isVisible={loginView} />
         ) : (
@@ -33,5 +33,5 @@ const Login = () => {
     </NoSsr>
   );
 };
-Login.noSession = true;
+Login.isLogin = true;
 export default Login;

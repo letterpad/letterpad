@@ -10,7 +10,7 @@ const Register = () => {
       <Head>
         <title>Register</title>
       </Head>
-      <div className="register" style={{ height: "100%" }}>
+      <div className="register" style={{ height: "100%", flex: 1 }}>
         <RegisterForm />
       </div>
     </>
@@ -28,7 +28,7 @@ const Provider: React.VFC<Props> = ({ recaptchaKey }) => {
   );
 };
 //@ts-ignore
-Provider.noSession = true;
+Provider.isLogin = true;
 export default Provider;
 
 export const getServerSideProps = async () => {

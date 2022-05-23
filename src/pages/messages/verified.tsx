@@ -32,5 +32,5 @@ const Verified = () => {
     </>
   );
 };
-Verified.noSession = true;
+Verified.isStatic = true;
 export default Verified;

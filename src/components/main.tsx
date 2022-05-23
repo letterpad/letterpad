@@ -8,6 +8,7 @@ import { Page } from "@/page";
 import AuthenticatedLayout from "./layouts/Layout";
 import AuthenticatedNoLayout from "./layouts/NoLayout";
 import StaticLayout from "./layouts/StaticLayout";
+import LoginLayout from "./layouts/LoginLayout";
 
 interface IProps {
   Component: Page;
@@ -15,7 +16,7 @@ interface IProps {
 }
 const Main = ({ Component, props }: IProps) => {
   useTracking();
-  const protectedPage = Component.noSession;
+  const protectedPage = Component.isStatic;
 
   useEffect(() => {
     if (protectedPage) ThemeSwitcher.switch(localStorage.theme);
@@ -23,11 +24,17 @@ const Main = ({ Component, props }: IProps) => {
   }, []);
 
   let node: JSX.Element;
-  if (Component.noSession) {
+  if (Component.isStatic) {
     node = (
       <StaticLayout>
         <Component {...props} />
       </StaticLayout>
+    );
+  } else if (Component.isLogin) {
+    node = (
+      <LoginLayout>
+        <Component {...props} />
+      </LoginLayout>
     );
   } else if (Component.noLayout) {
     node = (
