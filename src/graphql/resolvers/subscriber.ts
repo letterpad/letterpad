@@ -68,7 +68,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
 
     try {
-      await prisma.subscriber.create({
+      const response = await prisma.subscriber.create({
         data: {
           email: args.email,
           verified: false,
@@ -82,7 +82,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
       await enqueueEmailAndSend({
         author_id,
-        subscriber_email: args.email,
+        subscriber_id: response.id,
         template_id: EmailTemplates.VerifySubscriber,
       });
     } catch (e) {

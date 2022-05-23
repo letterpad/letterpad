@@ -11,6 +11,7 @@ import {
   formatNumber,
   formatShortTime,
 } from "@/utils/format";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const cols = [
   {
@@ -45,7 +46,7 @@ const Metrics = () => {
     },
   });
   const [days, setDays] = useState(7);
-  const [_loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -68,21 +69,13 @@ const Metrics = () => {
     setLoading(false);
   };
 
-  const num = Math.min(
-    data.stats?.uniques.value,
-    data && data.stats?.bounces.value,
-  );
-
-  const pageViews = data.stats?.pageviews;
-  const visitors = data.stats?.uniques;
-  const bounces = data.stats?.bounces;
-  const totalTime = data.stats?.totaltime;
-
+  const { pageviews, uniques, bounces, totaltime } = data.stats || {};
+  const num = Math.min(data && uniques.value, data && bounces.value);
   const diffs = data && {
-    pageViews: pageViews.value - pageViews.change,
-    uniques: visitors.value - visitors.change,
+    pageviews: pageviews.value - pageviews.change,
+    uniques: uniques.value - uniques.change,
     bounces: bounces.value - bounces.change,
-    totalTime: totalTime.value - totalTime.change,
+    totaltime: totaltime.value - totaltime.change,
   };
 
   const formatFunc = (n) =>
@@ -110,50 +103,53 @@ const Metrics = () => {
             <option value={14}>Last 2 weeks</option>
             <option value={30}>Last 1 Month</option>
             <option value={90}>Last 3 Months</option>
-          </select>
+          </select>{" "}
+          {loading && <LoadingOutlined />}
           <Divider />
           <Row gutter={16}>
             <Box
               title="Views"
               item={{
-                value: pageViews.value,
-                change: diffs.pageViews,
+                value: pageviews.value,
+                change: pageviews.change,
               }}
               format={formatFunc}
             />
-            <Box title="Visitors" item={visitors} format={formatFunc} />
+            <Box
+              title="Visitors"
+              item={{
+                value: uniques.value,
+                change: uniques.change,
+              }}
+              format={formatFunc}
+            />
             <Box
               title="Bounces"
               item={{
-                value: formatNumber(
-                  visitors.value ? (num / visitors.value) * 100 : 0,
-                ),
-                change: formatNumber(
-                  visitors.value && visitors.change
-                    ? (num / visitors.value) * 100 -
+                value: uniques.value ? (num / uniques.value) * 100 : 0,
+                change:
+                  uniques.value && uniques.change
+                    ? (num / uniques.value) * 100 -
                         (Math.min(diffs.uniques, diffs.bounces) /
                           diffs.uniques) *
                           100 || 0
                     : 0,
-                ),
               }}
               format={(n) => Number(n).toFixed(0) + "%"}
             />
             <Box
               title="Average time"
               item={{
-                value: formatNumber(
-                  totalTime.value && pageViews.value
-                    ? totalTime.value / (pageViews.value - bounces.value)
+                value:
+                  totaltime.value && pageviews.value
+                    ? totaltime.value / (pageviews.value - bounces.value)
                     : 0,
-                ),
-                change: formatNumber(
-                  totalTime.value && pageViews.value
-                    ? (diffs.totalTime / (diffs.pageViews - diffs.bounces) -
-                        totalTime.value / (pageViews.value - bounces.value)) *
+                change:
+                  totaltime.value && pageviews.value
+                    ? (diffs.totaltime / (diffs.pageviews - diffs.bounces) -
+                        totaltime.value / (pageviews.value - bounces.value)) *
                         -1 || 0
                     : 0,
-                ),
               }}
               unit="s"
               format={(n) =>
