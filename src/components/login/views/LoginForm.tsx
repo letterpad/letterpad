@@ -8,7 +8,6 @@ import { SocialLogin } from "./SocialLogin";
 import { useRouter } from "next/router";
 import { basePath } from "@/constants";
 import { DividerWithOr } from "./Divider";
-import Image from "next/image";
 import { Logo } from "./Logo";
 import css from "./style.module.css";
 export const LoginForm = ({
