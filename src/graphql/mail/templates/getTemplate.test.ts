@@ -71,7 +71,7 @@ Object {
     const data = await getEmailTemplate(
       {
         template_id: EmailTemplates.VerifySubscriber,
-        subscriber_email: subscriberEmail,
+        subscriber_id: 1,
         author_id: 2,
       },
       prisma,

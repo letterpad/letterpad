@@ -52,7 +52,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         await enqueueEmailAndSend({
           template_id: EmailTemplates.VerifySubscriber,
           author_id,
-          subscriber_email: args.email,
+          subscriber_id: subscribers[0].id,
         });
 
         return {
