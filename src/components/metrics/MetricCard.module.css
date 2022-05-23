@@ -1,0 +1,40 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 100px;
+  gap: 8px;
+}
+
+.value {
+  font-size: 3rem;
+  line-height: 40px;
+  min-height: 40px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.label {
+  font-size: 1rem;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.change {
+  font-size: 12px;
+  padding: 0 5px;
+  border-radius: 5px;
+  margin-left: 4px;
+  border: 1px solid rgb(var(--color-border));
+  /* color: var(--gray500); */
+}
+
+.change.positive {
+  color: #268e6c;
+}
+
+.change.negative {
+  color: #d7373f;
+}
