@@ -26,6 +26,18 @@ export async function getVerifySubscriberEmailContent(
       message: `No info found for the current blog.`,
     };
   }
+
+  const subscriber = await prisma.subscriber.findFirst({
+    where: { id: data.subscriber_id },
+  });
+
+  if (!subscriber) {
+    return {
+      ok: false,
+      message: `No info found for subscriber. Check if the record exist`,
+    };
+  }
+
   const subjectTemplate = Twig.twig({
     data: template.subject,
   });
@@ -39,7 +51,7 @@ export async function getVerifySubscriberEmailContent(
   });
 
   const token = getVerifySubscriberToken({
-    email: data.subscriber_email,
+    email: subscriber.email,
     author_id: data.author_id,
   });
 
@@ -55,7 +67,7 @@ export async function getVerifySubscriberEmailContent(
 
   return {
     ok: true,
-    content: { subject, html: addLineBreaks(body), to: data.subscriber_email },
+    content: { subject, html: addLineBreaks(body), to: subscriber.email },
     meta: {
       author,
     },

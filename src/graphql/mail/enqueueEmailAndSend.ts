@@ -14,16 +14,9 @@ export async function enqueueEmailAndSend(props: EmailProps, restrict = false) {
     );
   }
   try {
-    // const found = await prisma.emailDelivery.findFirst({
-    //   where: { ...props },
-    // });
-    // if (found) {
-    //   return logger.debug("Email record exist. Skipping");
-    // }
     const newDelivery = await prisma.emailDelivery.create({
       data: {
         ...props,
-        // createdAt: getDateTime(new Date()) as any,
         delivered: 0,
       },
     } as any);
@@ -31,6 +24,7 @@ export async function enqueueEmailAndSend(props: EmailProps, restrict = false) {
 
     // TODO - Since we are tracking the email, we should not run it on the main thread. Instead use a child thread or an external service. Lets worry when we are worried.
     const data = await getEmailTemplate(props, prisma);
+
     if (data.ok) {
       const addUnsubscribe = props.template_id === EmailTemplates.NewPost;
       const response = await sendMail(data.content, data.meta, addUnsubscribe);

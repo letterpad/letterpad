@@ -104,7 +104,7 @@ export interface EmailVerifyNewEmailProps {
 
 export interface EmailVerifySubscriberProps {
   author_id: number;
-  subscriber_email: string;
+  subscriber_id: number;
   template_id: EmailTemplates.VerifySubscriber;
 }
 

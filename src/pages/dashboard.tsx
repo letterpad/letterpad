@@ -1,16 +1,13 @@
 import { basePath } from "@/constants";
 import { useState, useEffect } from "react";
 import { PageHeader, Table } from "antd";
-import { Divider, Tag, Card } from "antd";
+import { Divider } from "antd";
 import Head from "next/head";
 import { Content } from "antd/lib/layout/layout";
-import { Statistic, Row, Col } from "antd";
+import { Row } from "antd";
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
-import {
-  formatLongNumber,
-  formatNumber,
-  formatShortTime,
-} from "@/utils/format";
+import { LoadingOutlined } from "@ant-design/icons";
+import MetricsBar from "@/components/metrics/MetricsBar";
 
 const cols = [
   {
@@ -45,7 +42,7 @@ const Metrics = () => {
     },
   });
   const [days, setDays] = useState(7);
-  const [_loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -67,26 +64,6 @@ const Metrics = () => {
     }
     setLoading(false);
   };
-
-  const num = Math.min(
-    data.stats?.uniques.value,
-    data && data.stats?.bounces.value,
-  );
-
-  const pageViews = data.stats?.pageviews;
-  const visitors = data.stats?.uniques;
-  const bounces = data.stats?.bounces;
-  const totalTime = data.stats?.totaltime;
-
-  const diffs = data && {
-    pageViews: pageViews.value - pageViews.change,
-    uniques: visitors.value - visitors.change,
-    bounces: bounces.value - bounces.change,
-    totalTime: totalTime.value - totalTime.change,
-  };
-
-  const formatFunc = (n) =>
-    n >= 0 ? formatLongNumber(n) : `-${formatLongNumber(Math.abs(n))}`;
 
   return (
     <div>
@@ -110,60 +87,11 @@ const Metrics = () => {
             <option value={14}>Last 2 weeks</option>
             <option value={30}>Last 1 Month</option>
             <option value={90}>Last 3 Months</option>
-          </select>
+          </select>{" "}
+          {loading && <LoadingOutlined />}
           <Divider />
           <Row gutter={16}>
-            <Box
-              title="Views"
-              item={{
-                value: pageViews.value,
-                change: diffs.pageViews,
-              }}
-              format={formatFunc}
-            />
-            <Box title="Visitors" item={visitors} format={formatFunc} />
-            <Box
-              title="Bounces"
-              item={{
-                value: formatNumber(
-                  visitors.value ? (num / visitors.value) * 100 : 0,
-                ),
-                change: formatNumber(
-                  visitors.value && visitors.change
-                    ? (num / visitors.value) * 100 -
-                        (Math.min(diffs.uniques, diffs.bounces) /
-                          diffs.uniques) *
-                          100 || 0
-                    : 0,
-                ),
-              }}
-              format={(n) => Number(n).toFixed(0) + "%"}
-            />
-            <Box
-              title="Average time"
-              item={{
-                value: formatNumber(
-                  totalTime.value && pageViews.value
-                    ? totalTime.value / (pageViews.value - bounces.value)
-                    : 0,
-                ),
-                change: formatNumber(
-                  totalTime.value && pageViews.value
-                    ? (diffs.totalTime / (diffs.pageViews - diffs.bounces) -
-                        totalTime.value / (pageViews.value - bounces.value)) *
-                        -1 || 0
-                    : 0,
-                ),
-              }}
-              unit="s"
-              format={(n) =>
-                `${n < 0 ? "-" : ""}${formatShortTime(
-                  Math.abs(~~n),
-                  ["m", "s"],
-                  " ",
-                )}`
-              }
-            />
+            <MetricsBar stats={data.stats} />
           </Row>
           <Divider />
           <Table dataSource={data.urlView} columns={cols} pagination={false} />
@@ -173,20 +101,3 @@ const Metrics = () => {
   );
 };
 export default Metrics;
-
-const Box = ({ title, item, unit = "", format = formatNumber }) => {
-  return (
-    <Col span={12} md={{ span: 6 }}>
-      <Card style={{ textAlign: "center" }}>
-        <Statistic
-          title={title}
-          value={item.value + unit}
-          valueStyle={{ fontSize: "3em" }}
-        />
-        <Tag color={item.change >= 0 ? "lime" : "magenta"}>
-          {format(item.change)}
-        </Tag>
-      </Card>
-    </Col>
-  );
-};
