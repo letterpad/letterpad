@@ -15,5 +15,5 @@ const VerifiedSubscriber = () => {
     </>
   );
 };
-VerifiedSubscriber.noSession = true;
+VerifiedSubscriber.isStatic = true;
 export default VerifiedSubscriber;

@@ -7,7 +7,9 @@ import Link from "next/link";
 import { SocialLogin } from "./SocialLogin";
 import { useRouter } from "next/router";
 import { basePath } from "@/constants";
-
+import { DividerWithOr } from "./Divider";
+import { Logo } from "./Logo";
+import css from "./style.module.css";
 export const LoginForm = ({
   isVisible,
   hideSelf,
@@ -49,89 +51,90 @@ export const LoginForm = ({
   }
 
   return (
-    <div>
-      <Form
-        name="basic"
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
-        autoComplete="off"
-        onFinish={onFinish}
-        className="forms"
-      >
-        <h2>Login</h2>
-        <Divider />
-        <Form.Item
-          label="Email"
-          name="email"
-          data-testid="input-email"
-          rules={[
-            {
-              required: true,
-              message: "Please input your email!",
-              type: "email",
-            },
-          ]}
-        >
-          <Input autoComplete="dontshow" data-testid="email" />
-        </Form.Item>
+    <>
+      <div className={css.wrapper}>
+        <div className={css.leftBox}>
+          <span>Letterpad</span>
+        </div>
+        <div className={css.rightBox}>
+          <Form
+            name="basic"
+            initialValues={{ remember: true }}
+            autoComplete="off"
+            onFinish={onFinish}
+            className={css.forms}
+          >
+            <Logo />
+            <Divider />
+            <Form.Item
+              name="email"
+              data-testid="input-email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your email!",
+                  type: "email",
+                },
+              ]}
+            >
+              <Input
+                autoComplete="dontshow"
+                data-testid="email"
+                placeholder="Enter your email"
+              />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              data-testid="input-password"
+              rules={[
+                { required: true, message: "Please input your password!" },
+              ]}
+            >
+              <Input.Password
+                autoComplete="dontshow"
+                data-testid="password"
+                placeholder="Enter your password"
+              />
+            </Form.Item>
+            <Form.Item name="remember" valuePropName="checked">
+              <Checkbox>Remember me</Checkbox>
+              <Button type="link" onClick={hideSelf}>
+                Forgot Password
+              </Button>
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                data-testid="loginBtn"
+                style={{ width: "100%" }}
+              >
+                Login
+              </Button>
+            </Form.Item>
+            <DividerWithOr />
+            <br />
+            <SocialLogin mode="login" />
+            <br />
 
-        <Form.Item
-          label="Password"
-          name="password"
-          data-testid="input-password"
-          rules={[{ required: true, message: "Please input your password!" }]}
-        >
-          <Input.Password autoComplete="dontshow" data-testid="password" />
-        </Form.Item>
-
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{
-            offset: 0,
-            span: 16,
-            sm: { offset: 6 },
-            md: { offset: 6 },
-          }}
-        >
-          <Checkbox>Remember me</Checkbox>
-          <Button type="link" onClick={hideSelf}>
-            Forgot Password
-          </Button>
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
-          <Button type="primary" htmlType="submit" data-testid="loginBtn">
-            Login
-          </Button>
-          <Link href="/register">
-            <Button type="link">Register</Button>
-          </Link>
-        </Form.Item>
-        <Divider />
-        <SocialLogin mode="login" />
-      </Form>
-      <style jsx global>{`
-        .forms {
-          width: 500px;
-          padding: 30px;
-          background: rgb(var(----section-bg));
-          border: 1px solid rgb(var(--color-border));
-          border-radius: 2px;
-          overflow: hidden;
-          margin: auto;
-        }
+            <Form.Item
+              name="remember"
+              valuePropName="checked"
+              style={{ textAlign: "center" }}
+            >
+              Dont have an account ?
+              <Link href="/register">
+                <Button type="link">Register Now</Button>
+              </Link>
+            </Form.Item>
+          </Form>
+        </div>
+      </div>
+      <style jsx>{`
         input:-internal-autofill-selected {
           background-color: transparent !important;
         }
-        @media (max-width: 500px) {
-          .forms {
-            width: 100%;
-            padding: 16px;
-            border: none;
-          }
-        }
       `}</style>
-    </div>
+    </>
   );
 };

@@ -15,5 +15,5 @@ const Expired = () => {
     </>
   );
 };
-Expired.noSession = true;
+Expired.isStatic = true;
 export default Expired;

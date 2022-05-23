@@ -26,5 +26,5 @@ const Registered = () => {
     </>
   );
 };
-Registered.noSession = true;
+Registered.isStatic = true;
 export default Registered;

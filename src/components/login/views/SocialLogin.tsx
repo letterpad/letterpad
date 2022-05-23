@@ -23,36 +23,34 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
     await signIn(type, { callbackUrl: callback });
   };
   return (
-    <div>
+    <div className="container">
       <Button
         icon={<GoogleSquareFilled />}
         onClick={(e) => onClick(e, "google")}
         type="primary"
-        style={{ width: "100%" }}
         className="google-btn"
         size="large"
-      >
-        Login with Google
-      </Button>
+      ></Button>
       &nbsp;&nbsp;
       <Button
         icon={<GithubFilled />}
         onClick={(e) => onClick(e, "github")}
         type="primary"
-        style={{ width: "100%" }}
         className="github-btn"
         size="large"
-      >
-        Login with Github
-      </Button>
+      ></Button>
       <style global jsx>{`
+        .container {
+          display: flex;
+          justify-content: center;
+        }
         .google-btn {
-          background: #c93a23;
-          border: 1px solid #8c3b3b;
+          background: #da6a59;
+          border: 1px solid #b02e2e;
         }
         .google-btn:hover {
-          background: #b0321f;
-          border: 1px solid #9f2d2d;
+          background: #da6a59;
+          border: 1px solid #b02e2e;
         }
         .github-btn {
           background: #141212;

@@ -21,5 +21,5 @@ const Unsubscribed = () => {
   );
 };
 
-Unsubscribed.noSession = true;
+Unsubscribed.isStatic = true;
 export default Unsubscribed;

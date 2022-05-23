@@ -10,6 +10,9 @@ import { EventAction, track } from "@/track";
 import Link from "next/link";
 import { SocialLogin } from "@/components/login/views/SocialLogin";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { DividerWithOr } from "@/components/login/views/Divider";
+import { Logo } from "@/components/login/views/Logo";
+import css from "@/components/login/views/style.module.css";
 
 const key = "register";
 export const RegisterForm = () => {
@@ -69,120 +72,112 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div>
-      <Form
-        name="basic"
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 14 }}
-        initialValues={{ remember: true }}
-        autoComplete="off"
-        onFinish={onFinish}
-        className="forms"
-      >
-        <h2>Register</h2>
-        <Divider />
-        <Form.Item
-          label="Name"
-          name="name"
-          rules={[
-            {
-              required: true,
-              message: "Please input your name!",
-              max: 100,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Site Title"
-          name="site_title"
-          rules={[
-            {
-              required: true,
-              message: "Please input a title of your site!",
-              max: 25,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: "Please input your username!",
-            },
-            {
-              pattern: /[0-9A-Za-z_.]*/,
-              message: "Can only contain alphabets and numbers",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Email"
-          name="email"
-          data-testid="input-email"
-          rules={[
-            {
-              required: true,
-              message: "Please input your email!",
-              type: "email",
-            },
-          ]}
-        >
-          <Input autoComplete="off" />
-        </Form.Item>
+    <>
+      <div className={css.wrapper}>
+        <div className={css.leftBox}>
+          <span>Letterpad</span>
+        </div>
+        <div className={css.rightBox}>
+          <Form
+            name="basic"
+            initialValues={{ remember: true }}
+            autoComplete="off"
+            onFinish={onFinish}
+            className={css.forms}
+          >
+            <Logo />
+            <Divider />
+            <Form.Item
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your name!",
+                  max: 100,
+                },
+              ]}
+            >
+              <Input placeholder="Enter your Name" />
+            </Form.Item>
+            <Form.Item
+              name="email"
+              data-testid="input-email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your email!",
+                  type: "email",
+                },
+              ]}
+            >
+              <Input autoComplete="off" placeholder="Enter your email" />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              data-testid="input-password"
+              rules={[
+                { required: true, message: "Please input your password!" },
+                { min: 6, message: "Password must be minimum 6 characters." },
+              ]}
+            >
+              <Input.Password placeholder="Enter your password" />
+            </Form.Item>
+            <Form.Item
+              name="site_title"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input a title of your site!",
+                  max: 25,
+                },
+              ]}
+            >
+              <Input placeholder="Enter a name for your site" />
+            </Form.Item>
+            <Form.Item
+              name="username"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your username!",
+                },
+                {
+                  pattern: /[0-9A-Za-z_.]*/,
+                  message: "Can only contain alphabets and numbers",
+                },
+              ]}
+            >
+              <Input placeholder="Enter a username" />
+            </Form.Item>
 
-        <Form.Item
-          label="Password"
-          name="password"
-          data-testid="input-password"
-          rules={[
-            { required: true, message: "Please input your password!" },
-            { min: 6, message: "Password must be minimum 6 characters." },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
-          <br />
-          <Button type="primary" htmlType="submit" disabled={processing}>
-            Register
-          </Button>
-          <Link href="/login">
-            <Button type="link">⏎ Login</Button>
-          </Link>
-        </Form.Item>
-        <Divider />
-        <SocialLogin mode="register" />
-      </Form>
-
-      <style jsx global>{`
-        .forms {
-          width: 500px;
-          padding: 30px;
-          background: rgb(var(----section-bg));
-          border: 1px solid rgb(var(--color-border));
-          border-radius: 2px;
-          overflow: hidden;
-          margin: auto;
-        }
-        input:-internal-autofill-selected {
-          background-color: transparent !important;
-        }
-        @media (max-width: 500px) {
-          .forms {
-            width: 100%;
-            padding: 16px;
-            border: none;
-          }
-        }
-      `}</style>
-    </div>
+            <Form.Item>
+              <br />
+              <Button
+                type="primary"
+                htmlType="submit"
+                disabled={processing}
+                style={{ width: "100%" }}
+              >
+                Register
+              </Button>
+            </Form.Item>
+            <DividerWithOr />
+            <br />
+            <SocialLogin mode="register" />
+            <br />
+            <Form.Item
+              name="remember"
+              valuePropName="checked"
+              style={{ textAlign: "center" }}
+            >
+              Already have an account ?
+              <Link href="/login">
+                <Button type="link">Login</Button>
+              </Link>
+            </Form.Item>
+          </Form>
+        </div>
+      </div>
+    </>
   );
 };

@@ -4,7 +4,8 @@ import { ComponentType, ReactElement, ReactNode } from "react";
 
 export type Page<P = {}> = NextPage<P> & {
   // Does not need any session and will take care of their own layout. Like login page
-  noSession?: boolean;
+  isStatic?: boolean;
+  isLogin?: boolean;
   // Needs session but will take care of its own layout. Like editPost
   noLayout?: boolean;
 };

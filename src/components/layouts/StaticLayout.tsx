@@ -1,6 +1,5 @@
 import React from "react";
-import { Layout, Menu } from "antd";
-import Link from "next/link";
+import { Layout } from "antd";
 const { Header, Content, Footer } = Layout;
 
 const StaticLayout = ({ children }) => {
@@ -11,11 +10,6 @@ const StaticLayout = ({ children }) => {
           <div className="logo">
             <img src="/admin/uploads/logo.png" height={28} />
           </div>
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
-            <Menu.Item>
-              <Link href="/">Home</Link>
-            </Menu.Item>
-          </Menu>
         </Header>
         <Content className="content">
           <div className="site-layout-content">{children}</div>
