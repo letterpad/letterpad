@@ -52,6 +52,7 @@ export async function getVerifySubscriberEmailContent(
 
   const token = getVerifySubscriberToken({
     email: subscriber.email,
+    subscriber_id: subscriber.id,
     author_id: data.author_id,
   });
 

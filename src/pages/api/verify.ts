@@ -21,7 +21,7 @@ const Verify = async (
     if (isSubscriber) {
       update = await prisma.subscriber.update({
         data: { verified: true },
-        where: { id: token.id },
+        where: { id: token.subscriber_id },
       });
     } else {
       const author = await prisma.author.findFirst({
