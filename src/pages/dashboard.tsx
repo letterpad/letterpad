@@ -1,18 +1,12 @@
 import { basePath } from "@/constants";
 import { useState, useEffect } from "react";
 import { PageHeader, Table } from "antd";
-import { Divider, Tag, Card } from "antd";
+import { Divider } from "antd";
 import Head from "next/head";
 import { Content } from "antd/lib/layout/layout";
-import { Statistic, Row, Col } from "antd";
+import { Row } from "antd";
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
-import {
-  formatLongNumber,
-  formatNumber,
-  formatShortTime,
-} from "@/utils/format";
 import { LoadingOutlined } from "@ant-design/icons";
-import { useSpring, animated } from "react-spring";
 import MetricsBar from "@/components/metrics/MetricsBar";
 
 const cols = [
