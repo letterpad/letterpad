@@ -6,7 +6,7 @@ interface GetToken {
   algorithm?: string;
 }
 export function getToken({
-  validityInMins = 10,
+  validityInMins = 120,
   data,
   algorithm = "",
 }: GetToken) {
@@ -44,9 +44,9 @@ export function getVerifyUserToken({ email, author_id }) {
   });
 }
 
-export function getVerifySubscriberToken({ email, author_id }) {
+export function getVerifySubscriberToken({ email, author_id, subscriber_id }) {
   return getToken({
-    data: { email, author_id },
+    data: { email, author_id, subscriber_id },
     algorithm: "HS256",
   });
 }

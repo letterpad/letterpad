@@ -21,7 +21,7 @@ const Verify = async (
     if (isSubscriber) {
       update = await prisma.subscriber.update({
         data: { verified: true },
-        where: { id: token.id },
+        where: { id: token.subscriber_id },
       });
     } else {
       const author = await prisma.author.findFirst({
@@ -46,7 +46,11 @@ const Verify = async (
     }
     res.redirect(basePath + "/messages/verified");
   } catch (e) {
-    res.send(e.message);
+    console.log(e);
+    res.status(500).json({
+      error:
+        "We encountered an error and failed to Verify. This issue has been reported",
+    });
   }
 };
 

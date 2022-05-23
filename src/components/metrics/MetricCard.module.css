@@ -2,12 +2,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-width: 100px;
+  min-width: 120px;
   gap: 8px;
 }
 
 .value {
-  font-size: 3rem;
+  font-size: 2.5rem;
   line-height: 40px;
   min-height: 40px;
   font-weight: 600;
