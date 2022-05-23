@@ -46,7 +46,11 @@ const Verify = async (
     }
     res.redirect(basePath + "/messages/verified");
   } catch (e) {
-    res.send(e.message);
+    console.log(e);
+    res.status(500).json({
+      error:
+        "We encountered an error and failed to Verify. This issue has been reported",
+    });
   }
 };
 
