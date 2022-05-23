@@ -101,7 +101,9 @@ const Query: QueryResolvers<ResolverContext> = {
           author_id: authorId,
           id: args.filters?.id,
           featured: args.filters?.featured,
-          status: args.filters?.status,
+          status: args.filters?.status ?? {
+            in: [PostStatusOptions.Published, PostStatusOptions.Draft],
+          },
           //@todo - remove slug
           slug: args.filters?.slug,
           type: args.filters?.type || PostTypes.Post,
