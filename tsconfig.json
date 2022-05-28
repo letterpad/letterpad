@@ -32,10 +32,9 @@
     "strict": true,
     "target": "ES2020"
   },
-  "exclude": ["node_modules/**/*", "generated/**/*"],
+  "exclude": ["node_modules/**/*", "__generated__/**/*"],
   "include": [
     "src/**/*",
-    "__generated__/**/*",
     "postcss.config.js",
     "tests/**/*",
     "migrations/**/*",
