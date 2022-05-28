@@ -34,13 +34,13 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
     return () => {
       socket.disconnect();
     };
-  }, [editorRef.current]);
+  }, [onChange]);
 
   useEffect(() => {
     if (typeof html == "undefined") {
       setHtml(text);
     }
-  }, [text]);
+  }, [html, text]);
 
   return (
     <>

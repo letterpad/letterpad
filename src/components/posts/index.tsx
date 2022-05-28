@@ -18,6 +18,7 @@ export const columns = [
           width={60}
           height={50}
           style={{ objectFit: "cover" }}
+          alt="post-image"
         />
       );
     },

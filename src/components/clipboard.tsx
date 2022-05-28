@@ -17,7 +17,7 @@ export const CopyToClipboard: VFC<Props> = ({ elementId }) => {
         target: () => target,
       });
     }
-  }, [buttonRef.current]);
+  }, [elementId]);
 
   return (
     <>

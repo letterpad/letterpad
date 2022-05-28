@@ -20,7 +20,7 @@ const MediaItem: React.FC<IProps> = ({
   const classes = isSelected ? "item selected" : "item";
   return (
     <div data-testid="media-item" className={classes} onClick={onSelect}>
-      <img src={media.url} />
+      <img src={media.url} alt={media.name} />
 
       <style jsx>{`
         img {

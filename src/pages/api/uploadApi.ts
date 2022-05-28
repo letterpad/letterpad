@@ -30,7 +30,7 @@ export const config = {
   },
 };
 
-export default async (
+const uploadApi = async (
   req: NextApiRequestWithFormData,
   res: NextApiResponse,
 ) => {
@@ -155,3 +155,5 @@ async function getCloudinaryCreds(author_id: number) {
   }
   return {};
 }
+
+export default uploadApi;

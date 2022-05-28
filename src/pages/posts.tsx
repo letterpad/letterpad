@@ -22,7 +22,7 @@ function Posts({ readOnly }: { readOnly: boolean }) {
   const router = useRouter();
   const { loading, data, error, refetch } = usePostsQuery();
   const setting = useContext(LetterpadContext);
-  if (error) return <ErrorMessage description={error} title="Error" />;
+
   const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
   const totalCount =
     data?.posts.__typename === "PostsNode" ? data.posts.count : 0;
@@ -34,7 +34,7 @@ function Posts({ readOnly }: { readOnly: boolean }) {
         router.push("/home");
       }
     }
-  }, []);
+  }, [router, setting?.intro_dismissed]);
 
   const handleChange = (p) => {
     track({
@@ -48,6 +48,7 @@ function Posts({ readOnly }: { readOnly: boolean }) {
       },
     });
   };
+  if (error) return <ErrorMessage description={error} title="Error" />;
   if (typeof window === "undefined") return null;
   return (
     <>

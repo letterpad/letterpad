@@ -27,6 +27,7 @@ const MediaUpdateModal = ({
           loading="lazy"
           width={img.width}
           height={img.height}
+          alt={img.name}
         />
       )}
       <Input

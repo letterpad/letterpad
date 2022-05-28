@@ -29,7 +29,7 @@ const ImageUpload = ({ url, onDone, name, dataTestid }: IProps) => {
       // @ts-ignore
       setFileList([{ url, status: "done", uid: "1", size: 200, name }]);
     }
-  }, [url]);
+  }, [name, url]);
 
   const handleChange = async (info: UploadChangeParam) => {
     if (info.file.status === "uploading") {

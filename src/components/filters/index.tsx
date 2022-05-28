@@ -35,7 +35,7 @@ const Filters = ({ showTags = true, onChange }: IProps) => {
     );
 
     onChange(filters);
-  }, [JSON.stringify(filters), tags]);
+  }, [filters, loading, onChange, showTags, tags]);
 
   if (loading && showTags) return <Loading />;
   return (

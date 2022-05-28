@@ -13,7 +13,7 @@ const ThemeSwitcher = () => {
     setTimeout(() => {
       switchTheme(localStorage.theme || theme);
     }, 0);
-  }, []);
+  }, [theme]);
 
   const switchTheme = (color: string) => {
     ThemeSwitcher.switch(color);

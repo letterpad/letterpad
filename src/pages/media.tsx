@@ -23,7 +23,7 @@ const Media = () => {
     if (data?.media.__typename === "MediaNode") {
       setImages(data.media);
     }
-  }, [loading]);
+  }, [loading, data?.media]);
   const deleteImage = async (img: IMedia) => {
     const res = await deleteImageAPI(img);
     if (res.data?.deleteMedia?.__typename === "MediaDeleteResult") {

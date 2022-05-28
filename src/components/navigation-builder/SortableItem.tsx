@@ -134,7 +134,7 @@ const SortableItem = SortableElement((props: IProps) => {
         <Divider />
         Assign a page <p />
         {getOptions(source, NavigationType.Page, onClick).map((item) => (
-          <div>{item}</div>
+          <div key={item.key}>{item}</div>
         ))}
       </Modal>
       <style jsx global>{`

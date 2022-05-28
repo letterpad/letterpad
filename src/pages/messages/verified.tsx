@@ -3,9 +3,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 const Verified = () => {
-  if (typeof document === "undefined") {
-    return null;
-  }
   const router = useRouter();
   const queryParams = new URLSearchParams(document.location.search);
   const doLogin = () => {
@@ -13,6 +10,9 @@ const Verified = () => {
   };
   if (queryParams.get("msg")) {
     return <Result status="error" title={queryParams.get("msg")} />;
+  }
+  if (typeof document === "undefined") {
+    return null;
   }
   return (
     <>

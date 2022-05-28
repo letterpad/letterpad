@@ -44,6 +44,7 @@ const Home = () => {
               <a
                 href="https://docs.letterpad.app/setup/setting-up-your-blog"
                 target="_blank"
+                rel="noreferrer"
               >
                 article
               </a>{" "}
@@ -58,7 +59,11 @@ const Home = () => {
             <p>
               Letterpad is an open source project, meaning all its code is
               freely available{" "}
-              <a href="https://github.com/letterpad/letterpad" target="_blank">
+              <a
+                href="https://github.com/letterpad/letterpad"
+                target="_blank"
+                rel="noreferrer"
+              >
                 here
               </a>
               . We believe that a community has more power in driving the
@@ -68,7 +73,11 @@ const Home = () => {
             </p>
             <p>
               If you would like to contribute, refer to this{" "}
-              <a href="https://docs.letterpad.app/contribute" target="_blank">
+              <a
+                href="https://docs.letterpad.app/contribute"
+                target="_blank"
+                rel="noreferrer"
+              >
                 article
               </a>
               .

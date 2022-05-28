@@ -1,4 +1,4 @@
-import { useMemo, useState, createContext } from "react";
+import { useMemo, useState, createContext, useCallback } from "react";
 
 import { Setting } from "@/__generated__/__types__";
 import { useContext } from "react";
@@ -15,24 +15,34 @@ export const PostProvider: React.FC<{
 
   //updatePostDraftAttributes
 
-  const onMediaBrowse = () => setFileExplorerOpen(true);
+  const onMediaBrowse = useCallback(() => setFileExplorerOpen(true), []);
 
-  const onFileExplorerClose = () => setFileExplorerOpen(false);
+  const onFileExplorerClose = useCallback(() => setFileExplorerOpen(false), []);
 
-  const context: PostContextType = {
-    fileExplorerOpen,
-    settings,
-    helpers,
-    setHelpers,
-    onMediaBrowse,
-    onFileExplorerClose,
-  };
+  const context: PostContextType = useMemo(
+    () => ({
+      fileExplorerOpen,
+      settings,
+      helpers,
+      setHelpers,
+      onMediaBrowse,
+      onFileExplorerClose,
+    }),
+    [
+      fileExplorerOpen,
+      settings,
+      helpers,
+      setHelpers,
+      onMediaBrowse,
+      onFileExplorerClose,
+    ],
+  );
 
   return useMemo(() => {
     return (
       <PostContext.Provider value={context}>{children}</PostContext.Provider>
     );
-  }, [context]);
+  }, [context, children]);
 };
 
 export const usePostContext = () => useContext(PostContext);

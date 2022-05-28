@@ -1,5 +1,5 @@
 import { basePath } from "@/constants";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { PageHeader, Table } from "antd";
 import { Divider } from "antd";
 import Head from "next/head";
@@ -44,26 +44,32 @@ const Metrics = () => {
   const [days, setDays] = useState(7);
   const [loading, setLoading] = useState(false);
 
+  const analyticsId =
+    meResult.data?.me?.__typename === "Author"
+      ? meResult.data.me.analytics_id
+      : null;
+
+  const fetchData = useCallback(
+    async (d = days) => {
+      if (!analyticsId) return;
+      setLoading(true);
+      try {
+        const res = await fetch(
+          basePath + `/api/analytics?websiteId=${analyticsId}&days=` + d,
+        );
+        const json = await res.json();
+        setData(json);
+      } catch (e) {
+        //
+      }
+      setLoading(false);
+    },
+    [days, analyticsId],
+  );
+
   useEffect(() => {
     fetchData();
-  }, [days, meResult.data]);
-
-  const fetchData = async (d = days) => {
-    if (meResult.data?.me?.__typename !== "Author") return;
-    setLoading(true);
-    try {
-      const res = await fetch(
-        basePath +
-          `/api/analytics?websiteId=${meResult.data?.me.analytics_id}&days=` +
-          d,
-      );
-      const json = await res.json();
-      setData(json);
-    } catch (e) {
-      //
-    }
-    setLoading(false);
-  };
+  }, [days, fetchData, meResult.data]);
 
   return (
     <div>

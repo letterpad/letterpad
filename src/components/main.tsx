@@ -21,7 +21,7 @@ const Main = ({ Component, props }: IProps) => {
   useEffect(() => {
     if (protectedPage) ThemeSwitcher.switch(localStorage.theme);
     initPageProgress();
-  }, []);
+  }, [protectedPage]);
 
   let node: JSX.Element;
   if (Component.isStatic) {

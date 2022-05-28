@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   MediaQuery,
   MediaQueryVariables,
@@ -17,38 +17,41 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
   const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);
 
-  let mounted = false;
+  const fetchInternalMedia = useCallback(
+    async (page: number = 1) => {
+      const result = await apolloBrowserClient.query<
+        MediaQuery,
+        MediaQueryVariables
+      >({
+        query: MediaDocument,
+        variables: {
+          filters: {
+            page,
+          },
+        },
+      });
+
+      const images = {
+        rows: result.data.media.rows,
+        count: result.data.media.count,
+      };
+      if (mounted) {
+        setData([...data, ...images.rows]);
+        setTotalCount(images.count);
+      }
+    },
+    [data],
+  );
+
+  let mounted = useRef(false);
   useEffect(() => {
-    mounted = true;
+    mounted.current = true;
     fetchInternalMedia();
 
     return () => {
-      mounted = false;
+      mounted.current = false;
     };
-  }, []);
-
-  const fetchInternalMedia = async (page = 1) => {
-    const result = await apolloBrowserClient.query<
-      MediaQuery,
-      MediaQueryVariables
-    >({
-      query: MediaDocument,
-      variables: {
-        filters: {
-          page,
-        },
-      },
-    });
-
-    const images = {
-      rows: result.data.media.rows,
-      count: result.data.media.count,
-    };
-    if (mounted) {
-      setData([...data, ...images.rows]);
-      setTotalCount(images.count);
-    }
-  };
+  }, [fetchInternalMedia]);
 
   const loadMore = () => {
     const nextPage = page + 1;

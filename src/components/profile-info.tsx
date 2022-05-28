@@ -2,11 +2,17 @@ const ProfileInfo = ({ name, avatar, site_url }) => {
   return (
     <>
       <div className="container">
-        {avatar && <img src={avatar} style={{ borderRadius: 50 }} />}
+        {avatar && (
+          <img
+            src={avatar}
+            style={{ borderRadius: 50 }}
+            alt={`avatar-${name}`}
+          />
+        )}
         <div className="flex">
           <span>{name}</span>
           <span>
-            <a href={site_url} target="_blank">
+            <a href={site_url} target="_blank" rel="noreferrer">
               View Site
             </a>
           </span>

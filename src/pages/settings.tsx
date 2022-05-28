@@ -36,7 +36,7 @@ function Settings({
       </Head>
       <PageHeader className="site-page-header" title="Settings">
         <span className="help-text">
-          Here you can customize your blog's settings.
+          Here you can customize your blog&apos;s settings.
         </span>
       </PageHeader>
       <Content>

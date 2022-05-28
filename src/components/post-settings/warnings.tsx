@@ -17,6 +17,7 @@ export function warnNoTags() {
           <a
             target="_blank"
             href="https://docs.letterpad.app/publishing/grouping-posts#setup-navigation-menu-to-display-the-tag"
+            rel="noreferrer"
           >
             Click here
           </a>{" "}
@@ -43,7 +44,11 @@ export function tagNotLinkedWithNavigation(tags: string[]) {
         You can do so by going to Settings → Navigation → New. Then give a name
         and select a tag from the dropdown.
         <p>
-          <a target="_blank" href="https://docs.letterpad.app/navigation-menu">
+          <a
+            target="_blank"
+            href="https://docs.letterpad.app/navigation-menu"
+            rel="noreferrer"
+          >
             Click here
           </a>{" "}
           to know more.
@@ -66,7 +71,11 @@ export function pageNotLinkedWithNavigation() {
         You can link this page by going to Settings → Navigation → New. Then
         give a name and select this page from the dropdown.
         <p>
-          <a target="_blank" href="https://docs.letterpad.app/navigation-menu">
+          <a
+            target="_blank"
+            href="https://docs.letterpad.app/navigation-menu"
+            rel="noreferrer"
+          >
             Click here
           </a>{" "}
           to know more.
