@@ -23,7 +23,7 @@ const Query: QueryResolvers<ResolverContext> = {
         rows: subscribers,
       };
     } catch (e) {
-      logger.log(e);
+      logger.error(e);
     }
     return {
       count: 0,

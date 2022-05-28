@@ -24,7 +24,7 @@ export const getImageAttrs = (
       src: makeCloudinaryUrl(src, sizes[sizes.length - 1]),
       sizes: srcSizes,
       "data-srcset": srcSet,
-      srcSet: [base64Url],
+      srcSet: base64Url,
       width: "100%",
       loading: "lazy",
       class: "lazyload",
@@ -38,7 +38,7 @@ export const getImageAttrs = (
       src: makeUnsplashUrl(src, sizes[sizes.length - 1]),
       sizes: srcSizes,
       "data-srcset": srcSet,
-      srcSet: [base64Url],
+      srcSet: base64Url,
       loading: "lazy",
       class: "lazyload",
     };
@@ -72,7 +72,7 @@ export function makeCloudinaryImage(src: string, width: number) {
   return `${makeCloudinaryUrl(src, width)} ${width}w`;
 }
 
-export function makeCloudinaryUrl(src, width) {
+export function makeCloudinaryUrl(src, width): string {
   const replace = /image\/upload\/(.*)\/blog-images/;
   const url = src.replace(
     replace,
