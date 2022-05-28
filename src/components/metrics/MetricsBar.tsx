@@ -1,5 +1,7 @@
-import { formatLongNumber, formatShortTime } from "@/utils/format";
 import React from "react";
+
+import { formatLongNumber, formatShortTime } from "@/utils/format";
+
 import MetricCard from "./MetricsCard";
 
 interface DefaultValue {

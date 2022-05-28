@@ -1,14 +1,18 @@
-import ThemeSwitcher from "@/components/theme-switcher";
-import { initPageProgress } from "./../shared/utils";
-import { useTracking } from "@/hooks/usetracking";
-import React, { useEffect } from "react";
 import Head from "next/head";
+import React, { useEffect } from "react";
+
+import { useTracking } from "@/hooks/usetracking";
+
+import ThemeSwitcher from "@/components/theme-switcher";
+
 import { basePath } from "@/constants";
 import { Page } from "@/page";
+
+import { initPageProgress } from "./../shared/utils";
 import AuthenticatedLayout from "./layouts/Layout";
+import LoginLayout from "./layouts/LoginLayout";
 import AuthenticatedNoLayout from "./layouts/NoLayout";
 import StaticLayout from "./layouts/StaticLayout";
-import LoginLayout from "./layouts/LoginLayout";
 
 interface IProps {
   Component: Page;

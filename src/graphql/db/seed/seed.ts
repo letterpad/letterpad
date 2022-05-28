@@ -1,15 +1,20 @@
-import Prisma, { prisma } from "@/lib/prisma";
-import { promisify } from "util";
+/* eslint-disable no-console */
 import copydir from "copy-dir";
 import mkdirp from "mkdirp";
-import rimraf from "rimraf";
 import path from "path";
-import { ROLES } from "@/graphql/types";
-import posts from "./posts";
-import generatePost from "./contentGenerator";
-import { getDateTime } from "@/shared/utils";
+import rimraf from "rimraf";
+import { promisify } from "util";
+
 import { createAuthorWithSettings } from "@/lib/onboard";
+import Prisma, { prisma } from "@/lib/prisma";
+
+import { ROLES } from "@/graphql/types";
+import logger from "@/shared/logger";
+import { getDateTime } from "@/shared/utils";
 import { textToSlug } from "@/utils/slug";
+
+import generatePost from "./contentGenerator";
+import posts from "./posts";
 
 const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
@@ -42,7 +47,9 @@ export async function seed(folderCheck = true) {
       console.time("delete all recoreds from all tables");
       try {
         await cleanupDatabase();
-      } catch (e) {}
+      } catch (e) {
+        logger.error(e);
+      }
       console.timeEnd("delete all recoreds from all tables");
       console.time("ensure data directories");
       await Promise.all([

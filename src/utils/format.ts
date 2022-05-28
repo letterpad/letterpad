@@ -1,4 +1,3 @@
-//@ts-nocheck
 export function parseTime(val) {
   const days = ~~(val / 86400);
   const hours = ~~(val / 3600) - days * 24;
@@ -16,9 +15,9 @@ export function parseTime(val) {
 }
 
 export function formatTime(val) {
-  const { hour, minutes, seconds } = parseTime(val);
-  const h = hour > 0 ? `${hour}:` : "";
-  const m = hour > 0 ? minutes.toString().padStart(2, "0") : minutes;
+  const { hours, minutes, seconds } = parseTime(val);
+  const h = hours > 0 ? `${hours}:` : "";
+  const m = hours > 0 ? minutes.toString().padStart(2, "0") : minutes;
   const s = seconds.toString().padStart(2, "0");
 
   return `${h}${m}:${s}`;
@@ -74,7 +73,7 @@ export function stringToColor(str: string) {
   }
   let color = "#";
   for (let i = 0; i < 3; i++) {
-    let value = (hash >> (i * 8)) & 0xff;
+    const value = (hash >> (i * 8)) & 0xff;
     color += ("00" + value.toString(16)).substr(-2);
   }
   return color;

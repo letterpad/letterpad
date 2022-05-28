@@ -1,19 +1,22 @@
+import bcrypt from "bcryptjs";
+
+import { createAuthorWithSettings } from "@/lib/onboard";
+import { analytics_on, umamiApi } from "@/lib/umami";
+
 import {
-  MutationResolvers,
   InputAuthor,
+  MutationResolvers,
   QueryResolvers,
   Social,
 } from "@/__generated__/__types__";
-import bcrypt from "bcryptjs";
-import { validateCaptcha } from "./helpers";
-import { decodeToken, verifyToken } from "@/shared/token";
-import { EmailTemplates } from "../types";
-import { ResolverContext } from "../context";
-import { mapAuthorToGraphql } from "./mapper";
-import { createAuthorWithSettings } from "@/lib/onboard";
 import { encryptEmail } from "@/shared/clientToken";
+import { decodeToken, verifyToken } from "@/shared/token";
+
+import { validateCaptcha } from "./helpers";
+import { mapAuthorToGraphql } from "./mapper";
+import { ResolverContext } from "../context";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
-import { umamiApi, analytics_on } from "@/lib/umami";
+import { EmailTemplates } from "../types";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -25,15 +28,12 @@ const Author = {
       where: { id },
     });
     if (!author || !author.role_id) return;
-    try {
-      const role = await prisma.role.findFirst({
-        where: { id: author.role_id },
-      });
 
-      return role?.name;
-    } catch (e) {
-      throw e;
-    }
+    const role = await prisma.role.findFirst({
+      where: { id: author.role_id },
+    });
+
+    return role?.name;
   },
   permissions: async ({ id }, _args, { prisma }: ResolverContext) => {
     const author = await prisma.author.findFirst({

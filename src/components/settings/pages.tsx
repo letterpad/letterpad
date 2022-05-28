@@ -1,6 +1,8 @@
-import { useUpdateSettings } from "@/hooks/useUpdateSettings";
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { Checkbox, Collapse, Divider } from "antd";
+
+import { useUpdateSettings } from "@/hooks/useUpdateSettings";
+
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 const { Panel } = Collapse;
 
 interface Props {

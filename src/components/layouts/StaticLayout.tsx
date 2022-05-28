@@ -1,5 +1,5 @@
-import React from "react";
 import { Layout } from "antd";
+import React from "react";
 const { Header, Content, Footer } = Layout;
 
 const StaticLayout = ({ children }) => {

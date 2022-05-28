@@ -1,8 +1,10 @@
-import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
-import { removeTypenames } from "@/shared/utils";
-import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
-import { InputSocial } from "@/__generated__/__types__";
 import { Form, Input } from "antd";
+
+import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
+
+import { InputSocial } from "@/__generated__/__types__";
+import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
+import { removeTypenames } from "@/shared/utils";
 
 interface Props {
   social: MeFragmentFragment["social"];

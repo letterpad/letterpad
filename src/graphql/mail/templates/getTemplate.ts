@@ -1,9 +1,10 @@
 import { EmailProps, EmailTemplates } from "@/graphql/types";
-import { getNewPostContent } from "../newPost/content";
+
 import { getForgotPasswordContent } from "../forgotPassword/content";
+import { getNewPostContent } from "../newPost/content";
+import { getVerifyUserEmailChangeContent } from "../verifyChangedEmail/content";
 import { getVerifyUserEmailContent } from "../verifyNewUser/content";
 import { getVerifySubscriberEmailContent } from "../verifySubscriber/content";
-import { getVerifyUserEmailChangeContent } from "../verifyChangedEmail/content";
 import { getWelcomeUserContent } from "../welcomeUser/content";
 
 export async function getEmailTemplate(props: EmailProps, prismaInstance) {

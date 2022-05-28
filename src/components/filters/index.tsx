@@ -1,12 +1,14 @@
+import { useEffect, useState } from "react";
+
 import {
   PostsFilters,
   PostStatusOptions,
   SortBy,
 } from "@/__generated__/__types__";
-import { useEffect, useState } from "react";
-import { useTagsContext } from "../tags/context";
-import Loading from "../loading";
 import { EventAction, track } from "@/track";
+
+import Loading from "../loading";
+import { useTagsContext } from "../tags/context";
 
 interface IProps {
   showTags?: boolean;

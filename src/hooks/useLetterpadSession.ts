@@ -1,7 +1,8 @@
-import { SessionData } from "@/graphql/types";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
+
+import { SessionData } from "@/graphql/types";
 
 export const useLetterpadSession = () => {
   const { data: session, status } = useSession();

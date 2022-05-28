@@ -1,16 +1,17 @@
 import {
-  PostStatusOptions,
-  PostTypes,
-  Post,
-  Author,
-  SettingInputType,
-  Setting,
-} from "@/__generated__/__types__";
-import {
-  Post as DbPost,
   Author as DbAuthor,
+  Post as DbPost,
   Setting as DbSetting,
 } from "@prisma/client";
+
+import {
+  Author,
+  Post,
+  PostStatusOptions,
+  PostTypes,
+  Setting,
+  SettingInputType,
+} from "@/__generated__/__types__";
 
 export const mapPostToGraphql = (post: DbPost) => {
   return {

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { exec } = require("child_process");
 require("dotenv/config");
 
@@ -24,6 +25,7 @@ function init() {
   execShellCommand(
     `DATABASE_URL='${process.env.DATABASE_URL}' npx prisma db push --force-reset --schema prisma/sqlite/${schema}`,
   ).then(() => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { seed } = require("./seed");
     seed()
       .catch((e) => {

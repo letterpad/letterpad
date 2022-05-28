@@ -1,10 +1,10 @@
-import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
+import { PostsFilters, PostTypes } from "@/__generated__/__types__";
 import {
   PostsDocument,
   PostsQuery,
   PostsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
-import { PostsFilters, PostTypes } from "@/__generated__/__types__";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 export const fetchPosts = async (
   type: PostTypes = PostTypes.Post,

@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+
+import { Media } from "@/__generated__/__types__";
+import { MediaDocument } from "@/__generated__/queries/queries.graphql";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import {
   MediaQuery,
   MediaQueryVariables,
 } from "@/graphql/queries/queries.graphql";
-import { MediaDocument } from "@/__generated__/queries/queries.graphql";
-import { Media } from "@/__generated__/__types__";
+
 import InfiniteScrollList from "../InfiniteScrollList";
-import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];
@@ -18,7 +20,7 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
   const [totalCount, setTotalCount] = useState(0);
 
   const fetchInternalMedia = useCallback(
-    async (page: number = 1) => {
+    async (page = 1) => {
       const result = await apolloBrowserClient.query<
         MediaQuery,
         MediaQueryVariables
@@ -43,7 +45,7 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
     [data],
   );
 
-  let mounted = useRef(false);
+  const mounted = useRef(false);
   useEffect(() => {
     mounted.current = true;
     fetchInternalMedia();

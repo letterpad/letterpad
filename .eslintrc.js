@@ -16,7 +16,9 @@ module.exports = {
     "no-unused-vars": "off",
     "no-console": "warn",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/ban-ts-nocheck": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     // Sort
     "simple-import-sort/exports": "warn",
     "simple-import-sort/imports": [

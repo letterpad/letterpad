@@ -1,8 +1,10 @@
-import path from "path";
 import fs from "fs";
+import path from "path";
+
 import { EmailTemplates } from "../types";
 
 const emailTemplatesDir = path.resolve(process.cwd(), "src/graphql/mail");
+// eslint-disable-next-line @typescript-eslint/ban-types
 const cache: Record<EmailTemplates, { body: ""; subject: "" }> | {} = {};
 
 export function getTemplate(template: EmailTemplates): {

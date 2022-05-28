@@ -1,9 +1,10 @@
-import { useMemo, useState, createContext, useCallback } from "react";
+import { Editor } from "@tinymce/tinymce-react";
+import { createContext, useCallback, useMemo, useState } from "react";
+import { useContext } from "react";
+
+import { PostContextType } from "@/components/post/types";
 
 import { Setting } from "@/__generated__/__types__";
-import { useContext } from "react";
-import { PostContextType } from "@/components/post/types";
-import { Editor } from "@tinymce/tinymce-react";
 
 export const PostContext = createContext<Partial<PostContextType>>({});
 

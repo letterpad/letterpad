@@ -1,4 +1,5 @@
-import { IMediaUploadResult } from "@/graphql/types";
+import Router from "next/router";
+import NProgress from "nprogress";
 
 import {
   SettingsDocument,
@@ -6,10 +7,10 @@ import {
   SettingsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
 import { basePath } from "@/constants";
-import Router from "next/router";
-import NProgress from "nprogress";
-import { IUploadFileProps } from "./types";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
+import { IMediaUploadResult } from "@/graphql/types";
+
+import { IUploadFileProps } from "./types";
 
 export const getReadableDate = (timestamp: Date) => {
   return new Date(timestamp).toLocaleString("en-us", {
@@ -108,7 +109,7 @@ export function removeTypenames<T>(data: T): Omit<T, "__typename"> {
 
 export function initPageProgress() {
   NProgress.configure({ showSpinner: true });
-  Router.events.on("routeChangeStart", (_url) => {
+  Router.events.on("routeChangeStart", () => {
     NProgress.start();
   });
   Router.events.on("routeChangeComplete", () => NProgress.done());

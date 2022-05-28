@@ -12,6 +12,7 @@
     "start": "next start",
     "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/index.ts",
     "lint": "next lint",
+    "lint:fix": "eslint src --fix && yarn format",
     "migrate": "prisma migrate dev --name init",
     "typecheck": "yarn tsc",
     "prisma:generate": "dotenv scripts/generatePrisma.sh",

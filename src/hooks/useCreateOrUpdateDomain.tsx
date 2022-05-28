@@ -1,11 +1,12 @@
-import { useCallback } from "react";
-import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { debounce } from "@/shared/utils";
-import { useCreateOrUpdateDomainMutation } from "@/__generated__/queries/mutations.graphql";
-import { InputDomain } from "@/__generated__/__types__";
-import { EventAction, track } from "@/track";
 import { message } from "antd";
+import { useCallback } from "react";
+
+import { InputDomain } from "@/__generated__/__types__";
+import { useCreateOrUpdateDomainMutation } from "@/__generated__/queries/mutations.graphql";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { DomainDocument } from "@/graphql/queries/queries.graphql";
+import { debounce } from "@/shared/utils";
+import { EventAction, track } from "@/track";
 
 const key = "domain";
 

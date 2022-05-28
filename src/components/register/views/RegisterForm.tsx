@@ -1,18 +1,20 @@
+import { Button, Divider, Form, Input, message } from "antd";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+
+import css from "@/components/login/views/style.module.css";
+
+import { DividerWithOr } from "@/components/login/views/Divider";
+import { Logo } from "@/components/login/views/Logo";
+import { SocialLogin } from "@/components/login/views/SocialLogin";
+
 import {
   CreateAuthorDocument,
   useCreateAuthorMutation,
 } from "@/__generated__/queries/mutations.graphql";
-import { useRouter } from "next/router";
-
-import { Button, Divider, Form, Input, message } from "antd";
 import { EventAction, track } from "@/track";
-import Link from "next/link";
-import { SocialLogin } from "@/components/login/views/SocialLogin";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { DividerWithOr } from "@/components/login/views/Divider";
-import { Logo } from "@/components/login/views/Logo";
-import css from "@/components/login/views/style.module.css";
 
 const key = "register";
 export const RegisterForm = () => {

@@ -1,5 +1,6 @@
-import { SessionData } from "@/graphql/types";
+/* eslint-disable @typescript-eslint/no-namespace */
 import { Navigation, Setting } from "@/__generated__/__types__";
+import { SessionData } from "@/graphql/types";
 
 export type Optional<T> = { [P in keyof T]?: T[P] };
 declare global {

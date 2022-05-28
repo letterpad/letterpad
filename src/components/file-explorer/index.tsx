@@ -1,13 +1,15 @@
+import { Button } from "antd";
 import Modal from "antd/lib/modal/Modal";
+import { useRef, useState } from "react";
+import { MediaProvider, TypeMediaInsert } from "src/shared/types";
 
 import Internal from "@/components/file-explorer/providers/Internal";
 import Unsplash from "@/components/file-explorer/providers/Unsplash";
+
 import { Media } from "@/__generated__/__types__";
-import { Button } from "antd";
-import MediaItem from "./MediaItem";
-import { useRef, useState } from "react";
 import { uploadFile } from "@/shared/utils";
-import { MediaProvider, TypeMediaInsert } from "src/shared/types";
+
+import MediaItem from "./MediaItem";
 import NoSsr from "../NoSsr";
 
 interface IProps {
@@ -54,7 +56,7 @@ const FileExplorer = ({
   };
 
   const onMediaSelected = (media: Media) => {
-    let urls = { ...selectedUrls };
+    const urls = { ...selectedUrls };
     if (urls[`${media.url}`]) {
       delete urls[`${media.url}`];
     } else {
@@ -140,7 +142,7 @@ const FileExplorer = ({
               files: e.target.files,
               type: "cover_image",
             });
-            let urls = { ...selectedUrls };
+            const urls = { ...selectedUrls };
             urls[`${result.src}`] = { ...result, caption: "" };
             onInsert(Object.values(urls));
           }}

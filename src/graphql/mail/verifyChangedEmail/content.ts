@@ -1,20 +1,21 @@
+import { PrismaClient } from "@prisma/client";
 import Twig from "twig";
+
 import {
   EmailTemplateResponse,
-
   EmailVerifyNewEmailProps,
 } from "@/graphql/types";
 import { getVerifyUserToken } from "@/shared/token";
-import { addLineBreaks } from "../utils";
-import { PrismaClient } from "@prisma/client";
+
 import { getTemplate } from "../template";
+import { addLineBreaks } from "../utils";
 
 export async function getVerifyUserEmailChangeContent(
   data: EmailVerifyNewEmailProps,
   prisma: PrismaClient,
 ): Promise<EmailTemplateResponse> {
   const template = getTemplate(data.template_id);
-  
+
   const author = await prisma.author.findFirst({
     where: { id: data.author_id },
     include: {

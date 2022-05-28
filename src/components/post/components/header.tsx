@@ -1,7 +1,9 @@
-import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { PageHeader, Tag } from "antd";
 import { useRouter } from "next/router";
+
 import Actions from "@/components/post-settings";
+
+import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 
 interface Props {

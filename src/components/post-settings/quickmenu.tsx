@@ -1,7 +1,9 @@
-import { EventAction, track } from "@/track";
+import { EyeOutlined, SettingOutlined } from "@ant-design/icons";
 import { Button, Menu } from "antd";
+
 import { socket } from "@/components/post/components/tinymce/socket";
-import { SettingOutlined, EyeOutlined } from "@ant-design/icons";
+
+import { EventAction, track } from "@/track";
 
 const QuickMenu = ({ siteUrl, postHash, showDrawer }) => {
   return (

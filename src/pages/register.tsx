@@ -1,6 +1,6 @@
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-import React from "react";
 import Head from "next/head";
+import React from "react";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 import { RegisterForm } from "@/components/register/views/RegisterForm";
 

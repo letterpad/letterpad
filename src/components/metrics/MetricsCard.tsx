@@ -1,8 +1,10 @@
-import React from "react";
-import { useSpring, animated } from "react-spring";
-import { formatNumber } from "@/utils/format";
-import styles from "./MetricCard.module.css";
 import { Col } from "antd";
+import React from "react";
+import { animated, useSpring } from "react-spring";
+
+import styles from "./MetricCard.module.css";
+
+import { formatNumber } from "@/utils/format";
 
 const MetricCard = ({
   value = 0,

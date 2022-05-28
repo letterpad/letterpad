@@ -13,6 +13,6 @@ Any other info e.g. Why do you consider this to be a bug? What did you expect to
 
 ### Technical details:
 
--   Node Version:
--   Browser/OS:
--   Database:
+- Node Version:
+- Browser/OS:
+- Database:

@@ -1,9 +1,10 @@
+import { PrismaClient } from "@prisma/client";
+
 import { EmailForgotPasswordProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
-import { PrismaClient } from "@prisma/client";
-import { sendMail } from "../sendMail";
 
 import { getForgotPasswordContent } from "./content";
+import { sendMail } from "../sendMail";
 
 export async function sendForgotPasswordEmail(
   data: EmailForgotPasswordProps,

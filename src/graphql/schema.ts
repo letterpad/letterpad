@@ -1,7 +1,7 @@
-import { join } from "path";
-import { makeExecutableSchema } from "@graphql-tools/schema";
 import { loadFilesSync } from "@graphql-tools/load-files";
-import { mergeTypeDefs, mergeResolvers } from "@graphql-tools/merge";
+import { mergeResolvers, mergeTypeDefs } from "@graphql-tools/merge";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { join } from "path";
 
 // import graphQLLetConfig from "../../.graphql-let.yml";
 import resolversArray from "./resolvers";

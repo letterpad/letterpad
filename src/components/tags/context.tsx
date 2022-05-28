@@ -1,12 +1,15 @@
-import { useMemo, useState, createContext, useCallback } from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import { useContext } from "react";
+import { useEffect } from "react";
+
 import { TagRow, TagsContextType } from "@/components/tags/types";
-import { useTagsQuery } from "@/__generated__/queries/queries.graphql";
+
 import {
   useDeleteTagsMutation,
   useUpdateTagsMutation,
 } from "@/__generated__/queries/mutations.graphql";
-import { useEffect } from "react";
+import { useTagsQuery } from "@/__generated__/queries/queries.graphql";
+
 import { getHeaders } from "./headers";
 
 export const TagsContext = createContext<Partial<TagsContextType<any, any>>>({

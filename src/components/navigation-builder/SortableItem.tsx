@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-
-import { SortableElement } from "react-sortable-hoc";
-import { Input, Button, Modal, Divider } from "antd";
-import { Navigation, NavigationType } from "@/__generated__/__types__";
 import { DeleteOutlined, MenuOutlined } from "@ant-design/icons";
+import { Button, Divider, Input, Modal } from "antd";
+import React, { useState } from "react";
+import { SortableElement } from "react-sortable-hoc";
+
+import { Navigation, NavigationType } from "@/__generated__/__types__";
 
 interface IProps {
   source: Navigation[];

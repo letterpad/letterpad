@@ -1,11 +1,15 @@
-import { IImportExportData } from "../../components/import-export/importExportTypes";
-import { SessionData } from "./../../graphql/types";
 import fs from "fs";
-import { getSession } from "next-auth/react";
-import { Role } from "@/__generated__/__types__";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
+
 import { prisma } from "@/lib/prisma";
+
 import { validateWithAjv } from "@/components/import-export/schema";
+
+import { Role } from "@/__generated__/__types__";
+
+import { SessionData } from "./../../graphql/types";
+import { IImportExportData } from "../../components/import-export/importExportTypes";
 
 const Export = async (req: NextApiRequest, res: NextApiResponse) => {
   const _session = await getSession({ req });
@@ -46,7 +50,7 @@ const Export = async (req: NextApiRequest, res: NextApiResponse) => {
   res.writeHead(200, {
     "Content-Type": "application/json",
     "Content-Length": stat.size,
-    "Content-Disposition": `attachment; filename=\"data.json\"`,
+    "Content-Disposition": `attachment; filename="data.json"`,
   });
 
   const readStream = fs.createReadStream("data.json");

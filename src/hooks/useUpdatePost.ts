@@ -1,9 +1,10 @@
 import { useCallback } from "react";
-import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { debounce } from "@/shared/utils";
+
+import { InputUpdatePost } from "@/__generated__/__types__";
 import { useUpdatePostMutation } from "@/__generated__/queries/mutations.graphql";
 import { PostDocument } from "@/__generated__/queries/queries.graphql";
-import { InputUpdatePost } from "@/__generated__/__types__";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
+import { debounce } from "@/shared/utils";
 
 export const useUpdatePost = () => {
   const [updatePostMutation, progress] = useUpdatePostMutation();

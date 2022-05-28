@@ -1,7 +1,8 @@
 import { EmailTemplates, EmailVerifyNewEmailProps } from "@/graphql/types";
 import logger from "@/shared/logger";
-import { sendMail } from "../sendMail";
+
 import { getVerifyUserEmailChangeContent } from "./content";
+import { sendMail } from "../sendMail";
 
 export async function sendVerifyUserEmail(
   data: EmailVerifyNewEmailProps,

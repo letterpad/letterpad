@@ -1,13 +1,15 @@
-import { basePath } from "@/constants";
-import { useState, useEffect, useCallback } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
 import { PageHeader, Table } from "antd";
 import { Divider } from "antd";
-import Head from "next/head";
-import { Content } from "antd/lib/layout/layout";
 import { Row } from "antd";
-import { useMeQuery } from "@/__generated__/queries/queries.graphql";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Content } from "antd/lib/layout/layout";
+import Head from "next/head";
+import { useCallback, useEffect, useState } from "react";
+
 import MetricsBar from "@/components/metrics/MetricsBar";
+
+import { useMeQuery } from "@/__generated__/queries/queries.graphql";
+import { basePath } from "@/constants";
 
 const cols = [
   {

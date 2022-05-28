@@ -1,21 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col, Input, Drawer, Switch, Divider } from "antd";
-import ImageUpload from "../ImageUpload";
-import { PostTypes } from "@/__generated__/__types__";
-import Tags from "./tags";
-import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
-import { getPostHash } from "./api";
-import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
-import PublishButton from "./publishButton";
-import QuickMenu from "./quickmenu";
+import { Col, Divider, Drawer, Input, Row, Switch } from "antd";
+import React, { useEffect, useState } from "react";
+
 import { useUpdatePost } from "@/hooks/useUpdatePost";
-import { DeletePost } from "./deletePost";
+
+import { PostTypes } from "@/__generated__/__types__";
+import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
+import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
+import { subscribe } from "@/shared/eventBus";
 import {
   createPathWithPrefix,
   getLastPartFromPath,
   textToSlug,
 } from "@/utils/slug";
-import { subscribe } from "@/shared/eventBus";
+
+import { getPostHash } from "./api";
+import { DeletePost } from "./deletePost";
+import PublishButton from "./publishButton";
+import QuickMenu from "./quickmenu";
+import Tags from "./tags";
+import ImageUpload from "../ImageUpload";
 
 const { TextArea } = Input;
 
@@ -52,7 +55,7 @@ const Actions = ({ post }: IProps) => {
   const onClose = () => setVisible(false);
 
   const formatSlug = (slug: string) => {
-    let formattedSlug = createPathWithPrefix(
+    const formattedSlug = createPathWithPrefix(
       textToSlug(getLastPartFromPath(slug)),
       post.type,
     );

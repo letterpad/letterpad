@@ -1,15 +1,18 @@
-import { EventAction, track } from "@/track";
 import { Divider, message } from "antd";
-import { doLogin } from "../actions";
-import { key } from "../constants";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Button, Checkbox, Form, Input } from "antd";
 import Link from "next/link";
-import { SocialLogin } from "./SocialLogin";
 import { useRouter } from "next/router";
+
+import css from "./style.module.css";
+
 import { basePath } from "@/constants";
+import { EventAction, track } from "@/track";
+
 import { DividerWithOr } from "./Divider";
 import { Logo } from "./Logo";
-import css from "./style.module.css";
+import { SocialLogin } from "./SocialLogin";
+import { doLogin } from "../actions";
+import { key } from "../constants";
 export const LoginForm = ({
   isVisible,
   hideSelf,

@@ -1,6 +1,7 @@
-import { PostTypes } from "@/__generated__/__types__";
 import { Button, PageHeader } from "antd";
 import { useRouter } from "next/router";
+
+import { PostTypes } from "@/__generated__/__types__";
 
 interface IProps {
   type: PostTypes;

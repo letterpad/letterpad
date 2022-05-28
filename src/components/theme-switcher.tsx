@@ -1,7 +1,7 @@
-import { EventAction, track } from "@/track";
 import { basePath } from "next.config";
-
 import { useEffect, useState } from "react";
+
+import { EventAction, track } from "@/track";
 
 const ThemeSwitcher = () => {
   const [theme, setTheme] = useState(localStorage.theme || "light");

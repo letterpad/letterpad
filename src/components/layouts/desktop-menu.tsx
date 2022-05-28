@@ -1,9 +1,11 @@
-import siteConfig from "@/config/site.config";
 import { Drawer } from "antd";
-import ProfileInfo from "../profile-info";
-import Menu from "../menu";
-import Logo from "../Logo";
+
 import { Stats } from "@/__generated__/__types__";
+import siteConfig from "@/config/site.config";
+
+import Logo from "../Logo";
+import Menu from "../menu";
+import ProfileInfo from "../profile-info";
 
 interface Props {
   site_logo?: string;
@@ -13,7 +15,7 @@ interface Props {
   avatar?: string;
   isVisible: boolean;
   setIsVisible: (a: boolean) => void;
-  stats: Stats | {};
+  stats: Stats | Record<string, unknown>;
 }
 
 export const DesktopMenu: React.VFC<Props> = ({

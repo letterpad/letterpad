@@ -1,13 +1,15 @@
+import { Button } from "antd";
 import React, { useState } from "react";
 import { arrayMove } from "react-sortable-hoc";
-import { useNavigationData } from "./data.hook";
+
 import {
   Navigation as NavigationItemType,
   NavigationType,
 } from "@/__generated__/__types__";
-import { Button } from "antd";
-import SortableList from "./SortableList";
 import { IMenuWithError, INavigationBuilderProps } from "@/shared/types";
+
+import { useNavigationData } from "./data.hook";
+import SortableList from "./SortableList";
 
 const Navigation: React.FC<INavigationBuilderProps> = ({
   menuData,
@@ -44,7 +46,7 @@ const Navigation: React.FC<INavigationBuilderProps> = ({
   };
 
   const onChange = async (index: number, change: IMenuWithError) => {
-    let newMenu = [...menu];
+    const newMenu = [...menu];
     newMenu[index] = change;
     setMenu(newMenu);
 

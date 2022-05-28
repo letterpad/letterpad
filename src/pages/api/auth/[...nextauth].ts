@@ -1,15 +1,17 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import GithubProvider from "next-auth/providers/github";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { NextApiRequest, NextApiResponse } from "next";
-import { basePath } from "@/constants";
 import bcrypt from "bcryptjs";
-import Prisma, { prisma } from "@/lib/prisma";
+import { NextApiRequest, NextApiResponse } from "next";
+import NextAuth, { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
+
 import { createAuthorWithSettings, onBoardUser } from "@/lib/onboard";
+import Prisma, { prisma } from "@/lib/prisma";
+import { analytics_on, umamiApi } from "@/lib/umami";
+
 import { Role } from "@/__generated__/__types__";
+import { basePath } from "@/constants";
 import { SessionData } from "@/graphql/types";
-import { umamiApi, analytics_on } from "@/lib/umami";
 
 const providers = (_req: NextApiRequest) => [
   GoogleProvider({

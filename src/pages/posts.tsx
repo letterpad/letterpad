@@ -1,19 +1,22 @@
-import React from "react";
-import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
-import { PostTypes } from "@/__generated__/__types__";
 import { Layout, Table } from "antd";
-import Filters from "@/components/filters";
-import { useRouter } from "next/router";
-import ErrorMessage from "@/components/ErrorMessage";
+import { Alert } from "antd";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { getSession } from "next-auth/react";
+import React from "react";
+import { useContext } from "react";
+
 import { postsStyles } from "@/components/posts.css";
+
+import ErrorMessage from "@/components/ErrorMessage";
+import Filters from "@/components/filters";
 import { postsColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
 import { TagsProvider } from "@/components/tags/context";
-import { useContext } from "react";
+
+import { PostTypes } from "@/__generated__/__types__";
+import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { LetterpadContext } from "@/context/LetterpadProvider";
-import { Alert } from "antd";
-import { getSession } from "next-auth/react";
 import { EventAction, track } from "@/track";
 
 const { Content } = Layout;

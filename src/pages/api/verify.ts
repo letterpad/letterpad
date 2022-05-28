@@ -1,9 +1,12 @@
 import { NextApiResponse } from "next";
-import { NextApiRequestWithFormData } from "./../../graphql/types";
+
+import { onBoardUser } from "@/lib/onboard";
+import { prisma } from "@/lib/prisma";
+
 import { basePath } from "@/constants";
 import { decodeToken, verifyToken } from "@/shared/token";
-import { prisma } from "@/lib/prisma";
-import { onBoardUser } from "@/lib/onboard";
+
+import { NextApiRequestWithFormData } from "./../../graphql/types";
 
 const Verify = async (
   req: NextApiRequestWithFormData,

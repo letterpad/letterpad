@@ -1,15 +1,16 @@
+import { Button, Input, InputRef } from "antd";
 import React, {
+  useCallback,
   useEffect,
-  useState,
   useMemo,
   useRef,
-  useCallback,
+  useState,
 } from "react";
 
-import InfiniteScrollList from "../InfiniteScrollList";
 import { Media } from "@/__generated__/__types__";
-import { Button, Input, InputRef } from "antd";
 import { basePath } from "@/constants";
+
+import InfiniteScrollList from "../InfiniteScrollList";
 
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];

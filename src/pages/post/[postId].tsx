@@ -1,6 +1,7 @@
-import { Setting } from "@/__generated__/__types__";
-import { PostProvider } from "@/components/post/context";
 import Post from "@/components/post/components/post";
+import { PostProvider } from "@/components/post/context";
+
+import { Setting } from "@/__generated__/__types__";
 
 function EditPost({ settings }: { readOnly: boolean; settings: Setting }) {
   return (

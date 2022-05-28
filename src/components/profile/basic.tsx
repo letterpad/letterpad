@@ -1,7 +1,10 @@
-import React from "react";
-import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
-import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { Button, Form, Input } from "antd";
+import React from "react";
+
+import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
+
+import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
+
 import ImageUpload from "../ImageUpload";
 
 interface Props {

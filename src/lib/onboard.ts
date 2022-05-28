@@ -1,19 +1,21 @@
-import siteConfig from "../../config/site.config";
 import bcrypt from "bcryptjs";
-import generatePost from "@/graphql/db/seed/contentGenerator";
-import { encryptEmail } from "@/shared/clientToken";
-import { EmailTemplates, ROLES } from "@/graphql/types";
+
 import {
   InputCreateAuthor,
   PostStatusOptions,
   PostTypes,
   SettingInputType,
 } from "@/__generated__/__types__";
-import { prisma } from "./prisma";
-import { mapSettingToDb } from "@/graphql/resolvers/mapper";
 import { defaultSettings } from "@/graphql/db/seed/constants";
-import { textToSlug } from "@/utils/slug";
+import generatePost from "@/graphql/db/seed/contentGenerator";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
+import { mapSettingToDb } from "@/graphql/resolvers/mapper";
+import { EmailTemplates, ROLES } from "@/graphql/types";
+import { encryptEmail } from "@/shared/clientToken";
+import { textToSlug } from "@/utils/slug";
+
+import { prisma } from "./prisma";
+import siteConfig from "../../config/site.config";
 
 export const onBoardUser = async (id: number) => {
   const newAuthor = await prisma.author.findUnique({ where: { id } });
@@ -69,7 +71,7 @@ function getWelcomePostAndPage() {
   const post_cover =
     "https://images.unsplash.com/photo-1516035054744-d474c5209db5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80";
 
-  let { html } = generatePost(PostTypes.Post);
+  const { html } = generatePost(PostTypes.Post);
   let title = "Welcome to Letterpad";
 
   const post = {

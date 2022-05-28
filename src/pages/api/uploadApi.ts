@@ -1,20 +1,23 @@
+import crypto from "crypto";
+import multer from "multer";
 import { NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
+import path from "path";
+
+import { prisma } from "@/lib/prisma";
+
+import { basePath } from "@/constants";
 import {
   BlobCorrected,
   IMediaUploadResult,
   NextApiRequestWithFormData,
   SessionData,
 } from "@/graphql/types";
-import { getSession } from "next-auth/react";
+
 import logger from "./../../shared/logger";
-import path from "path";
-import multer from "multer";
+import initMiddleware from "./middleware";
 import { uploadToCloudinary } from "./providers/cloudinary";
 import { uploadToInternal } from "./providers/internal";
-import initMiddleware from "./middleware";
-import crypto from "crypto";
-import { basePath } from "@/constants";
-import { prisma } from "@/lib/prisma";
 
 const upload = multer();
 const uploadDir = path.join(process.cwd(), "public/uploads/");

@@ -1,9 +1,11 @@
-import { useDomainQuery } from "@/__generated__/queries/queries.graphql";
 import { Alert, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
-import Loading from "@/components/loading";
+
 import { NewDomain } from "@/components/domain/new-domain";
+import Loading from "@/components/loading";
+
+import { useDomainQuery } from "@/__generated__/queries/queries.graphql";
 
 interface Props {
   readOnly: boolean;

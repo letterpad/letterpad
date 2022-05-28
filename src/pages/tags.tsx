@@ -1,8 +1,9 @@
 import { PageHeader } from "antd";
 import Head from "next/head";
-import { TagsProvider } from "@/components/tags/context";
-import Component from "@/components/tags/component";
 import { getSession } from "next-auth/react";
+
+import Component from "@/components/tags/component";
+import { TagsProvider } from "@/components/tags/context";
 
 const EditableTable = ({ readOnly }: { readOnly: boolean }) => {
   return (

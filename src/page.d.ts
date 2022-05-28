@@ -1,8 +1,6 @@
-import { Setting } from "@/__generated__/queries/queries.graphql";
 import { NextPage } from "next";
-import { ComponentType, ReactElement, ReactNode } from "react";
 
-export type Page<P = {}> = NextPage<P> & {
+export type Page<P = Record<string, unknown>> = NextPage<P> & {
   // Does not need any session and will take care of their own layout. Like login page
   isStatic?: boolean;
   isLogin?: boolean;

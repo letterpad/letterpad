@@ -1,6 +1,7 @@
+import Document, { Head, Html, Main, NextScript } from "next/document";
 import React from "react";
+
 import { basePath } from "@/constants";
-import Document, { Html, Head, Main, NextScript } from "next/document";
 
 let theme = "antd";
 if (typeof localStorage !== "undefined") {
