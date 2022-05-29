@@ -1,5 +1,5 @@
-import { LanguageResponse, Match } from "../types";
 import { getTemplate } from "./template";
+import { LanguageResponse, Match } from "../types";
 
 interface CorrectionOffset {
   offset: number;

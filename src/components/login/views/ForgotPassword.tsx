@@ -1,9 +1,12 @@
+import { Button, Divider, Form, Input } from "antd";
 import { useRouter } from "next/router";
-import { forgotPasswordAction } from "../actions";
-import { Form, Input, Button, Divider } from "antd";
-import { EventAction, track } from "@/track";
-import { Logo } from "./Logo";
+
 import css from "./style.module.css";
+
+import { EventAction, track } from "@/track";
+
+import { Logo } from "./Logo";
+import { forgotPasswordAction } from "../actions";
 
 export const ForgotPassword = ({
   isVisible,

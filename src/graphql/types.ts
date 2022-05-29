@@ -1,6 +1,7 @@
+import { Author, Post, Setting } from "@prisma/client";
 import { NextApiRequest } from "next";
+
 import { Author as GraphqlAuthor } from "@/__generated__/__types__";
-import { Post, Author, Setting } from "@prisma/client";
 
 export enum ROLES {
   ADMIN = "ADMIN",
@@ -65,19 +66,7 @@ interface IImageAttrs {
   width: string;
   loading: "lazy";
 }
-export type IImageAttrsResult = IImageAttrs | {};
-
-interface IProcessEnv {
-  DB_USER?: string;
-  DB_URL: string;
-  DB_NAME?: string;
-  DB_PASSWORD?: string;
-  DB_TYPE?: string;
-}
-
-declare namespace NodeJS {
-  export interface ProcessEnv extends IProcessEnv {}
-}
+export type IImageAttrsResult = IImageAttrs | Record<string, string>;
 
 export enum EmailTemplates {
   VerifyNewUser = "verifyNewUser",

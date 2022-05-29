@@ -1,13 +1,15 @@
-import Head from "next/head";
-import { PageHeader, Form, Button, Upload, Alert, notification } from "antd";
-import { Content } from "antd/lib/layout/layout";
-import { basePath } from "@/constants";
 import { UploadOutlined } from "@ant-design/icons";
-import { getDateTime } from "./../shared/utils";
-import { IAuthComponentProps } from "./../shared/types";
-import { Role } from "@/__generated__/__types__";
+import { Alert, Button, Form, notification, PageHeader, Upload } from "antd";
+import { Content } from "antd/lib/layout/layout";
 import { UploadChangeParam } from "antd/lib/upload";
+import Head from "next/head";
 import { getSession } from "next-auth/react";
+
+import { Role } from "@/__generated__/__types__";
+import { basePath } from "@/constants";
+
+import { IAuthComponentProps } from "./../shared/types";
+import { getDateTime } from "./../shared/utils";
 
 // If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to /admin/register first. This will allow you to seed letterpad with mysql. Then login and import the data to populate the exisiting data in mysql.
 

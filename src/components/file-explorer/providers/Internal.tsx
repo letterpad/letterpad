@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
+import { Media } from "@/__generated__/__types__";
+import { MediaDocument } from "@/__generated__/queries/queries.graphql";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import {
   MediaQuery,
   MediaQueryVariables,
 } from "@/graphql/queries/queries.graphql";
-import { MediaDocument } from "@/__generated__/queries/queries.graphql";
-import { Media } from "@/__generated__/__types__";
+
 import InfiniteScrollList from "../InfiniteScrollList";
-import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];
@@ -17,38 +19,41 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
   const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);
 
-  let mounted = false;
+  const fetchInternalMedia = useCallback(
+    async (page = 1) => {
+      const result = await apolloBrowserClient.query<
+        MediaQuery,
+        MediaQueryVariables
+      >({
+        query: MediaDocument,
+        variables: {
+          filters: {
+            page,
+          },
+        },
+      });
+
+      const images = {
+        rows: result.data.media.rows,
+        count: result.data.media.count,
+      };
+      if (mounted) {
+        setData([...data, ...images.rows]);
+        setTotalCount(images.count);
+      }
+    },
+    [data],
+  );
+
+  const mounted = useRef(false);
   useEffect(() => {
-    mounted = true;
+    mounted.current = true;
     fetchInternalMedia();
 
     return () => {
-      mounted = false;
+      mounted.current = false;
     };
-  }, []);
-
-  const fetchInternalMedia = async (page = 1) => {
-    const result = await apolloBrowserClient.query<
-      MediaQuery,
-      MediaQueryVariables
-    >({
-      query: MediaDocument,
-      variables: {
-        filters: {
-          page,
-        },
-      },
-    });
-
-    const images = {
-      rows: result.data.media.rows,
-      count: result.data.media.count,
-    };
-    if (mounted) {
-      setData([...data, ...images.rows]);
-      setTotalCount(images.count);
-    }
-  };
+  }, [fetchInternalMedia]);
 
   const loadMore = () => {
     const nextPage = page + 1;

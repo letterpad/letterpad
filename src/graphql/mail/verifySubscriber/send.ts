@@ -1,6 +1,7 @@
 //@ts-nocheck
 import { EmailTemplates, EmailVerifySubscriberProps } from "@/graphql/types";
 import logger from "@/shared/logger";
+
 import { getVerifySubscriberEmailContent } from "./content";
 import SendMail from "../sendMail";
 

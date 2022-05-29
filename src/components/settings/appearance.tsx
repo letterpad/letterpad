@@ -1,15 +1,18 @@
 import { Collapse, Form, Radio, Space } from "antd";
-import ImageUpload from "../ImageUpload";
-import Editor from "react-simple-code-editor";
-
 import highlight from "highlight.js";
 import hljs from "highlight.js/lib/core";
 import hljsCssLang from "highlight.js/lib/languages/css";
+import Editor from "react-simple-code-editor";
+
+import ImageUpload from "../ImageUpload";
 hljs.registerLanguage("css", hljsCssLang);
-import "highlight.js/styles/night-owl.css";
 import { useRef } from "react";
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
+
+import "highlight.js/styles/night-owl.css";
+
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
+
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 
 const { Panel } = Collapse;
 

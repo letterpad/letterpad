@@ -1,4 +1,5 @@
 import { Row } from "antd";
+
 import { getReadableDate } from "@/shared/utils";
 
 const PostDate: React.VFC<{ date: Date }> = ({ date }) => {

@@ -1,7 +1,7 @@
-import { useRef, useEffect, VFC } from "react";
-import clipboard from "clipboard";
-import { Button, message } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
+import { Button, message } from "antd";
+import clipboard from "clipboard";
+import { useEffect, useRef, VFC } from "react";
 
 interface Props {
   elementId: string;
@@ -17,7 +17,7 @@ export const CopyToClipboard: VFC<Props> = ({ elementId }) => {
         target: () => target,
       });
     }
-  }, [buttonRef.current]);
+  }, [elementId]);
 
   return (
     <>

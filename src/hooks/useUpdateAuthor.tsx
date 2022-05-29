@@ -1,15 +1,16 @@
+import { message, Modal } from "antd";
+import { signOut } from "next-auth/react";
 import { useCallback } from "react";
-import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { debounce } from "@/shared/utils";
+
+import { InputAuthor } from "@/__generated__/__types__";
 import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import {
   MeDocument,
   SettingsDocument,
 } from "@/__generated__/queries/queries.graphql";
-import { InputAuthor } from "@/__generated__/__types__";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
+import { debounce } from "@/shared/utils";
 import { EventAction, track } from "@/track";
-import { message, Modal } from "antd";
-import { signOut } from "next-auth/react";
 
 const key = "author";
 

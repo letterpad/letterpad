@@ -1,7 +1,9 @@
-import { UpdateOptionsDocument } from "./../../../__generated__/src/graphql/queries/mutations.graphql";
-import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
-import { API } from "./../../../tests/testClient";
 import { prisma } from "@/lib/prisma";
+
+import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
+
+import { UpdateOptionsDocument } from "./../../../__generated__/src/graphql/queries/mutations.graphql";
+import { API } from "./../../../tests/testClient";
 
 describe("Test Settings Graphql API", () => {
   it("get sitename and title", async () => {

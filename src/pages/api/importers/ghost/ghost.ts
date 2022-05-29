@@ -1,15 +1,17 @@
 //@ts-nocheck
-import { Optional } from "./../../../../shared/types";
-import { SessionData } from "@/graphql/types";
+import reading_time from "reading-time";
+
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
+import { defaultSettings } from "@/graphql/db/seed/constants";
+import { SessionData } from "@/graphql/types";
+
+import { Optional } from "./../../../../shared/types";
+import { IGhostDb, IGhostSettings, IImportExportGhostData } from "./types";
 import {
-  IImportExportData,
   IAuthorData,
+  IImportExportData,
   ITagSanitized,
 } from "../../../../components/import-export/importExportTypes";
-import { IGhostDb, IGhostSettings, IImportExportGhostData } from "./types";
-import reading_time from "reading-time";
-import { defaultSettings } from "@/graphql/db/seed/constants";
 
 export function convertGhostToLetterpad(
   data: IImportExportGhostData,

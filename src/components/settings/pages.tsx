@@ -1,6 +1,8 @@
-import { useUpdateSettings } from "@/hooks/useUpdateSettings";
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { Checkbox, Collapse, Divider } from "antd";
+
+import { useUpdateSettings } from "@/hooks/useUpdateSettings";
+
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 const { Panel } = Collapse;
 
 interface Props {
@@ -19,8 +21,8 @@ const Pages: React.FC<Props> = ({ settings }) => {
             debounceUpdateSettings({ show_about_page: e.target.checked })
           }
         >
-          Select this to add a new menu item "About" which will display
-          information about you.
+          Select this to add a new menu item &quot;About&quot; which will
+          display information about you.
         </Checkbox>
         <Divider />
 
@@ -31,8 +33,8 @@ const Pages: React.FC<Props> = ({ settings }) => {
             debounceUpdateSettings({ show_tags_page: e.target.checked })
           }
         >
-          Select this to add a new menu item "Tags" which will display all the
-          tags with the post count. <br />
+          Select this to add a new menu item &quot;Tags&quot; which will display
+          all the tags with the post count. <br />
           This will allow users to explore all the collection of posts. <br />
           It is a good idea to enable this after you have written 10+ posts
         </Checkbox>

@@ -1,14 +1,16 @@
-import {
-  QueryResolvers,
-  MutationResolvers,
-  Setting as SettingType,
-  Navigation,
-} from "@/__generated__/__types__";
 import fs from "fs";
 import path from "path";
+
+import {
+  MutationResolvers,
+  Navigation,
+  QueryResolvers,
+  Setting as SettingType,
+} from "@/__generated__/__types__";
 import logger from "@/shared/logger";
-import { ResolverContext } from "../context";
+
 import { mapSettingToGraphql } from "./mapper";
+import { ResolverContext } from "../context";
 
 type ValueOf<T> = T[keyof T];
 const SECURE_SETTINGS = [
@@ -92,7 +94,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       if (!setting_id)
         return { __typename: "SettingError", message: "Setting now found" };
 
-      let promises = args.options.map((setting) => {
+      const promises = args.options.map((setting) => {
         const option = Object.keys(setting)[0] as keyof Omit<
           SettingType,
           "__typename"

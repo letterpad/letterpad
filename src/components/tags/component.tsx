@@ -1,8 +1,10 @@
 import { Table } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { useEffect, useState } from "react";
+
 import { EditableCell, EditableRow } from "@/components/ediitable-table";
 import { TagRow } from "@/components/tags/types";
+
 import { useTagsContext } from "./context";
 
 type EditableTableProps = Parameters<typeof Table>[0];

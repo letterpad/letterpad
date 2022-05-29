@@ -1,4 +1,5 @@
 import { QueryResolvers } from "@/__generated__/__types__";
+
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {

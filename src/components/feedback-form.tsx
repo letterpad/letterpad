@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Modal, Button, Input, message } from "antd";
+import { Button, Input, message, Modal } from "antd";
 import { basePath } from "next.config";
+import React, { useState } from "react";
 
 const key = "feedback";
 const FeedbackForm = () => {

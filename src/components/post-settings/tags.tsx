@@ -1,8 +1,10 @@
+import { useEffect, useMemo, useState } from "react";
 import ReactTags from "react-tag-autocomplete";
-import { useEffect, useState } from "react";
+
+import { useUpdatePost } from "@/hooks/useUpdatePost";
+
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/queries.graphql";
 import { useTagsQuery } from "@/graphql/queries/queries.graphql";
-import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { textToSlug } from "@/utils/slug";
 
 interface IProps {
@@ -22,16 +24,21 @@ const Tags = ({ post }: IProps) => {
     variables: { filters: { suggest: true } },
   });
 
+  const computedTags = useMemo(
+    () => (data?.tags.__typename === "TagsNode" ? data.tags.rows : []),
+    [data],
+  );
+
   useEffect(() => {
-    if (!loading && data?.tags.__typename === "TagsNode") {
+    if (!loading) {
       // remove used tags from suggestions
-      const result = data.tags.rows.filter((s) => {
+      const result = computedTags.filter((s) => {
         return !tags.find((t) => s.name === t.name);
       });
 
       setSuggestions(addTagsWithId(result));
     }
-  }, [loading]);
+  }, [computedTags, loading, tags]);
 
   const saveTags = (tags: Tag[]) => {
     updatePost({

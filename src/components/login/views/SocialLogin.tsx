@@ -1,8 +1,9 @@
-import { EventAction, track } from "@/track";
 import { GithubFilled, GoogleSquareFilled } from "@ant-design/icons";
 import { Button } from "antd";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
+
+import { EventAction, track } from "@/track";
 
 interface Props {
   mode: "login" | "register";

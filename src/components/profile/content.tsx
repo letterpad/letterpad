@@ -1,6 +1,8 @@
-import { MeFragmentFragment } from "@/__generated__/queries/partial.graphql";
 import { Collapse, Form } from "antd";
 import CollapsePanel from "antd/lib/collapse/CollapsePanel";
+
+import { MeFragmentFragment } from "@/__generated__/queries/partial.graphql";
+
 import { Basic } from "./basic";
 import { ChangePassword } from "./change-password";
 import { Social } from "./social";

@@ -1,20 +1,24 @@
 import { Layout } from "antd";
-import ErrorMessage from "@/components/ErrorMessage";
-import Head from "next/head";
-import Header from "@/components/post/components/header";
-import { usePostContext } from "@/components/post/context";
-import FileExplorer from "@/components/file-explorer";
-import Title from "@/components/post/components/title";
-import Editor from "@/components/post/components/editor";
-import { PostContextType } from "../types";
 import { Content } from "antd/lib/layout/layout";
-import { insertImageInEditor } from "./commands";
-import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+import Head from "next/head";
 import { useRouter } from "next/router";
+
+import { useUpdatePost } from "@/hooks/useUpdatePost";
+
+import ErrorMessage from "@/components/ErrorMessage";
+import FileExplorer from "@/components/file-explorer";
+import Editor from "@/components/post/components/editor";
+import Header from "@/components/post/components/header";
+import Title from "@/components/post/components/title";
+import { usePostContext } from "@/components/post/context";
+
+import { PostStatusOptions } from "@/__generated__/__types__";
+import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+
+import { insertImageInEditor } from "./commands";
 import PostDate from "./postDate";
 import WordCount from "./wordCount";
-import { PostStatusOptions } from "@/__generated__/__types__";
-import { useUpdatePost } from "@/hooks/useUpdatePost";
+import { PostContextType } from "../types";
 
 function Post() {
   const router = useRouter();

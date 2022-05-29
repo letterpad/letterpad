@@ -1,12 +1,15 @@
+import { Button, Space } from "antd";
+
 import { useUpdatePost } from "@/hooks/useUpdatePost";
-import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+
 import {
   Navigation,
   NavigationType,
   PostStatusOptions,
   PostTypes,
 } from "@/__generated__/__types__";
-import { Button, Space } from "antd";
+import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+
 import {
   pageNotLinkedWithNavigation,
   tagNotLinkedWithNavigation,

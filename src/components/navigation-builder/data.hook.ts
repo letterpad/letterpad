@@ -1,3 +1,11 @@
+import { useEffect, useState } from "react";
+
+import {
+  NavigationType,
+  Post,
+  PostTypes,
+  Tags,
+} from "@/__generated__/__types__";
 import {
   PostsDocument,
   PostsQuery,
@@ -6,14 +14,6 @@ import {
   TagsQuery,
   TagsQueryVariables,
 } from "@/__generated__/queries/queries.graphql";
-import { useEffect, useState } from "react";
-
-import {
-  Post,
-  PostTypes,
-  Tags,
-  NavigationType,
-} from "@/__generated__/__types__";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 interface IReturn {

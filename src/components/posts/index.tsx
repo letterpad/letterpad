@@ -1,6 +1,7 @@
 // import { getImageAttrs } from "@/graphql/utils/imageAttributs";
-import { Image, PostStatusOptions, Tags } from "@/__generated__/__types__";
 import { Breakpoint } from "antd/lib/_util/responsiveObserve";
+
+import { Image, PostStatusOptions, Tags } from "@/__generated__/__types__";
 
 export const columns = [
   {
@@ -18,6 +19,7 @@ export const columns = [
           width={60}
           height={50}
           style={{ objectFit: "cover" }}
+          alt="post-image"
         />
       );
     },
@@ -49,10 +51,10 @@ export const columns = [
     dataIndex: "updatedAt",
     key: "updatedAt",
     render: (date: string) => {
-      let d = new Date(date);
-      let ye = new Intl.DateTimeFormat("en", { year: "2-digit" }).format(d);
-      let mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
-      let da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
+      const d = new Date(date);
+      const ye = new Intl.DateTimeFormat("en", { year: "2-digit" }).format(d);
+      const mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
+      const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
 
       return (
         <span>

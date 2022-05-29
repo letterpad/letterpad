@@ -11,6 +11,8 @@
     "test": "yarn codegen && jest --runInBand",
     "start": "next start",
     "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/index.ts",
+    "lint": "next lint",
+    "lint:fix": "eslint src --fix && yarn format",
     "migrate": "prisma migrate dev --name init",
     "typecheck": "yarn tsc",
     "prisma:generate": "dotenv scripts/generatePrisma.sh",
@@ -21,7 +23,10 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run --record --key e2c7bae0-47ed-49e5-8ea8-b0c26c3493f7",
     "e2e:ci": "yarn seed && start-server-and-test 'yarn start' http://localhost:3000/admin/login cy:run",
-    "e2e": "yarn seed && start-server-and-test 'yarn dev' http://localhost:3000/admin/login cy:open"
+    "e2e": "yarn seed && start-server-and-test 'yarn dev' http://localhost:3000/admin/login cy:open",
+    "format": "prettier -w .",
+    "format:check": "prettier -c .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
@@ -79,6 +84,8 @@
     "twig": "^1.15.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.0.1",
+    "@commitlint/config-conventional": "^17.0.0",
     "@cypress/react": "^5.12.4",
     "@graphql-codegen/cli": "^1.17.8",
     "@graphql-codegen/import-types-preset": "^1.18.2",
@@ -94,24 +101,42 @@
     "@types/next-auth": "^3.7.1",
     "@types/react-test-renderer": "16.9.3",
     "@types/react-tooltip": "^4.2.4",
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
     "autoprefixer": "^10.2.6",
     "concurrently": "^6.2.0",
     "cypress": "9.5.4",
     "cypress-plugin-tab": "^1.0.5",
     "dotenv": "^16.0.1",
     "dotenv-cli": "^5.1.0",
+    "eslint": "^8.16.0",
+    "eslint-config-next": "^12.1.6",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
     "graphql-let": "0.x",
     "graphql-tag": "2.11.0",
     "html-webpack-plugin": "5",
+    "husky": "^8.0.1",
     "jest": "^27.0.5",
+    "lint-staged": "^12.4.2",
     "node-env-file": "^0.1.8",
     "node-sass": "^6.0.1",
     "postcss-nested": "^5.0.5",
+    "prettier": "^2.6.2",
     "react-test-renderer": "16.13.1",
     "start-server-and-test": "^1.14.0",
     "ts-jest": "^27.0.3",
     "tsconfig-paths": "^3.9.0",
     "typescript": "4.3.2",
     "yaml-loader": "0.6.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,}": [
+      "eslint --max-warnings=124",
+      "prettier -w"
+    ],
+    "src/**/*.{json,css,md}": [
+      "prettier -w"
+    ]
   }
 }

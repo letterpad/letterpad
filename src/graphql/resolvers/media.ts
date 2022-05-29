@@ -1,5 +1,7 @@
-import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { Prisma } from "@prisma/client";
+
+import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
+
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {

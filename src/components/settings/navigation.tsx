@@ -1,7 +1,10 @@
-import { useUpdateSettings } from "@/hooks/useUpdateSettings";
-import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
-import { Navigation } from "@/__generated__/__types__";
 import { Collapse } from "antd";
+
+import { useUpdateSettings } from "@/hooks/useUpdateSettings";
+
+import { Navigation } from "@/__generated__/__types__";
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
+
 import NavigationBuilder from "../navigation-builder";
 const { Panel } = Collapse;
 

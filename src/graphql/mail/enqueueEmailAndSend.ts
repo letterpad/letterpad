@@ -1,10 +1,11 @@
-import { EmailProps, EmailTemplates } from "@/graphql/types";
-import logger from "@/shared/logger";
-import { getEmailTemplate } from "./templates/getTemplate";
-
-import { sendMail } from "./sendMail";
 import { hasCredentials } from "@/lib/mail";
 import { prisma } from "@/lib/prisma";
+
+import { EmailProps, EmailTemplates } from "@/graphql/types";
+import logger from "@/shared/logger";
+
+import { sendMail } from "./sendMail";
+import { getEmailTemplate } from "./templates/getTemplate";
 
 export async function enqueueEmailAndSend(props: EmailProps, restrict = false) {
   if (restrict) return "";

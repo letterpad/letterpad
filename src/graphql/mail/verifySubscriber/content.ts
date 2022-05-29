@@ -1,12 +1,14 @@
+import { PrismaClient } from "@prisma/client";
 import Twig from "twig";
-import { getVerifySubscriberToken } from "@/shared/token";
-import { addLineBreaks } from "../utils";
+
 import {
   EmailTemplateResponse,
   EmailVerifySubscriberProps,
 } from "@/graphql/types";
-import { PrismaClient } from "@prisma/client";
+import { getVerifySubscriberToken } from "@/shared/token";
+
 import { getTemplate } from "../template";
+import { addLineBreaks } from "../utils";
 
 export async function getVerifySubscriberEmailContent(
   data: EmailVerifySubscriberProps,

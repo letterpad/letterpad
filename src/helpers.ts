@@ -1,15 +1,15 @@
-import {
-  UpdateMediaMutationVariables,
-  UpdateMediaDocument,
-} from "./../__generated__/src/graphql/queries/mutations.graphql";
-
+import { Media } from "@/__generated__/__types__";
 import {
   DeleteMediaDocument,
   DeleteMediaMutation,
   DeleteMediaMutationVariables,
   UpdateMediaMutation,
 } from "@/__generated__/queries/mutations.graphql";
-import { Media } from "@/__generated__/__types__";
+
+import {
+  UpdateMediaDocument,
+  UpdateMediaMutationVariables,
+} from "./../__generated__/src/graphql/queries/mutations.graphql";
 import { apolloBrowserClient } from "./graphql/apolloBrowserClient";
 
 export const deleteImageAPI = async (img: Media) => {

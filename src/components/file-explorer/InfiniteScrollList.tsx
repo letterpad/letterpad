@@ -1,5 +1,5 @@
-import InfiniteScroll from "react-infinite-scroll-component";
 import React from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 interface IInfiniteScrollListProps {
   data: any;

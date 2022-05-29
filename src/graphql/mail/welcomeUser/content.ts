@@ -1,8 +1,10 @@
-import Twig from "twig";
-import { EmailWelcomeUserProps, EmailTemplateResponse } from "@/graphql/types";
-import { addLineBreaks } from "../utils";
 import { PrismaClient } from "@prisma/client";
+import Twig from "twig";
+
+import { EmailTemplateResponse, EmailWelcomeUserProps } from "@/graphql/types";
+
 import { getTemplate } from "../template";
+import { addLineBreaks } from "../utils";
 
 export async function getWelcomeUserContent(
   data: EmailWelcomeUserProps,

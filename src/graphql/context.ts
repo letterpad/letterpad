@@ -1,7 +1,10 @@
-import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
 import { getSession } from "next-auth/react";
-import { SessionData } from "./types";
+
 import { prisma } from "@/lib/prisma";
+
+import getAuthorIdFromRequest from "@/shared/getAuthorIdFromRequest";
+
+import { SessionData } from "./types";
 
 const isTest = process.env.NODE_ENV === "test";
 

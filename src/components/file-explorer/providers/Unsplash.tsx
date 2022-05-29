@@ -1,9 +1,16 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import { Button, Input, InputRef } from "antd";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
+import { Media } from "@/__generated__/__types__";
+import { basePath } from "@/constants";
 
 import InfiniteScrollList from "../InfiniteScrollList";
-import { Media } from "@/__generated__/__types__";
-import { Button, Input, InputRef } from "antd";
-import { basePath } from "@/constants";
 
 interface IProps {
   renderer: (items: Media[]) => JSX.Element[];
@@ -18,20 +25,19 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<InputRef>(null);
 
-  useEffect(() => {
-    searchUnsplash();
-  }, [page, query]);
+  const handleUnsplashResponse = useCallback(
+    ({ rows, count }: any) => {
+      setLoading(false);
+      if (rows.length === 0) {
+        return setError("No images found.");
+      }
+      setData([...data, ...rows]);
+      setTotalCount(count);
+    },
+    [data],
+  );
 
-  function handleUnsplashResponse({ rows, count }: any) {
-    setLoading(false);
-    if (rows.length === 0) {
-      return setError("No images found.");
-    }
-    setData([...data, ...rows]);
-    setTotalCount(count);
-  }
-
-  const searchUnsplash = async () => {
+  const searchUnsplash = useCallback(async () => {
     const term = inputRef.current?.input?.value;
     if (!term || term.length === 0) return;
     setLoading(true);
@@ -41,7 +47,11 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
         setError(_e.message);
         setLoading(false);
       });
-  };
+  }, [handleUnsplashResponse, page, url]);
+
+  useEffect(() => {
+    searchUnsplash();
+  }, [page, query, searchUnsplash]);
 
   const resetAll = () => {
     setError("");
@@ -62,7 +72,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     setPage(nextPage);
   };
 
-  const jsxElements = useMemo(() => renderer(data), [data]);
+  const jsxElements = useMemo(() => renderer(data), [data, renderer]);
   return (
     <div>
       <Input.Group compact>

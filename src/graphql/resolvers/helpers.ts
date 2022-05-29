@@ -1,10 +1,12 @@
-import https from "https";
+import { Prisma } from "@prisma/client";
 import cheerio from "cheerio";
+import https from "https";
 import sizeOf from "image-size";
 import reading_time from "reading-time";
-import logger from "./../../shared/logger";
-import { Prisma } from "@prisma/client";
+
 import { textToSlug } from "@/utils/slug";
+
+import logger from "./../../shared/logger";
 
 const slugOfUntitledPost = "untitled";
 
@@ -85,7 +87,7 @@ export const setImageWidthAndHeightInHtml = async (html: string) => {
       const el = $bodyImages[i];
       const $el = $(el);
       $el.attr("loading", "lazy");
-      let src = $el.attr("src");
+      const src = $el.attr("src");
       if (!src) return;
       if (!src.startsWith("http")) return;
       logger.debug("Getting dimensions of ", src);

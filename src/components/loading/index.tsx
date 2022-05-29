@@ -1,5 +1,5 @@
-import { Row } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Row } from "antd";
 
 const Loading = () => {
   return (

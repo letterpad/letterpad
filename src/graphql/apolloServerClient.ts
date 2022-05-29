@@ -1,14 +1,15 @@
 import {
   ApolloClient,
-  InMemoryCache,
   ApolloLink,
   concat,
+  InMemoryCache,
 } from "@apollo/client";
 import { SchemaLink } from "@apollo/client/link/schema";
 
 import { publish } from "@/shared/eventBus";
-import { schema } from "./schema";
+
 import { getResolverContext } from "./context";
+import { schema } from "./schema";
 
 const isTest = process.env.NODE_ENV === "test";
 const isBuildRunning = process.env.NEXT_PHASE === "phase-production-build";

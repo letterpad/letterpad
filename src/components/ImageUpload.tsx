@@ -1,18 +1,20 @@
-import { useEffect, useRef, useState } from "react";
-import { Upload, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { IMediaUploadResult } from "@/graphql/types";
-import { UploadChangeParam } from "antd/lib/upload";
+import { message, Upload } from "antd";
 import Modal from "antd/lib/modal/Modal";
-import FileExplorer from "./file-explorer";
-import { getBase64 } from "./../shared/utils";
+import { UploadChangeParam } from "antd/lib/upload";
+import { useEffect, useRef, useState } from "react";
+
 import { basePath } from "@/constants";
+import { IMediaUploadResult } from "@/graphql/types";
+
+import { getBase64 } from "./../shared/utils";
+import FileExplorer from "./file-explorer";
 
 interface IProps {
   url?: string;
   dataTestid?: string;
   name: string;
-  onRemove?: () => {};
+  onRemove?: () => null;
   onDone: (response: IMediaUploadResult[]) => void;
 }
 const ImageUpload = ({ url, onDone, name, dataTestid }: IProps) => {
@@ -29,7 +31,7 @@ const ImageUpload = ({ url, onDone, name, dataTestid }: IProps) => {
       // @ts-ignore
       setFileList([{ url, status: "done", uid: "1", size: 200, name }]);
     }
-  }, [url]);
+  }, [name, url]);
 
   const handleChange = async (info: UploadChangeParam) => {
     if (info.file.status === "uploading") {

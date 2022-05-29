@@ -1,13 +1,15 @@
-import { PageHeader, message, Popconfirm, Button } from "antd";
-import { Content } from "antd/lib/layout/layout";
+import { Button, message, PageHeader, Popconfirm } from "antd";
 import { Empty } from "antd";
-import { useMediaQuery } from "@/__generated__/queries/queries.graphql";
-import { MediaNode, Media as IMedia } from "@/__generated__/__types__";
-import { deleteImageAPI, updateImageAPI } from "src/helpers";
-import { useEffect, useState } from "react";
-import MediaUpdateModal from "@/components/modals/media-update-modal";
+import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
+import { useEffect, useState } from "react";
+import { deleteImageAPI, updateImageAPI } from "src/helpers";
+
 import { Grid } from "@/components/grid";
+import MediaUpdateModal from "@/components/modals/media-update-modal";
+
+import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
+import { useMediaQuery } from "@/__generated__/queries/queries.graphql";
 
 const key = "updatable";
 
@@ -23,7 +25,7 @@ const Media = () => {
     if (data?.media.__typename === "MediaNode") {
       setImages(data.media);
     }
-  }, [loading]);
+  }, [loading, data?.media]);
   const deleteImage = async (img: IMedia) => {
     const res = await deleteImageAPI(img);
     if (res.data?.deleteMedia?.__typename === "MediaDeleteResult") {

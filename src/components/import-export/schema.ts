@@ -1,7 +1,9 @@
-import { IImportExportData } from "@/components/import-export/importExportTypes";
-import { PostStatusOptions, PostTypes } from "../../../__generated__/__types__";
-import AjvFormats from "ajv-formats";
 import Ajv, { JSONSchemaType } from "ajv";
+import AjvFormats from "ajv-formats";
+
+import { IImportExportData } from "@/components/import-export/importExportTypes";
+
+import { PostStatusOptions, PostTypes } from "../../../__generated__/__types__";
 
 const ajv = new Ajv({ removeAdditional: true, strictTypes: false });
 

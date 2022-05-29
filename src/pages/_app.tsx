@@ -1,14 +1,19 @@
-import React from "react";
-import { AppProps } from "next/app";
-import type { Page } from "../page";
-import "lazysizes";
-import "../../public/css/globals.css";
 import { ApolloProvider } from "@apollo/client";
-import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import Main from "@/components/main";
-import { useSavingIndicator } from "@/hooks/useSavingIndicator";
+import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
+import React from "react";
+import "lazysizes";
+
+import "../../public/css/globals.css";
+
+import { useSavingIndicator } from "@/hooks/useSavingIndicator";
+
+import Main from "@/components/main";
+
 import { basePath } from "@/constants";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
+
+import type { Page } from "../page";
 
 type Props = AppProps & {
   Component: Page;

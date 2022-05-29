@@ -1,7 +1,8 @@
-import logger from "./logger";
 import { Context } from "@apollo/client";
 import { Prisma, PrismaClient } from "@prisma/client";
+
 import { decryptEmail } from "./clientToken";
+import logger from "./logger";
 
 const authHeaderPrefix = "Basic ";
 const prisma = new PrismaClient();

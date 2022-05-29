@@ -1,11 +1,12 @@
+import { message } from "antd";
 import { useCallback } from "react";
-import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { debounce } from "@/shared/utils";
+
+import { SettingInputType } from "@/__generated__/__types__";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
-import { SettingInputType } from "@/__generated__/__types__";
+import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
+import { debounce } from "@/shared/utils";
 import { EventAction, track } from "@/track";
-import { message } from "antd";
 
 const key = "settings";
 

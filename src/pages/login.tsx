@@ -1,5 +1,6 @@
-import React, { useState } from "react";
 import Head from "next/head";
+import React, { useState } from "react";
+
 import { ForgotPassword } from "@/components/login/views/ForgotPassword";
 import { LoginForm } from "@/components/login/views/LoginForm";
 import { LoginFormDemo } from "@/components/login/views/LoginFormDemo";

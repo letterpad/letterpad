@@ -1,8 +1,10 @@
-import { NextApiRequestWithFormData } from "@/graphql/types";
 import { NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import { prisma } from "@/lib/prisma";
+
 import { mail } from "@/lib/mail";
+import { prisma } from "@/lib/prisma";
+
+import { NextApiRequestWithFormData } from "@/graphql/types";
 
 const sendFeedback = async (
   req: NextApiRequestWithFormData,

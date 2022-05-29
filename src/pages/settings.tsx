@@ -1,18 +1,18 @@
 import { Col, Collapse, Form, Input, PageHeader, Row } from "antd";
-import { Content } from "antd/lib/layout/layout";
-import { Role } from "@/__generated__/__types__";
 import { Alert } from "antd";
-
+import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
-
-import General from "@/components/settings/general";
-import Appearance from "@/components/settings/appearance";
-import Navigation from "@/components/settings/navigation";
-import Social from "@/components/settings/social";
-import Integrations from "@/components/settings/integrations";
-import { CopyToClipboard } from "@/components/clipboard";
 import { getSession } from "next-auth/react";
+
+import { CopyToClipboard } from "@/components/clipboard";
+import Appearance from "@/components/settings/appearance";
+import General from "@/components/settings/general";
+import Integrations from "@/components/settings/integrations";
+import Navigation from "@/components/settings/navigation";
 import Pages from "@/components/settings/pages";
+import Social from "@/components/settings/social";
+
+import { Role } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 
 const { Panel } = Collapse;
@@ -36,7 +36,7 @@ function Settings({
       </Head>
       <PageHeader className="site-page-header" title="Settings">
         <span className="help-text">
-          Here you can customize your blog's settings.
+          Here you can customize your blog&apos;s settings.
         </span>
       </PageHeader>
       <Content>

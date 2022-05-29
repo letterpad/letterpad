@@ -1,3 +1,6 @@
+import { Prisma } from "@prisma/client";
+import Cheerio from "cheerio";
+
 import {
   MutationCreatePostArgs,
   MutationResolvers,
@@ -7,18 +10,17 @@ import {
   PostTypes,
   RequireFields,
 } from "@/__generated__/__types__";
-import {
-  slugify,
-  getImageDimensions,
-  setImageWidthAndHeightInHtml,
-  getReadingTimeFromHtml,
-} from "./helpers";
 import logger from "@/shared/logger";
-import { ResolverContext } from "../context";
-import { Prisma } from "@prisma/client";
-import { mapPostToGraphql } from "./mapper";
-import Cheerio from "cheerio";
 import { getLastPartFromPath, textToSlug } from "@/utils/slug";
+
+import {
+  getImageDimensions,
+  getReadingTimeFromHtml,
+  setImageWidthAndHeightInHtml,
+  slugify,
+} from "./helpers";
+import { mapPostToGraphql } from "./mapper";
+import { ResolverContext } from "../context";
 
 export const createPost = async (
   args: RequireFields<MutationCreatePostArgs, never>,
@@ -42,7 +44,7 @@ export const createPost = async (
     };
   }
 
-  let slug = args.data.slug;
+  const slug = args.data.slug;
 
   try {
     const newPost = await prisma.post.create({
@@ -76,7 +78,9 @@ export const createPost = async (
         title: args.data.title || "Untitled",
       };
     }
-  } catch (e) {}
+  } catch (e) {
+    logger.error(e);
+  }
   return {
     __typename: "PostError",
     message: "Unable to create post",
@@ -207,7 +211,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         ...mapPostToGraphql(updatedPost),
       };
     } catch (e) {
-      console.log(e);
+      logger.error(e);
       return {
         __typename: "PostError",
         message: e.message,
@@ -312,7 +316,7 @@ async function getCoverImageAttrs(cover_image): Promise<{
   if (!cover_image)
     return { cover_image: "", cover_image_width: 0, cover_image_height: 0 };
   const { width, height } = cover_image;
-  let src = cover_image.src?.replace(process.env.ROOT_URL || "", "");
+  const src = cover_image.src?.replace(process.env.ROOT_URL || "", "");
 
   const data = {
     cover_image: src,

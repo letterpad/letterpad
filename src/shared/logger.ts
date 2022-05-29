@@ -1,4 +1,6 @@
-// @ts-nocheck
+/* eslint-disable @typescript-eslint/no-unused-vars */
+//@ts-nocheck
+
 const reset = "\x1b[0m";
 const bright = "\x1b[1m";
 const dim = "\x1b[2m";

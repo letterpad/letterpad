@@ -1,5 +1,7 @@
-import { EventAction, track } from "@/track";
 import { SortableContainer } from "react-sortable-hoc";
+
+import { EventAction, track } from "@/track";
+
 import SortableItem from "./SortableItem";
 
 const SortableList = ({ items, source, onChange, onRemove }) => {

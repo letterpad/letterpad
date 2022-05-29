@@ -1,13 +1,13 @@
+import { Button, Divider, Form, Input, message, Row } from "antd";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import React from "react";
 
-import { message, Row, Form, Input, Button, Divider } from "antd";
-import { useRouter } from "next/router";
 import {
+  ResetPasswordDocument,
   ResetPasswordMutation,
   ResetPasswordMutationVariables,
-  ResetPasswordDocument,
 } from "@/__generated__/queries/mutations.graphql";
-import Head from "next/head";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { EventAction, track } from "@/track";
 

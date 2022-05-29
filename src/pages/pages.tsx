@@ -1,15 +1,18 @@
-import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
-import { PostTypes } from "@/__generated__/__types__";
-import { useRouter } from "next/router";
 import { Layout, Table } from "antd";
+import { Alert } from "antd";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { getSession } from "next-auth/react";
+
+import { postsStyles } from "@/components/posts.css";
+
 import ErrorMessage from "@/components/ErrorMessage";
 import Filters from "@/components/filters";
-import Head from "next/head";
-import { postsStyles } from "@/components/posts.css";
 import { columns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
-import { Alert } from "antd";
-import { getSession } from "next-auth/react";
+
+import { PostTypes } from "@/__generated__/__types__";
+import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 
 const { Content } = Layout;
 

@@ -1,8 +1,10 @@
-import { usePostFromCache } from "@/hooks/usePostFromCache";
-import { useUpdatePost } from "@/hooks/useUpdatePost";
-import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { Button } from "antd";
 import { useRouter } from "next/router";
+
+import { usePostFromCache } from "@/hooks/usePostFromCache";
+import { useUpdatePost } from "@/hooks/useUpdatePost";
+
+import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 
 interface Props {
   postId: number;

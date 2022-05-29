@@ -1,18 +1,21 @@
-import { getSession } from "next-auth/react";
 import multer from "multer";
-import initMiddleware from "./middleware";
-import { ROLES, SessionData } from "@/graphql/types";
+import { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
+
+import { prisma } from "@/lib/prisma";
+
+import { validateWithAjv } from "@/components/import-export/schema";
+
 import { Role } from "@/__generated__/__types__";
+import { ROLES, SessionData } from "@/graphql/types";
+import { encryptEmail } from "@/shared/clientToken";
+
+import { convertGhostToLetterpad } from "./importers/ghost/ghost";
+import initMiddleware from "./middleware";
 import {
   IAuthorData,
   IImportExportData,
 } from "../../components/import-export/importExportTypes";
-
-import { convertGhostToLetterpad } from "./importers/ghost/ghost";
-import { prisma } from "@/lib/prisma";
-import { validateWithAjv } from "@/components/import-export/schema";
-import { NextApiRequest, NextApiResponse } from "next";
-import { encryptEmail } from "@/shared/clientToken";
 
 const upload = multer();
 const multerAny = initMiddleware(upload.any());
@@ -217,7 +220,7 @@ async function validateSingleAuthorImport(
 function collectSensitiveFromData(data: {
   [email: string]: IAuthorData & { password: string; role_id: number };
 }) {
-  let passwords = {};
+  const passwords = {};
   Object.keys(data).forEach((email) => {
     passwords[email] = {
       password: data[email].password,

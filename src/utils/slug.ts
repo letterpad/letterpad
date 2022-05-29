@@ -1,7 +1,7 @@
-export const textToSlug = (text: String) => {
+export const textToSlug = (text: string) => {
   return text
     .toLowerCase()
-    .replace(/[^\w\s\-]/g, " ")
+    .replace(/[^\w\s-]/g, " ")
     .split(" ")
     .filter(function (substr) {
       return substr.length > 0;

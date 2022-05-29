@@ -1,7 +1,8 @@
 //@ts-nocheck
-import config from "../../next.config";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+
+import config from "../../next.config";
 
 export const useTracking = () => {
   const trackingId = config.gaTrackingId;
@@ -15,6 +16,7 @@ export const useTracking = () => {
         (i[r] =
           i[r] ||
           function () {
+            // eslint-disable-next-line prefer-rest-params
             (i[r].q = i[r].q || []).push(arguments);
           }),
           (i[r].l = 1 * new Date());

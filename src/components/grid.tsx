@@ -7,7 +7,7 @@ export const Grid = ({ images, actions, onClick }) => {
 
   useEffect(() => {
     handleResize();
-  }, [ref.current]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -33,7 +33,7 @@ export const Grid = ({ images, actions, onClick }) => {
         {images.map((image, index) => {
           image = getDimensions({ ...image }, width - 20);
           return (
-            <div className="image-item">
+            <div className="image-item" key={image.url}>
               <Image
                 {...image}
                 src={image.url}

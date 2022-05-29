@@ -1,9 +1,10 @@
+import { PrismaClient } from "@prisma/client";
 import Twig from "twig";
 
 import { EmailNewPostProps, EmailTemplateResponse } from "@/graphql/types";
-import { addLineBreaks } from "../utils";
-import { PrismaClient } from "@prisma/client";
+
 import { getTemplate } from "../template";
+import { addLineBreaks } from "../utils";
 
 export async function getNewPostContent(
   data: EmailNewPostProps,

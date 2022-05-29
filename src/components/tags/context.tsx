@@ -1,12 +1,15 @@
-import { useMemo, useState, createContext } from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import { useContext } from "react";
+import { useEffect } from "react";
+
 import { TagRow, TagsContextType } from "@/components/tags/types";
-import { useTagsQuery } from "@/__generated__/queries/queries.graphql";
+
 import {
   useDeleteTagsMutation,
   useUpdateTagsMutation,
 } from "@/__generated__/queries/mutations.graphql";
-import { useEffect } from "react";
+import { useTagsQuery } from "@/__generated__/queries/queries.graphql";
+
 import { getHeaders } from "./headers";
 
 export const TagsContext = createContext<Partial<TagsContextType<any, any>>>({
@@ -30,47 +33,58 @@ export const TagsProvider: React.FC<{ readOnly: boolean }> = ({
   const [deleteTagsMutation] = useDeleteTagsMutation();
   const [tags, setTags] = useState<TagRow[]>([]);
 
+  const computedTags = useMemo(
+    () => (data?.tags.__typename === "TagsNode" ? data.tags.rows : []),
+    [data],
+  );
+
   useEffect(() => {
-    if (!loading && data?.tags.__typename === "TagsNode") {
+    if (!loading) {
       setTags(
-        data.tags.rows.map((item) => ({
+        computedTags.map((item) => ({
           ...item,
           key: item.name,
           posts: item.posts?.__typename === "PostsNode" ? item.posts.count : 0,
         })),
       );
     }
-  }, [loading]);
+  }, [computedTags, loading]);
 
-  const deleteTag = async (key: React.Key) => {
-    if (readOnly) return;
-    const tagToDelete = [...tags].filter((item) => item.key === key);
-    if (tagToDelete.length > 0) {
-      await deleteTagsMutation({ variables: { name: tagToDelete[0].name } });
-    }
-    setTags([...tags].filter((item) => item.key !== key));
-  };
+  const deleteTag = useCallback(
+    async (key: React.Key) => {
+      if (readOnly) return;
+      const tagToDelete = [...tags].filter((item) => item.key === key);
+      if (tagToDelete.length > 0) {
+        await deleteTagsMutation({ variables: { name: tagToDelete[0].name } });
+      }
+      setTags([...tags].filter((item) => item.key !== key));
+    },
+    [deleteTagsMutation, readOnly, tags],
+  );
 
-  const saveTag = async (row: TagRow) => {
-    if (readOnly) return;
-    const newData = [...tags];
-    const index = newData.findIndex((item) => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
-    });
+  const saveTag = useCallback(
+    async (row: TagRow) => {
+      if (readOnly) return;
+      const newData = [...tags];
+      const index = newData.findIndex((item) => row.key === item.key);
+      const item = newData[index];
+      newData.splice(index, 1, {
+        ...item,
+        ...row,
+      });
 
-    const { name, slug } = row;
-    await updateTagsMutation({
-      variables: {
-        data: { name, slug, old_name: item.name },
-      },
-    });
-    if (newData) setTags(newData);
-  };
+      const { name, slug } = row;
+      await updateTagsMutation({
+        variables: {
+          data: { name, slug, old_name: item.name },
+        },
+      });
+      if (newData) setTags(newData);
+    },
+    [readOnly, tags, updateTagsMutation],
+  );
 
-  const addTag = () => {
+  const addTag = useCallback(() => {
     const newData: TagRow = {
       key: tags.length + 2,
       name: `new-tag-${tags.length}`,
@@ -78,24 +92,27 @@ export const TagsProvider: React.FC<{ readOnly: boolean }> = ({
       slug: `new-tag-${tags.length}`,
     };
     setTags([...tags, newData]);
-  };
+  }, [tags]);
 
   const context: TagsContextType<typeof updateTagsMutation, typeof deleteTag> =
-    {
-      loading,
-      tags,
-      deleteTag,
-      addTag,
-      updateTagsMutation,
-      saveTag,
-      headers: getHeaders(tags, deleteTag),
-    };
+    useMemo(
+      () => ({
+        loading,
+        tags,
+        deleteTag,
+        addTag,
+        updateTagsMutation,
+        saveTag,
+        headers: getHeaders(tags, deleteTag),
+      }),
+      [addTag, deleteTag, loading, saveTag, tags, updateTagsMutation],
+    );
 
   return useMemo(() => {
     return (
       <TagsContext.Provider value={context}>{children}</TagsContext.Provider>
     );
-  }, [context.tags, loading]);
+  }, [children, context]);
 };
 
 export const useTagsContext = () => useContext(TagsContext);

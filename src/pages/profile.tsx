@@ -1,12 +1,13 @@
 import { PageHeader } from "antd";
-import { Content } from "antd/lib/layout/layout";
-import { useMeQuery } from "@/__generated__/queries/queries.graphql";
-import Head from "next/head";
-import Loading from "@/components/loading";
 import { Alert } from "antd";
+import { Content } from "antd/lib/layout/layout";
+import Head from "next/head";
 import { getSession } from "next-auth/react";
 
+import Loading from "@/components/loading";
 import { Content as ProfileContent } from "@/components/profile/content";
+
+import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 
 function Profile({ readOnly }: { readOnly: boolean }) {
   const { data, loading } = useMeQuery({

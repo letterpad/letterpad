@@ -1,23 +1,26 @@
-import React from "react";
 import Layout from "antd/lib/layout/layout";
+import siteConfig from "config/site.config";
+import React from "react";
+import { useEffect, useState } from "react";
+
+import { useErrorReporting } from "@/hooks/useErrorReporting";
+import { useLetterpadSession } from "@/hooks/useLetterpadSession";
+
 import { Stats } from "@/__generated__/__types__";
 import {
+  SettingsFragmentFragment,
+  StatsDocument,
   StatsQuery,
   StatsQueryVariables,
-  StatsDocument,
-  SettingsFragmentFragment,
 } from "@/__generated__/queries/queries.graphql";
-import { useEffect, useState } from "react";
-import siteConfig from "config/site.config";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { useErrorReporting } from "@/hooks/useErrorReporting";
+import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
+import { SessionData } from "@/graphql/types";
+
 import { DesktopMenu } from "./desktop-menu";
 import { MobileMenu } from "./mobile-menu";
 import { SiteFooter } from "./site-footer";
 import { TopBar } from "./top-bar";
-import { useLetterpadSession } from "@/hooks/useLetterpadSession";
-import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
-import { SessionData } from "@/graphql/types";
 
 interface IProps {
   render: ({
@@ -31,7 +34,7 @@ interface IProps {
 
 const AuthenticatedLayout = ({ render }: IProps) => {
   const { data, loading } = useSettingsQuery();
-  const [stats, setStats] = useState<Stats | {}>({});
+  const [stats, setStats] = useState<Stats | Record<string, unknown>>({});
   const [collapsed, setCollapsed] = useState(false);
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
   const session = useLetterpadSession();

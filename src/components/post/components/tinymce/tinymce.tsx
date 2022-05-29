@@ -1,11 +1,13 @@
-import "./core";
 import { Editor } from "@tinymce/tinymce-react";
 import { memo, useEffect, useRef, useState } from "react";
-import { usePostContext } from "../../context";
+import "./core";
+
 import { basePath } from "@/constants";
-import { textPatterns } from "../textPatterns";
+
 import { socket } from "./socket";
 import { initImagePlugin } from "../plugins/image";
+import { textPatterns } from "../textPatterns";
+import { usePostContext } from "../../context";
 
 interface Props {
   text: string;
@@ -34,13 +36,13 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
     return () => {
       socket.disconnect();
     };
-  }, [editorRef.current]);
+  }, [onChange]);
 
   useEffect(() => {
     if (typeof html == "undefined") {
       setHtml(text);
     }
-  }, [text]);
+  }, [html, text]);
 
   return (
     <>
@@ -150,7 +152,7 @@ export default memo(LpEditor);
 
 const insertScript = (src: string, head: HTMLHeadElement) => {
   return new Promise((resolve, reject) => {
-    var script = document.createElement("script");
+    const script = document.createElement("script");
     script.type = "text/javascript";
     script.src = src;
     script.onload = resolve;

@@ -1,8 +1,10 @@
-import { SessionData } from "@/graphql/types";
-import { umamiApi } from "@/lib/umami";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
+
 import { prisma } from "@/lib/prisma";
+import { umamiApi } from "@/lib/umami";
+
+import { SessionData } from "@/graphql/types";
 
 const Analytics = async (req: NextApiRequest, res: NextApiResponse) => {
   const _session = await getSession({ req });

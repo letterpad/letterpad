@@ -1,7 +1,10 @@
 import { Button, Divider, Form, Input, Modal } from "antd";
-import { CopyToClipboard } from "../clipboard";
-import { useRemoveDomainMutation } from "@/__generated__/queries/mutations.graphql";
+
 import { useDomainMutation } from "@/hooks/useCreateOrUpdateDomain";
+
+import { useRemoveDomainMutation } from "@/__generated__/queries/mutations.graphql";
+
+import { CopyToClipboard } from "../clipboard";
 
 export const NewDomain: React.FC<{
   name?: string;

@@ -1,5 +1,5 @@
-import React from "react";
 import { Layout } from "antd";
+import React from "react";
 const { Header, Content, Footer } = Layout;
 
 const StaticLayout = ({ children }) => {
@@ -8,7 +8,7 @@ const StaticLayout = ({ children }) => {
       <Layout>
         <Header>
           <div className="logo">
-            <img src="/admin/uploads/logo.png" height={28} />
+            <img src="/admin/uploads/logo.png" height={28} alt="logo" />
           </div>
         </Header>
         <Content className="content">

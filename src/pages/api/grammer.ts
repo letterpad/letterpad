@@ -1,5 +1,6 @@
-import { NextApiRequestWithFormData } from "@/graphql/types";
 import { NextApiResponse } from "next";
+
+import { NextApiRequestWithFormData } from "@/graphql/types";
 
 const analyse = async (
   req: NextApiRequestWithFormData,

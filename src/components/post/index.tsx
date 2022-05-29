@@ -1,3 +1,3 @@
-export { usePostContext, PostContext, PostProvider } from "./context";
-export type { PostContextType } from "./types";
 export { default as Post } from "./components/post";
+export { PostContext, PostProvider, usePostContext } from "./context";
+export type { PostContextType } from "./types";

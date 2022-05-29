@@ -1,5 +1,7 @@
-import { decodeToken } from "@/shared/token";
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
+import logger from "@/shared/logger";
+import { decodeToken } from "@/shared/token";
+
 import { ResolverContext } from "../context";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 import { EmailTemplates } from "../types";
@@ -20,7 +22,9 @@ const Query: QueryResolvers<ResolverContext> = {
         count: subscribers.length,
         rows: subscribers,
       };
-    } catch (e) {}
+    } catch (e) {
+      logger.error(e);
+    }
     return {
       count: 0,
       rows: [],

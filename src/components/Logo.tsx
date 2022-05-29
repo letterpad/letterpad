@@ -11,7 +11,12 @@ const Logo = ({
 }) => {
   if (!src) return null;
   return (
-    <img src={src} height={height} style={{ padding, objectFit: "contain" }} />
+    <img
+      src={src}
+      height={height}
+      style={{ padding, objectFit: "contain" }}
+      alt="logo"
+    />
   );
 };
 

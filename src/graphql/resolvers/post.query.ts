@@ -1,16 +1,18 @@
-import { setResponsiveImages } from "./../utils/imageAttributs";
+import { Prisma } from "@prisma/client";
+
 import {
+  NavigationType,
   PostStatusOptions,
   PostTypes,
   QueryResolvers,
-  NavigationType,
 } from "@/__generated__/__types__";
-import { decrypt } from "../utils/crypto";
-import logger from "./../../shared/logger";
-import { ResolverContext } from "../context";
-import { Prisma } from "@prisma/client";
-import { mapPostToGraphql } from "./mapper";
 import { createPathWithPrefix, getLastPartFromPath } from "@/utils/slug";
+
+import logger from "./../../shared/logger";
+import { setResponsiveImages } from "./../utils/imageAttributs";
+import { mapPostToGraphql } from "./mapper";
+import { ResolverContext } from "../context";
+import { decrypt } from "../utils/crypto";
 
 type PostAttributes = any;
 
@@ -59,7 +61,7 @@ const Query: QueryResolvers<ResolverContext> = {
    * Used for Search and Admin posts and pages list.
    */
   async posts(_parent, args, { session, author_id, prisma }, _info) {
-    let authorId = session?.user.id || author_id;
+    const authorId = session?.user.id || author_id;
     if (!authorId) {
       return { __typename: "PostError", message: "Author Id not found" };
     }
@@ -157,7 +159,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
     const { previewHash, id, slug } = args.filters;
 
-    let postId = previewHash ? Number(decrypt(previewHash)) : id;
+    const postId = previewHash ? Number(decrypt(previewHash)) : id;
 
     if (previewHash) {
       const postId = Number(decrypt(previewHash));

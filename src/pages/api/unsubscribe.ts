@@ -1,8 +1,11 @@
 import { NextApiResponse } from "next";
-import { NextApiRequestWithFormData } from "../../graphql/types";
+
+import { prisma } from "@/lib/prisma";
+
 import { basePath } from "@/constants";
 import { decodeToken, verifyToken } from "@/shared/token";
-import { prisma } from "@/lib/prisma";
+
+import { NextApiRequestWithFormData } from "../../graphql/types";
 
 const Unsubscribe = async (
   req: NextApiRequestWithFormData,

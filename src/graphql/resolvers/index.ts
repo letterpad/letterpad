@@ -1,11 +1,11 @@
 import Author from "./author";
-import Media from "./media";
-import Setting from "./setting";
-import Tag from "./tag";
-import Post from "./post.query";
-import PostMutation from "./post.mutation";
-import Subscriber from "./subscriber";
 import Domain from "./domain";
+import Media from "./media";
+import PostMutation from "./post.mutation";
+import Post from "./post.query";
+import Setting from "./setting";
+import Subscriber from "./subscriber";
+import Tag from "./tag";
 
 export default [
   Author,

@@ -1,7 +1,8 @@
-import { Media } from "@/__generated__/__types__";
 import { Input } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import Image from "next/image";
+
+import { Media } from "@/__generated__/__types__";
 
 const MediaUpdateModal = ({
   img,
@@ -27,6 +28,7 @@ const MediaUpdateModal = ({
           loading="lazy"
           width={img.width}
           height={img.height}
+          alt={img.name}
         />
       )}
       <Input

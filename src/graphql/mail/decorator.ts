@@ -1,5 +1,5 @@
-import Twig from "twig";
 import path from "path";
+import Twig from "twig";
 
 import { getUnsubscribeToken } from "@/shared/token";
 
@@ -18,6 +18,7 @@ export const bodyDecorator = (
     "src/graphql/mail/templates/base.twig",
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const template = require("fs").readFileSync(baseTemplate, "utf-8");
   if (!template) {
     throw new Error("Email base template not found in sr/mail");

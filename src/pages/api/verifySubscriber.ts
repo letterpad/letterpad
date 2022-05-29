@@ -1,8 +1,11 @@
-import { NextApiResponse } from "next";
-import { NextApiRequestWithFormData } from "../../graphql/types";
 import Cryptr from "cryptr";
-import { basePath } from "@/constants";
+import { NextApiResponse } from "next";
+
 import { prisma } from "@/lib/prisma";
+
+import { basePath } from "@/constants";
+
+import { NextApiRequestWithFormData } from "../../graphql/types";
 
 const cryptr = new Cryptr(process.env.SECRET_KEY);
 

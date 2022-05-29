@@ -22,11 +22,11 @@ const groupClass = "gallery";
 */
 export const addGalleryWrapper = (
   htmlStr: string,
-  selector: string = "figure.lp-image",
+  selector = "figure.lp-image",
 ) => {
   const $ = cheerio.load(htmlStr.replace(/\n/, ""));
 
-  let participants = $(selector);
+  const participants = $(selector);
 
   participants.each((_i, current) => {
     const nextInSource = $(current).next(selector);

@@ -1,9 +1,11 @@
 import { NextApiResponse } from "next";
-import { NextApiRequestWithFormData } from "./../../graphql/types";
-import { basePath } from "@/constants";
+
 import { PostTypes } from "@/__generated__/__types__";
+import { basePath } from "@/constants";
 import { getResolverContext } from "@/graphql/context";
 import { createPost } from "@/graphql/resolvers/post.mutation";
+
+import { NextApiRequestWithFormData } from "./../../graphql/types";
 
 const Create = async (
   req: NextApiRequestWithFormData,

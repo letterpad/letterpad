@@ -1,6 +1,7 @@
 import { ApolloServer } from "apollo-server-micro";
-import { schema } from "@/graphql/schema";
+
 import { getResolverContext } from "@/graphql/context";
+import { schema } from "@/graphql/schema";
 
 export const apolloServer = new ApolloServer({
   schema,

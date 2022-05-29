@@ -10,7 +10,11 @@ export const SiteFooter = () => {
           Letterpad, 2022. An open source project.
         </Col>
         <Col span={12} style={{ textAlign: "center" }}>
-          <a href="https://github.com/letterpad/letterpad" target="_blank">
+          <a
+            href="https://github.com/letterpad/letterpad"
+            target="_blank"
+            rel="noreferrer"
+          >
             <GithubOutlined />
           </a>
         </Col>

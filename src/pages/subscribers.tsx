@@ -1,6 +1,8 @@
 import { Layout, PageHeader, Table } from "antd";
-import ErrorMessage from "@/components/ErrorMessage";
 import Head from "next/head";
+
+import ErrorMessage from "@/components/ErrorMessage";
+
 import { useSubscribersQuery } from "@/graphql/queries/queries.graphql";
 
 const { Content } = Layout;
@@ -24,10 +26,10 @@ export const columns = [
     dataIndex: "createdAt",
     key: "createdAt",
     render: (date: string) => {
-      let d = new Date(date);
-      let ye = new Intl.DateTimeFormat("en", { year: "2-digit" }).format(d);
-      let mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
-      let da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
+      const d = new Date(date);
+      const ye = new Intl.DateTimeFormat("en", { year: "2-digit" }).format(d);
+      const mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
+      const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
 
       return (
         <span>

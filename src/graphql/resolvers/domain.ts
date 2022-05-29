@@ -1,5 +1,6 @@
-import { execShellCommand } from "@/shared/execShellCommand";
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
+import { execShellCommand } from "@/shared/execShellCommand";
+
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {

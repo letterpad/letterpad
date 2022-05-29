@@ -1,14 +1,15 @@
-import { basePath } from "@/constants";
 import {
   ApolloClient,
-  InMemoryCache,
   ApolloLink,
   // concat,
   HttpLink,
+  InMemoryCache,
 } from "@apollo/client";
-import { publish } from "@/shared/eventBus";
-import fetch from "cross-fetch";
 import { onError } from "@apollo/client/link/error";
+import fetch from "cross-fetch";
+
+import { basePath } from "@/constants";
+import { publish } from "@/shared/eventBus";
 
 // Log any GraphQL errors or network error that occurred
 const errorLink = onError(({ graphQLErrors, networkError }) => {

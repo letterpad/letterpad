@@ -1,10 +1,12 @@
-import { createPathWithPrefix } from "@/utils/slug";
 import {
-  QueryResolvers,
   MutationResolvers,
   PostStatusOptions,
+  QueryResolvers,
   Tags as TagsType,
 } from "@/__generated__/__types__";
+import logger from "@/shared/logger";
+import { createPathWithPrefix } from "@/utils/slug";
+
 import { ResolverContext } from "../context";
 
 const Query: QueryResolvers<ResolverContext> = {
@@ -78,7 +80,9 @@ const Query: QueryResolvers<ResolverContext> = {
         __typename: "TagsNode",
         rows: tags as TagsType[],
       };
-    } catch (e) {}
+    } catch (e) {
+      logger.error(e);
+    }
     return {
       __typename: "TagsError",
       message: "Missing or invalid token or session",

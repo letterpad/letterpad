@@ -1,8 +1,8 @@
 // import { Spinner } from "@/components/spinner";
-import { subscribe } from "@/shared/eventBus";
 import { message } from "antd";
+import { useEffect, useState } from "react";
 
-import { useState, useEffect } from "react";
+import { subscribe } from "@/shared/eventBus";
 
 const key = "msg";
 export const useSavingIndicator = () => {

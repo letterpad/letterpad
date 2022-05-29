@@ -1,10 +1,11 @@
+import { PostStatusOptions } from "@/__generated__/__types__";
 import {
   CreatePostDocument,
   UpdatePostDocument,
 } from "@/__generated__/src/graphql/queries/mutations.graphql";
-import { API } from "../../../tests/testClient";
-import { PostStatusOptions } from "@/__generated__/__types__";
 import { createPathWithPrefix, textToSlug } from "@/utils/slug";
+
+import { API } from "../../../tests/testClient";
 
 const title = "New Post";
 describe("Test Post Query Graphql API", () => {
