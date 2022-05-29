@@ -107,6 +107,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           },
           entity_encoding: "raw",
           codesample_global_prismjs: true,
+          gecko_spellcheck: false,
           codesample_languages: [
             { text: "Bash", value: "bash" },
             { text: "C", value: "c" },

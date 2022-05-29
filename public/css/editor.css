@@ -7,7 +7,7 @@ body {
   font-family: "Merriweather", serif;
   background: transparent;
   line-height: 1.8;
-  font-size: 1.2em;
+  font-size: 1.05em;
   overflow-x: hidden;
   color: rgba(var(--color), 0.7);
   margin: 0;
@@ -65,12 +65,7 @@ blockquote p {
   color: rgb(221, 79, 79);
 }
 
-.mark {
-  background: #ebeca8;
-  color: #111;
-  cursor: pointer;
-}
-.mark.typographical {
+/* .mark.typographical {
   background: #e0a7e1;
   color: #111;
 }
@@ -85,17 +80,15 @@ blockquote p {
 .mark.grammar {
   background: #a7d391;
   color: #111;
-}
-.mark.style {
+} */
+/* .mark.style {
   background: #9dc9f2;
   color: #111;
-}
+} */
 .mark {
   /* text-decoration: underline; */
-  padding: 0 6px;
-  font-size: 90%;
-  border-radius: 4px;
-  border-bottom: 1px solid #111;
+  cursor: pointer;
+  border-bottom: 3px solid #d932c0
 }
 
 .tippy-content {
