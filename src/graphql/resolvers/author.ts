@@ -12,7 +12,7 @@ import {
 import { encryptEmail } from "@/shared/clientToken";
 import { decodeToken, verifyToken } from "@/shared/token";
 
-import { validateCaptcha } from "./helpers";
+import { validateCaptcha, validateHostNames } from "./helpers";
 import { mapAuthorToGraphql } from "./mapper";
 import { ResolverContext } from "../context";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
@@ -50,7 +50,7 @@ const Author = {
   },
   social: ({ social }) => {
     if (typeof social === "string") {
-      return JSON.parse(social);
+      return validateHostNames(JSON.parse(social));
     }
     return social;
   },
@@ -73,7 +73,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
       return {
         ...author,
-        social: JSON.parse(author.social as string) as Social,
+        social: validateHostNames(JSON.parse(author.social as string)),
         avatar,
         analytics_id: author.analytics_id || undefined,
         analytics_uuid: author.analytics_uuid || undefined,
