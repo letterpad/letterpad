@@ -7,7 +7,6 @@ import {
   InputAuthor,
   MutationResolvers,
   QueryResolvers,
-  Social,
 } from "@/__generated__/__types__";
 import { encryptEmail } from "@/shared/clientToken";
 import { decodeToken, verifyToken } from "@/shared/token";
@@ -57,7 +56,7 @@ const Author = {
 };
 
 const Query: QueryResolvers<ResolverContext> = {
-  async me(_parent, _args, { session, prisma, author_id }, _info) {
+  async me(_parent, _args, { session, prisma, author_id }) {
     author_id = session?.user.id || author_id;
 
     const author = await prisma.author.findFirst({
@@ -149,7 +148,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       message: "Something went wrong and we dont know what.",
     };
   },
-  async login(_parent, args, { prisma }, _info) {
+  async login(_parent, args, { prisma }) {
     const author = await prisma.author.findFirst({
       where: { email: args.data?.email },
     });

@@ -22,7 +22,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
     <>
       <Form.Item label="Twitter">
         <Input
-          placeholder="https://twitter.com/username"
+          placeholder="username"
           size="middle"
           value={social?.twitter}
           onChange={(e) => {
@@ -32,7 +32,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
       </Form.Item>
       <Form.Item label="Facebook">
         <Input
-          placeholder="https://facebook.com/username"
+          placeholder="username"
           size="middle"
           value={social?.facebook}
           onChange={(e) => updateSocial({ facebook: e.target.value })}
@@ -40,7 +40,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
       </Form.Item>
       <Form.Item label="Instagram">
         <Input
-          placeholder="https://instagram.com/username"
+          placeholder="username"
           size="middle"
           value={social?.instagram}
           onChange={(e) => updateSocial({ instagram: e.target.value })}
@@ -48,7 +48,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
       </Form.Item>
       <Form.Item label="Github">
         <Input
-          placeholder="https://github.com/username"
+          placeholder="username"
           size="middle"
           value={social?.github}
           onChange={(e) => updateSocial({ github: e.target.value })}
@@ -56,7 +56,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
       </Form.Item>
       <Form.Item label="LinkedIn">
         <Input
-          placeholder="https://linkedin.com/in/username/"
+          placeholder="username/"
           size="middle"
           value={social?.linkedin}
           onChange={(e) => updateSocial({ linkedin: e.target.value })}
