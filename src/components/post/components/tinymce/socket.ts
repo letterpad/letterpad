@@ -10,6 +10,7 @@ class Socket {
   grammar: any;
   onContentChange = () => null;
   nodes: Array<Element> = [];
+  listenersActivated = false;
 
   constructor(grammar) {
     this.grammar = new grammar();
@@ -30,7 +31,7 @@ class Socket {
   }
 
   async connectSocketAndAddListeners() {
-    if (this.editor) {
+    if (this.editor && !this.listenersActivated) {
       this.grammar.activateListeners(this.editor.getDoc(), this.onChange);
     }
     this.socket = await this._initSocket();
@@ -58,9 +59,10 @@ class Socket {
   checkGrammar() {
     this.removeGrammar();
     this.nodes = this._getDomNodesForCorrection();
+    const socket = this.socket;
     this.nodes.forEach((node, index) => {
       //@ts-ignore
-      this.socket?.emit("REVIEW", { m: node.innerText, index });
+      socket?.emit("REVIEW", { m: node.innerText, index });
     });
   }
 
@@ -113,6 +115,9 @@ class Socket {
   }
 
   private async _initSocket(): Promise<ReturnType<typeof io>> {
+    if (this.socket?.connected) {
+      return this.socket;
+    }
     const p = async (resolve, reject) => {
       try {
         await fetch(path);
@@ -126,10 +131,11 @@ class Socket {
           socket.emit("hello");
         });
 
-        socket.on("disconnect", () => {
-          console.log("disconnect");
+        socket.on("disconnect", (e) => {
+          console.log("disconnect", e);
         });
       }
+      return socket;
     };
     return new Promise(p);
   }

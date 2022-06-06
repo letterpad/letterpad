@@ -4,10 +4,7 @@ const socketMap = {};
 
 const ioHandler = (_req, res) => {
   if (!res.socket.server.io) {
-    console.log("*First use, starting socket.io");
-
     const io = new Server(res.socket.server, { path: "/admin/api/socket.io" });
-
     io.on("connection", (socket) => {
       console.log("A user got connected");
       socket.broadcast.emit("a user connected");
@@ -25,6 +22,10 @@ const ioHandler = (_req, res) => {
         } catch (e) {
           console.log(e);
         }
+      });
+
+      socket.on("disconnect", () => {
+        console.log("client disconnected");
       });
     });
 
