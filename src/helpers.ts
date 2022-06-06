@@ -5,6 +5,11 @@ import {
   DeleteMediaMutationVariables,
   UpdateMediaMutation,
 } from "@/__generated__/queries/mutations.graphql";
+import {
+  MediaDocument,
+  StatsDocument,
+  StatsQuery,
+} from "@/__generated__/queries/queries.graphql";
 
 import {
   UpdateMediaDocument,
@@ -20,6 +25,34 @@ export const deleteImageAPI = async (img: Media) => {
     mutation: DeleteMediaDocument,
     variables: {
       ids: [img.id],
+    },
+    update: (cache) => {
+      const mediaList = cache.readQuery({
+        query: MediaDocument,
+        variables: { filters: {} },
+      });
+      //@ts-ignore
+      const rows = mediaList.media.rows.filter((item) => item.id !== img.id);
+      //@ts-ignore
+      const count = mediaList.media.count - 1;
+
+      //@ts-ignore
+      const newMediaList = { media: { ...mediaList.media, rows, count } };
+
+      cache.writeQuery({
+        query: MediaDocument,
+        variables: { filters: {} },
+        data: newMediaList,
+      });
+
+      const stats = cache.readQuery<StatsQuery>({
+        query: StatsDocument,
+      });
+
+      cache.writeQuery({
+        query: StatsDocument,
+        data: { stats: { ...stats?.stats, media: count } },
+      });
     },
   });
   return response;

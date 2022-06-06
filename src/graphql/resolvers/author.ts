@@ -7,12 +7,11 @@ import {
   InputAuthor,
   MutationResolvers,
   QueryResolvers,
-  Social,
 } from "@/__generated__/__types__";
 import { encryptEmail } from "@/shared/clientToken";
 import { decodeToken, verifyToken } from "@/shared/token";
 
-import { validateCaptcha } from "./helpers";
+import { validateCaptcha, validateHostNames } from "./helpers";
 import { mapAuthorToGraphql } from "./mapper";
 import { ResolverContext } from "../context";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
@@ -50,14 +49,14 @@ const Author = {
   },
   social: ({ social }) => {
     if (typeof social === "string") {
-      return JSON.parse(social);
+      return validateHostNames(JSON.parse(social));
     }
     return social;
   },
 };
 
 const Query: QueryResolvers<ResolverContext> = {
-  async me(_parent, _args, { session, prisma, author_id }, _info) {
+  async me(_parent, _args, { session, prisma, author_id }) {
     author_id = session?.user.id || author_id;
 
     const author = await prisma.author.findFirst({
@@ -73,7 +72,7 @@ const Query: QueryResolvers<ResolverContext> = {
 
       return {
         ...author,
-        social: JSON.parse(author.social as string) as Social,
+        social: validateHostNames(JSON.parse(author.social as string)),
         avatar,
         analytics_id: author.analytics_id || undefined,
         analytics_uuid: author.analytics_uuid || undefined,
@@ -149,7 +148,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
       message: "Something went wrong and we dont know what.",
     };
   },
-  async login(_parent, args, { prisma }, _info) {
+  async login(_parent, args, { prisma }) {
     const author = await prisma.author.findFirst({
       where: { email: args.data?.email },
     });

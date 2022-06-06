@@ -121,10 +121,10 @@ const Actions = ({ post }: IProps) => {
             showCount
             rows={4}
             maxLength={160}
-            onChange={(e) =>
-              debounceUpdatePost({ excerpt: e.target.value, id: post.id })
-            }
-            value={post.excerpt}
+            onChange={(e) => {
+              debounceUpdatePost({ excerpt: e.target.value, id: post.id });
+            }}
+            defaultValue={post.excerpt}
           />
         </div>
         <Divider />

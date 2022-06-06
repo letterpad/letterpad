@@ -10,6 +10,10 @@ interface Props {
   social: MeFragmentFragment["social"];
   id: number;
 }
+
+const getUsernamefromUrl = (str: string | undefined) =>
+  str ? str.split("/").pop() : "";
+
 export const Social: React.VFC<Props> = ({ social, id }) => {
   const { debounceUpdateAuthor } = useUpdateAuthor(id);
 
@@ -18,48 +22,63 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
       social: { ...removeTypenames(social), ...inp },
     });
   };
+  const verify = (str: string) => {
+    const res = /^[a-z0-9_\\.]+$/.exec(str);
+    const valid = !!res;
+    return valid;
+  };
+
   return (
     <>
       <Form.Item label="Twitter">
         <Input
-          placeholder="https://twitter.com/username"
+          placeholder="username"
           size="middle"
-          value={social?.twitter}
-          onChange={(e) => {
-            updateSocial({ twitter: e.target.value });
-          }}
+          value={getUsernamefromUrl(social?.twitter)}
+          onChange={(e) =>
+            verify(e.target.value) && updateSocial({ twitter: e.target.value })
+          }
         />
       </Form.Item>
       <Form.Item label="Facebook">
         <Input
-          placeholder="https://facebook.com/username"
+          placeholder="username"
           size="middle"
-          value={social?.facebook}
-          onChange={(e) => updateSocial({ facebook: e.target.value })}
+          value={getUsernamefromUrl(social?.facebook)}
+          onChange={(e) =>
+            verify(e.target.value) && updateSocial({ facebook: e.target.value })
+          }
         />
       </Form.Item>
       <Form.Item label="Instagram">
         <Input
-          placeholder="https://instagram.com/username"
+          placeholder="username"
           size="middle"
-          value={social?.instagram}
-          onChange={(e) => updateSocial({ instagram: e.target.value })}
+          value={getUsernamefromUrl(social?.instagram)}
+          onChange={(e) =>
+            verify(e.target.value) &&
+            updateSocial({ instagram: e.target.value })
+          }
         />
       </Form.Item>
       <Form.Item label="Github">
         <Input
-          placeholder="https://github.com/username"
+          placeholder="username"
           size="middle"
-          value={social?.github}
-          onChange={(e) => updateSocial({ github: e.target.value })}
+          value={getUsernamefromUrl(social?.github)}
+          onChange={(e) =>
+            verify(e.target.value) && updateSocial({ github: e.target.value })
+          }
         />
       </Form.Item>
       <Form.Item label="LinkedIn">
         <Input
-          placeholder="https://linkedin.com/in/username/"
+          placeholder="username/"
           size="middle"
-          value={social?.linkedin}
-          onChange={(e) => updateSocial({ linkedin: e.target.value })}
+          value={getUsernamefromUrl(social?.linkedin)}
+          onChange={(e) =>
+            verify(e.target.value) && updateSocial({ linkedin: e.target.value })
+          }
         />
       </Form.Item>
     </>

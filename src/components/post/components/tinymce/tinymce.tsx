@@ -21,9 +21,13 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
   const [html, setHtml] = useState(text);
 
   useEffect(() => {
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
     if (editorRef.current) {
-      socket.setEditor(editorRef.current);
-      socket.connectSocketAndAddListeners();
       socket.setChangeHandler(() => {
         const html = editorRef.current?.getBody().innerHTML;
         if (html) {
@@ -33,9 +37,6 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
         }
       });
     }
-    return () => {
-      socket.disconnect();
-    };
   }, [onChange]);
 
   useEffect(() => {
@@ -51,6 +52,9 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           if (editor) {
             //@ts-ignore
             editorRef.current = editor;
+            socket.setEditor(editorRef.current);
+            socket.connectSocketAndAddListeners();
+
             const className = isDark ? "dark" : "light";
             const body = editor.getDoc().body;
             body.classList.remove("dark", "light");
@@ -107,7 +111,6 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           },
           entity_encoding: "raw",
           codesample_global_prismjs: true,
-          gecko_spellcheck: false,
           codesample_languages: [
             { text: "Bash", value: "bash" },
             { text: "C", value: "c" },

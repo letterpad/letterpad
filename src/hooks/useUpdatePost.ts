@@ -1,5 +1,3 @@
-import { useCallback } from "react";
-
 import { InputUpdatePost } from "@/__generated__/__types__";
 import { useUpdatePostMutation } from "@/__generated__/queries/mutations.graphql";
 import { PostDocument } from "@/__generated__/queries/queries.graphql";
@@ -8,9 +6,10 @@ import { debounce } from "@/shared/utils";
 
 export const useUpdatePost = () => {
   const [updatePostMutation, progress] = useUpdatePostMutation();
+  const debounceUpdatePost = debounce(updatePost, 500);
 
-  function updatePost(data: InputUpdatePost) {
-    return updatePostMutation({
+  async function updatePost(data: InputUpdatePost) {
+    return await updatePostMutation({
       variables: {
         data,
       },
@@ -37,13 +36,6 @@ export const useUpdatePost = () => {
       },
     });
   }
-
-  const d = useCallback(debounce(updatePost, 500), []);
-
-  const debounceUpdatePost = (data: InputUpdatePost) => {
-    updateLocalState(data);
-    d(data);
-  };
 
   const updateLocalState = (data: InputUpdatePost) => {
     const postData = apolloBrowserClient.readQuery({

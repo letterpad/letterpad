@@ -4,6 +4,7 @@ import https from "https";
 import sizeOf from "image-size";
 import reading_time from "reading-time";
 
+import { Social } from "@/__generated__/__types__";
 import { textToSlug } from "@/utils/slug";
 
 import logger from "./../../shared/logger";
@@ -128,3 +129,18 @@ export async function validateCaptcha(serverKey: string, clientToken: string) {
   }
   return false;
 }
+
+const prepareLink = (host: string, link: string | undefined) => {
+  const hasHttps = link && link.indexOf("https://") === 0;
+  return hasHttps ? link : `${host}/${link}`;
+};
+
+export const validateHostNames = (social: Social) => {
+  social.facebook = prepareLink("https://facebook.com", social.facebook);
+  social.twitter = prepareLink("https://twitter.com", social.twitter);
+  social.github = prepareLink("https://github.com", social.github);
+  social.instagram = prepareLink("https://instagram.com", social.instagram);
+  social.linkedin = prepareLink("https://linkedin.com/in", social.linkedin);
+
+  return social;
+};

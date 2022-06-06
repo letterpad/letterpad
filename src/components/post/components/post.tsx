@@ -2,6 +2,7 @@ import { Layout } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
@@ -31,12 +32,27 @@ function Post() {
   const { onFileExplorerClose, fileExplorerOpen, helpers } =
     usePostContext() as PostContextType;
 
+  const post = data?.post.__typename === "Post" ? data.post : undefined;
+  let content = post?.html;
+  const id = post?.id;
+  const status = post?.status;
+
+  const onEditorChange = useCallback(
+    (html) => {
+      if (!id) return;
+      if (status === PostStatusOptions.Draft) {
+        debounceUpdatePost({ id, html_draft: html });
+      } else if (status === PostStatusOptions.Published) {
+        debounceUpdatePost({ id: id, html });
+      }
+    },
+    [debounceUpdatePost, id, status],
+  );
+
   if (!loading && data && data.post.__typename !== "Post") {
     return <ErrorMessage title="Error" description={error} />;
   }
 
-  const post = data?.post.__typename === "Post" ? data.post : undefined;
-  let content = post?.html;
   if (
     post?.status === PostStatusOptions.Draft ||
     post?.status === PostStatusOptions.Trashed
@@ -60,16 +76,7 @@ function Post() {
                 title={post?.title || ""}
                 postId={post?.id}
               />
-              <Editor
-                text={content ?? ""}
-                onChange={(html) => {
-                  if (post?.status === PostStatusOptions.Draft) {
-                    debounceUpdatePost({ id: post.id, html_draft: html });
-                  } else if (post?.status === PostStatusOptions.Published) {
-                    debounceUpdatePost({ id: post.id, html });
-                  }
-                }}
-              />
+              <Editor text={content ?? ""} onChange={onEditorChange} />
               <WordCount text={content || ""} />
               <FileExplorer
                 multi={true}

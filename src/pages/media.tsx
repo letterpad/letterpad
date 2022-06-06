@@ -1,4 +1,4 @@
-import { Button, message, PageHeader, Popconfirm } from "antd";
+import { Button, message, PageHeader } from "antd";
 import { Empty } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
@@ -68,16 +68,14 @@ const Media = () => {
             onClick={(index) => setPreview(images.rows[index])}
             actions={(index) => {
               return (
-                <Popconfirm
-                  title="Are you sure to delete this image?"
-                  onConfirm={() => deleteImage(images.rows[index])}
-                  okText="Yes"
-                  cancelText="No"
+                <Button
+                  size="small"
+                  type="link"
+                  danger
+                  onClick={() => deleteImage(images.rows[index])}
                 >
-                  <Button size="small" type="link" danger>
-                    Delete
-                  </Button>
-                </Popconfirm>
+                  Delete
+                </Button>
               );
             }}
           />
