@@ -68,17 +68,27 @@ const Media = () => {
             onClick={(index) => setPreview(images.rows[index])}
             actions={(index) => {
               return (
-                <Popconfirm
-                  title="Are you sure to delete this image?"
-                  onConfirm={() => deleteImage(images.rows[index])}
-                  okText="Yes"
-                  cancelText="No"
+                <Button
+                  size="small"
+                  type="link"
+                  danger
+                  onClick={() => deleteImage(images.rows[index])}
                 >
-                  <Button size="small" type="link" danger>
-                    Delete
-                  </Button>
-                </Popconfirm>
+                  Delete
+                </Button>
               );
+              // return (
+              //   <Popconfirm
+              //     title="Are you sure to delete this image?"
+              //     // onConfirm={() => deleteImage(images.rows[index])}
+              //     okText="Yes"
+              //     cancelText="No"
+              //   >
+              //     <Button size="small" type="link" danger>
+              //       Delete
+              //     </Button>
+              //   </Popconfirm>
+              // );
             }}
           />
           {images.rows.length === 0 && (
