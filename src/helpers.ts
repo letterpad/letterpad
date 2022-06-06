@@ -26,7 +26,7 @@ export const deleteImageAPI = async (img: Media) => {
     variables: {
       ids: [img.id],
     },
-    update: (cache, response) => {
+    update: (cache) => {
       const mediaList = cache.readQuery({
         query: MediaDocument,
         variables: { filters: {} },
