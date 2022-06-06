@@ -77,18 +77,6 @@ const Media = () => {
                   Delete
                 </Button>
               );
-              // return (
-              //   <Popconfirm
-              //     title="Are you sure to delete this image?"
-              //     // onConfirm={() => deleteImage(images.rows[index])}
-              //     okText="Yes"
-              //     cancelText="No"
-              //   >
-              //     <Button size="small" type="link" danger>
-              //       Delete
-              //     </Button>
-              //   </Popconfirm>
-              // );
             }}
           />
           {images.rows.length === 0 && (
