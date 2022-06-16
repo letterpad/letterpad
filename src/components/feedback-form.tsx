@@ -43,7 +43,7 @@ const FeedbackForm = () => {
   return (
     <>
       <Button type="link" onClick={showModal}>
-        Feedback
+        Report
       </Button>
       <Modal
         title="Basic Modal"
