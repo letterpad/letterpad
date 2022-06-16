@@ -2,7 +2,7 @@ import { Layout } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
@@ -15,6 +15,7 @@ import { usePostContext } from "@/components/post/context";
 
 import { PostStatusOptions } from "@/__generated__/__types__";
 import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+import { debounce } from "@/shared/utils";
 
 import { insertImageInEditor } from "./commands";
 import PostDate from "./postDate";
@@ -23,11 +24,16 @@ import { PostContextType } from "../types";
 
 function Post() {
   const router = useRouter();
-  const { debounceUpdatePost } = useUpdatePost();
+  const { updatePostAPI, updateLocalState } = useUpdatePost();
   const { postId } = router.query;
   const { data, loading, error } = usePostQuery({
     variables: { filters: { id: Number(postId) } },
   });
+
+  const debounceUpdatePostAPI = useMemo(
+    () => debounce((data) => updatePostAPI(data), 500),
+    [updatePostAPI],
+  );
 
   const { onFileExplorerClose, fileExplorerOpen, helpers } =
     usePostContext() as PostContextType;
@@ -41,12 +47,14 @@ function Post() {
     (html) => {
       if (!id) return;
       if (status === PostStatusOptions.Draft) {
-        debounceUpdatePost({ id, html_draft: html });
+        debounceUpdatePostAPI({ id, html_draft: html });
+        updateLocalState({ id, html_draft: html });
       } else if (status === PostStatusOptions.Published) {
-        debounceUpdatePost({ id: id, html });
+        debounceUpdatePostAPI({ id: id, html });
+        updateLocalState({ id: id, html });
       }
     },
-    [debounceUpdatePost, id, status],
+    [debounceUpdatePostAPI, id, status, updateLocalState],
   );
 
   if (!loading && data && data.post.__typename !== "Post") {

@@ -5,7 +5,6 @@ import { SettingInputType } from "@/__generated__/__types__";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { debounce } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
 const key = "settings";
@@ -57,12 +56,21 @@ export const useUpdateSettings = () => {
     }
   }
 
-  const d = useCallback(debounce(updateSettings, 500), []);
-
-  const debounceUpdateSettings = (data: SettingInputType) => {
-    updateLocalState(data);
-    d(data);
-  };
+  const updateSettingsAPI = useCallback(
+    async (data: SettingInputType) => {
+      track({
+        eventAction: EventAction.Change,
+        eventCategory: "settings",
+        eventLabel: Object.keys({ ...data }).join("-"),
+      });
+      await updateOption({
+        variables: {
+          options: { ...data },
+        },
+      });
+    },
+    [updateOption],
+  );
 
   const updateLocalState = (data: SettingInputType) => {
     const settingsData = apolloBrowserClient.readQuery({
@@ -83,7 +91,7 @@ export const useUpdateSettings = () => {
   return {
     updateSettings,
     progress,
-    debounceUpdateSettings,
     updateLocalState,
+    updateSettingsAPI,
   };
 };

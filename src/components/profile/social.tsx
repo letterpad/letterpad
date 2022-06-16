@@ -1,29 +1,38 @@
 import { Form, Input } from "antd";
+import { useMemo } from "react";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 
-import { InputSocial } from "@/__generated__/__types__";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
-import { removeTypenames } from "@/shared/utils";
+import { debounce, removeTypenames } from "@/shared/utils";
 
 interface Props {
   social: MeFragmentFragment["social"];
   id: number;
 }
+type ChangeEvent = React.ChangeEvent<HTMLInputElement> & KeyboardEvent;
 
 const getUsernamefromUrl = (str: string | undefined) =>
   str ? str.split("/").pop() : "";
 
 export const Social: React.VFC<Props> = ({ social, id }) => {
-  const { debounceUpdateAuthor } = useUpdateAuthor(id);
+  const { updateAuthorAPI, updateLocalState } = useUpdateAuthor(id);
 
-  const updateSocial = (inp: InputSocial) => {
-    debounceUpdateAuthor({
-      social: { ...removeTypenames(social), ...inp },
-    });
-  };
-  const verify = (str: string) => {
-    const res = /^[a-z0-9_\\.]+$/.exec(str);
+  const updateSocial = useMemo(
+    () =>
+      debounce(
+        (inp) =>
+          updateAuthorAPI({
+            social: { ...removeTypenames(social), ...inp },
+          }),
+        500,
+      ),
+    [social, updateAuthorAPI],
+  );
+
+  const verify = (e: ChangeEvent) => {
+    if (e.target.value === "") return true;
+    const res = /^[a-z0-9_\\.]+$/.exec(e.target.value);
     const valid = !!res;
     return valid;
   };
@@ -35,9 +44,14 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           placeholder="username"
           size="middle"
           value={getUsernamefromUrl(social?.twitter)}
-          onChange={(e) =>
-            verify(e.target.value) && updateSocial({ twitter: e.target.value })
-          }
+          onChange={(e: ChangeEvent) => {
+            if (!verify(e)) return;
+            updateSocial({ twitter: e.target.value });
+            const data = {
+              social: { ...removeTypenames(social), twitter: e.target.value },
+            };
+            updateLocalState(data);
+          }}
         />
       </Form.Item>
       <Form.Item label="Facebook">
@@ -45,9 +59,14 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           placeholder="username"
           size="middle"
           value={getUsernamefromUrl(social?.facebook)}
-          onChange={(e) =>
-            verify(e.target.value) && updateSocial({ facebook: e.target.value })
-          }
+          onChange={(e: ChangeEvent) => {
+            if (!verify(e)) return;
+            updateSocial({ facebook: e.target.value });
+            const data = {
+              social: { ...removeTypenames(social), facebook: e.target.value },
+            };
+            updateLocalState(data);
+          }}
         />
       </Form.Item>
       <Form.Item label="Instagram">
@@ -55,10 +74,14 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           placeholder="username"
           size="middle"
           value={getUsernamefromUrl(social?.instagram)}
-          onChange={(e) =>
-            verify(e.target.value) &&
-            updateSocial({ instagram: e.target.value })
-          }
+          onChange={(e: ChangeEvent) => {
+            if (!verify(e)) return;
+            updateSocial({ instagram: e.target.value });
+            const data = {
+              social: { ...removeTypenames(social), instagram: e.target.value },
+            };
+            updateLocalState(data);
+          }}
         />
       </Form.Item>
       <Form.Item label="Github">
@@ -66,9 +89,14 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           placeholder="username"
           size="middle"
           value={getUsernamefromUrl(social?.github)}
-          onChange={(e) =>
-            verify(e.target.value) && updateSocial({ github: e.target.value })
-          }
+          onChange={(e: ChangeEvent) => {
+            if (!verify(e)) return;
+            updateSocial({ github: e.target.value });
+            const data = {
+              social: { ...removeTypenames(social), github: e.target.value },
+            };
+            updateLocalState(data);
+          }}
         />
       </Form.Item>
       <Form.Item label="LinkedIn">
@@ -76,9 +104,14 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           placeholder="username/"
           size="middle"
           value={getUsernamefromUrl(social?.linkedin)}
-          onChange={(e) =>
-            verify(e.target.value) && updateSocial({ linkedin: e.target.value })
-          }
+          onChange={(e: ChangeEvent) => {
+            if (!verify(e)) return;
+            updateSocial({ linkedin: e.target.value });
+            const data = {
+              social: { ...removeTypenames(social), linkedin: e.target.value },
+            };
+            updateLocalState(data);
+          }}
         />
       </Form.Item>
     </>

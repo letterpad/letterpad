@@ -1,6 +1,5 @@
 import { message, Modal } from "antd";
 import { signOut } from "next-auth/react";
-import { useCallback } from "react";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
@@ -9,13 +8,28 @@ import {
   SettingsDocument,
 } from "@/__generated__/queries/queries.graphql";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { debounce } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
 const key = "author";
 
 export const useUpdateAuthor = (id: number) => {
   const [updateAuthorMutation, progress] = useUpdateAuthorMutation();
+
+  async function updateAuthorAPI(data: Omit<InputAuthor, "id">) {
+    if (!data.password) {
+      track({
+        eventAction: EventAction.Change,
+        eventCategory: "profile",
+        eventLabel: Object.keys({ ...data, id }).join("-"),
+      });
+    }
+
+    await updateAuthorMutation({
+      variables: {
+        author: { ...data, id },
+      },
+    });
+  }
 
   async function updateAuthor(data: Omit<InputAuthor, "id">) {
     if (!data.password) {
@@ -93,13 +107,6 @@ export const useUpdateAuthor = (id: number) => {
     }
   }
 
-  const d = useCallback(debounce(updateAuthor, 500), []);
-
-  const debounceUpdateAuthor = (data: Omit<InputAuthor, "id">) => {
-    updateLocalState(data);
-    d(data);
-  };
-
   const updateLocalState = (data: Omit<InputAuthor, "id">) => {
     const meData = apolloBrowserClient.readQuery({
       query: MeDocument,
@@ -117,5 +124,5 @@ export const useUpdateAuthor = (id: number) => {
     });
   };
 
-  return { updateAuthor, progress, debounceUpdateAuthor, updateLocalState };
+  return { updateAuthor, progress, updateAuthorAPI, updateLocalState };
 };

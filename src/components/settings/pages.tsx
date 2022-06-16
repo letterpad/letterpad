@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Pages: React.FC<Props> = ({ settings }) => {
-  const { debounceUpdateSettings } = useUpdateSettings();
+  const { updateSettings } = useUpdateSettings();
   return (
     <Collapse>
       <Panel header="Pages" key="1" className="pages">
@@ -18,7 +18,7 @@ const Pages: React.FC<Props> = ({ settings }) => {
           data-testid="aboutPageCb"
           checked={!!settings.show_about_page}
           onChange={(e) =>
-            debounceUpdateSettings({ show_about_page: e.target.checked })
+            updateSettings({ show_about_page: e.target.checked })
           }
         >
           Select this to add a new menu item &quot;About&quot; which will
@@ -29,9 +29,7 @@ const Pages: React.FC<Props> = ({ settings }) => {
         <Checkbox
           checked={!!settings.show_tags_page}
           data-testId="tagsPageCb"
-          onChange={(e) =>
-            debounceUpdateSettings({ show_tags_page: e.target.checked })
-          }
+          onChange={(e) => updateSettings({ show_tags_page: e.target.checked })}
         >
           Select this to add a new menu item &quot;Tags&quot; which will display
           all the tags with the post count. <br />

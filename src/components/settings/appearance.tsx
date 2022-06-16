@@ -6,13 +6,14 @@ import Editor from "react-simple-code-editor";
 
 import ImageUpload from "../ImageUpload";
 hljs.registerLanguage("css", hljsCssLang);
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 
 import "highlight.js/styles/night-owl.css";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
+import { debounce } from "@/shared/utils";
 
 const { Panel } = Collapse;
 
@@ -21,7 +22,13 @@ interface Props {
 }
 const Appearance: React.FC<Props> = ({ settings }) => {
   const editorRef = useRef<any>(null);
-  const { updateSettings, debounceUpdateSettings } = useUpdateSettings();
+  const { updateSettings, updateLocalState, updateSettingsAPI } =
+    useUpdateSettings();
+
+  const debounceUpdateSettingsAPI = useMemo(
+    () => debounce((data) => updateSettingsAPI(data), 500),
+    [updateSettingsAPI],
+  );
   return (
     <Collapse>
       <Panel header="Appearance" key="1">
@@ -91,7 +98,8 @@ const Appearance: React.FC<Props> = ({ settings }) => {
             <Editor
               value={settings.css ?? ""}
               onValueChange={(code) => {
-                debounceUpdateSettings({ css: code });
+                debounceUpdateSettingsAPI({ css: code });
+                updateLocalState({ css: code });
               }}
               ref={editorRef}
               onChange={() => {

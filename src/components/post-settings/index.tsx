@@ -1,5 +1,5 @@
 import { Col, Divider, Drawer, Input, Row, Switch } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
@@ -7,6 +7,7 @@ import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
 import { subscribe } from "@/shared/eventBus";
+import { debounce } from "@/shared/utils";
 import {
   createPathWithPrefix,
   getLastPartFromPath,
@@ -31,8 +32,12 @@ const Actions = ({ post }: IProps) => {
   const [postHash, setPostHash] = useState("");
   const settingsResponse = useSettingsQuery();
   const [slug, setSlug] = useState(post.slug);
-  const { updatePost, debounceUpdatePost } = useUpdatePost();
   const [saving, setSaving] = useState("");
+  const { updatePost } = useUpdatePost();
+  const debounceUpdatePost = useMemo(
+    () => debounce((data) => updatePost(data), 500),
+    [updatePost],
+  );
 
   useEffect(() => {
     getPostHash(post.id).then(setPostHash);
@@ -60,7 +65,7 @@ const Actions = ({ post }: IProps) => {
       post.type,
     );
     setSlug(formattedSlug);
-    updatePost({ id: post.id, slug: formattedSlug });
+    debounceUpdatePost({ id: post.id, slug: formattedSlug });
   };
 
   if (post.__typename !== "Post") return null;
@@ -103,7 +108,7 @@ const Actions = ({ post }: IProps) => {
               size="small"
               checked={post.featured}
               onChange={(change) => {
-                updatePost({
+                debounceUpdatePost({
                   id: post.id,
                   featured: change,
                 });
