@@ -1,6 +1,5 @@
 import { message, Modal } from "antd";
 import { signOut } from "next-auth/react";
-import { useCallback } from "react";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
@@ -9,7 +8,6 @@ import {
   SettingsDocument,
 } from "@/__generated__/queries/queries.graphql";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { debounce } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
 const key = "author";
