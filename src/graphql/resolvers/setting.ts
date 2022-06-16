@@ -1,6 +1,3 @@
-import fs from "fs";
-import path from "path";
-
 import {
   MutationResolvers,
   Navigation,
@@ -18,8 +15,6 @@ const SECURE_SETTINGS = [
   "cloudinary_name",
   "cloudinary_secret",
 ];
-
-const cssPath = path.join(process.cwd(), "public/css/custom.css");
 
 const Setting = {
   menu: ({ menu }) => {
@@ -102,7 +97,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         let value = Object.values(setting)[0] as ValueOf<SettingType>;
 
         if (option === "css") {
-          fs.writeFileSync(cssPath, value as string);
+          setting.css = (value as string) || "";
         }
         const isImageOption =
           setting.banner || setting.site_logo || setting.site_favicon;

@@ -2,12 +2,17 @@ import { InputUpdatePost } from "@/__generated__/__types__";
 import { useUpdatePostMutation } from "@/__generated__/queries/mutations.graphql";
 import { PostDocument } from "@/__generated__/queries/queries.graphql";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
-import { debounce } from "@/shared/utils";
 
 export const useUpdatePost = () => {
   const [updatePostMutation, progress] = useUpdatePostMutation();
-  const debounceUpdatePost = debounce(updatePost, 500);
 
+  async function updatePostAPI(data: InputUpdatePost) {
+    return await updatePostMutation({
+      variables: {
+        data,
+      },
+    });
+  }
   async function updatePost(data: InputUpdatePost) {
     return await updatePostMutation({
       variables: {
@@ -56,5 +61,5 @@ export const useUpdatePost = () => {
     });
   };
 
-  return { updatePost, progress, debounceUpdatePost, updateLocalState };
+  return { updatePost, progress, updateLocalState, updatePostAPI };
 };

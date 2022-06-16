@@ -22,8 +22,9 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
       social: { ...removeTypenames(social), ...inp },
     });
   };
-  const verify = (str: string) => {
-    const res = /^[a-z0-9_\\.]+$/.exec(str);
+  const verify = (e: React.ChangeEvent<HTMLInputElement> & KeyboardEvent) => {
+    if (e.target.value === "") return true;
+    const res = /^[a-z0-9_\\.]+$/.exec(e.target.value);
     const valid = !!res;
     return valid;
   };
@@ -36,7 +37,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           size="middle"
           value={getUsernamefromUrl(social?.twitter)}
           onChange={(e) =>
-            verify(e.target.value) && updateSocial({ twitter: e.target.value })
+            verify(e) && updateSocial({ twitter: e.target.value })
           }
         />
       </Form.Item>
@@ -46,7 +47,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
           size="middle"
           value={getUsernamefromUrl(social?.facebook)}
           onChange={(e) =>
-            verify(e.target.value) && updateSocial({ facebook: e.target.value })
+            verify(e) && updateSocial({ facebook: e.target.value })
           }
         />
       </Form.Item>

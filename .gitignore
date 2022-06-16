@@ -53,3 +53,5 @@ generated
 .cache
 prisma/sqlite/data
 .vscode
+
+public/css/custom.css

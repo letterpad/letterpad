@@ -17,6 +17,22 @@ const key = "author";
 export const useUpdateAuthor = (id: number) => {
   const [updateAuthorMutation, progress] = useUpdateAuthorMutation();
 
+  async function updateAuthorAPI(data: Omit<InputAuthor, "id">) {
+    if (!data.password) {
+      track({
+        eventAction: EventAction.Change,
+        eventCategory: "profile",
+        eventLabel: Object.keys({ ...data, id }).join("-"),
+      });
+    }
+
+    await updateAuthorMutation({
+      variables: {
+        author: { ...data, id },
+      },
+    });
+  }
+
   async function updateAuthor(data: Omit<InputAuthor, "id">) {
     if (!data.password) {
       track({
@@ -93,13 +109,6 @@ export const useUpdateAuthor = (id: number) => {
     }
   }
 
-  const d = useCallback(debounce(updateAuthor, 500), []);
-
-  const debounceUpdateAuthor = (data: Omit<InputAuthor, "id">) => {
-    updateLocalState(data);
-    d(data);
-  };
-
   const updateLocalState = (data: Omit<InputAuthor, "id">) => {
     const meData = apolloBrowserClient.readQuery({
       query: MeDocument,
@@ -117,5 +126,5 @@ export const useUpdateAuthor = (id: number) => {
     });
   };
 
-  return { updateAuthor, progress, debounceUpdateAuthor, updateLocalState };
+  return { updateAuthor, progress, updateAuthorAPI, updateLocalState };
 };
