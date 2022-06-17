@@ -18,34 +18,18 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);
-
-  const fetchInternalMedia = useCallback(
-    async (page = 1) => {
-      const result = await apolloBrowserClient.query<
-        MediaQuery,
-        MediaQueryVariables
-      >({
-        query: MediaDocument,
-        variables: {
-          filters: {
-            page,
-          },
-        },
-      });
-
-      const images = {
-        rows: result.data.media.rows,
-        count: result.data.media.count,
-      };
-      if (mounted) {
-        setData([...data, ...images.rows]);
-        setTotalCount(images.count);
-      }
-    },
-    [data],
-  );
-
   const mounted = useRef(false);
+
+  const fetchInternalMedia = useCallback(async (page = 1) => {
+    const images = await fetchMedia(page);
+    if (mounted.current) {
+      setData((prevData) => {
+        return [...prevData, ...images.rows];
+      });
+      setTotalCount(images.count);
+    }
+  }, []);
+
   useEffect(() => {
     mounted.current = true;
     fetchInternalMedia();
@@ -79,3 +63,24 @@ const InternalMedia: React.FC<IProps> = ({ renderer }) => {
 };
 
 export default InternalMedia;
+
+const fetchMedia = async (page: number) => {
+  const result = await apolloBrowserClient.query<
+    MediaQuery,
+    MediaQueryVariables
+  >({
+    query: MediaDocument,
+    variables: {
+      filters: {
+        page,
+      },
+    },
+    fetchPolicy: "network-only",
+  });
+
+  const images = {
+    rows: result.data.media.rows,
+    count: result.data.media.count,
+  };
+  return images;
+};

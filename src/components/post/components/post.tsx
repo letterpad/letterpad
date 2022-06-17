@@ -90,9 +90,10 @@ function Post() {
                 multi={true}
                 isVisible={fileExplorerOpen}
                 handleCancel={onFileExplorerClose}
-                onInsert={(images) =>
-                  helpers && insertImageInEditor(helpers, images)
-                }
+                onInsert={(images) => {
+                  helpers && insertImageInEditor(helpers, images);
+                  onFileExplorerClose();
+                }}
               />
             </div>
           )}

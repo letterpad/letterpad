@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import Modal from "antd/lib/modal/Modal";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { MediaProvider, TypeMediaInsert } from "src/shared/types";
 
 import Internal from "@/components/file-explorer/providers/Internal";
@@ -55,39 +55,46 @@ const FileExplorer = ({
     setTimeout(closeWindow, 0);
   };
 
-  const onMediaSelected = (media: Media) => {
-    const urls = { ...selectedUrls };
-    if (urls[`${media.url}`]) {
-      delete urls[`${media.url}`];
-    } else {
-      urls[`${media.url}`] = {
-        src: media.url,
-        width: media.width || 0,
-        height: media.height || 0,
-        caption: media.description,
-      };
-    }
-    if (!multi) {
-      urls[`${media.url}`] = {
-        src: media.url,
-        width: media.width || 0,
-        height: media.height || 0,
-        caption: media.description,
-      };
-    }
-    setSelection(urls);
-  };
+  const onMediaSelected = useCallback(
+    (media: Media) => {
+      const urls = { ...selectedUrls };
+      if (urls[`${media.url}`]) {
+        delete urls[`${media.url}`];
+      } else {
+        urls[`${media.url}`] = {
+          src: media.url,
+          width: media.width || 0,
+          height: media.height || 0,
+          caption: media.description,
+        };
+      }
+      if (!multi) {
+        urls[`${media.url}`] = {
+          src: media.url,
+          width: media.width || 0,
+          height: media.height || 0,
+          caption: media.description,
+        };
+      }
+      setSelection(urls);
+    },
+    [multi, selectedUrls],
+  );
 
-  const renderer = (media: Media[]) => {
-    return media.map((item) => (
-      <MediaItem
-        key={item.id}
-        media={item}
-        isSelected={!!selectedUrls[item.url]}
-        onMediaSelected={onMediaSelected}
-      />
-    ));
-  };
+  const renderer = useCallback(
+    (media: Media[]) => {
+      return media.map((item) => (
+        <MediaItem
+          key={item.id}
+          media={item}
+          isSelected={!!selectedUrls[item.url]}
+          onMediaSelected={onMediaSelected}
+        />
+      ));
+    },
+    [selectedUrls, onMediaSelected],
+  );
+
   const hasSelectedImages = Object.keys(selectedUrls).length > 0;
   if (!isVisible) return null;
   return (
