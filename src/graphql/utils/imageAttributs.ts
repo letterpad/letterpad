@@ -16,6 +16,9 @@ export const getImageAttrs = (
       loading: "lazy",
     };
   }
+  if (!src.startsWith("http")) {
+    return { src, loading: "lazy" };
+  }
   const url = new URL(src);
 
   if (url.hostname.includes("cloudinary")) {
@@ -53,6 +56,7 @@ export const setResponsiveImages = (html: string, sizes?: number[]) => {
   if (!sizes) sizes = [480, 720, 960, 1200, 1440, 1600, 2000];
 
   const re = /<img\s+[^>]*src="([^"]*)"[^>]*>/g;
+
   const htmlWithResponsiveImages = html.replace(re, (str, src) => {
     const attrs = getImageAttrs(src, sizes);
     if (Object.keys(attrs).length > 0) {
@@ -64,7 +68,6 @@ export const setResponsiveImages = (html: string, sizes?: number[]) => {
     }
     return str;
   });
-
   return htmlWithResponsiveImages;
 };
 
