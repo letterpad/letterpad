@@ -46,7 +46,7 @@ const FeedbackForm = () => {
         Report
       </Button>
       <Modal
-        title="Basic Modal"
+        title="Report an issue"
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={[
