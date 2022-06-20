@@ -163,3 +163,6 @@ code {
 .mce-offscreen-selection {
   display: none;
 }
+figure img {
+  cursor: pointer;
+}

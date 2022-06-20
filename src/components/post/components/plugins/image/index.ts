@@ -48,6 +48,21 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
     },
   });
 
+  editor.ui.registry.addButton("img-delete", {
+    icon: "remove",
+    onAction: function (_) {
+      const figure = editor.selection.getNode().parentElement;
+      if (figure) {
+        editor.dom.remove(figure);
+        editor.save();
+        const toolbar = editor
+          .getWin()
+          .parent.document.querySelector(".tox-tinymce-aux");
+        if (toolbar) toolbar.innerHTML = "";
+      }
+    },
+  });
+
   editor.ui.registry.addButton("edit-image", {
     icon: "edit-image",
     onAction: function (_) {
@@ -55,7 +70,8 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
       let imgWidth = image.getBoundingClientRect().width + "px";
       const figStyles = image.parentElement?.getAttribute("style");
       if (figStyles) {
-        imgWidth = styleObject(figStyles).width;
+        const w = styleObject(figStyles).width;
+        if (w) imgWidth = w;
       }
       const caption =
         image.parentElement?.querySelector("figcaption")?.innerHTML;
@@ -120,7 +136,7 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
 
   editor.ui.registry.addContextToolbar("hello", {
     predicate: isImage,
-    items: "edit-image img-left img-center img-right",
+    items: "edit-image img-left img-center img-right img-delete",
     position: "selection",
     scope: "node",
   });

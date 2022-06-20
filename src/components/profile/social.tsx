@@ -41,6 +41,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
     <>
       <Form.Item label="Twitter">
         <Input
+          addonBefore="@"
           placeholder="username"
           size="middle"
           value={getUsernamefromUrl(social?.twitter)}
@@ -56,6 +57,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
       </Form.Item>
       <Form.Item label="Facebook">
         <Input
+          addonBefore="@"
           placeholder="username"
           size="middle"
           value={getUsernamefromUrl(social?.facebook)}
@@ -71,6 +73,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
       </Form.Item>
       <Form.Item label="Instagram">
         <Input
+          addonBefore="@"
           placeholder="username"
           size="middle"
           value={getUsernamefromUrl(social?.instagram)}
@@ -86,6 +89,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
       </Form.Item>
       <Form.Item label="Github">
         <Input
+          addonBefore="@"
           placeholder="username"
           size="middle"
           value={getUsernamefromUrl(social?.github)}
@@ -101,6 +105,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
       </Form.Item>
       <Form.Item label="LinkedIn">
         <Input
+          addonBefore="@"
           placeholder="username/"
           size="middle"
           value={getUsernamefromUrl(social?.linkedin)}
