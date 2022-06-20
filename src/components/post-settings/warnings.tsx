@@ -29,6 +29,17 @@ export function warnNoTags() {
 }
 
 export function tagNotLinkedWithNavigation(tags: string[]) {
+  const hasTags = tags.length > 0;
+  const tagsCount = tags.length;
+  const plural = tagsCount > 1;
+  const tagsStr = tags.join(", ");
+
+  const message = `Currently the navigation menu has ${
+    plural ? "these tags" : "this tag"
+  } - ${tagsStr}. You should use a tag from above or create a new tag and link it in
+        navigation menu. You can do so by going to Settings → Navigation → New.
+        Then give a name and select a tag from the dropdown.`;
+
   Modal.warning({
     className: "tags-notlinked-modal", //used by cypress
     zIndex: 999999999,
@@ -39,10 +50,7 @@ export function tagNotLinkedWithNavigation(tags: string[]) {
     content: (
       <div>
         Atleast one tag of this post should be linked in Navigation. <br />
-        {tags.length > 0 &&
-          `Currently the navigation menu has these tags - ${tags.join(", ")}`}
-        You can do so by going to Settings → Navigation → New. Then give a name
-        and select a tag from the dropdown.
+        {hasTags && message}
         <p>
           <a
             target="_blank"
