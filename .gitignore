@@ -49,6 +49,7 @@ data/*
 .sentryclirc
 /.vscode/
 generated
+.env.*.local
 .env
 .cache
 prisma/sqlite/data

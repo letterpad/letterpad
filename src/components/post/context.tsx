@@ -1,5 +1,11 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { createContext, useCallback, useMemo, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { useContext } from "react";
 
 import { PostContextType } from "@/components/post/types";
@@ -10,6 +16,7 @@ export const PostContext = createContext<Partial<PostContextType>>({});
 
 export const PostProvider: React.FC<{
   settings: Setting;
+  children: ReactNode;
 }> = ({ children, settings }) => {
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [helpers, setHelpers] = useState<Editor["editor"]>();

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import copydir from "copy-dir";
-import mkdirp from "mkdirp";
+import fs from "fs";
 import path from "path";
 import rimraf from "rimraf";
 import { promisify } from "util";
@@ -16,7 +16,6 @@ import { textToSlug } from "@/utils/slug";
 import generatePost from "./contentGenerator";
 import posts from "./posts";
 
-const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
 const copydirAsync = promisify(copydir);
 
@@ -52,9 +51,11 @@ export async function seed(folderCheck = true) {
       }
       console.timeEnd("delete all recoreds from all tables");
       console.time("ensure data directories");
+      console.log(absPath(dataDir));
+      console.log(absPath(publicUploadsDir));
       await Promise.all([
-        mkdirpAsync(absPath(dataDir)),
-        mkdirpAsync(absPath(publicUploadsDir)),
+        fs.promises.mkdir(absPath(dataDir), { recursive: true }),
+        fs.promises.mkdir(absPath(publicUploadsDir), { recursive: true }),
       ]);
       console.timeEnd("ensure data directories");
     }

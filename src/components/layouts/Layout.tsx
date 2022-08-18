@@ -19,6 +19,7 @@ import { SessionData } from "@/graphql/types";
 
 import { DesktopMenu } from "./desktop-menu";
 import { MobileMenu } from "./mobile-menu";
+import { Sidebar } from "./sidebar";
 import { SiteFooter } from "./site-footer";
 import { TopBar } from "./top-bar";
 
@@ -65,18 +66,21 @@ const AuthenticatedLayout = ({ render }: IProps) => {
 
   const { settings } = data;
 
+  const sidebar = (
+    <Sidebar
+      avatar={session.user.avatar}
+      name={session.user.name}
+      site_logo={settings.site_logo?.src}
+      site_title={settings.site_title}
+      site_url={settings.site_url}
+      stats={stats}
+    />
+  );
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <DesktopMenu
-        avatar={session.user.avatar}
-        name={session.user.name}
-        site_logo={settings.site_logo?.src}
-        site_title={settings.site_title}
-        site_url={settings.site_url}
-        isVisible={!collapsed}
-        setIsVisible={setMobileMenuVisible}
-        stats={stats}
-      />
+      <DesktopMenu isVisible={!collapsed} setIsVisible={setMobileMenuVisible}>
+        {sidebar}
+      </DesktopMenu>
       <Layout
         className="site-layout"
         style={{
@@ -85,15 +89,11 @@ const AuthenticatedLayout = ({ render }: IProps) => {
       >
         <nav className="navbar">
           <MobileMenu
-            avatar={session.user.avatar}
-            name={session.user.name}
-            site_logo={settings.site_logo?.src}
-            site_title={settings.site_title}
-            site_url={settings.site_url}
             isVisible={mobileMenuVisible}
             setIsVisible={setMobileMenuVisible}
-            stats={stats}
-          />
+          >
+            {sidebar}
+          </MobileMenu>
         </nav>
 
         <div className="top-bar">
