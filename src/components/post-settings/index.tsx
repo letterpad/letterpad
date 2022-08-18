@@ -98,6 +98,7 @@ const Actions = ({ post }: IProps) => {
           width={drawerWidth}
           zIndex={1000}
           extra={[saving || <span>────</span>]}
+          // drawerStyle={{ background: "rgb(var(--sidebar-bg))" }}
         >
           {/* <Space direction="vertical" size="middle"> */}
           <PublishButton postId={post.id} menu={settings?.menu ?? []} />
