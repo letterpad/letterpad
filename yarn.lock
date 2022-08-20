@@ -2715,6 +2715,13 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.12.tgz#0d4557fd3b94497d793efd4e7d92df2f83b4ef24"
   integrity sha512-q4jlIR71hUpWTnGhXWcakgkZeHa3CCjcQcnuzU8M891BAWA2jHiziiWEPEkdS5pFsz7H9HJiy8BrK7tBRNrY7A==
 
+"@types/nodemailer@^6.4.5":
+  version "6.4.5"
+  resolved "https://registry.yarnpkg.com/@types/nodemailer/-/nodemailer-6.4.5.tgz#09011ac73259245475d1688e4ba101860567dc39"
+  integrity sha512-zuP3nBRQHI6M2PkXnGGy1Ww4VB+MyYHGgnfV2T+JR9KLkeWqPJuyVUgLpKXuFnA/b7pZaIDFh2sV4759B7jK1g==
+  dependencies:
+    "@types/node" "*"
+
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"

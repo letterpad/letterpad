@@ -1,5 +1,6 @@
-import { encryptEmail } from "@/shared/clientToken";
 import { GraphQLClient } from "graphql-request";
+
+import { encryptEmail } from "@/shared/clientToken";
 
 interface IArgs {
   query?: any;

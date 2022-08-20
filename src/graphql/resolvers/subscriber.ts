@@ -1,6 +1,6 @@
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import logger from "@/shared/logger";
-import { decodeToken } from "@/shared/token";
+import { decodeJWTToken } from "@/shared/token";
 import { VerifySubscriberToken } from "@/shared/types";
 
 import { ResolverContext } from "../context";
@@ -29,6 +29,22 @@ const Query: QueryResolvers<ResolverContext> = {
     return {
       count: 0,
       rows: [],
+    };
+  },
+  subscriber: async (_root, args, { session, prisma }) => {
+    if (!session?.user.id) {
+      return { message: "Invalid Session" };
+    }
+    try {
+      const subscriber = await prisma.subscriber.findFirst({
+        where: { id: args.subscriber_id },
+      });
+      if (subscriber) return subscriber;
+    } catch (e) {
+      logger.error(e);
+    }
+    return {
+      message: "Subscriber not found",
     };
   },
 };
@@ -101,7 +117,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     };
   },
   updateSubscriber: async (_, args, { prisma }) => {
-    const decodedToken = decodeToken<VerifySubscriberToken>(
+    const decodedToken = decodeJWTToken<VerifySubscriberToken>(
       args.data?.secret_id || "",
     );
     if (!decodedToken) {

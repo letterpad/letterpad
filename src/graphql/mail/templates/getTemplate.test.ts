@@ -52,14 +52,14 @@ describe("Email templates", () => {
     );
     if (data?.ok) {
       expect(data.content).toMatchInlineSnapshot(`
-Object {
-  "html": "Hello Friend, <br><br>A new post has been published in <strong>Demo Account</strong>.<br><br><img src=\\"https://a.com/image.jpg\\" width=\\"100%\\"><br><strong>new-post-test</strong><br><br><br><a target=\\"_blank\\" href=\\"https://demo.letterpad.app/post/new-post-test\\">Read More</a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
-  "subject": "Demo Account - New Post",
-  "to": Array [
-    "subscriber@test.com",
-  ],
-}
-`);
+        Object {
+          "html": "Hello Friend, <br><br>A new post has been published in <strong>Demo Account</strong>.<br><br><img src=\\"https://a.com/image.jpg\\" width=\\"100%\\"><br><strong>new-post-test</strong><br><br><br><a target=\\"_blank\\" href=\\"https://demo.letterpad.app/post/new-post-test\\">Read More</a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
+          "subject": "Demo Account - New Post",
+          "to": Array [
+            "subscriber@test.com",
+          ],
+        }
+      `);
     }
   });
 
@@ -80,12 +80,42 @@ Object {
     if (data?.ok) {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
-Object {
-  "html": "Hello There, <br><br>You have subscribed to <strong>Demo Account</strong> using this email address. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=&subscriber=1\\"><br>        Verify Email<br>      </a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
-  "subject": "Demo Account - Verify your email",
-  "to": "subscriber@test.com",
-}
-`);
+        Object {
+          "html": "Hello There, <br><br>You have subscribed to <strong>Demo Account</strong> using this email address. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verifySubscriber?token=&subscriber=1\\"><br>        Verify Email<br>      </a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
+          "subject": "Demo Account - Verify your email",
+          "to": "subscriber@test.com",
+        }
+      `);
+    }
+  });
+
+  it("gets new subscriber verification success email", async () => {
+    const subscriberEmail = "subscriber@test.com";
+    await API({
+      query: UpdateSubscriberDocument,
+      variables: {
+        data: {
+          verified: true,
+          secret_id: getToken({ data: { email: subscriberEmail } }),
+        },
+      },
+    });
+    const data = await getEmailTemplate(
+      {
+        template_id: EmailTemplates.SubscriberVerified,
+        subscriber_id: 1,
+        author_id: 2,
+      },
+      prisma,
+    );
+    if (data?.ok) {
+      expect(data.content).toMatchInlineSnapshot(`
+        Object {
+          "html": "Hello There, <br><br>All set! You have been subscribed to <strong>Demo Account</strong>.<br><br><a target=\\"_blank\\" href=\\"http://demo.localhost\\"><br>        Visit Demo Account<br>      </a><br><br>If you have received this by mistake, you can safely ignore this email.<br>",
+          "subject": "You are subscribed to Demo Account",
+          "to": "subscriber@test.com",
+        }
+      `);
     }
   });
 
@@ -118,12 +148,12 @@ Object {
     if (data?.ok) {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
-Object {
-  "html": "Hello foo, <br><br>You have used this email address while registering in <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong>. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=",
-  "subject": "Letterpad - Verify Email",
-  "to": "newuser@test.com",
-}
-`);
+        Object {
+          "html": "Hello foo, <br><br>You have used this email address while registering in <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong>. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=",
+          "subject": "Letterpad - Verify Email",
+          "to": "newuser@test.com",
+        }
+      `);
     }
   });
 
@@ -168,12 +198,12 @@ Object {
       data.content.html = removeToken(data.content.html);
       // The to email is wrong below, because when the email changed, the session was changed, so the update query failed. Leaving it as a bug.
       expect(data.content).toMatchInlineSnapshot(`
-Object {
-  "html": "Hello foo, <br><br>You have requested to change your email address to this email address in <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong>. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=",
-  "subject": "Letterpad - Email Change Verification",
-  "to": "another@test.com",
-}
-`);
+        Object {
+          "html": "Hello foo, <br><br>You have requested to change your email address to this email address in <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong>. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=",
+          "subject": "Letterpad - Email Change Verification",
+          "to": "another@test.com",
+        }
+      `);
     }
   });
 
@@ -195,12 +225,12 @@ Object {
     if (data?.ok) {
       data.content.html = removeToken(data.content.html);
       expect(data.content).toMatchInlineSnapshot(`
-Object {
-  "html": "Hello Demo Author,<br><br>We have received a request to change the password for your <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong> account. Please click the below button to change your password.<br><br><a target=\\"_blank\\"  href=\\"http://localhost:3000/admin/resetPassword?token=",
-  "subject": "Letterpad - Reset your password",
-  "to": "demo@demo.com",
-}
-`);
+        Object {
+          "html": "Hello Demo Author,<br><br>We have received a request to change the password for your <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong> account. Please click the below button to change your password.<br><br><a target=\\"_blank\\"  href=\\"http://localhost:3000/admin/resetPassword?token=",
+          "subject": "Letterpad - Reset your password",
+          "to": "demo@demo.com",
+        }
+      `);
     }
   });
 });

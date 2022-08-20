@@ -9,7 +9,7 @@ import {
   QueryResolvers,
 } from "@/__generated__/__types__";
 import { encryptEmail } from "@/shared/clientToken";
-import { decodeToken, verifyToken } from "@/shared/token";
+import { decodeJWTToken, verifyToken } from "@/shared/token";
 import { ForgotPasswordToken } from "@/shared/types";
 
 import { validateCaptcha, validateHostNames } from "./helpers";
@@ -348,7 +348,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         throw new Error("The link is not valid.");
       }
 
-      const authorEmail = decodeToken<ForgotPasswordToken>(token);
+      const authorEmail = decodeJWTToken<ForgotPasswordToken>(token);
 
       const author = await prisma.author.findFirst({
         where: { email: authorEmail.email },

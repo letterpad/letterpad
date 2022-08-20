@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 import { basePath } from "@/constants";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
-import { decodeToken } from "@/shared/token";
+import { decodeJWTToken } from "@/shared/token";
 import { VerifySubscriberToken } from "@/shared/types";
 
 import {
@@ -21,7 +21,7 @@ const Verify = async (
       throw Error("No token provided");
     }
 
-    const token = decodeToken<VerifySubscriberToken>(req.query.token);
+    const token = decodeJWTToken<VerifySubscriberToken>(req.query.token);
 
     const update = await prisma.subscriber.update({
       data: {

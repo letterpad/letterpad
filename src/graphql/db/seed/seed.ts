@@ -48,6 +48,7 @@ export async function seed(folderCheck = true) {
         await cleanupDatabase();
       } catch (e) {
         logger.error(e);
+        throw "error";
       }
       console.timeEnd("delete all recoreds from all tables");
       console.time("ensure data directories");
@@ -293,9 +294,8 @@ export async function insertPost(postData, author_id) {
 }
 
 export const cleanupDatabase = () => {
-  // const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
   const modelNames = Object.keys(prisma).filter((key) => {
-    return key.startsWith("$") ? false : true;
+    return key.startsWith("_") ? false : true;
   });
 
   return Promise.all(
@@ -305,7 +305,3 @@ export const cleanupDatabase = () => {
     }),
   );
 };
-
-// function deCapitalizeFirstLetter(string) {
-//   return string.charAt(0).toLowerCase() + string.slice(1);
-// }
