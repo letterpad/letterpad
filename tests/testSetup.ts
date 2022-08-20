@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 const envLoaded = dotenv.config({ path: "./.env.test.local", debug: true });
-if (envLoaded.error && !process.env.DATABASE_URL) {
+if (envLoaded.error) {
   throw new Error("`.env.test.local` not found.");
 }
 import { ApolloServer } from "apollo-server";
