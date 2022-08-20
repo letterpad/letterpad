@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
-dotenv.config({ path: "./.env.test.local", debug: true });
-// process.env.DATABASE_URL = "file:data/test.sqlite";
+const envLoaded = dotenv.config({ path: "./.env.test.local", debug: true });
+if (envLoaded.error && !process.env.DATABASE_URL) {
+  throw new Error("`.env.test.local` not found.");
+}
 import { ApolloServer } from "apollo-server";
 const { exec } = require("child_process");
 import React from "react";
