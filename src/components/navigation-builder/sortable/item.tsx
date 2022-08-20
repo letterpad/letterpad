@@ -25,14 +25,8 @@ export const Item: FC<Props> = ({
   onRemove,
   openSuggestions,
 }) => {
-  const {
-    setNodeRef,
-    attributes,
-    listeners,
-    transition,
-    transform,
-    isDragging,
-  } = useSortable({ id: library.id });
+  const { setNodeRef, attributes, listeners, transition, transform } =
+    useSortable({ id: library.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),

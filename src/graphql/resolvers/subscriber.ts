@@ -1,6 +1,7 @@
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import logger from "@/shared/logger";
 import { decodeToken } from "@/shared/token";
+import { VerifySubscriberToken } from "@/shared/types";
 
 import { ResolverContext } from "../context";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
@@ -100,7 +101,9 @@ const Mutation: MutationResolvers<ResolverContext> = {
     };
   },
   updateSubscriber: async (_, args, { prisma }) => {
-    const decodedToken = decodeToken(args.data?.secret_id || "");
+    const decodedToken = decodeToken<VerifySubscriberToken>(
+      args.data?.secret_id || "",
+    );
     if (!decodedToken) {
       return {
         ok: false,
@@ -109,7 +112,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
 
     const subscriber = await prisma?.subscriber.findFirst({
-      where: { email: decodedToken.email },
+      where: {
+        author_id: decodedToken.author_id,
+        id: decodedToken.subscriber_id,
+      },
     });
     if (!subscriber) {
       return {

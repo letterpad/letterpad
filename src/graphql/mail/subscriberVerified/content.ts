@@ -2,16 +2,15 @@ import { PrismaClient } from "@prisma/client";
 import Twig from "twig";
 
 import {
+  EmailSubscriberVerifiedProps,
   EmailTemplateResponse,
-  EmailVerifySubscriberProps,
 } from "@/graphql/types";
-import { getVerifySubscriberToken } from "@/shared/token";
 
 import { getTemplate } from "../template";
 import { addLineBreaks } from "../utils";
 
-export async function getVerifySubscriberEmailContent(
-  data: EmailVerifySubscriberProps,
+export async function getSubscriberVerifiedEmailContent(
+  data: EmailSubscriberVerifiedProps,
   prisma: PrismaClient,
 ): Promise<EmailTemplateResponse> {
   const template = getTemplate(data.template_id);
@@ -52,19 +51,15 @@ export async function getVerifySubscriberEmailContent(
     data: template.body.toString(),
   });
 
-  const token = getVerifySubscriberToken({
-    email: subscriber.email,
-    subscriber_id: subscriber.id,
-    author_id: data.author_id,
-  });
+  const myURL = new URL(process.env.ROOT_URL);
 
-  const href = `${process.env.ROOT_URL}/api/verifySubscriber?token=${token}&subscriber=1`;
+  const href = `${myURL.protocol}//${author.username}.${myURL.hostname}`;
 
   const body = bodyTemplate.render({
     blog_name: author.setting?.site_title,
     full_name: "There",
-    verify_link: `<a target="_blank" href="${href}">
-        Verify Email
+    site_url: `<a target="_blank" href="${href}">
+        Visit ${author.setting?.site_title}
       </a>`,
   });
 

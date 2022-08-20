@@ -6,7 +6,7 @@ import rimraf from "rimraf";
 import { promisify } from "util";
 
 import { createAuthorWithSettings } from "@/lib/onboard";
-import Prisma, { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 import { ROLES } from "@/graphql/types";
 import logger from "@/shared/logger";
@@ -293,16 +293,19 @@ export async function insertPost(postData, author_id) {
 }
 
 export const cleanupDatabase = () => {
-  const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
+  // const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
+  const modelNames = Object.keys(prisma).filter((key) => {
+    return key.startsWith("$") ? false : true;
+  });
 
   return Promise.all(
     modelNames.map((modelName) => {
-      const model = prisma[deCapitalizeFirstLetter(modelName)];
+      const model = prisma[modelName];
       return model ? model.deleteMany() : null;
     }),
   );
 };
 
-function deCapitalizeFirstLetter(string) {
-  return string.charAt(0).toLowerCase() + string.slice(1);
-}
+// function deCapitalizeFirstLetter(string) {
+//   return string.charAt(0).toLowerCase() + string.slice(1);
+// }
