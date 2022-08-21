@@ -84,20 +84,6 @@ query Subscribers($author_id: Int) {
   }
 }
 
-query Subscriber($subscriber_id: Int) {
-  subscriber(subscriber_id: $subscriber_id) {
-    ... on Subscriber {
-      id
-      email
-      verified
-      createdAt
-    }
-    ... on SubscriberError {
-      message
-    }
-  }
-}
-
 query Email($template_id: String) {
   email(template_id: $template_id) {
     ... on Email {

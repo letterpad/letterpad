@@ -44,7 +44,7 @@ function Post() {
   const status = post?.status;
 
   const onEditorChange = useCallback(
-    (html: string) => {
+    (html) => {
       if (!id) return;
       if (status === PostStatusOptions.Draft) {
         debounceUpdatePostAPI({ id, html_draft: html });

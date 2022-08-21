@@ -1,21 +1,15 @@
 import jwt from "jsonwebtoken";
 
-import {
-  ForgotPasswordToken,
-  UnsubscribeToken,
-  VerifySubscriberToken,
-} from "./types";
-
-interface GetToken<T> {
-  data: T;
+interface GetToken {
+  data: Record<any, any>;
   validityInMins?: number;
   algorithm?: string;
 }
-export function getToken<T extends object>({
+export function getToken({
   validityInMins = 120,
   data,
   algorithm = "",
-}: GetToken<T>) {
+}: GetToken) {
   let option = { expiresIn: validityInMins * 60 } as any;
   if (validityInMins === 0) {
     option = {};
@@ -31,8 +25,8 @@ export function verifyToken(token: string) {
   return jwt.verify(token, process.env.SECRET_KEY);
 }
 
-export function decodeJWTToken<T>(token: string) {
-  return jwt.decode(token) as T;
+export function decodeToken(token: string) {
+  return jwt.decode(token) as any;
 }
 
 export function getClientToken({ email }: { email: string }) {
@@ -50,31 +44,23 @@ export function getVerifyUserToken({ email, author_id }) {
   });
 }
 
-export function getVerifySubscriberToken({
-  email,
-  author_id,
-  subscriber_id,
-}: VerifySubscriberToken) {
+export function getVerifySubscriberToken({ email, author_id, subscriber_id }) {
   return getToken({
     data: { email, author_id, subscriber_id },
     algorithm: "HS256",
   });
 }
 
-export function getForgotPasswordToken({ email }: ForgotPasswordToken) {
-  return getToken<ForgotPasswordToken>({
+export function getForgotPasswordToken({ email }) {
+  return getToken({
     data: { email },
     algorithm: "HS256",
   });
 }
 
-export function getUnsubscribeToken({
-  email,
-  author_id,
-  subscriber_id,
-}: UnsubscribeToken) {
+export function getUnsubscribeToken({ email }) {
   return getToken({
-    data: { email, author_id, subscriber_id },
+    data: { email },
     algorithm: "HS256",
     validityInMins: 0,
   });

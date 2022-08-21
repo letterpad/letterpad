@@ -26,6 +26,7 @@ yarn-error.log*
 
 # local env files
 .env.local
+.env.test.local
 .env.production.local
 
 # vercel
@@ -36,7 +37,6 @@ yarn-error.log*
 
 __generated__/*
 data/*
-.env
 .env.production.local
 .bin
 # Sentry
@@ -49,6 +49,7 @@ data/*
 .sentryclirc
 /.vscode/
 generated
+.env
 .cache
 prisma/sqlite/data
 .vscode

@@ -63,27 +63,3 @@ export type PubSubEvent = "save" | "noop" | "networkError";
 export interface ClientTokenData {
   id: number;
 }
-
-export interface ForgotPasswordToken {
-  email: string;
-}
-
-export interface UnsubscribeToken {
-  email: string;
-  author_id: number;
-  subscriber_id: number;
-}
-
-export interface VerifyUserToken {
-  email: string;
-  author_id: number;
-}
-
-export interface VerifySubscriberToken {
-  email: string;
-  author_id: number;
-  subscriber_id: number;
-}
-
-export type VerifyUserOrSubscriberToken = VerifyUserToken &
-  VerifySubscriberToken;

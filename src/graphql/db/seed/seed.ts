@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 import copydir from "copy-dir";
-import fs from "fs";
+import mkdirp from "mkdirp";
 import path from "path";
 import rimraf from "rimraf";
 import { promisify } from "util";
 
 import { createAuthorWithSettings } from "@/lib/onboard";
-import { prisma } from "@/lib/prisma";
+import Prisma, { prisma } from "@/lib/prisma";
 
 import { ROLES } from "@/graphql/types";
 import logger from "@/shared/logger";
@@ -16,6 +16,7 @@ import { textToSlug } from "@/utils/slug";
 import generatePost from "./contentGenerator";
 import posts from "./posts";
 
+const mkdirpAsync = promisify(mkdirp);
 const rimrafAsync = promisify(rimraf);
 const copydirAsync = promisify(copydir);
 
@@ -48,15 +49,12 @@ export async function seed(folderCheck = true) {
         await cleanupDatabase();
       } catch (e) {
         logger.error(e);
-        throw "error";
       }
       console.timeEnd("delete all recoreds from all tables");
       console.time("ensure data directories");
-      console.log(absPath(dataDir));
-      console.log(absPath(publicUploadsDir));
       await Promise.all([
-        fs.promises.mkdir(absPath(dataDir), { recursive: true }),
-        fs.promises.mkdir(absPath(publicUploadsDir), { recursive: true }),
+        mkdirpAsync(absPath(dataDir)),
+        mkdirpAsync(absPath(publicUploadsDir)),
       ]);
       console.timeEnd("ensure data directories");
     }
@@ -294,14 +292,16 @@ export async function insertPost(postData, author_id) {
 }
 
 export const cleanupDatabase = () => {
-  const modelNames = Object.keys(prisma).filter((key) => {
-    return key.startsWith("_") ? false : true;
-  });
+  const modelNames = Prisma.dmmf.datamodel.models.map((model) => model.name);
 
   return Promise.all(
     modelNames.map((modelName) => {
-      const model = prisma[modelName];
+      const model = prisma[deCapitalizeFirstLetter(modelName)];
       return model ? model.deleteMany() : null;
     }),
   );
 };
+
+function deCapitalizeFirstLetter(string) {
+  return string.charAt(0).toLowerCase() + string.slice(1);
+}

@@ -1,10 +1,4 @@
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import { useContext } from "react";
 import { useEffect } from "react";
 
@@ -28,10 +22,10 @@ export const TagsContext = createContext<Partial<TagsContextType<any, any>>>({
   headers: [],
 });
 
-export const TagsProvider: React.FC<{
-  readOnly: boolean;
-  children: ReactNode;
-}> = ({ children, readOnly }) => {
+export const TagsProvider: React.FC<{ readOnly: boolean }> = ({
+  children,
+  readOnly,
+}) => {
   const { loading, data } = useTagsQuery({
     fetchPolicy: "network-only",
   });

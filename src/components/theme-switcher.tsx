@@ -1,6 +1,6 @@
+import { basePath } from "next.config";
 import { useEffect, useState } from "react";
 
-import { basePath } from "@/constants";
 import { EventAction, track } from "@/track";
 
 const ThemeSwitcher = () => {

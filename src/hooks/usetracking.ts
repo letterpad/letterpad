@@ -2,11 +2,10 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { gaTrackingId } from "@/constants";
+import config from "../../next.config";
 
 export const useTracking = () => {
-  const trackingId = gaTrackingId;
-
+  const trackingId = config.gaTrackingId;
   const router = useRouter();
   // Initialize ga
   useEffect(() => {

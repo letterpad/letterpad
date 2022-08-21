@@ -1,19 +1,26 @@
+const path = require("path");
 const basePath = "/admin";
+
+const isServer = typeof window === "undefined";
+
 const nextConfig = {
   productionBrowserSourceMaps: true,
   env: {
     ROOT: __dirname,
     RAYGUN_API_KEY: process.env.RAYGUN_API_KEY,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    NEXT_PUBLIC_BASE_PATH: process.env.BASE_PATH,
   },
   swcMinify: true,
+  compilerOptions: {
+    jsxImportSource: true,
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ["images.unsplash.com", "res.cloudinary.com", "letterpad.app"],
+    domains: ["images.unsplash.com", "res.cloudinary.com"],
   },
+  gaTrackingId: "UA-120251616-1",
   basePath,
   async redirects() {
     return [
@@ -23,7 +30,7 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: basePath,
+        source: "/admin",
         destination: `/posts`,
         permanent: true,
       },
@@ -49,6 +56,10 @@ const nextConfig = {
     });
     return config;
   },
+  webpackDevMiddleware: (config) => {
+    return config;
+  },
 };
 
 module.exports = nextConfig;
+module.exports.basePath = basePath;

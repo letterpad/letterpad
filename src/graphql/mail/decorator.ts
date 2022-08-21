@@ -6,13 +6,10 @@ import { getUnsubscribeToken } from "@/shared/token";
 export const bodyDecorator = (
   html: string,
   recipient_email: string,
-  author_id: number,
-  subcriber_id: number,
+  unsubscribe = false,
 ) => {
   const token = getUnsubscribeToken({
     email: recipient_email,
-    author_id: author_id,
-    subscriber_id: subcriber_id,
   });
   const unsubscribeUrl = `${process.env.ROOT_URL}/api/unsubscribe?token=${token}`;
 
@@ -32,7 +29,7 @@ export const bodyDecorator = (
 
   const body = bodyTemplate.render({
     content: html,
-    unsubscribe_link: subcriber_id
+    unsubscribe_link: unsubscribe
       ? `
                       Changed your mind about receiving our emails? You can
                       <a target="_blank" href="${unsubscribeUrl}"
