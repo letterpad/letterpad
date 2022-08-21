@@ -92,6 +92,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         process.env.RECAPTCHA_KEY_SERVER,
         args.data.token,
       );
+
       if (!response) {
         return {
           __typename: "CreateAuthorError",

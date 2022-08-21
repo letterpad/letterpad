@@ -157,21 +157,21 @@ describe("Email templates", () => {
     }
   });
 
-  it.skip("gets change email verification email", async () => {
+  it("gets change email verification email - Step 1", async () => {
     const newUserEmail = "another@test.com";
-
-    const resonse1 = await API({
+    const changedEmail = "changedemail@email.com";
+    const response1 = await API({
       query: CreateAuthorDocument,
       variables: {
         data: {
           name: "foo",
           email: newUserEmail,
           password: "foofoofoo",
-          username: "foo",
+          username: "mrrobot",
           setting: {
             site_title: "Test site title",
           },
-          token: "this token wont be validated in test environment",
+          token: "this recaptcha token wont be validated in test environment",
         },
       },
     });
@@ -180,17 +180,17 @@ describe("Email templates", () => {
       query: UpdateAuthorDocument,
       variables: {
         author: {
-          email: "change@email.com",
-          id: resonse1.createAuthor.id,
+          email: changedEmail,
+          id: response1.createAuthor.id,
         },
       },
-      sessionId: resonse1.createAuthor.id,
+      sessionId: response1.createAuthor.id,
     });
 
     const data = await getEmailTemplate(
       {
         template_id: EmailTemplates.VerifyChangedEmail,
-        author_id: resonse1.createAuthor.id,
+        author_id: response1.createAuthor.id,
       },
       prisma,
     );
