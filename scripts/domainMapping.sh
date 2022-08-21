@@ -121,7 +121,16 @@ server {
     gzip on;
     gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
-    root $WEB_DIR;
+    location ^~ /.well-known/acme-challenge/ {
+
+        default_type "text/plain";
+
+        # This directory must be the same as in /etc/letsencrypt/cli.ini
+        # as "webroot-path" parameter. Also don't forget to set "authenticator" parameter
+        # there to "webroot".
+        root $WEB_DIR;
+    }
+    
     add_header X-App-Name Letterpad;
     location / {
         proxy_pass http://127.0.0.1:3001;

@@ -1,5 +1,6 @@
 import { EmailProps, EmailTemplates } from "@/graphql/types";
 
+import { getdomainMapSuccessContent } from "../domainMapSuccess/content";
 import { getEmailChangeSuccessContent } from "../emailChangeSuccess/content";
 import { getForgotPasswordContent } from "../forgotPassword/content";
 import { getNewPostContent } from "../newPost/content";
@@ -30,5 +31,7 @@ export async function getEmailTemplate(props: EmailProps, prismaInstance) {
       return await getEmailChangeSuccessContent(props, prismaInstance);
     case EmailTemplates.PasswordChangeSuccess:
       return await getPasswordChangeSuccessContent(props, prismaInstance);
+    case EmailTemplates.DomainMapSuccess:
+      return await getdomainMapSuccessContent(props, prismaInstance);
   }
 }

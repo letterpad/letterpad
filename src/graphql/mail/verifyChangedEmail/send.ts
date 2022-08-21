@@ -1,3 +1,5 @@
+import { PrismaClient } from "@prisma/client";
+
 import { EmailTemplates, EmailVerifyNewEmailProps } from "@/graphql/types";
 import logger from "@/shared/logger";
 
@@ -6,7 +8,7 @@ import { sendMail } from "../sendMail";
 
 export async function sendVerifyUserEmail(
   data: EmailVerifyNewEmailProps,
-  models,
+  models: PrismaClient,
 ) {
   try {
     const template = await getVerifyUserEmailChangeContent(data, models);

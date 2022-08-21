@@ -1,17 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 
-import { EmailTemplates, EmailVerifyNewUserProps } from "@/graphql/types";
+import { DomainMapSuccessProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
 
-import { getVerifyUserEmailContent } from "./content";
+import { getdomainMapSuccessContent } from "./content";
 import { sendMail } from "../sendMail";
 
-export async function sendVerifyUserEmail(
-  data: EmailVerifyNewUserProps,
+export async function sendDomainMapSuccessEmail(
+  data: DomainMapSuccessProps,
   models: PrismaClient,
 ) {
   try {
-    const template = await getVerifyUserEmailContent(data, models);
+    const template = await getdomainMapSuccessContent(data, models);
     if (template.ok) {
       await sendMail(template.content, template.meta);
     }
@@ -20,7 +20,7 @@ export async function sendVerifyUserEmail(
       message: "We have sent you an email to verify your email",
     };
   } catch (e: any) {
-    logger.error("Could not send mail - " + EmailTemplates.VerifyNewUser);
+    logger.error("Could not send mail - " + EmailTemplates.DomainMapSuccess);
     throw e;
   }
 }
