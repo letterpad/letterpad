@@ -9,7 +9,8 @@ import {
   QueryResolvers,
 } from "@/__generated__/__types__";
 import { encryptEmail } from "@/shared/clientToken";
-import { decodeToken, verifyToken } from "@/shared/token";
+import { decodeJWTToken, verifyToken } from "@/shared/token";
+import { ForgotPasswordToken } from "@/shared/types";
 
 import { validateCaptcha, validateHostNames } from "./helpers";
 import { mapAuthorToGraphql } from "./mapper";
@@ -347,7 +348,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
         throw new Error("The link is not valid.");
       }
 
-      const authorEmail = decodeToken(token);
+      const authorEmail = decodeJWTToken<ForgotPasswordToken>(token);
 
       const author = await prisma.author.findFirst({
         where: { email: authorEmail.email },
@@ -366,7 +367,10 @@ const Mutation: MutationResolvers<ResolverContext> = {
         },
         where: { id: author.id },
       });
-
+      await enqueueEmailAndSend({
+        author_id: author.id,
+        template_id: EmailTemplates.PasswordChangeSuccess,
+      });
       return {
         ok: true,
         message: "Password changed successfully",

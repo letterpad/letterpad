@@ -3,7 +3,8 @@ import { NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
 
 import { basePath } from "@/constants";
-import { decodeToken, verifyToken } from "@/shared/token";
+import { decodeJWTToken, verifyToken } from "@/shared/token";
+import { UnsubscribeToken } from "@/shared/types";
 
 import { NextApiRequestWithFormData } from "../../graphql/types";
 
@@ -16,7 +17,7 @@ const Unsubscribe = async (
     if (!isValidToken) {
       return res.redirect(basePath + "/messages/expired");
     }
-    const token = decodeToken(req.query.token as string);
+    const token = decodeJWTToken<UnsubscribeToken>(req.query.token as string);
 
     const destroyed = await prisma.subscriber.delete({
       where: {

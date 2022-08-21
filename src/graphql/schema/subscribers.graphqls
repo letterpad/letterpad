@@ -1,4 +1,4 @@
-type Subscribers {
+type Subscriber {
   id: Int!
   email: String!
   author_id: Int!
@@ -8,7 +8,7 @@ type Subscribers {
 
 type SubscribersNode {
   count: Int!
-  rows: [Subscribers!]!
+  rows: [Subscriber!]!
 }
 
 type SubscribersAddResult {
@@ -20,9 +20,15 @@ type SubscribersUpdateResult {
   ok: Boolean!
   message: String
 }
+type SubscriberError {
+  message: String
+}
+
+union SubscriberResponse = Subscriber | SubscriberError
 
 type Query {
   subscribers(author_id: Int): SubscribersNode!
+  subscriber(subscriber_id: Int): SubscriberResponse!
 }
 
 input InputUpdateSubscriber {
