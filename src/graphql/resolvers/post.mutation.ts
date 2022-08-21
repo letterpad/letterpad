@@ -11,6 +11,7 @@ import {
   RequireFields,
 } from "@/__generated__/__types__";
 import logger from "@/shared/logger";
+import { submitSitemap } from "@/shared/submitSitemap";
 import { getLastPartFromPath, textToSlug } from "@/utils/slug";
 
 import {
@@ -198,6 +199,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
           originalName: updatedPost.title,
           slug: updatedPost.slug,
         });
+
+        if (newPostArgs.data.status === PostStatusOptions.Published) {
+          const url = `https://${session.user.username}.letterpad.app/sitemap.xml`;
+          submitSitemap(url);
+        }
       }
 
       if (!updatedPost) {

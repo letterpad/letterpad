@@ -4,6 +4,7 @@ import Media from "./media";
 import PostMutation from "./post.mutation";
 import Post from "./post.query";
 import Setting from "./setting";
+import Sitemap from "./sitemap";
 import Subscriber from "./subscriber";
 import Tag from "./tag";
 
@@ -16,4 +17,5 @@ export default [
   Tag,
   Subscriber,
   Domain,
+  Sitemap,
 ];

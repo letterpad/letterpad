@@ -9,10 +9,12 @@ const prisma = new PrismaClient();
 
 const getAuthorIdFromRequest = async (context: Context) => {
   const authHeader = context.req?.headers?.authorization || "";
+
   let author_id: number | null = null;
 
   try {
     author_id = await getAuthorFromLetterpadSubdomain(context);
+
     if (author_id) {
       logger.debug("Author from subdomain - ", author_id);
     }

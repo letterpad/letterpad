@@ -1,0 +1,20 @@
+type SiteMapNode {
+  route: String!
+  priority: Int!
+  changefreq: String
+  lastmod: String
+}
+
+type SiteMapList {
+  rows: [SiteMapNode!]!
+}
+
+type SiteMapError {
+  message: String
+}
+
+union SiteMapResponse = SiteMapList | SiteMapError
+
+type Query {
+  sitemap: SiteMapResponse!
+}
