@@ -2,7 +2,8 @@ import { DeleteOutlined, MenuOutlined } from "@ant-design/icons";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Button, Input } from "antd";
-import { FC } from "react";
+import { message } from "antd";
+import { FC, useEffect, useState } from "react";
 
 import { Navigation, NavigationType } from "@/__generated__/__types__";
 import { IMenuWithError } from "@/shared/types";
@@ -27,6 +28,7 @@ export const Item: FC<Props> = ({
 }) => {
   const { setNodeRef, attributes, listeners, transition, transform } =
     useSortable({ id: library.id });
+  const [nameError, setNameError] = useState("");
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -50,7 +52,7 @@ export const Item: FC<Props> = ({
 
     // check the label
     if (changedItem.label.length === 0) {
-      tmpError.nameError = "Cannot be empty";
+      tmpError.nameError = "Label cannot be empty";
     }
 
     // check the slug
@@ -68,10 +70,14 @@ export const Item: FC<Props> = ({
     if (!tmpError.error) {
       onChange(changedItem);
     }
-
-    // setNameError(tmpError.nameError);
+    setNameError(tmpError.nameError);
   };
 
+  useEffect(() => {
+    if (nameError.length > 0) {
+      message.error(nameError);
+    }
+  }, [nameError]);
   return (
     <div style={style} {...attributes} ref={setNodeRef}>
       <div data-testid="item-sortable" className="grid">
@@ -92,8 +98,7 @@ export const Item: FC<Props> = ({
             data-testid={library.label === "" ? "empty-label-item" : ""}
             placeholder="Enter the name of this item"
             size="middle"
-
-            // className={nameError ? "hasError" : ""}
+            className={nameError ? "hasError" : ""}
           />
         </div>
 
