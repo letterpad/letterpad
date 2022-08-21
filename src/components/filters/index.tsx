@@ -23,7 +23,7 @@ const Filters = ({ showTags = true, onChange }: IProps) => {
   const { tags, loading } = useTagsContext();
 
   useEffect(() => {
-    if (!showTags) return onChange(filters);
+    if (!showTags) return;
     if (loading || !tags) return;
 
     const uniqueData = [

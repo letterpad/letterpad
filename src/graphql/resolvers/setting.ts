@@ -4,7 +4,6 @@ import {
   QueryResolvers,
   Setting as SettingType,
 } from "@/__generated__/__types__";
-import { basePath } from "@/constants";
 import logger from "@/shared/logger";
 
 import { mapSettingToGraphql } from "./mapper";
@@ -26,7 +25,7 @@ const Setting = {
   banner: ({ banner }) => {
     banner = parse(banner);
     if (banner.src && !banner.src.startsWith("http")) {
-      banner.src = process.env.ROOT_URL + banner.src.replace(basePath, "");
+      banner.src = process.env.ROOT_URL + banner.src;
     }
     return banner;
   },
@@ -34,8 +33,7 @@ const Setting = {
   site_logo: ({ site_logo }) => {
     site_logo = parse(site_logo);
     if (site_logo.src && !site_logo.src.startsWith("http")) {
-      site_logo.src =
-        process.env.ROOT_URL + site_logo.src.replace(basePath, "");
+      site_logo.src = process.env.ROOT_URL + site_logo.src;
     }
     return site_logo;
   },
@@ -43,8 +41,7 @@ const Setting = {
   site_favicon: ({ site_favicon }) => {
     site_favicon = parse(site_favicon);
     if (site_favicon.src && !site_favicon.src.startsWith("http")) {
-      site_favicon.src =
-        process.env.ROOT_URL + site_favicon.src.replace(basePath, "");
+      site_favicon.src = process.env.ROOT_URL + site_favicon.src;
     }
     return site_favicon;
   },

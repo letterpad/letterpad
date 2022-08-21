@@ -1,25 +1,13 @@
-import Image from "next/image";
-
-interface Props {
-  name: string;
-  avatar?: string;
-  site_url: string;
-}
-const ProfileInfo: React.FC<Props> = ({ name, avatar, site_url }) => {
+const ProfileInfo = ({ name, avatar, site_url }) => {
   return (
     <>
-      <div className="container" style={{ padding: 20 }}>
+      <div className="container">
         {avatar && (
-          <div
-            style={{
-              borderRadius: 100,
-              border: "1px solid #fff",
-              overflow: "hidden",
-              display: "flex",
-            }}
-          >
-            <Image src={avatar} width={40} height={40} alt={name} />
-          </div>
+          <img
+            src={avatar}
+            style={{ borderRadius: 50 }}
+            alt={`avatar-${name}`}
+          />
         )}
         <div className="flex">
           <span>{name}</span>

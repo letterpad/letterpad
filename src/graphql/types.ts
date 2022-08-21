@@ -70,12 +70,9 @@ export type IImageAttrsResult = IImageAttrs | Record<string, string>;
 
 export enum EmailTemplates {
   VerifyNewUser = "verifyNewUser",
-  EmailChangeSuccess = "emailChangeSuccess",
   VerifyChangedEmail = "verifyChangedEmail",
   VerifySubscriber = "verifySubscriber",
-  SubscriberVerified = "subscriberVerified",
   ForgotPassword = "forgotPassword",
-  PasswordChangeSuccess = "passwordChangeSuccess",
   NewPost = "newPost",
   WelcomeUser = "welcomeUser",
 }
@@ -94,24 +91,10 @@ export interface EmailVerifyNewEmailProps {
   template_id: EmailTemplates.VerifyChangedEmail;
 }
 
-export interface EmailChangeSuccessProps {
-  author_id: number;
-  template_id: EmailTemplates.EmailChangeSuccess;
-}
-export interface PasswordChangeSuccessProps {
-  author_id: number;
-  template_id: EmailTemplates.PasswordChangeSuccess;
-}
-
 export interface EmailVerifySubscriberProps {
   author_id: number;
   subscriber_id: number;
   template_id: EmailTemplates.VerifySubscriber;
-}
-export interface EmailSubscriberVerifiedProps {
-  author_id: number;
-  subscriber_id: number;
-  template_id: EmailTemplates.SubscriberVerified;
 }
 
 export interface EmailNewPostProps {
@@ -133,11 +116,8 @@ export type EmailProps =
   | EmailVerifyNewUserProps
   | EmailVerifyNewEmailProps
   | EmailVerifySubscriberProps
-  | EmailSubscriberVerifiedProps
   | EmailNewPostProps
   | EmailWelcomeUserProps
-  | EmailChangeSuccessProps
-  | PasswordChangeSuccessProps
   | EmailForgotPasswordProps;
 
 export interface Mail {

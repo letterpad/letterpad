@@ -13,7 +13,7 @@ export const useLetterpadSession = () => {
     if (status === "unauthenticated") {
       router.push("/api/auth/signin");
     }
-  }, [router, status]);
+  }, [status]);
 
   if (!session?.user) return null;
 

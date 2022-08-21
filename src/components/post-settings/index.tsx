@@ -88,95 +88,92 @@ const Actions = ({ post }: IProps) => {
         postHash={postHash}
         showDrawer={showDrawer}
       />
-      {visible && (
-        <Drawer
-          title="Settings"
-          placement="right"
-          closable={true}
-          onClose={onClose}
-          visible={visible}
-          width={drawerWidth}
-          zIndex={1000}
-          extra={[saving || <span>────</span>]}
-          // drawerStyle={{ background: "rgb(var(--sidebar-bg))" }}
-        >
-          {/* <Space direction="vertical" size="middle"> */}
-          <PublishButton postId={post.id} menu={settings?.menu ?? []} />
-          <Divider />
-          <Row justify="space-between" hidden={true || !isPost} gutter={16}>
-            <Col span={20}>Featured</Col>
-            <Col span={4}>
-              <Switch
-                size="small"
-                checked={post.featured}
-                onChange={(change) => {
-                  debounceUpdatePost({
-                    id: post.id,
-                    featured: change,
-                  });
-                }}
-              />
-            </Col>
-          </Row>
-          <div>
-            <label>{postVerb} Description</label>
-            <p className="help-text">
-              This will be used in displaying your post in your feed, in SEO and
-              when sharing in social media.
-            </p>
-            <TextArea
-              showCount
-              rows={4}
-              maxLength={160}
-              onChange={(e) => {
-                debounceUpdatePost({ excerpt: e.target.value, id: post.id });
-              }}
-              defaultValue={post.excerpt}
-            />
-          </div>
-          <Divider />
-          <div>
-            <label>Path</label>
-            <p className="help-text">
-              The URL of your post. Should contain only letters, numbers, - and
-              should start with /{post.type}/.
-            </p>
-            <Input.Search
-              onChange={(e) => setSlug(e.target.value)}
-              value={slug}
-              enterButton="Set Path"
-              onSearch={formatSlug}
-              data-testid="slugInp"
-            />
-          </div>
-          <Divider />
-          {isPost && <Tags post={post} />}
-          {isPost && <Divider />}
-          <div>
-            <label>Cover Image</label>
-            <p className="help-text">
-              Add a cover image to your blog. This image might be used in your
-              feed, newsletters, recent posts, sharing in social platform, etc.
-            </p>
-            <ImageUpload
-              name="Cover Image"
-              url={post.cover_image.src}
-              onDone={([res]) => {
-                updatePost({
+      <Drawer
+        title="Settings"
+        placement="right"
+        closable={true}
+        onClose={onClose}
+        visible={visible}
+        width={drawerWidth}
+        zIndex={1000}
+        extra={[saving || <span>────</span>]}
+      >
+        {/* <Space direction="vertical" size="middle"> */}
+        <PublishButton postId={post.id} menu={settings?.menu ?? []} />
+        <Divider />
+        <Row justify="space-between" hidden={true || !isPost} gutter={16}>
+          <Col span={20}>Featured</Col>
+          <Col span={4}>
+            <Switch
+              size="small"
+              checked={post.featured}
+              onChange={(change) => {
+                debounceUpdatePost({
                   id: post.id,
-                  cover_image: {
-                    src: res.src,
-                    width: res.size.width,
-                    height: res.size.height,
-                  },
+                  featured: change,
                 });
               }}
             />
-          </div>
-          <Divider />
-          <DeletePost postId={post.id} />
-        </Drawer>
-      )}
+          </Col>
+        </Row>
+        <div>
+          <label>{postVerb} Description</label>
+          <p className="help-text">
+            This will be used in displaying your post in your feed, in SEO and
+            when sharing in social media.
+          </p>
+          <TextArea
+            showCount
+            rows={4}
+            maxLength={160}
+            onChange={(e) => {
+              debounceUpdatePost({ excerpt: e.target.value, id: post.id });
+            }}
+            defaultValue={post.excerpt}
+          />
+        </div>
+        <Divider />
+        <div>
+          <label>Path</label>
+          <p className="help-text">
+            The URL of your post. Should contain only letters, numbers, - and
+            should start with /{post.type}/.
+          </p>
+          <Input.Search
+            onChange={(e) => setSlug(e.target.value)}
+            value={slug}
+            enterButton="Set Path"
+            onSearch={formatSlug}
+            data-testid="slugInp"
+          />
+        </div>
+        <Divider />
+        {isPost && <Tags post={post} />}
+        {isPost && <Divider />}
+        <div>
+          <label>Cover Image</label>
+          <p className="help-text">
+            Add a cover image to your blog. This image might be used in your
+            feed, newsletters, recent posts, sharing in social platform, etc.
+          </p>
+          <ImageUpload
+            name="Cover Image"
+            url={post.cover_image.src}
+            onDone={([res]) => {
+              updatePost({
+                id: post.id,
+                cover_image: {
+                  src: res.src,
+                  width: res.size.width,
+                  height: res.size.height,
+                },
+              });
+            }}
+          />
+        </div>
+        <Divider />
+        <DeletePost postId={post.id} />
+      </Drawer>
       <style jsx global>{`
         .ant-drawer-header {
           border-bottom: 1px solid rgb(var(--color-border));

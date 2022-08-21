@@ -4,8 +4,7 @@ import { onBoardUser } from "@/lib/onboard";
 import { prisma } from "@/lib/prisma";
 
 import { basePath } from "@/constants";
-import { decodeJWTToken, verifyToken } from "@/shared/token";
-import { VerifyUserOrSubscriberToken } from "@/shared/types";
+import { decodeToken, verifyToken } from "@/shared/token";
 
 import { NextApiRequestWithFormData } from "./../../graphql/types";
 
@@ -19,12 +18,10 @@ const Verify = async (
     } catch (e) {
       return res.redirect(basePath + "/messages/expired");
     }
-    const token = decodeJWTToken<VerifyUserOrSubscriberToken>(
-      req.query.token as string,
-    );
+    const token = decodeToken(req.query.token as string);
     const isSubscriber = req.query.subscriber;
     let update;
-    if (isSubscriber && token.subscriber_id) {
+    if (isSubscriber) {
       update = await prisma.subscriber.update({
         data: { verified: true },
         where: { id: token.subscriber_id },

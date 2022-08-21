@@ -1,4 +1,3 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import bcrypt from "bcryptjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
@@ -7,7 +6,7 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
 import { createAuthorWithSettings, onBoardUser } from "@/lib/onboard";
-import { prisma } from "@/lib/prisma";
+import Prisma, { prisma } from "@/lib/prisma";
 import { analytics_on, umamiApi } from "@/lib/umami";
 
 import { Role } from "@/__generated__/__types__";
@@ -69,7 +68,7 @@ const providers = (_req: NextApiRequest) => [
           }
         }
       } catch (e) {
-        if (e instanceof PrismaClientKnownRequestError) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
           if (e.code === "P2021") {
             throw new Error(
               "Database is not ready. Run `yarn seed` from terminal.",

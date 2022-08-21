@@ -12,9 +12,7 @@ const getHashFromPostId = async (
 
   if (!_session || !_session.user?.email)
     return res.status(401).send("Unauthorized");
-  if (!req.query.id) {
-    return res.status(401).send("Invalid Arguments");
-  }
+
   res.send(encrypt(req.query.id.toString()));
 };
 

@@ -1,25 +1,39 @@
 import { Drawer } from "antd";
-import { ReactNode } from "react";
 
+import { Stats } from "@/__generated__/__types__";
 import siteConfig from "@/config/site.config";
 
+import Logo from "../Logo";
+import Menu from "../menu";
+import ProfileInfo from "../profile-info";
+
 interface Props {
+  site_logo?: string;
+  site_title: string;
+  site_url: string;
+  name: string;
+  avatar?: string;
   isVisible: boolean;
   setIsVisible: (a: boolean) => void;
-  children: ReactNode;
+  stats: Stats | Record<string, unknown>;
 }
 
 export const MobileMenu: React.VFC<Props> = ({
+  site_logo,
+  site_title,
+  site_url,
+  name,
+  avatar,
   isVisible,
   setIsVisible,
-  children,
+  stats,
 }) => {
-  if (!isVisible) return null;
-
   return (
     <Drawer
       onClose={() => setIsVisible(false)}
       placement="left"
+      drawerStyle={{ background: "rgb(var(--sidebar-bg))" }}
+      bodyStyle={{ background: "rgb(var(--sidebar-bg))" }}
       contentWrapperStyle={{ boxShadow: "none" }}
       headerStyle={{
         padding: "0 24px",
@@ -28,8 +42,17 @@ export const MobileMenu: React.VFC<Props> = ({
       }}
       width={siteConfig.sidebar_width}
       visible={isVisible}
+      title={
+        site_logo ? (
+          <Logo src={site_logo} padding="16px 0px" />
+        ) : (
+          <h2>{site_title}</h2>
+        )
+      }
+      footer={<ProfileInfo name={name} avatar={avatar} site_url={site_url} />}
+      footerStyle={{ borderColor: "#333" }}
     >
-      {children}
+      <Menu stats={stats} />
     </Drawer>
   );
 };

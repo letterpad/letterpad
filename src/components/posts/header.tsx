@@ -1,13 +1,11 @@
 import { Button, PageHeader } from "antd";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
 
 import { PostTypes } from "@/__generated__/__types__";
 
 interface IProps {
   type: PostTypes;
   title: string;
-  children: ReactNode;
 }
 
 export const Header: React.FC<IProps> = ({ type, title, children }) => {
