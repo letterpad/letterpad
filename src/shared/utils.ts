@@ -1,13 +1,7 @@
 import Router from "next/router";
 import NProgress from "nprogress";
 
-import {
-  SettingsDocument,
-  SettingsQuery,
-  SettingsQueryVariables,
-} from "@/__generated__/queries/queries.graphql";
 import { basePath } from "@/constants";
-import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { IMediaUploadResult } from "@/graphql/types";
 
 import { IUploadFileProps } from "./types";
