@@ -16,9 +16,11 @@ import {
 } from "@/__generated__/queries/queries.graphql";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
+import { Collection } from "./types";
+
 interface IReturn {
   loading: boolean;
-  collection: Post[] | [] | Tags[];
+  collection: Collection[];
 }
 
 function useNavigationData(): IReturn {

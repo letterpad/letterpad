@@ -1,6 +1,7 @@
 import { Button, Input, message, Modal } from "antd";
-import { basePath } from "next.config";
 import React, { useState } from "react";
+
+import { basePath } from "@/constants";
 
 const key = "feedback";
 const FeedbackForm = () => {

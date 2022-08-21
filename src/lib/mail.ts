@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -16,7 +17,9 @@ interface Props {
   replyTo?: string;
   bcc?: string;
 }
-export const mail = (mailOptions: Props) => {
+export const mail = (
+  mailOptions: Props,
+): Promise<SMTPTransport.SentMessageInfo> => {
   return new Promise((resolve, reject) => {
     if (process.env.LETTERPAD_PLATFORM === "true") {
       mailOptions = {
