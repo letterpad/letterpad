@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { InputUpdatePost } from "@/__generated__/__types__";
 import { useUpdatePostMutation } from "@/__generated__/queries/mutations.graphql";
 import { PostDocument } from "@/__generated__/queries/queries.graphql";
@@ -6,13 +8,17 @@ import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 export const useUpdatePost = () => {
   const [updatePostMutation, progress] = useUpdatePostMutation();
 
-  async function updatePostAPI(data: InputUpdatePost) {
-    return await updatePostMutation({
-      variables: {
-        data,
-      },
-    });
-  }
+  const updatePostAPI = useCallback(
+    async (data: InputUpdatePost) => {
+      return await updatePostMutation({
+        variables: {
+          data,
+        },
+      });
+    },
+    [updatePostMutation],
+  );
+
   async function updatePost(data: InputUpdatePost) {
     return await updatePostMutation({
       variables: {

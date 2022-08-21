@@ -62,12 +62,6 @@ export function getBase64(file: File) {
   });
 }
 
-export async function getSettings() {
-  return apolloBrowserClient.query<SettingsQuery, SettingsQueryVariables>({
-    query: SettingsDocument,
-  });
-}
-
 export const uploadFile = async ({
   files,
   type,
