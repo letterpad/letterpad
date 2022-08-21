@@ -1,6 +1,3 @@
-/**
- * @type {import('next').NextConfig}
- */
 const basePath = "/admin";
 const nextConfig = {
   productionBrowserSourceMaps: true,

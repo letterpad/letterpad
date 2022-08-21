@@ -71,6 +71,7 @@ export type IImageAttrsResult = IImageAttrs | Record<string, string>;
 export enum EmailTemplates {
   VerifyNewUser = "verifyNewUser",
   EmailChangeSuccess = "emailChangeSuccess",
+  DomainMapSuccess = "domainMapSuccess",
   VerifyChangedEmail = "verifyChangedEmail",
   VerifySubscriber = "verifySubscriber",
   SubscriberVerified = "subscriberVerified",
@@ -87,6 +88,12 @@ export interface Template {
 export interface EmailVerifyNewUserProps {
   author_id: number;
   template_id: EmailTemplates.VerifyNewUser;
+}
+
+export interface DomainMapSuccessProps {
+  author_id: number;
+  domain_name: string;
+  template_id: EmailTemplates.DomainMapSuccess;
 }
 
 export interface EmailVerifyNewEmailProps {
@@ -137,6 +144,7 @@ export type EmailProps =
   | EmailNewPostProps
   | EmailWelcomeUserProps
   | EmailChangeSuccessProps
+  | DomainMapSuccessProps
   | PasswordChangeSuccessProps
   | EmailForgotPasswordProps;
 

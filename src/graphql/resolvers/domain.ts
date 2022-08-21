@@ -2,6 +2,8 @@ import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { execShellCommand } from "@/shared/execShellCommand";
 
 import { ResolverContext } from "../context";
+import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
+import { EmailTemplates } from "../types";
 
 const Query: QueryResolvers<ResolverContext> = {
   domain: async (_root, _args, { session, prisma }) => {
@@ -102,6 +104,11 @@ const Mutation: MutationResolvers<ResolverContext> = {
               "SSL has been configured. However, your domain is in a redirect loop. This is usually because your domain is reconfiguring the SSL. Contact your domain provider regarding this.",
           };
         }
+        await enqueueEmailAndSend({
+          author_id: session.user.id,
+          template_id: EmailTemplates.DomainMapSuccess,
+          domain_name: domainName,
+        });
         return {
           ok: true,
           message:
@@ -129,7 +136,6 @@ async function execShell(fn, domain = "") {
     const result = await execShellCommand(
       `./scripts/domainMapping.sh ${fn} ${domain}`.trim(),
     );
-    console.log(fn, result);
     if (result.includes("success")) {
       return {
         ok: true,
@@ -141,7 +147,6 @@ async function execShell(fn, domain = "") {
       };
     }
   } catch (e) {
-    console.log(e);
     return {
       ok: false,
       message: e.message,
