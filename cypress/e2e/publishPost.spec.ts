@@ -44,6 +44,7 @@ describe("Publishing", () => {
 
     cy.enterTags(["new-tag"]);
     cy.getTestId("publishBtn").click();
+    cy.wait(100);
     cy.get(".tags-notlinked-modal").should("exist");
     cy.get(".okModalBtn").click();
 
