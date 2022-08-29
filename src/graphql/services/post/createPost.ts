@@ -65,19 +65,18 @@ export const createPost = async (
       },
     });
 
-    if (args.data.title) {
-      const newSlug = await getOrCreateSlug(
-        prisma.post,
-        newPost.id,
-        slug,
-        args.data.title,
-      );
-      await prisma.post.update({
-        data: { slug: newSlug },
-        where: { id: newPost.id },
-      });
-      newPost.slug = newSlug;
-    }
+    const newSlug = await getOrCreateSlug(
+      prisma.post,
+      newPost.id,
+      slug,
+      args.data.title,
+    );
+    await prisma.post.update({
+      data: { slug: newSlug },
+      where: { id: newPost.id },
+    });
+    newPost.slug = newSlug;
+
     if (newPost) {
       return {
         ...mapPostToGraphql(newPost),
