@@ -12,21 +12,21 @@ export const getResolverContext = async (context) => {
   const session = isTest
     ? null
     : ((await getSession(context)) as unknown as { user: SessionData });
-  let author_id: number | null = null;
+  let client_author_id: number | null = null;
 
   if (!session?.user.id) {
     const authorIdFound = await getAuthorIdFromRequest(context);
     if (authorIdFound) {
-      author_id = authorIdFound;
+      client_author_id = authorIdFound;
     }
   } else {
-    author_id = session.user.id;
+    client_author_id = session.user.id;
   }
 
-  if (author_id) {
+  if (client_author_id) {
     return {
       session,
-      author_id,
+      client_author_id,
       prisma,
     };
   }

@@ -47,7 +47,7 @@ export const RegisterForm = () => {
           },
         },
       });
-      if (result.data?.createAuthor?.__typename === "CreateAuthorError") {
+      if (result.data?.createAuthor?.__typename === "Exception") {
         message.error({
           content: result.data?.createAuthor.message,
           key,

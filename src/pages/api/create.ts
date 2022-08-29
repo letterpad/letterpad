@@ -3,7 +3,7 @@ import { NextApiResponse } from "next";
 import { PostTypes } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
 import { getResolverContext } from "@/graphql/context";
-import { createPost } from "@/graphql/resolvers/post.mutation";
+import { createPost } from "@/graphql/services/post";
 
 import { NextApiRequestWithFormData } from "./../../graphql/types";
 
@@ -15,16 +15,15 @@ const Create = async (
     const type = req.query.type as PostTypes;
 
     const context = await getResolverContext({ req, res });
+
     const result = await createPost({ data: { type } }, context);
 
-    if (result) {
-      //@ts-ignore
+    if (result.__typename === "Post") {
       res.redirect(basePath + "/post/" + result.id);
       return;
     }
     res.send("Post creation failed");
-  } catch (e) {
-    //@ts-ignore
+  } catch (e: any) {
     res.send(e.message);
   }
 };

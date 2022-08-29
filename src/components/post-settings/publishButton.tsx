@@ -36,8 +36,9 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
   const publish = (active: boolean) => {
     const navigationTags = getTagsFromMenu(menu);
     const navigationPages = getPagesFromMenu(menu);
+    const postTags = post.tags?.__typename === "TagsNode" ? post.tags.rows : [];
 
-    const navLinkedWithTags = post.tags?.find((tag) =>
+    const navLinkedWithTags = postTags.find((tag) =>
       navigationTags?.includes(tag.name.toLowerCase()),
     );
     const navLinkedWithPages = navigationPages?.find(
@@ -46,7 +47,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
 
     if (active) {
       if (post.type === PostTypes.Post) {
-        if (post.tags?.length === 0) return warnNoTags();
+        if (postTags.length === 0) return warnNoTags();
         if (!navLinkedWithTags)
           return tagNotLinkedWithNavigation(navigationTags);
       } else {

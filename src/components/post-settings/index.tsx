@@ -31,7 +31,7 @@ const Actions = ({ post }: IProps) => {
   const [visible, setVisible] = useState(false);
   const [postHash, setPostHash] = useState("");
   const settingsResponse = useSettingsQuery();
-  const [slug, setSlug] = useState(post.slug);
+  const [slug, setSlug] = useState(post.slug || "");
   const [saving, setSaving] = useState("");
   const { updatePost } = useUpdatePost();
   const debounceUpdatePost = useMemo(
@@ -44,7 +44,7 @@ const Actions = ({ post }: IProps) => {
   }, [post.id]);
 
   useEffect(() => {
-    setSlug(post.slug);
+    if (post.slug) setSlug(post.slug);
   }, [post.slug]);
 
   useEffect(() => {
@@ -131,7 +131,7 @@ const Actions = ({ post }: IProps) => {
               onChange={(e) => {
                 debounceUpdatePost({ excerpt: e.target.value, id: post.id });
               }}
-              defaultValue={post.excerpt}
+              defaultValue={post.excerpt ?? ""}
             />
           </div>
           <Divider />
@@ -160,7 +160,7 @@ const Actions = ({ post }: IProps) => {
             </p>
             <ImageUpload
               name="Cover Image"
-              url={post.cover_image.src}
+              url={post.cover_image.src || ""}
               onDone={([res]) => {
                 updatePost({
                   id: post.id,

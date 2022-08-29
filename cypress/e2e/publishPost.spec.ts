@@ -11,7 +11,10 @@ describe("Publishing", () => {
     cy.openSettings();
     cy.enterTags(["first-post"]);
     cy.getTestId("slugInp").should("have.value", slug);
+
     cy.getTestId("publishBtn").click();
+    cy.wait(100);
+
     cy.getTestId("postStatus").should("have.text", "published");
     cy.get(".ant-drawer-close").click();
     cy.get(".ant-page-header-back-button").click();
@@ -41,6 +44,7 @@ describe("Publishing", () => {
 
     cy.enterTags(["new-tag"]);
     cy.getTestId("publishBtn").click();
+    cy.wait(100);
     cy.get(".tags-notlinked-modal").should("exist");
     cy.get(".okModalBtn").click();
 

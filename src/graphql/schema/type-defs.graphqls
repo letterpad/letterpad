@@ -31,7 +31,3 @@ enum Permissions {
   MANAGE_USERS
   MANAGE_SETTINGS
 }
-
-interface LetterpadError {
-  message: String!
-}

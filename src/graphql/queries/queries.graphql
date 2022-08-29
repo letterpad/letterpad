@@ -2,12 +2,14 @@
 
 query Tag($slug: String!) {
   tag(slug: $slug) {
-    ... on Tags {
-      name
-      slug
-    }
-    ... on TagResultError {
-      message
+    ... on TagResponse {
+      ... on Tag {
+        name
+        slug
+      }
+      ... on Exception {
+        message
+      }
     }
   }
 }
@@ -18,7 +20,11 @@ query Post($filters: PostFilters) {
       ...PostWithAuthorAndTags
     }
 
-    ... on PostError {
+    ... on UnAuthorizedError {
+      message
+    }
+
+    ... on NotFound {
       message
     }
   }
@@ -31,26 +37,32 @@ query Posts($filters: PostsFilters) {
       rows {
         ...Partial
         author {
-          name
-          social {
-            github
-            twitter
-            instagram
-            facebook
-            linkedin
+          ... on Author {
+            name
+            social {
+              github
+              twitter
+              instagram
+              facebook
+              linkedin
+            }
+            bio
+            occupation
+            company_name
           }
-          bio
-          occupation
-          company_name
         }
         tags {
-          name
-          slug
+          ... on TagsNode {
+            rows {
+              name
+              slug
+            }
+          }
         }
       }
     }
 
-    ... on PostError {
+    ... on UnAuthorizedError {
       message
     }
   }
@@ -124,7 +136,7 @@ query Me {
     ... on Author {
       ...MeFragment
     }
-    ... on AuthorNotFoundError {
+    ... on NotFound {
       message
     }
   }
@@ -178,7 +190,10 @@ query settings {
     ... on Setting {
       ...SettingsFragment
     }
-    ... on SettingError {
+    ... on NotFound {
+      message
+    }
+    ... on UnAuthorizedError {
       message
     }
   }

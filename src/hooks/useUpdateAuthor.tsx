@@ -51,18 +51,23 @@ export const useUpdateAuthor = (id: number) => {
         const data = { ...meData.me, ...cache.author };
         return {
           updateAuthor: {
-            data: { ...data, social: { ...data.social, __typename: "Social" } },
-            ok: true,
-            errors: [],
+            ...data,
+            social: { ...data.social, __typename: "Social" },
           },
         };
       },
     });
 
-    if (!res.data?.updateAuthor?.ok) {
-      const error = res.data?.updateAuthor?.errors?.pop()?.message;
-      if (error) {
-        message.error({ key, content: error, duration: 10 });
+    if (res.data?.updateAuthor?.__typename !== "Author") {
+      const a = res.data?.updateAuthor;
+
+      if (
+        a?.__typename === "Exception" ||
+        a?.__typename === "Failed" ||
+        a?.__typename === "NotFound" ||
+        a?.__typename === "UnAuthorizedError"
+      ) {
+        message.error({ key, content: a.message, duration: 10 });
       }
     } else {
       if (data.username) {

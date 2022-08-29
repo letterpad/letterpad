@@ -4,7 +4,7 @@ import {
   NavigationType,
   Post,
   PostTypes,
-  Tags,
+  Tag,
 } from "@/__generated__/__types__";
 import {
   PostsDocument,
@@ -24,7 +24,7 @@ interface IReturn {
 }
 
 function useNavigationData(): IReturn {
-  const [tags, setTags] = useState<Tags[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [pages, setPages] = useState<Post[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
 

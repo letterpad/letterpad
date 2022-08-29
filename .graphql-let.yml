@@ -1,8 +1,10 @@
 schema: "src/graphql/schema/**/*.graphqls"
-documents: "**/*.graphql"
+documents:
+  - "src/graphql/**/*.graphql"
 plugins:
   - typescript-operations
   - typescript-react-apollo
 cacheDir: __generated__
 config:
+  avoidOptionals: false
   maybeValue: T

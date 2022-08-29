@@ -1,6 +1,6 @@
 import { QueryResolvers } from "@/__generated__/__types__";
 
-import { ResolverContext } from "../context";
+import { ResolverContext } from "@/graphql/context";
 
 const Query: QueryResolvers<ResolverContext> = {
   email: async (_root, args, { session, prisma }) => {

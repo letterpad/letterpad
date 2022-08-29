@@ -54,7 +54,7 @@ mutation createAuthor($data: InputCreateAuthor!) {
       name
       id
     }
-    ... on CreateAuthorError {
+    ... on Exception {
       message
     }
   }
@@ -105,7 +105,7 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
         height
       }
     }
-    ... on SettingError {
+    ... on UnAuthorizedError {
       message
     }
   }
@@ -113,12 +113,7 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
 
 mutation UpdateAuthor($author: InputAuthor!) {
   updateAuthor(author: $author) {
-    ok
-    errors {
-      path
-      message
-    }
-    data {
+    ... on Author {
       name
       social {
         github
@@ -133,6 +128,18 @@ mutation UpdateAuthor($author: InputAuthor!) {
       avatar
       username
     }
+    ... on Exception {
+      message
+    }
+    ... on NotFound {
+      message
+    }
+    ... on UnAuthorizedError {
+      message
+    }
+    ... on Failed {
+      message
+    }
   }
 }
 
@@ -141,11 +148,17 @@ mutation createPost($data: InputCreatePost) {
     ... on Post {
       ...Partial
       author {
-        name
+        ... on Author {
+          name
+        }
       }
       tags {
-        name
-        slug
+        ... on TagsNode {
+          rows {
+            name
+            slug
+          }
+        }
       }
     }
     ... on PostError {
@@ -159,23 +172,29 @@ mutation updatePost($data: InputUpdatePost) {
     ... on Post {
       ...Partial
       author {
-        id
-        name
-        avatar
-        social {
-          github
-          twitter
-          instagram
-          facebook
-          linkedin
+        ... on Author {
+          id
+          name
+          avatar
+          social {
+            github
+            twitter
+            instagram
+            facebook
+            linkedin
+          }
+          bio
+          occupation
+          company_name
         }
-        bio
-        occupation
-        company_name
       }
       tags {
-        name
-        slug
+        ... on TagsNode {
+          rows {
+            name
+            slug
+          }
+        }
       }
     }
 

@@ -1,0 +1,23 @@
+interface LetterpadError {
+  message: String!
+}
+
+type NotFound implements LetterpadError {
+  message: String!
+}
+
+type UnAuthorizedError implements LetterpadError {
+  message: String!
+}
+
+type Exception implements LetterpadError {
+  message: String!
+}
+
+type InvalidArguments implements LetterpadError {
+  message: String!
+}
+
+type Failed implements LetterpadError {
+  message: String!
+}

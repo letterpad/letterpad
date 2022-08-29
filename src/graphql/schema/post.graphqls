@@ -8,7 +8,7 @@ type Post {
   # Draft for republishing content
   html_draft: String
   # Author information of the post
-  author: Author
+  author: AuthorResponse
   # A breif summary of the post
   excerpt: String
   # Convert image of the post
@@ -32,7 +32,7 @@ type Post {
   # Reading time of the post in minutes
   reading_time: String
   # Tags of the post
-  tags: [Tags!]
+  tags: TagsResponse
 }
 
 enum PostStatusOptions {
@@ -146,9 +146,14 @@ type StatsError implements LetterpadError {
   message: String!
 }
 
-union PostResponse = Post | PostError
+union PostResponse =
+    Post
+  | UnAuthorizedError
+  | NotFound
+  | InvalidArguments
+  | Exception
 
-union PostsResponse = PostsNode | PostError
+union PostsResponse = PostsNode | UnAuthorizedError | Exception
 
 union CreatePostResponse = Post | PostError
 
