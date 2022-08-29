@@ -1,4 +1,4 @@
-type Tags {
+type Tag {
   name: String!
   slug: String!
   posts: PostsResponse
@@ -25,7 +25,7 @@ type DeleteTagsResult {
 type TagResultError implements LetterpadError {
   message: String!
 }
-
+union TagsResponse = TagsNode | Exception
 union UpdateTagsResponse = EditTaxResponse | TagsError
 union DeleteTagsResponse = DeleteTagsResult | TagsError
 
@@ -36,10 +36,10 @@ input InputTags {
 }
 
 type TagsNode {
-  rows: [Tags!]!
+  rows: [Tag!]!
 }
 union TagsResponse = TagsNode | TagsError
-union TagResponse = TagResultError | Tags
+union TagResponse = Exception | Tag
 
 type Query {
   tags(filters: TagsFilters): TagsResponse!

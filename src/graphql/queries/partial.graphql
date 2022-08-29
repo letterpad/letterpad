@@ -23,23 +23,29 @@ fragment Partial on Post {
 fragment PostWithAuthorAndTags on Post {
   ...Partial
   author {
-    id
-    name
-    avatar
-    social {
-      github
-      twitter
-      instagram
-      linkedin
-      facebook
+    ... on Author {
+      id
+      name
+      avatar
+      social {
+        github
+        twitter
+        instagram
+        linkedin
+        facebook
+      }
+      bio
+      occupation
+      company_name
     }
-    bio
-    occupation
-    company_name
   }
   tags {
-    name
-    slug
+    ... on TagsNode {
+      rows {
+        name
+        slug
+      }
+    }
   }
 }
 

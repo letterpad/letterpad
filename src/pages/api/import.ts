@@ -46,7 +46,7 @@ const Import = async (req: MulterRequest, res: NextApiResponse) => {
         success: false,
         message: "No session found",
       });
-    const isLoggedInUserAdmin = session.user.role === Role.Admin;
+    const isAuthUserAdmin = session.user.role === Role.Admin;
 
     let foreignData = JSON.parse(req.files[0].buffer.toString());
 
@@ -57,7 +57,7 @@ const Import = async (req: MulterRequest, res: NextApiResponse) => {
       const ghostData = JSON.parse(req.files[0].buffer.toString());
       foreignData = convertGhostToLetterpad(ghostData, session.user);
     } else {
-      if (isLoggedInUserAdmin) {
+      if (isAuthUserAdmin) {
         passwords = collectSensitiveFromData(foreignData.authors);
       }
     }
@@ -66,7 +66,7 @@ const Import = async (req: MulterRequest, res: NextApiResponse) => {
 
     data = validateWithAjv(data);
 
-    if (!isLoggedInUserAdmin) {
+    if (!isAuthUserAdmin) {
       data = validateWithAjv(data);
       const author = await validateSingleAuthorImport(res, data, session.user);
       if (!author) {
@@ -77,7 +77,7 @@ const Import = async (req: MulterRequest, res: NextApiResponse) => {
     }
     const response = await startImport(
       data.authors,
-      isLoggedInUserAdmin,
+      isAuthUserAdmin,
       session.user,
       passwords,
     );

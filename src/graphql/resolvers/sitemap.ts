@@ -1,10 +1,10 @@
 import { PostStatusOptions, QueryResolvers } from "@/__generated__/__types__";
 
-import { ResolverContext } from "../context";
+import { ResolverContext } from "@/graphql/context";
 
 const Query: QueryResolvers<ResolverContext> = {
-  sitemap: async (_root, _args, { author_id, prisma, session }) => {
-    const id = author_id || session?.user.id;
+  sitemap: async (_root, _args, { client_author_id, prisma, session }) => {
+    const id = client_author_id || session?.user.id;
     if (!id) return { message: "Author Id not found", rows: [] };
     const setting = await prisma.setting.findFirst({
       where: { author: { id } },

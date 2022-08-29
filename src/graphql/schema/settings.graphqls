@@ -28,16 +28,16 @@ type Setting {
   intro_dismissed: Boolean!
   show_about_page: Boolean
   show_tags_page: Boolean
-  cloudinary_key: String
-  cloudinary_name: String
-  cloudinary_secret: String
+  cloudinary_key: String @maskIfUnauth
+  cloudinary_name: String @maskIfUnauth
+  cloudinary_secret: String @maskIfUnauth
   menu: [Navigation!]!
   css: String
   theme: String
   banner: Image
   site_logo: Image
   site_favicon: Image
-  client_token: String!
+  client_token: String! @maskIfUnauth
 }
 
 input InputNavigation {
@@ -84,7 +84,7 @@ type SettingError implements LetterpadError {
   message: String!
 }
 
-union SettingResponse = Setting | SettingError
+union SettingResponse = Setting | NotFound | UnAuthorizedError
 
 type Query {
   settings: SettingResponse!

@@ -5,9 +5,8 @@ import sizeOf from "image-size";
 import reading_time from "reading-time";
 
 import { Social } from "@/__generated__/__types__";
+import logger from "@/shared/logger";
 import { textToSlug } from "@/utils/slug";
-
-import logger from "./../../shared/logger";
 
 const slugOfUntitledPost = "untitled";
 
@@ -135,7 +134,7 @@ const prepareLink = (host: string, link: string | undefined) => {
   return hasHttps ? link : `${host}/${link}`;
 };
 
-export const validateHostNames = (social: Social) => {
+export const getSocialLink = (social: Social) => {
   social.facebook = prepareLink("https://facebook.com", social.facebook);
   social.twitter = prepareLink("https://twitter.com", social.twitter);
   social.github = prepareLink("https://github.com", social.github);

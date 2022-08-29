@@ -3,7 +3,7 @@ import logger from "@/shared/logger";
 import { decodeJWTToken } from "@/shared/token";
 import { VerifySubscriberToken } from "@/shared/types";
 
-import { ResolverContext } from "../context";
+import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 import { EmailTemplates } from "../types";
 
@@ -50,8 +50,8 @@ const Query: QueryResolvers<ResolverContext> = {
 };
 
 const Mutation: MutationResolvers<ResolverContext> = {
-  addSubscriber: async (_, args, { author_id, prisma }) => {
-    if (!author_id) {
+  addSubscriber: async (_, args, { client_author_id, prisma }) => {
+    if (!client_author_id) {
       return {
         ok: false,
         message: "A valid owner of the blog you subscribed was not found",
@@ -59,7 +59,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
     }
 
     const subscribers = await prisma.subscriber.findMany({
-      where: { email: args.email, author_id },
+      where: { email: args.email, author_id: client_author_id },
     });
     if (subscribers && subscribers.length > 0) {
       if (!subscribers[0].verified) {
@@ -72,7 +72,7 @@ const Mutation: MutationResolvers<ResolverContext> = {
 
         await enqueueEmailAndSend({
           template_id: EmailTemplates.VerifySubscriber,
-          author_id,
+          author_id: client_author_id,
           subscriber_id: subscribers[0].id,
         });
 
@@ -95,14 +95,14 @@ const Mutation: MutationResolvers<ResolverContext> = {
           verified: false,
           author: {
             connect: {
-              id: author_id,
+              id: client_author_id,
             },
           },
         },
       });
 
       await enqueueEmailAndSend({
-        author_id,
+        author_id: client_author_id,
         subscriber_id: response.id,
         template_id: EmailTemplates.VerifySubscriber,
       });

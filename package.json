@@ -37,6 +37,7 @@
     "@graphql-tools/load-files": "6.5.3",
     "@graphql-tools/merge": "8.2.6",
     "@graphql-tools/schema": "8.3.5",
+    "@graphql-tools/utils": "^8.10.0",
     "@prisma/client": "^3.8.1",
     "@tinymce/tinymce-react": "^4.2.0",
     "@types/bcryptjs": "^2.4.2",

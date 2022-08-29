@@ -17,7 +17,9 @@ interface Tag {
 }
 
 const Tags = ({ post }: IProps) => {
-  const [tags, setTags] = useState<Tag[]>(addTagsWithId(post.tags || []));
+  const initialTags =
+    post.tags?.__typename === "TagsNode" ? post.tags.rows : [];
+  const [tags, setTags] = useState<Tag[]>(addTagsWithId(initialTags));
   const [suggestions, setSuggestions] = useState<Tag[]>([]);
   const { updatePost } = useUpdatePost();
   const { loading, data } = useTagsQuery({

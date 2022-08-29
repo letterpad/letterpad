@@ -48,7 +48,7 @@ export const useUpdateSettings = () => {
       },
     });
 
-    if (res.data?.updateOptions?.__typename === "SettingError") {
+    if (res.data?.updateOptions?.__typename === "UnAuthorizedError") {
       const error = res.data?.updateOptions?.message;
       if (error) {
         message.error({ key, content: error, duration: 10 });

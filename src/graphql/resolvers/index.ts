@@ -1,17 +1,15 @@
 import Author from "./author";
 import Domain from "./domain";
 import Media from "./media";
-import PostMutation from "./post.mutation";
-import Post from "./post.query";
+import Post from "./post";
 import Setting from "./setting";
 import Sitemap from "./sitemap";
 import Subscriber from "./subscriber";
 import Tag from "./tag";
 
-export default [
+export const resolversArr = [
   Author,
   Post,
-  PostMutation,
   Setting,
   Media,
   Tag,

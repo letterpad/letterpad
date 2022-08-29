@@ -19,7 +19,7 @@ type Author {
   permissions: [Permissions!]
   avatar: String
   verified: Boolean
-  accessToken: String
+  accessToken: String @maskIfUnauth
   analytics_id: Int
   analytics_uuid: String
 }
@@ -59,13 +59,13 @@ input InputCreateAuthor {
   token: String!
 }
 
-type AuthorResponse {
+type UpdateAuthorResponse {
   ok: Boolean!
   errors: [Error]
   data: Author
 }
 
-type AuthorNotFoundError implements LetterpadError {
+type AuthorNotFound implements LetterpadError {
   message: String!
 }
 
@@ -77,8 +77,8 @@ type LoginError implements LetterpadError {
   message: String!
 }
 
-union MeResponse = Author | AuthorNotFoundError
-
+union MeResponse = Author | AuthorNotFound
+union AuthorResponse = Author | AuthorNotFound
 union CreateAuthorResponse = Author | CreateAuthorError
 
 union LoginResponse = Author | LoginError
@@ -94,7 +94,7 @@ type Query {
 
 type Mutation {
   login(data: LoginData): LoginResponse
-  updateAuthor(author: InputAuthor!): AuthorResponse
+  updateAuthor(author: InputAuthor!): UpdateAuthorResponse
   createAuthor(data: InputCreateAuthor!): CreateAuthorResponse
   forgotPassword(email: String!): ForgotPasswordResponse!
   resetPassword(password: String!, token: String!): ForgotPasswordResponse!

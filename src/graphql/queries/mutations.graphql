@@ -105,7 +105,7 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
         height
       }
     }
-    ... on SettingError {
+    ... on UnAuthorizedError {
       message
     }
   }
@@ -141,11 +141,17 @@ mutation createPost($data: InputCreatePost) {
     ... on Post {
       ...Partial
       author {
-        name
+        ... on Author {
+          name
+        }
       }
       tags {
-        name
-        slug
+        ... on TagsNode {
+          rows {
+            name
+            slug
+          }
+        }
       }
     }
     ... on PostError {
@@ -159,23 +165,29 @@ mutation updatePost($data: InputUpdatePost) {
     ... on Post {
       ...Partial
       author {
-        id
-        name
-        avatar
-        social {
-          github
-          twitter
-          instagram
-          facebook
-          linkedin
+        ... on Author {
+          id
+          name
+          avatar
+          social {
+            github
+            twitter
+            instagram
+            facebook
+            linkedin
+          }
+          bio
+          occupation
+          company_name
         }
-        bio
-        occupation
-        company_name
       }
       tags {
-        name
-        slug
+        ... on TagsNode {
+          rows {
+            name
+            slug
+          }
+        }
       }
     }
 
