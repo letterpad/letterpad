@@ -59,17 +59,13 @@ input InputCreateAuthor {
   token: String!
 }
 
-type AuthorNotFound implements LetterpadError {
-  message: String!
-}
-
 type LoginError implements LetterpadError {
   message: String!
 }
 
 union AuthorResponse =
     Author
-  | AuthorNotFound
+  | NotFound
   | Exception
   | UnAuthorizedError
   | Failed

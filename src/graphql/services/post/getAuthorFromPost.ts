@@ -20,7 +20,7 @@ export const getAuthorFromPost = async (
     };
   }
   return {
-    __typename: "AuthorNotFound",
+    __typename: "NotFound",
     message: `Author of post ${id} was not found`,
   };
 };

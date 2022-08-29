@@ -136,7 +136,7 @@ query Me {
     ... on Author {
       ...MeFragment
     }
-    ... on AuthorNotFound {
+    ... on NotFound {
       message
     }
   }

@@ -131,6 +131,15 @@ mutation UpdateAuthor($author: InputAuthor!) {
     ... on Exception {
       message
     }
+    ... on NotFound {
+      message
+    }
+    ... on UnAuthorizedError {
+      message
+    }
+    ... on Failed {
+      message
+    }
   }
 }
 

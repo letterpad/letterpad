@@ -10,7 +10,7 @@ export const getAuthor = async (
 
   if (!client_author_id) {
     return {
-      __typename: "AuthorNotFound",
+      __typename: "UnAuthorizedError",
       message: "Invalid Session or Token",
     };
   }
@@ -34,5 +34,5 @@ export const getAuthor = async (
       __typename: "Author",
     };
   }
-  return { __typename: "AuthorNotFound", message: "Author not found" };
+  return { __typename: "NotFound", message: "Author not found" };
 };
