@@ -13,7 +13,7 @@ import { EmailTemplates } from "@/graphql/types";
 export const createAuthor = async (
   args: RequireFields<MutationCreateAuthorArgs, "data">,
   { prisma }: ResolverContext,
-): Promise<ResolversTypes["CreateAuthorResponse"]> => {
+): Promise<ResolversTypes["AuthorResponse"]> => {
   if (args.data?.token) {
     const response = await validateCaptcha(
       process.env.RECAPTCHA_KEY_SERVER,
@@ -22,7 +22,7 @@ export const createAuthor = async (
 
     if (!response) {
       return {
-        __typename: "CreateAuthorError",
+        __typename: "Exception",
         message: "We cannot allow you at the moment.",
       };
     }
@@ -34,7 +34,7 @@ export const createAuthor = async (
 
   if (authorExistData) {
     return {
-      __typename: "CreateAuthorError",
+      __typename: "Failed",
       message: "Email already exist. Did you forget your password ?",
     };
   }
@@ -45,7 +45,7 @@ export const createAuthor = async (
 
   if (usernameExist) {
     return {
-      __typename: "CreateAuthorError",
+      __typename: "Failed",
       message: "Username already exist",
     };
   }
@@ -74,7 +74,7 @@ export const createAuthor = async (
   }
 
   return {
-    __typename: "CreateAuthorError",
+    __typename: "Exception",
     message: "Something went wrong and we dont know what.",
   };
 };

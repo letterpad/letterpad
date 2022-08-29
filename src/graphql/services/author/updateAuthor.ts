@@ -21,11 +21,11 @@ interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
 export const updateAuthor = async (
   args: RequireFields<MutationUpdateAuthorArgs, "author">,
   { prisma, session }: ResolverContext,
-): Promise<ResolversTypes["UpdateAuthorResponse"]> => {
+): Promise<ResolversTypes["AuthorResponse"]> => {
   if (session?.user.id !== args.author.id) {
     return {
-      ok: false,
-      errors: [{ message: "No session", path: "updateAuthor resolver" }],
+      __typename: "UnAuthorizedError",
+      message: "You are not authorized to update this author",
     };
   }
   try {
@@ -56,13 +56,8 @@ export const updateAuthor = async (
 
       if (usernameExist) {
         return {
-          ok: false,
-          errors: [
-            {
-              message: "Username already exist",
-              path: "updateAuthor resolver",
-            },
-          ],
+          __typename: "Failed",
+          message: "Username already exist",
         };
       }
     }
@@ -81,13 +76,8 @@ export const updateAuthor = async (
 
       if (emailExist) {
         return {
-          ok: false,
-          errors: [
-            {
-              message: "Email already exist",
-              path: "updateAuthor resolver",
-            },
-          ],
+          __typename: "Failed",
+          message: "Email already exist",
         };
       }
       dataToUpdate.verified = false;
@@ -134,13 +124,13 @@ export const updateAuthor = async (
       }
     }
     return {
-      ok: true,
-      data: mapAuthorToGraphql(author),
+      __typename: "Author",
+      ...mapAuthorToGraphql(author),
     };
   } catch (e: any) {
     return {
-      ok: false,
-      errors: [{ message: e.message, path: "updateAuthor resolver" }],
+      __typename: "Exception",
+      message: "Something wrong happened",
     };
   }
 };

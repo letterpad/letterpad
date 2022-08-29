@@ -5,9 +5,15 @@ import { getSocialLink } from "@/graphql/resolvers/helpers";
 export const getAuthor = async (
   _: any,
   { session, prisma, client_author_id }: ResolverContext,
-): Promise<ResolversTypes["MeResponse"]> => {
+): Promise<ResolversTypes["AuthorResponse"]> => {
   client_author_id = session?.user.id || client_author_id;
 
+  if (!client_author_id) {
+    return {
+      __typename: "AuthorNotFound",
+      message: "Invalid Session or Token",
+    };
+  }
   const author = await prisma.author.findFirst({
     where: {
       id: client_author_id,
@@ -28,6 +34,5 @@ export const getAuthor = async (
       __typename: "Author",
     };
   }
-
-  return { __typename: "AuthorNotFound", message: "Invalid Session" };
+  return { __typename: "AuthorNotFound", message: "Author not found" };
 };

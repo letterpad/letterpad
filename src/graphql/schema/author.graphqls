@@ -59,17 +59,7 @@ input InputCreateAuthor {
   token: String!
 }
 
-type UpdateAuthorResponse {
-  ok: Boolean!
-  errors: [Error]
-  data: Author
-}
-
 type AuthorNotFound implements LetterpadError {
-  message: String!
-}
-
-type CreateAuthorError implements LetterpadError {
   message: String!
 }
 
@@ -77,9 +67,12 @@ type LoginError implements LetterpadError {
   message: String!
 }
 
-union MeResponse = Author | AuthorNotFound
-union AuthorResponse = Author | AuthorNotFound
-union CreateAuthorResponse = Author | CreateAuthorError
+union AuthorResponse =
+    Author
+  | AuthorNotFound
+  | Exception
+  | UnAuthorizedError
+  | Failed
 
 union LoginResponse = Author | LoginError
 
@@ -89,13 +82,13 @@ type ForgotPasswordResponse {
 }
 
 type Query {
-  me: MeResponse
+  me: AuthorResponse
 }
 
 type Mutation {
   login(data: LoginData): LoginResponse
-  updateAuthor(author: InputAuthor!): UpdateAuthorResponse
-  createAuthor(data: InputCreateAuthor!): CreateAuthorResponse
+  updateAuthor(author: InputAuthor!): AuthorResponse
+  createAuthor(data: InputCreateAuthor!): AuthorResponse
   forgotPassword(email: String!): ForgotPasswordResponse!
   resetPassword(password: String!, token: String!): ForgotPasswordResponse!
 }

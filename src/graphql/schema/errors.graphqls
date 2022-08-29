@@ -17,3 +17,7 @@ type Exception implements LetterpadError {
 type InvalidArguments implements LetterpadError {
   message: String!
 }
+
+type Failed implements LetterpadError {
+  message: String!
+}

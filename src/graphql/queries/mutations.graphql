@@ -54,7 +54,7 @@ mutation createAuthor($data: InputCreateAuthor!) {
       name
       id
     }
-    ... on CreateAuthorError {
+    ... on Exception {
       message
     }
   }
@@ -113,12 +113,7 @@ mutation UpdateOptions($options: [SettingInputType!]!) {
 
 mutation UpdateAuthor($author: InputAuthor!) {
   updateAuthor(author: $author) {
-    ok
-    errors {
-      path
-      message
-    }
-    data {
+    ... on Author {
       name
       social {
         github
@@ -132,6 +127,9 @@ mutation UpdateAuthor($author: InputAuthor!) {
       company_name
       avatar
       username
+    }
+    ... on Exception {
+      message
     }
   }
 }
