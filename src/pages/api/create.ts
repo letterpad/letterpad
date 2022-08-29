@@ -3,7 +3,7 @@ import { NextApiResponse } from "next";
 import { PostTypes } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
 import { getResolverContext } from "@/graphql/context";
-import { postService } from "@/graphql/services/post";
+import { createPost } from "@/graphql/services/post";
 
 import { NextApiRequestWithFormData } from "./../../graphql/types";
 
@@ -16,7 +16,7 @@ const Create = async (
 
     const context = await getResolverContext({ req, res });
 
-    const result = await postService.createPost({ data: { type } }, context);
+    const result = await createPost({ data: { type } }, context);
 
     if (result.__typename === "Post") {
       res.redirect(basePath + "/post/" + result.id);

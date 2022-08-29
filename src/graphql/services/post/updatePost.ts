@@ -4,7 +4,6 @@ import {
   MutationUpdatePostArgs,
   PostStatusOptions,
   PostTypes,
-  RequireFields,
   ResolversTypes,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";

@@ -1,12 +1,11 @@
 import {
   MutationResolvers,
-  PostStatusOptions,
   QueryResolvers,
   TagResolvers,
 } from "@/__generated__/__types__";
+import { ResolverContext } from "@/graphql/context";
 import { createPathWithPrefix } from "@/utils/slug";
 
-import { ResolverContext } from "@/graphql/context";
 import {
   deleteTags,
   getPostsFromTag,

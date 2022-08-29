@@ -2,11 +2,11 @@ import { ResolversTypes } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
 import { mapSettingToGraphql } from "@/graphql/resolvers/mapper";
 
-const SECURE_SETTINGS = [
-  "cloudinary_key",
-  "cloudinary_name",
-  "cloudinary_secret",
-];
+// const SECURE_SETTINGS = [
+//   "cloudinary_key",
+//   "cloudinary_name",
+//   "cloudinary_secret",
+// ];
 
 export const getSetting = async (
   _args: unknown,
