@@ -21,7 +21,7 @@ Cypress.Commands.add("setContent", ({ title, content }) => {
   if (!title && !content) return;
   cy.window().should("have.property", "tinymce");
   if (title) {
-    cy.getTestId("postTitleInput").type(`${title}{enter}`);
+    cy.getTestId("postTitleInput").type(`${title}{enter}`).tab();
     cy.wait("@updatePostMutation");
   }
   if (content) {
