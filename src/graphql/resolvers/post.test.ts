@@ -21,7 +21,7 @@ describe("Test Post Query Graphql API", () => {
       height: 100,
     });
 
-    expect(firstRecord.tags).toEqual(
+    expect(firstRecord.tags.rows).toEqual(
       expect.arrayContaining([
         { name: "Home", slug: "/tag/home" },
         {
