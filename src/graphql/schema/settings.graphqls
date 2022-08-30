@@ -84,7 +84,7 @@ type SettingError implements LetterpadError {
   message: String!
 }
 
-union SettingResponse = Setting | NotFound | UnAuthorizedError
+union SettingResponse = Setting | NotFound | UnAuthorized
 
 type Query {
   settings: SettingResponse!

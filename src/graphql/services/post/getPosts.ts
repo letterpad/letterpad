@@ -19,7 +19,7 @@ export const getPosts = async (
   const authorId = session_author_id || client_author_id;
   if (!authorId) {
     return {
-      __typename: "UnAuthorizedError",
+      __typename: "UnAuthorized",
       message:
         "Either use session or add a valid Authorization token in the header.",
     };

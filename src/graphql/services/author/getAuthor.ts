@@ -10,7 +10,7 @@ export const getAuthor = async (
 
   if (!client_author_id) {
     return {
-      __typename: "UnAuthorizedError",
+      __typename: "UnAuthorized",
       message: "Invalid Session or Token",
     };
   }

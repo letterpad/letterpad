@@ -24,7 +24,7 @@ export const updateAuthor = async (
 ): Promise<ResolversTypes["AuthorResponse"]> => {
   if (session?.user.id !== args.author.id) {
     return {
-      __typename: "UnAuthorizedError",
+      __typename: "UnAuthorized",
       message: "You are not authorized to update this author",
     };
   }

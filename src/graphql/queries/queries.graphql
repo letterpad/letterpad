@@ -20,7 +20,7 @@ query Post($filters: PostFilters) {
       ...PostWithAuthorAndTags
     }
 
-    ... on UnAuthorizedError {
+    ... on UnAuthorized {
       message
     }
 
@@ -62,7 +62,7 @@ query Posts($filters: PostsFilters) {
       }
     }
 
-    ... on UnAuthorizedError {
+    ... on UnAuthorized {
       message
     }
   }
@@ -193,7 +193,7 @@ query settings {
     ... on NotFound {
       message
     }
-    ... on UnAuthorizedError {
+    ... on UnAuthorized {
       message
     }
   }

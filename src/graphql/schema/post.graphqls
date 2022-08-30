@@ -148,12 +148,12 @@ type StatsError implements LetterpadError {
 
 union PostResponse =
     Post
-  | UnAuthorizedError
+  | UnAuthorized
   | NotFound
   | InvalidArguments
   | Exception
 
-union PostsResponse = PostsNode | UnAuthorizedError | Exception
+union PostsResponse = PostsNode | UnAuthorized | Exception
 
 union CreatePostResponse = Post | PostError
 

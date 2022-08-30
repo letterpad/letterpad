@@ -65,7 +65,7 @@ export const useUpdateAuthor = (id: number) => {
         a?.__typename === "Exception" ||
         a?.__typename === "Failed" ||
         a?.__typename === "NotFound" ||
-        a?.__typename === "UnAuthorizedError"
+        a?.__typename === "UnAuthorized"
       ) {
         message.error({ key, content: a.message, duration: 10 });
       }
