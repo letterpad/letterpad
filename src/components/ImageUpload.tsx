@@ -16,8 +16,15 @@ interface IProps {
   name: string;
   onRemove?: () => null;
   onDone: (response: IMediaUploadResult[]) => void;
+  containerClass?: string;
 }
-const ImageUpload = ({ url, onDone, name, dataTestid }: IProps) => {
+const ImageUpload = ({
+  url,
+  onDone,
+  name,
+  dataTestid,
+  containerClass,
+}: IProps) => {
   const [previewUrl, setPreviewUrl] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [loading, setLoading] = useState(false);
@@ -81,6 +88,7 @@ const ImageUpload = ({ url, onDone, name, dataTestid }: IProps) => {
           setExplorerVisible(true);
         }}
         data-testid={dataTestid}
+        className={containerClass}
       >
         <Upload
           openFileDialogOnClick={false}
@@ -98,16 +106,6 @@ const ImageUpload = ({ url, onDone, name, dataTestid }: IProps) => {
         >
           {fileList.length === 0 && uploadButton}
         </Upload>
-        <style jsx global>
-          {`
-            .ant-upload,
-            .ant-upload-list-picture-card-container {
-              min-height: 100% !important;
-              height: 100% !important;
-              width: 100% !important;
-            }
-          `}
-        </style>
       </div>
       <Modal
         visible={previewVisible}

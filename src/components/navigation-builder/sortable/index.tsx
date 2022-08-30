@@ -13,9 +13,9 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Button } from "antd";
 import { FC, useState } from "react";
 
+import { EnhancedButton } from "@/components/buttons";
 import { Collection } from "@/components/navigation-builder/types";
 
 import { NavigationType } from "@/__generated__/__types__";
@@ -147,14 +147,14 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
           />
         ))}
       </SortableContext>
-      <Button
-        type="primary"
+      <EnhancedButton
+        type="dark"
         size="middle"
         onClick={addNewRow}
         data-testid="newMenuBtn"
       >
         Add New
-      </Button>
+      </EnhancedButton>
       <SuggestionModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
