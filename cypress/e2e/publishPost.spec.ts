@@ -38,13 +38,14 @@ describe("Publishing", () => {
     });
     cy.openSettings();
 
+    cy.get(".react-tags__selected-tag").click();
     cy.getTestId("publishBtn").click();
     cy.get(".no-tags-modal").should("exist");
     cy.get(".okModalBtn").click();
 
     cy.enterTags(["new-tag"]);
     cy.getTestId("publishBtn").click();
-    cy.wait(100);
+    cy.wait("@updatePostMutation");
     cy.get(".tags-notlinked-modal").should("exist");
     cy.get(".okModalBtn").click();
 
