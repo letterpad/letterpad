@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { default: siteConfig } = require("@/config/site.config");
+const { default: siteConfig } = require("../../../../config/site.config");
 
 const menu = [
   {
