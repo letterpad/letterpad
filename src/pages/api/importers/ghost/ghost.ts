@@ -68,7 +68,7 @@ function getPostTagsMapper(data: IGhostDb["data"]) {
       mapper[relation.post_id] = [
         {
           slug: "home",
-          name: "Home",
+          name: "home",
         },
       ] as ITagSanitized[];
     }

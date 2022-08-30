@@ -13,7 +13,7 @@ describe("Publishing", () => {
     cy.getTestId("slugInp").should("have.value", slug);
 
     cy.getTestId("publishBtn").click();
-    cy.wait(100);
+    cy.wait("@updatePostMutation");
 
     cy.getTestId("postStatus").should("have.text", "published");
     cy.get(".ant-drawer-close").click();

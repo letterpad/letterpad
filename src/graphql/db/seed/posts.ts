@@ -1,4 +1,4 @@
-export default [
+export const postsList = [
   {
     title: "Another sunny day",
     type: "post",

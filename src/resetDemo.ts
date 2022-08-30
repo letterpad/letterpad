@@ -124,7 +124,7 @@ const data = {
           author_id: 2,
           tags: [
             {
-              name: "Home",
+              name: "home",
               desc: "",
               slug: "home",
               createdAt: new Date(),

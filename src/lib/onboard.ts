@@ -26,7 +26,7 @@ export const onBoardUser = async (id: number) => {
       slug: siteConfig.default_tag,
     };
 
-    const welcomeContent = getWelcomePostAndPage();
+    const welcomeContent = getWelcomePost();
     await prisma.post.create({
       data: {
         ...welcomeContent.post,
@@ -38,15 +38,6 @@ export const onBoardUser = async (id: number) => {
             create: { name: newTag.name },
             where: { name: newTag.name },
           },
-        },
-      },
-    });
-
-    await prisma.post.create({
-      data: {
-        ...welcomeContent.page,
-        author: {
-          connect: { id: newAuthor.id },
         },
       },
     });
@@ -67,12 +58,12 @@ export const onBoardUser = async (id: number) => {
   }
 };
 
-function getWelcomePostAndPage() {
+function getWelcomePost() {
   const post_cover =
     "https://images.unsplash.com/photo-1516035054744-d474c5209db5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80";
 
   const { html } = generatePost(PostTypes.Post);
-  let title = "Welcome to Letterpad";
+  const title = "Welcome to Letterpad";
 
   const post = {
     title: "Welcome to Letterpad",
@@ -90,27 +81,7 @@ function getWelcomePostAndPage() {
     reading_time: "5 mins",
   };
 
-  const pageContent = generatePost(PostTypes.Page);
-  title = "Letterpad Typography";
-
-  const page = {
-    title,
-    type: PostTypes.Page,
-    html: pageContent.html,
-    status: PostStatusOptions.Published,
-    excerpt:
-      "You can use this space to write a small description about this page. This will be helpful in SEO.",
-    slug: textToSlug(title),
-    cover_image:
-      "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-    cover_image_width: 1482,
-    cover_image_height: 900,
-    createdAt: new Date(),
-    publishedAt: new Date(),
-    html_draft: "",
-  };
-
-  return { page, post };
+  return { post };
 }
 
 export async function createAuthorWithSettings(

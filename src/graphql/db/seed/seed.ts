@@ -14,7 +14,7 @@ import { getDateTime } from "@/shared/utils";
 import { textToSlug } from "@/utils/slug";
 
 import generatePost from "./contentGenerator";
-import posts from "./posts";
+import { postsList } from "./posts";
 
 const rimrafAsync = promisify(rimraf);
 const copydirAsync = promisify(copydir);
@@ -31,7 +31,7 @@ function absPath(p) {
 }
 const tags = [
   {
-    name: "Home",
+    name: "home",
     slug: "home",
   },
   {
@@ -79,10 +79,10 @@ export async function seed(folderCheck = true) {
     const author = await prisma.author.findFirst({
       where: { email: "demo@demo.com" },
     });
-    await insertPost(posts[0], author?.id);
-    await insertPost(posts[1], author?.id);
-    await insertPost(posts[2], author?.id);
-    await insertPost(posts[3], author?.id);
+    await insertPost(postsList[0], author?.id);
+    await insertPost(postsList[1], author?.id);
+    await insertPost(postsList[2], author?.id);
+    await insertPost(postsList[3], author?.id);
     console.timeEnd("Insert post and page and tags");
   } catch (e) {
     console.log("seeding failed", e);

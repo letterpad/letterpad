@@ -5,6 +5,7 @@ import {
   PostTypes,
   ResolversTypes,
 } from "@/__generated__/__types__";
+import siteConfig from "@/config/site.config";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { getOrCreateSlug } from "@/graphql/resolvers/utils/getOrCreateSlug";
@@ -53,6 +54,18 @@ export const createPost = async (
     dataToUpdate.type = args.data.type || PostTypes.Post;
   }
 
+  // add default tag
+  if (dataToUpdate.type === PostTypes.Post) {
+    dataToUpdate.tags = {
+      connectOrCreate: {
+        create: {
+          name: siteConfig.default_tag,
+          slug: siteConfig.default_tag,
+        },
+        where: { name: siteConfig.default_tag },
+      },
+    };
+  }
   const slug = args.data.slug;
 
   try {
