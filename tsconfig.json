@@ -6,11 +6,11 @@
       "@/components/*": ["src/components/*"],
       "@/pages/*": ["src/pages/*"],
       "@/__generated__/*": ["__generated__/src/graphql/*", "__generated__/*"],
-      "@/*": ["src/*"],
       "@/config/*": ["config/*"],
       "@/graphql/db/models": ["src/graphql/db/models"],
       "@/graphql/schema": ["src/graphql/schema"],
-      "@/graphql/*": ["src/graphql/*"]
+      "@/graphql/*": ["src/graphql/*"],
+      "@/*": ["src/*"]
     },
     "allowJs": true,
     "alwaysStrict": true,

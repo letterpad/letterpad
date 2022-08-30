@@ -98,6 +98,16 @@ const ImageUpload = ({ url, onDone, name, dataTestid }: IProps) => {
         >
           {fileList.length === 0 && uploadButton}
         </Upload>
+        <style jsx global>
+          {`
+            .ant-upload,
+            .ant-upload-list-picture-card-container {
+              min-height: 100% !important;
+              height: 100% !important;
+              width: 100% !important;
+            }
+          `}
+        </style>
       </div>
       <Modal
         visible={previewVisible}
@@ -109,7 +119,7 @@ const ImageUpload = ({ url, onDone, name, dataTestid }: IProps) => {
           setPreviewTitle("");
         }}
       >
-        <img alt="example" style={{ width: "100%" }} src={previewUrl} />
+        <img alt="preview" style={{ width: "100%" }} src={previewUrl} />
       </Modal>
       <FileExplorer
         isVisible={explorerVisible}

@@ -53,7 +53,7 @@ const Home = () => {
             </p>
             <p>
               Letterpad has a small footprint in terms of features and thats why
-              it is extremely performant. As an independent blogger, it was
+              it is extremely performant. As independent bloggers, it was
               important for us to provide a good expereince to readers and
               writers without any paywall.
             </p>

@@ -42,7 +42,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
       navigationTags?.includes(tag.name.toLowerCase()),
     );
     const navLinkedWithPages = navigationPages?.find(
-      (page) => page === post.slug?.replace("/page/", "").toLocaleLowerCase(),
+      (page) => page === post.slug?.replace("/page/", "").toLowerCase(),
     );
 
     if (active) {
@@ -97,7 +97,6 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
                 size="large"
                 style={{ fontSize: 14 }}
                 data-testid="unPublishBtn"
-                danger
               >
                 Un-Publish
               </Button>

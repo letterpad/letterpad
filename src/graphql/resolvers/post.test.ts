@@ -23,7 +23,7 @@ describe("Test Post Query Graphql API", () => {
 
     expect(firstRecord.tags.rows).toEqual(
       expect.arrayContaining([
-        { name: "Home", slug: "/tag/home" },
+        { name: "home", slug: "/tag/home" },
         {
           name: "first-post",
           slug: "/tag/first-post",

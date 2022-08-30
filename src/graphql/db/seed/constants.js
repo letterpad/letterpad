@@ -2,7 +2,7 @@ const menu = [
   {
     label: "home",
     original_name: "home",
-    slug: "first-post",
+    slug: "home",
     type: "tag",
   },
   {

@@ -2,8 +2,8 @@ import { PageHeader } from "antd";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
 
-import Component from "@/components/tags/component";
 import { TagsProvider } from "@/components/tags/context";
+import TagsTable from "@/components/tags/tags-table";
 
 const EditableTable = ({ readOnly }: { readOnly: boolean }) => {
   return (
@@ -19,7 +19,7 @@ const EditableTable = ({ readOnly }: { readOnly: boolean }) => {
         </span>
       </PageHeader>
       <TagsProvider readOnly={readOnly}>
-        <Component />
+        <TagsTable />
       </TagsProvider>
     </>
   );
