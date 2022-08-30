@@ -15,6 +15,7 @@ import {
   tagNotLinkedWithNavigation,
   warnNoTags,
 } from "./warnings";
+import { EnhancedButton } from "../buttons";
 
 interface Props {
   postId: number;
@@ -90,8 +91,8 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
               <p className="help-text">
                 Your {post.type} will no longer be visible to users.
               </p>
-              <Button
-                type="primary"
+              <EnhancedButton
+                type="dark"
                 onClick={() => publish(false)}
                 block
                 size="large"
@@ -99,7 +100,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
                 data-testid="unPublishBtn"
               >
                 Un-Publish
-              </Button>
+              </EnhancedButton>
             </label>
           </>
         )}

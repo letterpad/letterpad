@@ -5,6 +5,8 @@ import { Button, Input } from "antd";
 import { message } from "antd";
 import { FC, useEffect, useState } from "react";
 
+import { EnhancedButton } from "@/components/buttons";
+
 import { Navigation, NavigationType } from "@/__generated__/__types__";
 import { IMenuWithError } from "@/shared/types";
 
@@ -33,7 +35,6 @@ export const Item: FC<Props> = ({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    background: "#FFF",
   };
 
   const source = [];
@@ -110,14 +111,14 @@ export const Item: FC<Props> = ({
               value={library.type + ": " + library.original_name}
               readOnly
             />
-            <Button
-              type="default"
+            <EnhancedButton
+              type="dark"
               size="middle"
               onClick={() => openSuggestions(library.id)}
               data-testid="content-modal-btn"
             >
               Select Content
-            </Button>
+            </EnhancedButton>
           </Input.Group>
           <Button
             type="primary"

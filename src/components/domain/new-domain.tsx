@@ -4,6 +4,7 @@ import { useDomainMutation } from "@/hooks/useCreateOrUpdateDomain";
 
 import { useRemoveDomainMutation } from "@/__generated__/queries/mutations.graphql";
 
+import { EnhancedButton } from "../buttons";
 import { CopyToClipboard } from "../clipboard";
 
 export const NewDomain: React.FC<{
@@ -87,9 +88,9 @@ export const NewDomain: React.FC<{
         <br />
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           {!mapped && (
-            <Button type="primary" htmlType="submit">
+            <EnhancedButton type="dark" htmlType="submit">
               Map my domain
-            </Button>
+            </EnhancedButton>
           )}
 
           {mapped && (

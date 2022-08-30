@@ -171,6 +171,7 @@ const Actions = ({ post }: IProps) => {
                   },
                 });
               }}
+              containerClass="image-upload-container"
             />
           </div>
           <Divider />
@@ -180,6 +181,12 @@ const Actions = ({ post }: IProps) => {
       <style jsx global>{`
         .ant-drawer-header {
           border-bottom: 1px solid rgb(var(--color-border));
+        }
+        .image-upload-container .ant-upload,
+        .image-upload-container .ant-upload-list-picture-card-container {
+          min-height: 200px !important;
+          height: 100% !important;
+          width: 100% !important;
         }
       `}</style>
     </>
