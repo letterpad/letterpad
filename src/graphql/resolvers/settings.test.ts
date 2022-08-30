@@ -44,7 +44,7 @@ describe("Test Settings Graphql API", () => {
       {
         label: "home",
         original_name: "home",
-        slug: "/tag/first-post",
+        slug: "/tag/home",
         type: "tag",
       },
       {
