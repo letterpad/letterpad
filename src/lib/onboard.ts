@@ -22,8 +22,8 @@ export const onBoardUser = async (id: number) => {
   if (newAuthor && newAuthor.verified) {
     // create new tag for author
     const newTag = {
-      name: siteConfig.first_post_tag,
-      slug: siteConfig.first_post_tag,
+      name: siteConfig.default_tag,
+      slug: siteConfig.default_tag,
     };
 
     const welcomeContent = getWelcomePostAndPage();

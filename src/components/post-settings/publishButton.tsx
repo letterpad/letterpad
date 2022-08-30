@@ -97,7 +97,6 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
                 size="large"
                 style={{ fontSize: 14 }}
                 data-testid="unPublishBtn"
-                danger
               >
                 Un-Publish
               </Button>

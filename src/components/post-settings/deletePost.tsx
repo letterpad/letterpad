@@ -21,7 +21,7 @@ export const DeletePost: React.VFC<Props> = ({ postId }) => {
     router.push(isPost ? "/posts" : "/pages");
   };
   return (
-    <Button type="primary" danger onClick={deletePost}>
+    <Button type="primary" danger onClick={deletePost} block>
       Delete {postVerb}
     </Button>
   );
