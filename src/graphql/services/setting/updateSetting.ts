@@ -14,7 +14,7 @@ export const updateSetting = async (
 ): Promise<ResolversTypes["SettingResponse"]> => {
   if (!session?.user.id) {
     return {
-      __typename: "UnAuthorizedError",
+      __typename: "UnAuthorized",
       message: "You are not authenticated",
     };
   }
@@ -83,6 +83,6 @@ export const updateSetting = async (
   }
   return {
     message: "You are not authorized",
-    __typename: "UnAuthorizedError",
+    __typename: "UnAuthorized",
   };
 };

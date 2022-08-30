@@ -63,12 +63,7 @@ type LoginError implements LetterpadError {
   message: String!
 }
 
-union AuthorResponse =
-    Author
-  | NotFound
-  | Exception
-  | UnAuthorizedError
-  | Failed
+union AuthorResponse = Author | NotFound | Exception | UnAuthorized | Failed
 
 union LoginResponse = Author | LoginError
 

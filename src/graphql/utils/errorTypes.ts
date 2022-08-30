@@ -1,4 +1,4 @@
-export class UnauthorizedError extends Error {
+export class UnAuthorized extends Error {
   statusCode = 401;
   constructor({ statusCode = 401, error }) {
     super(error);

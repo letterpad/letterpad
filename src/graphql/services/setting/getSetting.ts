@@ -33,7 +33,7 @@ export const getSetting = async (
   }
 
   return {
-    __typename: "UnAuthorizedError",
+    __typename: "UnAuthorized",
     message: `Setting related to author:${authorId} not found`,
   };
 };

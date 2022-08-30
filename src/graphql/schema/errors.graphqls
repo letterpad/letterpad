@@ -6,11 +6,7 @@ type NotFound implements LetterpadError {
   message: String!
 }
 
-type UnAuthorizedError implements LetterpadError {
-  message: String!
-}
-
-type Exception implements LetterpadError {
+type UnAuthorized implements LetterpadError {
   message: String!
 }
 
@@ -18,6 +14,30 @@ type InvalidArguments implements LetterpadError {
   message: String!
 }
 
+type Unexpected implements LetterpadError {
+  message: String!
+}
+
+type Exception implements LetterpadError {
+  message: String!
+}
+
+type Forbidden implements LetterpadError {
+  message: String!
+  type: Failed
+}
+
 type Failed implements LetterpadError {
   message: String!
 }
+
+# enum FailedCodes {
+#   Exception
+#   Forbidden
+#   InvalidArguments
+#   UnAuthorized
+#   NotFound
+# }
+# type Failed {
+#   code: FailedCodes
+# }
