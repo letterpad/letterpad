@@ -7,13 +7,16 @@ describe("Publishing", () => {
     cy.getTestId("postStatus").should("have.text", "draft");
 
     cy.setContent({ title, content: "Content written from cypress test" });
+    cy.wait("@updatePostMutation");
 
     cy.openSettings();
     cy.enterTags(["first-post"]);
+    cy.wait("@updatePostMutation");
+
     cy.getTestId("slugInp").should("have.value", slug);
 
     cy.getTestId("publishBtn").click();
-    cy.wait(200);
+    cy.wait("@updatePostMutation");
 
     cy.getTestId("postStatus").should("have.text", "published");
     cy.get(".ant-drawer-close").click();
