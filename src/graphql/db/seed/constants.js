@@ -1,11 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { default: siteConfig } = require("../../../../config/site.config");
-
 const menu = [
   {
     label: "home",
     original_name: "home",
-    slug: siteConfig.default_tag,
+    slug: "home",
     type: "tag",
   },
   {
