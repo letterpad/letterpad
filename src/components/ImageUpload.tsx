@@ -106,16 +106,6 @@ const ImageUpload = ({
         >
           {fileList.length === 0 && uploadButton}
         </Upload>
-        <style jsx global>
-          {`
-            .ant-upload,
-            .ant-upload-list-picture-card-container {
-              min-height: 100% !important;
-              height: 100% !important;
-              width: 100% !important;
-            }
-          `}
-        </style>
       </div>
       <Modal
         visible={previewVisible}

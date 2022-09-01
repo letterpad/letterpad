@@ -33,10 +33,6 @@ module.exports.defaultSettings = {
   site_footer: "Letterpad is an open source project licensed under MIT.",
   site_description: "Use this space to describe your blog.",
   subscribe_embed: "",
-  social_twitter: "",
-  social_facebook: "",
-  social_instagram: "",
-  social_github: "",
   display_author_info: true,
   site_logo: JSON.stringify({
     src: "https://letterpad.app/admin/uploads/logo.png",

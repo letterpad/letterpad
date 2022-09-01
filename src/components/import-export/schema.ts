@@ -215,18 +215,6 @@ export const schema: JSONSchemaType<IImportExportData> = {
                 subscribe_embed: {
                   type: "string",
                 },
-                social_twitter: {
-                  type: "string",
-                },
-                social_facebook: {
-                  type: "string",
-                },
-                social_instagram: {
-                  type: "string",
-                },
-                social_github: {
-                  type: "string",
-                },
                 display_author_info: {
                   type: "boolean",
                 },
@@ -280,10 +268,6 @@ export const schema: JSONSchemaType<IImportExportData> = {
                 "site_footer",
                 "site_description",
                 "subscribe_embed",
-                "social_twitter",
-                "social_facebook",
-                "social_instagram",
-                "social_github",
                 "display_author_info",
                 "cloudinary_key",
                 "cloudinary_name",

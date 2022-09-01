@@ -7,4 +7,4 @@ if [ -z "$1" ]; then
     exit 1;
 fi
 
-npx prisma migrate dev --name "$1" --schema prisma/$PRISMA_FILE
+npx prisma migrate dev --name "$1" --schema ./prisma/$PRISMA_FILE
