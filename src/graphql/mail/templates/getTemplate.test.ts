@@ -158,14 +158,14 @@ describe("Email templates", () => {
   });
 
   it("gets change email verification email - Step 1", async () => {
-    const newUserEmail = "another@test.com";
-    const changedEmail = "changedemail@email.com";
+    const userEmail = "useremail@test.com";
+    const changedEmail = "newUserEmail@email.com";
     const response1 = await API({
       query: CreateAuthorDocument,
       variables: {
         data: {
           name: "foo",
-          email: newUserEmail,
+          email: userEmail,
           password: "foofoofoo",
           username: "mrrobot",
           setting: {
@@ -201,7 +201,7 @@ describe("Email templates", () => {
         Object {
           "html": "Hello foo, <br><br>You have requested to change your email address to this email address in <strong><a href=\\"https://letterpad.app\\">Letterpad</a></strong>. Please click the below button to verify this email address.<br><br><a target=\\"_blank\\" href=\\"http://localhost:3000/admin/api/verify?token=",
           "subject": "Letterpad - Email Change Verification",
-          "to": "another@test.com",
+          "to": "newUserEmail@email.com",
         }
       `);
     }
