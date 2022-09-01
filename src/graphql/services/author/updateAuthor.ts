@@ -22,7 +22,7 @@ export const updateAuthor = async (
   args: RequireFields<MutationUpdateAuthorArgs, "author">,
   { prisma, session }: ResolverContext,
 ): Promise<ResolversTypes["AuthorResponse"]> => {
-  if (session?.user.id !== args.author.id) {
+  if (!session?.user.id) {
     return {
       __typename: "UnAuthorized",
       message: "You are not authorized to update this author",

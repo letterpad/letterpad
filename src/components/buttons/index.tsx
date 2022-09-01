@@ -63,7 +63,7 @@ export const EnhancedButton = (props: ButtonProps) => {
       className={_classes}
       style={{ ..._style, ...props.style }}
       ghost={_ghost}
-      {...(_type ? { type: _type } : {})}
+      {...(_type ? { type: _type as any } : {})}
     >
       {props.children}
     </ButtonOriginal>

@@ -10,9 +10,7 @@ import General from "@/components/settings/general";
 import Integrations from "@/components/settings/integrations";
 import Navigation from "@/components/settings/navigation";
 import Pages from "@/components/settings/pages";
-import Social from "@/components/settings/social";
 
-import { Role } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 
 const { Panel } = Collapse;
@@ -21,14 +19,8 @@ interface Props {
   settings: SettingsFragmentFragment;
   cloudinaryEnabledByAdmin: boolean;
   readOnly: boolean;
-  showSocial: boolean;
 }
-function Settings({
-  settings,
-  cloudinaryEnabledByAdmin,
-  readOnly,
-  showSocial,
-}: Props) {
+function Settings({ settings, cloudinaryEnabledByAdmin, readOnly }: Props) {
   return (
     <>
       <Head>
@@ -57,7 +49,6 @@ function Settings({
             <Appearance settings={settings} />
             <Pages settings={settings} />
             <Navigation settings={settings} />
-            {showSocial && <Social settings={settings} />}
             <Integrations
               settings={settings}
               cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
@@ -98,8 +89,6 @@ export async function getServerSideProps(context) {
         process.env.CLOUDINARY_NAME &&
         process.env.CLOUDINARY_SECRET
       ),
-      //@ts-ignore
-      showSocial: session?.user.role === Role.Admin,
       readOnly:
         process.env.READ_ONLY === "true" &&
         session?.user?.email === "demo@demo.com",

@@ -114,10 +114,6 @@ model Setting {
   site_footer         String
   site_description    String
   subscribe_embed     String
-  social_twitter      String
-  social_facebook     String
-  social_instagram    String
-  social_github       String
   display_author_info Boolean   @default(false)
   cloudinary_key      String
   cloudinary_name     String
