@@ -130,6 +130,7 @@ export async function validateCaptcha(serverKey: string, clientToken: string) {
 }
 
 const prepareLink = (host: string, link: string | undefined) => {
+  if (!link || link.length === 0) return "";
   const hasHttps = link && link.indexOf("https://") === 0;
   return hasHttps ? link : `${host}/${link}`;
 };
