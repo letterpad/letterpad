@@ -16,6 +16,7 @@ export async function getdomainMapSuccessContent(
     where: { id: data.author_id },
     include: {
       setting: true,
+      domain: true,
     },
   });
 
@@ -32,13 +33,19 @@ export async function getdomainMapSuccessContent(
       message: `No info found for the current blog.`,
     };
   }
+  if (!author.domain) {
+    return {
+      ok: false,
+      message: `No domain found for the current blog.`,
+    };
+  }
   const subjectTemplate = Twig.twig({
     data: template.subject,
   });
 
   const subject = subjectTemplate.render({
     company_name: `Letterpad`,
-    domain_name: data.domain_name,
+    domain_name: author.domain.name,
   });
   const bodyTemplate = Twig.twig({
     data: template.body.toString(),
@@ -47,7 +54,7 @@ export async function getdomainMapSuccessContent(
   const body = bodyTemplate.render({
     company_name: `<a href="https://letterpad.app">Letterpad</a>`,
     full_name: author.name,
-    domain_name: `<a href="https://${data.domain_name}">${data.domain_name}</a>`,
+    domain_name: `<a href="https://${author.domain.name}">${author.domain.name}</a>`,
   });
 
   return {
