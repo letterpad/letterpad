@@ -125,7 +125,7 @@ const options = (): NextAuthOptions => ({
         }
       } catch (e) {
         report.error(e);
-        throw new Error("Could not create a valid session", e);
+        throw new Error("Could not create a valid session");
       }
       return session as { user: SessionData; expires: any };
     },
