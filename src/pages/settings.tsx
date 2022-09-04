@@ -2,6 +2,7 @@ import { Col, Collapse, Form, Input, PageHeader, Row } from "antd";
 import { Alert } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 
 import { CopyToClipboard } from "@/components/clipboard";
@@ -21,6 +22,11 @@ interface Props {
   readOnly: boolean;
 }
 function Settings({ settings, cloudinaryEnabledByAdmin, readOnly }: Props) {
+  const router = useRouter();
+  const onPanelClick = (key) => {
+    router.replace({ query: { selected: key } });
+  };
+
   return (
     <>
       <Head>
@@ -45,16 +51,38 @@ function Settings({ settings, cloudinaryEnabledByAdmin, readOnly }: Props) {
             layout="horizontal"
             size={"small"}
           >
-            <General settings={settings} />
-            <Appearance settings={settings} />
-            <Pages settings={settings} />
-            <Navigation settings={settings} />
-            <Integrations
-              settings={settings}
-              cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
-            />
-            <Collapse>
-              <Panel header="Keys" key="1">
+            <Collapse onChange={onPanelClick} activeKey={router.query.selected}>
+              <Panel
+                header="General Settings"
+                key="general"
+                className="general-settings"
+              >
+                <General settings={settings} />
+              </Panel>
+              <Panel header="Appearance" key="appearance">
+                <Appearance settings={settings} />
+              </Panel>
+              <Panel header="Pages" key="pages" className="pages">
+                <Pages settings={settings} />
+              </Panel>
+              <Panel
+                header="Navigation"
+                key="navigation"
+                className="navigation"
+              >
+                <Navigation settings={settings} />
+              </Panel>
+              <Panel
+                header="Integrations"
+                key="integrations"
+                className="integrations"
+              >
+                <Integrations
+                  settings={settings}
+                  cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
+                />
+              </Panel>
+              <Panel header="Keys" key="keys">
                 <Form.Item label="Client Authorization Key">
                   <Row>
                     <Col span={18}>

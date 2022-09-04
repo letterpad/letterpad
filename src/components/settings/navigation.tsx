@@ -1,4 +1,3 @@
-import { Collapse } from "antd";
 import { useMemo } from "react";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
@@ -8,7 +7,6 @@ import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphq
 import { debounce } from "@/shared/utils";
 
 import NavigationBuilder from "../navigation-builder";
-const { Panel } = Collapse;
 
 interface Props {
   settings: SettingsFragmentFragment;
@@ -32,14 +30,10 @@ const NavigationPanel: React.FC<Props> = ({ settings }) => {
   };
 
   return (
-    <Collapse>
-      <Panel header="Navigation" key="1" className="navigation">
-        <NavigationBuilder
-          menuData={settings.menu}
-          updateOption={(menu) => updateMenu(menu)}
-        />
-      </Panel>
-    </Collapse>
+    <NavigationBuilder
+      menuData={settings.menu}
+      updateOption={(menu) => updateMenu(menu)}
+    />
   );
 };
 export default NavigationPanel;

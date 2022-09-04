@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
 
@@ -54,7 +55,6 @@ const Home: FC<PageProps> = ({ session }) => {
             </p>
             {changeUsername && (
               <>
-                <h4>Change your username:</h4>
                 <p>
                   Your username is visible in the url. We suggest using text
                   instead of numbers
@@ -65,6 +65,18 @@ const Home: FC<PageProps> = ({ session }) => {
                 />
               </>
             )}
+            <h4>Write about yourself:</h4>
+            <p>
+              Introduce yourself by updating your{" "}
+              <Link href={"/settings?selected=general"}>profile</Link>
+            </p>
+
+            <h4>Write about your site:</h4>
+            <p>
+              Update your site details to let the audience know what your site
+              is about by{" "}
+              <Link href={"/settings?selected=general"}>clicking here</Link>
+            </p>
             <p>
               To begin with, we recommend you to go through this{" "}
               <a
