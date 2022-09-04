@@ -1,5 +1,4 @@
 import { PostStatusOptions, QueryResolvers } from "@/__generated__/__types__";
-
 import { ResolverContext } from "@/graphql/context";
 
 const Query: QueryResolvers<ResolverContext> = {

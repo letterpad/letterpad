@@ -1,6 +1,8 @@
 import fs from "fs";
 import { imageSize } from "image-size";
 
+import { report } from "@/components/error";
+
 import { BlobCorrected, IMediaUploadResult } from "@/graphql/types";
 
 export function uploadToInternal(
@@ -25,7 +27,8 @@ export function uploadToInternal(
         },
       };
       resolve(resultItem);
-    } catch (error) {
+    } catch (error: any) {
+      report.error(error);
       reject(error);
     }
   });

@@ -1,5 +1,7 @@
 import { Prisma } from "@prisma/client";
 
+import { report } from "@/components/error";
+
 import {
   MutationCreatePostArgs,
   PostTypes,
@@ -9,7 +11,6 @@ import siteConfig from "@/config/site.config";
 import { ResolverContext } from "@/graphql/context";
 import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { getOrCreateSlug } from "@/graphql/resolvers/utils/getOrCreateSlug";
-import logger from "@/shared/logger";
 
 export const createPost = async (
   args: MutationCreatePostArgs,
@@ -98,7 +99,7 @@ export const createPost = async (
       };
     }
   } catch (e) {
-    logger.error(e);
+    report.error(e);
   }
   return {
     __typename: "PostError",

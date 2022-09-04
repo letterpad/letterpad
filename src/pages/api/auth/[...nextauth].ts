@@ -8,13 +8,14 @@ import GoogleProvider from "next-auth/providers/google";
 
 import { createAuthorWithSettings, onBoardUser } from "@/lib/onboard";
 import { prisma } from "@/lib/prisma";
-import { analytics_on, umamiApi } from "@/lib/umami";
+import { addUmamAnalyticsiIfNotExists } from "@/lib/umami";
 
-import { Role } from "@/__generated__/__types__";
+import { report } from "@/components/error";
+
 import { basePath } from "@/constants";
 import { SessionData } from "@/graphql/types";
 
-const providers = (_req: NextApiRequest) => [
+const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -33,19 +34,7 @@ const providers = (_req: NextApiRequest) => [
       try {
         const author = await prisma.author.findFirst({
           where: { email: credentials?.email },
-          include: {
-            role: true,
-          },
         });
-        const permissions = await prisma.rolePermissions.findMany({
-          where: {
-            role_id: author?.role_id,
-          },
-          include: {
-            permission: true,
-          },
-        });
-
         if (author) {
           if (!author.verified) {
             throw new Error("Your email id is not verified yet.");
@@ -54,21 +43,10 @@ const providers = (_req: NextApiRequest) => [
             credentials?.password || "",
             author.password,
           );
-
-          if (authenticated) {
-            const user = {
-              id: author.id,
-              avatar: author.avatar,
-              username: author.username,
-              name: author.name,
-              email: author.email,
-              role: author.role.name,
-              permissions: permissions.map(({ permission }) => permission),
-            };
-            return user;
-          }
+          return authenticated ? author : null;
         }
       } catch (e) {
+        report.error(e);
         if (e instanceof PrismaClientKnownRequestError) {
           if (e.code === "P2021") {
             throw new Error(
@@ -81,8 +59,8 @@ const providers = (_req: NextApiRequest) => [
   }),
 ];
 
-const options = (req: NextApiRequest): NextAuthOptions => ({
-  providers: providers(req),
+const options = (): NextAuthOptions => ({
+  providers: providers(),
   callbacks: {
     redirect: async ({ url, baseUrl }) => {
       if (url.startsWith(baseUrl)) {
@@ -90,19 +68,7 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
       }
       return process.env.ROOT_URL + "/posts";
     },
-    jwt: async ({ token, user, account }) => {
-      if (account) {
-        token.accessToken = account.access_token;
-        token.provider = account.provider;
-        token.user = user;
-        return token;
-      }
-      //  "user" parameter is the object received from "authorize"
-      //  "token" is being send to "session" callback...
-      //  ...so we set "user" param of "token" to object from "authorize"...
-      //  ...and return it...
-      //@ts-ignore
-      token.user = user;
+    jwt: async ({ token }) => {
       return token;
     },
     session: async ({ session, token }) => {
@@ -110,49 +76,13 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
         if (!token.email) {
           throw new Error("Invalid session");
         }
+        await addUmamAnalyticsiIfNotExists(token.email);
         const author = await prisma.author.findFirst({
           where: { email: token.email },
-          include: {
-            role: true,
-          },
         });
 
-        if (author) {
-          if (!author.analytics_id && analytics_on) {
-            try {
-              const api = await umamiApi();
-              const website = (await api.addWebsite(
-                author.username,
-                `${author.username}.letterpad.app`,
-              )) as Record<string, any>;
-              await prisma.author.update({
-                data: {
-                  analytics_id: website.website_id,
-                  analytics_uuid: website.website_uuid,
-                },
-                where: {
-                  id: author.id,
-                },
-              });
-            } catch (e) {
-              console.log(e);
-            }
-          }
-          const { id, email, username, avatar, name } = author;
-          session.user = {
-            id,
-            email,
-            username,
-            name,
-            avatar,
-            image: avatar,
-            role: author.role.name,
-          } as any;
-        } else {
-          throw new Error("Author not found");
-        }
-      } catch (e) {
-        if (token.email && token.name && token.sub) {
+        // If the user logins with google or github, create their letterpad account
+        if (!author && token.sub && token.name) {
           const newAuthor = await createAuthorWithSettings(
             {
               email: token.email,
@@ -171,17 +101,31 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
           );
           if (newAuthor) {
             await onBoardUser(newAuthor.id);
-            session.user = {
-              id: newAuthor.id,
-              email: token.email,
-              username: token.sub,
-              name: token.name,
-              avatar: token.picture,
-              image: token.picture,
-              role: Role.Author,
-            } as any;
           }
         }
+
+        const finalAuthor = await prisma.author.findFirst({
+          where: { email: token.email },
+          include: {
+            role: true,
+          },
+        });
+
+        if (finalAuthor) {
+          const { id, email, username, avatar, name } = finalAuthor;
+          session.user = {
+            id,
+            email,
+            username,
+            name,
+            avatar,
+            image: avatar,
+            role: finalAuthor.role.name,
+          } as any;
+        }
+      } catch (e) {
+        report.error(e);
+        throw new Error("Could not create a valid session");
       }
       return session as { user: SessionData; expires: any };
     },
@@ -196,6 +140,6 @@ const options = (req: NextApiRequest): NextAuthOptions => ({
 });
 
 const auth = (req: NextApiRequest, res: NextApiResponse) =>
-  NextAuth(req, res, options(req));
+  NextAuth(req, res, options());
 
 export default auth;

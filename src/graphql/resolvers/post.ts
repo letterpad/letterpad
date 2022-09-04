@@ -1,3 +1,5 @@
+import { report } from "@/components/error";
+
 import { MutationResolvers } from "@/__generated__/__types__";
 import { PostResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
@@ -55,17 +57,24 @@ const Query: QueryResolvers<ResolverContext> = {
       }
       return response;
     } catch (e: any) {
-      return { __typename: "Exception", message: e.message };
+      report.error(e);
+      return {
+        __typename: "Exception",
+        message: "Something unexpected happened",
+      };
     }
   },
 
   async post(_parent, args, context) {
     try {
       const response = await getPost(args, context);
-
       return response;
     } catch (e: any) {
-      return { __typename: "Exception", message: e.message };
+      report.error(e);
+      return {
+        __typename: "Exception",
+        message: "Something unexpected happened.",
+      };
     }
   },
 
@@ -76,14 +85,29 @@ const Query: QueryResolvers<ResolverContext> = {
 
 const Mutation: MutationResolvers<ResolverContext> = {
   async createPost(_parent, args, context) {
-    const response = await createPost(args, context);
-
-    return response;
+    try {
+      const response = await createPost(args, context);
+      return response;
+    } catch (e: any) {
+      report.error(e);
+      return {
+        __typename: "PostError",
+        message: "Something unexpected happened.",
+      };
+    }
   },
 
   async updatePost(_parent, args, { session, prisma }) {
-    const response = await updatePost(args, { session, prisma });
-    return response;
+    try {
+      const response = await updatePost(args, { session, prisma });
+      return response;
+    } catch (e: any) {
+      report.error(e);
+      return {
+        __typename: "PostError",
+        message: "Something unexpected happened.",
+      };
+    }
   },
 };
 
