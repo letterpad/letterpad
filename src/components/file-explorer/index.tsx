@@ -1,7 +1,6 @@
 import { Button } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { useCallback, useRef, useState } from "react";
-import { MediaProvider, TypeMediaInsert } from "src/shared/types";
 
 import Internal from "@/components/file-explorer/providers/Internal";
 import Unsplash from "@/components/file-explorer/providers/Unsplash";
@@ -11,6 +10,8 @@ import { uploadFile } from "@/shared/utils";
 
 import MediaItem from "./MediaItem";
 import NoSsr from "../NoSsr";
+
+import { MediaProvider, TypeMediaInsert } from "@/types";
 
 interface IProps {
   isVisible: boolean;

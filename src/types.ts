@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Navigation, Setting } from "@/__generated__/__types__";
+import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { SessionData } from "@/graphql/types";
 
 export type Optional<T> = { [P in keyof T]?: T[P] };
@@ -87,3 +88,8 @@ export interface VerifySubscriberToken {
 
 export type VerifyUserOrSubscriberToken = VerifyUserToken &
   VerifySubscriberToken;
+
+export interface PageProps {
+  settings: SettingsFragmentFragment;
+  session: SessionData;
+}

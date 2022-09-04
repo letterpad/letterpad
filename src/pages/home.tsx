@@ -2,17 +2,23 @@ import { Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { FC } from "react";
+
+import { ChangeUsername } from "@/components/profile/change-username";
 
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 
-const Home = () => {
+import { PageProps } from "@/types";
+
+const Home: FC<PageProps> = ({ session }) => {
   const [settingsMutation] = useUpdateOptionsMutation();
   const router = useRouter();
   const onDismiss = () => {
     settingsMutation({ variables: { options: { intro_dismissed: true } } });
     router.push("/posts");
   };
-
+  const changeUsername =
+    parseInt(session.username).toString() == session.username;
   return (
     <>
       <Head>
@@ -37,9 +43,12 @@ const Home = () => {
             <p>Hi There 👋 ,</p>
             <p>
               Thank you for trying out Letterpad. Letterpad is fairly new and it
-              needs your support in making blogging a wonderful experience.
+              needs your support in making blogging a delightful experience.
             </p>
-
+            <ChangeUsername
+              author_id={session.id}
+              username={session.username}
+            />
             <p>
               To begin with, we recommend you to go through this{" "}
               <a
@@ -70,7 +79,7 @@ const Home = () => {
               . We believe that a community has more power in driving the
               roadmap of this product instead of us making decisions. If you
               have any feedback, feel free to share it with us by clicking the
-              feedback button on the top right corner.
+              report button on the top right corner.
             </p>
             <p>
               If you would like to contribute, refer to this{" "}

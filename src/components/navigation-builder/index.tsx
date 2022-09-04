@@ -3,9 +3,10 @@ import React, { useCallback, useMemo } from "react";
 import { List } from "@/components/navigation-builder/sortable";
 
 import { Navigation as NavigationItemType } from "@/__generated__/__types__";
-import { INavigationBuilderProps } from "@/shared/types";
 
 import { useNavigationData } from "./data.hook";
+
+import { INavigationBuilderProps } from "@/types";
 
 const Navigation: React.FC<INavigationBuilderProps> = ({
   menuData,

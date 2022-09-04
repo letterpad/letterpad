@@ -8,8 +8,8 @@ import { getSession } from "next-auth/react";
 import { Role } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
 
-import { IAuthComponentProps } from "./../shared/types";
 import { getDateTime } from "./../shared/utils";
+import { IAuthComponentProps } from "../types";
 
 // If you want to switch from sqlite3 to mysql then first change the .env.production.local with the appropriate database options and head over to /admin/register first. This will allow you to seed letterpad with mysql. Then login and import the data to populate the exisiting data in mysql.
 

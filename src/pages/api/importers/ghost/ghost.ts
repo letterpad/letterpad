@@ -5,13 +5,13 @@ import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { defaultSettings } from "@/graphql/db/seed/constants";
 import { SessionData } from "@/graphql/types";
 
-import { Optional } from "./../../../../shared/types";
 import { IGhostDb, IGhostSettings, IImportExportGhostData } from "./types";
 import {
   IAuthorData,
   IImportExportData,
   ITagSanitized,
 } from "../../../../components/import-export/importExportTypes";
+import { Optional } from "../../../../types";
 
 export function convertGhostToLetterpad(
   data: IImportExportGhostData,

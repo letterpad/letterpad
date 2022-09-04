@@ -1,4 +1,4 @@
-import { PubSubEvent } from "./types";
+import { PubSubEvent } from "../types";
 
 /**
  * subscriptions data format:

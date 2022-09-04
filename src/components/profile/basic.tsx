@@ -7,6 +7,7 @@ import { InputAuthor } from "@/__generated__/__types__";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { debounce } from "@/shared/utils";
 
+import { ChangeUsername } from "./change-username";
 import ImageUpload from "../ImageUpload";
 
 interface Props {
@@ -15,7 +16,7 @@ interface Props {
 
 export const Basic: React.VFC<Props> = ({ data }) => {
   const [email, setEmail] = React.useState(data.email);
-  const [username, setUsername] = React.useState(data.username);
+  // const [username, setUsername] = React.useState(data.username);
   const { updateAuthorAPI, updateLocalState } = useUpdateAuthor(data.id);
 
   const debounceUpdateAuthorAPI = useMemo(
@@ -86,24 +87,7 @@ export const Basic: React.VFC<Props> = ({ data }) => {
           </Button>
         </Input.Group>
       </Form.Item>
-      <Form.Item label="Username">
-        <Input.Group compact>
-          <Input
-            size="middle"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            style={{ width: "calc(100% - 100px)" }}
-          />
-          <Button
-            type="primary"
-            size="middle"
-            onClick={(_) => updateAuthorAPI({ username })}
-            disabled={username === data.username}
-          >
-            Save
-          </Button>
-        </Input.Group>
-      </Form.Item>
+      <ChangeUsername username={data.username} author_id={data.id} />
       <Form.Item label="Avatar">
         <ImageUpload
           url={data.avatar || ""}

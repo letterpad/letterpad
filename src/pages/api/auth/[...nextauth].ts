@@ -72,15 +72,15 @@ const options = (): NextAuthOptions => ({
       return token;
     },
     session: async ({ session, token }) => {
-      try {
-        if (!token.email) {
-          throw new Error("Invalid session");
-        }
-        await addUmamAnalyticsiIfNotExists(token.email);
-        const author = await prisma.author.findFirst({
-          where: { email: token.email },
-        });
+      if (!token.email) {
+        throw new Error("Invalid session");
+      }
+      await addUmamAnalyticsiIfNotExists(token.email);
+      const author = await prisma.author.findFirst({
+        where: { email: token.email },
+      });
 
+      try {
         // If the user logins with google or github, create their letterpad account
         if (!author && token.sub && token.name) {
           const newAuthor = await createAuthorWithSettings(
@@ -127,7 +127,15 @@ const options = (): NextAuthOptions => ({
         report.error(e);
         throw new Error("Could not create a valid session");
       }
-      return session as { user: SessionData; expires: any };
+
+      const ses = session as { user: SessionData; expires: any };
+      if (author) {
+        //update the session data
+        ses.user.username = author.username;
+        ses.user.avatar = author.avatar;
+        ses.user.name = author.name;
+      }
+      return ses;
     },
   },
   jwt: {

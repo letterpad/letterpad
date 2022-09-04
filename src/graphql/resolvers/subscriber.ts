@@ -1,11 +1,12 @@
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
+import { ResolverContext } from "@/graphql/context";
 import logger from "@/shared/logger";
 import { decodeJWTToken } from "@/shared/token";
-import { VerifySubscriberToken } from "@/shared/types";
 
-import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "../mail/enqueueEmailAndSend";
 import { EmailTemplates } from "../types";
+
+import { VerifySubscriberToken } from "@/types";
 
 const Query: QueryResolvers<ResolverContext> = {
   subscribers: async (_root, _args, { session, prisma }) => {

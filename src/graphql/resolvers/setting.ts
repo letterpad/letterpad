@@ -5,13 +5,14 @@ import {
   SettingResolvers,
 } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
-import { Optional } from "@/shared/types";
 
 import {
   getSetting,
   resolveImageField,
   updateSetting,
 } from "../services/setting";
+
+import { Optional } from "@/types";
 
 const Setting: SettingResolvers<ResolverContext> = {
   menu: ({ menu }) => getMenuWithSanitizedSlug(parse(menu)),

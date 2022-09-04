@@ -4,7 +4,7 @@ import NProgress from "nprogress";
 import { basePath } from "@/constants";
 import { IMediaUploadResult } from "@/graphql/types";
 
-import { IUploadFileProps } from "./types";
+import { IUploadFileProps } from "../types";
 
 export const getReadableDate = (timestamp: Date) => {
   return new Date(timestamp).toLocaleString("en-us", {

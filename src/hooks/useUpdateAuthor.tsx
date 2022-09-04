@@ -1,5 +1,6 @@
 import { message, Modal } from "antd";
 import { signOut } from "next-auth/react";
+import { useState } from "react";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
@@ -14,6 +15,7 @@ const key = "author";
 
 export const useUpdateAuthor = (id: number) => {
   const [updateAuthorMutation, progress] = useUpdateAuthorMutation();
+  const [loading, setLoading] = useState(false);
 
   async function updateAuthorAPI(data: Omit<InputAuthor, "id">) {
     if (!data.password) {
@@ -23,12 +25,14 @@ export const useUpdateAuthor = (id: number) => {
         eventLabel: Object.keys({ ...data, id }).join("-"),
       });
     }
-
-    await updateAuthorMutation({
+    setLoading(true);
+    const result = await updateAuthorMutation({
       variables: {
         author: { ...data, id },
       },
     });
+    setLoading(false);
+    return result;
   }
 
   async function updateAuthor(data: Omit<InputAuthor, "id">) {
@@ -39,6 +43,7 @@ export const useUpdateAuthor = (id: number) => {
         eventLabel: Object.keys({ ...data, id }).join("-"),
       });
     }
+    setLoading(true);
     const meData = apolloBrowserClient.readQuery({
       query: MeDocument,
     });
@@ -57,7 +62,7 @@ export const useUpdateAuthor = (id: number) => {
         };
       },
     });
-
+    setLoading(false);
     if (res.data?.updateAuthor?.__typename !== "Author") {
       const a = res.data?.updateAuthor;
 
@@ -129,5 +134,5 @@ export const useUpdateAuthor = (id: number) => {
     });
   };
 
-  return { updateAuthor, progress, updateAuthorAPI, updateLocalState };
+  return { updateAuthor, progress, updateAuthorAPI, updateLocalState, loading };
 };
