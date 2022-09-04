@@ -1,5 +1,7 @@
 import fetch from "cross-fetch";
 
+import { report } from "@/components/error";
+
 export const submitSitemap = async (sitemapUrl: string) => {
   if (!sitemapUrl) return false;
   try {
@@ -11,7 +13,7 @@ export const submitSitemap = async (sitemapUrl: string) => {
 
     await fetch(googleSubmitUrl);
     await fetch(bingAndYahooSubmitUrl);
-  } catch (e) {
-    console.log(e);
+  } catch (e: any) {
+    report.error(e);
   }
 };

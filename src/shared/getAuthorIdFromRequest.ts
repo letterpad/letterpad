@@ -1,6 +1,8 @@
 import { Context } from "@apollo/client";
 import { Prisma, PrismaClient } from "@prisma/client";
 
+import { report } from "@/components/error";
+
 import { decryptEmail } from "./clientToken";
 import logger from "./logger";
 
@@ -47,7 +49,7 @@ const getAuthorIdFromRequest = async (context: Context) => {
         );
       }
     } else {
-      throw new Error(e);
+      report.error(e);
     }
   }
   return author_id;
@@ -70,10 +72,6 @@ async function getAuthorFromLetterpadSubdomain(context) {
 }
 
 async function getAuthorFromCustomDomain(context) {
-  if (process.env.CUSTOM_DOMAIN) {
-    console.log(context.req.headers);
-    console.log(context.req.headers.identifier);
-  }
   if (!context.req.headers?.identifier) return null;
 
   const domain = context.req.headers.identifier;
@@ -83,9 +81,6 @@ async function getAuthorFromCustomDomain(context) {
       mapped: true,
     },
   });
-  if (process.env.CUSTOM_DOMAIN) {
-    console.log(record);
-  }
   return record ? record.author_id : null;
 }
 

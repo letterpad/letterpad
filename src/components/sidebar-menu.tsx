@@ -65,10 +65,11 @@ export const SidebarMenu = ({ stats }) => {
         key: "/logout",
         icon: <LogoutOutlined />,
         label: "Logout",
-        onClick: () =>
+        onClick: () => {
           signOut({
             redirect: true,
-          }),
+          });
+        },
       },
     ];
   }, [
@@ -85,7 +86,9 @@ export const SidebarMenu = ({ stats }) => {
       defaultSelectedKeys={[menuItems[pathname]]}
       style={{ paddingBottom: 60, background: "none", flex: 1 }}
       items={menuItems}
-      onClick={(info) => router.push(info.key)}
+      onClick={(info) => {
+        if (info.key !== "/logout") router.push(info.key);
+      }}
     />
   );
 };

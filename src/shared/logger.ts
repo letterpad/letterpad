@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 //@ts-nocheck
+import { getDateTime } from "@/shared/utils";
 
 const reset = "\x1b[0m";
 const bright = "\x1b[1m";
@@ -74,7 +75,7 @@ function print(
   if (process.env.DEBUG !== "true") return null;
   console.log("");
   console.log.apply(console, [
-    tagColor + bright + `[${tagName}]${reset}`,
+    tagColor + bright + `[${tagName} - ${getDateTime()}]${reset}`,
     magenta + ` ${fileName}${reset}: `,
     message,
     ...rest,

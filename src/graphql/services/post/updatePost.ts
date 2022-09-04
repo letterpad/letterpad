@@ -1,5 +1,7 @@
 import { Prisma } from "@prisma/client";
 
+import { report } from "@/components/error";
+
 import {
   MutationUpdatePostArgs,
   PostStatusOptions,
@@ -12,7 +14,6 @@ import { mapPostToGraphql } from "@/graphql/resolvers/mapper";
 import { formatHtml } from "@/graphql/resolvers/utils/formatHtml";
 import { getCoverImageAttrs } from "@/graphql/resolvers/utils/getImageAttrs";
 import { updateMenuOnTitleChange } from "@/graphql/resolvers/utils/updateMenuOnTitleChange";
-import logger from "@/shared/logger";
 import { submitSitemap } from "@/shared/submitSitemap";
 import { textToSlug } from "@/utils/slug";
 
@@ -143,7 +144,7 @@ export const updatePost = async (
       ...mapPostToGraphql(updatedPost),
     };
   } catch (e) {
-    logger.error(e);
+    report.error(e);
     return {
       __typename: "PostError",
       message: e.message,

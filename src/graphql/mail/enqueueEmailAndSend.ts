@@ -1,6 +1,8 @@
 import { hasCredentials } from "@/lib/mail";
 import { prisma } from "@/lib/prisma";
 
+import { report } from "@/components/error";
+
 import { EmailProps, EmailTemplates } from "@/graphql/types";
 import logger from "@/shared/logger";
 
@@ -41,7 +43,7 @@ export async function enqueueEmailAndSend(props: EmailProps) {
     } else {
       throw new Error(data?.message);
     }
-  } catch (e: any) {
-    throw new Error(e);
+  } catch (e) {
+    report.error(e);
   }
 }

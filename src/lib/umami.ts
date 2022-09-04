@@ -1,3 +1,7 @@
+import { prisma } from "@/lib/prisma";
+
+import { report } from "@/components/error";
+
 function parseCookies(response) {
   const raw = response.headers.raw()["set-cookie"] || [];
   return raw
@@ -266,3 +270,33 @@ export const analytics_on =
   process.env.UMAMI_USERNAME &&
   process.env.UMAMI_PASSWORD &&
   process.env.UMAMI_HOST;
+
+export const addUmamAnalyticsiIfNotExists = async (email: string) => {
+  const author = await prisma.author.findFirst({
+    where: { email },
+    include: {
+      role: true,
+    },
+  });
+
+  if (author && !author.analytics_id && analytics_on) {
+    try {
+      const api = await umamiApi();
+      const website = (await api.addWebsite(
+        author.username,
+        `${author.username}.letterpad.app`,
+      )) as Record<string, any>;
+      await prisma.author.update({
+        data: {
+          analytics_id: website.website_id,
+          analytics_uuid: website.website_uuid,
+        },
+        where: {
+          id: author.id,
+        },
+      });
+    } catch (e) {
+      report.error(e);
+    }
+  }
+};
