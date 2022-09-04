@@ -7,8 +7,7 @@ import logger from "@/shared/logger";
 import { sendMail } from "./sendMail";
 import { getEmailTemplate } from "./templates/getTemplate";
 
-export async function enqueueEmailAndSend(props: EmailProps, restrict = false) {
-  if (restrict) return "";
+export async function enqueueEmailAndSend(props: EmailProps) {
   if (!hasCredentials()) {
     return logger.debug(
       "No client found to send emails. Terminating enqueuing Email",

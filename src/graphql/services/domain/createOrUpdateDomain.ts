@@ -65,7 +65,6 @@ export const createOrUpdateDomain = async (
       await enqueueEmailAndSend({
         author_id: session.user.id,
         template_id: EmailTemplates.DomainMapSuccess,
-        domain_name: domainName,
       });
       return {
         ok: true,

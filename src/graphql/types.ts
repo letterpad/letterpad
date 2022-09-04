@@ -92,7 +92,6 @@ export interface EmailVerifyNewUserProps {
 
 export interface DomainMapSuccessProps {
   author_id: number;
-  domain_name: string;
   template_id: EmailTemplates.DomainMapSuccess;
 }
 
