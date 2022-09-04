@@ -7,18 +7,25 @@ import { FC } from "react";
 import { ChangeUsername } from "@/components/profile/change-username";
 
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
+import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 
 import { PageProps } from "@/types";
 
 const Home: FC<PageProps> = ({ session }) => {
   const [settingsMutation] = useUpdateOptionsMutation();
+  const me = useMeQuery();
   const router = useRouter();
+
   const onDismiss = () => {
     settingsMutation({ variables: { options: { intro_dismissed: true } } });
     router.push("/posts");
   };
+  const username =
+    me.data?.me?.__typename === "Author" ? me.data.me.username : "";
+
   const changeUsername =
-    parseInt(session.username).toString() == session.username;
+    parseInt(username).toString() == username && username.match(/^[0-9]+$/);
+
   return (
     <>
       <Head>
@@ -42,13 +49,22 @@ const Home: FC<PageProps> = ({ session }) => {
           <div style={{ maxWidth: 500, margin: "auto", padding: 20 }}>
             <p>Hi There 👋 ,</p>
             <p>
-              Thank you for trying out Letterpad. Letterpad is fairly new and it
-              needs your support in making blogging a delightful experience.
+              Thank you for trying out Letterpad. We encourage you to update the
+              below information first.
             </p>
-            <ChangeUsername
-              author_id={session.id}
-              username={session.username}
-            />
+            {changeUsername && (
+              <>
+                <h4>Change your username:</h4>
+                <p>
+                  Your username is visible in the url. We suggest using text
+                  instead of numbers
+                </p>
+                <ChangeUsername
+                  author_id={session.id}
+                  username={session.username}
+                />
+              </>
+            )}
             <p>
               To begin with, we recommend you to go through this{" "}
               <a

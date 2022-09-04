@@ -20,7 +20,7 @@ const countStyle = {
   right: 24,
 };
 
-export const SidebarMenu = ({ stats }) => {
+export const SiteMenu = ({ stats }) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -83,7 +83,7 @@ export const SidebarMenu = ({ stats }) => {
     <Menu
       theme="dark"
       mode="inline"
-      defaultSelectedKeys={[menuItems[pathname]]}
+      defaultSelectedKeys={[pathname]}
       style={{ paddingBottom: 60, background: "none", flex: 1 }}
       items={menuItems}
       onClick={(info) => {

@@ -4,7 +4,7 @@ import { Stats } from "@/__generated__/__types__";
 
 import Logo from "../Logo";
 import ProfileInfo from "../profile-info";
-import { SidebarMenu } from "../sidebar-menu";
+import { SiteMenu } from "../site-menu";
 
 interface Props {
   site_logo?: string;
@@ -40,7 +40,7 @@ export const Sidebar: FC<Props> = ({
           <h2>{site_title}</h2>
         )}
       </div>
-      <SidebarMenu stats={stats} />
+      <SiteMenu stats={stats} />
       <ProfileInfo name={name} avatar={avatar} site_url={site_url} />
     </div>
   );

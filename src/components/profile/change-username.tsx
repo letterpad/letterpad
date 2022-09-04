@@ -15,14 +15,6 @@ export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
 
   const { updateAuthorAPI, loading } = useUpdateAuthor(author_id);
 
-  useEffect(() => {
-    // get latest session data
-    getSession().then((session) => {
-      //@ts-ignore
-      if (session?.user?.username) setUsername(session.user.username);
-    });
-  }, []);
-
   const updateAuthor = async () => {
     setError(null);
     const result = await updateAuthorAPI({ username: _username });

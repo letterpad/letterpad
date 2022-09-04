@@ -235,11 +235,11 @@ async function insertAuthors() {
     data: {
       verified: true,
       social: JSON.stringify({
-        twitter: "https://twitter.com",
-        facebook: "https://facebook.com",
-        github: "https://github.com",
-        instagram: "https://instagram.com",
-        linkedin: "https://linkedin.com",
+        twitter: "",
+        facebook: "",
+        github: "",
+        instagram: "",
+        linkedin: "",
       }),
       occupation: "Principal Engineer @ Ajaxtown",
       company_name: "Letterpad",
