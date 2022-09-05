@@ -1,4 +1,4 @@
-import { Button, Divider, PageHeader } from "antd";
+import { Button, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import Link from "next/link";
@@ -24,17 +24,17 @@ const Home: FC<PageProps> = ({ session, settings }) => {
   const author = me.data?.me?.__typename === "Author" ? me.data.me : null;
   const username = author?.username || "";
   const changeUsername =
-    true ||
-    (parseInt(username).toString() == username && username.match(/^[0-9]+$/));
+    parseInt(username).toString() == username && username.match(/^[0-9]+$/);
 
+  let count = 1;
   return (
     <>
       <Head>
-        <title>Posts</title>
+        <title>Home</title>
       </Head>
       <Content>
         <PageHeader
-          title="Welcome to your new blog!"
+          title="Welcome to your new blog! 🎉"
           className="site-page-header"
         >
           <span className="help-text">
@@ -57,53 +57,51 @@ const Home: FC<PageProps> = ({ session, settings }) => {
             lineHeight: 1.6,
           }}
         >
-          <div style={{ maxWidth: 600 }}>
-            <ul style={{ padding: "0px 20px" }}>
-              {changeUsername && (
-                <li>
+          <div style={{ maxWidth: 600 }} className="help-text">
+            {changeUsername && (
+              <Section title={`${count++}. Update your username`}>
+                <p>
+                  Your site name is{" "}
+                  <a href={settings.site_url}>{settings.site_url}</a>. Change
+                  your username <i>{username}</i> to text instead of just
+                  numbers.
+                </p>
+                <ChangeUsername
+                  author_id={session.id}
+                  username={session.username}
+                />
+              </Section>
+            )}
+            {author && (
+              <>
+                <Section title={`${count++}. Update your profile page`}>
                   <p>
-                    Your site name is{" "}
-                    <a href={settings.site_url}>{settings.site_url}</a>. Change
-                    your username to text instead of numbers.
-                  </p>
-                  <ChangeUsername
-                    author_id={session.id}
-                    username={session.username}
-                  />
-                  <Divider />
-                </li>
-              )}
-              {author && (
-                <li>
-                  <p>
-                    Introduce yourself. Write a short text about yourself,
-                    change your profile image and update your social links by
-                    visiting{"  "}
+                    Write a short text about yourself, change your profile image
+                    and update your social links by visiting{"  "}
                     <Link href={"/profile?selected=basic"}>
                       Profile → Basic Information
                     </Link>
                     .
                   </p>
-                  <Divider />
-                  <li>
-                    <p>
-                      Update your site details by visiting{" "}
-                      <Link href={"/settings?selected=general"}>
-                        Settings → General
-                      </Link>
-                      .
-                    </p>
-                  </li>
-                </li>
-              )}
-              <Divider />
-              <li>
-                <p>
-                  Write your first post by visiting{" "}
-                  <Link href="/api/create?type=post">Posts → New Post</Link>.
-                </p>
-              </li>
-            </ul>
+                </Section>
+                <Section title={`${count++}. Update site details`}>
+                  <p>
+                    Update your site details by visiting{" "}
+                    <Link href={"/settings?selected=general"}>
+                      Settings → General
+                    </Link>
+                    .
+                  </p>
+                </Section>
+              </>
+            )}
+
+            <Section title={`${count++}. Write your first post`}>
+              <p>
+                Write your first post by visiting{" "}
+                <Link href="/api/create?type=post">Posts → New Post</Link>.
+              </p>
+            </Section>
 
             <br />
             <br />
@@ -120,3 +118,20 @@ const Home: FC<PageProps> = ({ session, settings }) => {
   );
 };
 export default Home;
+
+const Section = ({ children, title }) => {
+  return (
+    <>
+      <h4 style={{ borderLeft: "2px solid green", paddingLeft: 8 }}>{title}</h4>
+      <section
+        style={{
+          background: "rgb(var(--content-bg))",
+          padding: 20,
+          marginBottom: 20,
+        }}
+      >
+        {children}
+      </section>
+    </>
+  );
+};
