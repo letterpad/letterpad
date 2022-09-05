@@ -1,11 +1,10 @@
-import { Collapse, Form, Input } from "antd";
+import { Form, Input } from "antd";
 import { useMemo } from "react";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { debounce } from "@/shared/utils";
-const { Panel } = Collapse;
 
 interface Props {
   settings: SettingsFragmentFragment;
