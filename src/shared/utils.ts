@@ -103,3 +103,8 @@ export function initPageProgress() {
   Router.events.on("routeChangeComplete", () => NProgress.done());
   Router.events.on("routeChangeError", () => NProgress.done());
 }
+
+const expr = /^[a-zA-Z0-9._]*$/;
+export const sanitizeUsername = (username: string) => {
+  return expr.test(username);
+};

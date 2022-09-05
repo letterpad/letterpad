@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Divider, Form, PageHeader } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import Link from "next/link";
@@ -12,7 +12,7 @@ import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 
 import { PageProps } from "@/types";
 
-const Home: FC<PageProps> = ({ session }) => {
+const Home: FC<PageProps> = ({ session, settings }) => {
   const [settingsMutation] = useUpdateOptionsMutation();
   const me = useMeQuery();
   const router = useRouter();
@@ -21,11 +21,11 @@ const Home: FC<PageProps> = ({ session }) => {
     settingsMutation({ variables: { options: { intro_dismissed: true } } });
     router.push("/posts");
   };
-  const username =
-    me.data?.me?.__typename === "Author" ? me.data.me.username : "";
-
+  const author = me.data?.me?.__typename === "Author" ? me.data.me : null;
+  const username = author?.username || "";
   const changeUsername =
-    parseInt(username).toString() == username && username.match(/^[0-9]+$/);
+    true ||
+    (parseInt(username).toString() == username && username.match(/^[0-9]+$/));
 
   return (
     <>
@@ -33,94 +33,83 @@ const Home: FC<PageProps> = ({ session }) => {
         <title>Posts</title>
       </Head>
       <Content>
+        <PageHeader
+          title="Welcome to your new blog!"
+          className="site-page-header"
+        >
+          <span className="help-text">
+            Thank you for trying out Letterpad. We encourage you to update the
+            below information first. This will allow search engines to know
+            about your site.
+          </span>
+        </PageHeader>
         <div
           className="site-layout-background"
           style={{
             fontSize: "1rem",
-            paddingTop: "10px",
+            padding: "40px 20px",
             minHeight: "calc(100vh - 100px)",
             paddingBottom: 20,
             display: "flex",
-            alignItems: "center",
+            alignItems: "top",
             flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: "left",
             lineHeight: 1.6,
           }}
         >
-          <div style={{ maxWidth: 500, margin: "auto", padding: 20 }}>
-            <p>Hi There 👋 ,</p>
-            <p>
-              Thank you for trying out Letterpad. We encourage you to update the
-              below information first.
-            </p>
-            {changeUsername && (
-              <>
+          <div style={{ maxWidth: 600 }}>
+            <ul style={{ padding: "0px 20px" }}>
+              {changeUsername && (
+                <li>
+                  <p>
+                    Your site name is{" "}
+                    <a href={settings.site_url}>{settings.site_url}</a>. Change
+                    your username to text instead of numbers.
+                  </p>
+                  <ChangeUsername
+                    author_id={session.id}
+                    username={session.username}
+                  />
+                  <Divider />
+                </li>
+              )}
+              {author && (
+                <li>
+                  <p>
+                    Introduce yourself. Write a short text about yourself,
+                    change your profile image and update your social links by
+                    visiting{"  "}
+                    <Link href={"/profile?selected=basic"}>
+                      Profile → Basic Information
+                    </Link>
+                    .
+                  </p>
+                  <Divider />
+                  <li>
+                    <p>
+                      Update your site details by visiting{" "}
+                      <Link href={"/settings?selected=general"}>
+                        Settings → General
+                      </Link>
+                      .
+                    </p>
+                  </li>
+                </li>
+              )}
+              <Divider />
+              <li>
                 <p>
-                  Your username is visible in the url. We suggest using text
-                  instead of numbers
+                  Write your first post by visiting{" "}
+                  <Link href="/api/create?type=post">Posts → New Post</Link>.
                 </p>
-                <ChangeUsername
-                  author_id={session.id}
-                  username={session.username}
-                />
-              </>
-            )}
-            <h4>Write about yourself:</h4>
-            <p>
-              Introduce yourself by updating your{" "}
-              <Link href={"/settings?selected=general"}>profile</Link>
-            </p>
+              </li>
+            </ul>
 
-            <h4>Write about your site:</h4>
-            <p>
-              Update your site details to let the audience know what your site
-              is about by{" "}
-              <Link href={"/settings?selected=general"}>clicking here</Link>
-            </p>
-            <p>
-              To begin with, we recommend you to go through this{" "}
-              <a
-                href="https://docs.letterpad.app/setup/setting-up-your-blog"
-                target="_blank"
-                rel="noreferrer"
-              >
-                article
-              </a>{" "}
-              on getting started.
-            </p>
-            <p>
-              Letterpad has a small footprint in terms of features and thats why
-              it is extremely performant. As independent bloggers, it was
-              important for us to provide a good expereince to readers and
-              writers without any paywall.
-            </p>
-            <p>
-              Letterpad is an open source project, meaning all its code is
-              freely available{" "}
-              <a
-                href="https://github.com/letterpad/letterpad"
-                target="_blank"
-                rel="noreferrer"
-              >
-                here
-              </a>
-              . We believe that a community has more power in driving the
-              roadmap of this product instead of us making decisions. If you
-              have any feedback, feel free to share it with us by clicking the
-              report button on the top right corner.
-            </p>
-            <p>
-              If you would like to contribute, refer to this{" "}
-              <a
-                href="https://docs.letterpad.app/contribute"
-                target="_blank"
-                rel="noreferrer"
-              >
-                article
-              </a>
-              .
-            </p>
-            <p>Happy Blogging!</p>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
           </div>
           <Button type="link" onClick={onDismiss} data-testid="dismissIntro">
             Dismiss

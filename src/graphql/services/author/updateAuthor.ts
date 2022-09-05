@@ -13,6 +13,7 @@ import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { mapAuthorToGraphql } from "@/graphql/resolvers/mapper";
 import { EmailTemplates } from "@/graphql/types";
 import { encryptEmail } from "@/shared/clientToken";
+import { sanitizeUsername } from "@/shared/utils";
 
 interface InputAuthorForDb extends Omit<InputAuthor, "social"> {
   social: string;
@@ -43,6 +44,12 @@ export const updateAuthor = async (
     }
 
     if (args.author.username) {
+      if (!sanitizeUsername(args.author.username)) {
+        return {
+          __typename: "Failed",
+          message: "Username is not valid",
+        };
+      }
       const usernameExist = await prisma.author.findFirst({
         where: {
           username: args.author.username,
