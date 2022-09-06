@@ -22,17 +22,22 @@ model Author {
   createdAt           DateTime?    @default(now())
   updatedAt           DateTime?    @updatedAt
   verify_attempt_left Int?         @default(3)
-  posts               Post[]
-  uploads             Upload[]
   analytics_id        Int?
   analytics_uuid      String?
-  setting             Setting?
   role_id             Int
-  role                Role         @relation(fields: [role_id], references: [id])
-  subscribers         Subscriber[]
   login_type          String       @default("credentials")
-  domain              Domain?
   last_seen           DateTime?
+  role                Role         @relation(fields: [role_id], references: [id])
+  domain              Domain?
+  posts               Post[]
+  setting             Setting?
+  subscribers         Subscriber[]
+  uploads             Upload[]
+  first_post_published Boolean      @default(false)
+  settings_updated    Boolean      @default(false)
+  profile_updated      Boolean      @default(false)
+
+  @@index([role_id], map: "Author_role_id_fkey")
 }
 
 model EmailDelivery {
@@ -82,8 +87,10 @@ model Post {
   updatedAt          DateTime? @updatedAt
   createdAt          DateTime? @default(now())
   author_id          Int
-  author             Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author             Author?    @relation(fields: [author_id], references: [id], onDelete: Cascade)
   tags               Tag[]
+
+  @@index([author_id], map: "Post_author_id_fkey")
 }
 
 model RolePermissions {
@@ -94,6 +101,9 @@ model RolePermissions {
   permission_id Int
   permission    Permission @relation(fields: [permission_id], references: [id], onDelete: Cascade)
   role          Role       @relation(fields: [role_id], references: [id], onDelete: Cascade)
+
+  @@index([permission_id], map: "RolePermissions_permission_id_fkey")
+  @@index([role_id], map: "RolePermissions_role_id_fkey")
 }
 
 model Role {
@@ -101,8 +111,8 @@ model Role {
   name        String?           @unique
   createdAt   DateTime?         @default(now())
   updatedAt   DateTime?         @updatedAt
-  permissions RolePermissions[]
   author      Author[]
+  permissions RolePermissions[]
 }
 
 model Setting {
@@ -143,10 +153,10 @@ model Subscriber {
   createdAt           DateTime? @default(now())
   updatedAt           DateTime? @updatedAt
   verify_attempt_left Int?      @default(3)
-
-  author Author? @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author              Author?    @relation(fields: [author_id], references: [id], onDelete: Cascade)
 
   @@unique([email, author_id])
+  @@index([author_id], map: "Subscriber_author_id_fkey")
 }
 
 model Tag {
@@ -169,6 +179,8 @@ model Upload {
   createdAt   DateTime? @default(now())
   author_id   Int
   author      Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+
+  @@index([author_id], map: "Upload_author_id_fkey")
 }
 
 model Domain {
@@ -179,7 +191,7 @@ model Domain {
   updatedAt DateTime? @updatedAt
   createdAt DateTime? @default(now())
   author_id Int       @unique
-  author    Author?   @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author    Author?    @relation(fields: [author_id], references: [id], onDelete: Cascade)
 }
 
 model SubscribersDelivery {

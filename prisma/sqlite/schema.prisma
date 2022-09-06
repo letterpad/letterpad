@@ -34,6 +34,9 @@ model Author {
   login_type          String       @default("credentials")
   domain              Domain?
   last_seen           DateTime?
+  first_post_published Boolean      @default(false)
+  settings_updated    Boolean      @default(false)
+  profile_updated      Boolean      @default(false)
 }
 
 model EmailDelivery {

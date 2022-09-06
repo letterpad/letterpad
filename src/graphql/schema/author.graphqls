@@ -22,6 +22,9 @@ type Author {
   accessToken: String @maskIfUnauth
   analytics_id: Int
   analytics_uuid: String
+  first_post_published: Boolean
+  settings_updated: Boolean
+  profile_updated: Boolean
 }
 
 input LoginData {
@@ -48,6 +51,9 @@ input InputAuthor {
   roleId: Int
   avatar: String
   username: String
+  first_post_published: Boolean
+  settings_updated: Boolean
+  profile_updated: Boolean
 }
 
 input InputCreateAuthor {

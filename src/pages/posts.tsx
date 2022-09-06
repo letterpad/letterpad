@@ -10,6 +10,10 @@ import { postsStyles } from "@/components/posts.css";
 
 import ErrorMessage from "@/components/ErrorMessage";
 import Filters from "@/components/filters";
+import {
+  isIntroDismissed,
+  setIntroDimissed,
+} from "@/components/home/visibility";
 import { postsColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
 import { TagsProvider } from "@/components/tags/context";
@@ -32,8 +36,8 @@ function Posts({ readOnly }: { readOnly: boolean }) {
 
   React.useEffect(() => {
     if (!setting?.intro_dismissed) {
-      if (!localStorage.intro_dismissed) {
-        localStorage.intro_dismissed = true;
+      if (!isIntroDismissed()) {
+        setIntroDimissed(true);
         router.push("/home");
       }
     }

@@ -51,9 +51,8 @@ export async function seed(folderCheck = true) {
         throw "error";
       }
       console.timeEnd("delete all recoreds from all tables");
+
       console.time("ensure data directories");
-      console.log(absPath(dataDir));
-      console.log(absPath(publicUploadsDir));
       await Promise.all([
         fs.promises.mkdir(absPath(dataDir), { recursive: true }),
         fs.promises.mkdir(absPath(publicUploadsDir), { recursive: true }),
