@@ -2,4 +2,9 @@
 
 source scripts/schema.sh
 
-npx prisma migrate dev --schema prisma/$PRISMA_FILE
+if [ $NODE_ENV -eq "production" ]; then
+    npx prisma migrate deploy --schema prisma/$PRISMA_FILE
+else
+    npx prisma migrate dev --schema prisma/$PRISMA_FILE
+fi
+
