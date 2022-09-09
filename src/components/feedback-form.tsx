@@ -1,5 +1,4 @@
 import { Button, Input, message, Modal } from "antd";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 import { basePath } from "@/constants";
@@ -9,7 +8,6 @@ const FeedbackForm = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [processing, setProcessing] = useState(false);
-  const router = useRouter();
 
   const showModal = () => {
     setIsModalVisible(true);

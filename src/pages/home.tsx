@@ -3,7 +3,6 @@ import { FC, useCallback, useEffect } from "react";
 
 import { GettingStarted } from "@/components/home/getting-started";
 
-import { InputAuthor } from "@/__generated__/__types__";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 

@@ -1,5 +1,4 @@
 export const setIntroDimissed = (value: boolean) => {
-  console.log(value);
   localStorage.intro_dismissed = value;
 };
 
