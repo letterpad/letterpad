@@ -4,7 +4,7 @@ import {
   ForgotPasswordToken,
   UnsubscribeToken,
   VerifySubscriberToken,
-} from "./types";
+} from "../types";
 
 interface GetToken<T> {
   data: T;

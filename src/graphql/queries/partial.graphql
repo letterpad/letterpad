@@ -108,4 +108,7 @@ fragment MeFragment on Author {
   occupation
   company_name
   avatar
+  first_post_published
+  settings_updated
+  profile_updated
 }

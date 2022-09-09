@@ -37,11 +37,11 @@ describe("Test Post Query Graphql API", () => {
       name: "Demo Author",
       occupation: "Principal Engineer @ Ajaxtown",
       social: {
-        facebook: "https://facebook.com",
-        github: "https://github.com",
-        instagram: "https://instagram.com",
-        linkedin: "https://linkedin.com",
-        twitter: "https://twitter.com",
+        facebook: "",
+        github: "",
+        instagram: "",
+        linkedin: "",
+        twitter: "",
       },
     });
   });

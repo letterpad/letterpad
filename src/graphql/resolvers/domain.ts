@@ -1,12 +1,13 @@
 import { MutationResolvers, QueryResolvers } from "@/__generated__/__types__";
 import { ResolverContext } from "@/graphql/context";
-import { Optional } from "@/shared/types";
 
 import {
   createOrUpdateDomain,
   getDomain,
   removeDomain,
 } from "../services/domain";
+
+import { Optional } from "@/types";
 
 const Query: Optional<QueryResolvers<ResolverContext>> = {
   domain: async (_root, _args, context) => {

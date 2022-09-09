@@ -51,9 +51,8 @@ export async function seed(folderCheck = true) {
         throw "error";
       }
       console.timeEnd("delete all recoreds from all tables");
+
       console.time("ensure data directories");
-      console.log(absPath(dataDir));
-      console.log(absPath(publicUploadsDir));
       await Promise.all([
         fs.promises.mkdir(absPath(dataDir), { recursive: true }),
         fs.promises.mkdir(absPath(publicUploadsDir), { recursive: true }),
@@ -235,11 +234,11 @@ async function insertAuthors() {
     data: {
       verified: true,
       social: JSON.stringify({
-        twitter: "https://twitter.com",
-        facebook: "https://facebook.com",
-        github: "https://github.com",
-        instagram: "https://instagram.com",
-        linkedin: "https://linkedin.com",
+        twitter: "",
+        facebook: "",
+        github: "",
+        instagram: "",
+        linkedin: "",
       }),
       occupation: "Principal Engineer @ Ajaxtown",
       company_name: "Letterpad",

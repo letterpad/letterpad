@@ -5,12 +5,13 @@ import { prisma } from "@/lib/prisma";
 import { basePath } from "@/constants";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { decodeJWTToken } from "@/shared/token";
-import { VerifySubscriberToken } from "@/shared/types";
 
 import {
   EmailTemplates,
   NextApiRequestWithFormData,
 } from "../../graphql/types";
+
+import { VerifySubscriberToken } from "@/types";
 
 const Verify = async (
   req: NextApiRequestWithFormData,

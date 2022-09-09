@@ -45,6 +45,16 @@ export const updatePost = async (
       };
     }
 
+    const author = await prisma.author.findFirst({
+      where: { id: existingPost.author_id },
+    });
+    if (!author) {
+      return {
+        __typename: "PostError",
+        message: "No Author found",
+      };
+    }
+
     const newPostArgs: Prisma.PostUpdateArgs = {
       data: {},
       where: {
@@ -114,6 +124,14 @@ export const updatePost = async (
       };
     }
     const updatedPost = await prisma.post.update(newPostArgs);
+
+    const nowPublished = args.data.status === PostStatusOptions.Published;
+    if (!author.first_post_published && nowPublished) {
+      await prisma.author.update({
+        data: { first_post_published: true },
+        where: { id: author.id },
+      });
+    }
 
     // update content
 

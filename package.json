@@ -3,6 +3,9 @@
   "version": "3.2.1",
   "author": "Abhishek Saha",
   "license": "MIT",
+  "prisma": {
+    "seed": "yarn seed"
+  },
   "scripts": {
     "codegen": "graphql-let",
     "client": "concurrently -k 'yarn dev'",
@@ -18,12 +21,13 @@
     "prisma:generate": "dotenv scripts/generatePrisma.sh",
     "prisma:migrate:create": "dotenv scripts/createMigration.sh",
     "prisma:migrate:run": "dotenv scripts/runMigration.sh",
+    "prisma:seed": "dotenv scripts/seed.sh",
     "prisma:studio": "dotenv scripts/studio.sh",
     "resetDemo": "ts-node -r tsconfig-paths/register --transpile-only ./src/resetDemo.ts",
     "cy:open": "cypress open --browser chrome",
     "cy:run": "cypress run --record --key e2c7bae0-47ed-49e5-8ea8-b0c26c3493f7 --browser chrome",
-    "e2e:ci": "yarn seed && start-server-and-test 'yarn start' http://localhost:3000/admin/login cy:run",
-    "e2e": "yarn seed && start-server-and-test 'yarn dev' http://localhost:3000/admin/login cy:open",
+    "e2e:ci": "yarn prisma:seed && start-server-and-test 'yarn start' http://localhost:3000/admin/login cy:run",
+    "e2e": "yarn prisma:seed && start-server-and-test 'yarn dev' http://localhost:3000/admin/login cy:open",
     "format": "prettier -w .",
     "format:check": "prettier -c .",
     "prepare": "husky install"
@@ -38,7 +42,7 @@
     "@graphql-tools/merge": "8.2.6",
     "@graphql-tools/schema": "8.3.5",
     "@graphql-tools/utils": "^8.10.0",
-    "@prisma/client": "^3.8.1",
+    "@prisma/client": "^4.3.1",
     "@tinymce/tinymce-react": "^4.2.0",
     "@types/bcryptjs": "^2.4.2",
     "ajv": "^8.10.0",
@@ -67,7 +71,7 @@
     "next-auth": "4.10.0",
     "nodemailer": "^6.7.3",
     "nprogress": "^0.2.0",
-    "prisma": "4.1.1",
+    "prisma": "4.3.1",
     "raygun": "^0.13.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -4,7 +4,7 @@ import NProgress from "nprogress";
 import { basePath } from "@/constants";
 import { IMediaUploadResult } from "@/graphql/types";
 
-import { IUploadFileProps } from "./types";
+import { IUploadFileProps } from "../types";
 
 export const getReadableDate = (timestamp: Date) => {
   return new Date(timestamp).toLocaleString("en-us", {
@@ -103,3 +103,8 @@ export function initPageProgress() {
   Router.events.on("routeChangeComplete", () => NProgress.done());
   Router.events.on("routeChangeError", () => NProgress.done());
 }
+
+const expr = /^[a-zA-Z0-9._]*$/;
+export const sanitizeUsername = (username: string) => {
+  return expr.test(username);
+};

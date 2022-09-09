@@ -19,11 +19,12 @@ import { EnhancedButton } from "@/components/buttons";
 import { Collection } from "@/components/navigation-builder/types";
 
 import { NavigationType } from "@/__generated__/__types__";
-import { IMenuWithError } from "@/shared/types";
 import { EventAction, track } from "@/track";
 
 import { Item } from "./item";
 import { SuggestionModal } from "./suggestion-modal";
+
+import { IMenuWithError } from "@/types";
 
 interface Props {
   items: IMenuWithError[];

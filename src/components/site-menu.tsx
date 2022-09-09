@@ -14,15 +14,26 @@ import {
 import { Menu } from "antd";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 
 const countStyle = {
   right: 24,
 };
 
-export const SidebarMenu = ({ stats }) => {
+export const SiteMenu = ({ stats }) => {
   const router = useRouter();
   const { pathname } = router;
+  const menuRef = useRef(null);
+
+  const [key, setKey] = useState("");
+
+  const handleClick = ({ key }) => {
+    setKey(key);
+  };
+
+  useEffect(() => {
+    setKey(pathname);
+  }, [pathname]);
 
   const menuItems = useMemo(() => {
     return [
@@ -81,12 +92,15 @@ export const SidebarMenu = ({ stats }) => {
 
   return (
     <Menu
+      ref={menuRef}
       theme="dark"
       mode="inline"
-      defaultSelectedKeys={[menuItems[pathname]]}
+      defaultSelectedKeys={[router.pathname]}
       style={{ paddingBottom: 60, background: "none", flex: 1 }}
       items={menuItems}
+      selectedKeys={[key]}
       onClick={(info) => {
+        handleClick(info);
         if (info.key !== "/logout") router.push(info.key);
       }}
     />

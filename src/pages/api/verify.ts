@@ -5,9 +5,10 @@ import { prisma } from "@/lib/prisma";
 
 import { basePath } from "@/constants";
 import { decodeJWTToken, verifyToken } from "@/shared/token";
-import { VerifyUserOrSubscriberToken } from "@/shared/types";
 
 import { NextApiRequestWithFormData } from "./../../graphql/types";
+
+import { VerifyUserOrSubscriberToken } from "@/types";
 
 const Verify = async (
   req: NextApiRequestWithFormData,

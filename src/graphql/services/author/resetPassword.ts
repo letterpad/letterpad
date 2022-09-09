@@ -5,7 +5,8 @@ import { ResolverContext } from "@/graphql/context";
 import { enqueueEmailAndSend } from "@/graphql/mail/enqueueEmailAndSend";
 import { EmailTemplates } from "@/graphql/types";
 import { decodeJWTToken, verifyToken } from "@/shared/token";
-import { ForgotPasswordToken } from "@/shared/types";
+
+import { ForgotPasswordToken } from "@/types";
 
 export const resetPassword = async (
   args,

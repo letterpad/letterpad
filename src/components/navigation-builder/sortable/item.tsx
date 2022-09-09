@@ -8,7 +8,8 @@ import { FC, useEffect, useState } from "react";
 import { EnhancedButton } from "@/components/buttons";
 
 import { Navigation, NavigationType } from "@/__generated__/__types__";
-import { IMenuWithError } from "@/shared/types";
+
+import { IMenuWithError } from "@/types";
 
 interface INavigationUI extends Omit<Navigation, "type"> {
   hasError?: boolean;

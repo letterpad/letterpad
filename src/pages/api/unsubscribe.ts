@@ -4,9 +4,10 @@ import { prisma } from "@/lib/prisma";
 
 import { basePath } from "@/constants";
 import { decodeJWTToken, verifyToken } from "@/shared/token";
-import { UnsubscribeToken } from "@/shared/types";
 
 import { NextApiRequestWithFormData } from "../../graphql/types";
+
+import { UnsubscribeToken } from "@/types";
 
 const Unsubscribe = async (
   req: NextApiRequestWithFormData,
