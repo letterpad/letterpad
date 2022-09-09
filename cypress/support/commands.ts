@@ -36,6 +36,9 @@ function login({ email, password }) {
   cy.url().then(($url) => {
     if ($url.includes("home")) {
       cy.getTestId("dismissIntro").click();
+      cy.wait("@UpdateOptionsMutation");
+      // cy.visitPosts();
+      // cy.visit("/posts");
     }
   });
 }
@@ -95,6 +98,7 @@ beforeEach(function () {
     aliasMutation(req, "updatePost");
     aliasMutation(req, "UpdateOptions");
     aliasMutation(req, "UpdateAuthor");
+    aliasMutation(req, "UpdateOptions");
   });
   cy.intercept("/admin/api/auth/session").as("getSession");
   cy.intercept("/admin/api/auth/callback/credentials?").as("getCredentials");

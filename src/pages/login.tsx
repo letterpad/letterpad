@@ -1,7 +1,6 @@
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-import { setIntroDimissed } from "@/components/home/visibility";
 import { ForgotPassword } from "@/components/login/views/ForgotPassword";
 import { LoginForm } from "@/components/login/views/LoginForm";
 import { LoginFormDemo } from "@/components/login/views/LoginFormDemo";
@@ -13,9 +12,6 @@ const Login = () => {
   const isDemo =
     typeof document !== "undefined" && document.location.search === "?demo";
 
-  useEffect(() => {
-    setIntroDimissed(false);
-  }, []);
   return (
     <NoSsr>
       <Head>

@@ -36,8 +36,26 @@ const Home: FC<PageProps> = ({ settings }) => {
   if (author?.__typename !== "Author") return <div>Future</div>;
 
   if (showGettingStarted) {
-    return <GettingStarted settings={settings} author={author} />;
+    return withDismiss(
+      <GettingStarted settings={settings} author={author} />,
+      onDismiss,
+    );
   }
-  return null;
+  return withDismiss(null, onDismiss);
 };
 export default Home;
+
+const withDismiss = (children: React.ReactNode, onDismiss) => {
+  return (
+    <>
+      <button
+        onClick={onDismiss}
+        style={{ height: 10, width: 10, opacity: 0 }}
+        data-testid="dismissIntro"
+      >
+        -
+      </button>
+      {children}
+    </>
+  );
+};
