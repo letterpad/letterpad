@@ -75,7 +75,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
             await insertScript("/admin/tippy/tippy.min.js", domBody.head);
 
             socket.applyTooltip();
-            editor.on("SelectionChange", function (e) {
+            editor.on("SelectionChange", function () {
               let node = editor.selection.getNode();
               const prevNode = editor
                 .getDoc()

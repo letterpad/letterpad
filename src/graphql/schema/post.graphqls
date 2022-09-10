@@ -50,6 +50,11 @@ input PostFilters {
   type: PostTypes
 }
 
+input LetterpadPostFilters {
+  slug: String!
+  username: String!
+}
+
 enum PostTypes {
   post
   page
@@ -165,6 +170,8 @@ type Query {
   post(filters: PostFilters): PostResponse!
   posts(filters: PostsFilters): PostsResponse!
   stats: StatsResponse
+  letterpadLatestPosts: PostsResponse!
+  letterpadLatestPost(filters: LetterpadPostFilters): PostResponse!
 }
 
 type Mutation {

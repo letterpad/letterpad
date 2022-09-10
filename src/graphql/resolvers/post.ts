@@ -12,6 +12,8 @@ import {
   getPosts,
   getTagsFromPost,
 } from "../services/post";
+import { getLetterpadLatestPost } from "../services/post/getLetterpadLatestPost";
+import { getLetterpadLatestPosts } from "../services/post/getLetterpadLatestPosts";
 import { getStats } from "../services/stats";
 import { setResponsiveImages } from "../utils/imageAttributs";
 
@@ -45,6 +47,30 @@ const Post: PostResolvers<ResolverContext> = {
 };
 
 const Query: QueryResolvers<ResolverContext> = {
+  async letterpadLatestPost(_parent, args, context) {
+    try {
+      const response = await getLetterpadLatestPost(args, context);
+      return response;
+    } catch (e: any) {
+      report.error(e);
+      return {
+        __typename: "Exception",
+        message: "Something unexpected happened",
+      };
+    }
+  },
+  async letterpadLatestPosts(_parent, args, context) {
+    try {
+      const response = await getLetterpadLatestPosts(args, context);
+      return response;
+    } catch (e: any) {
+      report.error(e);
+      return {
+        __typename: "Exception",
+        message: "Something unexpected happened",
+      };
+    }
+  },
   async posts(_parent, args, context) {
     try {
       const response = await getPosts(args, context);

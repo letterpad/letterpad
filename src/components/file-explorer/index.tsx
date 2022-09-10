@@ -1,5 +1,5 @@
 import { LoadingOutlined } from "@ant-design/icons";
-import { Button, Progress, Spin } from "antd";
+import { Button, Spin } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { useCallback, useRef, useState } from "react";
 
