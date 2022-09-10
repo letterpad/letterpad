@@ -13,6 +13,7 @@ if (typeof window !== "undefined") {
   require("tinymce/plugins/quickbars");
   require("tinymce/plugins/autoresize");
   require("tinymce/plugins/codesample");
+  require("tinymce/plugins/directionality");
   // require("tinymce/plugins/image");
   require("tinymce/plugins/pagebreak");
   require("tinymce/icons/default");

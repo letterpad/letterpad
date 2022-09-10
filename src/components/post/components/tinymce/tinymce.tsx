@@ -107,7 +107,8 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           contextmenu: false,
           socket,
           branding: false,
-          plugins: "lists link quickbars autoresize  code codesample",
+          plugins:
+            "lists link quickbars autoresize  code codesample directionality",
           skin: window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "oxide-dark"
             : "",
@@ -115,7 +116,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           height: "100%",
           quickbars_image_toolbar: false,
           quickbars_selection_toolbar:
-            "h1 h2 bold italic underline quicklink nlpcheck nlpremove",
+            "h1 h2 bold italic underline quicklink nlpcheck nlpremove ltr rtl",
           quickbars_insert_toolbar:
             "bullist numlist blockquote hr codesample customImage",
           statusbar: false,
