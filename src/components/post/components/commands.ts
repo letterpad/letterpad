@@ -5,6 +5,7 @@ export const insertImageInEditor = (editor: Editor["editor"], images: any) => {
     const range = editor?.selection.getRng(); // get range: ;
     const doc = editor?.getDoc();
     const newNode = doc?.createElement("figure");
+    newNode?.setAttribute("contenteditable", "true");
     if (newNode && range) {
       newNode.innerHTML = `
             <img src="${image.src}" alt="${image.caption}" style="display: block; margin-left: auto; margin-right: auto;">

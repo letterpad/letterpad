@@ -141,15 +141,6 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
     scope: "node",
   });
 
-  editor.on("keyup", function (e) {
-    if (e.key == "Delete" || e.key == "Backspace") {
-      const node = editor.selection.getNode();
-      if (node.tagName === "FIGURE") {
-        node.remove();
-      }
-    }
-  });
-
   editor.on("keydown", function (e) {
     // move cursor to next element when hitting enter on figcaption
     if (e.key == "Enter") {
@@ -164,6 +155,15 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
           editor.selection.setRng(range, true);
         }
         e.preventDefault();
+      }
+    }
+    if (e.key == "Delete" || e.key == "Backspace") {
+      const node = editor.selection.getNode();
+      if (node.tagName === "FIGURE") {
+        node.remove();
+      }
+      if (node.tagName === "IMG") {
+        node.parentElement?.remove();
       }
     }
   });

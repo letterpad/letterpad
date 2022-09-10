@@ -86,15 +86,6 @@ function Post() {
               />
               <Editor text={content ?? ""} onChange={onEditorChange} />
               <WordCount text={content || ""} />
-              <FileExplorer
-                multi={true}
-                isVisible={fileExplorerOpen}
-                handleCancel={onFileExplorerClose}
-                onInsert={(images) => {
-                  helpers && insertImageInEditor(helpers, images);
-                  onFileExplorerClose();
-                }}
-              />
             </div>
           )}
         </div>
