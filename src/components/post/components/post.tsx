@@ -7,7 +7,6 @@ import { useCallback, useMemo } from "react";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import ErrorMessage from "@/components/ErrorMessage";
-import FileExplorer from "@/components/file-explorer";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
 import Title from "@/components/post/components/title";
@@ -17,7 +16,6 @@ import { PostStatusOptions } from "@/__generated__/__types__";
 import { usePostQuery } from "@/__generated__/queries/queries.graphql";
 import { debounce } from "@/shared/utils";
 
-import { insertImageInEditor } from "./commands";
 import PostDate from "./postDate";
 import WordCount from "./wordCount";
 import { PostContextType } from "../types";
@@ -35,8 +33,7 @@ function Post() {
     [updatePostAPI],
   );
 
-  const { onFileExplorerClose, fileExplorerOpen, helpers } =
-    usePostContext() as PostContextType;
+  const { helpers } = usePostContext() as PostContextType;
 
   const post = data?.post.__typename === "Post" ? data.post : undefined;
   let content = post?.html;
@@ -86,15 +83,6 @@ function Post() {
               />
               <Editor text={content ?? ""} onChange={onEditorChange} />
               <WordCount text={content || ""} />
-              <FileExplorer
-                multi={true}
-                isVisible={fileExplorerOpen}
-                handleCancel={onFileExplorerClose}
-                onInsert={(images) => {
-                  helpers && insertImageInEditor(helpers, images);
-                  onFileExplorerClose();
-                }}
-              />
             </div>
           )}
         </div>

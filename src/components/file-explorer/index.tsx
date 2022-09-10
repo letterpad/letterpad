@@ -1,4 +1,5 @@
-import { Button } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Button, Spin } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { useCallback, useRef, useState } from "react";
 
@@ -26,6 +27,7 @@ const FileExplorer = ({
   multi = true,
   onInsert,
 }: IProps) => {
+  const [uploading, setUploading] = useState(false);
   const [mediaProvider, setMediaProvider] = useState<MediaProvider>(
     MediaProvider.Letterpad,
   );
@@ -103,9 +105,24 @@ const FileExplorer = ({
       <Modal
         centered
         className="file-explorer"
-        title="Media"
+        title={
+          <>
+            Media &nbsp;&nbsp;
+            {uploading && (
+              <Spin
+                indicator={
+                  <LoadingOutlined
+                    style={{ fontSize: 16, fontWeight: "bolder" }}
+                    spin
+                  />
+                }
+              />
+            )}
+          </>
+        }
         visible={isVisible}
         onCancel={closeWindow}
+        // width={window.innerWidth < 900 ? "90%" : "60%"}
         zIndex={1301} // 1300 is tinymce insert toolbar
         footer={[
           <Button key="back" onClick={closeWindow}>
@@ -146,19 +163,32 @@ const FileExplorer = ({
           style={{ display: "none" }}
           onChange={async (e) => {
             if (!e.target.files) return;
+            const filesArr = Array.from(e.target.files);
+            const fileSizeIncrease = filesArr.filter(
+              (file) => file.size > 10000000,
+            );
+            if (fileSizeIncrease.length > 0) {
+              alert("File size should be less than 10MB");
+              return;
+            }
+            setUploading(true);
             const [result] = await uploadFile({
               files: e.target.files,
               type: "cover_image",
             });
+            setUploading(false);
             const urls = { ...selectedUrls };
             urls[`${result.src}`] = { ...result, caption: "" };
             onInsert(Object.values(urls));
           }}
         />
       </Modal>
-      <style jsx>{`
-        :global(.file-explorer) {
-          @media (min-width: 991px) {
+      <style jsx global>{`
+        .file-explorer {
+          width: 90vw !important;
+        }
+        @media (min-width: 991px) {
+          .file-explorer {
             width: 60vw !important;
           }
         }

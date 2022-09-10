@@ -2,9 +2,12 @@ import { Editor } from "@tinymce/tinymce-react";
 import { memo, useEffect, useRef, useState } from "react";
 import "./core";
 
+import FileExplorer from "@/components/file-explorer";
+
 import { basePath } from "@/constants";
 
 import { socket } from "./socket";
+import { insertImageInEditor } from "../commands";
 import { initImagePlugin } from "../plugins/image";
 import { textPatterns } from "../textPatterns";
 import { usePostContext } from "../../context";
@@ -15,7 +18,13 @@ interface Props {
 }
 
 const LpEditor: React.FC<Props> = ({ text, onChange }) => {
-  const { setHelpers, onMediaBrowse } = usePostContext();
+  const {
+    setHelpers,
+    onMediaBrowse,
+    fileExplorerOpen,
+    onFileExplorerClose,
+    helpers,
+  } = usePostContext();
   const editorRef = useRef<Editor["editor"]>(null);
   const isDark = document.body.classList.contains("dark");
   const [html, setHtml] = useState(text);
@@ -66,12 +75,29 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
             await insertScript("/admin/tippy/tippy.min.js", domBody.head);
 
             socket.applyTooltip();
+            editor.on("SelectionChange", function () {
+              let node = editor.selection.getNode();
+              const prevNode = editor
+                .getDoc()
+                .querySelector("[data-id='image-focussed']");
+              if (prevNode) {
+                prevNode.removeAttribute("data-id");
+              }
+
+              if (node.nodeName === "IMG" && node.parentElement) {
+                node = node.parentElement;
+              }
+              if (node.nodeName === "FIGURE") {
+                node.setAttribute("data-id", "image-focussed");
+              }
+            });
           }
         }}
         initialValue={html}
         onEditorChange={(html) => {
           const htmlWithBody = `<html><body>${html}</body></html>`;
-          if (htmlWithBody === text) return;
+          if (htmlWithBody === html) return;
+
           onChange(htmlWithBody);
         }}
         init={{
@@ -81,7 +107,8 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           contextmenu: false,
           socket,
           branding: false,
-          plugins: "lists link quickbars autoresize  code codesample",
+          plugins:
+            "lists link quickbars autoresize  code codesample directionality",
           skin: window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "oxide-dark"
             : "",
@@ -89,7 +116,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           height: "100%",
           quickbars_image_toolbar: false,
           quickbars_selection_toolbar:
-            "h1 h2 bold italic underline quicklink nlpcheck nlpremove",
+            "h1 h2 bold italic underline quicklink nlpcheck nlpremove ltr rtl",
           quickbars_insert_toolbar:
             "bullist numlist blockquote hr codesample customImage",
           statusbar: false,
@@ -131,7 +158,16 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           ],
         }}
       />
-
+      <FileExplorer
+        multi={true}
+        isVisible={!!fileExplorerOpen}
+        handleCancel={onFileExplorerClose}
+        onInsert={(images) => {
+          helpers && insertImageInEditor(helpers, images);
+          onFileExplorerClose();
+        }}
+        // setUploading={}
+      />
       <style jsx global>{`
         .dark iframe {
           margin-bottom: 50px;
