@@ -12,7 +12,12 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ["images.unsplash.com", "res.cloudinary.com", "letterpad.app"],
+    domains: [
+      "images.unsplash.com",
+      "res.cloudinary.com",
+      "letterpad.app",
+      "localhost",
+    ],
   },
   basePath,
   async redirects() {
