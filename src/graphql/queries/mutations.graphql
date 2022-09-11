@@ -256,3 +256,9 @@ mutation RemoveDomain {
     message
   }
 }
+mutation DeleteAuthor {
+  deleteAuthor {
+    ok
+    message
+  }
+}

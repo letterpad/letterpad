@@ -77,6 +77,10 @@ type ForgotPasswordResponse {
   ok: Boolean!
   message: String
 }
+type DeleteAuthorResponse {
+  ok: Boolean!
+  message: String
+}
 
 type Query {
   me: AuthorResponse
@@ -84,6 +88,7 @@ type Query {
 
 type Mutation {
   login(data: LoginData): LoginResponse
+  deleteAuthor: DeleteAuthorResponse
   updateAuthor(author: InputAuthor!): AuthorResponse
   createAuthor(data: InputCreateAuthor!): AuthorResponse
   forgotPassword(email: String!): ForgotPasswordResponse!

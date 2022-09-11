@@ -1,5 +1,11 @@
 import Image from "next/image";
 
 export const Logo = () => {
-  return <Image src="/admin/logo/lp_logo_black.svg" width={50} height={50} />;
+  const theme =
+    typeof localStorage !== "undefined" ? localStorage.theme : "light";
+  const logo =
+    theme === "light"
+      ? "/admin/logo/lp_logo_black.svg"
+      : "/admin/logo/lp_logo_white.svg";
+  return <Image src={logo} width={50} height={50} />;
 };

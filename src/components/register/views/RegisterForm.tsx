@@ -124,6 +124,7 @@ export const RegisterForm = () => {
             >
               <Input.Password placeholder="Enter your password" />
             </Form.Item>
+            <br />
             <Form.Item
               name="site_title"
               rules={[

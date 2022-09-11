@@ -51,6 +51,20 @@ const Mutation: MutationResolvers<ResolverContext> = {
   async resetPassword(_root, args, context) {
     return resetPassword(args, context);
   },
+  async deleteAuthor(_root, _args, { prisma, session }) {
+    if (session?.user.id) {
+      await prisma.author.delete({
+        where: { id: session.user.id },
+      });
+      return {
+        ok: true,
+      };
+    }
+    return {
+      ok: false,
+      message: "You are not logged in",
+    };
+  },
 };
 
 export default { Mutation, Author, Query };

@@ -23,7 +23,7 @@ export const DividerWithOr = () => {
           padding: 0.5rem;
         }
         .border-gray-300 {
-          border: 1px solid #eee;
+          border: 1px solid rgb(var(--color-border));
         }
       `}</style>
     </>
