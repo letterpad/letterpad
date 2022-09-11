@@ -5,6 +5,7 @@ import { GettingStarted } from "@/components/home/getting-started";
 
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
+import { EventAction, track } from "@/track";
 
 import { PageProps } from "@/types";
 
@@ -14,6 +15,11 @@ const Home: FC<PageProps> = ({ settings }) => {
   const router = useRouter();
 
   const onDismiss = useCallback(() => {
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: "onboarding",
+      eventLabel: "completed",
+    });
     settingsMutation({ variables: { options: { intro_dismissed: true } } });
     router.push("/posts");
   }, [settingsMutation, router]);

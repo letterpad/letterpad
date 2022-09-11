@@ -23,10 +23,13 @@ const Integrations: React.FC<Props> = ({
   return (
     <>
       <p>
+        <span>
+          Cloudinary helps in optimising all your images and are served by a
+          CDN.
+        </span>
         {cloudinaryEnabledByAdmin && (
           <span>
-            Cloudinary helps in optimising all your images and are served by a
-            CDN. <u>This has already been enabled by Admin.</u>
+            <u>This has already been enabled by Admin.</u>
           </span>
         )}
       </p>

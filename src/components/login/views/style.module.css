@@ -19,7 +19,7 @@
   letter-spacing: 8px;
   gap: 16px;
   flex-direction: column;
-  border-right: 1px solid rgb(226, 226, 226);
+  border-right: 1px solid rgb(var(--color-border));
 }
 .rightBox {
   flex: 1;
