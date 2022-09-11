@@ -70,8 +70,6 @@ const AuthenticatedLayout = ({ render }: IProps) => {
     <Sidebar
       avatar={session.user.avatar}
       name={session.user.name}
-      site_logo={settings.site_logo?.src}
-      site_title={settings.site_title}
       site_url={settings.site_url}
       stats={stats}
     />

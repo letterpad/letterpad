@@ -178,7 +178,11 @@ const FileExplorer = ({
             });
             setUploading(false);
             const urls = { ...selectedUrls };
-            urls[`${result.src}`] = { ...result, caption: "" };
+            const {
+              src,
+              size: { width, height },
+            } = result;
+            urls[`${result.src}`] = { src, width, height, caption: "" };
             onInsert(Object.values(urls));
           }}
         />
