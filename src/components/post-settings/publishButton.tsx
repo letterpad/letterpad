@@ -9,6 +9,7 @@ import {
   PostTypes,
 } from "@/__generated__/__types__";
 import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+import { EventAction, track } from "@/track";
 
 import {
   pageNotLinkedWithNavigation,
@@ -58,7 +59,13 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
     const status = active
       ? PostStatusOptions.Published
       : PostStatusOptions.Draft;
-
+    if (active) {
+      track({
+        eventAction: EventAction.Click,
+        eventCategory: "post status",
+        eventLabel: "publish",
+      });
+    }
     updatePost({ id: postId, status });
   };
 
