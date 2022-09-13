@@ -19,6 +19,7 @@ export const useLetterpadSession = () => {
 
   const _session = session as unknown as { user: SessionData };
   if (typeof window !== "undefined" && window.ga) {
+    window.ga("set", "dimension1", _session.user.id);
     window.ga("set", "userId", _session.user.id);
   }
   return _session;

@@ -1,10 +1,26 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { basePath } from "@/constants";
 import { EventAction, track } from "@/track";
 
 const ThemeSwitcher = () => {
   const [theme, setTheme] = useState(localStorage.theme || "light");
+
+  const switchTheme = useCallback(
+    (color: string) => {
+      if (color === theme) {
+        return;
+      }
+      ThemeSwitcher.switch(color);
+      setTheme(color);
+      track({
+        eventAction: EventAction.Click,
+        eventCategory: "toggle",
+        eventLabel: `theme.switcher - ${color}`,
+      });
+    },
+    [theme],
+  );
 
   useEffect(() => {
     if (localStorage.theme) {
@@ -13,18 +29,7 @@ const ThemeSwitcher = () => {
     setTimeout(() => {
       switchTheme(localStorage.theme || theme);
     }, 0);
-  }, [theme]);
-
-  const switchTheme = (color: string) => {
-    ThemeSwitcher.switch(color);
-    setTheme(color);
-    track({
-      eventAction: EventAction.Click,
-      eventCategory: "toggle",
-      eventLabel: `theme.switcher - ${color}`,
-    });
-  };
-
+  }, [switchTheme, theme]);
   return (
     <>
       <div className="container">
