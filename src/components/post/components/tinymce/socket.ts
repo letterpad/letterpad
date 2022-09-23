@@ -1,13 +1,14 @@
 import { Editor } from "@tinymce/tinymce-react";
 import io from "socket.io-client";
 
-import Grammar from "../language-tool/grammar";
+import { wsUrl } from "@/constants";
 
-const path = "/admin/api/socket.io";
+import Grammar, { GrammarBase } from "../language-tool/grammar";
+
 class Socket {
   editor: Editor["editor"] = undefined;
   socket: ReturnType<typeof io> | null = null;
-  grammar: any;
+  grammar: GrammarBase;
   onContentChange = () => null;
   nodes: Array<Element> = [];
   listenersActivated = false;
@@ -50,19 +51,29 @@ class Socket {
       this.nodes[index].innerHTML = suggested;
       this.applyTooltip();
     }
-
-    if (index === this.nodes.length - 1) {
-      this._checkComplete();
-    }
   }
 
-  checkGrammar() {
+  async checkGrammar() {
     this.removeGrammar();
     this.nodes = this._getDomNodesForCorrection();
+
+    const promises = this.nodes.map((node, index) => {
+      return this.sendMessage({
+        //@ts-ignore
+        m: node.innerText,
+        index,
+      });
+    });
+    await Promise.all(promises);
+    this._checkComplete();
+  }
+
+  sendMessage(data) {
     const socket = this.socket;
-    this.nodes.forEach((node, index) => {
-      //@ts-ignore
-      socket?.emit("REVIEW", { m: node.innerText, index });
+    return new Promise((resolve) => {
+      socket?.emit("REVIEW", data, function (response) {
+        resolve(response);
+      });
     });
   }
 
@@ -76,12 +87,7 @@ class Socket {
   }
 
   private _checkComplete() {
-    const hasErrors = this.editor
-      ?.getDoc()
-      .body.querySelectorAll("[data-offset-start]");
-    if (hasErrors?.length === 0) {
-      alert("No Errors found");
-    }
+    alert("Check complete!");
   }
 
   disconnect() {
@@ -120,19 +126,17 @@ class Socket {
     }
     const p = async (resolve, reject) => {
       try {
-        await fetch(path);
+        await fetch(wsUrl);
       } catch (err) {
         reject();
       } finally {
-        const socket = io(window.location.origin, { path });
+        const socket = io(window.location.origin, { path: wsUrl });
         socket.on("connect", () => {
-          console.log("Socket connected");
           resolve(socket);
-          socket.emit("hello");
         });
 
-        socket.on("disconnect", (e) => {
-          console.log("disconnect", e);
+        socket.on("disconnect", () => {
+          //
         });
       }
       return socket;

@@ -1,4 +1,5 @@
 import { getTemplate } from "./template";
+import { startOfTag } from "./utils";
 import { LanguageResponse, Match } from "../types";
 
 interface CorrectionOffset {
@@ -10,19 +11,24 @@ interface CorrectionOffset {
 
 type CorrectionOffsetList = { [offset: string]: CorrectionOffset };
 
-export default class Grammar {
+export interface GrammarBase {
+  activateListeners(html: Document, onChange: () => void): void;
+  getSuggestedHtml(html: string, correction: LanguageResponse): string;
+}
+
+export default class Grammar implements GrammarBase {
   correctionOffsets: CorrectionOffsetList = {};
   html = "";
   output = "";
   onChange = () => null;
 
-  activateListeners(document: Document, onChange) {
+  public activateListeners(document: Document, onChange) {
     this.handleSuggestionClick(document);
     this.handleIgnoreSuggestionClick(document);
     this.onChange = onChange;
   }
 
-  getSuggestedHtml(html: string, correction: LanguageResponse) {
+  public getSuggestedHtml(html: string, correction: LanguageResponse) {
     this.html = html;
     this.setCorrectionOffsets(correction);
     return this.generateHtmlWithCorrections();
@@ -42,23 +48,27 @@ export default class Grammar {
 
   private generateHtmlWithCorrections() {
     const htmlLength = this.html.length;
-    let tagCount = 0;
+    let inTag = 0;
     let offset = 0;
     let wordEndOffset = -1;
     this.output = "";
 
+    const addToOutput = (chunk: string) => {
+      this.output += chunk;
+    };
+
     for (let i = 0; i < htmlLength; i++) {
       const letter = this.html[i];
 
-      if (letter == "<") {
-        tagCount++;
-        this.output += letter;
+      if (startOfTag(letter)) {
+        inTag++;
+        addToOutput(letter);
         continue;
       } else if (letter == ">") {
-        tagCount--;
-        this.output += letter;
+        inTag--;
+        addToOutput(letter);
         continue;
-      } else if (tagCount === 0) {
+      } else if (inTag === 0) {
         const suggestion = this.correctionOffsets[offset];
         if (suggestion) {
           const { issueType, category } = suggestion.match.rule;
