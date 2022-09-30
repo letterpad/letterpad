@@ -43,14 +43,6 @@ const saveMiddleware = new ApolloLink((operation, forward) => {
   });
 });
 
-// const responseLogger = new ApolloLink((operation, forward) => {
-//   console.log("hello");
-//   return forward(operation).map((result) => {
-//     console.info(operation.getContext().response.headers);
-//     return result;
-//   });
-// });
-
 export const apolloBrowserClient = new ApolloClient({
   ssrMode: false,
   link: ApolloLink.from([saveMiddleware, errorLink, httpLink]),

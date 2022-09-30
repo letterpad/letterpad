@@ -36,7 +36,7 @@ export const createPost = async (
   const dataToUpdate: Prisma.PostCreateInput = { html: args.data.html || "" };
 
   if (args.data.title) {
-    dataToUpdate.title = args.data.title;
+    dataToUpdate.title = args.data.title.trim();
   }
   if (args.data.cover_image?.src) {
     dataToUpdate.cover_image = args.data.cover_image.src;
