@@ -26,7 +26,7 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
       <a
         href="#"
         onClick={(e) => onClick(e, "google")}
-        className="flex items-center justify-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        className="flex items-center justify-center text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
       >
         <div className="px-4 py-2">
           <svg className="h-6 w-6" viewBox="0 0 40 40">
@@ -56,7 +56,7 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
       <a
         href="#"
         onClick={(e) => onClick(e, "google")}
-        className="flex items-center justify-center text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        className="flex items-center justify-center text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
       >
         <div className="px-4 py-2">
           <svg

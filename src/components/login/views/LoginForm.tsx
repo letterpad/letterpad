@@ -66,9 +66,7 @@ export const LoginForm = ({
                 <h2 className="text-4xl font-bold text-white">Letterpad</h2>
 
                 <p className="max-w-xl mt-3 text-gray-300">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. In
-                  autem ipsa, nulla laboriosam dolores, repellendus perferendis
-                  libero suscipit nam temporibus molestiae
+                  Another Day, Another Story
                 </p>
               </div>
             </div>

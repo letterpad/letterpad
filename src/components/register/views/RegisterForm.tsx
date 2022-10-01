@@ -30,21 +30,51 @@ export const RegisterForm = () => {
 
   const registerAction = async () => {
     setProcessing(true);
+    setError(null);
     message.loading({
       content: "Please wait",
       key,
       duration: 5,
     });
-
+    let errors = {};
     if (executeRecaptcha) {
       const token = await executeRecaptcha("register");
       const formWithToken = { email, username, name, token, password };
-      if (!sanitizeUsername(username)) {
-        setError({
-          ...error,
+      if (!username || !sanitizeUsername(username)) {
+        errors = {
+          ...errors,
           username:
             "Only letters, numbers, underscore, hyphen and dot are allowed",
-        });
+        };
+      }
+      if (email.length === 0) {
+        errors = {
+          ...errors,
+          email: "Email cannot be empty",
+        };
+      }
+      if (
+        password.length < 8 ||
+        password.search(/[a-z]/i) < 0 ||
+        password.search(/[0-9]/) < 0
+      ) {
+        errors = {
+          ...errors,
+          password:
+            "Should be 8 character long and should contain at least one number",
+        };
+      }
+      if (name.length < 3 || name.search(/^([ \u00c0-\u01ffa-zA-Z'-])+$/) < 0) {
+        errors = {
+          ...errors,
+          name: "Should be 3 character long and may contain specific special characters",
+        };
+      }
+      if (Object.keys(errors).length > 0) {
+        setProcessing(false);
+        setError(errors);
+        message.destroy(key);
+        return;
       }
       const result = await createAuthor({
         mutation: CreateAuthorDocument,
@@ -91,9 +121,7 @@ export const RegisterForm = () => {
                 <h2 className="text-4xl font-bold text-white">Letterpad</h2>
 
                 <p className="max-w-xl mt-3 text-gray-300">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. In
-                  autem ipsa, nulla laboriosam dolores, repellendus perferendis
-                  libero suscipit nam temporibus molestiae
+                  Register to create your own blog. It&apos;s free.
                 </p>
               </div>
             </div>
@@ -128,6 +156,7 @@ export const RegisterForm = () => {
                     required
                     className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                   />
+                  <p className="text-rose-500">{error?.name}</p>
                 </div>
               </div>
 
@@ -148,6 +177,7 @@ export const RegisterForm = () => {
                     placeholder="example@example.com"
                     className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                   />
+                  <p className="text-rose-400">{error?.email}</p>
                 </div>
 
                 <div className="mt-6">
@@ -169,6 +199,7 @@ export const RegisterForm = () => {
                     placeholder="Your Password"
                     className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                   />
+                  <p className="text-rose-400">{error?.password}</p>
                 </div>
                 <div className="mt-8">
                   <div>
@@ -187,7 +218,7 @@ export const RegisterForm = () => {
                       placeholder="jacksparrow"
                       className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
-                    <p>{error?.username}</p>
+                    <p className="text-rose-400">{error?.username}</p>
                   </div>
                 </div>
                 <div className="mt-6">
