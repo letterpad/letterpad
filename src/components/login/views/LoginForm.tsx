@@ -87,65 +87,63 @@ export const LoginForm = ({
               </div>
 
               <div className="mt-8">
-                <form>
-                  <div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block mb-2 text-sm text-gray-600 dark:text-gray-200"
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value.trim())}
+                    type="email"
+                    name="email"
+                    id="email"
+                    data-testid="email"
+                    placeholder="example@example.com"
+                    className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  />
+                </div>
+
+                <div className="mt-6">
+                  <div className="flex justify-between mb-2">
                     <label
-                      htmlFor="email"
-                      className="block mb-2 text-sm text-gray-600 dark:text-gray-200"
+                      htmlFor="password"
+                      className="text-sm text-gray-600 dark:text-gray-200"
                     >
-                      Email Address
+                      Password
                     </label>
-                    <input
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value.trim())}
-                      type="email"
-                      name="email"
-                      id="email"
-                      data-testid="email"
-                      placeholder="example@example.com"
-                      className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                    />
-                  </div>
-
-                  <div className="mt-6">
-                    <div className="flex justify-between mb-2">
-                      <label
-                        htmlFor="password"
-                        className="text-sm text-gray-600 dark:text-gray-200"
-                      >
-                        Password
-                      </label>
-                      <a
-                        onClick={hideSelf}
-                        href="#"
-                        className="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline"
-                      >
-                        Forgot password?
-                      </a>
-                    </div>
-
-                    <input
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value.trim())}
-                      type="password"
-                      name="password"
-                      id="password"
-                      data-testid="password"
-                      placeholder="Your Password"
-                      className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                    />
-                  </div>
-
-                  <div className="mt-6">
-                    <button
-                      className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
-                      data-testid="loginBtn"
-                      onClick={loginAction}
+                    <a
+                      onClick={hideSelf}
+                      href="#"
+                      className="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline"
                     >
-                      Sign in
-                    </button>
+                      Forgot password?
+                    </a>
                   </div>
-                </form>
+
+                  <input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value.trim())}
+                    type="password"
+                    name="password"
+                    id="password"
+                    data-testid="password"
+                    placeholder="Your Password"
+                    className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  />
+                </div>
+
+                <div className="mt-6">
+                  <button
+                    className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                    data-testid="loginBtn"
+                    onClick={loginAction}
+                  >
+                    Sign in
+                  </button>
+                </div>
                 <hr className="my-8 h-px bg-gray-200 border-0 dark:bg-gray-700" />
                 <SocialLogin mode={"login"} />
                 <p className="mt-6 text-sm text-center text-gray-400">
