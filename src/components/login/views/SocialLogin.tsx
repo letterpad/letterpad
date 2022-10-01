@@ -24,7 +24,7 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
     await signIn(type, { callbackUrl: callback });
   };
   return (
-    <div className="container">
+    <div className="wrapper">
       <Button
         icon={<GoogleSquareFilled />}
         onClick={(e) => onClick(e, "google")}
@@ -41,7 +41,7 @@ export const SocialLogin: React.VFC<Props> = ({ mode }) => {
         size="large"
       ></Button>
       <style global jsx>{`
-        .container {
+        .wrapper {
           display: flex;
           justify-content: center;
         }

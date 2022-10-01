@@ -93,7 +93,6 @@ const AuthenticatedLayout = ({ render }: IProps) => {
             {sidebar}
           </MobileMenu>
         </nav>
-
         <div className="top-bar">
           <TopBar
             showNavBtn={collapsed && !mobileMenuVisible}
