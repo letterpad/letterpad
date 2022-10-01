@@ -24,7 +24,7 @@ export const RegisterForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [createAuthor] = useCreateAuthorMutation();
 
-  const [processing, setProcessing] = useState(false);
+  const [_, setProcessing] = useState(false);
 
   const router = useRouter();
 

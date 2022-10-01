@@ -1,4 +1,3 @@
-import { Button, Divider, Form, Input } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -59,7 +58,7 @@ export const ForgotPassword = ({
             <div className="flex-1">
               <div className="text-center">
                 <h2 className="text-4xl font-bold text-center text-gray-700 dark:text-white">
-                  Letterpad
+                  <Logo />
                 </h2>
 
                 <p className="mt-3 text-gray-500 dark:text-gray-300">
