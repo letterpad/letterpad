@@ -19,10 +19,9 @@ export const createAuthor = async (
       process.env.RECAPTCHA_KEY_SERVER,
       args.data.token,
     );
-
     if (!response) {
       return {
-        __typename: "Exception",
+        __typename: "Failed",
         message: "We cannot allow you at the moment.",
       };
     }

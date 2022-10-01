@@ -85,9 +85,10 @@ export const RegisterForm = () => {
           },
         },
       });
-      if (result.data?.createAuthor?.__typename === "Exception") {
+      const out = result.data?.createAuthor ?? {};
+      if (out.__typename === "Failed") {
         message.error({
-          content: result.data?.createAuthor.message,
+          content: out.message,
           key,
           duration: 5,
         });

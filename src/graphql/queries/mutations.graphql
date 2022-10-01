@@ -54,7 +54,7 @@ mutation createAuthor($data: InputCreateAuthor!) {
       name
       id
     }
-    ... on Exception {
+    ... on Failed {
       message
     }
   }

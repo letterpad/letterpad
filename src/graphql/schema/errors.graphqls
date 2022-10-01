@@ -29,6 +29,7 @@ type Forbidden implements LetterpadError {
 
 type Failed implements LetterpadError {
   message: String!
+  type: Failed
 }
 
 # enum FailedCodes {
