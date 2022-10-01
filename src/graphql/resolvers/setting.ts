@@ -1,6 +1,7 @@
 import {
   MutationResolvers,
   Navigation,
+  NavigationType,
   QueryResolvers,
   SettingResolvers,
 } from "@/__generated__/__types__";
