@@ -124,14 +124,15 @@ const Appearance: React.FC<Props> = ({ settings }) => {
             height: 300px;
             border: 1px solid #333;
             width: 600px;
-            @media (max-width: 967px) {
-              width: 70vw;
+          }
+          @media (max-width: 767px) {
+            #css-editor {
+              width: 100%;
             }
-
-            pre,
-            .hljs {
-              overflow-y: scroll;
-            }
+          }
+          pre,
+          .hljs {
+            overflow-y: scroll;
           }
         `}</style>
       </Form.Item>

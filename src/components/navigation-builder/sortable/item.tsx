@@ -80,6 +80,11 @@ export const Item: FC<Props> = ({
       message.error(nameError);
     }
   }, [nameError]);
+
+  const type =
+    library.type === NavigationType.Custom
+      ? "Select a tag or page"
+      : library.type;
   return (
     <div style={style} {...attributes} ref={setNodeRef}>
       <div data-testid="item-sortable" className="grid">
@@ -109,7 +114,7 @@ export const Item: FC<Props> = ({
             <Input
               style={{ width: "calc(100% - 150px)", cursor: "not-allowed" }}
               size="middle"
-              value={library.type + ": " + library.original_name}
+              value={type + ": " + library.original_name}
               readOnly
             />
             <EnhancedButton

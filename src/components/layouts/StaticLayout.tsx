@@ -8,7 +8,7 @@ const StaticLayout = ({ children }) => {
       <Layout>
         <Header>
           <div className="logo">
-            <img src="/admin/uploads/logo.png" height={28} alt="logo" />
+            <img src="/admin/uploads/logo.png" width={28} alt="logo" />
           </div>
         </Header>
         <Content className="content">

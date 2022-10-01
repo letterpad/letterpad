@@ -19,7 +19,7 @@ export const LoginFormDemo = ({ isVisible }: { isVisible: boolean }) => {
   return (
     <>
       <div
-        className="container"
+        className="wrapper"
         style={{ paddingLeft: 10, height: "calc(100% - 70px)" }}
       >
         <span>
@@ -32,7 +32,7 @@ export const LoginFormDemo = ({ isVisible }: { isVisible: boolean }) => {
         </Button>
       </div>
       <style jsx>{`
-        .container {
+        .wrapper {
           display: flex;
           flex-direction: column;
           align-items: center;

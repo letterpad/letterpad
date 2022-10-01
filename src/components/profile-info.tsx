@@ -8,7 +8,7 @@ interface Props {
 const ProfileInfo: React.FC<Props> = ({ name, avatar, site_url }) => {
   return (
     <>
-      <div className="container" style={{ padding: 20 }}>
+      <div className="profile-wrapper" style={{ padding: 20 }}>
         {avatar && (
           <div
             style={{
@@ -35,7 +35,7 @@ const ProfileInfo: React.FC<Props> = ({ name, avatar, site_url }) => {
           display: flex;
           flex-direction: column;
         }
-        .container {
+        .profile-wrapper {
           display: flex;
           color: #fff;
           align-items: center;

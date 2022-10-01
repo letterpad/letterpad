@@ -1,12 +1,9 @@
-import { Button, Divider, Form, Input, message } from "antd";
+import { message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
-import css from "@/components/login/views/style.module.css";
-
-import { DividerWithOr } from "@/components/login/views/Divider";
 import { Logo } from "@/components/login/views/Logo";
 import { SocialLogin } from "@/components/login/views/SocialLogin";
 
@@ -14,36 +11,77 @@ import {
   CreateAuthorDocument,
   useCreateAuthorMutation,
 } from "@/__generated__/queries/mutations.graphql";
+import { sanitizeUsername } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
 const key = "register";
 export const RegisterForm = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState<null | Record<string, string>>(null);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [createAuthor] = useCreateAuthorMutation();
 
-  const [processing, setProcessing] = useState(false);
+  const [_, setProcessing] = useState(false);
 
   const router = useRouter();
 
-  const registerAction = async (formData) => {
+  const registerAction = async () => {
     setProcessing(true);
+    setError(null);
     message.loading({
       content: "Please wait",
       key,
       duration: 5,
     });
-
+    let errors = {};
     if (executeRecaptcha) {
       const token = await executeRecaptcha("register");
-      const { site_title, ...authorData } = formData;
-      const formWithToken = { ...authorData, token };
-
+      const formWithToken = { email, username, name, token, password };
+      if (!username || !sanitizeUsername(username)) {
+        errors = {
+          ...errors,
+          username:
+            "Only letters, numbers, underscore, hyphen and dot are allowed",
+        };
+      }
+      if (email.length === 0) {
+        errors = {
+          ...errors,
+          email: "Email cannot be empty",
+        };
+      }
+      if (
+        password.length < 8 ||
+        password.search(/[a-z]/i) < 0 ||
+        password.search(/[0-9]/) < 0
+      ) {
+        errors = {
+          ...errors,
+          password:
+            "Should be 8 character long and should contain at least one number",
+        };
+      }
+      if (name.length < 3 || name.search(/^([ \u00c0-\u01ffa-zA-Z'-])+$/) < 0) {
+        errors = {
+          ...errors,
+          name: "Should be 3 character long and may contain specific special characters",
+        };
+      }
+      if (Object.keys(errors).length > 0) {
+        setProcessing(false);
+        setError(errors);
+        message.destroy(key);
+        return;
+      }
       const result = await createAuthor({
         mutation: CreateAuthorDocument,
         variables: {
           data: {
             ...formWithToken,
-            setting: { site_title },
+            setting: { site_title: "My Blog" },
           },
         },
       });
@@ -67,118 +105,146 @@ export const RegisterForm = () => {
     setProcessing(false);
   };
 
-  const onFinish = (values: any) => {
-    const { name, username, password, email, site_title } = values;
-    const formData = { name, username, password, email, site_title };
-    registerAction(formData);
-  };
-
   return (
     <>
-      <div className={css.wrapper}>
-        <div className={css.leftBox}>
-          <span>Letterpad</span>
-        </div>
-        <div className={css.rightBox}>
-          <Form
-            name="basic"
-            initialValues={{ remember: true }}
-            autoComplete="off"
-            onFinish={onFinish}
-            className={css.forms}
+      <div className="bg-white dark:bg-gray-900">
+        <div className="flex justify-center h-screen">
+          <div
+            className="hidden bg-cover lg:block lg:w-2/3"
+            style={{
+              backgroundImage:
+                "url(https://images.unsplash.com/photo-1606625058344-64612c845754?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80)",
+            }}
           >
-            <Logo />
-            <Divider />
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your name!",
-                  max: 100,
-                },
-              ]}
-            >
-              <Input placeholder="Enter your Name" />
-            </Form.Item>
-            <Form.Item
-              name="email"
-              data-testid="input-email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your email!",
-                  type: "email",
-                },
-              ]}
-            >
-              <Input autoComplete="off" placeholder="Enter your email" />
-            </Form.Item>
-            <Form.Item
-              name="password"
-              data-testid="input-password"
-              rules={[
-                { required: true, message: "Please input your password!" },
-                { min: 6, message: "Password must be minimum 6 characters." },
-              ]}
-            >
-              <Input.Password placeholder="Enter your password" />
-            </Form.Item>
-            <br />
-            <Form.Item
-              name="site_title"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input a title of your site!",
-                  max: 25,
-                },
-              ]}
-            >
-              <Input placeholder="Enter a name for your site" />
-            </Form.Item>
-            <Form.Item
-              name="username"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your username!",
-                },
-                {
-                  pattern: /[0-9A-Za-z_.]*/,
-                  message: "Can only contain alphabets and numbers",
-                },
-              ]}
-            >
-              <Input placeholder="Enter a username" />
-            </Form.Item>
+            <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
+              <div>
+                <h2 className="text-4xl font-bold text-white">Letterpad</h2>
 
-            <Form.Item>
-              <br />
-              <Button
-                type="primary"
-                htmlType="submit"
-                disabled={processing}
-                style={{ width: "100%" }}
-              >
-                Register
-              </Button>
-            </Form.Item>
-            <DividerWithOr />
-            <br />
-            <SocialLogin mode="register" />
-            <br />
-            <Form.Item
-              name="remember"
-              valuePropName="checked"
-              style={{ textAlign: "center" }}
-            >
-              Already have an account ?
-              <Link href="/login">
-                <Button type="link">Login</Button>
-              </Link>
-            </Form.Item>
-          </Form>
+                <p className="max-w-xl mt-3 text-gray-300">
+                  Register to create your own blog. It&apos;s free.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+            <div className="flex-1">
+              <div className="text-center">
+                <h2 className="text-4xl font-bold text-center text-gray-700 dark:text-white">
+                  <Logo />
+                </h2>
+
+                <p className="mt-3 text-gray-500 dark:text-gray-300">
+                  Register your free account
+                </p>
+              </div>
+              <div className="mt-8">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block mb-2 text-sm text-gray-600 dark:text-gray-200"
+                  >
+                    Name
+                  </label>
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    type="text"
+                    name="email"
+                    id="name"
+                    placeholder="John Doe"
+                    required
+                    className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  />
+                  <p className="text-rose-500">{error?.name}</p>
+                </div>
+              </div>
+
+              <div className="mt-8">
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block mb-2 text-sm text-gray-600 dark:text-gray-200"
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value.trim())}
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="example@example.com"
+                    className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  />
+                  <p className="text-rose-400">{error?.email}</p>
+                </div>
+
+                <div className="mt-6">
+                  <div className="flex justify-between mb-2">
+                    <label
+                      htmlFor="password"
+                      className="text-sm text-gray-600 dark:text-gray-200"
+                    >
+                      Password
+                    </label>
+                  </div>
+
+                  <input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value.trim())}
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Your Password"
+                    className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                  />
+                  <p className="text-rose-400">{error?.password}</p>
+                </div>
+                <div className="mt-8">
+                  <div>
+                    <label
+                      htmlFor="username"
+                      className="block mb-2 text-sm text-gray-600 dark:text-gray-200"
+                    >
+                      Username
+                    </label>
+                    <input
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value.trim())}
+                      type="text"
+                      name="username"
+                      id="username"
+                      placeholder="jacksparrow"
+                      className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                    />
+                    <p className="text-rose-400">{error?.username}</p>
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <button
+                    className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                    data-testid="loginBtn"
+                    onClick={registerAction}
+                  >
+                    Register
+                  </button>
+                </div>
+                <hr className="my-8 h-px bg-gray-200 border-0 dark:bg-gray-700" />
+                <SocialLogin mode="register" />
+                <p className="mt-6 text-sm text-center text-gray-400">
+                  Already have an account ?{" "}
+                  <Link
+                    href="/login"
+                    className="text-blue-500 focus:outline-none focus:underline hover:underline"
+                  >
+                    <a>Sign in</a>
+                  </Link>
+                  .
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

@@ -8,10 +8,16 @@ export const forgotPassword = async (args, { prisma }) => {
       where: { email },
     });
     if (!author) {
-      throw new Error("Email does not exist");
+      return {
+        ok: false,
+        message: "Email does not exist",
+      };
     }
     if (author.verify_attempt_left === 0) {
-      throw new Error("No more attempts left.");
+      return {
+        ok: false,
+        message: "No more attempts left",
+      };
     }
 
     await enqueueEmailAndSend({
@@ -33,7 +39,7 @@ export const forgotPassword = async (args, { prisma }) => {
   } catch (e) {
     return {
       ok: false,
-      msg: "Something unexpected happened",
+      message: "Something unexpected happened",
     };
   }
 };

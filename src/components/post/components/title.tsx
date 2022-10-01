@@ -34,7 +34,8 @@ const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
         {...defaults}
         defaultValue={title}
         onChange={(e) => {
-          if (postId) updateLocalState({ title: e.target.value, id: postId });
+          if (postId)
+            updateLocalState({ title: e.target.value.trim(), id: postId });
         }}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
@@ -43,7 +44,7 @@ const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
           }
         }}
         onBlur={(e) =>
-          postId && updatePost({ title: e.target.value, id: postId })
+          postId && updatePost({ title: e.target.value.trim(), id: postId })
         }
         className="title"
         data-testid="postTitleInput"

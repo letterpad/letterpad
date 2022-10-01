@@ -61,11 +61,11 @@ export const updatePost = async (
         id: args.data.id,
       },
     };
-    if (args.data.title) {
-      newPostArgs.data.title = args.data.title;
+    if (args.data.title?.trim()) {
+      newPostArgs.data.title = args.data.title.trim();
     }
-    if (args.data.excerpt) {
-      newPostArgs.data.excerpt = args.data.excerpt;
+    if (args.data.excerpt?.trim()) {
+      newPostArgs.data.excerpt = args.data.excerpt.trim();
     }
     if (args.data.status) {
       newPostArgs.data.status = args.data.status;
@@ -89,7 +89,7 @@ export const updatePost = async (
     if (args.data.title && existingPost.slug.includes("untitled")) {
       newPostArgs.data.slug = await slugify(
         prisma.post,
-        textToSlug(args.data.title),
+        textToSlug(args.data.title.trim()),
         existingPost.author_id,
       );
     }

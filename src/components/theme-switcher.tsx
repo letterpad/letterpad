@@ -8,11 +8,11 @@ const ThemeSwitcher = () => {
 
   const switchTheme = useCallback(
     (color: string) => {
+      ThemeSwitcher.switch(color);
+      setTheme(color);
       if (color === theme) {
         return;
       }
-      ThemeSwitcher.switch(color);
-      setTheme(color);
       track({
         eventAction: EventAction.Click,
         eventCategory: "toggle",
@@ -32,7 +32,7 @@ const ThemeSwitcher = () => {
   }, [switchTheme, theme]);
   return (
     <>
-      <div className="container">
+      <div className="wrapper">
         <div
           className="button"
           onClick={() => switchTheme(theme === "dark" ? "light" : "dark")}
@@ -41,7 +41,7 @@ const ThemeSwitcher = () => {
         </div>
       </div>
       <style jsx>{`
-        .container {
+        .wrapper {
           display: flex;
           align-items: center;
         }
