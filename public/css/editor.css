@@ -20,6 +20,29 @@ h5,
 h6 {
   color: rgba(var(--color), 0.8);
 }
+h1 {
+  font-size: 4.5em;
+  line-height: 4;
+  font-weight: 400;
+  margin: 0.5em 0;
+}
+h2 {
+  font-size: 3.5em;
+  line-height: 3;
+  font-weight: 400;
+  margin: 0.5em 0;
+}
+h3{
+  font-size: 2.5em;
+  line-height: 2;
+  font-weight: 400;
+  margin: 0.5em 0;
+}
+h4{
+  font-size: 1.2em;
+  font-weight: 400;
+  margin: 0.5em 0;
+}
 pre {
   font-size: 0.7em;
   font-family: "Roboto Mono", monospace !important;

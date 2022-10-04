@@ -12,13 +12,18 @@ import Header from "@/components/post/components/header";
 import Title from "@/components/post/components/title";
 import { usePostContext } from "@/components/post/context";
 
-import { PostStatusOptions } from "@/__generated__/__types__";
+import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { usePostQuery } from "@/__generated__/queries/queries.graphql";
+import { PageType } from "@/graphql/types";
+import Builder from "@/pages/builder";
 import { debounce } from "@/shared/utils";
 
 import PostDate from "./postDate";
+import { Portfolio } from "./templates/portfolio";
 import WordCount from "./wordCount";
 import { PostContextType } from "../types";
+
+const defaultPageData = JSON.stringify({ rows: [] });
 
 function Post() {
   const router = useRouter();
@@ -73,19 +78,42 @@ function Post() {
       {post && <Header post={post} />}
       <Content style={{ margin: "24px 16px 0" }}>
         <div style={{ maxWidth: 660, margin: "auto" }}>
-          {!loading && (
-            <div>
-              <PostDate date={post?.updatedAt} />
-              <Title
-                onEnter={() => helpers?.focus()}
-                title={post?.title || ""}
-                postId={post?.id}
-              />
-              <Editor text={content ?? ""} onChange={onEditorChange} />
-              <WordCount text={content || ""} />
-            </div>
-          )}
+          {!loading &&
+            (post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
+            post.page_type === PageType.Default && (
+              <div>
+                <PostDate date={post?.updatedAt} />
+                <Title
+                  onEnter={() => helpers?.focus()}
+                  title={post?.title || ""}
+                  postId={post?.id}
+                />
+                <Editor text={content ?? ""} onChange={onEditorChange} />
+                <WordCount text={content || ""} />
+              </div>
+            )}
         </div>
+        {!loading && post?.page_type === PageType.PortfolioMasonry && (
+          <Portfolio
+            layout={PageType.PortfolioMasonry}
+            text={post.page_data ?? defaultPageData}
+            onSave={(pageData: string) =>
+              debounceUpdatePostAPI({ id: id, page_data: pageData })
+            }
+          />
+        )}
+        {!loading && post?.page_type === PageType.PortfolioZigZag && (
+          <Builder layout={PageType.PortfolioZigZag} />
+        )}
+        {false && !loading && post?.page_type === PageType.PortfolioZigZag && (
+          <Portfolio
+            layout={PageType.PortfolioZigZag}
+            text={post.page_data ?? defaultPageData}
+            onSave={(pageData: string) =>
+              debounceUpdatePostAPI({ id: id, page_data: pageData })
+            }
+          />
+        )}
       </Content>
     </Layout>
   );

@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import {
   PostsFilters,
   PostStatusOptions,
+  PostTypes,
   SortBy,
 } from "@/__generated__/__types__";
+import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 
 import Loading from "../loading";
@@ -13,9 +15,14 @@ import { useTagsContext } from "../tags/context";
 interface IProps {
   showTags?: boolean;
   onChange: (filters: PostsFilters) => void;
+  showPageTypes?: boolean;
 }
 
-const Filters = ({ showTags = true, onChange }: IProps) => {
+const Filters = ({
+  showTags = true,
+  onChange,
+  showPageTypes = false,
+}: IProps) => {
   const [allTags, setAllTags] = useState<{ slug: string; name: string }[]>([]);
   const [filters, setFilters] = useState<PostsFilters>({
     sortBy: SortBy["Desc"],
@@ -23,7 +30,8 @@ const Filters = ({ showTags = true, onChange }: IProps) => {
   const { tags, loading } = useTagsContext();
 
   useEffect(() => {
-    if (!showTags) return onChange(filters);
+    if (!showTags || showPageTypes) return onChange(filters);
+
     if (loading || !tags) return;
 
     const uniqueData = [
@@ -112,6 +120,33 @@ const Filters = ({ showTags = true, onChange }: IProps) => {
             return (
               <option key={tag.name} value={tag.slug}>
                 {tag.name}
+              </option>
+            );
+          })}
+        </select>
+      )}
+      {showPageTypes && (
+        <select
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            if (e.target.value === "all") {
+              const { type, tagSlug, ...rest } = filters;
+              return setFilters({
+                ...rest,
+              });
+            }
+            track({
+              eventAction: EventAction.Click,
+              eventCategory: "filters",
+              eventLabel: "pagetype dropdown",
+            });
+            setFilters({ ...filters, page_type: e.target.value as PageType });
+          }}
+        >
+          <option value="all">All</option>
+          {Object.values(PageType).map((type) => {
+            return (
+              <option key={type} value={type}>
+                {type}
               </option>
             );
           })}

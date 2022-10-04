@@ -6,6 +6,7 @@ import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
+import { PageType } from "@/graphql/types";
 import { subscribe } from "@/shared/eventBus";
 import { debounce } from "@/shared/utils";
 import {
@@ -32,6 +33,7 @@ const Actions = ({ post }: IProps) => {
   const [postHash, setPostHash] = useState("");
   const settingsResponse = useSettingsQuery();
   const [slug, setSlug] = useState(post.slug || "");
+  const [template, setTemplate] = useState("post");
   const [saving, setSaving] = useState("");
   const { updatePost } = useUpdatePost();
   const debounceUpdatePost = useMemo(
@@ -87,6 +89,10 @@ const Actions = ({ post }: IProps) => {
         siteUrl={settings?.site_url ?? ""}
         postHash={postHash}
         showDrawer={showDrawer}
+        pageType={post.page_type as PageType}
+        setPageType={(page_type: string) =>
+          debounceUpdatePost({ id: post.id, page_type })
+        }
       />
       {visible && (
         <Drawer

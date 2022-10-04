@@ -17,8 +17,10 @@ const nextConfig = {
       "res.cloudinary.com",
       "letterpad.app",
       "localhost",
+      "picsum.photos",
     ],
   },
+  experimental: { images: { allowFutureImage: true } },
   basePath,
   async redirects() {
     return [

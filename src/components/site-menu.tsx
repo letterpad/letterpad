@@ -49,7 +49,10 @@ export const SiteMenu = ({ stats }) => {
         key: "/pages",
         icon: <FileTextOutlined />,
         label: (
-          <ItemLabelWithNumber label="Pages" value={stats?.pages?.published} />
+          <ItemLabelWithNumber
+            label="Creatives"
+            value={stats?.pages?.published}
+          />
         ),
       },
       {

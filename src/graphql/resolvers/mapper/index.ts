@@ -18,6 +18,8 @@ export const mapPostToGraphql = (post: DbPost) => {
     ...post,
     type: post.type as PostTypes,
     status: post.status as PostStatusOptions,
+    page_data:
+      post.page_data === "{}" ? JSON.stringify({ rows: [] }) : post.page_data,
     __typename: "Post",
   } as Post;
 };
