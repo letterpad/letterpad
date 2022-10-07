@@ -54,6 +54,9 @@ export const createPost = async (
   if (args.data.type) {
     dataToUpdate.type = args.data.type || PostTypes.Post;
   }
+  if (args.data.page_type) {
+    dataToUpdate.page_type = args.data.page_type;
+  }
 
   // add default tag
   if (dataToUpdate.type === PostTypes.Post) {

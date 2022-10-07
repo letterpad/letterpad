@@ -33,7 +33,6 @@ const Actions = ({ post }: IProps) => {
   const [postHash, setPostHash] = useState("");
   const settingsResponse = useSettingsQuery();
   const [slug, setSlug] = useState(post.slug || "");
-  const [template, setTemplate] = useState("post");
   const [saving, setSaving] = useState("");
   const { updatePost } = useUpdatePost();
   const debounceUpdatePost = useMemo(

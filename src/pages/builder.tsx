@@ -4,7 +4,7 @@ import Head from "next/head";
 import { FC } from "react";
 
 import { Layout } from "@/components/builder";
-import { Placeholder } from "@/components/builder/layouts/zipzag";
+import { Placeholder } from "@/components/builder/layouts/zigzag";
 
 import { PageProps } from "@/types";
 
@@ -21,7 +21,7 @@ const Builder: FC<PageProps> = () => {
         </span>
       </PageHeader>
       <Content>
-        <Layout Placeholder={Placeholder} onChange={console.log} />
+        <Layout Placeholder={Placeholder} onChange={() => null} />
       </Content>
     </>
   );

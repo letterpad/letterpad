@@ -170,4 +170,6 @@ export enum PageType {
   Default = "default",
   PortfolioMasonry = "portfolio-masonry",
   PortfolioZigZag = "portfolio-zigzag",
+  ZigZag = "zigzag",
+  Grid = "grid",
 }

@@ -1,69 +1,50 @@
-import { FC, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 
 import FileExplorer from "@/components/file-explorer";
 
-import { IconImage, IconLeft, IconRight, IconText } from "./icons";
+import { IconImage, IconLeft, IconRefresh, IconRight, IconText } from "./icons";
+import { BlockItem } from "../types";
 
 interface Props {
-  updateImage: (image: {
-    src: string;
-    width?: number;
-    height?: number;
-  }) => void;
+  updateBlock: (newData: BlockItem, position?: number) => void;
   setEditorOpen: (visible: boolean) => void;
   move: (dir: "up" | "down") => void;
+  editorOpen: boolean;
 }
 export const ContentToolbar: FC<Props> = ({
-  updateImage,
+  updateBlock,
   move,
   setEditorOpen,
+  editorOpen,
 }) => {
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
 
   return (
     <>
       <div className="inline-flex rounded-md shadow-sm">
-        <a
-          href="#"
-          aria-current="page"
-          className="rounded-l-lg icon-class"
-          onClick={(e) => {
-            e.preventDefault();
-            setFileExplorerOpen(true);
-          }}
+        <Button
+          onClick={() => setFileExplorerOpen(true)}
+          className="rounded-l-lg"
         >
           <IconImage />
-        </a>
-        <a
-          href="#"
-          className="icon-class"
-          onClick={(e) => {
-            e.preventDefault();
-            setEditorOpen(true);
-          }}
-        >
+        </Button>
+        <Button onClick={() => setEditorOpen(!editorOpen)} active={editorOpen}>
           <IconText />
-        </a>
-        <a
-          href="#"
-          className="icon-class"
-          onClick={(e) => {
-            e.preventDefault();
-            move("up");
-          }}
-        >
+        </Button>
+        <Button onClick={() => move("up")}>
           <IconLeft />
-        </a>
-        <a
-          href="#"
-          className="icon-class rounded-r-md"
-          onClick={(e) => {
-            e.preventDefault();
-            move("down");
-          }}
-        >
+        </Button>
+        <Button onClick={() => move("down")}>
           <IconRight />
-        </a>
+        </Button>
+        <Button onClick={() => updateBlock({})} className="rounded-r-lg ">
+          <IconRefresh />
+        </Button>
+        <style jsx global>{`
+          .active {
+            background: #21212b !important;
+          }
+        `}</style>
       </div>
       <FileExplorer
         multi={true}
@@ -72,9 +53,36 @@ export const ContentToolbar: FC<Props> = ({
         onInsert={(image) => {
           setFileExplorerOpen(false);
           const { src, width, height, caption } = image[0];
-          updateImage({ src, width, height });
+          updateBlock({ image: { src, width, height, description: caption } });
         }}
       />
     </>
+  );
+};
+
+interface ButtonProps {
+  onClick: () => void;
+  className?: string;
+  children: ReactNode;
+  active?: boolean;
+}
+const Button: FC<ButtonProps> = ({
+  onClick,
+  children,
+  className = "",
+  active,
+}) => {
+  className += active ? " active" : "";
+  return (
+    <a
+      href="#"
+      className={className + " icon-class "}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
+    >
+      {children}
+    </a>
   );
 };

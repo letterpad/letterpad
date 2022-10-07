@@ -4,6 +4,7 @@
     "useDefineForClassFields": false,
     "paths": {
       "@/components/*": ["src/components/*"],
+      "@/components_v2/*": ["src/components_v2/*"],
       "@/pages/*": ["src/pages/*"],
       "@/__generated__/*": ["__generated__/src/graphql/*", "__generated__/*"],
       "@/config/*": ["config/*"],

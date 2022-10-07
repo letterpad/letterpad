@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
-import { PlaceholderProps } from "./layouts/zipzag/placeholder";
-import { Block, BlockType } from "./types";
+import { PlaceholderProps } from "./layouts/zigzag/placeholder";
+import { Block } from "./types";
 
 const getImage = (i) => {
   const isPortrait = random(0, 1) === 1;
@@ -11,46 +11,40 @@ const getImage = (i) => {
 };
 const data = [
   {
-    type: BlockType.Split,
+    columns: 2,
     data: [
+      {},
       {
-        type: "text",
-        data: {
-          text: "Hello World",
-        },
-      },
-      {
-        type: "image",
-        data: {
+        text: "Hello World",
+        image: {
           src: getImage(1),
         },
       },
     ],
   },
-
   {
-    type: BlockType.FullWidth,
+    columns: 2,
     data: [
       {
-        type: "image",
-        data: {
+        image: {
           src: getImage(5),
         },
+      },
+      {
+        text: "Another Day",
       },
     ],
   },
   {
-    type: BlockType.Split,
+    columns: 2,
     data: [
       {
-        type: "image",
-        data: {
+        image: {
           src: getImage(0),
         },
       },
       {
-        type: "image",
-        data: {
+        image: {
           src: getImage(2),
         },
       },
@@ -60,71 +54,47 @@ const data = [
 
 interface Props {
   Placeholder: React.ComponentType<PlaceholderProps>;
-  onChange: () => null;
+  onChange: (block: Block[]) => void;
 }
 
 const defaultItem: Block = {
-  type: BlockType.FullWidth,
-  data: [{ type: "text", data: { text: "Hello World" } }],
+  columns: 3,
+  data: [
+    {
+      text: "Hello World",
+    },
+  ],
 };
 
 export const Layout: FC<Props> = ({ Placeholder, onChange }) => {
   const [grid, setGrid] = useState<Block[]>(data);
-
+  const [preview, setPreview] = useState(false);
   const addBlock = () => {
     setGrid((grid) => [...grid, defaultItem]);
   };
 
-  const updateGrid = (change, index: number) => {
+  const updateGrid = (change: Block, index: number) => {
     const newGrid = grid.map((item, idx) => {
       return idx === index ? change : item;
     });
     setGrid(newGrid);
-    console.log(newGrid);
-    // onChange(newGrid);
+    onChange(newGrid);
   };
 
   return (
     <>
-      <div className="site-layout-background" style={{ padding: 24 }}>
-        <div className="flex flex-col">
+      <div className="" style={{ padding: 24 }}>
+        <button onClick={() => setPreview(!preview)}>Toggle</button>
+        <div className="flex flex-col gap-4">
           {grid.map((item, i) => {
             return (
               <Placeholder
+                preview={preview}
                 item={item}
                 key={i}
                 onChange={(block) => updateGrid(block, i)}
                 move={(dir, position) => {
-                  const gridCopy = [...grid];
-                  const temp = gridCopy[i].data[position];
-
-                  const hasImmediatePrev =
-                    position === 1 && gridCopy[i].data[position - 1];
-                  const prevBlock = gridCopy[i - 1];
-
-                  const prev = hasImmediatePrev
-                    ? [i, 0]
-                    : prevBlock && [i - 1, prevBlock.data.length === 2 ? 1 : 0];
-
-                  const hasImmediateNext =
-                    position === 0 && gridCopy[i].data[position + 1];
-                  const nextBlockChild = gridCopy[i + 1]?.data[0];
-
-                  const next = hasImmediateNext
-                    ? [i, 1]
-                    : nextBlockChild
-                    ? [i + 1, 0]
-                    : null;
-
-                  if (dir === "up" && prev) {
-                    gridCopy[i].data[position] =
-                      gridCopy[prev[0]].data[prev[1]];
-                    gridCopy[prev[0]].data[prev[1]] = temp;
-                  } else if (next) {
-                    gridCopy[i].data[position] =
-                      gridCopy[next[0]].data[next[1]];
-                    gridCopy[next[0]].data[next[1]] = temp;
-                  }
+                  const gridCopy = moveGridItem(grid, i, position, dir);
                   setGrid(gridCopy);
                 }}
               />
@@ -147,4 +117,37 @@ export const Layout: FC<Props> = ({ Placeholder, onChange }) => {
 function random(min, max) {
   // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function moveGridItem(grid: Block[], rowIndex, colIndex, dir) {
+  const gridCopy = [...grid];
+
+  const current = gridCopy[rowIndex].data[colIndex];
+  const prevRow = gridCopy[rowIndex - 1];
+  const prevRowLastItem = prevRow?.data[prevRow.data.length - 1];
+  const nextRow = gridCopy[rowIndex + 1];
+  const nextRowFirstItem = nextRow?.data[0];
+
+  if (dir === "up") {
+    if (colIndex > 0) {
+      const target = gridCopy[rowIndex].data[colIndex - 1];
+      gridCopy[rowIndex].data[colIndex] = target;
+      gridCopy[rowIndex].data[colIndex - 1] = current;
+    }
+    if (colIndex === 0 && prevRowLastItem) {
+      gridCopy[rowIndex].data[colIndex] = prevRowLastItem;
+      gridCopy[rowIndex - 1].data[prevRow.data.length - 1] = current;
+    }
+  } else if (dir === "down") {
+    if (colIndex < gridCopy[rowIndex].columns - 1) {
+      const target = gridCopy[rowIndex].data[colIndex + 1];
+      gridCopy[rowIndex].data[colIndex] = target;
+      gridCopy[rowIndex].data[colIndex + 1] = current;
+    }
+    if (colIndex === gridCopy[rowIndex].columns - 1 && nextRowFirstItem) {
+      gridCopy[rowIndex].data[colIndex] = nextRowFirstItem;
+      gridCopy[rowIndex + 1].data[0] = current;
+    }
+  }
+  return gridCopy;
 }

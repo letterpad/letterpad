@@ -1,1 +1,1 @@
-export { Placeholder } from "../zipzag/placeholder";
+export { Placeholder } from "../zigzag/placeholder";

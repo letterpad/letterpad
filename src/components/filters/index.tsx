@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import {
   PostsFilters,
   PostStatusOptions,
-  PostTypes,
   SortBy,
 } from "@/__generated__/__types__";
 import { PageType } from "@/graphql/types";
@@ -45,7 +44,7 @@ const Filters = ({
     );
 
     onChange(filters);
-  }, [filters, loading, onChange, showTags, tags]);
+  }, [filters, loading, onChange, showPageTypes, showTags, tags]);
 
   if (loading && showTags) return <Loading />;
   return (

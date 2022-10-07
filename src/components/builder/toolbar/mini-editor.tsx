@@ -41,13 +41,15 @@ const MiniEditor: React.FC<Props> = ({ text, onChange }) => {
           onChange(htmlWithBody);
         }}
         init={{
+          font_formats:
+            "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats",
           height: "auto",
           width: "100%",
           menubar: false,
           content_css: basePath + "/css/editor.css",
           toolbar: false,
           quickbars_selection_toolbar:
-            "h1 h2 h3 h4 | bold italic underline strikethrough | alignleft aligncenter alignright  | link codesample code forecolor",
+            "fontfamily styles | fontsize | bold italic underline strikethrough | alignleft aligncenter alignright  | link codesample code forecolor",
           inline: true,
           browser_spellcheck: false,
           contextmenu: false,

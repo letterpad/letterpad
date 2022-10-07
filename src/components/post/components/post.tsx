@@ -6,6 +6,8 @@ import { useCallback, useMemo } from "react";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
+import { Layout as LayoutBuilder } from "@/components/builder";
+import { Placeholder } from "@/components/builder/layouts/zigzag";
 import ErrorMessage from "@/components/ErrorMessage";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
@@ -15,7 +17,6 @@ import { usePostContext } from "@/components/post/context";
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { usePostQuery } from "@/__generated__/queries/queries.graphql";
 import { PageType } from "@/graphql/types";
-import Builder from "@/pages/builder";
 import { debounce } from "@/shared/utils";
 
 import PostDate from "./postDate";
@@ -93,7 +94,7 @@ function Post() {
               </div>
             )}
         </div>
-        {!loading && post?.page_type === PageType.PortfolioMasonry && (
+        {!loading && post?.page_type === PageType.Grid && (
           <Portfolio
             layout={PageType.PortfolioMasonry}
             text={post.page_data ?? defaultPageData}
@@ -102,17 +103,15 @@ function Post() {
             }
           />
         )}
-        {!loading && post?.page_type === PageType.PortfolioZigZag && (
-          <Builder layout={PageType.PortfolioZigZag} />
-        )}
-        {false && !loading && post?.page_type === PageType.PortfolioZigZag && (
-          <Portfolio
-            layout={PageType.PortfolioZigZag}
-            text={post.page_data ?? defaultPageData}
-            onSave={(pageData: string) =>
-              debounceUpdatePostAPI({ id: id, page_data: pageData })
-            }
-          />
+        {!loading && post?.page_type === PageType.ZigZag && (
+          <>
+            <Title
+              onEnter={() => helpers?.focus()}
+              title={post?.title || ""}
+              postId={post?.id}
+            />
+            <LayoutBuilder Placeholder={Placeholder} onChange={() => null} />
+          </>
         )}
       </Content>
     </Layout>

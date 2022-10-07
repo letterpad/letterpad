@@ -7,12 +7,7 @@ interface Props {
   minReached: boolean;
 }
 
-export const Controls: FC<Props> = ({
-  onNext,
-  onPrevious,
-  maxReached,
-  minReached,
-}) => {
+export const Controls: FC<Props> = ({ onNext, onPrevious }) => {
   return (
     <div className="absolute w-full h-full flex justify-between items-center px-4">
       <button
