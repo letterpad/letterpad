@@ -121,7 +121,6 @@ input TagsInputType {
 input InputCreatePost {
   title: String
   html: String
-  # authorId: Int
   excerpt: String
   cover_image: InputImage
   type: PostTypes
@@ -130,6 +129,7 @@ input InputCreatePost {
   slug: String
   tags: [TagsInputType]
   page_type: String
+  page_data: String
 }
 
 input InputUpdatePost {

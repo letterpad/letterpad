@@ -9,7 +9,7 @@ interface Props {
 }
 export const LayoutToolbar: FC<Props> = ({ onChange, item }) => {
   return (
-    <div className="z-50 inline-flex rounded-md shadow-sm absolute left-1/2 -ml-14 top-10">
+    <div className="p-2  z-50 flex justify-center  rounded-t-lg shadow-sm  left-1/2  top-10 bg-slate-100 dark:bg-gray-800 border-gray-200 dark:border-gray-800 border border-b-0">
       <button
         className="icon-class rounded-l-md"
         onClick={() => onChange({ ...item, columns: 1 })}
@@ -18,7 +18,7 @@ export const LayoutToolbar: FC<Props> = ({ onChange, item }) => {
       </button>
       <button
         aria-current="page"
-        className="icon-class"
+        className="icon-class rounded-r-md"
         onClick={() =>
           onChange({
             ...item,
@@ -28,19 +28,6 @@ export const LayoutToolbar: FC<Props> = ({ onChange, item }) => {
         }
       >
         <IconSplit />
-      </button>
-      <button
-        aria-current="page"
-        className="icon-class rounded-r-md"
-        onClick={() =>
-          onChange({
-            ...item,
-            data: [...item.data, {}, {}],
-            columns: 3,
-          })
-        }
-      >
-        <IconThreeCols />
       </button>
     </div>
   );

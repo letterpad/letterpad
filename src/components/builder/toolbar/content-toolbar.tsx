@@ -2,11 +2,19 @@ import { FC, ReactNode, useState } from "react";
 
 import FileExplorer from "@/components/file-explorer";
 
-import { IconImage, IconLeft, IconRefresh, IconRight, IconText } from "./icons";
+import {
+  IconDelete,
+  IconImage,
+  IconLeft,
+  IconRefresh,
+  IconRight,
+  IconText,
+} from "./icons";
 import { BlockItem } from "../types";
 
 interface Props {
   updateBlock: (newData: BlockItem, position?: number) => void;
+  removeBlock: () => void;
   setEditorOpen: (visible: boolean) => void;
   move: (dir: "up" | "down") => void;
   editorOpen: boolean;
@@ -16,6 +24,7 @@ export const ContentToolbar: FC<Props> = ({
   move,
   setEditorOpen,
   editorOpen,
+  removeBlock,
 }) => {
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
 
@@ -37,8 +46,11 @@ export const ContentToolbar: FC<Props> = ({
         <Button onClick={() => move("down")}>
           <IconRight />
         </Button>
-        <Button onClick={() => updateBlock({})} className="rounded-r-lg ">
+        <Button onClick={() => updateBlock({})}>
           <IconRefresh />
+        </Button>
+        <Button onClick={() => removeBlock()} className="rounded-r-lg ">
+          <IconDelete />
         </Button>
         <style jsx global>{`
           .active {

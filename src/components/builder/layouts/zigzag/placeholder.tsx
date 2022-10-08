@@ -9,12 +9,14 @@ export interface PlaceholderProps {
   onChange: (change: Block) => void;
   move: (dir: "up" | "down", index: number) => void;
   preview: boolean;
+  onRemove: (col?: number) => void;
 }
 export const Placeholder: FC<PlaceholderProps> = ({
   item,
   onChange,
   move,
   preview,
+  onRemove,
 }) => {
   const updateBlock = (newData: BlockData, position = 0) => {
     const data = [...item.data];
@@ -22,7 +24,16 @@ export const Placeholder: FC<PlaceholderProps> = ({
     data[position] = resetBlock ? {} : { ...item.data[position], ...newData };
     onChange({ ...item, data });
   };
-  const columns = Array.from({ length: item.columns }, (_, i) => i);
+  const removeBlock = (position: number) => {
+    const data = [...item.data];
+    if (data.length === 1) {
+      onRemove();
+      // remove row
+    } else {
+      onRemove(position);
+    }
+  };
+  const columns = Array.from({ length: item?.columns }, (_, i) => i);
 
   return (
     <div className="flex-1 relative">
@@ -36,6 +47,7 @@ export const Placeholder: FC<PlaceholderProps> = ({
                 key={col}
                 item={item.data[col]}
                 updateBlock={(data) => updateBlock(data, col)}
+                removeBlock={() => removeBlock(col)}
                 onChange={onChange}
                 columns={item.columns}
                 move={(dir) => move(dir, col)}

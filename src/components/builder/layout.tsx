@@ -1,6 +1,10 @@
 import { FC, useState } from "react";
 
+import { Button } from "@/components_v2/button";
+import { Drawer } from "@/components_v2/drawer";
+
 import { PlaceholderProps } from "./layouts/zigzag/placeholder";
+import { IconAdd, IconClose } from "./toolbar/icons";
 import { Block } from "./types";
 
 const getImage = (i) => {
@@ -55,20 +59,23 @@ const data = [
 interface Props {
   Placeholder: React.ComponentType<PlaceholderProps>;
   onChange: (block: Block[]) => void;
+  data: { rows: Block[] };
+  type: string;
 }
 
 const defaultItem: Block = {
-  columns: 3,
+  columns: 1,
   data: [
     {
-      text: "Hello World",
+      text: "",
     },
   ],
 };
 
-export const Layout: FC<Props> = ({ Placeholder, onChange }) => {
-  const [grid, setGrid] = useState<Block[]>(data);
+export const Layout: FC<Props> = ({ Placeholder, onChange, data, type }) => {
+  const [grid, setGrid] = useState<Block[]>(data.rows);
   const [preview, setPreview] = useState(false);
+  const [showConfig, setShowConfig] = useState(true);
   const addBlock = () => {
     setGrid((grid) => [...grid, defaultItem]);
   };
@@ -81,9 +88,24 @@ export const Layout: FC<Props> = ({ Placeholder, onChange }) => {
     onChange(newGrid);
   };
 
+  const removeBlock = (index: number, col?: number) => {
+    let gridCopy = [...grid];
+    if (col && gridCopy[index].columns > 1) {
+      gridCopy[index].columns -= 1;
+      delete gridCopy[index].data[col];
+    } else {
+      gridCopy = gridCopy.filter((_, idx) => idx !== index);
+      // delete gridCopy[index];
+    }
+    setGrid(gridCopy);
+    onChange(gridCopy);
+  };
+  const className = showConfig
+    ? "w-[calc(80vw)] transition-all transition-duration-500"
+    : "transition-all";
   return (
     <>
-      <div className="" style={{ padding: 24 }}>
+      <div className={className} style={{ padding: 24 }}>
         <button onClick={() => setPreview(!preview)}>Toggle</button>
         <div className="flex flex-col gap-4">
           {grid.map((item, i) => {
@@ -93,6 +115,7 @@ export const Layout: FC<Props> = ({ Placeholder, onChange }) => {
                 item={item}
                 key={i}
                 onChange={(block) => updateGrid(block, i)}
+                onRemove={(col) => removeBlock(i, col)}
                 move={(dir, position) => {
                   const gridCopy = moveGridItem(grid, i, position, dir);
                   setGrid(gridCopy);
@@ -102,13 +125,28 @@ export const Layout: FC<Props> = ({ Placeholder, onChange }) => {
           })}
         </div>
         <div className="flex align-center justify-center">
-          <button
-            className="bg-white p-2 rounded text-black"
-            onClick={addBlock}
-          >
-            Add
-          </button>
+          <Button type="dark" onClick={addBlock}>
+            <IconAdd />
+          </Button>
         </div>
+      </div>
+      <div>
+        <div className="text-center">
+          {/* <button
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            type="button"
+            onClick={() => setShowConfig(!showConfig)}
+          >
+            Show drawer
+          </button> */}
+        </div>
+        <Drawer
+          show={showConfig}
+          onClose={() => setShowConfig(false)}
+          title="Theme"
+        >
+          hello
+        </Drawer>
       </div>
     </>
   );

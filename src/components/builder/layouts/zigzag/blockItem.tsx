@@ -12,6 +12,7 @@ interface Props {
   columns: number;
   move: (str: "up" | "down") => void;
   preview: boolean;
+  removeBlock: () => void;
 }
 export const BlockItem: FC<Props> = ({
   item,
@@ -19,6 +20,7 @@ export const BlockItem: FC<Props> = ({
   columns,
   move,
   preview,
+  removeBlock,
 }) => {
   const isEmptyBlock = item && Object.keys(item).length === 0;
   const [editorOpen, setEditorOpen] = useState(false);
@@ -28,7 +30,9 @@ export const BlockItem: FC<Props> = ({
   } else if (columns === 3) {
     className += " md:1/3";
   }
-  className += preview ? "" : " border-dotted border-2 border-gray-600 ";
+  className += preview
+    ? ""
+    : " border-dotted border-2 border-gray-200 dark:border-gray-700 border-t-0 ";
   return (
     <div
       className={`relative h-full justify-center items-center flex ${className}`}
@@ -40,14 +44,15 @@ export const BlockItem: FC<Props> = ({
             move={move}
             setEditorOpen={setEditorOpen}
             editorOpen={editorOpen}
+            removeBlock={removeBlock}
           />
         )}
       </div>
-      <div className="absolute  left-0 w-full text-center">
+      <div className="absolute  left-0 w-full text-center p-6">
         {editorOpen && (
           <MiniEditor
-            onChange={(text) => updateBlock({ text })}
-            text={item?.text ?? "Write something..."}
+            onChange={(text) => updateBlock({ text: encodeURIComponent(text) })}
+            text={decodeURIComponent(item?.text ?? "Write something...")}
           />
         )}
       </div>
@@ -68,9 +73,9 @@ export const BlockItem: FC<Props> = ({
         )}
         {!editorOpen && (
           <div
-            className="text-3xl text-white absolute text-center"
+            className="text-3xl text-white absolute text-center p-6 w-full"
             dangerouslySetInnerHTML={{
-              __html: item?.text ?? "",
+              __html: decodeURIComponent(item?.text ?? ""),
             }}
           />
         )}

@@ -70,50 +70,58 @@ function Post() {
   ) {
     content = post.html_draft;
   }
-
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Head>
         <title>Editing - {post?.title}</title>
       </Head>
       {post && <Header post={post} />}
-      <Content style={{ margin: "24px 16px 0" }}>
-        <div style={{ maxWidth: 660, margin: "auto" }}>
-          {!loading &&
-            (post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
-            post.page_type === PageType.Default && (
-              <div>
-                <PostDate date={post?.updatedAt} />
-                <Title
-                  onEnter={() => helpers?.focus()}
-                  title={post?.title || ""}
-                  postId={post?.id}
-                />
-                <Editor text={content ?? ""} onChange={onEditorChange} />
-                <WordCount text={content || ""} />
-              </div>
-            )}
-        </div>
-        {!loading && post?.page_type === PageType.Grid && (
-          <Portfolio
-            layout={PageType.PortfolioMasonry}
-            text={post.page_data ?? defaultPageData}
-            onSave={(pageData: string) =>
-              debounceUpdatePostAPI({ id: id, page_data: pageData })
+
+      {!loading &&
+        (post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
+        post.page_type === PageType.Default && (
+          <div style={{ maxWidth: 660, margin: "auto" }}>
+            <Content style={{ margin: "24px 16px 0" }}>
+              <PostDate date={post?.updatedAt} />
+              <Title
+                onEnter={() => helpers?.focus()}
+                title={post?.title || ""}
+                postId={post?.id}
+              />
+              <Editor text={content ?? ""} onChange={onEditorChange} />
+              <WordCount text={content || ""} />
+            </Content>
+          </div>
+        )}
+      {!loading && post?.page_type === PageType.Grid && (
+        <Portfolio
+          layout={PageType.PortfolioMasonry}
+          text={post.page_data ?? defaultPageData}
+          onSave={(pageData: string) =>
+            debounceUpdatePostAPI({ id: id, page_data: pageData })
+          }
+        />
+      )}
+      {!loading && post?.page_type === PageType.ZigZag && (
+        <div className="my-10">
+          <Title
+            onEnter={() => helpers?.focus()}
+            title={post?.title || ""}
+            postId={post?.id}
+          />
+          <LayoutBuilder
+            data={JSON.parse(post.page_data as string)}
+            type={post.page_type}
+            Placeholder={Placeholder}
+            onChange={(page_data) =>
+              debounceUpdatePostAPI({
+                id: id,
+                page_data: JSON.stringify({ rows: page_data }),
+              })
             }
           />
-        )}
-        {!loading && post?.page_type === PageType.ZigZag && (
-          <>
-            <Title
-              onEnter={() => helpers?.focus()}
-              title={post?.title || ""}
-              postId={post?.id}
-            />
-            <LayoutBuilder Placeholder={Placeholder} onChange={() => null} />
-          </>
-        )}
-      </Content>
+        </div>
+      )}
     </Layout>
   );
 }
