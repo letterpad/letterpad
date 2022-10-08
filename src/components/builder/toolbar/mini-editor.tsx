@@ -6,9 +6,10 @@ import "@/components/post/components/tinymce/core";
 interface Props {
   text: string;
   onChange: (_html: string) => void;
+  formats: string;
 }
 
-const MiniEditor: React.FC<Props> = ({ text, onChange }) => {
+const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
   const editorRef = useRef<Editor["editor"]>(null);
   const isDark = document.body.classList.contains("dark");
   const [html, setHtml] = useState(text);
@@ -46,9 +47,10 @@ const MiniEditor: React.FC<Props> = ({ text, onChange }) => {
           height: "auto",
           width: "100%",
           menubar: false,
-          content_css: basePath + "/css/editor.css",
+          content_css: basePath + "/css/editor-mini.css",
           toolbar: false,
           quickbars_selection_toolbar:
+            formats ??
             "fontfamily styles | fontsize | bold italic underline strikethrough | alignleft aligncenter alignright  | link codesample code forecolor",
           inline: true,
           browser_spellcheck: false,

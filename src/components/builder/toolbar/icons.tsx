@@ -47,14 +47,15 @@ export const IconClose = () => (
   </svg>
 );
 
-export const IconImage = () => (
+export const IconImage = ({ size }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className="w-5 h-5"
+    style={{ width: size, height: size }}
+    // className="w-5 h-5"
   >
     <path
       strokeLinecap="round"
@@ -97,36 +98,36 @@ export const IconRefresh = () => (
   </svg>
 );
 
-export const IconLeft = () => (
+export const IconUp = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className="w-5 h-5"
+    className="w-6 h-6"
   >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
-      d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+      d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
     />
   </svg>
 );
 
-export const IconRight = () => (
+export const IconDown = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className="w-5 h-5"
+    className="w-6 h-6"
   >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
-      d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+      d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75"
     />
   </svg>
 );
@@ -169,6 +170,6 @@ export const IconFullWidth = () => (
     className="bi bi-window-fullscreen"
     viewBox="0 0 16 16"
   >
-    <path d="M.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h15a.5.5 0 0 0 .5-.5v-13a.5.5 0 0 0-.5-.5H.5ZM1 5V2h14v3H1Zm0 1h14v8H1V6Z" />
+    <path d="M 0.5 1 a 0.5 0.5 0 0 0 -0.5 0.5 v 13 a 0.5 0.5 0 0 0 0.5 0.5 h 15 a 0.5 0.5 0 0 0 0.5 -0.5 v -13 a 0.5 0.5 0 0 0 -0.5 -0.5 H 0.5 Z M 1 5 v 3 Z m 0 1 M 15 2 v 8 V 14 H 1 V 14 V 2 Z" />
   </svg>
 );

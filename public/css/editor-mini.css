@@ -1,0 +1,66 @@
+@import url("./theme-variables.css");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;1,400&family=Roboto+Mono&display=swap&family=Lato&display=swap&family=Raleway::wght@900&display=swap");
+
+body {
+  font-family: "Lato", sans-serif;
+  background: transparent;
+  line-height: 1.8;
+  font-size: 1.05em;
+  overflow-x: hidden;
+  color: rgba(var(--color), 0.7);
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: rgba(var(--color), 0.8);
+}
+
+#creative h1 {
+  font-size: 4rem;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  /* font-family: 'Raleway', sans-serif; */
+  font-weight: 900
+}
+
+#creative h2 {
+  font-size: 3rem;
+  line-height: 1;
+  /* font-family: 'Raleway', sans-serif; */
+}
+
+p, i, a {
+  margin-top: 21px;
+  font-family: "Lora";
+  font-size: 21px;
+  letter-spacing: -0.03px;
+  line-height: 1.58;
+}
+a {
+  color: rgb(var(--accent));
+  text-decoration: none;
+}
+
+blockquote {
+  margin: 20px 0px;
+  padding: 0.4rem 1rem;
+  border-left: 3px solid rgb(var(--accent));
+  line-height: 1.6;
+  position: relative;
+}
+blockquote p {
+  margin: 0px;
+}
+
+[data-id='image-focussed'] {
+  outline: 2px solid #d932c0;
+}
+
+hr {
+  border: 1px solid rgb(var(--color-border))
+}

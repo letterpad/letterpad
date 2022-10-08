@@ -1,1 +1,1 @@
-export { Placeholder } from "./placeholder";
+export { Row } from "./row";

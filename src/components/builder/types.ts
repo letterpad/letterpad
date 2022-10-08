@@ -8,14 +8,11 @@ interface BlockImage {
 export interface BlockItem {
   image?: BlockImage;
   text?: string;
+  type: "text" | "image";
 }
-// export enum BlockType {
-//   Split = "split",
-//   FullWidth = "fullWidth",
-//   Placeholder = "placeholder",
-// }
 export interface Block {
   // onChange: (change: BlockItem) => void;
   columns: number;
   data: BlockItem[];
+  cover?: "big" | "small";
 }

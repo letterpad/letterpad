@@ -1,55 +1,78 @@
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode } from "react";
 
-import FileExplorer from "@/components/file-explorer";
-
-import {
-  IconDelete,
-  IconImage,
-  IconLeft,
-  IconRefresh,
-  IconRight,
-  IconText,
-} from "./icons";
+import { IconDelete, IconImage, IconRefresh, IconText } from "./icons";
 import { BlockItem } from "../types";
 
 interface Props {
   updateBlock: (newData: BlockItem, position?: number) => void;
   removeBlock: () => void;
   setEditorOpen: (visible: boolean) => void;
-  move: (dir: "up" | "down") => void;
   editorOpen: boolean;
+  showOnlyImage: boolean;
+  setFileExplorerOpen: (visible: boolean) => void;
+  showOnlyRemove: boolean;
+  rowIndex: number;
 }
 export const ContentToolbar: FC<Props> = ({
   updateBlock,
-  move,
   setEditorOpen,
   editorOpen,
   removeBlock,
+  showOnlyImage,
+  setFileExplorerOpen,
+  showOnlyRemove,
+  rowIndex,
 }) => {
-  const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
-
-  return (
-    <>
+  if (showOnlyRemove) {
+    return (
       <div className="inline-flex rounded-md shadow-sm">
         <Button
           onClick={() => setFileExplorerOpen(true)}
-          className="rounded-l-lg"
+          className="rounded-l-md "
         >
-          <IconImage />
+          <IconImage size={18} />
         </Button>
-        <Button onClick={() => setEditorOpen(!editorOpen)} active={editorOpen}>
-          <IconText />
+        {rowIndex === 0 && (
+          <>
+            <Button onClick={() => setEditorOpen(!editorOpen)}>
+              <IconText />
+            </Button>
+            <Button onClick={() => updateBlock({})}>Cover</Button>
+          </>
+        )}
+        <Button onClick={() => removeBlock()} className="rounded-r-md ">
+          <IconDelete />
         </Button>
-        <Button onClick={() => move("up")}>
-          <IconLeft />
+      </div>
+    );
+  }
+  if (showOnlyImage) {
+    return (
+      <div className="inline-flex rounded-md shadow-sm">
+        <Button onClick={() => setFileExplorerOpen(true)}>
+          <IconImage size={18} />
         </Button>
-        <Button onClick={() => move("down")}>
-          <IconRight />
-        </Button>
-        <Button onClick={() => updateBlock({})}>
-          <IconRefresh />
-        </Button>
-        <Button onClick={() => removeBlock()} className="rounded-r-lg ">
+      </div>
+    );
+  }
+  return (
+    <>
+      <div className="inline-flex rounded-md shadow-sm">
+        {!showOnlyImage && (
+          <>
+            <Button
+              onClick={() => setEditorOpen(!editorOpen)}
+              className="rounded-l-md "
+              active={editorOpen}
+            >
+              <IconText />
+            </Button>
+            <Button onClick={() => updateBlock({})}>
+              <IconRefresh />
+            </Button>
+          </>
+        )}
+        <Button onClick={() => removeBlock()} className="rounded-r-md ">
           <IconDelete />
         </Button>
         <style jsx global>{`
@@ -58,16 +81,6 @@ export const ContentToolbar: FC<Props> = ({
           }
         `}</style>
       </div>
-      <FileExplorer
-        multi={true}
-        isVisible={!!fileExplorerOpen}
-        handleCancel={() => setFileExplorerOpen(false)}
-        onInsert={(image) => {
-          setFileExplorerOpen(false);
-          const { src, width, height, caption } = image[0];
-          updateBlock({ image: { src, width, height, description: caption } });
-        }}
-      />
     </>
   );
 };

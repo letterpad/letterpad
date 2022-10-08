@@ -7,7 +7,7 @@ import { useCallback, useMemo } from "react";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import { Layout as LayoutBuilder } from "@/components/builder";
-import { Placeholder } from "@/components/builder/layouts/zigzag";
+import { Row } from "@/components/builder/layouts/zigzag";
 import ErrorMessage from "@/components/ErrorMessage";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
@@ -112,7 +112,7 @@ function Post() {
           <LayoutBuilder
             data={JSON.parse(post.page_data as string)}
             type={post.page_type}
-            Placeholder={Placeholder}
+            Row={Row}
             onChange={(page_data) =>
               debounceUpdatePostAPI({
                 id: id,

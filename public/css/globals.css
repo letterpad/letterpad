@@ -13,7 +13,7 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
-@import url("./editor.css");
+@import url("./editor-mini.css");
 @import url("./buttons.css");
 [data-color-scheme="dark"] {
   color-scheme: dark;
