@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import classNames from "classnames";
 import Image from "next/future/image";
 import { FC, useState } from "react";
 
@@ -24,26 +25,24 @@ export const Cell: FC<Props> = ({ item, columns, rowIndex, colIndex }) => {
   const [editorOpen, setEditorOpen] = useState(false);
 
   const isImage = item?.type === "image";
-
-  const showImgBtnCenter = !item?.image?.src && isImage && !preview;
+  const showImgBtnCenter =
+    !item?.image?.src && isImage && !preview && item.text?.trim().length === 0;
 
   return (
     <div
-      className={classnames(
-        "relative h-full justify-center items-center flex",
-        {
-          "w-full": columns === 1,
-          "lg:w-1/2": columns === 2,
-          "bg-slate-100 dark:bg-slate-700": !item?.image?.src && isImage,
-        },
-      )}
+      className={classnames("relative  justify-center items-center flex", {
+        "w-full": columns === 1,
+        "lg:w-1/2": columns === 2,
+        "h-[calc(60vh)]": rowIndex > 0,
+        "bg-slate-100 dark:bg-black/20": !item?.image?.src && isImage,
+      })}
     >
-      <div className="absolute bottom-10 left-0 w-full text-center">
+      <div className="absolute bottom-0 left-0 w-full text-center">
         {!preview && (
           <ContentToolbar
             setEditorOpen={(visible) => {
               setFormats(
-                "h1 h2 | alignleft aligncenter alignright | blockquote ",
+                "h1 h2 | alignleft aligncenter alignright | blockquote | forecolor",
               );
               setEditorOpen(visible);
             }}
@@ -55,7 +54,7 @@ export const Cell: FC<Props> = ({ item, columns, rowIndex, colIndex }) => {
           />
         )}
       </div>
-      {showImgBtnCenter && (
+      {/* {showImgBtnCenter && (
         <div className="absolute top-1/2 left-1/2 -ml-8 -mt-10">
           <Button
             onClick={() => setFileExplorerOpen(true)}
@@ -65,9 +64,13 @@ export const Cell: FC<Props> = ({ item, columns, rowIndex, colIndex }) => {
             <IconImage size={24} color="#000" />
           </Button>
         </div>
-      )}
+      )} */}
       {editorOpen ? (
-        <div className="absolute left-0 w-full text-center p-6 md:px-20 ">
+        <div
+          className={classNames("absolute text-center p-6 w-full", {
+            "max-w-[calc(500px)]": columns === 2,
+          })}
+        >
           <MiniEditor
             onChange={(text) =>
               updateCell(
@@ -84,15 +87,17 @@ export const Cell: FC<Props> = ({ item, columns, rowIndex, colIndex }) => {
           />
         </div>
       ) : (
-        item?.text && (
+        item?.text &&
+        hasText(item?.text || "") && (
           <div
-            className={classnames("text-white absolute text-center p-6", {
-              "shadow-lg bg-opacity-10 p-20 rounded-md bg-black/40":
-                item.type === "image",
-              "p-10": item.type === "text",
+            className={classnames("text-white absolute text-center w-full", {
+              "shadow-lg bg-opacity-10 p-6 rounded-md bg-black/40":
+                item?.type === "image",
+              "p-6": item?.type === "text",
+              "max-w-[calc(500px)]": columns === 2,
             })}
             dangerouslySetInnerHTML={{
-              __html: decodeURIComponent(item.text),
+              __html: decodeURIComponent(item?.text ?? ""),
             }}
           />
         )
@@ -111,9 +116,6 @@ export const Cell: FC<Props> = ({ item, columns, rowIndex, colIndex }) => {
             }}
             alt={item.image.description}
           />
-        )}
-        {isEmptyBlock && !editorOpen && (
-          <span className="opacity-60">Add a text or an image</span>
         )}
       </div>
       <FileExplorer
@@ -135,4 +137,9 @@ export const Cell: FC<Props> = ({ item, columns, rowIndex, colIndex }) => {
       />
     </div>
   );
+};
+
+const hasText = (text: string) => {
+  const decodedText = decodeURIComponent(text);
+  return decodedText !== "<html><body></body></html>";
 };

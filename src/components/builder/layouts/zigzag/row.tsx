@@ -47,10 +47,12 @@ export const Row: FC<PlaceholderProps> = ({
       )}
 
       <div
-        className={classNames("flex flex-col lg:flex-row", {
+        className={classNames("flex lg:flex-row", {
           "h-screen": item.cover === "big",
           "h-[calc(40vh)]": item.cover === "small",
-          "h-[calc(80vh)]": !item.cover,
+          // "h-[calc(80vh)]": !item.cover,
+          "flex-col-reverse": item.data[1]?.type === "image",
+          "flex-col": item.data[1]?.type === "text",
         })}
       >
         {columns.map((colIndex) => {
@@ -68,9 +70,3 @@ export const Row: FC<PlaceholderProps> = ({
     </div>
   );
 };
-
-// preview={preview}
-//                 onChange={(block) => updateRow(block, i)}
-//                 onRemove={(col) => removeCell(i, col)}
-//                 move={(dir) => moveRow(i, dir)}
-//                 swapColumns={() => swapColumns(i)}

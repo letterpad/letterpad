@@ -18,6 +18,7 @@ interface ContextType {
   removeCell: (rowIndex: number, colIndex?: number) => void;
   moveRow: (rowIndex: number, dir: "up" | "down") => void;
   swapColumns: (rowIndex: number) => void;
+  getColumns: (rowIndex: number) => BlockItem[];
 }
 
 const Context = createContext<ContextType>({} as ContextType);
@@ -86,9 +87,12 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
   };
 
   const swapColumns = (rowIndex: number) => {
-    const gridCopy = [...grid];
-    const current = gridCopy[rowIndex].data;
-    gridCopy[rowIndex].data = current.reverse();
+    const gridCopy = grid.map((item, idx) => {
+      if (idx === rowIndex) {
+        return { ...item, data: item.data.reverse() };
+      }
+      return item;
+    });
     setGrid(gridCopy);
     onSave(gridCopy);
   };
@@ -103,6 +107,7 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     moveRow,
     swapColumns,
     updateCell,
+    getColumns: (rowIndex: number) => grid[rowIndex].data,
   };
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };

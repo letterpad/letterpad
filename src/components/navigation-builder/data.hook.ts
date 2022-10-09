@@ -119,6 +119,6 @@ function addIds(arr) {
 }
 
 function filterSlug(path) {
-  return path;
+  // return path;
   return path.split("/").pop();
 }

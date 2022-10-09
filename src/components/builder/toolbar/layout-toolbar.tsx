@@ -28,9 +28,11 @@ export const LayoutToolbar: FC<Props> = ({
         },
       ];
     } else if (item.data[1].type === "image") {
-      mergeItem.data = [{ type: "image", image: item.data[1].image }];
+      mergeItem.data = [
+        { type: "image", image: item.data[1].image, text: item.data[0]?.text },
+      ];
     }
-    onChange({ ...item, columns: 1 });
+    onChange({ ...mergeItem, columns: 1 });
   };
 
   const onSplit = () => {

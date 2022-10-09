@@ -20,7 +20,7 @@ export const ContentToolbar: FC<Props> = ({
   colIndex,
   item,
 }) => {
-  const { updateCell, removeCell, updateRow } = useBuilderContext();
+  const { updateCell, removeCell, updateRow, getColumns } = useBuilderContext();
   const noImgSrcInImgType = item?.type === "image" && !item?.image?.src;
   if (item?.type === "image") {
     return (
@@ -31,7 +31,7 @@ export const ContentToolbar: FC<Props> = ({
         >
           <IconImage size={18} />
         </Button>
-        {rowIndex === 0 && (
+        {(rowIndex === 0 || getColumns(rowIndex).length === 1) && (
           <>
             <Button onClick={() => setEditorOpen(!editorOpen)}>
               <IconText />

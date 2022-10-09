@@ -1,5 +1,5 @@
 @import url("./theme-variables.css");
-@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;1,400&family=Roboto+Mono&display=swap&family=Lato&display=swap&family=Raleway::wght@900&display=swap&family=Niconne&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;1,400&family=Roboto+Mono&display=swap&family=Lato&display=swap&family=Niconne&display=swap");
 
 body {
   font-family: "Lato", sans-serif;
@@ -33,11 +33,11 @@ h6 {
 }
 
 #creative p, #creative i, #creative a {
-  margin-top: 21px;
+  /* margin-top: 21px; */
   /* font-family: "Lora"; */
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   letter-spacing: -0.03px;
-  line-height: 1.58;
+  line-height: 1.5;
 }
 a {
   color: rgb(var(--accent));
@@ -47,8 +47,11 @@ a {
 #creative blockquote {
   margin: 20px 0px;
   padding: 2rem 1rem;
-  line-height: 1.6;
+  line-height: 1.1;
   position: relative;
+}
+#creative blockquote p {
+  line-height: 1.3;
 }
 
 #creative blockquote:before {
@@ -79,6 +82,7 @@ a {
 #creative blockquote p {
   margin: 0px;
   font-family: 'Niconne', cursive;
+  font-size: 2.5rem;
 }
 
 [data-id='image-focussed'] {
