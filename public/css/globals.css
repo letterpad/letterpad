@@ -35,8 +35,8 @@ body {
 }
 p, i, a {
   font-family:  Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif !important;
-    font-size: 0.9rem !important;
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    font-size: 0.9rem;
 }
 .ant-layout {
   min-height: 100vh;

@@ -47,13 +47,13 @@ export const IconClose = () => (
   </svg>
 );
 
-export const IconImage = ({ size }) => (
+export const IconImage = ({ size, color = "currentColor" }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
-    stroke="currentColor"
+    stroke={color}
     style={{ width: size, height: size }}
     // className="w-5 h-5"
   >

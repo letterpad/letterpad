@@ -45,8 +45,7 @@ export const Button: FC<Props> = ({
         type="button"
         onClick={onClick}
         className={
-          "text-gray-900 bg-white hover:bg-gray-100 button dark:bg-gray-800 dark:hover:bg-gray-900 dark:focus:ring-gray-900 " +
-          className
+          "text-gray-900 bg-white hover:bg-gray-100 button " + className
         }
       >
         {children}

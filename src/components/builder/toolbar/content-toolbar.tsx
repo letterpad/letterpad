@@ -1,29 +1,28 @@
 import { FC, ReactNode } from "react";
 
 import { IconDelete, IconImage, IconRefresh, IconText } from "./icons";
+import { useBuilderContext } from "../context";
 import { BlockItem } from "../types";
 
 interface Props {
-  updateBlock: (newData: BlockItem, position?: number) => void;
-  removeBlock: () => void;
   setEditorOpen: (visible: boolean) => void;
   editorOpen: boolean;
-  showOnlyImage: boolean;
   setFileExplorerOpen: (visible: boolean) => void;
-  showOnlyRemove: boolean;
   rowIndex: number;
+  colIndex: number;
+  item?: BlockItem;
 }
 export const ContentToolbar: FC<Props> = ({
-  updateBlock,
   setEditorOpen,
   editorOpen,
-  removeBlock,
-  showOnlyImage,
   setFileExplorerOpen,
-  showOnlyRemove,
   rowIndex,
+  colIndex,
+  item,
 }) => {
-  if (showOnlyRemove) {
+  const { updateCell, removeCell } = useBuilderContext();
+  const noImgSrcInImgType = item?.type === "image" && !item?.image?.src;
+  if (item?.type === "image") {
     return (
       <div className="inline-flex rounded-md shadow-sm">
         <Button
@@ -37,28 +36,25 @@ export const ContentToolbar: FC<Props> = ({
             <Button onClick={() => setEditorOpen(!editorOpen)}>
               <IconText />
             </Button>
-            <Button onClick={() => updateBlock({})}>Cover</Button>
+            <Button onClick={() => updateCell({}, rowIndex, colIndex)}>
+              Cover
+            </Button>
           </>
         )}
-        <Button onClick={() => removeBlock()} className="rounded-r-md ">
+        <Button
+          onClick={() => removeCell(rowIndex, colIndex)}
+          className="rounded-r-md "
+        >
           <IconDelete />
         </Button>
       </div>
     );
   }
-  if (showOnlyImage) {
-    return (
-      <div className="inline-flex rounded-md shadow-sm">
-        <Button onClick={() => setFileExplorerOpen(true)}>
-          <IconImage size={18} />
-        </Button>
-      </div>
-    );
-  }
+
   return (
     <>
       <div className="inline-flex rounded-md shadow-sm">
-        {!showOnlyImage && (
+        {!noImgSrcInImgType && (
           <>
             <Button
               onClick={() => setEditorOpen(!editorOpen)}
@@ -67,12 +63,15 @@ export const ContentToolbar: FC<Props> = ({
             >
               <IconText />
             </Button>
-            <Button onClick={() => updateBlock({})}>
+            <Button onClick={() => updateCell({}, rowIndex, colIndex)}>
               <IconRefresh />
             </Button>
           </>
         )}
-        <Button onClick={() => removeBlock()} className="rounded-r-md ">
+        <Button
+          onClick={() => removeCell(rowIndex, colIndex)}
+          className="rounded-r-md "
+        >
           <IconDelete />
         </Button>
         <style jsx global>{`

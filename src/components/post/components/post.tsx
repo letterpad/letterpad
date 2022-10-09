@@ -7,6 +7,7 @@ import { useCallback, useMemo } from "react";
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import { Layout as LayoutBuilder } from "@/components/builder";
+import { BuilderContext } from "@/components/builder/context";
 import { Row } from "@/components/builder/layouts/zigzag";
 import ErrorMessage from "@/components/ErrorMessage";
 import Editor from "@/components/post/components/editor";
@@ -109,17 +110,21 @@ function Post() {
             title={post?.title || ""}
             postId={post?.id}
           />
-          <LayoutBuilder
-            data={JSON.parse(post.page_data as string)}
-            type={post.page_type}
-            Row={Row}
-            onChange={(page_data) =>
+          <BuilderContext
+            data={JSON.parse(post.page_data as string).rows}
+            onSave={(page_data) =>
               debounceUpdatePostAPI({
                 id: id,
                 page_data: JSON.stringify({ rows: page_data }),
               })
             }
-          />
+          >
+            <LayoutBuilder
+              data={JSON.parse(post.page_data as string)}
+              type={post.page_type}
+              Row={Row}
+            />
+          </BuilderContext>
         </div>
       )}
     </Layout>
