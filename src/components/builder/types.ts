@@ -11,7 +11,6 @@ export interface BlockItem {
   type: "text" | "image";
 }
 export interface Block {
-  // onChange: (change: BlockItem) => void;
   columns: number;
   data: BlockItem[];
   cover?: "big" | "small";

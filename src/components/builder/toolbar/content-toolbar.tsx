@@ -20,7 +20,7 @@ export const ContentToolbar: FC<Props> = ({
   colIndex,
   item,
 }) => {
-  const { updateCell, removeCell } = useBuilderContext();
+  const { updateCell, removeCell, updateRow } = useBuilderContext();
   const noImgSrcInImgType = item?.type === "image" && !item?.image?.src;
   if (item?.type === "image") {
     return (
@@ -35,9 +35,6 @@ export const ContentToolbar: FC<Props> = ({
           <>
             <Button onClick={() => setEditorOpen(!editorOpen)}>
               <IconText />
-            </Button>
-            <Button onClick={() => updateCell({}, rowIndex, colIndex)}>
-              Cover
             </Button>
           </>
         )}

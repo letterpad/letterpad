@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { FC } from "react";
 
 import { Cell } from "./cell";
@@ -20,17 +21,21 @@ export const Row: FC<PlaceholderProps> = ({
 
   const columns = Array.from({ length: item?.columns }, (_, i) => i);
   const showSwap = !preview && item?.columns === 2;
-  const className = !preview
-    ? " border-dotted border-2 border-gray-200 dark:border-gray-700 border-t-0 "
-    : "";
+
   return (
-    <div className={"flex-1 relative " + className}>
+    <div
+      className={classNames("flex-1 relative ", {
+        "border-dotted border-2 border-gray-200 dark:border-gray-700 border-t-0 ":
+          !preview,
+      })}
+    >
       {!preview && (
         <LayoutToolbar
           onChange={(block) => updateRow(block, rowIndex)}
           item={item}
           move={(dir) => moveRow(rowIndex, dir)}
           isPrevRowImageLeft={isPrevRowImageLeft}
+          rowIndex={rowIndex}
         />
       )}
       {showSwap && (
@@ -41,20 +46,24 @@ export const Row: FC<PlaceholderProps> = ({
         />
       )}
 
-      <div>
-        <div className={"flex flex-col lg:flex-row  h-[calc(80vh)] "}>
-          {columns.map((colIndex) => {
-            return (
-              <Cell
-                key={colIndex}
-                colIndex={colIndex}
-                item={item.data[colIndex]}
-                columns={item.columns}
-                rowIndex={rowIndex}
-              />
-            );
-          })}
-        </div>
+      <div
+        className={classNames("flex flex-col lg:flex-row", {
+          "h-screen": item.cover === "big",
+          "h-[calc(40vh)]": item.cover === "small",
+          "h-[calc(80vh)]": !item.cover,
+        })}
+      >
+        {columns.map((colIndex) => {
+          return (
+            <Cell
+              key={colIndex}
+              colIndex={colIndex}
+              item={item.data[colIndex]}
+              columns={item.columns}
+              rowIndex={rowIndex}
+            />
+          );
+        })}
       </div>
     </div>
   );
