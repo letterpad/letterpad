@@ -27,6 +27,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
         extra={[
           <Button
             key="1"
+            testid="createPostBtn"
             onClick={() =>
               isCreativesActive()
                 ? setShowModal(true)
@@ -34,7 +35,6 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
                     `/api/create?type=${type}&page_type=${PageType.Default}`,
                   )
             }
-            data-testid="createPostBtn"
           >
             New{" "}
             {type === "page"

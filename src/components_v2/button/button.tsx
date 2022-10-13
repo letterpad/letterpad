@@ -5,6 +5,7 @@ interface Props {
   children: ReactNode;
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   className?: string;
+  testid?: string;
 }
 
 export const Button: FC<Props> = ({
@@ -12,10 +13,12 @@ export const Button: FC<Props> = ({
   children,
   onClick,
   className,
+  testid,
 }) => {
   if (type === "primary") {
     return (
       <button
+        data-testid={testid}
         type="button"
         onClick={onClick}
         className={
