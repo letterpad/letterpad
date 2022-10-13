@@ -6,7 +6,6 @@ import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
-import { PageType } from "@/graphql/types";
 import { subscribe } from "@/shared/eventBus";
 import { debounce } from "@/shared/utils";
 import {

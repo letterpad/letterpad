@@ -13,6 +13,7 @@ export const ThumbnailList: FC<Props> = ({ items, onSelect, index }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // @ts-ignore
     ref.current?.childNodes[index]?.scrollIntoView({
       behavior: "smooth",
       block: "center",

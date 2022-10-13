@@ -22,7 +22,7 @@ const pageData = {
   }),
 };
 
-export const Portfolio = ({ layout, text, onSave }) => {
+export const Portfolio = ({ layout, onSave }) => {
   // const pageData = JSON.parse(text);
   const empty = pageData.rows.length === 0;
 

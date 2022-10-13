@@ -1,11 +1,5 @@
 import { Button, Input, InputRef } from "antd";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 
 import { Media } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
