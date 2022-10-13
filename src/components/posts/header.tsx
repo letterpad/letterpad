@@ -34,7 +34,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
                     `/api/create?type=${type}&page_type=${PageType.Default}`,
                   )
             }
-            ata-testid="createPostBtn"
+            data-testid="createPostBtn"
           >
             New{" "}
             {type === "page"
