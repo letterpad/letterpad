@@ -257,6 +257,7 @@ export async function insertPost(postData, author_id) {
     data: {
       title: postData.title,
       html: html,
+      page_data: JSON.stringify({ rows: [] }),
       excerpt:
         "You can use this space to write a small description about the topic. This will be helpful in SEO.",
       cover_image: postData.cover_image,
