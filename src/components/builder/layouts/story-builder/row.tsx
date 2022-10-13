@@ -5,7 +5,7 @@ import { Cell } from "./cell";
 import { useBuilderContext } from "../../context";
 import { LayoutToolbar } from "../../toolbar/layout-toolbar";
 import { Swap } from "../../toolbar/swap";
-import { Block, BlockItem as BlockData } from "../../types";
+import { Block } from "../../types";
 
 export interface PlaceholderProps {
   row: Block;

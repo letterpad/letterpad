@@ -6,7 +6,7 @@ import { PageType } from "@/graphql/types";
 
 import { useBuilderContext } from "./context";
 import { PlaceholderProps } from "./layouts/story-builder/row";
-import { IconAdd, IconClose } from "./toolbar/icons";
+import { IconAdd } from "./toolbar/icons";
 import { Block } from "./types";
 
 interface Props {

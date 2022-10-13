@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Image from "next/image";
 
 import { ItemPlaceholder } from "@/components/post/components/templates/portfolio/itemPlaceholder";

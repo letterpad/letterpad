@@ -17,7 +17,7 @@ interface IProps {
 }
 const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const url = (basePath + "/api/unsplash").replace("//api", "");
-  const [query, setQuery] = useState("");
+  const [, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);

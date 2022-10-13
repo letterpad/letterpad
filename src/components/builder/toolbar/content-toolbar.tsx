@@ -20,7 +20,7 @@ export const ContentToolbar: FC<Props> = ({
   colIndex,
   item,
 }) => {
-  const { updateCell, removeCell, updateRow, getColumns } = useBuilderContext();
+  const { updateCell, removeCell, getColumns } = useBuilderContext();
   const noImgSrcInImgType = item?.type === "image" && !item?.image?.src;
   if (item?.type === "image") {
     return (
@@ -62,6 +62,7 @@ export const ContentToolbar: FC<Props> = ({
             >
               <IconText />
             </Button>
+            {/* @ts-ignore */}
             <Button onClick={() => updateCell({}, rowIndex, colIndex)}>
               <IconRefresh />
             </Button>
