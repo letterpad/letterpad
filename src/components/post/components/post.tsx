@@ -8,7 +8,7 @@ import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import { Layout as LayoutBuilder } from "@/components/builder";
 import { BuilderContext } from "@/components/builder/context";
-import { Row } from "@/components/builder/layouts/zigzag";
+import { Row } from "@/components/builder/layouts/story-builder";
 import ErrorMessage from "@/components/ErrorMessage";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
@@ -21,11 +21,8 @@ import { PageType } from "@/graphql/types";
 import { debounce } from "@/shared/utils";
 
 import PostDate from "./postDate";
-import { Portfolio } from "./templates/portfolio";
 import WordCount from "./wordCount";
 import { PostContextType } from "../types";
-
-const defaultPageData = JSON.stringify({ rows: [] });
 
 function Post() {
   const router = useRouter();
@@ -81,8 +78,8 @@ function Post() {
       {!loading &&
         (post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
         post.page_type === PageType.Default && (
-          <div style={{ maxWidth: 660, margin: "auto" }}>
-            <Content style={{ margin: "24px 16px 0" }}>
+          <Content style={{ margin: "24px 16px 0" }}>
+            <div style={{ maxWidth: 660, margin: "0 auto" }}>
               <PostDate date={post?.updatedAt} />
               <Title
                 onEnter={() => helpers?.focus()}
@@ -91,19 +88,11 @@ function Post() {
               />
               <Editor text={content ?? ""} onChange={onEditorChange} />
               <WordCount text={content || ""} />
-            </Content>
-          </div>
+            </div>
+          </Content>
         )}
-      {!loading && post?.page_type === PageType.Grid && (
-        <Portfolio
-          layout={PageType.PortfolioMasonry}
-          text={post.page_data ?? defaultPageData}
-          onSave={(pageData: string) =>
-            debounceUpdatePostAPI({ id: id, page_data: pageData })
-          }
-        />
-      )}
-      {!loading && post?.page_type === PageType.ZigZag && (
+
+      {!loading && post?.page_type === PageType.StoryBuilder && (
         <div className="my-10">
           <Title
             onEnter={() => helpers?.focus()}

@@ -6,6 +6,9 @@ import { Button } from "@/components_v2/button/button";
 import { Modal } from "@/components_v2/modal";
 
 import { PostTypes } from "@/__generated__/__types__";
+import { PageType } from "@/graphql/types";
+
+import { isCreativesActive } from "./switch";
 
 interface IProps {
   type: PostTypes;
@@ -16,7 +19,6 @@ interface IProps {
 export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-
   return (
     <>
       <PageHeader
@@ -25,38 +27,53 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
         extra={[
           <Button
             key="1"
-            onClick={() => setShowModal(true)}
+            onClick={() =>
+              isCreativesActive()
+                ? setShowModal(true)
+                : router.push(
+                    `/api/create?type=${type}&page_type=${PageType.Default}`,
+                  )
+            }
             ata-testid="createPostBtn"
           >
-            New {type}
+            New{" "}
+            {type === "page"
+              ? isCreativesActive()
+                ? "Creative"
+                : "Page"
+              : "Post"}
           </Button>,
         ]}
       >
         {children}
       </PageHeader>
       <Modal
-        header="New Creative"
+        header="Select a Creative"
         show={showModal}
         toggle={setShowModal}
-        footer={[
-          <Button type="primary" key={1}>
-            Create
-          </Button>,
-        ]}
+        footer={[]}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2">
           <Card
-            title={"Magazine Style"}
-            description={"Grid layouts and image story composer"}
+            title="Photo Story"
+            description={
+              "Grid of photos and text. Ideal for showcasing pictures."
+            }
             onClick={() =>
-              router.push(`/api/create?type=${type}&page_type=zigzag`)
+              router.push(
+                `/api/create?type=${type}&page_type=${PageType.StoryBuilder}`,
+              )
             }
           />
           <Card
             title={"Rich Text Page"}
-            description={"Create a page with rich text"}
+            description={
+              "Page with rich text. Ideal for long text content with some images."
+            }
             onClick={() =>
-              router.push(`/api/create?type=${type}&page_type=default`)
+              router.push(
+                `/api/create?type=${type}&page_type=${PageType.Default}`,
+              )
             }
           />
         </div>
@@ -71,8 +88,8 @@ const Card = ({ title, description, onClick }) => {
     onClick();
   };
   return (
-    <a className="hover:text-inherit" onClick={handleClick}>
-      <div className="card m-2 cursor-pointer border dark:border-gray-600 rounded-lg hover:shadow-xs dark:hover:border-gray-700">
+    <a className="hover:text-inherit " onClick={handleClick}>
+      <div className="card m-2 cursor-pointer border dark:border-gray-600 hover:bg-black/30 rounded-lg hover:shadow-xs dark:hover:border-gray-700">
         <div className="m-3">
           <h2 className="mb-2">{title}</h2>
           <p className="opacity-70">{description}</p>

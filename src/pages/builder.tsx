@@ -4,7 +4,7 @@ import Head from "next/head";
 import { FC } from "react";
 
 import { Layout } from "@/components/builder";
-import { Placeholder } from "@/components/builder/layouts/zigzag";
+import { Placeholder } from "@/components/builder/layouts/story-builder";
 
 import { PageProps } from "@/types";
 

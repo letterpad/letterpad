@@ -88,10 +88,6 @@ const Actions = ({ post }: IProps) => {
         siteUrl={settings?.site_url ?? ""}
         postHash={postHash}
         showDrawer={showDrawer}
-        pageType={post.page_type as PageType}
-        setPageType={(page_type: string) =>
-          debounceUpdatePost({ id: post.id, page_type })
-        }
       />
       {visible && (
         <Drawer

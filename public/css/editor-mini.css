@@ -92,3 +92,7 @@ a {
 hr {
   border: 1px solid rgb(var(--color-border))
 }
+
+.mce-edit-focus {
+  outline: none;
+}

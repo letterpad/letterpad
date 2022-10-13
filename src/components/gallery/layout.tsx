@@ -3,7 +3,6 @@ import { FC, ReactNode } from "react";
 import { PageType } from "@/graphql/types";
 
 import { getMasonryLayout } from "./layouts/mazonry";
-import { getZigZagLayout } from "./layouts/zipzag";
 import { Item } from "./types";
 
 interface Props {
@@ -21,13 +20,10 @@ export const PortfolioLayout: FC<Props> = ({
   onSelect,
   addItem,
   removeItem,
-  layout,
   onSave,
 }) => {
-  const grid =
-    layout === PageType.PortfolioMasonry
-      ? getMasonryLayout(items, onSelect, removeItem, onSave)
-      : getZigZagLayout(items, onSelect, removeItem, onSave);
+  const grid = getMasonryLayout(items, onSelect, removeItem, onSave);
+
   return (
     <div className="p-2 md:p-10 space-y-20">
       <button onClick={() => addItem()}>Add</button>

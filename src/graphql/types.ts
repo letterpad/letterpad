@@ -168,8 +168,6 @@ export type ValueOf<T> = T[keyof T];
 
 export enum PageType {
   Default = "default",
-  PortfolioMasonry = "portfolio-masonry",
-  PortfolioZigZag = "portfolio-zigzag",
-  ZigZag = "zigzag",
-  Grid = "grid",
+  StoryBuilder = "story-builder",
+  // Grid = "grid",
 }

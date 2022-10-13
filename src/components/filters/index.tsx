@@ -128,7 +128,7 @@ const Filters = ({
         <select
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
             if (e.target.value === "all") {
-              const { type, tagSlug, ...rest } = filters;
+              const { tagSlug, page_type, ...rest } = filters;
               return setFilters({
                 ...rest,
               });
@@ -142,9 +142,9 @@ const Filters = ({
           }}
         >
           <option value="all">All</option>
-          {Object.values(PageType).map((type) => {
+          {Object.keys(PageType).map((type) => {
             return (
-              <option key={type} value={type}>
+              <option key={type} value={PageType[type]}>
                 {type}
               </option>
             );

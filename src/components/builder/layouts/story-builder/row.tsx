@@ -8,19 +8,19 @@ import { Swap } from "../../toolbar/swap";
 import { Block, BlockItem as BlockData } from "../../types";
 
 export interface PlaceholderProps {
-  item: Block;
+  row: Block;
   isPrevRowImageLeft: boolean;
   rowIndex: number;
 }
 export const Row: FC<PlaceholderProps> = ({
-  item,
+  row,
   isPrevRowImageLeft,
   rowIndex,
 }) => {
   const { updateRow, moveRow, swapColumns, preview } = useBuilderContext();
 
-  const columns = Array.from({ length: item?.columns }, (_, i) => i);
-  const showSwap = !preview && item?.columns === 2;
+  const columns = Array.from({ length: row?.columns }, (_, i) => i);
+  const showSwap = !preview && row?.columns === 2;
 
   return (
     <div
@@ -32,7 +32,7 @@ export const Row: FC<PlaceholderProps> = ({
       {!preview && (
         <LayoutToolbar
           onChange={(block) => updateRow(block, rowIndex)}
-          item={item}
+          item={row}
           move={(dir) => moveRow(rowIndex, dir)}
           isPrevRowImageLeft={isPrevRowImageLeft}
           rowIndex={rowIndex}
@@ -47,12 +47,11 @@ export const Row: FC<PlaceholderProps> = ({
       )}
 
       <div
-        className={classNames("flex lg:flex-row", {
-          "h-screen": item.cover === "big",
-          "h-[calc(40vh)]": item.cover === "small",
-          // "h-[calc(80vh)]": !item.cover,
-          "flex-col-reverse": item.data[1]?.type === "image",
-          "flex-col": item.data[1]?.type === "text",
+        data-row
+        className={classNames("relative flex flex-1  lg:flex-row", {
+          // "h-[calc(60vh)]": !row.cover && rowIndex === 0,
+          "flex-col-reverse": row.data[1]?.type === "image",
+          "flex-col": row.data[1]?.type === "text",
         })}
       >
         {columns.map((colIndex) => {
@@ -60,8 +59,8 @@ export const Row: FC<PlaceholderProps> = ({
             <Cell
               key={colIndex}
               colIndex={colIndex}
-              item={item.data[colIndex]}
-              columns={item.columns}
+              row={row}
+              columns={row.columns}
               rowIndex={rowIndex}
             />
           );

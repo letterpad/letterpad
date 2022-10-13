@@ -24,12 +24,16 @@ export const LayoutToolbar: FC<Props> = ({
         {
           type: "image",
           image: item.data[0].image,
-          text: item.data[1]?.text,
+          text: item.data[0]?.text ?? item.data[1]?.text,
         },
       ];
     } else if (item.data[1].type === "image") {
       mergeItem.data = [
-        { type: "image", image: item.data[1].image, text: item.data[0]?.text },
+        {
+          type: "image",
+          image: item.data[1].image,
+          text: item.data[1]?.text || item.data[0]?.text,
+        },
       ];
     }
     onChange({ ...mergeItem, columns: 1 });

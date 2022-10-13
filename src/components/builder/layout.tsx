@@ -2,16 +2,17 @@ import { FC } from "react";
 
 import { Button } from "@/components_v2/button";
 
+import { PageType } from "@/graphql/types";
+
 import { useBuilderContext } from "./context";
-import { PlaceholderProps } from "./layouts/zigzag/row";
+import { PlaceholderProps } from "./layouts/story-builder/row";
 import { IconAdd, IconClose } from "./toolbar/icons";
 import { Block } from "./types";
 
 interface Props {
   Row: React.ComponentType<PlaceholderProps>;
-  onChange: (block: Block[]) => void;
   data: { rows: Block[] };
-  type: string;
+  type: PageType;
 }
 
 export const Layout: FC<Props> = ({ Row }) => {
@@ -21,12 +22,12 @@ export const Layout: FC<Props> = ({ Row }) => {
     <div style={{ padding: 24 }} id="creative">
       <button onClick={() => setPreview(!preview)}>Toggle</button>
       <div className="flex flex-col gap-4">
-        {grid.map((item, i) => {
+        {grid.map((row, i) => {
           const isPrevRowImageLeft = grid[i - 1]?.data[0]?.type === "image";
           return (
             <Row
               isPrevRowImageLeft={isPrevRowImageLeft}
-              item={item}
+              row={row}
               key={i}
               rowIndex={i}
             />

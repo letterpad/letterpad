@@ -79,16 +79,17 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
             <p>
               <label>Ready to publish your {post.type} ?</label>
             </p>
-            <Button
-              type="primary"
+            <EnhancedButton
+              type="success"
               block
               size="large"
               style={{ fontSize: 14 }}
               onClick={() => publish(true)}
               data-testid="publishBtn"
+              className="button btn-success"
             >
               Publish
-            </Button>
+            </EnhancedButton>
           </>
         )}
         {published && (

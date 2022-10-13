@@ -10578,6 +10578,13 @@ react-spring@^9.5.2:
     "@react-spring/web" "~9.5.2"
     "@react-spring/zdog" "~9.5.2"
 
+react-sticky-box@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-sticky-box/-/react-sticky-box-1.0.2.tgz#7e72a0f237bdf8270cec9254337f49519a411174"
+  integrity sha512-Kyvtppdtv1KqJyNU4DtrSMI0unyQRgtraZvVQ0GAazVbYiTsIVpyhpr+5R0Aavzu4uJNSe1awj2rk/qI7i6Zfw==
+  dependencies:
+    resize-observer-polyfill "^1.5.1"
+
 react-tag-autocomplete@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/react-tag-autocomplete/-/react-tag-autocomplete-6.3.0.tgz#ce064bbab77b4daf7706be1c08413e7d0335ff4d"

@@ -24,32 +24,34 @@ export const ContentToolbar: FC<Props> = ({
   const noImgSrcInImgType = item?.type === "image" && !item?.image?.src;
   if (item?.type === "image") {
     return (
-      <div className="inline-flex rounded-md shadow-sm">
-        <Button
-          onClick={() => setFileExplorerOpen(true)}
-          className="rounded-l-md "
-        >
-          <IconImage size={18} />
-        </Button>
-        {(rowIndex === 0 || getColumns(rowIndex).length === 1) && (
-          <>
-            <Button onClick={() => setEditorOpen(!editorOpen)}>
-              <IconText />
-            </Button>
-          </>
-        )}
-        <Button
-          onClick={() => removeCell(rowIndex, colIndex)}
-          className="rounded-r-md "
-        >
-          <IconDelete />
-        </Button>
+      <div className="absolute top-0 left-1/2 -ml-20 text-center z-10">
+        <div className="inline-flex rounded-md shadow-sm">
+          <Button
+            onClick={() => setFileExplorerOpen(true)}
+            className="rounded-l-md "
+          >
+            <IconImage size={18} />
+          </Button>
+          {(rowIndex === 0 || getColumns(rowIndex).length === 1) && (
+            <>
+              <Button onClick={() => setEditorOpen(!editorOpen)}>
+                <IconText />
+              </Button>
+            </>
+          )}
+          <Button
+            onClick={() => removeCell(rowIndex, colIndex)}
+            className="rounded-r-md "
+          >
+            <IconDelete />
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <>
+    <div className="absolute top-0 left-1/2 -ml-24 text-center">
       <div className="inline-flex rounded-md shadow-sm">
         {!noImgSrcInImgType && (
           <>
@@ -77,7 +79,7 @@ export const ContentToolbar: FC<Props> = ({
           }
         `}</style>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -8,7 +8,7 @@ interface Props {
 
 export const Swap: FC<Props> = ({ onClick }) => {
   return (
-    <div className="absolute top-50 top-1/2 left-1/2 -ml-5 z-10 ">
+    <div className="absolute top-52 left-1/2 -ml-5 z-10">
       <Button onClick={onClick} type="primary" className="rounded-full p-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"

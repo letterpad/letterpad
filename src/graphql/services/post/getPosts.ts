@@ -49,7 +49,6 @@ export const getPosts = async (
   const { page = 1, limit = 10 } = args.filters;
   const skip = page && limit ? (page - 1) * limit : 0;
   const isPage = args.filters.type === PostTypes.Page;
-
   const condition: Prisma.PostFindManyArgs = {
     where: {
       author_id: authorId,

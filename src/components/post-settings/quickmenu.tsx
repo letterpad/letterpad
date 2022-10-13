@@ -3,25 +3,15 @@ import { Button } from "antd";
 import { FC } from "react";
 
 import { socket } from "@/components/post/components/tinymce/socket";
-import { Select } from "@/components_v2/select/select";
 
-import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 
 interface Props {
   siteUrl: string;
   postHash: string;
   showDrawer: () => void;
-  pageType: PageType;
-  setPageType: (type: PageType) => void;
 }
-const QuickMenu: FC<Props> = ({
-  siteUrl,
-  postHash,
-  showDrawer,
-  pageType,
-  setPageType,
-}) => {
+const QuickMenu: FC<Props> = ({ siteUrl, postHash, showDrawer }) => {
   return (
     <div className="flex space-x-3">
       <Button
@@ -37,17 +27,6 @@ const QuickMenu: FC<Props> = ({
       >
         Grammar
       </Button>
-      <Select
-        id="layout-switch"
-        selected={pageType}
-        items={[
-          { key: PageType.ZigZag, label: "ZigZag" },
-          { key: PageType.Grid, label: "Grid" },
-        ]}
-        onChange={(key) => {
-          setPageType(key as PageType);
-        }}
-      />
       <Button
         type="text"
         onClick={() => {

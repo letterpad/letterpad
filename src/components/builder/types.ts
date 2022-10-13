@@ -10,6 +10,7 @@ export interface BlockItem {
   text?: string;
   type: "text" | "image";
 }
+
 export interface Block {
   columns: number;
   data: BlockItem[];
