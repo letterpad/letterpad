@@ -27,7 +27,7 @@ const defaultItem: Block = {
   data: [
     {
       text: "",
-      type: "image",
+      type: "text",
     },
   ],
 };
