@@ -3,7 +3,7 @@ describe("Settings", () => {
     cy.visitSettings();
     cy.get(".navigation [role=button]").click();
     cy.getTestId("newMenuBtn").click();
-    cy.addNavItem("New Tag", "/tag/first-post");
+    cy.addNavItem("New Tag", "first-post");
   });
 
   it("can fill general settings", () => {

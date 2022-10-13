@@ -16,11 +16,6 @@ export enum PERMISSIOMS {
   READ_ONLY_POSTS = "READ_ONLY_POSTS",
 }
 
-export enum PostTypes {
-  post,
-  page,
-}
-
 export type updatePostOptionalArgs = {
   cover_image: string;
   cover_image_width: number;
@@ -170,3 +165,9 @@ interface EmailTemplateError {
 export type EmailTemplateResponse = EmailTemplateSuccess | EmailTemplateError;
 
 export type ValueOf<T> = T[keyof T];
+
+export enum PageType {
+  Default = "default",
+  StoryBuilder = "story-builder",
+  // Grid = "grid",
+}

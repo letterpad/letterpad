@@ -46,6 +46,7 @@ function Pages({ readOnly }: { readOnly: boolean }) {
         <div className="site-layout-background" style={{ padding: 24 }}>
           <Filters
             showTags={false}
+            showPageTypes={false}
             onChange={(filters) => {
               refetch({ filters: { ...filters, type: PostTypes.Page } });
             }}

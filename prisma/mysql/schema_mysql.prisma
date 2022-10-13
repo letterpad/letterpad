@@ -89,7 +89,8 @@ model Post {
   author_id          Int
   author             Author?    @relation(fields: [author_id], references: [id], onDelete: Cascade)
   tags               Tag[]
-
+  page_type          String    @default("default")
+  page_data          String    @db.Text
   @@index([author_id], map: "Post_author_id_fkey")
 }
 

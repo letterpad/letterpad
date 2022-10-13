@@ -115,7 +115,7 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
     if (item && suggestionItem)
       onItemChange({
         ...item,
-        slug,
+        slug: slug.split("/").pop() as string,
         original_name: suggestionItem.original_name,
         type: suggestionItem.type,
       });

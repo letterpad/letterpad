@@ -52,14 +52,14 @@ export const getPosts = async (
   const condition: Prisma.PostFindManyArgs = {
     where: {
       author_id: authorId,
-      id: args.filters?.id,
+      // id: args.filters?.id,
       featured: args.filters?.featured,
       status: args.filters?.status ?? {
         in: [PostStatusOptions.Published, PostStatusOptions.Draft],
       },
       //@todo - remove slug
       slug: args.filters?.slug,
-      type: args.filters?.type || PostTypes.Post,
+      type: args.filters?.type ?? PostTypes.Post,
       tags: isPage
         ? { every: {} }
         : !session_author_id || args.filters?.tagSlug
@@ -69,6 +69,7 @@ export const getPosts = async (
             },
           }
         : undefined,
+      page_type: args.filters.page_type,
     },
     take: args.filters?.limit || 10,
     skip,

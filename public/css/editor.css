@@ -20,6 +20,32 @@ h5,
 h6 {
   color: rgba(var(--color), 0.8);
 }
+
+h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 48px;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-family: "Lato", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  padding: 0;
+  margin: 56px 0 -13px -1.883px;
+  text-align: left;
+  line-height: 34.5px;
+  letter-spacing: -0.45px;
+}
+
+p, i, a {
+  margin-top: 21px;
+  font-family: "Lora";
+  font-size: 21px;
+  letter-spacing: -0.03px;
+  line-height: 1.58;
+}
 pre {
   font-size: 0.7em;
   font-family: "Roboto Mono", monospace !important;

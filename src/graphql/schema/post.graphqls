@@ -13,7 +13,7 @@ type Post {
   excerpt: String
   # Convert image of the post
   cover_image: Image!
-  # Type of the post. Can be "page" or "post"
+  # Type of the post. Can be "creatives" or "post"
   type: PostTypes!
   # Status of the post
   status: PostStatusOptions!
@@ -33,6 +33,10 @@ type Post {
   reading_time: String
   # Tags of the post
   tags: TagsResponse
+  # Page can have different templates like portfolio
+  page_type: String
+  # Page data
+  page_data: String
 }
 
 enum PostStatusOptions {
@@ -83,6 +87,7 @@ input PostsFilters {
   offset: Int
   limit: Int
   sortBy: SortBy
+  page_type: String
 }
 
 type PostsNode {
@@ -116,7 +121,6 @@ input TagsInputType {
 input InputCreatePost {
   title: String
   html: String
-  # authorId: Int
   excerpt: String
   cover_image: InputImage
   type: PostTypes
@@ -124,6 +128,8 @@ input InputCreatePost {
   status: PostStatusOptions
   slug: String
   tags: [TagsInputType]
+  page_type: String
+  page_data: String
 }
 
 input InputUpdatePost {
@@ -141,6 +147,8 @@ input InputUpdatePost {
   status: PostStatusOptions
   slug: String
   tags: [TagsInputType!]
+  page_type: String
+  page_data: String
 }
 
 type PostError implements LetterpadError {

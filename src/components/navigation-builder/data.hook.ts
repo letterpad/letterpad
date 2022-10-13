@@ -86,15 +86,17 @@ function useNavigationData(): IReturn {
 export { useNavigationData };
 
 function normalizePages(pages) {
-  return pages.rows.map((item) => {
-    return {
-      type: NavigationType.Page,
-      slug: filterSlug(item.slug),
-      label: item.title,
-      original_name: item.title,
-      postCount: pages.count,
-    };
-  });
+  return pages.rows
+    .map((item) => {
+      return {
+        type: NavigationType.Page,
+        slug: filterSlug(item.slug),
+        label: item.title,
+        original_name: item.title,
+        postCount: pages.count,
+      };
+    })
+    .filter((item) => item.original_name.length > 0);
 }
 
 function normalizeTags(tags) {
@@ -117,6 +119,6 @@ function addIds(arr) {
 }
 
 function filterSlug(path) {
-  return path;
+  // return path;
   return path.split("/").pop();
 }

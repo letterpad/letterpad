@@ -1,11 +1,5 @@
 import { Button, Input, InputRef } from "antd";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 
 import { Media } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
@@ -17,7 +11,7 @@ interface IProps {
 }
 const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const url = (basePath + "/api/unsplash").replace("//api", "");
-  const [query, setQuery] = useState("");
+  const [, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -37,21 +31,22 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     [data],
   );
 
-  const searchUnsplash = useCallback(async () => {
-    const term = inputRef.current?.input?.value;
-    if (!term || term.length === 0) return;
-    setLoading(true);
-    fetchUnsplashMedia(url, page, term)
-      .then(handleUnsplashResponse)
-      .catch((_e) => {
-        setError(_e.message);
-        setLoading(false);
-      });
-  }, [handleUnsplashResponse, page, url]);
-
-  useEffect(() => {
-    searchUnsplash();
-  }, [page, query, searchUnsplash]);
+  const searchUnsplash = useCallback(
+    async (page = 1) => {
+      const term = inputRef.current?.input?.value;
+      if (!term || term.length === 0) {
+        return setLoading(false);
+      }
+      setLoading(true);
+      fetchUnsplashMedia(url, page, term)
+        .then(handleUnsplashResponse)
+        .catch((_e) => {
+          setError(_e.message);
+          setLoading(false);
+        });
+    },
+    [handleUnsplashResponse, url],
+  );
 
   const resetAll = () => {
     setError("");
@@ -63,13 +58,14 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     const term = inputRef.current?.input?.value;
     if (term && term.length > 0) {
       resetAll();
-      setQuery(term);
+      searchUnsplash();
     }
   };
 
   const loadMore = () => {
     const nextPage = page + 1;
     setPage(nextPage);
+    searchUnsplash(nextPage);
   };
 
   const jsxElements = useMemo(() => renderer(data), [data, renderer]);
@@ -80,6 +76,7 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
           ref={inputRef}
           data-testid="input-unsplash"
           onPressEnter={onSearchEnter}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="Search high resolution photos from Unsplash"
           autoFocus
           style={{ width: "calc(100% - 110px)" }}

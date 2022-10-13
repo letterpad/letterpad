@@ -73,6 +73,15 @@ export const updatePost = async (
     if (args.data.featured) {
       newPostArgs.data.featured = args.data.featured;
     }
+    if (args.data.type) {
+      newPostArgs.data.type = args.data.type;
+    }
+    if (args.data.page_type) {
+      newPostArgs.data.page_type = args.data.page_type;
+    }
+    if (args.data.page_data) {
+      newPostArgs.data.page_data = args.data.page_data;
+    }
     if (args.data.cover_image) {
       const img = await getCoverImageAttrs(args.data.cover_image);
       newPostArgs.data.cover_image = img.cover_image;

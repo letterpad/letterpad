@@ -13,6 +13,8 @@ fragment Partial on Post {
   scheduledAt
   updatedAt
   reading_time
+  page_type
+  page_data
   cover_image {
     src
     width

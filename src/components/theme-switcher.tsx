@@ -32,22 +32,17 @@ const ThemeSwitcher = () => {
   }, [switchTheme, theme]);
   return (
     <>
-      <div className="wrapper">
-        <div
-          className="button"
-          onClick={() => switchTheme(theme === "dark" ? "light" : "dark")}
-        >
-          {theme === "light" ? <Icon dark /> : <Icon />}
-        </div>
+      <div
+        className="wrapper"
+        onClick={() => switchTheme(theme === "dark" ? "light" : "dark")}
+      >
+        {theme === "light" ? <Icon dark /> : <Icon />}
       </div>
+
       <style jsx>{`
         .wrapper {
           display: flex;
           align-items: center;
-        }
-        .button {
-          width: 20px;
-          height: 20px;
           cursor: pointer;
         }
       `}</style>

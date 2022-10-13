@@ -33,7 +33,10 @@ export const createPost = async (
       message: "Author not found",
     };
   }
-  const dataToUpdate: Prisma.PostCreateInput = { html: args.data.html || "" };
+  const dataToUpdate: Prisma.PostCreateInput = {
+    html: args.data.html || "",
+    page_data: JSON.stringify({ rows: [] }),
+  };
 
   if (args.data.title) {
     dataToUpdate.title = args.data.title.trim();
@@ -53,6 +56,12 @@ export const createPost = async (
 
   if (args.data.type) {
     dataToUpdate.type = args.data.type || PostTypes.Post;
+  }
+  if (args.data.page_type) {
+    dataToUpdate.page_type = args.data.page_type;
+  }
+  if (args.data.page_data) {
+    dataToUpdate.page_data = args.data.page_data;
   }
 
   // add default tag

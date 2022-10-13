@@ -12,11 +12,12 @@ import { ChangeUsername } from "@/components/profile/change-username";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
-import { SettingsFragmentFragment } from "@/graphql/queries/partial.graphql";
+
+import { PageProps } from "@/types";
 
 interface Props {
   author: MeFragmentFragment;
-  settings: SettingsFragmentFragment;
+  settings: PageProps["settings"];
 }
 type Status = keyof InputAuthor;
 export const GettingStarted: FC<Props> = ({ author, settings }) => {

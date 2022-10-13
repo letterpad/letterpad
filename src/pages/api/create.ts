@@ -13,10 +13,11 @@ const Create = async (
 ) => {
   try {
     const type = req.query.type as PostTypes;
+    const page_type = req.query.page_type as string;
 
     const context = await getResolverContext({ req, res });
 
-    const result = await createPost({ data: { type } }, context);
+    const result = await createPost({ data: { type, page_type } }, context);
 
     if (result.__typename === "Post") {
       res.redirect(basePath + "/post/" + result.id);
