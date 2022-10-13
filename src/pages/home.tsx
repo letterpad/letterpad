@@ -43,7 +43,7 @@ const Home: FC<PageProps> = ({ settings }) => {
 
   if (showGettingStarted) {
     return withDismiss(
-      <GettingStarted settings={settings} author={author} />,
+      <GettingStarted author={author} settings={settings} />,
       onDismiss,
     );
   }

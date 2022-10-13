@@ -11,6 +11,8 @@ import { Block } from "./types";
 
 interface Props {
   Row: React.ComponentType<PlaceholderProps>;
+  data: { rows: Block[] };
+  type: PageType;
 }
 
 export const Layout: FC<Props> = ({ Row }) => {

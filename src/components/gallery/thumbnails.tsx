@@ -26,6 +26,7 @@ export const ThumbnailList: FC<Props> = ({ items, onSelect, index }) => {
       {items.map((item, i) => (
         <div key={i}>
           <Image
+            //@ts-ignore
             src={item.src as string}
             width={100}
             height={100}
