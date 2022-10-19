@@ -1,4 +1,4 @@
-import { Editor } from "@tinymce/tinymce-react/node_modules/tinymce/tinymce";
+import { Editor } from "tinymce";
 
 export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
   editor.ui.registry.addButton("customImage", {

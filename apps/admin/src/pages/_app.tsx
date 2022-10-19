@@ -15,7 +15,7 @@ import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 import type { Page } from "../page";
 
-type Props = AppProps & {
+type Props = AppProps<{ session: any }> & {
   Component: Page;
 };
 
