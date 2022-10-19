@@ -47,6 +47,7 @@ jobs:
         run: yarn codegen
 
       - name: Generate Prisma Client
+        working-directory: apps/admin
         run: npx prisma generate --schema prisma/sqlite/schema.prisma
         env:
           DATABASE_URL: "file:data/test.sqlite"
