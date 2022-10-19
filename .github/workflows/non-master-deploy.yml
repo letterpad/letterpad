@@ -28,7 +28,10 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
+      
+      - run: |
+          node_modules/cypress/bin/cypress install
+      
       - name: Cache Cypress Binary
         uses: actions/cache@v2
         with:
@@ -45,9 +48,6 @@ jobs:
 
       - name: Create .env file
         run: mv apps/admin/.env.sample apps/admin/.env
-
-      - run: |
-          node_modules/cypress/bin/cypress install
 
       - name: Graphql Codegen
         run: yarn codegen
