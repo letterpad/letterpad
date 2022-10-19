@@ -13,7 +13,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "turbo run test",
     "e2e:ci": "turbo run e2e:ci",
-    "e2e": "turbo run e2e"
+    "e2e": "turbo run e2e",
+    "codegen": "turbo run codegen"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
