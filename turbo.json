@@ -37,6 +37,9 @@
     },
     "typecheck": {
       "outputs": []
+    },
+    "lint:fix": {
+      "outputs": []
     }
   }
 }

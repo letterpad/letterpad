@@ -140,11 +140,10 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,}": [
-      "eslint --max-warnings=124",
-      "prettier -w"
+      "eslint --max-warnings=124"
     ],
     "src/**/*.{json,css,md}": [
-      "prettier -w"
+      "eslint --max-warnings=124"
     ],
     ".env": [
       "ts-node ./scripts/verifyEnv.ts"

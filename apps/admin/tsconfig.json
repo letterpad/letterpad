@@ -1,6 +1,6 @@
 {
   "extends": "tsconfig/nextjs.json",
-   "compilerOptions": {
+  "compilerOptions": {
     "baseUrl": ".",
     "useDefineForClassFields": false,
     "paths": {
