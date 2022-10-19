@@ -6,6 +6,11 @@
   "prisma": {
     "seed": "yarn seed"
   },
+  "eslint": {
+    "dirs": [
+      "src"
+    ]
+  },
   "scripts": {
     "codegen": "graphql-let",
     "client": "concurrently -k 'yarn dev'",
@@ -15,7 +20,7 @@
     "start": "next start",
     "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/index.ts",
     "lint": "next lint",
-    "lint:fix": "eslint src --fix && yarn format",
+    "lint:fix": "next lint --fix && yarn format",
     "migrate": "prisma migrate dev --name init",
     "typecheck": "yarn tsc",
     "prisma:generate": "dotenv scripts/generatePrisma.sh",
@@ -140,10 +145,10 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,}": [
-      "eslint --max-warnings=124"
+      "eslint --max-warnings=10"
     ],
     "src/**/*.{json,css,md}": [
-      "eslint --max-warnings=124"
+      "eslint --max-warnings=10"
     ],
     ".env": [
       "ts-node ./scripts/verifyEnv.ts"

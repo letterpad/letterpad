@@ -1,6 +1,9 @@
 // const withTM = require("next-transpile-modules")(["ui"]);
 const basePath = "/admin";
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   productionBrowserSourceMaps: true,
   env: {
     ROOT: __dirname,
