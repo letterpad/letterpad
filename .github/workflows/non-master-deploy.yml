@@ -11,11 +11,16 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v2
+      - name: Check out code
+        uses: actions/checkout@v3
         with:
-          node-version: "16.15.1"
+          fetch-depth: 2
+
+      - name: Setup Node.js environment
+          uses: actions/setup-node@v3
+          with:
+            node-version: 16.15.1
+            cache: 'yarn'
 
       - name: Cache node_modules
         uses: actions/cache@v2
@@ -35,14 +40,15 @@ jobs:
 
       - name: Yarn install deps
         run: |
-          yarn install --frozen-lockfile
+          yarn install --frozen-lockfile 
         if: steps.yarn-dep-cache.outputs.cache-hit != 'true'
 
       - name: Create .env file
         run: mv apps/admin/.env.sample apps/admin/.env
 
       - run: |
-          node_modules/cypress/bin/cypress install
+          apps/admin/node_modules/cypress/bin/cypress install
+
       - name: Graphql Codegen
         run: yarn codegen
 
