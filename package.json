@@ -14,7 +14,8 @@
     "test": "turbo run test",
     "e2e:ci": "turbo run e2e:ci",
     "e2e": "turbo run e2e",
-    "codegen": "turbo run codegen"
+    "codegen": "turbo run codegen",
+    "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
