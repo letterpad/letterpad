@@ -1,0 +1,16 @@
+# schema: http://localhost:3000/admin/api/graphql
+schema: https://letterpad.app/admin/api/graphql
+documents:
+  - components/**/*.tsx
+  - pages/**/*.tsx
+  - queries/**/*.ts
+generates:
+  lib/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      exportFragmentSpreadSubTypes: true
+hooks:
+  afterAllFileWrite:
+    - prettier --write
