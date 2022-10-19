@@ -47,7 +47,7 @@ jobs:
         run: mv apps/admin/.env.sample apps/admin/.env
 
       - run: |
-          apps/admin/node_modules/cypress/bin/cypress install
+          node_modules/cypress/bin/cypress install
 
       - name: Graphql Codegen
         run: yarn codegen
