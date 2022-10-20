@@ -40,6 +40,9 @@
     },
     "lint:fix": {
       "outputs": []
+    },
+    "start": {
+      "outputs": []
     }
   }
 }

@@ -15,6 +15,7 @@
     "e2e:ci": "turbo run e2e:ci",
     "e2e": "turbo run e2e",
     "codegen": "turbo run codegen",
+    "start": "turbo run start",
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
