@@ -1,7 +1,7 @@
 name: PR Checks
 on:
   push:
-    branches-ignore:
+    branches:
       - "master"
 env:
   CYPRESS_CACHE_FOLDER: /home/runner/work/letterpad/letterpad/apps/admin/cypress/cache

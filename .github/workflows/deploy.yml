@@ -1,7 +1,7 @@
 name: Deployment Workflow
 on:
   push:
-    branches:
+    branches-ignore:
       - "master"
 
 jobs:
@@ -46,7 +46,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: "."
-          target: /var/www/html/letterpad-admin
+          target: /var/www/html/letterpad-turbo
 
       - name: executing remote ssh commands
         uses: appleboy/ssh-action@master
@@ -55,5 +55,5 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: |
-            pm2 reload letterpad-admin
+          # script: |
+          #   pm2 reload letterpad-admin
