@@ -1,4 +1,4 @@
-name: Deploy Master
+name: Deploy Stage
 on:
   push:
     branches:
@@ -6,6 +6,7 @@ on:
 
 jobs:
   job_one:
+    if: "!contains(github.event.head_commit.message, 'stage')"
     name: Deploy
     runs-on: ubuntu-latest
     steps:
@@ -55,5 +56,5 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
-          # script: |
-          #   pm2 reload letterpad-admin
+          script: |
+            pm2 reload letterpad-turbo
