@@ -32,7 +32,7 @@ jobs:
       - name: Cache Cypress Binary
         uses: actions/cache@v2
         with:
-          path: "**/cypress/cache"
+          path: "**/apps/admin/cypress/cache"
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Yarn
