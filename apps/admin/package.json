@@ -50,6 +50,7 @@
     "@prisma/client": "^4.3.1",
     "@tinymce/tinymce-react": "^4.2.0",
     "@types/bcryptjs": "^2.4.2",
+    "eslint-config-custom": "*",
     "ajv": "^8.10.0",
     "ajv-formats": "^2.1.1",
     "antd": "4.22.6",
