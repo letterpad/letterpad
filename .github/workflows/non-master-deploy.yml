@@ -8,7 +8,7 @@ env:
 
 jobs:
   job_one:
-    name: Build
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
