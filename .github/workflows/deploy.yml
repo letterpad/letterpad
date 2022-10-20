@@ -1,4 +1,4 @@
-name: Deployment Workflow
+name: Deploy Master
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   job_one:
-    name: Deploy
+    name: Deploy Master
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -34,7 +34,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Generate Prisma Client
-        run: npx prisma generate --schema prisma/mysql/schema_mysql.prisma
+        run: npx prisma generate --schema apps/admin/prisma/mysql/schema_mysql.prisma
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
@@ -46,7 +46,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: "."
-          target: /var/www/html/letterpad-admin
+          target: /var/www/html/letterpad-turbo
 
       - name: executing remote ssh commands
         uses: appleboy/ssh-action@master
@@ -55,5 +55,5 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: |
-            pm2 reload letterpad-admin
+          # script: |
+          #   pm2 reload letterpad-admin

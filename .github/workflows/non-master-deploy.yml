@@ -4,18 +4,23 @@ on:
     branches-ignore:
       - "master"
 env:
-  CYPRESS_CACHE_FOLDER: cypress/cache
+  CYPRESS_CACHE_FOLDER: /home/runner/work/letterpad/letterpad/apps/admin/cypress/cache
 
 jobs:
   job_one:
-    name: Build
+    name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v2
+      - name: Check out code
+        uses: actions/checkout@v3
         with:
-          node-version: "16.15.1"
+          fetch-depth: 2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.15.1
+          cache: 'yarn'
 
       - name: Cache node_modules
         uses: actions/cache@v2
@@ -23,11 +28,11 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
+      
       - name: Cache Cypress Binary
         uses: actions/cache@v2
         with:
-          path: "**/cypress/cache"
+          path: "/home/runner/work/letterpad/letterpad/apps/admin/cypress/cache"
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Yarn
@@ -35,18 +40,20 @@ jobs:
 
       - name: Yarn install deps
         run: |
-          yarn install --frozen-lockfile
+          yarn install --frozen-lockfile 
         if: steps.yarn-dep-cache.outputs.cache-hit != 'true'
-
-      - name: Create .env file
-        run: mv .env.sample .env
 
       - run: |
           node_modules/cypress/bin/cypress install
+
+      - name: Create .env file
+        run: mv apps/admin/.env.sample apps/admin/.env
+
       - name: Graphql Codegen
         run: yarn codegen
 
       - name: Generate Prisma Client
+        working-directory: apps/admin
         run: npx prisma generate --schema prisma/sqlite/schema.prisma
         env:
           DATABASE_URL: "file:data/test.sqlite"
@@ -63,7 +70,9 @@ jobs:
         run: yarn run build
 
       - name: Run Cypress
-        run: yarn e2e:ci
+        run: |
+          node_modules/cypress/bin/cypress install
+          yarn e2e:ci
         env:
           DATABASE_URL: "file:../data/test.sqlite"
           ROOT_URL: "http://localhost:3000/admin"

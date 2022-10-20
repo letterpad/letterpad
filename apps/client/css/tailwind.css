@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('./creative.css');
+
+@layer components {
+  .button-primary {
+    @apply rounded-sm bg-gray-800 px-4 py-3 leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg;
+  }
+  .link {
+    @apply text-sm font-medium text-primary-500 hover:text-primary-600 dark:hover:text-primary-400;
+  }
+  .link {
+    @apply text-sm font-medium text-primary-600 hover:text-primary-600 dark:hover:text-primary-400;
+  }
+  .social-link {
+    @apply fill-current text-gray-700 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400;
+  }
+  /* ... */
+}
+
+.task-list-item::before {
+  @apply hidden;
+}
+
+.task-list-item {
+  @apply list-none;
+}
+
+.footnotes {
+  @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
+}
+
+.csl-entry {
+  @apply my-5;
+}
+
+/* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+.prose :where(pre):not(:where([class~='not-prose'] *)) {
+  font-size: 80%;
+}
+
+body {
+  word-break: break-word;
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**"
+      ]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false
+    },
+    "prisma:generate": {
+      "outputs": [
+        "node_modules/.prisma/client"
+      ]
+    },
+    "test": {
+      "outputs": [
+        "coverage/**"
+      ]
+    },
+    "e2e:ci": {
+      "outputs": []
+    },
+    "e2e": {
+      "outputs": []
+    },
+    "codegen": {
+      "outputs": []
+    },
+    "typecheck": {
+      "outputs": []
+    },
+    "lint:fix": {
+      "outputs": []
+    },
+    "start": {
+      "outputs": []
+    }
+  }
+}

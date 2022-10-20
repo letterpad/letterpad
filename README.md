@@ -1,6 +1,7 @@
-Letterpad Admin is the dashboard for publishing blogs.
+# Letterpad
+Letterpad is a blog publishing platform.
 
-<img src="./demo.png" >
+<img src="./apps/admin/demo.png" >
 
 ## Features
 
@@ -13,97 +14,56 @@ Letterpad Admin is the dashboard for publishing blogs.
 - Connects to multiple databases. Default is sqlite3
 - Can be used as a multi-user service
 - Minimalistic Dashboard
+- Domain Mapping
+- Creatives - (Coming soon) - With creatives you will get page builder with which you can create your homepage.
 
 ## Demo:
+https://demo.letterpad.app
 
-https://letterpad.app/admin/login?demo
+# How to install
 
-## Without self hosting
+Clone this project
 
-You can register in https://letterpad.app/admin/register and start writing posts, free of cost.
+```sh
+git clone git@github.com:letterpad/letterpad.git
+```
+Change directory
+```sh
+cd letterpad
+```
 
-## With self hosting
+## Install dependencies and generate database tables
 
-There are few things that you should know before running letterpad in a production environment.
-
-- In the root folder, you will find a file `.env.sampple`. Clone is file and rename it to `.env`. The most important key is `SECRET_KEY`, set the value of this key to something different. This key is used to encrypt passwords, sessions and preview links.
-
-- Letterpad Admin runs on the url `/admin`. If you would like to run the admin dashboard in the root url,
-  edit `next.config.js` and remove the basePath. Also open `.env` and remove the `/admin` from all the urls.
-
-- Run the below commands.
-
-```bash
+```sh
 yarn install
 yarn seed
+```
+
+## Production
+```sh
 yarn build
-yarn start # starts the server
+yarn start
 ```
 
-- Open http://localhost:3000/admin
-
-- Login with demo account
-
-```
-Email - demo@demo.com
-Password - demo
-```
-
----
-
-## Enabling Emails
-
-Letterpad integrates with [Gmail](https://gmail.com/). You should set `GMAIL_USER` and `GMAIL_PASSWORD` in `..env` file to activate emails.
-
----
-
-## Captcha for registrations
-
-This section is required only if you want to use Letterpad as a multi-user account. Letterpad uses [ReCaptcha](https://www.google.com/recaptcha/about/). You can register and set the `RECAPTCHA_KEY` in `.env`.
-
----
-
-## Running Letterpad on Development Mode
-
-First install the node modules and seed the database using
-
-```bash
-yarn install
-yarn seed
-```
-
-`yarn seed` will reset the database. So use this only in dev environment. When you execute this command, it is going to create the prisma client from the env variable `DATABASE_URL`, with which it is going to seed the database.
-
-> If you want to swith the db to something different like `mysql`, you should change the `DATABASE_URL` and generate the client with the command `prisma:generate`.
-
-Then, run the development server:
-
-```bash
+## Development
+```sh
 yarn dev
 ```
 
-Open [http://localhost:3000/admin](http://localhost:3000/admin) with your browser. You can login with the test account mentioned below
+## URL and Port
+By default the admin panel runs on port 3000 and client runs on port 3001
+- Admin  - http://localhost:3000/admin
+- Client - http://localhost:3001
 
-```
-Email - demo@demo.com
-Password - demo
-```
-
----
-
-Letterpad has been developed using Next.js.
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Letterpad Admin
+You can find more information about configuration in this [folder](https://github.com/letterpad/letterpad/tree/master/apps/admin)
 
 ## Letterpad Client
 
-We also have a letterpad client which you can find in [this repository](https://github.com/letterpad/letterpad-client). The letterpad client is a simple react application which uses the graphql API of letterpad to render a public facing blog.
-
+The letterpad client (public) app can be found inside `apps/client`.
 Demo: https://demo.letterpad.app
 
-Letterpad Admin provides a client key which can be found in settings. If you want to host the client in a different domain, then you should set this client_key in `next.config.js`.
+Letterpad Admin provides a client key which can be found in settings. If you want to host the client in a different domain, then you should set this client_key in `apps/client/next.config.js`.
 
 ## Contribute
 
