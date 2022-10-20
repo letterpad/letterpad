@@ -4,7 +4,7 @@ on:
     branches-ignore:
       - "master"
 env:
-  CYPRESS_CACHE_FOLDER: cypress/cache
+  CYPRESS_CACHE_FOLDER: /home/runner/work/letterpad/letterpad/apps/admin/cypress/cache
 
 jobs:
   job_one:
@@ -32,7 +32,7 @@ jobs:
       - name: Cache Cypress Binary
         uses: actions/cache@v2
         with:
-          path: "**/apps/admin/cypress/cache"
+          path: "/home/runner/work/letterpad/letterpad/apps/admin/cypress/cache"
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Yarn
