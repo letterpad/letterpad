@@ -48,7 +48,7 @@ export async function seed(folderCheck = true) {
         await cleanupDatabase();
       } catch (e: any) {
         logger.error(e);
-        throw "error";
+        throw "Couldnt clean database tables";
       }
       console.timeEnd("delete all recoreds from all tables");
 
