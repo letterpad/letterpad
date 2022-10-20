@@ -4,7 +4,7 @@ on:
     branches-ignore:
       - "master"
 env:
-  CYPRESS_CACHE_FOLDER: apps/admin/cypress/cache
+  CYPRESS_CACHE_FOLDER: cypress/cache
 
 jobs:
   job_one:
