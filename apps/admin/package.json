@@ -4,7 +4,7 @@
   "author": "Abhishek Saha",
   "license": "MIT",
   "prisma": {
-    "seed": "yarn seed"
+    "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/index.ts"
   },
   "eslint": {
     "dirs": [
@@ -18,7 +18,7 @@
     "build": "yarn codegen && next build",
     "test": "yarn codegen && jest --runInBand",
     "start": "next start",
-    "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/index.ts",
+    "seed": "yarn prisma:seed",
     "lint": "next lint",
     "lint:fix": "next lint --fix && yarn format",
     "migrate": "prisma migrate dev --name init",

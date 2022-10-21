@@ -2,6 +2,7 @@
   "extends": "tsconfig/nextjs.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "module": "commonjs",
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/components_v2/*": ["src/components_v2/*"],
