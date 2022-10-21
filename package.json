@@ -17,7 +17,8 @@
     "codegen": "turbo run codegen --parallel",
     "start": "turbo run start --parallel",
     "typecheck": "turbo run typecheck",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "seed": "turbo run seed"
   },
   "devDependencies": {
     "eslint-config-custom": "*",

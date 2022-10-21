@@ -46,6 +46,12 @@
     },
     "find-deadcode": {
       "outputs": []
+    },
+    "seed": {
+      "outputs": [
+        "dist/**",
+        "build/**"
+      ]
     }
   }
 }
