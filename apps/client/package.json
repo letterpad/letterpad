@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "yarn codegen && next -p 3001",
-    "build": "yarn codegen && next build",
+    "prebuild": "yarn codegen",
+    "build": "next build",
     "start": "next start -p 3001",
     "codegen": "graphql-codegen",
     "serve": "next start",
