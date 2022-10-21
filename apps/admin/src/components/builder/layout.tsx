@@ -1,21 +1,20 @@
 import { FC } from "react";
 
+import { Row } from "@/components/builder/layouts/story-builder";
 import { Button } from "@/components_v2/button";
 
 import { PageType } from "@/graphql/types";
 
 import { useBuilderContext } from "./context";
-import { PlaceholderProps } from "./layouts/story-builder/row";
 import { IconAdd } from "./toolbar/icons";
 import { Block } from "./types";
 
 interface Props {
-  Row: React.ComponentType<PlaceholderProps>;
   data: { rows: Block[] };
   type: PageType;
 }
 
-export const Layout: FC<Props> = ({ Row }) => {
+export const Layout: FC<Props> = () => {
   const { preview, setPreview, grid, addRow } = useBuilderContext();
 
   return (

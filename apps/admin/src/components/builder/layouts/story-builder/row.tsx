@@ -7,16 +7,12 @@ import { LayoutToolbar } from "../../toolbar/layout-toolbar";
 import { Swap } from "../../toolbar/swap";
 import { Block } from "../../types";
 
-export interface PlaceholderProps {
+export interface RowProps {
   row: Block;
   isPrevRowImageLeft: boolean;
   rowIndex: number;
 }
-export const Row: FC<PlaceholderProps> = ({
-  row,
-  isPrevRowImageLeft,
-  rowIndex,
-}) => {
+export const Row: FC<RowProps> = ({ row, isPrevRowImageLeft, rowIndex }) => {
   const { updateRow, moveRow, swapColumns, preview } = useBuilderContext();
 
   const columns = Array.from({ length: row?.columns }, (_, i) => i);

@@ -51,7 +51,10 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     onSave(gridCopy);
   };
 
-  const addRow = () => setGrid((grid) => [...grid, defaultItem]);
+  const addRow = () => {
+    const id = createId();
+    setGrid([...grid, { ...defaultItem, id }]);
+  };
 
   const updateRow = (change: Block, rowIndex: number) => {
     const newGrid = grid.map((item, idx) => {
