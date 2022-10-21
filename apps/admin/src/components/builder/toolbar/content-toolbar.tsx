@@ -14,15 +14,12 @@ interface Props {
   item?: BlockItem;
 }
 export const ContentToolbar: FC<Props> = ({
-  setEditorOpen,
-  editorOpen,
   setFileExplorerOpen,
   rowIndex,
   colIndex,
   item,
 }) => {
-  const { updateCell, removeCell, getColumns } = useBuilderContext();
-  const noImgSrcInImgType = item?.type === "image" && !item?.image?.src;
+  const { removeCell } = useBuilderContext();
   const isFirstRow = rowIndex === 0;
 
   if (isFirstRow) {
@@ -43,19 +40,6 @@ export const ContentToolbar: FC<Props> = ({
     return (
       <div className="absolute top-0 right-0 z-10 m-4  text-center">
         <div className="inline-flex rounded-md shadow-sm">
-          {/* <Button
-            onClick={() => setFileExplorerOpen(true)}
-            className="rounded-l-md "
-          >
-            <IconImage size={18} />
-          </Button> */}
-          {/* {(isFirstRow || getColumns(rowIndex).length === 1) && (
-            <>
-              <Button onClick={() => setEditorOpen(!editorOpen)}>
-                <IconText />
-              </Button>
-            </>
-          )} */}
           {!isFirstRow && (
             <Button
               onClick={() => removeCell(rowIndex, colIndex)}

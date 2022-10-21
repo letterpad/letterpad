@@ -26,7 +26,7 @@ export const LayoutToolbar: FC<Props> = ({
   rowIndex,
 }) => {
   const onSmallHeight = () => {
-    onChange({ ...item, cover: "banner" });
+    onChange({ ...item, cover: "banner", data: [item.data[0]], columns: 1 });
   };
 
   const showSplitIcon = item.columns === 1;
@@ -75,30 +75,34 @@ export const LayoutToolbar: FC<Props> = ({
   return (
     <div className="left-1/2  top-10 z-50 flex  justify-center rounded-t-lg  border  border-b-0 border-gray-200 bg-slate-100 p-2 shadow-sm dark:border-gray-800 dark:bg-gray-800">
       {showBannerIcon && (
-        <button className="icon-class rounded-md" onClick={onSmallHeight}>
+        <button className="icon-class-1 rounded-md" onClick={onSmallHeight}>
           <IconSmallHeight />
         </button>
       )}
       {showFullSizeIcon && (
-        <button className="icon-class rounded-md" onClick={onFullWidth}>
+        <button className="icon-class-1 rounded-md" onClick={onFullWidth}>
           <IconFullWidth />
         </button>
       )}
       {showSplitIcon && (
-        <button aria-current="page" className={"icon-class "} onClick={onSplit}>
+        <button
+          aria-current="page"
+          className={"icon-class-1 "}
+          onClick={onSplit}
+        >
           <IconSplit />
         </button>
       )}
 
       {isNotFirstAndSecondrow && (
-        <button className="icon-class " onClick={() => move("up")}>
+        <button className="icon-class-1 " onClick={() => move("up")}>
           <IconUp />
         </button>
       )}
 
       {isNotFirstRow && (
         <button
-          className="icon-class rounded-r-md"
+          className="icon-class-1 rounded-r-md"
           onClick={() => move("down")}
         >
           <IconDown />
