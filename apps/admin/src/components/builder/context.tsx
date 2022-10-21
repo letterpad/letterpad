@@ -24,16 +24,19 @@ interface ContextType {
 }
 
 const Context = createContext<ContextType>({} as ContextType);
-const defaultItem: Block = {
-  id: createId(),
-  columns: 1,
-  data: [
-    {
-      text: "",
-      type: "text",
-    },
-  ],
-};
+
+function createDefaultItem(): Block {
+  return {
+    id: createId(),
+    columns: 1,
+    data: [
+      {
+        text: "",
+        type: "text",
+      },
+    ],
+  };
+}
 
 export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
   const [preview, setPreview] = useState(false);
@@ -53,7 +56,7 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
 
   const addRow = () => {
     const id = createId();
-    setGrid([...grid, { ...defaultItem, id }]);
+    setGrid([...grid, { ...createDefaultItem(), id }]);
   };
 
   const updateRow = (change: Block, rowIndex: number) => {
