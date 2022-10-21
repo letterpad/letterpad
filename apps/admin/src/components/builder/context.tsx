@@ -53,8 +53,15 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
   const removeCell = (index: number, col?: number) => {
     let gridCopy = [...grid];
     if (typeof col !== "undefined" && gridCopy[index].columns > 1) {
-      gridCopy[index].columns -= 1;
-      delete gridCopy[index].data[col];
+      const {
+        data: [a, b],
+      } = gridCopy[index];
+
+      gridCopy[index] = {
+        ...gridCopy[index],
+        data: [col === 0 ? b : a],
+        columns: 1,
+      };
     } else {
       gridCopy = gridCopy.filter((_, idx) => idx !== index);
     }
@@ -63,9 +70,7 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
   };
 
   const addRow = useCallback(() => {
-    const id = createId();
-    const isPrevRowImageLeft = grid[grid.length - 1].data[0].type === "image";
-    let block: Block = { ...createDefaultItem(), id, data: [] };
+    const isPrevRowImageLeft = grid[grid.length - 1].data[0]?.type === "image";
     const newItem = { ...createDefaultItem() };
     if (isPrevRowImageLeft) {
       newItem.data = [{ type: "text" }, { type: "image" }];
