@@ -12,7 +12,7 @@
       "@/graphql/schema": ["src/graphql/schema"],
       "@/graphql/*": ["src/graphql/*"],
       "@/*": ["src/*"]
-    },
+    }
   },
   "exclude": ["__generated__/**/*"],
   "include": [
