@@ -34,8 +34,7 @@
     "e2e:ci": "yarn prisma:seed && start-server-and-test 'yarn start' http://localhost:3000/admin/login cy:run",
     "e2e": "yarn prisma:seed && start-server-and-test 'yarn dev' http://localhost:3000/admin/login cy:open",
     "format": "prettier -w .",
-    "format:check": "prettier -c .",
-    "prepare": "husky install"
+    "format:check": "prettier -c ."
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
@@ -43,7 +42,6 @@
     "@dnd-kit/core": "^6.0.5",
     "@dnd-kit/sortable": "^7.0.1",
     "@dnd-kit/utilities": "^3.2.0",
-    "tsconfig": "*",
     "@graphql-tools/load-files": "6.5.3",
     "@graphql-tools/merge": "8.2.6",
     "@graphql-tools/schema": "8.3.5",
@@ -51,7 +49,6 @@
     "@prisma/client": "^4.3.1",
     "@tinymce/tinymce-react": "^4.2.0",
     "@types/bcryptjs": "^2.4.2",
-    "eslint-config-custom": "*",
     "ajv": "^8.10.0",
     "ajv-formats": "^2.1.1",
     "antd": "4.22.6",
@@ -66,6 +63,7 @@
     "cross-fetch": "^3.1.5",
     "cryptr": "^6.0.2",
     "debug": "^4.3.1",
+    "eslint-config-custom": "*",
     "graphql": "15.3.0",
     "graphql-request": "^3.4.0",
     "highlight.js": "^11.4.0",
@@ -98,6 +96,7 @@
     "sqlite3": "^5.0.11",
     "tinymce": "^6.0.0",
     "tippy.js": "^6.3.7",
+    "tsconfig": "*",
     "twig": "^1.15.4"
   },
   "devDependencies": {
@@ -114,11 +113,11 @@
     "@styled-jsx/plugin-sass": "^4.0.0",
     "@tailwindcss/typography": "^0.5.7",
     "@types/jest": "^26.0.23",
-    "@types/react": "18.0.21",
-    "@types/react-dom": "18.0.6",
     "@types/multer": "^1.4.5",
     "@types/next-auth": "^3.15.0",
     "@types/nodemailer": "^6.4.5",
+    "@types/react": "18.0.21",
+    "@types/react-dom": "18.0.6",
     "@types/react-test-renderer": "^18.0.0",
     "@types/react-tooltip": "^4.2.4",
     "autoprefixer": "^10.4.12",
@@ -130,7 +129,6 @@
     "graphql-let": "0.x",
     "graphql-tag": "2.11.0",
     "html-webpack-plugin": "5.5.0",
-    "husky": "^8.0.1",
     "jest": "^27.0.5",
     "lint-staged": "^12.4.2",
     "node-env-file": "^0.1.8",

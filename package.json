@@ -16,12 +16,14 @@
     "e2e": "turbo run e2e",
     "codegen": "turbo run codegen --parallel",
     "start": "turbo run start --parallel",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
     "prettier": "latest",
-    "turbo": "latest"
+    "turbo": "latest",
+    "husky": "^8.0.1"
   },
   "engines": {
     "node": ">=14.0.0"

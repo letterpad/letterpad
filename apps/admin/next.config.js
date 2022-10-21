@@ -1,4 +1,5 @@
 // const withTM = require("next-transpile-modules")(["ui"]);
+const UnusedFilesWebpackPlugin = require("unused-files-webpack-plugin");
 const basePath = "/admin";
 const nextConfig = {
   eslint: {
