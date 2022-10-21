@@ -29,6 +29,10 @@ export const LayoutToolbar: FC<Props> = ({
     onChange({ ...item, cover: "banner" });
   };
 
+  const showSplitIcon = item.columns === 1;
+  const showFullSizeIcon = !showSplitIcon;
+  const showBannerIcon = item.cover !== "banner";
+
   const onFullWidth = () => {
     const mergeItem: Block = { columns: 1, data: [], id: createId() };
 
@@ -55,9 +59,9 @@ export const LayoutToolbar: FC<Props> = ({
   const onSplit = () => {
     let data = [...item.data];
     if (isPrevRowImageLeft) {
-      data = [{ type: "text" }, { ...data[0], type: "image" }];
+      data = [{ type: "text" }, { type: "image" }];
     } else {
-      data = [{ ...data[0], type: "image" }, { type: "text" }];
+      data = [{ type: "image" }, { type: "text" }];
     }
 
     onChange({
@@ -70,15 +74,21 @@ export const LayoutToolbar: FC<Props> = ({
   const isNotFirstAndSecondrow = rowIndex > 1;
   return (
     <div className="left-1/2  top-10 z-50 flex  justify-center rounded-t-lg  border  border-b-0 border-gray-200 bg-slate-100 p-2 shadow-sm dark:border-gray-800 dark:bg-gray-800">
-      <button className="icon-class rounded-l-md" onClick={onSmallHeight}>
-        <IconSmallHeight />
-      </button>
-      <button className="icon-class rounded-l-md" onClick={onFullWidth}>
-        <IconFullWidth />
-      </button>
-      <button aria-current="page" className={"icon-class "} onClick={onSplit}>
-        <IconSplit />
-      </button>
+      {showBannerIcon && (
+        <button className="icon-class rounded-md" onClick={onSmallHeight}>
+          <IconSmallHeight />
+        </button>
+      )}
+      {showFullSizeIcon && (
+        <button className="icon-class rounded-md" onClick={onFullWidth}>
+          <IconFullWidth />
+        </button>
+      )}
+      {showSplitIcon && (
+        <button aria-current="page" className={"icon-class "} onClick={onSplit}>
+          <IconSplit />
+        </button>
+      )}
 
       {isNotFirstAndSecondrow && (
         <button className="icon-class " onClick={() => move("up")}>

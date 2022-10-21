@@ -20,13 +20,14 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
   const { preview, updateCell } = useBuilderContext();
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [formats, setFormats] = useState("");
-  const [editorOpen, setEditorOpen] = useState(false);
   const item = row?.data[colIndex];
-  // const showImgBtnCenter =
-  //   !item?.image?.src && isImage && !preview && item.text?.trim().length === 0;
   const isText = item?.type === "text";
   const isImage = item?.type === "image";
   const isFirstRow = rowIndex === 0;
+
+  const [editorOpen, setEditorOpen] = useState(isText || columns === 1);
+  // const showImgBtnCenter =
+  //   !item?.image?.src && isImage && !preview && item.text?.trim().length === 0;
 
   return (
     <div
@@ -34,7 +35,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
         "relative flex w-full justify-center align-middle",
         "row-" + rowIndex,
       )}
-      onClick={() => setEditorOpen(true)}
+      onClick={() => setEditorOpen(isText || columns === 1)}
     >
       {!preview && (
         <ContentToolbar
@@ -76,6 +77,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             formats={formats}
             editable={editorOpen}
             cover={row?.cover}
+            setFileExplorerOpen={setFileExplorerOpen}
             setEditorOpen={(visible) => {
               setFormats(
                 "h1 h2 | fontfamily alignleft aligncenter alignright | blockquote | forecolor",

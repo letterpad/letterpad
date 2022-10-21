@@ -27,7 +27,7 @@ export const ContentToolbar: FC<Props> = ({
 
   if (isFirstRow) {
     return (
-      <div className="absolute top-0 right-0 z-10 m-4 -ml-8 text-center">
+      <div className="absolute top-0 right-0 z-10 m-4 text-center">
         <div className="inline-flex rounded-md shadow-sm">
           <Button
             onClick={() => setFileExplorerOpen(true)}
@@ -41,25 +41,25 @@ export const ContentToolbar: FC<Props> = ({
   }
   if (item?.type === "image") {
     return (
-      <div className="absolute top-0 left-1/2 z-10 -ml-20 text-center">
+      <div className="absolute top-0 right-0 z-10 m-4  text-center">
         <div className="inline-flex rounded-md shadow-sm">
-          <Button
+          {/* <Button
             onClick={() => setFileExplorerOpen(true)}
             className="rounded-l-md "
           >
             <IconImage size={18} />
-          </Button>
-          {(isFirstRow || getColumns(rowIndex).length === 1) && (
+          </Button> */}
+          {/* {(isFirstRow || getColumns(rowIndex).length === 1) && (
             <>
               <Button onClick={() => setEditorOpen(!editorOpen)}>
                 <IconText />
               </Button>
             </>
-          )}
+          )} */}
           {!isFirstRow && (
             <Button
               onClick={() => removeCell(rowIndex, colIndex)}
-              className="rounded-r-md "
+              className="rounded-md "
             >
               <IconDelete />
             </Button>
@@ -71,34 +71,16 @@ export const ContentToolbar: FC<Props> = ({
 
   return (
     <div
-      className={classNames("absolute top-0 left-1/2  text-center", {
+      className={classNames("absolute top-0 right-0  m-4 text-center", {
         "-ml-16": isFirstRow,
         "-ml-24": !isFirstRow,
       })}
     >
       <div className="inline-flex rounded-md shadow-sm">
-        {!noImgSrcInImgType && (
-          <>
-            <Button
-              onClick={() => setEditorOpen(!editorOpen)}
-              className="rounded-l-md "
-              active={editorOpen}
-            >
-              <IconText />
-            </Button>
-            {/* @ts-ignore */}
-            {/* <Button
-              onClick={() => updateCell({}, rowIndex, colIndex)}
-              className={classNames("", { "rounded-r-md": isFirstRow })}
-            >
-              <IconRefresh />
-            </Button> */}
-          </>
-        )}
         {!isFirstRow && (
           <Button
             onClick={() => removeCell(rowIndex, colIndex)}
-            className="rounded-r-md "
+            className="rounded-md "
           >
             <IconDelete />
           </Button>
@@ -129,7 +111,7 @@ const Button: FC<ButtonProps> = ({
   return (
     <a
       href="#"
-      className={className + " icon-class "}
+      className={className}
       onClick={(e) => {
         e.preventDefault();
         onClick();

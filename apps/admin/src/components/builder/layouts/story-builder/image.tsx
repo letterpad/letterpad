@@ -4,6 +4,7 @@ import StickyBox from "react-sticky-box";
 
 import { getHeight, hasText, Wrapper } from "./wrapper";
 import { useBuilderContext } from "../../context";
+import { IconImage } from "../../toolbar/icons";
 import MiniEditor from "../../toolbar/mini-editor";
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
   formats: string;
   cover?: "small" | "big" | "banner";
   setEditorOpen: any;
+  setFileExplorerOpen: (open: boolean) => void;
 }
 export const SectionImage: FC<Props> = ({
   columns,
@@ -23,6 +25,7 @@ export const SectionImage: FC<Props> = ({
   formats,
   cover,
   setEditorOpen,
+  setFileExplorerOpen,
 }) => {
   const { updateCell } = useBuilderContext();
   const [rowIndex, colIndex] = position;
@@ -42,8 +45,21 @@ export const SectionImage: FC<Props> = ({
       className={classNames(
         "flex w-full items-center  bg-cover bg-center bg-no-repeat ",
         `row-${rowIndex}`,
+        {
+          "bg-gray-900": true,
+        },
       )}
     >
+      {!item?.image?.src && (
+        <div className="absolute flex w-full justify-center">
+          <span
+            className="cursor-pointer"
+            onClick={() => setFileExplorerOpen(true)}
+          >
+            <IconImage size={100} color="#333" />
+          </span>
+        </div>
+      )}
       {editable ? (
         <Wrapper>
           <MiniEditor
@@ -59,7 +75,7 @@ export const SectionImage: FC<Props> = ({
             }
             formats={formats}
             text={decodeURIComponent(
-              item?.text && hasText(item?.text) ? item.text : "cadsc",
+              item?.text && hasText(item?.text) ? item.text : "",
             )}
           />
         </Wrapper>
