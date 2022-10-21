@@ -11,7 +11,7 @@ interface Props {
   editable: boolean;
   position: [rowIndex: number, colIndex: number];
   formats: string;
-  cover: "small" | "big" | "banner";
+  cover?: "small" | "big" | "banner";
 }
 export const SectionImage: FC<Props> = ({
   columns,
@@ -92,7 +92,7 @@ const hasText = (text: string) => {
   return decodedText !== "<html><body></body></html>";
 };
 
-const getHeight = (size: "small" | "big" | "banner") => {
+const getHeight = (size?: "small" | "big" | "banner") => {
   const h = typeof window !== "undefined" ? window.innerHeight : 600;
   if (size === "small") return h * 0.4;
   if (size === "big") return h;
