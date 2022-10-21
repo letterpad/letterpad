@@ -87,7 +87,7 @@ export default function Home({
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: any) {
   const data = await fetchProps<HomeQueryQuery, HomeQueryQueryVariables>(
     homeQuery,
     {},
@@ -113,7 +113,7 @@ export async function getServerSideProps(context) {
     };
   }
 
-  if (data.props.data.me.__typename !== 'Author') {
+  if (data.props.data.me?.__typename !== 'Author') {
     return {
       redirect: {
         permanent: false,
@@ -122,6 +122,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
+  //@ts-ignore
   const { menu } = data.props.data.settings;
 
   if (menu?.length === 0) {

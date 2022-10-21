@@ -16,7 +16,7 @@ const PostList: React.VFC<Props> = ({ posts }) => {
       {posts.__typename === 'PostsNode' &&
         posts.rows.map((post) => {
           const { slug, publishedAt, title, tags, excerpt } = post;
-          const tagsData = tags.__typename === 'TagsNode' ? tags.rows : [];
+          const tagsData = tags?.__typename === 'TagsNode' ? tags.rows : [];
           return (
             <li key={slug} className="py-12">
               <article>

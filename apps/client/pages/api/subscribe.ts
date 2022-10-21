@@ -12,11 +12,11 @@ const query = gql`
 `;
 
 const doSubscribe = async (req: NextApiRequest, res: NextApiResponse) => {
-  const resp = await fetch(process.env.GRAPHQL_URL, {
+  const resp = await fetch(process.env.GRAPHQL_URL as string, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      identifier: req.headers.host,
+      identifier: req.headers.host as string,
       Authorization: `Basic ${process.env.CLIENT_ID}`,
     },
     body: JSON.stringify({

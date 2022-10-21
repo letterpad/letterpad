@@ -21,9 +21,10 @@
   },
   "devDependencies": {
     "eslint-config-custom": "*",
+    "husky": "^8.0.1",
     "prettier": "latest",
-    "turbo": "latest",
-    "husky": "^8.0.1"
+    "ts-prune": "^0.10.3",
+    "turbo": "latest"
   },
   "engines": {
     "node": ">=14.0.0"

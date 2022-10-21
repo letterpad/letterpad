@@ -37,7 +37,7 @@ export default function Tag({
   if (
     posts.__typename !== 'PostsNode' ||
     settings.__typename !== 'Setting' ||
-    me.__typename !== 'Author'
+    me?.__typename !== 'Author'
   ) {
     return null;
   }
@@ -47,17 +47,17 @@ export default function Tag({
       <TagSEO
         title={`${tagName} - ${settings.site_title}`}
         description={`${tagName} - Tag of ${settings.site_title}`}
-        site_banner={settings.banner.src}
+        site_banner={settings.banner?.src}
         site_title={settings.site_title}
         url={settings.site_url + 'tags'}
-        twSite={me.social.twitter}
+        twSite={me.social?.twitter}
       />
       <ListLayout posts={posts} title={tagName} />
     </>
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: any) {
   const response = await fetchProps<TagPostsQueryQuery, TagPostsQueryQueryVariables>(
     tagsQuery,
     { tagSlug: context.params.tag },

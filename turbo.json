@@ -43,6 +43,9 @@
     },
     "start": {
       "outputs": []
+    },
+    "find-deadcode": {
+      "outputs": []
     }
   }
 }

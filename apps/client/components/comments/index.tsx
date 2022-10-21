@@ -8,15 +8,15 @@ interface Props {
 
 const UtterancesComponent = dynamic(() => import('@/components/comments/Utterances'), {
   ssr: false,
-}) as any;
+});
 
 const GiscusComponent = dynamic(() => import('@/components/comments/Giscus'), {
   ssr: false,
-}) as any;
+});
 
 const DisqusComponent = dynamic(() => import('@/components/comments/Disqus'), {
   ssr: false,
-}) as any;
+});
 
 const Comments = ({ provider }: Props) => {
   const term =

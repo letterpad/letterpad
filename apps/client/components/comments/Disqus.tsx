@@ -12,7 +12,9 @@ const Disqus = () => {
 
     // @ts-ignore
     window.disqus_config = function () {
+      // @ts-ignore
       this.page.url = window.location.href;
+      // @ts-ignore
       this.page.identifier = location.pathname;
     };
     // @ts-ignore

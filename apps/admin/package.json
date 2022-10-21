@@ -34,7 +34,8 @@
     "e2e:ci": "yarn prisma:seed && start-server-and-test 'yarn start' http://localhost:3000/admin/login cy:run",
     "e2e": "yarn prisma:seed && start-server-and-test 'yarn dev' http://localhost:3000/admin/login cy:open",
     "format": "prettier -w .",
-    "format:check": "prettier -c ."
+    "format:check": "prettier -c .",
+    "find-deadcode": "ts-prune | grep -Ev \"\\.d\\.ts|__generated__|seed\" | cat"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",

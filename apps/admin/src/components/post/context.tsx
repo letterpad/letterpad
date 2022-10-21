@@ -23,8 +23,6 @@ export const PostProvider: React.FC<{
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [helpers, setHelpers] = useState<Editor["editor"]>();
 
-  //updatePostDraftAttributes
-
   const onMediaBrowse = useCallback(() => setFileExplorerOpen(true), []);
 
   const onFileExplorerClose = useCallback(() => setFileExplorerOpen(false), []);

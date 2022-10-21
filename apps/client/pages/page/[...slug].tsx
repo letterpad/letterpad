@@ -48,14 +48,14 @@ export default function Blog({
   if (post.__typename === 'Post' && settings.__typename === 'Setting') {
     return (
       <PostLayout data={{ post, settings, me }}>
-        <div dangerouslySetInnerHTML={{ __html: post.html }}></div>
+        <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
       </PostLayout>
     );
   }
   return null;
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: any) {
   const response = await fetchProps<PageQueryWithHtmlQuery, PageQueryWithHtmlQueryVariables>(
     pageQueryWithHtml,
     {

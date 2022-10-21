@@ -20,7 +20,7 @@ export default function About({
   settings,
   me,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  if (me.__typename !== 'Author') return <div>Author not found</div>;
+  if (me?.__typename !== 'Author') return <div>Author not found</div>;
   if (settings.__typename !== 'Setting') return <div>Setting not found</div>;
 
   const { name, social, avatar = '/static/images/avatar.png', bio, occupation, company_name } = me;
@@ -32,21 +32,21 @@ export default function About({
       data={{
         avatar: avatar || '/static/images/avatar.png',
         name,
-        github: social.github,
-        twitter: social.twitter,
+        github: social?.github,
+        twitter: social?.twitter,
         email: site_email,
         company: company_name,
-        linkedin: social.linkedin,
+        linkedin: social?.linkedin,
         occupation,
-        banner: settings.banner.src,
+        banner: settings.banner?.src,
       }}
     >
-      <div dangerouslySetInnerHTML={{ __html: bio }} />
+      <div dangerouslySetInnerHTML={{ __html: bio ?? '' }} />
     </AuthorLayout>
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: any) {
   const response = await fetchProps<AboutQueryQuery, AboutQueryQueryVariables>(
     aboutQuery,
     {},

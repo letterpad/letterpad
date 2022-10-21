@@ -18,7 +18,7 @@ interface Props {
 }
 
 const LayoutWrapper = ({ children, props }: Props) => {
-  if (props.settings.__typename !== 'Setting' || props.me.__typename !== 'Author')
+  if (props.settings.__typename !== 'Setting' || props.me?.__typename !== 'Author')
     return <div>Setting not found</div>;
 
   const { show_about_page, show_tags_page } = props.settings;
