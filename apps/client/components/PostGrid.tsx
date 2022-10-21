@@ -25,11 +25,11 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
               >
                 <Link
                   className="c-card block transform overflow-hidden rounded-lg bg-transparent transition duration-500 group-hover:scale-105"
-                  href={slug}
+                  href={slug ?? ''}
                 >
                   <div className="relative max-h-4 overflow-hidden rounded-lg pb-60">
                     <span>
-                      <Image src={cover_image.src} layout="fill" alt={title} />
+                      <Image src={cover_image.src ?? ''} layout="fill" alt={title} />
                     </span>
                   </div>
                   <div className="py-4">
@@ -44,7 +44,7 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                     <p className="text-sm tracking-wider text-gray-600 dark:text-gray-300">
                       {excerpt}
                     </p>
-                    {tags.__typename === 'TagsNode' &&
+                    {tags?.__typename === 'TagsNode' &&
                       tags.rows.map(({ name }) => (
                         <Link href={`/tag/${kebabCase(name)}`} key={name}>
                           <a className="mt-4 mr-1 inline-block rounded border border-gray-700 py-1 px-2 text-xs font-medium">

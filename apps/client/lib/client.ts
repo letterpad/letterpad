@@ -12,7 +12,7 @@ export async function executeQuery<
   identifier = string
 >(query: DocumentNode, variables: Variables, identifier: string): Promise<PageProps<Data>> {
   const queryText = print(query);
-  const resp = await fetch(process.env.GRAPHQL_URL, {
+  const resp = await fetch(process.env.GRAPHQL_URL as string, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export async function fetchProps<Data, Variables extends Record<string, unknown>
 
   return {
     props: {
-      data: data || null,
+      data: data,
       errors: errors || null,
     },
   };

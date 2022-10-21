@@ -7,11 +7,11 @@ interface Props {
   data: PageFragmentFragment;
 }
 export const PhotoStory: FC<Props> = ({ data }) => {
-  const page_data = JSON.parse(data.page_data).rows;
+  const page_data = JSON.parse(data.page_data ?? '').rows as any;
 
   return (
     <>
-      {page_data.map((item, rowIndex) => {
+      {page_data.map((item: any, rowIndex: number) => {
         const columns = Array.from({ length: item.columns }, (_, i) => i);
         return (
           <div
@@ -45,7 +45,7 @@ export const PhotoStory: FC<Props> = ({ data }) => {
   );
 };
 
-const SectionImage = ({ columns, item, rowIndex, cover }) => {
+const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
   const { image, type } = item;
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const SectionImage = ({ columns, item, rowIndex, cover }) => {
   );
 };
 
-const SectionText = ({ columns, text, type }) => {
+const SectionText: FC<any> = ({ columns, text, type }) => {
   if (type === 'image') return null;
   if (!text) return null;
 

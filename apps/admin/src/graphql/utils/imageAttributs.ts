@@ -94,11 +94,3 @@ export function makeUnsplashUrl(src: string, width: number, extras = "") {
   const baseUrl = `${url.protocol}//${url.hostname}${url.pathname}`;
   return `${baseUrl}?w=${width}&auto=format&lossless=true${extras}`;
 }
-
-export async function makeBase64Url(requestURL: string) {
-  const response = await fetch(requestURL);
-  //@ts-ignore
-  const arrayBuffer = await response.buffer();
-  const b64 = arrayBuffer.toString("base64");
-  return `data:${response.headers.get("content-type")};base64,${b64}`;
-}

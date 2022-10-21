@@ -24,10 +24,22 @@
     "test": {
       "outputs": [
         "coverage/**"
+      ],
+      "inputs": [
+        "admin/**/*.tsx",
+        "admin/**/*.ts",
+        "client/**/*.ts",
+        "client/**/*.tsx"
       ]
     },
     "e2e:ci": {
-      "outputs": []
+      "outputs": [],
+      "inputs": [
+        "admin/**/*.tsx",
+        "admin/**/*.ts",
+        "client/**/*.ts",
+        "client/**/*.tsx"
+      ]
     },
     "e2e": {
       "outputs": []
@@ -42,6 +54,12 @@
       "outputs": []
     },
     "start": {
+      "outputs": []
+    },
+    "find-deadcode": {
+      "outputs": []
+    },
+    "seed": {
       "outputs": []
     }
   }

@@ -2,7 +2,7 @@
   "extends": "tsconfig/nextjs.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "useDefineForClassFields": false,
+    "module": "commonjs",
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/components_v2/*": ["src/components_v2/*"],
@@ -13,28 +13,9 @@
       "@/graphql/schema": ["src/graphql/schema"],
       "@/graphql/*": ["src/graphql/*"],
       "@/*": ["src/*"]
-    },
-    "allowJs": true,
-    "alwaysStrict": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "lib": ["dom", "es2017"],
-    "module": "commonjs",
-    "noImplicitAny": false,
-    "moduleResolution": "node",
-    "noEmit": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "ES2020"
+    }
   },
-  "exclude": ["node_modules/**/*", "__generated__/**/*"],
+  "exclude": ["__generated__/**/*"],
   "include": [
     "src/**/*",
     "postcss.config.js",

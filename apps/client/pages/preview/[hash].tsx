@@ -40,18 +40,18 @@ export default function Blog({
   if (post.__typename !== 'Post' || settings.__typename !== 'Setting') {
     return null;
   }
-  if (post.author.__typename !== 'Author') return null;
+  if (post.author?.__typename !== 'Author') return null;
   if (post.page_type === 'zigzag') {
     return <Creative data={post} site_name={settings.site_title} settings={settings} me={me} />;
   }
   return (
     <PostLayout data={{ post, settings, me }}>
-      <div dangerouslySetInnerHTML={{ __html: post.html }}></div>
+      <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }}></div>
     </PostLayout>
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: any) {
   const response = await fetchProps<PreviewQueryQuery, PreviewQueryQueryVariables>(
     previewQuery,
     { previewHash: context.params.hash },

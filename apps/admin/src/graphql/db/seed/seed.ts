@@ -300,12 +300,11 @@ export const cleanupDatabase = () => {
   const modelNames = Object.keys(prisma).filter((key) => {
     return key.startsWith("_") ? false : true;
   });
-
   return Promise.all(
     modelNames.map((modelName) => {
+      //@ts-ignore
       const model = prisma[modelName];
-      // console.log(prisma);
-      return model && model.deleteMany ? model.deleteMany() : null;
+      return model && model?.deleteMany ? model.deleteMany() : null;
     }),
   );
 };

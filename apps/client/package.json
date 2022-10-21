@@ -24,6 +24,8 @@
     "gray-matter": "^4.0.2",
     "image-size": "1.0.0",
     "next": "^12.3.1",
+    "eslint-config-custom": "*",
+    "tsconfig": "*",
     "next-themes": "^0.2.1",
     "node-sass": "^7.0.1",
     "postcss": "^8.4.5",

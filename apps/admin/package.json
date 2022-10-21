@@ -4,7 +4,7 @@
   "author": "Abhishek Saha",
   "license": "MIT",
   "prisma": {
-    "seed": "yarn seed"
+    "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/index.ts"
   },
   "eslint": {
     "dirs": [
@@ -18,7 +18,7 @@
     "build": "yarn codegen && next build",
     "test": "yarn codegen && jest --runInBand",
     "start": "next start",
-    "seed": "ts-node -r tsconfig-paths/register --transpile-only ./src/graphql/db/seed/index.ts",
+    "seed": "yarn prisma:seed",
     "lint": "next lint",
     "lint:fix": "next lint --fix && yarn format",
     "migrate": "prisma migrate dev --name init",
@@ -35,7 +35,7 @@
     "e2e": "yarn prisma:seed && start-server-and-test 'yarn dev' http://localhost:3000/admin/login cy:open",
     "format": "prettier -w .",
     "format:check": "prettier -c .",
-    "prepare": "husky install"
+    "find-deadcode": "ts-prune | grep -Ev \"\\.d\\.ts|__generated__|seed\" | cat"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
@@ -64,6 +64,7 @@
     "cross-fetch": "^3.1.5",
     "cryptr": "^6.0.2",
     "debug": "^4.3.1",
+    "eslint-config-custom": "*",
     "graphql": "15.3.0",
     "graphql-request": "^3.4.0",
     "highlight.js": "^11.4.0",
@@ -96,6 +97,7 @@
     "sqlite3": "^5.0.11",
     "tinymce": "^6.0.0",
     "tippy.js": "^6.3.7",
+    "tsconfig": "*",
     "twig": "^1.15.4"
   },
   "devDependencies": {
@@ -112,11 +114,11 @@
     "@styled-jsx/plugin-sass": "^4.0.0",
     "@tailwindcss/typography": "^0.5.7",
     "@types/jest": "^26.0.23",
-    "@types/react": "18.0.21",
-    "@types/react-dom": "18.0.6",
     "@types/multer": "^1.4.5",
     "@types/next-auth": "^3.15.0",
     "@types/nodemailer": "^6.4.5",
+    "@types/react": "18.0.21",
+    "@types/react-dom": "18.0.6",
     "@types/react-test-renderer": "^18.0.0",
     "@types/react-tooltip": "^4.2.4",
     "autoprefixer": "^10.4.12",
@@ -128,7 +130,6 @@
     "graphql-let": "0.x",
     "graphql-tag": "2.11.0",
     "html-webpack-plugin": "5.5.0",
-    "husky": "^8.0.1",
     "jest": "^27.0.5",
     "lint-staged": "^12.4.2",
     "node-env-file": "^0.1.8",

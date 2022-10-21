@@ -56,7 +56,8 @@ export const EnhancedButton = (props: ButtonProps) => {
   const _linkStyle = _isLink ? disableAnimation : undefined;
   const _classes = [_linkStyle, props.className].filter((x) => !!x).join(" ");
 
-  const { type, ...rest } = props;
+  const { type, onClick, ...rest } = props;
+
   return (
     <ButtonOriginal
       {...rest}
@@ -64,6 +65,7 @@ export const EnhancedButton = (props: ButtonProps) => {
       style={{ ..._style, ...props.style }}
       ghost={_ghost}
       {...(_type ? { type: _type as any } : {})}
+      onClick={(e) => onClick && setTimeout(() => onClick(e), 0)}
     >
       {props.children}
     </ButtonOriginal>

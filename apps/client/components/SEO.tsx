@@ -58,10 +58,10 @@ const CommonSEO = ({
 interface PageSEOProps {
   title: string;
   description: string;
-  site_banner: string;
+  site_banner?: string | null;
   site_title: string;
   url: string;
-  twSite: string;
+  twSite?: string | null;
 }
 
 export const PageSEO = ({
@@ -77,11 +77,11 @@ export const PageSEO = ({
       title={title}
       description={description}
       ogType="website"
-      ogImage={site_banner}
+      ogImage={site_banner ?? ''}
       site_name={site_title}
       url={url}
-      twImage={site_banner}
-      twSite={twSite}
+      twImage={site_banner ?? ''}
+      twSite={twSite ?? ''}
     />
   );
 };
@@ -100,11 +100,11 @@ export const TagSEO = ({
         title={title}
         description={description}
         ogType="website"
-        ogImage={site_banner}
-        twImage={site_banner}
+        ogImage={site_banner ?? ''}
+        twImage={site_banner ?? ''}
         site_name={site_title}
         url={url}
-        twSite={twSite}
+        twSite={twSite ?? ''}
       />
       {/* <Head>
         <link
@@ -175,7 +175,7 @@ export const BlogSEO = ({
     author: authorList,
     publisher: {
       '@type': 'Organization',
-      name: authorDetails.pop(),
+      name: authorDetails?.pop(),
       logo: {
         '@type': 'ImageObject',
         url: '/static/images/logo.png',
@@ -190,7 +190,7 @@ export const BlogSEO = ({
     <>
       <CommonSEO
         title={title}
-        description={summary}
+        description={summary ?? ''}
         ogType="article"
         ogImage={featuredImages}
         twImage={lpImageUrl}

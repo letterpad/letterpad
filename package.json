@@ -7,20 +7,24 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run build --parallel",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "turbo run test",
     "e2e:ci": "turbo run e2e:ci",
     "e2e": "turbo run e2e",
-    "codegen": "turbo run codegen",
-    "start": "turbo run start",
-    "typecheck": "turbo run typecheck"
+    "codegen": "turbo run codegen --parallel",
+    "start": "turbo run start --parallel",
+    "typecheck": "turbo run typecheck",
+    "prepare": "husky install",
+    "seed": "turbo run seed"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
+    "husky": "^8.0.1",
     "prettier": "latest",
+    "ts-prune": "^0.10.3",
     "turbo": "latest"
   },
   "engines": {

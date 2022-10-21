@@ -1,12 +1,12 @@
 name: Deploy Stage
 on:
   push:
-    branches:
+    branches-ignore:
       - "master"
 
 jobs:
   job_one:
-    if: "!contains(github.event.head_commit.message, 'stage')"
+    if: "contains(github.event.head_commit.message, 'stage')"
     name: Deploy Stage
     runs-on: ubuntu-latest
     steps:
@@ -47,7 +47,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: "."
-          target: /var/www/html/letterpad-turbo
+          target: /var/www/html/letterpad-stage
 
       - name: executing remote ssh commands
         uses: appleboy/ssh-action@master
@@ -57,4 +57,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            pm2 reload letterpad-turbo
+            pm2 reload letterpad-stage

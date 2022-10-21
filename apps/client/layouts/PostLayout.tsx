@@ -44,13 +44,13 @@ export default function PostLayout({ data, next, prev, children }: Props) {
   if (
     post.__typename !== 'Post' ||
     settings.__typename !== 'Setting' ||
-    me.__typename !== 'Author'
+    me?.__typename !== 'Author'
   ) {
     return null;
   }
 
   const { slug, publishedAt, title, excerpt, updatedAt, cover_image, tags, author, type } = post;
-  if (author.__typename !== 'Author') return null;
+  if (author?.__typename !== 'Author') return null;
   const authorDetails = [
     {
       name: author.name,
@@ -58,11 +58,11 @@ export default function PostLayout({ data, next, prev, children }: Props) {
       occupation: me.occupation,
       company: me.company_name,
       email: settings.site_email,
-      twitter: me.social.twitter,
-      linkedin: me.social.linkedin,
-      github: me.social.github,
-      banner: settings.banner.src,
-      logo: settings.site_logo.src,
+      twitter: me.social?.twitter,
+      linkedin: me.social?.linkedin,
+      github: me.social?.github,
+      banner: settings.banner?.src,
+      logo: settings.site_logo?.src,
     },
   ];
   const postUrl = `${settings.site_url}${slug}`;
@@ -73,11 +73,11 @@ export default function PostLayout({ data, next, prev, children }: Props) {
         authorDetails={authorDetails}
         date={publishedAt}
         title={title}
-        summary={excerpt}
+        summary={excerpt ?? ''}
         lastmod={updatedAt}
-        images={[cover_image.src]}
-        slug={slug}
-        tags={tags.__typename === 'TagsNode' ? tags.rows.map((t) => t.name) : []}
+        images={cover_image.src ? [cover_image.src] : []}
+        slug={slug ?? ''}
+        tags={tags?.__typename === 'TagsNode' ? tags.rows.map((t) => t.name) : []}
         fileName={title}
         canonicalUrl={postUrl}
         site_name={settings.site_title}
@@ -125,7 +125,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                       <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
                       <dt className="sr-only">Twitter</dt>
                       <dd>
-                        {me.social.twitter && (
+                        {me.social?.twitter && (
                           <Link href={me.social.twitter} className="link">
                             {me.social.twitter.replace('https://twitter.com/', '@')}
                           </Link>
@@ -144,7 +144,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
             <footer>
               <div className="divide-gray-200 text-sm font-medium leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y">
                 <div className="flex flex-row justify-between xl:flex-col">
-                  {tags.__typename === 'TagsNode' && tags.rows.length > 0 && (
+                  {tags?.__typename === 'TagsNode' && tags.rows.length > 0 && (
                     <div className="py-4 xl:py-4">
                       <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                         Tags

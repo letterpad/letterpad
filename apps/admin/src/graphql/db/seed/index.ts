@@ -1,11 +1,10 @@
-import logger from "@/shared/logger";
 require("dotenv/config");
 
 import { seed } from "./seed";
 
 seed()
   .catch((e) => {
-    logger.error(e);
+    throw e;
     process.exit(1);
   })
   .then(() => {

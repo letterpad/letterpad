@@ -1,4 +1,4 @@
-const ENCRYPTION_KEY = "6gExXHbH3MMTaFnydd4kvscD7ZC6TC7W";
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || process.env.SECRET || "";
 
 export function encryptEmail(text: string) {
   const bufferObj = Buffer.from(text + ENCRYPTION_KEY, "utf8");
