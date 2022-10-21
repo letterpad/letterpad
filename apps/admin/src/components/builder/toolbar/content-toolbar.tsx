@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { FC, ReactNode } from "react";
 
 import { IconDelete, IconImage, IconRefresh, IconText } from "./icons";
@@ -22,6 +23,22 @@ export const ContentToolbar: FC<Props> = ({
 }) => {
   const { updateCell, removeCell, getColumns } = useBuilderContext();
   const noImgSrcInImgType = item?.type === "image" && !item?.image?.src;
+  const isFirstRow = rowIndex === 0;
+
+  if (isFirstRow) {
+    return (
+      <div className="absolute top-0 right-0 z-10 m-4 -ml-8 text-center">
+        <div className="inline-flex rounded-md shadow-sm">
+          <Button
+            onClick={() => setFileExplorerOpen(true)}
+            className="rounded-md"
+          >
+            <IconImage size={18} />
+          </Button>
+        </div>
+      </div>
+    );
+  }
   if (item?.type === "image") {
     return (
       <div className="absolute top-0 left-1/2 z-10 -ml-20 text-center">
@@ -32,26 +49,33 @@ export const ContentToolbar: FC<Props> = ({
           >
             <IconImage size={18} />
           </Button>
-          {(rowIndex === 0 || getColumns(rowIndex).length === 1) && (
+          {(isFirstRow || getColumns(rowIndex).length === 1) && (
             <>
               <Button onClick={() => setEditorOpen(!editorOpen)}>
                 <IconText />
               </Button>
             </>
           )}
-          <Button
-            onClick={() => removeCell(rowIndex, colIndex)}
-            className="rounded-r-md "
-          >
-            <IconDelete />
-          </Button>
+          {!isFirstRow && (
+            <Button
+              onClick={() => removeCell(rowIndex, colIndex)}
+              className="rounded-r-md "
+            >
+              <IconDelete />
+            </Button>
+          )}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="absolute top-0 left-1/2 -ml-24 text-center">
+    <div
+      className={classNames("absolute top-0 left-1/2  text-center", {
+        "-ml-16": isFirstRow,
+        "-ml-24": !isFirstRow,
+      })}
+    >
       <div className="inline-flex rounded-md shadow-sm">
         {!noImgSrcInImgType && (
           <>
@@ -63,17 +87,22 @@ export const ContentToolbar: FC<Props> = ({
               <IconText />
             </Button>
             {/* @ts-ignore */}
-            <Button onClick={() => updateCell({}, rowIndex, colIndex)}>
+            {/* <Button
+              onClick={() => updateCell({}, rowIndex, colIndex)}
+              className={classNames("", { "rounded-r-md": isFirstRow })}
+            >
               <IconRefresh />
-            </Button>
+            </Button> */}
           </>
         )}
-        <Button
-          onClick={() => removeCell(rowIndex, colIndex)}
-          className="rounded-r-md "
-        >
-          <IconDelete />
-        </Button>
+        {!isFirstRow && (
+          <Button
+            onClick={() => removeCell(rowIndex, colIndex)}
+            className="rounded-r-md "
+          >
+            <IconDelete />
+          </Button>
+        )}
         <style jsx global>{`
           .active {
             background: #21212b !important;

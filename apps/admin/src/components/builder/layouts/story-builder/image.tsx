@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { FC, ReactNode, useEffect } from "react";
 import StickyBox from "react-sticky-box";
 
+import { getHeight, hasText, Wrapper } from "./wrapper";
 import { useBuilderContext } from "../../context";
 import MiniEditor from "../../toolbar/mini-editor";
 
@@ -12,6 +13,7 @@ interface Props {
   position: [rowIndex: number, colIndex: number];
   formats: string;
   cover?: "small" | "big" | "banner";
+  setEditorOpen: any;
 }
 export const SectionImage: FC<Props> = ({
   columns,
@@ -20,6 +22,7 @@ export const SectionImage: FC<Props> = ({
   position,
   formats,
   cover,
+  setEditorOpen,
 }) => {
   const { updateCell } = useBuilderContext();
   const [rowIndex, colIndex] = position;
@@ -37,7 +40,7 @@ export const SectionImage: FC<Props> = ({
         minHeight: getHeight(cover),
       }}
       className={classNames(
-        "flex w-full items-center justify-center bg-cover bg-center bg-no-repeat ",
+        "flex w-full items-center  bg-cover bg-center bg-no-repeat ",
         `row-${rowIndex}`,
       )}
     >
@@ -56,7 +59,7 @@ export const SectionImage: FC<Props> = ({
             }
             formats={formats}
             text={decodeURIComponent(
-              item?.text && hasText(item?.text) ? item.text : "",
+              item?.text && hasText(item?.text) ? item.text : "cadsc",
             )}
           />
         </Wrapper>
@@ -72,30 +75,10 @@ export const SectionImage: FC<Props> = ({
             dangerouslySetInnerHTML={{
               __html: decodeURIComponent(item?.text ?? ""),
             }}
+            onClick={() => setEditorOpen(true)}
           />
         </Wrapper>
       )}
     </StickyBox>
   );
-};
-
-const Wrapper: FC<{ children: ReactNode }> = ({ children }) => {
-  return (
-    <div className="margin-auto flex h-full w-full flex-col items-center justify-center p-6 text-center leading-6 text-gray-800 dark:text-white lg:py-20 lg:px-40">
-      {children}
-    </div>
-  );
-};
-
-const hasText = (text: string) => {
-  const decodedText = decodeURIComponent(text);
-  return decodedText !== "<html><body></body></html>";
-};
-
-const getHeight = (size?: "small" | "big" | "banner") => {
-  const h = typeof window !== "undefined" ? window.innerHeight : 600;
-  if (size === "small") return h * 0.4;
-  if (size === "big") return h;
-  if (size === "banner") return 200;
-  return h;
 };

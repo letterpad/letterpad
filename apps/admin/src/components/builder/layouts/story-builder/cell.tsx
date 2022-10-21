@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { FC, useState } from "react";
 
 import FileExplorer from "@/components/file-explorer";
@@ -23,9 +24,18 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
   const item = row?.data[colIndex];
   // const showImgBtnCenter =
   //   !item?.image?.src && isImage && !preview && item.text?.trim().length === 0;
+  const isText = item?.type === "text";
+  const isImage = item?.type === "image";
+  const isFirstRow = rowIndex === 0;
 
   return (
-    <div className="relative flex w-full justify-center align-middle">
+    <div
+      className={classNames(
+        "relative flex w-full justify-center align-middle",
+        "row-" + rowIndex,
+      )}
+      onClick={() => setEditorOpen(true)}
+    >
       {!preview && (
         <ContentToolbar
           setEditorOpen={(visible) => {
@@ -42,16 +52,23 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
         />
       )}
       <div className="w-full">
-        {item?.type === "text" && (
+        {isText && !isFirstRow && (
           <SectionText
             columns={columns}
             item={item}
             editable={editorOpen}
+            setEditorOpen={(visible) => {
+              setFormats(
+                "h1 h2 | fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+              );
+              setEditorOpen(visible);
+            }}
             position={[rowIndex, colIndex]}
+            cover={row?.cover}
             formats={formats}
           />
         )}
-        {item?.type === "image" && (
+        {(isImage || isFirstRow) && (
           <SectionImage
             item={item}
             columns={columns}
@@ -59,6 +76,12 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             formats={formats}
             editable={editorOpen}
             cover={row?.cover}
+            setEditorOpen={(visible) => {
+              setFormats(
+                "h1 h2 | fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+              );
+              setEditorOpen(visible);
+            }}
           />
         )}
       </div>

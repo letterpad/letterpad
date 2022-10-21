@@ -17,7 +17,7 @@ const defaults = {
     lineHeight: 1,
     minHeight: 50,
     textAlign: TextAlign.center,
-    overflow: "hidden",
+    // overflow: "hidden",
     fontWeight: "bold",
   },
   rows: 3,

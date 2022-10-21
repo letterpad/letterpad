@@ -1,4 +1,12 @@
-import { createContext, FC, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { createId } from "@/shared/utils";
 
@@ -54,10 +62,18 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     onSave(gridCopy);
   };
 
-  const addRow = () => {
+  const addRow = useCallback(() => {
     const id = createId();
-    setGrid([...grid, { ...createDefaultItem(), id }]);
-  };
+    const isPrevRowImageLeft = grid[grid.length - 1].data[0].type === "image";
+    let block: Block = { ...createDefaultItem(), id, data: [] };
+    const newItem = { ...createDefaultItem() };
+    if (isPrevRowImageLeft) {
+      newItem.data = [{ type: "text" }, { type: "image" }];
+    } else {
+      newItem.data = [{ type: "image" }, { type: "text" }];
+    }
+    setGrid([...grid, { ...newItem, columns: 2 }]);
+  }, [grid]);
 
   const updateRow = (change: Block, rowIndex: number) => {
     const newGrid = grid.map((item, idx) => {
@@ -105,6 +121,12 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     setGrid(gridCopy);
     onSave(gridCopy);
   };
+
+  useEffect(() => {
+    if (grid.length === 0) {
+      setGrid([...grid, { ...createDefaultItem(), cover: "big" }]);
+    }
+  }, [addRow, grid]);
 
   const value = {
     preview,

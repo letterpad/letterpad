@@ -54,7 +54,6 @@ export const Row: FC<RowProps> = ({ row, isPrevRowImageLeft, rowIndex }) => {
       <div
         data-row
         className={classNames("relative flex flex-1  lg:flex-row", {
-          // "h-[calc(60vh)]": !row.cover && rowIndex === 0,
           "flex-col-reverse": row.data[1]?.type === "image",
           "flex-col": row.data[1]?.type === "text",
         })}
