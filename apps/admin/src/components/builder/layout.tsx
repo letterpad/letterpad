@@ -28,7 +28,7 @@ export const Layout: FC<Props> = ({ Row }) => {
             <Row
               isPrevRowImageLeft={isPrevRowImageLeft}
               row={row}
-              key={i}
+              key={row.id}
               rowIndex={i}
             />
           );

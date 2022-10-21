@@ -1,5 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useState } from "react";
 
+import { createId } from "@/shared/utils";
+
 import { Block, BlockItem } from "./types";
 
 interface Props {
@@ -23,6 +25,7 @@ interface ContextType {
 
 const Context = createContext<ContextType>({} as ContextType);
 const defaultItem: Block = {
+  id: createId(),
   columns: 1,
   data: [
     {

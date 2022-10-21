@@ -15,4 +15,5 @@ export interface Block {
   columns: number;
   data: BlockItem[];
   cover?: "big" | "small";
+  id: string;
 }
