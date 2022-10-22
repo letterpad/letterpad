@@ -8,11 +8,13 @@ interface BlockImage {
 export interface BlockItem {
   image?: BlockImage;
   text?: string;
+  bgColor?: string;
   type: "text" | "image";
 }
 
 export interface Block {
   columns: number;
   data: BlockItem[];
-  cover?: "big" | "small";
+  cover?: "big" | "small" | "banner";
+  id: string;
 }

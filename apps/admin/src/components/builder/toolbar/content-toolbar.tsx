@@ -1,5 +1,7 @@
-import { FC, ReactNode } from "react";
+import classNames from "classnames";
+import { FC, ReactNode, useRef } from "react";
 
+import { ColorPicker } from "./color";
 import { IconDelete, IconImage, IconRefresh, IconText } from "./icons";
 import { useBuilderContext } from "../context";
 import { BlockItem } from "../types";
@@ -11,69 +13,74 @@ interface Props {
   rowIndex: number;
   colIndex: number;
   item?: BlockItem;
+  onBgColorChange: (color: string) => void;
 }
 export const ContentToolbar: FC<Props> = ({
-  setEditorOpen,
-  editorOpen,
   setFileExplorerOpen,
   rowIndex,
   colIndex,
   item,
+  onBgColorChange,
 }) => {
-  const { updateCell, removeCell, getColumns } = useBuilderContext();
-  const noImgSrcInImgType = item?.type === "image" && !item?.image?.src;
-  if (item?.type === "image") {
+  const { removeCell } = useBuilderContext();
+  const isFirstRow = rowIndex === 0;
+  const colorPickerRef = useRef<HTMLInputElement>(null);
+  if (isFirstRow) {
     return (
-      <div className="absolute top-0 left-1/2 z-10 -ml-20 text-center">
+      <div className="absolute top-0 right-0 z-10 m-4 text-center">
         <div className="inline-flex rounded-md shadow-sm">
           <Button
             onClick={() => setFileExplorerOpen(true)}
-            className="rounded-l-md "
+            className="rounded-md"
           >
             <IconImage size={18} />
           </Button>
-          {(rowIndex === 0 || getColumns(rowIndex).length === 1) && (
+        </div>
+      </div>
+    );
+  }
+  if (item?.type === "image") {
+    return (
+      <div className="absolute top-0 right-0 z-10 m-4  text-center">
+        <div className="inline-flex gap-2 rounded-md shadow-sm">
+          {!isFirstRow && (
             <>
-              <Button onClick={() => setEditorOpen(!editorOpen)}>
-                <IconText />
+              <Button
+                onClick={() => setFileExplorerOpen(true)}
+                className="rounded-l-md "
+              >
+                <IconImage size={20} />
+              </Button>
+              <Button
+                onClick={() => removeCell(rowIndex, colIndex)}
+                className="rounded-r-md "
+              >
+                <IconDelete />
               </Button>
             </>
           )}
-          <Button
-            onClick={() => removeCell(rowIndex, colIndex)}
-            className="rounded-r-md "
-          >
-            <IconDelete />
-          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="absolute top-0 left-1/2 -ml-24 text-center">
-      <div className="inline-flex rounded-md shadow-sm">
-        {!noImgSrcInImgType && (
-          <>
-            <Button
-              onClick={() => setEditorOpen(!editorOpen)}
-              className="rounded-l-md "
-              active={editorOpen}
-            >
-              <IconText />
-            </Button>
-            {/* @ts-ignore */}
-            <Button onClick={() => updateCell({}, rowIndex, colIndex)}>
-              <IconRefresh />
-            </Button>
-          </>
+    <div
+      className={classNames("absolute top-0 right-0  m-4 text-center", {
+        "-ml-16": isFirstRow,
+        "-ml-24": !isFirstRow,
+      })}
+    >
+      <div className="inline-flex gap-4 rounded-md shadow-sm">
+        <ColorPicker onColorChange={onBgColorChange} color={item?.bgColor} />
+        {!isFirstRow && (
+          <Button
+            onClick={() => removeCell(rowIndex, colIndex)}
+            className="rounded-md "
+          >
+            <IconDelete />
+          </Button>
         )}
-        <Button
-          onClick={() => removeCell(rowIndex, colIndex)}
-          className="rounded-r-md "
-        >
-          <IconDelete />
-        </Button>
         <style jsx global>{`
           .active {
             background: #21212b !important;
@@ -100,7 +107,7 @@ const Button: FC<ButtonProps> = ({
   return (
     <a
       href="#"
-      className={className + " icon-class "}
+      className={className}
       onClick={(e) => {
         e.preventDefault();
         onClick();

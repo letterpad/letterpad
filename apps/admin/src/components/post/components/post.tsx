@@ -8,7 +8,6 @@ import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import { Layout as LayoutBuilder } from "@/components/builder";
 import { BuilderContext } from "@/components/builder/context";
-import { Row } from "@/components/builder/layouts/story-builder";
 import ErrorMessage from "@/components/ErrorMessage";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
@@ -111,7 +110,6 @@ function Post() {
             <LayoutBuilder
               data={JSON.parse(post.page_data as string)}
               type={post.page_type}
-              Row={Row}
             />
           </BuilderContext>
         </div>

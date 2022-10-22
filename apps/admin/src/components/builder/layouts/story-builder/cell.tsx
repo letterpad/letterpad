@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { FC, useState } from "react";
 
 import FileExplorer from "@/components/file-explorer";
@@ -18,19 +19,30 @@ interface Props {
 export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
   const { preview, updateCell } = useBuilderContext();
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
-  const [formats, setFormats] = useState("");
-  const [editorOpen, setEditorOpen] = useState(false);
+  const [formats, setFormats] = useState(
+    "h1 h2 | fontfamily fontsize alignleft aligncenter alignright | blockquote | forecolor",
+  );
   const item = row?.data[colIndex];
-  // const showImgBtnCenter =
-  //   !item?.image?.src && isImage && !preview && item.text?.trim().length === 0;
+  const isText = item?.type === "text";
+  const isImage = item?.type === "image";
+  const isFirstRow = rowIndex === 0;
+
+  const [editorOpen, setEditorOpen] = useState(isText || columns === 1);
 
   return (
-    <div className="relative flex w-full justify-center align-middle">
+    <div
+      className={classNames(
+        "relative flex w-full justify-center align-middle",
+        "row-" + rowIndex,
+      )}
+      style={{ backgroundColor: item?.bgColor }}
+      onClick={() => setEditorOpen(isText || columns === 1)}
+    >
       {!preview && (
         <ContentToolbar
           setEditorOpen={(visible) => {
             setFormats(
-              "h1 h2 | fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+              "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | forecolor",
             );
             setEditorOpen(visible);
           }}
@@ -39,26 +51,50 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
           setFileExplorerOpen={setFileExplorerOpen}
           rowIndex={rowIndex}
           colIndex={colIndex}
+          onBgColorChange={(color) =>
+            updateCell(
+              {
+                bgColor: color,
+                type: "text",
+              },
+              rowIndex,
+              colIndex,
+            )
+          }
         />
       )}
       <div className="w-full">
-        {item?.type === "text" && (
+        {isText && !isFirstRow && (
           <SectionText
             columns={columns}
             item={item}
-            editable={editorOpen}
+            editable={!isFirstRow}
+            setEditorOpen={() => {
+              setFormats(
+                "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+              );
+              setEditorOpen(true);
+            }}
             position={[rowIndex, colIndex]}
+            cover={row?.cover}
             formats={formats}
           />
         )}
-        {item?.type === "image" && (
+        {(isImage || isFirstRow) && (
           <SectionImage
             item={item}
             columns={columns}
             position={[rowIndex, colIndex]}
             formats={formats}
-            editable={editorOpen}
+            editable={isFirstRow}
             cover={row?.cover}
+            setFileExplorerOpen={setFileExplorerOpen}
+            setEditorOpen={() => {
+              setFormats(
+                "h1 h2 | fontsize_formats fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+              );
+              setEditorOpen(true);
+            }}
           />
         )}
       </div>

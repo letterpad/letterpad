@@ -1,6 +1,6 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { basePath } from "next.config";
-import { memo, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "@/components/post/components/tinymce/core";
 
 interface Props {
@@ -21,13 +21,12 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
   }, [html, text]);
 
   return (
-    <>
+    <div className="editor-wrapper w-full">
       <Editor
         onInit={async (_evt, editor) => {
           if (editor) {
             //@ts-ignore
             editorRef.current = editor;
-
             const className = isDark ? "dark" : "light";
             const body = editor.getDoc().body;
             body.classList.remove("dark", "light");
@@ -42,22 +41,24 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
           onChange(htmlWithBody);
         }}
         init={{
-          font_formats:
-            "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats",
+          font_family_formats:
+            "Anonymous Pro=Anonymous Pro; Caveat=Caveat; Major Mono Display=Major Mono Display; Merriweather=Merriweather; Nanum Pen Script=Nanum Pen Script; Niconne=Niconne; PT Sans=PT Sans; Raleway=Raleway; Roboto=Roboto; Spectral=Spectral",
           height: "auto",
           width: "100%",
-          placeholder: "Write something...",
+          placeholder: "Title",
           menubar: false,
           content_css: basePath + "/css/editor-mini.css",
           toolbar: false,
+          quickbars_insert_toolbar: false,
+          fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
           quickbars_selection_toolbar:
             formats ??
-            "fontfamily styles | fontsize | bold italic underline strikethrough | alignleft aligncenter alignright  | link codesample code forecolor",
+            "fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright  | link codesample code forecolor",
           inline: true,
           browser_spellcheck: false,
           contextmenu: false,
           branding: false,
-          plugins: "link code textcolor quickbars autoresize",
+          plugins: "link code quickbars autoresize",
           skin: window.matchMedia("(prefers-color-scheme: light)").matches
             ? "oxide-dark"
             : "",
@@ -68,6 +69,7 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
         }}
       />
       <style jsx global>{`
+        ${getfonts()}
         .dark iframe {
           margin-bottom: 50px;
           background-color: transparent;
@@ -79,9 +81,17 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
         .tox {
           border: none !important;
         }
+        #creative .editor-wrapper a {
+          font-family: inherit;
+          font-size: inherit;
+        }
       `}</style>
-    </>
+    </div>
   );
 };
 
-export default memo(MiniEditor);
+export default MiniEditor;
+
+function getfonts() {
+  return "@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Merriweather:ital,wght@0,400;0,700;0,900;1,700&family=Nanum+Pen+Script&family=Niconne&family=PT+Sans:ital,wght@0,400;0,700;1,400&family=Raleway:ital,wght@0,400;0,500;0,800;1,500&family=Roboto:wght@400;500;900&family=Spectral:ital,wght@0,400;0,500;0,700;0,800;1,500;1,700&display=swap');";
+}

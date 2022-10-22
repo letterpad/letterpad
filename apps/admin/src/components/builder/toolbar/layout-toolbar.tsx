@@ -1,6 +1,14 @@
 import { FC } from "react";
 
-import { IconDown, IconFullWidth, IconSplit, IconUp } from "./icons";
+import { createId } from "@/shared/utils";
+
+import {
+  IconDown,
+  IconFullWidth,
+  IconSmallHeight,
+  IconSplit,
+  IconUp,
+} from "./icons";
 import { Block } from "../types";
 
 interface Props {
@@ -17,8 +25,22 @@ export const LayoutToolbar: FC<Props> = ({
   isPrevRowImageLeft,
   rowIndex,
 }) => {
+  const onSmallHeight = () => {
+    onChange({
+      ...item,
+      cover: "banner",
+      data: [{ ...item.data[0], type: "text" }],
+      columns: 1,
+    });
+  };
+
+  const showSplitIcon = item.columns === 1;
+  const showFullSizeIcon = !showSplitIcon;
+  const showBannerIcon = item.cover !== "banner";
+
   const onFullWidth = () => {
-    const mergeItem: Block = { columns: 1, data: [] };
+    const mergeItem: Block = { columns: 1, data: [], id: createId() };
+
     if (item.data[0].type === "image") {
       mergeItem.data = [
         {
@@ -42,63 +64,50 @@ export const LayoutToolbar: FC<Props> = ({
   const onSplit = () => {
     let data = [...item.data];
     if (isPrevRowImageLeft) {
-      data = [{ type: "text" }, { ...data[0], type: "image" }];
+      data = [{ type: "text" }, { type: "image" }];
     } else {
-      data = [{ ...data[0], type: "image" }, { type: "text" }];
+      data = [{ type: "image" }, { type: "text" }];
     }
 
     onChange({
       data,
       columns: 2,
+      id: createId(),
     });
   };
+  const isNotFirstRow = rowIndex != 0;
+  const isNotFirstAndSecondrow = rowIndex > 1;
   return (
     <div className="left-1/2  top-10 z-50 flex  justify-center rounded-t-lg  border  border-b-0 border-gray-200 bg-slate-100 p-2 shadow-sm dark:border-gray-800 dark:bg-gray-800">
-      <button className="icon-class rounded-l-md" onClick={onFullWidth}>
-        <IconFullWidth />
-      </button>
-      <button aria-current="page" className={"icon-class "} onClick={onSplit}>
-        <IconSplit />
-      </button>
-
-      {rowIndex === 0 && (
-        <>
-          <button
-            className="icon-class"
-            onClick={() => {
-              onChange({
-                ...item,
-                cover: "small",
-                columns: 1,
-                data: [item.data[0]],
-              });
-            }}
-          >
-            Cover Small
-          </button>
-          <button
-            className="icon-class rounded-r-md"
-            onClick={() => {
-              onChange({
-                ...item,
-                cover: "big",
-                columns: 1,
-                data: [item.data[0]],
-              });
-            }}
-          >
-            Cover Big
-          </button>
-        </>
+      {showBannerIcon && (
+        <button className="icon-class-1 rounded-md" onClick={onSmallHeight}>
+          <IconSmallHeight />
+        </button>
       )}
-      {rowIndex > 1 && (
-        <button className="icon-class " onClick={() => move("up")}>
+      {showFullSizeIcon && (
+        <button className="icon-class-1 rounded-md" onClick={onFullWidth}>
+          <IconFullWidth />
+        </button>
+      )}
+      {showSplitIcon && (
+        <button
+          aria-current="page"
+          className={"icon-class-1 "}
+          onClick={onSplit}
+        >
+          <IconSplit />
+        </button>
+      )}
+
+      {isNotFirstAndSecondrow && (
+        <button className="icon-class-1 " onClick={() => move("up")}>
           <IconUp />
         </button>
       )}
-      {rowIndex > 0 && (
+
+      {isNotFirstRow && (
         <button
-          className="icon-class rounded-r-md"
+          className="icon-class-1 rounded-r-md"
           onClick={() => move("down")}
         >
           <IconDown />

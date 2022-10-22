@@ -1,5 +1,7 @@
-import { FC, ReactNode } from "react";
+import classNames from "classnames";
+import { FC, ReactNode, useEffect } from "react";
 
+import { getHeight, Wrapper } from "./wrapper";
 import { useBuilderContext } from "../../context";
 import MiniEditor from "../../toolbar/mini-editor";
 import { BlockItem } from "../../types";
@@ -10,6 +12,8 @@ interface Props {
   editable: boolean;
   position: [number, number];
   formats: string;
+  setEditorOpen: any;
+  cover?: "small" | "big" | "banner";
 }
 
 export const SectionText: FC<Props> = ({
@@ -18,14 +22,22 @@ export const SectionText: FC<Props> = ({
   editable,
   position,
   formats,
+  setEditorOpen,
+  cover,
 }) => {
   const { updateCell } = useBuilderContext();
   const [rowIndex, colIndex] = position;
+
+  useEffect(() => {
+    const div = document.querySelector(`.row-${rowIndex}`) as HTMLDivElement;
+    div?.style.setProperty("min-height", getHeight(cover) + "px");
+  }, [cover, rowIndex]);
+
   if (item.type === "image") return null;
 
   if (editable) {
     return (
-      <Wrapper>
+      <Wrapper className={`row-${rowIndex}`}>
         <MiniEditor
           onChange={(text) =>
             updateCell(
@@ -38,30 +50,23 @@ export const SectionText: FC<Props> = ({
             )
           }
           formats={formats}
-          text={decodeURIComponent(item?.text ?? "Write something...")}
+          text={decodeURIComponent(item?.text ?? "")}
         />
       </Wrapper>
     );
   }
   return (
-    <Wrapper>
+    <Wrapper className={`row-${rowIndex}`}>
       <div
         data-text
         className={
           columns == 2 ? "margin-auto max-w-full lg:max-w-[calc(500px)]" : ""
         }
+        onClick={() => setEditorOpen(true)}
         dangerouslySetInnerHTML={{
           __html: decodeURIComponent(item.text ?? ""),
         }}
       />
     </Wrapper>
-  );
-};
-
-const Wrapper: FC<{ children: ReactNode }> = ({ children }) => {
-  return (
-    <div className="margin-auto flex h-full flex-col items-center justify-center p-6 text-center leading-6 text-gray-800 dark:text-white lg:py-20 lg:px-40">
-      {children}
-    </div>
   );
 };

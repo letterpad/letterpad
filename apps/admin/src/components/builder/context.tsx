@@ -1,4 +1,14 @@
-import { createContext, FC, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
+import { createId } from "@/shared/utils";
 
 import { Block, BlockItem } from "./types";
 
@@ -12,25 +22,30 @@ interface ContextType {
   preview: boolean;
   setPreview: (preview: boolean) => void;
   grid: Block[];
-  addRow: () => void;
+  addRow: (columns?: number) => void;
   updateRow: (row: Block, rowIndex: number) => void;
   updateCell: (cell: BlockItem, rowIndex: number, colIndex: number) => void;
   removeCell: (rowIndex: number, colIndex?: number) => void;
   moveRow: (rowIndex: number, dir: "up" | "down") => void;
   swapColumns: (rowIndex: number) => void;
   getColumns: (rowIndex: number) => BlockItem[];
+  addTextRow: () => void;
 }
 
 const Context = createContext<ContextType>({} as ContextType);
-const defaultItem: Block = {
-  columns: 1,
-  data: [
-    {
-      text: "",
-      type: "text",
-    },
-  ],
-};
+
+function createDefaultItem(): Block {
+  return {
+    id: createId(),
+    columns: 1,
+    data: [
+      {
+        text: "",
+        type: "text",
+      },
+    ],
+  };
+}
 
 export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
   const [preview, setPreview] = useState(false);
@@ -39,8 +54,15 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
   const removeCell = (index: number, col?: number) => {
     let gridCopy = [...grid];
     if (typeof col !== "undefined" && gridCopy[index].columns > 1) {
-      gridCopy[index].columns -= 1;
-      delete gridCopy[index].data[col];
+      const {
+        data: [a, b],
+      } = gridCopy[index];
+
+      gridCopy[index] = {
+        ...gridCopy[index],
+        data: [col === 0 ? b : a],
+        columns: 1,
+      };
     } else {
       gridCopy = gridCopy.filter((_, idx) => idx !== index);
     }
@@ -48,7 +70,36 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     onSave(gridCopy);
   };
 
-  const addRow = () => setGrid((grid) => [...grid, defaultItem]);
+  const addRow = useCallback(
+    (columns = 2) => {
+      const isPrevRowImageLeft =
+        grid[grid.length - 1].data[0]?.type === "image";
+      const newItem = { ...createDefaultItem() };
+
+      if (columns === 1) {
+        newItem.data = [{ type: "image" }];
+        return setGrid([...grid, { ...newItem, columns: 1 }]);
+      }
+
+      if (isPrevRowImageLeft) {
+        newItem.data = [{ type: "text" }, { type: "image" }];
+      } else {
+        newItem.data = [{ type: "image" }, { type: "text" }];
+      }
+      setGrid([...grid, { ...newItem, columns: 2 }]);
+    },
+    [grid],
+  );
+
+  const addTextRow = () => {
+    const newItem = { ...createDefaultItem() };
+    const newGrid: Block[] = [
+      ...grid,
+      { ...newItem, columns: 1, cover: "banner" },
+    ];
+    setGrid(newGrid);
+    onSave(newGrid);
+  };
 
   const updateRow = (change: Block, rowIndex: number) => {
     const newGrid = grid.map((item, idx) => {
@@ -97,6 +148,12 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     onSave(gridCopy);
   };
 
+  useEffect(() => {
+    if (grid.length === 0) {
+      setGrid([...grid, { ...createDefaultItem(), cover: "big" }]);
+    }
+  }, [addRow, grid]);
+
   const value = {
     preview,
     setPreview,
@@ -108,6 +165,7 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     swapColumns,
     updateCell,
     getColumns: (rowIndex: number) => grid[rowIndex].data,
+    addTextRow,
   };
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };

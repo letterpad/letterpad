@@ -1,45 +1,65 @@
 import classNames from "classnames";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useEffect } from "react";
 import StickyBox from "react-sticky-box";
 
+import { getHeight, hasText, Wrapper } from "./wrapper";
 import { useBuilderContext } from "../../context";
+import { IconImage } from "../../toolbar/icons";
 import MiniEditor from "../../toolbar/mini-editor";
 
-export const SectionImage = ({
+interface Props {
+  columns: number;
+  item: any;
+  editable: boolean;
+  position: [rowIndex: number, colIndex: number];
+  formats: string;
+  cover?: "small" | "big" | "banner";
+  setEditorOpen: any;
+  setFileExplorerOpen: (open: boolean) => void;
+}
+export const SectionImage: FC<Props> = ({
   columns,
   item,
   editable,
   position,
   formats,
   cover,
+  setEditorOpen,
+  setFileExplorerOpen,
 }) => {
   const { updateCell } = useBuilderContext();
   const [rowIndex, colIndex] = position;
-  if (item?.type === "text" || !item?.image?.src)
-    return (
-      <div
-        className="bg-gray-400"
-        style={{
-          height: getHeight(cover, rowIndex),
-        }}
-      />
-    );
+
+  useEffect(() => {
+    const div = document.querySelector(`.row-${rowIndex}`) as HTMLDivElement;
+    div?.style.setProperty("min-height", getHeight(cover) + "px");
+  }, [cover, rowIndex]);
+
   return (
     <StickyBox
       data-background
       style={{
         backgroundImage: `url(${item?.image?.src})`,
-        height: getHeight(cover, rowIndex),
+        minHeight: getHeight(cover),
       }}
       className={classNames(
-        "flex w-full items-center justify-center bg-slate-700 bg-cover bg-center bg-no-repeat",
+        "flex w-full items-center  bg-cover bg-center bg-no-repeat ",
+        `row-${rowIndex}`,
         {
-          // "lg:w-1/2": columns === 2,
-          "h-screen": item.cover === "big",
-          "h-[calc(40vh)]": cover === "small",
+          "bg-gray-900": true,
         },
       )}
     >
+      {!item?.image?.src && (
+        <div className="absolute flex w-full justify-center">
+          <span
+            className="cursor-pointer"
+            onClick={() => setFileExplorerOpen(true)}
+          >
+            <IconImage size={100} color="#333" />
+          </span>
+        </div>
+      )}
       {editable ? (
         <Wrapper>
           <MiniEditor
@@ -71,30 +91,10 @@ export const SectionImage = ({
             dangerouslySetInnerHTML={{
               __html: decodeURIComponent(item?.text ?? ""),
             }}
+            onClick={() => setEditorOpen(true)}
           />
         </Wrapper>
       )}
     </StickyBox>
   );
-};
-
-const Wrapper: FC<{ children: ReactNode }> = ({ children }) => {
-  return (
-    <div className="margin-auto flex h-full w-full flex-col items-center justify-center p-6 text-center leading-6 text-gray-800 dark:text-white lg:py-20 lg:px-40">
-      {children}
-    </div>
-  );
-};
-
-const hasText = (text: string) => {
-  const decodedText = decodeURIComponent(text);
-  return decodedText !== "<html><body></body></html>";
-};
-
-const getHeight = (size: "small" | "big", rowIndex: number) => {
-  const h = typeof window !== "undefined" ? window.innerHeight : 600;
-  if (rowIndex > 0) return h;
-  if (size === "small") return h * 0.4;
-  if (size === "big") return h;
-  return 600;
 };

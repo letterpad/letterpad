@@ -96,3 +96,20 @@ hr {
 .mce-edit-focus {
   outline: none;
 }
+.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
+  color:rgba(var(--color), 0.7);
+  font-size: 1.2rem;
+  cursor: text;
+}
+
+.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks):focus::before {
+  color: transparent;
+}
+
+.mce-content-body {
+  width: 100%;
+}
+
+.mce-content-body:not([dir=rtl])[data-mce-placeholder]:not(.mce-visualblocks)::before {
+    left: initial;
+}
