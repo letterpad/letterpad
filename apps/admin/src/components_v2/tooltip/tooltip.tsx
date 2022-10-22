@@ -70,7 +70,7 @@ export const Tooltip = ({
               },
             })}
           >
-            <div onClick={() => onToggleSwitch(false)}>{render}</div>
+            <div onClick={() => onToggleSwitch()}>{render}</div>
           </div>
         )}
       </FloatingPortal>

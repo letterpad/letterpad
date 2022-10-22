@@ -93,7 +93,10 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
 
   const addTextRow = () => {
     const newItem = { ...createDefaultItem() };
-    const newGrid = [...grid, { ...newItem, columns: 1, cover: "banner" }];
+    const newGrid: Block[] = [
+      ...grid,
+      { ...newItem, columns: 1, cover: "banner" },
+    ];
     setGrid(newGrid);
     onSave(newGrid);
   };
