@@ -24,6 +24,7 @@ html .ant-btn-dark {
 .ant-btn {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 .ant-btn-dark-disabled,
 .ant-btn-dark.disabled,
