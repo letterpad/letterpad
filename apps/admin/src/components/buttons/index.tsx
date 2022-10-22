@@ -4,7 +4,6 @@ import ButtonOriginal, {
 } from "antd/lib/button/button";
 import React from "react";
 
-// require("./button.css");
 type Mod<T, R> = Omit<T, keyof R> & R;
 const customTypeArray = [
   "success",
