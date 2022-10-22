@@ -16,6 +16,7 @@ export const PhotoStory: FC<Props> = ({ data }) => {
         return (
           <div
             key={rowIndex}
+            data-cover={item.cover}
             data-row={rowIndex}
             className={
               'relative flex flex-1  lg:flex-row ' +
@@ -26,14 +27,22 @@ export const PhotoStory: FC<Props> = ({ data }) => {
               const _item = item.data[col];
               return (
                 <>
-                  <div className="relative flex w-full justify-center align-middle">
+                  <div
+                    className="relative flex w-full justify-center align-middle"
+                    style={{ backgroundColor: _item.bgColor }}
+                  >
                     <SectionImage
                       columns={item.columns}
                       item={_item}
                       cover={item.cover}
                       rowIndex={rowIndex}
                     />
-                    <SectionText columns={item.columns} text={_item?.text} type={_item.type} />
+                    <SectionText
+                      columns={item.columns}
+                      text={_item?.text}
+                      type={_item.type}
+                      cover={item.cover}
+                    />
                   </div>
                 </>
               );
@@ -63,13 +72,12 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
       data-background
       style={{
         backgroundImage: `url(${image?.src})`,
-        minHeight: getHeight(cover),
+        height: getHeight(cover),
       }}
       className={`${className} flex w-full items-center justify-center bg-cover bg-center bg-no-repeat row-${rowIndex}`}
     >
       <Wrapper>
         <div
-          data-text
           className={columns == 2 ? 'margin-auto max-w-full lg:max-w-[calc(500px)]' : ''}
           dangerouslySetInnerHTML={{
             __html: decodeURIComponent(item?.text ?? ''),
@@ -88,7 +96,7 @@ const SectionText: FC<any> = ({ columns, text, type }) => {
     <div
       data-text
       className={
-        'flex w-full flex-col items-center justify-center p-6 text-center leading-6 text-gray-800 dark:text-white ' +
+        'my-20 flex w-full flex-col items-center justify-center p-6 text-center leading-6 text-gray-800 dark:text-white ' +
         (columns == 2 ? 'max-w-full lg:max-w-[calc(500px)]' : '')
       }
       dangerouslySetInnerHTML={{

@@ -1,6 +1,7 @@
 import classNames from "classnames";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useRef } from "react";
 
+import { ColorPicker } from "./color";
 import { IconDelete, IconImage, IconRefresh, IconText } from "./icons";
 import { useBuilderContext } from "../context";
 import { BlockItem } from "../types";
@@ -12,16 +13,18 @@ interface Props {
   rowIndex: number;
   colIndex: number;
   item?: BlockItem;
+  onBgColorChange: (color: string) => void;
 }
 export const ContentToolbar: FC<Props> = ({
   setFileExplorerOpen,
   rowIndex,
   colIndex,
   item,
+  onBgColorChange,
 }) => {
   const { removeCell } = useBuilderContext();
   const isFirstRow = rowIndex === 0;
-
+  const colorPickerRef = useRef<HTMLInputElement>(null);
   if (isFirstRow) {
     return (
       <div className="absolute top-0 right-0 z-10 m-4 text-center">
@@ -39,14 +42,22 @@ export const ContentToolbar: FC<Props> = ({
   if (item?.type === "image") {
     return (
       <div className="absolute top-0 right-0 z-10 m-4  text-center">
-        <div className="inline-flex rounded-md shadow-sm">
+        <div className="inline-flex gap-2 rounded-md shadow-sm">
           {!isFirstRow && (
-            <Button
-              onClick={() => removeCell(rowIndex, colIndex)}
-              className="rounded-md "
-            >
-              <IconDelete />
-            </Button>
+            <>
+              <Button
+                onClick={() => setFileExplorerOpen(true)}
+                className="rounded-l-md "
+              >
+                <IconImage size={20} />
+              </Button>
+              <Button
+                onClick={() => removeCell(rowIndex, colIndex)}
+                className="rounded-r-md "
+              >
+                <IconDelete />
+              </Button>
+            </>
           )}
         </div>
       </div>
@@ -60,7 +71,8 @@ export const ContentToolbar: FC<Props> = ({
         "-ml-24": !isFirstRow,
       })}
     >
-      <div className="inline-flex rounded-md shadow-sm">
+      <div className="inline-flex gap-4 rounded-md shadow-sm">
+        <ColorPicker onColorChange={onBgColorChange} color={item?.bgColor} />
         {!isFirstRow && (
           <Button
             onClick={() => removeCell(rowIndex, colIndex)}

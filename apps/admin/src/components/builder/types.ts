@@ -8,6 +8,7 @@ interface BlockImage {
 export interface BlockItem {
   image?: BlockImage;
   text?: string;
+  bgColor?: string;
   type: "text" | "image";
 }
 

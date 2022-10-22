@@ -20,7 +20,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
   const { preview, updateCell } = useBuilderContext();
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [formats, setFormats] = useState(
-    "h1 h2 | fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+    "h1 h2 | fontfamily fontsize alignleft aligncenter alignright | blockquote | forecolor",
   );
   const item = row?.data[colIndex];
   const isText = item?.type === "text";
@@ -35,13 +35,14 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
         "relative flex w-full justify-center align-middle",
         "row-" + rowIndex,
       )}
+      style={{ backgroundColor: item?.bgColor }}
       onClick={() => setEditorOpen(isText || columns === 1)}
     >
       {!preview && (
         <ContentToolbar
           setEditorOpen={(visible) => {
             setFormats(
-              "h1 h2 | fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+              "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | forecolor",
             );
             setEditorOpen(visible);
           }}
@@ -50,6 +51,16 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
           setFileExplorerOpen={setFileExplorerOpen}
           rowIndex={rowIndex}
           colIndex={colIndex}
+          onBgColorChange={(color) =>
+            updateCell(
+              {
+                bgColor: color,
+                type: "text",
+              },
+              rowIndex,
+              colIndex,
+            )
+          }
         />
       )}
       <div className="w-full">
@@ -57,12 +68,12 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
           <SectionText
             columns={columns}
             item={item}
-            editable={editorOpen}
-            setEditorOpen={(visible) => {
+            editable={!isFirstRow}
+            setEditorOpen={() => {
               setFormats(
-                "h1 h2 | fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+                "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | forecolor",
               );
-              setEditorOpen(visible);
+              setEditorOpen(true);
             }}
             position={[rowIndex, colIndex]}
             cover={row?.cover}
@@ -75,14 +86,14 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             columns={columns}
             position={[rowIndex, colIndex]}
             formats={formats}
-            editable={editorOpen}
+            editable={isFirstRow}
             cover={row?.cover}
             setFileExplorerOpen={setFileExplorerOpen}
-            setEditorOpen={(visible) => {
+            setEditorOpen={() => {
               setFormats(
-                "h1 h2 | fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+                "h1 h2 | fontsize_formats fontfamily alignleft aligncenter alignright | blockquote | forecolor",
               );
-              setEditorOpen(visible);
+              setEditorOpen(true);
             }}
           />
         )}
