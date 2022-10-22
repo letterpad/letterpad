@@ -26,7 +26,12 @@ export const LayoutToolbar: FC<Props> = ({
   rowIndex,
 }) => {
   const onSmallHeight = () => {
-    onChange({ ...item, cover: "banner", data: [item.data[0]], columns: 1 });
+    onChange({
+      ...item,
+      cover: "banner",
+      data: [{ ...item.data[0], type: "text" }],
+      columns: 1,
+    });
   };
 
   const showSplitIcon = item.columns === 1;

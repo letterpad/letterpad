@@ -19,15 +19,15 @@ interface Props {
 export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
   const { preview, updateCell } = useBuilderContext();
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
-  const [formats, setFormats] = useState("");
+  const [formats, setFormats] = useState(
+    "h1 h2 | fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+  );
   const item = row?.data[colIndex];
   const isText = item?.type === "text";
   const isImage = item?.type === "image";
   const isFirstRow = rowIndex === 0;
 
   const [editorOpen, setEditorOpen] = useState(isText || columns === 1);
-  // const showImgBtnCenter =
-  //   !item?.image?.src && isImage && !preview && item.text?.trim().length === 0;
 
   return (
     <div

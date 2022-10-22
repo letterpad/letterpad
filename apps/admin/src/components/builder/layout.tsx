@@ -1,12 +1,11 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { Row } from "@/components/builder/layouts/story-builder";
-import { Button } from "@/components_v2/button";
 
 import { PageType } from "@/graphql/types";
 
 import { useBuilderContext } from "./context";
-import { IconAdd } from "./toolbar/icons";
+import { Toolbar } from "./toolbar";
 import { Block } from "./types";
 
 interface Props {
@@ -16,7 +15,7 @@ interface Props {
 
 export const Layout: FC<Props> = () => {
   const { preview, setPreview, grid, addRow } = useBuilderContext();
-
+  const [showTools, setShowTools] = useState(false);
   return (
     <div style={{ padding: 24 }} id="creative">
       <button onClick={() => setPreview(!preview)}>Toggle</button>
@@ -34,9 +33,7 @@ export const Layout: FC<Props> = () => {
         })}
       </div>
       <div className="align-center flex justify-center">
-        <Button type="dark" onClick={addRow}>
-          <IconAdd />
-        </Button>
+        <Toolbar />
       </div>
     </div>
   );

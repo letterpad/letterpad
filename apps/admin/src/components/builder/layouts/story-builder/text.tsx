@@ -50,7 +50,7 @@ export const SectionText: FC<Props> = ({
             )
           }
           formats={formats}
-          text={decodeURIComponent(item?.text ?? "Write here")}
+          text={decodeURIComponent(item?.text ?? "")}
         />
       </Wrapper>
     );
