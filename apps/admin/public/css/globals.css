@@ -166,9 +166,7 @@ table tr {
   font-family: "Fira Code";
 }
 
-:root {
-  --primary-color: orange;
-}
+
 
 body .editor {
   font-size: 1.2rem;
