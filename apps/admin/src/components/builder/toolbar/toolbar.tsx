@@ -25,7 +25,7 @@ export const Toolbar = () => {
       }
     >
       <button className="icon-class text-md flex flex-row items-center  gap-2 rounded-md">
-        <IconAdd stroke="#000" size={28} /> <span>ADD</span>
+        <IconAdd stroke="rgb(var(--color))" size={28} /> <span>ADD</span>
       </button>
     </Tooltip>
   );
