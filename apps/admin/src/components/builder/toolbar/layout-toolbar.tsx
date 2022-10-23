@@ -35,13 +35,13 @@ export const LayoutToolbar: FC<Props> = ({
   };
 
   const showSplitIcon = item.columns === 1;
-  const showFullSizeIcon = !showSplitIcon;
+  const showFullSizeIcon = !showSplitIcon || item.cover === "banner";
   const showBannerIcon = item.cover !== "banner";
 
   const onFullWidth = () => {
     const mergeItem: Block = { columns: 1, data: [], id: createId() };
 
-    if (item.data[0].type === "image") {
+    if (item.data[0]?.type === "image") {
       mergeItem.data = [
         {
           type: "image",
@@ -49,7 +49,7 @@ export const LayoutToolbar: FC<Props> = ({
           text: item.data[0]?.text ?? item.data[1]?.text,
         },
       ];
-    } else if (item.data[1].type === "image") {
+    } else if (item.data[1]?.type === "image") {
       mergeItem.data = [
         {
           type: "image",
@@ -57,8 +57,14 @@ export const LayoutToolbar: FC<Props> = ({
           text: item.data[1]?.text || item.data[0]?.text,
         },
       ];
+    } else {
+      mergeItem.data = [
+        {
+          type: "image",
+        },
+      ];
     }
-    onChange({ ...mergeItem, columns: 1 });
+    onChange({ ...mergeItem, columns: 1, cover: "big" });
   };
 
   const onSplit = () => {

@@ -22,14 +22,14 @@ interface ContextType {
   preview: boolean;
   setPreview: (preview: boolean) => void;
   grid: Block[];
-  addRow: (columns?: number) => void;
+  addRow: (rowIndex: number, columns?: number) => void;
   updateRow: (row: Block, rowIndex: number) => void;
   updateCell: (cell: BlockItem, rowIndex: number, colIndex: number) => void;
   removeCell: (rowIndex: number, colIndex?: number) => void;
   moveRow: (rowIndex: number, dir: "up" | "down") => void;
   swapColumns: (rowIndex: number) => void;
   getColumns: (rowIndex: number) => BlockItem[];
-  addTextRow: () => void;
+  addTextRow: (rowIndex: number) => void;
 }
 
 const Context = createContext<ContextType>({} as ContextType);
@@ -72,14 +72,19 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
   };
 
   const addRow = useCallback(
-    (columns = 2) => {
+    (rowIndex, columns = 2) => {
       const isPrevRowImageLeft =
         grid[grid.length - 1].data[0]?.type === "image";
       const newItem = { ...createDefaultItem() };
 
       if (columns === 1) {
         newItem.data = [{ type: "image" }];
-        return setGrid([...grid, { ...newItem, columns: 1 }]);
+        const newGrid: Block[] = [
+          ...grid.slice(0, rowIndex + 1),
+          { ...newItem, columns: 1 },
+          ...grid.slice(rowIndex + 1),
+        ];
+        return setGrid(newGrid);
       }
 
       if (isPrevRowImageLeft) {
@@ -87,16 +92,22 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
       } else {
         newItem.data = [{ type: "image" }, { type: "text" }];
       }
-      setGrid([...grid, { ...newItem, columns: 2 }]);
+      const newGrid: Block[] = [
+        ...grid.slice(0, rowIndex + 1),
+        { ...newItem, columns: 2 },
+        ...grid.slice(rowIndex + 1),
+      ];
+      setGrid(newGrid);
     },
     [grid],
   );
 
-  const addTextRow = () => {
+  const addTextRow = (rowIndex: number) => {
     const newItem = { ...createDefaultItem() };
     const newGrid: Block[] = [
-      ...grid,
+      ...grid.slice(0, rowIndex + 1),
       { ...newItem, columns: 1, cover: "banner" },
+      ...grid.slice(rowIndex + 1),
     ];
     setGrid(newGrid);
     onSave(newGrid);
