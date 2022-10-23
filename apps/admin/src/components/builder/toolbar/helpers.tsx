@@ -1,8 +1,15 @@
 import classNames from "classnames";
+import { FC } from "react";
 
 import { IconClose } from "./icons";
 
-export const Reset = ({ visible, onClick, className }) => {
+interface Props {
+  visible: boolean;
+  onClick: () => void;
+  className?: string;
+}
+
+export const Reset: FC<Props> = ({ visible, onClick, className }) => {
   if (!visible) return null;
 
   return (

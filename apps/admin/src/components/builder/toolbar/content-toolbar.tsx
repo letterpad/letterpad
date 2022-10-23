@@ -35,7 +35,7 @@ export const ContentToolbar: FC<Props> = ({
           >
             <IconImage size={20} />
             <Reset
-              src={item?.image?.src}
+              visible={!!item?.image?.src}
               onClick={() =>
                 updateCell(
                   { image: { src: "" }, type: "image" },
@@ -61,7 +61,7 @@ export const ContentToolbar: FC<Props> = ({
               >
                 <IconImage size={20} />
                 <Reset
-                  visible={item?.image?.src}
+                  visible={!!item?.image?.src}
                   onClick={() =>
                     updateCell(
                       { image: { src: "" }, type: "image" },

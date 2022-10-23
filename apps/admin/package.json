@@ -138,6 +138,7 @@
     "node-sass": "^7.0.1",
     "postcss": "^8.4.17",
     "postcss-nested": "^5.0.5",
+    "react-parallax": "^3.5.1",
     "react-test-renderer": "18.2.0",
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.1.8",

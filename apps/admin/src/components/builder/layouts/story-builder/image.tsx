@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { FC, ReactNode, useEffect } from "react";
+import { Background, Parallax } from "react-parallax";
 import StickyBox from "react-sticky-box";
 
 import { getHeight, hasText, Wrapper } from "./wrapper";
@@ -46,7 +47,7 @@ export const SectionImage: FC<Props> = ({
     <StickyBox
       data-background
       style={{
-        backgroundImage: `url(${item?.image?.src})`,
+        // backgroundImage: `url(${item?.image?.src})`,
         minHeight: getHeight(cover),
       }}
       className={classNames(
@@ -58,23 +59,34 @@ export const SectionImage: FC<Props> = ({
         },
       )}
     >
-      {!item?.image?.src && (
-        <div className="absolute flex w-full justify-center">
-          <IconImage size={60} stroke="rgb(var(--color),0.2)" />
-        </div>
-      )}
+      <Parallax
+        strength={200}
+        lazy={true}
+        bgImage={item?.image?.src}
+        className="flex h-full w-full flex-col items-center justify-center"
+        bgImageStyle={{ height: "100%" }}
+        style={{
+          // backgroundImage: `url(${item?.image?.src})`,
+          minHeight: getHeight(cover),
+        }}
+      >
+        {!item?.image?.src && (
+          <div className="absolute flex w-full justify-center">
+            <IconImage size={60} stroke="rgb(var(--color),0.2)" />
+          </div>
+        )}
 
-      <Wrapper>
-        {preview ? (
-          <Text columns={columns} text={item.text} />
-        ) : firstRow ? (
-          <MiniEditor
-            onChange={update}
-            formats={formats}
-            text={decodeURIComponent(item?.text ?? "")}
-          />
-        ) : null}
-      </Wrapper>
+        <Wrapper>
+          {preview && <Text columns={columns} text={item.text} />}
+          {!preview && firstRow ? (
+            <MiniEditor
+              onChange={update}
+              formats={formats}
+              text={decodeURIComponent(item?.text ?? "")}
+            />
+          ) : null}
+        </Wrapper>
+      </Parallax>
     </StickyBox>
   );
 };
