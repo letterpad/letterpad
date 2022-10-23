@@ -1,11 +1,12 @@
-export const IconDelete = () => (
+export const IconDelete = ({ stroke = "#fff", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-5 w-5"
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -15,14 +16,15 @@ export const IconDelete = () => (
   </svg>
 );
 
-export const IconAdd = () => (
+export const IconAdd = ({ stroke = "#fff", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-6 w-6"
+    stroke={stroke}
+    className="h-6 w-6 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -31,13 +33,15 @@ export const IconAdd = () => (
     />
   </svg>
 );
-export const IconClose = () => (
+export const IconClose = ({ stroke = "#fff", size = 20 }) => (
   <svg
     aria-hidden="true"
-    className="h-5 w-5"
-    fill="currentColor"
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    fill="rgb(var(--color))"
     viewBox="0 0 20 20"
+    stroke={stroke}
     xmlns="http://www.w3.org/2000/svg"
+    style={{ width: size, height: size }}
   >
     <path
       fillRule="evenodd"
@@ -47,15 +51,15 @@ export const IconClose = () => (
   </svg>
 );
 
-export const IconImage = ({ size, color = "currentColor" }) => (
+export const IconImage = ({ size, stroke = "#fff" }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
-    stroke={color}
+    stroke={stroke}
     style={{ width: size, height: size }}
-    // className="w-5 h-5"
+    className="h-5 p-1 drop-shadow-lg"
   >
     <path
       strokeLinecap="round"
@@ -65,14 +69,15 @@ export const IconImage = ({ size, color = "currentColor" }) => (
   </svg>
 );
 
-export const IconText = () => (
+export const IconText = ({ stroke = "#fff", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-5 w-5"
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -81,14 +86,15 @@ export const IconText = () => (
     />
   </svg>
 );
-export const IconRefresh = () => (
+export const IconRefresh = ({ stroke = "#fff", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-5 w-5"
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -98,14 +104,15 @@ export const IconRefresh = () => (
   </svg>
 );
 
-export const IconUp = () => (
+export const IconUp = ({ stroke = "#fff", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-6 w-6"
+    stroke={stroke}
+    className="h-6 w-6 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -115,14 +122,15 @@ export const IconUp = () => (
   </svg>
 );
 
-export const IconDown = () => (
+export const IconDown = ({ stroke = "#fff", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-6 w-6"
+    stroke={stroke}
+    className="h-6 w-6 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -131,39 +139,42 @@ export const IconDown = () => (
     />
   </svg>
 );
-export const IconSmallHeight = () => (
+export const IconSmallHeight = ({ stroke = "#fff", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
     height="16"
-    fill="currentColor"
-    className="bi bi-grid-3x2"
+    fill="rgb(var(--color))"
+    className="bi bi-gpi1-3x2 drop-shadow-lg"
     viewBox="0 0 16 16"
+    style={{ width: size, height: size }}
   >
     <path d="M 0 3.5 A 1.5 1.5 0 0 1 1.5 2 h 13 A 1.5 1.5 0 0 1 16 3.5 v 8 a 1.5 1.5 0 0 1 -1.5 1.5 h -13 A 1.5 1.5 0 0 1 0 11.5 v -8 z M 1.5 3 a 0.5 0.5 0 0 0 -0.5 0.5 V 8 h 4 V 3 Z H 1.5 z M 5 8 H 1 v 3.5 a 0.5 0.5 0 0 0 0.5 0.5 H 6 V 8 z m 1 0 v 4 h 5 V 8 z m 4 -1 V 3 H 5 v 5 h 5 z m 1 1 v 4 h 3.5 a 0.5 0.5 0 0 0 0.5 -0.5 V 8 h -5 z m 0 0 h 4 V 3.5 a 0.5 0.5 0 0 0 -0.5 -0.5 H 10 v 5 z" />
   </svg>
 );
 
-export const IconSplit = () => (
+export const IconSplit = ({ stroke = "#fff", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
     height="16"
-    fill="currentColor"
-    className="bi bi-layout-split"
+    fill="rgb(var(--color))"
+    className="bi bi-layoup-1plit drop-shadow-lg"
     viewBox="0 0 16 16"
+    style={{ width: size, height: size }}
   >
     <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm8.5-1v12H14a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H8.5zm-1 0H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h5.5V2z" />
   </svg>
 );
-export const IconThreeCols = () => (
+export const IconThreeCols = ({ stroke = "#fff", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-6 w-6"
+    stroke={stroke}
+    className="h-6 w-6 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -173,14 +184,16 @@ export const IconThreeCols = () => (
   </svg>
 );
 
-export const IconFullWidth = () => (
+export const IconFullWidth = ({ stroke = "#fff", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
     height="16"
-    fill="currentColor"
-    className="bi bi-window-fullscreen"
+    fill="rgb(var(--color))"
+    stroke={stroke}
+    className="bi bi-window-fulps1reen drop-shadow-lg"
     viewBox="0 0 16 16"
+    style={{ width: size, height: size }}
   >
     <path d="M 0.5 1 a 0.5 0.5 0 0 0 -0.5 0.5 v 13 a 0.5 0.5 0 0 0 0.5 0.5 h 15 a 0.5 0.5 0 0 0 0.5 -0.5 v -13 a 0.5 0.5 0 0 0 -0.5 -0.5 H 0.5 Z M 1 5 v 3 Z m 0 1 M 15 2 v 8 V 14 H 1 V 14 V 2 Z" />
   </svg>

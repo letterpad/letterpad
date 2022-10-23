@@ -10,30 +10,37 @@ import MiniEditor from "../../toolbar/mini-editor";
 interface Props {
   columns: number;
   item: any;
-  editable: boolean;
   position: [rowIndex: number, colIndex: number];
   formats: string;
   cover?: "small" | "big" | "banner";
   setEditorOpen: any;
-  setFileExplorerOpen: (open: boolean) => void;
 }
 export const SectionImage: FC<Props> = ({
   columns,
   item,
-  editable,
   position,
   formats,
   cover,
-  setEditorOpen,
-  setFileExplorerOpen,
 }) => {
-  const { updateCell } = useBuilderContext();
+  const { updateCell, preview } = useBuilderContext();
   const [rowIndex, colIndex] = position;
 
+  const firstRow = rowIndex === 0;
   useEffect(() => {
     const div = document.querySelector(`.row-${rowIndex}`) as HTMLDivElement;
     div?.style.setProperty("min-height", getHeight(cover) + "px");
   }, [cover, rowIndex]);
+
+  const update = (text: string) => {
+    updateCell(
+      {
+        text: encodeURIComponent(text),
+        type: item?.type ?? "text",
+      },
+      rowIndex,
+      colIndex,
+    );
+  };
 
   return (
     <StickyBox
@@ -46,55 +53,40 @@ export const SectionImage: FC<Props> = ({
         "flex w-full items-center  bg-cover bg-center bg-no-repeat ",
         `row-${rowIndex}`,
         {
-          "bg-gray-900": true,
+          "bg-gray-200": true,
+          "dark:bg-gray-800": true,
         },
       )}
     >
       {!item?.image?.src && (
         <div className="absolute flex w-full justify-center">
-          <span
-            className="cursor-pointer"
-            onClick={() => setFileExplorerOpen(true)}
-          >
-            <IconImage size={100} color="#333" />
-          </span>
+          <IconImage size={60} stroke="rgb(var(--color),0.2)" />
         </div>
       )}
-      {editable ? (
-        <Wrapper>
+
+      <Wrapper>
+        {preview ? (
+          <Text columns={columns} text={item.text} />
+        ) : firstRow ? (
           <MiniEditor
-            onChange={(text) =>
-              updateCell(
-                {
-                  text: encodeURIComponent(text),
-                  type: item?.type ?? "text",
-                },
-                rowIndex,
-                colIndex,
-              )
-            }
+            onChange={update}
             formats={formats}
-            text={decodeURIComponent(
-              item?.text && hasText(item?.text) ? item.text : "",
-            )}
+            text={decodeURIComponent(item?.text ?? "")}
           />
-        </Wrapper>
-      ) : (
-        <Wrapper>
-          <div
-            data-text
-            className={
-              columns == 2
-                ? "margin-auto max-w-full lg:max-w-[calc(500px)]"
-                : ""
-            }
-            dangerouslySetInnerHTML={{
-              __html: decodeURIComponent(item?.text ?? ""),
-            }}
-            onClick={() => setEditorOpen(true)}
-          />
-        </Wrapper>
-      )}
+        ) : null}
+      </Wrapper>
     </StickyBox>
   );
 };
+
+const Text = ({ columns, text = "" }) => (
+  <div
+    data-text
+    className={
+      columns == 2 ? "margin-auto max-w-full lg:max-w-[calc(500px)]" : ""
+    }
+    dangerouslySetInnerHTML={{
+      __html: decodeURIComponent(text),
+    }}
+  />
+);

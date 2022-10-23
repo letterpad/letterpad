@@ -67,8 +67,6 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
 
   return (
     <StickyBox
-      offsetTop={20}
-      offsetBottom={20}
       data-background
       style={{
         backgroundImage: `url(${image?.src})`,

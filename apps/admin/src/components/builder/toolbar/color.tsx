@@ -35,6 +35,7 @@ export const ColorPicker = ({ color, onColorChange }) => {
             top: 20,
             left: -5,
             fontSize: 12,
+            color: "rgb(var(--color))",
           }}
         >
           Clear

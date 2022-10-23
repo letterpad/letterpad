@@ -28,12 +28,12 @@ export const ContentToolbar: FC<Props> = ({
   if (isFirstRow) {
     return (
       <div className="absolute top-0 right-0 z-10 m-4 text-center">
-        <div className="inline-flex rounded-md shadow-sm">
+        <div className="inline-flex  shadow-sm">
           <Button
             onClick={() => setFileExplorerOpen(true)}
-            className="rounded-md"
+            className="rounded-full bg-blue-600 p-1"
           >
-            <IconImage size={18} />
+            <IconImage size={20} />
           </Button>
         </div>
       </div>
@@ -42,18 +42,18 @@ export const ContentToolbar: FC<Props> = ({
   if (item?.type === "image") {
     return (
       <div className="absolute top-0 right-0 z-10 m-4  text-center">
-        <div className="inline-flex gap-2 rounded-md shadow-sm">
+        <div className="inline-flex gap-2  shadow-sm">
           {!isFirstRow && (
             <>
               <Button
                 onClick={() => setFileExplorerOpen(true)}
-                className="rounded-l-md "
+                className="rounded-full bg-blue-600 p-1"
               >
                 <IconImage size={20} />
               </Button>
               <Button
                 onClick={() => removeCell(rowIndex, colIndex)}
-                className="rounded-r-md "
+                className="rounded-full bg-blue-600 p-1"
               >
                 <IconDelete />
               </Button>
@@ -71,12 +71,12 @@ export const ContentToolbar: FC<Props> = ({
         "-ml-24": !isFirstRow,
       })}
     >
-      <div className="inline-flex gap-4 rounded-md shadow-sm">
+      <div className="inline-flex items-center  justify-center gap-4 shadow-sm">
         <ColorPicker onColorChange={onBgColorChange} color={item?.bgColor} />
         {!isFirstRow && (
           <Button
             onClick={() => removeCell(rowIndex, colIndex)}
-            className="rounded-md "
+            className="rounded-full bg-blue-600 p-1"
           >
             <IconDelete />
           </Button>

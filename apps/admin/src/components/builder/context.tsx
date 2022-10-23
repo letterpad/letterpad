@@ -49,6 +49,7 @@ function createDefaultItem(): Block {
 
 export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
   const [preview, setPreview] = useState(false);
+
   const [grid, setGrid] = useState(data);
 
   const removeCell = (index: number, col?: number) => {
