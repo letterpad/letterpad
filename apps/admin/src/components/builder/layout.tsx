@@ -14,8 +14,7 @@ interface Props {
 }
 
 export const Layout: FC<Props> = () => {
-  const { preview, setPreview, grid, addRow } = useBuilderContext();
-  const [showTools, setShowTools] = useState(false);
+  const { preview, setPreview, grid } = useBuilderContext();
   return (
     <div style={{ padding: 24 }} id="creative">
       <button onClick={() => setPreview(!preview)}>Toggle</button>
@@ -31,16 +30,15 @@ export const Layout: FC<Props> = () => {
                 key={row.id}
                 rowIndex={rowIndex}
               />
-              <div className="align-center flex justify-center">
-                <Toolbar rowIndex={rowIndex} />
-              </div>
+              {!preview && (
+                <div className="align-center flex justify-center">
+                  <Toolbar rowIndex={rowIndex} />
+                </div>
+              )}
             </>
           );
         })}
       </div>
-      {/* <div className="align-center flex justify-center">
-        <Toolbar />
-      </div> */}
     </div>
   );
 };

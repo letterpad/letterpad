@@ -12,6 +12,8 @@ export interface BlockItem {
   type: "text" | "image";
 }
 
+export type CoverType = "big" | "small" | "banner";
+
 export interface Block {
   columns: number;
   data: BlockItem[];

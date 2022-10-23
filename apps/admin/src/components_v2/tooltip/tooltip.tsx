@@ -3,6 +3,7 @@ import {
   flip,
   FloatingPortal,
   offset,
+  Placement,
   shift,
   useClick,
   useFloating,
@@ -17,6 +18,7 @@ type TooltipProps = {
   disabled?: boolean;
   follow?: boolean;
   render: React.ReactNode;
+  position?: Placement;
 };
 
 export const Tooltip = ({
@@ -24,12 +26,13 @@ export const Tooltip = ({
   disabled = false,
   render,
   children,
+  position,
 }: TooltipProps) => {
   const arrowRef = useRef(null);
   const { flag, onToggleSwitch } = useFlag(false);
   const { context, reference, floating, strategy, x, y, placement } =
     useFloating({
-      placement: "bottom",
+      placement: position ?? "bottom",
       open: flag,
       onOpenChange: onToggleSwitch,
       middleware: [
@@ -64,8 +67,6 @@ export const Tooltip = ({
                 top: y ?? "",
                 left: x ?? "",
                 maxWidth: "400px",
-                // background: "black",
-                // color: "white",
                 padding: "8px",
               },
             })}

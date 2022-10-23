@@ -7,6 +7,7 @@ export const Toolbar = ({ rowIndex }) => {
   const { addTextRow, addRow } = useBuilderContext();
   return (
     <Tooltip
+      position="right"
       render={
         <p>
           <button
@@ -27,8 +28,8 @@ export const Toolbar = ({ rowIndex }) => {
         </p>
       }
     >
-      <button className="icon-class text-md flex flex-row items-center  gap-2 rounded-md">
-        <IconAdd stroke="rgb(var(--color))" size={28} /> <span>ADD</span>
+      <button className="text-md my-10 flex flex-row items-center  gap-2 rounded-md">
+        <IconAdd stroke="rgb(var(--color))" size={28} />
       </button>
     </Tooltip>
   );

@@ -1,8 +1,9 @@
-import classNames from "classnames";
-import { FC, ReactNode, useRef } from "react";
+import { FC, ReactNode } from "react";
+import ReactStickyBox from "react-sticky-box";
 
 import { ColorPicker } from "./color";
-import { IconDelete, IconImage, IconRefresh, IconText } from "./icons";
+import { Reset } from "./helpers";
+import { IconDelete, IconImage } from "./icons";
 import { useBuilderContext } from "../context";
 import { BlockItem } from "../types";
 
@@ -22,26 +23,35 @@ export const ContentToolbar: FC<Props> = ({
   item,
   onBgColorChange,
 }) => {
-  const { removeCell } = useBuilderContext();
+  const { removeCell, updateCell } = useBuilderContext();
   const isFirstRow = rowIndex === 0;
-  const colorPickerRef = useRef<HTMLInputElement>(null);
   if (isFirstRow) {
     return (
-      <div className="absolute top-0 right-0 z-10 m-4 text-center">
+      <Wrapper>
         <div className="inline-flex  shadow-sm">
           <Button
             onClick={() => setFileExplorerOpen(true)}
             className="rounded-full bg-blue-600 p-1"
           >
             <IconImage size={20} />
+            <Reset
+              src={item?.image?.src}
+              onClick={() =>
+                updateCell(
+                  { image: { src: "" }, type: "image" },
+                  rowIndex,
+                  colIndex,
+                )
+              }
+            />
           </Button>
         </div>
-      </div>
+      </Wrapper>
     );
   }
   if (item?.type === "image") {
     return (
-      <div className="absolute top-0 right-0 z-10 m-4  text-center">
+      <Wrapper>
         <div className="inline-flex gap-2  shadow-sm">
           {!isFirstRow && (
             <>
@@ -50,6 +60,16 @@ export const ContentToolbar: FC<Props> = ({
                 className="rounded-full bg-blue-600 p-1"
               >
                 <IconImage size={20} />
+                <Reset
+                  visible={item?.image?.src}
+                  onClick={() =>
+                    updateCell(
+                      { image: { src: "" }, type: "image" },
+                      rowIndex,
+                      colIndex,
+                    )
+                  }
+                />
               </Button>
               <Button
                 onClick={() => removeCell(rowIndex, colIndex)}
@@ -60,17 +80,12 @@ export const ContentToolbar: FC<Props> = ({
             </>
           )}
         </div>
-      </div>
+      </Wrapper>
     );
   }
 
   return (
-    <div
-      className={classNames("absolute top-0 right-0  m-4 text-center", {
-        "-ml-16": isFirstRow,
-        "-ml-24": !isFirstRow,
-      })}
-    >
+    <Wrapper>
       <div className="inline-flex items-center  justify-center gap-4 shadow-sm">
         <ColorPicker onColorChange={onBgColorChange} color={item?.bgColor} />
         {!isFirstRow && (
@@ -87,7 +102,7 @@ export const ContentToolbar: FC<Props> = ({
           }
         `}</style>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 
@@ -117,3 +132,11 @@ const Button: FC<ButtonProps> = ({
     </a>
   );
 };
+
+const Wrapper = ({ children }) => (
+  <div className="absolute top-0 right-0 z-10 m-4 h-full text-center">
+    <ReactStickyBox className="mb-10" offsetTop={20}>
+      {children}
+    </ReactStickyBox>
+  </div>
+);

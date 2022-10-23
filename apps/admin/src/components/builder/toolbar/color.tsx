@@ -1,5 +1,7 @@
 import { useRef } from "react";
 
+import { Reset } from "./helpers";
+
 export const ColorPicker = ({ color, onColorChange }) => {
   const colorPickerRef = useRef<HTMLInputElement>(null);
 
@@ -15,7 +17,7 @@ export const ColorPicker = ({ color, onColorChange }) => {
       <input
         ref={colorPickerRef}
         type="color"
-        className="cursor-pointer border-0 p-0 opacity-0"
+        className="-mb-8 cursor-pointer border-0 p-0 opacity-0"
         style={{
           transform: "translate(-25%, -25%)",
           width: "200%",
@@ -24,23 +26,11 @@ export const ColorPicker = ({ color, onColorChange }) => {
         value={color}
         onChange={(e) => onColorChange(e.target.value)}
       />
-      {color && (
-        <span
-          onClick={(e) => {
-            e.stopPropagation();
-            onColorChange("");
-          }}
-          className="absolute cursor-pointer"
-          style={{
-            top: 20,
-            left: -5,
-            fontSize: 12,
-            color: "rgb(var(--color))",
-          }}
-        >
-          Clear
-        </span>
-      )}
+      <Reset
+        visible={color}
+        className="-mt-7"
+        onClick={() => onColorChange("")}
+      />
     </div>
   );
 };
