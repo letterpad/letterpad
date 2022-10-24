@@ -18,11 +18,10 @@ import ThemeSwitcher from "@/components/theme-switcher";
 
 import { PageType } from "@/graphql/types";
 
-const data = [];
 const TryCreatives = () => {
   return (
     <BuilderContext
-      data={data}
+      data={[]}
       onSave={(newData) => {
         localStorage.setItem("page_data", JSON.stringify(newData));
       }}
@@ -35,6 +34,7 @@ const TryCreatives = () => {
 const Builder = () => {
   const { setPreview, setGrid } = useBuilderContext();
   const router = useRouter();
+
   const loadCreative = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (value === "0") {
@@ -66,9 +66,14 @@ const Builder = () => {
         setGrid([]);
     }
   };
+
   useEffect(() => {
     setPreview(true);
-  }, [setPreview]);
+    setTimeout(() => {
+      setGrid(introData);
+    });
+  }, [setGrid, setPreview]);
+
   return (
     <>
       <Head>

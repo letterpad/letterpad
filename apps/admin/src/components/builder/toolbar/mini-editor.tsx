@@ -8,10 +8,11 @@ interface Props {
   onChange: (_html: string) => void;
   formats: string;
 }
+const isBrowser = typeof window !== "undefined";
 
 const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
   const editorRef = useRef<Editor["editor"]>(null);
-  const isDark = document.body.classList.contains("dark");
+  const isDark = isBrowser && document.body.classList.contains("dark");
   const [html, setHtml] = useState(text);
 
   useEffect(() => {
@@ -59,9 +60,11 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
           contextmenu: false,
           branding: false,
           plugins: "link code quickbars autoresize",
-          skin: window.matchMedia("(prefers-color-scheme: light)").matches
-            ? "oxide-dark"
-            : "",
+          skin:
+            isBrowser &&
+            window.matchMedia("(prefers-color-scheme: light)").matches
+              ? "oxide-dark"
+              : "",
           //   toolbar_location: "bottom",
           statusbar: false,
           entity_encoding: "raw",
