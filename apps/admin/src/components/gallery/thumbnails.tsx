@@ -1,20 +1,23 @@
 import Image from "next/image";
-import { FC, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-import { Item } from "./types";
-
-interface Props {
-  items: Item[];
+interface Props<T> {
+  items: T[];
   onSelect: (index: number) => void;
   index: number;
 }
 
-export const ThumbnailList: FC<Props> = ({ items, onSelect, index }) => {
+export const ThumbnailList = <
+  T extends { src: string; description?: string; caption?: string },
+>({
+  items,
+  onSelect,
+  index,
+}: Props<T>) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // @ts-ignore
-    ref.current?.childNodes[index]?.scrollIntoView({
+    (ref.current?.childNodes[index] as HTMLDivElement)?.scrollIntoView({
       behavior: "smooth",
       block: "center",
       inline: "center",
@@ -26,7 +29,6 @@ export const ThumbnailList: FC<Props> = ({ items, onSelect, index }) => {
       {items.map((item, i) => (
         <div key={i}>
           <Image
-            //@ts-ignore
             src={item.src as string}
             width={100}
             height={100}
@@ -38,7 +40,7 @@ export const ThumbnailList: FC<Props> = ({ items, onSelect, index }) => {
             }
             onClick={() => onSelect(i)}
             objectFit="fill"
-            alt={item.description}
+            alt={item.description || item.caption}
           />
         </div>
       ))}

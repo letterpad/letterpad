@@ -1,13 +1,12 @@
-//@ts-nocheck
 import Image from "next/image";
 import { FC } from "react";
 
 import { Controls } from "./controls";
 import { ThumbnailList } from "./thumbnails";
-import { Item } from "./types";
+import { BlockMasonry } from "../builder/types";
 
 interface Props {
-  items: Item[];
+  items: BlockMasonry[];
   onSelect: (index: number) => void;
   index: number;
   onClose: () => void;
@@ -20,9 +19,10 @@ export const GalleryModal: FC<Props> = ({
 }) => {
   const item = items[index];
   if (index < 0) return null;
-  const isPortrait = item.aspectRatio < 1;
+  const ar = item.aspectRatio || 1;
+  const isPortrait = ar < 1;
   const maxH = window.innerHeight - 100;
-  const width = isPortrait ? maxH * item.aspectRatio : 1400;
+  const width = isPortrait ? maxH * ar : 1400;
   const height = isPortrait ? maxH : 800;
 
   return (

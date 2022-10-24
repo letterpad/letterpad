@@ -1,33 +1,24 @@
-//@ts-nocheck
 import Image from "next/image";
+import { FC } from "react";
 
 import { RemoveButton } from "@/components/gallery/remove";
-import { ItemPlaceholder } from "@/components/post/components/templates/portfolio/itemPlaceholder";
 
-import { BlockMasonry } from "../../types";
+import { BlockMasonry } from "../../../types";
 
-export const getMasonryLayout = (
-  items: BlockMasonry[],
+interface Props {
+  items: BlockMasonry[];
+  onSelect: (index: number) => void;
+  onRemove: (id: string) => void;
+  preview: boolean;
+}
+export const MasonryGrid: FC<Props> = ({
+  items,
   onSelect,
-  removeItem,
-  onSave,
+  onRemove,
   preview,
-) => {
+}) => {
   const rows = items.map((item, i) => {
-    const direction = i % 2 === 0 ? " md:flex-row-reverse" : " md:flex-row";
-
-    if (item.__typename === "GridPlaceholder") {
-      return (
-        <ItemPlaceholder
-          className={direction}
-          removeItem={() => removeItem(i)}
-          onSave={(data) => onSave(i, data)}
-          description={item.description}
-          src={item.src}
-        />
-      );
-    }
-    const isPortrait = item.aspectRatio < 1;
+    const isPortrait = item.aspectRatio && item.aspectRatio < 1;
     const width = isPortrait ? 200 : 1400;
     const height = isPortrait ? 300 : 800;
     const aspect = isPortrait ? "aspect-video" : "aspect-square";
@@ -44,7 +35,7 @@ export const getMasonryLayout = (
           className={aspect}
         />
 
-        {!preview && <RemoveButton onClick={() => removeItem(item.id)} />}
+        {!preview && <RemoveButton onClick={() => onRemove(item.id)} />}
       </div>
     );
   });

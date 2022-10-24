@@ -7,7 +7,6 @@ import { PageType } from "@/graphql/types";
 import { useBuilderContext } from "./context";
 import { Toolbar } from "./toolbar";
 import { EditSwitch } from "./toolbar/editSwitch";
-import { IconEye, IconTools } from "./toolbar/icons";
 
 interface Props {
   type: PageType;
@@ -40,6 +39,11 @@ export const Layout: FC<Props> = ({ editable = true }) => {
           );
         })}
       </div>
+      <div
+        data-type="portal"
+        id="modal-creatives"
+        className="absolute top-0 left-0 z-10"
+      ></div>
     </div>
   );
 };

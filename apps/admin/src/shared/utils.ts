@@ -117,3 +117,11 @@ export const createId = () => {
   };
   return s4() + s4();
 };
+
+export const disableScroll = (flag: boolean) => {
+  if (flag) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "scroll";
+  }
+};

@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect, useState } from "react";
 
@@ -65,6 +66,9 @@ const Builder = () => {
   }, [setPreview]);
   return (
     <>
+      <Head>
+        <title>Creatives</title>
+      </Head>
       <div className="flex items-center justify-between py-4">
         <h1 className="flex justify-start p-4 text-xl font-bold">
           Creatives Playground

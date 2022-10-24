@@ -100,19 +100,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
           />
         )}
         {isMasonry && (
-          <SectionMasonry
-            item={item}
-            columns={columns}
-            position={[rowIndex, colIndex]}
-            formats={formats}
-            cover={row?.cover}
-            setEditorOpen={() => {
-              setFormats(
-                "h1 h2 | fontsize_formats fontfamily alignleft aligncenter alignright | blockquote | forecolor",
-              );
-              setEditorOpen(true);
-            }}
-          />
+          <SectionMasonry item={item} position={[rowIndex, colIndex]} />
         )}
       </div>
       <FileExplorer

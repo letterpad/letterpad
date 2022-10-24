@@ -1,67 +1,38 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 
-import { createId } from "@/shared/utils";
+import { GalleryModal } from "@/components/gallery";
+import { Portal } from "@/components/portal";
 
-import { getHeight, Wrapper } from "./wrapper";
-import { getMasonryLayout } from "../masonry/masonry";
+import { disableScroll } from "@/shared/utils";
+
+import { MasonryGrid } from "./masonry/grid";
+import { isLastImage, reorder } from "./masonry/selectors";
+import { Wrapper } from "./wrapper";
 import { useBuilderContext } from "../../context";
 import { BlockItem, BlockMasonry } from "../../types";
-import { random } from "../../utils";
 
 interface Props {
-  columns: number;
   item: BlockItem;
   position: [number, number];
-  formats: string;
-  setEditorOpen: any;
-  cover?: "small" | "big" | "banner";
 }
 
-// const block: BlockItem = {
-//   type: "masonry",
-//   masonry: Array.from({ length: 6 }, (_, i) => {
-//     const isPortrait = random(0, 1) === 1;
-//     const width = isPortrait ? 800 : 1400;
-//     const height = isPortrait ? 1400 : 800;
-//     const data = {
-//       src: `https://picsum.photos/${width}/${height}/?random=` + i,
-//       aspectRatio: isPortrait ? 9 / 16 : 16 / 9,
-//       description: `In publishing and graphic design, Lorem ipsum is a placeholder
-//                   text commonly used to demonstrate the visual form of a document
-//                   or a typeface without relying on meaningful content.`,
-//       alt: "",
-//       title: "",
-//       index: createId(),
-//     };
-
-//     return data;
-//   }),
-// };
-
-export const SectionMasonry: FC<Props> = ({
-  columns,
-  item,
-  position,
-  formats,
-  cover,
-}) => {
+export const SectionMasonry: FC<Props> = ({ item, position }) => {
   const { updateCell, preview } = useBuilderContext();
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const [rowIndex, colIndex] = position;
 
-  if (item.type === "image") return null;
+  useEffect(() => {
+    disableScroll(selectedIndex > 0);
+  }, [selectedIndex]);
 
-  const reorder = (arr: BlockMasonry[], columns: number) => {
-    const cols = columns;
-    const out: BlockMasonry[] = [];
-    let col = 0;
-    while (col < cols) {
-      for (let i = 0; i < arr.length; i += cols) {
-        let _val = arr[i + col];
-        if (_val !== undefined) out.push(_val);
-      }
-      col++;
+  const onImageChange = (index: number) => {
+    if (isLastImage(item.masonry || [], index)) {
+      return setSelectedIndex(0);
     }
-    return out;
+    if (index < 0) {
+      return setSelectedIndex((item.masonry ?? []).length - 1);
+    }
+    setSelectedIndex(index);
   };
 
   const update = (data: BlockMasonry[]) => {
@@ -74,18 +45,36 @@ export const SectionMasonry: FC<Props> = ({
       colIndex,
     );
   };
-  if (!item.masonry) return null;
 
-  const grid = getMasonryLayout(
-    reorder(item.masonry, 4) ?? [],
-    () => {},
-    (id) => {
-      const newData = item.masonry?.filter((item) => item.id !== id);
-      if (newData) update(newData);
-    },
-    () => {},
-    preview,
+  const onSelect = (idx: number) => {
+    setSelectedIndex(idx);
+  };
+
+  const onRemove = (id: string) => {
+    const newData = item.masonry?.filter((item) => item.id !== id);
+    if (newData) update(newData);
+  };
+
+  if (item.type !== "masonry" || !item.masonry) return null;
+
+  return (
+    <Wrapper className={`row-${rowIndex} lg:py-0`}>
+      <MasonryGrid
+        items={reorder(item.masonry, 4) ?? []}
+        onSelect={onSelect}
+        onRemove={onRemove}
+        preview={preview}
+      />
+      <div className="modal">
+        <Portal id="modal-creatives">
+          <GalleryModal
+            items={item.masonry ?? []}
+            onSelect={onImageChange}
+            index={selectedIndex}
+            onClose={() => setSelectedIndex(-1)}
+          />
+        </Portal>
+      </div>
+    </Wrapper>
   );
-
-  return <Wrapper className={`row-${rowIndex} lg:py-0`}>{grid}</Wrapper>;
 };
