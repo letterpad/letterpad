@@ -10,6 +10,7 @@ export interface BlockMasonry {
   height?: number;
   src: string;
   description?: string;
+  caption?: string;
   aspectRatio?: number;
   id: string;
 }

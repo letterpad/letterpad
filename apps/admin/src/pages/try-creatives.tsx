@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect } from "react";
 
 import { Layout } from "@/components/builder";
 import {
@@ -9,6 +9,7 @@ import {
 } from "@/components/builder/context";
 import { EditSwitch } from "@/components/builder/toolbar/editSwitch";
 import {
+  introData,
   paintingData,
   portfolioData,
   weddingData,
@@ -56,6 +57,10 @@ const Builder = () => {
         setGrid([]);
         setPreview(false);
         break;
+      case "intro":
+        setGrid(introData);
+        setPreview(true);
+        break;
 
       default:
         setGrid([]);
@@ -78,6 +83,7 @@ const Builder = () => {
           <select onChange={loadCreative}>
             <option value="0">Select</option>
             <option value="new">New</option>
+            <option value="intro">Intro</option>
             <option value="portfolio">Creative</option>
             <option value="wedding">Wedding</option>
             <option value="painting">Painting</option>

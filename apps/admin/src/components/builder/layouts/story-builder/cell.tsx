@@ -110,7 +110,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
         onInsert={(images) => {
           setFileExplorerOpen(false);
           const { src, width = 1200, height = 800, caption } = images[0];
-          if (isImage) {
+          if (isImage || isFirstRow) {
             updateCell(
               {
                 image: { src, width, height, description: caption },
