@@ -78,7 +78,7 @@ const Builder = () => {
         <h1 className="flex justify-start p-4 text-2xl font-bold">
           Creatives Playground
         </h1>
-        <div className="flex h-16 justify-end gap-4 p-4">
+        <div className="flex h-16 justify-end gap-0 p-4 md:gap-4">
           <ThemeSwitcher />
           <EditSwitch />
           <select onChange={loadCreative}>
