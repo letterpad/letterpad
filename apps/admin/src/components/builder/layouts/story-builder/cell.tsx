@@ -28,7 +28,6 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
   const isFirstRow = rowIndex === 0;
 
   const [editorOpen, setEditorOpen] = useState(isText || columns === 1);
-
   return (
     <div
       className={classNames(

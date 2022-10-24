@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { FC, ReactNode } from "react";
 import ReactStickyBox from "react-sticky-box";
 
@@ -29,10 +30,7 @@ export const ContentToolbar: FC<Props> = ({
     return (
       <Wrapper>
         <div className="inline-flex  shadow-sm">
-          <Button
-            onClick={() => setFileExplorerOpen(true)}
-            className="rounded-full bg-blue-600 p-1"
-          >
+          <Button onClick={() => setFileExplorerOpen(true)}>
             <IconImage size={20} />
             <Reset
               visible={!!item?.image?.src}
@@ -55,10 +53,7 @@ export const ContentToolbar: FC<Props> = ({
         <div className="inline-flex gap-2  shadow-sm">
           {!isFirstRow && (
             <>
-              <Button
-                onClick={() => setFileExplorerOpen(true)}
-                className="rounded-full bg-blue-600 p-1"
-              >
+              <Button onClick={() => setFileExplorerOpen(true)}>
                 <IconImage size={20} />
                 <Reset
                   visible={!!item?.image?.src}
@@ -71,10 +66,7 @@ export const ContentToolbar: FC<Props> = ({
                   }
                 />
               </Button>
-              <Button
-                onClick={() => removeCell(rowIndex, colIndex)}
-                className="rounded-full bg-blue-600 p-1"
-              >
+              <Button onClick={() => removeCell(rowIndex, colIndex)}>
                 <IconDelete />
               </Button>
             </>
@@ -86,13 +78,10 @@ export const ContentToolbar: FC<Props> = ({
 
   return (
     <Wrapper>
-      <div className="inline-flex items-center  justify-center gap-4 shadow-sm">
+      <div className="inline-flex items-center  justify-center gap-4">
         <ColorPicker onColorChange={onBgColorChange} color={item?.bgColor} />
         {!isFirstRow && (
-          <Button
-            onClick={() => removeCell(rowIndex, colIndex)}
-            className="rounded-full bg-blue-600 p-1"
-          >
+          <Button onClick={() => removeCell(rowIndex, colIndex)}>
             <IconDelete />
           </Button>
         )}
@@ -118,11 +107,16 @@ const Button: FC<ButtonProps> = ({
   className = "",
   active,
 }) => {
-  className += active ? " active" : "";
   return (
     <a
       href="#"
-      className={className}
+      className={classNames(
+        "rounded-full bg-gray-50 p-1 shadow-lg hover:bg-gray-200 dark:bg-black dark:hover:bg-gray-700",
+        className,
+        {
+          active: active,
+        },
+      )}
       onClick={(e) => {
         e.preventDefault();
         onClick();

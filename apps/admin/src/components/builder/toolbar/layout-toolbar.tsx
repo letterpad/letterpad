@@ -1,7 +1,5 @@
 import { FC } from "react";
 
-import { createId } from "@/shared/utils";
-
 import {
   IconDown,
   IconFullWidth,
@@ -11,8 +9,6 @@ import {
 } from "./icons";
 import { Block } from "../types";
 import {
-  isFirstColumnImageType,
-  isSecondColumnImageType,
   mergeTextWithImage,
   resetCellToImageType,
   showBannerIcon,
@@ -64,66 +60,69 @@ export const LayoutToolbar: FC<Props> = ({
       <Wrapper>
         {isNotFirstAndSecondrow && (
           <button
-            className="icon-class-1 rounded-l-m"
+            className="icon-class-1 rounded-l-m p-0"
             onClick={() => move("up")}
           >
-            <IconUp size={20} />
+            <IconUp size={24} />
           </button>
         )}
 
         {isNotFirstRow && (
           <button
-            className="icon-class-1 rounded-r-md"
+            className="icon-class-1 rounded-r-md p-0"
             onClick={() => move("down")}
           >
-            <IconDown size={20} />
+            <IconDown size={24} />
           </button>
         )}
       </Wrapper>
     );
   }
   return (
-    <div className="left-1/2  top-10 z-50 flex  justify-center rounded-t-lg  border  border-b-0 border-gray-200 bg-slate-100 p-2 shadow-sm dark:border-gray-800 dark:bg-gray-800">
+    <Wrapper>
       {showBannerIcon(item) && (
-        <button className="icon-class-1 rounded-md" onClick={onSmallHeight}>
-          <IconSmallHeight size={16} />
+        <button
+          className="icon-class-1 rounded-md p-0 text-xl"
+          onClick={onSmallHeight}
+        >
+          A
         </button>
       )}
       {showFullSizeIcon(item) && (
-        <button className="icon-class-1 rounded-md" onClick={onFullWidth}>
-          <IconFullWidth size={16} />
+        <button className="icon-class-1 rounded-md p-0" onClick={onFullWidth}>
+          <IconFullWidth size={20} />
         </button>
       )}
       {showSplitIcon(item) && (
         <button
           aria-current="page"
-          className={"icon-class-1 "}
+          className={"icon-class-1 p-0 "}
           onClick={onSplit}
         >
-          <IconSplit size={16} />
+          <IconSplit size={24} />
         </button>
       )}
 
       {isNotFirstAndSecondrow && (
-        <button className="icon-class-1 " onClick={() => move("up")}>
-          <IconUp size={20} />
+        <button className="icon-class-1 p-0 " onClick={() => move("up")}>
+          <IconUp size={24} />
         </button>
       )}
 
       {isNotFirstRow && (
         <button
-          className="icon-class-1 rounded-r-md"
+          className="icon-class-1 rounded-r-md p-0"
           onClick={() => move("down")}
         >
-          <IconDown size={20} />
+          <IconDown size={24} />
         </button>
       )}
-    </div>
+    </Wrapper>
   );
 };
 
 const Wrapper = ({ children }) => (
-  <div className="left-1/2  top-10 z-50 flex  justify-center rounded-t-lg  border  border-b-0 border-gray-200 bg-slate-100 p-2 shadow-sm dark:border-gray-800 dark:bg-gray-800">
+  <div className="top-10 left-1/2  z-50 flex items-center  justify-center gap-8   rounded-t-lg border-b border-gray-200 bg-slate-100 p-2 shadow-sm dark:border-gray-700 dark:bg-gray-800">
     {children}
   </div>
 );

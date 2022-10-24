@@ -21,7 +21,7 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
   }, [html, text]);
 
   return (
-    <div className="editor-wrapper w-full">
+    <div className="editor-wrapper  w-full">
       <Editor
         onInit={async (_evt, editor) => {
           if (editor) {
@@ -45,7 +45,7 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
             "Anonymous Pro=Anonymous Pro; Caveat=Caveat; Major Mono Display=Major Mono Display; Merriweather=Merriweather; Nanum Pen Script=Nanum Pen Script; Niconne=Niconne; PT Sans=PT Sans; Raleway=Raleway; Roboto=Roboto; Spectral=Spectral",
           height: "auto",
           width: "100%",
-          placeholder: "Title",
+          placeholder: "....[ text ]....",
           menubar: false,
           content_css: basePath + "/css/editor-mini.css",
           toolbar: false,
@@ -65,7 +65,7 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
           //   toolbar_location: "bottom",
           statusbar: false,
           entity_encoding: "raw",
-          content_style: "body { padding: 4px 12px; }",
+          content_style: "body { padding: 4px 12px }",
         }}
       />
       <style jsx global>{`
@@ -84,6 +84,9 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
         #creative .editor-wrapper a {
           font-family: inherit;
           font-size: inherit;
+        }
+        .mce-content-body {
+          min-width: 100px;
         }
       `}</style>
     </div>

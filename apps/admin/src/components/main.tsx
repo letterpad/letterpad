@@ -28,7 +28,9 @@ const Main = ({ Component, props }: IProps) => {
   }, [protectedPage]);
 
   let node: JSX.Element;
-  if (Component.isStatic) {
+  if (Component.isPublic) {
+    node = <Component {...props} />;
+  } else if (Component.isStatic) {
     node = (
       <StaticLayout>
         <Component {...props} />

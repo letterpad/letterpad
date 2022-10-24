@@ -61,8 +61,9 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
 
       gridCopy[index] = {
         ...gridCopy[index],
-        data: [col === 0 ? b : a],
+        data: [col === 0 ? { ...b, type: "image" } : { ...a, type: "image" }],
         columns: 1,
+        cover: "big",
       };
     } else {
       gridCopy = gridCopy.filter((_, idx) => idx !== index);
@@ -127,7 +128,7 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     grid[rowIndex].data[colIndex] = resetBlock
       ? { type: cell.type }
       : { ...data, ...cell };
-    setGrid(grid);
+    setGrid([...grid]);
     onSave(grid);
   };
 

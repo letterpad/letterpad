@@ -37,4 +37,12 @@ const AuthenticatedNoLayout = ({ render }: IProps) => {
   return <div>{render({ settings, session: session.user })}</div>;
 };
 
+export const NoLayout = ({ render }: IProps) => {
+  React.useEffect(() => {
+    ThemeSwitcher.switch(localStorage.theme);
+  }, []);
+
+  return <div>{render()}</div>;
+};
+
 export default AuthenticatedNoLayout;

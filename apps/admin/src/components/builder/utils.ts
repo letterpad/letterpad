@@ -28,12 +28,13 @@ export const mergeTextWithImage = (item: Block): Block => {
       },
     ];
   }
-  return { ...itemCopy, columns: 1, id: createId() };
+  return { ...itemCopy, columns: 1, id: createId(), cover: "big" };
 };
 
 export const resetCellToImageType = (item: Block): Block => {
   return {
     ...item,
+    cover: "big",
     data: [
       {
         type: "image",

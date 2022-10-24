@@ -1,9 +1,9 @@
 import classNames from "classnames";
-import { FC, ReactNode, useEffect } from "react";
-import { Background, Parallax } from "react-parallax";
+import { FC, useEffect } from "react";
+import { Parallax } from "react-parallax";
 import StickyBox from "react-sticky-box";
 
-import { getHeight, hasText, Wrapper } from "./wrapper";
+import { getHeight, Wrapper } from "./wrapper";
 import { useBuilderContext } from "../../context";
 import { IconImage } from "../../toolbar/icons";
 import MiniEditor from "../../toolbar/mini-editor";
@@ -47,7 +47,6 @@ export const SectionImage: FC<Props> = ({
     <StickyBox
       data-background
       style={{
-        // backgroundImage: `url(${item?.image?.src})`,
         minHeight: getHeight(cover),
       }}
       className={classNames(
@@ -60,22 +59,16 @@ export const SectionImage: FC<Props> = ({
       )}
     >
       <Parallax
-        strength={200}
+        strength={300}
         lazy={true}
         bgImage={item?.image?.src}
         className="flex h-full w-full flex-col items-center justify-center"
-        bgImageStyle={{ height: "100%" }}
+        bgImageStyle={{ height: "100%", objectFit: "cover" }}
+        contentClassName="w-full"
         style={{
-          // backgroundImage: `url(${item?.image?.src})`,
           minHeight: getHeight(cover),
         }}
       >
-        {!item?.image?.src && (
-          <div className="absolute flex w-full justify-center">
-            <IconImage size={60} stroke="rgb(var(--color),0.2)" />
-          </div>
-        )}
-
         <Wrapper>
           {preview && <Text columns={columns} text={item.text} />}
           {!preview && firstRow ? (
