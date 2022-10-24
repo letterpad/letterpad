@@ -14,9 +14,9 @@ interface IProps {
     settings,
     session,
   }: {
-    settings: SettingsFragmentFragment;
-    session: SessionData;
-  }) => React.ReactChild;
+    settings?: SettingsFragmentFragment;
+    session?: SessionData;
+  }) => React.ReactNode;
 }
 
 const AuthenticatedNoLayout = ({ render }: IProps) => {
@@ -42,7 +42,7 @@ export const NoLayout = ({ render }: IProps) => {
     ThemeSwitcher.switch(localStorage.theme);
   }, []);
 
-  return <div>{render()}</div>;
+  return <div>{render({})}</div>;
 };
 
 export default AuthenticatedNoLayout;

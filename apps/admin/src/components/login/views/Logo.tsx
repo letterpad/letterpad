@@ -1,6 +1,11 @@
 import Image from "next/image";
+import { FC } from "react";
 
-export const Logo = ({ width = 50, isDarkBg }) => {
+interface Props {
+  isDarkBg?: boolean;
+  width?: number;
+}
+export const Logo: FC<Props> = ({ width = 50, isDarkBg }) => {
   const theme =
     (typeof localStorage !== "undefined" && localStorage?.theme) ?? "light";
 
