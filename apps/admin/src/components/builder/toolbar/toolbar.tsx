@@ -4,7 +4,7 @@ import { IconAdd } from "./icons";
 import { useBuilderContext } from "../context";
 
 export const Toolbar = ({ rowIndex }) => {
-  const { addTextRow, addRow } = useBuilderContext();
+  const { addTextRow, addRow, addMasonry } = useBuilderContext();
   return (
     <Tooltip
       position="right"
@@ -15,6 +15,9 @@ export const Toolbar = ({ rowIndex }) => {
             onClick={() => addTextRow(rowIndex)}
           >
             Text
+          </button>
+          <button className="icon-class" onClick={() => addMasonry(rowIndex)}>
+            Masonry
           </button>
           <button className="icon-class" onClick={() => addRow(rowIndex, 2)}>
             Split

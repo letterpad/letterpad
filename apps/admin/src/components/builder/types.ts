@@ -5,11 +5,22 @@ interface BlockImage {
   description?: string;
 }
 
+export interface BlockMasonry {
+  width?: number;
+  height?: number;
+  src: string;
+  description?: string;
+  caption?: string;
+  aspectRatio?: number;
+  id: string;
+}
+
 export interface BlockItem {
   image?: BlockImage;
   text?: string;
+  masonry?: BlockMasonry[];
   bgColor?: string;
-  type: "text" | "image";
+  type: "text" | "image" | "masonry";
 }
 
 export type CoverType = "big" | "small" | "banner";

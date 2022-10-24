@@ -76,6 +76,35 @@ export const ContentToolbar: FC<Props> = ({
     );
   }
 
+  if (item?.type === "masonry") {
+    return (
+      <Wrapper>
+        <div className="inline-flex gap-2  shadow-sm">
+          {!isFirstRow && (
+            <>
+              <Button onClick={() => setFileExplorerOpen(true)}>
+                <IconImage size={20} />
+                <Reset
+                  visible={!!item?.masonry?.length}
+                  onClick={() =>
+                    updateCell(
+                      { masonry: [], type: "masonry" },
+                      rowIndex,
+                      colIndex,
+                    )
+                  }
+                />
+              </Button>
+              <Button onClick={() => removeCell(rowIndex, colIndex)}>
+                <IconDelete />
+              </Button>
+            </>
+          )}
+        </div>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
       <div className="inline-flex items-center  justify-center gap-4">
