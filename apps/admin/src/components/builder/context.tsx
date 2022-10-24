@@ -21,6 +21,7 @@ interface Props {
 interface ContextType {
   preview: boolean;
   setPreview: (preview: boolean) => void;
+  setGrid: (data: Block[]) => void;
   grid: Block[];
   addRow: (rowIndex: number, columns?: number) => void;
   updateRow: (row: Block, rowIndex: number) => void;
@@ -52,6 +53,9 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
 
   const [grid, setGrid] = useState(data);
 
+  useEffect(() => {
+    setGrid(data);
+  }, [data]);
   const removeCell = (index: number, col?: number) => {
     let gridCopy = [...grid];
     if (typeof col !== "undefined" && gridCopy[index].columns > 1) {
@@ -177,6 +181,7 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     moveRow,
     swapColumns,
     updateCell,
+    setGrid,
     getColumns: (rowIndex: number) => grid[rowIndex].data,
     addTextRow,
   };

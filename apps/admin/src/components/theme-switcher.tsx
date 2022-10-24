@@ -26,12 +26,9 @@ const ThemeSwitcher = () => {
   );
 
   useEffect(() => {
-    if (localStorage.theme) {
-      setTheme(localStorage.theme);
-    }
-    setTimeout(() => {
-      switchTheme(localStorage.theme || theme);
-    }, 0);
+    // setTimeout(() => {
+    switchTheme(ls.theme || theme);
+    // }, 0);
   }, [switchTheme, theme]);
   return (
     <>
