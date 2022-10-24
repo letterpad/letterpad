@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 
 import { Row } from "@/components/builder/layouts/story-builder";
 
@@ -6,34 +6,39 @@ import { PageType } from "@/graphql/types";
 
 import { useBuilderContext } from "./context";
 import { Toolbar } from "./toolbar";
-import { Block } from "./types";
+import { EditSwitch } from "./toolbar/editSwitch";
+import { IconEye, IconTools } from "./toolbar/icons";
 
 interface Props {
-  data: { rows: Block[] };
   type: PageType;
+  editable?: boolean;
 }
 
-export const Layout: FC<Props> = () => {
-  const { preview, setPreview, grid, addRow } = useBuilderContext();
-  const [showTools, setShowTools] = useState(false);
+export const Layout: FC<Props> = ({ editable = true }) => {
+  const { preview, grid } = useBuilderContext();
   return (
-    <div style={{ padding: 24 }} id="creative">
-      <button onClick={() => setPreview(!preview)}>Toggle</button>
+    <div id="creative">
+      {editable && <EditSwitch />}
       <div className="flex flex-col">
-        {grid.map((row, i) => {
-          const isPrevRowImageLeft = grid[i - 1]?.data[0]?.type === "image";
+        {grid.map((row, rowIndex) => {
+          const isPrevRowImageLeft =
+            grid[rowIndex - 1]?.data[0]?.type === "image";
           return (
-            <Row
-              isPrevRowImageLeft={isPrevRowImageLeft}
-              row={row}
-              key={row.id}
-              rowIndex={i}
-            />
+            <>
+              <Row
+                isPrevRowImageLeft={isPrevRowImageLeft}
+                row={row}
+                key={row.id}
+                rowIndex={rowIndex}
+              />
+              {!preview && (
+                <div className="align-center flex justify-center">
+                  <Toolbar rowIndex={rowIndex} />
+                </div>
+              )}
+            </>
           );
         })}
-      </div>
-      <div className="align-center flex justify-center">
-        <Toolbar />
       </div>
     </div>
   );

@@ -1,11 +1,12 @@
-export const IconDelete = () => (
+export const IconDelete = ({ stroke = "rgb(var(--color))", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-5 w-5"
+    strokeWidth={1.2}
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -15,14 +16,15 @@ export const IconDelete = () => (
   </svg>
 );
 
-export const IconAdd = () => (
+export const IconAdd = ({ stroke = "rgb(var(--color))", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-6 w-6"
+    strokeWidth={1.2}
+    stroke={stroke}
+    className="h-6 w-6 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -31,13 +33,15 @@ export const IconAdd = () => (
     />
   </svg>
 );
-export const IconClose = () => (
+export const IconClose = ({ stroke = "rgb(var(--color))", size = 20 }) => (
   <svg
     aria-hidden="true"
-    className="h-5 w-5"
-    fill="currentColor"
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    fill="rgb(var(--color))"
     viewBox="0 0 20 20"
+    stroke={stroke}
     xmlns="http://www.w3.org/2000/svg"
+    style={{ width: size, height: size }}
   >
     <path
       fillRule="evenodd"
@@ -47,15 +51,15 @@ export const IconClose = () => (
   </svg>
 );
 
-export const IconImage = ({ size, color = "currentColor" }) => (
+export const IconImage = ({ size, stroke = "rgb(var(--color))" }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke={color}
+    strokeWidth={1.2}
+    stroke={stroke}
     style={{ width: size, height: size }}
-    // className="w-5 h-5"
+    className="h-5 p-1 drop-shadow-lg"
   >
     <path
       strokeLinecap="round"
@@ -65,14 +69,15 @@ export const IconImage = ({ size, color = "currentColor" }) => (
   </svg>
 );
 
-export const IconText = () => (
+export const IconText = ({ stroke = "rgb(var(--color))", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-5 w-5"
+    strokeWidth={1.2}
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -81,14 +86,15 @@ export const IconText = () => (
     />
   </svg>
 );
-export const IconRefresh = () => (
+export const IconRefresh = ({ stroke = "rgb(var(--color))", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-5 w-5"
+    strokeWidth={1.2}
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -98,14 +104,15 @@ export const IconRefresh = () => (
   </svg>
 );
 
-export const IconUp = () => (
+export const IconUp = ({ stroke = "rgb(var(--color))", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-6 w-6"
+    strokeWidth={1.2}
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -115,14 +122,15 @@ export const IconUp = () => (
   </svg>
 );
 
-export const IconDown = () => (
+export const IconDown = ({ stroke = "rgb(var(--color))", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-6 w-6"
+    strokeWidth={1.2}
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -131,39 +139,29 @@ export const IconDown = () => (
     />
   </svg>
 );
-export const IconSmallHeight = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    fill="currentColor"
-    className="bi bi-grid-3x2"
-    viewBox="0 0 16 16"
-  >
-    <path d="M 0 3.5 A 1.5 1.5 0 0 1 1.5 2 h 13 A 1.5 1.5 0 0 1 16 3.5 v 8 a 1.5 1.5 0 0 1 -1.5 1.5 h -13 A 1.5 1.5 0 0 1 0 11.5 v -8 z M 1.5 3 a 0.5 0.5 0 0 0 -0.5 0.5 V 8 h 4 V 3 Z H 1.5 z M 5 8 H 1 v 3.5 a 0.5 0.5 0 0 0 0.5 0.5 H 6 V 8 z m 1 0 v 4 h 5 V 8 z m 4 -1 V 3 H 5 v 5 h 5 z m 1 1 v 4 h 3.5 a 0.5 0.5 0 0 0 0.5 -0.5 V 8 h -5 z m 0 0 h 4 V 3.5 a 0.5 0.5 0 0 0 -0.5 -0.5 H 10 v 5 z" />
-  </svg>
-);
+export const IconSmallHeight = ({ stroke = "rgb(var(--color))", size = 20 }) =>
+  "A";
 
-export const IconSplit = () => (
+export const IconSplit = ({ stroke = "rgb(var(--color))", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
     fill="currentColor"
-    className="bi bi-layout-split"
-    viewBox="0 0 16 16"
+    strokeWidth={1}
+    stroke={stroke}
+    className="h-5 w-5 p-1"
+    style={{ width: size, height: size }}
   >
     <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm8.5-1v12H14a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H8.5zm-1 0H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h5.5V2z" />
   </svg>
 );
-export const IconThreeCols = () => (
+export const IconThreeCols = ({ stroke = "rgb(var(--color))", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="h-6 w-6"
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
   >
     <path
       strokeLinecap="round"
@@ -173,15 +171,56 @@ export const IconThreeCols = () => (
   </svg>
 );
 
-export const IconFullWidth = () => (
+export const IconFullWidth = ({ stroke = "rgb(var(--color))", size = 20 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    fill="currentColor"
-    className="bi bi-window-fullscreen"
+    fill="rgb(var(--color))"
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
     viewBox="0 0 16 16"
+    style={{ width: size, height: size }}
   >
     <path d="M 0.5 1 a 0.5 0.5 0 0 0 -0.5 0.5 v 13 a 0.5 0.5 0 0 0 0.5 0.5 h 15 a 0.5 0.5 0 0 0 0.5 -0.5 v -13 a 0.5 0.5 0 0 0 -0.5 -0.5 H 0.5 Z M 1 5 v 3 Z m 0 1 M 15 2 v 8 V 14 H 1 V 14 V 2 Z" />
+  </svg>
+);
+
+export const IconEye = ({ stroke = "rgb(var(--color))", size = 20 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.2}
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+    />
+  </svg>
+);
+
+export const IconTools = ({ stroke = "rgb(var(--color))", size = 20 }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.2}
+    stroke={stroke}
+    className="h-5 w-5 p-1 drop-shadow-lg"
+    style={{ width: size, height: size }}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"
+    />
   </svg>
 );

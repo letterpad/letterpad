@@ -3,8 +3,11 @@ import { useCallback, useEffect, useState } from "react";
 import { basePath } from "@/constants";
 import { EventAction, track } from "@/track";
 
+const ls =
+  typeof localStorage !== "undefined" ? localStorage : { theme: "dark" };
+
 const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState(localStorage.theme || "light");
+  const [theme, setTheme] = useState(ls.theme || "light");
 
   const switchTheme = useCallback(
     (color: string) => {
@@ -23,12 +26,9 @@ const ThemeSwitcher = () => {
   );
 
   useEffect(() => {
-    if (localStorage.theme) {
-      setTheme(localStorage.theme);
-    }
-    setTimeout(() => {
-      switchTheme(localStorage.theme || theme);
-    }, 0);
+    // setTimeout(() => {
+    switchTheme(ls.theme || theme);
+    // }, 0);
   }, [switchTheme, theme]);
   return (
     <>

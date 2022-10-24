@@ -23,7 +23,6 @@ html .dark .ant-btn-dark{
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
 }
 .ant-btn {
-    display: flex;
     align-items: center;
     justify-content: center;
 }

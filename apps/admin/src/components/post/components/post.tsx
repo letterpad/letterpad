@@ -107,10 +107,7 @@ function Post() {
               })
             }
           >
-            <LayoutBuilder
-              data={JSON.parse(post.page_data as string)}
-              type={post.page_type}
-            />
+            <LayoutBuilder type={post.page_type} />
           </BuilderContext>
         </div>
       )}

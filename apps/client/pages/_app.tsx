@@ -4,7 +4,6 @@ import { ThemeProvider } from 'next-themes';
 
 import '@/css/tailwind.css';
 import '@/css/prism.css';
-// import '@fontsource/inter';
 import '@fontsource/inter/variable-full.css';
 
 import Analytics from '@/components/analytics';
@@ -28,11 +27,9 @@ export default function App({ Component, pageProps }: AppProps<PageProps>) {
       <Analytics id={pageProps.me?.analytics_uuid} />
       {pageProps.settings ? (
         <LayoutWrapper props={pageProps}>
-          {/* @ts-ignore */}
           <Component {...pageProps} />
         </LayoutWrapper>
       ) : (
-        // @ts-ignore
         <Component {...pageProps} />
       )}
     </ThemeProvider>

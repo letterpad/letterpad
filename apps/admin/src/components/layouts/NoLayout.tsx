@@ -14,9 +14,9 @@ interface IProps {
     settings,
     session,
   }: {
-    settings: SettingsFragmentFragment;
-    session: SessionData;
-  }) => React.ReactChild;
+    settings?: SettingsFragmentFragment;
+    session?: SessionData;
+  }) => React.ReactNode;
 }
 
 const AuthenticatedNoLayout = ({ render }: IProps) => {
@@ -35,6 +35,14 @@ const AuthenticatedNoLayout = ({ render }: IProps) => {
   const { settings } = data;
 
   return <div>{render({ settings, session: session.user })}</div>;
+};
+
+export const NoLayout = ({ render }: IProps) => {
+  React.useEffect(() => {
+    ThemeSwitcher.switch(localStorage.theme);
+  }, []);
+
+  return <div>{render({})}</div>;
 };
 
 export default AuthenticatedNoLayout;

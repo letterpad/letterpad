@@ -1,4 +1,5 @@
 import { FC, ReactNode, useEffect } from 'react';
+import { Background, Parallax } from 'react-parallax';
 import StickyBox from 'react-sticky-box';
 
 import { PageFragmentFragment } from '@/lib/graphql';
@@ -67,23 +68,31 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
 
   return (
     <StickyBox
-      offsetTop={20}
-      offsetBottom={20}
       data-background
       style={{
-        backgroundImage: `url(${image?.src})`,
         height: getHeight(cover),
       }}
       className={`${className} flex w-full items-center justify-center bg-cover bg-center bg-no-repeat row-${rowIndex}`}
     >
-      <Wrapper>
-        <div
-          className={columns == 2 ? 'margin-auto max-w-full lg:max-w-[calc(500px)]' : ''}
-          dangerouslySetInnerHTML={{
-            __html: decodeURIComponent(item?.text ?? ''),
-          }}
-        />
-      </Wrapper>
+      <Parallax
+        strength={300}
+        lazy={true}
+        bgImage={image?.src}
+        className="flex h-full w-full flex-col items-center justify-center"
+        bgImageStyle={{ height: '100%', objectFit: 'cover' }}
+        style={{
+          minHeight: getHeight(cover),
+        }}
+      >
+        <Wrapper>
+          <div
+            className={columns == 2 ? 'margin-auto max-w-full lg:max-w-[calc(500px)]' : ''}
+            dangerouslySetInnerHTML={{
+              __html: decodeURIComponent(item?.text ?? ''),
+            }}
+          />
+        </Wrapper>
+      </Parallax>
     </StickyBox>
   );
 };
@@ -97,7 +106,7 @@ const SectionText: FC<any> = ({ columns, text, type }) => {
       data-text
       className={
         'my-20 flex w-full flex-col items-center justify-center p-6 text-center leading-6 text-gray-800 dark:text-white ' +
-        (columns == 2 ? 'max-w-full lg:max-w-[calc(500px)]' : '')
+        (columns == 2 ? 'max-w-full lg:max-w-[calc(500px)]' : 'w-full')
       }
       dangerouslySetInnerHTML={{
         __html: decodeURIComponent(text),

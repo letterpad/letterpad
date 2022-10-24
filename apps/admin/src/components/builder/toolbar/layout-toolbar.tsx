@@ -1,7 +1,5 @@
 import { FC } from "react";
 
-import { createId } from "@/shared/utils";
-
 import {
   IconDown,
   IconFullWidth,
@@ -10,6 +8,14 @@ import {
   IconUp,
 } from "./icons";
 import { Block } from "../types";
+import {
+  mergeTextWithImage,
+  resetCellToImageType,
+  showBannerIcon,
+  showFullSizeIcon,
+  showSplitIcon,
+  splitBlock,
+} from "../utils";
 
 interface Props {
   onChange: (change: Block) => void;
@@ -34,85 +40,89 @@ export const LayoutToolbar: FC<Props> = ({
     });
   };
 
-  const showSplitIcon = item.columns === 1;
-  const showFullSizeIcon = !showSplitIcon;
-  const showBannerIcon = item.cover !== "banner";
-
   const onFullWidth = () => {
-    const mergeItem: Block = { columns: 1, data: [], id: createId() };
-
-    if (item.data[0].type === "image") {
-      mergeItem.data = [
-        {
-          type: "image",
-          image: item.data[0].image,
-          text: item.data[0]?.text ?? item.data[1]?.text,
-        },
-      ];
-    } else if (item.data[1].type === "image") {
-      mergeItem.data = [
-        {
-          type: "image",
-          image: item.data[1].image,
-          text: item.data[1]?.text || item.data[0]?.text,
-        },
-      ];
+    if (item.columns === 2) {
+      onChange({ ...mergeTextWithImage(item), cover: "big" });
+    } else {
+      onChange(resetCellToImageType(item));
     }
-    onChange({ ...mergeItem, columns: 1 });
   };
 
   const onSplit = () => {
-    let data = [...item.data];
-    if (isPrevRowImageLeft) {
-      data = [{ type: "text" }, { type: "image" }];
-    } else {
-      data = [{ type: "image" }, { type: "text" }];
-    }
-
-    onChange({
-      data,
-      columns: 2,
-      id: createId(),
-    });
+    const firstCellType = isPrevRowImageLeft ? "text" : "image";
+    onChange(splitBlock(item, firstCellType));
   };
   const isNotFirstRow = rowIndex != 0;
   const isNotFirstAndSecondrow = rowIndex > 1;
+
+  if (item.columns === 2) {
+    return (
+      <Wrapper>
+        {isNotFirstAndSecondrow && (
+          <button
+            className="icon-class-1 rounded-l-m p-0"
+            onClick={() => move("up")}
+          >
+            <IconUp size={24} />
+          </button>
+        )}
+
+        {isNotFirstRow && (
+          <button
+            className="icon-class-1 rounded-r-md p-0"
+            onClick={() => move("down")}
+          >
+            <IconDown size={24} />
+          </button>
+        )}
+      </Wrapper>
+    );
+  }
   return (
-    <div className="left-1/2  top-10 z-50 flex  justify-center rounded-t-lg  border  border-b-0 border-gray-200 bg-slate-100 p-2 shadow-sm dark:border-gray-800 dark:bg-gray-800">
-      {showBannerIcon && (
-        <button className="icon-class-1 rounded-md" onClick={onSmallHeight}>
-          <IconSmallHeight />
+    <Wrapper>
+      {showBannerIcon(item) && (
+        <button
+          className="icon-class-1 rounded-md p-0 text-xl"
+          onClick={onSmallHeight}
+        >
+          A
         </button>
       )}
-      {showFullSizeIcon && (
-        <button className="icon-class-1 rounded-md" onClick={onFullWidth}>
-          <IconFullWidth />
+      {showFullSizeIcon(item) && (
+        <button className="icon-class-1 rounded-md p-0" onClick={onFullWidth}>
+          <IconFullWidth size={20} />
         </button>
       )}
-      {showSplitIcon && (
+      {showSplitIcon(item) && (
         <button
           aria-current="page"
-          className={"icon-class-1 "}
+          className={"icon-class-1 p-0 "}
           onClick={onSplit}
         >
-          <IconSplit />
+          <IconSplit size={24} />
         </button>
       )}
 
       {isNotFirstAndSecondrow && (
-        <button className="icon-class-1 " onClick={() => move("up")}>
-          <IconUp />
+        <button className="icon-class-1 p-0 " onClick={() => move("up")}>
+          <IconUp size={24} />
         </button>
       )}
 
       {isNotFirstRow && (
         <button
-          className="icon-class-1 rounded-r-md"
+          className="icon-class-1 rounded-r-md p-0"
           onClick={() => move("down")}
         >
-          <IconDown />
+          <IconDown size={24} />
         </button>
       )}
-    </div>
+    </Wrapper>
   );
 };
+
+const Wrapper = ({ children }) => (
+  <div className="top-10 left-1/2  z-50 flex items-center  justify-center gap-8   rounded-t-lg border-b border-gray-200 bg-slate-100 p-2 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    {children}
+  </div>
+);

@@ -21,15 +21,16 @@ interface Props {
 interface ContextType {
   preview: boolean;
   setPreview: (preview: boolean) => void;
+  setGrid: (data: Block[]) => void;
   grid: Block[];
-  addRow: (columns?: number) => void;
+  addRow: (rowIndex: number, columns?: number) => void;
   updateRow: (row: Block, rowIndex: number) => void;
   updateCell: (cell: BlockItem, rowIndex: number, colIndex: number) => void;
   removeCell: (rowIndex: number, colIndex?: number) => void;
   moveRow: (rowIndex: number, dir: "up" | "down") => void;
   swapColumns: (rowIndex: number) => void;
   getColumns: (rowIndex: number) => BlockItem[];
-  addTextRow: () => void;
+  addTextRow: (rowIndex: number) => void;
 }
 
 const Context = createContext<ContextType>({} as ContextType);
@@ -49,8 +50,12 @@ function createDefaultItem(): Block {
 
 export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
   const [preview, setPreview] = useState(false);
+
   const [grid, setGrid] = useState(data);
 
+  useEffect(() => {
+    setGrid(data);
+  }, [data]);
   const removeCell = (index: number, col?: number) => {
     let gridCopy = [...grid];
     if (typeof col !== "undefined" && gridCopy[index].columns > 1) {
@@ -60,8 +65,9 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
 
       gridCopy[index] = {
         ...gridCopy[index],
-        data: [col === 0 ? b : a],
+        data: [col === 0 ? { ...b, type: "image" } : { ...a, type: "image" }],
         columns: 1,
+        cover: "big",
       };
     } else {
       gridCopy = gridCopy.filter((_, idx) => idx !== index);
@@ -71,14 +77,19 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
   };
 
   const addRow = useCallback(
-    (columns = 2) => {
+    (rowIndex, columns = 2) => {
       const isPrevRowImageLeft =
         grid[grid.length - 1].data[0]?.type === "image";
       const newItem = { ...createDefaultItem() };
 
       if (columns === 1) {
         newItem.data = [{ type: "image" }];
-        return setGrid([...grid, { ...newItem, columns: 1 }]);
+        const newGrid: Block[] = [
+          ...grid.slice(0, rowIndex + 1),
+          { ...newItem, columns: 1 },
+          ...grid.slice(rowIndex + 1),
+        ];
+        return setGrid(newGrid);
       }
 
       if (isPrevRowImageLeft) {
@@ -86,16 +97,22 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
       } else {
         newItem.data = [{ type: "image" }, { type: "text" }];
       }
-      setGrid([...grid, { ...newItem, columns: 2 }]);
+      const newGrid: Block[] = [
+        ...grid.slice(0, rowIndex + 1),
+        { ...newItem, columns: 2 },
+        ...grid.slice(rowIndex + 1),
+      ];
+      setGrid(newGrid);
     },
     [grid],
   );
 
-  const addTextRow = () => {
+  const addTextRow = (rowIndex: number) => {
     const newItem = { ...createDefaultItem() };
     const newGrid: Block[] = [
-      ...grid,
+      ...grid.slice(0, rowIndex + 1),
       { ...newItem, columns: 1, cover: "banner" },
+      ...grid.slice(rowIndex + 1),
     ];
     setGrid(newGrid);
     onSave(newGrid);
@@ -115,7 +132,7 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     grid[rowIndex].data[colIndex] = resetBlock
       ? { type: cell.type }
       : { ...data, ...cell };
-    setGrid(grid);
+    setGrid([...grid]);
     onSave(grid);
   };
 
@@ -164,6 +181,7 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     moveRow,
     swapColumns,
     updateCell,
+    setGrid,
     getColumns: (rowIndex: number) => grid[rowIndex].data,
     addTextRow,
   };

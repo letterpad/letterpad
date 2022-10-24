@@ -1,8 +1,10 @@
 import classNames from "classnames";
-import { FC, ReactNode, useRef } from "react";
+import { FC, ReactNode } from "react";
+import ReactStickyBox from "react-sticky-box";
 
 import { ColorPicker } from "./color";
-import { IconDelete, IconImage, IconRefresh, IconText } from "./icons";
+import { Reset } from "./helpers";
+import { IconDelete, IconImage } from "./icons";
 import { useBuilderContext } from "../context";
 import { BlockItem } from "../types";
 
@@ -22,62 +24,64 @@ export const ContentToolbar: FC<Props> = ({
   item,
   onBgColorChange,
 }) => {
-  const { removeCell } = useBuilderContext();
+  const { removeCell, updateCell } = useBuilderContext();
   const isFirstRow = rowIndex === 0;
-  const colorPickerRef = useRef<HTMLInputElement>(null);
   if (isFirstRow) {
     return (
-      <div className="absolute top-0 right-0 z-10 m-4 text-center">
-        <div className="inline-flex rounded-md shadow-sm">
-          <Button
-            onClick={() => setFileExplorerOpen(true)}
-            className="rounded-md"
-          >
-            <IconImage size={18} />
+      <Wrapper>
+        <div className="inline-flex  shadow-sm">
+          <Button onClick={() => setFileExplorerOpen(true)}>
+            <IconImage size={20} />
+            <Reset
+              visible={!!item?.image?.src}
+              onClick={() =>
+                updateCell(
+                  { image: { src: "" }, type: "image" },
+                  rowIndex,
+                  colIndex,
+                )
+              }
+            />
           </Button>
         </div>
-      </div>
+      </Wrapper>
     );
   }
   if (item?.type === "image") {
     return (
-      <div className="absolute top-0 right-0 z-10 m-4  text-center">
-        <div className="inline-flex gap-2 rounded-md shadow-sm">
+      <Wrapper>
+        <div className="inline-flex gap-2  shadow-sm">
           {!isFirstRow && (
             <>
-              <Button
-                onClick={() => setFileExplorerOpen(true)}
-                className="rounded-l-md "
-              >
+              <Button onClick={() => setFileExplorerOpen(true)}>
                 <IconImage size={20} />
+                <Reset
+                  visible={!!item?.image?.src}
+                  onClick={() =>
+                    updateCell(
+                      { image: { src: "" }, type: "image" },
+                      rowIndex,
+                      colIndex,
+                    )
+                  }
+                />
               </Button>
-              <Button
-                onClick={() => removeCell(rowIndex, colIndex)}
-                className="rounded-r-md "
-              >
+              <Button onClick={() => removeCell(rowIndex, colIndex)}>
                 <IconDelete />
               </Button>
             </>
           )}
         </div>
-      </div>
+      </Wrapper>
     );
   }
 
   return (
-    <div
-      className={classNames("absolute top-0 right-0  m-4 text-center", {
-        "-ml-16": isFirstRow,
-        "-ml-24": !isFirstRow,
-      })}
-    >
-      <div className="inline-flex gap-4 rounded-md shadow-sm">
+    <Wrapper>
+      <div className="inline-flex items-center  justify-center gap-4">
         <ColorPicker onColorChange={onBgColorChange} color={item?.bgColor} />
         {!isFirstRow && (
-          <Button
-            onClick={() => removeCell(rowIndex, colIndex)}
-            className="rounded-md "
-          >
+          <Button onClick={() => removeCell(rowIndex, colIndex)}>
             <IconDelete />
           </Button>
         )}
@@ -87,7 +91,7 @@ export const ContentToolbar: FC<Props> = ({
           }
         `}</style>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 
@@ -103,11 +107,16 @@ const Button: FC<ButtonProps> = ({
   className = "",
   active,
 }) => {
-  className += active ? " active" : "";
   return (
     <a
       href="#"
-      className={className}
+      className={classNames(
+        "rounded-full bg-gray-50 p-1 shadow-lg hover:bg-gray-200 dark:bg-black dark:hover:bg-gray-700",
+        className,
+        {
+          active: active,
+        },
+      )}
       onClick={(e) => {
         e.preventDefault();
         onClick();
@@ -117,3 +126,11 @@ const Button: FC<ButtonProps> = ({
     </a>
   );
 };
+
+const Wrapper = ({ children }) => (
+  <div className="absolute top-0 right-0 z-10 m-4 h-full text-center">
+    <ReactStickyBox className="mb-10" offsetTop={20}>
+      {children}
+    </ReactStickyBox>
+  </div>
+);

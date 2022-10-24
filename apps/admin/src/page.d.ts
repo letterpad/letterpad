@@ -3,6 +3,7 @@ import { NextPage } from "next";
 export type Page<P = Record<string, unknown>> = NextPage<P> & {
   // Does not need any session and will take care of their own layout. Like login page
   isStatic?: boolean;
+  isPublic?: boolean;
   isLogin?: boolean;
   // Needs session but will take care of its own layout. Like editPost
   noLayout?: boolean;

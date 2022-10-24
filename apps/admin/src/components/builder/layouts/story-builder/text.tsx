@@ -19,13 +19,11 @@ interface Props {
 export const SectionText: FC<Props> = ({
   columns,
   item,
-  editable,
   position,
   formats,
-  setEditorOpen,
   cover,
 }) => {
-  const { updateCell } = useBuilderContext();
+  const { updateCell, preview } = useBuilderContext();
   const [rowIndex, colIndex] = position;
 
   useEffect(() => {
@@ -33,40 +31,41 @@ export const SectionText: FC<Props> = ({
     div?.style.setProperty("min-height", getHeight(cover) + "px");
   }, [cover, rowIndex]);
 
+  const update = (text: string) => {
+    updateCell(
+      {
+        text: encodeURIComponent(text),
+        type: item?.type ?? "text",
+      },
+      rowIndex,
+      colIndex,
+    );
+  };
   if (item.type === "image") return null;
 
-  if (editable) {
-    return (
-      <Wrapper className={`row-${rowIndex}`}>
+  return (
+    <Wrapper className={`row-${rowIndex}`}>
+      {preview ? (
+        <Text columns={columns} text={item.text} />
+      ) : (
         <MiniEditor
-          onChange={(text) =>
-            updateCell(
-              {
-                text: encodeURIComponent(text),
-                type: item?.type ?? "text",
-              },
-              rowIndex,
-              colIndex,
-            )
-          }
+          onChange={update}
           formats={formats}
           text={decodeURIComponent(item?.text ?? "")}
         />
-      </Wrapper>
-    );
-  }
-  return (
-    <Wrapper className={`row-${rowIndex}`}>
-      <div
-        data-text
-        className={
-          columns == 2 ? "margin-auto max-w-full lg:max-w-[calc(500px)]" : ""
-        }
-        onClick={() => setEditorOpen(true)}
-        dangerouslySetInnerHTML={{
-          __html: decodeURIComponent(item.text ?? ""),
-        }}
-      />
+      )}
     </Wrapper>
   );
 };
+
+const Text = ({ columns, text = "" }) => (
+  <div
+    data-text
+    className={
+      columns == 2 ? "margin-auto max-w-full lg:max-w-[calc(500px)]" : "w-full"
+    }
+    dangerouslySetInnerHTML={{
+      __html: decodeURIComponent(text),
+    }}
+  />
+);

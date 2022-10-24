@@ -1,6 +1,8 @@
 @import url("./theme-variables.css");
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;1,400&family=Roboto+Mono&display=swap&family=Lato&display=swap&family=Niconne&display=swap");
 
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Merriweather:ital,wght@0,400;0,700;0,900;1,700&family=Nanum+Pen+Script&family=Niconne&family=PT+Sans:ital,wght@0,400;0,700;1,400&family=Raleway:ital,wght@0,400;0,500;0,800;1,500&family=Roboto:wght@400;500;900&family=Spectral:ital,wght@0,400;0,500;0,700;0,800;1,500;1,700&display=swap');
+
 body {
   font-family: "Lato", sans-serif;
   background: transparent;
@@ -97,9 +99,11 @@ hr {
   outline: none;
 }
 .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
-  color:rgba(var(--color), 0.7);
+  color:rgba(var(--color), 0.3);
   font-size: 1.2rem;
   cursor: text;
+  min-width: 200px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif
 }
 
 .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks):focus::before {

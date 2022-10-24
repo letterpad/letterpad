@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { FC, useState } from "react";
+import StickyBox from "react-sticky-box";
 
 import FileExplorer from "@/components/file-explorer";
 
@@ -7,7 +8,6 @@ import { SectionImage } from "./image";
 import { SectionText } from "./text";
 import { useBuilderContext } from "../../context";
 import { ContentToolbar } from "../../toolbar";
-// import { IconImage } from "../../toolbar/icons";
 import { Block } from "../../types";
 
 interface Props {
@@ -28,7 +28,6 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
   const isFirstRow = rowIndex === 0;
 
   const [editorOpen, setEditorOpen] = useState(isText || columns === 1);
-
   return (
     <div
       className={classNames(
@@ -86,9 +85,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             columns={columns}
             position={[rowIndex, colIndex]}
             formats={formats}
-            editable={isFirstRow}
             cover={row?.cover}
-            setFileExplorerOpen={setFileExplorerOpen}
             setEditorOpen={() => {
               setFormats(
                 "h1 h2 | fontsize_formats fontfamily alignleft aligncenter alignright | blockquote | forecolor",
