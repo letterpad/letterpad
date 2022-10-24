@@ -24,6 +24,7 @@ interface ContextType {
   setGrid: (data: Block[]) => void;
   grid: Block[];
   addRow: (rowIndex: number, columns?: number) => void;
+  addMasonry: (rowIndex: number) => void;
   updateRow: (row: Block, rowIndex: number) => void;
   updateCell: (cell: BlockItem, rowIndex: number, colIndex: number) => void;
   removeCell: (rowIndex: number, colIndex?: number) => void;
@@ -107,6 +108,20 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     [grid],
   );
 
+  const addMasonry = useCallback(
+    (rowIndex) => {
+      const newItem = { ...createDefaultItem() };
+      newItem.data = [{ type: "masonry" }];
+      const newGrid: Block[] = [
+        ...grid.slice(0, rowIndex + 1),
+        { ...newItem, columns: 1, cover: "big" },
+        ...grid.slice(rowIndex + 1),
+      ];
+      return setGrid(newGrid);
+    },
+    [grid],
+  );
+
   const addTextRow = (rowIndex: number) => {
     const newItem = { ...createDefaultItem() };
     const newGrid: Block[] = [
@@ -182,6 +197,7 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
     swapColumns,
     updateCell,
     setGrid,
+    addMasonry,
     getColumns: (rowIndex: number) => grid[rowIndex].data,
     addTextRow,
   };

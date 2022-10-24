@@ -7,7 +7,6 @@ import {
   useBuilderContext,
 } from "@/components/builder/context";
 import { EditSwitch } from "@/components/builder/toolbar/editSwitch";
-import { Block } from "@/components/builder/types";
 import {
   paintingData,
   portfolioData,
@@ -17,16 +16,8 @@ import ThemeSwitcher from "@/components/theme-switcher";
 
 import { PageType } from "@/graphql/types";
 
-const TryBuilder = () => {
-  const [data, setData] = useState<Block[]>([]);
-
-  useEffect(() => {
-    try {
-      const data = JSON.parse(localStorage.getItem("page_data") || "[]");
-      // setData(data);
-    } catch {}
-  }, []);
-
+const data = [];
+const TryCreatives = () => {
   return (
     <BuilderContext
       data={data}
@@ -75,11 +66,10 @@ const Builder = () => {
   return (
     <>
       <div className="flex items-center justify-between py-4">
-        <h1 className="flex justify-start p-4 text-2xl font-bold">
+        <h1 className="flex justify-start p-4 text-xl font-bold">
           Creatives Playground
         </h1>
-        <div className="flex h-16 justify-end gap-0 p-4 md:gap-4">
-          <ThemeSwitcher />
+        <div className="flex h-16 justify-end gap-2 p-4 md:gap-4">
           <EditSwitch />
           <select onChange={loadCreative}>
             <option value="0">Select</option>
@@ -96,12 +86,13 @@ const Builder = () => {
           >
             Register
           </button>
+          <ThemeSwitcher />
         </div>
       </div>
       <Layout type={PageType.StoryBuilder} editable={false} />
     </>
   );
 };
-TryBuilder.isPublic = true;
+TryCreatives.isPublic = true;
 
-export default TryBuilder;
+export default TryCreatives;

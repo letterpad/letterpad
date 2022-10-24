@@ -1,6 +1,6 @@
 import { createId } from "@/shared/utils";
 
-import { Block, BlockItem } from "./types";
+import { Block } from "./types";
 
 export const isFirstColumnImageType = (item: Block) =>
   item.data[0]?.type === "image";
@@ -63,3 +63,8 @@ export const splitBlock = (item: Block, firstCellType): Block => {
     id: createId(),
   };
 };
+
+export function random(min: number, max: number) {
+  // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}

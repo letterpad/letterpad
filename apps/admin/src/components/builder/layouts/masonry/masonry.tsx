@@ -1,16 +1,17 @@
 //@ts-nocheck
 import Image from "next/image";
 
+import { RemoveButton } from "@/components/gallery/remove";
 import { ItemPlaceholder } from "@/components/post/components/templates/portfolio/itemPlaceholder";
 
-import { RemoveButton } from "../remove";
-import { Item } from "../types";
+import { BlockMasonry } from "../../types";
 
 export const getMasonryLayout = (
-  items: Item[],
+  items: BlockMasonry[],
   onSelect,
   removeItem,
   onSave,
+  preview,
 ) => {
   const rows = items.map((item, i) => {
     const direction = i % 2 === 0 ? " md:flex-row-reverse" : " md:flex-row";
@@ -43,12 +44,12 @@ export const getMasonryLayout = (
           className={aspect}
         />
 
-        <RemoveButton onClick={() => removeItem(i)} />
+        {!preview && <RemoveButton onClick={() => removeItem(item.id)} />}
       </div>
     );
   });
   return (
-    <div className="m-auto w-full columns-1 gap-8 space-y-8 md:columns-3 lg:columns-4">
+    <div className="m-auto w-full columns-1 gap-2 md:columns-3 lg:columns-4">
       {rows}
     </div>
   );

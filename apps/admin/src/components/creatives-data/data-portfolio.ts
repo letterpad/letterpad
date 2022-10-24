@@ -127,6 +127,101 @@ export const portfolioData: Block[] = [
     ],
   },
   {
+    id: "c0cbd4ed",
+    columns: 1,
+    data: [
+      {
+        text: "%3Chtml%3E%3Cbody%3E%3Cp%20style%3D%22text-align%3A%20center%3B%22%3EBelow%20photographs%20are%20in%20collaboration%20with%20an%20NGO.%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%C2%A0%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%3Cstrong%3ELorem%20Ipsum%3C%2Fstrong%3E%C2%A0is%20simply%20dummy%20text%20of%20the%20printing%20and%20typesetting%20industry.%20Lorem%20Ipsum%20has%20been%20the%20industry's%20standard%20dummy%20text%20ever%20since%20the%201500s%2C%20when%20an%20unknown%20printer%20took%20a%20galley%20of%20type%20and%20scrambled%20it%20to%20make%20a%20type%20specimen%20book.%20It%20has%20survived%20not%20only%20five%20centuries%2C%20but%20also%20the%20leap%20into%20electronic%20typesetting%2C%20remaining%20essentially%20unchanged.%C2%A0%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
+        type: "text",
+      },
+    ],
+    cover: "banner",
+  },
+  {
+    id: "a1b8fb02",
+    columns: 1,
+    data: [
+      {
+        type: "masonry",
+        masonry: [
+          {
+            src: "https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDR8fGNyYWZ0fGVufDB8fHx8MTY2NjYyNDA1Nw&ixlib=rb-4.0.3&q=80&w=1080",
+            width: 5062,
+            height: 3031,
+            description:
+              "Unsplash - SwapnIl Dwivedi | https://unsplash.com/photos/w46tRF64qNc",
+            aspectRatio: 1.7777777777777777,
+            id: "a70d7f16",
+          },
+          {
+            src: "https://images.unsplash.com/photo-1516783154360-123b392d0833?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDd8fGNyYWZ0fGVufDB8fHx8MTY2NjYyNDA1Nw&ixlib=rb-4.0.3&q=80&w=1080",
+            width: 6423,
+            height: 3613,
+            description:
+              "Unsplash - Vladimir Proskurovskiy | https://unsplash.com/photos/ZlPeHjYoAdU",
+            aspectRatio: 1.7777777777777777,
+            id: "6277a2a5",
+          },
+          {
+            src: "https://images.unsplash.com/photo-1485546784815-e380f3297414?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDh8fGNyYWZ0fGVufDB8fHx8MTY2NjYyNDA1Nw&ixlib=rb-4.0.3&q=80&w=1080",
+            width: 7360,
+            height: 4912,
+            description:
+              "Unsplash - Roman Kraft | https://unsplash.com/photos/WOzVqzpScrk",
+            aspectRatio: 1.7777777777777777,
+            id: "f7ac5bfe",
+          },
+          {
+            src: "https://images.unsplash.com/photo-1528717384022-f8d665c86909?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDV8fGNyYWZ0fGVufDB8fHx8MTY2NjYyNDA1Nw&ixlib=rb-4.0.3&q=80&w=1080",
+            width: 6000,
+            height: 4000,
+            description:
+              "Unsplash - Malcolm Lightbody | https://unsplash.com/photos/gPRvTP0sZ2M",
+            aspectRatio: 1.7777777777777777,
+            id: "cc8df9c1",
+          },
+          {
+            src: "https://images.unsplash.com/photo-1568288796918-03e7d93306bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDE2fHxjcmFmdHxlbnwwfHx8fDE2NjY2MjQwNTc&ixlib=rb-4.0.3&q=80&w=1080",
+            width: 5472,
+            height: 3648,
+            description:
+              "Unsplash - Elio Santos | https://unsplash.com/photos/5ZQn_gWKvLE",
+            aspectRatio: 1.7777777777777777,
+            id: "ac776894",
+          },
+          {
+            src: "https://images.unsplash.com/photo-1553051021-9f94520a6cad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDE4fHxjcmFmdHxlbnwwfHx8fDE2NjY2MjQwNTc&ixlib=rb-4.0.3&q=80&w=1080",
+            width: 6000,
+            height: 4000,
+            description:
+              "Unsplash - Benjamin Thomas | https://unsplash.com/photos/idEEZ-wQkfA",
+            aspectRatio: 1.7777777777777777,
+            id: "fb27bba1",
+          },
+          {
+            src: "https://images.unsplash.com/photo-1589051079002-b140a970f568?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDIwfHxjcmFmdHxlbnwwfHx8fDE2NjY2MjQwNTc&ixlib=rb-4.0.3&q=80&w=1080",
+            width: 5184,
+            height: 3456,
+            description:
+              "Unsplash - Anne Nygård | https://unsplash.com/photos/P7X0np30w30",
+            aspectRatio: 1.7777777777777777,
+            id: "5f38d516",
+          },
+          {
+            src: "https://images.unsplash.com/photo-1597484661973-ee6cd0b6482c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDIzfHxjcmFmdHxlbnwwfHx8fDE2NjY2MjQwNzA&ixlib=rb-4.0.3&q=80&w=1080",
+            width: 5184,
+            height: 3888,
+            description:
+              "Unsplash - Dan Cristian Pădureț | https://unsplash.com/photos/8cxJzVpGKk8",
+            aspectRatio: 1.7777777777777777,
+            id: "0a04b5be",
+          },
+        ],
+      },
+    ],
+    cover: "big",
+  },
+  {
     id: "7eaf2717",
     columns: 1,
     data: [
