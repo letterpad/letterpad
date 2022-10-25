@@ -1,18 +1,13 @@
 import classNames from "classnames";
-import React, { FC, forwardRef } from "react";
+import React, { ChangeEvent, FC, forwardRef, HTMLProps } from "react";
 
 const classes = {
-  base: "focus:outline-none transition ease-in-out duration-300",
+  base: "px-4 py-2 focus:outline-none transition ease-in-out duration-300 rounded-md flex items-center justify-center flex-row",
   disabled: "opacity-50 cursor-not-allowed",
-  pill: "rounded-full",
-  size: {
-    small: "px-2 py-1 text-sm",
-    normal: "px-4 py-2",
-    large: "px-8 py-3 text-lg",
-  },
+  error: "border-red-500 focus:border-red-500 dark:focus:border-red-500",
   variant: {
     primary:
-      "bg-blue-500 hover:bg-blue-800 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-white",
+      "bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
     dark: "bg-gray-800 text-white hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-800 dark:focus:ring-gray-900",
     success:
       "bg-green-700 text-white hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800",
@@ -25,44 +20,39 @@ const classes = {
   },
 };
 
-interface Props {
-  children: React.ReactNode;
-  disabled?: boolean;
-  pill?: boolean;
-  size?: "small" | "normal" | "large";
-  variant?: "primary" | "secondary" | "danger";
+interface Props extends HTMLProps<HTMLInputElement> {
+  value?: string;
+  variant?: "primary" | "secondary" | "danger" | "dark" | "success" | "warning";
   className?: string;
-  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  type?: HTMLInputElement["type"];
+  error?: boolean;
 }
 
-export const Button = forwardRef<HTMLButtonElement, Props>((props, ref) => {
+export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const {
-    children,
-    type = "button",
     className,
     variant = "primary",
-    size = "normal",
-    pill,
     disabled = false,
+    type = "text",
+    error,
     ...rest
   } = props;
   return (
-    <button
+    <input
       ref={ref}
-      disabled={disabled}
       type={type}
+      disabled={disabled}
       className={classNames(
+        error && classes.error,
         classes.base,
-        classes.size[size],
         classes.variant[variant],
-        pill && classes.pill,
         disabled && classes.disabled,
         className,
       )}
       {...rest}
-    >
-      {children}
-    </button>
+    />
   );
 });
-Button.displayName = "Button";
+Input.displayName = "Input";

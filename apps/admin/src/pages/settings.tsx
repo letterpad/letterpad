@@ -14,13 +14,13 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 
-import { EnhancedButton } from "@/components/buttons";
 import { CopyToClipboard } from "@/components/clipboard";
 import Appearance from "@/components/settings/appearance";
 import General from "@/components/settings/general";
 import Integrations from "@/components/settings/integrations";
 import Navigation from "@/components/settings/navigation";
 import Pages from "@/components/settings/pages";
+import { Buttonv2 } from "@/components_v2/button";
 
 import { useDeleteAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
@@ -140,9 +140,9 @@ function Settings({ settings, cloudinaryEnabledByAdmin, readOnly }: Props) {
                         okText="Yes"
                         cancelText="No"
                       >
-                        <EnhancedButton type="danger">
+                        <Buttonv2 variant="danger">
                           Delete your account
-                        </EnhancedButton>
+                        </Buttonv2>
                       </Popconfirm>
                     </Col>
                   </Row>

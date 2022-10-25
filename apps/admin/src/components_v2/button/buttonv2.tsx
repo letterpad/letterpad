@@ -9,7 +9,7 @@ import React, {
 } from "react";
 
 const classes = {
-  base: "focus:outline-none transition ease-in-out duration-300 rounded-md",
+  base: "focus:outline-none transition ease-in-out duration-300 rounded-md flex items-center justify-center flex-row",
   disabled: "opacity-50 cursor-not-allowed",
   pill: "rounded-full",
   size: {
@@ -40,6 +40,7 @@ interface Props {
   className?: string;
   disabled?: boolean;
   onClick?: (e: MouseEvent) => void;
+  type?: "button" | "submit" | "reset";
 }
 
 export const Buttonv2 = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>(

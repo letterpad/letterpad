@@ -6,9 +6,9 @@ import { FC, useEffect } from "react";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 
-import { EnhancedButton } from "@/components/buttons";
 import { setIntroDimissed } from "@/components/home/visibility";
 import { ChangeUsername } from "@/components/profile/change-username";
+import { Buttonv2 } from "@/components_v2/button";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
@@ -55,7 +55,7 @@ export const GettingStarted: FC<Props> = ({ author, settings }) => {
           </span>
         </PageHeader>
         <div
-          className="site-layout-background"
+          className="site-layout-background "
           style={{
             fontSize: "1rem",
             padding: "40px 20px",
@@ -95,13 +95,14 @@ export const GettingStarted: FC<Props> = ({ author, settings }) => {
                       </Link>
                       .
                     </p>
-                    <EnhancedButton
-                      type="dark"
+                    <Buttonv2
+                      variant="dark"
                       size="small"
                       onClick={() => updateStatus("profile_updated")}
+                      className="mt-2"
                     >
                       Done
-                    </EnhancedButton>
+                    </Buttonv2>
                   </Section>
                 )}
                 {!author.settings_updated && (
@@ -113,13 +114,14 @@ export const GettingStarted: FC<Props> = ({ author, settings }) => {
                       </Link>
                       .
                     </p>
-                    <EnhancedButton
-                      type="dark"
+                    <Buttonv2
+                      variant="dark"
                       size="small"
                       onClick={() => updateStatus("settings_updated")}
+                      className="mt-2"
                     >
                       Done
-                    </EnhancedButton>
+                    </Buttonv2>
                   </Section>
                 )}
               </>
@@ -148,13 +150,17 @@ export const GettingStarted: FC<Props> = ({ author, settings }) => {
 const Section = ({ children, title }) => {
   return (
     <>
-      <h4 style={{ borderLeft: "2px solid green", paddingLeft: 8 }}>{title}</h4>
+      <h4
+        style={{ borderLeft: "2px solid green", paddingLeft: 8 }}
+        className="mb-4"
+      >
+        {title}
+      </h4>
       <section
         style={{
           background: "rgb(var(--content-bg))",
-          padding: 20,
-          marginBottom: 20,
         }}
+        className="mb-10 p-6"
       >
         {children}
       </section>

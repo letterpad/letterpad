@@ -2,6 +2,8 @@ import { Space } from "antd";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
+import { Buttonv2 } from "@/components_v2/button";
+
 import {
   Navigation,
   NavigationType,
@@ -16,7 +18,6 @@ import {
   tagNotLinkedWithNavigation,
   warnNoTags,
 } from "./warnings";
-import { EnhancedButton } from "../buttons";
 
 interface Props {
   postId: number;
@@ -79,36 +80,31 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
             <p>
               <label>Ready to publish your {post.type} ?</label>
             </p>
-            <EnhancedButton
-              type="success"
-              block
-              size="large"
-              style={{ fontSize: 14 }}
+            <Buttonv2
+              variant="success"
+              size="normal"
               onClick={() => publish(true)}
               data-testid="publishBtn"
               className="button btn-success"
             >
               Publish
-            </EnhancedButton>
+            </Buttonv2>
           </>
         )}
         {published && (
           <>
             <label>
               Unpublish this {post.type} ? &nbsp;
-              <p className="help-text">
+              <p className="help-text mb-4">
                 Your {post.type} will no longer be visible to users.
               </p>
-              <EnhancedButton
-                type="dark"
+              <Buttonv2
+                variant="dark"
                 onClick={() => publish(false)}
-                block
-                size="large"
-                style={{ fontSize: 14 }}
                 data-testid="unPublishBtn"
               >
                 Un-Publish
-              </EnhancedButton>
+              </Buttonv2>
             </label>
           </>
         )}
