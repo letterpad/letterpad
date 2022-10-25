@@ -6,7 +6,7 @@ export const paintingData: Block[] = [
     columns: 1,
     data: [
       {
-        text: "%3Chtml%3E%3Cbody%3E%3Ch1%3E%3Cspan%20style%3D%22color%3A%20rgb(236%2C%20240%2C%20241)%3B%22%3EHi!%3C%2Fspan%3E%3C%2Fh1%3E%0A%3Cp%3E%3Cspan%20style%3D%22color%3A%20rgb(236%2C%20240%2C%20241)%3B%22%3EI%20am%20Foo.%C2%A0%3C%2Fspan%3E%3C%2Fp%3E%0A%3Cp%3E%3Cspan%20style%3D%22color%3A%20rgb(236%2C%20240%2C%20241)%3B%22%3EAll%20my%20paintings%20are%20showcased%20here.%3C%2Fspan%3E%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
+        text: "%3Chtml%3E%3Cbody%3E%3Ch1%3E%3Cspan%20style%3D%22color%3A%20rgb(236%2C%20240%2C%20241)%3B%22%3EHi!%3C%2Fspan%3E%3C%2Fh1%3E%0A%3Cp%3E%3Cspan%20style%3D%22color%3A%20rgb(236%2C%20240%2C%20241)%3B%22%3EI%20am%20Foo.%C2%A0%3C%2Fspan%3E%3C%2Fp%3E%0A%3Cp%3E%3Cspan%20style%3D%22color%3A%20rgb(236%2C%20240%2C%20241)%3B%22%3EI%20am%20an%20artist%20.%3C%2Fspan%3E%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
         type: "image",
         image: {
           src: "https://images.unsplash.com/photo-1622737133809-d95047b9e673?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDE1fHxhcnR8ZW58MHx8fHwxNjY2NjA5Njc3&ixlib=rb-4.0.3&q=80&w=1080",

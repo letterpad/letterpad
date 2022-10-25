@@ -23,19 +23,12 @@ export const Layout: FC<Props> = ({ editable = true }) => {
           const isPrevRowImageLeft =
             grid[rowIndex - 1]?.data[0]?.type === "image";
           return (
-            <>
-              <Row
-                isPrevRowImageLeft={isPrevRowImageLeft}
-                row={row}
-                key={row.id}
-                rowIndex={rowIndex}
-              />
-              {!preview && (
-                <div className="align-center flex justify-center">
-                  <Toolbar rowIndex={rowIndex} />
-                </div>
-              )}
-            </>
+            <Row
+              isPrevRowImageLeft={isPrevRowImageLeft}
+              row={row}
+              key={row.id}
+              rowIndex={rowIndex}
+            />
           );
         })}
       </div>
