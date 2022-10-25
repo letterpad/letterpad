@@ -15,10 +15,14 @@ import {
   weddingData,
 } from "@/components/creatives-data";
 import ThemeSwitcher from "@/components/theme-switcher";
+import { Buttonv2 } from "@/components_v2/button";
 
 import { PageType } from "@/graphql/types";
 
 const TryCreatives = () => {
+  useEffect(() => {
+    ThemeSwitcher.switch("dark");
+  }, []);
   return (
     <BuilderContext
       data={[]}
@@ -79,13 +83,15 @@ const Builder = () => {
       <Head>
         <title>Creatives</title>
       </Head>
-      <div className="flex items-center justify-between py-4">
+      <div className="mx-4 flex items-center justify-between py-4">
         <h1 className="flex justify-start p-4 text-xl font-bold">
           Creatives Playground
         </h1>
-        <div className="flex h-16 justify-end gap-2 p-4 md:gap-4">
-          <EditSwitch />
-          <select onChange={loadCreative}>
+        <div className=" flex h-10 justify-end gap-2 md:gap-4">
+          <select
+            onChange={loadCreative}
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          >
             <option value="0">Select</option>
             <option value="new">New</option>
             <option value="intro">Intro</option>
@@ -93,14 +99,14 @@ const Builder = () => {
             <option value="wedding">Wedding</option>
             <option value="painting">Painting</option>
           </select>
-          <button
-            className="btn-success button"
+          <EditSwitch />
+          <Buttonv2
             onClick={() => {
               router.push("/register");
             }}
           >
             Register
-          </button>
+          </Buttonv2>
           <ThemeSwitcher />
         </div>
       </div>

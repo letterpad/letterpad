@@ -56,16 +56,16 @@ export const introData: Block[] = [
     data: [
       {
         type: "text",
-        text: "%3Chtml%3E%3Cbody%3E%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22font-family%3A%20Knewave%3B%20font-size%3A%2024pt%3B%22%3EYou%20can%20use%20special%20fonts%20to%20express%20the%20tone%20of%20the%20story.%3C%2Fspan%3E%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%C2%A0%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%C2%A0%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
+        text: "%3Chtml%3E%3Cbody%3E%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22font-family%3A%20Knewave%3B%20font-size%3A%2024pt%3B%22%3EUse%20special%20fonts%20to%20express%20the%20tone%20of%20the%20story.%3C%2Fspan%3E%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%C2%A0%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%C2%A0%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
       },
       {
         type: "image",
         image: {
-          src: "https://images.unsplash.com/photo-1511548774318-563182fe8d03?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDd8fGZvbnRzfGVufDB8fHx8MTY2NjY0MzA3Mg&ixlib=rb-4.0.3&q=80&w=1080",
-          width: 6225,
-          height: 4155,
+          src: "https://images.unsplash.com/photo-1581080247486-57989c1f14ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTU3NnwwfDF8c2VhcmNofDd8fHR5cG9ncmFwaHl8ZW58MHx8fHwxNjY2NzI5MDU2&ixlib=rb-4.0.3&q=80&w=1080",
+          width: 4240,
+          height: 2832,
           description:
-            "Unsplash - Alexander Andrews | https://unsplash.com/photos/zw07kVDaHPw",
+            "Unsplash - Mika Baumeister | https://unsplash.com/photos/2X6bkiL0GDo",
         },
       },
     ],
