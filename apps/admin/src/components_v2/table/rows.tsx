@@ -1,7 +1,5 @@
 import { FC } from "react";
 
-import { getReadableDate } from "@/shared/utils";
-
 import { Columns } from "./types";
 
 interface Props {

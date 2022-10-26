@@ -1,7 +1,5 @@
 import { FC } from "react";
 
-import { getReadableDate } from "@/shared/utils";
-
 import { Header } from "./header";
 import { Rows } from "./rows";
 import { Columns } from "./types";

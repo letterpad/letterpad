@@ -4,5 +4,5 @@ export interface Columns {
   key: string;
   // responsive: Breakpoint[];
   width?: string;
-  // render: (cover_image: any) => JSX.Element | null;
+  render: (data: any) => any;
 }
