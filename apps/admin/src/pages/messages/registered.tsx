@@ -28,5 +28,5 @@ const Registered = () => {
     </>
   );
 };
-Registered.isStatic = true;
+Registered.isMessage = true;
 export default Registered;

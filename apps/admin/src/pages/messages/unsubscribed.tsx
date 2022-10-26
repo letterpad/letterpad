@@ -21,5 +21,5 @@ const Unsubscribed = () => {
   );
 };
 
-Unsubscribed.isStatic = true;
+Unsubscribed.isMessage = true;
 export default Unsubscribed;

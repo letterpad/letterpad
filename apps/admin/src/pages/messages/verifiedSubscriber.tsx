@@ -15,5 +15,5 @@ const VerifiedSubscriber = () => {
     </>
   );
 };
-VerifiedSubscriber.isStatic = true;
+VerifiedSubscriber.isMessage = true;
 export default VerifiedSubscriber;

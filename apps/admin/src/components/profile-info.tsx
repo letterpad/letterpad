@@ -8,7 +8,7 @@ interface Props {
 const ProfileInfo: React.FC<Props> = ({ name, avatar, site_url }) => {
   return (
     <>
-      <div className="profile-wrapper fixed w-full" style={{ padding: 20 }}>
+      <div className="profile-wrapper fixed bottom-0 w-full border-t border-t-zinc-800 bg-zinc-900 p-4">
         {avatar && (
           <div
             style={{
@@ -40,7 +40,6 @@ const ProfileInfo: React.FC<Props> = ({ name, avatar, site_url }) => {
           color: #fff;
           align-items: center;
           gap: 8px;
-          bottom: 0px;
         }
         img {
           width: 40px;

@@ -31,9 +31,10 @@ const Verified = () => {
             Login
           </Buttonv2>,
         ]}
+        style={{ textAlign: "center" }}
       />
     </>
   );
 };
-Verified.isStatic = true;
+Verified.isMessage = true;
 export default Verified;
