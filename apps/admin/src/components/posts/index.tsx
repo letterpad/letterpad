@@ -4,26 +4,26 @@ import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import { Image, PostStatusOptions, TagsNode } from "@/__generated__/__types__";
 
 export const columns = [
-  {
-    title: "Image",
-    dataIndex: "cover_image",
-    key: "cover_image",
-    responsive: ["md"] as Breakpoint[],
-    width: "10%",
-    render: (cover_image: Image) => {
-      if (!cover_image.src) return null;
-      const imageAttrs = { src: cover_image.src }; //getImageAttrs(cover_image.src);
-      return (
-        <img
-          {...imageAttrs}
-          width={60}
-          height={50}
-          style={{ objectFit: "cover" }}
-          alt="post-image"
-        />
-      );
-    },
-  },
+  // {
+  //   title: "Image",
+  //   dataIndex: "cover_image",
+  //   key: "cover_image",
+  //   responsive: ["md"] as Breakpoint[],
+  //   width: "10%",
+  //   render: (cover_image: Image) => {
+  //     if (!cover_image.src) return null;
+  //     const imageAttrs = { src: cover_image.src }; //getImageAttrs(cover_image.src);
+  //     return (
+  //       <img
+  //         {...imageAttrs}
+  //         width={60}
+  //         height={50}
+  //         style={{ objectFit: "cover" }}
+  //         alt="post-image"
+  //       />
+  //     );
+  //   },
+  // },
   {
     title: "Title",
     dataIndex: "title",

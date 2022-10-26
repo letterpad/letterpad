@@ -211,3 +211,43 @@ query domain {
     }
   }
 }
+
+query homeQuery {
+  me {
+    ... on Author {
+      ...MeFragment
+    }
+    ... on NotFound {
+      message
+    }
+  }
+  settings {
+    ... on Setting {
+      ...SettingsFragment
+    }
+    ... on NotFound {
+      message
+    }
+    ... on UnAuthorized {
+      message
+    }
+  }
+  stats {
+    ... on Stats {
+      posts {
+        published
+        drafts
+      }
+      pages {
+        published
+        drafts
+      }
+      tags
+      media
+    }
+
+    ... on StatsError {
+      message
+    }
+  }
+}

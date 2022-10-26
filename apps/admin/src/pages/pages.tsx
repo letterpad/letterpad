@@ -1,4 +1,4 @@
-import { Layout, Table } from "antd";
+import { Layout } from "antd";
 import { Alert } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -10,7 +10,9 @@ import ErrorMessage from "@/components/ErrorMessage";
 import Filters from "@/components/filters";
 import { columns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
+import { Table } from "@/components_v2/table";
 
+// import { Table } from "@/componentsv2/table";
 import { PostTypes } from "@/__generated__/__types__";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 
@@ -43,7 +45,7 @@ function Pages({ readOnly }: { readOnly: boolean }) {
             type="warning"
           />
         )}
-        <div className="site-layout-background" style={{ padding: 24 }}>
+        <div className="site-layout-background  px-4 py-4">
           <Filters
             showTags={false}
             showPageTypes={false}
@@ -55,9 +57,7 @@ function Pages({ readOnly }: { readOnly: boolean }) {
             columns={columns}
             dataSource={source}
             loading={loading}
-            onRow={(row) => ({
-              onClick: () => router.push("/post/" + row.id),
-            })}
+            onRowClick={(row) => router.push("/post/" + row.id)}
           />
         </div>
         <style jsx>{postsStyles}</style>

@@ -20,7 +20,7 @@ export const Modal = (props: Props) => {
       setDisplay(true);
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto";
+      document.body.style.overflowY = "auto";
       setDisplay(false);
     }
   }, [props.show]);

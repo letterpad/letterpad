@@ -1,4 +1,4 @@
-import { Layout, Table } from "antd";
+import { Layout } from "antd";
 import { Alert } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -17,6 +17,7 @@ import {
 import { postsColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
 import { TagsProvider } from "@/components/tags/context";
+import { Table } from "@/components_v2/table";
 
 import { PostTypes } from "@/__generated__/__types__";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
@@ -74,7 +75,7 @@ function Posts({ readOnly }: { readOnly: boolean }) {
             type="warning"
           />
         )}
-        <div className="site-layout-background" style={{ padding: 16 }}>
+        <div className="site-layout-background  px-4 py-4">
           <TagsProvider readOnly={readOnly}>
             <Filters onChange={(filters) => refetch({ filters })} />
           </TagsProvider>
@@ -82,16 +83,7 @@ function Posts({ readOnly }: { readOnly: boolean }) {
             columns={postsColumns}
             dataSource={source.map((item) => ({ ...item, key: item.id }))}
             loading={loading}
-            onRow={(row) => ({
-              onClick: () => {
-                router.push("/post/" + row.id);
-              },
-            })}
-            onChange={handleChange}
-            pagination={{
-              hideOnSinglePage: true,
-              total: totalCount, // total count returned from backend
-            }}
+            onRowClick={(row) => router.push("/post/" + row.id)}
           />
         </div>
         <style jsx>{postsStyles}</style>

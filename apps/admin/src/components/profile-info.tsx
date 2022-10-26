@@ -8,7 +8,7 @@ interface Props {
 const ProfileInfo: React.FC<Props> = ({ name, avatar, site_url }) => {
   return (
     <>
-      <div className="profile-wrapper" style={{ padding: 20 }}>
+      <div className="profile-wrapper fixed w-full" style={{ padding: 20 }}>
         {avatar && (
           <div
             style={{
