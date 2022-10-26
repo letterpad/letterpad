@@ -44,8 +44,6 @@ const Filters = ({
         name: tag.name,
       })),
     );
-
-    onChange(filters);
   }, [filters, loading, onChange, showPageTypes, showTags, tags]);
 
   if (loading && showTags) return <Loading />;

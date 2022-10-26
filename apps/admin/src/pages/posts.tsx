@@ -19,7 +19,7 @@ import { Header } from "@/components/posts/header";
 import { TagsProvider } from "@/components/tags/context";
 import { Table } from "@/components_v2/table";
 
-import { PostTypes } from "@/__generated__/__types__";
+import { PostTypes, SortBy } from "@/__generated__/__types__";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { LetterpadContext } from "@/context/LetterpadProvider";
 import { EventAction, track } from "@/track";
@@ -28,7 +28,9 @@ const { Content } = Layout;
 
 function Posts({ readOnly }: { readOnly: boolean }) {
   const router = useRouter();
-  const { loading, data, error, refetch } = usePostsQuery();
+  const { loading, data, error, refetch } = usePostsQuery({
+    variables: { filters: { sortBy: SortBy.Desc } },
+  });
   const setting = useContext(LetterpadContext);
 
   const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
