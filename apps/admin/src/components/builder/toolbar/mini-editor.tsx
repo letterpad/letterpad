@@ -43,7 +43,7 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
         }}
         init={{
           font_family_formats:
-            "Anonymous Pro=Anonymous Pro; Caveat=Caveat; Major Mono Display=Major Mono Display; Merriweather=Merriweather; Nanum Pen Script=Nanum Pen Script; Niconne=Niconne; PT Sans=PT Sans; Raleway=Raleway; Roboto=Roboto; Spectral=Spectral",
+            "Anonymous Pro=Anonymous Pro; Bowlby One SC=Bowlby One SC; Bungee Inline=Bungee Inline; Caveat=Caveat; Germania One=Germania One; Knewave=Knewave; Major Mono Display=Major Mono Display; Merriweather=Merriweather; Nanum Pen Script=Nanum Pen Script; Niconne=Niconne; PT Sans=PT Sans; Raleway=Raleway; Roboto=Roboto; Skranji=Skranji; Spectral=Spectral;Farsan=Farsan; Potta One=Potta One; Metal Mania=Metal Mania",
           height: "auto",
           width: "100%",
           placeholder: "....[ text ]....",
@@ -72,7 +72,6 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
         }}
       />
       <style jsx global>{`
-        ${getfonts()}
         .dark iframe {
           margin-bottom: 50px;
           background-color: transparent;
@@ -97,7 +96,3 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
 };
 
 export default MiniEditor;
-
-function getfonts() {
-  return "@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Merriweather:ital,wght@0,400;0,700;0,900;1,700&family=Nanum+Pen+Script&family=Niconne&family=PT+Sans:ital,wght@0,400;0,700;1,400&family=Raleway:ital,wght@0,400;0,500;0,800;1,500&family=Roboto:wght@400;500;900&family=Spectral:ital,wght@0,400;0,500;0,700;0,800;1,500;1,700&display=swap');";
-}

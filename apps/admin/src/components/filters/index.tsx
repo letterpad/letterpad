@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { Select } from "@/components_v2/select";
+
 import {
   PostsFilters,
   PostStatusOptions,
@@ -48,10 +50,11 @@ const Filters = ({
 
   if (loading && showTags) return <Loading />;
   return (
-    <>
-      <select
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-          if (e.target.value === "all") {
+    <div className="flex w-full flex-row items-center justify-end gap-2 ">
+      <Select
+        id="filters-status"
+        onChange={(value) => {
+          if (value === "all") {
             const { status, ...rest } = filters;
             return setFilters({
               ...rest,
@@ -64,43 +67,41 @@ const Filters = ({
           });
           setFilters({
             ...filters,
-            status: e.target.value as PostStatusOptions,
+            status: value as PostStatusOptions,
           });
         }}
-      >
-        <option value="all">All</option>
-        {Object.keys(PostStatusOptions).map((key) => {
-          return (
-            <option key={key} value={PostStatusOptions[key]}>
-              {key}
-            </option>
-          );
-        })}
-      </select>
-      &nbsp;
-      <select
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+        selected={filters.status ?? "all"}
+        items={[
+          { key: "all", label: "All" },
+          ...Object.values(PostStatusOptions).map((value) => ({
+            key: value,
+            label: value,
+          })),
+        ]}
+      />
+      <Select
+        id="filters-sort"
+        onChange={(key) => {
           track({
             eventAction: EventAction.Click,
             eventCategory: "filters",
             eventLabel: "sortBy",
           });
-          setFilters({ ...filters, sortBy: e.target.value as SortBy });
+          setFilters({ ...filters, sortBy: key as SortBy });
         }}
-      >
-        {Object.keys(SortBy).map((key) => {
-          return (
-            <option key={key} value={SortBy[key]}>
-              {key}
-            </option>
-          );
-        })}
-      </select>
-      &nbsp;
+        selected={filters.sortBy ?? "all"}
+        items={[
+          ...Object.values(SortBy).map((key) => ({
+            key,
+            label: key === SortBy.Desc ? "Latest" : "Oldest",
+          })),
+        ]}
+      />
       {allTags && showTags && (
-        <select
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            if (e.target.value === "all") {
+        <Select
+          id="filters-tags"
+          onChange={(key) => {
+            if (key === "all") {
               const { tagSlug, ...rest } = filters;
               return setFilters({
                 ...rest,
@@ -111,23 +112,22 @@ const Filters = ({
               eventCategory: "filters",
               eventLabel: "tagSlug",
             });
-            setFilters({ ...filters, tagSlug: e.target.value });
+            setFilters({ ...filters, tagSlug: key });
           }}
-        >
-          <option value="all">All</option>
-          {allTags.map((tag) => {
-            return (
-              <option key={tag.name} value={tag.slug}>
-                {tag.name}
-              </option>
-            );
-          })}
-        </select>
+          selected={filters.tagSlug ?? "all"}
+          items={[
+            ...allTags.map((tag) => ({
+              key: tag.slug,
+              label: tag.name,
+            })),
+          ]}
+        />
       )}
       {showPageTypes && (
-        <select
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            if (e.target.value === "all") {
+        <Select
+          id="filters-pagetypes"
+          onChange={(key) => {
+            if (key === "all") {
               const { tagSlug, page_type, ...rest } = filters;
               return setFilters({
                 ...rest,
@@ -138,22 +138,20 @@ const Filters = ({
               eventCategory: "filters",
               eventLabel: "pagetype dropdown",
             });
-            setFilters({ ...filters, page_type: e.target.value as PageType });
+            setFilters({ ...filters, page_type: key as PageType });
           }}
-        >
-          <option value="all">All</option>
-          {Object.keys(PageType).map((type) => {
-            return (
-              <option key={type} value={PageType[type]}>
-                {type}
-              </option>
-            );
-          })}
-        </select>
+          selected={filters.sortBy ?? "all"}
+          items={[
+            ...Object.keys(PageType).map((type) => ({
+              key: type,
+              label: PageType[type],
+            })),
+          ]}
+        />
       )}
       <br />
       <br />
-    </>
+    </div>
   );
 };
 

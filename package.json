@@ -34,5 +34,8 @@
   "resolutions": {
     "@types/fs-capacitor": "^2.0.0"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "yarn@1.22.19",
+  "dependencies": {
+    "react-icons": "^4.6.0"
+  }
 }

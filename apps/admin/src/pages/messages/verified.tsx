@@ -1,6 +1,8 @@
-import { Button, Result } from "antd";
+import { Result } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
+
+import { Buttonv2 } from "@/components_v2/button";
 
 const Verified = () => {
   const router = useRouter();
@@ -25,9 +27,9 @@ const Verified = () => {
         title="Email Verified"
         subTitle="Your email has been successfully verified with Letterpad. Click the below button to login"
         extra={[
-          <Button type="primary" key="login" onClick={doLogin}>
+          <Buttonv2 key="login" onClick={doLogin}>
             Login
-          </Button>,
+          </Buttonv2>,
         ]}
       />
     </>

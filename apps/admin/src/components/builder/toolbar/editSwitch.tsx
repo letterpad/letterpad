@@ -1,18 +1,27 @@
+import { Buttonv2 } from "@/components_v2/button";
+
 import { IconEye, IconTools } from "./icons";
 import { useBuilderContext } from "../context";
 
 export const EditSwitch = () => {
   const { preview, setPreview } = useBuilderContext();
   return (
-    <a
+    <Buttonv2
+      variant="primary"
       onClick={() => setPreview(!preview)}
-      className="m-4 flex flex-row items-center justify-end"
+      className="btn flex h-full flex-row items-center justify-end gap-1 px-4"
     >
       {preview ? (
-        <IconTools size={26} stroke="rgb(var(--color))" />
+        <>
+          <IconTools size={26} stroke="#FFF" />
+          Edit
+        </>
       ) : (
-        <IconEye size={26} stroke="rgb(var(--color))" />
+        <>
+          <IconEye size={26} stroke="#FFF" />
+          Preview
+        </>
       )}
-    </a>
+    </Buttonv2>
   );
 };

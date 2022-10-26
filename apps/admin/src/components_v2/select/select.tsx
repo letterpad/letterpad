@@ -9,7 +9,7 @@ interface Props {
 }
 export const Select: FC<Props> = ({ title, selected, items, onChange, id }) => {
   return (
-    <>
+    <div>
       {title && (
         <label
           htmlFor={id}
@@ -23,14 +23,15 @@ export const Select: FC<Props> = ({ title, selected, items, onChange, id }) => {
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           onChange(e.target.value);
         }}
-        className="block w-full rounded-lg border border-gray-300 bg-gray-50  p-1.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 "
+        value={selected}
+        className="block w-full rounded-md border border-gray-300 bg-gray-50  p-1.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 "
       >
         {items.map(({ key, label }) => (
-          <option key={key} value={key} selected={key === selected}>
+          <option key={key} value={key}>
             {label}
           </option>
         ))}
       </select>
-    </>
+    </div>
   );
 };

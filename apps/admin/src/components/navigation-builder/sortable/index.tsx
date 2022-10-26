@@ -15,8 +15,8 @@ import {
 } from "@dnd-kit/sortable";
 import { FC, useState } from "react";
 
-import { EnhancedButton } from "@/components/buttons";
 import { Collection } from "@/components/navigation-builder/types";
+import { Buttonv2 } from "@/components_v2/button";
 
 import { NavigationType } from "@/__generated__/__types__";
 import { EventAction, track } from "@/track";
@@ -148,14 +148,11 @@ export const List: FC<Props> = ({ items = [], suggestions, onChange }) => {
           />
         ))}
       </SortableContext>
-      <EnhancedButton
-        type="dark"
-        size="middle"
-        onClick={addNewRow}
-        data-testid="newMenuBtn"
-      >
-        Add New
-      </EnhancedButton>
+      <div className="flex items-center justify-center">
+        <Buttonv2 onClick={addNewRow} data-testid="newMenuBtn">
+          Add New
+        </Buttonv2>
+      </div>
       <SuggestionModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}

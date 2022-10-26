@@ -3,6 +3,7 @@ import { FC } from "react";
 
 import { Cell } from "./cell";
 import { useBuilderContext } from "../../context";
+import { Toolbar } from "../../toolbar";
 import { LayoutToolbar } from "../../toolbar/layout-toolbar";
 import { LayoutToolbarFirstRow } from "../../toolbar/layout-toolbar-first-row";
 import { Swap } from "../../toolbar/swap";
@@ -70,6 +71,11 @@ export const Row: FC<RowProps> = ({ row, isPrevRowImageLeft, rowIndex }) => {
           );
         })}
       </div>
+      {!preview && (
+        <div className="align-center flex justify-center">
+          <Toolbar rowIndex={rowIndex} />
+        </div>
+      )}
     </div>
   );
 };

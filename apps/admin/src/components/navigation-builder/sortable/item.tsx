@@ -1,11 +1,11 @@
 import { DeleteOutlined, MenuOutlined } from "@ant-design/icons";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Button, Input } from "antd";
 import { message } from "antd";
 import { FC, useEffect, useState } from "react";
 
-import { EnhancedButton } from "@/components/buttons";
+import { Buttonv2 } from "@/components_v2/button";
+import { Input as Inputv2 } from "@/components_v2/input";
 
 import { Navigation, NavigationType } from "@/__generated__/__types__";
 
@@ -89,54 +89,39 @@ export const Item: FC<Props> = ({
     <div style={style} {...attributes} ref={setNodeRef}>
       <div data-testid="item-sortable" className="grid">
         <div className="block">
-          <div
-            className="icon-box"
-            {...listeners}
-
-            // className={styles.container}
-          >
+          <div className="icon-box" {...listeners}>
             <MenuOutlined className="dragger" />
           </div>
-          <Input
+          <Inputv2
             value={library.label}
             onChange={(e) =>
               onInputChange({ ...library, label: e.target.value })
             }
             data-testid={library.label === "" ? "empty-label-item" : ""}
-            placeholder="Enter the name of this item"
-            size="middle"
-            className={nameError ? "hasError" : ""}
+            placeholder="Name"
+            error={!!nameError}
           />
         </div>
 
         <div className="menu-content block">
-          <Input.Group className="menu-content-group">
-            <Input
-              style={{ width: "calc(100% - 150px)", cursor: "not-allowed" }}
-              size="middle"
-              value={type + ": " + library.original_name}
-              readOnly
-            />
-            <EnhancedButton
-              type="dark"
-              size="middle"
-              onClick={() => openSuggestions(library.id)}
-              data-testid="content-modal-btn"
-            >
-              Select Content
-            </EnhancedButton>
-          </Input.Group>
-          <Button
-            type="primary"
-            danger
-            size="middle"
-            onClick={() => onRemove(library)}
+          <Inputv2
+            style={{ width: "calc(100% - 200px)", cursor: "not-allowed" }}
+            value={type + ": " + library.original_name}
+            disabled
+          />
+          <Buttonv2
+            variant="dark"
+            onClick={() => openSuggestions(library.id)}
+            data-testid="content-modal-btn"
           >
+            Select Content
+          </Buttonv2>
+          <Buttonv2 variant="danger" onClick={() => onRemove(library)}>
             <DeleteOutlined
               data-testid="button-nav-delete"
-              className="menu-delete"
+              className="menu-delete py-1"
             />
-          </Button>
+          </Buttonv2>
         </div>
 
         <style jsx global>{`

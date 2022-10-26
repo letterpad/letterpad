@@ -1,7 +1,7 @@
 import { ApolloProvider } from "@apollo/client";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
-import React from "react";
+import React, { createContext } from "react";
 import "lazysizes";
 
 import "../../public/css/globals.css";
@@ -9,6 +9,10 @@ import "../../public/css/globals.css";
 import { useSavingIndicator } from "@/hooks/useSavingIndicator";
 
 import Main from "@/components/main";
+import {
+  Responsive,
+  ResponsiveProvider,
+} from "@/components_v2/layouts/responsiveProvider";
 
 import { basePath } from "@/constants";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
@@ -19,16 +23,21 @@ type Props = AppProps<{ session: any }> & {
   Component: Page;
 };
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: Props) {
+function LetterpadApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}: Props) {
   const Indicator = useSavingIndicator();
   return (
     <SessionProvider session={session} basePath={basePath + "/api/auth"}>
       <ApolloProvider client={apolloBrowserClient}>
         {Indicator}
-        <Main Component={Component} props={{ ...pageProps }} />
+        <ResponsiveProvider>
+          <Main Component={Component} props={{ ...pageProps }} />
+        </ResponsiveProvider>
       </ApolloProvider>
     </SessionProvider>
   );
 }
 
-export default MyApp;
+export default LetterpadApp;

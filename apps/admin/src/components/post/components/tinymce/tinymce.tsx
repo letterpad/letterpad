@@ -131,7 +131,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
             editor.on("init", function () {
               setTimeout(() => {
                 editor.dom.doc
-                  .querySelectorAll("img")
+                  ?.querySelectorAll("img")
                   .forEach((e) => e.removeAttribute("srcset"));
               }, 1000);
             });

@@ -1,10 +1,11 @@
-import { Button, Divider, Form, Input, Modal } from "antd";
+import { Divider, Form, Input, Modal } from "antd";
 
 import { useDomainMutation } from "@/hooks/useCreateOrUpdateDomain";
 
+import { Buttonv2 } from "@/components_v2/button";
+
 import { useRemoveDomainMutation } from "@/__generated__/queries/mutations.graphql";
 
-import { EnhancedButton } from "../buttons";
 import { CopyToClipboard } from "../clipboard";
 
 export const NewDomain: React.FC<{
@@ -88,15 +89,15 @@ export const NewDomain: React.FC<{
         <br />
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           {!mapped && (
-            <EnhancedButton type="dark" htmlType="submit">
+            <Buttonv2 variant="dark" type="submit">
               Map my domain
-            </EnhancedButton>
+            </Buttonv2>
           )}
 
           {mapped && (
-            <Button type="primary" onClick={removeMapping} danger>
+            <Buttonv2 variant="danger" onClick={removeMapping}>
               Remove Mapping
-            </Button>
+            </Buttonv2>
           )}
         </Form.Item>
       </Form>

@@ -2,6 +2,7 @@ import { PageHeader } from "antd";
 import { useRouter } from "next/router";
 import { MouseEvent, ReactNode, useState } from "react";
 
+import { Buttonv2 } from "@/components_v2/button";
 import { Button } from "@/components_v2/button/button";
 import { Modal } from "@/components_v2/modal";
 
@@ -25,9 +26,10 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
         className="site-page-header"
         title={title}
         extra={[
-          <Button
+          <Buttonv2
+            size="normal"
             key="1"
-            testid="createPostBtn"
+            data-testid="createPostBtn"
             onClick={() =>
               isCreativesActive()
                 ? setShowModal(true)
@@ -42,7 +44,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
                 ? "Creative"
                 : "Page"
               : "Post"}
-          </Button>,
+          </Buttonv2>,
         ]}
       >
         {children}
