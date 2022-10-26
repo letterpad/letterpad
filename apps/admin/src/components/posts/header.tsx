@@ -29,7 +29,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
           <Buttonv2
             size="normal"
             key="1"
-            test-id="createPostBtn"
+            data-testid="createPostBtn"
             onClick={() =>
               isCreativesActive()
                 ? setShowModal(true)
