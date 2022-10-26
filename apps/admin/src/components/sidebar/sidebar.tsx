@@ -14,12 +14,7 @@ import {
 import { useResponsiveLayout } from "@/components_v2/layouts/responsiveProvider";
 import { Menu } from "@/components_v2/menu";
 
-import { Stats } from "@/__generated__/__types__";
-import {
-  HomeQueryQuery,
-  SettingsFragmentFragment,
-  SettingsQueryResult,
-} from "@/__generated__/queries/queries.graphql";
+import { HomeQueryQuery } from "@/__generated__/queries/queries.graphql";
 
 import { Brand } from "./brand";
 import ProfileInfo from "../profile-info";
@@ -27,7 +22,7 @@ import ProfileInfo from "../profile-info";
 interface Props {
   settings?: HomeQueryQuery["settings"];
   me?: HomeQueryQuery["me"];
-  stats?: Stats;
+  stats?: HomeQueryQuery["stats"];
 }
 
 export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
@@ -35,6 +30,7 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
   const { setSidebarVisible, isMobileOrTablet } = useResponsiveLayout();
   const s = settings?.__typename === "Setting" ? settings : null;
   const _me = me?.__typename === "Author" ? me : null;
+  const _stats = stats?.__typename === "Stats" ? stats : null;
 
   return (
     <div className="100vh">
@@ -60,25 +56,25 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
               label: "Posts",
               icon: <BsEnvelope />,
               key: "/posts",
-              badge: stats?.posts?.published.toString(),
+              badge: _stats?.posts?.published.toString(),
             },
             {
               label: "Pages",
               icon: <HiOutlineDocumentText />,
               key: "/pages",
-              badge: stats?.pages?.published.toString(),
+              badge: _stats?.pages?.published.toString(),
             },
             {
               label: "Media",
               icon: <BsImages />,
               key: "/media",
-              badge: stats?.media?.toString(),
+              badge: _stats?.media?.toString(),
             },
             {
               label: "Tags",
               icon: <BsTags />,
               key: "/tags",
-              badge: stats?.tags?.toString(),
+              badge: _stats?.tags?.toString(),
             },
             {
               label: "Profile",
