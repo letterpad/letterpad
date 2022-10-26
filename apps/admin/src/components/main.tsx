@@ -1,4 +1,6 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import React, { useEffect } from "react";
 
 import { useTracking } from "@/hooks/usetracking";
@@ -23,12 +25,22 @@ interface IProps {
 }
 const Main = ({ Component, props }: IProps) => {
   useTracking();
+  const router = useRouter();
   const { data, loading } = useHomeQueryQuery();
+  const session = useSession();
+  const isPublic =
+    Component.isLogin || Component.isPublic || Component.isStatic;
 
   useEffect(() => {
     ThemeSwitcher.switch(localStorage.theme);
     initPageProgress();
   }, []);
+
+  useEffect(() => {
+    if (!isPublic && session.status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [isPublic, router, session.status]);
 
   if (loading) {
     return <>Loading...</>;
@@ -66,14 +78,15 @@ const Main = ({ Component, props }: IProps) => {
   }
 
   if (!node) {
-    const settings =
-      data?.settings.__typename === "Setting" ? data.settings : null;
-
-    const stats = data?.stats;
-
     node = (
       <TwoColumnLayout
-        left={<Sidebar settings={settings} me={data?.me} stats={data?.stats} />}
+        left={
+          <Sidebar
+            settings={data?.settings}
+            me={data?.me}
+            stats={data?.stats}
+          />
+        }
         right={
           <>
             <TopBar />
@@ -83,6 +96,7 @@ const Main = ({ Component, props }: IProps) => {
       />
     );
   }
+
   return (
     <>
       <Head>
