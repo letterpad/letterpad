@@ -24,11 +24,11 @@ export const Drawer: FC<Props> = ({
   return (
     <div
       className={
-        "fixed top-0 z-40 h-screen w-80 overflow-y-auto bg-white p-4 transition-transform  dark:bg-gray-800 " +
+        "fixed top-0 z-40 h-screen w-96 overflow-y-auto bg-white p-4 transition-transform  dark:bg-gray-800 " +
         (show
           ? className
           : dir === "right"
-          ? "right-0 translate-x-[calc(20vw)]"
+          ? "right-0 translate-x-[calc(25vw)]"
           : "left-0 translate-x-full")
       }
       tabIndex={-1}

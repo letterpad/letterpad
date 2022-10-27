@@ -12,7 +12,6 @@ import { columns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
 import { Table } from "@/components_v2/table";
 
-// import { Table } from "@/componentsv2/table";
 import { PostTypes, SortBy } from "@/__generated__/__types__";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 

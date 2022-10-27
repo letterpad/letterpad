@@ -1,7 +1,11 @@
-import { Col, Divider, Drawer, Input, Row, Switch } from "antd";
+import { Col, Divider, Row, Switch } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
+
+import { Drawer as Drawerv2 } from "@/components_v2/drawer";
+import { SearchInput } from "@/components_v2/input";
+import { TextArea } from "@/components_v2/textarea";
 
 import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
@@ -20,8 +24,6 @@ import PublishButton from "./publishButton";
 import QuickMenu from "./quickmenu";
 import Tags from "./tags";
 import ImageUpload from "../ImageUpload";
-
-const { TextArea } = Input;
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
@@ -88,21 +90,9 @@ const Actions = ({ post }: IProps) => {
         postHash={postHash}
         showDrawer={showDrawer}
       />
-      {visible && (
-        <Drawer
-          title="Settings"
-          placement="right"
-          closable={true}
-          onClose={onClose}
-          visible={visible}
-          width={drawerWidth}
-          zIndex={1000}
-          extra={[saving || <span>────</span>]}
-          // drawerStyle={{ background: "rgb(var(--sidebar-bg))" }}
-        >
-          {/* <Space direction="vertical" size="middle"> */}
+      <Drawerv2 show={visible} title="Settings" onClose={onClose} dir="right">
+        <div className="space-y-10 whitespace-normal">
           <PublishButton postId={post.id} menu={settings?.menu ?? []} />
-          <Divider />
           <Row justify="space-between" hidden={true || !isPost} gutter={16}>
             <Col span={20}>Featured</Col>
             <Col span={4}>
@@ -120,12 +110,12 @@ const Actions = ({ post }: IProps) => {
           </Row>
           <div>
             <label>{postVerb} Description</label>
-            <p className="help-text">
+            <p className="help-text mb-4">
               This will be used in displaying your post in your feed, in SEO and
               when sharing in social media.
             </p>
+
             <TextArea
-              showCount
               rows={4}
               maxLength={160}
               onChange={(e) => {
@@ -134,27 +124,25 @@ const Actions = ({ post }: IProps) => {
               defaultValue={post.excerpt ?? ""}
             />
           </div>
-          <Divider />
           <div>
             <label>Path</label>
-            <p className="help-text">
+            <p className="help-text mb-4">
               The URL of your post. Should contain only letters, numbers, - and
               should start with /{post.type}/.
             </p>
-            <Input.Search
+
+            <SearchInput
               onChange={(e) => setSlug(e.target.value)}
               value={slug}
-              enterButton="Set Path"
+              enterButton="Validate"
               onSearch={formatSlug}
               data-testid="slugInp"
             />
           </div>
-          <Divider />
           {isPost && <Tags post={post} />}
-          {isPost && <Divider />}
           <div>
             <label>Cover Image</label>
-            <p className="help-text">
+            <p className="help-text mb-4">
               Add a cover image to your blog. This image might be used in your
               feed, newsletters, recent posts, sharing in social platform, etc.
             </p>
@@ -176,12 +164,9 @@ const Actions = ({ post }: IProps) => {
           </div>
           <Divider />
           <DeletePost postId={post.id} />
-        </Drawer>
-      )}
+        </div>
+      </Drawerv2>
       <style jsx global>{`
-        .ant-drawer-header {
-          border-bottom: 1px solid rgb(var(--color-border));
-        }
         .image-upload-container .ant-upload,
         .image-upload-container .ant-upload-list-picture-card-container {
           min-height: 200px !important;
