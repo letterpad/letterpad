@@ -12,15 +12,14 @@ import { columns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
 import { Table } from "@/components_v2/table";
 
-// import { Table } from "@/componentsv2/table";
-import { PostTypes } from "@/__generated__/__types__";
+import { PostTypes, SortBy } from "@/__generated__/__types__";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 
 const { Content } = Layout;
 
 function Pages({ readOnly }: { readOnly: boolean }) {
   const { loading, data, error, refetch } = usePostsQuery({
-    variables: { filters: { type: PostTypes.Page } },
+    variables: { filters: { type: PostTypes.Page, sortBy: SortBy.Desc } },
   });
   const router = useRouter();
 

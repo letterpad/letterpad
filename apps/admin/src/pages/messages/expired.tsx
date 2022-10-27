@@ -15,5 +15,5 @@ const Expired = () => {
     </>
   );
 };
-Expired.isStatic = true;
+Expired.isMessage = true;
 export default Expired;

@@ -14,8 +14,9 @@ import { Page } from "@/page";
 
 import { initPageProgress } from "./../shared/utils";
 import LoginLayout from "./layouts/LoginLayout";
+import MessageLayout from "./layouts/MessageLayout";
 import AuthenticatedNoLayout from "./layouts/NoLayout";
-import StaticLayout from "./layouts/StaticLayout";
+import { LoadingScreen } from "./loading-screen";
 import { Sidebar } from "./sidebar";
 import { TopBar } from "./top-bar/topBar";
 
@@ -29,7 +30,7 @@ const Main = ({ Component, props }: IProps) => {
   const { data, loading } = useHomeQueryQuery();
   const session = useSession();
   const isPublic =
-    Component.isLogin || Component.isPublic || Component.isStatic;
+    Component.isLogin || Component.isPublic || Component.isMessage;
 
   useEffect(() => {
     ThemeSwitcher.switch(localStorage.theme);
@@ -43,7 +44,7 @@ const Main = ({ Component, props }: IProps) => {
   }, [isPublic, router, session.status]);
 
   if (loading) {
-    return <>Loading...</>;
+    return <LoadingScreen />;
   }
 
   let node: JSX.Element | null = null;
@@ -51,11 +52,11 @@ const Main = ({ Component, props }: IProps) => {
     node = <Component {...props} />;
   }
 
-  if (Component.isStatic) {
+  if (Component.isMessage) {
     node = (
-      <StaticLayout>
+      <MessageLayout>
         <Component {...props} />
-      </StaticLayout>
+      </MessageLayout>
     );
   }
 

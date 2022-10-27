@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import ReactTags from "react-tag-autocomplete";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
@@ -9,6 +9,7 @@ import { textToSlug } from "@/utils/slug";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
+  header: ReactNode;
 }
 
 interface Tag {
@@ -16,7 +17,7 @@ interface Tag {
   name: string;
 }
 
-const Tags = ({ post }: IProps) => {
+const Tags = ({ post, header }: IProps) => {
   const initialTags =
     post.tags?.__typename === "TagsNode" ? post.tags.rows : [];
   const [tags, setTags] = useState<Tag[]>(addTagsWithId(initialTags));
@@ -78,28 +79,21 @@ const Tags = ({ post }: IProps) => {
 
   return (
     <div>
-      <label>Tags</label>
-      <p className="help-text">
-        Tags are used to group your posts together. Without tags, your post wont
-        be visible in your blog. Add a tag and ensure its linked with
-        navigation.{" "}
-        <a href="https://docs.letterpad.app/navigation-menu">Learn more</a>
-      </p>
-      <ReactTags
-        tags={tags}
-        onDelete={onDelete}
-        onAddition={onAddition}
-        allowNew
-        suggestions={suggestions}
-        delimiters={["Enter", "Tab", ","]}
-      />
+      {header}
+      <div className="w-full rounded-md border border-gray-300 bg-gray-50  p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500">
+        <ReactTags
+          tags={tags}
+          onDelete={onDelete}
+          onAddition={onAddition}
+          allowNew
+          suggestions={suggestions}
+          delimiters={["Enter", "Tab", ","]}
+        />
+      </div>
       <style jsx global>{`
         .react-tags {
           position: relative;
           padding: 6px 0 0 6px;
-          border: 1px solid rgb(var(--color-border));
-          border-radius: 1px;
-
           /* shared font styles */
           font-size: 1em;
           line-height: 1.2;
@@ -117,10 +111,10 @@ const Tags = ({ post }: IProps) => {
           box-sizing: border-box;
           margin: 0 6px 6px 0;
           padding: 6px 8px;
-          border: 1px solid rgb(var(--color-border));
-          border-radius: 2px;
-          background: var(--content-bg);
-
+          border: 1px solid #0b5cbe;
+          border-radius: 6px;
+          background: #0b5cbe;
+          color: #fff;
           /* match the font styles */
           font-size: inherit;
           line-height: inherit;
@@ -195,7 +189,6 @@ const Tags = ({ post }: IProps) => {
 
         .react-tags__suggestions li mark {
           background: none;
-          color: rgb(var(--color));
           margin: 0;
           padding: 0;
           font-weight: bold;

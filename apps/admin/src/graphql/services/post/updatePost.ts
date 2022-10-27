@@ -91,7 +91,7 @@ export const updatePost = async (
     if (args.data.slug) {
       newPostArgs.data.slug = await slugify(
         prisma.post,
-        textToSlug(args.data.slug),
+        textToSlug(args.data.slug.split("/").pop() ?? ""),
         existingPost.author_id,
       );
     }

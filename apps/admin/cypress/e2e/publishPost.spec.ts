@@ -19,7 +19,7 @@ describe("Publishing", () => {
     cy.wait("@updatePostMutation");
 
     cy.getTestId("postStatus").should("have.text", "published");
-    cy.get(".ant-drawer-close").click();
+    cy.getTestId("close-drawer").click();
     cy.get(".ant-page-header-back-button").click();
   });
 
@@ -68,7 +68,7 @@ describe("Publishing", () => {
     cy.getTestId("publishBtn").click();
     cy.getTestId("postStatus").should("have.text", "published");
 
-    cy.get(".ant-drawer-close").click();
+    cy.getTestId("close-drawer").click();
 
     cy.setContent({
       content: "updated content",
