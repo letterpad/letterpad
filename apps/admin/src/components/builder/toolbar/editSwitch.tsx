@@ -7,7 +7,8 @@ export const EditSwitch = () => {
   const { preview, setPreview } = useBuilderContext();
   return (
     <Buttonv2
-      variant="primary"
+      variant="dark"
+      size="small"
       onClick={() => setPreview(!preview)}
       className="btn flex h-full flex-row items-center justify-end gap-1 px-4"
     >

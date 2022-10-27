@@ -171,7 +171,7 @@ const Wrapper: FC<{ children: ReactNode; className?: string }> = ({ children, cl
   return (
     <div
       className={
-        'margin-auto flex h-full w-full flex-col items-center justify-center p-6 text-center leading-6 text-gray-800 dark:text-white lg:py-20 lg:px-40 ' +
+        'margin-auto px:10 flex h-full w-full flex-col items-center justify-center p-6 py-20 text-center leading-6 text-gray-800 dark:text-white lg:px-40 ' +
         className
       }
     >

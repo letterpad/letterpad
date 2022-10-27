@@ -74,7 +74,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
 
   return (
     <>
-      <Space direction="vertical" style={{ display: "flex" }}>
+      <div className="flex flex-col gap-4">
         {!published && (
           <>
             <p>
@@ -93,11 +93,11 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
         )}
         {published && (
           <>
-            <label>
+            <label className="flex flex-col">
               Unpublish this {post.type} ? &nbsp;
-              <p className="help-text mb-4">
+              <span className="help-text mb-4 block">
                 Your {post.type} will no longer be visible to users.
-              </p>
+              </span>
               <Buttonv2
                 variant="dark"
                 onClick={() => publish(false)}
@@ -108,7 +108,7 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
             </label>
           </>
         )}
-      </Space>
+      </div>
     </>
   );
 };

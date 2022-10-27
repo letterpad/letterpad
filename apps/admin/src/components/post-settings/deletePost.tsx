@@ -18,7 +18,7 @@ export const DeletePost: React.VFC<Props> = ({ postId }) => {
 
   const deletePost = () => {
     updatePost({ id: postId, status: PostStatusOptions.Trashed });
-    router.push(isPost ? "/posts" : "/pages");
+    router.push(isPost ? "/posts" : "/creatives");
   };
   return (
     <Button type="primary" danger onClick={deletePost} block>

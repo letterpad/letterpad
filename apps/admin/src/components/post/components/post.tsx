@@ -91,7 +91,7 @@ function Post() {
           </Content>
         )}
 
-      {!loading && post?.page_type === PageType.StoryBuilder && (
+      {!loading && post?.page_type === PageType["Story Builder"] && (
         <div className="my-10">
           <Title
             onEnter={() => helpers?.focus()}

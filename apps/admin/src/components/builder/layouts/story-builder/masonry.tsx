@@ -58,7 +58,7 @@ export const SectionMasonry: FC<Props> = ({ item, position }) => {
   if (item.type !== "masonry" || !item.masonry) return null;
 
   return (
-    <Wrapper className={`row-${rowIndex} lg:py-0`}>
+    <Wrapper className={`row-${rowIndex}`}>
       <MasonryGrid
         items={reorder(item.masonry, 4) ?? []}
         onSelect={onSelect}

@@ -5,6 +5,7 @@ import { Select } from "@/components_v2/select";
 import {
   PostsFilters,
   PostStatusOptions,
+  PostTypes,
   SortBy,
 } from "@/__generated__/__types__";
 import { PageType } from "@/graphql/types";
@@ -147,15 +148,19 @@ const Filters = ({
               eventCategory: "filters",
               eventLabel: "pagetype dropdown",
             });
-            setFilters({ ...filters, page_type: key as PageType });
+            setFilters({
+              ...filters,
+              page_type: key as PageType,
+              // type: PostTypes.Page,
+            });
             onChange({ ...filters, page_type: key as PageType });
           }}
-          selected={filters.sortBy ?? "all"}
+          selected={filters.page_type ?? "all"}
           items={[
             { key: "all", label: "All" },
             ...Object.keys(PageType).map((type) => ({
-              key: type,
-              label: PageType[type],
+              key: PageType[type],
+              label: type,
             })),
           ]}
         />
