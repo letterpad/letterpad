@@ -1,6 +1,8 @@
 import { Button, Input, message, Modal } from "antd";
 import React, { useState } from "react";
 
+import { Buttonv2 } from "@/components_v2/button";
+
 import { basePath } from "@/constants";
 
 const key = "feedback";
@@ -43,9 +45,9 @@ const FeedbackForm = () => {
 
   return (
     <>
-      <Button type="link" onClick={showModal}>
+      <Buttonv2 size="small" onClick={showModal} variant="ghost">
         Report
-      </Button>
+      </Buttonv2>
       <Modal
         title="Report an issue"
         visible={isModalVisible}

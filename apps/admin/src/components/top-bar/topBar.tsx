@@ -1,4 +1,3 @@
-import { Button } from "antd";
 import { CgClose } from "react-icons/cg";
 import { HiOutlineMenu } from "react-icons/hi";
 
@@ -27,10 +26,16 @@ export const TopBar = () => {
         )}
       </div>
       {SavingIndicator}
-      <div className="flex flex-row">
-        <Button type="link" href="https://docs.letterpad.app/" target="_blank">
-          Help
-        </Button>
+      <div className="flex flex-row gap-2">
+        <Buttonv2 size="small" variant="ghost">
+          <a
+            href="https://docs.letterpad.app/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Help
+          </a>
+        </Buttonv2>
         <FeedbackForm />
         <ThemeSwitcher />
       </div>

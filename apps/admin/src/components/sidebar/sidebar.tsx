@@ -10,6 +10,7 @@ import {
   HiOutlineHome,
   HiOutlineUsers,
 } from "react-icons/hi";
+import { RiLayout4Line } from "react-icons/ri";
 
 import { useResponsiveLayout } from "@/components_v2/layouts/responsiveProvider";
 import { Menu } from "@/components_v2/menu";
@@ -63,9 +64,9 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
                 badge: _stats?.posts?.published.toString(),
               },
               {
-                label: "Pages",
-                icon: <HiOutlineDocumentText />,
-                key: "/pages",
+                label: "Creatives",
+                icon: <RiLayout4Line />,
+                key: "/creatives",
                 badge: _stats?.pages?.published.toString(),
               },
               {

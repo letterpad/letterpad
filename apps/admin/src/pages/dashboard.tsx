@@ -7,6 +7,7 @@ import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 
 import MetricsBar from "@/components/metrics/MetricsBar";
+import { Select } from "@/components_v2/select";
 
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 import { basePath } from "@/constants";
@@ -83,19 +84,20 @@ const Metrics = () => {
       </PageHeader>
       <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
-          <select
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-              setDays(Number(e.target.value))
-            }
-            value={days}
-          >
-            <option value={0}>Today</option>
-            <option value={1}>Yesterday</option>
-            <option value={7}>Last Week</option>
-            <option value={14}>Last 2 weeks</option>
-            <option value={30}>Last 1 Month</option>
-            <option value={90}>Last 3 Months</option>
-          </select>{" "}
+          <Select
+            className="w-32"
+            onChange={(key) => setDays(Number(key))}
+            selected={days}
+            id="select-days"
+            items={[
+              { key: 0, label: "Today" },
+              { key: 30, label: "Yesterday" },
+              { key: 90, label: "Last week" },
+              { key: 14, label: "Last 2 weeks" },
+              { key: 30, label: "Last 1 month" },
+              { key: 90, label: "Last 3 months" },
+            ]}
+          />
           {loading && <LoadingOutlined />}
           <Divider />
           <Row gutter={16}>

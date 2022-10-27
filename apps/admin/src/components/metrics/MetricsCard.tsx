@@ -19,7 +19,7 @@ const MetricCard = ({
 
   return (
     <Col>
-      <div className={styles.card}>
+      <div className="flex w-24 flex-col justify-center gap-8 text-gray-600 dark:text-gray-200">
         <animated.div className={styles.value}>
           {props.x.interpolate((x) => format(x))}
         </animated.div>

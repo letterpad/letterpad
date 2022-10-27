@@ -2,14 +2,22 @@ import { ChangeEvent, FC } from "react";
 
 interface Props {
   title?: string;
-  selected: string;
-  items: { key: string; label: string }[];
-  onChange: (key: string) => void;
+  selected: any;
+  items: { key: any; label: any }[];
+  onChange: (key: any) => void;
   id: string;
+  className?: string;
 }
-export const Select: FC<Props> = ({ title, selected, items, onChange, id }) => {
+export const Select: FC<Props> = ({
+  title,
+  selected,
+  items,
+  onChange,
+  id,
+  className,
+}) => {
   return (
-    <div>
+    <div className={className}>
       {title && (
         <label
           htmlFor={id}

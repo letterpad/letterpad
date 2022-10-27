@@ -10,6 +10,7 @@ import ErrorMessage from "@/components/ErrorMessage";
 import Filters from "@/components/filters";
 import { columns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
+import { Buttonv2 } from "@/components_v2/button";
 import { Table } from "@/components_v2/table";
 
 import { PostTypes, SortBy } from "@/__generated__/__types__";
@@ -30,12 +31,24 @@ function Pages({ readOnly }: { readOnly: boolean }) {
   return (
     <>
       <Head>
-        <title>Pages</title>
+        <title>Creatives</title>
       </Head>
-      <Header type={PostTypes.Page} title="Pages">
-        <span className="help-text">
-          Here you will find the list of pages for your blog.
-        </span>
+      <Header type={PostTypes.Page} title="Creatives">
+        <div className="flex flex-row items-center justify-start">
+          <span className="help-text">
+            Creatives add more customisation to your site. Create portfolios,
+            photo stories, write a picture book etc.
+          </span>
+          <Buttonv2 size="small" variant="ghost">
+            <a
+              href="https://letterpad.app/admin/try-creatives"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Demo
+            </a>
+          </Buttonv2>
+        </div>
       </Header>
       <Content>
         {readOnly && (
@@ -47,7 +60,7 @@ function Pages({ readOnly }: { readOnly: boolean }) {
         <div className="site-layout-background  px-4 py-4">
           <Filters
             showTags={false}
-            showPageTypes={false}
+            showPageTypes={true}
             onChange={(filters) => {
               refetch({ filters: { ...filters, type: PostTypes.Page } });
             }}

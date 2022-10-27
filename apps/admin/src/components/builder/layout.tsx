@@ -16,7 +16,11 @@ export const Layout: FC<Props> = ({ editable = true }) => {
   const { grid } = useBuilderContext();
   return (
     <div id="creative">
-      {editable && <EditSwitch />}
+      {editable && (
+        <div className="flex justify-end p-4">
+          <EditSwitch />
+        </div>
+      )}
       <div className="flex flex-col">
         {grid.map((row, rowIndex) => {
           const isPrevRowImageLeft =

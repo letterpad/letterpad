@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
+import { BiSun } from "react-icons/bi";
+import { BsMoonStars } from "react-icons/bs";
 
 import { basePath } from "@/constants";
 import { EventAction, track } from "@/track";
@@ -36,7 +38,11 @@ const ThemeSwitcher = () => {
         className="wrapper"
         onClick={() => switchTheme(theme === "dark" ? "light" : "dark")}
       >
-        {theme === "light" ? <Icon dark /> : <Icon />}
+        {theme === "dark" ? (
+          <BiSun fill="#fff" size={20} />
+        ) : (
+          <BsMoonStars size={20} />
+        )}
       </div>
 
       <style jsx>{`

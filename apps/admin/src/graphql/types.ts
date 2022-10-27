@@ -168,6 +168,6 @@ export type ValueOf<T> = T[keyof T];
 
 export enum PageType {
   Default = "default",
-  StoryBuilder = "story-builder",
+  "Story Builder" = "story-builder",
   // Grid = "grid",
 }

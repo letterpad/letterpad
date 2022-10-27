@@ -9,8 +9,6 @@ import { PostTypes } from "@/__generated__/__types__";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 
-import { isCreativesActive } from "./switch";
-
 interface IProps {
   type: PostTypes;
   title: string;
@@ -24,19 +22,20 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const onClick = (type, pageType: PageType) => {
     track({
       eventAction: EventAction.Click,
-      eventCategory: "page",
-      eventLabel: pageType,
+      eventCategory: "New",
+      eventLabel: `${type} - ${pageType}`,
     });
     router.push(`/api/create?type=${type}&page_type=${pageType}`);
   };
 
   const onNewClick = () => {
-    isCreativesActive() ? setShowModal(true) : onClick(type, PageType.Default);
+    if (type === PostTypes.Post) {
+      return onClick(type, PageType.Default);
+    }
+    setShowModal(true);
   };
 
-  const buttonLabel = `New ${
-    type === "page" ? (isCreativesActive() ? "Creative" : "Page") : "Post"
-  }`;
+  const buttonLabel = `New ${type === "page" ? "Creative" : "Post"}`;
 
   return (
     <>
@@ -68,7 +67,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
             description={
               "Grid of photos and text. Ideal for showcasing pictures."
             }
-            onClick={() => onClick(type, PageType.StoryBuilder)}
+            onClick={() => onClick(type, PageType["Story Builder"])}
           />
           <Card
             title={"Rich Text Page"}

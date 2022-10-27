@@ -29,6 +29,7 @@ const classes = {
       "bg-gray-200 hover:bg-gray-800 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 text-gray-900 hover:text-white",
     danger:
       "bg-red-500 hover:bg-red-800 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-white",
+    ghost: "text-blue-600",
   },
 };
 
@@ -36,7 +37,14 @@ interface Props {
   children: ReactNode;
   pill?: boolean;
   size?: "small" | "normal" | "large";
-  variant?: "primary" | "secondary" | "danger" | "dark" | "success" | "warning";
+  variant?:
+    | "primary"
+    | "secondary"
+    | "danger"
+    | "dark"
+    | "success"
+    | "warning"
+    | "ghost";
   className?: string;
   disabled?: boolean;
   onClick?: (e: MouseEvent) => void;

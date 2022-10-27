@@ -79,7 +79,7 @@ Cypress.Commands.add("enterTags", enterTags);
 Cypress.Commands.add("visitLogin", () => cy.visit("/login"));
 Cypress.Commands.add("visitHome", () => cy.visit("/home"));
 Cypress.Commands.add("visitPosts", () => cy.visit("/posts"));
-Cypress.Commands.add("visitPages", () => cy.visit("/pages"));
+Cypress.Commands.add("visitPages", () => cy.visit("/creatives"));
 Cypress.Commands.add("visitProfile", () => cy.visit("/profile"));
 Cypress.Commands.add("visitSettings", () => cy.visit("/settings"));
 
