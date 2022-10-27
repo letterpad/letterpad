@@ -131,7 +131,7 @@ const Builder = () => {
           <ThemeSwitcher />
         </div>
       </div>
-      <Layout type={PageType.StoryBuilder} editable={false} />
+      <Layout type={PageType["Story Builder"]} editable={false} />
     </>
   );
 };

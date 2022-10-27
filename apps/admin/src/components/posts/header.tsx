@@ -68,7 +68,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
             description={
               "Grid of photos and text. Ideal for showcasing pictures."
             }
-            onClick={() => onClick(type, PageType.StoryBuilder)}
+            onClick={() => onClick(type, PageType["Story Builder"])}
           />
           <Card
             title={"Rich Text Page"}

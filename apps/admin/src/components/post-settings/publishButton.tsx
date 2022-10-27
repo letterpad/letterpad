@@ -77,9 +77,8 @@ const PublishButton: React.VFC<Props> = ({ postId, menu }) => {
       <div className="flex flex-col gap-4">
         {!published && (
           <>
-            <p>
-              <label>Ready to publish your {post.type} ?</label>
-            </p>
+            <label>Ready to publish your {post.type} ?</label>
+
             <Buttonv2
               variant="success"
               size="normal"

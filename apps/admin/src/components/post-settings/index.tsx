@@ -10,6 +10,7 @@ import { TextArea } from "@/components_v2/textarea";
 import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
 import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
+import { PageType } from "@/graphql/types";
 import { subscribe } from "@/shared/eventBus";
 import { debounce } from "@/shared/utils";
 import {
@@ -86,6 +87,8 @@ const Actions = ({ post }: IProps) => {
   return (
     <>
       <QuickMenu
+        grammar={post.page_type !== PageType["Story Builder"]}
+        preview={post.page_type !== PageType["Story Builder"]}
         siteUrl={settings?.site_url ?? ""}
         postHash={postHash}
         showDrawer={showDrawer}
