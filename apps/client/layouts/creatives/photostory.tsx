@@ -131,7 +131,7 @@ export const SectionMasonry: FC<{ item: BlockItem; position: [rowIndex: number] 
   const [rowIndex] = position;
 
   useEffect(() => {
-    // disableScroll(selectedIndex > 0);
+    disableScroll(selectedIndex > 0);
   }, [selectedIndex]);
 
   const onImageChange = (index: number) => {
@@ -187,4 +187,12 @@ const getHeight = (size: 'small' | 'big') => {
   if (size === 'big') return h;
   if (size === 'banner') return 200;
   return h;
+};
+
+export const disableScroll = (flag: boolean) => {
+  if (flag) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'scroll';
+  }
 };
