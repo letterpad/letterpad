@@ -22,10 +22,17 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const onClick = (type, pageType: PageType) => {
     track({
       eventAction: EventAction.Click,
-      eventCategory: "page",
-      eventLabel: pageType,
+      eventCategory: "New",
+      eventLabel: `${type} - ${pageType}`,
     });
     router.push(`/api/create?type=${type}&page_type=${pageType}`);
+  };
+
+  const onNewClick = () => {
+    if (type === PostTypes.Post) {
+      return onClick(type, PageType.Default);
+    }
+    setShowModal(true);
   };
 
   const buttonLabel = `New ${type === "page" ? "Creative" : "Post"}`;
@@ -40,7 +47,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
             size="normal"
             key="1"
             data-testid="createPostBtn"
-            onClick={() => setShowModal(true)}
+            onClick={() => onNewClick()}
           >
             {buttonLabel}
           </Buttonv2>,
