@@ -41,7 +41,7 @@ export const Drawer: FC<Props> = ({
           (show
             ? className
             : dir === "right"
-            ? "right-0 translate-x-[calc(25vw)]"
+            ? "right-0 translate-x-[calc(100vw)]"
             : "left-0 translate-x-full")
         }
         tabIndex={-1}
