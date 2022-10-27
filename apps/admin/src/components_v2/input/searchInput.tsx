@@ -1,5 +1,12 @@
 import classNames from "classnames";
-import React, { ChangeEvent, FC, forwardRef, HTMLProps, useState } from "react";
+import React, {
+  ChangeEvent,
+  FC,
+  forwardRef,
+  HTMLProps,
+  useEffect,
+  useState,
+} from "react";
 
 const classes = {
   base: "px-4 py-2 focus:outline-none transition ease-in-out duration-300 rounded-md flex items-center justify-center flex-row",
@@ -46,6 +53,10 @@ export const SearchInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
     enterButton,
     ...rest
   } = props;
+
+  useEffect(() => {
+    setInputValue(props.value ?? "");
+  }, [props.value]);
 
   return (
     <div className="relative w-full">
