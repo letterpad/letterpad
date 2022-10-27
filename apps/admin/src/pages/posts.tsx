@@ -79,7 +79,11 @@ function Posts({ readOnly }: { readOnly: boolean }) {
         )}
         <div className="site-layout-background  px-4 py-4">
           <TagsProvider readOnly={readOnly}>
-            <Filters onChange={(filters) => refetch({ filters })} />
+            <Filters
+              onChange={(filters) => {
+                refetch({ filters: { ...filters, type: PostTypes.Post } });
+              }}
+            />
           </TagsProvider>
           <Table
             columns={postsColumns}

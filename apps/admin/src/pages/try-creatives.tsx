@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 
 import { Layout } from "@/components/builder";
 import {
@@ -26,7 +26,7 @@ const TryCreatives = () => {
   }, []);
   return (
     <BuilderContext
-      data={[]}
+      data={introData}
       onSave={(newData) => {
         localStorage.setItem("page_data", JSON.stringify(newData));
       }}
@@ -38,49 +38,52 @@ const TryCreatives = () => {
 
 const Builder = () => {
   const { setPreview, setGrid } = useBuilderContext();
+  const [activeCreative, setActiveCreative] = useState("intro");
   const router = useRouter();
 
-  const loadCreative = (e: ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    track({
-      eventAction: EventAction.Click,
-      eventCategory: "creatives-demo",
-      eventLabel: value,
-    });
+  const loadCreative = useCallback(
+    (value: string) => {
+      track({
+        eventAction: EventAction.Click,
+        eventCategory: "creatives-demo",
+        eventLabel: value,
+      });
 
-    switch (value) {
-      case "portfolio":
-        setGrid(portfolioData);
-        setPreview(true);
-        break;
-      case "wedding":
-        setGrid(weddingData);
-        setPreview(true);
-        break;
-      case "painting":
-        setGrid(paintingData);
-        setPreview(true);
-        break;
-      case "new":
-        setGrid([]);
-        setPreview(false);
-        break;
-      case "intro":
-        setGrid(introData);
-        setPreview(true);
-        break;
+      switch (value) {
+        case "portfolio":
+          setGrid(portfolioData);
+          setPreview(true);
+          break;
+        case "wedding":
+          setGrid(weddingData);
+          setPreview(true);
+          break;
+        case "painting":
+          setGrid(paintingData);
+          setPreview(true);
+          break;
+        case "new":
+          setGrid([]);
+          setPreview(false);
+          break;
+        case "intro":
+          setGrid(introData);
+          setPreview(true);
+          break;
 
-      default:
-        setGrid([]);
-    }
-  };
+        default:
+          setGrid([]);
+      }
+    },
+    [setGrid, setPreview],
+  );
 
   useEffect(() => {
     setPreview(true);
     setTimeout(() => {
-      setGrid(introData);
-    });
-  }, [setGrid, setPreview]);
+      loadCreative(activeCreative);
+    }, 0);
+  }, [activeCreative, loadCreative, setPreview]);
 
   return (
     <>
@@ -93,15 +96,29 @@ const Builder = () => {
         </h1>
         <div className=" flex h-10 justify-end gap-2 md:gap-4">
           <select
-            onChange={loadCreative}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+              setActiveCreative(e.target.value)
+            }
             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           >
-            <option value="0">Select</option>
-            <option value="new">New</option>
-            <option value="intro">Intro</option>
-            <option value="portfolio">Creative</option>
-            <option value="wedding">Wedding</option>
-            <option value="painting">Painting</option>
+            <option value="0" selected={activeCreative === "0"}>
+              Select
+            </option>
+            <option value="new" selected={activeCreative === "new"}>
+              New
+            </option>
+            <option value="intro" selected={activeCreative === "intro"}>
+              Intro
+            </option>
+            <option value="portfolio" selected={activeCreative === "portfolio"}>
+              Creative
+            </option>
+            <option value="wedding" selected={activeCreative === "wedding"}>
+              Wedding
+            </option>
+            <option value="painting" selected={activeCreative === "painting"}>
+              Painting
+            </option>
           </select>
           <EditSwitch />
           <Buttonv2

@@ -18,5 +18,7 @@ export const Logo: FC<Props> = ({ width = 50, isDarkBg }) => {
     logo = "/admin/logo/lp_logo_white.svg";
   }
 
+  logo = "/admin/logo/logo.png";
+
   return <Image src={logo} width={width} height={width} alt="Letterpad" />;
 };

@@ -24,7 +24,7 @@ export const introData: Block[] = [
     columns: 1,
     data: [
       {
-        text: "%3Chtml%3E%3Cbody%3E%3Ch1%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22font-family%3A%20'Major%20Mono%20Display'%3B%22%3EWhat%20are%20Creatives%3F%3C%2Fspan%3E%3C%2Fh1%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%C2%A0%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3ECreatives%20is%20a%20framework%20to%20build%20landing%20pages%20with%20a%20set%20of%20tools.%20Its%20a%20story%20builder%20which%20allows%20you%20to%20lay%20your%20thoughts%20with%20pictures%20and%20text.%C2%A0%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
+        text: "%3Chtml%3E%3Cbody%3E%3Ch1%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22font-family%3A%20'Major%20Mono%20Display'%3B%20font-size%3A%2036pt%3B%22%3EWhat%20are%20Creatives%3F%3C%2Fspan%3E%3C%2Fh1%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%C2%A0%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3ECreatives%20is%20a%20framework%20to%20build%20landing%20pages%20with%20a%20set%20of%20tools.%20Its%20a%20story%20builder%20which%20allows%20you%20to%20lay%20your%20thoughts%20with%20pictures%20and%20text.%C2%A0%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
         type: "text",
       },
     ],
@@ -115,12 +115,6 @@ export const introData: Block[] = [
     cover: "banner",
   },
   {
-    id: "b8291d01",
-    columns: 1,
-    data: [{ text: "", type: "text" }],
-    cover: "banner",
-  },
-  {
     id: "f7f0623e",
     columns: 1,
     data: [
@@ -205,17 +199,11 @@ export const introData: Block[] = [
     cover: "big",
   },
   {
-    id: "125c0f34",
-    columns: 1,
-    data: [{ text: "", type: "text" }],
-    cover: "banner",
-  },
-  {
     id: "8f21ec2d",
     columns: 1,
     data: [
       {
-        text: "%3Chtml%3E%3Cbody%3E%3Ch1%3E%3Cspan%20style%3D%22color%3A%20rgb(255%2C%20255%2C%20255)%3B%22%3EFull%20size%20image%20%3F%20%3C%2Fspan%3E%3C%2Fh1%3E%0A%3Cp%3E%3Cspan%20style%3D%22color%3A%20rgb(255%2C%20255%2C%20255)%3B%20font-family%3A%20Caveat%3B%20font-size%3A%2018pt%3B%22%3EYou%20can%20also%20add%20full%20size%20image.%20Because%20few%C2%A0%20are%20special.%3C%2Fspan%3E%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
+        text: "%3Chtml%3E%3Cbody%3E%3Ch1%3E%3Cspan%20style%3D%22color%3A%20rgb(255%2C%20255%2C%20255)%3B%22%3EFull%20size%20image%3F%C2%A0%3C%2Fspan%3E%3C%2Fh1%3E%0A%3Cp%3E%3Cspan%20style%3D%22color%3A%20rgb(255%2C%20255%2C%20255)%3B%20font-family%3A%20Caveat%3B%20font-size%3A%2018pt%3B%22%3EYou%20can%20also%20add%20full%20size%20image.%20Because%20few%C2%A0%20are%20special.%3C%2Fspan%3E%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
         type: "text",
         bgColor: "#222027",
       },
@@ -243,7 +231,7 @@ export const introData: Block[] = [
     columns: 1,
     data: [
       {
-        text: "%3Chtml%3E%3Cbody%3E%3Ch1%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22color%3A%20rgb(255%2C%20255%2C%20255)%3B%22%3EWant%20to%20use%20Creatives%20%3F%3C%2Fspan%3E%3C%2Fh1%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22color%3A%20rgb(255%2C%20255%2C%20255)%3B%22%3EIts%20free%3C%2Fspan%3E.%20%3Cspan%20style%3D%22color%3A%20rgb(53%2C%20152%2C%20219)%3B%22%3E%3Ca%20style%3D%22color%3A%20rgb(53%2C%20152%2C%20219)%3B%22%20href%3D%22https%3A%2F%2Fletterpad.app%2Fadmin%2Fregister%22%3ERegister%20now%3C%2Fa%3E.%3C%2Fspan%3E%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
+        text: "%3Chtml%3E%3Cbody%3E%3Ch1%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22color%3A%20rgb(255%2C%20255%2C%20255)%3B%22%3EWant%20to%20use%20Creatives%20%3F%3C%2Fspan%3E%3C%2Fh1%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22color%3A%20rgb(255%2C%20255%2C%20255)%3B%22%3EIts%20free%3C%2Fspan%3E.%20%3Cspan%20style%3D%22color%3A%20rgb(53%2C%20152%2C%20219)%3B%22%3E%3Ca%20style%3D%22color%3A%20rgb(53%2C%20152%2C%20219)%3B%22%20href%3D%22register%22%3ERegister%20now%3C%2Fa%3E.%3C%2Fspan%3E%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
         type: "text",
         bgColor: "#000000",
       },
