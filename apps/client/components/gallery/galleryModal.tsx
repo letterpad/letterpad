@@ -3,10 +3,9 @@ import { FC } from 'react';
 
 import { Controls } from './controls';
 import { ThumbnailList } from './thumbnails';
-import { BlockMasonry } from '../builder/types';
 
-interface Props {
-  items: BlockMasonry[];
+interface Props<T = any> {
+  items: T[];
   onSelect: (index: number) => void;
   index: number;
   onClose: () => void;

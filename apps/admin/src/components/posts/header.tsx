@@ -7,6 +7,7 @@ import { Modal } from "@/components_v2/modal";
 
 import { PostTypes } from "@/__generated__/__types__";
 import { PageType } from "@/graphql/types";
+import { EventAction, track } from "@/track";
 
 import { isCreativesActive } from "./switch";
 
@@ -19,6 +20,24 @@ interface IProps {
 export const Header: React.FC<IProps> = ({ type, title, children }) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+
+  const onClick = (type, pageType: PageType) => {
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: "page",
+      eventLabel: pageType,
+    });
+    router.push(`/api/create?type=${type}&page_type=${pageType}`);
+  };
+
+  const onNewClick = () => {
+    isCreativesActive() ? setShowModal(true) : onClick(type, PageType.Default);
+  };
+
+  const buttonLabel = `New ${
+    type === "page" ? (isCreativesActive() ? "Creative" : "Page") : "Post"
+  }`;
+
   return (
     <>
       <PageHeader
@@ -29,20 +48,9 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
             size="normal"
             key="1"
             data-testid="createPostBtn"
-            onClick={() =>
-              isCreativesActive()
-                ? setShowModal(true)
-                : router.push(
-                    `/api/create?type=${type}&page_type=${PageType.Default}`,
-                  )
-            }
+            onClick={() => onNewClick()}
           >
-            New{" "}
-            {type === "page"
-              ? isCreativesActive()
-                ? "Creative"
-                : "Page"
-              : "Post"}
+            {buttonLabel}
           </Buttonv2>,
         ]}
       >
@@ -60,22 +68,14 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
             description={
               "Grid of photos and text. Ideal for showcasing pictures."
             }
-            onClick={() =>
-              router.push(
-                `/api/create?type=${type}&page_type=${PageType.StoryBuilder}`,
-              )
-            }
+            onClick={() => onClick(type, PageType.StoryBuilder)}
           />
           <Card
             title={"Rich Text Page"}
             description={
               "Page with rich text. Ideal for long text content with some images."
             }
-            onClick={() =>
-              router.push(
-                `/api/create?type=${type}&page_type=${PageType.Default}`,
-              )
-            }
+            onClick={() => onClick(type, PageType.Default)}
           />
         </div>
       </Modal>
