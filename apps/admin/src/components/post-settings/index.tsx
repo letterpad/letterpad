@@ -1,4 +1,4 @@
-import { Col, Divider, Row, Switch } from "antd";
+import { Col, Row, Switch } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
@@ -109,12 +109,11 @@ const Actions = ({ post }: IProps) => {
             </Col>
           </Row>
           <div>
-            <label>{postVerb} Description</label>
-            <p className="help-text mb-4">
-              This will be used in displaying your post in your feed, in SEO and
-              when sharing in social media.
-            </p>
-
+            <Heading
+              heading={`${postVerb} Description`}
+              subheading={`This will be used in displaying your post in your feed, in SEO and
+              when sharing in social media.`}
+            />
             <TextArea
               rows={4}
               maxLength={160}
@@ -125,12 +124,11 @@ const Actions = ({ post }: IProps) => {
             />
           </div>
           <div>
-            <label>Path</label>
-            <p className="help-text mb-4">
-              The URL of your post. Should contain only letters, numbers, - and
-              should start with /{post.type}/.
-            </p>
-
+            <Heading
+              heading="Path"
+              subheading={`The URL of your post. Should contain only letters, numbers, - and
+              should start with /${post.type}/.`}
+            />
             <SearchInput
               onChange={(e) => setSlug(e.target.value)}
               value={slug}
@@ -139,13 +137,33 @@ const Actions = ({ post }: IProps) => {
               data-testid="slugInp"
             />
           </div>
-          {isPost && <Tags post={post} />}
+          {isPost && (
+            <Tags
+              post={post}
+              header={
+                <Heading
+                  heading="Tags"
+                  subheading={
+                    <>
+                      Tags are used to group your posts together. Without tags,
+                      your post wont be visible in your blog. Add a tag and
+                      ensure its linked with navigation.{" "}
+                      <a href="https://docs.letterpad.app/navigation-menu">
+                        Learn more
+                      </a>
+                    </>
+                  }
+                />
+              }
+            />
+          )}
           <div>
-            <label>Cover Image</label>
-            <p className="help-text mb-4">
-              Add a cover image to your blog. This image might be used in your
-              feed, newsletters, recent posts, sharing in social platform, etc.
-            </p>
+            <Heading
+              heading="Cover Image"
+              subheading="Add a cover image to your blog. This image might be used in your
+              feed, newsletters, recent posts, sharing in social platform, etc."
+            />
+
             <ImageUpload
               name="Cover Image"
               url={post.cover_image.src || ""}
@@ -162,7 +180,6 @@ const Actions = ({ post }: IProps) => {
               containerClass="image-upload-container"
             />
           </div>
-          <Divider />
           <DeletePost postId={post.id} />
         </div>
       </Drawerv2>
@@ -179,3 +196,12 @@ const Actions = ({ post }: IProps) => {
 };
 
 export default Actions;
+
+const Heading = ({ heading, subheading }) => {
+  return (
+    <>
+      <label className="font-bold">{heading}</label>
+      <p className="help-text mb-4">{subheading}</p>
+    </>
+  );
+};

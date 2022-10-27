@@ -1,6 +1,8 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 import { IconClose } from "@/components/builder/toolbar/icons";
+
+import { disableScroll } from "@/shared/utils";
 
 interface Props {
   show: boolean;
@@ -21,10 +23,14 @@ export const Drawer: FC<Props> = ({
   let className = dir === "left" ? "-translate-x-full left-0" : "";
   className = dir === "right" ? "right-0 translate-x-[calc(0vw)]" : "";
 
+  useEffect(() => {
+    disableScroll(show);
+  }, [show]);
+
   return (
     <div
       className={
-        "fixed top-0 z-40 h-screen w-96 overflow-y-auto bg-white p-4 transition-transform  dark:bg-gray-800 " +
+        "fixed top-0 z-40 h-screen w-96 overflow-y-auto bg-zinc-100 p-4 shadow-md transition-transform  dark:bg-gray-800 " +
         (show
           ? className
           : dir === "right"

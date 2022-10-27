@@ -16,6 +16,7 @@ import { initPageProgress } from "./../shared/utils";
 import LoginLayout from "./layouts/LoginLayout";
 import MessageLayout from "./layouts/MessageLayout";
 import AuthenticatedNoLayout from "./layouts/NoLayout";
+import { LoadingScreen } from "./loading-screen";
 import { Sidebar } from "./sidebar";
 import { TopBar } from "./top-bar/topBar";
 
@@ -43,7 +44,7 @@ const Main = ({ Component, props }: IProps) => {
   }, [isPublic, router, session.status]);
 
   if (loading) {
-    return <>Loading...</>;
+    return <LoadingScreen />;
   }
 
   let node: JSX.Element | null = null;

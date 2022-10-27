@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import ReactTags from "react-tag-autocomplete";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
@@ -9,6 +9,7 @@ import { textToSlug } from "@/utils/slug";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
+  header: ReactNode;
 }
 
 interface Tag {
@@ -16,7 +17,7 @@ interface Tag {
   name: string;
 }
 
-const Tags = ({ post }: IProps) => {
+const Tags = ({ post, header }: IProps) => {
   const initialTags =
     post.tags?.__typename === "TagsNode" ? post.tags.rows : [];
   const [tags, setTags] = useState<Tag[]>(addTagsWithId(initialTags));
@@ -78,13 +79,7 @@ const Tags = ({ post }: IProps) => {
 
   return (
     <div>
-      <label>Tags</label>
-      <p className="help-text mb-4">
-        Tags are used to group your posts together. Without tags, your post wont
-        be visible in your blog. Add a tag and ensure its linked with
-        navigation.{" "}
-        <a href="https://docs.letterpad.app/navigation-menu">Learn more</a>
-      </p>
+      {header}
       <div className="w-full rounded-md border border-gray-300 bg-gray-50  p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500">
         <ReactTags
           tags={tags}
@@ -119,7 +114,7 @@ const Tags = ({ post }: IProps) => {
           border: 1px solid #0b5cbe;
           border-radius: 6px;
           background: #0b5cbe;
-
+          color: #fff;
           /* match the font styles */
           font-size: inherit;
           line-height: inherit;
@@ -194,7 +189,6 @@ const Tags = ({ post }: IProps) => {
 
         .react-tags__suggestions li mark {
           background: none;
-          color: rgb(var(--color));
           margin: 0;
           padding: 0;
           font-weight: bold;
