@@ -9,8 +9,6 @@ import { PostTypes } from "@/__generated__/__types__";
 import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 
-import { isCreativesActive } from "./switch";
-
 interface IProps {
   type: PostTypes;
   title: string;
@@ -30,13 +28,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
     router.push(`/api/create?type=${type}&page_type=${pageType}`);
   };
 
-  const onNewClick = () => {
-    isCreativesActive() ? setShowModal(true) : onClick(type, PageType.Default);
-  };
-
-  const buttonLabel = `New ${
-    type === "page" ? (isCreativesActive() ? "Creative" : "Page") : "Post"
-  }`;
+  const buttonLabel = `New ${type === "page" ? "Creative" : "Post"}`;
 
   return (
     <>
@@ -48,7 +40,7 @@ export const Header: React.FC<IProps> = ({ type, title, children }) => {
             size="normal"
             key="1"
             data-testid="createPostBtn"
-            onClick={() => onNewClick()}
+            onClick={() => setShowModal(true)}
           >
             {buttonLabel}
           </Buttonv2>,
