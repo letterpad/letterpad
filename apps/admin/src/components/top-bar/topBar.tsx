@@ -33,7 +33,6 @@ export const TopBar = () => {
             href="https://docs.letterpad.app/"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-white"
           >
             Help
           </a>
