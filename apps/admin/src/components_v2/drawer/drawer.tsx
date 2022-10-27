@@ -57,6 +57,7 @@ export const Drawer: FC<Props> = ({
         <button
           onClick={() => onClose()}
           type="button"
+          data-testid="close-drawer"
           className="absolute top-2.5 right-2.5 inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
         >
           <IconClose />
