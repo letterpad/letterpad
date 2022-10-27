@@ -47,6 +47,7 @@ const Filters = ({
   }, [filters, loading, onChange, showPageTypes, showTags, tags]);
 
   if (loading && showTags) return <Loading />;
+
   return (
     <div className="flex w-full flex-row items-center justify-end gap-2 ">
       <Select
@@ -54,6 +55,9 @@ const Filters = ({
         onChange={(value) => {
           if (value === "all") {
             const { status, ...rest } = filters;
+            onChange({
+              ...rest,
+            });
             return setFilters({
               ...rest,
             });
@@ -64,6 +68,10 @@ const Filters = ({
             eventLabel: "status",
           });
           setFilters({
+            ...filters,
+            status: value as PostStatusOptions,
+          });
+          onChange({
             ...filters,
             status: value as PostStatusOptions,
           });
@@ -86,6 +94,7 @@ const Filters = ({
             eventLabel: "sortBy",
           });
           setFilters({ ...filters, sortBy: key as SortBy });
+          onChange({ ...filters, sortBy: key as SortBy });
         }}
         selected={filters.sortBy ?? "all"}
         items={[
@@ -111,9 +120,11 @@ const Filters = ({
               eventLabel: "tagSlug",
             });
             setFilters({ ...filters, tagSlug: key });
+            onChange({ ...filters, tagSlug: key });
           }}
           selected={filters.tagSlug ?? "all"}
           items={[
+            { key: "all", label: "All Tags" },
             ...allTags.map((tag) => ({
               key: tag.slug,
               label: tag.name,
@@ -137,9 +148,11 @@ const Filters = ({
               eventLabel: "pagetype dropdown",
             });
             setFilters({ ...filters, page_type: key as PageType });
+            onChange({ ...filters, page_type: key as PageType });
           }}
           selected={filters.sortBy ?? "all"}
           items={[
+            { key: "all", label: "All" },
             ...Object.keys(PageType).map((type) => ({
               key: type,
               label: PageType[type],
