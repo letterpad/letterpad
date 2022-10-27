@@ -24,7 +24,7 @@ export const introData: Block[] = [
     columns: 1,
     data: [
       {
-        text: "%3Chtml%3E%3Cbody%3E%3Ch1%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22font-family%3A%20'Major%20Mono%20Display'%3B%22%3EWhat%20are%20Creatives%20%3F%3C%2Fspan%3E%3C%2Fh1%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%C2%A0%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3ECreatives%20is%20a%20framework%20to%20build%20landing%20pages%20with%20a%20set%20of%20tools.%20Its%20a%20story%20builder%20which%20allows%20you%20to%20lay%20your%20thoughts%20with%20pictures%20and%20text.%C2%A0%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
+        text: "%3Chtml%3E%3Cbody%3E%3Ch1%20style%3D%22text-align%3A%20center%3B%22%3E%3Cspan%20style%3D%22font-family%3A%20'Major%20Mono%20Display'%3B%22%3EWhat%20are%20Creatives%3F%3C%2Fspan%3E%3C%2Fh1%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3E%C2%A0%3C%2Fp%3E%0A%3Cp%20style%3D%22text-align%3A%20center%3B%22%3ECreatives%20is%20a%20framework%20to%20build%20landing%20pages%20with%20a%20set%20of%20tools.%20Its%20a%20story%20builder%20which%20allows%20you%20to%20lay%20your%20thoughts%20with%20pictures%20and%20text.%C2%A0%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E",
         type: "text",
       },
     ],
