@@ -60,7 +60,7 @@ export const Modal = (props: Props) => {
         </div>
         <div
           onClick={() => props.toggle(false)}
-          className="absolute top-0 left-0 z-10 h-screen w-screen bg-white/40 backdrop-blur-sm dark:bg-black/40"
+          className="absolute top-0 left-0 z-10 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-black/40"
         />
       </>
     );

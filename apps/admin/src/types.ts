@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+
 import { Navigation, Setting } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { SessionData } from "@/graphql/types";

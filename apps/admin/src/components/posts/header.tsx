@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { MouseEvent, ReactNode, useState } from "react";
 
 import { Buttonv2 } from "@/components_v2/button";
-import { Button } from "@/components_v2/button/button";
 import { Modal } from "@/components_v2/modal";
 
 import { PostTypes } from "@/__generated__/__types__";
@@ -91,9 +90,9 @@ const Card = ({ title, description, onClick }) => {
   };
   return (
     <a className="hover:text-inherit " onClick={handleClick}>
-      <div className="card hover:shadow-xs m-2 cursor-pointer rounded-lg border hover:bg-black/30 dark:border-gray-600 dark:hover:border-gray-700">
+      <div className="card hover:shadow-xs m-2 cursor-pointer rounded-lg border hover:bg-gray-100 dark:border-gray-600 dark:text-gray-200 dark:hover:border-gray-700 dark:hover:bg-black/30">
         <div className="m-3">
-          <h2 className="mb-2">{title}</h2>
+          <h2 className="mb-2 text-lg">{title}</h2>
           <p className="opacity-70">{description}</p>
         </div>
       </div>

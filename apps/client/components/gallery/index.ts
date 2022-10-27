@@ -1,0 +1,1 @@
+export { GalleryModal } from './galleryModal';
