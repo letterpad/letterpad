@@ -1,14 +1,21 @@
-import { FC, ReactNode, useEffect } from 'react';
-import { Background, Parallax } from 'react-parallax';
+import { FC, ReactNode, useEffect, useState } from 'react';
+import { Parallax } from 'react-parallax';
 import StickyBox from 'react-sticky-box';
 
 import { PageFragmentFragment } from '@/lib/graphql';
+
+import { GalleryModal } from '@/components/gallery';
+import { Portal } from '@/components/portal';
+
+import { MasonryGrid } from './masonry/grid';
+import { isLastImage, reorder } from './masonry/selectors';
+import { BlockItem } from './types';
 
 interface Props {
   data: PageFragmentFragment;
 }
 export const PhotoStory: FC<Props> = ({ data }) => {
-  const page_data = JSON.parse(data.page_data ?? '').rows as any;
+  const page_data: BlockItem[] = JSON.parse(data.page_data ?? '').rows;
 
   return (
     <>
@@ -44,6 +51,7 @@ export const PhotoStory: FC<Props> = ({ data }) => {
                       type={_item.type}
                       cover={item.cover}
                     />
+                    <SectionMasonry item={_item} position={[rowIndex]} />
                   </div>
                 </>
               );
@@ -63,7 +71,7 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
     div?.style.setProperty('min-height', getHeight(cover) + 'px');
   }, [cover, rowIndex]);
 
-  if (type === 'text') return null;
+  if (type !== 'image') return null;
   const className = 'w-full';
 
   return (
@@ -98,7 +106,7 @@ const SectionImage: FC<any> = ({ columns, item, rowIndex, cover }) => {
 };
 
 const SectionText: FC<any> = ({ columns, text, type }) => {
-  if (type === 'image') return null;
+  if (type !== 'text') return null;
   if (!text) return null;
 
   return (
@@ -115,9 +123,58 @@ const SectionText: FC<any> = ({ columns, text, type }) => {
   );
 };
 
-const Wrapper: FC<{ children: ReactNode }> = ({ children }) => {
+export const SectionMasonry: FC<{ item: BlockItem; position: [rowIndex: number] }> = ({
+  item,
+  position,
+}) => {
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [rowIndex] = position;
+
+  useEffect(() => {
+    disableScroll(selectedIndex > 0);
+  }, [selectedIndex]);
+
+  const onImageChange = (index: number) => {
+    if (isLastImage(item.masonry || [], index)) {
+      return setSelectedIndex(0);
+    }
+    if (index < 0) {
+      return setSelectedIndex((item.masonry ?? []).length - 1);
+    }
+    setSelectedIndex(index);
+  };
+
+  const onSelect = (idx: number) => {
+    setSelectedIndex(idx);
+  };
+
+  if (item.type !== 'masonry' || !item.masonry) return null;
+
   return (
-    <div className="margin-auto flex h-full w-full flex-col items-center justify-center p-6 text-center leading-6 text-gray-800 dark:text-white lg:py-20 lg:px-40">
+    <Wrapper className={`row-${rowIndex} lg:py-0`}>
+      <MasonryGrid items={reorder(item.masonry, 4) ?? []} onSelect={onSelect} />
+      <div className="modal">
+        <Portal id="modal-creatives">
+          <GalleryModal
+            items={item.masonry ?? []}
+            onSelect={onImageChange}
+            index={selectedIndex}
+            onClose={() => setSelectedIndex(-1)}
+          />
+        </Portal>
+      </div>
+    </Wrapper>
+  );
+};
+
+const Wrapper: FC<{ children: ReactNode; className?: string }> = ({ children, className }) => {
+  return (
+    <div
+      className={
+        'margin-auto flex h-full w-full flex-col items-center justify-center p-6 text-center leading-6 text-gray-800 dark:text-white lg:py-20 lg:px-40 ' +
+        className
+      }
+    >
       {children}
     </div>
   );
@@ -130,4 +187,12 @@ const getHeight = (size: 'small' | 'big') => {
   if (size === 'big') return h;
   if (size === 'banner') return 200;
   return h;
+};
+
+export const disableScroll = (flag: boolean) => {
+  if (flag) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'scroll';
+  }
 };

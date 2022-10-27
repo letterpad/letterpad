@@ -5,7 +5,6 @@ import { Row } from "@/components/builder/layouts/story-builder";
 import { PageType } from "@/graphql/types";
 
 import { useBuilderContext } from "./context";
-import { Toolbar } from "./toolbar";
 import { EditSwitch } from "./toolbar/editSwitch";
 
 interface Props {
@@ -14,7 +13,7 @@ interface Props {
 }
 
 export const Layout: FC<Props> = ({ editable = true }) => {
-  const { preview, grid } = useBuilderContext();
+  const { grid } = useBuilderContext();
   return (
     <div id="creative">
       {editable && <EditSwitch />}

@@ -18,6 +18,7 @@ import ThemeSwitcher from "@/components/theme-switcher";
 import { Buttonv2 } from "@/components_v2/button";
 
 import { PageType } from "@/graphql/types";
+import { EventAction, track } from "@/track";
 
 const TryCreatives = () => {
   useEffect(() => {
@@ -41,8 +42,11 @@ const Builder = () => {
 
   const loadCreative = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    if (value === "0") {
-    }
+    track({
+      eventAction: EventAction.Click,
+      eventCategory: "creatives-demo",
+      eventLabel: value,
+    });
 
     switch (value) {
       case "portfolio":
