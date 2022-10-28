@@ -54,10 +54,6 @@ export const BuilderContext: FC<Props> = ({ children, data, onSave }) => {
 
   const [grid, setGrid] = useState(data);
 
-  useEffect(() => {
-    setGrid(data);
-  }, [data]);
-
   const removeCell = (index: number, col?: number) => {
     let gridCopy = [...grid];
     if (typeof col !== "undefined" && gridCopy[index].columns > 1) {
