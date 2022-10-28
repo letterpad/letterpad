@@ -101,6 +101,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           onChange(htmlWithBody);
         }}
         init={{
+          min_height: 300,
           menubar: false,
           toolbar: false,
           browser_spellcheck: true,

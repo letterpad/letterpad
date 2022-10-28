@@ -135,9 +135,7 @@ class Socket {
           resolve(socket);
         });
 
-        socket.on("disconnect", () => {
-          //
-        });
+        socket.on("disconnect", () => {});
       }
       return socket;
     };
