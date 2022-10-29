@@ -31,7 +31,7 @@ const Verified = () => {
             Login
           </Buttonv2>,
         ]}
-        style={{ textAlign: "center" }}
+        className="flex flex-col justify-center"
       />
     </>
   );

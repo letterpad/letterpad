@@ -22,6 +22,7 @@ const ChangePasswordSuccess = () => {
             Login
           </Button>,
         ]}
+        className="flex flex-col justify-center"
       />
     </>
   );

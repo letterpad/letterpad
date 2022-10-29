@@ -20,6 +20,7 @@ const unsplash = async (req, res) => {
       rows: [],
       count: 0,
       pages: 0,
+      error: e.message,
     });
   }
 };

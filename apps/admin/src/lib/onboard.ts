@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 
 import {
   InputCreateAuthor,
+  InputCreatePost,
   PostStatusOptions,
   PostTypes,
   SettingInputType,
@@ -79,6 +80,8 @@ function getWelcomePost() {
     createdAt: new Date(),
     publishedAt: new Date(),
     reading_time: "5 mins",
+    page_data: JSON.stringify({ rows: [] }),
+    page_type: "default",
   };
 
   return { post };

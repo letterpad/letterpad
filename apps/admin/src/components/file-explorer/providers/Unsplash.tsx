@@ -20,8 +20,13 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const inputRef = useRef<InputRef>(null);
 
   const handleUnsplashResponse = useCallback(
-    ({ rows, count }: any) => {
+    ({ rows, count, error }: any) => {
       setLoading(false);
+      if (error) {
+        return setError(
+          "Rate limit for Unsplash has exceeded for free version. Please try after sometime.",
+        );
+      }
       if (rows.length === 0) {
         return setError("No images found.");
       }
