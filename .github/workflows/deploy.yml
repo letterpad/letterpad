@@ -47,6 +47,9 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
+      - name: Remove cache
+        run: rm -rf .turbo
+
       - name: Deploy to Digital Ocean
         uses: appleboy/scp-action@master
         with:
