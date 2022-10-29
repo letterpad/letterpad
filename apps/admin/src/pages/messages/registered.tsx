@@ -24,6 +24,7 @@ const Registered = () => {
             Login
           </Buttonv2>,
         ]}
+        className="flex flex-col justify-center"
       />
     </>
   );

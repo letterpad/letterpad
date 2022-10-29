@@ -39,7 +39,7 @@ const Home: FC<PageProps> = ({ settings }) => {
     if (!showGettingStarted) onDismiss();
   }, [showGettingStarted, onDismiss]);
 
-  if (author?.__typename !== "Author") return <div>Future</div>;
+  if (author?.__typename !== "Author") return null;
 
   if (showGettingStarted) {
     return withDismiss(
