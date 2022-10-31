@@ -1,0 +1,49 @@
+query postsQuery($tagSlug: String) {
+  posts(filters: { tagSlug: $tagSlug }) {
+    __typename
+    ...postsFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}
+
+fragment postsFragment on PostsNode {
+  count
+  rows {
+    id
+    title
+    slug
+    cover_image {
+      src
+    }
+    author {
+      __typename
+      ... on LetterpadError {
+        message
+      }
+
+      ... on Author {
+        name
+        avatar
+        __typename
+      }
+    }
+    publishedAt
+    reading_time
+    excerpt
+    tags {
+      __typename
+      ... on LetterpadError {
+        message
+      }
+
+      ... on TagsNode {
+        rows {
+          name
+          slug
+        }
+      }
+    }
+  }
+}

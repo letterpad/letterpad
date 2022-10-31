@@ -1,0 +1,52 @@
+query PageQuery($slug: String) {
+  post(filters: { slug: $slug }) {
+    __typename
+    ...pageFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}
+
+fragment pageFragment on Post {
+  id
+  slug
+  title
+  reading_time
+  page_type
+  page_data
+  html
+  type
+  publishedAt
+  updatedAt
+  excerpt
+  tags {
+    __typename
+    ... on LetterpadError {
+      message
+    }
+
+    ... on TagsNode {
+      rows {
+        name
+        slug
+      }
+    }
+  }
+  author {
+    __typename
+    ... on LetterpadError {
+      message
+    }
+
+    ... on Author {
+      id
+      name
+      avatar
+      occupation
+    }
+  }
+  cover_image {
+    src
+  }
+}
