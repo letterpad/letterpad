@@ -120,10 +120,11 @@ const fetchUnsplashMedia = async (url: string, page: number, query: string) => {
         return {
           id: item.id,
           url: item.urls.regular,
-          description: `Unsplash - ${item.user.name} | ${item.links.html}`,
+          description: `Photo by <a href="${item.user.links.html}?utm_source=Letterpad Editor&utm_medium=referral">${item.user.name}</a> on <a href="https://unsplash.com/?utm_source=Letterpad Editor&utm_medium=referral">Unsplash</a>`,
           createdAt: item.created_at,
           width: item.width,
           height: item.height,
+          download_location: item.links.download_location,
         };
       }),
       count,

@@ -81,9 +81,6 @@ const Actions = ({ post }: IProps) => {
       ? settingsResponse.data?.settings
       : undefined;
 
-  //bad
-  const drawerWidth = window.innerWidth > 500 ? 500 : window.innerWidth;
-
   return (
     <>
       <QuickMenu

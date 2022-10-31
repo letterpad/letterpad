@@ -15,29 +15,37 @@ export const TwoColumnLayout: FC<Props> = ({ left, right }) => {
     useResponsiveLayout();
 
   return (
-    <div className="flex min-h-screen w-full flex-row bg-gray-100 text-gray-800 dark:bg-zinc-900 dark:text-gray-800">
-      <aside
-        className={classNames(
-          "top-0 h-screen min-w-[250px] -translate-x-full transform bg-zinc-900 transition-transform duration-150 ease-in md:sticky  md:shadow",
-          { "translate-x-0": sidebarVisible || isDesktop },
-        )}
-      >
-        {left}
-      </aside>
-      <div
-        className={classNames(
-          "main  flex flex-grow flex-col transition-all duration-150 ease-in md:ml-0",
-          {
-            "-ml-[250px]": !sidebarVisible,
-            "translate-x-0": sidebarVisible && isMobileOrTablet,
-            "min-w-full": !!isMobileOrTablet,
-          },
-        )}
-        onClick={() => sidebarVisible && setSidebarVisible(!isMobileOrTablet)}
-      >
-        {right}
-        <SiteFooter />
+    <>
+      {/* {sidebarVisible && (
+        <div
+          onClick={() => setSidebarVisible(false)}
+          className="fixed inset-0 bg-zinc-800 bg-opacity-50 dark:bg-opacity-80"
+        ></div>
+      )} */}
+      <div className="fixed flex min-h-screen w-full flex-row bg-gray-100 text-gray-800 dark:bg-zinc-900 dark:text-gray-800">
+        <aside
+          className={classNames(
+            "top-0  h-screen min-w-[250px] -translate-x-full transform bg-zinc-900 transition-transform duration-150 ease-in md:sticky  md:shadow",
+            { "translate-x-0": sidebarVisible || isDesktop },
+          )}
+        >
+          {left}
+        </aside>
+        <div
+          className={classNames(
+            "main  flex flex-grow flex-col transition-all duration-150 ease-in md:ml-0",
+            {
+              "-ml-[250px]": !sidebarVisible,
+              "translate-x-0 blur-lg": sidebarVisible && isMobileOrTablet,
+              "min-w-full": !!isMobileOrTablet,
+            },
+          )}
+          onClick={() => sidebarVisible && setSidebarVisible(!isMobileOrTablet)}
+        >
+          {right}
+          <SiteFooter />
+        </div>
       </div>
-    </div>
+    </>
   );
 };

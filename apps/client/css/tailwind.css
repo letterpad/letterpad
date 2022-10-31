@@ -49,3 +49,7 @@ input:-webkit-autofill:focus {
 body {
   word-break: break-word;
 }
+.prose figcaption {
+  text-align: center;
+  font-size: 0.9rem;
+}

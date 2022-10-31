@@ -1,6 +1,7 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import { Button, Spin } from "antd";
 import Modal from "antd/lib/modal/Modal";
+import { basePath } from "next.config";
 import { useCallback, useRef, useState } from "react";
 
 import Internal from "@/components/file-explorer/providers/Internal";
@@ -51,7 +52,16 @@ const FileExplorer = ({
   const insertMedia = async () => {
     // get only the urls in an array
     try {
-      await onInsert(Object.values(selectedUrls));
+      onInsert(Object.values(selectedUrls));
+      Object.values(selectedUrls).forEach((media) => {
+        if (!media.download_location) return;
+        const url =
+          basePath +
+          "/api/unsplash?downloadLocation=" +
+          media.download_location;
+
+        fetch(url);
+      });
     } catch (e: any) {
       // notify.show("Something unexpected happened.", "error");
     }
@@ -69,6 +79,8 @@ const FileExplorer = ({
           width: media.width || 0,
           height: media.height || 0,
           caption: media.description,
+          //@ts-ignore
+          download_location: media.download_location,
         };
       }
       if (!multi) {
@@ -77,6 +89,8 @@ const FileExplorer = ({
           width: media.width || 0,
           height: media.height || 0,
           caption: media.description,
+          //@ts-ignore
+          download_location: media.download_location,
         };
       }
       setSelection(urls);
