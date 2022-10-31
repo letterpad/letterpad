@@ -1,0 +1,29 @@
+{
+  "name": "letterpad-sdk",
+  "version": "0.0.1",
+  "scripts": {
+    "codegen": "graphql-codegen --config codegen.ts",
+    "build.tsc.mjs": "tsc -p tsconfig.json",
+    "build.tsc.cjs": "tsc -p tsconfig.cjs.json",
+    "build": "yarn codegen && yarn build.tsc.mjs && yarn build.tsc.cjs && ./fixup.sh"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "dependencies": {
+    "graphql-request": "^5.0.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.13.8",
+    "@graphql-codegen/typescript-graphql-request": "^4.5.7"
+  }
+}

@@ -1,0 +1,19 @@
+query SitemapQuery {
+  sitemap {
+    ...sitemapFragment
+  }
+}
+
+fragment sitemapFragment on SiteMapResponse {
+  ... on SiteMapList {
+    rows {
+      route
+      priority
+      lastmod
+    }
+  }
+  ... on SiteMapError {
+    message
+  }
+  __typename
+}
