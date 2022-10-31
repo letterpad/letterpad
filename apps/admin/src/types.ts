@@ -59,6 +59,8 @@ export interface TypeMediaInsert {
   caption?: string;
   width?: number;
   height?: number;
+  // for unsplash images
+  download_location?: string;
 }
 
 export type PubSubEvent = "save" | "noop" | "networkError";

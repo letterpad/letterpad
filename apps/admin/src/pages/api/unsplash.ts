@@ -2,9 +2,17 @@ const unsplashUrl = "https://api.unsplash.com/search/photos";
 const clientId = process.env.UNSPLASH_CLIENT_ID;
 
 const unsplash = async (req, res) => {
-  const { page, query } = req.query;
+  const { page, query, downloadLocation } = req.query;
   if (!clientId) {
     throw new Error("No client id provided");
+  }
+  if (downloadLocation) {
+    const download = await fetch(downloadLocation, {
+      headers: {
+        Authorization: `Client-ID ${clientId}`,
+      },
+    });
+    return res.status(200).json({});
   }
   const endpoint = `${unsplashUrl}?client_id=${clientId}&query=${query}&page=${page}&per_page=21`;
 

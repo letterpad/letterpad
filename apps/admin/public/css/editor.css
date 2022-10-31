@@ -68,7 +68,14 @@ figure img {
 figure figcaption {
   font-size: 0.8rem;
   text-align: center;
+  padding: 10px 0;
 }
+figcaption a {
+  font-size: 0.8rem;
+  color: rgb(var(--accent)) !important;
+  font-family: inherit;
+}
+
 a {
   color: rgb(var(--accent));
   text-decoration: none;

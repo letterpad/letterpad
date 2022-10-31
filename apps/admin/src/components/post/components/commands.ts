@@ -2,13 +2,13 @@ import { Editor } from "@tinymce/tinymce-react";
 
 export const insertImageInEditor = (editor: Editor["editor"], images: any) => {
   images.map((image) => {
-    const range = editor?.selection.getRng(); // get range: ;
+    const range = editor?.selection.getRng();
     const doc = editor?.getDoc();
     const newNode = doc?.createElement("figure");
-    newNode?.setAttribute("contenteditable", "true");
+    newNode?.setAttribute("contenteditable", "false");
     if (newNode && range) {
       newNode.innerHTML = `
-            <img src="${image.src}" alt="${image.caption}" style="display: block; margin-left: auto; margin-right: auto;">
+            <img src="${image.src}" style="display: block; margin-left: auto; margin-right: auto;">
             <figcaption contexteditable="false">${image.caption}</figcaption>
       `;
       range.insertNode(newNode);
