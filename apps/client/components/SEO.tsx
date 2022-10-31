@@ -184,7 +184,7 @@ export const BlogSEO = ({
     description: summary,
   };
 
-  const lpImageUrl = featuredImages[0].url;
+  const lpImageUrl = featuredImages[0]?.url;
 
   return (
     <>
