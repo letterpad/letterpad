@@ -159,7 +159,7 @@ type StatsError implements LetterpadError {
   message: String!
 }
 
-type PostTrashed  {
+type PostTrashed {
   message: String!
 }
 
