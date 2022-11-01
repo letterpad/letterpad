@@ -3,10 +3,12 @@ import { Alert } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
-import React from "react";
+import React, { useState } from "react";
 import { useContext } from "react";
 
 import { postsStyles } from "@/components/posts.css";
+
+import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import ErrorMessage from "@/components/ErrorMessage";
 import Filters from "@/components/filters";
@@ -19,10 +21,14 @@ import { Header } from "@/components/posts/header";
 import { TagsProvider } from "@/components/tags/context";
 import { Table } from "@/components_v2/table";
 
-import { PostTypes, SortBy } from "@/__generated__/__types__";
+import {
+  PostsFilters,
+  PostStatusOptions,
+  PostTypes,
+  SortBy,
+} from "@/__generated__/__types__";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { LetterpadContext } from "@/context/LetterpadProvider";
-import { EventAction, track } from "@/track";
 
 const { Content } = Layout;
 
@@ -31,11 +37,16 @@ function Posts({ readOnly }: { readOnly: boolean }) {
   const { loading, data, error, refetch } = usePostsQuery({
     variables: { filters: { sortBy: SortBy.Desc } },
   });
+  const { updatePost } = useUpdatePost();
   const setting = useContext(LetterpadContext);
-
+  const [filters, setFilters] = useState<PostsFilters>({
+    sortBy: SortBy["Desc"],
+  });
   const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
-  const totalCount =
-    data?.posts.__typename === "PostsNode" ? data.posts.count : 0;
+
+  const changeStatus = (id: number, status: PostStatusOptions) => {
+    updatePost({ id, status });
+  };
 
   React.useEffect(() => {
     if (!setting?.intro_dismissed) {
@@ -46,18 +57,6 @@ function Posts({ readOnly }: { readOnly: boolean }) {
     }
   }, [router, setting?.intro_dismissed]);
 
-  const handleChange = (p) => {
-    track({
-      eventAction: EventAction.Click,
-      eventCategory: "posts",
-      eventLabel: "pagination",
-    });
-    refetch({
-      filters: {
-        page: p.current,
-      },
-    });
-  };
   if (error) return <ErrorMessage description={error} title="Error" />;
   if (typeof window === "undefined") return null;
   return (
@@ -83,10 +82,12 @@ function Posts({ readOnly }: { readOnly: boolean }) {
               onChange={(filters) => {
                 refetch({ filters: { ...filters, type: PostTypes.Post } });
               }}
+              filters={filters}
+              setFilters={setFilters}
             />
           </TagsProvider>
           <Table
-            columns={postsColumns}
+            columns={postsColumns({ changeStatus })}
             dataSource={source.map((item) => ({ ...item, key: item.id }))}
             loading={loading}
             onRowClick={(row) => router.push("/post/" + row.id)}

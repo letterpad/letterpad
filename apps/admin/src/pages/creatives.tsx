@@ -3,17 +3,25 @@ import { Alert } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
+import { useState } from "react";
 
 import { postsStyles } from "@/components/posts.css";
 
+import { useUpdatePost } from "@/hooks/useUpdatePost";
+
 import ErrorMessage from "@/components/ErrorMessage";
 import Filters from "@/components/filters";
-import { columns } from "@/components/posts";
+import { creativesColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
 import { Buttonv2 } from "@/components_v2/button";
 import { Table } from "@/components_v2/table";
 
-import { PostTypes, SortBy } from "@/__generated__/__types__";
+import {
+  PostsFilters,
+  PostStatusOptions,
+  PostTypes,
+  SortBy,
+} from "@/__generated__/__types__";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 
 const { Content } = Layout;
@@ -22,11 +30,19 @@ function Pages({ readOnly }: { readOnly: boolean }) {
   const { loading, data, error, refetch } = usePostsQuery({
     variables: { filters: { type: PostTypes.Page, sortBy: SortBy.Desc } },
   });
+  const [filters, setFilters] = useState<PostsFilters>({
+    sortBy: SortBy["Desc"],
+    type: PostTypes.Page,
+  });
   const router = useRouter();
-
+  const { updatePost } = useUpdatePost();
   if (error) {
     return <ErrorMessage description={error} title="Error" />;
   }
+  const changeStatus = (id: number, status: PostStatusOptions) => {
+    updatePost({ id, status });
+  };
+
   const source = data?.posts.__typename === "PostsNode" ? data.posts.rows : [];
   return (
     <>
@@ -64,9 +80,11 @@ function Pages({ readOnly }: { readOnly: boolean }) {
             onChange={(filters) => {
               refetch({ filters: { ...filters, type: PostTypes.Page } });
             }}
+            filters={filters}
+            setFilters={setFilters}
           />
           <Table
-            columns={columns}
+            columns={creativesColumns({ changeStatus })}
             dataSource={source}
             loading={loading}
             onRowClick={(row) => router.push("/post/" + row.id)}

@@ -1,29 +1,9 @@
-// import { getImageAttrs } from "@/graphql/utils/imageAttributs";
 import { Breakpoint } from "antd/lib/_util/responsiveObserve";
+import classNames from "classnames";
 
-import { Image, PostStatusOptions, TagsNode } from "@/__generated__/__types__";
+import { PostStatusOptions, TagsNode } from "@/__generated__/__types__";
 
-export const columns = [
-  // {
-  //   title: "Image",
-  //   dataIndex: "cover_image",
-  //   key: "cover_image",
-  //   responsive: ["md"] as Breakpoint[],
-  //   width: "10%",
-  //   render: (cover_image: Image) => {
-  //     if (!cover_image.src) return null;
-  //     const imageAttrs = { src: cover_image.src }; //getImageAttrs(cover_image.src);
-  //     return (
-  //       <img
-  //         {...imageAttrs}
-  //         width={60}
-  //         height={50}
-  //         style={{ objectFit: "cover" }}
-  //         alt="post-image"
-  //       />
-  //     );
-  //   },
-  // },
+const columns = [
   {
     title: "Title",
     dataIndex: "title",
@@ -31,13 +11,6 @@ export const columns = [
     width: "45%",
     render: (title: string) => <span>{title || "(Draft)"}</span>,
   },
-  // {
-  //   title: "Description",
-  //   dataIndex: "excerpt",
-  //   key: "excerpt",
-  //   width: "45%",
-  //   responsive: ["md"] as Breakpoint[],
-  // },
   {
     title: "Status",
     dataIndex: "status",
@@ -64,8 +37,52 @@ export const columns = [
     },
   },
 ];
+const Actions = ({ changeStatus, id, status }) => {
+  return (
+    <div className="flex items-center justify-center gap-2">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          changeStatus(id, PostStatusOptions.Trashed);
+        }}
+        className="text-blue-600"
+      >
+        Delete
+      </button>
+      <span
+        className={classNames({
+          hidden: status !== PostStatusOptions.Trashed,
+        })}
+      >
+        |
+      </span>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          changeStatus(id, PostStatusOptions.Draft);
+        }}
+        className={classNames("text-blue-600", {
+          hidden: status !== PostStatusOptions.Trashed,
+        })}
+      >
+        Draft
+      </button>
+    </div>
+  );
+};
+export const creativesColumns = ({ changeStatus }) => [
+  ...columns,
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    key: "actions",
+    render: (_, item) => (
+      <Actions changeStatus={changeStatus} id={item.id} status={item.status} />
+    ),
+  },
+];
 
-export const postsColumns = [
+export const postsColumns = ({ changeStatus }) => [
   ...columns,
   {
     title: "Tags",
@@ -75,5 +92,13 @@ export const postsColumns = [
     render: (tags: TagsNode) => {
       return tags.rows.map((tag) => tag.name).join(", ");
     },
+  },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    key: "actions",
+    render: (_, item) => (
+      <Actions changeStatus={changeStatus} id={item.id} status={item.status} />
+    ),
   },
 ];

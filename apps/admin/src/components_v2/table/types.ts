@@ -4,5 +4,5 @@ export interface Columns {
   key: string;
   // responsive: Breakpoint[];
   width?: string;
-  render: (data: any) => any;
+  render: (data: any, item: any) => any;
 }

@@ -20,7 +20,7 @@ import { textToSlug } from "@/utils/slug";
 export const updatePost = async (
   args: MutationUpdatePostArgs,
   { prisma, session }: ResolverContext,
-): Promise<ResolversTypes["CreatePostResponse"]> => {
+): Promise<ResolversTypes["UpdatePostResponse"]> => {
   if (!session?.user.id) {
     return {
       __typename: "PostError",
@@ -61,6 +61,19 @@ export const updatePost = async (
         id: args.data.id,
       },
     };
+    if (
+      args.data.status === PostStatusOptions.Trashed &&
+      existingPost.status === PostStatusOptions.Trashed
+    ) {
+      // permanently delete the post
+      await prisma.post.delete({
+        where: { id: args.data.id },
+      });
+      return {
+        __typename: "PostTrashed",
+        message: "Post deleted successfully",
+      };
+    }
     if (args.data.title?.trim()) {
       newPostArgs.data.title = args.data.title.trim();
     }

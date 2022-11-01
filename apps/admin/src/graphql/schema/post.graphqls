@@ -159,6 +159,10 @@ type StatsError implements LetterpadError {
   message: String!
 }
 
+type PostTrashed {
+  message: String!
+}
+
 union PostResponse =
     Post
   | UnAuthorized
@@ -170,7 +174,7 @@ union PostsResponse = PostsNode | UnAuthorized | Exception
 
 union CreatePostResponse = Post | PostError
 
-union UpdatePostResponse = Post | PostError
+union UpdatePostResponse = Post | PostError | PostTrashed
 
 union StatsResponse = Stats | StatsError
 

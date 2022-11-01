@@ -5,7 +5,6 @@ import { Select } from "@/components_v2/select";
 import {
   PostsFilters,
   PostStatusOptions,
-  PostTypes,
   SortBy,
 } from "@/__generated__/__types__";
 import { PageType } from "@/graphql/types";
@@ -18,17 +17,19 @@ interface IProps {
   showTags?: boolean;
   onChange: (filters: PostsFilters) => void;
   showPageTypes?: boolean;
+  filters: PostsFilters;
+  setFilters: (data: PostsFilters) => void;
 }
 
 const Filters = ({
   showTags = true,
   onChange,
   showPageTypes = false,
+  filters,
+  setFilters,
 }: IProps) => {
   const [allTags, setAllTags] = useState<{ slug: string; name: string }[]>([]);
-  const [filters, setFilters] = useState<PostsFilters>({
-    sortBy: SortBy["Desc"],
-  });
+
   const { tags, loading } = useTagsContext();
 
   useEffect(() => {

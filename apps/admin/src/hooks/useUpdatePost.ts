@@ -1,8 +1,13 @@
 import { useCallback } from "react";
 
-import { InputUpdatePost } from "@/__generated__/__types__";
+import { InputUpdatePost, PostStatusOptions } from "@/__generated__/__types__";
 import { useUpdatePostMutation } from "@/__generated__/queries/mutations.graphql";
-import { PostDocument } from "@/__generated__/queries/queries.graphql";
+import {
+  PostDocument,
+  PostsDocument,
+  StatsDocument,
+  StatsQueryResult,
+} from "@/__generated__/queries/queries.graphql";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 
 export const useUpdatePost = () => {
@@ -25,11 +30,47 @@ export const useUpdatePost = () => {
         data,
       },
       update: (cache, response) => {
+        if (data.status === PostStatusOptions.Trashed) {
+          const normalizedId = cache.identify({
+            __typename: "Post",
+            id: data.id,
+          });
+          cache.evict({ id: normalizedId });
+          cache.gc();
+        } else {
+          cache.writeQuery({
+            query: PostDocument,
+            variables: { filters: { id: data.id } },
+            data: {
+              post: response.data?.updatePost,
+            },
+          });
+        }
+
+        const stats = cache.readQuery<StatsQueryResult["data"]>({
+          query: StatsDocument,
+          variables: {},
+        });
+        if (stats?.stats?.__typename !== "Stats") return;
+        let published = stats?.stats?.posts?.published;
+        if (data.status === PostStatusOptions.Trashed) {
+          published -= 1;
+        } else if (data.status === PostStatusOptions.Published) {
+          published += 1;
+        } else if (data.status === PostStatusOptions.Draft) {
+          // published -= 1;
+        }
+
         cache.writeQuery({
-          query: PostDocument,
-          variables: { filters: { id: data.id } },
+          query: StatsDocument,
           data: {
-            post: response.data?.updatePost,
+            stats: {
+              ...stats?.stats,
+              posts: {
+                ...(stats?.stats?.posts ?? {}),
+                published,
+              },
+            },
           },
         });
       },
@@ -40,7 +81,7 @@ export const useUpdatePost = () => {
         });
         return {
           updatePost: {
-            ...postData.post,
+            ...(postData?.post || {}),
             ...cache.data,
           },
         };

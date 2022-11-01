@@ -31,7 +31,9 @@ export const Rows: FC<Props> = ({ dataSource, columns, onRowClick }) => {
                   <div className="flex items-center">
                     <div className="space-y-2">
                       <p className="whitespace-no-wrap">
-                        {props.render ? props.render(item[key]) : item[key]}
+                        {props.render
+                          ? props.render(item[key], item)
+                          : item[key]}
                       </p>
                     </div>
                   </div>

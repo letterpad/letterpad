@@ -20,7 +20,6 @@ import {
 } from "@/utils/slug";
 
 import { getPostHash } from "./api";
-import { DeletePost } from "./deletePost";
 import PublishButton from "./publishButton";
 import QuickMenu from "./quickmenu";
 import Tags from "./tags";
@@ -180,7 +179,6 @@ const Actions = ({ post }: IProps) => {
               containerClass="image-upload-container"
             />
           </div>
-          <DeletePost postId={post.id} />
         </div>
       </Drawerv2>
       <style jsx global>{`
