@@ -1,4 +1,3 @@
-import { GraphQLClient } from "graphql-request";
 import { ArrayElement } from "./array-element";
 import {
   handleAuthorErrors,
@@ -9,6 +8,7 @@ import {
   handleTagsErrors,
 } from "./errors.js";
 import { getSdk, PostsQuery } from "./graphql.js";
+import { createRequester } from "./requester.js";
 
 export interface LetterpadServerOptions {
   url: string;
@@ -20,15 +20,9 @@ export interface LetterpadSdkOptions {
 }
 
 export class Letterpad {
-  public client: GraphQLClient;
   public sdk: ReturnType<typeof getSdk>;
   constructor(options: LetterpadSdkOptions) {
-    this.client = new GraphQLClient(options.letterpadServer.url, {
-      headers: {
-        authorization: `Bearer ${options.letterpadServer.token}`,
-      },
-    });
-    this.sdk = getSdk(this.client);
+    this.sdk = getSdk(createRequester(options));
   }
 
   async listPosts(tagSlug?: string) {
