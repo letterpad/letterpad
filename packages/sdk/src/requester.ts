@@ -12,6 +12,7 @@ export function createRequester(options: LetterpadSdkOptions) {
         variables,
       }),
     });
-    return response.json();
+    const body = await response.json();
+    return body.data;
   };
 }
