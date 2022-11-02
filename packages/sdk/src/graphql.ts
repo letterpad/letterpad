@@ -784,11 +784,11 @@ export type UpdatePostResponse = Post | PostError;
 
 export type UpdateTagsResponse = EditTaxResponse | TagsError;
 
-export type PageQueryQueryVariables = Exact<{
+export type PostQueryVariables = Exact<{
   slug?: Maybe<Scalars["String"]>;
 }>;
 
-export type PageQueryQuery = { __typename?: "Query" } & {
+export type PostQuery = { __typename?: "Query" } & {
   post:
     | ({ __typename: "Exception" } & Pick<Exception, "message">)
     | ({ __typename: "InvalidArguments" } & Pick<InvalidArguments, "message">)
@@ -831,11 +831,11 @@ export type PageFragmentFragment = { __typename?: "Post" } & Pick<
     cover_image: { __typename?: "Image" } & Pick<Image, "src">;
   };
 
-export type PostsQueryQueryVariables = Exact<{
+export type PostsQueryVariables = Exact<{
   tagSlug?: Maybe<Scalars["String"]>;
 }>;
 
-export type PostsQueryQuery = { __typename?: "Query" } & {
+export type PostsQuery = { __typename?: "Query" } & {
   posts:
     | ({ __typename: "Exception" } & Pick<Exception, "message">)
     | ({ __typename: "PostsNode" } & PostsFragmentFragment)
@@ -872,9 +872,43 @@ export type PostsFragmentFragment = { __typename?: "PostsNode" } & Pick<
     >;
   };
 
-export type SitemapQueryQueryVariables = Exact<{ [key: string]: never }>;
+export type SettingsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type SitemapQueryQuery = { __typename?: "Query" } & {
+export type SettingsQuery = { __typename?: "Query" } & {
+  settings:
+    | ({ __typename: "NotFound" } & Pick<NotFound, "message">)
+    | ({ __typename: "Setting" } & SettingsFragmentFragment)
+    | ({ __typename: "UnAuthorized" } & Pick<UnAuthorized, "message">);
+};
+
+export type SettingsFragmentFragment = { __typename?: "Setting" } & Pick<
+  Setting,
+  | "site_title"
+  | "site_tagline"
+  | "site_email"
+  | "site_description"
+  | "site_footer"
+> & {
+    banner?: Maybe<
+      { __typename?: "Image" } & Pick<Image, "src" | "width" | "height">
+    >;
+    menu: Array<
+      { __typename?: "Navigation" } & Pick<
+        Navigation,
+        "label" | "type" | "original_name"
+      >
+    >;
+    site_logo?: Maybe<
+      { __typename?: "Image" } & Pick<Image, "src" | "width" | "height">
+    >;
+    site_favicon?: Maybe<
+      { __typename?: "Image" } & Pick<Image, "src" | "width" | "height">
+    >;
+  };
+
+export type SitemapQueryVariables = Exact<{ [key: string]: never }>;
+
+export type SitemapQuery = { __typename?: "Query" } & {
   sitemap:
     | ({ __typename?: "SiteMapError" } & SitemapFragment_SiteMapError_Fragment)
     | ({ __typename?: "SiteMapList" } & SitemapFragment_SiteMapList_Fragment);
@@ -896,6 +930,17 @@ type SitemapFragment_SiteMapList_Fragment = { __typename: "SiteMapList" } & {
 export type SitemapFragmentFragment =
   | SitemapFragment_SiteMapError_Fragment
   | SitemapFragment_SiteMapList_Fragment;
+
+export type TagsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type TagsQuery = { __typename?: "Query" } & {
+  tags:
+    | ({ __typename: "Exception" } & Pick<Exception, "message">)
+    | ({ __typename: "TagsError" } & Pick<TagsError, "message">)
+    | ({ __typename: "TagsNode" } & {
+        rows: Array<{ __typename?: "Tag" } & Pick<Tag, "name" | "slug">>;
+      });
+};
 
 export const PageFragmentFragmentDoc = gql`
   fragment pageFragment on Post {
@@ -978,6 +1023,36 @@ export const PostsFragmentFragmentDoc = gql`
     }
   }
 `;
+export const SettingsFragmentFragmentDoc = gql`
+  fragment settingsFragment on Setting {
+    banner {
+      src
+      width
+      height
+    }
+    site_title
+    site_tagline
+    site_email
+    site_description
+    menu {
+      label
+      type
+      original_name
+      label
+    }
+    site_logo {
+      src
+      width
+      height
+    }
+    site_favicon {
+      src
+      width
+      height
+    }
+    site_footer
+  }
+`;
 export const SitemapFragmentFragmentDoc = gql`
   fragment sitemapFragment on SiteMapResponse {
     ... on SiteMapList {
@@ -993,8 +1068,8 @@ export const SitemapFragmentFragmentDoc = gql`
     __typename
   }
 `;
-export const PageQueryDocument = gql`
-  query PageQuery($slug: String) {
+export const PostDocument = gql`
+  query post($slug: String) {
     post(filters: { slug: $slug }) {
       __typename
       ...pageFragment
@@ -1005,8 +1080,8 @@ export const PageQueryDocument = gql`
   }
   ${PageFragmentFragmentDoc}
 `;
-export const PostsQueryDocument = gql`
-  query postsQuery($tagSlug: String) {
+export const PostsDocument = gql`
+  query posts($tagSlug: String) {
     posts(filters: { tagSlug: $tagSlug }) {
       __typename
       ...postsFragment
@@ -1017,13 +1092,41 @@ export const PostsQueryDocument = gql`
   }
   ${PostsFragmentFragmentDoc}
 `;
-export const SitemapQueryDocument = gql`
-  query SitemapQuery {
+export const SettingsDocument = gql`
+  query settings {
+    settings {
+      __typename
+      ...settingsFragment
+      ... on LetterpadError {
+        message
+      }
+    }
+  }
+  ${SettingsFragmentFragmentDoc}
+`;
+export const SitemapDocument = gql`
+  query sitemap {
     sitemap {
       ...sitemapFragment
     }
   }
   ${SitemapFragmentFragmentDoc}
+`;
+export const TagsDocument = gql`
+  query tags {
+    tags {
+      __typename
+      ... on LetterpadError {
+        message
+      }
+      ... on TagsNode {
+        rows {
+          name
+          slug
+        }
+      }
+    }
+  }
 `;
 
 export type SdkFunctionWrapper = <T>(
@@ -1043,45 +1146,73 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
   return {
-    PageQuery(
-      variables?: PageQueryQueryVariables,
+    post(
+      variables?: PostQueryVariables,
       requestHeaders?: Dom.RequestInit["headers"]
-    ): Promise<PageQueryQuery> {
+    ): Promise<PostQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<PageQueryQuery>(PageQueryDocument, variables, {
+          client.request<PostQuery>(PostDocument, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        "PageQuery",
+        "post",
         "query"
       );
     },
-    postsQuery(
-      variables?: PostsQueryQueryVariables,
+    posts(
+      variables?: PostsQueryVariables,
       requestHeaders?: Dom.RequestInit["headers"]
-    ): Promise<PostsQueryQuery> {
+    ): Promise<PostsQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<PostsQueryQuery>(PostsQueryDocument, variables, {
+          client.request<PostsQuery>(PostsDocument, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        "postsQuery",
+        "posts",
         "query"
       );
     },
-    SitemapQuery(
-      variables?: SitemapQueryQueryVariables,
+    settings(
+      variables?: SettingsQueryVariables,
       requestHeaders?: Dom.RequestInit["headers"]
-    ): Promise<SitemapQueryQuery> {
+    ): Promise<SettingsQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
-          client.request<SitemapQueryQuery>(SitemapQueryDocument, variables, {
+          client.request<SettingsQuery>(SettingsDocument, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        "SitemapQuery",
+        "settings",
+        "query"
+      );
+    },
+    sitemap(
+      variables?: SitemapQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<SitemapQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<SitemapQuery>(SitemapDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "sitemap",
+        "query"
+      );
+    },
+    tags(
+      variables?: TagsQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<TagsQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<TagsQuery>(TagsDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "tags",
         "query"
       );
     },

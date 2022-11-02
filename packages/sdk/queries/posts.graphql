@@ -1,4 +1,4 @@
-query postsQuery($tagSlug: String) {
+query posts($tagSlug: String) {
   posts(filters: { tagSlug: $tagSlug }) {
     __typename
     ...postsFragment

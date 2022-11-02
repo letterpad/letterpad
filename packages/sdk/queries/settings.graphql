@@ -1,0 +1,38 @@
+query settings {
+  settings {
+    __typename
+    ...settingsFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}
+
+fragment settingsFragment on Setting {
+  banner {
+    src
+    width
+    height
+  }
+  site_title
+  site_tagline
+  site_email
+  site_description
+  menu {
+    label
+    type
+    original_name
+    label
+  }
+  site_logo {
+    src
+    width
+    height
+  }
+  site_favicon {
+    src
+    width
+    height
+  }
+  site_footer
+}
