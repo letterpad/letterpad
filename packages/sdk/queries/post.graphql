@@ -1,4 +1,4 @@
-query PageQuery($slug: String) {
+query post($slug: String) {
   post(filters: { slug: $slug }) {
     __typename
     ...pageFragment

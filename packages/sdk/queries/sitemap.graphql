@@ -1,4 +1,4 @@
-query SitemapQuery {
+query sitemap {
   sitemap {
     ...sitemapFragment
   }

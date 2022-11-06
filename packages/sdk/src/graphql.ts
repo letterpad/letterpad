@@ -1,6 +1,3 @@
-import { GraphQLClient } from "graphql-request";
-import * as Dom from "graphql-request/dist/types.dom.js";
-import { gql } from "graphql-request";
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -507,6 +504,11 @@ export enum PostStatusOptions {
   Trashed = "trashed",
 }
 
+export type PostTrashed = {
+  __typename?: "PostTrashed";
+  message: Scalars["String"];
+};
+
 export enum PostTypes {
   Page = "page",
   Post = "post",
@@ -780,15 +782,15 @@ export type UpdateDomainResponse = {
   ok: Scalars["Boolean"];
 };
 
-export type UpdatePostResponse = Post | PostError;
+export type UpdatePostResponse = Post | PostError | PostTrashed;
 
 export type UpdateTagsResponse = EditTaxResponse | TagsError;
 
-export type PageQueryQueryVariables = Exact<{
+export type PostQueryVariables = Exact<{
   slug?: Maybe<Scalars["String"]>;
 }>;
 
-export type PageQueryQuery = { __typename?: "Query" } & {
+export type PostQuery = { __typename?: "Query" } & {
   post:
     | ({ __typename: "Exception" } & Pick<Exception, "message">)
     | ({ __typename: "InvalidArguments" } & Pick<InvalidArguments, "message">)
@@ -831,11 +833,11 @@ export type PageFragmentFragment = { __typename?: "Post" } & Pick<
     cover_image: { __typename?: "Image" } & Pick<Image, "src">;
   };
 
-export type PostsQueryQueryVariables = Exact<{
+export type PostsQueryVariables = Exact<{
   tagSlug?: Maybe<Scalars["String"]>;
 }>;
 
-export type PostsQueryQuery = { __typename?: "Query" } & {
+export type PostsQuery = { __typename?: "Query" } & {
   posts:
     | ({ __typename: "Exception" } & Pick<Exception, "message">)
     | ({ __typename: "PostsNode" } & PostsFragmentFragment)
@@ -872,9 +874,43 @@ export type PostsFragmentFragment = { __typename?: "PostsNode" } & Pick<
     >;
   };
 
-export type SitemapQueryQueryVariables = Exact<{ [key: string]: never }>;
+export type SettingsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type SitemapQueryQuery = { __typename?: "Query" } & {
+export type SettingsQuery = { __typename?: "Query" } & {
+  settings:
+    | ({ __typename: "NotFound" } & Pick<NotFound, "message">)
+    | ({ __typename: "Setting" } & SettingsFragmentFragment)
+    | ({ __typename: "UnAuthorized" } & Pick<UnAuthorized, "message">);
+};
+
+export type SettingsFragmentFragment = { __typename?: "Setting" } & Pick<
+  Setting,
+  | "site_title"
+  | "site_tagline"
+  | "site_email"
+  | "site_description"
+  | "site_footer"
+> & {
+    banner?: Maybe<
+      { __typename?: "Image" } & Pick<Image, "src" | "width" | "height">
+    >;
+    menu: Array<
+      { __typename?: "Navigation" } & Pick<
+        Navigation,
+        "label" | "type" | "original_name"
+      >
+    >;
+    site_logo?: Maybe<
+      { __typename?: "Image" } & Pick<Image, "src" | "width" | "height">
+    >;
+    site_favicon?: Maybe<
+      { __typename?: "Image" } & Pick<Image, "src" | "width" | "height">
+    >;
+  };
+
+export type SitemapQueryVariables = Exact<{ [key: string]: never }>;
+
+export type SitemapQuery = { __typename?: "Query" } & {
   sitemap:
     | ({ __typename?: "SiteMapError" } & SitemapFragment_SiteMapError_Fragment)
     | ({ __typename?: "SiteMapList" } & SitemapFragment_SiteMapList_Fragment);
@@ -897,18 +933,82 @@ export type SitemapFragmentFragment =
   | SitemapFragment_SiteMapError_Fragment
   | SitemapFragment_SiteMapList_Fragment;
 
-export const PageFragmentFragmentDoc = gql`
-  fragment pageFragment on Post {
+export type TagsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type TagsQuery = { __typename?: "Query" } & {
+  tags:
+    | ({ __typename: "Exception" } & Pick<Exception, "message">)
+    | ({ __typename: "TagsError" } & Pick<TagsError, "message">)
+    | ({ __typename: "TagsNode" } & {
+        rows: Array<{ __typename?: "Tag" } & Pick<Tag, "name" | "slug">>;
+      });
+};
+
+export const PageFragmentFragmentDoc = `
+    fragment pageFragment on Post {
+  id
+  slug
+  title
+  reading_time
+  page_type
+  page_data
+  html
+  type
+  publishedAt
+  updatedAt
+  excerpt
+  tags {
+    __typename
+    ... on LetterpadError {
+      message
+    }
+    ... on TagsNode {
+      rows {
+        name
+        slug
+      }
+    }
+  }
+  author {
+    __typename
+    ... on LetterpadError {
+      message
+    }
+    ... on Author {
+      id
+      name
+      avatar
+      occupation
+    }
+  }
+  cover_image {
+    src
+  }
+}
+    `;
+export const PostsFragmentFragmentDoc = `
+    fragment postsFragment on PostsNode {
+  count
+  rows {
     id
-    slug
     title
-    reading_time
-    page_type
-    page_data
-    html
-    type
+    slug
+    cover_image {
+      src
+    }
+    author {
+      __typename
+      ... on LetterpadError {
+        message
+      }
+      ... on Author {
+        name
+        avatar
+        __typename
+      }
+    }
     publishedAt
-    updatedAt
+    reading_time
     excerpt
     tags {
       __typename
@@ -922,168 +1022,157 @@ export const PageFragmentFragmentDoc = gql`
         }
       }
     }
-    author {
-      __typename
-      ... on LetterpadError {
-        message
-      }
-      ... on Author {
-        id
-        name
-        avatar
-        occupation
-      }
-    }
-    cover_image {
-      src
-    }
   }
-`;
-export const PostsFragmentFragmentDoc = gql`
-  fragment postsFragment on PostsNode {
-    count
+}
+    `;
+export const SettingsFragmentFragmentDoc = `
+    fragment settingsFragment on Setting {
+  banner {
+    src
+    width
+    height
+  }
+  site_title
+  site_tagline
+  site_email
+  site_description
+  menu {
+    label
+    type
+    original_name
+    label
+  }
+  site_logo {
+    src
+    width
+    height
+  }
+  site_favicon {
+    src
+    width
+    height
+  }
+  site_footer
+}
+    `;
+export const SitemapFragmentFragmentDoc = `
+    fragment sitemapFragment on SiteMapResponse {
+  ... on SiteMapList {
     rows {
-      id
-      title
-      slug
-      cover_image {
-        src
-      }
-      author {
-        __typename
-        ... on LetterpadError {
-          message
-        }
-        ... on Author {
-          name
-          avatar
-          __typename
-        }
-      }
-      publishedAt
-      reading_time
-      excerpt
-      tags {
-        __typename
-        ... on LetterpadError {
-          message
-        }
-        ... on TagsNode {
-          rows {
-            name
-            slug
-          }
-        }
-      }
+      route
+      priority
+      lastmod
     }
   }
-`;
-export const SitemapFragmentFragmentDoc = gql`
-  fragment sitemapFragment on SiteMapResponse {
-    ... on SiteMapList {
-      rows {
-        route
-        priority
-        lastmod
-      }
-    }
-    ... on SiteMapError {
+  ... on SiteMapError {
+    message
+  }
+  __typename
+}
+    `;
+export const PostDocument = `
+    query post($slug: String) {
+  post(filters: {slug: $slug}) {
+    __typename
+    ...pageFragment
+    ... on LetterpadError {
       message
     }
+  }
+}
+    ${PageFragmentFragmentDoc}`;
+export const PostsDocument = `
+    query posts($tagSlug: String) {
+  posts(filters: {tagSlug: $tagSlug}) {
     __typename
+    ...postsFragment
+    ... on LetterpadError {
+      message
+    }
   }
-`;
-export const PageQueryDocument = gql`
-  query PageQuery($slug: String) {
-    post(filters: { slug: $slug }) {
-      __typename
-      ...pageFragment
-      ... on LetterpadError {
-        message
+}
+    ${PostsFragmentFragmentDoc}`;
+export const SettingsDocument = `
+    query settings {
+  settings {
+    __typename
+    ...settingsFragment
+    ... on LetterpadError {
+      message
+    }
+  }
+}
+    ${SettingsFragmentFragmentDoc}`;
+export const SitemapDocument = `
+    query sitemap {
+  sitemap {
+    ...sitemapFragment
+  }
+}
+    ${SitemapFragmentFragmentDoc}`;
+export const TagsDocument = `
+    query tags {
+  tags {
+    __typename
+    ... on LetterpadError {
+      message
+    }
+    ... on TagsNode {
+      rows {
+        name
+        slug
       }
     }
   }
-  ${PageFragmentFragmentDoc}
-`;
-export const PostsQueryDocument = gql`
-  query postsQuery($tagSlug: String) {
-    posts(filters: { tagSlug: $tagSlug }) {
-      __typename
-      ...postsFragment
-      ... on LetterpadError {
-        message
-      }
-    }
-  }
-  ${PostsFragmentFragmentDoc}
-`;
-export const SitemapQueryDocument = gql`
-  query SitemapQuery {
-    sitemap {
-      ...sitemapFragment
-    }
-  }
-  ${SitemapFragmentFragmentDoc}
-`;
-
-export type SdkFunctionWrapper = <T>(
-  action: (requestHeaders?: Record<string, string>) => Promise<T>,
-  operationName: string,
-  operationType?: string
-) => Promise<T>;
-
-const defaultWrapper: SdkFunctionWrapper = (
-  action,
-  _operationName,
-  _operationType
-) => action();
-
-export function getSdk(
-  client: GraphQLClient,
-  withWrapper: SdkFunctionWrapper = defaultWrapper
-) {
+}
+    `;
+export type Requester<C = {}, E = unknown> = <R, V>(
+  doc: string,
+  vars?: V,
+  options?: C
+) => Promise<R> | AsyncIterable<R>;
+export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
-    PageQuery(
-      variables?: PageQueryQueryVariables,
-      requestHeaders?: Dom.RequestInit["headers"]
-    ): Promise<PageQueryQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<PageQueryQuery>(PageQueryDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        "PageQuery",
-        "query"
-      );
+    post(variables?: PostQueryVariables, options?: C): Promise<PostQuery> {
+      return requester<PostQuery, PostQueryVariables>(
+        PostDocument,
+        variables,
+        options
+      ) as Promise<PostQuery>;
     },
-    postsQuery(
-      variables?: PostsQueryQueryVariables,
-      requestHeaders?: Dom.RequestInit["headers"]
-    ): Promise<PostsQueryQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<PostsQueryQuery>(PostsQueryDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        "postsQuery",
-        "query"
-      );
+    posts(variables?: PostsQueryVariables, options?: C): Promise<PostsQuery> {
+      return requester<PostsQuery, PostsQueryVariables>(
+        PostsDocument,
+        variables,
+        options
+      ) as Promise<PostsQuery>;
     },
-    SitemapQuery(
-      variables?: SitemapQueryQueryVariables,
-      requestHeaders?: Dom.RequestInit["headers"]
-    ): Promise<SitemapQueryQuery> {
-      return withWrapper(
-        (wrappedRequestHeaders) =>
-          client.request<SitemapQueryQuery>(SitemapQueryDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        "SitemapQuery",
-        "query"
-      );
+    settings(
+      variables?: SettingsQueryVariables,
+      options?: C
+    ): Promise<SettingsQuery> {
+      return requester<SettingsQuery, SettingsQueryVariables>(
+        SettingsDocument,
+        variables,
+        options
+      ) as Promise<SettingsQuery>;
+    },
+    sitemap(
+      variables?: SitemapQueryVariables,
+      options?: C
+    ): Promise<SitemapQuery> {
+      return requester<SitemapQuery, SitemapQueryVariables>(
+        SitemapDocument,
+        variables,
+        options
+      ) as Promise<SitemapQuery>;
+    },
+    tags(variables?: TagsQueryVariables, options?: C): Promise<TagsQuery> {
+      return requester<TagsQuery, TagsQueryVariables>(
+        TagsDocument,
+        variables,
+        options
+      ) as Promise<TagsQuery>;
     },
   };
 }

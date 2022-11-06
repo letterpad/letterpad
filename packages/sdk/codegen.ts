@@ -13,13 +13,15 @@ const config: CodegenConfig = {
       plugins: [
         "typescript",
         "typescript-operations",
-        "typescript-graphql-request",
+        {
+          "@graphql-codegen/typescript-generic-sdk": {
+            documentMode: "string",
+          },
+        },
       ],
-      config: {
-        gqlImport: "graphql-request#gql",
-      },
     },
   },
+
   hooks: { afterOneFileWrite: ["prettier --write"] },
 };
 
