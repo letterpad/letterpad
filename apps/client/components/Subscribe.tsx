@@ -37,7 +37,7 @@ const Subscribe = () => {
             <input
               type="email"
               placeholder="yourmail@example.com"
-              className="flex-1 border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-900 dark:bg-gray-200 dark:text-black  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 md:w-64"
+              className="flex-1 border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-900 dark:bg-gray-900 dark:text-gray-200  dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 md:w-64"
               onChange={(e) => setEmail(e.target.value.trim())}
               value={email}
             />

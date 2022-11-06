@@ -12,11 +12,12 @@ import { BlogSEO } from '@/components/SEO';
 import { Share } from '@/components/share';
 import Tag from '@/components/Tag';
 
-const postDateTemplate: Intl.DateTimeFormatOptions = {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
+export const getReadableDate = (timestamp: Date | number) => {
+  return new Date(timestamp).toLocaleString('en-us', {
+    month: 'short',
+    year: 'numeric',
+    day: 'numeric',
+  });
 };
 
 interface Props {
@@ -66,7 +67,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
     },
   ];
   const postUrl = `${settings.site_url}${slug}`;
-  const printPublishedAt = new Date(publishedAt).toLocaleDateString('en-US', postDateTemplate);
+  const printPublishedAt = getReadableDate(publishedAt);
   const isPage = type === 'page';
 
   return (
@@ -86,11 +87,11 @@ export default function PostLayout({ data, next, prev, children }: Props) {
         site_name={settings.site_title}
       />
       <ScrollTop />
-      <div className="mx-auto flex max-w-screen-xl justify-between px-4 pt-10">
-        <article className="format format-sm sm:format-base lg:format-lg format-blue dark:format-invert mx-auto w-full max-w-2xl">
+      <div className="mx-auto flex max-w-screen-xl justify-between pt-10">
+        <article className="post lg:format-lg format-blue dark:format-invert mx-auto w-full max-w-2xl">
           <header className={'mb-4 lg:mb-6'}>
             <address className={'mb-6 flex items-center not-italic' + (isPage && ' hidden')}>
-              <div className="mr-3 inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
+              <div className="inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
                 <div className="mr-4">
                   {author.avatar && (
                     <Image
@@ -99,7 +100,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                       width="64px"
                       height="64px"
                       alt={author.name}
-                      className="h-16 w-16 rounded-full"
+                      className="mr-3  h-16 w-16 rounded-full "
                     />
                   )}
                 </div>
@@ -112,13 +113,19 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                     >
                       {author.name}
                     </a>
-                    <Share title={title} summary={excerpt} url={postUrl} />
+                    <Share
+                      title={title}
+                      summary={excerpt}
+                      url={postUrl}
+                      className="hidden md:block"
+                    />
                   </div>
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     {author.occupation}
                   </p>
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                    <time title={printPublishedAt}>{printPublishedAt}</time>
+                    <time title={printPublishedAt}>{printPublishedAt}</time> &nbsp;•&nbsp;
+                    <span>{post.reading_time}</span>
                   </p>
                 </div>
               </div>
@@ -133,7 +140,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
               (isPage || !author.bio ? 'hidden' : '')
             }
           >
-            <div className="mr-4">
+            <div className="mr-4 hidden md:block">
               {author.avatar && (
                 <Image
                   loader={({ src }) => src}
@@ -149,7 +156,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
               <a
                 href="#"
                 rel="author"
-                className="text-xl font-extrabold text-gray-900 dark:text-white"
+                className="text-xl font-extrabold text-gray-900 dark:text-white "
               >
                 {author.name}
               </a>

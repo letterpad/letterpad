@@ -29,7 +29,7 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['Source Serif Pro', ...defaultTheme.fontFamily.sans],
+        sans: ['Lato', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
         xs: '.85rem',
