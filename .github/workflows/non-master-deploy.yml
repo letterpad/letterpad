@@ -94,4 +94,5 @@ jobs:
         with:
           token: ${{ secrets.SLACK_TOKEN }}
           channels: 'tests-failed'
+          workdir: "/home/runner/work/letterpad/letterpad/apps/admin/cypress"
           message-text: 'Cypress tests failed! They have been placed in this thread, good luck.'
