@@ -113,6 +113,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                   <li className="flex items-center space-x-2" key={author.name}>
                     {author.avatar && (
                       <Image
+                        loader={({ src }) => src}
                         src={author.avatar}
                         width="38px"
                         height="38px"
@@ -133,7 +134,6 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                       </dd>
                     </dl>
                   </li>
-                  {/* ))} */}
                 </ul>
               </dd>
             </dl>

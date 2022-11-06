@@ -1,0 +1,14 @@
+query tags {
+  tags {
+    __typename
+    ... on LetterpadError {
+      message
+    }
+    ... on TagsNode {
+      rows {
+        name
+        slug
+      }
+    }
+  }
+}
