@@ -67,7 +67,7 @@ input:-webkit-autofill:focus {
 
 .prose :where(pre):not(:where([class~='not-prose'] *)) {
   font-size: 80%;
-  width: 84vw;
+  max-width: 85vw;
   overflow-y: auto;
 }
 
