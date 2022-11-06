@@ -107,11 +107,11 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
                 icon: <HiOutlineUsers />,
                 key: "/subscribers",
               },
-              {
-                label: "Membership",
-                icon: <CiSettings />,
-                key: "/membership",
-              },
+              // {
+              //   label: "Membership",
+              //   icon: <CiSettings />,
+              //   key: "/membership",
+              // },
               {
                 label: "Logout",
                 icon: <BiLogOut />,
