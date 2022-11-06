@@ -37,6 +37,8 @@ model Author {
   first_post_published Boolean      @default(false)
   settings_updated    Boolean      @default(false)
   profile_updated      Boolean      @default(false)
+  stripe_customer_id  String?
+  stripe_subscription_id String?
 }
 
 model EmailDelivery {

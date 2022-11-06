@@ -3,32 +3,8 @@
 import { Navigation, Setting } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { SessionData } from "@/graphql/types";
-
 export type Optional<T> = { [P in keyof T]?: T[P] };
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      ROOT_URL: string;
-      PWD: string;
-      SECRET_KEY: string;
-      RECAPTCHA_KEY_CLIENT: string;
-      RECAPTCHA_KEY_SERVER: string;
-      SENDGRID_API_KEY: string;
-      MJ_APIKEY_PUBLIC: string;
-      MJ_APIKEY_PRIVATE: string;
-      CLOUDINARY_KEY?: string;
-      CLOUDINARY_SECRET?: string;
-      CLOUDINARY_NAME?: string;
-      UNSPLASH_CLIENT_ID?: string;
-      DATABASE_URL: string;
-      GOOGLE_CLIENT_ID: string;
-      GOOGLE_CLIENT_SECRET: string;
-      GITHUB_CLIENT_ID: string;
-      GITHUB_CLIENT_SECRET: string;
-      LANGUAGE_TOOL_URL: string;
-    }
-  }
-}
+
 export interface IMenuWithError extends Navigation {
   hasError?: boolean;
   id: number;

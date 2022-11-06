@@ -25,6 +25,18 @@ type Author {
   first_post_published: Boolean
   settings_updated: Boolean
   profile_updated: Boolean
+  stripe_customer_id: String
+  stripe_subscription_id: String
+}
+
+type Subscription {
+  id: Int!
+  customer_id: Int!
+  subscription_id: Int!
+  plan_id: Int!
+  status: String!
+  created_at: String!
+  updated_at: String!
 }
 
 input LoginData {
@@ -54,6 +66,8 @@ input InputAuthor {
   first_post_published: Boolean
   settings_updated: Boolean
   profile_updated: Boolean
+  stripe_customer_id: String
+  stripe_subscription_id: String
 }
 
 input InputCreateAuthor {

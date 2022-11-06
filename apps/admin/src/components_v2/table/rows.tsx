@@ -21,7 +21,7 @@ export const Rows: FC<Props> = ({ dataSource, columns, onRowClick }) => {
         return (
           <tr
             key={index}
-            onClick={() => onRowClick(item)}
+            onClick={() => onRowClick && onRowClick(item)}
             className={classes.row}
           >
             {fields.map((key, idx) => {
