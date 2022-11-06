@@ -2,10 +2,6 @@ schema: "src/graphql/schema/**/*.graphqls"
 documents:
   - "src/graphql/**/*.graphql"
 plugins:
-  - add:
-      content: 'import type {DocumentNode} from "graphql-tag/node_modules/graphql/language/ast";'
-  - add:
-      content: "/* eslint-disable */"
   - typescript-operations
   - typescript-react-apollo
 cacheDir: __generated__
