@@ -85,6 +85,7 @@ export const pageFragment = gql`
         ... on Author {
           id
           name
+          bio
           avatar
           occupation
           __typename
@@ -114,6 +115,7 @@ export const postsFragment = gql`
           ... on Author {
             name
             avatar
+            bio
             __typename
           }
         }

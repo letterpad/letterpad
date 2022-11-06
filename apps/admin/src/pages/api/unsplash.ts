@@ -7,6 +7,7 @@ const unsplash = async (req, res) => {
     throw new Error("No client id provided");
   }
   if (downloadLocation) {
+    // if the photo is inserted, trigger downloadlocation url
     const download = await fetch(downloadLocation, {
       headers: {
         Authorization: `Client-ID ${clientId}`,
@@ -14,6 +15,7 @@ const unsplash = async (req, res) => {
     });
     return res.status(200).json({});
   }
+  // contninue with searching for photos
   const endpoint = `${unsplashUrl}?client_id=${clientId}&query=${query}&page=${page}&per_page=21`;
 
   try {

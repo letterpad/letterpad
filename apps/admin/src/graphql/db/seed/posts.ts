@@ -24,7 +24,7 @@ export const postsList = [
     page_data: JSON.stringify({ rows: [] }),
   },
   {
-    title: "Magical moments",
+    title: "Best practices for successful prototypes",
     type: "post",
     status: "published",
     cover_image:
