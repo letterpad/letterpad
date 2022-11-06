@@ -17,6 +17,7 @@ const pageQueryWithHtml = gql`
         author {
           ... on Author {
             name
+            bio
             avatar
           }
           __typename

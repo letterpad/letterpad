@@ -29,13 +29,13 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['Source Sans Pro', ...defaultTheme.fontFamily.sans],
+        sans: ['Source Serif Pro', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
-        xs: '.8rem',
-        sm: '0.9rem',
+        xs: '.85rem',
+        sm: '0.95rem',
         tiny: '.9rem',
-        base: '1.1rem',
+        base: '1.2rem',
       },
       colors: {
         primary: colors.green,

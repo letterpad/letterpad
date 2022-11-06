@@ -66,6 +66,9 @@ export default function PostLayout({ data, next, prev, children }: Props) {
     },
   ];
   const postUrl = `${settings.site_url}${slug}`;
+  const printPublishedAt = new Date(publishedAt).toLocaleDateString('en-US', postDateTemplate);
+  const isPage = type === 'page';
+
   return (
     <SectionContainer>
       <BlogSEO
@@ -83,122 +86,80 @@ export default function PostLayout({ data, next, prev, children }: Props) {
         site_name={settings.site_title}
       />
       <ScrollTop />
-      <article>
-        <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
-          <header className="pt-6 xl:pb-6">
-            <div className="space-y-1 text-center">
-              <dl className="space-y-10">
-                <div>
-                  <dt className="sr-only">Published on</dt>
-                  <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                    <time dateTime={publishedAt}>
-                      {new Date(publishedAt).toLocaleDateString('en-US', postDateTemplate)}
-                    </time>
-                  </dd>
-                </div>
-              </dl>
-              <div>
-                <PageTitle>{title}</PageTitle>
-              </div>
-            </div>
-          </header>
-          <div
-            className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0"
-            style={{ gridTemplateRows: 'auto 1fr' }}
-          >
-            <dl className="pt-6 pb-10 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
-              <dt className="sr-only">Authors</dt>
-              <dd>
-                <ul className="flex justify-center space-x-8 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8">
-                  <li className="flex items-center space-x-2" key={author.name}>
-                    {author.avatar && (
-                      <Image
-                        loader={({ src }) => src}
-                        src={author.avatar}
-                        width="38px"
-                        height="38px"
-                        alt="avatar"
-                        className="h-10 w-10 rounded-full"
-                      />
-                    )}
-                    <dl className="whitespace-nowrap text-sm font-medium leading-5">
-                      <dt className="sr-only">Name</dt>
-                      <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                      <dt className="sr-only">Twitter</dt>
-                      <dd>
-                        {me.social?.twitter && (
-                          <Link href={me.social.twitter} className="link">
-                            {me.social.twitter.replace('https://twitter.com/', '@')}
-                          </Link>
-                        )}
-                      </dd>
-                    </dl>
-                  </li>
-                </ul>
-              </dd>
-            </dl>
-            <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">{children}</div>
-              {type === 'post' && <Comments provider="utterances" />}
-            </div>
-            <footer>
-              <div className="divide-gray-200 text-sm font-medium leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y">
-                <div className="flex flex-row justify-between xl:flex-col">
-                  {tags?.__typename === 'TagsNode' && tags.rows.length > 0 && (
-                    <div className="py-4 xl:py-4">
-                      <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                        Tags
-                      </h2>
-                      <div className="flex flex-wrap">
-                        {tags.rows.map((tag) => (
-                          <Tag key={tag.name} text={tag.name} />
-                        ))}
-                      </div>
-                    </div>
+      <div className="mx-auto flex max-w-screen-xl justify-between px-4 pt-10">
+        <article className="format format-sm sm:format-base lg:format-lg format-blue dark:format-invert mx-auto w-full max-w-2xl">
+          <header className={'mb-4 lg:mb-6'}>
+            <address className={'mb-6 flex items-center not-italic' + (isPage && ' hidden')}>
+              <div className="mr-3 inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
+                <div className="mr-4">
+                  {author.avatar && (
+                    <Image
+                      loader={({ src }) => src}
+                      src={author.avatar}
+                      width="64px"
+                      height="64px"
+                      alt={author.name}
+                      className="h-16 w-16 rounded-full"
+                    />
                   )}
-                  <div className="py-4 xl:py-4">
-                    <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                      Share
-                    </h2>
-                    <div className="mt-2 flex flex-wrap">
-                      <Share title={title} summary={excerpt} url={postUrl} />
-                    </div>
-                  </div>
                 </div>
-                {(next || prev) && (
-                  <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
-                    {prev && (
-                      <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                          Previous Article
-                        </h2>
-                        <div className="link">
-                          <Link href={`${prev.slug}`}>{prev.title}</Link>
-                        </div>
-                      </div>
-                    )}
-                    {next && (
-                      <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                          Next Article
-                        </h2>
-                        <div className="link">
-                          <Link href={`${next.slug}`}>{next.title}</Link>
-                        </div>
-                      </div>
-                    )}
+                <div className="w-full">
+                  <div className="flex flex-1 justify-between">
+                    <a
+                      href="#"
+                      rel="author"
+                      className="text-xl font-extrabold text-gray-900 dark:text-white"
+                    >
+                      {author.name}
+                    </a>
+                    <Share title={title} summary={excerpt} url={postUrl} />
                   </div>
-                )}
+                  <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                    {author.occupation}
+                  </p>
+                  <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                    <time title={printPublishedAt}>{printPublishedAt}</time>
+                  </p>
+                </div>
               </div>
-              <div className="pt-4 xl:pt-8">
-                <Link href="/" className="link">
-                  &larr; Back to home
-                </Link>
-              </div>
-            </footer>
+            </address>
+            <PageTitle>{title}</PageTitle>
+          </header>
+          <div className="prose max-w-none pb-8 dark:prose-dark">{children}</div>
+
+          <div
+            className={
+              'mb-10 mr-3 flex items-center rounded-md border p-8 text-sm text-gray-900 dark:border-gray-800 dark:text-white ' +
+              (isPage || !author.bio ? 'hidden' : '')
+            }
+          >
+            <div className="mr-4">
+              {author.avatar && (
+                <Image
+                  loader={({ src }) => src}
+                  src={author.avatar}
+                  width="94px"
+                  height="94px"
+                  alt={author.name}
+                  className="h-16 w-16 rounded-full"
+                />
+              )}
+            </div>
+            <div>
+              <a
+                href="#"
+                rel="author"
+                className="text-xl font-extrabold text-gray-900 dark:text-white"
+              >
+                {author.name}
+              </a>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">{author.bio}</p>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400"></p>
+            </div>
           </div>
-        </div>
-      </article>
+          {type === 'post' && <Comments provider="utterances" />}
+        </article>
+      </div>
     </SectionContainer>
   );
 }
