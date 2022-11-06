@@ -228,6 +228,12 @@ pre[class*='language-'].line-numbers > code {
   white-space: inherit;
 }
 
+@media (max-width: 800px) {
+  pre[class*='language-'].line-numbers {
+    padding-left: 10px;
+  }
+}
+
 .line-numbers .line-numbers-rows {
   position: absolute;
   pointer-events: none;
