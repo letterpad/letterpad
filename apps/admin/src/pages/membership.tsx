@@ -34,7 +34,8 @@ const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
       headers: { "Content-Type": "application/json" },
     }).then((res) => res.json());
     const stripe = await stripePromise;
-    const { error } = await stripe?.redirectToCheckout({
+
+    const result = await stripe?.redirectToCheckout({
       sessionId: res.id,
     });
   };

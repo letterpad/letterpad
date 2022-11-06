@@ -16,6 +16,8 @@ export const getAuthorFromPost = async (
       ...post.author,
       analytics_id: post.author.analytics_id || undefined,
       analytics_uuid: post.author.analytics_uuid || undefined,
+      stripe_customer_id: post.author.stripe_customer_id || undefined,
+      stripe_subscription_id: post.author.stripe_subscription_id || undefined,
       social: JSON.parse(post.author.social),
     };
   }

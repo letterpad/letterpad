@@ -21,6 +21,7 @@
     "postcss.config.js",
     "tests/**/*",
     "migrations/**/*",
-    "config/*"
+    "config/*",
+    "src/types.d.ts"
   ]
 }
