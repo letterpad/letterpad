@@ -25,7 +25,9 @@ body {
 
 .site-layout-background {
   background: rgb(var(--section-bg));
-  min-height: calc(100vh - 214px);
+  height: calc(100vh - 214px);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .dark .ant-layout-footer {
   background: rgb(var(--content-bg));
