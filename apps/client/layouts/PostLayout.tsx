@@ -88,7 +88,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
       />
       <ScrollTop />
       <div className="mx-auto flex max-w-screen-xl justify-between pt-10">
-        <article className="post lg:format-lg format-blue dark:format-invert mx-auto w-full max-w-2xl">
+        <article className="post format-blue dark:format-invert mx-auto w-full max-w-2xl">
           <header className={'mb-4 lg:mb-6'}>
             <address className={'mb-6 flex items-center not-italic' + (isPage && ' hidden')}>
               <div className="inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
@@ -132,7 +132,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
             </address>
             <PageTitle>{title}</PageTitle>
           </header>
-          <div className="prose max-w-none pb-8 dark:prose-dark">{children}</div>
+          <div className="prose max-w-none pb-8 text-lg dark:prose-dark">{children}</div>
 
           <div
             className={

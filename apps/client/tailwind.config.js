@@ -35,7 +35,8 @@ module.exports = {
         xs: '.85rem',
         sm: '0.95rem',
         tiny: '.9rem',
-        base: '1.2rem',
+        lg: '1.3rem',
+        base: '1rem',
       },
       colors: {
         primary: colors.green,

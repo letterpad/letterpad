@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,800;1,400;1,600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;1,400&family=Roboto+Mono&display=swap&family=Lato&display=swap&family=Niconne&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,7 +33,7 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: 'Lato', serif;
+  font-family: 'Source Serif Pro', serif;
 }
 .post {
   font-family: 'Source Serif Pro', serif;
