@@ -4,7 +4,6 @@ import { Navigation, Setting } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { SessionData } from "@/graphql/types";
 
-export type Optional<T> = { [P in keyof T]?: T[P] };
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
@@ -17,6 +16,7 @@ declare global {
       MJ_APIKEY_PUBLIC: string;
       MJ_APIKEY_PRIVATE: string;
       CLOUDINARY_KEY?: string;
+      STRIPE_SECRET_KEY?: string;
       CLOUDINARY_SECRET?: string;
       CLOUDINARY_NAME?: string;
       UNSPLASH_CLIENT_ID?: string;
@@ -26,9 +26,13 @@ declare global {
       GITHUB_CLIENT_ID: string;
       GITHUB_CLIENT_SECRET: string;
       LANGUAGE_TOOL_URL: string;
+      STRIPE_PRICE_ID: string;
     }
   }
 }
+
+export type Optional<T> = { [P in keyof T]?: T[P] };
+
 export interface IMenuWithError extends Navigation {
   hasError?: boolean;
   id: number;

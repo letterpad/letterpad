@@ -6,7 +6,7 @@ import { IMediaUploadResult } from "@/graphql/types";
 
 import { IUploadFileProps } from "../types";
 
-export const getReadableDate = (timestamp: Date) => {
+export const getReadableDate = (timestamp: Date | number) => {
   return new Date(timestamp).toLocaleString("en-us", {
     month: "long",
     year: "numeric",

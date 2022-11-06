@@ -106,6 +106,8 @@ export async function createAuthorWithSettings(
         verified,
         bio: "",
         occupation: "",
+        stripe_customer_id: "",
+        stripe_subscription_id: "",
         company_name: "",
         social: JSON.stringify({
           twitter: "",

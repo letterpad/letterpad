@@ -1,0 +1,14 @@
+type CreateSubscriptionResponse {
+  ok: Boolean!
+  message: String
+}
+
+type UpdateSubscriptionResponse {
+  ok: Boolean!
+  message: String
+}
+
+type Query {
+  createSubscription(type: String): CreateSubscriptionResponse!
+  updateSubscription(type: String): UpdateSubscriptionResponse!
+}

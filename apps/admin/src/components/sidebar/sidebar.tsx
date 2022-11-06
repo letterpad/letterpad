@@ -10,6 +10,7 @@ import {
   HiOutlineHome,
   HiOutlineUsers,
 } from "react-icons/hi";
+import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
 
 import { useResponsiveLayout } from "@/components_v2/layouts/responsiveProvider";
@@ -83,7 +84,7 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
               },
               {
                 label: "Profile",
-                icon: <CgProfile />,
+                icon: <MdManageAccounts />,
                 key: "/profile",
               },
               {
@@ -106,6 +107,11 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
                 icon: <HiOutlineUsers />,
                 key: "/subscribers",
               },
+              // {
+              //   label: "Membership",
+              //   icon: <CiSettings />,
+              //   key: "/membership",
+              // },
               {
                 label: "Logout",
                 icon: <BiLogOut />,

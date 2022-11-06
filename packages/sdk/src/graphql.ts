@@ -1,4 +1,5 @@
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
@@ -36,6 +37,8 @@ export type Author = {
   role?: Maybe<Role>;
   settings_updated?: Maybe<Scalars["Boolean"]>;
   social?: Maybe<Social>;
+  stripe_customer_id?: Maybe<Scalars["String"]>;
+  stripe_subscription_id?: Maybe<Scalars["String"]>;
   username: Scalars["String"];
   verified?: Maybe<Scalars["Boolean"]>;
 };
@@ -50,6 +53,12 @@ export type AuthorResponse =
 export type CreateDomainResponse = Domain | DomainError;
 
 export type CreatePostResponse = Post | PostError;
+
+export type CreateSubscriptionResponse = {
+  __typename?: "CreateSubscriptionResponse";
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+};
 
 export type DeleteAuthorResponse = {
   __typename?: "DeleteAuthorResponse";
@@ -140,55 +149,57 @@ export type Image = {
 };
 
 export type InputAuthor = {
-  avatar?: Maybe<Scalars["String"]>;
-  bio?: Maybe<Scalars["String"]>;
-  company_name?: Maybe<Scalars["String"]>;
-  email?: Maybe<Scalars["String"]>;
-  first_post_published?: Maybe<Scalars["Boolean"]>;
+  avatar?: InputMaybe<Scalars["String"]>;
+  bio?: InputMaybe<Scalars["String"]>;
+  company_name?: InputMaybe<Scalars["String"]>;
+  email?: InputMaybe<Scalars["String"]>;
+  first_post_published?: InputMaybe<Scalars["Boolean"]>;
   id: Scalars["Int"];
-  name?: Maybe<Scalars["String"]>;
-  occupation?: Maybe<Scalars["String"]>;
-  password?: Maybe<Scalars["String"]>;
-  profile_updated?: Maybe<Scalars["Boolean"]>;
-  roleId?: Maybe<Scalars["Int"]>;
-  settings_updated?: Maybe<Scalars["Boolean"]>;
-  social?: Maybe<InputSocial>;
-  username?: Maybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  occupation?: InputMaybe<Scalars["String"]>;
+  password?: InputMaybe<Scalars["String"]>;
+  profile_updated?: InputMaybe<Scalars["Boolean"]>;
+  roleId?: InputMaybe<Scalars["Int"]>;
+  settings_updated?: InputMaybe<Scalars["Boolean"]>;
+  social?: InputMaybe<InputSocial>;
+  stripe_customer_id?: InputMaybe<Scalars["String"]>;
+  stripe_subscription_id?: InputMaybe<Scalars["String"]>;
+  username?: InputMaybe<Scalars["String"]>;
 };
 
 export type InputCreateAuthor = {
   email: Scalars["String"];
   name: Scalars["String"];
   password: Scalars["String"];
-  setting?: Maybe<SettingInputType>;
+  setting?: InputMaybe<SettingInputType>;
   token: Scalars["String"];
   username: Scalars["String"];
 };
 
 export type InputCreatePost = {
-  cover_image?: Maybe<InputImage>;
-  excerpt?: Maybe<Scalars["String"]>;
-  featured?: Maybe<Scalars["Boolean"]>;
-  html?: Maybe<Scalars["String"]>;
-  page_data?: Maybe<Scalars["String"]>;
-  page_type?: Maybe<Scalars["String"]>;
-  slug?: Maybe<Scalars["String"]>;
-  status?: Maybe<PostStatusOptions>;
-  tags?: Maybe<Array<Maybe<TagsInputType>>>;
-  title?: Maybe<Scalars["String"]>;
-  type?: Maybe<PostTypes>;
+  cover_image?: InputMaybe<InputImage>;
+  excerpt?: InputMaybe<Scalars["String"]>;
+  featured?: InputMaybe<Scalars["Boolean"]>;
+  html?: InputMaybe<Scalars["String"]>;
+  page_data?: InputMaybe<Scalars["String"]>;
+  page_type?: InputMaybe<Scalars["String"]>;
+  slug?: InputMaybe<Scalars["String"]>;
+  status?: InputMaybe<PostStatusOptions>;
+  tags?: InputMaybe<Array<InputMaybe<TagsInputType>>>;
+  title?: InputMaybe<Scalars["String"]>;
+  type?: InputMaybe<PostTypes>;
 };
 
 export type InputDomain = {
-  mapped?: Maybe<Scalars["Boolean"]>;
-  name?: Maybe<Scalars["String"]>;
-  ssl?: Maybe<Scalars["Boolean"]>;
+  mapped?: InputMaybe<Scalars["Boolean"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  ssl?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type InputImage = {
-  height?: Maybe<Scalars["Int"]>;
+  height?: InputMaybe<Scalars["Int"]>;
   src: Scalars["String"];
-  width?: Maybe<Scalars["Int"]>;
+  width?: InputMaybe<Scalars["Int"]>;
 };
 
 export type InputNavigation = {
@@ -199,47 +210,47 @@ export type InputNavigation = {
 };
 
 export type InputSocial = {
-  facebook?: Maybe<Scalars["String"]>;
-  github?: Maybe<Scalars["String"]>;
-  instagram?: Maybe<Scalars["String"]>;
-  linkedin?: Maybe<Scalars["String"]>;
-  twitter?: Maybe<Scalars["String"]>;
+  facebook?: InputMaybe<Scalars["String"]>;
+  github?: InputMaybe<Scalars["String"]>;
+  instagram?: InputMaybe<Scalars["String"]>;
+  linkedin?: InputMaybe<Scalars["String"]>;
+  twitter?: InputMaybe<Scalars["String"]>;
 };
 
 export type InputTags = {
   name: Scalars["String"];
-  old_name?: Maybe<Scalars["String"]>;
-  slug?: Maybe<Scalars["String"]>;
+  old_name?: InputMaybe<Scalars["String"]>;
+  slug?: InputMaybe<Scalars["String"]>;
 };
 
 export type InputUpdateMedia = {
-  description?: Maybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["String"]>;
   id: Scalars["Int"];
-  name?: Maybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
 };
 
 export type InputUpdatePost = {
-  cover_image?: Maybe<InputImage>;
-  excerpt?: Maybe<Scalars["String"]>;
-  featured?: Maybe<Scalars["Boolean"]>;
-  html?: Maybe<Scalars["String"]>;
-  html_draft?: Maybe<Scalars["String"]>;
+  cover_image?: InputMaybe<InputImage>;
+  excerpt?: InputMaybe<Scalars["String"]>;
+  featured?: InputMaybe<Scalars["Boolean"]>;
+  html?: InputMaybe<Scalars["String"]>;
+  html_draft?: InputMaybe<Scalars["String"]>;
   id: Scalars["Int"];
-  page_data?: Maybe<Scalars["String"]>;
-  page_type?: Maybe<Scalars["String"]>;
-  publishedAt?: Maybe<Scalars["Date"]>;
-  scheduledAt?: Maybe<Scalars["Date"]>;
-  slug?: Maybe<Scalars["String"]>;
-  status?: Maybe<PostStatusOptions>;
-  tags?: Maybe<Array<TagsInputType>>;
-  title?: Maybe<Scalars["String"]>;
-  type?: Maybe<PostTypes>;
-  updatedAt?: Maybe<Scalars["Date"]>;
+  page_data?: InputMaybe<Scalars["String"]>;
+  page_type?: InputMaybe<Scalars["String"]>;
+  publishedAt?: InputMaybe<Scalars["Date"]>;
+  scheduledAt?: InputMaybe<Scalars["Date"]>;
+  slug?: InputMaybe<Scalars["String"]>;
+  status?: InputMaybe<PostStatusOptions>;
+  tags?: InputMaybe<Array<TagsInputType>>;
+  title?: InputMaybe<Scalars["String"]>;
+  type?: InputMaybe<PostTypes>;
+  updatedAt?: InputMaybe<Scalars["Date"]>;
 };
 
 export type InputUpdateSubscriber = {
-  secret_id?: Maybe<Scalars["String"]>;
-  verified?: Maybe<Scalars["Boolean"]>;
+  secret_id?: InputMaybe<Scalars["String"]>;
+  verified?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type InvalidArguments = LetterpadError & {
@@ -293,11 +304,11 @@ export type MediaError = LetterpadError & {
 };
 
 export type MediaFilters = {
-  authorId?: Maybe<Scalars["Int"]>;
-  cursor?: Maybe<Scalars["Int"]>;
-  id?: Maybe<Scalars["Int"]>;
-  limit?: Maybe<Scalars["Int"]>;
-  page?: Maybe<Scalars["Int"]>;
+  authorId?: InputMaybe<Scalars["Int"]>;
+  cursor?: InputMaybe<Scalars["Int"]>;
+  id?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  page?: InputMaybe<Scalars["Int"]>;
 };
 
 export type MediaNode = {
@@ -347,7 +358,7 @@ export type MutationCreateOrUpdateDomainArgs = {
 };
 
 export type MutationCreatePostArgs = {
-  data?: Maybe<InputCreatePost>;
+  data?: InputMaybe<InputCreatePost>;
 };
 
 export type MutationDeleteMediaArgs = {
@@ -363,7 +374,7 @@ export type MutationForgotPasswordArgs = {
 };
 
 export type MutationLoginArgs = {
-  data?: Maybe<LoginData>;
+  data?: InputMaybe<LoginData>;
 };
 
 export type MutationResetPasswordArgs = {
@@ -384,7 +395,7 @@ export type MutationUpdateOptionsArgs = {
 };
 
 export type MutationUpdatePostArgs = {
-  data?: Maybe<InputUpdatePost>;
+  data?: InputMaybe<InputUpdatePost>;
 };
 
 export type MutationUpdateSubscriberArgs = {
@@ -392,7 +403,7 @@ export type MutationUpdateSubscriberArgs = {
 };
 
 export type MutationUpdateTagsArgs = {
-  data?: Maybe<InputTags>;
+  data?: InputMaybe<InputTags>;
 };
 
 export type Navigation = {
@@ -457,12 +468,12 @@ export type PostError = LetterpadError & {
 };
 
 export type PostFilters = {
-  featured?: Maybe<Scalars["Boolean"]>;
-  id?: Maybe<Scalars["Int"]>;
-  previewHash?: Maybe<Scalars["String"]>;
-  slug?: Maybe<Scalars["String"]>;
-  status?: Maybe<PostStatusOptions>;
-  type?: Maybe<PostTypes>;
+  featured?: InputMaybe<Scalars["Boolean"]>;
+  id?: InputMaybe<Scalars["Int"]>;
+  previewHash?: InputMaybe<Scalars["String"]>;
+  slug?: InputMaybe<Scalars["String"]>;
+  status?: InputMaybe<PostStatusOptions>;
+  type?: InputMaybe<PostTypes>;
 };
 
 export type PostResponse =
@@ -471,32 +482,6 @@ export type PostResponse =
   | NotFound
   | Post
   | UnAuthorized;
-
-export type PostsFilters = {
-  author?: Maybe<Scalars["String"]>;
-  cursor?: Maybe<Scalars["Int"]>;
-  featured?: Maybe<Scalars["Boolean"]>;
-  id?: Maybe<Scalars["Int"]>;
-  limit?: Maybe<Scalars["Int"]>;
-  offset?: Maybe<Scalars["Int"]>;
-  page?: Maybe<Scalars["Int"]>;
-  page_type?: Maybe<Scalars["String"]>;
-  previewHash?: Maybe<Scalars["String"]>;
-  slug?: Maybe<Scalars["String"]>;
-  sortBy?: Maybe<SortBy>;
-  status?: Maybe<PostStatusOptions>;
-  tag?: Maybe<Scalars["String"]>;
-  tagSlug?: Maybe<Scalars["String"]>;
-  type?: Maybe<PostTypes>;
-};
-
-export type PostsNode = {
-  __typename?: "PostsNode";
-  count: Scalars["Int"];
-  rows: Array<Post>;
-};
-
-export type PostsResponse = Exception | PostsNode | UnAuthorized;
 
 export enum PostStatusOptions {
   Draft = "draft",
@@ -514,8 +499,35 @@ export enum PostTypes {
   Post = "post",
 }
 
+export type PostsFilters = {
+  author?: InputMaybe<Scalars["String"]>;
+  cursor?: InputMaybe<Scalars["Int"]>;
+  featured?: InputMaybe<Scalars["Boolean"]>;
+  id?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+  page?: InputMaybe<Scalars["Int"]>;
+  page_type?: InputMaybe<Scalars["String"]>;
+  previewHash?: InputMaybe<Scalars["String"]>;
+  slug?: InputMaybe<Scalars["String"]>;
+  sortBy?: InputMaybe<SortBy>;
+  status?: InputMaybe<PostStatusOptions>;
+  tag?: InputMaybe<Scalars["String"]>;
+  tagSlug?: InputMaybe<Scalars["String"]>;
+  type?: InputMaybe<PostTypes>;
+};
+
+export type PostsNode = {
+  __typename?: "PostsNode";
+  count: Scalars["Int"];
+  rows: Array<Post>;
+};
+
+export type PostsResponse = Exception | PostsNode | UnAuthorized;
+
 export type Query = {
   __typename?: "Query";
+  createSubscription: CreateSubscriptionResponse;
   domain: DomainResponse;
   email: EmailResponse;
   emails: Array<Maybe<Email>>;
@@ -532,34 +544,39 @@ export type Query = {
   subscribers: SubscribersNode;
   tag: TagResponse;
   tags: TagsResponse;
+  updateSubscription: UpdateSubscriptionResponse;
+};
+
+export type QueryCreateSubscriptionArgs = {
+  type?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryEmailArgs = {
-  template_id?: Maybe<Scalars["String"]>;
+  template_id?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryLetterpadLatestPostArgs = {
-  filters?: Maybe<LetterpadPostFilters>;
+  filters?: InputMaybe<LetterpadPostFilters>;
 };
 
 export type QueryMediaArgs = {
-  filters?: Maybe<MediaFilters>;
+  filters?: InputMaybe<MediaFilters>;
 };
 
 export type QueryPostArgs = {
-  filters?: Maybe<PostFilters>;
+  filters?: InputMaybe<PostFilters>;
 };
 
 export type QueryPostsArgs = {
-  filters?: Maybe<PostsFilters>;
+  filters?: InputMaybe<PostsFilters>;
 };
 
 export type QuerySubscriberArgs = {
-  subscriber_id?: Maybe<Scalars["Int"]>;
+  subscriber_id?: InputMaybe<Scalars["Int"]>;
 };
 
 export type QuerySubscribersArgs = {
-  author_id?: Maybe<Scalars["Int"]>;
+  author_id?: InputMaybe<Scalars["Int"]>;
 };
 
 export type QueryTagArgs = {
@@ -567,7 +584,11 @@ export type QueryTagArgs = {
 };
 
 export type QueryTagsArgs = {
-  filters?: Maybe<TagsFilters>;
+  filters?: InputMaybe<TagsFilters>;
+};
+
+export type QueryUpdateSubscriptionArgs = {
+  type?: InputMaybe<Scalars["String"]>;
 };
 
 export type RemoveDomainResponse = {
@@ -622,26 +643,26 @@ export type SettingError = LetterpadError & {
 };
 
 export type SettingInputType = {
-  banner?: Maybe<InputImage>;
-  cloudinary_key?: Maybe<Scalars["String"]>;
-  cloudinary_name?: Maybe<Scalars["String"]>;
-  cloudinary_secret?: Maybe<Scalars["String"]>;
-  css?: Maybe<Scalars["String"]>;
-  display_author_info?: Maybe<Scalars["Boolean"]>;
-  intro_dismissed?: Maybe<Scalars["Boolean"]>;
-  menu?: Maybe<Array<InputNavigation>>;
-  show_about_page?: Maybe<Scalars["Boolean"]>;
-  show_tags_page?: Maybe<Scalars["Boolean"]>;
-  site_description?: Maybe<Scalars["String"]>;
-  site_email?: Maybe<Scalars["String"]>;
-  site_favicon?: Maybe<InputImage>;
-  site_footer?: Maybe<Scalars["String"]>;
-  site_logo?: Maybe<InputImage>;
-  site_tagline?: Maybe<Scalars["String"]>;
-  site_title?: Maybe<Scalars["String"]>;
-  site_url?: Maybe<Scalars["String"]>;
-  subscribe_embed?: Maybe<Scalars["String"]>;
-  theme?: Maybe<Scalars["String"]>;
+  banner?: InputMaybe<InputImage>;
+  cloudinary_key?: InputMaybe<Scalars["String"]>;
+  cloudinary_name?: InputMaybe<Scalars["String"]>;
+  cloudinary_secret?: InputMaybe<Scalars["String"]>;
+  css?: InputMaybe<Scalars["String"]>;
+  display_author_info?: InputMaybe<Scalars["Boolean"]>;
+  intro_dismissed?: InputMaybe<Scalars["Boolean"]>;
+  menu?: InputMaybe<Array<InputNavigation>>;
+  show_about_page?: InputMaybe<Scalars["Boolean"]>;
+  show_tags_page?: InputMaybe<Scalars["Boolean"]>;
+  site_description?: InputMaybe<Scalars["String"]>;
+  site_email?: InputMaybe<Scalars["String"]>;
+  site_favicon?: InputMaybe<InputImage>;
+  site_footer?: InputMaybe<Scalars["String"]>;
+  site_logo?: InputMaybe<InputImage>;
+  site_tagline?: InputMaybe<Scalars["String"]>;
+  site_title?: InputMaybe<Scalars["String"]>;
+  site_url?: InputMaybe<Scalars["String"]>;
+  subscribe_embed?: InputMaybe<Scalars["String"]>;
+  theme?: InputMaybe<Scalars["String"]>;
 };
 
 export type SettingResponse = NotFound | Setting | UnAuthorized;
@@ -729,6 +750,17 @@ export type SubscribersUpdateResult = {
   ok: Scalars["Boolean"];
 };
 
+export type Subscription = {
+  __typename?: "Subscription";
+  created_at: Scalars["String"];
+  customer_id: Scalars["Int"];
+  id: Scalars["Int"];
+  plan_id: Scalars["Int"];
+  status: Scalars["String"];
+  subscription_id: Scalars["Int"];
+  updated_at: Scalars["String"];
+};
+
 export type Tag = {
   __typename?: "Tag";
   name: Scalars["String"];
@@ -749,9 +781,9 @@ export type TagsError = LetterpadError & {
 };
 
 export type TagsFilters = {
-  active?: Maybe<Scalars["Boolean"]>;
-  name?: Maybe<Scalars["String"]>;
-  suggest?: Maybe<Scalars["Boolean"]>;
+  active?: InputMaybe<Scalars["Boolean"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  suggest?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type TagsInputType = {
@@ -784,149 +816,274 @@ export type UpdateDomainResponse = {
 
 export type UpdatePostResponse = Post | PostError | PostTrashed;
 
+export type UpdateSubscriptionResponse = {
+  __typename?: "UpdateSubscriptionResponse";
+  message?: Maybe<Scalars["String"]>;
+  ok: Scalars["Boolean"];
+};
+
 export type UpdateTagsResponse = EditTaxResponse | TagsError;
 
 export type PostQueryVariables = Exact<{
-  slug?: Maybe<Scalars["String"]>;
+  slug?: InputMaybe<Scalars["String"]>;
 }>;
 
-export type PostQuery = { __typename?: "Query" } & {
+export type PostQuery = {
+  __typename?: "Query";
   post:
-    | ({ __typename: "Exception" } & Pick<Exception, "message">)
-    | ({ __typename: "InvalidArguments" } & Pick<InvalidArguments, "message">)
-    | ({ __typename: "NotFound" } & Pick<NotFound, "message">)
-    | ({ __typename: "Post" } & PageFragmentFragment)
-    | ({ __typename: "UnAuthorized" } & Pick<UnAuthorized, "message">);
+    | { __typename: "Exception"; message: string }
+    | { __typename: "InvalidArguments"; message: string }
+    | { __typename: "NotFound"; message: string }
+    | {
+        __typename: "Post";
+        id: number;
+        slug?: string | null;
+        title: string;
+        reading_time?: string | null;
+        page_type?: string | null;
+        page_data?: string | null;
+        html?: string | null;
+        type: PostTypes;
+        publishedAt?: any | null;
+        updatedAt: any;
+        excerpt?: string | null;
+        tags?:
+          | { __typename: "Exception"; message: string }
+          | { __typename: "TagsError"; message: string }
+          | {
+              __typename: "TagsNode";
+              rows: Array<{ __typename?: "Tag"; name: string; slug: string }>;
+            }
+          | null;
+        author?:
+          | {
+              __typename: "Author";
+              id: number;
+              name: string;
+              avatar?: string | null;
+              occupation?: string | null;
+            }
+          | { __typename: "Exception"; message: string }
+          | { __typename: "Failed"; message: string }
+          | { __typename: "NotFound"; message: string }
+          | { __typename: "UnAuthorized"; message: string }
+          | null;
+        cover_image: { __typename?: "Image"; src?: string | null };
+      }
+    | { __typename: "UnAuthorized"; message: string };
 };
 
-export type PageFragmentFragment = { __typename?: "Post" } & Pick<
-  Post,
-  | "id"
-  | "slug"
-  | "title"
-  | "reading_time"
-  | "page_type"
-  | "page_data"
-  | "html"
-  | "type"
-  | "publishedAt"
-  | "updatedAt"
-  | "excerpt"
-> & {
-    tags?: Maybe<
-      | ({ __typename: "Exception" } & Pick<Exception, "message">)
-      | ({ __typename: "TagsError" } & Pick<TagsError, "message">)
-      | ({ __typename: "TagsNode" } & {
-          rows: Array<{ __typename?: "Tag" } & Pick<Tag, "name" | "slug">>;
-        })
-    >;
-    author?: Maybe<
-      | ({ __typename: "Author" } & Pick<
-          Author,
-          "id" | "name" | "avatar" | "occupation"
-        >)
-      | ({ __typename: "Exception" } & Pick<Exception, "message">)
-      | ({ __typename: "Failed" } & Pick<Failed, "message">)
-      | ({ __typename: "NotFound" } & Pick<NotFound, "message">)
-      | ({ __typename: "UnAuthorized" } & Pick<UnAuthorized, "message">)
-    >;
-    cover_image: { __typename?: "Image" } & Pick<Image, "src">;
-  };
+export type PageFragmentFragment = {
+  __typename?: "Post";
+  id: number;
+  slug?: string | null;
+  title: string;
+  reading_time?: string | null;
+  page_type?: string | null;
+  page_data?: string | null;
+  html?: string | null;
+  type: PostTypes;
+  publishedAt?: any | null;
+  updatedAt: any;
+  excerpt?: string | null;
+  tags?:
+    | { __typename: "Exception"; message: string }
+    | { __typename: "TagsError"; message: string }
+    | {
+        __typename: "TagsNode";
+        rows: Array<{ __typename?: "Tag"; name: string; slug: string }>;
+      }
+    | null;
+  author?:
+    | {
+        __typename: "Author";
+        id: number;
+        name: string;
+        avatar?: string | null;
+        occupation?: string | null;
+      }
+    | { __typename: "Exception"; message: string }
+    | { __typename: "Failed"; message: string }
+    | { __typename: "NotFound"; message: string }
+    | { __typename: "UnAuthorized"; message: string }
+    | null;
+  cover_image: { __typename?: "Image"; src?: string | null };
+};
 
 export type PostsQueryVariables = Exact<{
-  tagSlug?: Maybe<Scalars["String"]>;
+  tagSlug?: InputMaybe<Scalars["String"]>;
 }>;
 
-export type PostsQuery = { __typename?: "Query" } & {
+export type PostsQuery = {
+  __typename?: "Query";
   posts:
-    | ({ __typename: "Exception" } & Pick<Exception, "message">)
-    | ({ __typename: "PostsNode" } & PostsFragmentFragment)
-    | ({ __typename: "UnAuthorized" } & Pick<UnAuthorized, "message">);
+    | { __typename: "Exception"; message: string }
+    | {
+        __typename: "PostsNode";
+        count: number;
+        rows: Array<{
+          __typename?: "Post";
+          id: number;
+          title: string;
+          slug?: string | null;
+          publishedAt?: any | null;
+          reading_time?: string | null;
+          excerpt?: string | null;
+          cover_image: { __typename?: "Image"; src?: string | null };
+          author?:
+            | { __typename: "Author"; name: string; avatar?: string | null }
+            | { __typename: "Exception"; message: string }
+            | { __typename: "Failed"; message: string }
+            | { __typename: "NotFound"; message: string }
+            | { __typename: "UnAuthorized"; message: string }
+            | null;
+          tags?:
+            | { __typename: "Exception"; message: string }
+            | { __typename: "TagsError"; message: string }
+            | {
+                __typename: "TagsNode";
+                rows: Array<{ __typename?: "Tag"; name: string; slug: string }>;
+              }
+            | null;
+        }>;
+      }
+    | { __typename: "UnAuthorized"; message: string };
 };
 
-export type PostsFragmentFragment = { __typename?: "PostsNode" } & Pick<
-  PostsNode,
-  "count"
-> & {
-    rows: Array<
-      { __typename?: "Post" } & Pick<
-        Post,
-        "id" | "title" | "slug" | "publishedAt" | "reading_time" | "excerpt"
-      > & {
-          cover_image: { __typename?: "Image" } & Pick<Image, "src">;
-          author?: Maybe<
-            | ({ __typename: "Author" } & Pick<Author, "name" | "avatar">)
-            | ({ __typename: "Exception" } & Pick<Exception, "message">)
-            | ({ __typename: "Failed" } & Pick<Failed, "message">)
-            | ({ __typename: "NotFound" } & Pick<NotFound, "message">)
-            | ({ __typename: "UnAuthorized" } & Pick<UnAuthorized, "message">)
-          >;
-          tags?: Maybe<
-            | ({ __typename: "Exception" } & Pick<Exception, "message">)
-            | ({ __typename: "TagsError" } & Pick<TagsError, "message">)
-            | ({ __typename: "TagsNode" } & {
-                rows: Array<
-                  { __typename?: "Tag" } & Pick<Tag, "name" | "slug">
-                >;
-              })
-          >;
+export type PostsFragmentFragment = {
+  __typename?: "PostsNode";
+  count: number;
+  rows: Array<{
+    __typename?: "Post";
+    id: number;
+    title: string;
+    slug?: string | null;
+    publishedAt?: any | null;
+    reading_time?: string | null;
+    excerpt?: string | null;
+    cover_image: { __typename?: "Image"; src?: string | null };
+    author?:
+      | { __typename: "Author"; name: string; avatar?: string | null }
+      | { __typename: "Exception"; message: string }
+      | { __typename: "Failed"; message: string }
+      | { __typename: "NotFound"; message: string }
+      | { __typename: "UnAuthorized"; message: string }
+      | null;
+    tags?:
+      | { __typename: "Exception"; message: string }
+      | { __typename: "TagsError"; message: string }
+      | {
+          __typename: "TagsNode";
+          rows: Array<{ __typename?: "Tag"; name: string; slug: string }>;
         }
-    >;
-  };
+      | null;
+  }>;
+};
 
 export type SettingsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type SettingsQuery = { __typename?: "Query" } & {
+export type SettingsQuery = {
+  __typename?: "Query";
   settings:
-    | ({ __typename: "NotFound" } & Pick<NotFound, "message">)
-    | ({ __typename: "Setting" } & SettingsFragmentFragment)
-    | ({ __typename: "UnAuthorized" } & Pick<UnAuthorized, "message">);
+    | { __typename: "NotFound"; message: string }
+    | {
+        __typename: "Setting";
+        site_title: string;
+        site_tagline?: string | null;
+        site_email: string;
+        site_description?: string | null;
+        site_footer?: string | null;
+        banner?: {
+          __typename?: "Image";
+          src?: string | null;
+          width?: number | null;
+          height?: number | null;
+        } | null;
+        menu: Array<{
+          __typename?: "Navigation";
+          label: string;
+          type: NavigationType;
+          original_name: string;
+        }>;
+        site_logo?: {
+          __typename?: "Image";
+          src?: string | null;
+          width?: number | null;
+          height?: number | null;
+        } | null;
+        site_favicon?: {
+          __typename?: "Image";
+          src?: string | null;
+          width?: number | null;
+          height?: number | null;
+        } | null;
+      }
+    | { __typename: "UnAuthorized"; message: string };
 };
 
-export type SettingsFragmentFragment = { __typename?: "Setting" } & Pick<
-  Setting,
-  | "site_title"
-  | "site_tagline"
-  | "site_email"
-  | "site_description"
-  | "site_footer"
-> & {
-    banner?: Maybe<
-      { __typename?: "Image" } & Pick<Image, "src" | "width" | "height">
-    >;
-    menu: Array<
-      { __typename?: "Navigation" } & Pick<
-        Navigation,
-        "label" | "type" | "original_name"
-      >
-    >;
-    site_logo?: Maybe<
-      { __typename?: "Image" } & Pick<Image, "src" | "width" | "height">
-    >;
-    site_favicon?: Maybe<
-      { __typename?: "Image" } & Pick<Image, "src" | "width" | "height">
-    >;
-  };
+export type SettingsFragmentFragment = {
+  __typename?: "Setting";
+  site_title: string;
+  site_tagline?: string | null;
+  site_email: string;
+  site_description?: string | null;
+  site_footer?: string | null;
+  banner?: {
+    __typename?: "Image";
+    src?: string | null;
+    width?: number | null;
+    height?: number | null;
+  } | null;
+  menu: Array<{
+    __typename?: "Navigation";
+    label: string;
+    type: NavigationType;
+    original_name: string;
+  }>;
+  site_logo?: {
+    __typename?: "Image";
+    src?: string | null;
+    width?: number | null;
+    height?: number | null;
+  } | null;
+  site_favicon?: {
+    __typename?: "Image";
+    src?: string | null;
+    width?: number | null;
+    height?: number | null;
+  } | null;
+};
 
 export type SitemapQueryVariables = Exact<{ [key: string]: never }>;
 
-export type SitemapQuery = { __typename?: "Query" } & {
+export type SitemapQuery = {
+  __typename?: "Query";
   sitemap:
-    | ({ __typename?: "SiteMapError" } & SitemapFragment_SiteMapError_Fragment)
-    | ({ __typename?: "SiteMapList" } & SitemapFragment_SiteMapList_Fragment);
+    | { __typename: "SiteMapError"; message?: string | null }
+    | {
+        __typename: "SiteMapList";
+        rows: Array<{
+          __typename?: "SiteMapNode";
+          route: string;
+          priority: number;
+          lastmod?: string | null;
+        }>;
+      };
 };
 
 type SitemapFragment_SiteMapError_Fragment = {
   __typename: "SiteMapError";
-} & Pick<SiteMapError, "message">;
+  message?: string | null;
+};
 
-type SitemapFragment_SiteMapList_Fragment = { __typename: "SiteMapList" } & {
-  rows: Array<
-    { __typename?: "SiteMapNode" } & Pick<
-      SiteMapNode,
-      "route" | "priority" | "lastmod"
-    >
-  >;
+type SitemapFragment_SiteMapList_Fragment = {
+  __typename: "SiteMapList";
+  rows: Array<{
+    __typename?: "SiteMapNode";
+    route: string;
+    priority: number;
+    lastmod?: string | null;
+  }>;
 };
 
 export type SitemapFragmentFragment =
@@ -935,13 +1092,15 @@ export type SitemapFragmentFragment =
 
 export type TagsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type TagsQuery = { __typename?: "Query" } & {
+export type TagsQuery = {
+  __typename?: "Query";
   tags:
-    | ({ __typename: "Exception" } & Pick<Exception, "message">)
-    | ({ __typename: "TagsError" } & Pick<TagsError, "message">)
-    | ({ __typename: "TagsNode" } & {
-        rows: Array<{ __typename?: "Tag" } & Pick<Tag, "name" | "slug">>;
-      });
+    | { __typename: "Exception"; message: string }
+    | { __typename: "TagsError"; message: string }
+    | {
+        __typename: "TagsNode";
+        rows: Array<{ __typename?: "Tag"; name: string; slug: string }>;
+      };
 };
 
 export const PageFragmentFragmentDoc = `

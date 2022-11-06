@@ -7,8 +7,8 @@ import { Columns } from "./types";
 interface Props {
   columns: Columns[];
   dataSource: any;
-  loading: Boolean;
-  onRowClick: any;
+  loading?: Boolean;
+  onRowClick?: any;
 }
 
 export const Table: FC<Props> = ({ columns, dataSource, onRowClick }) => {
