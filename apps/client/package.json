@@ -3,7 +3,7 @@
   "version": "1.5.1",
   "private": true,
   "scripts": {
-    "dev": "next -p 3001",
+    "dev": "yarn codegen && next -p 3001",
     "prebuild": "yarn codegen",
     "build": "next build",
     "start": "next start -p 3001",
