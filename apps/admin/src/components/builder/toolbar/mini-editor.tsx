@@ -54,7 +54,7 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
           fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
           quickbars_selection_toolbar:
             formats ??
-            "fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright  | link codesample code forecolor",
+            "fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright | codesample code forecolor",
           inline: true,
           browser_spellcheck: false,
           contextmenu: false,

@@ -180,15 +180,15 @@ blockquote p {
 .tippy-content .suggestion-list li {
   color: rgb(69, 163, 218);
 }
+.dark code {
+  color: #88cead;
+}
 code {
-  font-size: inherit;
   font-family: inherit;
-  font-size: 90%;
-  font-family: inherit;
-  background: rgba(var(--color-border), 0.2);
-  padding: 3px 6px;
+  background: #4eaa3730;
+  padding: 2px 4px;
   border-radius: 6px;
-  color: #ad29c8;
+  color: #3b7157;
 }
 .mce-offscreen-selection {
   display: none;

@@ -77,8 +77,11 @@ module.exports = {
               backgroundColor: theme('colors.gray.800'),
             },
             code: {
-              color: theme('colors.pink.500'),
-              backgroundColor: theme('colors.gray.100'),
+              color: '#3b7157',
+              backgroundColor: '#4eaa3730',
+              fontSize: theme('fontSize.base'),
+              fontWeight: 500,
+              fontFamily: '"Source Serif Pro", serif',
               paddingLeft: '4px',
               paddingRight: '4px',
               paddingTop: '2px',
@@ -148,7 +151,7 @@ module.exports = {
               backgroundColor: theme('colors.gray.900'),
             },
             code: {
-              backgroundColor: theme('colors.gray.900'),
+              color: '#88cead',
             },
             details: {
               backgroundColor: theme('colors.gray.800'),

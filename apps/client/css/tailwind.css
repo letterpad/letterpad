@@ -38,10 +38,7 @@ h5 {
 .post {
   font-family: 'Source Serif Pro', serif;
 }
-.post figure {
-  margin-left: -24px;
-  margin-right: -24px;
-}
+
 .task-list-item::before {
   @apply hidden;
 }
@@ -61,6 +58,10 @@ h5 {
 @media screen and (max-width: 900px) {
   .prose h1 {
     font-size: 2.2rem;
+  }
+  .post figure {
+    margin-left: -24px;
+    margin-right: -24px;
   }
 }
 /* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
