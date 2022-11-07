@@ -109,7 +109,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                     <a
                       href="#"
                       rel="author"
-                      className="text-xl font-extrabold text-gray-900 dark:text-white"
+                      className="font-sans text-lg font-extrabold text-gray-900 dark:text-white"
                     >
                       {author.name}
                     </a>
@@ -156,7 +156,7 @@ export default function PostLayout({ data, next, prev, children }: Props) {
               <a
                 href="#"
                 rel="author"
-                className="text-xl font-extrabold text-gray-900 dark:text-white "
+                className="font-sans text-xl font-extrabold text-gray-900 dark:text-white "
               >
                 {author.name}
               </a>

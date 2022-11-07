@@ -21,7 +21,7 @@ export default function ListLayout({ posts, title }: Props) {
         <ul>
           {/* {!filteredBlogPosts.length && 'No posts found.'} */}
           {posts.rows.map((frontMatter) => {
-            const { slug, publishedAt, title, tags, excerpt } = frontMatter;
+            const { slug, publishedAt, title, tags, excerpt, reading_time } = frontMatter;
             return (
               <li key={slug} className="py-4">
                 <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
@@ -29,6 +29,7 @@ export default function ListLayout({ posts, title }: Props) {
                     <dt className="sr-only">Published on</dt>
                     <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
                       <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
+                      <div>{reading_time}</div>
                     </dd>
                   </dl>
                   <div className="space-y-3 xl:col-span-3">

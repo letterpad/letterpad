@@ -35,6 +35,9 @@ const PostList: React.VFC<Props> = ({ posts }) => {
                             {title}
                           </Link>
                         </h2>
+                        <span className="block text-gray-700 dark:text-gray-300">
+                          {post.reading_time} read
+                        </span>
                         <div className="mt-1 flex flex-wrap">
                           {tagsData.map((tag) => (
                             <Tag key={tag.name} text={tag.name} />

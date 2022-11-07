@@ -246,7 +246,7 @@ async function insertAuthors() {
       company_name: "Letterpad",
       bio: "You can write some information about yourself for the world to know you a little better.",
       avatar:
-        "https://images.unsplash.com/photo-1572478465144-f5f6573e8bfd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=120&q=80",
+        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZmFjZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
     },
   });
 }

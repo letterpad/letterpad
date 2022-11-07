@@ -70,7 +70,9 @@ export default function Home({
             </p>
           </div>
           {posts?.__typename === 'Exception' ? 'No posts found.' : ''}
-          {posts?.__typename === 'PostsNode' && posts.rows.length === 0 && 'No posts found.'}
+          {posts?.__typename === 'PostsNode' && posts.rows.length === 0 && (
+            <span className="py-16 text-gray-400">Hi, my name is {me.name}!</span>
+          )}
 
           {!isPage && posts.__typename === 'PostsNode' && <Component posts={posts} />}
           {isPage && page.__typename === 'Post' && page.page_type === 'default' && (
