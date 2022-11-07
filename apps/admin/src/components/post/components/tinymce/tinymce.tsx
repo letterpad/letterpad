@@ -117,10 +117,16 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           height: "100%",
           quickbars_image_toolbar: false,
           quickbars_selection_toolbar:
-            "h1 h2 bold italic underline quicklink nlpcheck nlpremove ltr rtl",
+            "h1 h2 mark bold italic underline quicklink nlpcheck nlpremove ltr rtl",
           quickbars_insert_toolbar:
             "bullist numlist blockquote hr codesample customImage",
           statusbar: false,
+          formats: {
+            hilitecolor: {
+              inline: "code",
+              remove_similar: true,
+            },
+          },
           text_patterns: textPatterns,
           onpageload: () => {
             editorRef.current?.dom.doc
@@ -129,6 +135,12 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           },
           setup: function (editor) {
             initImagePlugin(editor, { onMediaBrowse });
+            editor.ui.registry.addButton("mark", {
+              icon: "highlight-bg-color",
+              onAction: function (_) {
+                editor.execCommand("HiliteColor", false, "");
+              },
+            });
             editor.on("init", function () {
               setTimeout(() => {
                 editor.dom.doc

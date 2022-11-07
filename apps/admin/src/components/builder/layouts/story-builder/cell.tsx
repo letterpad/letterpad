@@ -24,7 +24,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
   const { preview, updateCell } = useBuilderContext();
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [formats, setFormats] = useState(
-    "h1 h2 | fontfamily fontsize alignleft aligncenter alignright | blockquote | forecolor",
+    "h1 h2 | fontfamily fontsize alignleft aligncenter alignright | blockquote quicklink | forecolor",
   );
   const item = row?.data[colIndex];
   const isText = item?.type === "text";
@@ -46,7 +46,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
         <ContentToolbar
           setEditorOpen={(visible) => {
             setFormats(
-              "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+              "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | quicklink | forecolor",
             );
             setEditorOpen(visible);
           }}
@@ -75,7 +75,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             editable={!isFirstRow}
             setEditorOpen={() => {
               setFormats(
-                "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+                "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | quicklink | forecolor",
               );
               setEditorOpen(true);
             }}
@@ -93,7 +93,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             cover={row?.cover}
             setEditorOpen={() => {
               setFormats(
-                "h1 h2 | fontsize_formats fontfamily alignleft aligncenter alignright | blockquote | forecolor",
+                "h1 h2 | fontsize_formats fontfamily alignleft aligncenter alignright | blockquote | quicklink | forecolor",
               );
               setEditorOpen(true);
             }}
