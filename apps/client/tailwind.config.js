@@ -29,14 +29,15 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['Lato', ...defaultTheme.fontFamily.sans],
+        serif: ['Source Serif Pro', ...defaultTheme.fontFamily.serif],
+        // serif: ['sans-serif', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
         xs: '.85rem',
         sm: '0.95rem',
         tiny: '.9rem',
         lg: '1.3rem',
-        base: '1rem',
+        base: '1.1rem',
       },
       colors: {
         primary: colors.green,
@@ -99,6 +100,9 @@ module.exports = {
               borderRadius: '0.25rem',
             },
             hr: { borderColor: theme('colors.gray.200') },
+            'ul,ol': {
+              padding: '0 1rem',
+            },
             'ol li::marker': {
               fontWeight: '600',
               color: theme('colors.gray.500'),
@@ -109,7 +113,7 @@ module.exports = {
             strong: { color: theme('colors.gray.600') },
             blockquote: {
               color: theme('colors.gray.900'),
-              borderLeftColor: theme('colors.gray.200'),
+              borderLeftColor: theme('colors.green.600'),
             },
           },
         },
@@ -170,7 +174,7 @@ module.exports = {
             },
             blockquote: {
               color: theme('colors.gray.100'),
-              borderLeftColor: theme('colors.gray.700'),
+              borderLeftColor: theme('colors.green.600'),
             },
           },
         },

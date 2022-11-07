@@ -39,7 +39,7 @@ export default function AuthorLayout({ children, data, site_title, site_url }: P
                 src={avatar}
                 alt="avatar"
                 width="192px"
-                height="192px"
+                height="auto"
                 className="h-48 w-48 rounded-full"
               />
             )}

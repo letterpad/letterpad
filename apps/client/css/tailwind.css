@@ -33,10 +33,14 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: 'Source Serif Pro', serif;
+  font-family: sans-serif;
 }
 .post {
   font-family: 'Source Serif Pro', serif;
+}
+.post figure {
+  margin-left: -24px;
+  margin-right: -24px;
 }
 .task-list-item::before {
   @apply hidden;

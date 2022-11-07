@@ -10,15 +10,19 @@ interface Logo {
 export const LogoWithTitle = ({ logo, title }: { logo?: Logo | null; title: string }) => {
   const logoProps = getLogoWidthAndHeight({ ...logo, title });
   const { className, ...props } = logoProps;
+  const hasTitle = typeof title === 'string';
+  const logoExist = !!logo?.src;
   return (
     <div className={'flex justify-between ' + className}>
       <span className="mr-2 flex">
         {logo?.src && <Image alt={title} {...props} src={logo.src} />}
       </span>
-
-      {typeof title === 'string' && (
-        <div className="mt-2 hidden text-sm font-light italic sm:block">{title}</div>
-      )}
+      {hasTitle &&
+        (logoExist ? (
+          <div className="text-md mt-2 hidden font-bold md:block">{title}</div>
+        ) : (
+          <div className="text-md mt-2  font-bold">{title}</div>
+        ))}
     </div>
   );
 };

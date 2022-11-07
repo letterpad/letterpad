@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 import { MeFragment, Navigation, NavigationType, SettingsFragment } from '@/lib/graphql';
 
@@ -18,6 +18,18 @@ interface Props {
 }
 
 const LayoutWrapper = ({ children, props }: Props) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+    const winHeight = window.innerHeight;
+    const bodyHeight = document.body.clientHeight;
+    const contentHeight = contentRef.current.clientHeight;
+    if (winHeight > bodyHeight) {
+      const extraHeight = winHeight - bodyHeight;
+      contentRef.current.style.minHeight = extraHeight + contentHeight + 'px';
+    }
+  }, []);
   if (props.settings.__typename !== 'Setting' || props.me?.__typename !== 'Author')
     return <div>Setting not found</div>;
 
@@ -48,7 +60,9 @@ const LayoutWrapper = ({ children, props }: Props) => {
           </div>
         </header>
       </SectionContainer>
-      <main className="mb-auto">{children}</main>
+      <main className="mb-auto" ref={contentRef}>
+        {children}
+      </main>
       <br />
       <br />
       <br />
