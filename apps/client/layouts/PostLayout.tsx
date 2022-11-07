@@ -92,8 +92,8 @@ export default function PostLayout({ data, next, prev, children }: Props) {
           <header className={'mb-4 lg:mb-6'}>
             <address className={'mb-6 flex items-center not-italic' + (isPage && ' hidden')}>
               <div className="inline-flex w-full items-center text-sm text-gray-900 dark:text-white">
-                <div className="mr-4">
-                  {author.avatar && (
+                {author.avatar && (
+                  <div className="mr-4">
                     <Image
                       loader={({ src }) => src}
                       src={author.avatar}
@@ -102,8 +102,8 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                       alt={author.name}
                       className="mr-3  h-16 w-16 rounded-full "
                     />
-                  )}
-                </div>
+                  </div>
+                )}
                 <div className="w-full">
                   <div className="flex flex-1 justify-between">
                     <a
