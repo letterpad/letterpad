@@ -24,6 +24,7 @@ body {
   overflow-x: hidden;
   color: rgba(var(--color), 0.7);
   margin: 0;
+  word-break: break-word;
 }
 address {
   font-style: normal;
@@ -39,26 +40,55 @@ h5 {
   font-family: 'Source Serif Pro', serif;
 }
 
-.task-list-item::before {
-  @apply hidden;
+.prose h1 {
+  font-size: 2.1rem;
+  text-align: left;
+  margin-bottom: 8px;
+  line-height: 3rem;
 }
 
-.task-list-item {
-  @apply list-none;
+.prose h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 0;
+  margin: 36px 0 -13px -1.883px;
+  text-align: left;
+  line-height: 2.5rem;
+  letter-spacing: -0.45px;
 }
 
-.footnotes {
-  @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
+@media only screen and (max-width: 600px) {
+  .prose h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    line-height: 2.5rem;
+  }
+  .prose h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.9rem;
+  }
 }
 
-.csl-entry {
-  @apply my-5;
+.prose p,
+.prose i,
+.prose a {
+  margin-top: 21px;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+.prose pre {
+  font-size: 0.7em;
+  font-family: 'Roboto Mono', monospace !important;
+  /* background: rgba(var(--section-bg), 1) !important; */
+  padding: 0.8rem !important;
+  opacity: 0.9;
+}
+.prose pre code {
+  background-color: initial;
 }
 
 @media screen and (max-width: 900px) {
-  .prose h1 {
-    font-size: 2.2rem;
-  }
   .post figure {
     margin-left: -24px;
     margin-right: -24px;
@@ -76,9 +106,6 @@ input:-webkit-autofill:focus {
   overflow-y: auto;
 }
 
-body {
-  word-break: break-word;
-}
 .prose figcaption {
   text-align: center;
   font-size: 0.9rem;

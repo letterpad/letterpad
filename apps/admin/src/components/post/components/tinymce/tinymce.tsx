@@ -102,7 +102,15 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
         }}
         init={{
           min_height: 300,
+          valid_classes: "none",
           menubar: false,
+          link_title: false,
+          link_quicklink: true,
+          target_list: [
+            { title: "None", value: "" },
+            { title: "Same page", value: "_self" },
+            { title: "New page", value: "_blank" },
+          ],
           toolbar: false,
           browser_spellcheck: true,
           contextmenu: false,
@@ -117,7 +125,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           height: "100%",
           quickbars_image_toolbar: false,
           quickbars_selection_toolbar:
-            "h1 h2 mark bold italic underline quicklink nlpcheck nlpremove ltr rtl",
+            "h1 h2 mark bold italic underline link nlpcheck nlpremove ltr rtl",
           quickbars_insert_toolbar:
             "bullist numlist blockquote hr codesample customImage",
           statusbar: false,
