@@ -1,5 +1,12 @@
 import classNames from "classnames";
-import React, { ChangeEvent, FC, forwardRef, HTMLProps } from "react";
+import React, {
+  ChangeEvent,
+  FC,
+  forwardRef,
+  HTMLProps,
+  useLayoutEffect,
+  useRef,
+} from "react";
 
 const classes = {
   base: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
@@ -9,7 +16,7 @@ const classes = {
 
 interface Props extends HTMLProps<HTMLTextAreaElement> {
   value?: string;
-  variant?: "primary" | "secondary" | "danger" | "dark" | "success" | "warning";
+  autoGrow?: boolean;
   className?: string;
   disabled?: boolean;
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
@@ -17,17 +24,46 @@ interface Props extends HTMLProps<HTMLTextAreaElement> {
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
+  const localRef = useRef<HTMLTextAreaElement>();
+  useLayoutEffect(() => {
+    if (!localRef.current) {
+      return;
+    }
+    localRef.current.style.height = "auto";
+    localRef.current.style.overflow = "hidden";
+    const next = `${localRef.current.scrollHeight}px`;
+    localRef.current.style.height = next;
+  }, [localRef, props.value]);
+
+  const setRef = (node: HTMLTextAreaElement) => {
+    localRef.current = node;
+    if (typeof ref === "function") {
+      ref(node);
+    } else if (ref) {
+      ref.current = node;
+    }
+  };
+
   const {
     className,
-    variant = "primary",
+    autoGrow = false,
     disabled = false,
     error,
     ...rest
   } = props;
   return (
     <textarea
-      ref={ref}
+      ref={setRef}
+      onKeyDown={(evt) => {
+        if (evt.key === "Enter") {
+          evt.preventDefault();
+        }
+      }}
+      maxLength={100}
       disabled={disabled}
+      rows={1}
+      placeholder="Enter a subtitle"
+      // className="w-full resize-none overflow-y-hidden border-0 bg-transparent text-center text-lg font-thin text-gray-400 placeholder-gray-600 outline-none"
       className={classNames(
         error && classes.error,
         classes.base,
