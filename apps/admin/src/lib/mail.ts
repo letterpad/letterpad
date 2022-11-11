@@ -24,7 +24,7 @@ export const mail = (
     if (process.env.LETTERPAD_PLATFORM === "true") {
       mailOptions = {
         ...mailOptions,
-        bcc: `"Letterpad <letterpad@ajaxtown.com>`,
+        bcc: `"Letterpad <${process.env.GMAIL_USER}>`,
       };
     }
     transporter.sendMail(mailOptions, function (err, info) {
