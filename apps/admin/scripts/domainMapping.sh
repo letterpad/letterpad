@@ -40,7 +40,7 @@ function createCertificate {
     certbot certonly \
         --webroot \
         --agree-tos \
-        --email letterpad@ajaxtown.com \
+        --email admin@letterpad.app \
         -d $DOMAIN \
         -w $WEB_DIR >/dev/null 2>&1
 
