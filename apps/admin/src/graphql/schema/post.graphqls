@@ -188,8 +188,5 @@ type Query {
 
 type Mutation {
   createPost(data: InputCreatePost): CreatePostResponse!
-
   updatePost(data: InputUpdatePost): UpdatePostResponse!
-
-  # deletePosts(ids: [Int!], deleteFromSystem: Boolean): Response!
 }

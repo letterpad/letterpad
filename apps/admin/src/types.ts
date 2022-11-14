@@ -10,7 +10,7 @@ declare module "next-auth" {
   interface Session {
     user?: DefaultUser & {
       username: string;
-      avatarr: string;
+      avatar: string;
       name: string;
       id: number;
       role: ROLES;
@@ -114,4 +114,9 @@ export type VerifyUserOrSubscriberToken = VerifyUserToken &
 export interface PageProps {
   settings: SettingsFragmentFragment;
   session: SessionData;
+}
+
+export enum AdminUsersType {
+  RECENT_USERS,
+  TOP_USERS,
 }

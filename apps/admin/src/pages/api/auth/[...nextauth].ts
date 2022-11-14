@@ -128,8 +128,8 @@ const options = (): NextAuthOptions => ({
         throw new Error("Could not create a valid session");
       }
 
-      const ses = session as { user: SessionData; expires: any };
-      if (author) {
+      const ses = session;
+      if (author && ses.user) {
         //update the session data
         ses.user.username = author.username;
         ses.user.avatar = author.avatar;
