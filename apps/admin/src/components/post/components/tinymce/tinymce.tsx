@@ -15,9 +15,10 @@ import { usePostContext } from "../../context";
 interface Props {
   text: string;
   onChange: (_html: string) => void;
+  style?: string;
 }
 
-const LpEditor: React.FC<Props> = ({ text, onChange }) => {
+const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
   const {
     setHelpers,
     onMediaBrowse,
@@ -101,6 +102,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange }) => {
           onChange(htmlWithBody);
         }}
         init={{
+          content_style: style,
           min_height: 300,
           valid_classes: "none",
           menubar: false,

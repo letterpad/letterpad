@@ -1,8 +1,22 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
+import { DefaultUser } from "next-auth";
+
 import { Navigation, Setting } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
-import { SessionData } from "@/graphql/types";
+import { ROLES, SessionData } from "@/graphql/types";
+
+declare module "next-auth" {
+  interface Session {
+    user?: DefaultUser & {
+      username: string;
+      avatarr: string;
+      name: string;
+      id: number;
+      role: ROLES;
+    };
+  }
+}
 
 declare global {
   namespace NodeJS {

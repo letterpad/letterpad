@@ -19,9 +19,10 @@ interface Props {
 }
 export const mail = (
   mailOptions: Props,
+  addBcc = true,
 ): Promise<SMTPTransport.SentMessageInfo> => {
   return new Promise((resolve, reject) => {
-    if (process.env.LETTERPAD_PLATFORM === "true") {
+    if (process.env.LETTERPAD_PLATFORM === "true" && addBcc) {
       mailOptions = {
         ...mailOptions,
         bcc: `"Letterpad <${process.env.GMAIL_USER}>`,
