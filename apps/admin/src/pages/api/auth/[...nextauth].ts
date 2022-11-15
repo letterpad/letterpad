@@ -13,7 +13,6 @@ import { addUmamAnalyticsiIfNotExists } from "@/lib/umami";
 import { report } from "@/components/error";
 
 import { basePath } from "@/constants";
-import { SessionData } from "@/graphql/types";
 
 const providers = (): NextAuthOptions["providers"] => [
   GoogleProvider({

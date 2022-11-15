@@ -1,3 +1,4 @@
+import { Session } from "next-auth";
 import React from "react";
 
 import { useErrorReporting } from "@/hooks/useErrorReporting";
@@ -5,7 +6,6 @@ import { useLetterpadSession } from "@/hooks/useLetterpadSession";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { useSettingsQuery } from "@/graphql/queries/queries.graphql";
-import { SessionData } from "@/graphql/types";
 
 import ThemeSwitcher from "../theme-switcher";
 
@@ -15,7 +15,7 @@ interface IProps {
     session,
   }: {
     settings?: SettingsFragmentFragment;
-    session?: SessionData;
+    session?: Session["user"];
   }) => React.ReactNode;
 }
 
