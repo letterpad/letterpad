@@ -85,45 +85,47 @@ const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
               </Buttonv2>
             )}
           </div>
-          <Table
-            columns={[
-              {
-                key: "date",
-                title: "Date",
-                dataIndex: "date",
-              },
-              {
-                key: "ammount",
-                title: "Ammount",
-                dataIndex: "ammount",
-              },
-              {
-                key: "receipt_url",
-                title: "Receipt",
-                dataIndex: "receipt_url",
-                render: (url) => {
-                  return (
-                    <Link href={url}>
-                      <a target="_blank" className="text-blue-600">
-                        Receipt
-                      </a>
-                    </Link>
-                  );
+          {active && (
+            <Table
+              columns={[
+                {
+                  key: "date",
+                  title: "Date",
+                  dataIndex: "date",
                 },
-              },
-              {
-                key: "status",
-                title: "Status",
-                dataIndex: "status",
-              },
-            ]}
-            dataSource={charges?.data.map((item) => ({
-              date: getReadableDate(item.created * 1000),
-              status: item.status === "succeeded" ? "Paid" : "Failed",
-              receipt_url: item.receipt_url,
-              ammount: formatAmountForDisplay(item.amount, item.currency),
-            }))}
-          />
+                {
+                  key: "ammount",
+                  title: "Ammount",
+                  dataIndex: "ammount",
+                },
+                {
+                  key: "receipt_url",
+                  title: "Receipt",
+                  dataIndex: "receipt_url",
+                  render: (url) => {
+                    return (
+                      <Link href={url}>
+                        <a target="_blank" className="text-blue-600">
+                          Receipt
+                        </a>
+                      </Link>
+                    );
+                  },
+                },
+                {
+                  key: "status",
+                  title: "Status",
+                  dataIndex: "status",
+                },
+              ]}
+              dataSource={charges?.data.map((item) => ({
+                date: getReadableDate(item.created * 1000),
+                status: item.status === "succeeded" ? "Paid" : "Failed",
+                receipt_url: item.receipt_url,
+                ammount: formatAmountForDisplay(item.amount, item.currency),
+              }))}
+            />
+          )}
         </div>
       </Content>
     </>

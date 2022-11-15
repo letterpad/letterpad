@@ -117,6 +117,7 @@ export interface PageProps {
 }
 
 export enum AdminUsersType {
-  RECENT_USERS,
-  TOP_USERS,
+  RECENT_USERS = "recent_users",
+  TOP_USERS = "top_users",
+  DOMAIN_MAPPED = "domain_mapped",
 }

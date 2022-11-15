@@ -102,6 +102,11 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           onChange(htmlWithBody);
         }}
         init={{
+          paste_preprocess: function (pl, o) {
+            o.content = o.content
+              .replace(/<div(.*?)>(.*?)<\/div>/gi, "<p$1>$2</p>")
+              .replace(/(.*?)<br\s?\/?>/gi, "<p>$1</p>");
+          },
           content_style: style,
           min_height: 300,
           valid_classes: "none",
