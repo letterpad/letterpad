@@ -1,8 +1,22 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
+import { DefaultUser } from "next-auth";
+
 import { Navigation, Setting } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
-import { SessionData } from "@/graphql/types";
+import { ROLES, SessionData } from "@/graphql/types";
+
+declare module "next-auth" {
+  interface Session {
+    user?: DefaultUser & {
+      username: string;
+      avatar: string;
+      name: string;
+      id: number;
+      role: ROLES;
+    };
+  }
+}
 
 declare global {
   namespace NodeJS {
@@ -100,4 +114,10 @@ export type VerifyUserOrSubscriberToken = VerifyUserToken &
 export interface PageProps {
   settings: SettingsFragmentFragment;
   session: SessionData;
+}
+
+export enum AdminUsersType {
+  RECENT_USERS = "recent_users",
+  TOP_USERS = "top_users",
+  DOMAIN_MAPPED = "domain_mapped",
 }

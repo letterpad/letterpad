@@ -2,8 +2,6 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
-import { SessionData } from "@/graphql/types";
-
 export const useLetterpadSession = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -17,10 +15,10 @@ export const useLetterpadSession = () => {
 
   if (!session?.user) return null;
 
-  const _session = session as unknown as { user: SessionData };
+  const _session = session;
   if (typeof window !== "undefined" && window.ga) {
-    window.ga("set", "dimension1", _session.user.id);
-    window.ga("set", "userId", _session.user.id);
+    window.ga("set", "dimension1", _session.user?.id);
+    window.ga("set", "userId", _session.user?.id);
   }
   return _session;
 };
