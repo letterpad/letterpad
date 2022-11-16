@@ -11,6 +11,7 @@ describe("Publishing", () => {
 
     cy.openSettings();
     cy.enterTags(["first-post"]);
+    cy.wait(1000);
     cy.wait("@updatePostMutation");
 
     cy.getTestId("slugInp").should("have.value", slug);
@@ -47,6 +48,7 @@ describe("Publishing", () => {
     cy.get(".okModalBtn").click();
 
     cy.enterTags(["new-tag"]);
+    cy.wait(1000);
     cy.getTestId("publishBtn").click();
     cy.wait("@updatePostMutation");
     cy.get(".tags-notlinked-modal").should("exist");
