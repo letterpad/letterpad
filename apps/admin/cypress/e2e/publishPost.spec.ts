@@ -16,7 +16,8 @@ describe("Publishing", () => {
     cy.getTestId("slugInp").should("have.value", slug);
 
     cy.getTestId("publishBtn").click();
-    cy.wait("@updatePostMutation");
+    // cy.wait("@updatePostMutation");
+    cy.wait(3000);
 
     cy.getTestId("postStatus").should("have.text", "published");
     cy.getTestId("close-drawer").click();
@@ -42,6 +43,7 @@ describe("Publishing", () => {
     cy.openSettings();
 
     cy.get(".react-tags__selected-tag").click();
+    cy.wait(1000);
     cy.getTestId("publishBtn").click();
     cy.get(".no-tags-modal").should("exist");
     cy.get(".okModalBtn").click();
