@@ -2,7 +2,7 @@ import { Layout } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
@@ -25,11 +25,16 @@ import { PostContextType } from "../types";
 
 function Post() {
   const router = useRouter();
+  const firstLoadRef = useRef(false);
   const { updatePostAPI, updateLocalState } = useUpdatePost();
   const { postId } = router.query;
   const { data, loading, error } = usePostQuery({
     variables: { filters: { id: Number(postId) } },
   });
+
+  useEffect(() => {
+    firstLoadRef.current = true;
+  }, []);
 
   const debounceUpdatePostAPI = useMemo(
     () => debounce((data) => updatePostAPI(data), 500),
@@ -45,7 +50,7 @@ function Post() {
 
   const onEditorChange = useCallback(
     (html: string) => {
-      if (!id || html === content) return;
+      if (!id || firstLoadRef.current) return;
       if (status === PostStatusOptions.Draft) {
         debounceUpdatePostAPI({ id, html_draft: html });
         updateLocalState({ id, html_draft: html });
@@ -54,7 +59,7 @@ function Post() {
         updateLocalState({ id: id, html });
       }
     },
-    [content, debounceUpdatePostAPI, id, status, updateLocalState],
+    [debounceUpdatePostAPI, id, status, updateLocalState],
   );
 
   if (!loading && data && data.post.__typename !== "Post") {
