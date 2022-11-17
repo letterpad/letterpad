@@ -63,9 +63,9 @@ export const Drawer: FC<Props> = ({
           <IconClose />
           <span className="sr-only">Close menu</span>
         </button>
-        <p className="mb-6 flex-1 text-sm text-gray-500 dark:text-gray-400">
+        <div className="mb-6 flex-1 text-sm text-gray-500 dark:text-gray-400">
           {children}
-        </p>
+        </div>
         <div className="bottom-0 left-0">{footer}</div>
       </div>
     </>

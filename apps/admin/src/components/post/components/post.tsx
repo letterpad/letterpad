@@ -45,7 +45,7 @@ function Post() {
 
   const onEditorChange = useCallback(
     (html: string) => {
-      if (!id) return;
+      if (!id || html === content) return;
       if (status === PostStatusOptions.Draft) {
         debounceUpdatePostAPI({ id, html_draft: html });
         updateLocalState({ id, html_draft: html });
@@ -54,7 +54,7 @@ function Post() {
         updateLocalState({ id: id, html });
       }
     },
-    [debounceUpdatePostAPI, id, status, updateLocalState],
+    [content, debounceUpdatePostAPI, id, status, updateLocalState],
   );
 
   if (!loading && data && data.post.__typename !== "Post") {
