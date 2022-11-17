@@ -6,6 +6,7 @@ import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 
+import Loading from "@/components/loading";
 import MetricsBar from "@/components/metrics/MetricsBar";
 import { Select } from "@/components_v2/select";
 
@@ -84,21 +85,23 @@ const Metrics = () => {
       </PageHeader>
       <Content>
         <div className="site-layout-background" style={{ padding: 24 }}>
-          <Select
-            className="w-32"
-            onChange={(key) => setDays(Number(key))}
-            selected={days}
-            id="select-days"
-            items={[
-              { key: 0, label: "Today" },
-              { key: 30, label: "Yesterday" },
-              { key: 90, label: "Last week" },
-              { key: 14, label: "Last 2 weeks" },
-              { key: 30, label: "Last 1 month" },
-              { key: 90, label: "Last 3 months" },
-            ]}
-          />
-          {loading && <LoadingOutlined />}
+          <div className="flex items-center gap-2">
+            <Select
+              className="w-32"
+              onChange={(key) => setDays(Number(key))}
+              selected={days}
+              id="select-days"
+              items={[
+                { key: 0, label: "Today" },
+                { key: 30, label: "Yesterday" },
+                { key: 90, label: "Last week" },
+                { key: 14, label: "Last 2 weeks" },
+                { key: 30, label: "Last 1 month" },
+                { key: 90, label: "Last 3 months" },
+              ]}
+            />
+            {!loading && <Loading />}
+          </div>
           <Divider />
           <Row gutter={16}>
             <MetricsBar stats={data.stats} />

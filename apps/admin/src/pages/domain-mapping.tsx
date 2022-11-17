@@ -11,7 +11,7 @@ interface Props {
   readOnly: boolean;
 }
 
-const DomainMapping: React.FC<Props> = ({ readOnly }) => {
+const DomainMapping: React.FC<Props> = () => {
   const { data, loading } = useDomainQuery();
   return (
     <>
@@ -25,12 +25,6 @@ const DomainMapping: React.FC<Props> = ({ readOnly }) => {
       </PageHeader>
 
       <Content>
-        {readOnly && (
-          <Alert
-            message="This section is read only. You will be able to make changes, but they wont be saved."
-            type="warning"
-          />
-        )}
         <div className="site-layout-background" style={{ padding: 24 }}>
           {loading && <Loading />}
           {data?.domain.__typename === "DomainNotFound" && <NewDomain />}

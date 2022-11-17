@@ -8,11 +8,9 @@ import {
   Row,
   Typography,
 } from "antd";
-import { Alert } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { getSession } from "next-auth/react";
 
 import { CopyToClipboard } from "@/components/clipboard";
 import Appearance from "@/components/settings/appearance";
@@ -32,9 +30,8 @@ const { Panel } = Collapse;
 interface Props extends PageProps {
   settings: SettingsFragmentFragment;
   cloudinaryEnabledByAdmin: boolean;
-  readOnly: boolean;
 }
-function Settings({ settings, cloudinaryEnabledByAdmin, readOnly }: Props) {
+function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
   const router = useRouter();
   const onPanelClick = (key) => {
     router.replace({ query: { selected: key } });
@@ -56,12 +53,6 @@ function Settings({ settings, cloudinaryEnabledByAdmin, readOnly }: Props) {
         </span>
       </PageHeader>
       <Content>
-        {readOnly && (
-          <Alert
-            message="This section is read only. You will be able to make changes, but they wont be saved."
-            type="warning"
-          />
-        )}
         <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
             labelCol={{ span: 4 }}
@@ -159,7 +150,6 @@ function Settings({ settings, cloudinaryEnabledByAdmin, readOnly }: Props) {
 export default Settings;
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
   return {
     props: {
       cloudinaryEnabledByAdmin: !!(
@@ -167,9 +157,6 @@ export async function getServerSideProps(context) {
         process.env.CLOUDINARY_NAME &&
         process.env.CLOUDINARY_SECRET
       ),
-      readOnly:
-        process.env.READ_ONLY === "true" &&
-        session?.user?.email === "demo@demo.com",
     },
   };
 }
