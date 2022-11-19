@@ -93,6 +93,7 @@ model Post {
   tags               Tag[]
   page_type          String    @default("default")
   page_data          String    @db.Text
+  stats              String    @default("{}")
   @@index([author_id], map: "Post_author_id_fkey")
 }
 

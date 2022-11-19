@@ -2,7 +2,7 @@ import { Layout } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
@@ -20,16 +20,21 @@ import { PageType } from "@/graphql/types";
 import { debounce } from "@/shared/utils";
 
 import PostDate from "./postDate";
-import WordCount from "./wordCount";
+import { WordCount } from "./wordCount";
 import { PostContextType } from "../types";
 
 function Post() {
   const router = useRouter();
+  const firstLoadRef = useRef(false);
   const { updatePostAPI, updateLocalState } = useUpdatePost();
   const { postId } = router.query;
   const { data, loading, error } = usePostQuery({
     variables: { filters: { id: Number(postId) } },
   });
+
+  useEffect(() => {
+    firstLoadRef.current = true;
+  }, []);
 
   const debounceUpdatePostAPI = useMemo(
     () => debounce((data) => updatePostAPI(data), 500),
@@ -44,17 +49,18 @@ function Post() {
   const status = post?.status;
 
   const onEditorChange = useCallback(
-    (html: string) => {
+    (html: string, id?: number) => {
       if (!id) return;
+      const stats = WordCount.getStats();
       if (status === PostStatusOptions.Draft) {
-        debounceUpdatePostAPI({ id, html_draft: html });
-        updateLocalState({ id, html_draft: html });
+        debounceUpdatePostAPI({ id, html_draft: html, stats });
+        updateLocalState({ id, html_draft: html, stats });
       } else if (status === PostStatusOptions.Published) {
-        debounceUpdatePostAPI({ id: id, html });
-        updateLocalState({ id: id, html });
+        debounceUpdatePostAPI({ id: id, html, stats, html_draft: "" });
+        updateLocalState({ id: id, html, stats, html_draft: "" });
       }
     },
-    [debounceUpdatePostAPI, id, status, updateLocalState],
+    [debounceUpdatePostAPI, status, updateLocalState],
   );
 
   if (!loading && data && data.post.__typename !== "Post") {
@@ -79,14 +85,20 @@ function Post() {
         post.page_type === PageType.Default && (
           <Content style={{ margin: "24px 16px 0" }}>
             <div style={{ maxWidth: 660, margin: "0 auto" }}>
-              <PostDate date={post?.updatedAt} />
+              {/* <PostDate date={post?.updatedAt} /> */}
               <Title
                 onEnter={() => helpers?.focus()}
                 title={post?.title || ""}
                 postId={post?.id}
               />
-              <Editor text={content ?? ""} onChange={onEditorChange} />
-              <WordCount text={content || ""} />
+              <WordCount />
+              <Editor
+                text={content ?? ""}
+                onChange={(html) =>
+                  firstLoadRef.current && onEditorChange(html, id)
+                }
+              />
+              {/* <WordCount /> */}
             </div>
           </Content>
         )}

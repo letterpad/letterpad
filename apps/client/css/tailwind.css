@@ -17,6 +17,9 @@
   .social-link {
     @apply fill-current text-gray-700 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400;
   }
+  .creatives-cta {
+    @apply mr-2 mb-2 rounded-md bg-blue-700 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
+  }
   /* ... */
 }
 body {
@@ -109,4 +112,22 @@ input:-webkit-autofill:focus {
 .prose figcaption {
   text-align: center;
   font-size: 0.9rem;
+}
+.btn-primary,
+.btn-primary-big {
+  background: #3b7eeb !important;
+  color: #ffffff;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.btn-primary:hover,
+.btn-primary-big:hover {
+  background: #316dce !important;
+  color: #ffffff;
+}
+
+.btn-primary-big {
+  padding: 14px 18px;
+  border-radius: 8px;
 }

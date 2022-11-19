@@ -1,11 +1,10 @@
 import { PageHeader } from "antd";
 import Head from "next/head";
-import { getSession } from "next-auth/react";
 
 import { TagsProvider } from "@/components/tags/context";
 import TagsTable from "@/components/tags/tags-table";
 
-const EditableTable = ({ readOnly }: { readOnly: boolean }) => {
+const EditableTable = () => {
   return (
     <>
       <Head>
@@ -18,7 +17,7 @@ const EditableTable = ({ readOnly }: { readOnly: boolean }) => {
           your navigation menu.
         </span>
       </PageHeader>
-      <TagsProvider readOnly={readOnly}>
+      <TagsProvider>
         <TagsTable />
       </TagsProvider>
     </>
@@ -26,15 +25,3 @@ const EditableTable = ({ readOnly }: { readOnly: boolean }) => {
 };
 
 export default EditableTable;
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  return {
-    props: {
-      readOnly:
-        process.env.READ_ONLY === "true" &&
-        session?.user?.email === "demo@demo.com",
-    },
-  };
-}

@@ -37,6 +37,29 @@ type Post {
   page_type: String
   # Page data
   page_data: String
+
+  # Stats - words, characters, reading time.
+  stats: PostStats
+}
+
+type PostStats {
+  # Number of words in the post
+  words: Int
+  # Number of characters in the post
+  characters: Int
+  # Number of characters in the post excluding spaces
+  spaceless_characters: Int
+  # Reading time of the post in minutes
+  reading_time: Int @deprecated(reason: "Use stats.reading_time in Post")
+}
+
+input InputPostStats {
+  # Number of words in the post
+  words: Int
+  # Number of characters in the post
+  characters: Int
+  # Number of characters in the post excluding spaces
+  spaceless_characters: Int
 }
 
 enum PostStatusOptions {
@@ -149,6 +172,7 @@ input InputUpdatePost {
   tags: [TagsInputType!]
   page_type: String
   page_data: String
+  stats: InputPostStats
 }
 
 type PostError implements LetterpadError {

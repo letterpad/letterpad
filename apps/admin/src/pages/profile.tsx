@@ -1,15 +1,13 @@
 import { PageHeader } from "antd";
-import { Alert } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
-import { getSession } from "next-auth/react";
 
 import Loading from "@/components/loading";
 import { Content as ProfileContent } from "@/components/profile/content";
 
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 
-function Profile({ readOnly }: { readOnly: boolean }) {
+function Profile() {
   const { data, loading } = useMeQuery({
     variables: {},
   });
@@ -26,12 +24,6 @@ function Profile({ readOnly }: { readOnly: boolean }) {
         </span>
       </PageHeader>
       <Content>
-        {readOnly && (
-          <Alert
-            message="This section is read only. You will be able to make changes, but they wont be saved."
-            type="warning"
-          />
-        )}
         {loading && <Loading />}
         {data?.me?.__typename === "Author" && (
           <div className="site-layout-background" style={{ padding: 24 }}>
@@ -44,15 +36,3 @@ function Profile({ readOnly }: { readOnly: boolean }) {
 }
 
 export default Profile;
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  return {
-    props: {
-      readOnly:
-        process.env.READ_ONLY === "true" &&
-        session?.user?.email === "demo@demo.com",
-    },
-  };
-}

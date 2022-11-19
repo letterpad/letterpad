@@ -15,6 +15,12 @@ fragment Partial on Post {
   reading_time
   page_type
   page_data
+  stats {
+    words
+    characters
+    spaceless_characters
+    reading_time
+  }
   cover_image {
     src
     width

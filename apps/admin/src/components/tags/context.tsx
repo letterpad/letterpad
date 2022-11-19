@@ -29,9 +29,8 @@ export const TagsContext = createContext<Partial<TagsContextType<any, any>>>({
 });
 
 export const TagsProvider: React.FC<{
-  readOnly: boolean;
   children: ReactNode;
-}> = ({ children, readOnly }) => {
+}> = ({ children }) => {
   const { loading, data } = useTagsQuery({
     fetchPolicy: "network-only",
   });
@@ -58,19 +57,17 @@ export const TagsProvider: React.FC<{
 
   const deleteTag = useCallback(
     async (key: React.Key) => {
-      if (readOnly) return;
       const tagToDelete = [...tags].filter((item) => item.key === key);
       if (tagToDelete.length > 0) {
         await deleteTagsMutation({ variables: { name: tagToDelete[0].name } });
       }
       setTags([...tags].filter((item) => item.key !== key));
     },
-    [deleteTagsMutation, readOnly, tags],
+    [deleteTagsMutation, tags],
   );
 
   const saveTag = useCallback(
     async (row: TagRow) => {
-      if (readOnly) return;
       const newData = [...tags];
       const index = newData.findIndex((item) => row.key === item.key);
       const item = newData[index];
@@ -87,7 +84,7 @@ export const TagsProvider: React.FC<{
       });
       if (newData) setTags(newData);
     },
-    [readOnly, tags, updateTagsMutation],
+    [tags, updateTagsMutation],
   );
 
   const addTag = useCallback(() => {

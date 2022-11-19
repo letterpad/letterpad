@@ -53,8 +53,8 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
           quickbars_insert_toolbar: false,
           fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
           quickbars_selection_toolbar:
-            formats ??
-            "fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright | codesample code forecolor",
+            formats + " styles" ??
+            "styles fontfamily fontsize | bold italic underline strikethrough | alignleft aligncenter alignright | codesample code forecolor custom_button",
           inline: true,
           browser_spellcheck: false,
           contextmenu: false,
@@ -69,6 +69,36 @@ const MiniEditor: React.FC<Props> = ({ text, onChange, formats = "" }) => {
           statusbar: false,
           entity_encoding: "raw",
           content_style: "body { padding: 4px 12px }",
+          formats: {
+            cta: {
+              selector: "a",
+              classes: "btn-primary",
+              preview: false,
+              remove: "all",
+            },
+            ctaBig: {
+              selector: "a",
+              classes: "btn-primary-big",
+              preview: false,
+              remove: "all",
+            },
+          },
+
+          // The style_formats option controls the styleformat toolbar button menu
+          // https://www.tiny.cloud/docs/configure/editor-appearance/#style_formats
+          style_formats: [
+            { title: "Button styles" },
+            {
+              title: "Button",
+              format: "cta",
+              classes: "btn-primary",
+            },
+            {
+              title: "Big Button",
+              format: "ctaBig",
+              classes: "btn-primary-big",
+            },
+          ],
         }}
       />
       <style jsx global>{`

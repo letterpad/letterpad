@@ -3,7 +3,6 @@ import { Alert, Button, Form, notification, PageHeader, Upload } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import { UploadChangeParam } from "antd/lib/upload";
 import Head from "next/head";
-import { getSession } from "next-auth/react";
 
 import { Role } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
@@ -29,10 +28,7 @@ const Info = () => {
     </ol>
   );
 };
-const Migrate = ({
-  session,
-  readOnly,
-}: IAuthComponentProps & { readOnly: boolean }) => {
+const Migrate = ({ session }: IAuthComponentProps) => {
   return (
     <>
       <Head>
@@ -45,9 +41,6 @@ const Migrate = ({
         </span>
       </PageHeader>
       <Content>
-        {readOnly && (
-          <Alert message="This section is read only." type="warning" />
-        )}
         <div className="site-layout-background" style={{ padding: 24 }}>
           <Form
             labelCol={{ span: 4 }}
@@ -142,15 +135,3 @@ const openNotificationWithIcon = (type, description) => {
     description,
   });
 };
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  return {
-    props: {
-      readOnly:
-        process.env.READ_ONLY === "true" &&
-        session?.user?.email === "demo@demo.com",
-    },
-  };
-}

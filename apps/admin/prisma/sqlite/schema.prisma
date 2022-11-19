@@ -92,6 +92,7 @@ model Post {
   tags               Tag[]
   page_type          String    @default("default")
   page_data          String    @default("")
+  stats              String    @default("{}")
 }
 
 model RolePermissions {

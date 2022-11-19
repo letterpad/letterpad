@@ -97,6 +97,10 @@ export const useUpdatePost = () => {
     const post = {
       ...postData.post,
       ...data,
+      stats: {
+        ...postData.post?.stats,
+        ...data.stats,
+      },
     };
 
     apolloBrowserClient.writeQuery({

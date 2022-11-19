@@ -1,8 +1,6 @@
 import { Layout } from "antd";
-import { Alert } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { getSession } from "next-auth/react";
 import { useState } from "react";
 
 import { postsStyles } from "@/components/posts.css";
@@ -26,7 +24,7 @@ import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 
 const { Content } = Layout;
 
-function Pages({ readOnly }: { readOnly: boolean }) {
+function Pages() {
   const { loading, data, error, refetch } = usePostsQuery({
     variables: { filters: { type: PostTypes.Page, sortBy: SortBy.Desc } },
   });
@@ -67,12 +65,6 @@ function Pages({ readOnly }: { readOnly: boolean }) {
         </div>
       </Header>
       <Content>
-        {readOnly && (
-          <Alert
-            message="This section is read only. You will be able to make changes, but they wont be saved."
-            type="warning"
-          />
-        )}
         <div className="site-layout-background  px-4 py-4">
           <Filters
             showTags={false}
@@ -97,15 +89,3 @@ function Pages({ readOnly }: { readOnly: boolean }) {
 }
 
 export default Pages;
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  return {
-    props: {
-      readOnly:
-        process.env.READ_ONLY === "true" &&
-        session?.user?.email === "demo@demo.com",
-    },
-  };
-}
