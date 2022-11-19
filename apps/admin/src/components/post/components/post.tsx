@@ -20,7 +20,7 @@ import { PageType } from "@/graphql/types";
 import { debounce } from "@/shared/utils";
 
 import PostDate from "./postDate";
-import WordCount from "./wordCount";
+import { WordCount } from "./wordCount";
 import { PostContextType } from "../types";
 
 function Post() {
@@ -91,7 +91,7 @@ function Post() {
                 postId={post?.id}
               />
               <Editor text={content ?? ""} onChange={onEditorChange} />
-              <WordCount text={content || ""} />
+              <WordCount />
             </div>
           </Content>
         )}
