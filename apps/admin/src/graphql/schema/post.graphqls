@@ -50,7 +50,7 @@ type PostStats {
   # Number of characters in the post excluding spaces
   spaceless_characters: Int
   # Reading time of the post in minutes
-  reading_time: Int
+  reading_time: Int @deprecated(reason: "Use stats.reading_time in Post")
 }
 
 input InputPostStats {
