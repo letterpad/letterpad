@@ -44,6 +44,15 @@ const Post: PostResolvers<ResolverContext> = {
   html: async ({ html }) => {
     return html ? setResponsiveImages(html) : "";
   },
+  stats: async ({ stats }) => {
+    if (stats && typeof stats === "string") {
+      const newStats = JSON.parse(stats);
+      return {
+        ...newStats,
+        reading_time: Math.ceil(newStats.words ?? 0 / 200),
+      };
+    }
+  },
 };
 
 const Query: QueryResolvers<ResolverContext> = {

@@ -49,17 +49,18 @@ function Post() {
   const status = post?.status;
 
   const onEditorChange = useCallback(
-    (html: string) => {
-      if (!id || firstLoadRef.current) return;
+    (html: string, id?: number) => {
+      if (!id) return;
+      const stats = WordCount.getStats();
       if (status === PostStatusOptions.Draft) {
-        debounceUpdatePostAPI({ id, html_draft: html });
-        updateLocalState({ id, html_draft: html });
+        debounceUpdatePostAPI({ id, html_draft: html, stats });
+        updateLocalState({ id, html_draft: html, stats });
       } else if (status === PostStatusOptions.Published) {
-        debounceUpdatePostAPI({ id: id, html });
-        updateLocalState({ id: id, html });
+        debounceUpdatePostAPI({ id: id, html, stats, html_draft: "" });
+        updateLocalState({ id: id, html, stats, html_draft: "" });
       }
     },
-    [debounceUpdatePostAPI, id, status, updateLocalState],
+    [debounceUpdatePostAPI, status, updateLocalState],
   );
 
   if (!loading && data && data.post.__typename !== "Post") {
@@ -84,14 +85,20 @@ function Post() {
         post.page_type === PageType.Default && (
           <Content style={{ margin: "24px 16px 0" }}>
             <div style={{ maxWidth: 660, margin: "0 auto" }}>
-              <PostDate date={post?.updatedAt} />
+              {/* <PostDate date={post?.updatedAt} /> */}
               <Title
                 onEnter={() => helpers?.focus()}
                 title={post?.title || ""}
                 postId={post?.id}
               />
-              <Editor text={content ?? ""} onChange={onEditorChange} />
               <WordCount />
+              <Editor
+                text={content ?? ""}
+                onChange={(html) =>
+                  firstLoadRef.current && onEditorChange(html, id)
+                }
+              />
+              {/* <WordCount /> */}
             </div>
           </Content>
         )}

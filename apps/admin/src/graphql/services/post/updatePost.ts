@@ -101,6 +101,11 @@ export const updatePost = async (
       newPostArgs.data.cover_image_width = img.cover_image_width;
       newPostArgs.data.cover_image_height = img.cover_image_height;
     }
+    if (args.data.stats) {
+      newPostArgs.data.stats = JSON.stringify({
+        ...args.data.stats,
+      });
+    }
     if (args.data.slug) {
       newPostArgs.data.slug = await slugify(
         prisma.post,

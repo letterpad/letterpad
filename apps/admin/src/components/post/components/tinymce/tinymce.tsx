@@ -95,11 +95,8 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           }
         }}
         initialValue={html}
-        onEditorChange={(html) => {
-          const htmlWithBody = `<html><body>${html}</body></html>`;
-          if (htmlWithBody === html) return;
-
-          onChange(htmlWithBody);
+        onEditorChange={(newHtml) => {
+          onChange(newHtml);
         }}
         init={{
           paste_preprocess: function (pl, o) {
