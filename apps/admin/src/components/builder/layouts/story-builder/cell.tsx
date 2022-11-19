@@ -12,7 +12,6 @@ import { SectionText } from "./text";
 import { useBuilderContext } from "../../context";
 import { ContentToolbar } from "../../toolbar";
 import { Block } from "../../types";
-import { random } from "../../utils";
 
 interface Props {
   row?: Block;
@@ -24,7 +23,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
   const { preview, updateCell } = useBuilderContext();
   const [fileExplorerOpen, setFileExplorerOpen] = useState(false);
   const [formats, setFormats] = useState(
-    "h1 h2 | fontfamily fontsize alignleft aligncenter alignright | blockquote quicklink | forecolor",
+    "h1 h2 | fontfamily fontsize alignleft aligncenter alignright | blockquote link | forecolor",
   );
   const item = row?.data[colIndex];
   const isText = item?.type === "text";
@@ -46,7 +45,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
         <ContentToolbar
           setEditorOpen={(visible) => {
             setFormats(
-              "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | quicklink | forecolor",
+              "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | link | forecolor",
             );
             setEditorOpen(visible);
           }}
@@ -75,7 +74,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             editable={!isFirstRow}
             setEditorOpen={() => {
               setFormats(
-                "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | quicklink | forecolor",
+                "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | link | forecolor",
               );
               setEditorOpen(true);
             }}
@@ -93,7 +92,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
             cover={row?.cover}
             setEditorOpen={() => {
               setFormats(
-                "h1 h2 | fontsize_formats fontfamily alignleft aligncenter alignright | blockquote | quicklink | forecolor",
+                "h1 h2 | fontsize_formats fontfamily alignleft aligncenter alignright | blockquote | link | forecolor",
               );
               setEditorOpen(true);
             }}

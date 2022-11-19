@@ -124,7 +124,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           socket,
           branding: false,
           plugins:
-            "lists link quickbars autoresize  code codesample directionality",
+            "lists link quickbars autoresize  code codesample directionality wordcount",
           skin: window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "oxide-dark"
             : "",
