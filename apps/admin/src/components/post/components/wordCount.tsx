@@ -30,9 +30,9 @@ export const WordCount = () => {
   if (!editor) return null;
 
   return (
-    <div className="sticky top-0 z-10 bg-white p-2 dark:bg-black">
+    <div className="sticky top-0 z-10 mt-4 bg-white p-2 dark:bg-black">
       <a
-        className="flex justify-center gap-4 text-xs uppercase text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
+        className="flex justify-center gap-4 text-sm  text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
         onClick={(e) => {
           e.preventDefault();
           setVisible(!visible);
