@@ -80,6 +80,12 @@ function getWelcomePost() {
     createdAt: new Date(),
     publishedAt: new Date(),
     reading_time: "5 mins",
+    stats: {
+      words: 100,
+      reading_time: 5,
+      characters: 1000,
+      spaceless_characters: 800,
+    },
     page_data: JSON.stringify({ rows: [] }),
     page_type: "default",
   };

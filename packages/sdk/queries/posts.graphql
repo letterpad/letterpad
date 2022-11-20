@@ -31,6 +31,12 @@ fragment postsFragment on PostsNode {
     }
     publishedAt
     reading_time
+    stats {
+      words
+      reading_time
+      characters
+      spaceless_characters
+    }
     excerpt
     tags {
       __typename

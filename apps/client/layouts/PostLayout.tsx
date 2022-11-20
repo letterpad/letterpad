@@ -3,6 +3,7 @@ import { ReactNode, useEffect } from 'react';
 import { PageQueryWithHtmlQuery } from '@/lib/graphql';
 
 import Comments from '@/components/comments';
+import { IconBook } from '@/components/icons';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 import PageTitle from '@/components/PageTitle';
@@ -123,9 +124,12 @@ export default function PostLayout({ data, next, prev, children }: Props) {
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     {author.occupation}
                   </p>
-                  <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                  <p className="flex text-sm font-light text-gray-500 dark:text-gray-400">
                     <time title={printPublishedAt}>{printPublishedAt}</time> &nbsp;•&nbsp;
-                    <span>{post.reading_time}</span>
+                    <span className="flex items-center gap-1">
+                      <IconBook />
+                      {post.stats?.reading_time} min read
+                    </span>
                   </p>
                 </div>
               </div>

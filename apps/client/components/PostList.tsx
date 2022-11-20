@@ -6,6 +6,8 @@ import formatDate from '@/lib/utils/formatDate';
 import Link from '@/components/Link';
 import Tag from '@/components/Tag';
 
+import { IconBook } from './icons';
+
 interface Props {
   posts: PostsFragmentFragment;
 }
@@ -21,10 +23,9 @@ const PostList: React.VFC<Props> = ({ posts }) => {
             <li key={slug} className="py-12">
               <article>
                 <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-                  <dl>
-                    <dt className="sr-only">Published on</dt>
+                  <dl className="flex text-sm font-light text-gray-500 dark:text-gray-400">
                     <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                      <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
+                      <time title={publishedAt}>{formatDate(publishedAt)}</time>
                     </dd>
                   </dl>
                   <div className="space-y-5 xl:col-span-3">
@@ -35,8 +36,9 @@ const PostList: React.VFC<Props> = ({ posts }) => {
                             {title}
                           </Link>
                         </h2>
-                        <span className="block text-gray-700 dark:text-gray-300">
-                          {post.reading_time} read
+                        <span className="flex items-center gap-1">
+                          <IconBook />
+                          {post.stats?.reading_time} min read
                         </span>
                         <div className="mt-1 flex flex-wrap">
                           {tagsData.map((tag) => (

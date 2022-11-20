@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { MeFragment, PageFragmentFragment, SettingsFragment } from '@/lib/graphql';
 import formatDate from '@/lib/utils/formatDate';
 
+import { IconBook } from '@/components/icons';
 import Link from '@/components/Link';
 import PageTitle from '@/components/PageTitle';
 // import Comments from '@/components/comments';
@@ -62,6 +63,7 @@ export default function PostSimple({ site_name, data, next, prev, children, sett
                 <div>
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                    <IconBook />
                     <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
                   </dd>
                 </div>

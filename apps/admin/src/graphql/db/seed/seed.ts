@@ -271,6 +271,12 @@ export async function insertPost(postData, author_id) {
       slug: slug,
       publishedAt: new Date(getDateTime()).toISOString(),
       reading_time: "5 mins",
+      stats: JSON.stringify({
+        characters: 1000,
+        reading_time: 2,
+        spaceless_characters: 800,
+        words: 200,
+      }),
       createdAt: new Date().toISOString(),
       tags:
         postData.type === "post"

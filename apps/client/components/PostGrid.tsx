@@ -7,6 +7,8 @@ import kebabCase from '@/lib/utils/kebabCase';
 import Image from '@/components/Image';
 import Link from '@/components/Link';
 
+import { IconBook } from './icons';
+
 interface Props {
   posts: PostsFragmentFragment;
 }
@@ -17,7 +19,7 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
       <div className="grid grid-cols-1 gap-8 py-12 md:grid-cols-2 xl:grid-cols-3">
         {posts.__typename === 'PostsNode' &&
           posts.rows.map((post) => {
-            const { slug, publishedAt, title, tags, excerpt, cover_image, reading_time } = post;
+            const { slug, publishedAt, title, tags, excerpt, cover_image, stats } = post;
             return (
               <div
                 key={slug}
@@ -34,7 +36,10 @@ const PostGrid: React.VFC<Props> = ({ posts }) => {
                   </div>
                   <div className="py-4">
                     <span className="inline-flex w-full items-center justify-between">
-                      <span>{reading_time}</span>
+                      <span className="flex items-center gap-1">
+                        <IconBook />
+                        {stats?.reading_time} min read
+                      </span>
 
                       <time dateTime={publishedAt} className="text-sm font-semibold">
                         {formatDate(publishedAt)}

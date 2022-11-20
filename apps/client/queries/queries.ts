@@ -73,12 +73,12 @@ export const pageFragment = gql`
       publishedAt
       updatedAt
       excerpt
-      # stats {
-      #   words
-      #   reading_time
-      #   characters
-      #   spaceless_characters
-      # }
+      stats {
+        words
+        reading_time
+        characters
+        spaceless_characters
+      }
       tags {
         ... on TagsNode {
           rows {
@@ -125,12 +125,12 @@ export const postsFragment = gql`
             __typename
           }
         }
-        # stats {
-        #   words
-        #   reading_time
-        #   characters
-        #   spaceless_characters
-        # }
+        stats {
+          words
+          reading_time
+          characters
+          spaceless_characters
+        }
         publishedAt
         reading_time
         excerpt
