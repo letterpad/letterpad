@@ -28,7 +28,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
   const editorRef = useRef<Editor["editor"]>(null);
   const isDark = document.body.classList.contains("dark");
   const [html, setHtml] = useState(text);
-
+  const contentLoadedRef = useRef(false);
   useEffect(() => {
     return () => {
       socket.disconnect();
@@ -91,10 +91,13 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
         }}
         initialValue={html}
         onEditorChange={(newHtml) => {
-          onChange(newHtml);
+          if (contentLoadedRef.current) {
+            onChange(newHtml);
+          } else {
+            contentLoadedRef.current = true;
+          }
         }}
         init={{
-          // theme: "modern",
           paste_preprocess: function (pl, o) {
             o.content = o.content
               .replace(/<div(.*?)>(.*?)<\/div>/gi, "<p$1>$2</p>")

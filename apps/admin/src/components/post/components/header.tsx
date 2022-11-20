@@ -1,6 +1,6 @@
-import { PageHeader, Tag } from "antd";
 import classNames from "classnames";
 import { useRouter } from "next/router";
+import { BsArrowLeft } from "react-icons/bs";
 
 import Actions from "@/components/post-settings";
 
@@ -22,25 +22,30 @@ const Header: React.VFC<Props> = ({ post }) => {
 
     const isPost = post.type === PostTypes.Post;
 
+    const goBack = (e) => {
+      e.preventDefault();
+      router.push(isPost ? "/posts" : "/creatives");
+    };
     return (
-      <PageHeader
-        className="site-page-header"
-        title="&nbsp;"
-        style={{ padding: 10 }}
-        onBack={() => router.push(isPost ? "/posts" : "/creatives")}
-        extra={[<Actions key="actions" post={post} />]}
-        tags={
+      <div className="flex flex-row justify-between px-4 py-4">
+        <div className="left flex flex-row items-center gap-4">
+          <a onClick={goBack}>
+            <BsArrowLeft size={24} />
+          </a>
           <span
             className={classNames(
-              "rounded-md p-1.5 px-2 text-xs text-white shadow-md",
+              "rounded-md p-1.5 px-2 text-xs text-white shadow-sm",
               className,
             )}
             data-testid="postStatus"
           >
             {post.status}
           </span>
-        }
-      ></PageHeader>
+        </div>
+        <div className="right">
+          <Actions key="actions" post={post} />
+        </div>
+      </div>
     );
   }
 

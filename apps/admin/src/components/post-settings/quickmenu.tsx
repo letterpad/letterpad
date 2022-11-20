@@ -1,6 +1,6 @@
-import { EyeOutlined, SettingOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { FC } from "react";
+import { IoEyeOutline, IoSettingsOutline } from "react-icons/io5";
 
 import { socket } from "@/components/post/components/tinymce/socket";
 
@@ -22,11 +22,12 @@ const QuickMenu: FC<Props> = ({
   preview,
 }) => {
   return (
-    <div className="flex space-x-3">
+    <div className="flex items-center gap-6">
       {grammar && (
-        <Button
-          type="text"
-          onClick={() => {
+        <a
+          title="Check Grammar"
+          onClick={(e) => {
+            e.preventDefault();
             track({
               eventAction: EventAction.Click,
               eventCategory: "post",
@@ -36,12 +37,13 @@ const QuickMenu: FC<Props> = ({
           }}
         >
           Grammar
-        </Button>
+        </a>
       )}
       {preview && (
-        <Button
-          type="text"
-          onClick={() => {
+        <a
+          title="Preview"
+          onClick={(e) => {
+            e.preventDefault();
             track({
               eventAction: EventAction.Change,
               eventCategory: "setting",
@@ -49,15 +51,20 @@ const QuickMenu: FC<Props> = ({
             });
             window.open(siteUrl + "/preview/" + postHash);
           }}
-          icon={<EyeOutlined />}
-        ></Button>
+        >
+          <IoEyeOutline size={18} />
+        </a>
       )}
-      <Button
-        type="text"
-        onClick={showDrawer}
+      <a
+        title="Settings"
+        onClick={(e) => {
+          e.preventDefault();
+          showDrawer();
+        }}
         data-testid="postSettingsLink"
-        icon={<SettingOutlined />}
-      ></Button>
+      >
+        <IoSettingsOutline size={18} />
+      </a>
     </div>
   );
 };
