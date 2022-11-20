@@ -11,7 +11,6 @@ import { insertImageInEditor } from "../commands";
 import { initImagePlugin } from "../plugins/image";
 import { textPatterns } from "../textPatterns";
 import { usePostContext } from "../../context";
-
 interface Props {
   text: string;
   onChange: (_html: string) => void;
@@ -64,17 +63,14 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
             editorRef.current = editor;
             socket.setEditor(editorRef.current);
             socket.connectSocketAndAddListeners();
-
             const className = isDark ? "dark" : "light";
             const body = editor.getDoc().body;
             body.classList.remove("dark", "light");
             body.classList.add(className);
             setHelpers && setHelpers(editor);
-
             const domBody = editor.getDoc();
             await insertScript("/admin/tippy/popper.min.js", domBody.head);
             await insertScript("/admin/tippy/tippy.min.js", domBody.head);
-
             socket.applyTooltip();
             editor.on("SelectionChange", function () {
               let node = editor.selection.getNode();
@@ -84,7 +80,6 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
               if (prevNode) {
                 prevNode.removeAttribute("data-id");
               }
-
               if (node.nodeName === "IMG" && node.parentElement) {
                 node = node.parentElement;
               }
@@ -99,6 +94,7 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           onChange(newHtml);
         }}
         init={{
+          // theme: "modern",
           paste_preprocess: function (pl, o) {
             o.content = o.content
               .replace(/<div(.*?)>(.*?)<\/div>/gi, "<p$1>$2</p>")
@@ -106,7 +102,6 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           },
           content_style: style,
           min_height: 300,
-          valid_classes: "none",
           menubar: false,
           link_title: false,
           link_quicklink: true,
@@ -122,9 +117,8 @@ const LpEditor: React.FC<Props> = ({ text, onChange, style }) => {
           branding: false,
           plugins:
             "lists link quickbars autoresize  code codesample directionality wordcount",
-          skin: window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "oxide-dark"
-            : "",
+          skin: "none",
+          skin_url: basePath + "/skins/ui/" + (isDark ? "oxide-dark" : "oxide"),
           content_css: basePath + "/css/editor.css",
           height: "100%",
           quickbars_image_toolbar: false,

@@ -44,14 +44,17 @@ const Post: PostResolvers<ResolverContext> = {
   html: async ({ html }) => {
     return html ? setResponsiveImages(html) : "";
   },
-  stats: async ({ stats }) => {
+  stats: async ({ stats, reading_time }) => {
+    const oldReadingTime = reading_time ? parseInt(reading_time || "") : 2;
     if (stats && typeof stats === "string") {
       const newStats = JSON.parse(stats);
+      const newReadingTime = Math.ceil((newStats.words ?? 0) / 200);
       return {
         ...newStats,
-        reading_time: Math.ceil((newStats.words ?? 0) / 200),
+        reading_time: newStats.words ? newReadingTime : oldReadingTime,
       };
     }
+    return { reading_time: oldReadingTime };
   },
 };
 

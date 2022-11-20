@@ -140,33 +140,6 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
     position: "selection",
     scope: "node",
   });
-
-  editor.on("keydown", function (e) {
-    // move cursor to next element when hitting enter on figcaption
-    if (e.key == "Enter") {
-      const tag = editor.selection.getNode().tagName;
-      if (tag === "FIGCAPTION") {
-        const range = new Range();
-        const nextEle =
-          editor.selection.getNode().parentElement?.nextElementSibling;
-        if (nextEle) {
-          range.setStart(nextEle, 0);
-          range.setEnd(nextEle, 0);
-          editor.selection.setRng(range, true);
-        }
-        e.preventDefault();
-      }
-    }
-    if (e.key == "Delete" || e.key == "Backspace") {
-      const node = editor.selection.getNode();
-      if (node.tagName === "FIGURE") {
-        node.remove();
-      }
-      if (node.tagName === "IMG") {
-        node.parentElement?.remove();
-      }
-    }
-  });
 };
 
 function styleObject(css: null | string): Record<string, string> {

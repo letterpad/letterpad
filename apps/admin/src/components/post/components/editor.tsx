@@ -5,7 +5,6 @@ import { TextBlockPlaceholder } from "@/components_v2/placeholders";
 
 const TinyMceEditor = dynamic(() => import("./tinymce/tinymce"), {
   suspense: true,
-  ssr: false,
 });
 interface Props {
   text: string;
