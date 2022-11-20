@@ -11,7 +11,7 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
   editor.ui.registry.addButton("img-left", {
     icon: "align-left",
     onAction: function (_) {
-      const figure = editor.selection.getNode().parentElement;
+      const figure = editor.selection.getNode();
       if (figure) {
         const style = styleObject(figure.getAttribute("style"));
         style.float = "left";
@@ -24,7 +24,7 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
   editor.ui.registry.addButton("img-right", {
     icon: "align-right",
     onAction: function (_) {
-      const figure = editor.selection.getNode().parentElement;
+      const figure = editor.selection.getNode();
       if (figure) {
         const style = styleObject(figure.getAttribute("style"));
         style.float = "right";
@@ -37,7 +37,7 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
   editor.ui.registry.addButton("img-center", {
     icon: "align-center",
     onAction: function (_) {
-      const figure = editor.selection.getNode().parentElement;
+      const figure = editor.selection.getNode();
       if (figure) {
         const style = styleObject(figure.getAttribute("style"));
         style.float = "none";
@@ -48,20 +48,20 @@ export const initImagePlugin = (editor: Editor, { onMediaBrowse }) => {
     },
   });
 
-  editor.ui.registry.addButton("img-delete", {
-    icon: "remove",
-    onAction: function (_) {
-      const figure = editor.selection.getNode().parentElement;
-      if (figure) {
-        editor.dom.remove(figure);
-        editor.save();
-        const toolbar = editor
-          .getWin()
-          .parent.document.querySelector(".tox-tinymce-aux");
-        if (toolbar) toolbar.innerHTML = "";
-      }
-    },
-  });
+  // editor.ui.registry.addButton("img-delete", {
+  //   icon: "remove",
+  //   onAction: function (_) {
+  //     const figure = editor.selection.getNode().parentElement;
+  //     if (figure) {
+  //       editor.dom.remove(figure);
+  //       editor.save();
+  //       const toolbar = editor
+  //         .getWin()
+  //         .parent.document.querySelector(".tox-tinymce-aux");
+  //       if (toolbar) toolbar.innerHTML = "";
+  //     }
+  //   },
+  // });
 
   editor.ui.registry.addButton("edit-image", {
     icon: "edit-image",

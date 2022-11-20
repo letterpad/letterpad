@@ -25,16 +25,11 @@ import { PostContextType } from "../types";
 
 function Post() {
   const router = useRouter();
-  const firstLoadRef = useRef(true);
   const { updatePostAPI, updateLocalState } = useUpdatePost();
   const { postId } = router.query;
   const { data, loading, error } = usePostQuery({
     variables: { filters: { id: Number(postId) } },
   });
-
-  useEffect(() => {
-    firstLoadRef.current = false;
-  }, []);
 
   const debounceUpdatePostAPI = useMemo(
     () => debounce((data) => updatePostAPI(data), 500),
@@ -99,9 +94,7 @@ function Post() {
                 loading={loading}
                 text={content ?? ""}
                 onChange={(html) => {
-                  !firstLoadRef.current &&
-                    removeSrcSet(content) !== removeSrcSet(html) &&
-                    onEditorChange(html, id);
+                  onEditorChange(html, id);
                 }}
               />
               {/* <WordCount /> */}
@@ -134,16 +127,3 @@ function Post() {
 }
 
 export default Post;
-
-function removeSrcSet(html: string = "") {
-  const doc = new DOMParser().parseFromString(html, "text/html");
-  const images = doc.querySelectorAll("img");
-  images.forEach((img) => {
-    img.removeAttribute("srcset");
-    img.removeAttribute("data-srcset");
-    img.removeAttribute("sizes");
-    img.removeAttribute("class");
-    img.removeAttribute("loading");
-  });
-  return doc.body.innerHTML;
-}

@@ -32,9 +32,6 @@ const Editor: React.VFC<Props> = ({
         </div>
       }
     >
-      {/* <div className="mt-4">
-        <TextBlockPlaceholder />
-      </div> */}
       <TinyMceEditor text={text} onChange={onChange} style={style} />
     </Suspense>
   );
