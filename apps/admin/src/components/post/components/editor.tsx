@@ -1,13 +1,43 @@
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
-const TinyMceEditor = dynamic(() => import("./tinymce/tinymce"));
+import { TextBlockPlaceholder } from "@/components_v2/placeholders";
 
+const TinyMceEditor = dynamic(() => import("./tinymce/tinymce"), {
+  suspense: true,
+  ssr: false,
+});
 interface Props {
   text: string;
   onChange: (_html: string) => void;
   style?: string;
+  loading?: boolean;
 }
-const Editor: React.VFC<Props> = ({ text, onChange, style }) => {
-  return <TinyMceEditor text={text} onChange={onChange} style={style} />;
+const Editor: React.VFC<Props> = ({
+  text,
+  onChange,
+  style,
+  loading = false,
+}) => {
+  if (loading)
+    return (
+      <div className="mt-4">
+        <TextBlockPlaceholder />
+      </div>
+    );
+  return (
+    <Suspense
+      fallback={
+        <div className="mt-4">
+          <TextBlockPlaceholder />
+        </div>
+      }
+    >
+      {/* <div className="mt-4">
+        <TextBlockPlaceholder />
+      </div> */}
+      <TinyMceEditor text={text} onChange={onChange} style={style} />
+    </Suspense>
+  );
 };
 export default Editor;

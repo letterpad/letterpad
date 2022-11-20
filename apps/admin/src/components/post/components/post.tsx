@@ -13,19 +13,19 @@ import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
 import Title from "@/components/post/components/title";
 import { usePostContext } from "@/components/post/context";
+import { PostTitlePlaceholder } from "@/components_v2/placeholders";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
 import { usePostQuery } from "@/__generated__/queries/queries.graphql";
 import { PageType } from "@/graphql/types";
 import { debounce } from "@/shared/utils";
 
-import PostDate from "./postDate";
 import { WordCount } from "./wordCount";
 import { PostContextType } from "../types";
 
 function Post() {
   const router = useRouter();
-  const firstLoadRef = useRef(false);
+  const firstLoadRef = useRef(true);
   const { updatePostAPI, updateLocalState } = useUpdatePost();
   const { postId } = router.query;
   const { data, loading, error } = usePostQuery({
@@ -33,7 +33,7 @@ function Post() {
   });
 
   useEffect(() => {
-    firstLoadRef.current = true;
+    firstLoadRef.current = false;
   }, []);
 
   const debounceUpdatePostAPI = useMemo(
@@ -71,7 +71,7 @@ function Post() {
     post?.status === PostStatusOptions.Draft ||
     post?.status === PostStatusOptions.Trashed
   ) {
-    content = post.html_draft;
+    content = post?.html_draft;
   }
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -80,23 +80,29 @@ function Post() {
       </Head>
       {post && <Header post={post} />}
 
-      {!loading &&
-        (post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
+      {(post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
         post.page_type === PageType.Default && (
           <Content style={{ margin: "24px 16px 0" }}>
             <div style={{ maxWidth: 660, margin: "0 auto" }}>
               {/* <PostDate date={post?.updatedAt} /> */}
-              <Title
-                onEnter={() => helpers?.focus()}
-                title={post?.title || ""}
-                postId={post?.id}
-              />
+              {loading ? (
+                <PostTitlePlaceholder />
+              ) : (
+                <Title
+                  onEnter={() => helpers?.focus()}
+                  title={post?.title || ""}
+                  postId={post?.id}
+                />
+              )}
               <WordCount />
               <Editor
+                loading={loading}
                 text={content ?? ""}
-                onChange={(html) =>
-                  firstLoadRef.current && onEditorChange(html, id)
-                }
+                onChange={(html) => {
+                  !firstLoadRef.current &&
+                    removeSrcSet(content) !== removeSrcSet(html) &&
+                    onEditorChange(html, id);
+                }}
               />
               {/* <WordCount /> */}
             </div>
@@ -128,3 +134,16 @@ function Post() {
 }
 
 export default Post;
+
+function removeSrcSet(html: string = "") {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const images = doc.querySelectorAll("img");
+  images.forEach((img) => {
+    img.removeAttribute("srcset");
+    img.removeAttribute("data-srcset");
+    img.removeAttribute("sizes");
+    img.removeAttribute("class");
+    img.removeAttribute("loading");
+  });
+  return doc.body.innerHTML;
+}

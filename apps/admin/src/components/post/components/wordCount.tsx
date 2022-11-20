@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { LinePlaceholder } from "@/components_v2/placeholders";
+
 export const WordCount = () => {
   const [visible, setVisible] = useState(true);
   const [words, setWords] = useState(0);
@@ -27,10 +29,10 @@ export const WordCount = () => {
     setActive(true);
   }, [editor]);
 
-  if (!editor) return null;
+  if (!editor) return <LinePlaceholder />;
 
   return (
-    <div className="sticky top-0 z-10 mt-4 bg-white p-2 dark:bg-black">
+    <div className="sticky top-0 z-10 mt-4 flex h-8 items-center justify-center bg-white dark:bg-black">
       <a
         className="flex justify-center gap-4 text-sm  text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
         onClick={(e) => {
