@@ -1,4 +1,5 @@
 // const withTM = require("next-transpile-modules")(["ui"]);
+
 const basePath = "/admin";
 const nextConfig = {
   eslint: {
@@ -58,6 +59,7 @@ const nextConfig = {
       type: "json",
       use: "yaml-loader",
     });
+
     return config;
   },
 };

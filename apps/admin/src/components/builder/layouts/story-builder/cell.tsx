@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import { FC, useState } from "react";
-import StickyBox from "react-sticky-box";
 
 import FileExplorer from "@/components/file-explorer";
 
