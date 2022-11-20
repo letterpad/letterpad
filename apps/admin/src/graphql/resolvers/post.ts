@@ -49,7 +49,7 @@ const Post: PostResolvers<ResolverContext> = {
       const newStats = JSON.parse(stats);
       return {
         ...newStats,
-        reading_time: Math.ceil(newStats.words ?? 0 / 200),
+        reading_time: Math.ceil((newStats.words ?? 0) / 200),
       };
     }
   },

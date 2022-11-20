@@ -13,6 +13,12 @@ fragment pageFragment on Post {
   slug
   title
   reading_time
+  stats{
+    words
+    reading_time
+    characters
+    spaceless_characters
+  }
   page_type
   page_data
   html

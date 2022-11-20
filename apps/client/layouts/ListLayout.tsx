@@ -1,7 +1,9 @@
 import { PostsFragmentFragment } from '@/lib/graphql';
 import formatDate from '@/lib/utils/formatDate';
 
+import { IconBook } from '@/components/icons';
 import Link from '@/components/Link';
+import PageTitle from '@/components/PageTitle';
 import SectionContainer from '@/components/SectionContainer';
 import Tag from '@/components/Tag';
 interface Props {
@@ -14,14 +16,12 @@ export default function ListLayout({ posts, title }: Props) {
     <SectionContainer>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            {title}
-          </h1>
+          <PageTitle>{title}</PageTitle>
         </div>
         <ul>
           {/* {!filteredBlogPosts.length && 'No posts found.'} */}
           {posts.rows.map((frontMatter) => {
-            const { slug, publishedAt, title, tags, excerpt, reading_time } = frontMatter;
+            const { slug, publishedAt, title, tags, excerpt, stats } = frontMatter;
             return (
               <li key={slug} className="py-4">
                 <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
@@ -29,7 +29,10 @@ export default function ListLayout({ posts, title }: Props) {
                     <dt className="sr-only">Published on</dt>
                     <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
                       <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
-                      <div>{reading_time}</div>
+                      <div>
+                        <IconBook />
+                        {stats?.reading_time} min read
+                      </div>
                     </dd>
                   </dl>
                   <div className="space-y-3 xl:col-span-3">
