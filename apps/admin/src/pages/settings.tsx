@@ -1,6 +1,5 @@
 import {
   Col,
-  Collapse,
   Form,
   Input,
   PageHeader,
@@ -18,14 +17,13 @@ import General from "@/components/settings/general";
 import Integrations from "@/components/settings/integrations";
 import Navigation from "@/components/settings/navigation";
 import Pages from "@/components/settings/pages";
+import { Accordion } from "@/components_v2/accordion";
 import { Buttonv2 } from "@/components_v2/button";
 
 import { useDeleteAuthorMutation } from "@/__generated__/queries/mutations.graphql";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 
 import { PageProps } from "@/types";
-
-const { Panel } = Collapse;
 
 interface Props extends PageProps {
   settings: SettingsFragmentFragment;
@@ -60,25 +58,20 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
             layout="horizontal"
             size={"small"}
           >
-            <Collapse onChange={onPanelClick} activeKey={router.query.selected}>
-              <Panel
-                header="General Settings"
-                key="general"
-                className="general-settings"
-              >
+            <Accordion
+              onChange={onPanelClick}
+              activeKey={router.query.selected}
+            >
+              <Accordion.Item label="General Settings" id="general">
                 <General settings={settings} />
-              </Panel>
-              <Panel header="Appearance" key="appearance">
+              </Accordion.Item>
+              <Accordion.Item label="Appearance" id="appearance">
                 <Appearance settings={settings} />
-              </Panel>
-              <Panel header="Pages" key="pages" className="pages">
+              </Accordion.Item>
+              <Accordion.Item label="Pages" id="pages">
                 <Pages settings={settings} />
-              </Panel>
-              <Panel
-                header="Navigation"
-                key="navigation"
-                className="navigation"
-              >
+              </Accordion.Item>
+              <Accordion.Item label="Navigation" id="navigation">
                 <Form.Item>
                   <Typography.Text type="secondary">
                     Configure the navigation menu of your blog. The first item
@@ -86,18 +79,14 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
                   </Typography.Text>
                 </Form.Item>
                 <Navigation settings={settings} />
-              </Panel>
-              <Panel
-                header="Integrations"
-                key="integrations"
-                className="integrations"
-              >
+              </Accordion.Item>
+              <Accordion.Item label="Integrations" id="integrations">
                 <Integrations
                   settings={settings}
                   cloudinaryEnabledByAdmin={cloudinaryEnabledByAdmin}
                 />
-              </Panel>
-              <Panel header="Keys" key="keys">
+              </Accordion.Item>
+              <Accordion.Item label="Keys" id="keys">
                 <Form.Item label="Client Authorization Key">
                   <Row>
                     <Col span={18}>
@@ -112,8 +101,8 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
                     </Col>
                   </Row>
                 </Form.Item>
-              </Panel>
-              <Panel header="Delete your account" key="account">
+              </Accordion.Item>
+              <Accordion.Item label="Delete your account" id="account">
                 <Form.Item>
                   <Typography.Text type="secondary">
                     If due to some reason you wish to move out of Letterpad, you
@@ -138,8 +127,8 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
                     </Col>
                   </Row>
                 </Form.Item>
-              </Panel>
-            </Collapse>
+              </Accordion.Item>
+            </Accordion>
           </Form>
         </div>
       </Content>
