@@ -19,8 +19,7 @@ export const Component = ({ children, activeKey, onChange }) => {
           const { label, id, children } = child.props;
           const isFirstItem = index === 0;
           const isLastItem = index === totalChildren - 1;
-          if (child.type.name !== "Item")
-            throw "<Accordion.Item .../> is required";
+
           return (
             <>
               <Header
