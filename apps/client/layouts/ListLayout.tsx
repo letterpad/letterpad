@@ -25,16 +25,7 @@ export default function ListLayout({ posts, title }: Props) {
             return (
               <li key={slug} className="py-4">
                 <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-                  <dl>
-                    <dt className="sr-only">Published on</dt>
-                    <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                      <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
-                      <div>
-                        <IconBook />
-                        {stats?.reading_time} min read
-                      </div>
-                    </dd>
-                  </dl>
+                  <PublishedAt publishedAt={publishedAt} className="hidden text-sm xl:block" />
                   <div className="space-y-3 xl:col-span-3">
                     <div>
                       <h3 className="text-2xl font-bold leading-8 tracking-tight">
@@ -42,12 +33,18 @@ export default function ListLayout({ posts, title }: Props) {
                           {title}
                         </Link>
                       </h3>
+                      <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-300">
+                        <PublishedAt publishedAt={publishedAt} className="xl:hidden" />
+                        <span className="xl:hidden">•</span>
+                        <IconBook />
+                        <span>{stats?.reading_time} min read</span>
+                      </div>
                       <div className="flex flex-wrap">
                         {tags?.__typename === 'TagsNode' &&
                           tags.rows.map((tag) => <Tag key={tag.name} text={tag.name} />)}
                       </div>
                     </div>
-                    <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                    <div className="prose max-w-none text-sm leading-6 text-gray-500 dark:text-gray-400">
                       {excerpt}
                     </div>
                   </div>
@@ -60,3 +57,12 @@ export default function ListLayout({ posts, title }: Props) {
     </SectionContainer>
   );
 }
+
+const PublishedAt = ({ publishedAt, className }) => (
+  <dl className={className}>
+    <dt className="sr-only">Published on</dt>
+    <dd className=" font-medium leading-6 text-gray-500 dark:text-gray-400">
+      <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
+    </dd>
+  </dl>
+);
