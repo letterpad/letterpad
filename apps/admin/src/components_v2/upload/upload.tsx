@@ -8,6 +8,7 @@ import { IMediaUploadResult } from "@/graphql/types";
 
 import { Preview } from "./preview";
 import { Buttonv2 } from "../button";
+import { Label } from "../input";
 
 interface Props {
   progress?: (percentCompleted: number) => void;
@@ -15,6 +16,7 @@ interface Props {
   onError?: (res: any) => void;
   url: string;
   className?: string;
+  label?: string;
 }
 
 const noop = () => {};
@@ -27,6 +29,7 @@ export const Upload: FC<Props> = ({
   onSuccess = noop,
   onError = noop,
   url,
+  label,
   className,
 }) => {
   const [fileList, setFileList] = useState<UploadFileList[]>([]);
@@ -67,41 +70,50 @@ export const Upload: FC<Props> = ({
     onSuccess(data);
     setFileList(data);
   };
-  return (
-    <div className={className}>
-      <div
-        onClick={() => {
-          if (fileList.length > 0) return;
-          setExplorerVisible(true);
-        }}
-        className="h-full w-full cursor-pointer rounded-md dark:border-gray-700"
-      >
-        <input type="file" hidden onChange={uploadImage} ref={ref} />
-        <Preview url={url} onRemove={handleSuccess} loading={uploading} />
-      </div>
-      <FileExplorer
-        isVisible={explorerVisible}
-        handleCancel={() => setExplorerVisible(false)}
-        onInsert={async (files) => {
-          const result: IMediaUploadResult[] = files.map((item) => {
-            return {
-              src: item.src,
-              name: "does-not-matter",
-              caption: item.caption,
-              error: "",
-              size: {
-                width: (item.width || 0) as number,
-                height: (item.height || 0) as number,
-                type: "",
-              },
-            };
-          });
 
-          handleSuccess(result);
-          setExplorerVisible(false);
-          return Promise.resolve(result);
-        }}
-      />
+  return (
+    <div>
+      {label && (
+        <>
+          <br />
+          <Label label={label} />
+        </>
+      )}
+      <div className={className}>
+        <div
+          onClick={() => {
+            if (fileList.length > 0) return;
+            setExplorerVisible(true);
+          }}
+          className="h-full w-full cursor-pointer rounded-md dark:border-gray-700"
+        >
+          <input type="file" hidden onChange={uploadImage} ref={ref} />
+          <Preview url={url} onRemove={handleSuccess} loading={uploading} />
+        </div>
+        <FileExplorer
+          isVisible={explorerVisible}
+          handleCancel={() => setExplorerVisible(false)}
+          onInsert={async (files) => {
+            const result: IMediaUploadResult[] = files.map((item) => {
+              return {
+                src: item.src,
+                name: "does-not-matter",
+                caption: item.caption,
+                error: "",
+                size: {
+                  width: (item.width || 0) as number,
+                  height: (item.height || 0) as number,
+                  type: "",
+                },
+              };
+            });
+
+            handleSuccess(result);
+            setExplorerVisible(false);
+            return Promise.resolve(result);
+          }}
+        />
+      </div>
     </div>
   );
 };

@@ -1,8 +1,8 @@
-import { Result } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { Buttonv2 } from "@/components_v2/button";
+import { Result } from "@/components_v2/result";
 
 const Verified = () => {
   const router = useRouter();
@@ -15,7 +15,7 @@ const Verified = () => {
   const queryParams = new URLSearchParams(document.location.search);
 
   if (queryParams.get("msg")) {
-    return <Result status="error" title={queryParams.get("msg")} />;
+    return <Result status="error" title={queryParams.get("msg") ?? ""} />;
   }
   return (
     <>
@@ -31,7 +31,6 @@ const Verified = () => {
             Login
           </Buttonv2>,
         ]}
-        className="flex flex-col justify-center"
       />
     </>
   );

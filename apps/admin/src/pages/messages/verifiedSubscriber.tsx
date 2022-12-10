@@ -1,5 +1,6 @@
-import { Result } from "antd";
 import Head from "next/head";
+
+import { Result } from "@/components_v2/result";
 
 const VerifiedSubscriber = () => {
   return (

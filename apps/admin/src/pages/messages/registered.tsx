@@ -1,8 +1,8 @@
-import { Result } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
 import { Buttonv2 } from "@/components_v2/button";
+import { Result } from "@/components_v2/result";
 
 const Registered = () => {
   const router = useRouter();
@@ -24,7 +24,6 @@ const Registered = () => {
             Login
           </Buttonv2>,
         ]}
-        className="flex flex-col justify-center"
       />
     </>
   );

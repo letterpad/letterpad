@@ -69,6 +69,8 @@ const Header = ({ isActive, label, onClick, isFirstItem, isLastItem }) => {
             "rounded-t-lg": isFirstItem,
             "rounded-b-lg border-b": isLastItem && !isActive,
             "border-t-0": !isFirstItem && !isActive,
+            "border-b-0": isActive,
+            "bg-gray-800": isActive,
           },
         )}
         aria-expanded="true"

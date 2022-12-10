@@ -1,16 +1,18 @@
-import { Form, Radio, Space } from "antd";
 import highlight from "highlight.js";
 import hljs from "highlight.js/lib/core";
 import hljsCssLang from "highlight.js/lib/languages/css";
 import Editor from "react-simple-code-editor";
 
-import ImageUpload from "../ImageUpload";
 hljs.registerLanguage("css", hljsCssLang);
 import { useMemo, useRef } from "react";
 
 import "highlight.js/styles/night-owl.css";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
+
+import { Label } from "@/components_v2/input";
+import { RadioGroup } from "@/components_v2/radio";
+import { Upload } from "@/components_v2/upload";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { debounce } from "@/shared/utils";
@@ -28,69 +30,63 @@ const Appearance: React.FC<Props> = ({ settings }) => {
     [updateSettingsAPI],
   );
   return (
-    <>
-      <Form.Item label="Logo">
-        <ImageUpload
-          name="Logo"
-          url={settings?.site_logo?.src}
-          onDone={([res]) =>
+    <div className="grid gap-8">
+      <div className="grid grid-cols-3">
+        <Upload
+          label="Logo"
+          className="h-28 w-28"
+          url={settings?.site_logo?.src ?? ""}
+          onSuccess={([res]) => {
             updateSettings({
               site_logo: {
                 src: res.src,
                 width: res.size.width,
                 height: res.size.height,
               },
-            })
-          }
+            });
+          }}
         />
-      </Form.Item>
-      <Form.Item label="Favicon">
-        <ImageUpload
-          name="Favicon"
-          url={settings?.site_favicon?.src}
-          onDone={([res]) =>
+        <Upload
+          label="Favicon"
+          className="h-28 w-28"
+          url={settings?.site_favicon?.src ?? ""}
+          onSuccess={([res]) => {
             updateSettings({
               site_favicon: {
                 src: res.src,
                 width: res.size.width,
                 height: res.size.height,
               },
-            })
-          }
+            });
+          }}
         />
-      </Form.Item>
-      <Form.Item label="Banner">
-        <ImageUpload
-          name="Banner"
-          url={settings?.banner?.src}
-          onDone={([res]) =>
+        <Upload
+          label="Banner"
+          className="h-28 w-28"
+          url={settings?.banner?.src ?? ""}
+          onSuccess={([res]) => {
             updateSettings({
               banner: {
                 src: res.src,
                 width: res.size.width,
                 height: res.size.height,
               },
-            })
-          }
+            });
+          }}
         />
-        <small>
-          (Banner may or may not be displayed, depending on the theme)
-        </small>
-      </Form.Item>
-      <Form.Item label="Layout">
-        <Radio.Group
-          onChange={(e) => updateSettings({ theme: e.target.value })}
-          defaultValue="a"
-          size="middle"
-          value={settings.theme}
-        >
-          <Space direction="vertical">
-            <Radio value="minimal">Minimal</Radio>
-            <Radio value="magazine">Magazine</Radio>
-          </Space>
-        </Radio.Group>
-      </Form.Item>
-      <Form.Item label="CSS">
+      </div>
+      <RadioGroup
+        label="Layout Style"
+        items={[
+          { label: "Minimal", value: "minimal" },
+          { label: "Magazine", value: "magazine" },
+        ]}
+        selected={settings.theme ?? "minimal"}
+        onChange={(item) => updateSettings({ theme: item.value })}
+      />
+      <div>
+        <Label label="CSS" />
+
         <div id="css-editor">
           <Editor
             value={settings.css ?? ""}
@@ -135,8 +131,8 @@ const Appearance: React.FC<Props> = ({ settings }) => {
             overflow-y: scroll;
           }
         `}</style>
-      </Form.Item>
-    </>
+      </div>
+    </div>
   );
 };
 export default Appearance;

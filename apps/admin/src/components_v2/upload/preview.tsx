@@ -18,7 +18,7 @@ interface Props {
 
 export const Preview: FC<Props> = ({ url, onRemove, loading }) => {
   return (
-    <div className="group relative h-full w-full bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-600">
+    <div className="group relative h-full w-full rounded-md bg-gray-200 p-4 text-gray-400 dark:bg-gray-700 dark:text-gray-600">
       {loading ? (
         <Loading />
       ) : (

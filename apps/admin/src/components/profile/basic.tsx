@@ -63,17 +63,6 @@ export const Basic: React.VFC<Props> = ({ data }) => {
               update({ avatar: res.src });
             }}
           />
-          {/* <ImageUpload
-            url={data.avatar || ""}
-            name="Avatar"
-            onDone={([res]) => {
-              update({ avatar: res.src });
-            }}
-            dataTestid="avatar"
-            // onRemove={() => {
-            //   updateLocalState({ avatar: "" });
-            // }}
-          /> */}
         </div>
         <Input
           label="Company Name"
