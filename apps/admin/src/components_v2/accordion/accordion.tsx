@@ -36,7 +36,16 @@ export const Component = ({ children, activeKey, onChange }) => {
                     hidden: activeTab !== id,
                   })}
                 >
-                  <div className="border border-b-0 border-gray-200 p-5 font-light dark:border-gray-700">
+                  <div
+                    className={classNames(
+                      "border border-gray-200 p-5 font-light dark:border-gray-700",
+                      {
+                        "border-b-0":
+                          !isLastItem && child.props.id !== activeTab,
+                        "rounded-b-lg": isLastItem,
+                      },
+                    )}
+                  >
                     {children}
                   </div>
                 </div>
@@ -57,8 +66,9 @@ const Header = ({ isActive, label, onClick, isFirstItem, isLastItem }) => {
         className={classNames(
           "flex w-full items-center justify-between  border  border-gray-200 p-5 text-left font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:ring-gray-800",
           {
-            "rounded-t-xl": isFirstItem,
-            "rounded-b-xl border-b": isLastItem && !isActive,
+            "rounded-t-lg": isFirstItem,
+            "rounded-b-lg border-b": isLastItem && !isActive,
+            "border-t-0": !isFirstItem && !isActive,
           },
         )}
         aria-expanded="true"

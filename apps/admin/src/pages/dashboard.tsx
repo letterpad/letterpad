@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import Loading from "@/components/loading";
 import MetricsBar from "@/components/metrics/MetricsBar";
+import { Form } from "@/components_v2/form";
 import { Select } from "@/components_v2/select";
 
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
@@ -75,6 +76,7 @@ const Metrics = () => {
     fetchData();
   }, [days, fetchData, meResult.data]);
 
+  return <Form />;
   return (
     <div>
       <Head>

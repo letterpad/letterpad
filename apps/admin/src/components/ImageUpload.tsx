@@ -90,7 +90,7 @@ const ImageUpload = ({
         data-testid={dataTestid}
         className={containerClass}
       >
-        <Upload
+        {/* <Upload
           openFileDialogOnClick={false}
           name="avatar"
           listType="picture-card"
@@ -105,7 +105,10 @@ const ImageUpload = ({
           data-testid="image"
         >
           {fileList.length === 0 && uploadButton}
-        </Upload>
+        </Upload> */}
+        <div>
+          <input type="file" onChange={handleChange} />
+        </div>
       </div>
       <Modal
         visible={previewVisible}

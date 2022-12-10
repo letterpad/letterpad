@@ -1,7 +1,9 @@
-import { Button, Form, Input } from "antd";
 import { FC, useState } from "react";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
+
+import { Buttonv2 } from "@/components_v2/button";
+import { Input } from "@/components_v2/input";
 
 import { sanitizeUsername } from "@/shared/utils";
 
@@ -43,25 +45,25 @@ export const ChangeUsername: FC<Props> = ({ username, author_id }) => {
   };
 
   return (
-    <Form.Item label="Username">
-      <Input.Group compact>
-        <Input
-          size="middle"
-          value={_username}
-          onChange={onUsernameChange}
-          style={{ width: "calc(100% - 100px)" }}
-        />
-        <Button
-          type="primary"
-          size="middle"
+    <>
+      <div className="grid grid-cols-12 items-end gap-2">
+        <div className="col-span-10 lg:col-span-6">
+          <Input
+            label="Username"
+            value={_username}
+            onChange={onUsernameChange}
+          />
+        </div>
+        <Buttonv2
+          variant="primary"
           onClick={updateAuthor}
           disabled={!saveButtonEnabled}
-          loading={loading}
+          className="col-span-2 lg:col-span-1"
         >
           Save
-        </Button>
-      </Input.Group>
-      <small style={{ color: "red" }}>{error}</small>
-    </Form.Item>
+        </Buttonv2>
+      </div>
+      <span className="-mt-4 text-sm text-red-500">{error}</span>
+    </>
   );
 };
