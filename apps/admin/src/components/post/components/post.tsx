@@ -9,10 +9,10 @@ import { useUpdatePost } from "@/hooks/useUpdatePost";
 import { Layout as LayoutBuilder } from "@/components/builder";
 import { BuilderContext } from "@/components/builder/context";
 import ErrorMessage from "@/components/ErrorMessage";
+import { usePostContext } from "@/components/post";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
 import Title from "@/components/post/components/title";
-import { usePostContext } from "@/components/post/context";
 import { PostTitlePlaceholder } from "@/components_v2/placeholders";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
@@ -23,7 +23,7 @@ import { debounce } from "@/shared/utils";
 import { WordCount } from "./wordCount";
 import { PostContextType } from "../types";
 
-function Post() {
+export const Post = () => {
   const router = useRouter();
   const { updatePostAPI, updateLocalState } = useUpdatePost();
   const { postId } = router.query;
@@ -124,6 +124,4 @@ function Post() {
       )}
     </Layout>
   );
-}
-
-export default Post;
+};

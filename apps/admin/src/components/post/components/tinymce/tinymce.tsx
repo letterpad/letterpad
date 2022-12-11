@@ -10,7 +10,7 @@ import { socket } from "./socket";
 import { insertImageInEditor } from "../commands";
 import { initImagePlugin } from "../plugins/image";
 import { textPatterns } from "../textPatterns";
-import { usePostContext } from "../../context";
+import { usePostContext } from "../..";
 interface Props {
   text: string;
   onChange: (_html: string) => void;

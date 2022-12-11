@@ -1,5 +1,5 @@
-import Post from "@/components/post/components/post";
-import { PostProvider } from "@/components/post/context";
+import { PostProvider } from "@/components/post";
+import { Post } from "@/components/post";
 
 import { Setting } from "@/__generated__/__types__";
 

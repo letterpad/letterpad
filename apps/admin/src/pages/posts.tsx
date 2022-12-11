@@ -55,7 +55,13 @@ function Posts() {
     }
   }, [router, setting?.intro_dismissed]);
 
-  if (error) return <ErrorMessage description={error} title="Error" />;
+  if (error)
+    return (
+      <ErrorMessage
+        description={error}
+        title="Could not load posts. Refresh the page to try again"
+      />
+    );
   if (typeof window === "undefined") return null;
   return (
     <>

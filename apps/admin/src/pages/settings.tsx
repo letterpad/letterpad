@@ -1,4 +1,4 @@
-import { Col, Form, Popconfirm, Row, Typography } from "antd";
+import { Popconfirm } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -12,6 +12,7 @@ import { Accordion } from "@/components_v2/accordion";
 import { Buttonv2 } from "@/components_v2/button";
 import { Content } from "@/components_v2/content";
 import { PageHeader } from "@/components_v2/page-header";
+import { PopConfirm as Popconfirm2 } from "@/components_v2/popconfirm";
 import { TextArea } from "@/components_v2/textarea";
 
 import { useDeleteAuthorMutation } from "@/__generated__/queries/mutations.graphql";
@@ -81,27 +82,19 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
             </div>
           </Accordion.Item>
           <Accordion.Item label="Delete your account" id="account">
-            <Form.Item>
-              <Typography.Text type="secondary">
-                If due to some reason you wish to move out of Letterpad, you may
-                delete your account. All data will be deleted and you will not
-                be able to recover it. You will be logged out after this action.
-              </Typography.Text>
-            </Form.Item>
-            <Form.Item>
-              <Row>
-                <Col span={18}>
-                  <Popconfirm
-                    title="Are you sure you want to delete your account ?"
-                    onConfirm={confirm}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <Buttonv2 variant="danger">Delete your account</Buttonv2>
-                  </Popconfirm>
-                </Col>
-              </Row>
-            </Form.Item>
+            <div className="mb-4 text-gray-500">
+              If due to some reason you wish to move out of Letterpad, you may
+              delete your account. All data will be deleted and you will not be
+              able to recover it. You will be logged out after this action.
+            </div>
+            <Popconfirm2
+              title="Are you sure you want to delete your account ?"
+              onConfirm={() => alert(1)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Buttonv2 variant="danger">Delete your account</Buttonv2>
+            </Popconfirm2>
           </Accordion.Item>
         </Accordion>
       </Content>
