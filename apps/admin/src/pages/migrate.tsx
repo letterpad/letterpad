@@ -1,8 +1,9 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Alert, Button, Form, notification, PageHeader, Upload } from "antd";
-import { Content } from "antd/lib/layout/layout";
 import { UploadChangeParam } from "antd/lib/upload";
 import Head from "next/head";
+
+import { Content } from "@/components_v2/content";
 
 import { Role } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
@@ -41,54 +42,53 @@ const Migrate = ({ session }: IAuthComponentProps) => {
         </span>
       </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 24 }}>
-          <Form
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 8 }}
-            layout="horizontal"
-            size={"small"}
-          >
-            <Form.Item label="Export Data">
-              <Button
-                type="link"
-                onClick={() => {
-                  fetch(basePath + "/api/export")
-                    .then((res) => res.blob())
-                    .then(download);
-                }}
-              >
-                Download
-              </Button>
-            </Form.Item>
-            <Form.Item label="Import Letterpad Data">
-              <Upload
-                type="drag"
-                name="import"
-                accept=".json"
-                action={basePath + "/api/import"}
-                onChange={(info: UploadChangeParam) => {
-                  if (info.file.status === "done") {
-                    if (!info.file.response.success) {
-                      openNotificationWithIcon(
-                        "error",
-                        info.file.response.message,
-                      );
-                    } else {
-                      openNotificationWithIcon(
-                        "success",
-                        info.file.response.message,
-                      );
-                      setTimeout(() => {
-                        location.href = basePath + "/api/auth/signout";
-                      }, 3000);
-                    }
+        <Form
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 8 }}
+          layout="horizontal"
+          size={"small"}
+        >
+          <Form.Item label="Export Data">
+            <Button
+              type="link"
+              onClick={() => {
+                fetch(basePath + "/api/export")
+                  .then((res) => res.blob())
+                  .then(download);
+              }}
+            >
+              Download
+            </Button>
+          </Form.Item>
+          <Form.Item label="Import Letterpad Data">
+            <Upload
+              type="drag"
+              name="import"
+              accept=".json"
+              action={basePath + "/api/import"}
+              onChange={(info: UploadChangeParam) => {
+                if (info.file.status === "done") {
+                  if (!info.file.response.success) {
+                    openNotificationWithIcon(
+                      "error",
+                      info.file.response.message,
+                    );
+                  } else {
+                    openNotificationWithIcon(
+                      "success",
+                      info.file.response.message,
+                    );
+                    setTimeout(() => {
+                      location.href = basePath + "/api/auth/signout";
+                    }, 3000);
                   }
-                }}
-              >
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-              </Upload>
-            </Form.Item>
-            {/* <Form.Item label="Import Ghost Data">
+                }
+              }}
+            >
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
+          </Form.Item>
+          {/* <Form.Item label="Import Ghost Data">
               <Upload
                 type="drag"
                 name="ghost"
@@ -98,17 +98,16 @@ const Migrate = ({ session }: IAuthComponentProps) => {
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
             </Form.Item> */}
-          </Form>
-          {session.role === Role.Admin && (
-            <Alert
-              description={<Info />}
-              message="Migrating from sqlite3 to mysql"
-              type="info"
-              showIcon
-              style={{ marginTop: 40 }}
-            />
-          )}
-        </div>
+        </Form>
+        {session.role === Role.Admin && (
+          <Alert
+            description={<Info />}
+            message="Migrating from sqlite3 to mysql"
+            type="info"
+            showIcon
+            style={{ marginTop: 40 }}
+          />
+        )}
       </Content>
     </>
   );

@@ -1,9 +1,9 @@
 import { Table } from "antd";
-import { Content } from "antd/lib/layout/layout";
 import { useEffect, useState } from "react";
 
 import { EditableCell, EditableRow } from "@/components/ediitable-table";
 import { TagRow } from "@/components/tags/types";
+import { Content } from "@/components_v2/content";
 
 import { useTagsContext } from "./context";
 
@@ -47,19 +47,17 @@ const EditableTable = () => {
 
   return (
     <Content>
-      <div className="site-layout-background" style={{ padding: 24 }}>
-        {/* <Button onClick={addTag} type="primary" style={{ marginBottom: 16 }}>
+      {/* <Button onClick={addTag} type="primary" style={{ marginBottom: 16 }}>
           Add a row
         </Button> */}
-        <Table
-          components={components}
-          rowClassName={() => "editable-row"}
-          bordered
-          dataSource={dataSource}
-          columns={columns as ColumnTypes}
-          loading={loading}
-        />
-      </div>
+      <Table
+        components={components}
+        rowClassName={() => "editable-row"}
+        bordered
+        dataSource={dataSource}
+        columns={columns as ColumnTypes}
+        loading={loading}
+      />
     </Content>
   );
 };

@@ -1,11 +1,10 @@
-import { Layout, PageHeader, Table } from "antd";
+import { PageHeader, Table } from "antd";
 import Head from "next/head";
 
 import ErrorMessage from "@/components/ErrorMessage";
+import { Content } from "@/components_v2/content";
 
 import { useSubscribersQuery } from "@/graphql/queries/queries.graphql";
-
-const { Content } = Layout;
 
 export const columns = [
   {
@@ -56,14 +55,12 @@ function Subscribers() {
         </span>
       </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 16 }}>
-          <Table
-            columns={columns}
-            dataSource={data?.subscribers.rows}
-            loading={loading}
-            pagination={false}
-          />
-        </div>
+        <Table
+          columns={columns}
+          dataSource={data?.subscribers.rows}
+          loading={loading}
+          pagination={false}
+        />
       </Content>
     </>
   );

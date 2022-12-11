@@ -1,4 +1,3 @@
-import { Layout } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -12,6 +11,7 @@ import Filters from "@/components/filters";
 import { creativesColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
 import { Buttonv2 } from "@/components_v2/button";
+import { Content } from "@/components_v2/content";
 import { Table } from "@/components_v2/table";
 
 import {
@@ -21,8 +21,6 @@ import {
   SortBy,
 } from "@/__generated__/__types__";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
-
-const { Content } = Layout;
 
 function Pages() {
   const { loading, data, error, refetch } = usePostsQuery({
@@ -65,23 +63,22 @@ function Pages() {
         </div>
       </Header>
       <Content>
-        <div className="site-layout-background  px-4 py-4">
-          <Filters
-            showTags={false}
-            showPageTypes={true}
-            onChange={(filters) => {
-              refetch({ filters: { ...filters, type: PostTypes.Page } });
-            }}
-            filters={filters}
-            setFilters={setFilters}
-          />
-          <Table
-            columns={creativesColumns({ changeStatus })}
-            dataSource={source}
-            loading={loading}
-            onRowClick={(row) => router.push("/post/" + row.id)}
-          />
-        </div>
+        <Filters
+          showTags={false}
+          showPageTypes={true}
+          onChange={(filters) => {
+            refetch({ filters: { ...filters, type: PostTypes.Page } });
+          }}
+          filters={filters}
+          setFilters={setFilters}
+        />
+        <Table
+          columns={creativesColumns({ changeStatus })}
+          dataSource={source}
+          loading={loading}
+          onRowClick={(row) => router.push("/post/" + row.id)}
+        />
+
         <style jsx>{postsStyles}</style>
       </Content>
     </>

@@ -1,12 +1,12 @@
 import { Button, message, PageHeader } from "antd";
 import { Empty } from "antd";
-import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
 
 import { Grid } from "@/components/grid";
 import MediaUpdateModal from "@/components/modals/media-update-modal";
+import { Content } from "@/components_v2/content";
 
 import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
 import { useMediaQuery } from "@/__generated__/queries/queries.graphql";
@@ -62,27 +62,25 @@ const Media = () => {
         </span>
       </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 24 }}>
-          <Grid
-            images={images.rows}
-            onClick={(index) => setPreview(images.rows[index])}
-            actions={(index) => {
-              return (
-                <Button
-                  size="small"
-                  type="link"
-                  danger
-                  onClick={() => deleteImage(images.rows[index])}
-                >
-                  Delete
-                </Button>
-              );
-            }}
-          />
-          {images.rows.length === 0 && (
-            <Empty description="No media found" style={{ marginTop: 100 }} />
-          )}
-        </div>
+        <Grid
+          images={images.rows}
+          onClick={(index) => setPreview(images.rows[index])}
+          actions={(index) => {
+            return (
+              <Button
+                size="small"
+                type="link"
+                danger
+                onClick={() => deleteImage(images.rows[index])}
+              >
+                Delete
+              </Button>
+            );
+          }}
+        />
+        {images.rows.length === 0 && (
+          <Empty description="No media found" style={{ marginTop: 100 }} />
+        )}
 
         <MediaUpdateModal
           img={preview}
