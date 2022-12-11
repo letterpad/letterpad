@@ -1,4 +1,4 @@
-import { Col, Form, PageHeader, Popconfirm, Row, Typography } from "antd";
+import { Col, Form, Popconfirm, Row, Typography } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -11,6 +11,7 @@ import Pages from "@/components/settings/pages";
 import { Accordion } from "@/components_v2/accordion";
 import { Buttonv2 } from "@/components_v2/button";
 import { Content } from "@/components_v2/content";
+import { PageHeader } from "@/components_v2/page-header";
 import { TextArea } from "@/components_v2/textarea";
 
 import { useDeleteAuthorMutation } from "@/__generated__/queries/mutations.graphql";

@@ -1,5 +1,4 @@
 import { loadStripe } from "@stripe/stripe-js";
-import { PageHeader } from "antd";
 import classNames from "classnames";
 import { InferGetServerSidePropsType } from "next";
 import { basePath } from "next.config";
@@ -14,6 +13,7 @@ import { stripe } from "@/lib/stripe";
 import { formatAmountForDisplay } from "@/components/payments/utils";
 import { Buttonv2 } from "@/components_v2/button";
 import { Content } from "@/components_v2/content";
+import { PageHeader } from "@/components_v2/page-header";
 import { Table } from "@/components_v2/table";
 
 import { SessionData } from "@/graphql/types";

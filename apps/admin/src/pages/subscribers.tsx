@@ -1,8 +1,9 @@
-import { PageHeader, Table } from "antd";
+import { Table } from "antd";
 import Head from "next/head";
 
 import ErrorMessage from "@/components/ErrorMessage";
 import { Content } from "@/components_v2/content";
+import { PageHeader } from "@/components_v2/page-header";
 
 import { useSubscribersQuery } from "@/graphql/queries/queries.graphql";
 

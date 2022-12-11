@@ -1,4 +1,3 @@
-import { PageHeader } from "antd";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -7,6 +6,7 @@ import Editor from "@/components/post/components/editor";
 import { Buttonv2 } from "@/components_v2/button";
 import { Content } from "@/components_v2/content";
 import { Input } from "@/components_v2/input";
+import { PageHeader } from "@/components_v2/page-header";
 import { Table } from "@/components_v2/table";
 import { Tabs } from "@/components_v2/tabs";
 

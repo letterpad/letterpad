@@ -1,4 +1,4 @@
-import { Button, message, PageHeader } from "antd";
+import { Button, message } from "antd";
 import { Empty } from "antd";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import { deleteImageAPI, updateImageAPI } from "src/helpers";
 import { Grid } from "@/components/grid";
 import MediaUpdateModal from "@/components/modals/media-update-modal";
 import { Content } from "@/components_v2/content";
+import { PageHeader } from "@/components_v2/page-header";
 
 import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
 import { useMediaQuery } from "@/__generated__/queries/queries.graphql";

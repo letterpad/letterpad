@@ -1,9 +1,9 @@
-import { Alert, PageHeader } from "antd";
 import Head from "next/head";
 
 import { NewDomain } from "@/components/domain/new-domain";
 import Loading from "@/components/loading";
 import { Content } from "@/components_v2/content";
+import { PageHeader } from "@/components_v2/page-header";
 
 import { useDomainQuery } from "@/__generated__/queries/queries.graphql";
 
