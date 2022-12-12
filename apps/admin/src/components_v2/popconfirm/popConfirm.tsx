@@ -10,10 +10,12 @@ interface Props {
   okText?: string;
   cancelText?: string;
   title: string;
+  description?: string;
 }
 
 export const PopConfirm: FC<Props> = ({
   children,
+  description,
   title,
   onConfirm,
   okText = "Yes",
@@ -25,7 +27,7 @@ export const PopConfirm: FC<Props> = ({
     <>
       <div
         className={classNames(
-          "absolute top-0 left-0 z-10 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-black/40",
+          "fixed top-0 left-0 z-10 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-black/40",
           { hidden: !display },
         )}
       />
@@ -45,7 +47,8 @@ export const PopConfirm: FC<Props> = ({
               <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                 {title}
               </h3>
-              <div className="flex justify-center gap-2">
+              {description && <span>{description}</span>}
+              <div className="mt-5 flex justify-center gap-2">
                 <Buttonv2 variant="danger" onClick={() => onConfirm()}>
                   {okText}
                 </Buttonv2>

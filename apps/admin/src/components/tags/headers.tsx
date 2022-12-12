@@ -1,6 +1,7 @@
 import { EditOutlined } from "@ant-design/icons";
 
-import { ConfirmPopup } from "@/components/confirm-dialog";
+import { Buttonv2 } from "@/components_v2/button";
+import { PopConfirm } from "@/components_v2/popconfirm";
 
 export function getHeaders(dataSource, deleteTag) {
   return [
@@ -27,12 +28,15 @@ export function getHeaders(dataSource, deleteTag) {
       dataIndex: "operation",
       render: (_, record: { key: React.Key }) =>
         dataSource.length >= 1 ? (
-          <ConfirmPopup
-            callback={(res) => res && deleteTag(record.key)}
-            title="Are you sure ?"
-            description="This action will remove this tag from all the posts. Are you sure you want to do this ?"
-            type="warning"
-          />
+          <PopConfirm
+            title="Remove Tag ?"
+            description="This action will remove this tag from all the posts. Are you sure you want to continue ?"
+            onConfirm={() => deleteTag(record.key)}
+          >
+            <Buttonv2 variant="danger" size="small">
+              Unlink
+            </Buttonv2>
+          </PopConfirm>
         ) : null,
     },
   ];

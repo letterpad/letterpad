@@ -1,5 +1,3 @@
-import { Space } from "antd";
-
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import { Buttonv2 } from "@/components_v2/button";

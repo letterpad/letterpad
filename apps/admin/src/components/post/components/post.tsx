@@ -11,7 +11,6 @@ import { usePostContext } from "@/components/post";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
 import Title from "@/components/post/components/title";
-import { Content } from "@/components_v2/content";
 import { PostTitlePlaceholder } from "@/components_v2/placeholders";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
@@ -76,29 +75,26 @@ export const Post = () => {
 
       {(post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
         post.page_type === PageType.Default && (
-          <Content>
-            <div style={{ maxWidth: 660, margin: "0 auto" }}>
-              {/* <PostDate date={post?.updatedAt} /> */}
-              {loading ? (
-                <PostTitlePlaceholder />
-              ) : (
-                <Title
-                  onEnter={() => helpers?.focus()}
-                  title={post?.title || ""}
-                  postId={post?.id}
-                />
-              )}
-              <WordCount />
-              <Editor
-                loading={loading}
-                text={content ?? ""}
-                onChange={(html) => {
-                  onEditorChange(html, id);
-                }}
+          <div style={{ maxWidth: 660, margin: "0 auto" }}>
+            {/* <PostDate date={post?.updatedAt} /> */}
+            {loading ? (
+              <PostTitlePlaceholder />
+            ) : (
+              <Title
+                onEnter={() => helpers?.focus()}
+                title={post?.title || ""}
+                postId={post?.id}
               />
-              {/* <WordCount /> */}
-            </div>
-          </Content>
+            )}
+            <WordCount />
+            <Editor
+              loading={loading}
+              text={content ?? ""}
+              onChange={(html) => {
+                onEditorChange(html, id);
+              }}
+            />
+          </div>
         )}
 
       {!loading && post?.page_type === PageType["Story Builder"] && (

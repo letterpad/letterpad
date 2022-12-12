@@ -76,7 +76,7 @@ export const Upload: FC<Props> = ({
       {label && (
         <>
           <br />
-          <Label label={label} />
+          <Label label={label} className="mb-3" />
         </>
       )}
       <div className={className}>
@@ -87,7 +87,12 @@ export const Upload: FC<Props> = ({
           }}
           className="h-full w-full cursor-pointer rounded-md dark:border-gray-700"
         >
-          <input type="file" hidden onChange={uploadImage} ref={ref} />
+          <input
+            type="file"
+            className="hidden"
+            onChange={uploadImage}
+            ref={ref}
+          />
           <Preview url={url} onRemove={handleSuccess} loading={uploading} />
         </div>
         <FileExplorer
