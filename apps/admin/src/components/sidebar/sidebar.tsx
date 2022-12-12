@@ -35,7 +35,7 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
   const _stats = stats?.__typename === "Stats" ? stats : null;
 
   return (
-    <div className="h-full">
+    <div className="h-full shadow-lg">
       <div className=" h-full flex-1 p-4">
         <Brand site_name={s?.site_title ?? ""} />
         <div

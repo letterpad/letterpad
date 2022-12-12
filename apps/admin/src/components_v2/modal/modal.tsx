@@ -10,6 +10,7 @@ interface Props {
   style?: CSSProperties;
   header?: ReactNode;
   footer?: ReactNode[];
+  zIndex?: number;
 }
 
 export const Modal = (props: Props) => {
@@ -32,11 +33,12 @@ export const Modal = (props: Props) => {
           id="defaultModal"
           tabIndex={-1}
           aria-hidden="true"
-          className="h-modal fixed top-0 right-0 left-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full "
+          className="h-modal fixed top-0 right-0 left-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full"
+          style={{ zIndex: props.zIndex ?? 1 }}
         >
           <div className="relative h-full w-full  max-w-2xl p-4 md:h-auto">
             <div className="relative rounded-md bg-white shadow dark:bg-gray-800">
-              <div className="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-700">
+              <div className="flex items-center justify-between rounded-t border-b p-4 dark:border-gray-700">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   {props.header}
                 </h3>

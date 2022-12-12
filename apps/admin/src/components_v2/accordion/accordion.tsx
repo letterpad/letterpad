@@ -64,13 +64,13 @@ const Header = ({ isActive, label, onClick, isFirstItem, isLastItem }) => {
       <button
         type="button"
         className={classNames(
-          "flex w-full items-center justify-between  border  border-gray-200 p-5 text-left font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:ring-gray-800",
+          "flex w-full items-center justify-between  border  border-gray-200 p-5 text-left font-medium text-gray-500 hover:bg-gray-200 focus:ring-4 focus:ring-gray-200 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:ring-gray-800",
           {
             "rounded-t-lg": isFirstItem,
             "rounded-b-lg border-b": isLastItem && !isActive,
             "border-t-0": !isFirstItem && !isActive,
             "border-b-0": isActive,
-            "bg-gray-800": isActive,
+            "bg-gray-200 dark:bg-gray-800": isActive,
           },
         )}
         aria-expanded="true"
