@@ -1,12 +1,11 @@
 import { Table } from "antd";
-import { Divider } from "antd";
-import { Row } from "antd";
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 
 import Loading from "@/components/loading";
 import MetricsBar from "@/components/metrics/MetricsBar";
 import { Content } from "@/components_v2/content";
+import { Divider } from "@/components_v2/divider";
 import { PageHeader } from "@/components_v2/page-header";
 import { Select } from "@/components_v2/select";
 
@@ -102,9 +101,9 @@ const Metrics = () => {
           {!loading && <Loading />}
         </div>
         <Divider />
-        <Row gutter={16}>
+        <div>
           <MetricsBar stats={data.stats} />
-        </Row>
+        </div>
         <Divider />
         <Table dataSource={data.urlView} columns={cols} pagination={false} />
       </Content>

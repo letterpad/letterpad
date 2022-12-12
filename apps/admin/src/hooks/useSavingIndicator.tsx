@@ -1,6 +1,6 @@
-// import { Spinner } from "@/components/spinner";
-import { message } from "antd";
 import { useEffect, useState } from "react";
+
+import { Message } from "@/components_v2/message";
 
 import { subscribe } from "@/shared/eventBus";
 
@@ -11,7 +11,7 @@ export const useSavingIndicator = () => {
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     subscribe("save", (msg) => {
-      message.destroy(key);
+      Message().destroy();
       clearTimeout(timeout);
       setMsg(msg);
       timeout = setTimeout(() => {
@@ -20,7 +20,7 @@ export const useSavingIndicator = () => {
     });
     subscribe("networkError", (msg) => {
       setMsg("");
-      message.error({ content: msg, key, duration: 50 });
+      Message().error({ content: msg, duration: 50 });
     });
   }, []);
 

@@ -33,6 +33,7 @@ function LetterpadApp({
       <ApolloProvider client={apolloBrowserClient}>
         {Indicator}
         <ResponsiveProvider>
+          <div id="message" />
           <Main Component={Component} props={{ ...pageProps }} />
         </ResponsiveProvider>
       </ApolloProvider>

@@ -1,8 +1,6 @@
-import { Layout } from "antd";
-import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useMemo } from "react";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
@@ -13,6 +11,7 @@ import { usePostContext } from "@/components/post";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
 import Title from "@/components/post/components/title";
+import { Content } from "@/components_v2/content";
 import { PostTitlePlaceholder } from "@/components_v2/placeholders";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
@@ -69,7 +68,7 @@ export const Post = () => {
     content = post?.html_draft;
   }
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <div style={{ minHeight: "100vh" }}>
       <Head>
         <title>Editing - {post?.title}</title>
       </Head>
@@ -77,7 +76,7 @@ export const Post = () => {
 
       {(post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
         post.page_type === PageType.Default && (
-          <Content style={{ margin: "24px 16px 0" }}>
+          <Content>
             <div style={{ maxWidth: 660, margin: "0 auto" }}>
               {/* <PostDate date={post?.updatedAt} /> */}
               {loading ? (
@@ -122,6 +121,6 @@ export const Post = () => {
           </BuilderContext>
         </div>
       )}
-    </Layout>
+    </div>
   );
 };

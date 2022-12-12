@@ -1,6 +1,8 @@
-import { Checkbox, Divider } from "antd";
+import { Checkbox } from "antd";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
+
+import { Divider } from "@/components_v2/divider";
 
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
 

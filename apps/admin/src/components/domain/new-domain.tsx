@@ -1,8 +1,9 @@
-import { Divider, Form, Input, Modal } from "antd";
+import { Form, Input, Modal } from "antd";
 
 import { useDomainMutation } from "@/hooks/useCreateOrUpdateDomain";
 
 import { Buttonv2 } from "@/components_v2/button";
+import { Divider } from "@/components_v2/divider";
 
 import { useRemoveDomainMutation } from "@/__generated__/queries/mutations.graphql";
 

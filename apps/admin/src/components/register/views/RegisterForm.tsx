@@ -1,4 +1,3 @@
-import { message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -6,6 +5,7 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 import { Logo } from "@/components/login/views/Logo";
 import { SocialLogin } from "@/components/login/views/SocialLogin";
+import { Message } from "@/components_v2/message";
 
 import {
   CreateAuthorDocument,
@@ -14,7 +14,6 @@ import {
 import { sanitizeUsername } from "@/shared/utils";
 import { EventAction, track } from "@/track";
 
-const key = "register";
 export const RegisterForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,9 +30,8 @@ export const RegisterForm = () => {
   const registerAction = async () => {
     setProcessing(true);
     setError(null);
-    message.loading({
+    Message().loading({
       content: "Please wait",
-      key,
       duration: 5,
     });
     let errors = {};
@@ -73,7 +71,7 @@ export const RegisterForm = () => {
       if (Object.keys(errors).length > 0) {
         setProcessing(false);
         setError(errors);
-        message.destroy(key);
+        Message().destroy();
         return;
       }
       const result = await createAuthor({
@@ -87,9 +85,8 @@ export const RegisterForm = () => {
       });
       const out = result.data?.createAuthor ?? {};
       if (out.__typename === "Failed") {
-        message.error({
+        Message().error({
           content: out.message,
-          key,
           duration: 5,
         });
       } else {
@@ -98,7 +95,7 @@ export const RegisterForm = () => {
           eventCategory: "register",
           eventLabel: `success`,
         });
-        message.success({ content: "Succcess", key, duration: 5 });
+        Message().success({ content: "Succcess", duration: 5 });
         router.push("/messages/registered");
       }
     }

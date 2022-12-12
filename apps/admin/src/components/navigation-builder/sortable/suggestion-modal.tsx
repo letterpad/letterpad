@@ -1,5 +1,7 @@
-import { Button, Divider } from "antd";
 import Modal from "antd/lib/modal/Modal";
+
+import { Buttonv2 } from "@/components_v2/button";
+import { Divider } from "@/components_v2/divider";
 
 import { NavigationType } from "@/__generated__/__types__";
 
@@ -11,14 +13,14 @@ export const SuggestionModal = ({ suggestions, onSelect, isOpen, onClose }) => {
       okText={false}
       onCancel={() => onClose()}
       footer={[
-        <Button
+        <Buttonv2
           key="cancel"
-          type="primary"
+          variant="primary"
           onClick={() => onClose()}
-          size="middle"
+          size="normal"
         >
           Cancel
-        </Button>,
+        </Buttonv2>,
       ]}
     >
       Assign a tag to display all posts linked with that tag
@@ -47,14 +49,13 @@ function getOptions(source, type: NavigationType, onClick) {
   return source
     .filter((navItem) => navItem.type === type)
     .map((navItem) => (
-      <Button
+      <Buttonv2
         key={navItem.slug}
-        value={navItem.slug}
         data-testid={navItem.slug}
-        type="link"
         onClick={() => onClick(navItem.slug)}
+        variant="ghost"
       >
         {getSuggestionLabel(navItem)}
-      </Button>
+      </Buttonv2>
     ));
 }

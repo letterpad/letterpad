@@ -1,11 +1,11 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { message } from "antd";
 import { FC, useEffect, useState } from "react";
 import { AiOutlineDelete, AiOutlineMenu } from "react-icons/ai";
 
 import { Buttonv2 } from "@/components_v2/button";
 import { Input as Inputv2 } from "@/components_v2/input";
+import { Message } from "@/components_v2/message";
 
 import { Navigation, NavigationType } from "@/__generated__/__types__";
 
@@ -77,7 +77,7 @@ export const Item: FC<Props> = ({
 
   useEffect(() => {
     if (nameError.length > 0) {
-      message.error(nameError);
+      Message().error({ content: nameError });
     }
   }, [nameError]);
 

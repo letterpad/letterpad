@@ -1,6 +1,8 @@
-import { message, Modal } from "antd";
+import { Modal } from "antd";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
+
+import { Message } from "@/components_v2/message";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { useUpdateAuthorMutation } from "@/__generated__/queries/mutations.graphql";
@@ -72,7 +74,7 @@ export const useUpdateAuthor = (id: number) => {
         a?.__typename === "NotFound" ||
         a?.__typename === "UnAuthorized"
       ) {
-        message.error({ key, content: a.message, duration: 10 });
+        Message().error({ content: a.message, duration: 10 });
       }
     } else {
       if (data.username) {

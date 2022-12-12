@@ -1,4 +1,3 @@
-import { Popconfirm } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -12,7 +11,7 @@ import { Accordion } from "@/components_v2/accordion";
 import { Buttonv2 } from "@/components_v2/button";
 import { Content } from "@/components_v2/content";
 import { PageHeader } from "@/components_v2/page-header";
-import { PopConfirm as Popconfirm2 } from "@/components_v2/popconfirm";
+import { PopConfirm } from "@/components_v2/popconfirm";
 import { TextArea } from "@/components_v2/textarea";
 
 import { useDeleteAuthorMutation } from "@/__generated__/queries/mutations.graphql";
@@ -87,14 +86,14 @@ function Settings({ settings, cloudinaryEnabledByAdmin }: Props) {
               delete your account. All data will be deleted and you will not be
               able to recover it. You will be logged out after this action.
             </div>
-            <Popconfirm2
+            <PopConfirm
               title="Are you sure you want to delete your account ?"
               onConfirm={() => alert(1)}
               okText="Yes"
               cancelText="No"
             >
               <Buttonv2 variant="danger">Delete your account</Buttonv2>
-            </Popconfirm2>
+            </PopConfirm>
           </Accordion.Item>
         </Accordion>
       </Content>
