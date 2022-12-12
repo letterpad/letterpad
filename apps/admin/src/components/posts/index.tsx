@@ -1,4 +1,3 @@
-import { Breakpoint } from "antd/lib/_util/responsiveObserve";
 import classNames from "classnames";
 
 import { PostStatusOptions, TagsNode } from "@/__generated__/__types__";
@@ -88,7 +87,6 @@ export const postsColumns = ({ changeStatus }) => [
     title: "Tags",
     dataIndex: "tags",
     key: "tags",
-    responsive: ["md"] as Breakpoint[],
     render: (tags: TagsNode) => {
       return tags.rows.map((tag) => tag.name).join(", ");
     },

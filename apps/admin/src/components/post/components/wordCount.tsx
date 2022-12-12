@@ -27,7 +27,7 @@ export const WordCount = () => {
       storeStats();
     });
     setActive(true);
-  }, [editor]);
+  }, [active, editor]);
 
   if (!editor) return <LinePlaceholder />;
 

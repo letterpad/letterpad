@@ -1,10 +1,8 @@
-import { Button } from "antd";
 import { FC } from "react";
 import { IoEyeOutline, IoSettingsOutline } from "react-icons/io5";
 
 import { socket } from "@/components/post/components/tinymce/socket";
 
-import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 
 interface Props {
