@@ -184,7 +184,7 @@ select {
   cursor: pointer;
 }
 .help-text {
-  color: rgba(var(--color), 0.5);
+  color: rgba(var(--color), 0.8);
 }
 
 .site-page-header {

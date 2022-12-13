@@ -73,7 +73,7 @@ const Members = () => {
       <Head>
         <title>Mails</title>
       </Head>
-      <PageHeader className="site-page-header" title="Media">
+      <PageHeader className="site-page-header" title="Members">
         <span className="help-text">
           Here you will find the collection of images that you uploaded from
           your computer.

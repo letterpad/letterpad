@@ -12,6 +12,7 @@ class Socket {
   onContentChange = () => null;
   nodes: Array<Element> = [];
   listenersActivated = false;
+  isAvailable = true;
 
   constructor(grammar) {
     this.grammar = new grammar();
@@ -54,6 +55,7 @@ class Socket {
   }
 
   async checkGrammar() {
+    this.isAvailable = false;
     this.removeGrammar();
     this.nodes = this._getDomNodesForCorrection();
 
@@ -88,6 +90,7 @@ class Socket {
 
   private _checkComplete() {
     alert("Check complete!");
+    this.isAvailable = true;
   }
 
   disconnect() {

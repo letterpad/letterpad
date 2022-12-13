@@ -59,7 +59,7 @@ export const SearchInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
   }, [props.value]);
 
   return (
-    <div className="relative w-full">
+    <div className="flex w-full">
       <input
         ref={ref}
         type={type}
@@ -70,6 +70,7 @@ export const SearchInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
           classes.variant[variant],
           disabled && classes.disabled,
           className,
+          "rounded-r-none border-r-0",
         )}
         onChange={(e) => {
           setInputValue(e.target.value);
@@ -86,7 +87,7 @@ export const SearchInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
 
       <button
         type="submit"
-        className="absolute top-0 right-0 rounded-r-lg border border-blue-700 bg-blue-700 p-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="rounded-r-lg border border-blue-700 bg-blue-700 p-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         onClick={() => onSearch && onSearch(inputValue)}
       >
         {enterButton}

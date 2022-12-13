@@ -121,7 +121,7 @@ const FileExplorer = ({
         header={
           <div className="flex items-center gap-4">
             Media
-            {!uploading && (
+            {uploading && (
               <AiOutlineLoading3Quarters className="animate-spin" size={14} />
             )}
           </div>
