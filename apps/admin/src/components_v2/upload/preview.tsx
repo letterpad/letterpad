@@ -17,6 +17,7 @@ interface Props {
   url: string;
   onRemove: (args: NoImage[]) => void;
   loading?: boolean;
+  openImage?: () => void;
 }
 
 export const Preview: FC<Props> = ({ url, onRemove, loading }) => {
