@@ -29,6 +29,7 @@ export const Component = ({ children, activeKey, onChange }) => {
                 isActive={activeTab === id}
                 label={label}
                 onClick={() => onClickTabItem(id)}
+                testId={id}
               />
               {child.props.id === activeTab && (
                 <div
@@ -58,7 +59,14 @@ export const Component = ({ children, activeKey, onChange }) => {
   );
 };
 
-const Header = ({ isActive, label, onClick, isFirstItem, isLastItem }) => {
+const Header = ({
+  isActive,
+  label,
+  onClick,
+  isFirstItem,
+  isLastItem,
+  testId,
+}) => {
   return (
     <h2 data-last={isLastItem} data-first={isFirstItem}>
       <button
@@ -75,6 +83,7 @@ const Header = ({ isActive, label, onClick, isFirstItem, isLastItem }) => {
         )}
         aria-expanded="true"
         onClick={onClick}
+        data-testid={testId}
       >
         <span>{label}</span>
         {isActive ? (

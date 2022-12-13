@@ -68,6 +68,7 @@ const General: React.FC<Props> = ({ settings }) => {
           value={fields.site_description}
           placeholder="Write something about your site. Will be used in SEO and other pages"
           autoGrow={true}
+          data-testid="shortDescription"
         />
 
         <TextArea
@@ -80,7 +81,12 @@ const General: React.FC<Props> = ({ settings }) => {
           data-testid="footerDescription"
         />
       </div>
-      <Buttonv2 onClick={() => updateSettingsAPI(fields)}>Save</Buttonv2>
+      <Buttonv2
+        onClick={() => updateSettingsAPI(fields)}
+        data-testid="save-general"
+      >
+        Save
+      </Buttonv2>
     </>
   );
 };

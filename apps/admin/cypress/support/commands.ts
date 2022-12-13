@@ -56,6 +56,8 @@ function setContent({ title, content }: { title?: string; content?: string }) {
     cy.window().then((win) => {
       //@ts-ignore
       win.tinymce.activeEditor.setContent(content);
+      //@ts-ignore
+      win.tinymce.activeEditor.fire("Change");
     });
   }
 }

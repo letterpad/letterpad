@@ -46,7 +46,7 @@ const Integrations: React.FC<Props> = ({
           placeholder="Enter cloudinary name"
           data-testid="cName"
           disabled={cloudinaryEnabledByAdmin}
-          value={settings.cloudinary_name}
+          value={fields.cloudinary_name}
           onChange={(e) => {
             onChange(e, "cloudinary_name");
           }}
@@ -57,7 +57,7 @@ const Integrations: React.FC<Props> = ({
           placeholder="Enter cloudinary key"
           disabled={cloudinaryEnabledByAdmin}
           data-testid="cKey"
-          value={settings.cloudinary_key}
+          value={fields.cloudinary_key}
           onChange={(e) => {
             onChange(e, "cloudinary_key");
           }}
@@ -68,13 +68,18 @@ const Integrations: React.FC<Props> = ({
           placeholder="Enter cloudinary secret"
           disabled={cloudinaryEnabledByAdmin}
           data-testid="cSecret"
-          value={settings.cloudinary_secret}
+          value={fields.cloudinary_secret}
           onChange={(e) => {
             onChange(e, "cloudinary_secret");
           }}
         />
       </div>
-      <Buttonv2 onClick={() => updateSettingsAPI(fields)}>Save</Buttonv2>
+      <Buttonv2
+        onClick={() => updateSettingsAPI(fields)}
+        data-testid="save-integrations"
+      >
+        Save
+      </Buttonv2>
     </>
   );
 };

@@ -35,6 +35,7 @@ export const EmailAndUsername: React.VFC<Props> = ({ data }) => {
               label="Email (private)"
               value={email}
               onChange={(e) => onEmailChange(e.target.value)}
+              data-id="email-input"
             />
           </div>
           <Buttonv2
@@ -42,6 +43,7 @@ export const EmailAndUsername: React.VFC<Props> = ({ data }) => {
             onClick={(_) => updateAuthorAPI({ email })}
             disabled={email === data.email}
             className="col-span-2 lg:col-span-1"
+            data-id="email-save-button"
           >
             Save
           </Buttonv2>

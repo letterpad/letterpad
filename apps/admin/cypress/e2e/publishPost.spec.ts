@@ -7,7 +7,6 @@ describe("Publishing", () => {
     cy.getTestId("postStatus").should("have.text", "draft");
 
     cy.setContent({ title, content: "Content written from cypress test" });
-    cy.wait("@updatePostMutation");
 
     cy.openSettings();
     cy.enterTags(["first-post"]);
@@ -21,7 +20,7 @@ describe("Publishing", () => {
 
     cy.getTestId("postStatus").should("have.text", "published");
     cy.getTestId("close-drawer").click();
-    cy.get(".ant-page-header-back-button").click();
+    cy.getTestId("back-button").click();
   });
 
   it("can publish new post with same title and autogeneratd new tag", () => {
