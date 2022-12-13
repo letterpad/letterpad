@@ -20,7 +20,11 @@ export const EmailAndUsername: React.VFC<Props> = ({ data }) => {
 
   const onEmailChange = (email: string) => {
     setEmail(email);
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    if (
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email,
+      )
+    ) {
       setEmailError("");
     } else {
       setEmailError("Invalid email address");
