@@ -27,8 +27,8 @@ export const updateTags = async (
   }
 
   const oldName = args.data.old_name || "";
-  const newName = args.data.name.toLowerCase();
-  const newSlug = newName.replace(/ /g, "-").toLowerCase();
+  const newName = args.data.name.replace(/\s+/g, "-").toLowerCase();
+  const newSlug = newName;
 
   const linkedPosts = await prisma.post.findMany({
     select: {

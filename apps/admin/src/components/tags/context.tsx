@@ -3,12 +3,17 @@ import {
   ReactNode,
   useCallback,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useContext } from "react";
 import { useEffect } from "react";
 
 import { TagRow, TagsContextType } from "@/components/tags/types";
+import { Buttonv2 } from "@/components_v2/button";
+import { Input } from "@/components_v2/input";
+import { Message } from "@/components_v2/message";
+import { Modal } from "@/components_v2/modal";
 
 import {
   useDeleteTagsMutation,
@@ -37,11 +42,12 @@ export const TagsProvider: React.FC<{
   const [updateTagsMutation] = useUpdateTagsMutation();
   const [deleteTagsMutation] = useDeleteTagsMutation();
   const [tags, setTags] = useState<TagRow[]>([]);
-
+  const [editTagId, setEditTagId] = useState<React.Key | null>(null);
   const computedTags = useMemo(
     () => (data?.tags.__typename === "TagsNode" ? data.tags.rows : []),
     [data],
   );
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!loading) {
@@ -66,8 +72,20 @@ export const TagsProvider: React.FC<{
     [deleteTagsMutation, tags],
   );
 
+  const editTag = useCallback(async (key: React.Key) => {
+    setEditTagId(key);
+  }, []);
+
   const saveTag = useCallback(
     async (row: TagRow) => {
+      if (row.name.length === 0) {
+        return Message().error({ content: "Tag name cannot be empty!" });
+      }
+      const isDuplicate = tags.filter((item) => item.name === row.name).pop();
+      if (isDuplicate) {
+        return Message().error({ content: "Tag name already exists!" });
+      }
+
       const newData = [...tags];
       const index = newData.findIndex((item) => row.key === item.key);
       const item = newData[index];
@@ -83,6 +101,7 @@ export const TagsProvider: React.FC<{
         },
       });
       if (newData) setTags(newData);
+      setEditTagId(null);
     },
     [tags, updateTagsMutation],
   );
@@ -106,16 +125,50 @@ export const TagsProvider: React.FC<{
         addTag,
         updateTagsMutation,
         saveTag,
-        headers: getHeaders(tags, deleteTag),
+        headers: getHeaders({ tags, deleteTag, editTag }),
       }),
-      [addTag, deleteTag, loading, saveTag, tags, updateTagsMutation],
+      [addTag, deleteTag, editTag, loading, saveTag, tags, updateTagsMutation],
     );
 
-  return useMemo(() => {
-    return (
-      <TagsContext.Provider value={context}>{children}</TagsContext.Provider>
-    );
-  }, [children, context]);
+  const tagToBeEdited = tags.filter((item) => item.key === editTagId).pop();
+  return (
+    <TagsContext.Provider value={context}>
+      {children}
+
+      <Modal
+        toggle={() => setEditTagId(null)}
+        show={!!editTagId}
+        header={`Editing tag: ${tagToBeEdited?.name}`}
+        footer={[
+          <Buttonv2
+            key="close"
+            variant="ghost"
+            onClick={() => setEditTagId(null)}
+            size="normal"
+          >
+            Cancel
+          </Buttonv2>,
+          <Buttonv2
+            key="save"
+            variant="primary"
+            onClick={() =>
+              tagToBeEdited &&
+              saveTag({ ...tagToBeEdited, name: inputRef.current?.value ?? "" })
+            }
+            size="normal"
+          >
+            Save
+          </Buttonv2>,
+        ]}
+      >
+        <Input
+          label="Rename Tag"
+          defaultValue={tagToBeEdited?.name}
+          ref={inputRef}
+        />
+      </Modal>
+    </TagsContext.Provider>
+  );
 };
 
 export const useTagsContext = () => useContext(TagsContext);
