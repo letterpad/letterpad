@@ -8,7 +8,7 @@ import {
   IoIosWarning,
 } from "react-icons/io";
 
-const DELAY = 2000;
+const DELAY = 2;
 
 function getTextWidth(text: string, font = null) {
   const canvas = document.createElement("canvas");
@@ -50,7 +50,7 @@ const clearText = (node, DELAY) => {
   if (DELAY === 0) return;
   timeout = setTimeout(() => {
     ReactDom.render(<span />, node);
-  }, DELAY);
+  }, DELAY * 1000);
 };
 
 interface Props {

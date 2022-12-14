@@ -16,7 +16,7 @@ interface Props {
 export const EmailAndUsername: React.VFC<Props> = ({ data }) => {
   const [email, setEmail] = React.useState(data.email);
   const [emailError, setEmailError] = useState("");
-  const { updateAuthorAPI } = useUpdateAuthor(data.id);
+  const { updateAuthor } = useUpdateAuthor(data.id);
 
   const onEmailChange = (email: string) => {
     setEmail(email);
@@ -44,7 +44,7 @@ export const EmailAndUsername: React.VFC<Props> = ({ data }) => {
           </div>
           <Buttonv2
             variant="primary"
-            onClick={(_) => updateAuthorAPI({ email })}
+            onClick={(_) => updateAuthor({ email })}
             disabled={email === data.email}
             className="col-span-2 lg:col-span-1"
             data-id="email-save-button"

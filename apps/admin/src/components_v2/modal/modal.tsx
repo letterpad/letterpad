@@ -52,7 +52,7 @@ export const Modal = (props: Props) => {
                 </button>
               </div>
 
-              <div className="space-y-6 p-6">{props.children}</div>
+              <div className="p-6">{props.children}</div>
 
               <div className="flex items-end justify-end space-x-2 rounded-b border-t border-gray-200 py-4 px-4 dark:border-gray-700">
                 <>{props.footer}</>

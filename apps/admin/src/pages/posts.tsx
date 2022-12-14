@@ -53,7 +53,7 @@ function Posts() {
     }
   }, [router, setting?.intro_dismissed]);
 
-  if (!error)
+  if (error)
     return (
       <ErrorMessage
         description={error}

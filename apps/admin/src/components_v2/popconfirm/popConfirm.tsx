@@ -10,7 +10,8 @@ interface Props {
   okText?: string;
   cancelText?: string;
   title: string;
-  description?: string;
+  description?: string | ReactNode;
+  visible?: boolean;
 }
 
 export const PopConfirm: FC<Props> = ({
@@ -20,8 +21,9 @@ export const PopConfirm: FC<Props> = ({
   onConfirm,
   okText = "Yes",
   cancelText = "No",
+  visible = false,
 }) => {
-  const [display, setDisplay] = useState<boolean>(false);
+  const [display, setDisplay] = useState<boolean>(visible);
 
   return (
     <>
@@ -52,9 +54,14 @@ export const PopConfirm: FC<Props> = ({
                 <Buttonv2 variant="danger" onClick={() => onConfirm()}>
                   {okText}
                 </Buttonv2>
-                <Buttonv2 variant="secondary" onClick={() => setDisplay(false)}>
-                  {cancelText}
-                </Buttonv2>
+                {cancelText && (
+                  <Buttonv2
+                    variant="secondary"
+                    onClick={() => setDisplay(false)}
+                  >
+                    {cancelText}
+                  </Buttonv2>
+                )}
               </div>
             </div>
           </div>

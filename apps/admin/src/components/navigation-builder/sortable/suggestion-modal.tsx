@@ -1,17 +1,15 @@
-import Modal from "antd/lib/modal/Modal";
-
 import { Buttonv2 } from "@/components_v2/button";
 import { Divider } from "@/components_v2/divider";
+import { Modal } from "@/components_v2/modal";
 
 import { NavigationType } from "@/__generated__/__types__";
 
 export const SuggestionModal = ({ suggestions, onSelect, isOpen, onClose }) => {
   return (
     <Modal
-      title="Assign Content to Navigation Menu"
-      visible={isOpen}
-      okText={false}
-      onCancel={() => onClose()}
+      header="Assign Content to Navigation Menu"
+      show={isOpen}
+      toggle={() => onClose()}
       footer={[
         <Buttonv2
           key="cancel"
@@ -54,6 +52,7 @@ function getOptions(source, type: NavigationType, onClick) {
         data-testid={navItem.slug}
         onClick={() => onClick(navItem.slug)}
         variant="ghost"
+        className="px-0"
       >
         {getSuggestionLabel(navItem)}
       </Buttonv2>

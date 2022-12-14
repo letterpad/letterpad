@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 
@@ -17,6 +17,7 @@ const key = "author";
 
 export const useUpdateAuthor = (id: number) => {
   const [updateAuthorMutation, progress] = useUpdateAuthorMutation();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   async function updateAuthorAPI(data: Omit<InputAuthor, "id">) {
@@ -98,24 +99,17 @@ export const useUpdateAuthor = (id: number) => {
           },
         });
       }
-      if (!data.email) return;
-      Modal.success({
-        title: "Email saved",
-        okText: "Logout",
-        closable: false,
-        content: (
-          <div>
-            You have changed your email from <strong>{meData.me.email}</strong>{" "}
-            to <strong>{data.email}</strong>. We have sent you an email to your
-            new email address. Please verify your email and login.
-          </div>
-        ),
-        onOk() {
-          signOut({
-            redirect: true,
+
+      if (data.email) {
+        router
+          .replace("/messages/email-changed?newEmail=" + data.email)
+          .then(() => {
+            signOut({
+              redirect: false,
+              callbackUrl: "/posts",
+            });
           });
-        },
-      });
+      }
     }
   }
 
