@@ -5,14 +5,12 @@ interface IInfiniteScrollListProps {
   data: any;
   count: number;
   loadMore: () => void;
-  query: string;
 }
 
 const InfiniteScrollList = ({
   data,
   count,
   loadMore,
-  query,
 }: IInfiniteScrollListProps) => {
   return (
     <>

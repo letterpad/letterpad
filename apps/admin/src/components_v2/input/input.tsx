@@ -32,6 +32,7 @@ interface Props extends HTMLProps<HTMLInputElement> {
   error?: boolean;
   label?: string;
   addonBefore?: string;
+  help?: string;
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
@@ -42,6 +43,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
     type = "text",
     error,
     label,
+    help,
     addonBefore,
     ...rest
   } = props;
@@ -75,6 +77,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
             {...rest}
           />
         </div>
+        {help && <span className="py-4 text-sm text-gray-500">{help}</span>}
       </div>
     );
   }

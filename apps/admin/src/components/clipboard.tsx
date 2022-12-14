@@ -1,7 +1,9 @@
-import { CopyOutlined } from "@ant-design/icons";
-import { Button, message } from "antd";
 import clipboard from "clipboard";
 import { useEffect, useRef, VFC } from "react";
+import { MdContentCopy } from "react-icons/md";
+
+import { Buttonv2 } from "@/components_v2/button";
+import { Message } from "@/components_v2/message";
 
 interface Props {
   elementId: string;
@@ -21,14 +23,15 @@ export const CopyToClipboard: VFC<Props> = ({ elementId }) => {
 
   return (
     <>
-      <Button
+      <Buttonv2
         ref={buttonRef}
-        icon={<CopyOutlined />}
-        type="link"
-        onClick={() => message.success({ content: "Copied", key: "copy" })}
+        variant="ghost"
+        onClick={() => Message().success({ content: "Copied" })}
       >
-        Copy
-      </Button>
+        <MdContentCopy size={16} />
+        &nbsp;
+        <span>Copy</span>
+      </Buttonv2>
     </>
   );
 };

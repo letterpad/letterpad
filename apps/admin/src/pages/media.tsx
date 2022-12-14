@@ -1,4 +1,3 @@
-import { Empty } from "antd";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
@@ -11,8 +10,6 @@ import { PageHeader } from "@/components_v2/page-header";
 
 import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
 import { useMediaQuery } from "@/__generated__/queries/queries.graphql";
-
-const key = "updatable";
 
 const Media = () => {
   const { loading, data } = useMediaQuery({ variables: { filters: {} } });
@@ -91,9 +88,7 @@ const Media = () => {
           })}
         </div>
 
-        {images.rows.length === 0 && (
-          <Empty description="No media found" style={{ marginTop: 100 }} />
-        )}
+        {images.rows.length === 0 && <div className="p-4">0 Media found</div>}
 
         <MediaUpdateModal
           img={preview}
