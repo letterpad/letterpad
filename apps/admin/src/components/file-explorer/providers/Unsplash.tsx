@@ -97,7 +97,6 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
         data={jsxElements}
         count={totalCount}
         loadMore={loadMore}
-        query={query}
       />
     </div>
   );
