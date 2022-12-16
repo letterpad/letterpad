@@ -55,7 +55,7 @@ describe("Test Tags Graphql API", () => {
     });
 
     expect(response.tag).toEqual({
-      name: "new tag",
+      name: "new-tag",
       slug: "/tag/new-tag",
     });
   });
