@@ -43,6 +43,7 @@ const QuickMenu: FC<Props> = ({
       {preview && (
         <a
           title="Preview"
+          className="cursor-pointer"
           onClick={(e) => {
             e.preventDefault();
             track({
@@ -58,6 +59,7 @@ const QuickMenu: FC<Props> = ({
       )}
       <a
         title="Settings"
+        className="cursor-pointer"
         onClick={(e) => {
           e.preventDefault();
           showDrawer();

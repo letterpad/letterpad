@@ -24,7 +24,6 @@ export interface DisplayProps extends MessageType {
   content: any;
   title?: string;
   duration?: number;
-  node: any;
 }
 
 interface MessageType {
@@ -34,6 +33,5 @@ interface MessageType {
   loading?: boolean;
 }
 export interface InternalMessageProps extends MessageType, MessageProps {
-  node: any;
   showIcon?: boolean;
 }

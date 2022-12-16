@@ -170,9 +170,9 @@ const Actions = ({ post }: IProps) => {
                 updatePost({
                   id: post.id,
                   cover_image: {
-                    src: res.src,
-                    width: res.size.width,
-                    height: res.size.height,
+                    src: res?.src,
+                    width: res.size?.width,
+                    height: res.size?.height,
                   },
                 });
               }}
@@ -180,14 +180,6 @@ const Actions = ({ post }: IProps) => {
           </div>
         </div>
       </Drawerv2>
-      <style jsx global>{`
-        .image-upload-container .ant-upload,
-        .image-upload-container .ant-upload-list-picture-card-container {
-          min-height: 200px !important;
-          height: 100% !important;
-          width: 100% !important;
-        }
-      `}</style>
     </>
   );
 };

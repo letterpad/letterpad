@@ -23,10 +23,7 @@ const defaults = {
     background: "transparent",
   },
   rows: 1,
-  maxRows: 3,
-  autoSize: true,
   placeholder: "Enter a title",
-  bordered: false,
   maxLength: 140,
 };
 export const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
@@ -38,8 +35,7 @@ export const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
         {...defaults}
         value={title}
         onChange={(e) => {
-          if (postId)
-            updateLocalState({ title: e.target.value.trim(), id: postId });
+          if (postId) updateLocalState({ title: e.target.value, id: postId });
         }}
         onKeyPress={(e) => {
           if (e.key === "Enter") {

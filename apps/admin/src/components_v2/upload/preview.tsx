@@ -12,6 +12,8 @@ import { Modal } from "../modal";
 
 interface NoImage {
   src: string;
+  width?: number;
+  height?: number;
 }
 interface Props {
   url: string;
@@ -23,7 +25,10 @@ interface Props {
 export const Preview: FC<Props> = ({ url, onRemove, loading }) => {
   const [show, setShow] = useState<boolean>(false);
   return (
-    <div className="group relative h-full w-full rounded-md bg-gray-200 p-2 text-gray-800 dark:bg-gray-700 dark:text-gray-600">
+    <div
+      className="group relative h-full w-full rounded-md bg-gray-200 p-2 text-gray-800 dark:bg-gray-700 dark:text-gray-600"
+      style={{ minHeight: 80 }}
+    >
       {loading ? (
         <Loading />
       ) : (
@@ -82,7 +87,7 @@ const AddImage: FC<Props> = ({ url }) => {
   return (
     <div
       className={classNames(
-        "absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 gap-2",
+        "absolute top-1/2 left-1/2 flex h-12 flex-1 -translate-x-1/2 -translate-y-1/2 items-center gap-2",
         {
           hidden: url,
         },

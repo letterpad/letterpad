@@ -5,7 +5,6 @@ import StickyBox from "react-sticky-box";
 
 import { getHeight, Wrapper } from "./wrapper";
 import { useBuilderContext } from "../../context";
-import { IconImage } from "../../toolbar/icons";
 import MiniEditor from "../../toolbar/mini-editor";
 
 interface Props {
