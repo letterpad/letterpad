@@ -10,7 +10,7 @@ import ErrorMessage from "@/components/ErrorMessage";
 import { usePostContext } from "@/components/post";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
-import Title from "@/components/post/components/title";
+import { Title } from "@/components/post/components/title";
 import { PostTitlePlaceholder } from "@/components_v2/placeholders";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";

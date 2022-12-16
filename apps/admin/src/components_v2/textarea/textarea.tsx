@@ -62,16 +62,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
       )}
       <textarea
         ref={setRef}
-        onKeyDown={(evt) => {
-          if (evt.key === "Enter") {
-            evt.preventDefault();
-          }
-        }}
-        maxLength={100}
         disabled={disabled}
-        // rows={1}
-        placeholder="Enter a subtitle"
-        // className="w-full resize-none overflow-y-hidden border-0 bg-transparent text-center text-lg font-thin text-gray-400 placeholder-gray-600 outline-none"
         className={classNames(
           error && classes.error,
           classes.base,

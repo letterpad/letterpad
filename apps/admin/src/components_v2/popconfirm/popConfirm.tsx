@@ -9,7 +9,7 @@ interface Props {
   className?: string;
   okText?: string;
   cancelText?: string;
-  title: string;
+  title?: string;
   description?: string | ReactNode;
   visible?: boolean;
 }
@@ -22,6 +22,7 @@ export const PopConfirm: FC<Props> = ({
   okText = "Yes",
   cancelText = "No",
   visible = false,
+  className,
 }) => {
   const [display, setDisplay] = useState<boolean>(visible);
 
@@ -41,6 +42,7 @@ export const PopConfirm: FC<Props> = ({
           {
             hidden: !display,
           },
+          className,
         )}
       >
         <div className="relative h-full w-full max-w-md md:h-auto">
@@ -51,7 +53,11 @@ export const PopConfirm: FC<Props> = ({
               </h3>
               {description && <span>{description}</span>}
               <div className="mt-5 flex justify-center gap-2">
-                <Buttonv2 variant="danger" onClick={() => onConfirm()}>
+                <Buttonv2
+                  variant="danger"
+                  onClick={() => onConfirm()}
+                  className="okModalBtn"
+                >
                   {okText}
                 </Buttonv2>
                 {cancelText && (
