@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDom from "react-dom";
 
+import { clearText } from "./clear";
 import { DisplayProps, Props } from "./types";
 import { Wrapper } from "./wrapper";
 
@@ -37,18 +38,8 @@ const Display = (
       onConfirm={() => {
         clearText(node, 0);
       }}
+      node={node}
     />,
     node,
   );
-};
-
-let timeout;
-const clearText = (node, DELAY) => {
-  clearTimeout(timeout);
-  if (DELAY === 0) {
-    return ReactDom.render(<span />, node);
-  }
-  timeout = setTimeout(() => {
-    ReactDom.render(<span />, node);
-  }, DELAY * 1000);
 };

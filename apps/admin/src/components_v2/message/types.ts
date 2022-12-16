@@ -3,16 +3,19 @@ import { ReactNode } from "react";
 interface BaseProps {
   className?: string;
   content: ReactNode;
+  children?: ReactNode;
 }
 
-interface MessageProps extends BaseProps {
+export interface MessageProps extends BaseProps {
   duration?: number;
+  content: string;
   displayType?: "message";
 }
 
-interface ModalProps extends BaseProps {
+export interface ModalProps extends BaseProps {
   displayType: "modal";
   title?: string;
+  onConfirm?: () => void;
 }
 
 export type Props = MessageProps | ModalProps;
@@ -30,7 +33,7 @@ interface MessageType {
   warn?: boolean;
   loading?: boolean;
 }
-export interface InternalMessageProps extends MessageType {
-  content: string;
+export interface InternalMessageProps extends MessageType, MessageProps {
+  node: any;
   showIcon?: boolean;
 }

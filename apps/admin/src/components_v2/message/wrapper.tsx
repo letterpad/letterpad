@@ -1,8 +1,9 @@
 import classNames from "classnames";
-import { FC, ReactNode, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
+import { clearText } from "./clear";
 import { MessageMarkup } from "./content";
-import { DisplayProps } from "./types";
+import { DisplayProps, InternalMessageProps, ModalProps } from "./types";
 import { PopConfirm } from "../popconfirm";
 
 interface Props extends DisplayProps {
@@ -26,12 +27,12 @@ export const Wrapper: FC<Props> = ({ displayType, onConfirm, ...rest }) => {
   );
 };
 
-const Modalify: FC<{
-  title?: string;
-  onConfirm: () => void;
-  children: ReactNode;
-  className?: string;
-}> = ({ children, onConfirm, title, className }) => {
+const Modalify: FC<Omit<ModalProps, "displayType">> = ({
+  children,
+  onConfirm,
+  title,
+  className,
+}) => {
   const [visible, setVisible] = useState(true);
   return (
     <PopConfirm
@@ -39,7 +40,7 @@ const Modalify: FC<{
       visible={visible}
       onConfirm={() => {
         setVisible(false);
-        onConfirm();
+        onConfirm && onConfirm();
       }}
       className={className}
       okText="Ok"
@@ -49,9 +50,20 @@ const Modalify: FC<{
   );
 };
 
-const Sticky = ({ children, content, className }) => {
+const Sticky: FC<InternalMessageProps> = ({
+  children,
+  content,
+  className,
+  duration,
+  node,
+}) => {
   const textWidth = getTextWidth(content) + 120;
   const width = Math.min(textWidth, Math.min(window.innerWidth - 100, 500));
+
+  useEffect(() => {
+    clearText(node, duration);
+  }, [duration, node]);
+
   return (
     <div
       className={classNames("fixed inset-x-0 top-2 z-50 mx-auto", className)}
