@@ -29,7 +29,11 @@ const Header: React.VFC<Props> = ({ post }) => {
     return (
       <div className="flex flex-row justify-between px-4 py-4">
         <div className="left flex flex-row items-center gap-4">
-          <a onClick={goBack} data-testid="back-button">
+          <a
+            onClick={goBack}
+            data-testid="back-button"
+            className="cursor-pointer"
+          >
             <BsArrowLeft size={24} />
           </a>
           <span
