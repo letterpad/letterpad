@@ -23,7 +23,10 @@ export const NewDomain: React.FC<{
   const next = async (values) => {
     const result = await createUpdateDomain({ name: values.domain });
     if (result.data?.createOrUpdateDomain.ok) {
-      Message().success({ content: result.data?.createOrUpdateDomain.message });
+      if (result.data?.createOrUpdateDomain.message)
+        Message().success({
+          content: result.data?.createOrUpdateDomain.message,
+        });
     }
   };
 

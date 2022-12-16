@@ -64,6 +64,7 @@ export function pageNotLinkedWithNavigation() {
   Message().warn({
     className: "page-link-modal", //used by cypress
     title: "Post not published",
+    displayType: "modal",
     content: (
       <div>
         This page has has not been linked in Navigation. Without linking, the

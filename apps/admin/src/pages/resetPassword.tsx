@@ -54,10 +54,12 @@ const ResetPassword = () => {
 
     const data = result.data?.resetPassword;
     if (data && data.ok) {
-      Message().success({
-        content: data.message,
-        duration: 10,
-      });
+      if (data.message) {
+        Message().success({
+          content: data.message,
+          duration: 10,
+        });
+      }
       router.push("/login");
     } else if (!data?.ok) {
       Message().error({
