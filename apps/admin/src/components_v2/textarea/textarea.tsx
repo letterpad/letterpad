@@ -1,10 +1,9 @@
 import classNames from "classnames";
 import React, {
   ChangeEvent,
-  FC,
   forwardRef,
   HTMLProps,
-  useLayoutEffect,
+  useEffect,
   useRef,
 } from "react";
 
@@ -26,7 +25,7 @@ interface Props extends HTMLProps<HTMLTextAreaElement> {
 
 export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
   const localRef = useRef<HTMLTextAreaElement>();
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!localRef.current) {
       return;
     }
