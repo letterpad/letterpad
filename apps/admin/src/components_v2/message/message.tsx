@@ -1,28 +1,27 @@
-import React, { useEffect } from "react";
-import ReactDom from "react-dom";
+import React from "react";
 
 import { clearText } from "./clear";
+import { root } from "./root";
 import { DisplayProps, Props } from "./types";
 import { Wrapper } from "./wrapper";
 
 export const Message = () => {
-  const node = document.querySelector("#message");
-  clearText(node, 0);
+  clearText(0);
   return {
     success: (props: Props) => {
-      Display({ ...props, node, success: true });
+      Display({ ...props, success: true });
     },
     error: (props: Props) => {
-      Display({ ...props, node, error: true });
+      Display({ ...props, error: true });
     },
     warn: (props: Props) => {
-      Display({ ...props, node, warn: true });
+      Display({ ...props, warn: true });
     },
     loading: (props: Props) => {
-      Display({ ...props, node, loading: true });
+      Display({ ...props, loading: true });
     },
     destroy: () => {
-      ReactDom.render(<span />, node);
+      root.render(<span />);
     },
   };
 };
@@ -30,16 +29,14 @@ export const Message = () => {
 const Display = (
   props: DisplayProps & { displayType?: "modal" | "message" },
 ) => {
-  const { displayType, node, duration, title, ...rest } = props;
+  const { displayType, duration, title, ...rest } = props;
 
-  ReactDom.render(
+  root.render(
     <Wrapper
       {...props}
       onConfirm={() => {
-        clearText(node, 0);
+        clearText(0);
       }}
-      node={node}
     />,
-    node,
   );
 };

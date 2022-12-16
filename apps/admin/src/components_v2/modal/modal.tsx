@@ -2,6 +2,8 @@ import React, { CSSProperties, ReactNode, useEffect, useState } from "react";
 
 import { IconClose } from "@/components/builder/toolbar/icons";
 
+import { Portal } from "./portal";
+
 interface Props {
   show?: boolean;
   toggle: (val: boolean) => void;
@@ -19,22 +21,20 @@ export const Modal = (props: Props) => {
   useEffect(() => {
     if (props.show) {
       setDisplay(true);
-      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflowY = "auto";
       setDisplay(false);
     }
   }, [props.show]);
 
   if (display) {
     return (
-      <>
+      <Portal>
         <div
           id="defaultModal"
           tabIndex={-1}
           aria-hidden="true"
           className="h-modal fixed top-0 right-0 left-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0 md:h-full"
-          style={{ zIndex: props.zIndex ?? 11 }}
+          style={{ zIndex: props.zIndex ?? 50 }}
         >
           <div className="relative h-full w-full  max-w-2xl p-4 md:h-auto">
             <div className="relative rounded-md bg-white shadow dark:bg-gray-800">
@@ -62,9 +62,9 @@ export const Modal = (props: Props) => {
         </div>
         <div
           onClick={() => props.toggle(false)}
-          className="fixed top-0 left-0 z-10 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-black/40"
+          className="fixed top-0 left-0 z-40 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-black/40"
         />
-      </>
+      </Portal>
     );
   } else return <div />;
 };

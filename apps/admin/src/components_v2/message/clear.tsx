@@ -1,12 +1,12 @@
-import ReactDom from "react-dom";
+import { root } from "./root";
 
 let timeout;
-export const clearText = (node, DELAY) => {
+export const clearText = (DELAY) => {
   clearTimeout(timeout);
   if (DELAY === 0) {
-    return ReactDom.render(<span />, node);
+    return root.render(<span />);
   }
   timeout = setTimeout(() => {
-    ReactDom.render(<span />, node);
+    root.render(<span />);
   }, DELAY * 1000);
 };

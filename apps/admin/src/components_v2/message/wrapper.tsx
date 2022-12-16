@@ -55,14 +55,13 @@ const Sticky: FC<InternalMessageProps> = ({
   content,
   className,
   duration,
-  node,
 }) => {
   const textWidth = getTextWidth(content) + 120;
   const width = Math.min(textWidth, Math.min(window.innerWidth - 100, 500));
 
   useEffect(() => {
-    clearText(node, duration);
-  }, [duration, node]);
+    clearText(duration);
+  }, [duration]);
 
   return (
     <div

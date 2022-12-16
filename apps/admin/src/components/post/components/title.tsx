@@ -23,10 +23,7 @@ const defaults = {
     background: "transparent",
   },
   rows: 1,
-  maxRows: 3,
-  autoSize: true,
   placeholder: "Enter a title",
-  bordered: false,
   maxLength: 140,
 };
 export const Title: React.FC<Props> = ({ onEnter, postId, title }) => {

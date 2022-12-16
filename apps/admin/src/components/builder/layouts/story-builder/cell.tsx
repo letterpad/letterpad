@@ -1,16 +1,22 @@
 import classNames from "classnames";
-import { FC, useState } from "react";
+import { FC, lazy, useState } from "react";
 
 import FileExplorer from "@/components/file-explorer";
 
 import { createId } from "@/shared/utils";
 
-import { SectionImage } from "./image";
 import { SectionMasonry } from "./masonry";
 import { SectionText } from "./text";
 import { useBuilderContext } from "../../context";
-import { ContentToolbar } from "../../toolbar";
 import { Block } from "../../types";
+
+const LazySectionImage = lazy(() =>
+  import("./image").then((m) => ({ default: m.SectionImage })),
+);
+
+const LazyContentToolbar = lazy(() =>
+  import("../../toolbar").then((m) => ({ default: m.ContentToolbar })),
+);
 
 interface Props {
   row?: Block;
@@ -41,7 +47,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
       onClick={() => setEditorOpen(isText || columns === 1)}
     >
       {!preview && (
-        <ContentToolbar
+        <LazyContentToolbar
           setEditorOpen={(visible) => {
             setFormats(
               "h1 h2 | fontsize fontfamily alignleft aligncenter alignright | blockquote | link | forecolor",
@@ -83,7 +89,7 @@ export const Cell: FC<Props> = ({ row, columns, rowIndex, colIndex }) => {
           />
         )}
         {(isImage || isFirstRow) && (
-          <SectionImage
+          <LazySectionImage
             item={item}
             columns={columns}
             position={[rowIndex, colIndex]}
