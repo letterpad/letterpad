@@ -1,17 +1,15 @@
-import { Button, message, PageHeader } from "antd";
-import { Empty } from "antd";
-import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { deleteImageAPI, updateImageAPI } from "src/helpers";
 
-import { Grid } from "@/components/grid";
 import MediaUpdateModal from "@/components/modals/media-update-modal";
+import { Buttonv2 } from "@/components_v2/button";
+import { Content } from "@/components_v2/content";
+import { Message } from "@/components_v2/message";
+import { PageHeader } from "@/components_v2/page-header";
 
 import { Media as IMedia, MediaNode } from "@/__generated__/__types__";
 import { useMediaQuery } from "@/__generated__/queries/queries.graphql";
-
-const key = "updatable";
 
 const Media = () => {
   const { loading, data } = useMediaQuery({ variables: { filters: {} } });
@@ -35,17 +33,17 @@ const Media = () => {
   };
 
   const updateImage = async (img: IMedia) => {
-    message.loading({ content: "Updating, Please wait...", key });
+    Message().loading({ content: "Updating, Please wait..." });
     const res = await updateImageAPI(img);
     if (res?.__typename === "MediaUpdateResult") {
-      message.success({ content: "Updated", key, duration: 3 });
+      Message().success({ content: "Updated", duration: 3 });
       const updateSrc = images.rows.map((item) =>
         item.id === img.id ? { ...img } : item,
       );
       setImages({ ...images, rows: updateSrc });
     }
     if (res?.__typename === "MediaError") {
-      message.error({ content: res.message, key, duration: 3 });
+      Message().error({ content: res.message, duration: 3 });
     }
     setPreview(undefined);
   };
@@ -62,27 +60,35 @@ const Media = () => {
         </span>
       </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 24 }}>
-          <Grid
-            images={images.rows}
-            onClick={(index) => setPreview(images.rows[index])}
-            actions={(index) => {
-              return (
-                <Button
+        <div className="mx-auto grid grid-cols-3 gap-8 md:grid-cols-4 lg:grid-cols-5 ">
+          {images.rows.map((image) => {
+            return (
+              <div
+                className="flex flex-col gap-2 rounded-md bg-slate-200 p-4 align-middle"
+                key={image.url}
+              >
+                <div className="flex  flex-1 items-center justify-center">
+                  <img
+                    src={image.url}
+                    alt="kkkk"
+                    loading="lazy"
+                    className="max-h-[200px] object-cover"
+                    onClick={() => setPreview(image)}
+                  />
+                </div>
+                <Buttonv2
                   size="small"
-                  type="link"
-                  danger
-                  onClick={() => deleteImage(images.rows[index])}
+                  variant="danger"
+                  onClick={() => deleteImage(image)}
                 >
                   Delete
-                </Button>
-              );
-            }}
-          />
-          {images.rows.length === 0 && (
-            <Empty description="No media found" style={{ marginTop: 100 }} />
-          )}
+                </Buttonv2>
+              </div>
+            );
+          })}
         </div>
+
+        {images.rows.length === 0 && <div className="p-4">0 Media found</div>}
 
         <MediaUpdateModal
           img={preview}

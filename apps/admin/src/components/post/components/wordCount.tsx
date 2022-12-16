@@ -27,12 +27,12 @@ export const WordCount = () => {
       storeStats();
     });
     setActive(true);
-  }, [editor]);
+  }, [active, editor]);
 
   if (!editor) return <LinePlaceholder />;
 
   return (
-    <div className="sticky top-0 z-10 mt-4 flex h-8 items-center justify-center bg-white dark:bg-black">
+    <div className="sticky top-0 z-10 mt-4 flex h-8 items-center justify-center rounded-md bg-white dark:bg-gray-800">
       <a
         className="flex justify-center gap-4 text-sm  text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
         onClick={(e) => {

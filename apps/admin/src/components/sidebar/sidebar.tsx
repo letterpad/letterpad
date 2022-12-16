@@ -5,11 +5,7 @@ import { BiLogOut } from "react-icons/bi";
 import { BsEnvelope, BsImages, BsTags } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { CiSettings } from "react-icons/ci";
-import {
-  HiOutlineDocumentText,
-  HiOutlineHome,
-  HiOutlineUsers,
-} from "react-icons/hi";
+import { HiOutlineUsers } from "react-icons/hi";
 import { MdManageAccounts } from "react-icons/md";
 import { RiLayout4Line } from "react-icons/ri";
 
@@ -35,7 +31,7 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
   const _stats = stats?.__typename === "Stats" ? stats : null;
 
   return (
-    <div className="h-full">
+    <div className="h-full shadow-lg">
       <div className=" h-full flex-1 p-4">
         <Brand site_name={s?.site_title ?? ""} />
         <div
@@ -53,11 +49,6 @@ export const Sidebar: FC<Props> = ({ settings, stats, me }) => {
             }}
             selectedKey={router.pathname}
             items={[
-              {
-                label: "Dashboard",
-                icon: <HiOutlineHome />,
-                key: "/dashboard",
-              },
               {
                 label: "Posts",
                 icon: <BsEnvelope />,

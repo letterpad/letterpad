@@ -9,13 +9,14 @@ import React, {
 } from "react";
 
 const classes = {
-  base: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+  base: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
   disabled: "opacity-50 cursor-not-allowed",
   error: "border-red-500 focus:border-red-500 dark:focus:border-red-500",
 };
 
 interface Props extends HTMLProps<HTMLTextAreaElement> {
   value?: string;
+  label?: string;
   autoGrow?: boolean;
   className?: string;
   disabled?: boolean;
@@ -49,29 +50,28 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>((props, ref) => {
     autoGrow = false,
     disabled = false,
     error,
+    label,
     ...rest
   } = props;
   return (
-    <textarea
-      ref={setRef}
-      onKeyDown={(evt) => {
-        if (evt.key === "Enter") {
-          evt.preventDefault();
-        }
-      }}
-      maxLength={100}
-      disabled={disabled}
-      rows={1}
-      placeholder="Enter a subtitle"
-      // className="w-full resize-none overflow-y-hidden border-0 bg-transparent text-center text-lg font-thin text-gray-400 placeholder-gray-600 outline-none"
-      className={classNames(
-        error && classes.error,
-        classes.base,
-        disabled && classes.disabled,
-        className,
+    <div>
+      {label && (
+        <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+          {label}
+        </label>
       )}
-      {...rest}
-    />
+      <textarea
+        ref={setRef}
+        disabled={disabled}
+        className={classNames(
+          error && classes.error,
+          classes.base,
+          disabled && classes.disabled,
+          className,
+        )}
+        {...rest}
+      />
+    </div>
   );
 });
 TextArea.displayName = "TextArea";

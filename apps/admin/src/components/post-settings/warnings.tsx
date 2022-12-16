@@ -1,13 +1,10 @@
-import { Modal } from "antd";
+import { Message } from "@/components_v2/message";
 
 export function warnNoTags() {
-  Modal.warning({
-    className: "no-tags-modal", //used by cypress
-    zIndex: 999999999,
+  Message().warn({
+    displayType: "modal",
     title: "Post not published",
-    okButtonProps: {
-      className: "okModalBtn",
-    },
+    className: "no-tags-modal",
     content: (
       <div>
         You have not added tags to your post. Add a tag/tags and ensure its set
@@ -40,13 +37,10 @@ export function tagNotLinkedWithNavigation(tags: string[]) {
         navigation menu. You can do so by going to Settings → Navigation → New.
         Then give a name and select a tag from the dropdown.`;
 
-  Modal.warning({
-    className: "tags-notlinked-modal", //used by cypress
-    zIndex: 999999999,
+  Message().warn({
+    displayType: "modal",
     title: "Post not published",
-    okButtonProps: {
-      className: "okModalBtn",
-    },
+    className: "tags-notlinked-modal",
     content: (
       <div>
         Atleast one tag of this post should be linked in Navigation. <br />
@@ -67,10 +61,10 @@ export function tagNotLinkedWithNavigation(tags: string[]) {
 }
 
 export function pageNotLinkedWithNavigation() {
-  Modal.warning({
+  Message().warn({
     className: "page-link-modal", //used by cypress
-    zIndex: 999999999,
     title: "Post not published",
+    displayType: "modal",
     content: (
       <div>
         This page has has not been linked in Navigation. Without linking, the

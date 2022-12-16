@@ -1,5 +1,6 @@
-import { message } from "antd";
 import { signIn } from "next-auth/react";
+
+import { Message } from "@/components_v2/message";
 
 import {
   ForgotPasswordDocument,
@@ -8,8 +9,6 @@ import {
 import { basePath } from "@/constants";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { ForgotPasswordMutationVariables } from "@/graphql/queries/mutations.graphql";
-
-import { key } from "./constants";
 
 type LoginResult = {
   success: boolean;
@@ -24,7 +23,7 @@ export const doLogin = async ({
   email: string;
   password: string;
 }): Promise<LoginResult> => {
-  message.loading({ content: "Please wait...", key });
+  Message().loading({ content: "Please wait..." });
   const result = await signIn("credentials", {
     redirect: false,
     password: password,
@@ -67,15 +66,17 @@ export const forgotPasswordAction = async (email: string) => {
     const data = res.data?.forgotPassword;
 
     if (data?.ok) {
-      message.success("Check your email to reset your password!");
+      Message().success({
+        content: "Check your email to reset your password!",
+      });
       return true;
     } else {
-      message.warn(
-        data?.message || "Something wrong hapenned. Please try again.",
-      );
+      Message().warn({
+        content: data?.message || "Something wrong hapenned. Please try again.",
+      });
     }
   } else {
-    message.warn("Email field is mandatory");
+    Message().warn({ content: "Email field is mandatory" });
   }
   return false;
 };

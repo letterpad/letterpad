@@ -1,10 +1,9 @@
-import { Button } from "antd";
 import { FC } from "react";
 import { IoEyeOutline, IoSettingsOutline } from "react-icons/io5";
 
 import { socket } from "@/components/post/components/tinymce/socket";
+import { Buttonv2 } from "@/components_v2/button";
 
-import { PageType } from "@/graphql/types";
 import { EventAction, track } from "@/track";
 
 interface Props {
@@ -24,9 +23,11 @@ const QuickMenu: FC<Props> = ({
   return (
     <div className="flex items-center gap-6">
       {grammar && (
-        <a
-          title="Check Grammar"
+        <Buttonv2
+          size="small"
+          disabled={!socket.isAvailable}
           onClick={(e) => {
+            if (!socket.isAvailable) return;
             e.preventDefault();
             track({
               eventAction: EventAction.Click,
@@ -37,7 +38,7 @@ const QuickMenu: FC<Props> = ({
           }}
         >
           Grammar
-        </a>
+        </Buttonv2>
       )}
       {preview && (
         <a

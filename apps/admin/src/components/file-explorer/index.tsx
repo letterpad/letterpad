@@ -1,11 +1,11 @@
-import { LoadingOutlined } from "@ant-design/icons";
-import { Button, Spin } from "antd";
-import Modal from "antd/lib/modal/Modal";
 import { basePath } from "next.config";
 import { useCallback, useRef, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import Internal from "@/components/file-explorer/providers/Internal";
 import Unsplash from "@/components/file-explorer/providers/Unsplash";
+import { Buttonv2 } from "@/components_v2/button";
+import { Modal } from "@/components_v2/modal";
 
 import { Media } from "@/__generated__/__types__";
 import { uploadFile } from "@/shared/utils";
@@ -117,56 +117,46 @@ const FileExplorer = ({
   return (
     <NoSsr>
       <Modal
-        centered
         className="file-explorer"
-        title={
-          <>
-            Media &nbsp;&nbsp;
+        header={
+          <div className="flex items-center gap-4">
+            Media
             {uploading && (
-              <Spin
-                indicator={
-                  <LoadingOutlined
-                    style={{ fontSize: 16, fontWeight: "bolder" }}
-                    spin
-                  />
-                }
-              />
+              <AiOutlineLoading3Quarters className="animate-spin" size={14} />
             )}
-          </>
+          </div>
         }
-        visible={isVisible}
-        onCancel={closeWindow}
-        // width={window.innerWidth < 900 ? "90%" : "60%"}
+        show={isVisible}
+        toggle={closeWindow}
         zIndex={1301} // 1300 is tinymce insert toolbar
         footer={[
-          <Button key="back" onClick={closeWindow}>
+          <Buttonv2 key="back" onClick={closeWindow} variant="ghost">
             Cancel
-          </Button>,
+          </Buttonv2>,
           hasSelectedImages ? (
-            <Button key="insert" onClick={insertMedia}>
+            <Buttonv2 key="insert" onClick={insertMedia}>
               Insert
-            </Button>
+            </Buttonv2>
           ) : null,
           isInternal ? (
-            <Button
+            <Buttonv2
               key="upload"
               onClick={() => {
                 hiddenInputRef.current?.click();
               }}
             >
               Browse
-            </Button>
+            </Buttonv2>
           ) : null,
-          <Button
+          <Buttonv2
             key="provider"
-            type="primary"
             onClick={() => {
               setSelection({});
               setMediaProvider(toggleProvider);
             }}
           >
             {isUnsplash ? "My Media" : "Search Online"}
-          </Button>,
+          </Buttonv2>,
         ]}
       >
         {isInternal && <Internal renderer={renderer} />}

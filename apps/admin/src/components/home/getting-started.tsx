@@ -1,5 +1,3 @@
-import { PageHeader } from "antd";
-import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import Link from "next/link";
 import { FC, useEffect } from "react";
@@ -9,6 +7,8 @@ import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
 import { setIntroDimissed } from "@/components/home/visibility";
 import { ChangeUsername } from "@/components/profile/change-username";
 import { Buttonv2 } from "@/components_v2/button";
+import { Content } from "@/components_v2/content";
+import { PageHeader } from "@/components_v2/page-header";
 
 import { InputAuthor } from "@/__generated__/__types__";
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";

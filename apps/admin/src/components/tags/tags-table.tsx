@@ -1,22 +1,14 @@
-import { Table } from "antd";
-import { Content } from "antd/lib/layout/layout";
 import { useEffect, useState } from "react";
 
-import { EditableCell, EditableRow } from "@/components/ediitable-table";
 import { TagRow } from "@/components/tags/types";
+import { Content } from "@/components_v2/content";
+import { Table } from "@/components_v2/table";
 
 import { useTagsContext } from "./context";
 
 type EditableTableProps = Parameters<typeof Table>[0];
 
 type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
-
-const components = {
-  body: {
-    row: EditableRow,
-    cell: EditableCell,
-  },
-};
 
 const EditableTable = () => {
   const [dataSource, setDataSource] = useState<TagRow[]>([]);
@@ -47,19 +39,11 @@ const EditableTable = () => {
 
   return (
     <Content>
-      <div className="site-layout-background" style={{ padding: 24 }}>
-        {/* <Button onClick={addTag} type="primary" style={{ marginBottom: 16 }}>
-          Add a row
-        </Button> */}
-        <Table
-          components={components}
-          rowClassName={() => "editable-row"}
-          bordered
-          dataSource={dataSource}
-          columns={columns as ColumnTypes}
-          loading={loading}
-        />
-      </div>
+      <Table
+        dataSource={dataSource}
+        columns={columns as ColumnTypes}
+        loading={loading}
+      />
     </Content>
   );
 };

@@ -1,11 +1,13 @@
-import { Col, Row, Switch } from "antd";
+import classNames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import { Drawer as Drawerv2 } from "@/components_v2/drawer";
 import { SearchInput } from "@/components_v2/input";
+import { Switch } from "@/components_v2/switch";
 import { TextArea } from "@/components_v2/textarea";
+import { Upload } from "@/components_v2/upload";
 
 import { PostTypes } from "@/__generated__/__types__";
 import { PostWithAuthorAndTagsFragment } from "@/__generated__/queries/partial.graphql";
@@ -23,7 +25,6 @@ import { getPostHash } from "./api";
 import PublishButton from "./publishButton";
 import QuickMenu from "./quickmenu";
 import Tags from "./tags";
-import ImageUpload from "../ImageUpload";
 
 interface IProps {
   post: PostWithAuthorAndTagsFragment;
@@ -92,21 +93,22 @@ const Actions = ({ post }: IProps) => {
       <Drawerv2 show={visible} title="Settings" onClose={onClose} dir="right">
         <div className="space-y-10 whitespace-normal">
           <PublishButton postId={post.id} menu={settings?.menu ?? []} />
-          <Row justify="space-between" hidden={true || !isPost} gutter={16}>
-            <Col span={20}>Featured</Col>
-            <Col span={4}>
-              <Switch
-                size="small"
-                checked={post.featured}
-                onChange={(change) => {
-                  debounceUpdatePost({
-                    id: post.id,
-                    featured: change,
-                  });
-                }}
-              />
-            </Col>
-          </Row>
+          <div
+            className={classNames({
+              hidden: true || !isPost,
+            })}
+          >
+            <Switch
+              label="Featured"
+              active={post.featured}
+              onChange={(change) => {
+                debounceUpdatePost({
+                  id: post.id,
+                  featured: change,
+                });
+              }}
+            />
+          </div>
           <div>
             <Heading
               heading={`${postVerb} Description`}
@@ -162,11 +164,9 @@ const Actions = ({ post }: IProps) => {
               subheading="Add a cover image to your blog. This image might be used in your
               feed, newsletters, recent posts, sharing in social platform, etc."
             />
-
-            <ImageUpload
-              name="Cover Image"
+            <Upload
               url={post.cover_image.src || ""}
-              onDone={([res]) => {
+              onSuccess={([res]) => {
                 updatePost({
                   id: post.id,
                   cover_image: {
@@ -176,7 +176,6 @@ const Actions = ({ post }: IProps) => {
                   },
                 });
               }}
-              containerClass="image-upload-container"
             />
           </div>
         </div>

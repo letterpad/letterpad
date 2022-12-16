@@ -1,10 +1,10 @@
-import { message } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 import { Logo } from "@/components/login/views/Logo";
 import NoSsr from "@/components/NoSsr";
+import { Message } from "@/components_v2/message";
 
 import {
   ResetPasswordDocument,
@@ -14,27 +14,23 @@ import {
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { EventAction, track } from "@/track";
 
-const key = "change-password";
-
 const ResetPassword = () => {
   const router = useRouter();
   const [newPassword, setNewPassword] = useState("");
 
   const resetPassword = async () => {
     if (newPassword.length === 0) {
-      message.error({
+      Message().error({
         content: "Password cannot be empty",
         duration: 5,
-        key,
       });
       return;
     }
 
     if (!router.query.token) {
-      message.error({
+      Message().error({
         content: "Token is missing",
         duration: 5,
-        key,
       });
       return;
     }
@@ -58,19 +54,19 @@ const ResetPassword = () => {
 
     const data = result.data?.resetPassword;
     if (data && data.ok) {
-      message.success({
-        content: data.message,
-        duration: 10,
-        key,
-      });
+      if (data.message) {
+        Message().success({
+          content: data.message,
+          duration: 10,
+        });
+      }
       router.push("/login");
     } else if (!data?.ok) {
-      message.error({
+      Message().error({
         content:
           data?.message ||
           "There was a problem making this request. Contact the admin.",
         duration: 5,
-        key,
       });
     }
   };

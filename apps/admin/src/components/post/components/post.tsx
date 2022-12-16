@@ -1,18 +1,16 @@
-import { Layout } from "antd";
-import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useMemo } from "react";
 
 import { useUpdatePost } from "@/hooks/useUpdatePost";
 
 import { Layout as LayoutBuilder } from "@/components/builder";
 import { BuilderContext } from "@/components/builder/context";
 import ErrorMessage from "@/components/ErrorMessage";
+import { usePostContext } from "@/components/post";
 import Editor from "@/components/post/components/editor";
 import Header from "@/components/post/components/header";
-import Title from "@/components/post/components/title";
-import { usePostContext } from "@/components/post/context";
+import { Title } from "@/components/post/components/title";
 import { PostTitlePlaceholder } from "@/components_v2/placeholders";
 
 import { PostStatusOptions, PostTypes } from "@/__generated__/__types__";
@@ -23,7 +21,7 @@ import { debounce } from "@/shared/utils";
 import { WordCount } from "./wordCount";
 import { PostContextType } from "../types";
 
-function Post() {
+export const Post = () => {
   const router = useRouter();
   const { updatePostAPI, updateLocalState } = useUpdatePost();
   const { postId } = router.query;
@@ -69,7 +67,7 @@ function Post() {
     content = post?.html_draft;
   }
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <div style={{ minHeight: "100vh" }}>
       <Head>
         <title>Editing - {post?.title}</title>
       </Head>
@@ -77,29 +75,26 @@ function Post() {
 
       {(post?.type == PostTypes.Page || post?.type == PostTypes.Post) &&
         post.page_type === PageType.Default && (
-          <Content style={{ margin: "24px 16px 0" }}>
-            <div style={{ maxWidth: 660, margin: "0 auto" }}>
-              {/* <PostDate date={post?.updatedAt} /> */}
-              {loading ? (
-                <PostTitlePlaceholder />
-              ) : (
-                <Title
-                  onEnter={() => helpers?.focus()}
-                  title={post?.title || ""}
-                  postId={post?.id}
-                />
-              )}
-              <WordCount />
-              <Editor
-                loading={loading}
-                text={content ?? ""}
-                onChange={(html) => {
-                  onEditorChange(html, id);
-                }}
+          <div style={{ maxWidth: 660, margin: "0 auto" }}>
+            {/* <PostDate date={post?.updatedAt} /> */}
+            {loading ? (
+              <PostTitlePlaceholder />
+            ) : (
+              <Title
+                onEnter={() => helpers?.focus()}
+                title={post?.title || ""}
+                postId={post?.id}
               />
-              {/* <WordCount /> */}
-            </div>
-          </Content>
+            )}
+            <WordCount />
+            <Editor
+              loading={loading}
+              text={content ?? ""}
+              onChange={(html) => {
+                onEditorChange(html, id);
+              }}
+            />
+          </div>
         )}
 
       {!loading && post?.page_type === PageType["Story Builder"] && (
@@ -122,8 +117,6 @@ function Post() {
           </BuilderContext>
         </div>
       )}
-    </Layout>
+    </div>
   );
-}
-
-export default Post;
+};

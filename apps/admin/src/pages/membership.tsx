@@ -1,6 +1,4 @@
 import { loadStripe } from "@stripe/stripe-js";
-import { PageHeader } from "antd";
-import { Content } from "antd/lib/layout/layout";
 import classNames from "classnames";
 import { InferGetServerSidePropsType } from "next";
 import { basePath } from "next.config";
@@ -14,6 +12,8 @@ import { stripe } from "@/lib/stripe";
 
 import { formatAmountForDisplay } from "@/components/payments/utils";
 import { Buttonv2 } from "@/components_v2/button";
+import { Content } from "@/components_v2/content";
+import { PageHeader } from "@/components_v2/page-header";
 import { Table } from "@/components_v2/table";
 
 import { SessionData } from "@/graphql/types";
@@ -61,72 +61,70 @@ const Payments: FC<P & Props> = ({ customer, session, charges, active }) => {
         </span>
       </PageHeader>
       <Content>
-        <div className="site-layout-background dark:" style={{ padding: 24 }}>
-          <input type="hidden" name="priceId" value="price_G0FvDp6vZvdwRZ" />
-          <div className="flex items-center justify-between">
-            <p>
-              Status:{" "}
-              <span
-                className={classNames("font-medium", {
-                  "text-green-600": active,
-                  "text-red-500": !active,
-                })}
-              >
-                {active ? "Active" : "Inactive"}
-              </span>
-            </p>
-            {active ? (
-              <Buttonv2 onClick={deleteSubscription} variant="danger">
-                Cancel Subscription
-              </Buttonv2>
-            ) : (
-              <Buttonv2 type="submit" onClick={handleClick}>
-                Subscribe
-              </Buttonv2>
-            )}
-          </div>
-          {active && (
-            <Table
-              columns={[
-                {
-                  key: "date",
-                  title: "Date",
-                  dataIndex: "date",
-                },
-                {
-                  key: "ammount",
-                  title: "Ammount",
-                  dataIndex: "ammount",
-                },
-                {
-                  key: "receipt_url",
-                  title: "Receipt",
-                  dataIndex: "receipt_url",
-                  render: (url) => {
-                    return (
-                      <Link href={url}>
-                        <a target="_blank" className="text-blue-600">
-                          Receipt
-                        </a>
-                      </Link>
-                    );
-                  },
-                },
-                {
-                  key: "status",
-                  title: "Status",
-                  dataIndex: "status",
-                },
-              ]}
-              dataSource={charges?.data.map((item) => ({
-                date: getReadableDate(item.created * 1000),
-                status: item.status === "succeeded" ? "Paid" : "Failed",
-                receipt_url: item.receipt_url,
-                ammount: formatAmountForDisplay(item.amount, item.currency),
-              }))}
-            />
+        <input type="hidden" name="priceId" value="price_G0FvDp6vZvdwRZ" />
+        <div className="flex items-center justify-between">
+          <p>
+            Status:{" "}
+            <span
+              className={classNames("font-medium", {
+                "text-green-600": active,
+                "text-red-500": !active,
+              })}
+            >
+              {active ? "Active" : "Inactive"}
+            </span>
+          </p>
+          {active ? (
+            <Buttonv2 onClick={deleteSubscription} variant="danger">
+              Cancel Subscription
+            </Buttonv2>
+          ) : (
+            <Buttonv2 type="submit" onClick={handleClick}>
+              Subscribe
+            </Buttonv2>
           )}
         </div>
+        {active && (
+          <Table
+            columns={[
+              {
+                key: "date",
+                title: "Date",
+                dataIndex: "date",
+              },
+              {
+                key: "ammount",
+                title: "Ammount",
+                dataIndex: "ammount",
+              },
+              {
+                key: "receipt_url",
+                title: "Receipt",
+                dataIndex: "receipt_url",
+                render: (url) => {
+                  return (
+                    <Link href={url}>
+                      <a target="_blank" className="text-blue-600">
+                        Receipt
+                      </a>
+                    </Link>
+                  );
+                },
+              },
+              {
+                key: "status",
+                title: "Status",
+                dataIndex: "status",
+              },
+            ]}
+            dataSource={charges?.data.map((item) => ({
+              date: getReadableDate(item.created * 1000),
+              status: item.status === "succeeded" ? "Paid" : "Failed",
+              receipt_url: item.receipt_url,
+              ammount: formatAmountForDisplay(item.amount, item.currency),
+            }))}
+          />
+        )}
       </Content>
     </>
   );

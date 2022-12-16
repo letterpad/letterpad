@@ -1,5 +1,6 @@
-import { message } from "antd";
 import { useCallback } from "react";
+
+import { Message } from "@/components_v2/message";
 
 import { InputDomain } from "@/__generated__/__types__";
 import { useCreateOrUpdateDomainMutation } from "@/__generated__/queries/mutations.graphql";
@@ -7,8 +8,6 @@ import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { DomainDocument } from "@/graphql/queries/queries.graphql";
 import { debounce } from "@/shared/utils";
 import { EventAction, track } from "@/track";
-
-const key = "domain";
 
 export const useDomainMutation = () => {
   const [updateDomain, progress] = useCreateOrUpdateDomainMutation();
@@ -29,7 +28,7 @@ export const useDomainMutation = () => {
     if (!res.data?.createOrUpdateDomain.ok) {
       const error = res.data?.createOrUpdateDomain?.message;
       if (error) {
-        message.error({ key, content: error, duration: 10 });
+        Message().error({ content: error, duration: 10 });
       }
     } else {
       updateLocalState({ mapped: true, ssl: true, name: data.name });

@@ -74,6 +74,7 @@ export const updatePost = async (
         message: "Post deleted successfully",
       };
     }
+
     if (args.data.title?.trim()) {
       newPostArgs.data.title = args.data.title.trim();
     }
@@ -83,7 +84,7 @@ export const updatePost = async (
     if (args.data.status) {
       newPostArgs.data.status = args.data.status;
     }
-    if (args.data.featured) {
+    if (typeof args.data.featured !== "undefined") {
       newPostArgs.data.featured = args.data.featured;
     }
     if (args.data.type) {
@@ -150,6 +151,7 @@ export const updatePost = async (
         }),
       };
     }
+
     const updatedPost = await prisma.post.update(newPostArgs);
 
     const nowPublished = args.data.status === PostStatusOptions.Published;

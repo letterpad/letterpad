@@ -1,7 +1,8 @@
-import { message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+
+import { Message } from "@/components_v2/message";
 
 import { basePath } from "@/constants";
 import { EventAction, track } from "@/track";
@@ -9,7 +10,7 @@ import { EventAction, track } from "@/track";
 import { Logo } from "./Logo";
 import { SocialLogin } from "./SocialLogin";
 import { doLogin } from "../actions";
-import { key } from "../constants";
+
 export const LoginForm = ({
   isVisible,
   hideSelf,
@@ -31,7 +32,7 @@ export const LoginForm = ({
     });
 
     if (result.success && result.redirectUrl) {
-      message.success({ key, content: result.message, duration: 3 });
+      Message().success({ content: result.message, duration: 3 });
       const { callbackUrl } = router.query;
       let redirectPath = "/posts";
       if (callbackUrl && typeof callbackUrl === "string") {
@@ -43,7 +44,7 @@ export const LoginForm = ({
       router.push(redirectPath.replace(basePath, ""));
       return;
     }
-    message.error({ key, content: result.message, duration: 5 });
+    Message().error({ content: result.message, duration: 5 });
   };
 
   if (!isVisible) {

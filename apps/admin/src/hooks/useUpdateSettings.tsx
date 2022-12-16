@@ -1,13 +1,12 @@
-import { message } from "antd";
 import { useCallback } from "react";
+
+import { Message } from "@/components_v2/message";
 
 import { SettingInputType } from "@/__generated__/__types__";
 import { useUpdateOptionsMutation } from "@/__generated__/queries/mutations.graphql";
 import { SettingsDocument } from "@/__generated__/queries/queries.graphql";
 import { apolloBrowserClient } from "@/graphql/apolloBrowserClient";
 import { EventAction, track } from "@/track";
-
-const key = "settings";
 
 export const useUpdateSettings = () => {
   const [updateOption, progress] = useUpdateOptionsMutation();
@@ -51,7 +50,7 @@ export const useUpdateSettings = () => {
     if (res.data?.updateOptions?.__typename === "UnAuthorized") {
       const error = res.data?.updateOptions?.message;
       if (error) {
-        message.error({ key, content: error, duration: 10 });
+        Message().error({ content: error, duration: 10 });
       }
     }
   }

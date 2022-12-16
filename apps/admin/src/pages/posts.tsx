@@ -1,8 +1,5 @@
-import { Layout } from "antd";
-import { Alert } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { getSession } from "next-auth/react";
 import React, { useState } from "react";
 import { useContext } from "react";
 
@@ -19,6 +16,7 @@ import {
 import { postsColumns } from "@/components/posts";
 import { Header } from "@/components/posts/header";
 import { TagsProvider } from "@/components/tags/context";
+import { Content } from "@/components_v2/content";
 import { Table } from "@/components_v2/table";
 
 import {
@@ -29,8 +27,6 @@ import {
 } from "@/__generated__/__types__";
 import { usePostsQuery } from "@/__generated__/queries/queries.graphql";
 import { LetterpadContext } from "@/context/LetterpadProvider";
-
-const { Content } = Layout;
 
 function Posts() {
   const router = useRouter();
@@ -57,7 +53,13 @@ function Posts() {
     }
   }, [router, setting?.intro_dismissed]);
 
-  if (error) return <ErrorMessage description={error} title="Error" />;
+  if (error)
+    return (
+      <ErrorMessage
+        description={error}
+        title="Could not load posts. Refresh the page to try again"
+      />
+    );
   if (typeof window === "undefined") return null;
   return (
     <>
@@ -70,23 +72,21 @@ function Posts() {
         </span>
       </Header>
       <Content>
-        <div className="site-layout-background  px-4 py-4">
-          <TagsProvider>
-            <Filters
-              onChange={(filters) => {
-                refetch({ filters: { ...filters, type: PostTypes.Post } });
-              }}
-              filters={filters}
-              setFilters={setFilters}
-            />
-          </TagsProvider>
-          <Table
-            columns={postsColumns({ changeStatus })}
-            dataSource={source.map((item) => ({ ...item, key: item.id }))}
-            loading={loading}
-            onRowClick={(row) => router.push("/post/" + row.id)}
+        <TagsProvider>
+          <Filters
+            onChange={(filters) => {
+              refetch({ filters: { ...filters, type: PostTypes.Post } });
+            }}
+            filters={filters}
+            setFilters={setFilters}
           />
-        </div>
+        </TagsProvider>
+        <Table
+          columns={postsColumns({ changeStatus })}
+          dataSource={source.map((item) => ({ ...item, key: item.id }))}
+          loading={loading}
+          onRowClick={(row) => router.push("/post/" + row.id)}
+        />
         <style jsx>{postsStyles}</style>
       </Content>
     </>

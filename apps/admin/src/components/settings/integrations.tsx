@@ -1,10 +1,12 @@
-import { Form, Input } from "antd";
-import { useMemo } from "react";
+import { useState } from "react";
 
 import { useUpdateSettings } from "@/hooks/useUpdateSettings";
 
+import { Buttonv2 } from "@/components_v2/button";
+import { Input } from "@/components_v2/input";
+
+import { SettingInputType } from "@/__generated__/__types__";
 import { SettingsFragmentFragment } from "@/__generated__/queries/queries.graphql";
-import { debounce } from "@/shared/utils";
 
 interface Props {
   settings: SettingsFragmentFragment;
@@ -14,15 +16,19 @@ const Integrations: React.FC<Props> = ({
   settings,
   cloudinaryEnabledByAdmin,
 }) => {
-  const { updateLocalState, updateSettingsAPI } = useUpdateSettings();
+  const [fields, setFields] = useState<SettingInputType>({
+    cloudinary_name: settings.cloudinary_name,
+    cloudinary_key: settings.cloudinary_key,
+    cloudinary_secret: settings.cloudinary_secret,
+  });
+  const { updateSettingsAPI } = useUpdateSettings();
 
-  const debounceUpdateSettings = useMemo(
-    () => debounce((data) => updateSettingsAPI(data), 500),
-    [updateSettingsAPI],
-  );
+  const onChange = (e, field: keyof SettingInputType) => {
+    setFields({ ...fields, [field]: e.target.value });
+  };
   return (
     <>
-      <p>
+      <p className="dark:text-gray-400">
         <span>
           Cloudinary helps in optimising all your images and are served by a
           CDN.
@@ -34,42 +40,46 @@ const Integrations: React.FC<Props> = ({
         )}
       </p>
       <br />
-      <Form.Item label="Cloudinary Name">
+      <div className="mb-8 grid w-full grid-cols-1 gap-8 lg:grid-cols-3">
         <Input
-          size="middle"
+          label="Cloudinary Name"
+          placeholder="Enter cloudinary name"
           data-testid="cName"
           disabled={cloudinaryEnabledByAdmin}
-          value={settings.cloudinary_name}
+          value={fields.cloudinary_name}
           onChange={(e) => {
-            debounceUpdateSettings({ cloudinary_name: e.target.value });
-            updateLocalState({ cloudinary_name: e.target.value });
+            onChange(e, "cloudinary_name");
           }}
         />
-      </Form.Item>
-      <Form.Item label="Cloudinary Key">
+
         <Input
+          label="Cloudinary Key"
+          placeholder="Enter cloudinary key"
           disabled={cloudinaryEnabledByAdmin}
           data-testid="cKey"
-          size="middle"
-          value={settings.cloudinary_key}
+          value={fields.cloudinary_key}
           onChange={(e) => {
-            debounceUpdateSettings({ cloudinary_key: e.target.value });
-            updateLocalState({ cloudinary_key: e.target.value });
+            onChange(e, "cloudinary_key");
           }}
         />
-      </Form.Item>
-      <Form.Item label="Cloudinary Secret">
+
         <Input
+          label="Cloudinary Secret"
+          placeholder="Enter cloudinary secret"
           disabled={cloudinaryEnabledByAdmin}
-          size="middle"
           data-testid="cSecret"
-          value={settings.cloudinary_secret}
+          value={fields.cloudinary_secret}
           onChange={(e) => {
-            debounceUpdateSettings({ cloudinary_secret: e.target.value });
-            updateLocalState({ cloudinary_secret: e.target.value });
+            onChange(e, "cloudinary_secret");
           }}
         />
-      </Form.Item>
+      </div>
+      <Buttonv2
+        onClick={() => updateSettingsAPI(fields)}
+        data-testid="save-integrations"
+      >
+        Save
+      </Buttonv2>
     </>
   );
 };

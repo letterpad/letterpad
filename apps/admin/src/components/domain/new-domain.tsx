@@ -1,8 +1,10 @@
-import { Divider, Form, Input, Modal } from "antd";
+import { ChangeEvent, useState } from "react";
 
 import { useDomainMutation } from "@/hooks/useCreateOrUpdateDomain";
 
 import { Buttonv2 } from "@/components_v2/button";
+import { Input } from "@/components_v2/input";
+import { Message } from "@/components_v2/message";
 
 import { useRemoveDomainMutation } from "@/__generated__/queries/mutations.graphql";
 
@@ -13,13 +15,18 @@ export const NewDomain: React.FC<{
   mapped?: boolean;
   ssl?: boolean;
 }> = ({ name, mapped = false }) => {
+  const [domain, setDomain] = useState("");
+
   const [removeDomain] = useRemoveDomainMutation();
   const { updateLocalState, createUpdateDomain } = useDomainMutation();
 
   const next = async (values) => {
     const result = await createUpdateDomain({ name: values.domain });
     if (result.data?.createOrUpdateDomain.ok) {
-      Modal.success({ content: result.data?.createOrUpdateDomain.message });
+      if (result.data?.createOrUpdateDomain.message)
+        Message().success({
+          content: result.data?.createOrUpdateDomain.message,
+        });
     }
   };
 
@@ -28,79 +35,46 @@ export const NewDomain: React.FC<{
     updateLocalState({ mapped: false, ssl: false });
   };
 
+  const changeDomainName = (e: ChangeEvent<HTMLInputElement>) => {
+    setDomain(e.target.value);
+  };
+
   return (
     <>
-      <br />
-      <Form
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 8 }}
-        layout="horizontal"
-        size="middle"
-        onFinish={next}
-      >
-        <Form.Item
-          label="Map IP"
-          name="ip"
-          help="Copy this IP and set it as a A record in your Domain under DNS configuration"
-        >
+      <div className="m-auto flex max-w-2xl flex-auto flex-col gap-8 px-4">
+        <div className="flex flex-1 items-center ">
           <Input
-            readOnly={true}
-            style={{ width: "calc(100% - 90px)", opacity: 0.6 }}
-            value={"138.68.127.224"}
-            id="lpip"
+            label="Map Network Address"
+            id="map_id"
+            value="letterpad.network"
+            help="Copy this Network Address and set it as a A record in your Domain under DNS configuration"
           />
-          <CopyToClipboard elementId="lpip" />
-        </Form.Item>
-        <Divider />
-        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          Proceed with the below step only after you have mapped the IP with
-          your domain <br /> otherwise domain verification will fail.
-        </Form.Item>
-        <Form.Item
-          initialValue={name}
-          label="Domain name"
-          name="domain"
+          <CopyToClipboard elementId="map_id" />
+        </div>
+        <div className="rounded-md bg-red-200 p-4 font-medium text-red-800 shadow-md dark:bg-gray-800 dark:text-red-400">
+          Proceed with the below step only after you have mapped the Network
+          Address with your domain, otherwise domain verification will fail.
+        </div>
+        <Input
+          label="Domain Name"
+          value={domain}
+          placeholder="e.g. example.com, blog.example.com"
           help="(without http://, https:// and www)"
-          requiredMark={false}
-          rules={[
-            {
-              required: true,
-              message: "e.g. example.com, blog.example.com",
-              validator: async (_, value) => {
-                if (
-                  value.match(
-                    /(?=^.{4,253}$)(^((?!-)[a-zA-Z0-9-]{1,63}(?<!-).)+[a-zA-Z]{2,63}$)/,
-                  ) &&
-                  value.includes(".")
-                ) {
-                  return Promise.resolve();
-                }
+          onChange={changeDomainName}
+          disabled={mapped}
+        />
+        {!mapped && (
+          <Buttonv2 variant="primary" type="submit">
+            Map my domain
+          </Buttonv2>
+        )}
 
-                return Promise.reject();
-              },
-            },
-          ]}
-        >
-          <Input
-            placeholder="e.g. example.com, blog.example.com"
-            readOnly={mapped}
-          />
-        </Form.Item>
-        <br />
-        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          {!mapped && (
-            <Buttonv2 variant="dark" type="submit">
-              Map my domain
-            </Buttonv2>
-          )}
-
-          {mapped && (
-            <Buttonv2 variant="danger" onClick={removeMapping}>
-              Remove Mapping
-            </Buttonv2>
-          )}
-        </Form.Item>
-      </Form>
+        {mapped && (
+          <Buttonv2 variant="danger" onClick={removeMapping}>
+            Remove Mapping
+          </Buttonv2>
+        )}
+      </div>
     </>
   );
 };

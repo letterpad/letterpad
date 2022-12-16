@@ -55,8 +55,11 @@ function setContent({ title, content }: { title?: string; content?: string }) {
   if (content) {
     cy.window().then((win) => {
       //@ts-ignore
+      win.tinymce.activeEditor.setContent("ignore");
+      //@ts-ignore
       win.tinymce.activeEditor.setContent(content);
     });
+    cy.wait("@updatePostMutation");
   }
 }
 Cypress.Commands.add("setContent", setContent);

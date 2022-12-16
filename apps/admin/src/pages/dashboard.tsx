@@ -1,13 +1,12 @@
-import { LoadingOutlined } from "@ant-design/icons";
-import { PageHeader, Table } from "antd";
-import { Divider } from "antd";
-import { Row } from "antd";
-import { Content } from "antd/lib/layout/layout";
+import { Table } from "antd";
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 
 import Loading from "@/components/loading";
 import MetricsBar from "@/components/metrics/MetricsBar";
+import { Content } from "@/components_v2/content";
+import { Divider } from "@/components_v2/divider";
+import { PageHeader } from "@/components_v2/page-header";
 import { Select } from "@/components_v2/select";
 
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
@@ -84,31 +83,29 @@ const Metrics = () => {
         <span className="help-text">Analytics of your blog.</span>
       </PageHeader>
       <Content>
-        <div className="site-layout-background" style={{ padding: 24 }}>
-          <div className="flex items-center gap-2">
-            <Select
-              className="w-32"
-              onChange={(key) => setDays(Number(key))}
-              selected={days}
-              id="select-days"
-              items={[
-                { key: 0, label: "Today" },
-                { key: 30, label: "Yesterday" },
-                { key: 90, label: "Last week" },
-                { key: 14, label: "Last 2 weeks" },
-                { key: 30, label: "Last 1 month" },
-                { key: 90, label: "Last 3 months" },
-              ]}
-            />
-            {!loading && <Loading />}
-          </div>
-          <Divider />
-          <Row gutter={16}>
-            <MetricsBar stats={data.stats} />
-          </Row>
-          <Divider />
-          <Table dataSource={data.urlView} columns={cols} pagination={false} />
+        <div className="flex items-center gap-2">
+          <Select
+            className="w-32"
+            onChange={(key) => setDays(Number(key))}
+            selected={days}
+            id="select-days"
+            items={[
+              { key: 0, label: "Today" },
+              { key: 30, label: "Yesterday" },
+              { key: 90, label: "Last week" },
+              { key: 14, label: "Last 2 weeks" },
+              { key: 30, label: "Last 1 month" },
+              { key: 90, label: "Last 3 months" },
+            ]}
+          />
+          {!loading && <Loading />}
         </div>
+        <Divider />
+        <div>
+          <MetricsBar stats={data.stats} />
+        </div>
+        <Divider />
+        <Table dataSource={data.urlView} columns={cols} pagination={false} />
       </Content>
     </div>
   );

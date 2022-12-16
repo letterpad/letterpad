@@ -1,6 +1,6 @@
-import { Input } from "antd";
-
 import { useUpdatePost } from "@/hooks/useUpdatePost";
+
+import { TextArea } from "@/components_v2/textarea";
 
 interface Props {
   onEnter(): void;
@@ -19,18 +19,22 @@ const defaults = {
     textAlign: TextAlign.center,
     // overflow: "hidden",
     fontWeight: "bold",
+    border: "none",
+    background: "transparent",
   },
   rows: 3,
+  maxRows: 3,
   autoSize: true,
   placeholder: "Enter a title",
   bordered: false,
+  maxLength: 140,
 };
-const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
+export const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
   const { updatePost, updateLocalState } = useUpdatePost();
 
   return (
     <>
-      <Input.TextArea
+      <TextArea
         {...defaults}
         defaultValue={title}
         onChange={(e) => {
@@ -46,9 +50,10 @@ const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
         onBlur={(e) =>
           postId && updatePost({ title: e.target.value.trim(), id: postId })
         }
-        className="title"
+        placeholder="Enter a title"
+        className="title resize-none"
         data-testid="postTitleInput"
-        autoSize={true}
+        autoGrow={true}
       />
       <style jsx global>{`
         textarea.title {
@@ -58,5 +63,3 @@ const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
     </>
   );
 };
-
-export default Title;

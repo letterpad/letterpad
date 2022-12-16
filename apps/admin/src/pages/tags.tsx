@@ -1,8 +1,8 @@
-import { PageHeader } from "antd";
 import Head from "next/head";
 
 import { TagsProvider } from "@/components/tags/context";
 import TagsTable from "@/components/tags/tags-table";
+import { PageHeader } from "@/components_v2/page-header";
 
 const EditableTable = () => {
   return (

@@ -1,11 +1,11 @@
-import { DeleteOutlined, MenuOutlined } from "@ant-design/icons";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { message } from "antd";
 import { FC, useEffect, useState } from "react";
+import { AiOutlineDelete, AiOutlineMenu } from "react-icons/ai";
 
 import { Buttonv2 } from "@/components_v2/button";
 import { Input as Inputv2 } from "@/components_v2/input";
+import { Message } from "@/components_v2/message";
 
 import { Navigation, NavigationType } from "@/__generated__/__types__";
 
@@ -77,7 +77,7 @@ export const Item: FC<Props> = ({
 
   useEffect(() => {
     if (nameError.length > 0) {
-      message.error(nameError);
+      Message().error({ content: nameError });
     }
   }, [nameError]);
 
@@ -90,7 +90,7 @@ export const Item: FC<Props> = ({
       <div data-testid="item-sortable" className="grid">
         <div className="block">
           <div className="icon-box" {...listeners}>
-            <MenuOutlined className="dragger" />
+            <AiOutlineMenu className="dark:text-white" />
           </div>
           <Inputv2
             value={library.label}
@@ -117,7 +117,8 @@ export const Item: FC<Props> = ({
             Select Content
           </Buttonv2>
           <Buttonv2 variant="danger" onClick={() => onRemove(library)}>
-            <DeleteOutlined
+            <AiOutlineDelete
+              size={20}
               data-testid="button-nav-delete"
               className="menu-delete py-1"
             />

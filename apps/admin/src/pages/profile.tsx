@@ -1,9 +1,9 @@
-import { PageHeader } from "antd";
-import { Content } from "antd/lib/layout/layout";
 import Head from "next/head";
 
 import Loading from "@/components/loading";
 import { Content as ProfileContent } from "@/components/profile/content";
+import { Content } from "@/components_v2/content";
+import { PageHeader } from "@/components_v2/page-header";
 
 import { useMeQuery } from "@/__generated__/queries/queries.graphql";
 
@@ -25,11 +25,7 @@ function Profile() {
       </PageHeader>
       <Content>
         {loading && <Loading />}
-        {data?.me?.__typename === "Author" && (
-          <div className="site-layout-background" style={{ padding: 24 }}>
-            <ProfileContent data={data.me} />
-          </div>
-        )}
+        {data?.me?.__typename === "Author" && <ProfileContent data={data.me} />}
       </Content>
     </>
   );

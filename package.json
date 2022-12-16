@@ -24,6 +24,7 @@
     "eslint-config-custom": "*",
     "husky": "^8.0.1",
     "prettier": "latest",
+    "react-dom": "^18.2.0",
     "react-parallax": "^3.5.1",
     "ts-prune": "^0.10.3",
     "turbo": "latest"
@@ -36,6 +37,7 @@
   },
   "packageManager": "yarn@1.22.19",
   "dependencies": {
+    "axios": "^1.2.0",
     "react-icons": "^4.6.0"
   }
 }

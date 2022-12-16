@@ -1,7 +1,8 @@
-import { Form, Input } from "antd";
 import { useMemo } from "react";
 
 import { useUpdateAuthor } from "@/hooks/useUpdateAuthor";
+
+import { Input } from "@/components_v2/input";
 
 import { MeFragmentFragment } from "@/__generated__/queries/queries.graphql";
 import { debounce, removeTypenames } from "@/shared/utils";
@@ -10,7 +11,7 @@ interface Props {
   social: MeFragmentFragment["social"];
   id: number;
 }
-type ChangeEvent = React.ChangeEvent<HTMLInputElement> & KeyboardEvent;
+type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
 const getUsernamefromUrl = (str: string | undefined) =>
   str ? str.split("/").pop() : "";
@@ -39,13 +40,13 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
 
   return (
     <>
-      <Form.Item label="Twitter">
+      <div className="mb-8 grid w-full grid-cols-1 gap-6 lg:grid-cols-2">
         <Input
+          label="Twitter"
           addonBefore="@"
           placeholder="username"
-          size="middle"
           value={getUsernamefromUrl(social?.twitter)}
-          onChange={(e: ChangeEvent) => {
+          onChange={(e) => {
             if (!verify(e)) return;
             updateSocial({ twitter: e.target.value });
             const data = {
@@ -54,12 +55,11 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
             updateLocalState(data);
           }}
         />
-      </Form.Item>
-      <Form.Item label="Facebook">
+
         <Input
+          label="Facebook"
           addonBefore="@"
           placeholder="username"
-          size="middle"
           value={getUsernamefromUrl(social?.facebook)}
           onChange={(e: ChangeEvent) => {
             if (!verify(e)) return;
@@ -70,12 +70,11 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
             updateLocalState(data);
           }}
         />
-      </Form.Item>
-      <Form.Item label="Instagram">
+
         <Input
+          label="Instagram"
           addonBefore="@"
           placeholder="username"
-          size="middle"
           value={getUsernamefromUrl(social?.instagram)}
           onChange={(e: ChangeEvent) => {
             if (!verify(e)) return;
@@ -86,12 +85,11 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
             updateLocalState(data);
           }}
         />
-      </Form.Item>
-      <Form.Item label="Github">
+
         <Input
+          label="Github"
           addonBefore="@"
           placeholder="username"
-          size="middle"
           value={getUsernamefromUrl(social?.github)}
           onChange={(e: ChangeEvent) => {
             if (!verify(e)) return;
@@ -102,12 +100,11 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
             updateLocalState(data);
           }}
         />
-      </Form.Item>
-      <Form.Item label="LinkedIn">
+
         <Input
+          label="LinkedIn"
           addonBefore="@"
           placeholder="username/"
-          size="middle"
           value={getUsernamefromUrl(social?.linkedin)}
           onChange={(e: ChangeEvent) => {
             if (!verify(e)) return;
@@ -118,7 +115,7 @@ export const Social: React.VFC<Props> = ({ social, id }) => {
             updateLocalState(data);
           }}
         />
-      </Form.Item>
+      </div>
     </>
   );
 };

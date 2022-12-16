@@ -1,6 +1,8 @@
-import { Button, Result } from "antd";
 import Head from "next/head";
 import { useRouter } from "next/router";
+
+import { Buttonv2 } from "@/components_v2/button";
+import { Result } from "@/components_v2/result";
 
 const ChangePasswordSuccess = () => {
   const router = useRouter();
@@ -18,11 +20,10 @@ const ChangePasswordSuccess = () => {
         title="Password Changed"
         subTitle="Your password has been changed successfully"
         extra={[
-          <Button type="primary" key="login" onClick={doLogin}>
+          <Buttonv2 key="login" onClick={doLogin}>
             Login
-          </Button>,
+          </Buttonv2>,
         ]}
-        className="flex flex-col justify-center"
       />
     </>
   );

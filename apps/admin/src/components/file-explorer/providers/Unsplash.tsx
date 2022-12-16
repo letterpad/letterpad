@@ -1,5 +1,6 @@
-import { Button, Input, InputRef } from "antd";
 import React, { useCallback, useMemo, useRef, useState } from "react";
+
+import { SearchInput } from "@/components_v2/input";
 
 import { Media } from "@/__generated__/__types__";
 import { basePath } from "@/constants";
@@ -11,13 +12,12 @@ interface IProps {
 }
 const Unsplash: React.FC<IProps> = ({ renderer }) => {
   const url = (basePath + "/api/unsplash").replace("//api", "");
-  const [, setQuery] = useState("");
+  const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Media[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const inputRef = useRef<InputRef>(null);
 
   const handleUnsplashResponse = useCallback(
     ({ rows, count, error }: any) => {
@@ -30,20 +30,23 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
       if (rows.length === 0) {
         return setError("No images found.");
       }
-      setData([...data, ...rows]);
+      if (page === 1) {
+        setData(rows);
+      } else {
+        setData([...data, ...rows]);
+      }
       setTotalCount(count);
     },
-    [data],
+    [data, page],
   );
 
   const searchUnsplash = useCallback(
-    async (page = 1) => {
-      const term = inputRef.current?.input?.value;
-      if (!term || term.length === 0) {
+    async (searchTerm, page = 1) => {
+      if (!searchTerm || searchTerm.length === 0) {
         return setLoading(false);
       }
       setLoading(true);
-      fetchUnsplashMedia(url, page, term)
+      fetchUnsplashMedia(url, page, searchTerm)
         .then(handleUnsplashResponse)
         .catch((_e) => {
           setError(_e.message);
@@ -59,41 +62,37 @@ const Unsplash: React.FC<IProps> = ({ renderer }) => {
     setData([]);
   };
 
-  const onSearchEnter = async () => {
-    const term = inputRef.current?.input?.value;
-    if (term && term.length > 0) {
+  const onSearchEnter = async (searchTerm) => {
+    if (searchTerm && searchTerm.length > 0) {
       resetAll();
-      searchUnsplash();
+      setQuery(searchTerm);
+      setPage(1);
+      searchUnsplash(searchTerm);
     }
   };
 
   const loadMore = () => {
     const nextPage = page + 1;
     setPage(nextPage);
-    searchUnsplash(nextPage);
+    searchUnsplash(query, nextPage);
   };
 
   const jsxElements = useMemo(() => renderer(data), [data, renderer]);
   return (
     <div>
-      <Input.Group compact>
-        <Input
-          ref={inputRef}
-          data-testid="input-unsplash"
-          onPressEnter={onSearchEnter}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search high resolution photos from Unsplash"
-          autoFocus
-          style={{ width: "calc(100% - 110px)" }}
-        />
-        <Button type="primary" loading={loading} onClick={onSearchEnter}>
-          Search
-        </Button>
-      </Input.Group>
+      <SearchInput
+        // onChange={(e) => setQuery(e.target.value)}
+        value={query}
+        enterButton="Search"
+        data-testid="input-unsplash"
+        onSearch={onSearchEnter}
+        placeholder="Search high resolution photos from Unsplash"
+        loading={loading}
+      />
 
       <br />
-      <br />
-      {error}
+
+      <span className="text-gray-700 dark:text-gray-200">{error}</span>
       <InfiniteScrollList
         data={jsxElements}
         count={totalCount}
