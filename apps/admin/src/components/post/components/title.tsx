@@ -22,7 +22,7 @@ const defaults = {
     border: "none",
     background: "transparent",
   },
-  rows: 3,
+  rows: 1,
   maxRows: 3,
   autoSize: true,
   placeholder: "Enter a title",
@@ -36,7 +36,7 @@ export const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
     <>
       <TextArea
         {...defaults}
-        defaultValue={title}
+        value={title}
         onChange={(e) => {
           if (postId)
             updateLocalState({ title: e.target.value.trim(), id: postId });
