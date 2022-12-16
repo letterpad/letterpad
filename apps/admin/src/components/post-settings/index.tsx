@@ -23,7 +23,7 @@ import {
 
 import { getPostHash } from "./api";
 import PublishButton from "./publishButton";
-import QuickMenu from "./quickmenu";
+import { QuickMenu } from "./quickmenu";
 import Tags from "./tags";
 
 interface IProps {

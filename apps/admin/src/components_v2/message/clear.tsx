@@ -1,12 +1,12 @@
-import { root } from "./root";
+import { portal } from "./root";
 
 let timeout;
 export const clearText = (DELAY) => {
   clearTimeout(timeout);
   if (DELAY === 0) {
-    return root.render(<span />);
+    return portal.show(<span />);
   }
   timeout = setTimeout(() => {
-    root.render(<span />);
+    portal.show(<span />);
   }, DELAY * 1000);
 };

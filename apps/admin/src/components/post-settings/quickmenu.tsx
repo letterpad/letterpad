@@ -13,7 +13,7 @@ interface Props {
   grammar?: boolean;
   preview?: boolean;
 }
-const QuickMenu: FC<Props> = ({
+export const QuickMenu: FC<Props> = ({
   siteUrl,
   postHash,
   showDrawer,
@@ -71,4 +71,3 @@ const QuickMenu: FC<Props> = ({
     </div>
   );
 };
-export default QuickMenu;
