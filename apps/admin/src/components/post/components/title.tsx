@@ -38,8 +38,7 @@ export const Title: React.FC<Props> = ({ onEnter, postId, title }) => {
         {...defaults}
         value={title}
         onChange={(e) => {
-          if (postId)
-            updateLocalState({ title: e.target.value.trim(), id: postId });
+          if (postId) updateLocalState({ title: e.target.value, id: postId });
         }}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
