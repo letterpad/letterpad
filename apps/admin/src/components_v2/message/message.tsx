@@ -1,7 +1,7 @@
 import React from "react";
 
 import { clearText } from "./clear";
-import { root } from "./root";
+import { portal } from "./root";
 import { DisplayProps, Props } from "./types";
 import { Wrapper } from "./wrapper";
 
@@ -21,7 +21,7 @@ export const Message = () => {
       Display({ ...props, loading: true });
     },
     destroy: () => {
-      root.render(<span />);
+      portal.show(<span />);
     },
   };
 };
@@ -31,7 +31,7 @@ const Display = (
 ) => {
   const { displayType, duration, title, ...rest } = props;
 
-  root.render(
+  portal.show(
     <Wrapper
       {...props}
       onConfirm={() => {

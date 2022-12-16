@@ -30,9 +30,10 @@ export const PopConfirm: FC<Props> = ({
     <>
       <div
         className={classNames(
-          "fixed top-0 left-0 z-10 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-black/40",
+          "fixed top-0 left-0 h-screen w-screen bg-gray-300/50 backdrop-blur-sm dark:bg-black/40",
           { hidden: !display },
         )}
+        style={{ zIndex: 41 }}
       />
       <div
         id="popup-modal"
