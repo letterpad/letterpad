@@ -10,16 +10,18 @@ const Query: QueryResolvers<ResolverContext> = {
         last_seen: true,
       },
     });
-    const rows = subdomains.map(({ username, last_seen }) => {
-      return {
-        route: `https://${username}.letterpad.app`,
-        lastmod: last_seen
-          ? new Date(last_seen).toISOString()
-          : new Date().toISOString(),
-        priority: 1,
-        changefreq: "daily",
-      };
-    });
+    const rows = subdomains
+      .filter(({ username }) => isValidUrl(`https://${username}.letterpad.app`))
+      .map(({ username, last_seen }) => {
+        return {
+          route: `https://${username}.letterpad.app`,
+          lastmod: last_seen
+            ? new Date(last_seen).toISOString()
+            : new Date().toISOString(),
+          priority: 1,
+          changefreq: "daily",
+        };
+      });
     return { message: "", rows, __typename: "SiteMapList" };
   },
   sitemap: async (_root, _args, { client_author_id, prisma, session }) => {
@@ -76,3 +78,16 @@ const Query: QueryResolvers<ResolverContext> = {
   },
 };
 export default { Query };
+
+const isValidUrl = (urlString) => {
+  var urlPattern = new RegExp(
+    "^(https?:\\/\\/)?" + // validate protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // validate domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // validate OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // validate port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // validate query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i",
+  ); // validate fragment locator
+  return !!urlPattern.test(urlString);
+};
